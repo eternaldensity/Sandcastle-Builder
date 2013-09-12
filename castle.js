@@ -47,6 +47,10 @@ function PriceSort(a,b)
 	else if (a.castlePrice<b.castlePrice) return -1;
 	else return 0;
 }
+function FormatPrice(monies)
+{
+	return Molpify(Math.floor(monies*Molpy.priceFactor));
+}
 function Flint(stones){return parseInt(Math.floor(stones))}
 function CuegishToBeanish(mustard)
 {
@@ -73,6 +77,16 @@ function EvalMaybeFunction(bacon,babies)
 	var B = typeof(bacon);
 	var D = 'function';
 	return(B===D?bacon(babies):bacon);	
+}	
+function isChildOf(child,parent)
+{
+	if(!child)return;
+	var current = child;
+	while(current = current.parentNode)
+	{
+		if(current == parent)
+			return 1;
+	}
 }
 
 /* In which the game initialisation is specified
@@ -1058,6 +1072,7 @@ Molpy.Up=function()
 		Molpy.CastleToolsN=0;
 		Molpy.SandToolsOwned=0;
 		Molpy.CastleToolsOwned=0;
+		Molpy.priceFactor=1;
 		
 		Molpy.SandTool=function(name,commonName,desc,price,spmNP,drawFunction,buyFunction,
 			pic,icon,background)
@@ -1086,7 +1101,7 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
-				var price=Math.floor(this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount));
+				var price=Math.floor(Molpy.priceFactor*this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount));				
 				if (Molpy.castles>=price)
 				{
 					Molpy.SpendCastles(price);
@@ -1121,6 +1136,7 @@ Molpy.Up=function()
 			}
 			this.hover=function()
 			{
+				if(this.hovered)return;
 				this.hovered=1;
 				var desc = '';
 				if(Molpy.showStats)
@@ -1135,8 +1151,8 @@ Molpy.Up=function()
 				}
 				g('SandToolDescription'+this.id).innerHTML='<br/>'+desc;
 			}
-			this.unhover=function()
-			{
+			this.unhover=function(event)
+			{				
 				this.hovered=0;
 				g('SandToolDescription'+this.id).innerHTML='';
 			}
@@ -1151,8 +1167,7 @@ Molpy.Up=function()
 			Molpy.SandToolsById[this.id]=this;
 			Molpy.SandToolsN++;
 			return this;
-		}		
-			
+		}	
 	
 		Molpy.CastleTool=function(name,commonName,desc,price0,price1,destroyN,buildN,drawFunction,buyFunction,
 			pic,icon,background)
@@ -1187,7 +1202,7 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
-				var price=this.prevPrice+this.nextPrice;
+				var price=Math.floor(Molpy.priceFactor*(this.prevPrice+this.nextPrice));
 				if (Molpy.castles>=price)
 				{
 					Molpy.SpendCastles(price);
@@ -1254,6 +1269,7 @@ Molpy.Up=function()
 			}
 			this.hover=function()
 			{
+				if(this.hovered)return;
 				this.hovered=1;
 				var desc = '';
 				var bN = EvalMaybeFunction(this.buildN);
@@ -1277,7 +1293,7 @@ Molpy.Up=function()
 			
 				g('CastleToolDescription'+this.id).innerHTML='<br/>'+desc;
 			}
-			this.unhover=function()
+			this.unhover=function(event)
 			{
 				this.hovered=0;
 				g('CastleToolDescription'+this.id).innerHTML='';
@@ -1336,11 +1352,14 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
-				if (!this.bought && Molpy.castles>=this.castlePrice && Molpy.sand>=this.sandPrice)
+				var sp = Math.floor(Molpy.priceFactor*this.sandPrice);
+				var cp = Math.floor(Molpy.priceFactor*this.castlePrice);
+				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp)
 				{
-					Molpy.SpendSand(this.sandPrice);
-					Molpy.SpendCastles(this.castlePrice);
+					Molpy.SpendSand(sp);
+					Molpy.SpendCastles(cp);
 					this.bought=1;
+					this.hovered=0;
 					if (this.buyFunction) this.buyFunction(this);
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
@@ -1349,11 +1368,16 @@ Molpy.Up=function()
 			}
 			this.hover=function(inv)
 			{
+				if(this.hovered)return;
 				this.hovered=1;
 				g((inv?'Inv':'')+'BoostDescription'+this.id).innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
 			}
-			this.unhover=function(inv)
-			{
+			this.unhover=function(event,inv)
+			{			
+				var source=event.currentTarget;
+				var dest=event.toElement;
+				if(source==dest||isChildOf(dest,source))return;
+				
 				this.hovered=0;
 				g((inv?'Inv':'')+'BoostDescription'+this.id).innerHTML='';
 			}
@@ -1415,6 +1439,7 @@ Molpy.Up=function()
 							Molpy.BoostsOwned--;
 							Molpy.Boosts[bacon].bought=0;
 						} //Orteil did this bit wrong :P
+						Molpy.Notify('Boost Locked: '+bacon);
 					}
 				}
 			}else{ //so I put bacon in your bacon
@@ -1449,10 +1474,13 @@ Molpy.Up=function()
 			
 			this.hover=function()
 			{
+				if(this.hovered)return;
+				this.hovered=1;
 				g('BadgeDescription'+this.id).innerHTML='<br/>'+((this.earned||this.visibility<1)?this.desc:'????');
 			}
-			this.unhover=function(inv)
+			this.unhover=function(event,inv)
 			{
+				this.hovered=0;
 				g('BadgeDescription'+this.id).innerHTML='';
 			}
 			
@@ -1551,7 +1579,7 @@ Molpy.Up=function()
 				Molpy.EarnBadge("Don't Litter!");
 			if(Molpy.redactedClicks>=15)
 				Molpy.UnlockBoost('Kitnip');
-			if(Molpy.redactedClicks>=50)
+			if(Molpy.redactedClicks>=32)
 				Molpy.UnlockBoost('Department of Redundancy Department');
 			if(Molpy.redactedClicks>=101)
 				Molpy.EarnBadge('Y U NO BELIEVE ME?');
@@ -1596,7 +1624,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.SandTools[i];
-				str+='<div class="floatbox sandtool" onMouseOver="Molpy.SandToolsById['+me.id+'].hover()" onMouseOut="Molpy.SandToolsById['+me.id+'].unhover()"><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+Molpify(Math.floor(me.price))+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="SandToolDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox sandtool" onMouseOver="Molpy.SandToolsById['+me.id+'].hover()" onMouseOut="Molpy.SandToolsById['+me.id+'].unhover(event)"><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="SandToolDescription'+me.id+'"></div></div></div>';
 				r++
 			}
 			if(r==redactedIndex) str+= Molpy.redactedShop;
@@ -1618,7 +1646,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.CastleTools[i];
-				str+='<div class="floatbox castletool" onMouseOver="Molpy.CastleToolsById['+me.id+'].hover()" onMouseOut="Molpy.CastleToolsById['+me.id+'].unhover()"><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+Molpify(Math.floor(me.price))+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox castletool" onMouseOver="Molpy.CastleToolsById['+me.id+'].hover()" onMouseOut="Molpy.CastleToolsById['+me.id+'].unhover(event)"><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
 				r++
 			}
 			if(r==redactedIndex) str+= Molpy.redactedShop;
@@ -1659,7 +1687,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.BoostsInShop[i];
-				str+='<div class="floatbox boostsale" onMouseOver="Molpy.BoostsById['+me.id+'].hover()" onMouseOut="Molpy.BoostsById['+me.id+'].unhover()"><div class="title">'+me.name+' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div><span class="price">Price: '+Molpify(Math.floor(me.sandPrice))+' sand + '+Molpify(Math.floor(me.castlePrice))+' castles</span><div id="BoostDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox boostsale" onMouseOver="Molpy.BoostsById['+me.id+'].hover()" onMouseOut="Molpy.BoostsById['+me.id+'].unhover(event)"><div class="title">'+me.name+' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div><span class="price">Price: '+FormatPrice(me.sandPrice)+' sand + '+FormatPrice(me.castlePrice)+' castles</span><div id="BoostDescription'+me.id+'"></div></div></div>';
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedShop;
@@ -1690,7 +1718,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
 				var me=blist[i];
-				str+='<div class="lootbox boostinv" onMouseOver="Molpy.BoostsById['+me.id+'].hover(1)" onMouseOut="Molpy.BoostsById['+me.id+'].unhover(1)"><div>[boost]</div><div class="title">'+me.name+'</div><div id="InvBoostDescription'+me.id+'"></div></div></div>';
+				str+='<div class="lootbox boostinv" onMouseOver="Molpy.BoostsById['+me.id+'].hover(1)" onMouseOut="Molpy.BoostsById['+me.id+'].unhover(event,1)"><div>[boost]</div><div class="title">'+me.name+'</div><div id="InvBoostDescription'+me.id+'"></div></div></div>';
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedLoot;
@@ -1726,7 +1754,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
 				var me=blist[i];
-				str+='<div class="lootbox badgeearned" onMouseOver="Molpy.BadgesById['+me.id+'].hover()" onMouseOut="Molpy.BadgesById['+me.id+'].unhover()"><div class="badgeearnedheading">[badge][earned]</div><div id="boost'+me.id+'"></div><div class="title">'+me.name+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
+				str+='<div class="lootbox badgeearned" onMouseOver="Molpy.BadgesById['+me.id+'].hover()" onMouseOut="Molpy.BadgesById['+me.id+'].unhover(event)"><div class="badgeearnedheading">[badge][earned]</div><div id="boost'+me.id+'"></div><div class="title">'+me.name+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedLoot;
@@ -1757,7 +1785,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
 				var me=blist[i];
-				str+='<div class="lootbox badgeavail" onMouseOver="Molpy.BadgesById['+me.id+'].hover()" onMouseOut="Molpy.BadgesById['+me.id+'].unhover()"><div class="badgeavailheading">[badge][available]</div><div id="boost'+me.id+'"></div><div class="title">'+(me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
+				str+='<div class="lootbox badgeavail" onMouseOver="Molpy.BadgesById['+me.id+'].hover()" onMouseOut="Molpy.BadgesById['+me.id+'].unhover(event)"><div class="badgeavailheading">[badge][available]</div><div id="boost'+me.id+'"></div><div class="title">'+(me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedLoot;

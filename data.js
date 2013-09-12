@@ -247,7 +247,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Cooperation','Increases sand rate of Cuegan 10% per pair of buckets',2000,4);
 	new Molpy.Boost('Spring Fling','Trebuchets build an extra castle',1000,6);
 	new Molpy.Boost('Trebuchet Pong','Increases sand rate of buckets 50% per pair of trebuchets',3000,6);
-	new Molpy.Boost('Molpies','Increases sand digging 1% per badge earned',5000,5);
+	new Molpy.Boost('Molpies','Increases sand dig rate by 1% per badge earned',5000,5);
 	new Molpy.Boost('Busy Bot','NewPixBots activate 10% sooner',900,4);
 	new Molpy.Boost('Stealthy Bot','NewPixBots activate 10% sooner',1200,5);
 	new Molpy.Boost('Flag Bearer','Flags are more powerful',5500,8);
@@ -272,7 +272,7 @@ Molpy.DefineBoosts=function()
 		}
 		,0,0);
 	new Molpy.Boost('Kitnip',Molpy.redactedWords+' come more often and stay longer',33221,63);
-	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',234567,89);
+	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',23456,78);
 	new Molpy.Boost('Raise the Flag', 'Each Flag+Ladder pair gives clicking an extra +50 sand',8500,45);
 	new Molpy.Boost('Hand it Up', 'Each Ladder+Bag pair gives clicking an extra +500 sand',50000,70);
 	new Molpy.Boost('Riverish', 'Rivers destroy less castles the more you click',30000,99,0,
@@ -280,6 +280,26 @@ Molpy.DefineBoosts=function()
 		{
 			me.power=Molpy.beachClicks;
 		});
+	new Molpy.Boost('Double or Nothing', '<a onclick="Molpy.DoubleOrNothing();">Click</a> to double or lose your current castle balance',200,0);
+	Molpy.DoubleOrNothing=function()
+	{
+		if(!Molpy.Boosts['Double or Nothing'].bought)
+		{
+			Molpy.Notify('Buy it first, silly molpy!');
+			return;
+		}
+		if(Math.floor(Math.random()*2))
+		{
+			Molpy.Build(Molpy.castles);
+		}else{
+			Molpy.Destroy(Molpy.castles);
+		}
+		Molpy.LockBoost('Double or Nothing');
+	}
+	new Molpy.Boost('Grapevine', 'Increases sand dig rate by 2% per badge earned',25000,25);
+	new Molpy.Boost('Affordable Swedish Home Furniture', function(me){return'50% off all items for '+Molpify(me.countdown)+'mNP'},0,0);
+	
+	Molpy.DepartmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', 'Affordable Swedish Home Furniture'];
 	
 }	
 	

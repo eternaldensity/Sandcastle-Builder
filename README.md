@@ -23,6 +23,8 @@ Not for any commercial use!
 -department of redundancy department!
 -changed 'Where is this coming from?' to 'Where is all this coming from?'
 -when starting, define newpixnumber BEFORE trying to use it to set the ONG date (prevents erroneous ONGs)
+-added some boosts for the department and a normal one for click boosting
+-price factor stuff
 ### 0.913
 - made temporary boosts system more extensible: counter and power variables are stored in the boost
 - fixed incorrect blitzing power: was showing the time for the power
