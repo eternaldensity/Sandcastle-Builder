@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.923;
+		Molpy.version=0.9231;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1607,7 +1607,7 @@ Molpy.Up=function()
 
 		Molpy.RewardRedacted=function()
 		{
-			//if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
+			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
 			{
 				var red=Molpy.Boosts[GLRschoice(Molpy.departmentBoosts)];
 				var tries=Molpy.departmentBoosts.length*4;
