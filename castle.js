@@ -2,7 +2,7 @@
 /* In which some Helper functions are defined
 +++++++++++++++++++++++++++++++++++++++++++++*/
 function g(id) {return document.getElementById(id);}
-function GLRschoice(things) { things[Math.floor(Math.random()*things.length)];}
+function GLRschoice(things) {return things[Math.floor(Math.random()*things.length)];}
 function ONGsnip(time)
 {
 	if(time.getMinutes()>=30&&Molpy.newpixNumber <= 240)
@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.922;
+		Molpy.version=0.923;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -899,6 +899,9 @@ Molpy.Up=function()
 		Molpy.sandPerClick=function()
 		{			
 			var baserate=1 + Molpy.Got('Bigger Buckets')*0.1;
+			var mult=1;
+			if(Molpy.Got('Huge Buckets'))mult*=2;
+			baserate*=mult;
 			if(Molpy.Got('Helpful Hands'))
 			{
 				var pairs = Math.min(Molpy.SandTools['Bucket'].amount, Molpy.SandTools['Cuegan'].amount);
@@ -919,9 +922,7 @@ Molpy.Up=function()
 				var pairs = Math.min(Molpy.SandTools['Bag'].amount, Molpy.SandTools['Ladder'].amount);
 				baserate+=500*pairs;
 			}
-			var mult=1;
-			if(Molpy.Got('Huge Buckets'))mult*=2;
-			return baserate*mult;
+			return baserate;
 		}
 		Molpy.computedSandPerClick=1;
 		Molpy.globalSpmNPMult=1;
@@ -1039,6 +1040,10 @@ Molpy.Up=function()
 			if(Molpy.Got('Molpies'))//molpy molpy molpy molpy molpy
 			{
 				multiplier+=0.01*Molpy.BadgesOwned;
+			}
+			if(Molpy.Got('Grapevine'))//grapevine
+			{
+				multiplier+=0.02*Molpy.BadgesOwned;
 			}
 			if(Molpy.Got('Blitzing'))
 			{
@@ -1602,22 +1607,23 @@ Molpy.Up=function()
 
 		Molpy.RewardRedacted=function()
 		{
-			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
+			//if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
 			{
-				Molpy.Notify('The Department of Redundancy Department has produced:');
 				var red=Molpy.Boosts[GLRschoice(Molpy.departmentBoosts)];
-				var tries=Molpy.departmentBoosts*4;
-				while(tries&&(!red.unlocked||red.bought))
+				var tries=Molpy.departmentBoosts.length*4;
+				while(tries&&(red.unlocked||red.bought))
 				{
 					red=Molpy.Boosts[GLRschoice(Molpy.departmentBoosts)];
 					tries--;
 				}
-				if(red.unlocked&&!red.bought)
+				if(!red.unlocked&&!red.bought)
 				{
 					if((red.sandPrice+red.castlePrice))
 					{
+						Molpy.Notify('The Department of Redundancy Department has produced:');
 						Molpy.UnlockBoost(red.name);
 					}else{
+						Molpy.Notify('The Department of Redundancy Department has produced:');
 						Molpy.GiveTempBoost(red.name,red.startPower,red.startCountdown);
 					}
 					return;

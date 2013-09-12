@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.923:
+-bigger buckets x2 sand is now applied BEFORE Helpful Hands, True Colours, and so on
+-fixed some reversed logic, a missing return from the random list element function, and a missing .length, so now the Department should work.
+-implemented grapevine. Cos it didn't actually do anything before. oops.
 ### 0.922:
 -improved import/export prompt messages
 ### 0.921:
