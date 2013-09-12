@@ -389,6 +389,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Not So '+Molpy.redactedW,'Click 2 '+Molpy.redactedWords,1);
 	new Molpy.Badge("Don't Litter!",'Click 14 '+Molpy.redactedWords,1);
 	new Molpy.Badge('Y U NO BELIEVE ME?','Click 101 '+Molpy.redactedWords,1);
+	new Molpy.Badge("Have you noticed it's slower?",'Experience the LongPix');
 }
 		
 Molpy.CheckBuyUnlocks=function()

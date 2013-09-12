@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.9231;
+		Molpy.version=0.924;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2074,6 +2074,10 @@ Molpy.Up=function()
 		}else
 		{		
 			Molpy.NPlength=3600;
+		}
+		if(Molpy.newpixNumber > 241)
+		{
+			Molpy.EarnBadge("Have you noticed it's slower?");
 		}
 		Molpy.TimePeriod=["Here be Dragons"];
 		Molpy.TimeEra=["Here be Dragons"];
