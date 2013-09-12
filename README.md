@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.924:
+-badge for experiencing the longpix
+### 0.9231:
+-disabled having the department activate 100% every redactedreward even when it's not bought
 ### 0.923:
 -bigger buckets x2 sand is now applied BEFORE Helpful Hands, True Colours, and so on
 -fixed some reversed logic, a missing return from the random list element function, and a missing .length, so now the Department should work.
