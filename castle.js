@@ -1002,7 +1002,7 @@ Molpy.Up=function()
 			for (var i in Molpy.SandTools)
 			{
 				var me=Molpy.SandTools[i];
-				me.storedSpmNP=EvalMaybeFunction(me.spmNP);
+				me.storedSpmNP=EvalMaybeFunction(me.spmNP,me);
 				me.storedTotalSpmNP=me.amount*me.storedSpmNP;
 				Molpy.sandPermNP+=me.storedTotalSpmNP;
 			}
@@ -1094,7 +1094,7 @@ Molpy.Up=function()
 					this.bought++;
 					price=Math.floor(this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount));
 					this.price=price;
-					if (this.buyFunction) this.buyFunction();
+					if (this.buyFunction) this.buyFunction(this);
 					if (this.drawFunction) this.drawFunction();
 					Molpy.shopRepaint=1;
 					Molpy.recalculateDig=1;
@@ -1196,7 +1196,7 @@ Molpy.Up=function()
 					this.prevPrice=this.nextPrice;
 					this.nextPrice=this.price;
 					this.price=this.prevPrice+this.nextPrice;
-					if (this.buyFunction) this.buyFunction();
+					if (this.buyFunction) this.buyFunction(this);
 					if (this.drawFunction) this.drawFunction();
 					Molpy.shopRepaint=1;
 					Molpy.recalculateDig=1;
@@ -1328,6 +1328,8 @@ Molpy.Up=function()
 			this.bought=0;
 			this.order=this.id;
 			this.hovered=0;
+			this.power=0;
+			this.countdown=0;
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
 			
@@ -1339,7 +1341,7 @@ Molpy.Up=function()
 					Molpy.SpendSand(this.sandPrice);
 					Molpy.SpendCastles(this.castlePrice);
 					this.bought=1;
-					if (this.buyFunction) this.buyFunction();
+					if (this.buyFunction) this.buyFunction(this);
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
 					Molpy.BoostsOwned++;

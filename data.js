@@ -218,7 +218,22 @@ Molpy.DefineCastleTools=function()
 		if(this.totalCastlesWasted>=200) Molpy.EarnBadge('Wipeout');
 	}
 		
-	new Molpy.CastleTool('River','river|rivers|washed|left','Washes away many castles, but leaves many more new ones.',1800,520,160,690
+	new Molpy.CastleTool('River','river|rivers|washed|left','Washes away many castles, but leaves many more new ones.',1800,520,
+		function()
+		{
+			var baseval = 160;
+			if(Molpy.Got('Riverish'))
+			{
+				var newClicks=Molpy.beachClicks-Molpy.Boosts['Riverish'].power;
+				var log=Math.log(newClicks);
+				if(log>0)
+				{
+					var reduction=Math.min(baseval,Math.floor(log*log));
+					baseval-=reduction;
+				}
+			}
+			return baseval;
+		},690
 	);
 }
 	
@@ -252,8 +267,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Ninja Hope','Avoid one Ninja Stealth reset, at the cost of 10 castles',7500,40);
 	new Molpy.Boost('Ninja Penance','Avoid a second Ninja Stealth reset, at the cost of 30 castles',25000,88);
 	new Molpy.Boost('Blitzing',function(me)
-		{
-		
+		{		
 			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP'
 		}
 		,0,0);
@@ -261,6 +275,11 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',234567,89);
 	new Molpy.Boost('Raise the Flag', 'Each Flag+Ladder pair gives clicking an extra +50 sand',8500,45);
 	new Molpy.Boost('Hand it Up', 'Each Ladder+Bag pair gives clicking an extra +500 sand',50000,70);
+	new Molpy.Boost('Riverish', 'Rivers destroy less castles the more you click',30000,99,0,
+		function(me)
+		{
+			me.power=Molpy.beachClicks;
+		});
 	
 }	
 	
