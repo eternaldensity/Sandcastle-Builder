@@ -1346,8 +1346,8 @@ Molpy.Up=function()
 			this.hovered=0;
 			this.power=0;
 			this.countdown=0;
-			this.startPower=startPower|0;
-			this.startCountdown=startCountdown|0;
+			this.startPower=startPower;
+			this.startCountdown=startCountdown;
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
 			
@@ -1435,6 +1435,7 @@ Molpy.Up=function()
 					{
 						Molpy.Boosts[bacon].unlocked=0;
 						Molpy.boostRepaint=1;
+						Molpy.shopRepaint=1;
 						Molpy.recalculateDig=1;
 						if(Molpy.Boosts[bacon].bought==1);
 						{
@@ -1622,10 +1623,21 @@ Molpy.Up=function()
 				Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 			}			
 		}
+		Molpy.CalcPriceFactor=function()
+		{
+			var baseval=1;
+			var savings = 0;
+			if(Molpy.Got(Molpy.IKEA))
+			{
+				savings+=Molpy.Boosts[Molpy.IKEA].power;
+			}
+			Molpy.priceFactor=Math.max(0,baseval-savings);
+		}
 	
 		Molpy.RepaintShop=function()
 		{
 			Molpy.shopRepaint=0;
+			Molpy.CalcPriceFactor();			
 			var redactedIndex=-1;
 			if(Molpy.redactedVisible==1)
 			{
@@ -1831,7 +1843,8 @@ Molpy.Up=function()
 				var me=Molpy.notifs[i];
 				if (me.life!=-1)
 				{
-					Molpy.notifsY+=me.l.clientHeight;
+					if (me.life<Molpy.fps*3)Molpy.notifsY+=me.l.clientHeight;
+					
 					var y=me.y-(1-Math.pow(1-me.life/(Molpy.fps*4),10))*250;
 					me.life++;
 					var el=me.l;
