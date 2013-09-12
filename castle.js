@@ -1331,7 +1331,7 @@ Molpy.Up=function()
 		Molpy.BoostsInShop=[];
 		Molpy.BoostsOwned=0;
 		var order=0;
-		Molpy.Boost=function(name,desc,sand,castles,icon,buyFunction)
+		Molpy.Boost=function(name,desc,sand,castles,icon,buyFunction,startPower,startCountdown)
 		{
 			this.id=Molpy.BoostN;
 			this.name=name;
@@ -1346,6 +1346,8 @@ Molpy.Up=function()
 			this.hovered=0;
 			this.power=0;
 			this.countdown=0;
+			this.startPower=startPower|0;
+			this.startCountdown=startCountdown|0;
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
 			
@@ -1587,22 +1589,38 @@ Molpy.Up=function()
 
 		Molpy.RewardRedacted=function()
 		{
-			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(10*Math.random()))
+			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
 			{
-				Molpy.Notify('TODO: Add Awesome Stuff Here');
-				
-			}else{
-				if(Math.floor(2*Math.random()))
+				Molpy.Notify('The Department of Redundancy Department has produced:');
+				var red=Molpy.Boosts[GLRschoice(Molpy.departmentBoosts)];
+				var tries=Molpy.departmentBoosts*4;
+				while(tries&&(!red.unlocked||red.bought))
 				{
-					Molpy.Notify('You are Not Lucky');
-					Molpy.Notify('Which is Good');
-					var bonus = Math.floor((Molpy.SandToolsOwned+Molpy.CastleToolsOwned+Molpy.BoostsOwned+Molpy.BadgesOwned)/4)+4;
-					Molpy.Build(bonus);
-				}else{
-					var blitzSpeed=8,blitzTime=23;
-					Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
+					red=Molpy.Boosts[GLRschoice(Molpy.departmentBoosts)];
+					tries--;
+				}
+				if(red.unlocked&&!red.bought)
+				{
+					if((red.sandPrice+red.castlePrice))
+					{
+						Molpy.UnlockBoost(red.name);
+					}else{
+						Molpy.GiveTempBoost(red.name,red.startPower,red.startCountdown);
+					}
+					return;
 				}
 			}
+			
+			if(Math.floor(2*Math.random()))
+			{
+				Molpy.Notify('You are Not Lucky');
+				Molpy.Notify('Which is Good');
+				var bonus = Math.floor((Molpy.SandToolsOwned+Molpy.CastleToolsOwned+Molpy.BoostsOwned+Molpy.BadgesOwned)/4)+4;
+				Molpy.Build(bonus);
+			}else{
+				var blitzSpeed=8,blitzTime=23;
+				Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
+			}			
 		}
 	
 		Molpy.RepaintShop=function()
@@ -1856,13 +1874,14 @@ Molpy.Up=function()
 			if (!me.l) me.l=g('notif'+i);
 			me.life=0;
 			me.x=x;
-			me.y=y-Molpy.notifsY;
+			me.y=y+Molpy.notifsY;
 			me.text=text;
 			me.l.innerHTML=text;
 			me.l.style.left=Math.floor(Molpy.notifs[i].x-200)+'px';
 			me.l.style.bottom=Math.floor(-Molpy.notifs[i].y)+'px';
 			me.l.style.display='block';
-			Molpy.notifsY-=36;
+			Molpy.notifsY+=me.l.clientHeight;
+			me.y+=me.l.clientHeight;
 			
 			Molpy.notifsReceived++;
 			Molpy.EarnBadge('Notified');

@@ -297,9 +297,9 @@ Molpy.DefineBoosts=function()
 		Molpy.LockBoost('Double or Nothing');
 	}
 	new Molpy.Boost('Grapevine', 'Increases sand dig rate by 2% per badge earned',25000,25);
-	new Molpy.Boost('Affordable Swedish Home Furniture', function(me){return'50% off all items for '+Molpify(me.countdown)+'mNP'},0,0);
+	new Molpy.Boost('Affordable Swedish Home Furniture', function(me){return Molpify(me.countdown)+'% off all items for '+Molpify(me.countdown)+'mNP'},0,0,0,function(){Molpy.shopRepaint=1;},50,4);
 	
-	Molpy.DepartmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', 'Affordable Swedish Home Furniture'];
+	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', 'Affordable Swedish Home Furniture'];
 	
 }	
 	
