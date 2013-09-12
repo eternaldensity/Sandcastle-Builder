@@ -16,6 +16,8 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.921:
+-upped some prices
 ### 0.92:
 -no longer saving the redacted timing numbers: wasn't necessary
 -added some redacted related badges

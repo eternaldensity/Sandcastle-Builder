@@ -273,9 +273,9 @@ Molpy.DefineBoosts=function()
 		,0,0);
 	new Molpy.Boost('Kitnip',Molpy.redactedWords+' come more often and stay longer',33221,63);
 	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',23456,78);
-	new Molpy.Boost('Raise the Flag', 'Each Flag+Ladder pair gives clicking an extra +50 sand',8500,45);
-	new Molpy.Boost('Hand it Up', 'Each Ladder+Bag pair gives clicking an extra +500 sand',50000,70);
-	new Molpy.Boost('Riverish', 'Rivers destroy less castles the more you click',30000,99,0,
+	new Molpy.Boost('Raise the Flag', 'Each Flag+Ladder pair gives clicking an extra +50 sand',85000,95);
+	new Molpy.Boost('Hand it Up', 'Each Ladder+Bag pair gives clicking an extra +500 sand',570000,170);
+	new Molpy.Boost('Riverish', 'Rivers destroy less castles the more you click',82000,290,0,
 		function(me)
 		{
 			me.power=Molpy.beachClicks;
