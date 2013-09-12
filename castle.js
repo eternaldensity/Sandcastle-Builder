@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.924;
+		Molpy.version=0.93;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -929,8 +929,10 @@ Molpy.Up=function()
 		Molpy.lastClick=0;
 		Molpy.ClickBeach=function()
 		{
-			Molpy.Dig(Molpy.computedSandPerClick);
-			Molpy.sandManual+=Molpy.computedSandPerClick;
+			var newsand=Molpy.computedSandPerClick;
+			Molpy.Dig(newsand);
+			Molpy.AddSandParticle('+'+Molpify(newsand,1));
+			Molpy.sandManual+=newsand;
 			Molpy.beachClicks+=1;
 			Molpy.CheckClickAchievements();
 			if( Molpy.ninjad==0&&Molpy.CastleTools['NewPixBot'].amount)
@@ -1559,11 +1561,14 @@ Molpy.Up=function()
 					if(Molpy.redactedVisible)
 					{
 						Molpy.redactedVisible=0;
+						Molpy.shopRepaint=1;
+						Molpy.boostRepaint=1;
+						Molpy.badgeRepaint=1;						
 						Molpy.RandomiseRedactedTime();	
 					}else{
 						Molpy.redactedVisible=Math.ceil(Molpy.redactableThings*Math.random());
 						Molpy.redactedViewIndex=-1;
-						var stay = 3 *(1+ Molpy.Got('Kitnip'));
+						var stay = 6 *(4+ Molpy.Got('Kitnip'));
 						Molpy.redactedToggle=stay;
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
@@ -1576,7 +1581,7 @@ Molpy.Up=function()
 		}
 		Molpy.RandomiseRedactedTime=function()
 		{
-			var min = 200-60*Molpy.Got('Kitnip');
+			var min = 200-80*Molpy.Got('Kitnip');
 			var spread = 90-20*Molpy.Got('Kitnip');
 			Molpy.redactedToggle=min+Math.ceil(spread*Math.random());
 		}
@@ -1841,15 +1846,84 @@ Molpy.Up=function()
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;		
 		}
 		
-		//notifications. this code is pretty much directly copied from Orteil :P
-		//except then I changed it a bunch cos I didn't like it :P
+		//the numbers that fly up when you click the pic for sand
+		Molpy.sParticles=[];
+		var str='';
+		for (var i=0;i<20;i++)
+		{
+			Molpy.sParticles[i]={x:0,y:0,dx:0,life:-1,text:''};
+			str+='<div id="sparticle'+i+'" class="notif"></div>';
+		}
+		g('sparticles').innerHTML=str;
+		Molpy.sparticlesUpdate=function()
+		{
+			for (var i in Molpy.sParticles)
+			{
+				var me=Molpy.sParticles[i];
+				if (me.life!=-1)
+				{
+					
+					me.y-=300/Molpy.fps;;
+					me.x+=me.dx/Molpy.fps;
+					
+					me.life++;
+					var el=me.l;
+					me.l.style.left=Math.floor(me.x)+'px';
+					me.l.style.top=Math.floor(me.y)+'px';
+					el.style.opacity=1-(me.life/(Molpy.fps*2));
+					if (me.life>=Molpy.fps*2)
+					{
+						me.life=-1;
+						el.style.opacity=0;
+						el.style.display='none';
+					}
+				}
+			}
+		}
+		Molpy.AddSandParticle=function(text)
+		{
+			//pick the first free (or the oldest) notification to replace it
+			var highest=0;
+			var highestI=0;
+			for (var i in Molpy.sParticles)
+			{
+				if (Molpy.sParticles[i].life==-1) {highestI=i;break;}
+				if (Molpy.sParticles[i].life>highest)
+				{
+					highest=Molpy.sParticles[i].life;
+					highestI=i;
+				}
+			}
+			var i=highestI;
+			
+			var rect=g('beach').getBoundingClientRect();
+			var x=0;
+			var y=Math.floor((rect.height)*.7);
+			x+=(Math.random()-0.5)*180;
+			y+=(Math.random()-0.5)*120;
+			var dx = (Math.random()-0.5)*60;
+			
+			var me=Molpy.sParticles[i];
+			if (!me.l) me.l=g('sparticle'+i);
+			me.life=0;
+			me.x=x;
+			me.y=y;
+			me.dx=dx;
+			me.text=text;
+			me.l.innerHTML=text;
+			me.l.style.left=Math.floor(me.x)+'px';
+			me.l.style.top=Math.floor(me.y)+'px';
+			me.l.style.display='block';
+		}
+		
+		//notifications.
 		Molpy.notifs=[];
 		Molpy.notifsY=0;
 		var str='';
 		for (var i=0;i<20;i++)
 		{
 			Molpy.notifs[i]={x:0,y:0,life:-1,text:''};
-			str+='<div id="notif'+i+'" class="notif title"></div>';
+			str+='<div id="notif'+i+'" class="notif"></div>';
 		}
 		g('notifs').innerHTML=str;
 		Molpy.notifsReceived=0;
@@ -1893,8 +1967,6 @@ Molpy.Up=function()
 				}
 			}
 			var i=highestI;
-			var x=(Math.random()-0.5)*40;
-			var y=0;
 			
 			var rect=g('game').getBoundingClientRect();
 			var x=Math.floor((rect.left+rect.right)/2);
@@ -1919,8 +1991,7 @@ Molpy.Up=function()
 			if(Molpy.notifsReceived>=2000)
 			{
 				Molpy.EarnBadge('Thousands of Them!');
-			}
-			
+			}			
 		}
 				
 
@@ -2195,6 +2266,7 @@ Molpy.Up=function()
 		drawClockHand();
 		if(Molpy.showStats) Molpy.PaintStats();
 		Molpy.notifsUpdate();
+		Molpy.sparticlesUpdate();
 	}
 		
 	Molpy.PaintStats=function()

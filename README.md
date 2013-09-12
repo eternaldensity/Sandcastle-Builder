@@ -16,6 +16,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.93
+- sand particles!
+- when redacted were supposedly vanishing they weren't actually causing refreshes so they stuck around.
 ### 0.924:
 -badge for experiencing the longpix
 ### 0.9231:
