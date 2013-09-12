@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.921;
+		Molpy.version=0.922;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -208,7 +208,7 @@ Molpy.Up=function()
 				var i=0;
 				while(i<n)
 				{
-					prompt('This is part '+(i+1)+' of '+n+' of your save code:'+(i?'':'(Stick both halves together in order.)'), thread.substr(2000*(i),2000));
+					prompt('This is part '+(i+1)+' of '+n+' of your save code:'+(i?'':'\n(Stick all parts together in order.)'), thread.substr(2000*(i),2000));
 					i++;
 				}
 			}
@@ -217,7 +217,7 @@ Molpy.Up=function()
 		
 		Molpy.Import=function()
 		{
-			var thread=prompt('Please paste in the text that was given to you on save export.\nWarning: this will automatically save so you may want to back up your current save first.','');
+			var thread=prompt('Please paste in the text that was given to you on save export.\n(If you have multiple parts, put them all together with no gaps.)\nWarning: this will automatically save so you may want to back up your current save first.','');
 			if (thread && thread!='') Molpy.FromNeedlePulledThing(BeanishToCuegish(thread));
 			Molpy.SaveC_STARSTAR_kie();
 		}

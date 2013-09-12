@@ -16,6 +16,8 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.922:
+-improved import/export prompt messages
 ### 0.921:
 -upped some prices
 ### 0.92:
