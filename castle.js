@@ -200,7 +200,19 @@ Molpy.Up=function()
 		Molpy.Export=function()
 		{
 			var thread = CuegishToBeanish(Molpy.ToNeedlePulledThing());
-			prompt('This is your save code:',thread);
+			if(thread.length<=2000)
+			{
+				prompt('This is your save code:',thread);
+			}else{
+				var n=Math.ceil(thread.length/2000);
+				var i=0;
+				while(i<n)
+				{
+					prompt('This is part '+(i+1)+' of '+n+' of your save code:'+(i?'':'(Stick both halves together in order.)'), thread.substr(2000*(i),2000));
+					i++;
+				}
+			}
+			
 		}
 		
 		Molpy.Import=function()

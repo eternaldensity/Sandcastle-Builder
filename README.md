@@ -25,6 +25,8 @@ Not for any commercial use!
 -when starting, define newpixnumber BEFORE trying to use it to set the ONG date (prevents erroneous ONGs)
 -added some boosts for the department and a normal one for click boosting
 -price factor stuff
+-if export string is over 2000, split into multiple prompts.
+-(should replace that entirely, soon. cos it doesn't work on my phone.)
 ### 0.913
 - made temporary boosts system more extensible: counter and power variables are stored in the boost
 - fixed incorrect blitzing power: was showing the time for the power
