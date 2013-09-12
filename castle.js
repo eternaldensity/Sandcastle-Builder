@@ -883,6 +883,16 @@ Molpy.Up=function()
 				var pairs = Math.min(Molpy.SandTools['Flag'].amount, Molpy.SandTools['Cuegan'].amount);
 				baserate+=5*pairs;
 			}
+			if(Molpy.Got('Raise the Flag'))
+			{
+				var pairs = Math.min(Molpy.SandTools['Flag'].amount, Molpy.SandTools['Ladder'].amount);
+				baserate+=50*pairs;
+			}
+			if(Molpy.Got('Hand it Up'))
+			{
+				var pairs = Math.min(Molpy.SandTools['Bag'].amount, Molpy.SandTools['Ladder'].amount);
+				baserate+=500*pairs;
+			}
 			var mult=1;
 			if(Molpy.Got('Huge Buckets'))mult*=2;
 			return baserate*mult;

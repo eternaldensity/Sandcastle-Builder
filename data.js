@@ -259,6 +259,8 @@ Molpy.DefineBoosts=function()
 		,0,0);
 	new Molpy.Boost('Kitnip',Molpy.redactedWords+' come more often and stay longer',33221,63);
 	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',234567,89);
+	new Molpy.Boost('Raise the Flag', 'Each Flag+Ladder pair gives clicking an extra +50 sand',8500,45);
+	new Molpy.Boost('Hand it Up', 'Each Ladder+Bag pair gives clicking an extra +500 sand',50000,70);
 	
 }	
 	
@@ -396,6 +398,7 @@ Molpy.CheckClickAchievements=function()
 	}
 	if(c>=1000){
 		Molpy.EarnBadge('Click Storm');
+		Molpy.UnlockBoost('Raise the Flag');
 	}
 	if(c>=3333){
 		Molpy.UnlockBoost('True Colours');
