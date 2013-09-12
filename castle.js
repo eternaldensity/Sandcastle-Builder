@@ -90,9 +90,10 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.913;
+		Molpy.version=0.92;
 		
 		Molpy.time=new Date().getTime();
+		Molpy.newpixNumber=1; //to track which background to load, and other effects...
 		Molpy.ONGstart= ONGsnip(new Date()); //contains the time of the previous ONG
 		Molpy.NPlength=1800; //seconds in current NewPix (or milliseconds in milliNewPix)
 		Molpy.updateFactor=1; //increase to update more often
@@ -106,7 +107,6 @@ Molpy.Up=function()
 		Molpy.ninjad=0; //ninja flag for newpixbots
 		Molpy.npbONG=0; //activation flag for newpixbots
 
-		Molpy.newpixNumber=1; //to track which background to load, and other effects...
 		Molpy.sandDug=0; //total sand dug throughout the game
 		Molpy.sandManual=0; //total sand dug through user clicks
 		Molpy.sand=0; //current sand balance
@@ -246,9 +246,6 @@ Molpy.Up=function()
 			Flint(Molpy.redactedToggle)+s+
 			Flint(Molpy.redactedVisible)+s+
 			Flint(Molpy.redactedViewIndex)+s+
-			Flint(Molpy.redactedWaitMin)+s+
-			Flint(Molpy.redactedWaitSpread)+s+
-			Flint(Molpy.redactedStay)+s+
 			Flint(Molpy.redactedClicks)+s+
 			p;
 			//sand tools:
@@ -338,13 +335,18 @@ Molpy.Up=function()
 			Molpy.redactedCountup=parseInt(pixels[20]);			
 			Molpy.redactedToggle=parseInt(pixels[21]);			
 			Molpy.redactedVisible=parseInt(pixels[22]);			
-			Molpy.redactedViewIndex=parseInt(pixels[23]);			
-			Molpy.redactedWaitMin=parseInt(pixels[24]);			
-			Molpy.redactedWaitSpread=parseInt(pixels[25]);			
-			Molpy.redactedStay=parseInt(pixels[26]);	
-			Molpy.redactedClicks=parseInt(pixels[27]);	
-			var blitzSpeed=parseInt(pixels[28]);	//for 0.911 and 2
-			var blitzTime=parseInt(pixels[29]);	
+			Molpy.redactedViewIndex=parseInt(pixels[23]);	
+			if(version < 0.92)
+			{	
+				//three variables not needed are skipped here
+				Molpy.redactedClicks=parseInt(pixels[27]);	
+				
+				var blitzSpeed=parseInt(pixels[28]);	//these were saved here in 0.911 and 2
+				var blitzTime=parseInt(pixels[29]);		//but now are put in the 'Blitzed' boost
+			}else{
+				Molpy.redactedClicks=parseInt(pixels[24]);
+			}
+			
 			
 			pixels=thread[5].split(s);
 			Molpy.SandToolsOwned=0;
@@ -402,9 +404,15 @@ Molpy.Up=function()
 				{
 					var ice=pixels[i].split(',');
 					me.unlocked=parseInt(ice[0]);
-					me.bought=parseInt(ice[1]);
-					me.power=parseInt(ice[2]);
-					me.countdown=parseInt(ice[3]);
+					me.bought=parseInt(ice[1]); 
+					if(version<0.92)
+                    {
+                        me.power=0;
+                        me.countdown=0;                        
+                    }else{
+                        me.power=parseInt(ice[2]);
+                        me.countdown=parseInt(ice[3]);
+                    }
 					if(me.bought)Molpy.BoostsOwned++;
 					if(me.countdown)
 					{
@@ -413,7 +421,7 @@ Molpy.Up=function()
 				}
 				else
 				{
-					me.unlocked=0;me.bought=0;					
+					me.unlocked=0;me.bought=0;me.power=0;me.countdown=0;				
 				}
 			}
 			if(thread[8])
@@ -499,9 +507,6 @@ Molpy.Up=function()
 				Molpy.redactedToggle=0; 
 				Molpy.redactedVisible=0; 
 				Molpy.redactedViewIndex=-1;
-				Molpy.redactedWaitMin=150;
-				Molpy.redactedWaitSpread=80;
-				Molpy.redactedStay=4;
 				Molpy.redactedClicks=0;
 			}
 			if(version<0.913)
@@ -1481,9 +1486,6 @@ Molpy.Up=function()
 		Molpy.redactedToggle=0; //disabled
 		Molpy.redactedVisible=0; //hidden
 		Molpy.redactedViewIndex=-1;
-		Molpy.redactedWaitMin=150;
-		Molpy.redactedWaitSpread=80;
-		Molpy.redactedStay=3;
 		Molpy.redactableThings=6;
 		Molpy.redactedClicks=0;
 		Molpy.CheckRedactedToggle=function()
@@ -1501,7 +1503,8 @@ Molpy.Up=function()
 					}else{
 						Molpy.redactedVisible=Math.ceil(Molpy.redactableThings*Math.random());
 						Molpy.redactedViewIndex=-1;
-						Molpy.redactedToggle=Molpy.redactedStay;
+						var stay = 3 *(1+ Molpy.Got('Kitnip'));
+						Molpy.redactedToggle=stay;
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
 						Molpy.badgeRepaint=1;
@@ -1513,12 +1516,15 @@ Molpy.Up=function()
 		}
 		Molpy.RandomiseRedactedTime=function()
 		{
-			Molpy.redactedToggle=Molpy.redactedWaitMin+Math.ceil(Molpy.redactedWaitSpread*Math.random());
+			var min = 200-60*Molpy.Got('Kitnip');
+			var spread = 90-20*Molpy.Got('Kitnip');
+			Molpy.redactedToggle=min+Math.ceil(spread*Math.random());
 		}
 		
 		Molpy.clickRedacted=function()
 		{
-			g('redacteditem').className='hidden';
+			var item=g('redacteditem');
+			if(item) item.className='hidden';
 			Molpy.redactedClicks++;
 			Molpy.redactedVisible=0;
 			Molpy.redactedViewIndex=-1;
@@ -1526,17 +1532,38 @@ Molpy.Up=function()
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
 			Molpy.RandomiseRedactedTime();				
-			if(Math.floor(2*Math.random()))
+			Molpy.RewardRedacted();
+			if(Molpy.redactedClicks>=2)
+				Molpy.EarnBadge('Not So '+Molpy.redactedW);
+			if(Molpy.redactedClicks>=14)
+				Molpy.EarnBadge("Don't Litter!");
+			if(Molpy.redactedClicks>=15)
+				Molpy.UnlockBoost('Kitnip');
+			if(Molpy.redactedClicks>=50)
+				Molpy.UnlockBoost('Department of Redundancy Department');
+			if(Molpy.redactedClicks>=101)
+				Molpy.EarnBadge('Y U NO BELIEVE ME?');
+		}
+
+		Molpy.RewardRedacted=function()
+		{
+			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(10*Math.random()))
 			{
-				Molpy.Notify('You are Not Lucky');
-				Molpy.Notify('Which is Good');
-				var bonus = Math.floor((Molpy.SandToolsOwned+Molpy.CastleToolsOwned+Molpy.BoostsOwned+Molpy.BadgesOwned)/4)+4;
-				Molpy.Build(bonus);
+				Molpy.Notify('TODO: Add Awesome Stuff Here');
+				
 			}else{
-				var blitzSpeed=8,blitzTime=23;
-				Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
+				if(Math.floor(2*Math.random()))
+				{
+					Molpy.Notify('You are Not Lucky');
+					Molpy.Notify('Which is Good');
+					var bonus = Math.floor((Molpy.SandToolsOwned+Molpy.CastleToolsOwned+Molpy.BoostsOwned+Molpy.BadgesOwned)/4)+4;
+					Molpy.Build(bonus);
+				}else{
+					var blitzSpeed=8,blitzTime=23;
+					Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
+				}
 			}
-		}		
+		}
 	
 		Molpy.RepaintShop=function()
 		{
@@ -1940,8 +1967,9 @@ Molpy.Up=function()
 		Molpy.SandToCastles();
 		if(Molpy.ninjad==0)
 		{
+			var hadStealth = Molpy.ninjaStealth;
 			if(Molpy.NinjaUnstealth())
-				Molpy.EarnBadge('Ninja Holiday');
+				if(hadStealth)Molpy.EarnBadge('Ninja Holiday');
 		}
 		Molpy.ninjad=0;//reset ninja flag
 		Molpy.npbONG=0;//reset newpixbot flag

@@ -257,6 +257,9 @@ Molpy.DefineBoosts=function()
 			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP'
 		}
 		,0,0);
+	new Molpy.Boost('Kitnip',Molpy.redactedWords+' come more often and stay longer',33221,63);
+	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',234567,89);
+	
 }	
 	
 Molpy.DefineBadges=function()
@@ -317,7 +320,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Hundred Year Storm', 'Have a sand dig rate of 100 SpmNP');
 	new Molpy.Badge('Thundering Typhoon!', 'Have a sand dig rate of 400 SpmNP');
 	new Molpy.Badge('Sandblaster', 'Have a sand dig rate of 1,600 SpmNP');
-	new Molpy.Badge('Where is this coming from?', 'Have a sand dig rate of 7,500 SpmNP');
+	new Molpy.Badge('Where is all this coming from?', 'Have a sand dig rate of 7,500 SpmNP');
 	new Molpy.Badge('Seaish Sandstorm', 'Have a sand dig rate of 30,000 SpmNP',1);
 	new Molpy.Badge('WHOOSH', 'Have a sand dig rate of 500,500 SpmNP',1);
 	new Molpy.Badge('We want some two!', 'Have a sand dig rate of 2,222,222 SpmNP',1);
@@ -337,6 +340,9 @@ Molpy.DefineBadges=function()
 	
 	new Molpy.Badge('Ninja Shortcomings','Lose a Ninja Stealth Streak of between 30 and 35');
 	new Molpy.Badge('Not Ground Zero','Molpy Down',1);
+	new Molpy.Badge('Not So '+Molpy.redactedW,'Click 2 '+Molpy.redactedWords,1);
+	new Molpy.Badge("Don't Litter!",'Click 14 '+Molpy.redactedWords,1);
+	new Molpy.Badge('Y U NO BELIEVE ME?','Click 101 '+Molpy.redactedWords,1);
 }
 		
 Molpy.CheckBuyUnlocks=function()
