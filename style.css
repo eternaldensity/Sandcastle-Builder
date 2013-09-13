@@ -13,7 +13,6 @@ figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
-	padding: 0;
 	border: 0;
 	font-size: 100%;
 	font: inherit;
@@ -199,6 +198,7 @@ a:active
 	margin:10px;
 	border-width: 1px;
 	border-style: solid;
+	padding: 2px;
 }
 
 body.darkscheme .floatbox:hover{
@@ -219,7 +219,8 @@ body.lightscheme .floatbox:hover{
 	margin:5px;
 	border-width: 1px;
 	border-style: solid;
-	overflow:hidden
+	overflow:hidden;
+	padding: 2px;
 }
 .minifloatbox{
 	display: inline-block;

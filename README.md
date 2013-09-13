@@ -16,6 +16,8 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.932
+- padding
 ### 0.931
 - added 2 longpix boosts
 - fiddles with some department stuff a little
