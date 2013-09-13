@@ -16,7 +16,7 @@ Not for any commercial use!
 
 ## Changelog
 
-### 0.934
+### 0.94
 - track highest NP visited (doesn't reset with Molpy Down)
 - some treeish new boosts
 

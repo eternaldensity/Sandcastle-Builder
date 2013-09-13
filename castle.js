@@ -194,24 +194,6 @@ Molpy.Up=function()
 			}
 		}
 		
-		Molpy.Export=function()
-		{
-			var thread = CuegishToBeanish(Molpy.ToNeedlePulledThing());
-			if(thread.length<=2000)
-			{
-				prompt('This is your save code:',thread);
-			}else{
-				var n=Math.ceil(thread.length/2000);
-				var i=0;
-				while(i<n)
-				{
-					prompt('This is part '+(i+1)+' of '+n+' of your save code:'+(i?'':'\n(Stick all parts together in order.)'), thread.substr(2000*(i),2000));
-					i++;
-				}
-			}
-			
-		}
-		
 		Molpy.Import=function()
 		{
 			var thread=prompt('Please paste in the text that was given to you on save export.\n(If you have multiple parts, put them all together with no gaps.)\nWarning: this will automatically save so you may want to back up your current save first.','');
@@ -914,7 +896,6 @@ Molpy.Up=function()
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
 			Molpy.castlesSpent+=amount;
-			//maybe have an achievement which makes the next castle cheaper when one is spent
 		}
 		Molpy.SpendSand=function(amount)
 		{
