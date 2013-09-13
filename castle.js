@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.936;
+		Molpy.version=0.94;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -139,6 +139,7 @@ Molpy.Up=function()
 		Molpy.saveCount=0; //number of times game has been saved
 		Molpy.loadCount=0; //number of times gave has been loaded
 		Molpy.autosaveCountup=0;
+		Molpy.highestNPvisited=1; //keep track of where the player has been
 		
 		
 		Molpy.options=[];
@@ -269,6 +270,7 @@ Molpy.Up=function()
 			Flint(Molpy.redactedVisible)+s+
 			Flint(Molpy.redactedViewIndex)+s+
 			Flint(Molpy.redactedClicks)+s+
+			Flint(Molpy.highestNPvisited)+s+
 			p;
 			//sand tools:
 			for(var cancerbabies in Molpy.SandTools)
@@ -357,7 +359,8 @@ Molpy.Up=function()
 			Molpy.redactedCountup=parseInt(pixels[20]);			
 			Molpy.redactedToggle=parseInt(pixels[21]);			
 			Molpy.redactedVisible=parseInt(pixels[22]);			
-			Molpy.redactedViewIndex=parseInt(pixels[23]);	
+			Molpy.redactedViewIndex=parseInt(pixels[23]);
+			Molpy.redactedClicks=parseInt(pixels[24]);	
 			if(version < 0.92)
 			{	
 				//three variables not needed are skipped here
@@ -365,9 +368,8 @@ Molpy.Up=function()
 				
 				var blitzSpeed=parseInt(pixels[28]);	//these were saved here in 0.911 and 2
 				var blitzTime=parseInt(pixels[29]);		//but now are put in the 'Blitzed' boost
-			}else{
-				Molpy.redactedClicks=parseInt(pixels[24]);
 			}
+			Molpy.highestNPvisited=(pixels[25]);
 			
 			
 			pixels=thread[5].split(s);
@@ -542,6 +544,10 @@ Molpy.Up=function()
 			{
 				Molpy.Boosts['Overcompensating'].power=1.05;				
 			}
+			if(version<0.94)
+			{
+				Molpy.highestNPvisited=Molpy.newpixNumber;				
+			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
 			Molpy.CheckSandRateBadges(); //shiny!
@@ -628,6 +634,7 @@ Molpy.Up=function()
 				Molpy.Down(1);				
 				Molpy.saveCount=0;
 				Molpy.loadCount=0;
+				Molpy.highestNPvisited=0;
 				Molpy.BadgesOwned=0;
 				for (var i in Molpy.BadgesById)
 				{
@@ -2157,6 +2164,10 @@ Molpy.Up=function()
 	Molpy.ONG=function()
 	{
 		Molpy.newpixNumber+=1;
+		if(Molpy.newpixNumber > Molpy.highestNPvisited)
+		{
+			Molpy.highestNPvisited=Molpy.newpixNumber;
+		}
 		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.Notify('ONG!');	
 		

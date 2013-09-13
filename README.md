@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.934
+- track highest NP visited (doesn't reset with Molpy Down)
+- some treeish new boosts
+
 ### 0.936
 - export to textfield
 - favicon
