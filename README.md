@@ -18,26 +18,35 @@ Not for any commercial use!
 
 ### 0.933
 - layout nicification
+
 ### 0.932
 - padding
+
 ### 0.931
 - added 2 longpix boosts
 - fiddles with some department stuff a little
+
 ### 0.93
 - sand particles!
 - when redacted were supposedly vanishing they weren't actually causing refreshes so they stuck around.
+
 ### 0.924:
 -badge for experiencing the longpix
+
 ### 0.9231:
 -disabled having the department activate 100% every redactedreward even when it's not bought
+
 ### 0.923:
 -bigger buckets x2 sand is now applied BEFORE Helpful Hands, True Colours, and so on
 -fixed some reversed logic, a missing return from the random list element function, and a missing .length, so now the Department should work.
 -implemented grapevine. Cos it didn't actually do anything before. oops.
+
 ### 0.922:
 -improved import/export prompt messages
+
 ### 0.921:
 -upped some prices
+
 ### 0.92:
 -no longer saving the redacted timing numbers: wasn't necessary
 -added some redacted related badges
@@ -49,6 +58,7 @@ Not for any commercial use!
 -price factor stuff
 -if export string is over 2000, split into multiple prompts.
 -(should replace that entirely, soon. cos it doesn't work on my phone.)
+
 ### 0.913
 - made temporary boosts system more extensible: counter and power variables are stored in the boost
 - fixed incorrect blitzing power: was showing the time for the power
