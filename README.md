@@ -16,6 +16,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.935
+- gave overcompensating the proper power value when loading old saves
+
 ### 0.934
 - option for click numbers
 - notifications move better

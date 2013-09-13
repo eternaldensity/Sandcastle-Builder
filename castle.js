@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.934;
+		Molpy.version=0.935;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -537,6 +537,10 @@ Molpy.Up=function()
 				{
 					Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 				}
+			}
+			if(version<0.935)
+			{
+				Molpy.Boosts['Overcompensating'].power=1.05;				
 			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
