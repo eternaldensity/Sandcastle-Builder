@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.936
+- export to textfield
+- favicon
+
 ### 0.935
 - gave overcompensating the proper power value when loading old saves
 

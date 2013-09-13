@@ -644,14 +644,17 @@ Molpy.Up=function()
 				Molpy.showOptions=0;
 				g('beachAnchor').className='unhidden';
 				g('beach').className='unhidden';
-				g('options').className='hidden';
+				g('export').className='hidden';
 					
 			}else{
 				Molpy.showOptions=1;
 				Molpy.showStats=0;
+				Molpy.showExport=0;
 				g('beachAnchor').className='hidden';
 				g('beach').className='hidden';
 				g('stats').className='hidden';
+				g('stats').className='hidden';
+				g('options').className='hidden';
 				g('options').className='unhidden';				
 				Molpy.EarnBadge('Decisions, Decisions');
 				if(Molpy.Got('Autosave Option')){
@@ -738,9 +741,34 @@ Molpy.Up=function()
 			}else{
 				Molpy.showStats=1;
 				Molpy.showOptions=0;
+				Molpy.showExport=0;
 				g('beachAnchor').className='hidden';
 				g('beach').className='hidden';
 				g('options').className='hidden';
+				g('export').className='hidden';
+				g('stats').className='unhidden';
+				Molpy.EarnBadge('Far End of the Bell Curve');
+			}
+		}
+		
+		Molpy.showExport=0;
+		Molpy.ExportToggle=function()
+		{
+			if(Molpy.showExport)
+			{
+				Molpy.showExport=0;
+				g('beachAnchor').className='unhidden';
+				g('beach').className='unhidden';
+				g('stats').className='hidden';
+					
+			}else{
+				Molpy.showExport=1;
+				Molpy.showOptions=0;
+				Molpy.showStats=0;
+				g('beachAnchor').className='hidden';
+				g('beach').className='hidden';
+				g('options').className='hidden';
+				g('export').className='hidden';
 				g('stats').className='unhidden';
 				Molpy.EarnBadge('Far End of the Bell Curve');
 			}
