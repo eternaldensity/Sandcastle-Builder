@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.935;
+		Molpy.version=0.936;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -760,6 +760,7 @@ Molpy.Up=function()
 				g('beachAnchor').className='unhidden';
 				g('beach').className='unhidden';
 				g('stats').className='hidden';
+				g('export').className='hidden';
 					
 			}else{
 				Molpy.showExport=1;
@@ -768,9 +769,9 @@ Molpy.Up=function()
 				g('beachAnchor').className='hidden';
 				g('beach').className='hidden';
 				g('options').className='hidden';
-				g('export').className='hidden';
-				g('stats').className='unhidden';
-				Molpy.EarnBadge('Far End of the Bell Curve');
+				g('stats').className='hidden';
+				g('exporttext').value= CuegishToBeanish(Molpy.ToNeedlePulledThing());
+				g('export').className='unhidden';
 			}
 		}
 		
