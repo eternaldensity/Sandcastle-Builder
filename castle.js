@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.93;
+		Molpy.version=0.931;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -139,10 +139,6 @@ Molpy.Up=function()
 		Molpy.saveCount=0; //number of times game has been saved
 		Molpy.loadCount=0; //number of times gave has been loaded
 		Molpy.autosaveCountup=0;
-		
-		Molpy.UpdateBeach();
-		Molpy.HandlePeriods();
-		Molpy.startDate=parseInt(new Date().getTime()); //used for save
 		
 		
 		Molpy.options=[];
@@ -1051,10 +1047,15 @@ Molpy.Up=function()
 			{
 				multiplier*=Molpy.Boosts['Blitzing'].power;
 			}
+			Molpy.computedSandPerClick=Molpy.sandPerClick()*multiplier;
+			
+			if(Molpy.Got('Overcompensating')) //doesn't apply to clicks
+			{
+				multiplier+=Molpy.Boosts['Overcompensating'].power;
+			}
 			Molpy.globalSpmNPMult=multiplier;
 			Molpy.sandPermNP*=Molpy.globalSpmNPMult;
 			
-			Molpy.computedSandPerClick=Molpy.sandPerClick()*Molpy.globalSpmNPMult;
 			Molpy.recalculateDig=0;
 			
 			if(Molpy.sandPermNP>oldrate) Molpy.CheckSandRateBadges();
@@ -1257,7 +1258,6 @@ Molpy.Up=function()
 			}
 			this.DestroyPhase=function()
 			{
-				this.currentActive=0;
 				var i = this.amount
 				var destroyN=EvalMaybeFunction(this.destroyN);
 				while(i--)
@@ -1361,11 +1361,13 @@ Molpy.Up=function()
 			this.buyFunction=buyFunction;
 			this.unlocked=0;
 			this.bought=0;
+			this.hardlocked=0; //prevent unlock by the department (this is not a saved value)
 			this.order=this.id;
 			this.hovered=0;
 			this.power=0;
 			this.countdown=0;
 			this.startPower=startPower;
+			this.power=startPower;
 			this.startCountdown=startCountdown;
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
@@ -1614,21 +1616,25 @@ Molpy.Up=function()
 		{
 			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
 			{
-				var red=Molpy.Boosts[GLRschoice(Molpy.departmentBoosts)];
+				var red;
 				var tries=Molpy.departmentBoosts.length*4;
-				while(tries&&(red.unlocked||red.bought))
+				while(tries)
 				{
 					red=Molpy.Boosts[GLRschoice(Molpy.departmentBoosts)];
+					if(!(red.unlocked||red.bought||red.hardlocked))
+					{
+						break;
+					}
 					tries--;
 				}
-				if(!red.unlocked&&!red.bought)
+				if(!(red.unlocked||red.bought||red.hardlocked))
 				{
 					if((red.sandPrice+red.castlePrice))
 					{
 						Molpy.Notify('The Department of Redundancy Department has produced:');
 						Molpy.UnlockBoost(red.name);
 					}else{
-						Molpy.Notify('The Department of Redundancy Department has produced:');
+						Molpy.Notify('The Department of Redundancy Department has provided:');
 						Molpy.GiveTempBoost(red.name,red.startPower,red.startCountdown);
 					}
 					return;
@@ -2000,6 +2006,9 @@ Molpy.Up=function()
 		Molpy.DefineBoosts();
 		Molpy.DefineBadges();		
 		
+		Molpy.UpdateBeach();
+		Molpy.HandlePeriods();
+		Molpy.startDate=parseInt(new Date().getTime()); //used for save
 		
 		/*In which we announce that initialisation is complete
 		++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -2017,6 +2026,7 @@ Molpy.Up=function()
 		bots.BuildPhase();
 		Molpy.buildNotifyFlag=1;
 		Molpy.Build(0);
+		
 	}
 	
 	/*In which we explain how to think
@@ -2101,26 +2111,31 @@ Molpy.Up=function()
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
 		//various machines fire and do stuff
-		var i = Molpy.CastleToolsN;
-		Molpy.destroyNotifyFlag=0;
-		while(i--)
-		{
-			var t = Molpy.CastleToolsById[i];
-			t.DestroyPhase();
-		}
-		Molpy.destroyNotifyFlag=1;
-		Molpy.Destroy(0);
 		
-		Molpy.buildNotifyFlag=0;
-		i = Molpy.CastleToolsN;
-		while(i--)
+		var activateTimes=1+Molpy.Got('Doublepost');
+		while(activateTimes--)
 		{
-			var t = Molpy.CastleToolsById[i];
-			if(t.name!='NewPixBot')
-				t.BuildPhase();
+			Molpy.destroyNotifyFlag=0;
+			var i = Molpy.CastleToolsN;
+			while(i--)
+			{
+				var t = Molpy.CastleToolsById[i];
+				t.DestroyPhase();
+			}
+			Molpy.destroyNotifyFlag=1;
+			Molpy.Destroy(0);
+			
+			Molpy.buildNotifyFlag=0;
+			i = Molpy.CastleToolsN;
+			while(i--)
+			{
+				var t = Molpy.CastleToolsById[i];
+				if(t.name!='NewPixBot')
+					t.BuildPhase();
+			}
+			Molpy.buildNotifyFlag=1;
+			Molpy.Build(0);
 		}
-		Molpy.buildNotifyFlag=1;
-		Molpy.Build(0);
 		
 		Molpy.prevCastleSand=0; //sand cost of previous castle
 		Molpy.nextCastleSand=1; //sand cost of next castle
@@ -2142,13 +2157,21 @@ Molpy.Up=function()
 		if(Molpy.newpixNumber <= 240)
 		{
 			Molpy.NPlength=1800; 
+			Molpy.LockBoost('Overcompensating');
+			Molpy.LockBoost('Doublepost');
+			Molpy.Boosts['Doublepost'].hardlocked=1;//prevent the department from unlocking it
 		}else
 		{		
 			Molpy.NPlength=3600;
+			Molpy.Boosts['Doublepost'].hardlocked=0;
 		}
 		if(Molpy.newpixNumber > 241)
 		{
 			Molpy.EarnBadge("Have you noticed it's slower?");
+		}
+		if(Molpy.newpixNumber >= 250)
+		{
+			Molpy.UnlockBoost('Overcompensating');
 		}
 		Molpy.TimePeriod=["Here be Dragons"];
 		Molpy.TimeEra=["Here be Dragons"];

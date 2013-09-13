@@ -298,13 +298,18 @@ Molpy.DefineBoosts=function()
 	}
 	new Molpy.Boost('Grapevine', 'Increases sand dig rate by 2% per badge earned',25000,25);
 	Molpy.IKEA='Affordable Swedish Home Furniture';
-	new Molpy.Boost(Molpy.IKEA, function(me){return Molpify(me.power*100,1)+'% off all items for '+Molpify(me.countdown)+'mNP'},0,0,0,
+	new Molpy.Boost(Molpy.IKEA, function(me){return Molpify(me.power*100,1)+'% off all items for '+Molpify(me.countdown)+'mNP'}
+		,0,0,0,
 		function(){
 			Molpy.shopRepaint=1;
 		}
-		,0.5,4);
+		,0.4,4);
 	
-	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA];
+	new Molpy.Boost('Overcompensating', function(me){return 'During LongPix, Sand Tools dig '+Molpify(me.power*100,1)+'% extra sand'}
+		,987645,321,0,0,1.05);
+	new Molpy.Boost('Doublepost', 'During LongPix, Castle Tools activate a second time',650000,4000);
+	
+	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost'];
 	
 }	
 	

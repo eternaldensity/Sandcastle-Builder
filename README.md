@@ -16,6 +16,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.931
+- added 2 longpix boosts
+- fiddles with some department stuff a little
 ### 0.93
 - sand particles!
 - when redacted were supposedly vanishing they weren't actually causing refreshes so they stuck around.
