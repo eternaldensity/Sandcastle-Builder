@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.934
+- option for click numbers
+- notifications move better
+
 ### 0.933
 - layout nicification
 

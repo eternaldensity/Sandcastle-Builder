@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.933;
+		Molpy.version=0.934;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -663,6 +663,10 @@ Molpy.Up=function()
 			{
 				Molpy.options.autosave++;
 				if(Molpy.options.autosave>=9)Molpy.options.autosave=0;
+			}else if(bacon=='sandnumbers')
+			{
+				Molpy.options.numbers++;
+				if(Molpy.options.numbers>=2)Molpy.options.numbers=0;
 			}else if(bacon=='colourscheme')
 			{
 				Molpy.options.colourscheme++;
@@ -692,6 +696,14 @@ Molpy.Up=function()
 						desc="Dark Theme";
 					}else{
 						desc="Light Theme";
+					}
+				} if(bacon=='sandnumbers')
+				{
+					var nu = Molpy.options.numbers;
+					if(!nu){
+						desc="No";
+					}else{
+						desc="Yes";
 					}
 				}else{
 					return;
@@ -927,7 +939,7 @@ Molpy.Up=function()
 		{
 			var newsand=Molpy.computedSandPerClick;
 			Molpy.Dig(newsand);
-			Molpy.AddSandParticle('+'+Molpify(newsand,1));
+			if(Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(newsand,1));
 			Molpy.sandManual+=newsand;
 			Molpy.beachClicks+=1;
 			Molpy.CheckClickAchievements();
@@ -1943,13 +1955,20 @@ Molpy.Up=function()
 				{
 					if (me.life<Molpy.fps*3)Molpy.notifsY+=me.l.clientHeight;
 					
-					var y=me.y-(1-Math.pow(1-me.life/(Molpy.fps*4),10))*250;
+					var y=me.y;
+					if(me.life<Molpy.fps/2)
+					{
+						y-=10;
+					}else{
+						y-=10*(1-(me.life-Molpy.fps/2)/(Molpy.fps*5));
+					}
+					me.y=y;
 					me.life++;
 					var el=me.l;
 					el.style.left=Math.floor(-200+me.x)+'px';
 					el.style.bottom=Math.floor(-y)+'px';
-					el.style.opacity=1-(me.life/(Molpy.fps*4));
-					if (me.life>=Molpy.fps*4)
+					el.style.opacity=1-Math.pow(me.life/(Molpy.fps*5),2);
+					if (me.life>=Molpy.fps*5)
 					{
 						me.life=-1;
 						el.style.opacity=0;
