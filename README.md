@@ -16,6 +16,8 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.933
+- layout nicification
 ### 0.932
 - padding
 ### 0.931

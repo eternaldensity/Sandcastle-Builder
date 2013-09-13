@@ -193,12 +193,12 @@ a:active
 .floatbox{
 	display: inline-block;
 	vertical-align: top;
-	width:160px;
-	min-height:80px;
+	width:150px;
+	min-height:66px;
 	margin:10px;
 	border-width: 1px;
 	border-style: solid;
-	padding: 2px;
+	padding: 4px;
 }
 
 body.darkscheme .floatbox:hover{
@@ -214,13 +214,13 @@ body.lightscheme .floatbox:hover{
 .lootbox{
 	display: inline-block;
 	vertical-align: top;
-	width:120px;
-	min-height:40px;
+	width:110px;
+	min-height:38px;
 	margin:5px;
 	border-width: 1px;
 	border-style: solid;
 	overflow:hidden;
-	padding: 2px;
+	padding: 4px;
 }
 .minifloatbox{
 	display: inline-block;
