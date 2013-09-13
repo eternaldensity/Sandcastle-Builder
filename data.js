@@ -308,8 +308,19 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Overcompensating', function(me){return 'During LongPix, Sand Tools dig '+Molpify(me.power*100,1)+'% extra sand'}
 		,987645,321,0,0,1.05);
 	new Molpy.Boost('Doublepost', 'During LongPix, Castle Tools activate a second time',650000,4000);
-	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost'];
+	new Molpy.Boost('Coma Molpy Style', 
+		function(me){ return me.power? 'Castle Tools do not activate and ninjas stay stealthed <br/><a onclick="Molpy.ComaMolpyStyleToggle()">Deactivate</a>':'When active, Castle Tools do not activate and ninjas stay stealthed <br/><a onclick="Molpy.ComaMolpyStyleToggle()">Activate</a>';}
+		,1000,30);
+	Molpy.ComaMolpyStyleToggle=function()
+	{
+		var p = Molpy.Boosts['Coma Molpy Style'].power;
+		p++;
+		if(p>=2)p=0;
+		Molpy.Boosts['Coma Molpy Style'].power=p;
+		Molpy.Boosts['Coma Molpy Style'].hovered=0;
+		Molpy.boostRepaint=1;
+	}
 	
 }	
 	
