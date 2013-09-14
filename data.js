@@ -314,10 +314,12 @@ Molpy.DefineBoosts=function()
 		,8500,200);
 		
 	var cms=[
-		"Blitzin' the thread, just one more page until I ketch it.",
-		"Read through the decrees, signposts, ONGs and ponder ev'ry tidbit.",
-		"All I need is just a bit of Time to read all of it.",
-		"But Outside says I have to quit.",
+		"Coma Molpy Style",
+		"Molpy Style",
+		"Blitzin' the thread, just one more page until I ketch it",
+		"Read through the decrees, signposts, ONGs and ponder ev'ry tidbit",
+		"All I need is just a bit of Time to read all of it",
+		"But Outside says I have to quit",
 		"Mustard might appear",
 		"The other night we saw an extra star just disappear",
 		"Some extra Cueganites went too, turned back into thin air",
