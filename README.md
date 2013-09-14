@@ -16,6 +16,16 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.94
+- track highest NP visited (doesn't reset with Molpy Down)
+- some treeish new boosts - not finished/available yet
+- notifications logged to stats page
+- took a newline out of the Counter box so there's room for numbers to get big and take up multiple lines
+- buffed Erosion so it's relevant if you have Rivers
+- Department reward selcection algorithm is more treeish
+- buffed the Not Lucky reward
+- implemented mrob27's export riverification idea
+
 ### 0.936
 - export to textfield
 - favicon

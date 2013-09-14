@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.936;
+		Molpy.version=0.94;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -139,6 +139,7 @@ Molpy.Up=function()
 		Molpy.saveCount=0; //number of times game has been saved
 		Molpy.loadCount=0; //number of times gave has been loaded
 		Molpy.autosaveCountup=0;
+		Molpy.highestNPvisited=1; //keep track of where the player has been
 		
 		
 		Molpy.options=[];
@@ -175,7 +176,7 @@ Molpy.Up=function()
 			thread=CuegishToBeanish(thread);
 			document.cookie='CastleBuilderGame='+escape(thread)+'; expires='+flood.toUTCString()+';';//aaand save
 				
-			if(document.cookie.indexOf('CastleBuilderGame')<0) Molpy.Notify('Error while saving.<br>Export your save instead!');
+			if(document.cookie.indexOf('CastleBuilderGame')<0) Molpy.Notify('Error while saving.<br>Export your save instead!',1);
 			else Molpy.Notify('Game saved');
 			Molpy.autosaveCountup=0;
 		}
@@ -189,26 +190,8 @@ Molpy.Up=function()
 				Molpy.FromNeedlePulledThing(thread);
 				Molpy.loadCount++;
 				Molpy.autosaveCountup=0;
-				Molpy.Notify('Game loaded');
+				Molpy.Notify('Game loaded',1);
 			}
-		}
-		
-		Molpy.Export=function()
-		{
-			var thread = CuegishToBeanish(Molpy.ToNeedlePulledThing());
-			if(thread.length<=2000)
-			{
-				prompt('This is your save code:',thread);
-			}else{
-				var n=Math.ceil(thread.length/2000);
-				var i=0;
-				while(i<n)
-				{
-					prompt('This is part '+(i+1)+' of '+n+' of your save code:'+(i?'':'\n(Stick all parts together in order.)'), thread.substr(2000*(i),2000));
-					i++;
-				}
-			}
-			
 		}
 		
 		Molpy.Import=function()
@@ -223,9 +206,9 @@ Molpy.Up=function()
 		+++++++++++++++++++++++++++++++*/
 		Molpy.ToNeedlePulledThing=function()
 		{
-			var p='|'; //seParator
-			var s=';'; //Semicolon
-			var c=','; //Comma
+			var p='P'; //Pipe seParator
+			var s='S'; //Semicolon
+			var c='C'; //Comma
 			
 			var thread='';
 			thread+=Molpy.version+p+p;//some extra space!
@@ -269,6 +252,7 @@ Molpy.Up=function()
 			Flint(Molpy.redactedVisible)+s+
 			Flint(Molpy.redactedViewIndex)+s+
 			Flint(Molpy.redactedClicks)+s+
+			Flint(Molpy.highestNPvisited)+s+
 			p;
 			//sand tools:
 			for(var cancerbabies in Molpy.SandTools)
@@ -307,10 +291,14 @@ Molpy.Up=function()
 		Molpy.FromNeedlePulledThing=function(thread)
 		{
 			Molpy.needlePulling=1; //prevent earning badges that haven't been loaded
-			var p='|'; //seParator
-			var s=';'; //Semicolon
-			var c=','; //Comma
+			var p='P'; //Pipe seParator
+			var s='S'; //Semicolon
+			var c='C'; //Comma
 			if(!thread)return;
+			if(thread.indexOf(p)<0)
+			{
+				p='|'; s=';'; c=','; //old style data
+			}
 			thread=thread.split(p);
 			var version = parseFloat(thread[0]);
 			if(version>Molpy.version)
@@ -357,7 +345,8 @@ Molpy.Up=function()
 			Molpy.redactedCountup=parseInt(pixels[20]);			
 			Molpy.redactedToggle=parseInt(pixels[21]);			
 			Molpy.redactedVisible=parseInt(pixels[22]);			
-			Molpy.redactedViewIndex=parseInt(pixels[23]);	
+			Molpy.redactedViewIndex=parseInt(pixels[23]);
+			Molpy.redactedClicks=parseInt(pixels[24]);	
 			if(version < 0.92)
 			{	
 				//three variables not needed are skipped here
@@ -365,9 +354,8 @@ Molpy.Up=function()
 				
 				var blitzSpeed=parseInt(pixels[28]);	//these were saved here in 0.911 and 2
 				var blitzTime=parseInt(pixels[29]);		//but now are put in the 'Blitzed' boost
-			}else{
-				Molpy.redactedClicks=parseInt(pixels[24]);
 			}
+			Molpy.highestNPvisited=(pixels[25]);
 			
 			
 			pixels=thread[5].split(s);
@@ -377,7 +365,7 @@ Molpy.Up=function()
 				var me=Molpy.SandToolsById[i];
 				if (pixels[i])
 				{
-					var ice=pixels[i].split(',');
+					var ice=pixels[i].split(c);
 					me.amount=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]);
 					me.totalSand=parseInt(ice[2]);
@@ -396,7 +384,7 @@ Molpy.Up=function()
 				var me=Molpy.CastleToolsById[i];
 				if (pixels[i])
 				{
-					var ice=pixels[i].split(',');
+					var ice=pixels[i].split(c);
 					me.amount=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]);
 					me.totalCastlesBuilt=parseInt(ice[2]);
@@ -424,7 +412,7 @@ Molpy.Up=function()
 				var me=Molpy.BoostsById[i];
 				if (pixels[i])
 				{
-					var ice=pixels[i].split(',');
+					var ice=pixels[i].split(c);
 					me.unlocked=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]); 
 					if(version<0.92)
@@ -458,7 +446,7 @@ Molpy.Up=function()
 				var me=Molpy.BadgesById[i];
 				if (pixels[i])
 				{
-					var ice=pixels[i].split(',');
+					var ice=pixels[i].split(c);
 					me.earned=parseInt(ice[0]);
 					if(me.earned)Molpy.BadgesOwned++;
 				}
@@ -541,6 +529,10 @@ Molpy.Up=function()
 			if(version<0.935)
 			{
 				Molpy.Boosts['Overcompensating'].power=1.05;				
+			}
+			if(version<0.94)
+			{
+				Molpy.highestNPvisited=Molpy.newpixNumber;				
 			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
@@ -628,6 +620,7 @@ Molpy.Up=function()
 				Molpy.Down(1);				
 				Molpy.saveCount=0;
 				Molpy.loadCount=0;
+				Molpy.highestNPvisited=0;
 				Molpy.BadgesOwned=0;
 				for (var i in Molpy.BadgesById)
 				{
@@ -851,7 +844,7 @@ Molpy.Up=function()
 					Molpy.buildNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'+1 Castle':amount+ ' Castles Built');
+					Molpy.Notify(amount==1?'+1 Castle':amount+ ' Castles Built',1);
 				}
 			}else{
 				Molpy.buildNotifyCount+=amount;
@@ -907,7 +900,6 @@ Molpy.Up=function()
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
 			Molpy.castlesSpent+=amount;
-			//maybe have an achievement which makes the next castle cheaper when one is spent
 		}
 		Molpy.SpendSand=function(amount)
 		{
@@ -930,7 +922,7 @@ Molpy.Up=function()
 					Molpy.destroyNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'-1 Castle':amount+ ' Castles Destroyed');
+					Molpy.Notify(amount==1?'-1 Castle':amount+ ' Castles Destroyed',1);
 				}
 			}else{
 				Molpy.destroyNotifyCount+=amount;
@@ -1034,7 +1026,7 @@ Molpy.Up=function()
 				if(Molpy.castles>=10){
 					Molpy.Destroy(10);
 					Molpy.ninjaForgiveness++
-					Molpy.Notify('Ninja Forgiven');
+					Molpy.Notify('Ninja Forgiven',1);
 					return 0;
 				}
 			}
@@ -1043,13 +1035,13 @@ Molpy.Up=function()
 				if(Molpy.castles>=30){
 					Molpy.Destroy(30);
 					Molpy.ninjaForgiveness++
-					Molpy.Notify('Ninja Forgiven Again');
+					Molpy.Notify('Ninja Forgiven Again',1);
 					return 0;
 				}
 			}
 			Molpy.ninjaForgiveness=0;
 			if(Molpy.ninjaStealth)
-				Molpy.Notify('Ninja Unstealthed');
+				Molpy.Notify('Ninja Unstealthed',1);
 			if(Molpy.ninjaStealth>=7&&Molpy.Got('Ninja Hope'))
 			{
 				Molpy.UnlockBoost('Ninja Penance');
@@ -1451,7 +1443,7 @@ Molpy.Up=function()
 			}
 			this.describe=function()
 			{			
-				Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this));
+				Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this),1);
 			}
 			
 			Molpy.Boosts[this.name]=this;
@@ -1471,7 +1463,7 @@ Molpy.Up=function()
 						Molpy.Boosts[bacon].unlocked=1;
 						Molpy.boostRepaint=1;
 						Molpy.recalculateDig=1;
-						Molpy.Notify('Boost Unlocked: '+bacon);
+						Molpy.Notify('Boost Unlocked: '+bacon,1);
 					}
 				}
 			}else{ //yo wolpy I heard you like bacon...
@@ -1508,7 +1500,7 @@ Molpy.Up=function()
 							Molpy.BoostsOwned--;
 							Molpy.Boosts[bacon].bought=0;
 						} //Orteil did this bit wrong :P
-						Molpy.Notify('Boost Locked: '+bacon);
+						Molpy.Notify('Boost Locked: '+bacon,1);
 					}
 				}
 			}else{ //so I put bacon in your bacon
@@ -1571,7 +1563,7 @@ Molpy.Up=function()
 						Molpy.badgeRepaint=1;
 						Molpy.recalculateDig=1;
 						Molpy.BadgesOwned++;
-						Molpy.Notify('Badge Earned: '+bacon);
+						Molpy.Notify('Badge Earned: '+bacon,1);
 						Molpy.EarnBadge('Redundant');
 					}
 				}
@@ -1661,25 +1653,28 @@ Molpy.Up=function()
 		{
 			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
 			{
-				var red;
-				var tries=Molpy.departmentBoosts.length*4;
-				while(tries)
+				var availRewards=[];
+				var i = Molpy.departmentBoosts.length;
+				var f=0;
+				while(i--)
 				{
-					red=Molpy.Boosts[GLRschoice(Molpy.departmentBoosts)];
-					if(!(red.unlocked||red.bought||red.hardlocked))
+					var me=Molpy.Boosts[Molpy.departmentBoosts[i]];
+					if(!(me.unlocked||me.bought||me.hardlocked))
 					{
-						break;
+						availRewards[f]=me;
+						f++;
 					}
-					tries--;
 				}
-				if(!(red.unlocked||red.bought||red.hardlocked))
+				
+				if(f)
 				{
+					var red=GLRschoice(availRewards);
 					if((red.sandPrice+red.castlePrice))
 					{
-						Molpy.Notify('The Department of Redundancy Department has produced:');
+						Molpy.Notify('The Department of Redundancy Department has produced:',1);
 						Molpy.UnlockBoost(red.name);
 					}else{
-						Molpy.Notify('The Department of Redundancy Department has provided:');
+						Molpy.Notify('The Department of Redundancy Department has provided:',1);
 						Molpy.GiveTempBoost(red.name,red.startPower,red.startCountdown);
 					}
 					return;
@@ -1690,7 +1685,20 @@ Molpy.Up=function()
 			{
 				Molpy.Notify('You are Not Lucky');
 				Molpy.Notify('Which is Good');
-				var bonus = Math.floor((Molpy.SandToolsOwned+Molpy.CastleToolsOwned+Molpy.BoostsOwned+Molpy.BadgesOwned)/4)+4;
+				var bonus=0;
+				var i=0;
+				while(i<Molpy.SandToolsN)
+				{
+					bonus+=Molpy.SandToolsById[i].amount*Math.pow(2,i+1);
+					i++;
+                } 
+				i=0;
+				while(i<Molpy.CastleToolsN)
+				{
+					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(3,i+1);
+					i++;
+                }
+				bonus = Math.floor((bonus+Molpy.BoostsOwned+Molpy.BadgesOwned)/4)+4;
 				Molpy.Build(bonus);
 			}else{
 				var blitzSpeed=8,blitzTime=23;
@@ -2010,7 +2018,12 @@ Molpy.Up=function()
 				}
 			}
 		}
-		Molpy.Notify=function(text)
+		
+		Molpy.notifLog=[];
+		Molpy.notifLogNext=0;
+		Molpy.notifLogMax=39; //store 40 lines
+		Molpy.notifLogPaint=0;
+		Molpy.Notify=function(text,log)
 		{
 			//pick the first free (or the oldest) notification to replace it
 			var highest=0;
@@ -2049,7 +2062,39 @@ Molpy.Up=function()
 			if(Molpy.notifsReceived>=2000)
 			{
 				Molpy.EarnBadge('Thousands of Them!');
-			}			
+			}		
+			if(log)
+			{
+				Molpy.notifLog[Molpy.notifLogNext]=text;
+				Molpy.notifLogNext++;
+				if(Molpy.notifLogNext>Molpy.notifLogMax)Molpy.notifLogNext=0;
+				Molpy.notifLogPaint=1;
+			}
+		}
+		
+		Molpy.PaintNotifLog=function()
+		{
+			Molpy.notifLogPaint=0;
+			var str='';
+			var i = Molpy.notifLogNext;
+			while(i<=Molpy.notifLogMax)
+			{
+				var line = Molpy.notifLog[i];
+				if(line){
+					str+=line+'<br/>;';
+				}
+				i++;
+			}
+			i = 0;
+			while(i<=Molpy.notifLogNext)
+			{
+				var line = Molpy.notifLog[i];
+				if(line){
+					str+=line+'<br/>';
+				}
+				i++;
+			}
+			g('notiflogitems').innerHTML=str;
 		}
 				
 
@@ -2157,8 +2202,12 @@ Molpy.Up=function()
 	Molpy.ONG=function()
 	{
 		Molpy.newpixNumber+=1;
+		if(Molpy.newpixNumber > Molpy.highestNPvisited)
+		{
+			Molpy.highestNPvisited=Molpy.newpixNumber;
+		}
 		Molpy.ONGstart = ONGsnip(new Date());
-		Molpy.Notify('ONG!');	
+		Molpy.Notify('ONG!',1);	
 		
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
@@ -2189,9 +2238,10 @@ Molpy.Up=function()
 			Molpy.Build(0);
 		}
 		
+		if(Molpy.nextCastleSand>1)
+			Molpy.EarnBadge('Castle Price Rollback');
 		Molpy.prevCastleSand=0; //sand cost of previous castle
 		Molpy.nextCastleSand=1; //sand cost of next castle
-		Molpy.EarnBadge('Castle Price Rollback');
 		Molpy.SandToCastles();
 		if(Molpy.ninjad==0)
 		{
@@ -2371,7 +2421,8 @@ Molpy.Up=function()
 		g('badgesownedstat').innerHTML=Molpify(Molpy.BadgesOwned);		
 		
 		g('sandmultiplierstat').innerHTML=Molpify(Molpy.globalSpmNPMult*100,1)+'%';			
-		g('redactedstat').innerHTML=Molpy.redactedWords + ": " + Molpify(Molpy.redactedClicks);			
+		g('redactedstat').innerHTML=Molpy.redactedWords + ": " + Molpify(Molpy.redactedClicks);		
+		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 	}
 	
 	function createClockHand()

@@ -208,6 +208,7 @@ Molpy.DefineCastleTools=function()
 			var baseval = 24;				
 			if(Molpy.Got('Erosion')) baseval-=
 				Math.floor(Math.min(baseval,Molpy.CastleTools['Wave'].totalCastlesWasted*0.2));
+			baseval -= Molpy.CastleTools['River'].bought*2;
 			return baseval;
 		}
 		,111
@@ -259,7 +260,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Megball','Cuegan produce double sand',10700,56);
 	new Molpy.Boost('Robot Uprising','Newpixbots build an extra castle',14000,53);
 	new Molpy.Boost('Ninja Builder','When increasing ninja stealth streak, builds that many castles',4000,35);
-	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves',40000,77);
+	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves, and 2 less per River bought',40000,77);
 	new Molpy.Boost('Autosave Option','Autosave option is available',100,4);
 	new Molpy.Boost('Helpful Hands','Each Cuegan+Bucket pair gives clicking +0.5 sand',250,5);
 	new Molpy.Boost('True Colours','Each Cuegan+Flag pair gives clicking +5 sand',750,15);
@@ -308,9 +309,131 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Overcompensating', function(me){return 'During LongPix, Sand Tools dig '+Molpify(me.power*100,1)+'% extra sand'}
 		,987645,321,0,0,1.05);
 	new Molpy.Boost('Doublepost', 'During LongPix, Castle Tools activate a second time',650000,4000);
-	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost'];
-	
+	new Molpy.Boost('Coma Molpy Style', 
+		function(me){ return me.power? 'Castle Tools do not activate and ninjas stay stealthed <br/><a onclick="Molpy.ComaMolpyStyleToggle()">Deactivate</a>':'When active, Castle Tools do not activate and ninjas stay stealthed <br/><a onclick="Molpy.ComaMolpyStyleToggle()">Activate</a>';}
+		,8500,200);
+		
+	var cms=[
+		"Coma Molpy Style",
+		"Molpy Style",
+		"Blitzin' the thread, just one more page until I ketch it",
+		"Read through the decrees, signposts, ONGs and ponder ev'ry tidbit",
+		"All I need is just a bit of Time to read all of it",
+		"But Outside says I have to quit",
+		"Mustard might appear",
+		"The other night we saw an extra star just disappear",
+		"Some extra Cueganites went too, turned back into thin air",
+		"An extra alt-text dot is gone as well, will we ever know where?",
+		"Were they ever there?",
+		"In the O.T.T., follow the decree",
+		"Cos I'm the pope, hey!",
+		"So post some rope, hey!",
+		"When you're postin', you can be boastin'",
+		"About out aims, hey!",
+		"To have no flames, hey!",
+		"Cos we turn our disagreements into games, -ames, -ames, -ames, -a-a-a-a-a-a-a-aaaa...",
+		"Coma Molpy Style",
+		"Molpy Style",
+		"Co - co - co - co - Coma Molpy Style",
+		"Molpy Style",
+		"Co - co - co - co - Coma Molpy Style",
+		"Heyyyy, Neat Sandcastle",
+		"Co - co - co - co - Coma Molpy Style",
+		"Heyyyy, Neat Sandcastle",
+		"Co - co - co - co - Coma Molpy Style",
+		"Back in the present wearing hats with all the OTTers",
+		"Bumping the firstposts, and discussing all the Elders",
+		"Some have not been seen in wix, so have they yet forgot us?",
+		"But some are still posting with us",
+		"There's a spoiler here!",
+		"It is a link to the live image, not the hashed one there!",
+		"Don't want the blitzing to be ruined that would not be fair",
+		"Better edit the hash in and next time ONG with care",
+		"Next time that you dare",
+		"Postcounts growin', the cakes are flowin'",
+		"The lurkers lurk, hey",
+		"The m*stards ch*rp, hey",
+		"You make up your mind, to not fall behind",
+		"Cannot shirk, hey",
+		"The speed's berserk, hey",
+		"Staying up forever just can't work, -erk, -erk, -erk, -r-r-r-r-r-r-r-r-rrrrr...",
+		"Coma Molpy Style",
+		"Molpy Style",
+		"Co - co - co - co - Coma Molpy Style",
+		"Molpy Style",
+		"Co - co - co - co - Coma Molpy Style",
+		"Heyyyy, Neat Sandcastle",
+		"Co - co - co - co - Coma Molpy Style",
+		"Heyyyy, Neat Sandcastle",
+		"Co - co - co - co - Coma Molpy Style",
+		"Walk with me, until you see the tree",
+		"Molpy molpy beanie river grapevine sea!",
+		"Walk with me, avoid all heresy",
+		"Molpy molpy bucket river OTC! (ain't no redunakitty!)",
+		"Coma Molpy Style",
+		"Co-co-co - co-co-co",
+		"Heyyyy, Neat Sandcastle",
+		"Co - co - co - co - Coma Molpy Style",
+		"Heyyyy, Neat Sandcastle",
+		"Co - co - co - co - Coma Molpy",
+		"Co-co-co - co-co-co",
+		"Coma Molpy Style",
+		"[End of the song. BTW you should buy this]"
+	]
+	var cmsline=0;
+	Molpy.ComaMolpyStyleToggle=function()
+	{
+		if(!Molpy.Boosts['Coma Molpy Style'].bought)
+		{
+			Molpy.Notify(cms[cmsline]);
+			cmsline++;
+			if(cmsline>=cms.length)cmsline=0;
+			return;
+		}
+		var p = Molpy.Boosts['Coma Molpy Style'].power;
+		p++;
+		if(p>=2)p=0;
+		Molpy.Boosts['Coma Molpy Style'].power=p;
+		Molpy.Boosts['Coma Molpy Style'].hovered=0;
+		Molpy.boostRepaint=1;
+	}
+	new Molpy.Boost('Time Travel', 
+		function(me)
+		{
+			me.hovered=0;
+			return 'Pay ' + Molpify(Math.floor(Molpy.newpixNumber*Molpy.priceFactor)) + ' Castles to move <a onlick="Molpy.TimeTravel('+(-me.power)+')">backwards</a> or <a onlick="Molpy.TimeTravel('+me.power+')">forwards</a> '+
+			Molpify(me.power)+' NP in Time';
+		}
+		,1000,30,0,0,1);
+	Molpy.TimeTravel=function(NP)
+	{		
+		NP = Math.floor(NP);
+		var price=Math.floor(Molpy.newpixNumber*Molpy.priceFactor);
+		if(Molpy.newpixNumber+NP <1)
+		{
+			Molpy.Notify('Heretic!');
+			Molpy.Notify('There is nothing before time.');
+			return;
+		}
+		if(Molpy.newpixNumber+NP >Molpy.highestNPvisited)
+		{
+			Molpy.Notify('Wait For It');
+			return;
+		}
+		if(!Molpy.Boosts['Time Travel'].bought)
+		{
+			Molpy.Notify('In the future, you\'ll pay for this!');
+			return;
+		}
+		if(Molpy.castles >=price)
+		{
+			Molpy.SpendCastles(price);
+			Molpy.newpixNumber+=NP;			
+			Molpy.HandlePeriods();
+			Molpy.UpdateBeach();
+		}
+	}
 }	
 	
 Molpy.DefineBadges=function()
