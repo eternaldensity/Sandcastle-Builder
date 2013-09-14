@@ -2000,8 +2000,8 @@ Molpy.Up=function()
 		}
 		
 		Molpy.notifLog=[];
-		Molpy.notifLogPlace=0;
-		Molpy.notifLogMax=30; //store just 30 lines
+		Molpy.notifLogNext=0;
+		Molpy.notifLogMax=29; //store just 30 lines
 		Molpy.notifLogPaint=0;
 		Molpy.Notify=function(text,log)
 		{
@@ -2050,6 +2050,31 @@ Molpy.Up=function()
 				if(Molpy.notifLogNext>Molpy.notifLogMax)Molpy.notifLogNext=0;
 				Molpy.notifLogPaint=1;
 			}
+		}
+		
+		Molpy.PaintNotifLog=function()
+		{
+			Molpy.notifLogPaint=0;
+			var str='';
+			var i = Molpy.notifLogNext;
+			while(i<=Molpy.notifLogMax)
+			{
+				var line = Molpy.notifLog[i];
+				if(line){
+					str+=line+'<br/>;';
+				}
+				i++;
+			}
+			i = 0;
+			while(i<=Molpy.notifLogNext)
+			{
+				var line = Molpy.notifLog[i];
+				if(line){
+					str+=line+'<br/>';
+				}
+				i++;
+			}
+			g('notiflogitems').innerHTML=str;
 		}
 				
 
@@ -2375,7 +2400,8 @@ Molpy.Up=function()
 		g('badgesownedstat').innerHTML=Molpify(Molpy.BadgesOwned);		
 		
 		g('sandmultiplierstat').innerHTML=Molpify(Molpy.globalSpmNPMult*100,1)+'%';			
-		g('redactedstat').innerHTML=Molpy.redactedWords + ": " + Molpify(Molpy.redactedClicks);			
+		g('redactedstat').innerHTML=Molpy.redactedWords + ": " + Molpify(Molpy.redactedClicks);		
+		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 	}
 	
 	function createClockHand()
