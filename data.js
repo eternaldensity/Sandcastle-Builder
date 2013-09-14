@@ -207,8 +207,9 @@ Molpy.DefineCastleTools=function()
 		{
 			var baseval = 24;				
 			if(Molpy.Got('Erosion')) baseval-=
-				Math.floor(Math.min(baseval,Molpy.CastleTools['Wave'].totalCastlesWasted*0.2));
+				Math.floor(baseval,Molpy.CastleTools['Wave'].totalCastlesWasted*0.2);
 			baseval -= Molpy.CastleTools['River'].bought*2;
+			baseval=Math.max(baseval,0);
 			return baseval;
 		}
 		,111
@@ -306,7 +307,8 @@ Molpy.DefineBoosts=function()
 		}
 		,0.4,4);
 	
-	new Molpy.Boost('Overcompensating', function(me){return 'During LongPix, Sand Tools dig '+Molpify(me.power*100,1)+'% extra sand'}
+	new Molpy.Boost('Overcompensating', function(me){
+		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
 		,987645,321,0,0,1.05);
 	new Molpy.Boost('Doublepost', 'During LongPix, Castle Tools activate a second time',650000,4000);
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost'];
