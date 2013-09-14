@@ -1998,6 +1998,11 @@ Molpy.Up=function()
 				}
 			}
 		}
+		
+		Molpy.notifLog=[];
+		Molpy.notifLogPlace=0;
+		Molpy.notifLogMax=30; //store just 30 lines
+		Molpy.notifLogPaint=0;
 		Molpy.Notify=function(text,log)
 		{
 			//pick the first free (or the oldest) notification to replace it
@@ -2040,7 +2045,10 @@ Molpy.Up=function()
 			}		
 			if(log)
 			{
-				//todo: store important notifications to show in stats
+				Molpy.notifLog[Molpy.notifLogNext]=text;
+				Molpy.notifLogNext++;
+				if(Molpy.notifLogNext>Molpy.notifLogMax)Molpy.notifLogNext=0;
+				Molpy.notifLogPaint=1;
 			}
 		}
 				
