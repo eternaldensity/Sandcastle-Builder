@@ -19,6 +19,8 @@ Not for any commercial use!
 ### 0.94
 - track highest NP visited (doesn't reset with Molpy Down)
 - some treeish new boosts
+- notifications logged to stats page
+- took a newline out of the Counter box so there's room for numbers to get big and take up multiple lines
 
 ### 0.936
 - export to textfield

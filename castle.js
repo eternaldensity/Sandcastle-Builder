@@ -176,7 +176,7 @@ Molpy.Up=function()
 			thread=CuegishToBeanish(thread);
 			document.cookie='CastleBuilderGame='+escape(thread)+'; expires='+flood.toUTCString()+';';//aaand save
 				
-			if(document.cookie.indexOf('CastleBuilderGame')<0) Molpy.Notify('Error while saving.<br>Export your save instead!');
+			if(document.cookie.indexOf('CastleBuilderGame')<0) Molpy.Notify('Error while saving.<br>Export your save instead!',1);
 			else Molpy.Notify('Game saved');
 			Molpy.autosaveCountup=0;
 		}
@@ -190,7 +190,7 @@ Molpy.Up=function()
 				Molpy.FromNeedlePulledThing(thread);
 				Molpy.loadCount++;
 				Molpy.autosaveCountup=0;
-				Molpy.Notify('Game loaded');
+				Molpy.Notify('Game loaded',1);
 			}
 		}
 		
@@ -840,7 +840,7 @@ Molpy.Up=function()
 					Molpy.buildNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'+1 Castle':amount+ ' Castles Built');
+					Molpy.Notify(amount==1?'+1 Castle':amount+ ' Castles Built',1);
 				}
 			}else{
 				Molpy.buildNotifyCount+=amount;
@@ -918,7 +918,7 @@ Molpy.Up=function()
 					Molpy.destroyNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'-1 Castle':amount+ ' Castles Destroyed');
+					Molpy.Notify(amount==1?'-1 Castle':amount+ ' Castles Destroyed',1);
 				}
 			}else{
 				Molpy.destroyNotifyCount+=amount;
@@ -1022,7 +1022,7 @@ Molpy.Up=function()
 				if(Molpy.castles>=10){
 					Molpy.Destroy(10);
 					Molpy.ninjaForgiveness++
-					Molpy.Notify('Ninja Forgiven');
+					Molpy.Notify('Ninja Forgiven',1);
 					return 0;
 				}
 			}
@@ -1031,13 +1031,13 @@ Molpy.Up=function()
 				if(Molpy.castles>=30){
 					Molpy.Destroy(30);
 					Molpy.ninjaForgiveness++
-					Molpy.Notify('Ninja Forgiven Again');
+					Molpy.Notify('Ninja Forgiven Again',1);
 					return 0;
 				}
 			}
 			Molpy.ninjaForgiveness=0;
 			if(Molpy.ninjaStealth)
-				Molpy.Notify('Ninja Unstealthed');
+				Molpy.Notify('Ninja Unstealthed',1);
 			if(Molpy.ninjaStealth>=7&&Molpy.Got('Ninja Hope'))
 			{
 				Molpy.UnlockBoost('Ninja Penance');
@@ -1439,7 +1439,7 @@ Molpy.Up=function()
 			}
 			this.describe=function()
 			{			
-				Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this));
+				Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this),1);
 			}
 			
 			Molpy.Boosts[this.name]=this;
@@ -1459,7 +1459,7 @@ Molpy.Up=function()
 						Molpy.Boosts[bacon].unlocked=1;
 						Molpy.boostRepaint=1;
 						Molpy.recalculateDig=1;
-						Molpy.Notify('Boost Unlocked: '+bacon);
+						Molpy.Notify('Boost Unlocked: '+bacon,1);
 					}
 				}
 			}else{ //yo wolpy I heard you like bacon...
@@ -1496,7 +1496,7 @@ Molpy.Up=function()
 							Molpy.BoostsOwned--;
 							Molpy.Boosts[bacon].bought=0;
 						} //Orteil did this bit wrong :P
-						Molpy.Notify('Boost Locked: '+bacon);
+						Molpy.Notify('Boost Locked: '+bacon,1);
 					}
 				}
 			}else{ //so I put bacon in your bacon
@@ -1559,7 +1559,7 @@ Molpy.Up=function()
 						Molpy.badgeRepaint=1;
 						Molpy.recalculateDig=1;
 						Molpy.BadgesOwned++;
-						Molpy.Notify('Badge Earned: '+bacon);
+						Molpy.Notify('Badge Earned: '+bacon,1);
 						Molpy.EarnBadge('Redundant');
 					}
 				}
@@ -1664,10 +1664,10 @@ Molpy.Up=function()
 				{
 					if((red.sandPrice+red.castlePrice))
 					{
-						Molpy.Notify('The Department of Redundancy Department has produced:');
+						Molpy.Notify('The Department of Redundancy Department has produced:',1);
 						Molpy.UnlockBoost(red.name);
 					}else{
-						Molpy.Notify('The Department of Redundancy Department has provided:');
+						Molpy.Notify('The Department of Redundancy Department has provided:',1);
 						Molpy.GiveTempBoost(red.name,red.startPower,red.startCountdown);
 					}
 					return;
@@ -1998,7 +1998,7 @@ Molpy.Up=function()
 				}
 			}
 		}
-		Molpy.Notify=function(text)
+		Molpy.Notify=function(text,log)
 		{
 			//pick the first free (or the oldest) notification to replace it
 			var highest=0;
@@ -2037,7 +2037,11 @@ Molpy.Up=function()
 			if(Molpy.notifsReceived>=2000)
 			{
 				Molpy.EarnBadge('Thousands of Them!');
-			}			
+			}		
+			if(log)
+			{
+				//todo: store important notifications to show in stats
+			}
 		}
 				
 
@@ -2150,7 +2154,7 @@ Molpy.Up=function()
 			Molpy.highestNPvisited=Molpy.newpixNumber;
 		}
 		Molpy.ONGstart = ONGsnip(new Date());
-		Molpy.Notify('ONG!');	
+		Molpy.Notify('ONG!',1);	
 		
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();

@@ -399,14 +399,14 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{
 			me.hovered=0;
-			return 'Pay ' + Molpify(Math.floor(Molpy.newpixNumber*Molpy.priceFactor*Math.abs(me.power))) + ' Castles to move <a onlick="Molpy.TimeTravel('+(-me.power)+')">backwards</a> or <a onlick="Molpy.TimeTravel('+me.power+')">forwards</a> '+
+			return 'Pay ' + Molpify(Math.floor(Molpy.newpixNumber*Molpy.priceFactor)) + ' Castles to move <a onlick="Molpy.TimeTravel('+(-me.power)+')">backwards</a> or <a onlick="Molpy.TimeTravel('+me.power+')">forwards</a> '+
 			Molpify(me.power)+' NP in Time';
 		}
 		,1000,30,0,0,1);
 	Molpy.TimeTravel=function(NP)
 	{		
 		NP = Math.floor(NP);
-		var price=Math.floor(Molpy.newpixNumber*Molpy.priceFactor*Math.abs(NP));
+		var price=Math.floor(Molpy.newpixNumber*Molpy.priceFactor);
 		if(Molpy.newpixNumber+NP <1)
 		{
 			Molpy.Notify('Heretic!');
