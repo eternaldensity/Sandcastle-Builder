@@ -2001,7 +2001,7 @@ Molpy.Up=function()
 		
 		Molpy.notifLog=[];
 		Molpy.notifLogNext=0;
-		Molpy.notifLogMax=29; //store just 30 lines
+		Molpy.notifLogMax=39; //store 40 lines
 		Molpy.notifLogPaint=0;
 		Molpy.Notify=function(text,log)
 		{
@@ -2218,9 +2218,10 @@ Molpy.Up=function()
 			Molpy.Build(0);
 		}
 		
+		if(Molpy.nextCastleSand>1)
+			Molpy.EarnBadge('Castle Price Rollback');
 		Molpy.prevCastleSand=0; //sand cost of previous castle
 		Molpy.nextCastleSand=1; //sand cost of next castle
-		Molpy.EarnBadge('Castle Price Rollback');
 		Molpy.SandToCastles();
 		if(Molpy.ninjad==0)
 		{
