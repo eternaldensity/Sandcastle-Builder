@@ -208,6 +208,7 @@ Molpy.DefineCastleTools=function()
 			var baseval = 24;				
 			if(Molpy.Got('Erosion')) baseval-=
 				Math.floor(Math.min(baseval,Molpy.CastleTools['Wave'].totalCastlesWasted*0.2));
+			baseval -= Molpy.CastleTools['River'].bought*2;
 			return baseval;
 		}
 		,111
@@ -259,7 +260,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Megball','Cuegan produce double sand',10700,56);
 	new Molpy.Boost('Robot Uprising','Newpixbots build an extra castle',14000,53);
 	new Molpy.Boost('Ninja Builder','When increasing ninja stealth streak, builds that many castles',4000,35);
-	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves',40000,77);
+	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves, and 2 less per River bought',40000,77);
 	new Molpy.Boost('Autosave Option','Autosave option is available',100,4);
 	new Molpy.Boost('Helpful Hands','Each Cuegan+Bucket pair gives clicking +0.5 sand',250,5);
 	new Molpy.Boost('True Colours','Each Cuegan+Flag pair gives clicking +5 sand',750,15);

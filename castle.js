@@ -1647,21 +1647,24 @@ Molpy.Up=function()
 
 		Molpy.RewardRedacted=function()
 		{
-			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
+			//if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
 			{
-				var red;
-				var tries=Molpy.departmentBoosts.length*4;
-				while(tries)
+				var availRewards=[];
+				var i = Molpy.departmentBoosts.length;
+				var f=0;
+				while(i--)
 				{
-					red=Molpy.Boosts[GLRschoice(Molpy.departmentBoosts)];
-					if(!(red.unlocked||red.bought||red.hardlocked))
+					var me=Molpy.Boosts[Molpy.departmentBoosts[i]];
+					if(!(me.unlocked||me.bought||me.hardlocked))
 					{
-						break;
+						availRewards[f]=me;
+						f++;
 					}
-					tries--;
 				}
-				if(!(red.unlocked||red.bought||red.hardlocked))
+				
+				if(f)
 				{
+					var red=GLRschoice(availRewards);
 					if((red.sandPrice+red.castlePrice))
 					{
 						Molpy.Notify('The Department of Redundancy Department has produced:',1);
