@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.9411
+- high level sand click badges now bases on sand dug by clicks, not clicks
+- this should have been in the previous version but forgot to list it and it didn't work anyway.
+
 ### 0.941
 - removed some version-specific lock-on-load for badges which were made more expensive long ago
 - Overcompensating description fixed, ensure it's 105%

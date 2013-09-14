@@ -578,7 +578,7 @@ Molpy.CheckClickAchievements=function()
 	if(c>=3333){
 		Molpy.UnlockBoost('True Colours');
 	}
-	v = Molpy.sandManual;
+	c = Molpy.sandManual;
 	if(c>=100000){
 		Molpy.EarnBadge('Getting Sick of Clicking');
 	}
