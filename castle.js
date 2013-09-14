@@ -206,9 +206,9 @@ Molpy.Up=function()
 		+++++++++++++++++++++++++++++++*/
 		Molpy.ToNeedlePulledThing=function()
 		{
-			var p='|'; //seParator
-			var s=';'; //Semicolon
-			var c=','; //Comma
+			var p='P'; //Pipe seParator
+			var s='S'; //Semicolon
+			var c='C'; //Comma
 			
 			var thread='';
 			thread+=Molpy.version+p+p;//some extra space!
@@ -291,10 +291,14 @@ Molpy.Up=function()
 		Molpy.FromNeedlePulledThing=function(thread)
 		{
 			Molpy.needlePulling=1; //prevent earning badges that haven't been loaded
-			var p='|'; //seParator
-			var s=';'; //Semicolon
-			var c=','; //Comma
+			var p='P'; //Pipe seParator
+			var s='S'; //Semicolon
+			var c='C'; //Comma
 			if(!thread)return;
+			if(thread.indexOf(p)<0)
+			{
+				p='|'; s=';'; c=','; //old style data
+			}
 			thread=thread.split(p);
 			var version = parseFloat(thread[0]);
 			if(version>Molpy.version)
@@ -361,7 +365,7 @@ Molpy.Up=function()
 				var me=Molpy.SandToolsById[i];
 				if (pixels[i])
 				{
-					var ice=pixels[i].split(',');
+					var ice=pixels[i].split(c);
 					me.amount=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]);
 					me.totalSand=parseInt(ice[2]);
@@ -380,7 +384,7 @@ Molpy.Up=function()
 				var me=Molpy.CastleToolsById[i];
 				if (pixels[i])
 				{
-					var ice=pixels[i].split(',');
+					var ice=pixels[i].split(c);
 					me.amount=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]);
 					me.totalCastlesBuilt=parseInt(ice[2]);
@@ -408,7 +412,7 @@ Molpy.Up=function()
 				var me=Molpy.BoostsById[i];
 				if (pixels[i])
 				{
-					var ice=pixels[i].split(',');
+					var ice=pixels[i].split(c);
 					me.unlocked=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]); 
 					if(version<0.92)
@@ -442,7 +446,7 @@ Molpy.Up=function()
 				var me=Molpy.BadgesById[i];
 				if (pixels[i])
 				{
-					var ice=pixels[i].split(',');
+					var ice=pixels[i].split(c);
 					me.earned=parseInt(ice[0]);
 					if(me.earned)Molpy.BadgesOwned++;
 				}

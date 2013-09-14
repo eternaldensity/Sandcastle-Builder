@@ -24,6 +24,7 @@ Not for any commercial use!
 - buffed Erosion so it's relevant if you have Rivers
 - Department reward selcection algorithm is more treeish
 - buffed the Not Lucky reward
+- implemented mrob27's export riverification idea
 
 ### 0.936
 - export to textfield
