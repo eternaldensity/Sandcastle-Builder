@@ -1647,7 +1647,7 @@ Molpy.Up=function()
 
 		Molpy.RewardRedacted=function()
 		{
-			//if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
+			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
 			{
 				var availRewards=[];
 				var i = Molpy.departmentBoosts.length;
@@ -1681,7 +1681,20 @@ Molpy.Up=function()
 			{
 				Molpy.Notify('You are Not Lucky');
 				Molpy.Notify('Which is Good');
-				var bonus = Math.floor((Molpy.SandToolsOwned+Molpy.CastleToolsOwned+Molpy.BoostsOwned+Molpy.BadgesOwned)/4)+4;
+				var bonus=0;
+				var i=0;
+				while(i<Molpy.SandToolsN)
+				{
+					bonus+=Molpy.SandToolsById[i].amount*Math.pow(2,i+1);
+					i++;
+                } 
+				i=0;
+				while(i<Molpy.CastleToolsN)
+				{
+					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(3,i+1);
+					i++;
+                }
+				bonus = Math.floor((bonus+Molpy.BoostsOwned+Molpy.BadgesOwned)/4)+4;
 				Molpy.Build(bonus);
 			}else{
 				var blitzSpeed=8,blitzTime=23;

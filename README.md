@@ -21,6 +21,9 @@ Not for any commercial use!
 - some treeish new boosts
 - notifications logged to stats page
 - took a newline out of the Counter box so there's room for numbers to get big and take up multiple lines
+- buffed Erosion so it's relevant if you have Rivers
+- Department reward selcection algorithm is more treeish
+- buffed the Not Lucky reward
 
 ### 0.936
 - export to textfield
