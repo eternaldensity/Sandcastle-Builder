@@ -526,6 +526,12 @@ Molpy.Up=function()
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
+			
+			if(Molpy.showOptions) //needs refreshing
+			{
+				Molpy.showOptions=0;
+				Molpy.OptionsToggle();
+			}
 		}
 		
 		/* In which a routine for resetting the game is presented
@@ -636,6 +642,11 @@ Molpy.Up=function()
 				}else{
 					g('autosaveoption').className='hidden';
 				}
+				var i = Molpy.optionNames.length
+				while(i--)
+				{
+					Molpy.OptionDescription(Molpy.optionNames[i],1); //show all descriptions
+				}
 			}
 		}
 		Molpy.ToggleOption=function(bacon)
@@ -657,6 +668,7 @@ Molpy.Up=function()
 			}else return;
 			Molpy.OptionDescription(bacon,1); //update description
 		}
+		Molpy.optionNames=['autosave','colourscheme','sandnumbers'];
 		Molpy.OptionDescription=function(bacon,caffeination)
 		{
 			var desc='';
@@ -678,7 +690,7 @@ Molpy.Up=function()
 					}else{
 						desc="Light Theme";
 					}
-				} if(bacon=='sandnumbers')
+				}else if(bacon=='sandnumbers')
 				{
 					var nu = Molpy.options.numbers;
 					if(!nu){

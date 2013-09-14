@@ -445,9 +445,9 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Just Starting','10 clicks');
 	new Molpy.Badge('Busy Clicking','100 clicks');
 	new Molpy.Badge('Click Storm','1,000 clicks');
-	new Molpy.Badge('Getting Sick of Clicking','10,000 clicks');
-	new Molpy.Badge('Why am I still clicking?','100,000 clicks');
-	new Molpy.Badge('Click Master','1,000,000 clicks',2);
+	new Molpy.Badge('Getting Sick of Clicking','Dig 100,000 sand by clicking');
+	new Molpy.Badge('Why am I still clicking?','Dig 5,000,000 sand by clicking');
+	new Molpy.Badge('Click Master','Dig 100,000,000 sand by clicking',2);
 	
 	new Molpy.Badge('Rook','Make a castle');
 	new Molpy.Badge('Enough for Chess','Make 4 castles');
@@ -578,13 +578,14 @@ Molpy.CheckClickAchievements=function()
 	if(c>=3333){
 		Molpy.UnlockBoost('True Colours');
 	}
-	if(c>=10000){
+	v = Molpy.sandManual;
+	if(c>=100000){
 		Molpy.EarnBadge('Getting Sick of Clicking');
 	}
-	if(c>=100000){
+	if(c>=5000000){
 		Molpy.EarnBadge('Why am I still clicking?');
 	}
-	if(c>=1000000){
+	if(c>=100000000){
 		Molpy.EarnBadge('Click Master');
 	}						
 }	

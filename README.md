@@ -20,6 +20,8 @@ Not for any commercial use!
 - removed some version-specific lock-on-load for badges which were made more expensive long ago
 - Overcompensating description fixed, ensure it's 105%
 - ensure Erosion can't make Wave's destruction negative
+- notificaction/sandnumber text 8 points smaller
+- always show option descriptions, refresh them if visible after load/import
 
 ### 0.94
 - track highest NP visited (doesn't reset with Molpy Down)
