@@ -391,7 +391,7 @@ body.lightscheme .badgeearned:hover
 	width:600px;
 	z-index:100000000;
 	text-align:center;
-	font-size:36px;
+	font-size:28px;
 }
 body.darkscheme .notif
 {

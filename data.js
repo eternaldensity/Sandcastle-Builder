@@ -207,8 +207,9 @@ Molpy.DefineCastleTools=function()
 		{
 			var baseval = 24;				
 			if(Molpy.Got('Erosion')) baseval-=
-				Math.floor(Math.min(baseval,Molpy.CastleTools['Wave'].totalCastlesWasted*0.2));
+				Math.floor(baseval,Molpy.CastleTools['Wave'].totalCastlesWasted*0.2);
 			baseval -= Molpy.CastleTools['River'].bought*2;
+			baseval=Math.max(baseval,0);
 			return baseval;
 		}
 		,111
@@ -306,7 +307,8 @@ Molpy.DefineBoosts=function()
 		}
 		,0.4,4);
 	
-	new Molpy.Boost('Overcompensating', function(me){return 'During LongPix, Sand Tools dig '+Molpify(me.power*100,1)+'% extra sand'}
+	new Molpy.Boost('Overcompensating', function(me){
+		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
 		,987645,321,0,0,1.05);
 	new Molpy.Boost('Doublepost', 'During LongPix, Castle Tools activate a second time',650000,4000);
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost'];
@@ -443,9 +445,9 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Just Starting','10 clicks');
 	new Molpy.Badge('Busy Clicking','100 clicks');
 	new Molpy.Badge('Click Storm','1,000 clicks');
-	new Molpy.Badge('Getting Sick of Clicking','10,000 clicks');
-	new Molpy.Badge('Why am I still clicking?','100,000 clicks');
-	new Molpy.Badge('Click Master','1,000,000 clicks',2);
+	new Molpy.Badge('Getting Sick of Clicking','Dig 100,000 sand by clicking');
+	new Molpy.Badge('Why am I still clicking?','Dig 5,000,000 sand by clicking');
+	new Molpy.Badge('Click Master','Dig 100,000,000 sand by clicking',2);
 	
 	new Molpy.Badge('Rook','Make a castle');
 	new Molpy.Badge('Enough for Chess','Make 4 castles');
@@ -576,13 +578,14 @@ Molpy.CheckClickAchievements=function()
 	if(c>=3333){
 		Molpy.UnlockBoost('True Colours');
 	}
-	if(c>=10000){
+	v = Molpy.sandManual;
+	if(c>=100000){
 		Molpy.EarnBadge('Getting Sick of Clicking');
 	}
-	if(c>=100000){
+	if(c>=5000000){
 		Molpy.EarnBadge('Why am I still clicking?');
 	}
-	if(c>=1000000){
+	if(c>=100000000){
 		Molpy.EarnBadge('Click Master');
 	}						
 }	

@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.94;
+		Molpy.version=0.941;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -457,25 +457,6 @@ Molpy.Up=function()
 			}			
 			Molpy.needlePulling=0;//badges are loaded now
 			
-			if(version<1.72)
-			{
-				if(Molpy.Badges['Glass Factory'].earned==1 && Molpy.sand<300000)
-				{
-					Molpy.Badges['Glass Factory'].earned=0;
-					Molpy.BadgesOwned--;
-				} 
-			}
-			if(version<0.73)
-			{
-				if(Molpy.Badges['Getting Sick of Clicking'].earned==1 && Molpy.beachClicks<10000)
-				{
-					Molpy.Badges['Getting Sick of Clicking'].earned=0;
-					Molpy.BadgesOwned--;
-				}
-				Molpy.saveCount=0;
-				Molpy.loadCount=0;	
-				Molpy.EarnBadge(['Redundant Redundancy','Clerical Error']);
-			}
 			if(version<0.8)
 			{
 				Molpy.options.autosave=2; //default to 5 millinewpix
@@ -526,13 +507,13 @@ Molpy.Up=function()
 					Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 				}
 			}
-			if(version<0.935)
-			{
-				Molpy.Boosts['Overcompensating'].power=1.05;				
-			}
 			if(version<0.94)
 			{
 				Molpy.highestNPvisited=Molpy.newpixNumber;				
+			}
+			if(version<0.941)
+			{
+				Molpy.Boosts['Overcompensating'].power=1.05;				
 			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
@@ -545,6 +526,12 @@ Molpy.Up=function()
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
+			
+			if(Molpy.showOptions) //needs refreshing
+			{
+				Molpy.showOptions=0;
+				Molpy.OptionsToggle();
+			}
 		}
 		
 		/* In which a routine for resetting the game is presented
@@ -655,6 +642,11 @@ Molpy.Up=function()
 				}else{
 					g('autosaveoption').className='hidden';
 				}
+				var i = Molpy.optionNames.length
+				while(i--)
+				{
+					Molpy.OptionDescription(Molpy.optionNames[i],1); //show all descriptions
+				}
 			}
 		}
 		Molpy.ToggleOption=function(bacon)
@@ -676,6 +668,7 @@ Molpy.Up=function()
 			}else return;
 			Molpy.OptionDescription(bacon,1); //update description
 		}
+		Molpy.optionNames=['autosave','colourscheme','sandnumbers'];
 		Molpy.OptionDescription=function(bacon,caffeination)
 		{
 			var desc='';
@@ -697,7 +690,7 @@ Molpy.Up=function()
 					}else{
 						desc="Light Theme";
 					}
-				} if(bacon=='sandnumbers')
+				}else if(bacon=='sandnumbers')
 				{
 					var nu = Molpy.options.numbers;
 					if(!nu){
