@@ -396,7 +396,7 @@ body.lightscheme .badgeearned:hover
 	text-align:center;
 	font-size:28px;
 }
-.toolpic
+.toolpic, .boostpic, .badgepic
 {
 	float:right;
 	top:4px;
@@ -491,4 +491,36 @@ body.darkscheme #toolRiver
 body.lightscheme #toolRiver
 {
 	background-image:url('img/river_dark_icon.png');
+}
+body.darkscheme #redacted
+{
+	background-image:url('img/redacted_light_icon.png');
+}
+body.lightscheme #redacted
+{
+	background-image:url('img/redacted_dark_icon.png');
+}
+.shop.boostpic
+{
+	background-image:url('img/boost_grey_icon.png');
+}
+body.darkscheme .loot.boostpic
+{
+	background-image:url('img/boost_dark_icon.png');
+}
+body.lightscheme .loot.boostpic
+{
+	background-image:url('img/boost_light_icon.png');
+}
+.shop.badgepic
+{
+	background-image:url('img/badge_grey_icon.png');
+}
+body.darkscheme .loot.badgepic
+{
+	background-image:url('img/badge_light_icon.png');
+}
+body.lightscheme .loot.badgepic
+{
+	background-image:url('img/badge_dark_icon.png');
 }
