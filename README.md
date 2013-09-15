@@ -18,7 +18,7 @@ Not for any commercial use!
 
 ### 0.95
 - Ninja forgiveness now uses boost power property so you don't need Hope for Penance to work
--
+- ChronosDragon's epic icons of epicosious treefulosity
 
 ### 0.943
 - typo: bag->bags

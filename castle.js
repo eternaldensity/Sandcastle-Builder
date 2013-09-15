@@ -1746,7 +1746,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.SandTools[i];
-				str+='<div class="floatbox sandtool" onMouseOver="Molpy.SandToolsById['+me.id+'].hover()" onMouseOut="Molpy.SandToolsById['+me.id+'].unhover()"><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="SandToolDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox sandtool" onMouseOver="Molpy.SandToolsById['+me.id+'].hover()" onMouseOut="Molpy.SandToolsById['+me.id+'].unhover()"><div id="tool'+me.name+'" class="toolpic"></div><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="SandToolDescription'+me.id+'"></div></div></div>';
 				r++
 			}
 			if(r==redactedIndex) str+= Molpy.redactedShop;
@@ -1768,7 +1768,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.CastleTools[i];
-				str+='<div class="floatbox castletool" onMouseOver="Molpy.CastleToolsById['+me.id+'].hover()" onMouseOut="Molpy.CastleToolsById['+me.id+'].unhover()"><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox castletool" onMouseOver="Molpy.CastleToolsById['+me.id+'].hover()" onMouseOut="Molpy.CastleToolsById['+me.id+'].unhover()"><div id="tool'+me.name+'" class="toolpic"></div><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
 				r++
 			}
 			if(r==redactedIndex) str+= Molpy.redactedShop;

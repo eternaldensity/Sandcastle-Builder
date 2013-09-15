@@ -206,7 +206,7 @@ a:active
 }
 #clockface {
 	background-color:White;
-	background-image:url('clockface.png');
+	background-image:url('img/clockface.png');
 	width:40px;
 	height:40px;
 	border-radius:50px;
@@ -396,6 +396,14 @@ body.lightscheme .badgeearned:hover
 	text-align:center;
 	font-size:28px;
 }
+.toolpic
+{
+	float:right;
+	top:4px;
+	width:32px;
+	height:32px;
+}
+
 body.darkscheme .notif
 {
 	text-shadow:0px 0px 6px #000;
@@ -403,4 +411,84 @@ body.darkscheme .notif
 body.lightscheme .notif
 {
 	text-shadow:0px 0px 6px #fff;
+}
+body.darkscheme #toolBucket
+{
+	background-image:url('img/bucket_light_icon.png');
+}
+body.lightscheme #toolBucket
+{
+	background-image:url('img/bucket_dark_icon.png');
+}
+body.darkscheme #toolCuegan
+{
+	background-image:url('img/cuegan_light_icon.png');
+}
+body.lightscheme #toolCuegan
+{
+	background-image:url('img/cuegan_dark_icon.png');
+}
+body.darkscheme #toolFlag
+{
+	background-image:url('img/flag_light_icon.png');
+}
+body.lightscheme #toolFlag
+{
+	background-image:url('img/flag_dark_icon.png');
+}
+body.darkscheme #toolLadder
+{
+	background-image:url('img/ladder_light_icon.png');
+}
+body.lightscheme #toolLadder
+{
+	background-image:url('img/ladder_dark_icon.png');
+}
+body.darkscheme #toolBag
+{
+	background-image:url('img/bag_light_icon.png');
+}
+body.lightscheme #toolBag
+{
+	background-image:url('img/bag_dark_icon.png');
+}
+body.darkscheme #toolNewPixBot
+{
+	background-image:url('img/newpixbot_light_icon.png');
+}
+body.lightscheme #toolNewPixBot
+{
+	background-image:url('img/newpixbot_dark_icon.png');
+}
+body.darkscheme #toolTrebuchet
+{
+	background-image:url('img/trebuchet_light_icon.png');
+}
+body.lightscheme #toolTrebuchet
+{
+	background-image:url('img/trebuchet_dark_icon.png');
+}
+body.darkscheme #toolScaffold
+{
+	background-image:url('img/scaffold_light_icon.png');
+}
+body.lightscheme #toolScaffold
+{
+	background-image:url('img/scaffold_dark_icon.png');
+}
+body.darkscheme #toolWave
+{
+	background-image:url('img/wave_light_icon.png');
+}
+body.lightscheme #toolWave
+{
+	background-image:url('img/wave_dark_icon.png');
+}
+body.darkscheme #toolRiver
+{
+	background-image:url('img/river_light_icon.png');
+}
+body.lightscheme #toolRiver
+{
+	background-image:url('img/river_dark_icon.png');
 }
