@@ -16,6 +16,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.952
+- Fixed 2 typos, one causing weird description, one causing failure to load Factory Automation
+
 ### 0.951
 - Options visibility toggle had some lines flipped around somehow
 - Keep track of number of times time travel is used
