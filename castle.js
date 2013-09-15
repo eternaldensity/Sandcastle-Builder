@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.95;
+		Molpy.version=0.951;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -139,6 +139,7 @@ Molpy.Up=function()
 		Molpy.loadCount=0; //number of times gave has been loaded
 		Molpy.autosaveCountup=0;
 		Molpy.highestNPvisited=1; //keep track of where the player has been
+		Molpy.timeTravels=0; //number of times timetravel has been used
 		
 		
 		Molpy.options=[];
@@ -247,7 +248,7 @@ Molpy.Up=function()
 			Flint(Molpy.saveCount)+s+
 			Flint(Molpy.loadCount)+s+
 			Flint(Molpy.notifsReceived)+s+
-			s+ //NOT: position 18 is now available!
+			Flint(Molpy.timeTravels)+s+
 			Flint(Molpy.npbONG)+s+
 		
 			Flint(Molpy.redactedCountup)+s+
@@ -342,7 +343,7 @@ Molpy.Up=function()
 			Molpy.saveCount=parseInt(pixels[15]);
 			Molpy.loadCount=parseInt(pixels[16]);			
 			Molpy.notifsReceived=parseInt(pixels[17]);			
-			//Molpy.ninjaForgiveness=parseInt(pixels[18]);	NOTE: 18 is now FREE		
+			Molpy.timeTravels=parseInt(pixels[18]);		
 			Molpy.npbONG=parseInt(pixels[19]);		
 			
 			Molpy.redactedCountup=parseInt(pixels[20]);			
@@ -522,6 +523,10 @@ Molpy.Up=function()
 				Molpy.Boosts['Ninja Hope'].power=1;				
 				Molpy.Boosts['Ninja Penance'].power=2;				
 			}
+			if(version<0.951)
+			{
+				Molpy.timeTravels=0;				
+			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
 			Molpy.CheckSandRateBadges(); //shiny!
@@ -616,6 +621,10 @@ Molpy.Up=function()
 				Molpy.loadCount=0;
 				Molpy.highestNPvisited=0;
 				Molpy.BadgesOwned=0;
+				Molpy.redactedClicks=0;
+				Molpy.timeTravels=0;
+				Molpy.Boosts['Ninja Hope'].power=1;
+				Molpy.Boosts['Ninja Penance'].power=2;
 				for (var i in Molpy.BadgesById)
 				{
 					Molpy.BadgesById[i].earned=0;						
@@ -631,7 +640,7 @@ Molpy.Up=function()
 				Molpy.showOptions=0;
 				g('beachAnchor').className='unhidden';
 				g('beach').className='unhidden';
-				g('export').className='hidden';
+				g('options').className='hidden';
 					
 			}else{
 				Molpy.showOptions=1;
@@ -640,8 +649,7 @@ Molpy.Up=function()
 				g('beachAnchor').className='hidden';
 				g('beach').className='hidden';
 				g('stats').className='hidden';
-				g('stats').className='hidden';
-				g('options').className='hidden';
+				g('export').className='hidden';
 				g('options').className='unhidden';				
 				Molpy.EarnBadge('Decisions, Decisions');
 				if(Molpy.Got('Autosave Option')){
@@ -900,11 +908,14 @@ Molpy.Up=function()
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
 			Molpy.castlesSpent+=amount;
+			Molpy.Notify('Spent Castles: ' + Molpify(amount),1);
 		}
 		Molpy.SpendSand=function(amount)
 		{
+			if(!amount)return;
 			Molpy.sand-=amount;
 			Molpy.sandSpent+=amount;
+			Molpy.Notify('Spent Sand: ' + Molpify(amount),1);
 		}
 		
 		Molpy.destroyNotifyFlag=1;
@@ -1430,13 +1441,24 @@ Molpy.Up=function()
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
 					Molpy.BoostsOwned++;
+					Molpy.CheckBuyUnlocks();
 				}				
 			}
 			this.hover=function()
 			{			
 				if(this.hovered==-1)return;
 				this.hovered=-1;
-				g((this.bought?'Inv':'')+'BoostDescription'+this.id).innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
+				var boo=g((this.bought?'Inv':'')+'BoostDescription'+this.id)
+				if(boo)
+				{
+					boo.innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
+				}else{//might have been bought right before hover was lost
+					boo=g((!this.bought?'Inv':'')+'BoostDescription'+this.id)
+					if(boo)
+					{
+						boo.innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
+					}
+				}
 			}
 			this.unhover=function()
 			{							
@@ -1659,9 +1681,20 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Y U NO BELIEVE ME?');
 		}
 
-		Molpy.RewardRedacted=function()
+		Molpy.RewardRedacted=function(forceDepartment)
 		{
-			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
+			if(Molpy.Got('Blast Furnace') && !Math.floor(24*Math.random()))
+			{
+				var castles=Math.floor(Molpy.sand/1000);				
+				Molpy.Notify('Blast Furnace in Operation!');
+				Molpy.SpendSand(castles*1000);
+				Molpy.Build(castles);
+				return;				
+			}
+		
+		
+			if((Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
+				|| forceDepartment)
 			{
 				var availRewards=[];
 				var i = Molpy.departmentBoosts.length;
@@ -2133,7 +2166,14 @@ Molpy.Up=function()
 		bots.BuildPhase();
 		Molpy.buildNotifyFlag=1;
 		Molpy.Build(0);
-		
+		if(Molpy.Got('Factory Automation'))
+		{
+			if(Molpy.sand>=2000000)
+			{
+				Molpy.SpendSand(2000000);
+				Molpy.RewardRedacted(1);
+			}
+		}
 	}
 	
 	/*In which we explain how to think
