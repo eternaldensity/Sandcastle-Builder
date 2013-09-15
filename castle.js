@@ -191,6 +191,10 @@ Molpy.Up=function()
 				Molpy.loadCount++;
 				Molpy.autosaveCountup=0;
 				Molpy.Notify('Game loaded',1);
+				if(Molpy.loadCount>=40)
+				{
+					Molpy.UnlockBoost('Coma Molpy Style');
+				}
 			}
 		}
 		
@@ -1186,6 +1190,7 @@ Molpy.Up=function()
 			}
 			this.hover=function()
 			{
+				if(this.hovered==-1)return;
 				this.hovered=-1;
 				var desc = '';
 				if(Molpy.showStats)
@@ -1320,6 +1325,7 @@ Molpy.Up=function()
 			}
 			this.hover=function()
 			{
+				if(this.hovered==-1)return;
 				this.hovered=-1;
 				var desc = '';
 				var bN = EvalMaybeFunction(this.buildN);
@@ -1423,7 +1429,8 @@ Molpy.Up=function()
 				}				
 			}
 			this.hover=function()
-			{
+			{			
+				if(this.hovered==-1)return;
 				this.hovered=-1;
 				g((this.bought?'Inv':'')+'BoostDescription'+this.id).innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
 			}
@@ -1529,6 +1536,7 @@ Molpy.Up=function()
 			
 			this.hover=function()
 			{
+				if(this.hovered==-1)return;
 				this.hovered=-1;
 				g('BadgeDescription'+this.id).innerHTML='<br/>'+((this.earned||this.visibility<1)?this.desc:'????');
 			}
@@ -2128,7 +2136,7 @@ Molpy.Up=function()
 	Molpy.Think=function()
 	{
 		Molpy.SandToCastles();
-		if(! Molpy.ketchupTime)
+		if(! (Molpy.ketchupTime || Molpy.Got('Coma Molpy Style')))
 			Molpy.CheckONG();
 		Molpy.CheckRedactedToggle();
 		
@@ -2138,6 +2146,7 @@ Molpy.Up=function()
 			if(me.bought&&me.countdown)
 			{
 				me.countdown--;
+				if(me.hovered)me.hovered=-2; //force redraw
 				if(!me.countdown)
 				{
 					me.power=0;
@@ -2201,7 +2210,14 @@ Molpy.Up=function()
 		if(Molpy.newpixNumber > Molpy.highestNPvisited)
 		{
 			Molpy.highestNPvisited=Molpy.newpixNumber;
+		}else //in the past
+		{
+			if(Molpy.newpixNumber > 2)
+			{
+				Molpy.UnlockBoost('Time Travel');
+			}
 		}
+		
 		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.Notify('ONG!',1);	
 		

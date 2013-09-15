@@ -18,7 +18,9 @@ Not for any commercial use!
 
 ### 0.942
 - time delay before descriptions vanish
-
+- links in boost descriptions work
+- temp boosts with countdowns will continue updating without descriptions vanishing (until they finish)
+- a new boost is finally working! (it may be very handy to some and has a neat easteregg)
 
 ### 0.9411
 - high level sand click badges now bases on sand dug by clicks, not clicks
