@@ -157,7 +157,7 @@ Molpy.DefineSandTools=function()
 		}
 	);
 	
-	new Molpy.SandTool('Bag','bag|bag|carried','Carries sand from far away',12000,
+	new Molpy.SandTool('Bag','bag|bags|carried','Carries sand from far away',12000,
 		function()
 		{
 			var baserate = 600;
@@ -270,7 +270,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Ninja Penance','Avoid a second Ninja Stealth reset, at the cost of 30 castles',25000,88);
 	new Molpy.Boost('Blitzing',function(me)
 		{		
-			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP'
+			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP';
 		}
 		,0,0);
 	new Molpy.Boost('Kitnip',Molpy.redactedWords+' come more often and stay longer',33221,63);
@@ -380,7 +380,7 @@ Molpy.DefineBoosts=function()
 		"Heyyyy, Neat Sandcastle",
 		"Co - co - co - co - Coma Molpy Style",
 		"Heyyyy, Neat Sandcastle",
-		"Co - co - co - co - Coma Molpy",
+		"Co - co - co - co - Coma Molpy Style",
 		"Co-co-co - co-co-co",
 		"Coma Molpy Style",
 		"[End of the song. BTW you should buy this]"
@@ -452,8 +452,12 @@ Molpy.DefineBoosts=function()
 			Molpy.Boosts['Time Travel'].hover();
 		}
 	}
-	new Molpy.Boost('Active Ninja', 'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',1500000,240);
-	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja'];
+	new Molpy.Boost('Active Ninja',
+		'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',1500000,240);
+	new Molpy.Boost('Kitties Galore','Even more '+Molpy.redactedWords,2500000,4400);
+	Molpy.Boosts['Kitties Galore'].hardlocked=1;
+	
+	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja', 'Kitties Galore'];
 }	
 	
 Molpy.DefineBadges=function()

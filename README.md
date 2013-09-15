@@ -16,6 +16,12 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.943
+- typo: bag->bags
+- typo: added missing 'Style' from lyrics
+- new boost: kitties galore
+- typo: ; being output in notification log
+
 ### 0.942
 - time delay before descriptions vanish
 - links in boost descriptions work

@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.942;
+		Molpy.version=0.943;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1624,8 +1624,8 @@ Molpy.Up=function()
 		}
 		Molpy.RandomiseRedactedTime=function()
 		{
-			var min = 200-80*Molpy.Got('Kitnip');
-			var spread = 90-20*Molpy.Got('Kitnip');
+			var min = 200-80*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore'));
+			var spread = 90-20*Molpy.Got('Kitnip'+Molpy.Got('Kitties Galore'));
 			Molpy.redactedToggle=min+Math.ceil(spread*Math.random());
 		}
 		
@@ -1645,11 +1645,13 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Not So '+Molpy.redactedW);
 			if(Molpy.redactedClicks>=14)
 				Molpy.EarnBadge("Don't Litter!");
-			if(Molpy.redactedClicks>=15)
+			if(Molpy.redactedClicks>=16)
 				Molpy.UnlockBoost('Kitnip');
 			if(Molpy.redactedClicks>=32)
 				Molpy.UnlockBoost('Department of Redundancy Department');
-			if(Molpy.redactedClicks>=101)
+			if(Molpy.redactedClicks>=64)
+				Molpy.Boosts['Kitties Galore'].hardlocked=0;
+			if(Molpy.redactedClicks>=128)
 				Molpy.EarnBadge('Y U NO BELIEVE ME?');
 		}
 
@@ -2085,7 +2087,7 @@ Molpy.Up=function()
 			{
 				var line = Molpy.notifLog[i];
 				if(line){
-					str+=line+'<br/>;';
+					str+=line+'<br/>';
 				}
 				i++;
 			}
