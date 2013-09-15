@@ -311,7 +311,6 @@ Molpy.DefineBoosts=function()
 		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
 		,987645,321,0,0,1.05);
 	new Molpy.Boost('Doublepost', 'During LongPix, Castle Tools activate a second time',650000,4000);
-	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost'];
 	new Molpy.Boost('Coma Molpy Style', 
 		function(me)
 		{ 
@@ -453,6 +452,8 @@ Molpy.DefineBoosts=function()
 			Molpy.Boosts['Time Travel'].hover();
 		}
 	}
+	new Molpy.Boost('Active Ninja', 'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',1500000,240);
+	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja'];
 }	
 	
 Molpy.DefineBadges=function()

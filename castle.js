@@ -972,7 +972,7 @@ Molpy.Up=function()
 					//clicking first time, after newpixbot		
 					Molpy.EarnBadge('No Ninja');
 					Molpy.ninjaFreeCount++; 
-					Molpy.ninjaStealth++;
+					Molpy.ninjaStealth+=(1+Molpy.Got('Active Ninja')*2);
 					Molpy.Build(1); //neat!
 					
 					if(Molpy.Got('Ninja Builder')) 
@@ -2136,7 +2136,7 @@ Molpy.Up=function()
 	Molpy.Think=function()
 	{
 		Molpy.SandToCastles();
-		if(! (Molpy.ketchupTime || Molpy.Got('Coma Molpy Style')))
+		if(! (Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].power))
 			Molpy.CheckONG();
 		Molpy.CheckRedactedToggle();
 		
@@ -2273,11 +2273,14 @@ Molpy.Up=function()
 			Molpy.NPlength=1800; 
 			Molpy.LockBoost('Overcompensating');
 			Molpy.LockBoost('Doublepost');
+			Molpy.LockBoost('Active Ninja');
 			Molpy.Boosts['Doublepost'].hardlocked=1;//prevent the department from unlocking it
+			Molpy.Boosts['Active Ninja'].hardlocked=1;//prevent the department from unlocking it
 		}else
 		{		
 			Molpy.NPlength=3600;
 			Molpy.Boosts['Doublepost'].hardlocked=0;
+			Molpy.Boosts['Active Ninja'].hardlocked=0;
 		}
 		if(Molpy.newpixNumber > 241)
 		{
