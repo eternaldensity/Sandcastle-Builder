@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.943;
+		Molpy.version=0.95;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -135,7 +135,6 @@ Molpy.Up=function()
 		Molpy.beachClicks=0; //number of times beach has been clicked for sand
 		Molpy.ninjaFreeCount=0; //newpix with no clicks in ninja period (but with clicks later)
 		Molpy.ninjaStealth=0; //streak of uninterrupted ninja-free newpix
-		Molpy.ninjaForgiveness=0; //counts number of times stealth has been broken and excused
 		Molpy.saveCount=0; //number of times game has been saved
 		Molpy.loadCount=0; //number of times gave has been loaded
 		Molpy.autosaveCountup=0;
@@ -248,7 +247,7 @@ Molpy.Up=function()
 			Flint(Molpy.saveCount)+s+
 			Flint(Molpy.loadCount)+s+
 			Flint(Molpy.notifsReceived)+s+
-			Flint(Molpy.ninjaForgiveness)+s+
+			s+ //NOT: position 18 is now available!
 			Flint(Molpy.npbONG)+s+
 		
 			Flint(Molpy.redactedCountup)+s+
@@ -343,7 +342,7 @@ Molpy.Up=function()
 			Molpy.saveCount=parseInt(pixels[15]);
 			Molpy.loadCount=parseInt(pixels[16]);			
 			Molpy.notifsReceived=parseInt(pixels[17]);			
-			Molpy.ninjaForgiveness=parseInt(pixels[18]);			
+			//Molpy.ninjaForgiveness=parseInt(pixels[18]);	NOTE: 18 is now FREE		
 			Molpy.npbONG=parseInt(pixels[19]);		
 			
 			Molpy.redactedCountup=parseInt(pixels[20]);			
@@ -484,8 +483,7 @@ Molpy.Up=function()
 				Molpy.notifsReceived=0;
 			}
 			if(version<0.902)
-			{
-				Molpy.ninjaForgiveness=0;			
+			{			
 				if(Molpy.ninjaStealth>=26)				
 					Molpy.EarnBadge('Ninja Madness');				
 				if(Molpy.Earned('Ninja Madness'))
@@ -518,6 +516,11 @@ Molpy.Up=function()
 			if(version<0.941)
 			{
 				Molpy.Boosts['Overcompensating'].power=1.05;				
+			}
+			if(version<0.95)
+			{
+				Molpy.Boosts['Ninja Hope'].power=1;				
+				Molpy.Boosts['Ninja Penance'].power=2;				
 			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
@@ -1018,25 +1021,26 @@ Molpy.Up=function()
 		
 		Molpy.NinjaUnstealth=function()
 		{
-			if(Molpy.ninjaForgiveness==0&&Molpy.Got('Ninja Hope'))
+			if(Molpy.Got('Ninja Hope')&&Molpy.Boosts['Ninja Hope'].power)
 			{
 				if(Molpy.castles>=10){
 					Molpy.Destroy(10);
-					Molpy.ninjaForgiveness++
+					Molpy.Boosts['Ninja Hope'].power--;
 					Molpy.Notify('Ninja Forgiven',1);
 					return 0;
 				}
 			}
-			if(Molpy.ninjaForgiveness==1&&Molpy.Got('Ninja Penance'))
+			if(Molpy.Got('Ninja Penance')&&Molpy.Boosts['Ninja Penance'].power)
 			{
 				if(Molpy.castles>=30){
 					Molpy.Destroy(30);
-					Molpy.ninjaForgiveness++
-					Molpy.Notify('Ninja Forgiven Again',1);
+					Molpy.Boosts['Ninja Penance'].power;;
+					Molpy.Notify('Ninja Forgiven',1);
 					return 0;
 				}
 			}
-			Molpy.ninjaForgiveness=0;
+			Molpy.Boosts['Ninja Hope'].power=1;
+			Molpy.Boosts['Ninja Penance'].power=2;
 			if(Molpy.ninjaStealth)
 				Molpy.Notify('Ninja Unstealthed',1);
 			if(Molpy.ninjaStealth>=7&&Molpy.Got('Ninja Hope'))
@@ -2452,7 +2456,8 @@ Molpy.Up=function()
 		g('ninjatimestat').innerHTML=Molpify(Molpy.ninjaTime/Molpy.NPlength,1)+'mNP';		
 		g('ninjastealthstat').innerHTML=Molpify(Molpy.ninjaStealth)+'NP';	
 		var forgives=Molpy.Got('Ninja Hope')+Molpy.Got('Ninja Penance');
-		g('ninjaforgivestat').innerHTML=forgives-Molpy.ninjaForgiveness;		
+		g('ninjaforgivestat').innerHTML=Molpy.Boosts['Ninja Hope'].power*Molpy.Got('Ninja Hope')
+			+Molpy.Boosts['Ninja Penance'].power*Molpy.Got('Ninja Penance');		
 		
 		g('loadcountstat').innerHTML=Molpify(Molpy.loadCount);
 		g('savecountstat').innerHTML=Molpify(Molpy.saveCount);	
