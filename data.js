@@ -461,7 +461,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Kitties Galore','Even more '+Molpy.redactedWords,2500000,4400);
 	Molpy.Boosts['Kitties Galore'].hardlocked=1;	
 	
-	new Molpy.Boost('HAL-0-Kitty','NewPixBots build an extra Castle per 9 '+Molpy.readactedWords,9000,2001);
+	new Molpy.Boost('HAL-0-Kitty','NewPixBots build an extra Castle per 9 '+Molpy.redactedWords,9000,2001);
 	new Molpy.Boost('Factory Automation','When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+Molpify(2000000)+' Sand', 4500000,15700);
 	new Molpy.Boost('Blast Furnace','Gives the Department of Redundancy Department the ability to make Castles from Sand', 8800000,28600);
 	Molpy.Boosts['Blast Furnace'].hardlocked=1;	
@@ -579,7 +579,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=20 && Molpy.Got('Department of Redundancy Department'))Molpy.UnlockBoost('Factory Automation');
 	if(Molpy.Got('Factory Automation'))
 	{
-		Molpy.Boosts('Blast Furnace').hardlocked=0;
+		Molpy.Boosts['Blast Furnace'].hardlocked=0;
 	}
 	 
 	me=Molpy.CastleTools['Trebuchet'];
