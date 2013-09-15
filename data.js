@@ -267,7 +267,9 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('True Colours','Each Cuegan+Flag pair gives clicking +5 sand',750,15);
 	new Molpy.Boost('Precise Placement','For every two ladders, scaffolds destroy one less castle',750,15);
 	new Molpy.Boost('Ninja Hope','Avoid one Ninja Stealth reset, at the cost of 10 castles',7500,40);
-	new Molpy.Boost('Ninja Penance','Avoid a second Ninja Stealth reset, at the cost of 30 castles',25000,88);
+	new Molpy.Boost('Ninja Penance','Avoid a two Ninja Stealth resets, at the cost of 30 castles each',25000,88);
+	Molpy.Boosts['Ninja Hope'].power=1;				
+	Molpy.Boosts['Ninja Penance'].power=2;	
 	new Molpy.Boost('Blitzing',function(me)
 		{		
 			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP';
