@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.942
+- time delay before descriptions vanish
+
+
 ### 0.9411
 - high level sand click badges now bases on sand dug by clicks, not clicks
 - this should have been in the previous version but forgot to list it and it didn't work anyway.

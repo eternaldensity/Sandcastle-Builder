@@ -282,7 +282,7 @@ Molpy.DefineBoosts=function()
 		{
 			me.power=Molpy.beachClicks;
 		});
-	new Molpy.Boost('Double or Nothing', '<a onclick="Molpy.DoubleOrNothing();">Click</a> to double or lose your current castle balance',200,0);
+	new Molpy.Boost('Double or Nothing', '<a onclick="Molpy.DoubleOrNothing()">Click</a> to double or lose your current castle balance',200,0);
 	Molpy.DoubleOrNothing=function()
 	{
 		if(!Molpy.Boosts['Double or Nothing'].bought)
@@ -397,14 +397,12 @@ Molpy.DefineBoosts=function()
 		p++;
 		if(p>=2)p=0;
 		Molpy.Boosts['Coma Molpy Style'].power=p;
-		Molpy.Boosts['Coma Molpy Style'].hovered=0;
 		Molpy.boostRepaint=1;
 	}
 	new Molpy.Boost('Time Travel', 
 		function(me)
 		{
-			me.hovered=0;
-			return 'Pay ' + Molpify(Math.floor(Molpy.newpixNumber*Molpy.priceFactor)) + ' Castles to move <a onlick="Molpy.TimeTravel('+(-me.power)+')">backwards</a> or <a onlick="Molpy.TimeTravel('+me.power+')">forwards</a> '+
+			return 'Pay ' + Molpify(Math.floor(Molpy.newpixNumber*Molpy.priceFactor)) + ' Castles to move <a onclick="Molpy.TimeTravel('+(-me.power)+')">backwards</a> or <a onclick="Molpy.TimeTravel('+me.power+')">forwards</a> '+
 			Molpify(me.power)+' NP in Time';
 		}
 		,1000,30,0,0,1);
