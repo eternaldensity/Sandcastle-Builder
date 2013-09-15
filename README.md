@@ -16,6 +16,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.951
+- Options visibility toggle had some lines flipped around somehow
+- Keep track of number of times time travel is used
+- Reset some more stuff on Coma which I forgot to add
+
 ### 0.95
 - Ninja forgiveness now uses boost power property so you don't need Hope for Penance to work
 - ChronosDragon's epic icons of epicosious treefulosity
