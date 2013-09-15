@@ -908,11 +908,14 @@ Molpy.Up=function()
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
 			Molpy.castlesSpent+=amount;
+			Molpy.Notify('Spent Castles: ' + Molpify(amount),1);
 		}
 		Molpy.SpendSand=function(amount)
 		{
+			if(!amount)return;
 			Molpy.sand-=amount;
 			Molpy.sandSpent+=amount;
+			Molpy.Notify('Spent Sand: ' + Molpify(amount),1);
 		}
 		
 		Molpy.destroyNotifyFlag=1;
@@ -1438,13 +1441,24 @@ Molpy.Up=function()
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
 					Molpy.BoostsOwned++;
+					Molpy.CheckBuyUnlocks();
 				}				
 			}
 			this.hover=function()
 			{			
 				if(this.hovered==-1)return;
 				this.hovered=-1;
-				g((this.bought?'Inv':'')+'BoostDescription'+this.id).innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
+				var boo=g((this.bought?'Inv':'')+'BoostDescription'+this.id)
+				if(boo)
+				{
+					boo.innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
+				}else{//might have been bought right before hover was lost
+					boo=g((!this.bought?'Inv':'')+'BoostDescription'+this.id)
+					if(boo)
+					{
+						boo.innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
+					}
+				}
 			}
 			this.unhover=function()
 			{							
@@ -1667,9 +1681,20 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Y U NO BELIEVE ME?');
 		}
 
-		Molpy.RewardRedacted=function()
+		Molpy.RewardRedacted=function(forceDepartment)
 		{
-			if(Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
+			if(Molpy.Got('Blast Furnace') && !Math.floor(24*Math.random()))
+			{
+				var castles=Math.floor(Molpy.sand/1000);				
+				Molpy.Notify('Blast Furnace in Operation!');
+				Molpy.SpendSand(castles*1000);
+				Molpy.Build(castles);
+				return;				
+			}
+		
+		
+			if((Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
+				|| forceDepartment)
 			{
 				var availRewards=[];
 				var i = Molpy.departmentBoosts.length;
@@ -2141,7 +2166,14 @@ Molpy.Up=function()
 		bots.BuildPhase();
 		Molpy.buildNotifyFlag=1;
 		Molpy.Build(0);
-		
+		if(Molpy.Got('Factory Automation'))
+		{
+			if(Molpy.sand>=2000000)
+			{
+				Molpy.SpendSand(2000000);
+				Molpy.RewardRedacted(1);
+			}
+		}
 	}
 	
 	/*In which we explain how to think

@@ -172,8 +172,10 @@ Molpy.DefineCastleTools=function()
 	new Molpy.CastleTool('NewPixBot','newpixbot|newpixbots||automated','Automates castles after the ONG\n(if not ninja\'d)',1,0,0,
 	 function()
 	 {
-	  if(Molpy.Got('Robot Uprising')) return 2;
-	  return 1;
+		var baseval=1;		
+		if(Molpy.Got('Robot Uprising')) baseval++;
+		if(Molpy.Got('HAL-0-Kitty')) baseval+=Math.floor(Molpy.redactedClicks/9);
+	  return baseval;
 	 } 
 	);
 		
@@ -457,9 +459,14 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Active Ninja',
 		'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',1500000,240);
 	new Molpy.Boost('Kitties Galore','Even more '+Molpy.redactedWords,2500000,4400);
-	Molpy.Boosts['Kitties Galore'].hardlocked=1;
+	Molpy.Boosts['Kitties Galore'].hardlocked=1;	
 	
-	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja', 'Kitties Galore'];
+	new Molpy.Boost('HAL-0-Kitty','NewPixBots build an extra Castle per 9 '+Molpy.readactedWords,9000,2001);
+	new Molpy.Boost('Factory Automation','When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+Molpify(2000000)+' Sand', 4500000,15700);
+	new Molpy.Boost('Blast Furnace','Gives the Department of Redundancy Department the ability to make Castles from Sand', 8800000,28600);
+	Molpy.Boosts['Blast Furnace'].hardlocked=1;	
+	
+	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja', 'Kitties Galore', 'Blast Furnace'];
 }	
 	
 Molpy.DefineBadges=function()
@@ -568,6 +575,12 @@ Molpy.CheckBuyUnlocks=function()
 	me=Molpy.CastleTools['NewPixBot'];
 	if(me.amount>=3)Molpy.UnlockBoost('Busy Bot');
 	if(me.amount>=10)Molpy.UnlockBoost('Robot Uprising');
+	if(me.amount>=15)Molpy.UnlockBoost('HAL-0-Kitty');
+	if(me.amount>=20 && Molpy.Got('Department of Redundancy Department'))Molpy.UnlockBoost('Factory Automation');
+	if(Molpy.Got('Factory Automation'))
+	{
+		Molpy.Boosts('Blast Furnace').hardlocked=0;
+	}
 	 
 	me=Molpy.CastleTools['Trebuchet'];
 	if(me.amount>=1)Molpy.UnlockBoost('Spring Fling');

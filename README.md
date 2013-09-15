@@ -20,6 +20,7 @@ Not for any commercial use!
 - Options visibility toggle had some lines flipped around somehow
 - Keep track of number of times time travel is used
 - Reset some more stuff on Coma which I forgot to add
+- Three new boosts relating to the department and newpixbots
 
 ### 0.95
 - Ninja forgiveness now uses boost power property so you don't need Hope for Penance to work
