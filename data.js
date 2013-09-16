@@ -177,7 +177,7 @@ Molpy.DefineCastleTools=function()
 	 function()
 	 {
 		var baseval=1;		
-		if(Molpy.Got('Robot Uprising')) baseval++;
+		if(Molpy.Got('Robot Efficiency')) baseval++;
 		if(Molpy.Got('HAL-0-Kitty')) baseval+=Math.floor(Molpy.redactedClicks/9);
 		var pow=0;
 		for(var i in Molpy.npbDoublers)
@@ -298,7 +298,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Level Up!','Ladders are much more powerful',29000,34);
 	new Molpy.Boost('Varied Ammo','Trebuchets build an extra castle for each Castle Tool you have 2+ of',3900,48);
 	new Molpy.Boost('Megball','Cuegan produce double sand',10700,56);
-	new Molpy.Boost('Robot Uprising','Newpixbots build an extra castle (before any doubling)',14000,53);
+	new Molpy.Boost('Robot Efficiency','Newpixbots build an extra castle (before any doubling)',14000,53);
 	new Molpy.Boost('Ninja Builder','When increasing ninja stealth streak, builds that many castles',4000,35);
 	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves, and 2 less per River bought',40000,77);
 	new Molpy.Boost('Autosave Option','Autosave option is available',100,4);
@@ -358,7 +358,8 @@ Molpy.DefineBoosts=function()
 			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><a onclick="Molpy.ComaMolpyStyleToggle();">' + (me.power? 'Deactivate</a>':'Activate</a>');
 		}
 		,8500,200);
-		
+	
+	{//#REGION Lyrics :P	
 	var cms=[
 		"Coma Molpy Style",
 		"Molpy Style",
@@ -426,6 +427,7 @@ Molpy.DefineBoosts=function()
 		"Coma Molpy Style",
 		"[End of the song. BTW you should buy this]"
 	]
+	}
 	var cmsline=0;
 	Molpy.ComaMolpyStyleToggle=function()
 	{
@@ -453,11 +455,14 @@ Molpy.DefineBoosts=function()
 		Molpy.Boosts['Coma Molpy Style'].power=p;
 		Molpy.Boosts['Coma Molpy Style'].hovered=-2;
 		Molpy.Boosts['Coma Molpy Style'].hover();
+		Molpy.recalculateDig=1;
 	}
 	new Molpy.Boost('Time Travel', 
 		function(me)
 		{
-			return 'Pay ' + Molpify(Math.floor(Molpy.newpixNumber*Molpy.priceFactor)) + ' Castles to move <a onclick="Molpy.TimeTravel('+(-me.power)+');">backwards</a> or <a onclick="Molpy.TimeTravel('+me.power+');">forwards</a> '+
+			var price=Math.floor(Molpy.newpixNumber*Molpy.priceFactor);
+			if(Molpy.Got('Flux Capacitor'))price=Math.floor(price*.2);
+			return 'Pay ' + Molpify(price) + ' Castles to move <a onclick="Molpy.TimeTravel('+(-me.power)+');">backwards</a> or <a onclick="Molpy.TimeTravel('+me.power+');">forwards</a> '+
 			Molpify(me.power)+' NP in Time';
 		}
 		,1000,30,0,0,1);
@@ -465,6 +470,7 @@ Molpy.DefineBoosts=function()
 	{		
 		NP = Math.floor(NP);
 		var price=Math.floor(Molpy.newpixNumber*Molpy.priceFactor);
+		if(Molpy.Got('Flux Capacitor'))price=Math.floor(price*.2);
 		if(Molpy.newpixNumber+NP <1)
 		{
 			Molpy.Notify('Heretic!');
@@ -490,6 +496,35 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
 			Molpy.Boosts['Time Travel'].hovered=-2;
 			Molpy.Boosts['Time Travel'].hover();
+			Molpy.timeTravels++;
+			if(NP>0)
+				Molpy.EarnBadge('Fast Forward');
+			if(NP<0)
+				Molpy.EarnBadge('And Back');
+			var t = Molpy.timeTravels;
+			if(t>=10)
+			{
+				Molpy.EarnBadge('Primer');
+				var incursionFactor=Molpy.Got('Flux Capacitor')?4:20;
+				if(!Math.floor(Math.random()*incursionFactor))
+				{
+					Molpy.Notify('You do not arrive alone');
+					var npb=Molpy.CastleTools['NewPixBot'];
+					npb.amount++;
+					Molpy.shopRepaint=1;
+					Molpy.recalculateDig=1;
+					npb.refresh();
+				}
+			}
+			if(t>=20)
+				Molpy.UnlockBoost('Flux Capacitor');
+			if(t>=40)
+				Molpy.EarnBadge('Wimey');
+			if(t>=160)
+				Molpy.EarnBadge('Hot Tub');
+			if(t>=640)
+				Molpy.EarnBadge("Dude, Where's my DeLorean?");
+			
 		}
 	}
 	new Molpy.Boost('Active Ninja',
@@ -517,6 +552,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Smallbot','NewPixBots produce double castles',160000,16000);
 	
 	new Molpy.Boost('Swell','Waves produce 29 more Castles',20000,200);
+	new Molpy.Boost('Flux Capacitor','It makes Time Travel possibler!',88,88);
 }	
 	
 Molpy.DefineBadges=function()
@@ -601,6 +637,46 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge("Don't Litter!",'Click 14 '+Molpy.redactedWords,1);
 	new Molpy.Badge('Y U NO BELIEVE ME?','Click 101 '+Molpy.redactedWords,1);
 	new Molpy.Badge("Have you noticed it's slower?",'Experience the LongPix');
+	new Molpy.Badge("Judgement Day Warning",
+		function()
+		{
+			var report=Molpy.JudgementDayReport();
+			var level = report[0];
+			var countdown = report[1];
+			if(!level) return 'Safe. For now.';
+			if(level==1) return 'The countdown is at ' + Molpify(countdown)+'NP';
+			return 'Judgement day is upon us! But it can get worse. The countdown is at ' + Molpify(countdown)+
+			'NP';
+		},2);
+	Molpy.JudgementDayThreshhold=function()
+	{
+		return 20000000;
+	}
+	Molpy.JudgementDayReport=function()
+	{
+		var bot=Molpy.CastleTools['NewPixBot'];
+		var botCastles=bot.totalCastlesBuilt*bot.amount;
+		var thresh = Molpy.JudgementDayThreshhold();
+		var level = Math.floor(botCastles/thresh);
+		var countdown = ((level+1)*thresh - botCastles);
+		countdown/=(bot.buildN()*bot.amount*bot.amount);
+		if(Molpy.Got('Doublepost'))countdown/=2;
+		return [level,Math.ceil(countdown)];
+	}
+	new Molpy.Badge("Judgement Day",
+		function()
+		{
+			var j=Molpy.judgeLevel-1;
+			if(j<1) return 'Safe. For now.';
+			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' per mNP';			
+		}
+		,3);
+	new Molpy.Badge('Fast Forward','Travel Back to the Future',1);
+	new Molpy.Badge('And Back','Return to the Past',1);
+	new Molpy.Badge('Primer','Travel through Time 10 Times',1);
+	new Molpy.Badge('Wimey','Travel through Time 40 Times',1);
+	new Molpy.Badge('Hot Tub','Travel through Time 160 Times',1);
+	new Molpy.Badge("Dude, Where's my DeLorean?",'Travel through Time 640 Times',2);
 }
 		
 Molpy.CheckBuyUnlocks=function()
@@ -635,7 +711,7 @@ Molpy.CheckBuyUnlocks=function()
 	{
 		Molpy.Boosts['Blast Furnace'].hardlocked=0;
 	}
-	if(Molpy.Got('Recursivebot'))Molpy.UnlockBoost('Robot Uprising');
+	if(Molpy.Got('Recursivebot'))Molpy.UnlockBoost('Robot Efficiency');
 	 
 	me=Molpy.CastleTools['Trebuchet'];
 	if(me.amount>=1)Molpy.UnlockBoost('Spring Fling');

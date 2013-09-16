@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.962;
+		Molpy.version=0.963;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -140,6 +140,7 @@ Molpy.Up=function()
 		Molpy.autosaveCountup=0;
 		Molpy.highestNPvisited=1; //keep track of where the player has been
 		Molpy.timeTravels=0; //number of times timetravel has been used
+		Molpy.totalCastlesDown=0; //cumulative castles built and then wiped by Molpy Down throughout all games
 		
 		
 		Molpy.options=[];
@@ -257,6 +258,7 @@ Molpy.Up=function()
 			Flint(Molpy.redactedViewIndex)+s+
 			Flint(Molpy.redactedClicks)+s+
 			Flint(Molpy.highestNPvisited)+s+
+			Flint(Molpy.totalCastlesDown)+s+
 			p;
 			//sand tools:
 			for(var cancerbabies in Molpy.SandTools)
@@ -359,7 +361,8 @@ Molpy.Up=function()
 				var blitzSpeed=parseInt(pixels[28]);	//these were saved here in 0.911 and 2
 				var blitzTime=parseInt(pixels[29]);		//but now are put in the 'Blitzed' boost
 			}
-			Molpy.highestNPvisited=(pixels[25]);
+			Molpy.highestNPvisited=parseInt(pixels[25]);
+			Molpy.totalCastlesDown=parseInt(pixels[26]);
 			
 			
 			pixels=thread[5].split(s);
@@ -510,10 +513,6 @@ Molpy.Up=function()
 					Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 				}
 			}
-			if(version<0.94)
-			{
-				Molpy.highestNPvisited=Molpy.newpixNumber;				
-			}
 			if(version<0.941)
 			{
 				Molpy.Boosts['Overcompensating'].power=1.05;				
@@ -534,6 +533,11 @@ Molpy.Up=function()
 					Molpy.Notify('Refund!');
 					Molpy.BuildCastles(12000);
 				}
+			}
+			if(version<0.963)
+			{
+				Molpy.totalCastlesDown=0;
+				Molpy.highestNPvisited=Molpy.newpixNumber;		//steambottle!	
 			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
@@ -564,6 +568,7 @@ Molpy.Up=function()
 				Molpy.sandDug=0; 
 				Molpy.sand=0; 
 				Molpy.sandManual=0;
+				Molpy.totalCastlesDown+=Molpy.castlesBuilt;
 				Molpy.castlesBuilt=0;
 				Molpy.castles=0; 
 				Molpy.castlesDestroyed=0;
@@ -598,7 +603,8 @@ Molpy.Up=function()
 					var me = Molpy.CastleTools[i];
 					me.amount=0;
 					me.bought=0;
-					me.totalCastlesBuilt=0;
+					if(i!='NewPixBot')
+						me.totalCastlesBuilt=0;
 					me.totalCastlesDestroyed=0;
 					me.totalCastlesWasted=0;
 					me.currentActive=0;
@@ -608,7 +614,9 @@ Molpy.Up=function()
 				{
 					var me = Molpy.Boosts[i];
 					me.unlocked=0;
-					me.bought=0;					
+					me.bought=0;	
+					me.power=me.startPower;
+					me.countdown=0;
 				}
 				Molpy.recalculateDig=1;
 				Molpy.boostRepaint=1;
@@ -632,8 +640,8 @@ Molpy.Up=function()
 				Molpy.BadgesOwned=0;
 				Molpy.redactedClicks=0;
 				Molpy.timeTravels=0;
-				Molpy.Boosts['Ninja Hope'].power=1;
-				Molpy.Boosts['Ninja Penance'].power=2;
+				Molpy.totalCastlesDown=0;
+				Molpy.CastleTools['NewPixBot'].totalCastlesBuilt=0; //because we normally don't reset this.
 				for (var i in Molpy.BadgesById)
 				{
 					Molpy.BadgesById[i].earned=0;						
@@ -929,7 +937,7 @@ Molpy.Up=function()
 		
 		Molpy.destroyNotifyFlag=1;
 		Molpy.destroyNotifyCount=0;
-		Molpy.Destroy=function(amount)
+		Molpy.Destroy=function(amount,logsilent)
 		{
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
@@ -942,7 +950,7 @@ Molpy.Up=function()
 					Molpy.destroyNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'-1 Castle':amount+ ' Castles Destroyed',1);
+					Molpy.Notify(amount==1?'-1 Castle':amount+ ' Castles Destroyed',!logsilent);
 				}
 			}else{
 				Molpy.destroyNotifyCount+=amount;
@@ -1117,6 +1125,14 @@ Molpy.Up=function()
 			Molpy.recalculateDig=0;
 			
 			if(Molpy.sandPermNP>oldrate) Molpy.CheckSandRateBadges();
+			
+			Molpy.judgeLevel=Molpy.JudgementDayReport()[0];
+			if(Molpy.Boosts['Coma Molpy Style'].power)
+			{
+				Molpy.judgeLevel=Math.floor(Molpy.judgeLevel/2);
+			}
+			if(Molpy.judgeLevel)Molpy.EarnBadge('Judgement Day Warning');
+			if(Molpy.judgeLevel>1)Molpy.EarnBadge('Judgement Day');
 		}
 		Molpy.CheckSandRateBadges=function()
 		{
@@ -1432,8 +1448,11 @@ Molpy.Up=function()
 			this.hovered=0;
 			this.power=0;
 			this.countdown=0;
-			this.startPower=startPower;
-			this.power=startPower;
+			if(startPower)
+			{
+				this.startPower=startPower;
+				this.power=startPower;
+			}
 			this.startCountdown=startCountdown;
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
@@ -1459,16 +1478,10 @@ Molpy.Up=function()
 			{			
 				if(this.hovered==-1)return;
 				this.hovered=-1;
-				var boo=g((this.bought?'Inv':'')+'BoostDescription'+this.id)
+				var boo=g('BoostDescription'+this.id)
 				if(boo)
 				{
 					boo.innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
-				}else{//might have been bought right before hover was lost
-					boo=g((!this.bought?'Inv':'')+'BoostDescription'+this.id)
-					if(boo)
-					{
-						boo.innerHTML='<br/>'+EvalMaybeFunction(this.desc,this);
-					}
 				}
 			}
 			this.unhover=function()
@@ -1477,7 +1490,7 @@ Molpy.Up=function()
 			}
 			this.hidedesc=function()
 			{					
-				var d=g((this.bought?'Inv':'')+'BoostDescription'+this.id);
+				var d=g('BoostDescription'+this.id);
 				if(d)d.innerHTML='';
 			}
 			this.describe=function()
@@ -1576,7 +1589,8 @@ Molpy.Up=function()
 			{
 				if(this.hovered==-1)return;
 				this.hovered=-1;
-				g('BadgeDescription'+this.id).innerHTML='<br/>'+((this.earned||this.visibility<1)?this.desc:'????');
+				g('BadgeDescription'+this.id).innerHTML='<br/>'+((this.earned||this.visibility<1)?
+				EvalMaybeFunction(this.desc):'????');
 			}
 			this.unhover=function()
 			{
@@ -1584,8 +1598,7 @@ Molpy.Up=function()
 			}
 			this.hidedesc=function()
 			{
-				var d=('BadgeDescription'+this.id);
-				if(d)d.innerHTML='';
+				g('BadgeDescription'+this.id).innerHTML='';
 			}
 			
 			Molpy.Badges[this.name]=this;
@@ -1899,7 +1912,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
 				var me=blist[i];
-				str+='<div class="lootbox boost loot" onMouseOver="Molpy.BoostsById['+me.id+'].hover()" onMouseOut="Molpy.BoostsById['+me.id+'].unhover()"><div id="boost'+me.name+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="InvBoostDescription'+me.id+'"></div></div></div>';
+				str+='<div class="lootbox boost loot" onMouseOver="Molpy.BoostsById['+me.id+'].hover()" onMouseOut="Molpy.BoostsById['+me.id+'].unhover()"><div id="boost'+me.name+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="BoostDescription'+me.id+'"></div></div></div>';
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedLoot;
@@ -2200,6 +2213,7 @@ Molpy.Up=function()
 				Molpy.RewardRedacted(1);
 			}
 		}
+		Molpy.recalculateDig=1;
 	}
 	
 	/*In which we explain how to think
@@ -2247,6 +2261,9 @@ Molpy.Up=function()
 				Molpy.autosaveCountup=0;
 			}
 		}
+		
+		if(Molpy.judgeLevel>1)
+			Molpy.Destroy((Molpy.judgeLevel-1)*Molpy.CastleTools['NewPixBot'].amount,1);
 	}
 	
 	var clockDegrees=0;
