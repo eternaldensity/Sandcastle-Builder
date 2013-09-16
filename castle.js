@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.962;
+		Molpy.version=0.963;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -140,6 +140,7 @@ Molpy.Up=function()
 		Molpy.autosaveCountup=0;
 		Molpy.highestNPvisited=1; //keep track of where the player has been
 		Molpy.timeTravels=0; //number of times timetravel has been used
+		Molpy.totalCastlesDown=0; //cumulative castles built and then wiped by Molpy Down throughout all games
 		
 		
 		Molpy.options=[];
@@ -257,6 +258,7 @@ Molpy.Up=function()
 			Flint(Molpy.redactedViewIndex)+s+
 			Flint(Molpy.redactedClicks)+s+
 			Flint(Molpy.highestNPvisited)+s+
+			Flint(Molpy.totalCastlesDown)+s+
 			p;
 			//sand tools:
 			for(var cancerbabies in Molpy.SandTools)
@@ -359,7 +361,8 @@ Molpy.Up=function()
 				var blitzSpeed=parseInt(pixels[28]);	//these were saved here in 0.911 and 2
 				var blitzTime=parseInt(pixels[29]);		//but now are put in the 'Blitzed' boost
 			}
-			Molpy.highestNPvisited=(pixels[25]);
+			Molpy.highestNPvisited=parseInt(pixels[25]);
+			Molpy.totalCastlesDown=parseInt(pixels[26]);
 			
 			
 			pixels=thread[5].split(s);
@@ -510,10 +513,6 @@ Molpy.Up=function()
 					Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 				}
 			}
-			if(version<0.94)
-			{
-				Molpy.highestNPvisited=Molpy.newpixNumber;				
-			}
 			if(version<0.941)
 			{
 				Molpy.Boosts['Overcompensating'].power=1.05;				
@@ -534,6 +533,11 @@ Molpy.Up=function()
 					Molpy.Notify('Refund!');
 					Molpy.BuildCastles(12000);
 				}
+			}
+			if(version<0.963)
+			{
+				Molpy.totalCastlesDown=0;
+				Molpy.highestNPvisited=Molpy.newpixNumber;		//steambottle!	
 			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
@@ -564,6 +568,7 @@ Molpy.Up=function()
 				Molpy.sandDug=0; 
 				Molpy.sand=0; 
 				Molpy.sandManual=0;
+				Molpy.totalCastlesDown+=Molpy.castlesBuilt;
 				Molpy.castlesBuilt=0;
 				Molpy.castles=0; 
 				Molpy.castlesDestroyed=0;
@@ -598,7 +603,8 @@ Molpy.Up=function()
 					var me = Molpy.CastleTools[i];
 					me.amount=0;
 					me.bought=0;
-					me.totalCastlesBuilt=0;
+					if(i!='NewPixBot')
+						me.totalCastlesBuilt=0;
 					me.totalCastlesDestroyed=0;
 					me.totalCastlesWasted=0;
 					me.currentActive=0;
@@ -634,6 +640,8 @@ Molpy.Up=function()
 				Molpy.timeTravels=0;
 				Molpy.Boosts['Ninja Hope'].power=1;
 				Molpy.Boosts['Ninja Penance'].power=2;
+				Molpy.totalCastlesDown=0;
+				Molpy.CastleTools['NewPixBot'].totalCastlesBuilt=0; //because we normally don't reset this.
 				for (var i in Molpy.BadgesById)
 				{
 					Molpy.BadgesById[i].earned=0;						

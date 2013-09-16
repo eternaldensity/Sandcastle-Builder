@@ -16,6 +16,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.963
+- an inoccuous boost rename
+- track total castles built wiped by Molpy Down
+- fixed tracking highest NP visited (oops, that would have been messing with Time Travel)
+
 ### 0.962
 - 10 NewPixBot boosts
 - a Wave boost

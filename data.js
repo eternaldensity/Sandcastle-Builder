@@ -177,7 +177,7 @@ Molpy.DefineCastleTools=function()
 	 function()
 	 {
 		var baseval=1;		
-		if(Molpy.Got('Robot Uprising')) baseval++;
+		if(Molpy.Got('Robot Efficiency')) baseval++;
 		if(Molpy.Got('HAL-0-Kitty')) baseval+=Math.floor(Molpy.redactedClicks/9);
 		var pow=0;
 		for(var i in Molpy.npbDoublers)
@@ -298,7 +298,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Level Up!','Ladders are much more powerful',29000,34);
 	new Molpy.Boost('Varied Ammo','Trebuchets build an extra castle for each Castle Tool you have 2+ of',3900,48);
 	new Molpy.Boost('Megball','Cuegan produce double sand',10700,56);
-	new Molpy.Boost('Robot Uprising','Newpixbots build an extra castle (before any doubling)',14000,53);
+	new Molpy.Boost('Robot Efficiency','Newpixbots build an extra castle (before any doubling)',14000,53);
 	new Molpy.Boost('Ninja Builder','When increasing ninja stealth streak, builds that many castles',4000,35);
 	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves, and 2 less per River bought',40000,77);
 	new Molpy.Boost('Autosave Option','Autosave option is available',100,4);
@@ -635,7 +635,7 @@ Molpy.CheckBuyUnlocks=function()
 	{
 		Molpy.Boosts['Blast Furnace'].hardlocked=0;
 	}
-	if(Molpy.Got('Recursivebot'))Molpy.UnlockBoost('Robot Uprising');
+	if(Molpy.Got('Recursivebot'))Molpy.UnlockBoost('Robot Efficiency');
 	 
 	me=Molpy.CastleTools['Trebuchet'];
 	if(me.amount>=1)Molpy.UnlockBoost('Spring Fling');
