@@ -16,10 +16,11 @@ Not for any commercial use!
 
 ## Changelog
 
-### 0.936
+### 0.96
 - Even more ChronosDragon icons
 - fiddled with a bunch of CSS and a few of the shades on badge headings
 - removed [available] and [earned] on badges because they are redundant (and waste space)
+- clock visibility is set properly after loading
 
 ### 0.952
 - Fixed 2 typos, one causing weird description, one causing failure to load Factory Automation

@@ -408,12 +408,11 @@ Molpy.DefineBoosts=function()
 		{
 			p=0; //off
 			Molpy.ONGstart = ONGsnip(new Date()); //don't immediately ONG!
-			g('clockface').className='unhidden';
 		}else
 		{
-			p=1; //on
-			g('clockface').className='hidden';			
+			p=1; //on		
 		}
+		g('clockface').className= p?'hidden':'unhidden';	
 		Molpy.Boosts['Coma Molpy Style'].power=p;
 		Molpy.Boosts['Coma Molpy Style'].hovered=-2;
 		Molpy.Boosts['Coma Molpy Style'].hover();

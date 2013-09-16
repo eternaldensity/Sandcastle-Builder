@@ -532,6 +532,7 @@ Molpy.Up=function()
 			Molpy.CheckSandRateBadges(); //shiny!
 			
 			Molpy.ONGstart = ONGsnip(new Date()); //if you missed the ONG before loading, too bad!
+			g('clockface').className= Molpy.Boosts['Coma Molpy Style'].power?'hidden':'unhidden';
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.recalculateDig=1;
