@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.961;
+		Molpy.version=0.962;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1623,8 +1623,9 @@ Molpy.Up=function()
 		Molpy.redactedWord=BeanishToCuegish("UmVkdW5kYWtpdHR5");
 		Molpy.redactedWords=BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
 		Molpy.redactedBrackets=BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
-		Molpy.redactedShop='<div id="redacteditem"><div class="icon redacted"></div><div class="title">'+Molpy.redactedWord+' <a onclick="Molpy.clickRedacted();">Buy</a> <a onclick="Molpy.clickRedacted();">Sell</a></div><span class="price">Price: 0 '+Molpy.redactedWords+'</span><div id="SandToolDescription'+Molpy.redactedW+'"></div></div></div>';
-		Molpy.redactedLoot='<div id="redacteditem" onclick="Molpy.clickRedacted();"><div class="icon redacted"></div><div class="heading">'+Molpy.redactedBrackets+'</div><div class="title">'+Molpy.redactedWord+'</div><div id="InvBoostDescription'+Molpy.redactedW+'"></div></div></div>';
+		Molpy.redactedSpoiler='<div><b>Spoiler:</b><input type="button" value="Show" onclick="Molpy.clickRedacted()"></input></div>';
+		Molpy.redactedShop='<div id="redacteditem"><div class="icon redacted"></div><div class="title">'+Molpy.redactedWord+'</div>'+Molpy.redactedSpoiler+'</div>';
+		Molpy.redactedLoot='<div id="redacteditem"><div class="icon redacted"></div><div class="heading">'+Molpy.redactedBrackets+'</div><div class="title">'+Molpy.redactedWord+'</div>'+Molpy.redactedSpoiler+'</div>';
 		
 		Molpy.redactedCountup=0;
 		Molpy.redactedToggle=0; //disabled

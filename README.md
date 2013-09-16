@@ -16,6 +16,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.962
+- 10 NewPixBot boosts
+- a Wave boost
+- changed how redundakitties are clicked
+
 ### 0.961
 - Encheapened Embaggening, with refund
 - Hide higher end shop items until you buy the cheaper ones
