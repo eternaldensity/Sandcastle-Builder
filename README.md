@@ -20,6 +20,10 @@ Not for any commercial use!
 - an inoccuous boost rename
 - track total castles built wiped by Molpy Down
 - fixed tracking highest NP visited (oops, that would have been messing with Time Travel)
+- a several new badges, mostly for Time Travel use
+- actually increment number of time travels!
+- added a way to help finance time travel
+- and a time travel boost to help even more!
 
 ### 0.962
 - 10 NewPixBot boosts
