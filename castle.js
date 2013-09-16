@@ -527,6 +527,14 @@ Molpy.Up=function()
 			{
 				Molpy.timeTravels=0;				
 			}
+			if(version<0.961)
+			{
+				if(Molpy.Got('Embaggening'))
+				{
+					Molpy.Notify('Refund!');
+					Molpy.BuildCastles(12000);
+				}
+			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
 			Molpy.CheckSandRateBadges(); //shiny!

@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.961
+- Encheapened Embaggening, with refund
+
+
 ### 0.96
 - Even more ChronosDragon icons
 - fiddled with a bunch of CSS and a few of the shades on badge headings
