@@ -267,105 +267,113 @@ body.lightscheme .infobox
 {
 	background:#eee;
 }
-body.darkscheme .sandtool
+body.darkscheme .sand.shop
 {
 	background:#181818
 }
-body.lightscheme .sandtool
+body.lightscheme .sand.shop
 {
 	background:#d8d8d8
 }
-body.darkscheme .castletool
+body.darkscheme .castle.shop
 {
 	background:#222
 }
-body.lightscheme .castletool
+body.lightscheme .castle.shop
 {
 	background:#ddd
 }
-body.darkscheme .boostsale
+body.darkscheme .boost.shop
 {
 	background:#282828
 }
-body.lightscheme .boostsale
+body.lightscheme .boost.shop
 {
 	background:#c8c8c8
 }
-body.darkscheme .boostinv
+body.darkscheme .boost.loot
 {
 	background:#ddd;
 	color:#000;
 	border-color:#333;
 }
-body.lightscheme .boostinv
+body.lightscheme .boost.loot
 {
 	background:#222;
 	color:#fff;
 	border-color:#ccc;
 }
-body.darkscheme .boostinv:hover
+body.darkscheme .boost.loot:hover
 {
 	background:#F5F5F5;
 	color:#000;
 }
-body.lightscheme .boostinv:hover
+body.lightscheme .boost.loot:hover
 {
 	background:#0b0b0b;
 	color:#fff;
 }
-.badgeavail
+.badge.shop
 {
 	border-style:dashed;
 }
-body.darkscheme .badgeavail
+body.darkscheme .badge.shop
 {
 	color:#aaa;
 	border-color:#222;
 }
-body.lightscheme .badgeavail
+body.lightscheme .badge.shop
 {
 	color:#666;
 	border-color:#ddd;
 }
-.badgeavail:hover
+.badge.shop:hover
 {
 	border-style:solid;
 }
-body.darkscheme .badgeavail:hover
+body.darkscheme .badge.shop:hover
 {
 	color:#ccc;
 	background:#111;
 }
-body.lightscheme .badgeavail:hover
+body.lightscheme .badge.shop:hover
 {
 	color:#333;
 	background:#eee;
 }
-.badgeavailheading
+body.darkscheme .badge.shop .heading
 {
 	color:#333;
 }
-body.darkscheme .badgeearned
+body.lightscheme .badge.shop .heading
+{
+	color:#ccc;
+}
+body.darkscheme .badge.loot
 {
 	border-color:#ccc;
 	color:#eee;
 }
-body.lightscheme .badgeearned
+body.lightscheme .badge.loot
 {
 	border-color:#333;
 	color:#111;
 }
-body.darkscheme .badgeearned:hover
+body.darkscheme .badge.loot:hover
 {
 	background:#222;
 	border-color:#ccc;
 }
-body.lightscheme .badgeearned:hover
+body.lightscheme .badge.loot:hover
 {
 	background:#ddd;
 	border-color:#333;
 }
-.badgeearnedheading
+body.darkscheme .badge.loot .heading
+{
+	color:#999;
+}
+body.lightscheme .badge.loot .heading
 {
 	color:#777;
 }
@@ -396,7 +404,7 @@ body.lightscheme .badgeearned:hover
 	text-align:center;
 	font-size:28px;
 }
-.toolpic
+.icon
 {
 	float:right;
 	top:4px;
@@ -492,3 +500,40 @@ body.lightscheme #toolRiver
 {
 	background-image:url('img/river_dark_icon.png');
 }
+.boost.shop .icon
+{
+	background-image:url('img/boost_grey_icon.png');
+}
+body.darkscheme .boost.loot .icon
+{
+	background-image:url('img/boost_dark_icon.png');
+}
+body.lightscheme .boost.loot .icon
+{
+	background-image:url('img/boost_light_icon.png');
+}
+.badge.shop .icon
+{
+	background-image:url('img/badge_grey_icon.png');
+}
+body.darkscheme .badge.loot .icon
+{
+	background-image:url('img/badge_light_icon.png');
+}
+body.lightscheme .badge.loot .icon
+{
+	background-image:url('img/badge_dark_icon.png');
+}
+body.darkscheme .tool .icon.redacted, body.darkscheme .badge.loot .icon.redacted, body.lightscheme .boost.loot .icon.redacted
+{
+	background-image:url('img/redacted_light_icon.png');
+}
+body.lightscheme .tool .icon.redacted,  body.lightscheme .badge.loot .icon.redacted, body.darkscheme .boost.loot .icon.redacted
+{
+	background-image:url('img/redacted_dark_icon.png');
+}
+.boost.shop .icon.redacted, .badge.shop .icon.redacted
+{
+	background-image:url('img/redacted_grey_icon.png');
+}
+

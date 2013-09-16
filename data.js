@@ -162,6 +162,10 @@ Molpy.DefineSandTools=function()
 		{
 			var baserate = 600;
 			var mult = 1;
+			if(Molpy.Got('Embaggening'))
+				mult*=Math.pow(1.02,Molpy.SandTools['Cuegan'].amount);
+			if(Molpy.Got('Sandbag'))
+				mult*=Math.pow(1.05,Molpy.CastleTools['River'].amount);
 			return baserate*mult;
 		}
 	);
@@ -232,12 +236,23 @@ Molpy.DefineCastleTools=function()
 				var log=Math.log(newClicks);
 				if(log>0)
 				{
-					var reduction=Math.min(baseval,Math.floor(log*log));
+					var reduction=Math.min(baseval,log*log);
 					baseval-=reduction;
 				}
 			}
-			return baseval;
-		},690
+			var mult=1;
+			if(Molpy.Got('Sandbag'))
+				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
+			return Math.floor(baseval*mult);
+		},
+		function()
+		{
+			var baseval=690;	
+			var mult=1;
+			if(Molpy.Got('Sandbag'))
+				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
+			return Math.floor(baseval*mult);
+		}
 	);
 }
 	
@@ -408,12 +423,11 @@ Molpy.DefineBoosts=function()
 		{
 			p=0; //off
 			Molpy.ONGstart = ONGsnip(new Date()); //don't immediately ONG!
-			g('clockface').className='unhidden';
 		}else
 		{
-			p=1; //on
-			g('clockface').className='hidden';			
+			p=1; //on		
 		}
+		g('clockface').className= p?'hidden':'unhidden';	
 		Molpy.Boosts['Coma Molpy Style'].power=p;
 		Molpy.Boosts['Coma Molpy Style'].hovered=-2;
 		Molpy.Boosts['Coma Molpy Style'].hover();
@@ -467,6 +481,8 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Blast Furnace'].hardlocked=1;	
 	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja', 'Kitties Galore', 'Blast Furnace'];
+	new Molpy.Boost('Sandbag','Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1400000,21000);
+	new Molpy.Boost('Embaggening','Each Cuegan gives a 2% boost to the sand dig rate of Bags',3500000,35000);
 }	
 	
 Molpy.DefineBadges=function()
@@ -592,6 +608,11 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=4)Molpy.UnlockBoost('Level Up!');
 	
 	me=Molpy.CastleTools['Wave'];
+	
+	me=Molpy.SandTools['Bag'];
+	if(me.amount>=2)Molpy.UnlockBoost('Embaggening');
+	var you=Molpy.CastleTools['River'];
+	if(me.amount&&you.amount)Molpy.UnlockBoost('Sandbag');
 }
 
 Molpy.CheckClickAchievements=function()
