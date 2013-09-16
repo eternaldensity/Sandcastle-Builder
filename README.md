@@ -19,6 +19,7 @@ Not for any commercial use!
 ### 0.962
 - 10 NewPixBot boosts
 - a Wave boost
+- changed how redundakitties are clicked
 
 ### 0.961
 - Encheapened Embaggening, with refund
