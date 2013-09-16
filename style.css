@@ -267,19 +267,19 @@ body.lightscheme .infobox
 {
 	background:#eee;
 }
-body.darkscheme .sandtool
+body.darkscheme .sand.shop
 {
 	background:#181818
 }
-body.lightscheme .sandtool
+body.lightscheme .sand.shop
 {
 	background:#d8d8d8
 }
-body.darkscheme .castletool
+body.darkscheme .castle.shop
 {
 	background:#222
 }
-body.lightscheme .castletool
+body.lightscheme .castle.shop
 {
 	background:#ddd
 }
@@ -341,9 +341,13 @@ body.lightscheme .badge.shop:hover
 	color:#333;
 	background:#eee;
 }
-.badge.shop .heading
+body.darkscheme .badge.shop .heading
 {
 	color:#333;
+}
+body.lightscheme .badge.shop .heading
+{
+	color:#ccc;
 }
 body.darkscheme .badge.loot
 {
@@ -365,7 +369,11 @@ body.lightscheme .badge.loot:hover
 	background:#ddd;
 	border-color:#333;
 }
-.badge.loot .heading
+body.darkscheme .badge.loot .heading
+{
+	color:#999;
+}
+body.lightscheme .badge.loot .heading
 {
 	color:#777;
 }
@@ -492,14 +500,6 @@ body.lightscheme #toolRiver
 {
 	background-image:url('img/river_dark_icon.png');
 }
-body.darkscheme #redacted
-{
-	background-image:url('img/redacted_light_icon.png');
-}
-body.lightscheme #redacted
-{
-	background-image:url('img/redacted_dark_icon.png');
-}
 .boost.shop .icon
 {
 	background-image:url('img/boost_grey_icon.png');
@@ -524,3 +524,16 @@ body.lightscheme .badge.loot .icon
 {
 	background-image:url('img/badge_dark_icon.png');
 }
+body.darkscheme .tool .icon.redacted, body.darkscheme .badge.loot .icon.redacted, body.lightscheme .boost.loot .icon.redacted
+{
+	background-image:url('img/redacted_light_icon.png');
+}
+body.lightscheme .tool .icon.redacted,  body.lightscheme .badge.loot .icon.redacted, body.darkscheme .boost.loot .icon.redacted
+{
+	background-image:url('img/redacted_dark_icon.png');
+}
+.boost.shop .icon.redacted, .badge.shop .icon.redacted
+{
+	background-image:url('img/redacted_grey_icon.png');
+}
+
