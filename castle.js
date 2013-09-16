@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.96;
+		Molpy.version=0.961;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -526,6 +526,14 @@ Molpy.Up=function()
 			if(version<0.951)
 			{
 				Molpy.timeTravels=0;				
+			}
+			if(version<0.961)
+			{
+				if(Molpy.Got('Embaggening'))
+				{
+					Molpy.Notify('Refund!');
+					Molpy.BuildCastles(12000);
+				}
 			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
@@ -1226,8 +1234,9 @@ Molpy.Up=function()
 				this.hovered=Molpy.fps;
 			}
 			this.hidedesc=function()
-			{				
-				g('SandToolDescription'+this.id).innerHTML='';
+			{		
+				var d=g('SandToolDescription'+this.id);
+				if(d)d.innerHTML='';
 			}
 			this.refresh=function()
 			{
@@ -1371,7 +1380,8 @@ Molpy.Up=function()
 			}
 			this.hidedesc=function(event)
 			{
-				g('CastleToolDescription'+this.id).innerHTML='';
+				var d=g('CastleToolDescription'+this.id);
+				if(d)d.innerHTML='';
 			}
 			this.refresh=function()
 			{
@@ -1467,7 +1477,8 @@ Molpy.Up=function()
 			}
 			this.hidedesc=function()
 			{					
-				g((this.bought?'Inv':'')+'BoostDescription'+this.id).innerHTML='';
+				var d=g((this.bought?'Inv':'')+'BoostDescription'+this.id);
+				if(d)d.innerHTML='';
 			}
 			this.describe=function()
 			{			
@@ -1573,7 +1584,8 @@ Molpy.Up=function()
 			}
 			this.hidedesc=function()
 			{
-				g('BadgeDescription'+this.id).innerHTML='';
+				var d=('BadgeDescription'+this.id);
+				if(d)d.innerHTML='';
 			}
 			
 			Molpy.Badges[this.name]=this;
@@ -1683,20 +1695,19 @@ Molpy.Up=function()
 		}
 
 		Molpy.RewardRedacted=function(forceDepartment)
-		{
-			if(Molpy.Got('Blast Furnace') && !Math.floor(24*Math.random()))
+		{		
+			if(Molpy.Got('Department of Redundancy Department') &&
+				(!Math.floor(8*Math.random()) || forceDepartment))
 			{
-				var castles=Math.floor(Molpy.sand/1000);				
-				Molpy.Notify('Blast Furnace in Operation!');
-				Molpy.SpendSand(castles*1000);
-				Molpy.Build(castles);
-				return;				
-			}
-		
-		
-			if((Molpy.Got('Department of Redundancy Department') && !Math.floor(8*Math.random()))
-				|| forceDepartment)
-			{
+				if(Molpy.Got('Blast Furnace') && !Math.floor(4*Math.random()))
+				{
+					var castles=Math.floor(Molpy.sand/1000);				
+					Molpy.Notify('Blast Furnace in Operation!');
+					Molpy.SpendSand(castles*1000);
+					Molpy.Build(castles);
+					return;				
+				}
+			
 				var availRewards=[];
 				var i = Molpy.departmentBoosts.length;
 				var f=0;
@@ -1765,47 +1776,60 @@ Molpy.Up=function()
 			Molpy.shopRepaint=0;
 			Molpy.CalcPriceFactor();			
 			var redactedIndex=-1;
+			
+			var toolsUnlocked=1;			
+			for (var i in Molpy.SandTools)
+			{
+				if(Molpy.SandTools[i].bought)toolsUnlocked++;
+			}
+			
 			if(Molpy.redactedVisible==1)
 			{
 				if(Molpy.redactedViewIndex==-1)
 				{
-					Molpy.redactedViewIndex=Math.floor((Molpy.SandToolsN+1)*Math.random());					
+					Molpy.redactedViewIndex=Math.floor((toolsUnlocked+1)*Math.random());					
 				}
 				redactedIndex=Molpy.redactedViewIndex;
 			}
-			
+1
 			var str='';
-			var r=0;
-			for (var i in Molpy.SandTools)
+			var i=0;
+			while (i < Math.min(toolsUnlocked, Molpy.SandToolsN))
 			{
-				if(r==redactedIndex) str+= Molpy.redactedShop;
-				var me=Molpy.SandTools[i];
+				if(i==redactedIndex) str+= Molpy.redactedShop;
+				var me=Molpy.SandToolsById[i];
 				str+='<div class="floatbox sand shop" onMouseOver="Molpy.SandToolsById['+me.id+'].hover()" onMouseOut="Molpy.SandToolsById['+me.id+'].unhover()"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="SandToolDescription'+me.id+'"></div></div></div>';
-				r++
+				i++
 			}
-			if(r==redactedIndex) str+= Molpy.redactedShop;
+			if(i==redactedIndex) str+= Molpy.redactedShop;
 			g('sandtools').innerHTML=str;
+			
+			toolsUnlocked=1;			
+			for (var i in Molpy.CastleTools)
+			{
+				if(Molpy.CastleTools[i].bought)toolsUnlocked++;
+			}
 			
 			redactedIndex=-1;
 			if(Molpy.redactedVisible==2)
 			{
 				if(Molpy.redactedViewIndex==-1)
 				{
-					Molpy.redactedViewIndex=Math.floor((Molpy.CastleToolsN+1)*Math.random());
+					Molpy.redactedViewIndex=Math.floor((toolsUnlocked+1)*Math.random());
 				}
 				redactedIndex=Molpy.redactedViewIndex;
 			}
 						
 			str='';
-			r=0;
-			for (var i in Molpy.CastleTools)
+			i=0;
+			while (i < Math.min(toolsUnlocked, Molpy.CastleToolsN))
 			{
-				if(r==redactedIndex) str+= Molpy.redactedShop;
-				var me=Molpy.CastleTools[i];
+				if(i==redactedIndex) str+= Molpy.redactedShop;
+				var me=Molpy.CastleToolsById[i];
 				str+='<div class="floatbox castle shop" onMouseOver="Molpy.CastleToolsById['+me.id+'].hover()" onMouseOut="Molpy.CastleToolsById['+me.id+'].unhover()"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
-				r++
+				i++
 			}
-			if(r==redactedIndex) str+= Molpy.redactedShop;
+			if(i==redactedIndex) str+= Molpy.redactedShop;
 			g('castletools').innerHTML=str;		
 		}
 		

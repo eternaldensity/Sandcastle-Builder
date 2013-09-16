@@ -184,6 +184,10 @@ a:active
 	overflow-x:hidden;
 
 }
+#inventory.force3columns
+{
+	min-width:440px;
+}
 #sectionMainStats
 {
 	margin:10px
@@ -237,7 +241,7 @@ body.lightscheme .floatbox:hover{
 .lootbox{
 	display: inline-block;
 	vertical-align: top;
-	width:110px;
+	width:120px;
 	min-height:38px;
 	margin:5px;
 	border-width: 1px;
