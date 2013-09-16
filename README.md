@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.962
+- 10 NewPixBot boosts
+- a Wave boost
+
 ### 0.961
 - Encheapened Embaggening, with refund
 - Hide higher end shop items until you buy the cheaper ones

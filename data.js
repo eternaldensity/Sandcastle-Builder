@@ -179,9 +179,28 @@ Molpy.DefineCastleTools=function()
 		var baseval=1;		
 		if(Molpy.Got('Robot Uprising')) baseval++;
 		if(Molpy.Got('HAL-0-Kitty')) baseval+=Math.floor(Molpy.redactedClicks/9);
-	  return baseval;
+		var pow=0;
+		for(var i in Molpy.npbDoublers)
+		{
+			var me = Molpy.Boosts[Molpy.npbDoublers[i]];
+			if(me.bought)pow++
+		}
+		
+	  return baseval*Math.pow(2,pow);
 	 } 
 	);
+	
+	Molpy.npbDoublers = ['Carrybot',
+		'Stickbot',
+		'Standardbot',
+		'Climbbot',
+		'Luggagebot',
+		'Recursivebot',
+		'Flingbot',
+		'Propbot',
+		'Washbot',
+		'Smallbot'];
+	Molpy.npbDoubleThreshhold=12;
 		
 	new Molpy.CastleTool('Trebuchet','trebuchet|trebuchets|flung|formed','Flings some castles, forming more.',13,1,
 		function(){
@@ -217,8 +236,11 @@ Molpy.DefineCastleTools=function()
 			baseval -= Molpy.CastleTools['River'].bought*2;
 			baseval=Math.max(baseval,0);
 			return baseval;
+		},
+		function()
+		{
+			return 111+19*Molpy.Got('Swell');
 		}
-		,111
 	);
 	Molpy.CastleTools['Wave'].onDestroy=function()
 	{
@@ -276,7 +298,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Level Up!','Ladders are much more powerful',29000,34);
 	new Molpy.Boost('Varied Ammo','Trebuchets build an extra castle for each Castle Tool you have 2+ of',3900,48);
 	new Molpy.Boost('Megball','Cuegan produce double sand',10700,56);
-	new Molpy.Boost('Robot Uprising','Newpixbots build an extra castle',14000,53);
+	new Molpy.Boost('Robot Uprising','Newpixbots build an extra castle (before any doubling)',14000,53);
 	new Molpy.Boost('Ninja Builder','When increasing ninja stealth streak, builds that many castles',4000,35);
 	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves, and 2 less per River bought',40000,77);
 	new Molpy.Boost('Autosave Option','Autosave option is available',100,4);
@@ -483,6 +505,18 @@ Molpy.DefineBoosts=function()
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja', 'Kitties Galore', 'Blast Furnace'];
 	new Molpy.Boost('Sandbag','Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1400000,21000);
 	new Molpy.Boost('Embaggening','Each Cuegan gives a 2% boost to the sand dig rate of Bags',3500000,23000);
+	new Molpy.Boost('Carrybot','NewPixBots produce double castles',1000,100);
+	new Molpy.Boost('Stickbot','NewPixBots produce double castles',2000,200);
+	new Molpy.Boost('Standardbot','NewPixBots produce double castles',4000,400);
+	new Molpy.Boost('Climbbot','NewPixBots produce double castles',8000,800);
+	new Molpy.Boost('Luggagebot','NewPixBots produce double castles',16000,1600);
+	new Molpy.Boost('Recursivebot','NewPixBots produce double castles',10000,1000);
+	new Molpy.Boost('Flingbot','NewPixBots produce double castles',20000,2000);
+	new Molpy.Boost('Propbot','NewPixBots produce double castles',40000,4000);
+	new Molpy.Boost('Washbot','NewPixBots produce double castles',80000,8000);
+	new Molpy.Boost('Smallbot','NewPixBots produce double castles',160000,16000);
+	
+	new Molpy.Boost('Swell','Waves produce 29 more Castles',20000,200);
 }	
 	
 Molpy.DefineBadges=function()
@@ -574,45 +608,57 @@ Molpy.CheckBuyUnlocks=function()
 	var me=Molpy.SandTools['Bucket'];
 	if(me.amount>=1)Molpy.UnlockBoost('Bigger Buckets');
 	if(me.amount>=4)Molpy.UnlockBoost('Huge Buckets');
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Carrybot');
 	
 	me=Molpy.SandTools['Cuegan'];
 	if(me.amount>=1)Molpy.UnlockBoost('Helping Hand');
 	if(me.amount>=4)Molpy.UnlockBoost('Cooperation');
 	if(me.amount>=8)Molpy.UnlockBoost('Megball');
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Stickbot');
 	
 	me=Molpy.SandTools['Flag'];
 	if(me.amount>=1)Molpy.UnlockBoost('Flag Bearer');
 	if(me.amount>=2)Molpy.UnlockBoost('War Banner');
 	if(me.amount>=6)Molpy.UnlockBoost('Magic Mountain');
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Standardbot');
 	
 	me=Molpy.SandTools['Ladder'];
 	if(me.amount>=1)Molpy.UnlockBoost('Extension Ladder');
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Climbbot');
 	
 	me=Molpy.CastleTools['NewPixBot'];
 	if(me.amount>=3)Molpy.UnlockBoost('Busy Bot');
-	if(me.amount>=10)Molpy.UnlockBoost('Robot Uprising');
-	if(me.amount>=15)Molpy.UnlockBoost('HAL-0-Kitty');
-	if(me.amount>=20 && Molpy.Got('Department of Redundancy Department'))Molpy.UnlockBoost('Factory Automation');
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Recursivebot');
+	if(me.amount>=17)Molpy.UnlockBoost('HAL-0-Kitty');
+	if(me.amount>=22 && Molpy.Got('Department of Redundancy Department'))Molpy.UnlockBoost('Factory Automation');
 	if(Molpy.Got('Factory Automation'))
 	{
 		Molpy.Boosts['Blast Furnace'].hardlocked=0;
 	}
+	if(Molpy.Got('Recursivebot'))Molpy.UnlockBoost('Robot Uprising');
 	 
 	me=Molpy.CastleTools['Trebuchet'];
 	if(me.amount>=1)Molpy.UnlockBoost('Spring Fling');
 	if(me.amount>=2)Molpy.UnlockBoost('Trebuchet Pong');				
 	if(me.amount>=5)Molpy.UnlockBoost('Varied Ammo');	
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Flingbot');	
 	
 	me=Molpy.CastleTools['Scaffold'];
 	if(me.amount>=2)Molpy.UnlockBoost('Precise Placement');
 	if(me.amount>=4)Molpy.UnlockBoost('Level Up!');
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Propbot');
 	
 	me=Molpy.CastleTools['Wave'];
+	if(me.amount>=2)Molpy.UnlockBoost('Swell');
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Washbot');
 	
 	me=Molpy.SandTools['Bag'];
 	if(me.amount>=2)Molpy.UnlockBoost('Embaggening');
-	var you=Molpy.CastleTools['River'];
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Luggagebot');
+	var you=me;
+	me = Molpy.CastleTools['River'];
 	if(me.amount&&you.amount)Molpy.UnlockBoost('Sandbag');
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Smallbot');
 }
 
 Molpy.CheckClickAchievements=function()
