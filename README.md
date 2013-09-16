@@ -18,7 +18,7 @@ Not for any commercial use!
 
 ### 0.961
 - Encheapened Embaggening, with refund
-
+- Hide higher end shop items until you buy the cheaper ones
 
 ### 0.96
 - Even more ChronosDragon icons
