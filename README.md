@@ -21,6 +21,7 @@ Not for any commercial use!
 - fiddled with a bunch of CSS and a few of the shades on badge headings
 - removed [available] and [earned] on badges because they are redundant (and waste space)
 - clock visibility is set properly after loading
+- added 2 bag boosts
 
 ### 0.952
 - Fixed 2 typos, one causing weird description, one causing failure to load Factory Automation
