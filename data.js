@@ -296,33 +296,70 @@ Molpy.DefineBoosts=function()
 {
 	
 	//only add to the end!
-	new Molpy.Boost('Bigger Buckets','Increases sand rate of buckets and clicks',500,0);
+	new Molpy.Boost('Bigger Buckets','Increases sand rate of buckets and clicks',500,0,'Adds 0.1 S/mNP to each Bucket, before multipliers');
 	new Molpy.Boost('Huge Buckets','Doubles sand rate of buckets and clicks',800,1);
-	new Molpy.Boost('Helping Hand','Increases sand rate of Cuegan',500,2);
-	new Molpy.Boost('Cooperation','Increases sand rate of Cuegan 10% per pair of buckets',2000,4);
-	new Molpy.Boost('Spring Fling','Trebuchets build an extra castle',1000,6);
+	new Molpy.Boost('Helping Hand','Increases sand rate of Cuegan',500,2,'Adds 0.2 S/mNP to each Cuegan, before multipliers');
+	new Molpy.Boost('Cooperation','Increases sand rate of Cuegan 10% per pair of buckets',2000,4,
+		function()
+		{			
+			if(Molpy.Got('Cooperation'))
+			{
+				var mult=Math.pow(1.1,Math.floor(Molpy.SandTools['Bucket'].amount/2));
+				return 'Multiplies Cuegans\' sand production by ' + Molpify(mult*100,2)+'%';
+			}
+			return 'Multiplies by 10% per pair of buckets';
+		}
+	);
+	new Molpy.Boost('Spring Fling','Trebuchets build an extra Castle',1000,6);
 	new Molpy.Boost('Trebuchet Pong','Increases sand rate of buckets 50% per pair of trebuchets',3000,6);
-	new Molpy.Boost('Molpies','Increases sand dig rate by 1% per badge earned',5000,5);
+	new Molpy.Boost('Molpies','Increases sand dig rate based on Badges',5000,5,
+		function()
+		{
+			if(Molpy.Got('Molpies'))
+			{
+				var mult=0.01*Molpy.BadgesOwned;
+				return 'Multiplies all sand rates by '+ Molpify(mult*100,2)+'%';
+			}
+			return 'Multiplies all sand rates by 1% per Badge earned';
+		}
+	);
 	new Molpy.Boost('Busy Bot','NewPixBots activate 10% sooner',900,4);
 	new Molpy.Boost('Stealthy Bot','NewPixBots activate 10% sooner',1200,5);
-	new Molpy.Boost('Flag Bearer','Flags are more powerful',5500,8);
+	new Molpy.Boost('Flag Bearer','Flags are more powerful',5500,8, 'Each flag produces 2 extra sand/mNP, before multipliers');
 	new Molpy.Boost('War Banner','Trebuchets only destroy 1 castle',3000,10);
-	new Molpy.Boost('Magic Mountain','Flags are much more powerful',8000,15);
-	new Molpy.Boost('Extension Ladder','Ladders reach a little higher',12000,22);
-	new Molpy.Boost('Level Up!','Ladders are much more powerful',29000,34);
-	new Molpy.Boost('Varied Ammo','Trebuchets build an extra castle for each Castle Tool you have 2+ of',3900,48);
+	new Molpy.Boost('Magic Mountain','Flags are much more powerful',8000,15,'Multiplies Flag sand rate by 2.5');
+	new Molpy.Boost('Extension Ladder','Ladders reach a little higher',12000,22,'Each ladder produces 18 extra castles per ONG, before multipliers');
+	new Molpy.Boost('Level Up!','Ladders are much more powerful',29000,34,'Ladders produce 2 times as many castles per ONG');
+	new Molpy.Boost('Varied Ammo','Trebuchets build an extra castle for each Castle Tool you have 2+ of',3900,48,
+		function()
+		{
+			if(Molpy.Got('Varied Ammo'))
+			{
+				var val = 0;
+				for(i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)val++;
+				return 'Each trebuchet produces '+Molpify(val)+ ' more castles per ONG, before multipliers';
+			}
+			return 'For each kind of Castle Tool of which you have 2 or more, each trebuchet produces an additional castle per ONG, before multipliers';
+		}
+	);
 	new Molpy.Boost('Megball','Cuegan produce double sand',10700,56);
 	new Molpy.Boost('Robot Efficiency','Newpixbots build an extra castle (before any doubling)',34000,153);
-	new Molpy.Boost('Ninja Builder','When increasing ninja stealth streak, builds that many castles',4000,35);
+	new Molpy.Boost('Ninja Builder','When increasing ninja stealth streak, builds that many castles',4000,35,
+		function()
+		{
+			if(Molpy.Got('Ninja Builder')) 
+				return 'Will build '+ (Molpy.ninjaStealth+(1+Molpy.Got('Active Ninja')*2))+ ' Castles unless you destealth ninjas';
+			return 'Ninja Stealth increases the first time you click within a NewPix after NewPixBots activate. It will reset if you click before NewPixBots activate, or don\'t click before the next ONG.'	
+			
+		}
+	);
 	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves, and 2 less per River bought',40000,77);
 	new Molpy.Boost('Autosave Option','Autosave option is available',100,4);
 	new Molpy.Boost('Helpful Hands','Each Cuegan+Bucket pair gives clicking +0.5 sand',250,5);
 	new Molpy.Boost('True Colours','Each Cuegan+Flag pair gives clicking +5 sand',750,15);
-	new Molpy.Boost('Precise Placement','For every two ladders, scaffolds destroy one less castle',750,15);
-	new Molpy.Boost('Ninja Hope','Avoid one Ninja Stealth reset, at the cost of 10 castles',7500,40);
-	new Molpy.Boost('Ninja Penance','Avoid a two Ninja Stealth resets, at the cost of 30 castles each',25000,88);
-	Molpy.Boosts['Ninja Hope'].power=1;				
-	Molpy.Boosts['Ninja Penance'].power=2;	
+	new Molpy.Boost('Precise Placement','For every two ladders, scaffolds destroy one less castle',8750,115);
+	new Molpy.Boost('Ninja Hope','Avoid one Ninja Stealth reset, at the cost of 10 castles',7500,40,0,0,0,1); //startpower 1
+	new Molpy.Boost('Ninja Penance','Avoid a two Ninja Stealth resets, at the cost of 30 castles each',25000,88,0,0,0,2); //starpower 2
 	new Molpy.Boost('Blitzing',function(me)
 		{		
 			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP';
@@ -337,7 +374,8 @@ Molpy.DefineBoosts=function()
 		{
 			me.power=Molpy.beachClicks;
 		});
-	new Molpy.Boost('Double or Nothing', '<a onclick="Molpy.DoubleOrNothing();">Click</a> to double or lose your current castle balance',200,0);
+	new Molpy.Boost('Double or Nothing', '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing();"></input> to double or lose your current castle balance',200,0);
+	Molpy.Boosts['Double or Nothing'].className='toggle';
 	Molpy.DoubleOrNothing=function()
 	{
 		if(!Molpy.Boosts['Double or Nothing'].bought)
@@ -356,7 +394,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Grapevine', 'Increases sand dig rate by 2% per badge earned',25000,25);
 	Molpy.IKEA='Affordable Swedish Home Furniture';
 	new Molpy.Boost(Molpy.IKEA, function(me){return Molpify(me.power*100,1)+'% off all items for '+Molpify(me.countdown)+'mNP'}
-		,0,0,0,
+		,0,0,0,0,
 		function(){
 			Molpy.shopRepaint=1;
 		}
@@ -364,14 +402,15 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost('Overcompensating', function(me){
 		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
-		,987645,321,0,0,1.05);
+		,987645,321,0,0,0,1.05);
 	new Molpy.Boost('Doublepost', 'During LongPix, Castle Tools activate a second time',650000,4000);
 	new Molpy.Boost('Coma Molpy Style', 
 		function(me)
 		{ 
-			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><a onclick="Molpy.ComaMolpyStyleToggle();">' + (me.power? 'Deactivate</a>':'Activate</a>');
+			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><input type="Button" onclick="Molpy.ComaMolpyStyleToggle();" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 		}
 		,8500,200);
+	Molpy.Boosts['Coma Molpy Style'].className='toggle';
 	
 	{//#REGION Lyrics :P	
 	var cms=[
@@ -467,8 +506,7 @@ Molpy.DefineBoosts=function()
 		}
 		g('clockface').className= p?'hidden':'unhidden';	
 		Molpy.Boosts['Coma Molpy Style'].power=p;
-		Molpy.Boosts['Coma Molpy Style'].hovered=-2;
-		Molpy.Boosts['Coma Molpy Style'].hover();
+		Molpy.Boosts['Coma Molpy Style'].hoverOnConter=1;
 		Molpy.recalculateDig=1;
 	}
 	new Molpy.Boost('Time Travel', 
@@ -476,10 +514,11 @@ Molpy.DefineBoosts=function()
 		{
 			var price=Math.ceil(Molpy.newpixNumber*Molpy.priceFactor);
 			if(Molpy.Got('Flux Capacitor'))price=Math.ceil(price*.2);
-			return 'Pay ' + Molpify(price) + ' Castles to move <a onclick="Molpy.TimeTravel('+(-me.power)+');">backwards</a> or <a onclick="Molpy.TimeTravel('+me.power+');">forwards</a> '+
+			return 'Pay ' + Molpify(price) + ' Castles to move <input type="Button" onclick="Molpy.TimeTravel('+(-me.power)+');" value="backwards"></input> or <input type="Button" onclick="Molpy.TimeTravel('+me.power+');" value="forwards"></input> '+
 			Molpify(me.power)+' NP in Time';
 		}
-		,1000,30,0,0,1);
+		,1000,30,0,0,0,1);
+	Molpy.Boosts['Time Travel'].className='action';
 	Molpy.intruderBots=0;
 	Molpy.TimeTravel=function(NP)
 	{		
@@ -509,9 +548,8 @@ Molpy.DefineBoosts=function()
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
-			Molpy.Boosts['Time Travel'].hovered=-2;
-			Molpy.Boosts['Time Travel'].hover();
 			Molpy.timeTravels++;
+			Molpy.Boosts['Time Travel'].hoverOnCounter=1;
 			if(NP>0)
 				Molpy.EarnBadge('Fast Forward');
 			if(NP<0)
@@ -575,6 +613,27 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Swell','Waves produce 29 more Castles',20000,200);
 	new Molpy.Boost('Flux Capacitor','It makes Time Travel possibler!',88,88);
 	new Molpy.Boost('Bag Burning','Bags help counteract NewPixBots',50000000,0);
+	new Molpy.Boost('Chromatic Heresy',
+		function(me)
+		{
+			return 'Saturation is '+(me.power?'':'not ')+'allowed. <input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
+		},200,10);
+	Molpy.Boosts['Chromatic Heresy'].className='toggle';
+	Molpy.ChromaticHeresyToggle=function()
+	{
+		if(!Molpy.Boosts['Chromatic Heresy'].bought)
+		{
+			Molpy.Notify('Somewhere, over the rainbow...');
+			return;
+		}
+		var p = Molpy.Boosts['Chromatic Heresy'].power;
+		p++;
+		p%=2;
+		Molpy.Boosts['Chromatic Heresy'].power=p;
+		Molpy.Boosts['Chromatic Heresy'].hoverOnCounter=1;
+		Molpy.UpdateColourScheme();
+		
+	}
 }	
 	
 Molpy.DefineBadges=function()
@@ -705,6 +764,8 @@ Molpy.DefineBadges=function()
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			
 		}
 		,3);
+	Molpy.Badges['Judgement Dip Warning'].className='alert';
+	Molpy.Badges['Judgement Dip'].className='alert';
 	new Molpy.Badge('Fast Forward','Travel Back to the Future',1);
 	new Molpy.Badge('And Back','Return to the Past',1);
 	new Molpy.Badge('Primer','Travel through Time 10 Times',1);
@@ -769,6 +830,11 @@ Molpy.CheckBuyUnlocks=function()
 	me = Molpy.CastleTools['River'];
 	if(me.amount&&you.amount)Molpy.UnlockBoost('Sandbag');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Smallbot');
+	
+	if(Molpy.Got('Coma Molpy Style')||Molpy.Got('Double or Nothing')||Molpy.Got('Time Travel')||Molpy.Got('Judgement Dip Warning'))
+	{
+		Molpy.UnlockBoost('Chromatic Heresy');
+	}
 }
 
 Molpy.CheckClickAchievements=function()

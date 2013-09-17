@@ -16,6 +16,14 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.973
+- Removed some references to old hover stuff
+- More buttons
+- Added some (not all yet) Boost stats
+- Sometimes stats will show some extra info on a boost before you buy it
+- Made Precise Placement cost a lot more: I think I never changed it after copypasting
+- Heresy
+
 ### 0.972
 - Judgement Dip notifications logged
 - Prevent DON savescumming
