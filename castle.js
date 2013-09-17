@@ -117,7 +117,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.971;
+		Molpy.version=0.972;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1155,41 +1155,41 @@ Molpy.Up=function()
 			if(Molpy.judgeLevel==-1)//just loaded
 			{
 				if(judy>0)
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1));
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1),1);
 			}			
 			else if(judy>Molpy.judgeLevel)//increase
 			{
 				if(Molpy.judgeLevel<2&&judy>2)//jumped from safe to multiple levels of judgement
 				{
 					Molpy.Notify('Judgement Dip is upon us!');
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1));
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1),1);
 				}else if(judy>2)
 				{
 					Molpy.Notify('Things got worse!!');
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1));
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1),1);
 				}
 				else if(judy==2)
 				{
-					Molpy.Notify('Judgement Dip is upon us!');
+					Molpy.Notify('Judgement Dip is upon us!',1);
 				}
 				else if(judy==1)
 				{
-					Molpy.Notify("You sense trouble. The bots are restless.");
+					Molpy.Notify("You sense trouble. The bots are restless.",1);
 				}
 			}else if(judy<Molpy.judgeLevel)//decrease
 			{
 				if(judy>1)
 				{
 					Molpy.Notify('Things got better');
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1));
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1),1);
 				}
 				else if(judy==1)
 				{
-					Molpy.Notify("You feel relief but fear lingers.");
+					Molpy.Notify("You feel relief but fear lingers.",1);
 				}
 				else if(judy==0)
 				{
-					Molpy.Notify('You feel safe.');
+					Molpy.Notify('You feel safe.',1);
 				}
 			}
 			Molpy.judgeLevel=judy;

@@ -16,6 +16,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.972
+- Judgement Dip notifications logged
+
 ### 0.971
 - Not Lucky reward general increase, sand tools benefit more than castle tools
 - Fixed Ninja Penance not decrementing when used
