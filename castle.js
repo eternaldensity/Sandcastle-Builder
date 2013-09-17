@@ -338,7 +338,6 @@ Molpy.Up=function()
 			Molpy.options.fancy=parseInt(pixels[5]);
 			Molpy.options.ketchup=parseInt(pixels[6]);
 			Molpy.options.colourscheme=parseInt(pixels[7]);
-			Molpy.UpdateColourScheme();
 			
 			pixels=thread[4].split(s);
 			Molpy.newpixNumber=parseInt(pixels[0]);
@@ -564,6 +563,7 @@ Molpy.Up=function()
 				}
 			}
 			
+			Molpy.UpdateColourScheme();
 			Molpy.LockBoost('Double or Nothing');
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
@@ -766,7 +766,7 @@ Molpy.Up=function()
 		Molpy.UpdateColourScheme=function()
 		{
 			var heresy=(Molpy.Got('Chromatic Heresy')&&Molpy.Boosts['Chromatic Heresy'].power)?
-				'':' heresy';
+				' heresy':'';
 			
 			if(Molpy.options.colourscheme)
 			{

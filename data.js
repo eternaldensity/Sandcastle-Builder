@@ -764,6 +764,8 @@ Molpy.DefineBadges=function()
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			
 		}
 		,3);
+	Molpy.Badges['Judgement Dip Warning'].className='alert';
+	Molpy.Badges['Judgement Dip'].className='alert';
 	new Molpy.Badge('Fast Forward','Travel Back to the Future',1);
 	new Molpy.Badge('And Back','Return to the Past',1);
 	new Molpy.Badge('Primer','Travel through Time 10 Times',1);
