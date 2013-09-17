@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.973
+- Removed some references to old hover stuff
+- More buttons
+
 ### 0.972
 - Judgement Dip notifications logged
 - Prevent DON savescumming

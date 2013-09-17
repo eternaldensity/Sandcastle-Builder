@@ -337,7 +337,7 @@ Molpy.DefineBoosts=function()
 		{
 			me.power=Molpy.beachClicks;
 		});
-	new Molpy.Boost('Double or Nothing', '<a onclick="Molpy.DoubleOrNothing();">Click</a> to double or lose your current castle balance',200,0);
+	new Molpy.Boost('Double or Nothing', '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing();"></input> to double or lose your current castle balance',200,0);
 	Molpy.DoubleOrNothing=function()
 	{
 		if(!Molpy.Boosts['Double or Nothing'].bought)
@@ -369,7 +369,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Coma Molpy Style', 
 		function(me)
 		{ 
-			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><a onclick="Molpy.ComaMolpyStyleToggle();">' + (me.power? 'Deactivate</a>':'Activate</a>');
+			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><input type="Button" onclick="Molpy.ComaMolpyStyleToggle();" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 		}
 		,8500,200);
 	
@@ -467,8 +467,6 @@ Molpy.DefineBoosts=function()
 		}
 		g('clockface').className= p?'hidden':'unhidden';	
 		Molpy.Boosts['Coma Molpy Style'].power=p;
-		Molpy.Boosts['Coma Molpy Style'].hovered=-2;
-		Molpy.Boosts['Coma Molpy Style'].hover();
 		Molpy.recalculateDig=1;
 	}
 	new Molpy.Boost('Time Travel', 
@@ -476,7 +474,7 @@ Molpy.DefineBoosts=function()
 		{
 			var price=Math.ceil(Molpy.newpixNumber*Molpy.priceFactor);
 			if(Molpy.Got('Flux Capacitor'))price=Math.ceil(price*.2);
-			return 'Pay ' + Molpify(price) + ' Castles to move <a onclick="Molpy.TimeTravel('+(-me.power)+');">backwards</a> or <a onclick="Molpy.TimeTravel('+me.power+');">forwards</a> '+
+			return 'Pay ' + Molpify(price) + ' Castles to move <input type="Button" onclick="Molpy.TimeTravel('+(-me.power)+');" value="backwards"></input> or <input type="Button" onclick="Molpy.TimeTravel('+me.power+');" value="forwards"></input> '+
 			Molpify(me.power)+' NP in Time';
 		}
 		,1000,30,0,0,1);
@@ -509,8 +507,6 @@ Molpy.DefineBoosts=function()
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
-			Molpy.Boosts['Time Travel'].hovered=-2;
-			Molpy.Boosts['Time Travel'].hover();
 			Molpy.timeTravels++;
 			if(NP>0)
 				Molpy.EarnBadge('Fast Forward');
