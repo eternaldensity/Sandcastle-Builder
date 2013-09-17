@@ -564,6 +564,8 @@ Molpy.Up=function()
 				}
 			}
 			
+			Molpy.LockBoost('Double or Nothing');
+			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
 			Molpy.CheckSandRateBadges(); //shiny!
 			
