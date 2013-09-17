@@ -16,9 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
-###
+### 0.971
 - Not Lucky reward general increase, sand tools benefit more than castle tools
 - Fixed Ninja Penance not decrementing when used
+- Bag Burning Boost: helps fight the NewPixBots
 
 ### 0.97
 - fixed Dip heresy

@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.97;
+		Molpy.version=0.971;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1286,6 +1286,13 @@ Molpy.Up=function()
 			{
 				if(this.hovered==-1)return;
 				this.hovered=-1;
+			}
+			this.unhover=function()
+			{				
+				this.hovered=Molpy.fps;
+			}
+			this.showdesc=function()
+			{
 				var desc = '';
 				if(Molpy.showStats)
 				{
@@ -1298,10 +1305,6 @@ Molpy.Up=function()
 					desc=this.desc;
 				}
 				g('SandToolDescription'+this.id).innerHTML='<br/>'+desc;
-			}
-			this.unhover=function()
-			{				
-				this.hovered=Molpy.fps;
 			}
 			this.hidedesc=function()
 			{		
@@ -1429,6 +1432,9 @@ Molpy.Up=function()
 			{
 				if(this.hovered==-1)return;
 				this.hovered=-1;
+			}
+			this.showdesc=function()
+			{
 				var desc = '';
 				var bN = EvalMaybeFunction(this.buildN);
 				var dN = EvalMaybeFunction(this.destroyN);
@@ -1539,6 +1545,9 @@ Molpy.Up=function()
 			{			
 				if(this.hovered==-1)return;
 				this.hovered=-1;
+			}
+			this.showdesc=function()
+			{
 				var boo=g('BoostDescription'+this.id)
 				if(boo)
 				{
@@ -1651,6 +1660,9 @@ Molpy.Up=function()
 			{
 				if(this.hovered==-1)return;
 				this.hovered=-1;
+			}
+			this.showdesc=function()
+			{
 				g('BadgeDescription'+this.id).innerHTML='<br/>'+((this.earned||this.visibility<1)?
 				EvalMaybeFunction(this.desc):'????');
 			}
@@ -1829,7 +1841,7 @@ Molpy.Up=function()
 					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(2,i);
 					i++;
                 }
-				bonus = Molpy.BoostsOwned+Molpy.BadgesOwned))+4;
+				bonus += Molpy.BoostsOwned+Molpy.BadgesOwned+4;
 				Molpy.Build(bonus);
 			}else{
 				var blitzSpeed=8,blitzTime=23;

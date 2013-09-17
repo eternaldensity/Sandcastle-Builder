@@ -574,6 +574,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost('Swell','Waves produce 29 more Castles',20000,200);
 	new Molpy.Boost('Flux Capacitor','It makes Time Travel possibler!',88,88);
+	new Molpy.Boost('Bag Burning','Bags help counteract NewPixBots',50000000,0);
 }	
 	
 Molpy.DefineBadges=function()
@@ -674,6 +675,10 @@ Molpy.DefineBadges=function()
 		var baseVal= 500000000;
 		var div = 1+ Molpy.Got('Factory Automation')+Molpy.Got('Blast Furnace')+Molpy.Got('Time Travel')
 			+Molpy.Got('Flux Capacitor')+Molpy.Got('Recursivebot')+Molpy.Got('Robot Efficiency');
+		if(Molpy.Got('Bag Burning'))
+		{
+			div/=Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
+		}
 		return baseVal/div;
 	}
 	Molpy.JudgementDipReport=function()
@@ -685,6 +690,11 @@ Molpy.DefineBadges=function()
 		var countdown = ((level+1)*thresh - botCastles);
 		countdown/=(bot.buildN()*bot.amount*bot.amount);
 		if(Molpy.Got('Doublepost'))countdown/=2;
+		
+		if(level>3 && Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
+		{
+			Molpy.UnlockBoost('Bag Burning');
+		}
 		return [level,Math.ceil(countdown)];
 	}
 	new Molpy.Badge("Judgement Dip",
