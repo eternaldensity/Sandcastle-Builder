@@ -565,6 +565,11 @@ Molpy.Up=function()
 			
 			Molpy.UpdateColourScheme();
 			Molpy.LockBoost('Double or Nothing');
+			if(Molpy.redactedVisible)
+			{
+				Molpy.redactedCountup=Molpy.redactedToggle;
+				Molpy.CheckRedactedToggle();
+			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
 			Molpy.CheckSandRateBadges(); //shiny!

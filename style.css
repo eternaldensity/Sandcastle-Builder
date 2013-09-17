@@ -541,38 +541,38 @@ body.lightscheme .tool .icon.redacted,  body.lightscheme .badge.loot .icon.redac
 	background-image:url('img/redacted_grey_icon.png');
 }
 
-body.darkscheme.heresy .boost.toggle, body.lightscheme.heresy .badge.toggle
+body.darkscheme.heresy .boost.loot.toggle, body.lightscheme.heresy .boost.shop.toggle, body.lightscheme.heresy .badge.toggle
 {
 	background:#d0d0e8;
 }
-body.lightscheme.heresy .boost.toggle, body.darkscheme.heresy .badge.toggle
+body.lightscheme.heresy .boost.loot.toggle, body.darkscheme.heresy .boost.shop.toggle, body.darkscheme.heresy .badge.toggle
 {
 	background:#224;
 }
 
-body.darkscheme.heresy .boost.toggle:hover, body.lightscheme.heresy .badge.toggle:hover
+body.darkscheme.heresy .boost.loot.toggle:hover, body.lightscheme.heresy .boost.shop.toggle:hover, body.lightscheme.heresy .badge.toggle:hover
 {
 	background:#d8d8ff;
 }
-body.lightscheme.heresy .boost.toggle:hover, body.darkscheme.heresy .badge.toggle:hover
+body.lightscheme.heresy .boost.loot.toggle:hover, body.darkscheme.heresy .boost.shop.toggle:hover, body.darkscheme.heresy .badge.toggle:hover
 {
 	background:#0a0a20;
 }
 
-body.darkscheme.heresy .boost.alert:hover, body.lightscheme.heresy .badge.alert
+body.darkscheme.heresy .boost.loot.alert:hover, body.lightscheme.heresy .boost.shop.alert:hover, body.lightscheme.heresy .badge.alert
 {
 	background:#FFF2F2;
 }
-body.lightscheme.heresy .boost.alert:hover, body.darkscheme.heresy .badge.alert
+body.lightscheme.heresy .boost.loot.alert:hover, body.darkscheme.heresy .boost.shop.alert:hover, body.darkscheme.heresy .badge.alert
 {
 	background:#200b0b;
 }
 
-body.darkscheme.heresy .boost.alert,body.lightscheme.heresy .badge.alert:hover
+body.darkscheme.heresy .boost.loot.alert, body.lightscheme.heresy .boost.shop.alert, body.lightscheme.heresy .badge.alert:hover
 {
 	background:#fdd;
 }
-body.lightscheme.heresy .boost.alert, body.darkscheme.heresy .badge.alert:hover
+body.lightscheme.heresy .boost.loot.alert, body.darkscheme.heresy .boost.shop.alert, body.darkscheme.heresy .badge.alert:hover
 {
 	background:#522;
 }

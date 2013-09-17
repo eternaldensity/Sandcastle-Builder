@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.974
+- When loading, hide redacted to prevent savescumming
+- Fixed chromatic CSS for boosts in shop
+
 ### 0.973
 - Removed some references to old hover stuff
 - More buttons
