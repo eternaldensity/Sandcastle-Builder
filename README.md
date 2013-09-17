@@ -19,6 +19,7 @@ Not for any commercial use!
 ### 0.972
 - Judgement Dip notifications logged
 - Prevent DON savescumming
+- Description hover now works in firefox (probably Safari too, let me know)
 
 ### 0.971
 - Not Lucky reward general increase, sand tools benefit more than castle tools

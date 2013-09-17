@@ -91,13 +91,13 @@ function isChildOf(child,parent)
 
 function onhover(me,event)
 {
-	if(this.hoverOnCounter>0)return;
+	if(me.hoverOnCounter>0)return;
 	me.hoverOnCounter=Math.ceil(Molpy.fps/2);
 	me.hoverOffCounter=-1;
 }
 function onunhover(me,event)
 {				
-	if(isChildOf(event.toElement,event.fromElement)) return;
+	if(isChildOf(event.relatedTarget,event.currentTarget)) return;
 	me.hoverOffCounter=Molpy.fps;
 	me.hoverOnCounter=-1;
 }
