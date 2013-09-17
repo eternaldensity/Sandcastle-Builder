@@ -19,7 +19,7 @@ Not for any commercial use!
 ### 0.97
 - fixed Dip heresy
 - fixed Where is All this coming from boost not unlocking
-- made *bot boosts a bit harder to get
+- made *bot boosts a bit harder to get, more expensive, and locked them all :P
 - moved Bot Efficience back to being before Recursivebot
 - *bot boosts now also boost their related tool, by 4.
 - Judgement Dip triggers reworked
