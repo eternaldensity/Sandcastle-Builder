@@ -1074,7 +1074,7 @@ Molpy.Up=function()
 			{
 				if(Molpy.castles>=30){
 					Molpy.Destroy(30);
-					Molpy.Boosts['Ninja Penance'].power;;
+					Molpy.Boosts['Ninja Penance'].power--;
 					Molpy.Notify('Ninja Forgiven',1);
 					return 0;
 				}
@@ -1820,16 +1820,16 @@ Molpy.Up=function()
 				var i=0;
 				while(i<Molpy.SandToolsN)
 				{
-					bonus+=Molpy.SandToolsById[i].amount*Math.pow(2,i+1);
+					bonus+=Molpy.SandToolsById[i].amount*Math.pow(3,i);
 					i++;
                 } 
 				i=0;
 				while(i<Molpy.CastleToolsN)
 				{
-					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(3,i+1);
+					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(2,i);
 					i++;
                 }
-				bonus = Math.floor((bonus+Molpy.BoostsOwned+Molpy.BadgesOwned)/4)+4;
+				bonus = Molpy.BoostsOwned+Molpy.BadgesOwned))+4;
 				Molpy.Build(bonus);
 			}else{
 				var blitzSpeed=8,blitzTime=23;

@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+###
+- Not Lucky reward general increase, sand tools benefit more than castle tools
+- Fixed Ninja Penance not decrementing when used
+
 ### 0.97
 - fixed Dip heresy
 - fixed Where is All this coming from boost not unlocking
