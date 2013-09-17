@@ -16,6 +16,17 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.97
+- fixed Dip heresy
+- fixed Where is All this coming from boost not unlocking
+- made *bot boosts a bit harder to get
+- moved Bot Efficience back to being before Recursivebot
+- *bot boosts now also boost their related tool, by 4.
+- Judgement Dip triggers reworked
+- Judgement Dip destruction now occures only every 50mNP
+- Prevent infinite sandcastle gain loop via timetravel
+- Prevent free timetravel
+
 ### 0.963
 - an inoccuous boost rename
 - track total castles built wiped by Molpy Down

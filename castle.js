@@ -104,7 +104,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.963;
+		Molpy.version=0.97;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -259,6 +259,7 @@ Molpy.Up=function()
 			Flint(Molpy.redactedClicks)+s+
 			Flint(Molpy.highestNPvisited)+s+
 			Flint(Molpy.totalCastlesDown)+s+
+			Flint(Molpy.intruderBots)+s+
 			p;
 			//sand tools:
 			for(var cancerbabies in Molpy.SandTools)
@@ -363,6 +364,7 @@ Molpy.Up=function()
 			}
 			Molpy.highestNPvisited=parseInt(pixels[25]);
 			Molpy.totalCastlesDown=parseInt(pixels[26]);
+			Molpy.intruderBots=parseInt(pixels[27]);
 			
 			
 			pixels=thread[5].split(s);
@@ -539,6 +541,10 @@ Molpy.Up=function()
 				Molpy.totalCastlesDown=0;
 				Molpy.highestNPvisited=Molpy.newpixNumber;		//steambottle!	
 			}
+			if(version<0.97)
+			{
+				Molpy.intruderBots=0;
+			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
 			Molpy.CheckSandRateBadges(); //shiny!
@@ -551,6 +557,7 @@ Molpy.Up=function()
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
+			Molpy.judgeLevel=-1;
 			
 			if(Molpy.showOptions) //needs refreshing
 			{
@@ -695,7 +702,7 @@ Molpy.Up=function()
 			{
 				Molpy.options.colourscheme++;
 				if(Molpy.options.colourscheme>=2)Molpy.options.colourscheme=0;
-				Molpy.EarnBadge('Night and Day');
+				Molpy.EarnBadge('Night and Dip');
 				Molpy.UpdateColourScheme();
 			}else return;
 			Molpy.OptionDescription(bacon,1); //update description
@@ -1126,13 +1133,55 @@ Molpy.Up=function()
 			
 			if(Molpy.sandPermNP>oldrate) Molpy.CheckSandRateBadges();
 			
-			Molpy.judgeLevel=Molpy.JudgementDayReport()[0];
+			var judy=Molpy.JudgementDipReport()[0];
+			if(Molpy.judgeLevel==-1)//just loaded
+			{
+				if(judy>0)
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1));
+			}			
+			else if(judy>Molpy.judgeLevel)//increase
+			{
+				if(Molpy.judgeLevel<2&&judy>2)//jumped from safe to multiple levels of judgement
+				{
+					Molpy.Notify('Judgement Dip is upon us!');
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1));
+				}else if(judy>2)
+				{
+					Molpy.Notify('Things got worse!!');
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1));
+				}
+				else if(judy==2)
+				{
+					Molpy.Notify('Judgement Dip is upon us!');
+				}
+				else if(judy==1)
+				{
+					Molpy.Notify("You sense trouble. The bots are restless.");
+				}
+			}else if(judy<Molpy.judgeLevel)//decrease
+			{
+				if(judy>1)
+				{
+					Molpy.Notify('Things got better');
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1));
+				}
+				else if(judy==1)
+				{
+					Molpy.Notify("You feel relief but fear lingers.");
+				}
+				else if(judy==0)
+				{
+					Molpy.Notify('You feel safe.');
+				}
+			}
+			Molpy.judgeLevel=judy;
+			
 			if(Molpy.Boosts['Coma Molpy Style'].power)
 			{
 				Molpy.judgeLevel=Math.floor(Molpy.judgeLevel/2);
 			}
-			if(Molpy.judgeLevel)Molpy.EarnBadge('Judgement Day Warning');
-			if(Molpy.judgeLevel>1)Molpy.EarnBadge('Judgement Day');
+			if(Molpy.judgeLevel)Molpy.EarnBadge('Judgement Dip Warning');
+			if(Molpy.judgeLevel>1)Molpy.EarnBadge('Judgement Dip');
 		}
 		Molpy.CheckSandRateBadges=function()
 		{
@@ -1144,7 +1193,7 @@ Molpy.Up=function()
 			if(sr>=100)Molpy.EarnBadge('Hundred Year Storm');
 			if(sr>=400)Molpy.EarnBadge('Thundering Typhoon!');
 			if(sr>=1600)Molpy.EarnBadge('Sandblaster');
-			if(sr>=7500)Molpy.EarnBadge('Where is this coming from?');
+			if(sr>=7500)Molpy.EarnBadge('Where is all this coming from?');
 			if(sr>=30000)Molpy.EarnBadge('Seaish Sandstorm');
 			if(sr>=500500)Molpy.EarnBadge('WHOOSH');
 			if(sr>=2222222)Molpy.EarnBadge('We want some two!');
@@ -1216,7 +1265,7 @@ Molpy.Up=function()
 				var price=this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount);
 				price=Math.floor(price*0.5);
 				if (this.amount>0)
-				{
+				{					
 					Molpy.Build(price);
 					this.amount--;
 					price=this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount);
@@ -1322,7 +1371,14 @@ Molpy.Up=function()
 				var price=this.prevPrice;
 				if (this.amount>0)
 				{
-					Molpy.Build(price);
+					if(this.name=='NewPixBot'&&Molpy.intruderBots)
+					{
+						Molpy.intruderBots--;
+						Molpy.Notify('Intruder Destroyed!');
+					}else{
+						Molpy.Build(price);
+					}
+					
 					this.amount--;
 					this.prevPrice=this.nextPrice-this.prevPrice;
 					this.price=this.nextPrice;
@@ -2262,8 +2318,11 @@ Molpy.Up=function()
 			}
 		}
 		
-		if(Molpy.judgeLevel>1)
-			Molpy.Destroy((Molpy.judgeLevel-1)*Molpy.CastleTools['NewPixBot'].amount,1);
+		if(Molpy.judgeLevel>1 && Math.floor(Molpy.ONGelapsed/1000)%50==0)
+		{
+			Molpy.Destroy((Molpy.judgeLevel-1)*Molpy.CastleTools['NewPixBot'].amount*50,1);
+			Molpy.Notify('By the NewpixBots');
+		}
 	}
 	
 	var clockDegrees=0;
@@ -2348,7 +2407,7 @@ Molpy.Up=function()
 		{
 			var hadStealth = Molpy.ninjaStealth;
 			if(Molpy.NinjaUnstealth())
-				if(hadStealth)Molpy.EarnBadge('Ninja Holiday');
+				if(hadStealth)Molpy.EarnBadge('Ninja Holidip');
 		}
 		Molpy.ninjad=0;//reset ninja flag
 		Molpy.npbONG=0;//reset newpixbot flag
