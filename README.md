@@ -20,6 +20,9 @@ Not for any commercial use!
 - Not Lucky reward general increase, sand tools benefit more than castle tools
 - Fixed Ninja Penance not decrementing when used
 - Bag Burning Boost: helps fight the NewPixBots
+- Totally revamped the hover code
+- Half second delay on show description, full second on hide
+- That means you can move the mouse over the badges and boosts at a reasonable speed without them popping up
 
 ### 0.97
 - fixed Dip heresy
