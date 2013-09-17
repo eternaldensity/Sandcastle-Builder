@@ -544,6 +544,11 @@ Molpy.Up=function()
 			if(version<0.97)
 			{
 				Molpy.intruderBots=0;
+				for(var i in Molpy.npbDoublers)
+				{
+					var me = Molpy.Boosts[Molpy.npbDoublers[i]];
+					if(me.bought)Molpy.LockBoost(me.name,1); //ha!
+				}
 			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
@@ -1591,7 +1596,7 @@ Molpy.Up=function()
 				bb.buy();					
 			}
 		}
-		Molpy.LockBoost=function(bacon)
+		Molpy.LockBoost=function(bacon,silent)
 		{
 			if(typeof bacon==='string')
 			{
@@ -1608,7 +1613,8 @@ Molpy.Up=function()
 							Molpy.BoostsOwned--;
 							Molpy.Boosts[bacon].bought=0;
 						} //Orteil did this bit wrong :P
-						Molpy.Notify('Boost Locked: '+bacon,1);
+						if(!silent)
+							Molpy.Notify('Boost Locked: '+bacon,1);
 					}
 				}
 			}else{ //so I put bacon in your bacon
