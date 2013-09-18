@@ -179,20 +179,23 @@ Molpy.DefineSandTools=function()
 Molpy.DefineCastleTools=function()
 {
 	new Molpy.CastleTool('NewPixBot','newpixbot|newpixbots||automated','Automates castles after the ONG\n(if not ninja\'d)',1,0,0,
-	 function()
-	 {
-		var baseval=1;		
-		if(Molpy.Got('Robot Efficiency')) baseval++;
-		if(Molpy.Got('HAL-0-Kitty')) baseval+=Math.floor(Molpy.redactedClicks/9);
-		var pow=0;
-		for(var i in Molpy.npbDoublers)
+		function()
 		{
-			var me = Molpy.Boosts[Molpy.npbDoublers[i]];
-			if(me.bought)pow++
-		}
-		
-	  return baseval*Math.pow(2,pow);
-	 } 
+			var baseval=1;		
+			if(Molpy.Got('Robot Efficiency')) baseval++;
+			if(Molpy.Got('HAL-0-Kitty')) baseval+=Math.floor(Molpy.redactedClicks/9);
+			var pow=0;
+			for(var i in Molpy.npbDoublers)
+			{
+				var me = Molpy.Boosts[Molpy.npbDoublers[i]];
+				if(me.bought)pow++;
+			}
+			
+			baseval*=Math.pow(2,pow);
+			if(Molpy.Boosts['NewPixBot Navigation Code'].power)
+				baseval=Math.floor(baseval*.001);
+			return baseval;
+		} 
 	);
 	
 	Molpy.npbDoublers = ['Carrybot',
@@ -369,6 +372,7 @@ Molpy.DefineBoosts=function()
 			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP';
 		}
 		,0,0);
+	Molpy.Boosts['Blitzing'].className='alert';
 	new Molpy.Boost('Kitnip',Molpy.redactedWords+' come more often and stay longer',33221,63);
 	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',23456,78);
 	new Molpy.Boost('Raise the Flag', 'Each Flag+Ladder pair gives clicking an extra +50 sand',85000,95);
@@ -378,7 +382,7 @@ Molpy.DefineBoosts=function()
 		{
 			me.power=Molpy.beachClicks;
 		});
-	new Molpy.Boost('Double or Nothing', '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing();"></input> to double or lose your current castle balance',200,0);
+	new Molpy.Boost('Double or Nothing', '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to double or lose your current castle balance',200,0);
 	Molpy.Boosts['Double or Nothing'].className='toggle';
 	Molpy.DoubleOrNothing=function()
 	{
@@ -403,6 +407,7 @@ Molpy.DefineBoosts=function()
 			Molpy.shopRepaint=1;
 		}
 		,0.4,4);
+	Molpy.Boosts[Molpy.IKEA].className='alert';
 	
 	new Molpy.Boost('Overcompensating', function(me){
 		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
@@ -411,7 +416,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Coma Molpy Style', 
 		function(me)
 		{ 
-			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><input type="Button" onclick="Molpy.ComaMolpyStyleToggle();" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><input type="Button" onclick="Molpy.ComaMolpyStyleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 		}
 		,8500,200);
 	Molpy.Boosts['Coma Molpy Style'].className='toggle';
@@ -604,7 +609,9 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Blast Furnace','Gives the Department of Redundancy Department the ability to make Castles from Sand', 8800000,28600);
 	Molpy.Boosts['Blast Furnace'].hardlocked=1;	
 	
-	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja', 'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked','Big Splash','Irregular Rivers'];
+	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja',
+		'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked',
+		'Big Splash','Irregular Rivers','NewPixBot Navigation Code'];
 	new Molpy.Boost('Sandbag','Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1400000,21000);
 	new Molpy.Boost('Embaggening','Each Cuegan gives a 2% boost to the sand dig rate of Bags',3500000,23000);
 	new Molpy.Boost('Carrybot','NewPixBots produce double castles',1000,100);
@@ -629,16 +636,14 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Chromatic Heresy'].className='toggle';
 	Molpy.ChromaticHeresyToggle=function()
 	{
-		if(!Molpy.Boosts['Chromatic Heresy'].bought)
+		var ch = Molpy.Boosts['Chromatic Heresy'];
+		if(!ch.bought)
 		{
 			Molpy.Notify('Somewhere, over the rainbow...');
 			return;
 		}
-		var p = Molpy.Boosts['Chromatic Heresy'].power;
-		p++;
-		p%=2;
-		Molpy.Boosts['Chromatic Heresy'].power=p;
-		Molpy.Boosts['Chromatic Heresy'].hoverOnCounter=1;
+		ch.power=!ch.power*1;
+		ch.hoverOnCounter=1;
 		Molpy.UpdateColourScheme();
 		
 	}
@@ -659,7 +664,55 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Stacked'].hardlocked=1;	
 	Molpy.Boosts['Big Splash'].hardlocked=1;	
 	Molpy.Boosts['Irregular Rivers'].hardlocked=1;	
-}	
+	
+	Molpy.scrumptiousDonuts=-1;
+	new Molpy.Boost('NewPixBot Navigation Code', 
+		function()
+		{
+			return 'thisAlgorithm. BecomingSkynetCost = 999999999 <input type="Button" onclick="Molpy.NavigationCodeToggle()" value="' +
+				(Molpy.Boosts['NewPixBot Navigation Code'].power?'Uni':'I')+'nstall"></input>';
+		}
+		,999999999,2101, 'When installed, this averts Judgement Dip at the cost of 99.9% of NewPixBot Castle Production.');	
+		
+	Molpy.NavigationCodeToggle=function()
+	{		
+		if(Molpy.Got('Jamming'))
+		{
+			Molpy.Notify('Experiencing Jamming, cannot access Navigation Code');
+			if(Molpy.scrumptiousDonuts<0)
+			{
+				Molpy.Notify('Things I will never do:');
+				Molpy.scrumptiousDonuts=120;
+			}
+			return;
+		}
+		var nc = Molpy.Boosts['NewPixBot Navigation Code'];
+		if(!nc.bought)
+		{
+			if(Molpy.scrumptiousDonuts<0)
+			{
+				Molpy.Notify('Things I will never do:');
+				Molpy.scrumptiousDonuts=120;
+			}
+			return;
+		}
+		nc.power=!nc.power*1;
+		Molpy.scrumptiousDonuts=-1;
+		nc.hoverOnCounter=1;
+		Molpy.recalculateDig=1;
+		Molpy.GiveTempBoost('Jamming',1,2000);
+	}
+	new Molpy.Boost('Jamming', 
+		function(me)
+		{		
+			return 'You cannot access NewPixBot Navigation Code for '+Molpify(me.countdown)+'mNP';
+		}
+		,0,0);
+	Molpy.Boosts['NewPixBot Navigation Code'].className='toggle';
+	Molpy.Boosts['NewPixBot Navigation Code'].hardlocked=1;
+	Molpy.Boosts['Jamming'].className='alert';
+}
+	
 	
 Molpy.DefineBadges=function()
 {	
@@ -747,6 +800,7 @@ Molpy.DefineBadges=function()
 		function()
 		{
 			var report=Molpy.JudgementDipReport();
+			if(Molpy.Boosts['NewPixBot Navigation Code'].power) return 'The Bots have been foiled by altered navigation code';
 			var level = report[0];
 			var countdown = report[1];
 			if(!level) return 'Safe. For now.';
@@ -756,6 +810,7 @@ Molpy.DefineBadges=function()
 		},2);
 	Molpy.JudgementDipThreshhold=function()
 	{
+		if(Molpy.Boosts['NewPixBot Navigation Code'].power) return [0,Infinity];
 		var baseVal= 500000000;
 		var div = 1+ Molpy.Got('Factory Automation')+Molpy.Got('Blast Furnace')+Molpy.Got('Time Travel')
 			+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine')+Molpy.Got('Recursivebot')+Molpy.Got('Robot Efficiency')
@@ -804,11 +859,17 @@ Molpy.DefineBadges=function()
 			if(Molpy.Got('Big Splash'))
 				Molpy.Boosts['Irregular Rivers'].hardlocked=0;
 		}
+		if(level>12)
+		{
+			if(Molpy.Got('Irregular Rivers'))
+				Molpy.Boosts['NewPixBot Navigation Code'].hardlocked=0;
+		}
 		return [level,Math.ceil(countdown)];
 	}
 	new Molpy.Badge("Judgement Dip",
 		function()
 		{
+			if(Molpy.Boosts['NewPixBot Navigation Code'].power) return 'The Bots have been foiled by altered navigation code';
 			var j=Molpy.judgeLevel-1;
 			if(j<1) return 'Safe. For now.';
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			

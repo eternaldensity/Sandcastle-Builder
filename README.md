@@ -16,6 +16,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.978
+- Added a way for touchscreen-leopard users to type stuff in (or rather, just handled the events for the existing already existing method :P)
+- Added a boost to avert Judgement Dip
+- Scrumptious Donuts
+
 ### 0.977
 - A whole raft of new Boosts in the Department, available as Judgement Dip progresses to higher levels
 
