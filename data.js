@@ -659,6 +659,8 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Stacked'].hardlocked=1;	
 	Molpy.Boosts['Big Splash'].hardlocked=1;	
 	Molpy.Boosts['Irregular Rivers'].hardlocked=1;	
+	
+	new Molpy.Boost('NewPixBot Navigation Code', 'thisAlgorithmBecomingSkynetCost = 999999999',999999999,2101);	
 }	
 	
 Molpy.DefineBadges=function()

@@ -117,7 +117,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.977;
+		Molpy.version=0.978;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1092,8 +1092,8 @@ Molpy.Up=function()
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
 		
-		var prevKey=''
-		window.onkeydown=function(e)
+		var prevKey='';
+		Molpy.KeyDown=function(e)
 		{
 			var key= String.fromCharCode(e.keyCode||e.charCode);
 			if(key=='5'&&prevKey.toLowerCase()=='f')
@@ -1103,6 +1103,7 @@ Molpy.Up=function()
 			}
 			prevKey=key;
 		}
+		window.onkeydown=Molpy.KeyDown;
 		
 		Molpy.NinjaUnstealth=function()
 		{
@@ -2358,7 +2359,9 @@ Molpy.Up=function()
 		
 		if(Molpy.judgeLevel>1 && Math.floor(Molpy.ONGelapsed/1000)%50==0)
 		{
-			Molpy.Destroy((Molpy.judgeLevel-1)*Molpy.CastleTools['NewPixBot'].amount*50,1);
+			var dAmount = (Molpy.judgeLevel-1)*Molpy.CastleTools['NewPixBot'].amount*50;
+			Molpy.Destroy(dAmount,1);
+			Molpy.CastleTools['NewPixBot'].totalCastlesDestroyed+=dAmount;
 			Molpy.Notify('By the NewpixBots');
 		}
 	}
