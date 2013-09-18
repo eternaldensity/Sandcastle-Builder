@@ -117,7 +117,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.974;
+		Molpy.version=0.975;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -590,6 +590,7 @@ Molpy.Up=function()
 				Molpy.showOptions=0;
 				Molpy.OptionsToggle();
 			}
+			Molpy.InMyPants=!Math.floor(Math.random()*4);
 		}
 		
 		/* In which a routine for resetting the game is presented
@@ -2184,6 +2185,7 @@ Molpy.Up=function()
 		Molpy.notifLogPaint=0;
 		Molpy.Notify=function(text,log)
 		{
+			if(Molpy.InMyPants) text+= ' in my pants';
 			//pick the first free (or the oldest) notification to replace it
 			var highest=0;
 			var highestI=0;
