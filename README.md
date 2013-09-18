@@ -17,8 +17,10 @@ Not for any commercial use!
 ## Changelog
 
 ### 0.974
-- When loading, hide redacted to prevent savescumming
+- When loading, hide Redacted to prevent savescumming
 - Fixed chromatic CSS for boosts in shop
+- New boost for time travellers: Flux Turbine
+- Found the Sand Tool sell code didn't do quite what I thought
 
 ### 0.973
 - Removed some references to old hover stuff
