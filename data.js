@@ -782,6 +782,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Wimey','Travel through Time 40 Times',1);
 	new Molpy.Badge('Hot Tub','Travel through Time 160 Times',1);
 	new Molpy.Badge("Dude, Where's my DeLorean?",'Travel through Time 640 Times',2);
+	new Molpy.Badge('Use Your Leopard','Get a click by using your leopard to simulate reloading the page');
 }
 		
 Molpy.CheckBuyUnlocks=function()
