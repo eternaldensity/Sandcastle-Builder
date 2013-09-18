@@ -216,6 +216,11 @@ Molpy.Up=function()
 		Molpy.Import=function()
 		{
 			var thread=prompt('Please paste in the text that was given to you on save export.\n(If you have multiple parts, put them all together with no gaps.)\nWarning: this will automatically save so you may want to back up your current save first.','');
+			if(thread=='pants')
+			{
+				Molpy.InMyPants=!Molpy.InMyPants;
+				return;
+			}
 			if (thread && thread!='') Molpy.FromNeedlePulledThing(BeanishToCuegish(thread));
 			Molpy.SaveC_STARSTAR_kie();
 		}
@@ -590,7 +595,6 @@ Molpy.Up=function()
 				Molpy.showOptions=0;
 				Molpy.OptionsToggle();
 			}
-			Molpy.InMyPants=!Math.floor(Math.random()*4);
 		}
 		
 		/* In which a routine for resetting the game is presented
@@ -1222,7 +1226,12 @@ Molpy.Up=function()
 				}
 				else if(judy==0)
 				{
-					Molpy.Notify('You feel safe.',1);
+					if(Molpy.Boosts['NewPixBot Navigation Code'].power)
+					{
+						Molpy.Notify('Your alterations to the navigation code have saved the day!',1);
+					}else{
+						Molpy.Notify('You feel safe.',1);
+					}
 				}
 			}
 			Molpy.judgeLevel=judy;
@@ -2199,6 +2208,7 @@ Molpy.Up=function()
 		Molpy.notifLogNext=0;
 		Molpy.notifLogMax=39; //store 40 lines
 		Molpy.notifLogPaint=0;
+		Molpy.InMyPants=0;
 		Molpy.Notify=function(text,log)
 		{
 			if(Molpy.InMyPants) text+= ' in my pants';
@@ -2614,6 +2624,17 @@ Molpy.Up=function()
 		if(Molpy.showStats) Molpy.PaintStats();
 		Molpy.notifsUpdate();
 		Molpy.sparticlesUpdate();
+		
+		if(Molpy.scrumptiousDonuts==1)
+		{
+			g('scrumptiousdonuts').innerHTML=BeanishToCuegish('JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGR1U5Ukw2RDIzamslMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==');
+			Molpy.Notify('Give you up,');
+		}else if(Molpy.scrumptiousDonuts==-1){
+			g('scrumptiousdonuts').innerHTML='';
+		}
+		if(Molpy.scrumptiousDonuts>0){
+			Molpy.scrumptiousDonuts--;
+		}
 	}
 	
 	Molpy.TickHover=function(me)
