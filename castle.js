@@ -117,7 +117,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.973;
+		Molpy.version=0.974;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -154,6 +154,7 @@ Molpy.Up=function()
 		Molpy.highestNPvisited=1; //keep track of where the player has been
 		Molpy.timeTravels=0; //number of times timetravel has been used
 		Molpy.totalCastlesDown=0; //cumulative castles built and then wiped by Molpy Down throughout all games
+		Molpy.globalCastleMult=1; //for boosting castle gains
 		
 		
 		Molpy.options=[];
@@ -565,6 +566,11 @@ Molpy.Up=function()
 			
 			Molpy.UpdateColourScheme();
 			Molpy.LockBoost('Double or Nothing');
+			if(Molpy.redactedVisible)
+			{
+				Molpy.redactedCountup=Molpy.redactedToggle;
+				Molpy.CheckRedactedToggle();
+			}
 			
 			Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
 			Molpy.CheckSandRateBadges(); //shiny!
@@ -886,8 +892,13 @@ Molpy.Up=function()
 		}
 		Molpy.buildNotifyFlag=1;
 		Molpy.buildNotifyCount=0;
-		Molpy.Build=function(amount)
+		Molpy.Build=function(amount,refund)
 		{
+			if(!refund)
+			{
+				amount = Math.round(amount*Molpy.globalCastleMult);
+			}
+			amount = Math.max(0,amount);
 			Molpy.castlesBuilt+=amount;
 			Molpy.castles+=amount;
 			
@@ -1205,6 +1216,14 @@ Molpy.Up=function()
 			}
 			if(Molpy.judgeLevel)Molpy.EarnBadge('Judgement Dip Warning');
 			if(Molpy.judgeLevel>1)Molpy.EarnBadge('Judgement Dip');
+			
+			if(Molpy.Got('Flux Turbine'))
+			{
+				Molpy.globalCastleMult=Math.max(1,Math.pow(1.02,Math.log(Molpy.totalCastlesDown)));
+			}else{
+				Molpy.globalCastleMult=1;
+			}
+			
 		}
 		Molpy.CheckSandRateBadges=function()
 		{
@@ -1285,12 +1304,10 @@ Molpy.Up=function()
 			}
 			this.sell=function()
 			{
-				var price=this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount);
-				price=Math.floor(price*0.5);
 				if (this.amount>0)
 				{					
-					Molpy.Build(price);
 					this.amount--;
+					Molpy.Build(Math.floor(price*0.5),1);
 					price=this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount);
 					this.price=price;
 					if (this.sellFunction) this.sellFunction();
@@ -1393,7 +1410,7 @@ Molpy.Up=function()
 						Molpy.intruderBots--;
 						Molpy.Notify('Intruder Destroyed!');
 					}else{
-						Molpy.Build(price);
+						Molpy.Build(price,1);
 					}
 					
 					this.amount--;

@@ -558,7 +558,9 @@ Molpy.DefineBoosts=function()
 			if(t>=10)
 			{
 				Molpy.EarnBadge('Primer');
-				var incursionFactor=Molpy.Got('Flux Capacitor')?4:20;
+				var incursionFactor=Molpy.Got('Flux Capacitor')?4
+					:(Molpy.Got('Flux Capacitor')?8
+					:20);
 				if(!Math.floor(Math.random()*incursionFactor))
 				{
 					Molpy.Notify('You do not arrive alone');
@@ -577,6 +579,8 @@ Molpy.DefineBoosts=function()
 			}
 			if(t>=20)
 				Molpy.UnlockBoost('Flux Capacitor');
+			if(t>=30&&Molpy.Got('Flux Capacitor'))
+				Molpy.UnlockBoost('Flux Turbine');
 			if(t>=40)
 				Molpy.EarnBadge('Wimey');
 			if(t>=160)
@@ -634,6 +638,12 @@ Molpy.DefineBoosts=function()
 		Molpy.UpdateColourScheme();
 		
 	}
+	new Molpy.Boost('Flux Turbine','Castles lost via Molpy Down increase the rate of building new Castles',1985,121,
+		function()
+		{
+			if(!Molpy.Got('Flux Turbine')) return 'All castle gains are increased by 2% per natural logarithm of castles wiped by Molpy Down, except refunds which are not increased.';
+			return 'Multiplies all Castle gains by ' + Molpify(Molpy.globalCastleMult*100,2)+'% (But refunds when selling remain unchanged.)';
+		});
 }	
 	
 Molpy.DefineBadges=function()
@@ -733,7 +743,7 @@ Molpy.DefineBadges=function()
 	{
 		var baseVal= 500000000;
 		var div = 1+ Molpy.Got('Factory Automation')+Molpy.Got('Blast Furnace')+Molpy.Got('Time Travel')
-			+Molpy.Got('Flux Capacitor')+Molpy.Got('Recursivebot')+Molpy.Got('Robot Efficiency');
+			+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine')+Molpy.Got('Recursivebot')+Molpy.Got('Robot Efficiency');
 		if(Molpy.Got('Bag Burning'))
 		{
 			div/=Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
