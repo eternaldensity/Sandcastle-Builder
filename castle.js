@@ -1046,11 +1046,14 @@ Molpy.Up=function()
 					Molpy.EarnBadge('No Ninja');
 					Molpy.ninjaFreeCount++; 
 					Molpy.ninjaStealth+=(1+Molpy.Got('Active Ninja')*2);
-					Molpy.Build(1); //neat!
 					
 					if(Molpy.Got('Ninja Builder')) 
 					{
-						Molpy.Build(Molpy.ninjaStealth);
+						var stealthBuild=Molpy.ninjaStealth;
+						if(Molpy.Got('Ninja Assistants')) stealthBuild*=Molpy.CastleTools['NewPixBot'].amount;
+						Molpy.Build(stealthBuild+1);
+					}else{
+						Molpy.Build(1); //neat!
 					}
 					if(Molpy.ninjaStealth>=6)
 					{

@@ -217,6 +217,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Spring Fling'))baseval++;
 			if(Molpy.Got('Varied Ammo'))for(i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)baseval++;
 			if(Molpy.Got('Flingbot'))baseval*=4;
+			if(Molpy.Got('Minigun')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			return baseval;
 		}
 	);
@@ -233,6 +234,7 @@ Molpy.DefineCastleTools=function()
 		{
 			var baseval = 22;
 			if(Molpy.Got('Propbot'))baseval*=4;
+			if(Molpy.Got('Stacked')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			return baseval;
 		}
 	);
@@ -252,6 +254,7 @@ Molpy.DefineCastleTools=function()
 			var baseval= 111;
 			baseval+=Molpy.Got('Swell')*19;			
 			if(Molpy.Got('Washbot'))baseval*=4;
+			if(Molpy.Got('Big Splash')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			return baseval;
 		}
 	);
@@ -287,6 +290,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Sandbag'))
 				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
 			if(Molpy.Got('Smallbot'))mult*=4;
+			if(Molpy.Got('Irregular Rivers')) mult*=Molpy.CastleTools['NewPixBot'].amount;
 			return Math.floor(baseval*mult);
 		}
 	);
@@ -600,7 +604,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Blast Furnace','Gives the Department of Redundancy Department the ability to make Castles from Sand', 8800000,28600);
 	Molpy.Boosts['Blast Furnace'].hardlocked=1;	
 	
-	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja', 'Kitties Galore', 'Blast Furnace'];
+	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja', 'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked','Big Splash','Irregular Rivers'];
 	new Molpy.Boost('Sandbag','Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1400000,21000);
 	new Molpy.Boost('Embaggening','Each Cuegan gives a 2% boost to the sand dig rate of Bags',3500000,23000);
 	new Molpy.Boost('Carrybot','NewPixBots produce double castles',1000,100);
@@ -644,6 +648,17 @@ Molpy.DefineBoosts=function()
 			if(!Molpy.Got('Flux Turbine')) return 'All castle gains are increased by 2% per natural logarithm of castles wiped by Molpy Down, except refunds which are not increased.';
 			return 'Multiplies all Castle gains by ' + Molpify(Molpy.globalCastleMult*100,2)+'% (But refunds when selling remain unchanged.)';
 		});
+	new Molpy.Boost('Ninja Assistants', 'Ninja Builder\'s castle output is multiplied by the number of NewPixBots you have.',250000000,777);
+	new Molpy.Boost('Minigun', 'The castle output of Trebuchets is multiplied by the number of NewPixBots you have.',480000000,888);
+	new Molpy.Boost('Stacked', 'The castle output of Scaffolds is multiplied by the number of NewPixBots you have.',970000000,999);
+	new Molpy.Boost('Big Splash', 'The castle output of Waves is multiplied by the number of NewPixBots you have.',2650000000,1111);
+	new Molpy.Boost('Irregular Rivers', 'The castle output of Waves is multiplied by the number of NewPixBots you have.',8290000000,2222);	
+	
+	Molpy.Boosts['Ninja Assistants'].hardlocked=1;	
+	Molpy.Boosts['Minigun'].hardlocked=1;	
+	Molpy.Boosts['Stacked'].hardlocked=1;	
+	Molpy.Boosts['Big Splash'].hardlocked=1;	
+	Molpy.Boosts['Irregular Rivers'].hardlocked=1;	
 }	
 	
 Molpy.DefineBadges=function()
@@ -743,7 +758,8 @@ Molpy.DefineBadges=function()
 	{
 		var baseVal= 500000000;
 		var div = 1+ Molpy.Got('Factory Automation')+Molpy.Got('Blast Furnace')+Molpy.Got('Time Travel')
-			+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine')+Molpy.Got('Recursivebot')+Molpy.Got('Robot Efficiency');
+			+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine')+Molpy.Got('Recursivebot')+Molpy.Got('Robot Efficiency')
+			+Molpy.Got('Ninja Assistants')+Molpy.Got('Minigun')+Molpy.Got('Stacked')+Molpy.Got('Big Splash')+Molpy.Got('Irregular Rivers');
 		if(Molpy.Got('Bag Burning'))
 		{
 			div/=Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
@@ -759,10 +775,34 @@ Molpy.DefineBadges=function()
 		var countdown = ((level+1)*thresh - botCastles);
 		countdown/=(bot.buildN()*bot.amount*bot.amount);
 		if(Molpy.Got('Doublepost'))countdown/=2;
+		countdown/=Molpy.globalCastleMult; //this is a bit approximate because of its rounding, but close enough for this, hopefully
 		
 		if(level>3 && Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
 		{
 			Molpy.UnlockBoost('Bag Burning');
+		}
+		if(level>4)
+		{
+			Molpy.Boosts['Ninja Assistants'].hardlocked=0;
+		}
+		if(level>5)
+		{
+			Molpy.Boosts['Minigun'].hardlocked=0;
+		}
+		if(level>6)
+		{
+			if(Molpy.Got('Minigun'))
+				Molpy.Boosts['Stacked'].hardlocked=0;
+		}
+		if(level>7)
+		{
+			if(Molpy.Got('Stacked'))
+				Molpy.Boosts['Big Splash'].hardlocked=0;
+		}
+		if(level>8)
+		{
+			if(Molpy.Got('Big Splash'))
+				Molpy.Boosts['Irregular Rivers'].hardlocked=0;
 		}
 		return [level,Math.ceil(countdown)];
 	}
