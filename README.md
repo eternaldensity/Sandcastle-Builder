@@ -16,6 +16,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.977
+- A whole raft of new Boosts in the Department, available as Judgement Dip progresses to higher levels
+
 ### 0.976
 - Added leopard stuff including badge
 
