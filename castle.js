@@ -117,7 +117,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.975;
+		Molpy.version=0.976;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1088,6 +1088,18 @@ Molpy.Up=function()
 			Molpy.ninjad=1;
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
+		
+		var prevKey=''
+		window.onkeydown=function(e)
+		{
+			var key= String.fromCharCode(e.keyCode||e.charCode);
+			if(key=='5'&&prevKey.toLowerCase()=='f')
+			{
+				Molpy.ClickBeach();
+				Molpy.EarnBadge('Use Your Leopard');
+			}
+			prevKey=key;
+		}
 		
 		Molpy.NinjaUnstealth=function()
 		{

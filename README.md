@@ -16,6 +16,12 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.976
+- Added leopard stuff including badge
+
+### 0.975
+- Occasional pants
+
 ### 0.974
 - When loading, hide Redacted to prevent savescumming
 - Fixed chromatic CSS for boosts in shop
