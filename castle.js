@@ -2184,6 +2184,7 @@ Molpy.Up=function()
 		Molpy.notifLogPaint=0;
 		Molpy.Notify=function(text,log)
 		{
+			text+=' in my pants'
 			//pick the first free (or the oldest) notification to replace it
 			var highest=0;
 			var highestI=0;
