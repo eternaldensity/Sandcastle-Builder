@@ -221,6 +221,17 @@ Molpy.Up=function()
 				Molpy.InMyPants=!Molpy.InMyPants;
 				return;
 			}
+			if(thread=='F5')
+			{
+				Molpy.ClickBeach();
+				Molpy.EarnBadge('Use Your Leopard');				
+				return;
+			}
+			if(thread=='scrumptious donuts')
+			{
+				Molpy.scrumptiousDonuts=1;				
+				return;
+			}
 			if (thread && thread!='') Molpy.FromNeedlePulledThing(BeanishToCuegish(thread));
 			Molpy.SaveC_STARSTAR_kie();
 		}
