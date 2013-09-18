@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.979
+- Now anyone can definitely get the leopard badge by entering 'F5' in the right place
+- scrumptious donuts
+
 ### 0.978
 - Added a way for touchscreen-leopard users to type stuff in (or rather, just handled the events for the existing already existing method :P)
 - Added a boost to avert Judgement Dip
