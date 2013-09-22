@@ -117,7 +117,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.978;
+		Molpy.version=0.98;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -674,6 +674,7 @@ Molpy.Up=function()
 				Molpy.UpdateBeach();
 				Molpy.HandlePeriods();
 				Molpy.EarnBadge('Not Ground Zero');
+				Molpy.UpdateColourScheme();
 			}
 		}
 		Molpy.Coma=function()
@@ -1247,10 +1248,6 @@ Molpy.Up=function()
 			}
 			Molpy.judgeLevel=judy;
 			
-			if(Molpy.Boosts['Coma Molpy Style'].power)
-			{
-				Molpy.judgeLevel=Math.floor(Molpy.judgeLevel/2);
-			}
 			if(Molpy.judgeLevel)Molpy.EarnBadge('Judgement Dip Warning');
 			if(Molpy.judgeLevel>1)Molpy.EarnBadge('Judgement Dip');
 			

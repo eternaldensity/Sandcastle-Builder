@@ -831,6 +831,10 @@ Molpy.DefineBadges=function()
 		countdown/=(bot.buildN()*bot.amount*bot.amount);
 		if(Molpy.Got('Doublepost'))countdown/=2;
 		countdown/=Molpy.globalCastleMult; //this is a bit approximate because of its rounding, but close enough for this, hopefully
+		if(Molpy.Boosts['Coma Molpy Style'].power)
+		{
+			level=Math.floor(level/2);
+		}
 		
 		if(level>3 && Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
 		{
@@ -846,22 +850,21 @@ Molpy.DefineBadges=function()
 		}
 		if(level>6)
 		{
-			if(Molpy.Got('Minigun'))
 				Molpy.Boosts['Stacked'].hardlocked=0;
 		}
 		if(level>7)
 		{
-			if(Molpy.Got('Stacked'))
+			if(Molpy.Got('Minigun'))
 				Molpy.Boosts['Big Splash'].hardlocked=0;
 		}
 		if(level>8)
 		{
-			if(Molpy.Got('Big Splash'))
+			if(Molpy.Got('Stacked'))
 				Molpy.Boosts['Irregular Rivers'].hardlocked=0;
 		}
 		if(level>12)
 		{
-			if(Molpy.Got('Irregular Rivers'))
+			if(Molpy.Got('Big Splash'))
 				Molpy.Boosts['NewPixBot Navigation Code'].hardlocked=0;
 		}
 		return [level,Math.ceil(countdown)];

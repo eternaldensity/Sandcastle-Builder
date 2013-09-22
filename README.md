@@ -16,6 +16,15 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.98
+- Update Colour Scheme when Molpy Down
+- Display correct Judgement Dip level during Coma Molpy Style
+- Don't pop up Judgement Dip notifications when it hasn't changed (it thought it had changed because of how CMS changed the numbers)
+- Made the boosts available in Judgement Dip only require the boost 2 levels before, rather than the one immediate previous
+- (e.g. you only need Minigun for Big Splash to be available in the Department, before you needed Stacked)
+- First log entry was repeated at the bottom
+- Some layout improvements to fit large numbers better
+
 ### 0.979
 - Now anyone can definitely get the leopard badge by entering 'F5' in the right place
 - scrumptious donuts
