@@ -377,7 +377,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',23456,78);
 	new Molpy.Boost('Raise the Flag', 'Each Flag+Ladder pair gives clicking an extra +50 sand',85000,95);
 	new Molpy.Boost('Hand it Up', 'Each Ladder+Bag pair gives clicking an extra +500 sand',570000,170);
-	new Molpy.Boost('Riverish', 'Rivers destroy less castles the more you click',82000,290,0,
+	new Molpy.Boost('Riverish', 'Rivers destroy less castles the more you click',82000,290,0,0,
 		function(me)
 		{
 			me.power=Molpy.beachClicks;
@@ -711,6 +711,13 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['NewPixBot Navigation Code'].className='toggle';
 	Molpy.Boosts['NewPixBot Navigation Code'].hardlocked=1;
 	Molpy.Boosts['Jamming'].className='alert';
+	
+	
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',6800000,888555222,0,0,
+		function(me)
+		{
+			me.power=Molpy.redactedClicks;
+		});
 }
 	
 	
@@ -866,6 +873,15 @@ Molpy.DefineBadges=function()
 		{
 			if(Molpy.Got('Big Splash'))
 				Molpy.Boosts['NewPixBot Navigation Code'].hardlocked=0;
+		}
+		if(level>30)
+		{
+			if(Molpy.Got('Flux Turbine'))
+			{
+				Molpy.Boosts['NewPixBot Navigation Code'].hardlocked=0;
+				Molpy.Boosts['NewPixBot Navigation Code'].sandPrice=33000;
+				Molpy.Boosts['NewPixBot Navigation Code'].castlePrice=7400;
+			}
 		}
 		return [level,Math.ceil(countdown)];
 	}

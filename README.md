@@ -27,6 +27,8 @@ Not for any commercial use!
 - Large numbers are shortened: Kilo, Mega, Giga, Tera, Peta for 1,000s, 1,000,000s, 1,000,000,000s, 1,000,000,000,000s, and 1,000,000,000,000,000s
 - Stats view shows full length numbers for when you want exact figures
 - Huge Buckets now costs '2 Castles' rather than '1 Castles' so I don't have to write a conditional s
+- Blixtnedslag Kattungar, JA! (after you buy this, every additional redundakitty will add 1 to the blitzing multiplier)
+- Buffed Not Lucky some more
 
 ### 0.979
 - Now anyone can definitely get the leopard badge by entering 'F5' in the right place

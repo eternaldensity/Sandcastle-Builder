@@ -1841,6 +1841,8 @@ Molpy.Up=function()
 				Molpy.Boosts['Kitties Galore'].hardlocked=0;
 			if(Molpy.redactedClicks>=128)
 				Molpy.EarnBadge('Y U NO BELIEVE ME?');
+			if(Molpy.redactedClicks>=256)
+				Molpy.UnlockBoost('Blixtnedslag Kattungar, JA!');
 		}
 
 		Molpy.RewardRedacted=function(forceDepartment)
@@ -1893,19 +1895,22 @@ Molpy.Up=function()
 				var i=0;
 				while(i<Molpy.SandToolsN)
 				{
-					bonus+=Molpy.SandToolsById[i].amount*Math.pow(3,i);
+					bonus+=Molpy.SandToolsById[i].amount*Math.pow(4,i+1);
 					i++;
                 } 
 				i=0;
 				while(i<Molpy.CastleToolsN)
 				{
-					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(2,i);
+					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(3,i+1);
 					i++;
                 }
-				bonus += Molpy.BoostsOwned+Molpy.BadgesOwned+4;
+				bonus += Molpy.BoostsOwned+Molpy.BadgesOwned;
+				bonus += Molpy.redactedClicks*10;
 				Molpy.Build(bonus);
 			}else{
 				var blitzSpeed=8,blitzTime=23;
+				var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
+				if(BKJ.bought) blitzSpeed+= Molpy.redactedClicks-BKJ.power;
 				Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 			}			
 		}
