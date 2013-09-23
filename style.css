@@ -642,6 +642,14 @@ body.lightscheme .boost.loot #boost_chromatic.icon
 {
 	background-image:url('img/boost_chromatic_light_icon.png');
 }
+body.darkscheme.heresy .boost.loot #boost_chromatic.icon
+{
+	background-image:url('img/boost_chromatic_dark_heresy_icon.png');
+}
+body.lightscheme.heresy .boost.loot #boost_chromatic.icon
+{
+	background-image:url('img/boost_chromatic_light_heresy_icon.png');
+}
 body.darkscheme .boost.loot #boost_comamolpystyle.icon
 {
 	background-image:url('img/boost_comamolpystyle_dark_icon.png');
