@@ -16,6 +16,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.981
+- Multiplied *bot Boost sand prices by 10
+- Show/Hide Loot subkittegories
+
 ### 0.98
 - Update Colour Scheme when Molpy Down
 - Display correct Judgement Dip level during Coma Molpy Style

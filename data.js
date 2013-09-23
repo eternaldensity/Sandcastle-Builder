@@ -629,16 +629,16 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Embaggening','Each Cuegan gives a 2% boost to the sand dig rate of Bags',3500000,23000,
 	0
 	,'embaggening');
-	new Molpy.Boost('Carrybot','NewPixBots produce double castles',1000,100);
-	new Molpy.Boost('Stickbot','NewPixBots produce double castles',4000,200);
-	new Molpy.Boost('Standardbot','NewPixBots produce double castles',16000,400);
-	new Molpy.Boost('Climbbot','NewPixBots produce double castles',64000,800);
-	new Molpy.Boost('Luggagebot','NewPixBots produce double castles',256000,1600);
-	new Molpy.Boost('Recursivebot','NewPixBots produce double castles',10000,1000);
-	new Molpy.Boost('Flingbot','NewPixBots produce double castles',40000,2000);
-	new Molpy.Boost('Propbot','NewPixBots produce double castles',160000,4000);
-	new Molpy.Boost('Washbot','NewPixBots produce double castles',640000,8000);
-	new Molpy.Boost('Smallbot','NewPixBots produce double castles',2560000,16000);
+	new Molpy.Boost('Carrybot','NewPixBots produce double castles',10000,100);
+	new Molpy.Boost('Stickbot','NewPixBots produce double castles',40000,200);
+	new Molpy.Boost('Standardbot','NewPixBots produce double castles',160000,400);
+	new Molpy.Boost('Climbbot','NewPixBots produce double castles',640000,800);
+	new Molpy.Boost('Luggagebot','NewPixBots produce double castles',2560000,1600);
+	new Molpy.Boost('Recursivebot','NewPixBots produce double castles',100000,1000);
+	new Molpy.Boost('Flingbot','NewPixBots produce double castles',400000,2000);
+	new Molpy.Boost('Propbot','NewPixBots produce double castles',1600000,4000);
+	new Molpy.Boost('Washbot','NewPixBots produce double castles',6400000,8000);
+	new Molpy.Boost('Smallbot','NewPixBots produce double castles',25600000,16000);
 	
 	new Molpy.Boost('Swell','Waves produce 29 more Castles',20000,200);
 	new Molpy.Boost('Flux Capacitor','It makes Time Travel possibler!',88,88);
