@@ -16,6 +16,12 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.982
+- Icons for *bot Boosts
+- Updated *bot Boosts' descriptions to match long-ago buff
+- Rename Washbot to Surfbot because it's more molpish
+- Double or Nothing isn't available after 10 locks
+
 ### 0.981
 - Multiplied *bot Boost sand prices by 10
 - Show/Hide Loot subkittegories

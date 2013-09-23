@@ -206,7 +206,7 @@ Molpy.DefineCastleTools=function()
 		'Recursivebot',
 		'Flingbot',
 		'Propbot',
-		'Washbot',
+		'Surfbot',
 		'Smallbot'];
 	Molpy.npbDoubleThreshhold=14;
 		
@@ -256,7 +256,7 @@ Molpy.DefineCastleTools=function()
 		{
 			var baseval= 111;
 			baseval+=Molpy.Got('Swell')*19;			
-			if(Molpy.Got('Washbot'))baseval*=4;
+			if(Molpy.Got('Surfbot'))baseval*=4;
 			if(Molpy.Got('Big Splash')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			return baseval;
 		}
@@ -392,7 +392,7 @@ Molpy.DefineBoosts=function()
 			me.power=Molpy.beachClicks;
 		}
 		);
-	new Molpy.Boost('Double or Nothing', '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to double or lose your current castle balance',200,0);
+	new Molpy.Boost('Double or Nothing', '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to double or lose your current castle balance',200,0,0,0,0,10);
 	Molpy.Boosts['Double or Nothing'].className='toggle';
 	Molpy.DoubleOrNothing=function()
 	{
@@ -629,16 +629,16 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Embaggening','Each Cuegan gives a 2% boost to the sand dig rate of Bags',3500000,23000,
 	0
 	,'embaggening');
-	new Molpy.Boost('Carrybot','NewPixBots produce double castles',10000,100);
-	new Molpy.Boost('Stickbot','NewPixBots produce double castles',40000,200);
-	new Molpy.Boost('Standardbot','NewPixBots produce double castles',160000,400);
-	new Molpy.Boost('Climbbot','NewPixBots produce double castles',640000,800);
-	new Molpy.Boost('Luggagebot','NewPixBots produce double castles',2560000,1600);
-	new Molpy.Boost('Recursivebot','NewPixBots produce double castles',100000,1000);
-	new Molpy.Boost('Flingbot','NewPixBots produce double castles',400000,2000);
-	new Molpy.Boost('Propbot','NewPixBots produce double castles',1600000,4000);
-	new Molpy.Boost('Washbot','NewPixBots produce double castles',6400000,8000);
-	new Molpy.Boost('Smallbot','NewPixBots produce double castles',25600000,16000);
+	new Molpy.Boost('Carrybot','NewPixBots produce double castles, Buckets produce quadruple',10000,100,0,'carrybot');
+	new Molpy.Boost('Stickbot','NewPixBots produce double castles, Cuegan produce quadruple',40000,200,0,'stickbot');
+	new Molpy.Boost('Standardbot','NewPixBots produce double castles, Flags produce quadruple',160000,400,0,'standardbot');
+	new Molpy.Boost('Climbbot','NewPixBots produce double castles, Ladders produce quadruple',640000,800,0,'climbbot');
+	new Molpy.Boost('Luggagebot','NewPixBots produce double castles, Bags produce quadruple',2560000,1600,0,'luggagebot');
+	new Molpy.Boost('Recursivebot','NewPixBots produce double castles',100000,1000,0,'recursivebot');
+	new Molpy.Boost('Flingbot','NewPixBots produce double castles, Trebuchets produce quadruple',400000,2000,0,'flingbot');
+	new Molpy.Boost('Propbot','NewPixBots produce double castles, Scaffolds produce quadruple',1600000,4000,0,'propbot');
+	new Molpy.Boost('Surfbot','NewPixBots produce double castles, Waves produce quadruple',6400000,8000,0,'surfbot');
+	new Molpy.Boost('Smallbot','NewPixBots produce double castles, Rivers produce quadruple',25600000,16000,0,'smallbot');
 	
 	new Molpy.Boost('Swell','Waves produce 29 more Castles',20000,200);
 	new Molpy.Boost('Flux Capacitor','It makes Time Travel possibler!',88,88);
@@ -967,7 +967,7 @@ Molpy.CheckBuyUnlocks=function()
 	
 	me=Molpy.CastleTools['Wave'];
 	if(me.amount>=2)Molpy.UnlockBoost('Swell');
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Washbot');
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Surfbot');
 	
 	me=Molpy.SandTools['Bag'];
 	if(me.amount>=2)Molpy.UnlockBoost('Embaggening');
