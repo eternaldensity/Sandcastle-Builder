@@ -29,6 +29,7 @@ Not for any commercial use!
 - Huge Buckets now costs '2 Castles' rather than '1 Castles' so I don't have to write a conditional s
 - Blixtnedslag Kattungar, JA! (after you buy this, every additional redundakitty will add 1 to the blitzing multiplier)
 - Buffed Not Lucky some more
+- Wipeout now actually checks if 500 castles have been destroyed by waves rather than 200 wasted.
 
 ### 0.979
 - Now anyone can definitely get the leopard badge by entering 'F5' in the right place

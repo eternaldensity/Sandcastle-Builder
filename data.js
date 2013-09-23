@@ -264,7 +264,7 @@ Molpy.DefineCastleTools=function()
 	Molpy.CastleTools['Wave'].onDestroy=function()
 	{
 		if(this.totalCastlesDestroyed>=2000) Molpy.UnlockBoost('Erosion');
-		if(this.totalCastlesWasted>=200) Molpy.EarnBadge('Wipeout');
+		if(this.totalCastlesDestroyed>=500) Molpy.EarnBadge('Wipeout');
 	}
 		
 	new Molpy.CastleTool('River','river|rivers|washed|left','Washes away many castles, but leaves many more new ones.',1800,520,
