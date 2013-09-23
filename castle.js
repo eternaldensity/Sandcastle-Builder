@@ -127,6 +127,19 @@ function onunhover(me,event)
 	me.hoverOnCounter=-1;
 }
 
+var showhide={boosts:1,badges:1,badgesav:1};
+function showhideButton(key)
+{
+	return '<input type="Button" value="'+(showhide[key]?'Visible':'Hidden')+'" onclick="showhideToggle(\''+key+'\')"></input>'
+}
+function showhideToggle(key)
+{
+	showhide[key]=!showhide[key];
+	Molpy.shopRepaint=1;
+	Molpy.boostRepaint=1;
+	Molpy.badgeRepaint=1;
+}
+
 /* In which the game initialisation is specified
 ++++++++++++++++++++++++++++++++++++++++++++++++*/
 var Molpy={};
@@ -142,7 +155,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.98;
+		Molpy.version=0.981;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1733,7 +1746,8 @@ Molpy.Up=function()
 			}
 			this.hidedesc=function()
 			{
-				g('BadgeDescription'+this.id).innerHTML='';
+				var d = g('BadgeDescription'+this.id);
+				if(d)d.innerHTML='';
 			}
 			
 			Molpy.Badges[this.name]=this;
@@ -1924,6 +1938,30 @@ Molpy.Up=function()
 			}
 			Molpy.priceFactor=Math.max(0,baseval-savings);
 		}
+		
+		Molpy.RepaintLootSelection=function()
+		{
+			var str = '';
+			if(Molpy.BoostsOwned)
+			{
+				str+= '<div class="floatsquare boost loot"><div class="icon '
+					+(Molpy.redactedVisible==4?'redacted':'')
+					+'"></div>Boosts<br/>'+showhideButton('boosts')+'</div>';
+			}
+			if(Molpy.BadgesOwned)
+			{
+				str+= '<div class="floatsquare badge loot"><div class="icon '
+					+(Molpy.redactedVisible==5?'redacted':'')
+					+'"></div>Badges<br/>Earned<br/>'+showhideButton('badges')+'</div>';
+			}
+			if(Molpy.BadgeN-Molpy.BadgesOwned)
+			{
+				str+= '<div class="floatsquare badge shop"><div class="icon '
+					+(Molpy.redactedVisible==6?'redacted':'')
+					+'"></div>Badges<br/>Available<br/>'+showhideButton('badgesav')+'</div>';
+			}
+			g('lootselection').innerHTML=str;
+		}
 	
 		Molpy.RepaintShop=function()
 		{
@@ -2053,17 +2091,19 @@ Molpy.Up=function()
 				}
 				redactedIndex=Molpy.redactedViewIndex;
 			}
-			str='';
-			r=0;
-			for (var i in blist)
-			{
+			str='';			
+			if(showhide.boosts){
+				r=0;
+				for (var i in blist)
+				{
+					if(r==redactedIndex) str+= Molpy.redactedLoot;
+					var me=blist[i];
+					var cn= me.className?me.className:'';
+					str+='<div class="lootbox boost loot '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.name)+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="BoostDescription'+me.id+'"></div></div></div>';
+					r++;
+				}
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
-				var me=blist[i];
-				var cn= me.className?me.className:'';
-				str+='<div class="lootbox boost loot '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.name)+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="BoostDescription'+me.id+'"></div></div></div>';
-				r++;
 			}
-			if(r==redactedIndex) str+= Molpy.redactedLoot;
 			Molpy.boostHTML=str;
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;	
 		}
@@ -2071,67 +2111,71 @@ Molpy.Up=function()
 		Molpy.RepaintBadges=function()
 		{
 			Molpy.badgeRepaint=0;
-			var str='';
-			var blist=[];
-			for (var i in Molpy.Badges)
-			{
-				var me=Molpy.Badges[i];
-				if (me.earned)
+			var str='';			
+			if(showhide.badges){
+				var blist=[];
+				for (var i in Molpy.Badges)
 				{
-					blist.push(me);
+					var me=Molpy.Badges[i];
+					if (me.earned)
+					{
+						blist.push(me);
+					}
 				}
-			}
-			var redactedIndex=-1;
-			if(Molpy.redactedVisible==5)
-			{
-				if(Molpy.redactedViewIndex==-1)
+				var redactedIndex=-1;
+				if(Molpy.redactedVisible==5)
 				{
-					Molpy.redactedViewIndex=Math.floor((blist.length+1)*Math.random());
+					if(Molpy.redactedViewIndex==-1)
+					{
+						Molpy.redactedViewIndex=Math.floor((blist.length+1)*Math.random());
+					}
+					redactedIndex=Molpy.redactedViewIndex;
 				}
-				redactedIndex=Molpy.redactedViewIndex;
-			}
-			var r=0;
-			//do some sorting here?
-			for (var i in blist)
-			{
+				var r=0;
+				//do some sorting here?
+				for (var i in blist)
+				{
+					if(r==redactedIndex) str+= Molpy.redactedLoot;
+					var me=blist[i];
+					var cn= me.className?me.className:'';
+					str+='<div class="lootbox badge loot '+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div id="badge'+me.name+'" class="icon"></div><div class="heading">[badge]</div><div id="boost'+me.id+'"></div><div class="title">'+me.name+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
+					r++;
+				}
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
-				var me=blist[i];
-				var cn= me.className?me.className:'';
-				str+='<div class="lootbox badge loot '+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div id="badge'+me.name+'" class="icon"></div><div class="heading">[badge]</div><div id="boost'+me.id+'"></div><div class="title">'+me.name+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
-				r++;
 			}
-			if(r==redactedIndex) str+= Molpy.redactedLoot;
 			Molpy.badgeHTML=str;
-			str='';
-			blist=[];
-			for (var i in Molpy.Badges)
-			{
-				var me=Molpy.Badges[i];
-				if (!me.earned)
+			str='';			
+			if(showhide.badgesav){
+				var blist=[];
+				for (var i in Molpy.Badges)
 				{
-					blist.push(me);
+					var me=Molpy.Badges[i];
+					if (!me.earned)
+					{
+						blist.push(me);
+					}
 				}
-			}
-			
-			redactedIndex=-1;
-			if(Molpy.redactedVisible==6)
-			{
-				if(Molpy.redactedViewIndex==-1)
+				
+				var redactedIndex=-1;
+				if(Molpy.redactedVisible==6)
 				{
-					Molpy.redactedViewIndex=Math.floor((blist.length+1)*Math.random());
+					if(Molpy.redactedViewIndex==-1)
+					{
+						Molpy.redactedViewIndex=Math.floor((blist.length+1)*Math.random());
+					}
+					redactedIndex=Molpy.redactedViewIndex;
+				}			
+				var r=0;
+				//do some sorting here?
+				for (var i in blist)
+				{
+					if(r==redactedIndex) str+= Molpy.redactedLoot;
+					var me=blist[i];
+					str+='<div class="lootbox badge shop" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div id="badge'+me.name+'" class="icon"></div><div class="heading">[badge]</div><div id="boost'+me.id+'"></div><div class="title">'+(me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
+					r++;
 				}
-				redactedIndex=Molpy.redactedViewIndex;
-			}			
-			r=0;
-			//do some sorting here?
-			for (var i in blist)
-			{
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
-				var me=blist[i];
-				str+='<div class="lootbox badge shop" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div id="badge'+me.name+'" class="icon"></div><div class="heading">[badge]</div><div id="boost'+me.id+'"></div><div class="title">'+(me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
-				r++;
 			}
-			if(r==redactedIndex) str+= Molpy.redactedLoot;
 			Molpy.badgeHTML+=str;
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;		
 		}
@@ -2587,6 +2631,7 @@ Molpy.Up=function()
 		g('version').innerHTML= '<br>Version: '+Molpy.version;
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
+		if(repainted) Molpy.RepaintLootSelection();
 		
 		if(Molpy.shopRepaint)
 		{
