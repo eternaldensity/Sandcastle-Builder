@@ -869,3 +869,84 @@ body.lightscheme .boost.loot #boost_warbanner.icon
 {
 	background-image:url('img/boost_warbanner_light_icon.png');
 }
+
+body.darkscheme .boost.loot #boost_carrybot.icon
+{
+	background-image:url('img/boost_carrybot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_carrybot.icon
+{
+	background-image:url('img/boost_carrybot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_stickbot.icon
+{
+	background-image:url('img/boost_stickbot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_stickbot.icon
+{
+	background-image:url('img/boost_stickbot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_standardbot.icon
+{
+	background-image:url('img/boost_standardbot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_standardbot.icon
+{
+	background-image:url('img/boost_standardbot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_climbbot.icon
+{
+	background-image:url('img/boost_climbbot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_climbbot.icon
+{
+	background-image:url('img/boost_climbbot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_luggagebot.icon
+{
+	background-image:url('img/boost_luggagebot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_luggagebot.icon
+{
+	background-image:url('img/boost_luggagebot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_recursivebot.icon
+{
+	background-image:url('img/boost_recursivebot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_recursivebot.icon
+{
+	background-image:url('img/boost_recursivebot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_flingbot.icon
+{
+	background-image:url('img/boost_flingbot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_flingbot.icon
+{
+	background-image:url('img/boost_flingbot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_propbot.icon
+{
+	background-image:url('img/boost_propbot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_propbot.icon
+{
+	background-image:url('img/boost_propbot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_surfbot.icon
+{
+	background-image:url('img/boost_surfbot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_surfbot.icon
+{
+	background-image:url('img/boost_surfbot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_smallbot.icon
+{
+	background-image:url('img/boost_smallbot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_smallbot.icon
+{
+	background-image:url('img/boost_smallbot_light_icon.png');
+}
