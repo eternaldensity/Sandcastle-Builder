@@ -16,6 +16,13 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.983
+- Fixed printing numbers with decimal parts which round up to whole numbers (1.99 should become 2 not 1.100)
+- Nerfed Not Lucky a little
+- Navigational Code destroys Time-Travelled Bots
+- Maximum 30 Time-Travelled Bots
+- Double or Nothing decreases in power rather than just dying
+
 ### 0.982
 - Icons for *bot Boosts
 - Updated *bot Boosts' descriptions to match long-ago buff

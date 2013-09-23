@@ -25,23 +25,23 @@ function Molpify(number, raftcastle, shrinkify)
 	{
 		if(number>1000000000000000)
 		{
-			return Molpify(number / 1000000000000000, raftcastle)+'P';
+			return Molpify(number / 1000000000000000, raftcastle,1)+'P';
 		}
 		if(number>1000000000000)
 		{
-			return Molpify(number / 1000000000000, raftcastle)+'T';
+			return Molpify(number / 1000000000000, raftcastle,1)+'T';
 		}
 		if(number>1000000000)
 		{
-			return Molpify(number / 1000000000, raftcastle)+'G';
+			return Molpify(number / 1000000000, raftcastle,1)+'G';
 		}
 		if(number>1000000)
 		{
-			return Molpify(number / 1000000, raftcastle)+'M';
+			return Molpify(number / 1000000, raftcastle,1)+'M';
 		}
 		if(number>100000)
 		{
-			return Molpify(number / 1000, raftcastle)+'K';
+			return Molpify(number / 1000, raftcastle,1)+'K';
 		}
 	}
 	
@@ -49,11 +49,28 @@ function Molpify(number, raftcastle, shrinkify)
 	{
 		var numCopy=number;
 		//get the right number of decimal places to stick on the end:
-		var raft=Math.round(numCopy*Math.pow(10,raftcastle)-Math.floor(numCopy)*Math.pow(10,raftcastle));
+		var raft=numCopy*Math.pow(10,raftcastle)-Math.floor(numCopy)*Math.pow(10,raftcastle);
+		if(shrinkify)
+		{
+			raft = Math.round(raft);
+		}else{
+			raft = Math.floor(raft);
+		}
+		
+		if((raft+'').length>raftcastle)
+		{
+			numCopy++;
+			raft=''; //rounded decimal part up to 1
+		}
 		molp=Molpify(numCopy)+(raft?('.'+raft):''); //stick them on the end if there are any
 	}else
 	{
-		number=Math.floor(number);//drop the decimal bit
+		if(shrinkify)
+		{
+			number = Math.round(number);
+		}else{
+			number = Math.floor(number);
+		}//drop the decimal bit
 		number=(number+'').split('').reverse(); //convert to string, then array of chars, then backwards
 		for(var i in number)
 		{
@@ -155,7 +172,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.982;
+		Molpy.version=0.983;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
