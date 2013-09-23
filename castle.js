@@ -16,10 +16,35 @@ function ONGsnip(time)
 	time.setMilliseconds(0); 
 	return time;
 }
-function Molpify(number, raftcastle)
+function Molpify(number, raftcastle, shrinkify)
 {
 	if(isNaN(number))return'Mustard';
 	var molp='';
+	
+	if(shrinkify)
+	{
+		if(number>1000000000000000)
+		{
+			return Molpify(number / 1000000000000000, raftcastle)+'P';
+		}
+		if(number>1000000000000)
+		{
+			return Molpify(number / 1000000000000, raftcastle)+'T';
+		}
+		if(number>1000000000)
+		{
+			return Molpify(number / 1000000000, raftcastle)+'G';
+		}
+		if(number>1000000)
+		{
+			return Molpify(number / 1000000, raftcastle)+'M';
+		}
+		if(number>100000)
+		{
+			return Molpify(number / 1000, raftcastle)+'K';
+		}
+	}
+	
 	if(raftcastle>0)
 	{
 		var numCopy=number;
@@ -49,7 +74,7 @@ function PriceSort(a,b)
 }
 function FormatPrice(monies)
 {
-	return Molpify(Math.floor(monies*Molpy.priceFactor));
+	return Molpify(Math.floor(monies*Molpy.priceFactor),1,!Molpy.showStats);
 }
 function Flint(stones){return parseInt(Math.floor(stones))}
 function CuegishToBeanish(mustard)
@@ -820,6 +845,8 @@ Molpy.Up=function()
 				g('stats').className='unhidden';
 				Molpy.EarnBadge('Far End of the Bell Curve');
 			}
+			Molpy.shopRepaint=1;
+			Molpy.boostRepaint=1;
 		}
 		
 		Molpy.showExport=0;
@@ -927,7 +954,7 @@ Molpy.Up=function()
 					Molpy.buildNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'+1 Castle':amount+ ' Castles Built',1);
+					Molpy.Notify(amount==1?'+1 Castle':Molpify(amount)+ ' Castles Built',1);
 				}
 			}else{
 				Molpy.buildNotifyCount+=amount;
@@ -1920,7 +1947,10 @@ Molpy.Up=function()
 			{
 				if(i==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.SandToolsById[i];
-				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="SandToolDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a></div>'+
+				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
+				'<span class="price">Price: '+FormatPrice(me.price)+(me.price<100?' Castles':' C')+'</span>'+
+				'<div id="SandToolDescription'+me.id+'"></div></div></div>';
 				i++
 			}
 			if(i==redactedIndex) str+= Molpy.redactedShop;
@@ -1948,7 +1978,10 @@ Molpy.Up=function()
 			{
 				if(i==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.CastleToolsById[i];
-				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a></div><span class="price">Price: '+FormatPrice(me.price)+' castles</span>'+(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a></div>'+
+				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
+				'<span class="price">Price: '+FormatPrice(me.price)+(me.price<100?' Castles':' C')+'</span>'+
+				'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
 				i++
 			}
 			if(i==redactedIndex) str+= Molpy.redactedShop;
@@ -1990,7 +2023,7 @@ Molpy.Up=function()
 				if(r==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.BoostsInShop[i];
 				var cn= me.className?me.className:'';
-				str+='<div class="floatbox boost shop '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div><span class="price">Price: '+FormatPrice(me.sandPrice)+' sand + '+FormatPrice(me.castlePrice)+' castles</span><div id="BoostDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox boost shop '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div><span class="price">Price: '+FormatPrice(me.sandPrice)+' Sand + '+FormatPrice(me.castlePrice)+' Castles</span><div id="BoostDescription'+me.id+'"></div></div></div>';
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedShop;
@@ -2281,7 +2314,7 @@ Molpy.Up=function()
 				i++;
 			}
 			i = 0;
-			while(i<=Molpy.notifLogNext)
+			while(i<Molpy.notifLogNext)
 			{
 				var line = Molpy.notifLog[i];
 				if(line){
@@ -2539,9 +2572,9 @@ Molpy.Up=function()
 		'floatbox boost shop','lootbox boost loot','lootbox badge loot','lootbox badge shop'];
 	Molpy.Draw=function()
 	{
-		g('castlecount').innerHTML=Molpify(Molpy.castles) + ' castles';
-		g('sandcount').innerHTML=Molpify(Molpy.sand) + ' sand out of ' + Molpify(Molpy.nextCastleSand) + ' needed';
-		g('sandrate').innerHTML=Molpify(Molpy.sandPermNP,1) + ' sand/milliNewPix';
+		g('castlecount').innerHTML=Molpify(Molpy.castles,1,!Molpy.showStats) + ' castles';
+		g('sandcount').innerHTML=Molpify(Molpy.sand,1,!Molpy.showStats) + ' sand of ' + Molpify(Molpy.nextCastleSand,1,!Molpy.showStats) + ' needed';
+		g('sandrate').innerHTML=Molpify(Molpy.sandPermNP,1,!Molpy.showStats) + ' sand/mNP';
 		g('newpixnum').innerHTML='Newpix '+Molpy.newpixNumber;
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
@@ -2582,7 +2615,7 @@ Molpy.Up=function()
 				{
 					if(desc.innerHTML==''||desc.innerHTML.indexOf('Sand/mNP:')>-1)
 					{
-						desc.innerHTML='Sand/mNP: '+Molpify(me.storedTotalSpmNP,1);					
+						desc.innerHTML='Sand/mNP: '+Molpify(me.storedTotalSpmNP,1,!Molpy.showStats);					
 					}		
 				}
 			}

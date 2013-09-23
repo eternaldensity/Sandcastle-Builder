@@ -24,6 +24,9 @@ Not for any commercial use!
 - (e.g. you only need Minigun for Big Splash to be available in the Department, before you needed Stacked)
 - First log entry was repeated at the bottom
 - Some layout improvements to fit large numbers better
+- Large numbers are shortened: Kilo, Mega, Giga, Tera, Peta for 1,000s, 1,000,000s, 1,000,000,000s, 1,000,000,000,000s, and 1,000,000,000,000,000s
+- Stats view shows full length numbers for when you want exact figures
+- Huge Buckets now costs '2 Castles' rather than '1 Castles' so I don't have to write a conditional s
 
 ### 0.979
 - Now anyone can definitely get the leopard badge by entering 'F5' in the right place

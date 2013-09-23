@@ -304,7 +304,7 @@ Molpy.DefineBoosts=function()
 	
 	//only add to the end!
 	new Molpy.Boost('Bigger Buckets','Increases sand rate of buckets and clicks',500,0,'Adds 0.1 S/mNP to each Bucket, before multipliers');
-	new Molpy.Boost('Huge Buckets','Doubles sand rate of buckets and clicks',800,1);
+	new Molpy.Boost('Huge Buckets','Doubles sand rate of buckets and clicks',800,2);
 	new Molpy.Boost('Helping Hand','Increases sand rate of Cuegan',500,2,'Adds 0.2 S/mNP to each Cuegan, before multipliers');
 	new Molpy.Boost('Cooperation','Increases sand rate of Cuegan 10% per pair of buckets',2000,4,
 		function()
