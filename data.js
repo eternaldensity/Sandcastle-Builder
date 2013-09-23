@@ -303,9 +303,9 @@ Molpy.DefineBoosts=function()
 {
 	
 	//only add to the end!
-	new Molpy.Boost('Bigger Buckets','Increases sand rate of buckets and clicks',500,0,'Adds 0.1 S/mNP to each Bucket, before multipliers');
-	new Molpy.Boost('Huge Buckets','Doubles sand rate of buckets and clicks',800,2);
-	new Molpy.Boost('Helping Hand','Increases sand rate of Cuegan',500,2,'Adds 0.2 S/mNP to each Cuegan, before multipliers');
+	new Molpy.Boost('Bigger Buckets','Increases sand rate of buckets and clicks',500,0,'Adds 0.1 S/mNP to each Bucket, before multipliers','biggerbuckets');
+	new Molpy.Boost('Huge Buckets','Doubles sand rate of buckets and clicks',800,2,0,'hugebuckets');
+	new Molpy.Boost('Helping Hand','Increases sand rate of Cuegan',500,2,'Adds 0.2 S/mNP to each Cuegan, before multipliers','helpinghand');
 	new Molpy.Boost('Cooperation','Increases sand rate of Cuegan 10% per pair of buckets',2000,4,
 		function()
 		{			
@@ -317,7 +317,7 @@ Molpy.DefineBoosts=function()
 			return 'Multiplies by 10% per pair of buckets';
 		}
 	);
-	new Molpy.Boost('Spring Fling','Trebuchets build an extra Castle',1000,6);
+	new Molpy.Boost('Spring Fling','Trebuchets build an extra Castle',1000,6,0,'springfling');
 	new Molpy.Boost('Trebuchet Pong','Increases sand rate of buckets 50% per pair of trebuchets',3000,6);
 	new Molpy.Boost('Molpies','Increases sand dig rate based on Badges',5000,5,
 		function()
@@ -328,15 +328,15 @@ Molpy.DefineBoosts=function()
 				return 'Multiplies all sand rates by '+ Molpify(mult*100,2)+'%';
 			}
 			return 'Multiplies all sand rates by 1% per Badge earned';
-		}
+		},'molpies'
 	);
 	new Molpy.Boost('Busy Bot','NewPixBots activate 10% sooner',900,4);
 	new Molpy.Boost('Stealthy Bot','NewPixBots activate 10% sooner',1200,5);
-	new Molpy.Boost('Flag Bearer','Flags are more powerful',5500,8, 'Each flag produces 2 extra sand/mNP, before multipliers');
-	new Molpy.Boost('War Banner','Trebuchets only destroy 1 castle',3000,10);
-	new Molpy.Boost('Magic Mountain','Flags are much more powerful',8000,15,'Multiplies Flag sand rate by 2.5');
+	new Molpy.Boost('Flag Bearer','Flags are more powerful',5500,8, 'Each flag produces 2 extra sand/mNP, before multipliers','flagbearer');
+	new Molpy.Boost('War Banner','Trebuchets only destroy 1 castle',3000,10,0,'warbanner');
+	new Molpy.Boost('Magic Mountain','Flags are much more powerful',8000,15,'Multiplies Flag sand rate by 2.5','magicmountain');
 	new Molpy.Boost('Extension Ladder','Ladders reach a little higher',12000,22,'Each ladder produces 18 extra castles per ONG, before multipliers');
-	new Molpy.Boost('Level Up!','Ladders are much more powerful',29000,34,'Ladders produce 2 times as many castles per ONG');
+	new Molpy.Boost('Level Up!','Ladders are much more powerful',29000,34,'Ladders produce 2 times as many castles per ONG','levelup');
 	new Molpy.Boost('Varied Ammo','Trebuchets build an extra castle for each Castle Tool you have 2+ of',3900,48,
 		function()
 		{
@@ -349,7 +349,7 @@ Molpy.DefineBoosts=function()
 			return 'For each kind of Castle Tool of which you have 2 or more, each trebuchet produces an additional castle per ONG, before multipliers';
 		}
 	);
-	new Molpy.Boost('Megball','Cuegan produce double sand',10700,56);
+	new Molpy.Boost('Megball','Cuegan produce double sand',10700,56,0,'megball');
 	new Molpy.Boost('Robot Efficiency','Newpixbots build an extra castle (before any doubling)',34000,153);
 	new Molpy.Boost('Ninja Builder','When increasing ninja stealth streak, builds that many castles',4000,35,
 		function()
@@ -358,30 +358,40 @@ Molpy.DefineBoosts=function()
 				return 'Will build '+ (Molpy.ninjaStealth+(1+Molpy.Got('Active Ninja')*2))+ ' Castles unless you destealth ninjas';
 			return 'Ninja Stealth increases the first time you click within a NewPix after NewPixBots activate. It will reset if you click before NewPixBots activate, or don\'t click before the next ONG.'	
 			
-		}
+		},'ninjabuilder'
 	);
-	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves, and 2 less per River bought',40000,77);
-	new Molpy.Boost('Autosave Option','Autosave option is available',100,4);
-	new Molpy.Boost('Helpful Hands','Each Cuegan+Bucket pair gives clicking +0.5 sand',250,5);
-	new Molpy.Boost('True Colours','Each Cuegan+Flag pair gives clicking +5 sand',750,15);
+	new Molpy.Boost('Erosion','Waves destroy less by 20% of total castles wasted by waves, and 2 less per River bought',40000,77,
+	0
+	,'erosion');
+	new Molpy.Boost('Autosave Option','Autosave option is available',100,4,0,'autosave');
+	new Molpy.Boost('Helpful Hands','Each Cuegan+Bucket pair gives clicking +0.5 sand',250,5,
+	0
+	,'helpfulhands');
+	new Molpy.Boost('True Colours','Each Cuegan+Flag pair gives clicking +5 sand',750,15,
+	0
+	,'truecolours');
 	new Molpy.Boost('Precise Placement','For every two ladders, scaffolds destroy one less castle',8750,115);
-	new Molpy.Boost('Ninja Hope','Avoid one Ninja Stealth reset, at the cost of 10 castles',7500,40,0,0,0,1); //startpower 1
-	new Molpy.Boost('Ninja Penance','Avoid a two Ninja Stealth resets, at the cost of 30 castles each',25000,88,0,0,0,2); //starpower 2
+	new Molpy.Boost('Ninja Hope','Avoid one Ninja Stealth reset, at the cost of 10 castles',7500,40,0,'ninjahope',0,1); //startpower 1
+	new Molpy.Boost('Ninja Penance','Avoid a two Ninja Stealth resets, at the cost of 30 castles each',25000,88,0,'ninjapenance',0,2); //starpower 2
 	new Molpy.Boost('Blitzing',function(me)
 		{		
 			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP';
 		}
-		,0,0);
+		,0,0,0,'blitzing');
 	Molpy.Boosts['Blitzing'].className='alert';
-	new Molpy.Boost('Kitnip',Molpy.redactedWords+' come more often and stay longer',33221,63);
-	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',23456,78);
+	new Molpy.Boost('Kitnip',Molpy.redactedWords+' come more often and stay longer',33221,63,
+	0
+	,'kitnip');
+	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',23456,78,0,
+	'department');
 	new Molpy.Boost('Raise the Flag', 'Each Flag+Ladder pair gives clicking an extra +50 sand',85000,95);
 	new Molpy.Boost('Hand it Up', 'Each Ladder+Bag pair gives clicking an extra +500 sand',570000,170);
-	new Molpy.Boost('Riverish', 'Rivers destroy less castles the more you click',82000,290,0,0,
+	new Molpy.Boost('Riverish', 'Rivers destroy less castles the more you click',82000,290,0,'riverish',
 		function(me)
 		{
 			me.power=Molpy.beachClicks;
-		});
+		}
+		);
 	new Molpy.Boost('Double or Nothing', '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to double or lose your current castle balance',200,0);
 	Molpy.Boosts['Double or Nothing'].className='toggle';
 	Molpy.DoubleOrNothing=function()
@@ -411,14 +421,14 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost('Overcompensating', function(me){
 		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
-		,987645,321,0,0,0,1.05);
-	new Molpy.Boost('Doublepost', 'During LongPix, Castle Tools activate a second time',650000,4000);
+		,987645,321,0,'overcompensating',0,1.05);
+	new Molpy.Boost('Doublepost', 'During LongPix, Castle Tools activate a second time',650000,4000,0,'doublepost');
 	new Molpy.Boost('Coma Molpy Style', 
 		function(me)
 		{ 
 			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><input type="Button" onclick="Molpy.ComaMolpyStyleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 		}
-		,8500,200);
+		,8500,200,0,'comamolpystyle');
 	Molpy.Boosts['Coma Molpy Style'].className='toggle';
 	
 	{//#REGION Lyrics :P	
@@ -600,20 +610,25 @@ Molpy.DefineBoosts=function()
 		}
 	}
 	new Molpy.Boost('Active Ninja',
-		'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',1500000,240);
-	new Molpy.Boost('Kitties Galore','Even more '+Molpy.redactedWords,2500000,4400);
+		'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',1500000,240,0,'activeninja');
+	new Molpy.Boost('Kitties Galore','Even more '+Molpy.redactedWords,2500000,4400,0,'kittiesgalore');
 	Molpy.Boosts['Kitties Galore'].hardlocked=1;	
 	
-	new Molpy.Boost('HAL-0-Kitty','NewPixBots build an extra Castle per 9 '+Molpy.redactedWords,9000,2001);
-	new Molpy.Boost('Factory Automation','When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+Molpify(2000000)+' Sand', 4500000,15700);
-	new Molpy.Boost('Blast Furnace','Gives the Department of Redundancy Department the ability to make Castles from Sand', 8800000,28600);
+	new Molpy.Boost('HAL-0-Kitty','NewPixBots build an extra Castle per 9 '+Molpy.redactedWords,9000,2001,
+	0
+	,'halokitty');
+	new Molpy.Boost('Factory Automation','When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+Molpify(2000000)+' Sand', 4500000,15700,0,'factoryautomation');
+	new Molpy.Boost('Blast Furnace','Gives the Department of Redundancy Department the ability to make Castles from Sand',
+		8800000,28600,0,'blastfurnace');
 	Molpy.Boosts['Blast Furnace'].hardlocked=1;	
 	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja',
 		'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked',
 		'Big Splash','Irregular Rivers','NewPixBot Navigation Code'];
 	new Molpy.Boost('Sandbag','Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1400000,21000);
-	new Molpy.Boost('Embaggening','Each Cuegan gives a 2% boost to the sand dig rate of Bags',3500000,23000);
+	new Molpy.Boost('Embaggening','Each Cuegan gives a 2% boost to the sand dig rate of Bags',3500000,23000,
+	0
+	,'embaggening');
 	new Molpy.Boost('Carrybot','NewPixBots produce double castles',1000,100);
 	new Molpy.Boost('Stickbot','NewPixBots produce double castles',4000,200);
 	new Molpy.Boost('Standardbot','NewPixBots produce double castles',16000,400);
@@ -627,12 +642,12 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost('Swell','Waves produce 29 more Castles',20000,200);
 	new Molpy.Boost('Flux Capacitor','It makes Time Travel possibler!',88,88);
-	new Molpy.Boost('Bag Burning','Bags help counteract NewPixBots',50000000,0);
+	new Molpy.Boost('Bag Burning','Bags help counteract NewPixBots',50000000,0,0,'bagburning');
 	new Molpy.Boost('Chromatic Heresy',
 		function(me)
 		{
 			return 'Saturation is '+(me.power?'':'not ')+'allowed. <input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
-		},200,10);
+		},200,10,0,'chromatic');
 	Molpy.Boosts['Chromatic Heresy'].className='toggle';
 	Molpy.ChromaticHeresyToggle=function()
 	{
@@ -713,7 +728,7 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Jamming'].className='alert';
 	
 	
-	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',6800000,888555222,0,0,
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,0,'blixtnedslag',
 		function(me)
 		{
 			me.power=Molpy.redactedClicks;

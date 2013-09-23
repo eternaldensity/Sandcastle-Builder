@@ -2028,7 +2028,7 @@ Molpy.Up=function()
 				if(r==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.BoostsInShop[i];
 				var cn= me.className?me.className:'';
-				str+='<div class="floatbox boost shop '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div><span class="price">Price: '+FormatPrice(me.sandPrice)+' Sand + '+FormatPrice(me.castlePrice)+' Castles</span><div id="BoostDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox boost shop '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.name)+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div><span class="price">Price: '+FormatPrice(me.sandPrice)+' Sand + '+FormatPrice(me.castlePrice)+' Castles</span><div id="BoostDescription'+me.id+'"></div></div></div>';
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedShop;
@@ -2060,7 +2060,7 @@ Molpy.Up=function()
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
 				var me=blist[i];
 				var cn= me.className?me.className:'';
-				str+='<div class="lootbox boost loot '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost'+me.name+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="BoostDescription'+me.id+'"></div></div></div>';
+				str+='<div class="lootbox boost loot '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.name)+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="BoostDescription'+me.id+'"></div></div></div>';
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedLoot;

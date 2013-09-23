@@ -30,6 +30,7 @@ Not for any commercial use!
 - Blixtnedslag Kattungar, JA! (after you buy this, every additional redundakitty will add 1 to the blitzing multiplier)
 - Buffed Not Lucky some more
 - Wipeout now actually checks if 500 castles have been destroyed by waves rather than 200 wasted.
+- New icons! For many purchased boosts (also better Cuegan), by BlitzGirl
 
 ### 0.979
 - Now anyone can definitely get the leopard badge by entering 'F5' in the right place
