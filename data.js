@@ -578,22 +578,27 @@ Molpy.DefineBoosts=function()
 			{
 				Molpy.EarnBadge('Primer');
 				var incursionFactor=Molpy.Got('Flux Capacitor')?4
-					:(Molpy.Got('Flux Capacitor')?8
+					:(Molpy.Got('Flux Turbine')?8
 					:20);
 				if(!Math.floor(Math.random()*incursionFactor))
 				{
-					Molpy.Notify('You do not arrive alone');
-					var npb=Molpy.CastleTools['NewPixBot'];
-					npb.amount++;
-					if(Molpy.intruderBots)
+					if(!Molpy.Boosts['NewPixBot Navigation Code'] && Molpy.intruderBots<=30)
 					{
-						Molpy.intruderBots++;
+						Molpy.Notify('You do not arrive alone');
+						var npb=Molpy.CastleTools['NewPixBot'];
+						npb.amount++;
+						if(Molpy.intruderBots)
+						{
+							Molpy.intruderBots++;
+						}else{
+							Molpy.intruderBots=1;
+						}
+						Molpy.shopRepaint=1;
+						Molpy.recalculateDig=1;
+						npb.refresh();
 					}else{
-						Molpy.intruderBots=1;
+						Molpy.Notify('Temporal Incursion Prevented!');
 					}
-					Molpy.shopRepaint=1;
-					Molpy.recalculateDig=1;
-					npb.refresh();
 				}
 			}
 			if(t>=20)
@@ -712,6 +717,12 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		nc.power=!nc.power*1;
+		if(Molpy.intruderBots)
+		{
+			Molpy.CastleTools['NewPixBot'].amount-=Molpy.intruderBots;
+			Molpy.Notify(Molpy.intruderBots + ' Intruders Destroyed!');
+			Molpy.intruderBots=0;
+		}
 		Molpy.scrumptiousDonuts=-1;
 		nc.hoverOnCounter=1;
 		Molpy.recalculateDig=1;
@@ -848,7 +859,7 @@ Molpy.DefineBadges=function()
 		var bot=Molpy.CastleTools['NewPixBot'];
 		var botCastles=bot.totalCastlesBuilt*bot.amount;
 		var thresh = Molpy.JudgementDipThreshhold();
-		var level = Math.floor(botCastles/thresh);
+		var level = Math.max(0,Math.floor(botCastles/thresh));
 		var countdown = ((level+1)*thresh - botCastles);
 		countdown/=(bot.buildN()*bot.amount*bot.amount);
 		if(Molpy.Got('Doublepost'))countdown/=2;

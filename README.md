@@ -19,8 +19,11 @@ Not for any commercial use!
 ### 0.983
 - Fixed printing numbers with decimal parts which round up to whole numbers (1.99 should become 2 not 1.100)
 - Nerfed Not Lucky a little
-- Navigational Code destroys Time-Travelled Bots
+- Navigational Code destroys Time-Travelled Bots and prevents more when active
+- Fixed incorrect incursion factor calculation
 - Maximum 30 Time-Travelled Bots
+- No notification if Judgement Dip Bots destroy 0 castles because you have none
+- Ensure Judgement Dip level can't be negative
 - Double or Nothing decreases in power rather than just dying
 
 ### 0.982

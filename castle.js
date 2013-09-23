@@ -1938,17 +1938,18 @@ Molpy.Up=function()
 				var i=0;
 				while(i<Molpy.SandToolsN)
 				{
-					bonus+=Molpy.SandToolsById[i].amount*Math.pow(4,i+1);
+					bonus+=Molpy.SandToolsById[i].amount*Math.pow(3.5,i+1);
 					i++;
                 } 
 				i=0;
 				while(i<Molpy.CastleToolsN)
 				{
-					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(3,i+1);
+					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(2.5,i+1);
 					i++;
                 }
 				bonus += Molpy.BoostsOwned+Molpy.BadgesOwned;
 				bonus += Molpy.redactedClicks*10;
+				bonus = math.floor(bonus);
 				Molpy.Build(bonus);
 			}else{
 				var blitzSpeed=8,blitzTime=23;
@@ -2489,9 +2490,12 @@ Molpy.Up=function()
 		if(Molpy.judgeLevel>1 && Math.floor(Molpy.ONGelapsed/1000)%50==0)
 		{
 			var dAmount = (Molpy.judgeLevel-1)*Molpy.CastleTools['NewPixBot'].amount*50;
-			Molpy.Destroy(dAmount,1);
-			Molpy.CastleTools['NewPixBot'].totalCastlesDestroyed+=dAmount;
-			Molpy.Notify('By the NewpixBots');
+			if(Molpy.castles)
+			{
+				Molpy.Destroy(dAmount,1);
+				Molpy.CastleTools['NewPixBot'].totalCastlesDestroyed+=dAmount;
+				Molpy.Notify('By the NewpixBots');
+			}
 		}
 	}
 	
