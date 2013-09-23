@@ -392,7 +392,19 @@ Molpy.DefineBoosts=function()
 			me.power=Molpy.beachClicks;
 		}
 		);
-	new Molpy.Boost('Double or Nothing', '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to double or lose your current castle balance',200,0,0,0,0,10);
+	new Molpy.Boost('Double or Nothing', 
+		function(me)
+		{
+			var action = 'double';
+			if(me.power>=10)
+			{
+				var amount = Math.round(10+90*Math.pow(.9,me.power-9));
+				action='gain '+amount+'% of';
+			}
+			return '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to '+action
+				+' your current castle balance or lose it all.';
+		}
+		,200,0,0,0,0,0);
 	Molpy.Boosts['Double or Nothing'].className='toggle';
 	Molpy.DoubleOrNothing=function()
 	{
@@ -403,7 +415,13 @@ Molpy.DefineBoosts=function()
 		}
 		if(Math.floor(Math.random()*2))
 		{
-			Molpy.Build(Molpy.castles);
+			var amount=Molpy.castles;
+			var power = Molpy.Boosts['Double or Nothing'].power;
+			if(power>=10)
+			{
+				amount = Math.floor(Molpy.castles/100* Math.round(10+90*Math.pow(.9,power-9)));
+			}
+			Molpy.Build(amount);
 		}else{
 			Molpy.Destroy(Molpy.castles);
 		}

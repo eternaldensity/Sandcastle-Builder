@@ -634,9 +634,9 @@ Molpy.Up=function()
 					if(me.bought)Molpy.LockBoost(me.name,1); //ha!
 				}
 			}
-			if(version<0.982)
+			if(version<0.983)
 			{
-				Molpy.Boosts['Double or Nothing'].power=10;
+				Molpy.Boosts['Double or Nothing'].power=0;
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -1723,10 +1723,7 @@ Molpy.Up=function()
 						Molpy.recalculateDig=1;
 						if(bacon=='Double or Nothing')
 						{
-							if(Molpy.Boosts[bacon].power>0)
-							{
-								Molpy.Boosts[bacon].power--;
-							}
+							Molpy.Boosts[bacon].power++;							
 						}
 						if(Molpy.Boosts[bacon].bought==1);
 						{
@@ -1909,7 +1906,6 @@ Molpy.Up=function()
 					var me=Molpy.Boosts[Molpy.departmentBoosts[i]];
 					if(!(me.unlocked||me.bought||me.hardlocked))
 					{
-						if(me.name=='Double or Nothing' && !me.power)continue;
 						availRewards[f]=me;
 						f++;
 					}
@@ -1949,7 +1945,7 @@ Molpy.Up=function()
                 }
 				bonus += Molpy.BoostsOwned+Molpy.BadgesOwned;
 				bonus += Molpy.redactedClicks*10;
-				bonus = math.floor(bonus);
+				bonus = Math.floor(bonus);
 				Molpy.Build(bonus);
 			}else{
 				var blitzSpeed=8,blitzTime=23;
