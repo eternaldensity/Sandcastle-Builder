@@ -25,23 +25,23 @@ function Molpify(number, raftcastle, shrinkify)
 	{
 		if(number>1000000000000000)
 		{
-			return Molpify(number / 1000000000000000, raftcastle)+'P';
+			return Molpify(number / 1000000000000000, raftcastle,1)+'P';
 		}
 		if(number>1000000000000)
 		{
-			return Molpify(number / 1000000000000, raftcastle)+'T';
+			return Molpify(number / 1000000000000, raftcastle,1)+'T';
 		}
 		if(number>1000000000)
 		{
-			return Molpify(number / 1000000000, raftcastle)+'G';
+			return Molpify(number / 1000000000, raftcastle,1)+'G';
 		}
 		if(number>1000000)
 		{
-			return Molpify(number / 1000000, raftcastle)+'M';
+			return Molpify(number / 1000000, raftcastle,1)+'M';
 		}
 		if(number>100000)
 		{
-			return Molpify(number / 1000, raftcastle)+'K';
+			return Molpify(number / 1000, raftcastle,1)+'K';
 		}
 	}
 	
@@ -49,11 +49,28 @@ function Molpify(number, raftcastle, shrinkify)
 	{
 		var numCopy=number;
 		//get the right number of decimal places to stick on the end:
-		var raft=Math.round(numCopy*Math.pow(10,raftcastle)-Math.floor(numCopy)*Math.pow(10,raftcastle));
+		var raft=numCopy*Math.pow(10,raftcastle)-Math.floor(numCopy)*Math.pow(10,raftcastle);
+		if(shrinkify)
+		{
+			raft = Math.round(raft);
+		}else{
+			raft = Math.floor(raft);
+		}
+		
+		if((raft+'').length>raftcastle)
+		{
+			numCopy++;
+			raft=''; //rounded decimal part up to 1
+		}
 		molp=Molpify(numCopy)+(raft?('.'+raft):''); //stick them on the end if there are any
 	}else
 	{
-		number=Math.floor(number);//drop the decimal bit
+		if(shrinkify)
+		{
+			number = Math.round(number);
+		}else{
+			number = Math.floor(number);
+		}//drop the decimal bit
 		number=(number+'').split('').reverse(); //convert to string, then array of chars, then backwards
 		for(var i in number)
 		{
@@ -65,16 +82,20 @@ function Molpify(number, raftcastle, shrinkify)
 }
 function PriceSort(a,b)
 {
-	if (a.sandPrice>b.sandPrice) return 1;
-	else if (a.sandPrice<b.sandPrice) return -1;
+	var asp = EvalMaybeFunction(a.sandPrice);
+	var acp = EvalMaybeFunction(a.castlePrice);
+	var bsp = EvalMaybeFunction(b.sandPrice);
+	var bcp = EvalMaybeFunction(b.castlePrice);
+	if (asp>bsp) return 1;
+	else if (asp<bsp) return -1;
 	else
-	if (a.castlePrice>b.castlePrice) return 1;
-	else if (a.castlePrice<b.castlePrice) return -1;
+	if (acp>bcp) return 1;
+	else if (acp<bcp) return -1;
 	else return 0;
 }
 function FormatPrice(monies)
 {
-	return Molpify(Math.floor(monies*Molpy.priceFactor),1,!Molpy.showStats);
+	return Molpify(Math.floor(EvalMaybeFunction(monies)*Molpy.priceFactor),1,!Molpy.showStats);
 }
 function Flint(stones){return parseInt(Math.floor(stones))}
 function CuegishToBeanish(mustard)
@@ -127,7 +148,7 @@ function onunhover(me,event)
 	me.hoverOnCounter=-1;
 }
 
-var showhide={boosts:1,badges:1,badgesav:1};
+var showhide={boosts:1,badges:1,badgesav:1,tagged:0};
 function showhideButton(key)
 {
 	return '<input type="Button" value="'+(showhide[key]?'Visible':'Hidden')+'" onclick="showhideToggle(\''+key+'\')"></input>'
@@ -135,6 +156,18 @@ function showhideButton(key)
 function showhideToggle(key)
 {
 	showhide[key]=!showhide[key];
+	if(showhide[key])
+	{
+		if(key=='tagged')
+		{
+			for(var k in showhide)
+			{
+				showhide[k]=k==key; //when showing tagged, hide all others
+			}
+		}else{
+			showhide.tagged=0; //hide tagged when showing anything else
+		}
+	}
 	Molpy.shopRepaint=1;
 	Molpy.boostRepaint=1;
 	Molpy.badgeRepaint=1;
@@ -155,7 +188,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.982;
+		Molpy.version=0.99;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -617,9 +650,9 @@ Molpy.Up=function()
 					if(me.bought)Molpy.LockBoost(me.name,1); //ha!
 				}
 			}
-			if(version<0.982)
+			if(version<0.983)
 			{
-				Molpy.Boosts['Double or Nothing'].power=10;
+				Molpy.Boosts['Double or Nothing'].power=0;
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -679,8 +712,7 @@ Molpy.Up=function()
 				Molpy.startDate=parseInt(new Date().getTime());
 				Molpy.newpixNumber=1; 				
 				Molpy.ONGstart = ONGsnip(new Date());
-				//reset structures and unlocks and stuff 
-				
+							
 				for(i in Molpy.SandTools)
 				{
 					var me = Molpy.SandTools[i];
@@ -706,7 +738,8 @@ Molpy.Up=function()
 					var me = Molpy.Boosts[i];
 					me.unlocked=0;
 					me.bought=0;	
-					me.power=me.startPower;
+					if(me.startPower)
+						me.power=me.startPower;
 					me.countdown=0;
 				}
 				Molpy.recalculateDig=1;
@@ -941,7 +974,17 @@ Molpy.Up=function()
 			Molpy.buildNotifyFlag=0;
 			while(Molpy.sand >= Molpy.nextCastleSand)
 			{
-				Molpy.Build(1);
+				if(Molpy.Got('Fractal Sandcastles'))
+				{
+					Molpy.Build(Math.floor(Math.pow(1.35,Molpy.Boosts['Fractal Sandcastles'].power)));
+					Molpy.Boosts['Fractal Sandcastles'].power++;
+					if(Molpy.Boosts['Fractal Sandcastles'].power>=55)
+					{
+						Molpy.EarnBadge('Fractals Forever');
+					}
+				}else{
+					Molpy.Build(1);
+				}
 				Molpy.sand -= Molpy.nextCastleSand;
 				Molpy.currentCastleSand = Molpy.nextCastleSand;
 				//In which Fibbonacci occurs:
@@ -1149,6 +1192,7 @@ Molpy.Up=function()
 				}
 			}
 			Molpy.ninjad=1;
+			Molpy.HandleClickNP();
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
 		
@@ -1199,6 +1243,16 @@ Molpy.Up=function()
 			}
 			Molpy.ninjaStealth=0;
 			return 1;
+		}
+		
+		Molpy.HandleClickNP=function()
+		{
+			var NP = Molpy.newpixNumber;
+			if(NP==404) Molpy.EarnBadge('Badge Not Found');
+			if(Molpy.TimePeriod=='Recursion')
+			{
+				Molpy.UnlockBoost('Fractal Sandcastles');
+			}
 		}
 		
 		/* In which we calculate how much sand per milliNewPix we dig
@@ -1623,8 +1677,8 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
-				var sp = Math.floor(Molpy.priceFactor*this.sandPrice);
-				var cp = Math.floor(Molpy.priceFactor*this.castlePrice);
+				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice));
+				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice));
 				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp)
 				{
 					Molpy.SpendSand(sp);
@@ -1706,10 +1760,7 @@ Molpy.Up=function()
 						Molpy.recalculateDig=1;
 						if(bacon=='Double or Nothing')
 						{
-							if(Molpy.Boosts[bacon].power>0)
-							{
-								Molpy.Boosts[bacon].power--;
-							}
+							Molpy.Boosts[bacon].power++;							
 						}
 						if(Molpy.Boosts[bacon].bought==1);
 						{
@@ -1877,31 +1928,33 @@ Molpy.Up=function()
 			{
 				if(Molpy.Got('Blast Furnace') && !Math.floor(4*Math.random()))
 				{
-					var castles=Math.floor(Molpy.sand/1000);				
+					var blastFactor=1000;
+					if(Molpy.Got('Fractal Sandcastles'))
+					{
+						blastFactor=Math.max(1,1000*Math.pow(0.98,Molpy.Boosts['Fractal Sandcastles'].power));
+					}
+					var castles=Math.floor(Molpy.sand/blastFactor);				
 					Molpy.Notify('Blast Furnace in Operation!');
-					Molpy.SpendSand(castles*1000);
+					Molpy.SpendSand(castles*blastFactor);
 					Molpy.Build(castles);
 					return;				
 				}
 			
 				var availRewards=[];
 				var i = Molpy.departmentBoosts.length;
-				var f=0;
 				while(i--)
 				{
 					var me=Molpy.Boosts[Molpy.departmentBoosts[i]];
 					if(!(me.unlocked||me.bought||me.hardlocked))
 					{
-						if(me.name=='Double or Nothing' && !me.power)continue;
-						availRewards[f]=me;
-						f++;
+						availRewards.push(me);
 					}
 				}
 				
 				if(f)
 				{
 					var red=GLRschoice(availRewards);
-					if((red.sandPrice+red.castlePrice))
+					if((EvalMaybeFunction(red.sandPrice)+EvalMaybeFunction(red.castlePrice)))
 					{
 						Molpy.Notify('The Department of Redundancy Department has produced:',1);
 						Molpy.UnlockBoost(red.name);
@@ -1921,17 +1974,18 @@ Molpy.Up=function()
 				var i=0;
 				while(i<Molpy.SandToolsN)
 				{
-					bonus+=Molpy.SandToolsById[i].amount*Math.pow(4,i+1);
+					bonus+=Molpy.SandToolsById[i].amount*Math.pow(3.5,i+1);
 					i++;
                 } 
 				i=0;
 				while(i<Molpy.CastleToolsN)
 				{
-					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(3,i+1);
+					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(2.5,i+1);
 					i++;
                 }
 				bonus += Molpy.BoostsOwned+Molpy.BadgesOwned;
 				bonus += Molpy.redactedClicks*10;
+				bonus = Math.floor(bonus);
 				Molpy.Build(bonus);
 			}else{
 				var blitzSpeed=8,blitzTime=23;
@@ -1972,6 +2026,13 @@ Molpy.Up=function()
 					+(Molpy.redactedVisible==6?'redacted':'')
 					+'"></div>Badges<br/>Available<br/>'+showhideButton('badgesav')+'</div>';
 			}
+			if(Molpy.Boosts['Chromatic Heresy'].unlocked)
+			{
+				str+= '<div class="floatsquare boost loot alert"><div id="boost_chromatic" class="icon '
+					+(Molpy.redactedVisible==7?'redacted':'')
+					+'"></div>Tagged<br/>'+showhideButton('tagged')+'</div>';
+			}
+			
 			g('lootselection').innerHTML=str;
 		}
 	
@@ -2043,6 +2104,13 @@ Molpy.Up=function()
 			g('castletools').innerHTML=str;		
 		}
 		
+		Molpy.BoostLootString=function(me)
+		{		
+			var cn= me.className?me.className:'';
+			if(cn)Molpy.UnlockBoost('Chromatic Heresy');
+			return '<div class="lootbox boost loot '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.name)+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="BoostDescription'+me.id+'"></div></div></div>';
+		}
+		
 		Molpy.RepaintBoosts=function()
 		{
 			Molpy.boostRepaint=0;			
@@ -2110,14 +2178,20 @@ Molpy.Up=function()
 				{
 					if(r==redactedIndex) str+= Molpy.redactedLoot;
 					var me=blist[i];
-					var cn= me.className?me.className:'';
-					str+='<div class="lootbox boost loot '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.name)+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="BoostDescription'+me.id+'"></div></div></div>';
+					str+=Molpy.BoostLootString(me);
 					r++;
 				}
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
 			}
 			Molpy.boostHTML=str;
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;	
+		}
+		
+		Molpy.BadgeLootString=function(me)
+		{
+			var cn= me.className?me.className:'';			
+			if(cn)Molpy.UnlockBoost('Chromatic Heresy');
+			return '<div class="lootbox badge loot '+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div id="badge'+me.name+'" class="icon"></div><div class="heading">[badge]</div><div id="boost'+me.id+'"></div><div class="title">'+me.name+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
 		}
 		
 		Molpy.RepaintBadges=function()
@@ -2148,9 +2222,8 @@ Molpy.Up=function()
 				for (var i in blist)
 				{
 					if(r==redactedIndex) str+= Molpy.redactedLoot;
-					var me=blist[i];
-					var cn= me.className?me.className:'';
-					str+='<div class="lootbox badge loot '+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div id="badge'+me.name+'" class="icon"></div><div class="heading">[badge]</div><div id="boost'+me.id+'"></div><div class="title">'+me.name+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
+					var me=blist[i];					
+					str+=Molpy.BadgeLootString(me);
 					r++;
 				}
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
@@ -2192,6 +2265,40 @@ Molpy.Up=function()
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;		
 		}
 		
+		Molpy.RepaintTaggedLoot=function()
+		{
+			var str='';
+			var blist=[];
+			for (var i in Molpy.Boosts)
+			{
+				var me=Molpy.Boosts[i];
+				if (me.bought&&me.className)
+				{
+					blist.push(me);
+				}
+			}		
+			for (var i in blist)
+			{
+				var me=blist[i];					
+				str+=Molpy.BoostLootString(me);
+			}
+			
+			blist=[];
+			for (var i in Molpy.Badges)
+			{
+				var me=Molpy.Badges[i];
+				if (me.earned&&me.className)
+				{
+					blist.push(me);
+				}
+			}			
+			for (var i in blist)
+			{
+				var me=blist[i];					
+				str+=Molpy.BadgeLootString(me);
+			}
+			g('loot').innerHTML=str;
+		}
 		//the numbers that fly up when you click the pic for sand
 		Molpy.sParticles=[];
 		var str='';
@@ -2472,9 +2579,12 @@ Molpy.Up=function()
 		if(Molpy.judgeLevel>1 && Math.floor(Molpy.ONGelapsed/1000)%50==0)
 		{
 			var dAmount = (Molpy.judgeLevel-1)*Molpy.CastleTools['NewPixBot'].amount*50;
-			Molpy.Destroy(dAmount,1);
-			Molpy.CastleTools['NewPixBot'].totalCastlesDestroyed+=dAmount;
-			Molpy.Notify('By the NewpixBots');
+			if(Molpy.castles)
+			{
+				Molpy.Destroy(dAmount,1);
+				Molpy.CastleTools['NewPixBot'].totalCastlesDestroyed+=dAmount;
+				Molpy.Notify('By the NewpixBots');
+			}
 		}
 	}
 	
@@ -2518,7 +2628,7 @@ Molpy.Up=function()
 				Molpy.UnlockBoost('Time Travel');
 			}
 		}
-		
+		Molpy.Boosts['Fractal Sandcastles'].power=0;
 		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.Notify('ONG!',1);	
 		
@@ -2656,6 +2766,10 @@ Molpy.Up=function()
 		if(Molpy.badgeRepaint)
 		{
 			Molpy.RepaintBadges();
+		}
+		if(repainted&&showhide.tagged)
+		{
+			Molpy.RepaintTaggedLoot();
 		}
 		if(repainted&&Molpy.redactedVisible)
 		{		

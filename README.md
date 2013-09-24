@@ -16,6 +16,26 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.99
+- Fixed printing numbers with decimal parts which round up to whole numbers (1.99 should become 2 not 1.100)
+- Nerfed Not Lucky a little
+- Navigational Code destroys Time-Travelled Bots and prevents more when active
+- Fixed incorrect incursion factor calculation
+- Maximum 30 Time-Travelled Bots
+- No notification if Judgement Dip Bots destroy 0 castles because you have none
+- Ensure Judgement Dip level can't be negative
+- Double or Nothing decreases in power rather than just dying
+- New Boost: Novikov Self-Consistency Principle. Will help Time Travellers against the Bot incursion
+- Made *bot Boosts even more expensive because Luggagebot was cheaper than Embaggening
+- Nerfed Embaggening to only count Cuegans over 14.
+- Fractal Sandcastles: Dug Sand turns into more Castles (incrementally). Also reduces the Blast Furnace Castle Cost
+- Badge Not Found
+- Another Badge which lets you keep Fractal Sandcastles when you Molpy Down!
+- Factored out some boost and badge rendering code for reuse.
+- Toggle button to show just the tagged boosts and badges
+- Better detection of when to unlock Chromatic Heresy: don't need to add new tagged items to a long OR condition
+- Finally decided there's too much stuff in this version to tall it 0.983
+
 ### 0.982
 - Icons for *bot Boosts
 - Updated *bot Boosts' descriptions to match long-ago buff
