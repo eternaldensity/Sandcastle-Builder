@@ -188,7 +188,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.991;
+		Molpy.version=0.992;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -653,6 +653,14 @@ Molpy.Up=function()
 			if(version<0.983)
 			{
 				Molpy.Boosts['Double or Nothing'].power=0;
+			}			
+			if(version<0.992)
+			{
+				var bkj ='Blixtnedslag Kattungar, JA!';
+				if(Molpy.Got(bkj))
+				{
+					Molpy.Boosts[bkj].power=Molpy.redactedClicks-Molpy.Boosts[bkj].power;
+				}
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -738,6 +746,7 @@ Molpy.Up=function()
 					var me = Molpy.Boosts[i];
 					me.unlocked=0;
 					me.bought=0;	
+					me.power=0;
 					if(me.startPower)
 						me.power=me.startPower;
 					me.countdown=0;
@@ -1867,7 +1876,12 @@ Molpy.Up=function()
 					Molpy.redactedCountup=0;
 					if(Molpy.redactedVisible)
 					{
-						Molpy.redactedVisible=0;
+						Molpy.redactedVisible=0; //hide because the redacted was missed
+						var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
+						if(BKJ.bought)
+						{
+							if(BKJ.power>0)	BKJ.power--;
+						}
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
 						Molpy.badgeRepaint=1;						
@@ -1990,7 +2004,11 @@ Molpy.Up=function()
 			}else{
 				var blitzSpeed=8,blitzTime=23;
 				var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
-				if(BKJ.bought) blitzSpeed+= Molpy.redactedClicks-BKJ.power;
+				if(BKJ.bought)
+				{
+					BKJ.power=(BKJ.power||0)+1;
+					blitzSpeed+= BKJ.power;
+				}
 				Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 			}			
 		}

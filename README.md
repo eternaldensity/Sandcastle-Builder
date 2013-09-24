@@ -15,6 +15,12 @@ Inspired by Orteil's Cookie Clicker
 Not for any commercial use!
 
 ## Changelog
+
+### 0.992
+- Fixed Balancing Act
+- NPB Navigation Code now only prevent time-travellers when it's activated
+- BKJ! counting logic is flipped around, and loses 1 power when you miss a redacted.
+
 ### 0.991
 - Changed condition for Fractal Sandcastles, so people who are past the Recursion Period don't have to go back for it
 - And a related badge
