@@ -1077,11 +1077,6 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount&&you.amount)Molpy.UnlockBoost('Sandbag');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Smallbot');
 	
-	if(Molpy.Got('Coma Molpy Style')||Molpy.Got('Double or Nothing')||Molpy.Got('Time Travel')||Molpy.Got('Judgement Dip Warning'))
-	{
-		Molpy.UnlockBoost('Chromatic Heresy');
-	}
-	
 	if(Molpy.Earned('Fractals Forever')&& !Molpy.Got('Fractal Sandcastles'))
 	{
 		Molpy.UnlockBoost('Fractal Sandcastles');	
