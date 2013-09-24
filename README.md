@@ -34,7 +34,7 @@ Not for any commercial use!
 - Factored out some boost and badge rendering code for reuse.
 - Toggle button to show just the tagged boosts and badges
 - Better detection of when to unlock Chromatic Heresy: don't need to add new tagged items to a long OR condition
-- Finally decided there's too much stuff in this version to tall it 0.983
+- Finally decided there's too much stuff in this version to call it 0.983
 
 ### 0.982
 - Icons for *bot Boosts
