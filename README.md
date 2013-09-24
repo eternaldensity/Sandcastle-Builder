@@ -20,6 +20,9 @@ Not for any commercial use!
 - And a related badge
 - Badges for spending a lot
 - Boost for Scaffolds and flags
+- Fixed Novikov price
+- Ch*rpies
+- Fixed department crash
 
 ### 0.99
 - Fixed printing numbers with decimal parts which round up to whole numbers (1.99 should become 2 not 1.100)

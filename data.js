@@ -791,11 +791,13 @@ Molpy.DefineBoosts=function()
 		function()
 		{
 			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+			if(!me.power)me.power=0;
 			return 2101*Math.pow(4,me.power);
 		},
 		function()
 		{
 			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+			if(!me.power)me.power=0;
 			return 486*Math.pow(2,me.power);
 		}, 'The Bots forget half their past/future slavery. Costs twice as much each time. BTW you need to switch out of Stats view to activate it.'
 	);
@@ -826,6 +828,7 @@ Molpy.DefineBoosts=function()
 			return 'Digging Sand will give you ' + Molpify(Math.floor(Math.pow(1.35,me.power)),1,!Molpy.showStats)+' Castles';
 		});
 	new Molpy.Boost('Balancing Act','Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1875000,843700);
+	new Molpy.Boost('Ch*rpies','Increases sand dig rate by 5% per badge earned',6969696969,81818181);
 }
 	
 	
@@ -1027,6 +1030,9 @@ Molpy.DefineBadges=function()
 		function(){return 'Spend '+Molpify(200000000,0,!Molpy.showStats)+' Castles total';});
 	new Molpy.Badge('Valued Customer',
 		function(){return 'Spend '+Molpify(10000000000,0,!Molpy.showStats)+' Castles total';});
+	new Molpy.Badge('Beachscaper','Have 100 Sand Tools');
+	new Molpy.Badge('Beachmover','Have 100 Castle Tools');
+	new Molpy.Badge('Better This Way','Purchase 50 Boosts');
 }
 		
 Molpy.CheckBuyUnlocks=function()
@@ -1109,6 +1115,15 @@ Molpy.CheckBuyUnlocks=function()
 	}else{
 		Molpy.Boosts[Molpy.IKEA].startPower=0.4;
 	}
+	
+	if(Molpy.BadgesOwned>=69)
+	{
+		Molpy.UnlockBoost('Ch*rpies');
+	}
+	
+	if(Molpy.SandToolsOwned>=200)Molpy.EarnBadge('Beachscaper');
+	if(Molpy.CastleToolsOwned>=100)Molpy.EarnBadge('Beachmover');
+	if(Molpy.BoostsOwned>=50)Molpy.EarnBadge('Better This Way');
 }
 
 Molpy.CheckClickAchievements=function()

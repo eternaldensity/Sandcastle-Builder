@@ -1277,6 +1277,10 @@ Molpy.Up=function()
 			{
 				multiplier+=0.02*Molpy.BadgesOwned;
 			}
+			if(Molpy.Got('Ch*rpies'))
+			{
+				multiplier+=0.05*Molpy.BadgesOwned;
+			}
 			if(Molpy.Got('Blitzing'))
 			{
 				multiplier*=Molpy.Boosts['Blitzing'].power;
@@ -1947,7 +1951,7 @@ Molpy.Up=function()
 					}
 				}
 				
-				if(f)
+				if(availRewards.length)
 				{
 					var red=GLRschoice(availRewards);
 					if((EvalMaybeFunction(red.sandPrice)+EvalMaybeFunction(red.castlePrice)))
