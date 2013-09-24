@@ -230,7 +230,7 @@ Molpy.DefineCastleTools=function()
 		function()
 		{
 			var baseval = 6;	
-			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.CastleTools['Flag'].amount);			
+			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);			
 			if(Molpy.Got('Precise Placement')) baseval-=Math.floor(Molpy.SandTools['Ladder'].amount*0.5);
 			return Math.max(0,Math.floor(baseval));
 		},
@@ -239,7 +239,7 @@ Molpy.DefineCastleTools=function()
 			var baseval = 22;
 			if(Molpy.Got('Propbot'))baseval*=4;
 			if(Molpy.Got('Stacked')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
-			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.CastleTools['Flag'].amount);
+			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);
 			return Math.floor(baseval);
 		}
 	);
@@ -602,7 +602,7 @@ Molpy.DefineBoosts=function()
 					:20);
 				if(!Math.floor(Math.random()*incursionFactor))
 				{
-					if(!Molpy.Boosts['NewPixBot Navigation Code'] && Molpy.intruderBots<=30)
+					if(!Molpy.Boosts['NewPixBot Navigation Code'].power && Molpy.intruderBots<=30)
 					{
 						Molpy.Notify('You do not arrive alone');
 						var npb=Molpy.CastleTools['NewPixBot'];
@@ -781,7 +781,7 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Jamming'].className='alert';
 	
 	
-	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier','blixtnedslag',
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. But missed '+Molpy.redactedWord+' are subtracted from the multiplier','blixtnedslag',
 		function(me)
 		{
 			me.power=Molpy.redactedClicks;
