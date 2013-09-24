@@ -166,8 +166,8 @@ Molpy.DefineSandTools=function()
 		{
 			var baserate = 600;
 			var mult = 1;
-			if(Molpy.Got('Embaggening'))
-				mult*=Math.pow(1.02,Molpy.SandTools['Cuegan'].amount);
+			if(Molpy.Got('Embaggening')||Molpy.SandTools['Cuegan'].amount>14)
+				mult*=Math.pow(1.02,Molpy.SandTools['Cuegan'].amount-14);
 			if(Molpy.Got('Sandbag'))
 				mult*=Math.pow(1.05,Molpy.CastleTools['River'].amount);
 			if(Molpy.Got('Luggagebot'))mult*=4;
@@ -555,7 +555,7 @@ Molpy.DefineBoosts=function()
 			Molpify(me.power)+' NP in Time';
 		}
 		,1000,30,0,0,0,1);
-	Molpy.Boosts['Time Travel'].className='action';
+	Molpy.Boosts['Time Travel'].className='toggle';
 	Molpy.intruderBots=0;
 	Molpy.TimeTravel=function(NP)
 	{		
@@ -642,30 +642,52 @@ Molpy.DefineBoosts=function()
 	,'halokitty');
 	new Molpy.Boost('Factory Automation','When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+Molpify(2000000)+' Sand', 4500000,15700,0,'factoryautomation');
 	new Molpy.Boost('Blast Furnace','Gives the Department of Redundancy Department the ability to make Castles from Sand',
-		8800000,28600,0,'blastfurnace');
+		8800000,28600,
+		function()
+		{
+			var blastFactor=1000;
+			if(Molpy.Got('Fractal Sandcastles'))
+			{
+				blastFactor=Math.max(1,1000*Math.pow(0.98,Molpy.Boosts['Fractal Sandcastles'].power));
+			}
+			return 'Uses '+Molpify(2000000)+' Sand to warm up, then makes Castles at a cost of ' + Molpify(blastFactor,1) + ' each';
+		}
+		,'blastfurnace');
 	Molpy.Boosts['Blast Furnace'].hardlocked=1;	
 	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja',
 		'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked',
 		'Big Splash','Irregular Rivers','NewPixBot Navigation Code'];
 	new Molpy.Boost('Sandbag','Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1400000,21000);
-	new Molpy.Boost('Embaggening','Each Cuegan gives a 2% boost to the sand dig rate of Bags',3500000,23000,
+	new Molpy.Boost('Embaggening','Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',3500000,23000,
 	0
 	,'embaggening');
-	new Molpy.Boost('Carrybot','NewPixBots produce double castles, Buckets produce quadruple',10000,100,0,'carrybot');
-	new Molpy.Boost('Stickbot','NewPixBots produce double castles, Cuegan produce quadruple',40000,200,0,'stickbot');
-	new Molpy.Boost('Standardbot','NewPixBots produce double castles, Flags produce quadruple',160000,400,0,'standardbot');
-	new Molpy.Boost('Climbbot','NewPixBots produce double castles, Ladders produce quadruple',640000,800,0,'climbbot');
-	new Molpy.Boost('Luggagebot','NewPixBots produce double castles, Bags produce quadruple',2560000,1600,0,'luggagebot');
-	new Molpy.Boost('Recursivebot','NewPixBots produce double castles',100000,1000,0,'recursivebot');
-	new Molpy.Boost('Flingbot','NewPixBots produce double castles, Trebuchets produce quadruple',400000,2000,0,'flingbot');
-	new Molpy.Boost('Propbot','NewPixBots produce double castles, Scaffolds produce quadruple',1600000,4000,0,'propbot');
-	new Molpy.Boost('Surfbot','NewPixBots produce double castles, Waves produce quadruple',6400000,8000,0,'surfbot');
-	new Molpy.Boost('Smallbot','NewPixBots produce double castles, Rivers produce quadruple',25600000,16000,0,'smallbot');
+	new Molpy.Boost('Carrybot','NewPixBots produce double castles, Buckets produce quadruple',10000,1000,0,'carrybot');
+	new Molpy.Boost('Stickbot','NewPixBots produce double castles, Cuegan produce quadruple',50000,2500,0,'stickbot');
+	new Molpy.Boost('Standardbot','NewPixBots produce double castles, Flags produce quadruple',250000,6250,0,'standardbot');
+	new Molpy.Boost('Climbbot','NewPixBots produce double castles, Ladders produce quadruple',1250000,15625,0,'climbbot');
+	new Molpy.Boost('Luggagebot','NewPixBots produce double castles, Bags produce quadruple',6250000,39062.5,0,'luggagebot');
+	new Molpy.Boost('Recursivebot','NewPixBots produce double castles',50000,10000,0,'recursivebot');
+	new Molpy.Boost('Flingbot','NewPixBots produce double castles, Trebuchets produce quadruple',250000,25000,0,'flingbot');
+	new Molpy.Boost('Propbot','NewPixBots produce double castles, Scaffolds produce quadruple',1250000,62500,0,'propbot');
+	new Molpy.Boost('Surfbot','NewPixBots produce double castles, Waves produce quadruple',62500000,156250,0,'surfbot');
+	new Molpy.Boost('Smallbot','NewPixBots produce double castles, Rivers produce quadruple',352500000,390625,0,'smallbot');
 	
 	new Molpy.Boost('Swell','Waves produce 29 more Castles',20000,200);
 	new Molpy.Boost('Flux Capacitor','It makes Time Travel possibler!',88,88);
-	new Molpy.Boost('Bag Burning','Bags help counteract NewPixBots',50000000,0,0,'bagburning');
+	new Molpy.Boost('Bag Burning','Bags help counteract NewPixBots',50000000,86,
+		function()
+		{
+			var str = 'Half of Bags beyond the 14th owned give a 40% increase to Judgement Dip threshhold.';
+			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
+			{
+				var amount = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2))-1;
+				amount=Molpify(amount*100,0,1);
+				str+=' Currently '+amount+'%';
+			}
+			return str;
+		}
+		,'bagburning');
 	new Molpy.Boost('Chromatic Heresy',
 		function(me)
 		{
@@ -757,10 +779,49 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Jamming'].className='alert';
 	
 	
-	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,0,'blixtnedslag',
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier','blixtnedslag',
 		function(me)
 		{
 			me.power=Molpy.redactedClicks;
+		});
+		
+	new Molpy.Boost('Novikov Self-Consistency Principle', '<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
+		function()
+		{
+			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+			return 2101*Math.pow(4,me.power);
+		},
+		function()
+		{
+			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+			return 486*Math.pow(2,me.power);
+		}, 'The Bots forget half their past/future slavery. Costs twice as much each time. BTW you need to switch out of Stats view to activate it.'
+	);
+	Molpy.Novikov=function()
+	{
+		var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+		if(!me.bought)me.buy();
+		if(!me.bought)
+		{
+			Molpy.Notify('You know the rules, and so do I.');
+			return;
+		}
+		Molpy.CastleTools['NewPixBot'].totalCastlesBuilt=Math.ceil(Molpy.CastleTools['NewPixBot'].totalCastlesBuilt/2);
+		me.power++;
+		Molpy.LockBoost(me.name);
+	}	
+	Molpy.Boosts['Novikov Self-Consistency Principle'].className='toggle';
+	
+	new Molpy.Boost('Fractal Sandcastles',
+		function(me)
+		{
+			return 'Get more castles for your sand. Fractal Level is '+me.power;
+		}
+		,10987654321,1234567890,
+		function(me)
+		{
+			if(!me.bought)return 'Digging sand gives 35% more Castles per Fractal Level, which resets to 1 on the ONG. Blast Furnace uses 98% Sand to make Castles, per Fractal Level';
+			return 'Digging Sand will give you ' + Molpify(Math.floor(Math.pow(1.35,me.power)),1,!Molpy.showStats)+' Castles';
 		});
 }
 	
@@ -887,9 +948,17 @@ Molpy.DefineBadges=function()
 			level=Math.floor(level/2);
 		}
 		
-		if(level>3 && Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
+		if(level>3)
 		{
-			Molpy.UnlockBoost('Bag Burning');
+			if(Molpy.Got('Time Travel') && 
+				!(Molpy.Got('Overcompensating')||Molpy.Got('Doublepost')))
+			{
+				Molpy.UnlockBoost('Novikov Self-Consistency Principle');
+			}
+			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
+			{
+				Molpy.UnlockBoost('Bag Burning');
+			}
 		}
 		if(level>4)
 		{
@@ -947,6 +1016,8 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Hot Tub','Travel through Time 160 Times',1);
 	new Molpy.Badge("Dude, Where's my DeLorean?",'Travel through Time 640 Times',2);
 	new Molpy.Badge('Use Your Leopard','Get a click by using your leopard to simulate reloading the page');
+	new Molpy.Badge('Badge Not Found','Description Not Found');
+	new Molpy.Badge('Fractals Forever','Reach Fractal Level 55, and Fractal Sandcastles will be retained if you Molpy Down.');
 }
 		
 Molpy.CheckBuyUnlocks=function()
@@ -1009,6 +1080,16 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Got('Coma Molpy Style')||Molpy.Got('Double or Nothing')||Molpy.Got('Time Travel')||Molpy.Got('Judgement Dip Warning'))
 	{
 		Molpy.UnlockBoost('Chromatic Heresy');
+	}
+	
+	if(Molpy.Earned('Fractals Forever')&& !Molpy.Got('Fractal Sandcastles'))
+	{
+		Molpy.UnlockBoost('Fractal Sandcastles');	
+		Molpy.Boosts['Fractal Sandcastles'].power=0;	
+		Molpy.Boosts['Fractal Sandcastles'].bought=1; //woo freebie!
+		Molpy.boostRepaint=1;
+		Molpy.recalculateDig=1;
+		Molpy.BoostsOwned++;
 	}
 }
 

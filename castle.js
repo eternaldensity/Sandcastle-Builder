@@ -82,16 +82,20 @@ function Molpify(number, raftcastle, shrinkify)
 }
 function PriceSort(a,b)
 {
-	if (a.sandPrice>b.sandPrice) return 1;
-	else if (a.sandPrice<b.sandPrice) return -1;
+	var asp = EvalMaybeFunction(a.sandPrice);
+	var acp = EvalMaybeFunction(a.castlePrice);
+	var bsp = EvalMaybeFunction(b.sandPrice);
+	var bcp = EvalMaybeFunction(b.castlePrice);
+	if (asp>bsp) return 1;
+	else if (asp<bsp) return -1;
 	else
-	if (a.castlePrice>b.castlePrice) return 1;
-	else if (a.castlePrice<b.castlePrice) return -1;
+	if (acp>bcp) return 1;
+	else if (acp<bcp) return -1;
 	else return 0;
 }
 function FormatPrice(monies)
 {
-	return Molpify(Math.floor(monies*Molpy.priceFactor),1,!Molpy.showStats);
+	return Molpify(Math.floor(EvalMaybeFunction(monies)*Molpy.priceFactor),1,!Molpy.showStats);
 }
 function Flint(stones){return parseInt(Math.floor(stones))}
 function CuegishToBeanish(mustard)
@@ -696,8 +700,7 @@ Molpy.Up=function()
 				Molpy.startDate=parseInt(new Date().getTime());
 				Molpy.newpixNumber=1; 				
 				Molpy.ONGstart = ONGsnip(new Date());
-				//reset structures and unlocks and stuff 
-				
+							
 				for(i in Molpy.SandTools)
 				{
 					var me = Molpy.SandTools[i];
@@ -723,7 +726,8 @@ Molpy.Up=function()
 					var me = Molpy.Boosts[i];
 					me.unlocked=0;
 					me.bought=0;	
-					me.power=me.startPower;
+					if(me.startPower)
+						me.power=me.startPower;
 					me.countdown=0;
 				}
 				Molpy.recalculateDig=1;
@@ -958,7 +962,17 @@ Molpy.Up=function()
 			Molpy.buildNotifyFlag=0;
 			while(Molpy.sand >= Molpy.nextCastleSand)
 			{
-				Molpy.Build(1);
+				if(Molpy.Got('Fractal Sandcastles'))
+				{
+					Molpy.Build(Math.floor(Math.pow(1.35,Molpy.Boosts['Fractal Sandcastles'].power)));
+					Molpy.Boosts['Fractal Sandcastles'].power++;
+					if(Molpy.Boosts['Fractal Sandcastles'].power>=55)
+					{
+						Molpy.EarnBadge('Fractals Forever');
+					}
+				}else{
+					Molpy.Build(1);
+				}
 				Molpy.sand -= Molpy.nextCastleSand;
 				Molpy.currentCastleSand = Molpy.nextCastleSand;
 				//In which Fibbonacci occurs:
@@ -1166,6 +1180,7 @@ Molpy.Up=function()
 				}
 			}
 			Molpy.ninjad=1;
+			Molpy.HandleClickNP();
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
 		
@@ -1216,6 +1231,16 @@ Molpy.Up=function()
 			}
 			Molpy.ninjaStealth=0;
 			return 1;
+		}
+		
+		Molpy.HandleClickNP=function()
+		{
+			var NP = Molpy.newpixNumber;
+			if(NP==404) Molpy.EarnBadge('Badge Not Found');
+			if(Molpy.TimePeriod=='Recursion')
+			{
+				Molpy.UnlockBoost('Fractal Sandcastles');
+			}
 		}
 		
 		/* In which we calculate how much sand per milliNewPix we dig
@@ -1640,8 +1665,8 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
-				var sp = Math.floor(Molpy.priceFactor*this.sandPrice);
-				var cp = Math.floor(Molpy.priceFactor*this.castlePrice);
+				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice));
+				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice));
 				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp)
 				{
 					Molpy.SpendSand(sp);
@@ -1891,9 +1916,14 @@ Molpy.Up=function()
 			{
 				if(Molpy.Got('Blast Furnace') && !Math.floor(4*Math.random()))
 				{
-					var castles=Math.floor(Molpy.sand/1000);				
+					var blastFactor=1000;
+					if(Molpy.Got('Fractal Sandcastles'))
+					{
+						blastFactor=Math.max(1,1000*Math.pow(0.98,Molpy.Boosts['Fractal Sandcastles'].power));
+					}
+					var castles=Math.floor(Molpy.sand/blastFactor);				
 					Molpy.Notify('Blast Furnace in Operation!');
-					Molpy.SpendSand(castles*1000);
+					Molpy.SpendSand(castles*blastFactor);
 					Molpy.Build(castles);
 					return;				
 				}
@@ -1914,7 +1944,7 @@ Molpy.Up=function()
 				if(f)
 				{
 					var red=GLRschoice(availRewards);
-					if((red.sandPrice+red.castlePrice))
+					if((EvalMaybeFunction(red.sandPrice)+EvalMaybeFunction(red.castlePrice)))
 					{
 						Molpy.Notify('The Department of Redundancy Department has produced:',1);
 						Molpy.UnlockBoost(red.name);
@@ -2535,7 +2565,7 @@ Molpy.Up=function()
 				Molpy.UnlockBoost('Time Travel');
 			}
 		}
-		
+		Molpy.Boosts['Fractal Sandcastles'].power=0;
 		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.Notify('ONG!',1);	
 		

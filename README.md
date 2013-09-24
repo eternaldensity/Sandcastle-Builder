@@ -25,6 +25,12 @@ Not for any commercial use!
 - No notification if Judgement Dip Bots destroy 0 castles because you have none
 - Ensure Judgement Dip level can't be negative
 - Double or Nothing decreases in power rather than just dying
+- New Boost: Novikov Self-Consistency Principle. Will help Time Travellers against the Bot incursion
+- Made *bot Boosts even more expensive because Luggagebot was cheaper than Embaggening
+- Nerfed Embaggening to only count Cuegans over 14.
+- Fractal Sandcastles: Dug Sand turns into more Castles (incrementally). Also reduces the Blast Furnace Castle Cost
+- Badge Not Found
+- Another Badge which lets you keep Fractal Sandcastles when you Molpy Down!
 
 ### 0.982
 - Icons for *bot Boosts
