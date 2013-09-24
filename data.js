@@ -146,6 +146,7 @@ Molpy.DefineSandTools=function()
 			var mult = 1;
 			if(Molpy.Got('Magic Mountain'))mult*=2.5;
 			if(Molpy.Got('Standardbot'))mult*=4;
+			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Molpy.CastleTools['Scaffold'].amount);
 			return baserate*mult;
 		}
 	);
@@ -228,17 +229,18 @@ Molpy.DefineCastleTools=function()
 	new Molpy.CastleTool('Scaffold','scaffold|scaffolds|squished|raised','Squishes some castles, raising a place to put more.',60,100,
 		function()
 		{
-			var baseval = 6;				
-			if(Molpy.Got('Precise Placement')) baseval-=
-				Math.floor(Math.min(baseval,Molpy.SandTools['Ladder'].amount*0.5));
-			return baseval;
+			var baseval = 6;	
+			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.CastleTools['Flag'].amount);			
+			if(Molpy.Got('Precise Placement')) baseval-=Math.floor(Molpy.SandTools['Ladder'].amount*0.5);
+			return Math.max(0,Math.floor(baseval));
 		},
 		function()
 		{
 			var baseval = 22;
 			if(Molpy.Got('Propbot'))baseval*=4;
 			if(Molpy.Got('Stacked')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
-			return baseval;
+			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.CastleTools['Flag'].amount);
+			return Math.floor(baseval);
 		}
 	);
 		
@@ -789,11 +791,13 @@ Molpy.DefineBoosts=function()
 		function()
 		{
 			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+			if(!me.power)me.power=0;
 			return 2101*Math.pow(4,me.power);
 		},
 		function()
 		{
 			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+			if(!me.power)me.power=0;
 			return 486*Math.pow(2,me.power);
 		}, 'The Bots forget half their past/future slavery. Costs twice as much each time. BTW you need to switch out of Stats view to activate it.'
 	);
@@ -823,6 +827,8 @@ Molpy.DefineBoosts=function()
 			if(!me.bought)return 'Digging sand gives 35% more Castles per Fractal Level, which resets to 1 on the ONG. Blast Furnace uses 98% Sand to make Castles, per Fractal Level';
 			return 'Digging Sand will give you ' + Molpify(Math.floor(Math.pow(1.35,me.power)),1,!Molpy.showStats)+' Castles';
 		});
+	new Molpy.Boost('Balancing Act','Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1875000,843700);
+	new Molpy.Boost('Ch*rpies','Increases sand dig rate by 5% per badge earned',6969696969,81818181);
 }
 	
 	
@@ -1018,6 +1024,15 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Use Your Leopard','Get a click by using your leopard to simulate reloading the page');
 	new Molpy.Badge('Badge Not Found','Description Not Found');
 	new Molpy.Badge('Fractals Forever','Reach Fractal Level 55, and Fractal Sandcastles will be retained if you Molpy Down.');
+	new Molpy.Badge('Recursion',
+		function(){return 'Yo Dawg, we heard you earned '+Molpify(50000000000,0,!Molpy.showStats)+' Sand by clicking...';});
+	new Molpy.Badge('Big Spender',
+		function(){return 'Spend '+Molpify(200000000,0,!Molpy.showStats)+' Castles total';});
+	new Molpy.Badge('Valued Customer',
+		function(){return 'Spend '+Molpify(10000000000,0,!Molpy.showStats)+' Castles total';});
+	new Molpy.Badge('Beachscaper','Have 100 Sand Tools');
+	new Molpy.Badge('Beachmover','Have 100 Castle Tools');
+	new Molpy.Badge('Better This Way','Purchase 50 Boosts');
 }
 		
 Molpy.CheckBuyUnlocks=function()
@@ -1064,6 +1079,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=2)Molpy.UnlockBoost('Precise Placement');
 	if(me.amount>=4)Molpy.UnlockBoost('Level Up!');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Propbot');
+	if(me.amount>=20)Molpy.UnlockBoost('Balancing Act');
 	
 	me=Molpy.CastleTools['Wave'];
 	if(me.amount>=2)Molpy.UnlockBoost('Swell');
@@ -1086,6 +1102,28 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.recalculateDig=1;
 		Molpy.BoostsOwned++;
 	}
+	
+	
+	if(Molpy.castlesSpent>10000000000)
+	{
+		Molpy.EarnBadge('Valued Customer');
+		Molpy.Boosts[Molpy.IKEA].startPower=0.6;
+	}else if(Molpy.castlesSpent>200000000)
+	{
+		Molpy.EarnBadge('Big Spender');
+		Molpy.Boosts[Molpy.IKEA].startPower=0.5;
+	}else{
+		Molpy.Boosts[Molpy.IKEA].startPower=0.4;
+	}
+	
+	if(Molpy.BadgesOwned>=69)
+	{
+		Molpy.UnlockBoost('Ch*rpies');
+	}
+	
+	if(Molpy.SandToolsOwned>=200)Molpy.EarnBadge('Beachscaper');
+	if(Molpy.CastleToolsOwned>=100)Molpy.EarnBadge('Beachmover');
+	if(Molpy.BoostsOwned>=50)Molpy.EarnBadge('Better This Way');
 }
 
 Molpy.CheckClickAchievements=function()
@@ -1118,6 +1156,10 @@ Molpy.CheckClickAchievements=function()
 	}
 	if(c>=100000000){
 		Molpy.EarnBadge('Click Master');
+	}
+	if(c>=50000000000){
+		Molpy.EarnBadge('Recursion');
+		Molpy.UnlockBoost('Fractal Sandcastles');
 	}						
 }	
 /**

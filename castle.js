@@ -188,7 +188,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.99;
+		Molpy.version=0.991;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1249,10 +1249,6 @@ Molpy.Up=function()
 		{
 			var NP = Molpy.newpixNumber;
 			if(NP==404) Molpy.EarnBadge('Badge Not Found');
-			if(Molpy.TimePeriod=='Recursion')
-			{
-				Molpy.UnlockBoost('Fractal Sandcastles');
-			}
 		}
 		
 		/* In which we calculate how much sand per milliNewPix we dig
@@ -1280,6 +1276,10 @@ Molpy.Up=function()
 			if(Molpy.Got('Grapevine'))//grapevine
 			{
 				multiplier+=0.02*Molpy.BadgesOwned;
+			}
+			if(Molpy.Got('Ch*rpies'))
+			{
+				multiplier+=0.05*Molpy.BadgesOwned;
 			}
 			if(Molpy.Got('Blitzing'))
 			{
@@ -1951,7 +1951,7 @@ Molpy.Up=function()
 					}
 				}
 				
-				if(f)
+				if(availRewards.length)
 				{
 					var red=GLRschoice(availRewards);
 					if((EvalMaybeFunction(red.sandPrice)+EvalMaybeFunction(red.castlePrice)))

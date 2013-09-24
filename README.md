@@ -15,6 +15,14 @@ Inspired by Orteil's Cookie Clicker
 Not for any commercial use!
 
 ## Changelog
+### 0.991
+- Changed condition for Fractal Sandcastles, so people who are past the Recursion Period don't have to go back for it
+- And a related badge
+- Badges for spending a lot
+- Boost for Scaffolds and flags
+- Fixed Novikov price
+- Ch*rpies
+- Fixed department crash
 
 ### 0.99
 - Fixed printing numbers with decimal parts which round up to whole numbers (1.99 should become 2 not 1.100)
