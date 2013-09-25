@@ -18,7 +18,6 @@ Not for any commercial use!
 
 ### 0.9551
 - Mustard
-- Just editing the file to try to make github update stuff again.
 
 ### 0.995
 - You must understand this line before you can understand it
