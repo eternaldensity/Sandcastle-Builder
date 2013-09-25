@@ -120,6 +120,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Huge Buckets'))mult*=2;
 			if(Molpy.Got('Trebuchet Pong'))mult*=Math.pow(1.5,Math.floor(Molpy.CastleTools['Trebuchet'].amount/2));
 			if(Molpy.Got('Carrybot'))mult*=4;
+			if(Molpy.Got('Buccaneer'))mult*=2;
 			return mult*baserate;
 			
 			;}
@@ -829,6 +830,8 @@ Molpy.DefineBoosts=function()
 		});
 	new Molpy.Boost('Balancing Act','Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1875000,843700);
 	new Molpy.Boost('Ch*rpies','Increases sand dig rate by 5% per badge earned',6969696969,81818181);
+	new Molpy.Boost('Buccaneer','Clicks and buckets give double sand',84700000,7540);
+	new Molpy.Boost('Bucket Brigade','Clicks give 1% of sand dig rate per 50 buckets',412000000,8001);
 }
 	
 	
@@ -1041,6 +1044,8 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=1)Molpy.UnlockBoost('Bigger Buckets');
 	if(me.amount>=4)Molpy.UnlockBoost('Huge Buckets');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Carrybot');
+	if(me.amount>=30)Molpy.UnlockBoost('Buccaneer');
+	if(me.amount>=50)Molpy.UnlockBoost('Bucket Brigade');
 	
 	me=Molpy.SandTools['Cuegan'];
 	if(me.amount>=1)Molpy.UnlockBoost('Helping Hand');
