@@ -188,7 +188,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.992;
+		Molpy.version=0.994;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1142,6 +1142,11 @@ Molpy.Up=function()
 			{
 				baserate+=Molpy.sandPermNP*0.01*Math.floor(Molpy.SandTools['Bucket'].amount/50);
 			}
+			
+			if(Molpy.Got('Bag Puns'))
+			{
+				baserate+= baserate*0.4*Math.floor((Molpy.SandTools['Bag'].amount-25)/5);
+			}
 			return baserate;
 		}
 		Molpy.computedSandPerClick=1;
@@ -1203,6 +1208,12 @@ Molpy.Up=function()
 							Molpy.EarnBadge('Ninja Strike');
 						}
 					}
+				}
+			}else if(Molpy.Got('Bag Puns'))
+			{
+				if(Molpy.beachClicks%20==0)
+{
+					Molpy.Notify(GLRschoice(Molpy.bp));
 				}
 			}
 			Molpy.ninjad=1;

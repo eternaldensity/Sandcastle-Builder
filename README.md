@@ -16,6 +16,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.994
+- Updated version number to 0.993
+- No, to 0.994 actually :P
+- Added another boost for clicking, this one relating to Bags
+
 ### 0.993
 - 2 new Bucket boosts!
 
