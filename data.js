@@ -121,9 +121,8 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Trebuchet Pong'))mult*=Math.pow(1.5,Math.floor(Molpy.CastleTools['Trebuchet'].amount/2));
 			if(Molpy.Got('Carrybot'))mult*=4;
 			if(Molpy.Got('Buccaneer'))mult*=2;
-			return mult*baserate;
-			
-			;}
+			return mult*baserate;			
+			}
 	);
 	
 	new Molpy.SandTool('Cuegan','cuegan|cuegans|tossed','Megan and Cueball toss in a bit of extra sand',50,
@@ -137,7 +136,7 @@ Molpy.DefineSandTools=function()
 			}
 			if(Molpy.Got('Stickbot'))mult*=4;
 			return baserate*mult;
-			;}
+			}
 	);
 	
 	new Molpy.SandTool('Flag','flag|flags|marked','Marks out even more sand',420,
