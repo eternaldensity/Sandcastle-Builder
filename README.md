@@ -16,6 +16,12 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.956
+- Actions now get their own colour rather than being toggles
+
+### 0.9552
+- Ensure index page loads fresh .js files rather than cached
+
 ### 0.9551
 - Mustard
 

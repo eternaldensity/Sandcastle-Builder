@@ -408,7 +408,7 @@ Molpy.DefineBoosts=function()
 				+' your current castle balance or lose it all.';
 		}
 		,200,0,0,0,0,0);
-	Molpy.Boosts['Double or Nothing'].className='toggle';
+	Molpy.Boosts['Double or Nothing'].className='action';
 	Molpy.DoubleOrNothing=function()
 	{
 		if(!Molpy.Boosts['Double or Nothing'].bought)
@@ -558,7 +558,7 @@ Molpy.DefineBoosts=function()
 			Molpify(me.power)+' NP in Time';
 		}
 		,1000,30,0,0,0,1);
-	Molpy.Boosts['Time Travel'].className='toggle';
+	Molpy.Boosts['Time Travel'].className='action';
 	Molpy.intruderBots=0;
 	Molpy.TimeTravel=function(NP)
 	{		
@@ -815,7 +815,7 @@ Molpy.DefineBoosts=function()
 		me.power++;
 		Molpy.LockBoost(me.name);
 	}	
-	Molpy.Boosts['Novikov Self-Consistency Principle'].className='toggle';
+	Molpy.Boosts['Novikov Self-Consistency Principle'].className='action';
 	
 	new Molpy.Boost('Fractal Sandcastles',
 		function(me)
@@ -828,6 +828,7 @@ Molpy.DefineBoosts=function()
 			if(!me.bought)return 'Digging sand gives 35% more Castles per Fractal Level, which resets to 1 on the ONG. Blast Furnace uses 98% Sand to make Castles, per Fractal Level';
 			return 'Digging Sand will give you ' + Molpify(Math.floor(Math.pow(1.35,me.power)),1,!Molpy.showStats)+' Castles';
 		});
+	Molpy.Boosts['Fractal Sandcastles'].className="alert";
 	new Molpy.Boost('Balancing Act','Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1875000,843700);
 	new Molpy.Boost('Ch*rpies','Increases sand dig rate by 5% per badge earned',6969696969,81818181);
 	new Molpy.Boost('Buccaneer','Clicks and buckets give double sand',84700000,7540);
@@ -988,7 +989,7 @@ Molpy.DefineBoosts=function()
 		me.power = (!me.power)*1;
 		Molpy.shopRepaint=1;
 	}
-	Molpy.Boosts['No Sell'].className="toggle"
+	Molpy.Boosts['No Sell'].className='toggle';
 }
 	
 	
