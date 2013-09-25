@@ -188,7 +188,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.995;
+		Molpy.version=0.9951;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1898,8 +1898,8 @@ Molpy.Up=function()
 						var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
 						if(BKJ.bought)
 						{
-							BKJ.power-2;
-							if(BKJ.power=Math.max(0,BKJ.power);
+							BKJ.power-=2;
+							BKJ.power=Math.max(0,BKJ.power);
 						}
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
