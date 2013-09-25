@@ -1173,6 +1173,10 @@ Molpy.Up=function()
 					{
 						var stealthBuild=Molpy.ninjaStealth;
 						if(Molpy.Got('Ninja Assistants')) stealthBuild*=Molpy.CastleTools['NewPixBot'].amount;
+						if(Molpy.Got('Skull and Crossbones'))
+						{
+							stealthBuild*=Math.floor(Math.pow(1.05,Math.max(-1,Molpy.SandTools['Flag'].amount-40)));
+						}
 						Molpy.Build(stealthBuild+1);
 					}else{
 						Molpy.Build(1); //neat!
@@ -1293,6 +1297,7 @@ Molpy.Up=function()
 			var ninjaFactor =1;
 			if(Molpy.Got('Busy Bot'))ninjaFactor+=0.1;
 			if(Molpy.Got('Stealthy Bot'))ninjaFactor+=0.1;
+			if(Molpy.Got('Chequered Flag'))ninjaFactor+=0.1;
 			Molpy.ninjaTime = Molpy.baseNinjaTime/ninjaFactor;
 			if(Molpy.Got('Molpies'))//molpy molpy molpy molpy molpy
 			{
