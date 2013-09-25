@@ -16,7 +16,15 @@ Not for any commercial use!
 
 ## Changelog
 
-### 0.9551
+### 0.996
+- Actions now get their own colour rather than being toggles
+- New Cuegan boost (finally did The Forty which was suggested ages ago)
+- 2 Flag boosts to ninjas
+
+### 0.9952
+- Ensure index page loads fresh .js files rather than cached
+
+### 0.9951
 - Mustard
 
 ### 0.995

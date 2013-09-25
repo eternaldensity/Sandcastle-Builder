@@ -587,6 +587,24 @@ body.lightscheme.heresy .boost.loot.alert, body.darkscheme.heresy .boost.shop.al
 	background:#522;
 }
 
+body.darkscheme.heresy .boost.loot.action:hover, body.lightscheme.heresy .boost.shop.action:hover, body.lightscheme.heresy .badge.action
+{
+	background:#FFFFF2;
+}
+body.lightscheme.heresy .boost.loot.action:hover, body.darkscheme.heresy .boost.shop.action:hover, body.darkscheme.heresy .badge.action
+{
+	background:#20200b;
+}
+
+body.darkscheme.heresy .boost.loot.action, body.lightscheme.heresy .boost.shop.action, body.lightscheme.heresy .badge.action:hover
+{
+	background:#ffd;
+}
+body.lightscheme.heresy .boost.loot.action, body.darkscheme.heresy .boost.shop.action, body.darkscheme.heresy .badge.action:hover
+{
+	background:#552;
+}
+
 
 body.darkscheme .boost.loot #boost_activeninja.icon
 {

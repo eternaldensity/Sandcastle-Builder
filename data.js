@@ -135,6 +135,7 @@ Molpy.DefineSandTools=function()
 				mult*=Math.pow(1.1,Math.floor(Molpy.SandTools['Bucket'].amount/2));
 			}
 			if(Molpy.Got('Stickbot'))mult*=4;
+			if(Molpy.Got('The Forty'))mult*=40;
 			return baserate*mult;
 			}
 	);
@@ -408,7 +409,7 @@ Molpy.DefineBoosts=function()
 				+' your current castle balance or lose it all.';
 		}
 		,200,0,0,0,0,0);
-	Molpy.Boosts['Double or Nothing'].className='toggle';
+	Molpy.Boosts['Double or Nothing'].className='action';
 	Molpy.DoubleOrNothing=function()
 	{
 		if(!Molpy.Boosts['Double or Nothing'].bought)
@@ -558,7 +559,7 @@ Molpy.DefineBoosts=function()
 			Molpify(me.power)+' NP in Time';
 		}
 		,1000,30,0,0,0,1);
-	Molpy.Boosts['Time Travel'].className='toggle';
+	Molpy.Boosts['Time Travel'].className='action';
 	Molpy.intruderBots=0;
 	Molpy.TimeTravel=function(NP)
 	{		
@@ -815,7 +816,7 @@ Molpy.DefineBoosts=function()
 		me.power++;
 		Molpy.LockBoost(me.name);
 	}	
-	Molpy.Boosts['Novikov Self-Consistency Principle'].className='toggle';
+	Molpy.Boosts['Novikov Self-Consistency Principle'].className='action';
 	
 	new Molpy.Boost('Fractal Sandcastles',
 		function(me)
@@ -828,11 +829,15 @@ Molpy.DefineBoosts=function()
 			if(!me.bought)return 'Digging sand gives 35% more Castles per Fractal Level, which resets to 1 on the ONG. Blast Furnace uses 98% Sand to make Castles, per Fractal Level';
 			return 'Digging Sand will give you ' + Molpify(Math.floor(Math.pow(1.35,me.power)),1,!Molpy.showStats)+' Castles';
 		});
+	Molpy.Boosts['Fractal Sandcastles'].className="alert";
 	new Molpy.Boost('Balancing Act','Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1875000,843700);
 	new Molpy.Boost('Ch*rpies','Increases sand dig rate by 5% per badge earned',6969696969,81818181);
 	new Molpy.Boost('Buccaneer','Clicks and buckets give double sand',84700000,7540);
 	new Molpy.Boost('Bucket Brigade','Clicks give 1% of sand dig rate per 50 buckets',412000000,8001);
 	new Molpy.Boost('Bag Puns','Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',1470000000,450021);
+	new Molpy.Boost('The Forty','Cuegan produce 40 times as much sand',40404040,4040);
+	new Molpy.Boost('Chequered Flag','Racing NewPixBots activate 10% sooner',101010101,10101);
+	new Molpy.Boost('Skull and Crossbones','Pirates vs. Ninjas! Ninja Builder\'s Castle output is increased by 5% per flag owned over 40',304050607,809010);
 	
 	{//#region puns	
 		Molpy.bp = [
@@ -988,7 +993,7 @@ Molpy.DefineBoosts=function()
 		me.power = (!me.power)*1;
 		Molpy.shopRepaint=1;
 	}
-	Molpy.Boosts['No Sell'].className="toggle"
+	Molpy.Boosts['No Sell'].className='toggle';
 }
 	
 	
@@ -1210,12 +1215,15 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=4)Molpy.UnlockBoost('Cooperation');
 	if(me.amount>=8)Molpy.UnlockBoost('Megball');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Stickbot');
+	if(me.amount>=40)Molpy.UnlockBoost('The Forty');
 	
 	me=Molpy.SandTools['Flag'];
 	if(me.amount>=1)Molpy.UnlockBoost('Flag Bearer');
 	if(me.amount>=2)Molpy.UnlockBoost('War Banner');
 	if(me.amount>=6)Molpy.UnlockBoost('Magic Mountain');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Standardbot');
+	if(me.amount>=25)Molpy.UnlockBoost('Chequered Flag');
+	if(me.amount>=40)Molpy.UnlockBoost('Skull and Crossbones');
 	
 	me=Molpy.SandTools['Ladder'];
 	if(me.amount>=1)Molpy.UnlockBoost('Extension Ladder');
