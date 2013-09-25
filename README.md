@@ -16,6 +16,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.993
+- 2 new Bucket boosts!
+
 ### 0.992
 - Fixed Balancing Act
 - NPB Navigation Code now only prevent time-travellers when it's activated

@@ -1116,6 +1116,7 @@ Molpy.Up=function()
 			var baserate=1 + Molpy.Got('Bigger Buckets')*0.1;
 			var mult=1;
 			if(Molpy.Got('Huge Buckets'))mult*=2;
+			if(Molpy.Got('Buccaneer'))mult*=2;
 			baserate*=mult;
 			if(Molpy.Got('Helpful Hands'))
 			{
@@ -1136,6 +1137,10 @@ Molpy.Up=function()
 			{
 				var pairs = Math.min(Molpy.SandTools['Bag'].amount, Molpy.SandTools['Ladder'].amount);
 				baserate+=500*pairs;
+			}
+			if(Molpy.Got('Bucket Brigade'))
+			{
+				baserate+=Molpy.sandPermNP*0.01*Math.floor(Molpy.SandTools['Bucket'].amount/50);
 			}
 			return baserate;
 		}
