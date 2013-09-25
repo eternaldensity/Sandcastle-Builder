@@ -132,7 +132,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Megball')) mult*=2;
 			if(Molpy.Got('Cooperation'))
 			{
-				mult*=Math.pow(1.1,Math.floor(Molpy.SandTools['Bucket'].amount/2));
+				mult*=Math.pow(1.05,Math.floor(Molpy.SandTools['Bucket'].amount/2));
 			}
 			if(Molpy.Got('Stickbot'))mult*=4;
 			if(Molpy.Got('The Forty'))mult*=40;
@@ -310,15 +310,15 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Bigger Buckets','Increases sand rate of buckets and clicks',500,0,'Adds 0.1 S/mNP to each Bucket, before multipliers','biggerbuckets');
 	new Molpy.Boost('Huge Buckets','Doubles sand rate of buckets and clicks',800,2,0,'hugebuckets');
 	new Molpy.Boost('Helping Hand','Increases sand rate of Cuegan',500,2,'Adds 0.2 S/mNP to each Cuegan, before multipliers','helpinghand');
-	new Molpy.Boost('Cooperation','Increases sand rate of Cuegan 10% per pair of buckets',2000,4,
+	new Molpy.Boost('Cooperation','Increases sand rate of Cuegan 5% per pair of buckets',2000,4,
 		function()
 		{			
 			if(Molpy.Got('Cooperation'))
 			{
-				var mult=Math.pow(1.1,Math.floor(Molpy.SandTools['Bucket'].amount/2));
+				var mult=Math.pow(1.05,Math.floor(Molpy.SandTools['Bucket'].amount/2));
 				return 'Multiplies Cuegans\' sand production by ' + Molpify(mult*100,2)+'%';
 			}
-			return 'Multiplies by 10% per pair of buckets';
+			return 'Multiplies by 5% per pair of buckets';
 		}
 	);
 	new Molpy.Boost('Spring Fling','Trebuchets build an extra Castle',1000,6,0,'springfling');
@@ -661,7 +661,7 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja',
 		'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked',
-		'Big Splash','Irregular Rivers','NewPixBot Navigation Code'];
+		'Big Splash','Irregular Rivers','NewPixBot Navigation Code','Blixtnedslag Förmögenhet, JA!'];
 	new Molpy.Boost('Sandbag','Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1400000,21000);
 	new Molpy.Boost('Embaggening','Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',3500000,23000,
 	0
@@ -783,7 +783,7 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Jamming'].className='alert';
 	
 	
-	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. Missing a '+Molpy.redactedWord+' subtracts 2 from the multiplier','blixtnedslag',
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. (Actually only when you get a Blitzing reward.) Missing a '+Molpy.redactedWord+' subtracts 5 from the multiplier','blixtnedslag',
 		function(me)
 		{
 			me.power=Molpy.redactedClicks;
@@ -994,6 +994,13 @@ Molpy.DefineBoosts=function()
 		Molpy.shopRepaint=1;
 	}
 	Molpy.Boosts['No Sell'].className='toggle';
+	
+	new Molpy.Boost('Blixtnedslag Förmögenhet, JA!','Not Lucky gets a 5% bonus per level of Blixtnedslag Kattungar, JA!',1987645321,7777777,
+		function()
+		{
+			return 'Adds ' + Molpify((Math.pow(1.05,Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)-1)*100,1)+'% to Not Lucky reward';
+		});
+	Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].hardlocked=1;
 }
 	
 	
