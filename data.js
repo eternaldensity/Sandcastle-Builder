@@ -783,7 +783,7 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Jamming'].className='alert';
 	
 	
-	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. But missed '+Molpy.redactedWord+' are subtracted from the multiplier','blixtnedslag',
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. Missing a '+Molpy.redactedWord+' subtracts 2 from the multiplier','blixtnedslag',
 		function(me)
 		{
 			me.power=Molpy.redactedClicks;
@@ -835,8 +835,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Bucket Brigade','Clicks give 1% of sand dig rate per 50 buckets',412000000,8001);
 	new Molpy.Boost('Bag Puns','Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',1470000000,450021);
 	
-	{//#region puns
-	
+	{//#region puns	
 		Molpy.bp = [
 			"One True Comic II: The Baginning"
 			,"One True Comic 2: Electric Bagaloo"
@@ -971,6 +970,26 @@ Molpy.DefineBoosts=function()
 			,"Half-Bag 3 Confirmed!"
 		]
 	}
+	
+	new Molpy.Boost('No Sell',
+		function(me)
+		{
+			return '<input type="Button" onclick="Molpy.NoSellToggle()" value="'+(me.power? 'Show':'Hide')+'"></input> the Sell links on tools.';
+		},3333,55);
+	
+	Molpy.NoSellToggle=function()
+	{
+		var me=Molpy.Boosts['No Sell'];
+		if(!me.bought)me.buy();
+		if(!me.bought)
+		{
+			Molpy.Notify('Looks like you need to sell something');
+			return;
+		}
+		me.power = (!me.power)*1;
+		Molpy.shopRepaint=1;
+	}
+	Molpy.Boosts['No Sell'].className="toggle"
 }
 	
 	
@@ -1175,6 +1194,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Beachscaper','Have 100 Sand Tools');
 	new Molpy.Badge('Beachmover','Have 100 Castle Tools');
 	new Molpy.Badge('Better This Way','Purchase 50 Boosts');
+	new Molpy.Badge('Recursion ','To Earn Recursion, you must first earn Recursion');
 }
 		
 Molpy.CheckBuyUnlocks=function()
@@ -1304,6 +1324,7 @@ Molpy.CheckClickAchievements=function()
 	}
 	if(c>=50000000000){
 		Molpy.EarnBadge('Recursion');
+		Molpy.EarnBadge('Recursion ');
 		Molpy.UnlockBoost('Fractal Sandcastles');
 	}						
 }	

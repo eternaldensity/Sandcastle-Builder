@@ -23,23 +23,23 @@ function Molpify(number, raftcastle, shrinkify)
 	
 	if(shrinkify)
 	{
-		if(number>1000000000000000)
+		if(number>=1000000000000000)
 		{
 			return Molpify(number / 1000000000000000, raftcastle,1)+'P';
 		}
-		if(number>1000000000000)
+		if(number>=1000000000000)
 		{
 			return Molpify(number / 1000000000000, raftcastle,1)+'T';
 		}
-		if(number>1000000000)
+		if(number>=1000000000)
 		{
 			return Molpify(number / 1000000000, raftcastle,1)+'G';
 		}
-		if(number>1000000)
+		if(number>=1000000)
 		{
 			return Molpify(number / 1000000, raftcastle,1)+'M';
 		}
-		if(number>100000)
+		if(number>=100000)
 		{
 			return Molpify(number / 1000, raftcastle,1)+'K';
 		}
@@ -188,7 +188,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.994;
+		Molpy.version=0.995;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1145,7 +1145,7 @@ Molpy.Up=function()
 			
 			if(Molpy.Got('Bag Puns'))
 			{
-				baserate+= baserate*0.4*Math.floor((Molpy.SandTools['Bag'].amount-25)/5);
+				baserate+= baserate*0.4*Math.max(-2,Math.floor((Molpy.SandTools['Bag'].amount-25)/5));
 			}
 			return baserate;
 		}
@@ -1472,6 +1472,7 @@ Molpy.Up=function()
 					Molpy.shopRepaint=1;
 					Molpy.recalculateDig=1;
 					Molpy.SandToolsOwned--;
+					Molpy.UnlockBoost('No Sell');
 				}
 			}
 			this.showdesc=function()
@@ -1579,6 +1580,7 @@ Molpy.Up=function()
 					Molpy.shopRepaint=1;
 					Molpy.recalculateDig=1;
 					Molpy.CastleToolsOwned--;
+					Molpy.UnlockBoost('No Sell');
 				}
 			}
 			this.DestroyPhase=function()
@@ -1896,7 +1898,8 @@ Molpy.Up=function()
 						var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
 						if(BKJ.bought)
 						{
-							if(BKJ.power>0)	BKJ.power--;
+							BKJ.power-2;
+							if(BKJ.power=Math.max(0,BKJ.power);
 						}
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
@@ -2097,7 +2100,7 @@ Molpy.Up=function()
 			{
 				if(i==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.SandToolsById[i];
-				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a></div>'+
+				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
 				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="SandToolDescription'+me.id+'"></div></div></div>';
@@ -2128,7 +2131,7 @@ Molpy.Up=function()
 			{
 				if(i==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.CastleToolsById[i];
-				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a> <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a></div>'+
+				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
 				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="CastleToolDescription'+me.id+'"></div></div></div>';

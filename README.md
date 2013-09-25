@@ -16,6 +16,12 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.995
+- You must understand this line before you can understand it
+- No Sell boost. Finally.
+- Prevent negative click sand if you sell lots of bags
+- BKJ! loses power a little quicker for missed kitties
+
 ### 0.994
 - Updated version number to 0.993
 - No, to 0.994 actually :P
