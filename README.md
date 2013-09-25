@@ -16,6 +16,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.9551
+- Mustard
+
 ### 0.995
 - You must understand this line before you can understand it
 - No Sell boost. Finally.
