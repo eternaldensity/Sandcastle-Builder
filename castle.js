@@ -188,7 +188,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.996;
+		Molpy.version=0.997;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1903,7 +1903,7 @@ Molpy.Up=function()
 						var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
 						if(BKJ.bought)
 						{
-							BKJ.power-=2;
+							BKJ.power-=5;
 							BKJ.power=Math.max(0,BKJ.power);
 						}
 						Molpy.shopRepaint=1;
@@ -2006,8 +2006,7 @@ Molpy.Up=function()
 			
 			if(Math.floor(2*Math.random()))
 			{
-				Molpy.Notify('You are Not Lucky');
-				Molpy.Notify('Which is Good');
+				Molpy.Notify('You are not Lucky (which is good)');
 				var bonus=0;
 				var i=0;
 				while(i<Molpy.SandToolsN)
@@ -2023,6 +2022,8 @@ Molpy.Up=function()
                 }
 				bonus += Molpy.BoostsOwned+Molpy.BadgesOwned;
 				bonus += Molpy.redactedClicks*10;
+				if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
+					bonus*= Math.pow(1.05,Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)
 				bonus = Math.floor(bonus);
 				Molpy.Build(bonus);
 			}else{
@@ -2032,6 +2033,7 @@ Molpy.Up=function()
 				{
 					BKJ.power=(BKJ.power||0)+1;
 					blitzSpeed+= BKJ.power;
+					if(BKJ.power>24) Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].hardlocked=0;
 				}
 				Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 			}			

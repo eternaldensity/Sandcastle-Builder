@@ -16,6 +16,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.997
+- New Department Boost: Blixtnedslag Förmögenhet, JA! available after you get Blixtnedslag Kattungar, JA! powered up enough
+- Nerfed Cooperation to 5% per bucket pair, rather than 10%. Combined with The Forty it made Cuegan far more powerful than Bags
+- BKJ! now decays by 5 for a missed kitty
+
 ### 0.996
 - Actions now get their own colour rather than being toggles
 - New Cuegan boost (finally did The Forty which was suggested ages ago)
