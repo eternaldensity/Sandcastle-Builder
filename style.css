@@ -63,12 +63,12 @@ body
 	font-family:Tahoma,Arial,sans-serif;
 	font-size:13px;
 }
-body.darkscheme, body.darkscheme a
+body.darkscheme, body.darkscheme a.minifloatbox
 {
 	color:#fafafa;
 	background:#050505;
 }
-body.lightscheme , body.lightscheme a
+body.lightscheme , body.lightscheme a.minifloatbox
 {
 	color:#020202;
 	background:#fdfdfd;
@@ -252,7 +252,7 @@ body.lightscheme .floatbox:hover{
 .lootbox{
 	display: inline-block;
 	vertical-align: top;
-	width:120px;
+	width:130px;
 	min-height:38px;
 	margin:5px;
 	border-width: 1px;
