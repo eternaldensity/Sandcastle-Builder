@@ -717,11 +717,11 @@ Molpy.DefineBoosts=function()
 			if(!Molpy.Got('Flux Turbine')) return 'All castle gains are increased by 2% per natural logarithm of castles wiped by Molpy Down, except refunds which are not increased.';
 			return 'Multiplies all Castle gains by ' + Molpify(Molpy.globalCastleMult*100,2)+'% (But refunds when selling remain unchanged.)';
 		});
-	new Molpy.Boost('Ninja Assistants', 'Ninja Builder\'s castle output is multiplied by the number of NewPixBots you have.',250000000,777);
-	new Molpy.Boost('Minigun', 'The castle output of Trebuchets is multiplied by the number of NewPixBots you have.',480000000,888);
-	new Molpy.Boost('Stacked', 'The castle output of Scaffolds is multiplied by the number of NewPixBots you have.',970000000,999);
-	new Molpy.Boost('Big Splash', 'The castle output of Waves is multiplied by the number of NewPixBots you have.',2650000000,1111);
-	new Molpy.Boost('Irregular Rivers', 'The castle output of Waves is multiplied by the number of NewPixBots you have.',8290000000,2222);	
+	new Molpy.Boost('Ninja Assistants', 'Ninja Builder\'s castle output is multiplied by the number of NewPixBots you have.',250000000,777,0,'ninjaassistants');
+	new Molpy.Boost('Minigun', 'The castle output of Trebuchets is multiplied by the number of NewPixBots you have.',480000000,888,0,'minigun');
+	new Molpy.Boost('Stacked', 'The castle output of Scaffolds is multiplied by the number of NewPixBots you have.',970000000,999,0,'stacked');
+	new Molpy.Boost('Big Splash', 'The castle output of Waves is multiplied by the number of NewPixBots you have.',2650000000,1111,0,'bigsplash');
+	new Molpy.Boost('Irregular Rivers', 'The castle output of Waves is multiplied by the number of NewPixBots you have.',8290000000,2222,0,'irregularrivers');	
 	
 	Molpy.Boosts['Ninja Assistants'].hardlocked=1;	
 	Molpy.Boosts['Minigun'].hardlocked=1;	
@@ -783,7 +783,7 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Jamming'].className='alert';
 	
 	
-	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. (Actually only when you get a Blitzing reward.) Missing a '+Molpy.redactedWord+' subtracts 5 from the multiplier','blixtnedslag',
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. (Actually only when you get a Blitzing reward.) Missing a '+Molpy.redactedWord+' subtracts 5 from the multiplier','bkj',
 		function(me)
 		{
 			me.power=Molpy.redactedClicks;
@@ -823,17 +823,17 @@ Molpy.DefineBoosts=function()
 		{
 			return 'Get more castles for your sand. Fractal Level is '+me.power;
 		}
-		,10987654321,1234567890,
+		,910987654321,12345678910,
 		function(me)
 		{
 			if(!me.bought)return 'Digging sand gives 35% more Castles per Fractal Level, which resets to 1 on the ONG. Blast Furnace uses 98% Sand to make Castles, per Fractal Level';
 			return 'Digging Sand will give you ' + Molpify(Math.floor(Math.pow(1.35,me.power)),1,!Molpy.showStats)+' Castles';
 		});
 	Molpy.Boosts['Fractal Sandcastles'].className="alert";
-	new Molpy.Boost('Balancing Act','Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1875000,843700);
-	new Molpy.Boost('Ch*rpies','Increases sand dig rate by 5% per badge earned',6969696969,81818181);
-	new Molpy.Boost('Buccaneer','Clicks and buckets give double sand',84700000,7540);
-	new Molpy.Boost('Bucket Brigade','Clicks give 1% of sand dig rate per 50 buckets',412000000,8001);
+	new Molpy.Boost('Balancing Act','Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',1875000,843700,0,'balancingact');
+	new Molpy.Boost('Ch*rpies','Increases sand dig rate by 5% per badge earned',6969696969,81818181,0,'chirpies');
+	new Molpy.Boost('Buccaneer','Clicks and buckets give double sand',84700000,7540,0,'buccaneer');
+	new Molpy.Boost('Bucket Brigade','Clicks give 1% of sand dig rate per 50 buckets',412000000,8001,0,'bucketbrigade');
 	new Molpy.Boost('Bag Puns','Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',1470000000,450021);
 	{//#region puns	
 		Molpy.bp = [
@@ -971,7 +971,7 @@ Molpy.DefineBoosts=function()
 		]
 	}
 	
-	new Molpy.Boost('The Forty','Cuegan produce 40 times as much sand',40404040,4040);
+	new Molpy.Boost('The Forty','Cuegan produce 40 times as much sand',40404040,4040,0,'theforty');
 	new Molpy.Boost('Chequered Flag','Racing NewPixBots activate 10% sooner',101010101,10101);
 	new Molpy.Boost('Skull and Crossbones','Pirates vs. Ninjas! Ninja Builder\'s Castle output is increased by 5% per flag owned over 40',304050607,809010);
 	new Molpy.Boost('No Sell',
@@ -998,7 +998,7 @@ Molpy.DefineBoosts=function()
 		function()
 		{
 			return 'Adds ' + Molpify((Math.pow(1.05,Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)-1)*100,1)+'% to Not Lucky reward';
-		});
+		},'bfj');
 	Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].hardlocked=1;
 	new Molpy.Boost('VITSSÅGEN, JA!','Stop the Puns!',334455667788,999222111000);
 }
@@ -1097,7 +1097,7 @@ Molpy.DefineBadges=function()
 			if(level==1) return 'The countdown is at ' + Molpify(countdown)+'NP';
 			return 'Judgement dip is upon us! But it can get worse. The countdown is at ' + Molpify(countdown)+
 			'NP';
-		},2);
+		},2,'judgementdipwarning');
 	Molpy.JudgementDipThreshhold=function()
 	{
 		if(Molpy.Boosts['NewPixBot Navigation Code'].power) return [0,Infinity];
@@ -1184,7 +1184,7 @@ Molpy.DefineBadges=function()
 			if(j<1) return 'Safe. For now.';
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			
 		}
-		,3);
+		,3,'judgementdip');
 	Molpy.Badges['Judgement Dip Warning'].className='alert';
 	Molpy.Badges['Judgement Dip'].className='alert';
 	new Molpy.Badge('Fast Forward','Travel Back to the Future',1);

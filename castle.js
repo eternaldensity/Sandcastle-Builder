@@ -2192,7 +2192,7 @@ Molpy.Up=function()
 		{		
 			var cn= me.className?me.className:'';
 			if(cn)Molpy.UnlockBoost('Chromatic Heresy');
-			return '<div class="lootbox boost loot '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.name)+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="BoostDescription'+me.id+'"></div></div></div>';
+			return '<div class="lootbox boost loot '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="heading">[boost]</div><div class="title">'+me.name+'</div><div id="BoostDescription'+me.id+'"></div></div></div>';
 		}
 		
 		Molpy.RepaintBoosts=function()
@@ -2230,7 +2230,7 @@ Molpy.Up=function()
 				if(r==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.BoostsInShop[i];
 				var cn= me.className?me.className:'';
-				str+='<div class="floatbox boost shop '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.name)+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div><span class="price">Price: '+FormatPrice(me.sandPrice)+' Sand + '+FormatPrice(me.castlePrice)+' Castles</span><div id="BoostDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox boost shop '+cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div><span class="price">Price: '+FormatPrice(me.sandPrice)+' Sand + '+FormatPrice(me.castlePrice)+' Castles</span><div id="BoostDescription'+me.id+'"></div></div></div>';
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedShop;
@@ -2275,7 +2275,7 @@ Molpy.Up=function()
 		{
 			var cn= me.className?me.className:'';			
 			if(cn)Molpy.UnlockBoost('Chromatic Heresy');
-			return '<div class="lootbox badge loot '+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div id="badge'+me.name+'" class="icon"></div><div class="heading">[badge]</div><div id="boost'+me.id+'"></div><div class="title">'+me.name+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
+			return '<div class="lootbox badge loot '+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div class="heading">[badge]</div><div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'+me.name+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
 		}
 		
 		Molpy.RepaintBadges=function()
@@ -2340,7 +2340,7 @@ Molpy.Up=function()
 				{
 					if(r==redactedIndex) str+= Molpy.redactedLoot;
 					var me=blist[i];
-					str+='<div class="lootbox badge shop" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div id="badge'+me.name+'" class="icon"></div><div class="heading">[badge]</div><div id="boost'+me.id+'"></div><div class="title">'+(me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
+					str+='<div class="lootbox badge shop" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div class="heading">[badge]</div><div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'+(me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
 					r++;
 				}
 				if(r==redactedIndex) str+= Molpy.redactedLoot;

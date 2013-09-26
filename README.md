@@ -8,7 +8,9 @@ Code by Eternal Density (and probably other OTTers)
 
 Graphics likely by GLR and OTTers, when they are added
 
-Parts of code and the clockface image by ChronosDragon
+Parts of code and the clockface image by ChronosDragon.
+
+Icons by ChronosDragon and BlitzGirl.
 
 Inspired by Orteil's Cookie Clicker
 
@@ -21,8 +23,9 @@ Not for any commercial use!
 - VITSSÅGEN, JA!
 - More tool badges
 - Valued Customer and Fractals Forever made harder
-- BFJ more expensive
+- BFJ and FC more expensive
 - Exa, Yotta and Zeta postfixes
+- More BlitzGirl icons!
 
 
 ### 0.997
