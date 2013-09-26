@@ -2394,7 +2394,7 @@ Molpy.Up=function()
 			for (var i in blist)
 			{
 				var me=blist[i];					
-				str+=Molpy.BoostLootString(me);
+				str+=Molpy.BoostString(me);
 			}
 			
 			blist=[];
