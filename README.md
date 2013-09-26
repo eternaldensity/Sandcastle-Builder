@@ -18,6 +18,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.9992
+- fix tagged loot mustard
+
 ### 0.9991
 - fix buying badge mustard
 - Fix css on links mustard
