@@ -400,14 +400,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Double or Nothing', 
 		function(me)
 		{
-			var action = 'double';
-			if(me.power>=10)
-			{
-				var amount = Math.round(10+90*Math.pow(.9,me.power-9));
-				action='gain '+amount+'% of';
-			}
-			return '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to '+action
-				+' your current castle balance or lose it all.';
+			return '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to double your current castle balance or lose it all.';
 		}
 		,
 		function()
@@ -967,6 +960,20 @@ Molpy.DefineBoosts=function()
 			,"Bagaxy Quest"
 			,"The Italian Bag"
 			,"Half-Bag 3 Confirmed!"
+			,"The Big Bag Wolpy"
+			,"The Bag of Music"
+			,"Iron Bag"
+			,"Baglander"
+			,"The Molpy, the Bag, and the Castle"
+			,"Treasures of the Bag"
+			,"Romeo and Bagguette"
+			,"Bags for Dummies"
+			,"Tomb Bagger"
+			,"Raiders of the Lost Bag"
+			,"Bagnado"
+			,"Bag vs. Predator"
+			,"Bagception"
+			,"Baginator"
 		]
 	}
 	
@@ -1000,6 +1007,63 @@ Molpy.DefineBoosts=function()
 		},'bfj');
 	Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].hardlocked=1;
 	new Molpy.Boost('VITSSÅGEN, JA!','Stop the Puns!',334455667788,999222111000);
+	new Molpy.Boost('Swedish Chef',
+		function(me)
+		{
+			if(!me.bought)
+				return 'Björk Björk Björk!';
+			if(!me.power)
+				return 'Björk Björk Björk! Well that was a waste...';
+			return 'Björk Björk Björk! You\'re welcöme';
+		},999222111000,8887766554433,
+		function(me)
+		{
+			if(!me.power)
+			{
+				me.power=1;
+				Molpy.Build(8887766554433);
+			}
+			Molpy.UnlockBoost(['Family Discount','Shopping Assistant','Late Closing Hours']);
+			return 'Gives you Swedish stuff';
+		});
+	new Molpy.Boost('Family Discount','Permament 80% discount on all prices',24000000000,720000000000,0,0,		
+		function(){Molpy.shopRepaint=1;}
+	);
+	Molpy.shoppingItem='';
+	new Molpy.Boost('Shopping Assistant',
+		function(me)
+		{
+			if(!me.bought)
+				return 'We do your shopping for you! For a small fee...';
+			if(!Molpy.shoppingItem)
+				return '<input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> an item to automatically buy whenever possible';
+			return 'Buys '+Molpy.shoppingItem+' whenever possible, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
+		},18000000000,650000000000);
+	Molpy.Boosts['Shopping Assistant'].className='action';
+	Molpy.ChooseShoppingItem=function()
+	{
+		var name = prompt('Enter the name of the tool or boost you wish to buy.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is not preserved if you reload.',Molpy.shoppingItem||'Bag');
+		if(name)
+		{
+			var item=Molpy.SandTools[name] || Molpy.CastleTools[name];
+			if(item)
+			{
+				Molpy.shoppingItem=name;
+				Molpy.Notify(item.plural + ' will be purchased whenever possible',1);
+				return;
+			}
+			var item = Molpy.Boosts[name];
+			if(item && !item.bought)
+			{
+				Molpy.shoppingItem=name;
+				Molpy.Notify(name + ' will be purchased when possible',1);
+				return;
+			}
+		}
+		Molpy.shoppingItem='';
+		Molpy.Notify('No item selected for shopping assistant',1);
+	}
+	new Molpy.Boost('Late Closing Hours',Molpy.IKEA+' is available for 6 mNP longer',47000000000,930000000000);
 }
 	
 	
@@ -1295,6 +1359,11 @@ Molpy.CheckBuyUnlocks=function()
 	{
 		Molpy.EarnBadge('Valued Customer');
 		Molpy.Boosts[Molpy.IKEA].startPower=0.6;
+	}
+	Molpy.Boosts[Molpy.IKEA].startCountdown=4;
+	if(Molpy.Got('Late Closing Hours'))
+	{
+		Molpy.Boosts[Molpy.IKEA].startCountdown=10;
 	}
 	
 	if(Molpy.BadgesOwned>=69)
