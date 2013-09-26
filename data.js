@@ -783,11 +783,7 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Jamming'].className='alert';
 	
 	
-	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. (Actually only when you get a Blitzing reward.) Missing a '+Molpy.redactedWord+' subtracts 5 from the multiplier','bkj',
-		function(me)
-		{
-			me.power=Molpy.redactedClicks;
-		});
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. (Actually only when you get a Blitzing reward.) Missing a '+Molpy.redactedWord+' subtracts 5 from the multiplier','bkj');
 		
 	new Molpy.Boost('Novikov Self-Consistency Principle', '<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
 		function()

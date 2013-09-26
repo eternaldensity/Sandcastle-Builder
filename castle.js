@@ -1243,7 +1243,7 @@ Molpy.Up=function()
 					Molpy.Notify(GLRschoice(Molpy.bp));
 					var p = Molpy.Boosts['Bag Puns'].power||0;
 					p++;
-					if(p>500)
+					if(p>100)
 					{
 						Molpy.UnlockBoost('VITSSÅGEN, JA!');
 					}
@@ -1900,6 +1900,7 @@ Molpy.Up=function()
 						Molpy.BadgesOwned++;
 						Molpy.Notify('Badge Earned: '+bacon,1);
 						Molpy.EarnBadge('Redundant');
+						Molpy.CheckBuyUnlocks();
 					}
 				}
 			}else{ //so you can be bacon while you're bacon
@@ -1940,7 +1941,7 @@ Molpy.Up=function()
 						var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
 						if(BKJ.bought)
 						{
-							BKJ.power-=5;
+							BKJ.power-=4;
 							BKJ.power=Math.max(0,BKJ.power);
 						}
 						Molpy.shopRepaint=1;

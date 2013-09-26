@@ -26,6 +26,7 @@ Not for any commercial use!
 - BFJ and FC more expensive
 - Exa, Yotta and Zeta postfixes
 - More BlitzGirl icons!
+- Removed accidental overpowering of BKJ: forgot to remove some code when I reversed how its power works
 
 
 ### 0.997
