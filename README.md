@@ -22,6 +22,7 @@ Not for any commercial use!
 - Swedish Chef follows on from VITSSÅGEN, JA!
 - 3 More swedish/shopping related boosts
 - fiddled with sell pricing a little to ensure no cheating :P
+- update DON description
 
 ### 0.9993
 - VITSSÅGEN, JA! actually works now
