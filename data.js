@@ -379,7 +379,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Ninja Penance','Avoid a two Ninja Stealth resets, at the cost of 30 castles each',25000,88,0,'ninjapenance',0,2); //starpower 2
 	new Molpy.Boost('Blitzing',function(me)
 		{		
-			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP';
+			return Molpify(me.power,1)+'% Sand for '+Molpify(me.countdown)+'mNP';
 		}
 		,0,0,0,'blitzing');
 	Molpy.Boosts['Blitzing'].className='alert';
@@ -409,7 +409,12 @@ Molpy.DefineBoosts=function()
 			return '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to '+action
 				+' your current castle balance or lose it all.';
 		}
-		,200,0,0,0,0,0);
+		,
+		function()
+		{
+			var p = Molpy.Boosts['Double or Nothing'].power;
+			return 100*Math.pow(2,Math.max(1,p-9));
+		},0,0,0,0,0);
 	Molpy.Boosts['Double or Nothing'].className='action';
 	Molpy.DoubleOrNothing=function()
 	{
@@ -421,12 +426,7 @@ Molpy.DefineBoosts=function()
 		if(Math.floor(Math.random()*2))
 		{
 			var amount=Molpy.castles;
-			var power = Molpy.Boosts['Double or Nothing'].power;
-			if(power>=10)
-			{
-				amount = Math.floor(Molpy.castles/100* Math.round(10+90*Math.pow(.9,power-9)));
-			}
-			Molpy.Build(amount);
+			Molpy.Build(Molpy.castles);
 		}else{
 			Molpy.Destroy(Molpy.castles);
 		}
@@ -786,21 +786,21 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Jamming'].className='alert';
 	
 	
-	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. (Actually only when you get a Blitzing reward.) Missing a '+Molpy.redactedWord+' subtracts 5 from the multiplier','bkj');
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.)','bkj');
 		
 	new Molpy.Boost('Novikov Self-Consistency Principle', '<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
 		function()
 		{
 			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
 			if(!me.power)me.power=0;
-			return 2101*Math.pow(4,me.power);
+			return 2101*Math.pow(1.5,me.power);
 		},
 		function()
 		{
 			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
 			if(!me.power)me.power=0;
-			return 486*Math.pow(2,me.power);
-		}, 'The Bots forget half their past/future slavery. Costs twice as much each time. BTW you need to switch out of Stats view to activate it.'
+			return 486*Math.pow(1.5,me.power);
+		}, 'The Bots forget half their past/future slavery. Costs 50% more each time. BTW you need to switch out of Stats view to activate it.'
 	);
 	Molpy.Novikov=function()
 	{
@@ -993,10 +993,10 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.Boosts['No Sell'].className='toggle';
 	
-	new Molpy.Boost('Blixtnedslag Förmögenhet, JA!','Not Lucky gets a 5% bonus per level of Blixtnedslag Kattungar, JA!',111098645321,7777777777,
+	new Molpy.Boost('Blixtnedslag Förmögenhet, JA!','Not Lucky gets a 20% bonus (non-cumulative) per level of Blixtnedslag Kattungar, JA!',111098645321,7777777777,
 		function()
 		{
-			return 'Adds ' + Molpify((Math.pow(1.05,Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)-1)*100,1)+'% to Not Lucky reward';
+			return 'Adds ' + Molpify(20*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power,1)+'% to Not Lucky reward';
 		},'bfj');
 	Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].hardlocked=1;
 	new Molpy.Boost('VITSSÅGEN, JA!','Stop the Puns!',334455667788,999222111000);
@@ -1113,7 +1113,9 @@ Molpy.DefineBadges=function()
 	Molpy.JudgementDipReport=function()
 	{
 		var bot=Molpy.CastleTools['NewPixBot'];
-		var botCastles=bot.totalCastlesBuilt*bot.amount;
+		var bots = bot.amount;
+		if(Molpy.Got('Time Travel')||Molpy.newpixNumber<20)bots-=2;
+		var botCastles=bot.totalCastlesBuilt*bots;
 		var thresh = Molpy.JudgementDipThreshhold();
 		var level = Math.max(0,Math.floor(botCastles/thresh));
 		var countdown = ((level+1)*thresh - botCastles);

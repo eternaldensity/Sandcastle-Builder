@@ -200,7 +200,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.9992;
+		Molpy.version=0.9993;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1247,7 +1247,7 @@ Molpy.Up=function()
 			}else if(Molpy.Got('VITSSÅGEN, JA!'))
 			{
 				if(Molpy.beachClicks%1000==0)
-{
+				{
 					Molpy.Notify('VITSSÅGEN, JA!');
 					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power||0;
 					p++;
@@ -1255,10 +1255,10 @@ Molpy.Up=function()
 					
 					Molpy.Boosts['VITSSÅGEN, JA!'].power=p;
 				}
-			} if(Molpy.Got('Bag Puns'))
+			}else if(Molpy.Got('Bag Puns'))
 			{
 				if(Molpy.beachClicks%20==0)
-{
+				{
 					Molpy.Notify(GLRschoice(Molpy.bp));
 					var p = Molpy.Boosts['Bag Puns'].power||0;
 					p++;
@@ -1270,13 +1270,7 @@ Molpy.Up=function()
 				}
 			}
 			Molpy.ninjad=1;
-			Molpy.HandleClickNP();
-			
-			Molpy.redactedThrottle=0;
-			if(Molpy.redactedToggle>400)
-			{
-				Molpy.RandomiseRedactedTime();
-			}			
+			Molpy.HandleClickNP();					
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
 		
@@ -1368,7 +1362,7 @@ Molpy.Up=function()
 			}
 			if(Molpy.Got('Blitzing'))
 			{
-				multiplier*=Molpy.Boosts['Blitzing'].power;
+				multiplier*=Molpy.Boosts['Blitzing'].power/100;
 			}
 			Molpy.computedSandPerClick=Molpy.sandPerClick()*multiplier;
 			
@@ -1945,7 +1939,6 @@ Molpy.Up=function()
 		Molpy.redactedViewIndex=-1;
 		Molpy.redactableThings=6;
 		Molpy.redactedClicks=0;
-		Molpy.redactedThrottle=0;
 		Molpy.CheckRedactedToggle=function()
 		{
 			if(Molpy.redactedToggle)
@@ -1958,15 +1951,9 @@ Molpy.Up=function()
 					{
 						Molpy.redactedVisible=0; //hide because the redacted was missed
 						var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
-						if(BKJ.bought)
-						{
-							BKJ.power-=4;
-							BKJ.power=Math.max(0,BKJ.power);
-						}
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
-						Molpy.badgeRepaint=1;		
-						Molpy.redactedThrottle++;
+						Molpy.badgeRepaint=1;	
 						Molpy.RandomiseRedactedTime();	
 					}else{
 						Molpy.redactedVisible=Math.ceil(Molpy.redactableThings*Math.random());
@@ -1987,7 +1974,6 @@ Molpy.Up=function()
 			var min = 200-80*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore'));
 			var spread = 90-20*Molpy.Got('Kitnip'+Molpy.Got('Kitties Galore'));
 			Molpy.redactedToggle=min+Math.ceil(spread*Math.random());
-			Molpy.redactedToggle+=400*Molpy.redactedThrottle;
 		}
 		
 		Molpy.clickRedacted=function()
@@ -2000,7 +1986,6 @@ Molpy.Up=function()
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
-			Molpy.redactedThrottle=0;
 			Molpy.RandomiseRedactedTime();				
 			Molpy.RewardRedacted();
 			if(Molpy.redactedClicks>=2)
@@ -2063,7 +2048,11 @@ Molpy.Up=function()
 					return;
 				}
 			}
-			
+			var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];			
+			if(BKJ.bought)
+			{
+				BKJ.power=(BKJ.power||0)+1;
+			}
 			if(Math.floor(2*Math.random()))
 			{
 				Molpy.Notify('You are not Lucky (which is good)');
@@ -2083,16 +2072,14 @@ Molpy.Up=function()
 				bonus += Molpy.BoostsOwned+Molpy.BadgesOwned;
 				bonus += Molpy.redactedClicks*10;
 				if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
-					bonus*= Math.pow(1.05,Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)
+					bonus*= (1+0.2*BKJ.power)
 				bonus = Math.floor(bonus);
 				Molpy.Build(bonus);
 			}else{
-				var blitzSpeed=8,blitzTime=23;
-				var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
+				var blitzSpeed=800,blitzTime=23;
 				if(BKJ.bought)
 				{
-					BKJ.power=(BKJ.power||0)+1;
-					blitzSpeed+= BKJ.power;
+					blitzSpeed+= BKJ.power*20;
 					if(BKJ.power>24) Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].hardlocked=0;
 				}
 				Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
