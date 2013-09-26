@@ -388,6 +388,7 @@ Molpy.DefineBoosts=function()
 	,'kitnip');
 	new Molpy.Boost('Department of Redundancy Department',Molpy.redactedWords+' sometimes unlock special boosts',23456,78,0,
 	'department');
+	Molpy.Boosts['Department of Redundancy Department'].group='hpt';
 	new Molpy.Boost('Raise the Flag', 'Each Flag+Ladder pair gives clicking an extra +50 sand',85000,95);
 	new Molpy.Boost('Hand it Up', 'Each Ladder+Bag pair gives clicking an extra +500 sand',570000,170);
 	new Molpy.Boost('Riverish', 'Rivers destroy less castles the more you click',82000,290,0,'riverish',
@@ -645,6 +646,7 @@ Molpy.DefineBoosts=function()
 	0
 	,'halokitty');
 	new Molpy.Boost('Factory Automation','When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+Molpify(2000000)+' Sand', 4500000,15700,0,'factoryautomation');
+	Molpy.Boosts['Factory Automation'].group='hpt';
 	new Molpy.Boost('Blast Furnace','Gives the Department of Redundancy Department the ability to make Castles from Sand',
 		8800000,28600,
 		function()
@@ -657,6 +659,7 @@ Molpy.DefineBoosts=function()
 			return 'Uses '+Molpify(2000000)+' Sand to warm up, then makes Castles at a cost of ' + Molpify(blastFactor,1) + ' each';
 		}
 		,'blastfurnace');
+	Molpy.Boosts['Blast Furnace'].group='hpt';
 	Molpy.Boosts['Blast Furnace'].hardlocked=1;	
 	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja',
@@ -1278,19 +1281,18 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.boostRepaint=1;
 		Molpy.recalculateDig=1;
 		Molpy.BoostsOwned++;
+	}	
+	
+	Molpy.Boosts[Molpy.IKEA].startPower=0.4;
+	if(Molpy.castlesSpent>200000000)
+	{
+		Molpy.EarnBadge('Big Spender');
+		Molpy.Boosts[Molpy.IKEA].startPower=0.5;
 	}
-	
-	
 	if(Molpy.castlesSpent>80000000000)
 	{
 		Molpy.EarnBadge('Valued Customer');
 		Molpy.Boosts[Molpy.IKEA].startPower=0.6;
-	}else if(Molpy.castlesSpent>200000000)
-	{
-		Molpy.EarnBadge('Big Spender');
-		Molpy.Boosts[Molpy.IKEA].startPower=0.5;
-	}else{
-		Molpy.Boosts[Molpy.IKEA].startPower=0.4;
 	}
 	
 	if(Molpy.BadgesOwned>=69)

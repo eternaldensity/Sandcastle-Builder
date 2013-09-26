@@ -18,6 +18,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.9991
+- fix buying badge mustard
+- Fix css on links mustard
+- fiddled with boost drawing because of reasons
+
 ### 0.999
 - Some sort of title page thingy
 
