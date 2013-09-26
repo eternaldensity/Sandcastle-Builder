@@ -606,37 +606,37 @@ body.lightscheme.heresy .boost.loot.action, body.darkscheme.heresy .boost.shop.a
 }
 
 
-body.darkscheme .boost.loot #badge_judgementdip.icon
+body.lightscheme .badge.loot #badge_judgementdip.icon
 {
 	background-image:url('img/badge_judgementdip_dark_icon.png');
 }
-body.lightscheme .boost.loot #badge_judgementdip.icon
+body.darkscheme .badge.loot #badge_judgementdip.icon
 {
 	background-image:url('img/badge_judgementdip_light_icon.png');
 }
-body.darkscheme.heresy .boost.loot #badge_judgementdip.icon
+body.lightscheme.heresy .badge.loot #badge_judgementdip.icon
 {
 	background-image:url('img/badge_judgementdip_dark_heresy_icon.png');
 }
-body.lightscheme.heresy .boost.loot #badge_judgementdip.icon
+body.darkscheme.heresy .badge.loot #badge_judgementdip.icon
 {
-	background-image:url('img/badge_judgementdip_heresy_icon.png');
+	background-image:url('img/badge_judgementdip_light_heresy_icon.png');
 }
-body.darkscheme .boost.loot #badge_judgementdipwarning.icon
+body.lightscheme .badge.loot #badge_judgementdipwarning.icon
 {
 	background-image:url('img/badge_judgementdipwarning_dark_icon.png');
 }
-body.lightscheme .boost.loot #badge_judgementdipwarning.icon
+body.darkscheme .badge.loot #badge_judgementdipwarning.icon
 {
 	background-image:url('img/badge_judgementdipwarning_light_icon.png');
 }
-body.darkscheme.heresy .boost.loot #badge_judgementdipwarning.icon
+body.lightscheme.heresy .badge.loot #badge_judgementdipwarning.icon
 {
 	background-image:url('img/badge_judgementdipwarning_dark_heresy_icon.png');
 }
-body.lightscheme.heresy .boost.loot #badge_judgementdipwarning.icon
+body.darkscheme.heresy .badge.loot #badge_judgementdipwarning.icon
 {
-	background-image:url('img/badge_judgementdipwarning_heresy_icon.png');
+	background-image:url('img/badge_judgementdipwarning_light_heresy_icon.png');
 }
 
 
