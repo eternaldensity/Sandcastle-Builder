@@ -400,14 +400,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Double or Nothing', 
 		function(me)
 		{
-			var action = 'double';
-			if(me.power>=10)
-			{
-				var amount = Math.round(10+90*Math.pow(.9,me.power-9));
-				action='gain '+amount+'% of';
-			}
-			return '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to '+action
-				+' your current castle balance or lose it all.';
+			return '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to double your current castle balance or lose it all.';
 		}
 		,
 		function()
