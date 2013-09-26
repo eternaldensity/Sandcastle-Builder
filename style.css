@@ -63,12 +63,12 @@ body
 	font-family:Tahoma,Arial,sans-serif;
 	font-size:13px;
 }
-body.darkscheme
+body.darkscheme, body.darkscheme a
 {
 	color:#fafafa;
 	background:#050505;
 }
-body.lightscheme 
+body.lightscheme , body.lightscheme a
 {
 	color:#020202;
 	background:#fdfdfd;

@@ -193,14 +193,14 @@ Molpy.Up=function()
 	Molpy.molpish=0;
 	
 	Molpy.Wake=function()
-	{
+	{	
 		Molpy.molpish=1;
 		Molpy.HardcodedData();//split some stuff into separate file
 		/* In which variables are declared
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.998;
+		Molpy.version=0.999;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -438,6 +438,11 @@ Molpy.Up=function()
 			Molpy.options.fancy=parseInt(pixels[5]);
 			Molpy.options.ketchup=parseInt(pixels[6]);
 			Molpy.options.colourscheme=parseInt(pixels[7]);
+			if(!g('game'))
+			{				
+				Molpy.UpdateColourScheme();
+				return;
+			}
 			
 			pixels=thread[4].split(s);
 			Molpy.newpixNumber=parseInt(pixels[0]);
@@ -884,8 +889,14 @@ Molpy.Up=function()
 		}
 		Molpy.UpdateColourScheme=function()
 		{
-			var heresy=(Molpy.Got('Chromatic Heresy')&&Molpy.Boosts['Chromatic Heresy'].power)?
-				' heresy':'';
+			var heresy='';
+			if(g('game'))
+			{
+				if(Molpy.Got('Chromatic Heresy')&&Molpy.Boosts['Chromatic Heresy'].power)
+				{
+					heresy=' heresy'
+				}
+			}
 			
 			if(Molpy.options.colourscheme)
 			{
@@ -894,6 +905,14 @@ Molpy.Up=function()
 				document.body.className='darkscheme'+heresy;
 			}
 		}
+		
+		
+		if(!g('game'))
+		{
+			Molpy.LoadC_STARSTAR_kie();
+			return;
+		}
+		
 		
 		Molpy.showStats=0;
 		Molpy.StatsToggle=function()
