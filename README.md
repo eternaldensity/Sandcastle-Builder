@@ -18,6 +18,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.9994
+- Swedish Chef follows on from VITSSÅGEN, JA!
+- 3 More swedish/shopping related boosts
+- fiddled with sell pricing a little to ensure no cheating :P
+
 ### 0.9993
 - VITSSÅGEN, JA! actually works now
 - Reduced BKJ and BFJ's power a lot but now they don't decay at all

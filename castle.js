@@ -200,7 +200,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.9993;
+		Molpy.version=0.9994;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1251,8 +1251,8 @@ Molpy.Up=function()
 					Molpy.Notify('VITSSÅGEN, JA!');
 					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power||0;
 					p++;
-					Molpy.Build(1000000*Math.ceil(p/5));
-					
+					Molpy.Build(1000000*p);
+					if(p>5)Molpy.UnlockBoost('Swedish Chef');
 					Molpy.Boosts['VITSSÅGEN, JA!'].power=p;
 				}
 			}else if(Molpy.Got('Bag Puns'))
@@ -1459,7 +1459,7 @@ Molpy.Up=function()
 		/* In which the shop is implemented
 		+++++++++++++++++++++++++++++++++++*/
 		Molpy.shopRepaint=1;
-		Molpy.castleToolPriceFactor=1.1;
+		Molpy.sandToolPriceFactor=1.1;
 		Molpy.SandTools=[];
 		Molpy.SandToolsById=[];
 		Molpy.SandToolsN=0;
@@ -1497,13 +1497,13 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
-				var price=Math.floor(Molpy.priceFactor*this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount));				
+				var price=Math.floor(Molpy.priceFactor*this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));				
 				if (Molpy.castles>=price)
 				{
 					Molpy.SpendCastles(price);
 					this.amount++;
 					this.bought++;
-					price=Math.floor(this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount));
+					price=Math.floor(this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
 					this.price=price;
 					if (this.buyFunction) this.buyFunction(this);
 					if (this.drawFunction) this.drawFunction();
@@ -1518,8 +1518,11 @@ Molpy.Up=function()
 				if (this.amount>0)
 				{					
 					this.amount--;
-					Molpy.Build(Math.floor(price*0.5),1);
-					price=this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount);
+					var price=this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount);
+					var d=1;
+					if(Molpy.Got('Family Discount'))d=.2;
+					if(Molpy.Boosts[Molpy.IKEA].startPower>0.5) d*=0.8; //sorry guys, no ikea-scumming
+					Molpy.Build(Math.floor(price*0.5*d),1);
 					this.price=price;
 					if (this.sellFunction) this.sellFunction();
 					if (this.drawFunction) this.drawFunction();
@@ -1551,7 +1554,7 @@ Molpy.Up=function()
 			}
 			this.refresh=function()
 			{
-				this.price=Math.floor(this.basePrice*Math.pow(Molpy.castleToolPriceFactor,this.amount));
+				this.price=Math.floor(this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
 				if (this.drawFunction) this.drawFunction();
 			}
 			
@@ -1621,8 +1624,11 @@ Molpy.Up=function()
 					{
 						Molpy.intruderBots--;
 						Molpy.Notify('Intruder Destroyed!');
-					}else{
-						Molpy.Build(price,1);
+					}else{					
+						var d=1;
+						if(Molpy.Got('Family Discount'))d=.2;
+						if(Molpy.Boosts[Molpy.IKEA].startPower>0.5) d*=0.7; //sorry guys, no ikea-scumming
+						Molpy.Build(price*d,1);
 					}
 					
 					this.amount--;
@@ -2088,12 +2094,15 @@ Molpy.Up=function()
 		Molpy.CalcPriceFactor=function()
 		{
 			var baseval=1;
-			var savings = 0;
 			if(Molpy.Got(Molpy.IKEA))
 			{
-				savings+=Molpy.Boosts[Molpy.IKEA].power;
+				baseval*=(1-Molpy.Boosts[Molpy.IKEA].power);
 			}
-			Molpy.priceFactor=Math.max(0,baseval-savings);
+			if(Molpy.Got('Family Discount'))
+			{
+				baseval*=(0.2);
+			}
+			Molpy.priceFactor=Math.max(0,baseval);
 		}
 		
 		Molpy.RepaintLootSelection=function()
@@ -2686,6 +2695,16 @@ Molpy.Up=function()
 				Molpy.CastleTools['NewPixBot'].totalCastlesDestroyed+=dAmount;
 				Molpy.Notify('By the NewpixBots');
 			}
+		}
+		
+		if(Molpy.Got('Shopping Assistant') && Molpy.shoppingItem)
+		{
+			var factor = Molpy.priceFactor;
+			Molpy.priceFactor*=1.05;
+			var name=Molpy.shoppingItem;
+			var item = Molpy.SandTools[name] || Molpy.CastleTools[name] || Molpy.Boosts[name];
+			item.buy();
+			Molpy.priceFactor=factor;
 		}
 	}
 	
