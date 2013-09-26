@@ -8,13 +8,26 @@ Code by Eternal Density (and probably other OTTers)
 
 Graphics likely by GLR and OTTers, when they are added
 
-Parts of code and the clockface image by ChronosDragon
+Parts of code and the clockface image by ChronosDragon.
+
+Icons by ChronosDragon and BlitzGirl.
 
 Inspired by Orteil's Cookie Clicker
 
 Not for any commercial use!
 
 ## Changelog
+
+### 0.998
+- Missing a kitty delays the next kitty, increasing as you miss more but resetting when you click one or click for sand.
+- VITSSÅGEN, JA!
+- More tool badges
+- Valued Customer and Fractals Forever made harder
+- BFJ and FC more expensive
+- Exa, Yotta and Zeta postfixes
+- More BlitzGirl icons!
+- Removed accidental overpowering of BKJ: forgot to remove some code when I reversed how its power works
+
 
 ### 0.997
 - New Department Boost: Blixtnedslag Förmögenhet, JA! available after you get Blixtnedslag Kattungar, JA! powered up enough

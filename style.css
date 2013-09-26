@@ -606,6 +606,40 @@ body.lightscheme.heresy .boost.loot.action, body.darkscheme.heresy .boost.shop.a
 }
 
 
+body.lightscheme .badge.loot #badge_judgementdip.icon
+{
+	background-image:url('img/badge_judgementdip_dark_icon.png');
+}
+body.darkscheme .badge.loot #badge_judgementdip.icon
+{
+	background-image:url('img/badge_judgementdip_light_icon.png');
+}
+body.lightscheme.heresy .badge.loot #badge_judgementdip.icon
+{
+	background-image:url('img/badge_judgementdip_dark_heresy_icon.png');
+}
+body.darkscheme.heresy .badge.loot #badge_judgementdip.icon
+{
+	background-image:url('img/badge_judgementdip_light_heresy_icon.png');
+}
+body.lightscheme .badge.loot #badge_judgementdipwarning.icon
+{
+	background-image:url('img/badge_judgementdipwarning_dark_icon.png');
+}
+body.darkscheme .badge.loot #badge_judgementdipwarning.icon
+{
+	background-image:url('img/badge_judgementdipwarning_light_icon.png');
+}
+body.lightscheme.heresy .badge.loot #badge_judgementdipwarning.icon
+{
+	background-image:url('img/badge_judgementdipwarning_dark_heresy_icon.png');
+}
+body.darkscheme.heresy .badge.loot #badge_judgementdipwarning.icon
+{
+	background-image:url('img/badge_judgementdipwarning_light_heresy_icon.png');
+}
+
+
 body.darkscheme .boost.loot #boost_activeninja.icon
 {
 	background-image:url('img/boost_activeninja_dark_icon.png');
@@ -630,6 +664,14 @@ body.lightscheme .boost.loot #boost_bagburning.icon
 {
 	background-image:url('img/boost_bagburning_light_icon.png');
 }
+body.darkscheme .boost.loot #boost_balancingact.icon
+{
+	background-image:url('img/boost_balancingact_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_balancingact.icon
+{
+	background-image:url('img/boost_balancingact_light_icon.png');
+}
 body.darkscheme .boost.loot #boost_biggerbuckets.icon
 {
 	background-image:url('img/boost_biggerbuckets_dark_icon.png');
@@ -637,6 +679,22 @@ body.darkscheme .boost.loot #boost_biggerbuckets.icon
 body.lightscheme .boost.loot #boost_biggerbuckets.icon
 {
 	background-image:url('img/boost_biggerbuckets_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_bigsplash.icon
+{
+	background-image:url('img/boost_bigsplash_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_bigsplash.icon
+{
+	background-image:url('img/boost_bigsplash_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_bfj.icon
+{
+	background-image:url('img/boost_bfj_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_bfj.icon
+{
+	background-image:url('img/boost_bfj_light_icon.png');
 }
 body.darkscheme .boost.loot #boost_blastfurnace.icon
 {
@@ -654,13 +712,37 @@ body.lightscheme .boost.loot #boost_blitzing.icon
 {
 	background-image:url('img/boost_blitzing_light_icon.png');
 }
-body.darkscheme .boost.loot #boost_blixtnedslag.icon
+body.darkscheme .boost.loot #boost_bkj.icon
 {
-	background-image:url('img/boost_blixtnedslag_dark_icon.png');
+	background-image:url('img/boost_bkj_dark_icon.png');
 }
-body.lightscheme .boost.loot #boost_blixtnedslag.icon
+body.lightscheme .boost.loot #boost_bkj.icon
 {
-	background-image:url('img/boost_blixtnedslag_light_icon.png');
+	background-image:url('img/boost_bkj_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_buccaneer.icon
+{
+	background-image:url('img/boost_buccaneer_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_buccaneer.icon
+{
+	background-image:url('img/boost_buccaneer_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_bucketbrigade.icon
+{
+	background-image:url('img/boost_bucketbrigade_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_bucketbrigade.icon
+{
+	background-image:url('img/boost_bucketbrigade_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_chirpies.icon
+{
+	background-image:url('img/boost_chirpies_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_chirpies.icon
+{
+	background-image:url('img/boost_chirpies_light_icon.png');
 }
 body.darkscheme .boost.loot #boost_chromatic.icon
 {
@@ -701,6 +783,14 @@ body.darkscheme .boost.loot #boost_department.icon
 body.lightscheme .boost.loot #boost_department.icon
 {
 	background-image:url('img/boost_department_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_doubleornothing.icon
+{
+	background-image:url('img/boost_doubleornothing_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_doubleornothing.icon
+{
+	background-image:url('img/boost_doubleornothing_light_icon.png');
 }
 body.darkscheme .boost.loot #boost_doublepost.icon
 {
@@ -775,6 +865,14 @@ body.lightscheme .boost.loot #boost_hugebuckets.icon
 {
 	background-image:url('img/boost_hugebuckets_light_icon.png');
 }
+body.darkscheme .boost.loot #boost_irregularrivers.icon
+{
+	background-image:url('img/boost_irregularrivers_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_irregularrivers.icon
+{
+	background-image:url('img/boost_irregularrivers_light_icon.png');
+}
 body.darkscheme .boost.loot #boost_kitnip.icon
 {
 	background-image:url('img/boost_kitnip_dark_icon.png');
@@ -815,6 +913,14 @@ body.lightscheme .boost.loot #boost_megball.icon
 {
 	background-image:url('img/boost_megball_light_icon.png');
 }
+body.darkscheme .boost.loot #boost_minigun.icon
+{
+	background-image:url('img/boost_minigun_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_minigun.icon
+{
+	background-image:url('img/boost_minigun_light_icon.png');
+}
 body.darkscheme .boost.loot #boost_molpies.icon
 {
 	background-image:url('img/boost_molpies_dark_icon.png');
@@ -822,6 +928,14 @@ body.darkscheme .boost.loot #boost_molpies.icon
 body.lightscheme .boost.loot #boost_molpies.icon
 {
 	background-image:url('img/boost_molpies_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_ninjaassistants.icon
+{
+	background-image:url('img/boost_ninjaassistants_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_ninjaassistants.icon
+{
+	background-image:url('img/boost_ninjaassistants_light_icon.png');
 }
 body.darkscheme .boost.loot #boost_ninjabuilder.icon
 {
@@ -849,11 +963,11 @@ body.lightscheme .boost.loot #boost_ninjapenance.icon
 }
 body.darkscheme .boost.loot #boost_overcompensating.icon
 {
-	background-image:url('img/boost_overcompensating_dark_icon.png');
+	background-image:url('img/boost_overcompensating2_dark_icon.png');
 }
 body.lightscheme .boost.loot #boost_overcompensating.icon
 {
-	background-image:url('img/boost_overcompensating_light_icon.png');
+	background-image:url('img/boost_overcompensating2_light_icon.png');
 }
 body.darkscheme .boost.loot #boost_riverish.icon
 {
@@ -870,6 +984,22 @@ body.darkscheme .boost.loot #boost_springfling.icon
 body.lightscheme .boost.loot #boost_springfling.icon
 {
 	background-image:url('img/boost_springfling_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_stacked.icon
+{
+	background-image:url('img/boost_stacked_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_stacked.icon
+{
+	background-image:url('img/boost_stacked_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_theforty.icon
+{
+	background-image:url('img/boost_theforty_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_theforty.icon
+{
+	background-image:url('img/boost_theforty_light_icon.png');
 }
 body.darkscheme .boost.loot #boost_truecolours.icon
 {
