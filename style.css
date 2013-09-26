@@ -104,6 +104,17 @@ a:active
 	top:5px;
 	margin-left:51px;
 }
+#indexlinks
+{
+	margin:15px;
+}
+#otthercomic
+{
+	margin:20px;
+	background-image:url('img/otthercomic.png');
+	width:676px;
+	height:709px;
+}
 #beach
 {
 	width:553px;
@@ -404,6 +415,18 @@ body.lightscheme .badge.loot .heading
 	src: local('?'), url('fonts/xkcd-Regular.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
+}
+.bigheading
+{
+	font-family:'Conv_xkcd-Regular',Sans-Serif;
+	font-size:48px;
+	margin:20px;
+}
+.subheading
+{
+	font-family:'Conv_xkcd-Regular',Sans-Serif;
+	font-size:20px;
+	margin:20px;
 }
 #notifs {position:absolute;left:0px;top:0px;}
 .notif

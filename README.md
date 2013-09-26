@@ -18,6 +18,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.999
+- Some sort of title page thingy
+
 ### 0.998
 - Missing a kitty delays the next kitty, increasing as you miss more but resetting when you click one or click for sand.
 - VITSSÅGEN, JA!

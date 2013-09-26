@@ -3033,6 +3033,7 @@ Molpy.Up=function()
 	});
 	function drawClockHand()
 	{
+		if(!g('game'))return;
 		if(!Molpy.ONGelapsed){
 			Molpy.ONGelapsed = new Date().getTime()-Molpy.ONGstart.getTime();
 		}
