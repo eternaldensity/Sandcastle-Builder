@@ -786,21 +786,21 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Jamming'].className='alert';
 	
 	
-	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks are added to the Blitzing multiplier. (Actually only when you get a Blitzing reward.) Missing a '+Molpy.redactedWord+' subtracts 5 from the multiplier','bkj');
+	new Molpy.Boost('Blixtnedslag Kattungar, JA!', 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',9800000,888555222,'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.)','bkj');
 		
 	new Molpy.Boost('Novikov Self-Consistency Principle', '<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
 		function()
 		{
 			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
 			if(!me.power)me.power=0;
-			return 2101*Math.pow(4,me.power);
+			return 2101*Math.pow(1.5,me.power);
 		},
 		function()
 		{
 			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
 			if(!me.power)me.power=0;
-			return 486*Math.pow(2,me.power);
-		}, 'The Bots forget half their past/future slavery. Costs twice as much each time. BTW you need to switch out of Stats view to activate it.'
+			return 486*Math.pow(1.5,me.power);
+		}, 'The Bots forget half their past/future slavery. Costs 50% more each time. BTW you need to switch out of Stats view to activate it.'
 	);
 	Molpy.Novikov=function()
 	{
@@ -993,10 +993,10 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.Boosts['No Sell'].className='toggle';
 	
-	new Molpy.Boost('Blixtnedslag Förmögenhet, JA!','Not Lucky gets a 5% bonus per level of Blixtnedslag Kattungar, JA!',111098645321,7777777777,
+	new Molpy.Boost('Blixtnedslag Förmögenhet, JA!','Not Lucky gets a 20% bonus (non-cumulative) per level of Blixtnedslag Kattungar, JA!',111098645321,7777777777,
 		function()
 		{
-			return 'Adds ' + Molpify((Math.pow(1.05,Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)-1)*100,1)+'% to Not Lucky reward';
+			return 'Adds ' + Molpify(20*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power,1)+'% to Not Lucky reward';
 		},'bfj');
 	Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].hardlocked=1;
 	new Molpy.Boost('VITSSÅGEN, JA!','Stop the Puns!',334455667788,999222111000);
@@ -1113,7 +1113,9 @@ Molpy.DefineBadges=function()
 	Molpy.JudgementDipReport=function()
 	{
 		var bot=Molpy.CastleTools['NewPixBot'];
-		var botCastles=bot.totalCastlesBuilt*bot.amount;
+		var bots = bot.amount;
+		if(Molpy.Got('Time Travel')||Molpy.newpixNumber<20)bots-=2;
+		var botCastles=bot.totalCastlesBuilt*bots;
 		var thresh = Molpy.JudgementDipThreshhold();
 		var level = Math.max(0,Math.floor(botCastles/thresh));
 		var countdown = ((level+1)*thresh - botCastles);
