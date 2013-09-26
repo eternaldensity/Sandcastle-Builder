@@ -16,6 +16,15 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.998
+- Missing a kitty delays the next kitty, increasing as you miss more but resetting when you click one or click for sand.
+- VITSSÅGEN, JA!
+- More tool badges
+- Valued Customer and Fractals Forever made harder
+- BFJ more expensive
+- Exa, Yotta and Zeta postfixes
+
+
 ### 0.997
 - New Department Boost: Blixtnedslag Förmögenhet, JA! available after you get Blixtnedslag Kattungar, JA! powered up enough
 - Nerfed Cooperation to 5% per bucket pair, rather than 10%. Combined with The Forty it made Cuegan far more powerful than Bags

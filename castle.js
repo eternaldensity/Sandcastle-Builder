@@ -21,8 +21,20 @@ function Molpify(number, raftcastle, shrinkify)
 	if(isNaN(number))return'Mustard';
 	var molp='';
 	
-	if(shrinkify)
+	if(shrinkify) //todo: roll into loop
 	{
+		if(number>=1000000000000000000000000)
+		{
+			return Molpify(number / 1000000000000000000000000, raftcastle,1)+'Z';
+		}
+		if(number>=1000000000000000000000)
+		{
+			return Molpify(number / 1000000000000000000000, raftcastle,1)+'Y';
+		}
+		if(number>=1000000000000000000)
+		{
+			return Molpify(number / 1000000000000000000, raftcastle,1)+'E';
+		}
 		if(number>=1000000000000000)
 		{
 			return Molpify(number / 1000000000000000, raftcastle,1)+'P';
@@ -188,7 +200,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.997;
+		Molpy.version=0.998;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -987,7 +999,7 @@ Molpy.Up=function()
 				{
 					Molpy.Build(Math.floor(Math.pow(1.35,Molpy.Boosts['Fractal Sandcastles'].power)));
 					Molpy.Boosts['Fractal Sandcastles'].power++;
-					if(Molpy.Boosts['Fractal Sandcastles'].power>=55)
+					if(Molpy.Boosts['Fractal Sandcastles'].power>=60)
 					{
 						Molpy.EarnBadge('Fractals Forever');
 					}
@@ -1213,15 +1225,39 @@ Molpy.Up=function()
 						}
 					}
 				}
-			}else if(Molpy.Got('Bag Puns'))
+			}else if(Molpy.Got('VITSSÅGEN, JA!'))
+			{
+				if(Molpy.beachClicks%1000==0)
+{
+					Molpy.Notify('VITSSÅGEN, JA!');
+					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power||0;
+					p++;
+					Molpy.Build(1000000*Math.ceil(p/5));
+					
+					Molpy.Boosts['VITSSÅGEN, JA!'].power=p;
+				}
+			} if(Molpy.Got('Bag Puns'))
 			{
 				if(Molpy.beachClicks%20==0)
 {
 					Molpy.Notify(GLRschoice(Molpy.bp));
+					var p = Molpy.Boosts['Bag Puns'].power||0;
+					p++;
+					if(p>500)
+					{
+						Molpy.UnlockBoost('VITSSÅGEN, JA!');
+					}
+					Molpy.Boosts['Bag Puns'].power=p;
 				}
 			}
 			Molpy.ninjad=1;
 			Molpy.HandleClickNP();
+			
+			Molpy.redactedThrottle=0;
+			if(Molpy.redactedToggle>400)
+			{
+				Molpy.RandomiseRedactedTime();
+			}			
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
 		
@@ -1889,6 +1925,7 @@ Molpy.Up=function()
 		Molpy.redactedViewIndex=-1;
 		Molpy.redactableThings=6;
 		Molpy.redactedClicks=0;
+		Molpy.redactedThrottle=0;
 		Molpy.CheckRedactedToggle=function()
 		{
 			if(Molpy.redactedToggle)
@@ -1908,7 +1945,8 @@ Molpy.Up=function()
 						}
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
-						Molpy.badgeRepaint=1;						
+						Molpy.badgeRepaint=1;		
+						Molpy.redactedThrottle++;
 						Molpy.RandomiseRedactedTime();	
 					}else{
 						Molpy.redactedVisible=Math.ceil(Molpy.redactableThings*Math.random());
@@ -1929,6 +1967,7 @@ Molpy.Up=function()
 			var min = 200-80*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore'));
 			var spread = 90-20*Molpy.Got('Kitnip'+Molpy.Got('Kitties Galore'));
 			Molpy.redactedToggle=min+Math.ceil(spread*Math.random());
+			Molpy.redactedToggle+=400*Molpy.redactedThrottle;
 		}
 		
 		Molpy.clickRedacted=function()
@@ -1941,6 +1980,7 @@ Molpy.Up=function()
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
+			Molpy.redactedThrottle=0;
 			Molpy.RandomiseRedactedTime();				
 			Molpy.RewardRedacted();
 			if(Molpy.redactedClicks>=2)
