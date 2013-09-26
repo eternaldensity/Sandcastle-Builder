@@ -379,7 +379,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost('Ninja Penance','Avoid a two Ninja Stealth resets, at the cost of 30 castles each',25000,88,0,'ninjapenance',0,2); //starpower 2
 	new Molpy.Boost('Blitzing',function(me)
 		{		
-			return Molpify(me.power,1)+'x Sand for '+Molpify(me.countdown)+'mNP';
+			return Molpify(me.power,1)+'% Sand for '+Molpify(me.countdown)+'mNP';
 		}
 		,0,0,0,'blitzing');
 	Molpy.Boosts['Blitzing'].className='alert';
@@ -409,7 +409,12 @@ Molpy.DefineBoosts=function()
 			return '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to '+action
 				+' your current castle balance or lose it all.';
 		}
-		,200,0,0,0,0,0);
+		,
+		function()
+		{
+			var p = Molpy.Boosts['Double or Nothing'].power;
+			return 100*Math.pow(2,Math.max(1,p-9));
+		},0,0,0,0,0);
 	Molpy.Boosts['Double or Nothing'].className='action';
 	Molpy.DoubleOrNothing=function()
 	{
@@ -421,12 +426,7 @@ Molpy.DefineBoosts=function()
 		if(Math.floor(Math.random()*2))
 		{
 			var amount=Molpy.castles;
-			var power = Molpy.Boosts['Double or Nothing'].power;
-			if(power>=10)
-			{
-				amount = Math.floor(Molpy.castles/100* Math.round(10+90*Math.pow(.9,power-9)));
-			}
-			Molpy.Build(amount);
+			Molpy.Build(Molpy.castles);
 		}else{
 			Molpy.Destroy(Molpy.castles);
 		}

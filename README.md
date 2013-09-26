@@ -18,6 +18,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.9993
+- VITSSÅGEN, JA! actually works now
+- Reduced BKJ and BFJ's power a lot but now they don't decay at all
+- DoN's power doesn't decay, instead the price increases.
+
 ### 0.9992
 - fix tagged loot mustard
 
