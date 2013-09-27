@@ -20,6 +20,8 @@ Not for any commercial use!
 
 ### 0.9996
 - a timetravel-related boost (which may help you *get* time travel if you're lucky)
+- boost groups now have buttons!
+- redacted works with the new group buttons
 
 ### 0.9995
 - VITSSÅGEN, JA! is more powerful
