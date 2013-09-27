@@ -18,6 +18,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.9996
+- a timetravel-related boost (which may help you *get* time travel if you're lucky)
+
 ### 0.9995
 - VITSSÅGEN, JA! is more powerful
 - Swedish Chef unlocks a bit sooner

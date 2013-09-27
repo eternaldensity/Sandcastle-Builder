@@ -200,7 +200,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.9995;
+		Molpy.version=0.9996;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2797,6 +2797,14 @@ Molpy.Up=function()
 		}
 		Molpy.ninjad=0;//reset ninja flag
 		Molpy.npbONG=0;//reset newpixbot flag
+		
+		
+		Molpy.Boosts['Temporal Rift'].hardlocked=1;
+		if(Molpy.newpixNumber%
+			(50-(Molpy.Got('Time Travel')+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine'))*10)==0)
+		{
+			Molpy.Boosts['Temporal Rift'].hardlocked=(Math.random()*6<5)*1;
+		}
 	}
 		
 	Molpy.HandlePeriods=function()

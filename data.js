@@ -668,8 +668,8 @@ Molpy.DefineBoosts=function()
 		,icon:'blastfurnace',group:'hpt',hardlocked:1});
 	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja',
-		'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked',
-		'Big Splash','Irregular Rivers','NewPixBot Navigation Code','Blixtnedslag Förmögenhet, JA!'];
+		'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked','Big Splash','Irregular Rivers',
+		'NewPixBot Navigation Code','Blixtnedslag Förmögenhet, JA!','Temporal Rift'];
 	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:1400000,castles:21000});
 	new Molpy.Boost({name:'Embaggening',desc:'Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',
 		sand:3500000,castles:23000,icon:'embaggening'});
@@ -843,7 +843,10 @@ Molpy.DefineBoosts=function()
 		sand:84700000,castles:7540,icon:'buccaneer'});
 	new Molpy.Boost({name:'Bucket Brigade',desc:'Clicks give 1% of sand dig rate per 50 buckets',
 		sand:412000000,castles:8001,icon:'bucketbrigade'});
-	new Molpy.Boost({name:'Bag Puns',desc:'Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',sand:1470000000,castles:450021});
+	new Molpy.Boost({name:'Bag Puns',desc:'Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',sand:1470000000,castles:450021,stats:function(me)
+		{
+			if(me.power <= 20) return 'Speed is at '+me.power+'out of 20';
+		}});
 	{//#region puns	
 		Molpy.bp = [
 			"One True Comic II: The Baginning"
@@ -1021,7 +1024,11 @@ Molpy.DefineBoosts=function()
 		{
 			return 'Adds ' + Molpify(20*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power,1)+'% to Not Lucky reward';
 		},icon:'bfj',hardlocked:1});
-	new Molpy.Boost({name:'VITSSÅGEN, JA!',desc:'Stop the Puns!',sand:334455667788,castles:999222111000});
+	new Molpy.Boost({name:'VITSSÅGEN, JA!',desc:'Stop the Puns!',sand:334455667788,castles:999222111000,
+		stats:function(me)
+		{
+			if(me.power <= 100) return 'Speed is at '+me.power+'out of 100';
+		}});
 	new Molpy.Boost({name:'Swedish Chef',desc:
 		function(me)
 		{
@@ -1081,7 +1088,26 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Throw Your Toys',desc:'Trebuchets build a castle for every flag and bucket owned',sand:546000000,castles: 230000});
 	new Molpy.Boost({name:'Broken Rung',desc:'Multiplies the Sand output of Ladders by the amount of the tool you have least of.',sand:1769000000,castles: 450000});
 	
-	
+	new Molpy.Boost({name:'Temporal Rift',
+		desc:function(me)
+		{
+			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+me.countdown+'mNP.<br/><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
+			return 'A hole in time has opened.';
+		},startCountdown:6,hardlocked:1,group:'chron',className:'action'});
+	Molpy.RiftJump=function()
+	{
+		if(Math.random()*6<5)
+		{
+			Molpy.totalCastlesDown+=Molpy.castles;
+			Molpy.castlesBuilt-=Molpy.castles;
+			Molpy.Destroy(Molpy.castles);
+			Molpy.sand*=2;
+		}
+		Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
+		Molpy.ONG();
+		Molpy.LockBoost('Temporal Rift');
+		Molpy.Notify('You wonder when you are');
+	}
 	
 	Molpy.groupNames={boosts:'boost',hpt:'hill people tech',ninj:'ninjutsu',chron:'chronotech',cyb:'cybernetics'};
 }
