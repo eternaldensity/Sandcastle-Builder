@@ -1534,6 +1534,7 @@ Molpy.Up=function()
 					Molpy.recalculateDig=1;
 					Molpy.SandToolsOwned--;
 					Molpy.UnlockBoost('No Sell');
+					Molpy.CheckBuyUnlocks();
 				}
 			}
 			this.showdesc=function()
@@ -1645,6 +1646,7 @@ Molpy.Up=function()
 					Molpy.recalculateDig=1;
 					Molpy.CastleToolsOwned--;
 					Molpy.UnlockBoost('No Sell');
+					Molpy.CheckBuyUnlocks();
 				}
 			}
 			this.DestroyPhase=function()
@@ -1764,7 +1766,7 @@ Molpy.Up=function()
 			this.startCountdown=args.startCountdown;
 			this.hardlocked=args.hardlocked;
 			this.className=args.className;
-			this.group=args.group;
+			this.group=args.group||'boosts';
 			this.lockFunction=args.lockFunction;
 			
 			if(order) this.order=order+this.id/1000;
@@ -1785,7 +1787,11 @@ Molpy.Up=function()
 					Molpy.recalculateDig=1;
 					Molpy.BoostsOwned++;
 					Molpy.CheckBuyUnlocks();
-					Molpy.unlockedGroups[this.group||'boosts']=1;
+					Molpy.unlockedGroups[this.group]=1;
+					for(var i in showhide)
+					{
+						showhide[i]=(i==this.group);
+					}
 				}				
 			}
 			this.showdesc=function()
@@ -1865,6 +1871,7 @@ Molpy.Up=function()
 						if(!silent)
 							Molpy.Notify('Boost Locked: '+bacon,1);
 						if(me.lockFunction)me.lockFunction();
+						Molpy.CheckBuyUnlocks();
 					}
 				}
 			}else{ //so I put bacon in your bacon

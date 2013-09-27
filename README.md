@@ -19,6 +19,8 @@ Not for any commercial use!
 ## Changelog
 
 ### 0.9997
+- Fixed boosts in shop being hidden by the group buttons
+- When a boost is bought, show just its group
 
 ### 0.9996
 - a timetravel-related boost (which may help you *get* time travel if you're lucky)
