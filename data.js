@@ -1096,12 +1096,12 @@ Molpy.DefineBoosts=function()
 		},startCountdown:6,hardlocked:1,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
-		if(Math.random()*6<5)
+		if(Math.random()*5<4)
 		{
 			Molpy.totalCastlesDown+=Molpy.castles;
 			Molpy.castlesBuilt-=Molpy.castles;
 			Molpy.Destroy(Molpy.castles);
-			Molpy.sand*=2;
+			Molpy.Dig(Molpy.sand);
 		}
 		Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
 		Molpy.ONG();
@@ -1109,7 +1109,8 @@ Molpy.DefineBoosts=function()
 		Molpy.Notify('You wonder when you are');
 	}
 	
-	Molpy.groupNames={boosts:'boost',hpt:'hill people tech',ninj:'ninjutsu',chron:'chronotech',cyb:'cybernetics'};
+	Molpy.groupNames={boosts:['boost','Boosts'],hpt:['hill people tech','Hill People Tech','boost_department'],ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
+		chron:['chronotech','Chronotech'],cyb:['cybernetics','Cybernetics','boost_minigun']};
 }
 	
 	

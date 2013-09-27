@@ -274,11 +274,12 @@ body.lightscheme .floatbox:hover{
 	display: inline-block;
 	vertical-align: top;
 	min-width:88px;
-	min-height:98;
+	min-height:48px;
 	margin:5px;
 	border-width: 1px;
 	border-style: solid;
 	text-align:center;
+	padding: 4px;
 }
 .infobox
 {

@@ -160,7 +160,7 @@ function onunhover(me,event)
 	me.hoverOnCounter=-1;
 }
 
-var showhide={boosts:1,badges:1,badgesav:1,tagged:0};
+var showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,badges:1,badgesav:1,tagged:0};
 function showhideButton(key)
 {
 	return '<input type="Button" value="'+(showhide[key]?'Visible':'Hidden')+'" onclick="showhideToggle(\''+key+'\')"></input>'
@@ -549,7 +549,11 @@ Molpy.Up=function()
                         me.power=parseInt(ice[2]);
                         me.countdown=parseInt(ice[3]);
                     }
-					if(me.bought)Molpy.BoostsOwned++;
+					if(me.bought)
+					{
+						Molpy.BoostsOwned++;
+						Molpy.unlockedGroups[me.group||'boosts']=1;
+					}
 					if(me.countdown)
 					{
 						Molpy.GiveTempBoost(me.name,me.power,me.countdown);
@@ -1780,6 +1784,7 @@ Molpy.Up=function()
 					Molpy.recalculateDig=1;
 					Molpy.BoostsOwned++;
 					Molpy.CheckBuyUnlocks();
+					Molpy.unlockedGroups[Molpy.Boosts[bacon].group||'boosts']=1;
 				}				
 			}
 			this.showdesc=function()
@@ -1946,6 +1951,7 @@ Molpy.Up=function()
 		Molpy.redactedCountup=0;
 		Molpy.redactedToggle=0; //disabled
 		Molpy.redactedVisible=0; //hidden
+		Molpy.redactedGr=''; //for boosts keep track of which group it's in
 		Molpy.redactedViewIndex=-1;
 		Molpy.redactableThings=6;
 		Molpy.redactedClicks=0;
@@ -2109,32 +2115,44 @@ Molpy.Up=function()
 			Molpy.priceFactor=Math.max(0,baseval);
 		}
 		
+		Molpy.unlockedGroups={};
 		Molpy.RepaintLootSelection=function()
 		{
 			var str = '';
-			if(Molpy.BoostsOwned)
+			var groups = ['boosts','ninj','cyb','hpt','chron'];
+			for(var i in groups)
 			{
-				str+= '<div class="floatsquare boost loot"><div class="icon '
-					+(Molpy.redactedVisible==4?'redacted':'')
-					+'"></div>Boosts<br/>'+showhideButton('boosts')+'</div>';
+				var gr = groups[i];
+				if(Molpy.unlockedGroups[gr])
+				{
+					var id = Molpy.groupNames[gr][2]||'';
+					if(id) id= ' id="'+id+'"';
+					str+= '<div class="floatsquare boost loot">'+Molpy.groupNames[gr][1]+'<br/>'+showhideButton(gr)
+						+'<div class="icon'
+						+((Molpy.redactedVisible==4&&Molpy.redactedCat==gr)?' redacted"':'"')
+						+id+'></div></div>';
+				}
 			}
 			if(Molpy.BadgesOwned)
 			{
-				str+= '<div class="floatsquare badge loot"><div class="icon '
+				str+= '<div class="floatsquare badge loot">Badges<br/>Earned<br/>'
+					+showhideButton('badges')+'<div class="icon '
 					+(Molpy.redactedVisible==5?'redacted':'')
-					+'"></div>Badges<br/>Earned<br/>'+showhideButton('badges')+'</div>';
+					+'"></div></div>';
 			}
 			if(Molpy.BadgeN-Molpy.BadgesOwned)
 			{
-				str+= '<div class="floatsquare badge shop"><div class="icon '
+				str+= '<div class="floatsquare badge shop">Badges<br/>Available<br/>'
+					+showhideButton('badgesav')+'<div class="icon '
 					+(Molpy.redactedVisible==6?'redacted':'')
-					+'"></div>Badges<br/>Available<br/>'+showhideButton('badgesav')+'</div>';
+					+'"></div></div>';
 			}
 			if(Molpy.Boosts['Chromatic Heresy'].unlocked)
 			{
-				str+= '<div class="floatsquare boost loot alert"><div id="boost_chromatic" class="icon '
+				str+= '<div class="floatsquare boost loot alert">Tagged<br/>'
+					+showhideButton('tagged')+'<div id="boost_chromatic" class="icon '
 					+(Molpy.redactedVisible==7?'redacted':'')
-					+'"></div>Tagged<br/>'+showhideButton('tagged')+'</div>';
+					+'"></div></div>';
 			}
 			
 			g('lootselection').innerHTML=str;
@@ -2212,10 +2230,11 @@ Molpy.Up=function()
 		{		
 			var cn= me.className||'';
 			var group= me.group||'boosts';
+			if(!showhide[group])return'';
 			if(cn)Molpy.UnlockBoost('Chromatic Heresy');
 			
 			cn = '<div class="boost '+(me.bought?'lootbox loot ':'floatbox shop ')+cn;
-			var heading= '<div class="heading">['+Molpy.groupNames[group]+']</div>';
+			var heading= '<div class="heading">['+Molpy.groupNames[group][0]+']</div>';
 			var buy= me.bought?'</div>':(' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div>'
 				+'<span class="price">Price: '+FormatPrice(me.sandPrice)+' Sand + '
 				+FormatPrice(me.castlePrice)+' Castles</span>');
@@ -2285,17 +2304,16 @@ Molpy.Up=function()
 				redactedIndex=Molpy.redactedViewIndex;
 			}
 			str='';			
-			if(showhide.boosts){
-				r=0;
-				for (var i in blist)
-				{
-					if(r==redactedIndex) str+= Molpy.redactedLoot;
-					var me=blist[i];
-					str+=Molpy.BoostString(me);
-					r++;
-				}
+			r=0;
+			for (var i in blist)
+			{
 				if(r==redactedIndex) str+= Molpy.redactedLoot;
+				var me=blist[i];
+				str+=Molpy.BoostString(me);
+				r++;
 			}
+			if(r==redactedIndex) str+= Molpy.redactedLoot;
+			
 			Molpy.boostHTML=str;
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;	
 		}
