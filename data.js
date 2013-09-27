@@ -159,6 +159,13 @@ Molpy.DefineSandTools=function()
 			var mult = 1;
 			if(Molpy.Got('Level Up!'))mult*=2;
 			if(Molpy.Got('Climbbot'))mult*=4;
+			if(Molpy.Got('Broken Rung'))
+			{
+				var min =1000;
+				for(var i in Molpy.SandTools)min=Math.min(min,Molpy.SandTools[i].amount);
+				for(var i in Molpy.CastleTools)min=Math.min(min,Molpy.CastleTools[i].amount);
+				mult*=min;
+			}
 			return baserate*mult;
 		}
 	);
@@ -222,6 +229,7 @@ Molpy.DefineCastleTools=function()
 		 var baseval=4;
 			if(Molpy.Got('Spring Fling'))baseval++;
 			if(Molpy.Got('Varied Ammo'))for(i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)baseval++;
+			if(Molpy.Got('Throw Your Toys')) baseval+=Molpy.SandTools['Bucket'].amount+Molpy.SandTools['Flag'].amount;
 			if(Molpy.Got('Flingbot'))baseval*=4;
 			if(Molpy.Got('Minigun')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			return baseval;
@@ -343,7 +351,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Magic Mountain',desc:'Flags are much more powerful',
 		sand:8000,castles:15,stats:'Multiplies Flag sand rate by 2.5',icon:'magicmountain'});
 	new Molpy.Boost({name:'Extension Ladder',desc:'Ladders reach a little higher',sand:12000,castles:22,
-		stats:'Each ladder produces 18 extra castles per ONG, before multipliers'});
+		stats:'Each ladder produces 18 more sand per mNP, before multipliers'});
 	new Molpy.Boost({name:'Level Up!',desc:'Ladders are much more powerful',sand:29000,castles:34,
 		stats:'Ladders produce 2 times as many castles per ONG',icon:'levelup'});
 	new Molpy.Boost({name:'Varied Ammo',desc:'Trebuchets build an extra castle for each Castle Tool you have 2+ of',sand:3900,castles:48,
@@ -1070,7 +1078,8 @@ Molpy.DefineBoosts=function()
 		Molpy.Notify('No item selected for shopping assistant',1);
 	}
 	new Molpy.Boost({name:'Late Closing Hours',desc:Molpy.IKEA+' is available for 6 mNP longer',sand:47000000000,castles:930000000000});
-	
+	new Molpy.Boost({name:'Throw Your Toys',desc:'Trebuchets build a castle for every flag and bucket owned',sand:546000000,castles: 230000});
+	new Molpy.Boost({name:'Broken Rung',desc:'Multiplies the Sand output of Ladders by the amount of the tool you have least of.',sand:1769000000,castles: 450000});
 	
 	
 	
@@ -1313,6 +1322,7 @@ Molpy.CheckBuyUnlocks=function()
 	me=Molpy.SandTools['Ladder'];
 	if(me.amount>=1)Molpy.UnlockBoost('Extension Ladder');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Climbbot');
+	if(me.amount>=25)Molpy.UnlockBoost('Broken Rung');
 	
 	me=Molpy.CastleTools['NewPixBot'];
 	if(me.amount>=3)Molpy.UnlockBoost('Busy Bot');
@@ -1329,7 +1339,8 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=1)Molpy.UnlockBoost('Spring Fling');
 	if(me.amount>=2)Molpy.UnlockBoost('Trebuchet Pong');				
 	if(me.amount>=5)Molpy.UnlockBoost('Varied Ammo');	
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Flingbot');	
+	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Flingbot');				
+	if(me.amount>=20)Molpy.UnlockBoost('Throw Your Toys');	
 	
 	me=Molpy.CastleTools['Scaffold'];
 	if(me.amount>=2)Molpy.UnlockBoost('Precise Placement');

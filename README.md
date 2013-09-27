@@ -22,6 +22,8 @@ Not for any commercial use!
 - VITSSÅGEN, JA! is more powerful
 - Swedish Chef unlocks a bit sooner
 - more boost group names
+- a trebuchet boost
+- a ladder boost
 
 ### 0.9994
 - Swedish Chef follows on from VITSSÅGEN, JA!
