@@ -422,7 +422,10 @@ Molpy.DefineBoosts=function()
 		{
 			var p = Molpy.Boosts['Double or Nothing'].power;
 			return 100*Math.pow(2,Math.max(1,p-9));
-		}});
+		},lockFunction:function(){
+			this.power++;
+		}
+	});
 	Molpy.Boosts['Double or Nothing'].className='action';
 	Molpy.DoubleOrNothing=function()
 	{
@@ -447,7 +450,7 @@ Molpy.DefineBoosts=function()
 		function(){
 			Molpy.shopRepaint=1;
 		}
-		,startPower:0.4,startCountdown:4});
+		,startPower:0.4,startCountdown:4,group:'hpt'});
 	Molpy.Boosts[Molpy.IKEA].className='alert';
 	
 	new Molpy.Boost({name:'Overcompensating',desc: function(me){
@@ -796,7 +799,7 @@ Molpy.DefineBoosts=function()
 		},className:'alert',group:'cyb'
 		});	
 	
-	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',sand:9800000,castles:888555222,stats:'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.)',icon:'bkj'});
+	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',sand:9800000,castles:888555222,stats:'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.)',icon:'bkj',group:'hpt'});
 		
 	new Molpy.Boost({name:'Novikov Self-Consistency Principle',desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
 		sand:function()
@@ -1023,12 +1026,12 @@ Molpy.DefineBoosts=function()
 		stats:function()
 		{
 			return 'Adds ' + Molpify(20*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power,1)+'% to Not Lucky reward';
-		},icon:'bfj',hardlocked:1});
+		},icon:'bfj',hardlocked:1,group:'hpt'});
 	new Molpy.Boost({name:'VITSSÅGEN, JA!',desc:'Stop the Puns!',sand:334455667788,castles:999222111000,
 		stats:function(me)
 		{
 			if(me.power <= 100) return 'Speed is at '+me.power+'out of 100';
-		}});
+		},group:'hpt'});
 	new Molpy.Boost({name:'Swedish Chef',desc:
 		function(me)
 		{
@@ -1047,9 +1050,9 @@ Molpy.DefineBoosts=function()
 			}
 			Molpy.UnlockBoost(['Family Discount','Shopping Assistant','Late Closing Hours']);
 			return 'Gives you Swedish stuff';
-		}});
+		},group:'hpt'});
 	new Molpy.Boost({name:'Family Discount',desc:'Permament 80% discount on all prices',sand:24000000000,castles:720000000000,
-		buyFunction:function(){Molpy.shopRepaint=1;}}
+		buyFunction:function(){Molpy.shopRepaint=1;},group:'hpt'}
 	);
 	Molpy.shoppingItem='';
 	new Molpy.Boost({name:'Shopping Assistant',desc:
@@ -1060,7 +1063,7 @@ Molpy.DefineBoosts=function()
 			if(!Molpy.shoppingItem)
 				return '<input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> an item to automatically buy whenever possible';
 			return 'Buys '+Molpy.shoppingItem+' whenever possible, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
-		},sand:18000000000,castles:650000000000,className:'action'});
+		},sand:18000000000,castles:650000000000,className:'action',group:'hpt'});
 	Molpy.ChooseShoppingItem=function()
 	{
 		var name = prompt('Enter the name of the tool or boost you wish to buy.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is not preserved if you reload.',Molpy.shoppingItem||'Bag');
@@ -1108,6 +1111,39 @@ Molpy.DefineBoosts=function()
 		Molpy.LockBoost('Temporal Rift');
 		Molpy.Notify('You wonder when you are');
 	}
+	
+	new Molpy.Boost({name:'Glass Furnace',
+		desc:function(me)
+		{
+			if(!me.bought) return 'Turns Sand into Glass';
+			var pow=Molpify(Molpy.Boosts['Sand Refiner'].power+1);
+			return (me.power?'U':'When active, u')+'ses '+pow+'% of Sand dug to produce '+pow+' Glass per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
+		}
+		,sand:80000000,castles:500000,className:'toggle',group:'hpt'});
+	new Molpy.Boost({name:'Glass Furnace Switching',lockFunction:
+		function()
+		{
+			Molpy.Boosts['Glass Furnace'].power = !this.power;
+			Molpy.Notify('Glass Furnace is '+(this.power?'off':'on'));
+		}
+		,className:'alert',group:'hpt'
+	});
+	Molpy.SwitchGlassFurnace=function(off)
+	{
+		if(Molpy.Got('Glass Furnace Switching'))
+		{
+			Molpy.Notify('Glass Furnace is already switching, please wait for it');
+			return;
+		}
+		Molpy.GiveTempBoost('Glass Furnace Switching',off,1500,
+			function(me){return (off?'off':'on')+' in '+Molpify(me.countdown)+'mNP';});
+	}
+	new Molpy.Boost({name:'Sand Refiner',desc:
+		function(me)
+		{
+			return 'Increases the power of the Glass Furnace';
+		}
+	});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],hpt:['hill people tech','Hill People Tech','boost_department'],ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
 		chron:['chronotech','Chronotech'],cyb:['cybernetics','Cybernetics','boost_minigun']};

@@ -200,7 +200,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.9996;
+		Molpy.version=0.9997;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1765,6 +1765,7 @@ Molpy.Up=function()
 			this.hardlocked=args.hardlocked;
 			this.className=args.className;
 			this.group=args.group;
+			this.lockFunction=args.lockFunction;
 			
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
@@ -1846,25 +1847,24 @@ Molpy.Up=function()
 		{
 			if(typeof bacon==='string')
 			{
-				if(Molpy.Boosts[bacon])
+				var me = Molpy.Boosts[bacon];
+				if(me)
 				{
-					if(Molpy.Boosts[bacon].unlocked==1)
+					if(me.unlocked==1)
 					{
-						Molpy.Boosts[bacon].unlocked=0;
+						me.unlocked=0;
 						Molpy.boostRepaint=1;
 						Molpy.shopRepaint=1;
 						Molpy.recalculateDig=1;
-						if(bacon=='Double or Nothing')
-						{
-							Molpy.Boosts[bacon].power++;							
-						}
-						if(Molpy.Boosts[bacon].bought==1);
+
+						if(me.bought==1);
 						{
 							Molpy.BoostsOwned--;
-							Molpy.Boosts[bacon].bought=0;
+							me.bought=0;
 						} //Orteil did this bit wrong :P
 						if(!silent)
 							Molpy.Notify('Boost Locked: '+bacon,1);
+						if(me.lockFunction)me.lockFunction();
 					}
 				}
 			}else{ //so I put bacon in your bacon
@@ -2293,7 +2293,7 @@ Molpy.Up=function()
 			{
 				if(r==redactedIndex) str+= Molpy.redactedShop;
 				var me=Molpy.BoostsInShop[i];
-				str+=Molpy.BoostString(me);
+				str+=Molpy.BoostString(me,1);
 				r++;
 			}
 			if(r==redactedIndex) str+= Molpy.redactedShop;
