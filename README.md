@@ -22,6 +22,7 @@ Not for any commercial use!
 - Fixed boosts in shop being hidden by the group buttons
 - When a boost is bought, show just its group
 - Changed show/hide boxes a bit (is this better?)
+- Renamed a boost and added new boost with the old name at a higher tier because reasons
 - first stage of Next Big Thing (not exactly highly useful yet but you can buy and use stuff okay)
 
 ### 0.9996
