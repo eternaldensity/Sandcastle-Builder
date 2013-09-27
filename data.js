@@ -1120,7 +1120,11 @@ Molpy.DefineBoosts=function()
 			return (me.power?'U':'When active, u')+'ses '+pow+'% of Sand dug to produce '+pow+' Glass Chips per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
 		}
 		,sand:80000000,castles:500000,className:'toggle',group:'hpt'});
-	new Molpy.Boost({name:'Glass Furnace Switching',lockFunction:
+	new Molpy.Boost({name:'Glass Furnace Switching',
+		desc:function(me)
+		{
+			return (me.power?'off':'on')+' in '+Molpify(me.countdown)+'mNP';
+		},lockFunction:
 		function()
 		{
 			Molpy.Boosts['Glass Furnace'].power = (!this.power)*1;
@@ -1135,8 +1139,8 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('Glass Furnace is already switching, please wait for it');
 			return;
 		}
-		Molpy.GiveTempBoost('Glass Furnace Switching',off,1500,
-			function(me){return (off?'off':'on')+' in '+Molpify(me.countdown)+'mNP';});
+		this.power=off;
+		Molpy.GiveTempBoost('Glass Furnace Switching',off,1500);
 	}
 	new Molpy.Boost({name:'Sand Refinery',desc:
 		function(me)
