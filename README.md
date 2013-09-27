@@ -18,6 +18,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.9995
+- VITSSÅGEN, JA! is more powerful
+- Swedish Chef unlocks a bit sooner
+- more boost group names
+
 ### 0.9994
 - Swedish Chef follows on from VITSSÅGEN, JA!
 - 3 More swedish/shopping related boosts

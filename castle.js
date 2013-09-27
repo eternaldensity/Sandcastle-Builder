@@ -200,7 +200,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.9994;
+		Molpy.version=0.9995;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1246,13 +1246,13 @@ Molpy.Up=function()
 				}
 			}else if(Molpy.Got('VITSSÅGEN, JA!'))
 			{
-				if(Molpy.beachClicks%1000==0)
+				if(Molpy.beachClicks%100==0)
 				{
 					Molpy.Notify('VITSSÅGEN, JA!');
 					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power||0;
 					p++;
 					Molpy.Build(1000000*p);
-					if(p>5)Molpy.UnlockBoost('Swedish Chef');
+					if(p>20)Molpy.UnlockBoost('Swedish Chef');
 					Molpy.Boosts['VITSSÅGEN, JA!'].power=p;
 				}
 			}else if(Molpy.Got('Bag Puns'))
@@ -1735,16 +1735,16 @@ Molpy.Up=function()
 		Molpy.BoostsInShop=[];
 		Molpy.BoostsOwned=0;
 		var order=0;
-		Molpy.Boost=function(name,desc,sand,castles,stats,icon,buyFunction,startPower,startCountdown)
+		Molpy.Boost=function(args)
 		{
 			this.id=Molpy.BoostN;
-			this.name=name;
-			this.desc=desc;
-			this.sandPrice=sand;
-			this.castlePrice=castles;
-			this.stats=stats;
-			this.icon=icon;
-			this.buyFunction=buyFunction;
+			this.name=args.name;
+			this.desc=args.desc;
+			this.sandPrice=args.sand||0;
+			this.castlePrice=args.castles||0;
+			this.stats=args.stats;
+			this.icon=args.icon;
+			this.buyFunction=args.buyFunction;
 			this.unlocked=0;
 			this.bought=0;
 			this.hardlocked=0; //prevent unlock by the department (this is not a saved value)
@@ -1752,12 +1752,16 @@ Molpy.Up=function()
 			this.hovered=0;
 			this.power=0;
 			this.countdown=0;
-			if(startPower)
+			if(args.startPower)
 			{
-				this.startPower=startPower;
-				this.power=startPower;
+				this.startPower=args.startPower;
+				this.power=args.startPower;
 			}
-			this.startCountdown=startCountdown;
+			this.startCountdown=args.startCountdown;
+			this.hardlocked=args.hardlocked;
+			this.className=args.className;
+			this.group=args.group;
+			
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
 			
@@ -2203,7 +2207,6 @@ Molpy.Up=function()
 			if(i==redactedIndex) str+= Molpy.redactedShop;
 			g('castletools').innerHTML=str;		
 		}
-		Molpy.groupNames={boosts:'boost',hpt:'hill people tech'};
 		
 		Molpy.BoostString=function(me)
 		{		
