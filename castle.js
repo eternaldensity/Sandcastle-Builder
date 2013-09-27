@@ -2952,8 +2952,14 @@ Molpy.Up=function()
 	}
 	Molpy.UpdateBeach=function()
 	{
-		g('beach').style.background='url(http://xkcd.mscha.org/frame/'+Molpy.newpixNumber+')';
-		g('beach').style.backgroundSize='auto';	
+		if(Molpy.Got('Chromatic Heresy')&&Molpy.Boosts['Chromatic Heresy'].power)
+		{	
+			g('beach').style.background='url(http://178.79.159.24/Time/otcolorization/'+Molpy.newpixNumber+')';
+			g('beach').style.backgroundSize='auto';	
+		}else{
+			g('beach').style.background='url(http://xkcd.mscha.org/frame/'+Molpy.newpixNumber+')';
+			g('beach').style.backgroundSize='auto';	
+		}
 	}
 	/* In which we figure out how to draw stuff
 	+++++++++++++++++++++++++++++++++++++++++++*/

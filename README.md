@@ -21,6 +21,7 @@ Not for any commercial use!
 ### 0.9998
 - Fixed furnace-switch-description refresh-mustard
 - Fiddled with show-hide-on-buy: tags override group and groups don't hide other groups
+- Experimental Chromatic Heresy
 
 ### 0.9997
 - Fixed boosts in shop being hidden by the group buttons
