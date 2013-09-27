@@ -1823,9 +1823,17 @@ Molpy.Up=function()
 					Molpy.unlockedGroups[this.group]=1;
 					if(sp+cp>0)
 					{
-						for(var i in showhide)
+						if(this.className)
 						{
-							showhide[i]=(i==this.group);
+							if(!showhide.tagged)
+							{
+								showhideToggle('tagged');
+							}
+						}else{
+							if(!showhide[this.group])
+							{
+								showhideToggle(this.group);
+							}
 						}
 					}
 				}				
