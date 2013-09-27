@@ -160,7 +160,7 @@ function onunhover(me,event)
 	me.hoverOnCounter=-1;
 }
 
-var showhide={boosts:1,badges:1,badgesav:1,tagged:0};
+var showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,badges:1,badgesav:1,tagged:0};
 function showhideButton(key)
 {
 	return '<input type="Button" value="'+(showhide[key]?'Visible':'Hidden')+'" onclick="showhideToggle(\''+key+'\')"></input>'
@@ -200,7 +200,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.9995;
+		Molpy.version=0.9996;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -368,7 +368,7 @@ Molpy.Up=function()
 			Flint(Molpy.redactedCountup)+s+
 			Flint(Molpy.redactedToggle)+s+
 			Flint(Molpy.redactedVisible)+s+
-			Flint(Molpy.redactedViewIndex)+s+
+			Flint(0)+s+ //SPARE NUMBER BECAUSE redactedViewIndex is *ahem* redundant
 			Flint(Molpy.redactedClicks)+s+
 			Flint(Molpy.highestNPvisited)+s+
 			Flint(Molpy.totalCastlesDown)+s+
@@ -469,7 +469,7 @@ Molpy.Up=function()
 			Molpy.redactedCountup=parseInt(pixels[20]);			
 			Molpy.redactedToggle=parseInt(pixels[21]);			
 			Molpy.redactedVisible=parseInt(pixels[22]);			
-			Molpy.redactedViewIndex=parseInt(pixels[23]);
+			//Molpy.redactedViewIndex=parseInt(pixels[23]); NOT NEEDED!
 			Molpy.redactedClicks=parseInt(pixels[24]);	
 			if(version < 0.92)
 			{	
@@ -549,7 +549,11 @@ Molpy.Up=function()
                         me.power=parseInt(ice[2]);
                         me.countdown=parseInt(ice[3]);
                     }
-					if(me.bought)Molpy.BoostsOwned++;
+					if(me.bought)
+					{
+						Molpy.BoostsOwned++;
+						Molpy.unlockedGroups[me.group||'boosts']=1;
+					}
 					if(me.countdown)
 					{
 						Molpy.GiveTempBoost(me.name,me.power,me.countdown);
@@ -1780,6 +1784,7 @@ Molpy.Up=function()
 					Molpy.recalculateDig=1;
 					Molpy.BoostsOwned++;
 					Molpy.CheckBuyUnlocks();
+					Molpy.unlockedGroups[this.group||'boosts']=1;
 				}				
 			}
 			this.showdesc=function()
@@ -1946,6 +1951,7 @@ Molpy.Up=function()
 		Molpy.redactedCountup=0;
 		Molpy.redactedToggle=0; //disabled
 		Molpy.redactedVisible=0; //hidden
+		Molpy.redactedGr=''; //for boosts keep track of which group it's in
 		Molpy.redactedViewIndex=-1;
 		Molpy.redactableThings=6;
 		Molpy.redactedClicks=0;
@@ -1966,7 +1972,8 @@ Molpy.Up=function()
 						Molpy.badgeRepaint=1;	
 						Molpy.RandomiseRedactedTime();	
 					}else{
-						Molpy.redactedVisible=Math.ceil(Molpy.redactableThings*Math.random());
+						Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
+						if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;
 						Molpy.redactedViewIndex=-1;
 						var stay = 6 *(4+ Molpy.Got('Kitnip'));
 						Molpy.redactedToggle=stay;
@@ -1984,6 +1991,7 @@ Molpy.Up=function()
 			var min = 200-80*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore'));
 			var spread = 90-20*Molpy.Got('Kitnip'+Molpy.Got('Kitties Galore'));
 			Molpy.redactedToggle=min+Math.ceil(spread*Math.random());
+			Molpy.redactedGr='';
 		}
 		
 		Molpy.clickRedacted=function()
@@ -2109,32 +2117,46 @@ Molpy.Up=function()
 			Molpy.priceFactor=Math.max(0,baseval);
 		}
 		
+		Molpy.unlockedGroups={};
 		Molpy.RepaintLootSelection=function()
 		{
 			var str = '';
-			if(Molpy.BoostsOwned)
+			var groups = ['boosts','ninj','cyb','hpt','chron'];
+			for(var i in groups)
 			{
-				str+= '<div class="floatsquare boost loot"><div class="icon '
-					+(Molpy.redactedVisible==4?'redacted':'')
-					+'"></div>Boosts<br/>'+showhideButton('boosts')+'</div>';
+				var gr = groups[i];
+				if(Molpy.unlockedGroups[gr])
+				{
+					var id = Molpy.groupNames[gr][2]||'';
+					if(id) id= ' id="'+id+'"';
+					var r = (Molpy.redactedVisible==4&&Molpy.redactedGr==gr);
+					if(r)id='';
+					str+= '<div class="floatsquare boost loot">'+Molpy.groupNames[gr][1]+'<br/><br/>'+showhideButton(gr)
+						+'<div class="icon'
+						+(r?' redacted"':'"')
+						+id+'></div></div>';
+				}
 			}
 			if(Molpy.BadgesOwned)
 			{
-				str+= '<div class="floatsquare badge loot"><div class="icon '
+				str+= '<div class="floatsquare badge loot">Badges<br/>Earned<br/>'
+					+showhideButton('badges')+'<div class="icon '
 					+(Molpy.redactedVisible==5?'redacted':'')
-					+'"></div>Badges<br/>Earned<br/>'+showhideButton('badges')+'</div>';
+					+'"></div></div>';
 			}
 			if(Molpy.BadgeN-Molpy.BadgesOwned)
 			{
-				str+= '<div class="floatsquare badge shop"><div class="icon '
+				str+= '<div class="floatsquare badge shop">Badges<br/>Available<br/>'
+					+showhideButton('badgesav')+'<div class="icon '
 					+(Molpy.redactedVisible==6?'redacted':'')
-					+'"></div>Badges<br/>Available<br/>'+showhideButton('badgesav')+'</div>';
+					+'"></div></div>';
 			}
 			if(Molpy.Boosts['Chromatic Heresy'].unlocked)
 			{
-				str+= '<div class="floatsquare boost loot alert"><div id="boost_chromatic" class="icon '
+				str+= '<div class="floatsquare boost loot alert">Tagged<br/>Items<br/>'
+					+showhideButton('tagged')+'<div id="boost_chromatic" class="icon '
 					+(Molpy.redactedVisible==7?'redacted':'')
-					+'"></div>Tagged<br/>'+showhideButton('tagged')+'</div>';
+					+'"></div></div>';
 			}
 			
 			g('lootselection').innerHTML=str;
@@ -2208,17 +2230,29 @@ Molpy.Up=function()
 			g('castletools').innerHTML=str;		
 		}
 		
-		Molpy.BoostString=function(me)
+		Molpy.BoostString=function(me,f,r)
 		{		
 			var cn= me.className||'';
 			var group= me.group||'boosts';
+			if(r)
+			{
+				r=Molpy.redactedLoot;
+				Molpy.redactedGr=group;
+			}else{
+				r='';
+			}
+			
+			if(!(showhide[group]||f))return'';
 			if(cn)Molpy.UnlockBoost('Chromatic Heresy');
 			
-			cn = '<div class="boost '+(me.bought?'lootbox loot ':'floatbox shop ')+cn;
-			var heading= '<div class="heading">['+Molpy.groupNames[group]+']</div>';
+			
+			cn = r+'<div class="boost '+(me.bought?'lootbox loot ':'floatbox shop ')+cn;
+			var heading= '<div class="heading">['+Molpy.groupNames[group][0]+']</div>';
 			var buy= me.bought?'</div>':(' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div>'
 				+'<span class="price">Price: '+FormatPrice(me.sandPrice)+' Sand + '
 				+FormatPrice(me.castlePrice)+' Castles</span>');
+				
+			
 			
 			return cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id
 				+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+heading+'<div class="title">'+me.name+buy
@@ -2280,22 +2314,19 @@ Molpy.Up=function()
 			{
 				if(Molpy.redactedViewIndex==-1)
 				{
-					Molpy.redactedViewIndex=Math.floor((blist.length+1)*Math.random());
+					Molpy.redactedViewIndex=Math.floor((blist.length)*Math.random());
 				}
 				redactedIndex=Molpy.redactedViewIndex;
 			}
 			str='';			
-			if(showhide.boosts){
-				r=0;
-				for (var i in blist)
-				{
-					if(r==redactedIndex) str+= Molpy.redactedLoot;
-					var me=blist[i];
-					str+=Molpy.BoostString(me);
-					r++;
-				}
-				if(r==redactedIndex) str+= Molpy.redactedLoot;
+			r=0;
+			for (var i in blist)
+			{
+				var me=blist[i];
+				str+=Molpy.BoostString(me,0,r==redactedIndex);
+				r++;
 			}
+			
 			Molpy.boostHTML=str;
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;	
 		}
@@ -2393,7 +2424,7 @@ Molpy.Up=function()
 			for (var i in blist)
 			{
 				var me=blist[i];					
-				str+=Molpy.BoostString(me);
+				str+=Molpy.BoostString(me,1);
 			}
 			
 			blist=[];
@@ -2797,6 +2828,14 @@ Molpy.Up=function()
 		}
 		Molpy.ninjad=0;//reset ninja flag
 		Molpy.npbONG=0;//reset newpixbot flag
+		
+		
+		Molpy.Boosts['Temporal Rift'].hardlocked=1;
+		if(Molpy.newpixNumber%
+			(50-(Molpy.Got('Time Travel')+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine'))*10)==0)
+		{
+			Molpy.Boosts['Temporal Rift'].hardlocked=(Math.random()*6<5)*1;
+		}
 	}
 		
 	Molpy.HandlePeriods=function()
@@ -2876,7 +2915,6 @@ Molpy.Up=function()
 		g('version').innerHTML= '<br>Version: '+Molpy.version;
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
-		if(repainted) Molpy.RepaintLootSelection();
 		
 		if(Molpy.shopRepaint)
 		{
@@ -2894,6 +2932,7 @@ Molpy.Up=function()
 		{
 			Molpy.RepaintTaggedLoot();
 		}
+		if(repainted) Molpy.RepaintLootSelection();
 		if(repainted&&Molpy.redactedVisible)
 		{		
 			var redacteditem=g('redacteditem');
