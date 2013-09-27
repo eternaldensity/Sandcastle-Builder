@@ -21,6 +21,8 @@ Not for any commercial use!
 ### 0.9997
 - Fixed boosts in shop being hidden by the group buttons
 - When a boost is bought, show just its group
+- Changed show/hide boxes a bit (is this better?)
+- first stage of Next Big Thing (not exactly highly useful yet but you can buy and use stuff okay)
 
 ### 0.9996
 - a timetravel-related boost (which may help you *get* time travel if you're lucky)

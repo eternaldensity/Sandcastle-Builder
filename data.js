@@ -1116,14 +1116,14 @@ Molpy.DefineBoosts=function()
 		desc:function(me)
 		{
 			if(!me.bought) return 'Turns Sand into Glass';
-			var pow=Molpify(Molpy.Boosts['Sand Refiner'].power+1);
-			return (me.power?'U':'When active, u')+'ses '+pow+'% of Sand dug to produce '+pow+' Glass per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
+			var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+1);
+			return (me.power?'U':'When active, u')+'ses '+pow+'% of Sand dug to produce '+pow+' Glass Chips per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
 		}
 		,sand:80000000,castles:500000,className:'toggle',group:'hpt'});
 	new Molpy.Boost({name:'Glass Furnace Switching',lockFunction:
 		function()
 		{
-			Molpy.Boosts['Glass Furnace'].power = !this.power;
+			Molpy.Boosts['Glass Furnace'].power = (!this.power)*1;
 			Molpy.Notify('Glass Furnace is '+(this.power?'off':'on'));
 		}
 		,className:'alert',group:'hpt'
@@ -1138,12 +1138,78 @@ Molpy.DefineBoosts=function()
 		Molpy.GiveTempBoost('Glass Furnace Switching',off,1500,
 			function(me){return (off?'off':'on')+' in '+Molpify(me.countdown)+'mNP';});
 	}
-	new Molpy.Boost({name:'Sand Refiner',desc:
+	new Molpy.Boost({name:'Sand Refinery',desc:
+		function(me)
+		{		
+			var ch = Molpy.Boosts['Glass Chip Storage'];
+			if(ch.power>=3)
+			{
+				var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
+				return '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery()"></input> 3 Chips to upgrade the Glass furnace to produce '+pow+' Glass Chips per NP (will use '+pow+'% of Sand dug).';
+			}
+			return 'It costs 3 Chips to upgrade the Glass Furnace\'s speed';
+		},className:'action',group:'hpt'
+	});
+	Molpy.UpgradeSandRefinery=function()
+	{
+		var ch = Molpy.Boosts['Glass Chip Storage'];
+		if(ch.power>=3)
+		{
+			ch.power-=3;
+			Molpy.Boosts['Sand Refinery'].power++;
+			Molpy.Notify('Sand Refinery upgraded',1);
+			Molpy.boostRepaint=1;
+		}
+	}
+	
+	new Molpy.Boost({name:'Glass Chip Storage',desc:
 		function(me)
 		{
-			return 'Increases the power of the Glass Furnace';
-		}
+			var str= 'Contains '+Molpify(me.power)+' Glass Chips.';
+			var size=(me.bought)*10;
+			str+= ' Has space to store '+Molpify(size,1,!Molpy.showStats)+ ' Chips total.';
+			if(size-me.power<=20)
+			{
+				if(me.power>=5)
+				{
+					str+= ' <input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage()"></input> 5 Chips to build storage for 10 more.'
+				}else{
+					str+=' It costs 5 Glass Chips to store 10 more.';
+				}
+			}
+			if(me.power>10&&!Molpy.Got('Sand Refinery'))
+			{
+				if(me.power>=30)
+				{
+					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuySandRefinery()"></input> 30 Chips to build a Sand Refinery to make Chips faster.'
+				}else{
+					str+=' It costs 30 Glass Chips to buy a Sand Refinery, which can make Chips faster.';
+				}
+			}
+			return str;
+		},className:'alert',group:'hpt'
 	});
+	Molpy.UpgradeChipStorage=function()
+	{
+		var ch = Molpy.Boosts['Glass Chip Storage'];
+		if(ch.power>=5)
+		{
+			ch.power-=5;
+			ch.bought++;
+			Molpy.boostRepaint=1;
+			Molpy.Notify('Glass Chip Storage upgraded',1);
+		}
+	}
+	Molpy.BuySandRefinery=function()
+	{
+		var ch = Molpy.Boosts['Glass Chip Storage'];
+		if(ch.power>=30)
+		{
+			ch.power-=30;
+			Molpy.UnlockBoost('Sand Refinery');
+			Molpy.Boosts['Sand Refinery'].buy();
+		}
+	}
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],hpt:['hill people tech','Hill People Tech','boost_department'],ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
 		chron:['chronotech','Chronotech'],cyb:['cybernetics','Cybernetics','boost_minigun']};
@@ -1180,7 +1246,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Storehouse','Have 200 sand');
 	new Molpy.Badge('Bigger Barn','Have 500 sand');
 	new Molpy.Badge('Warehouse','Have 8,000 sand');
-	new Molpy.Badge('Glass Factory','Have 300,000 sand');
+	new Molpy.Badge('Sand Silo','Have 300,000 sand');
 	new Molpy.Badge('Silicon Valley','Have 7,000,000 sand');
 	new Molpy.Badge('Seaish Sands','Have 420,000,000 sand',1);
 	new Molpy.Badge('You can do what you want','Have 123,456,789 sand',2);
@@ -1356,6 +1422,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Recursion ','To Earn Recursion, you must first earn Recursion');
 	new Molpy.Badge('Beachomancer','Have 1000 Sand Tools');
 	new Molpy.Badge('Beachineer','Have 500 Castle Tools');
+	new Molpy.Badge('Glass Factory','Have 80,000,000 sand');
 }
 		
 Molpy.CheckBuyUnlocks=function()

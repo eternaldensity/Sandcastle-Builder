@@ -163,7 +163,7 @@ function onunhover(me,event)
 var showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,badges:1,badgesav:1,tagged:0};
 function showhideButton(key)
 {
-	return '<input type="Button" value="'+(showhide[key]?'Visible':'Hidden')+'" onclick="showhideToggle(\''+key+'\')"></input>'
+	return '<input type="Button" value="'+(showhide[key]?'Hide':'Show')+'" onclick="showhideToggle(\''+key+'\')"></input>'
 }
 function showhideToggle(key)
 {
@@ -552,7 +552,7 @@ Molpy.Up=function()
 					if(me.bought)
 					{
 						Molpy.BoostsOwned++;
-						Molpy.unlockedGroups[me.group||'boosts']=1;
+						Molpy.unlockedGroups[me.group]=1;
 					}
 					if(me.countdown)
 					{
@@ -998,10 +998,14 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Warehouse');
 			}
 			if(Molpy.sand>=300000){
-				Molpy.EarnBadge('Glass Factory');
+				Molpy.EarnBadge('Sand Silo');
 			}
 			if(Molpy.sand>=7000000){
 				Molpy.EarnBadge('Silicon Valley');
+			}
+			if(Molpy.sand>=80000000){
+				Molpy.EarnBadge('Glass Factory');
+				Molpy.UnlockBoost('Glass Furnace');
 			}
 			if(Molpy.sand>=420000000){
 				Molpy.EarnBadge('Seaish Sands');
@@ -1108,6 +1112,29 @@ Molpy.Up=function()
 						
 		
 		}
+		Molpy.MakeChips=function()
+		{
+			var furnaceLevel=(Molpy.Boosts['Sand Refinery'].power)+1;
+			Molpy.UnlockBoost('Glass Chip Storage');
+			var ch = Molpy.Boosts['Glass Chip Storage'];
+			if(!ch.bought)
+			{
+				ch.buy();
+			}
+			ch.power+=furnaceLevel;
+			var waste = Math.max(0,ch.power-(ch.bought)*10);
+			ch.power-=waste;
+			furnaceLevel-=waste;
+			if(furnaceLevel)
+            {
+				Molpy.Notify('Made '+Molpify(furnaceLevel)+' Glass Chip'+(furnaceLevel>1?'s':''),1);
+			}
+			if(waste)
+			{
+				Molpy.Notify('Not enough Chip Storage for '+Molpify(waste)+' Glass Chip'+(waste>1?'s':''));
+			}
+		}
+		
 		Molpy.SpendCastles=function(amount)
 		{
 			if(!amount)return;
@@ -1253,7 +1280,7 @@ Molpy.Up=function()
 				if(Molpy.beachClicks%100==0)
 				{
 					Molpy.Notify('VITSSÅGEN, JA!');
-					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power||0;
+					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power;
 					p++;
 					Molpy.Build(1000000*p);
 					if(p>20)Molpy.UnlockBoost('Swedish Chef');
@@ -1264,7 +1291,7 @@ Molpy.Up=function()
 				if(Molpy.beachClicks%20==0)
 				{
 					Molpy.Notify(GLRschoice(Molpy.bp));
-					var p = Molpy.Boosts['Bag Puns'].power||0;
+					var p = Molpy.Boosts['Bag Puns'].power;
 					p++;
 					if(p>100)
 					{
@@ -1370,9 +1397,15 @@ Molpy.Up=function()
 			}
 			Molpy.computedSandPerClick=Molpy.sandPerClick()*multiplier;
 			
-			if(Molpy.Got('Overcompensating')) //doesn't apply to clicks
+			//stuff beyond here doesn't apply to clicks
+			if(Molpy.Got('Overcompensating')) 
 			{
 				multiplier+=Molpy.Boosts['Overcompensating'].power;
+			}
+			if(Molpy.Boosts['Glass Furnace'].power||Molpy.Got('Glass Furnace Switching'))
+			{
+				var furnaceLevel=(Molpy.Boosts['Sand Refinery'].power)+1;
+				multiplier*=Math.max(0,((100-furnaceLevel)/100));
 			}
 			Molpy.globalSpmNPMult=multiplier;
 			Molpy.sandPermNP*=Molpy.globalSpmNPMult;
@@ -1788,9 +1821,12 @@ Molpy.Up=function()
 					Molpy.BoostsOwned++;
 					Molpy.CheckBuyUnlocks();
 					Molpy.unlockedGroups[this.group]=1;
-					for(var i in showhide)
+					if(sp+cp>0)
 					{
-						showhide[i]=(i==this.group);
+						for(var i in showhide)
+						{
+							showhide[i]=(i==this.group);
+						}
 					}
 				}				
 			}
@@ -2076,7 +2112,7 @@ Molpy.Up=function()
 			var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];			
 			if(BKJ.bought)
 			{
-				BKJ.power=(BKJ.power||0)+1;
+				BKJ.power=(BKJ.power)+1;
 			}
 			if(Math.floor(2*Math.random()))
 			{
@@ -2240,7 +2276,7 @@ Molpy.Up=function()
 		Molpy.BoostString=function(me,f,r)
 		{		
 			var cn= me.className||'';
-			var group= me.group||'boosts';
+			var group= me.group;
 			if(r)
 			{
 				r=Molpy.redactedLoot;
@@ -2796,6 +2832,11 @@ Molpy.Up=function()
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
 		//various machines fire and do stuff
+		
+		if(Molpy.Boosts['Glass Furnace'].power)
+		{
+			Molpy.MakeChips();
+		}
 		
 		var activateTimes=1+Molpy.Got('Doublepost');
 		while(activateTimes--)
