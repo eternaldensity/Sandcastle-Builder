@@ -440,6 +440,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Build(Molpy.castles);
 		}else{
 			Molpy.Destroy(Molpy.castles);
+			Molpy.Boosts['Double or Nothing'].power=Math.floor(Molpy.Boosts['Double or Nothing'].power/2);
 		}
 		Molpy.LockBoost('Double or Nothing');
 	}
@@ -1027,11 +1028,20 @@ Molpy.DefineBoosts=function()
 		{
 			return 'Adds ' + Molpify(20*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power,1)+'% to Not Lucky reward';
 		},icon:'bfj',hardlocked:1,group:'hpt'});
-	new Molpy.Boost({name:'VITSSÅGEN, JA!',desc:'Stop the Puns!',sand:334455667788,castles:999222111000,
+	new Molpy.Boost({name:'VITSSÅGEN, JA!',
+		desc:function()
+		{
+			return '<input type="Button" onclick="Molpy.PunsawToggle()" value="'+(me.power? 'Start':'Stop')+'"></input> the Puns!'
+		},sand:334455667788,castles:999222111000,
 		stats:function(me)
 		{
 			if(me.power <= 100) return 'Speed is at '+me.power+'out of 100';
 		},group:'hpt'});
+	Molpy.PunsawToggle=function()
+	{
+		Molpy.Boosts['VITSSÅGEN, JA!'].power = (!Molpy.Boosts['VITSSÅGEN, JA!'].power)*1;
+		Molpy.boostRepaint=1;
+	}
 	new Molpy.Boost({name:'Swedish Chef',desc:
 		function(me)
 		{
@@ -1117,7 +1127,7 @@ Molpy.DefineBoosts=function()
 		{
 			if(!me.bought) return 'Turns Sand into Glass';
 			var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+1);
-			return (me.power?'U':'When active, u')+'ses '+pow+'% of Sand dug to produce '+pow+' Glass Chips per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
+			return (me.power?'U':'When active, u')+'ses '+pow+'% of Sand dug to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
 		}
 		,sand:80000000,castles:500000,className:'toggle',group:'hpt'});
 	new Molpy.Boost({name:'Glass Furnace Switching',
@@ -1142,14 +1152,25 @@ Molpy.DefineBoosts=function()
 		this.power=off;
 		Molpy.GiveTempBoost('Glass Furnace Switching',off,1500);
 	}
+	//check whether we can further reduce the sand rate to use any for various means
+	Molpy.CheckSandRateAvailable=function()
+	{
+		//this will become more complex when we add boosts and other uses of sand rate
+		return Molpy.Boosts['Sand Refinery'].power+1 < 100;
+	}
 	new Molpy.Boost({name:'Sand Refinery',desc:
 		function(me)
 		{		
 			var ch = Molpy.Boosts['Glass Chip Storage'];
 			if(ch.power>=3)
 			{
-				var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
-				return '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery()"></input> 3 Chips to upgrade the Glass furnace to produce '+pow+' Glass Chips per NP (will use '+pow+'% of Sand dug).';
+				if(Molpy.CheckSandRateAvailable())
+				{
+					var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
+					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery()"></input> 3 Chips to upgrade the Glass furnace to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+pow+'% of Sand dug).';
+				}else{
+					return 'Currently, you have no more sand available for further upgrades';
+				}
 			}
 			return 'It costs 3 Chips to upgrade the Glass Furnace\'s speed';
 		},className:'action',group:'hpt'
@@ -1157,7 +1178,7 @@ Molpy.DefineBoosts=function()
 	Molpy.UpgradeSandRefinery=function()
 	{
 		var ch = Molpy.Boosts['Glass Chip Storage'];
-		if(ch.power>=3)
+		if(ch.power>=3 && Molpy.CheckSandRateAvailable())
 		{
 			ch.power-=3;
 			Molpy.Boosts['Sand Refinery'].power++;
@@ -1169,7 +1190,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Glass Chip Storage',desc:
 		function(me)
 		{
-			var str= 'Contains '+Molpify(me.power)+' Glass Chips.';
+			var str= 'Contains '+Molpify(me.power)+' Glass Chip'+(me.power>1?'s':'')+'.';
 			var size=(me.bought)*10;
 			str+= ' Has space to store '+Molpify(size,1,!Molpy.showStats)+ ' Chips total.';
 			if(size-me.power<=20)

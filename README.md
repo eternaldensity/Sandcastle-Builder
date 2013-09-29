@@ -18,6 +18,15 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.9999
+- Fixed postfix mixup
+- parseFloat rather than parseInt on all sand and castle amounts when loading, just in case
+- got rid of unnecessary Flint function (WHY was it using parseInt when SAVING??)
+- singular Glass Chips are now 1 Glass Chip
+- prevent further usage of sand rate for glass making purposes if it's already all in use
+- gave a benefit to Double or Nothing destroying :P
+- VITSSÅGEN, JA! now toggles
+
 ### 0.9998
 - Fixed furnace-switch-description refresh-mustard
 - Fiddled with show-hide-on-buy: tags override group and groups don't hide other groups

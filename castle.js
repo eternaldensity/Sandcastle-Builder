@@ -25,11 +25,11 @@ function Molpify(number, raftcastle, shrinkify)
 	{
 		if(number>=1000000000000000000000000)
 		{
-			return Molpify(number / 1000000000000000000000000, raftcastle,1)+'Z';
+			return Molpify(number / 1000000000000000000000000, raftcastle,1)+'Y';
 		}
 		if(number>=1000000000000000000000)
 		{
-			return Molpify(number / 1000000000000000000000, raftcastle,1)+'Y';
+			return Molpify(number / 1000000000000000000000, raftcastle,1)+'Z';
 		}
 		if(number>=1000000000000000000)
 		{
@@ -109,7 +109,6 @@ function FormatPrice(monies)
 {
 	return Molpify(Math.floor(EvalMaybeFunction(monies)*Molpy.priceFactor),1,!Molpy.showStats);
 }
-function Flint(stones){return parseInt(Math.floor(stones))}
 function CuegishToBeanish(mustard)
 {
 	try{
@@ -200,7 +199,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.9998;
+		Molpy.version=0.9999;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -335,50 +334,50 @@ Molpy.Up=function()
 			thread+=
 			(Molpy.options.particles?'1':'0')+
 			(Molpy.options.numbers?'1':'0')+
-			Flint(Molpy.options.autosave)+
+			(Molpy.options.autosave)+
 			(Molpy.options.autoupdate?'1':'0')+
 			(Molpy.options.sea?'1':'0')+
 			(Molpy.options.fancy?'1':'0')+
 			(Molpy.options.ketchup?'1':'0')+
-			Flint(Molpy.options.colourscheme)+
+			(Molpy.options.colourscheme)+
 			p;
 			
 			thread+=			
-			Flint(Molpy.newpixNumber)+s+
-			Flint(Molpy.sandDug)+s+
-			Flint(Molpy.sandManual)+s+
-			Flint(Molpy.sand)+s+
-			Flint(Molpy.castlesBuilt)+s+
-			Flint(Molpy.castles)+s+
-			Flint(Molpy.castlesDestroyed)+s+
-			Flint(Molpy.prevCastleSand)+s+
-			Flint(Molpy.nextCastleSand)+s+
-			Flint(Molpy.castlesSpent)+s+
-			Flint(Molpy.sandSpent)+s+
-			Flint(Molpy.beachClicks)+s+
-			Flint(Molpy.ninjaFreeCount)+s+
-			Flint(Molpy.ninjaStealth)+s+
-			Flint(Molpy.ninjad)+s+
-			Flint(Molpy.saveCount)+s+
-			Flint(Molpy.loadCount)+s+
-			Flint(Molpy.notifsReceived)+s+
-			Flint(Molpy.timeTravels)+s+
-			Flint(Molpy.npbONG)+s+
+			(Molpy.newpixNumber)+s+
+			(Molpy.sandDug)+s+
+			(Molpy.sandManual)+s+
+			(Molpy.sand)+s+
+			(Molpy.castlesBuilt)+s+
+			(Molpy.castles)+s+
+			(Molpy.castlesDestroyed)+s+
+			(Molpy.prevCastleSand)+s+
+			(Molpy.nextCastleSand)+s+
+			(Molpy.castlesSpent)+s+
+			(Molpy.sandSpent)+s+
+			(Molpy.beachClicks)+s+
+			(Molpy.ninjaFreeCount)+s+
+			(Molpy.ninjaStealth)+s+
+			(Molpy.ninjad)+s+
+			(Molpy.saveCount)+s+
+			(Molpy.loadCount)+s+
+			(Molpy.notifsReceived)+s+
+			(Molpy.timeTravels)+s+
+			(Molpy.npbONG)+s+
 		
-			Flint(Molpy.redactedCountup)+s+
-			Flint(Molpy.redactedToggle)+s+
-			Flint(Molpy.redactedVisible)+s+
-			Flint(0)+s+ //SPARE NUMBER BECAUSE redactedViewIndex is *ahem* redundant
-			Flint(Molpy.redactedClicks)+s+
-			Flint(Molpy.highestNPvisited)+s+
-			Flint(Molpy.totalCastlesDown)+s+
-			Flint(Molpy.intruderBots)+s+
+			(Molpy.redactedCountup)+s+
+			(Molpy.redactedToggle)+s+
+			(Molpy.redactedVisible)+s+
+			(0)+s+ //SPARE NUMBER BECAUSE redactedViewIndex is *ahem* redundant
+			(Molpy.redactedClicks)+s+
+			(Molpy.highestNPvisited)+s+
+			(Molpy.totalCastlesDown)+s+
+			(Molpy.intruderBots)+s+
 			p;
 			//sand tools:
 			for(var cancerbabies in Molpy.SandTools)
 			{
 				var cb = Molpy.SandTools[cancerbabies];
-				thread += cb.amount+c+cb.bought+c+Flint(cb.totalSand)+s;
+				thread += cb.amount+c+cb.bought+c+(cb.totalSand)+s;
 			}
 			thread+=p;
 			//castletools:
@@ -446,16 +445,16 @@ Molpy.Up=function()
 			
 			pixels=thread[4].split(s);
 			Molpy.newpixNumber=parseInt(pixels[0]);
-			Molpy.sandDug=parseInt(pixels[1]);
-			Molpy.sandManual=parseInt(pixels[2]);
-			Molpy.sand=parseInt(pixels[3]);
-			Molpy.castlesBuilt=parseInt(pixels[4]);
-			Molpy.castles=parseInt(pixels[5]);
-			Molpy.castlesDestroyed=parseInt(pixels[6]);
-			Molpy.prevCastleSand=parseInt(pixels[7]);
-			Molpy.nextCastleSand=parseInt(pixels[8]);
-			Molpy.castlesSpent=parseInt(pixels[9]);
-			Molpy.sandSpent=parseInt(pixels[10]);
+			Molpy.sandDug=parseFloat(pixels[1]);
+			Molpy.sandManual=parseFloat(pixels[2]);
+			Molpy.sand=parseFloat(pixels[3]);
+			Molpy.castlesBuilt=parseFloat(pixels[4]);
+			Molpy.castles=parseFloat(pixels[5]);
+			Molpy.parseFloat=parseInt(pixels[6]);
+			Molpy.prevCastleSand=parseFloat(pixels[7]);
+			Molpy.nextCastleSand=parseFloat(pixels[8]);
+			Molpy.castlesSpent=parseFloat(pixels[9]);
+			Molpy.sandSpent=parseFloat(pixels[10]);
 			Molpy.beachClicks=parseInt(pixels[11]);
 			Molpy.ninjaFreeCount=parseInt(pixels[12]);
 			Molpy.ninjaStealth=parseInt(pixels[13]);
@@ -494,7 +493,7 @@ Molpy.Up=function()
 					var ice=pixels[i].split(c);
 					me.amount=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]);
-					me.totalSand=parseInt(ice[2]);
+					me.totalSand=parseFloat(ice[2]);
 					Molpy.SandToolsOwned+=me.amount;
 					me.refresh();
 				}
@@ -513,10 +512,10 @@ Molpy.Up=function()
 					var ice=pixels[i].split(c);
 					me.amount=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]);
-					me.totalCastlesBuilt=parseInt(ice[2]);
-					me.totalCastlesDestroyed=parseInt(ice[3]);
+					me.totalCastlesBuilt=parseFloat(ice[2]);
+					me.totalCastlesDestroyed=parseFloat(ice[3]);
 					if(!me.totalCastlesDestroyed)me.totalCastlesDestroyed=0;//mustard cleaning
-					me.totalCastlesWasted=parseInt(ice[4]);
+					me.totalCastlesWasted=parseFloat(ice[4]);
 					me.currentActive=parseInt(ice[5]);
 					Molpy.CastleToolsOwned+=me.amount;
 					me.refresh();
@@ -1282,8 +1281,13 @@ Molpy.Up=function()
 					Molpy.Notify('VITSSÅGEN, JA!');
 					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power;
 					p++;
-					Molpy.Build(1000000*p);
-					if(p>20)Molpy.UnlockBoost('Swedish Chef');
+					if(Molpy.Got('Swedish Chef'))
+					{
+						Molpy.Build(100000000*p);
+					}else{
+						Molpy.Build(1000000*p);
+						if(p>20)Molpy.UnlockBoost('Swedish Chef');
+					}
 					Molpy.Boosts['VITSSÅGEN, JA!'].power=p;
 				}
 			}else if(Molpy.Got('Bag Puns'))
