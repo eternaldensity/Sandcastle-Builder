@@ -18,6 +18,15 @@ Not for any commercial use!
 
 ## Changelog
 
+### 0.99991
+- VITSSÅGEN, JA! description works
+- VITSSÅGEN, JA! toggle actually implemented
+- VITSSÅGEN, JA! is now tagged as toggle so it shows up blue
+- VITSSÅGEN, JA! is just fun to say
+- VITSSÅGEN, JA!
+- VITSSÅGEN, JA!
+- VITSSÅGEN, JA!
+
 ### 0.9999
 - Fixed postfix mixup
 - parseFloat rather than parseInt on all sand and castle amounts when loading, just in case

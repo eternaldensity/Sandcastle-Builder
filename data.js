@@ -1029,17 +1029,17 @@ Molpy.DefineBoosts=function()
 			return 'Adds ' + Molpify(20*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power,1)+'% to Not Lucky reward';
 		},icon:'bfj',hardlocked:1,group:'hpt'});
 	new Molpy.Boost({name:'VITSSÅGEN, JA!',
-		desc:function()
+		desc:function(me)
 		{
-			return '<input type="Button" onclick="Molpy.PunsawToggle()" value="'+(me.power? 'Start':'Stop')+'"></input> the Puns!'
+			return '<input type="Button" onclick="Molpy.PunsawToggle()" value="'+(me.bought==1? 'Start':'Stop')+'"></input> the Puns!'
 		},sand:334455667788,castles:999222111000,
 		stats:function(me)
 		{
 			if(me.power <= 100) return 'Speed is at '+me.power+'out of 100';
-		},group:'hpt'});
+		},group:'hpt',className:'toggle'});
 	Molpy.PunsawToggle=function()
 	{
-		Molpy.Boosts['VITSSÅGEN, JA!'].power = (!Molpy.Boosts['VITSSÅGEN, JA!'].power)*1;
+		Molpy.Boosts['VITSSÅGEN, JA!'].bought = (Molpy.Boosts['VITSSÅGEN, JA!'].bought==1?2:1);
 		Molpy.boostRepaint=1;
 	}
 	new Molpy.Boost({name:'Swedish Chef',desc:

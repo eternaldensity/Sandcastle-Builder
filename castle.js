@@ -199,7 +199,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.9999;
+		Molpy.version=0.99991;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1290,7 +1290,8 @@ Molpy.Up=function()
 					}
 					Molpy.Boosts['VITSSÅGEN, JA!'].power=p;
 				}
-			}else if(Molpy.Got('Bag Puns'))
+			}
+			if(Molpy.Got('Bag Puns')&&Molpy.Boosts['VITSSÅGEN, JA!'].bought!=1)
 			{
 				if(Molpy.beachClicks%20==0)
 				{
