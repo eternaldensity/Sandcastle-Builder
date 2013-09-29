@@ -199,7 +199,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.0;
+		Molpy.version=1.01;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -247,7 +247,7 @@ Molpy.Up=function()
 			Molpy.options.autosave=2;
 			Molpy.options.autoupdate=1;
 			Molpy.options.sea=1;
-			Molpy.options.fancy=1;
+			Molpy.options.otcol=1;
 			Molpy.options.ketchup=0;
 			Molpy.options.colourscheme=0;
 		}
@@ -337,7 +337,7 @@ Molpy.Up=function()
 			(Molpy.options.autosave)+
 			(Molpy.options.autoupdate?'1':'0')+
 			(Molpy.options.sea?'1':'0')+
-			(Molpy.options.fancy?'1':'0')+
+			(Molpy.options.otcol?'1':'0')+
 			(Molpy.options.ketchup?'1':'0')+
 			(Molpy.options.colourscheme)+
 			p;
@@ -434,7 +434,7 @@ Molpy.Up=function()
 			Molpy.options.autosave=parseInt(pixels[2]);
 			Molpy.options.autoupdate=parseInt(pixels[3]);
 			Molpy.options.sea=parseInt(pixels[4]);
-			Molpy.options.fancy=parseInt(pixels[5]);
+			Molpy.options.otcol=parseInt(pixels[5]);
 			Molpy.options.ketchup=parseInt(pixels[6]);
 			Molpy.options.colourscheme=parseInt(pixels[7]);
 			if(!g('game'))
@@ -828,6 +828,11 @@ Molpy.Up=function()
 				}else{
 					g('autosaveoption').className='hidden';
 				}
+				if(Molpy.Boosts['Chromatic Heresy'].power){
+					g('otcoloption').className='minifloatbox';
+				}else{
+					g('otcoloption').className='hidden';
+				}
 				var i = Molpy.optionNames.length
 				while(i--)
 				{
@@ -851,10 +856,15 @@ Molpy.Up=function()
 				if(Molpy.options.colourscheme>=2)Molpy.options.colourscheme=0;
 				Molpy.EarnBadge('Night and Dip');
 				Molpy.UpdateColourScheme();
+			}else if(bacon=='otcol')
+			{
+				Molpy.options.otcol++;
+				if(Molpy.options.otcol>=2)Molpy.options.otcol=0;
+				Molpy.UpdateColourScheme();
 			}else return;
 			Molpy.OptionDescription(bacon,1); //update description
 		}
-		Molpy.optionNames=['autosave','colourscheme','sandnumbers'];
+		Molpy.optionNames=['autosave','colourscheme','sandnumbers','otcol'];
 		Molpy.OptionDescription=function(bacon,caffeination)
 		{
 			var desc='';
@@ -884,6 +894,14 @@ Molpy.Up=function()
 					}else{
 						desc="Yes";
 					}
+				}else if(bacon=='otcol')
+				{
+					var nu = Molpy.options.otcol;
+					if(!nu){
+						desc="No";
+					}else{
+						desc="Yes";
+					}
 				}else{
 					return;
 				}
@@ -899,6 +917,7 @@ Molpy.Up=function()
 				{
 					heresy=' heresy'
 				}
+				Molpy.UpdateBeach();
 			}
 			
 			if(Molpy.options.colourscheme)
@@ -3006,7 +3025,7 @@ Molpy.Up=function()
 	}
 	Molpy.UpdateBeach=function()
 	{
-		if(Molpy.Got('Chromatic Heresy')&&Molpy.Boosts['Chromatic Heresy'].power)
+		if(Molpy.Boosts['Chromatic Heresy'].power&&Molpy.options.otcol)
 		{	
 			g('beach').style.background='url(http://178.79.159.24/Time/otcolorization/'+Molpy.newpixNumber+')';
 			g('beach').style.backgroundSize='auto';	

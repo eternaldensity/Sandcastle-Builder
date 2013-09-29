@@ -18,6 +18,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.01
+- Added Option to Options, to toggle OTColoured (only available when Chromatic Heresy is on)
+
+
 ### 1.0
 - Glass Block stuff
 - Glass Furnace can actually switch off now.
