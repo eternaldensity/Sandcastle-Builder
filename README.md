@@ -24,6 +24,8 @@ Not for any commercial use!
 - Department messages shortened
 - Fiddled with Swedish Chef a little
 - Glass Jaw
+- New pun
+- VITSSÅGEN, JA! now can't be "bought" by toggling it.
 
 ### 0.99991
 - VITSSÅGEN, JA! description works

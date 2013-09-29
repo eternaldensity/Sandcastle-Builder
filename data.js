@@ -1032,6 +1032,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'VITSSÅGEN, JA!',
 		desc:function(me)
 		{
+			if(me.bought==0) return 'This message is dedicated to MajorDouble7 who found this bug and thus will never see this message since it is intended to stop people from magically getting this without buying it';
 			return '<input type="Button" onclick="Molpy.PunsawToggle()" value="'+(me.bought==1? 'Start':'Stop')+'"></input> the Puns!'
 		},sand:334455667788,castles:999222111000,
 		stats:function(me)
