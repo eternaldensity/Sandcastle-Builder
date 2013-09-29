@@ -998,6 +998,7 @@ Molpy.DefineBoosts=function()
 			,"Bag vs. Predator"
 			,"Bagception"
 			,"Baginator"
+			,"The Legend of Bagger Vance"
 		]
 	}
 	
