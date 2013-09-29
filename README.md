@@ -18,6 +18,12 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.0
+- Glass Block stuff
+- Glass Furnace can actually switch off now.
+- Department messages shortened
+- Fiddled with Swedish Chef a little
+
 ### 0.99991
 - VITSSÅGEN, JA! description works
 - VITSSÅGEN, JA! toggle actually implemented

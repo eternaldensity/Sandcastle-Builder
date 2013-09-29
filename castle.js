@@ -199,7 +199,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=0.99991;
+		Molpy.version=1.0;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1133,6 +1133,44 @@ Molpy.Up=function()
 				Molpy.Notify('Not enough Chip Storage for '+Molpify(waste)+' Glass Chip'+(waste>1?'s':''));
 			}
 		}
+		Molpy.MakeBlocks=function()
+		{
+			var chillerLevel=(Molpy.Boosts['Glass Chiller'].power)+1;
+			var chipsFor=chillerLevel;
+			
+			var ch = Molpy.Boosts['Glass Chip Storage'];
+			while((ch.power+1) < chipsFor*20)
+			{
+				chipsFor--;
+			}
+			if(!chipsFor)
+			{
+				Molpy.Notify('Not enough Glass Chips to make any Blocks',1);
+				return;
+			}else if (chillerLevel<chipsFor){
+				Molpy.Notify('Running low on Glass Chips!');
+				chillerLevel=chipsFor;
+			}
+			ch.power-=chipsFor*20;
+			Molpy.UnlockBoost('Glass Block Storage');
+			var bl = Molpy.Boosts['Glass Block Storage'];
+			if(!bl.bought)
+			{
+				bl.buy();
+			}
+			bl.power+=chillerLevel;
+			var waste = Math.max(0,bl.power-(bl.bought)*50);
+			bl.power-=waste;
+			chillerLevel-=waste;
+			if(chillerLevel)
+            {
+				Molpy.Notify('Made '+Molpify(chillerLevel)+' Glass Block'+(chillerLevel>1?'s':''),1);
+			}
+			if(waste)
+			{
+				Molpy.Notify('Not enough Block Storage for '+Molpify(waste)+' Glass Block'+(waste>1?'s':''));
+			}
+		}
 		
 		Molpy.SpendCastles=function(amount)
 		{
@@ -1407,11 +1445,8 @@ Molpy.Up=function()
 			{
 				multiplier+=Molpy.Boosts['Overcompensating'].power;
 			}
-			if(Molpy.Boosts['Glass Furnace'].power||Molpy.Got('Glass Furnace Switching'))
-			{
-				var furnaceLevel=(Molpy.Boosts['Sand Refinery'].power)+1;
-				multiplier*=Math.max(0,((100-furnaceLevel)/100));
-			}
+			var glassUse=Molpy.CalcGlassUse();
+			multiplier*=Math.max(0,((100-glassUse)/100));
 			Molpy.globalSpmNPMult=multiplier;
 			Molpy.sandPermNP*=Molpy.globalSpmNPMult;
 			
@@ -2113,10 +2148,10 @@ Molpy.Up=function()
 					var red=GLRschoice(availRewards);
 					if((EvalMaybeFunction(red.sandPrice)+EvalMaybeFunction(red.castlePrice)))
 					{
-						Molpy.Notify('The Department of Redundancy Department has produced:',1);
+						Molpy.Notify('The DoRD has produced:',1);
 						Molpy.UnlockBoost(red.name);
 					}else{
-						Molpy.Notify('The Department of Redundancy Department has provided:',1);
+						Molpy.Notify('The DoRD has provided:',1);
 						Molpy.GiveTempBoost(red.name,red.startPower,red.startCountdown);
 					}
 					return;
@@ -2749,8 +2784,8 @@ Molpy.Up=function()
 				if(me.hovered)me.hovered=-2; //force redraw
 				if(!me.countdown)
 				{
-					me.power=0;
 					Molpy.LockBoost(i);
+					me.power=0;
 				}else if(me.hovered<0)me.hover();
 			}
 		}
@@ -2849,6 +2884,10 @@ Molpy.Up=function()
 		if(Molpy.Boosts['Glass Furnace'].power)
 		{
 			Molpy.MakeChips();
+		}
+		if(Molpy.Boosts['Glass Blower'].power)
+		{
+			Molpy.MakeBlocks();
 		}
 		
 		var activateTimes=1+Molpy.Got('Doublepost');
