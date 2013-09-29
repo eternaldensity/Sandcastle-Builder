@@ -1423,6 +1423,8 @@ Molpy.DefineBoosts=function()
 		}
 	}
 	new Molpy.Boost({name:'Sand Purifier',desc:'Glass Furnace uses half as much sand',group:'hpt'});
+	new Molpy.Boost({name:'Glass Jaw',desc:'Ninja Builder builds 100x as many Castles, at the cost of 1 Glass Block per NP'
+		,sand:16000000,castles:122500,group:'ninj'});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],hpt:['hill people tech','Hill People Tech','boost_department'],ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
 		chron:['chronotech','Chronotech'],cyb:['cybernetics','Cybernetics','boost_minigun']};
@@ -1636,6 +1638,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Beachomancer','Have 1000 Sand Tools');
 	new Molpy.Badge('Beachineer','Have 500 Castle Tools');
 	new Molpy.Badge('Glass Factory','Have 80,000,000 sand');
+	new Molpy.Badge('Glassblower','Make a Glass Block',2);
 }
 		
 Molpy.CheckBuyUnlocks=function()
@@ -1741,6 +1744,9 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.SandToolsOwned>=1000)Molpy.EarnBadge('Beachomancer');
 	if(Molpy.CastleToolsOwned>=500)Molpy.EarnBadge('Beachineer');
 	if(Molpy.BoostsOwned>=50)Molpy.EarnBadge('Better This Way');
+	
+	if(Molpy.Got('Ninja Builder')&&Molpy.Got('Glass Block Storage'))
+		Molpy.UnlockBoost('Glass Jaw');
 }
 
 Molpy.CheckClickAchievements=function()

@@ -23,6 +23,7 @@ Not for any commercial use!
 - Glass Furnace can actually switch off now.
 - Department messages shortened
 - Fiddled with Swedish Chef a little
+- Glass Jaw
 
 ### 0.99991
 - VITSSÅGEN, JA! description works

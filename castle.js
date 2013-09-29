@@ -1164,6 +1164,7 @@ Molpy.Up=function()
 			chillerLevel-=waste;
 			if(chillerLevel)
             {
+				Molpy.EarnBadge('Glassblower');
 				Molpy.Notify('Made '+Molpify(chillerLevel)+' Glass Block'+(chillerLevel>1?'s':''),1);
 			}
 			if(waste)
@@ -1275,6 +1276,15 @@ Molpy.Up=function()
 						if(Molpy.Got('Skull and Crossbones'))
 						{
 							stealthBuild*=Math.floor(Math.pow(1.05,Math.max(-1,Molpy.SandTools['Flag'].amount-40)));
+						}
+						if(Molpy.Got('Glass Jaw'))
+						{
+							var bl = Molpy.Boosts['Glass Block Storage'];
+							if(bl.power>0)
+							{
+								bl.power--;
+								stealthBuild*=100;
+							}
 						}
 						Molpy.Build(stealthBuild+1);
 					}else{
