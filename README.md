@@ -24,6 +24,7 @@ Not for any commercial use!
 - Furnance Crossfeed boost kills 2 of waveney's ch*rpies with one stone
 - Combined the castles destroyed and built by Doublepost into just one notification each
 - Combined castles created by tools and by the castle-sand price rollover into one notification
+- 2 Boosts and 2 Badges now change their class (i.e. colour tag) depending on state
 
 ### 1.22
 - VITSSÅGEN, JA! stats falls back to show description once powered up

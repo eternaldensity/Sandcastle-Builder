@@ -1539,7 +1539,17 @@ Molpy.DefineBoosts=function()
 				}
 			}
 			return str;
-		}, sand:'400T',castles:'12.5T',group:'bean',className:'action'});
+		}, sand:'400T',castles:'12.5T',group:'bean',className:'action',
+		classChange:function()
+		{
+			var oldClass=this.className;
+			var newClass = Molpy.Boosts['Rosetta'].unlocked?'':'action';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
+		}});
 		
 	Molpy.GetRosetta=function()
 	{
@@ -1565,7 +1575,18 @@ Molpy.DefineBoosts=function()
 				}
 			}
 			return str;
-		}, sand:'0.9P',castles:'32T',group:'bean',className:'action'});
+		}, sand:'0.9P',castles:'32T',group:'bean',className:'action',
+		classChange:function()
+		{
+			var oldClass=this.className;
+			var newClass = Molpy.Got('Panther Salve')?'':'action';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
+		}
+		});
 		
 	new Molpy.Boost({name:'Panther Salve',desc:'"It\'s some kind of paste." Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 2 Glass Blocks per use.',
 	desc:'Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 2 Glass Blocks per use.',group:'bean'});
@@ -1786,8 +1807,20 @@ Molpy.DefineBadges=function()
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			
 		}
 		,3,'judgementdip');
+	Molpy.CheckJudgeClass=function()
+		{
+			var oldClass=this.className;
+			var newClass = Molpy.judgeLevel>0?'alert':'';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
+		}
 	Molpy.Badges['Judgement Dip Warning'].className='alert';
 	Molpy.Badges['Judgement Dip'].className='alert';
+	Molpy.Badges['Judgement Dip Warning'].classChange=Molpy.CheckJudgeClass;
+	Molpy.Badges['Judgement Dip'].classChange=Molpy.CheckJudgeClass;
 	new Molpy.Badge('Fast Forward','Travel Back to the Future',1);
 	new Molpy.Badge('And Back','Return to the Past',1);
 	new Molpy.Badge('Primer','Travel through Time 10 Times',1);

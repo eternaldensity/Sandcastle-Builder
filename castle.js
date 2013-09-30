@@ -1917,6 +1917,7 @@ Molpy.Up=function()
 			this.startCountdown=args.startCountdown;
 			this.hardlocked=args.hardlocked;
 			this.className=args.className;
+			this.classChange=args.classChange;
 			this.group=args.group||'boosts';
 			this.lockFunction=args.lockFunction;
 			
@@ -2875,15 +2876,39 @@ Molpy.Up=function()
 		for(var i in Molpy.Boosts)//count down any boosts with a countdown
 		{
 			var me = Molpy.Boosts[i];
-			if(me.bought&&me.countdown)
+			if(me.bought)
 			{
-				me.countdown--;
-				if(me.hovered)me.hovered=-2; //force redraw
-				if(!me.countdown)
+				if(me.countdown)
 				{
-					Molpy.LockBoost(i);
-					me.power=0;
-				}else if(me.hovered<0)me.hover();
+					me.countdown--;
+					if(me.hovered)me.hovered=-2; //force redraw
+					if(!me.countdown)
+					{
+						Molpy.LockBoost(i);
+						me.power=0;
+					}else if(me.hovered<0)me.hover();
+				}
+				if(me.classChange)
+				{
+					if(me.classChange())
+					{
+						Molpy.boostRepaint=1;
+					}
+				}
+			}
+		}
+		for(var i in Molpy.Badges)
+		{
+			var me = Molpy.Badges[i];
+			if(me.earned)
+			{
+				if(me.classChange)
+				{
+					if(me.classChange())
+					{
+						Molpy.badgeRepaint=1;
+					}
+				}
 			}
 		}
 
