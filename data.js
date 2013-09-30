@@ -1044,6 +1044,7 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		me.power = (!me.power)*1;
+		me.hoverOnCounter=1;
 		Molpy.shopRepaint=1;
 	}
 		
@@ -1061,11 +1062,13 @@ Molpy.DefineBoosts=function()
 		stats:function(me)
 		{
 			if(me.power <= 100) return 'Speed is at '+me.power+'out of 100';
+			return me.desc(me);
 		},group:'hpt',className:'toggle'});
 	Molpy.PunsawToggle=function()
 	{
 		Molpy.Boosts['VITSSÅGEN, JA!'].bought = (Molpy.Boosts['VITSSÅGEN, JA!'].bought==1?2:1);
 		Molpy.boostRepaint=1;
+		Molpy.Boosts['VITSSÅGEN, JA!'].hoverOnCounter=1;
 	}
 	new Molpy.Boost({name:'Swedish Chef',desc:
 		function(me)
@@ -1155,7 +1158,15 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Turns Sand into Glass';
 			var pow=Molpy.Boosts['Sand Refinery'].power+1;
 			var cost=Molpify(Molpy.GlassFurnaceSandUse(),1);
-			return (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
+			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP.<br/>';
+			
+			if(Molpy.Got('Glass Furnace Switching'))
+			{
+			 str+='Currently '+(me.power?'Dea':'A')+'ctivating.';
+			}else{
+				str+='<input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
+			}			
+			return str;
 		}
 		,sand:'80M',castles:'0.5M',className:'toggle',group:'hpt'});
 	new Molpy.Boost({name:'Glass Furnace Switching',
@@ -1345,7 +1356,17 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Makes Glass Blocks from Glass Chips';
 			var pow=Molpy.Boosts['Glass Chiller'].power+1;
 			var cost=Molpify((Molpy.GlassBlowerSandUse(),1));
-			return (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Block'+(pow>1?'s':'')+' from 20 Glass Chips per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassBlower('+me.power+')"></input>';
+			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Block'+(pow>1?'s':'')
+				+' from 20 Glass Chips per NP.<br/>';			
+			
+			if(Molpy.Got('Glass Blower Switching'))
+			{
+			 str+='Currently '+(me.power?'Dea':'A')+'ctivating.';
+			}else{
+				str+='<input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassBlower('+me.power+')"></input>';
+			}			
+			return str;			
+			
 		},className:'toggle',group:'hpt'});
 	new Molpy.Boost({name:'Glass Blower Switching',
 		desc:function(me)
@@ -1479,8 +1500,23 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},className:'action',group:'hpt'});
-	new Molpy.Boost({name:'Glass Jaw',desc:'Ninja Builder builds 100x as many Castles, at the cost of 1 Glass Block per NP'
-		,sand:'16M',castles:122500,group:'ninj'});
+	new Molpy.Boost({name:'Glass Jaw',
+		desc:function(me)
+		{
+			var str= 'Ninja Builder builds 100x as many Castles, at the cost of 1 Glass Block per NP.';
+			if(me.bought){
+				str+=' <input type="Button" onclick="Molpy.GlassJawToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+			}
+			return str;
+		}
+		,sand:'16M',castles:122500,group:'ninj',className:'toggle'});
+	Molpy.GlassJawToggle=function()
+	{
+		var gj=Molpy.Boosts['Glass Jaw'];
+		gj.power=(!gj.power)*1;
+		gj.hoverOnCounter=1;
+		Molpy.boostRepaint=1;
+	}
 		
 	new Molpy.Boost({name:'Ninja League',desc:'Ninja Stealth is raised by 100x as much'
 		,sand:'5T',castles:'0.6T',group:'ninj',hardlocked:1});
@@ -1860,8 +1896,9 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.CastleToolsOwned>=500)Molpy.EarnBadge('Beachineer');
 	if(Molpy.BoostsOwned>=50)Molpy.EarnBadge('Better This Way');
 	
-	if(Molpy.Got('Ninja Builder')&&Molpy.Got('Glass Block Storage'))
+	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['Glass Chiller'].power>0)
 		Molpy.UnlockBoost('Glass Jaw');
+	
 }
 
 Molpy.CheckClickAchievements=function()
