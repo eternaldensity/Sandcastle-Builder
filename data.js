@@ -148,6 +148,15 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Magic Mountain'))mult*=2.5;
 			if(Molpy.Got('Standardbot'))mult*=4;
 			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Molpy.CastleTools['Scaffold'].amount);
+			if(Molpy.Got('Swim Between the Flags'))
+			{
+				if(Molpy.newpixNumber%2==0)//even
+				{
+					mult/=Molpy.CastleTools['Wave'].amount;
+				}else{//odd
+					mult*=Molpy.CastleTools['Wave'].amount;
+				}
+			}
 			return baserate*mult;
 		}
 	);
@@ -257,11 +266,18 @@ Molpy.DefineCastleTools=function()
 	new Molpy.CastleTool('Wave','wave|waves|swept|deposited','Sweeps away some castles, depositing more in their place.',300,80,
 		function()
 		{
-			var baseval = 24;				
-			if(Molpy.Got('Erosion')) baseval-=
-				Math.floor(baseval,Molpy.CastleTools['Wave'].totalCastlesWasted*0.2);
+			var baseval = 24;
+			if(Molpy.Got('Swim Between the Flags'))
+			{
+				if(Molpy.newpixNumber%2==1)//odd
+				{
+					baseval=Math.floor(baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount));
+				}
+			}
+			
+			if(Molpy.Got('Erosion')) baseval-=Molpy.CastleTools['Wave'].totalCastlesWasted*0.2;
 			baseval -= Molpy.CastleTools['River'].bought*2;
-			baseval=Math.max(baseval,0);
+			baseval=Math.floor(Math.max(baseval,0));
 			return baseval;
 		},
 		function()
@@ -270,6 +286,13 @@ Molpy.DefineCastleTools=function()
 			baseval+=Molpy.Got('Swell')*19;			
 			if(Molpy.Got('Surfbot'))baseval*=4;
 			if(Molpy.Got('Big Splash')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
+			if(Molpy.Got('Swim Between the Flags'))
+			{
+				if(Molpy.newpixNumber%2==0)//even
+				{
+					baseval=Math.floor(baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount));
+				}
+			}
 			return baseval;
 		}
 	);
@@ -1080,21 +1103,21 @@ Molpy.DefineBoosts=function()
 		},sand:'18G',castles:'650G',className:'action',group:'hpt'});
 	Molpy.ChooseShoppingItem=function()
 	{
-		var name = prompt('Enter the name of the tool or boost you wish to buy.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is not preserved if you reload.',Molpy.shoppingItem||'Bag');
+		var name = prompt('Enter the name of the tool or boost you wish to buy whenever ASHF is active.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is not preserved if you reload.',Molpy.shoppingItem||'Bag');
 		if(name)
 		{
 			var item=Molpy.SandTools[name] || Molpy.CastleTools[name];
 			if(item)
 			{
 				Molpy.shoppingItem=name;
-				Molpy.Notify(item.plural + ' will be purchased whenever possible',1);
+				Molpy.Notify(item.plural + ' will be purchased whenever ASHF is active if possible',1);
 				return;
 			}
 			var item = Molpy.Boosts[name];
 			if(item && !item.bought)
 			{
 				Molpy.shoppingItem=name;
-				Molpy.Notify(name + ' will be purchased when possible',1);
+				Molpy.Notify(name + ' will be purchased when ASHF is active if possible',1);
 				return;
 			}
 		}
@@ -1433,6 +1456,8 @@ Molpy.DefineBoosts=function()
 		
 	new Molpy.Boost({name:'Ninja Legion',desc:'Ninja Stealth is raised by 1000x as much'
 		,sand:'3P',castles:'0.9P',group:'ninj',hardlocked:1});
+		
+	new Molpy.Boost({name:'Swim Between the Flags',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T'});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],hpt:['hill people tech','Hill People Tech','boost_department'],ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
 		chron:['chronotech','Chronotech'],cyb:['cybernetics','Cybernetics','boost_minigun']};
@@ -1707,6 +1732,7 @@ Molpy.CheckBuyUnlocks=function()
 	me=Molpy.CastleTools['Wave'];
 	if(me.amount>=2)Molpy.UnlockBoost('Swell');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Surfbot');
+	if(me.amount>=30)Molpy.UnlockBoost('Swim Between the Flags');
 	
 	me=Molpy.SandTools['Bag'];
 	if(me.amount>=2)Molpy.UnlockBoost('Embaggening');
