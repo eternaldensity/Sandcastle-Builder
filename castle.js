@@ -2126,7 +2126,7 @@ Molpy.Up=function()
 		Molpy.redactableThings=6;
 		Molpy.redactedClicks=0;
 		Molpy.CheckRedactedToggle=function()
-		{
+		{				
 			if(Molpy.redactedToggle)
 			{
 				Molpy.redactedCountup++;
@@ -2158,10 +2158,16 @@ Molpy.Up=function()
 		}
 		Molpy.RandomiseRedactedTime=function()
 		{
-			var min = 200-80*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore'));
-			var spread = 90-20*Molpy.Got('Kitnip'+Molpy.Got('Kitties Galore'));
+			var rrsr='Redundant Redundance Supply of Redundancy';
+			var min = 200-80*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore'))-30*Molpy.Got(rrsr);
+			var spread = 90-20*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore')+Molpy.Got(rrsr));
 			Molpy.redactedToggle=min+Math.ceil(spread*Math.random());
 			Molpy.redactedGr='';
+			if(Molpy.Boosts[rrsr].unlocked
+				&& !Molpy.Boosts[rrsr].bought)
+			{
+				Molpy.redactedToggle*=12;
+			}
 		}
 		
 		Molpy.clickRedacted=function()

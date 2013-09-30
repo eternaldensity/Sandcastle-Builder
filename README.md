@@ -20,7 +20,10 @@ Not for any commercial use!
 
 ### 1.24
 - Renamed Novikov Self-Consistency Principle to be more OTTish
-- Fixed some Badge description mustard: I was trying to Molpify pre-Molpified numbers, now they are UnMolpified first.
+- Fixed some Badge description mustard: I was trying to Molpify pre-Molpified numbers, now they are DeMolpified first.
+- Index updated with film even though I haven't finished whatching it yet at the time of writing this.
+- Okay now I have. Redundant Redundance Supply of Redundancy added.
+- Fixed m*starded parentheses which were preventing the full benefit of Kitnip and Kitties Galore from being applied
 - **Other Things that are Necessary in a Changelog:**
 - *Molpy, molpy, molpy, molpy*
 - *Molpy, molpy, molpy, molpy*

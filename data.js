@@ -1615,6 +1615,10 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Furnace Crossfeed',desc:'Blast Furnace now acts as a Glass Furnace instead of it\'s previous purpose, only if Glass Furnace is active.',sand:'6.5G',castles:'.8G',hardlocked:1,group:'hpt'});
 	
+	new Molpy.Boost({name:'Redundant Redundance Supply of Redundancy',
+	desc:'The Department of Redundancy Department announces: You have exceeded your daily redundancy limit. Your primary redundancy supply will now be turned down. You can always switch to your redundant redundance supply of redundancy.',
+	stats: Molpy.redactedWords+' appear more often, but they are rare until you buy this.',sand:'42G',castles:'4.2G',buyFunction:Molpy.RandomiseRedactedTime,hardlocked:1,group:'hpt'});
+	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
 		ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
@@ -1831,11 +1835,11 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Badge Not Found','Description Not Found');
 	new Molpy.Badge('Fractals Forever','Reach Fractal Level 60, and Fractal Sandcastles will be retained if you Molpy Down.');
 	new Molpy.Badge('Recursion',
-		function(){return 'Yo Dawg, we heard you earned '+Molpify(UnMolpify('50G'),0,!Molpy.showStats)+' Sand by clicking...';});
+		function(){return 'Yo Dawg, we heard you earned '+Molpify(DeMolpify('50G'),0,!Molpy.showStats)+' Sand by clicking...';});
 	new Molpy.Badge('Big Spender',
-		function(){return 'Spend '+Molpify(UnMolpify('200M'),0,!Molpy.showStats)+' Castles total';});
+		function(){return 'Spend '+Molpify(DeMolpify('200M'),0,!Molpy.showStats)+' Castles total';});
 	new Molpy.Badge('Valued Customer',
-		function(){return 'Spend '+Molpify(UnMolpify('80G'),0,!Molpy.showStats)+' Castles total';});
+		function(){return 'Spend '+Molpify(DeMolpify('80G'),0,!Molpy.showStats)+' Castles total';});
 	new Molpy.Badge('Beachscaper','Have 200 Sand Tools');
 	new Molpy.Badge('Beachmover','Have 100 Castle Tools');
 	new Molpy.Badge('Better This Way','Purchase 50 Boosts');
@@ -1968,6 +1972,11 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Earned('Ninja Pact') && Molpy.Got('Ninja League'))
 	{
 		Molpy.Boosts['Ninja Legion'].hardlocked=0;
+	}
+	
+	if(Molpy.redactedClicks>=554)
+	{
+		Molpy.UnlockBoost('Redundant Redundance Supply of Redundancy');
 	}
 }
 
