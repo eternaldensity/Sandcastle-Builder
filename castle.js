@@ -210,7 +210,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.22;
+		Molpy.version=1.23;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2198,6 +2198,14 @@ Molpy.Up=function()
 			{
 				if(Molpy.Got('Blast Furnace') && !Math.floor(4*Math.random()))
 				{
+					if(Molpy.Got('Furnace Crossfeed'))
+					{
+						if(Molpy.Boosts['Glass Furnace'].power)
+						{
+							Molpy.MakeChips();
+							return;
+						}
+					}
 					var blastFactor=1000;
 					if(Molpy.Got('Fractal Sandcastles'))
 					{
@@ -2980,19 +2988,17 @@ Molpy.Up=function()
 		}
 		
 		var activateTimes=1+Molpy.Got('Doublepost');
+		Molpy.buildNotifyFlag=0;
+		Molpy.destroyNotifyFlag=0;
 		while(activateTimes--)
 		{
-			Molpy.destroyNotifyFlag=0;
 			var i = Molpy.CastleToolsN;
 			while(i--)
 			{
 				var t = Molpy.CastleToolsById[i];
 				t.DestroyPhase();
 			}
-			Molpy.destroyNotifyFlag=1;
-			Molpy.Destroy(0);
 			
-			Molpy.buildNotifyFlag=0;
 			i = Molpy.CastleToolsN;
 			while(i--)
 			{
@@ -3000,15 +3006,16 @@ Molpy.Up=function()
 				if(t.name!='NewPixBot')
 					t.BuildPhase();
 			}
-			Molpy.buildNotifyFlag=1;
-			Molpy.Build(0);
 		}
+		Molpy.destroyNotifyFlag=1;
+		Molpy.Destroy(0);
 		
 		if(Molpy.nextCastleSand>1)
 			Molpy.EarnBadge('Castle Price Rollback');
 		Molpy.prevCastleSand=0; //sand cost of previous castle
 		Molpy.nextCastleSand=1; //sand cost of next castle
 		Molpy.SandToCastles();
+		
 		if(Molpy.ninjad==0)
 		{
 			var hadStealth = Molpy.ninjaStealth;
@@ -3036,13 +3043,17 @@ Molpy.Up=function()
 			Molpy.LockBoost('Overcompensating');
 			Molpy.LockBoost('Doublepost');
 			Molpy.LockBoost('Active Ninja');
+			Molpy.LockBoost('Furnace Crossfeed');
 			Molpy.Boosts['Doublepost'].hardlocked=1;//prevent the department from unlocking it
 			Molpy.Boosts['Active Ninja'].hardlocked=1;//prevent the department from unlocking it
+			Molpy.Boosts['Furnace Crossfeed'].hardlocked=1;//prevent the department from unlocking it
 		}else
 		{		
 			Molpy.NPlength=3600;
 			Molpy.Boosts['Doublepost'].hardlocked=0;
 			Molpy.Boosts['Active Ninja'].hardlocked=0;
+			if(Molpy.Got('Glass Furnace'))
+				Molpy.Boosts['Furnace Crossfeed'].hardlocked=0;
 		}
 		if(Molpy.newpixNumber > 241)
 		{

@@ -696,7 +696,8 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja',
 		'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked','Big Splash','Irregular Rivers',
-		'NewPixBot Navigation Code','Blixtnedslag Förmögenhet, JA!','Temporal Rift','Ninja League','Ninja Legion','Castle Crusher'];
+		'NewPixBot Navigation Code','Blixtnedslag Förmögenhet, JA!','Temporal Rift','Ninja League','Ninja Legion',
+		'Castle Crusher', 'Furnace Crossfeed'];
 	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1.4M',castles:'21K'});
 	new Molpy.Boost({name:'Embaggening',desc:'Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',
 		sand:'3.5M',castles:'23K',icon:'embaggening'});
@@ -1258,7 +1259,7 @@ Molpy.DefineBoosts=function()
 				var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
 					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery()"></input> '
 					+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+pow
-					+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+(pow*Molpy.SandRefineryIncrement())+'% of Sand dug).';
+					+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 			}else{
 				return 'Currently, you have no more sand available for further upgrades';
 			}
@@ -1590,6 +1591,8 @@ Molpy.DefineBoosts=function()
 		Molpy.Boosts['Castle Crusher'].power++;
 		Molpy.LockBoost('Castle Crusher');
 	}
+	
+	new Molpy.Boost({name:'Furnace Crossfeed',desc:'Blast Furnace now acts as a Glass Furnace instead of it\'s previous purpose, only if Glass Furnace is active.',sand:'6.5G',castles:'.8G',hardlocked:1,group:'hpt'});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],

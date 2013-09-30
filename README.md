@@ -18,6 +18,13 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.23
+- VITSSÅGEN, JA! has nothing to do with this update
+- Fixed (theoretical) Sand Refinery description mayonaisse caused by Sand Purifier division
+- Furnance Crossfeed boost kills 2 of waveney's ch*rpies with one stone
+- Combined the castles destroyed and built by Doublepost into just one notification each
+- Combined castles created by tools and by the castle-sand price rollover into one notification
+
 ### 1.22
 - VITSSÅGEN, JA! stats falls back to show description once powered up
 - Glass Jaw now doesn't unlock until you have upgraded Glass Chiller at least once
