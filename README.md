@@ -18,7 +18,7 @@ Not for any commercial use!
 
 ## Changelog
 
-### 1.24
+### 1.3
 - Renamed Novikov Self-Consistency Principle to be more OTTish
 - Fixed some Badge description mustard: I was trying to Molpify pre-Molpified numbers, now they are DeMolpified first.
 - Index updated with film even though I haven't finished whatching it yet at the time of writing this.
