@@ -18,6 +18,15 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.24
+- Renamed Novikov Self-Consistency Principle to be more OTTish
+- Fixed some Badge description mustard: I was trying to Molpify pre-Molpified numbers, now they are UnMolpified first.
+- **Other Things that are Necessary in a Changelog:**
+- *Molpy, molpy, molpy, molpy*
+- *Molpy, molpy, molpy, molpy*
+- *Molpy, molpy, molpy, molpy*
+- *Grapevine, grapevine*
+
 ### 1.23
 - VITSSÅGEN, JA! has nothing to do with this update
 - Fixed (theoretical) Sand Refinery description mayonaisse caused by Sand Purifier division

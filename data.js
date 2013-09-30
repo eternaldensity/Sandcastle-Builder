@@ -826,22 +826,22 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',sand:'9.8M',castles:888555222,stats:'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.)',icon:'bkj',group:'hpt'});
 		
-	new Molpy.Boost({name:'Novikov Self-Consistency Principle',desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
+	new Molpy.Boost({name:'Summon Knights Temporal',desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
 		sand:function()
 		{
-			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+			var me=Molpy.Boosts['Summon Knights Temporal'];
 			if(!me.power)me.power=0;
 			return 2101*Math.pow(1.5,me.power);
 		},castles:function()
 		{
-			var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+			var me=Molpy.Boosts['Summon Knights Temporal'];
 			if(!me.power)me.power=0;
 			return 486*Math.pow(1.5,me.power);
 		},stats: 'The Bots forget half their past/future slavery. Costs 50% more each time. BTW you need to switch out of Stats view to activate it.',className:'action',group:'chron'}
 	);
 	Molpy.Novikov=function()
 	{
-		var me=Molpy.Boosts['Novikov Self-Consistency Principle'];
+		var me=Molpy.Boosts['Summon Knights Temporal'];
 		if(!me.bought)me.buy();
 		if(!me.bought)
 		{
@@ -1753,7 +1753,7 @@ Molpy.DefineBadges=function()
 			if(Molpy.Got('Time Travel') && 
 				!(Molpy.Got('Overcompensating')||Molpy.Got('Doublepost')))
 			{
-				Molpy.UnlockBoost('Novikov Self-Consistency Principle');
+				Molpy.UnlockBoost('Summon Knights Temporal');
 			}
 			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
 			{
@@ -1831,11 +1831,11 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Badge Not Found','Description Not Found');
 	new Molpy.Badge('Fractals Forever','Reach Fractal Level 60, and Fractal Sandcastles will be retained if you Molpy Down.');
 	new Molpy.Badge('Recursion',
-		function(){return 'Yo Dawg, we heard you earned '+Molpify('50G',0,!Molpy.showStats)+' Sand by clicking...';});
+		function(){return 'Yo Dawg, we heard you earned '+Molpify(UnMolpify('50G'),0,!Molpy.showStats)+' Sand by clicking...';});
 	new Molpy.Badge('Big Spender',
-		function(){return 'Spend '+Molpify('200M',0,!Molpy.showStats)+' Castles total';});
+		function(){return 'Spend '+Molpify(UnMolpify('200M'),0,!Molpy.showStats)+' Castles total';});
 	new Molpy.Badge('Valued Customer',
-		function(){return 'Spend '+Molpify('80G',0,!Molpy.showStats)+' Castles total';});
+		function(){return 'Spend '+Molpify(UnMolpify('80G'),0,!Molpy.showStats)+' Castles total';});
 	new Molpy.Badge('Beachscaper','Have 200 Sand Tools');
 	new Molpy.Badge('Beachmover','Have 100 Castle Tools');
 	new Molpy.Badge('Better This Way','Purchase 50 Boosts');
