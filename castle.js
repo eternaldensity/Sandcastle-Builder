@@ -170,7 +170,7 @@ function onunhover(me,event)
 	me.hoverOnCounter=-1;
 }
 
-var showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,badges:1,badgesav:1,tagged:0};
+var showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:1,tagged:0};
 function showhideButton(key)
 {
 	return '<input type="Button" value="'+(showhide[key]?'Hide':'Show')+'" onclick="showhideToggle(\''+key+'\')"></input>'
@@ -210,7 +210,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.1;
+		Molpy.version=1.2;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1134,6 +1134,10 @@ Molpy.Up=function()
 			if(Molpy.castlesBuilt>=1000000000){
 				Molpy.EarnBadge('Reign of Terror');
 			}
+			if(Molpy.castlesBuilt>=2000000000000){
+				Molpy.EarnBadge('Unreachable?');
+				Molpy.UnlockBoost("Château d'If");
+			}
 									
 			
 			if(Molpy.castles>=1000){
@@ -1839,14 +1843,14 @@ Molpy.Up=function()
 				var desc = '';
 				var bN = EvalMaybeFunction(this.buildN);
 				var dN = EvalMaybeFunction(this.destroyN);
-				var actuals ='<br/>Builds '+Molpify(bN)+(dN?(' if '+Molpify(dN)+((dN-1)?' are':' is')+' destroyed.'):'');
+				var actuals ='<br/>Builds '+Molpify(bN,1,!Molpy.showStats)+(dN?(' if '+Molpify(dN,1,!Molpy.showStats)+((dN-1)?' are':' is')+' destroyed.'):'');
 				if(Molpy.showStats)
 				{
 					if(this.totalCastlesDestroyed)
-						desc+='Total castles '+this.actionDName+': '+Molpify(this.totalCastlesDestroyed,1)+
-						'<br/>Total castles wasted: '+Molpify(this.totalCastlesWasted,1);
+						desc+='Total castles '+this.actionDName+': '+Molpify(this.totalCastlesDestroyed)+
+						'<br/>Total castles wasted: '+Molpify(this.totalCastlesWasted);
 					if(this.totalCastlesBuilt)
-						desc+='<br/>Total castles '+this.actionBName+': +'+Molpify(this.totalCastlesBuilt,1);
+						desc+='<br/>Total castles '+this.actionBName+': +'+Molpify(this.totalCastlesBuilt);
 					desc+='<br/>Total '+this.plural+' bought: '+Molpify(this.bought);
 					desc+='<br/>'+actuals;
 					Molpy.EarnBadge('Keeping Track');
@@ -2249,21 +2253,32 @@ Molpy.Up=function()
 				Molpy.Notify('You are not Lucky (which is good)');
 				var bonus=0;
 				var i=0;
+				var items=0;
 				while(i<Molpy.SandToolsN)
 				{
 					bonus+=Molpy.SandToolsById[i].amount*Math.pow(3.5,i+1);
+					items+=Molpy.SandToolsById[i].amount;
 					i++;
                 } 
 				i=0;
 				while(i<Molpy.CastleToolsN)
 				{
 					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(2.5,i+1);
+					items+=Molpy.CastleToolsById[i].amount;
 					i++;
                 }
-				bonus += Molpy.BoostsOwned+Molpy.BadgesOwned;
+				var bb = Molpy.BoostsOwned+Molpy.BadgesOwned;
+				bonus+=bb;
+				items+=bb;
 				bonus += Molpy.redactedClicks*10;
 				if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
 					bonus*= (1+0.2*BKJ.power)
+				if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=2)		
+				{				
+					Molpy.Boosts['Glass Block Storage'].power-=2;
+					bonus*=Math.pow(1.01,items);
+				}
+				
 				bonus = Math.floor(bonus);
 				Molpy.Build(bonus);
 			}else{
@@ -2294,7 +2309,7 @@ Molpy.Up=function()
 		Molpy.RepaintLootSelection=function()
 		{
 			var str = '';
-			var groups = ['boosts','ninj','cyb','hpt','chron'];
+			var groups = ['boosts','ninj','cyb','hpt','bean','chron'];
 			for(var i in groups)
 			{
 				var gr = groups[i];

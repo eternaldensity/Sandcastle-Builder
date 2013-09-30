@@ -1459,8 +1459,55 @@ Molpy.DefineBoosts=function()
 		
 	new Molpy.Boost({name:'Swim Between the Flags',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T'});
 	
-	Molpy.groupNames={boosts:['boost','Boosts'],hpt:['hill people tech','Hill People Tech','boost_department'],ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
-		chron:['chronotech','Chronotech'],cyb:['cybernetics','Cybernetics','boost_minigun']};
+	new Molpy.Boost({name:"Château d'If",
+		desc:function(me)
+		{
+			var str = '<b>THIS FORTRESS IS HERE</b>.'
+			if(me.bought)
+			{
+				if(!Molpy.Got('Rosetta'))
+				{
+					return '<input type="Button" value="Trade" onclick="Molpy.GetRosetta()"> 50 Bags to find Rosetta.</input>'
+				}
+			}
+			return str;
+		}, sand:'400T',castles:'12.5T',group:'bean',className:'action'});
+		
+	Molpy.GetRosetta=function()
+	{
+		if(Molpy.SandTools['Bag'].amount>=50)
+		{
+			Molpy.SandTools['Bag'].amount-=50;
+			Molpy.shopRepaint=1;
+			Molpy.UnlockBoost('Rosetta');
+		}else{
+			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
+		}
+	}
+		
+	new Molpy.Boost({name:'Rosetta',
+		desc:function(me)
+		{
+			var str = '<b>SOMEWHAT</b>.'
+			if(me.bought)
+			{
+				if(!Molpy.Got('Panther Salve'))
+				{
+					return '<input type="Button" value="Trade" onclick="Molpy.BuyGlassBoost(\'Panther Salve\',0,250)"> 250 Glass Blocks for Panther Salve.</input>'
+				}
+			}
+			return str;
+		}, sand:'0.9P',castles:'32T',group:'bean',className:'action'});
+		
+	new Molpy.Boost({name:'Panther Salve',desc:'"It\'s some kind of paste." Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 2 Glass Blocks per use.',
+	desc:'Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 2 Glass Blocks per use.',group:'bean'});
+	
+	Molpy.groupNames={boosts:['boost','Boosts'],
+		hpt:['hill people tech','Hill People Tech','boost_department'],
+		ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
+		chron:['chronotech','Chronotech'],
+		cyb:['cybernetics','Cybernetics','boost_minigun'],
+		bean:['bean','Beanie Tech']};
 }
 	
 	
@@ -1674,6 +1721,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Glassblower','Make a Glass Block',2);
 	new Molpy.Badge('Ninja Pact','Have a ninja stealth streak over 4K');
 	new Molpy.Badge('Ninja Unity','Have a ninja stealth streak over 4M');
+	new Molpy.Badge('Unreachable?', 'Build a total of 2T Castles. (I GUESS <b>SUPPOSE <i>MAYBE</i></b> IT WILL BE AN ISLAND <b>AGAIN</b>.))',1);
 }
 		
 Molpy.CheckBuyUnlocks=function()

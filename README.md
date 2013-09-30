@@ -18,6 +18,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.2
+- Castle tools use postfixes for amounts of castles rather than long form
+- New Badge
+- New Boosts
+
 ### 1.1
 - Added Option to Options, to toggle OTColoured (only available when Chromatic Heresy is on)
 - Added Option for longer numeric postfixes (i.e. show Kilo instead of K)
