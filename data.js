@@ -1153,8 +1153,9 @@ Molpy.DefineBoosts=function()
 		desc:function(me)
 		{
 			if(!me.bought) return 'Turns Sand into Glass';
-			var pow=Molpify(Molpy.GlassFurnaceSandUse(),1);
-			return (me.power?'U':'When active, u')+'ses '+pow+'% of Sand dug to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
+			var pow=Molpy.Boosts['Sand Refinery'].power+1;
+			var cost=Molpify(Molpy.GlassFurnaceSandUse(),1);
+			return (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
 		}
 		,sand:'80M',castles:'0.5M',className:'toggle',group:'hpt'});
 	new Molpy.Boost({name:'Glass Furnace Switching',
@@ -1193,7 +1194,7 @@ Molpy.DefineBoosts=function()
 	{
 		if(force||Molpy.Boosts['Glass Furnace'].power||Molpy.Got('Glass Furnace Switching'))
 		{
-			var amount = (Molpy.Boosts['Sand Refinery'].power)+1;
+			var amount = Molpy.Boosts['Sand Refinery'].power+1;
 			amount*=Molpy.SandRefineryIncrement();
 			return amount;
 		}
@@ -1201,13 +1202,14 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.SandRefineryIncrement=function()
 	{
-		return (Molpy.Got('Sand Purifier')?0.5:1);		
+		if(!Molpy.Got('Sand Purifier'))return 1;
+		return 1/(Molpy.Boosts['Sand Purifier'].power+2)
 	}
 	Molpy.GlassBlowerSandUse=function(force)
 	{
 		if(force||Molpy.Boosts['Glass Blower'].power||Molpy.Got('Glass Blower Switching'))
 		{
-			var amount = (Molpy.Boosts['Glass Chiller'].power)+1;
+			var amount = Molpy.Boosts['Glass Chiller'].power+1;
 			amount*=Molpy.GlassChillerIncrement();
 			return amount;
 		}
@@ -1245,7 +1247,7 @@ Molpy.DefineBoosts=function()
 				var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
 					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery()"></input> '
 					+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+pow
-					+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+pow+'% of Sand dug).';
+					+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+(pow*Molpy.SandRefineryIncrement())+'% of Sand dug).';
 			}else{
 				return 'Currently, you have no more sand available for further upgrades';
 			}
@@ -1341,8 +1343,9 @@ Molpy.DefineBoosts=function()
 		desc:function(me)
 		{
 			if(!me.bought) return 'Makes Glass Blocks from Glass Chips';
-			var pow=Molpify((Molpy.GlassBlowerSandUse(),1));
-			return (me.power?'U':'When active, u')+'ses '+pow+'% of Sand dug to produce '+pow+' Glass Block'+(pow>1?'s':'')+' from 20 Glass Chips per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassBlower('+me.power+')"></input>';
+			var pow=Molpy.Boosts['Glass Chiller'].power+1;
+			var cost=Molpify((Molpy.GlassBlowerSandUse(),1));
+			return (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Block'+(pow>1?'s':'')+' from 20 Glass Chips per NP.<br/><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassBlower('+me.power+')"></input>';
 		},className:'toggle',group:'hpt'});
 	new Molpy.Boost({name:'Glass Blower Switching',
 		desc:function(me)
@@ -1380,7 +1383,7 @@ Molpy.DefineBoosts=function()
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
 				{
 					var pow=Molpify((Molpy.Boosts['Glass Chiller'].power)+2);
-					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+pow+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+pow+'% of Sand dug).';
+					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+pow+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+(pow*Molpy.GlassChillerIncrement())+'% of Sand dug).';
 				}else{
 					return 'Currently, you have no more sand available for further upgrades';
 				}
@@ -1447,7 +1450,35 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('Glass Block Storage upgraded',1);
 		}
 	}
-	new Molpy.Boost({name:'Sand Purifier',desc:'Glass Furnace uses half as much sand',group:'hpt'});
+	Molpy.UpgradeSandPurifier=function()
+	{
+		var bl = Molpy.Boosts['Glass Block Storage'];
+		if(bl.power>=20+(5*Molpy.Boosts['Sand Purifier'].power))
+		{
+			bl.power-=25;
+			Molpy.Boosts['Sand Purifier'].power++;
+			Molpy.boostRepaint=1;
+			Molpy.Notify('And Purifier upgraded',1);
+		}
+	}
+	new Molpy.Boost({name:'Sand Purifier',
+		desc:function(me)
+		{
+			var cost = (20+(5*Molpy.Boosts['Sand Purifier'].power));
+			var str = 'Glass Furnace\'s sand use is divided by '+(me.power+2);
+			var bl = Molpy.Boosts['Glass Block Storage'];
+			if(bl.power >= cost-10)
+			{
+				if(bl.power>=cost)
+				{
+					str+='. <input type="Button" value="Pay" onclick="Molpy.UpgradeSandPurifier()"></input> '+cost
+						+ ' Glass Blocks to increase this by 1.';
+				}else{
+					str+='. It costs '+cost+ 'Glass Blocks to increase this by 1.';				
+				}
+			}
+			return str;
+		},className:'action',group:'hpt'});
 	new Molpy.Boost({name:'Glass Jaw',desc:'Ninja Builder builds 100x as many Castles, at the cost of 1 Glass Block per NP'
 		,sand:'16M',castles:122500,group:'ninj'});
 		
@@ -1507,7 +1538,7 @@ Molpy.DefineBoosts=function()
 		ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
 		chron:['chronotech','Chronotech'],
 		cyb:['cybernetics','Cybernetics','boost_minigun'],
-		bean:['bean','Beanie Tech']};
+		bean:['beanie tech','Beanie Tech']};
 }
 	
 	

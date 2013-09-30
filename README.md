@@ -18,6 +18,14 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.21
+- Fixed bean group name mayonaisse
+- Made Sand Purifier upgradeable
+- Fixed Glass Furnace and Glass Blower description mustard: was using the sand cost % value for the amount produced.
+- Fixed Sand Refinery upgrade descripton text: was using the amount produced value for the future sand cost % value.
+- Proactively fixed the same for Glass Chiller (currently they ARE the same value but they might not always be)
+- Great Scott!
+
 ### 1.2
 - Castle tools use postfixes for amounts of castles rather than long form
 - New Badge
