@@ -20,6 +20,13 @@ Not for any commercial use!
 
 ### 1.01
 - Added Option to Options, to toggle OTColoured (only available when Chromatic Heresy is on)
+- Added Option for longer numeric postfixes (i.e. show Kilo instead of K)
+- Added a bunch more non-SI numeric postfixes which I made up because why not?
+- Now I can specify Boost prices as '2.3T' or '95M' instead of 2300000000000 and 95000000
+- Yeah messing that up was what caused everything to go to mustard for a while
+- Shopping Assistant now only buys during ASHF
+- New ninja stealth boosts and badges
+- Prevent spending 20 chips when you have 19
 
 
 ### 1.0

@@ -16,6 +16,23 @@ function ONGsnip(time)
 	time.setMilliseconds(0); 
 	return time;
 }
+var postfixes=[
+{limit:1000000000000000000000000000000000000000000,divisor:1000000000000000000000000000000000000000000,postfix:['W',' Whatthe']},
+{limit:1000000000000000000000000000000000000000,divisor:1000000000000000000000000000000000000000,postfix:['L',' Lotta']},
+{limit:1000000000000000000000000000000000000,divisor:1000000000000000000000000000000000000,postfix:['F',' Fraki']},
+{limit:1000000000000000000000000000000000,divisor:1000000000000000000000000000000000,postfix:['H',' Helo']}, //or Ballard
+{limit:1000000000000000000000000000000,divisor:1000000000000000000000000000000,postfix:['S',' Squilli']},
+{limit:1000000000000000000000000000,divisor:1000000000000000000000000000,postfix:['U',' Umpty']},
+
+{limit:1000000000000000000000000,divisor:1000000000000000000000000,postfix:['Y',' Yotta']},
+{limit:1000000000000000000000,divisor:1000000000000000000000,postfix:['Z',' Zeta']},
+{limit:1000000000000000000,divisor:1000000000000000000,postfix:['E',' Exa']},
+{limit:1000000000000000,divisor:1000000000000000,postfix:['P',' Peta']},
+{limit:1000000000000,divisor:1000000000000,postfix:['T',' Tera']},
+{limit:1000000000,divisor:1000000000,postfix:['G',' Giga']},
+{limit:1000000,divisor:1000000,postfix:['M',' Mega']},
+{limit:10000,divisor:1000,postfix:['K',' Kilo']}, //yes this is intentional
+];
 function Molpify(number, raftcastle, shrinkify)
 {
 	if(isNaN(number))return'Mustard';
@@ -23,37 +40,13 @@ function Molpify(number, raftcastle, shrinkify)
 	
 	if(shrinkify) //todo: roll into loop
 	{
-		if(number>=1000000000000000000000000)
-		{
-			return Molpify(number / 1000000000000000000000000, raftcastle,1)+'Y';
-		}
-		if(number>=1000000000000000000000)
-		{
-			return Molpify(number / 1000000000000000000000, raftcastle,1)+'Z';
-		}
-		if(number>=1000000000000000000)
-		{
-			return Molpify(number / 1000000000000000000, raftcastle,1)+'E';
-		}
-		if(number>=1000000000000000)
-		{
-			return Molpify(number / 1000000000000000, raftcastle,1)+'P';
-		}
-		if(number>=1000000000000)
-		{
-			return Molpify(number / 1000000000000, raftcastle,1)+'T';
-		}
-		if(number>=1000000000)
-		{
-			return Molpify(number / 1000000000, raftcastle,1)+'G';
-		}
-		if(number>=1000000)
-		{
-			return Molpify(number / 1000000, raftcastle,1)+'M';
-		}
-		if(number>=100000)
-		{
-			return Molpify(number / 1000, raftcastle,1)+'K';
+		for (var i in postfixes)
+		{	
+			var p = postfixes[i];
+			if(number>=p.limit)
+			{
+				return Molpify(number / p.divisor, raftcastle,1)+p.postfix[Molpy.options.longpostfix];
+			}
 		}
 	}
 	
@@ -83,21 +76,34 @@ function Molpify(number, raftcastle, shrinkify)
 		}else{
 			number = Math.floor(number);
 		}//drop the decimal bit
+		var sep = (number+'').indexOf('e') ==-1; //true if not in exponential notation
 		number=(number+'').split('').reverse(); //convert to string, then array of chars, then backwards
 		for(var i in number)
 		{
-			if(i%3==0 &&i>0) molp=','+molp;//stick commas in every 3rd spot but not 0th
+			if(sep&&i%3==0 &&i>0) molp=','+molp;//stick commas in every 3rd spot but not 0th
 			molp=number[i]+molp;
 		}
 	}
 	return molp;
 }
+function DeMolpify(grape)
+{
+	for (var i in postfixes)
+	{	
+		var vine = postfixes[i];
+		if(grape.indexOf(vine.postfix[0])>0)
+		{
+			return parseFloat(grape)*vine.divisor;
+		}
+	}
+	return parseFloat(grape); //postfix not recognised so ignore it	
+}
 function PriceSort(a,b)
 {
-	var asp = EvalMaybeFunction(a.sandPrice);
-	var acp = EvalMaybeFunction(a.castlePrice);
-	var bsp = EvalMaybeFunction(b.sandPrice);
-	var bcp = EvalMaybeFunction(b.castlePrice);
+	var asp = EvalMaybeFunction(a.sandPrice,a,1);
+	var acp = EvalMaybeFunction(a.castlePrice,a,1);
+	var bsp = EvalMaybeFunction(b.sandPrice,b,1);
+	var bcp = EvalMaybeFunction(b.castlePrice,b,1);
 	if (asp>bsp) return 1;
 	else if (asp<bsp) return -1;
 	else
@@ -107,7 +113,7 @@ function PriceSort(a,b)
 }
 function FormatPrice(monies)
 {
-	return Molpify(Math.floor(EvalMaybeFunction(monies)*Molpy.priceFactor),1,!Molpy.showStats);
+	return Molpify(Math.floor(EvalMaybeFunction(monies,0,1)*Molpy.priceFactor),1,!Molpy.showStats);
 }
 function CuegishToBeanish(mustard)
 {
@@ -129,11 +135,16 @@ function BeanishToCuegish(mustard)
 		return '';
 	}
 }
-function EvalMaybeFunction(bacon,babies)
+function EvalMaybeFunction(bacon,babies,ice)
 {
 	var B = typeof(bacon);
 	var D = 'function';
-	return(B===D?bacon(babies):bacon);	
+	var O = (B===D?bacon(babies):bacon);
+	if(!ice) return O;
+	
+	B = typeof(O);
+	D = 'string';
+	return (B===D?DeMolpify(O):O);
 }	
 function isChildOf(child,parent)
 {
@@ -248,7 +259,7 @@ Molpy.Up=function()
 			Molpy.options.autoupdate=1;
 			Molpy.options.sea=1;
 			Molpy.options.otcol=1;
-			Molpy.options.ketchup=0;
+			Molpy.options.longpostfix=0;
 			Molpy.options.colourscheme=0;
 		}
 		Molpy.DefaultOptions();
@@ -338,7 +349,7 @@ Molpy.Up=function()
 			(Molpy.options.autoupdate?'1':'0')+
 			(Molpy.options.sea?'1':'0')+
 			(Molpy.options.otcol?'1':'0')+
-			(Molpy.options.ketchup?'1':'0')+
+			(Molpy.options.longpostfix?'1':'0')+
 			(Molpy.options.colourscheme)+
 			p;
 			
@@ -435,7 +446,7 @@ Molpy.Up=function()
 			Molpy.options.autoupdate=parseInt(pixels[3]);
 			Molpy.options.sea=parseInt(pixels[4]);
 			Molpy.options.otcol=parseInt(pixels[5]);
-			Molpy.options.ketchup=parseInt(pixels[6]);
+			Molpy.options.longpostfix=parseInt(pixels[6]);
 			Molpy.options.colourscheme=parseInt(pixels[7]);
 			if(!g('game'))
 			{				
@@ -861,10 +872,15 @@ Molpy.Up=function()
 				Molpy.options.otcol++;
 				if(Molpy.options.otcol>=2)Molpy.options.otcol=0;
 				Molpy.UpdateColourScheme();
+			}else if(bacon=='longpostfix')
+			{
+				Molpy.options.longpostfix++;
+				if(Molpy.options.longpostfix>=2)Molpy.options.longpostfix=0;
+				Molpy.shopRepaint=1;
 			}else return;
 			Molpy.OptionDescription(bacon,1); //update description
 		}
-		Molpy.optionNames=['autosave','colourscheme','sandnumbers','otcol'];
+		Molpy.optionNames=['autosave','colourscheme','sandnumbers','otcol','longpostfix'];
 		Molpy.OptionDescription=function(bacon,caffeination)
 		{
 			var desc='';
@@ -897,6 +913,14 @@ Molpy.Up=function()
 				}else if(bacon=='otcol')
 				{
 					var nu = Molpy.options.otcol;
+					if(!nu){
+						desc="No";
+					}else{
+						desc="Yes";
+					}
+				}else if(bacon=='longpostfix')
+				{
+					var nu = Molpy.options.longpostfix;
 					if(!nu){
 						desc="No";
 					}else{
@@ -1158,7 +1182,7 @@ Molpy.Up=function()
 			var chipsFor=chillerLevel;
 			
 			var ch = Molpy.Boosts['Glass Chip Storage'];
-			while((ch.power+1) < chipsFor*20)
+			while(ch.power < chipsFor*20)
 			{
 				chipsFor--;
 			}
@@ -1286,7 +1310,20 @@ Molpy.Up=function()
 					//clicking first time, after newpixbot		
 					Molpy.EarnBadge('No Ninja');
 					Molpy.ninjaFreeCount++; 
-					Molpy.ninjaStealth+=(1+Molpy.Got('Active Ninja')*2);
+					var ninjaInc = 1;
+					if(Molpy.Got('Active Ninja'))
+					{
+						ninjaInc*=3;
+					}
+					if(Molpy.Got('Ninja League'))
+					{
+						ninjaInc*=100;
+					}
+					if(Molpy.Got('Ninja Legion'))
+					{
+						ninjaInc*=1000;
+					}
+					Molpy.ninjaStealth+=ninjaInc;
 					
 					if(Molpy.Got('Ninja Builder')) 
 					{
@@ -1327,6 +1364,22 @@ Molpy.Up=function()
  					if(Molpy.ninjaStealth>=36)
 					{
 						Molpy.EarnBadge('Ninja Omnipresence');
+						if(Molpy.Got('Active Ninja'))
+						{
+							Molpy.Boosts['Ninja League'].hardlocked=0;
+						}
+					}
+ 					if(Molpy.ninjaStealth>4000)
+					{
+						Molpy.EarnBadge('Ninja Pact');
+						if(Molpy.Got('Ninja Builder'))
+						{
+							Molpy.Boosts['Ninja Legion'].hardlocked=0;
+						}
+					}	
+ 					if(Molpy.ninjaStealth>4000000)
+					{
+						Molpy.EarnBadge('Ninja Unity');
 					}				
 				}else if(Molpy.npbONG==0){
 					if(Molpy.NinjaUnstealth())
@@ -1877,8 +1930,8 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
-				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice));
-				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice));
+				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1));
+				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));
 				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp)
 				{
 					Molpy.SpendSand(sp);
@@ -2851,7 +2904,7 @@ Molpy.Up=function()
 			}
 		}
 		
-		if(Molpy.Got('Shopping Assistant') && Molpy.shoppingItem)
+		if(Molpy.shoppingItem && Molpy.Got('Shopping Assistant') && Molpy.Got(Molpy.IKEA))
 		{
 			var factor = Molpy.priceFactor;
 			Molpy.priceFactor*=1.05;
