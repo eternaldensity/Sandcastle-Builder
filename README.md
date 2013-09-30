@@ -18,12 +18,14 @@ Not for any commercial use!
 
 ## Changelog
 
-### 1.21
+### 1.22
 - VITSSÅGEN, JA! stats falls back to show description once powered up
 - Glass Jaw now doesn't unlock until you have upgraded Glass Chiller at least once
 - Glass Jaw also is now a Toggle (defaults to off so you may need to switch it on if you expect it to work)
 - The above changes now prevent you from being in a situation where you need to Ninja-click 5 times to avoid being stuck unable to upgrade the Chiller ever
 - Glass Furnace and Glass Blower now show 'currently activating/deactivating' instead of the activate/deactivate button, when appropriate
+- A new department boost because I need it!
+- Changed Ninja League/Legion un-hardlock placement so they won't become unavailable when you (by which I mean *I*) reload
 
 ### 1.21
 - Fixed bean group name mayonaisse

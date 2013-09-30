@@ -696,7 +696,7 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja',
 		'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked','Big Splash','Irregular Rivers',
-		'NewPixBot Navigation Code','Blixtnedslag Förmögenhet, JA!','Temporal Rift','Ninja League','Ninja Legion'];
+		'NewPixBot Navigation Code','Blixtnedslag Förmögenhet, JA!','Temporal Rift','Ninja League','Ninja Legion','Castle Crusher'];
 	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1.4M',castles:'21K'});
 	new Molpy.Boost({name:'Embaggening',desc:'Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',
 		sand:'3.5M',castles:'23K',icon:'embaggening'});
@@ -1569,6 +1569,28 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Panther Salve',desc:'"It\'s some kind of paste." Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 2 Glass Blocks per use.',
 	desc:'Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 2 Glass Blocks per use.',group:'bean'});
 	
+	new Molpy.Boost({name:'Castle Crusher',desc:'<input type="Button" value="Crush" onclick="Molpy.CastleCrush()"></input> half your castles back into sand.',
+	sand:function(){
+		return (Molpy.Boosts['Castle Crusher'].power+1)*120+'M';
+	},castles:function(){
+		return (Molpy.Boosts['Castle Crusher'].power+1)*380+'M';
+	},className:'action',hardlocked:1});
+	
+	Molpy.CastleCrush=function()
+	{
+		Molpy.Boosts['Castle Crusher'].buy();
+		if(!Molpy.Boosts['Castle Crusher'].bought)
+		{
+			Molpy.Notify('What a pity!');
+			return;
+		}
+		var c = Math.floor(Molpy.castles/2);
+		Molpy.Destroy(c);
+		Molpy.Dig(c);
+		Molpy.Boosts['Castle Crusher'].power++;
+		Molpy.LockBoost('Castle Crusher');
+	}
+	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
 		ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
@@ -1899,6 +1921,18 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['Glass Chiller'].power>0)
 		Molpy.UnlockBoost('Glass Jaw');
 	
+	if(Molpy.Got('Swim Between the Flags'))
+	{
+		Molpy.Boosts['Castle Crusher'].hardlocked=0;
+	}
+	if(Molpy.Earned('Ninja Omnipresence') && Molpy.Got('Active Ninja'))
+	{
+		Molpy.Boosts['Ninja League'].hardlocked=0;
+	}
+	if(Molpy.Earned('Ninja Pact') && Molpy.Got('Ninja League'))
+	{
+		Molpy.Boosts['Ninja Legion'].hardlocked=0;
+	}
 }
 
 Molpy.CheckClickAchievements=function()

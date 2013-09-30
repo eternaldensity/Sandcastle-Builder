@@ -1368,18 +1368,10 @@ Molpy.Up=function()
  					if(Molpy.ninjaStealth>=36)
 					{
 						Molpy.EarnBadge('Ninja Omnipresence');
-						if(Molpy.Got('Active Ninja'))
-						{
-							Molpy.Boosts['Ninja League'].hardlocked=0;
-						}
 					}
  					if(Molpy.ninjaStealth>4000)
 					{
 						Molpy.EarnBadge('Ninja Pact');
-						if(Molpy.Got('Ninja Builder'))
-						{
-							Molpy.Boosts['Ninja Legion'].hardlocked=0;
-						}
 					}	
  					if(Molpy.ninjaStealth>4000000)
 					{
