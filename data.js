@@ -121,6 +121,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Trebuchet Pong'))mult*=Math.pow(1.5,Math.floor(Molpy.CastleTools['Trebuchet'].amount/2));
 			if(Molpy.Got('Carrybot'))mult*=4;
 			if(Molpy.Got('Buccaneer'))mult*=2;
+			if(Molpy.Got('Flying Buckets'))mult*=Molpy.CastleTools['Trebuchet'].amount;
 			return mult*baserate;			
 			}
 	);
@@ -136,6 +137,7 @@ Molpy.DefineSandTools=function()
 			}
 			if(Molpy.Got('Stickbot'))mult*=4;
 			if(Molpy.Got('The Forty'))mult*=40;
+			if(Molpy.Got('Human Cannonball'))mult*=2*Molpy.CastleTools['Trebuchet'].amount;
 			return baserate*mult;
 			}
 	);
@@ -157,6 +159,7 @@ Molpy.DefineSandTools=function()
 					mult*=Molpy.CastleTools['Wave'].amount;
 				}
 			}
+			if(Molpy.Got('Fly the Flag'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
 			return baserate*mult;
 		}
 	);
@@ -175,6 +178,7 @@ Molpy.DefineSandTools=function()
 				for(var i in Molpy.CastleTools)min=Math.min(min,Molpy.CastleTools[i].amount);
 				mult*=min;
 			}
+			if(Molpy.Got('Up Up and Away'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
 			return baserate*mult;
 		}
 	);
@@ -190,6 +194,7 @@ Molpy.DefineSandTools=function()
 				mult*=Math.pow(1.05,Molpy.CastleTools['River'].amount);
 			if(Molpy.Got('Luggagebot'))mult*=4;
 			if(Molpy.Got('Bag Puns'))mult*=2;
+			if(Molpy.Got('Air Drop'))mult*=5;
 			return baserate*mult;
 		}
 	);
@@ -241,6 +246,11 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Throw Your Toys')) baseval+=Molpy.SandTools['Bucket'].amount+Molpy.SandTools['Flag'].amount;
 			if(Molpy.Got('Flingbot'))baseval*=4;
 			if(Molpy.Got('Minigun')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
+			
+			baseval*=
+				10*(Molpy.Got('Flying Buckets')+Molpy.Got('Human Cannonball')+Molpy.Got('Fly the Flag')
+				+Molpy.Got('Up Up and Away')+Molpy.Got('Air Drop')*5);
+			
 			return baseval;
 		}
 	);
@@ -428,9 +438,9 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Raise the Flag',desc:'Each Flag+Ladder pair gives clicking an extra +50 sand',
 		sand:'85K',castles:95});
 	new Molpy.Boost({name:'Hand it Up',desc:'Each Ladder+Bag pair gives clicking an extra +500 sand',
-		sand:'570K',castles:170});
+		sand:'570K',castles:170,department:1});
 	new Molpy.Boost({name:'Riverish',desc:'Rivers destroy less castles the more you click',
-		sand:'82K',castles:290,icon:'riverish',
+		sand:'82K',castles:290,icon:'riverish',department:1,
 		buyFunction:function(me)
 		{
 			me.power=Molpy.beachClicks;
@@ -445,11 +455,10 @@ Molpy.DefineBoosts=function()
 		{
 			var p = Molpy.Boosts['Double or Nothing'].power;
 			return 100*Math.pow(2,Math.max(1,p-9));
-		},lockFunction:function(){
+		},department:1,classname:'action',lockFunction:function(){
 			this.power++;
 		}
 	});
-	Molpy.Boosts['Double or Nothing'].className='action';
 	Molpy.DoubleOrNothing=function()
 	{
 		if(!Molpy.Boosts['Double or Nothing'].bought)
@@ -467,15 +476,14 @@ Molpy.DefineBoosts=function()
 		}
 		Molpy.LockBoost('Double or Nothing');
 	}
-	new Molpy.Boost({name:'Grapevine',desc:'Increases sand dig rate by 2% per badge earned',sand:'25K',castles:25});
+	new Molpy.Boost({name:'Grapevine',desc:'Increases sand dig rate by 2% per badge earned',sand:'25K',castles:25,department:1});
 	Molpy.IKEA='Affordable Swedish Home Furniture';
 	new Molpy.Boost({name:Molpy.IKEA,desc: function(me){return Molpify(me.power*100,1)+'% off all items for '+Molpify(me.countdown)+'mNP'}
 		,buyFunction:
 		function(){
 			Molpy.shopRepaint=1;
 		}
-		,startPower:0.4,startCountdown:4,group:'hpt'});
-	Molpy.Boosts[Molpy.IKEA].className='alert';
+		,startPower:0.4,startCountdown:4,group:'hpt',department:1,className:'alert'});
 	
 	new Molpy.Boost({name:'Overcompensating',desc: function(me){
 		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
@@ -487,8 +495,7 @@ Molpy.DefineBoosts=function()
 		{ 
 			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><input type="Button" onclick="Molpy.ComaMolpyStyleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 		}
-		,sand:8500,castles:200,icon:'comamolpystyle'});
-	Molpy.Boosts['Coma Molpy Style'].className='toggle';
+		,sand:8500,castles:200,icon:'comamolpystyle',className:'toggle'});
 	
 	{//#REGION Lyrics :P	
 	var cms=[
@@ -676,7 +683,7 @@ Molpy.DefineBoosts=function()
 		'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',
 			sand:'1.5M',castles:240,icon:'activeninja',group:'ninj'});
 	new Molpy.Boost({name:'Kitties Galore',desc:'Even more '+Molpy.redactedWords,
-		sand:'2.5M',castles:4400,icon:'kittiesgalore',hardlocked:1});	
+		sand:'2.5M',castles:4400,icon:'kittiesgalore',department:1});	
 	
 	new Molpy.Boost({name:'HAL-0-Kitty',desc:'NewPixBots build an extra Castle per 9 '+Molpy.redactedWords,
 		sand:9000,castles:2001,icon:'halokitty',group:'cyb'});
@@ -692,12 +699,8 @@ Molpy.DefineBoosts=function()
 			}
 			return 'Uses '+Molpify(2000000)+' Sand to warm up, then makes Castles at a cost of ' + Molpify(blastFactor,1) + ' each';
 		}
-		,icon:'blastfurnace',group:'hpt',hardlocked:1});
+		,icon:'blastfurnace',group:'hpt'});
 	
-	Molpy.departmentBoosts=['Hand it Up', 'Riverish', 'Double or Nothing', 'Grapevine', Molpy.IKEA, 'Doublepost','Active Ninja',
-		'Kitties Galore', 'Blast Furnace','Ninja Assistants','Minigun','Stacked','Big Splash','Irregular Rivers',
-		'NewPixBot Navigation Code','Blixtnedslag Förmögenhet, JA!','Temporal Rift','Ninja League','Ninja Legion',
-		'Castle Crusher', 'Furnace Crossfeed'];
 	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1.4M',castles:'21K'});
 	new Molpy.Boost({name:'Embaggening',desc:'Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',
 		sand:'3.5M',castles:'23K',icon:'embaggening'});
@@ -763,15 +766,15 @@ Molpy.DefineBoosts=function()
 			return 'Multiplies all Castle gains by ' + Molpify(Molpy.globalCastleMult*100,2)+'% (But refunds when selling remain unchanged.)';
 		},group:'chron'});
 	new Molpy.Boost({name:'Ninja Assistants',desc:'Ninja Builder\'s castle output is multiplied by the number of NewPixBots'
-		+' you have.',sand:'250M',castles:777,icon:'ninjaassistants',hardlocked:1,group:'ninj'});
+		+' you have.',sand:'250M',castles:777,icon:'ninjaassistants',group:'ninj'});
 	new Molpy.Boost({name:'Minigun',desc:'The castle output of Trebuchets is multiplied by the number of NewPixBots you have.',
-		sand:'480M',castles:888,icon:'minigun',hardlocked:1,group:'cyb'});
+		sand:'480M',castles:888,icon:'minigun',group:'cyb'});
 	new Molpy.Boost({name:'Stacked',desc:'The castle output of Scaffolds is multiplied by the number of NewPixBots you have.',
-		sand:'970M',castles:999,icon:'stacked',hardlocked:1,group:'cyb'});
+		sand:'970M',castles:999,icon:'stacked',group:'cyb'});
 	new Molpy.Boost({name:'Big Splash',desc:'The castle output of Waves is multiplied by the number of NewPixBots you have.',
-		sand:'2650M',castles:1111,icon:'bigsplash',hardlocked:1,group:'cyb'});
+		sand:'2650M',castles:1111,icon:'bigsplash',group:'cyb'});
 	new Molpy.Boost({name:'Irregular Rivers',desc:'The castle output of Waves is multiplied by the number of NewPixBots'
-		+' you have.',sand:'8290M',castles:2222,icon:'irregularrivers',hardlocked:1,group:'cyb'});
+		+' you have.',sand:'8290M',castles:2222,icon:'irregularrivers',group:'cyb'});
 	
 	Molpy.scrumptiousDonuts=-1;
 	new Molpy.Boost({name:'NewPixBot Navigation Code',desc: 
@@ -781,7 +784,7 @@ Molpy.DefineBoosts=function()
 				(Molpy.Boosts['NewPixBot Navigation Code'].power?'Uni':'I')+'nstall"></input>';
 		},sand:999999999,castles:2101,
 		stats:'When installed, this averts Judgement Dip at the cost of 99.9% of NewPixBot Castle Production.',
-		className:'toggle',hardlocked:1,group:'cyb'});	
+		className:'toggle',group:'cyb'});	
 		
 	Molpy.NavigationCodeToggle=function()
 	{		
@@ -1053,7 +1056,7 @@ Molpy.DefineBoosts=function()
 		stats:function()
 		{
 			return 'Adds ' + Molpify(20*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power,1)+'% to Not Lucky reward';
-		},icon:'bfj',hardlocked:1,group:'hpt'});
+		},icon:'bfj',group:'hpt'});
 	new Molpy.Boost({name:'VITSSÅGEN, JA!',
 		desc:function(me)
 		{
@@ -1137,7 +1140,7 @@ Molpy.DefineBoosts=function()
 		{
 			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+me.countdown+'mNP.<br/><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
 			return 'A hole in time has opened.';
-		},startCountdown:6,hardlocked:1,group:'chron',className:'action'});
+		},startCountdown:6,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
 		if(Math.random()*5<4)
@@ -1520,10 +1523,10 @@ Molpy.DefineBoosts=function()
 	}
 		
 	new Molpy.Boost({name:'Ninja League',desc:'Ninja Stealth is raised by 100x as much'
-		,sand:'5T',castles:'0.6T',group:'ninj',hardlocked:1});
+		,sand:'5T',castles:'0.6T',group:'ninj'});
 		
 	new Molpy.Boost({name:'Ninja Legion',desc:'Ninja Stealth is raised by 1000x as much'
-		,sand:'3P',castles:'0.9P',group:'ninj',hardlocked:1});
+		,sand:'3P',castles:'0.9P',group:'ninj'});
 		
 	new Molpy.Boost({name:'Swim Between the Flags',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T'});
 	
@@ -1596,7 +1599,7 @@ Molpy.DefineBoosts=function()
 		return (Molpy.Boosts['Castle Crusher'].power+1)*120+'M';
 	},castles:function(){
 		return (Molpy.Boosts['Castle Crusher'].power+1)*380+'M';
-	},className:'action',hardlocked:1});
+	},className:'action'});
 	
 	Molpy.CastleCrush=function()
 	{
@@ -1613,11 +1616,18 @@ Molpy.DefineBoosts=function()
 		Molpy.LockBoost('Castle Crusher');
 	}
 	
-	new Molpy.Boost({name:'Furnace Crossfeed',desc:'Blast Furnace now acts as a Glass Furnace instead of it\'s previous purpose, only if Glass Furnace is active.',sand:'6.5G',castles:'.8G',hardlocked:1,group:'hpt'});
+	new Molpy.Boost({name:'Furnace Crossfeed',desc:'Blast Furnace now acts as a Glass Furnace instead of it\'s previous purpose, only if Glass Furnace is active.',sand:'6.5G',castles:'.8G',group:'hpt'});
 	
 	new Molpy.Boost({name:'Redundant Redundance Supply of Redundancy',
 	desc:'The Department of Redundancy Department announces: You have exceeded your daily redundancy limit. Your primary redundancy supply will now be turned down. You can always switch to your redundant redundance supply of redundancy.',
-	stats: Molpy.redactedWords+' appear more often, but they are rare until you buy this.',sand:'42G',castles:'4.2G',buyFunction:Molpy.RandomiseRedactedTime,hardlocked:1,group:'hpt'});
+	stats: Molpy.redactedWords+' appear more often, but they are rare until you buy this.',sand:'42G',castles:'4.2G',buyFunction:Molpy.RandomiseRedactedTime,group:'hpt',lockFunction:function(){Molpy.Notify('Primary Redundancy Supply Reengaged',1);}});
+	
+	new Molpy.Boost({name:'Flying Buckets',desc:'Sand rate of Buckets is multiplied by the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',sand:'120T',castles:'2T'});
+	new Molpy.Boost({name:'Human Cannonball',desc:'Sand rate of Cuegan is multiplied by two times the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',sand:'240T',castles:'4T'});
+	new Molpy.Boost({name:'Fly the Flag',desc:'Sand rate of Flags is multiplied by ten times the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',sand:'360T',castles:'6T'});
+	new Molpy.Boost({name:'Up Up and Away',desc:'Sand rate of Ladders is multiplied by ten times the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',sand:'480T',castles:'8T'});
+	new Molpy.Boost({name:'Air Drop',desc:'Bags produce five times as much Sand. Trebuchets produce fifty times as many Castles.',sand:'1.2G',castles:'24T'});
+	new Molpy.Boost({name:'Schizoblitz',desc:'Double Blitzing speed',sand:'200T',castles:'368G'});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
@@ -1766,36 +1776,36 @@ Molpy.DefineBadges=function()
 		}
 		if(level>4)
 		{
-			Molpy.Boosts['Ninja Assistants'].hardlocked=0;
+			Molpy.Boosts['Ninja Assistants'].department=1;
 		}
 		if(level>5)
 		{
-			Molpy.Boosts['Minigun'].hardlocked=0;
+			Molpy.Boosts['Minigun'].department=1;
 		}
 		if(level>6)
 		{
-				Molpy.Boosts['Stacked'].hardlocked=0;
+				Molpy.Boosts['Stacked'].department=1;
 		}
 		if(level>7)
 		{
 			if(Molpy.Got('Minigun'))
-				Molpy.Boosts['Big Splash'].hardlocked=0;
+				Molpy.Boosts['Big Splash'].department=1;
 		}
 		if(level>8)
 		{
 			if(Molpy.Got('Stacked'))
-				Molpy.Boosts['Irregular Rivers'].hardlocked=0;
+				Molpy.Boosts['Irregular Rivers'].department=1;
 		}
 		if(level>12)
 		{
 			if(Molpy.Got('Big Splash'))
-				Molpy.Boosts['NewPixBot Navigation Code'].hardlocked=0;
+				Molpy.Boosts['NewPixBot Navigation Code'].department=1;
 		}
 		if(level>30)
 		{
 			if(Molpy.Got('Flux Turbine'))
 			{
-				Molpy.Boosts['NewPixBot Navigation Code'].hardlocked=0;
+				Molpy.Boosts['NewPixBot Navigation Code'].department=1;
 				Molpy.Boosts['NewPixBot Navigation Code'].sandPrice='33K';
 				Molpy.Boosts['NewPixBot Navigation Code'].castlePrice=7400;
 			}
@@ -1851,6 +1861,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge('Ninja Pact','Have a ninja stealth streak over 4K');
 	new Molpy.Badge('Ninja Unity','Have a ninja stealth streak over 4M');
 	new Molpy.Badge('Unreachable?', 'Build a total of 2T Castles. (I GUESS <b>SUPPOSE <i>MAYBE</i></b> IT WILL BE AN ISLAND <b>AGAIN</b>.))',1);
+	new Molpy.Badge('Flung','Have 50 Trebuchets');
 }
 		
 Molpy.CheckBuyUnlocks=function()
@@ -1861,6 +1872,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Carrybot');
 	if(me.amount>=30)Molpy.UnlockBoost('Buccaneer');
 	if(me.amount>=50)Molpy.UnlockBoost('Bucket Brigade');
+	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Flying Buckets');
 	
 	me=Molpy.SandTools['Cuegan'];
 	if(me.amount>=1)Molpy.UnlockBoost('Helping Hand');
@@ -1868,6 +1880,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=8)Molpy.UnlockBoost('Megball');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Stickbot');
 	if(me.amount>=40)Molpy.UnlockBoost('The Forty');
+	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Human Cannonball');
 	
 	me=Molpy.SandTools['Flag'];
 	if(me.amount>=1)Molpy.UnlockBoost('Flag Bearer');
@@ -1876,11 +1889,13 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Standardbot');
 	if(me.amount>=25)Molpy.UnlockBoost('Chequered Flag');
 	if(me.amount>=40)Molpy.UnlockBoost('Skull and Crossbones');
+	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Fly the Flag');
 	
 	me=Molpy.SandTools['Ladder'];
 	if(me.amount>=1)Molpy.UnlockBoost('Extension Ladder');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Climbbot');
 	if(me.amount>=25)Molpy.UnlockBoost('Broken Rung');
+	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Up Up and Away');
 	
 	me=Molpy.CastleTools['NewPixBot'];
 	if(me.amount>=3)Molpy.UnlockBoost('Busy Bot');
@@ -1890,7 +1905,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=22 && Molpy.Got('Department of Redundancy Department'))Molpy.UnlockBoost('Factory Automation');
 	if(Molpy.Got('Factory Automation'))
 	{
-		Molpy.Boosts['Blast Furnace'].hardlocked=0;
+		Molpy.Boosts['Blast Furnace'].department=1;
 	}
 	 
 	me=Molpy.CastleTools['Trebuchet'];
@@ -1899,6 +1914,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=5)Molpy.UnlockBoost('Varied Ammo');	
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Flingbot');				
 	if(me.amount>=20)Molpy.UnlockBoost('Throw Your Toys');	
+	if(me.amount>=50)Molpy.EarnBadge('Flung');	
 	
 	me=Molpy.CastleTools['Scaffold'];
 	if(me.amount>=2)Molpy.UnlockBoost('Precise Placement');
@@ -1915,6 +1931,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=2)Molpy.UnlockBoost('Embaggening');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Luggagebot');
 	if(me.amount>=30)Molpy.UnlockBoost('Bag Puns');
+	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Air Drop');
 	var you=me;
 	me = Molpy.CastleTools['River'];
 	if(me.amount&&you.amount)Molpy.UnlockBoost('Sandbag');
@@ -1963,21 +1980,25 @@ Molpy.CheckBuyUnlocks=function()
 	
 	if(Molpy.Got('Swim Between the Flags'))
 	{
-		Molpy.Boosts['Castle Crusher'].hardlocked=0;
+		Molpy.Boosts['Castle Crusher'].department=1;
 	}
 	if(Molpy.Earned('Ninja Omnipresence') && Molpy.Got('Active Ninja'))
 	{
-		Molpy.Boosts['Ninja League'].hardlocked=0;
+		Molpy.Boosts['Ninja League'].department=1;
 	}
 	if(Molpy.Earned('Ninja Pact') && Molpy.Got('Ninja League'))
 	{
-		Molpy.Boosts['Ninja Legion'].hardlocked=0;
+		Molpy.Boosts['Ninja Legion'].department=1;
 	}
 	
-	if(Molpy.redactedClicks>=554)
+	if(Molpy.redactedClicks>=554 && (Molpy.Got('Overcompensating') || Molpy.Got('Doublepost')))
 	{
 		Molpy.UnlockBoost('Redundant Redundance Supply of Redundancy');
+	}else{
+		Molpy.LockBoost('Redundant Redundance Supply of Redundancy'); //prevent use in shortpix!
 	}
+	
+	if(Molpy.Got('Air Drop'))Molpy.Boosts['Schizoblitz'].department=1;
 }
 
 Molpy.CheckClickAchievements=function()

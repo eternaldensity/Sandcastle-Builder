@@ -210,7 +210,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.3;
+		Molpy.version=1.4;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -325,8 +325,11 @@ Molpy.Up=function()
 				Molpy.scrumptiousDonuts=1;				
 				return;
 			}
-			if (thread && thread!='') Molpy.FromNeedlePulledThing(BeanishToCuegish(thread));
-			Molpy.SaveC_STARSTAR_kie();
+			if (thread && thread!='')
+			{
+				Molpy.FromNeedlePulledThing(BeanishToCuegish(thread));
+				Molpy.SaveC_STARSTAR_kie();
+			}
 		}
 		
 		
@@ -1904,7 +1907,7 @@ Molpy.Up=function()
 			this.buyFunction=args.buyFunction;
 			this.unlocked=0;
 			this.bought=0;
-			this.hardlocked=0; //prevent unlock by the department (this is not a saved value)
+			this.department=args.department; //prevent unlock by the department (this is not a saved value)
 			this.order=this.id;
 			this.hovered=0;
 			this.power=0;
@@ -1915,7 +1918,6 @@ Molpy.Up=function()
 				this.power=args.startPower;
 			}
 			this.startCountdown=args.startCountdown;
-			this.hardlocked=args.hardlocked;
 			this.className=args.className;
 			this.classChange=args.classChange;
 			this.group=args.group||'boosts';
@@ -2191,7 +2193,7 @@ Molpy.Up=function()
 			if(Molpy.redactedClicks>=32)
 				Molpy.UnlockBoost('Department of Redundancy Department');
 			if(Molpy.redactedClicks>=64)
-				Molpy.Boosts['Kitties Galore'].hardlocked=0;
+				Molpy.Boosts['Kitties Galore'].department=1;
 			if(Molpy.redactedClicks>=128)
 				Molpy.EarnBadge('Y U NO BELIEVE ME?');
 			if(Molpy.redactedClicks>=256)
@@ -2226,11 +2228,10 @@ Molpy.Up=function()
 				}
 			
 				var availRewards=[];
-				var i = Molpy.departmentBoosts.length;
-				while(i--)
+				for(var i in Molpy.Boosts)
 				{
-					var me=Molpy.Boosts[Molpy.departmentBoosts[i]];
-					if(!(me.unlocked||me.bought||me.hardlocked))
+					var me=Molpy.Boosts[i];
+					if(!(me.unlocked||me.bought)&&me.department)
 					{
 						availRewards.push(me);
 					}
@@ -2288,13 +2289,23 @@ Molpy.Up=function()
 				
 				bonus = Math.floor(bonus);
 				Molpy.Build(bonus);
+				if(Molpy.Got('Glass Block Storage'))
+				{
+					var bl = Molpy.Boosts['Glass Block Storage'];
+					if(bl.power<bl.bought*50) //room for 1 more, at least
+					{
+						bl.power++;
+						Molpy.Notify('+1 Glass Block');
+					}
+				}
 			}else{
 				var blitzSpeed=800,blitzTime=23;
 				if(BKJ.bought)
 				{
 					blitzSpeed+= BKJ.power*20;
-					if(BKJ.power>24) Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].hardlocked=0;
+					if(BKJ.power>24) Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].department=1;
 				}
+				if(Molpy.Got('Schizoblitz'))blitzSpeed*=2;
 				Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 			}			
 		}
@@ -3057,11 +3068,15 @@ Molpy.Up=function()
 		Molpy.npbONG=0;//reset newpixbot flag
 		
 		
-		Molpy.Boosts['Temporal Rift'].hardlocked=1;
+		Molpy.Boosts['Temporal Rift'].department=0;
 		if(Molpy.newpixNumber%
 			(50-(Molpy.Got('Time Travel')+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine'))*10)==0)
 		{
-			Molpy.Boosts['Temporal Rift'].hardlocked=(Math.random()*6<5)*1;
+			Molpy.Boosts['Temporal Rift'].department=(Math.random()*6>=5)*1;
+		}
+		if(Molpy.Got('Swim Between the Flags'))
+		{
+			Molpy.recalculateDig=1;
 		}
 	}
 		
@@ -3075,16 +3090,16 @@ Molpy.Up=function()
 			Molpy.LockBoost('Doublepost');
 			Molpy.LockBoost('Active Ninja');
 			Molpy.LockBoost('Furnace Crossfeed');
-			Molpy.Boosts['Doublepost'].hardlocked=1;//prevent the department from unlocking it
-			Molpy.Boosts['Active Ninja'].hardlocked=1;//prevent the department from unlocking it
-			Molpy.Boosts['Furnace Crossfeed'].hardlocked=1;//prevent the department from unlocking it
+			Molpy.Boosts['Doublepost'].department=0;//prevent the department from unlocking it
+			Molpy.Boosts['Active Ninja'].department=0;//prevent the department from unlocking it
+			Molpy.Boosts['Furnace Crossfeed'].department=0;//prevent the department from unlocking it
 		}else
 		{		
 			Molpy.NPlength=3600;
-			Molpy.Boosts['Doublepost'].hardlocked=0;
-			Molpy.Boosts['Active Ninja'].hardlocked=0;
+			Molpy.Boosts['Doublepost'].department=1;
+			Molpy.Boosts['Active Ninja'].department=1;
 			if(Molpy.Got('Glass Furnace'))
-				Molpy.Boosts['Furnace Crossfeed'].hardlocked=0;
+				Molpy.Boosts['Furnace Crossfeed'].department=1;
 		}
 		if(Molpy.newpixNumber > 241)
 		{
