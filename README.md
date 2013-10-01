@@ -21,6 +21,7 @@ Not for any commercial use!
 ### 1.43
 - New Icons for Fractal Sandcastles, by StormAngel88
 - Who did the original image? I'll credit them here if you remind me
+- Editing a file and maybe it'll rebuild and work?
 
 ### 1.42
 - New Icons by BlitzGirl!
