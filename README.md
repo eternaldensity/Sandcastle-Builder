@@ -24,6 +24,9 @@ Not for any commercial use!
 - Schitzoblitz
 - Boosts given by the department now opt-in rather than having to be put into a list of all possible department boosts and opting out until they want to be really available. This means it's simpler to add new ones since there's no triple handling. (This does not affect gameplay.)
 - Import doesn't save if you cancel
+- Refactored Badge definitions to use dictionary like Boosts do
+- Fix SurfBot price: was missing an M
+- Late Closing Hours should have been Hill People Tech
 
 ### 1.3
 - Renamed Novikov Self-Consistency Principle to be more OTTish

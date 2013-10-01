@@ -2056,18 +2056,21 @@ Molpy.Up=function()
 		Molpy.BadgeN=0;
 		Molpy.BadgesOwned=0;
 		var order=0;
-		Molpy.Badge=function(name,desc,visibility,icon,earnFunction)
+		Molpy.Badge=function(args)
 		{
 			this.id=Molpy.BadgeN;
-			this.name=name;
-			this.desc=desc
-			this.icon=icon;
-			this.earnFunction=earnFunction;
+			this.name=args.name;
+			this.desc=args.desc
+			this.icon=args.icon;
+			this.earnFunction=args.earnFunction;
 			this.earned=0;
 			this.order=this.id;
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
-			this.visibility=(visibility?visibility:0); //0 is normal, 1 is hidden description, 2 is hidden name, 3 is invisible
+			this.visibility=args.vis||0; //0 is normal, 1 is hidden description, 2 is hidden name, 3 is invisible
+			this.className=args.className;
+			this.classChange=args.classChange;
+			this.group=args.group||'badges';
 			
 			this.showdesc=function()
 			{
