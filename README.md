@@ -18,6 +18,11 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.42
+- New Icons by BlitzGirl!
+- Fixed an old icon which was broken because I derped
+- Somehow DoN wasn't tagged as Action because of capitalisation. I thought it was working before
+
 ### 1.41
 - Boost price fix: some were 1000 times what I intended
 

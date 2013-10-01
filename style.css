@@ -865,7 +865,6 @@ body.lightscheme .boost.loot #boost_halokitty.icon
 {
 	background-image:url('img/boost_halokitty_light_icon.png');
 }
-
 body.darkscheme .boost.loot #boost_helpfulhands.icon
 {
 	background-image:url('img/boost_helpfulhands_dark_icon.png');
@@ -1122,4 +1121,196 @@ body.darkscheme .boost.loot #boost_smallbot.icon
 body.lightscheme .boost.loot #boost_smallbot.icon
 {
 	background-image:url('img/boost_smallbot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_redred.icon
+{
+	background-image:url('img/boost_redred_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_redred.icon
+{
+	background-image:url('img/boost_redred_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_busybot.icon
+{
+	background-image:url('img/boost_busybot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_busybot.icon
+{
+	background-image:url('img/boost_busybot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_lateclosing.icon
+{
+	background-image:url('img/boost_lateclosing_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_lateclosing.icon
+{
+	background-image:url('img/boost_lateclosing_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_nosell.icon
+{
+	background-image:url('img/boost_nosell_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_nosell.icon
+{
+	background-image:url('img/boost_nosell_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_swedishchef.icon
+{
+	background-image:url('img/boost_swedishchef_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_swedishchef.icon
+{
+	background-image:url('img/boost_swedishchef_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_vitss.icon
+{
+	background-image:url('img/boost_vitss_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_vitss.icon
+{
+	background-image:url('img/boost_vitss_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_ninjaleague.icon
+{
+	background-image:url('img/boost_ninjaleague_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_ninjaleague.icon
+{
+	background-image:url('img/boost_ninjaleague_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_navcode.icon
+{
+	background-image:url('img/boost_navcode_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_navcode.icon
+{
+	background-image:url('img/boost_navcode_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_robotefficiency.icon
+{
+	background-image:url('img/boost_robotefficiency_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_robotefficiency.icon
+{
+	background-image:url('img/boost_robotefficiency_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_grapevine.icon
+{
+	background-image:url('img/boost_grapevine_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_grapevine.icon
+{
+	background-image:url('img/boost_grapevine_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_chateau.icon
+{
+	background-image:url('img/boost_chateau_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_chateau.icon
+{
+	background-image:url('img/boost_chateau_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_rosetta.icon
+{
+	background-image:url('img/boost_rosetta_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_rosetta.icon
+{
+	background-image:url('img/boost_rosetta_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glasschipstore.icon
+{
+	background-image:url('img/boost_glasschipstore_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glasschipstore.icon
+{
+	background-image:url('img/boost_glasschipstore_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassblockstore.icon
+{
+	background-image:url('img/boost_glassblockstore_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassblockstore.icon
+{
+	background-image:url('img/boost_glassblockstore_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassblower.icon
+{
+	background-image:url('img/boost_glassblower_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassblower.icon
+{
+	background-image:url('img/boost_glassblower_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassfurnace.icon
+{
+	background-image:url('img/boost_glassfurnace_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassfurnace.icon
+{
+	background-image:url('img/boost_glassfurnace_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_sandrefinery.icon
+{
+	background-image:url('img/boost_sandrefinery_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_sandrefinery.icon
+{
+	background-image:url('img/boost_sandrefinery_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_furnacecrossfeed.icon
+{
+	background-image:url('img/boost_furnacecrossfeed_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_furnacecrossfeed.icon
+{
+	background-image:url('img/boost_furnacecrossfeed_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_shopassist.icon
+{
+	background-image:url('img/boost_shopassist_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_shopassist.icon
+{
+	background-image:url('img/boost_shopassist_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_castlecrusher.icon
+{
+	background-image:url('img/boost_castlecrusher_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_castlecrusher.icon
+{
+	background-image:url('img/boost_castlecrusher_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_cheqflag.icon
+{
+	background-image:url('img/boost_cheqflag_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_cheqflag.icon
+{
+	background-image:url('img/boost_cheqflag_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_skullcrossbones.icon
+{
+	background-image:url('img/boost_skullcrossbones_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_skullcrossbones.icon
+{
+	background-image:url('img/boost_skullcrossbones_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_stealthybot.icon
+{
+	background-image:url('img/boost_stealthybot_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_stealthybot.icon
+{
+	background-image:url('img/boost_stealthybot_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_familydiscount.icon
+{
+	background-image:url('img/boost_familydiscount_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_familydiscount.icon
+{
+	background-image:url('img/boost_familydiscount_light_icon.png');
 }
