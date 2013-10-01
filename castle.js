@@ -266,6 +266,7 @@ Molpy.Up=function()
 		Molpy.timeTravels=0; //number of times timetravel has been used
 		Molpy.totalCastlesDown=0; //cumulative castles built and then wiped by Molpy Down throughout all games
 		Molpy.globalCastleMult=1; //for boosting castle gains
+		Molpy.lGlass=0;
 		
 		
 		Molpy.options=[];
@@ -399,7 +400,7 @@ Molpy.Up=function()
 			(Molpy.redactedCountup)+s+
 			(Molpy.redactedToggle)+s+
 			(Molpy.redactedVisible)+s+
-			(0)+s+ //SPARE NUMBER BECAUSE redactedViewIndex is *ahem* redundant
+			(Molpy.lGlass)+s+ //SPARE NUMBER BECAUSE redactedViewIndex is *ahem* redundant
 			(Molpy.redactedClicks)+s+
 			(Molpy.highestNPvisited)+s+
 			(Molpy.totalCastlesDown)+s+
@@ -500,7 +501,7 @@ Molpy.Up=function()
 			Molpy.redactedCountup=parseInt(pixels[20]);			
 			Molpy.redactedToggle=parseInt(pixels[21]);			
 			Molpy.redactedVisible=parseInt(pixels[22]);			
-			//Molpy.redactedViewIndex=parseInt(pixels[23]); NOT NEEDED!
+			Molpy.lGlass=parseInt(pixels[23]);
 			Molpy.redactedClicks=parseInt(pixels[24]);	
 			if(version < 0.92)
 			{	
@@ -713,6 +714,10 @@ Molpy.Up=function()
 				{
 					Molpy.Boosts[bkj].power=Molpy.redactedClicks-Molpy.Boosts[bkj].power;
 				}
+			}		
+			if(version<1.5)//wow I haven't needed one of these in a while!
+			{
+				Molpy.lGlass = Molpy.Boosts['Glass Chiller'].power+1;
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -2169,7 +2174,6 @@ Molpy.Up=function()
 					if(Molpy.redactedVisible)
 					{
 						Molpy.redactedVisible=0; //hide because the redacted was missed
-						var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
 						Molpy.badgeRepaint=1;	
@@ -2252,24 +2256,8 @@ Molpy.Up=function()
 			{
 				if(Molpy.Got('Blast Furnace') && !Math.floor(4*Math.random()))
 				{
-					if(Molpy.Got('Furnace Crossfeed'))
-					{
-						if(Molpy.Boosts['Glass Furnace'].power)
-						{
-							Molpy.MakeChips();
-							return;
-						}
-					}
-					var blastFactor=1000;
-					if(Molpy.Got('Fractal Sandcastles'))
-					{
-						blastFactor=Math.max(.1,1000*Math.pow(0.9,Molpy.Boosts['Fractal Sandcastles'].power));
-					}
-					var castles=Math.floor(Molpy.sand/blastFactor);				
-					Molpy.Notify('Blast Furnace in Operation!');
-					Molpy.SpendSand(castles*blastFactor);
-					Molpy.Build(castles);
-					return;				
+					Molpy.RewardBlastFurnace();
+					return;
 				}
 			
 				var availRewards=[];
@@ -2303,57 +2291,98 @@ Molpy.Up=function()
 			}
 			if(Math.floor(2*Math.random()))
 			{
-				Molpy.Notify('You are not Lucky (which is good)');
-				var bonus=0;
-				var i=0;
-				var items=0;
-				while(i<Molpy.SandToolsN)
+				Molpy.RewardNotLucky();
+			}else{
+				Molpy.RewardBlitzing();
+			}			
+		}
+		Molpy.RewardBlastFurnace=function()
+		{
+			if(Molpy.Got('Furnace Crossfeed'))
+			{
+				if(Molpy.Boosts['Glass Furnace'].power)
 				{
-					bonus+=Molpy.SandToolsById[i].amount*Math.pow(3.5,i+1);
-					items+=Molpy.SandToolsById[i].amount;
-					i++;
-                } 
-				i=0;
-				while(i<Molpy.CastleToolsN)
-				{
-					bonus+=Molpy.CastleToolsById[i].amount*Math.pow(2.5,i+1);
-					items+=Molpy.CastleToolsById[i].amount;
-					i++;
-                }
-				var bb = Molpy.BoostsOwned+Molpy.BadgesOwned;
-				bonus+=bb;
-				items+=bb;
-				bonus += Molpy.redactedClicks*10;
-				if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
-					bonus*= (1+0.2*BKJ.power)
-				if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=2)		
-				{				
-					Molpy.Boosts['Glass Block Storage'].power-=2;
-					bonus*=Math.pow(1.01,items);
+					Molpy.MakeChips();
+					return;
 				}
-				
-				bonus = Math.floor(bonus);
-				Molpy.Build(bonus);
-				if(Molpy.Got('Glass Block Storage'))
+			}
+			var blastFactor=1000;
+			if(Molpy.Got('Fractal Sandcastles'))
+			{
+				blastFactor=Math.max(.1,1000*Math.pow(0.9,Molpy.Boosts['Fractal Sandcastles'].power));
+			}
+			var castles=Math.floor(Molpy.sand/blastFactor);				
+			Molpy.Notify('Blast Furnace in Operation!');
+			Molpy.SpendSand(castles*blastFactor);
+			Molpy.Build(castles);
+		}
+		Molpy.RewardNotLucky=function()
+		{
+			Molpy.Notify('You are not Lucky (which is good)');
+			var bonus=0;
+			var i=0;
+			var items=0;
+			while(i<Molpy.SandToolsN)
+			{
+				bonus+=Molpy.SandToolsById[i].amount*Math.pow(3.5,i+1);
+				items+=Molpy.SandToolsById[i].amount;
+				i++;
+			} 
+			i=0;
+			while(i<Molpy.CastleToolsN)
+			{
+				bonus+=Molpy.CastleToolsById[i].amount*Math.pow(2.5,i+1);
+				items+=Molpy.CastleToolsById[i].amount;
+				i++;
+			}
+			var bb = Molpy.BoostsOwned+Molpy.BadgesOwned;
+			bonus+=bb;
+			items+=bb;
+			bonus += Molpy.redactedClicks*10;
+			if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
+				bonus*= (1+0.2*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)
+			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=2)		
+			{				
+				Molpy.Boosts['Glass Block Storage'].power-=2;
+				bonus*=Math.pow(1.01,items);
+			}
+			
+			bonus = Math.floor(bonus);
+			Molpy.Build(bonus);
+			if(Molpy.Got('Glass Block Storage'))
+			{
+				if(Molpy.lGlass)
 				{
+					Molpy.lGlass--;
 					var bl = Molpy.Boosts['Glass Block Storage'];
 					if(bl.power<bl.bought*50) //room for 1 more, at least
 					{
 						bl.power++;
 						Molpy.Notify('+1 Glass Block');
 					}
+				}else{
+					var ch = Molpy.Boosts['Glass Chip Storage'];
+					if(ch.power<ch.bought*20) //room for 1 more, at least
+					{
+						ch.power++;
+						Molpy.Notify('+1 Glass Chip');
+					}					
 				}
-			}else{
-				var blitzSpeed=800,blitzTime=23;
-				if(BKJ.bought)
-				{
-					blitzSpeed+= BKJ.power*20;
-					if(BKJ.power>24) Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].department=1;
-				}
-				if(Molpy.Got('Schizoblitz'))blitzSpeed*=2;
-				Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
-			}			
+			}
 		}
+		Molpy.RewardBlitzing=function()
+		{
+			var blitzSpeed=800,blitzTime=23;
+			var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
+			if(BKJ.bought)
+			{
+				blitzSpeed+= BKJ.power*20;
+				if(BKJ.power>24) Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].department=1;
+			}
+			if(Molpy.Got('Schizoblitz'))blitzSpeed*=2;
+			Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
+		}
+		
 		Molpy.CalcPriceFactor=function()
 		{
 			var baseval=1;
@@ -3074,6 +3103,7 @@ Molpy.Up=function()
 		{
 			Molpy.MakeBlocks();
 		}
+		Molpy.lGlass = Molpy.Boosts['Glass Chiller'].power+1; //reset amount of glass available to Not Lucky
 		
 		var activateTimes=1+Molpy.Got('Doublepost');
 		Molpy.buildNotifyFlag=0;

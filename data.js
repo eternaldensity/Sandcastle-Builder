@@ -1995,7 +1995,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.CastleToolsOwned>=500)Molpy.EarnBadge('Beachineer');
 	if(Molpy.BoostsOwned>=50)Molpy.EarnBadge('Better This Way');
 	
-	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['Glass Chiller'].power>0)
+	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['Glass Block Storage'].power>10)
 		Molpy.UnlockBoost('Glass Jaw');
 	
 	if(Molpy.Got('Swim Between the Flags'))

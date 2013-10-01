@@ -20,6 +20,9 @@ Not for any commercial use!
 
 ### 1.5
 - Tweaked Blast Furnace (fractals helps it more), made base ASHF time 5 not 4 mNP
+- Glass Jaw is now easier to unlock for those who want to use it sooner rather than increase glass block production
+- Extracted the various redundarewards into their own functions for neatness and easier reading of code
+- Set limit of Glass Blocks available as rewards (based on chiller), further notluck gives chips
 
 ### 1.43
 - New Icons for Fractal Sandcastles, by StormAngel88
