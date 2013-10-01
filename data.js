@@ -779,13 +779,15 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.scrumptiousDonuts=-1;
 	new Molpy.Boost({name:'NewPixBot Navigation Code',desc: 
-		function()
+		function(me)
 		{
 			return 'thisAlgorithm. BecomingSkynetCost = 999999999 <input type="Button" onclick="Molpy.NavigationCodeToggle()" value="' +
-				(Molpy.Boosts['NewPixBot Navigation Code'].power?'Uni':'I')+'nstall"></input>';
+				(me.power?'Uni':'I')+'nstall"></input>';
 		},sand:999999999,castles:2101,
 		stats:'When installed, this averts Judgement Dip at the cost of 99.9% of NewPixBot Castle Production.',
-		icon:'navcode',className:'toggle',group:'cyb'});	
+		icon:'navcode',className:'toggle',group:'cyb',
+		classChange:function(){return Molpy.CheckJudgeClass(this,1,'toggle',this.power);}
+	});	
 		
 	Molpy.NavigationCodeToggle=function()
 	{		
@@ -841,7 +843,7 @@ Molpy.DefineBoosts=function()
 			var me=Molpy.Boosts['Summon Knights Temporal'];
 			if(!me.power)me.power=0;
 			return 486*Math.pow(1.5,me.power);
-		},stats: 'The Bots forget half their past/future slavery. Costs 50% more each time. BTW you need to switch out of Stats view to activate it.',className:'action',group:'chron'}
+		},stats: 'The Bots forget half their past/future slavery. Costs 50% more each time. BTW you need to switch out of Stats view to activate it.',className:'action',group:'chron',classChange:function(){return Molpy.CheckJudgeClass(this,0,'action');}}
 	);
 	Molpy.Novikov=function()
 	{
@@ -1726,23 +1728,13 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:"Don't Litter!",desc:'Click 14 '+Molpy.redactedWords,vis:1});
 	new Molpy.Badge({name:'Y U NO BELIEVE ME?',desc:'Click 101 '+Molpy.redactedWords,vis:1});
 	new Molpy.Badge({name:"Have you noticed it's slower?",desc:'Experience the LongPix'});
-	Molpy.CheckJudgeClass=function()
+	Molpy.CheckJudgeClass=function(me,level,name,force)
 		{
-			var oldClass=this.className;
-			var newClass = Molpy.judgeLevel>1?'alert':'';
+			var oldClass=me.className;
+			var newClass = (force||Molpy.judgeLevel>level)?name:'';
 			if(newClass!=oldClass)
 			{
-				this.className=newClass;
-				return 1;
-			}
-		}
-	Molpy.CheckJudgeWClass=function()
-		{
-			var oldClass=this.className;
-			var newClass = Molpy.judgeLevel>0?'alert':'';
-			if(newClass!=oldClass)
-			{
-				this.className=newClass;
+				me.className=newClass;
 				return 1;
 			}
 		}
@@ -1757,7 +1749,7 @@ Molpy.DefineBadges=function()
 			if(level==1) return 'The countdown is at ' + Molpify(countdown)+'NP';
 			return 'Judgement dip is upon us! But it can get worse. The countdown is at ' + Molpify(countdown)+
 			'NP';
-		},vis:2,icon:'judgementdipwarning',className:'alert',classChange:Molpy.CheckJudgeWClass});
+		},vis:2,icon:'judgementdipwarning',className:'alert',classChange:function(){return Molpy.CheckJudgeClass(this,0,'alert');}});
 	Molpy.JudgementDipThreshhold=function()
 	{
 		if(Molpy.Boosts['NewPixBot Navigation Code'].power) return [0,Infinity];
@@ -1859,7 +1851,7 @@ Molpy.DefineBadges=function()
 			if(j<1) return 'Safe. For now.';
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			
 		}
-		,vis:3,icon:'judgementdip',className:'alert',classChange:Molpy.CheckJudgeClass});
+		,vis:3,icon:'judgementdip',className:'alert',classChange:function(){return Molpy.CheckJudgeClass(this,1,'alert');}});
 	new Molpy.Badge({name:'Fast Forward',desc:'Travel Back to the Future',vis:1});
 	new Molpy.Badge({name:'And Back',desc:'Return to the Past',vis:1});
 	new Molpy.Badge({name:'Primer',desc:'Travel through Time 10 Times',vis:1});

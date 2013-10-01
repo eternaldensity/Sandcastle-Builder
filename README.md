@@ -23,6 +23,7 @@ Not for any commercial use!
 - Fixed an old icon which was broken because I derped
 - Somehow DoN wasn't tagged as Action because of capitalisation. I thought it was working before
 - Fixed 0 castles from Trebuchets if you have none of the new multipliers
+- Untag some things when no JD
 
 ### 1.41
 - Boost price fix: some were 1000 times what I intended
