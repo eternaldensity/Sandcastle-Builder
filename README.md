@@ -22,6 +22,7 @@ Not for any commercial use!
 - New Icons by BlitzGirl!
 - Fixed an old icon which was broken because I derped
 - Somehow DoN wasn't tagged as Action because of capitalisation. I thought it was working before
+- Fixed 0 castles from Trebuchets if you have none of the new multipliers
 
 ### 1.41
 - Boost price fix: some were 1000 times what I intended

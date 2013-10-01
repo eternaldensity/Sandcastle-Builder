@@ -247,11 +247,12 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Flingbot'))baseval*=4;
 			if(Molpy.Got('Minigun')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			
-			baseval*=
+			var mult =
 				10*(Molpy.Got('Flying Buckets')+Molpy.Got('Human Cannonball')+Molpy.Got('Fly the Flag')
 				+Molpy.Got('Up Up and Away')+Molpy.Got('Air Drop')*5);
+			mult = mult||1;
 			
-			return baseval;
+			return baseval*mult;
 		}
 	);
 		
