@@ -774,7 +774,7 @@ Molpy.DefineBoosts=function()
 		sand:'970M',castles:999,icon:'stacked',group:'cyb'});
 	new Molpy.Boost({name:'Big Splash',desc:'The castle output of Waves is multiplied by the number of NewPixBots you have.',
 		sand:'2650M',castles:1111,icon:'bigsplash',group:'cyb'});
-	new Molpy.Boost({name:'Irregular Rivers',desc:'The castle output of Waves is multiplied by the number of NewPixBots'
+	new Molpy.Boost({name:'Irregular Rivers',desc:'The castle output of Rivers is multiplied by the number of NewPixBots'
 		+' you have.',sand:'8290M',castles:2222,icon:'irregularrivers',group:'cyb'});
 	
 	Molpy.scrumptiousDonuts=-1;

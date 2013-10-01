@@ -24,6 +24,11 @@ Not for any commercial use!
 - Somehow DoN wasn't tagged as Action because of capitalisation. I thought it was working before
 - Fixed 0 castles from Trebuchets if you have none of the new multipliers
 - Untag some things when no JD
+- Irregular Rivers are not Waves in the description now
+- TWV0YWwlMjUyME1vbHBpZXM= [REDACTED]
+- That was redundant.
+- Believe me!
+- Tagged items are now sorted!
 
 ### 1.41
 - Boost price fix: some were 1000 times what I intended
