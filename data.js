@@ -869,7 +869,7 @@ Molpy.DefineBoosts=function()
 		{
 			if(!me.bought)return 'Digging sand gives 35% more Castles per Fractal Level, which resets to 1 on the ONG. Blast Furnace uses 98% Sand to make Castles, per Fractal Level';
 			return 'Digging Sand will give you ' + Molpify(Math.floor(Math.pow(1.35,me.power)),1,!Molpy.showStats)+' Castles';
-		},className:'alert'});
+		},className:'alert',icon:'fractals'});
 	new Molpy.Boost({name:'Balancing Act',desc:'Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1875K',castles:843700,icon:'balancingact'});
 	new Molpy.Boost({name:'Ch*rpies',desc:'Increases sand dig rate by 5% per badge earned',
 		sand:6969696969,castles:81818181,icon:'chirpies'});

@@ -1314,3 +1314,11 @@ body.lightscheme .boost.loot #boost_familydiscount.icon
 {
 	background-image:url('img/boost_familydiscount_light_icon.png');
 }
+body.darkscheme .boost.loot #boost_fractals.icon
+{
+	background-image:url('img/boost_fractals_dark_icon.gif');
+}
+body.lightscheme .boost.loot #boost_fractals.icon
+{
+	background-image:url('img/boost_fractals_light_icon.gif');
+}

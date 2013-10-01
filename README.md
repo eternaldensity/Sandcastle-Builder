@@ -18,6 +18,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.43
+- New Icons for Fractal Sandcastles, by StormAngel88
+- Who did the original image? I'll credit them here if you remind me
+
 ### 1.42
 - New Icons by BlitzGirl!
 - Fixed an old icon which was broken because I derped
