@@ -1978,7 +1978,7 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.EarnBadge('Valued Customer');
 		Molpy.Boosts[Molpy.IKEA].startPower=0.6;
 	}
-	Molpy.Boosts[Molpy.IKEA].startCountdown=4;
+	Molpy.Boosts[Molpy.IKEA].startCountdown=5;
 	if(Molpy.Got('Late Closing Hours'))
 	{
 		Molpy.Boosts[Molpy.IKEA].startCountdown=10;

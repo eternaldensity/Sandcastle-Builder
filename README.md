@@ -18,6 +18,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.5
+- Tweaked Blast Furnace (fractals helps it more), made base ASHF time 5 not 4 mNP
+
 ### 1.43
 - New Icons for Fractal Sandcastles, by StormAngel88
 - Who did the original image? I'll credit them here if you remind me
