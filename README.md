@@ -18,6 +18,9 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.41
+- Boost price fix: some were 1000 times what I intended
+
 ### 1.4
 - Trebuchet badge and boosts
 - Not Lucky Glass
