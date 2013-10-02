@@ -19,6 +19,18 @@ Not for any commercial use!
 ## Changelog
 
 ### 1.5
+- Tweaked Blast Furnace (fractals helps it more), made base ASHF time 5 not 4 mNP
+- Glass Jaw is now easier to unlock for those who want to use it sooner rather than increase glass block production
+- Extracted the various redundarewards into their own functions for neatness and easier reading of code
+- Set limit per NP of Glass Blocks available as rewards (based on chiller), further not-luck gives chips
+- Rewrote how redundaboxes are generated to be more treeish and extensible
+- New boost (in the progression it comes before Redundant Redundance Supply of Redundancy)
+- Blitzing multiplies subsequent Not Lucky and Blast Furnace rewards
+- Blitzing stacks with Blitzing (adds power of current Blitz and half its countdown)
+- Fractal Sandcastles boosts Not Lucky also
+- Panther Salve uses more Glass
+
+### 1.5 musical version
 - Blast Furnace-fractal interaction is more benefici-al
 - Home Furniture is now for 1 m.N.P. more available
 - I rewrote redundaboxes to be more extensible
@@ -27,7 +39,6 @@ Not for any commercial use!
 - And then until the next ONG only glass chips are available
 - Glass Jaw can be unlocked as soon as you have ten blocks in the store
 - The kit reward code has been split so reading it is not a bore
-
 
 ### 1.43
 - New Icons for Fractal Sandcastles, by StormAngel88

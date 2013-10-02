@@ -2240,11 +2240,10 @@ Molpy.Up=function()
 				Molpy.redactedDrawType[level]='hide1';
 				Molpy.redactedToggle*=10;	
 			}else
-			if (Molpy.Got('Redunception') && Math.floor(Math.random*8/Molpy.redactedDrawType.length)==0)
+			if (Molpy.Got('Redunception') && Math.floor(Math.random()*8/Molpy.redactedDrawType.length)==0)
 			{
 				Molpy.redactedDrawType[level]='recur';
-				Molpy.redactedDrawType.push('show');	
-				Molpy.redactedToggle++;
+				Molpy.redactedDrawType.push('show');
 				//JUMP!
 				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
 				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
@@ -2256,6 +2255,7 @@ Molpy.Up=function()
 				Molpy.redactedVisible=0;
 				Molpy.redactedViewIndex=-1;
 				Molpy.redactedDrawType=[];
+				Molpy.redactedCountup=0; //whoops forgot that!
 				Molpy.RandomiseRedactedTime();
 			}
 			
@@ -2338,7 +2338,9 @@ Molpy.Up=function()
 			var blastFactor=1000;
 			if(Molpy.Got('Fractal Sandcastles'))
 			{
-				blastFactor=Math.max(.1,1000*Math.pow(0.9,Molpy.Boosts['Fractal Sandcastles'].power));
+				blastFactor=Math.max(.1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
+				if(Molpy.Got('Blitzing'))
+					blastFactor/=Math.max(1,(Molpy.Boosts['Blitzing'].power-800)/100);
 			}
 			var castles=Math.floor(Molpy.sand/blastFactor);				
 			Molpy.Notify('Blast Furnace in Operation!');
@@ -2370,11 +2372,15 @@ Molpy.Up=function()
 			bonus += Molpy.redactedClicks*10;
 			if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
 				bonus*= (1+0.2*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)
-			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=2)		
+			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=5)		
 			{				
-				Molpy.Boosts['Glass Block Storage'].power-=2;
+				Molpy.Boosts['Glass Block Storage'].power-=5;
 				bonus*=Math.pow(1.01,items);
 			}
+			if(Molpy.Got('Fractal Sandcastles'))
+				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/5);
+			if(Molpy.Got('Blitzing'))
+				bonus*=(Molpy.Boosts['Blitzing'].power/10);
 			
 			bonus = Math.floor(bonus);
 			Molpy.Build(bonus);
@@ -2409,6 +2415,12 @@ Molpy.Up=function()
 				if(BKJ.power>24) Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].department=1;
 			}
 			if(Molpy.Got('Schizoblitz'))blitzSpeed*=2;
+			
+			if(Molpy.Got('Blitzing'))
+			{
+				blitzSpeed+=Molpy.Boosts['Blitzing'].power;
+				blitzTime+=Math.floor(Molpy.Boosts['Blitzing'].countdown/2);
+			}
 			Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 		}
 		
