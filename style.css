@@ -1322,3 +1322,43 @@ body.lightscheme .boost.loot #boost_fractals.icon
 {
 	background-image:url('img/boost_fractals_light_icon.gif');
 }
+body.darkscheme .boost.loot #boost_schizoblitz.icon
+{
+	background-image:url('img/boost_schizoblitz_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_schizoblitz.icon
+{
+	background-image:url('img/boost_schizoblitz_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glasschiller.icon
+{
+	background-image:url('img/boost_glasschiller_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glasschiller.icon
+{
+	background-image:url('img/boost_glasschiller_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassjaw.icon
+{
+	background-image:url('img/boost_glassjaw_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassjaw.icon
+{
+	background-image:url('img/boost_glassjaw_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_brokenrung.icon
+{
+	background-image:url('img/boost_brokenrung_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_brokenrung.icon
+{
+	background-image:url('img/boost_brokenrung_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_redunception.icon
+{
+	background-image:url('img/boost_redunception_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_redunception.icon
+{
+	background-image:url('img/boost_redunception_light_icon.png');
+}
