@@ -1698,7 +1698,7 @@ Molpy.DefineBoosts=function()
 		redundancy.subjnouns=[
 			function(){return make(redundancy.department);},
 			function(){return make(redundancy.creature);},
-			function(){return make(redundancy.reader);},
+			function(){return make(redundancy.person);},
 			function(){return make(redundancy.thing);},
 			function(){return make(redundancy.character);}
 		];
@@ -1714,7 +1714,7 @@ Molpy.DefineBoosts=function()
 		redundancy.objnouns=[
 			function(){return make(redundancy.department);},
 			function(){return make(redundancy.creature);},
-			function(){return make(redundancy.reader);},
+			function(){return make(redundancy.person);},
 			function(){return make(redundancy.thing);},
 			function(){return make(redundancy.character);}
 		];
@@ -1738,13 +1738,13 @@ Molpy.DefineBoosts=function()
 			function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ '-like';},
 			function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ 'ish';}
 		]
-		redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','blue','green','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick'];
+		redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick'];
 		redundancy.adjmodifier=['very', 'somewhat','kinda','partly','not','nearly','almost','quite','not quite','almost but not quite entirely','entirely','fully','totally','a little bit','far too','incredibly','barely',
 			function(){return make(redundancy.adjective)+'ly';},
 			function(){return make(redundancy.prefix)+make(redundancy.adjective);}
 		];
 		redundancy.prefix=['un','non','in','anti','sub','super','post','pre','ex','in','redunda'];
-		redundancy.conjunctions=[';','but','and','so','while','because','after','before','if','which is why'];
+		redundancy.conjunctions=[';','but','and','so','while','because','after','before','if','which is why','but then'];
 		redundancy.creature=[
 			function(noart){return (noart?'':'the ')+make(redundancy.creatures);},
 			function(noart){return (noart?'':'the ')+make(redundancy.adjectives)+' '+make(redundancy.creatures);}
@@ -1752,14 +1752,14 @@ Molpy.DefineBoosts=function()
 		redundancy.creatures=['molpy','molpy','molpy','redundakitty','kitty','beesnake','pricklymolp','raptorcat','chirpy','keyboard'];
 		redundancy.character=[
 			function(noart){return make(redundancy.characters);},
-			function(noart){return +make(redundancy.adjectives)+' '+make(redundancy.characters);}
+			function(noart){return make(redundancy.adjectives)+' '+make(redundancy.characters);}
 		];
 		redundancy.characters=['Cueball','Megan','LaPetite','Bunny','Mini-Bunny','White Bunny','Gray Bun','Black Bun','Curly Bun','Pulled Back','Headband','Meg-a-like','Hat-Hair','Loopsy','Rose','Bob','Leopard','Sandy','She-Bangs','Littlest Bangs Brother','Middle Bangs Brother','Newest Bangs Brother','Sparse','Curly','Buzz','Brick','Forelock','Roundhair','Lopside','Shortdo','Shorty','Mini-Shortdo','Spike','Two-Tone','Mini-Towo-Tone','Afro','Part','Baldo','Rosetta','B-1','B-2','B-3','Expando'];
 		redundancy.interjections=['CH*RP','chirping mustard','ch*rping m*stard','m*stard','mustard','by GLR','oh','neat','neat','yeah','yeah','hey'];
-		redundancy.reader=[
-			function(){return make(redundancy.readers);}
+		redundancy.person=[
+			function(){return make(redundancy.people);}
 		];
-		redundancy.readers=['the one who reads this','xe who is reading','the clicking person','whoever is on the outside of the screen looking in'];
+		redundancy.people=['the one who reads this','xe who is reading','the clicking person','whoever is on the outside of the screen looking in','one of your friends','a random OTTer','GLR','the stranger looking in the window','someone standing behind your','one of your parents','your mother','your long lost cousin from Australia','the Pope','the Mome','a Blitzer','an Old One'];
 		redundancy.thing=[
 			function(noart){return (noart?'':make(redundancy.thingmods)+' ')+make(redundancy.things);},
 			function(noart){return (noart?'':make(redundancy.thingmods)+' ')+make(redundancy.adjectives)+' '+make(redundancy.things);}
@@ -1779,7 +1779,7 @@ Molpy.DefineBoosts=function()
 		];
 		redundancy.intransverb=['jumps','laughs','burns','cries','explodes','melts','runs','sings','worries','dies','lives','decays','eats','plays','turns','spins','posts','burrows','types','reboots','refreshes','reloads','wonders', function(){return 'is '+make(redundancy.things)+'ing'}];
 		redundancy.prepphrase=[function(){return make(redundancy.prepositions)+' '+make(redundancy.objects);}];
-		redundancy.prepositions=['in','in','on','over','under','inside','outside','behind','from','within','from within','beside','underneath','near','at','for','into','of'];
+		redundancy.prepositions=['in','in','on','over','under','inside','outside','behind','from','within','from within','beside','underneath','near','at','for','into','of','in front of','nowhere near','to','from','close to'];
 		redundancy.adjphrase=[
 			function(){return make(redundancy.adjphrasestart)+' '+make(redundancy.transverbs)+' '+make(redundancy.objects);},
 			function(){return make(redundancy.adjphrasestart)+' '+make(redundancy.intransverbs);},
