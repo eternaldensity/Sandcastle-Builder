@@ -1137,7 +1137,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Late Closing Hours',desc:Molpy.IKEA+' is available for 6 mNP longer',
 		sand:'47G',castles:'930G',icon:'lateclosing',group:'hpt'});
 	new Molpy.Boost({name:'Throw Your Toys',desc:'Trebuchets build a castle for every flag and bucket owned',sand:'546M',castles: '230K'});
-	new Molpy.Boost({name:'Broken Rung',desc:'Multiplies the Sand output of Ladders by the amount of the tool you have least of.',sand:'1769M',castles: '450K'});
+	new Molpy.Boost({name:'Broken Rung',desc:'Multiplies the Sand output of Ladders by the amount of the tool you have least of.',
+		sand:'1769M',castles: '450K',icon:'brokenrung'});
 	
 	new Molpy.Boost({name:'Temporal Rift',
 		desc:function(me)
@@ -1421,7 +1422,7 @@ Molpy.DefineBoosts=function()
 				}
 			}
 			return 'It costs 5 Blocks to upgrade the Glass Blower\'s speed';
-		},className:'action',group:'hpt'
+		},icon:'glasschiller',className:'action',group:'hpt'
 	});
 	Molpy.UpgradeGlassChiller=function()
 	{
@@ -1521,7 +1522,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
-		,sand:'16M',castles:122500,group:'ninj',className:'toggle'});
+		,sand:'16M',castles:122500,icon:'glassjaw',group:'ninj',className:'toggle'});
 	Molpy.GlassJawToggle=function()
 	{
 		var gj=Molpy.Boosts['Glass Jaw'];
@@ -1636,8 +1637,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Fly the Flag',desc:'Sand rate of Flags is multiplied by ten times the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',sand:'360G',castles:'6T'});
 	new Molpy.Boost({name:'Up Up and Away',desc:'Sand rate of Ladders is multiplied by ten times the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',sand:'480G',castles:'8T'});
 	new Molpy.Boost({name:'Air Drop',desc:'Bags produce five times as much Sand. Trebuchets produce fifty times as many Castles.',sand:'1.2T',castles:'24T'});
-	new Molpy.Boost({name:'Schizoblitz',desc:'Double Blitzing speed',sand:'200T',castles:'368G'});
-	new Molpy.Boost({name:'Redunception',desc:'The Department of Redundancy Department redundantly wishes to redundantly wish you (who are being redundantly wished by the Department of Redunancy Departmeng, redundnatly) to be informed by the Department of Redundancy Department that the Department of Redundancy Department which is currently redundantly informing you has redundant information from the Department of Redundancy Department with which to redundantly inform you in order than you may be redundantly informed by the Department of Redundancy Department according to the redundant wishes of the Department of Redundancy Department which has that redundant information, at least according to other redundant information provided redundantly to you by the Department of Redundancy Department prior to the Department of Redundancy Department redundantly informing you with the redundant information with which it is currently redundantly informing you.',sand:'.97G',castles:'340M',stats:'Causes the effect which results from Redunception',icon:'redunception',group:'hpt'});
+	new Molpy.Boost({name:'Schizoblitz',desc:'Double Blitzing speed',sand:'200T',castles:'368G',icon:'schizoblitz'});
+	new Molpy.Boost({name:'Redunception',desc:'The Department of Redundancy Department redundantly wishes to redundantly wish you (who are being redundantly wished by the Department of Redunancy Department, redundantly) to be redundantly informed by the Department of Redundancy Department that the Department of Redundancy Department which is currently redundantly informing you has redundant information from the Department of Redundancy Department with which to redundantly inform you in order that you may be redundantly informed by the Department of Redundancy Department according to the redundant wishes of the Department of Redundancy Department which has that redundant information, at least according to other redundant information provided redundantly to you by the Department of Redundancy Department prior to the Department of Redundancy Department redundantly informing you with the redundant information with which it is currently redundantly informing you.',sand:'.97G',castles:'340M',stats:'Causes the effect which results from Redunception',icon:'redunception',group:'hpt'});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],

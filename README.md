@@ -29,8 +29,9 @@ Not for any commercial use!
 - Blitzing stacks with Blitzing (adds power of current Blitz and half its countdown)
 - Fractal Sandcastles boosts Not Lucky also
 - Panther Salve uses more Glass
+- New icons! (By BlitzGirl)
 
-### 1.5 musical version
+### 1.5 musical version (incomplete but I'm not writing a second verse right now)
 - Blast Furnace-fractal interaction is more benefici-al
 - Home Furniture is now for 1 m.N.P. more available
 - I rewrote redundaboxes to be more extensible
