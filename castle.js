@@ -2336,13 +2336,21 @@ Molpy.Up=function()
 				}
 			}
 			var blastFactor=1000;
+			var boosted=0;
 			if(Molpy.Got('Fractal Sandcastles'))
 			{
-				blastFactor=Math.max(.1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
+				blastFactor=Math.max(1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
 				if(Molpy.Got('Blitzing')||Molpy.Got('Blixtnedslag Kattungar, JA!'))
-					blastFactor/=Math.max(1,(Molpy.Boosts['Blitzing'].power-800)/100);
+				{
+					blastFactor/=Math.max(1,(Molpy.Boosts['Blitzing'].power-800)/500);
+					boosted=1;
+				}
 			}
-			var castles=Math.floor(Molpy.sand/blastFactor);				
+			var castles=Math.floor(Molpy.sand/blastFactor);		
+			if(boosted)
+			{
+				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/10));
+			}
 			Molpy.Notify('Blast Furnace in Operation!');
 			Molpy.SpendSand(castles*blastFactor);
 			Molpy.Build(castles);
@@ -2384,7 +2392,7 @@ Molpy.Up=function()
 			if(Molpy.Got('Fractal Sandcastles'))
 				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/5);
 			if(Molpy.Got('Blitzing'))
-				bonus*=(Molpy.Boosts['Blitzing'].power/10);
+				bonus*=Math.min(1,(Molpy.Boosts['Blitzing'].power-800)/400);
 			
 			bonus = Math.floor(bonus);
 			Molpy.Build(bonus);

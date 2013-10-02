@@ -1602,7 +1602,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Panther Salve',desc:'"It\'s some kind of paste." Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 5 Glass Blocks per use.',
 	desc:'Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 2 Glass Blocks per use.',group:'bean'});
 	
-	new Molpy.Boost({name:'Castle Crusher',desc:'<input type="Button" value="Crush" onclick="Molpy.CastleCrush()"></input> half your castles back into sand.',
+	new Molpy.Boost({name:'Castle Crusher',desc:'<input type="Button" value="Crush" onclick="Molpy.CastleCrush()"></input> half your castles back into sand. (One use.)',
 	sand:function(){
 		return (Molpy.Boosts['Castle Crusher'].power+1)*120+'M';
 	},castles:function(){
@@ -1619,6 +1619,7 @@ Molpy.DefineBoosts=function()
 		}
 		var c = Math.floor(Molpy.castles/2);
 		Molpy.Destroy(c);
+		if(Molpy.Got('Blitzing'))c*=(Molpy.Boosts['Blitzing'].power/100)
 		Molpy.Dig(c);
 		Molpy.Boosts['Castle Crusher'].power++;
 		Molpy.LockBoost('Castle Crusher');
