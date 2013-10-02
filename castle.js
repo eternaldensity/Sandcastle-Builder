@@ -228,7 +228,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.5;
+		Molpy.version=1.51;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2340,10 +2340,15 @@ Molpy.Up=function()
 			if(Molpy.Got('Fractal Sandcastles'))
 			{
 				blastFactor=Math.max(1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
-				if(Molpy.Got('Blitzing')||Molpy.Got('Blixtnedslag Kattungar, JA!'))
+				if(Molpy.Got('Blitzing'))
 				{
-					blastFactor/=Math.max(1,(Molpy.Boosts['Blitzing'].power-800)/500);
-					boosted=1;
+					if(Molpy.Got('Blixtnedslag Kattungar, JA!'))
+					{
+						blastFactor/=Math.max(1,(Molpy.Boosts['Blitzing'].power-800)/600);
+						boosted=1;
+					}
+					blastFactor/=2;
+					
 				}
 			}
 			var castles=Math.floor(Molpy.sand/blastFactor);		
@@ -2382,7 +2387,7 @@ Molpy.Up=function()
 			{
 				bonus*= (1+0.2*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)
 				if(Molpy.Got('Blitzing'))
-					bonus*=(Molpy.Boosts['Blitzing'].power/10);
+					bonus*=Math.min(2,(Molpy.Boosts['Blitzing'].power-800)/200);
 			}
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=5)		
 			{				
@@ -2391,8 +2396,6 @@ Molpy.Up=function()
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
 				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/5);
-			if(Molpy.Got('Blitzing'))
-				bonus*=Math.min(1,(Molpy.Boosts['Blitzing'].power-800)/400);
 			
 			bonus = Math.floor(bonus);
 			Molpy.Build(bonus);

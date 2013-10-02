@@ -18,6 +18,10 @@ Not for any commercial use!
 
 ## Changelog
 
+### 1.51
+- Tweaked some sentence generation, added some stuff, fixed some mustard
+- Adjusted blitzing stack effects (there was some mustard in the code, also I wanted to make it double BF/NL at minimum)
+
 ### 1.5
 - Tweaked Blast Furnace (fractals helps it more), made base ASHF time 5 not 4 mNP
 - Glass Jaw is now easier to unlock for those who want to use it sooner rather than increase glass block production
