@@ -19,14 +19,19 @@ Not for any commercial use!
 ## Changelog
 
 ### 1.5
-- Tweaked Blast Furnace (fractals helps it more), made base ASHF time 5 not 4 mNP
-- Glass Jaw is now easier to unlock for those who want to use it sooner rather than increase glass block production
-- Extracted the various redundarewards into their own functions for neatness and easier reading of code
-- Set limit of Glass Blocks available as rewards (based on chiller), further notluck gives chips
+- Blast Furnace-fractal interaction is more benefici-al
+- Home Furniture is now for 1 m.N.P. more available
+- I rewrote redundaboxes to be more extensible
+- The code is far more treeish and the function is maintainable
+- The Lucky glass block prize per ONG is limited by Chill level
+- And then until the next ONG only glass chips are available
+- Glass Jaw can be unlocked as soon as you have ten blocks in the store
+- The kit reward code has been split so reading it is not a bore
+
 
 ### 1.43
 - New Icons for Fractal Sandcastles, by StormAngel88
-- Who did the original image? I'll credit them here if you remind me
+- Original image was by cmyk
 
 ### 1.42
 - New Icons by BlitzGirl!

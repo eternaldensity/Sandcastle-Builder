@@ -1277,7 +1277,7 @@ Molpy.Up=function()
 					Molpy.destroyNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'-1 Castle':amount+ ' Castles Destroyed',!logsilent);
+					Molpy.Notify(amount==1?'-1 Castle':Molpify(amount)+ ' Castles Destroyed',!logsilent);
 				}
 			}else{
 				Molpy.destroyNotifyCount+=amount;
@@ -1965,7 +1965,7 @@ Molpy.Up=function()
 					Molpy.BoostsOwned++;
 					Molpy.CheckBuyUnlocks();
 					Molpy.unlockedGroups[this.group]=1;
-					if(sp+cp>0)
+					if(sp+cp>0 && Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]!='hide1')
 					{
 						if(this.className)
 						{
@@ -2142,18 +2142,28 @@ Molpy.Up=function()
 		Molpy.redactedWord=BeanishToCuegish("UmVkdW5kYWtpdHR5");
 		Molpy.redactedWords=BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
 		Molpy.redactedBrackets=BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
-		Molpy.redactedSpoiler=['<div><b>Spoiler:</b><input type="button" value="Show" onclick="Molpy.clickRedacted()"></input></div>',
-		'<div><b>Spoiler:</b><input type="button" value="Hide" onclick="Molpy.clickRedacted()"></input>'
-			+BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==")+'</div>'];
-		Molpy.RedactedShop=function()
+		Molpy.redactedSpoilerValue=BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
+		Molpy.redactedDrawType=[];
+		Molpy.RedactedHTML=function(heading,level)
 		{
-			var H = (Molpy.redactedVisible<0)*1;
-			return '<div id="redacteditem"><div class="icon redacted"></div><div class="title">'+Molpy.redactedWord+'</div>'+Molpy.redactedSpoiler[H]+'</div>';
-		}
-		Molpy.RedactedLoot=function()
-		{
-			var H = (Molpy.redactedVisible<0)*1;
-			return '<div id="redacteditem"><div class="icon redacted"></div><div class="heading">'+Molpy.redactedBrackets+'</div><div class="title">'+Molpy.redactedWord+'</div>'+Molpy.redactedSpoiler[H]+'</div>';
+			level=level||0;
+			var drawType = Molpy.redactedDrawType[level];
+			var spoiler = '';
+			var label = 'Hide';
+			if(drawType=='show') label='Show';
+			heading=heading?'<div class="heading">'+Molpy.redactedBrackets+'</div>':'';
+			var str = '<div id="redacteditem">'+heading+'<div class="icon redacted"></div><div class="title">'
+				+Molpy.redactedWord+'</div><div><b>Spoiler:</b><input type="button" value="'
+				+label+'" onclick="Molpy.ClickRedacted('+level+')"</input>';
+			if(drawType=='recur')
+			{
+				str+=Molpy.RedactedHTML(heading,level+1);
+			}else if( drawType=='hide1')
+			{
+				str+=Molpy.redactedSpoilerValue;
+			}
+				
+			return str+'</div></div>';
 		}
 		
 		Molpy.redactedCountup=0;
@@ -2174,11 +2184,13 @@ Molpy.Up=function()
 					if(Molpy.redactedVisible)
 					{
 						Molpy.redactedVisible=0; //hide because the redacted was missed
+						Molpy.redactedDrawType=[];
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
 						Molpy.badgeRepaint=1;	
 						Molpy.RandomiseRedactedTime();	
 					}else{
+						Molpy.redactedDrawType=['show'];
 						Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
 						if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;
 
@@ -2208,30 +2220,47 @@ Molpy.Up=function()
 			}
 		}
 		
-		Molpy.clickRedacted=function()
+		Molpy.ClickRedacted=function(level)
 		{
+			level=level||0;
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
-			if(Molpy.redactedVisible<1 || (Molpy.Got('Redundant Redundance Supply of Redundancy') && Math.floor(Math.random()*20)==2))
+			if(Molpy.redactedDrawType[level]!='show')
 			{
-				Molpy.redactedVisible*=-1;
-				Molpy.redactedToggle*=10;
-				if(Molpy.redactedVisible <1)	
-				{				
-					Molpy.RewardRedacted(); //see how generous I am?
-					Molpy.redactedClicks++; 
-				}
+				Molpy.redactedDrawType[level]='show'; 
+				while(Molpy.redactedDrawType.length>level+1)
+					Molpy.redactedDrawType.pop(); //we don't need to remember those now
 				return;
 			}
-		
-		
-			var item=g('redacteditem');
-			if(item) item.className='hidden';
-			Molpy.redactedClicks++;
-			Molpy.redactedVisible=0;
-			Molpy.redactedViewIndex=-1;
-			Molpy.RandomiseRedactedTime();				
+			
+			
+			if(Molpy.Got('Redundant Redundance Supply of Redundancy') && Math.floor(Math.random()*20)==1)
+			{
+				Molpy.redactedDrawType[level]='hide1';
+				Molpy.redactedToggle*=10;	
+			}else
+			if (Molpy.Got('Redunception') && Math.floor(Math.random*8/Molpy.redactedDrawType.length)==0)
+			{
+				Molpy.redactedDrawType[level]='recur';
+				Molpy.redactedDrawType.push('show');	
+				Molpy.redactedToggle++;
+				//JUMP!
+				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
+				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
+				Molpy.redactedViewIndex=-1;
+			}else
+			{ // it goes away.					
+				var item=g('redacteditem');
+				if(item) item.className='hidden';
+				Molpy.redactedVisible=0;
+				Molpy.redactedViewIndex=-1;
+				Molpy.redactedDrawType=[];
+				Molpy.RandomiseRedactedTime();
+			}
+			
+			
+			Molpy.redactedClicks++;				
 			Molpy.RewardRedacted();
 			if(Molpy.redactedClicks>=2)
 				Molpy.EarnBadge('Not So '+Molpy.redactedW);
@@ -2409,7 +2438,7 @@ Molpy.Up=function()
 				{
 					var id = Molpy.groupNames[gr][2]||'';
 					if(id) id= ' id="'+id+'"';
-					var r = (Math.abs(Molpy.redactedVisible)==4&&Molpy.redactedGr==gr);
+					var r = (Molpy.redactedVisible==4&&Molpy.redactedGr==gr);
 					if(r)id='';
 					str+= '<div class="floatsquare boost loot">'+Molpy.groupNames[gr][1]+'<br/><br/>'+showhideButton(gr)
 						+'<div class="icon'
@@ -2421,21 +2450,21 @@ Molpy.Up=function()
 			{
 				str+= '<div class="floatsquare badge loot">Badges<br/>Earned<br/>'
 					+showhideButton('badges')+'<div class="icon '
-					+(Math.abs(Molpy.redactedVisible)==5?'redacted':'')
+					+(Molpy.redactedVisible==5?'redacted':'')
 					+'"></div></div>';
 			}
 			if(Molpy.BadgeN-Molpy.BadgesOwned)
 			{
 				str+= '<div class="floatsquare badge shop">Badges<br/>Available<br/>'
 					+showhideButton('badgesav')+'<div class="icon '
-					+(Math.abs(Molpy.redactedVisible)==6?'redacted':'')
+					+(Molpy.redactedVisible==6?'redacted':'')
 					+'"></div></div>';
 			}
 			if(Molpy.Boosts['Chromatic Heresy'].unlocked)
 			{
 				str+= '<div class="floatsquare boost loot alert">Tagged<br/>Items<br/>'
 					+showhideButton('tagged')+'<div id="boost_chromatic" class="icon '
-					+(Math.abs(Molpy.redactedVisible)==7?'redacted':'')
+					+(Molpy.redactedVisible==7?'redacted':'')
 					+'"></div></div>';
 			}
 			
@@ -2454,7 +2483,7 @@ Molpy.Up=function()
 				if(Molpy.SandTools[i].bought)toolsUnlocked++;
 			}
 			
-			if(Math.abs(Molpy.redactedVisible)==1)
+			if(Molpy.redactedVisible==1)
 			{
 				if(Molpy.redactedViewIndex==-1)
 				{
@@ -2467,7 +2496,7 @@ Molpy.Up=function()
 			var i=0;
 			while (i < Math.min(toolsUnlocked, Molpy.SandToolsN))
 			{
-				if(i==redactedIndex) str+= Molpy.RedactedShop();
+				if(i==redactedIndex) str+= Molpy.RedactedHTML();
 				var me=Molpy.SandToolsById[i];
 				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
 				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
@@ -2475,7 +2504,7 @@ Molpy.Up=function()
 				'<div id="SandToolDescription'+me.id+'"></div></div></div>';
 				i++
 			}
-			if(i==redactedIndex) str+= Molpy.RedactedShop();
+			if(i==redactedIndex) str+= Molpy.RedactedHTML();
 			g('sandtools').innerHTML=str;
 			
 			toolsUnlocked=1;			
@@ -2485,7 +2514,7 @@ Molpy.Up=function()
 			}
 			
 			redactedIndex=-1;
-			if(Math.abs(Molpy.redactedVisible)==2)
+			if(Molpy.redactedVisible==2)
 			{
 				if(Molpy.redactedViewIndex==-1)
 				{
@@ -2498,7 +2527,7 @@ Molpy.Up=function()
 			i=0;
 			while (i < Math.min(toolsUnlocked, Molpy.CastleToolsN))
 			{
-				if(i==redactedIndex) str+= Molpy.RedactedShop();
+				if(i==redactedIndex) str+= Molpy.RedactedHTML();
 				var me=Molpy.CastleToolsById[i];
 				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
 				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
@@ -2506,7 +2535,7 @@ Molpy.Up=function()
 				'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
 				i++
 			}
-			if(i==redactedIndex) str+= Molpy.RedactedShop();
+			if(i==redactedIndex) str+= Molpy.RedactedHTML();
 			g('castletools').innerHTML=str;		
 		}
 		
@@ -2516,7 +2545,7 @@ Molpy.Up=function()
 			var group= me.group;
 			if(r)
 			{
-				r=Molpy.RedactedLoot();
+				r=Molpy.RedactedHTML(1);
 				Molpy.redactedGr=group;
 			}else{
 				r='';
@@ -2559,7 +2588,7 @@ Molpy.Up=function()
 			}
 			
 			var redactedIndex=-1;
-			if(Math.abs(Molpy.redactedVisible)==3)
+			if(Molpy.redactedVisible==3)
 			{
 				if(Molpy.redactedViewIndex==-1)
 				{
@@ -2571,12 +2600,12 @@ Molpy.Up=function()
 			var r = 0;
 			for (var i in Molpy.BoostsInShop)
 			{
-				if(r==redactedIndex) str+= Molpy.RedactedShop();
+				if(r==redactedIndex) str+= Molpy.RedactedHTML();
 				var me=Molpy.BoostsInShop[i];
 				str+=Molpy.BoostString(me,1);
 				r++;
 			}
-			if(r==redactedIndex) str+= Molpy.RedactedShop();
+			if(r==redactedIndex) str+= Molpy.RedactedHTML();
 			g('boosts').innerHTML=str;
 			
 			var blist=[];
@@ -2590,7 +2619,7 @@ Molpy.Up=function()
 			}
 			blist.sort(PriceSort);
 			redactedIndex=-1;
-			if(Math.abs(Molpy.redactedVisible)==4)
+			if(Molpy.redactedVisible==4)
 			{
 				if(Molpy.redactedViewIndex==-1)
 				{
@@ -2633,7 +2662,7 @@ Molpy.Up=function()
 					}
 				}
 				var redactedIndex=-1;
-				if(Math.abs(Molpy.redactedVisible)==5)
+				if(Molpy.redactedVisible==5)
 				{
 					if(Molpy.redactedViewIndex==-1)
 					{
@@ -2645,12 +2674,12 @@ Molpy.Up=function()
 				//do some sorting here?
 				for (var i in blist)
 				{
-					if(r==redactedIndex) str+= Molpy.RedactedLoot();
+					if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
 					var me=blist[i];					
 					str+=Molpy.BadgeLootString(me);
 					r++;
 				}
-				if(r==redactedIndex) str+= Molpy.RedactedLoot();
+				if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
 			}
 			Molpy.badgeHTML=str;
 			str='';			
@@ -2666,7 +2695,7 @@ Molpy.Up=function()
 				}
 				
 				var redactedIndex=-1;
-				if(Math.abs(Molpy.redactedVisible)==6)
+				if(Molpy.redactedVisible==6)
 				{
 					if(Molpy.redactedViewIndex==-1)
 					{
@@ -2678,12 +2707,12 @@ Molpy.Up=function()
 				//do some sorting here?
 				for (var i in blist)
 				{
-					if(r==redactedIndex) str+= Molpy.RedactedLoot();
+					if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
 					var me=blist[i];
 					str+='<div class="lootbox badge shop" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div class="heading">[badge]</div><div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'+(me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
 					r++;
 				}
-				if(r==redactedIndex) str+= Molpy.RedactedLoot();
+				if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
 			}
 			Molpy.badgeHTML+=str;
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;		
@@ -3266,7 +3295,7 @@ Molpy.Up=function()
 			var redacteditem=g('redacteditem');
 			if(redacteditem)
 			{
-				redacteditem.className=Molpy.redactedClassNames[Math.abs(Molpy.redactedVisible)];
+				redacteditem.className=Molpy.redactedClassNames[Molpy.redactedVisible];
 			}
 		}
 		for(var i in Molpy.SandTools)
