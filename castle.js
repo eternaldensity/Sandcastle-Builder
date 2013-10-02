@@ -2339,7 +2339,7 @@ Molpy.Up=function()
 			if(Molpy.Got('Fractal Sandcastles'))
 			{
 				blastFactor=Math.max(.1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
-				if(Molpy.Got('Blitzing'))
+				if(Molpy.Got('Blitzing')||Molpy.Got('Blixtnedslag Kattungar, JA!'))
 					blastFactor/=Math.max(1,(Molpy.Boosts['Blitzing'].power-800)/100);
 			}
 			var castles=Math.floor(Molpy.sand/blastFactor);				
@@ -2371,7 +2371,11 @@ Molpy.Up=function()
 			items+=bb;
 			bonus += Molpy.redactedClicks*10;
 			if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
+			{
 				bonus*= (1+0.2*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)
+				if(Molpy.Got('Blitzing'))
+					bonus*=(Molpy.Boosts['Blitzing'].power/10);
+			}
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=5)		
 			{				
 				Molpy.Boosts['Glass Block Storage'].power-=5;
