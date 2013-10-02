@@ -30,6 +30,7 @@ Not for any commercial use!
 - Fractal Sandcastles boosts Not Lucky also
 - Panther Salve uses more Glass
 - New icons! (By BlitzGirl)
+- Spent way too much time on the description of the new boost and I'm struggling to stay awake I just realized ugh.
 
 ### 1.5 musical version (incomplete but I'm not writing a second verse right now)
 - Blast Furnace-fractal interaction is more benefici-al
