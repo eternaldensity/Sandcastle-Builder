@@ -3478,9 +3478,10 @@ Molpy.Up=function()
 		});
 		g("clockface").appendChild(hand);
     }
-	$(document).ready(function () {
-		createClockHand();
-	});
+	if(g('game'))
+		$(document).ready(function () {
+			createClockHand();
+		});
 	function drawClockHand()
 	{
 		if(!g('game'))return;

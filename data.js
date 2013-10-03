@@ -1266,6 +1266,7 @@ Molpy.DefineBoosts=function()
 		{		
 			var ch = Molpy.Boosts['Glass Chip Storage'];
 			var bl = Molpy.Boosts['Glass Block Storage'];
+			var str ='';
 			if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()))
 			{
 				var useChips=1;
@@ -1276,15 +1277,20 @@ Molpy.DefineBoosts=function()
 				{
 					useChips=0
 				}else{
-					return 'It costs 3 Chips to upgrade the Glass Furnace\'s speed';
+					str+= 'It costs 3 Chips to upgrade the Glass Furnace\'s speed';
 				}
 				var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
-					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery()"></input> '
+					str+= '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery()"></input> '
 					+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+pow
 					+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 			}else{
-				return 'Currently, you have no more sand available for further upgrades';
+				str+= 'Currently, you have no more sand available for further upgrades';
 			}
+			if(Molpy.Boosts['Sand Refinery'].power>1 && ch.power<ch.bought*10)
+			{
+				str+='</br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeSandRefinery()"></input> the Sand Refinery and receive a 1 Glass Chip refund.';
+			}
+			return str;
 		}
 		,icon:'sandrefinery',className:'action',group:'hpt'
 	});
@@ -1307,8 +1313,18 @@ Molpy.DefineBoosts=function()
 			Molpy.Boosts['Sand Refinery'].power++;
 			Molpy.Notify('Sand Refinery upgraded',1);
 			Molpy.boostRepaint=1;
-		}
-		
+		}		
+	}
+	Molpy.DowngradeSandRefinery=function()
+	{
+		var sr = Molpy.Boosts['Sand Refinery'];
+			var ch = Molpy.Boosts['Glass Chip Storage'];
+		if(sr.power<1)return;
+		if(ch.power>=ch.bought*10)return;
+		ch.power++;
+		sr.power--;
+		Molpy.Notify('Sand Refinery downgraded',1);
+		Molpy.boostRepaint=1;			
 	}
 	
 	new Molpy.Boost({name:'Glass Chip Storage',desc:
