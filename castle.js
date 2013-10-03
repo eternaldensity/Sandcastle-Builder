@@ -206,7 +206,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.532;
+		Molpy.version=1.54;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -295,10 +295,13 @@ Molpy.Up=function()
 				Molpy.FromNeedlePulledThing(thread);
 				Molpy.loadCount++;
 				Molpy.autosaveCountup=0;
-				Molpy.Notify('Game loaded',1);
-				if(Molpy.loadCount>=40)
+				if(g('game'))
 				{
-					Molpy.UnlockBoost('Coma Molpy Style');
+					Molpy.Notify('Game loaded',1);
+					if(Molpy.loadCount>=40)
+					{
+						Molpy.UnlockBoost('Coma Molpy Style');
+					}
 				}
 			}
 		}
@@ -3020,15 +3023,18 @@ Molpy.Up=function()
 		if(Molpy.Got('Factory Automation'))
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
+			var t=0;
 			while(i--)
 			{
 				var sand = 2000000*Math.pow(10000,i);
 				if(Molpy.sand>=sand)
 				{
 					Molpy.SpendSand(sand);
-					Molpy.RewardRedacted(1);
+					t++;
 				}
 			}
+			while(t--) 
+				Molpy.RewardRedacted(1);
 		}
 		Molpy.recalculateDig=1;
 	}

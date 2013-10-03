@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.54
+- Prevent index from trying to Notify after loading
+- Upgrade/downgrade refinery and chiller now cause sand rate to recalculate immediately rather than waiting for somthing else to trigger it (oops)
+- Furnace Automation now prespends sand so Blast Furnace doesn't prevent it from running multiple times.
+
 ### 1.532
 - no I fixed Factory Automaton which doesn't exist.
 - index shows version I think. can't test locally!

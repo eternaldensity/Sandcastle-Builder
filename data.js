@@ -1326,6 +1326,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Boosts['Sand Refinery'].power++;
 			Molpy.Notify('Sand Refinery upgraded',1);
 			Molpy.boostRepaint=1;
+			Molpy.recalculateDig=1;
 		}		
 	}
 	Molpy.DowngradeSandRefinery=function()
@@ -1337,7 +1338,8 @@ Molpy.DefineBoosts=function()
 		ch.power++;
 		sr.power--;
 		Molpy.Notify('Sand Refinery downgraded',1);
-		Molpy.boostRepaint=1;			
+		Molpy.boostRepaint=1;
+		Molpy.recalculateDig=1;			
 	}
 	
 	new Molpy.Boost({name:'Glass Chip Storage',desc:
@@ -1476,6 +1478,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Boosts['Glass Chiller'].power++;
 			Molpy.Notify('Glass Chiller upgraded',1);
 			Molpy.boostRepaint=1;
+			Molpy.recalculateDig=1;
 		}
 	}
 	
