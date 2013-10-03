@@ -200,14 +200,13 @@ Molpy.Up=function()
 	
 	Molpy.Wake=function()
 	{
-		createClockHand();
 		Molpy.molpish=1;
 		Molpy.HardcodedData();//split some stuff into separate file
 		/* In which variables are declared
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.531;
+		Molpy.version=1.532;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -451,6 +450,7 @@ Molpy.Up=function()
 			Molpy.options.colourscheme=parseInt(pixels[7]);
 			if(!g('game'))
 			{				
+				g('indexversion').innerHTML='The Game of Time. Version '+Molpy.version;
 				Molpy.UpdateColourScheme();
 				return;
 			}
@@ -708,9 +708,9 @@ Molpy.Up=function()
 					Molpy.Notify('+5 glass blocks. Sorry about that, BlitzGirl',1);
 				}
 			}
-			if(version<1.531)
+			if(version<1.532)
 			{
-				var fa = Molpy.Boosts['Factory Automaton'];
+				var fa = Molpy.Boosts['Factory Automation'];
 				if(!fa.power) 
 				{
 					fa.power=0;
@@ -982,6 +982,7 @@ Molpy.Up=function()
 			return;
 		}
 		
+		createClockHand();
 		
 		Molpy.showStats=0;
 		Molpy.StatsToggle=function()
