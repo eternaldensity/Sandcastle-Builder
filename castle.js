@@ -721,11 +721,12 @@ Molpy.Up=function()
 			}	
 			if(version<1.51)
 			{
-				var bl Molpy.Boosts['Glass Block Storage'];
+				var bl = Molpy.Boosts['Glass Block Storage'];
 				var pur = Molpy.Boosts['Sand Purifier'];
 				if(pur.power==1 || pur.power==2) //cost should be 20, 25, 30 but was actually 25, 25, 25.
+				{
 					bl.power+=5;
-					Molpy.Notify('+5 glass blocks. Sorry about that BlitzGirl');
+					Molpy.Notify('+5 glass blocks. Sorry about that, BlitzGirl',1);
 				}
 			}
 			

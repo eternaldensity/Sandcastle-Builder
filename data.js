@@ -1506,7 +1506,7 @@ Molpy.DefineBoosts=function()
 		var bl = Molpy.Boosts['Glass Block Storage'];
 		if(bl.power>=Molpy.SandPurifierUpgradeCost())
 		{
-			bl.power-=Molpy.SandPurifierUpgradeCost());
+			bl.power-=Molpy.SandPurifierUpgradeCost();
 			Molpy.Boosts['Sand Purifier'].power++;
 			Molpy.boostRepaint=1;
 			Molpy.Notify('Sand Purifier upgraded',1);
