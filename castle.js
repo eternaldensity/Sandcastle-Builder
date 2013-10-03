@@ -199,7 +199,8 @@ Molpy.Up=function()
 	Molpy.molpish=0;
 	
 	Molpy.Wake=function()
-	{	
+	{
+		createClockHand();
 		Molpy.molpish=1;
 		Molpy.HardcodedData();//split some stuff into separate file
 		/* In which variables are declared
@@ -3478,10 +3479,6 @@ Molpy.Up=function()
 		});
 		g("clockface").appendChild(hand);
     }
-	if(g('game'))
-		$(document).ready(function () {
-			createClockHand();
-		});
 	function drawClockHand()
 	{
 		if(!g('game'))return;

@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.523
+- Fixed the clock hand. I didn't write any of that code btw :P
+
 ### 1.522
 - what idiot wrote the _utf8_decode function I'm using?????
 
