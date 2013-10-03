@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.522
+- what idiot wrote the _utf8_decode function I'm using?????
+
 ### 1.521
 - Fixed undefined i strict mode problem which popped up in the index page
 - That's what I get for not testing with cookies since they don't work in chrome for local pages
