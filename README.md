@@ -21,6 +21,8 @@ Not for any commercial use!
 ### 1.52
 - Glass blower has an 'each'
 - Fixed 'When active X uses 0%...' mustard
+- More words and sentence structure rejigging
+- Prevent Panther Salve from being too overpowered
 
 ### 1.51
 - Tweaked some sentence generation, added some stuff, fixed some mustard
