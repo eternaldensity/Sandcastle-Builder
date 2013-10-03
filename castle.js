@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.53;
+		Molpy.version=1.531;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -706,6 +706,14 @@ Molpy.Up=function()
 				{
 					bl.power+=5;
 					Molpy.Notify('+5 glass blocks. Sorry about that, BlitzGirl',1);
+				}
+			}
+			if(version<1.531)
+			{
+				var fa = Molpy.Boosts['Factory Automaton'];
+				if(!fa.power) 
+				{
+					fa.power=0;
 				}
 			}
 			
