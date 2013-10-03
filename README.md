@@ -18,8 +18,16 @@ For personal amusement only.
 
 ## Changelog
 
-### 1.523
+### 1.53
 - Fixed the clock hand. I didn't write any of that code btw :P
+- Furnace Crossfeed toggle
+- looked at the grammar of *its* description and realised that *it's* wrong.
+- new Furnace related boost (you can probably guess from my recent discussion with waveney)
+- because **its** description is copied from the previously mentioned, **it's** wrong as well.
+- Gave Rosetta a new purpose. Also waveney-discussion related
+- Rewrote postfix specification code using exponential notation rather than a squillion zeroes. Also waveney's suggestion (though no new postfixes yet)
+- I guess I'll dedicate this update to waveney.
+- Added some words and sentence structure. StormAngel helped a bit.
 
 ### 1.522
 - what idiot wrote the _utf8_decode function I'm using?????

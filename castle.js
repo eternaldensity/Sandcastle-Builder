@@ -16,21 +16,21 @@ function ONGsnip(time)
 	return time;
 }
 var postfixes=[
-{limit:1000000000000000000000000000000000000000000,divisor:1000000000000000000000000000000000000000000,postfix:['W',' Whatthe']},
-{limit:1000000000000000000000000000000000000000,divisor:1000000000000000000000000000000000000000,postfix:['L',' Lotta']},
-{limit:1000000000000000000000000000000000000,divisor:1000000000000000000000000000000000000,postfix:['F',' Fraki']},
-{limit:1000000000000000000000000000000000,divisor:1000000000000000000000000000000000,postfix:['H',' Helo']}, //or Ballard
-{limit:1000000000000000000000000000000,divisor:1000000000000000000000000000000,postfix:['S',' Squilli']},
-{limit:1000000000000000000000000000,divisor:1000000000000000000000000000,postfix:['U',' Umpty']},
+{limit:1e42,divisor:1e42,postfix:['W',' Whatthe']},
+{limit:1e39,divisor:1e39,postfix:['L',' Lotta']},
+{limit:1e36,divisor:1e36,postfix:['F',' Fraki']},
+{limit:1e33,divisor:1e33,postfix:['H',' Helo']}, //or Ballard
+{limit:1e30,divisor:1e30,postfix:['S',' Squilli']},
+{limit:1e27,divisor:1e27,postfix:['U',' Umpty']},
 
-{limit:1000000000000000000000000,divisor:1000000000000000000000000,postfix:['Y',' Yotta']},
-{limit:1000000000000000000000,divisor:1000000000000000000000,postfix:['Z',' Zeta']},
-{limit:1000000000000000000,divisor:1000000000000000000,postfix:['E',' Exa']},
-{limit:1000000000000000,divisor:1000000000000000,postfix:['P',' Peta']},
-{limit:1000000000000,divisor:1000000000000,postfix:['T',' Tera']},
-{limit:1000000000,divisor:1000000000,postfix:['G',' Giga']},
-{limit:1000000,divisor:1000000,postfix:['M',' Mega']},
-{limit:10000,divisor:1000,postfix:['K',' Kilo']}, //yes this is intentional
+{limit:1e24,divisor:1e24,postfix:['Y',' Yotta']},
+{limit:1e21,divisor:1e21,postfix:['Z',' Zeta']},
+{limit:1e18,divisor:1e18,postfix:['E',' Exa']},
+{limit:1e15,divisor:1e15,postfix:['P',' Peta']},
+{limit:1e12,divisor:1e12,postfix:['T',' Tera']},
+{limit:1e9,divisor:1e9,postfix:['G',' Giga']},
+{limit:1e6,divisor:1e6,postfix:['M',' Mega']},
+{limit:1e4,divisor:1e3,postfix:['K',' Kilo']}, //yes this is intentional
 ];
 function Molpify(number, raftcastle, shrinkify)
 {
@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.522;
+		Molpy.version=1.53;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2323,14 +2323,25 @@ Molpy.Up=function()
 		}
 		Molpy.RewardBlastFurnace=function()
 		{
+			var cb=0;
 			if(Molpy.Got('Furnace Crossfeed'))
 			{
-				if(Molpy.Boosts['Glass Furnace'].power)
+				if(Molpy.Boosts['Glass Furnace'].power && Molpy.Boosts['Furnace Crossfeed'].power)
 				{
 					Molpy.MakeChips();
-					return;
+					cb=1;
 				}
 			}
+			if(Molpy.Got('Furnace Multitasking'))
+			{
+				if(Molpy.Boosts['Glass Blower'].power && Molpy.Boosts['Furnace Multitasking'].power)
+				{
+					Molpy.MakeBlocks();
+					cb=1;
+				}
+			}
+			if(cb)return;
+			
 			var blastFactor=1000;
 			var boosted=0;
 			if(Molpy.Got('Fractal Sandcastles'))
@@ -2999,10 +3010,15 @@ Molpy.Up=function()
 		Molpy.Build(0);
 		if(Molpy.Got('Factory Automation'))
 		{
-			if(Molpy.sand>=2000000)
+			var i = Molpy.Boosts['Factory Automation'].power+1;
+			while(i--)
 			{
-				Molpy.SpendSand(2000000);
-				Molpy.RewardRedacted(1);
+				var sand = 2000000*Math.pow(10000,i);
+				if(Molpy.sand>=sand)
+				{
+					Molpy.SpendSand(sand);
+					Molpy.RewardRedacted(1);
+				}
 			}
 		}
 		Molpy.recalculateDig=1;
@@ -3231,9 +3247,16 @@ Molpy.Up=function()
 			Molpy.LockBoost('Doublepost');
 			Molpy.LockBoost('Active Ninja');
 			Molpy.LockBoost('Furnace Crossfeed');
-			Molpy.Boosts['Doublepost'].department=0;//prevent the department from unlocking it
-			Molpy.Boosts['Active Ninja'].department=0;//prevent the department from unlocking it
-			Molpy.Boosts['Furnace Crossfeed'].department=0;//prevent the department from unlocking it
+			Molpy.Boosts['Doublepost'].department=0;	//prevent the department from unlocking these
+			Molpy.Boosts['Active Ninja'].department=0;
+			Molpy.Boosts['Furnace Crossfeed'].department=0;
+			Molpy.Boosts['Furnace Multitasking'].department=0;
+			var fa = Molpy.Boosts['Factory Automation'];
+			if(fa.power>0)
+			{
+				fa.power=0;
+				Molpy.Notify('Factory Automation Downgraded',1);
+			}
 		}else
 		{		
 			Molpy.NPlength=3600;
@@ -3241,6 +3264,8 @@ Molpy.Up=function()
 			Molpy.Boosts['Active Ninja'].department=1;
 			if(Molpy.Got('Glass Furnace'))
 				Molpy.Boosts['Furnace Crossfeed'].department=1;
+			if(Molpy.Got('Furnace Crossfeed'))
+				Molpy.Boosts['Furnace Multitasking'].department=1;
 		}
 		if(Molpy.newpixNumber > 241)
 		{

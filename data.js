@@ -694,7 +694,20 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'HAL-0-Kitty',desc:'NewPixBots build an extra Castle per 9 '+Molpy.redactedWords,
 		sand:9000,castles:2001,icon:'halokitty',group:'cyb'});
-	new Molpy.Boost({name:'Factory Automation',desc:'When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+Molpify(2000000)+' Sand',sand:'4.5M',castles:15700,icon:'factoryautomation',group:'hpt'});
+	new Molpy.Boost({name:'Factory Automation',
+		desc:function(me)
+		{
+			var costs = '';			
+			var i = me.power+1;
+			while(i--)
+			{
+				var sand = 2000000*Math.pow(10000,i);
+				costs+=Molpify(sand,0,!Molpy.showStats);
+				if(i)costs+=', then ';
+			}
+			return 'When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand';
+		},
+		sand:'4.5M',castles:15700,icon:'factoryautomation',group:'hpt'});
 	new Molpy.Boost({name:'Blast Furnace',desc:'Gives the Department of Redundancy Department the ability to make Castles from Sand',
 		sand:'8.8M',castles:28600,
 		stats:function()
@@ -1581,7 +1594,7 @@ Molpy.DefineBoosts=function()
 			{
 				if(!Molpy.Got('Rosetta'))
 				{
-					return '<input type="Button" value="Trade" onclick="Molpy.GetRosetta()"> 50 Bags to find Rosetta.</input>'
+					str+= '<br/><input type="Button" value="Trade" onclick="Molpy.GetRosetta()"></input> 50 Bags to find Rosetta.';
 				}
 			}
 			return str;
@@ -1601,7 +1614,8 @@ Molpy.DefineBoosts=function()
 	{
 		if(Molpy.SandTools['Bag'].amount>=50)
 		{
-			Molpy.SandTools['Bag'].amount-=50;
+			Molpy.SandTools['Bag'].amount-=50;			
+			Molpy.CastleTools['Bag'].refresh();
 			Molpy.shopRepaint=1;
 			Molpy.UnlockBoost('Rosetta');
 		}else{
@@ -1617,7 +1631,17 @@ Molpy.DefineBoosts=function()
 			{
 				if(!Molpy.Got('Panther Salve'))
 				{
-					return '<input type="Button" value="Trade" onclick="Molpy.BuyGlassBoost(\'Panther Salve\',0,250)"> 250 Glass Blocks for Panther Salve.</input>'
+					str+= '<br/><input type="Button" value="Trade" onclick="Molpy.BuyGlassBoost(\'Panther Salve\',0,250)"> 250 Glass Blocks for Panther Salve.</input>'
+				}
+				
+				var fa = Molpy.Boosts['Factory Automation'];
+				var bots=Molpy.CastleTools['NewPixBot'].amount;
+				if(fa.bought && Molpy.Got('Doublepost'))
+				{
+					if(fa.power==0&&bots>=55 || fa.power==1&&bots>=65)
+					{
+						str+='<br/><input type="Button" value="Trade" onclick="Molpy.UpgradeFactoryAutomation()"></input> '+(fa.power?65:55)+' NewPixBots to upgrade Factory Automation.';
+					}
 				}
 			}
 			return str;
@@ -1633,7 +1657,24 @@ Molpy.DefineBoosts=function()
 			}
 		}
 		});
-		
+	Molpy.UpgradeFactoryAutomation=function()
+	{	
+		var fa = Molpy.Boosts['Factory Automation'];
+		var bots=Molpy.CastleTools['NewPixBot'].amount;
+		if(fa.bought && Molpy.Got('Doublepost'))
+		{
+			if(fa.power==0&&bots>=55 || fa.power==1&&bots>=65)
+			{
+				Molpy.CastleTools['NewPixBot'].amount-=(fa.power?65:55);
+				Molpy.CastleTools['NewPixBot'].refresh();
+				Molpy.shopRepaint=1;
+				fa.power++;				
+				fa.hoverOnCounter=1;
+				Molpy.boostRepaint=1;
+				Molpy.Notify('Factory Automation Upgraded',1);
+			}
+		}
+	}
 	new Molpy.Boost({name:'Panther Salve',desc:'"It\'s some kind of paste." Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 10 Glass Blocks per use.',
 	stats:'Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 10 Glass Blocks per use.',group:'bean'});
 	
@@ -1660,7 +1701,21 @@ Molpy.DefineBoosts=function()
 		Molpy.LockBoost('Castle Crusher');
 	}
 	
-	new Molpy.Boost({name:'Furnace Crossfeed',desc:'Blast Furnace now acts as a Glass Furnace instead of it\'s previous purpose, only if Glass Furnace is active.',sand:'6.5G',castles:'.8G',icon:'furnacecrossfeed',group:'hpt'});
+	new Molpy.Boost({name:'Furnace Crossfeed',
+		desc:function(me)
+		{
+			if(!me.bought) return 'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.';
+			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active. <input type="Button" onclick="Molpy.FurnaceCrossfeedToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+		},sand:'6.5G',castles:'.8G',icon:'furnacecrossfeed',group:'hpt',
+		buyFunction:function(me){me.power=1;}
+	});
+	Molpy.FurnaceCrossfeedToggle=function()
+	{
+		var fc=Molpy.Boosts['Furnace Crossfeed'];
+		fc.power=(!fc.power)*1;
+		fc.hoverOnCounter=1;
+		Molpy.boostRepaint=1;
+	}
 	
 	new Molpy.Boost({name:'Redundant Redundance Supply of Redundancy',
 	desc:'The Department of Redundancy Department announces: You have exceeded your daily redundancy limit. Your primary redundancy supply will now be turned down. You can always switch to your redundant redundance supply of redundancy.',
@@ -1681,6 +1736,23 @@ Molpy.DefineBoosts=function()
 			return sent;
 		}
 		,sand:'.97G',castles:'340M',stats:'Causes the effect which results from Redunception',icon:'redunception',group:'hpt'});
+		
+	new Molpy.Boost({name:'Furnace Multitasking',
+	desc:function(me)
+		{
+			if(!me.bought) return 'Blast Furnace acts as a Glass Blower instead of its previous purpose, only if Glass Blower is active. (This stacks with Furnace Crossfeed)';
+			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active. <input type="Button" onclick="Molpy.FurnaceMultitaskToggle()" value="'
+				+(me.power? 'Dea':'A')+'ctivate"></input> (This stacks with Furnace Crossfeed)';
+		},sand:'48G',castles:'1.2G',icon:'furnacemultitask',group:'hpt',
+		buyFunction:function(me){me.power=1;}
+	});
+	Molpy.FurnaceMultitaskToggle=function()
+	{
+		var fm=Molpy.Boosts['Furnace Multitasking'];
+		fm.power=(!fm.power)*1;
+		fm.hoverOnCounter=1;
+		Molpy.boostRepaint=1;
+	}
 	
 	Molpy.redundancy=MakeRedundancy();
 	

@@ -60,6 +60,7 @@ function MakeRedundancy()
 		redundancy.makeTransClause,
 		redundancy.makeTransClause,
 		redundancy.makeTransClause,
+		function(){return redundancy.makeTransClause()+', and doesn\'t afraid of '+redundancy.makeObjNoun()},
 		function(){ return redundancy.makeTransClause()+' '+make(redundancy.comparison);},
 		redundancy.makeIntransCluase,
 		redundancy.makeIntransCluase,
@@ -95,7 +96,8 @@ function MakeRedundancy()
 		redundancy.makeObjNoun,
 		redundancy.makeObjNoun,
 		redundancy.makeObjNoun,
-		redundancy.makeObjNoun
+		redundancy.makeObjNoun,
+		'anything'
 	];
 	redundancy.objnouns=[
 		function(){return make(redundancy.department);},
@@ -113,6 +115,8 @@ function MakeRedundancy()
 	redundancy.makeAdjective=function(){return make(redundancy.adjectives);};
 	redundancy.makeModifiedAdjective=function(){return make(redundancy.adjmodifier)+ ' ' + make(redundancy.adjectives);};
 	redundancy.adjective=[
+		function(){return make(redundancy.adjective)+' but '+make(redundancy.adjective);},
+		function(){return make(redundancy.adjective)+' yet '+make(redundancy.adjective);},
 		redundancy.makeAdjective,
 		redundancy.makeAdjective,
 		redundancy.makeAdjective,
@@ -126,7 +130,8 @@ function MakeRedundancy()
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ '-like';},
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ 'ish';}
 	]
-	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','iron','chilled','delicous','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor'];
+	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','iron','chilled','delicious','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor','great','radioactive','glowing','speakable','unspeakable','helpful','inevitable','sudden','problematic'];
+	
 	redundancy.adjmodifier=['very', 'somewhat','kinda','partly','not','nearly','almost','quite','not quite','almost but not quite entirely','entirely','fully','totally','a little bit','far too','incredibly','barely','most','least',
 		function(){return make(redundancy.adjective)+'ly';},
 		function(){return make(redundancy.prefix)+make(redundancy.adjective);}
@@ -142,7 +147,7 @@ function MakeRedundancy()
 		function(noart){return make(redundancy.characters);},
 		function(noart){return make(redundancy.adjectives)+' '+make(redundancy.characters);}
 	];
-	redundancy.characters=['Cueball','Megan','LaPetite','Bunny','Mini-Bunny','White Bunny','Gray Bun','Black Bun','Curly Bun','Pulled Back','Headband','Meg-a-like','Hat-Hair','Loopsy','Rose','Bob','Leopard','Sandy','She-Bangs','Littlest Bangs Brother','Middle Bangs Brother','Newest Bangs Brother','Sparse','Curly','Buzz','Brick','Forelock','Roundhair','Lopside','Shortdo','Shorty','Mini-Shortdo','Spike','Two-Tone','Mini-Two-Tone','Afro','Part','Baldo','Rosetta','B-1','B-2','B-3','Expando','GLaDOS','Cave Johnson'];
+	redundancy.characters=['Cueball','Megan','LaPetite','Bunny','Mini-Bunny','White Bunny','Gray Bun','Black Bun','Curly Bun','Pulled Back','Headband','Meg-a-like','Hat-Hair','Loopsy','Rose','Bob','Leopard','Sandy','She-Bangs','Littlest Bangs Brother','Middle Bangs Brother','Newest Bangs Brother','Sparse','Curly','Buzz','Brick','Forelock','Roundhair','Lopside','Shortdo','Shorty','Mini-Shortdo','Spike','Two-Tone','Mini-Two-Tone','Afro','Part','Baldo','Rosetta','B-1','B-2','B-3','Expando','GLaDOS','Cave Johnson','Eternal Density','waveney','StormAngel'];//this will not end well
 	redundancy.interjections=['CH*RP','chirping mustard','ch*rping m*stard','m*stard','mustard','by GLR','oh','neat','neat','yeah','yeah','hey','no','yes','alright','nooooooooo','finally','chirp everything'];
 	redundancy.person=[
 		function(){return make(redundancy.people);}
@@ -173,7 +178,7 @@ function MakeRedundancy()
 		function(noart){return (noart?'':make(redundancy.thingmods)+' ')+make(redundancy.adjectives)+' '+make(redundancy.things);}
 	];
 	redundancy.thingmods=['the', 'my', 'your'];
-	redundancy.things=['message','screen','tool','badge','boost','pointer','leopard','information','love','bot','ONG','bucket','flag','ladder','sea','river','wave','trebuchet','scaffold','sand','castle','sandcastle','warning','data','bag','bag','pun','pun','post','OTC','OTT','NewPix','hat','avatar','computer','paper','phone','webpage','thing','pants','pants','pants','cuegan','cake','cake','tree','baobab','steambottle','dilgunnerang','hut','shack','tent','raft','yurt','dip','mushroom','ruin','plant','sack','door','window','brick','m*ustard','grape','vine','grapevine','cheese','break','bacon','cancer','baby','ice','magnet','bacon','music','OTTification','rONG','OTColoured','beanONG','LuckyPix','text','spoiler','javascript','c**kie','bycicle','moon','clock','video','key','internet','prop','turret','portal','rift','panel','valve','steam','joke'];
+	redundancy.things=['message','screen','tool','badge','boost','pointer','leopard','information','love','bot','ONG','bucket','flag','ladder','sea','river','wave','trebuchet','scaffold','sand','castle','sandcastle','warning','data','bag','bag','pun','pun','post','OTC','OTT','NewPix','hat','avatar','computer','paper','phone','webpage','thing','pants','pants','pants','cuegan','cake','cake','tree','baobab','steambottle','dilgunnerang','hut','shack','tent','raft','yurt','dip','mushroom','ruin','plant','sack','door','window','brick','m*ustard','grape','vine','grapevine','cheese','break','bacon','cancer','baby','ice','magnet','bacon','music','OTTification','rONG','OTColoured','beanONG','LuckyPix','text','spoiler','javascript','c**kie','bicycle','moon','clock','video','key','internet','prop','turret','portal','rift','panel','valve','steam','joke','redundancy','redundancy','postfix','escape route','power','responsibility','vocabulation','terseness','comma','coma','goggles','glasses','nothing','betrayal','food','fruit','planet','spaceship','firefly'];
 	redundancy.transverbs=[
 		function(){return make(redundancy.transverb);},
 		function(){return make(redundancy.adverb)+' '+make(redundancy.transverb);},
@@ -190,7 +195,7 @@ function MakeRedundancy()
 	];
 	redundancy.intransverb=['jumps','laughs','burns','cries','explodes','melts','runs','sings','worries','dies','lives','decays','eats','plays','turns','spins','posts','burrows','types','reboots','refreshes','reloads','wonders','walks','falls','collapses','shrugs', function(){return 'is '+make(redundancy.things)+'ing'}];
 	redundancy.prepphrase=[function(){return make(redundancy.prepositions)+' '+make(redundancy.objects);}];
-	redundancy.prepositions=['in','in','on','over','under','inside','outside','behind','from','within','from within','beside','underneath','near','at','for','into','of','in front of','nowhere near','to','from','close to','with','along','towards','away from'];
+	redundancy.prepositions=['in','in','on','over','under','inside','outside','behind','from','within','from within','beside','underneath','near','at','for','into','of','in front of','nowhere near','to','from','close to','with','along','towards','away from','through','throughout','past','after','before'];
 	redundancy.adjphrase=[
 		function(){return make(redundancy.adjphrasestart)+' '+make(redundancy.transverbs)+' '+make(redundancy.objects);},
 		function(){return make(redundancy.adjphrasestart)+' '+make(redundancy.intransverbs);},
