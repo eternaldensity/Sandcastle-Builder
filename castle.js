@@ -2,7 +2,6 @@
 /* In which some Helper functions are defined
 +++++++++++++++++++++++++++++++++++++++++++++*/
 function g(id) {return document.getElementById(id);}
-function GLRschoice(things) {return things[Math.floor(Math.random()*things.length)];}
 function ONGsnip(time)
 {
 	if(time.getMinutes()>=30&&Molpy.newpixNumber <= 240)
@@ -86,18 +85,7 @@ function Molpify(number, raftcastle, shrinkify)
 	}
 	return molp;
 }
-function DeMolpify(grape)
-{
-	for (var i in postfixes)
-	{	
-		var vine = postfixes[i];
-		if(grape.indexOf(vine.postfix[0])>0)
-		{
-			return parseFloat(grape)*vine.divisor;
-		}
-	}
-	return parseFloat(grape); //postfix not recognised so ignore it	
-}
+
 function PriceSort(a,b)
 {
 	var asp = EvalMaybeFunction(a.sandPrice,a,1);
@@ -153,17 +141,7 @@ function BeanishToCuegish(mustard)
 		return '';
 	}
 }
-function EvalMaybeFunction(bacon,babies,ice)
-{
-	var B = typeof(bacon);
-	var D = 'function';
-	var O = (B===D?bacon(babies):bacon);
-	if(!ice) return O;
 	
-	B = typeof(O);
-	D = 'string';
-	return (B===D?DeMolpify(O):O);
-}	
 function isChildOf(child,parent)
 {
 	if(!child)return;

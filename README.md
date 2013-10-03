@@ -23,6 +23,9 @@ Not for any commercial use!
 - Fixed 'When active X uses 0%...' mustard
 - More words and sentence structure rejigging
 - Prevent Panther Salve from being too overpowered
+- Fixed 3 boosts where I defined descriptions twice, instead of description and stats
+- Moved redundancy to a new file
+- Noticed that 'strict' wasn't on in my data.js and then discovered the base64 unencode function needed a tiny syntax change :P
 
 ### 1.51
 - Tweaked some sentence generation, added some stuff, fixed some mustard
