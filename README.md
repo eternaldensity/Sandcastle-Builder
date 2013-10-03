@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.521
+- Fixed undefined i strict mode problem which popped up in the index page
+- That's what I get for not testing with cookies since they don't work in chrome for local pages
+
 ### 1.52
 - Glass blower has an 'each'
 - Fixed 'When active X uses 0%...' mustard

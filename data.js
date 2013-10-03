@@ -243,7 +243,7 @@ Molpy.DefineCastleTools=function()
 		function(){
 		 var baseval=4;
 			if(Molpy.Got('Spring Fling'))baseval++;
-			if(Molpy.Got('Varied Ammo'))for(i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)baseval++;
+			if(Molpy.Got('Varied Ammo'))for(var i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)baseval++;
 			if(Molpy.Got('Throw Your Toys')) baseval+=Molpy.SandTools['Bucket'].amount+Molpy.SandTools['Flag'].amount;
 			if(Molpy.Got('Flingbot'))baseval*=4;
 			if(Molpy.Got('Minigun')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
@@ -395,7 +395,7 @@ Molpy.DefineBoosts=function()
 			if(Molpy.Got('Varied Ammo'))
 			{
 				var val = 0;
-				for(i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)val++;
+				for(var i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)val++;
 				return 'Each trebuchet produces '+Molpify(val)+ ' more castles per ONG, before multipliers';
 			}
 			return 'For each kind of Castle Tool of which you have 2 or more, each trebuchet produces an additional castle per ONG, before multipliers';
