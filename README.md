@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.532
+- no I fixed Factory Automaton which doesn't exist.
+- index shows version I think. can't test locally!
+
 ### 1.531
 - Probably fixed factory automation not working or upgrading for old save files (like mine)
 - Can't see the probem with Glass Blower description yet, no time to debug right now.
