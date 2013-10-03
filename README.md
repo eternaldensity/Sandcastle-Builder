@@ -21,6 +21,8 @@ Not for any commercial use!
 ### 1.51
 - Tweaked some sentence generation, added some stuff, fixed some mustard
 - Adjusted blitzing stack effects (there was some mustard in the code, also I wanted to make it double BF/NL at minimum)
+- Notification when ASHF and Temporal Rift are about to expire
+- You have a chance of slipping into the Rift accidentally as you dig (when it's active but not immediately)
 
 ### 1.5
 - Tweaked Blast Furnace (fractals helps it more), made base ASHF time 5 not 4 mNP

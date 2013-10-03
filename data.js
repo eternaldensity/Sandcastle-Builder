@@ -480,9 +480,14 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Grapevine',desc:'Increases sand dig rate by 2% per badge earned',sand:'25K',castles:25,icon:'grapevine',department:1});
 	Molpy.IKEA='Affordable Swedish Home Furniture';
 	new Molpy.Boost({name:Molpy.IKEA,desc: function(me){return Molpify(me.power*100,1)+'% off all items for '+Molpify(me.countdown)+'mNP'}
-		,buyFunction:
-		function(){
+		,buyFunction:function(){
 			Molpy.shopRepaint=1;
+		}
+		,countdownFunction:function(){
+			if(this.countdown==2)
+			{
+				Molpy.Notify('Only 2mNP of discounts remain!');
+			}
 		}
 		,startPower:0.4,startCountdown:4,group:'hpt',department:1,className:'alert'});
 	
@@ -1145,7 +1150,15 @@ Molpy.DefineBoosts=function()
 		{
 			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+me.countdown+'mNP.<br/><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
 			return 'A hole in time has opened.';
-		},startCountdown:6,group:'chron',className:'action'});
+		}
+		,countdownFunction:function()
+		{
+			if(this.countdown==2)
+			{
+				Molpy.Notify('The rift closes in 2mNP!');
+			}
+		}
+		,startCountdown:6,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
 		if(Math.random()*5<4)
@@ -1484,21 +1497,25 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('Glass Block Storage upgraded',1);
 		}
 	}
+	Molpy.SandPurifierUpgradeCost=function()
+	{
+		return 20+(5*Molpy.Boosts['Sand Purifier'].power);
+	}
 	Molpy.UpgradeSandPurifier=function()
 	{
 		var bl = Molpy.Boosts['Glass Block Storage'];
-		if(bl.power>=20+(5*Molpy.Boosts['Sand Purifier'].power))
+		if(bl.power>=Molpy.SandPurifierUpgradeCost())
 		{
-			bl.power-=25;
+			bl.power-=Molpy.SandPurifierUpgradeCost());
 			Molpy.Boosts['Sand Purifier'].power++;
 			Molpy.boostRepaint=1;
-			Molpy.Notify('And Purifier upgraded',1);
+			Molpy.Notify('Sand Purifier upgraded',1);
 		}
 	}
 	new Molpy.Boost({name:'Sand Purifier',
 		desc:function(me)
 		{
-			var cost = (20+(5*Molpy.Boosts['Sand Purifier'].power));
+			var cost = Molpy.SandPurifierUpgradeCost();
 			var str = 'Glass Furnace\'s sand use is divided by '+(me.power+2);
 			var bl = Molpy.Boosts['Glass Block Storage'];
 			if(bl.power >= cost-10)

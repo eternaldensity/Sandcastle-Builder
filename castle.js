@@ -718,6 +718,15 @@ Molpy.Up=function()
 			if(version<1.5)//wow I haven't needed one of these in a while!
 			{
 				Molpy.lGlass = Molpy.Boosts['Glass Chiller'].power+1;
+			}	
+			if(version<1.51)
+			{
+				var bl Molpy.Boosts['Glass Block Storage'];
+				var pur = Molpy.Boosts['Sand Purifier'];
+				if(pur.power==1 || pur.power==2) //cost should be 20, 25, 30 but was actually 25, 25, 25.
+					bl.power+=5;
+					Molpy.Notify('+5 glass blocks. Sorry about that BlitzGirl');
+				}
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -1448,7 +1457,13 @@ Molpy.Up=function()
 				}
 			}
 			Molpy.ninjad=1;
-			Molpy.HandleClickNP();					
+			Molpy.HandleClickNP();	
+
+			if(Molpy.Got('Temporal Rift') && Molpy.Boosts['Temporal Rift'].countdown<5 && Math.floor(Math.random()*2)==1)
+			{
+				Molpy.Notify('You accidentally slip through the temporal rift!,1');
+				Molpy.RiftJump();
+			}
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
 		
@@ -1928,6 +1943,7 @@ Molpy.Up=function()
 			this.stats=args.stats;
 			this.icon=args.icon;
 			this.buyFunction=args.buyFunction;
+			this.countdownFunction=args.countdownFunction;
 			this.unlocked=0;
 			this.bought=0;
 			this.department=args.department; //prevent unlock by the department (this is not a saved value)
@@ -3034,7 +3050,11 @@ Molpy.Up=function()
 					{
 						Molpy.LockBoost(i);
 						me.power=0;
-					}else if(me.hovered<0)me.hover();
+					}else
+					{
+						if(me.countdownFunction)me.countdownFunction();
+						if(me.hovered<0)me.hover();
+					}
 				}
 				if(me.classChange)
 				{
