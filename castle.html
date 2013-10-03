@@ -6,6 +6,7 @@
 <link rel="shortcut icon" href="img/favicon.ico" />
 <link href="style.css?v=1" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="redundancy.js?v=1"></script>
 <script src="castle.js?v=1"></script>
 <script src="data.js?v=1"></script>
 </head>
@@ -22,8 +23,6 @@
 				<a class="minifloatbox" onclick=Molpy.LoadC_STARSTAR_kie()>Load</a>
 				<a class="minifloatbox" onclick=Molpy.ExportToggle()>Export</a>
 				<a class="minifloatbox" onclick=Molpy.Import()>Import</a>
-				<a class="minifloatbox" onclick=Molpy.Down()>Molpy Down</a>
-				<a class="minifloatbox" onclick=Molpy.Coma()>Coma</a>
 				<a class="minifloatbox" onclick=Molpy.OptionsToggle()>Options</a>
 				<a class="minifloatbox" onclick=Molpy.StatsToggle()>Stats</a>
 			</div>
@@ -36,6 +35,8 @@
 				</div>
 				<div id="options" class="hidden">Options:
 					<div id="optionsItems">
+						<a class="minifloatbox" onclick=Molpy.Down()>Molpy Down</a>
+						<a class="minifloatbox" onclick=Molpy.Coma()>Coma</a>
 						<div id="autosaveoption" class="minifloatbox" >
 							<a onclick="Molpy.ToggleOption('autosave')">Autosave</a>
 							<div id="autosavedescription"></div>

@@ -14,15 +14,28 @@ Icons by ChronosDragon and BlitzGirl.
 
 Inspired by Orteil's Cookie Clicker
 
-Not for any commercial use!
+For personal amusement only.
 
 ## Changelog
+
+### 1.52
+- Glass blower has an 'each'
+- Fixed 'When active X uses 0%...' mustard
+- More words and sentence structure rejigging
+- Prevent Panther Salve from being too overpowered
+- Fixed 3 boosts where I defined descriptions twice, instead of description and stats
+- Moved redundancy to a new file
+- Noticed that 'strict' wasn't on in my data.js and then discovered the base64 unencode function needed a tiny syntax change :P
+- Added redundant information to the index
+- Buttons at the top are bigger, and moved Molpy Down and Coma into options
+- Sand Refinery downgrade button. Refunds 1 chip. (doesn't have detail about the effect on production but obviously it's the opposite of upgrade)
 
 ### 1.51
 - Tweaked some sentence generation, added some stuff, fixed some mustard
 - Adjusted blitzing stack effects (there was some mustard in the code, also I wanted to make it double BF/NL at minimum)
 - Notification when ASHF and Temporal Rift are about to expire
 - You have a chance of slipping into the Rift accidentally as you dig (when it's active but not immediately)
+- Sand Purifier fixes
 
 ### 1.5
 - Tweaked Blast Furnace (fractals helps it more), made base ASHF time 5 not 4 mNP
