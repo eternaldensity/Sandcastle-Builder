@@ -19,7 +19,7 @@ For personal amusement only.
 ## Changelog
 
 ### 1.531
-- Probably fixed furnace automation not working or upgrading for old save files (like mine)
+- Probably fixed factory automation not working or upgrading for old save files (like mine)
 - Can't see the probem with Glass Blower description yet, no time to debug right now.
 
 ### 1.53
