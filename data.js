@@ -1179,7 +1179,7 @@ Molpy.DefineBoosts=function()
 		{
 			if(!me.bought) return 'Turns Sand into Glass';
 			var pow=Molpy.Boosts['Sand Refinery'].power+1;
-			var cost=Molpify(Molpy.GlassFurnaceSandUse(),1);
+			var cost=Molpify(Molpy.GlassFurnaceSandUse(1),1);
 			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP.<br/>';
 			
 			if(Molpy.Got('Glass Furnace Switching'))
@@ -1379,9 +1379,9 @@ Molpy.DefineBoosts=function()
 		{
 			if(!me.bought) return 'Makes Glass Blocks from Glass Chips';
 			var pow=Molpy.Boosts['Glass Chiller'].power+1;
-			var cost=Molpify((Molpy.GlassBlowerSandUse(),1));
+			var cost=Molpify((Molpy.GlassBlowerSandUse(1),1));
 			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Block'+(pow>1?'s':'')
-				+' from 20 Glass Chips per NP.<br/>';			
+				+' from 20 Glass Chips (each) per NP.<br/>';			
 			
 			if(Molpy.Got('Glass Blower Switching'))
 			{
