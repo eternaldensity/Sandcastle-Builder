@@ -228,7 +228,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.5;
+		Molpy.version=1.51;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -718,6 +718,16 @@ Molpy.Up=function()
 			if(version<1.5)//wow I haven't needed one of these in a while!
 			{
 				Molpy.lGlass = Molpy.Boosts['Glass Chiller'].power+1;
+			}	
+			if(version<1.51)
+			{
+				var bl = Molpy.Boosts['Glass Block Storage'];
+				var pur = Molpy.Boosts['Sand Purifier'];
+				if(pur.power==1 || pur.power==2) //cost should be 20, 25, 30 but was actually 25, 25, 25.
+				{
+					bl.power+=5;
+					Molpy.Notify('+5 glass blocks. Sorry about that, BlitzGirl',1);
+				}
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -1448,7 +1458,13 @@ Molpy.Up=function()
 				}
 			}
 			Molpy.ninjad=1;
-			Molpy.HandleClickNP();					
+			Molpy.HandleClickNP();	
+
+			if(Molpy.Got('Temporal Rift') && Molpy.Boosts['Temporal Rift'].countdown<5 && Math.floor(Math.random()*2)==1)
+			{
+				Molpy.Notify('You accidentally slip through the temporal rift!,1');
+				Molpy.RiftJump();
+			}
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
 		
@@ -1928,6 +1944,7 @@ Molpy.Up=function()
 			this.stats=args.stats;
 			this.icon=args.icon;
 			this.buyFunction=args.buyFunction;
+			this.countdownFunction=args.countdownFunction;
 			this.unlocked=0;
 			this.bought=0;
 			this.department=args.department; //prevent unlock by the department (this is not a saved value)
@@ -2340,10 +2357,15 @@ Molpy.Up=function()
 			if(Molpy.Got('Fractal Sandcastles'))
 			{
 				blastFactor=Math.max(1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
-				if(Molpy.Got('Blitzing')||Molpy.Got('Blixtnedslag Kattungar, JA!'))
+				if(Molpy.Got('Blitzing'))
 				{
-					blastFactor/=Math.max(1,(Molpy.Boosts['Blitzing'].power-800)/500);
-					boosted=1;
+					if(Molpy.Got('Blixtnedslag Kattungar, JA!'))
+					{
+						blastFactor/=Math.max(1,(Molpy.Boosts['Blitzing'].power-800)/600);
+						boosted=1;
+					}
+					blastFactor/=2;
+					
 				}
 			}
 			var castles=Math.floor(Molpy.sand/blastFactor);		
@@ -2382,7 +2404,7 @@ Molpy.Up=function()
 			{
 				bonus*= (1+0.2*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)
 				if(Molpy.Got('Blitzing'))
-					bonus*=(Molpy.Boosts['Blitzing'].power/10);
+					bonus*=Math.min(2,(Molpy.Boosts['Blitzing'].power-800)/200);
 			}
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=5)		
 			{				
@@ -2391,8 +2413,6 @@ Molpy.Up=function()
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
 				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/5);
-			if(Molpy.Got('Blitzing'))
-				bonus*=Math.min(1,(Molpy.Boosts['Blitzing'].power-800)/400);
 			
 			bonus = Math.floor(bonus);
 			Molpy.Build(bonus);
@@ -3031,7 +3051,11 @@ Molpy.Up=function()
 					{
 						Molpy.LockBoost(i);
 						me.power=0;
-					}else if(me.hovered<0)me.hover();
+					}else
+					{
+						if(me.countdownFunction)me.countdownFunction();
+						if(me.hovered<0)me.hover();
+					}
 				}
 				if(me.classChange)
 				{
