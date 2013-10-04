@@ -21,7 +21,12 @@ For personal amusement only.
 ### 1.54
 - Prevent index from trying to Notify after loading
 - Upgrade/downgrade refinery and chiller now cause sand rate to recalculate immediately rather than waiting for somthing else to trigger it (oops)
-- Furnace Automation now prespends sand so Blast Furnace doesn't prevent it from running multiple times.
+- Furnace Automation now pre-spends sand so Blast Furnace doesn't prevent it from running multiple times.
+- Noticed what in the bit of CSS I kept from Orteil was preventing text selection and disabled it for Redundant Information :D
+- New high value boost
+- Prevent stack overflow when people get infinite sand or make castles cost 0 sand
+- Format infinite amounts properly
+- Glass Blower now not stuck showing 1% in description (silly parentheses where they shouldn't be!)
 
 ### 1.532
 - no I fixed Factory Automaton which doesn't exist.

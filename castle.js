@@ -35,6 +35,7 @@ var postfixes=[
 function Molpify(number, raftcastle, shrinkify)
 {
 	if(isNaN(number))return'Mustard';
+	if(!Number.isFinite(parseFloat(number)))return'Infinite Mustard';
 	var molp='';
 	
 	if(shrinkify) //todo: roll into loop
@@ -1107,6 +1108,16 @@ Molpy.Up=function()
 				//In which Fibbonacci occurs:
 				Molpy.nextCastleSand = Molpy.prevCastleSand+Molpy.currentCastleSand;
 				Molpy.prevCastleSand=Molpy.currentCastleSand
+				if(!Number.isFinite(Molpy.sand) || Molpy.nextCastleSand<=0)
+				{
+					Molpy.sand=0;
+					Molpy.nextCastleSand=1;
+					Molpy.castles=Infinity;
+					Molpy.castlesBuilt=Infinity;
+					Molpy.Boosts['Fractal Sandcastles'].power=Infinity;
+					Molpy.Notify('Thanks I could help Bro,1');
+					return;
+				}
 			}
 			Molpy.buildNotifyFlag=1;
 			Molpy.Build(0);
@@ -1181,6 +1192,9 @@ Molpy.Up=function()
 			}
 			if(Molpy.castles>=8888000000000000){
 				Molpy.EarnBadge('Castle Galaxy');
+			}
+			if(Molpy.castles>=DeMolpify('20P')){
+				Molpy.UnlockBoost('Free Advice');
 			}
 						
 		
