@@ -13,15 +13,17 @@ function EvalMaybeFunction(bacon,babies,ice)
 }
 function DeMolpify(grape)
 {
+	var fix = grape.slice(-1);
+	if(Number.isNaN(parseFloat(fix)))
 	for (var i in postfixes)
 	{	
 		var vine = postfixes[i];
-		if(grape.indexOf(vine.postfix[0])>0)
+		if(vine.postfix[0]==fix.toUpperCase())
 		{
-			return parseFloat(grape)*vine.divisor;
+			return DeMolpify(grape.slice(0,-1))*vine.divisor;
 		}
 	}
-	return parseFloat(grape); //postfix not recognised so ignore it	
+	return parseFloat(grape); //no postfix found
 }
 
 	function make(thinglist,arg)
@@ -51,7 +53,7 @@ function MakeRedundancy()
 	redundancy.sentences=[
 		function(){return capitalise(make(redundancy.defclauses))+make(redundancy.sentenceEnds);}
 	];
-	redundancy.sentenceEnds=['.','.','.','.','.','.','.','.','.','.','.','.','.','!','!','????',', and that was that.',' in my pants.',' or perhaps not.',' (or so you\'ve been lead to believe).',', right?',', don\'t you think?',' and that was that.',' which was the last anyone said on the matter.',' leading to the tragic events of today.', ' except in bed.',' but no one cared.',' but I am okay with that now.',', really.','...',' so, yeah...',' and you can probably see where this is going.',' but I don\'t believe a single word of it.',' and I\'m sure it\'ll happen one of these dips.',': ni ni ni ni ni chupacabra ping pong ball!'];
+	redundancy.sentenceEnds=['.','.','.','.','.','.','.','.','.','.','.','.','.','!','.','.','.','.','.','.','.','.','.','.','.','.','.','!','!','????',', and that was that.',' in my pants.',' or perhaps not.',' (or so you\'ve been lead to believe).',', right?',', don\'t you think?',' and that was that.',' which was the last anyone said on the matter.',' leading to the tragic events of today.', ' except in bed.',' but no one cared.',' but I am okay with that now.',', really.','...',' so, yeah...',' and you can probably see where this is going.',' but I don\'t believe a single word of it.',' and I\'m sure it\'ll happen one of these dips.',': ni ni ni ni ni chupacabra ping pong ball!',', it has been said.',', according to expert witnesses.', ', scientific studies have shown.',', statistically speaking.',', according to the latest word on the street.',' - in the minds of todip\'s youth.',' but I wouldn\'t worry about that.'];
 	redundancy.makeTransClause=function(){return make(redundancy.subjects)+' '+make(redundancy.transverbs)+' '+make(redundancy.objects);};
 	redundancy.makeIntransCluase=function(){return make(redundancy.subjects)+' '+make(redundancy.intransverbs);};
 	redundancy.makeCompoundClause=function(){return make(redundancy.interjections)+', '+make(redundancy.defclauses);};
@@ -130,7 +132,7 @@ function MakeRedundancy()
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ '-like';},
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ 'ish';}
 	]
-	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','iron','chilled','delicious','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor','great','radioactive','glowing','speakable','unspeakable','helpful','inevitable','sudden','problematic'];
+	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','diamond','ironic','golden','iron','chilled','delicious','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor','great','radioactive','glowing','speakable','unspeakable','helpful','inevitable','sudden','problematic'];
 	
 	redundancy.adjmodifier=['very', 'somewhat','kinda','partly','not','nearly','almost','quite','not quite','almost but not quite entirely','entirely','fully','totally','a little bit','far too','incredibly','barely','most','least',
 		function(){return make(redundancy.adjective)+'ly';},
@@ -142,18 +144,18 @@ function MakeRedundancy()
 		function(noart){return (noart?'':'the ')+make(redundancy.creatures);},
 		function(noart){return (noart?'':'the ')+make(redundancy.adjectives)+' '+make(redundancy.creatures);}
 	];
-	redundancy.creatures=['molpy','molpy','molpy','redundakitty','kitty','beesnake','pricklymolp','raptorcat','chirpy','keyboard','raptor','rabtor','snake','wolpy','seawolpy','dolphy','badger'];
+	redundancy.creatures=['molpy','molpy','molpy','redundakitty','kitty','beesnake','pricklymolp','raptorcat','chirpy','keyboard','raptor','rabtor','snake','wolpy','seawolpy','dolphy','badger','zombie'];
 	redundancy.character=[
 		function(noart){return make(redundancy.characters);},
 		function(noart){return make(redundancy.adjectives)+' '+make(redundancy.characters);}
 	];
-	redundancy.characters=['Cueball','Megan','LaPetite','Bunny','Mini-Bunny','White Bunny','Gray Bun','Black Bun','Curly Bun','Pulled Back','Headband','Meg-a-like','Hat-Hair','Loopsy','Rose','Bob','Leopard','Sandy','She-Bangs','Littlest Bangs Brother','Middle Bangs Brother','Newest Bangs Brother','Sparse','Curly','Buzz','Brick','Forelock','Roundhair','Lopside','Shortdo','Shorty','Mini-Shortdo','Spike','Two-Tone','Mini-Two-Tone','Afro','Part','Baldo','Rosetta','B-1','B-2','B-3','Expando','GLaDOS','Cave Johnson','Eternal Density','waveney','StormAngel'];//this will not end well
-	redundancy.interjections=['CH*RP','chirping mustard','ch*rping m*stard','m*stard','mustard','by GLR','oh','neat','neat','yeah','yeah','hey','no','yes','alright','nooooooooo','finally','chirp everything'];
+	redundancy.characters=['Cueball','Megan','LaPetite','Bunny','Mini-Bunny','White Bunny','Gray Bun','Black Bun','Curly Bun','Pulled Back','Headband','Meg-a-like','Hat-Hair','Loopsy','Rose','Bob','Leopard','Sandy','She-Bangs','Littlest Bangs Brother','Middle Bangs Brother','Newest Bangs Brother','Sparse','Curly','Buzz','Brick','Forelock','Roundhair','Lopside','Shortdo','Shorty','Mini-Shortdo','Spike','Two-Tone','Mini-Two-Tone','Afro','Part','Baldo','Rosetta','B-1','B-2','B-3','Expando','GLaDOS','Cave Johnson'];//this will not end well
+	redundancy.interjections=['CH*RP','chirping mustard','ch*rping m*stard','m*stard','mustard','by GLR','oh','neat','neat','yeah','yeah','hey','no','yes','alright','nooooooooo','finally','chirp everything','ah','oooh','huh','hooray','what','well','welp'];
+	redundancy.makeSubPerson=function(){return make(redundancy.subspecifier)+' '+make(redundancy.group);};
 	redundancy.person=[
 		function(){return make(redundancy.people);}
 	];
-	redundancy.makeSubPerson=function(){return make(redundancy.subspecifier)+' '+make(redundancy.group);};
-	redundancy.people=['the one who reads this','xe who is reading','the clicking person','whoever is on the outside of the screen looking in','one of your friends','a random OTTer','GLR','the stranger looking in the window','someone standing behind you','one of your parents','your mother','your long lost cousin from Australia','the Pope','the Mome','a Blitzer','an Old One','he','she','it','xe','a modern major general',
+	redundancy.people=['the one who reads this','xe who is reading','the clicking person','whoever is on the outside of the screen looking in','one of your friends','a random OTTer','GLR','the stranger looking in the window','someone standing behind you','one of your parents','your mother','your long lost cousin from Australia','the Pope','the Mome','a Blitzer','an Old One','he','she','it','xe','a modern major general','Eternal Density','waveney','StormAngel','RAZOR',
 		redundancy.makeSubPerson,
 		redundancy.makeSubPerson,
 		redundancy.makeSubPerson,
@@ -178,14 +180,14 @@ function MakeRedundancy()
 		function(noart){return (noart?'':make(redundancy.thingmods)+' ')+make(redundancy.adjectives)+' '+make(redundancy.things);}
 	];
 	redundancy.thingmods=['the', 'my', 'your'];
-	redundancy.things=['message','screen','tool','badge','boost','pointer','leopard','information','love','bot','ONG','bucket','flag','ladder','sea','river','wave','trebuchet','scaffold','sand','castle','sandcastle','warning','data','bag','bag','pun','pun','post','OTC','OTT','NewPix','hat','avatar','computer','paper','phone','webpage','thing','pants','pants','pants','cuegan','cake','cake','tree','baobab','steambottle','dilgunnerang','hut','shack','tent','raft','yurt','dip','mushroom','ruin','plant','sack','door','window','brick','m*ustard','grape','vine','grapevine','cheese','break','bacon','cancer','baby','ice','magnet','bacon','music','OTTification','rONG','OTColoured','beanONG','LuckyPix','text','spoiler','javascript','c**kie','bicycle','moon','clock','video','key','internet','prop','turret','portal','rift','panel','valve','steam','joke','redundancy','redundancy','postfix','escape route','power','responsibility','vocabulation','terseness','comma','coma','goggles','glasses','nothing','betrayal','food','fruit','planet','spaceship','firefly'];
+	redundancy.things=['message','screen','tool','badge','boost','pointer','leopard','nothing','betrayal','food','fruit','planet','spaceship','firefly','amu<span class="faded">semen</span>t'];
 	redundancy.transverbs=[
 		function(){return make(redundancy.transverb);},
 		function(){return make(redundancy.adverb)+' '+make(redundancy.transverb);},
 		function(){return make(redundancy.transverbs)+', and '+make(redundancy.transverbs);},
 		function(){return make(redundancy.transverb)+' ('+make(redundancy.prepphrase)+')';}
 	];
-	redundancy.transverb=['kicks','clicks','requires','asks','requests','needs','sees','likes','destroys','drops','chases','eats','throws','burns','carries','fires','builds','destroys','quotes','wears','questions','chirps','decyphers','decodes','confuses','hates','expandifies','embiggends','molpifies','explains','redoes','hides','hugs','spoilers', function(){return 'is '+make(redundancy.things)+'ing'}];
+	redundancy.transverb=['kicks','clicks','requires','asks','requests','needs','sees','likes','destroys','drops','chases','eats','throws','burns','carries','fires','builds','destroys','quotes','wears','questions','chirps','decyphers','decodes','confuses','hates','expandifies','embiggens','molpifies','explains','redoes','hides','hugs','spoilers', function(){return 'is '+make(redundancy.things)+'ing'}];
 	redundancy.intransverbs=[
 		function(){return make(redundancy.intransverb);},
 		function(){return make(redundancy.adverb)+' '+make(redundancy.intransverb);},
@@ -222,9 +224,16 @@ function MakeRedundancy()
 	return redundancy;
 }
 var red
+var par=function(stuff)
+{
+	return '<p>'+stuff+'</p>';
+}
 var maketext=function()
 {
 	if(!red)red=MakeRedundancy();
 	g('redundantpar').className='partext';
-	g('redundantpar').innerHTML=red.paragraph();
+	var str = par(red.paragraph());
+	var i = 6;
+	while(i--) str+= par(red.paragraph())+'<br/>';
+	g('redundantpar').innerHTML=str;
 }

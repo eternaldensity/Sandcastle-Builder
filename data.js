@@ -1326,6 +1326,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Boosts['Sand Refinery'].power++;
 			Molpy.Notify('Sand Refinery upgraded',1);
 			Molpy.boostRepaint=1;
+			Molpy.recalculateDig=1;
 		}		
 	}
 	Molpy.DowngradeSandRefinery=function()
@@ -1337,7 +1338,8 @@ Molpy.DefineBoosts=function()
 		ch.power++;
 		sr.power--;
 		Molpy.Notify('Sand Refinery downgraded',1);
-		Molpy.boostRepaint=1;			
+		Molpy.boostRepaint=1;
+		Molpy.recalculateDig=1;			
 	}
 	
 	new Molpy.Boost({name:'Glass Chip Storage',desc:
@@ -1409,7 +1411,7 @@ Molpy.DefineBoosts=function()
 		{
 			if(!me.bought) return 'Makes Glass Blocks from Glass Chips';
 			var pow=Molpy.Boosts['Glass Chiller'].power+1;
-			var cost=Molpify((Molpy.GlassBlowerSandUse(1),1));
+			var cost=Molpify(Molpy.GlassBlowerSandUse(1),1);
 			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Block'+(pow>1?'s':'')
 				+' from 20 Glass Chips (each) per NP.<br/>';			
 			
@@ -1476,6 +1478,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Boosts['Glass Chiller'].power++;
 			Molpy.Notify('Glass Chiller upgraded',1);
 			Molpy.boostRepaint=1;
+			Molpy.recalculateDig=1;
 		}
 	}
 	
@@ -1755,6 +1758,17 @@ Molpy.DefineBoosts=function()
 	}
 	
 	Molpy.redundancy=MakeRedundancy();
+	
+	new Molpy.Boost({name:'Free Advice',
+		desc:function(me)
+		{
+			return 'Hindsight'+(me.bought?' is 20/20':'');
+		},
+		stats:function(me)
+		{
+			return (me.bought?'This will be useful eventually :P':'Hindsight');
+		},
+		sand:'400P',castles:'400P'});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],

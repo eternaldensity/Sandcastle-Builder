@@ -35,6 +35,7 @@ var postfixes=[
 function Molpify(number, raftcastle, shrinkify)
 {
 	if(isNaN(number))return'Mustard';
+	if(!Number.isFinite(parseFloat(number)))return'Infinite Mustard';
 	var molp='';
 	
 	if(shrinkify) //todo: roll into loop
@@ -206,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.532;
+		Molpy.version=1.54;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -295,10 +296,13 @@ Molpy.Up=function()
 				Molpy.FromNeedlePulledThing(thread);
 				Molpy.loadCount++;
 				Molpy.autosaveCountup=0;
-				Molpy.Notify('Game loaded',1);
-				if(Molpy.loadCount>=40)
+				if(g('game'))
 				{
-					Molpy.UnlockBoost('Coma Molpy Style');
+					Molpy.Notify('Game loaded',1);
+					if(Molpy.loadCount>=40)
+					{
+						Molpy.UnlockBoost('Coma Molpy Style');
+					}
 				}
 			}
 		}
@@ -1104,6 +1108,16 @@ Molpy.Up=function()
 				//In which Fibbonacci occurs:
 				Molpy.nextCastleSand = Molpy.prevCastleSand+Molpy.currentCastleSand;
 				Molpy.prevCastleSand=Molpy.currentCastleSand
+				if(!Number.isFinite(Molpy.sand) || Molpy.nextCastleSand<=0)
+				{
+					Molpy.sand=0;
+					Molpy.nextCastleSand=1;
+					Molpy.castles=Infinity;
+					Molpy.castlesBuilt=Infinity;
+					Molpy.Boosts['Fractal Sandcastles'].power=Infinity;
+					Molpy.Notify('Thanks I could help Bro,1');
+					return;
+				}
 			}
 			Molpy.buildNotifyFlag=1;
 			Molpy.Build(0);
@@ -1178,6 +1192,9 @@ Molpy.Up=function()
 			}
 			if(Molpy.castles>=8888000000000000){
 				Molpy.EarnBadge('Castle Galaxy');
+			}
+			if(Molpy.castles>=DeMolpify('20P')){
+				Molpy.UnlockBoost('Free Advice');
 			}
 						
 		
@@ -3020,15 +3037,18 @@ Molpy.Up=function()
 		if(Molpy.Got('Factory Automation'))
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
+			var t=0;
 			while(i--)
 			{
 				var sand = 2000000*Math.pow(10000,i);
 				if(Molpy.sand>=sand)
 				{
 					Molpy.SpendSand(sand);
-					Molpy.RewardRedacted(1);
+					t++;
 				}
 			}
+			while(t--) 
+				Molpy.RewardRedacted(1);
 		}
 		Molpy.recalculateDig=1;
 	}
