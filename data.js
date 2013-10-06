@@ -1558,7 +1558,7 @@ Molpy.DefineBoosts=function()
 					str+='. <input type="Button" value="Pay" onclick="Molpy.UpgradeSandPurifier()"></input> '+cost
 						+ ' Glass Blocks to increase this by 1.';
 				}else{
-					str+='. It costs '+cost+ 'Glass Blocks to increase this by 1.';				
+					str+='. It costs '+cost+ ' Glass Blocks to increase this by 1.';				
 				}
 			}
 			return str;

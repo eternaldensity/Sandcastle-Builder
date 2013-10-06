@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.55
+- isFinite() works on more browsers than Number.isFinite. Okay.
+- a missing space in sand purifier description
+- DoN doesn't always lock on load
+
 ### 1.54
 - Prevent index from trying to Notify after loading
 - Upgrade/downgrade refinery and chiller now cause sand rate to recalculate immediately rather than waiting for something else to trigger it (oops)
