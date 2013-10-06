@@ -18,6 +18,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.6
+- Some error reporting to people don't have to find the javascript console and know more obviously that something went wrong
+- emergency export button on Index page: exports cookie value directly without parsing it so that if the game is broken they can still get at their save and back it up or transfer it.
+- Index now links to both the Time wiki main page and the game wiki page
+- Boost prices now don't show amounts with 0
+- Boost prices now handle glass blocks
+- Added a boost which - surprise surprise - costs glass blocks
+- Changed BR tags (the way I was doing it was an xhtml thing :P)
 ### 1.56
 - ditto for isNaN() (which was only wrong in 1 out of 2 places. derp.)
 - fixed the check for whether to allow purchase of more glass storage space.

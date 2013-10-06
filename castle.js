@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.56;
+		Molpy.version=1.6;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -561,7 +561,7 @@ Molpy.Up=function()
                         me.power=0;
                         me.countdown=0;                        
                     }else{
-                        me.power=parseInt(ice[2]);
+                        me.power=parseFloat(ice[2]);
                         me.countdown=parseInt(ice[3]);
                     }
 					if(me.bought)
@@ -958,7 +958,7 @@ Molpy.Up=function()
 					return;
 				}
 			}
-			g(bacon+'description').innerHTML='<br/>'+desc;
+			g(bacon+'description').innerHTML='<br>'+desc;
 		}
 		Molpy.UpdateColourScheme=function()
 		{
@@ -1381,10 +1381,9 @@ Molpy.Up=function()
 						}
 						if(Molpy.Boosts['Glass Jaw'].power)
 						{
-							var bl = Molpy.Boosts['Glass Block Storage'];
-							if(bl.power>0)
+							if(Molpy.HasGlassBlocks(1))
 							{
-								bl.power--;
+								Molpy.SpendGlassBlocks(1);
 								stealthBuild*=100;
 							}
 						}
@@ -1742,14 +1741,14 @@ Molpy.Up=function()
 				if(Molpy.showStats)
 				{
 					desc='Total sand '+this.actionName+': '+Molpify(this.totalSand,1)+
-					'<br/>Sand/mNP per '+this.single+': '+Molpify(this.storedSpmNP,1)+
-					'<br/>Total '+this.plural+' bought: '+Molpify(this.bought);
+					'<br>Sand/mNP per '+this.single+': '+Molpify(this.storedSpmNP,1)+
+					'<br>Total '+this.plural+' bought: '+Molpify(this.bought);
 					Molpy.EarnBadge('The Fine Print');
 				}else
 				{				
 					desc=this.desc;
 				}
-				g('SandToolDescription'+this.id).innerHTML='<br/>'+desc;
+				g('SandToolDescription'+this.id).innerHTML='<br>'+desc;
 			}
 			this.hidedesc=function()
 			{		
@@ -1883,16 +1882,16 @@ Molpy.Up=function()
 				var desc = '';
 				var bN = EvalMaybeFunction(this.buildN);
 				var dN = EvalMaybeFunction(this.destroyN);
-				var actuals ='<br/>Builds '+Molpify(bN,1,!Molpy.showStats)+(dN?(' if '+Molpify(dN,1,!Molpy.showStats)+((dN-1)?' are':' is')+' destroyed.'):'');
+				var actuals ='<br>Builds '+Molpify(bN,1,!Molpy.showStats)+(dN?(' if '+Molpify(dN,1,!Molpy.showStats)+((dN-1)?' are':' is')+' destroyed.'):'');
 				if(Molpy.showStats)
 				{
 					if(this.totalCastlesDestroyed)
 						desc+='Total castles '+this.actionDName+': '+Molpify(this.totalCastlesDestroyed)+
-						'<br/>Total castles wasted: '+Molpify(this.totalCastlesWasted);
+						'<br>Total castles wasted: '+Molpify(this.totalCastlesWasted);
 					if(this.totalCastlesBuilt)
-						desc+='<br/>Total castles '+this.actionBName+': +'+Molpify(this.totalCastlesBuilt);
-					desc+='<br/>Total '+this.plural+' bought: '+Molpify(this.bought);
-					desc+='<br/>'+actuals;
+						desc+='<br>Total castles '+this.actionBName+': +'+Molpify(this.totalCastlesBuilt);
+					desc+='<br>Total '+this.plural+' bought: '+Molpify(this.bought);
+					desc+='<br>'+actuals;
 					Molpy.EarnBadge('Keeping Track');
 				}else
 				{				
@@ -1900,7 +1899,7 @@ Molpy.Up=function()
 				}
 			
 			
-				g('CastleToolDescription'+this.id).innerHTML='<br/>'+desc;
+				g('CastleToolDescription'+this.id).innerHTML='<br>'+desc;
 			}
 			this.hidedesc=function(event)
 			{
@@ -1947,6 +1946,7 @@ Molpy.Up=function()
 			this.desc=args.desc;
 			this.sandPrice=args.sand||0;
 			this.castlePrice=args.castles||0;
+			this.glassPrice=args.glass||0;
 			this.stats=args.stats;
 			this.icon=args.icon;
 			this.buyFunction=args.buyFunction;
@@ -1977,10 +1977,12 @@ Molpy.Up=function()
 			{
 				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1));
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));
-				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp)
+				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1));
+				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp && Molpy.HasGlassBlocks(gp))
 				{
 					Molpy.SpendSand(sp);
 					Molpy.SpendCastles(cp);
+					Molpy.SpendGlassBlocks(gp);
 					this.bought=1;
 					if (this.buyFunction) this.buyFunction(this);
 					Molpy.boostRepaint=1;
@@ -2010,7 +2012,7 @@ Molpy.Up=function()
 				var boo=g('BoostDescription'+this.id)
 				if(boo)
 				{	
-					boo.innerHTML='<br/>'+EvalMaybeFunction((Molpy.showStats&&this.stats)?this.stats:this.desc,this);
+					boo.innerHTML='<br>'+EvalMaybeFunction((Molpy.showStats&&this.stats)?this.stats:this.desc,this);
 				}
 			}
 			this.hidedesc=function()
@@ -2120,7 +2122,7 @@ Molpy.Up=function()
 			
 			this.showdesc=function()
 			{
-				g('BadgeDescription'+this.id).innerHTML='<br/>'+((this.earned||this.visibility<1)?
+				g('BadgeDescription'+this.id).innerHTML='<br>'+((this.earned||this.visibility<1)?
 				EvalMaybeFunction(this.desc):'????');
 			}
 			this.hidedesc=function()
@@ -2502,7 +2504,7 @@ Molpy.Up=function()
 					if(id) id= ' id="'+id+'"';
 					var r = (Molpy.redactedVisible==4&&Molpy.redactedGr==gr);
 					if(r)id='';
-					str+= '<div class="floatsquare boost loot">'+Molpy.groupNames[gr][1]+'<br/><br/>'+showhideButton(gr)
+					str+= '<div class="floatsquare boost loot">'+Molpy.groupNames[gr][1]+'<br><br>'+showhideButton(gr)
 						+'<div class="icon'
 						+(r?' redacted"':'"')
 						+id+'></div></div>';
@@ -2510,21 +2512,21 @@ Molpy.Up=function()
 			}
 			if(Molpy.BadgesOwned)
 			{
-				str+= '<div class="floatsquare badge loot">Badges<br/>Earned<br/>'
+				str+= '<div class="floatsquare badge loot">Badges<br>Earned<br>'
 					+showhideButton('badges')+'<div class="icon '
 					+(Molpy.redactedVisible==5?'redacted':'')
 					+'"></div></div>';
 			}
 			if(Molpy.BadgeN-Molpy.BadgesOwned)
 			{
-				str+= '<div class="floatsquare badge shop">Badges<br/>Available<br/>'
+				str+= '<div class="floatsquare badge shop">Badges<br>Available<br>'
 					+showhideButton('badgesav')+'<div class="icon '
 					+(Molpy.redactedVisible==6?'redacted':'')
 					+'"></div></div>';
 			}
 			if(Molpy.Boosts['Chromatic Heresy'].unlocked)
 			{
-				str+= '<div class="floatsquare boost loot alert">Tagged<br/>Items<br/>'
+				str+= '<div class="floatsquare boost loot alert">Tagged<br>Items<br>'
 					+showhideButton('tagged')+'<div id="boost_chromatic" class="icon '
 					+(Molpy.redactedVisible==7?'redacted':'')
 					+'"></div></div>';
@@ -2619,14 +2621,22 @@ Molpy.Up=function()
 			
 			cn = r+'<div class="boost '+(me.bought?'lootbox loot ':'floatbox shop ')+cn;
 			var heading= '<div class="heading">['+Molpy.groupNames[group][0]+']</div>';
-			var buy= me.bought?'</div>':(' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a></div>'
-				+'<span class="price">Price: '+FormatPrice(me.sandPrice)+' Sand + '
-				+FormatPrice(me.castlePrice)+' Castles</span>');
-				
-			
+			var buy= '';
+			if(!me.bought)
+			{
+				buy=' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a>';
+				if(me.sandPrice||me.castlePrice||me.glassPrice)
+				{
+					buy+='<span class="price"> Price: ';
+					if(me.sandPrice) buy +=FormatPrice(me.sandPrice)+' Sand '+(me.castlePrice||me.glassPrice?'+ ':'');
+					if(me.castlePrice) buy +=FormatPrice(me.castlePrice)+' Castles '+(me.glassPrice?'+ ':'');
+					if(me.glassPrice) buy +=FormatPrice(me.glassPrice)+' Glasss Blocks ';
+					buy+='</span>';
+				}
+			}
 			
 			return cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id
-				+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+heading+'<div class="title">'+me.name+buy
+				+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+heading+'<div class="title">'+me.name+buy+'</div>'
 				+'<div id="BoostDescription'+me.id+'"></div></div></div>';
 		}
 		
@@ -2993,7 +3003,7 @@ Molpy.Up=function()
 			{
 				var line = Molpy.notifLog[i];
 				if(line){
-					str+=line+'<br/>';
+					str+=line+'<br>';
 				}
 				i++;
 			}
@@ -3002,7 +3012,7 @@ Molpy.Up=function()
 			{
 				var line = Molpy.notifLog[i];
 				if(line){
-					str+=line+'<br/>';
+					str+=line+'<br>';
 				}
 				i++;
 			}
@@ -3265,6 +3275,16 @@ Molpy.Up=function()
 				Molpy.Notify('A Bag was burned!',1);
 			}
 		}
+		if(Molpy.Got('Broken Bottle Cleanup'))
+		{
+			if(Molpy.HasGlassBlocks(5))
+			{
+				Molpy.SpendGlassBlocks(5);
+				Molpy.Boosts['Broken Bottle Cleanup'].power=1;
+			}else{
+				Molpy.Boosts['Broken Bottle Cleanup'].power=0;
+			}
+		}
 	}
 		
 	Molpy.HandlePeriods=function()
@@ -3423,7 +3443,7 @@ Molpy.Up=function()
 							desc.innerHTML="Ninja'd!";
 						}else
 						{
-							desc.innerHTML='Active: '+me.currentActive+'<br/>Timer: '
+							desc.innerHTML='Active: '+me.currentActive+'<br>Timer: '
 							+Math.ceil((Molpy.ninjaTime-Molpy.ONGelapsed)/Molpy.NPlength);
 						}
 					}else{
@@ -3559,20 +3579,29 @@ Molpy.Up=function()
 	{
 		Molpy.ketchupTime=0;
 		Molpy.lateness+=((new Date().getTime()-Molpy.time));
-		Molpy.lateness=Math.min(Molpy.lateness, 7200);//it's okay to skip a bit
-		if(Molpy.lateness > Molpy.NPlength)
-		{
-			Molpy.Think();
-			Molpy.lateness -= Molpy.NPlength;
-		}
-		Molpy.ketchupTime=1;
+		Molpy.lateness=Math.min(Molpy.lateness, 7200);//don't ketchup up too much
 		while(Molpy.lateness > Molpy.NPlength)
 		{
-			Molpy.Think();
+			try{
+				Molpy.Think();
+			}catch(e)
+			{
+				alert('Something went wrong in Molpy.Think() '+(Molpy.ketchupTime?'while ketching up: ':': ')+e+'\n\n'+e.stack);
+				throw e;
+				return;
+			}
+			Molpy.ketchupTime=1;
 			Molpy.lateness -= Molpy.NPlength;
 		}
 		Molpy.ketchupTime=0;
-		Molpy.Draw();
+		try{
+			Molpy.Draw();
+		}catch(e)
+		{
+			alert('Something went wrong in Molpy.Draw(): '+e+'\n\n'+e.stack);
+			throw e;
+			return;
+		}
 		Molpy.time=new Date().getTime();
 		setTimeout(Molpy.Loopist, 1000/Molpy.fps);
 	}	
