@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.61
+- Fixed boosts out of order
+
 ### 1.6
 - Some error reporting to people don't have to find the javascript console and know more obviously that something went wrong
 - emergency export button on Index page: exports cookie value directly without parsing it so that if the game is broken they can still get at their save and back it up or transfer it.

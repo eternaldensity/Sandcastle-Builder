@@ -1773,18 +1773,6 @@ Molpy.DefineBoosts=function()
 		Molpy.boostRepaint=1;
 	}
 	
-	new Molpy.Boost({name:'Broken Bottle Cleanup',desc:'All Sand Tools produce 20x Sand at a cost of 5 Glass Blocks per NP',
-		stats:function(me)
-		{
-			return me.desc+'<br>'+(me.power?'Active during this NP':'Inactive. May activate on the next ONG if 5 Glass Blocks are available.');
-		},sand:'5P',castles:'10P',glass:'500'});
-	Molpy.BBC=function()
-	{
-		if(Molpy.Got('Broken Bottle Cleanup')&&Molpy.Boosts['Broken Bottle Cleanup'].power)
-			return 20;
-		return 1;
-	}
-	
 	Molpy.redundancy=MakeRedundancy();
 	
 	new Molpy.Boost({name:'Free Advice',
@@ -1797,6 +1785,18 @@ Molpy.DefineBoosts=function()
 			return (me.bought?'This will be useful eventually :P':'Hindsight');
 		},
 		sand:'400P',castles:'400P'});
+	
+	new Molpy.Boost({name:'Broken Bottle Cleanup',desc:'All Sand Tools produce 20x Sand at a cost of 5 Glass Blocks per NP',
+		stats:function(me)
+		{
+			return me.desc+'<br>'+(me.power?'Active during this NP':'Inactive. May activate on the next ONG if 5 Glass Blocks are available.');
+		},sand:'5P',castles:'10P',glass:'500'});
+	Molpy.BBC=function()
+	{
+		if(Molpy.Got('Broken Bottle Cleanup')&&Molpy.Boosts['Broken Bottle Cleanup'].power)
+			return 20;
+		return 1;
+	}
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
