@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.56
+- ditto for isNaN() (which was only wrong in 1 out of 2 places. derp.)
+- fixed the check for whether to allow purchase of more glass storage space.
+
 ### 1.55
 - isFinite() works on more browsers than Number.isFinite. Okay.
 - a missing space in sand purifier description

@@ -1347,8 +1347,9 @@ Molpy.DefineBoosts=function()
 		{
 			var str= 'Contains '+Molpify(me.power)+' Glass Chip'+(me.power>1?'s':'')+'.';
 			var size=(me.bought)*10;
+			var rate = Molpy.Boosts['Glass Chiller'].power+1;
 			str+= ' Has space to store '+Molpify(size,1,!Molpy.showStats)+ ' Chips total.';
-			if(size-me.power<=me.power*5)
+			if(size-me.power<=rate*5)
 			{
 				if(me.power>=5)
 				{
@@ -1487,8 +1488,9 @@ Molpy.DefineBoosts=function()
 		{
 			var str= 'Contains '+Molpify(me.power)+' Glass Block'+(me.power>1?'s':'')+'.';
 			var size=(me.bought)*50;
+			var rate = Molpy.Boosts['Glass Blower'].power+1;
 			str+= ' Has space to store '+Molpify(size,1,!Molpy.showStats)+ ' Blocks total.';
-			if(size-me.power<=me.power*5)
+			if(size-me.power<=rate*5)
 			{
 				if(me.power>=15)
 				{
