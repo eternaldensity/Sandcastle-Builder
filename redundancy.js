@@ -14,7 +14,7 @@ function EvalMaybeFunction(bacon,babies,ice)
 function DeMolpify(grape)
 {
 	var fix = grape.slice(-1);
-	if(Number.isNaN(parseFloat(fix)))
+	if(isNaN(parseFloat(fix)))
 	for (var i in postfixes)
 	{	
 		var vine = postfixes[i];
