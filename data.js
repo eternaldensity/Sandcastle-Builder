@@ -123,6 +123,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Carrybot'))mult*=4;
 			if(Molpy.Got('Buccaneer'))mult*=2;
 			if(Molpy.Got('Flying Buckets'))mult*=Molpy.CastleTools['Trebuchet'].amount;
+			mult*=Molpy.BBC();
 			return mult*baserate;			
 			}
 	);
@@ -139,6 +140,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Stickbot'))mult*=4;
 			if(Molpy.Got('The Forty'))mult*=40;
 			if(Molpy.Got('Human Cannonball'))mult*=2*Molpy.CastleTools['Trebuchet'].amount;
+			mult*=Molpy.BBC();
 			return baserate*mult;
 			}
 	);
@@ -161,6 +163,7 @@ Molpy.DefineSandTools=function()
 				}
 			}
 			if(Molpy.Got('Fly the Flag'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
+			mult*=Molpy.BBC();
 			return baserate*mult;
 		}
 	);
@@ -180,6 +183,7 @@ Molpy.DefineSandTools=function()
 				mult*=min;
 			}
 			if(Molpy.Got('Up Up and Away'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
+			mult*=Molpy.BBC();
 			return baserate*mult;
 		}
 	);
@@ -196,6 +200,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Luggagebot'))mult*=4;
 			if(Molpy.Got('Bag Puns'))mult*=2;
 			if(Molpy.Got('Air Drop'))mult*=5;
+			mult*=Molpy.BBC();
 			return baserate*mult;
 		}
 	);
@@ -500,7 +505,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Coma Molpy Style',desc: 
 		function(me)
 		{ 
-			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br/><input type="Button" onclick="Molpy.ComaMolpyStyleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br><input type="Button" onclick="Molpy.ComaMolpyStyleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 		}
 		,sand:8500,castles:200,icon:'comamolpystyle',className:'toggle'});
 	
@@ -1162,7 +1167,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Temporal Rift',
 		desc:function(me)
 		{
-			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+me.countdown+'mNP.<br/><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
+			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+me.countdown+'mNP.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
 			return 'A hole in time has opened.';
 		}
 		,countdownFunction:function()
@@ -1194,7 +1199,7 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Turns Sand into Glass';
 			var pow=Molpy.Boosts['Sand Refinery'].power+1;
 			var cost=Molpify(Molpy.GlassFurnaceSandUse(1),1);
-			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP.<br/>';
+			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP.<br>';
 			
 			if(Molpy.Got('Glass Furnace Switching'))
 			{
@@ -1274,6 +1279,15 @@ Molpy.DefineBoosts=function()
 		return glassUse;
 	}
 	
+	Molpy.HasGlassBlocks=function(num)
+	{	
+		return Molpy.Boosts['Glass Chip Storage'].power >= num;
+	}
+	Molpy.SpendGlassBlocks=function(num)
+	{	
+		Molpy.Boosts['Glass Chip Storage'].power -= num;
+	}
+	
 	new Molpy.Boost({name:'Sand Refinery',desc:
 		function(me)
 		{		
@@ -1286,7 +1300,7 @@ Molpy.DefineBoosts=function()
 				if(ch.power>=3)
 				{
 					
-				}else if(bl.power>0)
+				}else if(Molpy.HasGlassBlocks(1))
 				{
 					useChips=0
 				}else{
@@ -1299,9 +1313,9 @@ Molpy.DefineBoosts=function()
 			}else{
 				str+= 'Currently, you have no more sand available for further upgrades';
 			}
-			if(Molpy.Boosts['Sand Refinery'].power>1 && ch.power<ch.bought*10)
+			if(Molpy.Boosts['Sand Refinery'].power>1 && !Molpy.HasGlassBlocks(ch.bought*10))
 			{
-				str+='</br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeSandRefinery()"></input> the Sand Refinery and receive a 1 Glass Chip refund.';
+				str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeSandRefinery()"></input> the Sand Refinery and receive a 1 Glass Chip refund.';
 			}
 			return str;
 		}
@@ -1317,9 +1331,9 @@ Molpy.DefineBoosts=function()
 			{
 				ch.power-=3;
 			}
-			else if(bl.power>=1)
+			else if(Molpy.HasGlassBlocks(1))
 			{
-				bl.power-=1;
+				Molpy.SpendGlassBlocks(1);
 			}else{
 				return;
 			}
@@ -1334,7 +1348,7 @@ Molpy.DefineBoosts=function()
 		var sr = Molpy.Boosts['Sand Refinery'];
 			var ch = Molpy.Boosts['Glass Chip Storage'];
 		if(sr.power<1)return;
-		if(ch.power>=ch.bought*10)return;
+		if(Molpy.HasGlassBlocks(ch.bought*10))return; //no space
 		ch.power++;
 		sr.power--;
 		Molpy.Notify('Sand Refinery downgraded',1);
@@ -1399,7 +1413,7 @@ Molpy.DefineBoosts=function()
 		if(ch.power>=chips&&bl.power>=blocks)
 		{
 			ch.power-=chips;
-			bl.power-=blocks;
+			Molpy.SpendGlassBlocks(blocks);
 			Molpy.UnlockBoost(name);
 			Molpy.Boosts[name].buy();			
 		}
@@ -1414,7 +1428,7 @@ Molpy.DefineBoosts=function()
 			var pow=Molpy.Boosts['Glass Chiller'].power+1;
 			var cost=Molpify(Molpy.GlassBlowerSandUse(1),1);
 			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Block'+(pow>1?'s':'')
-				+' from 20 Glass Chips (each) per NP.<br/>';			
+				+' from 20 Glass Chips (each) per NP.<br>';			
 			
 			if(Molpy.Got('Glass Blower Switching'))
 			{
@@ -1599,7 +1613,7 @@ Molpy.DefineBoosts=function()
 			{
 				if(!Molpy.Got('Rosetta'))
 				{
-					str+= '<br/><input type="Button" value="Trade" onclick="Molpy.GetRosetta()"></input> 50 Bags to find Rosetta.';
+					str+= '<br><input type="Button" value="Trade" onclick="Molpy.GetRosetta()"></input> 50 Bags to find Rosetta.';
 				}
 			}
 			return str;
@@ -1636,7 +1650,7 @@ Molpy.DefineBoosts=function()
 			{
 				if(!Molpy.Got('Panther Salve'))
 				{
-					str+= '<br/><input type="Button" value="Trade" onclick="Molpy.BuyGlassBoost(\'Panther Salve\',0,250)"> 250 Glass Blocks for Panther Salve.</input>'
+					str+= '<br><input type="Button" value="Trade" onclick="Molpy.BuyGlassBoost(\'Panther Salve\',0,250)"> 250 Glass Blocks for Panther Salve.</input>'
 				}
 				
 				var fa = Molpy.Boosts['Factory Automation'];
@@ -1645,7 +1659,7 @@ Molpy.DefineBoosts=function()
 				{
 					if(fa.power==0&&bots>=55 || fa.power==1&&bots>=65)
 					{
-						str+='<br/><input type="Button" value="Trade" onclick="Molpy.UpgradeFactoryAutomation()"></input> '+(fa.power?65:55)+' NewPixBots to upgrade Factory Automation.';
+						str+='<br><input type="Button" value="Trade" onclick="Molpy.UpgradeFactoryAutomation()"></input> '+(fa.power?65:55)+' NewPixBots to upgrade Factory Automation.';
 					}
 				}
 			}
@@ -1757,6 +1771,18 @@ Molpy.DefineBoosts=function()
 		fm.power=(!fm.power)*1;
 		fm.hoverOnCounter=1;
 		Molpy.boostRepaint=1;
+	}
+	
+	new Molpy.Boost({name:'Broken Bottle Cleanup',desc:'All Sand Tools produce 20x Sand at a cost of 5 Glass Blocks per NP',
+		stats:function(me)
+		{
+			return me.desc+'<br>'+(me.power?'Active during this NP':'Inactive. May activate on the next ONG if 5 Glass Blocks are available.');
+		},sand:'5P',castles:'10P',glass:'500'});
+	Molpy.BBC=function()
+	{
+		if(Molpy.Got('Broken Bottle Cleanup')&&Molpy.Boosts['Broken Bottle Cleanup'].power)
+			return 20;
+		return 1;
 	}
 	
 	Molpy.redundancy=MakeRedundancy();
@@ -2161,6 +2187,7 @@ Molpy.CheckBuyUnlocks=function()
 	}
 	
 	if(Molpy.Got('Air Drop'))Molpy.Boosts['Schizoblitz'].department=1;
+	if(Molpy.Earned('Beachomancer')&&Molpy.Got('Free Advice'))Molpy.Boosts['Broken Bottle Cleanup'].department=1;
 }
 
 Molpy.CheckClickAchievements=function()
