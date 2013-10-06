@@ -26,6 +26,7 @@ For personal amusement only.
 - Boost prices now handle glass blocks
 - Added a boost which - surprise surprise - costs glass blocks
 - Changed BR tags (the way I was doing it was an xhtml thing :P)
+
 ### 1.56
 - ditto for isNaN() (which was only wrong in 1 out of 2 places. derp.)
 - fixed the check for whether to allow purchase of more glass storage space.
