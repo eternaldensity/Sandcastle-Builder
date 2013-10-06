@@ -18,9 +18,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.55
+- isFinite() works on more browsers than Number.isFinite. Okay.
+- a missing space in sand purifier description
+- DoN doesn't always lock on load
+
 ### 1.54
 - Prevent index from trying to Notify after loading
-- Upgrade/downgrade refinery and chiller now cause sand rate to recalculate immediately rather than waiting for somthing else to trigger it (oops)
+- Upgrade/downgrade refinery and chiller now cause sand rate to recalculate immediately rather than waiting for something else to trigger it (oops)
 - Furnace Automation now pre-spends sand so Blast Furnace doesn't prevent it from running multiple times.
 - Noticed what in the bit of CSS I kept from Orteil was preventing text selection and disabled it for Redundant Information :D
 - New high value boost

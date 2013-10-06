@@ -35,7 +35,7 @@ var postfixes=[
 function Molpify(number, raftcastle, shrinkify)
 {
 	if(isNaN(number))return'Mustard';
-	if(!Number.isFinite(parseFloat(number)))return'Infinite Mustard';
+	if(!isFinite(parseFloat(number)))return'Infinite Mustard';
 	var molp='';
 	
 	if(shrinkify) //todo: roll into loop
@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.54;
+		Molpy.version=1.55;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -722,7 +722,8 @@ Molpy.Up=function()
 			}
 			
 			Molpy.UpdateColourScheme();
-			Molpy.LockBoost('Double or Nothing');
+			if(Molpy.Got('Double or Nothing') && Math.floor(Math.random()*2))
+				Molpy.LockBoost('Double or Nothing');
 			if(Molpy.redactedVisible)
 			{
 				Molpy.redactedCountup=Molpy.redactedToggle;
@@ -1108,7 +1109,7 @@ Molpy.Up=function()
 				//In which Fibbonacci occurs:
 				Molpy.nextCastleSand = Molpy.prevCastleSand+Molpy.currentCastleSand;
 				Molpy.prevCastleSand=Molpy.currentCastleSand
-				if(!Number.isFinite(Molpy.sand) || Molpy.nextCastleSand<=0)
+				if(!isFinite(Molpy.sand) || Molpy.nextCastleSand<=0)
 				{
 					Molpy.sand=0;
 					Molpy.nextCastleSand=1;
