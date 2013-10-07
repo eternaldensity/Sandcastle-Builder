@@ -18,6 +18,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.7
+- 10 Glass related boosts
+- build/destroy/spend messages now use nicer notation
+- Tools now show glass boost status
+- Fixed DoN which was only locking on load if you bought it
+- BBC secret ability
+- Sorry no multibuy or extra badges yet.
+
 ### 1.62
 - Fixed totally wrong HasGlassBlocks and SpendGlassBlocks functions: they were checking and spending chips!
 - Fixed wrong glass rate calculates which resulted in not letting you buy storage space as soon as you should be allowed to

@@ -118,9 +118,9 @@ function ClassNameSort(a,b)
 	else if (an<bn) return -1;
 	else return 0;
 }
-function FormatPrice(monies)
+function FormatPrice(monies,item)
 {
-	return Molpify(Math.floor(EvalMaybeFunction(monies,0,1)*Molpy.priceFactor),1,!Molpy.showStats);
+	return Molpify(Math.floor(EvalMaybeFunction(monies,item,1)*Molpy.priceFactor),1,!Molpy.showStats);
 }
 function CuegishToBeanish(mustard)
 {
@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.62;
+		Molpy.version=1.7;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -731,7 +731,7 @@ Molpy.Up=function()
 			}
 			
 			Molpy.UpdateColourScheme();
-			if(Molpy.Got('Double or Nothing') && Math.floor(Math.random()*2))
+			if(Molpy.Boosts['Double or Nothing'].unlocked && Math.floor(Math.random()*2))
 				Molpy.LockBoost('Double or Nothing');
 			if(Molpy.redactedVisible)
 			{
@@ -1152,7 +1152,7 @@ Molpy.Up=function()
 					Molpy.buildNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'+1 Castle':Molpify(amount)+ ' Castles Built',1);
+					Molpy.Notify(amount==1?'+1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Built',1);
 				}
 			}else{
 				Molpy.buildNotifyCount+=amount;
@@ -1277,14 +1277,14 @@ Molpy.Up=function()
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
 			Molpy.castlesSpent+=amount;
-			Molpy.Notify('Spent Castles: ' + Molpify(amount),1);
+			Molpy.Notify('Spent Castles: ' + Molpify(amount,3,!Molpy.showStats),1);
 		}
 		Molpy.SpendSand=function(amount)
 		{
 			if(!amount)return;
 			Molpy.sand-=amount;
 			Molpy.sandSpent+=amount;
-			Molpy.Notify('Spent Sand: ' + Molpify(amount),1);
+			Molpy.Notify('Spent Sand: ' + Molpify(amount,3,!Molpy.showStats),1);
 		}
 		
 		Molpy.destroyNotifyFlag=1;
@@ -1302,7 +1302,7 @@ Molpy.Up=function()
 					Molpy.destroyNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'-1 Castle':Molpify(amount)+ ' Castles Destroyed',!logsilent);
+					Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Destroyed',!logsilent);
 				}
 			}else{
 				Molpy.destroyNotifyCount+=amount;
@@ -2336,7 +2336,7 @@ Molpy.Up=function()
 				if(availRewards.length)
 				{
 					var red=GLRschoice(availRewards);
-					if((EvalMaybeFunction(red.sandPrice)+EvalMaybeFunction(red.castlePrice)))
+					if((EvalMaybeFunction(red.sandPrice,red)+EvalMaybeFunction(red.castlePrice,red)+EvalMaybeFunction(red.glassPrice,red)))
 					{
 						Molpy.Notify('The DoRD has produced:',1);
 						Molpy.UnlockBoost(red.name);
@@ -2571,9 +2571,11 @@ Molpy.Up=function()
 			{
 				if(i==redactedIndex) str+= Molpy.RedactedHTML();
 				var me=Molpy.SandToolsById[i];
-				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
+				var name = me.name;
+				if(Molpy.Got('Glass Ceiling '+(i*2))) name = 'Glass '+name;
+				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
 				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
-				'<span class="price">Price: '+FormatPrice(me.price)+(me.price<100?' Castles':' C')+'</span>'+
+				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="SandToolDescription'+me.id+'"></div></div></div>';
 				i++
 			}
@@ -2602,9 +2604,11 @@ Molpy.Up=function()
 			{
 				if(i==redactedIndex) str+= Molpy.RedactedHTML();
 				var me=Molpy.CastleToolsById[i];
-				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+me.name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
+				var name = me.name;
+				if(Molpy.Got('Glass Ceiling '+(i*2+1))) name = 'Glass '+name;
+				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
 				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
-				'<span class="price">Price: '+FormatPrice(me.price)+(me.price<100?' Castles':' C')+'</span>'+
+				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
 				i++
 			}
@@ -2637,9 +2641,9 @@ Molpy.Up=function()
 				if(me.sandPrice||me.castlePrice||me.glassPrice)
 				{
 					buy+='<span class="price"> Price: ';
-					if(me.sandPrice) buy +=FormatPrice(me.sandPrice)+' Sand '+(me.castlePrice||me.glassPrice?'+ ':'');
-					if(me.castlePrice) buy +=FormatPrice(me.castlePrice)+' Castles '+(me.glassPrice?'+ ':'');
-					if(me.glassPrice) buy +=FormatPrice(me.glassPrice)+' Glasss Blocks ';
+					if(me.sandPrice) buy +=FormatPrice(me.sandPrice,me)+' Sand '+(me.castlePrice||me.glassPrice?'+ ':'');
+					if(me.castlePrice) buy +=FormatPrice(me.castlePrice,me)+' Castles '+(me.glassPrice?'+ ':'');
+					if(me.glassPrice) buy +=FormatPrice(me.glassPrice,me)+' Glass Blocks ';
 					buy+='</span>';
 				}
 			}
@@ -3102,6 +3106,9 @@ Molpy.Up=function()
 						if(me.hovered<0)me.hover();
 					}
 				}
+			}
+			if(me.unlocked)
+			{
 				if(me.classChange)
 				{
 					if(me.classChange())
@@ -3290,6 +3297,8 @@ Molpy.Up=function()
 			{
 				Molpy.SpendGlassBlocks(5);
 				Molpy.Boosts['Broken Bottle Cleanup'].power=1;
+				if(Molpy.Boosts['Double or Nothing'].power>20)
+					Molpy.Boosts['Double or Nothing'].power--;
 			}else{
 				Molpy.Boosts['Broken Bottle Cleanup'].power=0;
 			}
