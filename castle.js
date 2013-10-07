@@ -3370,10 +3370,10 @@ Molpy.Up=function()
 		if(Molpy.Boosts['Chromatic Heresy'].power&&Molpy.options.otcol)
 		{	
 			g('beach').style.background='url(http://178.79.159.24/Time/otcolorization/'+Molpy.newpixNumber+')';
-			g('beach').style.backgroundSize='auto';	
+			g('beach').style.backgroundSize='contain';	
 		}else{
 			g('beach').style.background='url(http://xkcd.mscha.org/frame/'+Molpy.newpixNumber+')';
-			g('beach').style.backgroundSize='auto';	
+			g('beach').style.backgroundSize='contain';	
 		}
 	}
 	/* In which we figure out how to draw stuff
