@@ -18,6 +18,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.62
+- Fixed totally wrong HasGlassBlocks and SpendGlassBlocks functions: they were checking and spending chips!
+- Fixed wrong glass rate calculates which resulted in not letting you buy storage space as soon as you should be allowed to
+- Fixed negative amounts of glass chips resulting from the first problem
+- Fixed index export button
+- Fixed large OTColoured: use background-size:contain instead of :auto (thanks MDN)
+
 ### 1.61
 - Fixed boosts out of order
 

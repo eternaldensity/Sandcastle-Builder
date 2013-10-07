@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.61;
+		Molpy.version=1.62;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -718,6 +718,15 @@ Molpy.Up=function()
 				if(!fa.power) 
 				{
 					fa.power=0;
+				}
+			}
+			if(version<1.62)
+			{
+				var ch = Molpy.Boosts['Glass Chip Storage'];
+				if(ch.power<0)
+				{
+					ch.power=-ch.power;
+					Molpy.Notify('Reversed the Polarity');
 				}
 			}
 			
@@ -3361,10 +3370,10 @@ Molpy.Up=function()
 		if(Molpy.Boosts['Chromatic Heresy'].power&&Molpy.options.otcol)
 		{	
 			g('beach').style.background='url(http://178.79.159.24/Time/otcolorization/'+Molpy.newpixNumber+')';
-			g('beach').style.backgroundSize='auto';	
+			g('beach').style.backgroundSize='contain';	
 		}else{
 			g('beach').style.background='url(http://xkcd.mscha.org/frame/'+Molpy.newpixNumber+')';
-			g('beach').style.backgroundSize='auto';	
+			g('beach').style.backgroundSize='contain';	
 		}
 	}
 	/* In which we figure out how to draw stuff
