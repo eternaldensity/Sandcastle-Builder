@@ -1936,6 +1936,12 @@ Molpy.DefineBoosts=function()
 			return 1;
 		}
 	}
+	new Molpy.Boost({name:'Sand Multi Buy',desc:'Allow buying of multiple sand tools at once'
+		,sand:'200K',castles:'6502',stats:'Code for this feature supplied by waveney'
+	});
+	new Molpy.Boost({name:'Castle Multi Buy',desc:'Allow buying of multiple castle tools at once'
+		,sand:'2000K',castles:'68020',stats:'Code for this feature supplied by waveney'
+	});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
@@ -2352,6 +2358,8 @@ Molpy.CheckBuyUnlocks=function()
 	}
 	if(Molpy.GlassCeilingCount())
 		Molpy.GlassCeilingUnlockCheck();
+	if(Molpy.SandToolsOwned>=123)Molpy.UnlockBoost('Sand Multi Buy');
+	if(Molpy.CastleToolsOwned>=234)Molpy.UnlockBoost('Castle Multi Buy');
 }
 
 Molpy.CheckClickAchievements=function()

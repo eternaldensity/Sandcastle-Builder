@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.72
+- Buying Multi Style! (thanks for the code waveney)
+
 ### 1.71
 - Added critical missing component of the glass ceiling boosts
 - Buffed chequered flag
