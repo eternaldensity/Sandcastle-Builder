@@ -14,7 +14,7 @@ function EvalMaybeFunction(bacon,babies,ice)
 function DeMolpify(grape)
 {
 	var fix = grape.slice(-1);
-	if(Number.isNaN(parseFloat(fix)))
+	if(isNaN(parseFloat(fix)))
 	for (var i in postfixes)
 	{	
 		var vine = postfixes[i];
@@ -234,6 +234,18 @@ var maketext=function()
 	g('redundantpar').className='partext';
 	var str = par(red.paragraph());
 	var i = 6;
-	while(i--) str+= par(red.paragraph())+'<br/>';
+	while(i--) str+= par(red.paragraph())+'<br>';
 	g('redundantpar').innerHTML=str;
+}
+
+var EmergencyExport=function()
+{
+	var thread='';
+	if (document.cookie.indexOf('CastleBuilderGame')>=0) 
+	{
+		thread=document.cookie.split('CastleBuilderGame=')[1];
+		g('redundantpar').innerHTML=thread;
+		g('redundantpar').className='partext';
+		
+	}
 }

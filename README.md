@@ -18,9 +18,54 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.72
+- Buying Multi Style! (thanks for the code waveney)
+
+### 1.71
+- Added critical missing component of the glass ceiling boosts
+- Buffed chequered flag
+- DoN always locks again
+- Several new badges
+
+### 1.7
+- 10 Glass related boosts
+- build/destroy/spend messages now use nicer notation
+- Tools now show glass boost status
+- Fixed DoN which was only locking on load if you bought it
+- BBC secret ability
+- Sorry no multibuy or extra badges yet.
+
+### 1.62
+- Fixed totally wrong HasGlassBlocks and SpendGlassBlocks functions: they were checking and spending chips!
+- Fixed wrong glass rate calculates which resulted in not letting you buy storage space as soon as you should be allowed to
+- Fixed negative amounts of glass chips resulting from the first problem
+- Fixed index export button
+- Fixed large OTColoured: use background-size:contain instead of :auto (thanks MDN)
+
+### 1.61
+- Fixed boosts out of order
+
+### 1.6
+- Some error reporting to people don't have to find the javascript console and know more obviously that something went wrong
+- emergency export button on Index page: exports cookie value directly without parsing it so that if the game is broken they can still get at their save and back it up or transfer it.
+- Index now links to both the Time wiki main page and the game wiki page
+- Boost prices now don't show amounts with 0
+- Boost prices now handle glass blocks
+- Added a boost which - surprise surprise - costs glass blocks
+- Changed BR tags (the way I was doing it was an xhtml thing :P)
+
+### 1.56
+- ditto for isNaN() (which was only wrong in 1 out of 2 places. derp.)
+- fixed the check for whether to allow purchase of more glass storage space.
+
+### 1.55
+- isFinite() works on more browsers than Number.isFinite. Okay.
+- a missing space in sand purifier description
+- DoN doesn't always lock on load
+
 ### 1.54
 - Prevent index from trying to Notify after loading
-- Upgrade/downgrade refinery and chiller now cause sand rate to recalculate immediately rather than waiting for somthing else to trigger it (oops)
+- Upgrade/downgrade refinery and chiller now cause sand rate to recalculate immediately rather than waiting for something else to trigger it (oops)
 - Furnace Automation now pre-spends sand so Blast Furnace doesn't prevent it from running multiple times.
 - Noticed what in the bit of CSS I kept from Orteil was preventing text selection and disabled it for Redundant Information :D
 - New high value boost
