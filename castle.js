@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.7;
+		Molpy.version=1.71;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -731,8 +731,7 @@ Molpy.Up=function()
 			}
 			
 			Molpy.UpdateColourScheme();
-			if(Molpy.Boosts['Double or Nothing'].unlocked && Math.floor(Math.random()*2))
-				Molpy.LockBoost('Double or Nothing');
+			Molpy.LockBoost('Double or Nothing');
 			if(Molpy.redactedVisible)
 			{
 				Molpy.redactedCountup=Molpy.redactedToggle;
@@ -1203,8 +1202,26 @@ Molpy.Up=function()
 			if(Molpy.castles>=8888000000000000){
 				Molpy.EarnBadge('Castle Galaxy');
 			}
+			if(Molpy.castles>=DeMolpify('1P')){
+				Molpy.EarnBadge('People Eating Tasty Animals');
+			}
 			if(Molpy.castles>=DeMolpify('20P')){
-				Molpy.UnlockBoost('Free Advice');
+				Molpy.EarnBadge('Free Advice');
+			}
+			if(Molpy.castles>=DeMolpify('1Y')){
+				Molpy.EarnBadge('Y U NO RUN OUT OF SPACE?');
+			}
+			if(Molpy.castles>=DeMolpify('1U')){
+				Molpy.EarnBadge('Dumpty');
+			}
+			if(Molpy.castles>=DeMolpify('1S')){
+				Molpy.EarnBadge('This is a silly number');
+			}
+			if(Molpy.castles>=DeMolpify('1H')){
+				Molpy.EarnBadge('To Da Choppah');
+			}
+			if(Molpy.castles>=DeMolpify('1F')){
+				Molpy.EarnBadge('Toasters');
 			}
 						
 		
@@ -1554,7 +1571,7 @@ Molpy.Up=function()
 			var ninjaFactor =1;
 			if(Molpy.Got('Busy Bot'))ninjaFactor+=0.1;
 			if(Molpy.Got('Stealthy Bot'))ninjaFactor+=0.1;
-			if(Molpy.Got('Chequered Flag'))ninjaFactor+=0.1;
+			if(Molpy.Got('Chequered Flag'))ninjaFactor+=0.2;
 			Molpy.ninjaTime = Molpy.baseNinjaTime/ninjaFactor;
 			if(Molpy.Got('Molpies'))//molpy molpy molpy molpy molpy
 			{

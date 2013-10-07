@@ -18,6 +18,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.71
+- Added critical missing component of the glass ceiling boosts
+- Buffed chequered flag
+- DoN always locks again
+- Several new badges
+
 ### 1.7
 - 10 Glass related boosts
 - build/destroy/spend messages now use nicer notation
