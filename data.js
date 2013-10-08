@@ -914,7 +914,7 @@ Molpy.DefineBoosts=function()
 		sand:'412M',castles:8001,icon:'bucketbrigade'});
 	new Molpy.Boost({name:'Bag Puns',desc:'Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',sand:'1470M',castles:450021,stats:function(me)
 		{
-			if(me.power <= 20) return 'Speed is at '+me.power+'out of 20';
+			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
 		}});
 	{//#region puns	
 		Molpy.bp = [
@@ -1106,6 +1106,32 @@ Molpy.DefineBoosts=function()
 			,"Bag for the Holidips"
 			,"Knights of Bagassdom"
 			,"The Bag Commandments"
+			,"Dr. Bag"
+			,"From Russia With A Bag"
+			,"Goldbag"
+			,"Thunderbag"
+			,"Bags Only Live Twice"
+			,"On Her Majesty's Secret Bag"
+			,"Bags Are Forever"
+			,"Live and Let Bag"
+			,"The Man with the Golden Bag"
+			,"The Bag Who Loved Me"
+			,"Bagraker"
+			,"For Your Bags Only"
+			,"Octobaggy"
+			,"A View to a Bag"
+			,"The Living Baglights"
+			,"Licence to Bag"
+			,"GoldenBag"
+			,"Bag Never Dies"
+			,"The Bag is Not Enough"
+			,"Die Another Bag"
+			,"Bag Royale"
+			,"Bag of Solace"
+			,"Bagfall"
+			,"Bagmember"
+			,"Double Bag Seven"
+			,"Ocean's Bag"
 		]
 	}
 	
@@ -1145,7 +1171,8 @@ Molpy.DefineBoosts=function()
 		},sand:334455667788,castles:999222111000,icon:'vitss',
 		stats:function(me)
 		{
-			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
+			if(me.power <= 20) return 'Speed is at '+me.power+' out of 20';
+			if(me.power <= 88) return 'Speed is at '+me.power+' out of 88';
 			return me.desc(me);
 		},group:'hpt',className:'toggle'});
 	Molpy.PunsawToggle=function()
@@ -2071,6 +2098,9 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'
 		,sand:'490P',castles:'670P',glass:1500,group:'ninj'
 	});
+	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.'
+		,sand:'48E',castles:'38E',glass:100,group:'hpt'
+	});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
@@ -2494,6 +2524,10 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Boosts['Panther Salve'].power > 200)
 	{
 		Molpy.Boosts['Run Raptor Run'].department=1;
+	}
+	if(Molpy.Boosts['VITSSÅGEN, JA!'].power >=88)
+	{
+		Molpy.Boosts['Phonesaw'].department=1;
 	}
 }
 
