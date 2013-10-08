@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.74
+- Got rid of useless extra parts in the Sand Refinery description.
+
 ### 1.73
 - Glass Refinery x20 upgrade
 - Index export cleaned up
