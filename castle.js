@@ -3438,7 +3438,7 @@ Molpy.Up=function()
 				Molpy.Boosts['Broken Bottle Cleanup'].power=0;
 			}
 		}
-		Molpy.Boosts['Double or Nothing'].department=1*(Math.random()*3==0)
+		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(random()*3)==0);
 	}
 		
 	Molpy.HandlePeriods=function()
