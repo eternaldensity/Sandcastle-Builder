@@ -287,17 +287,16 @@ StatementGen.FillClaims=function(statement)
 	{
 		if(statement.value) //all claims must be true
 		{
-			var i = statement.refs.length;
-			while(i--)
+			for(var i in statement.refs)
 			{
 				var r=StatementGen.statements[statement.refs[i]];
 				statement.claims.push({name:r.name,value:r.value});
 			}
 		}else //at least 1 claim must be false
 		{ 
-			var i = statement.refs.length;
-			while(i--)
+			for(var i in statement.refs)
 			{
+				i=parseInt(i); //seriously javascript?
 				var r=StatementGen.statements[statement.refs[i]];
 				if(i)//fill in the rest with randoms
 				{
@@ -312,9 +311,9 @@ StatementGen.FillClaims=function(statement)
 	{
 		if(statement.value) //at least one claim must be true
 		{
-			var i = statement.refs.length;
-			while(i--)
+			for(var i in statement.refs)
 			{
+				i=parseInt(i); //seriously javascript?
 				var r=StatementGen.statements[statement.refs[i]];
 				if(i)//fill in the rest with randoms
 				{
@@ -326,8 +325,7 @@ StatementGen.FillClaims=function(statement)
 			}		
 		}else //all claims must be false
 		{
-			var i = statement.refs.length;
-			while(i--)
+			for(var i in statement.refs)
 			{
 				var r=StatementGen.statements[statement.refs[i]];
 				statement.claims.push({name:r.name,value:!r.value});
@@ -339,15 +337,20 @@ StatementGen.FillClaims=function(statement)
 }
 StatementGen.ShuffleList=function(l)
 {
-	var i = l.length;
-	while(i--)
+	for(var i in l)
 	{
-		var j = Math.floor(Math.random()*(i+1));
+		var j = Math.floor(Math.random()*(parseInt(i)+1));
 		var temp = l[j];
 		l[j]=l[i];
 		l[i]=temp;
 	}	
 	
+}
+StatementGen.RandStatementValue=function()
+{
+	var vals=[];
+	for(var i in StatementGen.statements) vals.push(StatementGen.statements[i].value);
+	return vals[Math.floor(Math.random()*vals.length)];
 }
 StatementGen.StringifyClaim=function(claim)
 {
@@ -363,11 +366,11 @@ StatementGen.StringifyStatement=function(statement,buttonFunction)
 	}else{
 		str=name+str;
 	}
-	var i = statement.claims.length;
-	while(i--)
+	for(var i in statement.claims)
 	{
+		i = parseInt(i);
 		str+= ' ' + StatementGen.StringifyClaim(statement.claims[i]);
-		if(i)
+		if(i<statement.claims.length-1)
 		{
 			str+=' '+statement.operator;
 		}
@@ -383,4 +386,8 @@ StatementGen.StringifyStatements=function(buttonFunction)
 	}
 	StatementGen.ShuffleList[str];
 	return str;
+}
+StatementGen.StatementValue=function(name)
+{
+	return StatementGen.statements[name].value;
 }

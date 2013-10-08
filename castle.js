@@ -2292,6 +2292,9 @@ Molpy.Up=function()
 			}else if( drawType=='hide1')
 			{
 				str+=Molpy.redactedSpoilerValue;
+			}else if( drawType=='hide2')
+			{
+				str+=Molpy.redactedPuzzleValue;
 			}
 				
 			return str+'</div></div>';
@@ -2375,6 +2378,15 @@ Molpy.Up=function()
 			{
 				Molpy.redactedDrawType[level]='recur';
 				Molpy.redactedDrawType.push('show');
+				//JUMP!
+				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
+				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
+				Molpy.redactedViewIndex=-1;
+			}else
+			if (Molpy.Got('Redunception') && Math.floor(Math.random()*12/Molpy.redactedDrawType.length)==0)
+			{
+				Molpy.MakeRedactedPuzzle();
+				Molpy.redactedDrawType[level]='hide2';
 				//JUMP!
 				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
 				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
@@ -2586,6 +2598,23 @@ Molpy.Up=function()
 				blitzTime+=Math.floor(Molpy.Boosts['Blitzing'].countdown/2);
 			}
 			Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
+		}
+		
+		Molpy.MakeRedactedPuzzle=function()
+		{
+			StatementGen.FillStatements();
+			Molpy.redactedPuzzleTarget=StatementGen.RandStatementValue();
+			var str='Click a statement that is '+Molpy.redactedPuzzleTarget;
+			var statements= StatementGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
+			for(var i in statements)
+			{
+				str+='<br>'+statements[i];
+			}
+			Molpy.redactedPuzzleValue=str;
+		}
+		Molpy.ClickRedactedPuzzle=function(name)
+		{
+			var clickedVal=StatementGen.StatementValue(name);
 		}
 		
 		Molpy.CalcPriceFactor=function()
