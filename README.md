@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.75
+- Tool purchases show up in the log
+
 ### 1.74
 - Got rid of useless extra parts in the Sand Refinery description.
 
