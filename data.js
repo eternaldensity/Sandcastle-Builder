@@ -1961,46 +1961,31 @@ Molpy.DefineBoosts=function()
 		return 1;
 	}
 	
-	new Molpy.Boost({name:'Glass Ceiling 0',desc:'Multiplies Sand rate of Buckets by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(0)"></input>',
-		sand: function(me){ return DeMolpify('6K')*Math.pow(1.1,me.power)},castles: function(me){ return DeMolpify('6K')*Math.pow(1.1,me.power)},
-		glass: 50, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,0);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 1',desc:'Multiplies Castles produced by NewPixBots by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(1)"></input>',
-		sand: function(me){ return DeMolpify('6M')*Math.pow(1.25,me.power)},castles: function(me){ return DeMolpify('6M')*Math.pow(1.25,me.power)},
-		glass: 100, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,1);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 2',desc:'Multiplies Sand rate of Cuegan by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(2)"></input>',
-		sand: function(me){ return DeMolpify('6G')*Math.pow(1.6,me.power)},castles: function(me){ return DeMolpify('6G')*Math.pow(1.6,me.power)},
-		glass: 150, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,2);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 3',desc:'Multiplies Castles produced by Trebuchets by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(3)"></input>',
-		sand: function(me){ return DeMolpify('6T')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6T')*Math.pow(2,me.power)},
-		glass: 200, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,3);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 4',desc:'Multiplies Sand rate of Flags by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(4)"></input>',
-		sand: function(me){ return DeMolpify('6P')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6P')*Math.pow(2,me.power)},
-		glass: 250, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,4);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 5',desc:'Multiplies Castles produced by Scaffolds by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(5)"></input>',
-		sand: function(me){ return DeMolpify('6E')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6E')*Math.pow(2,me.power)},
-		glass: 300, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,5);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 6',desc:'Multiplies Sand rate of Ladders by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(6)"></input>',
-		sand: function(me){ return DeMolpify('6Z')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6Z')*Math.pow(2,me.power)},
-		glass: 350, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,6);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 7',desc:'Multiplies Castles produced by Waves by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(7)"></input>',
-		sand: function(me){ return DeMolpify('6Y')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6Y')*Math.pow(2,me.power)},
-		glass: 400, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,7);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 8',desc:'Multiplies Sand rate of Bags by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(8)"></input>',
-		sand: function(me){ return DeMolpify('6U')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6U')*Math.pow(2,me.power)},
-		glass: 450, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,8);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 9',desc:'Multiplies Castles produced by Rivers by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(9)"></input>',
-		sand: function(me){ return DeMolpify('6S')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6S')*Math.pow(2,me.power)},
-		glass: 500, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,9);},buyFunction:function(me){me.power++;}
-	});
+	Molpy.glassCeilingPriceIncs=[1.1,1.25,1.6,2,2,2,2,2,2,2];
+	Molpy.glassCeilingDescText=['Sand rate of Buckets','Castles produced by NewPixBots','Sand rate of Cuegan',
+		'Castles produced by Trebuchets','Sand rate of Flags','Castles produced by Scaffolds',
+		'Sand rate of Ladders','Castles produced by Waves','Sand rate of Bags','Castles produced by Rivers'];
+		
+	for(var i in Molpy.glassCeilingDescText)
+	{
+		new Molpy.Boost({name:'Glass Ceiling '+i, desc:'Multiplies '+Molpy.glassCeilingDescText[i]
+			+' by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock('+i+')"></input>',
+			sand: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
+			castles: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
+			glass: 50, group:'hpt',
+			buyFunction:function(me){
+				me.power++;
+				Molpy.shopRepaint=1;
+				Molpy.GlassCeilingUnlockCheck();
+			},
+			lockFunction:function(me)
+			{
+				Molpy.shopRepaint=1;
+				Molpy.GlassCeilingUnlockCheck();
+			}
+		});
+		Molpy.Boosts['Glass Ceiling '+i].num=parseInt(i);
+	}
 	
 	Molpy.GlassCeilingCount=function()
 	{
@@ -2053,6 +2038,10 @@ Molpy.DefineBoosts=function()
 				}else{
 					if(me.unlocked)Molpy.LockBoost(me.name);
 				}
+			}
+			if(me.unlocked)
+			{
+				if(Molpy.CeilingClass(me,i)) Molpy.boostRepaint=1;
 			}
 		}
 	}

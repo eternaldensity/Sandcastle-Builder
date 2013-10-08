@@ -2168,7 +2168,8 @@ Molpy.Up=function()
 				bb.countdown=countdown;
 				bb.unlocked=1;					
 				bb.describe();
-				bb.buy();					
+				bb.buy();
+				Molpy.recalculateDig=1;
 			}
 		}
 		Molpy.LockBoost=function(bacon,silent)

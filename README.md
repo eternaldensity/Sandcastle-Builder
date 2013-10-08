@@ -18,12 +18,15 @@ For personal amusement only.
 
 ## Changelog
 
-### 1.791
+### 1.8
 - Badge for Judgement Dip level 12
 - Badge for unlocking all the Judgement Dip boosts
 - Ensured that if you skip a Judgement Dip boost (i.e. by reloading at the wrong time) you can still get it without having to increase Judgement level again
 - Fixed mustard in Sand Refinery description (once you reach prodution of 1000): was trying to multiply a number with a comma in it
 - Preemptive similar fix for Glass Chiller
+- Glass Ceiling boost delcaration in a loop rather than 10 separate and nearly identical declarations
+- Glass Tool status updates when a Glass Ceiling is bought or locked
+- Glass Ceiling unlock and colour class updates immediately rather than waiting for the next game tick so it's much smoother
 
 ### 1.79
 - Added Phonesaw
