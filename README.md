@@ -18,6 +18,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.75
+- Tool purchases show up in the log
+- fixed Major issue with Not Lucky reward
+- nerfed the Not Lucky - Fractal Sandcastles combo slightly
+- Panther Salve wasn't respecting its power toggle
+- Run Raptor Run now costs glass to use
+
 ### 1.74
 - Got rid of useless extra parts in the Sand Refinery description.
 
