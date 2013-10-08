@@ -22,6 +22,8 @@ For personal amusement only.
 - Badge for Judgement Dip level 12
 - Badge for unlocking all the Judgement Dip boosts
 - Ensured that if you skip a Judgement Dip boost (i.e. by reloading at the wrong time) you can still get it without having to increase Judgement level again
+- Fixed mustard in Sand Refinery description (once you reach prodution of 1000): was trying to multiply a number with a comma in it
+- Preemptive similar fix for Glass Chiller
 
 ### 1.79
 - Added Phonesaw

@@ -1390,9 +1390,9 @@ Molpy.DefineBoosts=function()
 				}
 				if(afford)
 				{
-					var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
+					var pow=(Molpy.Boosts['Sand Refinery'].power)+2;
 					str+= '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
-						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+pow
+						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+Molpify(pow)
 						+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 				}
 					
@@ -1412,9 +1412,9 @@ Molpy.DefineBoosts=function()
 					}
 					if(afford)
 					{
-						var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+21);
+						var pow=(Molpy.Boosts['Sand Refinery'].power)+21;
 						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(20)"></input> '
-							+(useChips?'50 Chips':'18 Blocks')+' to upgrade the Glass Furnace to produce '+pow
+							+(useChips?'50 Chips':'18 Blocks')+' to upgrade the Glass Furnace to produce '+Molpify(pow)
 							+' Glass Chips per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 					}						
 				}					
@@ -1585,8 +1585,8 @@ Molpy.DefineBoosts=function()
 			{
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
 				{
-					var pow=Molpify((Molpy.Boosts['Glass Chiller'].power)+2);
-					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+pow+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+(pow*Molpy.GlassChillerIncrement())+'% of Sand dug).';
+					var pow=(Molpy.Boosts['Glass Chiller'].power)+2;
+					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+Molpify(pow)+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+(pow*Molpy.GlassChillerIncrement())+'% of Sand dug).';
 				}else{
 					return 'Currently, you have no more sand available for further upgrades';
 				}
