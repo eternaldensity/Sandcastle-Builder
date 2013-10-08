@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.791
+- Badge for Judgement Dip level 12
+- Badge for unlocking all the Judgement Dip boosts
+- Ensured that if you skip a Judgement Dip boost (i.e. by reloading at the wrong time) you can still get it without having to increase Judgement level again
+
 ### 1.79
 - Added Phonesaw
 - VITSSÅGEN, JA! and Bag Puns had their stats backwards: one showed 'out of 20' but activated at 100, and vice versa

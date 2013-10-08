@@ -2284,18 +2284,19 @@ Molpy.DefineBadges=function()
 		}
 		if(level>7)
 		{
-			if(Molpy.Got('Minigun'))
+			if(Molpy.Got('Minigun')||Molpy.Got('Stacked'))
 				Molpy.Boosts['Big Splash'].department=1;
 		}
 		if(level>8)
 		{
-			if(Molpy.Got('Stacked'))
+			if(Molpy.Got('Stacked')||Molpy.Got('Big Splash'))
 				Molpy.Boosts['Irregular Rivers'].department=1;
 		}
 		if(level>12)
 		{
-			if(Molpy.Got('Big Splash'))
+			if(Molpy.Got('Big Splash')||Molpy.Got('Irregular Rivers'))
 				Molpy.Boosts['NewPixBot Navigation Code'].department=1;
+			Molpy.EarnBadge('On the 12th Dip of Judgement');
 		}
 		if(level>30)
 		{
@@ -2322,7 +2323,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Primer',desc:'Travel through Time 10 Times',vis:1});
 	new Molpy.Badge({name:'Wimey',desc:'Travel through Time 40 Times',vis:1});
 	new Molpy.Badge({name:'Hot Tub',desc:'Travel through Time 160 Times',vis:1});
-	new Molpy.Badge({name:"Dude, Where's my DeLorean?",desc:'Travel through Time 640 Times',vis:2});
+	new Molpy.Badge({name:"Dude, Where's my DeLorean?",desc:'Travel through Time 640 Times',vis:1});
 	new Molpy.Badge({name:'Use Your Leopard',desc:'Get a click by using your leopard to simulate reloading the page'});
 	new Molpy.Badge({name:'Badge Not Found',desc:'Description Not Found'});
 	new Molpy.Badge({name:'Fractals Forever',desc:'Reach Fractal Level 60, and Fractal Sandcastles will be retained if you Molpy Down.'});
@@ -2342,7 +2343,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Beachomancer',desc:'Have 1000 Sand Tools'});
 	new Molpy.Badge({name:'Beachineer',desc:'Have 500 Castle Tools'});
 	new Molpy.Badge({name:'Glass Factory',desc:'Have 80M sand'});
-	new Molpy.Badge({name:'Glassblower',desc:'Make a Glass Block',vis:2});
+	new Molpy.Badge({name:'Glassblower',desc:'Make a Glass Block',vis:1});
 	new Molpy.Badge({name:'Ninja Pact',desc:'Have a ninja stealth streak over 4K'});
 	new Molpy.Badge({name:'Ninja Unity',desc:'Have a ninja stealth streak over 4M'});
 	new Molpy.Badge({name:'Unreachable?', desc:'Build a total of 2T Castles. (I GUESS <b>SUPPOSE <i>MAYBE</i></b> IT WILL BE AN ISLAND <b>AGAIN</b>.))',vis:1});
@@ -2359,8 +2360,11 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'WHAT',desc:'Have over nine thousand Sand Tools',vis:1});
 	new Molpy.Badge({name:'\\/\\/AR]-[AMMER',desc:'Have 40K Tools',vis:1});
 	new Molpy.Badge({name:'Ceiling Broken',desc:'Have all 10 Glass Ceiling Boosts'});
+	new Molpy.Badge({name:'On the 12th Dip of Judgement',desc:'Reach Judgement Dip level 12'});
+	new Molpy.Badge({name:'Machine Learning',desc:'Unlock all the Judgement Dip Boosts'});
 }
-		
+
+Molpy.jDipBoosts=['NewPixBot Navigation Code','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		
 Molpy.CheckBuyUnlocks=function()
 {
 	var me=Molpy.SandTools['Bucket'];
@@ -2528,6 +2532,22 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Boosts['VITSSÅGEN, JA!'].power >=88)
 	{
 		Molpy.Boosts['Phonesaw'].department=1;
+	}
+	
+	if(Molpy.Got('NewPixBot Navigation Code')) //just in case they didn't earn it the normal way
+	{
+		Molpy.EarnBadge('On the 12th Dip of Judgement');
+	}
+	var found=0;
+	for(var i in Molpy.jDipBoosts)
+	{
+		var me = Molpy.Boosts[Molpy.jDipBoosts[i]];
+		if(found&&!me.unlocked) me.department=1;
+		if(me.unlocked) found++;
+	}
+	if(found==Molpy.jDipBoosts.length)
+	{
+		Molpy.EarnBadge('Machine Learning');
 	}
 }
 
