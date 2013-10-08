@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.75;
+		Molpy.version=1.76;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2384,7 +2384,7 @@ Molpy.Up=function()
 				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
 				Molpy.redactedViewIndex=-1;
 			}else
-			if (Molpy.Got('Redunception') && Math.floor(Math.random()*12/Molpy.redactedDrawType.length)==0)
+			if (Molpy.Got('The Puzzle Boost Which I Have Not Made Yet') && Math.floor(Math.random()*12/Molpy.redactedDrawType.length)==0)
 			{
 				Molpy.MakeRedactedPuzzle();
 				Molpy.redactedDrawType[level]='hide2';

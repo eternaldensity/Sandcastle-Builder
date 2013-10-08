@@ -18,7 +18,7 @@ For personal amusement only.
 
 ## Changelog
 
-### 1.8
+### 1.76
 - Don't lose ninja stealth if it's already 0 (and thus ignore forgiveness)
 - VITSSÅGEN, JA! stats corrected: no more missing space!
 - Nonbreaking space between buy and number
