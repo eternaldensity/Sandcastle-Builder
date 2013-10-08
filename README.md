@@ -18,6 +18,15 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.78
+- Actually fixed DoN: now it doesn't crash on ONG. sorry everyone!
+- So it turned out the Panther Salve toggle was broken all along anyway
+- Also made Panther Salve blue
+- And refresh stuff when toggling it
+- And fixed the Panther Salve toggle actually because I was using an nonexistant function parameter
+- Also tested it :P
+- Multibuy Boosts renamed slightly
+
 ### 1.77
 - I was checking the Panther Salve toggle value incorrectly
 - Fixed Double or Nothing not apearing: forgot to round random number

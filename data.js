@@ -1808,7 +1808,7 @@ Molpy.DefineBoosts=function()
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.PantherSalveToggle()" value="'
-					+(me.power? 'Dea':'A')+'ctivate"></input>';	
+					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
@@ -1819,11 +1819,14 @@ Molpy.DefineBoosts=function()
 			str+='<br>Speed is at '+me.power+' out of 200';
 		return str;
 	}
-	,group:'bean'});
+	,group:'bean',className:'toggle'});
 	
-	Molpy.PantherSalveToggle=function(me)
+	Molpy.PantherSalveToggle=function()
 	{
+		var me=Molpy.Boosts['Panther Salve'];
 		me.power=-me.power;
+		Molpy.boostRepaint=1;			
+		me.hoverOnCounter=1;
 	}
 	
 	new Molpy.Boost({name:'Castle Crusher',desc:'<input type="Button" value="Crush" onclick="Molpy.CastleCrush()"></input> half your castles back into sand. (One use.)',
@@ -2056,10 +2059,10 @@ Molpy.DefineBoosts=function()
 			return 1;
 		}
 	}
-	new Molpy.Boost({name:'Sand Multi Buy',desc:'Allow buying of multiple sand tools at once'
+	new Molpy.Boost({name:'Sand Tool Multi-Buy',desc:'Allow buying of multiple sand tools at once'
 		,sand:'200K',castles:'6502',stats:'Code for this feature supplied by waveney'
 	});
-	new Molpy.Boost({name:'Castle Multi Buy',desc:'Allow buying of multiple castle tools at once'
+	new Molpy.Boost({name:'Castle Tool Multi-Buy',desc:'Allow buying of multiple castle tools at once'
 		,sand:'2000K',castles:'68020',stats:'Code for this feature supplied by waveney'
 	});
 	new Molpy.Boost({name:'Run Raptor Run',desc:'Multiplies Not Lucky bonus by 1000 at a cost of 30 Glass Blocks per use'
@@ -2484,8 +2487,8 @@ Molpy.CheckBuyUnlocks=function()
 	}
 	if(Molpy.GlassCeilingCount())
 		Molpy.GlassCeilingUnlockCheck();
-	if(Molpy.SandToolsOwned>=123)Molpy.UnlockBoost('Sand Multi Buy');
-	if(Molpy.CastleToolsOwned>=234)Molpy.UnlockBoost('Castle Multi Buy');
+	if(Molpy.SandToolsOwned>=123)Molpy.UnlockBoost('Sand Tool Multi-Buy');
+	if(Molpy.CastleToolsOwned>=234)Molpy.UnlockBoost('Castle Tool Multi-Buy');
 	
 	
 	if(Molpy.Boosts['Panther Salve'].power > 200)
