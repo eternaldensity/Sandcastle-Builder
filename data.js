@@ -1308,6 +1308,7 @@ Molpy.DefineBoosts=function()
 			if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()))
 			{
 				var useChips=1;
+				var afford=1;
 				if(ch.power>=3)
 				{
 					
@@ -1316,16 +1317,20 @@ Molpy.DefineBoosts=function()
 					useChips=0
 				}else{
 					str+= 'It costs 3 Chips to upgrade the Glass Furnace\'s speed';
+					afford=0;
 				}
-				var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
-				str+= '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
-					+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+pow
-					+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
-					
+				if(afford)
+				{
+					var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
+					str+= '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
+						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+pow
+						+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
+				}
 					
 				if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()*20))
 				{
 					var useChips=1;
+					var afford=1;
 					if(ch.power>=50)
 					{
 						
@@ -1334,11 +1339,15 @@ Molpy.DefineBoosts=function()
 						useChips=0
 					}else{
 						str+= '<br>It costs 50 Chips to upgrade the Glass Furnace\'s speed by 20';
+						afford=0;
 					}
-					var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+21);
-					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(20)"></input> '
-						+(useChips?'50 Chips':'18 Blocks')+' to upgrade the Glass Furnace to produce '+pow
-						+' Glass Chips per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';	
+					if(afford)
+					{
+						var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+21);
+						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(20)"></input> '
+							+(useChips?'50 Chips':'18 Blocks')+' to upgrade the Glass Furnace to produce '+pow
+							+' Glass Chips per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
+					}						
 				}					
 				
 			}else{
