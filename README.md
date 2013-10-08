@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.77
+- I was checking the Panther Salve toggle value incorrectly
+- Fixed Double or Nothing not apearing: forgot to round random number
+
 ### 1.76
 - Don't lose ninja stealth if it's already 0 (and thus ignore forgiveness)
 - VITSSÅGEN, JA! stats corrected: no more missing space!
