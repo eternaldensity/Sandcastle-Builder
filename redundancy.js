@@ -243,7 +243,7 @@ var EmergencyExport=function()
 	var thread='';
 	if (document.cookie.indexOf('CastleBuilderGame')>=0) 
 	{
-		thread=document.cookie.split('CastleBuilderGame=')[1];
+		thread=document.cookie.split('CastleBuilderGame=')[1].split(';')[0];
 		g('redundantpar').innerHTML=thread;
 		g('redundantpar').className='partext';
 		

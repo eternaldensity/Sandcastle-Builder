@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.73
+- Glass Refinery x20 upgrade
+- Index export cleaned up
+
 ### 1.72
 - Buying Multi Style! (thanks for the code waveney)
 
