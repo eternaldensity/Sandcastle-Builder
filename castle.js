@@ -735,6 +735,10 @@ Molpy.Up=function()
 					Molpy.Notify('Reversed the Polarity');
 				}
 			}
+			if(version<1.73)
+			{
+				Molpy.Boosts['Panther Salve'].power=1;
+			}
 			
 			Molpy.UpdateColourScheme();
 			Molpy.LockBoost('Double or Nothing');
@@ -1415,71 +1419,7 @@ Molpy.Up=function()
 			{
 				if(Molpy.npbONG==1)
 				{
-					//clicking first time, after newpixbot		
-					Molpy.EarnBadge('No Ninja');
-					Molpy.ninjaFreeCount++; 
-					var ninjaInc = 1;
-					if(Molpy.Got('Active Ninja'))
-					{
-						ninjaInc*=3;
-					}
-					if(Molpy.Got('Ninja League'))
-					{
-						ninjaInc*=100;
-					}
-					if(Molpy.Got('Ninja Legion'))
-					{
-						ninjaInc*=1000;
-					}
-					Molpy.ninjaStealth+=ninjaInc;
-					
-					if(Molpy.Got('Ninja Builder')) 
-					{
-						var stealthBuild=Molpy.ninjaStealth;
-						if(Molpy.Got('Ninja Assistants')) stealthBuild*=Molpy.CastleTools['NewPixBot'].amount;
-						if(Molpy.Got('Skull and Crossbones'))
-						{
-							stealthBuild*=Math.floor(Math.pow(1.05,Math.max(-1,Molpy.SandTools['Flag'].amount-40)));
-						}
-						if(Molpy.Boosts['Glass Jaw'].power)
-						{
-							if(Molpy.HasGlassBlocks(1))
-							{
-								Molpy.SpendGlassBlocks(1);
-								stealthBuild*=100;
-							}
-						}
-						Molpy.Build(stealthBuild+1);
-					}else{
-						Molpy.Build(1); //neat!
-					}
-					if(Molpy.ninjaStealth>=6)
-					{
-					 Molpy.EarnBadge('Ninja Stealth');
-						Molpy.UnlockBoost('Stealthy Bot');
-					} 
-					if(Molpy.ninjaStealth>=16)
-					{
-						Molpy.EarnBadge('Ninja Dedication');			
-						Molpy.UnlockBoost('Ninja Builder');	
-					} 			
-					if(Molpy.ninjaStealth>=26)
-					{
-						Molpy.EarnBadge('Ninja Madness');
-						Molpy.UnlockBoost('Ninja Hope');
-					}
- 					if(Molpy.ninjaStealth>=36)
-					{
-						Molpy.EarnBadge('Ninja Omnipresence');
-					}
- 					if(Molpy.ninjaStealth>4000)
-					{
-						Molpy.EarnBadge('Ninja Pact');
-					}	
- 					if(Molpy.ninjaStealth>4000000)
-					{
-						Molpy.EarnBadge('Ninja Unity');
-					}				
+					Molpy.StealthClick();
 				}else if(Molpy.npbONG==0){
 					if(Molpy.NinjaUnstealth())
 					{
@@ -1534,6 +1474,90 @@ Molpy.Up=function()
 			}
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
+		
+		Molpy.StealthClick=function()
+		{		
+			//clicking first time, after newpixbot		
+			Molpy.EarnBadge('No Ninja');
+			Molpy.ninjaFreeCount++; 
+			var ninjaInc = 1;
+			if(Molpy.Got('Active Ninja'))
+			{
+				ninjaInc*=3;
+			}
+			if(Molpy.Got('Ninja League'))
+			{
+				ninjaInc*=100;
+			}
+			if(Molpy.Got('Ninja Legion'))
+			{
+				ninjaInc*=1000;
+			}
+			Molpy.ninjaStealth+=ninjaInc;
+			
+			if(Molpy.Got('Ninja Builder')) 
+			{
+				var stealthBuild=Molpy.CalcStealthBuild(1);
+				Molpy.Build(stealthBuild+1);
+			}else{
+				Molpy.Build(1); //neat!
+			}
+			if(Molpy.ninjaStealth>=6)
+			{
+			 Molpy.EarnBadge('Ninja Stealth');
+				Molpy.UnlockBoost('Stealthy Bot');
+			} 
+			if(Molpy.ninjaStealth>=16)
+			{
+				Molpy.EarnBadge('Ninja Dedication');			
+				Molpy.UnlockBoost('Ninja Builder');	
+			} 			
+			if(Molpy.ninjaStealth>=26)
+			{
+				Molpy.EarnBadge('Ninja Madness');
+				Molpy.UnlockBoost('Ninja Hope');
+			}
+			if(Molpy.ninjaStealth>=36)
+			{
+				Molpy.EarnBadge('Ninja Omnipresence');
+			}
+			if(Molpy.ninjaStealth>4000)
+			{
+				Molpy.EarnBadge('Ninja Pact');
+			}	
+			if(Molpy.ninjaStealth>4000000)
+			{
+				Molpy.EarnBadge('Ninja Unity');
+			}				
+		}
+		Molpy.CalcStealthBuild=function(spend)
+		{
+			var stealthBuild = Molpy.ninjaStealth;
+			if(Molpy.Got('Ninja Assistants')) stealthBuild*=Molpy.CastleTools['NewPixBot'].amount;
+			if(Molpy.Got('Skull and Crossbones'))
+			{
+				stealthBuild*=Math.floor(Math.pow(1.05,Math.max(-1,Molpy.SandTools['Flag'].amount-40)));
+			}
+			if(Molpy.Boosts['Glass Jaw'].power)
+			{
+				if(Molpy.HasGlassBlocks(1))
+				{
+					if(spend)
+						Molpy.SpendGlassBlocks(1);
+					stealthBuild*=100;
+				}
+			}
+			if(Molpy.Got('Ninja Climber'))
+			{
+				stealthBuild*=Molpy.SandTools['Ladder'].amount;
+				if(spend)
+				{
+					Molpy.recalculateDig=1;
+				}
+			}
+			
+			return stealthBuild;
+		}
 		
 		var prevKey='';
 		Molpy.KeyDown=function(e)
@@ -2504,9 +2528,12 @@ Molpy.Up=function()
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=10)		
 			{				
 				Molpy.Boosts['Glass Block Storage'].power-=10;
-				bonus*=Math.pow(1.01,items);
+				Molpy.Boosts['Panther Salve'].power++;
+				bonus*=Math.pow(bonus,items);
 				bonus=Math.min(bonus,Molpy.castlesBuilt/20); //just to keep things sane
 			}
+			if(Molpy.Got('Run Raptor Run'))
+				bonus*=1000;
 			if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
 			{
 				bonus*= (1+0.2*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)

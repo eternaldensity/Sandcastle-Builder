@@ -23,6 +23,8 @@ For personal amusement only.
 - Index export cleaned up
 - Fixed bug when trying to get Rosetta (oops how long has that been broken?)
 - Gave Rosetta more furnace automation upgrades
+- New Not Lucky boost after Panther Salve
+- New Ninja boost from Rosetta
 
 ### 1.72
 - Buying Multi Style! (thanks for the code waveney)

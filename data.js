@@ -180,13 +180,14 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Climbbot'))mult*=4;
 			if(Molpy.Got('Broken Rung'))
 			{
-				var min =1000;
+				var min =1000000;
 				for(var i in Molpy.SandTools)min=Math.min(min,Molpy.SandTools[i].amount);
 				for(var i in Molpy.CastleTools)min=Math.min(min,Molpy.CastleTools[i].amount);
 				mult*=min;
 			}
 			if(Molpy.Got('Up Up and Away'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
 			if(Molpy.Got('Glass Ceiling 6'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
 			mult*=Molpy.BBC();
 			return baserate*mult;
 		}
@@ -424,7 +425,7 @@ Molpy.DefineBoosts=function()
 		stats:function()
 		{
 			if(Molpy.Got('Ninja Builder')) 
-				return 'Will build '+ (Molpy.ninjaStealth+(1+Molpy.Got('Active Ninja')*2))+ ' Castles unless you destealth ninjas';
+				return 'Will build '+ Molpy.CalcStealthBuild()+ ' Castles unless you destealth ninjas';
 			return 'Ninja Stealth increases the first time you click within a NewPix after NewPixBots activate. It will reset if you click before NewPixBots activate, or don\'t click before the next ONG.'	
 			
 		},icon:'ninjabuilder',group:'ninj'
@@ -800,7 +801,7 @@ Molpy.DefineBoosts=function()
 			if(!Molpy.Got('Flux Turbine')) return 'All castle gains are increased by 2% per natural logarithm of castles wiped by Molpy Down, except refunds which are not increased.';
 			return 'Multiplies all Castle gains by ' + Molpify(Molpy.globalCastleMult*100,2)+'% (But refunds when selling remain unchanged.)';
 		},group:'chron'});
-	new Molpy.Boost({name:'Ninja Assistants',desc:'Ninja Builder\'s castle output is multiplied by the number of NewPixBots'
+	new Molpy.Boost({name:'Ninja Assistants',desc:'Ninja Builder\'s Castle output is multiplied by the number of NewPixBots'
 		+' you have.',sand:'250M',castles:777,icon:'ninjaassistants',group:'ninj'});
 	new Molpy.Boost({name:'Minigun',desc:'The castle output of Trebuchets is multiplied by the number of NewPixBots you have.',
 		sand:'480M',castles:888,icon:'minigun',group:'cyb'});
@@ -1693,6 +1694,10 @@ Molpy.DefineBoosts=function()
 						str+='<br><input type="Button" value="Trade" onclick="Molpy.UpgradeFactoryAutomation()"></input> '+Molpy.faCosts[fa.power]+' NewPixBots to upgrade Factory Automation.';
 					}
 				}
+				if(!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500)
+				{
+						str+='<br><input type="Button" value="Trade" onclick="Molpy.UnlockNinjaClimber()"></input> 500 Ladders to unlock Ninja Climber.';
+				}
 			}
 			return str;
 		}, sand:'0.9P',castles:'32T',icon:'rosetta',group:'bean',className:'action',
@@ -1702,7 +1707,9 @@ Molpy.DefineBoosts=function()
 			var newClass = '';
 			var fa = Molpy.Boosts['Factory Automation'];
 			var bots=Molpy.CastleTools['NewPixBot'].amount;
-			if(!Molpy.Got('Panther Salve')||fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power])
+			if(!Molpy.Got('Panther Salve')
+			||fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power]
+			||!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500)
 				newClass='action';
 			if(newClass!=oldClass)
 			{
@@ -1710,7 +1717,7 @@ Molpy.DefineBoosts=function()
 				return 1;
 			}
 		}
-		});
+	});
 	Molpy.UpgradeFactoryAutomation=function()
 	{	
 		var fa = Molpy.Boosts['Factory Automation'];
@@ -1723,14 +1730,50 @@ Molpy.DefineBoosts=function()
 				Molpy.CastleTools['NewPixBot'].refresh();
 				Molpy.shopRepaint=1;
 				fa.power++;				
-				fa.hoverOnCounter=1;
+				Molpy.Boosts['Rosetta'].hoverOnCounter=1;
 				Molpy.boostRepaint=1;
 				Molpy.Notify('Factory Automation Upgraded',1);
 			}
 		}
 	}
-	new Molpy.Boost({name:'Panther Salve',desc:'"It\'s some kind of paste." Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 10 Glass Blocks per use.',
-	stats:'Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 10 Glass Blocks per use.',group:'bean'});
+	Molpy.UnlockNinjaClimber=function()
+	{	
+		var lads=Molpy.SandTools['Ladder'];
+		if(!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&lads.amount>=500)
+		{
+			lads.amount-=500;
+			lads.refresh();
+			Molpy.shopRepaint=1;
+			Molpy.UnlockBoost('Ninja Climber');			
+			Molpy.Boosts['Rosetta'].hoverOnCounter=1;
+			Molpy.Notify('Factory Automation Upgraded',1);
+		}
+		
+	}
+	new Molpy.Boost({name:'Panther Salve',
+		desc:function(me)
+		{
+			var str='"It\'s some kind of paste." Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 10 Glass Blocks per use.'
+			if(me.bought)
+			{
+				str+=' <input type="Button" onclick="Molpy.PantherSalveToggle()" value="'
+					+(me.power? 'Dea':'A')+'ctivate"></input>';	
+			}
+			return str;
+		},buyFunction:function(me){me.power=1;},
+	stats:function(me)
+	{
+		var str ='Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 10 Glass Blocks per use.';
+		if(me.power <=200)
+			str+='<br>Speed is at '+me.power+' out of 200';
+		return str;
+	}
+	,group:'bean'});
+	
+	Molpy.PantherSalveToggle=function(me)
+	{
+		me.power=-me.power;
+	}
 	
 	new Molpy.Boost({name:'Castle Crusher',desc:'<input type="Button" value="Crush" onclick="Molpy.CastleCrush()"></input> half your castles back into sand. (One use.)',
 	sand:function(){
@@ -1967,6 +2010,12 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Castle Multi Buy',desc:'Allow buying of multiple castle tools at once'
 		,sand:'2000K',castles:'68020',stats:'Code for this feature supplied by waveney'
+	});
+	new Molpy.Boost({name:'Run Raptor Run',desc:'Multiplies Not Lucky bonus by 1000'
+		,sand:'180E',castles:'380E',glass:2500,group:'bean'
+	});
+	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'
+		,sand:'490P',castles:'670P',glass:1500,group:'ninj'
 	});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
@@ -2386,6 +2435,12 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.GlassCeilingUnlockCheck();
 	if(Molpy.SandToolsOwned>=123)Molpy.UnlockBoost('Sand Multi Buy');
 	if(Molpy.CastleToolsOwned>=234)Molpy.UnlockBoost('Castle Multi Buy');
+	
+	
+	if(Molpy.Boosts['Panther Salve'].power > 200)
+	{
+		Molpy.Boosts['Run Raptor Run'].department=1;
+	}
 }
 
 Molpy.CheckClickAchievements=function()
