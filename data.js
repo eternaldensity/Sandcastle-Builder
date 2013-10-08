@@ -1665,14 +1665,14 @@ Molpy.DefineBoosts=function()
 		if(Molpy.SandTools['Bag'].amount>=50)
 		{
 			Molpy.SandTools['Bag'].amount-=50;			
-			Molpy.CastleTools['Bag'].refresh();
+			Molpy.SandTools['Bag'].refresh();
 			Molpy.shopRepaint=1;
 			Molpy.UnlockBoost('Rosetta');
 		}else{
 			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
 		}
 	}
-		
+	Molpy.faCosts=[55,65,85,115,155,220];
 	new Molpy.Boost({name:'Rosetta',
 		desc:function(me)
 		{
@@ -1688,9 +1688,9 @@ Molpy.DefineBoosts=function()
 				var bots=Molpy.CastleTools['NewPixBot'].amount;
 				if(fa.bought && Molpy.Got('Doublepost'))
 				{
-					if(fa.power==0&&bots>=55 || fa.power==1&&bots>=65)
+					if(fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power])
 					{
-						str+='<br><input type="Button" value="Trade" onclick="Molpy.UpgradeFactoryAutomation()"></input> '+(fa.power?65:55)+' NewPixBots to upgrade Factory Automation.';
+						str+='<br><input type="Button" value="Trade" onclick="Molpy.UpgradeFactoryAutomation()"></input> '+Molpy.faCosts[fa.power]+' NewPixBots to upgrade Factory Automation.';
 					}
 				}
 			}
@@ -1699,7 +1699,11 @@ Molpy.DefineBoosts=function()
 		classChange:function()
 		{
 			var oldClass=this.className;
-			var newClass = Molpy.Got('Panther Salve')?'':'action';
+			var newClass = '';
+			var fa = Molpy.Boosts['Factory Automation'];
+			var bots=Molpy.CastleTools['NewPixBot'].amount;
+			if(!Molpy.Got('Panther Salve')||fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power])
+				newClass='action';
 			if(newClass!=oldClass)
 			{
 				this.className=newClass;
@@ -1713,9 +1717,9 @@ Molpy.DefineBoosts=function()
 		var bots=Molpy.CastleTools['NewPixBot'].amount;
 		if(fa.bought && Molpy.Got('Doublepost'))
 		{
-			if(fa.power==0&&bots>=55 || fa.power==1&&bots>=65)
+			if(fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power])
 			{
-				Molpy.CastleTools['NewPixBot'].amount-=(fa.power?65:55);
+				Molpy.CastleTools['NewPixBot'].amount-=Molpy.faCosts[fa.power];
 				Molpy.CastleTools['NewPixBot'].refresh();
 				Molpy.shopRepaint=1;
 				fa.power++;				
