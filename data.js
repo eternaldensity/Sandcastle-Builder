@@ -2020,7 +2020,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Castle Multi Buy',desc:'Allow buying of multiple castle tools at once'
 		,sand:'2000K',castles:'68020',stats:'Code for this feature supplied by waveney'
 	});
-	new Molpy.Boost({name:'Run Raptor Run',desc:'Multiplies Not Lucky bonus by 1000'
+	new Molpy.Boost({name:'Run Raptor Run',desc:'Multiplies Not Lucky bonus by 1000 at a cost of 30 Glass Blocks per use'
 		,sand:'180E',castles:'380E',glass:2500,group:'bean'
 	});
 	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'

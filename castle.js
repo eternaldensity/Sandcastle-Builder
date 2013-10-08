@@ -2525,23 +2525,26 @@ Molpy.Up=function()
 			bonus+=bb;
 			items+=bb;
 			bonus += Molpy.redactedClicks*10;
-			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Glass Block Storage'].power >=10)		
-			{				
-				Molpy.Boosts['Glass Block Storage'].power-=10;
-				Molpy.Boosts['Panther Salve'].power++;
-				bonus*=Math.pow(bonus,items);
-				bonus=Math.min(bonus,Molpy.castlesBuilt/20); //just to keep things sane
-			}
-			if(Molpy.Got('Run Raptor Run'))
-				bonus*=1000;
 			if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
 			{
 				bonus*= (1+0.2*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)
 				if(Molpy.Got('Blitzing'))
 					bonus*=Math.min(2,(Molpy.Boosts['Blitzing'].power-800)/200);
 			}
+			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power && Molpy.HasGlassBlocks(10))
+			{				
+				Molpy.SpendGlassBlocks(10);
+				Molpy.Boosts['Panther Salve'].power++;
+				bonus*=Math.pow(1.01,items);
+				bonus=Math.min(bonus,Molpy.castlesBuilt/20); //just to keep things sane
+			}
+			if(Molpy.Got('Run Raptor Run'&& Molpy.HasGlassBlocks(30)))
+			{
+				Molpy.SpendGlassBlocks(30);
+				bonus*=1000;
+			}
 			if(Molpy.Got('Fractal Sandcastles'))
-				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/5);
+				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/10);
 			
 			bonus = Math.floor(bonus);
 			Molpy.Build(bonus);

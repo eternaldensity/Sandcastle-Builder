@@ -249,3 +249,24 @@ var EmergencyExport=function()
 		
 	}
 }
+
+var StatementGen={};
+StatementGen.FillStatements=function(n)
+{
+	var statementNames='ABCDEFGHI';
+	if(!n) n = Math.floor(Math.random()*4)+3;
+	StatementGen.statements={};
+	var i = n;
+	while(i--)
+	{
+		var name=statementNames[i];
+		var statement={};
+		StatementGen.statements[name]=statement;
+		statement.name=name;
+		statement.value=Math.floor(Math.random()*2)==0;
+	}
+	i = n;
+	while(i--)
+	{
+	}
+}
