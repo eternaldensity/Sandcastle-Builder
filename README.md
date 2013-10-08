@@ -18,6 +18,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.73
+- Glass Refinery x20 upgrade
+- Index export cleaned up
+- Fixed bug when trying to get Rosetta (oops how long has that been broken?)
+- Gave Rosetta more furnace automation upgrades
+- New Not Lucky boost after Panther Salve
+- New Ninja boost from Rosetta
+
 ### 1.72
 - Buying Multi Style! (thanks for the code waveney)
 
