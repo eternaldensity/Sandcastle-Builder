@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.77;
+		Molpy.version=1.78;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -892,12 +892,12 @@ Molpy.Up=function()
 				}else{
 					g('otcoloption').className='hidden';
 				}
-				if(Molpy.Got('Sand Multi Buy')){
+				if(Molpy.Got('Sand Tool Multi-Buy')){
 					g('sandmultibuy').className='minifloatbox';
 				}else{
 					g('sandmultibuy').className='hidden';
 				}
-				if(Molpy.Got('Castle Multi Buy')){
+				if(Molpy.Got('Castle Tool Multi-Buy')){
 					g('castlemultibuy').className='minifloatbox';
 				}else{
 					g('castlemultibuy').className='hidden';
@@ -3438,7 +3438,7 @@ Molpy.Up=function()
 				Molpy.Boosts['Broken Bottle Cleanup'].power=0;
 			}
 		}
-		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(random()*3)==0);
+		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*3)==0);
 	}
 		
 	Molpy.HandlePeriods=function()
