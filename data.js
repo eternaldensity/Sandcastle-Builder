@@ -929,6 +929,10 @@ Molpy.DefineBoosts=function()
 			,"A Tale of Two Bags"
 			,"Cueball: The Guy Who Bagged Me"
 			,"Harry Potter and the Chamber of Bags"
+			,"Bagman and Robin"
+			,"Bagman Forever"
+			,"Bagman Begins"
+			,"Bagman: The Dark Nip"
 			,"Bagman: The Dark Watery Stuff Rises"
 			,"The Passion of the Bags"
 			,"The Good The Bag And The Ugly"
@@ -980,6 +984,14 @@ Molpy.DefineBoosts=function()
 			,"Bag By Me"
 			,"Firebag"
 			,"Buffy The Bag Slayer"
+			,"Baghouse"
+			,"Baggett Halverson"
+			,"Bagengers"
+			,"Agents of B.A.G."
+			,"Bagel"
+			,"Cabin in the Bag"
+			,"Bagenity"
+			,"Bag Suns"
 			,"Citizen Bag"
 			,"Seven Bagurai"
 			,"Bag Ocean 3: Until the End of Time"
@@ -1037,7 +1049,6 @@ Molpy.DefineBoosts=function()
 			,"Bagatouille"
 			,"The Inbagibles"
 			,"The Incredibags"
-			,"Cabin in the Bag"
 			,"Bagalon 5"
 			,"The Bag Lebowski"
 			,"Silence of the Bags"
@@ -1064,6 +1075,37 @@ Molpy.DefineBoosts=function()
 			,"Bagception"
 			,"Baginator"
 			,"The Legend of Bagger Vance"
+			,"Bag of Our Fathers"
+			,"Go ahead, make my bag!"
+			,"We are the Bags. Resistance is futon"
+			,"Three Men and a Baggy"
+			,"12 Angry Bags"
+			,"Bagland"
+			,"Bag of The Tentacle"
+			,"Full Metal Bag"
+			,"The Bag on the River Kwai"
+			,"The Bag Sleep"
+			,"Bag Business"
+			,"Bag Fiction"
+			,"Once Upon a Time in Bag"
+			,"The Third Bag"
+			,"Raging Bag"
+			,"Inglorious Bagterds"
+			,"Bagzilla"
+			,"Bagatar"
+			,"Bagtanic"
+			,"Clash of the Bags"
+			,"For a Bagful of Dollars"
+			,"Bill Bag: Vol 1"
+			,"Million Dollar Baggy"
+			,"Rosemanry's Baggy"
+			,"A Streetbag Named Desire"
+			,"Bag of Steel"
+			,"Pacific Bag"
+			,"Bags of Bloodsteel"
+			,"Bag for the Holidips"
+			,"Knights of Bagassdom"
+			,"The Bag Commandments"
 		]
 	}
 	
@@ -1103,7 +1145,7 @@ Molpy.DefineBoosts=function()
 		},sand:334455667788,castles:999222111000,icon:'vitss',
 		stats:function(me)
 		{
-			if(me.power <= 100) return 'Speed is at '+me.power+'out of 100';
+			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
 			return me.desc(me);
 		},group:'hpt',className:'toggle'});
 	Molpy.PunsawToggle=function()
@@ -2007,7 +2049,7 @@ Molpy.DefineBoosts=function()
 	Molpy.CeilingClass=function(me,key)
 	{
 		var oldClass=me.className;
-		var newClass=Molpy.CeilingTogglable(key)?'toggle':'';
+		var newClass=Molpy.CeilingTogglable(key)?'action':'alert';
 		if(newClass!=oldClass)
 		{
 			me.className=newClass;

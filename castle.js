@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.75;
+		Molpy.version=1.76;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1574,6 +1574,7 @@ Molpy.Up=function()
 		
 		Molpy.NinjaUnstealth=function()
 		{
+			if(!Molpy.ninjaStealth)return 0; //Nothing to lose!
 			if(Molpy.Got('Ninja Hope')&&Molpy.Boosts['Ninja Hope'].power)
 			{
 				if(Molpy.castles>=10){
@@ -2292,6 +2293,9 @@ Molpy.Up=function()
 			}else if( drawType=='hide1')
 			{
 				str+=Molpy.redactedSpoilerValue;
+			}else if( drawType=='hide2')
+			{
+				str+=Molpy.redactedPuzzleValue;
 			}
 				
 			return str+'</div></div>';
@@ -2375,6 +2379,15 @@ Molpy.Up=function()
 			{
 				Molpy.redactedDrawType[level]='recur';
 				Molpy.redactedDrawType.push('show');
+				//JUMP!
+				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
+				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
+				Molpy.redactedViewIndex=-1;
+			}else
+			if (Molpy.Got('The Puzzle Boost Which I Have Not Made Yet') && Math.floor(Math.random()*12/Molpy.redactedDrawType.length)==0)
+			{
+				Molpy.MakeRedactedPuzzle();
+				Molpy.redactedDrawType[level]='hide2';
 				//JUMP!
 				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
 				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
@@ -2588,6 +2601,23 @@ Molpy.Up=function()
 			Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 		}
 		
+		Molpy.MakeRedactedPuzzle=function()
+		{
+			StatementGen.FillStatements();
+			Molpy.redactedPuzzleTarget=StatementGen.RandStatementValue();
+			var str='Click a statement that is '+Molpy.redactedPuzzleTarget;
+			var statements= StatementGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
+			for(var i in statements)
+			{
+				str+='<br>'+statements[i];
+			}
+			Molpy.redactedPuzzleValue=str;
+		}
+		Molpy.ClickRedactedPuzzle=function(name)
+		{
+			var clickedVal=StatementGen.StatementValue(name);
+		}
+		
 		Molpy.CalcPriceFactor=function()
 		{
 			var baseval=1;
@@ -2677,7 +2707,7 @@ Molpy.Up=function()
 				var me=Molpy.SandToolsById[i];
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2))) name = 'Glass '+name;
-				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy '+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
+				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
 				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="SandToolDescription'+me.id+'"></div></div></div>';
@@ -2711,7 +2741,7 @@ Molpy.Up=function()
 				var me=Molpy.CastleToolsById[i];
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2+1))) name = 'Glass '+name;
-				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy '+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
+				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
 				(me.amount>0?'<div class="title owned">Owned: '+me.amount+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
