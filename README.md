@@ -20,7 +20,9 @@ For personal amusement only.
 
 ### 1.8
 - Don't lose ninja stealth if it's already 0 (and thus ignore forgiveness)
-- VITSSÅGEN, JA! stats corrected: no more missing space! 
+- VITSSÅGEN, JA! stats corrected: no more missing space!
+- Nonbreaking space between buy and number
+- Togglable Glass Ceilings are now Action (yellow) and untogglable are Alert (red)
 
 ### 1.75
 - Tool purchases show up in the log

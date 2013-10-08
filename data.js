@@ -2049,7 +2049,7 @@ Molpy.DefineBoosts=function()
 	Molpy.CeilingClass=function(me,key)
 	{
 		var oldClass=me.className;
-		var newClass=Molpy.CeilingTogglable(key)?'toggle':'';
+		var newClass=Molpy.CeilingTogglable(key)?'action':'alert';
 		if(newClass!=oldClass)
 		{
 			me.className=newClass;
