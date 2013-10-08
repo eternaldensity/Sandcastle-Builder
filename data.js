@@ -1821,9 +1821,12 @@ Molpy.DefineBoosts=function()
 	}
 	,group:'bean',className:'toggle'});
 	
-	Molpy.PantherSalveToggle=function(me)
+	Molpy.PantherSalveToggle=function()
 	{
+		var me=Molpy.Boosts['Panther Salve'];
 		me.power=-me.power;
+		Molpy.boostRepaint=1;			
+		me.hoverOnCounter=1;
 	}
 	
 	new Molpy.Boost({name:'Castle Crusher',desc:'<input type="Button" value="Crush" onclick="Molpy.CastleCrush()"></input> half your castles back into sand. (One use.)',
