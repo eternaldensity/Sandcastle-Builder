@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.8
+- Don't lose ninja stealth if it's already 0 (and thus ignore forgiveness)
+- VITSSÅGEN, JA! stats corrected: no more missing space! 
+
 ### 1.75
 - Tool purchases show up in the log
 - fixed Major issue with Not Lucky reward

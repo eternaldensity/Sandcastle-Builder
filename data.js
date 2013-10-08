@@ -1103,7 +1103,7 @@ Molpy.DefineBoosts=function()
 		},sand:334455667788,castles:999222111000,icon:'vitss',
 		stats:function(me)
 		{
-			if(me.power <= 100) return 'Speed is at '+me.power+'out of 100';
+			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
 			return me.desc(me);
 		},group:'hpt',className:'toggle'});
 	Molpy.PunsawToggle=function()

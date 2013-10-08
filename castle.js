@@ -1574,6 +1574,7 @@ Molpy.Up=function()
 		
 		Molpy.NinjaUnstealth=function()
 		{
+			if(!Molpy.ninjaStealth)return 0; //Nothing to lose!
 			if(Molpy.Got('Ninja Hope')&&Molpy.Boosts['Ninja Hope'].power)
 			{
 				if(Molpy.castles>=10){
