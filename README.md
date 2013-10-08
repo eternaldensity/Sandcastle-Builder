@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.79
+- Added Phonesaw
+- VITSSÅGEN, JA! and Bag Puns had their stats backwards: one showed 'out of 20' but activated at 100, and vice versa
+- Definitely nothing else to do with Bag Puns
+
 ### 1.78
 - Actually fixed DoN: now it doesn't crash on ONG. sorry everyone!
 - So it turned out the Panther Salve toggle was broken all along anyway

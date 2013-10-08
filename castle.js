@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.78;
+		Molpy.version=1.79;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1440,13 +1440,15 @@ Molpy.Up=function()
 					Molpy.Notify('VITSSÅGEN, JA!');
 					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power;
 					p++;
+					var mult=1000000;
 					if(Molpy.Got('Swedish Chef'))
 					{
-						Molpy.Build(100000000*p);
+						mult*=100;
 					}else{
-						Molpy.Build(1000000*p);
 						if(p>20)Molpy.UnlockBoost('Swedish Chef');
 					}
+					if(Molpy.Got('Phonesaw')) mult*=mult;
+					Molpy.Build(mult*p);
 					Molpy.Boosts['VITSSÅGEN, JA!'].power=p;
 				}
 			}
