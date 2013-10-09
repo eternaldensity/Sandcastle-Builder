@@ -149,13 +149,13 @@ function MakeRedundancy()
 		function(noart){return make(redundancy.characters);},
 		function(noart){return make(redundancy.adjectives)+' '+make(redundancy.characters);}
 	];
-	redundancy.characters=['Cueball','Megan','LaPetite','Bunny','Mini-Bunny','White Bunny','Gray Bun','Black Bun','Curly Bun','Pulled Back','Headband','Meg-a-like','Hat-Hair','Loopsy','Rose','Bob','Leopard','Sandy','She-Bangs','Littlest Bangs Brother','Middle Bangs Brother','Newest Bangs Brother','Sparse','Curly','Buzz','Brick','Forelock','Roundhair','Lopside','Shortdo','Shorty','Mini-Shortdo','Spike','Two-Tone','Mini-Two-Tone','Afro','Part','Baldo','Rosetta','B-1','B-2','B-3','Expando','GLaDOS','Cave Johnson'];//this will not end well
+	redundancy.characters=['Cueball','Megan','LaPetite','Bunny','Mini-Bunny','White Bunny','Gray Bun','Black Bun','Curly Bun','Pulled Back','Headband','Meg-a-like','Hat-Hair','Loopsy','Rose','Bob','Leopard','Sandy','She-Bangs','Littlest Bangs Brother','Middle Bangs Brother','Newest Bangs Brother','Sparse','Curly','Buzz','Brick','Forelock','Roundhair','Lopside','Shortdo','Shorty','Mini-Shortdo','Spike','Two-Tone','Mini-Two-Tone','Afro','Part','Baldo','Rosetta','B-1','B-2','B-'+Math.floor(Math.PI),'Expando','GLaDOS','Cave Johnson'];
 	redundancy.interjections=['CH*RP','chirping mustard','ch*rping m*stard','m*stard','mustard','by GLR','oh','neat','neat','yeah','yeah','hey','no','yes','alright','nooooooooo','finally','chirp everything','ah','oooh','huh','hooray','what','well','welp'];
 	redundancy.makeSubPerson=function(){return make(redundancy.subspecifier)+' '+make(redundancy.group);};
 	redundancy.person=[
 		function(){return make(redundancy.people);}
 	];
-	redundancy.people=['the one who reads this','xe who is reading','the clicking person','whoever is on the outside of the screen looking in','one of your friends','a random OTTer','GLR','the stranger looking in the window','someone standing behind you','one of your parents','your mother','your long lost cousin from Australia','the Pope','the Mome','a Blitzer','an Old One','he','she','it','xe','a modern major general','Eternal Density','waveney','StormAngel','RAZOR',
+	redundancy.people=['the one who reads this','xe who is reading','the clicking person','whoever is on the outside of the screen looking in','one of your friends','a random OTTer','GLR','the stranger looking in the window','someone standing behind you','one of your parents','your mother','your long lost cousin from Australia','the Pope','the Mome','a Blitzer','an Old One','he','she','it','xe','a modern major general','Eternal Density','waveney','StormAngel','RAZOR',//this will not end well
 		redundancy.makeSubPerson,
 		redundancy.makeSubPerson,
 		redundancy.makeSubPerson,
@@ -256,7 +256,7 @@ StatementGen.FillStatements=function(n)
 	var statementNames='ABCDEFGHI';
 	var operators=['and','or'];
 	var refCount=2;
-	if(!n) n = Math.floor(Math.random()*4)+4;
+	if(!n) n = Math.floor(Math.random()*Math.ceil(Math.PI))+Math.ceil(Math.PI);
 	StatementGen.statements={};
 	var i = n;
 	while(i--)
