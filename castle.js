@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.8;
+		Molpy.version=1.81;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2102,6 +2102,7 @@ Molpy.Up=function()
 			this.classChange=args.classChange;
 			this.group=args.group||'boosts';
 			this.lockFunction=args.lockFunction;
+			this.unlockFunction=args.unlockFunction;
 			
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
@@ -2169,14 +2170,16 @@ Molpy.Up=function()
 		{
 			if(typeof bacon==='string')
 			{
-				if(Molpy.Boosts[bacon])
+				var baby=Molpy.Boosts[bacon];
+				if(baby)
 				{
-					if(Molpy.Boosts[bacon].unlocked==0)
+					if(baby.unlocked==0)
 					{
-						Molpy.Boosts[bacon].unlocked=1;
+						baby.unlocked=1;
 						Molpy.boostRepaint=1;
 						Molpy.recalculateDig=1;
 						Molpy.Notify('Boost Unlocked: '+bacon,1);
+						if(baby.unlockFunction)baby.unlockFunction(baby);
 					}
 				}
 			}else{ //yo wolpy I heard you like bacon...
@@ -2860,7 +2863,7 @@ Molpy.Up=function()
 					buy+='<span class="price"> Price: ';
 					if(me.sandPrice) buy +=FormatPrice(me.sandPrice,me)+' Sand '+(me.castlePrice||me.glassPrice?'+ ':'');
 					if(me.castlePrice) buy +=FormatPrice(me.castlePrice,me)+' Castles '+(me.glassPrice?'+ ':'');
-					if(me.glassPrice) buy +=FormatPrice(me.glassPrice,me)+' Glass Blocks ';
+					if(me.glassPrice) buy +=FormatPrice(me.glassPrice,me)+' Glass Block'+(FormatPrice(me.glassPrice)=='1'?'':'s');
 					buy+='</span>';
 				}
 			}

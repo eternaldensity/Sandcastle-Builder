@@ -1483,40 +1483,51 @@ Molpy.DefineBoosts=function()
 			{
 				if(me.power>=5)
 				{
-					str+= ' <input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage()"></input> 5 Chips to build storage for 10 more.'
+					str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage(1)"></input> 5 Chips to build storage for 10 more.'
 				}else{
-					str+=' It costs 5 Glass Chips to store 10 more.';
+					str+='<br>It costs 5 Glass Chips to store 10 more.';
+				}
+				if(rate>150)
+				{
+					if(me.power>=90)
+					{
+						str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage(20)"></input> 90 Chips to build storage for 200 more.'
+					}else{
+						str+='<br>It costs 90 Glass Chips to store 200 more.';
+					}
 				}
 			}
 			if(me.power>10&&!Molpy.Got('Sand Refinery'))
 			{
 				if(me.power>=30)
 				{
-					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Sand Refinery\',30,0)"></input> 30 Chips to build a Sand Refinery to make Chips faster.'
+					str+='<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Sand Refinery\',30,0)"></input> 30 Chips to build a Sand Refinery to make Chips faster.'
 				}else{
-					str+=' It costs 30 Glass Chips to build a Sand Refinery, which can make Chips faster.';
+					str+='<br>It costs 30 Glass Chips to build a Sand Refinery, which can make Chips faster.';
 				}
 			}			
 			if(me.power>100&&!Molpy.Got('Glass Blower'))
 			{
 				if(me.power>=150)
 				{
-					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Blower\',150,0)"></input> 150 Chips to build a Glass Blower to make Glass Blocks from Glass Chips.'
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Blower\',150,0)"></input> 150 Chips to build a Glass Blower to make Glass Blocks from Glass Chips.'
 				}else{
-					str+=' It costs 150 Glass Chips to build a Glass Blower, which makes Glass Blocks from Glass Chips.';
+					str+='<br>It costs 150 Glass Chips to build a Glass Blower, which makes Glass Blocks from Glass Chips.';
 				}
 			}
 			return str;
 		}
 		,icon:'glasschipstore',className:'alert',group:'hpt'
 	});
-	Molpy.UpgradeChipStorage=function()
+	Molpy.UpgradeChipStorage=function(n)
 	{
 		var ch = Molpy.Boosts['Glass Chip Storage'];
-		if(ch.power>=5)
+		var cost = n*5
+		if(n>=10)cost*=.9;
+		if(ch.power>=cost)
 		{
-			ch.power-=5;
-			ch.bought++;
+			ch.power-=cost;
+			ch.bought+=n;
 			Molpy.boostRepaint=1;
 			Molpy.Notify('Glass Chip Storage upgraded',1);
 		}
@@ -1673,6 +1684,7 @@ Molpy.DefineBoosts=function()
 			bl.power-=Molpy.SandPurifierUpgradeCost();
 			Molpy.Boosts['Sand Purifier'].power++;
 			Molpy.boostRepaint=1;
+			Molpy.recalculateDig=1;
 			Molpy.Notify('Sand Purifier upgraded',1);
 		}
 	}
@@ -2132,6 +2144,37 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Flux Surge',desc:
 		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown)+'mNP';}
 		,group:'chron',logic:4,startCountdown:200
+	});
+	new Molpy.Boost({name:'Locked Crate',
+		desc:function(me){
+			if(!me.bought) return 'Contains Loot';
+			return 'Not so locked anymore.<br><input type="Button" value="Grab" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> the loot!'
+		},
+		sand:function(me){ return me.power*6;},
+		castles:function(me){ return me.power;},
+		glass:5,logic:2,className:'action',
+		unlockFunction:function(me)
+		{
+			me.power = DeMolpify(Molpify(Molpy.castles*6+Molpy.sand,1,1));
+		},
+		lockFunction:function(me)
+		{
+			var bl=Molpy.Boosts['Glass Block Storage'];
+			var win = Math.ceil(200*Molpy.LogicastleMult());
+			while(bl.bought*50<bl.power+win)bl.bought++; //make space!
+			bl.power+=win;
+			Molpy.Notify('+'+Molpify(win,3,!Molpy.showStats)+' Glass Blocks!');
+		}
+	});
+	new Molpy.Boost({name:'Crate Key',desc:'Halves the price of Locked Crate'
+		,logic:4,glass:20,
+		buyFunction:function(me)
+		{
+			var lc = Molpy.Boosts['Locked Crate'];
+			lc.power/=2;
+			Molpy.LockBoost(me.name);
+			if(!lc.unlocked||lc.bought) Molpy.Notify('Well, that was a waste');
+		}
 	});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
