@@ -1756,7 +1756,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
 		}
 	}
-	Molpy.faCosts=[55,65,85,115,155,220];
+	Molpy.faCosts=[55,65,85,115,145,175,205];
 	new Molpy.Boost({name:'Rosetta',
 		desc:function(me)
 		{

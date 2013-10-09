@@ -1336,12 +1336,13 @@ Molpy.Up=function()
 			if(!silent)
 				Molpy.Notify('Spent Castles: ' + Molpify(amount,3,!Molpy.showStats),1);
 		}
-		Molpy.SpendSand=function(amount)
+		Molpy.SpendSand=function(amount,silent)
 		{
 			if(!amount)return;
 			Molpy.sand-=amount;
 			Molpy.sandSpent+=amount;
-			Molpy.Notify('Spent Sand: ' + Molpify(amount,3,!Molpy.showStats),1);
+			if(!silent)
+				Molpy.Notify('Spent Sand: ' + Molpify(amount,3,!Molpy.showStats),1);
 		}
 		
 		Molpy.destroyNotifyFlag=1;
@@ -3283,15 +3284,18 @@ Molpy.Up=function()
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
 			var t=0;
+			var spent=0;
 			while(i--)
 			{
 				var sand = 2000000*Math.pow(10000,i);
 				if(Molpy.sand>=sand)
 				{
-					Molpy.SpendSand(sand);
+					Molpy.SpendSand(sand,1);
 					t++;
+					spent+=sand;
 				}
 			}
+			Molpy.Notify('Activating Factory Automation '+t+' time'+(t==1?'':'s')+' at a cost of '+Molpify(spent,4,!Molpy.ShowStats)+' Sand',1);
 			while(t--) 
 				Molpy.RewardRedacted(1);
 		}

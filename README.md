@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.81
+- Toned down the Factory Automation upgrade costs a little
+- Combined Factory Automation sand-use messages to reduce message spam
+
 ### 1.8
 - Badge for Judgement Dip level 12
 - Badge for unlocking all the Judgement Dip boosts
