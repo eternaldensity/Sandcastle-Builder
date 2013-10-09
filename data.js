@@ -450,7 +450,7 @@ Molpy.DefineBoosts=function()
 		sand:'25K',castles:88,icon:'ninjapenance',startPower:2,group:'ninj'}); 
 	new Molpy.Boost({name:'Blitzing',desc:function(me)
 		{		
-			return Molpify(me.power,1)+'% Sand for '+Molpify(me.countdown)+'mNP';
+			return Molpify(me.power,1)+'% Sand for '+Molpify(me.countdown,Math.floor(Math.PI),!Molpy.showStats)+'mNP';
 		}
 		,icon:'blitzing',className:'alert'});
 	new Molpy.Boost({name:'Kitnip',desc:Molpy.redactedWords+' come more often and stay longer',
@@ -501,7 +501,8 @@ Molpy.DefineBoosts=function()
 	}
 	new Molpy.Boost({name:'Grapevine',desc:'Increases sand dig rate by 2% per badge earned',sand:'25K',castles:25,icon:'grapevine',department:1});
 	Molpy.IKEA='Affordable Swedish Home Furniture';
-	new Molpy.Boost({name:Molpy.IKEA,desc: function(me){return Molpify(me.power*100,1)+'% off all items for '+Molpify(me.countdown)+'mNP'}
+	new Molpy.Boost({name:Molpy.IKEA,desc: function(me){return Molpify(me.power*100,1)+'% off all items for '
+		+Molpify(me.countdown,Math.floor(Math.PI),!Molpy.showStats)+'mNP'}
 		,buyFunction:function(){
 			Molpy.shopRepaint=1;
 		}
@@ -866,7 +867,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Jamming',desc:
 		function(me)
 		{		
-			return 'You cannot access NewPixBot Navigation Code for '+Molpify(me.countdown)+'mNP';
+			return 'You cannot access NewPixBot Navigation Code for '+Molpify(me.countdown,Math.floor(Math.PI),!Molpy.showStats)+'mNP';
 		},className:'alert',group:'cyb'
 		});	
 	
@@ -1252,7 +1253,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Temporal Rift',
 		desc:function(me)
 		{
-			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+me.countdown+'mNP.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
+			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+Molpify(me.countdown,Math.floor(Math.PI),!Molpy.showStats)+'mNP.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
 			return 'A hole in time has opened.';
 		}
 		,logic:Math.floor(Math.PI),countdownFunction:function()
@@ -1298,7 +1299,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Glass Furnace Switching',
 		desc:function(me)
 		{
-			return (me.power?'off':'on')+' in '+Molpify(me.countdown)+'mNP';
+			return (me.power?'off':'on')+' in '+Molpify(me.countdown,Math.floor(Math.PI),!Molpy.showStats)+'mNP';
 		},lockFunction:
 		function()
 		{
@@ -1569,7 +1570,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Glass Blower Switching',
 		desc:function(me)
 		{
-			return (me.power?'off':'on')+' in '+Molpify(me.countdown)+'mNP';
+			return (me.power?'off':'on')+' in '+Molpify(me.countdown,Math.floor(Math.PI),!Molpy.showStats)+'mNP';
 		},lockFunction:
 		function()
 		{
@@ -2116,7 +2117,7 @@ Molpy.DefineBoosts=function()
 		,sand:'55E',castles:'238E',glass:100,group:'hpt'
 	});
 	new Molpy.Boost({name:'Two for One',desc:
-		function(me){return 'For '+Molpify(me.countdown)+'mNP, when you buy a Tool, get one free!';}
+		function(me){return 'For '+Molpify(me.countdown,Math.floor(Math.PI),!Molpy.showStats)+'mNP, when you buy a Tool, get one free!';}
 		,group:'hpt',logic:1,startCountdown:5
 		,countdownFunction:function(){
 			if(this.countdown==2)
@@ -2126,7 +2127,7 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	new Molpy.Boost({name:'Impervious Ninja',desc:
-		function(me){return 'You cannot lose Ninja Stealth for '+Molpify(me.countdown)+'mNP';}
+		function(me){return 'You cannot lose Ninja Stealth for '+Molpify(me.countdown,Math.floor(Math.PI),!Molpy.showStats)+'mNP';}
 		,group:'ninj',logic:2,startCountdown:2000,className:'alert'
 	});
 	new Molpy.Boost({name:'Factory Ninja',desc:
@@ -2142,7 +2143,7 @@ Molpy.DefineBoosts=function()
 		return 1;
 	}
 	new Molpy.Boost({name:'Flux Surge',desc:
-		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown)+'mNP';}
+		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown,Math.floor(Math.PI),!Molpy.showStats)+'mNP';}
 		,group:'chron',logic:Math.ceil(Math.PI),startCountdown:200
 	});
 	new Molpy.Boost({name:'Locked Crate',

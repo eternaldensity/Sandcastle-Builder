@@ -25,6 +25,7 @@ For personal amusement only.
 - Glass Chip storage can be upgraded in larger amounts one you have enough refinery power. (also more newlines in description)
 - Singular glass block prices show up as singular
 - Added a new Logicat reward (or a pair actually)
+- Mmm, floor pie.
 
 ### 1.8
 - Badge for Judgement Dip level 12
