@@ -187,7 +187,7 @@ function MakeRedundancy()
 		function(){return make(redundancy.transverbs)+', and '+make(redundancy.transverbs);},
 		function(){return make(redundancy.transverb)+' ('+make(redundancy.prepphrase)+')';}
 	];
-	redundancy.transverb=['kicks','clicks','requires','asks','requests','needs','sees','likes','destroys','drops','chases','eats','throws','burns','carries','fires','builds','destroys','quotes','wears','questions','chirps','decyphers','decodes','confuses','hates','expandifies','embiggens','molpifies','explains','redoes','hides','hugs','spoilers', function(){return 'is '+make(redundancy.things)+'ing'}];
+	redundancy.transverb=['kicks','clicks','requires','asks','requests','needs','sees','likes','destroys','drops','chases','eats','throws','burns','carries','fires','builds','destroys','quotes','wears','questions','chirps','decyphers','decodes','confuses','hates','expandifies','embiggens','molpifies','explains','redoes','hides','hugs','spoilers','separates','debugs','uploads','downloads','steals', function(){return 'is '+make(redundancy.things)+'ing'}];
 	redundancy.intransverbs=[
 		function(){return make(redundancy.intransverb);},
 		function(){return make(redundancy.adverb)+' '+make(redundancy.intransverb);},
@@ -195,7 +195,7 @@ function MakeRedundancy()
 		function(){return make(redundancy.intransverb)+' '+make(redundancy.comparison);},
 		function(){return make(redundancy.intransverb)+' '+make(redundancy.prepphrase);}
 	];
-	redundancy.intransverb=['jumps','laughs','burns','cries','explodes','melts','runs','sings','worries','dies','lives','decays','eats','plays','turns','spins','posts','burrows','types','reboots','refreshes','reloads','wonders','walks','falls','collapses','shrugs', function(){return 'is '+make(redundancy.things)+'ing'}];
+	redundancy.intransverb=['jumps','laughs','burns','cries','explodes','melts','runs','sings','worries','dies','lives','decays','eats','plays','turns','spins','posts','burrows','types','reboots','refreshes','reloads','wonders','walks','falls','collapses','shrugs','departs', function(){return 'is '+make(redundancy.things)+'ing'}];
 	redundancy.prepphrase=[function(){return make(redundancy.prepositions)+' '+make(redundancy.objects);}];
 	redundancy.prepositions=['in','in','on','over','under','inside','outside','behind','from','within','from within','beside','underneath','near','at','for','into','of','in front of','nowhere near','to','from','close to','with','along','towards','away from','through','throughout','past','after','before'];
 	redundancy.adjphrase=[

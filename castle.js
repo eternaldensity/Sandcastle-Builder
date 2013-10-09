@@ -463,7 +463,6 @@ Molpy.Up=function()
 			Molpy.options.castlemultibuy=(parseInt(pixels[9] || 0));
 			if(!g('game'))
 			{				
-				g('indexversion').innerHTML='The Game of Time. Version '+Molpy.version;
 				Molpy.UpdateColourScheme();
 				return;
 			}
@@ -1034,6 +1033,7 @@ Molpy.Up=function()
 		if(!g('game'))
 		{
 			Molpy.LoadC_STARSTAR_kie();
+			g('indexversion').innerHTML='The Game of Time. Version '+Molpy.version;
 			return;
 		}
 		
@@ -3807,7 +3807,10 @@ Molpy.Up=function()
     }
 	function drawClockHand()
 	{
-		if(!g('game'))return;
+		if(!g('game'))
+		{
+			return;
+		}
 		if(!Molpy.ONGelapsed){
 			Molpy.ONGelapsed = new Date().getTime()-Molpy.ONGstart.getTime();
 		}

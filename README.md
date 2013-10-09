@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.82
+- Version now number shows up on index whether it loads a saved game or not
+- Added a few words to redundancy
+
 ### 1.81
 - Toned down the Factory Automation upgrade costs a little
 - Combined Factory Automation sand-use messages to reduce message spam
