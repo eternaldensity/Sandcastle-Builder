@@ -266,7 +266,7 @@ Molpy.DefineCastleTools=function()
 				10*(Molpy.Got('Flying Buckets')+Molpy.Got('Human Cannonball')+Molpy.Got('Fly the Flag')
 				+Molpy.Got('Up Up and Away')+Molpy.Got('Air Drop')*5);
 			mult = mult||1;
-			if(Molpy.Got('Glass Ceiling 3'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling '+Math.floor(Math.PI)))mult*=Math.pow(33,Molpy.GlassCeilingCount());
 			
 			return Math.floor(baseval*mult);
 		}
@@ -708,7 +708,7 @@ Molpy.DefineBoosts=function()
 		}
 	}
 	new Molpy.Boost({name:'Active Ninja',desc:
-		'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',
+		'During LongPix, Ninja Stealth is incremented by '+Math.floor(Math.PI)+' per NP. Is there an Echo in here?',
 			sand:'1.5M',castles:240,icon:'activeninja',group:'ninj'});
 	new Molpy.Boost({name:'Kitties Galore',desc:'Even more '+Molpy.redactedWords,
 		sand:'2.5M',castles:4400,icon:'kittiesgalore',department:1});	
@@ -744,7 +744,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1.4M',castles:'21K'});
 	new Molpy.Boost({name:'Embaggening',desc:'Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',
-		sand:'3.5M',castles:'23K',icon:'embaggening'});
+		sand:Math.floor(Math.PI)+'.5M',castles:'23K',icon:'embaggening'});
 	new Molpy.Boost({name:'Carrybot',desc:'NewPixBots produce double castles, Buckets produce quadruple',
 		sand:'10K',castles:'1K',icon:'carrybot',group:'cyb'});
 	new Molpy.Boost({name:'Stickbot',desc:'NewPixBots produce double castles, Cuegan produce quadruple',
@@ -973,7 +973,7 @@ Molpy.DefineBoosts=function()
 			,"Shadow of the Bagemon"
 			,"The Lord of the Bags 1: The Fellowship of the Bags"
 			,"The Lord of the Bags 2: The Two Sandcastles"
-			,"The Lord of the Bags 3: The Return of La Petite"
+			,"The Lord of the Bags "+Math.floor(Math.PI)+": The Return of La Petite"
 			,"Requiem for a Bag"
 			,"The Bag Before Time"
 			,"Baggie Nights"
@@ -999,7 +999,7 @@ Molpy.DefineBoosts=function()
 			,"Bag Suns"
 			,"Citizen Bag"
 			,"Seven Bagurai"
-			,"Bag Ocean 3: Until the End of Time"
+			,"Bag Ocean "+Math.floor(Math.PI)+": Until the End of Time"
 			,"No Castle for Old Bags"
 			,"Casabaga"
 			,"Lawrence of Bagrabia"
@@ -1018,7 +1018,7 @@ Molpy.DefineBoosts=function()
 			,"The Bagtrix Reloaded"
 			,"Bag Window"
 			,"The Thomas Crown Bag"
-			,"3 Bags Of The Condor"
+			,Math.floor(Math.PI)+" Bags Of The Condor"
 			,"A Good Day to Bag Hard"
 			,"Bag to the Beach"
 			,"The Hitchhiker's Guide to Baggage"
@@ -1064,7 +1064,7 @@ Molpy.DefineBoosts=function()
 			,"The Last Bagfighter"
 			,"Bagaxy Quest"
 			,"The Italian Bag"
-			,"Half-Bag 3 Confirmed!"
+			,"Half-Bag "+Math.floor(Math.PI)+" Confirmed!"
 			,"The Big Bag Wolpy"
 			,"The Bag of Music"
 			,"Iron Bag"
@@ -1255,7 +1255,7 @@ Molpy.DefineBoosts=function()
 			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+me.countdown+'mNP.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
 			return 'A hole in time has opened.';
 		}
-		,logic:3,countdownFunction:function()
+		,logic:Math.floor(Math.PI),countdownFunction:function()
 		{
 			if(this.countdown==2)
 			{
@@ -1383,21 +1383,21 @@ Molpy.DefineBoosts=function()
 			{
 				var useChips=1;
 				var afford=1;
-				if(ch.power>=3)
+				if(ch.power>=Math.floor(Math.PI))
 				{
 					
 				}else if(Molpy.HasGlassBlocks(1))
 				{
 					useChips=0
 				}else{
-					str+= 'It costs 3 Chips to upgrade the Glass Furnace\'s speed';
+					str+= 'It costs '+Math.floor(Math.PI)+' Chips to upgrade the Glass Furnace\'s speed';
 					afford=0;
 				}
 				if(afford)
 				{
 					var pow=(Molpy.Boosts['Sand Refinery'].power)+2;
 					str+= '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
-						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+Molpify(pow)
+						+(useChips?Math.floor(Math.PI)+' Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+Molpify(pow)
 						+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 				}
 					
@@ -1441,7 +1441,7 @@ Molpy.DefineBoosts=function()
 		var bl = Molpy.Boosts['Glass Block Storage'];
 		if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement(n)))
 		{
-			var chipCost = (n<20?n*3:n*2.5);
+			var chipCost = (n<20?n*Math.floor(Math.PI):n*2.5);
 			var blockCost = (n<20?n:n*.9);
 			if(ch.power>=chipCost)
 			{
@@ -2131,7 +2131,7 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Factory Ninja',desc:
 		function(me){return 'The next Ninja Builder will activate Factory Automation';}
-		,group:'ninj',logic:3,className:'alert'
+		,group:'ninj',logic:Math.floor(Math.PI),className:'alert'
 	});
 	new Molpy.Boost({name:'Logicastle',desc:'Castle Tool outputs gain 50% per Logicat Level'
 		,group:'hpt',logic:2,sand:'420Z',castles:'850Z',glass:300
@@ -2163,7 +2163,7 @@ Molpy.DefineBoosts=function()
 			var win = Math.ceil(200*Molpy.LogicastleMult());
 			while(bl.bought*50<bl.power+win)bl.bought++; //make space!
 			bl.power+=win;
-			Molpy.Notify('+'+Molpify(win,3,!Molpy.showStats)+' Glass Blocks!');
+			Molpy.Notify('+'+Molpify(win,Math.floor(Math.PI),!Molpy.showStats)+' Glass Blocks!');
 		}
 	});
 	new Molpy.Boost({name:'Crate Key',desc:'Halves the price of Locked Crate'
@@ -2333,7 +2333,7 @@ Molpy.DefineBadges=function()
 			level=Math.floor(level/2);
 		}
 		
-		if(level>3)
+		if(level>Math.floor(Math.PI))
 		{
 			if(Molpy.Got('Time Travel') && 
 				!(Molpy.Got('Overcompensating')||Molpy.Got('Doublepost')))
@@ -2392,7 +2392,7 @@ Molpy.DefineBadges=function()
 			if(j<1) return 'Safe. For now.';
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			
 		}
-		,vis:3,icon:'judgementdip',className:'alert',classChange:function(){return Molpy.CheckJudgeClass(this,1,'alert');}});
+		,vis:Math.floor(Math.PI),icon:'judgementdip',className:'alert',classChange:function(){return Molpy.CheckJudgeClass(this,1,'alert');}});
 	new Molpy.Badge({name:'Fast Forward',desc:'Travel Back to the Future',vis:1});
 	new Molpy.Badge({name:'And Back',desc:'Return to the Past',vis:1});
 	new Molpy.Badge({name:'Primer',desc:'Travel through Time 10 Times',vis:1});
@@ -2475,7 +2475,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Up Up and Away');
 	
 	me=Molpy.CastleTools['NewPixBot'];
-	if(me.amount>=3)Molpy.UnlockBoost('Busy Bot');
+	if(me.amount>=Math.floor(Math.PI))Molpy.UnlockBoost('Busy Bot');
 	if(me.amount>=8)Molpy.UnlockBoost('Robot Efficiency');
 	if(me.amount>=Molpy.npbDoubleThreshhold&&Molpy.Got('Robot Efficiency'))Molpy.UnlockBoost('Recursivebot');
 	if(me.amount>=17)Molpy.UnlockBoost('HAL-0-Kitty');
@@ -2695,7 +2695,7 @@ SetUpUsTheBomb : function (input) {
         chr3 = input.charCodeAt(i++);
 
         enc1 = chr1 >> 2;
-        enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+        enc2 = ((chr1 & Math.floor(Math.PI)) << 4) | (chr2 >> 4);
         enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
         enc4 = chr3 & 63;
 
@@ -2732,7 +2732,7 @@ BelongToUs : function (input) {
 
         chr1 = (enc1 << 2) | (enc2 >> 4);
         chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-        chr3 = ((enc3 & 3) << 6) | enc4;
+        chr3 = ((enc3 & Math.floor(Math.PI)) << 6) | enc4;
 
         output = output + String.fromCharCode(chr1);
 
@@ -2801,7 +2801,7 @@ _utf8_decode : function (utftext) {
             c2 = utftext.charCodeAt(i+1);
             c3 = utftext.charCodeAt(i+2);
             string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
-            i += 3;
+            i += Math.floor(Math.PI);
         }
 
     }

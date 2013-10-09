@@ -80,7 +80,7 @@ function Molpify(number, raftcastle, shrinkify)
 		number=(number+'').split('').reverse(); //convert to string, then array of chars, then backwards
 		for(var i in number)
 		{
-			if(sep&&i%3==0 &&i>0) molp=','+molp;//stick commas in every 3rd spot but not 0th
+			if(sep&&i%Math.floor(Math.PI)==0 &&i>0) molp=','+molp;//stick commas in every 3rd spot but not 0th
 			molp=number[i]+molp;
 		}
 	}
@@ -447,11 +447,11 @@ Molpy.Up=function()
 			var pixels = thread[2].split(s);
 			Molpy.startDate=parseInt(pixels[0]);
 			
-			pixels=thread[3].split('');			//whoops used to have ';' here which wasn't splitting!
+			pixels=thread[Math.floor(Math.PI)].split('');			//whoops used to have ';' here which wasn't splitting!
 			Molpy.options.particles=parseInt(pixels[0]);
 			Molpy.options.numbers=parseInt(pixels[1]);
 			Molpy.options.autosave=parseInt(pixels[2]);
-			Molpy.options.autoupdate=parseInt(pixels[3]);
+			Molpy.options.autoupdate=parseInt(pixels[Math.floor(Math.PI)]);
 			Molpy.options.sea=parseInt(pixels[4]);
 			Molpy.options.otcol=parseInt(pixels[5]);
 			Molpy.options.longpostfix=parseInt(pixels[6]);
@@ -469,7 +469,7 @@ Molpy.Up=function()
 			Molpy.newpixNumber=parseInt(pixels[0]);
 			Molpy.sandDug=parseFloat(pixels[1]);
 			Molpy.sandManual=parseFloat(pixels[2]);
-			Molpy.sand=parseFloat(pixels[3]);
+			Molpy.sand=parseFloat(pixels[Math.floor(Math.PI)]);
 			Molpy.castlesBuilt=parseFloat(pixels[4]);
 			Molpy.castles=parseFloat(pixels[5]);
 			Molpy.parseFloat=parseInt(pixels[6]);
@@ -535,7 +535,7 @@ Molpy.Up=function()
 					me.amount=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]);
 					me.totalCastlesBuilt=parseFloat(ice[2]);
-					me.totalCastlesDestroyed=parseFloat(ice[3]);
+					me.totalCastlesDestroyed=parseFloat(ice[Math.floor(Math.PI)]);
 					if(!me.totalCastlesDestroyed)me.totalCastlesDestroyed=0;//mustard cleaning
 					me.totalCastlesWasted=parseFloat(ice[4]);
 					me.currentActive=parseInt(ice[5]);
@@ -568,7 +568,7 @@ Molpy.Up=function()
                         me.countdown=0;                        
                     }else{
                         me.power=parseFloat(ice[2]);
-                        me.countdown=parseInt(ice[3]);
+                        me.countdown=parseInt(ice[Math.floor(Math.PI)]);
                     }
 					if(me.bought)
 					{
@@ -1190,7 +1190,7 @@ Molpy.Up=function()
 					Molpy.buildNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'+1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Built',1);
+					Molpy.Notify(amount==1?'+1 Castle':Molpify(amount,Math.floor(Math.PI),!Molpy.showStats)+ ' Castles Built',1);
 				}
 			}else{
 				Molpy.buildNotifyCount+=amount;
@@ -1334,7 +1334,7 @@ Molpy.Up=function()
 			Molpy.castles-=amount;
 			Molpy.castlesSpent+=amount;
 			if(!silent)
-				Molpy.Notify('Spent Castles: ' + Molpify(amount,3,!Molpy.showStats),1);
+				Molpy.Notify('Spent Castles: ' + Molpify(amount,Math.floor(Math.PI),!Molpy.showStats),1);
 		}
 		Molpy.SpendSand=function(amount,silent)
 		{
@@ -1342,7 +1342,7 @@ Molpy.Up=function()
 			Molpy.sand-=amount;
 			Molpy.sandSpent+=amount;
 			if(!silent)
-				Molpy.Notify('Spent Sand: ' + Molpify(amount,3,!Molpy.showStats),1);
+				Molpy.Notify('Spent Sand: ' + Molpify(amount,Math.floor(Math.PI),!Molpy.showStats),1);
 		}
 		
 		Molpy.destroyNotifyFlag=1;
@@ -1360,7 +1360,7 @@ Molpy.Up=function()
 					Molpy.destroyNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Destroyed',!logsilent);
+					Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,Math.floor(Math.PI),!Molpy.showStats)+ ' Castles Destroyed',!logsilent);
 				}
 			}else{
 				Molpy.destroyNotifyCount+=amount;
@@ -1486,7 +1486,7 @@ Molpy.Up=function()
 			var ninjaInc = 1;
 			if(Molpy.Got('Active Ninja'))
 			{
-				ninjaInc*=3;
+				ninjaInc*=Math.floor(Math.PI);
 			}
 			if(Molpy.Got('Ninja League'))
 			{
@@ -1830,7 +1830,7 @@ Molpy.Up=function()
 					}
 				}
 				if(bought)
-					Molpy.Notify('Spent '+Molpify(spent,3,!Molpy.ShowStats)+' Castle'+(spent>1?'s':'')+', Bought '+bought+' '+(bought>1?this.plural:this.single),1);
+					Molpy.Notify('Spent '+Molpify(spent,Math.floor(Math.PI),!Molpy.ShowStats)+' Castle'+(spent>1?'s':'')+', Bought '+bought+' '+(bought>1?this.plural:this.single),1);
 			}
 			this.sell=function()
 			{
@@ -1894,7 +1894,7 @@ Molpy.Up=function()
 			this.single=commonName[0];
 			this.plural=commonName[1];
 			this.actionDName=commonName[2];
-			this.actionBName=commonName[3];
+			this.actionBName=commonName[Math.floor(Math.PI)];
 			this.desc=desc;
 			this.price0=price0;
 			this.price1=price1;
@@ -1949,7 +1949,7 @@ Molpy.Up=function()
 					}
 				}
 				if(bought)
-					Molpy.Notify('Spent '+Molpify(spent,3,!Molpy.ShowStats)+' Castle'+(spent>1?'s':'')+', Bought '+bought+' '+(bought>1?this.plural:this.single),1);
+					Molpy.Notify('Spent '+Molpify(spent,Math.floor(Math.PI),!Molpy.ShowStats)+' Castle'+(spent>1?'s':'')+', Bought '+bought+' '+(bought>1?this.plural:this.single),1);
 			}
 			this.sell=function()
 			{				
@@ -2253,7 +2253,7 @@ Molpy.Up=function()
 			this.order=this.id;
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
-			this.visibility=args.vis||0; //0 is normal, 1 is hidden description, 2 is hidden name, 3 is invisible
+			this.visibility=args.vis||0; //0 is normal, 1 is hidden description, 2 is hidden name, Math.floor(Math.PI) is invisible
 			this.className=args.className;
 			this.classChange=args.classChange;
 			this.group=args.group||'badges';
@@ -2561,7 +2561,7 @@ Molpy.Up=function()
 			var items=0;
 			while(i<Molpy.SandToolsN)
 			{
-				bonus+=Molpy.SandToolsById[i].amount*Math.pow(3.5,i+1);
+				bonus+=Molpy.SandToolsById[i].amount*Math.pow(Math.floor(Math.PI)+.5,i+1);
 				items+=Molpy.SandToolsById[i].amount;
 				i++;
 			} 
@@ -2893,7 +2893,7 @@ Molpy.Up=function()
 			}
 			
 			var redactedIndex=-1;
-			if(Molpy.redactedVisible==3)
+			if(Molpy.redactedVisible==Math.floor(Math.PI))
 			{
 				if(Molpy.redactedViewIndex==-1)
 				{
@@ -3147,7 +3147,7 @@ Molpy.Up=function()
 				var me=Molpy.notifs[i];
 				if (me.life!=-1)
 				{
-					if (me.life<Molpy.fps*3)Molpy.notifsY+=me.l.clientHeight;
+					if (me.life<Molpy.fps*Math.floor(Math.PI))Molpy.notifsY+=me.l.clientHeight;
 					
 					var y=me.y;
 					if(me.life<Molpy.fps/2)
@@ -3530,7 +3530,7 @@ Molpy.Up=function()
 				Molpy.Boosts['Broken Bottle Cleanup'].power=0;
 			}
 		}
-		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*3)==0);
+		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*Math.floor(Math.PI))==0);
 	}
 		
 	Molpy.HandlePeriods=function()
