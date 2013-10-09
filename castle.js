@@ -2353,10 +2353,7 @@ Molpy.Up=function()
 						Molpy.RandomiseRedactedTime();	
 					}else{
 						Molpy.redactedDrawType=['show'];
-						Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
-						if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;
-
-						Molpy.redactedViewIndex=-1;
+						Molpy.RedactedJump();
 						var stay = 6 *(4+ Molpy.Got('Kitnip'));
 						Molpy.redactedToggle=stay;
 						Molpy.shopRepaint=1;
@@ -2393,6 +2390,7 @@ Molpy.Up=function()
 				Molpy.redactedDrawType[level]='show'; 
 				while(Molpy.redactedDrawType.length>level+1)
 					Molpy.redactedDrawType.pop(); //we don't need to remember those now
+				Molpy.RedactedJump();
 				return;
 			}
 			
@@ -2402,25 +2400,23 @@ Molpy.Up=function()
 				Molpy.redactedDrawType[level]='hide1';
 				Molpy.redactedToggle*=10;	
 			}else
-			if (Molpy.Got('Redunception') && Math.floor(Math.random()*8/Molpy.redactedDrawType.length)==0)
+			if (Molpy.Got('Redunception') && Molpy.redactedDrawType.length <21 
+				&& Math.floor(Math.random()*8/Molpy.redactedDrawType.length)==0)
 			{
 				Molpy.redactedDrawType[level]='recur';
 				Molpy.redactedDrawType.push('show');
-				//JUMP!
-				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
-				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
-				Molpy.redactedViewIndex=-1;
-				Molpy.redactedToggle+=2;
+				Molpy.RedactedJump();
+				if(Molpy.redactedDrawType.length < 5 && Molpy.redactedToggle<4)
+					Molpy.redactedToggle++;
 			}else
-			if (Molpy.Got('Logicat') && Math.floor(Math.random()*6/Molpy.redactedDrawType.length)==0)
+			if (Molpy.Got('Logicat') && Molpy.redactedDrawType.length <21
+				&& Math.floor(Math.random()*6/Molpy.redactedDrawType.length)==0)
 			{
 				Molpy.MakeRedactedPuzzle();
 				Molpy.redactedDrawType[level]='hide2';
-				//JUMP!
-				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
-				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
-				Molpy.redactedViewIndex=-1;
-				Molpy.redactedToggle+=10;
+				Molpy.RedactedJump();
+				if(Molpy.redactedToggle<10)
+					Molpy.redactedToggle+=10;
 			}else
 			{ // it goes away.					
 				var item=g('redacteditem');
@@ -2433,8 +2429,9 @@ Molpy.Up=function()
 			}
 			
 			
-			Molpy.redactedClicks++;				
-			Molpy.RewardRedacted();
+			Molpy.redactedClicks++;		
+			if(  Molpy.redactedDrawType.length <16)
+				Molpy.RewardRedacted();
 			if(Molpy.redactedClicks>=2)
 				Molpy.EarnBadge('Not So '+Molpy.redactedW);
 			if(Molpy.redactedClicks>=14)
@@ -2449,6 +2446,14 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Y U NO BELIEVE ME?');
 			if(Molpy.redactedClicks>=256)
 				Molpy.UnlockBoost('Blixtnedslag Kattungar, JA!');
+		}
+		
+		Molpy.RedactedJump=function()
+		{		
+			//JUMP!
+			Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
+			if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
+			Molpy.redactedViewIndex=-1;
 		}
 
 		Molpy.RewardRedacted=function(forceDepartment)

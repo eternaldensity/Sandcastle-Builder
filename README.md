@@ -31,6 +31,7 @@ For personal amusement only.
 - Prevent activation of Temp Boosts when loading from causing boost-unlock message spam
 - Temporal Rift and Flux Turbine descriptions/stats improved to reference each other
 - Fixed import of totalCastlesDown - was parsing int rather than float so if you got too high it would truncate to single digit :P
+- Reduced Redundakitty nesting: 150 is cool and all but it's a bit ridiculous really
 
 ### 1.79
 - Added Phonesaw
