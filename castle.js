@@ -210,7 +210,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.82;
+		Molpy.version=1.83;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2405,7 +2405,8 @@ Molpy.Up=function()
 			if(Molpy.Got('Redundant Redundance Supply of Redundancy') && Math.floor(Math.random()*20)==1)
 			{
 				Molpy.redactedDrawType[level]='hide1';
-				Molpy.redactedToggle*=10;	
+				Molpy.redactedToggle=65;	
+				Molpy.redactedCountup=0;
 			}else
 			if (Molpy.Got('Redunception') && Molpy.redactedDrawType.length <21 
 				&& Math.floor(Math.random()*8/Molpy.redactedDrawType.length)==0)
@@ -2413,8 +2414,11 @@ Molpy.Up=function()
 				Molpy.redactedDrawType[level]='recur';
 				Molpy.redactedDrawType.push('show');
 				Molpy.RedactedJump();
-				if(Molpy.redactedDrawType.length < 5 && Molpy.redactedToggle<4)
-					Molpy.redactedToggle++;
+				if(Molpy.redactedDrawType.length < 5 && Molpy.redactedToggle<5)
+				{
+					Molpy.redactedToggle=5;
+					Molpy.redactedCountup=0;
+				}
 			}else
 			if (Molpy.Got('Logicat') && Molpy.redactedDrawType.length <21
 				&& Math.floor(Math.random()*6/Molpy.redactedDrawType.length)==0)
@@ -2422,8 +2426,11 @@ Molpy.Up=function()
 				Molpy.MakeRedactedPuzzle();
 				Molpy.redactedDrawType[level]='hide2';
 				Molpy.RedactedJump();
-				if(Molpy.redactedToggle<10)
-					Molpy.redactedToggle+=10;
+				if(Molpy.redactedToggle<15)
+				{
+					Molpy.redactedToggle=15;
+					Molpy.redactedCountup=0;
+				}
 			}else
 			{ // it goes away.					
 				var item=g('redacteditem');
