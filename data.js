@@ -1990,7 +1990,7 @@ Molpy.DefineBoosts=function()
 			+' by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock('+i+')"></input>',
 			sand: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
 			castles: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
-			glass: 50, group:'hpt',
+			glass: 50* (+i+1), group:'hpt',
 			buyFunction:function(me){
 				me.power++;
 				Molpy.shopRepaint=1;

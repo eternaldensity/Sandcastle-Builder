@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.83
+- Fixed Glass Ceiling glass prices: they were all the same when they should not have been.
+
 ### 1.82
 - Version now number shows up on index whether it loads a saved game or not
 - Added a few words to redundancy
