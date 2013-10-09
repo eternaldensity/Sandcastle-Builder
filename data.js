@@ -120,7 +120,7 @@ Molpy.DefineSandTools=function()
 			var mult=1;
 			if(Molpy.Got('Huge Buckets'))mult*=2;
 			if(Molpy.Got('Trebuchet Pong'))mult*=Math.pow(1.5,Math.floor(Molpy.CastleTools['Trebuchet'].amount/2));
-			if(Molpy.Got('Carrybot'))mult*=4;
+			if(Molpy.Got('Carrybot'))mult*=Math.ceil(Math.PI);
 			if(Molpy.Got('Buccaneer'))mult*=2;
 			if(Molpy.Got('Flying Buckets'))mult*=Molpy.CastleTools['Trebuchet'].amount;
 			if(Molpy.Got('Glass Ceiling 0'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
@@ -138,7 +138,7 @@ Molpy.DefineSandTools=function()
 			{
 				mult*=Math.pow(1.05,Math.floor(Molpy.SandTools['Bucket'].amount/2));
 			}
-			if(Molpy.Got('Stickbot'))mult*=4;
+			if(Molpy.Got('Stickbot'))mult*=Math.ceil(Math.PI);
 			if(Molpy.Got('The Forty'))mult*=40;
 			if(Molpy.Got('Human Cannonball'))mult*=2*Molpy.CastleTools['Trebuchet'].amount;
 			if(Molpy.Got('Glass Ceiling 2'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
@@ -153,7 +153,7 @@ Molpy.DefineSandTools=function()
 			var baserate = 8+Molpy.Got('Flag Bearer')*2;
 			var mult = 1;
 			if(Molpy.Got('Magic Mountain'))mult*=2.5;
-			if(Molpy.Got('Standardbot'))mult*=4;
+			if(Molpy.Got('Standardbot'))mult*=Math.ceil(Math.PI);
 			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Molpy.CastleTools['Scaffold'].amount);
 			if(Molpy.Got('Swim Between the Flags'))
 			{
@@ -165,7 +165,7 @@ Molpy.DefineSandTools=function()
 				}
 			}
 			if(Molpy.Got('Fly the Flag'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
-			if(Molpy.Got('Glass Ceiling 4'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling '+Math.ceil(Math.PI)))mult*=Math.pow(33,Molpy.GlassCeilingCount());
 			mult*=Molpy.BBC();
 			return baserate*mult;
 		}
@@ -177,7 +177,7 @@ Molpy.DefineSandTools=function()
 			var baserate = 54+Molpy.Got('Extension Ladder')*18;
 			var mult = 1;
 			if(Molpy.Got('Level Up!'))mult*=2;
-			if(Molpy.Got('Climbbot'))mult*=4;
+			if(Molpy.Got('Climbbot'))mult*=Math.ceil(Math.PI);
 			if(Molpy.Got('Broken Rung'))
 			{
 				var min =1000000;
@@ -202,7 +202,7 @@ Molpy.DefineSandTools=function()
 				mult*=Math.pow(1.02,Molpy.SandTools['Cuegan'].amount-14);
 			if(Molpy.Got('Sandbag'))
 				mult*=Math.pow(1.05,Molpy.CastleTools['River'].amount);
-			if(Molpy.Got('Luggagebot'))mult*=4;
+			if(Molpy.Got('Luggagebot'))mult*=Math.ceil(Math.PI);
 			if(Molpy.Got('Bag Puns'))mult*=2;
 			if(Molpy.Got('Air Drop'))mult*=5;
 			if(Molpy.Got('Glass Ceiling 8'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
@@ -254,11 +254,11 @@ Molpy.DefineCastleTools=function()
 			else return 2;
 		},
 		function(){
-		 var baseval=4;
+		 var baseval=Math.ceil(Math.PI);
 			if(Molpy.Got('Spring Fling'))baseval++;
 			if(Molpy.Got('Varied Ammo'))for(var i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)baseval++;
 			if(Molpy.Got('Throw Your Toys')) baseval+=Molpy.SandTools['Bucket'].amount+Molpy.SandTools['Flag'].amount;
-			if(Molpy.Got('Flingbot'))baseval*=4;
+			if(Molpy.Got('Flingbot'))baseval*=Math.ceil(Math.PI);
 			if(Molpy.Got('Minigun')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			baseval*=Molpy.LogicastleMult();
 			
@@ -283,7 +283,7 @@ Molpy.DefineCastleTools=function()
 		function()
 		{
 			var baseval = 22;
-			if(Molpy.Got('Propbot'))baseval*=4;
+			if(Molpy.Got('Propbot'))baseval*=Math.ceil(Math.PI);
 			if(Molpy.Got('Stacked')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);
 			baseval*=Molpy.LogicastleMult();
@@ -313,7 +313,7 @@ Molpy.DefineCastleTools=function()
 		{
 			var baseval= 111;
 			baseval+=Molpy.Got('Swell')*19;			
-			if(Molpy.Got('Surfbot'))baseval*=4;
+			if(Molpy.Got('Surfbot'))baseval*=Math.ceil(Math.PI);
 			if(Molpy.Got('Big Splash')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Swim Between the Flags'))
@@ -360,7 +360,7 @@ Molpy.DefineCastleTools=function()
 			var mult=1;
 			if(Molpy.Got('Sandbag'))
 				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
-			if(Molpy.Got('Smallbot'))mult*=4;
+			if(Molpy.Got('Smallbot'))mult*=Math.ceil(Math.PI);
 			if(Molpy.Got('Irregular Rivers')) mult*=Molpy.CastleTools['NewPixBot'].amount;
 			return Math.floor(baseval*mult);
 		}
@@ -374,7 +374,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Bigger Buckets',desc:'Increases sand rate of buckets and clicks',sand:500,castles:0,stats:'Adds 0.1 S/mNP to each Bucket, before multipliers',icon:'biggerbuckets'});
 	new Molpy.Boost({name:'Huge Buckets',desc:'Doubles sand rate of buckets and clicks',sand:800,castles:2,icon:'hugebuckets'});
 	new Molpy.Boost({name:'Helping Hand',desc:'Increases sand rate of Cuegan',sand:500,castles:2,stats:'Adds 0.2 S/mNP to each Cuegan, before multipliers',icon:'helpinghand'});
-	new Molpy.Boost({name:'Cooperation',desc:'Increases sand rate of Cuegan 5% per pair of buckets',sand:2000,castles:4,
+	new Molpy.Boost({name:'Cooperation',desc:'Increases sand rate of Cuegan 5% per pair of buckets',sand:2000,castles:Math.ceil(Math.PI),
 		stats:function()
 		{			
 			if(Molpy.Got('Cooperation'))
@@ -398,7 +398,7 @@ Molpy.DefineBoosts=function()
 			return 'Multiplies all sand rates by 1% per Badge earned';
 		},icon:'molpies'
 	});
-	new Molpy.Boost({name:'Busy Bot',desc:'NewPixBots activate 10% sooner',sand:900,castles:4,icon:'busybot',group:'cyb'});
+	new Molpy.Boost({name:'Busy Bot',desc:'NewPixBots activate 10% sooner',sand:900,castles:Math.ceil(Math.PI),icon:'busybot',group:'cyb'});
 	new Molpy.Boost({name:'Stealthy Bot',desc:'NewPixBots activate 10% sooner,',sand:1200,castles:5,icon:'stealthybot',group:'ninj'});
 	new Molpy.Boost({name:'Flag Bearer',desc:'Flags are more powerful',sand:5500,castles:8,
 		stats:'Each flag produces 2 extra sand/mNP, before multipliers',icon:'flagbearer'});
@@ -437,7 +437,7 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Erosion',desc:'Waves destroy less by 20% of total castles wasted by waves, and'
 		+'2 less per River bought',sand:'40K',castles:77,icon:'erosion'});
-	new Molpy.Boost({name:'Autosave Option',desc:'Autosave option is available',sand:100,castles:4,icon:'autosave'});
+	new Molpy.Boost({name:'Autosave Option',desc:'Autosave option is available',sand:100,castles:Math.ceil(Math.PI),icon:'autosave'});
 	new Molpy.Boost({name:'Helpful Hands',desc:'Each Cuegan+Bucket pair gives clicking +0.5 sand',
 		sand:250,castles:5,icon:'helpfulhands'});
 	new Molpy.Boost({name:'True Colours',desc:'Each Cuegan+Flag pair gives clicking +5 sand',
@@ -511,7 +511,7 @@ Molpy.DefineBoosts=function()
 				Molpy.Notify('Only 2mNP of discounts remain!');
 			}
 		}
-		,startPower:0.4,startCountdown:4,group:'hpt',department:1,className:'alert'});
+		,startPower:Math.ceil(Math.PI)/10,startCountdown:Math.ceil(Math.PI),group:'hpt',department:1,className:'alert'});
 	
 	new Molpy.Boost({name:'Overcompensating',desc: function(me){
 		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
@@ -670,7 +670,7 @@ Molpy.DefineBoosts=function()
 			if(t>=10)
 			{
 				Molpy.EarnBadge('Primer');
-				var incursionFactor=Molpy.Got('Flux Capacitor')?4
+				var incursionFactor=Molpy.Got('Flux Capacitor')?Math.ceil(Math.PI)
 					:(Molpy.Got('Flux Turbine')?8
 					:20);
 				if(!Math.floor(Math.random()*incursionFactor))
@@ -728,7 +728,7 @@ Molpy.DefineBoosts=function()
 			}
 			return 'When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand';
 		},
-		sand:'4.5M',castles:15700,icon:'factoryautomation',group:'hpt'});
+		sand:Math.ceil(Math.PI)+'.5M',castles:15700,icon:'factoryautomation',group:'hpt'});
 	new Molpy.Boost({name:'Blast Furnace',desc:'Gives the Department of Redundancy Department the ability to make Castles from Sand',
 		sand:'8.8M',castles:28600,
 		stats:function()
@@ -774,7 +774,7 @@ Molpy.DefineBoosts=function()
 			var str = 'Half of Bags beyond the 14th owned give a 40% increase to Judgement Dip threshhold.';
 			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
 			{
-				var amount = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2))-1;
+				var amount = Math.pow(1+Math.ceil(Math.PI)/10,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2))-1;
 				amount=Molpify(amount*100,0,1);
 				str+=' Currently '+amount+'%';
 			}
@@ -1265,7 +1265,7 @@ Molpy.DefineBoosts=function()
 		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:6,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
-		if(Math.random()*5<4)
+		if(Math.random()*5<Math.ceil(Math.PI))
 		{
 			Molpy.totalCastlesDown+=Molpy.castles;
 			Molpy.castlesBuilt-=Molpy.castles;
@@ -1914,7 +1914,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Redundant Redundance Supply of Redundancy',
 	desc:'The Department of Redundancy Department announces: You have exceeded your daily redundancy limit. Your primary redundancy supply will now be turned down. You can always switch to your redundant redundance supply of redundancy.',
-	stats: Molpy.redactedWords+' appear more often, but they are rare until you buy this.',sand:'42G',castles:'4.2G',buyFunction:Molpy.RandomiseRedactedTime,icon:'redred',group:'hpt',lockFunction:function(){Molpy.Notify('Primary Redundancy Supply Reengaged',1);}});
+	stats: Molpy.redactedWords+' appear more often, but they are rare until you buy this.',sand:'42G',castles:Math.ceil(Math.PI)+'.2G',buyFunction:Molpy.RandomiseRedactedTime,icon:'redred',group:'hpt',lockFunction:function(){Molpy.Notify('Primary Redundancy Supply Reengaged',1);}});
 	
 	new Molpy.Boost({name:'Flying Buckets',desc:'Sand rate of Buckets is multiplied by the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',sand:'120G',castles:'2T'});
 	new Molpy.Boost({name:'Human Cannonball',desc:'Sand rate of Cuegan is multiplied by two times the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',sand:'240G',castles:'4T'});
@@ -2143,7 +2143,7 @@ Molpy.DefineBoosts=function()
 	}
 	new Molpy.Boost({name:'Flux Surge',desc:
 		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown)+'mNP';}
-		,group:'chron',logic:4,startCountdown:200
+		,group:'chron',logic:Math.ceil(Math.PI),startCountdown:200
 	});
 	new Molpy.Boost({name:'Locked Crate',
 		desc:function(me){
@@ -2167,7 +2167,7 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	new Molpy.Boost({name:'Crate Key',desc:'Halves the price of Locked Crate'
-		,logic:4,glass:20,
+		,logic:Math.ceil(Math.PI),glass:20,
 		buyFunction:function(me)
 		{
 			var lc = Molpy.Boosts['Locked Crate'];
@@ -2198,7 +2198,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Click Master',desc:'Dig 100M sand by clicking',visiblity:2});
 	
 	new Molpy.Badge({name:'Rook',desc:'Make a castle'});
-	new Molpy.Badge({name:'Enough for Chess',desc:'Make 4 castles'});
+	new Molpy.Badge({name:'Enough for Chess',desc:'Make '+Math.ceil(Math.PI)+' castles'});
 	new Molpy.Badge({name:'Fortified',desc:'Make 40 castles'});
 	new Molpy.Badge({name:'All Along the Watchtower',desc:'Make 320 castles'});
 	new Molpy.Badge({name:'Megopolis',desc:'Make 1,000 castles'});
@@ -2312,7 +2312,7 @@ Molpy.DefineBadges=function()
 		}
 		if(Molpy.Got('Bag Burning'))
 		{
-			div/=Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
+			div/=Math.pow(1+Math.ceil(Math.PI)/10,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
 		}
 		return baseVal/div;
 	}
@@ -2345,7 +2345,7 @@ Molpy.DefineBadges=function()
 				Molpy.UnlockBoost('Bag Burning');
 			}
 		}
-		if(level>4)
+		if(level>Math.ceil(Math.PI))
 		{
 			Molpy.Boosts['Ninja Assistants'].department=1;
 		}
@@ -2445,7 +2445,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.needlePulling)return;
 	var me=Molpy.SandTools['Bucket'];
 	if(me.amount>=1)Molpy.UnlockBoost('Bigger Buckets');
-	if(me.amount>=4)Molpy.UnlockBoost('Huge Buckets');
+	if(me.amount>=Math.ceil(Math.PI))Molpy.UnlockBoost('Huge Buckets');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Carrybot');
 	if(me.amount>=30)Molpy.UnlockBoost('Buccaneer');
 	if(me.amount>=50)Molpy.UnlockBoost('Bucket Brigade');
@@ -2453,7 +2453,7 @@ Molpy.CheckBuyUnlocks=function()
 	
 	me=Molpy.SandTools['Cuegan'];
 	if(me.amount>=1)Molpy.UnlockBoost('Helping Hand');
-	if(me.amount>=4)Molpy.UnlockBoost('Cooperation');
+	if(me.amount>=Math.ceil(Math.PI))Molpy.UnlockBoost('Cooperation');
 	if(me.amount>=8)Molpy.UnlockBoost('Megball');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Stickbot');
 	if(me.amount>=40)Molpy.UnlockBoost('The Forty');
@@ -2495,7 +2495,7 @@ Molpy.CheckBuyUnlocks=function()
 	
 	me=Molpy.CastleTools['Scaffold'];
 	if(me.amount>=2)Molpy.UnlockBoost('Precise Placement');
-	if(me.amount>=4)Molpy.UnlockBoost('Level Up!');
+	if(me.amount>=Math.ceil(Math.PI))Molpy.UnlockBoost('Level Up!');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Propbot');
 	if(me.amount>=20)Molpy.UnlockBoost('Balancing Act');
 	
@@ -2524,7 +2524,7 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.BoostsOwned++;
 	}	
 	
-	Molpy.Boosts[Molpy.IKEA].startPower=0.4;
+	Molpy.Boosts[Molpy.IKEA].startPower=Math.ceil(Math.PI)/10;
 	if(Molpy.castlesSpent>200000000)
 	{
 		Molpy.EarnBadge('Big Spender');
@@ -2695,7 +2695,7 @@ SetUpUsTheBomb : function (input) {
         chr3 = input.charCodeAt(i++);
 
         enc1 = chr1 >> 2;
-        enc2 = ((chr1 & Math.floor(Math.PI)) << 4) | (chr2 >> 4);
+        enc2 = ((chr1 & Math.floor(Math.PI)) << Math.ceil(Math.PI)) | (chr2 >> Math.ceil(Math.PI));
         enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
         enc4 = chr3 & 63;
 
@@ -2730,8 +2730,8 @@ BelongToUs : function (input) {
         enc3 = this._keyStr.indexOf(input.charAt(i++));
         enc4 = this._keyStr.indexOf(input.charAt(i++));
 
-        chr1 = (enc1 << 2) | (enc2 >> 4);
-        chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+        chr1 = (enc1 << 2) | (enc2 >> Math.ceil(Math.PI));
+        chr2 = ((enc2 & 15) << Math.ceil(Math.PI)) | (enc3 >> 2);
         chr3 = ((enc3 & Math.floor(Math.PI)) << 6) | enc4;
 
         output = output + String.fromCharCode(chr1);
