@@ -228,10 +228,11 @@ Molpy.DefineCastleTools=function()
 			}
 			
 			baseval*=Math.pow(2,pow);
+			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 1'))baseval*=Math.pow(33,Molpy.GlassCeilingCount());
 			if(Molpy.Boosts['NewPixBot Navigation Code'].power)
-				baseval=Math.floor(baseval*.001);
-			return baseval;
+				baseval=baseval*.001;
+			return Math.floor(baseval);
 		} 
 	);
 	
@@ -259,6 +260,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Throw Your Toys')) baseval+=Molpy.SandTools['Bucket'].amount+Molpy.SandTools['Flag'].amount;
 			if(Molpy.Got('Flingbot'))baseval*=4;
 			if(Molpy.Got('Minigun')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
+			baseval*=Molpy.LogicastleMult();
 			
 			var mult =
 				10*(Molpy.Got('Flying Buckets')+Molpy.Got('Human Cannonball')+Molpy.Got('Fly the Flag')
@@ -266,7 +268,7 @@ Molpy.DefineCastleTools=function()
 			mult = mult||1;
 			if(Molpy.Got('Glass Ceiling 3'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
 			
-			return baseval*mult;
+			return Math.floor(baseval*mult);
 		}
 	);
 		
@@ -284,6 +286,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Propbot'))baseval*=4;
 			if(Molpy.Got('Stacked')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);
+			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 5'))baseval*=Math.pow(33,Molpy.GlassCeilingCount());
 			return Math.floor(baseval);
 		}
@@ -312,15 +315,16 @@ Molpy.DefineCastleTools=function()
 			baseval+=Molpy.Got('Swell')*19;			
 			if(Molpy.Got('Surfbot'))baseval*=4;
 			if(Molpy.Got('Big Splash')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
+			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Swim Between the Flags'))
 			{
 				if(Molpy.newpixNumber%2==0)//even
 				{
-					baseval=Math.floor(baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount));
+					baseval=baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount);
 				}
 			}
 			if(Molpy.Got('Glass Ceiling 7'))baseval*=Math.pow(33,Molpy.GlassCeilingCount());
-			return baseval;
+			return Math.floor(baseval);
 		}
 	);
 	Molpy.CastleTools['Wave'].onDestroy=function()
@@ -352,6 +356,7 @@ Molpy.DefineCastleTools=function()
 		function()
 		{
 			var baseval=690;	
+			baseval*=Molpy.LogicastleMult();
 			var mult=1;
 			if(Molpy.Got('Sandbag'))
 				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
@@ -794,7 +799,7 @@ Molpy.DefineBoosts=function()
 		Molpy.UpdateColourScheme();
 		
 	}
-	new Molpy.Boost({name:'Flux Turbine',desc:'Castles lost via Molpy Down increase the rate of building new Castles',
+	new Molpy.Boost({name:'Flux Turbine',desc:'Castles lost via Molpy Down or Temporal Rift increase the rate of building new Castles',
 		sand:1985,castles:121,
 		stats:function()
 		{
@@ -1250,14 +1255,14 @@ Molpy.DefineBoosts=function()
 			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+me.countdown+'mNP.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
 			return 'A hole in time has opened.';
 		}
-		,countdownFunction:function()
+		,logic:3,countdownFunction:function()
 		{
 			if(this.countdown==2)
 			{
 				Molpy.Notify('The rift closes in 2mNP!');
 			}
 		}
-		,startCountdown:6,group:'chron',className:'action'});
+		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:6,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
 		if(Math.random()*5<4)
@@ -2090,6 +2095,44 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.'
 		,sand:'48E',castles:'38E',glass:100,group:'hpt'
 	});
+	new Molpy.Boost({name:'Logicat',desc:
+		function(me)
+		{
+			
+			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>'+((me.bought+1)*5-me.power)+' correct answers are needed to reach Logicat Level '+(me.bought+1);
+		}
+		,sand:'55E',castles:'238E',glass:100,group:'hpt'
+	});
+	new Molpy.Boost({name:'Two for One',desc:
+		function(me){return 'For '+Molpify(me.countdown)+'mNP, when you buy a Tool, get one free!';}
+		,group:'hpt',logic:1,startCountdown:5
+		,countdownFunction:function(){
+			if(this.countdown==2)
+			{
+				Molpy.Notify('Two for One runs out in 2mNP!');
+			}
+		}
+	});
+	new Molpy.Boost({name:'Impervious Ninja',desc:
+		function(me){return 'You cannot lose Ninja Stealth for '+Molpify(me.countdown)+'mNP';}
+		,group:'ninj',logic:2,startCountdown:2000,className:'alert'
+	});
+	new Molpy.Boost({name:'Factory Ninja',desc:
+		function(me){return 'The next Ninja Builder will activate Factory Automation';}
+		,group:'ninj',logic:3,className:'alert'
+	});
+	new Molpy.Boost({name:'Logicastle',desc:'Castle Tool outputs gain 50% per Logicat Level'
+		,group:'hpt',logic:2,sand:'420Z',castles:'850Z',glass:300
+	});
+	Molpy.LogicastleMult=function()
+	{
+		if(Molpy.Got('Logicastle'))return Math.pow(1.5,Molpy.Boosts['Logicat'].bought);
+		return 1;
+	}
+	new Molpy.Boost({name:'Flux Surge',desc:
+		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown)+'mNP';}
+		,group:'chron',logic:4,startCountdown:200
+	});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
@@ -2356,6 +2399,7 @@ Molpy.DefineBadges=function()
 Molpy.jDipBoosts=['NewPixBot Navigation Code','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		
 Molpy.CheckBuyUnlocks=function()
 {
+	if(Molpy.needlePulling)return;
 	var me=Molpy.SandTools['Bucket'];
 	if(me.amount>=1)Molpy.UnlockBoost('Bigger Buckets');
 	if(me.amount>=4)Molpy.UnlockBoost('Huge Buckets');
@@ -2499,6 +2543,10 @@ Molpy.CheckBuyUnlocks=function()
 	}else{
 		Molpy.LockBoost('Redunception'); //prevent use in shortpix!
 		Molpy.Boosts['Redunception'].department=0;
+	}
+	if(Molpy.redactedClicks>=776)
+	{
+		Molpy.Boosts['Logicat'].department=1;
 	}
 	
 	if(Molpy.Got('Air Drop'))Molpy.Boosts['Schizoblitz'].department=1;

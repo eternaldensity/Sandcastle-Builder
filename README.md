@@ -27,6 +27,10 @@ For personal amusement only.
 - Glass Ceiling boost delcaration in a loop rather than 10 separate and nearly identical declarations
 - Glass Tool status updates when a Glass Ceiling is bought or locked
 - Glass Ceiling unlock and colour class updates immediately rather than waiting for the next game tick so it's much smoother
+- Logicat is finally here!
+- Prevent activation of Temp Boosts when loading from causing boost-unlock message spam
+- Temporal Rift and Flux Turbine descriptions/stats improved to reference each other
+- Fixed import of totalCastlesDown - was parsing int rather than float so if you got too high it would truncate to single digit :P
 
 ### 1.79
 - Added Phonesaw
