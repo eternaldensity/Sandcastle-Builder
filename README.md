@@ -18,6 +18,39 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.8
+- Badge for Judgement Dip level 12
+- Badge for unlocking all the Judgement Dip boosts
+- Ensured that if you skip a Judgement Dip boost (i.e. by reloading at the wrong time) you can still get it without having to increase Judgement level again
+- Fixed mustard in Sand Refinery description (once you reach prodution of 1000): was trying to multiply a number with a comma in it
+- Preemptive similar fix for Glass Chiller
+- Glass Ceiling boost delcaration in a loop rather than 10 separate and nearly identical declarations
+- Glass Tool status updates when a Glass Ceiling is bought or locked
+- Glass Ceiling unlock and colour class updates immediately rather than waiting for the next game tick so it's much smoother
+- Logicat is finally here!
+- Prevent activation of Temp Boosts when loading from causing boost-unlock message spam
+- Temporal Rift and Flux Turbine descriptions/stats improved to reference each other
+- Fixed import of totalCastlesDown - was parsing int rather than float so if you got too high it would truncate to single digit :P
+- Reduced Redundakitty nesting: 150 is cool and all but it's a bit ridiculous really
+
+### 1.79
+- Added Phonesaw
+- VITSSÅGEN, JA! and Bag Puns had their stats backwards: one showed 'out of 20' but activated at 100, and vice versa
+- Definitely nothing else to do with Bag Puns
+
+### 1.78
+- Actually fixed DoN: now it doesn't crash on ONG. sorry everyone!
+- So it turned out the Panther Salve toggle was broken all along anyway
+- Also made Panther Salve blue
+- And refresh stuff when toggling it
+- And fixed the Panther Salve toggle actually because I was using an nonexistant function parameter
+- Also tested it :P
+- Multibuy Boosts renamed slightly
+
+### 1.77
+- I was checking the Panther Salve toggle value incorrectly
+- Fixed Double or Nothing not apearing: forgot to round random number
+
 ### 1.76
 - Don't lose ninja stealth if it's already 0 (and thus ignore forgiveness)
 - VITSSÅGEN, JA! stats corrected: no more missing space!

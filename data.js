@@ -228,10 +228,11 @@ Molpy.DefineCastleTools=function()
 			}
 			
 			baseval*=Math.pow(2,pow);
+			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 1'))baseval*=Math.pow(33,Molpy.GlassCeilingCount());
 			if(Molpy.Boosts['NewPixBot Navigation Code'].power)
-				baseval=Math.floor(baseval*.001);
-			return baseval;
+				baseval=baseval*.001;
+			return Math.floor(baseval);
 		} 
 	);
 	
@@ -259,6 +260,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Throw Your Toys')) baseval+=Molpy.SandTools['Bucket'].amount+Molpy.SandTools['Flag'].amount;
 			if(Molpy.Got('Flingbot'))baseval*=4;
 			if(Molpy.Got('Minigun')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
+			baseval*=Molpy.LogicastleMult();
 			
 			var mult =
 				10*(Molpy.Got('Flying Buckets')+Molpy.Got('Human Cannonball')+Molpy.Got('Fly the Flag')
@@ -266,7 +268,7 @@ Molpy.DefineCastleTools=function()
 			mult = mult||1;
 			if(Molpy.Got('Glass Ceiling 3'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
 			
-			return baseval*mult;
+			return Math.floor(baseval*mult);
 		}
 	);
 		
@@ -284,6 +286,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Propbot'))baseval*=4;
 			if(Molpy.Got('Stacked')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);
+			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 5'))baseval*=Math.pow(33,Molpy.GlassCeilingCount());
 			return Math.floor(baseval);
 		}
@@ -312,15 +315,16 @@ Molpy.DefineCastleTools=function()
 			baseval+=Molpy.Got('Swell')*19;			
 			if(Molpy.Got('Surfbot'))baseval*=4;
 			if(Molpy.Got('Big Splash')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
+			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Swim Between the Flags'))
 			{
 				if(Molpy.newpixNumber%2==0)//even
 				{
-					baseval=Math.floor(baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount));
+					baseval=baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount);
 				}
 			}
 			if(Molpy.Got('Glass Ceiling 7'))baseval*=Math.pow(33,Molpy.GlassCeilingCount());
-			return baseval;
+			return Math.floor(baseval);
 		}
 	);
 	Molpy.CastleTools['Wave'].onDestroy=function()
@@ -352,6 +356,7 @@ Molpy.DefineCastleTools=function()
 		function()
 		{
 			var baseval=690;	
+			baseval*=Molpy.LogicastleMult();
 			var mult=1;
 			if(Molpy.Got('Sandbag'))
 				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
@@ -794,7 +799,7 @@ Molpy.DefineBoosts=function()
 		Molpy.UpdateColourScheme();
 		
 	}
-	new Molpy.Boost({name:'Flux Turbine',desc:'Castles lost via Molpy Down increase the rate of building new Castles',
+	new Molpy.Boost({name:'Flux Turbine',desc:'Castles lost via Molpy Down or Temporal Rift increase the rate of building new Castles',
 		sand:1985,castles:121,
 		stats:function()
 		{
@@ -914,7 +919,7 @@ Molpy.DefineBoosts=function()
 		sand:'412M',castles:8001,icon:'bucketbrigade'});
 	new Molpy.Boost({name:'Bag Puns',desc:'Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',sand:'1470M',castles:450021,stats:function(me)
 		{
-			if(me.power <= 20) return 'Speed is at '+me.power+'out of 20';
+			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
 		}});
 	{//#region puns	
 		Molpy.bp = [
@@ -1106,6 +1111,32 @@ Molpy.DefineBoosts=function()
 			,"Bag for the Holidips"
 			,"Knights of Bagassdom"
 			,"The Bag Commandments"
+			,"Dr. Bag"
+			,"From Russia With A Bag"
+			,"Goldbag"
+			,"Thunderbag"
+			,"Bags Only Live Twice"
+			,"On Her Majesty's Secret Bag"
+			,"Bags Are Forever"
+			,"Live and Let Bag"
+			,"The Man with the Golden Bag"
+			,"The Bag Who Loved Me"
+			,"Bagraker"
+			,"For Your Bags Only"
+			,"Octobaggy"
+			,"A View to a Bag"
+			,"The Living Baglights"
+			,"Licence to Bag"
+			,"GoldenBag"
+			,"Bag Never Dies"
+			,"The Bag is Not Enough"
+			,"Die Another Bag"
+			,"Bag Royale"
+			,"Bag of Solace"
+			,"Bagfall"
+			,"Bagmember"
+			,"Double Bag Seven"
+			,"Ocean's Bag"
 		]
 	}
 	
@@ -1145,7 +1176,8 @@ Molpy.DefineBoosts=function()
 		},sand:334455667788,castles:999222111000,icon:'vitss',
 		stats:function(me)
 		{
-			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
+			if(me.power <= 20) return 'Speed is at '+me.power+' out of 20';
+			if(me.power <= 88) return 'Speed is at '+me.power+' out of 88';
 			return me.desc(me);
 		},group:'hpt',className:'toggle'});
 	Molpy.PunsawToggle=function()
@@ -1223,14 +1255,14 @@ Molpy.DefineBoosts=function()
 			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+me.countdown+'mNP.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
 			return 'A hole in time has opened.';
 		}
-		,countdownFunction:function()
+		,logic:3,countdownFunction:function()
 		{
 			if(this.countdown==2)
 			{
 				Molpy.Notify('The rift closes in 2mNP!');
 			}
 		}
-		,startCountdown:6,group:'chron',className:'action'});
+		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:6,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
 		if(Math.random()*5<4)
@@ -1363,9 +1395,9 @@ Molpy.DefineBoosts=function()
 				}
 				if(afford)
 				{
-					var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+2);
+					var pow=(Molpy.Boosts['Sand Refinery'].power)+2;
 					str+= '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
-						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+pow
+						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+Molpify(pow)
 						+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 				}
 					
@@ -1385,9 +1417,9 @@ Molpy.DefineBoosts=function()
 					}
 					if(afford)
 					{
-						var pow=Molpify((Molpy.Boosts['Sand Refinery'].power)+21);
+						var pow=(Molpy.Boosts['Sand Refinery'].power)+21;
 						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(20)"></input> '
-							+(useChips?'50 Chips':'18 Blocks')+' to upgrade the Glass Furnace to produce '+pow
+							+(useChips?'50 Chips':'18 Blocks')+' to upgrade the Glass Furnace to produce '+Molpify(pow)
 							+' Glass Chips per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 					}						
 				}					
@@ -1558,8 +1590,8 @@ Molpy.DefineBoosts=function()
 			{
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
 				{
-					var pow=Molpify((Molpy.Boosts['Glass Chiller'].power)+2);
-					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+pow+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+(pow*Molpy.GlassChillerIncrement())+'% of Sand dug).';
+					var pow=(Molpy.Boosts['Glass Chiller'].power)+2;
+					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+Molpify(pow)+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+(pow*Molpy.GlassChillerIncrement())+'% of Sand dug).';
 				}else{
 					return 'Currently, you have no more sand available for further upgrades';
 				}
@@ -1808,7 +1840,7 @@ Molpy.DefineBoosts=function()
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.PantherSalveToggle()" value="'
-					+(me.power? 'Dea':'A')+'ctivate"></input>';	
+					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
@@ -1819,11 +1851,14 @@ Molpy.DefineBoosts=function()
 			str+='<br>Speed is at '+me.power+' out of 200';
 		return str;
 	}
-	,group:'bean'});
+	,group:'bean',className:'toggle'});
 	
-	Molpy.PantherSalveToggle=function(me)
+	Molpy.PantherSalveToggle=function()
 	{
+		var me=Molpy.Boosts['Panther Salve'];
 		me.power=-me.power;
+		Molpy.boostRepaint=1;			
+		me.hoverOnCounter=1;
 	}
 	
 	new Molpy.Boost({name:'Castle Crusher',desc:'<input type="Button" value="Crush" onclick="Molpy.CastleCrush()"></input> half your castles back into sand. (One use.)',
@@ -1931,46 +1966,31 @@ Molpy.DefineBoosts=function()
 		return 1;
 	}
 	
-	new Molpy.Boost({name:'Glass Ceiling 0',desc:'Multiplies Sand rate of Buckets by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(0)"></input>',
-		sand: function(me){ return DeMolpify('6K')*Math.pow(1.1,me.power)},castles: function(me){ return DeMolpify('6K')*Math.pow(1.1,me.power)},
-		glass: 50, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,0);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 1',desc:'Multiplies Castles produced by NewPixBots by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(1)"></input>',
-		sand: function(me){ return DeMolpify('6M')*Math.pow(1.25,me.power)},castles: function(me){ return DeMolpify('6M')*Math.pow(1.25,me.power)},
-		glass: 100, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,1);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 2',desc:'Multiplies Sand rate of Cuegan by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(2)"></input>',
-		sand: function(me){ return DeMolpify('6G')*Math.pow(1.6,me.power)},castles: function(me){ return DeMolpify('6G')*Math.pow(1.6,me.power)},
-		glass: 150, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,2);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 3',desc:'Multiplies Castles produced by Trebuchets by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(3)"></input>',
-		sand: function(me){ return DeMolpify('6T')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6T')*Math.pow(2,me.power)},
-		glass: 200, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,3);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 4',desc:'Multiplies Sand rate of Flags by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(4)"></input>',
-		sand: function(me){ return DeMolpify('6P')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6P')*Math.pow(2,me.power)},
-		glass: 250, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,4);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 5',desc:'Multiplies Castles produced by Scaffolds by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(5)"></input>',
-		sand: function(me){ return DeMolpify('6E')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6E')*Math.pow(2,me.power)},
-		glass: 300, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,5);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 6',desc:'Multiplies Sand rate of Ladders by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(6)"></input>',
-		sand: function(me){ return DeMolpify('6Z')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6Z')*Math.pow(2,me.power)},
-		glass: 350, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,6);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 7',desc:'Multiplies Castles produced by Waves by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(7)"></input>',
-		sand: function(me){ return DeMolpify('6Y')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6Y')*Math.pow(2,me.power)},
-		glass: 400, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,7);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 8',desc:'Multiplies Sand rate of Bags by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(8)"></input>',
-		sand: function(me){ return DeMolpify('6U')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6U')*Math.pow(2,me.power)},
-		glass: 450, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,8);},buyFunction:function(me){me.power++;}
-	});
-	new Molpy.Boost({name:'Glass Ceiling 9',desc:'Multiplies Castles produced by Rivers by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(9)"></input>',
-		sand: function(me){ return DeMolpify('6S')*Math.pow(2,me.power)},castles: function(me){ return DeMolpify('6S')*Math.pow(2,me.power)},
-		glass: 500, group:'hpt',classChange:function(){return Molpy.CeilingClass(this,9);},buyFunction:function(me){me.power++;}
-	});
+	Molpy.glassCeilingPriceIncs=[1.1,1.25,1.6,2,2,2,2,2,2,2];
+	Molpy.glassCeilingDescText=['Sand rate of Buckets','Castles produced by NewPixBots','Sand rate of Cuegan',
+		'Castles produced by Trebuchets','Sand rate of Flags','Castles produced by Scaffolds',
+		'Sand rate of Ladders','Castles produced by Waves','Sand rate of Bags','Castles produced by Rivers'];
+		
+	for(var i in Molpy.glassCeilingDescText)
+	{
+		new Molpy.Boost({name:'Glass Ceiling '+i, desc:'Multiplies '+Molpy.glassCeilingDescText[i]
+			+' by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock('+i+')"></input>',
+			sand: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
+			castles: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
+			glass: 50, group:'hpt',
+			buyFunction:function(me){
+				me.power++;
+				Molpy.shopRepaint=1;
+				Molpy.GlassCeilingUnlockCheck();
+			},
+			lockFunction:function(me)
+			{
+				Molpy.shopRepaint=1;
+				Molpy.GlassCeilingUnlockCheck();
+			}
+		});
+		Molpy.Boosts['Glass Ceiling '+i].num=parseInt(i);
+	}
 	
 	Molpy.GlassCeilingCount=function()
 	{
@@ -2024,6 +2044,10 @@ Molpy.DefineBoosts=function()
 					if(me.unlocked)Molpy.LockBoost(me.name);
 				}
 			}
+			if(me.unlocked)
+			{
+				if(Molpy.CeilingClass(me,i)) Molpy.boostRepaint=1;
+			}
 		}
 	}
 	
@@ -2056,10 +2080,10 @@ Molpy.DefineBoosts=function()
 			return 1;
 		}
 	}
-	new Molpy.Boost({name:'Sand Multi Buy',desc:'Allow buying of multiple sand tools at once'
+	new Molpy.Boost({name:'Sand Tool Multi-Buy',desc:'Allow buying of multiple sand tools at once'
 		,sand:'200K',castles:'6502',stats:'Code for this feature supplied by waveney'
 	});
-	new Molpy.Boost({name:'Castle Multi Buy',desc:'Allow buying of multiple castle tools at once'
+	new Molpy.Boost({name:'Castle Tool Multi-Buy',desc:'Allow buying of multiple castle tools at once'
 		,sand:'2000K',castles:'68020',stats:'Code for this feature supplied by waveney'
 	});
 	new Molpy.Boost({name:'Run Raptor Run',desc:'Multiplies Not Lucky bonus by 1000 at a cost of 30 Glass Blocks per use'
@@ -2067,6 +2091,47 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'
 		,sand:'490P',castles:'670P',glass:1500,group:'ninj'
+	});
+	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.'
+		,sand:'48E',castles:'38E',glass:100,group:'hpt'
+	});
+	new Molpy.Boost({name:'Logicat',desc:
+		function(me)
+		{
+			
+			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>'+((me.bought+1)*5-me.power)+' correct answers are needed to reach Logicat Level '+(me.bought+1);
+		}
+		,sand:'55E',castles:'238E',glass:100,group:'hpt'
+	});
+	new Molpy.Boost({name:'Two for One',desc:
+		function(me){return 'For '+Molpify(me.countdown)+'mNP, when you buy a Tool, get one free!';}
+		,group:'hpt',logic:1,startCountdown:5
+		,countdownFunction:function(){
+			if(this.countdown==2)
+			{
+				Molpy.Notify('Two for One runs out in 2mNP!');
+			}
+		}
+	});
+	new Molpy.Boost({name:'Impervious Ninja',desc:
+		function(me){return 'You cannot lose Ninja Stealth for '+Molpify(me.countdown)+'mNP';}
+		,group:'ninj',logic:2,startCountdown:2000,className:'alert'
+	});
+	new Molpy.Boost({name:'Factory Ninja',desc:
+		function(me){return 'The next Ninja Builder will activate Factory Automation';}
+		,group:'ninj',logic:3,className:'alert'
+	});
+	new Molpy.Boost({name:'Logicastle',desc:'Castle Tool outputs gain 50% per Logicat Level'
+		,group:'hpt',logic:2,sand:'420Z',castles:'850Z',glass:300
+	});
+	Molpy.LogicastleMult=function()
+	{
+		if(Molpy.Got('Logicastle'))return Math.pow(1.5,Molpy.Boosts['Logicat'].bought);
+		return 1;
+	}
+	new Molpy.Boost({name:'Flux Surge',desc:
+		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown)+'mNP';}
+		,group:'chron',logic:4,startCountdown:200
 	});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
@@ -2251,18 +2316,19 @@ Molpy.DefineBadges=function()
 		}
 		if(level>7)
 		{
-			if(Molpy.Got('Minigun'))
+			if(Molpy.Got('Minigun')||Molpy.Got('Stacked'))
 				Molpy.Boosts['Big Splash'].department=1;
 		}
 		if(level>8)
 		{
-			if(Molpy.Got('Stacked'))
+			if(Molpy.Got('Stacked')||Molpy.Got('Big Splash'))
 				Molpy.Boosts['Irregular Rivers'].department=1;
 		}
 		if(level>12)
 		{
-			if(Molpy.Got('Big Splash'))
+			if(Molpy.Got('Big Splash')||Molpy.Got('Irregular Rivers'))
 				Molpy.Boosts['NewPixBot Navigation Code'].department=1;
+			Molpy.EarnBadge('On the 12th Dip of Judgement');
 		}
 		if(level>30)
 		{
@@ -2289,7 +2355,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Primer',desc:'Travel through Time 10 Times',vis:1});
 	new Molpy.Badge({name:'Wimey',desc:'Travel through Time 40 Times',vis:1});
 	new Molpy.Badge({name:'Hot Tub',desc:'Travel through Time 160 Times',vis:1});
-	new Molpy.Badge({name:"Dude, Where's my DeLorean?",desc:'Travel through Time 640 Times',vis:2});
+	new Molpy.Badge({name:"Dude, Where's my DeLorean?",desc:'Travel through Time 640 Times',vis:1});
 	new Molpy.Badge({name:'Use Your Leopard',desc:'Get a click by using your leopard to simulate reloading the page'});
 	new Molpy.Badge({name:'Badge Not Found',desc:'Description Not Found'});
 	new Molpy.Badge({name:'Fractals Forever',desc:'Reach Fractal Level 60, and Fractal Sandcastles will be retained if you Molpy Down.'});
@@ -2309,7 +2375,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Beachomancer',desc:'Have 1000 Sand Tools'});
 	new Molpy.Badge({name:'Beachineer',desc:'Have 500 Castle Tools'});
 	new Molpy.Badge({name:'Glass Factory',desc:'Have 80M sand'});
-	new Molpy.Badge({name:'Glassblower',desc:'Make a Glass Block',vis:2});
+	new Molpy.Badge({name:'Glassblower',desc:'Make a Glass Block',vis:1});
 	new Molpy.Badge({name:'Ninja Pact',desc:'Have a ninja stealth streak over 4K'});
 	new Molpy.Badge({name:'Ninja Unity',desc:'Have a ninja stealth streak over 4M'});
 	new Molpy.Badge({name:'Unreachable?', desc:'Build a total of 2T Castles. (I GUESS <b>SUPPOSE <i>MAYBE</i></b> IT WILL BE AN ISLAND <b>AGAIN</b>.))',vis:1});
@@ -2326,10 +2392,14 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'WHAT',desc:'Have over nine thousand Sand Tools',vis:1});
 	new Molpy.Badge({name:'\\/\\/AR]-[AMMER',desc:'Have 40K Tools',vis:1});
 	new Molpy.Badge({name:'Ceiling Broken',desc:'Have all 10 Glass Ceiling Boosts'});
+	new Molpy.Badge({name:'On the 12th Dip of Judgement',desc:'Reach Judgement Dip level 12'});
+	new Molpy.Badge({name:'Machine Learning',desc:'Unlock all the Judgement Dip Boosts'});
 }
-		
+
+Molpy.jDipBoosts=['NewPixBot Navigation Code','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		
 Molpy.CheckBuyUnlocks=function()
 {
+	if(Molpy.needlePulling)return;
 	var me=Molpy.SandTools['Bucket'];
 	if(me.amount>=1)Molpy.UnlockBoost('Bigger Buckets');
 	if(me.amount>=4)Molpy.UnlockBoost('Huge Buckets');
@@ -2474,6 +2544,10 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.LockBoost('Redunception'); //prevent use in shortpix!
 		Molpy.Boosts['Redunception'].department=0;
 	}
+	if(Molpy.redactedClicks>=776)
+	{
+		Molpy.Boosts['Logicat'].department=1;
+	}
 	
 	if(Molpy.Got('Air Drop'))Molpy.Boosts['Schizoblitz'].department=1;
 	if(Molpy.Got('Free Advice'))
@@ -2484,13 +2558,33 @@ Molpy.CheckBuyUnlocks=function()
 	}
 	if(Molpy.GlassCeilingCount())
 		Molpy.GlassCeilingUnlockCheck();
-	if(Molpy.SandToolsOwned>=123)Molpy.UnlockBoost('Sand Multi Buy');
-	if(Molpy.CastleToolsOwned>=234)Molpy.UnlockBoost('Castle Multi Buy');
+	if(Molpy.SandToolsOwned>=123)Molpy.UnlockBoost('Sand Tool Multi-Buy');
+	if(Molpy.CastleToolsOwned>=234)Molpy.UnlockBoost('Castle Tool Multi-Buy');
 	
 	
 	if(Molpy.Boosts['Panther Salve'].power > 200)
 	{
 		Molpy.Boosts['Run Raptor Run'].department=1;
+	}
+	if(Molpy.Boosts['VITSSÅGEN, JA!'].power >=88)
+	{
+		Molpy.Boosts['Phonesaw'].department=1;
+	}
+	
+	if(Molpy.Got('NewPixBot Navigation Code')) //just in case they didn't earn it the normal way
+	{
+		Molpy.EarnBadge('On the 12th Dip of Judgement');
+	}
+	var found=0;
+	for(var i in Molpy.jDipBoosts)
+	{
+		var me = Molpy.Boosts[Molpy.jDipBoosts[i]];
+		if(found&&!me.unlocked) me.department=1;
+		if(me.unlocked) found++;
+	}
+	if(found==Molpy.jDipBoosts.length)
+	{
+		Molpy.EarnBadge('Machine Learning');
 	}
 }
 

@@ -207,7 +207,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.76;
+		Molpy.version=1.8;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -501,7 +501,7 @@ Molpy.Up=function()
 				var blitzTime=parseInt(pixels[29]);		//but now are put in the 'Blitzed' boost
 			}
 			Molpy.highestNPvisited=parseInt(pixels[25]);
-			Molpy.totalCastlesDown=parseInt(pixels[26]);
+			Molpy.totalCastlesDown=parseFloat(pixels[26]);
 			Molpy.intruderBots=parseInt(pixels[27]);
 			
 			
@@ -892,12 +892,12 @@ Molpy.Up=function()
 				}else{
 					g('otcoloption').className='hidden';
 				}
-				if(Molpy.Got('Sand Multi Buy')){
+				if(Molpy.Got('Sand Tool Multi-Buy')){
 					g('sandmultibuy').className='minifloatbox';
 				}else{
 					g('sandmultibuy').className='hidden';
 				}
-				if(Molpy.Got('Castle Multi Buy')){
+				if(Molpy.Got('Castle Tool Multi-Buy')){
 					g('castlemultibuy').className='minifloatbox';
 				}else{
 					g('castlemultibuy').className='hidden';
@@ -1440,13 +1440,15 @@ Molpy.Up=function()
 					Molpy.Notify('VITSSÅGEN, JA!');
 					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power;
 					p++;
+					var mult=1000000;
 					if(Molpy.Got('Swedish Chef'))
 					{
-						Molpy.Build(100000000*p);
+						mult*=100;
 					}else{
-						Molpy.Build(1000000*p);
 						if(p>20)Molpy.UnlockBoost('Swedish Chef');
 					}
+					if(Molpy.Got('Phonesaw')) mult*=mult;
+					Molpy.Build(mult*p);
 					Molpy.Boosts['VITSSÅGEN, JA!'].power=p;
 				}
 			}
@@ -1499,6 +1501,11 @@ Molpy.Up=function()
 			{
 				var stealthBuild=Molpy.CalcStealthBuild(1);
 				Molpy.Build(stealthBuild+1);
+				if(Molpy.Got('Factory Ninja'))
+				{
+					Molpy.ActivateFactoryAutomation();
+					Molpy.LockBoost('Factory Ninja');
+				}
 			}else{
 				Molpy.Build(1); //neat!
 			}
@@ -1574,6 +1581,7 @@ Molpy.Up=function()
 		
 		Molpy.NinjaUnstealth=function()
 		{
+			if(Molpy.Got('Impervious Ninja'))return 0; //Safe
 			if(!Molpy.ninjaStealth)return 0; //Nothing to lose!
 			if(Molpy.Got('Ninja Hope')&&Molpy.Boosts['Ninja Hope'].power)
 			{
@@ -1719,7 +1727,12 @@ Molpy.Up=function()
 			
 			if(Molpy.Got('Flux Turbine'))
 			{
-				Molpy.globalCastleMult=Math.max(1,Math.pow(1.02,Math.log(Molpy.totalCastlesDown)));
+				var fluxLevel = Math.log(Molpy.totalCastlesDown);
+				if(Molpy.Got('Flux Surge'))
+				{
+					fluxLevel*=1.5;
+				}
+				Molpy.globalCastleMult=Math.max(1,Math.pow(1.02,fluxLevel));
 			}else{
 				Molpy.globalCastleMult=1;
 			}
@@ -1798,6 +1811,12 @@ Molpy.Up=function()
 						this.amount++;
 						this.bought++;
 						bought++;
+						if(Molpy.Got('Two for One'))
+						{
+							this.amount++;
+							this.bought++;
+							bought++;
+						}
 						spent+=price;
 						price=Math.floor(this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
 						this.price=price;
@@ -1910,6 +1929,12 @@ Molpy.Up=function()
 						this.amount++;
 						this.bought++;
 						bought++;
+						if(Molpy.Got('Two for One'))
+						{
+							this.amount++;
+							this.bought++;
+							bought++;
+						}
 						spent+=price;
 						this.prevPrice=this.nextPrice;
 						this.nextPrice=this.price;
@@ -2060,7 +2085,8 @@ Molpy.Up=function()
 			this.countdownFunction=args.countdownFunction;
 			this.unlocked=0;
 			this.bought=0;
-			this.department=args.department; //prevent unlock by the department (this is not a saved value)
+			this.department=args.department; //allow unlock by the department (this is not a saved value)
+			this.logic=args.logic; //allow unlock by logicat (this is not a saved value)
 			this.order=this.id;
 			this.hovered=0;
 			this.power=0;
@@ -2166,7 +2192,8 @@ Molpy.Up=function()
 				bb.countdown=countdown;
 				bb.unlocked=1;					
 				bb.describe();
-				bb.buy();					
+				bb.buy();
+				Molpy.recalculateDig=1;
 			}
 		}
 		Molpy.LockBoost=function(bacon,silent)
@@ -2326,10 +2353,7 @@ Molpy.Up=function()
 						Molpy.RandomiseRedactedTime();	
 					}else{
 						Molpy.redactedDrawType=['show'];
-						Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
-						if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;
-
-						Molpy.redactedViewIndex=-1;
+						Molpy.RedactedJump();
 						var stay = 6 *(4+ Molpy.Got('Kitnip'));
 						Molpy.redactedToggle=stay;
 						Molpy.shopRepaint=1;
@@ -2366,6 +2390,7 @@ Molpy.Up=function()
 				Molpy.redactedDrawType[level]='show'; 
 				while(Molpy.redactedDrawType.length>level+1)
 					Molpy.redactedDrawType.pop(); //we don't need to remember those now
+				Molpy.RedactedJump();
 				return;
 			}
 			
@@ -2375,23 +2400,23 @@ Molpy.Up=function()
 				Molpy.redactedDrawType[level]='hide1';
 				Molpy.redactedToggle*=10;	
 			}else
-			if (Molpy.Got('Redunception') && Math.floor(Math.random()*8/Molpy.redactedDrawType.length)==0)
+			if (Molpy.Got('Redunception') && Molpy.redactedDrawType.length <21 
+				&& Math.floor(Math.random()*8/Molpy.redactedDrawType.length)==0)
 			{
 				Molpy.redactedDrawType[level]='recur';
 				Molpy.redactedDrawType.push('show');
-				//JUMP!
-				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
-				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
-				Molpy.redactedViewIndex=-1;
+				Molpy.RedactedJump();
+				if(Molpy.redactedDrawType.length < 5 && Molpy.redactedToggle<4)
+					Molpy.redactedToggle++;
 			}else
-			if (Molpy.Got('The Puzzle Boost Which I Have Not Made Yet') && Math.floor(Math.random()*12/Molpy.redactedDrawType.length)==0)
+			if (Molpy.Got('Logicat') && Molpy.redactedDrawType.length <21
+				&& Math.floor(Math.random()*6/Molpy.redactedDrawType.length)==0)
 			{
 				Molpy.MakeRedactedPuzzle();
 				Molpy.redactedDrawType[level]='hide2';
-				//JUMP!
-				Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
-				if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
-				Molpy.redactedViewIndex=-1;
+				Molpy.RedactedJump();
+				if(Molpy.redactedToggle<10)
+					Molpy.redactedToggle+=10;
 			}else
 			{ // it goes away.					
 				var item=g('redacteditem');
@@ -2404,8 +2429,9 @@ Molpy.Up=function()
 			}
 			
 			
-			Molpy.redactedClicks++;				
-			Molpy.RewardRedacted();
+			Molpy.redactedClicks++;		
+			if(  Molpy.redactedDrawType.length <16)
+				Molpy.RewardRedacted();
 			if(Molpy.redactedClicks>=2)
 				Molpy.EarnBadge('Not So '+Molpy.redactedW);
 			if(Molpy.redactedClicks>=14)
@@ -2420,6 +2446,14 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Y U NO BELIEVE ME?');
 			if(Molpy.redactedClicks>=256)
 				Molpy.UnlockBoost('Blixtnedslag Kattungar, JA!');
+		}
+		
+		Molpy.RedactedJump=function()
+		{		
+			//JUMP!
+			Molpy.redactedVisible=Math.ceil((Molpy.redactableThings+2)*Math.random());
+			if(Molpy.redactedVisible>Molpy.redactableThings)Molpy.redactedVisible=4;		
+			Molpy.redactedViewIndex=-1;
 		}
 
 		Molpy.RewardRedacted=function(forceDepartment)
@@ -2544,7 +2578,7 @@ Molpy.Up=function()
 				if(Molpy.Got('Blitzing'))
 					bonus*=Math.min(2,(Molpy.Boosts['Blitzing'].power-800)/200);
 			}
-			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power && Molpy.HasGlassBlocks(10))
+			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0 && Molpy.HasGlassBlocks(10))
 			{				
 				Molpy.SpendGlassBlocks(10);
 				Molpy.Boosts['Panther Salve'].power++;
@@ -2605,17 +2639,64 @@ Molpy.Up=function()
 		{
 			StatementGen.FillStatements();
 			Molpy.redactedPuzzleTarget=StatementGen.RandStatementValue();
-			var str='Click a statement that is '+Molpy.redactedPuzzleTarget;
+			var str='Click a statement that is '+Molpy.redactedPuzzleTarget+':';
 			var statements= StatementGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
 			for(var i in statements)
 			{
-				str+='<br>'+statements[i];
+				str+='<br><br>'+statements[i];
 			}
 			Molpy.redactedPuzzleValue=str;
 		}
 		Molpy.ClickRedactedPuzzle=function(name)
 		{
 			var clickedVal=StatementGen.StatementValue(name);
+			if(clickedVal==Molpy.redactedPuzzleTarget)
+			{
+				Molpy.Notify('Correct');
+				var lc = Molpy.Boosts['Logicat'];
+				lc.power++;
+				if(lc.power>=lc.bought*5)
+				{
+					Molpy.RewardLogicat(lc.bought);
+					lc.bought++;
+				}
+			}
+			else
+			{
+				Molpy.Notify('Incorrect');
+				Molpy.Boosts['Logicat'].power--;
+			}
+			Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]='show';
+			Molpy.shopRepaint=1;
+			Molpy.boostRepaint=1;
+			Molpy.badgeRepaint=1;
+		}
+		Molpy.RewardLogicat=function(level)
+		{
+			var availRewards=[];
+			for(var i in Molpy.Boosts)
+			{
+				var me=Molpy.Boosts[i];
+				if(!(me.unlocked||me.bought)&&level>=me.logic)
+				{
+					availRewards.push(me);
+				}
+			}
+			
+			if(availRewards.length)
+			{
+				var red=GLRschoice(availRewards);
+				if((EvalMaybeFunction(red.sandPrice,red)+EvalMaybeFunction(red.castlePrice,red)+EvalMaybeFunction(red.glassPrice,red)))
+				{
+					Molpy.Notify('Logicat rewards you with:',1);
+					Molpy.UnlockBoost(red.name);
+				}else{
+					Molpy.Notify('You reward from Logicat:',1);
+					Molpy.GiveTempBoost(red.name,red.startPower,red.startCountdown);
+				}
+				return;
+			}
+			Molpy.RewardRedacted(1);
 		}
 		
 		Molpy.CalcPriceFactor=function()
@@ -3193,6 +3274,11 @@ Molpy.Up=function()
 		bots.BuildPhase();
 		Molpy.buildNotifyFlag=1;
 		Molpy.Build(0);
+		Molpy.ActivateFactoryAutomation();
+		Molpy.recalculateDig=1;
+	}
+	Molpy.ActivateFactoryAutomation=function()
+	{
 		if(Molpy.Got('Factory Automation'))
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
@@ -3209,7 +3295,6 @@ Molpy.Up=function()
 			while(t--) 
 				Molpy.RewardRedacted(1);
 		}
-		Molpy.recalculateDig=1;
 	}
 	
 	/*In which we explain how to think
@@ -3438,7 +3523,7 @@ Molpy.Up=function()
 				Molpy.Boosts['Broken Bottle Cleanup'].power=0;
 			}
 		}
-		Molpy.Boosts['Double or Nothing'].department=1*(Math.random()*3==0)
+		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*3)==0);
 	}
 		
 	Molpy.HandlePeriods=function()
