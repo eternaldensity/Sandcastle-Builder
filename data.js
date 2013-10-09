@@ -1992,7 +1992,10 @@ Molpy.DefineBoosts=function()
 			castles: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
 			glass: 50* (+i+1), group:'hpt',
 			buyFunction:function(me){
-				me.power++;
+				if(Molpy.Earned('Ceiling Broken'))
+					me.power=0;
+				else
+					me.power++;
 				Molpy.shopRepaint=1;
 				Molpy.GlassCeilingUnlockCheck();
 			},
@@ -2019,25 +2022,31 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.CeilingLock=function(key)
 	{
-		if(!Molpy.Got('Glass Ceiling '+key))
+		if(!Molpy.Earned('Ceiling Broken'))
 		{
-			Molpy.Notify('Nope.avi');
-			return;
-		}
-		var p = key-1;
-		if(p>=0&&!Molpy.Got('Glass Ceiling '+p))
-		{
-			Molpy.Notify('You need to Own Glass Ceiling '+p+' before you can Lock Glass Ceiling '+key,1);
-			return;
-		}
-		while(p--)
-		{
-			if(p<0) break;
-			if(Molpy.Got('Glass Ceiling '+p))
+			if(!Molpy.Got('Glass Ceiling '+key))
 			{
-				Molpy.Notify('You need to Lock Glass Ceiling '+p+' before you can Lock Glass Ceiling '+key,1);
-				return;				
+				Molpy.Notify('Nope.avi');
+				return;
 			}
+			var p = key-1;
+			if(p>=0&&!Molpy.Got('Glass Ceiling '+p))
+			{
+				Molpy.Notify('You need to Own Glass Ceiling '+p+' before you can Lock Glass Ceiling '+key,1);
+				return;
+			}
+			while(p--)
+			{
+				if(p<0) break;
+				if(Molpy.Got('Glass Ceiling '+p))
+				{
+					Molpy.Notify('You need to Lock Glass Ceiling '+p+' before you can Lock Glass Ceiling '+key,1);
+					return;				
+				}
+			}
+		}else
+		{
+			Molpy.Notify('The point of that was what exactly?');
 		}
 		Molpy.LockBoost('Glass Ceiling '+key);
 	}
@@ -2050,11 +2059,17 @@ Molpy.DefineBoosts=function()
 			var me = Molpy.Boosts['Glass Ceiling '+i];
 			if(!me.bought)
 			{
-				if(Molpy.CeilingTogglable(i))
+				if(Molpy.Earned('Ceiling Broken'))
 				{
-					if(!me.unlocked)Molpy.UnlockBoost(me.name);
-				}else{
-					if(me.unlocked)Molpy.LockBoost(me.name);
+					me.department=1;
+				}else
+					{
+					if(Molpy.CeilingTogglable(i))
+					{
+						if(!me.unlocked)Molpy.UnlockBoost(me.name);
+					}else{
+						if(me.unlocked)Molpy.LockBoost(me.name);
+					}
 				}
 			}
 			if(me.unlocked)
@@ -2065,7 +2080,7 @@ Molpy.DefineBoosts=function()
 	}
 	
 	Molpy.CeilingTogglable=function(key)
-	{
+	{	
 		var p = key-1;
 		if(p<0||Molpy.Got('Glass Ceiling '+p))
 		{
@@ -2086,7 +2101,7 @@ Molpy.DefineBoosts=function()
 	Molpy.CeilingClass=function(me,key)
 	{
 		var oldClass=me.className;
-		var newClass=Molpy.CeilingTogglable(key)?'action':'alert';
+		var newClass=Molpy.Earned('Ceiling Broken')?'':(Molpy.CeilingTogglable(key)?'action':'alert');
 		if(newClass!=oldClass)
 		{
 			me.className=newClass;
