@@ -315,7 +315,7 @@ body.darkscheme .sand.shop
 }
 body.lightscheme .sand.shop
 {
-	background:#d8d8d8
+	background:#ddd
 }
 body.darkscheme .castle.shop
 {
@@ -323,7 +323,7 @@ body.darkscheme .castle.shop
 }
 body.lightscheme .castle.shop
 {
-	background:#ddd
+	background:#d8d8d8
 }
 body.darkscheme .boost.shop
 {
@@ -591,31 +591,22 @@ body.lightscheme .tool .icon.redacted,  body.lightscheme .badge.loot .icon.redac
 	background-image:url('img/redacted_grey_icon.png');
 }
 
-body.darkscheme.heresy .boost.loot.toggle, body.lightscheme.heresy .boost.shop.toggle, body.lightscheme.heresy .badge.toggle
+body.darkscheme.heresy .boost.loot.toggle, body.lightscheme.heresy .boost.shop.toggle, body.lightscheme.heresy .badge.toggle:hover
 {
 	background:#d0d0e8;
 }
-body.lightscheme.heresy .boost.loot.toggle, body.darkscheme.heresy .boost.shop.toggle, body.darkscheme.heresy .badge.toggle
+body.lightscheme.heresy .boost.loot.toggle, body.darkscheme.heresy .boost.shop.toggle, body.darkscheme.heresy .badge.toggle:hover
 {
 	background:#224;
 }
 
-body.darkscheme.heresy .boost.loot.toggle:hover, body.lightscheme.heresy .boost.shop.toggle:hover, body.lightscheme.heresy .badge.toggle:hover
+body.darkscheme.heresy .boost.loot.toggle:hover, body.lightscheme.heresy .boost.shop.toggle:hover, body.lightscheme.heresy .badge.toggle
 {
 	background:#d8d8ff;
 }
-body.lightscheme.heresy .boost.loot.toggle:hover, body.darkscheme.heresy .boost.shop.toggle:hover, body.darkscheme.heresy .badge.toggle:hover
+body.lightscheme.heresy .boost.loot.toggle:hover, body.darkscheme.heresy .boost.shop.toggle:hover, body.darkscheme.heresy .badge.toggle
 {
 	background:#0a0a20;
-}
-
-body.darkscheme.heresy .boost.loot.alert:hover, body.lightscheme.heresy .boost.shop.alert:hover, body.lightscheme.heresy .badge.alert
-{
-	background:#FFF2F2;
-}
-body.lightscheme.heresy .boost.loot.alert:hover, body.darkscheme.heresy .boost.shop.alert:hover, body.darkscheme.heresy .badge.alert
-{
-	background:#200b0b;
 }
 
 body.darkscheme.heresy .boost.loot.alert, body.lightscheme.heresy .boost.shop.alert, body.lightscheme.heresy .badge.alert:hover
@@ -627,13 +618,13 @@ body.lightscheme.heresy .boost.loot.alert, body.darkscheme.heresy .boost.shop.al
 	background:#522;
 }
 
-body.darkscheme.heresy .boost.loot.action:hover, body.lightscheme.heresy .boost.shop.action:hover, body.lightscheme.heresy .badge.action
+body.darkscheme.heresy .boost.loot.alert:hover, body.lightscheme.heresy .boost.shop.alert:hover, body.lightscheme.heresy .badge.alert
 {
-	background:#FFFFF2;
+	background:#FFF2F2;
 }
-body.lightscheme.heresy .boost.loot.action:hover, body.darkscheme.heresy .boost.shop.action:hover, body.darkscheme.heresy .badge.action
+body.lightscheme.heresy .boost.loot.alert:hover, body.darkscheme.heresy .boost.shop.alert:hover, body.darkscheme.heresy .badge.alert
 {
-	background:#20200b;
+	background:#200b0b;
 }
 
 body.darkscheme.heresy .boost.loot.action, body.lightscheme.heresy .boost.shop.action, body.lightscheme.heresy .badge.action:hover
@@ -645,6 +636,64 @@ body.lightscheme.heresy .boost.loot.action, body.darkscheme.heresy .boost.shop.a
 	background:#552;
 }
 
+body.darkscheme.heresy .boost.loot.action:hover, body.lightscheme.heresy .boost.shop.action:hover, body.lightscheme.heresy .badge.action
+{
+	background:#FFFFF2;
+}
+body.lightscheme.heresy .boost.loot.action:hover, body.darkscheme.heresy .boost.shop.action:hover, body.darkscheme.heresy .badge.action
+{
+	background:#20200b;
+}
+
+body.darkscheme.heresy #redacteditem.castle.shop.alert
+{
+	background:#181838
+}
+body.lightscheme.heresy #redacteditem.castle.shop.alert
+{
+	background:#d8d8f0
+}
+body.darkscheme.heresy #redacteditem.castle.shop.action
+{
+	background:#522
+}
+body.lightscheme.heresy #redacteditem.castle.shop.action
+{
+	background:#fdd
+}
+body.darkscheme.heresy #redacteditem.castle.shop.toggle
+{
+	background:#552
+}
+body.lightscheme.heresy #redacteditem.castle.shop.toggle
+{
+	background:#ffd
+}
+
+body.darkscheme.heresy #redacteditem.sand.shop.alert
+{
+	background:#101038
+}
+body.lightscheme.heresy #redacteditem.sand.shop.alert
+{
+	background:#e0e0ff
+}
+body.darkscheme.heresy #redacteditem.sand.shop.action
+{
+	background:#5f1818
+}
+body.lightscheme.heresy #redacteditem.sand.shop.action
+{
+	background:#ffd8d8
+}
+body.darkscheme.heresy #redacteditem.sand.shop.toggle
+{
+	background:#5f5f18
+}
+body.lightscheme.heresy #redacteditem.sand.shop.toggle
+{
+	background:#ffffd8
+}
 
 body.lightscheme .badge.loot #badge_judgementdip.icon
 {

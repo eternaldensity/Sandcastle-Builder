@@ -18,6 +18,18 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.83
+- Fixed Glass Ceiling glass prices: they were all the same when they should not have been.
+- Earning Ceiling Broken makes all the ceilings untagged, and you can lock any of them if you like, and they're all available from the Department if you do lock them, and the prices go back to their base values permanently. (Or for instance if you Molpy Down)
+- Removed floor pie and ceiling pie from the code so I can actually read it.
+- Fiddled with redacted timing, should work more consistently now
+- Fixed incorrect number rounding
+- When building or destroying castles, if the amount is less than 1/10000 of the castles you have, don't notify (the amount is added to the running total of castles to notify about later)
+- Prevent "by the newpixbots" message from showing if the amount destroyed was not shown.
+- Maximum judgement dip level based on newpix: Can't get Level 1 before NP12, level 2 before NP20, level 3 before NP24, Level 6 before NP34, level 12 before NP45...
+- Added a cheap hopefully fun boost for people in the earlier game
+- Messed around with the CSS a bunch, improved a couple of things
+
 ### 1.82
 - Version now number shows up on index whether it loads a saved game or not
 - Added a few words to redundancy
