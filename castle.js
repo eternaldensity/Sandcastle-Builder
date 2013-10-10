@@ -202,7 +202,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.84;
+		Molpy.version=1.85;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -3662,7 +3662,7 @@ Molpy.Up=function()
 			if(redacteditem)
 			{
 				Molpy.drawFrame++;
-				if(Molpy.drawFrame>=Molpy.fps)Molpy.drawFrame=0;
+				if(Molpy.drawFrame>=Molpy.fps/3)Molpy.drawFrame=0;
 				if(repainted || Molpy.drawFrame==0)
 				{
 					var className=Molpy.redactedClassNames[Molpy.redactedVisible];
