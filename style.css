@@ -164,13 +164,13 @@ a:active
 #exporttext
 {
 	width:540px;
-	height:385px;
+	height:395px;
 }
 #statsItems
 {
 	position:absolute;
 	width:290px;
-	height:380px;
+	min-height:380px;
 }
 #notiflog
 {
