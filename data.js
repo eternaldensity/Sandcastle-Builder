@@ -724,7 +724,7 @@ Molpy.DefineBoosts=function()
 			while(i--)
 			{
 				var sand = 2000000*Math.pow(10000,i);
-				costs+=Molpify(sand,0);
+				costs+=Molpify(sand);
 				if(i)costs+=', then ';
 			}
 			return 'When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand';
@@ -2437,13 +2437,13 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Badge Not Found',desc:'Description Not Found'});
 	new Molpy.Badge({name:'Fractals Forever',desc:'Reach Fractal Level 60, and Fractal Sandcastles will be retained if you Molpy Down.'});
 	new Molpy.Badge({name:'Recursion',
-		desc:function(){return 'Yo Dawg, we heard you earned '+Molpify(DeMolpify('50G'),0)+' Sand by clicking...';}
+		desc:function(){return 'Yo Dawg, we heard you earned '+Molpify(DeMolpify('50G'))+' Sand by clicking...';}
 		});
 	new Molpy.Badge({name:'Big Spender',
-		desc:function(){return 'Spend '+Molpify(DeMolpify('200M'),0)+' Castles total';}
+		desc:function(){return 'Spend '+Molpify(DeMolpify('200M'))+' Castles total';}
 		});
 	new Molpy.Badge({name:'Valued Customer',
-		desc:function(){return 'Spend '+Molpify(DeMolpify('80G'),0)+' Castles total';}
+		desc:function(){return 'Spend '+Molpify(DeMolpify('80G'))+' Castles total';}
 		});
 	new Molpy.Badge({name:'Beachscaper',desc:'Have 200 Sand Tools'});
 	new Molpy.Badge({name:'Beachmover',desc:'Have 100 Castle Tools'});
