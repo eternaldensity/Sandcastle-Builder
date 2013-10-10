@@ -1611,7 +1611,7 @@ Molpy.DefineBoosts=function()
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
 				{
 					var pow=(Molpy.Boosts['Glass Chiller'].power)+2;
-					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+Molpify(pow)+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+(pow*Molpy.GlassChillerIncrement())+'% of Sand dug).';
+					return '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+Molpify(pow)+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dug).';
 				}else{
 					return 'Currently, you have no more sand available for further upgrades';
 				}
