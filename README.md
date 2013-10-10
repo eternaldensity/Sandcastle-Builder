@@ -23,6 +23,7 @@ For personal amusement only.
 - Earning Ceiling Broken makes all the ceilings untagged, and you can lock any of them if you like, and they're all available from the Department if you do lock them, and the prices go back to their base values permanently. (Or for instance if you Molpy Down)
 - Removed floor pie and ceiling pie from the code so I can actually read it.
 - Fiddled with redacted timing, should work more consistently now
+- Fixed incorrect number rounding
 
 ### 1.82
 - Version now number shows up on index whether it loads a saved game or not

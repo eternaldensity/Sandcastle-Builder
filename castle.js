@@ -58,13 +58,7 @@ function Molpify(number, raftcastle, shrinkify)
 		var numCopy=number;
 		//get the right number of decimal places to stick on the end:
 		var raft=numCopy*Math.pow(10,raftcastle)-Math.floor(numCopy)*Math.pow(10,raftcastle);
-		if(shrinkify)
-		{
-			raft = Math.round(raft);
-		}else{
-			raft = Math.floor(raft);
-		}
-		
+		raft = Math.floor(raft);
 		if((raft+'').length>raftcastle)
 		{
 			numCopy++;
@@ -73,12 +67,8 @@ function Molpify(number, raftcastle, shrinkify)
 		molp=Molpify(numCopy,0,shrinkify)+(raft?('.'+raft):''); //stick them on the end if there are any
 	}else
 	{
-		if(shrinkify)
-		{
-			number = Math.round(number);
-		}else{
-			number = Math.floor(number);
-		}//drop the decimal bit
+		number = Math.floor(number);
+		//drop the decimal bit
 		var sep = (number+'').indexOf('e') ==-1; //true if not in exponential notation
 		number=(number+'').split('').reverse(); //convert to string, then array of chars, then backwards
 		for(var i in number)
