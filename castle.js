@@ -2644,12 +2644,13 @@ Molpy.Up=function()
 			Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 		}
 		
+		Molpy.redactedSGen=InitStatementGen();
 		Molpy.MakeRedactedPuzzle=function()
 		{
-			StatementGen.FillStatements();
-			Molpy.redactedPuzzleTarget=StatementGen.RandStatementValue();
+			Molpy.redactedSGen.FillStatements();
+			Molpy.redactedPuzzleTarget=Molpy.redactedSGen.RandStatementValue();
 			var str='Click a statement that is '+Molpy.redactedPuzzleTarget+':';
-			var statements= StatementGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
+			var statements= Molpy.redactedSGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
 			for(var i in statements)
 			{
 				str+='<br><br>'+statements[i];
@@ -2658,7 +2659,7 @@ Molpy.Up=function()
 		}
 		Molpy.ClickRedactedPuzzle=function(name)
 		{
-			var clickedVal=StatementGen.StatementValue(name);
+			var clickedVal=Molpy.redactedSGen.StatementValue(name);
 			if(clickedVal==Molpy.redactedPuzzleTarget)
 			{
 				Molpy.Notify('Correct');

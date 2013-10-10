@@ -250,144 +250,148 @@ var EmergencyExport=function()
 	}
 }
 
-var StatementGen={};
-StatementGen.FillStatements=function(n)
+var InitStatementGen=function(gen)
 {
-	var statementNames='ABCDEFGHI';
-	var operators=['and','or'];
-	var refCount=2;
-	if(!n) n = Math.floor(Math.random()*Math.ceil(Math.PI))+Math.ceil(Math.PI);
-	StatementGen.statements={};
-	var i = n;
-	while(i--)
+	var StatementGen=gen||{};
+	StatementGen.FillStatements=function(n)
 	{
-		var name=statementNames[i];
-		var statement={};
-		StatementGen.statements[name]=statement;
-		statement.name=name;
-		statement.value=Math.floor(Math.random()*2)==0;
-	}
-	i = n;
-	while(i--)
-	{
-		var statement = StatementGen.statements[statementNames[i]];
-		statement.refs=[];
-		var j = refCount+1*(Math.floor(Math.random()*4)==0);
-		while(j--)
-			statement.refs[j]=statementNames[Math.floor(Math.random()*n)];
-		statement.operator=operators[Math.floor(Math.random()*operators.length)];
-		StatementGen.FillClaims(statement);
-		StatementGen.ShuffleList(statement.claims);
-	}
-}
-StatementGen.FillClaims=function(statement)
-{
-	statement.claims=[];
-	if(statement.operator == 'and')
-	{
-		if(statement.value) //all claims must be true
+		var statementNames='ABCDEFGHI';
+		var operators=['and','or'];
+		var refCount=2;
+		if(!n) n = Math.floor(Math.random()*Math.ceil(Math.PI))+Math.ceil(Math.PI);
+		StatementGen.statements={};
+		var i = n;
+		while(i--)
 		{
-			for(var i in statement.refs)
-			{
-				var r=StatementGen.statements[statement.refs[i]];
-				statement.claims.push({name:r.name,value:r.value});
-			}
-		}else //at least 1 claim must be false
-		{ 
-			for(var i in statement.refs)
-			{
-				i=parseInt(i); //seriously javascript?
-				var r=StatementGen.statements[statement.refs[i]];
-				if(i)//fill in the rest with randoms
-				{
-					statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
-				}else//get this one wrong
-				{
-					statement.claims.push({name:r.name,value:!r.value});
-				}
-			}
+			var name=statementNames[i];
+			var statement={};
+			StatementGen.statements[name]=statement;
+			statement.name=name;
+			statement.value=Math.floor(Math.random()*2)==0;
 		}
-	}else if(statement.operator == 'or')
-	{
-		if(statement.value) //at least one claim must be true
+		i = n;
+		while(i--)
 		{
-			for(var i in statement.refs)
+			var statement = StatementGen.statements[statementNames[i]];
+			statement.refs=[];
+			var j = refCount+1*(Math.floor(Math.random()*4)==0);
+			while(j--)
+				statement.refs[j]=statementNames[Math.floor(Math.random()*n)];
+			statement.operator=operators[Math.floor(Math.random()*operators.length)];
+			StatementGen.FillClaims(statement);
+			StatementGen.ShuffleList(statement.claims);
+		}
+	}
+	StatementGen.FillClaims=function(statement)
+	{
+		statement.claims=[];
+		if(statement.operator == 'and')
+		{
+			if(statement.value) //all claims must be true
 			{
-				i=parseInt(i); //seriously javascript?
-				var r=StatementGen.statements[statement.refs[i]];
-				if(i)//fill in the rest with randoms
+				for(var i in statement.refs)
 				{
-					statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
-				}else//get this one right
-				{
+					var r=StatementGen.statements[statement.refs[i]];
 					statement.claims.push({name:r.name,value:r.value});
 				}
-			}		
-		}else //all claims must be false
+			}else //at least 1 claim must be false
+			{ 
+				for(var i in statement.refs)
+				{
+					i=parseInt(i); //seriously javascript?
+					var r=StatementGen.statements[statement.refs[i]];
+					if(i)//fill in the rest with randoms
+					{
+						statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
+					}else//get this one wrong
+					{
+						statement.claims.push({name:r.name,value:!r.value});
+					}
+				}
+			}
+		}else if(statement.operator == 'or')
 		{
-			for(var i in statement.refs)
+			if(statement.value) //at least one claim must be true
 			{
-				var r=StatementGen.statements[statement.refs[i]];
-				statement.claims.push({name:r.name,value:!r.value});
-			}		
+				for(var i in statement.refs)
+				{
+					i=parseInt(i); //seriously javascript?
+					var r=StatementGen.statements[statement.refs[i]];
+					if(i)//fill in the rest with randoms
+					{
+						statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
+					}else//get this one right
+					{
+						statement.claims.push({name:r.name,value:r.value});
+					}
+				}		
+			}else //all claims must be false
+			{
+				for(var i in statement.refs)
+				{
+					var r=StatementGen.statements[statement.refs[i]];
+					statement.claims.push({name:r.name,value:!r.value});
+				}		
+			}
+		}else{
+			return;
 		}
-	}else{
-		return;
 	}
-}
-StatementGen.ShuffleList=function(l)
-{
-	for(var i in l)
+	StatementGen.ShuffleList=function(l)
 	{
-		var j = Math.floor(Math.random()*(parseInt(i)+1));
-		var temp = l[j];
-		l[j]=l[i];
-		l[i]=temp;
-	}	
-	
-}
-StatementGen.RandStatementValue=function()
-{
-	var vals=[];
-	for(var i in StatementGen.statements) vals.push(StatementGen.statements[i].value);
-	return vals[Math.floor(Math.random()*vals.length)];
-}
-StatementGen.StringifyClaim=function(claim)
-{
-	return 'Statement '+claim.name+' is '+claim.value;
-}
-StatementGen.StringifyStatement=function(statement,buttonFunction)
-{
-	var name = 'Statement '+statement.name;
-	var str = ':';
-	if(buttonFunction)
-	{
-		str='<input type="Button" value="'+name+'" onclick="'+buttonFunction+'(\''+statement.name+'\')"></input>';
-	}else{
-		str=name+str;
-	}
-	for(var i in statement.claims)
-	{
-		i = parseInt(i);
-		str+= ' ' + StatementGen.StringifyClaim(statement.claims[i]);
-		if(i<statement.claims.length-1)
+		for(var i in l)
 		{
-			str+=' '+statement.operator;
-		}
+			var j = Math.floor(Math.random()*(parseInt(i)+1));
+			var temp = l[j];
+			l[j]=l[i];
+			l[i]=temp;
+		}	
+		
 	}
-	return str;
-}
-StatementGen.StringifyStatements=function(buttonFunction)
-{
-	var str=[];
-	for(var i in StatementGen.statements)
+	StatementGen.RandStatementValue=function()
 	{
-		str.push(StatementGen.StringifyStatement(StatementGen.statements[i],buttonFunction));
+		var vals=[];
+		for(var i in StatementGen.statements) vals.push(StatementGen.statements[i].value);
+		return vals[Math.floor(Math.random()*vals.length)];
 	}
-	StatementGen.ShuffleList[str];
-	return str;
-}
-StatementGen.StatementValue=function(name)
-{
-	return StatementGen.statements[name].value;
+	StatementGen.StringifyClaim=function(claim)
+	{
+		return 'Statement '+claim.name+' is '+claim.value;
+	}
+	StatementGen.StringifyStatement=function(statement,buttonFunction)
+	{
+		var name = 'Statement '+statement.name;
+		var str = ':';
+		if(buttonFunction)
+		{
+			str='<input type="Button" value="'+name+'" onclick="'+buttonFunction+'(\''+statement.name+'\')"></input>';
+		}else{
+			str=name+str;
+		}
+		for(var i in statement.claims)
+		{
+			i = parseInt(i);
+			str+= ' ' + StatementGen.StringifyClaim(statement.claims[i]);
+			if(i<statement.claims.length-1)
+			{
+				str+=' '+statement.operator;
+			}
+		}
+		return str;
+	}
+	StatementGen.StringifyStatements=function(buttonFunction)
+	{
+		var str=[];
+		for(var i in StatementGen.statements)
+		{
+			str.push(StatementGen.StringifyStatement(StatementGen.statements[i],buttonFunction));
+		}
+		StatementGen.ShuffleList[str];
+		return str;
+	}
+	StatementGen.StatementValue=function(name)
+	{
+		return StatementGen.statements[name].value;
+	}
+	return StatementGen;
 }

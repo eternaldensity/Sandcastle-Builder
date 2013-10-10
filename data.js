@@ -1184,7 +1184,6 @@ Molpy.DefineBoosts=function()
 	Molpy.PunsawToggle=function()
 	{
 		Molpy.Boosts['VITSSÅGEN, JA!'].bought = (Molpy.Boosts['VITSSÅGEN, JA!'].bought==1?2:1);
-		Molpy.boostRepaint=1;
 		Molpy.Boosts['VITSSÅGEN, JA!'].hoverOnCounter=1;
 	}
 	new Molpy.Boost({name:'Swedish Chef',desc:
@@ -1457,7 +1456,6 @@ Molpy.DefineBoosts=function()
 			}
 			Molpy.Boosts['Sand Refinery'].power+=n;
 			Molpy.Notify('Sand Refinery upgraded',1);
-			Molpy.boostRepaint=1;
 			Molpy.recalculateDig=1;
 		}		
 	}
@@ -1470,7 +1468,6 @@ Molpy.DefineBoosts=function()
 		ch.power++;
 		sr.power--;
 		Molpy.Notify('Sand Refinery downgraded',1);
-		Molpy.boostRepaint=1;
 		Molpy.recalculateDig=1;			
 	}
 	
@@ -1540,7 +1537,7 @@ Molpy.DefineBoosts=function()
 		{
 			ch.power-=cost;
 			ch.bought+=n;
-			Molpy.boostRepaint=1;
+			ch.hoverOnCounter=1;
 			Molpy.Notify('Glass Chip Storage upgraded',1);
 		}
 	}
@@ -1629,8 +1626,8 @@ Molpy.DefineBoosts=function()
 		{
 			bl.power-=5;
 			Molpy.Boosts['Glass Chiller'].power++;
+			Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
 			Molpy.Notify('Glass Chiller upgraded',1);
-			Molpy.boostRepaint=1;
 			Molpy.recalculateDig=1;
 		}
 	}
@@ -1655,7 +1652,7 @@ Molpy.DefineBoosts=function()
 			{
 				if(me.power>=80)
 				{
-					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Chiller\',0,80)"></input> 80 Blocks to build a Glass Chiller to make Blocks faster.'
+					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Chiller\',0,80)"></input> 80 Blocks to build a Glass Chiller to make Blocks faster.';
 				}else{
 					str+=' It costs 80 Glass Blocks to build a Glass Chiller, which can make Blocks faster.';
 				}
@@ -1664,9 +1661,19 @@ Molpy.DefineBoosts=function()
 			{
 				if(me.power>=95)
 				{
-					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Sand Purifier\',0,95)"></input> 95 Blocks to build a Sand Purifier, which makes the Glass Furnace use less sand.'
+					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Sand Purifier\',0,95)"></input> 95 Blocks';
 				}else{
-					str+=' It costs 95 Glass Blocks to build a Sand Purifier, which makes the Glass Furnace use less sand.';
+					str+=' It costs 95 Glass Blocks';
+				}
+				str+=' to build a Sand Purifier, which makes the Glass Furnace use less sand.';
+			}
+			if(me.power>800&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
+			{
+				if(me.power>=1000)
+				{
+					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Caged Logicat\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
+				}else{
+					str+=' It costs '+Molpify(1000)+' Glass Blocks to get a Caged Logicat.';
 				}
 			}
 			return str;
@@ -1680,7 +1687,7 @@ Molpy.DefineBoosts=function()
 		{
 			bl.power-=15;
 			bl.bought++;
-			Molpy.boostRepaint=1;
+			bl.hoverOnCounter=1;
 			Molpy.Notify('Glass Block Storage upgraded',1);
 		}
 	}
@@ -1695,7 +1702,7 @@ Molpy.DefineBoosts=function()
 		{
 			bl.power-=Molpy.SandPurifierUpgradeCost();
 			Molpy.Boosts['Sand Purifier'].power++;
-			Molpy.boostRepaint=1;
+			Molpy.Boosts['Sand Purifier'].hoverOnConter=1;
 			Molpy.recalculateDig=1;
 			Molpy.Notify('Sand Purifier upgraded',1);
 		}
@@ -1735,7 +1742,6 @@ Molpy.DefineBoosts=function()
 		var gj=Molpy.Boosts['Glass Jaw'];
 		gj.power=(!gj.power)*1;
 		gj.hoverOnCounter=1;
-		Molpy.boostRepaint=1;
 	}
 		
 	new Molpy.Boost({name:'Ninja League',desc:'Ninja Stealth is raised by 100x as much'
@@ -1840,7 +1846,6 @@ Molpy.DefineBoosts=function()
 				Molpy.shopRepaint=1;
 				fa.power++;				
 				Molpy.Boosts['Rosetta'].hoverOnCounter=1;
-				Molpy.boostRepaint=1;
 				Molpy.Notify('Factory Automation Upgraded',1);
 			}
 		}
@@ -1882,8 +1887,7 @@ Molpy.DefineBoosts=function()
 	Molpy.PantherSalveToggle=function()
 	{
 		var me=Molpy.Boosts['Panther Salve'];
-		me.power=-me.power;
-		Molpy.boostRepaint=1;			
+		me.power=-me.power;			
 		me.hoverOnCounter=1;
 	}
 	
@@ -1923,7 +1927,6 @@ Molpy.DefineBoosts=function()
 		var fc=Molpy.Boosts['Furnace Crossfeed'];
 		fc.power=(!fc.power)*1;
 		fc.hoverOnCounter=1;
-		Molpy.boostRepaint=1;
 	}
 	
 	new Molpy.Boost({name:'Redundant Redundance Supply of Redundancy',
@@ -1960,7 +1963,6 @@ Molpy.DefineBoosts=function()
 		var fm=Molpy.Boosts['Furnace Multitasking'];
 		fm.power=(!fm.power)*1;
 		fm.hoverOnCounter=1;
-		Molpy.boostRepaint=1;
 	}
 	
 	Molpy.redundancy=MakeRedundancy();
@@ -2220,7 +2222,7 @@ Molpy.DefineBoosts=function()
 		{
 			ch.power-=Molpy.GlassExtruderUpgradeCost();
 			Molpy.Boosts['Glass Extruder'].power++;
-			Molpy.boostRepaint=1;
+			Molpy.Boosts['Glass Extruder'].hoverOnConter=1;
 			Molpy.recalculateDig=1;
 			Molpy.Notify('Glass Extruder upgraded',1);
 		}
@@ -2245,6 +2247,50 @@ Molpy.DefineBoosts=function()
 		}
 		,className:'action',group:'hpt'}
 	);
+	
+	new Molpy.Boost({name:'Caged Logicat',
+		desc:''});
+		
+	
+
+	Molpy.cagedSGen=InitStatementGen();
+	Molpy.MakeCagedPuzzle=function()
+	{
+		Molpy.cagedSGen.FillStatements();
+		Molpy.cagedPuzzleTarget=Molpy.cagedSGen.RandStatementValue();
+		var str='Click a statement that is '+Molpy.cagedPuzzleTarget+':';
+		var statements= Molpy.cagedSGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
+		for(var i in statements)
+		{
+			str+='<br><br>'+statements[i];
+		}
+		Molpy.cagedPuzzleValue=str;
+		Molpy.Boosts['Caged Logicat'].hoverOnConter=1;
+		Molpy.Boosts['Caged Logicat'].power=1;
+	}
+	Molpy.ClickCagedPuzzle=function(name)
+	{
+		var clickedVal=Molpy.cagedSGen.StatementValue(name);
+		if(clickedVal==Molpy.cagedPuzzleTarget)
+		{
+			Molpy.Notify('Correct');
+			var lc = Molpy.Boosts['Logicat'];
+			lc.power++;
+			if(lc.power>=lc.bought*5)
+			{
+				Molpy.RewardLogicat(lc.bought);
+				lc.bought++;
+			}
+		}
+		else
+		{
+			Molpy.Notify('Incorrect');
+			Molpy.Boosts['Logicat'].power-=0.5;
+		}
+		Molpy.cagedPuzzleValue='';
+		Molpy.Boosts['Caged Logicat'].hoverOnConter=1;
+		Molpy.Boosts['Caged Logicat'].power=0;
+	}
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
