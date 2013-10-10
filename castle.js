@@ -3780,9 +3780,8 @@ Molpy.Up=function()
 		
 		g('ninjatimestat').innerHTML=Molpify(Molpy.ninjaTime/Molpy.NPlength,1)+'mNP';		
 		g('ninjastealthstat').innerHTML=Molpify(Molpy.ninjaStealth)+'NP';	
-		var forgives=Molpy.Got('Ninja Hope')+Molpy.Got('Ninja Penance');
-		g('ninjaforgivestat').innerHTML=Molpy.Boosts['Ninja Hope'].power*Molpy.Got('Ninja Hope')
-			+Molpy.Boosts['Ninja Penance'].power*Molpy.Got('Ninja Penance');		
+		g('ninjaforgivestat').innerHTML=Molpify(Molpy.Boosts['Ninja Hope'].power*Molpy.Got('Ninja Hope')
+			+Molpy.Boosts['Ninja Penance'].power*Molpy.Got('Ninja Penance'));		
 		
 		g('loadcountstat').innerHTML=Molpify(Molpy.loadCount);
 		g('savecountstat').innerHTML=Molpify(Molpy.saveCount);	
@@ -3796,6 +3795,11 @@ Molpy.Up=function()
 		
 		g('sandmultiplierstat').innerHTML=Molpify(Molpy.globalSpmNPMult*100,1)+'%';			
 		g('redactedstat').innerHTML=Molpy.redactedWords + ": " + Molpify(Molpy.redactedClicks);		
+		
+		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['Glass Chip Storage'].power);
+		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power);
+		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse())+'%';
+		
 		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 	}
 	

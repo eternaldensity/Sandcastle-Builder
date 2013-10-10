@@ -20,6 +20,7 @@ For personal amusement only.
 
 ### 1.84
 - Added another way to unlock the new boost because previously it required the far more expensive Redunception first. You can get it sooner if you can afford Redunception though.
+- Some glass related stats on stats page
 
 ### 1.83
 - Fixed Glass Ceiling glass prices: they were all the same when they should not have been.
