@@ -38,6 +38,8 @@ function Molpify(number, raftcastle, shrinkify)
 	if(!isFinite(parseFloat(number)))return'Infinite Mustard';
 	var molp='';
 	
+	if(Molpy&&!shrinkify)shrinkify=!Molpy.showStats
+	
 	if(shrinkify) //todo: roll into loop
 	{
 		for (var i in postfixes)
@@ -113,7 +115,7 @@ function ClassNameSort(a,b)
 }
 function FormatPrice(monies,item)
 {
-	return Molpify(Math.floor(EvalMaybeFunction(monies,item,1)*Molpy.priceFactor),1,!Molpy.showStats);
+	return Molpify(Math.floor(EvalMaybeFunction(monies,item,1)*Molpy.priceFactor),1);
 }
 function CuegishToBeanish(mustard)
 {
@@ -1176,7 +1178,7 @@ Molpy.Up=function()
 				}				
 				if(amount){
 					if(amount >= Molpy.castles/10000)
-						Molpy.Notify(amount==1?'+1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Built',1);
+						Molpy.Notify(amount==1?'+1 Castle':Molpify(amount,3)+ ' Castles Built',1);
 					else
 						Molpy.buildNotifyCount+=amount;
 				}
@@ -1322,7 +1324,7 @@ Molpy.Up=function()
 			Molpy.castles-=amount;
 			Molpy.castlesSpent+=amount;
 			if(!silent)
-				Molpy.Notify('Spent Castles: ' + Molpify(amount,3,!Molpy.showStats),1);
+				Molpy.Notify('Spent Castles: ' + Molpify(amount,3),1);
 		}
 		Molpy.SpendSand=function(amount,silent)
 		{
@@ -1330,7 +1332,7 @@ Molpy.Up=function()
 			Molpy.sand-=amount;
 			Molpy.sandSpent+=amount;
 			if(!silent)
-				Molpy.Notify('Spent Sand: ' + Molpify(amount,3,!Molpy.showStats),1);
+				Molpy.Notify('Spent Sand: ' + Molpify(amount,3),1);
 		}
 		
 		Molpy.destroyNotifyFlag=1;
@@ -1349,7 +1351,7 @@ Molpy.Up=function()
 				}				
 				if(amount){
 					if(amount >= Molpy.castles/10000)
-						Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Destroyed',!logsilent);
+						Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,3)+ ' Castles Destroyed',!logsilent);
 					else
 					{
 						Molpy.destroyNotifyCount+=amount;
@@ -1674,18 +1676,18 @@ Molpy.Up=function()
 			if(Molpy.judgeLevel==-1)//just loaded
 			{
 				if(judy>0)
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2,!Molpy.showStats),1);
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2),1);
 			}			
 			else if(judy>Molpy.judgeLevel)//increase
 			{
 				if(Molpy.judgeLevel<2&&judy>2)//jumped from safe to multiple levels of judgement
 				{
 					Molpy.Notify('Judgement Dip is upon us!');
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2,!Molpy.showStats),1);
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2),1);
 				}else if(judy>2)
 				{
 					Molpy.Notify('Things got worse!!');
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2,!Molpy.showStats),1);
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2),1);
 				}
 				else if(judy==2)
 				{
@@ -1700,7 +1702,7 @@ Molpy.Up=function()
 				if(judy>1)
 				{
 					Molpy.Notify('Things got better');
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2,!Molpy.showStats),1);
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2),1);
 				}
 				else if(judy==1)
 				{
@@ -1825,7 +1827,7 @@ Molpy.Up=function()
 					}
 				}
 				if(bought)
-					Molpy.Notify('Spent '+Molpify(spent,3,!Molpy.showStats)+' Castle'+(spent>1?'s':'')+', Bought '+Molpify(bought,3,!Molpy.showStats)+' '+(bought>1?this.plural:this.single),1);
+					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+(spent>1?'s':'')+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
 			}
 			this.sell=function()
 			{
@@ -1944,7 +1946,7 @@ Molpy.Up=function()
 					}
 				}
 				if(bought)
-					Molpy.Notify('Spent '+Molpify(spent,3,!Molpy.showStats)+' Castle'+(spent>1?'s':'')+', Bought '+Molpify(bought,3,!Molpy.showStats)+' '+(bought>1?this.plural:this.single),1);
+					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+(spent>1?'s':'')+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
 			}
 			this.sell=function()
 			{				
@@ -2010,7 +2012,7 @@ Molpy.Up=function()
 				var desc = '';
 				var bN = EvalMaybeFunction(this.buildN);
 				var dN = EvalMaybeFunction(this.destroyN);
-				var actuals ='<br>Builds '+Molpify(bN,1,!Molpy.showStats)+(dN?(' if '+Molpify(dN,1,!Molpy.showStats)+((dN-1)?' are':' is')+' destroyed.'):'');
+				var actuals ='<br>Builds '+Molpify(bN,1)+(dN?(' if '+Molpify(dN,1)+((dN-1)?' are':' is')+' destroyed.'):'');
 				if(Molpy.showStats)
 				{
 					if(this.totalCastlesDestroyed)
@@ -2796,7 +2798,7 @@ Molpy.Up=function()
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2))) name = 'Glass '+name;
 				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
-				(me.amount>0?'<div class="title owned">Owned: '+Molpify(me.amount,3,!Molpy.showStats)
+				(me.amount>0?'<div class="title owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="SandToolDescription'+me.id+'"></div></div></div>';
@@ -2831,7 +2833,7 @@ Molpy.Up=function()
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2+1))) name = 'Glass '+name;
 				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
-				(me.amount>0?'<div class="title owned">Owned: '+Molpify(me.amount,3,!Molpy.showStats)
+				(me.amount>0?'<div class="title owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
@@ -3303,7 +3305,7 @@ Molpy.Up=function()
 					spent+=sand;
 				}
 			}
-			Molpy.Notify('Activating Factory Automation '+t+' time'+(t==1?'':'s')+' at a cost of '+Molpify(spent,4,!Molpy.showStats)+' Sand',1);
+			Molpy.Notify('Activating Factory Automation '+t+' time'+(t==1?'':'s')+' at a cost of '+Molpify(spent,4)+' Sand',1);
 			while(t--) 
 				Molpy.RewardRedacted(1);
 		}
@@ -3626,10 +3628,10 @@ Molpy.Up=function()
 	Molpy.drawFrame=0;
 	Molpy.Draw=function()
 	{
-		g('castlecount').innerHTML=Molpify(Molpy.castles,1,!Molpy.showStats) + ' castles';
-		g('sandcount').innerHTML=Molpify(Molpy.sand,1,!Molpy.showStats) + ' sand of ' + Molpify(Molpy.nextCastleSand,1,!Molpy.showStats) + ' needed';
-		g('sandrate').innerHTML=Molpify(Molpy.sandPermNP,1,!Molpy.showStats) + ' sand/mNP';
-		g('newpixnum').innerHTML='Newpix '+Molpify(Molpy.newpixNumber,3,!Molpy.showStats);
+		g('castlecount').innerHTML=Molpify(Molpy.castles,1) + ' castles';
+		g('sandcount').innerHTML=Molpify(Molpy.sand,1) + ' sand of ' + Molpify(Molpy.nextCastleSand,1) + ' needed';
+		g('sandrate').innerHTML=Molpify(Molpy.sandPermNP,1) + ' sand/mNP';
+		g('newpixnum').innerHTML='Newpix '+Molpify(Molpy.newpixNumber,3);
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
 		g('period').innerHTML=Molpy.TimePeriod;
@@ -3684,7 +3686,7 @@ Molpy.Up=function()
 				{
 					if(desc.innerHTML==''||desc.innerHTML.indexOf('Sand/mNP:')>-1)
 					{
-						desc.innerHTML='Sand/mNP: '+Molpify(me.storedTotalSpmNP,1,!Molpy.showStats);					
+						desc.innerHTML='Sand/mNP: '+Molpify(me.storedTotalSpmNP,1);					
 					}		
 				}
 			}
