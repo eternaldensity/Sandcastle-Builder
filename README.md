@@ -20,6 +20,7 @@ For personal amusement only.
 
 ### 1.85
 - TDC changes faster
+- Glass Extruder!
 
 ### 1.84
 - Added another way to unlock the new boost because previously it required the far more expensive Redunception first. You can get it sooner if you can afford Redunception though.

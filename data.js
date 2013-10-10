@@ -1354,8 +1354,9 @@ Molpy.DefineBoosts=function()
 		return 0;
 	}
 	Molpy.GlassChillerIncrement=function()
-	{
-		return 1;//(Molpy.Got('some boost I have not made yet')?0.5:1);		
+	{	
+		if(!Molpy.Got('Glass Extruder'))return 1;
+		return 1/(Molpy.Boosts['Glass Extruder'].power+2)
 	}
 	Molpy.CalcGlassUse=function()
 	{
@@ -1515,6 +1516,16 @@ Molpy.DefineBoosts=function()
 				}else{
 					str+='<br>It costs 150 Glass Chips to build a Glass Blower, which makes Glass Blocks from Glass Chips.';
 				}
+			}		
+			if(me.power>7500&&!Molpy.Got('Glass Extruder'))
+			{
+				if(me.power>=10000)
+				{
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Extruder\',1000,0)"></input> '+Molpify(10000)+' Chips'
+				}else{
+					str+='<br>It costs '+Molpify(10000)+' Glass Chips';
+				}
+				str+=' to build a Glass Extruder which makes the Glass Blower use less Sand.';
 			}
 			return str;
 		}
@@ -1706,7 +1717,9 @@ Molpy.DefineBoosts=function()
 				}
 			}
 			return str;
-		},className:'action',group:'hpt'});
+		}
+		,className:'action',group:'hpt'}
+	);
 	new Molpy.Boost({name:'Glass Jaw',
 		desc:function(me)
 		{
@@ -2194,6 +2207,44 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Technicolour Dream Cat',desc:Molpy.redactedWords+' are multicoloured (if Chromatic Heresy is enabled)',
 		sand:'320K',castles:'90K',glass:10});
+		
+		
+	Molpy.GlassExtruderUpgradeCost=function()
+	{
+		return 2000+(500*Molpy.Boosts['Glass Extruder'].power);
+	}
+	Molpy.UpgradeGlassExtruder=function()
+	{
+		var ch = Molpy.Boosts['Glass Chip Storage'];
+		if(ch.power>=Molpy.GlassExtruderUpgradeCost())
+		{
+			ch.power-=Molpy.GlassExtruderUpgradeCost();
+			Molpy.Boosts['Glass Extruder'].power++;
+			Molpy.boostRepaint=1;
+			Molpy.recalculateDig=1;
+			Molpy.Notify('Glass Extruder upgraded',1);
+		}
+	}
+	new Molpy.Boost({name:'Glass Extruder',
+		desc:function(me)
+		{
+			var cost = Molpy.GlassExtruderUpgradeCost();
+			var str = 'Glass Blower\'s sand use is divided by '+(me.power+2);
+			var ch = Molpy.Boosts['Glass Chip Storage'];
+			if(ch.power >= cost-800)
+			{
+				if(ch.power>=cost)
+				{
+					str+='. <input type="Button" value="Pay" onclick="Molpy.UpgradeGlassExtruder()"></input> '+cost
+						+ ' Glass Chips to increase this by 1.';
+				}else{
+					str+='. It costs '+cost+ ' Glass Chips to increase this by 1.';				
+				}
+			}
+			return str;
+		}
+		,className:'action',group:'hpt'}
+	);
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
