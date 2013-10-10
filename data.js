@@ -785,7 +785,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Chromatic Heresy',desc:
 		function(me)
 		{
-			return 'Saturation is '+(me.power?'':'not ')+'allowed. <input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
+			return 'Saturation is '+(me.power?'':'not ')+'allowed.<br><input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
 		},sand:200,castles:10,icon:'chromatic',className:'toggle'});
 	Molpy.ChromaticHeresyToggle=function()
 	{
@@ -1717,10 +1717,10 @@ Molpy.DefineBoosts=function()
 			{
 				if(bl.power>=cost)
 				{
-					str+='. <input type="Button" value="Pay" onclick="Molpy.UpgradeSandPurifier()"></input> '+cost
+					str+='.<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandPurifier()"></input> '+cost
 						+ ' Glass Blocks to increase this by 1.';
 				}else{
-					str+='. It costs '+cost+ ' Glass Blocks to increase this by 1.';				
+					str+='.<br>It costs '+cost+ ' Glass Blocks to increase this by 1.';				
 				}
 			}
 			return str;
@@ -1918,7 +1918,7 @@ Molpy.DefineBoosts=function()
 		desc:function(me)
 		{
 			if(!me.bought) return 'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.';
-			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active. <input type="Button" onclick="Molpy.FurnaceCrossfeedToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.FurnaceCrossfeedToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 		},sand:'6.5G',castles:'.8G',icon:'furnacecrossfeed',group:'hpt',
 		buyFunction:function(me){me.power=1;}
 	});
@@ -1953,7 +1953,7 @@ Molpy.DefineBoosts=function()
 	desc:function(me)
 		{
 			if(!me.bought) return 'Blast Furnace acts as a Glass Blower instead of its previous purpose, only if Glass Blower is active. (This stacks with Furnace Crossfeed)';
-			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active. <input type="Button" onclick="Molpy.FurnaceMultitaskToggle()" value="'
+			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.FurnaceMultitaskToggle()" value="'
 				+(me.power? 'Dea':'A')+'ctivate"></input> (This stacks with Furnace Crossfeed)';
 		},sand:'48G',castles:'1.2G',icon:'furnacemultitask',group:'hpt',
 		buyFunction:function(me){me.power=1;}
@@ -2144,7 +2144,7 @@ Molpy.DefineBoosts=function()
 			
 			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>'+((me.bought+1)*5-Math.floor(me.power))+' correct answers are needed to reach Logicat Level '+(me.bought+1);
 		}
-		,sand:'55E',castles:'238E',glass:100,group:'hpt'
+		,sand:'55E',castles:'238E',glass:100,group:'bean'
 	});
 	new Molpy.Boost({name:'Two for One',desc:
 		function(me){return 'For '+Molpify(me.countdown,3)+'mNP, when you buy a Tool, get one free!';}
@@ -2165,7 +2165,7 @@ Molpy.DefineBoosts=function()
 		,group:'ninj',logic:3,className:'alert'
 	});
 	new Molpy.Boost({name:'Logicastle',desc:'Castle Tool outputs gain 50% per Logicat Level'
-		,group:'hpt',logic:2,sand:'420Z',castles:'850Z',glass:300
+		,group:'bean',logic:2,sand:'420Z',castles:'850Z',glass:300
 	});
 	Molpy.LogicastleMult=function()
 	{
@@ -2237,10 +2237,10 @@ Molpy.DefineBoosts=function()
 			{
 				if(ch.power>=cost)
 				{
-					str+='. <input type="Button" value="Pay" onclick="Molpy.UpgradeGlassExtruder()"></input> '+cost
+					str+='.<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassExtruder()"></input> '+cost
 						+ ' Glass Chips to increase this by 1.';
 				}else{
-					str+='. It costs '+cost+ ' Glass Chips to increase this by 1.';				
+					str+='.<br>It costs '+cost+ ' Glass Chips to increase this by 1.';				
 				}
 			}
 			return str;
@@ -2249,17 +2249,29 @@ Molpy.DefineBoosts=function()
 	);
 	
 	new Molpy.Boost({name:'Caged Logicat',
-		desc:''});
-		
-	
+		desc: function(me)
+		{
+			if(me.power&&Molpy.cagedPuzzleValue)
+			{
+				return Molpy.cagedPuzzleValue;
+			}else
+			{
+				if(Molpy.HasGlassBlocks(100))
+					return '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle()"></input> 100 Glass Blocks for a puzzle';
+				else return 'It costs 100 Glass Blocks for a puzzle';
+			}
+		},group:'bean',className:'action'
+	});	
 
 	Molpy.cagedSGen=InitStatementGen();
 	Molpy.MakeCagedPuzzle=function()
 	{
+		if(Molpy.HasGlassBlocks(100))Molpy.SpendGlassBlocks(100);
+		
 		Molpy.cagedSGen.FillStatements();
 		Molpy.cagedPuzzleTarget=Molpy.cagedSGen.RandStatementValue();
 		var str='Click a statement that is '+Molpy.cagedPuzzleTarget+':';
-		var statements= Molpy.cagedSGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
+		var statements= Molpy.cagedSGen.StringifyStatements('Molpy.ClickCagedPuzzle');
 		for(var i in statements)
 		{
 			str+='<br><br>'+statements[i];

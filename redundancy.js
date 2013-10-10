@@ -377,6 +377,7 @@ var InitStatementGen=function(gen)
 				str+=' '+statement.operator;
 			}
 		}
+		//str+= ' ('+statement.value+')';
 		return str;
 	}
 	StatementGen.StringifyStatements=function(buttonFunction)
@@ -386,7 +387,7 @@ var InitStatementGen=function(gen)
 		{
 			str.push(StatementGen.StringifyStatement(StatementGen.statements[i],buttonFunction));
 		}
-		StatementGen.ShuffleList[str];
+		StatementGen.ShuffleList(str);
 		return str;
 	}
 	StatementGen.StatementValue=function(name)

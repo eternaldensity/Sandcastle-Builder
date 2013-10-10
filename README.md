@@ -23,6 +23,8 @@ For personal amusement only.
 - Glass Extruder!
 - New Logicat related boost (costs a LOT of glass blocks)
 - Reduce boost toggle flicker
+- Puzzles weren't shuffling statement order
+- Made sure buttons in boosts have linebreaks before the buttons, for neatness
 
 ### 1.84
 - Added another way to unlock the new boost because previously it required the far more expensive Redunception first. You can get it sooner if you can afford Redunception though.

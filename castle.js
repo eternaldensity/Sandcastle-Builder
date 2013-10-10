@@ -2424,8 +2424,8 @@ Molpy.Up=function()
 				if(Molpy.redactedToggle<15)
 				{
 					Molpy.redactedToggle=15;
-					Molpy.redactedCountup=0;
 				}
+				Molpy.redactedCountup=0;
 			}else
 			{ // it goes away.					
 				var item=g('redacteditem');
