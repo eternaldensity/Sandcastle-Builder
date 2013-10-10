@@ -2386,6 +2386,7 @@ Molpy.Up=function()
 			Molpy.badgeRepaint=1;
 			if(Molpy.redactedDrawType[level]!='show')
 			{
+				Molpy.UnlockBoost('Technicolour Dream Cat');
 				Molpy.redactedDrawType[level]='show'; 
 				while(Molpy.redactedDrawType.length>level+1)
 					Molpy.redactedDrawType.pop(); //we don't need to remember those now
@@ -3622,6 +3623,7 @@ Molpy.Up=function()
 	+++++++++++++++++++++++++++++++++++++++++++*/
 	Molpy.redactedClassNames=['hidden','floatbox sand tool shop','floatbox castle tool shop',
 		'floatbox boost shop','lootbox boost loot','lootbox badge loot','lootbox badge shop'];
+	Molpy.drawFrame=0;
 	Molpy.Draw=function()
 	{
 		g('castlecount').innerHTML=Molpify(Molpy.castles,1,!Molpy.showStats) + ' castles';
@@ -3652,12 +3654,22 @@ Molpy.Up=function()
 			Molpy.RepaintTaggedLoot();
 		}
 		if(repainted) Molpy.RepaintLootSelection();
-		if(repainted&&Molpy.redactedVisible)
+		if(Molpy.redactedVisible)
 		{		
 			var redacteditem=g('redacteditem');
 			if(redacteditem)
 			{
-				redacteditem.className=Molpy.redactedClassNames[Molpy.redactedVisible];
+				Molpy.drawFrame++;
+				if(Molpy.drawFrame>=Molpy.fps)Molpy.drawFrame=0;
+				if(repainted || Molpy.drawFrame==0)
+				{
+					var className=Molpy.redactedClassNames[Molpy.redactedVisible];
+					if(Molpy.Boosts['Chromatic Heresy'].power && Molpy.Got('Technicolour Dream Cat'))
+					{
+						className+=' '+['alert','action','toggle','',''][Math.floor(Math.random()*4)];
+					}
+					redacteditem.className=className;
+				}
 			}
 		}
 		for(var i in Molpy.SandTools)

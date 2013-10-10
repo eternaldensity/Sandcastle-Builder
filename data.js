@@ -2192,6 +2192,8 @@ Molpy.DefineBoosts=function()
 			if(!lc.unlocked||lc.bought) Molpy.Notify('Well, that was a waste');
 		}
 	});
+	new Molpy.Boost({name:'Technicolour Dream Cat',desc:Molpy.redactedWords+' are multicoloured (if Chromatic Heresy is enabled)',
+		sand:'320K',castles:'90K',glass:10});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],

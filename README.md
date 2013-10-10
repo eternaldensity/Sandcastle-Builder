@@ -27,6 +27,7 @@ For personal amusement only.
 - When building or destroying castles, if the amount is less than 1/10000 of the castles you have, don't notify (the amount is added to the running total of castles to notify about later)
 - Prevent "by the newpixbots" message from showing if the amount destroyed was not shown.
 - Maximum judgement dip level based on newpix: Can't get Level 1 before NP12, level 2 before NP20, level 3 before NP24, Level 6 before NP34, level 12 before NP45...
+- Added a cheap hopefully fun boost for people in the earlier game
 
 ### 1.82
 - Version now number shows up on index whether it loads a saved game or not
