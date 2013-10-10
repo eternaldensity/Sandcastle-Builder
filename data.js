@@ -198,7 +198,7 @@ Molpy.DefineSandTools=function()
 		{
 			var baserate = 600;
 			var mult = 1;
-			if(Molpy.Got('Embaggening')||Molpy.SandTools['Cuegan'].amount>14)
+			if(Molpy.Got('Embaggening')&&Molpy.SandTools['Cuegan'].amount>14)
 				mult*=Math.pow(1.02,Molpy.SandTools['Cuegan'].amount-14);
 			if(Molpy.Got('Sandbag'))
 				mult*=Math.pow(1.05,Molpy.CastleTools['River'].amount);
