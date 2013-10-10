@@ -315,7 +315,7 @@ body.darkscheme .sand.shop
 }
 body.lightscheme .sand.shop
 {
-	background:#d8d8d8
+	background:#ddd
 }
 body.darkscheme .castle.shop
 {
@@ -323,31 +323,7 @@ body.darkscheme .castle.shop
 }
 body.lightscheme .castle.shop
 {
-	background:#ddd
-}
-body.darkscheme.heresy #redacteditem .castle.shop.alert
-{
-	background:#222
-}
-body.lightscheme.heresy #redacteditem.castle.shop.alert
-{
-	background:#ddd
-}
-body.darkscheme.heresy #redacteditem .castle.shop.action
-{
-	background:#222
-}
-body.lightscheme.heresy #redacteditem.castle.shop.action
-{
-	background:#ddd
-}
-body.darkscheme.heresy #redacteditem .castle.shop.toggle
-{
-	background:#222
-}
-body.lightscheme.heresy #redacteditem.castle.shop.toggle
-{
-	background:#ddd
+	background:#d8d8d8
 }
 body.darkscheme .boost.shop
 {
@@ -669,6 +645,55 @@ body.lightscheme.heresy .boost.loot.action:hover, body.darkscheme.heresy .boost.
 	background:#20200b;
 }
 
+body.darkscheme.heresy #redacteditem.castle.shop.alert
+{
+	background:#181838
+}
+body.lightscheme.heresy #redacteditem.castle.shop.alert
+{
+	background:#d8d8f0
+}
+body.darkscheme.heresy #redacteditem.castle.shop.action
+{
+	background:#522
+}
+body.lightscheme.heresy #redacteditem.castle.shop.action
+{
+	background:#fdd
+}
+body.darkscheme.heresy #redacteditem.castle.shop.toggle
+{
+	background:#552
+}
+body.lightscheme.heresy #redacteditem.castle.shop.toggle
+{
+	background:#ffd
+}
+
+body.darkscheme.heresy #redacteditem.sand.shop.alert
+{
+	background:#101038
+}
+body.lightscheme.heresy #redacteditem.sand.shop.alert
+{
+	background:#e0e0ff
+}
+body.darkscheme.heresy #redacteditem.sand.shop.action
+{
+	background:#5f1818
+}
+body.lightscheme.heresy #redacteditem.sand.shop.action
+{
+	background:#ffd8d8
+}
+body.darkscheme.heresy #redacteditem.sand.shop.toggle
+{
+	background:#5f5f18
+}
+body.lightscheme.heresy #redacteditem.sand.shop.toggle
+{
+	background:#ffffd8
+}
 
 body.lightscheme .badge.loot #badge_judgementdip.icon
 {

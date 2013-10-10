@@ -28,6 +28,7 @@ For personal amusement only.
 - Prevent "by the newpixbots" message from showing if the amount destroyed was not shown.
 - Maximum judgement dip level based on newpix: Can't get Level 1 before NP12, level 2 before NP20, level 3 before NP24, Level 6 before NP34, level 12 before NP45...
 - Added a cheap hopefully fun boost for people in the earlier game
+- Messed around with the CSS a bunch, improved a couple of things
 
 ### 1.82
 - Version now number shows up on index whether it loads a saved game or not
