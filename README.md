@@ -24,6 +24,9 @@ For personal amusement only.
 - Removed floor pie and ceiling pie from the code so I can actually read it.
 - Fiddled with redacted timing, should work more consistently now
 - Fixed incorrect number rounding
+- When building or destroying castles, if the amount is less than 1/10000 of the castles you have, don't notify (the amount is added to the running total of castles to notify about later)
+- Prevent "by the newpixbots" message from showing if the amount destroyed was not shown.
+- Maximum judgement dip level based on newpix: Can't get Level 1 before NP12, level 2 before NP20, level 3 before NP24, Level 6 before NP34, level 12 before NP45...
 
 ### 1.82
 - Version now number shows up on index whether it loads a saved game or not

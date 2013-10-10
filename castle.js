@@ -662,14 +662,6 @@ Molpy.Up=function()
 			{
 				Molpy.timeTravels=0;				
 			}
-			if(version<0.961)
-			{
-				if(Molpy.Got('Embaggening'))
-				{
-					Molpy.Notify('Refund!');
-					Molpy.BuildCastles(12000);
-				}
-			}
 			if(version<0.963)
 			{
 				Molpy.totalCastlesDown=0;
@@ -1183,7 +1175,10 @@ Molpy.Up=function()
 					Molpy.buildNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'+1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Built',1);
+					if(amount >= Molpy.castles/10000)
+						Molpy.Notify(amount==1?'+1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Built',1);
+					else
+						Molpy.buildNotifyCount+=amount;
 				}
 			}else{
 				Molpy.buildNotifyCount+=amount;
@@ -1353,10 +1348,17 @@ Molpy.Up=function()
 					Molpy.destroyNotifyCount=0;
 				}				
 				if(amount){
-					Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Destroyed',!logsilent);
+					if(amount >= Molpy.castles/10000)
+						Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,3,!Molpy.showStats)+ ' Castles Destroyed',!logsilent);
+					else
+					{
+						Molpy.destroyNotifyCount+=amount;
+						return 1;
+					}
 				}
 			}else{
 				Molpy.destroyNotifyCount+=amount;
+				return 1;
 			}
 			//destroying is done by trebuchets and stuff: it's different to spending
 		}
@@ -1672,18 +1674,18 @@ Molpy.Up=function()
 			if(Molpy.judgeLevel==-1)//just loaded
 			{
 				if(judy>0)
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1),1);
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2,!Molpy.showStats),1);
 			}			
 			else if(judy>Molpy.judgeLevel)//increase
 			{
 				if(Molpy.judgeLevel<2&&judy>2)//jumped from safe to multiple levels of judgement
 				{
 					Molpy.Notify('Judgement Dip is upon us!');
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1),1);
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2,!Molpy.showStats),1);
 				}else if(judy>2)
 				{
 					Molpy.Notify('Things got worse!!');
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1),1);
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2,!Molpy.showStats),1);
 				}
 				else if(judy==2)
 				{
@@ -1698,7 +1700,7 @@ Molpy.Up=function()
 				if(judy>1)
 				{
 					Molpy.Notify('Things got better');
-					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1),1);
+					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2,!Molpy.showStats),1);
 				}
 				else if(judy==1)
 				{
@@ -3388,9 +3390,10 @@ Molpy.Up=function()
 			var dAmount = (Molpy.judgeLevel-1)*Molpy.CastleTools['NewPixBot'].amount*50;
 			if(Molpy.castles)
 			{
-				Molpy.Destroy(dAmount,1);
+				var failed = Molpy.Destroy(dAmount,1);
 				Molpy.CastleTools['NewPixBot'].totalCastlesDestroyed+=dAmount;
-				Molpy.Notify('By the NewpixBots');
+				if(!failed)
+					Molpy.Notify('By the NewpixBots');
 			}
 		}
 		

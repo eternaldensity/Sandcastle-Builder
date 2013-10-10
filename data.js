@@ -2348,7 +2348,23 @@ Molpy.DefineBadges=function()
 		{
 			level=Math.floor(level/2);
 		}
+		var maxDipLevel=Math.floor(Math.pow(2,Molpy.newpixNumber/12));
+		if(level > maxDipLevel)
+		{
+			level = maxDipLevel;
+			countdown=0;
+			while(Math.floor(Math.pow(2,(Molpy.newpixNumber+countdown)/12))<=level)
+			{
+				countdown++;
+			}
+		}
 		
+		Molpy.RewardDipLevel(level);
+		return [level,Math.ceil(countdown)];
+	}
+	Molpy.RewardDipLevel=function(level)
+	{
+	
 		if(level>3)
 		{
 			if(Molpy.Got('Time Travel') && 
@@ -2398,8 +2414,8 @@ Molpy.DefineBadges=function()
 				Molpy.Boosts['NewPixBot Navigation Code'].castlePrice=7400;
 			}
 		}
-		return [level,Math.ceil(countdown)];
 	}
+	
 	new Molpy.Badge({name:'Judgement Dip',
 		desc:function()
 		{
