@@ -272,7 +272,7 @@ StatementGen.FillStatements=function(n)
 	{
 		var statement = StatementGen.statements[statementNames[i]];
 		statement.refs=[];
-		var j = refCount;
+		var j = refCount+1*(Math.floor(Math.random()*4)==0);
 		while(j--)
 			statement.refs[j]=statementNames[Math.floor(Math.random()*n)];
 		statement.operator=operators[Math.floor(Math.random()*operators.length)];

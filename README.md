@@ -21,6 +21,8 @@ For personal amusement only.
 ### 1.84
 - Added another way to unlock the new boost because previously it required the far more expensive Redunception first. You can get it sooner if you can afford Redunception though.
 - Some glass related stats on stats page
+- Two wrong logicat answers are worth minus one correct answer now, so it's a little easier to level logicat.
+- Sometimes logicat statements are longer.
 
 ### 1.83
 - Fixed Glass Ceiling glass prices: they were all the same when they should not have been.

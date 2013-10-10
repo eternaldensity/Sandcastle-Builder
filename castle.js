@@ -2673,7 +2673,7 @@ Molpy.Up=function()
 			else
 			{
 				Molpy.Notify('Incorrect');
-				Molpy.Boosts['Logicat'].power--;
+				Molpy.Boosts['Logicat'].power-=0.5;
 			}
 			Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]='show';
 			Molpy.shopRepaint=1;
