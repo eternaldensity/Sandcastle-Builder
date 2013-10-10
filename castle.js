@@ -202,7 +202,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.84;
+		Molpy.version=1.85;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2424,8 +2424,8 @@ Molpy.Up=function()
 				if(Molpy.redactedToggle<15)
 				{
 					Molpy.redactedToggle=15;
-					Molpy.redactedCountup=0;
 				}
+				Molpy.redactedCountup=0;
 			}else
 			{ // it goes away.					
 				var item=g('redacteditem');
@@ -2644,12 +2644,13 @@ Molpy.Up=function()
 			Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 		}
 		
+		Molpy.redactedSGen=InitStatementGen();
 		Molpy.MakeRedactedPuzzle=function()
 		{
-			StatementGen.FillStatements();
-			Molpy.redactedPuzzleTarget=StatementGen.RandStatementValue();
+			Molpy.redactedSGen.FillStatements();
+			Molpy.redactedPuzzleTarget=Molpy.redactedSGen.RandStatementValue();
 			var str='Click a statement that is '+Molpy.redactedPuzzleTarget+':';
-			var statements= StatementGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
+			var statements= Molpy.redactedSGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
 			for(var i in statements)
 			{
 				str+='<br><br>'+statements[i];
@@ -2658,7 +2659,7 @@ Molpy.Up=function()
 		}
 		Molpy.ClickRedactedPuzzle=function(name)
 		{
-			var clickedVal=StatementGen.StatementValue(name);
+			var clickedVal=Molpy.redactedSGen.StatementValue(name);
 			if(clickedVal==Molpy.redactedPuzzleTarget)
 			{
 				Molpy.Notify('Correct');
@@ -3662,7 +3663,7 @@ Molpy.Up=function()
 			if(redacteditem)
 			{
 				Molpy.drawFrame++;
-				if(Molpy.drawFrame>=Molpy.fps)Molpy.drawFrame=0;
+				if(Molpy.drawFrame>=Molpy.fps/3)Molpy.drawFrame=0;
 				if(repainted || Molpy.drawFrame==0)
 				{
 					var className=Molpy.redactedClassNames[Molpy.redactedVisible];
