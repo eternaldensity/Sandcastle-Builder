@@ -2625,6 +2625,10 @@ Molpy.CheckBuyUnlocks=function()
 	{
 		Molpy.Boosts['Logicat'].department=1;
 	}
+	if(Molpy.redactedClicks>=431)
+	{
+		Molpy.Boosts['Technicolour Dream Cat'].department=1;
+	}
 	
 	if(Molpy.Got('Air Drop'))Molpy.Boosts['Schizoblitz'].department=1;
 	if(Molpy.Got('Free Advice'))

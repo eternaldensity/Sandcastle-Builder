@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.84
+- Added another way to unlock the new boost because previously it required the far more expensive Redunception first. You can get it sooner if you can afford Redunception though.
+
 ### 1.83
 - Fixed Glass Ceiling glass prices: they were all the same when they should not have been.
 - Earning Ceiling Broken makes all the ceilings untagged, and you can lock any of them if you like, and they're all available from the Department if you do lock them, and the prices go back to their base values permanently. (Or for instance if you Molpy Down)
