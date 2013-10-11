@@ -921,6 +921,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Bag Puns',desc:'Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',sand:'1470M',castles:450021,stats:function(me)
 		{
 			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
+			return me.desc;
 		}});
 	{//#region puns	
 		Molpy.bp = [
