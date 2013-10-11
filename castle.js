@@ -202,7 +202,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.85;
+		Molpy.version=1.86;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1177,7 +1177,7 @@ Molpy.Up=function()
 					Molpy.buildNotifyCount=0;
 				}				
 				if(amount){
-					if(amount >= Molpy.castles/10000)
+					if(amount >= Molpy.castles/10000000)
 						Molpy.Notify(amount==1?'+1 Castle':Molpify(amount,3)+ ' Castles Built',1);
 					else
 						Molpy.buildNotifyCount+=amount;
@@ -1350,7 +1350,7 @@ Molpy.Up=function()
 					Molpy.destroyNotifyCount=0;
 				}				
 				if(amount){
-					if(amount >= Molpy.castles/10000)
+					if(amount >= Molpy.castles/10000000)
 						Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,3)+ ' Castles Destroyed',!logsilent);
 					else
 					{
@@ -2656,6 +2656,7 @@ Molpy.Up=function()
 				str+='<br><br>'+statements[i];
 			}
 			Molpy.redactedPuzzleValue=str;
+			Molpy.redactedSGen.firstTry=1;
 		}
 		Molpy.ClickRedactedPuzzle=function(name)
 		{
@@ -2675,6 +2676,13 @@ Molpy.Up=function()
 			{
 				Molpy.Notify('Incorrect');
 				Molpy.Boosts['Logicat'].power-=0.5;
+			
+				if(Molpy.redactedSGen.firstTry&&Molpy.Got('Second Chance'))
+				{
+					Molpy.redactedSGen.firstTry=0;
+					Molpy.Notify('Try Again');
+					return;
+				}
 			}
 			Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]='show';
 			Molpy.shopRepaint=1;
@@ -3667,7 +3675,8 @@ Molpy.Up=function()
 				if(repainted || Molpy.drawFrame==0)
 				{
 					var className=Molpy.redactedClassNames[Molpy.redactedVisible];
-					if(Molpy.Boosts['Chromatic Heresy'].power && Molpy.Got('Technicolour Dream Cat'))
+					if(Molpy.Boosts['Chromatic Heresy'].power && Molpy.Got('Technicolour Dream Cat')
+						&& Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]!='hide2')
 					{
 						className+=' '+['alert','action','toggle','',''][Math.floor(Math.random()*4)];
 					}
