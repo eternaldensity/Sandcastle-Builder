@@ -18,6 +18,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.89
+- Changed Glass Ceiing 9 to multiply Rivers' Castle Build number rather than Castle Destruction
+- Trading with Rosetta now reduced the number of castle tools owned and updates sand dig rate calcs
+- Trading to unlock Rosetta updates the number of sand tools ownedand sand dig rate
+- Added a space to Erosion description (yes I remembered, StormAngle)
+- Made Time Travel a teeny tiny bit more expensive
+- Intentionally spelled StromAngel wrong for lulz
+
 ### 1.88
 - New batch of icons by BlitzGirl!
 

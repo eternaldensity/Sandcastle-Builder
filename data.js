@@ -350,7 +350,6 @@ Molpy.DefineCastleTools=function()
 			var mult=1;
 			if(Molpy.Got('Sandbag'))
 				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
-			if(Molpy.Got('Glass Ceiling 9'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
 			return Math.floor(baseval*mult);
 		},
 		function()
@@ -362,6 +361,7 @@ Molpy.DefineCastleTools=function()
 				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
 			if(Molpy.Got('Smallbot'))mult*=4;
 			if(Molpy.Got('Irregular Rivers')) mult*=Molpy.CastleTools['NewPixBot'].amount;
+			if(Molpy.Got('Glass Ceiling 9'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
 			return Math.floor(baseval*mult);
 		}
 	);
@@ -435,7 +435,7 @@ Molpy.DefineBoosts=function()
 			
 		},icon:'ninjabuilder',group:'ninj'
 	});
-	new Molpy.Boost({name:'Erosion',desc:'Waves destroy less by 20% of total castles wasted by waves, and'
+	new Molpy.Boost({name:'Erosion',desc:'Waves destroy less by 20% of total castles wasted by waves, and '
 		+'2 less per River bought',sand:'40K',castles:77,icon:'erosion'});
 	new Molpy.Boost({name:'Autosave Option',desc:'Autosave option is available',sand:100,castles:4,icon:'autosave'});
 	new Molpy.Boost({name:'Helpful Hands',desc:'Each Cuegan+Bucket pair gives clicking +0.5 sand',
@@ -626,18 +626,26 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Time Travel',desc: 
 		function(me)
 		{
-			var price=Math.ceil(Molpy.newpixNumber*Molpy.priceFactor);
-			if(Molpy.Got('Flux Capacitor'))price=Math.ceil(price*.2);
+			var price=Molpy.TimeTravelPrice();
 			return 'Pay ' + Molpify(price) + ' Castles to move <input type="Button" onclick="Molpy.TimeTravel('+(-me.power)+');" value="backwards"></input> or <input type="Button" onclick="Molpy.TimeTravel('+me.power+');" value="forwards"></input> '+
 			Molpify(me.power)+' NP in Time';
 		}
 		,sand:1000,castles:30,startPower:1,className:'action',group:'chron'});
 	Molpy.intruderBots=0;
+	
+	Molpy.TimeTravelPrice=function()
+	{
+		var price=Molpy.newpixNumber;
+		price+=Molpy.castles*Molpy.newpixNumber/3094;
+		price+=Molpy.timeTravels;
+		if(Molpy.Got('Flux Capacitor'))price=Math.ceil(price*.2);
+		return Math.ceil(price/Molpy.priceFactor); //BECAUSE TIME TRAVEL AMIRITE?
+	}
+	
 	Molpy.TimeTravel=function(NP)
 	{		
 		NP = Math.floor(NP);
-		var price=Math.ceil(Molpy.newpixNumber*Molpy.priceFactor);
-		if(Molpy.Got('Flux Capacitor'))price=Math.ceil(price*.2);
+		var price=Molpy.TimeTravelPrice();
 		if(Molpy.newpixNumber+NP <1)
 		{
 			Molpy.Notify('Heretic!');
@@ -1773,8 +1781,10 @@ Molpy.DefineBoosts=function()
 		if(Molpy.SandTools['Bag'].amount>=50)
 		{
 			Molpy.SandTools['Bag'].amount-=50;			
+			Molpy.SandToolsOwned-=50;			
 			Molpy.SandTools['Bag'].refresh();
 			Molpy.shopRepaint=1;
+			Molpy.recalculateDig=1;
 			Molpy.UnlockBoost('Rosetta');
 		}else{
 			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
@@ -1844,6 +1854,8 @@ Molpy.DefineBoosts=function()
 			if(fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power])
 			{
 				Molpy.CastleTools['NewPixBot'].amount-=Molpy.faCosts[fa.power];
+				Molpy.CastleToolsOwned-=Molpy.faCosts[fa.power];
+				Molpy.recalculateDig=1;
 				Molpy.CastleTools['NewPixBot'].refresh();
 				Molpy.shopRepaint=1;
 				fa.power++;				
