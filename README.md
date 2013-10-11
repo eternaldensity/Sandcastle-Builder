@@ -18,6 +18,77 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.88
+- New batch of icons by BlitzGirl!
+
+### 1.87
+- Fixed bag puns description
+- Adjusted postfix longnames
+
+### 1.86
+- Changed the build/destroy notify threshhold to 1 in ten million
+- Class Chiller number formatting
+- Logicat is not a Technicolour Dream Cat
+- New Second Chance boost
+- Moved Caged Logicat purchase to Rosetta
+- Rosetta now doesn't show as action (yellow) if you don't have doublepost or factory automation
+- Number of correct Logicat answers required displayed was 5 higher than real value
+
+### 1.85
+- TDC changes faster
+- Glass Extruder!
+- New Logicat related boost (costs a LOT of glass blocks)
+- Reduce boost toggle flicker
+- Puzzles weren't shuffling statement order
+- Made sure buttons in boosts have linebreaks before the buttons, for neatness
+- Embaggening fix: wrong logic operator! thanks intheshax.
+
+### 1.84
+- Added another way to unlock the new boost because previously it required the far more expensive Redunception first. You can get it sooner if you can afford Redunception though.
+- Some glass related stats on stats page
+- Two wrong logicat answers are worth minus one correct answer now, so it's a little easier to level logicat.
+- Sometimes logicat statements are longer.
+
+### 1.83
+- Fixed Glass Ceiling glass prices: they were all the same when they should not have been.
+- Earning Ceiling Broken makes all the ceilings untagged, and you can lock any of them if you like, and they're all available from the Department if you do lock them, and the prices go back to their base values permanently. (Or for instance if you Molpy Down)
+- Removed floor pie and ceiling pie from the code so I can actually read it.
+- Fiddled with redacted timing, should work more consistently now
+- Fixed incorrect number rounding
+- When building or destroying castles, if the amount is less than 1/10000 of the castles you have, don't notify (the amount is added to the running total of castles to notify about later)
+- Prevent "by the newpixbots" message from showing if the amount destroyed was not shown.
+- Maximum judgement dip level based on newpix: Can't get Level 1 before NP12, level 2 before NP20, level 3 before NP24, Level 6 before NP34, level 12 before NP45...
+- Added a cheap hopefully fun boost for people in the earlier game
+- Messed around with the CSS a bunch, improved a couple of things
+
+### 1.82
+- Version now number shows up on index whether it loads a saved game or not
+- Added a few words to redundancy
+
+### 1.81
+- Toned down the Factory Automation upgrade costs a little
+- Combined Factory Automation sand-use messages to reduce message spam
+- Recalculate dig speed when upgrade Sand Purifier
+- Glass Chip storage can be upgraded in larger amounts one you have enough refinery power. (also more newlines in description)
+- Singular glass block prices show up as singular
+- Added a new Logicat reward (or a pair actually)
+- Mmm, floor pie.
+
+### 1.8
+- Badge for Judgement Dip level 12
+- Badge for unlocking all the Judgement Dip boosts
+- Ensured that if you skip a Judgement Dip boost (i.e. by reloading at the wrong time) you can still get it without having to increase Judgement level again
+- Fixed mustard in Sand Refinery description (once you reach prodution of 1000): was trying to multiply a number with a comma in it
+- Preemptive similar fix for Glass Chiller
+- Glass Ceiling boost delcaration in a loop rather than 10 separate and nearly identical declarations
+- Glass Tool status updates when a Glass Ceiling is bought or locked
+- Glass Ceiling unlock and colour class updates immediately rather than waiting for the next game tick so it's much smoother
+- Logicat is finally here!
+- Prevent activation of Temp Boosts when loading from causing boost-unlock message spam
+- Temporal Rift and Flux Turbine descriptions/stats improved to reference each other
+- Fixed import of totalCastlesDown - was parsing int rather than float so if you got too high it would truncate to single digit :P
+- Reduced Redundakitty nesting: 150 is cool and all but it's a bit ridiculous really
+
 ### 1.79
 - Added Phonesaw
 - VITSSÅGEN, JA! and Bag Puns had their stats backwards: one showed 'out of 20' but activated at 100, and vice versa

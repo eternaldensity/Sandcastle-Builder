@@ -149,13 +149,13 @@ function MakeRedundancy()
 		function(noart){return make(redundancy.characters);},
 		function(noart){return make(redundancy.adjectives)+' '+make(redundancy.characters);}
 	];
-	redundancy.characters=['Cueball','Megan','LaPetite','Bunny','Mini-Bunny','White Bunny','Gray Bun','Black Bun','Curly Bun','Pulled Back','Headband','Meg-a-like','Hat-Hair','Loopsy','Rose','Bob','Leopard','Sandy','She-Bangs','Littlest Bangs Brother','Middle Bangs Brother','Newest Bangs Brother','Sparse','Curly','Buzz','Brick','Forelock','Roundhair','Lopside','Shortdo','Shorty','Mini-Shortdo','Spike','Two-Tone','Mini-Two-Tone','Afro','Part','Baldo','Rosetta','B-1','B-2','B-3','Expando','GLaDOS','Cave Johnson'];//this will not end well
+	redundancy.characters=['Cueball','Megan','LaPetite','Bunny','Mini-Bunny','White Bunny','Gray Bun','Black Bun','Curly Bun','Pulled Back','Headband','Meg-a-like','Hat-Hair','Loopsy','Rose','Bob','Leopard','Sandy','She-Bangs','Littlest Bangs Brother','Middle Bangs Brother','Newest Bangs Brother','Sparse','Curly','Buzz','Brick','Forelock','Roundhair','Lopside','Shortdo','Shorty','Mini-Shortdo','Spike','Two-Tone','Mini-Two-Tone','Afro','Part','Baldo','Rosetta','B-1','B-2','B-3','Expando','GLaDOS','Cave Johnson'];
 	redundancy.interjections=['CH*RP','chirping mustard','ch*rping m*stard','m*stard','mustard','by GLR','oh','neat','neat','yeah','yeah','hey','no','yes','alright','nooooooooo','finally','chirp everything','ah','oooh','huh','hooray','what','well','welp'];
 	redundancy.makeSubPerson=function(){return make(redundancy.subspecifier)+' '+make(redundancy.group);};
 	redundancy.person=[
 		function(){return make(redundancy.people);}
 	];
-	redundancy.people=['the one who reads this','xe who is reading','the clicking person','whoever is on the outside of the screen looking in','one of your friends','a random OTTer','GLR','the stranger looking in the window','someone standing behind you','one of your parents','your mother','your long lost cousin from Australia','the Pope','the Mome','a Blitzer','an Old One','he','she','it','xe','a modern major general','Eternal Density','waveney','StormAngel','RAZOR',
+	redundancy.people=['the one who reads this','xe who is reading','the clicking person','whoever is on the outside of the screen looking in','one of your friends','a random OTTer','GLR','the stranger looking in the window','someone standing behind you','one of your parents','your mother','your long lost cousin from Australia','the Pope','the Mome','a Blitzer','an Old One','he','she','it','xe','a modern major general','Eternal Density','waveney','StormAngel','RAZOR',//this will not end well
 		redundancy.makeSubPerson,
 		redundancy.makeSubPerson,
 		redundancy.makeSubPerson,
@@ -187,7 +187,7 @@ function MakeRedundancy()
 		function(){return make(redundancy.transverbs)+', and '+make(redundancy.transverbs);},
 		function(){return make(redundancy.transverb)+' ('+make(redundancy.prepphrase)+')';}
 	];
-	redundancy.transverb=['kicks','clicks','requires','asks','requests','needs','sees','likes','destroys','drops','chases','eats','throws','burns','carries','fires','builds','destroys','quotes','wears','questions','chirps','decyphers','decodes','confuses','hates','expandifies','embiggens','molpifies','explains','redoes','hides','hugs','spoilers', function(){return 'is '+make(redundancy.things)+'ing'}];
+	redundancy.transverb=['kicks','clicks','requires','asks','requests','needs','sees','likes','destroys','drops','chases','eats','throws','burns','carries','fires','builds','destroys','quotes','wears','questions','chirps','decyphers','decodes','confuses','hates','expandifies','embiggens','molpifies','explains','redoes','hides','hugs','spoilers','separates','debugs','uploads','downloads','steals', function(){return 'is '+make(redundancy.things)+'ing'}];
 	redundancy.intransverbs=[
 		function(){return make(redundancy.intransverb);},
 		function(){return make(redundancy.adverb)+' '+make(redundancy.intransverb);},
@@ -195,7 +195,7 @@ function MakeRedundancy()
 		function(){return make(redundancy.intransverb)+' '+make(redundancy.comparison);},
 		function(){return make(redundancy.intransverb)+' '+make(redundancy.prepphrase);}
 	];
-	redundancy.intransverb=['jumps','laughs','burns','cries','explodes','melts','runs','sings','worries','dies','lives','decays','eats','plays','turns','spins','posts','burrows','types','reboots','refreshes','reloads','wonders','walks','falls','collapses','shrugs', function(){return 'is '+make(redundancy.things)+'ing'}];
+	redundancy.intransverb=['jumps','laughs','burns','cries','explodes','melts','runs','sings','worries','dies','lives','decays','eats','plays','turns','spins','posts','burrows','types','reboots','refreshes','reloads','wonders','walks','falls','collapses','shrugs','departs', function(){return 'is '+make(redundancy.things)+'ing'}];
 	redundancy.prepphrase=[function(){return make(redundancy.prepositions)+' '+make(redundancy.objects);}];
 	redundancy.prepositions=['in','in','on','over','under','inside','outside','behind','from','within','from within','beside','underneath','near','at','for','into','of','in front of','nowhere near','to','from','close to','with','along','towards','away from','through','throughout','past','after','before'];
 	redundancy.adjphrase=[
@@ -250,144 +250,149 @@ var EmergencyExport=function()
 	}
 }
 
-var StatementGen={};
-StatementGen.FillStatements=function(n)
+var InitStatementGen=function(gen)
 {
-	var statementNames='ABCDEFGHI';
-	var operators=['and','or'];
-	var refCount=2;
-	if(!n) n = Math.floor(Math.random()*4)+4;
-	StatementGen.statements={};
-	var i = n;
-	while(i--)
+	var StatementGen=gen||{};
+	StatementGen.FillStatements=function(n)
 	{
-		var name=statementNames[i];
-		var statement={};
-		StatementGen.statements[name]=statement;
-		statement.name=name;
-		statement.value=Math.floor(Math.random()*2)==0;
-	}
-	i = n;
-	while(i--)
-	{
-		var statement = StatementGen.statements[statementNames[i]];
-		statement.refs=[];
-		var j = refCount;
-		while(j--)
-			statement.refs[j]=statementNames[Math.floor(Math.random()*n)];
-		statement.operator=operators[Math.floor(Math.random()*operators.length)];
-		StatementGen.FillClaims(statement);
-		StatementGen.ShuffleList(statement.claims);
-	}
-}
-StatementGen.FillClaims=function(statement)
-{
-	statement.claims=[];
-	if(statement.operator == 'and')
-	{
-		if(statement.value) //all claims must be true
+		var statementNames='ABCDEFGHI';
+		var operators=['and','or'];
+		var refCount=2;
+		if(!n) n = Math.floor(Math.random()*Math.ceil(Math.PI))+Math.ceil(Math.PI);
+		StatementGen.statements={};
+		var i = n;
+		while(i--)
 		{
-			for(var i in statement.refs)
-			{
-				var r=StatementGen.statements[statement.refs[i]];
-				statement.claims.push({name:r.name,value:r.value});
-			}
-		}else //at least 1 claim must be false
-		{ 
-			for(var i in statement.refs)
-			{
-				i=parseInt(i); //seriously javascript?
-				var r=StatementGen.statements[statement.refs[i]];
-				if(i)//fill in the rest with randoms
-				{
-					statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
-				}else//get this one wrong
-				{
-					statement.claims.push({name:r.name,value:!r.value});
-				}
-			}
+			var name=statementNames[i];
+			var statement={};
+			StatementGen.statements[name]=statement;
+			statement.name=name;
+			statement.value=Math.floor(Math.random()*2)==0;
 		}
-	}else if(statement.operator == 'or')
-	{
-		if(statement.value) //at least one claim must be true
+		i = n;
+		while(i--)
 		{
-			for(var i in statement.refs)
+			var statement = StatementGen.statements[statementNames[i]];
+			statement.refs=[];
+			var j = refCount+1*(Math.floor(Math.random()*4)==0);
+			while(j--)
+				statement.refs[j]=statementNames[Math.floor(Math.random()*n)];
+			statement.operator=operators[Math.floor(Math.random()*operators.length)];
+			StatementGen.FillClaims(statement);
+			StatementGen.ShuffleList(statement.claims);
+		}
+	}
+	StatementGen.FillClaims=function(statement)
+	{
+		statement.claims=[];
+		if(statement.operator == 'and')
+		{
+			if(statement.value) //all claims must be true
 			{
-				i=parseInt(i); //seriously javascript?
-				var r=StatementGen.statements[statement.refs[i]];
-				if(i)//fill in the rest with randoms
+				for(var i in statement.refs)
 				{
-					statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
-				}else//get this one right
-				{
+					var r=StatementGen.statements[statement.refs[i]];
 					statement.claims.push({name:r.name,value:r.value});
 				}
-			}		
-		}else //all claims must be false
+			}else //at least 1 claim must be false
+			{ 
+				for(var i in statement.refs)
+				{
+					i=parseInt(i); //seriously javascript?
+					var r=StatementGen.statements[statement.refs[i]];
+					if(i)//fill in the rest with randoms
+					{
+						statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
+					}else//get this one wrong
+					{
+						statement.claims.push({name:r.name,value:!r.value});
+					}
+				}
+			}
+		}else if(statement.operator == 'or')
 		{
-			for(var i in statement.refs)
+			if(statement.value) //at least one claim must be true
 			{
-				var r=StatementGen.statements[statement.refs[i]];
-				statement.claims.push({name:r.name,value:!r.value});
-			}		
+				for(var i in statement.refs)
+				{
+					i=parseInt(i); //seriously javascript?
+					var r=StatementGen.statements[statement.refs[i]];
+					if(i)//fill in the rest with randoms
+					{
+						statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
+					}else//get this one right
+					{
+						statement.claims.push({name:r.name,value:r.value});
+					}
+				}		
+			}else //all claims must be false
+			{
+				for(var i in statement.refs)
+				{
+					var r=StatementGen.statements[statement.refs[i]];
+					statement.claims.push({name:r.name,value:!r.value});
+				}		
+			}
+		}else{
+			return;
 		}
-	}else{
-		return;
 	}
-}
-StatementGen.ShuffleList=function(l)
-{
-	for(var i in l)
+	StatementGen.ShuffleList=function(l)
 	{
-		var j = Math.floor(Math.random()*(parseInt(i)+1));
-		var temp = l[j];
-		l[j]=l[i];
-		l[i]=temp;
-	}	
-	
-}
-StatementGen.RandStatementValue=function()
-{
-	var vals=[];
-	for(var i in StatementGen.statements) vals.push(StatementGen.statements[i].value);
-	return vals[Math.floor(Math.random()*vals.length)];
-}
-StatementGen.StringifyClaim=function(claim)
-{
-	return 'Statement '+claim.name+' is '+claim.value;
-}
-StatementGen.StringifyStatement=function(statement,buttonFunction)
-{
-	var name = 'Statement '+statement.name;
-	var str = ':';
-	if(buttonFunction)
-	{
-		str='<input type="Button" value="'+name+'" onclick="'+buttonFunction+'(\''+statement.name+'\')"></input>';
-	}else{
-		str=name+str;
-	}
-	for(var i in statement.claims)
-	{
-		i = parseInt(i);
-		str+= ' ' + StatementGen.StringifyClaim(statement.claims[i]);
-		if(i<statement.claims.length-1)
+		for(var i in l)
 		{
-			str+=' '+statement.operator;
-		}
+			var j = Math.floor(Math.random()*(parseInt(i)+1));
+			var temp = l[j];
+			l[j]=l[i];
+			l[i]=temp;
+		}	
+		
 	}
-	return str;
-}
-StatementGen.StringifyStatements=function(buttonFunction)
-{
-	var str=[];
-	for(var i in StatementGen.statements)
+	StatementGen.RandStatementValue=function()
 	{
-		str.push(StatementGen.StringifyStatement(StatementGen.statements[i],buttonFunction));
+		var vals=[];
+		for(var i in StatementGen.statements) vals.push(StatementGen.statements[i].value);
+		return vals[Math.floor(Math.random()*vals.length)];
 	}
-	StatementGen.ShuffleList[str];
-	return str;
-}
-StatementGen.StatementValue=function(name)
-{
-	return StatementGen.statements[name].value;
+	StatementGen.StringifyClaim=function(claim)
+	{
+		return 'Statement '+claim.name+' is '+claim.value;
+	}
+	StatementGen.StringifyStatement=function(statement,buttonFunction)
+	{
+		var name = 'Statement '+statement.name;
+		var str = ':';
+		if(buttonFunction)
+		{
+			str='<input type="Button" value="'+name+'" onclick="'+buttonFunction+'(\''+statement.name+'\')"></input>';
+		}else{
+			str=name+str;
+		}
+		for(var i in statement.claims)
+		{
+			i = parseInt(i);
+			str+= ' ' + StatementGen.StringifyClaim(statement.claims[i]);
+			if(i<statement.claims.length-1)
+			{
+				str+=' '+statement.operator;
+			}
+		}
+		//str+= ' ('+statement.value+')';
+		return str;
+	}
+	StatementGen.StringifyStatements=function(buttonFunction)
+	{
+		var str=[];
+		for(var i in StatementGen.statements)
+		{
+			str.push(StatementGen.StringifyStatement(StatementGen.statements[i],buttonFunction));
+		}
+		StatementGen.ShuffleList(str);
+		return str;
+	}
+	StatementGen.StatementValue=function(name)
+	{
+		return StatementGen.statements[name].value;
+	}
+	return StatementGen;
 }
