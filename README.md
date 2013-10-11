@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.88
+- New batch of icons by BlitzGirl!
+
 ### 1.87
 - Fixed bag puns description
 - Adjusted postfix longnames

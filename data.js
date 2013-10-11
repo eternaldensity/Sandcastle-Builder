@@ -374,7 +374,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Bigger Buckets',desc:'Increases sand rate of buckets and clicks',sand:500,castles:0,stats:'Adds 0.1 S/mNP to each Bucket, before multipliers',icon:'biggerbuckets'});
 	new Molpy.Boost({name:'Huge Buckets',desc:'Doubles sand rate of buckets and clicks',sand:800,castles:2,icon:'hugebuckets'});
 	new Molpy.Boost({name:'Helping Hand',desc:'Increases sand rate of Cuegan',sand:500,castles:2,stats:'Adds 0.2 S/mNP to each Cuegan, before multipliers',icon:'helpinghand'});
-	new Molpy.Boost({name:'Cooperation',desc:'Increases sand rate of Cuegan 5% per pair of buckets',sand:2000,castles:4,
+	new Molpy.Boost({name:'Cooperation',desc:'Increases sand rate of Cuegan 5% per pair of buckets',sand:2000,castles:4,icon:'cooperation',
 		stats:function()
 		{			
 			if(Molpy.Got('Cooperation'))
@@ -386,7 +386,7 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	new Molpy.Boost({name:'Spring Fling',desc:'Trebuchets build an extra Castle',sand:1000,castles:6,icon:'springfling'});
-	new Molpy.Boost({name:'Trebuchet Pong',desc:'Increases sand rate of buckets 50% per pair of trebuchets',sand:3000,castles:6});
+	new Molpy.Boost({name:'Trebuchet Pong',desc:'Increases sand rate of buckets 50% per pair of trebuchets',sand:3000,castles:6,icon:'trebpong'});
 	new Molpy.Boost({name:'Molpies',desc:'Increases sand dig rate based on Badges',sand:5000,castles:5,
 		stats:function()
 		{
@@ -406,11 +406,11 @@ Molpy.DefineBoosts=function()
 		sand:3000,castles:10,icon:'warbanner'});
 	new Molpy.Boost({name:'Magic Mountain',desc:'Flags are much more powerful',
 		sand:8000,castles:15,stats:'Multiplies Flag sand rate by 2.5',icon:'magicmountain'});
-	new Molpy.Boost({name:'Extension Ladder',desc:'Ladders reach a little higher',sand:'12K',castles:22,
+	new Molpy.Boost({name:'Extension Ladder',desc:'Ladders reach a little higher',sand:'12K',castles:22,icon:'extensionladder',
 		stats:'Each ladder produces 18 more sand per mNP, before multipliers'});
 	new Molpy.Boost({name:'Level Up!',desc:'Ladders are much more powerful',sand:'29K',castles:34,
 		stats:'Ladders produce 2 times as many castles per ONG',icon:'levelup'});
-	new Molpy.Boost({name:'Varied Ammo',desc:'Trebuchets build an extra castle for each Castle Tool you have 2+ of',sand:3900,castles:48,
+	new Molpy.Boost({name:'Varied Ammo',desc:'Trebuchets build an extra castle for each Castle Tool you have 2+ of',sand:3900,castles:48,icon:'variedammo',
 		stats:function()
 		{
 			if(Molpy.Got('Varied Ammo'))
@@ -443,7 +443,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'True Colours',desc:'Each Cuegan+Flag pair gives clicking +5 sand',
 		sand:750,castles:15,icon:'truecolours'});
 	new Molpy.Boost({name:'Precise Placement',desc:'For every two ladders, scaffolds destroy one less castle',
-		sand:8750,castles:115});
+		sand:8750,castles:115,icon:'preciseplacement'});
 	new Molpy.Boost({name:'Ninja Hope',desc:'Avoid one Ninja Stealth reset, at the cost of 10 castles',
 		sand:7500,castles:40,icon:'ninjahope',startPower:1,group:'ninj'}); 
 	new Molpy.Boost({name:'Ninja Penance',desc:'Avoid a two Ninja Stealth resets, at the cost of 30 castles each',
@@ -459,7 +459,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Department of Redundancy Department',desc:Molpy.redactedWords
 		+' sometimes unlock special boosts',sand:23456,castles:78,icon:'department',group:'hpt'});
 	new Molpy.Boost({name:'Raise the Flag',desc:'Each Flag+Ladder pair gives clicking an extra +50 sand',
-		sand:'85K',castles:95});
+		sand:'85K',castles:95,icon:'raisetheflag'});
 	new Molpy.Boost({name:'Hand it Up',desc:'Each Ladder+Bag pair gives clicking an extra +500 sand',
 		sand:'570K',castles:170,department:1});
 	new Molpy.Boost({name:'Riverish',desc:'Rivers destroy less castles the more you click',
@@ -767,7 +767,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Smallbot',desc:'NewPixBots produce double castles, Rivers produce quadruple',
 		sand:'352.5M',castles:390625,icon:'smallbot',group:'cyb'});
 	
-	new Molpy.Boost({name:'Swell',desc:'Waves produce 29 more Castles',sand:'20K',castles:200});
+	new Molpy.Boost({name:'Swell',desc:'Waves produce 29 more Castles',sand:'20K',castles:200,icon:'swell'});
 	new Molpy.Boost({name:'Flux Capacitor',desc:'It makes Time Travel possibler!',sand:88,castles:88,group:'chron'});
 	new Molpy.Boost({name:'Bag Burning',desc:'Bags help counteract NewPixBots',sand:'50M',castles:86,
 		stats:function()
@@ -918,7 +918,7 @@ Molpy.DefineBoosts=function()
 		sand:'84.7M',castles:7540,icon:'buccaneer'});
 	new Molpy.Boost({name:'Bucket Brigade',desc:'Clicks give 1% of sand dig rate per 50 buckets',
 		sand:'412M',castles:8001,icon:'bucketbrigade'});
-	new Molpy.Boost({name:'Bag Puns',desc:'Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',sand:'1470M',castles:450021,stats:function(me)
+	new Molpy.Boost({name:'Bag Puns',desc:'Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',sand:'1470M',castles:450021,icon:'bagpuns',stats:function(me)
 		{
 			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
 			return me.desc;
@@ -1742,7 +1742,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Ninja Legion',desc:'Ninja Stealth is raised by 1000x as much'
 		,sand:'3P',castles:'0.9P',group:'ninj'});
 		
-	new Molpy.Boost({name:'Swim Between the Flags',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T'});
+	new Molpy.Boost({name:'Swim Between the Flags',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T',icon:'swimbetweenflags'});
 	
 	new Molpy.Boost({name:"Château d'If",
 		desc:function(me)
@@ -1884,7 +1884,7 @@ Molpy.DefineBoosts=function()
 			str+='<br>Speed is at '+me.power+' out of 200';
 		return str;
 	}
-	,group:'bean',className:'toggle'});
+	,group:'bean',className:'toggle',icon:'panthersalve'});
 	
 	Molpy.PantherSalveToggle=function()
 	{
@@ -2126,10 +2126,10 @@ Molpy.DefineBoosts=function()
 		}
 	}
 	new Molpy.Boost({name:'Sand Tool Multi-Buy',desc:'Allow buying of multiple sand tools at once'
-		,sand:'200K',castles:'6502',stats:'Code for this feature supplied by waveney'
+		,sand:'200K',castles:'6502',stats:'Code for this feature supplied by waveney',icon:'sandmultibuy'
 	});
 	new Molpy.Boost({name:'Castle Tool Multi-Buy',desc:'Allow buying of multiple castle tools at once'
-		,sand:'2000K',castles:'68020',stats:'Code for this feature supplied by waveney'
+		,sand:'2000K',castles:'68020',stats:'Code for this feature supplied by waveney',icon:'castlemultibuy'
 	});
 	new Molpy.Boost({name:'Run Raptor Run',desc:'Multiplies Not Lucky bonus by 1000 at a cost of 30 Glass Blocks per use'
 		,sand:'180E',castles:'380E',glass:2500,group:'bean'
@@ -2138,7 +2138,7 @@ Molpy.DefineBoosts=function()
 		,sand:'490P',castles:'670P',glass:1500,group:'ninj'
 	});
 	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.'
-		,sand:'48E',castles:'38E',glass:100,group:'hpt'
+		,sand:'48E',castles:'38E',glass:100,group:'hpt',icon:'phonesaw'
 	});
 	new Molpy.Boost({name:'Logicat',desc:
 		function(me)
@@ -2146,7 +2146,7 @@ Molpy.DefineBoosts=function()
 			
 			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>'+(me.bought*5-Math.floor(me.power))+' correct answers are needed to reach Logicat Level '+(me.bought+1);
 		}
-		,sand:'55E',castles:'238E',glass:100,group:'bean'
+		,sand:'55E',castles:'238E',glass:100,group:'bean',icon:'logicat'
 	});
 	new Molpy.Boost({name:'Two for One',desc:
 		function(me){return 'For '+Molpify(me.countdown,3)+'mNP, when you buy a Tool, get one free!';}
@@ -2210,7 +2210,7 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	new Molpy.Boost({name:'Technicolour Dream Cat',desc:Molpy.redactedWords+' are multicoloured (if Chromatic Heresy is enabled)',
-		sand:'320K',castles:'90K',glass:10});
+		sand:'320K',castles:'90K',glass:10,icon:'dreamcat'});
 		
 		
 	Molpy.GlassExtruderUpgradeCost=function()
