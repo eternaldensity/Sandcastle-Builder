@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.87
+- Fixed bag puns description
+- Adjusted postfix longnames
+
 ### 1.86
 - Changed the build/destroy notify threshhold to 1 in ten million
 - Class Chiller number formatting
