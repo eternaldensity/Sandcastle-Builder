@@ -16,9 +16,9 @@ function ONGsnip(time)
 	return time;
 }
 var postfixes=[
-{limit:1e42,divisor:1e42,postfix:['W',' Whatthe']},
+{limit:1e42,divisor:1e42,postfix:['W',' Wololo']},
 {limit:1e39,divisor:1e39,postfix:['L',' Lotta']},
-{limit:1e36,divisor:1e36,postfix:['F',' Fraki']},
+{limit:1e36,divisor:1e36,postfix:['F',' Ferro']},
 {limit:1e33,divisor:1e33,postfix:['H',' Helo']}, //or Ballard
 {limit:1e30,divisor:1e30,postfix:['S',' Squilli']},
 {limit:1e27,divisor:1e27,postfix:['U',' Umpty']},
@@ -202,7 +202,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.86;
+		Molpy.version=1.87;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
