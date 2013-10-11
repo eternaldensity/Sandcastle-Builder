@@ -22,6 +22,10 @@ For personal amusement only.
 - Changed the build/destroy notify threshhold to 1 in ten million
 - Class Chiller number formatting
 - Logicat is not a Technicolour Dream Cat
+- New Second Chance boost
+- Moved Caged Logicat purchase to Rosetta
+- Rosetta now doesn't show as action (yellow) if you don't have doublepost or factory automation
+- Number of correct Logicat answers required displayed was 5 higher than real value
 
 ### 1.85
 - TDC changes faster

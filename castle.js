@@ -2656,6 +2656,7 @@ Molpy.Up=function()
 				str+='<br><br>'+statements[i];
 			}
 			Molpy.redactedPuzzleValue=str;
+			Molpy.redactedSGen.firstTry=1;
 		}
 		Molpy.ClickRedactedPuzzle=function(name)
 		{
@@ -2675,6 +2676,13 @@ Molpy.Up=function()
 			{
 				Molpy.Notify('Incorrect');
 				Molpy.Boosts['Logicat'].power-=0.5;
+			
+				if(Molpy.redactedSGen.firstTry&&Molpy.Got('Second Chance'))
+				{
+					Molpy.redactedSGen.firstTry=0;
+					Molpy.Notify('Try Again');
+					return;
+				}
 			}
 			Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]='show';
 			Molpy.shopRepaint=1;

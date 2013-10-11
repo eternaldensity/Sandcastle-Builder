@@ -1667,15 +1667,6 @@ Molpy.DefineBoosts=function()
 				}
 				str+=' to build a Sand Purifier, which makes the Glass Furnace use less sand.';
 			}
-			if(me.power>800&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
-			{
-				if(me.power>=1000)
-				{
-					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Caged Logicat\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
-				}else{
-					str+=' It costs '+Molpify(1000)+' Glass Blocks to get a Caged Logicat.';
-				}
-			}
 			return str;
 		}
 		,icon:'glassblockstore',className:'alert',group:'hpt'
@@ -1813,6 +1804,15 @@ Molpy.DefineBoosts=function()
 				{
 						str+='<br><input type="Button" value="Trade" onclick="Molpy.UnlockNinjaClimber()"></input> 500 Ladders to unlock Ninja Climber.';
 				}
+			if(Molpy.HasGlassBlocks(800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
+			{
+				if(Molpy.HasGlassBlocks(1000))
+				{
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Caged Logicat\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
+				}else{
+					str+='<br>It costs '+Molpify(1000)+' Glass Blocks to get a Caged Logicat.';
+				}
+			}
 			}
 			return str;
 		}, sand:'0.9P',castles:'32T',icon:'rosetta',group:'bean',className:'action',
@@ -1822,9 +1822,10 @@ Molpy.DefineBoosts=function()
 			var newClass = '';
 			var fa = Molpy.Boosts['Factory Automation'];
 			var bots=Molpy.CastleTools['NewPixBot'].amount;
-			if(!Molpy.Got('Panther Salve')
-			||fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power]
-			||!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500)
+			if(!Molpy.Got('Panther Salve')&&Molpy.HasGlassBlocks(250)
+			||fa.bought&&Molpy.Got('Doublepost')&&fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power]
+			||!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500
+			||Molpy.HasGlassBlocks(800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
 				newClass='action';
 			if(newClass!=oldClass)
 			{
@@ -2142,7 +2143,7 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{
 			
-			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>'+((me.bought+1)*5-Math.floor(me.power))+' correct answers are needed to reach Logicat Level '+(me.bought+1);
+			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>'+(me.bought*5-Math.floor(me.power))+' correct answers are needed to reach Logicat Level '+(me.bought+1);
 		}
 		,sand:'55E',castles:'238E',glass:100,group:'bean'
 	});
@@ -2279,6 +2280,7 @@ Molpy.DefineBoosts=function()
 		Molpy.cagedPuzzleValue=str;
 		Molpy.Boosts['Caged Logicat'].hoverOnConter=1;
 		Molpy.Boosts['Caged Logicat'].power=1;
+		Molpy.cagedSGen.firstTry=1;
 	}
 	Molpy.ClickCagedPuzzle=function(name)
 	{
@@ -2298,11 +2300,21 @@ Molpy.DefineBoosts=function()
 		{
 			Molpy.Notify('Incorrect');
 			Molpy.Boosts['Logicat'].power-=0.5;
+			
+			if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance'))
+			{
+				Molpy.cagedSGen.firstTry=0;
+				Molpy.Notify('Try Again');
+				return;
+			}
 		}
 		Molpy.cagedPuzzleValue='';
 		Molpy.Boosts['Caged Logicat'].hoverOnConter=1;
 		Molpy.Boosts['Caged Logicat'].power=0;
 	}
+	
+	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it.',
+		sand:'250Y',castles:'87Y',group:'bean',logic:5});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
