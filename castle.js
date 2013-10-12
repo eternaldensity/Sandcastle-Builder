@@ -1235,7 +1235,7 @@ Molpy.Up=function()
 				Molpy.EarnBadge('People Eating Tasty Animals');
 			}
 			if(Molpy.castles>=DeMolpify('20P')){
-				Molpy.EarnBadge('Free Advice');
+				Molpy.UnlockBoost('Free Advice');
 			}
 			if(Molpy.castles>=DeMolpify('1Y')){
 				Molpy.EarnBadge('Y U NO RUN OUT OF SPACE?');

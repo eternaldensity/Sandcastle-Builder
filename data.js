@@ -409,7 +409,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Extension Ladder',desc:'Ladders reach a little higher',sand:'12K',castles:22,icon:'extensionladder',
 		stats:'Each ladder produces 18 more sand per mNP, before multipliers'});
 	new Molpy.Boost({name:'Level Up!',desc:'Ladders are much more powerful',sand:'29K',castles:34,
-		stats:'Ladders produce 2 times as many castles per ONG',icon:'levelup'});
+		stats:'Ladders produce twice as much Sand',icon:'levelup'});
 	new Molpy.Boost({name:'Varied Ammo',desc:'Trebuchets build an extra castle for each Castle Tool you have 2+ of',sand:3900,castles:48,icon:'variedammo',
 		stats:function()
 		{
@@ -1147,6 +1147,12 @@ Molpy.DefineBoosts=function()
 			,"Bagmember"
 			,"Double Bag Seven"
 			,"Ocean's Bag"
+			,"The Royal Tenenbags"
+			,"Bags Wide Shut"
+			,"A Bag Day's Night"
+			,"The Baggit"
+			,"Finnegan's Bag"
+			,"One Hundred Bags of Solitude"
 		]
 	}
 	
@@ -1270,6 +1276,10 @@ Molpy.DefineBoosts=function()
 			{
 				Molpy.Notify('The rift closes in 2mNP!');
 			}
+		},
+		lockFunction:function(me)
+		{
+			me.countdown=0; //prevent reopening every time you load :P
 		}
 		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:6,group:'chron',className:'action'});
 	Molpy.RiftJump=function()

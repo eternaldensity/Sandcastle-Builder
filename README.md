@@ -18,6 +18,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.891
+- Fix Level Up! description
+- Free Advice fix (I don't understand how it got like that)
+- Prevent Temporal Rift from reopening on load if you save after having travelled through it.
+- bp
+
 ### 1.89
 - Changed Glass Ceiing 9 to multiply Rivers' Castle Build number rather than Castle Destruction
 - Trading with Rosetta now reduced the number of castle tools owned and updates sand dig rate calcs
