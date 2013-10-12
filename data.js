@@ -492,7 +492,7 @@ Molpy.DefineBoosts=function()
 		if(Math.floor(Math.random()*2))
 		{
 			var amount=Molpy.castles;
-			Molpy.Build(Molpy.castles);
+			Molpy.Build(Molpy.castles,1); //yeah that was a bit too powerful :P
 		}else{
 			Molpy.Destroy(Molpy.castles);
 			Molpy.Boosts['Double or Nothing'].power=Math.floor(Molpy.Boosts['Double or Nothing'].power/2);

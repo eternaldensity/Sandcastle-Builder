@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.892
+- Made Double or Nothing a bit less broken
+
 ### 1.891
 - Fix Level Up! description
 - Free Advice fix (I don't understand how it got like that)

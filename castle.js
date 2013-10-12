@@ -202,7 +202,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.891;
+		Molpy.version=1.892;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -3541,7 +3541,7 @@ Molpy.Up=function()
 			{
 				Molpy.SpendGlassBlocks(5);
 				Molpy.Boosts['Broken Bottle Cleanup'].power=1;
-				if(Molpy.Boosts['Double or Nothing'].power>20)
+				if(Molpy.Boosts['Double or Nothing'].power>20&&Math.floor(Math.random()*4)==0)
 					Molpy.Boosts['Double or Nothing'].power--;
 			}else{
 				Molpy.Boosts['Broken Bottle Cleanup'].power=0;
