@@ -24,6 +24,7 @@ For personal amusement only.
 - Prevent Temporal Rift from reopening on load if you save after having travelled through it.
 - bp
 - Glass Chiller downgrade
+- Rift countdown +1
 
 ### 1.89
 - Changed Glass Ceiing 9 to multiply Rivers' Castle Build number rather than Castle Destruction
