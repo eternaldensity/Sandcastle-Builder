@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.893
+- glass storage upgrades more available
+
 ### 1.892
 - Made Double or Nothing a bit less broken
 

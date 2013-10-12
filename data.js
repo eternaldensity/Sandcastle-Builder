@@ -1498,7 +1498,7 @@ Molpy.DefineBoosts=function()
 			var size=(me.bought)*10;
 			var rate = Molpy.Boosts['Sand Refinery'].power+1;
 			str+= ' Has space to store '+Molpify(size,1)+ ' Chips total.';
-			if(size-me.power<=rate*5)
+			if(size-me.power<=rate*10)
 			{
 				if(me.power>=5)
 				{
@@ -1679,7 +1679,7 @@ Molpy.DefineBoosts=function()
 			var size=(me.bought)*50;
 			var rate = Molpy.Boosts['Glass Chiller'].power+1;
 			str+= ' Has space to store '+Molpify(size,1)+ ' Blocks total.';
-			if(size-me.power<=rate*5)
+			if(size-me.power<=rate*10)
 			{
 				if(me.power>=15)
 				{
