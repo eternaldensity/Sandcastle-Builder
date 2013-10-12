@@ -23,6 +23,7 @@ For personal amusement only.
 - Free Advice fix (I don't understand how it got like that)
 - Prevent Temporal Rift from reopening on load if you save after having travelled through it.
 - bp
+- Glass Chiller downgrade
 
 ### 1.89
 - Changed Glass Ceiing 9 to multiply Rivers' Castle Build number rather than Castle Destruction
