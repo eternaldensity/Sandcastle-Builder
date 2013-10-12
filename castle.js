@@ -202,7 +202,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.89;
+		Molpy.version=1.891;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1235,7 +1235,7 @@ Molpy.Up=function()
 				Molpy.EarnBadge('People Eating Tasty Animals');
 			}
 			if(Molpy.castles>=DeMolpify('20P')){
-				Molpy.EarnBadge('Free Advice');
+				Molpy.UnlockBoost('Free Advice');
 			}
 			if(Molpy.castles>=DeMolpify('1Y')){
 				Molpy.EarnBadge('Y U NO RUN OUT OF SPACE?');
