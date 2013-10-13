@@ -201,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.895;
+		Molpy.version=1.9;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -255,8 +255,8 @@ Molpy.Up=function()
 			Molpy.options.colourscheme=0;
 			Molpy.options.sandmultibuy=0;
 			Molpy.options.castlemultibuy=0;
-			Molpy.options.showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:1,discov:0,monument:0,tagged:0};
-			Molpy.options.showhideNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monument','tagged'];
+			Molpy.options.showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:1,discov:0,monums:0,monumg:0,tagged:0};
+			Molpy.options.showhideNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged'];
 		}
 		Molpy.DefaultOptions();
 		
@@ -741,6 +741,10 @@ Molpy.Up=function()
 			if(version<1.73)
 			{
 				Molpy.Boosts['Panther Salve'].power=1;
+			}
+			if(version<1.9)
+			{
+				Molpy.options.showhide.tagged=Molpy.options.showhide.monumg;
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -2604,17 +2608,75 @@ Molpy.Up=function()
 				if(Molpy.Got('Blitzing'))
 					bonus*=Math.min(2,(Molpy.Boosts['Blitzing'].power-800)/200);
 			}
+			if(Molpy.Got('Run Raptor Run') && Molpy.Boosts['Run Raptor Run'].power && Molpy.HasGlassBlocks(30))
+			{
+				Molpy.SpendGlassBlocks(30);
+				bonus*=1000;
+			}
+			if(Molpy.Got('Let the Cat out of the Bag') && Molpy.Boosts['Let the Cat out of the Bag'].power)
+			{
+				if(Molpy.HasGlassBlocks(40))				
+				{
+					Molpy.SpendGlassBlocks(40);
+					items+=Molpy.SandTools['Ladder'].amount*5;
+				}
+				else if(Molpy.SandTools['Ladder'].amount)				
+				{
+					items+=(Molpy.SandTools['Ladder'].amount--)*5;
+					Molpy.SandToolsOwned--;
+					Molpy.shopRepaint=1;
+				}
+				if(Molpy.HasGlassBlocks(40))				
+				{
+					Molpy.SpendGlassBlocks(40);
+					items+=Molpy.SandTools['Bag'].amount*5;
+				}
+				else if(Molpy.SandTools['Bag'].amount)				
+				{
+					items+=(Molpy.SandTools['Bag'].amount--)*5;
+					Molpy.SandToolsOwned--;
+					Molpy.shopRepaint=1;
+				}
+			}
+			if(Molpy.Got('Catamaran') && Molpy.Boosts['Catamaran'].power)
+			{
+				if(Molpy.HasGlassBlocks(50))				
+				{
+					Molpy.SpendGlassBlocks(50);
+					items+=(Molpy.CastleTools['River'].amount)*5;
+				}
+				else if(Molpy.CastleTools['River'].amount)				
+				{
+					items+=(Molpy.CastleTools['River'].amount--)*5;
+					Molpy.CastleToolsOwned--;
+					Molpy.shopRepaint=1;
+				}
+				if(Molpy.HasGlassBlocks(50))				
+				{
+					Molpy.SpendGlassBlocks(50);
+					items+=(Molpy.CastleTools['Wave'].amount)*5;
+				}
+				else if(Molpy.CastleTools['Wave'].amount)				
+				{
+					items+=(Molpy.CastleTools['Wave'].amount--)*5;
+					Molpy.CastleToolsOwned--;
+					Molpy.shopRepaint=1;
+				}
+			}
+			if(Molpy.Got('Redundant Raptor') && Molpy.Boosts['Redundant Raptor'].power)
+			{
+				if(Molpy.HasGlassBlocks(150))				
+				{
+					Molpy.SpendGlassBlocks(150);
+					items+=Molpy.redactedClicks;
+				}
+			}
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0 && Molpy.HasGlassBlocks(10))
 			{				
 				Molpy.SpendGlassBlocks(10);
 				Molpy.Boosts['Panther Salve'].power++;
 				bonus*=Math.pow(1.01,items);
 				bonus=Math.min(bonus,Molpy.castlesBuilt/20); //just to keep things sane
-			}
-			if(Molpy.Got('Run Raptor Run'&& Molpy.HasGlassBlocks(30)))
-			{
-				Molpy.SpendGlassBlocks(30);
-				bonus*=1000;
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
 				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/10);
@@ -2869,6 +2931,8 @@ Molpy.Up=function()
 			g('castletools').innerHTML=str;		
 		}
 		
+		//f= force (show regardless of group visibility
+		//r = redacted index
 		Molpy.BoostString=function(me,f,r)
 		{		
 			var cn= me.className||'';
@@ -2978,11 +3042,20 @@ Molpy.Up=function()
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;	
 		}
 		
-		Molpy.BadgeLootString=function(me)
+		//f= force (show regardless of group visibility
+		//r = redacted index
+		Molpy.BadgeString=function(me,f,r)
 		{
+			if(r) r= Molpy.RedactedHTML(1);
+			else r='';
+			
 			var cn= me.className||'';			
-			if(cn)Molpy.UnlockBoost('Chromatic Heresy');
-			return '<div class="lootbox badge loot '+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div class="heading">[badge]</div><div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'+me.name+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
+			if(cn&&me.earned)Molpy.UnlockBoost('Chromatic Heresy');
+			cn+=' lootbox badge '+(me.earned?'loot':'shop');
+			
+			return r+'<div class="'+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id
+				+'],event)"><div class="heading">[badge]</div><div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'
+				+(me.earned||me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';			
 		}
 		
 		Molpy.RepaintBadges=function()
@@ -3012,9 +3085,8 @@ Molpy.Up=function()
 				//do some sorting here?
 				for (var i in blist)
 				{
-					if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
 					var me=blist[i];					
-					str+=Molpy.BadgeLootString(me);
+					str+=Molpy.BadgeString(me,0,r==redactedIndex);
 					r++;
 				}
 				if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
@@ -3045,9 +3117,8 @@ Molpy.Up=function()
 				//do some sorting here?
 				for (var i in blist)
 				{
-					if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
 					var me=blist[i];
-					str+='<div class="lootbox badge shop" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id+'],event)"><div class="heading">[badge]</div><div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'+(me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';
+					str+=Molpy.BadgeString(me,0,r==redactedIndex);
 					r++;
 				}
 				if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
@@ -3087,7 +3158,7 @@ Molpy.Up=function()
 			for (var i in blist)
 			{
 				var me=blist[i];					
-				str+=Molpy.BadgeLootString(me);
+				str+=Molpy.BadgeString(me,1);
 			}
 			g('loot').innerHTML=str;
 		}

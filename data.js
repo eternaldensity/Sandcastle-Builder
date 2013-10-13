@@ -1960,6 +1960,10 @@ Molpy.DefineBoosts=function()
 		var str ='Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 10 Glass Blocks per use.';
 		if(me.power <=200)
 			str+='<br>Speed is at '+me.power+' out of 200';
+		else if(me.power<=500)
+			str+='<br>Speed is at '+me.power+' out of 500';
+		else if(me.power<=800)
+			str+='<br>Speed is at '+me.power+' out of 800';
 		return str;
 	}
 	,group:'bean',className:'toggle',icon:'panthersalve'});
@@ -2395,12 +2399,76 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it.',
 		sand:'250Y',castles:'87Y',group:'bean',logic:5});
 	
+	new Molpy.Boost({name:'Let the Cat out of the Bag',
+		desc:function(me)
+		{
+			var str='Not Lucky reward gains 1% 5 times per Ladder and Bag owned, at a cost of 80 Glass Blocks (or 1 Ladder and 1 Bag) per use.'
+			if(me.bought)
+			{
+				str+=' <input type="Button" onclick="Molpy.CatBagToggle()" value="'
+					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
+			}
+			return str;
+		},buyFunction:function(me){me.power=1;},
+		stats:'At a cost of 40 Glass Blocks, multiplies Not Lucky by 1.01 5 times for each Ladder, then at a cost of 40 Glass Blocks, multiplies Not Lucky by 1.01 5 times for each Bag. If 40 Glass Blocks are not available each time, a Ladder/Bag is consumed before multiplying.',
+		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean'});
+	Molpy.CatBagToggle=function()
+	{
+		var me=Molpy.Boosts['Let the Cat out of the Bag'];
+		me.power=(!me.power)*1;			
+		me.hoverOnCounter=1;
+	}
+	
+	new Molpy.Boost({name:'Catamaran',
+		desc:function(me)
+		{
+			var str='Not Lucky reward gains 1% 5 times per Wave and River owned, at a cost of 100 Glass Blocks (or 1 Waves and 1 River) per use.'
+			if(me.bought)
+			{
+				str+=' <input type="Button" onclick="Molpy.CatamaranToggle()" value="'
+					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
+			}
+			return str;
+		},buyFunction:function(me){me.power=1;},
+		stats:'At a cost of 50 Glass Blocks, multiplies Not Lucky by 1.01 5 times for each Wave, then at a cost of 50 Glass Blocks, multiplies Not Lucky by 1.01 5 times for each River. If 50 Glass Blocks are not available each time, a Wave/River is consumed before multiplying.',
+		sand:'750S',castles:'245S',glass:'4800',className:'toggle',group:'bean'});
+	Molpy.CatamaranToggle=function()
+	{
+		var me=Molpy.Boosts['Catamaran'];
+		me.power=(!me.power)*1;			
+		me.hoverOnCounter=1;
+	}
+	
+	new Molpy.Boost({name:'Redundant Raptor',
+		desc:function(me)
+		{
+			var str='Not Lucky reward gains 1% per '+Molpy.redactedWord+' click, at a cost of 150 Glass Blocks per use.'
+			if(me.bought)
+			{
+				str+=' <input type="Button" onclick="Molpy.RedRaptorToggle()" value="'
+					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
+			}
+			return str;
+		},buyFunction:function(me){me.power=1;},
+		stats:'At a cost of 150 Glass Blocks, multiplies Not Lucky by 1.01 for each '+Molpy.redactedWord+' click',
+		sand:'930PW',castles:'824PW',glass:'4800',className:'toggle',group:'bean'});
+	Molpy.RedRaptorToggle=function()
+	{
+		var me=Molpy.Boosts['Redundant Raptor'];
+		me.power=(!me.power)*1;			
+		me.hoverOnCounter=1;
+	}
+	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
 		ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
 		chron:['chronotech','Chronotech','boost_lateclosing'],
 		cyb:['cybernetics','Cybernetics','boost_robotefficiency'],
-		bean:['beanie tech','Beanie Tech','boost_chateau']};
+		bean:['beanie tech','Beanie Tech','boost_chateau'],
+		discov:['discoveries','Discoveries'],
+		monums:['sand monuments','Sand Monuments'],
+		monumg:['glass monuments','Glass Monuments'],
+	};
 }
 	
 	
@@ -2507,7 +2575,7 @@ Molpy.DefineBadges=function()
 			if(level==1) return 'The countdown is at ' + Molpify(countdown)+'NP';
 			return 'Judgement dip is upon us! But it can get worse. The countdown is at ' + Molpify(countdown)+
 			'NP';
-		},vis:2,icon:'judgementdipwarning',className:'alert',classChange:function(){return Molpy.CheckJudgeClass(this,0,'alert');}});
+		},vis:2,icon:'judgementdipwarning',classChange:function(){return Molpy.CheckJudgeClass(this,0,'alert');}});
 	Molpy.JudgementDipThreshhold=function()
 	{
 		if(Molpy.Boosts['NewPixBot Navigation Code'].power) return [0,Infinity];
@@ -2626,7 +2694,7 @@ Molpy.DefineBadges=function()
 			if(j<1) return 'Safe. For now.';
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			
 		}
-		,vis:3,icon:'judgementdip',className:'alert',classChange:function(){return Molpy.CheckJudgeClass(this,1,'alert');}});
+		,vis:3,icon:'judgementdip',classChange:function(){return Molpy.CheckJudgeClass(this,1,'alert');}});
 	new Molpy.Badge({name:'Fast Forward',desc:'Travel Back to the Future',vis:1});
 	new Molpy.Badge({name:'And Back',desc:'Return to the Past',vis:1});
 	new Molpy.Badge({name:'Primer',desc:'Travel through Time 10 Times',vis:1});
@@ -2846,6 +2914,18 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Boosts['Panther Salve'].power > 200)
 	{
 		Molpy.Boosts['Run Raptor Run'].department=1;
+	}
+	if(Molpy.Boosts['Panther Salve'].power > 500)
+	{
+		Molpy.Boosts['Let the Cat out of the Bag'].logic=2;
+	}
+	if(Molpy.Boosts['Panther Salve'].power > 800)
+	{
+		Molpy.Boosts['Catamaran'].logic=4;
+	}
+	if(Molpy.Boosts['Panther Salve'].power > 1200)
+	{
+		Molpy.Boosts['Redundant Raptor'].logic=6;
 	}
 	if(Molpy.Boosts['VITSSÅGEN, JA!'].power >=88)
 	{

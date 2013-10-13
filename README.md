@@ -10,13 +10,22 @@ Graphics likely by GLR and OTTers, when they are added
 
 Parts of code and the clockface image by ChronosDragon.
 
-Icons by ChronosDragon and BlitzGirl.
+Icons by ChronosDragon, BlitzGirl, and StormAngel/cmyk
 
 Inspired by Orteil's Cookie Clicker
 
 For personal amusement only.
 
 ## Changelog
+
+### 1.9
+- BAG Power Unfortunately Necessitates Something
+- Badge drawing refactor: now works just like boosts so it's neater and I can easily add badge categories
+- Fixed RRR parentheses mustard
+- 2 new Not Lucky boosts... which are pretty powerful but probably not enough for waveney
+- Judgement Dip/Report are now not Alert by default, because if they are inactive they switch off after a mNP anyway, and now that you can save your Show/Hide state, it's annoying to see them appear and vanish on load
+- Another Not Lucky boost and buffed the previous 2
+- Now they're probably overpowered. I dunno. I'm 2 nopix late for coma.
 
 ### 1.895
 - trustedly mustardly
