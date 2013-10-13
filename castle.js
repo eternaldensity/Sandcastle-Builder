@@ -201,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.9;
+		Molpy.version=1.91;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2615,59 +2615,59 @@ Molpy.Up=function()
 			}
 			if(Molpy.Got('Let the Cat out of the Bag') && Molpy.Boosts['Let the Cat out of the Bag'].power)
 			{
-				if(Molpy.HasGlassBlocks(40))				
+				if(Molpy.HasGlassBlocks(35))				
 				{
-					Molpy.SpendGlassBlocks(40);
-					items+=Molpy.SandTools['Ladder'].amount*5;
+					Molpy.SpendGlassBlocks(35);
+					items+=Molpy.SandTools['Ladder'].amount*3;
 				}
 				else if(Molpy.SandTools['Ladder'].amount)				
 				{
-					items+=(Molpy.SandTools['Ladder'].amount--)*5;
+					items+=(Molpy.SandTools['Ladder'].amount--)*3;
 					Molpy.SandToolsOwned--;
 					Molpy.shopRepaint=1;
 				}
-				if(Molpy.HasGlassBlocks(40))				
+				if(Molpy.HasGlassBlocks(35))				
 				{
-					Molpy.SpendGlassBlocks(40);
-					items+=Molpy.SandTools['Bag'].amount*5;
+					Molpy.SpendGlassBlocks(35);
+					items+=Molpy.SandTools['Bag'].amount*3;
 				}
 				else if(Molpy.SandTools['Bag'].amount)				
 				{
-					items+=(Molpy.SandTools['Bag'].amount--)*5;
+					items+=(Molpy.SandTools['Bag'].amount--)*3;
 					Molpy.SandToolsOwned--;
 					Molpy.shopRepaint=1;
 				}
 			}
 			if(Molpy.Got('Catamaran') && Molpy.Boosts['Catamaran'].power)
 			{
-				if(Molpy.HasGlassBlocks(50))				
+				if(Molpy.HasGlassBlocks(45))				
 				{
-					Molpy.SpendGlassBlocks(50);
-					items+=(Molpy.CastleTools['River'].amount)*5;
+					Molpy.SpendGlassBlocks(45);
+					items+=(Molpy.CastleTools['River'].amount)*6;
 				}
 				else if(Molpy.CastleTools['River'].amount)				
 				{
-					items+=(Molpy.CastleTools['River'].amount--)*5;
+					items+=(Molpy.CastleTools['River'].amount--)*6;
 					Molpy.CastleToolsOwned--;
 					Molpy.shopRepaint=1;
 				}
-				if(Molpy.HasGlassBlocks(50))				
+				if(Molpy.HasGlassBlocks(45))				
 				{
-					Molpy.SpendGlassBlocks(50);
-					items+=(Molpy.CastleTools['Wave'].amount)*5;
+					Molpy.SpendGlassBlocks(45);
+					items+=(Molpy.CastleTools['Wave'].amount)*6;
 				}
 				else if(Molpy.CastleTools['Wave'].amount)				
 				{
-					items+=(Molpy.CastleTools['Wave'].amount--)*5;
+					items+=(Molpy.CastleTools['Wave'].amount--)*6;
 					Molpy.CastleToolsOwned--;
 					Molpy.shopRepaint=1;
 				}
 			}
 			if(Molpy.Got('Redundant Raptor') && Molpy.Boosts['Redundant Raptor'].power)
 			{
-				if(Molpy.HasGlassBlocks(150))				
+				if(Molpy.HasGlassBlocks(120))				
 				{
-					Molpy.SpendGlassBlocks(150);
+					Molpy.SpendGlassBlocks(120);
 					items+=Molpy.redactedClicks;
 				}
 			}
@@ -2676,7 +2676,7 @@ Molpy.Up=function()
 				Molpy.SpendGlassBlocks(10);
 				Molpy.Boosts['Panther Salve'].power++;
 				bonus*=Math.pow(1.01,items);
-				bonus=Math.min(bonus,Molpy.castlesBuilt/20); //just to keep things sane
+				bonus=Math.min(bonus,Molpy.castlesBuilt/50); //just to keep things sane
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
 				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/10);

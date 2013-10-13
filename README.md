@@ -18,6 +18,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.91
+- Messed with new Not lucky Boost numbers Just a bit
+- Increased the Countdown time: Flux surge and Imp ninja
+- Finished the Run raptor Run toggle, Buffed it some
+- Changelog is Writ with teTrameter Dactylic
+
 ### 1.9
 - BAG Power Unfortunately Necessitates Something
 - Badge drawing refactor: now works just like boosts so it's neater and I can easily add badge categories

@@ -2213,9 +2213,24 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Castle Tool Multi-Buy',desc:'Allow buying of multiple castle tools at once'
 		,sand:'2000K',castles:'68020',stats:'Code for this feature supplied by waveney',icon:'castlemultibuy'
 	});
-	new Molpy.Boost({name:'Run Raptor Run',desc:'Multiplies Not Lucky bonus by 1000 at a cost of 30 Glass Blocks per use'
+	new Molpy.Boost({name:'Run Raptor Run',
+		desc:function(me)
+		{
+			var str='Multiplies Not Lucky bonus by '+Molpify(10000)+' at a cost of 30 Glass Blocks per use'
+			if(me.bought)
+			{
+				str+=' <input type="Button" onclick="Molpy.RRRToggle()" value="'
+					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
+			}
+			return str;
+		},buyFunction:function(me){me.power=1;},
 		,sand:'180E',castles:'380E',glass:2500,group:'bean'
-	});
+	});	Molpy.RRRToggle=function()
+	{
+		var me=Molpy.Boosts['Run Raptor Run'];
+		me.power=(!me.power)*1;			
+		me.hoverOnCounter=1;
+	}
 	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'
 		,sand:'490P',castles:'670P',glass:1500,group:'ninj'
 	});
@@ -2242,7 +2257,7 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Impervious Ninja',desc:
 		function(me){return 'You cannot lose Ninja Stealth for '+Molpify(me.countdown,3)+'mNP';}
-		,group:'ninj',logic:2,startCountdown:2000,className:'alert'
+		,group:'ninj',logic:2,startCountdown:4000,className:'alert'
 	});
 	new Molpy.Boost({name:'Factory Ninja',desc:
 		function(me){return 'The next Ninja Builder will activate Factory Automation';}
@@ -2258,7 +2273,7 @@ Molpy.DefineBoosts=function()
 	}
 	new Molpy.Boost({name:'Flux Surge',desc:
 		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown,3)+'mNP';}
-		,group:'chron',logic:4,startCountdown:200
+		,group:'chron',logic:4,startCountdown:800
 	});
 	new Molpy.Boost({name:'Locked Crate',
 		desc:function(me){
@@ -2402,7 +2417,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Let the Cat out of the Bag',
 		desc:function(me)
 		{
-			var str='Not Lucky reward gains 1% 5 times per Ladder and Bag owned, at a cost of 80 Glass Blocks (or 1 Ladder and 1 Bag) per use.'
+			var str='Not Lucky reward gains 1% 3 times per Ladder and Bag owned, at a cost of 70 Glass Blocks (or 1 Ladder and 1 Bag) per use.'
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.CatBagToggle()" value="'
@@ -2410,7 +2425,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
-		stats:'At a cost of 40 Glass Blocks, multiplies Not Lucky by 1.01 5 times for each Ladder, then at a cost of 40 Glass Blocks, multiplies Not Lucky by 1.01 5 times for each Bag. If 40 Glass Blocks are not available each time, a Ladder/Bag is consumed before multiplying.',
+		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 3 times for each Ladder, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 3 times for each Bag. If 35 Glass Blocks are not available each time, a Ladder/Bag is consumed before multiplying.',
 		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean'});
 	Molpy.CatBagToggle=function()
 	{
@@ -2422,7 +2437,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Catamaran',
 		desc:function(me)
 		{
-			var str='Not Lucky reward gains 1% 5 times per Wave and River owned, at a cost of 100 Glass Blocks (or 1 Waves and 1 River) per use.'
+			var str='Not Lucky reward gains 1% 6 times per Wave and River owned, at a cost of 90 Glass Blocks (or 1 Waves and 1 River) per use.'
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.CatamaranToggle()" value="'
@@ -2430,7 +2445,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
-		stats:'At a cost of 50 Glass Blocks, multiplies Not Lucky by 1.01 5 times for each Wave, then at a cost of 50 Glass Blocks, multiplies Not Lucky by 1.01 5 times for each River. If 50 Glass Blocks are not available each time, a Wave/River is consumed before multiplying.',
+		stats:'At a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each Wave, then at a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each River. If 45 Glass Blocks are not available each time, a Wave/River is consumed before multiplying.',
 		sand:'750S',castles:'245S',glass:'4800',className:'toggle',group:'bean'});
 	Molpy.CatamaranToggle=function()
 	{
@@ -2442,7 +2457,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Redundant Raptor',
 		desc:function(me)
 		{
-			var str='Not Lucky reward gains 1% per '+Molpy.redactedWord+' click, at a cost of 150 Glass Blocks per use.'
+			var str='Not Lucky reward gains 1% per '+Molpy.redactedWord+' click, at a cost of 120 Glass Blocks per use.'
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.RedRaptorToggle()" value="'
@@ -2450,7 +2465,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
-		stats:'At a cost of 150 Glass Blocks, multiplies Not Lucky by 1.01 for each '+Molpy.redactedWord+' click',
+		stats:'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 for each '+Molpy.redactedWord+' click',
 		sand:'930PW',castles:'824PW',glass:'4800',className:'toggle',group:'bean'});
 	Molpy.RedRaptorToggle=function()
 	{
