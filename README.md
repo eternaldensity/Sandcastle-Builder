@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.894
+- lockfunction should use this instead of me (fix temporal rift crash introduced in 1.891)
+- changed unlockfunction for consistency
+
 ### 1.893
 - glass storage upgrades more available
 
