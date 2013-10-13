@@ -18,6 +18,16 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.895
+- trustedly mustardly
+- show and hide loot options
+- needed to be reclicked
+- when you reload
+- OTTers don't like that task
+- but my new javascripts
+- cookiefantasticly
+- shoulder the load
+
 ### 1.894
 - lockfunction should use this instead of me (fix temporal rift crash introduced in 1.891)
 - changed unlockfunction for consistency

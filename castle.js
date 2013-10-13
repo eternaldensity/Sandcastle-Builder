@@ -162,24 +162,23 @@ function onunhover(me,event)
 	me.hoverOnCounter=-1;
 }
 
-var showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:1,tagged:0};
 function showhideButton(key)
 {
-	return '<input type="Button" value="'+(showhide[key]?'Hide':'Show')+'" onclick="showhideToggle(\''+key+'\')"></input>'
+	return '<input type="Button" value="'+(Molpy.options.showhide[key]?'Hide':'Show')+'" onclick="showhideToggle(\''+key+'\')"></input>'
 }
 function showhideToggle(key)
 {
-	showhide[key]=!showhide[key];
-	if(showhide[key])
+	Molpy.options.showhide[key]=!Molpy.options.showhide[key];
+	if(Molpy.options.showhide[key])
 	{
 		if(key=='tagged')
 		{
-			for(var k in showhide)
+			for(var k in Molpy.options.showhide)
 			{
-				showhide[k]=k==key; //when showing tagged, hide all others
+				Molpy.options.showhide[k]=k==key; //when showing tagged, hide all others
 			}
 		}else{
-			showhide.tagged=0; //hide tagged when showing anything else
+			Molpy.options.showhide.tagged=0; //hide tagged when showing anything else
 		}
 	}
 	Molpy.shopRepaint=1;
@@ -202,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.894;
+		Molpy.version=1.895;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -256,6 +255,8 @@ Molpy.Up=function()
 			Molpy.options.colourscheme=0;
 			Molpy.options.sandmultibuy=0;
 			Molpy.options.castlemultibuy=0;
+			Molpy.options.showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:1,discov:0,monument:0,tagged:0};
+			Molpy.options.showhideNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monument','tagged'];
 		}
 		Molpy.DefaultOptions();
 		
@@ -416,7 +417,11 @@ Molpy.Up=function()
 				thread += cb.earned+s;
 			}
 			thread+=p;
-			//coupons:
+			//showhide:
+			for(var i in Molpy.options.showhideNamesOrder)
+			{
+				thread+=Molpy.options.showhide[Molpy.options.showhideNamesOrder[i]]?1:0;
+			}
 			thread+=p;
 			return thread;
 		}
@@ -599,6 +604,18 @@ Molpy.Up=function()
 				{
 					me.earned=0;					
 				}
+			}
+			if(thread[9])
+			{
+				pixels=thread[9].split('');
+			}else{
+				pixels=[];
+			}
+			for (var i in Molpy.options.showhideNamesOrder)
+			{
+				var vis = parseInt(pixels[i]);
+				if(!isNaN(vis))
+					Molpy.options.showhide[Molpy.options.showhideNamesOrder[i]]=vis;
 			}			
 			Molpy.needlePulling=0;//badges are loaded now
 			
@@ -2126,12 +2143,12 @@ Molpy.Up=function()
 					{
 						if(this.className)
 						{
-							if(!showhide.tagged)
+							if(!Molpy.options.showhide.tagged)
 							{
 								showhideToggle('tagged');
 							}
 						}else{
-							if(!showhide[this.group])
+							if(!Molpy.options.showhide[this.group])
 							{
 								showhideToggle(this.group);
 							}
@@ -2864,7 +2881,7 @@ Molpy.Up=function()
 				r='';
 			}
 			
-			if(!(showhide[group]||f))return'';
+			if(!(Molpy.options.showhide[group]||f))return'';
 			if(cn)Molpy.UnlockBoost('Chromatic Heresy');
 			
 			
@@ -2972,7 +2989,7 @@ Molpy.Up=function()
 		{
 			Molpy.badgeRepaint=0;
 			var str='';			
-			if(showhide.badges){
+			if(Molpy.options.showhide.badges){
 				var blist=[];
 				for (var i in Molpy.Badges)
 				{
@@ -3004,7 +3021,7 @@ Molpy.Up=function()
 			}
 			Molpy.badgeHTML=str;
 			str='';			
-			if(showhide.badgesav){
+			if(Molpy.options.showhide.badgesav){
 				var blist=[];
 				for (var i in Molpy.Badges)
 				{
@@ -3660,7 +3677,7 @@ Molpy.Up=function()
 		{
 			Molpy.RepaintBadges();
 		}
-		if(repainted&&showhide.tagged)
+		if(repainted&&Molpy.options.showhide.tagged)
 		{
 			Molpy.RepaintTaggedLoot();
 		}
