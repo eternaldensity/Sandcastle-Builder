@@ -2720,6 +2720,7 @@ Molpy.Up=function()
 				blitzSpeed+=Molpy.Boosts['Blitzing'].power;
 				blitzTime+=Math.floor(Molpy.Boosts['Blitzing'].countdown/2);
 			}
+			if(blitzSpeed>=1000000) Molpy.EarnBadge('Blitz and Pieces');
 			Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 		}
 		

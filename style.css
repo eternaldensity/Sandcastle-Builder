@@ -21,6 +21,9 @@ time, mark, audio, video {
 b{
 	font-weight:bold;
 }
+i{
+	 font-style: italic;
+}
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
@@ -44,7 +47,6 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
 
 html,body
 {

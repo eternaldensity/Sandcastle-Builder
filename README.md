@@ -22,6 +22,8 @@ For personal amusement only.
 - Messed with new Not lucky Boost numbers Just a bit
 - Increased the Countdown time: Flux surge and Imp ninja
 - Finished the Run raptor Run toggle, Buffed it some
+- Break tags were Added (deScriptions with Buttons in)
+- Added a New badge for Very high Blitzing speed
 - Changelog is Writ with teTrameter Dactylic
 
 ### 1.9

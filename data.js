@@ -1344,7 +1344,7 @@ Molpy.DefineBoosts=function()
 			{
 			 str+='Currently '+(me.power?'Dea':'A')+'ctivating.';
 			}else{
-				str+='<input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
+				str+='<br><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
 			}			
 			return str;
 		}
@@ -1451,7 +1451,7 @@ Molpy.DefineBoosts=function()
 				if(afford)
 				{
 					var pow=(Molpy.Boosts['Sand Refinery'].power)+2;
-					str+= '<input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
 						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+Molpify(pow)
 						+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 				}
@@ -1624,7 +1624,7 @@ Molpy.DefineBoosts=function()
 			{
 			 str+='Currently '+(me.power?'Dea':'A')+'ctivating.';
 			}else{
-				str+='<input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassBlower('+me.power+')"></input>';
+				str+='<br><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassBlower('+me.power+')"></input>';
 			}			
 			return str;			
 			
@@ -2216,7 +2216,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Run Raptor Run',
 		desc:function(me)
 		{
-			var str='Multiplies Not Lucky bonus by '+Molpify(10000)+' at a cost of 30 Glass Blocks per use'
+			var str='Multiplies Not Lucky bonus by '+Molpify(10000)+' at a cost of 30 Glass Blocks per use';
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.RRRToggle()" value="'
@@ -2224,7 +2224,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
-		,sand:'180E',castles:'380E',glass:2500,group:'bean'
+		sand:'180E',castles:'380E',glass:2500,group:'bean'
 	});	Molpy.RRRToggle=function()
 	{
 		var me=Molpy.Boosts['Run Raptor Run'];
@@ -2460,7 +2460,7 @@ Molpy.DefineBoosts=function()
 			var str='Not Lucky reward gains 1% per '+Molpy.redactedWord+' click, at a cost of 120 Glass Blocks per use.'
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.RedRaptorToggle()" value="'
+				str+='<br><input type="Button" onclick="Molpy.RedRaptorToggle()" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
 			return str;
@@ -2473,6 +2473,18 @@ Molpy.DefineBoosts=function()
 		me.power=(!me.power)*1;			
 		me.hoverOnCounter=1;
 	}
+	
+	new Molpy.Boost({name:'Camera',desc:function(me)
+	{
+		var str ='"<b>THIS DEVICE <i>MECHANISM</i> IS <i>OBSCURE</i> UNKNOWN</b>"';
+		if(me.bought)
+		{
+			str+= '<br><input type="Button" onclick="Molpy.Shutter()" value="Snap!"></input>';
+		}
+		return str;
+	},
+		className:'action',group:'bean'
+	});
 	
 	Molpy.groupNames={boosts:['boost','Boosts'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
@@ -2754,6 +2766,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Ceiling Broken',desc:'Have all 10 Glass Ceiling Boosts'});
 	new Molpy.Badge({name:'On the 12th Dip of Judgement',desc:'Reach Judgement Dip level 12'});
 	new Molpy.Badge({name:'Machine Learning',desc:'Unlock all the Judgement Dip Boosts'});
+	new Molpy.Badge({name:'Blitz and Pieces',desc:'Get Blitz Power to 1M%'});
 }
 
 Molpy.jDipBoosts=['NewPixBot Navigation Code','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		
