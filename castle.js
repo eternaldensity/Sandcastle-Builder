@@ -202,7 +202,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.893;
+		Molpy.version=1.894;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2176,7 +2176,7 @@ Molpy.Up=function()
 						Molpy.boostRepaint=1;
 						Molpy.recalculateDig=1;
 						Molpy.Notify('Boost Unlocked: '+bacon,1);
-						if(baby.unlockFunction)baby.unlockFunction(baby);
+						if(baby.unlockFunction)baby.unlockFunction();
 					}
 				}
 			}else{ //yo wolpy I heard you like bacon...

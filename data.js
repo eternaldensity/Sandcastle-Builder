@@ -1279,7 +1279,7 @@ Molpy.DefineBoosts=function()
 		},
 		lockFunction:function(me)
 		{
-			me.countdown=0; //prevent reopening every time you load :P
+			this.countdown=0; //prevent reopening every time you load :P
 		}
 		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:7,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
@@ -2229,9 +2229,9 @@ Molpy.DefineBoosts=function()
 		sand:function(me){ return me.power*6;},
 		castles:function(me){ return me.power;},
 		glass:5,logic:2,className:'action',
-		unlockFunction:function(me)
+		unlockFunction:function()
 		{
-			me.power = DeMolpify(Molpify(Molpy.castles*6+Molpy.sand,1,1));
+			this.power = DeMolpify(Molpify(Molpy.castles*6+Molpy.sand,1,1));
 		},
 		lockFunction:function(me)
 		{
