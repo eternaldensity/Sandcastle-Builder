@@ -2280,7 +2280,7 @@ Molpy.DefineBoosts=function()
 	}
 	new Molpy.Boost({name:'Flux Surge',desc:
 		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown,3)+'mNP';}
-		,group:'chron',logic:4,startCountdown:800
+		,group:'chron',startCountdown:800
 	});
 	new Molpy.Boost({name:'Locked Crate',
 		desc:function(me){
@@ -2981,6 +2981,10 @@ Molpy.CheckBuyUnlocks=function()
 	if(found==Molpy.jDipBoosts.length)
 	{
 		Molpy.EarnBadge('Machine Learning');
+	}
+	if(Molpy.Got('Flux Turbine'))
+	{
+		Molpy.Boosts['Flux Surge'].logic=4;
 	}
 }
 

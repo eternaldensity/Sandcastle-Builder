@@ -25,6 +25,7 @@ For personal amusement only.
 - Badges and Boosts can now be known in code by a shorter name than the display name
 - Boosts can be bought by Shopping Assistant by shorter name. e.g. RRR, BKJ, BFJ, VJ, LCB
 - Displays long names (and tool plurals) in the Shopping Assistant description
+- Flux Surge isn't rewarded until you have Flux Turbine
 
 ### 1.91
 - Messed with new Not lucky Boost numbers Just a bit
