@@ -2806,7 +2806,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=8)Molpy.UnlockBoost('Megball');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Stickbot');
 	if(me.amount>=40)Molpy.UnlockBoost('The Forty');
-	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Human Cannonball');
+	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Human Cannonball');
 	
 	me=Molpy.SandTools['Flag'];
 	if(me.amount>=1)Molpy.UnlockBoost('Flag Bearer');
@@ -2815,13 +2815,13 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Standardbot');
 	if(me.amount>=25)Molpy.UnlockBoost('Chequered Flag');
 	if(me.amount>=40)Molpy.UnlockBoost('Skull and Crossbones');
-	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Fly the Flag');
+	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Fly the Flag');
 	
 	me=Molpy.SandTools['Ladder'];
 	if(me.amount>=1)Molpy.UnlockBoost('Extension Ladder');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Climbbot');
 	if(me.amount>=25)Molpy.UnlockBoost('Broken Rung');
-	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Up Up and Away');
+	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Up Up and Away');
 	
 	me=Molpy.CastleTools['NewPixBot'];
 	if(me.amount>=3)Molpy.UnlockBoost('Busy Bot');
@@ -2857,7 +2857,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=2)Molpy.UnlockBoost('Embaggening');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Luggagebot');
 	if(me.amount>=30)Molpy.UnlockBoost('Bag Puns');
-	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Air Drop');
+	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Air Drop');
 	var you=me;
 	me = Molpy.CastleTools['River'];
 	if(me.amount&&you.amount)Molpy.UnlockBoost('Sandbag');
