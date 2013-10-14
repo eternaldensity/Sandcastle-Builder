@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.92
+- Buffed Two for One to stack with multibuy
+- Yes I realise the implications of that.
+- No I'm not giving you multisell :P
+
 ### 1.91
 - Messed with new Not lucky Boost numbers Just a bit
 - Increased the Countdown time: Flux surge and Imp ninja

@@ -201,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.91;
+		Molpy.version=1.92;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1830,12 +1830,6 @@ Molpy.Up=function()
 						this.amount++;
 						this.bought++;
 						bought++;
-						if(Molpy.Got('Two for One'))
-						{
-							this.amount++;
-							this.bought++;
-							bought++;
-						}
 						spent+=price;
 						price=Math.floor(this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
 						this.price=price;
@@ -1846,6 +1840,12 @@ Molpy.Up=function()
 						Molpy.SandToolsOwned++;
 						Molpy.CheckBuyUnlocks();
 					}
+				}
+				if(Molpy.Got('Two for One'))
+				{
+					this.amount+=bought;
+					this.bought+=bought;
+					bought+=bought;
 				}
 				if(bought)
 					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+(spent>1?'s':'')+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
@@ -1948,12 +1948,6 @@ Molpy.Up=function()
 						this.amount++;
 						this.bought++;
 						bought++;
-						if(Molpy.Got('Two for One'))
-						{
-							this.amount++;
-							this.bought++;
-							bought++;
-						}
 						spent+=price;
 						this.prevPrice=this.nextPrice;
 						this.nextPrice=this.price;
@@ -1965,6 +1959,12 @@ Molpy.Up=function()
 						Molpy.CastleToolsOwned++;
 						Molpy.CheckBuyUnlocks();
 					}
+				}
+				if(Molpy.Got('Two for One'))
+				{
+					this.amount+=bought;
+					this.bought+=bought;
+					bought+=bought;
 				}
 				if(bought)
 					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+(spent>1?'s':'')+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
