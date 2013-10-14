@@ -155,11 +155,11 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Magic Mountain'))mult*=2.5;
 			if(Molpy.Got('Standardbot'))mult*=4;
 			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Molpy.CastleTools['Scaffold'].amount);
-			if(Molpy.Got('Swim Between the Flags'))
+			if(Molpy.Got('SBTF'))
 			{
 				if(Molpy.newpixNumber%2==0)//even
 				{
-					mult/=Molpy.CastleTools['Wave'].amount;
+					mult/=Math.max(1,Molpy.CastleTools['Wave'].amount);
 				}else{//odd
 					mult*=Molpy.CastleTools['Wave'].amount;
 				}
@@ -296,7 +296,7 @@ Molpy.DefineCastleTools=function()
 		function()
 		{
 			var baseval = 24;
-			if(Molpy.Got('Swim Between the Flags'))
+			if(Molpy.Got('SBTF'))
 			{
 				if(Molpy.newpixNumber%2==1)//odd
 				{
@@ -316,7 +316,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Surfbot'))baseval*=4;
 			if(Molpy.Got('Big Splash')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			baseval*=Molpy.LogicastleMult();
-			if(Molpy.Got('Swim Between the Flags'))
+			if(Molpy.Got('SBTF'))
 			{
 				if(Molpy.newpixNumber%2==0)//even
 				{
@@ -1823,7 +1823,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Ninja Legion',desc:'Ninja Stealth is raised by 1000x as much'
 		,sand:'3P',castles:'0.9P',group:'ninj'});
 		
-	new Molpy.Boost({name:'Swim Between the Flags',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T',icon:'swimbetweenflags'});
+	new Molpy.Boost({name:'Swim Between the Flags',aka:'SWTF',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T',icon:'swimbetweenflags'});
 	
 	new Molpy.Boost({name:"Château d'If",
 		desc:function(me)
@@ -2424,7 +2424,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Let the Cat out of the Bag',aka:'LCB',
 		desc:function(me)
 		{
-			var str='Not Lucky reward gains 1% 3 times per Ladder and Bag owned, at a cost of 70 Glass Blocks (or 1 Ladder and 1 Bag) per use.'
+			var str='Not Lucky reward gains 1% per Ladder and Bag owned, at a cost of 70 Glass Blocks (or 1 Ladder and 1 Bag) per use.'
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.CatBagToggle()" value="'
@@ -2432,7 +2432,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
-		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 3 times for each Ladder, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 3 times for each Bag. If 35 Glass Blocks are not available each time, a Ladder/Bag is consumed before multiplying.',
+		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each Ladder, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each Bag. If 35 Glass Blocks are not available each time, a Ladder/Bag is consumed before multiplying.',
 		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean'});
 	Molpy.CatBagToggle=function()
 	{
@@ -2839,7 +2839,7 @@ Molpy.CheckBuyUnlocks=function()
 	me=Molpy.CastleTools['Wave'];
 	if(me.amount>=2)Molpy.UnlockBoost('Swell');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Surfbot');
-	if(me.amount>=30)Molpy.UnlockBoost('Swim Between the Flags');
+	if(me.amount>=30)Molpy.UnlockBoost('SBTF');
 	
 	me=Molpy.SandTools['Bag'];
 	if(me.amount>=2)Molpy.UnlockBoost('Embaggening');
@@ -2898,7 +2898,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['Glass Block Storage'].power>10)
 		Molpy.UnlockBoost('Glass Jaw');
 	
-	if(Molpy.Got('Swim Between the Flags'))
+	if(Molpy.Got('SBTF'))
 	{
 		Molpy.Boosts['Castle Crusher'].department=1;
 	}

@@ -201,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.92;
+		Molpy.version=1.93;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2521,10 +2521,10 @@ Molpy.Up=function()
 					if((EvalMaybeFunction(red.sandPrice,red)+EvalMaybeFunction(red.castlePrice,red)+EvalMaybeFunction(red.glassPrice,red)))
 					{
 						Molpy.Notify('The DoRD has produced:',1);
-						Molpy.UnlockBoost(red.name);
+						Molpy.UnlockBoost(red.aka);
 					}else{
+						Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
 						Molpy.Notify('The DoRD has provided:',1);
-						Molpy.GiveTempBoost(red.name,red.startPower,red.startCountdown);
 					}
 					return;
 				}
@@ -2626,22 +2626,22 @@ Molpy.Up=function()
 				if(Molpy.HasGlassBlocks(35))				
 				{
 					Molpy.SpendGlassBlocks(35);
-					items+=Molpy.SandTools['Ladder'].amount*3;
+					items+=Molpy.SandTools['Ladder'].amount;
 				}
 				else if(Molpy.SandTools['Ladder'].amount)				
 				{
-					items+=(Molpy.SandTools['Ladder'].amount--)*3;
+					items+=(Molpy.SandTools['Ladder'].amount--);
 					Molpy.SandToolsOwned--;
 					Molpy.shopRepaint=1;
 				}
 				if(Molpy.HasGlassBlocks(35))				
 				{
 					Molpy.SpendGlassBlocks(35);
-					items+=Molpy.SandTools['Bag'].amount*3;
+					items+=Molpy.SandTools['Bag'].amount;
 				}
 				else if(Molpy.SandTools['Bag'].amount)				
 				{
-					items+=(Molpy.SandTools['Bag'].amount--)*3;
+					items+=(Molpy.SandTools['Bag'].amount--);
 					Molpy.SandToolsOwned--;
 					Molpy.shopRepaint=1;
 				}
@@ -3625,7 +3625,7 @@ Molpy.Up=function()
 		{
 			Molpy.Boosts['Temporal Rift'].department=(Math.random()*6>=5)*1;
 		}
-		if(Molpy.Got('Swim Between the Flags'))
+		if(Molpy.Got('SBTF'))
 		{
 			Molpy.recalculateDig=1;
 		}

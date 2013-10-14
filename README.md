@@ -12,11 +12,16 @@ Parts of code and the clockface image by ChronosDragon.
 
 Icons by ChronosDragon, BlitzGirl, and StormAngel/cmyk
 
-Inspired by Orteil's Cookie Clicker
+Inspired by Orteil's C**kie Clicker
 
 For personal amusement only.
 
 ## Changelog
+
+### 1.93
+- Nerfed LCB even further
+- Prevent Infinite sand (which becomes infinite castles) which was possible via SBTF and 0 Waves
+-
 
 ### 1.92
 - Buffed Two for One to stack with multibuy
