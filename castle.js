@@ -1344,6 +1344,11 @@ Molpy.Up=function()
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
 			Molpy.castlesSpent+=amount;
+			if(Molpy.castles==NaN)
+			{
+				Molpy.castles=0;
+				Molpy.EarnBadge('Mustard Cleanup');
+			}
 			if(!silent)
 				Molpy.Notify('Spent Castles: ' + Molpify(amount,3),1);
 		}
@@ -2523,8 +2528,8 @@ Molpy.Up=function()
 						Molpy.Notify('The DoRD has produced:',1);
 						Molpy.UnlockBoost(red.aka);
 					}else{
-						Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
 						Molpy.Notify('The DoRD has provided:',1);
+						Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
 					}
 					return;
 				}

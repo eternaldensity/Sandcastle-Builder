@@ -2774,6 +2774,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'On the 12th Dip of Judgement',desc:'Reach Judgement Dip level 12'});
 	new Molpy.Badge({name:'Machine Learning',desc:'Unlock all the Judgement Dip Boosts'});
 	new Molpy.Badge({name:'Blitz and Pieces',desc:'Get Blitz Power to 1M%'});
+	new Molpy.Badge({name:'Mustard Cleanup',desc:'Your numbers got too big!',vis:2});
 }
 
 Molpy.jDipBoosts=['NewPixBot Navigation Code','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		
