@@ -22,6 +22,9 @@ For personal amusement only.
 - Buffed Two for One to stack with multibuy
 - Yes I realise the implications of that.
 - No I'm not giving you multisell :P
+- Badges and Boosts can now be known in code by a shorter name than the display name
+- Boosts can be bought by Shopping Assistant by shorter name. e.g. RRR, BKJ, BFJ, VJ, LCB
+- Displays long names (and tool plurals) in the Shopping Assistant description
 
 ### 1.91
 - Messed with new Not lucky Boost numbers Just a bit

@@ -701,7 +701,7 @@ Molpy.Up=function()
 			}			
 			if(version<0.992)
 			{
-				var bkj ='Blixtnedslag Kattungar, JA!';
+				var bkj ='BKJ';
 				if(Molpy.Got(bkj))
 				{
 					Molpy.Boosts[bkj].power=Molpy.redactedClicks-Molpy.Boosts[bkj].power;
@@ -1452,12 +1452,12 @@ Molpy.Up=function()
 						}
 					}
 				}
-			}else if(Molpy.Got('VITSSÅGEN, JA!'))
+			}else if(Molpy.Got('VJ'))
 			{
 				if(Molpy.beachClicks%100==0)
 				{
-					Molpy.Notify('VITSSÅGEN, JA!');
-					var p = Molpy.Boosts['VITSSÅGEN, JA!'].power;
+					Molpy.Notify('VJ');
+					var p = Molpy.Boosts['VJ'].power;
 					p++;
 					var mult=1000000;
 					if(Molpy.Got('Swedish Chef'))
@@ -1468,10 +1468,10 @@ Molpy.Up=function()
 					}
 					if(Molpy.Got('Phonesaw')) mult*=mult;
 					Molpy.Build(mult*p);
-					Molpy.Boosts['VITSSÅGEN, JA!'].power=p;
+					Molpy.Boosts['VJ'].power=p;
 				}
 			}
-			if(Molpy.Got('Bag Puns')&&Molpy.Boosts['VITSSÅGEN, JA!'].bought!=1)
+			if(Molpy.Got('Bag Puns')&&Molpy.Boosts['VJ'].bought!=1)
 			{
 				if(Molpy.beachClicks%20==0)
 				{
@@ -1480,7 +1480,7 @@ Molpy.Up=function()
 					p++;
 					if(p>100)
 					{
-						Molpy.UnlockBoost('VITSSÅGEN, JA!');
+						Molpy.UnlockBoost('VJ');
 					}
 					Molpy.Boosts['Bag Puns'].power=p;
 				}
@@ -1858,7 +1858,7 @@ Molpy.Up=function()
 					var price=this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount);
 					var d=1;
 					if(Molpy.Got('Family Discount'))d=.2;
-					if(Molpy.Boosts[Molpy.IKEA].startPower>0.5) d*=0.8; //sorry guys, no ikea-scumming
+					if(Molpy.Boosts['ASHF'].startPower>0.5) d*=0.8; //sorry guys, no ikea-scumming
 					Molpy.Build(Math.floor(price*0.5*d),1);
 					this.price=price;
 					if (this.sellFunction) this.sellFunction();
@@ -1981,7 +1981,7 @@ Molpy.Up=function()
 					}else{					
 						var d=1;
 						if(Molpy.Got('Family Discount'))d=.2;
-						if(Molpy.Boosts[Molpy.IKEA].startPower>0.5) d*=0.7; //sorry guys, no ikea-scumming
+						if(Molpy.Boosts['ASHF'].startPower>0.5) d*=0.7; //sorry guys, no ikea-scumming
 						Molpy.Build(price*d,1);
 					}
 					
@@ -2089,11 +2089,13 @@ Molpy.Up=function()
 		Molpy.BoostN=0;
 		Molpy.BoostsInShop=[];
 		Molpy.BoostsOwned=0;
+		Molpy.BoostAKA=[];
 		var order=0;
 		Molpy.Boost=function(args)
 		{
 			this.id=Molpy.BoostN;
 			this.name=args.name;
+			this.aka=args.aka||args.name;
 			this.desc=args.desc;
 			this.sandPrice=args.sand||0;
 			this.castlePrice=args.castles||0;
@@ -2178,8 +2180,12 @@ Molpy.Up=function()
 				Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this),1);
 			}
 			
-			Molpy.Boosts[this.name]=this;
+			Molpy.Boosts[this.aka]=this;
 			Molpy.BoostsById[this.id]=this;
+			if(this.name!=this.aka)
+			{
+				Molpy.BoostAKA[this.name]=this.aka;
+			}
 			Molpy.BoostN++;
 			return this;
 		}	
@@ -2264,6 +2270,7 @@ Molpy.Up=function()
 		{
 			this.id=Molpy.BadgeN;
 			this.name=args.name;
+			this.aka=args.aka||args.name;
 			this.desc=args.desc
 			this.icon=args.icon;
 			this.earnFunction=args.earnFunction;
@@ -2278,7 +2285,8 @@ Molpy.Up=function()
 			
 			this.showdesc=function()
 			{
-				g('BadgeDescription'+this.id).innerHTML='<br>'+((this.earned||this.visibility<1)?
+				var d = g('BadgeDescription'+this.id);
+				if(d)d.innerHTML='<br>'+((this.earned||this.visibility<1)?
 				EvalMaybeFunction(this.desc):'????');
 			}
 			this.hidedesc=function()
@@ -2287,7 +2295,7 @@ Molpy.Up=function()
 				if(d)d.innerHTML='';
 			}
 			
-			Molpy.Badges[this.name]=this;
+			Molpy.Badges[this.aka]=this;
 			Molpy.BadgesById[this.id]=this;
 			Molpy.BadgeN++;
 			return this;
@@ -2469,13 +2477,13 @@ Molpy.Up=function()
 			if(Molpy.redactedClicks>=16)
 				Molpy.UnlockBoost('Kitnip');
 			if(Molpy.redactedClicks>=32)
-				Molpy.UnlockBoost('Department of Redundancy Department');
+				Molpy.UnlockBoost('DoRD');
 			if(Molpy.redactedClicks>=64)
 				Molpy.Boosts['Kitties Galore'].department=1;
 			if(Molpy.redactedClicks>=128)
 				Molpy.EarnBadge('Y U NO BELIEVE ME?');
 			if(Molpy.redactedClicks>=256)
-				Molpy.UnlockBoost('Blixtnedslag Kattungar, JA!');
+				Molpy.UnlockBoost('BKJ');
 		}
 		
 		Molpy.RedactedJump=function()
@@ -2488,7 +2496,7 @@ Molpy.Up=function()
 
 		Molpy.RewardRedacted=function(forceDepartment)
 		{		
-			if(Molpy.Got('Department of Redundancy Department') &&
+			if(Molpy.Got('DoRD') &&
 				(!Math.floor(8*Math.random()) || forceDepartment))
 			{
 				if(Molpy.Got('Blast Furnace') && !Math.floor(4*Math.random()))
@@ -2521,7 +2529,7 @@ Molpy.Up=function()
 					return;
 				}
 			}
-			var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];			
+			var BKJ = Molpy.Boosts['BKJ'];			
 			if(BKJ.bought)
 			{
 				BKJ.power=(BKJ.power)+1;
@@ -2561,7 +2569,7 @@ Molpy.Up=function()
 				blastFactor=Math.max(1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
 				if(Molpy.Got('Blitzing'))
 				{
-					if(Molpy.Got('Blixtnedslag Kattungar, JA!'))
+					if(Molpy.Got('BKJ'))
 					{
 						blastFactor/=Math.max(1,(Molpy.Boosts['Blitzing'].power-800)/600);
 						boosted=1;
@@ -2602,18 +2610,18 @@ Molpy.Up=function()
 			bonus+=bb;
 			items+=bb;
 			bonus += Molpy.redactedClicks*10;
-			if(Molpy.Got('Blixtnedslag Förmögenhet, JA!'))
+			if(Molpy.Got('BFJ'))
 			{
-				bonus*= (1+0.2*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power)
+				bonus*= (1+0.2*Molpy.Boosts['BKJ'].power)
 				if(Molpy.Got('Blitzing'))
 					bonus*=Math.min(2,(Molpy.Boosts['Blitzing'].power-800)/200);
 			}
-			if(Molpy.Got('Run Raptor Run') && Molpy.Boosts['Run Raptor Run'].power && Molpy.HasGlassBlocks(30))
+			if(Molpy.Got('RRR') && Molpy.Boosts['RRR'].power && Molpy.HasGlassBlocks(30))
 			{
 				Molpy.SpendGlassBlocks(30);
 				bonus*=1000;
 			}
-			if(Molpy.Got('Let the Cat out of the Bag') && Molpy.Boosts['Let the Cat out of the Bag'].power)
+			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].power)
 			{
 				if(Molpy.HasGlassBlocks(35))				
 				{
@@ -2707,11 +2715,11 @@ Molpy.Up=function()
 		Molpy.RewardBlitzing=function()
 		{
 			var blitzSpeed=800,blitzTime=23;
-			var BKJ = Molpy.Boosts['Blixtnedslag Kattungar, JA!'];
+			var BKJ = Molpy.Boosts['BKJ'];
 			if(BKJ.bought)
 			{
 				blitzSpeed+= BKJ.power*20;
-				if(BKJ.power>24) Molpy.Boosts['Blixtnedslag Förmögenhet, JA!'].department=1;
+				if(BKJ.power>24) Molpy.Boosts['BFJ'].department=1;
 			}
 			if(Molpy.Got('Schizoblitz'))blitzSpeed*=2;
 			
@@ -2800,9 +2808,9 @@ Molpy.Up=function()
 		Molpy.CalcPriceFactor=function()
 		{
 			var baseval=1;
-			if(Molpy.Got(Molpy.IKEA))
+			if(Molpy.Got('ASHF'))
 			{
-				baseval*=(1-Molpy.Boosts[Molpy.IKEA].power);
+				baseval*=(1-Molpy.Boosts['ASHF'].power);
 			}
 			if(Molpy.Got('Family Discount'))
 			{
@@ -3409,6 +3417,11 @@ Molpy.Up=function()
 		}
 	}
 	
+	Molpy.Shutter=function()
+	{
+		Molpy.EarnBadge('Discovery '+Molpy.newpixNumber);
+	}
+	
 	/*In which we explain how to think
 	should be called once per milliNewPix
 	++++++++++++++++++++++++++++++++++*/
@@ -3498,7 +3511,7 @@ Molpy.Up=function()
 			}
 		}
 		
-		if(Molpy.shoppingItem && Molpy.Got('Shopping Assistant') && Molpy.Got(Molpy.IKEA))
+		if(Molpy.shoppingItem && Molpy.Got('Shopping Assistant') && Molpy.Got('ASHF'))
 		{
 			var factor = Molpy.priceFactor;
 			Molpy.priceFactor*=1.05;

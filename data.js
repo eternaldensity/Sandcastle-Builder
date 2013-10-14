@@ -456,7 +456,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Kitnip',desc:Molpy.redactedWords+' come more often and stay longer',
 		sand:33221,castles:63,
 	icon:'kitnip'});
-	new Molpy.Boost({name:'Department of Redundancy Department',desc:Molpy.redactedWords
+	new Molpy.Boost({name:'Department of Redundancy Department',aka:'DoRD',desc:Molpy.redactedWords
 		+' sometimes unlock special boosts',sand:23456,castles:78,icon:'department',group:'hpt'});
 	new Molpy.Boost({name:'Raise the Flag',desc:'Each Flag+Ladder pair gives clicking an extra +50 sand',
 		sand:'85K',castles:95,icon:'raisetheflag'});
@@ -500,8 +500,7 @@ Molpy.DefineBoosts=function()
 		Molpy.LockBoost('Double or Nothing');
 	}
 	new Molpy.Boost({name:'Grapevine',desc:'Increases sand dig rate by 2% per badge earned',sand:'25K',castles:25,icon:'grapevine',department:1});
-	Molpy.IKEA='Affordable Swedish Home Furniture';
-	new Molpy.Boost({name:Molpy.IKEA,desc: function(me){return Molpify(me.power*100,1)+'% off all items for '
+	new Molpy.Boost({name:'Affordable Swedish Home Furniture',aka:'ASHF',desc: function(me){return Molpify(me.power*100,1)+'% off all items for '
 		+Molpify(me.countdown,3)+'mNP'}
 		,buyFunction:function(){
 			Molpy.shopRepaint=1;
@@ -879,7 +878,7 @@ Molpy.DefineBoosts=function()
 		},className:'alert',group:'cyb'
 		});	
 	
-	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',sand:'9.8M',castles:888555222,stats:'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blizting to boost Blast Furnace if they overlap.',icon:'bkj',group:'hpt'});
+	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',aka:'BKJ',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',sand:'9.8M',castles:888555222,stats:'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blizting to boost Blast Furnace if they overlap.',icon:'bkj',group:'hpt'});
 		
 	new Molpy.Boost({name:'Summon Knights Temporal',desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
 		sand:function()
@@ -1214,12 +1213,12 @@ Molpy.DefineBoosts=function()
 		Molpy.shopRepaint=1;
 	}
 		
-	new Molpy.Boost({name:'Blixtnedslag Förmögenhet, JA!',desc:'Not Lucky gets a 20% bonus (non-cumulative) per level of Blixtnedslag Kattungar, JA! It also gets a boost from Blitzing if you get them simultaneously.',sand:111098645321,castles:7777777777,
+	new Molpy.Boost({name:'Blixtnedslag Förmögenhet, JA!',aka:'BFJ',desc:'Not Lucky gets a 20% bonus (non-cumulative) per level of Blixtnedslag Kattungar, JA! It also gets a boost from Blitzing if you get them simultaneously.',sand:111098645321,castles:7777777777,
 		stats:function()
 		{
-			return 'Adds ' + Molpify(20*Molpy.Boosts['Blixtnedslag Kattungar, JA!'].power,1)+'% to Not Lucky reward';
+			return 'Adds ' + Molpify(20*Molpy.Boosts['BKJ'].power,1)+'% to Not Lucky reward';
 		},icon:'bfj',group:'hpt'});
-	new Molpy.Boost({name:'VITSSÅGEN, JA!',
+	new Molpy.Boost({name:'VITSSÅGEN, JA!',aka:'VJ',
 		desc:function(me)
 		{
 			if(me.bought==0) return 'This message is dedicated to MajorDouble7 who found this bug and thus will never see this message since it is intended to stop people from magically getting this without buying it';
@@ -1233,8 +1232,8 @@ Molpy.DefineBoosts=function()
 		},group:'hpt',className:'toggle'});
 	Molpy.PunsawToggle=function()
 	{
-		Molpy.Boosts['VITSSÅGEN, JA!'].bought = (Molpy.Boosts['VITSSÅGEN, JA!'].bought==1?2:1);
-		Molpy.Boosts['VITSSÅGEN, JA!'].hoverOnCounter=1;
+		Molpy.Boosts['VJ'].bought = (Molpy.Boosts['VJ'].bought==1?2:1);
+		Molpy.Boosts['VJ'].hoverOnCounter=1;
 	}
 	new Molpy.Boost({name:'Swedish Chef',desc:
 		function(me)
@@ -1261,14 +1260,15 @@ Molpy.DefineBoosts=function()
 		buyFunction:function(){Molpy.shopRepaint=1;},group:'hpt',icon:'familydiscount'}
 	);
 	Molpy.shoppingItem='';
+	Molpy.shoppingItemName='';
 	new Molpy.Boost({name:'Shopping Assistant',desc:
 		function(me)
 		{
 			if(!me.bought)
 				return 'We do your shopping for you! For a small fee...';
 			if(!Molpy.shoppingItem)
-				return '<input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> an item to automatically buy when '+Molpy.IKEA+' is active';
-			return 'Buys '+Molpy.shoppingItem+' whenever possible, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
+				return '<input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> an item to automatically buy when '+'ASHF'+' is active';
+			return 'Buys '+Molpy.shoppingItemName+' whenever possible, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
 		},sand:'18G',castles:'650G',icon:'shopassist',className:'action',group:'hpt'});
 	Molpy.ChooseShoppingItem=function()
 	{
@@ -1279,21 +1279,28 @@ Molpy.DefineBoosts=function()
 			if(item)
 			{
 				Molpy.shoppingItem=name;
+				Molpy.shoppingItemName=item.plural;
 				Molpy.Notify(item.plural + ' will be purchased whenever ASHF is active if possible',1);
 				return;
 			}
 			var item = Molpy.Boosts[name];
+			if(!item)
+			{
+				item=Molpy.Boosts[Molpy.BoostAKA[name]];
+			}
 			if(item && !item.bought)
 			{
 				Molpy.shoppingItem=name;
-				Molpy.Notify(name + ' will be purchased when ASHF is active if possible',1);
+				Molpy.shoppingItemName=item.name;
+				Molpy.Notify(item.name + ' will be purchased when ASHF is active if possible',1);
 				return;
 			}
 		}
 		Molpy.shoppingItem='';
+		Molpy.shoppingItemName='';
 		Molpy.Notify('No item selected for shopping assistant',1);
 	}
-	new Molpy.Boost({name:'Late Closing Hours',desc:Molpy.IKEA+' is available for 6 mNP longer',
+	new Molpy.Boost({name:'Late Closing Hours',desc:'ASHF'+' is available for 6 mNP longer',
 		sand:'47G',castles:'930G',icon:'lateclosing',group:'hpt'});
 	new Molpy.Boost({name:'Throw Your Toys',desc:'Trebuchets build a castle for every flag and bucket owned',sand:'546M',castles: '230K'});
 	new Molpy.Boost({name:'Broken Rung',desc:'Multiplies the Sand output of Ladders by the amount of the tool you have least of.',
@@ -2213,7 +2220,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Castle Tool Multi-Buy',desc:'Allow buying of multiple castle tools at once'
 		,sand:'2000K',castles:'68020',stats:'Code for this feature supplied by waveney',icon:'castlemultibuy'
 	});
-	new Molpy.Boost({name:'Run Raptor Run',
+	new Molpy.Boost({name:'Run Raptor Run',aka:'RRR',
 		desc:function(me)
 		{
 			var str='Multiplies Not Lucky bonus by '+Molpify(10000)+' at a cost of 30 Glass Blocks per use';
@@ -2227,7 +2234,7 @@ Molpy.DefineBoosts=function()
 		sand:'180E',castles:'380E',glass:2500,group:'bean'
 	});	Molpy.RRRToggle=function()
 	{
-		var me=Molpy.Boosts['Run Raptor Run'];
+		var me=Molpy.Boosts['RRR'];
 		me.power=(!me.power)*1;			
 		me.hoverOnCounter=1;
 	}
@@ -2414,7 +2421,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it.',
 		sand:'250Y',castles:'87Y',group:'bean',logic:5});
 	
-	new Molpy.Boost({name:'Let the Cat out of the Bag',
+	new Molpy.Boost({name:'Let the Cat out of the Bag',aka:'LCB',
 		desc:function(me)
 		{
 			var str='Not Lucky reward gains 1% 3 times per Ladder and Bag owned, at a cost of 70 Glass Blocks (or 1 Ladder and 1 Bag) per use.'
@@ -2429,7 +2436,7 @@ Molpy.DefineBoosts=function()
 		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean'});
 	Molpy.CatBagToggle=function()
 	{
-		var me=Molpy.Boosts['Let the Cat out of the Bag'];
+		var me=Molpy.Boosts['LCB'];
 		me.power=(!me.power)*1;			
 		me.hoverOnCounter=1;
 	}
@@ -2809,7 +2816,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=8)Molpy.UnlockBoost('Robot Efficiency');
 	if(me.amount>=Molpy.npbDoubleThreshhold&&Molpy.Got('Robot Efficiency'))Molpy.UnlockBoost('Recursivebot');
 	if(me.amount>=17)Molpy.UnlockBoost('HAL-0-Kitty');
-	if(me.amount>=22 && Molpy.Got('Department of Redundancy Department'))Molpy.UnlockBoost('Factory Automation');
+	if(me.amount>=22 && Molpy.Got('DoRD'))Molpy.UnlockBoost('Factory Automation');
 	if(Molpy.Got('Factory Automation'))
 	{
 		Molpy.Boosts['Blast Furnace'].department=1;
@@ -2854,21 +2861,21 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.BoostsOwned++;
 	}	
 	
-	Molpy.Boosts[Molpy.IKEA].startPower=0.4;
+	Molpy.Boosts['ASHF'].startPower=0.4;
 	if(Molpy.castlesSpent>200000000)
 	{
 		Molpy.EarnBadge('Big Spender');
-		Molpy.Boosts[Molpy.IKEA].startPower=0.5;
+		Molpy.Boosts['ASHF'].startPower=0.5;
 	}
 	if(Molpy.castlesSpent>80000000000)
 	{
 		Molpy.EarnBadge('Valued Customer');
-		Molpy.Boosts[Molpy.IKEA].startPower=0.6;
+		Molpy.Boosts['ASHF'].startPower=0.6;
 	}
-	Molpy.Boosts[Molpy.IKEA].startCountdown=5;
+	Molpy.Boosts['ASHF'].startCountdown=5;
 	if(Molpy.Got('Late Closing Hours'))
 	{
-		Molpy.Boosts[Molpy.IKEA].startCountdown=10;
+		Molpy.Boosts['ASHF'].startCountdown=10;
 	}
 	
 	if(Molpy.BadgesOwned>=69)
@@ -2941,11 +2948,11 @@ Molpy.CheckBuyUnlocks=function()
 	
 	if(Molpy.Boosts['Panther Salve'].power > 200)
 	{
-		Molpy.Boosts['Run Raptor Run'].department=1;
+		Molpy.Boosts['RRR'].department=1;
 	}
 	if(Molpy.Boosts['Panther Salve'].power > 500)
 	{
-		Molpy.Boosts['Let the Cat out of the Bag'].logic=2;
+		Molpy.Boosts['LCB'].logic=2;
 	}
 	if(Molpy.Boosts['Panther Salve'].power > 800)
 	{
@@ -2955,7 +2962,7 @@ Molpy.CheckBuyUnlocks=function()
 	{
 		Molpy.Boosts['Redundant Raptor'].logic=6;
 	}
-	if(Molpy.Boosts['VITSSÅGEN, JA!'].power >=88)
+	if(Molpy.Boosts['VJ'].power >=88)
 	{
 		Molpy.Boosts['Phonesaw'].department=1;
 	}
