@@ -20,6 +20,10 @@ For personal amusement only.
 
 ### 1.94
 - Words
+- Extruder price fix
+- Made Glass Chip has/spend functions for consistency
+- Notify when spending glass blocks/chips (new function will need to be used in more places to improve this)
+- Don't notify when spending 0 (oops)
 
 ### 1.93
 - Nerfed LCB even further

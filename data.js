@@ -1433,6 +1433,18 @@ Molpy.DefineBoosts=function()
 	Molpy.SpendGlassBlocks=function(num)
 	{	
 		Molpy.Boosts['Glass Block Storage'].power -= num;
+		if(num)
+			Molpy.Notify('Spent '+Molpify(num,3)+' Glass Blocks');
+	}
+	Molpy.HasGlassChips=function(num)
+	{	
+		return Molpy.Boosts['Glass Chip Storage'].power >= num;
+	}
+	Molpy.SpendGlassChips=function(num)
+	{	
+		Molpy.Boosts['Glass Chip Storage'].power -= num;
+		if(num)
+			Molpy.Notify('Spent '+Molpify(num,3)+' Glass Chips');
 	}
 	
 	new Molpy.Boost({name:'Sand Refinery',desc:
@@ -1580,7 +1592,7 @@ Molpy.DefineBoosts=function()
 			{
 				if(me.power>=10000)
 				{
-					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Extruder\',1000,0)"></input> '+Molpify(10000)+' Chips'
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Extruder\',10000,0)"></input> '+Molpify(10000)+' Chips'
 				}else{
 					str+='<br>It costs '+Molpify(10000)+' Glass Chips';
 				}
@@ -1606,10 +1618,9 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.BuyGlassBoost=function(name,chips,blocks)
 	{
-		var ch = Molpy.Boosts['Glass Chip Storage'];
-		if(ch.power>=chips&&Molpy.HasGlassBlocks(blocks))
+		if(Molpy.HasGlassChips(chips)>=chips&&Molpy.HasGlassBlocks(blocks))
 		{
-			ch.power-=chips;
+			Molpy.SpendGlassChips(chips);
 			Molpy.SpendGlassBlocks(blocks);
 			Molpy.UnlockBoost(name);
 			Molpy.Boosts[name].buy();			

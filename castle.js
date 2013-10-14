@@ -201,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.93;
+		Molpy.version=1.94;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -751,9 +751,17 @@ Molpy.Up=function()
 			{
 				Molpy.options.showhide.tagged=Molpy.options.showhide.monumg;
 			}
-			if(version<1.93)
+			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
 				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
+			}
+			if(version<1.94)
+			{
+				if(Molpy.Got('Glass Extruder'))
+				{
+					Molpy.SpendGlassChips(9000);
+					Molpy.Notify('Yoink! Sorry, you got undercharged on Glass Extruder.',1);
+				}
 			}
 			
 			Molpy.UpdateColourScheme();
