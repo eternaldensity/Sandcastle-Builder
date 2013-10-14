@@ -21,7 +21,9 @@ For personal amusement only.
 ### 1.93
 - Nerfed LCB even further
 - Prevent Infinite sand (which becomes infinite castles) which was possible via SBTF and 0 Waves
-- Deal a bit more gracefully with the inevitable Infinite Castles
+- Deal a bit more gracefully with the inevitable Infinite Castles and prices
+- VITSSÅGEN, JA! notification fixed (overeager Replace)
+- I think I fixed the DoRD issue amongst all that
 
 ### 1.92
 - Buffed Two for One to stack with multibuy

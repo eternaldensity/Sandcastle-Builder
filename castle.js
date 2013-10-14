@@ -1177,6 +1177,22 @@ Molpy.Up=function()
 			}
 			Molpy.buildNotifyFlag=1;
 			Molpy.Build(0);
+			
+			if(isNaN(Molpy.sand))
+			{
+				Molpy.sand=0;
+				Molpy.EarnBadge('Mustard Cleanup');
+			}
+			if(isNaN(Molpy.castles))
+			{
+				Molpy.castles=0;
+				Molpy.EarnBadge('Mustard Cleanup');
+			}
+			if(isNaN(Molpy.castlesBuilt))
+			{
+				Molpy.castlesBuilt=0;
+				Molpy.EarnBadge('Mustard Cleanup');
+			}
 		}
 		Molpy.buildNotifyFlag=1;
 		Molpy.buildNotifyCount=0;
@@ -1344,7 +1360,7 @@ Molpy.Up=function()
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
 			Molpy.castlesSpent+=amount;
-			if(Molpy.castles==NaN)
+			if(isNaN(Molpy.castles))
 			{
 				Molpy.castles=0;
 				Molpy.EarnBadge('Mustard Cleanup');
@@ -1461,7 +1477,7 @@ Molpy.Up=function()
 			{
 				if(Molpy.beachClicks%100==0)
 				{
-					Molpy.Notify('VJ');
+					Molpy.Notify(Molpy.Boosts['VJ'].name);
 					var p = Molpy.Boosts['VJ'].power;
 					p++;
 					var mult=1000000;
