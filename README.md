@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.94
+- Words
+
 ### 1.93
 - Nerfed LCB even further
 - Prevent Infinite sand (which becomes infinite castles) which was possible via SBTF and 0 Waves

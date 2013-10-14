@@ -132,19 +132,19 @@ function MakeRedundancy()
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ '-like';},
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ 'ish';}
 	]
-	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','diamond','ironic','golden','iron','chilled','delicious','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor','great','radioactive','glowing','speakable','unspeakable','helpful','inevitable','sudden','problematic'];
+	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','diamond','ironic','golden','iron','chilled','delicious','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor','great','radioactive','glowing','speakable','unspeakable','helpful','inevitable','sudden','problematic','active','retroactive','futuristic','retro','old-fashioned','polite','upper-class','rough','pythonic','industrial'];
 	
-	redundancy.adjmodifier=['very', 'somewhat','kinda','partly','not','nearly','almost','quite','not quite','almost but not quite entirely','entirely','fully','totally','a little bit','far too','incredibly','barely','most','least',
+	redundancy.adjmodifier=['very', 'somewhat','kinda','partly','not','nearly','almost','quite','not quite','almost but not quite entirely','entirely','fully','totally','a little bit','far too','incredibly','barely','most','least','hardly',
 		function(){return make(redundancy.adjective)+'ly';},
 		function(){return make(redundancy.prefix)+make(redundancy.adjective);}
 	];
-	redundancy.prefix=['un','non','in','anti','sub','super','post','pre','ex','in','redunda'];
+	redundancy.prefix=['un','non','in','anti','sub','super','post','pre','ex','in','redunda','pro','retro','counter','poly','pseudo'];
 	redundancy.conjunctions=[';','but','and','so','while','because','after','before','if','which is why','but then','yet','however','nevertheless','henceforth'];
 	redundancy.creature=[
 		function(noart){return (noart?'':'the ')+make(redundancy.creatures);},
 		function(noart){return (noart?'':'the ')+make(redundancy.adjectives)+' '+make(redundancy.creatures);}
 	];
-	redundancy.creatures=['molpy','molpy','molpy','redundakitty','kitty','beesnake','pricklymolp','raptorcat','chirpy','keyboard','raptor','rabtor','snake','wolpy','seawolpy','dolphy','badger','zombie'];
+	redundancy.creatures=['molpy','molpy','molpy','redundakitty','kitty','badger','zombie','antelopey','badgermolp','bearraptor','beesnake','camolpy','chipmonpy','chirpy','chupamolpy','deerpy','dolphy','facebug','flutterbee','foxmolpy','gatorraptor','geckolpy','guineamolp','hamply','kangamolp','keyboard','lizmolp','manapy','meowlpy','molpanzee','molpanda','molpbear','molpicoot','molephant','molmot','molpguin','molphish','molpidillo','molpouse','molpossum','molpy','molpybara','molpydile','molpyguana','molpymundi','molpysnake','moltise','monkeymolp','moopy','moosepy','murtle','neckpy','orcaraptor','owlpy','pricklymolp','quackmolpy','rabtor','raptor','raptorcat','raptorshark','ratpy','rhrinocerolpy','ribbit','sealpy','seawolpy','skunkpy','slothpy','sparrow-raptor','squirpy','viperraptor','wallapy','waterottermolpy','wolpy','woolpy','zemolp'];
 	redundancy.character=[
 		function(noart){return make(redundancy.characters);},
 		function(noart){return make(redundancy.adjectives)+' '+make(redundancy.characters);}
@@ -187,7 +187,7 @@ function MakeRedundancy()
 		function(){return make(redundancy.transverbs)+', and '+make(redundancy.transverbs);},
 		function(){return make(redundancy.transverb)+' ('+make(redundancy.prepphrase)+')';}
 	];
-	redundancy.transverb=['kicks','clicks','requires','asks','requests','needs','sees','likes','destroys','drops','chases','eats','throws','burns','carries','fires','builds','destroys','quotes','wears','questions','chirps','decyphers','decodes','confuses','hates','expandifies','embiggens','molpifies','explains','redoes','hides','hugs','spoilers','separates','debugs','uploads','downloads','steals', function(){return 'is '+make(redundancy.things)+'ing'}];
+	redundancy.transverb=['kicks','clicks','requires','asks','requests','needs','sees','likes','destroys','drops','chases','eats','throws','burns','carries','fires','builds','destroys','quotes','wears','questions','chirps','decyphers','decodes','confuses','hates','expandifies','embiggens','molpifies','explains','redoes','hides','hugs','spoilers','separates','debugs','uploads','downloads','steals','climbs','produces','unbuckles','unties','unpacks','emails','decompiles','compiles','calls', function(){return 'is '+make(redundancy.things)+'ing'}];
 	redundancy.intransverbs=[
 		function(){return make(redundancy.intransverb);},
 		function(){return make(redundancy.adverb)+' '+make(redundancy.intransverb);},
