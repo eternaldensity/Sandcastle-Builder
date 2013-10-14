@@ -18,8 +18,8 @@ For personal amusement only.
 
 ## Changelog
 
-### 1.95
-- SBTF
+### 
+- Added parentheses: Maybe I had an operator precedence issue with Boosts that relied on the Flung badge?
 
 ### 1.94
 - Words
