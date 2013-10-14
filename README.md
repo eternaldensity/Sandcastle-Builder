@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.95
+- SBTF
+
 ### 1.94
 - Words
 - Extruder price fix

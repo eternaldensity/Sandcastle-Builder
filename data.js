@@ -1834,7 +1834,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Ninja Legion',desc:'Ninja Stealth is raised by 1000x as much'
 		,sand:'3P',castles:'0.9P',group:'ninj'});
 		
-	new Molpy.Boost({name:'Swim Between the Flags',aka:'SWTF',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T',icon:'swimbetweenflags'});
+	new Molpy.Boost({name:'Swim Between the Flags',aka:'SBTF',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T',icon:'swimbetweenflags'});
 	
 	new Molpy.Boost({name:"Château d'If",
 		desc:function(me)
@@ -2806,7 +2806,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=8)Molpy.UnlockBoost('Megball');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Stickbot');
 	if(me.amount>=40)Molpy.UnlockBoost('The Forty');
-	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Human Cannonball');
+	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Human Cannonball');
 	
 	me=Molpy.SandTools['Flag'];
 	if(me.amount>=1)Molpy.UnlockBoost('Flag Bearer');
@@ -2815,13 +2815,13 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Standardbot');
 	if(me.amount>=25)Molpy.UnlockBoost('Chequered Flag');
 	if(me.amount>=40)Molpy.UnlockBoost('Skull and Crossbones');
-	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Fly the Flag');
+	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Fly the Flag');
 	
 	me=Molpy.SandTools['Ladder'];
 	if(me.amount>=1)Molpy.UnlockBoost('Extension Ladder');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Climbbot');
 	if(me.amount>=25)Molpy.UnlockBoost('Broken Rung');
-	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Up Up and Away');
+	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Up Up and Away');
 	
 	me=Molpy.CastleTools['NewPixBot'];
 	if(me.amount>=3)Molpy.UnlockBoost('Busy Bot');
@@ -2857,7 +2857,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=2)Molpy.UnlockBoost('Embaggening');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Luggagebot');
 	if(me.amount>=30)Molpy.UnlockBoost('Bag Puns');
-	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Air Drop');
+	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Air Drop');
 	var you=me;
 	me = Molpy.CastleTools['River'];
 	if(me.amount&&you.amount)Molpy.UnlockBoost('Sandbag');
