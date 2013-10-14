@@ -324,6 +324,11 @@ Molpy.Up=function()
 				Molpy.scrumptiousDonuts=1;				
 				return;
 			}
+			if(thread=='Molpy')
+			{
+				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);			
+				return;
+			}
 			if (thread && thread!='')
 			{
 				Molpy.FromNeedlePulledThing(BeanishToCuegish(thread));
@@ -745,6 +750,10 @@ Molpy.Up=function()
 			if(version<1.9)
 			{
 				Molpy.options.showhide.tagged=Molpy.options.showhide.monumg;
+			}
+			if(version<1.93)
+			{
+				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
 			}
 			
 			Molpy.UpdateColourScheme();

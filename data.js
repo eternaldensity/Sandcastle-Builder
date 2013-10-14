@@ -3168,3 +3168,4 @@ _utf8_decode : function (utftext) {
 }
 
 }
+var BlitzGirl={ChallengeAccepted:'JTI1M0NpJTI1M0VNb2xweSUyNTIwbW9scHklMjUyMG1vbHB5JTI1MjBtb2xweSUyNTJDJTI1M0NiciUyNTNFTW9scHklMjUyMG1vbHB5JTI1MjBtb2xweSUyNTIwbW9scHkuJTI1M0NiciUyNTNFTW9scHklMjUyMG1vbHB5JTI1MjBtb2xweSUyNTIwbW9scHklMjUyQyUyNTNDYnIlMjUzRUdyYXBldmluZSUyNTJDJTI1MjBncmFwZXZpbmUuJTI1M0MlMjUyRmklMjUzRQ=='};

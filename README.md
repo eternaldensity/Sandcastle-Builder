@@ -24,6 +24,7 @@ For personal amusement only.
 - Deal a bit more gracefully with the inevitable Infinite Castles and prices
 - VITSSÅGEN, JA! notification fixed (overeager Replace)
 - I think I fixed the DoRD issue amongst all that
+- BlitzGirl.ChallengeAccepted
 
 ### 1.92
 - Buffed Two for One to stack with multibuy
