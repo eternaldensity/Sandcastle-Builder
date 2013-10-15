@@ -1899,15 +1899,24 @@ Molpy.DefineBoosts=function()
 				{
 						str+='<br><input type="Button" value="Trade" onclick="Molpy.UnlockNinjaClimber()"></input> 500 Ladders to unlock Ninja Climber.';
 				}
-			if(Molpy.HasGlassBlocks(800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
-			{
-				if(Molpy.HasGlassBlocks(1000))
+				if(Molpy.HasGlassBlocks(800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
 				{
-					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Caged Logicat\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
-				}else{
-					str+='<br>It costs '+Molpify(1000)+' Glass Blocks to get a Caged Logicat.';
+					if(Molpy.HasGlassBlocks(1000))
+					{
+						str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Caged Logicat\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
+					}else{
+						str+='<br>It costs '+Molpify(1000)+' Glass Blocks to get a Caged Logicat.';
+					}
 				}
-			}
+				if(Molpy.HasGlassChips(12500)&&Molpy.HasGlassBlocks(2500)&&!Molpy.Got('Camera'))
+				{
+					if(Molpy.HasGlassChips(25000)&&Molpy.HasGlassBlocks(5000))
+					{
+						str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Camera\',25000,5000)"></input> '+Molpify(25000)+' Chips and '+Molpify(5000)+' Blocks to get a Camera';
+					}else{
+						str+='<br>It costs '+Molpify(25000)+' Glass Chips and '+Molpify(5000)+' Glass Blocks to get a Camera.';
+					}
+				}
 			}
 			return str;
 		}, sand:'0.9P',castles:'32T',icon:'rosetta',group:'bean',className:'action',
@@ -1918,9 +1927,11 @@ Molpy.DefineBoosts=function()
 			var fa = Molpy.Boosts['Factory Automation'];
 			var bots=Molpy.CastleTools['NewPixBot'].amount;
 			if(!Molpy.Got('Panther Salve')&&Molpy.HasGlassBlocks(250)
-			||fa.bought&&Molpy.Got('Doublepost')&&fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power]
-			||!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500
-			||Molpy.HasGlassBlocks(800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
+				||fa.bought&&Molpy.Got('Doublepost')&&fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power]
+				||!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500
+				||Molpy.HasGlassBlocks(800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2
+				||Molpy.HasGlassChips(12500)&&Molpy.HasGlassBlocks(2500)&&!Molpy.Got('Camera')
+			)
 				newClass='action';
 			if(newClass!=oldClass)
 			{
@@ -2096,7 +2107,7 @@ Molpy.DefineBoosts=function()
 		}
 		,stats:function(me)
 		{
-			return me.desc()+'<br>(Also may have reduced price of Double or Nothing.)';
+			return me.desc(me)+'<br>(Also may have reduced price of Double or Nothing.)';
 		}
 		,sand:'5P',castles:'10P',glass:'500',className:'toggle'});
 		

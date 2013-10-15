@@ -201,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.97;
+		Molpy.version=1.98;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2964,9 +2964,10 @@ Molpy.Up=function()
 			}
 			if(Molpy.BadgeN-Molpy.BadgesOwned)
 			{
+				var r = Molpy.redactedVisible==6 && (Molpy.redactedGr=='badge'||Molpy.redactedViewIndex==-1)
 				str+= '<div class="floatsquare badge shop">Badges<br>Available<br>'
 					+showhideButton('badgesav')+'<div class="icon '
-					+(Molpy.redactedVisible==6?'redacted':'')
+					+(r?'redacted':'')
 					+'"></div></div>';
 			}
 			if(Molpy.Boosts['Chromatic Heresy'].unlocked)
@@ -3254,6 +3255,11 @@ Molpy.Up=function()
 					r++;
 				}
 				if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
+			}
+			if(redactedIndex>0&&!Molpy.options.showhide[Molpy.redactedGroup]) //it's a hidden badge so show it but move it if possible later
+			{
+				Molpy.redactedViewIndex=-1;
+				str+= Molpy.RedactedHTML(1);
 			}
 			Molpy.badgeHTML+=str;
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;		
@@ -3545,7 +3551,13 @@ Molpy.Up=function()
 		if(Molpy.HasGlassChips(10))
 		{
 			Molpy.SpendGlassChips(10);
-			Molpy.EarnBadge('discov'+Molpy.newpixNumber);
+			var aka='discov'+Molpy.newpixNumber;
+			if(Molpy.Earned(aka))
+			{
+				Molpy.Notify('You already have this '+Molpy.Badges[aka].name);
+			}else{
+				Molpy.EarnBadge(aka);
+			}
 		}else
 		{
 			Molpy.Notify('Out of Glass Chips');

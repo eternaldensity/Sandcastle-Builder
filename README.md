@@ -20,6 +20,12 @@ For personal amusement only.
 
 ### 2.0
 - 150 new badges
+- Made a boost I added a while ago obtainable
+- Made it cost chips to use
+- Redacted in Badges Available can't be invisible now
+- Should also prevent double redacted icons in the loot toggle boxes (assuming that was possible)
+- 100 of the new badges are not obtainable yet :P
+- fixed BBC stats
 
 ### 1.97
 - fixed NaN power to 0, may reduce savefile size
