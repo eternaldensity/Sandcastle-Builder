@@ -201,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.98;
+		Molpy.version=2.0;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -642,13 +642,14 @@ Molpy.Up=function()
 				pixels=[];
 			}
 			var j=0;
+			var cam=version >=2||Molpy.Got('Camera');
 			for (var i in Molpy.BadgesById)
 			{
 				var me=Molpy.BadgesById[i];
 				if(j||me.group!='badges')
 				{
 					if(!j)j=i;
-					if (pixels[i-j])
+					if(cam&&pixels[i-j])
 					{
 						var ice=pixels[i-j].split(c);
 						me.earned=parseInt(ice[0]);

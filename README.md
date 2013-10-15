@@ -19,6 +19,9 @@ For personal amusement only.
 ## Changelog
 
 ### 2.0
+- Ensure badges that shouldn't be earned aren't
+
+### 1.98
 - 150 new badges
 - Made a boost I added a while ago obtainable
 - Made it cost chips to use
