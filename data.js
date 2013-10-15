@@ -2522,15 +2522,17 @@ Molpy.DefineBoosts=function()
 		className:'action',group:'bean'
 	});
 	
-	Molpy.groupNames={boosts:['boost','Boosts'],
+	Molpy.groupNames={
+		boosts:['boost','Boosts'],
+		badges:['badge','Badges'],
 		hpt:['hill people tech','Hill People Tech','boost_department'],
 		ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
 		chron:['chronotech','Chronotech','boost_lateclosing'],
 		cyb:['cybernetics','Cybernetics','boost_robotefficiency'],
 		bean:['beanie tech','Beanie Tech','boost_chateau'],
-		discov:['discoveries','Discoveries'],
-		monums:['sand monuments','Sand Monuments'],
-		monumg:['glass monuments','Glass Monuments'],
+		discov:['discoveries','Discoveries',0,'Discovery','A memorable discovery'],
+		monums:['sand monuments','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
+		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
 	};
 }
 	
@@ -2804,6 +2806,10 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Machine Learning',desc:'Unlock all the Judgement Dip Boosts'});
 	new Molpy.Badge({name:'Blitz and Pieces',desc:'Get Blitz Power to 1M%'});
 	new Molpy.Badge({name:'Mustard Cleanup',desc:'Your numbers got too big!',vis:2});
+	
+	//*************************************************
+	//these MUST go last: add any new badges BEFORE them
+	Molpy.MakeTripleBadge({name:'In the Beginning',np:1,desc:'the first time we saw Megan and Cueball sitting by the sea'});
 }
 
 Molpy.jDipBoosts=['NewPixBot Navigation Code','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		

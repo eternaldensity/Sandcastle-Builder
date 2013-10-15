@@ -419,13 +419,22 @@ Molpy.Up=function()
 			for(var cancerbabies in Molpy.Badges)
 			{
 				var cb = Molpy.Badges[cancerbabies];
-				thread += cb.earned+s;
+				if(cb.group=='badges')
+					thread += cb.earned+s;
 			}
 			thread+=p;
 			//showhide:
 			for(var i in Molpy.options.showhideNamesOrder)
 			{
 				thread+=Molpy.options.showhide[Molpy.options.showhideNamesOrder[i]]?1:0;
+			}
+			thread+=p;
+			//stuff pretending to be badges:
+			for(var cancerbabies in Molpy.Badges)
+			{
+				var cb = Molpy.Badges[cancerbabies];
+				if(cb.group!='badges')
+					thread += cb.earned+s;
 			}
 			thread+=p;
 			return thread;
@@ -599,6 +608,7 @@ Molpy.Up=function()
 			for (var i in Molpy.BadgesById)
 			{
 				var me=Molpy.BadgesById[i];
+				if(me.group=='badges')
 				if (pixels[i])
 				{
 					var ice=pixels[i].split(c);
@@ -621,7 +631,34 @@ Molpy.Up=function()
 				var vis = parseInt(pixels[i]);
 				if(!isNaN(vis))
 					Molpy.options.showhide[Molpy.options.showhideNamesOrder[i]]=vis;
-			}			
+			}	
+
+			if(thread[10])
+			{
+				pixels=thread[10].split(s);
+			}else{
+				pixels=[];
+			}
+			for (var i in Molpy.BadgesById)
+			{
+				var me=Molpy.BadgesById[i];
+				if(me.group!='badges')
+				if (pixels[i])
+				{
+					var ice=pixels[i].split(c);
+					me.earned=parseInt(ice[0]);
+					if(me.earned)
+					{
+						Molpy.BadgesOwned++;
+						Molpy.unlockedGroups[me.group]=1;
+					}
+				}
+				else
+				{
+					me.earned=0;					
+				}
+			}
+			
 			Molpy.needlePulling=0;//badges are loaded now
 			
 			if(version<0.8)
@@ -2342,16 +2379,18 @@ Molpy.Up=function()
 		{
 			if(typeof bacon==='string')
 			{
-				if(Molpy.Badges[bacon])
+				var baby=Molpy.Badges[bacon];
+				if(baby)
 				{
-					if(Molpy.Badges[bacon].earned==0&&!Molpy.needlePulling)
+					if(baby.earned==0&&!Molpy.needlePulling)
 					{
-						Molpy.Badges[bacon].earned=1;
+						baby.earned=1;
 						if(Molpy.BadgesOwned==0) Molpy.EarnBadge('Redundant Redundancy');
 						Molpy.badgeRepaint=1;
 						Molpy.recalculateDig=1;
 						Molpy.BadgesOwned++;
-						Molpy.Notify('Badge Earned: '+bacon,1);
+						Molpy.unlockedGroups[baby.group]=1;
+						Molpy.Notify('Badge Earned: '+baby.name,1);
 						Molpy.EarnBadge('Redundant');
 						Molpy.CheckBuyUnlocks();
 					}
@@ -2363,6 +2402,18 @@ Molpy.Up=function()
 		Molpy.Earned=function(bacon)
 		{
 			return Molpy.Badges[bacon].earned;
+		}
+		
+		Molpy.MakeSpecialBadge=function(args,kind)
+		{
+			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+args.name,aka:kind+args.np,desc:Molpy.groupNames[kind][4]+': '+args.desc,icon:args.icon+'_'+kind,
+				earnFunction:args.earnFunction,visibility:args.visibility,group:kind});
+		}
+		Molpy.MakeTripleBadge=function(args)
+		{
+			Molpy.MakeSpecialBadge(args,'discov');
+			Molpy.MakeSpecialBadge(args,'monums');
+			Molpy.MakeSpecialBadge(args,'monumg');
 		}
 		
 		Molpy.redactedW=BeanishToCuegish("UmVkdW5kYW50");
@@ -2858,24 +2909,29 @@ Molpy.Up=function()
 		}
 		
 		Molpy.unlockedGroups={};
+		Molpy.PaintLootToggle=function(gr,kind)
+		{
+			var str='';
+			if(Molpy.unlockedGroups[gr])
+			{
+				var id = Molpy.groupNames[gr][2]||'';
+				if(id) id= ' id="'+id+'"';
+				var r = (Molpy.redactedVisible==kind&&Molpy.redactedGr==gr);
+				if(r)id='';
+				str+= '<div class="floatsquare loot '+(kind==4?'boost':'badge')+'">'+Molpy.groupNames[gr][1]+'<br><br>'+showhideButton(gr)
+					+'<div class="icon'
+					+(r?' redacted"':'"')
+					+id+'></div></div>';
+			}
+			return str;
+		}
 		Molpy.RepaintLootSelection=function()
 		{
 			var str = '';
 			var groups = ['boosts','ninj','cyb','hpt','bean','chron'];
 			for(var i in groups)
 			{
-				var gr = groups[i];
-				if(Molpy.unlockedGroups[gr])
-				{
-					var id = Molpy.groupNames[gr][2]||'';
-					if(id) id= ' id="'+id+'"';
-					var r = (Molpy.redactedVisible==4&&Molpy.redactedGr==gr);
-					if(r)id='';
-					str+= '<div class="floatsquare boost loot">'+Molpy.groupNames[gr][1]+'<br><br>'+showhideButton(gr)
-						+'<div class="icon'
-						+(r?' redacted"':'"')
-						+id+'></div></div>';
-				}
+				str+=Molpy.PaintLootToggle(groups[i],4);
 			}
 			if(Molpy.BadgesOwned)
 			{
@@ -2883,6 +2939,11 @@ Molpy.Up=function()
 					+showhideButton('badges')+'<div class="icon '
 					+(Molpy.redactedVisible==5?'redacted':'')
 					+'"></div></div>';
+			}
+			var groups = ['discov','monums','monumg'];
+			for(var i in groups)
+			{
+				str +=Molpy.PaintLootToggle(groups[i],5);
 			}
 			if(Molpy.BadgeN-Molpy.BadgesOwned)
 			{
@@ -3093,15 +3154,23 @@ Molpy.Up=function()
 		//r = redacted index
 		Molpy.BadgeString=function(me,f,r)
 		{
-			if(r) r= Molpy.RedactedHTML(1);
+			var group=me.group
+			if(r)
+			{
+				r=Molpy.RedactedHTML(1);
+				Molpy.redactedGr=group;
+			}
 			else r='';
 			
-			var cn= me.className||'';			
+			if(!(Molpy.options.showhide[group]||f))return'';
+			if(f&!me.bought&&group!='badges')return''; //this is for badgesav group
+			var cn= me.className||'';		
+			var heading= '<div class="heading">['+Molpy.groupNames[group][0]+']</div>';	
 			if(cn&&me.earned)Molpy.UnlockBoost('Chromatic Heresy');
 			cn+=' lootbox badge '+(me.earned?'loot':'shop');
 			
 			return r+'<div class="'+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id
-				+'],event)"><div class="heading">[badge]</div><div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'
+				+'],event)">'+heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'
 				+(me.earned||me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';			
 		}
 		
@@ -3109,35 +3178,34 @@ Molpy.Up=function()
 		{
 			Molpy.badgeRepaint=0;
 			var str='';			
-			if(Molpy.options.showhide.badges){
-				var blist=[];
-				for (var i in Molpy.Badges)
+			var blist=[];
+			for (var i in Molpy.Badges)
+			{
+				var me=Molpy.Badges[i];
+				if (me.earned)
 				{
-					var me=Molpy.Badges[i];
-					if (me.earned)
-					{
-						blist.push(me);
-					}
+					blist.push(me);
 				}
-				var redactedIndex=-1;
-				if(Molpy.redactedVisible==5)
-				{
-					if(Molpy.redactedViewIndex==-1)
-					{
-						Molpy.redactedViewIndex=Math.floor((blist.length+1)*Math.random());
-					}
-					redactedIndex=Molpy.redactedViewIndex;
-				}
-				var r=0;
-				//do some sorting here?
-				for (var i in blist)
-				{
-					var me=blist[i];					
-					str+=Molpy.BadgeString(me,0,r==redactedIndex);
-					r++;
-				}
-				if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
 			}
+			var redactedIndex=-1;
+			if(Molpy.redactedVisible==5)
+			{
+				if(Molpy.redactedViewIndex==-1)
+				{
+					Molpy.redactedViewIndex=Math.floor((blist.length+1)*Math.random());
+				}
+				redactedIndex=Molpy.redactedViewIndex;
+			}
+			var r=0;
+			//do some sorting here?
+			for (var i in blist)
+			{
+				var me=blist[i];					
+				str+=Molpy.BadgeString(me,0,r==redactedIndex);
+				r++;
+			}
+			if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
+			
 			Molpy.badgeHTML=str;
 			str='';			
 			if(Molpy.options.showhide.badgesav){
@@ -3165,7 +3233,7 @@ Molpy.Up=function()
 				for (var i in blist)
 				{
 					var me=blist[i];
-					str+=Molpy.BadgeString(me,0,r==redactedIndex);
+					str+=Molpy.BadgeString(me,1,r==redactedIndex);
 					r++;
 				}
 				if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
@@ -3457,7 +3525,7 @@ Molpy.Up=function()
 	
 	Molpy.Shutter=function()
 	{
-		Molpy.EarnBadge('Discovery '+Molpy.newpixNumber);
+		Molpy.EarnBadge('discov'+Molpy.newpixNumber);
 	}
 	
 	/*In which we explain how to think

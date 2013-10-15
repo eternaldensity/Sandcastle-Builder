@@ -23,6 +23,7 @@ For personal amusement only.
 - BBC now uses shortname
 - Locking a boost now notifies with the full name rather than abbreviation
 - DoN price reduction rarer
+- Fiddled with badge display code a bit
 
 ### 1.95
 - SBTF
