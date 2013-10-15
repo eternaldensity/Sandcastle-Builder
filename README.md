@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.0
+- 150 new badges
+
 ### 1.97
 - fixed NaN power to 0, may reduce savefile size
 - fix some badge loading code

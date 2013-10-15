@@ -2226,20 +2226,9 @@ Molpy.Up=function()
 					Molpy.BoostsOwned++;
 					Molpy.CheckBuyUnlocks();
 					Molpy.unlockedGroups[this.group]=1;
-					if(sp+cp>0 && Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]!='hide1')
+					if(sp+cp>0)
 					{
-						if(this.className)
-						{
-							if(!Molpy.options.showhide.tagged)
-							{
-								showhideToggle('tagged');
-							}
-						}else{
-							if(!Molpy.options.showhide[this.group])
-							{
-								showhideToggle(this.group);
-							}
-						}
+						Molpy.ShowGroup(this.group,this.className);
 					}
 				}				
 			}
@@ -2340,6 +2329,25 @@ Molpy.Up=function()
 			//also, watch www.youtube.com/watch?v=tTYr3JuueF4
 		}		
 		
+		Molpy.ShowGroup=function(group,tagged)
+		{		
+			if(Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]!='hide1')
+			{
+				if(tagged)
+				{
+					if(!Molpy.options.showhide.tagged)
+					{
+						showhideToggle('tagged');
+					}
+				}else{
+					if(!Molpy.options.showhide[group])
+					{
+						showhideToggle(group);
+					}
+				}
+			}
+		}
+		
 		Molpy.badgeRepaint=1
 		Molpy.badgeHTML='';
 		Molpy.Badges=[];
@@ -2396,9 +2404,12 @@ Molpy.Up=function()
 						Molpy.recalculateDig=1;
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[baby.group]=1;
-						Molpy.Notify('Badge Earned: '+baby.name,1);
+						Molpy.Notify((baby.group=='badges'?'Badge Earned: ':'')+baby.name,1);
 						Molpy.EarnBadge('Redundant');
-						Molpy.CheckBuyUnlocks();
+						Molpy.CheckBuyUnlocks();						
+					
+						Molpy.ShowGroup(baby.group,baby.className);
+					
 					}
 				}
 			}else{ //so you can be bacon while you're bacon
@@ -3531,7 +3542,14 @@ Molpy.Up=function()
 	
 	Molpy.Shutter=function()
 	{
-		Molpy.EarnBadge('discov'+Molpy.newpixNumber);
+		if(Molpy.HasGlassChips(10))
+		{
+			Molpy.SpendGlassChips(10);
+			Molpy.EarnBadge('discov'+Molpy.newpixNumber);
+		}else
+		{
+			Molpy.Notify('Out of Glass Chips');
+		}
 	}
 	
 	/*In which we explain how to think

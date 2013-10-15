@@ -2515,7 +2515,7 @@ Molpy.DefineBoosts=function()
 		var str ='"<b>THIS DEVICE <i>MECHANISM</i> IS <i>OBSCURE</i> UNKNOWN</b>"';
 		if(me.bought)
 		{
-			str+= '<br><input type="Button" onclick="Molpy.Shutter()" value="Snap!"></input>';
+			str+= '<br><input type="Button" onclick="Molpy.Shutter()" value="Snap!"></input> (Uses 10 Glass Chips)';
 		}
 		return str;
 	},
@@ -2809,7 +2809,56 @@ Molpy.DefineBadges=function()
 	
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
-	Molpy.MakeTripleBadge({name:'In the Beginning',np:1,desc:'the first time we saw Megan and Cueball sitting by the sea'});
+	Molpy.MakeTripleBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});
+	Molpy.MakeTripleBadge({np:16,name:'Dip',desc:'when Cueball dipped his toe in the fluid'});
+	Molpy.MakeTripleBadge({np:25,name:'Start of Construction',desc:'when Megan began building the first castle'});
+	Molpy.MakeTripleBadge({np:34,name:'One Done',desc:'the first Sandcastle\'s completion'});
+	Molpy.MakeTripleBadge({np:50,name:'Barrier',desc:'completion of the first wall'});
+	Molpy.MakeTripleBadge({np:52,name:'First Parting Words',desc:'the first words were spoken, and Cueball left'});
+	Molpy.MakeTripleBadge({np:75,name:'He Returns',desc:'when Cueball came back'});
+	Molpy.MakeTripleBadge({np:88,name:'Silent Exit',desc:'when Megan left without a word'});
+	Molpy.MakeTripleBadge({np:103,name:'The Fall of Man',desc:'when Cueball fell down and damaged the castle'});
+	Molpy.MakeTripleBadge({np:124,name:'Abandonment',desc:'when Cueball left us with no one to watch'});
+	Molpy.MakeTripleBadge({np:137,name:'So That\'s What They\'re up to',desc:'our first glimpse of the second castle'});
+	Molpy.MakeTripleBadge({np:143,name:'As According to the Prophesy',desc:'the prophesied newpix came to pass'});
+	Molpy.MakeTripleBadge({np:146,name:'Been Busy',desc:'when we first saw Megan working on the second castle'});
+	Molpy.MakeTripleBadge({np:158,name:'There he is!',desc:'when we finally saw Cueball working on the second castle too'});
+	Molpy.MakeTripleBadge({np:161,name:'Amu<span class="faded">semen</span>t Castle',desc:'when we wondered what this castle was made of'});
+	Molpy.MakeTripleBadge({np:170,name:'Wanna Swim?',desc:'the second text ever, and the first "Yeah"'});
+	Molpy.MakeTripleBadge({np:175,name:'You OK?',desc:'the time that Megan got some in her mouth and the third text appeared'});
+	Molpy.MakeTripleBadge({np:177,name:'Gone to Clean Up',desc:'when Megan left for the second time'});
+	Molpy.MakeTripleBadge({np:179,name:'Better Go Too',desc:'when Cueball also left'});
+	Molpy.MakeTripleBadge({np:210,name:'That Looks Grand',desc:'when Cueball completed the bridge connecting the two castles together'});
+	Molpy.MakeTripleBadge({np:211,name:'Shake It Off',desc:'when Cueball shook the sand off his hands'});
+	Molpy.MakeTripleBadge({np:212,name:'Didn\'t See that Coming',desc:'when something flew through the air towards Cueball from behind'});
+	Molpy.MakeTripleBadge({np:213,name:'Surprise Attack',desc:'the moment Cueball realised he was under fire'});
+	Molpy.MakeTripleBadge({np:214,name:'Cornered',desc:'when the corner was knocked off the bridge'});
+	Molpy.MakeTripleBadge({np:218,name:'Trebuchet',desc:'when the trebuchet was finaly completely visible'});
+	Molpy.MakeTripleBadge({np:219,name:'Liftoff',desc:'the moment we saw Megan fired the trebuchet'});
+	Molpy.MakeTripleBadge({np:221,name:'KO\'d',desc:'when Megan knocked out part of the bridge'});
+	Molpy.MakeTripleBadge({np:224,name:'Joy!',desc:'Megan throwing her arms up as Cueball launched the trebuchet'});
+	Molpy.MakeTripleBadge({np:232,name:'Take Cover!',desc:'when Cuegan jumped for cover after firing the trebuchet almost vertically'});
+	Molpy.MakeTripleBadge({np:260,name:'Shake it Out',desc:'the time when Megan woke up and shook the sand out of her hair'});
+	Molpy.MakeTripleBadge({np:308,name:'Wave',desc:'when Cuegan wave to one another after Cueball came back from a long absence'});
+	Molpy.MakeTripleBadge({np:309,name:'Whoops!',desc:'the time that Megan slipped off the sand mound she had built'});
+	Molpy.MakeTripleBadge({np:320,name:'Sentences',desc:'when the fourth text appeared, in which a question was asked about the whereabouts of the river'});
+	Molpy.MakeTripleBadge({np:376,name:'Clearly Recursion',desc:'when it became visible that Cueball was building a scale model of the castles'});
+	Molpy.MakeTripleBadge({np:390,name:'Investigation',desc:'the time that Cueball took a break to have a closer look at the fluid'});
+	Molpy.MakeTripleBadge({np:402,name:'Tiny',desc:'Megan holding up something very tiny'});
+	Molpy.MakeTripleBadge({np:403,name:'D\'awwwwwwww!',desc:'when we got a very close up of Megan holding the world\'s cutest trebuchette'});
+	Molpy.MakeTripleBadge({np:408,name:'Lack of Understanding',desc:'the fifth text, in which Megan does not understand what the sea is doing'});
+	Molpy.MakeTripleBadge({np:414,name:'Been Fun',desc:'the sixth text, in which Cueball does not think they can build it much taller'});
+	Molpy.MakeTripleBadge({np:421,name:'The First Pole',desc:'when Megan brought the first pole'});
+	Molpy.MakeTripleBadge({np:451,name:'Breath Easy',desc:'when Megan finished lifting the first pole into position and had a chance to catch her breath'});
+	Molpy.MakeTripleBadge({np:460,name:'Legs in Place',desc:'when all four poles had been raised to their positions'});
+	Molpy.MakeTripleBadge({np:466,name:'Heave!',desc:'when Cuegan were pulling the first bit of scaffolding up by rope'});
+	Molpy.MakeTripleBadge({np:469,name:'Ladder',desc:'when we first saw a ladder'});
+	Molpy.MakeTripleBadge({np:472,name:'Climb',desc:'the time when Megan first climbed a ladder'});
+	Molpy.MakeTripleBadge({np:486,name:'The Tasting',desc:'the moment Cueball took a sip'});
+	Molpy.MakeTripleBadge({np:487,name:'The Spit',desc:'the moment Cueball forcefully ejected the fluid from his mouth'});
+	Molpy.MakeTripleBadge({np:488,name:'More Spitting',desc:'when Cueball said Yuck'});
+	Molpy.MakeTripleBadge({np:490,name:'Worse',desc:'the moment we learned that Cueball has had worse'});
+	Molpy.MakeTripleBadge({np:524,name:'Connected',desc:'when the two sides of the scaffolding were joined'});
 }
 
 Molpy.jDipBoosts=['NewPixBot Navigation Code','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		
