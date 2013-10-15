@@ -19,7 +19,12 @@ For personal amusement only.
 ## Changelog
 
 ### 2.01
-- fixed some wrong variable names which don't seem to be doing much anyway (I should test that...)
+- fixed some wrong variable names which don't seem to be doing much anyway
+- I'll test those some other time and maybe remove them if they aren't needed
+- Supposedly they make sure boost descriptions update after you click a button on them
+- Fixed mustard where 0s after decimal points went missing. i.e 1.01 was displayed as 1.1 when showing 2 decimal places
+- Saw that Orteil seems to have fixed this issue a completely different way :P
+- Added a bunch more badges
 
 ### 2.0
 - Ensure badges that shouldn't be earned aren't
