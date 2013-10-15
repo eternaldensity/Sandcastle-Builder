@@ -619,7 +619,7 @@ Molpy.DefineBoosts=function()
 		}
 		g('clockface').className= p?'hidden':'unhidden';	
 		Molpy.Boosts['Coma Molpy Style'].power=p;
-		Molpy.Boosts['Coma Molpy Style'].hoverOnConter=1;
+		Molpy.Boosts['Coma Molpy Style'].hoverOnCounter=1;
 		Molpy.recalculateDig=1;
 	}
 	new Molpy.Boost({name:'Time Travel',desc: 
@@ -1786,7 +1786,7 @@ Molpy.DefineBoosts=function()
 		{
 			bl.power-=Molpy.SandPurifierUpgradeCost();
 			Molpy.Boosts['Sand Purifier'].power++;
-			Molpy.Boosts['Sand Purifier'].hoverOnConter=1;
+			Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
 			Molpy.recalculateDig=1;
 			Molpy.Notify('Sand Purifier upgraded',1);
 		}
@@ -2368,7 +2368,7 @@ Molpy.DefineBoosts=function()
 		{
 			ch.power-=Molpy.GlassExtruderUpgradeCost();
 			Molpy.Boosts['Glass Extruder'].power++;
-			Molpy.Boosts['Glass Extruder'].hoverOnConter=1;
+			Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
 			Molpy.recalculateDig=1;
 			Molpy.Notify('Glass Extruder upgraded',1);
 		}
@@ -2423,7 +2423,7 @@ Molpy.DefineBoosts=function()
 			str+='<br><br>'+statements[i];
 		}
 		Molpy.cagedPuzzleValue=str;
-		Molpy.Boosts['Caged Logicat'].hoverOnConter=1;
+		Molpy.Boosts['Caged Logicat'].hoverOnCounter=1;
 		Molpy.Boosts['Caged Logicat'].power=1;
 		Molpy.cagedSGen.firstTry=1;
 	}
@@ -2454,7 +2454,7 @@ Molpy.DefineBoosts=function()
 			}
 		}
 		Molpy.cagedPuzzleValue='';
-		Molpy.Boosts['Caged Logicat'].hoverOnConter=1;
+		Molpy.Boosts['Caged Logicat'].hoverOnCounter=1;
 		Molpy.Boosts['Caged Logicat'].power=0;
 	}
 	

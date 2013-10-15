@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.01
+- fixed some wrong variable names which don't seem to be doing much anyway (I should test that...)
+
 ### 2.0
 - Ensure badges that shouldn't be earned aren't
 
