@@ -201,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.96;
+		Molpy.version=1.97;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -592,6 +592,8 @@ Molpy.Up=function()
 					{
 						Molpy.GiveTempBoost(me.name,me.power,me.countdown);
 					}
+					if(isNaN(me.power))
+						me.power=0; //compression! :P
 				}
 				else
 				{
@@ -639,23 +641,27 @@ Molpy.Up=function()
 			}else{
 				pixels=[];
 			}
+			var j=0;
 			for (var i in Molpy.BadgesById)
 			{
 				var me=Molpy.BadgesById[i];
-				if(me.group!='badges')
-				if (pixels[i])
+				if(j||me.group!='badges')
 				{
-					var ice=pixels[i].split(c);
-					me.earned=parseInt(ice[0]);
-					if(me.earned)
+					if(!j)j=i;
+					if (pixels[i-j])
 					{
-						Molpy.BadgesOwned++;
-						Molpy.unlockedGroups[me.group]=1;
+						var ice=pixels[i-j].split(c);
+						me.earned=parseInt(ice[0]);
+						if(me.earned)
+						{
+							Molpy.BadgesOwned++;
+							Molpy.unlockedGroups[me.group]=1;
+						}
 					}
-				}
-				else
-				{
-					me.earned=0;					
+					else
+					{
+						me.earned=0;					
+					}
 				}
 			}
 			

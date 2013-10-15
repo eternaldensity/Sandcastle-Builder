@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.97
+- fixed NaN power to 0, may reduce savefile size
+- fix some badge loading code
+
 ### 1.96
 - BBC can be disabled
 - BBC now uses shortname
