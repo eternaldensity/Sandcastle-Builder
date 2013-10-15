@@ -18,6 +18,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 1.96
+- BBC can be disabled
+- BBC now uses shortname
+- Locking a boost now notifies with the full name rather than abbreviation
+- DoN price reduction rarer
+
 ### 1.95
 - SBTF
 

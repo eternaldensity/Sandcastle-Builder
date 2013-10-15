@@ -201,7 +201,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=1.95;
+		Molpy.version=1.96;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2240,7 +2240,7 @@ Molpy.Up=function()
 						baby.unlocked=1;
 						Molpy.boostRepaint=1;
 						Molpy.recalculateDig=1;
-						Molpy.Notify('Boost Unlocked: '+bacon,1);
+						Molpy.Notify('Boost Unlocked: '+baby.name,1);
 						if(baby.unlockFunction)baby.unlockFunction();
 					}
 				}
@@ -3675,16 +3675,20 @@ Molpy.Up=function()
 				Molpy.Notify('A Bag was burned!',1);
 			}
 		}
-		if(Molpy.Got('Broken Bottle Cleanup'))
+		if(Molpy.Got('BBC'))
 		{
-			if(Molpy.HasGlassBlocks(5))
+			var bbc =Molpy.Boosts['BBC'];
+			if(bbc.power>=0)
 			{
-				Molpy.SpendGlassBlocks(5);
-				Molpy.Boosts['Broken Bottle Cleanup'].power=1;
-				if(Molpy.Boosts['Double or Nothing'].power>20&&Math.floor(Math.random()*4)==0)
-					Molpy.Boosts['Double or Nothing'].power--;
-			}else{
-				Molpy.Boosts['Broken Bottle Cleanup'].power=0;
+				if(Molpy.HasGlassBlocks(5))
+				{
+					Molpy.SpendGlassBlocks(5);
+					bbc.power=1;
+					if(Molpy.Boosts['Double or Nothing'].power>20&&Math.floor(Math.random()*6)==0)
+						Molpy.Boosts['Double or Nothing'].power--;
+				}else{
+					bbc.power=0;
+				}
 			}
 		}
 		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*3)==0);

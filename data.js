@@ -2084,14 +2084,32 @@ Molpy.DefineBoosts=function()
 		},
 		sand:'400P',castles:'400P'});
 	
-	new Molpy.Boost({name:'Broken Bottle Cleanup',desc:'All Sand Tools produce 20x Sand at a cost of 5 Glass Blocks per NP',
-		stats:function(me)
+	new Molpy.Boost({name:'Broken Bottle Cleanup',aka:'BBC',
+		desc:function(me)
 		{
-			return me.desc+'<br>'+(me.power?'Active during this NP. (Also may have reduced price of Double or Nothing.)':'Inactive. May activate on the next ONG if 5 Glass Blocks are available.');
-		},sand:'5P',castles:'10P',glass:'500'});
+			var str =  'All Sand Tools produce 20x Sand at a cost of 5 Glass Blocks per NP';
+			if(me.bought) str+='<br>'
+				+(me.power>0?'Active during this NP.<br><input type="Button" value="Disable" onclick="Molpy.ToggleBBC()"></input>'
+				:(me.power==0?'Inactive. May activate on the next ONG if 5 Glass Blocks are available.'
+				:'Disabled. When enabled, will do nothing until the next ONG.<br><input type="Button" value="Enable" onclick="Molpy.ToggleBBC()"></input>'));
+			return str;
+		}
+		,stats:function(me)
+		{
+			return me.desc()+'<br>(Also may have reduced price of Double or Nothing.)';
+		}
+		,sand:'5P',castles:'10P',glass:'500',className:'toggle'});
+		
+	Molpy.ToggleBBC=function()
+	{
+		var me = Molpy.Boosts['BBC'];
+		if(me.power<0)me.power=0;
+		else me.power=-1;
+		me.hoverOnCounter=1;
+	}
 	Molpy.BBC=function()
 	{
-		if(Molpy.Got('Broken Bottle Cleanup')&&Molpy.Boosts['Broken Bottle Cleanup'].power)
+		if(Molpy.Got('BBC')&&Molpy.Boosts['BBC'].power>0)
 			return 20;
 		return 1;
 	}
@@ -2950,7 +2968,7 @@ Molpy.CheckBuyUnlocks=function()
 	{
 		Molpy.Boosts['Glass Ceiling 0'].department=1;
 		if(Molpy.Earned('Beachomancer'))
-			Molpy.Boosts['Broken Bottle Cleanup'].department=1;
+			Molpy.Boosts['BBC'].department=1;
 	}
 	if(Molpy.GlassCeilingCount())
 		Molpy.GlassCeilingUnlockCheck();
