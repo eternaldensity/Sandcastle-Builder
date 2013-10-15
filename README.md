@@ -21,6 +21,7 @@ For personal amusement only.
 ### 1.97
 - fixed NaN power to 0, may reduce savefile size
 - fix some badge loading code
+- fixed glass boost purchase logic mustard: didn't remove all of old condition
 
 ### 1.96
 - BBC can be disabled

@@ -1618,7 +1618,7 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.BuyGlassBoost=function(name,chips,blocks)
 	{
-		if(Molpy.HasGlassChips(chips)>=chips&&Molpy.HasGlassBlocks(blocks))
+		if(Molpy.HasGlassChips(chips)&&Molpy.HasGlassBlocks(blocks))
 		{
 			Molpy.SpendGlassChips(chips);
 			Molpy.SpendGlassBlocks(blocks);
