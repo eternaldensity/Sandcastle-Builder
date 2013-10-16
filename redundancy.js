@@ -234,7 +234,7 @@ var maketext=function()
 	g('redundantpar').className='partext';
 	var str = par(red.paragraph());
 	var i = 6;
-	while(i--) str+= par(red.paragraph())+'<br>';
+	while(i--) str+= '<br>'+par(red.paragraph());
 	g('redundantpar').innerHTML=str;
 }
 

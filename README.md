@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.02
+- Redundant paragraphs were missing the first linebreak
+
 ### 2.01
 - fixed some wrong variable names which don't seem to be doing much anyway
 - I'll test those some other time and maybe remove them if they aren't needed
