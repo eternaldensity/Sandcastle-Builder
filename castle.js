@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.02;
+		Molpy.version=2.03;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1794,6 +1794,11 @@ Molpy.Up=function()
 				{
 					Molpy.Notify('Things got worse!!');
 					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2),1);
+					if(judy>5)
+					{
+						if(Math.floor(Math.random()*4==0))cornify_add();
+						if(judy>9 && Math.floor(Math.random()*3==0))cornify_replace();
+					}
 				}
 				else if(judy==2)
 				{
@@ -2450,7 +2455,7 @@ Molpy.Up=function()
 			var spoiler = '';
 			var label = 'Hide';
 			if(drawType=='show') label='Show';
-			heading=heading?'<div class="heading">'+Molpy.redactedBrackets+'</div>':'';
+			heading=heading?'<h1>'+Molpy.redactedBrackets+'</h1>':'';
 			var str = '<div id="redacteditem">'+heading+'<div class="icon redacted"></div><div class="title">'
 				+Molpy.redactedWord+'</div><div><b>Spoiler:</b><input type="button" value="'
 				+label+'" onclick="Molpy.ClickRedacted('+level+')"</input>';
@@ -2729,7 +2734,7 @@ Molpy.Up=function()
 			if(Molpy.Got('RRR') && Molpy.Boosts['RRR'].power && Molpy.HasGlassBlocks(30))
 			{
 				Molpy.SpendGlassBlocks(30);
-				bonus*=1000;
+				bonus*=10000;
 			}
 			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].power)
 			{
@@ -3080,7 +3085,7 @@ Molpy.Up=function()
 			
 			
 			cn = r+'<div class="boost '+(me.bought?'lootbox loot ':'floatbox shop ')+cn;
-			var heading= '<div class="heading">['+Molpy.groupNames[group][0]+']</div>';
+			var heading= '<h1>['+Molpy.groupNames[group][0]+']</h1>';
 			var buy= '';
 			if(!me.bought)
 			{
@@ -3187,7 +3192,7 @@ Molpy.Up=function()
 			if(!(Molpy.options.showhide[group]||f))return'';
 			if(f&!me.bought&&group!='badges')return''; //this is for badgesav group
 			var cn= me.className||'';		
-			var heading= '<div class="heading">['+Molpy.groupNames[group][0]+']</div>';	
+			var heading= '<h1>['+Molpy.groupNames[group][0]+']</h1>';	
 			if(cn&&me.earned)Molpy.UnlockBoost('Chromatic Heresy');
 			cn+=' lootbox badge '+(me.earned?'loot':'shop');
 			
@@ -4062,7 +4067,7 @@ Molpy.Up=function()
 		
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['Glass Chip Storage'].power);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power);
-		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse())+'%';
+		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),3)+'%';
 		
 		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 	}

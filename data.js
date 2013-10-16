@@ -803,7 +803,11 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		ch.power=!ch.power*1;
-		if(ch.power&&(Math.floor(Math.random()*2))) cornify_add();
+		if(ch.power&&(Math.floor(Math.random()*2)))
+		{
+			cornify_count=5;
+			cornify_add();
+		}
 		ch.hoverOnCounter=1;
 		Molpy.UpdateColourScheme();
 		
@@ -864,6 +868,7 @@ Molpy.DefineBoosts=function()
 		if(Molpy.intruderBots)
 		{
 			Molpy.CastleTools['NewPixBot'].amount-=Molpy.intruderBots;
+			Molpy.CastleTools['NewPixBot'].refresh();
 			Molpy.Notify(Molpy.intruderBots + ' Intruders Destroyed!');
 			Molpy.intruderBots=0;
 		}
@@ -2272,7 +2277,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
-		sand:'180E',castles:'380E',glass:2500,group:'bean'
+		sand:'180E',castles:'380E',glass:2500,group:'bean',className:'toggle'
 	});	Molpy.RRRToggle=function()
 	{
 		var me=Molpy.Boosts['RRR'];
@@ -2878,7 +2883,7 @@ Molpy.DefineBadges=function()
 	Molpy.MakeTripleBadge({np:632,name:'Flagging',desc:'when Cueball put flags on the Rooks'});
 	Molpy.MakeTripleBadge({np:673,name:'Questioning',desc:'when Megan wondered if it rained on the sea, as they stood on the observation platform'});
 	Molpy.MakeTripleBadge({np:638,name:'Waste',desc:'when Cueball shared his feelings about hypothetical rain on the sea'});
-	Molpy.MakeTripleBadge({np:640,name:'Hills',desc:'the time that the hills were first mentioned, as the origon of the river'});
+	Molpy.MakeTripleBadge({np:640,name:'Hills',desc:'the time that the hills were first mentioned, as the origin of the river'});
 	Molpy.MakeTripleBadge({np:641,name:'<i>Other</i> Rivers?',desc:'when Cueball wondered about other rivers, as Megan attached a rope to a pole'});
 	Molpy.MakeTripleBadge({np:653,name:'Next Level',desc:'when Cuegan finished lifting the next horizontal piece above the platform'});
 	Molpy.MakeTripleBadge({np:659,name:'Must',desc:'when Cueball declared the necessity of other rivers to prevent the sea from drying up'});

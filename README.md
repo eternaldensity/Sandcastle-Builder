@@ -18,6 +18,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.03
+- Fixed RRR to match its description
+- RR is a toggle so it should be in the toggle class! (and thus blue to chromatic heretics)
+- Sand use stat has 3 decimal places
+- Fixed a badge typo
+- NPB NavCode wasn't resetting the NPB price when destroying intrudrers
+
 ### 2.02
 - Redundant paragraphs were missing the first linebreak
 - Chromatic Heresy wasn't heretical enough

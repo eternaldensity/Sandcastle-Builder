@@ -385,11 +385,11 @@ body.lightscheme .badge.shop:hover
 	color:#333;
 	background:#eee;
 }
-body.darkscheme .badge.shop .heading
+body.darkscheme .badge.shop h1
 {
 	color:#333;
 }
-body.lightscheme .badge.shop .heading
+body.lightscheme .badge.shop h1
 {
 	color:#ccc;
 }
@@ -413,11 +413,11 @@ body.lightscheme .badge.loot:hover
 	background:#ddd;
 	border-color:#333;
 }
-body.darkscheme .badge.loot .heading
+body.darkscheme .badge.loot h1
 {
 	color:#999;
 }
-body.lightscheme .badge.loot .heading
+body.lightscheme .badge.loot h1
 {
 	color:#777;
 }
