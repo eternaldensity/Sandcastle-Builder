@@ -25,6 +25,7 @@ For personal amusement only.
 - Fixed mustard where 0s after decimal points went missing. i.e 1.01 was displayed as 1.1 when showing 2 decimal places
 - Saw that Orteil seems to have fixed this issue a completely different way :P
 - Added a bunch more badges
+- Fixed a new mustard I introduced: prevent unnecessary trailing 0s after the decimal point
 
 ### 2.0
 - Ensure badges that shouldn't be earned aren't

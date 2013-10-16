@@ -60,16 +60,16 @@ function Molpify(number, raftcastle, shrinkify)
 		var numCopy=number;
 		//get the right number of decimal places to stick on the end:
 		var raft=numCopy*Math.pow(10,raftcastle)-Math.floor(numCopy)*Math.pow(10,raftcastle);
-		raft = Math.floor(raft)+'';
-		if((raft).length>raftcastle)
+		var sraft = Math.floor(raft)+'';
+		if((sraft).length>raftcastle)
 		{
 			numCopy++;
-			raft=''; //rounded decimal part up to 1
-		}else while(raft.length<raftcastle)
+			sraft=''; //rounded decimal part up to 1
+		}else if(raft) while(sraft.length<raftcastle)
 		{
-			raft='0'+raft; //needs leading zeroes because it's a number like 1.01
+			sraft='0'+sraft; //needs leading zeroes because it's a number like 1.01
 		}
-		molp=Molpify(numCopy,0,shrinkify)+(raft?('.'+raft):''); //stick them on the end if there are any
+		molp=Molpify(numCopy,0,shrinkify)+(raft?('.'+sraft):''); //stick them on the end if there are any
 	}else
 	{
 		number = Math.floor(number);
