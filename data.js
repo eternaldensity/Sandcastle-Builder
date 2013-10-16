@@ -2885,6 +2885,11 @@ Molpy.DefineBadges=function()
 	Molpy.MakeTripleBadge({np:673,name:'This should work',desc:'when Megan started a bucket ride'});
 	Molpy.MakeTripleBadge({np:674,name:'So Far So Good',desc:'Megan riding up in a bucket'});
 	Molpy.MakeTripleBadge({np:675,name:'Aaaaaaaaaaaaaa',desc:'the instant of Megan\'s fall off the bucket'});
+	Molpy.MakeTripleBadge({np:792,name:'Nap',desc:'when Megan took a nap on the platform after finishing the Top Castle'});
+	Molpy.MakeTripleBadge({np:799,name:'Third Character',desc:'the initial appearance of LaPetite'});
+	Molpy.MakeTripleBadge({np:802,name:'Short Stay',desc:'when LaPetite left, having made a big impression on our hearts'});
+	Molpy.MakeTripleBadge({np:806,name:'Megan Up!',desc:'when Megan Molpies Up, though we had no idea it was called that at the time'});
+	//Molpy.MakeTripleBadge({np:,name:'',desc:''});
 }
 
 Molpy.jDipBoosts=['NewPixBot Navigation Code','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		
