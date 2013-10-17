@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.04;
+		Molpy.version=2.05;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -610,6 +610,7 @@ Molpy.Up=function()
 				pixels=[];
 			}
 			Molpy.BadgesOwned=0;
+			Molpy.groupBadgeCounts={};
 			for (var i in Molpy.BadgesById)
 			{
 				var me=Molpy.BadgesById[i];
@@ -939,6 +940,7 @@ Molpy.Up=function()
 				Molpy.loadCount=0;
 				Molpy.highestNPvisited=0;
 				Molpy.BadgesOwned=0;
+				Molpy.groupBadgeCounts={};
 				Molpy.redactedClicks=0;
 				Molpy.timeTravels=0;
 				Molpy.totalCastlesDown=0;
@@ -1998,6 +2000,8 @@ Molpy.Up=function()
 			}
 			this.refresh=function()
 			{
+				Molpy.shopRepaint=1;
+				Molpy.recalculateDig=1;
 				this.price=Math.floor(this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
 				if (this.drawFunction) this.drawFunction();
 			}
@@ -2165,7 +2169,8 @@ Molpy.Up=function()
 			}
 			this.refresh=function()
 			{
-				//this.price= TODO relcalculate price!
+				Molpy.shopRepaint=1;
+				Molpy.recalculateDig=1;
 				var i = this.amount;
 				this.prevPrice=this.price0;
 				this.nextPrice=this.price1;
@@ -2452,7 +2457,8 @@ Molpy.Up=function()
 		}
 		Molpy.Earned=function(bacon)
 		{
-			return Molpy.Badges[bacon].earned;
+			var baby = Molpy.Badges[bacon];
+			return baby&&baby.earned;
 		}
 		
 		Molpy.MakeSpecialBadge=function(args,kind)
@@ -2460,7 +2466,7 @@ Molpy.Up=function()
 			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+args.name,aka:kind+args.np,np:args.np,
 				desc:function(me)
 				{
-					var str = Molpy.groupNames[kind][4]+': '+args.desc;
+					var str = Molpy.groupNames[kind][4]+' from NP '+me.np+': '+args.desc;
 					if(Molpy.newpixNumber!=me.np&&Molpy.Got('Memories Revisited') &&me.group=='discov')
 					{
 						str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',2,20)" value="Jump!"></input> (Uses 20 Glass Chips and '+Molpify(Molpy.TimeTravelPrice(),2)+' Castles)'
@@ -3596,6 +3602,11 @@ Molpy.Up=function()
 		{
 			Molpy.SpendGlassChips(10);
 			var aka='discov'+Molpy.newpixNumber;
+			if(!Molpy.Badges[aka])
+			{
+				Molpy.Notify('You don\'t notice anything especially notable.');
+				return;
+			}
 			if(Molpy.Earned(aka))
 			{
 				Molpy.Notify('You already have this '+Molpy.Badges[aka].name);
@@ -3685,10 +3696,10 @@ Molpy.Up=function()
 			}
 		}
 		
-		if(Molpy.judgeLevel>1 && Math.floor(Molpy.ONGelapsed/1000)%50==0)
+		if(Molpy.judgeLevel>1 && Math.floor(Molpy.ONGelapsed/1000)%25==0)
 		{
 			var j = Molpy.JDestroyAmount();
-			var dAmount = j*Molpy.CastleTools['NewPixBot'].amount*50;
+			var dAmount = j*Molpy.CastleTools['NewPixBot'].amount*25;
 			if(Molpy.castles)
 			{
 				var failed = Molpy.Destroy(dAmount,1);
@@ -3831,7 +3842,8 @@ Molpy.Up=function()
 				{
 					Molpy.SpendGlassBlocks(5);
 					bbc.power=1;
-					if(Molpy.Boosts['Double or Nothing'].power>20&&Math.floor(Math.random()*6)==0)
+					var don = Molpy.Boosts['Double or Nothing'];
+					if(don.unlocked&&don.power>20&&Math.floor(Math.random()*8)==0)
 						Molpy.Boosts['Double or Nothing'].power--;
 				}else{
 					bbc.power=0;
@@ -3847,8 +3859,6 @@ Molpy.Up=function()
 		Molpy.SandTools['Bag'].amount-=n;
 		Molpy.SandToolsOwned-=n;
 		Molpy.SandTools['Bag'].refresh();
-		Molpy.recalculateDig=1;
-		Molpy.shopRepaint=1;
 		if(n==1)
 			Molpy.Notify('A Bag was burned!',1);
 		else

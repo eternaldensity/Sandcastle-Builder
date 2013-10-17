@@ -18,6 +18,16 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.05
+- Memories Revisited was erroneously unlocking because I wasn't resetting badge counts on reload (or coma)
+- Reduced DoN price drop
+- Memories Revisited shouldn't be tagged as Action
+- Prevent a NavCode crash: was possible to get negative NPBs
+- Added a failure message to Camera
+- Also prevent console error when checking if non existent Badge is earned
+- Always recalc dig and repaint shop when refreshing a tool price, so I don't have to do it explicitly every single time I destroy tools
+- Fiddled with JDip destruction amounts. Will be same as normal (equal to level) for levels up to a million
+
 ### 2.04
 - Some tool destruction wasn't updating the number of tools owned
 - Removed corn

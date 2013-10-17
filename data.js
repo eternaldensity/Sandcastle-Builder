@@ -669,8 +669,6 @@ Molpy.DefineBoosts=function()
 						}else{
 							Molpy.intruderBots=1;
 						}
-						Molpy.shopRepaint=1;
-						Molpy.recalculateDig=1;
 						npb.refresh();
 					}else{
 						Molpy.Notify('Temporal Incursion Prevented!');
@@ -890,9 +888,11 @@ Molpy.DefineBoosts=function()
 		nc.power=!nc.power*1;
 		if(Molpy.intruderBots)
 		{
-			Molpy.CastleTools['NewPixBot'].amount-=Molpy.intruderBots;
+			var npb=Molpy.CastleTools['NewPixBot'];
+			Molpy.intruderBots = Math.min(npb.amount,Molpy.intruderBots);
+			npb.amount-=Molpy.intruderBots;
 			Molpy.CastleToolsOwned-=Molpy.intruderBots;
-			Molpy.CastleTools['NewPixBot'].refresh();
+			npb.refresh();
 			Molpy.Notify(Molpy.intruderBots + ' Intruders Destroyed!');
 			Molpy.intruderBots=0;
 		}
@@ -1897,8 +1897,6 @@ Molpy.DefineBoosts=function()
 			Molpy.SandTools['Bag'].amount-=50;			
 			Molpy.SandToolsOwned-=50;			
 			Molpy.SandTools['Bag'].refresh();
-			Molpy.shopRepaint=1;
-			Molpy.recalculateDig=1;
 			Molpy.UnlockBoost('Rosetta');
 		}else{
 			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
@@ -1980,9 +1978,7 @@ Molpy.DefineBoosts=function()
 			{
 				Molpy.CastleTools['NewPixBot'].amount-=Molpy.faCosts[fa.power];
 				Molpy.CastleToolsOwned-=Molpy.faCosts[fa.power];
-				Molpy.recalculateDig=1;
 				Molpy.CastleTools['NewPixBot'].refresh();
-				Molpy.shopRepaint=1;
 				fa.power++;				
 				Molpy.Boosts['Rosetta'].hoverOnCounter=1;
 				Molpy.Notify('Factory Automation Upgraded',1);
@@ -1997,7 +1993,6 @@ Molpy.DefineBoosts=function()
 			lads.amount-=500;
 			Molpy.SandToolsOwned-=500;
 			lads.refresh();
-			Molpy.shopRepaint=1;
 			Molpy.UnlockBoost('Ninja Climber');			
 			Molpy.Boosts['Rosetta'].hoverOnCounter=1;
 			Molpy.Notify('Factory Automation Upgraded',1);
@@ -2565,7 +2560,7 @@ Molpy.DefineBoosts=function()
 	});
 	
 	new Molpy.Boost({name:'Memories Revisited',desc:'Allows you to quickly jump in Time to Discoveries you have made.',
-		sand:'50P',castles:'20P',glass:'20K',className:'action',group:'chron'
+		sand:'50P',castles:'20P',glass:'20K',group:'chron'
 	});
 	
 	Molpy.groupNames={
@@ -2818,14 +2813,7 @@ Molpy.DefineBadges=function()
 	Molpy.JDestroyAmount=function()
 	{
 		var j=Molpy.judgeLevel-1;
-		var a=j*j;
-		var l=100000;
-		while(l<j)
-		{
-			l*=100000;
-			a*=j;
-		}
-		return a;
+		return Math.pow(j,Math.ceil(Math.log(j)/Math.LN10/6));
 	}
 	new Molpy.Badge({name:'Judgement Dip',
 		desc:function()
@@ -3170,6 +3158,9 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.groupBadgeCounts.discov>10&&Molpy.Earned("Dude, Where's my DeLorean?"))
 	{
 		Molpy.UnlockBoost('Memories Revisited');
+	}else
+	{
+		Molpy.LockBoost('Memories Revisited');
 	}
 }
 
