@@ -38,7 +38,7 @@ function Molpify(number, raftcastle, shrinkify)
 	if(!isFinite(parseFloat(number)))return'Infinite Mustard';
 	var molp='';
 	
-	if(Molpy&&!shrinkify)shrinkify=!Molpy.showStats
+	if(Molpy&&!shrinkify)shrinkify=!Molpy.showStats;
 	
 	if(shrinkify) //todo: roll into loop
 	{
@@ -1831,8 +1831,8 @@ Molpy.Up=function()
 					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2),1);
 					if(judy>5)
 					{
-						if(Math.floor(Math.random()*4==0))cornify_add();
-						if(judy>9 && Math.floor(Math.random()*3==0))cornify_replace();
+						if(Math.floor(Math.random()*5)==0)cornify_add();
+						if(judy>40 && Math.floor(Math.random()*6)==0)cornify_replace();
 					}
 				}
 				else if(judy==2)
@@ -2460,8 +2460,8 @@ Molpy.Up=function()
 			var label = 'Hide';
 			if(drawType=='show') label='Show';
 			heading=heading?'<h1>'+Molpy.redactedBrackets+'</h1>':'';
-			var str = '<div id="redacteditem">'+heading+'<div class="icon redacted"></div><div class="title">'
-				+Molpy.redactedWord+'</div><div><b>Spoiler:</b><input type="button" value="'
+			var str = '<div id="redacteditem">'+heading+'<div class="icon redacted"></div><h2">'
+				+Molpy.redactedWord+'</h2><div><b>Spoiler:</b><input type="button" value="'
 				+label+'" onclick="Molpy.ClickRedacted('+level+')"</input>';
 			if(drawType=='recur')
 			{
@@ -2948,7 +2948,7 @@ Molpy.Up=function()
 				if(id) id= ' id="'+id+'"';
 				var r = (Molpy.redactedVisible==kind&&Molpy.redactedGr==gr);
 				if(r)id='';
-				str+= '<div class="floatsquare loot '+(kind==4?'boost':'badge')+'">'+Molpy.groupNames[gr][1]+'<br><br>'+showhideButton(gr)
+				str+= '<div class="floatsquare loot '+(kind==4?'boost':'badge')+'"><h3>'+Molpy.groupNames[gr][1]+'</h3><br>'+showhideButton(gr)
 					+'<div class="icon'
 					+(r?' redacted"':'"')
 					+id+'></div></div>';
@@ -2965,7 +2965,7 @@ Molpy.Up=function()
 			}
 			if(Molpy.BadgesOwned)
 			{
-				str+= '<div class="floatsquare badge loot">Badges<br>Earned<br>'
+				str+= '<div class="floatsquare badge loot"><h3>Badges<br>Earned</h3>'
 					+showhideButton('badges')+'<div class="icon '
 					+(Molpy.redactedVisible==5?'redacted':'')
 					+'"></div></div>';
@@ -2978,14 +2978,14 @@ Molpy.Up=function()
 			if(Molpy.BadgeN-Molpy.BadgesOwned)
 			{
 				var r = Molpy.redactedVisible==6 && (Molpy.redactedGr=='badge'||Molpy.redactedViewIndex==-1)
-				str+= '<div class="floatsquare badge shop">Badges<br>Available<br>'
+				str+= '<div class="floatsquare badge shop"><h3>Badges<br>Available</h3>'
 					+showhideButton('badgesav')+'<div class="icon '
 					+(r?'redacted':'')
 					+'"></div></div>';
 			}
 			if(Molpy.Boosts['Chromatic Heresy'].unlocked)
 			{
-				str+= '<div class="floatsquare boost loot alert">Tagged<br>Items<br>'
+				str+= '<div class="floatsquare boost loot alert"><h3>Tagged<br>Items</h3>'
 					+showhideButton('tagged')+'<div id="boost_chromatic" class="icon '
 					+(Molpy.redactedVisible==7?'redacted':'')
 					+'"></div></div>';
@@ -3024,8 +3024,8 @@ Molpy.Up=function()
 				var me=Molpy.SandToolsById[i];
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2))) name = 'Glass '+name;
-				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
-				(me.amount>0?'<div class="title owned">Owned: '+Molpify(me.amount,3)
+				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</h2>'+
+				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="SandToolDescription'+me.id+'"></div></div></div>';
@@ -3059,8 +3059,8 @@ Molpy.Up=function()
 				var me=Molpy.CastleToolsById[i];
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2+1))) name = 'Glass '+name;
-				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><div class="title">'+name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</div>'+
-				(me.amount>0?'<div class="title owned">Owned: '+Molpify(me.amount,3)
+				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</h2>'+
+				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
@@ -3105,7 +3105,7 @@ Molpy.Up=function()
 			}
 			
 			return cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id
-				+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+heading+'<div class="title">'+me.name+buy+'</div>'
+				+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+heading+'<h2>'+me.name+buy+'</h2>'
 				+'<div id="BoostDescription'+me.id+'"></div></div></div>';
 		}
 		
@@ -3201,8 +3201,8 @@ Molpy.Up=function()
 			cn+=' lootbox badge '+(me.earned?'loot':'shop');
 			
 			return r+'<div class="'+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id
-				+'],event)">'+heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><div class="title">'
-				+(me.earned||me.visibility<2?me.name:'????')+'</div><div id="BadgeDescription'+me.id+'"></div></div></div>';			
+				+'],event)">'+heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><h2>'
+				+(me.earned||me.visibility<2?me.name:'????')+'</he><div id="BadgeDescription'+me.id+'"></div></div></div>';			
 		}
 		
 		Molpy.RepaintBadges=function()
@@ -3812,10 +3812,11 @@ Molpy.Up=function()
 	
 	Molpy.BurnBags=function(n)
 	{	
-		n=Math.min(Molpy.SandTools['Bag'].amount,n);
+		n=Math.floor(Math.min(Molpy.SandTools['Bag'].amount,n));
 		Molpy.SandTools['Bag'].amount-=n;
 		Molpy.SandTools['Bag'].refresh();
 		Molpy.recalculateDig=1;
+		Molpy.shopRepaint=1;
 		if(n==1)
 			Molpy.Notify('A Bag was burned!',1);
 		else

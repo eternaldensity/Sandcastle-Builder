@@ -784,8 +784,9 @@ Molpy.DefineBoosts=function()
 			{
 				var amount = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2))-1;
 				amount=Molpify(amount*100,0,1);
-				str+=' Currently '+amount+'%';
+				str+='<br>Currently '+amount+'%';
 			}
+			str+='<br>If the Judgement Dip level (apart from the Bag reduction) is greater than '+Molpify(Math.pow(2,Molpy.Boosts['Bag Burning'].power)+6,1,1)+', Bags will be burned to increase power.';
 			return str;
 		}
 		,lockFunction:function()
@@ -813,7 +814,6 @@ Molpy.DefineBoosts=function()
 		ch.power=!ch.power*1;
 		if(ch.power&&(Math.floor(Math.random()*2)))
 		{
-			cornify_count=5;
 			cornify_add();
 		}
 		ch.hoverOnCounter=1;
@@ -2707,10 +2707,10 @@ Molpy.DefineBadges=function()
 		if(Molpy.Got('Bag Burning'))
 		{
 			var nobagLevel = Math.max(0,Math.floor(Molpy.BagBurnDiv()*botCastles/thresh));
-			if(nobagLevel>Math.pow(8,Molpy.Boosts['Bag Burning'].power+1))
+			if(nobagLevel>Math.pow(2,Molpy.Boosts['Bag Burning'].power)+6)
 			{
 				Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power+1);
-				Molpy.Boosts['Bag Burning'].power++;
+				Molpy.Boosts['Bag Burning'].power+=0.5;
 				if(Molpy.SandTools['Bag'].amount<Molpy.npbDoubleThreshhold)
 				{
 					Molpy.Notify('The NewPixBots extinguished the burning Bags!',1);

@@ -26,6 +26,7 @@ For personal amusement only.
 - NPB NavCode wasn't resetting the NPB price when destroying intruders
 - Made judgement dip a little worse
 - Boost Locked messages show full name of boosts
+- Fiddled with bag burning a bit (though still no toggle, but that's the least of your worries)
 
 ### 2.02
 - Redundant paragraphs were missing the first linebreak
