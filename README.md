@@ -18,10 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
-### 2.03
+### 2.04
 - Some tool destruction wasn't updating the number of tools owned
 - Removed corn
 - descriptions stay for an extra half second
+- Awesome new time travel boost which works with the new badges
 
 ### 2.03
 - Fixed RRR to match its description

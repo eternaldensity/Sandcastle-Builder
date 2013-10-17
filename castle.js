@@ -618,7 +618,17 @@ Molpy.Up=function()
 				{
 					var ice=pixels[i].split(c);
 					me.earned=parseInt(ice[0]);
-					if(me.earned)Molpy.BadgesOwned++;
+					if(me.earned)
+					{
+						Molpy.BadgesOwned++;											
+						if(!Molpy.groupBadgeCounts[me.group])
+						{
+							Molpy.groupBadgeCounts[me.group]=1;
+						}else
+						{
+							Molpy.groupBadgeCounts[me.group]++;
+						}
+					}
 				}
 				else
 				{
@@ -658,8 +668,15 @@ Molpy.Up=function()
 						me.earned=parseInt(ice[0]);
 						if(me.earned)
 						{
-							Molpy.BadgesOwned++;
-							Molpy.unlockedGroups[me.group]=1;
+							Molpy.BadgesOwned++;	
+							Molpy.unlockedGroups[me.group]=1;										
+							if(!Molpy.groupBadgeCounts[me.group])
+							{
+								Molpy.groupBadgeCounts[me.group]=1;
+							}else
+							{
+								Molpy.groupBadgeCounts[me.group]++;
+							}
 						}
 					}
 					else
@@ -2366,6 +2383,7 @@ Molpy.Up=function()
 		Molpy.Badge=function(args)
 		{
 			this.id=Molpy.BadgeN;
+			this.np=args.np;
 			this.name=args.name;
 			this.aka=args.aka||args.name;
 			this.desc=args.desc
@@ -2384,7 +2402,7 @@ Molpy.Up=function()
 			{
 				var d = g('BadgeDescription'+this.id);
 				if(d)d.innerHTML='<br>'+((this.earned||this.visibility<1)?
-				EvalMaybeFunction(this.desc):'????');
+				EvalMaybeFunction(this.desc,this):'????');
 			}
 			this.hidedesc=function()
 			{
@@ -2397,6 +2415,8 @@ Molpy.Up=function()
 			Molpy.BadgeN++;
 			return this;
 		}		
+		
+		Molpy.groupBadgeCounts={};
 		Molpy.EarnBadge=function(bacon)
 		{
 			if(typeof bacon==='string')
@@ -2414,8 +2434,14 @@ Molpy.Up=function()
 						Molpy.unlockedGroups[baby.group]=1;
 						Molpy.Notify((baby.group=='badges'?'Badge Earned: ':'')+baby.name,1);
 						Molpy.EarnBadge('Redundant');
-						Molpy.CheckBuyUnlocks();						
-					
+						Molpy.CheckBuyUnlocks();							
+						if(!Molpy.groupBadgeCounts[baby.group])
+						{
+							Molpy.groupBadgeCounts[baby.group]=1;
+						}else
+						{
+							Molpy.groupBadgeCounts[baby.group]++;
+						}
 						Molpy.ShowGroup(baby.group,baby.className);
 					
 					}
@@ -2431,7 +2457,17 @@ Molpy.Up=function()
 		
 		Molpy.MakeSpecialBadge=function(args,kind)
 		{
-			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+args.name,aka:kind+args.np,desc:Molpy.groupNames[kind][4]+': '+args.desc,icon:args.icon+'_'+kind,
+			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+args.name,aka:kind+args.np,np:args.np,
+				desc:function(me)
+				{
+					var str = Molpy.groupNames[kind][4]+': '+args.desc;
+					if(Molpy.newpixNumber!=me.np&&Molpy.Got('Memories Revisited') &&me.group=='discov')
+					{
+						str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',2,20)" value="Jump!"></input> (Uses 20 Glass Chips and '+Molpify(Molpy.TimeTravelPrice(),2)+' Castles)'
+					}
+					return str;
+				}
+				,icon:args.icon+'_'+kind,
 				earnFunction:args.earnFunction,visibility:args.visibility,group:kind});
 		}
 		Molpy.MakeTripleBadge=function(args)

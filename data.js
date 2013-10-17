@@ -626,7 +626,7 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{
 			var price=Molpy.TimeTravelPrice();
-			return 'Pay ' + Molpify(price) + ' Castles to move <input type="Button" onclick="Molpy.TimeTravel('+(-me.power)+');" value="backwards"></input> or <input type="Button" onclick="Molpy.TimeTravel('+me.power+');" value="forwards"></input> '+
+			return 'Pay ' + Molpify(price,2) + ' Castles to move <input type="Button" onclick="Molpy.TimeTravel('+(-me.power)+');" value="backwards"></input> or <input type="Button" onclick="Molpy.TimeTravel('+me.power+');" value="forwards"></input> '+
 			Molpify(me.power)+' NP in Time';
 		}
 		,sand:1000,castles:30,startPower:1,className:'action',group:'chron'});
@@ -643,33 +643,8 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.TimeTravel=function(NP)
 	{		
-		NP = Math.floor(NP);
-		var price=Molpy.TimeTravelPrice();
-		if(Molpy.newpixNumber+NP <1)
+		if(Molpy.TTT(Molpy.newpixNumber+NP,1))
 		{
-			Molpy.Notify('Heretic!');
-			Molpy.Notify('There is nothing before time.');
-			return;
-		}
-		if(Molpy.newpixNumber+NP >Molpy.highestNPvisited)
-		{
-			Molpy.Notify('Wait For It');
-			return;
-		}
-		if(!Molpy.Boosts['Time Travel'].bought)
-		{
-			Molpy.Notify('In the future, you\'ll pay for this!');
-			return;
-		}
-		if(Molpy.castles >=price)
-		{
-			Molpy.SpendCastles(price);
-			Molpy.newpixNumber+=NP;			
-			Molpy.HandlePeriods();
-			Molpy.UpdateBeach();
-			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
-			Molpy.timeTravels++;
-			Molpy.Boosts['Time Travel'].hoverOnCounter=1;
 			if(NP>0)
 				Molpy.EarnBadge('Fast Forward');
 			if(NP<0)
@@ -715,6 +690,50 @@ Molpy.DefineBoosts=function()
 			
 		}
 	}
+	//targeted time travel!
+	Molpy.TTT=function(np,factor,chips)
+	{
+		np = Math.floor(np);
+		chips=chips||0;
+		var price=Molpy.TimeTravelPrice()*factor;
+		if(np <1)
+		{
+			Molpy.Notify('Heretic!');
+			Molpy.Notify('There is nothing before time.');
+			return;
+		}
+		if(np >Molpy.highestNPvisited)
+		{
+			Molpy.Notify('Wait For It');
+			return;
+		}
+		if(!Molpy.Boosts['Time Travel'].bought&&!chips)
+		{
+			Molpy.Notify('In the future, you\'ll pay for this!');
+			return;
+		}
+		if(Molpy.castles >=price)
+		{
+			if(!Molpy.HasGlassChips(chips))
+			{
+				Molpy.Notify('Great Scott, there\'s a hole in the glass tank!');
+				return;
+			}
+			Molpy.SpendGlassChips(chips);
+			Molpy.SpendCastles(price);
+			Molpy.newpixNumber=np;			
+			Molpy.HandlePeriods();
+			Molpy.UpdateBeach();
+			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
+			Molpy.timeTravels++;
+			Molpy.Boosts['Time Travel'].hoverOnCounter=1;
+			return 1;
+		}else
+		{
+			Molpy.Notify('<i>Castles</i>? Where we\'re going we do need... <i>castles</i>.');
+		}
+	}
+	
 	new Molpy.Boost({name:'Active Ninja',desc:
 		'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',
 			sand:'1.5M',castles:240,icon:'activeninja',group:'ninj'});
@@ -2545,6 +2564,10 @@ Molpy.DefineBoosts=function()
 		className:'action',group:'bean'
 	});
 	
+	new Molpy.Boost({name:'Memories Revisited',desc:'Allows you to quickly jump in Time to Discoveries you have made.',
+		sand:'50P',castles:'20P',glass:'20K',className:'action',group:'chron'
+	});
+	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
 		badges:['badge','Badges'],
@@ -2879,7 +2902,7 @@ Molpy.DefineBadges=function()
 	Molpy.MakeTripleBadge({np:161,name:'Amu<span class="faded">semen</span>t Castle',desc:'when we wondered what this castle was made of'});
 	Molpy.MakeTripleBadge({np:170,name:'Wanna Swim?',desc:'the second text ever, and the first "Yeah"'});
 	Molpy.MakeTripleBadge({np:175,name:'You OK?',desc:'the time that Megan got some in her mouth and the third text appeared'});
-	Molpy.MakeTripleBadge({np:177,name:'Gone to Clean Up',desc:'when Megan left for the second time'});
+	Molpy.MakeTripleBadge({np:177,name:'Gone to Clean Up',desc:'when Megan had left for the second time'});
 	Molpy.MakeTripleBadge({np:179,name:'Better Go Too',desc:'when Cueball also left'});
 	Molpy.MakeTripleBadge({np:210,name:'That Looks Grand',desc:'when Cueball completed the bridge connecting the two castles together'});
 	Molpy.MakeTripleBadge({np:211,name:'Shake It Off',desc:'when Cueball shook the sand off his hands'});
@@ -3143,6 +3166,10 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Got('Flux Turbine'))
 	{
 		Molpy.Boosts['Flux Surge'].logic=4;
+	}
+	if(Molpy.groupBadgeCounts.discov>10&&Molpy.Earned("Dude, Where's my DeLorean?"))
+	{
+		Molpy.UnlockBoost('Memories Revisited');
 	}
 }
 
