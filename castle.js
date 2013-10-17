@@ -161,7 +161,7 @@ function onhover(me,event)
 function onunhover(me,event)
 {				
 	if(isChildOf(event.relatedTarget,event.currentTarget)) return;
-	me.hoverOffCounter=Molpy.fps;
+	me.hoverOffCounter=Math.ceil(Molpy.fps*1.5);
 	me.hoverOnCounter=-1;
 }
 
