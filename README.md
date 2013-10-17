@@ -23,7 +23,9 @@ For personal amusement only.
 - RR is a toggle so it should be in the toggle class! (and thus blue to chromatic heretics)
 - Sand use stat has 3 decimal places
 - Fixed a badge typo
-- NPB NavCode wasn't resetting the NPB price when destroying intrudrers
+- NPB NavCode wasn't resetting the NPB price when destroying intruders
+- Made judgement dip a little worse
+- Boost Locked messages show full name of boosts
 
 ### 2.02
 - Redundant paragraphs were missing the first linebreak

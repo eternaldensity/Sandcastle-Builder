@@ -788,6 +788,14 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
+		,lockFunction:function()
+		{
+			this.power++;
+		}
+		,buyFunction:function()
+		{
+			Molpy.BurnBags(this.power+1);
+		}
 		,icon:'bagburning'});
 	new Molpy.Boost({name:'Chromatic Heresy',desc:
 		function(me)
@@ -2680,9 +2688,13 @@ Molpy.DefineBadges=function()
 		}
 		if(Molpy.Got('Bag Burning'))
 		{
-			div/=Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
+			div/=Molpy.BagBurnDiv();
 		}
 		return baseVal/div;
+	}
+	Molpy.BagBurnDiv=function()
+	{
+		return Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
 	}
 	Molpy.JudgementDipReport=function()
 	{
@@ -2692,6 +2704,21 @@ Molpy.DefineBadges=function()
 		var botCastles=bot.totalCastlesBuilt*bots;
 		var thresh = Molpy.JudgementDipThreshhold();
 		var level = Math.max(0,Math.floor(botCastles/thresh));
+		if(Molpy.Got('Bag Burning'))
+		{
+			var nobagLevel = Math.max(0,Math.floor(Molpy.BagBurnDiv()*botCastles/thresh));
+			if(nobagLevel>Math.pow(8,Molpy.Boosts['Bag Burning'].power+1))
+			{
+				Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power+1);
+				Molpy.Boosts['Bag Burning'].power++;
+				if(Molpy.SandTools['Bag'].amount<Molpy.npbDoubleThreshhold)
+				{
+					Molpy.Notify('The NewPixBots extinguished the burning Bags!',1);
+					Molpy.LockBoost('Bag Burning');
+					level=nobagLevel;
+				}
+			}
+		}
 		var countdown = ((level+1)*thresh - botCastles);
 		countdown/=(bot.buildN()*bot.amount*bot.amount);
 		if(Molpy.Got('Doublepost'))countdown/=2;
@@ -2767,12 +2794,23 @@ Molpy.DefineBadges=function()
 			}
 		}
 	}
-	
+	Molpy.JDestroyAmount=function()
+	{
+		var j=Molpy.judgeLevel-1;
+		var a=j*j;
+		var l=100000;
+		while(l<j)
+		{
+			l*=100000;
+			a*=j;
+		}
+		return a;
+	}
 	new Molpy.Badge({name:'Judgement Dip',
 		desc:function()
 		{
 			if(Molpy.Boosts['NewPixBot Navigation Code'].power) return 'The Bots have been foiled by altered navigation code';
-			var j=Molpy.judgeLevel-1;
+			var j=Molpy.JDestroyAmount();
 			if(j<1) return 'Safe. For now.';
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			
 		}

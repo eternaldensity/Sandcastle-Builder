@@ -1731,6 +1731,8 @@ Molpy.Up=function()
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 		Molpy.CalculateDigSpeed=function()
 		{
+			Molpy.recalculateDig=0;
+			
 			var oldrate = Molpy.sandPermNP;
 			Molpy.sandPermNP=0;
 			var multiplier = 1;
@@ -1773,11 +1775,44 @@ Molpy.Up=function()
 			multiplier*=Math.max(0,((100-glassUse)/100));
 			Molpy.globalSpmNPMult=multiplier;
 			Molpy.sandPermNP*=Molpy.globalSpmNPMult;
-			
-			Molpy.recalculateDig=0;
-			
+						
 			if(Molpy.sandPermNP>oldrate) Molpy.CheckSandRateBadges();
 			
+			Molpy.CalcReportJudgeLevel();
+			
+			if(Molpy.Got('Flux Turbine'))
+			{
+				var fluxLevel = Math.log(Molpy.totalCastlesDown);
+				if(Molpy.Got('Flux Surge'))
+				{
+					fluxLevel*=1.5;
+				}
+				Molpy.globalCastleMult=Math.max(1,Math.pow(1.02,fluxLevel));
+			}else{
+				Molpy.globalCastleMult=1;
+			}
+			
+		}
+		Molpy.CheckSandRateBadges=function()
+		{
+			var sr = Molpy.sandPermNP;
+			if(sr>=0.1)Molpy.EarnBadge('A light dusting');
+			if(sr>=0.8)Molpy.EarnBadge('Sprinkle');
+			if(sr>=6)Molpy.EarnBadge('Trickle');
+			if(sr>=25)Molpy.EarnBadge('Pouring it on');
+			if(sr>=100)Molpy.EarnBadge('Hundred Year Storm');
+			if(sr>=400)Molpy.EarnBadge('Thundering Typhoon!');
+			if(sr>=1600)Molpy.EarnBadge('Sandblaster');
+			if(sr>=7500)Molpy.EarnBadge('Where is all this coming from?');
+			if(sr>=30000)Molpy.EarnBadge('Seaish Sandstorm');
+			if(sr>=500500)Molpy.EarnBadge('WHOOSH');
+			if(sr>=2222222)Molpy.EarnBadge('We want some two!');
+			if(sr>=10101010)Molpy.EarnBadge('Bittorrent');
+			if(sr>=299792458)Molpy.EarnBadge('WARP SPEEEED');
+			if(sr>=8888888888.8)Molpy.EarnBadge('Maxed out the display');
+		}
+		Molpy.CalcReportJudgeLevel=function()
+		{
 			var judy=Molpy.JudgementDipReport()[0];
 			if(Molpy.judgeLevel==-1)//just loaded
 			{
@@ -1833,37 +1868,6 @@ Molpy.Up=function()
 			
 			if(Molpy.judgeLevel)Molpy.EarnBadge('Judgement Dip Warning');
 			if(Molpy.judgeLevel>1)Molpy.EarnBadge('Judgement Dip');
-			
-			if(Molpy.Got('Flux Turbine'))
-			{
-				var fluxLevel = Math.log(Molpy.totalCastlesDown);
-				if(Molpy.Got('Flux Surge'))
-				{
-					fluxLevel*=1.5;
-				}
-				Molpy.globalCastleMult=Math.max(1,Math.pow(1.02,fluxLevel));
-			}else{
-				Molpy.globalCastleMult=1;
-			}
-			
-		}
-		Molpy.CheckSandRateBadges=function()
-		{
-			var sr = Molpy.sandPermNP;
-			if(sr>=0.1)Molpy.EarnBadge('A light dusting');
-			if(sr>=0.8)Molpy.EarnBadge('Sprinkle');
-			if(sr>=6)Molpy.EarnBadge('Trickle');
-			if(sr>=25)Molpy.EarnBadge('Pouring it on');
-			if(sr>=100)Molpy.EarnBadge('Hundred Year Storm');
-			if(sr>=400)Molpy.EarnBadge('Thundering Typhoon!');
-			if(sr>=1600)Molpy.EarnBadge('Sandblaster');
-			if(sr>=7500)Molpy.EarnBadge('Where is all this coming from?');
-			if(sr>=30000)Molpy.EarnBadge('Seaish Sandstorm');
-			if(sr>=500500)Molpy.EarnBadge('WHOOSH');
-			if(sr>=2222222)Molpy.EarnBadge('We want some two!');
-			if(sr>=10101010)Molpy.EarnBadge('Bittorrent');
-			if(sr>=299792458)Molpy.EarnBadge('WARP SPEEEED');
-			if(sr>=8888888888.8)Molpy.EarnBadge('Maxed out the display');
 		}
 		
 		
@@ -2323,7 +2327,7 @@ Molpy.Up=function()
 							me.bought=0;
 						} //Orteil did this bit wrong :P
 						if(!silent)
-							Molpy.Notify('Boost Locked: '+bacon,1);
+							Molpy.Notify('Boost Locked: '+me.name,1);
 						if(me.lockFunction)me.lockFunction();
 						Molpy.CheckBuyUnlocks();
 					}
@@ -3652,7 +3656,8 @@ Molpy.Up=function()
 		
 		if(Molpy.judgeLevel>1 && Math.floor(Molpy.ONGelapsed/1000)%50==0)
 		{
-			var dAmount = (Molpy.judgeLevel-1)*Molpy.CastleTools['NewPixBot'].amount*50;
+			var j = Molpy.JDestroyAmount();
+			var dAmount = j*Molpy.CastleTools['NewPixBot'].amount*50;
 			if(Molpy.castles)
 			{
 				var failed = Molpy.Destroy(dAmount,1);
@@ -3778,14 +3783,12 @@ Molpy.Up=function()
 		}
 		if(Molpy.Got('SBTF'))
 		{
-			Molpy.recalculateDig=1;
 		}
 		if(Molpy.Got('Bag Burning')&& !Molpy.Boosts['NewPixBot Navigation Code'].power)
 		{
 			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold+1 && Math.floor(Math.random()*36)==0)
 			{
-				Molpy.SandTools['Bag'].amount--;
-				Molpy.Notify('A Bag was burned!',1);
+				Molpy.BurnBags(1);
 			}
 		}
 		if(Molpy.Got('BBC'))
@@ -3805,6 +3808,18 @@ Molpy.Up=function()
 			}
 		}
 		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*3)==0);
+	}
+	
+	Molpy.BurnBags=function(n)
+	{	
+		n=Math.min(Molpy.SandTools['Bag'].amount,n);
+		Molpy.SandTools['Bag'].amount-=n;
+		Molpy.SandTools['Bag'].refresh();
+		Molpy.recalculateDig=1;
+		if(n==1)
+			Molpy.Notify('A Bag was burned!',1);
+		else
+			Molpy.Notify(n+' Bags were burned!',1);
 	}
 		
 	Molpy.HandlePeriods=function()
