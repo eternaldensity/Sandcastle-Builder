@@ -20,6 +20,7 @@ For personal amusement only.
 
 ### 2.03
 - Some tool destruction wasn't updating the number of tools owned
+- Removed corn
 
 ### 2.03
 - Fixed RRR to match its description

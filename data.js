@@ -812,10 +812,6 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		ch.power=!ch.power*1;
-		if(ch.power&&(Math.floor(Math.random()*2)))
-		{
-			cornify_add();
-		}
 		ch.hoverOnCounter=1;
 		Molpy.UpdateColourScheme();
 		

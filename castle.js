@@ -1829,11 +1829,6 @@ Molpy.Up=function()
 				{
 					Molpy.Notify('Things got worse!!');
 					Molpy.Notify("Judgement Dip Level: "+Molpify(judy-1,2),1);
-					if(judy>5)
-					{
-						if(Math.floor(Math.random()*5)==0)cornify_add();
-						if(judy>40 && Math.floor(Math.random()*6)==0)cornify_replace();
-					}
 				}
 				else if(judy==2)
 				{
