@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.03;
+		Molpy.version=2.04;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -3814,6 +3814,7 @@ Molpy.Up=function()
 	{	
 		n=Math.floor(Math.min(Molpy.SandTools['Bag'].amount,n));
 		Molpy.SandTools['Bag'].amount-=n;
+		Molpy.SandToolsOwned-=n;
 		Molpy.SandTools['Bag'].refresh();
 		Molpy.recalculateDig=1;
 		Molpy.shopRepaint=1;

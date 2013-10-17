@@ -19,6 +19,9 @@ For personal amusement only.
 ## Changelog
 
 ### 2.03
+- Some tool destruction wasn't updating the number of tools owned
+
+### 2.03
 - Fixed RRR to match its description
 - RR is a toggle so it should be in the toggle class! (and thus blue to chromatic heretics)
 - Sand use stat has 3 decimal places

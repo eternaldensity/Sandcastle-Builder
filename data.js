@@ -876,6 +876,7 @@ Molpy.DefineBoosts=function()
 		if(Molpy.intruderBots)
 		{
 			Molpy.CastleTools['NewPixBot'].amount-=Molpy.intruderBots;
+			Molpy.CastleToolsOwned-=Molpy.intruderBots;
 			Molpy.CastleTools['NewPixBot'].refresh();
 			Molpy.Notify(Molpy.intruderBots + ' Intruders Destroyed!');
 			Molpy.intruderBots=0;
@@ -1979,6 +1980,7 @@ Molpy.DefineBoosts=function()
 		if(!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&lads.amount>=500)
 		{
 			lads.amount-=500;
+			Molpy.SandToolsOwned-=500;
 			lads.refresh();
 			Molpy.shopRepaint=1;
 			Molpy.UnlockBoost('Ninja Climber');			
