@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.06
+- Fixed a badge numbering issue or two (some high-numbered discoveries may require rediscovery)
+- Locked crate price bug fix
+
 ### 2.05
 - Memories Revisited was erroneously unlocking because I wasn't resetting badge counts on reload (or coma)
 - Reduced DoN price drop

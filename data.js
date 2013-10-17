@@ -2358,7 +2358,7 @@ Molpy.DefineBoosts=function()
 		glass:5,logic:2,className:'action',
 		unlockFunction:function()
 		{
-			this.power = DeMolpify(Molpify(Molpy.castles*6+Molpy.sand,1,1));
+			this.power = Molpy.castles*6+Molpy.sand;
 		},
 		lockFunction:function(me)
 		{
@@ -2928,13 +2928,13 @@ Molpy.DefineBadges=function()
 	Molpy.MakeTripleBadge({np:583,name:'Bucket',desc:'when Cueball brought a bucket'});
 	Molpy.MakeTripleBadge({np:623,name:'Castling',desc:'the moment Cueball finished building the Rooks'});
 	Molpy.MakeTripleBadge({np:632,name:'Flagging',desc:'when Cueball put flags on the Rooks'});
-	Molpy.MakeTripleBadge({np:673,name:'Questioning',desc:'when Megan wondered if it rained on the sea, as they stood on the observation platform'});
+	Molpy.MakeTripleBadge({np:637,name:'Questioning',desc:'when Megan wondered if it rained on the sea, as they stood on the observation platform'});
 	Molpy.MakeTripleBadge({np:638,name:'Waste',desc:'when Cueball shared his feelings about hypothetical rain on the sea'});
 	Molpy.MakeTripleBadge({np:640,name:'Hills',desc:'the time that the hills were first mentioned, as the origin of the river'});
 	Molpy.MakeTripleBadge({np:641,name:'<i>Other</i> Rivers?',desc:'when Cueball wondered about other rivers, as Megan attached a rope to a pole'});
 	Molpy.MakeTripleBadge({np:653,name:'Next Level',desc:'when Cuegan finished lifting the next horizontal piece above the platform'});
 	Molpy.MakeTripleBadge({np:659,name:'Must',desc:'when Cueball declared the necessity of other rivers to prevent the sea from drying up'});
-	Molpy.MakeTripleBadge({np:659,name:'<i>Anything</i>',desc:'when Megan and Cueball discuss not knowing how things work'});
+	Molpy.MakeTripleBadge({np:661,name:'<i>Anything</i>',desc:'when Megan and Cueball discuss not knowing how things work'});
 	Molpy.MakeTripleBadge({np:673,name:'This should work',desc:'when Megan started a bucket ride'});
 	Molpy.MakeTripleBadge({np:674,name:'So Far So Good',desc:'Megan riding up in a bucket'});
 	Molpy.MakeTripleBadge({np:675,name:'Aaaaaaaaaaaaaa',desc:'the instant of Megan\'s fall off the bucket'});
