@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.06;
+		Molpy.version=2.1;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2832,7 +2832,7 @@ Molpy.Up=function()
 				if(Molpy.HasGlassBlocks(120))				
 				{
 					Molpy.SpendGlassBlocks(120);
-					items+=Molpy.redactedClicks;
+					items+=Molpy.redactedClicks*2;
 				}
 			}
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0 && Molpy.HasGlassBlocks(10))
@@ -2951,10 +2951,10 @@ Molpy.Up=function()
 				if((EvalMaybeFunction(red.sandPrice,red)+EvalMaybeFunction(red.castlePrice,red)+EvalMaybeFunction(red.glassPrice,red)))
 				{
 					Molpy.Notify('Logicat rewards you with:',1);
-					Molpy.UnlockBoost(red.name);
+					Molpy.UnlockBoost(red.aka);
 				}else{
 					Molpy.Notify('You reward from Logicat:',1);
-					Molpy.GiveTempBoost(red.name,red.startPower,red.startCountdown);
+					Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
 				}
 				return;
 			}
@@ -3700,6 +3700,7 @@ Molpy.Up=function()
 		{
 			var j = Molpy.JDestroyAmount();
 			var dAmount = j*Molpy.CastleTools['NewPixBot'].amount*25;
+			dAmount = Math.ceil(Math.min(Molpy.castles/5, dAmount));
 			if(Molpy.castles)
 			{
 				var failed = Molpy.Destroy(dAmount,1);

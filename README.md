@@ -19,18 +19,20 @@ For personal amusement only.
 ## Changelog
 
 ### 2.1 TODO LIST
-- Check the locked crate reward code to ensure that it's expanding storage properly
+- Checked the locked crate reward to ensure that it's expanding storage properly. Seems fine to be
+- Evened out the locked crate reward a bit: starts higher but grows 2000 blocks per Logicat Level rather than 50%
+- Doubled Redundant Raptor effect
+- Impervious Ninja lasts between 1 and 50 NP, in half NP increments based on Logicat Level
+- Flux Surge time also based on Logicat Level, though lower max and increment
+- DoN is once again boosted by Flux Turbine
+- Caged Logicat costs 100 blocks per Logicat Level, rather than just 100
+- Fix Logicat rewards for boosts with alternate short name
+- NPBs can only destroy a maximum of 20% of your castles in one go, regardless of how many NPBs there are.
+
 - Add buttons for faster glass storage expansion (possibly prompt user for how much glass to use, or a percentage)
-- Buff RR a bit
-- Make IN and FS last longer
-- Make Caged price increase based on Logicat Level (because it's too cheap and unlimited at the moment)
 - And probably give a per ONG usage limit too
-- Put some sort of limitation on Crate Rewards (keeping in mind the above)
-- See if I can find a way to make Flux Turbine a bit more useful now that DoN doesn't stack with it. (possibly Ninja related?)
-- Nah probably just re-add the stacking with DoN
 - Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
 - Show Logicat puzzle countdown timer
-- Fix Logicat rewards using name instead of aka.
 - Do something about Infinite Castles Down (or at least how it combos with Flux), just because resetting mustard castles EVERY mNP is a bit annoying
 - Track castles given by Two for One and prevent resale (extend time-travelling bots system and rename Two for One to Temporal Duplication)
 - New badges

@@ -492,7 +492,7 @@ Molpy.DefineBoosts=function()
 		if(Math.floor(Math.random()*2))
 		{
 			var amount=Molpy.castles;
-			Molpy.Build(Molpy.castles,1); //yeah that was a bit too powerful :P
+			Molpy.Build(Molpy.castles); 
 		}else{
 			Molpy.Destroy(Molpy.castles);
 			Molpy.Boosts['Double or Nothing'].power=Math.floor(Molpy.Boosts['Double or Nothing'].power/2);
@@ -2330,7 +2330,11 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Impervious Ninja',desc:
 		function(me){return 'You cannot lose Ninja Stealth for '+Molpify(me.countdown,3)+'mNP';}
-		,group:'ninj',logic:2,startCountdown:4000,className:'alert'
+		,group:'ninj',logic:2,startCountdown:function()
+		{
+			return Math.min(50000, 500 * Molpy.Boosts['Logicat'].bought);
+		}
+		,className:'alert'
 	});
 	new Molpy.Boost({name:'Factory Ninja',desc:
 		function(me){return 'The next Ninja Builder will activate Factory Automation';}
@@ -2346,7 +2350,11 @@ Molpy.DefineBoosts=function()
 	}
 	new Molpy.Boost({name:'Flux Surge',desc:
 		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown,3)+'mNP';}
-		,group:'chron',startCountdown:800
+		,group:'chron',startCountdown:function()
+		{
+			return Math.min(12500, 80 * Molpy.Boosts['Logicat'].bought);
+		}
+		
 	});
 	new Molpy.Boost({name:'Locked Crate',
 		desc:function(me){
@@ -2363,7 +2371,7 @@ Molpy.DefineBoosts=function()
 		lockFunction:function(me)
 		{
 			var bl=Molpy.Boosts['Glass Block Storage'];
-			var win = Math.ceil(200*Molpy.LogicastleMult());
+			var win = Math.ceil(2000*Molpy.Boosts['Logicat'].bought);
 			while(bl.bought*50<bl.power+win)bl.bought++; //make space!
 			bl.power+=win;
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
@@ -2428,9 +2436,10 @@ Molpy.DefineBoosts=function()
 				return Molpy.cagedPuzzleValue;
 			}else
 			{
-				if(Molpy.HasGlassBlocks(100))
-					return '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle()"></input> 100 Glass Blocks for a puzzle';
-				else return 'It costs 100 Glass Blocks for a puzzle';
+				var cost=100*Molpy.Boosts['Logicat'].bought;
+				if(Molpy.HasGlassBlocks(cost))
+					return '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle()"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle';
+				else return 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle';
 			}
 		},group:'bean',className:'action'
 	});	
@@ -2538,7 +2547,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
-		stats:'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 for each '+Molpy.redactedWord+' click',
+		stats:'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each '+Molpy.redactedWord+' click',
 		sand:'930PW',castles:'824PW',glass:'4800',className:'toggle',group:'bean'});
 	Molpy.RedRaptorToggle=function()
 	{
