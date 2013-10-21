@@ -18,6 +18,25 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.1 TODO LIST
+- Check the locked crate reward code to ensure that it's expanding storage properly
+- Add buttons for faster glass storage expansion (possibly prompt user for how much glass to use, or a percentage)
+- Buff RR a bit
+- Make IN and FS last longer
+- Make Caged price increase based on Logicat Level (because it's too cheap and unlimited at the moment)
+- And probably give a per ONG usage limit too
+- Put some sort of limitation on Crate Rewards (keeping in mind the above)
+- See if I can find a way to make Flux Turbine a bit more useful now that DoN doesn't stack with it. (possibly Ninja related?)
+- Nah probably just re-add the stacking with DoN
+- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
+- Show Logicat puzzle countdown timer
+- Fix Logicat rewards using name instead of aka.
+- Do something about Infinite Castles Down (or at least how it combos with Flux), just because resetting mustard castles EVERY mNP is a bit annoying
+- Track castles given by Two for One and prevent resale (extend time-travelling bots system and rename Two for One to Temporal Duplication)
+- New badges
+- Lots more discoveries
+- Next phrase of Next Seaish Thing
+
 ### 2.06
 - Fixed a badge numbering issue or two (some high-numbered discoveries may require rediscovery)
 - Locked crate price bug fix
