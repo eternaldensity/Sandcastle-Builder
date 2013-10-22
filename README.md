@@ -18,7 +18,7 @@ For personal amusement only.
 
 ## Changelog
 
-### 2.1 TODO LIST
+### 2.1
 - Checked the locked crate reward to ensure that it's expanding storage properly. Seems fine to be
 - Evened out the locked crate reward a bit: starts higher but grows 2000 blocks per Logicat Level rather than 50%
 - Doubled Redundant Raptor effect
@@ -35,9 +35,11 @@ For personal amusement only.
 - Flux Turbine bonus is not applied when building 0 castles
 - Castles Down is not incremented if Infinite Castles have been built
 - Blackprints
+- Increased Glass Chip/Block Storage buying (Blocks still need an improvement in this area...)
 
-- Add buttons for faster glass storage expansion (possibly prompt user for how much glass to use, or a percentage)
-- And probably give a per ONG usage limit too
+###  TODO LIST
+- Another Glass Block Storage expansion button
+- Maybe give a per ONG usage for caged logicat
 - Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
 - Show Logicat puzzle countdown timer
 - New badges

@@ -1592,6 +1592,15 @@ Molpy.DefineBoosts=function()
 					}else{
 						str+='<br>It costs 90 Glass Chips to store 200 more.';
 					}
+					if(me.bought>250)
+					{
+						var n = Math.floor(me.power/6)
+						if(n>20)
+						{
+							str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage('+n+')"></input> '+Molpify(n*4.5,3)+' Chips to build storage for '
+								+Molpify(n*10,3)+' more.'
+						}
+					}
 				}
 			}
 			if(me.power>10&&!Molpy.Got('Sand Refinery'))
@@ -1760,9 +1769,18 @@ Molpy.DefineBoosts=function()
 			{
 				if(me.power>=15)
 				{
-					str+= ' <input type="Button" value="Pay" onclick="Molpy.UpgradeBlockStorage()"></input> 15 Blocks to build storage for 50 more.'
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeBlockStorage(1)"></input> 15 Blocks to build storage for 50 more.'
 				}else{
-					str+=' It costs 15 Glass Blocks to store 50 more.';
+					str+='<br>It costs 15 Glass Blocks to store 50 more.';
+				}
+				if(rate>200)
+				{
+					if(me.power>=2800)
+					{
+						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeBlockStorage(20)"></input> 270 Blocks to build storage for '+Molpify(1000)+' more.'
+					}else{
+						str+='<br>It costs 270 Glass Blocks to store '+Molpify(1000)+' more.';
+					}
 				}
 			}
 			if(me.power>30&&!Molpy.Got('Glass Chiller'))
@@ -1788,13 +1806,15 @@ Molpy.DefineBoosts=function()
 		}
 		,icon:'glassblockstore',className:'alert',group:'hpt'
 	});
-	Molpy.UpgradeBlockStorage=function()
+	Molpy.UpgradeBlockStorage=function(n)
 	{
 		var bl = Molpy.Boosts['Glass Block Storage'];
-		if(bl.power>=15)
+		var cost=n*15;
+		if(n>=10)cost*=.9;
+		if(bl.power>=cost)
 		{
-			bl.power-=15;
-			bl.bought++;
+			bl.power-=cost;
+			bl.bought+=n;
 			bl.hoverOnCounter=1;
 			Molpy.Notify('Glass Block Storage upgraded',1);
 		}
