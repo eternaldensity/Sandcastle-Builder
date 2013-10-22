@@ -390,17 +390,16 @@ Molpy.Up=function()
 			(Molpy.redactedCountup)+s+
 			(Molpy.redactedToggle)+s+
 			(Molpy.redactedVisible)+s+
-			(Molpy.lGlass)+s+ //SPARE NUMBER BECAUSE redactedViewIndex is *ahem* redundant
+			(Molpy.lGlass)+s+
 			(Molpy.redactedClicks)+s+
 			(Molpy.highestNPvisited)+s+
 			(Molpy.totalCastlesDown)+s+
-			(Molpy.intruderBots)+s+
 			p;
 			//sand tools:
 			for(var cancerbabies in Molpy.SandTools)
 			{
 				var cb = Molpy.SandTools[cancerbabies];
-				thread += cb.amount+c+cb.bought+c+(cb.totalSand)+s;
+				thread += cb.amount+c+cb.bought+c+cb.totalSand+c+cb.temp+s;
 			}
 			thread+=p;
 			//castletools:
@@ -408,7 +407,7 @@ Molpy.Up=function()
 			{
 				var cb = Molpy.CastleTools[cancerbabies];
 				thread += cb.amount+c+cb.bought+c+cb.totalCastlesBuilt+c+cb.totalCastlesDestroyed+c+
-				cb.totalCastlesWasted+c+cb.currentActive+s;
+				cb.totalCastlesWasted+c+cb.currentActive+c+cb.temp+s;
 			}
 			thread+=p;
 			//boosts:
@@ -518,7 +517,8 @@ Molpy.Up=function()
 			}
 			Molpy.highestNPvisited=parseInt(pixels[25]);
 			Molpy.totalCastlesDown=parseFloat(pixels[26]);
-			Molpy.intruderBots=parseInt(pixels[27]);
+			if(version < 2.1)
+				Molpy.tempIntruderBots=parseFloat(pixels[27]);
 			
 			
 			pixels=thread[5].split(s);
@@ -532,6 +532,7 @@ Molpy.Up=function()
 					me.amount=parseInt(ice[0]);
 					me.bought=parseInt(ice[1]);
 					me.totalSand=parseFloat(ice[2]);
+					me.temp=parseInt(ice[3])||0;
 					Molpy.SandToolsOwned+=me.amount;
 					me.refresh();
 				}
@@ -555,6 +556,7 @@ Molpy.Up=function()
 					if(!me.totalCastlesDestroyed)me.totalCastlesDestroyed=0;//mustard cleaning
 					me.totalCastlesWasted=parseFloat(ice[4]);
 					me.currentActive=parseInt(ice[5]);
+					me.temp=parseInt(ice[6])||0;
 					Molpy.CastleToolsOwned+=me.amount;
 					me.refresh();
 				}
@@ -827,6 +829,10 @@ Molpy.Up=function()
 					Molpy.SpendGlassChips(9000);
 					Molpy.Notify('Yoink! Sorry, you got undercharged on Glass Extruder.',1);
 				}
+			}
+			if(version < 2.1)
+			{
+				Molpy.CastleTools['NewPixBot'].temp=Molpy.tempIntruderBots;
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -1923,6 +1929,7 @@ Molpy.Up=function()
 						
 			this.amount=0;
 			this.bought=0;
+			this.temp=0;
 			
 			this.buy=function()
 			{
@@ -1949,10 +1956,10 @@ Molpy.Up=function()
 						Molpy.CheckBuyUnlocks();
 					}
 				}
-				if(Molpy.Got('Two for One'))
+				if(Molpy.Got('Temporal Duplication'))
 				{
 					this.amount+=bought;
-					this.bought+=bought;
+					this.temp+=bought;
 					bought+=bought;
 				}
 				if(bought)
@@ -1964,10 +1971,17 @@ Molpy.Up=function()
 				{					
 					this.amount--;
 					var price=this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount);
-					var d=1;
-					if(Molpy.Got('Family Discount'))d=.2;
-					if(Molpy.Boosts['ASHF'].startPower>0.5) d*=0.8; //sorry guys, no ikea-scumming
-					Molpy.Build(Math.floor(price*0.5*d),1);
+					
+					if(this.temp>0)
+					{
+						this.temp--;
+						Molpy.Notify('Temporal Duplicate Destroyed!');
+					}else{
+						var d=1;
+						if(Molpy.Got('Family Discount'))d=.2;
+						if(Molpy.Boosts['ASHF'].startPower>0.5) d*=0.8; //sorry guys, no ikea-scumming
+						Molpy.Build(Math.floor(price*0.5*d),1);
+					}
 					this.price=price;
 					if (this.sellFunction) this.sellFunction();
 					if (this.drawFunction) this.drawFunction();
@@ -2043,6 +2057,7 @@ Molpy.Up=function()
 						
 			this.amount=0;
 			this.bought=0;
+			this.temp=0;
 			
 			this.buy=function()
 			{
@@ -2070,10 +2085,10 @@ Molpy.Up=function()
 						Molpy.CheckBuyUnlocks();
 					}
 				}
-				if(Molpy.Got('Two for One'))
+				if(Molpy.Got('Temporal Duplication'))
 				{
 					this.amount+=bought;
-					this.bought+=bought;
+					this.temp+=bought;
 					bought+=bought;
 				}
 				if(bought)
@@ -2084,10 +2099,10 @@ Molpy.Up=function()
 				var price=this.prevPrice;
 				if (this.amount>0)
 				{
-					if(this.name=='NewPixBot'&&Molpy.intruderBots)
+					if(this.temp>0)
 					{
-						Molpy.intruderBots--;
-						Molpy.Notify('Intruder Destroyed!');
+						this.temp--;
+						Molpy.Notify('Temporal Duplicate Destroyed!');
 					}else{					
 						var d=1;
 						if(Molpy.Got('Family Discount'))d=.2;

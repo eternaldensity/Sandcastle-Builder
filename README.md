@@ -28,13 +28,15 @@ For personal amusement only.
 - Caged Logicat costs 100 blocks per Logicat Level, rather than just 100
 - Fix Logicat rewards for boosts with alternate short name
 - NPBs can only destroy a maximum of 20% of your castles in one go, regardless of how many NPBs there are.
+- Two for One is now Temporal Duplication and is chronotech
+- Number of temporal duplicates is remembered and duplicates cannot be sold
+- Timetravelled NPBs use the same temporal duplicate tracking as above
 
 - Add buttons for faster glass storage expansion (possibly prompt user for how much glass to use, or a percentage)
 - And probably give a per ONG usage limit too
 - Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
 - Show Logicat puzzle countdown timer
 - Do something about Infinite Castles Down (or at least how it combos with Flux), just because resetting mustard castles EVERY mNP is a bit annoying
-- Track castles given by Two for One and prevent resale (extend time-travelling bots system and rename Two for One to Temporal Duplication)
 - New badges
 - Lots more discoveries
 - Next phrase of Next Seaish Thing

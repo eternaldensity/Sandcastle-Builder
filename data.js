@@ -630,7 +630,6 @@ Molpy.DefineBoosts=function()
 			Molpify(me.power)+' NP in Time';
 		}
 		,sand:1000,castles:30,startPower:1,className:'action',group:'chron'});
-	Molpy.intruderBots=0;
 	
 	Molpy.TimeTravelPrice=function()
 	{
@@ -658,17 +657,12 @@ Molpy.DefineBoosts=function()
 					:20);
 				if(!Math.floor(Math.random()*incursionFactor))
 				{
-					if(!Molpy.Boosts['NewPixBot Navigation Code'].power && Molpy.intruderBots<=30)
+					var npb=Molpy.CastleTools['NewPixBot'];
+					if(!Molpy.Boosts['NewPixBot Navigation Code'].power && npb.temp<30)
 					{
 						Molpy.Notify('You do not arrive alone');
-						var npb=Molpy.CastleTools['NewPixBot'];
 						npb.amount++;
-						if(Molpy.intruderBots)
-						{
-							Molpy.intruderBots++;
-						}else{
-							Molpy.intruderBots=1;
-						}
+						npb.temp++;
 						npb.refresh();
 					}else{
 						Molpy.Notify('Temporal Incursion Prevented!');
@@ -886,15 +880,15 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		nc.power=!nc.power*1;
-		if(Molpy.intruderBots)
+		var npb=Molpy.CastleTools['NewPixBot'];
+		if(npb.temp)
 		{
-			var npb=Molpy.CastleTools['NewPixBot'];
-			Molpy.intruderBots = Math.min(npb.amount,Molpy.intruderBots);
-			npb.amount-=Molpy.intruderBots;
-			Molpy.CastleToolsOwned-=Molpy.intruderBots;
+			npb.temp = Math.min(npb.amount,npb.temp);
+			npb.amount-=npb.temp;
+			Molpy.CastleToolsOwned-=npb.temp;
 			npb.refresh();
-			Molpy.Notify(Molpy.intruderBots + ' Intruders Destroyed!');
-			Molpy.intruderBots=0;
+			Molpy.Notify(npb.temp + ' Temporal Duplicates Destroyed!');
+			npb.temp=0;
 		}
 		Molpy.scrumptiousDonuts=-1;
 		nc.hoverOnCounter=1;
@@ -2318,13 +2312,13 @@ Molpy.DefineBoosts=function()
 		}
 		,sand:'55E',castles:'238E',glass:100,group:'bean',icon:'logicat'
 	});
-	new Molpy.Boost({name:'Two for One',desc:
-		function(me){return 'For '+Molpify(me.countdown,3)+'mNP, when you buy a Tool, get one free!';}
-		,group:'hpt',logic:1,startCountdown:5
+	new Molpy.Boost({name:'Temporal Duplication',desc:
+		function(me){return 'For '+Molpify(me.countdown,3)+'mNP, when you buy tools, get the same amount again for free!';}
+		,group:'chron',logic:1,startCountdown:5
 		,countdownFunction:function(){
 			if(this.countdown==2)
 			{
-				Molpy.Notify('Two for One runs out in 2mNP!');
+				Molpy.Notify('Temporal Duplication runs out in 2mNP!');
 			}
 		}
 	});
