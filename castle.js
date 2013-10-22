@@ -40,7 +40,7 @@ function Molpify(number, raftcastle, shrinkify)
 	
 	if(Molpy&&!shrinkify)shrinkify=!Molpy.showStats;
 	
-	if(shrinkify) //todo: roll into loop
+	if(shrinkify)
 	{
 		for (var i in postfixes)
 		{	
@@ -599,6 +599,8 @@ Molpy.Up=function()
 					}
 					if(isNaN(me.power))
 						me.power=0; //compression! :P
+					if(isNaN(me.countdown))
+						me.countdown=0;
 				}
 				else
 				{
@@ -833,6 +835,10 @@ Molpy.Up=function()
 			if(version < 2.1)
 			{
 				Molpy.CastleTools['NewPixBot'].temp=Molpy.tempIntruderBots;
+				if(!isFinite(Molpy.castlesDown))
+				{
+					Molpy.castlesDown=DeMolpify('1WTF'); //:P
+				}
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -872,7 +878,8 @@ Molpy.Up=function()
 				Molpy.sandDug=0; 
 				Molpy.sand=0; 
 				Molpy.sandManual=0;
-				Molpy.totalCastlesDown+=Molpy.castlesBuilt;
+				if(isFinite(Molpy.castlesBuilt))
+					Molpy.totalCastlesDown+=Molpy.castlesBuilt;
 				Molpy.castlesBuilt=0;
 				Molpy.castles=0; 
 				Molpy.castlesDestroyed=0;
@@ -1287,7 +1294,7 @@ Molpy.Up=function()
 		Molpy.buildNotifyCount=0;
 		Molpy.Build=function(amount,refund)
 		{
-			if(!refund)
+			if(!refund&&amount)//don't multiply if amount is 0
 			{
 				amount = Math.round(amount*Molpy.globalCastleMult);
 			}
@@ -2482,9 +2489,16 @@ Molpy.Up=function()
 				desc:function(me)
 				{
 					var str = Molpy.groupNames[kind][4]+' from NP '+me.np+': '+args.desc;
-					if(Molpy.newpixNumber!=me.np&&Molpy.Got('Memories Revisited') &&me.group=='discov')
+					if(me.group=='discov')
 					{
-						str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',2,20)" value="Jump!"></input> (Uses 20 Glass Chips and '+Molpify(Molpy.TimeTravelPrice(),2)+' Castles)'
+						if(Molpy.newpixNumber!=me.np&&Molpy.Got('Memories Revisited'))
+						{
+							str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',2,20)" value="Jump!"></input> (Uses 20 Glass Chips and '+Molpify(Molpy.TimeTravelPrice(),2)+' Castles)'
+						}
+						if(Molpy.Got('SMM'))
+						{
+							str+='<br><br>You can make a Sand Mould when ED gets around to adding a button and more javascript.'
+						}
 					}
 					return str;
 				}
@@ -3593,6 +3607,16 @@ Molpy.Up=function()
 		if(Molpy.Got('Factory Automation'))
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
+			var npb=Molpy.CastleTools['NewPixBot'];
+			if(Math.floor(Math.random()*(20-i))==0)
+			{
+				if(npb.amount)
+				{
+					npb.amount--;
+					npb.refresh();
+					Molpy.Notify('Industrial Accident!');
+				}
+			}
 			var t=0;
 			var spent=0;
 			while(i--)
@@ -3605,9 +3629,17 @@ Molpy.Up=function()
 					spent+=sand;
 				}
 			}
+			t=Math.min(t,npb.amount);
 			Molpy.Notify('Activating Factory Automation '+t+' time'+(t==1?'':'s')+' at a cost of '+Molpify(spent,4)+' Sand',1);
 			while(t--) 
-				Molpy.RewardRedacted(1);
+			{
+				if(Molpy.Got('CfB'))
+				{
+					Molpy.DoBlackprintConstruction();
+				}else{
+					Molpy.RewardRedacted(1);
+				}
+			}
 		}
 	}
 	
@@ -3715,7 +3747,7 @@ Molpy.Up=function()
 		{
 			var j = Molpy.JDestroyAmount();
 			var dAmount = j*Molpy.CastleTools['NewPixBot'].amount*25;
-			dAmount = Math.ceil(Math.min(Molpy.castles/5, dAmount));
+			dAmount = Math.ceil(Math.min(Molpy.castles*.9, dAmount));
 			if(Molpy.castles)
 			{
 				var failed = Molpy.Destroy(dAmount,1);

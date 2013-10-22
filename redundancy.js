@@ -15,13 +15,16 @@ function DeMolpify(grape)
 {
 	var fix = grape.slice(-1);
 	if(isNaN(parseFloat(fix)))
-	for (var i in postfixes)
-	{	
-		var vine = postfixes[i];
-		if(vine.postfix[0]==fix.toUpperCase())
-		{
-			return DeMolpify(grape.slice(0,-1))*vine.divisor;
+	{
+		for (var i in postfixes)
+		{	
+			var vine = postfixes[i];
+			if(vine.postfix[0]==fix.toUpperCase())
+			{
+				return DeMolpify(grape.slice(0,-1))*vine.divisor;
+			}
 		}
+		return DeMolpify(grape.slice(0,-1)); //weird character found!
 	}
 	return parseFloat(grape); //no postfix found
 }

@@ -1939,6 +1939,11 @@ Molpy.DefineBoosts=function()
 						str+='<br>It costs '+Molpify(25000)+' Glass Chips and '+Molpify(5000)+' Glass Blocks to get a Camera.';
 					}
 				}
+				var s = Molpy.GetBlackprintSubject();
+				if(s && !Molpy.Got('CfB'))
+				{
+					str+='<br><input type="Button" value="Start" onclick="Molpy.StartBlackprintConstruction()"></input> construction of '+Molpy.Boosts[Molpy.GetBlackprintSubject()].name+' from Blackprints (requires 100 runs of Factory Automation)';
+				}
 			}
 			return str;
 		}, sand:'0.9P',castles:'32T',icon:'rosetta',group:'bean',className:'action',
@@ -1953,6 +1958,7 @@ Molpy.DefineBoosts=function()
 				||!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500
 				||Molpy.HasGlassBlocks(800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2
 				||Molpy.HasGlassChips(12500)&&Molpy.HasGlassBlocks(2500)&&!Molpy.Got('Camera')
+				||Molpy.GetBlackprintSubject()&&!Molpy.Got('CfB')
 			)
 				newClass='action';
 			if(newClass!=oldClass)
@@ -2326,7 +2332,7 @@ Molpy.DefineBoosts=function()
 		function(me){return 'You cannot lose Ninja Stealth for '+Molpify(me.countdown,3)+'mNP';}
 		,group:'ninj',logic:2,startCountdown:function()
 		{
-			return Math.min(50000, 500 * Molpy.Boosts['Logicat'].bought);
+			return Math.min(50000, Molpy.LogiMult('.5K'));
 		}
 		,className:'alert'
 	});
@@ -2346,7 +2352,7 @@ Molpy.DefineBoosts=function()
 		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown,3)+'mNP';}
 		,group:'chron',startCountdown:function()
 		{
-			return Math.min(12500, 80 * Molpy.Boosts['Logicat'].bought);
+			return Math.min(12500, Molpy.LogiMult(80));
 		}
 		
 	});
@@ -2365,14 +2371,19 @@ Molpy.DefineBoosts=function()
 		lockFunction:function(me)
 		{
 			var bl=Molpy.Boosts['Glass Block Storage'];
-			var win = Math.ceil(2000*Molpy.Boosts['Logicat'].bought);
+			var win = Math.ceil(Molpy.LogiMult('2K'));
 			while(bl.bought*50<bl.power+win)bl.bought++; //make space!
 			bl.power+=win;
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
+			if(Molpy.Got('Camera'))
+				Molpy.EarnBadge('discov'+Math.ceil(Molpy.newpixNumber*Math.random()));
+			Molpy.BlackprintIncrement();
+				
 		}
 	});
 	new Molpy.Boost({name:'Crate Key',desc:'Halves the price of Locked Crate'
-		,logic:4,glass:20,
+		,glass:function()
+		{return Molpy.LogiMult(20);},
 		buyFunction:function(me)
 		{
 			var lc = Molpy.Boosts['Locked Crate'];
@@ -2430,7 +2441,7 @@ Molpy.DefineBoosts=function()
 				return Molpy.cagedPuzzleValue;
 			}else
 			{
-				var cost=100*Molpy.Boosts['Logicat'].bought;
+				var cost=Molpy.LogiMult(100);
 				if(Molpy.HasGlassBlocks(cost))
 					return '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle()"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle';
 				else return 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle';
@@ -2487,7 +2498,7 @@ Molpy.DefineBoosts=function()
 		Molpy.Boosts['Caged Logicat'].power=0;
 	}
 	
-	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it.',
+	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it. (You still lose half a point for the wrong answer.)',
 		sand:'250Y',castles:'87Y',group:'bean',logic:5});
 	
 	new Molpy.Boost({name:'Let the Cat out of the Bag',aka:'LCB',
@@ -2565,6 +2576,121 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Memories Revisited',desc:'Allows you to quickly jump in Time to Discoveries you have made.',
 		sand:'50P',castles:'20P',glass:'20K',group:'chron'
 	});
+	
+	new Molpy.Boost({name:'Blackprints',desc:
+		function(me)
+		{
+			return '(Or Blueprints if you\'re into Chromatic Heresy)<br>Allows you to construct '+Molpy.Boosts[Molpy.GetBlackprintSubject(1)].name+' with Factory Automation';
+		}
+		,sand:function(){return Molpy.LogiMult('80YW');},castles:function(){return Molpy.LogiMult('40YW');},glass:function(){return Molpy.LogiMult('25K');},
+		lockFunction:function()
+		{
+			var s=Molpy.GetBlackprintSubject(1);
+			this.power-=Molpy.GetBlackprintPages();
+			Molpy.UnlockBoost(s);
+			Molpy.Boosts[s].buy();
+		},
+		group:'bean'
+	});
+	Molpy.LogiMult=function(s)
+	{
+		return DeMolpify(s+'')*Molpy.Boosts['Logicat'].bought;
+	}
+	Molpy.GetBlackprintPages=function()
+	{
+		for(var i in Molpy.blackprintOrder)
+		{
+			var print=Molpy.blackprintOrder[i];
+			if(!Molpy.Boosts[print].unlocked)
+				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
+		}
+	}
+	Molpy.GetBlackprintSubject=function(d)
+	{
+		if(!d&&!Molpy.Got('Blackprints'))return;
+		var pages = Molpy.Boosts['Blackprints'].power;
+		if(!pages)return;
+		for(var i in Molpy.blackprintOrder)
+		{
+			var print=Molpy.blackprintOrder[i];
+			if(!Molpy.Boosts[print].unlocked)
+			{
+				if(pages>=Molpy.blackprintCosts[print])
+					return print;
+				return;
+			}
+		}
+	}
+	Molpy.BlackprintIncrement=function()
+	{
+		var target = Molpy.GetBlackprintPages();
+		if(!target)return;
+		var b = Molpy.Boosts['Blackprints'];
+		b.power++;
+		if(b.power<target)
+			Molpy.Notify('You found a Blackprint page, and need  '+Molpify(target-b.power)+' more',1);
+		else if (b.power>target)
+			Molpy.Notify('You found an extra Blackprint page');
+		else
+			Molpy.Notify('You now have the '+target+' Blackprint pages you require.');
+	}
+	
+	//if we have enough blackprint pages for next blackprint boost, allow it as a department reward
+	Molpy.CheckBlackprintDepartment=function()
+	{
+		var pages = Molpy.Boosts['Blackprints'].power;
+		if(!pages)return;
+		for(var i in Molpy.blackprintOrder)
+		{
+			var print=Molpy.blackprintOrder[i];
+			var pboost=Molpy.Boosts[print];
+			if(!pboost.unlocked)
+			{
+				 Molpy.Boosts['Blackprints'].department=1*(pages>=Molpy.blackprintCosts[print]); 
+				 return;
+			}
+		}
+	}
+	Molpy.StartBlackprintConstruction=function()
+	{
+		if(Molpy.Got('CfB'))return;
+		Molpy.UnlockBoost('CfB')
+	}
+	Molpy.DoBlackprintConstruction=function()
+	{
+		var con=Molpy.Boosts['CfB'];
+		con.power++;
+		if(con.power>=100)
+		{
+			Molpy.LockBoost('CfB');
+		}
+	}
+	new Molpy.Boost({name:'Constructing from Blackprints',aka:'CfB',
+		desc:function(me)
+		{
+			return 'Constructing '+Molpy.Boosts[Molpy.GetBlackprintSubject(1)].name+' from Blackprints.<br>'+Molpify(100-me.power)+' runs of Factory Automation required to complete.';
+		},
+		unlockFunction:function()
+		{
+			this.buy();
+		},
+		lockFunction:function()
+		{
+			this.power=0;
+			Molpy.LockBoost('Blackprints');
+		},
+		className:'alert',group:'bean'
+	});
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF'];
+	
+	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:'Allows you to make a Sand Mold of a Discovery',group:'bean'});
+	new Molpy.Boost({name:'Glass Mould Maker',aka:'GMM',desc:'Allows you to make a Glass Mold of a Discovery',group:'bean'});
+	new Molpy.Boost({name:'Sand Mould Filler',aka:'SMF',desc:'Fills a Sand Mold with Sand to make a Sand Monument',group:'bean'});
+	new Molpy.Boost({name:'Glass Mould Filler',aka:'GMF',desc:'Fills a Glass Mold with Glass to make a Glass Monument',group:'bean'});
+	
+	/*10000000*Math.pow(1.25,3090) is relevant because reasons
+		2.8310021220015596e+306*/
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -2862,7 +2988,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Dumpty',desc:'Have 1 Umpty Castle'});
 	new Molpy.Badge({name:'This is a silly number',desc:'Have 1 Squilli Castle'});
 	new Molpy.Badge({name:'To Da Choppah',desc:'Have 1 Helo Castle'});
-	new Molpy.Badge({name:'Toasters',desc:'Have 1 Fraki Castle'});
+	new Molpy.Badge({name:'Toasters',desc:'Have 1 Ferro Castle'});
 	new Molpy.Badge({name:'All Your Base',desc:'Have 2101 Sand Tools'});
 	new Molpy.Badge({name:'Look Before You Leap',desc:'Have 3000 Sand Tools'});
 	new Molpy.Badge({name:'Fully Armed and Operational Battlestation',desc:'Have 4000 Castle Tools'});
@@ -3165,6 +3291,11 @@ Molpy.CheckBuyUnlocks=function()
 	{
 		Molpy.LockBoost('Memories Revisited');
 	}
+	if(Molpy.Boosts['Locked Crate'].unlocked && !Molpy.Boosts['Locked Crate'].bought)
+	{
+		Moly.Boosts['Crate Key'].logic=4;
+	}
+	Molpy.CheckBlackprintDepartment();
 }
 
 Molpy.CheckClickAchievements=function()

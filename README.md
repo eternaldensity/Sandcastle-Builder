@@ -27,10 +27,14 @@ For personal amusement only.
 - DoN is once again boosted by Flux Turbine
 - Caged Logicat costs 100 blocks per Logicat Level, rather than just 100
 - Fix Logicat rewards for boosts with alternate short name
-- NPBs can only destroy a maximum of 20% of your castles in one go, regardless of how many NPBs there are.
+- NPBs can only destroy a maximum of 90% of your castles in one go, regardless of how many NPBs there are.
 - Two for One is now Temporal Duplication and is chronotech
 - Number of temporal duplicates is remembered and duplicates cannot be sold
 - Timetravelled NPBs use the same temporal duplicate tracking as above
+- Crate Key is now only available from Logicat if Locked Crate is unlocked and unbought. Also its cost scales with Logicat level :P
+- Flux Turbine bonus is not applied when building 0 castles
+- Castles Down is not incremented if Infinite Castles have been built
+- Blackprints
 
 - Add buttons for faster glass storage expansion (possibly prompt user for how much glass to use, or a percentage)
 - And probably give a per ONG usage limit too
