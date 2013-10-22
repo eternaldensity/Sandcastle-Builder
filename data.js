@@ -2580,12 +2580,19 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Blackprints',desc:
 		function(me)
 		{
-			return '(Or Blueprints if you\'re into Chromatic Heresy)<br>Allows you to construct '+Molpy.Boosts[Molpy.GetBlackprintSubject(1)].name+' with Factory Automation';
+			var pBoost=Molpy.Boosts[Molpy.GetBlackprintSubject(1)];
+			if(!pBoost)
+			{
+				Molpy.LockBoost(me.aka);
+				return 'This is not the boost you are looking for.';
+			}
+			return '(Or Blueprints if you\'re into Chromatic Heresy)<br>Allows you to construct '+pBoost.name+' with Factory Automation';
 		}
 		,sand:function(){return Molpy.LogiMult('80YW');},castles:function(){return Molpy.LogiMult('40YW');},glass:function(){return Molpy.LogiMult('25K');},
 		lockFunction:function()
 		{
 			var s=Molpy.GetBlackprintSubject(1);
+			if(!s)return;
 			this.power-=Molpy.GetBlackprintPages();
 			Molpy.UnlockBoost(s);
 			Molpy.Boosts[s].buy();
@@ -2638,6 +2645,7 @@ Molpy.DefineBoosts=function()
 	//if we have enough blackprint pages for next blackprint boost, allow it as a department reward
 	Molpy.CheckBlackprintDepartment=function()
 	{
+		Molpy.Boosts['Blackprints'].department=0;
 		var pages = Molpy.Boosts['Blackprints'].power;
 		if(!pages)return;
 		for(var i in Molpy.blackprintOrder)

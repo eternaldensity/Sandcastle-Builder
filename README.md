@@ -40,10 +40,8 @@ For personal amusement only.
 - And probably give a per ONG usage limit too
 - Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
 - Show Logicat puzzle countdown timer
-- Do something about Infinite Castles Down (or at least how it combos with Flux), just because resetting mustard castles EVERY mNP is a bit annoying
 - New badges
 - Lots more discoveries
-- Next phrase of Next Seaish Thing
 
 ### 2.06
 - Fixed a badge numbering issue or two (some high-numbered discoveries may require rediscovery)
