@@ -2388,7 +2388,7 @@ Molpy.DefineBoosts=function()
 		{
 			this.power = Molpy.castles*6+Molpy.sand;
 		},
-		lockFunction:function(me)
+		lockFunction:function()
 		{
 			var bl=Molpy.Boosts['Glass Block Storage'];
 			var win = Math.ceil(Molpy.LogiMult('2K'));
@@ -2397,7 +2397,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
 			if(Molpy.Got('Camera'))
 				Molpy.EarnBadge('discov'+Math.ceil(Molpy.newpixNumber*Math.random()));
-			var i = me.bought;
+			var i = this.bought;
 			while(i--)
 				Molpy.BlackprintIncrement();
 				
