@@ -20,6 +20,7 @@ For personal amusement only.
 
 ### 2.22
 - Sand Mold stuff
+- This means 91 more badges are technically achievable
 
 ### 2.21
 - Added a key related boost
@@ -30,6 +31,7 @@ For personal amusement only.
 ###  TODO LIST
 - Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
 - still more discoveries
+- Fix the double-redacted issue that sometimes happens with Badges Earned (or one is visible when it shouldn't be)
 
 ### 2.2
 - fixed typo crash bug (if you had Locked Crate)

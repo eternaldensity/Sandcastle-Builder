@@ -2517,7 +2517,7 @@ Molpy.Up=function()
 			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+args.name,aka:kind+args.np,np:args.np,
 				desc:function(me)
 				{
-					var str = Molpy.groupNames[kind][4]+' from NP '+me.np+': '+args.desc;
+					var str = Molpy.groupNames[kind][4]+': '+args.desc+'<br><small>(in NP'+me.np+')</small>';
 					if(me.group=='discov')
 					{
 						if(Molpy.newpixNumber!=me.np&&Molpy.Got('Memories Revisited'))
