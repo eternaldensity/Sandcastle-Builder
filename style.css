@@ -168,6 +168,10 @@ a:active
 	width:540px;
 	height:395px;
 }
+#stats
+{
+	min-height:400px;
+}
 #statsItems
 {
 	position:absolute;

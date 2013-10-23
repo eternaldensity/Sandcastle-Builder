@@ -430,7 +430,7 @@ Molpy.DefineBoosts=function()
 		stats:function()
 		{
 			if(Molpy.Got('Ninja Builder')) 
-				return 'Will build '+ Molpy.CalcStealthBuild()+ ' Castles unless you destealth ninjas';
+				return 'Will build '+ Molpy.CalcStealthBuild(1)+ ' Castles unless you destealth ninjas';
 			return 'Ninja Stealth increases the first time you click within a NewPix after NewPixBots activate. It will reset if you click before NewPixBots activate, or don\'t click before the next ONG.'	
 			
 		},icon:'ninjabuilder',group:'ninj'
@@ -492,7 +492,7 @@ Molpy.DefineBoosts=function()
 		if(Math.floor(Math.random()*2))
 		{
 			var amount=Molpy.castles;
-			Molpy.Build(Molpy.castles); 
+			Molpy.Build(Molpy.castles,1); 
 		}else{
 			Molpy.Destroy(Molpy.castles);
 			Molpy.Boosts['Double or Nothing'].power=Math.floor(Molpy.Boosts['Double or Nothing'].power/2);
@@ -1252,7 +1252,7 @@ Molpy.DefineBoosts=function()
 		{
 			if(me.power <= 20) return 'Speed is at '+me.power+' out of 20';
 			if(me.power <= 88) return 'Speed is at '+me.power+' out of 88';
-			return me.desc(me);
+			return 'Speed is at '+Molpify(me.power);
 		},group:'hpt',className:'toggle'});
 	Molpy.PunsawToggle=function()
 	{
@@ -1916,7 +1916,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
 		}
 	}
-	Molpy.faCosts=[55,65,85,115,145,175,205];
+	Molpy.faCosts=[55,65,85,115,145,175,205,240,280,330];
 	new Molpy.Boost({name:'Rosetta',
 		desc:function(me)
 		{
@@ -2340,7 +2340,7 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Temporal Duplication',desc:
 		function(me){return 'For '+Molpify(me.countdown,3)+'mNP, when you buy tools, get the same amount again for free!';}
-		,group:'chron',logic:1,startCountdown:5
+		,group:'chron',className:'alert',logic:1,startCountdown:5
 		,countdownFunction:function(){
 			if(this.countdown==2)
 			{
@@ -2381,7 +2381,7 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Contains Loot';
 			return 'Not so locked anymore.<br><input type="Button" value="Grab" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> the loot!'
 		},
-		sand:function(me){ return me.power*6;},
+		sand:function(me){ return me.power;},
 		castles:function(me){ return me.power;},
 		glass:5,logic:2,className:'action',
 		unlockFunction:function()
@@ -2397,19 +2397,29 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
 			if(Molpy.Got('Camera'))
 				Molpy.EarnBadge('discov'+Math.ceil(Molpy.newpixNumber*Math.random()));
-			Molpy.BlackprintIncrement();
+			var i = me.bought;
+			while(i--)
+				Molpy.BlackprintIncrement();
 				
 		}
 	});
-	new Molpy.Boost({name:'Crate Key',desc:'Halves the price of Locked Crate'
+	new Molpy.Boost({name:'Crate Key',desc:'Quarters the price of Locked Crate',stats:'Quarters the price of Locked Crate, and does something else if you have already bought Locked Crate.'
 		,glass:function()
 		{return Molpy.LogiMult(20);},
 		buyFunction:function(me)
 		{
 			var lc = Molpy.Boosts['Locked Crate'];
-			lc.power/=2;
+			lc.power/=4;
 			Molpy.LockBoost(me.name);
-			if(!lc.unlocked||lc.bought) Molpy.Notify('Well, that was a waste');
+			if(!lc.unlocked) Molpy.Notify('Well, that was a waste');
+			if(lc.bought)
+			{
+				lc.bought++;
+				if(lc.bought<5)
+					Molpy.Notify('You wonder what good that did');
+				else
+					Molpy.LockBoost(lc.name);
+			}
 		}
 	});
 	new Molpy.Boost({name:'Technicolour Dream Cat',desc:Molpy.redactedWords+' are multicoloured (if Chromatic Heresy is enabled)',
@@ -2461,18 +2471,18 @@ Molpy.DefineBoosts=function()
 				return Molpy.cagedPuzzleValue;
 			}else
 			{
-				var cost=Molpy.LogiMult(100);
+				var cost=100+Molpy.LogiMult(25);
 				if(Molpy.HasGlassBlocks(cost))
-					return '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle()"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle';
+					return '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle';
 				else return 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle';
 			}
 		},group:'bean',className:'action'
 	});	
 
 	Molpy.cagedSGen=InitStatementGen();
-	Molpy.MakeCagedPuzzle=function()
+	Molpy.MakeCagedPuzzle=function(cost)
 	{
-		if(Molpy.HasGlassBlocks(100))Molpy.SpendGlassBlocks(100);
+		if(Molpy.HasGlassBlocks(cost))Molpy.SpendGlassBlocks(cost);
 		
 		Molpy.cagedSGen.FillStatements();
 		Molpy.cagedPuzzleTarget=Molpy.cagedSGen.RandStatementValue();
@@ -2506,8 +2516,9 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('Incorrect');
 			Molpy.Boosts['Logicat'].power-=0.5;
 			
-			if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance'))
+			if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))
 			{
+				Molpy.SpendGlassBlocks(50);
 				Molpy.cagedSGen.firstTry=0;
 				Molpy.Notify('Try Again');
 				return;
@@ -2518,7 +2529,7 @@ Molpy.DefineBoosts=function()
 		Molpy.Boosts['Caged Logicat'].power=0;
 	}
 	
-	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it. (You still lose half a point for the wrong answer.)',
+	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it. (Uses 50 Glass Blocks, and you still lose half a point for the wrong answer.)',
 		sand:'250Y',castles:'87Y',group:'bean',logic:5});
 	
 	new Molpy.Boost({name:'Let the Cat out of the Bag',aka:'LCB',
@@ -2716,6 +2727,26 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Glass Mould Maker',aka:'GMM',desc:'Allows you to make a Glass Mold of a Discovery',group:'bean'});
 	new Molpy.Boost({name:'Sand Mould Filler',aka:'SMF',desc:'Fills a Sand Mold with Sand to make a Sand Monument',group:'bean'});
 	new Molpy.Boost({name:'Glass Mould Filler',aka:'GMF',desc:'Fills a Glass Mold with Glass to make a Glass Monument',group:'bean'});
+		
+	new Molpy.Boost({name:'Ninjasaw',
+		desc:function(me)
+		{
+			var str= 'Ninja Builder\'s Castle output is multiplied by VITSSÅGEN, JA! and VITSSÅGEN, JA! is multipled by a tenth of Ninja Builder, each at a cost of 50 Glass Blocks';
+			if(me.bought){
+				str+=' <input type="Button" onclick="Molpy.NinjasawToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+			}
+			return str;
+		}
+		,sand:'450EW',castles:'75EW',glass:'1.8K',group:'ninj',className:'toggle'});
+	Molpy.NinjasawToggle=function()
+	{
+		var ns=Molpy.Boosts['Ninjasaw'];
+		ns.power=(!ns.power)*1;
+		ns.hoverOnCounter=1;
+	}	
+		
+	new Molpy.Boost({name:'Fractal Fractals',desc:'Even your fractals have fractals!<br>Increases the effect of Fractal Sandcastles',sand:'1.8ZW',castles:'.3ZW',glass:'3K'});
+	new Molpy.Boost({name:'Facebugs',desc:'Increases sand dig rate (but not clicks) by 10% per badge earned',sand:'24UW',castles:'7.5UW',glass:'8K'});
 	
 	/*10000000*Math.pow(1.25,3090) is relevant because reasons
 		2.8310021220015596e+306*/
@@ -3287,11 +3318,10 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Boosts['Panther Salve'].power > 1200)
 	{
 		Molpy.Boosts['Redundant Raptor'].logic=6;
-	}
-	if(Molpy.Boosts['VJ'].power >=88)
-	{
-		Molpy.Boosts['Phonesaw'].department=1;
-	}
+	}	
+	Molpy.Boosts['Phonesaw'].department=1*(Molpy.Boosts['VJ'].power >=88);	
+	
+	if(Molpy.Got('Phonesaw')) Molpy.Boosts['Ninjasaw'].logic=16;
 	
 	if(Molpy.Got('NewPixBot Navigation Code')) //just in case they didn't earn it the normal way
 	{
@@ -3319,11 +3349,19 @@ Molpy.CheckBuyUnlocks=function()
 	{
 		Molpy.LockBoost('Memories Revisited');
 	}
-	if(Molpy.Boosts['Locked Crate'].unlocked && !Molpy.Boosts['Locked Crate'].bought)
+	
+	Molpy.Boosts['Facebugs'].department=1*(Molpy.groupBadgeCounts.discov>20&&Molpy.Got('Ch*rpies'));
+	if(Molpy.Boosts['Locked Crate'].unlocked)
 	{
-		Moly.Boosts['Crate Key'].logic=4;
+		Molpy.Boosts['Crate Key'].logic=4;
+	}else
+	{
+		Molpy.Boosts['Crate Key'].logic=0;
 	}
 	Molpy.CheckBlackprintDepartment();
+	
+	Molpy.Boosts['Fractal Fractals'].department=1*(Molpy.Boosts['Fractal Sandcastles'].power>=120);
+	
 }
 
 Molpy.CheckClickAchievements=function()

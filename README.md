@@ -18,6 +18,27 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.2
+- fixed typo crash bug (if you had Locked Crate)
+- fixed temp boost countdown mustard
+- made caged logicat a bit cheaper
+- renerfed DoN
+- Locked Crate costs less sand
+- New Sand speed boost
+- Added some further Factory Automation upgrades
+- Added Stats item to show Blackprint Pages count
+- New Fractal boost
+- New Ninja boost
+- Doubled the effect of Crate Key
+
+###  TODO LIST
+- Another Glass Block Storage expansion button
+- Maybe give a per ONG usage for caged logicat
+- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
+- Show Logicat puzzle countdown timer
+- New badges
+- Lots more discoveries
+
 ### 2.1
 - Checked the locked crate reward to ensure that it's expanding storage properly. Seems fine to be
 - Evened out the locked crate reward a bit: starts higher but grows 2000 blocks per Logicat Level rather than 50%
@@ -36,14 +57,6 @@ For personal amusement only.
 - Castles Down is not incremented if Infinite Castles have been built
 - Blackprints
 - Increased Glass Chip/Block Storage buying (Blocks still need an improvement in this area...)
-
-###  TODO LIST
-- Another Glass Block Storage expansion button
-- Maybe give a per ONG usage for caged logicat
-- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
-- Show Logicat puzzle countdown timer
-- New badges
-- Lots more discoveries
 
 ### 2.06
 - Fixed a badge numbering issue or two (some high-numbered discoveries may require rediscovery)

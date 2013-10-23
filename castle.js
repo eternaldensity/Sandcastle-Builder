@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.1;
+		Molpy.version=2.2;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1246,7 +1246,9 @@ Molpy.Up=function()
 			{
 				if(Molpy.Got('Fractal Sandcastles'))
 				{
-					Molpy.Build(Math.floor(Math.pow(1.35,Molpy.Boosts['Fractal Sandcastles'].power)));
+					var m=1.35;
+					if(Molpy.Got('Fractal Fractals')) m = 1.5;
+					Molpy.Build(Math.floor(Math.pow(m,Molpy.Boosts['Fractal Sandcastles'].power)));
 					Molpy.Boosts['Fractal Sandcastles'].power++;
 					if(Molpy.Boosts['Fractal Sandcastles'].power>=60)
 					{
@@ -1574,18 +1576,8 @@ Molpy.Up=function()
 				if(Molpy.beachClicks%100==0)
 				{
 					Molpy.Notify(Molpy.Boosts['VJ'].name);
-					var p = Molpy.Boosts['VJ'].power;
-					p++;
-					var mult=1000000;
-					if(Molpy.Got('Swedish Chef'))
-					{
-						mult*=100;
-					}else{
-						if(p>20)Molpy.UnlockBoost('Swedish Chef');
-					}
-					if(Molpy.Got('Phonesaw')) mult*=mult;
-					Molpy.Build(mult*p);
-					Molpy.Boosts['VJ'].power=p;
+					Molpy.Build(Molpy.CalcVJReward(1));
+					Molpy.Boosts['VJ'].power++;
 				}
 			}
 			if(Molpy.Got('Bag Puns')&&Molpy.Boosts['VJ'].bought!=1)
@@ -1613,6 +1605,29 @@ Molpy.Up=function()
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
 		
+		Molpy.CalcVJReward=function(includeNinja)
+		{
+		
+			var p = Molpy.Boosts['VJ'].power;
+			var mult=1000000;
+			if(Molpy.Got('Swedish Chef'))
+			{
+				mult*=100;
+			}else{
+				if(p>20)Molpy.UnlockBoost('Swedish Chef');
+			}
+			if(Molpy.Got('Phonesaw')) mult*=mult;
+			if(includeNinja&&Molpy.Boosts['Ninjasaw'].power)
+			{
+				if(Molpy.HasGlassBlocks(50))
+				{
+					Molpy.SpendGlassBlocks(50);
+					mult*=Molpy.CalcStealthBuild(0,1)/10;
+				}
+			}
+			return p*mult;
+		}
+		
 		Molpy.StealthClick=function()
 		{		
 			//clicking first time, after newpixbot		
@@ -1635,7 +1650,7 @@ Molpy.Up=function()
 			
 			if(Molpy.Got('Ninja Builder')) 
 			{
-				var stealthBuild=Molpy.CalcStealthBuild(1);
+				var stealthBuild=Molpy.CalcStealthBuild(1,1);
 				Molpy.Build(stealthBuild+1);
 				if(Molpy.Got('Factory Ninja'))
 				{
@@ -1673,7 +1688,7 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Ninja Unity');
 			}				
 		}
-		Molpy.CalcStealthBuild=function(spend)
+		Molpy.CalcStealthBuild=function(vj,spend)
 		{
 			var stealthBuild = Molpy.ninjaStealth;
 			if(Molpy.Got('Ninja Assistants')) stealthBuild*=Molpy.CastleTools['NewPixBot'].amount;
@@ -1696,6 +1711,15 @@ Molpy.Up=function()
 				if(spend)
 				{
 					Molpy.recalculateDig=1;
+				}
+			}
+			if(vj&&Molpy.Boosts['Ninjasaw'].power&&Molpy.Boosts['VJ'].power)
+			{
+				if(Molpy.HasGlassBlocks(50))
+				{
+					if(spend)
+						Molpy.SpendGlassBlocks(50);
+						stealthBuild*=Molpy.CalcVJReward();
 				}
 			}
 			
@@ -1802,6 +1826,11 @@ Molpy.Up=function()
 			if(Molpy.Got('Overcompensating')) 
 			{
 				multiplier+=Molpy.Boosts['Overcompensating'].power;
+			}
+			
+			if(Molpy.Got('Facebugs'))
+			{
+				multiplier+=0.1*Molpy.BadgesOwned;
 			}
 			var glassUse=Molpy.CalcGlassUse();
 			multiplier*=Math.max(0,((100-glassUse)/100));
@@ -2338,8 +2367,8 @@ Molpy.Up=function()
 			if(bb)
 			{
 				if(desc)bb.desc=desc;
-				bb.power=power;
-				bb.countdown=countdown;
+				bb.power=EvalMaybeFunction(power);
+				bb.countdown=EvalMaybeFunction(countdown);
 				bb.unlocked=1;					
 				bb.describe();
 				bb.buy();
@@ -2360,6 +2389,7 @@ Molpy.Up=function()
 						Molpy.shopRepaint=1;
 						Molpy.recalculateDig=1;
 
+						if(me.lockFunction)me.lockFunction();
 						if(me.bought==1);
 						{
 							Molpy.BoostsOwned--;
@@ -2367,7 +2397,6 @@ Molpy.Up=function()
 						} //Orteil did this bit wrong :P
 						if(!silent)
 							Molpy.Notify('Boost Locked: '+me.name,1);
-						if(me.lockFunction)me.lockFunction();
 						Molpy.CheckBuyUnlocks();
 					}
 				}
@@ -4174,6 +4203,7 @@ Molpy.Up=function()
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['Glass Chip Storage'].power);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),3)+'%';
+		g('blackstat').innerHTML='Collected '+Molpify(Molpy.Boosts['Blackprints'].power)+' of '+Molpify(Molpy.GetBlackprintPages());
 		
 		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 	}
