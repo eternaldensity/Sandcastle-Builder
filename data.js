@@ -3063,6 +3063,8 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Machine Learning',desc:'Unlock all the Judgement Dip Boosts'});
 	new Molpy.Badge({name:'Blitz and Pieces',desc:'Get Blitz Power to 1M%'});
 	new Molpy.Badge({name:'Mustard Cleanup',desc:'Your numbers got too big!',vis:2});
+	new Molpy.Badge({name:'Pyramid of Giza',desc:'Have 7,016,280 Glass Blocks'});
+	new Molpy.Badge({name:'Personal Computer',desc:'Have 640K Glass Chips'});
 	
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
@@ -3135,6 +3137,28 @@ Molpy.DefineBadges=function()
 	Molpy.MakeTripleBadge({np:799,name:'Third Character',desc:'the initial appearance of LaPetite'});
 	Molpy.MakeTripleBadge({np:802,name:'Short Stay',desc:'when LaPetite left, having made a big impression on our hearts'});
 	Molpy.MakeTripleBadge({np:806,name:'Megan Up!',desc:'when Megan Molpies Up, though we had no idea it was called that at the time'});
+	Molpy.MakeTripleBadge({np:812,name:'Retrieval',desc:'Megan picking up the fallen flag'});
+	Molpy.MakeTripleBadge({np:814,name:'Relecation',desc:'Megan putting the fallen flag in a new place'});
+	Molpy.MakeTripleBadge({np:825,name:'That Should Hold it',desc:'when Megan left the newly-built sand barrier which she made from a bridge'});
+	Molpy.MakeTripleBadge({np:828,name:'Pair',desc:'when Cuegan returned together'});
+	Molpy.MakeTripleBadge({np:832,name:'Worry',desc:'Megan suggesting that the sea won\'t stop'});
+	Molpy.MakeTripleBadge({np:833,name:'Whatever it Wants',desc:'when we learned that the sea can do whatever it wants, even make more of itself forever'});
+	Molpy.MakeTripleBadge({np:834,name:'Yeah',desc:'when Megan agreed that there\'s a reason for everything'});
+	Molpy.MakeTripleBadge({np:835,name:'Reason',desc:'Megan pointing out that the reason for something isn\'t always a <b>good</b> one'});
+	Molpy.MakeTripleBadge({np:838,name:'Maybe',desc:'when Cueball suggested that there may be something wrong with the other rivers'});
+	Molpy.MakeTripleBadge({np:845,name:'Extra flags',desc:'Megan bringing some more flags for the top castle'});
+	Molpy.MakeTripleBadge({np:855,name:'I Like Our Castle',desc:'Megan\'s declaration after placing more flags'});
+	Molpy.MakeTripleBadge({np:856,name:'Wet Blanket',desc:'when Cueball made a dire prediction about the fate of their castle'});
+	Molpy.MakeTripleBadge({np:857,name:'Just Yeah',desc:'when Megan had only one word of reply to Cueball\'s doomsaying'});
+	Molpy.MakeTripleBadge({np:859,name:'Logical',desc:'when Cueball explained his reasoning behind the conclusion of other rivers existing'});
+	Molpy.MakeTripleBadge({np:860,name:'Overflow',desc:'Megan\'s alternate theory for the rising sea'});
+	Molpy.MakeTripleBadge({np:861,name:'Speculation Abounds',desc:'Cueball suggests another theory and admits a lack of knowledge'});
+	Molpy.MakeTripleBadge({np:862,name:'Yeah Again',desc:'Megan continues the laconic trend'});
+	Molpy.MakeTripleBadge({np:864,name:'Best Idea Ever',desc:'the critical moment when Megan suggested finding out why the sea was rising and Cueball immediately agreed'});
+	Molpy.MakeTripleBadge({np:865,name:'Bags',desc:'when Megan went to get bags'});
+	Molpy.MakeTripleBadge({np:875,name:'Laden',desc:'Megan returning with a bag'});
+	Molpy.MakeTripleBadge({np:878,name:'Finishing Touch',desc:'the moment Megan added one last flag to the castle'});
+	Molpy.MakeTripleBadge({np:881,name:'Basement For You!',desc:'Megan saying <small>bye</small>'});
 	//Molpy.MakeTripleBadge({np:,name:'',desc:''});
 }
 
@@ -3366,7 +3390,8 @@ Molpy.CheckBuyUnlocks=function()
 	Molpy.CheckBlackprintDepartment();
 	
 	Molpy.Boosts['Fractal Fractals'].department=1*(Molpy.Boosts['Fractal Sandcastles'].power>=120);
-	
+	if(Molpy.HasGlassBlocks(7016280))Molpy.EarnBadge('Pyramid of Giza');
+	if(Molpy.HasGlassChips(640000))Molpy.EarnBadge('Personal Computer');
 }
 
 Molpy.CheckClickAchievements=function()

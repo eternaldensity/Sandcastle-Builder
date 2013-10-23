@@ -20,6 +20,7 @@ For personal amusement only.
 
 ### 2.21
 - Added a key related boost
+- 68 more Badges
 
 ###  TODO LIST
 - Another Glass Block Storage expansion button
