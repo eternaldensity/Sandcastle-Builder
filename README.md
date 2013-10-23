@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.22
+- Sand Mold stuff
+
 ### 2.21
 - Added a key related boost
 - 68 more Badges
