@@ -754,7 +754,7 @@ Molpy.DefineBoosts=function()
 			var blastFactor=1000;
 			if(Molpy.Got('Fractal Sandcastles'))
 			{
-				blastFactor=Math.max(1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
+				blastFactor=Math.max(5,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
 			}
 			return 'Uses '+Molpify(2000000)+' Sand to warm up, then makes Castles at a cost of ' + Molpify(blastFactor,1) + ' each';
 		}
