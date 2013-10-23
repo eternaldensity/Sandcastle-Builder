@@ -18,6 +18,16 @@ For personal amusement only.
 
 ## Changelog
 
+### 2.21
+- Added a key related boost
+
+###  TODO LIST
+- Another Glass Block Storage expansion button
+- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
+- Show Logicat puzzle countdown timer
+- New badges
+- Lots more discoveries
+
 ### 2.2
 - fixed typo crash bug (if you had Locked Crate)
 - fixed temp boost countdown mustard
@@ -31,14 +41,6 @@ For personal amusement only.
 - New Fractal boost
 - New Ninja boost
 - Doubled the effect of Crate Key
-
-###  TODO LIST
-- Another Glass Block Storage expansion button
-- Maybe give a per ONG usage for caged logicat
-- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
-- Show Logicat puzzle countdown timer
-- New badges
-- Lots more discoveries
 
 ### 2.1
 - Checked the locked crate reward to ensure that it's expanding storage properly. Seems fine to be

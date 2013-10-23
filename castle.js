@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.2;
+		Molpy.version=2.21;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -3658,7 +3658,7 @@ Molpy.Up=function()
 					spent+=sand;
 				}
 			}
-			t=Math.min(t,npb.amount);
+			t=Math.min(t,Math.floor(npb.amount/20));
 			Molpy.Notify('Activating Factory Automation '+t+' time'+(t==1?'':'s')+' at a cost of '+Molpify(spent,4)+' Sand',1);
 			while(t--) 
 			{
@@ -3666,6 +3666,12 @@ Molpy.Up=function()
 				{
 					Molpy.DoBlackprintConstruction();
 				}else{
+					var key = Molpy.Boosts['Crate Key'];
+					key.department=0;
+					if(key.logic&&t>=10&&Math.floor(Math.random()*3)==0&&Molpy.Got('Keygrinder'))
+					{
+						key.department=1;						
+					}
 					Molpy.RewardRedacted(1);
 				}
 			}

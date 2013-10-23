@@ -741,11 +741,11 @@ Molpy.DefineBoosts=function()
 			var i = me.power+1;
 			while(i--)
 			{
-				var sand = 2000000*Math.pow(10000,i);
+				var sand = 200000*Math.pow(100000,i);
 				costs+=Molpify(sand);
 				if(i)costs+=', then ';
 			}
-			return 'When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand';
+			return 'Level: '+Molpify(me.power+1,3)+'<br>When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand. Will activate less times if you don\'t have 20 bots per activation level.';
 		},
 		sand:'4.5M',castles:15700,icon:'factoryautomation',group:'hpt'});
 	new Molpy.Boost({name:'Blast Furnace',desc:'Gives the Department of Redundancy Department the ability to make Castles from Sand',
@@ -2751,6 +2751,7 @@ Molpy.DefineBoosts=function()
 		
 	new Molpy.Boost({name:'Fractal Fractals',desc:'Even your fractals have fractals!<br>Increases the effect of Fractal Sandcastles',sand:'1.8ZW',castles:'.3ZW',glass:'3K'});
 	new Molpy.Boost({name:'Facebugs',desc:'Increases sand dig rate (but not clicks) by 10% per badge earned',sand:'24UW',castles:'7.5UW',glass:'8K'});
+	new Molpy.Boost({name:'Keygrinder',desc:'The DoRD may produce a Crate Key if Factory Automation is at Level 10 or above',sand:'463UW',castles:'15.6SW',glass:'13K',group:'hpt',logic:20});
 	
 	/*10000000*Math.pow(1.25,3090) is relevant because reasons
 		2.8310021220015596e+306*/
