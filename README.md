@@ -23,6 +23,7 @@ For personal amusement only.
 - fixed temp boost countdown mustard
 - made caged logicat a bit cheaper
 - renerfed DoN
+- Second Chance costs some glass on use
 - Locked Crate costs less sand
 - New Sand speed boost
 - Added some further Factory Automation upgrades
