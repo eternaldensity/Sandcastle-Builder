@@ -2894,10 +2894,12 @@ Molpy.DefineBoosts=function()
 		Molpy.SpendSand(sand);
 		smf.power++;
 		if(smf.power>100)
+		{
 			Molpy.Notify('Sand Mold Filling is complete',1);
 			Molpy.EarnBadge('monums'+smf.bought);
 			smf.bought=1;
 			smf.power=0;
+		}
 		return 1;
 	}
 		
