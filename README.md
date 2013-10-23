@@ -22,16 +22,17 @@ For personal amusement only.
 - Sand Mold stuff
 - This means 91 more badges are technically achievable
 
+###  TODO LIST
+- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
+- still more discoveries
+- Fix the double-redacted issue that sometimes happens with Badges Earned (or one is visible when it shouldn't be)
+- Make Factory Ninja gain power (and number of NP it affects) based on logicat level
+
 ### 2.21
 - Added a key related boost
 - 68 more Badges
 - Button for large upgrade to Glass Block Storage
 - Perhaps a countdown timer is redundant. Perhaps not.
-
-###  TODO LIST
-- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
-- still more discoveries
-- Fix the double-redacted issue that sometimes happens with Badges Earned (or one is visible when it shouldn't be)
 
 ### 2.2
 - fixed typo crash bug (if you had Locked Crate)
