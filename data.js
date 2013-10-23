@@ -262,10 +262,9 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Minigun')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			baseval*=Molpy.LogicastleMult();
 			
-			var mult =
-				10*(Molpy.Got('Flying Buckets')+Molpy.Got('Human Cannonball')+Molpy.Got('Fly the Flag')
-				+Molpy.Got('Up Up and Away')+Molpy.Got('Air Drop')*5);
-			mult = mult||1;
+			var mult = Math.pow(10,Molpy.Got('Flying Buckets')+Molpy.Got('Human Cannonball')
+				+Molpy.Got('Fly the Flag')+Molpy.Got('Up Up and Away')+Molpy.Got('Air Drop'));				
+			if(Molpy.Got('Air Drop'))mult*=5;
 			if(Molpy.Got('Glass Ceiling 3'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
 			
 			return Math.floor(baseval*mult);
@@ -755,7 +754,7 @@ Molpy.DefineBoosts=function()
 			var blastFactor=1000;
 			if(Molpy.Got('Fractal Sandcastles'))
 			{
-				blastFactor=Math.max(1,1000*Math.pow(0.98,Molpy.Boosts['Fractal Sandcastles'].power));
+				blastFactor=Math.max(1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
 			}
 			return 'Uses '+Molpify(2000000)+' Sand to warm up, then makes Castles at a cost of ' + Molpify(blastFactor,1) + ' each';
 		}
@@ -939,7 +938,7 @@ Molpy.DefineBoosts=function()
 		,sand:910987654321,castles:12345678910,
 		stats:function(me)
 		{
-			if(!me.bought)return 'Digging sand gives 35% more Castles per Fractal Level, which resets to 1 on the ONG. Blast Furnace uses 98% Sand to make Castles, per Fractal Level';
+			if(!me.bought)return 'Digging sand gives 35% more Castles per Fractal Level, which resets to 1 on the ONG. Blast Furnace uses 94% Sand to make Castles, per Fractal Level';
 			return 'Digging Sand will give you ' + Molpify(Math.floor(Math.pow(1.35,me.power)),1)+' Castles';
 		},className:'alert',icon:'fractals'});
 	new Molpy.Boost({name:'Balancing Act',desc:'Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1875K',castles:843700,icon:'balancingact'});
@@ -1368,8 +1367,8 @@ Molpy.DefineBoosts=function()
 		{
 			if(!me.bought) return 'Turns Sand into Glass';
 			var pow=Molpy.Boosts['Sand Refinery'].power+1;
-			var cost=Molpify(Molpy.GlassFurnaceSandUse(1),1);
-			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Chip'+(pow>1?'s':'')+' per NP.<br>';
+			var cost=Molpify(Molpy.GlassFurnaceSandUse(1),2);
+			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+Molpify(pow,3)+' Glass Chip'+(pow>1?'s':'')+' per NP.<br>';
 			
 			if(Molpy.Got('Glass Furnace Switching'))
 			{
@@ -1495,7 +1494,7 @@ Molpy.DefineBoosts=function()
 				{
 					var pow=(Molpy.Boosts['Sand Refinery'].power)+2;
 					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
-						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+Molpify(pow)
+						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+Molpify(pow,3)
 						+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 				}
 					
@@ -1517,7 +1516,7 @@ Molpy.DefineBoosts=function()
 					{
 						var pow=(Molpy.Boosts['Sand Refinery'].power)+21;
 						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(20)"></input> '
-							+(useChips?'50 Chips':'18 Blocks')+' to upgrade the Glass Furnace to produce '+Molpify(pow)
+							+(useChips?'50 Chips':'18 Blocks')+' to upgrade the Glass Furnace to produce '+Molpify(pow,3)
 							+' Glass Chips per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 					}						
 				}					
@@ -1572,10 +1571,10 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Glass Chip Storage',desc:
 		function(me)
 		{
-			var str= 'Contains '+Molpify(me.power)+' Glass Chip'+(me.power>1?'s':'')+'.';
+			var str= 'Contains '+Molpify(me.power,3)+' Glass Chip'+(me.power>1?'s':'')+'.';
 			var size=(me.bought)*10;
 			var rate = Molpy.Boosts['Sand Refinery'].power+1;
-			str+= ' Has space to store '+Molpify(size,1)+ ' Chips total.';
+			str+= ' Has space to store '+Molpify(size,3)+ ' Chips total.';
 			if(size-me.power<=rate*10)
 			{
 				if(me.power>=5)
@@ -1667,8 +1666,8 @@ Molpy.DefineBoosts=function()
 		{
 			if(!me.bought) return 'Makes Glass Blocks from Glass Chips';
 			var pow=Molpy.Boosts['Glass Chiller'].power+1;
-			var cost=Molpify(Molpy.GlassBlowerSandUse(1),1);
-			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+pow+' Glass Block'+(pow>1?'s':'')
+			var cost=Molpify(Molpy.GlassBlowerSandUse(1),2);
+			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+Molpify(pow,3)+' Glass Block'+(pow>1?'s':'')
 				+' from 20 Glass Chips (each) per NP.<br>';			
 			
 			if(Molpy.Got('Glass Blower Switching'))
@@ -1718,7 +1717,7 @@ Molpy.DefineBoosts=function()
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
 				{
 					var pow=(Molpy.Boosts['Glass Chiller'].power)+2;
-					str+= '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+Molpify(pow)+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dug).';
+					str+= '<input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller()"></input> 5 Blocks to upgrade the Glass Blower to produce '+Molpify(pow,3)+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dug).';
 				}else{
 					str+= 'Currently, you have no more sand available for further upgrades';
 				}
@@ -1761,10 +1760,10 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Glass Block Storage',desc:
 		function(me)
 		{
-			var str= 'Contains '+Molpify(me.power)+' Glass Block'+(me.power>1?'s':'')+'.';
+			var str= 'Contains '+Molpify(me.power,3)+' Glass Block'+(me.power>1?'s':'')+'.';
 			var size=(me.bought)*50;
 			var rate = Molpy.Boosts['Glass Chiller'].power+1;
-			str+= ' Has space to store '+Molpify(size,1)+ ' Blocks total.';
+			str+= ' Has space to store '+Molpify(size,3)+ ' Blocks total.';
 			if(size-me.power<=rate*10)
 			{
 				if(me.power>=15)

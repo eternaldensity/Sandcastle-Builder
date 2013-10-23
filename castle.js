@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.22;
+		Molpy.version=2.3;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -908,6 +908,7 @@ Molpy.Up=function()
 					me.amount=0;
 					me.bought=0;
 					me.totalSand=0;
+					me.temp=0;
 					me.refresh();
 				}
 				for(i in Molpy.CastleTools)
@@ -915,6 +916,7 @@ Molpy.Up=function()
 					var me = Molpy.CastleTools[i];
 					me.amount=0;
 					me.bought=0;
+					me.temp=0;
 					if(i!='NewPixBot')
 						me.totalCastlesBuilt=0;
 					me.totalCastlesDestroyed=0;
@@ -2792,7 +2794,7 @@ Molpy.Up=function()
 			var boosted=0;
 			if(Molpy.Got('Fractal Sandcastles'))
 			{
-				blastFactor=Math.max(1,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
+				blastFactor=Math.max(5,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
 				if(Molpy.Got('Blitzing'))
 				{
 					if(Molpy.Got('BKJ'))
@@ -2808,6 +2810,8 @@ Molpy.Up=function()
 			if(boosted)
 			{
 				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/10));
+			}else{
+				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/2));
 			}
 			Molpy.Notify('Blast Furnace in Operation!');
 			Molpy.SpendSand(castles*blastFactor);
