@@ -2737,10 +2737,108 @@ Molpy.DefineBoosts=function()
 	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30};
 	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF'];
 	
-	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:'Allows you to make a Sand Mold of a Discovery',group:'bean'});
+	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:
+		function(me)
+		{
+			var str = 'Allows you to make a Sand Mold of a Discovery.';
+			str+='<br>This requires 100 Factory Automation runs and consumes the NewPix number of the Discovery times 100 Glass Chips per run.<br>';
+			if(me.bought&&me.power>0)
+			{
+				var mname='<small>'+Molpy.Badges['monums'+me.bought].name+'</small>';
+				if(me.power>100)
+				{
+					str+='<br>Making a mold from '+mname+' is complete. The Sand Mold Filler is required next.';
+				}else{
+					str+='<br>'+(me.power-1)+'% complete making a mold from '+mname;
+				}
+			}
+			return str;
+		}
+		,group:'bean',
+		classChange:function()
+		{
+			var oldClass=this.className;
+			var newClass = (this.power>0&&this.power<=100)?'alert':'';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
+		}
+	});
 	new Molpy.Boost({name:'Glass Mould Maker',aka:'GMM',desc:'Allows you to make a Glass Mold of a Discovery',group:'bean'});
-	new Molpy.Boost({name:'Sand Mould Filler',aka:'SMF',desc:'Fills a Sand Mold with Sand to make a Sand Monument',group:'bean'});
+	new Molpy.Boost({name:'Sand Mould Filler',aka:'SMF',desc:
+		function(me)
+		{
+			var str ='Fills a Sand Mold with Sand to make a Sand Monument<br>';
+			if(me.bought&&!me.power&&(Molpy.Boosts['SMM'].power>100))
+			{
+				str+='Imagine there was a button here to start filling the mold with sand.';
+			}
+			return str;
+		}
+		,group:'bean',
+		classChange:function()
+		{
+			var oldClass=this.className;
+			var newClass = (Molpy.Boosts['SMM'].power>100)?'alert':'';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
+		}
+	});
 	new Molpy.Boost({name:'Glass Mould Filler',aka:'GMF',desc:'Fills a Glass Mold with Glass to make a Glass Monument',group:'bean'});
+	
+	Molpy.MakeSandMold=function(np)
+	{
+		var mname='monums'+np;
+		if(!Molpy.Badges[mname])
+		{
+			Notify('No such mold exists');
+			return;
+		}
+		if(Molpy.Earned(mname))
+		{
+			Notify('You don\'t need to make this mold');
+			return;
+		}
+		var smm=Molpy.Boosts['SMM'];
+		var smf=Molpy.Boosts['SMF'];
+		if(smf.power&&smf.bought==np)
+		{
+			Notify('You already made this mold and are presently filling it with sand');
+			return;
+		}
+		if(!smm.bought)
+		{
+			Notify('You don\'t have the Sand Mold Maker!');
+			return;
+		}
+		if(smm.power)
+		{
+			Notify('The Sand Mold Maker is already in use!');
+			return;
+		}
+		smm.bought=np;
+		smm.power=1;		
+	}
+	Molpy.MakeSandMoldWork=function()
+	{
+		var smm=Molpy.Boosts['SMM'];
+		if(smm.power==0||smm.power>100)
+		{
+			return;
+		}
+		var chips =smm.bought*100;
+		if(!Molpy.HasGlassChips(chips)) return;
+		Molpy.SpendGlassChips(chips);
+		smm.power++;
+		if(smm.power>100)
+			Molpy.Notify('Sand Mold Creation is complete',1);
+		return 1;
+	}
 		
 	new Molpy.Boost({name:'Ninjasaw',
 		desc:function(me)

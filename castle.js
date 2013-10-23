@@ -2524,9 +2524,9 @@ Molpy.Up=function()
 						{
 							str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',2,20)" value="Jump!"></input> (Uses 20 Glass Chips and '+Molpify(Molpy.TimeTravelPrice(),2)+' Castles)'
 						}
-						if(Molpy.Got('SMM'))
+						if(Molpy.Got('SMM')&&!Molpy.Boosts['SMM'].power&&!Molpy.Earned('monums'+me.np))
 						{
-							str+='<br><br>You can make a Sand Mould when ED gets around to adding a button and more javascript.'
+							str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeSandMold('+me.np+')" value="Make"></input> a mold from this Discovery, which can be filled with sand to create a Monument'
 						}
 					}
 					return str;
@@ -2711,7 +2711,7 @@ Molpy.Up=function()
 			Molpy.redactedViewIndex=-1;
 		}
 
-		Molpy.RewardRedacted=function(forceDepartment)
+		Molpy.RewardRedacted=function(forceDepartment,automationLevel)
 		{		
 			if(Molpy.Got('DoRD') &&
 				(!Math.floor(8*Math.random()) || forceDepartment))
@@ -2721,6 +2721,15 @@ Molpy.Up=function()
 					Molpy.RewardBlastFurnace();
 					return;
 				}
+				
+				//Just In Time Availability Check because it depends on the automation level
+				var key = Molpy.Boosts['Crate Key'];
+				key.department=0;
+				if(key.logic&&automationLevel>=10&&Math.floor(Math.random()*3)==0&&Molpy.Got('Keygrinder'))
+				{
+					key.department=1;						
+				}
+				
 			
 				var availRewards=[];
 				for(var i in Molpy.Boosts)
@@ -3669,13 +3678,8 @@ Molpy.Up=function()
 				{
 					Molpy.DoBlackprintConstruction();
 				}else{
-					var key = Molpy.Boosts['Crate Key'];
-					key.department=0;
-					if(key.logic&&t>=10&&Math.floor(Math.random()*3)==0&&Molpy.Got('Keygrinder'))
-					{
-						key.department=1;						
-					}
-					Molpy.RewardRedacted(1);
+					if(!Molpy.MakeSandMoldWork())
+						Molpy.RewardRedacted(1,t);
 				}
 			}
 		}
