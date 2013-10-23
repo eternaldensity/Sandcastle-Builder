@@ -2556,7 +2556,7 @@ Molpy.Up=function()
 			if(drawType=='show') label='Show';
 			heading=heading?'<h1>'+Molpy.redactedBrackets+'</h1>':'';
 			var str = '<div id="redacteditem">'+heading+'<div class="icon redacted"></div><h2">'
-				+Molpy.redactedWord+'</h2><div><b>Spoiler:</b><input type="button" value="'
+				+Molpy.redactedWord+'&nbsp;<span id="redactedcountdown" class="faded">'+Molpify(Molpy.redactedToggle-Molpy.redactedCountup)+'</span></h2><div><b>Spoiler:</b><input type="button" value="'
 				+label+'" onclick="Molpy.ClickRedacted('+level+')"</input>';
 			if(drawType=='recur')
 			{
@@ -2584,6 +2584,9 @@ Molpy.Up=function()
 			if(Molpy.redactedToggle)
 			{
 				Molpy.redactedCountup++;
+				var redC=g('redactedcountdown');
+				if(redC)redC.innerHTML=Molpify(Molpy.redactedToggle-Molpy.redactedCountup);
+				
 				if(Molpy.redactedCountup>=Molpy.redactedToggle)
 				{
 					Molpy.redactedCountup=0;
@@ -2664,9 +2667,9 @@ Molpy.Up=function()
 				Molpy.MakeRedactedPuzzle();
 				Molpy.redactedDrawType[level]='hide2';
 				Molpy.RedactedJump();
-				if(Molpy.redactedToggle<15)
+				if(Molpy.redactedToggle<20)
 				{
-					Molpy.redactedToggle=15;
+					Molpy.redactedToggle=20;
 				}
 				Molpy.redactedCountup=0;
 			}else

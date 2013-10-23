@@ -21,13 +21,12 @@ For personal amusement only.
 ### 2.21
 - Added a key related boost
 - 68 more Badges
+- Button for large upgrade to Glass Block Storage
+- Perhaps a countdown timer is redundant. Perhaps not.
 
 ###  TODO LIST
-- Another Glass Block Storage expansion button
 - Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
-- Show Logicat puzzle countdown timer
-- New badges
-- Lots more discoveries
+- still more discoveries
 
 ### 2.2
 - fixed typo crash bug (if you had Locked Crate)

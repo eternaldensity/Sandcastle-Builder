@@ -1781,6 +1781,16 @@ Molpy.DefineBoosts=function()
 					}else{
 						str+='<br>It costs 270 Glass Blocks to store '+Molpify(1000)+' more.';
 					}
+					
+					if(me.bought>250)
+					{
+						var n = Math.floor(me.power/15)
+						if(n>20)
+						{
+							str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeBlockStorage('+n+')"></input> '+Molpify(n*13.5,3)+' Blocks to build storage for '
+								+Molpify(n*50,3)+' more.'
+						}
+					}
 				}
 			}
 			if(me.power>30&&!Molpy.Got('Glass Chiller'))
