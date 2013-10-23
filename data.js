@@ -2397,9 +2397,8 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
 			if(Molpy.Got('Camera'))
 				Molpy.EarnBadge('discov'+Math.ceil(Molpy.newpixNumber*Math.random()));
-			var i = this.bought;
-			while(i--)
-				Molpy.BlackprintIncrement();
+			Molpy.BlackprintIncrement(this.bought);
+			Molpy.Boosts['Crate Key'].logic=0;
 				
 		}
 	});
@@ -2659,18 +2658,23 @@ Molpy.DefineBoosts=function()
 			}
 		}
 	}
-	Molpy.BlackprintIncrement=function()
+	Molpy.BlackprintIncrement=function(n)
 	{
 		var target = Molpy.GetBlackprintPages();
 		if(!target)return;
 		var b = Molpy.Boosts['Blackprints'];
-		b.power++;
-		if(b.power<target)
-			Molpy.Notify('You found a Blackprint page, and need  '+Molpify(target-b.power)+' more',1);
-		else if (b.power>target)
-			Molpy.Notify('You found an extra Blackprint page');
+		b.power+=n;
+		if(n==1)
+			Molpy.Notify('You found a Blackprint page',1);
 		else
-			Molpy.Notify('You now have the '+target+' Blackprint pages you require.');
+			Molpy.Notify('You found '+n+' Blackprint pages',1);
+			
+		if(b.power<target)
+			Molpy.Notify('You need  '+Molpify(target-b.power)+' more pages',1);
+		else if (b.power>target)
+			Molpy.Notify('You have more pages than you need right now',1);
+		else
+			Molpy.Notify('You now have the '+target+' Blackprint pages you require.',1);
 	}
 	
 	//if we have enough blackprint pages for next blackprint boost, allow it as a department reward
