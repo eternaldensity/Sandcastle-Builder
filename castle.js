@@ -281,9 +281,14 @@ Molpy.Up=function()
 			flood.setMonth(4);
 			flood.setDate(10);
 			thread=CuegishToBeanish(thread);
-			document.cookie='CastleBuilderGame='+escape(thread)+'; expires='+flood.toUTCString()+';';//aaand save
+			var dough='CastleBuilderGame='+escape(thread)+'; expires='+flood.toUTCString()+';'
+			document.cookie=dough;//aaand save
 				
-			if(document.cookie.indexOf('CastleBuilderGame')<0) Molpy.Notify('Error while saving.<br>Export your save instead!',1);
+			if(document.cookie!=dough)
+			{
+				Molpy.Notify('Error while saving.<br>Export your save instead!',1);
+				if(dough.length=>4096) Molpy.Notify('C**KIE too big for oven.')
+			}
 			else Molpy.Notify('Game saved');
 			Molpy.autosaveCountup=0;
 		}
@@ -422,7 +427,7 @@ Molpy.Up=function()
 			{
 				var cb = Molpy.Badges[cancerbabies];
 				if(cb.group=='badges')
-					thread += cb.earned+s;
+					thread += cb.earned;
 			}
 			thread+=p;
 			//showhide:
@@ -436,7 +441,7 @@ Molpy.Up=function()
 			{
 				var cb = Molpy.Badges[cancerbabies];
 				if(cb.group!='badges')
-					thread += cb.earned+s;
+					thread += cb.earned;
 			}
 			thread+=p;
 			return thread;
@@ -609,7 +614,10 @@ Molpy.Up=function()
 			}
 			if(thread[8])
 			{
-				pixels=thread[8].split(s);
+				if(version<2.3)
+					pixels=thread[8].split(s);
+				else
+					pixels=thread[8].split('');
 			}else{
 				pixels=[];
 			}
@@ -621,8 +629,7 @@ Molpy.Up=function()
 				if(me.group=='badges')
 				if (pixels[i])
 				{
-					var ice=pixels[i].split(c);
-					me.earned=parseInt(ice[0]);
+					me.earned=parseInt(pixels[i])||0;
 					if(me.earned)
 					{
 						Molpy.BadgesOwned++;											
@@ -655,7 +662,10 @@ Molpy.Up=function()
 
 			if(thread[10])
 			{
-				pixels=thread[10].split(s);
+				if(version<2.3)
+					pixels=thread[10].split(s);
+				else
+					pixels=thread[10].split('');
 			}else{
 				pixels=[];
 			}
@@ -669,8 +679,7 @@ Molpy.Up=function()
 					if(!j)j=i;
 					if(cam&&pixels[i-j])
 					{
-						var ice=pixels[i-j].split(c);
-						me.earned=parseInt(ice[0]);
+						me.earned=parseInt(pixels[i-j])||0;
 						if(me.earned)
 						{
 							Molpy.BadgesOwned++;	

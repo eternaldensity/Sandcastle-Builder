@@ -22,6 +22,7 @@ For personal amusement only.
 - Glass Block/Chip display decimal places is more consistent.
 - zero temporal duplcate tool count when Molpy Down
 - Trebuchet multliplier boosts weren't stacking properly
+- Save badges more efficiently so we don't run out of cookie space!
 
 ### 2.22
 - Sand Mold stuff
