@@ -629,7 +629,7 @@ Molpy.DefineBoosts=function()
 			Molpify(me.power)+' NP in Time';
 		}
 		,sand:1000,castles:30,className:'action',group:'chron',
-		buyFunction=function()
+		buyFunction:function()
 		{
 			this.power=1;
 		}
