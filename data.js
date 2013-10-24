@@ -2416,17 +2416,25 @@ Molpy.DefineBoosts=function()
 		{return Molpy.LogiMult(20);},
 		buyFunction:function(me)
 		{
+			Molpy.LockBoost(me.aka);
 			var lc = Molpy.Boosts['Locked Crate'];
-			lc.power/=4;
-			Molpy.LockBoost(me.name);
-			if(!lc.unlocked) Molpy.Notify('Well, that was a waste');
+			if(!lc.unlocked)
+			{			
+				if(!Molpy.Got('The Key Thing'))
+					Molpy.Notify('Well, that was a waste');
+				else
+					Molpy.UnlockBoost(lc.aka);
+				return;
+			}
 			if(lc.bought)
 			{
 				lc.bought++;
 				if(lc.bought<5)
-					Molpy.Notify('You wonder what good that did');
+					Molpy.Notify('You wonder what good that did...');
 				else
-					Molpy.LockBoost(lc.name);
+					Molpy.LockBoost(lc.aka);
+			}else{
+				lc.power/=4;
 			}
 		}
 	});
@@ -2922,6 +2930,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Fractal Fractals',desc:'Even your fractals have fractals!<br>Increases the effect of Fractal Sandcastles',sand:'1.8ZW',castles:'.3ZW',glass:'3K'});
 	new Molpy.Boost({name:'Facebugs',desc:'Increases sand dig rate (but not clicks) by 10% per badge earned',sand:'24UW',castles:'7.5UW',glass:'8K'});
 	new Molpy.Boost({name:'Keygrinder',desc:'The DoRD may produce a Crate Key if Factory Automation is at Level 10 or above',sand:'463UW',castles:'15.6SW',glass:'13K',group:'hpt',logic:20});
+	new Molpy.Boost({name:'The Key Thing',desc:'Buying a Crate Key when the Locked Crate is not available will now do something useful',sand:'18SW',castles:'47SW',glass:'19K',group:'bean',logic:25});
 	
 	/*10000000*Math.pow(1.25,3090) is relevant because reasons
 		2.8310021220015596e+306*/

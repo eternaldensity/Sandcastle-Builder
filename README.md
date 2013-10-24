@@ -25,6 +25,7 @@ For personal amusement only.
 - Save badges more efficiently so we don't run out of cookie space!
 - Unearned special badges don't get into the draw list (they weren't drawn anyhow) preventing Redacted from having too high a draw index
 - Pulled out the dodgy code which was dealing with Redacted with too high a view index
+- A new Key/Crate related boost
 
 ### 2.22
 - Sand Mold stuff
