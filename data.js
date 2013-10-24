@@ -303,8 +303,11 @@ Molpy.DefineCastleTools=function()
 				}
 			}
 			
-			if(Molpy.Got('Erosion')) baseval-=Molpy.CastleTools['Wave'].totalCastlesWasted*0.2;
-			baseval -= Molpy.CastleTools['River'].bought*2;
+			if(Molpy.Got('Erosion'))
+			{
+				baseval-=Molpy.CastleTools['Wave'].totalCastlesWasted*0.2;
+				baseval-= Molpy.CastleTools['River'].bought*2;
+			}
 			baseval=Math.floor(Math.max(baseval,0));
 			return baseval;
 		},
@@ -2526,7 +2529,7 @@ Molpy.DefineBoosts=function()
 		var clickedVal=Molpy.cagedSGen.StatementValue(name);
 		if(clickedVal==Molpy.cagedPuzzleTarget)
 		{
-			Molpy.Notify('Correct');
+			Molpy.Notify('Correct',1);
 			var lc = Molpy.Boosts['Logicat'];
 			lc.power++;
 			if(lc.power>=lc.bought*5)
@@ -2537,7 +2540,7 @@ Molpy.DefineBoosts=function()
 		}
 		else
 		{
-			Molpy.Notify('Incorrect');
+			Molpy.Notify('Incorrect',1);
 			Molpy.Boosts['Logicat'].power-=0.5;
 			
 			if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))

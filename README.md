@@ -18,6 +18,13 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.4
+- Second Chance was free to use for uncaged Logicats
+- Logicat results are now put in the log
+- Got rid of redundant non decrementing countdowns on Redunception
+- Got rid of redundant Redundant icon on Badges Earned when there's one on Discoveries
+- Half the Erosion boost was still being applied to Wave destruction without earning it.
+
 ## 2.33
 - Uh, how did that = get in there?
 

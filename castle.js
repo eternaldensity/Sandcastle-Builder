@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.33;
+		Molpy.version=2.4;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2578,8 +2578,9 @@ Molpy.Up=function()
 			var label = 'Hide';
 			if(drawType=='show') label='Show';
 			heading=heading?'<h1>'+Molpy.redactedBrackets+'</h1>':'';
+			var countdown=(level==0?'&nbsp;<span id="redactedcountdown" class="faded">'+Molpify(Molpy.redactedToggle-Molpy.redactedCountup)+'</span>':'');
 			var str = '<div id="redacteditem">'+heading+'<div class="icon redacted"></div><h2">'
-				+Molpy.redactedWord+'&nbsp;<span id="redactedcountdown" class="faded">'+Molpify(Molpy.redactedToggle-Molpy.redactedCountup)+'</span></h2><div><b>Spoiler:</b><input type="button" value="'
+				+Molpy.redactedWord+countdown+'</h2><div><b>Spoiler:</b><input type="button" value="'
 				+label+'" onclick="Molpy.ClickRedacted('+level+')"</input>';
 			if(drawType=='recur')
 			{
@@ -3002,7 +3003,7 @@ Molpy.Up=function()
 			var clickedVal=Molpy.redactedSGen.StatementValue(name);
 			if(clickedVal==Molpy.redactedPuzzleTarget)
 			{
-				Molpy.Notify('Correct');
+				Molpy.Notify('Correct',1);
 				var lc = Molpy.Boosts['Logicat'];
 				lc.power++;
 				if(lc.power>=lc.bought*5)
@@ -3013,11 +3014,12 @@ Molpy.Up=function()
 			}
 			else
 			{
-				Molpy.Notify('Incorrect');
+				Molpy.Notify('Incorrect',1);
 				Molpy.Boosts['Logicat'].power-=0.5;
 			
-				if(Molpy.redactedSGen.firstTry&&Molpy.Got('Second Chance'))
+				if(Molpy.redactedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))
 				{
+					Molpy.SpendGlassBlocks(50);
 					Molpy.redactedSGen.firstTry=0;
 					Molpy.Notify('Try Again');
 					return;
@@ -3099,7 +3101,7 @@ Molpy.Up=function()
 			{
 				str+= '<div class="floatsquare badge loot"><h3>Badges<br>Earned</h3>'
 					+showhideButton('badges')+'<div class="icon '
-					+(Molpy.redactedVisible==5?'redacted':'')
+					+(Molpy.redactedVisible==5&& Molpy.redactedGr=='badge'?'redacted':'')
 					+'"></div></div>';
 			}
 			var groups = ['discov','monums','monumg'];
