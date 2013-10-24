@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.32
+- Ensure Time Travel's power is 1 on buy (that was for a feature I never ended up making, whereby you could power up Time Travel to make bigger jumps. Now there's a better way of doing that.)
+- Upgrade for person who has bought Time Travel and is stuck with it on power 0
+- Apology
+
 ## 2.31
 - Fixed erroneous save failed messages
 - Factory Ninja is buffed based on logicat level

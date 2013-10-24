@@ -628,7 +628,12 @@ Molpy.DefineBoosts=function()
 			return 'Pay ' + Molpify(price,2) + ' Castles to move <input type="Button" onclick="Molpy.TimeTravel('+(-me.power)+');" value="backwards"></input> or <input type="Button" onclick="Molpy.TimeTravel('+me.power+');" value="forwards"></input> '+
 			Molpify(me.power)+' NP in Time';
 		}
-		,sand:1000,castles:30,startPower:1,className:'action',group:'chron'});
+		,sand:1000,castles:30,className:'action',group:'chron',
+		buyFunction=function()
+		{
+			this.power=1;
+		}
+	});
 	
 	Molpy.TimeTravelPrice=function()
 	{

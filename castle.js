@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.31;
+		Molpy.version=2.32;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -841,12 +841,21 @@ Molpy.Up=function()
 					Molpy.Notify('Yoink! Sorry, you got undercharged on Glass Extruder.',1);
 				}
 			}
-			if(version < 2.1)
+			if(version<2.1)
 			{
 				Molpy.CastleTools['NewPixBot'].temp=Molpy.tempIntruderBots;
 				if(!isFinite(Molpy.castlesDown))
 				{
 					Molpy.castlesDown=DeMolpify('1WTF'); //:P
+				}
+			}
+			if(version<2.32)
+			{
+				var tt=Molpy.Boosts['Time Travel'];
+				if(tt.bought&&tt.power!=1)
+				{
+					tt.power=1;
+					Molpy.Notify('Let it be known that this is an apology that Time Travel was broken, specifically to BlitzGirl <small>(<b>Knight Temporal</b> of the One True Comic, BlitzGirl the First, Mopey Molpy Mome, Ottifactor Superior, First of the True Followers of Time\'s Time, Patriarch of the Western Paradox Church, Great Pilgrim of the One True Comic, Greatest Grain on the Beach of Time, Hope of the Non-Committal Waiters, Time Architect of Signposting, Supreme Observer of Time, Saint of the Timewaiters, Cardinal Tempus Viator, Archbishop of the Past, Troubadour of Time, The Bard of The-Before, The Poetess of The-Present, Versifier of Voyages-Yet-To-Be, Most True Followerer, Beater of Paradoxes, Ghost of PresentPix, Incoming Hurricane, Omnilector of Time, Princess of Persia, Red Spiders Eyes, LaPetite BlitzGirl, Sister in Waiting, Big KnowItAll, Blitzrandir, Reader, B.O.B.)</small>',1);
 				}
 			}
 			
