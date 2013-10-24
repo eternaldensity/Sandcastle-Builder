@@ -287,7 +287,7 @@ Molpy.Up=function()
 			if(document.cookie!=dough)
 			{
 				Molpy.Notify('Error while saving.<br>Export your save instead!',1);
-				if(dough.length=>4096) Molpy.Notify('C**KIE too big for oven.')
+				if(dough.length>=4096) Molpy.Notify('C**KIE too big for oven.');
 			}
 			else Molpy.Notify('Game saved');
 			Molpy.autosaveCountup=0;
@@ -3097,10 +3097,9 @@ Molpy.Up=function()
 			}
 			if(Molpy.BadgeN-Molpy.BadgesOwned)
 			{
-				var r = Molpy.redactedVisible==6 && (Molpy.redactedGr=='badge'||Molpy.redactedViewIndex==-1)
 				str+= '<div class="floatsquare badge shop"><h3>Badges<br>Available</h3>'
 					+showhideButton('badgesav')+'<div class="icon '
-					+(r?'redacted':'')
+					+(Molpy.redactedVisible==6?'redacted':'')
 					+'"></div></div>';
 			}
 			if(Molpy.Boosts['Chromatic Heresy'].unlocked)
@@ -3364,7 +3363,7 @@ Molpy.Up=function()
 				for (var i in Molpy.Badges)
 				{
 					var me=Molpy.Badges[i];
-					if (!me.earned)
+					if (!me.earned&&me.group=='badges')
 					{
 						blist.push(me);
 					}
@@ -3388,11 +3387,6 @@ Molpy.Up=function()
 					r++;
 				}
 				if(r==redactedIndex) str+= Molpy.RedactedHTML(1);
-			}
-			if(redactedIndex>0&&!Molpy.options.showhide[Molpy.redactedGroup]) //it's a hidden badge so show it but move it if possible later
-			{
-				Molpy.redactedViewIndex=-1;
-				str+= Molpy.RedactedHTML(1);
 			}
 			Molpy.badgeHTML+=str;
 			g('loot').innerHTML=Molpy.boostHTML+Molpy.badgeHTML;		

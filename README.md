@@ -23,6 +23,8 @@ For personal amusement only.
 - zero temporal duplcate tool count when Molpy Down
 - Trebuchet multliplier boosts weren't stacking properly
 - Save badges more efficiently so we don't run out of cookie space!
+- Unearned special badges don't get into the draw list (they weren't drawn anyhow) preventing Redacted from having too high a draw index
+- Pulled out the dodgy code which was dealing with Redacted with too high a view index
 
 ### 2.22
 - Sand Mold stuff
