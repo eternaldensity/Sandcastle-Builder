@@ -18,6 +18,16 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.31
+- Fixed erroneous save failed messages
+- Factory Ninja is buffed based on logicat level
+
+###  TODO LIST
+- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
+- still more discoveries
+- Make Factory Ninja gain power (and number of NP it affects) based on logicat level
+- Flashy gif badge for toggling colour scheme very fast
+
 ## 2.3
 - Glass Block/Chip display decimal places is more consistent.
 - zero temporal duplcate tool count when Molpy Down
@@ -30,15 +40,6 @@ For personal amusement only.
 ### 2.22
 - Sand Mold stuff
 - This means 91 more badges are technically achievable
-
-###  TODO LIST
-- Trebuchet boosts stack additively, rather than multiplicatively (see issue #4)
-- Blast furnace has a percentage inconsistency and other balance issues (see issue #3)
-- Molpy Down doesn't clear temporal duplicates
-- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
-- still more discoveries
-- Fix the double-redacted issue that sometimes happens with Badges Earned (or one is visible when it shouldn't be)
-- Make Factory Ninja gain power (and number of NP it affects) based on logicat level
 
 ### 2.21
 - Added a key related boost

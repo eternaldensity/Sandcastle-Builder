@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.3;
+		Molpy.version=2.31;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -284,10 +284,9 @@ Molpy.Up=function()
 			var dough='CastleBuilderGame='+escape(thread)+'; expires='+flood.toUTCString()+';'
 			document.cookie=dough;//aaand save
 				
-			if(document.cookie!=dough)
+			if(document.cookie.indexOf('CastleBuilderGame')<0) 
 			{
 				Molpy.Notify('Error while saving.<br>Export your save instead!',1);
-				if(dough.length>=4096) Molpy.Notify('C**KIE too big for oven.');
 			}
 			else Molpy.Notify('Game saved');
 			Molpy.autosaveCountup=0;
@@ -444,6 +443,7 @@ Molpy.Up=function()
 					thread += cb.earned;
 			}
 			thread+=p;
+			if(thread.length>=4080) Molpy.Notify('C**KIE is probably too big for oven. Please complain to your local Hotdog Vendor');
 			return thread;
 		}
 		Molpy.needlePulling=0;
@@ -1663,10 +1663,13 @@ Molpy.Up=function()
 			{
 				var stealthBuild=Molpy.CalcStealthBuild(1,1);
 				Molpy.Build(stealthBuild+1);
-				if(Molpy.Got('Factory Ninja'))
+				var fn='Factory Ninja';
+				if(Molpy.Got(fn))
 				{
 					Molpy.ActivateFactoryAutomation();
-					Molpy.LockBoost('Factory Ninja');
+					!Molpy.Boosts[fn].power--
+					if(!Molpy.Boosts[fn].power)
+						Molpy.LockBoost(fn);
 				}
 			}else{
 				Molpy.Build(1); //neat!

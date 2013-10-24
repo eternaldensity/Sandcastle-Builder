@@ -2366,8 +2366,11 @@ Molpy.DefineBoosts=function()
 		,className:'alert'
 	});
 	new Molpy.Boost({name:'Factory Ninja',desc:
-		function(me){return 'The next Ninja Builder will activate Factory Automation';}
-		,group:'ninj',logic:3,className:'alert'
+		function(me){return 'The next '+me.power+' Ninja Builder'+(me.power==1?'':'s')+' will activate Factory Automation';}
+		,group:'ninj',logic:3,className:'alert',startPower:function()
+		{
+			return Math.ceil(Molpy.Boosts['Logicat'].bought/5)
+		}
 	});
 	new Molpy.Boost({name:'Logicastle',desc:'Castle Tool outputs gain 50% per Logicat Level'
 		,group:'bean',logic:2,sand:'420Z',castles:'850Z',glass:300
