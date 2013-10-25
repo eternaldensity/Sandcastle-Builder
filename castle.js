@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.52;
+		Molpy.version=2.53;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1051,7 +1051,7 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Night and Dip');
 				Molpy.UpdateColourScheme();
 				Molpy.flashes++;
-				if(Molpy.flashes>=20)
+				if(Molpy.flashes==30)
 				{
 					Molpy.EarnBadge('I love my flashy gif');
 				}
@@ -3865,7 +3865,8 @@ Molpy.Up=function()
 			item.buy();
 			Molpy.priceFactor=factor;
 		}
-		Molpy.flashes=0;
+		if(Math.floor(Molpy.ONGelapsed/1000)%3==0)
+			Molpy.flashes=0;
 	}
 	
 	var clockDegrees=0;

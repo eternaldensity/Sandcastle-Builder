@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.53
+- Flashy badge was too hard on my phone 
+
 ## 2.52
 - Deal with infinite prices (partially)
 
