@@ -19,10 +19,11 @@ For personal amusement only.
 ## Changelog
 
 ## 2.54
-- Brutal nerfing
+- Brutal nerfing of Window Washers (though now it's cheaper to upgrade)
+- Also nerfed LCB yet again
 - A couple of totally minor new things
 - Prevent Catmaran and LCB from using glass if you have no relevant tools to boost with
-- Prevent infinitely redundant rewards
+- Infinite castles prevents Flux Surge, Temporal Duplication or Temporal Rift from being Logicat rewards
 
 ## 2.53
 - Flashy badge was too hard on my phone 

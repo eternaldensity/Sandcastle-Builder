@@ -3674,10 +3674,15 @@ Molpy.CheckBuyUnlocks=function()
 	{
 		Molpy.EarnBadge('Machine Learning');
 	}
-	if(Molpy.Got('Flux Turbine'))
+	if(Molpy.Got('Flux Turbine')&&isFinite(Molpy.castles))
 	{
 		Molpy.Boosts['Flux Surge'].logic=4;
+	}else
+	{
+		Molpy.Boosts['Flux Surge'].logic=0;
 	}
+	Molpy.Boosts['Temporal Duplication'].logic=1*isFinite(Molpy.castles);
+	Molpy.Boosts['Temporal Rift'].logic=3*isFinite(Molpy.castles);
 	if(Molpy.groupBadgeCounts.discov>10&&Molpy.Earned("Dude, Where's my DeLorean?"))
 	{
 		Molpy.UnlockBoost('Memories Revisited');
