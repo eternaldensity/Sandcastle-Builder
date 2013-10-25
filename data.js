@@ -3256,6 +3256,10 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Pyramid of Giza',desc:'Have 7,016,280 Glass Blocks'});
 	new Molpy.Badge({name:'Personal Computer',desc:'Have 640K Glass Chips'});
 	new Molpy.Badge({name:'I love my flashy gif',desc:'Change the colourscheme 20 times in a mNP',vis:1});
+	new Molpy.Badge({name:'Dubya',desc:'Have at least a Wololo Castles',vis:1});
+	new Molpy.Badge({name:'Rub a Dub Dub',desc:'Have at least a Wololo Wololo Castles',vis:1});
+	new Molpy.Badge({name:'WWW',desc:'Have at least a Wololo Wololo Wololo Castles',vis:1});
+	new Molpy.Badge({name:'Age of Empires',desc:'Have at least a Wololo Wololo Wololo Wololo Castles',vis:1});
 	
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them

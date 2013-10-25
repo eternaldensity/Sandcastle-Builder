@@ -1413,6 +1413,18 @@ Molpy.Up=function()
 			if(Molpy.castles>=DeMolpify('1F')){
 				Molpy.EarnBadge('Toasters');
 			}
+			if(Molpy.castles>=DeMolpify('1W')){
+				Molpy.EarnBadge('Dubya');
+			}
+			if(Molpy.castles>=DeMolpify('1WW')){
+				Molpy.EarnBadge('Rub a Dub Dub');
+			}
+			if(Molpy.castles>=DeMolpify('1WWW')){
+				Molpy.EarnBadge('WWW');
+			}
+			if(Molpy.castles>=DeMolpify('1WWWW')){
+				Molpy.EarnBadge('Age of Empires');
+			}
 						
 		
 		}
