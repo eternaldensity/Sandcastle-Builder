@@ -36,7 +36,7 @@ var postfixes=[
 function Molpify(number, raftcastle, shrinkify)
 {
 	if(isNaN(number))return'Mustard';
-	if(!isFinite(parseFloat(number)))return'Infinite Mustard';
+	if(!isFinite(parseFloat(number)))return'Infinite';
 	var molp='';
 	
 	if(Molpy&&!shrinkify)shrinkify=!Molpy.showStats;
@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.51;
+		Molpy.version=2.52;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1291,12 +1291,10 @@ Molpy.Up=function()
 				Molpy.prevCastleSand=Molpy.currentCastleSand
 				if(!isFinite(Molpy.sand) || Molpy.nextCastleSand<=0)
 				{
-					Molpy.sand=0;
 					Molpy.nextCastleSand=1;
 					Molpy.castles=Infinity;
 					Molpy.castlesBuilt=Infinity;
 					Molpy.Boosts['Fractal Sandcastles'].power=Infinity;
-					Molpy.Notify('Thanks I could help Bro,1');
 					return;
 				}
 			}
@@ -2016,9 +2014,12 @@ Molpy.Up=function()
 				var spent=0;
 				while (times--)
 				{
-					var price=Math.floor(Molpy.priceFactor*this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));				
-					if (Molpy.castles>=price)
+					var price=Math.floor(Molpy.priceFactor*this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
+					if(!isFinite(price))
 					{
+						Molpy.UnlockBoost('Tool Factory');
+						Molpy.EarnBadge(this.name+' Shop Failed');
+					}else if (Molpy.castles>=price){
 						Molpy.SpendCastles(price,1);
 						this.amount++;
 						this.bought++;
@@ -2145,8 +2146,11 @@ Molpy.Up=function()
 				while (times--)
 				{
 					var price=Math.floor(Molpy.priceFactor*(this.prevPrice+this.nextPrice));
-					if (Molpy.castles>=price)
+					if(!isFinite(price))
 					{
+						Molpy.UnlockBoost('Tool Factory');
+						Molpy.EarnBadge(this.name+' Shop Failed');
+					}else if (Molpy.castles>=price){
 						Molpy.SpendCastles(price,1);
 						this.amount++;
 						this.bought++;
@@ -3176,7 +3180,13 @@ Molpy.Up=function()
 				var me=Molpy.SandToolsById[i];
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2))) name = 'Glass '+name;
-				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>')+'</h2>'+
+				var salebit='';
+				if(isFinite(me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
+				{
+					salebit=' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
+						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>');
+				}
+				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+salebit+'</h2>'+
 				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
@@ -3211,7 +3221,13 @@ Molpy.Up=function()
 				var me=Molpy.CastleToolsById[i];
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2+1))) name = 'Glass '+name;
-				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>')+'</h2>'+
+				var salebit='';
+				if(isFinite(me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
+				{
+					salebit=' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
+						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>');
+				}
+				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+salebit+'</h2>'+
 				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+

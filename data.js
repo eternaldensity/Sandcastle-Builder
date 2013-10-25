@@ -3031,6 +3031,8 @@ Molpy.DefineBoosts=function()
 		,group:'bean'
 	});
 	
+	new Molpy.Boost({name:'Tool Factory',desc:'Not implemented yet',sand:Infinity,castles:Infinity,glass:2001,group:'hpt'});
+	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
 		badges:['badge','Badges'],
@@ -3345,6 +3347,17 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Rub a Dub Dub',desc:'Have at least a Wololo Wololo Castles',vis:1});
 	new Molpy.Badge({name:'WWW',desc:'Have at least a Wololo Wololo Wololo Castles',vis:1});
 	new Molpy.Badge({name:'Age of Empires',desc:'Have at least a Wololo Wololo Wololo Wololo Castles',vis:1});
+	
+	for(var i in Molpy.SandToolsById)
+	{
+		var t = Molpy.SandToolsById[i];
+		new Molpy.Badge({name:t.name+' Shop Failed',desc:'The price of '+t.name+' is too ch*rping high!',vis:2});
+	}
+	for(var i in Molpy.CastleToolsById)
+	{
+		var t = Molpy.CastleToolsById[i];
+		new Molpy.Badge({name:t.name+' Shop Failed',desc:'The price of '+t.name+' is too ch*rping high!',vis:2});
+	}
 	
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them

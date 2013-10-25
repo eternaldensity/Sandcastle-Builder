@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.52
+- Deal with infinite prices (partially)
+
 ## 2.51
 - Forgot to subtract traded scaffolds from CastleToolsOwned, leading to erroneous badge earn
 - New postfix! It's worth 5 Ws
