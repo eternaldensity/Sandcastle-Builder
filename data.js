@@ -3031,7 +3031,7 @@ Molpy.DefineBoosts=function()
 		,group:'bean'
 	});
 	
-	new Molpy.Boost({name:'Tool Factory',desc:'Not implemented yet',sand:Infinity,castles:Infinity,glass:2001,group:'hpt'});
+	new Molpy.Boost({name:'Tool Factory',desc:'Not implemented yet',sand:Infinity,castles:Infinity,glass:10005,group:'hpt'});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
