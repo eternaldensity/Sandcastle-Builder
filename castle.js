@@ -204,7 +204,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.4;
+		Molpy.version=2.5;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1032,6 +1032,7 @@ Molpy.Up=function()
 				}
 			}
 		}
+		Molpy.flashes=0;
 		Molpy.ToggleOption=function(bacon)
 		{
 			if(bacon=='autosave')
@@ -1048,6 +1049,11 @@ Molpy.Up=function()
 				if(Molpy.options.colourscheme>=2)Molpy.options.colourscheme=0;
 				Molpy.EarnBadge('Night and Dip');
 				Molpy.UpdateColourScheme();
+				Molpy.flashes++;
+				if(Molpy.flashes>=20)
+				{
+					Molpy.EarnBadge('I love my flashy gif');
+				}
 			}else if(bacon=='otcol')
 			{
 				Molpy.options.otcol++;
@@ -3830,6 +3836,7 @@ Molpy.Up=function()
 			item.buy();
 			Molpy.priceFactor=factor;
 		}
+		Molpy.flashes=0;
 	}
 	
 	var clockDegrees=0;

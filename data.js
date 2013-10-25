@@ -3255,6 +3255,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Mustard Cleanup',desc:'Your numbers got too big!',vis:2});
 	new Molpy.Badge({name:'Pyramid of Giza',desc:'Have 7,016,280 Glass Blocks'});
 	new Molpy.Badge({name:'Personal Computer',desc:'Have 640K Glass Chips'});
+	new Molpy.Badge({name:'I love my flashy gif',desc:'Change the colourscheme 20 times in a mNP',1});
 	
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them

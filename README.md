@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.5
+- I (might) love waffles
+
 ## 2.4
 - Second Chance was free to use for uncaged Logicats
 - Logicat results are now put in the log
