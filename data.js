@@ -1665,7 +1665,7 @@ Molpy.DefineBoosts=function()
 			Molpy.UnlockBoost(name);
 			Molpy.Boosts[name].buy();			
 		}else{
-			Molpy.Notify('You require more <span class="strike">Vespene Gas</span>Glass')
+			Molpy.Notify('You require more <span class="strike">Vespene Gas</span>Glass',1)
 		}
 	}
 	
@@ -2251,7 +2251,7 @@ Molpy.DefineBoosts=function()
 		var p = 33;
 		if(Molpy.Got('WWB'))
 		{
-			p*=Math.pow(2,Math.floor(Math.pow(2,Molpy.Boosts['WWB'].bought-2))-1)*Molpy.CastleTools['Scaffold'].amount;
+			p*=Math.pow(2,Molpy.Boosts['WWB'].bought-2)*Molpy.CastleTools['Scaffold'].amount;
 		}
 		return Math.pow(p,Molpy.GlassCeilingCount());
 	}
@@ -2975,19 +2975,18 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Window Washing Beanies',aka:'WWB',desc:
 		function(me)
-		{
+		{	
+			if(!me.bought) return 'How are you seeing this?';
 			var str = 'Multiplies the effect of each Glass Ceiling by ';
-			if(!me.bought) return str+'half the number of Scaffolds owned';
-			str+=Molpify(Math.pow(2,Math.floor(Math.pow(2,me.bought-2))-1),3)+' times the number of Scaffolds owned.';
-			if(me.bought<8)
-				str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+(333+111*me.bought)+' Scaffolds to hire more Beanies.';
+			str+=Molpify(Math.pow(4,me.bought-4),3)+' times the number of Scaffolds owned.';
+			str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+(333+55*me.bought)+' Scaffolds to hire more Beanies.';
 			return str;
 		}
 		,group:'bean',classChange:
 		function()
 		{
 			var oldClass=this.className;
-			var newClass = this.bought&&this.bought<8&&Molpy.CastleTools['Scaffold'].amount>=333+this.bought*111				
+			var newClass = this.bought&&Molpy.CastleTools['Scaffold'].amount>=333+this.bought*55				
 				?'action':'';
 			if(newClass!=oldClass)
 			{
@@ -2999,16 +2998,11 @@ Molpy.DefineBoosts=function()
 	Molpy.GetWWB=function()
 	{
 		var wwb=Molpy.Boosts['WWB'];
-		var price = 333+111*wwb.bought;
+		var price = 333+55*wwb.bought;
 		var scaf=Molpy.CastleTools['Scaffold'];
 		if(scaf.amount<price)
 		{
-			Molpy.Notify('You must construct additional <span class="strike">pylons</span>scaffolds');
-			return;
-		}
-		if(wwb.bought>7)
-		{
-			Molpy.Notify('No Infinity for you!');
+			Molpy.Notify('You must construct additional <span class="strike">pylons</span>scaffolds',1);
 			return;
 		}
 		scaf.amount-=price;

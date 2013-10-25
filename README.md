@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.54
+- Brutal nerfing
+- Prevent infinitely redundant rewards
+
 ## 2.53
 - Flashy badge was too hard on my phone 
 - Fixed a price
