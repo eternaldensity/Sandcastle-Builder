@@ -21,6 +21,7 @@ For personal amusement only.
 ## 2.5
 - I (might) love waffles
 - Second Chance improved
+- Locked Crate description improved to fit some usage changes
 
 ## 2.4
 - Second Chance was free to use for uncaged Logicats

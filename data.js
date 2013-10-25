@@ -2399,7 +2399,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Locked Crate',
 		desc:function(me){
 			if(!me.bought) return 'Contains Loot';
-			return 'Not so locked anymore.<br><input type="Button" value="Grab" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> the loot!'
+			return (5-me.bought)+' locks remain<br><input type="Button" value="Smash" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> it open to grab the loot!'
 		},
 		sand:function(me){ return me.power;},
 		castles:function(me){ return me.power;},
@@ -2479,10 +2479,10 @@ Molpy.DefineBoosts=function()
 			{
 				if(ch.power>=cost)
 				{
-					str+='.<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassExtruder()"></input> '+cost
+					str+='.<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassExtruder()"></input> '+Molpify(cost,3)
 						+ ' Glass Chips to increase this by 1.';
 				}else{
-					str+='.<br>It costs '+cost+ ' Glass Chips to increase this by 1.';				
+					str+='.<br>It costs '+Molpify(cost,3)+ ' Glass Chips to increase this by 1.';				
 				}
 			}
 			return str;
