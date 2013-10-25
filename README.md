@@ -26,6 +26,7 @@ For personal amusement only.
 - Extra isFinite check
 - Window Washers in the Château
 - And recycling! (not quite complete: needs a button to power it up further)
+- Took the easy way out of the stats-space issue, for now.
 
 ## 2.4
 - Second Chance was free to use for uncaged Logicats
