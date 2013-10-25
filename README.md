@@ -20,6 +20,7 @@ For personal amusement only.
 
 ## 2.5
 - I (might) love waffles
+- Second Chance improved
 
 ## 2.4
 - Second Chance was free to use for uncaged Logicats

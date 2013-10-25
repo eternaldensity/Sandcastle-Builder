@@ -2541,7 +2541,6 @@ Molpy.DefineBoosts=function()
 		else
 		{
 			Molpy.Notify('Incorrect',1);
-			Molpy.Boosts['Logicat'].power-=0.5;
 			
 			if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))
 			{
@@ -2550,13 +2549,14 @@ Molpy.DefineBoosts=function()
 				Molpy.Notify('Try Again');
 				return;
 			}
+			Molpy.Boosts['Logicat'].power-=0.5;
 		}
 		Molpy.cagedPuzzleValue='';
 		Molpy.Boosts['Caged Logicat'].hoverOnCounter=1;
 		Molpy.Boosts['Caged Logicat'].power=0;
 	}
 	
-	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it. (Uses 50 Glass Blocks, and you still lose half a point for the wrong answer.)',
+	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it and don\'t lose half a Logicat point. (Uses 50 Glass Blocks)',
 		sand:'250Y',castles:'87Y',group:'bean',logic:5});
 	
 	new Molpy.Boost({name:'Let the Cat out of the Bag',aka:'LCB',
@@ -3255,7 +3255,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Mustard Cleanup',desc:'Your numbers got too big!',vis:2});
 	new Molpy.Badge({name:'Pyramid of Giza',desc:'Have 7,016,280 Glass Blocks'});
 	new Molpy.Badge({name:'Personal Computer',desc:'Have 640K Glass Chips'});
-	new Molpy.Badge({name:'I love my flashy gif',desc:'Change the colourscheme 20 times in a mNP',1});
+	new Molpy.Badge({name:'I love my flashy gif',desc:'Change the colourscheme 20 times in a mNP',vis:1});
 	
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them

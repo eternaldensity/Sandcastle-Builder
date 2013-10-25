@@ -3021,7 +3021,6 @@ Molpy.Up=function()
 			else
 			{
 				Molpy.Notify('Incorrect',1);
-				Molpy.Boosts['Logicat'].power-=0.5;
 			
 				if(Molpy.redactedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))
 				{
@@ -3030,6 +3029,7 @@ Molpy.Up=function()
 					Molpy.Notify('Try Again');
 					return;
 				}
+				Molpy.Boosts['Logicat'].power-=0.5;
 			}
 			Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]='show';
 			Molpy.shopRepaint=1;
