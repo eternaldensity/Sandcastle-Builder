@@ -20,6 +20,7 @@ For personal amusement only.
 
 ## 2.53
 - Flashy badge was too hard on my phone 
+- Fixed a price
 
 ## 2.52
 - Deal with infinite prices (partially)
