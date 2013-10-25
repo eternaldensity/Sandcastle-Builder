@@ -81,6 +81,10 @@ small
 {
 	font-size:80%;
 }
+.strike
+{
+	text-decoration:line-through;
+}
 
 a
 {

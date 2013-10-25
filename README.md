@@ -23,6 +23,8 @@ For personal amusement only.
 - Second Chance improved
 - Locked Crate description improved to fit some usage changes
 - Added some W badges
+- Extra isFinite check
+- Window Washers in the Château
 
 ## 2.4
 - Second Chance was free to use for uncaged Logicats

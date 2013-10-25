@@ -123,7 +123,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Carrybot'))mult*=4;
 			if(Molpy.Got('Buccaneer'))mult*=2;
 			if(Molpy.Got('Flying Buckets'))mult*=Molpy.CastleTools['Trebuchet'].amount;
-			if(Molpy.Got('Glass Ceiling 0'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return mult*baserate;			
 			}
@@ -141,7 +141,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Stickbot'))mult*=4;
 			if(Molpy.Got('The Forty'))mult*=40;
 			if(Molpy.Got('Human Cannonball'))mult*=2*Molpy.CastleTools['Trebuchet'].amount;
-			if(Molpy.Got('Glass Ceiling 2'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling 2'))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return baserate*mult;
 			}
@@ -165,7 +165,7 @@ Molpy.DefineSandTools=function()
 				}
 			}
 			if(Molpy.Got('Fly the Flag'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
-			if(Molpy.Got('Glass Ceiling '+4))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling '+4))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return baserate*mult;
 		}
@@ -186,7 +186,7 @@ Molpy.DefineSandTools=function()
 				mult*=min;
 			}
 			if(Molpy.Got('Up Up and Away'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
-			if(Molpy.Got('Glass Ceiling 6'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling 6'))mult*=Molpy.GlassCeilingMult();
 			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
 			mult*=Molpy.BBC();
 			return baserate*mult;
@@ -205,7 +205,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Luggagebot'))mult*=4;
 			if(Molpy.Got('Bag Puns'))mult*=2;
 			if(Molpy.Got('Air Drop'))mult*=5;
-			if(Molpy.Got('Glass Ceiling 8'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling 8'))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return baserate*mult;
 		}
@@ -229,7 +229,7 @@ Molpy.DefineCastleTools=function()
 			
 			baseval*=Math.pow(2,pow);
 			baseval*=Molpy.LogicastleMult();
-			if(Molpy.Got('Glass Ceiling 1'))baseval*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling 1'))baseval*=Molpy.GlassCeilingMult();
 			if(Molpy.Boosts['NewPixBot Navigation Code'].power)
 				baseval=baseval*.001;
 			return Math.floor(baseval);
@@ -265,7 +265,7 @@ Molpy.DefineCastleTools=function()
 			var mult = Math.pow(10,Molpy.Got('Flying Buckets')+Molpy.Got('Human Cannonball')
 				+Molpy.Got('Fly the Flag')+Molpy.Got('Up Up and Away')+Molpy.Got('Air Drop'));				
 			if(Molpy.Got('Air Drop'))mult*=5;
-			if(Molpy.Got('Glass Ceiling 3'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling 3'))mult*=Molpy.GlassCeilingMult();
 			
 			return Math.floor(baseval*mult);
 		}
@@ -286,7 +286,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Stacked')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
 			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);
 			baseval*=Molpy.LogicastleMult();
-			if(Molpy.Got('Glass Ceiling 5'))baseval*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling 5'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
 		}
 	);
@@ -325,7 +325,7 @@ Molpy.DefineCastleTools=function()
 					baseval=baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount);
 				}
 			}
-			if(Molpy.Got('Glass Ceiling 7'))baseval*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling 7'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
 		}
 	);
@@ -363,7 +363,7 @@ Molpy.DefineCastleTools=function()
 				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
 			if(Molpy.Got('Smallbot'))mult*=4;
 			if(Molpy.Got('Irregular Rivers')) mult*=Molpy.CastleTools['NewPixBot'].amount;
-			if(Molpy.Got('Glass Ceiling 9'))mult*=Math.pow(33,Molpy.GlassCeilingCount());
+			if(Molpy.Got('Glass Ceiling 9'))mult*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval*mult);
 		}
 	);
@@ -1357,7 +1357,7 @@ Molpy.DefineBoosts=function()
 		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:7,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
-		if(Math.random()*5<4)
+		if(Math.random()*5<4&&isFinite(Molpy.castlesBuilt))
 		{
 			Molpy.totalCastlesDown+=Molpy.castles;
 			Molpy.castlesBuilt-=Molpy.castles;
@@ -1907,13 +1907,20 @@ Molpy.DefineBoosts=function()
 				{
 					str+= '<br><input type="Button" value="Trade" onclick="Molpy.GetRosetta()"></input> 50 Bags to find Rosetta.';
 				}
+				if(!Molpy.Got('WWB')&&Molpy.CastleTools['Scaffold'].amount>=300)
+				{
+					str+= '<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> 333 Scaffolds to hire Window Washing Beanies.';
+				}
 			}
 			return str;
 		}, sand:'400T',castles:'12.5T',icon:'chateau',group:'bean',className:'action',
 		classChange:function()
 		{
 			var oldClass=this.className;
-			var newClass = Molpy.Boosts['Rosetta'].unlocked?'':'action';
+			var newClass = (!Molpy.Boosts['Rosetta'].unlocked
+				||!Molpy.Got('WWB')&&Molpy.CastleTools['Scaffold'].amount>=300
+				)
+				?'action':'';
 			if(newClass!=oldClass)
 			{
 				this.className=newClass;
@@ -2227,6 +2234,15 @@ Molpy.DefineBoosts=function()
 		}
 		if(c==10)Molpy.EarnBadge('Ceiling Broken');
 		return c;
+	}
+	Molpy.GlassCeilingMult=function()
+	{
+		var p = 33;
+		if(Molpy.Got('WWB'))
+		{
+			p*=Math.pow(2,Math.floor(Math.pow(2,Molpy.Boosts['WWB'].bought-2))-1)*Molpy.CastleTools['Scaffold'].amount;
+		}
+		return Math.pow(p,Molpy.GlassCeilingCount());
 	}
 	
 	Molpy.CeilingLock=function(key)
@@ -2937,14 +2953,62 @@ Molpy.DefineBoosts=function()
 		ns.power=(!ns.power)*1;
 		ns.hoverOnCounter=1;
 	}	
+	
+	/*10000000*Math.pow(1.25,3090) is relevant because reasons
+		2.8310021220015596e+306*/
 		
 	new Molpy.Boost({name:'Fractal Fractals',desc:'Even your fractals have fractals!<br>Increases the effect of Fractal Sandcastles',sand:'1.8ZW',castles:'.3ZW',glass:'3K'});
 	new Molpy.Boost({name:'Facebugs',desc:'Increases sand dig rate (but not clicks) by 10% per badge earned',sand:'24UW',castles:'7.5UW',glass:'8K'});
 	new Molpy.Boost({name:'Keygrinder',desc:'The DoRD may produce a Crate Key if Factory Automation is at Level 10 or above',sand:'463UW',castles:'15.6SW',glass:'13K',group:'hpt',logic:20});
 	new Molpy.Boost({name:'The Key Thing',desc:'Buying a Crate Key when the Locked Crate is not available will now do something useful',sand:'18SW',castles:'47SW',glass:'19K',group:'bean',logic:25});
 	
-	/*10000000*Math.pow(1.25,3090) is relevant because reasons
-		2.8310021220015596e+306*/
+	new Molpy.Boost({name:'Window Washing Beanies',aka:'WWB',desc:
+		function(me)
+		{
+			var str = 'Multiplies the effect of each Glass Ceiling by ';
+			if(!me.bought) return str+'half the number of Scaffolds owned';
+			str+=Molpify(Math.pow(2,Math.floor(Math.pow(2,me.bought-2))-1),3)+' times the number of Scaffolds owned.';
+			if(me.bought<8)
+				str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+(333+111*me.bought)+' Scaffolds to hire more Beanies.';
+			return str;
+		}
+		,group:'bean',classChange:
+		function()
+		{
+			var oldClass=this.className;
+			var newClass = this.bought&&Molpy.CastleTools['Scaffold'].amount>=333+this.bought*111				
+				?'action':'';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
+		}
+	});
+	Molpy.GetWWB=function()
+	{
+		var wwb=Molpy.Boosts['WWB'];
+		var price = 333+111*wwb.bought;
+		var scaf=Molpy.CastleTools['Scaffold'];
+		if(scaf.amount<price)
+		{
+			Molpy.Notify('You must construct additional <span class="strike">pylons</span>scaffolds');
+			return;
+		}
+		if(wwb.bought>7)
+		{
+			Molpy.Notify('No Infinity for you!');
+			return;
+		}
+		scaf.amount-=price;
+		scaf.refresh();
+		if(wwb.bought)wwb.bought++;
+		else
+		{
+			Molpy.UnlockBoost(wwb.aka);
+			wwb.buy();
+		}
+	}
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
