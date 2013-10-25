@@ -1664,6 +1664,8 @@ Molpy.DefineBoosts=function()
 			Molpy.SpendGlassBlocks(blocks);
 			Molpy.UnlockBoost(name);
 			Molpy.Boosts[name].buy();			
+		}else{
+			Molpy.Notify('You require more <span class="strike">Vespene Gas</span>Glass')
 		}
 	}
 	
@@ -1911,14 +1913,19 @@ Molpy.DefineBoosts=function()
 				{
 					str+= '<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> 333 Scaffolds to hire Window Washing Beanies.';
 				}
+				if(!Molpy.Got('RB'))
+				{
+					str+= '<br><input type="Button" value="Trade" onclick="Molpy.BuyGlassBoost(\'RB\',144000,1234)"></input> '+Molpify(144000)+' Glass Chips and '+Molpify(1234)+' Glass Blocks to hire Recycling Beanies.';
+				}
 			}
 			return str;
-		}, sand:'400T',castles:'12.5T',icon:'chateau',group:'bean',className:'action',
+		}, sand:'400T',castles:'12.5T',icon:'chateau',group:'bean',
 		classChange:function()
 		{
 			var oldClass=this.className;
 			var newClass = (!Molpy.Boosts['Rosetta'].unlocked
 				||!Molpy.Got('WWB')&&Molpy.CastleTools['Scaffold'].amount>=300
+				||!Molpy.Got('RB')&&Molpy.HasGlassChips(100000)&&Molpy.HasGlassBlocks(1000)
 				)
 				?'action':'';
 			if(newClass!=oldClass)
@@ -2190,9 +2197,13 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.BBC=function()
 	{
+		var m = 1;
 		if(Molpy.Got('BBC')&&Molpy.Boosts['BBC'].power>0)
-			return 20;
-		return 1;
+		{
+			m=20;
+			if(Molpy.Got('RB')) m*=Math.pow(200,Molpy.Boosts['RB'].bought);
+		}
+		return m;
 	}
 	
 	Molpy.glassCeilingPriceIncs=[1.1,1.25,1.6,2,2,2,2,2,2,2];
@@ -2976,7 +2987,7 @@ Molpy.DefineBoosts=function()
 		function()
 		{
 			var oldClass=this.className;
-			var newClass = this.bought&&Molpy.CastleTools['Scaffold'].amount>=333+this.bought*111				
+			var newClass = this.bought&&this.bought<8&&Molpy.CastleTools['Scaffold'].amount>=333+this.bought*111				
 				?'action':'';
 			if(newClass!=oldClass)
 			{
@@ -3009,6 +3020,15 @@ Molpy.DefineBoosts=function()
 			wwb.buy();
 		}
 	}
+	
+	new Molpy.Boost({name:'Recycling Beanies',aka:'RB',description:
+		function(me)
+		{
+			var str= 'Multiplies the effect of Broken Bottle Cleanup by '+Molpify(Math.pow(200,me.bought),3);
+			return str;
+		}
+		,group:'bean'
+	});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
