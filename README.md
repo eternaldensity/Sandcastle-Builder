@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.51
+- Forgot to subtract traded scaffolds from CastleToolsOwned, leading to erroneous badge earn
+- New postfix! It's worth 5 Ws
+
 ## 2.5
 - I (might) love waffles
 - Second Chance improved

@@ -3012,6 +3012,7 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		scaf.amount-=price;
+		Molpy.CastleToolsOwned-=price;
 		scaf.refresh();
 		if(wwb.bought)wwb.bought++;
 		else

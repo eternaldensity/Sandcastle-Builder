@@ -16,6 +16,7 @@ function ONGsnip(time)
 	return time;
 }
 var postfixes=[
+{limit:1e210,divisor:1e210,postfix:['Q',' Quita']},
 {limit:1e42,divisor:1e42,postfix:['W',' Wololo']},
 {limit:1e39,divisor:1e39,postfix:['L',' Lotta']},
 {limit:1e36,divisor:1e36,postfix:['F',' Ferro']},
