@@ -47,12 +47,6 @@ For personal amusement only.
 - Fixed erroneous save failed messages
 - Factory Ninja is buffed based on logicat level
 
-###  TODO LIST
-- Re-layout Logicat puzzles to be less awkward (instead have a button to show the puzzle in a way which uses the screen properly rather that being crammed into a tiny space)
-- still more discoveries
-- Make Factory Ninja gain power (and number of NP it affects) based on logicat level
-- Flashy gif badge for toggling colour scheme very fast
-
 ## 2.3
 - Glass Block/Chip display decimal places is more consistent.
 - zero temporal duplcate tool count when Molpy Down
