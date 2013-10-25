@@ -1294,7 +1294,6 @@ Molpy.Up=function()
 					Molpy.nextCastleSand=1;
 					Molpy.castles=Infinity;
 					Molpy.castlesBuilt=Infinity;
-					Molpy.Boosts['Fractal Sandcastles'].power=Infinity;
 					return;
 				}
 			}
@@ -1981,7 +1980,7 @@ Molpy.Up=function()
 		Molpy.CastleToolsOwned=0;
 		Molpy.priceFactor=1;
 		
-		Molpy.SandTool=function(name,commonName,desc,price,spmNP,drawFunction,buyFunction,
+		Molpy.SandTool=function(name,commonName,desc,price,spmNP,nextThreshold,drawFunction,buyFunction,
 			pic,icon,background)
 		{
 			this.id=Molpy.SandToolsN;
@@ -1997,6 +1996,7 @@ Molpy.Up=function()
 			this.totalSand=0;
 			this.storedSpmNP=0;
 			this.storedTotalSpmNP=0;
+			this.nextThreshold=nextThreshold;
 			this.pic=pic;
 			this.icon=icon;
 			this.background=background;
@@ -2106,7 +2106,7 @@ Molpy.Up=function()
 			return this;
 		}	
 	
-		Molpy.CastleTool=function(name,commonName,desc,price0,price1,destroyN,buildN,drawFunction,buyFunction,
+		Molpy.CastleTool=function(name,commonName,desc,price0,price1,destroyN,buildN,nextThreshold,drawFunction,buyFunction,
 			pic,icon,background)
 		{
 			this.id=Molpy.CastleToolsN;
@@ -2128,6 +2128,7 @@ Molpy.Up=function()
 			this.totalCastlesDestroyed=0;
 			this.totalCastlesWasted=0; //those destroyed for no gain
 			this.currentActive=0;
+			this.nextThreshold=nextThreshold;
 			this.pic=pic;
 			this.icon=icon;
 			this.background=background;
@@ -2898,52 +2899,64 @@ Molpy.Up=function()
 			}
 			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].power)
 			{
-				if(Molpy.HasGlassBlocks(35))				
+				if(Molpy.SandTools['Ladder'].amount)	
 				{
-					Molpy.SpendGlassBlocks(35);
-					items+=Molpy.SandTools['Ladder'].amount;
+					items+=Math.floor(Molpy.SandTools['Ladder'].amount/2);
+					if(Molpy.HasGlassBlocks(35))				
+					{
+						Molpy.SpendGlassBlocks(35);
+					}
+					else 			
+					{
+						Molpy.SandTools['Ladder'].amount--;
+						Molpy.SandToolsOwned--;
+						Molpy.shopRepaint=1;
+					}
 				}
-				else if(Molpy.SandTools['Ladder'].amount)				
+				if(Molpy.SandTools['Bag'].amount)	
 				{
-					items+=(Molpy.SandTools['Ladder'].amount--);
-					Molpy.SandToolsOwned--;
-					Molpy.shopRepaint=1;
-				}
-				if(Molpy.HasGlassBlocks(35))				
-				{
-					Molpy.SpendGlassBlocks(35);
-					items+=Molpy.SandTools['Bag'].amount;
-				}
-				else if(Molpy.SandTools['Bag'].amount)				
-				{
-					items+=(Molpy.SandTools['Bag'].amount--);
-					Molpy.SandToolsOwned--;
-					Molpy.shopRepaint=1;
+					items+=Math.floor(Molpy.SandTools['Bag'].amount/2);
+					if(Molpy.HasGlassBlocks(35))				
+					{
+						Molpy.SpendGlassBlocks(35);
+					}
+					else 			
+					{
+						Molpy.SandTools['Bag'].amount--;
+						Molpy.SandToolsOwned--;
+						Molpy.shopRepaint=1;
+					}
 				}
 			}
 			if(Molpy.Got('Catamaran') && Molpy.Boosts['Catamaran'].power)
 			{
-				if(Molpy.HasGlassBlocks(45))				
+				if(Molpy.CastleTools['River'].amount)
 				{
-					Molpy.SpendGlassBlocks(45);
 					items+=(Molpy.CastleTools['River'].amount)*6;
+					if(Molpy.HasGlassBlocks(45))				
+					{
+						Molpy.SpendGlassBlocks(45);
+					}
+					else 				
+					{
+						Molpy.CastleTools['River'].amount--;
+						Molpy.CastleToolsOwned--;
+						Molpy.shopRepaint=1;
+					}
 				}
-				else if(Molpy.CastleTools['River'].amount)				
+				if(Molpy.CastleTools['Wave'].amount)	
 				{
-					items+=(Molpy.CastleTools['River'].amount--)*6;
-					Molpy.CastleToolsOwned--;
-					Molpy.shopRepaint=1;
-				}
-				if(Molpy.HasGlassBlocks(45))				
-				{
-					Molpy.SpendGlassBlocks(45);
 					items+=(Molpy.CastleTools['Wave'].amount)*6;
-				}
-				else if(Molpy.CastleTools['Wave'].amount)				
-				{
-					items+=(Molpy.CastleTools['Wave'].amount--)*6;
-					Molpy.CastleToolsOwned--;
-					Molpy.shopRepaint=1;
+					if(Molpy.HasGlassBlocks(45))				
+					{
+						Molpy.SpendGlassBlocks(45);
+					}
+					else 			
+					{
+						Molpy.CastleTools['Wave'].amount--;
+						Molpy.CastleToolsOwned--;
+						Molpy.shopRepaint=1;
+					}
 				}
 			}
 			if(Molpy.Got('Redundant Raptor') && Molpy.Boosts['Redundant Raptor'].power)
@@ -3159,7 +3172,7 @@ Molpy.Up=function()
 			var toolsUnlocked=1;			
 			for (var i in Molpy.SandTools)
 			{
-				if(Molpy.SandTools[i].bought)toolsUnlocked++;
+				if(Molpy.SandTools[i].bought>=Molpy.SandTools[i].nextThreshold)toolsUnlocked++;
 			}
 			
 			if(Molpy.redactedVisible==1)
@@ -3199,7 +3212,7 @@ Molpy.Up=function()
 			toolsUnlocked=1;			
 			for (var i in Molpy.CastleTools)
 			{
-				if(Molpy.CastleTools[i].bought)toolsUnlocked++;
+				if(Molpy.CastleTools[i].bought>=Molpy.CastleTools[i].nextThreshold)toolsUnlocked++;
 			}
 			
 			redactedIndex=-1;

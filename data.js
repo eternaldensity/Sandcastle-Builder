@@ -126,7 +126,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return mult*baserate;			
-			}
+			},1
 	);
 	
 	new Molpy.SandTool('Cuegan','cuegan|cuegans|tossed','Megan and Cueball toss in a bit of extra sand',50,
@@ -144,7 +144,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 2'))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return baserate*mult;
-			}
+			},2
 	);
 	
 	new Molpy.SandTool('Flag','flag|flags|marked','Marks out even more sand',420,
@@ -168,7 +168,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling '+4))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return baserate*mult;
-		}
+		},4
 	);
 	
 	new Molpy.SandTool('Ladder','ladder|ladders|reached','Reaches higher sand',1700,
@@ -190,7 +190,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
 			mult*=Molpy.BBC();
 			return baserate*mult;
-		}
+		},8
 	);
 	
 	new Molpy.SandTool('Bag','bag|bags|carried','Carries sand from far away',12000,
@@ -208,7 +208,15 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 8'))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return baserate*mult;
-		}
+		},6000
+	);
+	
+	new Molpy.SandTool('LaPetite','LaPetite|LaPetite|rescued','Rescues sand via raft',1e126,
+		function(){
+			var baserate =1e42;
+			var mult=1;
+			return mult*baserate;			
+		},1
 	);
 }	
 
@@ -233,7 +241,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Boosts['NewPixBot Navigation Code'].power)
 				baseval=baseval*.001;
 			return Math.floor(baseval);
-		} 
+		},1
 	);
 	
 	Molpy.npbDoublers = ['Carrybot',
@@ -268,7 +276,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Glass Ceiling 3'))mult*=Molpy.GlassCeilingMult();
 			
 			return Math.floor(baseval*mult);
-		}
+		},2
 	);
 		
 	new Molpy.CastleTool('Scaffold','scaffold|scaffolds|squished|raised','Squishes some castles, raising a place to put more.',60,100,
@@ -288,7 +296,7 @@ Molpy.DefineCastleTools=function()
 			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 5'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
-		}
+		},4
 	);
 		
 	new Molpy.CastleTool('Wave','wave|waves|swept|deposited','Sweeps away some castles, depositing more in their place.',300,80,
@@ -327,7 +335,7 @@ Molpy.DefineCastleTools=function()
 			}
 			if(Molpy.Got('Glass Ceiling 7'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
-		}
+		},8
 	);
 	Molpy.CastleTools['Wave'].onDestroy=function()
 	{
@@ -365,7 +373,19 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Irregular Rivers')) mult*=Molpy.CastleTools['NewPixBot'].amount;
 			if(Molpy.Got('Glass Ceiling 9'))mult*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval*mult);
-		}
+		},1000
+	);
+	
+	new Molpy.CastleTool('Beanie Builder','beanie builder|beanie builders|escavated|recreated','Excavate some castles and recreate copies elsewhere.',1e42,11e42,
+		function(){
+			return 1e42;
+		},
+		function(){
+			var baseval=41e42;
+			var mult=1;
+			
+			return Math.floor(baseval*mult);
+		},1
 	);
 }
 	
@@ -2589,7 +2609,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Let the Cat out of the Bag',aka:'LCB',
 		desc:function(me)
 		{
-			var str='Not Lucky reward gains 1% per Ladder and Bag owned, at a cost of 70 Glass Blocks (or 1 Ladder and 1 Bag) per use.'
+			var str='Not Lucky reward gains 1% per two Ladders and Bags owned, at a cost of 70 Glass Blocks (or 1 Ladder and 1 Bag) per use.'
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.CatBagToggle()" value="'
@@ -2597,7 +2617,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(me){me.power=1;},
-		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each Ladder, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each Bag. If 35 Glass Blocks are not available each time, a Ladder/Bag is consumed before multiplying.',
+		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Ladders, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Bags. If 35 Glass Blocks are not available each time, a Ladder/Bag is consumed before multiplying.',
 		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean'});
 	Molpy.CatBagToggle=function()
 	{
@@ -3625,16 +3645,16 @@ Molpy.CheckBuyUnlocks=function()
 	}
 	if(Molpy.Boosts['Panther Salve'].power > 500)
 	{
-		Molpy.Boosts['LCB'].logic=2;
+		Molpy.Boosts['Redundant Raptor'].logic=2;
 	}
 	if(Molpy.Boosts['Panther Salve'].power > 800)
 	{
 		Molpy.Boosts['Catamaran'].logic=4;
-	}
+	}	
 	if(Molpy.Boosts['Panther Salve'].power > 1200)
 	{
-		Molpy.Boosts['Redundant Raptor'].logic=6;
-	}	
+		Molpy.Boosts['LCB'].logic=6;
+	}
 	Molpy.Boosts['Phonesaw'].department=1*(Molpy.Boosts['VJ'].power >=88);	
 	
 	if(Molpy.Got('Phonesaw')) Molpy.Boosts['Ninjasaw'].logic=16;

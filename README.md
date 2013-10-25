@@ -20,6 +20,8 @@ For personal amusement only.
 
 ## 2.54
 - Brutal nerfing
+- A couple of totally minor new things
+- Prevent Catmaran and LCB from using glass if you have no relevant tools to boost with
 - Prevent infinitely redundant rewards
 
 ## 2.53
