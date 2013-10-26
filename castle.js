@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.56;
+		Molpy.version=2.57;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2770,7 +2770,7 @@ Molpy.Up=function()
 					return;
 				}				
 				
-				Molpy.CheckRewards();				
+				Molpy.CheckRewards(automationLevel);				
 			
 				var availRewards=[];
 				for(var i in Molpy.Boosts)
@@ -3061,7 +3061,7 @@ Molpy.Up=function()
 		}
 		Molpy.RewardLogicat=function(level)
 		{
-			Molpy.CheckRewards();
+			Molpy.CheckRewards(0);
 			var availRewards=[];
 			for(var i in Molpy.Boosts)
 			{

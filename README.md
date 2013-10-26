@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.57
+- Yeah I wasn't passing the automationLevel into the new function. oops.
+
 ## 2.56
 - Moved some code around so department/logicat rewards are checked just before rewarding, rather than when other boosts are checked
 

@@ -3628,7 +3628,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.HasGlassChips(640000))Molpy.EarnBadge('Personal Computer');
 }
 
-Molpy.CheckRewards=function()
+Molpy.CheckRewards=function(automationLevel)
 {
 	if(Molpy.Got('SBTF'))
 	{
