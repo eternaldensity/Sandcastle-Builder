@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.55
+- Improved Broken Rung to only count visible tools
+
 ## 2.54
 - Brutal nerfing of Window Washers (though now it's cheaper to upgrade)
 - Also nerfed LCB yet again

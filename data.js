@@ -180,9 +180,17 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Climbbot'))mult*=4;
 			if(Molpy.Got('Broken Rung'))
 			{
-				var min =1000000;
-				for(var i in Molpy.SandTools)min=Math.min(min,Molpy.SandTools[i].amount);
-				for(var i in Molpy.CastleTools)min=Math.min(min,Molpy.CastleTools[i].amount);
+				var min =Infinity;
+				for(var i in Molpy.SandToolsById)
+				{
+					if(!+i||Molpy.SandToolsById[i-1].bought>=Molpy.SandToolsById[i-1].nextThreshold)
+						min=Math.min(min,Molpy.SandToolsById[i].amount);
+				}
+				for(var i in Molpy.CastleToolsById)
+				{
+					if(!+i||Molpy.CastleToolsById[i-1].bought>=Molpy.CastleToolsById[i-1].nextThreshold)
+						min=Math.min(min,Molpy.CastleToolsById[i].amount);
+				}
 				mult*=min;
 			}
 			if(Molpy.Got('Up Up and Away'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
