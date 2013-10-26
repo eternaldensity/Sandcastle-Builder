@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.55;
+		Molpy.version=2.56;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2768,16 +2768,9 @@ Molpy.Up=function()
 				{
 					Molpy.RewardBlastFurnace();
 					return;
-				}
+				}				
 				
-				//Just In Time Availability Check because it depends on the automation level
-				var key = Molpy.Boosts['Crate Key'];
-				key.department=0;
-				if(key.logic&&automationLevel>=10&&Math.floor(Math.random()*3)==0&&Molpy.Got('Keygrinder'))
-				{
-					key.department=1;						
-				}
-				
+				Molpy.CheckRewards();				
 			
 				var availRewards=[];
 				for(var i in Molpy.Boosts)
@@ -3068,6 +3061,7 @@ Molpy.Up=function()
 		}
 		Molpy.RewardLogicat=function(level)
 		{
+			Molpy.CheckRewards();
 			var availRewards=[];
 			for(var i in Molpy.Boosts)
 			{

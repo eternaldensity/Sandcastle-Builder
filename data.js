@@ -3599,6 +3599,37 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['Glass Block Storage'].power>10)
 		Molpy.UnlockBoost('Glass Jaw');
 	
+	
+	if(Molpy.redactedClicks>=554 && (Molpy.Got('Overcompensating') || Molpy.Got('Doublepost')))
+	{
+		Molpy.UnlockBoost('Redundant Redundance Supply of Redundancy');
+	}else{
+		Molpy.LockBoost('Redundant Redundance Supply of Redundancy'); //prevent use in shortpix!
+	}
+
+	if(Molpy.GlassCeilingCount())
+		Molpy.GlassCeilingUnlockCheck();
+	if(Molpy.SandToolsOwned>=123)Molpy.UnlockBoost('Sand Tool Multi-Buy');
+	if(Molpy.CastleToolsOwned>=234)Molpy.UnlockBoost('Castle Tool Multi-Buy');
+	
+	if(Molpy.Got('NewPixBot Navigation Code')) //just in case they didn't earn it the normal way
+	{
+		Molpy.EarnBadge('On the 12th Dip of Judgement');
+	}
+	if(Molpy.groupBadgeCounts.discov>10&&Molpy.Earned("Dude, Where's my DeLorean?"))
+	{
+		Molpy.UnlockBoost('Memories Revisited');
+	}else
+	{
+		Molpy.LockBoost('Memories Revisited');
+	}
+	
+	if(Molpy.HasGlassBlocks(7016280))Molpy.EarnBadge('Pyramid of Giza');
+	if(Molpy.HasGlassChips(640000))Molpy.EarnBadge('Personal Computer');
+}
+
+Molpy.CheckRewards=function()
+{
 	if(Molpy.Got('SBTF'))
 	{
 		Molpy.Boosts['Castle Crusher'].department=1;
@@ -3612,12 +3643,6 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.Boosts['Ninja Legion'].department=1;
 	}
 	
-	if(Molpy.redactedClicks>=554 && (Molpy.Got('Overcompensating') || Molpy.Got('Doublepost')))
-	{
-		Molpy.UnlockBoost('Redundant Redundance Supply of Redundancy');
-	}else{
-		Molpy.LockBoost('Redundant Redundance Supply of Redundancy'); //prevent use in shortpix!
-	}
 	if(Molpy.redactedClicks>=320 && (Molpy.Got('Overcompensating') || Molpy.Got('Doublepost')))
 	{
 		Molpy.Boosts['Redunception'].department=1;
@@ -3641,13 +3666,8 @@ Molpy.CheckBuyUnlocks=function()
 		if(Molpy.Earned('Beachomancer'))
 			Molpy.Boosts['BBC'].department=1;
 	}
-	if(Molpy.GlassCeilingCount())
-		Molpy.GlassCeilingUnlockCheck();
-	if(Molpy.SandToolsOwned>=123)Molpy.UnlockBoost('Sand Tool Multi-Buy');
-	if(Molpy.CastleToolsOwned>=234)Molpy.UnlockBoost('Castle Tool Multi-Buy');
 	
-	
-	if(Molpy.Boosts['Panther Salve'].power > 200)
+		if(Molpy.Boosts['Panther Salve'].power > 200)
 	{
 		Molpy.Boosts['RRR'].department=1;
 	}
@@ -3667,10 +3687,6 @@ Molpy.CheckBuyUnlocks=function()
 	
 	if(Molpy.Got('Phonesaw')) Molpy.Boosts['Ninjasaw'].logic=16;
 	
-	if(Molpy.Got('NewPixBot Navigation Code')) //just in case they didn't earn it the normal way
-	{
-		Molpy.EarnBadge('On the 12th Dip of Judgement');
-	}
 	var found=0;
 	for(var i in Molpy.jDipBoosts)
 	{
@@ -3691,13 +3707,6 @@ Molpy.CheckBuyUnlocks=function()
 	}
 	Molpy.Boosts['Temporal Duplication'].logic=1*isFinite(Molpy.castles);
 	Molpy.Boosts['Temporal Rift'].logic=3*isFinite(Molpy.castles);
-	if(Molpy.groupBadgeCounts.discov>10&&Molpy.Earned("Dude, Where's my DeLorean?"))
-	{
-		Molpy.UnlockBoost('Memories Revisited');
-	}else
-	{
-		Molpy.LockBoost('Memories Revisited');
-	}
 	
 	Molpy.Boosts['Facebugs'].department=1*(Molpy.groupBadgeCounts.discov>20&&Molpy.Got('Ch*rpies'));
 	if(Molpy.Boosts['Locked Crate'].unlocked)
@@ -3710,8 +3719,13 @@ Molpy.CheckBuyUnlocks=function()
 	Molpy.CheckBlackprintDepartment();
 	
 	Molpy.Boosts['Fractal Fractals'].department=1*(Molpy.Boosts['Fractal Sandcastles'].power>=120);
-	if(Molpy.HasGlassBlocks(7016280))Molpy.EarnBadge('Pyramid of Giza');
-	if(Molpy.HasGlassChips(640000))Molpy.EarnBadge('Personal Computer');
+	
+	var key = Molpy.Boosts['Crate Key'];
+	key.department=0;
+	if(key.logic&&automationLevel>=10&&Math.floor(Math.random()*3)==0&&Molpy.Got('Keygrinder'))
+	{
+		key.department=1;						
+	}
 }
 
 Molpy.CheckClickAchievements=function()

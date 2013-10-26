@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.56
+- Moved some code around so department/logicat rewards are checked just before rewarding, rather than when other boosts are checked
+
 ## 2.55
 - Improved Broken Rung to only count visible tools
 
