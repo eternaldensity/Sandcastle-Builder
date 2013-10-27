@@ -1937,9 +1937,9 @@ Molpy.DefineBoosts=function()
 				{
 					str+= '<br><input type="Button" value="Trade" onclick="Molpy.GetRosetta()"></input> 50 Bags to find Rosetta.';
 				}
-				if(!Molpy.Got('WWB')&&Molpy.CastleTools['Scaffold'].amount>=300)
+				if(!Molpy.Got('WWB')&&Molpy.CastleTools['Scaffold'].amount>=400)
 				{
-					str+= '<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> 333 Scaffolds to hire Window Washing Beanies.';
+					str+= '<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> 444 Scaffolds to hire Window Washing Beanies.';
 				}
 				if(!Molpy.Got('RB'))
 				{
@@ -1952,7 +1952,7 @@ Molpy.DefineBoosts=function()
 		{
 			var oldClass=this.className;
 			var newClass = (!Molpy.Boosts['Rosetta'].unlocked
-				||!Molpy.Got('WWB')&&Molpy.CastleTools['Scaffold'].amount>=300
+				||!Molpy.Got('WWB')&&Molpy.CastleTools['Scaffold'].amount>=400
 				||!Molpy.Got('RB')&&Molpy.HasGlassChips(100000)&&Molpy.HasGlassBlocks(1000)
 				)
 				?'action':'';
@@ -1975,7 +1975,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
 		}
 	}
-	Molpy.faCosts=[55,65,85,115,145,175,205,240,280,330];
+	Molpy.faCosts=[55,65,85,115,145,175,205,240,280,330,440,560,700,900,1200];
 	new Molpy.Boost({name:'Rosetta',
 		desc:function(me)
 		{
@@ -2279,7 +2279,7 @@ Molpy.DefineBoosts=function()
 		var p = 33;
 		if(Molpy.Got('WWB'))
 		{
-			p*=Math.pow(2,Molpy.Boosts['WWB'].bought-2)*Molpy.CastleTools['Scaffold'].amount;
+			p*=Math.pow(2,Molpy.Boosts['WWB'].bought-4)*Molpy.CastleTools['Scaffold'].amount;
 		}
 		return Math.pow(p,Molpy.GlassCeilingCount());
 	}
@@ -3006,15 +3006,15 @@ Molpy.DefineBoosts=function()
 		{	
 			if(!me.bought) return 'How are you seeing this?';
 			var str = 'Multiplies the effect of each Glass Ceiling by ';
-			str+=Molpify(Math.pow(4,me.bought-4),3)+' times the number of Scaffolds owned.';
-			str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+(333+55*me.bought)+' Scaffolds to hire more Beanies.';
+			str+=Molpify(Math.pow(2,me.bought-4),3)+' times the number of Scaffolds owned.';
+			str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+(444+77*me.bought)+' Scaffolds to hire more Beanies.';
 			return str;
 		}
 		,group:'bean',classChange:
 		function()
 		{
 			var oldClass=this.className;
-			var newClass = this.bought&&Molpy.CastleTools['Scaffold'].amount>=333+this.bought*55				
+			var newClass = this.bought&&Molpy.CastleTools['Scaffold'].amount>=444+this.bought*77				
 				?'action':'';
 			if(newClass!=oldClass)
 			{
@@ -3026,7 +3026,7 @@ Molpy.DefineBoosts=function()
 	Molpy.GetWWB=function()
 	{
 		var wwb=Molpy.Boosts['WWB'];
-		var price = 333+55*wwb.bought;
+		var price = 444+77*wwb.bought;
 		var scaf=Molpy.CastleTools['Scaffold'];
 		if(scaf.amount<price)
 		{

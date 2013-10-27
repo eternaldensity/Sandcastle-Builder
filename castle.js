@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.57;
+		Molpy.version=2.58;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2803,10 +2803,13 @@ Molpy.Up=function()
 			}
 			if(Math.floor(2*Math.random()))
 			{
-				Molpy.RewardNotLucky();
-			}else{
-				Molpy.RewardBlitzing();
-			}			
+				Molpy.RewardNotLucky(automationLevel);
+			}else if(isFinite(Molpy.sand)){
+				Molpy.RewardBlitzing(automationLevel);
+			}else
+			{
+				Molpy.RewardBlastFurnace();
+			}
 		}
 		Molpy.RewardBlastFurnace=function()
 		{
@@ -2856,9 +2859,10 @@ Molpy.Up=function()
 			Molpy.SpendSand(castles*blastFactor);
 			Molpy.Build(castles);
 		}
-		Molpy.RewardNotLucky=function()
+		Molpy.RewardNotLucky=function(automationLevel)
 		{
-			Molpy.Notify('You are not Lucky (which is good)');
+			if(!automationLevel)
+				Molpy.Notify('You are not Lucky (which is good)');
 			var bonus=0;
 			var i=0;
 			var items=0;
@@ -2960,15 +2964,21 @@ Molpy.Up=function()
 					items+=Molpy.redactedClicks*2;
 				}
 			}
+			var nerf=0;
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0 && Molpy.HasGlassBlocks(10))
 			{				
 				Molpy.SpendGlassBlocks(10);
 				Molpy.Boosts['Panther Salve'].power++;
 				bonus*=Math.pow(1.01,items);
-				bonus=Math.min(bonus,Molpy.castlesBuilt/50); //just to keep things sane
+				nerf=1;
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
+			{
 				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/10);
+				nerf=1;
+			}
+			if(nerf)
+				bonus=Math.min(bonus,Molpy.castlesBuilt/(50)); //just to keep things sane
 			
 			bonus = Math.floor(bonus);
 			Molpy.Build(bonus);
@@ -3066,7 +3076,7 @@ Molpy.Up=function()
 			for(var i in Molpy.Boosts)
 			{
 				var me=Molpy.Boosts[i];
-				if(!(me.unlocked||me.bought)&&level>=me.logic)
+				if(!(me.unlocked||me.bought)&&me.logic&&level>=me.logic)
 				{
 					availRewards.push(me);
 				}

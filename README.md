@@ -18,6 +18,13 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.58
+- Logicat rewards now exclude boosts with their logicat level set to 0
+- Nerfed WWB a little and increased the cost a bit
+- The limit on Panther Salve and friends is now applied *after* it's boosted by Fractal Sandcastles
+- Some more Factory Automation levels
+- Not Lucky from Factory Automation doesn't show the 'not lucky' message
+
 ## 2.57
 - Yeah I wasn't passing the automationLevel into the new function. oops.
 
