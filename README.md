@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.59
+- Some new badges
+
 ## 2.58
 - Logicat rewards now exclude boosts with their logicat level set to 0
 - Nerfed WWB a little and increased the cost a bit

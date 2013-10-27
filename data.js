@@ -3381,6 +3381,9 @@ Molpy.DefineBadges=function()
 		new Molpy.Badge({name:t.name+' Shop Failed',desc:'The price of '+t.name+' is too ch*rping high!',vis:2});
 	}
 	
+	new Molpy.Badge({name:'Queue',desc:'Have at least a Quita Castles',vis:1});
+	new Molpy.Badge({name:'What Queue',desc:'Have at least a Wololo Quita Castles',vis:1});
+	new Molpy.Badge({name:'Everything but the Kitchen Windows',desc:'Have Infinite Sand and Castles'});
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
 	Molpy.MakeTripleBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});
@@ -3474,6 +3477,13 @@ Molpy.DefineBadges=function()
 	Molpy.MakeTripleBadge({np:875,name:'Laden',desc:'Megan returning with a bag'});
 	Molpy.MakeTripleBadge({np:878,name:'Finishing Touch',desc:'the moment Megan added one last flag to the castle'});
 	Molpy.MakeTripleBadge({np:881,name:'Basement For You!',desc:'Megan saying <small>bye</small>'});
+	Molpy.MakeTripleBadge({np:925,name:'Crumbling',desc:'when part of the castle fell into the liquid'});
+	Molpy.MakeTripleBadge({np:951,name:'She Returns',desc:'the brief moment in The Fading when LaPetite returned, and there was much rejoicing'});
+	Molpy.MakeTripleBadge({np:969,name:'She Returns Again',desc:'LaPetite\'s second return, hardly visible due to The Fading'});
+	Molpy.MakeTripleBadge({np:970,name:'What a Drag',desc:'when we saw (with enhancement) that LaPetite was dragging something to the castle'});
+	Molpy.MakeTripleBadge({np:971,name:'All Gone',desc:'the completion of The Fading'});
+	Molpy.MakeTripleBadge({np:972,name:'New Ground',desc:'when we saw a completely new scene'});
+	Molpy.MakeTripleBadge({np:973,name:'Walkers',desc:'the first time we saw Cuegan walking on their journey'});
 	//Molpy.MakeTripleBadge({np:,name:'',desc:''});
 }
 

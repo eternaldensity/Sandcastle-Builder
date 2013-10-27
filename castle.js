@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.58;
+		Molpy.version=2.59;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1423,7 +1423,16 @@ Molpy.Up=function()
 			if(Molpy.castles>=DeMolpify('1WWWW')){
 				Molpy.EarnBadge('Age of Empires');
 			}
-						
+			if(Molpy.castles>=DeMolpify('1Q')){
+				Molpy.EarnBadge('Queue');
+			}
+			if(Molpy.castles>=DeMolpify('1WQ')){
+				Molpy.EarnBadge('What Queue');
+			}
+			if(!isFinite(Molpy.castles)&&!isFinite(Molpy.sand)){
+				Molpy.EarnBadge('Everything but the Kitchen Windows');
+			}
+					
 		
 		}
 		Molpy.MakeChips=function()
