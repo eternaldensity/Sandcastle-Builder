@@ -2834,12 +2834,12 @@ Molpy.DefineBoosts=function()
 			str+='<br>This requires 100 Factory Automation runs and consumes the NewPix number of the Discovery times 100 Glass Chips per run.<br>';
 			if(me.bought&&me.power>0)
 			{
-				var mname='<small>'+Molpy.Badges['monums'+me.bought].name+'</small>';
+				var dname='<small>'+Molpy.Badges['discov'+me.bought].name+'</small>';
 				if(me.power>100)
 				{
-					str+='<br>Making a mould from '+mname+' is complete. The Sand Mould Filler is required next.';
+					str+='<br>Making a mould from '+dname+' is complete. The Sand Mould Filler is required next.';
 				}else{
-					str+='<br>'+(me.power-1)+'% complete making a mould from '+mname;
+					str+='<br>'+(me.power-1)+'% complete making a mould from '+dname;
 				}
 			}
 			return str;
@@ -2856,7 +2856,35 @@ Molpy.DefineBoosts=function()
 			}
 		}
 	});
-	new Molpy.Boost({name:'Glass Mould Maker',aka:'GMM',desc:'Allows you to make a Glass Mould of a Discovery',group:'bean'});
+	new Molpy.Boost({name:'Glass Mould Maker',aka:'GMM',desc:
+		function(me)
+		{
+			var str = 'Allows you to make a Glass Mould of a Sand Monument.';
+			str+='<br>This requires 400 Factory Automation runs and consumes 1000 Glass Chips plus 1% per NewPix number of the Monument per run.<br>';
+			if(me.bought&&me.power>0)
+			{
+				var mname='<small>'+Molpy.Badges['monums'+me.bought].name+'</small>';
+				if(me.power>400)
+				{
+					str+='<br>Making a mould from '+mname+' is complete. The Glass Mould Filler is required next.';
+				}else{
+					str+='<br>'+Molpify((me.power-1)/4,2)+'% complete making a mould from '+mname;
+				}
+			}
+			return str;
+		}
+		,group:'bean',
+		classChange:function()
+		{
+			var oldClass=this.className;
+			var newClass = (this.power>0&&this.power<=400)?'alert':'';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
+		}
+	});
 	new Molpy.Boost({name:'Sand Mould Filler',aka:'SMF',desc:
 		function(me)
 		{
@@ -2869,8 +2897,8 @@ Molpy.DefineBoosts=function()
 				}
 				if(me.power>0)
 				{
-					var mname='<small>'+Molpy.Badges['monums'+me.bought].name+'</small>';
-					str+='<br>'+(me.power-1)+'% complete filling the mould from '+mname+' with Sand';					
+					var dname='<small>'+Molpy.Badges['discov'+me.bought].name+'</small>';
+					str+='<br>'+Molpify((me.power-1)/2,1)+'% complete filling the mould from '+dname+' with Sand';					
 				}
 			}
 			return str;
@@ -2879,7 +2907,7 @@ Molpy.DefineBoosts=function()
 		classChange:function()
 		{
 			var oldClass=this.className;
-			var newClass = (Molpy.Boosts['SMM'].power>100||this.power>0&&this.power<=100)?'alert':'';
+			var newClass = (Molpy.Boosts['SMM'].power>100||this.power>0&&this.power<=200)?'alert':'';
 			if(newClass!=oldClass)
 			{
 				this.className=newClass;
@@ -2887,7 +2915,36 @@ Molpy.DefineBoosts=function()
 			}
 		}
 	});
-	new Molpy.Boost({name:'Glass Mould Filler',aka:'GMF',desc:'Fills a Glass Mould with Glass to make a Glass Monument',group:'bean'});
+	new Molpy.Boost({name:'Glass Mould Filler',aka:'GMF',desc:
+		function(me)
+		{
+			var str ='Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.';
+			if(me.bought)
+			{
+				if(!me.power&&(Molpy.Boosts['GMM'].power>400))
+				{
+					str+='<br><input type="Button" onclick="Molpy.FillGlassMould('+Molpy.Boosts['GMM'].bought+')" value="Start Filling"></input> the mould in the Glass Mould Maker with Glass.';
+				}
+				if(me.power>0)
+				{
+					var mname='<small>'+Molpy.Badges['monums'+me.bought].name+'</small>';
+					str+='<br>'+Molpify((me.power-1)/8,3)+'% complete filling the mould from '+mname+' with Glass';					
+				}
+			}
+			return str;
+		}
+		,group:'bean',
+		classChange:function()
+		{
+			var oldClass=this.className;
+			var newClass = (Molpy.Boosts['GMM'].power>400||this.power>0&&this.power<=800)?'alert':'';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
+		}
+	});
 	
 	Molpy.MakeSandMould=function(np)
 	{
@@ -2983,12 +3040,116 @@ Molpy.DefineBoosts=function()
 		if(!Molpy.sand >=sand) return;
 		Molpy.SpendSand(sand);
 		smf.power++;
-		if(smf.power>100)
+		if(smf.power>200)
 		{
 			Molpy.Notify('Sand Mould Filling is complete',1);
 			Molpy.EarnBadge('monums'+smf.bought);
 			smf.bought=1;
 			smf.power=0;
+		}
+		return 1;
+	}		
+	
+	Molpy.MakeGlassMould=function(np)
+	{
+		var mname='monumg'+np;
+		if(!Molpy.Badges[mname])
+		{
+			Molpy.Notify('No such mould exists');
+			return;
+		}
+		if(Molpy.Earned(mname))
+		{
+			Molpy.Notify('You don\'t need to make this mould');
+			return;
+		}
+		var gmm=Molpy.Boosts['GMM'];
+		var gmf=Molpy.Boosts['GMF'];
+		if(gmf.power&&gmf.bought==np)
+		{
+			Molpy.Notify('You already made this mould and are presently filling it with glass');
+			return;
+		}
+		if(!gmm.bought)
+		{
+			Molpy.Notify('You don\'t have the Glass Mould Maker!');
+			return;
+		}
+		if(gmm.power)
+		{
+			Molpy.Notify('The Glass Mould Maker is already in use!');
+			return;
+		}
+		gmm.bought=np;
+		gmm.power=1;		
+	}
+	Molpy.MakeGlassMouldWork=function()
+	{
+		var gmm=Molpy.Boosts['GMM'];
+		if(gmm.power==0||gmm.power>400)
+		{
+			return;
+		}
+		var chips=Math.pow(1.01,gmm.bought)*1000;
+		if(!Molpy.HasGlassChips(chips)) return;
+		Molpy.SpendGlassChips(chips);
+		gmm.power++;
+		if(gmm.power>400)
+			Molpy.Notify('Glass Mould Creation is complete',1);
+		return 1;
+	}	
+	Molpy.FillGlassMould=function(np)
+	{
+		var mname='monumg'+np;
+		if(!Molpy.Badges[mname])
+		{
+			Molpy.Notify('No such mould exists');
+			return;
+		}
+		if(Molpy.Earned(mname))
+		{
+			Molpy.Notify('You don\'t need to make this mould');
+			return;
+		}
+		var gmm=Molpy.Boosts['GMM'];
+		var gmf=Molpy.Boosts['GMF'];
+		if(!gmf.bought)
+		{
+			Molpy.Notify('You don\'t have the Glass Mould Filler!');
+			return;
+		}
+		if(gmf.power)
+		{
+			Molpy.Notify('The Glass Mould Maker is already in use!');
+			return;
+		}
+		if(gmm.power<=400)
+		{
+			Molpy.Notify('No mould is ready to be filled!');
+			return;
+		}
+		gmf.bought=gmm.bought;
+		gmf.power=1;
+		gmm.bought=1; // *shrug again*
+		gmm.power=0;		
+	}
+	Molpy.FillGlassMouldWork=function()
+	{
+		var gmf=Molpy.Boosts['GMF'];
+		if(gmf.power==0)
+		{
+			return;
+		}
+		var glass=Math.pow(1.02,gmf.bought)*1000000;
+		if(!Molpy.glass >=glass) return;
+		Molpy.SpendGlass(glass);
+		gmf.power++;
+		if(gmf.power>800)
+		{
+			Molpy.Notify('Glass Mould Filling is complete',1);
+			Molpy.EarnBadge('monumg'+gmf.bought);
+			gmf.bought=1;
+			gmf.power=0;
 		}
 		return 1;
 	}
