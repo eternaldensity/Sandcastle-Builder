@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.61
+- Um, I wrote for instead of while and forgot to test
+
 ## 2.6
 - Castles are not built when you have infinite
 - Sand is not turned into castles if you have infinite castles

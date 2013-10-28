@@ -3798,7 +3798,7 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.CheckASHF();
 	var i = 10;
 	var b = 1*Molpy.Got('Ceiling Broken');
-	for(i--)
+	while(i--)
 	{
 		Molpy.Boosts['Glass Ceiling '+i].department=b;
 	}
