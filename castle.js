@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.59;
+		Molpy.version=2.6;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1269,7 +1269,7 @@ Molpy.Up=function()
 		Molpy.SandToCastles=function()
 		{
 			Molpy.buildNotifyFlag=0;
-			while(Molpy.sand >= Molpy.nextCastleSand)
+			while(Molpy.sand >= Molpy.nextCastleSand && isFinite(Molpy.castles))
 			{
 				if(Molpy.Got('Fractal Sandcastles'))
 				{
@@ -1320,6 +1320,10 @@ Molpy.Up=function()
 		Molpy.buildNotifyCount=0;
 		Molpy.Build=function(amount,refund)
 		{
+			if(!isFinite(Molpy.castles))
+			{
+				amount=0; //no point in adding any more
+			}
 			if(!refund&&amount)//don't multiply if amount is 0
 			{
 				amount = Math.round(amount*Molpy.globalCastleMult);
@@ -1343,7 +1347,7 @@ Molpy.Up=function()
 				}
 			}else{
 				Molpy.buildNotifyCount+=amount;
-			}				
+			}
 			
 			if(Molpy.castlesBuilt>=1){
 				Molpy.EarnBadge('Rook');
