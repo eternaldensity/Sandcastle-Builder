@@ -3084,6 +3084,7 @@ Molpy.DefineBoosts=function()
 	}
 	
 	new Molpy.Boost({name:'Tool Factory',desc:'Not implemented yet',sand:Infinity,castles:Infinity,glass:10005,group:'hpt'});
+	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:45000,group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -3794,6 +3795,7 @@ Molpy.CheckASHF=function()
 			return;
 		}
 	}	
+	//if prices are finite but castles are infinite, still give ASHF because Shopping Assistant might be in use
 }
 
 Molpy.CheckClickAchievements=function()

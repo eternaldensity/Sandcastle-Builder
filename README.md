@@ -25,6 +25,7 @@ For personal amusement only.
 - Warn on the ONG if not saved in over a newpix (the time since save counter now counts regardless of whether you have autosave)
 - No ASHF if you have no boosts to buy and all tools have infinite price
 - Recycling Beanie desc(ription) fix, added the upgrade button also
+- Panther Glaze
 
 ## 2.59
 - Some new badges
