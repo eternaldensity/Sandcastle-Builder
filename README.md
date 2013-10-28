@@ -21,6 +21,9 @@ For personal amusement only.
 ## 2.6
 - Castles are not built when you have infinite
 - Sand is not turned into castles if you have infinite castles
+- Fixed Badges Earned redacted icon not showing due to missing s
+- Warn on the ONG if not saved in over a newpix (the time since save counter now counts regardless of whether you have autosave)
+- No ASHF if you have no boosts to buy and all tools have infinite price
 
 ## 2.59
 - Some new badges

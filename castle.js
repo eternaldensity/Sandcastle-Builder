@@ -3154,7 +3154,7 @@ Molpy.Up=function()
 			{
 				str+= '<div class="floatsquare badge loot"><h3>Badges<br>Earned</h3>'
 					+showhideButton('badges')+'<div class="icon '
-					+(Molpy.redactedVisible==5&& Molpy.redactedGr=='badge'?'redacted':'')
+					+(Molpy.redactedVisible==5&& Molpy.redactedGr=='badges'?'redacted':'')
 					+'"></div></div>';
 			}
 			var groups = ['discov','monums','monumg'];
@@ -3863,8 +3863,8 @@ Molpy.Up=function()
 		if(Molpy.BadgesOwned==0) Molpy.EarnBadge('Redundant Redundancy');
 		
 		Molpy.Life++;
+		Molpy.autosaveCountup++;
 		if(Molpy.options.autosave){
-			Molpy.autosaveCountup++;
 			if(Molpy.autosaveCountup>=Molpy.options.autosave*5)
 			{
 				Molpy.SaveC_STARSTAR_kie(1);			
@@ -4029,7 +4029,12 @@ Molpy.Up=function()
 				}
 			}
 		}
+		if(isFinite(Molpy.castles))
 		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*3)==0);
+		if(Molpy.autosaveCountup>1000)
+		{
+			Molpy.Notify('You have not saved in over a NewPix!!',1);
+		}
 	}
 	
 	Molpy.BurnBags=function(n)

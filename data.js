@@ -3528,10 +3528,6 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=Molpy.npbDoubleThreshhold&&Molpy.Got('Robot Efficiency'))Molpy.UnlockBoost('Recursivebot');
 	if(me.amount>=17)Molpy.UnlockBoost('HAL-0-Kitty');
 	if(me.amount>=22 && Molpy.Got('DoRD'))Molpy.UnlockBoost('Factory Automation');
-	if(Molpy.Got('Factory Automation'))
-	{
-		Molpy.Boosts['Blast Furnace'].department=1;
-	}
 	 
 	me=Molpy.CastleTools['Trebuchet'];
 	if(me.amount>=1)Molpy.UnlockBoost('Spring Fling');
@@ -3640,6 +3636,11 @@ Molpy.CheckBuyUnlocks=function()
 
 Molpy.CheckRewards=function(automationLevel)
 {
+
+	if(Molpy.Got('Factory Automation'))
+	{
+		Molpy.Boosts['Blast Furnace'].department=1;
+	}
 	if(Molpy.Got('SBTF'))
 	{
 		Molpy.Boosts['Castle Crusher'].department=1;
@@ -3736,6 +3737,33 @@ Molpy.CheckRewards=function(automationLevel)
 	{
 		key.department=1;						
 	}
+	Molpy.CheckASHF();
+}
+	
+Molpy.CheckASHF=function()
+{
+	Molpy.Boosts['ASHF'].department=0;
+	if(Molpy.BoostsInShop.length)
+	{
+		Molpy.Boosts['ASHF'].department=1;
+		return;
+	}
+	for(var i in Molpy.SandTools)
+	{
+		if(isFinite(Molpy.SandTools[i].price))
+		{
+			Molpy.Boosts['ASHF'].department=1;
+			return;
+		}
+	}
+	for(var i in Molpy.CastleTools)
+	{
+		if(isFinite(Molpy.CastleTools[i].price))
+		{
+			Molpy.Boosts['ASHF'].department=1;
+			return;
+		}
+	}	
 }
 
 Molpy.CheckClickAchievements=function()
