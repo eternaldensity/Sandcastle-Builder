@@ -28,6 +28,7 @@ For personal amusement only.
 - Panther Glaze
 - Factored out function for adding glass blocks/chips from the glass furnace/blower, to avoid duplicating storage-space checks everywhere
 - Badgers can now have stats, for extra flavour text
+- Filled with new tool numbers
 
 ## 2.59
 - Some new badges

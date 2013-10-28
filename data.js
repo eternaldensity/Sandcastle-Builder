@@ -219,9 +219,9 @@ Molpy.DefineSandTools=function()
 		},6000
 	);
 	
-	new Molpy.SandTool('LaPetite','LaPetite|LaPetite|rescued','Rescues sand via raft',1e126,
+	new Molpy.SandTool('LaPetite','LaPetite|LaPetite|rescued','Rescues sand via raft',DeMolpify('2WQ'),
 		function(){
-			var baserate =1e42;
+			var baserate =DeMolpify('2Q');
 			var mult=1;
 			return mult*baserate;			
 		},1
@@ -384,12 +384,12 @@ Molpy.DefineCastleTools=function()
 		},1000
 	);
 	
-	new Molpy.CastleTool('Beanie Builder','beanie builder|beanie builders|escavated|recreated','Excavate some castles and recreate copies elsewhere.',1e42,11e42,
+	new Molpy.CastleTool('Beanie Builder','beanie builder|beanie builders|escavated|recreated','Excavate some castles and recreate copies elsewhere.',DeMolpify('40Q'),DeMolpify('60Q'),
 		function(){
-			return 1e42;
+			return DeMolpify('1Q');
 		},
 		function(){
-			var baseval=41e42;
+			var baseval=DeMolpify('10Q');
 			var mult=1;
 			
 			return Math.floor(baseval*mult);
