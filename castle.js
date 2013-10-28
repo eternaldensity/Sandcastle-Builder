@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.62;
+		Molpy.version=2.63;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2426,6 +2426,8 @@ Molpy.Up=function()
 						Molpy.recalculateDig=1;
 						Molpy.Notify('Boost Unlocked: '+baby.name,1);
 						if(baby.unlockFunction)baby.unlockFunction();
+						if(baby.name==Molpy.shoppingItem)
+							Molpy.Donkey();
 					}
 				}
 			}else{ //yo wolpy I heard you like bacon...
@@ -3905,16 +3907,8 @@ Molpy.Up=function()
 					Molpy.Notify('By the NewpixBots');
 			}
 		}
+		Molpy.Donkey();
 		
-		if(Molpy.shoppingItem && Molpy.Got('Shopping Assistant') && Molpy.Got('ASHF'))
-		{
-			var factor = Molpy.priceFactor;
-			Molpy.priceFactor*=1.05;
-			var name=Molpy.shoppingItem;
-			var item = Molpy.SandTools[name] || Molpy.CastleTools[name] || Molpy.Boosts[name];
-			item.buy();
-			Molpy.priceFactor=factor;
-		}
 		if(Math.floor(Molpy.ONGelapsed/1000)%3==0)
 			Molpy.flashes=0;
 	}

@@ -536,6 +536,7 @@ Molpy.DefineBoosts=function()
 		+Molpify(me.countdown,3)+'mNP'}
 		,buyFunction:function(){
 			Molpy.shopRepaint=1;
+			Molpy.Donkey();
 		}
 		,countdownFunction:function(){
 			if(this.countdown==2)
@@ -1330,7 +1331,8 @@ Molpy.DefineBoosts=function()
 			if(!Molpy.shoppingItem)
 				return '<input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> an item to automatically buy when '+'ASHF'+' is active';
 			return 'Buys '+Molpy.shoppingItemName+' whenever possible, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
-		},sand:'18G',castles:'650G',icon:'shopassist',className:'action',group:'hpt'});
+		},sand:'18G',castles:'650G',icon:'shopassist',className:'action',group:'hpt'
+	});
 	Molpy.ChooseShoppingItem=function()
 	{
 		var name = prompt('Enter the name of the tool or boost you wish to buy whenever ASHF is active.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is not preserved if you reload.',Molpy.shoppingItem||'Bag');
@@ -1361,6 +1363,19 @@ Molpy.DefineBoosts=function()
 		Molpy.shoppingItemName='';
 		Molpy.Notify('No item selected for shopping assistant',1);
 	}
+	Molpy.Donkey=function()
+	{
+		if(Molpy.shoppingItem && Molpy.Got('Shopping Assistant') && Molpy.Got('ASHF'))
+		{
+			var factor = Molpy.priceFactor;
+			Molpy.priceFactor*=1.05;
+			var name=Molpy.shoppingItem;
+			var item = Molpy.SandTools[name] || Molpy.CastleTools[name] || Molpy.Boosts[name];
+			item.buy();
+			Molpy.priceFactor=factor;
+		}
+	}
+	
 	new Molpy.Boost({name:'Late Closing Hours',desc:'ASHF'+' is available for 6 mNP longer',
 		sand:'47G',castles:'930G',icon:'lateclosing',group:'hpt'});
 	new Molpy.Boost({name:'Throw Your Toys',desc:'Trebuchets build a castle for every flag and bucket owned',sand:'546M',castles: '230K'});
@@ -2475,7 +2490,6 @@ Molpy.DefineBoosts=function()
 			if(Molpy.Got('Camera'))
 				Molpy.EarnBadge('discov'+Math.ceil(Molpy.newpixNumber*Math.random()));
 			Molpy.BlackprintIncrement(this.bought);
-			Molpy.Boosts['Crate Key'].logic=0;
 				
 		}
 	});
@@ -2503,6 +2517,7 @@ Molpy.DefineBoosts=function()
 					Molpy.LockBoost(lc.aka);
 			}else{
 				lc.power/=4;
+				lc.buy();
 			}
 		}
 	});
@@ -3778,7 +3793,7 @@ Molpy.CheckRewards=function(automationLevel)
 	
 	Molpy.Boosts['Facebugs'].department=1*(Molpy.groupBadgeCounts.discov>20&&Molpy.Got('Ch*rpies'));
 	Molpy.Boosts['Badgers'].department=1*(Molpy.groupBadgeCounts.monums>20&&Molpy.Got('Facebugs'));
-	if(Molpy.Boosts['Locked Crate'].unlocked)
+	if(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'))
 	{
 		Molpy.Boosts['Crate Key'].logic=4;
 	}else
