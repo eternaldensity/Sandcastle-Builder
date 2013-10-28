@@ -3044,14 +3044,44 @@ Molpy.DefineBoosts=function()
 		}
 	}
 	
-	new Molpy.Boost({name:'Recycling Beanies',aka:'RB',description:
+	new Molpy.Boost({name:'Recycling Beanies',aka:'RB',desc:
 		function(me)
 		{
 			var str= 'Multiplies the effect of Broken Bottle Cleanup by '+Molpify(Math.pow(200,me.bought),3);
+			if(Molpy.CastleTools['Beanie Builder'].amount>(me.bought*200))
+			{
+				str+='<br><input type="Button" value="Hire" onclick="Molpy.HireRecycling()"></input> '+(200*me.bought)+' Beanie Builders to recycle.';
+			}
 			return str;
 		}
-		,group:'bean'
+		,group:'bean',classChange:
+		function()
+		{
+			var oldClass=this.className;
+			var newClass = this.bought&&Molpy.CastleTools['Beanie Builder'].amount>=this.bought*200-20				
+				?'action':'';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
+		}
 	});
+	Molpy.HireRecycling=function()
+	{
+		var rb=Molpy.Boosts['RB'];
+		var price = 200*rb.bought;
+		var bb=Molpy.CastleTools['Beanie Builder'];
+		if(bb.amount<price)
+		{
+			Molpy.Notify('I find your lack of Beanie Builders disappointing',1);
+			return;
+		}
+		bb.amount-=price;
+		Molpy.CastleToolsOwned-=price;
+		bb.refresh();
+		rb.bought++;
+	}
 	
 	new Molpy.Boost({name:'Tool Factory',desc:'Not implemented yet',sand:Infinity,castles:Infinity,glass:10005,group:'hpt'});
 	
