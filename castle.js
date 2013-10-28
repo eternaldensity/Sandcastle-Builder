@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.61;
+		Molpy.version=2.62;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -594,6 +594,7 @@ Molpy.Up=function()
                         me.power=parseFloat(ice[2]);
                         me.countdown=parseInt(ice[3]);
                     }
+					if(!me.unlocked)me.bought=0; //prevent zombies from Shopping Assistant gone wrong!
 					if(me.bought)
 					{
 						Molpy.BoostsOwned++;
@@ -2360,6 +2361,8 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
+				if(!this.unlocked)return; //shopping assistant tried to buy it when it was locked
+				
 				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1));
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));
 				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1));
@@ -2798,7 +2801,7 @@ Molpy.Up=function()
 				for(var i in Molpy.Boosts)
 				{
 					var me=Molpy.Boosts[i];
-					if(!(me.unlocked||me.bought)&&me.department)
+					if(!me.unlocked&&me.department)
 					{
 						availRewards.push(me);
 					}
@@ -3106,7 +3109,7 @@ Molpy.Up=function()
 			for(var i in Molpy.Boosts)
 			{
 				var me=Molpy.Boosts[i];
-				if(!(me.unlocked||me.bought)&&me.logic&&level>=me.logic)
+				if(!me.unlocked&&me.logic&&level>=me.logic)
 				{
 					availRewards.push(me);
 				}

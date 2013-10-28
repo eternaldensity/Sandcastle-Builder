@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.62
+- ASHF should not be given if there are no boosts available and you have infinite castles
+- Shopping Assistant no longer buys locked boosts (thus preventing weird zombie state for DoN or Crate Key or Castle Crusher prevening them from being given by department due to being simultaneously bought and locked)
+
 ## 2.61
 - Um, I wrote for instead of while and forgot to test
 

@@ -3816,6 +3816,7 @@ Molpy.CheckASHF=function()
 		Molpy.Boosts['ASHF'].department=1;
 		return;
 	}
+	if(!isFinite(Molpy.castles))return;
 	for(var i in Molpy.SandTools)
 	{
 		if(isFinite(Molpy.SandTools[i].price))
@@ -3832,7 +3833,6 @@ Molpy.CheckASHF=function()
 			return;
 		}
 	}	
-	//if prices are finite but castles are infinite, still give ASHF because Shopping Assistant might be in use
 }
 
 Molpy.CheckClickAchievements=function()
