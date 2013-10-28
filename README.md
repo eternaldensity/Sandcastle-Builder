@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.7
+- Mould Spelling
+- Fixed: crashes on some notifications because I missed the "Molpy."
+- Spending finite sand/castles when you have infinite of the same, does not notify
+
 ## 2.63
 - Some little improvements to Shopping Assistant and key unlocking
 

@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.63;
+		Molpy.version=2.7;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1521,7 +1521,7 @@ Molpy.Up=function()
 				Molpy.castles=0;
 				Molpy.EarnBadge('Mustard Cleanup');
 			}
-			if(!silent)
+			if(!silent&&(isFinite(Molpy.castles)||!isFinite(amount)))
 				Molpy.Notify('Spent Castles: ' + Molpify(amount,3),1);
 		}
 		Molpy.SpendSand=function(amount,silent)
@@ -1529,7 +1529,7 @@ Molpy.Up=function()
 			if(!amount)return;
 			Molpy.sand-=amount;
 			Molpy.sandSpent+=amount;
-			if(!silent)
+			if(!silent&&(isFinite(Molpy.sand)||!isFinite(amount)))
 				Molpy.Notify('Spent Sand: ' + Molpify(amount,3),1);
 		}
 		
@@ -2600,7 +2600,7 @@ Molpy.Up=function()
 						}
 						if(Molpy.Got('SMM')&&!Molpy.Boosts['SMM'].power&&!Molpy.Earned('monums'+me.np))
 						{
-							str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeSandMold('+me.np+')" value="Make"></input> a mold from this Discovery, which can be filled with sand to create a Monument'
+							str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeSandMould('+me.np+')" value="Make"></input> a mould from this Discovery, which can be filled with sand to create a Monument'
 						}
 					}
 					return str;
@@ -3786,8 +3786,8 @@ Molpy.Up=function()
 				{
 					Molpy.DoBlackprintConstruction();
 				}else{
-					if(!Molpy.FillSandMoldWork())
-					if(!Molpy.MakeSandMoldWork())
+					if(!Molpy.FillSandMouldWork())
+					if(!Molpy.MakeSandMouldWork())
 						Molpy.RewardRedacted(1,t);
 				}
 			}
