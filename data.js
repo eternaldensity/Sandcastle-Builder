@@ -1596,8 +1596,7 @@ Molpy.DefineBoosts=function()
 		var sr = Molpy.Boosts['Sand Refinery'];
 		var ch = Molpy.Boosts['Glass Chip Storage'];
 		if(sr.power<1)return;
-		if(Molpy.HasGlassBlocks(ch.bought*10))return; //no space
-		ch.power++;
+		Molpy.AddChips(1);
 		sr.power--;
 		sr.hoverOnCounter=1;
 		Molpy.Notify('Sand Refinery downgraded',1);
@@ -1786,8 +1785,7 @@ Molpy.DefineBoosts=function()
 		var gc = Molpy.Boosts['Glass Chiller'];
 		var bl = Molpy.Boosts['Glass Block Storage'];
 		if(gc.power<1)return;
-		if(Molpy.HasGlassBlocks(bl.bought*50))return; //no space
-		bl.power++;
+		Molpy.AddBlocks(1);
 		gc.power--;
 		gc.hoverOnCounter=1;
 		Molpy.Notify('Glass Chiller downgraded',1);
@@ -3084,7 +3082,14 @@ Molpy.DefineBoosts=function()
 	}
 	
 	new Molpy.Boost({name:'Tool Factory',desc:'Not implemented yet',sand:Infinity,castles:Infinity,glass:10005,group:'hpt'});
-	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:45000,group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
+	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
+	new Molpy.Boost({name:'Badgers',desc:'Increases sand dig rate (but not clicks) by 10% per badge earned',
+		stats:function(me)
+		{
+			return GLRschoice(['Badgers? Badgers? We don\'t need no ch*rpin\' Badgers! This is Sacred Ground and I\'ll have no more heresy. Surely you mean Molpies.','Exactly! No, wait - No! There are no badgers involved at all!','For every 10 badges, Glass Chip production uses 1% less sand']);
+		},
+		sand:'Infinite',castles:'Infinite',glass:'60K'
+	});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -3136,7 +3141,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Seaish Sands',desc:'Have 420M sand',vis:1});
 	new Molpy.Badge({name:'You can do what you want',desc:'Have 123,456,789 sand',vis:2});
 	
-	new Molpy.Badge({name:'Ninja', desc:'Ninja a NewPixBot'});
+	new Molpy.Badge({name:'Ninja', desc:'Ninja a NewPixBot',stats:'The pope starts to dig some sand. A black figure swings from a rope from the ceiling.'});
 	new Molpy.Badge({name:'No Ninja', desc:'Click for sand after not ninjaing NewPixBot'});
 	new Molpy.Badge({name:'Ninja Stealth', desc:'Make non-ninjaing clicks 6 newpix in a row'});
 	new Molpy.Badge({name:'Ninja Dedication', desc:'Reach ninja stealth streak 16'});
@@ -3367,7 +3372,7 @@ Molpy.DefineBadges=function()
 		});
 	new Molpy.Badge({name:'Beachscaper',desc:'Have 200 Sand Tools'});
 	new Molpy.Badge({name:'Beachmover',desc:'Have 100 Castle Tools'});
-	new Molpy.Badge({name:'Better This Way',desc:'Purchase 50 Boosts'});
+	new Molpy.Badge({name:'Better This Way',desc:'Purchase 50 Boosts',stats:'So you\'re telling me Badgers build the castle by firing boots at the sand with trebuches?'});
 	new Molpy.Badge({name:'Recursion ',desc:'To Earn Recursion, you must first earn Recursion'});
 	new Molpy.Badge({name:'Beachomancer',desc:'Have 1000 Sand Tools'});
 	new Molpy.Badge({name:'Beachineer',desc:'Have 500 Castle Tools'});
@@ -3751,6 +3756,7 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Temporal Rift'].logic=3*isFinite(Molpy.castles);
 	
 	Molpy.Boosts['Facebugs'].department=1*(Molpy.groupBadgeCounts.discov>20&&Molpy.Got('Ch*rpies'));
+	Molpy.Boosts['Badgers'].department=1*(Molpy.groupBadgeCounts.monums>20&&Molpy.Got('Facebugs'));
 	if(Molpy.Boosts['Locked Crate'].unlocked)
 	{
 		Molpy.Boosts['Crate Key'].logic=4;

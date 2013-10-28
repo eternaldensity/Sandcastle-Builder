@@ -2511,6 +2511,7 @@ Molpy.Up=function()
 			this.name=args.name;
 			this.aka=args.aka||args.name;
 			this.desc=args.desc
+			this.stats=args.stats;
 			this.icon=args.icon;
 			this.earnFunction=args.earnFunction;
 			this.earned=0;
@@ -2526,7 +2527,7 @@ Molpy.Up=function()
 			{
 				var d = g('BadgeDescription'+this.id);
 				if(d)d.innerHTML='<br>'+((this.earned||this.visibility<1)?
-				EvalMaybeFunction(this.desc,this):'????');
+				EvalMaybeFunction((Molpy.showStats&&this.stats)?this.stats:this.desc,this):'????');
 			}
 			this.hidedesc=function()
 			{

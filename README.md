@@ -26,6 +26,8 @@ For personal amusement only.
 - No ASHF if you have no boosts to buy and all tools have infinite price
 - Recycling Beanie desc(ription) fix, added the upgrade button also
 - Panther Glaze
+- Factored out function for adding glass blocks/chips from the glass furnace/blower, to avoid duplicating storage-space checks everywhere
+- Badgers can now have stats, for extra flavour text
 
 ## 2.59
 - Some new badges
