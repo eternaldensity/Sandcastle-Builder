@@ -223,6 +223,7 @@ Molpy.DefineSandTools=function()
 		function(){
 			var baserate =DeMolpify('2Q');
 			var mult=1;
+			if(Molpy.Got('Glass Ceiling 10'))mult*=Molpy.GlassCeilingMult();
 			return mult*baserate;			
 		},1
 	);
@@ -391,6 +392,7 @@ Molpy.DefineCastleTools=function()
 		function(){
 			var baseval=DeMolpify('10Q');
 			var mult=1;
+			if(Molpy.Got('Glass Ceiling 11'))mult*=Molpy.GlassCeilingMult();
 			
 			return Math.floor(baseval*mult);
 		},1
@@ -2232,13 +2234,13 @@ Molpy.DefineBoosts=function()
 		return m;
 	}
 	
-	Molpy.glassCeilingPriceIncs=[1.1,1.25,1.6,2,2,2,2,2,2,2];
+	Molpy.glassCeilingPriceIncs=[1.1,1.25,1.6,2,2,2,2,2,2,2,1,1];
 	Molpy.glassCeilingDescText=['Sand rate of Buckets','Castles produced by NewPixBots','Sand rate of Cuegan',
 		'Castles produced by Trebuchets','Sand rate of Flags','Castles produced by Scaffolds',
 		'Sand rate of Ladders','Castles produced by Waves','Sand rate of Bags','Castles produced by Rivers'];
-		
-	for(var i in Molpy.glassCeilingDescText)
-	{
+	
+	Molpy.MakeGlassCeiling=function(i)
+	{	
 		new Molpy.Boost({name:'Glass Ceiling '+i, desc:'Multiplies '+Molpy.glassCeilingDescText[i]
 			+' by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock('+i+')"></input>',
 			sand: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
@@ -2260,16 +2262,21 @@ Molpy.DefineBoosts=function()
 		});
 		Molpy.Boosts['Glass Ceiling '+i].num=parseInt(i);
 	}
+	for(var i in Molpy.glassCeilingDescText)
+	{
+		Molpy.MakeGlassCeiling(i);
+	}
 	
 	Molpy.GlassCeilingCount=function()
 	{
 		var c = 0;
-		var i = 10;
+		var i = 12;
 		while(i--)
 		{
 			if(Molpy.Got('Glass Ceiling '+i)) c++;
 		}
-		if(c==10)Molpy.EarnBadge('Ceiling Broken');
+		if(c>=10)Molpy.EarnBadge('Ceiling Broken');
+		if(c>=12)Molpy.EarnBadge('Ceiling Disintegrated');
 		return c;
 	}
 	Molpy.GlassCeilingMult=function()
@@ -2321,11 +2328,8 @@ Molpy.DefineBoosts=function()
 			var me = Molpy.Boosts['Glass Ceiling '+i];
 			if(!me.bought)
 			{
-				if(Molpy.Earned('Ceiling Broken'))
+				if(!Molpy.Earned('Ceiling Broken'))
 				{
-					me.department=1;
-				}else
-					{
 					if(Molpy.CeilingTogglable(i))
 					{
 						if(!me.unlocked)Molpy.UnlockBoost(me.name);
@@ -3091,6 +3095,20 @@ Molpy.DefineBoosts=function()
 		sand:'Infinite',castles:'Infinite',glass:'60K'
 	});
 	
+	
+	Molpy.glassCeilingDescText.push('Sand rate of LaPetite');
+	Molpy.glassCeilingDescText.push('Castles produced by Beanie Builders');
+	Molpy.MakeGlassCeiling(10);
+	Molpy.MakeGlassCeiling(11);
+	Molpy.Boosts['Glass Ceiling 10'].sand='6FQ';
+	Molpy.Boosts['Glass Ceiling 10'].castles='6FQ';
+	Molpy.Boosts['Glass Ceiling 11'].sand='6WQ';
+	Molpy.Boosts['Glass Ceiling 11'].castles='6WQ';
+	Molpy.Boosts['Glass Ceiling 10'].glass='100K';
+	Molpy.Boosts['Glass Ceiling 11'].glass='350K';
+	Molpy.Boosts['Glass Ceiling 10'].logic=80;
+	Molpy.Boosts['Glass Ceiling 11'].logic=90;
+	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
 		badges:['badge','Badges'],
@@ -3393,7 +3411,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Fully Armed and Operational Battlestation',desc:'Have 4000 Castle Tools'});
 	new Molpy.Badge({name:'WHAT',desc:'Have over nine thousand Sand Tools',vis:1});
 	new Molpy.Badge({name:'\\/\\/AR]-[AMMER',desc:'Have 40K Tools',vis:1});
-	new Molpy.Badge({name:'Ceiling Broken',desc:'Have all 10 Glass Ceiling Boosts'});
+	new Molpy.Badge({name:'Ceiling Broken',desc:'Have all 10 Glass Ceiling Boosts',stats:'allegedly'});
 	new Molpy.Badge({name:'On the 12th Dip of Judgement',desc:'Reach Judgement Dip level 12'});
 	new Molpy.Badge({name:'Machine Learning',desc:'Unlock all the Judgement Dip Boosts'});
 	new Molpy.Badge({name:'Blitz and Pieces',desc:'Get Blitz Power to 1M%'});
@@ -3420,6 +3438,9 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Queue',desc:'Have at least a Quita Castles',vis:1});
 	new Molpy.Badge({name:'What Queue',desc:'Have at least a Wololo Quita Castles',vis:1});
 	new Molpy.Badge({name:'Everything but the Kitchen Windows',desc:'Have Infinite Sand and Castles'});
+	new Molpy.Badge({name:'Ceiling Disintegrated',desc:'Have all 12 Glass Ceiling Boosts',vis:1});
+	
+	
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
 	Molpy.MakeTripleBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});
@@ -3775,6 +3796,16 @@ Molpy.CheckRewards=function(automationLevel)
 		key.department=1;						
 	}
 	Molpy.CheckASHF();
+	var i = 10;
+	var b = 1*Molpy.Got('Ceiling Broken');
+	for(i--)
+	{
+		Molpy.Boosts['Glass Ceiling '+i].department=b;
+	}
+	b=1*Molpy.Got('Ceiling Disintegrated');
+	Molpy.Boosts['Glass Ceiling 10'].department=b;
+	Molpy.Boosts['Glass Ceiling 11'].department=b;
+	
 }
 	
 Molpy.CheckASHF=function()
