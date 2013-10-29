@@ -114,8 +114,8 @@ Molpy.HardcodedData=function()
 Molpy.DefineSandTools=function()
 {
 
-	new Molpy.SandTool('Bucket','bucket|buckets|poured','Pours a little sand',8,
-		function(){
+	new Molpy.SandTool({name:'Bucket',commonName:'bucket|buckets|poured',desc:'Pours a little sand',price:8,
+		spmNP:function(){
 			var baserate =0.1 + Molpy.Got('Bigger Buckets')*0.1;
 			var mult=1;
 			if(Molpy.Got('Huge Buckets'))mult*=2;
@@ -126,11 +126,12 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return mult*baserate;			
-			},1
-	);
+		},
+		nextThreshold:1
+	});
 	
-	new Molpy.SandTool('Cuegan','cuegan|cuegans|tossed','Megan and Cueball toss in a bit of extra sand',50,
-		function(){
+	new Molpy.SandTool({name:'Cuegan',commonName:'cuegan|cuegans|tossed',desc:'Megan and Cueball toss in a bit of extra sand',price:50,
+		spmNP:function(){
 			var baserate = 0.6+Molpy.Got('Helping Hand')*0.2;
 			var mult = 1;
 			if(Molpy.Got('Megball')) mult*=2;
@@ -144,11 +145,12 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 2'))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return baserate*mult;
-			},2
-	);
+		},
+		nextThreshold:2
+	});
 	
-	new Molpy.SandTool('Flag','flag|flags|marked','Marks out even more sand',420,
-	function()
+	new Molpy.SandTool({name:'Flag',commonName:'flag|flags|marked',desc:'Marks out even more sand',price:420,
+	spmNP:function()
 		{
 			var baserate = 8+Molpy.Got('Flag Bearer')*2;
 			var mult = 1;
@@ -168,11 +170,12 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling '+4))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return baserate*mult;
-		},4
-	);
+		},
+		nextThreshold:4
+	});
 	
-	new Molpy.SandTool('Ladder','ladder|ladders|reached','Reaches higher sand',1700,
-		function()
+	new Molpy.SandTool({name:'Ladder',commonName:'ladder|ladders|reached',desc:'Reaches higher sand',price:1700,
+		spmNP:function()
 		{
 			var baserate = 54+Molpy.Got('Extension Ladder')*18;
 			var mult = 1;
@@ -198,11 +201,12 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
 			mult*=Molpy.BBC();
 			return baserate*mult;
-		},8
-	);
+		},
+		nextThreshold:8
+	});
 	
-	new Molpy.SandTool('Bag','bag|bags|carried','Carries sand from far away',12000,
-		function()
+	new Molpy.SandTool({name:'Bag',commonName:'bag|bags|carried',desc:'Carries sand from far away',price:12000,
+		spmNP:function()
 		{
 			var baserate = 600;
 			var mult = 1;
@@ -216,23 +220,25 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 8'))mult*=Molpy.GlassCeilingMult();
 			mult*=Molpy.BBC();
 			return baserate*mult;
-		},6000
-	);
+		},
+		nextThreshold:6000
+	});
 	
-	new Molpy.SandTool('LaPetite','LaPetite|LaPetite|rescued','Rescues sand via raft',DeMolpify('2WQ'),
-		function(){
+	new Molpy.SandTool({name:'LaPetite',commonName:'LaPetite|LaPetite|rescued',desc:'Rescues sand via raft',price:DeMolpify('2WQ'),
+		spmNP:function(){
 			var baserate =DeMolpify('2WWWW');
 			var mult=1;
 			if(Molpy.Got('Glass Ceiling 10'))mult*=Molpy.GlassCeilingMult();
 			return mult*baserate;			
-		},1
-	);
+		},
+		nextThreshold:1
+	});
 }	
 
 Molpy.DefineCastleTools=function()
 {
-	new Molpy.CastleTool('NewPixBot','newpixbot|newpixbots||automated','Automates castles after the ONG\n(if not ninja\'d)',1,0,0,
-		function()
+	new Molpy.CastleTool({name:'NewPixBot',commonName:'newpixbot|newpixbots||automated',desc:'Automates castles after the ONG\n(if not ninja\'d)',price0:1,price1:0,destroyN:0,
+		buildN:function()
 		{
 			var baseval=1;		
 			if(Molpy.Got('Robot Efficiency')) baseval++;
@@ -250,8 +256,9 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Boosts['NewPixBot Navigation Code'].power)
 				baseval=baseval*.001;
 			return Math.floor(baseval);
-		},1
-	);
+		},
+		nextThreshold:1
+	});
 	
 	Molpy.npbDoublers = ['Carrybot',
 		'Stickbot',
@@ -265,12 +272,12 @@ Molpy.DefineCastleTools=function()
 		'Smallbot'];
 	Molpy.npbDoubleThreshhold=14;
 		
-	new Molpy.CastleTool('Trebuchet','trebuchet|trebuchets|flung|formed','Flings some castles, forming more.',13,1,
-		function(){
+	new Molpy.CastleTool({name:'Trebuchet',commonName:'trebuchet|trebuchets|flung|formed',desc:'Flings some castles, forming more.',price0:13,price1:1,
+		destroyN:function(){
 			if(Molpy.Got('War Banner'))return 1;
 			else return 2;
 		},
-		function(){
+		buildN:function(){
 		 var baseval=4;
 			if(Molpy.Got('Spring Fling'))baseval++;
 			if(Molpy.Got('Varied Ammo'))for(var i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)baseval++;
@@ -285,18 +292,19 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Glass Ceiling 3'))mult*=Molpy.GlassCeilingMult();
 			
 			return Math.floor(baseval*mult);
-		},2
-	);
+		},
+		nextThreshold:2
+	});
 		
-	new Molpy.CastleTool('Scaffold','scaffold|scaffolds|squished|raised','Squishes some castles, raising a place to put more.',60,100,
-		function()
+	new Molpy.CastleTool({name:'Scaffold',commonName:'scaffold|scaffolds|squished|raised',desc:'Squishes some castles, raising a place to put more.',price0:60,price1:100,
+		destroyN:function()
 		{
 			var baseval = 6;	
 			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);			
 			if(Molpy.Got('Precise Placement')) baseval-=Math.floor(Molpy.SandTools['Ladder'].amount*0.5);
 			return Math.max(0,Math.floor(baseval));
 		},
-		function()
+		buildN:function()
 		{
 			var baseval = 22;
 			if(Molpy.Got('Propbot'))baseval*=4;
@@ -305,11 +313,12 @@ Molpy.DefineCastleTools=function()
 			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 5'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
-		},4
-	);
+		},
+		nextThreshold:4
+	});
 		
-	new Molpy.CastleTool('Wave','wave|waves|swept|deposited','Sweeps away some castles, depositing more in their place.',300,80,
-		function()
+	new Molpy.CastleTool({name:'Wave',commonName:'wave|waves|swept|deposited',desc:'Sweeps away some castles, depositing more in their place.',price0:300,price1:80,
+		destroyN:function()
 		{
 			var baseval = 24;
 			if(Molpy.Got('SBTF'))
@@ -328,7 +337,7 @@ Molpy.DefineCastleTools=function()
 			baseval=Math.floor(Math.max(baseval,0));
 			return baseval;
 		},
-		function()
+		buildN:function()
 		{
 			var baseval= 111;
 			baseval+=Molpy.Got('Swell')*19;			
@@ -344,16 +353,17 @@ Molpy.DefineCastleTools=function()
 			}
 			if(Molpy.Got('Glass Ceiling 7'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
-		},8
-	);
-	Molpy.CastleTools['Wave'].onDestroy=function()
-	{
+		},
+		nextThreshold:8,
+		destroyFunction:function()
+		{
 		if(this.totalCastlesDestroyed>=2000) Molpy.UnlockBoost('Erosion');
 		if(this.totalCastlesDestroyed>=500) Molpy.EarnBadge('Wipeout');
-	}
+		}
+	});
 		
-	new Molpy.CastleTool('River','river|rivers|washed|left','Washes away many castles, but leaves many more new ones.',1800,520,
-		function()
+	new Molpy.CastleTool({name:'River',commonName:'river|rivers|washed|left',desc:'Washes away many castles, but leaves many more new ones.',price0:1800,price1:1520,
+		destroyN:function()
 		{
 			var baseval = 160;
 			if(Molpy.Got('Riverish'))
@@ -371,7 +381,7 @@ Molpy.DefineCastleTools=function()
 				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
 			return Math.floor(baseval*mult);
 		},
-		function()
+		buildN:function()
 		{
 			var baseval=690;	
 			baseval*=Molpy.LogicastleMult();
@@ -382,21 +392,23 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Irregular Rivers')) mult*=Molpy.CastleTools['NewPixBot'].amount;
 			if(Molpy.Got('Glass Ceiling 9'))mult*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval*mult);
-		},1000
-	);
+		},
+		nextThreshold:1000
+	});
 	
-	new Molpy.CastleTool('Beanie Builder','beanie builder|beanie builders|escavated|recreated','Excavate some castles and recreate copies elsewhere.',DeMolpify('40Q'),DeMolpify('60Q'),
-		function(){
+	new Molpy.CastleTool({name:'Beanie Builder',commonName:'beanie builder|beanie builders|escavated|recreated',desc:'Excavate some castles and recreate copies elsewhere.',
+		price0:DeMolpify('40Q'),price1:DeMolpify('60Q'),
+		destroyN:function(){
 			return DeMolpify('1Q');
 		},
-		function(){
+		buildN:function(){
 			var baseval=DeMolpify('10Q');
 			var mult=1;
 			if(Molpy.Got('Glass Ceiling 11'))mult*=Molpy.GlassCeilingMult();
 			
 			return Math.floor(baseval*mult);
-		},1
-	);
+		},nextThreshold:1
+	});
 }
 	
 Molpy.DefineBoosts=function()
@@ -3271,7 +3283,73 @@ Molpy.DefineBoosts=function()
 		rb.bought++;
 	}
 	
-	new Molpy.Boost({name:'Tool Factory',desc:'Not implemented yet',sand:Infinity,castles:Infinity,glass:10005,group:'hpt'});
+	new Molpy.Boost({name:'Tool Factory',desc:
+		function(me)
+		{
+			var str='Produces Tools from Glass Chips';
+			if(!me.bought)return str;
+			if(Molpy.HasGlassChips(1000))
+			{
+				str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1000)"></input> with 1K Glass Chips';
+			}
+			return str;
+		}
+	
+		,sand:Infinity,castles:Infinity,glass:10005,group:'hpt',className:'action'
+	});
+	
+	Molpy.LoadToolFactory=function(amount)
+	{
+		if(Molpy.HasGlassChips(amount))
+		{
+			Molpy.SpendGlassChips(amount);
+			Molpy.Boosts['Tool Factory'].power+=amount;
+		}
+	}
+	Molpy.MakeTFOrder=function()
+	{
+		Molpy.tfOrder=[];
+		for(i in Molpy.CastleToolsById)
+		{
+			Molpy.tfOrder.push(Molpy.SandToolsById[i]);
+			Molpy.tfOrder.push(Molpy.CastleToolsById[i]);
+		}
+	}
+	Molpy.MakeTFOrder();
+	Molpy.RunToolFactory=function()
+	{
+		var tf = Molpy.Boosts['Tool Factory'];
+		var i = tf.bought;
+		var pow=tf.power;
+		var built=0;
+		while(pow&&i--)
+		{
+			var t = Molpy.tfOrder.length;
+			while(pow&&t--)
+			{
+				var tool=Molpy.tfOrder[t];
+				if(!isFinite(tool.price))
+				{
+					var cost = 1000*(t+1);
+					if(pow>=cost)
+					{
+						pow-=cost;
+						tool.create();
+						built++;
+					}
+				}
+			}
+		}
+		if(built)
+		{
+			Molpy.Notify('Built '+Molpify(built,1)+' tool'+(built==1?'':'s'),1);
+			Molpy.recalculateDig=1;
+			Molpy.CheckBuyUnlocks();
+			tf.power=pow;
+			Molpy.shopRepaint=1;
+		}
+	}
+	
 	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
 	new Molpy.Boost({name:'Badgers',desc:'Increases sand dig rate (but not clicks) by 10% per badge earned',
 		stats:function(me)
@@ -3303,6 +3381,9 @@ Molpy.DefineBoosts=function()
 		}
 		,sand:800,castles:20,className:'toggle'
 	});
+	
+	new Molpy.Boost({name:'Sand to Glass',desc:'When Sand is Infinite, Sand Tools produce Glass Chips', sand:Infinity,castles:Infinity,glass:'200K',group:'hpt'});
+	new Molpy.Boost({name:'Castles to Glass',desc:'When Castles are Infinite, Castle Tools produce Glass Chips', sand:Infinity,castles:Infinity,glass:'2M',group:'hpt'});
 	
 	{ //#region more lyrics
 		var bdy = 'Boom De Yada';

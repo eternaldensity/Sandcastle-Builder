@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.71;
+		Molpy.version=2.8;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2025,28 +2025,27 @@ Molpy.Up=function()
 		Molpy.CastleToolsOwned=0;
 		Molpy.priceFactor=1;
 		
-		Molpy.SandTool=function(name,commonName,desc,price,spmNP,nextThreshold,drawFunction,buyFunction,
-			pic,icon,background)
+		Molpy.SandTool=function(args)
 		{
 			this.id=Molpy.SandToolsN;
-			this.name=name;
-			commonName=commonName.split('|');
-			this.single=commonName[0];
-			this.plural=commonName[1];
-			this.actionName=commonName[2];
-			this.desc=desc;
-			this.basePrice=price;
+			this.name=args.name;
+			args.commonName=args.commonName.split('|');
+			this.single=args.commonName[0];
+			this.plural=args.commonName[1];
+			this.actionName=args.commonName[2];
+			this.desc=args.desc;
+			this.basePrice=args.price;
 			this.price=this.basePrice;
-			this.spmNP=spmNP;
+			this.spmNP=args.spmNP;
 			this.totalSand=0;
 			this.storedSpmNP=0;
 			this.storedTotalSpmNP=0;
-			this.nextThreshold=nextThreshold;
-			this.pic=pic;
-			this.icon=icon;
-			this.background=background;
-			this.buyFunction=buyFunction;
-			this.drawFunction=drawFunction;
+			this.nextThreshold=args.nextThreshold;
+			this.pic=args.pic;
+			this.icon=args.icon;
+			this.background=args.background;
+			this.buyFunction=args.buyFunction;
+			this.drawFunction=args.drawFunction;
 						
 			this.amount=0;
 			this.bought=0;
@@ -2088,6 +2087,12 @@ Molpy.Up=function()
 				}
 				if(bought)
 					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+(spent>1?'s':'')+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
+			}
+			this.create=function()
+			{
+				this.amount++;
+				this.bought++;
+				Molpy.SandToolsOwned++;				
 			}
 			this.sell=function()
 			{
@@ -2152,34 +2157,34 @@ Molpy.Up=function()
 			return this;
 		}	
 	
-		Molpy.CastleTool=function(name,commonName,desc,price0,price1,destroyN,buildN,nextThreshold,drawFunction,buyFunction,
-			pic,icon,background)
+		Molpy.CastleTool=function(args)
 		{
 			this.id=Molpy.CastleToolsN;
-			this.name=name;
-			commonName=commonName.split('|');
-			this.single=commonName[0];
-			this.plural=commonName[1];
-			this.actionDName=commonName[2];
-			this.actionBName=commonName[3];
-			this.desc=desc;
-			this.price0=price0;
-			this.price1=price1;
-			this.prevPrice=price0;
-			this.nextPrice=price1;
+			this.name=args.name;
+			args.commonName=args.commonName.split('|');
+			this.single=args.commonName[0];
+			this.plural=args.commonName[1];
+			this.actionDName=args.commonName[2];
+			this.actionBName=args.commonName[3];
+			this.desc=args.desc;
+			this.price0=args.price0;
+			this.price1=args.price1;
+			this.prevPrice=args.price0;
+			this.nextPrice=args.price1;
 			this.price=this.prevPrice+this.nextPrice; //fib!
-			this.destroyN=destroyN;
-			this.buildN=buildN;
+			this.destroyN=args.destroyN;
+			this.buildN=args.buildN;
 			this.totalCastlesBuilt=0;
 			this.totalCastlesDestroyed=0;
 			this.totalCastlesWasted=0; //those destroyed for no gain
 			this.currentActive=0;
-			this.nextThreshold=nextThreshold;
-			this.pic=pic;
-			this.icon=icon;
-			this.background=background;
-			this.buyFunction=buyFunction;
-			this.drawFunction=drawFunction;
+			this.nextThreshold=args.nextThreshold;
+			this.pic=args.pic;
+			this.icon=args.icon;
+			this.background=args.background;
+			this.buyFunction=args.buyFunction;
+			this.drawFunction=args.drawFunction;
+			this.destroyFunction=args.destroyFunction;
 						
 			this.amount=0;
 			this.bought=0;
@@ -2222,6 +2227,12 @@ Molpy.Up=function()
 				}
 				if(bought)
 					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+(spent>1?'s':'')+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
+			}
+			this.create=function()
+			{
+				this.amount++;
+				this.bought++;
+				Molpy.CastleToolsOwned++;				
 			}
 			this.sell=function()
 			{				
@@ -2268,7 +2279,7 @@ Molpy.Up=function()
 						this.totalCastlesWasted+=Molpy.castles;
 					}
 					Molpy.Destroy(destroyN);
-					if(this.onDestroy)this.onDestroy();
+					if(this.destroyFunction)this.destroyFunction();
 				}
 			}
 			this.BuildPhase=function()
@@ -3863,6 +3874,7 @@ Molpy.Up=function()
 		if(! (Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].power))
 			Molpy.CheckONG();
 		Molpy.CheckRedactedToggle();
+		Molpy.RunToolFactory();
 		
 		for(var i in Molpy.Boosts)//count down any boosts with a countdown
 		{
@@ -4197,6 +4209,7 @@ Molpy.Up=function()
 		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==1.21?' Gigawatts!':'');
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
+		var tagRepaint=Molpy.boostRepaint||Molpy.badgeRepaint;
 		
 		if(Molpy.shopRepaint)
 		{
@@ -4210,11 +4223,11 @@ Molpy.Up=function()
 		{
 			Molpy.RepaintBadges();
 		}
-		if(repainted&&Molpy.options.showhide.tagged)
+		if(tagRepaint&&Molpy.options.showhide.tagged)
 		{
 			Molpy.RepaintTaggedLoot();
 		}
-		if(repainted) Molpy.RepaintLootSelection();
+		if(tagRepaint) Molpy.RepaintLootSelection();
 		if(Molpy.redactedVisible)
 		{		
 			var redacteditem=g('redacteditem');

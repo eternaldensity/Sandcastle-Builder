@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.8
+- Tool Factory now does something
+- Rewrote tool declaration code to use arguments dictionary like boosts and badges
+- Boosts for making tools produce glass
+
 ## 2.71
 - Prevent Expando from crashing when you haven't unlocked all Tools
 
