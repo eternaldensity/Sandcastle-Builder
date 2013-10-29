@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.71
+- Prevent Expando from crashing when you haven't unlocked all Tools
+
 ## 2.7
 - Mould Spelling
 - Fixed: crashes on some notifications because I missed the "Molpy."
@@ -31,7 +34,7 @@ For personal amusement only.
 - Also includes a song
 - Boosts songs are now accessible after buying as well as before
 - Only one free redacted from playing a song before purchase (unless you can't afford it)
-- A couple of indext changes: index and otthercomic
+- A couple of index changes: index and otthercomic
 
 ## 2.63
 - Some little improvements to Shopping Assistant and key unlocking

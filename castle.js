@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.7;
+		Molpy.version=2.71;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2129,7 +2129,8 @@ Molpy.Up=function()
 				{				
 					desc=this.desc;
 				}
-				g('SandToolDescription'+this.id).innerHTML='<br>'+desc;
+				var d=g('SandToolDescription'+this.id);
+				if(d)d.innerHTML='<br>'+desc;
 			}
 			this.hidedesc=function()
 			{		
@@ -2302,8 +2303,8 @@ Molpy.Up=function()
 					desc=this.desc+actuals;
 				}
 			
-			
-				g('CastleToolDescription'+this.id).innerHTML='<br>'+desc;
+				var d=g('CastleToolDescription'+this.id);
+				if(d)d.innerHTML='<br>'+desc;
 			}
 			this.hidedesc=function(event)
 			{
