@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.82
+- Now properly importing old save: because lists don't work that way in javascript
+
 ## 2.81
 - Now using more c**kies to save
 

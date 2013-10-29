@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.81;
+		Molpy.version=2.82;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -303,9 +303,10 @@ Molpy.Up=function()
 			var thread='';
 			if (document.cookie.indexOf('CastleBuilderGame')>=0) 
 			{
-				for(i in ['',0,1,2,3,4])
+				var k=['',0,1,2,3,4];
+				for(i in k)
 				{
-					var dough = document.cookie.split('CastleBuilderGame'+i+'=')[1];
+					var dough = document.cookie.split('CastleBuilderGame'+k[i]+'=')[1];
 					if(dough)
 						thread+=BeanishToCuegish(unescape(dough).split(';')[0])||'';
 				}

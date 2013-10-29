@@ -246,9 +246,10 @@ var EmergencyExport=function()
 	var thread='';
 	if (document.cookie.indexOf('CastleBuilderGame')>=0) 
 	{
-		for(var i in ['',0,1,2,3,4])
+		var k=['',0,1,2,3,4];
+		for(var i in k)
 		{
-			var dough = document.cookie.split('CastleBuilderGame'+i+'=')[1];
+			var dough = document.cookie.split('CastleBuilderGame'+k[i]+'=')[1];
 			if(dough)
 				thread+=unescape(dough).split(';')[0]||'';
 		}
