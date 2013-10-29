@@ -1524,13 +1524,36 @@ Molpy.Up=function()
 			if(!silent&&(isFinite(Molpy.castles)||!isFinite(amount)))
 				Molpy.Notify('Spent Castles: ' + Molpify(amount,3),1);
 		}
+		Molpy.spendSandNotifyFlag=1;
+		Molpy.spendSandNotifyCount=0;
 		Molpy.SpendSand=function(amount,silent)
 		{
 			if(!amount)return;
 			Molpy.sand-=amount;
 			Molpy.sandSpent+=amount;
-			if(!silent&&(isFinite(Molpy.sand)||!isFinite(amount)))
-				Molpy.Notify('Spent Sand: ' + Molpify(amount,3),1);
+			if((isFinite(Molpy.sand)||!isFinite(amount)))
+			{
+				if(!silent&&Molpy.spendSandNotifyFlag)
+				{
+					if(Molpy.spendSandNotifyCount)
+					{
+						amount+=Molpy.spendSandNotifyCount;
+						Molpy.spendSandNotifyCount=0;
+					}				
+					if(amount){
+						if(amount >= Molpy.sand/10000000)
+							Molpy.Notify('Spent Sand: ' + Molpify(amount,3),1);
+						else
+						{
+							Molpy.spendSandNotifyCount+=amount;
+							return 1;
+						}
+					}
+				}else{
+					Molpy.spendSandNotifyCount+=amount;
+					return 1;
+				}
+			}
 		}
 		
 		Molpy.destroyNotifyFlag=1;

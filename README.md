@@ -25,6 +25,8 @@ For personal amusement only.
 - Glass Monument making
 - Badgers wasn't actually implemented
 - RRR with GP now gives chips also
+- Nerfed a tool
+- Suppress low sand spent notifications
 
 ## 2.63
 - Some little improvements to Shopping Assistant and key unlocking

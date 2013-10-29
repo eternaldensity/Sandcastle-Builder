@@ -221,7 +221,7 @@ Molpy.DefineSandTools=function()
 	
 	new Molpy.SandTool('LaPetite','LaPetite|LaPetite|rescued','Rescues sand via raft',DeMolpify('2WQ'),
 		function(){
-			var baserate =DeMolpify('2Q');
+			var baserate =DeMolpify('2WWWW');
 			var mult=1;
 			if(Molpy.Got('Glass Ceiling 10'))mult*=Molpy.GlassCeilingMult();
 			return mult*baserate;			
@@ -2894,7 +2894,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Sand Mould Filler',aka:'SMF',desc:
 		function(me)
 		{
-			var str ='Fills a Sand Mould with Sand to make a Sand Monument<br>';
+			var str ='Fills a Sand Mould with Sand to make a Sand Monument.<br>This requires 200 Factory Automation runs and consumes 100 Sand plus 20% per NewPix number of the Discovery, per run.';
 			if(me.bought)
 			{
 				if(!me.power&&(Molpy.Boosts['SMM'].power>100))
@@ -2924,7 +2924,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Glass Mould Filler',aka:'GMF',desc:
 		function(me)
 		{
-			var str ='Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.';
+			var str ='Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.<br>This requires 800 Factory Automation runs and consumes 1M Glass Blocks plus 2% per NewPix number of the Discovery, per run.';
 			if(me.bought)
 			{
 				if(!me.power&&(Molpy.Boosts['GMM'].power>400))
