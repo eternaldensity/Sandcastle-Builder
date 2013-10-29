@@ -29,6 +29,8 @@ For personal amusement only.
 - Suppress low sand spent notifications
 - Expando boost! For showing descriptions.
 - Also includes a song
+- Boosts songs are now accessible after buying as well as before
+- Only one free redacted from playing a song before purchase (unless you can't afford it)
 
 ## 2.63
 - Some little improvements to Shopping Assistant and key unlocking

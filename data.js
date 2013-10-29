@@ -623,24 +623,28 @@ Molpy.DefineBoosts=function()
 		"Heyyyy, Neat Sandcastle",
 		"Co - co - co - co - Coma Molpy Style",
 		"Co-co-co - co-co-co",
-		"Coma Molpy Style",
-		"[End of the song. BTW you should buy this]"
+		"Coma Molpy Style"
 	]
 	}
 	var cmsline=0;
 	Molpy.ComaMolpyStyleToggle=function()
 	{
-		if(!Molpy.Boosts['Coma Molpy Style'].bought)
+		var me=Molpy.Boosts['Coma Molpy Style'];
+
+		Molpy.Notify(cms[cmsline]);
+		cmsline++;
+		if(cmsline>=cms.length)
 		{
-			Molpy.Notify(cms[cmsline]);
-			cmsline++;
-			if(cmsline>=cms.length)
+			cmsline=0;
+			if(!me.bought)
 			{
-				cmsline=0;
 				Molpy.RewardRedacted();
+				me.buy();
 			}
-			return;
 		}
+		if(!me.bought)
+			return;
+		
 		var p = Molpy.Boosts['Coma Molpy Style'].power;
 		if(p)
 		{
@@ -3295,7 +3299,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Expando',desc: 
 		function(me)
 		{ 
-			return (me.power? '':'When active, ') + 'All Boosts and Badges are expanded<br><input type="Button" onclick="Molpy.ToggleExpando()" value="'+(me.power? 'Deflate':'Expand')+'"></input>';
+			return (me.power? '':'When active, ') + 'All Tools, Boosts and Badges are expanded<br>'+(me.power? '<br>':'')+'<input type="Button" onclick="Molpy.ToggleExpando()" value="'+(me.power? 'Deflate':'Expand')+'"></input>';
 		}
 		,sand:800,castles:20,className:'toggle'
 	});
@@ -3311,7 +3315,7 @@ Molpy.DefineBoosts=function()
 			'And all its hatted folks',
 			bdy,bdy,bdy,bdy,
 			'I love sigcouragement',
-			'<small>amu</small>semen<small>t</small>coffeesea',
+			'amu<span class="faded">semen</span>tcoffeesea',
 			'I love the NewPixBot',
 			'I love the Wiki!',
 			'I love the whole thread',
@@ -3344,8 +3348,7 @@ Molpy.DefineBoosts=function()
 			'I love the whispers',
 			'I love the whole thread',
 			'The future\'s pretty cool!',
-			bdy,bdy,'<div class="flip">'+bdy+'</div>','<div class="flip">'+bdy+'</div>',
-			'[End of the song. BTW you should buy this]'
+			bdy,bdy,'<div class="flip">'+bdy+'</div>','<div class="flip">'+bdy+'</div>'
 			];
 	}
 	
@@ -3353,15 +3356,20 @@ Molpy.DefineBoosts=function()
 	Molpy.ToggleExpando=function()
 	{
 		var me=Molpy.Boosts['Expando'];
+		Molpy.Notify(love[loveline]);
+		loveline++;
+		if(loveline>=love.length)
+		{
+			loveline=0;
+			if(!me.bought)
+			{
+				Molpy.RewardRedacted();
+				me.buy();
+			}
+		}
+		
 		if(!me.bought)
 		{
-			Molpy.Notify(love[loveline]);
-			loveline++;
-			if(loveline>=love.length)
-			{
-				loveline=0;
-				Molpy.RewardRedacted();
-			}
 			return;
 		}
 		me.power=1*!me.power;
