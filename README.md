@@ -27,6 +27,8 @@ For personal amusement only.
 - RRR with GP now gives chips also
 - Nerfed a tool
 - Suppress low sand spent notifications
+- Expando boost! For showing descriptions.
+- Also includes a song
 
 ## 2.63
 - Some little improvements to Shopping Assistant and key unlocking

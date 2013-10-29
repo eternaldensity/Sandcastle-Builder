@@ -155,7 +155,7 @@ function isChildOf(child,parent)
 
 function onhover(me,event)
 {
-	if(me.hoverOnCounter>0)return;
+	if(me.hoverOnCounter>0||Molpy.Boosts['Expando'].power)return;
 	me.hoverOnCounter=Math.ceil(Molpy.fps/2);
 	me.hoverOffCounter=-1;
 }
@@ -3239,7 +3239,7 @@ Molpy.Up=function()
 			Molpy.shopRepaint=0;
 			Molpy.CalcPriceFactor();			
 			var redactedIndex=-1;
-			
+			var expando=Molpy.Boosts['Expando'].power;
 			var toolsUnlocked=1;			
 			for (var i in Molpy.SandTools)
 			{
@@ -3275,6 +3275,7 @@ Molpy.Up=function()
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="SandToolDescription'+me.id+'"></div></div></div>';
+				if(expando)me.hoverOnCounter=1;
 				i++
 			}
 			if(i==redactedIndex) str+= Molpy.RedactedHTML();
@@ -3316,6 +3317,7 @@ Molpy.Up=function()
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
 				'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
+				if(expando)me.hoverOnCounter=1;
 				i++
 			}
 			if(i==redactedIndex) str+= Molpy.RedactedHTML();
@@ -3355,6 +3357,7 @@ Molpy.Up=function()
 					buy+='</span>';
 				}
 			}
+			if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
 			
 			return cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id
 				+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+heading+'<h2>'+me.name+buy+'</h2>'
@@ -3451,6 +3454,7 @@ Molpy.Up=function()
 			var heading= '<h1>['+Molpy.groupNames[group][0]+']</h1>';	
 			if(cn&&me.earned)Molpy.UnlockBoost('Chromatic Heresy');
 			cn+=' lootbox badge '+(me.earned?'loot':'shop');
+			if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
 			
 			return r+'<div class="'+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id
 				+'],event)">'+heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><h2>'
@@ -4306,12 +4310,21 @@ Molpy.Up=function()
 	
 	Molpy.TickHover=function(me)
 	{
+		if(Molpy.Boosts['Expando'].power)
+		{
+			me.hoverOffCounter=-1;//prevent hide
+			if(me.hoverOnCounter!=0)
+			{
+				me.hoverOnCounter=1;//force show if not shown
+			}
+		}
 		if(me.hoverOnCounter>0)
 		{	
 			me.hoverOnCounter--;
 			if(me.hoverOnCounter<=0)
 			{
 				me.showdesc();
+				Molpy.UnlockBoost('Expando');
 			}
 		}
 		if(me.hoverOffCounter>0)

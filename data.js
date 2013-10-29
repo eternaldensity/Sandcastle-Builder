@@ -3291,6 +3291,83 @@ Molpy.DefineBoosts=function()
 	Molpy.Boosts['Glass Ceiling 10'].logic=80;
 	Molpy.Boosts['Glass Ceiling 11'].logic=90;
 	
+	
+	new Molpy.Boost({name:'Expando',desc: 
+		function(me)
+		{ 
+			return (me.power? '':'When active, ') + 'All Boosts and Badges are expanded<br><input type="Button" onclick="Molpy.ToggleExpando()" value="'+(me.power? 'Deflate':'Expand')+'"></input>';
+		}
+		,sand:800,castles:20,className:'toggle'
+	});
+	
+	{ //#region more lyrics
+		var bdy = 'Boom De Yada';
+		var love=[
+			'I love sandcastles',
+			'I love our weird haiku',
+			'I love the Book of Time',
+			'I love to chart all you!',
+			'I love the whole thread',
+			'And all its hatted folks',
+			bdy,bdy,bdy,bdy,
+			'I love sigcouragement',
+			'<small>amu</small>semen<small>t</small>coffeesea',
+			'I love the NewPixBot',
+			'I love the Wiki!',
+			'I love the whole thread',
+			'And all its mysteries',
+			bdy,bdy,'Bboz Dr Yndn','Bboz Dr Yndn',
+			'I love photomanips',
+			'I love our visitors',
+			'I love to make you hats!',
+			'I love inquisitors',
+			'I love the whole thread',
+			'The future\'s pretty cool!',
+			bdy,bdy,bdy,bdy,
+			'I love to journey',
+			'I love our beesnakes two',
+			'I love Time-mapping',
+			'I love to cupcake you!',
+			'I love the whole thread',
+			'and all its footnote jokes',
+			bdy,bdy,bdy,bdy,
+			'I love newpages',
+			'I love my flashy gif',
+			'I <small>(might)</small> love waffles...',
+			'I love to make you scripts',
+			'I love the whole thread',
+			'And all its mysteries',
+			bdy,bdy,bdy,'<small>'+bdy+'</small>',
+			'I love d-dactyls',
+			'I love our blitzers',
+			'I love to molpy-hunt',
+			'I love the whispers',
+			'I love the whole thread',
+			'The future\'s pretty cool!',
+			bdy,bdy,'<div class="flip">'+bdy+'</div>','<div class="flip">'+bdy+'</div>',
+			'[End of the song. BTW you should buy this]'
+			];
+	}
+	
+	var loveline=0;
+	Molpy.ToggleExpando=function()
+	{
+		var me=Molpy.Boosts['Expando'];
+		if(!me.bought)
+		{
+			Molpy.Notify(love[loveline]);
+			loveline++;
+			if(loveline>=love.length)
+			{
+				loveline=0;
+				Molpy.RewardRedacted();
+			}
+			return;
+		}
+		me.power=1*!me.power;
+		me.hoverOnCounter=1
+	}
+	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
 		badges:['badge','Badges'],
