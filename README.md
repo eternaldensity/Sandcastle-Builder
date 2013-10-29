@@ -21,8 +21,8 @@ For personal amusement only.
 ## 2.8
 - Tool Factory now does something
 - Rewrote tool declaration code to use arguments dictionary like boosts and badges
-- Boosts for making tools produce glass
 - Fixed 2 Glass Ceiling prices: sorry I'm forcing a rebuy if you have them already :P
+- Incomplete: Boosts for making tools produce glass
 
 ## 2.71
 - Prevent Expando from crashing when you haven't unlocked all Tools
