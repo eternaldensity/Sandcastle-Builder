@@ -139,10 +139,17 @@ a:active
 {
 	margin:15px;
 }
-#otthercomic
+.otthercomic1
 {
 	margin:20px;
-	background-image:url('img/otthercomic.png');
+	background-image:url('img/otthercomic1.png');
+	width:640px;
+	height:523px;
+}
+.otthercomic2
+{
+	margin:20px;
+	background-image:url('img/otthercomic2.png');
 	width:676px;
 	height:709px;
 }

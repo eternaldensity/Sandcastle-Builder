@@ -31,6 +31,7 @@ For personal amusement only.
 - Also includes a song
 - Boosts songs are now accessible after buying as well as before
 - Only one free redacted from playing a song before purchase (unless you can't afford it)
+- A couple of indext changes: index and otthercomic
 
 ## 2.63
 - Some little improvements to Shopping Assistant and key unlocking

@@ -247,8 +247,8 @@ var EmergencyExport=function()
 	if (document.cookie.indexOf('CastleBuilderGame')>=0) 
 	{
 		thread=document.cookie.split('CastleBuilderGame=')[1].split(';')[0];
-		g('redundantpar').innerHTML=thread;
-		g('redundantpar').className='partext';
+		g('exporttext').value==thread;
+		g('export').className='unhidden';
 		
 	}
 }
