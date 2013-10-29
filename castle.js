@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.8;
+		Molpy.version=2.81;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -276,20 +276,25 @@ Molpy.Up=function()
 			}else{
 				if(!Molpy.Got('Autosave Option')) return;
 			}
-			var thread = Molpy.ToNeedlePulledThing();
+			var threads = Molpy.ToNeedlePulledThing();
 			var flood = new Date();
 			flood.setFullYear(13291);
 			flood.setMonth(4);
 			flood.setDate(10);
-			thread=CuegishToBeanish(thread);
-			var dough='CastleBuilderGame='+escape(thread)+'; expires='+flood.toUTCString()+';'
-			document.cookie=dough;//aaand save
-				
-			if(document.cookie.indexOf('CastleBuilderGame')<0) 
+			for(var i in threads)
 			{
-				Molpy.Notify('Error while saving.<br>Export your save instead!',1);
+				var thread=CuegishToBeanish(threads[i]);
+				var dough='CastleBuilderGame'+i+'='+escape(thread)+'; expires='+flood.toUTCString()+';'
+				document.cookie=dough;//aaand save
+					
+				if(document.cookie.indexOf('CastleBuilderGame')<0) 
+				{
+					Molpy.Notify('Error while saving.<br>Export your save instead!',1);
+					return;
+				}
 			}
-			else Molpy.Notify('Game saved');
+			document.cookie='CastleBuilderGame=;'; //clear old cookie
+			Molpy.Notify('Game saved');
 			Molpy.autosaveCountup=0;
 		}
 		
@@ -298,7 +303,12 @@ Molpy.Up=function()
 			var thread='';
 			if (document.cookie.indexOf('CastleBuilderGame')>=0) 
 			{
-				thread=BeanishToCuegish(document.cookie.split('CastleBuilderGame=')[1])
+				for(i in ['',0,1,2,3,4])
+				{
+					var dough = document.cookie.split('CastleBuilderGame'+i+'=')[1];
+					if(dough)
+						thread+=BeanishToCuegish(unescape(dough).split(';')[0])||'';
+				}
 				Molpy.FromNeedlePulledThing(thread);
 				Molpy.loadCount++;
 				Molpy.autosaveCountup=0;
@@ -354,6 +364,7 @@ Molpy.Up=function()
 			var c='C'; //Comma
 			
 			var thread='';
+			var threads=[];
 			thread+=Molpy.version+p+p;//some extra space!
 			thread+=Molpy.startDate+p;
 			
@@ -415,6 +426,8 @@ Molpy.Up=function()
 				cb.totalCastlesWasted+c+cb.currentActive+c+cb.temp+s;
 			}
 			thread+=p;
+			threads.push(thread);
+			thread='';
 			//boosts:
 			for(var cancerbabies in Molpy.Boosts)
 			{
@@ -422,6 +435,8 @@ Molpy.Up=function()
 				thread += cb.unlocked+c+cb.bought+c+cb.power+c+cb.countdown+s;
 			}
 			thread+=p;
+			threads.push(thread);
+			thread='';
 			//badges:
 			for(var cancerbabies in Molpy.Badges)
 			{
@@ -436,6 +451,8 @@ Molpy.Up=function()
 				thread+=Molpy.options.showhide[Molpy.options.showhideNamesOrder[i]]?1:0;
 			}
 			thread+=p;
+			threads.push(thread);
+			thread='';
 			//stuff pretending to be badges:
 			for(var cancerbabies in Molpy.Badges)
 			{
@@ -444,8 +461,9 @@ Molpy.Up=function()
 					thread += cb.earned;
 			}
 			thread+=p;
-			if(thread.length>=4080) Molpy.Notify('C**KIE is probably too big for oven. Please complain to your local Hotdog Vendor');
-			return thread;
+			
+			threads.push(thread);
+			return threads;
 		}
 		Molpy.needlePulling=0;
 		Molpy.FromNeedlePulledThing=function(thread)
@@ -1211,7 +1229,7 @@ Molpy.Up=function()
 		{
 			if(Molpy.showExport)
 			{
-				Molpy.showExport=0;
+				Molpy.show=0;
 				g('beachAnchor').className='unhidden';
 				g('beach').className='unhidden';
 				g('stats').className='hidden';
@@ -1225,7 +1243,13 @@ Molpy.Up=function()
 				g('beach').className='hidden';
 				g('options').className='hidden';
 				g('stats').className='hidden';
-				g('exporttext').value= CuegishToBeanish(Molpy.ToNeedlePulledThing());
+				var threads = Molpy.ToNeedlePulledThing();
+				var thread='';
+				for(var i in threads)
+				{
+					thread+=threads[i]
+				}
+				g('exporttext').value= CuegishToBeanish(thread);
 				g('export').className='unhidden';
 			}
 		}

@@ -246,9 +246,15 @@ var EmergencyExport=function()
 	var thread='';
 	if (document.cookie.indexOf('CastleBuilderGame')>=0) 
 	{
-		thread=document.cookie.split('CastleBuilderGame=')[1].split(';')[0];
-		g('exporttext').value==thread;
+		for(var i in ['',0,1,2,3,4])
+		{
+			var dough = document.cookie.split('CastleBuilderGame'+i+'=')[1];
+			if(dough)
+				thread+=unescape(dough).split(';')[0]||'';
+		}
+		g('exporttext').value=thread;
 		g('export').className='unhidden';
+		g('otthercomic').className='hidden;'
 		
 	}
 }

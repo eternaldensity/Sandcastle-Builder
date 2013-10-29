@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.81
+- Now using more c**kies to save
+
 ## 2.8
 - Tool Factory now does something
 - Rewrote tool declaration code to use arguments dictionary like boosts and badges
