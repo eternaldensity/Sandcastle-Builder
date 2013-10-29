@@ -1476,8 +1476,14 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.SandRefineryIncrement=function()
 	{
-		if(!Molpy.Got('Sand Purifier'))return 1;
-		return 1/(Molpy.Boosts['Sand Purifier'].power+2)
+		var inc=1;
+		if(Molpy.Got('Sand Purifier'))
+			inc/=(Molpy.Boosts['Sand Purifier'].power+2)
+		if(Molpy.Got('Badgers'))
+		{
+			inc*=Math.pow(.99,Math.floor(Math.BadgesOwned/10));
+		}
+		return inc;
 	}
 	Molpy.GlassBlowerSandUse=function(force)
 	{
@@ -3911,25 +3917,12 @@ Molpy.CheckRewards=function(automationLevel)
 			Molpy.Boosts['BBC'].department=1;
 	}
 	
-		if(Molpy.Boosts['Panther Salve'].power > 200)
-	{
-		Molpy.Boosts['RRR'].department=1;
-	}
-	if(Molpy.Boosts['Panther Salve'].power > 500)
-	{
-		Molpy.Boosts['Redundant Raptor'].logic=2;
-	}
-	if(Molpy.Boosts['Panther Salve'].power > 800)
-	{
-		Molpy.Boosts['Catamaran'].logic=4;
-	}	
-	if(Molpy.Boosts['Panther Salve'].power > 1200)
-	{
-		Molpy.Boosts['LCB'].logic=6;
-	}
-	Molpy.Boosts['Phonesaw'].department=1*(Molpy.Boosts['VJ'].power >=88);	
-	
-	if(Molpy.Got('Phonesaw')) Molpy.Boosts['Ninjasaw'].logic=16;
+	Molpy.Boosts['RRR'].department=1*(Molpy.Boosts['Panther Salve'].power > 200);	
+	Molpy.Boosts['Redundant Raptor'].logic=2*(Molpy.Boosts['Panther Salve'].power > 500);	
+	Molpy.Boosts['Catamaran'].logic=4*(Molpy.Boosts['Panther Salve'].power > 800);
+	Molpy.Boosts['LCB'].logic=6*(Molpy.Boosts['Panther Salve'].power > 1200);	
+	Molpy.Boosts['Phonesaw'].department=1*(Molpy.Boosts['VJ'].power >=88);		
+	Molpy.Boosts['Ninjasaw'].logic=16*(Molpy.Got('Phonesaw'));
 	
 	var found=0;
 	for(var i in Molpy.jDipBoosts)

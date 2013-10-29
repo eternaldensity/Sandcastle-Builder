@@ -2926,8 +2926,11 @@ Molpy.Up=function()
 			var pg = Molpy.Got('Panther Glaze');
 			if(Molpy.Got('RRR') && Molpy.Boosts['RRR'].power && Molpy.HasGlassBlocks(30))
 			{
-				Molpy.SpendGlassBlocks(30);
 				bonus*=10000;
+				if(finite)
+					Molpy.SpendGlassBlocks(30);
+				else if(pg)
+					Molpy.AddChips(300);
 			}
 			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].power)
 			{

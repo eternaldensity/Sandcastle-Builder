@@ -23,6 +23,8 @@ For personal amusement only.
 - Fixed: crashes on some notifications because I missed the "Molpy."
 - Spending finite sand/castles when you have infinite of the same, does not notify
 - Glass Monument making
+- Badgers wasn't actually implemented
+- RRR with GP now gives chips also
 
 ## 2.63
 - Some little improvements to Shopping Assistant and key unlocking
