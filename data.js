@@ -3364,12 +3364,12 @@ Molpy.DefineBoosts=function()
 	Molpy.glassCeilingDescText.push('Castles produced by Beanie Builders');
 	Molpy.MakeGlassCeiling(10);
 	Molpy.MakeGlassCeiling(11);
-	Molpy.Boosts['Glass Ceiling 10'].sand='6FQ';
-	Molpy.Boosts['Glass Ceiling 10'].castles='6FQ';
-	Molpy.Boosts['Glass Ceiling 11'].sand='6WQ';
-	Molpy.Boosts['Glass Ceiling 11'].castles='6WQ';
-	Molpy.Boosts['Glass Ceiling 10'].glass='100K';
-	Molpy.Boosts['Glass Ceiling 11'].glass='350K';
+	Molpy.Boosts['Glass Ceiling 10'].sandPrice='6FQ';
+	Molpy.Boosts['Glass Ceiling 10'].castlePrice='6FQ';
+	Molpy.Boosts['Glass Ceiling 11'].sandPrice='6WQ';
+	Molpy.Boosts['Glass Ceiling 11'].castlePrice='6WQ';
+	Molpy.Boosts['Glass Ceiling 10'].glassPrice='100K';
+	Molpy.Boosts['Glass Ceiling 11'].glassPrice='350K';
 	Molpy.Boosts['Glass Ceiling 10'].logic=80;
 	Molpy.Boosts['Glass Ceiling 11'].logic=90;
 	
