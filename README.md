@@ -18,9 +18,13 @@ For personal amusement only.
 
 ## Changelog
 
-## 2.83
+## 2.84
 - Wasn't doing glass mold work in factory automation
 - Prevent tool descriptions from hiding sand rate and ninja status
+- 2 Boosts for a new tool (one of them requires high logicat and very high JDip)
+- Burning Bags now go faster (and level faster) at higher levels
+- Fiddled with JDip levels and destruction amounts a bunch. A lot actually.
+- Yeah I didn't get time to do other important stuff because I spent so long on JDip
 
 ## 2.83
 - Maybe there will never be a version 28. Maybe glass ceilings shouldn't lock on every load until then.

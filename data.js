@@ -224,11 +224,15 @@ Molpy.DefineSandTools=function()
 		nextThreshold:6000
 	});
 	
-	new Molpy.SandTool({name:'LaPetite',commonName:'LaPetite|LaPetite|rescued',desc:'Rescues sand via raft',price:DeMolpify('2WQ'),
+	new Molpy.SandTool({name:'LaPetite',commonName:'LaPetite|LaPetites|rescued',desc:'Rescues sand via raft',price:DeMolpify('2WQ'),
 		spmNP:function(){
 			var baserate =DeMolpify('2WWWW');
 			var mult=1;
 			if(Molpy.Got('Glass Ceiling 10'))mult*=Molpy.GlassCeilingMult();
+			if(Molpy.Got('Frenchbot'))
+				mult*=1e42;
+			if(Molpy.Got('Bacon'))
+				mult*=Math.pow(1.03,Molpy.CastleTools['NewPixBot'].amount);
 			return mult*baserate;			
 		},
 		nextThreshold:1
@@ -255,6 +259,10 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Glass Ceiling 1'))baseval*=Molpy.GlassCeilingMult();
 			if(Molpy.Boosts['NewPixBot Navigation Code'].power)
 				baseval=baseval*.001;
+			if(Molpy.Got('Frenchbot'))
+				baseval*=1e210;
+			if(Molpy.Got('Bacon'))
+				baseval*= 10;
 			return Math.floor(baseval);
 		},
 		nextThreshold:1
@@ -818,15 +826,15 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1.4M',castles:'21K'});
 	new Molpy.Boost({name:'Embaggening',desc:'Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',
 		sand:'3.5M',castles:'23K',icon:'embaggening'});
-	new Molpy.Boost({name:'Carrybot',desc:'NewPixBots produce double castles, Buckets produce quadruple',
+	new Molpy.Boost({name:'Carrybot',desc:'NewPixBots produce double castles, Buckets produce quadruple sand',
 		sand:'10K',castles:'1K',icon:'carrybot',group:'cyb'});
-	new Molpy.Boost({name:'Stickbot',desc:'NewPixBots produce double castles, Cuegan produce quadruple',
+	new Molpy.Boost({name:'Stickbot',desc:'NewPixBots produce double castles, Cuegan produce quadruple sand',
 		sand:'50K',castles:'2.5K',icon:'stickbot',group:'cyb'});
-	new Molpy.Boost({name:'Standardbot',desc:'NewPixBots produce double castles, Flags produce quadruple',
+	new Molpy.Boost({name:'Standardbot',desc:'NewPixBots produce double castles, Flags produce quadruple sand',
 		sand:'250K',castles:6250,icon:'standardbot',group:'cyb'});
-	new Molpy.Boost({name:'Climbbot',desc:'NewPixBots produce double castles, Ladders produce quadruple',
+	new Molpy.Boost({name:'Climbbot',desc:'NewPixBots produce double castles, Ladders produce quadruple sand',
 		sand:'1250K',castles:15625,icon:'climbbot',group:'cyb'});
-	new Molpy.Boost({name:'Luggagebot',desc:'NewPixBots produce double castles, Bags produce quadruple',
+	new Molpy.Boost({name:'Luggagebot',desc:'NewPixBots produce double castles, Bags produce quadruple sand',
 		sand:'6250K',castles:39063,icon:'luggagebot',group:'cyb'});
 	new Molpy.Boost({name:'Recursivebot',desc:'NewPixBots produce double castles',
 		sand:'50K',castles:'10K',icon:'recursivebot',group:'cyb'});
@@ -3457,6 +3465,12 @@ Molpy.DefineBoosts=function()
 		me.hoverOnCounter=1
 	}
 	
+	new Molpy.Boost({name:'Frenchbot',desc:'NewPixBots produce 1Q x castles, LaPetite produces 1W x sand', stats:'The Dip of Infinite Judgement Approaches. Do you have 101 Logicats?', 
+		sand:'10Q',castles:'10Q',glass:'.5M',group:'cyb'});
+	new Molpy.Boost({name:'Bacon',desc:'Knowledge is Power - France is Bacon.<br>NewPixBots produce 10x, LaPetite sand production gains 3% per NewPixBot', 
+		sand:'10WQ',castles:'10WQ',glass:'.75M',group:'cyb'
+	}); //note: it doesn't say 10x *castles*
+	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
 		badges:['badge','Badges'],
@@ -3604,7 +3618,7 @@ Molpy.DefineBadges=function()
 	}
 	Molpy.BagBurnDiv=function()
 	{
-		return Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
+		return Math.min(1e294, Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2)));
 	}
 	Molpy.JudgementDipReport=function()
 	{
@@ -3616,16 +3630,15 @@ Molpy.DefineBadges=function()
 		var level = Math.max(0,Math.floor(botCastles/thresh));
 		if(Molpy.Got('Bag Burning'))
 		{
-			var nobagLevel = Math.max(0,Math.floor(Molpy.BagBurnDiv()*botCastles/thresh));
+			var nobagLevel = Math.max(0,Math.floor((Molpy.BagBurnDiv()/thresh)*botCastles));
 			if(nobagLevel>Math.pow(2,Molpy.Boosts['Bag Burning'].power)+6)
 			{
-				Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power+1);
-				Molpy.Boosts['Bag Burning'].power+=0.5;
+				var rate = Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power+1,1);
+				Molpy.Boosts['Bag Burning'].power+=0.5*rate;
 				if(Molpy.SandTools['Bag'].amount<Molpy.npbDoubleThreshhold)
 				{
 					Molpy.Notify('The NewPixBots extinguished the burning Bags!',1);
 					Molpy.LockBoost('Bag Burning');
-					level=nobagLevel;
 				}
 			}
 		}
@@ -3637,12 +3650,12 @@ Molpy.DefineBadges=function()
 		{
 			level=Math.floor(level/2);
 		}
-		var maxDipLevel=Math.floor(Math.pow(2,Molpy.newpixNumber/12));
+		var maxDipLevel=Molpy.MaxDipLevel(Molpy.newpixNumber);
 		if(level > maxDipLevel)
 		{
 			level = maxDipLevel;
 			countdown=0;
-			while(Math.floor(Math.pow(2,(Molpy.newpixNumber+countdown)/12))<=level)
+			while(Molpy.MaxDipLevel(Molpy.newpixNumber+countdown)<=level)
 			{
 				countdown++;
 			}
@@ -3650,6 +3663,11 @@ Molpy.DefineBadges=function()
 		
 		Molpy.RewardDipLevel(level);
 		return [level,Math.ceil(countdown)];
+	}
+	Molpy.MaxDipLevel=function(np)
+	{
+		var maxDipLevel=Math.floor(Math.pow(2,Math.max(0,np*np/5-100000)+np/2-20));
+		return maxDipLevel;
 	}
 	Molpy.RewardDipLevel=function(level)
 	{
@@ -3707,7 +3725,10 @@ Molpy.DefineBadges=function()
 	Molpy.JDestroyAmount=function()
 	{
 		var j=Molpy.judgeLevel-1;
-		return Math.pow(j,Math.ceil(Math.log(j)/Math.LN10/6));
+		if(j<1)return 0;
+		var a=Math.pow(j,1+Math.min(1,j/1000000)-Math.min(1,j/1e150));
+		var b=Math.max(1,Math.min(1e12,j/1e150));
+		return a*b;
 	}
 	new Molpy.Badge({name:'Judgement Dip',
 		desc:function()
@@ -3963,6 +3984,11 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount&&you.amount)Molpy.UnlockBoost('Sandbag');
 	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Smallbot');
 	
+	me=Molpy.SandTools['LaPetite'];
+	if(me.amount>1000)
+	{
+		Molpy.UnlockBoost('Frenchbot');
+	}
 	if(Molpy.Earned('Fractals Forever')&& !Molpy.Got('Fractal Sandcastles'))
 	{
 		Molpy.UnlockBoost('Fractal Sandcastles');	

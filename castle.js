@@ -3026,8 +3026,8 @@ Molpy.Up=function()
 					else 			
 					{
 						Molpy.SandTools['Ladder'].amount--;
+						Molpy.SandTools['Ladder'].refresh();
 						Molpy.SandToolsOwned--;
-						Molpy.shopRepaint=1;
 						if(!finite&&pg)
 							Molpy.AddChips(350);
 					}
@@ -3042,8 +3042,8 @@ Molpy.Up=function()
 					else 			
 					{
 						Molpy.SandTools['Bag'].amount--;
+						Molpy.SandTools['Bag'].refresh();
 						Molpy.SandToolsOwned--;
-						Molpy.shopRepaint=1;
 						if(!finite&&pg)
 							Molpy.AddChips(350);
 					}
@@ -3061,8 +3061,8 @@ Molpy.Up=function()
 					else 				
 					{
 						Molpy.CastleTools['River'].amount--;
+						Molpy.CastleTools['River'].refresh();
 						Molpy.CastleToolsOwned--;
-						Molpy.shopRepaint=1;
 						if(!finite&&pg)
 							Molpy.AddChips(450);
 					}
@@ -3077,8 +3077,8 @@ Molpy.Up=function()
 					else 			
 					{
 						Molpy.CastleTools['Wave'].amount--;
+						Molpy.CastleTools['Wave'].refresh();
 						Molpy.CastleToolsOwned--;
-						Molpy.shopRepaint=1;
 						if(!finite&&pg)
 							Molpy.AddChips(450);
 					}
@@ -3996,6 +3996,12 @@ Molpy.Up=function()
 		{
 			var j = Molpy.JDestroyAmount();
 			var dAmount = j*Molpy.CastleTools['NewPixBot'].amount*25;
+			if(!Molpy.Boosts['Bacon'].unlocked)
+			if(!isFinite(dAmount)&&Molpy.Got('Frenchbot')&&Molpy.Boosts['Logicat'].power>100)
+			{
+				Molpy.Boosts['Logicat'].power-=100;
+				Molpy.UnlockBoost('Bacon');
+			}
 			dAmount = Math.ceil(Math.min(Molpy.castles*.9, dAmount));
 			if(Molpy.castles)
 			{
@@ -4149,9 +4155,27 @@ Molpy.Up=function()
 		}
 	}
 	
-	Molpy.BurnBags=function(n)
+	Molpy.BurnBags=function(n,e)
 	{	
+		if(e)
+		{
+			if(n>1000)
+			{
+				n*=2;
+				e=1000;
+			}else if(n>100)
+			{
+				n*=5;
+				e=100;
+			}else if(n>=10)
+			{
+				n*=10;
+				e=10;
+			}
+		}else e=1;
+		var o=n;
 		n=Math.floor(Math.min(Molpy.SandTools['Bag'].amount,n));
+		e=e*n/o;
 		Molpy.SandTools['Bag'].amount-=n;
 		Molpy.SandToolsOwned-=n;
 		Molpy.SandTools['Bag'].refresh();
@@ -4159,6 +4183,7 @@ Molpy.Up=function()
 			Molpy.Notify('A Bag was burned!',1);
 		else
 			Molpy.Notify(n+' Bags were burned!',1);
+		return e;
 	}
 		
 	Molpy.HandlePeriods=function()
