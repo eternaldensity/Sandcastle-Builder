@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.84;
+		Molpy.version=2.85;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -891,6 +891,23 @@ Molpy.Up=function()
 					Molpy.LockBoost('Glass Ceiling 11');
 					Molpy.UnlockBoost('Glass Ceiling 11');
 				}
+			}
+			if(version<2.85)
+			{
+				if(Molpy.Boosts['Bacon'].unlocked)
+				{
+					if(Molpy.Boosts['Logicat'].bought>100)
+					{
+						Molpy.Boosts['Logicat'].bought-=100;
+						Molpy.Boosts['Logicat'].power-=400;
+					}else
+					{
+						Molpy.Boosts['Logicat'].power+=100;
+						Molpy.LockBoost('Bacon');
+						Molpy.Notify('That should not have unlocked quite yet. A higher Logicat Level is needed.');
+					}
+				}
+				Molpy.UnlockBoost('Safety Hat');
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -3171,7 +3188,7 @@ Molpy.Up=function()
 				Molpy.Notify('Correct',1);
 				var lc = Molpy.Boosts['Logicat'];
 				lc.power++;
-				if(lc.power>=lc.bought*5)
+				while(lc.power>=lc.bought*5)
 				{
 					Molpy.RewardLogicat(lc.bought);
 					lc.bought++;
@@ -3997,9 +4014,10 @@ Molpy.Up=function()
 			var j = Molpy.JDestroyAmount();
 			var dAmount = j*Molpy.CastleTools['NewPixBot'].amount*25;
 			if(!Molpy.Boosts['Bacon'].unlocked)
-			if(!isFinite(dAmount)&&Molpy.Got('Frenchbot')&&Molpy.Boosts['Logicat'].power>100)
+			if(!isFinite(dAmount)&&Molpy.Got('Frenchbot')&&Molpy.Boosts['Logicat'].bought>100)
 			{
-				Molpy.Boosts['Logicat'].power-=100;
+				Molpy.Boosts['Logicat'].bought-=100;
+				Molpy.Boosts['Logicat'].power-=500;
 				Molpy.UnlockBoost('Bacon');
 			}
 			dAmount = Math.ceil(Math.min(Molpy.castles*.9, dAmount));
