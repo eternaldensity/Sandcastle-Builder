@@ -237,8 +237,8 @@ Molpy.DefineSandTools=function()
 
 Molpy.DefineCastleTools=function()
 {
-	new Molpy.CastleTool({name:'NewPixBot',commonName:'newpixbot|newpixbots||automated',desc:'Automates castles after the ONG\n(if not ninja\'d)',price0:1,price1:0,destroyN:0,
-		buildN:function()
+	new Molpy.CastleTool({name:'NewPixBot',commonName:'newpixbot|newpixbots||automated',desc:'Automates castles after the ONG\n(if not ninja\'d)',price0:1,price1:0,destroyC:0,
+		buildC:function()
 		{
 			var baseval=1;		
 			if(Molpy.Got('Robot Efficiency')) baseval++;
@@ -273,11 +273,11 @@ Molpy.DefineCastleTools=function()
 	Molpy.npbDoubleThreshhold=14;
 		
 	new Molpy.CastleTool({name:'Trebuchet',commonName:'trebuchet|trebuchets|flung|formed',desc:'Flings some castles, forming more.',price0:13,price1:1,
-		destroyN:function(){
+		destroyC:function(){
 			if(Molpy.Got('War Banner'))return 1;
 			else return 2;
 		},
-		buildN:function(){
+		buildC:function(){
 		 var baseval=4;
 			if(Molpy.Got('Spring Fling'))baseval++;
 			if(Molpy.Got('Varied Ammo'))for(var i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)baseval++;
@@ -297,14 +297,14 @@ Molpy.DefineCastleTools=function()
 	});
 		
 	new Molpy.CastleTool({name:'Scaffold',commonName:'scaffold|scaffolds|squished|raised',desc:'Squishes some castles, raising a place to put more.',price0:60,price1:100,
-		destroyN:function()
+		destroyC:function()
 		{
 			var baseval = 6;	
 			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);			
 			if(Molpy.Got('Precise Placement')) baseval-=Math.floor(Molpy.SandTools['Ladder'].amount*0.5);
 			return Math.max(0,Math.floor(baseval));
 		},
-		buildN:function()
+		buildC:function()
 		{
 			var baseval = 22;
 			if(Molpy.Got('Propbot'))baseval*=4;
@@ -318,7 +318,7 @@ Molpy.DefineCastleTools=function()
 	});
 		
 	new Molpy.CastleTool({name:'Wave',commonName:'wave|waves|swept|deposited',desc:'Sweeps away some castles, depositing more in their place.',price0:300,price1:80,
-		destroyN:function()
+		destroyC:function()
 		{
 			var baseval = 24;
 			if(Molpy.Got('SBTF'))
@@ -337,7 +337,7 @@ Molpy.DefineCastleTools=function()
 			baseval=Math.floor(Math.max(baseval,0));
 			return baseval;
 		},
-		buildN:function()
+		buildC:function()
 		{
 			var baseval= 111;
 			baseval+=Molpy.Got('Swell')*19;			
@@ -363,7 +363,7 @@ Molpy.DefineCastleTools=function()
 	});
 		
 	new Molpy.CastleTool({name:'River',commonName:'river|rivers|washed|left',desc:'Washes away many castles, but leaves many more new ones.',price0:1800,price1:1520,
-		destroyN:function()
+		destroyC:function()
 		{
 			var baseval = 160;
 			if(Molpy.Got('Riverish'))
@@ -381,7 +381,7 @@ Molpy.DefineCastleTools=function()
 				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
 			return Math.floor(baseval*mult);
 		},
-		buildN:function()
+		buildC:function()
 		{
 			var baseval=690;	
 			baseval*=Molpy.LogicastleMult();
@@ -398,10 +398,10 @@ Molpy.DefineCastleTools=function()
 	
 	new Molpy.CastleTool({name:'Beanie Builder',commonName:'beanie builder|beanie builders|escavated|recreated',desc:'Excavate some castles and recreate copies elsewhere.',
 		price0:DeMolpify('40Q'),price1:DeMolpify('60Q'),
-		destroyN:function(){
+		destroyC:function(){
 			return DeMolpify('1Q');
 		},
-		buildN:function(){
+		buildC:function(){
 			var baseval=DeMolpify('10Q');
 			var mult=1;
 			if(Molpy.Got('Glass Ceiling 11'))mult*=Molpy.GlassCeilingMult();
@@ -3630,7 +3630,7 @@ Molpy.DefineBadges=function()
 			}
 		}
 		var countdown = ((level+1)*thresh - botCastles);
-		countdown/=(bot.buildN()*bot.amount*bot.amount);
+		countdown/=(bot.buildC()*bot.amount*bot.amount);
 		if(Molpy.Got('Doublepost'))countdown/=2;
 		countdown/=Molpy.globalCastleMult; //this is a bit approximate because of its rounding, but close enough for this, hopefully
 		if(Molpy.Boosts['Coma Molpy Style'].power)

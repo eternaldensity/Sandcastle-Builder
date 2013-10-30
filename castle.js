@@ -2078,6 +2078,10 @@ Molpy.Up=function()
 			this.totalSand=0;
 			this.storedSpmNP=0;
 			this.storedTotalSpmNP=0;
+			this.gpmNP=args.gpmNP;
+			this.totalGlass=0;
+			this.storedGpmNP=0;
+			this.storedTotalGpmNP=0;
 			this.nextThreshold=args.nextThreshold;
 			this.pic=args.pic;
 			this.icon=args.icon;
@@ -2210,11 +2214,16 @@ Molpy.Up=function()
 			this.prevPrice=args.price0;
 			this.nextPrice=args.price1;
 			this.price=this.prevPrice+this.nextPrice; //fib!
-			this.destroyN=args.destroyN;
-			this.buildN=args.buildN;
+			this.destroyC=args.destroyC;
+			this.buildC=args.buildC;
+			this.destroyG=args.destroyG;
+			this.buildG=args.buildG;
 			this.totalCastlesBuilt=0;
 			this.totalCastlesDestroyed=0;
 			this.totalCastlesWasted=0; //those destroyed for no gain
+			this.totalGlassBuilt=0;
+			this.totalGlassDestroyed=0;
+			this.totalGlassWasted=0; 
 			this.currentActive=0;
 			this.nextThreshold=args.nextThreshold;
 			this.pic=args.pic;
@@ -2304,38 +2313,38 @@ Molpy.Up=function()
 			this.DestroyPhase=function()
 			{
 				var i = this.amount
-				var destroyN=EvalMaybeFunction(this.destroyN);
+				var destroyC=EvalMaybeFunction(this.destroyC);
 				while(i--)
 				{
-					if(Molpy.castles >= destroyN)
+					if(Molpy.castles >= destroyC)
 					{
 						this.currentActive++;
-						this.totalCastlesDestroyed+=destroyN;
+						this.totalCastlesDestroyed+=destroyC;
 					}
 					else
 					{
 						this.totalCastlesWasted+=Molpy.castles;
 					}
-					Molpy.Destroy(destroyN);
+					Molpy.Destroy(destroyC);
 					if(this.destroyFunction)this.destroyFunction();
 				}
 			}
 			this.BuildPhase=function()
 			{
 				var i = this.currentActive;
-				var buildN =EvalMaybeFunction(this.buildN);
+				var buildC =EvalMaybeFunction(this.buildC);
 				while(i--)
 				{
-					Molpy.Build(buildN);
-					this.totalCastlesBuilt+=buildN;
+					Molpy.Build(buildC);
+					this.totalCastlesBuilt+=buildC;
 				}
 				this.currentActive=0;
 			}
 			this.showdesc=function()
 			{
 				var desc = '';
-				var bN = EvalMaybeFunction(this.buildN);
-				var dN = EvalMaybeFunction(this.destroyN);
+				var bN = EvalMaybeFunction(this.buildC);
+				var dN = EvalMaybeFunction(this.destroyC);
 				var actuals ='<br>Builds '+Molpify(bN,1)+(dN?(' if '+Molpify(dN,1)+((dN-1)?' are':' is')+' destroyed.'):'');
 				if(Molpy.showStats)
 				{
