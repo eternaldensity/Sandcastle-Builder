@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.85
+- Fixed Logicat issue caused by Bacon Mustard in the level reduction
+- If you missed any Logicat rewards, you'll catch up next time you answer one.
+- Added Safety Hat boost! Yay now we can all have Safety Hats in the Hotdog!
+
 ## 2.84
 - Wasn't doing glass mould work in factory automation
 - Prevent tool descriptions from hiding sand rate and ninja status

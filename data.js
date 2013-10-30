@@ -2634,7 +2634,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('Correct',1);
 			var lc = Molpy.Boosts['Logicat'];
 			lc.power++;
-			if(lc.power>=lc.bought*5)
+			while(lc.power>=lc.bought*5)
 			{
 				Molpy.RewardLogicat(lc.bought);
 				lc.bought++;
@@ -3470,6 +3470,14 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Bacon',desc:'Knowledge is Power - France is Bacon.<br>NewPixBots produce 10x, LaPetite sand production gains 3% per NewPixBot', 
 		sand:'10WQ',castles:'10WQ',glass:'.75M',group:'cyb'
 	}); //note: it doesn't say 10x *castles*
+	
+	new Molpy.Boost({name:'Safety Hat',desc:'It\'s green, comfortable, stylish, and protects you from all kinds of harm! Best of all, it\'s completely free!',
+		buyFunction:function()
+		{
+			Molpy.Notify('You are hit by a torrent of salt and pumkins. No brainslug for you!',1);
+			Molpy.LockBoost('Safety Hat');
+		}
+	});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
