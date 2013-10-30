@@ -19,7 +19,7 @@ For personal amusement only.
 ## Changelog
 
 ## 2.84
-- Wasn't doing glass mold work in factory automation
+- Wasn't doing glass mould work in factory automation
 - Prevent tool descriptions from hiding sand rate and ninja status
 - 2 Boosts for a new tool (one of them requires high logicat and very high JDip)
 - Burning Bags now go faster (and level faster) at higher levels
