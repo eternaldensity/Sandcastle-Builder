@@ -3324,7 +3324,7 @@ Molpy.Up=function()
 				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
-				'<div id="SandToolDescription'+me.id+'"></div></div></div>';
+				'<div id="SandToolProduction'+me.id+'"></div><div id="SandToolDescription'+me.id+'"></div></div></div>';
 				if(expando)me.hoverOnCounter=1;
 				i++
 			}
@@ -3366,7 +3366,7 @@ Molpy.Up=function()
 				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
 				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
-				'<div id="CastleToolDescription'+me.id+'"></div></div></div>';
+				'<div id="CastleToolProduction'+me.id+'"></div><div id="CastleToolDescription'+me.id+'"></div></div></div>';
 				if(expando)me.hoverOnCounter=1;
 				i++
 			}
@@ -4294,7 +4294,7 @@ Molpy.Up=function()
 			
 			if(me.amount)
 			{
-				var desc = g('SandToolDescription'+me.id);
+				var desc = g('SandToolProduction'+me.id);
 				if(desc)
 				{
 					if(desc.innerHTML==''||desc.innerHTML.indexOf('Sand/mNP:')>-1)
@@ -4309,7 +4309,7 @@ Molpy.Up=function()
 			var me = Molpy.CastleTools[i];
 			Molpy.TickHover(me);
 			
-			var desc = g('CastleToolDescription'+me.id);
+			var desc = g('CastleToolProduction'+me.id);
 			if(desc)
 			{
 				if(desc.innerHTML==''||desc.innerHTML.indexOf('Active:')>-1 ||desc.innerHTML.indexOf("Ninja'd")>-1 )
