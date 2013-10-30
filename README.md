@@ -19,6 +19,9 @@ For personal amusement only.
 ## Changelog
 
 ## 2.83
+- Wasn't doing glass mold work in factory automation
+
+## 2.83
 - Maybe there will never be a version 28. Maybe glass ceilings shouldn't lock on every load until then.
 
 ## 2.82
