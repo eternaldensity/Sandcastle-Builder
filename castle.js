@@ -1318,6 +1318,7 @@ Molpy.Up=function()
 		var sandEpsilon = 0.0000001; //because floating point errors
 		Molpy.Dig=function(amount)
 		{
+			if(!isFinite(Molpy.sand))amount=0; //because why bother?
 			Molpy.sandDug+=amount;
 			Molpy.sand+=amount;
 			
@@ -1329,6 +1330,7 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Clerical Error');
 			}
 			Molpy.SandToCastles();
+			if(amount&&!isFinite(Molpy.sand))Molpy.recalculateDig=1;
 			
 			if(Molpy.sand>=50){
 				Molpy.EarnBadge('Barn');
@@ -1428,6 +1430,7 @@ Molpy.Up=function()
 			amount = Math.max(0,amount);
 			Molpy.castlesBuilt+=amount;
 			Molpy.castles+=amount;
+			if(amount&&!isFinite(Molpy.castles))Molpy.recalculateDig=1;
 			
 			if(Molpy.buildNotifyFlag)
 			{
@@ -1539,6 +1542,8 @@ Molpy.Up=function()
 			var furnaceLevel=(Molpy.Boosts['Sand Refinery'].power)+1;
 			Molpy.AddChips(furnaceLevel);
 		}
+		Molpy.chipAddAmount=0;
+		Molpy.chipWasteAmount=0;
 		Molpy.AddChips=function(amount)
 		{
 			Molpy.UnlockBoost('Glass Chip Storage');
@@ -1551,15 +1556,11 @@ Molpy.Up=function()
 			var waste = Math.max(0,ch.power-(ch.bought)*10);
 			ch.power-=waste;
 			amount-=waste;
-			if(amount)
-            {
-				Molpy.Notify('Made '+Molpify(amount)+' Glass Chip'+(amount>1?'s':''),1);
-			}
-			if(waste)
-			{
-				Molpy.Notify('Not enough Chip Storage for '+Molpify(waste)+' Glass Chip'+(waste>1?'s':''));
-			}
+			Molpy.chipAddAmount+=amount;
+			Molpy.chipWasteAmount+=waste;
 		}
+		Molpy.blockAddAmount=0;
+		Molpy.blockWasteAmount=0;
 		Molpy.MakeBlocks=function()
 		{
 			var chillerLevel=(Molpy.Boosts['Glass Chiller'].power)+1;
@@ -1579,6 +1580,7 @@ Molpy.Up=function()
 				chillerLevel=chipsFor;
 			}
 			ch.power-=chipsFor*20;
+			Molpy.chipAddAmount-=chipsFor*20;
 			Molpy.AddBlocks(chillerLevel);
 		}
 		Molpy.AddBlocks=function(amount)
@@ -1596,17 +1598,48 @@ Molpy.Up=function()
 			if(amount)
             {
 				Molpy.EarnBadge('Glassblower');
-				Molpy.Notify('Made '+Molpify(amount)+' Glass Block'+(amount>1?'s':''),1);
 			}
-			if(waste)
-			{
-				Molpy.Notify('Not enough Block Storage for '+Molpify(waste)+' Glass Block'+(waste>1?'s':''));
-			}
+			Molpy.blockAddAmount+=amount;
+			Molpy.blockWasteAmount+=waste;
+			
+		}
+		Molpy.GlassNotifyFlush=function()
+		{
+			Molpy.chipAddAmount=Math.round(Molpy.chipAddAmount);
+			Molpy.chipWasteAmount=Math.round(Molpy.chipWasteAmount);
+			Molpy.blockAddAmount=Math.round(Molpy.blockAddAmount);
+			Molpy.blockWasteAmount=Math.round(Molpy.blockWasteAmount);
+			if(Molpy.chipAddAmount>0)
+				Molpy.Notify('Gain of '+Molpify(Molpy.chipAddAmount)+' Glass Chip'+(Molpy.chipAddAmount>1?'s':''),1);
+			if(Molpy.chipAddAmount<0)
+				Molpy.Notify('Loss of '+Molpify(-Molpy.chipAddAmount)+' Glass Chip'+(-Molpy.chipAddAmount>1?'s':''),1);
+			Molpy.chipAddAmount=0;
+			
+			if(Molpy.chipWasteAmount>0)
+				Molpy.Notify('Not enough Chip Storage for '+Molpify(Molpy.chipWasteAmount)+' Glass Chip'+(Molpy.chipWasteAmount>1?'s':''),1);
+			Molpy.chipWasteAmount=0;
+			
+			if(Molpy.blockAddAmount>0)
+				Molpy.Notify('Gain of '+Molpify(Molpy.blockAddAmount)+' Glass Block'+(Molpy.blockAddAmount>1?'s':''),1);
+			if(Molpy.blockAddAmount<0)
+				Molpy.Notify('Loss of '+Molpify(-Molpy.blockAddAmount)+' Glass Block'+(-Molpy.blockAddAmount>1?'s':''),1);
+			Molpy.blockAddAmount=0;
+			
+			if(Molpy.blockWasteAmount>0)
+				Molpy.Notify('Not enough Block Storage for '+Molpify(Molpy.blockWasteAmount)+' Glass Block'+(Molpy.blockWasteAmount>1?'s':''),1);
+			Molpy.blockWasteAmount=0;
 		}
 		Molpy.DigGlass=function(amount)
 		{
 			Molpy.glassDug+=amount;
 			Molpy.Boosts['Tool Factory'].power+=amount;
+		}
+		Molpy.DestroyGlass=function(amount)
+		{
+			var tf=Molpy.Boosts['Tool Factory'];
+			amount=Math.min(tf.power,amount);
+			tf.power-=amount;
+			Molpy.totalGlassDestroyed+=amount;
 		}
 		
 		Molpy.SpendCastles=function(amount,silent)
@@ -2118,21 +2151,20 @@ Molpy.Up=function()
 			var oldrate = Molpy.glassPermNP;
 			Molpy.glassPermNP=0;
 			var multiplier = 1;
-			var f=!isFinite(Molpy.sand)*1;
-			if(!f && oldrate==0)return;
+			var inf=(Molpy.Got('Sand to Glass')&&!isFinite(Molpy.sand))*1;
+			if(!inf && oldrate==0)return;
 			
 			for (var i in Molpy.SandTools)
 			{
 				var me=Molpy.SandTools[i];
-				var tf=!isFinite(me.price)*1*f;
+				var tf=!isFinite(me.price)*1*inf;
 				me.storedGpmNP=EvalMaybeFunction(me.gpmNP,me)*tf;
 				me.storedTotalGpmNP=me.amount*me.storedGpmNP;
 				Molpy.glassPermNP+=me.storedTotalGpmNP;
 			}				
 			
 			Molpy.globalGpmNPMult=multiplier;
-			Molpy.glassPermNP*=Molpy.globalGpmNPMult;			
-			
+			Molpy.glassPermNP*=Molpy.globalGpmNPMult;	
 		}
 		
 		
@@ -2208,7 +2240,7 @@ Molpy.Up=function()
 						Molpy.CheckBuyUnlocks();
 					}
 				}
-				if(Molpy.Got('Temporal Duplication'))
+				if(Molpy.Got('Temporal Duplication')&&!Molpy.Earned(this.name+' Shop Failed'))
 				{
 					this.amount+=bought;
 					this.temp+=bought;
@@ -2355,7 +2387,7 @@ Molpy.Up=function()
 						Molpy.CheckBuyUnlocks();
 					}
 				}
-				if(Molpy.Got('Temporal Duplication'))
+				if(Molpy.Got('Temporal Duplication')&&!Molpy.Earned(this.name+' Shop Failed'))
 				{
 					this.amount+=bought;
 					this.temp+=bought;
@@ -2402,30 +2434,49 @@ Molpy.Up=function()
 			this.DestroyPhase=function()
 			{
 				var i = this.amount
-				var destroyC=EvalMaybeFunction(this.destroyC);
+				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(this.price);
+				var destroyN=EvalMaybeFunction(inf?this.destroyG:this.destroyC);
 				while(i--)
 				{
-					if(Molpy.castles >= destroyC)
+					if(inf)
 					{
-						this.currentActive++;
-						this.totalCastlesDestroyed+=destroyC;
+						if(Molpy.Boosts['Tool Factory'].power >= destroyN)
+						{
+							this.currentActive++;
+							this.totalGlassDestroyed+=destroyN;
+							Molpy.DestroyGlass(destroyN);
+						}
+						else
+						{
+							break;
+						}
+					}else{
+						if(Molpy.castles >= destroyN)
+						{
+							this.currentActive++;
+							this.totalCastlesDestroyed+=destroyN;
+						}
+						else
+						{
+							this.totalCastlesWasted+=Molpy.castles;
+						}
+						Molpy.Destroy(destroyN);
 					}
-					else
-					{
-						this.totalCastlesWasted+=Molpy.castles;
-					}
-					Molpy.Destroy(destroyC);
 					if(this.destroyFunction)this.destroyFunction();
 				}
 			}
 			this.BuildPhase=function()
 			{
-				var i = this.currentActive;
-				var buildC =EvalMaybeFunction(this.buildC);
-				while(i--)
+				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(this.price);
+				var buildN =EvalMaybeFunction(inf?this.buildG:this.buildC);
+				buildN*=this.currentActive;
+				if(inf)
 				{
-					Molpy.Build(buildC);
-					this.totalCastlesBuilt+=buildC;
+					Molpy.DigGlass(buildN);
+					this.totalGlassBuilt+=buildN;
+				}else{
+					Molpy.Build(buildN);
+					this.totalCastlesBuilt+=buildN;
 				}
 				this.currentActive=0;
 			}
@@ -2435,9 +2486,11 @@ Molpy.Up=function()
 				if(!d)return;
 				if(keep&&d.innerHTML)return;
 				var desc = '';
-				var bN = EvalMaybeFunction(this.buildC);
-				var dN = EvalMaybeFunction(this.destroyC);
-				var actuals ='<br>Builds '+Molpify(bN,1)+(dN?(' if '+Molpify(dN,1)+((dN-1)?' are':' is')+' destroyed.'):'');
+				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(this.price);
+				var bN = EvalMaybeFunction(inf?this.buildG:this.buildC);
+				var dN = EvalMaybeFunction(inf?this.destroyG:this.destroyC);
+				var w=inf?'Chip':'Castle';
+				var actuals ='<br>Builds '+Molpify(bN,1)+' '+w+(bN==1?'':'s')+(dN?(' if '+Molpify(dN,1)+' '+w+((dN!=1)?'s are':' is')+' destroyed.'):'');
 				if(Molpy.showStats)
 				{
 					if(this.totalCastlesDestroyed)
@@ -2943,8 +2996,11 @@ Molpy.Up=function()
 			
 			
 			Molpy.redactedClicks++;		
-			if(  Molpy.redactedDrawType.length <16)
+			if( Molpy.redactedDrawType.length<16)
+			{
 				Molpy.RewardRedacted();
+				Molpy.GlassNotifyFlush();
+			}
 			if(Molpy.redactedClicks>=2)
 				Molpy.EarnBadge('Not So '+Molpy.redactedW);
 			if(Molpy.redactedClicks>=14)
@@ -3317,6 +3373,7 @@ Molpy.Up=function()
 				return;
 			}
 			Molpy.RewardRedacted(1);
+			Molpy.GlassNotifyFlush();
 		}
 		
 		Molpy.CalcPriceFactor=function()
@@ -3947,13 +4004,15 @@ Molpy.Up=function()
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
 			var npb=Molpy.CastleTools['NewPixBot'];
-			if(Math.floor(Math.random()*(20-i))==0)
+			if(Math.floor(Math.random()*(Molpy.Got('Safety Pumpkin')*10+20-i))==0)
 			{
 				if(npb.amount)
 				{
 					npb.amount--;
 					npb.refresh();
 					Molpy.Notify('Industrial Accident!');
+					if(i>14)
+						Molpy.UnlockBoost('Safety Pumpkin');
 				}
 			}
 			var t=0;
@@ -3983,6 +4042,8 @@ Molpy.Up=function()
 						Molpy.RewardRedacted(1,t);
 				}
 			}
+			
+			Molpy.GlassNotifyFlush();
 		}
 	}
 	
@@ -4018,7 +4079,6 @@ Molpy.Up=function()
 		if(! (Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].power))
 			Molpy.CheckONG();
 		Molpy.CheckRedactedToggle();
-		Molpy.RunToolFactory();
 		
 		for(var i in Molpy.Boosts)//count down any boosts with a countdown
 		{
@@ -4075,8 +4135,10 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
-		if(Molpy.Got('Tool Factory'))
+		if(Molpy.Got('Sand to Glass'))
 			Molpy.DigGlass(Molpy.glassPermNP);
+		Molpy.GlassNotifyFlush()
+		Molpy.RunToolFactory();
 		if(Molpy.BadgesOwned==0) Molpy.EarnBadge('Redundant Redundancy');
 		
 		Molpy.Life++;
@@ -4245,8 +4307,9 @@ Molpy.Up=function()
 				}
 			}
 		}
+		Molpy.GlassNotifyFlush();
 		if(isFinite(Molpy.castles))
-		Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*3)==0);
+			Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*3)==0);
 		if(Molpy.autosaveCountup>1000)
 		{
 			Molpy.Notify('You have not saved in over a NewPix!!',1);
@@ -4299,7 +4362,7 @@ Molpy.Up=function()
 			Molpy.Boosts['Furnace Crossfeed'].department=0;
 			Molpy.Boosts['Furnace Multitasking'].department=0;
 			var fa = Molpy.Boosts['Factory Automation'];
-			if(fa.power>0)
+			if(fa.power>0 &&!Molpy.Got('Safety Pumpkin'))
 			{
 				fa.power=0;
 				Molpy.Notify('Factory Automation Downgraded',1);

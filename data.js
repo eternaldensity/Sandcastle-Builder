@@ -265,7 +265,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Bacon'))
 				baseval*= 10;
 			return Math.floor(baseval);
-		},buildG:2,
+		},destroyG:0,buildG:2,
 		nextThreshold:1
 	});
 	
@@ -403,7 +403,7 @@ Molpy.DefineCastleTools=function()
 			return Math.floor(baseval*mult);
 		}
 		,destroyG:52,buildG:134
-		nextThreshold:1000
+		,nextThreshold:1000
 	});
 	
 	new Molpy.CastleTool({name:'Beanie Builder',commonName:'beanie builder|beanie builders|escavated|recreated',desc:'Excavate some castles and recreate copies elsewhere.',
@@ -1543,8 +1543,7 @@ Molpy.DefineBoosts=function()
 	Molpy.SpendGlassBlocks=function(num)
 	{	
 		Molpy.Boosts['Glass Block Storage'].power -= num;
-		if(num)
-			Molpy.Notify('Spent '+Molpify(num,3)+' Glass Blocks');
+		Molpy.blockAddAmount-=num;
 	}
 	Molpy.HasGlassChips=function(num)
 	{	
@@ -1553,8 +1552,7 @@ Molpy.DefineBoosts=function()
 	Molpy.SpendGlassChips=function(num)
 	{	
 		Molpy.Boosts['Glass Chip Storage'].power -= num;
-		if(num)
-			Molpy.Notify('Spent '+Molpify(num,3)+' Glass Chips');
+		Molpy.chipAddAmount-=num;
 	}
 	
 	new Molpy.Boost({name:'Sand Refinery',desc:
@@ -2024,7 +2022,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
 		}
 	}
-	Molpy.faCosts=[55,65,85,115,145,175,205,240,280,330,440,560,700,900,1200];
+	Molpy.faCosts=[55,65,85,115,145,175,205,240,280,330,440,560,700,900,1200,1500];
 	new Molpy.Boost({name:'Rosetta',
 		desc:function(me)
 		{
@@ -3318,6 +3316,7 @@ Molpy.DefineBoosts=function()
 		{
 			Molpy.SpendGlassChips(amount);
 			Molpy.Boosts['Tool Factory'].power+=amount;
+			if((Molpy.SandTools['Bucket'].amount>=7470||Molpy.CastleTools['NewPixBot'].amount>=1515)&&Molpy.Got('Tool Factory')&&!isFinite(Molpy.sandPermNP))Molpy.UnlockBoost('Sand to Glass');
 		}
 	}
 	Molpy.MakeTFOrder=function()
@@ -3483,6 +3482,10 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('You are hit by a torrent of salt and pumpkins. No brainslug for you!',1);
 			Molpy.LockBoost('Safety Hat');
 		}
+	});
+	
+	new Molpy.Boost({name:'Safety Pumpkin',desc:'It\'s oranage, comfortable, stylish, and reduces the likelihood of industrial accidents!',
+		glass:'20K'
 	});
 	
 	Molpy.groupNames={

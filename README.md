@@ -26,6 +26,10 @@ For personal amusement only.
 - Gave up on description expand/shrink animation due to issues
 - BBC is included in the global sand rate rather than the individual tool rate
 - Nerfed WWB a little because some balancing was out because I didn't have it fully leveled when testing.
+- Combined glass messaging to reduce spam. Now it just gives a total proft/loss for chips and blocks
+- You can get glass from sand tools (though not castles tools yet) but it's only available to Tool Factory currently
+- Added 1 higher Factory Automation level
+- Safety Pumpkin
 
 ## 2.85
 - Fixed Logicat issue caused by Bacon Mustard in the level reduction
