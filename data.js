@@ -226,7 +226,7 @@ Molpy.DefineSandTools=function()
 	
 	new Molpy.SandTool({name:'LaPetite',commonName:'LaPetite|LaPetites|rescued',desc:'Rescues sand via raft',price:DeMolpify('2WQ'),
 		spmNP:function(){
-			var baserate =2e148;
+			var baserate =2e138;
 			var mult=1;
 			if(Molpy.Got('Glass Ceiling 10'))mult*=Molpy.GlassCeilingMult();
 			if(Molpy.Got('Frenchbot'))

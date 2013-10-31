@@ -24,6 +24,7 @@ For personal amusement only.
 - Clarified descriptions of Sand to Glass and Castles to Glass a little
 - Buffed Overcompensating because reasons
 - Undid yesterday's nerf to Temporal Duplication
+- Nerfed LaPetite a bit to ensure BBC is required for Infinite Sand rate
 
 ## 2.86
 - Added an extra little feature to the Flashy Gif badge (which took me some nopix of fiddling because it is fun to try to new things with css)
