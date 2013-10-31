@@ -229,6 +229,7 @@ Molpy.Up=function()
 		Molpy.castles=0; //current castle balance
 		Molpy.castlesDestroyed=0; //total castles destroyed by other structures throughout the game
 		Molpy.sandPermNP=0; //sand per milliNewPix (recaculated when stuff is bought)
+		Molpy.glassPermNP=0; 
 		Molpy.prevCastleSand=0; //sand cost of previous castle
 		Molpy.nextCastleSand=1; //sand cost of next castle
 		Molpy.castlesSpent=0; //castles spent in shop
@@ -1314,12 +1315,12 @@ Molpy.Up=function()
 		
 		/* In which the mathematical methods of sandcastles are described
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+		var sandEpsilon = 0.0000001; //because floating point errors
 		Molpy.Dig=function(amount)
 		{
 			Molpy.sandDug+=amount;
 			Molpy.sand+=amount;
 			
-			var sandEpsilon = 0.0000001; //because floating point errors
 			var gap = Math.ceil(Molpy.sand)-Molpy.sand;
 			if(gap && gap < sandEpsilon)
 			{	
@@ -1532,8 +1533,6 @@ Molpy.Up=function()
 			if(!isFinite(Molpy.castles)&&!isFinite(Molpy.sand)){
 				Molpy.EarnBadge('Everything but the Kitchen Windows');
 			}
-					
-		
 		}
 		Molpy.MakeChips=function()
 		{
@@ -1603,6 +1602,11 @@ Molpy.Up=function()
 			{
 				Molpy.Notify('Not enough Block Storage for '+Molpify(waste)+' Glass Block'+(waste>1?'s':''));
 			}
+		}
+		Molpy.DigGlass=function(amount)
+		{
+			Molpy.glassDug+=amount;
+			Molpy.Boosts['Tool Factory'].power+=amount;
 		}
 		
 		Molpy.SpendCastles=function(amount,silent)
@@ -1720,6 +1724,7 @@ Molpy.Up=function()
 		}
 		Molpy.computedSandPerClick=1;
 		Molpy.globalSpmNPMult=1;
+		Molpy.globalGpmNPMult=1;
 		Molpy.lastClick=0;
 		Molpy.ClickBeach=function()
 		{
@@ -2034,7 +2039,7 @@ Molpy.Up=function()
 				Molpy.globalCastleMult=1;
 			}
 			Molpy.shopRepaint=1;
-			
+			Molpy.CalculateGlassRate();
 		}
 		Molpy.CheckSandRateBadges=function()
 		{
@@ -2106,6 +2111,28 @@ Molpy.Up=function()
 			
 			if(Molpy.judgeLevel)Molpy.EarnBadge('Judgement Dip Warning');
 			if(Molpy.judgeLevel>1)Molpy.EarnBadge('Judgement Dip');
+		}
+		
+		Molpy.CalculateGlassRate=function()
+		{
+			var oldrate = Molpy.glassPermNP;
+			Molpy.glassPermNP=0;
+			var multiplier = 1;
+			var f=!isFinite(Molpy.sand)*1;
+			if(!f && oldrate==0)return;
+			
+			for (var i in Molpy.SandTools)
+			{
+				var me=Molpy.SandTools[i];
+				var tf=!isFinite(me.price)*1*f;
+				me.storedGpmNP=EvalMaybeFunction(me.gpmNP,me)*tf;
+				me.storedTotalGpmNP=me.amount*me.storedGpmNP;
+				Molpy.glassPermNP+=me.storedTotalGpmNP;
+			}				
+			
+			Molpy.globalGpmNPMult=multiplier;
+			Molpy.glassPermNP*=Molpy.globalGpmNPMult;			
+			
 		}
 		
 		
@@ -4048,6 +4075,8 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
+		if(Molpy.Got('Tool Factory'))
+			Molpy.DigGlass(Molpy.glassPermNP);
 		if(Molpy.BadgesOwned==0) Molpy.EarnBadge('Redundant Redundancy');
 		
 		Molpy.Life++;
@@ -4402,9 +4431,12 @@ Molpy.Up=function()
 				var desc = g('SandToolProduction'+me.id);
 				if(desc)
 				{
-					if(desc.innerHTML==''||desc.innerHTML.indexOf('Sand/mNP:')>-1)
+					if(desc.innerHTML==''||desc.innerHTML.indexOf('/mNP:')>-1)
 					{
-						desc.innerHTML='Sand/mNP: '+Molpify(me.storedTotalSpmNP,1);					
+						if(me.storedTotalGpmNP)
+							desc.innerHTML='Glass/mNP: '+Molpify(me.storedTotalGpmNP,1);	
+						else
+							desc.innerHTML='Sand/mNP: '+Molpify(me.storedTotalSpmNP,1);					
 					}		
 				}
 			}

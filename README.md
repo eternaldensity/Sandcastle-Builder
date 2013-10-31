@@ -25,6 +25,7 @@ For personal amusement only.
 - Fixed some typos
 - Gave up on description expand/shrink animation due to issues
 - BBC is included in the global sand rate rather than the individual tool rate
+- Nerfed WWB a little because some balancing was out because I didn't have it fully leveled when testing.
 
 ## 2.85
 - Fixed Logicat issue caused by Bacon Mustard in the level reduction

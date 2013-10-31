@@ -126,6 +126,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
 			return mult*baserate;			
 		},
+		gpmNP:0.001,
 		nextThreshold:1
 	});
 	
@@ -144,6 +145,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 2'))mult*=Molpy.GlassCeilingMult();
 			return baserate*mult;
 		},
+		gpmNP:0.003,
 		nextThreshold:2
 	});
 	
@@ -168,6 +170,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling '+4))mult*=Molpy.GlassCeilingMult();
 			return baserate*mult;
 		},
+		gpmNP:0.007,
 		nextThreshold:4
 	});
 	
@@ -198,6 +201,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
 			return baserate*mult;
 		},
+		gpmNP:0.015,
 		nextThreshold:8
 	});
 	
@@ -216,6 +220,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 8'))mult*=Molpy.GlassCeilingMult();
 			return baserate*mult;
 		},
+		gpmNP:0.031,
 		nextThreshold:6000
 	});
 	
@@ -230,6 +235,7 @@ Molpy.DefineSandTools=function()
 				mult*=Math.pow(1.03,Molpy.CastleTools['NewPixBot'].amount);
 			return mult*baserate;			
 		},
+		gpmNP:0.063,
 		nextThreshold:1
 	});
 }	
@@ -259,7 +265,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Bacon'))
 				baseval*= 10;
 			return Math.floor(baseval);
-		},
+		},buildG:2,
 		nextThreshold:1
 	});
 	
@@ -295,7 +301,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Glass Ceiling 3'))mult*=Molpy.GlassCeilingMult();
 			
 			return Math.floor(baseval*mult);
-		},
+		},destroyG:1,buildG:7,
 		nextThreshold:2
 	});
 		
@@ -316,7 +322,7 @@ Molpy.DefineCastleTools=function()
 			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 5'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
-		},
+		},destroyG:6,buildG:21,
 		nextThreshold:4
 	});
 		
@@ -357,7 +363,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Glass Ceiling 7'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
 		},
-		nextThreshold:8,
+		nextThreshold:8,destroyG:19,buildG:55,
 		destroyFunction:function()
 		{
 		if(this.totalCastlesDestroyed>=2000) Molpy.UnlockBoost('Erosion');
@@ -395,7 +401,8 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Irregular Rivers')) mult*=Molpy.CastleTools['NewPixBot'].amount;
 			if(Molpy.Got('Glass Ceiling 9'))mult*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval*mult);
-		},
+		}
+		,destroyG:52,buildG:134
 		nextThreshold:1000
 	});
 	
@@ -410,7 +417,9 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Glass Ceiling 11'))mult*=Molpy.GlassCeilingMult();
 			
 			return Math.floor(baseval*mult);
-		},nextThreshold:1
+		}
+		,destroyG:115,buildG:281
+		,nextThreshold:1
 	});
 }
 	
@@ -3347,7 +3356,7 @@ Molpy.DefineBoosts=function()
 		}
 		if(built)
 		{
-			Molpy.Notify('Built '+Molpify(built,1)+' tool'+(built==1?'':'s'),1);
+			Molpy.Notify('Built '+Molpify(built,1)+' tool'+(built==1?'':'s'));
 			Molpy.recalculateDig=1;
 			Molpy.CheckBuyUnlocks();
 			tf.power=pow;
