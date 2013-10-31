@@ -18,10 +18,18 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.86
+- Added an extra little feature to the Flashy Gif badge (which took me some nopix of fiddling because it is fun to try to new things with css)
+- You can how earn blackprint pages even when there is no need to do so.
+- Prevent Mustard/Infinite sand dig clicks
+- Fixed some typos
+- Gave up on description expand/shrink animation due to issues
+
 ## 2.85
 - Fixed Logicat issue caused by Bacon Mustard in the level reduction
 - If you missed any Logicat rewards, you'll catch up next time you answer one.
 - Added Safety Hat boost! Yay now we can all have Safety Hats in the Hotdog!
+
 
 ## 2.84
 - Wasn't doing glass mould work in factory automation

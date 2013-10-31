@@ -35,8 +35,12 @@
 				</div>
 				<div id="options" class="hidden">Options:
 					<div id="optionsItems">
-						<a class="minifloatbox" onclick=Molpy.Down()>Molpy Down</a>
-						<a class="minifloatbox" onclick=Molpy.Coma()>Coma</a>
+						<div class="minifloatbox">
+							<a onclick=Molpy.Coma()>Coma</a>
+						</div>
+						<div class="minifloatbox">
+							<a onclick=Molpy.Coma()>Coma</a>
+						</div>
 						<div id="autosaveoption" class="minifloatbox" >
 							<a onclick="Molpy.ToggleOption('autosave')">Autosave</a>
 							<div id="autosavedescription"></div>
@@ -64,6 +68,10 @@
 						<div id="castlemultibuy" class="minifloatbox" >
 							<a onclick="Molpy.ToggleOption('castlemultibuy')">Buy N Castle tools at once</a>
 							<div id="castlemultibuydescription"></div>
+						</div>
+						<div id="fadeoption" class="minifloatbox" >
+							<a onclick="Molpy.ToggleOption('fade')">Colour Scheme Fade</a>
+							<div id="fadedescription"></div>
 						</div>
 					</div>
 				</div>

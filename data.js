@@ -2771,6 +2771,7 @@ Molpy.DefineBoosts=function()
 			if(!Molpy.Boosts[print].unlocked)
 				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
 		}
+		return 0; //none needed at the moment
 	}
 	Molpy.GetBlackprintSubject=function(d)
 	{
@@ -2791,13 +2792,14 @@ Molpy.DefineBoosts=function()
 	Molpy.BlackprintIncrement=function(n)
 	{
 		var target = Molpy.GetBlackprintPages();
-		if(!target)return;
 		var b = Molpy.Boosts['Blackprints'];
 		b.power+=n;
 		if(n==1)
 			Molpy.Notify('You found a Blackprint page',1);
 		else
 			Molpy.Notify('You found '+n+' Blackprint pages',1);
+			
+		if(!target)return;
 			
 		if(b.power<target)
 			Molpy.Notify('You need  '+Molpify(target-b.power)+' more pages',1);
@@ -3474,7 +3476,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Safety Hat',desc:'It\'s green, comfortable, stylish, and protects you from all kinds of harm! Best of all, it\'s completely free!',
 		buyFunction:function()
 		{
-			Molpy.Notify('You are hit by a torrent of salt and pumkins. No brainslug for you!',1);
+			Molpy.Notify('You are hit by a torrent of salt and pumpkins. No brainslug for you!',1);
 			Molpy.LockBoost('Safety Hat');
 		}
 	});
@@ -3767,7 +3769,7 @@ Molpy.DefineBadges=function()
 		});
 	new Molpy.Badge({name:'Beachscaper',desc:'Have 200 Sand Tools'});
 	new Molpy.Badge({name:'Beachmover',desc:'Have 100 Castle Tools'});
-	new Molpy.Badge({name:'Better This Way',desc:'Purchase 50 Boosts',stats:'So you\'re telling me Badgers build the castle by firing boots at the sand with trebuches?'});
+	new Molpy.Badge({name:'Better This Way',desc:'Purchase 50 Boosts',stats:'So you\'re telling me Badgers build the castle by firing boots at the sand with trebuchets?'});
 	new Molpy.Badge({name:'Recursion ',desc:'To Earn Recursion, you must first earn Recursion'});
 	new Molpy.Badge({name:'Beachomancer',desc:'Have 1000 Sand Tools'});
 	new Molpy.Badge({name:'Beachineer',desc:'Have 500 Castle Tools'});
