@@ -850,10 +850,6 @@ Molpy.Up=function()
 			{
 				Molpy.options.showhide.tagged=Molpy.options.showhide.monumg;
 			}
-			if(version<Molpy.version) //hey let's do this every upgrade!
-			{
-				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
-			}
 			if(version<1.94)
 			{
 				if(Molpy.Got('Glass Extruder'))
@@ -876,7 +872,7 @@ Molpy.Up=function()
 				if(tt.bought&&tt.power!=1)
 				{
 					tt.power=1;
-					Molpy.Notify('Let it be known that this is an apology that Time Travel was broken, specifically to BlitzGirl <small>(<b>Knight Temporal</b> of the One True Comic, BlitzGirl the First, Mopey Molpy Mome, Ottifactor Superior, First of the True Followers of Time\'s Time, Patriarch of the Western Paradox Church, Great Pilgrim of the One True Comic, Greatest Grain on the Beach of Time, Hope of the Non-Committal Waiters, Time Architect of Signposting, Supreme Observer of Time, Saint of the Timewaiters, Cardinal Tempus Viator, Archbishop of the Past, Troubadour of Time, The Bard of The-Before, The Poetess of The-Present, Versifier of Voyages-Yet-To-Be, Most True Followerer, Beater of Paradoxes, Ghost of PresentPix, Incoming Hurricane, Omnilector of Time, Princess of Persia, Red Spiders Eyes, LaPetite BlitzGirl, Sister in Waiting, Big KnowItAll, Blitzrandir, Reader, B.O.B.)</small>',1);
+					Molpy.Notify(BeanishToCuegish(BlitzGirl.Apology),1);
 				}
 			}
 			if(version<2.8)
@@ -907,6 +903,10 @@ Molpy.Up=function()
 						Molpy.Notify('That should not have unlocked quite yet. A higher Logicat Level is needed.');
 					}
 				}
+			}
+			if(version<Molpy.version) //hey let's do this every upgrade!
+			{
+				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
 				Molpy.UnlockBoost('Safety Hat');
 			}
 			
