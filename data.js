@@ -572,7 +572,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Overcompensating',desc: function(me){
 		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
-		,sand:987645,castles:321,icon:'overcompensating',startPower:1.05});
+		,sand:987645,castles:321,icon:'overcompensating',startPower:1.5});
 	new Molpy.Boost({name:'Doublepost',desc:'During LongPix, Castle Tools activate a second time',
 		sand:'650K',castles:4000,icon:'doublepost'});
 	new Molpy.Boost({name:'Coma Molpy Style',desc: 
@@ -3316,7 +3316,8 @@ Molpy.DefineBoosts=function()
 		{
 			Molpy.SpendGlassChips(amount);
 			Molpy.Boosts['Tool Factory'].power+=amount;
-			if((Molpy.SandTools['Bucket'].amount>=7470||Molpy.CastleTools['NewPixBot'].amount>=1515)&&Molpy.Got('Tool Factory')&&!isFinite(Molpy.sandPermNP))Molpy.UnlockBoost('Sand to Glass');
+			if(Molpy.SandTools['Bucket'].amount>=7470&&Molpy.Got('Tool Factory')&&!isFinite(Molpy.sandPermNP))Molpy.UnlockBoost('Sand to Glass');
+			if(Molpy.CastleTools['NewPixBot'].amount>=1515&&Molpy.Got('Tool Factory')&&!isFinite(Molpy.castles))Molpy.UnlockBoost('Castles to Glass');
 		}
 	}
 	Molpy.MakeTFOrder=function()
@@ -3395,8 +3396,8 @@ Molpy.DefineBoosts=function()
 		,sand:800,castles:20,className:'toggle'
 	});
 	
-	new Molpy.Boost({name:'Sand to Glass',desc:'When Sand is Infinite, Sand Tools produce Glass Chips', sand:Infinity,castles:Infinity,glass:'200K',group:'hpt'});
-	new Molpy.Boost({name:'Castles to Glass',desc:'When Castles are Infinite, Castle Tools produce Glass Chips', sand:Infinity,castles:Infinity,glass:'2M',group:'hpt'});
+	new Molpy.Boost({name:'Sand to Glass',desc:'When Sand is Infinite, Sand Tools produce Glass Chips for Tool Factory', sand:Infinity,castles:Infinity,glass:'200K',group:'hpt'});
+	new Molpy.Boost({name:'Castles to Glass',desc:'When Castles are Infinite, Castle Tools produce Glass Chips for Tool Factory', sand:Infinity,castles:Infinity,glass:'2M',group:'hpt'});
 	
 	{ //#region more lyrics
 		var bdy = 'Boom De Yada';
@@ -4118,14 +4119,6 @@ Molpy.CheckRewards=function(automationLevel)
 		Molpy.Boosts['Technicolour Dream Cat'].department=1;
 	}
 	
-	if(Molpy.Got('Air Drop'))Molpy.Boosts['Schizoblitz'].department=1;
-	if(Molpy.Got('Free Advice'))
-	{
-		Molpy.Boosts['Glass Ceiling 0'].department=1;
-		if(Molpy.Earned('Beachomancer'))
-			Molpy.Boosts['BBC'].department=1;
-	}
-	
 	Molpy.Boosts['RRR'].department=1*(Molpy.Boosts['Panther Salve'].power > 200);	
 	Molpy.Boosts['Redundant Raptor'].logic=2*(Molpy.Boosts['Panther Salve'].power > 500);	
 	Molpy.Boosts['Catamaran'].logic=4*(Molpy.Boosts['Panther Salve'].power > 800);
@@ -4183,6 +4176,14 @@ Molpy.CheckRewards=function(automationLevel)
 	b=1*Molpy.Got('Ceiling Disintegrated');
 	Molpy.Boosts['Glass Ceiling 10'].department=b;
 	Molpy.Boosts['Glass Ceiling 11'].department=b;
+	
+	if(Molpy.Got('Air Drop'))Molpy.Boosts['Schizoblitz'].department=1;
+	if(Molpy.Got('Free Advice'))
+	{
+		Molpy.Boosts['Glass Ceiling 0'].department=1;
+		if(Molpy.Earned('Beachomancer'))
+			Molpy.Boosts['BBC'].department=1;
+	}
 	
 }
 	

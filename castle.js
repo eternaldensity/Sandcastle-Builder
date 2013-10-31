@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.86;
+		Molpy.version=2.87;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -779,7 +779,7 @@ Molpy.Up=function()
 			}
 			if(version<0.941)
 			{
-				Molpy.Boosts['Overcompensating'].power=1.05;				
+				Molpy.Boosts['Overcompensating'].power=1.5;				
 			}
 			if(version<0.95)
 			{
@@ -2240,7 +2240,7 @@ Molpy.Up=function()
 						Molpy.CheckBuyUnlocks();
 					}
 				}
-				if(Molpy.Got('Temporal Duplication')&&!Molpy.Earned(this.name+' Shop Failed'))
+				if(Molpy.Got('Temporal Duplication'))
 				{
 					this.amount+=bought;
 					this.temp+=bought;
@@ -2387,7 +2387,7 @@ Molpy.Up=function()
 						Molpy.CheckBuyUnlocks();
 					}
 				}
-				if(Molpy.Got('Temporal Duplication')&&!Molpy.Earned(this.name+' Shop Failed'))
+				if(Molpy.Got('Temporal Duplication'))
 				{
 					this.amount+=bought;
 					this.temp+=bought;

@@ -18,6 +18,13 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.87
+- Fixed Glass Ceiling 0 not becoming available due to GCB Badge overwriting its department flag
+- Made a way to unlock Castles to Glass
+- Clarified descriptions of Sand to Glass and Castles to Glass a little
+- Buffed Overcompensating because reasons
+- Undid yesterday's nerf to Temporal Duplication
+
 ## 2.86
 - Added an extra little feature to the Flashy Gif badge (which took me some nopix of fiddling because it is fun to try to new things with css)
 - You can how earn blackprint pages even when there is no need to do so.
