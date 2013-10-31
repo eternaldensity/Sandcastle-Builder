@@ -1296,7 +1296,7 @@ Molpy.Up=function()
 				g('export').className='unhidden';
 			}
 		}
-		var fadeClasses=['body','.floatbox','.lootbox','.minifloatbox','.floatsquare','.infobox','.icon','.descshow','.deschide','.badge.shop h1'];
+		var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1';
 		var fadeAttrib=['-webkit-transition','-moz-transition','-o-transition','-ms-transition','transition'];
 		
 		Molpy.AdjustFade=function()
@@ -1307,12 +1307,9 @@ Molpy.Up=function()
 				val='all '+Molpy.options.fade/2+'s ease-out';
 			}
 			if(!$)return;
-			for(var i in fadeClasses)
-			{
-				var fc = $(fadeClasses[i]);
-				for(var j in fadeAttrib)
-					fc.css(fadeAttrib[j],val);
-			}
+			var fc = $(fadeClasses);
+			for(var j in fadeAttrib)
+				fc.css(fadeAttrib[j],val);			
 		}
 		
 		/* In which the mathematical methods of sandcastles are described
@@ -2015,6 +2012,7 @@ Molpy.Up=function()
 			{
 				multiplier+=0.1*Molpy.BadgesOwned;
 			}
+			multiplier*=Molpy.BBC();
 			var glassUse=Molpy.CalcGlassUse();
 			multiplier*=Math.max(0,((100-glassUse)/100));
 			Molpy.globalSpmNPMult=multiplier;

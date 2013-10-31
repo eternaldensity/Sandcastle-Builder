@@ -124,7 +124,6 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Buccaneer'))mult*=2;
 			if(Molpy.Got('Flying Buckets'))mult*=Molpy.CastleTools['Trebuchet'].amount;
 			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
-			mult*=Molpy.BBC();
 			return mult*baserate;			
 		},
 		nextThreshold:1
@@ -143,7 +142,6 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('The Forty'))mult*=40;
 			if(Molpy.Got('Human Cannonball'))mult*=2*Molpy.CastleTools['Trebuchet'].amount;
 			if(Molpy.Got('Glass Ceiling 2'))mult*=Molpy.GlassCeilingMult();
-			mult*=Molpy.BBC();
 			return baserate*mult;
 		},
 		nextThreshold:2
@@ -168,7 +166,6 @@ Molpy.DefineSandTools=function()
 			}
 			if(Molpy.Got('Fly the Flag'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
 			if(Molpy.Got('Glass Ceiling '+4))mult*=Molpy.GlassCeilingMult();
-			mult*=Molpy.BBC();
 			return baserate*mult;
 		},
 		nextThreshold:4
@@ -199,7 +196,6 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Up Up and Away'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
 			if(Molpy.Got('Glass Ceiling 6'))mult*=Molpy.GlassCeilingMult();
 			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
-			mult*=Molpy.BBC();
 			return baserate*mult;
 		},
 		nextThreshold:8
@@ -218,7 +214,6 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Bag Puns'))mult*=2;
 			if(Molpy.Got('Air Drop'))mult*=5;
 			if(Molpy.Got('Glass Ceiling 8'))mult*=Molpy.GlassCeilingMult();
-			mult*=Molpy.BBC();
 			return baserate*mult;
 		},
 		nextThreshold:6000
@@ -226,7 +221,7 @@ Molpy.DefineSandTools=function()
 	
 	new Molpy.SandTool({name:'LaPetite',commonName:'LaPetite|LaPetites|rescued',desc:'Rescues sand via raft',price:DeMolpify('2WQ'),
 		spmNP:function(){
-			var baserate =DeMolpify('2WWWW');
+			var baserate =2e148;
 			var mult=1;
 			if(Molpy.Got('Glass Ceiling 10'))mult*=Molpy.GlassCeilingMult();
 			if(Molpy.Got('Frenchbot'))
@@ -2274,7 +2269,7 @@ Molpy.DefineBoosts=function()
 		if(Molpy.Got('BBC')&&Molpy.Boosts['BBC'].power>0)
 		{
 			m=20;
-			if(Molpy.Got('RB')) m*=Math.pow(200,Molpy.Boosts['RB'].bought);
+			m*=Math.pow(200,Molpy.Boosts['RB'].bought);
 		}
 		return m;
 	}
@@ -2329,7 +2324,7 @@ Molpy.DefineBoosts=function()
 		var p = 33;
 		if(Molpy.Got('WWB'))
 		{
-			p*=Math.pow(2,Molpy.Boosts['WWB'].bought-4)*Molpy.CastleTools['Scaffold'].amount;
+			p*=Math.pow(2,Molpy.Boosts['WWB'].bought-5)*Molpy.CastleTools['Scaffold'].amount;
 		}
 		return Math.pow(p,Molpy.GlassCeilingCount());
 	}
@@ -3216,7 +3211,7 @@ Molpy.DefineBoosts=function()
 		{	
 			if(!me.bought) return 'How are you seeing this?';
 			var str = 'Multiplies the effect of each Glass Ceiling by ';
-			str+=Molpify(Math.pow(2,me.bought-4),3)+' times the number of Scaffolds owned.';
+			str+=Molpify(Math.pow(2,me.bought-5),3)+' times the number of Scaffolds owned.';
 			str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+(444+77*me.bought)+' Scaffolds to hire more Beanies.';
 			return str;
 		}

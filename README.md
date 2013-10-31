@@ -24,6 +24,7 @@ For personal amusement only.
 - Prevent Mustard/Infinite sand dig clicks
 - Fixed some typos
 - Gave up on description expand/shrink animation due to issues
+- BBC is included in the global sand rate rather than the individual tool rate
 
 ## 2.85
 - Fixed Logicat issue caused by Bacon Mustard in the level reduction
