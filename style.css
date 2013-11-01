@@ -160,13 +160,13 @@ a:active
 	background-size:533px 395px;
 	cursor:pointer;
 	z-index:10;
+	border-width: 1px;
+	border-style: solid;
 	-webkit-transition: opacity 0.1s ease-out,-webkit-transform 0.1s ease-out;
 	-moz-transition: opacity 0.1s ease-out,-moz-transform 0.1s ease-out;
 	-ms-transition: opacity 0.1s ease-out,-ms-transform 0.1s ease-out;
 	-o-transition: opacity 0.1s ease-out,-o-transform 0.1s ease-out;
 	transition: opacity 0.1s ease-out,transform 0.1s ease-out;
-	border-width: 1px;
-	border-style: solid;
 }
 #beach:hover
 {

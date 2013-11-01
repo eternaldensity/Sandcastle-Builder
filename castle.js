@@ -1309,8 +1309,8 @@ Molpy.Up=function()
 				g('export').className='unhidden';
 			}
 		}
-		var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1, #beach';
-		var fadeAttrib=['-webkit-transition','-moz-transition','-o-transition','-ms-transition','transition'];
+		var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1';
+		var vendors=['-webkit-','-moz-','-o-','-ms-',''];
 		
 		Molpy.AdjustFade=function()
 		{
@@ -1321,8 +1321,16 @@ Molpy.Up=function()
 			}
 			if(!$)return;
 			var fc = $(fadeClasses);
-			for(var j in fadeAttrib)
-				fc.css(fadeAttrib[j],val);			
+			for(var j in vendors)
+				fc.css(vendors[j]+'transition',val);	
+				
+			if(Molpy.options.fade)
+			{
+				val=',background-image '+Molpy.options.fade/2+'s ease-out';
+			}		
+			var fc = $('#beach');
+			for(var j in vendors)
+				fc.css(vendors[j]+'transition','opacity 0.1s ease-out,'+vendors[j]+'transform 0.1s ease-out'+val);
 		}
 		
 		/* In which the mathematical methods of sandcastles are described

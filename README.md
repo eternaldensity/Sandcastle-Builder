@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.881
+- Prevent newpix background image transition from messing with the old opacity and transform transitions
+
 ## 2.88
 - Kitties Galore was in the department always instead of only after 64 clicks!
 - Fade now applies to the newpix also
