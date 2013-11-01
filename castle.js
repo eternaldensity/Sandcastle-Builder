@@ -596,19 +596,19 @@ Molpy.Up=function()
 					me.currentActive=parseInt(ice[5]);
 					me.temp=parseInt(ice[6])||0;
 					me.totalGlassBuilt=parseInt(ice[7])||0;
-					me.temp=totalGlassBuilt(ice[8])||0;
+					me.totalGlassDestroyed=temp(ice[8])||0;
 					Molpy.CastleToolsOwned+=me.amount;
 					me.refresh();
 				}
 				else
 				{
 					me.amount=0;me.bought=0;
+					me.totalCastlesBuilt=0;
 					me.totalCastlesDestroyed=0;
 					me.totalCastlesWasted=0;
-					me.totalCastlesBuilt=0;
 					me.currentActive=0;
-					me.totalGlassDestroyed=0;
 					me.totalGlassBuilt=0;
+					me.totalGlassDestroyed=0;
 				}
 			
 			}
