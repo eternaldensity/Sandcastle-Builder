@@ -1321,6 +1321,7 @@ Molpy.Up=function()
 			if(!isFinite(Molpy.sand))amount=0; //because why bother?
 			Molpy.sandDug+=amount;
 			Molpy.sand+=amount;
+			if(isNaN(Molpy.sandDug))Molpy.sandDug=0;
 			
 			var gap = Math.ceil(Molpy.sand)-Molpy.sand;
 			if(gap && gap < sandEpsilon)
@@ -1765,6 +1766,7 @@ Molpy.Up=function()
 			Molpy.Dig(newsand);
 			if(Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(newsand,1));
 			Molpy.sandManual+=newsand;
+			if(isNaN(Molpy.sandManual))Molpy.sandManual=0;
 			Molpy.beachClicks+=1;
 			Molpy.CheckClickAchievements();
 			if( Molpy.ninjad==0&&Molpy.CastleTools['NewPixBot'].amount)

@@ -23,6 +23,7 @@ For personal amusement only.
 - Fade now applies to the newpix also
 - Frivolous: prevent blank space when past T** E** with placeholders
 - Expando now shrinks everything when you disable him (with a milliLongPix wait so you can toggle him off and on without losing him)
+- Demustard sandDug and sandManual
 
 ## 2.87
 - Fixed Glass Ceiling 0 not becoming available due to GCB Badge overwriting its department flag
