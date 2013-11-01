@@ -22,6 +22,7 @@ For personal amusement only.
 - Kitties Galore was in the department always instead of only after 64 clicks!
 - Fade now applies to the newpix also
 - Frivolous: prevent blank space when past T** E** with placeholders
+- Expando now shrinks everything when you disable him (with a milliLongPix wait so you can toggle him off and on without losing him)
 
 ## 2.87
 - Fixed Glass Ceiling 0 not becoming available due to GCB Badge overwriting its department flag

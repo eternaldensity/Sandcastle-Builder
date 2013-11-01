@@ -4569,6 +4569,7 @@ Molpy.Up=function()
 		if(Molpy.scrumptiousDonuts>0){
 			Molpy.scrumptiousDonuts--;
 		}
+		Molpy.shrinkAll=0;
 	}
 	
 	Molpy.TickHover=function(me,repaint)
@@ -4580,6 +4581,9 @@ Molpy.Up=function()
 			{
 				me.hoverOnCounter=1;//force show if not shown
 			}
+		}else
+		{
+			if(Molpy.shrinkAll)me.hoverOffCounter=Math.ceil(Molpy.fps*3.6);
 		}
 		if(me.hoverOnCounter>0)
 		{	

@@ -3468,6 +3468,7 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		me.power=1*!me.power;
+		if(!me.power)Molpy.shrinkAll=1;
 		me.hoverOnCounter=1
 	}
 	
