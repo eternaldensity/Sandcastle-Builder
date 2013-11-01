@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.88
+- Kitties Galore was in the department always instead of only after 64 clicks!
+- Fade now applies to the newpix also
+- Frivolous: prevent blank space when past T** E** with placeholders
+
 ## 2.87
 - Fixed Glass Ceiling 0 not becoming available due to GCB Badge overwriting its department flag
 - Made a way to unlock Castles to Glass

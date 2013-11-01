@@ -796,7 +796,7 @@ Molpy.DefineBoosts=function()
 		'During LongPix, Ninja Stealth is incremented by 3 per NP. Is there an Echo in here?',
 			sand:'1.5M',castles:240,icon:'activeninja',group:'ninj'});
 	new Molpy.Boost({name:'Kitties Galore',desc:'Even more '+Molpy.redactedWords,
-		sand:'2.5M',castles:4400,icon:'kittiesgalore',department:1});	
+		sand:'2.5M',castles:4400,icon:'kittiesgalore'});	
 	
 	new Molpy.Boost({name:'HAL-0-Kitty',desc:'NewPixBots build an extra Castle per 9 '+Molpy.redactedWords,
 		sand:9000,castles:2001,icon:'halokitty',group:'cyb'});

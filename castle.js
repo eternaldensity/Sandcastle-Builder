@@ -1297,7 +1297,7 @@ Molpy.Up=function()
 				g('export').className='unhidden';
 			}
 		}
-		var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1';
+		var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1, #beach';
 		var fadeAttrib=['-webkit-transition','-moz-transition','-o-transition','-ms-transition','transition'];
 		
 		Molpy.AdjustFade=function()
@@ -4385,9 +4385,9 @@ Molpy.Up=function()
 		{
 			Molpy.UnlockBoost('Overcompensating');
 		}
-		Molpy.TimePeriod=["Here be Dragons"];
-		Molpy.TimeEra=["Here be Dragons"];
-		Molpy.TimeEon=["Here be Dragons"];
+		Molpy.TimePeriod=["Here be Kitties"];
+		Molpy.TimeEra=["Here be Kitties"];
+		Molpy.TimeEon=["Here be Kitties"];
 		for(var i in Molpy.Periods)
 		{
 			var per = Molpy.Periods[i];
@@ -4418,14 +4418,23 @@ Molpy.Up=function()
 	}
 	Molpy.UpdateBeach=function()
 	{
+		var x = 200+Math.floor(Math.random()*200);
+		var y = 200+Math.floor(Math.random()*400);
 		if(Molpy.Boosts['Chromatic Heresy'].power&&Molpy.options.otcol)
 		{	
-			g('beach').style.background='url(http://178.79.159.24/Time/otcolorization/'+Molpy.newpixNumber+')';
-			g('beach').style.backgroundSize='contain';	
+			if(Molpy.newpixNumber>3094)			
+				g('beach').style.background='url(http://placekitten.com/'+x+'/'+y+')';
+			else
+				g('beach').style.background='url(http://178.79.159.24/Time/otcolorization/'+Molpy.newpixNumber+')';
 		}else{
-			g('beach').style.background='url(http://xkcd.mscha.org/frame/'+Molpy.newpixNumber+')';
-			g('beach').style.backgroundSize='contain';	
+			if(Molpy.newpixNumber>3094)			
+				g('beach').style.background='url(http://placekitten.com/g/'+x+'/'+y+')';
+			else
+				g('beach').style.background='url(http://xkcd.mscha.org/frame/'+Molpy.newpixNumber+')';
 		}
+		g('beach').style.backgroundSize='contain';	
+		g('beach').style.backgroundRepeat='no-repeat';	
+		g('beach').style.backgroundPosition='center';	
 	}
 	/* In which we figure out how to draw stuff
 	+++++++++++++++++++++++++++++++++++++++++++*/
