@@ -596,7 +596,7 @@ Molpy.Up=function()
 					me.currentActive=parseInt(ice[5]);
 					me.temp=parseInt(ice[6])||0;
 					me.totalGlassBuilt=parseInt(ice[7])||0;
-					me.totalGlassDestroyed=temp(ice[8])||0;
+					me.totalGlassDestroyed=parseInt(ice[8])||0;
 					Molpy.CastleToolsOwned+=me.amount;
 					me.refresh();
 				}
