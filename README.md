@@ -27,6 +27,7 @@ For personal amusement only.
 - Tiny nerf to LaPetite again
 - BBC wasn't causing recalculate of dig rates on toggle
 - Game and per-tool glass totals are now saved. (this is quite separate to glass chip storage)
+- JDip countdown is sanitized to 0 if not a number, or negative
 
 ## 2.87
 - Fixed Glass Ceiling 0 not becoming available due to GCB Badge overwriting its department flag

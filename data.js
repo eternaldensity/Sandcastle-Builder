@@ -3666,6 +3666,7 @@ Molpy.DefineBadges=function()
 		countdown/=(bot.buildC()*bot.amount*bot.amount);
 		if(Molpy.Got('Doublepost'))countdown/=2;
 		countdown/=Molpy.globalCastleMult; //this is a bit approximate because of its rounding, but close enough for this, hopefully
+		if(isNaN(countdown)||countdown<0)countdown=0;
 		if(Molpy.Boosts['Coma Molpy Style'].power)
 		{
 			level=Math.floor(level/2);
@@ -3686,7 +3687,7 @@ Molpy.DefineBadges=function()
 	}
 	Molpy.MaxDipLevel=function(np)
 	{
-		var maxDipLevel=Math.floor(Math.pow(2,Math.max(0,np*np/5-100000)+np/2-20));
+		var maxDipLevel=Math.floor(Math.pow(2,Math.max(0,(np-200))*Math.max(0,np-200)/250+np/2-20));
 		return maxDipLevel;
 	}
 	Molpy.RewardDipLevel=function(level)
