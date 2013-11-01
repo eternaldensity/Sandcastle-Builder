@@ -245,6 +245,8 @@ Molpy.Up=function()
 		Molpy.totalCastlesDown=0; //cumulative castles built and then wiped by Molpy Down throughout all games
 		Molpy.globalCastleMult=1; //for boosting castle gains
 		Molpy.lGlass=0;
+		Molpy.totalGlassBuilt=0;
+		Molpy.totalGlassDestroyed=0;
 		
 		
 		Molpy.options=[];
@@ -414,12 +416,15 @@ Molpy.Up=function()
 			(Molpy.redactedClicks)+s+
 			(Molpy.highestNPvisited)+s+
 			(Molpy.totalCastlesDown)+s+
+			(Molpy.totalGlassBuilt)+s+
+			(Molpy.totalGlassDestroyed)+s+
+			
 			p;
 			//sand tools:
 			for(var cancerbabies in Molpy.SandTools)
 			{
 				var cb = Molpy.SandTools[cancerbabies];
-				thread += cb.amount+c+cb.bought+c+cb.totalSand+c+cb.temp+s;
+				thread += cb.amount+c+cb.bought+c+cb.totalSand+c+cb.temp+c+cb.totalGlass+s;
 			}
 			thread+=p;
 			//castletools:
@@ -427,7 +432,7 @@ Molpy.Up=function()
 			{
 				var cb = Molpy.CastleTools[cancerbabies];
 				thread += cb.amount+c+cb.bought+c+cb.totalCastlesBuilt+c+cb.totalCastlesDestroyed+c+
-				cb.totalCastlesWasted+c+cb.currentActive+c+cb.temp+s;
+				cb.totalCastlesWasted+c+cb.currentActive+c+cb.temp+c+cb.totalGlassBuilt+c+cb.totalGlassDestroyed+s;
 			}
 			thread+=p;
 			threads.push(thread);
@@ -550,6 +555,8 @@ Molpy.Up=function()
 			if(version < 2.1)
 				Molpy.tempIntruderBots=parseFloat(pixels[27]);
 			
+			Molpy.totalGlassBuilt=parseInt(pixels[27])||0;
+			Molpy.totalGlassDestroyed=parseFloat(pixels[28])||0;
 			
 			pixels=thread[5].split(s);
 			Molpy.SandToolsOwned=0;
@@ -563,12 +570,13 @@ Molpy.Up=function()
 					me.bought=parseInt(ice[1]);
 					me.totalSand=parseFloat(ice[2]);
 					me.temp=parseInt(ice[3])||0;
+					me.totalGlass=parseInt(ice[4])||0;
 					Molpy.SandToolsOwned+=me.amount;
 					me.refresh();
 				}
 				else
 				{
-					me.amount=0;me.bought=0;me.totalSand=0;
+					me.amount=0;me.bought=0;me.totalSand=0;me.totalGlass=0;
 				}
 			}
 			pixels=thread[6].split(s);
@@ -587,6 +595,8 @@ Molpy.Up=function()
 					me.totalCastlesWasted=parseFloat(ice[4]);
 					me.currentActive=parseInt(ice[5]);
 					me.temp=parseInt(ice[6])||0;
+					me.totalGlassBuilt=parseInt(ice[7])||0;
+					me.temp=totalGlassBuilt(ice[8])||0;
 					Molpy.CastleToolsOwned+=me.amount;
 					me.refresh();
 				}
@@ -597,6 +607,8 @@ Molpy.Up=function()
 					me.totalCastlesWasted=0;
 					me.totalCastlesBuilt=0;
 					me.currentActive=0;
+					me.totalGlassDestroyed=0;
+					me.totalGlassBuilt=0;
 				}
 			
 			}
@@ -1632,7 +1644,7 @@ Molpy.Up=function()
 		}
 		Molpy.DigGlass=function(amount)
 		{
-			Molpy.glassDug+=amount;
+			Molpy.totalGlassBuilt+=amount;
 			Molpy.Boosts['Tool Factory'].power+=amount;
 		}
 		Molpy.DestroyGlass=function(amount)
@@ -2346,7 +2358,6 @@ Molpy.Up=function()
 			this.totalCastlesWasted=0; //those destroyed for no gain
 			this.totalGlassBuilt=0;
 			this.totalGlassDestroyed=0;
-			this.totalGlassWasted=0; 
 			this.currentActive=0;
 			this.nextThreshold=args.nextThreshold;
 			this.pic=args.pic;
@@ -2450,7 +2461,7 @@ Molpy.Up=function()
 						}
 						else
 						{
-							break;
+							break; //no wastage
 						}
 					}else{
 						if(Molpy.castles >= destroyN)
@@ -4133,6 +4144,7 @@ Molpy.Up=function()
 		{
 			var me = Molpy.SandTools[i];
 			me.totalSand+=me.storedTotalSpmNP;
+			me.totalGlass+=me.storedTotalGpmNP;
 			if(Molpy.showStats&&me.hovered<0)me.hover();
 		}
 		

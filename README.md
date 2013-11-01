@@ -26,6 +26,7 @@ For personal amusement only.
 - Demustard sandDug and sandManual
 - Tiny nerf to LaPetite again
 - BBC wasn't causing recalculate of dig rates on toggle
+- Game and per-tool glass totals are now saved. (this is quite separate to glass chip storage)
 
 ## 2.87
 - Fixed Glass Ceiling 0 not becoming available due to GCB Badge overwriting its department flag
