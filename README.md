@@ -22,6 +22,9 @@ For personal amusement only.
 - Fixed Molpy Down/Coma button layout :P
 - Tool Factory glass display
 - Improved detection on when to recalc glass rate
+- New high level Logicat reward
+- Completed missing Bacon feature
+- Updated Tool Factory description slightly but significantly
 
 ## 2.882
 - Missing Molpy Down button

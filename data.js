@@ -265,7 +265,14 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Bacon'))
 				baseval*= 10;
 			return Math.floor(baseval);
-		},destroyG:0,buildG:2,
+		},destroyG:0,
+		buildG:function()
+		{
+			var baseval=2;
+			if(Molpy.Got('Bacon'))
+				baseval*= 10;
+			return baseval;
+		},
 		nextThreshold:1
 	});
 	
@@ -3300,7 +3307,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Tool Factory',desc:
 		function(me)
 		{
-			var str='Produces Tools from Glass Chips';
+			var str='Produces Glass Tools from Glass Chips';
 			if(!me.bought)return str;
 			if(Molpy.HasGlassChips(1000))
 			{
@@ -3344,7 +3351,7 @@ Molpy.DefineBoosts=function()
 			while(pow&&t--)
 			{
 				var tool=Molpy.tfOrder[t];
-				if(!isFinite(tool.price))
+				if(!isFinite(tool.price)&&Molpy.Got('Glass Ceiling '+t))
 				{
 					var cost = 1000*(t+1);
 					if(pow>=cost)
@@ -3376,6 +3383,7 @@ Molpy.DefineBoosts=function()
 		sand:'Infinite',castles:'Infinite',glass:'60K'
 	});
 	
+	new Molpy.Boost({name:'Backing Out',desc:'Castle Tools activate from smallest to largest',glass:'5M',logic:120});
 	
 	Molpy.glassCeilingDescText.push('Sand rate of LaPetite');
 	Molpy.glassCeilingDescText.push('Castles produced by Beanie Builders');

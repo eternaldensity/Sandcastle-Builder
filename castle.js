@@ -4267,11 +4267,19 @@ Molpy.Up=function()
 		Molpy.destroyNotifyFlag=0;
 		while(activateTimes--)
 		{
-			var i = Molpy.CastleToolsN;
-			while(i--)
+			if(Molpy.Got('Backing Out'))
 			{
-				var t = Molpy.CastleToolsById[i];
-				t.DestroyPhase();
+				for(i in Molpy.CastleToolsN)
+				{
+					Molpy.CastleToolsById[i].DestroyPhase();
+				}
+			}else
+			{
+				var i = Molpy.CastleToolsN;
+				while(i--)
+				{
+					Molpy.CastleToolsById[i].DestroyPhase();
+				}
 			}
 			
 			i = Molpy.CastleToolsN;
