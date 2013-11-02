@@ -3184,8 +3184,8 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		var glass=Math.pow(1.02,gmf.bought)*1000000;
-		if(!Molpy.glass >=glass) return;
-		Molpy.SpendGlass(glass);
+		if(!Molpy.HasGlassBlocks(glass)) return;
+		Molpy.SpendGlassBlocks(glass);
 		gmf.power++;
 		if(gmf.power>800)
 		{
@@ -3383,8 +3383,6 @@ Molpy.DefineBoosts=function()
 		sand:'Infinite',castles:'Infinite',glass:'60K'
 	});
 	
-	new Molpy.Boost({name:'Backing Out',desc:'Castle Tools activate from smallest to largest',glass:'5M',logic:120});
-	
 	Molpy.glassCeilingDescText.push('Sand rate of LaPetite');
 	Molpy.glassCeilingDescText.push('Castles produced by Beanie Builders');
 	Molpy.MakeGlassCeiling(10);
@@ -3500,6 +3498,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Safety Pumpkin',desc:'It\'s oranage, comfortable, stylish, and reduces the likelihood of industrial accidents!',
 		glass:'20K'
 	});
+	
+	new Molpy.Boost({name:'Backing Out',desc:'Castle Tools activate from smallest to largest, and each builds before the next destroys',glass:'6M',logic:120});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],

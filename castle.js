@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.89;
+		Molpy.version=2.891;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -920,6 +920,21 @@ Molpy.Up=function()
 						Molpy.LockBoost('Bacon');
 						Molpy.Notify('That should not have unlocked quite yet. A higher Logicat Level is needed.');
 					}
+				}
+			}
+			if(version<2.891)
+			{
+				if(Molpy.Got('Safety Hat'))
+				{
+					Molpy.Boosts['Safety Hat'].bought=0;
+					Molpy.Boosts['Safety Hat'].unlocked=0;
+					Molpy.BoostsOwned--;
+				}
+				if(Molpy.Got('Backing Out')&&Molpy.Boosts['Logicat'].bought<120)
+				{
+					Molpy.Boosts['Backing Out'].bought=0;
+					Molpy.Boosts['Backing Out'].unlocked=0;
+					Molpy.BoostsOwned--;
 				}
 			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
@@ -4271,7 +4286,10 @@ Molpy.Up=function()
 			{
 				for(i in Molpy.CastleToolsN)
 				{
-					Molpy.CastleToolsById[i].DestroyPhase();
+					var t = Molpy.CastleToolsById[i];
+					t.DestroyPhase();
+					if(t.name!='NewPixBot')
+						t.BuildPhase();
 				}
 			}else
 			{
@@ -4280,14 +4298,14 @@ Molpy.Up=function()
 				{
 					Molpy.CastleToolsById[i].DestroyPhase();
 				}
-			}
 			
-			i = Molpy.CastleToolsN;
-			while(i--)
-			{
-				var t = Molpy.CastleToolsById[i];
-				if(t.name!='NewPixBot')
-					t.BuildPhase();
+				i = Molpy.CastleToolsN;
+				while(i--)
+				{
+					var t = Molpy.CastleToolsById[i];
+					if(t.name!='NewPixBot')
+						t.BuildPhase();
+				}
 			}
 		}
 		Molpy.destroyNotifyFlag=1;

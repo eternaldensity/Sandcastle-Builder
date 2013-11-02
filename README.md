@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.891
+- Fixed ch*rped up boost order, and tried to fix the side effects.
+- Errors in filling glass mould fixed
+- Updated Backing Out a bit and fixed typo in price
+
 ## 2.89
 - Fixed Molpy Down/Coma button layout :P
 - Tool Factory glass display
