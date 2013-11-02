@@ -1509,7 +1509,7 @@ Molpy.DefineBoosts=function()
 			inc/=(Molpy.Boosts['Sand Purifier'].power+2)
 		if(Molpy.Got('Badgers'))
 		{
-			inc*=Math.pow(.99,Math.floor(Math.BadgesOwned/10));
+			inc*=Math.pow(.99,Math.floor(Molpy.BadgesOwned/10));
 		}
 		return inc;
 	}
@@ -2139,12 +2139,13 @@ Molpy.DefineBoosts=function()
 	stats:function(me)
 	{
 		var str ='Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 10 Glass Blocks per use.';
-		if(me.power <=200)
-			str+='<br>Speed is at '+me.power+' out of 200';
-		else if(me.power<=500)
-			str+='<br>Speed is at '+me.power+' out of 500';
-		else if(me.power<=800)
-			str+='<br>Speed is at '+me.power+' out of 800';
+		var p = Math.abs(me.power);
+		if(p <=200)
+			str+='<br>Speed is at '+p+' out of 200';
+		else if(p<=500)
+			str+='<br>Speed is at '+p+' out of 500';
+		else if(p<=800)
+			str+='<br>Speed is at '+p+' out of 800';
 		return str;
 	}
 	,group:'bean',className:'toggle',icon:'panthersalve'});

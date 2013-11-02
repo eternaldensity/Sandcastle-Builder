@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.882
+- Missing Molpy Down button
+- Panther Salve negative value when disabled was being used in stats display
+- Incorrect variable name in Badgers boost
+
 ## 2.881
 - Prevent newpix background image transition from messing with the old opacity and transform transitions
 
