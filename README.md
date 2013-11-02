@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.89
+- Fixed Molpy Down/Coma button layout :P
+- Tool Factory glass display
+- Improved detection on when to recalc glass rate
+
 ## 2.882
 - Missing Molpy Down button
 - Panther Salve negative value when disabled was being used in stats display

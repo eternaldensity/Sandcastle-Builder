@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.882;
+		Molpy.version=2.89;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -247,7 +247,8 @@ Molpy.Up=function()
 		Molpy.lGlass=0;
 		Molpy.totalGlassBuilt=0;
 		Molpy.totalGlassDestroyed=0;
-		
+		Molpy.toolsBuilt=0;
+		Molpy.toolsBuiltTotal=0;
 		
 		Molpy.options=[];
 		Molpy.DefaultOptions=function()
@@ -1048,6 +1049,7 @@ Molpy.Up=function()
 				Molpy.redactedClicks=0;
 				Molpy.timeTravels=0;
 				Molpy.totalCastlesDown=0;
+				Molpy.toolsBuiltTotal=0;
 				Molpy.CastleTools['NewPixBot'].totalCastlesBuilt=0; //because we normally don't reset this.
 				for (var i in Molpy.BadgesById)
 				{
@@ -1336,6 +1338,7 @@ Molpy.Up=function()
 		/* In which the mathematical methods of sandcastles are described
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 		var sandEpsilon = 0.0000001; //because floating point errors
+		var previousSand=0;
 		Molpy.Dig=function(amount)
 		{
 			if(!isFinite(Molpy.sand))amount=0; //because why bother?
@@ -1351,7 +1354,8 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Clerical Error');
 			}
 			Molpy.SandToCastles();
-			if(amount&&!isFinite(Molpy.sand))Molpy.recalculateDig=1;
+			if(isFinite(previousSand)!=isFinite(Molpy.sand))Molpy.recalculateDig=1;
+			previousSand=Molpy.sand;
 			
 			if(Molpy.sand>=50){
 				Molpy.EarnBadge('Barn');
@@ -4096,6 +4100,7 @@ Molpy.Up=function()
 	++++++++++++++++++++++++++++++++++*/
 	Molpy.Think=function()
 	{
+		Molpy.toolsBuilt=0;
 		Molpy.SandToCastles();
 		if(! (Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].power))
 			Molpy.CheckONG();
@@ -4463,11 +4468,24 @@ Molpy.Up=function()
 	Molpy.redactedClassNames=['hidden','floatbox sand tool shop','floatbox castle tool shop',
 		'floatbox boost shop','lootbox boost loot','lootbox badge loot','lootbox badge shop'];
 	Molpy.drawFrame=0;
+	var hidClassNames=['hidden','unhidden'];
 	Molpy.Draw=function()
 	{
 		g('castlecount').innerHTML=Molpify(Molpy.castles,1) + ' castles';
 		g('sandcount').innerHTML=Molpify(Molpy.sand,1) + ' sand of ' + Molpify(Molpy.nextCastleSand,1) + ' needed';
 		g('sandrate').innerHTML=Molpify(Molpy.sandPermNP,1) + ' sand/mNP';
+		g('chipcount').innerHTML=Molpify(Molpy.Boosts['Tool Factory'].power,1) + ' chips';
+		g('chiprate').innerHTML=Molpify(Molpy.glassPermNP,1) + ' chips/mNP';
+		g('newtools').innerHTML='Built '+Molpify(Molpy.toolsBuilt,1)+' new tool'+(Molpy.toolsBuilt==1?'':'s');
+		var sInf = (Molpy.Got('Sand to Glass')&&!isFinite(Molpy.sandPermNP))*1;
+		var cInf = (Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles))*1;
+		g('castlecount').className=hidClassNames[1-cInf];
+		g('sandcount').className=hidClassNames[1-sInf];
+		g('sandrate').className=hidClassNames[1-sInf];
+		g('chipcount').className=hidClassNames[Molpy.Got('Tool Factory')];
+		g('chiprate').className=hidClassNames[Molpy.Got('Sand to Glass')];
+		g('newtools').className=hidClassNames[Molpy.Got('Tool Factory')];
+		
 		g('newpixnum').innerHTML='Newpix '+Molpify(Molpy.newpixNumber,3);
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;

@@ -3358,7 +3358,8 @@ Molpy.DefineBoosts=function()
 		}
 		if(built)
 		{
-			Molpy.Notify('Built '+Molpify(built,1)+' tool'+(built==1?'':'s'));
+			Molpy.toolsBuilt+=built;
+			Molpy.toolsBuiltTotal+=built;
 			Molpy.recalculateDig=1;
 			Molpy.CheckBuyUnlocks();
 			tf.power=pow;
