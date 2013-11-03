@@ -4287,7 +4287,7 @@ Molpy.Up=function()
 		{
 			if(Molpy.Got('Backing Out'))
 			{
-				for(i in Molpy.CastleToolsN)
+				for(i in Molpy.CastleToolsById)
 				{
 					var t = Molpy.CastleToolsById[i];
 					t.DestroyPhase();
