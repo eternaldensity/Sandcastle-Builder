@@ -710,7 +710,10 @@ Molpy.DefineBoosts=function()
 		price+=Molpy.castles*Molpy.newpixNumber/3094;
 		price+=Molpy.timeTravels;
 		if(Molpy.Got('Flux Capacitor'))price=Math.ceil(price*.2);
-		return Math.ceil(price/Molpy.priceFactor); //BECAUSE TIME TRAVEL AMIRITE?
+		price = Math.ceil(price/Molpy.priceFactor); //BECAUSE TIME TRAVEL AMIRITE?
+		if(price>Molpy.castles)
+			Molpy.Boosts['Flux Capacitor'].department=1;
+		return price;
 	}
 	
 	Molpy.TimeTravel=function(NP)
@@ -814,7 +817,7 @@ Molpy.DefineBoosts=function()
 			var i = me.power+1;
 			while(i--)
 			{
-				var sand = 200000*Math.pow(100000,i);
+				var sand = 2000000*Math.pow(100000,i);
 				costs+=Molpify(sand);
 				if(i)costs+=', then ';
 			}
@@ -4181,12 +4184,12 @@ Molpy.CheckRewards=function(automationLevel)
 	}
 	Molpy.CheckASHF();
 	var i = 10;
-	var b = 1*Molpy.Got('Ceiling Broken');
+	var b = 1*Molpy.Earned('Ceiling Broken');
 	while(i--)
 	{
 		Molpy.Boosts['Glass Ceiling '+i].department=b;
 	}
-	b=1*Molpy.Got('Ceiling Disintegrated');
+	b=1*Molpy.Earned('Ceiling Disintegrated');
 	Molpy.Boosts['Glass Ceiling 10'].department=b;
 	Molpy.Boosts['Glass Ceiling 11'].department=b;
 	

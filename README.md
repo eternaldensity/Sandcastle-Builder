@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.892
+- Made it possible to get Flux Capacitor if time travel costs more castles than you have
+- Fixed logic for use of glass ceiling badges: they were being checked as if they were boosts
+- Fixed description of factory automation: wasn't showing correct prices
+
 ## 2.891
 - Fixed ch*rped up boost order, and tried to fix the side effects.
 - Errors in filling glass mould fixed
