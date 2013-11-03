@@ -21,6 +21,7 @@ For personal amusement only.
 ## 2.893
 - Fixed ONGs with Backing Out boost
 - Improved description of Molpies boost
+- Fix Logicat message text
 - Increase Panther Salve power even when you have infinite castles and Panther Glaze
 - ASHF updates the price factor before activating Shopping Assistant.
 - Prevent 0 fractal level from multiplying Not Lucky by 0 (though I think that could only happen if you have 0 sand or infinite castles, so it's probably unimportant)
