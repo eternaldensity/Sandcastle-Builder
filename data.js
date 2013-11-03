@@ -4160,7 +4160,31 @@ Molpy.CheckRewards=function(automationLevel)
 	{
 		Molpy.Boosts['Flux Surge'].logic=0;
 	}
-	Molpy.Boosts['Temporal Duplication'].logic=1*isFinite(Molpy.castles);
+	var finiteC = 1*isFinite(Molpy.castles);
+	var finiteP=0;
+	if(finiteC)
+	{
+		for(var i in Molpy.SandTools)
+		{
+			if(isFinite(Molpy.SandTools[i].price))
+			{
+				finiteP=1;
+				break;
+			}
+		}
+		if(!finiteP)
+		{
+			for(var i in Molpy.CastleTools)
+			{
+				if(isFinite(Molpy.CastleTools[i].price))
+				{
+					finiteP=1;
+					break;
+				}
+			}
+		}
+	}
+	Molpy.Boosts['Temporal Duplication'].logic=finiteC*finiteP;
 	Molpy.Boosts['Temporal Rift'].logic=3*isFinite(Molpy.castles);
 	
 	Molpy.Boosts['Facebugs'].department=1*(Molpy.groupBadgeCounts.discov>20&&Molpy.Got('Ch*rpies'));

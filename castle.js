@@ -1356,6 +1356,7 @@ Molpy.Up=function()
 		var previousSand=0;
 		Molpy.Dig=function(amount)
 		{
+			var oldSand=Molpy.sand;
 			if(!isFinite(Molpy.sand))amount=0; //because why bother?
 			Molpy.sandDug+=amount;
 			Molpy.sand+=amount;
@@ -1369,7 +1370,9 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Clerical Error');
 			}
 			Molpy.SandToCastles();
-			if(isFinite(previousSand)!=isFinite(Molpy.sand))Molpy.recalculateDig=1;
+			if(isFinite(previousSand)!=isFinite(Molpy.sand)
+				||isFinite(oldSand)!=isFinite(Molpy.sand))
+				Molpy.recalculateDig=1;
 			previousSand=Molpy.sand;
 			
 			if(Molpy.sand>=50){

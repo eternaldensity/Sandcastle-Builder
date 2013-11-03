@@ -22,6 +22,7 @@ For personal amusement only.
 - Made it possible to get Flux Capacitor if time travel costs more castles than you have
 - Fixed logic for use of glass ceiling badges: they were being checked as if they were boosts
 - Fixed description of factory automation: wasn't showing correct prices
+- I think I fixed the swich between sand and glass production more properly now
 
 ## 2.891
 - Fixed ch*rped up boost order, and tried to fix the side effects.
