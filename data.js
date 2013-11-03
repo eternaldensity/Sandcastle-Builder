@@ -456,9 +456,9 @@ Molpy.DefineBoosts=function()
 			if(Molpy.Got('Molpies'))
 			{
 				var mult=0.01*Molpy.BadgesOwned;
-				return 'Multiplies all sand rates by '+ Molpify(mult*100,2)+'%';
+				return 'Increases sand dig rate by '+ Molpify(mult*100,2)+'%';
 			}
-			return 'Multiplies all sand rates by 1% per Badge earned';
+			return 'Increases sand dig rate by 1% per Badge earned';
 		},icon:'molpies'
 	});
 	new Molpy.Boost({name:'Busy Bot',desc:'NewPixBots activate 10% sooner',sand:900,castles:4,icon:'busybot',group:'cyb'});

@@ -19,8 +19,8 @@ For personal amusement only.
 ## Changelog
 
 ## 2.893
-- Fixed ONGs with Backing Out
-- 
+- Fixed ONGs with Backing Out boost
+- Improved description of Molpies boost
 
 ## 2.892
 - Made it possible to get Flux Capacitor if time travel costs more castles than you have

@@ -3410,7 +3410,7 @@ Molpy.Up=function()
 					Molpy.Notify('Logicat rewards you with:',1);
 					Molpy.UnlockBoost(red.aka);
 				}else{
-					Molpy.Notify('You reward from Logicat:',1);
+					Molpy.Notify('Your reward from Logicat:',1);
 					Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
 				}
 				return;
