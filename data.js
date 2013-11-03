@@ -567,6 +567,7 @@ Molpy.DefineBoosts=function()
 		+Molpify(me.countdown,3)+'mNP'}
 		,buyFunction:function(){
 			Molpy.shopRepaint=1;
+			Molpy.CalcPriceFactor();
 			Molpy.Donkey();
 		}
 		,countdownFunction:function(){

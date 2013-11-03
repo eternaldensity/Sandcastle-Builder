@@ -3290,10 +3290,10 @@ Molpy.Up=function()
 			var nerf=0;
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0)
 			{
+				Molpy.Boosts['Panther Salve'].power++;
 				if(finite&&Molpy.HasGlassBlocks(10))
 				{				
 					Molpy.SpendGlassBlocks(10);
-					Molpy.Boosts['Panther Salve'].power++;
 					bonus*=Math.pow(1.01,items);
 					nerf=1;
 				}
@@ -3304,7 +3304,7 @@ Molpy.Up=function()
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
 			{
-				bonus*=Math.ceil(Molpy.Boosts['Fractal Sandcastles'].power/10);
+				bonus*=Math.ceil((Molpy.Boosts['Fractal Sandcastles'].power+1)/10);
 				nerf=1;
 			}
 			if(nerf)
