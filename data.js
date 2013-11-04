@@ -4289,9 +4289,9 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Statuesque'].logic=40*(Molpy.SandTools['Cuegan'].amount>=20000);
 	Molpy.Boosts['Flag in the Window'].logic=50*(Molpy.SandTools['Flag'].amount>=10000);
 	Molpy.Boosts['Crystal Wind'].logic=60*(Molpy.SandTools['Flag'].amount>=20000);
-	Molpy.Boosts['Crystal Peak'].logic=70*(Molpy.SandTools['Bucket'].amount>=15000);
-	Molpy.Boosts['Cupholder'].logic=80*(Molpy.SandTools['Bucket'].amount>=12000);
-	Molpy.Boosts['Tiny Glasses'].logic=90*(Molpy.SandTools['Bucket'].amount>=8000);
+	Molpy.Boosts['Crystal Peak'].logic=70*(Molpy.SandTools['Ladder'].amount>=15000);
+	Molpy.Boosts['Cupholder'].logic=80*(Molpy.SandTools['Bag'].amount>=12000);
+	Molpy.Boosts['Tiny Glasses'].logic=90*(Molpy.SandTools['LaPetite'].amount>=8000);
 	Molpy.Boosts['Stained Glass Launcher'].logic=100*(Molpy.CastleTools['Trebuchet'].amount>=4000);	
 	Molpy.Boosts['Glass Saw'].logic=150*(Molpy.glassPermNP>=4000);
 }

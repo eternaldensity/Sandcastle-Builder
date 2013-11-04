@@ -20,6 +20,7 @@ For personal amusement only.
 
 ## 2.894
 - Fixed SGL unlock
+- And some other unlocks
 - New Glass Block related boost
 - Fixed Export toggle
 
