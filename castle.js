@@ -2000,7 +2000,7 @@ Molpy.Up=function()
 			if(Molpy.Got('Ninja Assistants')) stealthBuild*=Molpy.CastleTools['NewPixBot'].amount;
 			if(Molpy.Got('Skull and Crossbones'))
 			{
-				stealthBuild*=Math.floor(Math.pow(1.05,Math.max(-1,Molpy.SandTools['Flag'].amount-40)));
+				stealthBuild=Math.floor(stealthBuild*Math.pow(1.05,Math.max(-1,Molpy.SandTools['Flag'].amount-40)));
 			}
 			if(Molpy.Boosts['Glass Jaw'].power)
 			{
@@ -4098,7 +4098,7 @@ Molpy.Up=function()
 				{
 					npb.amount--;
 					npb.refresh();
-					Molpy.Notify('Industrial Accident!');
+					Molpy.Notify('Industrial Accident!',1);
 					if(i>14)
 						Molpy.UnlockBoost('Safety Pumpkin');
 				}
