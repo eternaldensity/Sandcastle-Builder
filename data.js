@@ -126,7 +126,14 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
 			return mult*baserate;			
 		},
-		gpmNP:0.001,
+		gpmNP:function()
+		{
+			var baseval = 0.001;
+			var mult=1;
+			if(Molpy.Got('Bucking the Trend'))mult*=2;
+			if(Molpy.Got('Crystal Well'))mult*=10;
+			return baseval*mult;
+		},
 		nextThreshold:1
 	});
 	
@@ -145,7 +152,14 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 2'))mult*=Molpy.GlassCeilingMult();
 			return baserate*mult;
 		},
-		gpmNP:0.003,
+		gpmNP:function()
+		{
+			var baseval = 0.003;
+			var mult=1;
+			if(Molpy.Got('Glass Spades'))mult*=2;
+			if(Molpy.Got('Statuesque'))mult*=10;
+			return baseval*mult;
+		},
 		nextThreshold:2
 	});
 	
@@ -170,7 +184,14 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling '+4))mult*=Molpy.GlassCeilingMult();
 			return baserate*mult;
 		},
-		gpmNP:0.007,
+		gpmNP:function()
+		{
+			var baseval = 0.007;
+			var mult=1;
+			if(Molpy.Got('Flag in the Window'))mult*=4;
+			if(Molpy.Got('Crystal Wind'))mult*=5;
+			return baseval*mult;
+		},
 		nextThreshold:4
 	});
 	
@@ -201,7 +222,13 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
 			return baserate*mult;
 		},
-		gpmNP:0.015,
+		gpmNP:function()
+		{
+			var baseval = 0.015;
+			var mult=1;
+			if(Molpy.Got('Crystal Peak'))mult*=12;
+			return baseval*mult;
+		},
 		nextThreshold:8
 	});
 	
@@ -220,7 +247,13 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Glass Ceiling 8'))mult*=Molpy.GlassCeilingMult();
 			return baserate*mult;
 		},
-		gpmNP:0.031,
+		gpmNP:function()
+		{
+			var baseval = 0.031;
+			var mult=1;
+			if(Molpy.Got('Cupholder'))mult*=8;
+			return baseval*mult;
+		},
 		nextThreshold:6000
 	});
 	
@@ -235,7 +268,13 @@ Molpy.DefineSandTools=function()
 				mult*=Math.pow(1.03,Molpy.CastleTools['NewPixBot'].amount);
 			return mult*baserate;			
 		},
-		gpmNP:0.063,
+		gpmNP:function()
+		{
+			var baseval = 0.063;
+			var mult=1;
+			if(Molpy.Got('Tiny Glasses'))mult*=9;
+			return baseval*mult;
+		},
 		nextThreshold:1
 	});
 }	
@@ -293,8 +332,9 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('War Banner'))return 1;
 			else return 2;
 		},
-		buildC:function(){
-		 var baseval=4;
+		buildC:function()
+		{
+			var baseval=4;
 			if(Molpy.Got('Spring Fling'))baseval++;
 			if(Molpy.Got('Varied Ammo'))for(var i in Molpy.CastleTools) if(Molpy.CastleTools[i].amount>1)baseval++;
 			if(Molpy.Got('Throw Your Toys')) baseval+=Molpy.SandTools['Bucket'].amount+Molpy.SandTools['Flag'].amount;
@@ -308,7 +348,14 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Glass Ceiling 3'))mult*=Molpy.GlassCeilingMult();
 			
 			return Math.floor(baseval*mult);
-		},destroyG:1,buildG:7,
+		},
+		destroyG:1,
+		buildG:function(){
+			var baseval=7;
+			var mult=1;
+			if(Molpy.Got('Stained Glass Launcher'))mult*=Molpy.GlassCeilingCount();
+			return baseval*mult;
+		},
 		nextThreshold:2
 	});
 		
@@ -3504,6 +3551,16 @@ Molpy.DefineBoosts=function()
 	});
 	
 	new Molpy.Boost({name:'Backing Out',desc:'Castle Tools activate from smallest to largest, and each builds before the next destroys',glass:'6M',logic:120});
+	new Molpy.Boost({name:'Bucking the Trend',desc:'Buckets produce 2x Glass',glass:'2M',sand:Infinity});
+	new Molpy.Boost({name:'Crystal Well',desc:'Buckets produce 10x Glass',glass:'8M'});
+	new Molpy.Boost({name:'Glass Spades',desc:'Cuegan produce 2x Glass',glass:'3M'});
+	new Molpy.Boost({name:'Statuesque',desc:'Cuegan produce 10x Glass',glass:'10M',sand:Infinity});
+	new Molpy.Boost({name:'Flag in the Window',desc:'Flags produce 4X Glass',glass:'4M'});
+	new Molpy.Boost({name:'Crystal Wind',desc:'Flags produce 5X Glass',glass:'5M'});
+	new Molpy.Boost({name:'Crystal Peak',desc:'Ladders produce 12X Glass',glass:'9M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Cupholder',desc:'Bags produce 8X Glass',glass:'11M',castles:Infinity});
+	new Molpy.Boost({name:'Tiny Glasses',desc:'LaPetite produces 9X Glass',glass:'12M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Stained Glass Launcher',desc:'Trebuchet Glass flinging is multiplied by the number of Glass Ceilings owned',glass:'15M',sand:Infinity,castles:Infinity});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4225,7 +4282,16 @@ Molpy.CheckRewards=function(automationLevel)
 		if(Molpy.Earned('Beachomancer'))
 			Molpy.Boosts['BBC'].department=1;
 	}
-	
+	Molpy.Boosts['Bucking the Trend'].logic=10*(Molpy.SandTools['Bucket'].amount>=10000);
+	Molpy.Boosts['Crystal Well'].logic=20*(Molpy.SandTools['Bucket'].amount>=20000);
+	Molpy.Boosts['Glass Spades'].logic=30*(Molpy.SandTools['Cuegan'].amount>=10000);
+	Molpy.Boosts['Statuesque'].logic=40*(Molpy.SandTools['Cuegan'].amount>=20000);
+	Molpy.Boosts['Flag in the Window'].logic=50*(Molpy.SandTools['Flag'].amount>=10000);
+	Molpy.Boosts['Crystal Wind'].logic=60*(Molpy.SandTools['Flag'].amount>=20000);
+	Molpy.Boosts['Crystal Peak'].logic=70*(Molpy.SandTools['Bucket'].amount>=15000);
+	Molpy.Boosts['Cupholder'].logic=80*(Molpy.SandTools['Bucket'].amount>=12000);
+	Molpy.Boosts['Tiny Glasses'].logic=90*(Molpy.SandTools['Bucket'].amount>=8000);
+	Molpy.Boosts['Stained Glass Launcher'].logic=100*(Molpy.SandTools['Bucket'].amount>=4000);
 }
 	
 Molpy.CheckASHF=function()

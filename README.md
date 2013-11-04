@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.894
+- Some Glass multiplier boosts, mostly for sand tools
+
 ## 2.893
 - Fixed ONGs with Backing Out boost
 - Improved description of Molpies boost
