@@ -19,6 +19,11 @@ For personal amusement only.
 ## Changelog
 
 ## 2.894
+- Fixed SGL unlock
+- New Glass Block related boost
+- Fixed Export toggle
+
+## 2.894
 - Some Glass multiplier boosts, mostly for sand tools
 
 ## 2.893

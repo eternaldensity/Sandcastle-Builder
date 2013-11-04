@@ -3561,6 +3561,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Cupholder',desc:'Bags produce 8X Glass',glass:'11M',castles:Infinity});
 	new Molpy.Boost({name:'Tiny Glasses',desc:'LaPetite produces 9X Glass',glass:'12M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Stained Glass Launcher',desc:'Trebuchet Glass flinging is multiplied by the number of Glass Ceilings owned',glass:'15M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Glass Saw',desc:'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (20 chips each) in the Tool Factory buffer: up to 10K per Glass Ceiling',glass:'7M',sand:Infinity,castles:Infinity});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4291,7 +4292,8 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Crystal Peak'].logic=70*(Molpy.SandTools['Bucket'].amount>=15000);
 	Molpy.Boosts['Cupholder'].logic=80*(Molpy.SandTools['Bucket'].amount>=12000);
 	Molpy.Boosts['Tiny Glasses'].logic=90*(Molpy.SandTools['Bucket'].amount>=8000);
-	Molpy.Boosts['Stained Glass Launcher'].logic=100*(Molpy.SandTools['Bucket'].amount>=4000);
+	Molpy.Boosts['Stained Glass Launcher'].logic=100*(Molpy.CastleTools['Trebuchet'].amount>=4000);	
+	Molpy.Boosts['Glass Saw'].logic=150*(Molpy.glassPermNP>=4000);
 }
 	
 Molpy.CheckASHF=function()

@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.894;
+		Molpy.version=2.895;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -937,6 +937,15 @@ Molpy.Up=function()
 					Molpy.BoostsOwned--;
 				}
 			}
+			if(version<2.895)
+			{
+				if(Molpy.Got('Stained Glass Launcher')&&Molpy.CastleTools['Trebuchet'].amount<4000)
+				{
+					Molpy.Boosts['Stained Glass Launcher'].bought=0;
+					Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
+					Molpy.BoostsOwned--;
+				}
+			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
 				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
@@ -1302,7 +1311,7 @@ Molpy.Up=function()
 		{
 			if(Molpy.showExport)
 			{
-				Molpy.show=0;
+				Molpy.showExport=0;
 				g('beachAnchor').className='unhidden';
 				g('beach').className='unhidden';
 				g('stats').className='hidden';
@@ -1836,6 +1845,13 @@ Molpy.Up=function()
 					Molpy.Notify(Molpy.Boosts['VJ'].name);
 					Molpy.Build(Molpy.CalcVJReward(1));
 					Molpy.Boosts['VJ'].power++;
+					if(Molpy.Got('Glass Saw'))
+					{
+						var maxGlass=Molpy.GlassCeilingCount()*10000;
+						maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/20));
+						Molpy.AddBlocks(maxGlass);
+						Molpy.Boosts['Tool Factory'].power-=maxGlass*20;
+					}
 				}
 			}
 			if(Molpy.Got('Bag Puns')&&Molpy.Boosts['VJ'].bought!=1)
