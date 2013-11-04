@@ -944,7 +944,8 @@ Molpy.Up=function()
 					Molpy.Boosts['Stained Glass Launcher'].bought=0;
 					Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
 					Molpy.BoostsOwned--;
-				}
+				}else
+					Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
 			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
