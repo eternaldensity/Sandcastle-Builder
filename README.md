@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.897
+- Clarification on SBtF description and some explanation on its stats.
+
 ## 2.896
 - Show glass prices of tools when appropriate
 - Raised Glass Saw limit by factor of 1000
