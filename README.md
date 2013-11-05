@@ -24,6 +24,8 @@ For personal amusement only.
 - Prevent Caged Logicat from tiring out
 - Panther Rush boost to increase the endurance of Caged Logicat
 - Removed the 'of 1 needed' from sand display when castles are infinite
+- Castle tool prices are always recalculated from scratch rather than subtracting previous price from current because the rounding errors are too much for reliability
+- Prices that are definitely going to be infinite (i.e. over 1500 of a castle tool) are not calculated, just assumed to be infinite without calculating
 
 ## 2.895
 - Fixed SGL unlock

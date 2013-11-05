@@ -2453,7 +2453,7 @@ Molpy.Up=function()
 				var spent=0;
 				while (times--)
 				{
-					var price=Math.floor(Molpy.priceFactor*(this.prevPrice+this.nextPrice));
+					var price=Math.floor(Molpy.priceFactor*this.price);
 					if(!isFinite(price))
 					{
 						Molpy.UnlockBoost('Tool Factory');
@@ -2464,9 +2464,7 @@ Molpy.Up=function()
 						this.bought++;
 						bought++;
 						spent+=price;
-						this.prevPrice=this.nextPrice;
-						this.nextPrice=this.price;
-						this.price=this.prevPrice+this.nextPrice;
+						this.findPrice();
 						if (this.buyFunction) this.buyFunction(this);
 						if (this.drawFunction) this.drawFunction();
 						Molpy.shopRepaint=1;
@@ -2507,9 +2505,7 @@ Molpy.Up=function()
 					}
 					
 					this.amount--;
-					this.prevPrice=this.nextPrice-this.prevPrice;
-					this.price=this.nextPrice;
-					this.nextPrice=price; //which is the former value of prevPrice
+					this.findPrice();
 					if (this.sellFunction) this.sellFunction();
 					if (this.drawFunction) this.drawFunction();
 					Molpy.shopRepaint=1;
@@ -2600,11 +2596,15 @@ Molpy.Up=function()
 				var d=g('CastleToolDescription'+this.id);
 				if(d)d.innerHTML='';
 			}
-			this.refresh=function()
-			{
-				Molpy.shopRepaint=1;
-				Molpy.recalculateDig=1;
+			this.findPrice=function()
+			{			
 				var i = this.amount;
+				if(i>1500)
+				{	//don't even bother
+					this.prevPrice=Infinity;
+					this.nextPrice=Infinity;
+					this.pricePrice=Infinity;
+				}
 				this.prevPrice=this.price0;
 				this.nextPrice=this.price1;
 				var p = this.prevPrice+this.nextPrice;
@@ -2615,6 +2615,12 @@ Molpy.Up=function()
 					p=this.prevPrice+this.nextPrice;
 				}
 				this.price=p;
+			}
+			this.refresh=function()
+			{
+				Molpy.shopRepaint=1;
+				Molpy.recalculateDig=1;
+				this.findPrice();
 				if (this.drawFunction) this.drawFunction();
 			}
 			
