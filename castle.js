@@ -1648,7 +1648,8 @@ Molpy.Up=function()
 			var chipsFor=chillerLevel;
 			
 			var ch = Molpy.Boosts['Glass Chip Storage'];
-			while(ch.power < chipsFor*20)
+			var rate=Molpy.ChipsPerBlock();
+			while(ch.power < chipsFor*rate)
 			{
 				chipsFor--;
 			}
@@ -1660,8 +1661,8 @@ Molpy.Up=function()
 				Molpy.Notify('Running low on Glass Chips!');
 				chillerLevel=chipsFor;
 			}
-			ch.power-=chipsFor*20;
-			Molpy.chipAddAmount-=chipsFor*20;
+			ch.power-=chipsFor*rate;
+			Molpy.chipAddAmount-=chipsFor*rate;
 			Molpy.AddBlocks(chillerLevel);
 		}
 		Molpy.AddBlocks=function(amount)
@@ -1691,9 +1692,9 @@ Molpy.Up=function()
 			Molpy.blockAddAmount=Math.round(Molpy.blockAddAmount);
 			Molpy.blockWasteAmount=Math.round(Molpy.blockWasteAmount);
 			if(Molpy.chipAddAmount>0)
-				Molpy.Notify('Gain of '+Molpify(Molpy.chipAddAmount)+' Glass Chip'+(Molpy.chipAddAmount>1?'s':''),1);
+				Molpy.Notify('Gained '+Molpify(Molpy.chipAddAmount,3)+' Glass Chip'+(Molpy.chipAddAmount>1?'s':''),1);
 			if(Molpy.chipAddAmount<0)
-				Molpy.Notify('Loss of '+Molpify(-Molpy.chipAddAmount)+' Glass Chip'+(-Molpy.chipAddAmount>1?'s':''),1);
+				Molpy.Notify('Consumed '+Molpify(-Molpy.chipAddAmount,3)+' Glass Chip'+(-Molpy.chipAddAmount>1?'s':''),1);
 			Molpy.chipAddAmount=0;
 			
 			if(Molpy.chipWasteAmount>0)
@@ -1701,13 +1702,13 @@ Molpy.Up=function()
 			Molpy.chipWasteAmount=0;
 			
 			if(Molpy.blockAddAmount>0)
-				Molpy.Notify('Gain of '+Molpify(Molpy.blockAddAmount)+' Glass Block'+(Molpy.blockAddAmount>1?'s':''),1);
+				Molpy.Notify('Gain of '+Molpify(Molpy.blockAddAmount,3)+' Glass Block'+(Molpy.blockAddAmount>1?'s':''),1);
 			if(Molpy.blockAddAmount<0)
-				Molpy.Notify('Loss of '+Molpify(-Molpy.blockAddAmount)+' Glass Block'+(-Molpy.blockAddAmount>1?'s':''),1);
+				Molpy.Notify('Loss of '+Molpify(-Molpy.blockAddAmount,3)+' Glass Block'+(-Molpy.blockAddAmount>1?'s':''),1);
 			Molpy.blockAddAmount=0;
 			
 			if(Molpy.blockWasteAmount>0)
-				Molpy.Notify('Not enough Block Storage for '+Molpify(Molpy.blockWasteAmount)+' Glass Block'+(Molpy.blockWasteAmount>1?'s':''),1);
+				Molpy.Notify('Not enough Block Storage for '+Molpify(Molpy.blockWasteAmount,3)+' Glass Block'+(Molpy.blockWasteAmount>1?'s':''),1);
 			Molpy.blockWasteAmount=0;
 		}
 		Molpy.DigGlass=function(amount)
@@ -1877,9 +1878,10 @@ Molpy.Up=function()
 					if(Molpy.Got('Glass Saw'))
 					{
 						var maxGlass=Molpy.GlassCeilingCount()*10000000;
-						maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/20));
+						var rate = Molpy.ChipsPerBlock();
+						maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
 						Molpy.AddBlocks(maxGlass);
-						Molpy.Boosts['Tool Factory'].power-=maxGlass*20;
+						Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
 					}
 				}
 			}

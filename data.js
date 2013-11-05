@@ -1802,7 +1802,14 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('You require more <span class="strike">Vespene Gas</span>Glass',1)
 		}
 	}
-	
+	Molpy.ChipsPerBlock=function()
+	{
+		if(Molpy.Got('Ruthless Efficiency'))
+		{
+			return 5;
+		}
+		return 20;
+	}
 	
 	//glass blower
 	new Molpy.Boost({name:'Glass Blower',
@@ -1812,7 +1819,7 @@ Molpy.DefineBoosts=function()
 			var pow=Molpy.Boosts['Glass Chiller'].power+1;
 			var cost=Molpify(Molpy.GlassBlowerSandUse(1),2);
 			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+Molpify(pow,3)+' Glass Block'+(pow>1?'s':'')
-				+' from 20 Glass Chips (each) per NP.<br>';			
+				+' from '+Molpy.ChipsPerBlock()+' Glass Chips (each) per NP.<br>';			
 			
 			if(Molpy.Got('Glass Blower Switching'))
 			{
@@ -3585,6 +3592,8 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	
+	new Molpy.Boost({name:'Ruthless Efficiency',desc:'Glass Block production uses a quarter as many Chips',glass:'12M',sand:'10WW',castles:'10WW', group:'hpt'});
+	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
 		badges:['badge','Badges'],
@@ -4178,6 +4187,7 @@ Molpy.CheckBuyUnlocks=function()
 	
 	if(Molpy.HasGlassBlocks(7016280))Molpy.EarnBadge('Pyramid of Giza');
 	if(Molpy.HasGlassChips(640000))Molpy.EarnBadge('Personal Computer');
+	Molpy.Boosts['Ruthless Efficiency'].department=(Molpy.Boosts['Glass Chiller'].power>=1234);
 }
 
 Molpy.CheckRewards=function(automationLevel)

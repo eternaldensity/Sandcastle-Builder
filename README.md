@@ -26,6 +26,8 @@ For personal amusement only.
 - Removed the 'of 1 needed' from sand display when castles are infinite
 - Castle tool prices are always recalculated from scratch rather than subtracting previous price from current because the rounding errors are too much for reliability
 - Prices that are definitely going to be infinite (i.e. over 1500 of a castle tool) are not calculated, just assumed to be infinite without calculating
+- Glass gain/use messages show more decimal places (oops)
+- New boost to make glass block production more efficient.
 
 ## 2.895
 - Fixed SGL unlock
