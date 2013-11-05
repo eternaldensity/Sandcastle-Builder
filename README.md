@@ -23,6 +23,7 @@ For personal amusement only.
 - Raised Glass Saw limit by factor of 1000
 - Prevent Caged Logicat from tiring out
 - Panther Rush boost to increase the endurance of Caged Logicat
+- Removed the 'of 1 needed' from sand display when castles are infinite
 
 ## 2.895
 - Fixed SGL unlock

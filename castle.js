@@ -4558,7 +4558,7 @@ Molpy.Up=function()
 	Molpy.Draw=function()
 	{
 		g('castlecount').innerHTML=Molpify(Molpy.castles,1) + ' castles';
-		g('sandcount').innerHTML=Molpify(Molpy.sand,1) + ' sand of ' + Molpify(Molpy.nextCastleSand,1) + ' needed';
+		g('sandcount').innerHTML=Molpify(Molpy.sand,1) + ' sand'+(isFinite(Molpy.castles)?' of ' + Molpify(Molpy.nextCastleSand,1) + ' needed':'');
 		g('sandrate').innerHTML=Molpify(Molpy.sandPermNP,1) + ' sand/mNP';
 		g('chipcount').innerHTML=Molpify(Molpy.Boosts['Tool Factory'].power,1) + ' chips';
 		g('chiprate').innerHTML=Molpify(Molpy.glassPermNP,1) + ' chips/mNP';
