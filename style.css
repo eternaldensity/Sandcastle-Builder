@@ -193,7 +193,7 @@ a:active
 {
 	min-height:400px;
 }
-#statsItems
+.statsTab
 {
 	position:absolute;
 	width:290px;

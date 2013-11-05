@@ -20,6 +20,7 @@ For personal amusement only.
 
 ## 2.897
 - Clarification on SBtF description and some explanation on its stats.
+- stats tabs
 
 ## 2.896
 - Show glass prices of tools when appropriate

@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.896;
+		Molpy.version=2.897;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1333,6 +1333,11 @@ Molpy.Up=function()
 			}
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
+		}
+		Molpy.StatsTabChange=function(n)
+		{
+			$('.statsTab').removeClass('unhidden').addClass('hidden');
+			$('#statsTab'+n).removeClass('hidden').addClass('unhidden');			
 		}
 		
 		Molpy.showExport=0;
