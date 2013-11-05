@@ -20,6 +20,9 @@ For personal amusement only.
 
 ## 2.896
 - Show glass prices of tools when appropriate
+- Raised Glass Saw limit by factor of 1000
+- Prevent Caged Logicat from tiring out
+- Panther Rush boost to increase the endurance of Caged Logicat
 
 ## 2.895
 - Fixed SGL unlock

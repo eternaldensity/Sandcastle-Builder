@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.895;
+		Molpy.version=2.896;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2685,7 +2685,7 @@ Molpy.Up=function()
 					Molpy.SpendCastles(cp);
 					Molpy.SpendGlassBlocks(gp);
 					this.bought=1;
-					if (this.buyFunction) this.buyFunction(this);
+					if (this.buyFunction) this.buyFunction();
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
 					Molpy.BoostsOwned++;
@@ -4425,6 +4425,8 @@ Molpy.Up=function()
 		{
 			Molpy.Notify('You have not saved in over a NewPix!!',1);
 		}
+		if(Molpy.Got('Caged Logicat'))
+			Molpy.Boosts['Caged Logicat'].bought=11+Molpy.Boosts['Panther Rush'].power*5;
 	}
 	
 	Molpy.BurnBags=function(n,e)
