@@ -18,7 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
-## 2.894
+## 2.896
+- Show glass prices of tools when appropriate
+
+## 2.895
 - Fixed SGL unlock
 - And some other unlocks
 - New Glass Block related boost

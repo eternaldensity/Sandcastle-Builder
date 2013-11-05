@@ -1876,7 +1876,7 @@ Molpy.Up=function()
 					Molpy.Boosts['VJ'].power++;
 					if(Molpy.Got('Glass Saw'))
 					{
-						var maxGlass=Molpy.GlassCeilingCount()*10000;
+						var maxGlass=Molpy.GlassCeilingCount()*10000000;
 						maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/20));
 						Molpy.AddBlocks(maxGlass);
 						Molpy.Boosts['Tool Factory'].power-=maxGlass*20;
@@ -3569,10 +3569,15 @@ Molpy.Up=function()
 					salebit=' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>');
 				}
+				var price = '';
+				if(isFinite(me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+i*2))
+					price = FormatPrice(me.price,me)+(me.price<100?' Castles':' Ca');
+				else
+					price = Molpify(1000*(i*2+1),3)+' Chips';
 				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+salebit+'</h2>'+
 				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
-				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
+				'<span class="price">Price: '+price+'</span>'+
 				'<div id="SandToolProduction'+me.id+'"></div><div class="'+Molpy.DescClass(me)+'" id="SandToolDescription'+me.id+'"></div></div></div>';
 				if(expando)me.hoverOnCounter=1;
 				i++
@@ -3611,10 +3616,15 @@ Molpy.Up=function()
 					salebit=' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>');
 				}
+				var price = '';
+				if(isFinite(me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(i*2+1)))
+					price = FormatPrice(me.price,me)+(me.price<100?' Castles':' Ca');
+				else
+					price = Molpify(1000*(i*2+2),3)+' Chips';
 				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+salebit+'</h2>'+
 				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
-				'<span class="price">Price: '+FormatPrice(me.price,me)+(me.price<100?' Castles':' C')+'</span>'+
+				'<span class="price">Price: '+price+'</span>'+
 				'<div id="CastleToolProduction'+me.id+'"></div><div class="'+Molpy.DescClass(me)+'" id="CastleToolDescription'+me.id+'"></div></div></div>';
 				if(expando)me.hoverOnCounter=1;
 				i++
