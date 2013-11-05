@@ -4252,6 +4252,7 @@ Molpy.Up=function()
 			Molpy.DigGlass(Molpy.glassPermNP);
 		Molpy.GlassNotifyFlush()
 		Molpy.RunToolFactory();
+		if(Molpy.recalculateDig) Molpy.CalculateDigSpeed();
 		if(Molpy.BadgesOwned==0) Molpy.EarnBadge('Redundant Redundancy');
 		
 		Molpy.Life++;
