@@ -3952,7 +3952,7 @@ Molpy.DefineBadges=function()
 	Molpy.MakeTripleBadge({np:213,name:'Surprise Attack',desc:'the moment Cueball realised he was under fire'});
 	Molpy.MakeTripleBadge({np:214,name:'Cornered',desc:'when the corner was knocked off the bridge'});
 	Molpy.MakeTripleBadge({np:218,name:'Trebuchet',desc:'when the trebuchet was finaly completely visible'});
-	Molpy.MakeTripleBadge({np:219,name:'Liftoff',desc:'the moment we saw Megan fired the trebuchet'});
+	Molpy.MakeTripleBadge({np:219,name:'Liftoff',desc:'the moment we saw Megan fire the trebuchet'});
 	Molpy.MakeTripleBadge({np:221,name:'KO\'d',desc:'when Megan knocked out part of the bridge'});
 	Molpy.MakeTripleBadge({np:224,name:'Joy!',desc:'Megan throwing her arms up as Cueball launched the trebuchet'});
 	Molpy.MakeTripleBadge({np:232,name:'Take Cover!',desc:'when Cuegan jumped for cover after firing the trebuchet almost vertically'});
