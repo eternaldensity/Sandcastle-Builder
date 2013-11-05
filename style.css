@@ -233,7 +233,6 @@ a:active
 	margin:10px;
 	margin-left:600px;
 	height:541px;
-	overflow-y:scroll;
 	overflow-x:hidden;
 
 }
@@ -268,6 +267,14 @@ a:active
 	height:40px;
 	border-radius:50px;
 	margin-left:10px;
+}
+#lootselection {
+	position: fixed;
+}
+#loot {
+	margin-top:84px;
+	height: 444px;
+	overflow-y: auto;
 }
 
 .floatbox{
