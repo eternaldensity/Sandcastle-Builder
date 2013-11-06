@@ -19,7 +19,10 @@ For personal amusement only.
 ## Changelog
 
 ## 2.898
+- ONG performance increase - less looping on destruction
 - Prevent fractional glass chips/blocks in storage, and prevent fractional size upgrades
+- Larger upgrade increments for Sand Refinery and Glass Chiller (finally!)
+- Glass Extruder was missing punctuation
 
 ## 2.897
 - Clarification on SBtF description and some explanation on its stats.

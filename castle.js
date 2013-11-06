@@ -952,7 +952,7 @@ Molpy.Up=function()
 						Molpy.AddBlocks(1200000); //assume all discounts were used :P
 					}else
 						Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
-					}
+					
 				}
 				if(Molpy.SandTools['Ladder'].amount<15000)
 				{				
