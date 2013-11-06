@@ -942,41 +942,51 @@ Molpy.Up=function()
 			}
 			if(version<2.895)
 			{
-				if(Molpy.Got('Stained Glass Launcher')&&Molpy.CastleTools['Trebuchet'].amount<4000)
+				if(Molpy.CastleTools['Trebuchet'].amount<4000)
 				{
-					Molpy.Boosts['Stained Glass Launcher'].bought=0;
-					Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
-					Molpy.BoostsOwned--;
-					Molpy.AddBlocks(1200000); //assume all discounts were used :P
-				}else
-					Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
-													
-				if(Molpy.Got('Crystal Peak')&&Molpy.SandTools['Ladder'].amount<15000)
+					if(Molpy.Got('Stained Glass Launcher'))
+					{
+						Molpy.Boosts['Stained Glass Launcher'].bought=0;
+						Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
+						Molpy.BoostsOwned--;
+						Molpy.AddBlocks(1200000); //assume all discounts were used :P
+					}else
+						Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
+					}
+				}
+				if(Molpy.SandTools['Ladder'].amount<15000)
+				{				
+					if(Molpy.Got('Crystal Peak'))
+					{
+						Molpy.Boosts['Crystal Peak'].bought=0;
+						Molpy.Boosts['Crystal Peak'].unlocked=0;
+						Molpy.BoostsOwned--;
+						Molpy.AddBlocks(720000);
+					}else
+						Molpy.Boosts['Crystal Peak'].unlocked=0;
+				}	
+				if(Molpy.SandTools['Bag'].amount<12000)
 				{
-					Molpy.Boosts['Crystal Peak'].bought=0;
-					Molpy.Boosts['Crystal Peak'].unlocked=0;
-					Molpy.BoostsOwned--;
-					Molpy.AddBlocks(720000);
-				}else
-					Molpy.Boosts['Crystal Peak'].unlocked=0;
-					
-				if(Molpy.Got('Cupholder')&&Molpy.SandTools['Bag'].amount<12000)
+					if(Molpy.Got('Cupholder'))
+					{
+						Molpy.Boosts['Cupholder'].bought=0;
+						Molpy.Boosts['Cupholder'].unlocked=0;
+						Molpy.BoostsOwned--;
+						Molpy.AddBlocks(880000);
+					}else
+						Molpy.Boosts['Cupholder'].unlocked=0;
+				}
+				if(Molpy.SandTools['LaPetite'].amount<8000)
 				{
-					Molpy.Boosts['Cupholder'].bought=0;
-					Molpy.Boosts['Cupholder'].unlocked=0;
-					Molpy.BoostsOwned--;
-					Molpy.AddBlocks(880000);
-				}else
-					Molpy.Boosts['Cupholder'].unlocked=0;
-					
-				if(Molpy.Got('Tiny Glasses')&&Molpy.SandTools['LaPetite'].amount<8000)
-				{
-					Molpy.Boosts['Tiny Glasses'].bought=0;
-					Molpy.Boosts['Tiny Glasses'].unlocked=0;
-					Molpy.BoostsOwned--;
-					Molpy.AddBlocks(960000);
-				}else
-					Molpy.Boosts['Tiny Glasses'].unlocked=0;					
+					if(Molpy.Got('Tiny Glasses'))
+					{
+						Molpy.Boosts['Tiny Glasses'].bought=0;
+						Molpy.Boosts['Tiny Glasses'].unlocked=0;
+						Molpy.BoostsOwned--;
+						Molpy.AddBlocks(960000);
+					}else
+						Molpy.Boosts['Tiny Glasses'].unlocked=0;	
+				}					
 			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
