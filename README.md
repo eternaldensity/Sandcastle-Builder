@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.898
+- Prevent fractional glass chips/blocks in storage, and prevent fractional size upgrades
+
 ## 2.897
 - Clarification on SBtF description and some explanation on its stats.
 - stats tabs

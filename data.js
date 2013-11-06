@@ -1713,6 +1713,9 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Glass Chip Storage',desc:
 		function(me)
 		{
+			me.power=Math.round(me.power);
+			me.bought=Math.round(me.bought);
+			
 			var str= 'Contains '+Molpify(me.power,3)+' Glass Chip'+(me.power>1?'s':'')+'.';
 			var size=(me.bought)*10;
 			var rate = Molpy.Boosts['Sand Refinery'].power+1;
@@ -1735,7 +1738,7 @@ Molpy.DefineBoosts=function()
 					}
 					if(me.bought>250)
 					{
-						var n = Math.floor(me.power/6)
+						var n = Math.floor(me.power/12)*2 //ensure even to prevent fractional chips
 						if(n>20)
 						{
 							str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage('+n+')"></input> '+Molpify(n*4.5,3)+' Chips to build storage for '
@@ -1910,6 +1913,9 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Glass Block Storage',desc:
 		function(me)
 		{
+			me.power=Math.round(me.power);
+			me.bought=Math.round(me.bought);
+			
 			var str= 'Contains '+Molpify(me.power,3)+' Glass Block'+(me.power>1?'s':'')+'.';
 			var size=(me.bought)*50;
 			var rate = Molpy.Boosts['Glass Chiller'].power+1;
@@ -1933,7 +1939,7 @@ Molpy.DefineBoosts=function()
 					
 					if(me.bought>250)
 					{
-						var n = Math.floor(me.power/15)
+						var n = Math.floor(me.power/30)*2 //ensure even number to prevent fractional blocks
 						if(n>20)
 						{
 							str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeBlockStorage('+n+')"></input> '+Molpify(n*13.5,3)+' Blocks to build storage for '

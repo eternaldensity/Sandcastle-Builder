@@ -2560,6 +2560,28 @@ Molpy.Up=function()
 				var i = this.amount
 				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(this.price);
 				var destroyN=EvalMaybeFunction(inf?this.destroyG:this.destroyC);
+				if (inf)
+				{
+					if (Molpy.Boosts['Tool Factory'].power >= destroyN*i)
+					{
+						this.currentActive+=i;
+						this.totalGlassDestroyed+=destroyN*i;
+						Molpy.DestroyGlass(destroyN*i);
+						if(this.destroyFunction)this.destroyFunction();
+						return;
+					}
+				}
+				else 
+				{
+					if(Molpy.castles >= destroyN*i)
+					{
+						this.currentActive+=i;
+						this.totalCastlesDestroyed+=destroyN*i;
+						Molpy.Destroy(destroyN*i);
+						if(this.destroyFunction)this.destroyFunction();
+						return;
+					}
+				}
 				while(i--)
 				{
 					if(inf)
