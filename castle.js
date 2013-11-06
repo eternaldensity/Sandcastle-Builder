@@ -1373,13 +1373,18 @@ Molpy.Up=function()
 		}
 		var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1';
 		var vendors=['-webkit-','-moz-','-o-','-ms-',''];
+		var fadeProps=['color','border-color','background-color','background-image'];
 		
 		Molpy.AdjustFade=function()
 		{
 			var val='';
 			if(Molpy.options.fade)
 			{
-				val='all '+Molpy.options.fade/2+'s ease-out';
+				for(var i in fadeProps)
+				{
+					if(+i) val+=', ';
+					val+=fadeProps[i]+' '+Molpy.options.fade/2+'s ease-out';
+				}
 			}
 			if(!$)return;
 			var fc = $(fadeClasses);
