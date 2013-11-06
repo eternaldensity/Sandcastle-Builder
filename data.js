@@ -2833,6 +2833,16 @@ Molpy.DefineBoosts=function()
 			this.power-=Molpy.GetBlackprintPages();
 			Molpy.UnlockBoost(s);
 			Molpy.Boosts[s].buy();
+			if(Molpy.Boosts[s].bought)
+			{
+				Molpy.Notify(s.name+' has been constructed',1);
+			}else{
+				Molpy.Notify(s.name+' has been constructed and is available for purchase',1);
+			}
+		},
+		buyFunction:function()
+		{
+			Molpy.Notify('See Rosetta about your Blackprints',1);
 		},
 		group:'bean'
 	});
@@ -2933,8 +2943,8 @@ Molpy.DefineBoosts=function()
 		},
 		className:'alert',group:'bean'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:100,BG:200};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:
 		function(me)
@@ -3451,6 +3461,10 @@ Molpy.DefineBoosts=function()
 		{
 			var str='Produces Glass Tools from Glass Chips';
 			if(!me.bought)return str;
+			if(Molpy.Got('TFLL')&&Molpy.HasGlassChips(10000))
+			{
+				str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(10000)"></input> with 10K Glass Chips';
+			}
 			if(Molpy.HasGlassChips(1000))
 			{
 				str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1000)"></input> with 1K Glass Chips';
@@ -3671,6 +3685,9 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Ruthless Efficiency',desc:'Glass Block production uses a quarter as many Chips',glass:'12M',sand:'10WW',castles:'10WW', group:'hpt'});
 	new Molpy.Boost({name:'Break the Mould',desc:'Allows you to destroy an incomplete or unfilled Mould, if you decide making it was a mistake.',glass:'2M',sand:'10WWW',castles:'10WWW', group:'bean'});
+	
+	new Molpy.Boost({name:'TF Load Letter',aka:'TFLL',desc:'You can load Tool Factory with 10K Glass Chips at a time',glass:'4M',sand:Infinity,castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Booster Glass',aka:'BG',desc:'If you have Infinite Sand, clicking the NewPix gives Tool Factory 2 Glass Chips per Boost owned',glass:'8M',sand:Infinity,castles:Infinity, group:'hpt'});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],

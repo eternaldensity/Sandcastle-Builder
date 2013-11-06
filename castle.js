@@ -224,6 +224,7 @@ Molpy.Up=function()
 
 		Molpy.sandDug=0; //total sand dug throughout the game
 		Molpy.sandManual=0; //total sand dug through user clicks
+		Molpy.chipsManual=0;
 		Molpy.sand=0; //current sand balance
 		Molpy.castlesBuilt=0; //total castles built throughout the game
 		Molpy.castles=0; //current castle balance
@@ -419,6 +420,7 @@ Molpy.Up=function()
 			(Molpy.totalCastlesDown)+s+
 			(Molpy.totalGlassBuilt)+s+
 			(Molpy.totalGlassDestroyed)+s+
+			(Molpy.chipsManual)+s+
 			
 			p;
 			//sand tools:
@@ -558,6 +560,7 @@ Molpy.Up=function()
 			
 			Molpy.totalGlassBuilt=parseInt(pixels[27])||0;
 			Molpy.totalGlassDestroyed=parseFloat(pixels[28])||0;
+			Molpy.chipsManual=parseFloat(pixels[29])||0;
 			
 			pixels=thread[5].split(s);
 			Molpy.SandToolsOwned=0;
@@ -1019,6 +1022,7 @@ Molpy.Up=function()
 				Molpy.sandDug=0; 
 				Molpy.sand=0; 
 				Molpy.sandManual=0;
+				Molpy.chipsManual=0;
 				if(isFinite(Molpy.castlesBuilt))
 					Molpy.totalCastlesDown+=Molpy.castlesBuilt;
 				Molpy.castlesBuilt=0;
@@ -1049,6 +1053,7 @@ Molpy.Up=function()
 					me.amount=0;
 					me.bought=0;
 					me.totalSand=0;
+					me.totalGlass=0;
 					me.temp=0;
 					me.refresh();
 				}
@@ -1063,6 +1068,8 @@ Molpy.Up=function()
 					me.totalCastlesDestroyed=0;
 					me.totalCastlesWasted=0;
 					me.currentActive=0;
+					me.totalGlassBuilt=0;
+					me.totalGlassDestroyed=0;
 					me.refresh();
 				}
 				for(i in Molpy.Boosts)
@@ -1103,6 +1110,8 @@ Molpy.Up=function()
 				Molpy.timeTravels=0;
 				Molpy.totalCastlesDown=0;
 				Molpy.toolsBuiltTotal=0;
+				Molpy.totalGlassBuilt=0;
+				Molpy.totalGlassDestroyed=0;
 				Molpy.CastleTools['NewPixBot'].totalCastlesBuilt=0; //because we normally don't reset this.
 				for (var i in Molpy.BadgesById)
 				{
@@ -1860,6 +1869,12 @@ Molpy.Up=function()
 			if(Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(newsand,1));
 			Molpy.sandManual+=newsand;
 			if(isNaN(Molpy.sandManual))Molpy.sandManual=0;
+			if(!isFinite(Molpy.sand)&&Molpy.Got('BG'))
+			{
+				var ch=Molpy.BoostsOwned*2
+				Molpy.Boosts['Tool Factory'].power+=ch;
+				Molpy.chipsManual+=ch;
+			}
 			Molpy.beachClicks+=1;
 			Molpy.CheckClickAchievements();
 			if( Molpy.ninjad==0&&Molpy.CastleTools['NewPixBot'].amount)
@@ -4799,6 +4814,9 @@ Molpy.Up=function()
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),3)+'%';
 		g('blackstat').innerHTML='Collected '+Molpify(Molpy.Boosts['Blackprints'].power)+' of '+Molpify(Molpy.GetBlackprintPages());
+		g('totaltoolchipsstat').innerHTML=Molpify(Molpy.totalGlassBuilt);
+		g('destroyedtoolchipsstat').innerHTML=Molpify(Molpy.totalGlassDestroyed);
+		g('manualchipsstat').innerHTML=Molpify(Molpy.chipsManual);
 		
 		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 	}
