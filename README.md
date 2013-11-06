@@ -23,6 +23,9 @@ For personal amusement only.
 - stats tabs
 - Logicastle description fix
 - Break the Mould boost for when you decide making a mould was a bad idea
+- 3 new blackprint boosts
+- Notification log text is selectable
+- Prevent Glass Saw from wasting chips making blocks for which you do not have storage space
 
 ## 2.896
 - Show glass prices of tools when appropriate

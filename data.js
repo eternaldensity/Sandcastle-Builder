@@ -2835,9 +2835,9 @@ Molpy.DefineBoosts=function()
 			Molpy.Boosts[s].buy();
 			if(Molpy.Boosts[s].bought)
 			{
-				Molpy.Notify(s.name+' has been constructed',1);
+				Molpy.Notify(Molpy.Boosts[s].name+' has been constructed',1);
 			}else{
-				Molpy.Notify(s.name+' has been constructed and is available for purchase',1);
+				Molpy.Notify(Molpy.Boosts[s].name+' has been constructed and is available for purchase',1);
 			}
 		},
 		buyFunction:function()
@@ -2943,8 +2943,8 @@ Molpy.DefineBoosts=function()
 		},
 		className:'alert',group:'bean'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:100,BG:200};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:100,BG:150,AO:200};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:
 		function(me)
@@ -3688,6 +3688,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'TF Load Letter',aka:'TFLL',desc:'You can load Tool Factory with 10K Glass Chips at a time',glass:'4M',sand:Infinity,castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Booster Glass',aka:'BG',desc:'If you have Infinite Sand, clicking the NewPix gives Tool Factory 2 Glass Chips per Boost owned',glass:'8M',sand:Infinity,castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Automation Optimiser',aka:'AO',desc:'Mould Processing does not prevent the standard tasks of Factory Automation from occuring',glass:'20M',sand:Infinity,castles:Infinity, group:'hpt'});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],

@@ -1907,6 +1907,7 @@ Molpy.Up=function()
 						var maxGlass=Molpy.GlassCeilingCount()*10000000;
 						var rate = Molpy.ChipsPerBlock();
 						maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
+						maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power);
 						Molpy.AddBlocks(maxGlass);
 						Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
 					}
@@ -4169,10 +4170,12 @@ Molpy.Up=function()
 				{
 					Molpy.DoBlackprintConstruction();
 				}else{
-					if(!Molpy.FillGlassMouldWork())
-					if(!Molpy.MakeGlassMouldWork())
-					if(!Molpy.FillSandMouldWork())
-					if(!Molpy.MakeSandMouldWork())
+					var mouldWork=Molpy.FillGlassMouldWork()
+						||Molpy.MakeGlassMouldWork()
+						||Molpy.FillSandMouldWork()
+						||Molpy.MakeSandMouldWork();
+						
+					if(!mouldWork||Molpy.Got('AO'))
 						Molpy.RewardRedacted(1,t);
 				}
 			}
