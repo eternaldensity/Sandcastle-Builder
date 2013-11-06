@@ -1881,7 +1881,7 @@ Molpy.Up=function()
 			if(isNaN(Molpy.sandManual))Molpy.sandManual=0;
 			if(!isFinite(Molpy.sand)&&Molpy.Got('BG'))
 			{
-				var ch=Molpy.BoostsOwned*2
+				var ch=Molpy.BoostsOwned*4
 				Molpy.Boosts['Tool Factory'].power+=ch;
 				Molpy.chipsManual+=ch;
 			}

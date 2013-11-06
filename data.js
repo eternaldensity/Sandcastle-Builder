@@ -2982,7 +2982,7 @@ Molpy.DefineBoosts=function()
 		},
 		className:'alert',group:'bean'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:100,BG:150,AO:200};
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150};
 	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:
@@ -3500,9 +3500,9 @@ Molpy.DefineBoosts=function()
 		{
 			var str='Produces Glass Tools from Glass Chips';
 			if(!me.bought)return str;
-			if(Molpy.Got('TFLL')&&Molpy.HasGlassChips(10000))
+			if(Molpy.Got('TFLL')&&Molpy.HasGlassChips(50000))
 			{
-				str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(10000)"></input> with 10K Glass Chips';
+				str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(50000)"></input> with 50K Glass Chips';
 			}
 			if(Molpy.HasGlassChips(1000))
 			{
@@ -3725,8 +3725,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Ruthless Efficiency',desc:'Glass Block production uses a quarter as many Chips',glass:'12M',sand:'10WW',castles:'10WW', group:'hpt'});
 	new Molpy.Boost({name:'Break the Mould',desc:'Allows you to destroy an incomplete or unfilled Mould, if you decide making it was a mistake.',glass:'2M',sand:'10WWW',castles:'10WWW', group:'bean'});
 	
-	new Molpy.Boost({name:'TF Load Letter',aka:'TFLL',desc:'You can load Tool Factory with 10K Glass Chips at a time',glass:'4M',sand:Infinity,castles:Infinity, group:'hpt'});
-	new Molpy.Boost({name:'Booster Glass',aka:'BG',desc:'If you have Infinite Sand, clicking the NewPix gives Tool Factory 2 Glass Chips per Boost owned',glass:'8M',sand:Infinity,castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'TF Load Letter',aka:'TFLL',desc:'You can load Tool Factory with 50K Glass Chips at a time',glass:'4M',sand:Infinity,castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Booster Glass',aka:'BG',desc:'If you have Infinite Sand, clicking the NewPix gives Tool Factory 4 Glass Chips per Boost owned',glass:'8M',sand:Infinity,castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Automation Optimiser',aka:'AO',desc:'Mould Processing does not prevent the standard tasks of Factory Automation from occuring',glass:'20M',sand:Infinity,castles:Infinity, group:'hpt'});
 	
 	Molpy.groupNames={

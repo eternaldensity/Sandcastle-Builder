@@ -23,6 +23,8 @@ For personal amusement only.
 - Prevent fractional glass chips/blocks in storage, and prevent fractional size upgrades
 - Larger upgrade increments for Sand Refinery and Glass Chiller (finally!)
 - Glass Extruder was missing punctuation
+- Buffed TFLL a little
+- BG buffed a little also (it's not meant to be particularly powerful)
 
 ## 2.897
 - Clarification on SBtF description and some explanation on its stats.
