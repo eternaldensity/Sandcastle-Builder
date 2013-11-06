@@ -2552,7 +2552,7 @@ Molpy.DefineBoosts=function()
 			return Math.ceil(Molpy.Boosts['Logicat'].bought/5)
 		}
 	});
-	new Molpy.Boost({name:'Logicastle',desc:'Castle Tool outputs gain 50% per Logicat Level'
+	new Molpy.Boost({name:'Logicastle',desc:'The Castle outputs of Castle Tools gain 50% per Logicat Level'
 		,group:'bean',logic:2,sand:'420Z',castles:'850Z',glass:300
 	});
 	Molpy.LogicastleMult=function()
@@ -2949,6 +2949,10 @@ Molpy.DefineBoosts=function()
 					str+='<br>Making a mould from '+dname+' is complete. The Sand Mould Filler is required next.';
 				}else{
 					str+='<br>'+(me.power-1)+'% complete making a mould from '+dname;
+					if(Molpy.Got('Break the Mould'))
+					{
+						str+='<br><input type="Button" onclick="Molpy.BreakMould(\''+me.aka+'\')" value="Break the Mould"></input> to cancel';
+					}
 				}
 			}
 			return str;
@@ -2963,6 +2967,13 @@ Molpy.DefineBoosts=function()
 				this.className=newClass;
 				return 1;
 			}
+		},
+		reset:function()
+		{
+			var chips =this.bought*100*(this.power-1);
+			Molpy.AddChips(chips);
+			this.power=0;
+			Molpy.Notify(this.name+' has cancelled making <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
 		}
 	});
 	new Molpy.Boost({name:'Glass Mould Maker',aka:'GMM',desc:
@@ -2978,6 +2989,10 @@ Molpy.DefineBoosts=function()
 					str+='<br>Making a mould from '+mname+' is complete. The Glass Mould Filler is required next.';
 				}else{
 					str+='<br>'+Molpify((me.power-1)/4,2)+'% complete making a mould from '+mname;
+					if(Molpy.Got('Break the Mould'))
+					{
+						str+='<br><input type="Button" onclick="Molpy.BreakMould(\''+me.aka+'\')" value="Break the Mould"></input> to cancel';
+					}
 				}
 			}
 			return str;
@@ -2992,6 +3007,13 @@ Molpy.DefineBoosts=function()
 				this.className=newClass;
 				return 1;
 			}
+		},
+		reset:function()
+		{
+			var chips =Math.pow(1.01,this.bought)*1000*(this.power-1);
+			Molpy.AddChips(chips);
+			this.power=0;
+			Molpy.Notify(this.name+' has cancelled making <small>'+Molpy.Badges['monumg'+this.bought].name+'</small>',1);
 		}
 	});
 	new Molpy.Boost({name:'Sand Mould Filler',aka:'SMF',desc:
@@ -3007,7 +3029,11 @@ Molpy.DefineBoosts=function()
 				if(me.power>0)
 				{
 					var dname='<small>'+Molpy.Badges['discov'+me.bought].name+'</small>';
-					str+='<br>'+Molpify((me.power-1)/2,1)+'% complete filling the mould from '+dname+' with Sand';					
+					str+='<br>'+Molpify((me.power-1)/2,1)+'% complete filling the mould from '+dname+' with Sand';		
+					if(Molpy.Got('Break the Mould'))
+					{
+						str+='<br><input type="Button" onclick="Molpy.BreakMould(\''+me.aka+'\')" value="Break the Mould"></input> to cancel';
+					}			
 				}
 			}
 			return str;
@@ -3022,6 +3048,17 @@ Molpy.DefineBoosts=function()
 				this.className=newClass;
 				return 1;
 			}
+		},
+		reset:function()
+		{
+			if(!confirm('You will also lose the unfilled sand mould which will waste 100 runs of Factory Automation.\nAre you certain you want to do this?'))
+				return;
+			var chips =this.bought*100*100;
+			Molpy.AddChips(chips);
+			var sand=Math.pow(1.2,this.bought)*100*(this.power-1);
+			Molpy.Dig(sand);
+			this.power=0;
+			Molpy.Notify(this.name+' has cancelled filling <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
 		}
 	});
 	new Molpy.Boost({name:'Glass Mould Filler',aka:'GMF',desc:
@@ -3037,7 +3074,11 @@ Molpy.DefineBoosts=function()
 				if(me.power>0)
 				{
 					var mname='<small>'+Molpy.Badges['monums'+me.bought].name+'</small>';
-					str+='<br>'+Molpify((me.power-1)/8,3)+'% complete filling the mould from '+mname+' with Glass';					
+					str+='<br>'+Molpify((me.power-1)/8,3)+'% complete filling the mould from '+mname+' with Glass';				
+					if(Molpy.Got('Break the Mould'))
+					{
+						str+='<br><input type="Button" onclick="Molpy.BreakMould(\''+me.aka+'\')" value="Break the Mould"></input> to cancel';
+					}	
 				}
 			}
 			return str;
@@ -3052,8 +3093,27 @@ Molpy.DefineBoosts=function()
 				this.className=newClass;
 				return 1;
 			}
+		},
+		reset:function()
+		{
+			if(!confirm('You will also lose the unfilled glass mould which will waste 400 runs of Factory Automation.\nAre you certain you want to do this?'))
+				return;
+				
+			var blocks=Math.pow(1.02,this.bought)*1000000*(this.power-1);
+			Molpy.AddBlocks(blocks);
+			var chips =Math.pow(1.01,this.bought)*1000*400;
+			Molpy.AddChips(chips);
+			this.power=0;
+			Molpy.Notify(this.name+' has cancelled filling <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
 		}
 	});
+	
+	Molpy.BreakMould=function(aka)
+	{
+		var m = Molpy.Boosts[aka];
+		if(confirm('Do you want to cancel '+m.name+'?\nYou will have wasted '+(m.power-1)+' run'+(m.power==2?'':'s')+' of Factory Automation.'))
+			m.reset();
+	}
 	
 	Molpy.MakeSandMould=function(np)
 	{
@@ -3096,7 +3156,11 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		var chips =smm.bought*100;
-		if(!Molpy.HasGlassChips(chips)) return;
+		if(!Molpy.HasGlassChips(chips))
+		{
+			Molpy.Boosts['Break the Mould'].power++;
+			return;
+		}
 		Molpy.SpendGlassChips(chips);
 		smm.power++;
 		if(smm.power>100)
@@ -3146,7 +3210,11 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		var sand=Math.pow(1.2,smf.bought)*100;
-		if(!Molpy.sand >=sand) return;
+		if(!Molpy.sand >=sand)
+		{
+			Molpy.Boosts['Break the Mould'].power++;
+			return;
+		}
 		Molpy.SpendSand(sand);
 		smf.power++;
 		if(smf.power>200)
@@ -3200,7 +3268,11 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		var chips=Math.pow(1.01,gmm.bought)*1000;
-		if(!Molpy.HasGlassChips(chips)) return;
+		if(!Molpy.HasGlassChips(chips)) 
+		{
+			Molpy.Boosts['Break the Mould'].power++;
+			return;
+		}
 		Molpy.SpendGlassChips(chips);
 		gmm.power++;
 		if(gmm.power>400)
@@ -3250,7 +3322,11 @@ Molpy.DefineBoosts=function()
 			return;
 		}
 		var glass=Math.pow(1.02,gmf.bought)*1000000;
-		if(!Molpy.HasGlassBlocks(glass)) return;
+		if(!Molpy.HasGlassBlocks(glass)) 
+		{
+			Molpy.Boosts['Break the Mould'].power++;
+			return;
+		}
 		Molpy.SpendGlassBlocks(glass);
 		gmf.power++;
 		if(gmf.power>800)
@@ -3594,6 +3670,7 @@ Molpy.DefineBoosts=function()
 	});
 	
 	new Molpy.Boost({name:'Ruthless Efficiency',desc:'Glass Block production uses a quarter as many Chips',glass:'12M',sand:'10WW',castles:'10WW', group:'hpt'});
+	new Molpy.Boost({name:'Break the Mould',desc:'Allows you to destroy an incomplete or unfilled Mould, if you decide making it was a mistake.',glass:'2M',sand:'10WWW',castles:'10WWW', group:'bean'});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4181,14 +4258,10 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.groupBadgeCounts.discov>10&&Molpy.Earned("Dude, Where's my DeLorean?"))
 	{
 		Molpy.UnlockBoost('Memories Revisited');
-	}else
-	{
-		Molpy.LockBoost('Memories Revisited');
 	}
 	
 	if(Molpy.HasGlassBlocks(7016280))Molpy.EarnBadge('Pyramid of Giza');
 	if(Molpy.HasGlassChips(640000))Molpy.EarnBadge('Personal Computer');
-	Molpy.Boosts['Ruthless Efficiency'].department=(Molpy.Boosts['Glass Chiller'].power>=1234);
 }
 
 Molpy.CheckRewards=function(automationLevel)
@@ -4329,6 +4402,10 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Glass Saw'].logic=150*(Molpy.glassPermNP>=4000);
 	
 	Molpy.Boosts['Panther Rush'].logic=200*(Molpy.Boosts['Panther Rush'].power+1);
+	Molpy.Boosts['Ruthless Efficiency'].department=(Molpy.Boosts['Glass Chiller'].power>=1234);
+	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
+	
+
 }
 	
 Molpy.CheckASHF=function()

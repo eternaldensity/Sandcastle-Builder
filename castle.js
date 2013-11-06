@@ -1337,7 +1337,9 @@ Molpy.Up=function()
 		Molpy.StatsTabChange=function(n)
 		{
 			$('.statsTab').removeClass('unhidden').addClass('hidden');
-			$('#statsTab'+n).removeClass('hidden').addClass('unhidden');			
+			$('#statsTab'+n).removeClass('hidden').addClass('unhidden');
+			$('.statsButton').removeClass('selectedBox');
+			$('#statsButton'+n).addClass('selectedBox');			
 		}
 		
 		Molpy.showExport=0;
@@ -2680,6 +2682,7 @@ Molpy.Up=function()
 			this.group=args.group||'boosts';
 			this.lockFunction=args.lockFunction;
 			this.unlockFunction=args.unlockFunction;
+			this.reset=args.reset;
 			
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)

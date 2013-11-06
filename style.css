@@ -446,6 +446,10 @@ body.lightscheme .badge.loot h1
 {
 	color:#777;
 }
+.selectedBox
+{
+	border-width:2px;
+}
 .hidden
 {
 	display:none;
