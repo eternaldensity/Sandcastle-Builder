@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.9;
+		Molpy.version=2.91;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -4207,7 +4207,9 @@ Molpy.Up=function()
 				if(Molpy.Got('CfB'))
 				{
 					Molpy.DoBlackprintConstruction();
-				}else{
+				}
+				if(!Molpy.Got('CfB')||Molpy.Got('AO'))
+				{
 					var mouldWork=Molpy.FillGlassMouldWork()
 						||Molpy.MakeGlassMouldWork()
 						||Molpy.FillSandMouldWork()

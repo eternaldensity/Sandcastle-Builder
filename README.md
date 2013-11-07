@@ -24,6 +24,7 @@ For personal amusement only.
 - Panther Salve now shows progress towards LCB (oops)
 - Rosetta now always displays how many NPBs for the next FA upgrade
 - Stats show number of castles sacrificed via Molpy Down or Rift
+- Automation Optimisation improved to allow Construction from Blackprints from occurring alongside other work
 
 ## 2.9
 - Production Control for Tool Factory
