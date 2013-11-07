@@ -2990,8 +2990,8 @@ Molpy.DefineBoosts=function()
 		},
 		className:'alert',group:'bean'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150,AA:200};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO','AA'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:
 		function(me)
@@ -3553,13 +3553,14 @@ Molpy.DefineBoosts=function()
 		if(Molpy.Got('PC')) i=Molpy.Boosts['PC'].power;
 		var pow=tf.power;
 		var built=0;
+		var fVal=Molpy.Boosts['Flipside'].power;
 		while(pow&&i--)
 		{
 			var t = Molpy.tfOrder.length;
 			while(pow&&t--)
 			{
 				var tool=Molpy.tfOrder[t];
-				if(!isFinite(tool.price)&&Molpy.Got('Glass Ceiling '+t))
+				if(isFinite(tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
 				{
 					var cost = 1000*(t+1);
 					if(pow>=cost)
@@ -3572,14 +3573,48 @@ Molpy.DefineBoosts=function()
 			}
 		}
 		if(built)
-		{
+		{		
+			var t = Molpy.tfOrder.length;
+			while(t--)
+			{
+				var tool=Molpy.tfOrder[t];
+				if(isFinite(tool.price)) tool.refresh();
+			}
+			
 			Molpy.toolsBuilt+=built;
 			Molpy.toolsBuiltTotal+=built;
 			Molpy.recalculateDig=1;
-			Molpy.CheckBuyUnlocks();
-			tf.power=pow;
 			Molpy.shopRepaint=1;
+ 			Molpy.CheckBuyUnlocks();
+ 			tf.power=pow;
+
 		}
+		
+		if(!Molpy.Boosts['AA'].power)return;
+				
+		var p = 1;
+		if(Molpy.Got('PC')) p=Math.max(p,Molpy.Boosts['PC'].power);
+		var i=p;
+		while(i--)
+		{
+			var on = 1;
+			var t = Molpy.tfOrder.length;
+			while(on&&t--)
+			{
+				if(isFinite(Molpy.tfOrder[t].price)) on=0;
+			}
+			if(!on)return;
+			
+			var t = Molpy.tfOrder.length;
+			while(t--)
+			{
+				var tool=Molpy.tfOrder[t];
+				tool.amount--;
+				tool.refresh();
+			}
+			Molpy.FactoryAutomationRun((p-i)/2);
+		}
+		
 	}
 	
 	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
@@ -3779,6 +3814,33 @@ Molpy.DefineBoosts=function()
 			Molpy.LockBoost(this.aka);
 		}
 	});
+	new Molpy.Boost({name:'Flipside',
+	desc:function(me)
+	{
+		
+		return (me.power? '':'When active, ') + 'Factory constructs Glass Tools that do not have infinite price, instead of Glass Tools that do have infinite price.'+(me.bought?'<br><input type="Button" onclick="Molpy.FlipsideToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+	}
+	,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',logic:220});
+	Molpy.FlipsideToggle=function()
+	{
+		var me=Molpy.Boosts['Flipside'];
+		me.power=1*!me.power;			
+		me.hoverOnCounter=1;
+	}
+	
+	new Molpy.Boost({name:'Automata Assemble',aka:'AA',
+	desc:function(me)
+	{
+		
+		return (me.power? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Factory Automation run.'+(me.bought?'<br><input type="Button" onclick="Molpy.AutoAssembleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+	}
+	,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'});
+	Molpy.AutoAssembleToggle=function()
+	{
+		var me=Molpy.Boosts['AA'];
+		me.power=1*!me.power;			
+		me.hoverOnCounter=1;
+	}
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4514,7 +4576,7 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
 	
 	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
-	Molpy.Boosts['Panther Poke'].department=1*(Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&Math.floor(Math.random()*1.5)==0);
+	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&Math.floor(Math.random()*4)==0);
 }
 	
 Molpy.CheckASHF=function()

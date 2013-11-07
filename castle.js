@@ -4204,23 +4204,27 @@ Molpy.Up=function()
 			Molpy.Notify('Activating Factory Automation '+t+' time'+(t==1?'':'s')+' at a cost of '+Molpify(spent,4)+' Sand',1);
 			while(t--) 
 			{
-				if(Molpy.Got('CfB'))
-				{
-					Molpy.DoBlackprintConstruction();
-				}
-				if(!Molpy.Got('CfB')||Molpy.Got('AO'))
-				{
-					var mouldWork=Molpy.FillGlassMouldWork()
-						||Molpy.MakeGlassMouldWork()
-						||Molpy.FillSandMouldWork()
-						||Molpy.MakeSandMouldWork();
-						
-					if(!mouldWork||Molpy.Got('AO'))
-						Molpy.RewardRedacted(1,t);
-				}
+				Molpy.FactoryAutomationRun(t);
 			}
 			
 			Molpy.GlassNotifyFlush();
+		}
+	}
+	Molpy.FactoryAutomationRun=function(t)
+	{
+		if(Molpy.Got('CfB'))
+		{
+			Molpy.DoBlackprintConstruction();
+		}
+		if(!Molpy.Got('CfB')||Molpy.Got('AO'))
+		{
+			var mouldWork=Molpy.FillGlassMouldWork()
+				||Molpy.MakeGlassMouldWork()
+				||Molpy.FillSandMouldWork()
+				||Molpy.MakeSandMouldWork();
+				
+			if(!mouldWork||Molpy.Got('AO'))
+				Molpy.RewardRedacted(1,t);
 		}
 	}
 	
