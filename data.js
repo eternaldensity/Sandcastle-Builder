@@ -381,12 +381,13 @@ Molpy.DefineCastleTools=function()
 	});
 		
 	new Molpy.CastleTool({name:'Wave',commonName:'wave|waves|swept|deposited',desc:'Sweeps away some castles, depositing more in their place.',price0:300,price1:80,
-		destroyC:function()
+		destroyC:function(next)
 		{
+			next=next||0;
 			var baseval = 24;
 			if(Molpy.Got('SBTF'))
 			{
-				if(Molpy.newpixNumber%2==1)//odd
+				if(Molpy.newpixNumber%2==1-next)//odd
 				{
 					baseval=Math.floor(baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount));
 				}
@@ -400,8 +401,9 @@ Molpy.DefineCastleTools=function()
 			baseval=Math.floor(Math.max(baseval,0));
 			return baseval;
 		},
-		buildC:function()
+		buildC:function(next)
 		{
+			next=next||0;
 			var baseval= 111;
 			baseval+=Molpy.Got('Swell')*19;			
 			if(Molpy.Got('Surfbot'))baseval*=4;
@@ -409,7 +411,7 @@ Molpy.DefineCastleTools=function()
 			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('SBTF'))
 			{
-				if(Molpy.newpixNumber%2==0)//even
+				if(Molpy.newpixNumber%2==next)//even
 				{
 					baseval=baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount);
 				}
@@ -2076,8 +2078,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Ninja Legion',desc:'Ninja Stealth is raised by 1000x as much'
 		,sand:'3P',castles:'0.9P',group:'ninj'});
 		
-	new Molpy.Boost({name:'Swim Between the Flags',aka:'SBTF',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix (i.e. when changing from an odd NewPix to an even NewPix) and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.',stats:
-	'Note that Castle Tools\' amounts for castles to destroy and build are the amounts for the current NewPix. Since the evenness/oddness will change on the ONG, the amounts destroyed and built on the next ONG will be different to what are shown for Waves currently.', sand:'14G', castles: '2T',icon:'swimbetweenflags'});
+	new Molpy.Boost({name:'Swim Between the Flags',aka:'SBTF',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix (i.e. when changing from an odd NewPix to an even NewPix) and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T',icon:'swimbetweenflags'});
 	
 	new Molpy.Boost({name:"Château d'If",
 		desc:function(me)
@@ -2143,9 +2144,14 @@ Molpy.DefineBoosts=function()
 				var bots=Molpy.CastleTools['NewPixBot'].amount;
 				if(fa.bought && Molpy.Got('Doublepost'))
 				{
-					if(fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power])
+					if(fa.power<Molpy.faCosts.length)
 					{
-						str+='<br><input type="Button" value="Trade" onclick="Molpy.UpgradeFactoryAutomation()"></input> '+Molpy.faCosts[fa.power]+' NewPixBots to upgrade Factory Automation.';
+						if(bots>=Molpy.faCosts[fa.power])
+						{
+							str+='<br><input type="Button" value="Trade" onclick="Molpy.UpgradeFactoryAutomation()"></input> '+Molpify(Molpy.faCosts[fa.power],1)+' NewPixBots to upgrade Factory Automation.';
+						}else{
+							str+='<br>The next Factory Automation upgrade requires '+Molpify(Molpy.faCosts[fa.power],1)+' NewPixBots';
+						}
 					}
 				}
 				if(!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500)
@@ -2251,6 +2257,8 @@ Molpy.DefineBoosts=function()
 			str+='<br>Speed is at '+p+' out of 500';
 		else if(p<=800)
 			str+='<br>Speed is at '+p+' out of 800';
+		else if(p<=1200)
+			str+='<br>Speed is at '+p+' out of 1200';
 		return str;
 	}
 	,group:'bean',className:'toggle',icon:'panthersalve'});
@@ -3503,7 +3511,11 @@ Molpy.DefineBoosts=function()
 			if(Molpy.Got('TFLL')&&Molpy.HasGlassChips(50000))
 			{
 				str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(50000)"></input> with 50K Glass Chips';
+			}else if(Molpy.Got('TFLL')&&Molpy.HasGlassChips(10000))
+			{
+				str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(10000)"></input> with 10K Glass Chips';
 			}
+			
 			if(Molpy.HasGlassChips(1000))
 			{
 				str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1000)"></input> with 1K Glass Chips';

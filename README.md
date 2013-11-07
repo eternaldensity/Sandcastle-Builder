@@ -18,6 +18,13 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.91
+- TFLL now allows you to load 10K if you don't have 50K
+- Waves additionally show how many castles will be destroyed/built on the next ONG, if you have SBTF
+- Panther Salve now shows progress towards LCB (oops)
+- Rosetta now always displays how many NPBs for the next FA upgrade
+- Stats show number of castles sacrificed via Molpy Down or Rift
+
 ## 2.9
 - Production Control for Tool Factory
 - Panther Poke! This requires 2500 redactedclicks before you have any chance of seeing it

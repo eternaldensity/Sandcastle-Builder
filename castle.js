@@ -2637,6 +2637,12 @@ Molpy.Up=function()
 				var dN = EvalMaybeFunction(inf?this.destroyG:this.destroyC);
 				var w=inf?'Chip':'Castle';
 				var actuals ='<br>Builds '+Molpify(bN,1)+' '+w+(bN==1?'':'s')+(dN?(' if '+Molpify(dN,1)+' '+w+((dN!=1)?'s are':' is')+' destroyed.'):'');
+				if(this.name=='Wave'&&Molpy.Got('SBTF')&&!inf)
+				{
+					bN=this.buildC(1);
+					dN=this.destroyC(1);
+					actuals+='<br>Next ONG, will build '+Molpify(bN,1)+' '+w+(bN==1?'':'s')+(dN?(' if '+Molpify(dN,1)+' '+w+((dN!=1)?'s are':' is')+' destroyed.'):'');
+				}
 				if(Molpy.showStats)
 				{
 					if(this.totalCastlesDestroyed)
@@ -4825,6 +4831,7 @@ Molpy.Up=function()
 		g('sandspentstat').innerHTML=Molpify(Molpy.sandSpent);
 		g('totalcastlesstat').innerHTML=Molpify(Molpy.castlesBuilt);
 		g('destroyedcastlesstat').innerHTML=Molpify(Molpy.castlesDestroyed);
+		g('downcastlesstat').innerHTML=Molpify(Molpy.totalCastlesDown);
 		g('spentcastlesstat').innerHTML=Molpify(Molpy.castlesSpent);
 		
 		g('ninjatimestat').innerHTML=Molpify(Molpy.ninjaTime/Molpy.NPlength,1)+'mNP';		
