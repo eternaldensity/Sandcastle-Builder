@@ -3820,7 +3820,7 @@ Molpy.DefineBoosts=function()
 		
 		return (me.power? '':'When active, ') + 'Factory constructs Glass Tools that do not have infinite price, instead of Glass Tools that do have infinite price.'+(me.bought?'<br><input type="Button" onclick="Molpy.FlipsideToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
 	}
-	,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',logic:220});
+	,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'});
 	Molpy.FlipsideToggle=function()
 	{
 		var me=Molpy.Boosts['Flipside'];
@@ -3841,6 +3841,8 @@ Molpy.DefineBoosts=function()
 		me.power=1*!me.power;			
 		me.hoverOnCounter=1;
 	}
+	
+	new Molpy.Boost({name:'Glass Mousepy',aka:'GM',desc:'Clicks give 5% of your chips/mNP rate',glass:'10M',sand:Infinity,castles:Infinity, group:'hpt'});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4577,6 +4579,10 @@ Molpy.CheckRewards=function(automationLevel)
 	
 	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
 	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&Math.floor(Math.random()*4)==0);
+	Molpy.Boosts['Flipside'].logic=220*Molpy.Got('AA');
+	
+	Molpy.Boosts['Glass Mousepy'].department=1*(Molpy.chipsManual>=1e6);
+				
 }
 	
 Molpy.CheckASHF=function()

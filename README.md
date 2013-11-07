@@ -18,6 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.92
+- Flipside now not available until after you get Automata Assemble, since it's not really useful until then.
+- Glass Mouspy
+
 ## 2.91
 - TFLL now allows you to load 10K if you don't have 50K
 - Waves additionally show how many castles will be destroyed/built on the next ONG, if you have SBTF

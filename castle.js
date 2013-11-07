@@ -1882,6 +1882,10 @@ Molpy.Up=function()
 			if(!isFinite(Molpy.sand)&&Molpy.Got('BG'))
 			{
 				var ch=Molpy.BoostsOwned*4
+				if(Molpy.Got('GM'))
+				{
+					ch+=Molpy.glassPermNP/20;
+				}
 				Molpy.Boosts['Tool Factory'].power+=ch;
 				Molpy.chipsManual+=ch;
 			}
