@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.898;
+		Molpy.version=2.9;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -4849,6 +4849,7 @@ Molpy.Up=function()
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),3)+'%';
 		g('blackstat').innerHTML='Collected '+Molpify(Molpy.Boosts['Blackprints'].power)+' of '+Molpify(Molpy.GetBlackprintPages());
+		g('logicatstat').innerHTML=Molpify(Molpy.Boosts['Logicat'].bought);
 		g('totaltoolchipsstat').innerHTML=Molpify(Molpy.totalGlassBuilt);
 		g('destroyedtoolchipsstat').innerHTML=Molpify(Molpy.totalGlassDestroyed);
 		g('manualchipsstat').innerHTML=Molpify(Molpy.chipsManual);

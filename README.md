@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.9
+- Production Control for Tool Factory
+- Panther Poke! This requires 2500 redactedclicks before you have any chance of seeing it
+- Moved Blackprints stat into Other, and added Logicat Level to Other stats
+
 ## 2.898
 - ONG performance increase - less looping on destruction
 - Prevent fractional glass chips/blocks in storage, and prevent fractional size upgrades

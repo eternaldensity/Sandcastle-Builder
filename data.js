@@ -3537,7 +3537,8 @@ Molpy.DefineBoosts=function()
 	Molpy.RunToolFactory=function()
 	{
 		var tf = Molpy.Boosts['Tool Factory'];
-		var i = tf.bought;
+		var i = 1;
+		if(Molpy.Got('PC')) i=Molpy.Boosts['PC'].power;
 		var pow=tf.power;
 		var built=0;
 		while(pow&&i--)
@@ -3728,6 +3729,44 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'TF Load Letter',aka:'TFLL',desc:'You can load Tool Factory with 50K Glass Chips at a time',glass:'4M',sand:Infinity,castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Booster Glass',aka:'BG',desc:'If you have Infinite Sand, clicking the NewPix gives Tool Factory 4 Glass Chips per Boost owned',glass:'8M',sand:Infinity,castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Automation Optimiser',aka:'AO',desc:'Mould Processing does not prevent the standard tasks of Factory Automation from occuring',glass:'20M',sand:Infinity,castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Production Control',aka:'PC',
+		desc:function(me)
+		{
+			if(!me.bought) return 'Allows you to change how many copies of Glass Tools can be constructed by Tool Factory each mNP';
+			var n = me.power;
+			var str='Tool Factory produces up to '+Molpify(n,2)+' of any Glass Tool per mNP.';
+			if(Molpy.HasGlassBlocks(1e6*n))
+			{
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(1)"></input> the rate by 1 at a cost of '+Molpify(1e6*n,1)+' Glass Blocks.';
+			}
+			if(me.power>0&&Molpy.HasGlassBlocks(1e5*n))
+			{
+				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlToolFactory(-1)"></input> the rate by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Blocks.';
+			}
+			return str;
+		}
+		,glass:'30M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',
+		buyFunction:function(){this.power=1;}
+	});
+	Molpy.ControlToolFactory=function(n)
+	{
+		var me = Molpy.Boosts['PC'];
+		var cost=1e6*n;
+		if(n<0) cost=-1e5*n;
+		cost*=me.power;
+		if(Molpy.HasGlassBlocks(cost))
+		{
+			Molpy.SpendGlassBlocks(cost);
+			me.power+=n;
+			Molpy.Notify('Adjusted production rate of Tool Factory');
+		}
+	}
+	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
+		buyFunction:function(){
+			Molpy.Boosts['Caged Logicat'].bought++;
+			Molpy.LockBoost(this.aka);
+		}
+	});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4462,7 +4501,8 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Ruthless Efficiency'].department=(Molpy.Boosts['Glass Chiller'].power>=1234);
 	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
 	
-
+	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
+	Molpy.Boosts['Panther Poke'].department=1*(Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&Math.floor(Math.random()*1.5)==0);
 }
 	
 Molpy.CheckASHF=function()
