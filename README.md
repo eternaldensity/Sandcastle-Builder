@@ -20,6 +20,8 @@ For personal amusement only.
 
 ## 2.93
 - Shopping Assistant remembers your choice. (BTW it doesn't work for Bigger Buckets. But you probably already have that)
+- I think I fixed the issue of free boosts not being bought on occasion: castles were NaN after spending infinite castles
+- A bunch more boosts for glass castle tools
 
 ## 2.92
 - Flipside now not available until after you get Automata Assemble, since it's not really useful until then.

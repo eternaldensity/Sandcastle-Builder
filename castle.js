@@ -2760,6 +2760,16 @@ Molpy.Up=function()
 			this.buy=function()
 			{
 				if(!this.unlocked)return; //shopping assistant tried to buy it when it was locked
+				if(isNaN(Molpy.sand))
+				{
+					Molpy.sand=0;
+					Molpy.EarnBadge('Mustard Cleanup');
+				}
+				if(isNaN(Molpy.castles))
+				{
+					Molpy.castles=0;
+					Molpy.EarnBadge('Mustard Cleanup');
+				}
 				
 				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1));
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));

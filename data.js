@@ -310,6 +310,8 @@ Molpy.DefineCastleTools=function()
 			var baseval=2;
 			if(Molpy.Got('Bacon'))
 				baseval*= 10;
+			if(Molpy.Got('Bottle Battle'))
+				baseval*= 3;
 			return baseval;
 		},
 		nextThreshold:1
@@ -376,7 +378,13 @@ Molpy.DefineCastleTools=function()
 			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 5'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
-		},destroyG:6,buildG:21,
+		},destroyG:6,buildG:function()
+		{
+			var baseval=21;
+			if(Molpy.Got('Leggy'))
+				baseval*=8;
+			return baseval;
+		},
 		nextThreshold:4
 	});
 		
@@ -419,7 +427,13 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Glass Ceiling 7'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
 		},
-		nextThreshold:8,destroyG:19,buildG:55,
+		nextThreshold:8,destroyG:19,buildG:function()
+		{
+			var baseval=55;
+			if(Molpy.Got('Clear Wash'))
+				baseval*= 10;
+			return baseval;
+		},
 		destroyFunction:function()
 		{
 		if(this.totalCastlesDestroyed>=2000) Molpy.UnlockBoost('Erosion');
@@ -458,7 +472,13 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Glass Ceiling 9'))mult*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval*mult);
 		}
-		,destroyG:52,buildG:134
+		,destroyG:52,buildG:function()
+		{
+			var baseval=134;
+			if(Molpy.Got('Crystal Streams'))
+				baseval*= 12;
+			return baseval;
+		}
 		,nextThreshold:1000
 	});
 	
@@ -474,7 +494,15 @@ Molpy.DefineCastleTools=function()
 			
 			return Math.floor(baseval*mult);
 		}
-		,destroyG:115,buildG:281
+		,destroyG:115,buildG:function()
+		{
+			var baseval=281;
+			if(Molpy.Got('Super Visor'))
+				baseval*= 15;
+			if(Molpy.Got('Crystal Helm'))
+				baseval*= 5;
+			return baseval;
+		}
 		,nextThreshold:1
 	});
 }
@@ -3933,6 +3961,13 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('Adjusted Automata Assemble');
 		}
 	}
+	new Molpy.Boost({name:'Bottle Battle',desc:'NewPixBot Glass production is multiplied by 3',glass:'10M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Leggy',desc:'Scaffold Glass production is multiplied by 8',glass:'15M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Clear Wash',desc:'Wave Glass production is multiplied by 10',glass:'15M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Crystal Streams',desc:'River Glass production is multiplied by 12',glass:'20M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Super Visor',desc:'Beanie Builder Glass production is multiplied by 15',glass:'20M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Crystal Helm',desc:'Beanie Builder Glass production is multiplied by 5',glass:'30M',sand:Infinity,castles:Infinity});
+	
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4660,7 +4695,6 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Crystal Peak'].logic=70*(Molpy.SandTools['Ladder'].amount>=15000);
 	Molpy.Boosts['Cupholder'].logic=80*(Molpy.SandTools['Bag'].amount>=12000);
 	Molpy.Boosts['Tiny Glasses'].logic=90*(Molpy.SandTools['LaPetite'].amount>=8000);
-	Molpy.Boosts['Stained Glass Launcher'].logic=100*(Molpy.CastleTools['Trebuchet'].amount>=4000);	
 	Molpy.Boosts['Glass Saw'].logic=150*(Molpy.glassPermNP>=4000);
 	
 	Molpy.Boosts['Panther Rush'].logic=200*(Molpy.Boosts['Panther Rush'].power+1);
@@ -4674,6 +4708,13 @@ Molpy.CheckRewards=function(automationLevel)
 	
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
+	Molpy.Boosts['Bottle Battle'].logic=150*(Molpy.CastleTools['NewPixBot'].amount>=10000);	
+	Molpy.Boosts['Stained Glass Launcher'].logic=160*(Molpy.CastleTools['Trebuchet'].amount>=4000);	
+	Molpy.Boosts['Leggy'].logic=180*(Molpy.CastleTools['Scaffold'].amount>=5000);	
+	Molpy.Boosts['Clear Wash'].logic=200*(Molpy.CastleTools['Wave'].amount>=5000);	
+	Molpy.Boosts['Crystal Streams'].logic=220*(Molpy.CastleTools['River'].amount>=6000);	
+	Molpy.Boosts['Super Visor'].logic=240*(Molpy.CastleTools['Beanie Builder'].amount>=6000);	
+	Molpy.Boosts['Crystal Helm'].logic=300*(Molpy.CastleTools['Beanie Builder'].amount>=12000);	
 				
 }
 	
