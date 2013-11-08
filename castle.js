@@ -2291,7 +2291,7 @@ Molpy.Up=function()
 			for (var i in Molpy.SandTools)
 			{
 				var me=Molpy.SandTools[i];
-				var tf=!isFinite(me.price)*1*inf;
+				var tf=!isFinite(Molpy.priceFactor*me.price)*1*inf;
 				me.storedGpmNP=EvalMaybeFunction(me.gpmNP,me)*tf;
 				me.storedTotalGpmNP=me.amount*me.storedGpmNP;
 				Molpy.glassPermNP+=me.storedTotalGpmNP;
@@ -2567,7 +2567,7 @@ Molpy.Up=function()
 			this.DestroyPhase=function()
 			{
 				var i = this.amount
-				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(this.price);
+				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(Molpy.priceFactor*this.price);
 				var destroyN=EvalMaybeFunction(inf?this.destroyG:this.destroyC);
 				if (inf)
 				{
@@ -2622,7 +2622,7 @@ Molpy.Up=function()
 			}
 			this.BuildPhase=function()
 			{
-				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(this.price);
+				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(Molpy.priceFactor*this.price);
 				var buildN =EvalMaybeFunction(inf?this.buildG:this.buildC);
 				buildN*=this.currentActive;
 				if(inf)
@@ -2641,7 +2641,7 @@ Molpy.Up=function()
 				if(!d)return;
 				if(keep&&d.innerHTML)return;
 				var desc = '';
-				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(this.price);
+				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(Molpy.priceFactor*this.price);
 				var bN = EvalMaybeFunction(inf?this.buildG:this.buildC);
 				var dN = EvalMaybeFunction(inf?this.destroyG:this.destroyC);
 				var w=inf?'Chip':'Castle';
@@ -3648,13 +3648,13 @@ Molpy.Up=function()
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2))) name = 'Glass '+name;
 				var salebit='';
-				if(isFinite(me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
+				if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 				{
 					salebit=' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>');
 				}
 				var price = '';
-				if(isFinite(me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+i*2))
+				if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+i*2))
 					price = FormatPrice(me.price,me)+(me.price<100?' Castles':' Ca');
 				else
 					price = Molpify(1000*(i*2+1),3)+' Chips';
@@ -3695,13 +3695,13 @@ Molpy.Up=function()
 				var name = me.name;
 				if(Molpy.Got('Glass Ceiling '+(i*2+1))) name = 'Glass '+name;
 				var salebit='';
-				if(isFinite(me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
+				if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 				{
 					salebit=' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>');
 				}
 				var price = '';
-				if(isFinite(me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(i*2+1)))
+				if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(i*2+1)))
 					price = FormatPrice(me.price,me)+(me.price<100?' Castles':' Ca');
 				else
 					price = Molpify(1000*(i*2+2),3)+' Chips';

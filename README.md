@@ -23,8 +23,11 @@ For personal amusement only.
 - Glass Mousepy
 - Caged Logicat untagged if sleeping
 - Panther Rush improves Panther Poke
+- Glassed Lightning
 - Fixed Badgers description
 - The SpendSand function now ensures sand is not negative
+- Boost to control AA power separate from TF power (defaults to current behaviour until you get it, and it starts at the current level)
+- Finite/infinite tool price checks include the Price Factor now
 
 ## 2.91
 - TFLL now allows you to load 10K if you don't have 50K
