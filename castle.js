@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.91;
+		Molpy.version=2.92;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1775,6 +1775,7 @@ Molpy.Up=function()
 		{
 			if(!amount)return;
 			Molpy.sand-=amount;
+			if(Molpy.sand<0)Molpy.sand=0;
 			Molpy.sandSpent+=amount;
 			if((isFinite(Molpy.sand)||!isFinite(amount)))
 			{
@@ -2295,6 +2296,10 @@ Molpy.Up=function()
 				me.storedTotalGpmNP=me.amount*me.storedGpmNP;
 				Molpy.glassPermNP+=me.storedTotalGpmNP;
 			}				
+			if(Molpy.Got('GL'))
+			{
+				multiplier*=Molpy.Boosts['GL'].power/100;
+			}
 			
 			Molpy.globalGpmNPMult=multiplier;
 			Molpy.glassPermNP*=Molpy.globalGpmNPMult;	

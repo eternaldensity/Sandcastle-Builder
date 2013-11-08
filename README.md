@@ -20,7 +20,11 @@ For personal amusement only.
 
 ## 2.92
 - Flipside now not available until after you get Automata Assemble, since it's not really useful until then.
-- Glass Mouspy
+- Glass Mousepy
+- Caged Logicat untagged if sleeping
+- Panther Rush improves Panther Poke
+- Fixed Badgers description
+- The SpendSand function now ensures sand is not negative
 
 ## 2.91
 - TFLL now allows you to load 10K if you don't have 50K

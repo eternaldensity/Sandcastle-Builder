@@ -2728,6 +2728,16 @@ Molpy.DefineBoosts=function()
 		buyFunction:function()
 		{
 			this.bought=11;
+		},classChange:
+		function()
+		{
+			var oldClass=this.className;
+			var newClass = this.bought>1?'action':'';
+			if(newClass!=oldClass)
+			{
+				this.className=newClass;
+				return 1;
+			}
 		}
 	});	
 
@@ -3618,8 +3628,7 @@ Molpy.DefineBoosts=function()
 	}
 	
 	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
-	new Molpy.Boost({name:'Badgers',desc:'Increases sand dig rate (but not clicks) by 10% per badge earned',
-		stats:function(me)
+	new Molpy.Boost({name:'Badgers',desc:function(me)
 		{
 			return GLRschoice(['Badgers? Badgers? We don\'t need no ch*rpin\' Badgers! This is Sacred Ground and I\'ll have no more heresy. Surely you mean Molpies.','Exactly! No, wait - No! There are no badgers involved at all!','For every 10 badges, Glass Chip production uses 1% less sand']);
 		},
@@ -3810,7 +3819,7 @@ Molpy.DefineBoosts=function()
 	}
 	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
 		buyFunction:function(){
-			Molpy.Boosts['Caged Logicat'].bought++;
+			Molpy.Boosts['Caged Logicat'].bought+=1+Molpy.Boosts['Panther Rush'].power;
 			Molpy.LockBoost(this.aka);
 		}
 	});
@@ -3843,6 +3852,11 @@ Molpy.DefineBoosts=function()
 	}
 	
 	new Molpy.Boost({name:'Glass Mousepy',aka:'GM',desc:'Clicks give 5% of your chips/mNP rate',glass:'10M',sand:Infinity,castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Glassed Lightning',aka:'GL',desc:function(me)
+		{		
+			return Molpify(me.power,1)+'% Glass for '+Molpify(me.countdown,3)+'mNP';
+		}
+		,icon:'blitzing',className:'alert',startCountdown:25,startPower:400});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4581,7 +4595,8 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&Math.floor(Math.random()*4)==0);
 	Molpy.Boosts['Flipside'].logic=220*Molpy.Got('AA');
 	
-	Molpy.Boosts['Glass Mousepy'].department=1*(Molpy.chipsManual>=1e6);
+	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
+	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
 				
 }
 	
