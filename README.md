@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.93
+- Shopping Assistant remembers your choice. (BTW it doesn't work for Bigger Buckets. But you probably already have that)
+
 ## 2.92
 - Flipside now not available until after you get Automata Assemble, since it's not really useful until then.
 - Glass Mousepy

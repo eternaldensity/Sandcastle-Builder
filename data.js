@@ -1423,33 +1423,69 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.ChooseShoppingItem=function()
 	{
-		var name = prompt('Enter the name of the tool or boost you wish to buy whenever ASHF is active.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is not preserved if you reload.',Molpy.shoppingItem||'Bag');
+		var donkey=Molpy.Boosts['Shopping Assistant'];
+		donkey.power=0;
+		var name = prompt('Enter the name of the tool or boost you wish to buy whenever ASHF is active.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is preserved if you reload.',Molpy.shoppingItem||'Bag');
 		if(name)
 		{
 			var item=Molpy.SandTools[name] || Molpy.CastleTools[name];
 			if(item)
 			{
-				Molpy.shoppingItem=name;
+				for(var i in Molpy.tfOrder)
+				{
+					var tool=Molpy.tfOrder[i];
+					if(tool===item)
+					{
+						donkey.power=-i-1;
+						break;
+					}
+				}
+			}else{
+				item = Molpy.Boosts[name];
+				if(!item)
+				{
+					item=Molpy.Boosts[Molpy.BoostAKA[name]];
+				}
+				if(item && !item.bought)
+				{
+					donkey.power=item.id;
+				}
+			}
+		}
+		Molpy.SelectShoppingItem(1)
+	}
+	Molpy.SelectShoppingItem=function(notify)
+	{
+		var donkey=Molpy.Boosts['Shopping Assistant'];
+		if(donkey.power<0)
+		{
+			var item=Molpy.tfOrder[-(donkey.power+1)];
+			if(item)
+			{
+				Molpy.shoppingItem=item.name;
 				Molpy.shoppingItemName=item.plural;
-				Molpy.Notify(item.plural + ' will be purchased whenever ASHF is active if possible',1);
+				if(notify)
+					Molpy.Notify(item.plural + ' will be purchased whenever ASHF is active if possible',1);
 				return;
 			}
-			var item = Molpy.Boosts[name];
-			if(!item)
-			{
-				item=Molpy.Boosts[Molpy.BoostAKA[name]];
-			}
+		}else if(donkey.power>0)
+		{
+			var item = Molpy.BoostsById[donkey.power];
 			if(item && !item.bought)
 			{
-				Molpy.shoppingItem=name;
-				Molpy.shoppingItemName=item.name;
-				Molpy.Notify(item.name + ' will be purchased when ASHF is active if possible',1);
+				Molpy.shoppingItem=item.name;
+				Molpy.shoppingItemName=item.name;				
+				if(notify)
+					Molpy.Notify(item.name + ' will be purchased when ASHF is active if possible',1);
+				
 				return;
 			}
 		}
 		Molpy.shoppingItem='';
 		Molpy.shoppingItemName='';
-		Molpy.Notify('No item selected for shopping assistant',1);
+		if(notify)
+			Molpy.Notify('No item selected for shopping assistant',1);
+		
 	}
 	Molpy.Donkey=function()
 	{

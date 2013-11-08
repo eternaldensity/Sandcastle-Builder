@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.92;
+		Molpy.version=2.93;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -741,6 +741,7 @@ Molpy.Up=function()
 					}
 				}
 			}
+			Molpy.SelectShoppingItem();
 			
 			Molpy.needlePulling=0;//badges are loaded now
 			
