@@ -992,7 +992,10 @@ Molpy.Up=function()
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
 				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
-				Molpy.UnlockBoost('Safety Hat');
+				if(Molpy.Got('Safety Hat')&&Molpy.Got('Safety Pumpkin')&&!Molpy.Got('Safety Goggles'))
+					Molpy.UnlockBoost('Safety Goggles');
+				else
+					Molpy.UnlockBoost('Safety Hat');
 			}
 			
 			Molpy.UpdateColourScheme();
@@ -1143,7 +1146,12 @@ Molpy.Up=function()
 					
 			}else{
 				Molpy.showOptions=1;
-				Molpy.showStats=0;
+				if(Molpy.showStats)
+				{
+					Molpy.showStats=0;
+					Molpy.shopRepaint=1;
+					Molpy.boostRepaint=1;
+				}
 				Molpy.showExport=0;
 				g('beachAnchor').className='hidden';
 				g('beach').className='hidden';
@@ -1376,7 +1384,12 @@ Molpy.Up=function()
 			}else{
 				Molpy.showExport=1;
 				Molpy.showOptions=0;
-				Molpy.showStats=0;
+				if(Molpy.showStats)
+				{
+					Molpy.showStats=0;
+					Molpy.shopRepaint=1;
+					Molpy.boostRepaint=1;
+				}
 				g('beachAnchor').className='hidden';
 				g('beach').className='hidden';
 				g('options').className='hidden';
@@ -1920,12 +1933,14 @@ Molpy.Up=function()
 					Molpy.Boosts['VJ'].power++;
 					if(Molpy.Got('Glass Saw'))
 					{
-						var maxGlass=Molpy.GlassCeilingCount()*10000000;
+						var p = Molpy.Boosts['Glass Saw'].power+1;
+						var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
 						var rate = Molpy.ChipsPerBlock();
 						maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
 						maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power);
 						Molpy.AddBlocks(maxGlass);
 						Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
+						Molpy.Boosts['Glass Saw'].power=(p-1)*2;
 					}
 				}
 			}
@@ -4197,7 +4212,7 @@ Molpy.Up=function()
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
 			var npb=Molpy.CastleTools['NewPixBot'];
-			if(Math.floor(Math.random()*(Molpy.Got('Safety Pumpkin')*10+20-i))==0)
+			if(Math.floor(Math.random()*((Molpy.Got('Safety Pumpkin')+Molpy.Got('Safety Goggles'))*10+20-i))==0)
 			{
 				if(npb.amount)
 				{
@@ -4579,7 +4594,7 @@ Molpy.Up=function()
 			Molpy.Boosts['Furnace Crossfeed'].department=0;
 			Molpy.Boosts['Furnace Multitasking'].department=0;
 			var fa = Molpy.Boosts['Factory Automation'];
-			if(fa.power>0 &&!Molpy.Got('Safety Pumpkin'))
+			if(fa.power>0 &&!Molpy.Got('Safety Goggles'))
 			{
 				fa.power=0;
 				Molpy.Notify('Factory Automation Downgraded',1);

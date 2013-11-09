@@ -3834,7 +3834,7 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	
-	new Molpy.Boost({name:'Safety Pumpkin',desc:'It\'s oranage, comfortable, stylish, and reduces the likelihood of industrial accidents!',
+	new Molpy.Boost({name:'Safety Pumpkin',desc:'It\'s orange, comfortable, stylish, and reduces the likelihood of industrial accidents!',
 		glass:'20K'
 	});
 	
@@ -3984,6 +3984,10 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Crystal Streams',desc:'River Glass production is multiplied by 12',glass:'20M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Super Visor',desc:'Beanie Builder Glass production is multiplied by 15',glass:'20M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Crystal Helm',desc:'Beanie Builder Glass production is multiplied by 5',glass:'30M',sand:Infinity,castles:Infinity});
+	
+	new Molpy.Boost({name:'Safety Goggles',desc:'The goggles, they do something!',
+		glass:'2M'
+	});
 	
 	
 	Molpy.groupNames={
