@@ -1734,9 +1734,9 @@ Molpy.Up=function()
 			Molpy.chipWasteAmount=0;
 			
 			if(Molpy.blockAddAmount>0)
-				Molpy.Notify('Gain of '+Molpify(Molpy.blockAddAmount,3)+' Glass Block'+(Molpy.blockAddAmount>1?'s':''),1);
+				Molpy.Notify('Gainned '+Molpify(Molpy.blockAddAmount,3)+' Glass Block'+(Molpy.blockAddAmount>1?'s':''),1);
 			if(Molpy.blockAddAmount<0)
-				Molpy.Notify('Loss of '+Molpify(-Molpy.blockAddAmount,3)+' Glass Block'+(-Molpy.blockAddAmount>1?'s':''),1);
+				Molpy.Notify('Consumed '+Molpify(-Molpy.blockAddAmount,3)+' Glass Block'+(-Molpy.blockAddAmount>1?'s':''),1);
 			Molpy.blockAddAmount=0;
 			
 			if(Molpy.blockWasteAmount>0)
@@ -4760,8 +4760,8 @@ Molpy.Up=function()
 							desc.innerHTML="Ninja'd!";
 						}else
 						{
-							desc.innerHTML='Active: '+me.currentActive+'<br>Timer: '
-							+Math.ceil((Molpy.ninjaTime-Molpy.ONGelapsed)/Molpy.NPlength);
+							desc.innerHTML='Active: '+Molpify(me.currentActive,3)+'<br>Timer: '
+							+Molpify(Math.ceil((Molpy.ninjaTime-Molpy.ONGelapsed)/Molpy.NPlength));
 						}
 					}else{
 						desc.innerHTML='';

@@ -18,6 +18,12 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.94
+- Furnace Multitasking description was wrong after buy
+- block gain/loss messages were not consistent with chips
+- Performance increase if you have all Glass Tools enabled for Tool Factory and can afford them
+
+
 ## 2.93
 - Shopping Assistant remembers your choice. (BTW it doesn't work for Bigger Buckets. But you probably already have that)
 - I think I fixed the issue of free boosts not being bought on occasion: castles were NaN after spending infinite castles

@@ -3628,20 +3628,37 @@ Molpy.DefineBoosts=function()
 		var pow=tf.power;
 		var built=0;
 		var fVal=Molpy.Boosts['Flipside'].power;
-		while(pow&&i--)
+		if (Molpy.GlassCeilingCount()==12 && (fVal==0) && (pow >= 78000*i))
 		{
 			var t = Molpy.tfOrder.length;
-			while(pow&&t--)
+			while(t--)
 			{
-				var tool=Molpy.tfOrder[t];
-				if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
+				tool = Molpy.tfOrder[t];
+				tool.amount += i;
+				tool.bought += i;
+			}
+			Molpy.SandToolsOwned+= 6*i;				
+			Molpy.CastleToolsOwned+= 6*i;				
+			pow -= 78000*i;
+			built = i*12;	
+		}
+		else
+		{
+			while(pow&&i--)
+			{
+				var t = Molpy.tfOrder.length;
+				while(pow&&t--)
 				{
-					var cost = 1000*(t+1);
-					if(pow>=cost)
+					var tool=Molpy.tfOrder[t];
+					if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
 					{
-						pow-=cost;
-						tool.create();
-						built++;
+						var cost = 1000*(t+1);
+						if(pow>=cost)
+						{
+							pow-=cost;
+							tool.create();
+							built++;
+						}
 					}
 				}
 			}
