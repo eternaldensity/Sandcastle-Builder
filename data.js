@@ -3849,7 +3849,9 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Cupholder',desc:'Bags produce 8X Glass',glass:'11M',castles:Infinity});
 	new Molpy.Boost({name:'Tiny Glasses',desc:'LaPetite produces 9X Glass',glass:'12M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Stained Glass Launcher',desc:'Trebuchet Glass flinging is multiplied by the number of Glass Ceilings owned',glass:'15M',sand:Infinity,castles:Infinity});
-	new Molpy.Boost({name:'Glass Saw',desc:'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (20 chips each) in the Tool Factory buffer: up to 10M per Glass Ceiling',glass:'7M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Glass Saw',desc:'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (20 chips each) in the Tool Factory buffer: up to 10M per Glass Ceiling',glass:'7M',sand:Infinity,castles:Infinity,
+		buyFunction:function(){this.power=1;}
+	});
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
 			return 'When you buy this, uses '+Molpify(200*(me.power+1),3)+' Logicat levels to increase the number of times you can use Caged Logicat by 5 per NP'
