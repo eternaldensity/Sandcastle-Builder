@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.94;
+		Molpy.version=2.95;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -988,6 +988,10 @@ Molpy.Up=function()
 					}else
 						Molpy.Boosts['Tiny Glasses'].unlocked=0;	
 				}					
+			}
+			if(version<2.95)
+			{
+				if(Molpy.Got('Glass Saw'))Molpy.Boosts['Glass Saw'].buyFunction();
 			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
@@ -1933,14 +1937,14 @@ Molpy.Up=function()
 					Molpy.Boosts['VJ'].power++;
 					if(Molpy.Got('Glass Saw'))
 					{
-						var p = Molpy.Boosts['Glass Saw'].power+1;
+						var p = Molpy.Boosts['Glass Saw'].power;
 						var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
 						var rate = Molpy.ChipsPerBlock();
 						maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
 						maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power);
 						Molpy.AddBlocks(maxGlass);
 						Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
-						Molpy.Boosts['Glass Saw'].power=(p-1)*2;
+						Molpy.Boosts['Glass Saw'].power=p*2;
 					}
 				}
 			}
@@ -2992,7 +2996,11 @@ Molpy.Up=function()
 						Molpy.unlockedGroups[baby.group]=1;
 						Molpy.Notify((baby.group=='badges'?'Badge Earned: ':'')+baby.name,1);
 						Molpy.EarnBadge('Redundant');
-						Molpy.CheckBuyUnlocks();							
+						Molpy.CheckBuyUnlocks();
+						if(Molpy.Earned('Badgers'))
+						{
+							Molpy.recalculateDig=1;
+						}
 						if(!Molpy.groupBadgeCounts[baby.group])
 						{
 							Molpy.groupBadgeCounts[baby.group]=1;
