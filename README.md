@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.95
+- Single lettter typo
+- Glasss Saw power multipler should worrk now
+
+
 ## 2.94
 - Furnace Multitasking description was wrong after buy
 - block gain/loss messages were not consistent with chips
