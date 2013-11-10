@@ -21,7 +21,8 @@ For personal amusement only.
 ## 2.95
 - Single lettter typo
 - Glasss Saw power multipler should worrk now
-
+- Automata Assemble lets you upgrade glass storage any time.
+- Control Automata price reflects the description
 
 ## 2.94
 - Furnace Multitasking description was wrong after buy

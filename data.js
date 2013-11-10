@@ -1808,7 +1808,7 @@ Molpy.DefineBoosts=function()
 			var size=(me.bought)*10;
 			var rate = Molpy.Boosts['Sand Refinery'].power+1;
 			str+= ' Has space to store '+Molpify(size,3)+ ' Chips total.';
-			if(size-me.power<=rate*10)
+			if(size-me.power<=rate*10||Molpy.Got{'AA'})
 			{
 				if(me.power>=5)
 				{
@@ -2019,7 +2019,7 @@ Molpy.DefineBoosts=function()
 			var size=(me.bought)*50;
 			var rate = Molpy.Boosts['Glass Chiller'].power+1;
 			str+= ' Has space to store '+Molpify(size,3)+ ' Blocks total.';
-			if(size-me.power<=rate*10)
+			if(size-me.power<=rate*10||Molpy.Got{'AA'})
 			{
 				if(me.power>=15)
 				{
@@ -3970,8 +3970,8 @@ Molpy.DefineBoosts=function()
 	Molpy.ControlAutomata=function(n)
 	{
 		var me = Molpy.Boosts['AC'];
-		var cost=1e6*n;
-		if(n<0) cost=-1e5*n;
+		var cost=1e5*n;
+		if(n<0) cost=-1e4*n;
 		cost*=me.power;
 		if(Molpy.HasGlassChips(cost))
 		{
