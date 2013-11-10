@@ -23,6 +23,8 @@ For personal amusement only.
 - Glasss Saw power multipler should worrk now
 - Automata Assemble lets you upgrade glass storage any time.
 - Control Automata price reflects the description
+- Earning a Badge when you have Badgers recalculates sand dig rate
+- DeMolpify function now handles empty string or undefined value (returns 0) which should prevent stack overflow
 
 ## 2.94
 - Furnace Multitasking description was wrong after buy
