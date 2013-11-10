@@ -2996,7 +2996,11 @@ Molpy.Up=function()
 						Molpy.unlockedGroups[baby.group]=1;
 						Molpy.Notify((baby.group=='badges'?'Badge Earned: ':'')+baby.name,1);
 						Molpy.EarnBadge('Redundant');
-						Molpy.CheckBuyUnlocks();							
+						Molpy.CheckBuyUnlocks();
+						if(Molpy.Earned('Badgers'))
+						{
+							Molpy.recalculateDig=1;
+						}
 						if(!Molpy.groupBadgeCounts[baby.group])
 						{
 							Molpy.groupBadgeCounts[baby.group]=1;
