@@ -240,7 +240,12 @@ var maketext=function()
 	while(i--) str+= '<br>'+par(red.paragraph());
 	g('redundantpar').innerHTML=str;
 }
-
+function format(gainned)
+{
+	if(Math.floor(Math.random()*3))return gainned;
+	var n = Math.floor(Math.random()*(gainned.length-2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
+	return gainned.slice(0,n+1)+gainned.slice(n)
+}
 var EmergencyExport=function()
 {
 	var thread='';
