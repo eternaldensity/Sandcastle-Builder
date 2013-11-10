@@ -3671,8 +3671,8 @@ Molpy.Up=function()
 			{
 				if(i==redactedIndex) str+= Molpy.RedactedHTML();
 				var me=Molpy.SandToolsById[i];
-				var name = me.name;
-				if(Molpy.Got('Glass Ceiling '+(i*2))) name = 'Glass '+name;
+				var formattedName = format(me.name);
+				if(Molpy.Got('Glass Ceiling '+(i*2))) formattedName = 'Glass '+formattedName;
 				var salebit='';
 				if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 				{
@@ -3684,11 +3684,15 @@ Molpy.Up=function()
 					price = FormatPrice(me.price,me)+(me.price<100?' Castles':' Ca');
 				else
 					price = Molpify(1000*(i*2+1),3)+' Chips';
-				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+salebit+'</h2>'+
-				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
-				+'</div>':'')+
-				'<span class="price">Price: '+price+'</span>'+
-				'<div id="SandToolProduction'+me.id+'"></div><div class="'+Molpy.DescClass(me)+'" id="SandToolDescription'+me.id+'"></div></div></div>';
+				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id
+					+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name
+					+'" class="icon"></div><h2>'
+					+formattedName+salebit+'</h2>'+
+					(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
+					+'</div>':'')+
+					'<span class="price">Price: '+price+'</span>'+
+					'<div id="SandToolProduction'+me.id+'"></div><div class="'
+					+Molpy.DescClass(me)+'" id="SandToolDescription'+me.id+'"></div></div></div>';
 				if(expando)me.hoverOnCounter=1;
 				i++
 			}
@@ -3718,8 +3722,8 @@ Molpy.Up=function()
 			{
 				if(i==redactedIndex) str+= Molpy.RedactedHTML();
 				var me=Molpy.CastleToolsById[i];
-				var name = me.name;
-				if(Molpy.Got('Glass Ceiling '+(i*2+1))) name = 'Glass '+name;
+				var formattedName = format(me.name);
+				if(Molpy.Got('Glass Ceiling '+(i*2+1))) formattedName = 'Glass '+formattedName;
 				var salebit='';
 				if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 				{
@@ -3731,7 +3735,7 @@ Molpy.Up=function()
 					price = FormatPrice(me.price,me)+(me.price<100?' Castles':' Ca');
 				else
 					price = Molpify(1000*(i*2+2),3)+' Chips';
-				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+name+salebit+'</h2>'+
+				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+formattedName+salebit+'</h2>'+
 				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
 				'<span class="price">Price: '+price+'</span>'+
@@ -3779,7 +3783,7 @@ Molpy.Up=function()
 			if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
 			
 			return cn+'" onMouseOver="onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BoostsById['+me.id
-				+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+heading+'<h2>'+me.name+buy+'</h2>'
+				+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+heading+'<h2>'+format(me.name)+buy+'</h2>'
 				+'<div class="'+Molpy.DescClass(me)+'" id="BoostDescription'+me.id+'"></div></div></div>';
 		}
 		
@@ -4105,6 +4109,7 @@ Molpy.Up=function()
 		Molpy.Notify=function(text,log)
 		{
 			if(Molpy.InMyPants) text+= ' in my pants';
+			text=format(text);
 			//pick the first free (or the oldest) notification to replace it
 			var highest=0;
 			var highestI=0;
