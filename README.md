@@ -19,7 +19,7 @@ For personal amusement only.
 ## Changelog
 
 ## 2.97
-- Changed AC upgrades back to using chips
+- Changed AC upgrades back to using chips, and changed the pricing
 
 ## 2.96
 - The goggles, they unlock
