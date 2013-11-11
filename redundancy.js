@@ -243,9 +243,11 @@ var maketext=function()
 }
 function format(gainned)
 {
-	if(Math.floor(Math.random()*3))return gainned;
+	if(!Math.floor(Math.random()*1.2))return gainned;
 	var n = Math.floor(Math.random()*(gainned.length-2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
-	return gainned.slice(0,n+1)+gainned.slice(n)
+	if(!isNaN(gainned[n]))return gainned;
+	gainned= gainned.slice(0,n+1)+gainned.slice(n);
+	return format(gainned);
 }
 var EmergencyExport=function()
 {

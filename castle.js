@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.95;
+		Molpy.version=2.96;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -625,7 +625,7 @@ Molpy.Up=function()
 				{
 					var ice=pixels[i].split(c);
 					me.unlocked=parseInt(ice[0]);
-					me.bought=parseInt(ice[1]); 
+					me.bought=me.unlocked&&parseInt(ice[1]); //ensure boosts that are locked aren't somehow set as bought
 					if(version<0.92)
                     {
                         me.power=0;
@@ -634,7 +634,6 @@ Molpy.Up=function()
                         me.power=parseFloat(ice[2]);
                         me.countdown=parseInt(ice[3]);
                     }
-					if(!me.unlocked)me.bought=0; //prevent zombies from Shopping Assistant gone wrong!
 					if(me.bought)
 					{
 						Molpy.BoostsOwned++;
@@ -993,10 +992,15 @@ Molpy.Up=function()
 			{
 				if(Molpy.Got('Glass Saw'))Molpy.Boosts['Glass Saw'].buyFunction();
 			}
+			if(version<2.96)
+			{
+				Molpy.LockBoost('AC');
+				Molpy.Boosts['AC'].power=1;
+			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
 				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
-				if(Molpy.Got('Safety Hat')&&Molpy.Got('Safety Pumpkin')&&!Molpy.Got('Safety Goggles'))
+				if(Molpy.Boosts['Safety Hat'].unlocked&&Molpy.Got('Safety Pumpkin')&&!Molpy.Boosts['Safety Goggles'].unlocked)
 					Molpy.UnlockBoost('Safety Goggles');
 				else
 					Molpy.UnlockBoost('Safety Hat');
@@ -1925,6 +1929,18 @@ Molpy.Up=function()
 						if(Molpy.CastleTools['NewPixBot'].currentActive>=10)
 						{
 							Molpy.EarnBadge('Ninja Strike');
+							if(Molpy.CastleTools['NewPixBot'].currentActive>=1000)
+							{
+								Molpy.EarnBadge('KiloNinja Strike');
+								if(Molpy.CastleTools['NewPixBot'].currentActive>=1e6)
+								{
+									Molpy.EarnBadge('MegaNinja Strike');
+									if(Molpy.CastleTools['NewPixBot'].currentActive>=1e9)
+									{
+										Molpy.EarnBadge('GigaNinja Strike');
+									}
+								}
+							}
 						}
 					}
 				}
@@ -1939,12 +1955,14 @@ Molpy.Up=function()
 					{
 						var p = Molpy.Boosts['Glass Saw'].power;
 						var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
+						var absMaxGlass=maxGlass;
 						var rate = Molpy.ChipsPerBlock();
 						maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
 						maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power);
 						Molpy.AddBlocks(maxGlass);
 						Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
-						Molpy.Boosts['Glass Saw'].power=p*2;
+						if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)
+							Molpy.Boosts['Glass Saw'].power=p*2;
 					}
 				}
 			}
@@ -4250,29 +4268,30 @@ Molpy.Up=function()
 			}
 			t=Math.min(t,Math.floor(npb.amount/20));
 			Molpy.Notify('Activating Factory Automation '+t+' time'+(t==1?'':'s')+' at a cost of '+Molpify(spent,4)+' Sand',1);
-			while(t--) 
-			{
-				Molpy.FactoryAutomationRun(t);
-			}
+
+			Molpy.FactoryAutomationRun(t,1);
 			
 			Molpy.GlassNotifyFlush();
 		}
 	}
-	Molpy.FactoryAutomationRun=function(t)
+	Molpy.FactoryAutomationRun=function(times,div)
 	{
+		var left =times;
 		if(Molpy.Got('CfB'))
 		{
-			Molpy.DoBlackprintConstruction();
+			left=Molpy.DoBlackprintConstruction(times);
+			if(Molpy.Got('AO'))left=times;
 		}
-		if(!Molpy.Got('CfB')||Molpy.Got('AO'))
+		if(left)
 		{
-			var mouldWork=Molpy.FillGlassMouldWork()
-				||Molpy.MakeGlassMouldWork()
-				||Molpy.FillSandMouldWork()
-				||Molpy.MakeSandMouldWork();
-				
-			if(!mouldWork||Molpy.Got('AO'))
-				Molpy.RewardRedacted(1,t);
+			if (left) left=Molpy.FillGlassMouldWork(left);
+			if (left) left=Molpy.MakeGlassMouldWork(left);
+			if (left) left=Molpy.FillSandMouldWork(left);
+			if (left) left=Molpy.MakeSandMouldWork(left);
+
+			if(Molpy.Got('AO'))left=times;
+			while(left--)
+				Molpy.RewardRedacted(1,left/div);
 		}
 	}
 	
