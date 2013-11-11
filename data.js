@@ -3744,7 +3744,7 @@ Molpy.DefineBoosts=function()
 //          Molpy.Notify('Ran Factory Automation '+Molpify(times,1)+' times');
 //      }
     }
-    Molpy.RunFastFactory(times) //assumes player did buy AO before getting AA. probably a safe assumption
+    Molpy.RunFastFactory=function(times) //assumes player did buy AO before getting AA. probably a safe assumption
     {
         var t = Molpy.tfOrder.length;
         while(t--)
