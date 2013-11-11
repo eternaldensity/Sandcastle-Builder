@@ -4028,8 +4028,8 @@ Molpy.DefineBoosts=function()
 	Molpy.ControlAutomata=function(n)
 	{
 		var me = Molpy.Boosts['AC'];
-		var cost=1e7*Math.pow(1.2,n);
-		if(n<0) cost=-1e5*n;
+		var cost=1e7*Math.pow(1.2,me.power);
+		if(n<0) cost=-1e5*me.power;
 		cost*=me.power;
 		if(Molpy.HasGlassChips(cost))
 		{

@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.98
+- Finally fixed AC upgrade price mustard!
+
 ## 2.97
 - Changed AC upgrades back to using chips, and changed the pricing
 
