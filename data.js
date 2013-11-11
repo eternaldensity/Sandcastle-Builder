@@ -3039,14 +3039,16 @@ Molpy.DefineBoosts=function()
 		if(Molpy.Got('CfB'))return;
 		Molpy.UnlockBoost('CfB')
 	}
-	Molpy.DoBlackprintConstruction=function()
+	Molpy.DoBlackprintConstruction=function(times)
 	{
 		var con=Molpy.Boosts['CfB'];
-		con.power++;
+		con.power+=times;
 		if(con.power>=100)
 		{
 			Molpy.LockBoost('CfB');
+			return times+con.power-100;
 		}
+		return 0;
 	}
 	new Molpy.Boost({name:'Constructing from Blackprints',aka:'CfB',
 		desc:function(me)
@@ -3279,25 +3281,32 @@ Molpy.DefineBoosts=function()
 		smm.bought=np;
 		smm.power=1;		
 	}
-	Molpy.MakeSandMouldWork=function()
+	Molpy.MakeSandMouldWork=function(times)
 	{
 		var smm=Molpy.Boosts['SMM'];
 		if(smm.power==0||smm.power>100)
 		{
-			return;
+			return times;
 		}
 		var chips =smm.bought*100;
-		if(!Molpy.HasGlassChips(chips))
+		while (times) 
 		{
-			Molpy.Boosts['Break the Mould'].power++;
-			return;
+			if(!Molpy.HasGlassChips(chips))
+			{
+				Molpy.Boosts['Break the Mould'].power++;
+				return times;
+			}
+			Molpy.SpendGlassChips(chips);
+			times--;
+			smm.power++;
+			if(smm.power>100)
+			{
+				Molpy.Notify('Sand Mould Creation is complete',1);
+				return times;
+			}
 		}
-		Molpy.SpendGlassChips(chips);
-		smm.power++;
-		if(smm.power>100)
-			Molpy.Notify('Sand Mould Creation is complete',1);
-		return 1;
-	}	
+		return times;
+	}  	
 	Molpy.FillSandMould=function(np)
 	{
 		var mname='monums'+np;
@@ -3333,30 +3342,35 @@ Molpy.DefineBoosts=function()
 		smm.bought=1; //not that it really matters. *shrug*
 		smm.power=0;		
 	}
-	Molpy.FillSandMouldWork=function()
+	Molpy.FillSandMouldWork=function(times)
 	{
 		var smf=Molpy.Boosts['SMF'];
 		if(smf.power==0)
 		{
-			return;
+			return times;
 		}
 		var sand=Math.pow(1.2,smf.bought)*100;
-		if(!Molpy.sand >=sand)
+		while (times) 
 		{
-			Molpy.Boosts['Break the Mould'].power++;
-			return;
+			if(!Molpy.sand >=sand)
+			{
+				Molpy.Boosts['Break the Mould'].power++;
+				return times;
+			}
+			Molpy.SpendSand(sand);
+			times--;
+			smf.power++;
+			if(smf.power>200)
+			{
+				Molpy.Notify('Sand Mould Filling is complete',1);
+				Molpy.EarnBadge('monums'+smf.bought);
+				smf.bought=1;
+				smf.power=0;
+				return times;
+			}
 		}
-		Molpy.SpendSand(sand);
-		smf.power++;
-		if(smf.power>200)
-		{
-			Molpy.Notify('Sand Mould Filling is complete',1);
-			Molpy.EarnBadge('monums'+smf.bought);
-			smf.bought=1;
-			smf.power=0;
-		}
-		return 1;
-	}		
+		return times;
+	}  		
 	
 	Molpy.MakeGlassMould=function(np)
 	{
@@ -3391,25 +3405,32 @@ Molpy.DefineBoosts=function()
 		gmm.bought=np;
 		gmm.power=1;		
 	}
-	Molpy.MakeGlassMouldWork=function()
+	Molpy.MakeGlassMouldWork=function(times)
 	{
 		var gmm=Molpy.Boosts['GMM'];
 		if(gmm.power==0||gmm.power>400)
 		{
-			return;
+			return times;
 		}
 		var chips=Math.pow(1.01,gmm.bought)*1000;
-		if(!Molpy.HasGlassChips(chips)) 
+		while (times) 
 		{
-			Molpy.Boosts['Break the Mould'].power++;
-			return;
+			if(!Molpy.HasGlassChips(chips)) 
+			{
+				Molpy.Boosts['Break the Mould'].power++;
+				return times;
+			}
+			Molpy.SpendGlassChips(chips);
+			times--;
+			gmm.power++;
+			if(gmm.power>400)
+			{
+				Molpy.Notify('Glass Mould Creation is complete',1);
+				return times;
+			}
 		}
-		Molpy.SpendGlassChips(chips);
-		gmm.power++;
-		if(gmm.power>400)
-			Molpy.Notify('Glass Mould Creation is complete',1);
-		return 1;
-	}	
+		return times;
+	}   
 	Molpy.FillGlassMould=function(np)
 	{
 		var mname='monumg'+np;
@@ -3445,29 +3466,34 @@ Molpy.DefineBoosts=function()
 		gmm.bought=1; // *shrug again*
 		gmm.power=0;		
 	}
-	Molpy.FillGlassMouldWork=function()
+	Molpy.FillGlassMouldWork=function(times)
 	{
 		var gmf=Molpy.Boosts['GMF'];
 		if(gmf.power==0)
 		{
-			return;
+			return times;
 		}
 		var glass=Math.pow(1.02,gmf.bought)*1000000;
-		if(!Molpy.HasGlassBlocks(glass)) 
+		while (times) 
 		{
-			Molpy.Boosts['Break the Mould'].power++;
-			return;
+			if(!Molpy.HasGlassBlocks(glass)) 
+			{
+				Molpy.Boosts['Break the Mould'].power++;
+				return times;
+			}
+			Molpy.SpendGlassBlocks(glass);
+			times--;
+			gmf.power++;
+			if(gmf.power>800)
+			{
+				Molpy.Notify('Glass Mould Filling is complete',1);
+				Molpy.EarnBadge('monumg'+gmf.bought);
+				gmf.bought=1;
+				gmf.power=0;
+				return times;
+			}
 		}
-		Molpy.SpendGlassBlocks(glass);
-		gmf.power++;
-		if(gmf.power>800)
-		{
-			Molpy.Notify('Glass Mould Filling is complete',1);
-			Molpy.EarnBadge('monumg'+gmf.bought);
-			gmf.bought=1;
-			gmf.power=0;
-		}
-		return 1;
+		return times;
 	}
 		
 	new Molpy.Boost({name:'Ninjasaw',
@@ -3619,100 +3645,127 @@ Molpy.DefineBoosts=function()
 			Molpy.tfOrder.push(Molpy.CastleToolsById[i]);
 		}
 	}
-	Molpy.MakeTFOrder();
-	Molpy.RunToolFactory=function()
-	{
-		var tf = Molpy.Boosts['Tool Factory'];
-		var i = 1;
-		if(Molpy.Got('PC')) i=Molpy.Boosts['PC'].power;
-		var pow=tf.power;
-		var built=0;
-		var fVal=Molpy.Boosts['Flipside'].power;
-		if (Molpy.GlassCeilingCount()==12 && (fVal==0) && (pow >= 78000*i))
-		{
-			var t = Molpy.tfOrder.length;
-			while(t--)
-			{
-				tool = Molpy.tfOrder[t];
-				tool.amount += i;
-				tool.bought += i;
-			}
-			Molpy.SandToolsOwned+= 6*i;				
-			Molpy.CastleToolsOwned+= 6*i;				
-			pow -= 78000*i;
-			built = i*12;	
-		}
-		else
-		{
-			while(pow&&i--)
-			{
-				var t = Molpy.tfOrder.length;
-				while(pow&&t--)
-				{
-					var tool=Molpy.tfOrder[t];
-					if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
-					{
-						var cost = 1000*(t+1);
-						if(pow>=cost)
-						{
-							pow-=cost;
-							tool.create();
-							built++;
-						}
-					}
-				}
-			}
-		}
-		if(built)
-		{		
-			var t = Molpy.tfOrder.length;
-			while(t--)
-			{
-				var tool=Molpy.tfOrder[t];
-				if(isFinite(Molpy.priceFactor*tool.price)) tool.refresh();
-			}
-			
-			Molpy.toolsBuilt+=built;
-			Molpy.toolsBuiltTotal+=built;
-			Molpy.recalculateDig=1;
-			Molpy.shopRepaint=1;
- 			Molpy.CheckBuyUnlocks();
- 			tf.power=pow;
+	Molpy.MakeTFOrder();Molpy.RunToolFactory=function()
+    {
+        var tf = Molpy.Boosts['Tool Factory'];
+        var i = 1;
+        if(Molpy.Got('PC')) i=Molpy.Boosts['PC'].power;
+        var pow=tf.power;
+        var built=0;
+        var fVal=Molpy.Boosts['Flipside'].power;
+        var fast=0;
+        if (Molpy.GlassCeilingCount()==12 && (fVal==0) && (pow >= 78000*i))
+        {
+            var t = Molpy.tfOrder.length;
+            fast=1;
+            while(t--)
+            {
+                tool = Molpy.tfOrder[t];
+                tool.amount += i;
+                tool.bought += i;
+            }
+            Molpy.SandToolsOwned+= 6*i;             
+            Molpy.CastleToolsOwned+= 6*i;               
+            pow -= 78000*i;
+            built = i*12;   
+        }
+        else
+        {
+            while(pow&&i--)
+            {
+                var t = Molpy.tfOrder.length;
+                while(pow&&t--)
+                {
+                    var tool=Molpy.tfOrder[t];
+                    if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
+                    {
+                        var cost = 1000*(t+1);
+                        if(pow>=cost)
+                        {
+                            pow-=cost;
+                            tool.create();
+                            built++;
+                        }
+                    }
+                }
+            }
+        }
+        if(built)
+        {       
+            var t = Molpy.tfOrder.length;
+            while(t--)
+            {
+                var tool=Molpy.tfOrder[t];
+                if(isFinite(Molpy.priceFactor*tool.price)) tool.refresh();
+            }
 
-		}
+            Molpy.toolsBuilt+=built;
+            Molpy.toolsBuiltTotal+=built;
+            Molpy.recalculateDig=1;
+            Molpy.shopRepaint=1;
+            Molpy.CheckBuyUnlocks();
+            tf.power=pow;
+
+        }
+        if(!Molpy.Boosts['AA'].power)return;
+
+        var p = 1;
+        if(Molpy.Got('AC')) p=Molpy.Boosts['AC'].power;
+        var i=p;
+        var times=0;
+        if (fast)
+        {
+            Molpy.RunFastFactory(p);
+            return;
+        }
+        while(i--)
+        {
+            var on = 1;
+            var t = Molpy.tfOrder.length;
+            while(on&&t--)
+            {
+                if(isFinite(Molpy.priceFactor*Molpy.tfOrder[t].price)) on=0;
+            }
+            if(!on)break;
+            var t = Molpy.tfOrder.length;
+            while(t--)
+            {
+                var tool=Molpy.tfOrder[t];
+                tool.amount--;
+                tool.refresh();
+            }
+            times++;
+        }
+        Molpy.FactoryAutomationRun(times,2);
 		
-		if(!Molpy.Boosts['AA'].power)return;
-				
-		var p = 1;
-		if(Molpy.Got('PC')) p=Math.max(p,Molpy.Boosts['PC'].power);
-		if(Molpy.Got('AC')) p=Molpy.Boosts['AC'].power;
-		var i=p;
-		var times=0;
-		while(i--)
-		{
-			var on = 1;
-			var t = Molpy.tfOrder.length;
-			while(on&&t--)
-			{
-				if(isFinite(Molpy.priceFactor*Molpy.tfOrder[t].price)) on=0;
-			}
-			if(!on)break;
-			var t = Molpy.tfOrder.length;
-			while(t--)
-			{
-				var tool=Molpy.tfOrder[t];
-				tool.amount--;
-				tool.refresh();
-			}
-			Molpy.FactoryAutomationRun((p-i)/2);
-			times++;
-		}
-		if(times)
-		{
-			Molpy.GlassNotifyFlush();
-			Molpy.Notify('Ran Factory Automation '+Molpify(times,1)+' times');
-		}
-	}
+//      if(times)
+//      {
+//          Molpy.GlassNotifyFlush();
+//          Molpy.Notify('Ran Factory Automation '+Molpify(times,1)+' times');
+//      }
+    }
+    Molpy.RunFastFactory(times) //assumes player did buy AO before getting AA. probably a safe assumption
+    {
+        var t = Molpy.tfOrder.length;
+        while(t--)
+        {
+            var tool=Molpy.tfOrder[t];
+            tool.amount-= times;
+        }
+
+        var left = times;
+        if(Molpy.Got('CfB'))
+        {
+              Molpy.DoBlackprintConstruction(left);
+        }
+        if (left) left=Molpy.FillGlassMouldWork(left);
+        if (left) left=Molpy.MakeGlassMouldWork(left);
+        if (left) left=Molpy.FillSandMouldWork(left);
+        if (left) left=Molpy.MakeSandMouldWork(left);
+		
+		left=(times+Math.random()*3)/2;
+        for(var i=0; i <left; i++) Molpy.RewardBlastFurnace();
+    }
 	
 	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
 	new Molpy.Boost({name:'Badgers',desc:function(me)
