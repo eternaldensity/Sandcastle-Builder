@@ -27,6 +27,7 @@ For personal amusement only.
 - AC locked and reset. It's now harder to get. Getting more NewPixBots will help get it. See Free Advice
 - Badgers price fix
 - Some new Ninja Badges
+- Fixed some typos
 
 ## 2.95
 - Single lettter typo
