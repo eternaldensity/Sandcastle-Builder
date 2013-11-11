@@ -21,6 +21,11 @@ For personal amusement only.
 ## 2.96
 - The goggles, they unlock
 - Glass Saw only doubles in power if you have double it's power in glass left over.
+- Optimisation of Automata Assemble
+- Automata Control starts from 1 since it's now detached from Production Control
+- AC upgrade price fix (was checking wrong value... and I made it use Blocks. and was too cheap)
+- AC locked and reset. It's now harder to get. Getting more NewPixBots will help get it. See Free Advice
+- Badgers price fix
 
 ## 2.95
 - Single lettter typo

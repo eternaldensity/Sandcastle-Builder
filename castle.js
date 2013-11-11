@@ -992,6 +992,11 @@ Molpy.Up=function()
 			{
 				if(Molpy.Got('Glass Saw'))Molpy.Boosts['Glass Saw'].buyFunction();
 			}
+			if(version<2.96)
+			{
+				Molpy.LockBoost('AC');
+				Molpy.Boosts['AC'].power=1;
+			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
 				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
@@ -4272,7 +4277,7 @@ Molpy.Up=function()
 			if (left) left=Molpy.FillSandMouldWork(left);
 			if (left) left=Molpy.MakeSandMouldWork(left);
 
-			if(Molpy.Got(AO))left=times;
+			if(Molpy.Got('AO'))left=times;
 			while(left--)
 				Molpy.RewardRedacted(1,left/div);
 		}

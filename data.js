@@ -2413,6 +2413,10 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Free Advice',
 		desc:function(me)
 		{
+			if(Molpy.Got('AA')&&!Molpy.Got('AC')&&Molpy.CastleTools['NewPixBot'].amount>=7500)
+			{
+				return 'Logicat Level required for Automata Control: '+Molpify(440*50000/Molpy.CastleTools['NewPixBot'].amount,3);
+			}
 			if(Molpy.GlassCeilingCount())
 			{
 				return 'To Lock or Unlock a Glass Ceiling Boost, the previous numbered Glass Ceiling Boost must be owned and all lesser numbered Glass Ceiling Boosts must not be owned.';
@@ -3645,7 +3649,8 @@ Molpy.DefineBoosts=function()
 			Molpy.tfOrder.push(Molpy.CastleToolsById[i]);
 		}
 	}
-	Molpy.MakeTFOrder();Molpy.RunToolFactory=function()
+	Molpy.MakeTFOrder();
+	Molpy.RunToolFactory=function()
     {
         var tf = Molpy.Boosts['Tool Factory'];
         var i = 1;
@@ -3772,7 +3777,7 @@ Molpy.DefineBoosts=function()
 		{
 			return GLRschoice(['Badgers? Badgers? We don\'t need no ch*rpin\' Badgers! This is Sacred Ground and I\'ll have no more heresy. Surely you mean Molpies.','Exactly! No, wait - No! There are no badgers involved at all!','For every 10 badges, Glass Chip production uses 1% less sand']);
 		},
-		sand:'Infinite',castles:'Infinite',glass:'60K'
+		sand:Infinity,castles:Infinity,glass:'60K'
 	});
 	
 	Molpy.glassCeilingDescText.push('Sand rate of LaPetite');
@@ -4007,28 +4012,28 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
 			var n = me.power;
 			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
-			if(Molpy.HasGlassBlocks(1e6*n))
+			if(me.power<Molpy.Boosts['PC'].power&&Molpy.HasGlassBlocks(1e6*Math.pow(2,n)))
 			{
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Chips.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(1e6*Math.pow(2,n),2)+' Glass Blocks.';
 			}
-			if(me.power>1&&Molpy.HasGlassBlocks(1e5*n))
+			if(me.power>1&&Molpy.HasGlassBlocks(1e4*n))
 			{
-				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlAutomata(-1)"></input> the by 1 at a cost of '+Molpify(1e4*n,1)+' Glass Chips.';
+				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlAutomata(-1)"></input> the number of runs by 1 at a cost of '+Molpify(1e4*n,1)+' Glass Blocks.';
 			}
 			return str;
 		}
 		,glass:'25',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',
-		buyFunction:function(){this.power=Math.max(1,Molpy.Boosts['PC'].power);}
+		buyFunction:function(){this.power=1;}
 	});
 	Molpy.ControlAutomata=function(n)
 	{
 		var me = Molpy.Boosts['AC'];
-		var cost=1e5*n;
+		var cost=1e6*Math.pow(2,n);
 		if(n<0) cost=-1e4*n;
 		cost*=me.power;
-		if(Molpy.HasGlassChips(cost))
+		if(Molpy.HasGlassBlocks(cost))
 		{
-			Molpy.SpendGlassChips(cost);
+			Molpy.SpendGlassBlocks(cost);
 			me.power+=n;
 			Molpy.Notify('Adjusted Automata Assemble');
 		}
@@ -4778,7 +4783,7 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
 	
 	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
-	Molpy.Boosts['AC'].department=1*(Molpy.Got('AA')&&Molpy.CastleTools['NewPixBot'].amount>=7500);
+	Molpy.Boosts['AC'].logic=440*(Molpy.Got('AA')&&(Molpy.CastleTools['NewPixBot'].amount>=7500?50000/Molpy.CastleTools['NewPixBot'].amount:0));
 	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&Math.floor(Math.random()*4)==0);
 	Molpy.Boosts['Flipside'].logic=220*Molpy.Got('AA');
 	
