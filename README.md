@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.96
+- The goggles, they unlock
+
 ## 2.95
 - Single lettter typo
 - Glasss Saw power multipler should worrk now

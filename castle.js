@@ -205,7 +205,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.95;
+		Molpy.version=2.96;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -625,7 +625,7 @@ Molpy.Up=function()
 				{
 					var ice=pixels[i].split(c);
 					me.unlocked=parseInt(ice[0]);
-					me.bought=parseInt(ice[1]); 
+					me.bought=me.unlocked&&parseInt(ice[1]); //ensure boosts that are locked aren't somehow set as bought
 					if(version<0.92)
                     {
                         me.power=0;
@@ -634,7 +634,6 @@ Molpy.Up=function()
                         me.power=parseFloat(ice[2]);
                         me.countdown=parseInt(ice[3]);
                     }
-					if(!me.unlocked)me.bought=0; //prevent zombies from Shopping Assistant gone wrong!
 					if(me.bought)
 					{
 						Molpy.BoostsOwned++;
@@ -996,7 +995,7 @@ Molpy.Up=function()
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
 				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
-				if(Molpy.Got('Safety Hat')&&Molpy.Got('Safety Pumpkin')&&!Molpy.Got('Safety Goggles'))
+				if(Molpy.Boosts['Safety Hat'].unlocked&&Molpy.Got('Safety Pumpkin')&&!Molpy.Boosts['Safety Goggles'].unlocked)
 					Molpy.UnlockBoost('Safety Goggles');
 				else
 					Molpy.UnlockBoost('Safety Hat');
