@@ -20,6 +20,7 @@ For personal amusement only.
 
 ## 2.96
 - The goggles, they unlock
+- Glass Saw only doubles in power if you have double it's power in glass left over.
 
 ## 2.95
 - Single lettter typo
