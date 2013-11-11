@@ -4390,6 +4390,11 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Ceiling Disintegrated',desc:'Have all 12 Glass Ceiling Boosts',vis:1});
 	
 	
+	new Molpy.Badge({name:'KiloNinja Strike', desc:'Ninja 1K NewPixBots simultaneously',vis:1});
+	new Molpy.Badge({name:'MegaNinja Strike', desc:'Ninja 1M NewPixBots simultaneously',vis:1});
+	new Molpy.Badge({name:'GigaNinja Strike', desc:'Ninja 1G NewPixBots simultaneously',vis:1});
+	
+	
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
 	Molpy.MakeTripleBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});

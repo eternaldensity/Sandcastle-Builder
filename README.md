@@ -26,6 +26,7 @@ For personal amusement only.
 - AC upgrade price fix (was checking wrong value... and I made it use Blocks. and was too cheap)
 - AC locked and reset. It's now harder to get. Getting more NewPixBots will help get it. See Free Advice
 - Badgers price fix
+- Some new Ninja Badges
 
 ## 2.95
 - Single lettter typo

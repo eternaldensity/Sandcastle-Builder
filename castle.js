@@ -1929,6 +1929,18 @@ Molpy.Up=function()
 						if(Molpy.CastleTools['NewPixBot'].currentActive>=10)
 						{
 							Molpy.EarnBadge('Ninja Strike');
+							if(Molpy.CastleTools['NewPixBot'].currentActive>=1000)
+							{
+								Molpy.EarnBadge('KiloNinja Strike');
+								if(Molpy.CastleTools['NewPixBot'].currentActive>=1e6)
+								{
+									Molpy.EarnBadge('MegaNinja Strike');
+									if(Molpy.CastleTools['NewPixBot'].currentActive>=1e9)
+									{
+										Molpy.EarnBadge('GigaNinja Strike');
+									}
+								}
+							}
 						}
 					}
 				}
