@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.97
+- Changed AC upgrades back to using chips
+
 ## 2.96
 - The goggles, they unlock
 - Glass Saw only doubles in power if you have double it's power in glass left over.

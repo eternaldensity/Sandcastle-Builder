@@ -4012,13 +4012,13 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
 			var n = me.power;
 			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
-			if(me.power<Molpy.Boosts['PC'].power&&Molpy.HasGlassBlocks(1e6*Math.pow(2,n)))
+			if(me.power<Molpy.Boosts['PC'].power&&Molpy.HasGlassChips(1e6*Math.pow(2,n)))
 			{
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(1e6*Math.pow(2,n),2)+' Glass Blocks.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(1e6*Math.pow(2,n),2)+' Glass Chips.';
 			}
-			if(me.power>1&&Molpy.HasGlassBlocks(1e4*n))
+			if(me.power>1&&Molpy.HasGlassChips(1e5*n))
 			{
-				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlAutomata(-1)"></input> the number of runs by 1 at a cost of '+Molpify(1e4*n,1)+' Glass Blocks.';
+				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlAutomata(-1)"></input> the number of runs by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Chips.';
 			}
 			return str;
 		}
@@ -4029,11 +4029,11 @@ Molpy.DefineBoosts=function()
 	{
 		var me = Molpy.Boosts['AC'];
 		var cost=1e6*Math.pow(2,n);
-		if(n<0) cost=-1e4*n;
+		if(n<0) cost=-1e5*n;
 		cost*=me.power;
-		if(Molpy.HasGlassBlocks(cost))
+		if(Molpy.HasGlassChips(cost))
 		{
-			Molpy.SpendGlassBlocks(cost);
+			Molpy.SpendGlassChips(cost);
 			me.power+=n;
 			Molpy.Notify('Adjusted Automata Assemble');
 		}
