@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.982
+- Smashing a crate open only gives whole blocks
+
 ## 2.981
 - Colpix option description fix
 

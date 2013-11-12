@@ -2699,7 +2699,7 @@ Molpy.DefineBoosts=function()
 		{
 			var bl=Molpy.Boosts['Glass Block Storage'];
 			var win = Math.ceil(Molpy.LogiMult('2K'));
-			win = win/(6-this.bought);
+			win = Math.floor(win/(6-this.bought));
 			while(bl.bought*50<bl.power+win)bl.bought++; //make space!
 			bl.power+=win;
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
