@@ -20,6 +20,12 @@ For personal amusement only.
 
 ## 2.982
 - Smashing a crate open only gives whole blocks
+- Prevent infinite castles down
+- Missing 1* for Ruthless Efficiency department flag
+- Suppress glass ceiling lock message with Tool Factory
+- Prevent Impervious Ninja from preventing the new Ninja Strike badges from being earned
+- Seaish Glass upgrading (courtesy of waveney)
+- Fixed Sand Refinering being able to go over 100% sand usage
 
 ## 2.981
 - Colpix option description fix

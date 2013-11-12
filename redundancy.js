@@ -241,13 +241,21 @@ var maketext=function()
 	while(i--) str+= '<br>'+par(red.paragraph());
 	g('redundantpar').innerHTML=str;
 }
-function format(gainned)
+var eternalf=[];
+function format(gainned,level)
 {
-	if(!Math.floor(Math.random()*1.2))return gainned;
+	var squirpy=eternalf[gainned];
+	if(squirpy)return squirpy;
+	level=level||0;
+	var gained=gainned;
+	if(!Math.floor(Math.random()*1.02))return gainned;
 	var n = Math.floor(Math.random()*(gainned.length-2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
 	if(!isNaN(gainned[n]))return gainned;
 	gainned= gainned.slice(0,n+1)+gainned.slice(n);
-	return format(gainned);
+	gainned = format(gainned,level+1);
+	if(!level)
+		eternalf[gained]=gainned;
+	return gainned;
 }
 var EmergencyExport=function()
 {
