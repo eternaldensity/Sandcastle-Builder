@@ -189,6 +189,12 @@ function showhideToggle(key)
 	Molpy.boostRepaint=1;
 	Molpy.badgeRepaint=1;
 }
+function toOct(l){
+	return l[0]|l[1]<<1|l[2]<<2|l[3]<<3;
+}
+var fromOct=function(o){
+	return [o&1&&1,o&2&&1,o&4&&1,o&8&&1];
+}
 
 /* In which the game initialisation is specified
 ++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -465,12 +471,12 @@ Molpy.Up=function()
 			thread+=p;
 			threads.push(thread);
 			thread='';
-			//stuff pretending to be badges:
-			for(var cancerbabies in Molpy.Badges)
+			//stuff pretending to be badges:			
+			var id=Molpy.Badges['discov1'].id;			
+			while(id+3<Molpy.BadgeN)
 			{
-				var cb = Molpy.Badges[cancerbabies];
-				if(cb.group!='badges')
-					thread += cb.earned;
+				thread+=toOct([Molpy.BadgesById[id].earned,Molpy.BadgesById[id+1].earned,Molpy.BadgesById[id+2].earned,Molpy.BadgesById[id+3].earned]).toString(16);
+				id+=4;
 			}
 			thread+=p;
 			
@@ -670,7 +676,7 @@ Molpy.Up=function()
 				if(me.group=='badges')
 				if (pixels[i])
 				{
-					me.earned=parseInt(pixels[i])||0;
+					me.earned=parseInt(pixels[i])&&1||0;
 					if(me.earned)
 					{
 						Molpy.BadgesOwned++;											
@@ -711,16 +717,48 @@ Molpy.Up=function()
 				pixels=[];
 			}
 			var j=0;
-			var cam=version >=2||Molpy.Got('Camera');
-			for (var i in Molpy.BadgesById)
+			
+			if(version<2.97)
 			{
-				var me=Molpy.BadgesById[i];
-				if(j||me.group!='badges')
+				var cam=version >=2||Molpy.Got('Camera');
+				for (var i in Molpy.BadgesById)
 				{
-					if(!j)j=i;
-					if(cam&&pixels[i-j])
+					var me=Molpy.BadgesById[i];
+					if(j||me.group!='badges')
 					{
-						me.earned=parseInt(pixels[i-j])||0;
+						if(!j)j=i;
+						if(cam&&pixels[i-j])
+						{
+							me.earned=parseInt(pixels[i-j])&&1||0;
+							if(me.earned)
+							{
+								Molpy.BadgesOwned++;	
+								Molpy.unlockedGroups[me.group]=1;										
+								if(!Molpy.groupBadgeCounts[me.group])
+								{
+									Molpy.groupBadgeCounts[me.group]=1;
+								}else
+								{
+									Molpy.groupBadgeCounts[me.group]++;
+								}
+							}
+						}
+						else
+						{
+							me.earned=0;					
+						}
+					}
+				}
+			}else
+			{
+				var id=Molpy.Badges['discov1'].id;
+				for(var i in pixels)
+				{
+					var enhance=fromOct(parseInt(pixels[i],16));
+					for(var j in enhance)
+					{
+						var me=Molpy.BadgesById[id+ +j];
+						me.earned=enhance[j]||0;
 						if(me.earned)
 						{
 							Molpy.BadgesOwned++;	
@@ -734,10 +772,12 @@ Molpy.Up=function()
 							}
 						}
 					}
-					else
-					{
-						me.earned=0;					
-					}
+					id+=4;
+				}
+				while(id<Molpy.BadgeN)
+				{
+					Molpy.BadgesById[id].earned=0;
+					id++;
 				}
 			}
 			Molpy.SelectShoppingItem();
@@ -3068,11 +3108,12 @@ Molpy.Up=function()
 				,icon:args.icon+'_'+kind,
 				earnFunction:args.earnFunction,visibility:args.visibility,group:kind});
 		}
-		Molpy.MakeTripleBadge=function(args)
+		Molpy.MakeQuadBadge=function(args)
 		{
 			Molpy.MakeSpecialBadge(args,'discov');
 			Molpy.MakeSpecialBadge(args,'monums');
 			Molpy.MakeSpecialBadge(args,'monumg');
+			Molpy.MakeSpecialBadge(args,'diamm');
 		}
 		
 		Molpy.redactedW=BeanishToCuegish("UmVkdW5kYW50");
