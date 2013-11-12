@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 2.981
+- Colpix option description fix
+
 ## 2.98
 - Finally fixed AC upgrade price mustard!
 - Compressed advanced badge save-storage (and fixed backward compatibility)
