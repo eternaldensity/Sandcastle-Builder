@@ -211,7 +211,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.97;
+		Molpy.version=2.98;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -265,7 +265,7 @@ Molpy.Up=function()
 			Molpy.options.autosave=2;
 			Molpy.options.autoupdate=1;
 			Molpy.options.sea=1;
-			Molpy.options.otcol=1;
+			Molpy.options.colpix=1;
 			Molpy.options.longpostfix=0;
 			Molpy.options.colourscheme=0;
 			Molpy.options.sandmultibuy=0;
@@ -387,7 +387,7 @@ Molpy.Up=function()
 			(Molpy.options.autosave)+
 			(Molpy.options.autoupdate?'1':'0')+
 			(Molpy.options.sea?'1':'0')+
-			(Molpy.options.otcol?'1':'0')+
+			(Molpy.options.colpix?'1':'0')+
 			(Molpy.options.longpostfix?'1':'0')+
 			(Molpy.options.colourscheme)+
 			(Molpy.options.sandmultibuy)+
@@ -511,7 +511,7 @@ Molpy.Up=function()
 			Molpy.options.autosave=parseInt(pixels[2]);
 			Molpy.options.autoupdate=parseInt(pixels[3]);
 			Molpy.options.sea=parseInt(pixels[4]);
-			Molpy.options.otcol=parseInt(pixels[5]);
+			Molpy.options.colpix=parseInt(pixels[5]);
 			Molpy.options.longpostfix=parseInt(pixels[6]);
 			Molpy.options.colourscheme=parseInt(pixels[7]);
 			Molpy.options.sandmultibuy=(parseInt(pixels[8] || 0));
@@ -718,12 +718,14 @@ Molpy.Up=function()
 			}
 			var j=0;
 			
-			if(version<2.97)
+			if(version<2.98)
 			{
 				var cam=version >=2||Molpy.Got('Camera');
-				for (var i in Molpy.BadgesById)
+				var i = 0;
+				var offset=0;
+				while (i+offset<Molpy.BadgeN)
 				{
-					var me=Molpy.BadgesById[i];
+					var me=Molpy.BadgesById[i+offset];
 					if(j||me.group!='badges')
 					{
 						if(!j)j=i;
@@ -748,6 +750,8 @@ Molpy.Up=function()
 							me.earned=0;					
 						}
 					}
+					i++;
+					if(j) offset=Math.floor((i-j)/3);
 				}
 			}else
 			{
@@ -1261,10 +1265,10 @@ Molpy.Up=function()
 				{
 					Molpy.EarnBadge('I love my flashy gif');
 				}
-			}else if(bacon=='otcol')
+			}else if(bacon=='colpix')
 			{
-				Molpy.options.otcol++;
-				if(Molpy.options.otcol>=2)Molpy.options.otcol=0;
+				Molpy.options.colpix++;
+				if(Molpy.options.colpix>=2)Molpy.options.colpix=0;
 				Molpy.UpdateColourScheme();
 			}else if(bacon=='longpostfix')
 			{
@@ -1290,7 +1294,7 @@ Molpy.Up=function()
 			
 			Molpy.OptionDescription(bacon,1); //update description
 			}
-		Molpy.optionNames=['autosave','colourscheme','sandnumbers','otcol','longpostfix','sandmultibuy','castlemultibuy','fade'];
+		Molpy.optionNames=['autosave','colourscheme','sandnumbers','colpix','longpostfix','sandmultibuy','castlemultibuy','fade'];
 		Molpy.OptionDescription=function(bacon,caffeination)
 		{
 			var desc='';
@@ -1320,9 +1324,9 @@ Molpy.Up=function()
 					}else{
 						desc="Yes";
 					}
-				}else if(bacon=='otcol')
+				}else if(bacon=='colpix')
 				{
-					var nu = Molpy.options.otcol;
+					var nu = Molpy.options.colpix;
 					if(!nu){
 						desc="No";
 					}else{
@@ -1784,7 +1788,7 @@ Molpy.Up=function()
 			Molpy.chipWasteAmount=Math.round(Molpy.chipWasteAmount);
 			Molpy.blockAddAmount=Math.round(Molpy.blockAddAmount);
 			Molpy.blockWasteAmount=Math.round(Molpy.blockWasteAmount);
-			if(Molpy.chipAddAmount>0)
+			if(Molpy.chipAddAmount>0 && !Molpy.Boosts['AA'].power)
 				Molpy.Notify('Gained '+Molpify(Molpy.chipAddAmount,3)+' Glass Chip'+(Molpy.chipAddAmount>1?'s':''),1);
 			if(Molpy.chipAddAmount<0)
 				Molpy.Notify('Consumed '+Molpify(-Molpy.chipAddAmount,3)+' Glass Chip'+(-Molpy.chipAddAmount>1?'s':''),1);
@@ -1794,7 +1798,7 @@ Molpy.Up=function()
 				Molpy.Notify('Not enough Chip Storage for '+Molpify(Molpy.chipWasteAmount)+' Glass Chip'+(Molpy.chipWasteAmount>1?'s':''),1);
 			Molpy.chipWasteAmount=0;
 			
-			if(Molpy.blockAddAmount>0)
+			if(Molpy.blockAddAmount>0 && !Molpy.Boosts['AA'].power)
 				Molpy.Notify('Gained '+Molpify(Molpy.blockAddAmount,3)+' Glass Block'+(Molpy.blockAddAmount>1?'s':''),1);
 			if(Molpy.blockAddAmount<0)
 				Molpy.Notify('Consumed '+Molpify(-Molpy.blockAddAmount,3)+' Glass Block'+(-Molpy.blockAddAmount>1?'s':''),1);
@@ -4725,7 +4729,7 @@ Molpy.Up=function()
 	{
 		var x = 200+Math.floor(Math.random()*200);
 		var y = 200+Math.floor(Math.random()*400);
-		if(Molpy.Boosts['Chromatic Heresy'].power&&Molpy.options.otcol)
+		if(Molpy.Boosts['Chromatic Heresy'].power&&Molpy.options.colpix)
 		{	
 			if(Molpy.newpixNumber>3094)			
 				g('beach').style.background='url(http://placekitten.com/'+x+'/'+y+')';
@@ -4875,7 +4879,7 @@ Molpy.Up=function()
 		drawClockHand();
 		if(Molpy.showStats) Molpy.PaintStats();
 		Molpy.notifsUpdate();
-		Molpy.sparticlesUpdate();
+		if(Molpy.options.numbers)Molpy.sparticlesUpdate();
 		
 		if(Molpy.scrumptiousDonuts==1)
 		{

@@ -3049,8 +3049,9 @@ Molpy.DefineBoosts=function()
 		con.power+=times;
 		if(con.power>=100)
 		{
+			var op = con.power;
 			Molpy.LockBoost('CfB');
-			return times+con.power-100;
+			return times+op-100;
 		}
 		return 0;
 	}

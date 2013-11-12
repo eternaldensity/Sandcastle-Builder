@@ -20,7 +20,10 @@ For personal amusement only.
 
 ## 2.98
 - Finally fixed AC upgrade price mustard!
-- Compressed advanced badge save-storage
+- Compressed advanced badge save-storage (and fixed backward compatibility)
+- Don't notify about chip/block gains if Automata Assemble is on
+- Wording fix: Colpix
+- Mustard when finishing blackprint construction
 
 ## 2.97
 - Changed AC upgrades back to using chips, and changed the pricing
