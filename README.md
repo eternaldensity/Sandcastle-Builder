@@ -26,6 +26,7 @@ For personal amusement only.
 - Prevent Impervious Ninja from preventing the new Ninja Strike badges from being earned
 - Seaish Glass upgrading (courtesy of waveney)
 - Fixed Sand Refinering being able to go over 100% sand usage
+- Dealt with some typos
 
 ## 2.981
 - Colpix option description fix

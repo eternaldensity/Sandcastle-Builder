@@ -2139,7 +2139,8 @@ Molpy.DefineBoosts=function()
     {
         var upgrades = 0;
         var bl = Molpy.Boosts['Glass Block Storage'];
-        while( (cost = Molpy.SandPurifierUpgradeCost()) < bl.power )
+		var cost=0;
+        while( (cost = Molpy.SandPurifierUpgradeCost()) < bl.power*.99 )
         {
             bl.power -= cost;
             upgrades++;
@@ -2155,7 +2156,8 @@ Molpy.DefineBoosts=function()
     {
         var upgrades = 0;
         var ch = Molpy.Boosts['Glass Chip Storage'];
-        while( (cost = Molpy.GlassExtruderUpgradeCost()) < ch.power )
+		var cost=0;
+        while( (cost = Molpy.GlassExtruderUpgradeCost()) < ch.power*.99 )
         {
             ch.power -= cost;
             upgrades++;
@@ -2170,7 +2172,7 @@ Molpy.DefineBoosts=function()
     Molpy.SeaishSandRefinery=function()
     {
         var ch = Molpy.Boosts['Glass Chip Storage'];
-        var extra = Math.min(Math.floor(ch.power/2.5),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.SandRefineryIncrement()-1));
+        var extra = Math.min(Math.floor(ch.power/2.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.SandRefineryIncrement()-1));
         if (extra>20) 
         {
             ch.power -= extra*2.5;
@@ -2185,7 +2187,7 @@ Molpy.DefineBoosts=function()
     Molpy.SeaishGlassChiller=function()
     {
         var bl = Molpy.Boosts['Glass Block Storage'];
-        var extra = Math.min(Math.floor(bl.power/4.5),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.GlassChillerIncrement()-1));
+        var extra = Math.min(Math.floor(bl.power/4.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.GlassChillerIncrement()-1));
         if (extra>20) 
         {
             bl.power -= extra*4.5;
