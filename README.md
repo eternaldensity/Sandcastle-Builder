@@ -18,7 +18,10 @@ For personal amusement only.
 
 ## Changelog
 
-## 2.982
+## 2.991
+- Beanie Builder upgrades are now in the beanish tech group
+
+## 2.99
 - Smashing a crate open only gives whole blocks
 - Prevent infinite castles down
 - Missing 1* for Ruthless Efficiency department flag
