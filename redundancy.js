@@ -305,7 +305,7 @@ var InitStatementGen=function(gen)
 				statement.refs[j]=statementNames[Math.floor(Math.random()*n)];
 			statement.operator=operators[Math.floor(Math.random()*operators.length)];
 			StatementGen.FillClaims(statement);
-			StatementGen.ShuffleList(statement.claims);
+			ShuffleList(statement.claims);
 		}
 	}
 	StatementGen.FillClaims=function(statement)
@@ -363,17 +363,6 @@ var InitStatementGen=function(gen)
 			return;
 		}
 	}
-	StatementGen.ShuffleList=function(l)
-	{
-		for(var i in l)
-		{
-			var j = Math.floor(Math.random()*(parseInt(i)+1));
-			var temp = l[j];
-			l[j]=l[i];
-			l[i]=temp;
-		}	
-		
-	}
 	StatementGen.RandStatementValue=function()
 	{
 		var vals=[];
@@ -413,7 +402,7 @@ var InitStatementGen=function(gen)
 		{
 			str.push(StatementGen.StringifyStatement(StatementGen.statements[i],buttonFunction));
 		}
-		StatementGen.ShuffleList(str);
+		ShuffleList(str);
 		return str;
 	}
 	StatementGen.StatementValue=function(name)
@@ -421,4 +410,32 @@ var InitStatementGen=function(gen)
 		return StatementGen.statements[name].value;
 	}
 	return StatementGen;
+}
+function ShuffleList(l)
+	{
+		for(var i in l)
+		{
+			var j = Math.floor(Math.random()*(parseInt(i)+1));
+			var temp = l[j];
+			l[j]=l[i];
+			l[i]=temp;
+		}			
+	}
+function SplitWord(word)
+{
+	if(word.length<=3)return [word];
+	if(word.length==4)return [word.slice(0,2),word.slice(2)];
+	var size=2+Math.floor(Math.random()*2);
+	return [word.slice(0,size)].concat(SplitWord(word.slice(size)));
+}
+function Wordify(words)
+{
+	words=words.split(' ');
+	var split=[];
+	for(var i in words)
+	{
+		split=split.concat(SplitWord(words[i]));
+	}
+	ShuffleList(split);
+	return split.reduce(function(prev,next,i,a){return prev+' '+next;});	
 }
