@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.0
+- Bottle Battle in cyb group
+
 ## 2.991
 - Beanie Builder upgrades are now in the beanish tech group
 

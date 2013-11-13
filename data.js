@@ -4144,7 +4144,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('Adjusted Automata Assemble');
 		}
 	}
-	new Molpy.Boost({name:'Bottle Battle',desc:'NewPixBot Glass production is multiplied by 3',glass:'10M',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Bottle Battle',desc:'NewPixBot Glass production is multiplied by 3',glass:'10M',sand:Infinity,castles:Infinity,group:'cyb'});
 	new Molpy.Boost({name:'Leggy',desc:'Scaffold Glass production is multiplied by 8',glass:'15M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Clear Wash',desc:'Wave Glass production is multiplied by 10',glass:'15M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Crystal Streams',desc:'River Glass production is multiplied by 12',glass:'20M',sand:Infinity,castles:Infinity});
