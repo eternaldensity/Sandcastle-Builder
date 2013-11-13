@@ -3105,6 +3105,16 @@ Molpy.DefineBoosts=function()
 		else
 			Molpy.Notify('You now have the '+target+' Blackprint pages you require.',1);
 	}
+	Molpy.HasSpareBlackprints=function(n)
+	{
+		var pages = Molpy.Boosts['Blackprints'].power;
+		if(pages<1)return 0;
+		if(Molpy.Got('Blackprints'))
+		{
+			pages-=Molpy.blackprintCosts[Molpy.GetBlackprintSubject()];
+		}
+		return(pages>=n);
+	}
 	
 	//if we have enough blackprint pages for next blackprint boost, allow it as a department reward
 	Molpy.CheckBlackprintDepartment=function()
@@ -3156,8 +3166,8 @@ Molpy.DefineBoosts=function()
 		},
 		className:'alert',group:'bean'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150,AA:200};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO','AA'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150,AA:200,SG:5};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO','AA','SG'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:
 		function(me)
@@ -4100,7 +4110,7 @@ Molpy.DefineBoosts=function()
 			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
 			if(me.power<Molpy.Boosts['PC'].power&&Molpy.HasGlassChips(1e7*Math.pow(1.2,n)))
 			{
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(1e7*Math.pow(1.2,n),2)+' Glass Chips.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(1e7*Math.pow(1.2,n),2)+' Glass Chips and '+Molpify(n*2,2)+' Blackprint Pages.';
 			}
 			if(me.power>1&&Molpy.HasGlassChips(1e5*n))
 			{
@@ -4115,10 +4125,20 @@ Molpy.DefineBoosts=function()
 	{
 		var me = Molpy.Boosts['AC'];
 		var cost=1e7*Math.pow(1.2,me.power);
-		if(n<0) cost=-1e5*me.power;
-		cost*=me.power;
+		var pages=2*me.power;
+		if(n<0)
+		{
+			cost=-1e5*me.power;
+			pages=0;
+		}
 		if(Molpy.HasGlassChips(cost))
 		{
+			if(!Molpy.HasSpareBlackprints(pages))
+			{
+				Molpy.Notify('You need more Blackprint Pages');
+				return;
+			}
+			Molpy.Boosts['Blackprints'].power-=pages;
 			Molpy.SpendGlassChips(cost);
 			me.power+=n;
 			Molpy.Notify('Adjusted Automata Assemble');
@@ -4131,7 +4151,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Super Visor',desc:'Beanie Builder Glass production is multiplied by 15',glass:'20M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Crystal Helm',desc:'Beanie Builder Glass production is multiplied by 5',glass:'30M',sand:Infinity,castles:Infinity});
 	
-	new Molpy.Boost({name:'Safety Goggles',desc:'The goggles, they do something!',
+	new Molpy.Boost({name:'Safety Goggles',aka:'SG',desc:'The goggles, they do something!',
 		glass:'2M'		
 	});
 		

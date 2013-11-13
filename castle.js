@@ -211,7 +211,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=2.981;
+		Molpy.version=2.99;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1044,8 +1044,8 @@ Molpy.Up=function()
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
 				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
-				if(Molpy.Boosts['Safety Hat'].unlocked&&Molpy.Got('Safety Pumpkin')&&!Molpy.Boosts['Safety Goggles'].unlocked)
-					Molpy.UnlockBoost('Safety Goggles');
+				if(Molpy.Boosts['Safety Hat'].unlocked&&Molpy.Got('Safety Pumpkin')&&!Molpy.Boosts['SG'].unlocked)
+					Molpy.UnlockBoost('SG');
 				else
 					Molpy.UnlockBoost('Safety Hat');
 			}
@@ -4292,7 +4292,7 @@ Molpy.Up=function()
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
 			var npb=Molpy.CastleTools['NewPixBot'];
-			if(Math.floor(Math.random()*((Molpy.Got('Safety Pumpkin')+Molpy.Got('Safety Goggles'))*10+20-i))==0)
+			if(Math.floor(Math.random()*((Molpy.Got('Safety Pumpkin')+Molpy.Got('SG'))*10+20-i))==0)
 			{
 				if(npb.amount)
 				{
@@ -4675,7 +4675,7 @@ Molpy.Up=function()
 			Molpy.Boosts['Furnace Crossfeed'].department=0;
 			Molpy.Boosts['Furnace Multitasking'].department=0;
 			var fa = Molpy.Boosts['Factory Automation'];
-			if(fa.power>0 &&!Molpy.Got('Safety Goggles'))
+			if(fa.power>0 &&!Molpy.Got('SG'))
 			{
 				fa.power=0;
 				Molpy.Notify('Factory Automation Downgraded',1);
@@ -4976,7 +4976,7 @@ Molpy.Up=function()
 		
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['Glass Chip Storage'].power);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power);
-		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),3)+'%';
+		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),5)+'%';
 		g('blackstat').innerHTML='Collected '+Molpify(Molpy.Boosts['Blackprints'].power)+' of '+Molpify(Molpy.GetBlackprintPages());
 		g('logicatstat').innerHTML=Molpify(Molpy.Boosts['Logicat'].bought);
 		g('totaltoolchipsstat').innerHTML=Molpify(Molpy.totalGlassBuilt);

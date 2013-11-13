@@ -25,8 +25,11 @@ For personal amusement only.
 - Suppress glass ceiling lock message with Tool Factory
 - Prevent Impervious Ninja from preventing the new Ninja Strike badges from being earned
 - Seaish Glass upgrading (courtesy of waveney)
-- Fixed Sand Refinering being able to go over 100% sand usage
+- Stat for Sand use for glass now shows more decimal places
+- Fixed Sand Refinery being able to go over 100% sand usage
 - Dealt with some typos
+- Extra way to get Safety Goggles apart from the Safety Hat way
+- Fixed AC price and upgrade cost. And now it uses some Blackprint Pages too
 
 ## 2.981
 - Colpix option description fix
