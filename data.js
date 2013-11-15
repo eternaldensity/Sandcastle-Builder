@@ -4762,7 +4762,7 @@ Molpy.CheckBuyUnlocks=function()
 
 }
 
-Molpy.CheckRewards=function(automationLevel)
+Molpy.CheckDoRDRewards=function(automationLevel)
 {
 
 	if(Molpy.Got('Factory Automation'))
@@ -4799,11 +4799,7 @@ Molpy.CheckRewards=function(automationLevel)
 	}
 	
 	Molpy.Boosts['RRR'].department=1*(Molpy.Boosts['Panther Salve'].power > 200);	
-	Molpy.Boosts['Redundant Raptor'].logic=2*(Molpy.Boosts['Panther Salve'].power > 500);	
-	Molpy.Boosts['Catamaran'].logic=4*(Molpy.Boosts['Panther Salve'].power > 800);
-	Molpy.Boosts['LCB'].logic=6*(Molpy.Boosts['Panther Salve'].power > 1200);	
 	Molpy.Boosts['Phonesaw'].department=1*(Molpy.Boosts['VJ'].power >=88);		
-	Molpy.Boosts['Ninjasaw'].logic=16*(Molpy.Got('Phonesaw'));
 	
 	var found=0;
 	for(var i in Molpy.jDipBoosts)
@@ -4816,49 +4812,9 @@ Molpy.CheckRewards=function(automationLevel)
 	{
 		Molpy.EarnBadge('Machine Learning');
 	}
-	if(Molpy.Got('Flux Turbine')&&isFinite(Molpy.castles))
-	{
-		Molpy.Boosts['Flux Surge'].logic=4;
-	}else
-	{
-		Molpy.Boosts['Flux Surge'].logic=0;
-	}
-	var finiteC = 1*isFinite(Molpy.castles);
-	var finiteP=0;
-	if(finiteC)
-	{
-		for(var i in Molpy.SandTools)
-		{
-			if(isFinite(Molpy.priceFactor*Molpy.SandTools[i].price))
-			{
-				finiteP=1;
-				break;
-			}
-		}
-		if(!finiteP)
-		{
-			for(var i in Molpy.CastleTools)
-			{
-				if(isFinite(Molpy.priceFactor*Molpy.CastleTools[i].price))
-				{
-					finiteP=1;
-					break;
-				}
-			}
-		}
-	}
-	Molpy.Boosts['Temporal Duplication'].logic=finiteC*finiteP;
-	Molpy.Boosts['Temporal Rift'].logic=3*isFinite(Molpy.castles);
 	
 	Molpy.Boosts['Facebugs'].department=1*(Molpy.groupBadgeCounts.discov>20&&Molpy.Got('Ch*rpies'));
 	Molpy.Boosts['Badgers'].department=1*(Molpy.groupBadgeCounts.monums>20&&Molpy.Got('Facebugs'));
-	if(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'))
-	{
-		Molpy.Boosts['Crate Key'].logic=4;
-	}else
-	{
-		Molpy.Boosts['Crate Key'].logic=0;
-	}
 	Molpy.CheckBlackprintDepartment();
 	
 	Molpy.Boosts['Fractal Fractals'].department=1*(Molpy.Boosts['Fractal Sandcastles'].power>=120);
@@ -4887,6 +4843,54 @@ Molpy.CheckRewards=function(automationLevel)
 		if(Molpy.Earned('Beachomancer'))
 			Molpy.Boosts['BBC'].department=1;
 	}
+	Molpy.Boosts['Ruthless Efficiency'].department=1*(Molpy.Boosts['Glass Chiller'].power>=1234);
+	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
+	
+	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
+	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&Math.floor(Math.random()*4)==0);
+	
+	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
+	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
+				
+}
+
+Molpy.CheckLogicatRewards=function(automationLevel)
+{
+
+	Molpy.Boosts['Redundant Raptor'].logic=2*(Molpy.Boosts['Panther Salve'].power > 500);	
+	Molpy.Boosts['Catamaran'].logic=4*(Molpy.Boosts['Panther Salve'].power > 800);
+	Molpy.Boosts['LCB'].logic=6*(Molpy.Boosts['Panther Salve'].power > 1200);	
+	Molpy.Boosts['Ninjasaw'].logic=16*(Molpy.Got('Phonesaw'));
+	
+	Molpy.Boosts['Flux Surge'].logic=4*(Molpy.Got('Flux Turbine')&&isFinite(Molpy.castles));
+	var finiteC = 1*isFinite(Molpy.castles);
+	var finiteP=0;
+	if(finiteC)
+	{
+		for(var i in Molpy.SandTools)
+		{
+			if(isFinite(Molpy.priceFactor*Molpy.SandTools[i].price))
+			{
+				finiteP=1;
+				break;
+			}
+		}
+		if(!finiteP)
+		{
+			for(var i in Molpy.CastleTools)
+			{
+				if(isFinite(Molpy.priceFactor*Molpy.CastleTools[i].price))
+				{
+					finiteP=1;
+					break;
+				}
+			}
+		}
+	}
+	Molpy.Boosts['Temporal Duplication'].logic=finiteC*finiteP;
+	Molpy.Boosts['Temporal Rift'].logic=3*isFinite(Molpy.castles);
+	
+	Molpy.Boosts['Crate Key'].logic=4*(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'));
 	Molpy.Boosts['Bucking the Trend'].logic=10*(Molpy.SandTools['Bucket'].amount>=10000);
 	Molpy.Boosts['Crystal Well'].logic=20*(Molpy.SandTools['Bucket'].amount>=20000);
 	Molpy.Boosts['Glass Spades'].logic=30*(Molpy.SandTools['Cuegan'].amount>=10000);
@@ -4899,16 +4903,10 @@ Molpy.CheckRewards=function(automationLevel)
 	Molpy.Boosts['Glass Saw'].logic=150*(Molpy.glassPermNP>=4000);
 	
 	Molpy.Boosts['Panther Rush'].logic=200*(Molpy.Boosts['Panther Rush'].power+1);
-	Molpy.Boosts['Ruthless Efficiency'].department=1*(Molpy.Boosts['Glass Chiller'].power>=1234);
-	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
 	
-	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
 	Molpy.Boosts['AC'].logic=440*(Molpy.Got('AA')&&(Molpy.CastleTools['NewPixBot'].amount>=7500?50000/Molpy.CastleTools['NewPixBot'].amount:0));
-	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&Math.floor(Math.random()*4)==0);
 	Molpy.Boosts['Flipside'].logic=220*Molpy.Got('AA');
 	
-	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
-	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
 	Molpy.Boosts['Bottle Battle'].logic=150*(Molpy.CastleTools['NewPixBot'].amount>=10000);	
 	Molpy.Boosts['Stained Glass Launcher'].logic=160*(Molpy.CastleTools['Trebuchet'].amount>=4000);	
 	Molpy.Boosts['Leggy'].logic=180*(Molpy.CastleTools['Scaffold'].amount>=5000);	

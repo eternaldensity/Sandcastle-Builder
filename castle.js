@@ -3327,7 +3327,7 @@ Molpy.Up=function()
 					return;
 				}				
 				
-				Molpy.CheckRewards(automationLevel);				
+				Molpy.CheckDoRDRewards(automationLevel);				
 			
 				var availRewards=[];
 				for(var i in Molpy.Boosts)
@@ -3639,7 +3639,7 @@ Molpy.Up=function()
 		}
 		Molpy.RewardLogicat=function(level)
 		{
-			Molpy.CheckRewards(0);
+			Molpy.CheckLogicatRewards(0);
 			var availRewards=[];
 			for(var i in Molpy.Boosts)
 			{
