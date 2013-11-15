@@ -23,6 +23,8 @@ For personal amusement only.
 - Panther Rush description improved
 - Stat for chips per click
 - Clean up mustarded totalcastlesbuilt for castletools
+- Changed Panther Rush to increase the points from Logicats (Caged and Wild) instead of the number of Caged questions available
+- It's half a point per level which means it's about as powerful before : at level 1, 10 answers is worth 15 answers and at level 2, 10 answers is worth 20. (it used to give 5 extra questions per level)
 
 ## 2.991
 - Beanie Builder upgrades are now in the beanish tech group

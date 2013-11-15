@@ -434,10 +434,10 @@ function Wordify(words)
 	var split=[];
 	for(var i in words)
 	{
-		//console.debug(words[i].length);
+		console.debug(words[i].length);
 		split=split.concat(SplitWord(words[i]));
 	}
-	//console.debug(split.reduce(function(prev,next,i,a){return prev+' '+next;}));
+	console.debug(split.reduce(function(prev,next,i,a){return prev+' '+next;}));
 	ShuffleList(split);
 	return split.reduce(function(prev,next,i,a){return prev+' '+next;});	
 }

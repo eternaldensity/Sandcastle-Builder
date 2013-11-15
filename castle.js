@@ -3612,7 +3612,7 @@ Molpy.Up=function()
 			{
 				Molpy.Notify('Correct',1);
 				var lc = Molpy.Boosts['Logicat'];
-				lc.power++;
+				lc.power+=1+(Molpy.Boosts['Panther Rush'].power)/2;
 				while(lc.power>=lc.bought*5)
 				{
 					Molpy.RewardLogicat(lc.bought);
@@ -4644,7 +4644,7 @@ Molpy.Up=function()
 			Molpy.Notify('You have not saved in over a NewPix!!',1);
 		}
 		if(Molpy.Got('Caged Logicat'))
-			Molpy.Boosts['Caged Logicat'].bought=11+Molpy.Boosts['Panther Rush'].power*5;
+			Molpy.Boosts['Caged Logicat'].bought=11;
 	}
 	
 	Molpy.BurnBags=function(n,e)
