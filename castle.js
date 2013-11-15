@@ -2730,6 +2730,11 @@ Molpy.Up=function()
 					this.totalGlassBuilt+=buildN;
 				}else{
 					Molpy.Build(buildN);
+					if(isNaN(this.totalCastlesBuilt))
+					{
+						this.totalCastlesBuilt=0;
+						Molpy.EarnBadge('Mustard Cleanup');
+					}
 					this.totalCastlesBuilt+=buildN;
 				}
 				this.currentActive=0;

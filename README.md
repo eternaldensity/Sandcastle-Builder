@@ -22,6 +22,7 @@ For personal amusement only.
 - Bottle Battle in cyb group
 - Panther Rush description improved
 - Stat for chips per click
+- Clean up mustarded totalcastlesbuilt for castletools
 
 ## 2.991
 - Beanie Builder upgrades are now in the beanish tech group
