@@ -20,6 +20,8 @@ For personal amusement only.
 
 ## 3.0
 - Bottle Battle in cyb group
+- Panther Rush description improved
+- Stat for chips per click
 
 ## 2.991
 - Beanie Builder upgrades are now in the beanish tech group

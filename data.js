@@ -4008,7 +4008,7 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
-			return 'When you buy this, uses '+Molpify(200*(me.power+1),3)+' Logicat levels to increase the number of times you can use Caged Logicat by 5 per NP'
+			return 'When you buy this, uses '+Molpify(200*(me.power+1),3)+' Logicat levels to increase the number of times you can use Caged Logicat per NP by 5'
 		},glass:function()
 		{
 			return 30000000+Molpy.Boosts['Panther Rush'].power*10000000;

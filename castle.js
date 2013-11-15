@@ -1939,6 +1939,7 @@ Molpy.Up=function()
 		Molpy.globalSpmNPMult=1;
 		Molpy.globalGpmNPMult=1;
 		Molpy.lastClick=0;
+		Molpy.chipsPerClick=0;
 		Molpy.ClickBeach=function()
 		{
 			var newsand=Molpy.computedSandPerClick;
@@ -1948,13 +1949,13 @@ Molpy.Up=function()
 			if(isNaN(Molpy.sandManual))Molpy.sandManual=0;
 			if(!isFinite(Molpy.sand)&&Molpy.Got('BG'))
 			{
-				var ch=Molpy.BoostsOwned*4
+				Molpy.chipsPerClick=Molpy.BoostsOwned*4
 				if(Molpy.Got('GM'))
 				{
-					ch+=Molpy.glassPermNP/20;
+					Molpy.chipsPerClick+=Molpy.glassPermNP/20;
 				}
-				Molpy.Boosts['Tool Factory'].power+=ch;
-				Molpy.chipsManual+=ch;
+				Molpy.Boosts['Tool Factory'].power+=Molpy.chipsPerClick;
+				Molpy.chipsManual+=Molpy.chipsPerClick;
 			}
 			Molpy.beachClicks+=1;
 			Molpy.CheckClickAchievements();
@@ -2389,6 +2390,18 @@ Molpy.Up=function()
 			
 			Molpy.globalGpmNPMult=multiplier;
 			Molpy.glassPermNP*=Molpy.globalGpmNPMult;	
+			
+			if(!isFinite(Molpy.sand)&&Molpy.Got('BG'))
+			{
+				Molpy.chipsPerClick=Molpy.BoostsOwned*4
+				if(Molpy.Got('GM'))
+				{
+					Molpy.chipsPerClick+=Molpy.glassPermNP/20;
+				}
+			}else
+			{
+				Molpy.chipsPerClick=0;
+			}
 		}
 		
 		
@@ -4982,6 +4995,7 @@ Molpy.Up=function()
 		g('totaltoolchipsstat').innerHTML=Molpify(Molpy.totalGlassBuilt);
 		g('destroyedtoolchipsstat').innerHTML=Molpify(Molpy.totalGlassDestroyed);
 		g('manualchipsstat').innerHTML=Molpify(Molpy.chipsManual);
+		g('chipclickstat').innerHTML=Molpify(Molpy.chipsPerClick);
 		
 		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 	}
