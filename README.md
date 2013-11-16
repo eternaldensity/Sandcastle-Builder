@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.01
+- Shopping donkey doesn't buy if no item
+
 ## 3.0
 - Bottle Battle in cyb group
 - Panther Rush description improved

@@ -1523,7 +1523,8 @@ Molpy.DefineBoosts=function()
 			Molpy.priceFactor*=1.05;
 			var name=Molpy.shoppingItem;
 			var item = Molpy.SandTools[name] || Molpy.CastleTools[name] || Molpy.Boosts[name];
-			item.buy();
+			if(item)
+				item.buy();
 			Molpy.priceFactor=factor;
 		}
 	}
