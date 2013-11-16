@@ -28,6 +28,8 @@ For personal amusement only.
 - Pluralisation (i.e. conditional 's') finally moved to a function. Please report any resulting/remaining pluralisation errors. Once. ;)
 - CMS description clarified (I hope) a little.
 - Added a new link to the index: something which I only just discovered exists :P
+- Shorten Not Lucky message after np400
+- Added an ONG countdown timer. For free!
 
 ## 3.0
 - Bottle Battle in cyb group

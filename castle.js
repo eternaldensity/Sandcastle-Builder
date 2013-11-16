@@ -271,6 +271,7 @@ Molpy.Up=function()
 			Molpy.options.sandmultibuy=0;
 			Molpy.options.castlemultibuy=0;
 			Molpy.options.fade=0;
+			Molpy.options.typo=0;
 			Molpy.options.showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:1,discov:0,monums:0,monumg:0,tagged:0};
 			Molpy.options.showhideNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged'];
 		}
@@ -344,6 +345,11 @@ Molpy.Up=function()
 				Molpy.InMyPants=!Molpy.InMyPants;
 				return;
 			}
+			if(thread=='typo')
+			{
+				Molpy.options.typo=1*!Molpy.options.typo;
+				return;
+			}
 			if(thread=='F5')
 			{
 				Molpy.ClickBeach();
@@ -393,6 +399,7 @@ Molpy.Up=function()
 			(Molpy.options.sandmultibuy)+
 			(Molpy.options.castlemultibuy)+
 			(Molpy.options.fade)+
+			(Molpy.options.typo)+
 			p;
 			
 			thread+=			
@@ -517,6 +524,7 @@ Molpy.Up=function()
 			Molpy.options.sandmultibuy=(parseInt(pixels[8] || 0));
 			Molpy.options.castlemultibuy=(parseInt(pixels[9] || 0));
 			Molpy.options.fade=(parseInt(pixels[10] || 0));
+			Molpy.options.typo=(parseInt(pixels[11] || 0));
 			if(!g('game'))
 			{				
 				Molpy.AdjustFade();
@@ -3419,7 +3427,12 @@ Molpy.Up=function()
 		Molpy.RewardNotLucky=function(automationLevel)
 		{
 			if(!automationLevel)
-				Molpy.Notify('You are not Lucky (which is good)');
+			{
+				if(Molpy.newpixNumber<=400)
+					Molpy.Notify('You are not Lucky (which is good)');
+				else
+					Molpy.Notify('Not Lucky!');			
+			}
 			var bonus=0;
 			var i=0;
 			var items=0;
@@ -4505,6 +4518,7 @@ Molpy.Up=function()
 		}
 		var npPercent = Molpy.ONGelapsed/(Molpy.NPlength*1000);
 		clockDegrees = (npPercent * 360) + 180; //rotation from top
+		g('ongtimer').innerHTML= 1000-Math.floor(Molpy.ONGelapsed/Molpy.NPlength);
 		if(Molpy.ONGelapsed >= Molpy.NPlength*1000)//gotta convert to milliseconds
 		{
 			Molpy.ONG();

@@ -245,12 +245,11 @@ var eternalf=[];
 var typocount=0;
 function format(gainned,level)
 {
+	if(Molpy.options.typo)return gainned;
 	var squirpy=eternalf[gainned];
 	if(squirpy)return squirpy;
-	if(Molpy)
-	{
-		if(Molpy.newpixNumber<typocount) return gainned;
-	}
+	if(Molpy.newpixNumber<typocount) return gainned;
+	
 	level=level||0;
 	var gained=gainned;
 	if(!Math.floor(Math.random()*1.005))return gainned;
