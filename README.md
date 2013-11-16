@@ -19,8 +19,13 @@ For personal amusement only.
 ## Changelog
 
 ## 3.01
-- Shopping donkey doesn't buy if no item
-- Logicat's "correct answers needed"display now accounts for Panther Rush
+- Shopping donkey doesn't buy if no item (i.e. prevent crash.)
+- Logicat's "correct answers needed" display now accounts for Panther Rush
+- Bunch of new NP-based badges, by waveney (cos I was taking too long getting around to adding them)
+- Fixxed some typoes
+- Safety Goggles prevents Safety Hat unlock
+- Glass Saw doesn't competely fill glass block storage (another waveney idea)
+- Pluralisation (i.e. conditional 's') finally moved to a function. Please report any resulting/remaining pluralisation errors. Once. ;)
 
 ## 3.0
 - Bottle Battle in cyb group

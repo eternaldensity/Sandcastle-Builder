@@ -1574,7 +1574,7 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Turns Sand into Glass';
 			var pow=Molpy.Boosts['Sand Refinery'].power+1;
 			var cost=Molpify(Molpy.GlassFurnaceSandUse(1),2);
-			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+Molpify(pow,3)+' Glass Chip'+(pow>1?'s':'')+' per NP.<br>';
+			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+Molpify(pow,3)+' Glass Chip'+plural(pow)+' per NP.<br>';
 			
 			if(Molpy.Got('Glass Furnace Switching'))
 			{
@@ -1705,7 +1705,7 @@ Molpy.DefineBoosts=function()
 					var pow=(Molpy.Boosts['Sand Refinery'].power)+2;
 					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
 						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+Molpify(pow,3)
-						+' Glass Chip'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
+						+' Glass Chip'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
 				}
 					
 				if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()*20))
@@ -1810,7 +1810,7 @@ Molpy.DefineBoosts=function()
 			me.power=Math.round(me.power);
 			me.bought=Math.round(me.bought);
 			
-			var str= 'Contains '+Molpify(me.power,3)+' Glass Chip'+(me.power>1?'s':'')+'.';
+			var str= 'Contains '+Molpify(me.power,3)+' Glass Chip'+plural(me.power)+'.';
 			var size=(me.bought)*10;
 			var rate = Molpy.Boosts['Sand Refinery'].power+1;
 			str+= ' Has space to store '+Molpify(size,3)+ ' Chips total.';
@@ -1915,7 +1915,7 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Makes Glass Blocks from Glass Chips';
 			var pow=Molpy.Boosts['Glass Chiller'].power+1;
 			var cost=Molpify(Molpy.GlassBlowerSandUse(1),2);
-			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+Molpify(pow,3)+' Glass Block'+(pow>1?'s':'')
+			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+Molpify(pow,3)+' Glass Block'+plural(pow)
 				+' from '+Molpy.ChipsPerBlock()+' Glass Chips (each) per NP.<br>';			
 			
 			if(Molpy.Got('Glass Blower Switching'))
@@ -1966,13 +1966,13 @@ Molpy.DefineBoosts=function()
 				{
 					var pow=(Molpy.Boosts['Glass Chiller'].power)+2;
 					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller(1)"></input> 5 Blocks to upgrade the Glass Blower to produce '
-						+Molpify(pow,3)+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dug).';
+						+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dug).';
 					
 					if(Molpy.Boosts['Glass Extruder'].power>10&&Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*20))
 					{
 						var pow=(Molpy.Boosts['Glass Chiller'].power)+21;
 						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller(20)"></input> 90 Blocks to upgrade the Glass Blower to produce '
-							+Molpify(pow,3)+' Glass Block'+(pow>1?'s':'')+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dug).';
+							+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dug).';
 							
 						if (Molpy.Got('Seaish Glass Blocks'))
 						{
@@ -2026,7 +2026,7 @@ Molpy.DefineBoosts=function()
 			me.power=Math.round(me.power);
 			me.bought=Math.round(me.bought);
 			
-			var str= 'Contains '+Molpify(me.power,3)+' Glass Block'+(me.power>1?'s':'')+'.';
+			var str= 'Contains '+Molpify(me.power,3)+' Glass Block'+plural(me.power)+'.';
 			var size=(me.bought)*50;
 			var rate = Molpy.Boosts['Glass Chiller'].power+1;
 			str+= ' Has space to store '+Molpify(size,3)+ ' Blocks total.';
@@ -2718,8 +2718,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Logicat',desc:
 		function(me)
 		{
-			
-			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>'+Math.ceil((me.bought*5-Math.floor(me.power))/(1+Molpy.Boosts['Panther Rush'].power/2))+' correct answers are needed to reach Logicat Level '+(me.bought+1);
+			var ans=Math.ceil((me.bought*5-Math.floor(me.power))/(1+Molpy.Boosts['Panther Rush'].power/2));
+			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>Needs '+ans+' correct answer'+plural(ans)+' to reach Logicat Level '+(me.bought+1);
 		}
 		,sand:'55E',castles:'238E',glass:100,group:'bean',icon:'logicat'
 	});
@@ -2742,7 +2742,7 @@ Molpy.DefineBoosts=function()
 		,className:'alert'
 	});
 	new Molpy.Boost({name:'Factory Ninja',desc:
-		function(me){return 'The next '+me.power+' Ninja Builder'+(me.power==1?'':'s')+' will activate Factory Automation';}
+		function(me){return 'The next '+me.power+' Ninja Builder'+plural(me.power)+' will activate Factory Automation';}
 		,group:'ninj',logic:3,className:'alert',startPower:function()
 		{
 			return Math.ceil(Molpy.Boosts['Logicat'].bought/5)
@@ -2767,7 +2767,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Locked Crate',
 		desc:function(me){
 			if(!me.bought) return 'Contains Loot';
-			return (5-me.bought)+' locks remain<br><input type="Button" value="Smash" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> it open to grab the loot!'
+			return (5-me.bought)+' lock'+plural(5-me.bought)+' left<br><input type="Button" value="Smash" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> it open to grab the loot!'
 		},
 		sand:function(me){ return me.power;},
 		castles:function(me){ return me.power;},
@@ -3345,7 +3345,7 @@ Molpy.DefineBoosts=function()
 	Molpy.BreakMould=function(aka)
 	{
 		var m = Molpy.Boosts[aka];
-		if(confirm('Do you want to cancel '+m.name+'?\nYou will have wasted '+(m.power-1)+' run'+(m.power==2?'':'s')+' of Factory Automation.'))
+		if(confirm('Do you want to cancel '+m.name+'?\nYou will have wasted '+Molpify(m.power-1)+' run'+plural(m.power-1)+' of Factory Automation.'))
 			m.reset();
 	}
 	
@@ -4428,7 +4428,7 @@ Molpy.DefineBadges=function()
 			if(Molpy.Boosts['NewPixBot Navigation Code'].power) return 'The Bots have been foiled by altered navigation code';
 			var j=Molpy.JDestroyAmount();
 			if(j<1) return 'Safe. For now.';
-			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+(j==1?'':'s')+' each per mNP';			
+			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+plural(j)+' each per mNP';			
 		}
 		,vis:3,icon:'judgementdip',classChange:function(){return Molpy.CheckJudgeClass(this,1,'alert');}});
 	new Molpy.Badge({name:'Fast Forward',desc:'Travel Back to the Future',vis:1});
@@ -4607,6 +4607,62 @@ Molpy.DefineBadges=function()
 	Molpy.MakeQuadBadge({np:971,name:'All Gone',desc:'the completion of The Fading'});
 	Molpy.MakeQuadBadge({np:972,name:'New Ground',desc:'when we saw a completely new scene'});
 	Molpy.MakeQuadBadge({np:973,name:'Walkers',desc:'the first time we saw Cuegan walking on their journey'});
+	
+	//the next bunch were written by waveney (thanks!)
+	Molpy.MakeQuadBadge({np:985,name:'This Far',desc:'When Cueball asks Have you ever been this far?'});
+    Molpy.MakeQuadBadge({np:989,name:'Drinking',desc:'Cueball and Megan stop to drink'});
+    Molpy.MakeQuadBadge({np:999,name:'Change Direction',desc:'The picture changes orientation by 90 degrees'});
+    Molpy.MakeQuadBadge({np:1004,name:'Doesnt end',desc:'Megan says: Maybe the sea doesn\'t end'});
+    Molpy.MakeQuadBadge({np:1005,name:'Very Far',desc:'Cueball says: We haven\'t walked very far'});
+    Molpy.MakeQuadBadge({np:1006,name:'Not Ending',desc:'Megan doth say: Yeah.  But thats what the first part of not ending looks like.'});
+    Molpy.MakeQuadBadge({np:1018,name:'Steam bottle',desc:'Megan says: If we don\'t find something today, we\'ll have to start using the steam bottle'});
+    Molpy.MakeQuadBadge({np:1024,name:'Yes',desc:'Yes. Yes what?'});
+    Molpy.MakeQuadBadge({np:1025,name:'Other Rivers',desc:'Megan says: There are other rivers'});
+    Molpy.MakeQuadBadge({np:1029,name:'Dropped',desc:'Cueball drops his bottle in the river'});
+    Molpy.MakeQuadBadge({np:1036,name:'Lasso',desc:'Cueball attempts to lasso the bottle'});
+    Molpy.MakeQuadBadge({np:1038,name:'Lasso 2',desc:'Megan attempts to lasso the bottle'});
+    Molpy.MakeQuadBadge({np:1041,name:'Too Dangerous',desc:'Maybe I could -.  Too Dangerous'});
+    Molpy.MakeQuadBadge({np:1042,name:'Accident',desc:'Megan: It\'s OK, it was an accident'});
+    Molpy.MakeQuadBadge({np:1044,name:'Right',desc:'Megan say Cueball is right!'});
+    Molpy.MakeQuadBadge({np:1045,name:'Not Fast',desc:'This River\s <i>not</i> moving very fast'});
+    Molpy.MakeQuadBadge({np:1049,name:'Not Enough',desc:'Megan: I don\'t thnk it\'s enough water.'});
+    Molpy.MakeQuadBadge({np:1052,name:'Not Broken',desc:'Cueball: And this river doesn\'t <i>look</i> broken'});
+    Molpy.MakeQuadBadge({np:1053,name:'Pretty Neat',desc:'Cueball: It\'s pretty neat though'});
+    Molpy.MakeQuadBadge({np:1058,name:'Sorry',desc:'Cueball says sorry'});
+    Molpy.MakeQuadBadge({np:1066,name:'Still Rising',desc:'Megan: It\'s still rising'});
+    Molpy.MakeQuadBadge({np:1067,name:'Strange',desc:'The Sea couldn\'t wait.'});
+    Molpy.MakeQuadBadge({np:1068,name:'Find a ford',desc:'Megan: Walk up river to find a ford or turn back?'});
+    Molpy.MakeQuadBadge({np:1071,name:'Understand Everything',desc:'We don\'t understand everything yet.'});
+    Molpy.MakeQuadBadge({np:1072,name:'Understand Anything',desc:'Everything is a little ambitious.  We barely understand <i>Anything</i>.'});
+    Molpy.MakeQuadBadge({np:1073,name:'First Part',desc:'But that\'s what the first part of understanding everything looks like.'});
+    Molpy.MakeQuadBadge({np:1093,name:'Ours at its driest',desc:'I\'m glad we found this river'});
+    Molpy.MakeQuadBadge({np:1096,name:'Bigger',desc:'This river is even bigger than it looked.'});
+    Molpy.MakeQuadBadge({np:1123,name:'Fill the Sea',desc:'Maybe it <i>is</i> big enough to fill the Sea.'});
+    Molpy.MakeQuadBadge({np:1130,name:'Rope',desc:'Our rope isn\'t strong enough'});
+    Molpy.MakeQuadBadge({np:1131,name:'Hold this',desc:'Hold this or you\'ll fall'});
+    Molpy.MakeQuadBadge({np:1142,name:'Stuff',desc:'Our river fills with stuff'});
+    Molpy.MakeQuadBadge({np:1143,name:'This river',desc:'Cueball: This river doesn\'t look like that'});
+    Molpy.MakeQuadBadge({np:1144,name:'Empty places',desc:'Megan: Maybe it only flows through empty places'});
+    Molpy.MakeQuadBadge({np:1146,name:'Continue',desc:'We continue upriver'});
+    Molpy.MakeQuadBadge({np:1159,name:'How High',desc:'Megan: I wonder how high the water is now'});
+    Molpy.MakeQuadBadge({np:1160,name:'Been days',desc:'Not a lot of us by the shore this ime of year'});
+    Molpy.MakeQuadBadge({np:1161,name:'Tents get wet',desc:'A lot higher before any tents got wet'});
+    Molpy.MakeQuadBadge({np:1178,name:'Bigger Hills',desc:'This river flows from bigger hills than ours'});
+    Molpy.MakeQuadBadge({np:1179,name:'Crossing soon',desc:'If we don\'t reach a crossing soon we\'ll be in them'});
+    Molpy.MakeQuadBadge({np:1181,name:'Cliff',desc:'Looking over a cliff to the river'});
+    Molpy.MakeQuadBadge({np:1184,name:'Swim in',desc:'Megan: I wonder if it\'s possible to swim in'});
+    Molpy.MakeQuadBadge({np:1212,name:'You OK',desc:'Megan asks You OK?'});
+    Molpy.MakeQuadBadge({np:1213,name:'Just Thinking',desc:'Cueball is just thinking'});
+    Molpy.MakeQuadBadge({np:1218,name:'Follow river',desc:'Megan: Should we follow the river through there'});
+    Molpy.MakeQuadBadge({np:1219,name:'Over those',desc:'Cueball: Lets see if we can go over those and rejoin it further up'});
+    Molpy.MakeQuadBadge({np:1233,name:'Windier',desc:'It must get windier up here'});
+    Molpy.MakeQuadBadge({np:1261,name:'Bigger Dunes',desc:'These are bigger than they looked'});
+    Molpy.MakeQuadBadge({np:1265,name:'Megan Falls',desc:'Megan falls when dune surfing'});
+    Molpy.MakeQuadBadge({np:1276,name:'Raptor',desc:'First raptor spotted (a swift)'});
+	
+	
+	
+	
 	//Molpy.MakeQuadBadge({np:,name:'',desc:''});
 }
 

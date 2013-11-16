@@ -242,19 +242,27 @@ var maketext=function()
 	g('redundantpar').innerHTML=str;
 }
 var eternalf=[];
+var typocount=0;
 function format(gainned,level)
 {
 	var squirpy=eternalf[gainned];
 	if(squirpy)return squirpy;
+	if(Molpy)
+	{
+		if(Molpy.newpixNumber<typocount) return gainned;
+	}
 	level=level||0;
 	var gained=gainned;
-	if(!Math.floor(Math.random()*1.02))return gainned;
+	if(!Math.floor(Math.random()*1.005))return gainned;
 	var n = Math.floor(Math.random()*(gainned.length-2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
 	if(!isNaN(gainned[n]))return gainned;
 	gainned= gainned.slice(0,n+1)+gainned.slice(n);
 	gainned = format(gainned,level+1);
 	if(!level)
+	{
+		typocount++;
 		eternalf[gained]=gainned;
+	}
 	return gainned;
 }
 var EmergencyExport=function()
@@ -440,4 +448,9 @@ function Wordify(words)
 	console.debug(split.reduce(function(prev,next,i,a){return prev+' '+next;}));
 	ShuffleList(split);
 	return split.reduce(function(prev,next,i,a){return prev+' '+next;});	
+}
+
+function plural(n)
+{
+	return n==1?'':'s';
 }
