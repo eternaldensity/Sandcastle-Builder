@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.021
+- Was missing a return so the castle tool price calc was still horribly slow
+
 ## 3.02
 - Added Upgrade x10 button to Production Control
 - Downgrade buttons on Production Control, Automata Control, Sand Refinery, and Glass Chiller are all hidden by No Sell
