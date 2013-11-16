@@ -663,7 +663,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Coma Molpy Style',desc: 
 		function(me)
 		{ 
-			return (me.power? '':'When active, ') + 'Castle Tools do not activate and ninjas stay stealthed <br><input type="Button" onclick="Molpy.ComaMolpyStyleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+			return (me.power? '':'When active, ') + 'the ONG clock is frozen.<br>(Castle Tools do not activate and ninjas stay stealthed) <br><input type="Button" onclick="Molpy.ComaMolpyStyleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 		}
 		,sand:8500,castles:200,icon:'comamolpystyle',className:'toggle'});
 	
@@ -941,7 +941,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Swell',desc:'Waves produce 29 more Castles',sand:'20K',castles:200,icon:'swell'});
 	new Molpy.Boost({name:'Flux Capacitor',desc:'It makes Time Travel possibler!',sand:88,castles:88,group:'chron'});
-	new Molpy.Boost({name:'Bag Burning',desc:'Bags help counteract NewPixBots',sand:'50M',castles:86,
+	new Molpy.Boost({name:'Bag Burning',desc:'Bags help counteract NewPixBots. This will require burning some bags.',sand:'50M',castles:86,
 		stats:function()
 		{
 			var str = 'Half of Bags beyond the 14th owned give a 40% increase to Judgement Dip threshhold.';

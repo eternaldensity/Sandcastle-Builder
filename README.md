@@ -26,6 +26,8 @@ For personal amusement only.
 - Safety Goggles prevents Safety Hat unlock
 - Glass Saw doesn't competely fill glass block storage (another waveney idea)
 - Pluralisation (i.e. conditional 's') finally moved to a function. Please report any resulting/remaining pluralisation errors. Once. ;)
+- CMS description clarified (I hope) a little.
+- Added a new link to the index: something which I only just discovered exists :P
 
 ## 3.0
 - Bottle Battle in cyb group
