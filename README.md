@@ -18,6 +18,14 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.02
+- Added Upgrade x10 button to Production Control
+- Downgrade buttons on Production Control, Automata Control, Sand Refinery, and Glass Chiller are all hidden by No Sell
+- But did anyone ever use those apart from accidentally?
+- Fix stupid typo (pricePrice) which was messing up the shortcut calculation of infinte castle tool prices and therefore causing higher load times the more castle tools you/I have
+- If no Blackprint-construction remains, the Blackprints-needed stat shows the amount needed for Automata Control
+- Panther Rush now uses up 5 less Logicat levels, but still unlocks at the same point, meaning when you buy it you can't have less than 5 levels left
+
 ## 3.01
 - Shopping donkey doesn't buy if no item (i.e. prevent crash.)
 - Logicat's "correct answers needed" display now accounts for Panther Rush

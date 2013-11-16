@@ -2792,7 +2792,7 @@ Molpy.Up=function()
 				{	//don't even bother
 					this.prevPrice=Infinity;
 					this.nextPrice=Infinity;
-					this.pricePrice=Infinity;
+					this.price=Infinity;
 				}
 				this.prevPrice=this.price0;
 				this.nextPrice=this.price1;
@@ -5008,7 +5008,7 @@ Molpy.Up=function()
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['Glass Chip Storage'].power);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),5)+'%';
-		g('blackstat').innerHTML='Collected '+Molpify(Molpy.Boosts['Blackprints'].power)+' of '+Molpify(Molpy.GetBlackprintPages());
+		g('blackstat').innerHTML='Collected '+Molpify(Molpy.Boosts['Blackprints'].power)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2);
 		g('logicatstat').innerHTML=Molpify(Molpy.Boosts['Logicat'].bought);
 		g('totaltoolchipsstat').innerHTML=Molpify(Molpy.totalGlassBuilt);
 		g('destroyedtoolchipsstat').innerHTML=Molpify(Molpy.totalGlassDestroyed);

@@ -1375,7 +1375,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'No Sell',desc:
 		function(me)
 		{
-			return '<input type="Button" onclick="Molpy.NoSellToggle()" value="'+(me.power? 'Show':'Hide')+'"></input> the Sell links on tools.';
+			return '<input type="Button" onclick="Molpy.NoSellToggle()" value="'+(me.power? 'Show':'Hide')+'"></input> the Sell links on tools.<br>Also affects the Downgrade/Decrease buttons on some Glass-related boosts';
 		},sand:3333,castles:55,icon:'nosell',className:'toggle'});
 	
 	Molpy.NoSellToggle=function()
@@ -1762,7 +1762,7 @@ Molpy.DefineBoosts=function()
 			}else{
 				str+= 'Currently, you have no more sand available for further upgrades';
 			}
-			if(me.power>1 && !Molpy.HasGlassBlocks(ch.bought*10))
+			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.HasGlassBlocks(ch.bought*10))
 			{
 				str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeSandRefinery()"></input> the Sand Refinery (by 1) and receive a 1 Glass Chip refund.';
 			}
@@ -1987,7 +1987,7 @@ Molpy.DefineBoosts=function()
 			}else
 				str+= 'It costs 5 Blocks to upgrade the Glass Blower\'s speed';
 			
-			if(me.power>1 && !Molpy.HasGlassBlocks(bl.bought*50))
+			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.HasGlassBlocks(bl.bought*50))
 			{
 				str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeGlassChiller()"></input> the Glass Chiller (by 1) and receive a 1 Glass Block refund.';
 			}
@@ -4011,15 +4011,16 @@ Molpy.DefineBoosts=function()
 	});
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
-			return 'When you buy this, uses '+Molpify(200*(me.power+1),3)+' Logicat levels to increase the points awarded by Logicats by 0.5'
+			return 'When you buy this, uses '+Molpify(200*(me.power+1)-5,3)+' Logicat levels to increase the points awarded by Logicats by 0.5'
 		},glass:function()
 		{
 			return 30000000+Molpy.Boosts['Panther Rush'].power*10000000;
 		},sand:Infinity,castles:Infinity,
 		buyFunction:function()
 		{
-			Molpy.Boosts['Logicat'].bought-=200*(this.power+1);
-			Molpy.Boosts['Logicat'].power-=5*(200*(this.power+1));
+			var levels = 200*(me.power+1)-5;
+			Molpy.Boosts['Logicat'].bought-=levels;
+			Molpy.Boosts['Logicat'].power-=5*levels;
 			this.power++;
 			Molpy.LockBoost(this.aka);
 		}
@@ -4041,10 +4042,15 @@ Molpy.DefineBoosts=function()
 			{
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(1)"></input> the rate by 1 at a cost of '+Molpify(1e6*n,1)+' Glass Blocks.';
 			}
-			if(me.power>0&&Molpy.HasGlassBlocks(1e5*n))
+			if(n > 100 && Molpy.HasGlassBlocks(1e7*n))
+            {
+                str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(10)"></input> the rate by 10 at a cost of '+Molpify(1e7*n,1)+' Glass Blocks.';
+            }
+			if(!Molpy.Boosts['No Sell'].power&&me.power>0&&Molpy.HasGlassBlocks(1e5*n))
 			{
 				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlToolFactory(-1)"></input> the rate by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Blocks.';
 			}
+			
 			return str;
 		}
 		,glass:'30M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',
@@ -4115,7 +4121,7 @@ Molpy.DefineBoosts=function()
 			{
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(1e7*Math.pow(1.2,n),2)+' Glass Chips and '+Molpify(n*2,2)+' Blackprint Pages.';
 			}
-			if(me.power>1&&Molpy.HasGlassChips(1e5*n))
+			if(!Molpy.Boosts['No Sell'].power&&me.power>1&&Molpy.HasGlassChips(1e5*n))
 			{
 				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlAutomata(-1)"></input> the number of runs by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Chips.';
 			}
