@@ -747,8 +747,9 @@ Molpy.DefineBoosts=function()
 			cmsline=0;
 			if(!me.bought)
 			{
-				Molpy.RewardRedacted();
 				me.buy();
+				if(me.bought)
+					Molpy.RewardRedacted();
 			}
 		}
 		if(!me.bought)
@@ -3961,8 +3962,9 @@ Molpy.DefineBoosts=function()
 			loveline=0;
 			if(!me.bought)
 			{
-				Molpy.RewardRedacted();
 				me.buy();
+				if(me.bought)
+					Molpy.RewardRedacted();
 			}
 		}
 		
