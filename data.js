@@ -2719,7 +2719,7 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{
 			
-			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>'+(me.bought*5-Math.floor(me.power))+' correct answers are needed to reach Logicat Level '+(me.bought+1);
+			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>'+Math.ceil((me.bought*5-Math.floor(me.power))/(1+Molpy.Boosts['Panther Rush'].power/2))+' correct answers are needed to reach Logicat Level '+(me.bought+1);
 		}
 		,sand:'55E',castles:'238E',glass:100,group:'bean',icon:'logicat'
 	});

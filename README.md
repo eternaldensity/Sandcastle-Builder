@@ -20,6 +20,7 @@ For personal amusement only.
 
 ## 3.01
 - Shopping donkey doesn't buy if no item
+- Logicat's "correct answers needed"display now accounts for Panther Rush
 
 ## 3.0
 - Bottle Battle in cyb group
