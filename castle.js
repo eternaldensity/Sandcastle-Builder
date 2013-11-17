@@ -211,7 +211,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.021;
+		Molpy.version=3.03;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2004,19 +2004,24 @@ Molpy.Up=function()
 					Molpy.Notify(Molpy.Boosts['VJ'].name);
 					Molpy.Build(Molpy.CalcVJReward(1));
 					Molpy.Boosts['VJ'].power++;
-					if(Molpy.Got('Glass Saw'))
-					{
-						var p = Molpy.Boosts['Glass Saw'].power;
-						var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
-						var absMaxGlass=maxGlass;
-						var rate = Molpy.ChipsPerBlock();
-						maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
-						maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*47.5-Molpy.Boosts['Glass Block Storage'].power);
-						Molpy.AddBlocks(maxGlass);
-						Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
-						if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)
-							Molpy.Boosts['Glass Saw'].power=p*2;
-					}
+                    if(Molpy.Got('Glass Saw'))
+                    {
+                        var p = Molpy.Boosts['Glass Saw'].power;
+                        var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
+                        var absMaxGlass=maxGlass;
+                        var rate = Molpy.ChipsPerBlock();
+                        maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
+                        var leave = 0;
+                        if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
+                        {
+                            leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
+                        }
+                        maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power - leave);
+                        Molpy.AddBlocks(maxGlass);
+                        Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
+                        if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)
+                            Molpy.Boosts['Glass Saw'].power=p*2;
+                    }
 				}
 			}
 			if(Molpy.Got('Bag Puns')&&Molpy.Boosts['VJ'].bought!=1)

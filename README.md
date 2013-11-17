@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.03
+- Changed all occurances of "% of sand dug" to "% of sand dig rate", so glass-production costs are clearer
+
 ## 3.021
 - Was missing a return so the castle tool price calc was still horribly slow
 

@@ -1575,7 +1575,7 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Turns Sand into Glass';
 			var pow=Molpy.Boosts['Sand Refinery'].power+1;
 			var cost=Molpify(Molpy.GlassFurnaceSandUse(1),2);
-			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+Molpify(pow,3)+' Glass Chip'+plural(pow)+' per NP.<br>';
+			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dig rate to produce '+Molpify(pow,3)+' Glass Chip'+plural(pow)+' per NP.<br>';
 			
 			if(Molpy.Got('Glass Furnace Switching'))
 			{
@@ -1706,7 +1706,7 @@ Molpy.DefineBoosts=function()
 					var pow=(Molpy.Boosts['Sand Refinery'].power)+2;
 					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(1)"></input> '
 						+(useChips?'3 Chips':'1 Block')+' to upgrade the Glass Furnace to produce '+Molpify(pow,3)
-						+' Glass Chip'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
+						+' Glass Chip'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dig rate).';
 				}
 					
 				if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()*20))
@@ -1728,7 +1728,7 @@ Molpy.DefineBoosts=function()
 						var pow=(Molpy.Boosts['Sand Refinery'].power)+21;
 						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(20)"></input> '
 							+(useChips?'50 Chips':'18 Blocks')+' to upgrade the Glass Furnace to produce '+Molpify(pow,3)
-							+' Glass Chips per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
+							+' Glass Chips per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dig rate).';
 					}	
 					
 					if(Molpy.Boosts['Sand Purifier'].power>200&&Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()*600))
@@ -1749,7 +1749,7 @@ Molpy.DefineBoosts=function()
 							var pow=(Molpy.Boosts['Sand Refinery'].power)+601;
 							str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandRefinery(600)"></input> '
 								+(useChips?'1,500 Chips':'540 Blocks')+' to upgrade the Glass Furnace to produce '+Molpify(pow,3)
-								+' Glass Chips per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dug).';
+								+' Glass Chips per NP (will use '+Molpify(pow*Molpy.SandRefineryIncrement(),2)+'% of Sand dig rate).';
 								
 							if (Molpy.Got('Seaish Glass Chips'))
 							{
@@ -1916,7 +1916,7 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Makes Glass Blocks from Glass Chips';
 			var pow=Molpy.Boosts['Glass Chiller'].power+1;
 			var cost=Molpify(Molpy.GlassBlowerSandUse(1),2);
-			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dug to produce '+Molpify(pow,3)+' Glass Block'+plural(pow)
+			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dig rate to produce '+Molpify(pow,3)+' Glass Block'+plural(pow)
 				+' from '+Molpy.ChipsPerBlock()+' Glass Chips (each) per NP.<br>';			
 			
 			if(Molpy.Got('Glass Blower Switching'))
@@ -1967,13 +1967,13 @@ Molpy.DefineBoosts=function()
 				{
 					var pow=(Molpy.Boosts['Glass Chiller'].power)+2;
 					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller(1)"></input> 5 Blocks to upgrade the Glass Blower to produce '
-						+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dug).';
+						+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dig rate).';
 					
 					if(Molpy.Boosts['Glass Extruder'].power>10&&Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*20))
 					{
 						var pow=(Molpy.Boosts['Glass Chiller'].power)+21;
 						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller(20)"></input> 90 Blocks to upgrade the Glass Blower to produce '
-							+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dug).';
+							+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dig rate).';
 							
 						if (Molpy.Got('Seaish Glass Blocks'))
 						{
