@@ -3818,6 +3818,7 @@ Molpy.DefineBoosts=function()
         var times=0;
         if (fast)
         {
+            Molpy.FastTakeTools(p);
             Molpy.RunFastFactory(p);
             return;
         }
@@ -3839,7 +3840,7 @@ Molpy.DefineBoosts=function()
             }
             times++;
         }
-        Molpy.FactoryAutomationRun(times,2);
+        Molpy.RunFastFactory(times);
 		
 //      if(times)
 //      {
@@ -3847,7 +3848,7 @@ Molpy.DefineBoosts=function()
 //          Molpy.Notify('Ran Factory Automation '+Molpify(times,1)+' times');
 //      }
     }
-    Molpy.RunFastFactory=function(times) //assumes player did buy AO before getting AA. probably a safe assumption
+    Molpy.FastTakeTools=function(times)
     {
         var t = Molpy.tfOrder.length;
         while(t--)
@@ -3855,7 +3856,9 @@ Molpy.DefineBoosts=function()
             var tool=Molpy.tfOrder[t];
             tool.amount-= times;
         }
-
+	}
+    Molpy.RunFastFactory=function(times) //assumes player did buy AO before getting AA. probably a safe assumption
+    {
         var left = times;
         if(Molpy.Got('CfB'))
         {
@@ -4046,6 +4049,10 @@ Molpy.DefineBoosts=function()
             {
                 str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(10)"></input> the rate by 10 at a cost of '+Molpify(1e7*n,1)+' Glass Blocks.';
             }
+			if(n > 1000 && Molpy.HasGlassBlocks(1e8*n))
+            {
+                str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(100)"></input> the rate by 100 at a cost of '+Molpify(1e8*n,1)+' Glass Blocks.';
+            }
 			if(!Molpy.Boosts['No Sell'].power&&me.power>0&&Molpy.HasGlassBlocks(1e5*n))
 			{
 				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlToolFactory(-1)"></input> the rate by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Blocks.';
@@ -4093,7 +4100,7 @@ Molpy.DefineBoosts=function()
 	desc:function(me)
 	{
 		
-		return (me.power? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Factory Automation run.'+(me.bought?'<br><input type="Button" onclick="Molpy.AutoAssembleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		return (me.power? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Blast Furnace run.'+(me.bought?'<br><input type="Button" onclick="Molpy.AutoAssembleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
 	}
 	,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'});
 	Molpy.AutoAssembleToggle=function()

@@ -20,6 +20,9 @@ For personal amusement only.
 
 ## 3.03
 - Changed all occurances of "% of sand dug" to "% of sand dig rate", so glass-production costs are clearer
+- Waveney's improvement to Glass Saw: instead of leaving 5% of Block Storage empty, it leaves space equal to 10mNP worth of Automata Assemble's Factory Automation (so it'll still fill block storage if you don't have AA going)
+- Automata Assemble now uses same function for running FA in all cases
+- Automata Assemble description updated to show that it only activates Blast Furnace (and subsequent functions based on crossfeed/multitasking)
 
 ## 3.021
 - Was missing a return so the castle tool price calc was still horribly slow
