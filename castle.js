@@ -3604,11 +3604,11 @@ Molpy.Up=function()
 				{
 					Molpy.lGlass-=gift/10;
 					Molpy.AddBlocks(gift);
-					if(Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
+					if(gift>1&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
 				}else{
 					gift=Math.ceil(gift/100);
 					Molpy.AddChips(gift);				
-					if(Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Chips from '+Molpy.Boosts['SGC'].name,1);
+					if(gift>1&&MMolpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Chips from '+Molpy.Boosts['SGC'].name,1);
 				}
 			}
 		}
@@ -3619,6 +3619,7 @@ Molpy.Up=function()
 				Molpy.Boosts['GL'].power*=1.21; //GW :P
 				Molpy.Notify('Lightning struck the same place twice!');
 				Molpy.EarnBadge('Strikes Twice');
+				Molpy.UnlockBoost('LR');
 				return;
 			}
 			var blitzSpeed=800,blitzTime=23;

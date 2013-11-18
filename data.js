@@ -4160,7 +4160,13 @@ Molpy.DefineBoosts=function()
 		{		
 			return Molpify(me.power,1)+'% Glass for '+Molpify(me.countdown,3)+'mNP';
 		}
-		,icon:'blitzing',className:'alert',startCountdown:25,startPower:400
+		,icon:'blitzing',className:'alert',startCountdown:25,startPower:function()
+		{
+			return Molpy.Boosts['LR'].power||400;
+		},buyFunction:function()
+		{
+			if(Molpy.Got('LR'))Molpy.Boosts['LR'].power*=1.004;
+		}
 	});
 	
 	new Molpy.Boost({name:'Automata Control',aka:'AC',
@@ -4230,6 +4236,9 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Mind Glow',desc:'Jumping to a NewPix for which you have made a Sand Monument costs half as many Glass Blocks',glass:'2M'});
 	new Molpy.Boost({name:'Memory Singer',desc:'Jumping to a NewPix for which you have made a Glass Monument costs half as many Glass Blocks',glass:'10M'});
+	new Molpy.Boost({name:'Lightning Rod',aka:'LR',desc:'Glassed Lightning becomes more powerful with use',glass:'440M',sand:Infinity,castles:Infinity,
+		buyFunction:function(){this.power=Molpy.Boosts['GL'].power||400;}
+	});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
