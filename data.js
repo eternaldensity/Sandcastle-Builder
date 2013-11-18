@@ -3892,8 +3892,8 @@ Molpy.DefineBoosts=function()
 		
 		if(left>10&&Molpy.Got('LS'))
 		{
-			var keys=Math.floor(Math.random()*(left-10)/(1+7*Math.random()));
-			if(Molpy.Boosts['Crate Key'].unlocked&&keys>1)
+			var keys=Math.floor(Math.random()*(left-10)/(1+39*Math.random()));
+			if(keys>1&&Molpy.Boosts['Crate Key'].unlocked&&!Molpy.Boosts['ASHF'].unlocked)
 			{
 				var red = Molpy.Boosts['ASHF'];
 				Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
@@ -4066,10 +4066,10 @@ Molpy.DefineBoosts=function()
 		},sand:Infinity,castles:Infinity,
 		buyFunction:function()
 		{
-			var levels = 200*(me.power+1)-5;
+			var levels = 200*(this.power+1)-5;
 			Molpy.Boosts['Logicat'].bought-=levels;
 			Molpy.Boosts['Logicat'].power-=5*levels;
-			this.power++;
+		this.power++;
 			Molpy.LockBoost(this.aka);
 		}
 	});

@@ -18,6 +18,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.04
+- Prevent Locksmith from awarding ASHF when you already have it
+- Overcompensating's buff wasn't applied to saves which already had Overcompensating owned
+- Fix panther rush on-buy crash (fortunately it was in calculating the levels so it didn't waste any levels)
+
 ## 3.03
 - Changed all occurrences of "% of sand dug" to "% of sand dig rate", so glass-production costs are clearer (thanks Vidyogamasta for pointing that out... 2 weeks ago)
 - Waveney's improvement to Glass Saw: instead of leaving 5% of Block Storage empty, it leaves space equal to 10mNP worth of Automata Assemble's Factory Automation (so it'll still fill block storage if you don't have AA going)
