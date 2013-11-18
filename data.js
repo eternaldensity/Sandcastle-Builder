@@ -888,9 +888,10 @@ Molpy.DefineBoosts=function()
 		var cost= gap*gap;
 		cost+=Molpy.timeTravels;
 		cost*=100;
-		if(Molpy.Got('Flux Capacitor'))cost=Math.ceil(cost*.2);
-		//boosts will be added to reduce this further!
-		return cost;
+		if(Molpy.Got('Flux Capacitor'))cost*=.2;
+		if(Molpy.Got('Mind Glow')&&Molpy.Earned('monums'+destNP))cost*=.5;
+		if(Molpy.Got('Memory Singer')&&Molpy.Earned('monumg'+destNP))cost*=.5;
+		return Math.ceil(cost);
 	}
 	
 	new Molpy.Boost({name:'Active Ninja',desc:
@@ -2202,6 +2203,7 @@ Molpy.DefineBoosts=function()
     {
         var bl = Molpy.Boosts['Glass Block Storage'];
         var extra = Math.min(Math.floor(bl.power/4.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.GlassChillerIncrement()-1));
+		extra = Math.min(extra, Math.floor(Molpy.Boosts['Sand Refinery'].power/Molpy.ChipsPerBlock()-Molpy.Boosts['Glass Chiller'].power-2));
         if (extra>20) 
         {
             bl.power -= extra*4.5;
@@ -4214,7 +4216,7 @@ Molpy.DefineBoosts=function()
 		glass:'2M'		
 	});
 		
-    new Molpy.Boost({name:'Seaish Glass Chips', desc:'Allows Sand Purifier and Sand Refinery to increase as far as your resources allow', glass:'100K'});
+    new Molpy.Boost({name:'Seaish Glass Chips', desc:'Allows Sand Purifier and Sand Refinery (using chips only) to increase as far as your resources allow', glass:'100K'});
     new Molpy.Boost({name:'Seaish Glass Blocks', desc:'Allows Glass Extruder and Glass Chiller to increase as far as your resources allow', glass:'100K'});
 
 	new Molpy.Boost({name:'Automata Engineers',aka:'AE',desc:'Allows Automata Assemble to perform Blackprint Construction and Mould related tasks'
@@ -4225,6 +4227,9 @@ Molpy.DefineBoosts=function()
 		,glass:'2.5G',sand:Infinity,castles:Infinity, group:'bean'});
 		
 	new Molpy.Boost({name:'Schrödinger\'s Gingercat',aka:'SGC',desc:'Observes itself. Also causes Not Lucky to give more glass',glass:'16.2M',logic:1613});
+	
+	new Molpy.Boost({name:'Mind Glow',desc:'Jumping to a NewPix for which you have made a Sand Monument costs half as many Glass Blocks',glass:'2M'});
+	new Molpy.Boost({name:'Memory Singer',desc:'Jumping to a NewPix for which you have made a Glass Monument costs half as many Glass Blocks',glass:'10M'});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4876,6 +4881,14 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.groupBadgeCounts.discov>10&&Molpy.Earned("Dude, Where's my DeLorean?"))
 	{
 		Molpy.UnlockBoost('Memories Revisited');
+	}
+	if(Molpy.groupBadgeCounts.monums>10&&Molpy.Got('Memories Revisited'))
+	{
+		Molpy.UnlockBoost('Mind Glow');
+	}
+	if(Molpy.groupBadgeCounts.monumg>10&&Molpy.Got('Memories Revisited'))
+	{
+		Molpy.UnlockBoost('Memory Singer');
 	}
 	
 	if(Molpy.HasGlassBlocks(7016280))Molpy.EarnBadge('Pyramid of Giza');

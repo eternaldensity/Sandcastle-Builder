@@ -4833,7 +4833,7 @@ Molpy.Up=function()
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
 		g('period').innerHTML=Molpy.TimePeriod;
-		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==1.21?' Gigawatts!':'');
+		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.03?' See Other':'');
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
 		var tagRepaint=Molpy.boostRepaint||Molpy.badgeRepaint;

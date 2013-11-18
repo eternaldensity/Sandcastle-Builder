@@ -29,6 +29,10 @@ For personal amusement only.
 - Furnace Multitasking was not locking in shortpix, which lead to weirdness with AA because it quickly used up all your (well, my) Chips making Blocks
 - Sand Monuments show a thumbnail of their NP
 - SGC
+- Seaish Glass Chips description improved to explain what it doesn't do
+- A couple of monument related boosts
+- Seaish upgrade for Glass Chiller is limited so it won't use more chips than the Glass Furnace is making
+- *The Sea is Big*
 
 ## 3.021
 - Was missing a return so the castle tool price calc was still horribly slow
