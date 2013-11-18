@@ -3032,6 +3032,8 @@ Molpy.Up=function()
 			}
 		}
 		
+		Molpy.previewNP=0;
+		
 		Molpy.badgeRepaint=1
 		Molpy.badgeHTML='';
 		Molpy.Badges=[];
@@ -3067,11 +3069,21 @@ Molpy.Up=function()
 					d.innerHTML='<br>'+((this.earned||this.visibility<1)?
 						EvalMaybeFunction((Molpy.showStats&&this.stats)?this.stats:this.desc,this):'????');
 				}
+				if(this.np&&Molpy.previewNP!=this.np&&this.aka.indexOf('monumg')==0)
+				{
+					Molpy.previewNP=this.np;
+					Molpy.UpdateBeach(this.np);
+				}
 			}
 			this.hidedesc=function()
 			{
 				var d = g('BadgeDescription'+this.id);
 				if(d)d.innerHTML='';
+				if(this.np&&this.aka.indexOf('monumg')==0)
+				{
+					if(Molpy.previewNP==this.np)
+					Molpy.UpdateBeach();
+				}
 			}
 			
 			Molpy.Badges[this.aka]=this;
@@ -4802,9 +4814,9 @@ Molpy.Up=function()
 		}
 	}
 	
-	Molpy.UpdateBeach=function()
+	Molpy.UpdateBeach=function(np)
 	{
-		g('beach').style=Molpy.NewPixFor(Molpy.newpixNumber);
+		g('beach').style.background=Molpy.NewPixFor(np||Molpy.newpixNumber);
 	}
 	/* In which we figure out how to draw stuff
 	+++++++++++++++++++++++++++++++++++++++++++*/

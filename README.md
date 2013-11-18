@@ -27,10 +27,10 @@ For personal amusement only.
 - Monument Time Travel doesn't use any castles now but it costs more chips. (based on the square of the distance, so multiple short hops are cheaper than a long jump)
 - Destruction verb for NewPixBots because their destruction counter is used in Judgement Dip
 - Furnace Multitasking was not locking in shortpix, which lead to weirdness with AA because it quickly used up all your (well, my) Chips making Blocks
-- Sand Monuments show a thumbnail of their NP
-- SGC
+- Sand Monuments show a thumbnail of their NP and Glass Monuments change the main image to their image
+- SGC added. No that does not stand for Seaish Glass Chips
 - Seaish Glass Chips description improved to explain what it doesn't do
-- A couple of monument related boosts
+- A couple of monument related boosts (untested...)
 - Seaish upgrade for Glass Chiller is limited so it won't use more chips than the Glass Furnace is making
 - *The Sea is Big*
 
