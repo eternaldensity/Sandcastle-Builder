@@ -19,10 +19,15 @@ For personal amusement only.
 ## Changelog
 
 ## 3.03
-- Changed all occurances of "% of sand dug" to "% of sand dig rate", so glass-production costs are clearer
+- Changed all occurrences of "% of sand dug" to "% of sand dig rate", so glass-production costs are clearer (thanks Vidyogamasta for pointing that out... 2 weeks ago)
 - Waveney's improvement to Glass Saw: instead of leaving 5% of Block Storage empty, it leaves space equal to 10mNP worth of Automata Assemble's Factory Automation (so it'll still fill block storage if you don't have AA going)
 - Automata Assemble now uses same function for running FA in all cases
 - Automata Assemble description updated to show that it only activates Blast Furnace (and subsequent functions based on crossfeed/multitasking)
+- New boosts to add ability for AA to do Blackprints/Moulds work, and produce Keys and Panther Poke
+- Monument Time Travel doesn't use any castles now but it costs more chips. (based on the square of the distance, so multiple short hops are cheaper than a long jump)
+- Destruction verb for NewPixBots because their destruction counter is used in Judgement Dip
+- Furnace Multitasking was not locking in shortpix, which lead to weirdness with AA because it quickly used up all your (well, my) Chips making Blocks
+- Sand Monuments show a thumbnail of their NP
 
 ## 3.021
 - Was missing a return so the castle tool price calc was still horribly slow

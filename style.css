@@ -157,7 +157,9 @@ a:active
 {
 	width:553px;
 	height:395px;
-	background-size:533px 395px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
 	cursor:pointer;
 	z-index:10;
 	border-width: 1px;
@@ -188,6 +190,16 @@ a:active
 {
 	width:540px;
 	height:395px;
+}
+.npthumb
+{
+	width:130px;
+	height:94px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+	border-width: 1px;
+	border-style: solid;
 }
 #stats
 {

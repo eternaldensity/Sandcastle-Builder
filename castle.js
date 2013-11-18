@@ -539,7 +539,7 @@ Molpy.Up=function()
 			Molpy.sand=parseFloat(pixels[3]);
 			Molpy.castlesBuilt=parseFloat(pixels[4]);
 			Molpy.castles=parseFloat(pixels[5]);
-			Molpy.parseFloat=parseInt(pixels[6]);
+			Molpy.castlesDestroyed=parseFloat(pixels[6]);
 			Molpy.prevCastleSand=parseFloat(pixels[7]);
 			Molpy.nextCastleSand=parseFloat(pixels[8]);
 			Molpy.castlesSpent=parseFloat(pixels[9]);
@@ -610,6 +610,10 @@ Molpy.Up=function()
 					me.totalCastlesBuilt=parseFloat(ice[2]);
 					me.totalCastlesDestroyed=parseFloat(ice[3]);
 					if(!me.totalCastlesDestroyed)me.totalCastlesDestroyed=0;//mustard cleaning
+					if(version<3.03)
+					{
+						Molpy.castlesDestroyed+=me.totalCastlesDestroyed;
+					}
 					me.totalCastlesWasted=parseFloat(ice[4]);
 					me.currentActive=parseInt(ice[5]);
 					me.temp=parseInt(ice[6])||0;
@@ -3130,7 +3134,7 @@ Molpy.Up=function()
 					{
 						if(Molpy.newpixNumber!=me.np&&Molpy.Got('Memories Revisited'))
 						{
-							str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',2,20)" value="Jump!"></input> (Uses 20 Glass Chips and '+Molpify(Molpy.TimeTravelPrice(),2)+' Castles)'
+							str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',1)" value="Jump!"></input> (Uses '+Molpify(Molpy.CalcJumpEnergy(me.np),2)+' Glass Chips)'
 						}
 						if(Molpy.Got('SMM')&&!Molpy.Boosts['SMM'].power&&!Molpy.Earned('monums'+me.np))
 						{
@@ -3142,6 +3146,7 @@ Molpy.Up=function()
 						{
 							str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould('+me.np+')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 						}
+						str+='<div class="npthumb" style="background-image: '+Molpy.NewPixFor(me.np)+'"><div>';
 					}
 					return str;
 				}
@@ -4355,12 +4360,12 @@ Molpy.Up=function()
 			t=Math.min(t,Math.floor(npb.amount/20));
 			Molpy.Notify('Activating Factory Automation '+t+' time'+plural(t)+' at a cost of '+Molpify(spent,4)+' Sand',1);
 
-			Molpy.FactoryAutomationRun(t,1);
+			Molpy.FactoryAutomationRun(t);
 			
 			Molpy.GlassNotifyFlush();
 		}
 	}
-	Molpy.FactoryAutomationRun=function(times,div)
+	Molpy.FactoryAutomationRun=function(times)
 	{
 		var left =times;
 		if(Molpy.Got('CfB'))
@@ -4377,7 +4382,7 @@ Molpy.Up=function()
 
 			if(Molpy.Got('AO'))left=times;
 			while(left--)
-				Molpy.RewardRedacted(1,left/div);
+				Molpy.RewardRedacted(1,left);
 		}
 	}
 	
@@ -4707,6 +4712,7 @@ Molpy.Up=function()
 			Molpy.LockBoost('Doublepost');
 			Molpy.LockBoost('Active Ninja');
 			Molpy.LockBoost('Furnace Crossfeed');
+			Molpy.LockBoost('Furnace Multitasking');
 			Molpy.Boosts['Doublepost'].department=0;	//prevent the department from unlocking these
 			Molpy.Boosts['Active Ninja'].department=0;
 			Molpy.Boosts['Furnace Crossfeed'].department=0;
@@ -4766,25 +4772,27 @@ Molpy.Up=function()
 			}
 		}
 	}
-	Molpy.UpdateBeach=function()
+	Molpy.NewPixFor=function(np)
 	{
 		var x = 200+Math.floor(Math.random()*200);
 		var y = 200+Math.floor(Math.random()*400);
 		if(Molpy.Boosts['Chromatic Heresy'].power&&Molpy.options.colpix)
 		{	
 			if(Molpy.newpixNumber>3094)			
-				g('beach').style.background='url(http://placekitten.com/'+x+'/'+y+')';
+				return'url(http://placekitten.com/'+x+'/'+y+')';
 			else
-				g('beach').style.background='url(http://178.79.159.24/Time/otcolorization/'+Molpy.newpixNumber+')';
+				return'url(http://178.79.159.24/Time/otcolorization/'+np+')';
 		}else{
 			if(Molpy.newpixNumber>3094)			
-				g('beach').style.background='url(http://placekitten.com/g/'+x+'/'+y+')';
+				return'url(http://placekitten.com/g/'+x+'/'+y+')';
 			else
-				g('beach').style.background='url(http://xkcd.mscha.org/frame/'+Molpy.newpixNumber+')';
+				return'url(http://xkcd.mscha.org/frame/'+np+')';
 		}
-		g('beach').style.backgroundSize='contain';	
-		g('beach').style.backgroundRepeat='no-repeat';	
-		g('beach').style.backgroundPosition='center';	
+	}
+	
+	Molpy.UpdateBeach=function()
+	{
+		g('beach').style=Molpy.NewPixFor(Molpy.newpixNumber);
 	}
 	/* In which we figure out how to draw stuff
 	+++++++++++++++++++++++++++++++++++++++++++*/

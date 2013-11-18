@@ -281,7 +281,7 @@ Molpy.DefineSandTools=function()
 
 Molpy.DefineCastleTools=function()
 {
-	new Molpy.CastleTool({name:'NewPixBot',commonName:'newpixbot|newpixbots||automated',desc:'Automates castles after the ONG\n(if not ninja\'d)',price0:1,price1:0,destroyC:0,
+	new Molpy.CastleTool({name:'NewPixBot',commonName:'newpixbot|newpixbots|unautomated|automated',desc:'Automates castles after the ONG\n(if not ninja\'d)',price0:1,price1:0,destroyC:0,
 		buildC:function()
 		{
 			var baseval=1;		
@@ -797,7 +797,7 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.TimeTravel=function(NP)
 	{		
-		if(Molpy.TTT(Molpy.newpixNumber+NP,1))
+		if(Molpy.TTT(Molpy.newpixNumber+NP,0))
 		{
 			if(NP>0)
 				Molpy.EarnBadge('Fast Forward');
@@ -838,11 +838,12 @@ Molpy.DefineBoosts=function()
 		}
 	}
 	//targeted time travel!
-	Molpy.TTT=function(np,factor,chips)
+	Molpy.TTT=function(np,chips)
 	{
 		np = Math.floor(np);
-		chips=chips||0;
-		var price=Molpy.TimeTravelPrice()*factor;
+		chips=chips?Molpy.CalcJumpEnergy(np):0;
+		var price=Molpy.TimeTravelPrice();
+		if(chips)price=0;
 		if(np <1)
 		{
 			Molpy.Notify('Heretic!');
@@ -879,6 +880,17 @@ Molpy.DefineBoosts=function()
 		{
 			Molpy.Notify('<i>Castles</i>? Where we\'re going we do need... <i>castles</i>.');
 		}
+	}
+	
+	Molpy.CalcJumpEnergy=function(destNP)
+	{
+		var gap = Math.abs(Molpy.newpixNumber-destNP);
+		var cost= gap*gap;
+		cost+=Molpy.timeTravels;
+		cost*=100;
+		if(Molpy.Got('Flux Capacitor'))cost=Math.ceil(cost*.2);
+		//boosts will be added to reduce this further!
+		return cost;
 	}
 	
 	new Molpy.Boost({name:'Active Ninja',desc:
@@ -3168,8 +3180,8 @@ Molpy.DefineBoosts=function()
 		},
 		className:'alert',group:'bean'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150,AA:200,SG:5};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO','AA','SG'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150,AA:200,SG:5,AE:60,LS:120,ZK:180};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO','AA','SG','AE','LS','ZK'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:
 		function(me)
@@ -3860,17 +3872,45 @@ Molpy.DefineBoosts=function()
     Molpy.RunFastFactory=function(times) //assumes player did buy AO before getting AA. probably a safe assumption
     {
         var left = times;
-        if(Molpy.Got('CfB'))
-        {
-              Molpy.DoBlackprintConstruction(left);
-        }
-        if (left) left=Molpy.FillGlassMouldWork(left);
-        if (left) left=Molpy.MakeGlassMouldWork(left);
-        if (left) left=Molpy.FillSandMouldWork(left);
-        if (left) left=Molpy.MakeSandMouldWork(left);
+		if(Molpy.Got('AE'))
+		{
+			if(Molpy.Got('CfB'))
+			{
+				  Molpy.DoBlackprintConstruction(left);
+			}
+			if (left) left=Molpy.FillGlassMouldWork(left);
+			if (left) left=Molpy.MakeGlassMouldWork(left);
+			if (left) left=Molpy.FillSandMouldWork(left);
+			if (left) left=Molpy.MakeSandMouldWork(left);
+		}
 		
-		left=(times+Math.random()*3)/2;
-        for(var i=0; i <left; i++) Molpy.RewardBlastFurnace();
+		var furn=Math.floor((times+Math.random()*3)/2);
+        for(var i=0; i <furn; i++) Molpy.RewardBlastFurnace();
+		left=times-furn;
+		
+		if(left>10&&Molpy.Got('LS'))
+		{
+			if(Molpy.Boosts['Crate Key'].unlocked)
+			{
+				Molpy.UnlockBoost('ASHF');
+				left--;
+			}else{
+				var keys=Math.floor(Math.random()*(left-10)/(1+7*Math.random()));
+				for(var i=0; i <keys; i++) Molpy.UnlockBoost('Crate Key');
+				left-=keys;
+			}
+		}
+		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4)
+		{
+			var poke=Math.floor(Math.random()*(left-10)/(1+Math.random()*200));
+			if(poke){
+				Molpy.Boosts['Panther Poke'].buyFunction();
+				Molpy.Notify('Panther Poke!',1);
+				left--;
+			}
+			
+		}
+		
     }
 	
 	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
@@ -4174,7 +4214,12 @@ Molpy.DefineBoosts=function()
     new Molpy.Boost({name:'Seaish Glass Chips', desc:'Allows Sand Purifier and Sand Refinery to increase as far as your resources allow', glass:'100K'});
     new Molpy.Boost({name:'Seaish Glass Blocks', desc:'Allows Glass Extruder and Glass Chiller to increase as far as your resources allow', glass:'100K'});
 
-	
+	new Molpy.Boost({name:'Automata Engineers',aka:'AE',desc:'Allows Automata Assemble to perform Blackprint Construction and Mould related tasks'
+		,glass:'100M',sand:Infinity,castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Locksmith',aka:'LS',desc:'Allows Automata Assemble to create Crate Keys.<br>Needs at least 10 AA runs (after some are used for Blast Furnace).<br>Works best if you set Shopping Assistant to buy Crate Key.'
+		,glass:'500M',sand:Infinity,castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Zookeeper',aka:'ZK',desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 10 AA runs (after some are used for Blast Furnace and Locksmith) and even then, has a low chance of activating each mNP.'
+		,glass:'2.5G',sand:Infinity,castles:Infinity, group:'bean'});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4204,7 +4249,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Click Master',desc:'Dig 100M sand by clicking',visiblity:2});
 	
 	new Molpy.Badge({name:'Rook',desc:'Make a castle'});
-	new Molpy.Badge({name:'Enough for Chess',desc:'Make 4 castles'});
+	new Molpy.Badge({name:'Enough for Chess',desc:'Make '+Molpify(4)+' castles'});
 	new Molpy.Badge({name:'Fortified',desc:'Make 40 castles'});
 	new Molpy.Badge({name:'All Along the Watchtower',desc:'Make 320 castles'});
 	new Molpy.Badge({name:'Megopolis',desc:'Make 1,000 castles'});
