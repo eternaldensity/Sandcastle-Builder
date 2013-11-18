@@ -3586,17 +3586,29 @@ Molpy.Up=function()
 			Molpy.Build(bonus);
 			if(Molpy.Got('Glass Block Storage'))
 			{
+				var gift=1;
+				if(Molpy.Got('SGC'))gift+=Molpy.redactedClicks*Molpy.Boosts['Logicat'].bought;
 				if(Molpy.lGlass)
 				{
-					Molpy.lGlass--;
-					Molpy.AddBlocks(1);
+					Molpy.lGlass-=gift/10;
+					Molpy.AddBlocks(gift);
+					if(Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
 				}else{
-					Molpy.AddChips(1);				
+					gift=Math.ceil(gift/100);
+					Molpy.AddChips(gift);				
+					if(Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Chips from '+Molpy.Boosts['SGC'].name,1);
 				}
 			}
 		}
 		Molpy.RewardBlitzing=function()
 		{
+			if(Molpy.Got('GL'))
+			{
+				Molpy.Boosts['GL'].power*=1.21; //GW :P
+				Molpy.Notify('Lightning struck the same place twice!');
+				Molpy.EarnBadge('Strikes Twice');
+				return;
+			}
 			var blitzSpeed=800,blitzTime=23;
 			var BKJ = Molpy.Boosts['BKJ'];
 			if(BKJ.bought)

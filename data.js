@@ -3890,15 +3890,18 @@ Molpy.DefineBoosts=function()
 		
 		if(left>10&&Molpy.Got('LS'))
 		{
-			if(Molpy.Boosts['Crate Key'].unlocked)
+			var keys=Math.floor(Math.random()*(left-10)/(1+7*Math.random()));
+			if(Molpy.Boosts['Crate Key'].unlocked&&keys>1)
 			{
-				Molpy.UnlockBoost('ASHF');
+				var red = Molpy.Boosts['ASHF'];
+				Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
 				left--;
-			}else{
-				var keys=Math.floor(Math.random()*(left-10)/(1+7*Math.random()));
-				for(var i=0; i <keys; i++) Molpy.UnlockBoost('Crate Key');
-				left-=keys;
+				keys--;
 			}
+			
+			for(var i=0; i <keys; i++) Molpy.UnlockBoost('Crate Key');
+			left-=keys;
+			
 		}
 		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4)
 		{
@@ -4220,6 +4223,8 @@ Molpy.DefineBoosts=function()
 		,glass:'500M',sand:Infinity,castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Zookeeper',aka:'ZK',desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 10 AA runs (after some are used for Blast Furnace and Locksmith) and even then, has a low chance of activating each mNP.'
 		,glass:'2.5G',sand:Infinity,castles:Infinity, group:'bean'});
+		
+	new Molpy.Boost({name:'Schrödinger\'s Gingercat',aka:'SGC',desc:'Observes itself. Also causes Not Lucky to give more glass',glass:'16.2M',logic:1613});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4565,6 +4570,8 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'KiloNinja Strike', desc:'Ninja 1K NewPixBots simultaneously',vis:1});
 	new Molpy.Badge({name:'MegaNinja Strike', desc:'Ninja 1M NewPixBots simultaneously',vis:1});
 	new Molpy.Badge({name:'GigaNinja Strike', desc:'Ninja 1G NewPixBots simultaneously',vis:1});
+	
+	new Molpy.Badge({name:'Strikes Twice', desc:'Attempt to receive Blitzing while you have Glassed Lightning (this will instead give Glassed Lightning more power)'});
 	
 	
 	//*************************************************

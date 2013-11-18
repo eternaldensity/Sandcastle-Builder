@@ -28,6 +28,7 @@ For personal amusement only.
 - Destruction verb for NewPixBots because their destruction counter is used in Judgement Dip
 - Furnace Multitasking was not locking in shortpix, which lead to weirdness with AA because it quickly used up all your (well, my) Chips making Blocks
 - Sand Monuments show a thumbnail of their NP
+- SGC
 
 ## 3.021
 - Was missing a return so the castle tool price calc was still horribly slow
