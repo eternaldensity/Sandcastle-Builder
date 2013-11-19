@@ -2418,7 +2418,6 @@ Molpy.DefineBoosts=function()
 			lads.refresh();
 			Molpy.UnlockBoost('Ninja Climber');			
 			Molpy.Boosts['Rosetta'].hoverOnCounter=1;
-			Molpy.Notify('Factory Automation Upgraded',1);
 		}
 		
 	}
@@ -3940,7 +3939,7 @@ Molpy.DefineBoosts=function()
         for(var i=0; i <furn; i++) Molpy.RewardBlastFurnace();
 		left=times-furn;
 		Molpy.boostSilence=1;
-		if(left>10&&Molpy.Got('Milo'))
+		if(left>7&&Molpy.Got('Milo'))
 		{
 			var mr = Molpy.Boosts['Milo'];
 			var draft=Math.random()*(left-10);
@@ -4291,9 +4290,9 @@ Molpy.DefineBoosts=function()
 
 	new Molpy.Boost({name:'Automata Engineers',alias:'AE',desc:'Allows Automata Assemble to perform Blackprint Construction and Mould related tasks'
 		,glass:'100M',sand:Infinity,castles:Infinity, group:'hpt'});
-	new Molpy.Boost({name:'Myserious Representations',alias:'Milo',desc:'Allows Automata Assemble to create Blackprints.<br>Needs at least 10 AA runs (after some are used for Blast Furnace).'
+	new Molpy.Boost({name:'Mysterious Representations',alias:'Milo',desc:'Allows Automata Assemble to create Blackprints.<br>Needs at least 15 AA runs.'
 		,glass:'500M',sand:Infinity,castles:Infinity, group:'hpt'});
-	new Molpy.Boost({name:'Zookeeper',alias:'ZK',desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 10 AA runs (after some are used for Blast Furnace and Locksmith).'
+	new Molpy.Boost({name:'Zookeeper',alias:'ZK',desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 21 AA runs.'
 		,glass:'2.5G',sand:Infinity,castles:Infinity, group:'bean'});
 		
 	new Molpy.Boost({name:'Schrödinger\'s Gingercat',alias:'SGC',desc:'Observes itself. Also causes Not Lucky to give more glass and makes '+Molpy.redactedWords+' last longer',glass:'16.2M',logic:1613});

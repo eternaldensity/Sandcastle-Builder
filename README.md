@@ -20,6 +20,13 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.08
+- Mys*t*erious typo fixed
+- Unneeded Factory Automation Upgraded message removed from Ninja Climber
+- Mysterious Representations now works from AC level 15 (Zookeeper still works from 21), updated descriptions accordingly
+- Blast Furnace doesn't do any blastfurnacing if you have infinite castles (doesn't effect crossfeed/multitasking)
+
+
 ## 3.07
 - Moved AdjustFade so it's accessible to the index page (so the version number shows up again)
 - Changed Locksmith to Mysterious Representations, which produces pages directly.
