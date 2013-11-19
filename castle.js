@@ -1412,6 +1412,31 @@ Molpy.Up=function()
 			}else{
 				document.body.className='darkscheme'+heresy;
 			}
+		}		
+				
+		Molpy.AdjustFade=function()
+		{
+			var val='';
+			if(Molpy.options.fade)
+			{
+				for(var i in fadeProps)
+				{
+					if(+i) val+=', ';
+					val+=fadeProps[i]+' '+Molpy.options.fade/2+'s ease-out';
+				}
+			}
+			if(!$)return;
+			var fc = $(fadeClasses);
+			for(var j in vendors)
+				fc.css(vendors[j]+'transition',val);	
+				
+			if(Molpy.options.fade)
+			{
+				val=',background-image '+Molpy.options.fade/2+'s ease-out';
+			}		
+			var fc = $('#beach');
+			for(var j in vendors)
+				fc.css(vendors[j]+'transition','opacity 0.1s ease-out,'+vendors[j]+'transform 0.1s ease-out'+val);
 		}
 		
 		
@@ -1492,31 +1517,7 @@ Molpy.Up=function()
 		var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1';
 		var vendors=['-webkit-','-moz-','-o-','-ms-',''];
 		var fadeProps=['color','border-color','background-color','background-image'];
-		
-		Molpy.AdjustFade=function()
-		{
-			var val='';
-			if(Molpy.options.fade)
-			{
-				for(var i in fadeProps)
-				{
-					if(+i) val+=', ';
-					val+=fadeProps[i]+' '+Molpy.options.fade/2+'s ease-out';
-				}
-			}
-			if(!$)return;
-			var fc = $(fadeClasses);
-			for(var j in vendors)
-				fc.css(vendors[j]+'transition',val);	
-				
-			if(Molpy.options.fade)
-			{
-				val=',background-image '+Molpy.options.fade/2+'s ease-out';
-			}		
-			var fc = $('#beach');
-			for(var j in vendors)
-				fc.css(vendors[j]+'transition','opacity 0.1s ease-out,'+vendors[j]+'transform 0.1s ease-out'+val);
-		}
+
 		
 		/* In which the mathematical methods of sandcastles are described
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

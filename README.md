@@ -24,6 +24,7 @@ For personal amusement only.
 - Beachball
 - Exponential boosts now say "boosts by x% cumulatively per thing" to distinguish them from linear increases
 - Wasn't Molpifying the division numbers for sand purifier or glass extruder
+- Moved AdjustFade so it's accessible to the index page (so the version number shows up again)
 
 ## 3.05
 - Fixed Expando/Glass Monument interaction
