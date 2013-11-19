@@ -449,6 +449,8 @@ Molpy.Up=function()
 			(Molpy.totalGlassBuilt)+s+
 			(Molpy.totalGlassDestroyed)+s+
 			(Molpy.chipsManual)+s+
+			(Molpy.redactedChain)+s+
+			(Molpy.redactedChainMax)+s+
 			
 			p;
 			//sand tools:
@@ -590,6 +592,8 @@ Molpy.Up=function()
 			Molpy.totalGlassBuilt=parseInt(pixels[27])||0;
 			Molpy.totalGlassDestroyed=parseFloat(pixels[28])||0;
 			Molpy.chipsManual=parseFloat(pixels[29])||0;
+			Molpy.redactedChain=parseFloat(pixels[30])||0;
+			Molpy.redactedChainMax=parseFloat(pixels[31])||0;
 			
 			pixels=thread[5].split(s);
 			Molpy.SandToolsOwned=0;
@@ -3261,6 +3265,7 @@ Molpy.Up=function()
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
 						Molpy.badgeRepaint=1;	
+						Molpy.redactedChain=0;
 						Molpy.RandomiseRedactedTime();	
 					}else{
 						Molpy.redactedDrawType=['show'];
@@ -3310,8 +3315,9 @@ Molpy.Up=function()
 			if(Molpy.Got('Redundant Redundance Supply of Redundancy') && Math.floor(Math.random()*20)==1)
 			{
 				Molpy.redactedDrawType[level]='hide1';
-				Molpy.redactedToggle=65;	
-				Molpy.redactedCountup=0;
+				Molpy.redactedToggle=65;
+				Molpy.redactedChain++;	
+				Molpy.redactedCountup=Molpy.redactedChain;
 			}else
 			if (Molpy.Got('Redunception') && Molpy.redactedDrawType.length <21 
 				&& Math.floor(Math.random()*8/Molpy.redactedDrawType.length)==0)
@@ -3319,10 +3325,11 @@ Molpy.Up=function()
 				Molpy.redactedDrawType[level]='recur';
 				Molpy.redactedDrawType.push('show');
 				Molpy.RedactedJump();
+				Molpy.redactedChain++;
 				if(Molpy.redactedDrawType.length < 5 && Molpy.redactedToggle<5)
 				{
 					Molpy.redactedToggle=5;
-					Molpy.redactedCountup=0;
+					Molpy.redactedCountup=Molpy.redactedChain;
 				}
 			}else
 			if (Molpy.Got('Logicat') && Molpy.redactedDrawType.length <21
@@ -3336,6 +3343,7 @@ Molpy.Up=function()
 					Molpy.redactedToggle=20;
 				}
 				Molpy.redactedCountup=0;
+				Molpy.redactedChain++;
 			}else
 			{ // it goes away.					
 				var item=g('redacteditem');
@@ -3345,8 +3353,9 @@ Molpy.Up=function()
 				Molpy.redactedDrawType=[];
 				Molpy.redactedCountup=0; //whoops forgot that!
 				Molpy.RandomiseRedactedTime();
+				Molpy.redactedChain=0;
 			}
-			
+			Molpy.redactedChainMax=Math.max(Molpy.redactedChainMax,Molpy.redactedChain);
 			
 			Molpy.redactedClicks++;		
 			if( Molpy.redactedDrawType.length<16)

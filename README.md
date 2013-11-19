@@ -4,15 +4,17 @@ xkcd: 1190: Time: The Game
 
 ## Credits
 
-Code by Eternal Density (and probably other OTTers)
+Code by Eternal Density (and probably other OTTers).
 
-Graphics likely by GLR and OTTers, when they are added
+Graphics likely by GLR and OTTers, when they are added.
 
 Parts of code and the clockface image by ChronosDragon.
 
-Icons by ChronosDragon, BlitzGirl, and StormAngel/cmyk
+Quite a bit of code by waveney.
 
-Inspired by Orteil's C**kie Clicker
+Icons by ChronosDragon, BlitzGirl, and StormAngel/cmyk.
+
+Inspired by Orteil's C**kie Clicker.
 
 For personal amusement only.
 
@@ -22,6 +24,7 @@ For personal amusement only.
 - Moved AdjustFade so it's accessible to the index page (so the version number shows up again)
 - Changed Locksmith to Draftsman, which produces pages directly.
 - Removed Zookeeper notification (just wait for Caged Logicat to show up)
+- Track redundakitty chains
 
 ## 3.06
 - On buying a Crate Key, it will try to buy Locked Crate before using up the key making the Crate cheaper (so the key will be used to remove a lock, when it previously it was wasted)
