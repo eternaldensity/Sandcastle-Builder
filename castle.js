@@ -158,7 +158,7 @@ function onhover(me,event)
 	if(me.hoverOnCounter>0||Molpy.Boosts['Expando'].power)
 	{
 		
-		if(me.earned&&me.np&&Molpy.previewNP!=me.np&&me.aka.indexOf('monumg')==0)
+		if(me.earned&&me.np&&Molpy.previewNP!=me.np&&me.alias.indexOf('monumg')==0)
 		{
 			Molpy.previewNP=me.np;
 			Molpy.UpdateBeach(me.np);
@@ -174,7 +174,7 @@ function onunhover(me,event)
 	me.hoverOffCounter=Math.ceil(Molpy.fps*1.5);
 	me.hoverOnCounter=-1;
 	
-	if(me.earned&&me.np&&Molpy.previewNP==me.np&&Molpy.Boosts['Expando'].power&&me.aka.indexOf('monumg')==0)
+	if(me.earned&&me.np&&Molpy.previewNP==me.np&&Molpy.Boosts['Expando'].power&&me.alias.indexOf('monumg')==0)
 	{
 		Molpy.previewNP=0;
 		Molpy.UpdateBeach();
@@ -226,7 +226,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.06;
+		Molpy.version=3.07;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1072,9 +1072,9 @@ Molpy.Up=function()
 				Molpy.LockBoost('AC');
 				Molpy.Boosts['AC'].power=1;
 			}
-			if(version<3.04)
+			if(version<3.07)
 			{
-				if(Molpy.Got('Overcompensating'))Molpy.Boosts['Overcompensating'].power=Molpy.Boosts['Overcompensating'].startPower;
+				Molpy.Boosts['Overcompensating'].power=Molpy.Boosts['Overcompensating'].startPower;
 			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{
@@ -2877,7 +2877,7 @@ Molpy.Up=function()
 		{
 			this.id=Molpy.BoostN;
 			this.name=args.name;
-			this.aka=args.aka||args.name;
+			this.alias=args.alias||args.name;
 			this.desc=args.desc;
 			this.sandPrice=args.sand||0;
 			this.castlePrice=args.castles||0;
@@ -2966,11 +2966,11 @@ Molpy.Up=function()
 					Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this),1);
 			}
 			
-			Molpy.Boosts[this.aka]=this;
+			Molpy.Boosts[this.alias]=this;
 			Molpy.BoostsById[this.id]=this;
-			if(this.name!=this.aka)
+			if(this.name!=this.alias)
 			{
-				Molpy.BoostAKA[this.name]=this.aka;
+				Molpy.BoostAKA[this.name]=this.alias;
 			}
 			Molpy.BoostN++;
 			return this;
@@ -3081,7 +3081,7 @@ Molpy.Up=function()
 			this.id=Molpy.BadgeN;
 			this.np=args.np;
 			this.name=args.name;
-			this.aka=args.aka||args.name;
+			this.alias=args.alias||args.name;
 			this.desc=args.desc
 			this.stats=args.stats;
 			this.icon=args.icon;
@@ -3104,7 +3104,7 @@ Molpy.Up=function()
 					d.innerHTML='<br>'+((this.earned||this.visibility<1)?
 						EvalMaybeFunction((Molpy.showStats&&this.stats)?this.stats:this.desc,this):'????');
 				}
-				if(this.earned&&this.np&&Molpy.previewNP!=this.np&&!Molpy.Boosts['Expando'].power&&this.aka.indexOf('monumg')==0)
+				if(this.earned&&this.np&&Molpy.previewNP!=this.np&&!Molpy.Boosts['Expando'].power&&this.alias.indexOf('monumg')==0)
 				{
 					Molpy.previewNP=this.np;
 					Molpy.UpdateBeach(this.np);
@@ -3114,14 +3114,14 @@ Molpy.Up=function()
 			{
 				var d = g('BadgeDescription'+this.id);
 				if(d)d.innerHTML='';
-				if(this.np&&this.aka.indexOf('monumg')==0)
+				if(this.np&&this.alias.indexOf('monumg')==0)
 				{
 					if(Molpy.previewNP==this.np)
 					Molpy.UpdateBeach();
 				}
 			}
 			
-			Molpy.Badges[this.aka]=this;
+			Molpy.Badges[this.alias]=this;
 			Molpy.BadgesById[this.id]=this;
 			Molpy.BadgeN++;
 			return this;
@@ -3173,7 +3173,7 @@ Molpy.Up=function()
 		
 		Molpy.MakeSpecialBadge=function(args,kind)
 		{
-			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+args.name,aka:kind+args.np,np:args.np,
+			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+args.name,alias:kind+args.np,np:args.np,
 				desc:function(me)
 				{
 					var str = Molpy.groupNames[kind][4]+': '+args.desc+'<br><small>(in NP'+me.np+')</small>';
@@ -3270,7 +3270,7 @@ Molpy.Up=function()
 					}else{
 						Molpy.redactedDrawType=['show'];
 						Molpy.RedactedJump();
-						var stay = 6 *(4+ Molpy.Got('Kitnip'));
+						var stay = 6 *(4+ Molpy.Got('Kitnip')+Molpy.Got('SGR')*2);
 						Molpy.redactedToggle=stay;
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
@@ -3283,13 +3283,12 @@ Molpy.Up=function()
 		}
 		Molpy.RandomiseRedactedTime=function()
 		{
-			var rrsr='Redundant Redundance Supply of Redundancy';
-			var min = 200-80*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore'))-30*Molpy.Got(rrsr);
-			var spread = 90-20*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore')+Molpy.Got(rrsr));
+			var min = 200-80*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore'))-30*Molpy.Got('RRSR');
+			var spread = 90-20*(Molpy.Got('Kitnip')+Molpy.Got('Kitties Galore')+Molpy.Got('RRSR'));
 			Molpy.redactedToggle=min+Math.ceil(spread*Math.random());
 			Molpy.redactedGr='';
-			if(Molpy.Boosts[rrsr].unlocked
-				&& !Molpy.Boosts[rrsr].bought)
+			if(Molpy.Boosts['RRSR'].unlocked
+				&& !Molpy.Boosts['RRSR'].bought)
 			{
 				Molpy.redactedToggle*=12;
 			}
@@ -3312,7 +3311,7 @@ Molpy.Up=function()
 			}
 			
 			
-			if(Molpy.Got('Redundant Redundance Supply of Redundancy') && Math.floor(Math.random()*20)==1)
+			if(Molpy.Got('RRSR') && Math.floor(Math.random()*20)==1)
 			{
 				Molpy.redactedDrawType[level]='hide1';
 				Molpy.redactedToggle=65;
@@ -3356,6 +3355,7 @@ Molpy.Up=function()
 				Molpy.redactedChain=0;
 			}
 			Molpy.redactedChainMax=Math.max(Molpy.redactedChainMax,Molpy.redactedChain);
+			if(Molpy.redactedChainMax>=42)Molpy.EarnBadge('Meaning');
 			
 			Molpy.redactedClicks++;		
 			if( Molpy.redactedDrawType.length<16)
@@ -3416,10 +3416,10 @@ Molpy.Up=function()
 					if((EvalMaybeFunction(red.sandPrice,red)+EvalMaybeFunction(red.castlePrice,red)+EvalMaybeFunction(red.glassPrice,red)))
 					{
 						Molpy.Notify('The DoRD has produced:',1);
-						Molpy.UnlockBoost(red.aka);
+						Molpy.UnlockBoost(red.alias);
 					}else{
 						Molpy.Notify('The DoRD has provided:',1);
-						Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
+						Molpy.GiveTempBoost(red.alias,red.startPower,red.startCountdown);
 					}
 					return;
 				}
@@ -3745,10 +3745,10 @@ Molpy.Up=function()
 				if((EvalMaybeFunction(red.sandPrice,red)+EvalMaybeFunction(red.castlePrice,red)+EvalMaybeFunction(red.glassPrice,red)))
 				{
 					Molpy.Notify('Logicat rewards you with:',1);
-					Molpy.UnlockBoost(red.aka);
+					Molpy.UnlockBoost(red.alias);
 				}else{
 					Molpy.Notify('Your reward from Logicat:',1);
-					Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
+					Molpy.GiveTempBoost(red.alias,red.startPower,red.startCountdown);
 				}
 				return;
 			}
@@ -4456,17 +4456,17 @@ Molpy.Up=function()
 		if(Molpy.HasGlassChips(10))
 		{
 			Molpy.SpendGlassChips(10);
-			var aka='discov'+Molpy.newpixNumber;
-			if(!Molpy.Badges[aka])
+			var alias='discov'+Molpy.newpixNumber;
+			if(!Molpy.Badges[alias])
 			{
 				Molpy.Notify('You don\'t notice anything especially notable.');
 				return;
 			}
-			if(Molpy.Earned(aka))
+			if(Molpy.Earned(alias))
 			{
-				Molpy.Notify('You already have this '+Molpy.Badges[aka].name);
+				Molpy.Notify('You already have this '+Molpy.Badges[alias].name);
 			}else{
-				Molpy.EarnBadge(aka);
+				Molpy.EarnBadge(alias);
 			}
 		}else
 		{
@@ -4909,7 +4909,7 @@ Molpy.Up=function()
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
 		g('period').innerHTML=Molpy.TimePeriod;
-		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.06?'<br>Switch Proxy':'');
+		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.07?'<br>Temporary Redirect':'');
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
 		var tagRepaint=Molpy.boostRepaint||Molpy.badgeRepaint;
@@ -5108,6 +5108,7 @@ Molpy.Up=function()
 		
 		g('sandmultiplierstat').innerHTML=Molpify(Molpy.globalSpmNPMult*100,1)+'%';			
 		g('redactedstat').innerHTML=Molpy.redactedWords + ": " + Molpify(Molpy.redactedClicks);		
+		g('redactedmaxstat').innerHTML='Max '+Molpy.redactedWord + " Chain: " + Molpify(Molpy.redactedChainMax);		
 		
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['Glass Chip Storage'].power);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power);
