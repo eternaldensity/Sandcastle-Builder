@@ -25,6 +25,7 @@ For personal amusement only.
 - Unneeded Factory Automation Upgraded message removed from Ninja Climber
 - Mysterious Representations now works from AC level 15 (Zookeeper still works from 21), updated descriptions accordingly
 - Blast Furnace doesn't do any blastfurnacing if you have infinite castles (doesn't effect crossfeed/multitasking)
+- Keygrinder's check for key availability now doesn't need to have a logicat reward to have run first
 
 
 ## 3.07

@@ -5045,7 +5045,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	
 	var key = Molpy.Boosts['Crate Key'];
 	key.department=0;
-	if(key.logic&&automationLevel>=10&&Math.floor(Math.random()*3)==0&&Molpy.Got('Keygrinder'))
+	if((Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'))&&automationLevel>=10&&Math.floor(Math.random()*3)==0&&Molpy.Got('Keygrinder'))
 	{
 		key.department=1;						
 	}
