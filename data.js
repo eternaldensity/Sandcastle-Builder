@@ -3212,8 +3212,8 @@ Molpy.DefineBoosts=function()
 		},
 		className:'alert',group:'bean'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150,AA:200,SG:5,AE:60,LS:120,ZK:180};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO','AA','SG','AE','LS','ZK'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150,AA:200,SG:5,AE:60,DM:120,ZK:180};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO','AA','SG','AE','DM','ZK'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',aka:'SMM',desc:
 		function(me)
@@ -3930,18 +3930,10 @@ Molpy.DefineBoosts=function()
         for(var i=0; i <furn; i++) Molpy.RewardBlastFurnace();
 		left=times-furn;
 		Molpy.boostSilence=1;
-		if(left>10&&Molpy.Got('LS'))
+		if(left>10&&Molpy.Got('DM'))
 		{
-			var keys=Math.round(Math.random()*(left-10)/(1+29*Math.random()));
-			if(keys>1&&Molpy.Boosts['Crate Key'].unlocked&&!Molpy.Boosts['ASHF'].unlocked)
-			{
-				var red = Molpy.Boosts['ASHF'];
-				Molpy.GiveTempBoost(red.aka,red.startPower,red.startCountdown);
-				left--;
-				keys--;
-			}
-			
-			for(var i=0; i <keys; i++) Molpy.UnlockBoost('Crate Key');
+			var pages=Math.round(Math.random()*(left-10)/(6+29*Math.random()));
+			Molpy.BlackprintIncrement(pages);
 			left-=keys;
 			
 		}
@@ -3956,14 +3948,6 @@ Molpy.DefineBoosts=function()
 			
 		}
 		Molpy.boostSilence=0;
-		var message = '';
-		if(keys)
-		{
-			message+='Locksmith ';
-			if(poke) message+=' and ';
-		}if(poke)message+='Zookeeper ';
-		if(keys||poke)
-		Molpy.Notify(message+'activated',1);
     }
 	
 	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
@@ -4286,7 +4270,7 @@ Molpy.DefineBoosts=function()
 
 	new Molpy.Boost({name:'Automata Engineers',aka:'AE',desc:'Allows Automata Assemble to perform Blackprint Construction and Mould related tasks'
 		,glass:'100M',sand:Infinity,castles:Infinity, group:'hpt'});
-	new Molpy.Boost({name:'Locksmith',aka:'LS',desc:'Allows Automata Assemble to create Crate Keys.<br>Needs at least 10 AA runs (after some are used for Blast Furnace).<br>Works best if you set Shopping Assistant to buy Crate Key.'
+	new Molpy.Boost({name:'Draftsman',aka:'DM',desc:'Allows Automata Assemble to create Blackprints.<br>Needs at least 10 AA runs (after some are used for Blast Furnace).'
 		,glass:'500M',sand:Infinity,castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Zookeeper',aka:'ZK',desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 10 AA runs (after some are used for Blast Furnace and Locksmith) and even then, has a low chance of activating each mNP.'
 		,glass:'2.5G',sand:Infinity,castles:Infinity, group:'bean'});
