@@ -2155,7 +2155,7 @@ Molpy.DefineBoosts=function()
 		desc:function(me)
 		{
 			var cost = Molpy.SandPurifierUpgradeCost();
-			var str = 'Glass Furnace\'s sand use is divided by '+(me.power+2);
+			var str = 'Glass Furnace\'s sand use is divided by '+Molpify(me.power+2,2);
 			var bl = Molpy.Boosts['Glass Block Storage'];
 			if(bl.power >= cost-10)
 			{
@@ -2887,7 +2887,7 @@ Molpy.DefineBoosts=function()
 		desc:function(me)
 		{
 			var cost = Molpy.GlassExtruderUpgradeCost();
-			var str = 'Glass Blower\'s sand use is divided by '+(me.power+2);
+			var str = 'Glass Blower\'s sand use is divided by '+Molpify(me.power+2,3);
 			var ch = Molpy.Boosts['Glass Chip Storage'];
 			if(ch.power >= cost-800)
 			{

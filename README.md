@@ -23,6 +23,7 @@ For personal amusement only.
 - Added stats view for Trebuchet Pong, Grapevine, Ch*rpies, and Facebugs
 - Beachball
 - Exponential boosts now say "boosts by x% cumulatively per thing" to distinguish them from linear increases
+- Wasn't Molpifying the division numbers for sand purifier or glass extruder
 
 ## 3.05
 - Fixed Expando/Glass Monument interaction
