@@ -226,7 +226,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.05;
+		Molpy.version=3.06;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1225,9 +1225,9 @@ Molpy.Up=function()
 			if(Molpy.showOptions)
 			{
 				Molpy.showOptions=0;
-				g('beachAnchor').className='unhidden';
-				g('beach').className='unhidden';
-				g('options').className='hidden';
+				$('#beach').removeClass('hidden').addClass('unhidden');
+				$('#beachAnchor').removeClass('hidden').addClass('unhidden');
+				$('#options').removeClass('unhidden').addClass('hidden');
 					
 			}else{
 				Molpy.showOptions=1;
@@ -1238,18 +1238,19 @@ Molpy.Up=function()
 					Molpy.boostRepaint=1;
 				}
 				Molpy.showExport=0;
-				g('beachAnchor').className='hidden';
-				g('beach').className='hidden';
-				g('stats').className='hidden';
-				g('export').className='hidden';
-				g('options').className='unhidden';				
+				$('#beach').removeClass('unhidden').addClass('hidden');
+				$('#beachAnchor').removeClass('unhidden').addClass('hidden');
+				$('#stats').removeClass('unhidden').addClass('hidden');
+				$('#export').removeClass('unhidden').addClass('hidden');
+				$('#options').removeClass('hidden').addClass('unhidden');
+							
 				Molpy.EarnBadge('Decisions, Decisions');
 				if(Molpy.Got('Autosave Option')){
 					g('autosaveoption').className='minifloatbox';
 				}else{
 					g('autosaveoption').className='hidden';
 				}
-				if(Molpy.Boosts['Chromatic Heresy'].power){
+				if(Molpy.Got('Chromatic Heresy')){
 					g('otcoloption').className='minifloatbox';
 				}else{
 					g('otcoloption').className='hidden';
@@ -1398,7 +1399,7 @@ Molpy.Up=function()
 			var heresy='';
 			if(g('game'))
 			{
-				if(Molpy.Got('Chromatic Heresy')&&Molpy.Boosts['Chromatic Heresy'].power)
+				if(Molpy.Got('Chromatic Heresy')&&Molpy.Boosts['Chromatic Heresy'].power>0)
 				{
 					heresy=' heresy'
 				}
@@ -1429,19 +1430,19 @@ Molpy.Up=function()
 			if(Molpy.showStats)
 			{
 				Molpy.showStats=0;
-				g('beachAnchor').className='unhidden';
-				g('beach').className='unhidden';
-				g('stats').className='hidden';
+				$('#beach').removeClass('hidden').addClass('unhidden');
+				$('#beachAnchor').removeClass('hidden').addClass('unhidden');
+				$('#stats').removeClass('unhidden').addClass('hidden');
 					
 			}else{
 				Molpy.showStats=1;
 				Molpy.showOptions=0;
 				Molpy.showExport=0;
-				g('beachAnchor').className='hidden';
-				g('beach').className='hidden';
-				g('options').className='hidden';
-				g('export').className='hidden';
-				g('stats').className='unhidden';
+				$('#beach').removeClass('unhidden').addClass('hidden');
+				$('#beachAnchor').removeClass('unhidden').addClass('hidden');
+				$('#options').removeClass('unhidden').addClass('hidden');
+				$('#export').removeClass('unhidden').addClass('hidden');
+				$('#stats').removeClass('hidden').addClass('unhidden');
 				Molpy.EarnBadge('Far End of the Bell Curve');
 			}
 			Molpy.shopRepaint=1;
@@ -1461,10 +1462,9 @@ Molpy.Up=function()
 			if(Molpy.showExport)
 			{
 				Molpy.showExport=0;
-				g('beachAnchor').className='unhidden';
-				g('beach').className='unhidden';
-				g('stats').className='hidden';
-				g('export').className='hidden';
+				$('#beach').removeClass('hidden').addClass('unhidden');
+				$('#beachAnchor').removeClass('hidden').addClass('unhidden');
+				$('#export').removeClass('unhidden').addClass('hidden');
 					
 			}else{
 				Molpy.showExport=1;
@@ -1475,10 +1475,10 @@ Molpy.Up=function()
 					Molpy.shopRepaint=1;
 					Molpy.boostRepaint=1;
 				}
-				g('beachAnchor').className='hidden';
-				g('beach').className='hidden';
-				g('options').className='hidden';
-				g('stats').className='hidden';
+				$('#beach').removeClass('unhidden').addClass('hidden');
+				$('#beachAnchor').removeClass('unhidden').addClass('hidden');
+				$('#stats').removeClass('unhidden').addClass('hidden');
+				$('#options').removeClass('unhidden').addClass('hidden');
 				var threads = Molpy.ToNeedlePulledThing();
 				var thread='';
 				for(var i in threads)
@@ -1486,7 +1486,7 @@ Molpy.Up=function()
 					thread+=threads[i]
 				}
 				g('exporttext').value= CuegishToBeanish(thread);
-				g('export').className='unhidden';
+				$('#export').removeClass('hidden').addClass('unhidden');
 			}
 		}
 		var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1';
@@ -2067,6 +2067,9 @@ Molpy.Up=function()
 				}
 			}
 			Molpy.ninjad=1;
+			
+			if(oldBeachClass!='beachongwarning')
+				Molpy.UpdateBeachClass('beachsafe');
 			Molpy.HandleClickNP();	
 
 			if(Molpy.Got('Temporal Rift') && Molpy.Boosts['Temporal Rift'].countdown<5 && Math.floor(Math.random()*2)==1)
@@ -4570,6 +4573,16 @@ Molpy.Up=function()
 			Molpy.flashes=0;
 	}
 	
+	var oldBeachClass='';
+	Molpy.UpdateBeachClass=function(stateClass)
+	{
+		if(Molpy.Boosts['Beachball'].power&&oldBeachClass!=stateClass)
+		{
+			$('#beach').removeClass(oldBeachClass).addClass(stateClass);
+			oldBeachClass=stateClass;
+		}
+	}
+	
 	var clockDegrees=0;
 	Molpy.CheckONG=function()
 	{
@@ -4597,6 +4610,18 @@ Molpy.Up=function()
 				}
 			}
 		}
+		Molpy.CheckBeachClass();
+	}
+	Molpy.CheckBeachClass=function()
+	{
+		var stateClass='beachsafe';
+		Molpy.ONGelapsed = new Date().getTime()-Molpy.ONGstart.getTime();
+		if(Molpy.ONGelapsed >= Molpy.ninjaTime)
+		{
+			if(!Molpy.ninjad) stateClass='beachstreakextend';
+		}else stateClass='beachninjawarning';
+		if(Molpy.ONGelapsed/Molpy.NPlength>=999) stateClass='beachongwarning';
+		Molpy.UpdateBeachClass(stateClass);
 	}
 	Molpy.ONG=function()
 	{
@@ -4828,7 +4853,7 @@ Molpy.Up=function()
 	{
 		var x = 200+Math.floor(Math.random()*200);
 		var y = 200+Math.floor(Math.random()*400);
-		if(Molpy.Boosts['Chromatic Heresy'].power&&Molpy.options.colpix)
+		if(Molpy.Got('Chromatic Heresy')&&Molpy.options.colpix)
 		{	
 			if(Molpy.newpixNumber>3094)			
 				return'url(http://placekitten.com/'+x+'/'+y+')';
@@ -4874,7 +4899,7 @@ Molpy.Up=function()
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
 		g('period').innerHTML=Molpy.TimePeriod;
-		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.05?'<br>Use Proxy':'');
+		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.06?'<br>Switch Proxy':'');
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
 		var tagRepaint=Molpy.boostRepaint||Molpy.badgeRepaint;
@@ -4907,7 +4932,7 @@ Molpy.Up=function()
 				if(repainted || Molpy.drawFrame==0)
 				{
 					var className=Molpy.redactedClassNames[Molpy.redactedVisible];
-					if(Molpy.Boosts['Chromatic Heresy'].power && Molpy.Got('Technicolour Dream Cat')
+					if(Molpy.Boosts['Chromatic Heresy'].power>0 && Molpy.Got('Technicolour Dream Cat')
 						&& Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]!='hide2')
 					{
 						className+=' '+['alert','action','toggle','',''][Math.floor(Math.random()*4)];
@@ -4994,6 +5019,8 @@ Molpy.Up=function()
 			Molpy.scrumptiousDonuts--;
 		}
 		Molpy.shrinkAll=0;
+				
+		Molpy.CheckBeachClass();
 	}
 	
 	Molpy.TickHover=function(me,repaint)

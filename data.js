@@ -983,7 +983,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Chromatic Heresy',desc:
 		function(me)
 		{
-			return 'Saturation is '+(me.power?'':'not ')+'allowed.<br><input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
+			return 'Saturation is '+(me.power>0?'':'not ')+'allowed.<br><input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
 		},sand:200,castles:10,icon:'chromatic',className:'toggle'});
 	Molpy.ChromaticHeresyToggle=function()
 	{
@@ -993,7 +993,11 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('Somewhere, over the rainbow...');
 			return;
 		}
-		ch.power=!ch.power*1;
+		if(ch.power>0)ch.power=-ch.power;
+		else if(ch.power<0)ch.power=-ch.power+1;
+		else(ch.power=1);
+		
+		if(ch.power>10)Molpy.UnlockBoost('Beachball');
 		ch.hoverOnCounter=1;
 		Molpy.UpdateColourScheme();
 		
@@ -4264,6 +4268,20 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Lightning Rod',aka:'LR',desc:'Glassed Lightning becomes more powerful with use',glass:'440M',sand:Infinity,castles:Infinity,
 		buyFunction:function(){this.power=Molpy.Boosts['GL'].power||400;}
 	});
+	
+	new Molpy.Boost({name:'Beachball',desc:function(me)
+	{
+		
+		return (me.power? 'T':'When active, t') + 'he border of the NewPix changes colour.<br>Red = Clicking will Ninja<br>Blue = Click to gain Ninja Stealth<br>Green = All Clear<br>Yellow = less than a mNP until ONG'+(me.bought?'<br><input type="Button" onclick="Molpy.BeachballToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+	}
+	,sand:'4K',castles:200,className:'toggle'});
+	Molpy.BeachballToggle=function()
+	{
+		Molpy.UpdateBeachClass('');
+		var me=Molpy.Boosts['Beachball'];
+		me.power=1*!me.power;			
+		me.hoverOnCounter=1;
+	}
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],

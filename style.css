@@ -162,7 +162,7 @@ a:active
 	background-position:center;
 	cursor:pointer;
 	z-index:10;
-	border-width: 1px;
+	border-width: 2px;
 	border-style: solid;
 	-webkit-transition: opacity 0.1s ease-out,-webkit-transform 0.1s ease-out;
 	-moz-transition: opacity 0.1s ease-out,-moz-transform 0.1s ease-out;
@@ -185,6 +185,22 @@ a:active
 	-ms-transform:scale(0.98,0.98);opacity:1;
 	-o-transform:scale(0.98,0.98);opacity:1;
 	transform:scale(0.98,0.98);opacity:1;
+}
+.beachninjawarning
+{
+	border-color:#F00;
+}
+.beachongwarning
+{
+	border-color:#FF0;
+}
+.beachstreakextend
+{
+	border-color:#00F;
+}
+.beachsafe
+{
+	border-color:#0F0;
 }
 #exporttext
 {
