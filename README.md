@@ -20,8 +20,9 @@ For personal amusement only.
 
 ## 3.06
 - On buying a Crate Key, it will try to buy Locked Crate before using up the key making the Crate cheaper (so the key will be used to remove a lock, when it previously it was wasted)
-- Added stats view for Trebuchet Pong, Grapevine, and Ch*rpies
+- Added stats view for Trebuchet Pong, Grapevine, Ch*rpies, and Facebugs
 - Beachball
+- Exponential boosts now say "boosts by x% cumulatively per thing" to distinguish them from linear increases
 
 ## 3.05
 - Fixed Expando/Glass Monument interaction

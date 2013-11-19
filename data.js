@@ -511,10 +511,10 @@ Molpy.DefineBoosts=function()
 {
 	
 	//only add to the end!
-	new Molpy.Boost({name:'Bigger Buckets',desc:'Increases sand rate of buckets and clicks',sand:500,castles:0,stats:'Adds 0.1 S/mNP to each Bucket, before multipliers',icon:'biggerbuckets'});
+	new Molpy.Boost({name:'Bigger Buckets',desc:'Raises sand rate of buckets and clicks',sand:500,castles:0,stats:'Adds 0.1 S/mNP to each Bucket, before multipliers',icon:'biggerbuckets'});
 	new Molpy.Boost({name:'Huge Buckets',desc:'Doubles sand rate of buckets and clicks',sand:800,castles:2,icon:'hugebuckets'});
-	new Molpy.Boost({name:'Helping Hand',desc:'Increases sand rate of Cuegan',sand:500,castles:2,stats:'Adds 0.2 S/mNP to each Cuegan, before multipliers',icon:'helpinghand'});
-	new Molpy.Boost({name:'Cooperation',desc:'Increases sand rate of Cuegan 5% per pair of buckets',sand:2000,castles:4,icon:'cooperation',
+	new Molpy.Boost({name:'Helping Hand',desc:'Raises sand rate of Cuegan',sand:500,castles:2,stats:'Adds 0.2 S/mNP to each Cuegan, before multipliers',icon:'helpinghand'});
+	new Molpy.Boost({name:'Cooperation',desc:'Boosts sand rate of Cuegan cumulatively by 5% per pair of buckets',sand:2000,castles:4,icon:'cooperation',
 		stats:function()
 		{			
 			if(Molpy.Got('Cooperation'))
@@ -522,11 +522,11 @@ Molpy.DefineBoosts=function()
 				var mult=Math.pow(1.05,Math.floor(Molpy.SandTools['Bucket'].amount/2));
 				return 'Multiplies Cuegans\' sand production by ' + Molpify(mult*100,2)+'%';
 			}
-			return 'Multiplies by 5% per pair of buckets';
+			return 'Boosts sand rate of Cuegan cumulatively by 5% per pair of buckets';
 		}
 	});
 	new Molpy.Boost({name:'Spring Fling',desc:'Trebuchets build an extra Castle',sand:1000,castles:6,icon:'springfling'});
-	new Molpy.Boost({name:'Trebuchet Pong',desc:'Increases sand rate of buckets 50% per pair of trebuchets',
+	new Molpy.Boost({name:'Trebuchet Pong',desc:'Boosts sand rate of buckets cumulatively by 50% per pair of trebuchets',
 		stats:function(){return 'Sand rate of buckets is multiplied by '+ Molpify(Math.pow(1.5,Math.floor(Molpy.CastleTools['Trebuchet'].amount/2)));}
 		,sand:3000,castles:6,icon:'trebpong'
 	});
@@ -568,13 +568,13 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Megball',desc:'Cuegan produce double sand',sand:10700,castles:56,icon:'megball'});
 	new Molpy.Boost({name:'Robot Efficiency',desc:'Newpixbots build an extra castle (before any doubling)',
 		sand:'34K',castles:153,icon:'robotefficiency',group:'cyb'});
-	new Molpy.Boost({name:'Ninja Builder',desc:'When increasing ninja stealth streak, builds that many castles',
+	new Molpy.Boost({name:'Ninja Builder',desc:'When incrementing ninja stealth streak, builds that many castles',
 		sand:4000,castles:35,
 		stats:function()
 		{
 			if(Molpy.Got('Ninja Builder')) 
 				return 'Will build '+ Molpy.CalcStealthBuild(1)+ ' Castles unless you destealth ninjas';
-			return 'Ninja Stealth increases the first time you click within a NewPix after NewPixBots activate. It will reset if you click before NewPixBots activate, or don\'t click before the next ONG.'	
+			return 'Ninja Stealth increments the first time you click within a NewPix after NewPixBots activate. It will reset if you click before NewPixBots activate, or don\'t click before the next ONG.'	
 			
 		},icon:'ninjabuilder',group:'ninj'
 	});
@@ -942,7 +942,7 @@ Molpy.DefineBoosts=function()
 		}
 		,icon:'blastfurnace',group:'hpt'});
 	
-	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1.4M',castles:'21K'});
+	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a cumulative 5% boost to Sand digging, Castle building, and Castle destruction (per River or Bag, respectively)',sand:'1.4M',castles:'21K'});
 	new Molpy.Boost({name:'Embaggening',desc:'Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',
 		sand:'3.5M',castles:'23K',icon:'embaggening'});
 	new Molpy.Boost({name:'Carrybot',desc:'NewPixBots produce double castles, Buckets produce quadruple sand',
@@ -971,7 +971,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Bag Burning',desc:'Bags help counteract NewPixBots. This will require burning some bags.',sand:'50M',castles:86,
 		stats:function()
 		{
-			var str = 'Half of Bags beyond the 14th owned give a 40% increase to Judgement Dip threshhold.';
+			var str = 'Half of Bags beyond the 14th owned give a cumulative 40% boost to Judgement Dip threshhold.';
 			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
 			{
 				var amount = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2))-1;
@@ -1012,11 +1012,11 @@ Molpy.DefineBoosts=function()
 		Molpy.UpdateColourScheme();
 		
 	}
-	new Molpy.Boost({name:'Flux Turbine',desc:'Castles lost via Molpy Down or Temporal Rift increase the rate of building new Castles',
+	new Molpy.Boost({name:'Flux Turbine',desc:'Castles lost via Molpy Down or Temporal Rift boost the rate of building new Castles',
 		sand:1985,castles:121,
 		stats:function()
 		{
-			if(!Molpy.Got('Flux Turbine')) return 'All castle gains are increased by 2% per natural logarithm of castles wiped by Molpy Down, except refunds which are not increased.';
+			if(!Molpy.Got('Flux Turbine')) return 'All castle gains are boosted by 2% per natural logarithm of castles wiped by Molpy Down, except refunds which are not affected.';
 			return 'Multiplies all Castle gains by ' + Molpify(Molpy.globalCastleMult*100,2)+'% (But refunds when selling remain unchanged.)';
 		},group:'chron'});
 	new Molpy.Boost({name:'Ninja Assistants',desc:'Ninja Builder\'s Castle output is multiplied by the number of NewPixBots'
@@ -1127,7 +1127,7 @@ Molpy.DefineBoosts=function()
 			if(!me.bought)return 'Digging sand gives 35% more Castles per Fractal Level, which resets to 1 on the ONG. Blast Furnace uses 94% Sand to make Castles, per Fractal Level';
 			return 'Digging Sand will give you ' + Molpify(Math.floor(Math.pow(1.35,me.power)),1)+' Castles';
 		},className:'alert',icon:'fractals'});
-	new Molpy.Boost({name:'Balancing Act',desc:'Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1875K',castles:843700,icon:'balancingact'});
+	new Molpy.Boost({name:'Balancing Act',desc:'Flags and Scaffolds give each other a cumulative 5% boost to Sand digging, Castle building, and Castle destruction (per Scaffold or Flag, respectively)',sand:'1875K',castles:843700,icon:'balancingact'});
 	new Molpy.Boost({name:'Ch*rpies',desc:'Increases sand dig rate by 5% per badge earned',
 		sand:6969696969,castles:81818181,icon:'chirpies',
 		stats:function()
@@ -1411,7 +1411,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'The Forty',desc:'Cuegan produce 40 times as much sand',sand:40404040,castles:4040,icon:'theforty'});
 	new Molpy.Boost({name:'Chequered Flag',desc:'Racing NewPixBots activate 20% sooner',sand:101010101,castles:10101,icon:'cheqflag'});
-	new Molpy.Boost({name:'Skull and Crossbones',desc:'Pirates vs. Ninjas! Ninja Builder\'s Castle output is increased by 5% per flag owned over 40',sand:304050607,castles:809010,icon:'skullcrossbones',group:'ninj'});
+	new Molpy.Boost({name:'Skull and Crossbones',desc:'Pirates vs. Ninjas! Ninja Builder\'s Castle output is raised by 5% cumulatively per flag owned over 40',sand:304050607,castles:809010,icon:'skullcrossbones',group:'ninj'});
 	new Molpy.Boost({name:'No Sell',desc:
 		function(me)
 		{
@@ -2790,7 +2790,7 @@ Molpy.DefineBoosts=function()
 			return Math.ceil(Molpy.Boosts['Logicat'].bought/5)
 		}
 	});
-	new Molpy.Boost({name:'Logicastle',desc:'The Castle outputs of Castle Tools gain 50% per Logicat Level'
+	new Molpy.Boost({name:'Logicastle',desc:'The Castle outputs of Castle Tools are boosted by 50% cumulatively per Logicat Level'
 		,group:'bean',logic:2,sand:'420Z',castles:'850Z',glass:300
 	});
 	Molpy.LogicastleMult=function()
@@ -3663,7 +3663,17 @@ Molpy.DefineBoosts=function()
 		2.8310021220015596e+306*/
 		
 	new Molpy.Boost({name:'Fractal Fractals',desc:'Even your fractals have fractals!<br>Increases the effect of Fractal Sandcastles',sand:'1.8ZW',castles:'.3ZW',glass:'3K'});
-	new Molpy.Boost({name:'Facebugs',desc:'Increases sand dig rate (but not clicks) by 10% per badge earned',sand:'24UW',castles:'7.5UW',glass:'8K'});
+	new Molpy.Boost({name:'Facebugs',desc:'Increases sand dig rate (but not clicks) by 10% per badge earned',sand:'24UW',castles:'7.5UW',glass:'8K'1,
+		stats:function()
+		{
+			if(Molpy.Got('Facebugs'))
+			{
+				var mult=0.1*Molpy.BadgesOwned;
+				return 'Increases sand dig rate by '+ Molpify(mult*100,2)+'%';
+			}
+			return 'Increases sand dig rate by 10% per Badge earned';
+		}
+	});
 	new Molpy.Boost({name:'Keygrinder',desc:'The DoRD may produce a Crate Key if Factory Automation is at Level 10 or above',sand:'463UW',castles:'15.6SW',glass:'13K',group:'hpt',logic:20});
 	new Molpy.Boost({name:'The Key Thing',desc:'Buying a Crate Key when the Locked Crate is not available will now do something useful',sand:'18SW',castles:'47SW',glass:'19K',group:'bean',logic:25});
 	
@@ -4065,7 +4075,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Frenchbot',desc:'NewPixBots produce 1Q x castles, LaPetite produces 1W x sand', stats:'The Dip of Infinite Judgement Approaches. Do you have 101 Logicats?', 
 		sand:'10Q',castles:'10Q',glass:'.5M',group:'cyb'});
-	new Molpy.Boost({name:'Bacon',desc:'Knowledge is Power - France is Bacon.<br>NewPixBots produce 10x, LaPetite sand production gains 3% per NewPixBot', 
+	new Molpy.Boost({name:'Bacon',desc:'Knowledge is Power - France is Bacon.<br>NewPixBots produce 10x, LaPetite sand production is boosted by 3% cumulatively per NewPixBot', 
 		sand:'10WQ',castles:'10WQ',glass:'.75M',group:'cyb'
 	}); //note: it doesn't say 10x *castles*
 	
