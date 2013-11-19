@@ -155,7 +155,16 @@ function isChildOf(child,parent)
 
 function onhover(me,event)
 {
-	if(me.hoverOnCounter>0||Molpy.Boosts['Expando'].power)return;
+	if(me.hoverOnCounter>0||Molpy.Boosts['Expando'].power)
+	{
+		
+		if(me.earned&&me.np&&Molpy.previewNP!=me.np&&me.aka.indexOf('monumg')==0)
+		{
+			Molpy.previewNP=me.np;
+			Molpy.UpdateBeach(me.np);
+		}
+		return;
+	}
 	me.hoverOnCounter=Math.ceil(Molpy.fps/2);
 	me.hoverOffCounter=-1;
 }
@@ -164,6 +173,12 @@ function onunhover(me,event)
 	if(isChildOf(event.relatedTarget,event.currentTarget)) return;
 	me.hoverOffCounter=Math.ceil(Molpy.fps*1.5);
 	me.hoverOnCounter=-1;
+	
+	if(me.earned&&me.np&&Molpy.previewNP==me.np&&Molpy.Boosts['Expando'].power&&me.aka.indexOf('monumg')==0)
+	{
+		Molpy.previewNP=0;
+		Molpy.UpdateBeach();
+	}
 }
 
 function showhideButton(key)
@@ -211,7 +226,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.04;
+		Molpy.version=3.05;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1065,7 +1080,6 @@ Molpy.Up=function()
 				else if(!Molpy.Got('SG'))
 					Molpy.UnlockBoost('Safety Hat');
 			}
-			Molpy.Boosts['Expando'].power=0;
 			Molpy.UpdateColourScheme();
 			Molpy.AdjustFade();
 			Molpy.LockBoost('Double or Nothing');
@@ -3082,7 +3096,7 @@ Molpy.Up=function()
 					d.innerHTML='<br>'+((this.earned||this.visibility<1)?
 						EvalMaybeFunction((Molpy.showStats&&this.stats)?this.stats:this.desc,this):'????');
 				}
-				if(this.np&&Molpy.previewNP!=this.np&&this.aka.indexOf('monumg')==0)
+				if(this.earned&&this.np&&Molpy.previewNP!=this.np&&!Molpy.Boosts['Expando'].power&&this.aka.indexOf('monumg')==0)
 				{
 					Molpy.previewNP=this.np;
 					Molpy.UpdateBeach(this.np);
@@ -4860,7 +4874,7 @@ Molpy.Up=function()
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
 		g('period').innerHTML=Molpy.TimePeriod;
-		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.04?'<br>Not Modified':'');
+		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.05?'<br>Use Proxy':'');
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
 		var tagRepaint=Molpy.boostRepaint||Molpy.badgeRepaint;

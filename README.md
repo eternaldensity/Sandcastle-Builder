@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.05
+- Fixed Expando/Glass Monument interaction
+
 ## 3.04
 - Prevent Locksmith from awarding ASHF when you already have it
 - Overcompensating's buff wasn't applied to saves which already had Overcompensating owned

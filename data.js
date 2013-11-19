@@ -526,7 +526,10 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	new Molpy.Boost({name:'Spring Fling',desc:'Trebuchets build an extra Castle',sand:1000,castles:6,icon:'springfling'});
-	new Molpy.Boost({name:'Trebuchet Pong',desc:'Increases sand rate of buckets 50% per pair of trebuchets',sand:3000,castles:6,icon:'trebpong'});
+	new Molpy.Boost({name:'Trebuchet Pong',desc:'Increases sand rate of buckets 50% per pair of trebuchets',
+		stats:function(){return 'Sand rate of buckets is multiplied by '+ Molpify(Math.pow(1.5,Math.floor(Molpy.CastleTools['Trebuchet'].amount/2)));}
+		,sand:3000,castles:6,icon:'trebpong'
+	});
 	new Molpy.Boost({name:'Molpies',desc:'Increases sand dig rate based on Badges',sand:5000,castles:5,
 		stats:function()
 		{
@@ -4030,9 +4033,6 @@ Molpy.DefineBoosts=function()
 		{
 			return;
 		}
-		Molpy.Notify('Expando has been disabled due to general bugginess and specific issues with Glass Monuments.<br>Sorry for the inconvenience');
-		me.power=0;
-		return;
 		me.power=1*!me.power;
 		if(!me.power)Molpy.shrinkAll=1;
 		me.hoverOnCounter=1
