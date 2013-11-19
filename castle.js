@@ -1075,6 +1075,7 @@ Molpy.Up=function()
 			if(version<3.07)
 			{
 				Molpy.Boosts['Overcompensating'].power=Molpy.Boosts['Overcompensating'].startPower;
+				if(Molpy.Got('Panther Rush'))Molpy.Boosts['Panther Rush'].buyFunction();
 			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{

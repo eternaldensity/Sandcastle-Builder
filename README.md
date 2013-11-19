@@ -26,6 +26,7 @@ For personal amusement only.
 - Removed Zookeeper notification (just wait for Caged Logicat to show up)
 - Track redundakitty chains, added a badge and a stat
 - Actually fixed Overcompensating
+- If Panther Rush is stuck in Loot from earlier bug, run its buy function to fix
 
 ## 3.06
 - On buying a Crate Key, it will try to buy Locked Crate before using up the key making the Crate cheaper (so the key will be used to remove a lock, when it previously it was wasted)
