@@ -1065,7 +1065,7 @@ Molpy.Up=function()
 				else if(!Molpy.Got('SG'))
 					Molpy.UnlockBoost('Safety Hat');
 			}
-			
+			Molpy.Boosts['Expando'].power=0;
 			Molpy.UpdateColourScheme();
 			Molpy.AdjustFade();
 			Molpy.LockBoost('Double or Nothing');
@@ -1167,6 +1167,9 @@ Molpy.Up=function()
 				Molpy.recalculateDig=1;
 				Molpy.boostRepaint=1;
 				Molpy.shopRepaint=1;
+				
+				Molpy.showOptions=0;
+				Molpy.OptionsToggle();
 				
 				Molpy.UpdateBeach();
 				Molpy.HandlePeriods();
@@ -2015,20 +2018,23 @@ Molpy.Up=function()
                     if(Molpy.Got('Glass Saw'))
                     {
                         var p = Molpy.Boosts['Glass Saw'].power;
-                        var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
-                        var absMaxGlass=maxGlass;
-                        var rate = Molpy.ChipsPerBlock();
-                        maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
-                        var leave = 0;
-                        if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
-                        {
-                            leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
-                        }
-                        maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power - leave);
-                        Molpy.AddBlocks(maxGlass);
-                        Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
-                        if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)
-                            Molpy.Boosts['Glass Saw'].power=p*2;
+						if(p>0)
+						{
+							var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
+							var absMaxGlass=maxGlass;
+							var rate = Molpy.ChipsPerBlock();
+							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
+							var leave = 0;
+							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
+							{
+								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
+							}
+							maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power - leave);
+							Molpy.AddBlocks(maxGlass);
+							Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
+							if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)
+								Molpy.Boosts['Glass Saw'].power=p*2;
+						}
                     }
 				}
 			}
@@ -2843,6 +2849,7 @@ Molpy.Up=function()
 		Molpy.BoostsInShop=[];
 		Molpy.BoostsOwned=0;
 		Molpy.BoostAKA=[];
+		Molpy.boostSilence=0;
 		var order=0;
 		Molpy.Boost=function(args)
 		{
@@ -2911,7 +2918,7 @@ Molpy.Up=function()
 					Molpy.BoostsOwned++;
 					Molpy.CheckBuyUnlocks();
 					Molpy.unlockedGroups[this.group]=1;
-					if(sp+cp>0)
+					if(!Molpy.boostSilence&&sp+cp>0)
 					{
 						Molpy.ShowGroup(this.group,this.className);
 					}
@@ -2933,7 +2940,8 @@ Molpy.Up=function()
 			}
 			this.describe=function()
 			{			
-				Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this),1);
+				if(!Molpy.boostSilence)
+					Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this),1);
 			}
 			
 			Molpy.Boosts[this.aka]=this;
@@ -2958,7 +2966,8 @@ Molpy.Up=function()
 						baby.unlocked=1;
 						Molpy.boostRepaint=1;
 						Molpy.recalculateDig=1;
-						Molpy.Notify('Boost Unlocked: '+baby.name,1);
+						if(!Molpy.boostSilence)
+							Molpy.Notify('Boost Unlocked: '+baby.name,1);
 						if(baby.unlockFunction)baby.unlockFunction();
 						if(baby.name==Molpy.shoppingItem)
 							Molpy.Donkey();
@@ -2982,7 +2991,7 @@ Molpy.Up=function()
 				Molpy.recalculateDig=1;
 			}
 		}
-		Molpy.LockBoost=function(bacon,silent)
+		Molpy.LockBoost=function(bacon)
 		{
 			if(typeof bacon==='string')
 			{
@@ -3002,7 +3011,7 @@ Molpy.Up=function()
 							Molpy.BoostsOwned--;
 							me.bought=0;
 						} //Orteil did this bit wrong :P
-						if(!silent)
+						if(!Molpy.boostSilence)
 							Molpy.Notify('Boost Locked: '+me.name,1);
 						Molpy.CheckBuyUnlocks();
 					}
@@ -4819,6 +4828,7 @@ Molpy.Up=function()
 		}
 	}
 	
+	//call with argument to change to a specific np, otherwise defaults to the current np
 	Molpy.UpdateBeach=function(np)
 	{
 		g('beach').style.background=Molpy.NewPixFor(np||Molpy.newpixNumber);

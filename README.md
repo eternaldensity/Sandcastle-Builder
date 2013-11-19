@@ -22,6 +22,12 @@ For personal amusement only.
 - Prevent Locksmith from awarding ASHF when you already have it
 - Overcompensating's buff wasn't applied to saves which already had Overcompensating owned
 - Fix panther rush on-buy crash (fortunately it was in calculating the levels so it didn't waste any levels)
+- Nerfed Locksmith a bit (even though it wasn't any more powerful than AA was previously if you knew how to leverage it...)
+- Crate key message improved and not shown if from locksmith
+- Boost unlock/lock/describe messages supressed from locksmith/zookeeper: just 1 message to show that one/both activated
+- Disabled Expando because it's causing problems and I don't have time to fix it properly right now, sorry
+- Glass Saw is a toggle now
+- Molpy Down refreshes the Options
 
 ## 3.03
 - Changed all occurrences of "% of sand dug" to "% of sand dig rate", so glass-production costs are clearer (thanks Vidyogamasta for pointing that out... 2 weeks ago)

@@ -2824,7 +2824,9 @@ Molpy.DefineBoosts=function()
 			{
 				lc.bought++;
 				if(lc.bought<5)
-					Molpy.Notify('You wonder what good that did...');
+				{
+					if(!Molpy.boostSilence)Molpy.Notify('One less lock on the crate');
+				}
 				else
 					Molpy.LockBoost(lc.aka);
 			}else{
@@ -3889,10 +3891,10 @@ Molpy.DefineBoosts=function()
 		var furn=Math.floor((times+Math.random()*3)/2);
         for(var i=0; i <furn; i++) Molpy.RewardBlastFurnace();
 		left=times-furn;
-		
+		Molpy.boostSilence=1;
 		if(left>10&&Molpy.Got('LS'))
 		{
-			var keys=Math.floor(Math.random()*(left-10)/(1+39*Math.random()));
+			var keys=Math.round(Math.random()*(left-10)/(1+29*Math.random()));
 			if(keys>1&&Molpy.Boosts['Crate Key'].unlocked&&!Molpy.Boosts['ASHF'].unlocked)
 			{
 				var red = Molpy.Boosts['ASHF'];
@@ -3907,7 +3909,7 @@ Molpy.DefineBoosts=function()
 		}
 		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4)
 		{
-			var poke=Math.floor(Math.random()*(left-10)/(1+Math.random()*200));
+			var poke=Math.round(Math.random()*(left-10)/(1+Math.random()*199));
 			if(poke){
 				Molpy.Boosts['Panther Poke'].buyFunction();
 				Molpy.Notify('Panther Poke!',1);
@@ -3915,7 +3917,15 @@ Molpy.DefineBoosts=function()
 			}
 			
 		}
-		
+		Molpy.boostSilence=0;
+		var message = '';
+		if(keys)
+		{
+			message+='Locksmith ';
+			if(poke) message+=' and ';
+		}if(poke)message+='Zookeeper ';
+		if(keys||poke)
+		Molpy.Notify(message+'activated',1);
     }
 	
 	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',sand:Infinity,castles:Infinity,glass:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
@@ -4020,6 +4030,9 @@ Molpy.DefineBoosts=function()
 		{
 			return;
 		}
+		Molpy.Notify('Expando has been disabled due to general bugginess and specific issues with Glass Monuments.<br>Sorry for the inconvenience');
+		me.power=0;
+		return;
 		me.power=1*!me.power;
 		if(!me.power)Molpy.shrinkAll=1;
 		me.hoverOnCounter=1
@@ -4054,9 +4067,20 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Cupholder',desc:'Bags produce 8X Glass',glass:'11M',castles:Infinity});
 	new Molpy.Boost({name:'Tiny Glasses',desc:'LaPetite produces 9X Glass',glass:'12M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Stained Glass Launcher',desc:'Trebuchet Glass flinging is multiplied by the number of Glass Ceilings owned',glass:'15M',sand:Infinity,castles:Infinity});
-	new Molpy.Boost({name:'Glass Saw',desc:'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (20 chips each) in the Tool Factory buffer: up to 10M per Glass Ceiling',glass:'7M',sand:Infinity,castles:Infinity,
+	new Molpy.Boost({name:'Glass Saw',desc:function(me)
+	{		
+		return (me.power>0? '':'When active, ') + 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and doubling with use.'+(me.bought?'<br><input type="Button" onclick="Molpy.GlassSawToggle()" value="'+(me.power>0? 'Dea':'A')+'ctivate"></input>':'');
+	}
+	,glass:'7M',sand:Infinity,castles:Infinity,className:'toggle',
 		buyFunction:function(){this.power=1;}
 	});
+	Molpy.GlassSawToggle=function()
+	{
+		var me=Molpy.Boosts['Glass Saw'];
+		me.power=-me.power;			
+		me.hoverOnCounter=1;
+	}
+	
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
 			return 'When you buy this, uses '+Molpify(200*(me.power+1)-5,3)+' Logicat levels to increase the points awarded by Logicats by 0.5'
