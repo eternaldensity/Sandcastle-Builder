@@ -2823,6 +2823,7 @@ Molpy.DefineBoosts=function()
 					Molpy.UnlockBoost(lc.aka);
 				return;
 			}
+			lc.buy();
 			if(lc.bought)
 			{
 				lc.bought++;

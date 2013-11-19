@@ -18,6 +18,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.06
+- On buying a Crate Key, it will try to buy Locked Crate before using up the key making the Crate cheaper
+
 ## 3.05
 - Fixed Expando/Glass Monument interaction
 
