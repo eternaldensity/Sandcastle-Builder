@@ -642,7 +642,17 @@ Molpy.DefineBoosts=function()
 		}
 		Molpy.LockBoost('Double or Nothing');
 	}
-	new Molpy.Boost({name:'Grapevine',desc:'Increases sand dig rate by 2% per badge earned',sand:'25K',castles:25,icon:'grapevine',department:1});
+	new Molpy.Boost({name:'Grapevine',desc:'Increases sand dig rate by 2% per badge earned',sand:'25K',castles:25,icon:'grapevine',department:1,
+		stats:function()
+		{
+			if(Molpy.Got('Grapevine'))
+			{
+				var mult=0.02*Molpy.BadgesOwned;
+				return 'Increases sand dig rate by '+ Molpify(mult*100,2)+'%';
+			}
+			return 'Increases sand dig rate by 2% per Badge earned';
+		}
+	});
 	new Molpy.Boost({name:'Affordable Swedish Home Furniture',aka:'ASHF',desc: function(me){return Molpify(me.power*100,1)+'% off all items for '
 		+Molpify(me.countdown,3)+'mNP'}
 		,buyFunction:function(){
@@ -1119,7 +1129,17 @@ Molpy.DefineBoosts=function()
 		},className:'alert',icon:'fractals'});
 	new Molpy.Boost({name:'Balancing Act',desc:'Flags and Scaffolds give each other a 5% increase to Sand digging, Castle building, and Castle destruction',sand:'1875K',castles:843700,icon:'balancingact'});
 	new Molpy.Boost({name:'Ch*rpies',desc:'Increases sand dig rate by 5% per badge earned',
-		sand:6969696969,castles:81818181,icon:'chirpies'});
+		sand:6969696969,castles:81818181,icon:'chirpies',
+		stats:function()
+		{
+			if(Molpy.Got('Ch*rpies'))
+			{
+				var mult=0.05*Molpy.BadgesOwned;
+				return 'Increases sand dig rate by '+ Molpify(mult*100,2)+'%';
+			}
+			return 'Increases sand dig rate by 5% per Badge earned';
+		}
+	});
 	new Molpy.Boost({name:'Buccaneer',desc:'Clicks and buckets give double sand',
 		sand:'84.7M',castles:7540,icon:'buccaneer'});
 	new Molpy.Boost({name:'Bucket Brigade',desc:'Clicks give 1% of sand dig rate per 50 buckets',
