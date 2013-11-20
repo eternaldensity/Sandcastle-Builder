@@ -2930,6 +2930,7 @@ Molpy.Up=function()
 				}
 				
 				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1));
+				if(isNaN(sp)){this.power=0;sp=0;};
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));
 				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1));
 				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp && Molpy.HasGlassBlocks(gp))

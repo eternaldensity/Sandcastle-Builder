@@ -20,6 +20,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.09
+- If Locked Crate prices is mustarded, it becomes free (apart from the glass). Sorry I thought that couldn't happen in the wild.
+
 ## 3.08
 - Mys*t*erious typo fixed
 - Unneeded Factory Automation Upgraded message removed from Ninja Climber
