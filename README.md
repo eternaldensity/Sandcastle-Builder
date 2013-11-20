@@ -41,7 +41,7 @@ For personal amusement only.
 - 50 Glass Block cost for Second Chance is not applied until you click the second answer
 - Instructions on how to use your leopard
 - Prevent Tool Factory Load Letter (and subsequent) if you don't have Tool Factory
-- Added Bacon to Blackprints build list for people who managed to get infinite dip without it and don't want to wait
+- Added Bacon to Blackprints build list for people who managed to get infinite sand rate without it and don't want to wait (yes I wrote dip before, that was wrong)
 - Bigger load sizes for TFLL
 - With Booster Glass, show +numbers on click (if the click-numbers option is enabled)
 - Fixed stupid CSS weirdness preventing the resizing of Colpix
