@@ -926,7 +926,7 @@ Molpy.DefineBoosts=function()
 				costs+=Molpify(sand);
 				if(i)costs+=', then ';
 			}
-			return 'Level: '+Molpify(me.power+1,3)+'<br>When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand. Will activate less times if you don\'t have 20 bots per activation level.';
+			return 'Level: '+Molpify(me.power+1,3)+'<br>When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand. Will activate less times if you don\'t have 20 bots per automation level.';
 		},
 		sand:'4.5M',castles:15700,icon:'factoryautomation',group:'hpt'});
 	new Molpy.Boost({name:'Blast Furnace',desc:'Gives the Department of Redundancy Department the ability to make Castles from Sand',
@@ -1144,7 +1144,7 @@ Molpy.DefineBoosts=function()
 		sand:'84.7M',castles:7540,icon:'buccaneer'});
 	new Molpy.Boost({name:'Bucket Brigade',desc:'Clicks give 1% of sand dig rate per 50 buckets',
 		sand:'412M',castles:8001,icon:'bucketbrigade'});
-	new Molpy.Boost({name:'Bag Puns',desc:'Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25',sand:'1470M',castles:450021,icon:'bagpuns',stats:function(me)
+	new Molpy.Boost({name:'Bag Puns',desc:'Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25.<br>Yes, most of the "puns" are just word substitutions. I claim no responsibility :P',sand:'1470M',castles:450021,icon:'bagpuns',stats:function(me)
 		{
 			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
 			return me.desc;
@@ -2753,7 +2753,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'
 		,sand:'490P',castles:'670P',glass:1500,group:'ninj'
 	});
-	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.'
+	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.',stats:'Squares the reward from VITSSÅGEN, JA!'
 		,sand:'48E',castles:'38E',glass:100,group:'hpt',icon:'phonesaw'
 	});
 	new Molpy.Boost({name:'Logicat',desc:
@@ -2959,32 +2959,47 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.ClickCagedPuzzle=function(name)
 	{
-		var clickedVal=Molpy.cagedSGen.StatementValue(name);
-		if(clickedVal==Molpy.cagedPuzzleTarget)
+		var skip=0;
+		if(!Molpy.cagedSGen.firstTry)
 		{
-			Molpy.Notify('Correct',1);
-			var lc = Molpy.Boosts['Logicat'];
-			lc.power+=1+(Molpy.Boosts['Panther Rush'].power)/2;
-			while(lc.power>=lc.bought*5)
-			{
-				Molpy.RewardLogicat(lc.bought);
-				lc.bought++;
-			}
-		}
-		else
-		{
-			Molpy.Notify('Incorrect',1);
-			
-			if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))
+			if(Molpy.HasGlassBlocks(50))
 			{
 				Molpy.SpendGlassBlocks(50);
-				Molpy.cagedSGen.firstTry=0;
-				Molpy.Notify('Try Again');
-				return;
+			}else{
+				Molpy.Notify('You can\'t afford a seccond try.');
+				skip=1;
 			}
-			Molpy.Boosts['Logicat'].power-=0.5;
+		}
+		
+		if(!skip)
+		{
+			var clickedVal=Molpy.cagedSGen.StatementValue(name);
+			if(clickedVal==Molpy.cagedPuzzleTarget)
+			{
+				Molpy.Notify('Correct',1);
+				var lc = Molpy.Boosts['Logicat'];
+				lc.power+=1+(Molpy.Boosts['Panther Rush'].power)/2;
+				while(lc.power>=lc.bought*5)
+				{
+					Molpy.RewardLogicat(lc.bought);
+					lc.bought++;
+				}
+			}
+			else
+			{
+				Molpy.Notify('Incorrect',1);
+				
+				if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))
+				{
+					Molpy.cagedSGen.firstTry=0;
+					Molpy.Notify('Try Again');
+					return;
+				}
+				Molpy.Boosts['Logicat'].power-=0.5;
+			}
 		}
 		Molpy.cagedPuzzleValue='';
+		Molpy.cagedPuzzleTarget='Oh no you don\'t!';
 		Molpy.Boosts['Caged Logicat'].hoverOnCounter=1;
 		Molpy.Boosts['Caged Logicat'].power=0;
 		Molpy.Boosts['Caged Logicat'].bought--;
@@ -3111,7 +3126,10 @@ Molpy.DefineBoosts=function()
 		{
 			var print=Molpy.blackprintOrder[i];
 			if(!Molpy.Boosts[print].unlocked)
+			{
+				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return 0;
 				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
+			}
 		}
 		return 0; //none needed at the moment
 	}
@@ -3124,7 +3142,8 @@ Molpy.DefineBoosts=function()
 		{
 			var print=Molpy.blackprintOrder[i];
 			if(!Molpy.Boosts[print].unlocked)
-			{
+			{				
+				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return;
 				if(pages>=Molpy.blackprintCosts[print])
 					return print;
 				return;
@@ -3221,8 +3240,8 @@ Molpy.DefineBoosts=function()
 		},
 		className:'alert',group:'bean'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,AO:150,AA:200,SG:5,AE:60,Milo:120,ZK:180};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','AO','AA','SG','AE','Milo','ZK'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:120,ZK:180};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','Bacon','AO','AA','SG','AE','Milo','ZK'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',alias:'SMM',desc:
 		function(me)
@@ -4091,7 +4110,7 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	
-	new Molpy.Boost({name:'Safety Pumpkin',desc:'It\'s orange, comfortable, stylish, and reduces the likelihood of industrial accidents!',
+	new Molpy.Boost({name:'Safety Pumpkin',desc:'It\'s orange, comfortable, stylish, and reduces the likelihood of industrial accidents!', stats:'Also prevents Factory Automation from downgrading in shortpix!',
 		glass:'20K'
 	});
 	
@@ -4593,7 +4612,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Wimey',desc:'Travel through Time 40 Times',vis:1});
 	new Molpy.Badge({name:'Hot Tub',desc:'Travel through Time 160 Times',vis:1});
 	new Molpy.Badge({name:"Dude, Where's my DeLorean?",desc:'Travel through Time 640 Times',vis:1});
-	new Molpy.Badge({name:'Use Your Leopard',desc:'Get a click by using your leopard to simulate reloading the page'});
+	new Molpy.Badge({name:'Use Your Leopard',desc:'Get a click by using your leopard to simulate reloading the page',stats:'Type F5 into the Import dialog'});
 	new Molpy.Badge({name:'Badge Not Found',desc:'Description Not Found'});
 	new Molpy.Badge({name:'Fractals Forever',desc:'Reach Fractal Level 60, and Fractal Sandcastles will be retained if you Molpy Down.'});
 	new Molpy.Badge({name:'Recursion',

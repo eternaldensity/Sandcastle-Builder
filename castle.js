@@ -526,6 +526,8 @@ Molpy.Up=function()
 				alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
 				return;
 			}
+			g('title').innerHTML=GLRschoice(['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex']);
+			
 			var pixels = thread[2].split(s);
 			Molpy.startDate=parseInt(pixels[0]);
 			
@@ -3699,32 +3701,49 @@ Molpy.Up=function()
 		}
 		Molpy.ClickRedactedPuzzle=function(name)
 		{
-			var clickedVal=Molpy.redactedSGen.StatementValue(name);
-			if(clickedVal==Molpy.redactedPuzzleTarget)
+			var skip=0;
+			if(!Molpy.redactedSGen.firstTry)
 			{
-				Molpy.Notify('Correct',1);
-				var lc = Molpy.Boosts['Logicat'];
-				lc.power+=1+(Molpy.Boosts['Panther Rush'].power)/2;
-				while(lc.power>=lc.bought*5)
-				{
-					Molpy.RewardLogicat(lc.bought);
-					lc.bought++;
-				}
-			}
-			else
-			{
-				Molpy.Notify('Incorrect',1);
-			
-				if(Molpy.redactedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))
+				if(Molpy.HasGlassBlocks(50))
 				{
 					Molpy.SpendGlassBlocks(50);
-					Molpy.redactedSGen.firstTry=0;
-					Molpy.Notify('Try Again');
-					return;
+				}else{
+					Molpy.Notify('You can\'t afford a seccond try.');
+					skip=1;
 				}
-				Molpy.Boosts['Logicat'].power-=0.5;
 			}
+			
+			if(!skip)
+			{
+				var clickedVal=Molpy.redactedSGen.StatementValue(name);
+				if(clickedVal==Molpy.redactedPuzzleTarget)
+				{
+					Molpy.Notify('Correct',1);
+					var lc = Molpy.Boosts['Logicat'];
+					lc.power+=1+(Molpy.Boosts['Panther Rush'].power)/2;
+					while(lc.power>=lc.bought*5)
+					{
+						Molpy.RewardLogicat(lc.bought);
+						lc.bought++;
+					}
+				}
+				else
+				{
+					Molpy.Notify('Incorrect',1);
+					
+					if(Molpy.redactedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))
+					{
+						Molpy.redactedSGen.firstTry=0;
+						Molpy.Notify('Try Again');
+						return;
+					}
+					Molpy.Boosts['Logicat'].power-=0.5;
+				}
+			}
+		
 			Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]='show';
+			
+			Molpy.redactedPuzzleTarget='Oh no you don\'t!';
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;

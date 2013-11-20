@@ -26,9 +26,17 @@ For personal amusement only.
 - Mysterious Representations now works from AC level 15 (Zookeeper still works from 21), updated descriptions accordingly
 - Blast Furnace doesn't do any blastfurnacing if you have infinite castles (doesn't effect crossfeed/multitasking)
 - Keygrinder's check for key availability now doesn't need to have a logicat reward to have run first
-- Spent a while reading some archived /vg/ threads which showed up when I googled VITSSÅGEN. Very amuse!
+- Spent a while reading some /vg/ igg threads which showed up when I googled VITSSÅGEN. Very amuse!
+- Found a bunch of stuff that needs fixing, thanks /vb/
 - Noticed that VITSSÅGEN, JA!'s description didn't mention that it gives castles every 100 clicks, since that was originally a totally unimportant fringe benefit
 - VJ and Panther Salve also didn't mention that they unlock other boosts with use.
+- Phonesaw also didn't say what it does, added that to its stats.
+- Fixed 'activation level': meant 'automation level', duh.
+- Clear target answer after completing a logicat question
+- 50 Glass Block cost for Second Chance is not applied until you click the second answer
+- Instructions on how to use your leopard
+- Prevent Tool Factory Load Letter (and subsequent) if you don't have Tool Factory
+- Added Bacon to Blackprints build list for people who managed to get infinite dip without it and don't want to wait
 
 ## 3.07
 - Moved AdjustFade so it's accessible to the index page (so the version number shows up again)
