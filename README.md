@@ -4,15 +4,15 @@ xkcd: 1190: Time: The Game
 
 ## Credits
 
-Code by Eternal Density (and probably other OTTers).
-
-Graphics likely by GLR and OTTers, when they are added.
+Code mostly by Eternal Density.
 
 Parts of code and the clockface image by ChronosDragon.
 
 Quite a bit of code by waveney.
 
 Icons by ChronosDragon, BlitzGirl, and StormAngel/cmyk.
+
+'NewPix' by Randall Munroe. 'Colpix' by various.
 
 Inspired by Orteil's C**kie Clicker.
 
@@ -24,6 +24,9 @@ For personal amusement only.
 - If Locked Crate prices is mustarded, it becomes free (apart from the glass). Sorry I thought that couldn't happen in the wild.
 - And a Badge because why not?
 - More of Waveney's Discoveries
+- Removed all the upgrade code for versions less than 2.1 because I doubt anyone is running those. If so, let me know and don't upgrade until I put it back.
+- Showing full numbers in scientific notation instead of the shortened numbers is now a separate option rather than based on being in stats view
+- Toggling Stats wasn't redrawing Badges
 
 ## 3.08
 - Mys*t*erious typo fixed
