@@ -1672,7 +1672,7 @@ Molpy.DefineBoosts=function()
 	{
 		var inc=1;
 		if(Molpy.Got('Sand Purifier'))
-			inc/=(Molpy.Boosts['Sand Purifier'].power+2)
+			inc/=(Molpy.Boosts['Sand Purifier'].power+2);
 		if(Molpy.Got('Badgers'))
 		{
 			inc*=Math.pow(.99,Math.floor(Molpy.BadgesOwned/10));
@@ -1691,8 +1691,14 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.GlassChillerIncrement=function()
 	{	
-		if(!Molpy.Got('Glass Extruder'))return 1;
-		return 1/(Molpy.Boosts['Glass Extruder'].power+2)
+		var inc = 1;
+		if(Molpy.Got('Glass Extruder'));
+			inc/=(Molpy.Boosts['Glass Extruder'].power+2);
+		if(Molpy.Got('Mushrooms'))
+		{
+			inc*=Math.pow(.99,Math.floor(Molpy.BadgesOwned/10));
+		}
+		return inc;
 	}
 	Molpy.CalcGlassUse=function()
 	{
@@ -4343,6 +4349,8 @@ Molpy.DefineBoosts=function()
 		me.hoverOnCounter=1;
 	}
 	
+	new Molpy.Boost({name:'Mushrooms',desc:'For every 10 badges, Glass Block production uses 1% less sand',	sand:Infinity,castles:Infinity,glass:'60K'});
+	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
 		badges:['badge','Badges'],
@@ -5129,6 +5137,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	
 	Molpy.Boosts['Facebugs'].department=1*(Molpy.groupBadgeCounts.discov>20&&Molpy.Got('Ch*rpies'));
 	Molpy.Boosts['Badgers'].department=1*(Molpy.groupBadgeCounts.monums>20&&Molpy.Got('Facebugs'));
+	Molpy.Boosts['Mushrooms'].department=1*(Molpy.groupBadgeCounts.monums>40&&Molpy.Got('Facebugs'));
 	Molpy.CheckBlackprintDepartment();
 	
 	Molpy.Boosts['Fractal Fractals'].department=1*(Molpy.Boosts['Fractal Sandcastles'].power>=120);

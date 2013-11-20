@@ -27,6 +27,7 @@ For personal amusement only.
 - Removed all the upgrade code for versions less than 2.1 because I doubt anyone is running those. If so, let me know and don't upgrade until I put it back.
 - Showing full numbers in scientific notation instead of the shortened numbers is now a separate option rather than based on being in stats view
 - Toggling Stats wasn't redrawing Badges
+- Added Mushrooms as a counterpart to Badgers
 
 ## 3.08
 - Mys*t*erious typo fixed
