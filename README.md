@@ -20,6 +20,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.11
+- Panther Rush description missing word
+- Ensure WWB/RB's unlock Boosts will unlock if you're already eligible for them.
+
 ## 3.1
 - Fixed index to accept title change
 - Panther Rush description improved so players don't expect to see it in their Loot

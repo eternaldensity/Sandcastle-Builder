@@ -3721,9 +3721,12 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'How are you seeing this?';
 			var str = 'Multiplies the effect of each Glass Ceiling by ';
 			str+=Molpify(Math.pow(2,me.bought-5),3)+' times the number of Scaffolds owned.';
-			str+='<br>Current level is '+Molpify(me.bought);
-			str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+Molpify(444+77*me.bought,2)+' Scaffolds to hire more Beanies.';
-			if(Molpy.Got('Leggy')&&!Molpy.Got('Space Elevator')) str+='<br><input type="Button" value="Maximum Trade" onclick="Molpy.GetWWB(1)"></input> as many Scaffolds as possible to hire more Beanies: reach an infinite multiplier to unlock a new Boost!.';
+			if(isFinite(Math.pow(2,me.bought-5)))
+			{
+				str+='<br>Current level is '+Molpify(me.bought);
+				str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+Molpify(444+77*me.bought,2)+' Scaffolds to hire more Beanies.';
+				if(Molpy.Got('Leggy')&&!Molpy.Got('Space Elevator')) str+='<br><input type="Button" value="Maximum Trade" onclick="Molpy.GetWWB(1)"></input> as many Scaffolds as possible to hire more Beanies: reach an infinite multiplier to unlock a new Boost!.';
+			}
 			return str;
 		}
 		,group:'bean',classChange:
@@ -4181,7 +4184,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
-			return 'Each you buy this, uses '+Molpify(200*(me.power+1)-5,3)+' Logicat levels to increase the points awarded by correct Logicat answers by 0.5.<br>It will immediately relock and will become available again when you have '
+			return 'Each time you buy this, uses '+Molpify(200*(me.power+1)-5,3)+' Logicat levels to increase the points awarded by correct Logicat answers by 0.5.<br>It will immediately relock and will become available again when you have '
 				+Molpify(200*(me.power+2),3)+' Logicat levels';
 		},glass:function()
 		{
@@ -5111,6 +5114,9 @@ Molpy.CheckBuyUnlocks=function()
 	
 	if (Molpy.Boosts['Sand Purifier'].power > 1000) Molpy.UnlockBoost('Seaish Glass Chips');
 	if (Molpy.Boosts['Glass Extruder'].power > 1000) Molpy.UnlockBoost('Seaish Glass Blocks');
+	
+	if(!isFinite(Math.pow(200,Molpy.Boosts['RB'].bought)))Molpy.UnlockBoost('Knitted Beanies');
+	if(!isFinite(Math.pow(2,Molpy.Boosts['WWWB'].bought-5))) Molpy.UnlockBoost('Space Elevator');
 
 }
 
