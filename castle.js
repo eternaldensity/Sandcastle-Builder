@@ -82,6 +82,12 @@ function Molpify(number, raftcastle, shrinkify)
 			if(sep&&i%3==0 &&i>0) molp=','+molp;//stick commas in every 3rd spot but not 0th
 			molp=number[i]+molp;
 		}
+		if(!sep)
+		{
+			var dot=molp.indexOf('.')+1;
+			var exp=molp.indexOf('e');
+			molp=molp.slice(0,dot)+molp.slice(dot,exp).slice(0,6)+molp.slice(exp);//truncate after 6 decimal places
+		}
 	}
 	return molp;
 }

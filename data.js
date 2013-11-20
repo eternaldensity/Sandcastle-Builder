@@ -573,7 +573,7 @@ Molpy.DefineBoosts=function()
 		stats:function()
 		{
 			if(Molpy.Got('Ninja Builder')) 
-				return 'Will build '+ Molpy.CalcStealthBuild(1)+ ' Castles unless you destealth ninjas';
+				return 'Will build '+ Molpify(Molpy.CalcStealthBuild(1),3)+ ' Castles unless you destealth ninjas';
 			return 'Ninja Stealth increments the first time you click within a NewPix after NewPixBots activate. It will reset if you click before NewPixBots activate, or don\'t click before the next ONG.'	
 			
 		},icon:'ninjabuilder',group:'ninj'
