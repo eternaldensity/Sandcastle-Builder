@@ -1985,7 +1985,7 @@ Molpy.Up=function()
 		{
 			var newsand=Molpy.computedSandPerClick;
 			Molpy.Dig(newsand);
-			if(Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(newsand,1));
+			if(newsand&&Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(newsand,1));
 			Molpy.sandManual+=newsand;
 			if(isNaN(Molpy.sandManual))Molpy.sandManual=0;
 			if(!isFinite(Molpy.sand)&&Molpy.Got('BG'))
@@ -1997,6 +1997,7 @@ Molpy.Up=function()
 				}
 				Molpy.Boosts['Tool Factory'].power+=Molpy.chipsPerClick;
 				Molpy.chipsManual+=Molpy.chipsPerClick;
+				if(Molpy.chipsPerClick&&Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(Molpy.chipsPerClick,1));
 			}
 			Molpy.beachClicks+=1;
 			Molpy.CheckClickAchievements();

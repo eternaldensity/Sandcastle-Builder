@@ -3794,6 +3794,13 @@ Molpy.DefineBoosts=function()
 			if(!me.bought)return str;
 			if(Molpy.Got('TFLL')&&Molpy.HasGlassChips(50000))
 			{
+				if(Molpy.HasGlassChips(1e10))
+				{
+					str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1e10)"></input> with 10G Glass Chips';
+				}else if(Molpy.HasGlassChips(1e7))
+				{
+					str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1e7)"></input> with 10M Glass Chips';
+				}
 				str+='<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(50000)"></input> with 50K Glass Chips';
 			}else if(Molpy.Got('TFLL')&&Molpy.HasGlassChips(10000))
 			{
