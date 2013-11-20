@@ -4799,7 +4799,7 @@ Molpy.Up=function()
 	var hidClassNames=['hidden','unhidden'];
 	Molpy.Draw=function()
 	{
-		g('castlecount').innerHTML=Molpify(Molpy.castles,1) + ' castles';
+		g('castlecount').innerHTML=Molpify(Molpy.castles,1) + ' castle'+plural(Molpy.castles);
 		g('sandcount').innerHTML=Molpify(Molpy.sand,1) + ' sand'+(isFinite(Molpy.castles)?' of ' + Molpify(Molpy.nextCastleSand,1) + ' needed':'');
 		g('sandrate').innerHTML=Molpify(Molpy.sandPermNP,1) + ' sand/mNP';
 		g('chipcount').innerHTML=Molpify(Molpy.Boosts['Tool Factory'].power,1) + ' chips';
