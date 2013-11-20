@@ -4154,7 +4154,8 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
-			return 'When you buy this, uses '+Molpify(200*(me.power+1)-5,3)+' Logicat levels to increase the points awarded by Logicats by 0.5'
+			return 'Each you buy this, uses '+Molpify(200*(me.power+1)-5,3)+' Logicat levels to increase the points awarded by correct Logicat answers by 0.5.<br>It will immediately relock and will become available again when you have '
+				+Molpify(200*(me.power+2),3)+' Logicat levels';
 		},glass:function()
 		{
 			return 30000000+Molpy.Boosts['Panther Rush'].power*10000000;
@@ -4164,7 +4165,7 @@ Molpy.DefineBoosts=function()
 			var levels = 200*(this.power+1)-5;
 			Molpy.Boosts['Logicat'].bought-=levels;
 			Molpy.Boosts['Logicat'].power-=5*levels;
-		this.power++;
+			this.power++;
 			Molpy.LockBoost(this.alias);
 		}
 	});

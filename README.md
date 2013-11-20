@@ -20,6 +20,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1
+- Fixed index to accept title change
+- Panther Rush description improved so players don't expect to see it in their Loot
+
 ## 3.09
 - If Locked Crate prices is mustarded, it becomes free (apart from the glass). Sorry I thought that couldn't happen in the wild.
 - And a Badge because why not?
