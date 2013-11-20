@@ -26,6 +26,7 @@ For personal amusement only.
 - Fixed castle display so it shows "1 castle" for that first castle rather than "1 castles"
 - Molpify Ninja Stealth Build amount
 - Truncate scientific notation numbers to 6 decimal places
+- Boots typo
 
 ## 3.09
 - If Locked Crate prices is mustarded, it becomes free (apart from the glass). Sorry I thought that couldn't happen in the wild.
