@@ -383,7 +383,9 @@ Molpy.DefineCastleTools=function()
 			var baseval=21;
 			if(Molpy.Got('Leggy'))
 				baseval*=8;
-			return baseval;
+			if(Molpy.Got('Space Elevator'))
+				baseval*=Molpy.SandTools['Ladder'].amount/1e4;
+			return Math.floor(baseval);
 		},
 		nextThreshold:4
 	});
@@ -501,7 +503,9 @@ Molpy.DefineCastleTools=function()
 				baseval*= 15;
 			if(Molpy.Got('Crystal Helm'))
 				baseval*= 5;
-			return baseval;
+			if(Molpy.Got('Knitted Beanies'))
+				baseval*= Molpy.SandTools['Bag'].amount/1e6;
+			return Math.floor(baseval);
 		}
 		,nextThreshold:1
 	});
@@ -3717,7 +3721,9 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'How are you seeing this?';
 			var str = 'Multiplies the effect of each Glass Ceiling by ';
 			str+=Molpify(Math.pow(2,me.bought-5),3)+' times the number of Scaffolds owned.';
-			str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+(444+77*me.bought)+' Scaffolds to hire more Beanies.';
+			str+='<br>Current level is '+Molpify(me.bought);
+			str+='<br><input type="Button" value="Trade" onclick="Molpy.GetWWB()"></input> '+Molpify(444+77*me.bought,2)+' Scaffolds to hire more Beanies.';
+			if(Molpy.Got('Leggy')&&!Molpy.Got('Space Elevator')) str+='<br><input type="Button" value="Maximum Trade" onclick="Molpy.GetWWB(1)"></input> as many Scaffolds as possible to hire more Beanies: reach an infinite multiplier to unlock a new Boost!.';
 			return str;
 		}
 		,group:'bean',classChange:
@@ -3733,7 +3739,7 @@ Molpy.DefineBoosts=function()
 			}
 		}
 	});
-	Molpy.GetWWB=function()
+	Molpy.GetWWB=function(seaish)
 	{
 		var wwb=Molpy.Boosts['WWB'];
 		var price = 444+77*wwb.bought;
@@ -3743,24 +3749,43 @@ Molpy.DefineBoosts=function()
 			Molpy.Notify('You must construct additional <span class="strike">pylons</span>scaffolds',1);
 			return;
 		}
-		scaf.amount-=price;
-		Molpy.CastleToolsOwned-=price;
-		scaf.refresh();
-		if(wwb.bought)wwb.bought++;
-		else
+		if(seaish&&wwb.bought)
 		{
-			Molpy.UnlockBoost(wwb.alias);
-			wwb.buy();
+			while(scaf.amount>price&&isFinite(Math.pow(2,wwb.bought-5)))
+			{
+				scaf.amount-=price;
+				Molpy.CastleToolsOwned-=price;
+				wwb.bought++;
+				price = 444+77*wwb.bought;
+			}
+			scaf.refresh();
+		}else
+		{
+			scaf.amount-=price;
+			Molpy.CastleToolsOwned-=price;
+			scaf.refresh();
+			if(wwb.bought)wwb.bought++;
+			else
+			{
+				Molpy.UnlockBoost(wwb.alias);
+				wwb.buy();
+			}
 		}
+		if(!isFinite(Math.pow(2,wwb.bought-5))) Molpy.UnlockBoost('Space Elevator');
 	}
 	
 	new Molpy.Boost({name:'Recycling Beanies',alias:'RB',desc:
 		function(me)
 		{
 			var str= 'Multiplies the effect of Broken Bottle Cleanup by '+Molpify(Math.pow(200,me.bought),3);
-			if(Molpy.CastleTools['Beanie Builder'].amount>(me.bought*200))
+			if(isFinite(Math.pow(200,me.bought)))
 			{
-				str+='<br><input type="Button" value="Hire" onclick="Molpy.HireRecycling()"></input> '+(200*me.bought)+' Beanie Builders to recycle.';
+				str+='<br>Current level is '+Molpify(me.bought);
+				if(Molpy.CastleTools['Beanie Builder'].amount>(me.bought*200))
+				{
+					str+='<br><input type="Button" value="Hire" onclick="Molpy.HireRecycling()"></input> '+Molpify(200*me.bought,2)+' Beanie Builders to recycle.';
+				}
+				if(Molpy.Got('Crystal Helm'))str+='<br>Reach an infinite multiplier to unlock a new Boost!';
 			}
 			return str;
 		}
@@ -3768,7 +3793,7 @@ Molpy.DefineBoosts=function()
 		function()
 		{
 			var oldClass=this.className;
-			var newClass = this.bought&&Molpy.CastleTools['Beanie Builder'].amount>=this.bought*200-20				
+			var newClass = this.bought&&isFinite(Math.pow(200,this.bought))&&Molpy.CastleTools['Beanie Builder'].amount>=this.bought*200-20				
 				?'action':'';
 			if(newClass!=oldClass)
 			{
@@ -3791,6 +3816,8 @@ Molpy.DefineBoosts=function()
 		Molpy.CastleToolsOwned-=price;
 		bb.refresh();
 		rb.bought++;
+		
+		if(!isFinite(Math.pow(200,rb.bought)))Molpy.UnlockBoost('Knitted Beanies');
 	}
 	
 	new Molpy.Boost({name:'Tool Factory',desc:
@@ -4351,6 +4378,8 @@ Molpy.DefineBoosts=function()
 	}
 	
 	new Molpy.Boost({name:'Mushrooms',desc:'For every 10 badges, Glass Block production uses 1% less sand',	sand:Infinity,castles:Infinity,glass:'60K'});
+	new Molpy.Boost({name:'Knitted Beanies',desc:'Beanie Builder Glass production is multiplied by the number of million Bags owned',glass:'40G',sand:Infinity,castles:Infinity,group:'bean'});
+	new Molpy.Boost({name:'Space Elevator',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',glass:'25B',sand:Infinity,castles:Infinity});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
