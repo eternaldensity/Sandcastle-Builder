@@ -27,6 +27,8 @@ For personal amusement only.
 - Molpify Ninja Stealth Build amount
 - Truncate scientific notation numbers to 6 decimal places
 - Boots typo
+- Coloured border was not removed when loading a save with Beachball boost disabled
+- Fixed another Beach CSS problem: turned out all the recent issues there were caused by using .background instead of .backgroundImage
 
 ## 3.09
 - If Locked Crate prices is mustarded, it becomes free (apart from the glass). Sorry I thought that couldn't happen in the wild.

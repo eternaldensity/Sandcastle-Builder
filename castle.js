@@ -4500,10 +4500,17 @@ Molpy.Up=function()
 	var oldBeachClass='';
 	Molpy.UpdateBeachClass=function(stateClass)
 	{
-		if(Molpy.Boosts['Beachball'].power&&oldBeachClass!=stateClass)
+		if(Molpy.Boosts['Beachball'].power)
 		{
-			$('#beach').removeClass(oldBeachClass).addClass(stateClass);
-			oldBeachClass=stateClass;
+			if(oldBeachClass!=stateClass)
+			{
+				$('#beach').removeClass(oldBeachClass).addClass(stateClass);
+				oldBeachClass=stateClass;
+			}
+		}else if(oldBeachClass)
+		{
+			$('#beach').removeClass(oldBeachClass);
+			oldBeachClass='';
 		}
 	}
 	
@@ -4794,8 +4801,7 @@ Molpy.Up=function()
 	//call with argument to change to a specific np, otherwise defaults to the current np
 	Molpy.UpdateBeach=function(np)
 	{
-		g('beach').style.background=Molpy.NewPixFor(np||Molpy.newpixNumber);
-		g('beach').style.backgroundSize='contain';
+		g('beach').style.backgroundImage=Molpy.NewPixFor(np||Molpy.newpixNumber);
 	}
 	/* In which we figure out how to draw stuff
 	+++++++++++++++++++++++++++++++++++++++++++*/
