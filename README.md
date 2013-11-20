@@ -26,7 +26,9 @@ For personal amusement only.
 - Mysterious Representations now works from AC level 15 (Zookeeper still works from 21), updated descriptions accordingly
 - Blast Furnace doesn't do any blastfurnacing if you have infinite castles (doesn't effect crossfeed/multitasking)
 - Keygrinder's check for key availability now doesn't need to have a logicat reward to have run first
-
+- Spent a while reading some archived /vg/ threads which showed up when I googled VITSSÅGEN. Very amuse!
+- Noticed that VITSSÅGEN, JA!'s description didn't mention that it gives castles every 100 clicks, since that was originally a totally unimportant fringe benefit
+- VJ and Panther Salve also didn't mention that they unlock other boosts with use.
 
 ## 3.07
 - Moved AdjustFade so it's accessible to the index page (so the version number shows up again)
