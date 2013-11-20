@@ -39,6 +39,7 @@ For personal amusement only.
 - Added Bacon to Blackprints build list for people who managed to get infinite dip without it and don't want to wait
 - Bigger load sizes for TFLL
 - With Booster Glass, show +numbers on click (if the click-numbers option is enabled)
+- Fixed stupid CSS weirdness preventing the resizing of Colpix
 
 ## 3.07
 - Moved AdjustFade so it's accessible to the index page (so the version number shows up again)

@@ -4904,6 +4904,7 @@ Molpy.Up=function()
 	Molpy.UpdateBeach=function(np)
 	{
 		g('beach').style.background=Molpy.NewPixFor(np||Molpy.newpixNumber);
+		g('beach').style.backgroundSize='contain';
 	}
 	/* In which we figure out how to draw stuff
 	+++++++++++++++++++++++++++++++++++++++++++*/
