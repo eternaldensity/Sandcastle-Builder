@@ -226,7 +226,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.08;
+		Molpy.version=3.09;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2930,7 +2930,7 @@ Molpy.Up=function()
 				}
 				
 				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1));
-				if(isNaN(sp)){this.power=0;sp=0;};
+				if(isNaN(sp)){this.power=0;sp=0;Molpy.EarnBadge('How do I Shot Mustard?'};
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));
 				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1));
 				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp && Molpy.HasGlassBlocks(gp))

@@ -22,6 +22,8 @@ For personal amusement only.
 
 ## 3.09
 - If Locked Crate prices is mustarded, it becomes free (apart from the glass). Sorry I thought that couldn't happen in the wild.
+- And a Badge because why not?
+- More of Waveney's Discoveries
 
 ## 3.08
 - Mys*t*erious typo fixed
@@ -30,7 +32,7 @@ For personal amusement only.
 - Blast Furnace doesn't do any blastfurnacing if you have infinite castles (doesn't effect crossfeed/multitasking)
 - Keygrinder's check for key availability now doesn't need to have a logicat reward to have run first
 - Spent a while reading some /vg/ igg threads which showed up when I googled VITSSÅGEN. Very amuse!
-- Found a bunch of stuff that needs fixing, thanks /vb/
+- Found a bunch of stuff that needs fixing, thanks /vg/ (lulz typo, I just saw someone pointing that out... sigh)
 - Noticed that VITSSÅGEN, JA!'s description didn't mention that it gives castles every 100 clicks, since that was originally a totally unimportant fringe benefit
 - VJ and Panther Salve also didn't mention that they unlock other boosts with use.
 - Phonesaw also didn't say what it does, added that to its stats.
