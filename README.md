@@ -23,6 +23,13 @@ For personal amusement only.
 ## 3.11
 - Panther Rush description missing word
 - Ensure WWB/RB's unlock Boosts will unlock if you're already eligible for them.
+- Don't show trade/hint for WWB when infinite factor
+- Remove WWB from tagged items when infinite factor
+- Adjust Knitted Beanies and Space Elevator prices
+- Wasn't a way to see BKJ! power level
+- Locking glass ceilings now distributes Tool Factory's production over the remaining glass tools
+- i.e. if you have PC=1 and lock 6 of 12 glass ceilings, it'll make 2 of the remaining 6 tools per mNP (assuming you can afford it!)
+- or if you lock 11 you'll get 12x the 1 you didn't lock
 
 ## 3.1
 - Fixed index to accept title change

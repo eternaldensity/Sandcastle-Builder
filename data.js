@@ -1091,7 +1091,12 @@ Molpy.DefineBoosts=function()
 		},className:'alert',group:'cyb'
 		});	
 	
-	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',alias:'BKJ',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',sand:'9.8M',castles:888555222,stats:'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blizting to boost Blast Furnace if they overlap.',icon:'bkj',group:'hpt'});
+	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',alias:'BKJ',desc:function(me)
+		{
+			return 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.<br>Power level is '+Molpify(me.power,3);
+		}
+		,sand:'9.8M',castles:888555222,stats:'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blizting to boost Blast Furnace if they overlap.',icon:'bkj',group:'hpt'
+	});
 		
 	new Molpy.Boost({name:'Summon Knights Temporal',desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
 		sand:function()
@@ -3733,7 +3738,7 @@ Molpy.DefineBoosts=function()
 		function()
 		{
 			var oldClass=this.className;
-			var newClass = this.bought&&Molpy.CastleTools['Scaffold'].amount>=444+this.bought*77				
+			var newClass = this.bought&&isFinite(Math.pow(2,this.bought-5))&&Molpy.CastleTools['Scaffold'].amount>=444+this.bought*77				
 				?'action':'';
 			if(newClass!=oldClass)
 			{
@@ -3826,7 +3831,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Tool Factory',desc:
 		function(me)
 		{
-			var str='Produces Glass Tools from Glass Chips';
+			var str='Produces Glass Tools from Glass Chips.<br>Lock Glass Ceilings to prevent a tool from being produced.<br>This will concentrate more production of the remaining tools.';
 			if(!me.bought)return str;
 			if(Molpy.Got('TFLL')&&Molpy.HasGlassChips(50000))
 			{
@@ -3882,7 +3887,8 @@ Molpy.DefineBoosts=function()
         var built=0;
         var fVal=Molpy.Boosts['Flipside'].power;
         var fast=0;
-        if (Molpy.GlassCeilingCount()==12 && (fVal==0) && (pow >= 78000*i))
+		var gcCount=Molpy.GlassCeilingCount();
+        if (gcCount==12 && (fVal==0) && (pow >= 78000*i))
         {
             var t = Molpy.tfOrder.length;
             fast=1;
@@ -3899,6 +3905,7 @@ Molpy.DefineBoosts=function()
         }
         else
         {
+			pow=Math.floor(pow/gcCount*12);
             while(pow&&i--)
             {
                 var t = Molpy.tfOrder.length;
@@ -4381,8 +4388,8 @@ Molpy.DefineBoosts=function()
 	}
 	
 	new Molpy.Boost({name:'Mushrooms',desc:'For every 10 badges, Glass Block production uses 1% less sand',	sand:Infinity,castles:Infinity,glass:'60K'});
-	new Molpy.Boost({name:'Knitted Beanies',desc:'Beanie Builder Glass production is multiplied by the number of million Bags owned',glass:'40G',sand:Infinity,castles:Infinity,group:'bean'});
-	new Molpy.Boost({name:'Space Elevator',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',glass:'25B',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Knitted Beanies',desc:'Beanie Builder Glass production is multiplied by the number of million Bags owned',glass:'60T',sand:Infinity,castles:Infinity,group:'bean'});
+	new Molpy.Boost({name:'Space Elevator',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',glass:'55T',sand:Infinity,castles:Infinity});
 	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -5116,7 +5123,7 @@ Molpy.CheckBuyUnlocks=function()
 	if (Molpy.Boosts['Glass Extruder'].power > 1000) Molpy.UnlockBoost('Seaish Glass Blocks');
 	
 	if(!isFinite(Math.pow(200,Molpy.Boosts['RB'].bought)))Molpy.UnlockBoost('Knitted Beanies');
-	if(!isFinite(Math.pow(2,Molpy.Boosts['WWWB'].bought-5))) Molpy.UnlockBoost('Space Elevator');
+	if(!isFinite(Math.pow(2,Molpy.Boosts['WWB'].bought-5))) Molpy.UnlockBoost('Space Elevator');
 
 }
 
