@@ -37,6 +37,7 @@ For personal amusement only.
 - *Grapevine, grapevine*
 - More PC multiupgrades: now in a for loop!
 - Changed Tool Factory (other than the simple can afford to buy everything case) to bulk buy the largest number of tools it can buy the same amount of, then buy 1 of anything leftover
+- Bag burning should power up twice as fast, also removed the random burning of single bags.
 
 ## 3.1
 - Fixed index to accept title change

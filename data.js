@@ -987,11 +987,7 @@ Molpy.DefineBoosts=function()
 		}
 		,lockFunction:function()
 		{
-			this.power++;
-		}
-		,buyFunction:function()
-		{
-			Molpy.BurnBags(this.power+1);
+			this.power+=2;
 		}
 		,icon:'bagburning'});
 	new Molpy.Boost({name:'Chromatic Heresy',desc:
@@ -4593,7 +4589,7 @@ Molpy.DefineBadges=function()
 			if(nobagLevel>Math.pow(2,Molpy.Boosts['Bag Burning'].power)+6)
 			{
 				var rate = Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power+1,1);
-				Molpy.Boosts['Bag Burning'].power+=0.5*rate;
+				Molpy.Boosts['Bag Burning'].power+=rate;
 				if(Molpy.SandTools['Bag'].amount<Molpy.npbDoubleThreshhold)
 				{
 					Molpy.Notify('The NewPixBots extinguished the burning Bags!',1);
