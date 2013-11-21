@@ -3878,6 +3878,7 @@ Molpy.DefineBoosts=function()
 	Molpy.RunToolFactory=function()
     {
         var tf = Molpy.Boosts['Tool Factory'];
+		if(!tf.bought)return;
         var i = 1;
         if(Molpy.Got('PC')) i=Molpy.Boosts['PC'].power;
         var pow=tf.power;
@@ -3885,6 +3886,7 @@ Molpy.DefineBoosts=function()
         var fVal=Molpy.Boosts['Flipside'].power;
         var fast=0;
 		var gcCount=Molpy.GlassCeilingCount();
+		if(gcCount==0)return;
         if (gcCount==12 && (fVal==0) && (pow >= 78000*i)) //everything selected and we can afford it all!
         {
             var t = Molpy.tfOrder.length;
@@ -3918,7 +3920,7 @@ Molpy.DefineBoosts=function()
 			var iAfford= Math.min(i,Math.floor(pow/setPrice)); //find how many of everything can be built
 			
             t = Molpy.tfOrder.length;
-            while(t--)
+            while(iAfford&&t--)
             {
                 tool = Molpy.tfOrder[t];
                 tool.amount += iAfford;

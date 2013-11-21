@@ -614,9 +614,9 @@ Molpy.Up=function()
 				if (pixels[i])
 				{
 					var ice=pixels[i].split(c);
-					me.amount=parseInt(ice[0]);
-					me.bought=parseInt(ice[1]);
-					me.totalSand=parseFloat(ice[2]);
+					me.amount=parseInt(ice[0])||0;
+					me.bought=parseInt(ice[1])||0;
+					me.totalSand=parseFloat(ice[2])||0;
 					me.temp=parseInt(ice[3])||0;
 					me.totalGlass=parseInt(ice[4])||0;
 					Molpy.SandToolsOwned+=me.amount;
@@ -635,8 +635,8 @@ Molpy.Up=function()
 				if (pixels[i])
 				{
 					var ice=pixels[i].split(c);
-					me.amount=parseInt(ice[0]);
-					me.bought=parseInt(ice[1]);
+					me.amount=parseInt(ice[0])||0;
+					me.bought=parseInt(ice[1])||0;
 					me.totalCastlesBuilt=parseFloat(ice[2]);
 					me.totalCastlesDestroyed=parseFloat(ice[3]);
 					if(!me.totalCastlesDestroyed)me.totalCastlesDestroyed=0;//mustard cleaning

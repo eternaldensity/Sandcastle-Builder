@@ -20,6 +20,13 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.12
+- I removed the molpies and grapevines from the wrong place
+- The previous Tool Factory changes broke Tool Factory (and all your tools) if you didn't have Tool Factory
+- If you don't have an earlier save, sorry but your tools are gone and I can't get them back. If you remember how many you had, feel free to edit them back in
+- Also suggest suitable punishments for me
+- So yeah I should test what happens if you *don't* have features that I'm changing as well as if you do.
+
 ## 3.11
 - Panther Rush description missing word
 - Ensure WWB/RB's unlock Boosts will unlock if you're already eligible for them.
