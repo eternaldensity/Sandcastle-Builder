@@ -20,6 +20,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.13
+- Now you can call Molpify like this: Molpify(someNumber, decimalPlaces,2) and it won't apply all the letter prefix things, regardless of your game's scientific notation setting
+
 ## 3.12
 - I removed the molpies and grapevines from the wrong place
 - The previous Tool Factory changes broke Tool Factory (and all your tools) if you didn't have Tool Factory
