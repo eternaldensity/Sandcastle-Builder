@@ -232,7 +232,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.11;
+		Molpy.version=3.12;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -385,7 +385,7 @@ Molpy.Up=function()
 			}
 			if(thread=='Molpy')
 			{
-				Molpy.Notify('Upgraded to new version!',1);			
+				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
 				return;
 			}
 			if (thread && thread!='')
@@ -954,8 +954,8 @@ Molpy.Up=function()
 				if(Molpy.Got('Panther Rush'))Molpy.Boosts['Panther Rush'].buyFunction();
 			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
-			{
-				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
+			{	
+				Molpy.Notify('Upgraded to new version!',1);		
 				if(Molpy.Boosts['Safety Hat'].unlocked&&Molpy.Got('Safety Pumpkin')&&!Molpy.Boosts['SG'].unlocked)
 					Molpy.UnlockBoost('SG');
 				else if(!Molpy.Got('SG'))
