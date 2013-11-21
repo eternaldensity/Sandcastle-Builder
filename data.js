@@ -3166,6 +3166,7 @@ Molpy.DefineBoosts=function()
 		var target = Molpy.GetBlackprintPages();
 		var b = Molpy.Boosts['Blackprints'];
 		b.power+=n;
+		if(b.power>9000)Molpy.EarnBadge('Scouter');
 		if(!Molpy.boostSilence)
 		{
 			if(n==1)
@@ -4782,6 +4783,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'MegaTool', desc:'Make 1M Glass Tools per mNP'});
 	new Molpy.Badge({name:'GigaTool', desc:'Make 1G Glass Tools per mNP'});
 	new Molpy.Badge({name:'TeraTool', desc:'Make 1T Glass Tools per mNP'});
+	new Molpy.Badge({name:'Scouter', desc:'Have over nine thousand Blackprints'});
 	
 	
 	//*************************************************
