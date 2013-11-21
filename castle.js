@@ -39,7 +39,7 @@ function Molpify(number, raftcastle, shrinkify)
 	if(!isFinite(parseFloat(number)))return'Infinite';
 	var molp='';
 	
-	if(shrinkify=2)shrinkify=0;
+	if(shrinkify==2)shrinkify=0;
 	else if(Molpy&&!shrinkify)shrinkify=!Molpy.options.science;
 	
 	if(shrinkify)
