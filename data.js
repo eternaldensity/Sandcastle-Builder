@@ -972,7 +972,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Swell',desc:'Waves produce 29 more Castles',sand:'20K',castles:200,icon:'swell'});
 	new Molpy.Boost({name:'Flux Capacitor',desc:'It makes Time Travel possibler!',sand:88,castles:88,group:'chron'});
-	new Molpy.Boost({name:'Bag Burning',desc:'Bags help counteract NewPixBots. This will require burning some bags.',sand:'50M',castles:86,
+	new Molpy.Boost({name:'Bag Burning',desc:'Bags help counteract NewPixBots. This will involve burning some Bags.<br>Bag Burning is the first of several Boosts available during Judgement Dip.<br>Remember you can always sell Bags to reduce the effect of Bag Burning.',sand:'50M',castles:86,
 		stats:function()
 		{
 			var str = 'Half of Bags beyond the 14th owned give a cumulative 40% boost to Judgement Dip threshhold.';
@@ -3971,6 +3971,11 @@ Molpy.DefineBoosts=function()
             Molpy.shopRepaint=1;
             Molpy.CheckBuyUnlocks();
             tf.power=pow;
+			
+			if(built>=1000)Molpy.EarnBadge('KiloTool');
+			if(built>=1e6)Molpy.EarnBadge('MegaTool');
+			if(built>=1e9)Molpy.EarnBadge('GigaTool');
+			if(built>=1e12)Molpy.EarnBadge('TeraTool');
 
         }
         if(!Molpy.Boosts['AA'].power)return;
@@ -4773,6 +4778,10 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Strikes Twice', desc:'Attempt to receive Blitzing while you have Glassed Lightning (this will instead give Glassed Lightning more power)'});
 	new Molpy.Badge({name:'Meaning',desc:'Reach a '+Molpy.redactedWord+' streak of 42'});
 	new Molpy.Badge({name:'How do I Shot Mustard?',desc:'Buy a Locked Crate with mustarded price',stats:'To get one you will need to have Locked Crate appear in the shop immediately after spending infinite castles'});
+	new Molpy.Badge({name:'KiloTool', desc:'Make 1K Glass Tools per mNP'});
+	new Molpy.Badge({name:'MegaTool', desc:'Make 1M Glass Tools per mNP'});
+	new Molpy.Badge({name:'GigaTool', desc:'Make 1G Glass Tools per mNP'});
+	new Molpy.Badge({name:'TeraTool', desc:'Make 1T Glass Tools per mNP'});
 	
 	
 	//*************************************************

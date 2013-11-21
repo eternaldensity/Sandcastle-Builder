@@ -232,7 +232,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1;
+		Molpy.version=3.11;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2633,34 +2633,28 @@ Molpy.Up=function()
 						return;
 					}
 				}
-				while(i--)
+				if(inf)
 				{
-					if(inf)
+					var iAfford = Math.min(i,Math.floor(Molpy.Boosts['Tool Factory'].power/destroyN));
+					this.currentActive+=iAfford;
+					this.totalGlassDestroyed+=destroyN*iAfford;
+					Molpy.DestroyGlass(destroyN*iAfford);
+					
+				}else{
+					var iAfford = Math.min(i,Math.floor(Molpy.castles/destroyN));
+					var waste=0;
+					if(iAfford<i)
 					{
-						if(Molpy.Boosts['Tool Factory'].power >= destroyN)
-						{
-							this.currentActive++;
-							this.totalGlassDestroyed+=destroyN;
-							Molpy.DestroyGlass(destroyN);
-						}
-						else
-						{
-							break; //no wastage
-						}
-					}else{
-						if(Molpy.castles >= destroyN)
-						{
-							this.currentActive++;
-							this.totalCastlesDestroyed+=destroyN;
-						}
-						else
-						{
-							this.totalCastlesWasted+=Molpy.castles;
-						}
-						Molpy.Destroy(destroyN);
+						waste = Molpy.castles-destroyN*iAfford;
 					}
-					if(this.destroyFunction)this.destroyFunction();
+					this.currentActive+=iAfford;
+					this.totalCastlesDestroyed+=destroyN*iAfford;
+					this.totalCastlesWasted+=waste;
+					
+					Molpy.Destroy(destroyN*iAfford+waste);
 				}
+				if(this.destroyFunction)this.destroyFunction();
+				
 			}
 			this.BuildPhase=function()
 			{

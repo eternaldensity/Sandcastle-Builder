@@ -38,6 +38,8 @@ For personal amusement only.
 - More PC multiupgrades: now in a for loop!
 - Changed Tool Factory (other than the simple can afford to buy everything case) to bulk buy the largest number of tools it can buy the same amount of, then buy 1 of anything leftover
 - Bag burning should power up twice as fast, also removed the random burning of single bags.
+- Longer description for Bag Burning
+- DestroyPhase function no longer loops once per castle tool owned (which is kinda slow when you get millions), instead uses division :P
 
 ## 3.1
 - Fixed index to accept title change
