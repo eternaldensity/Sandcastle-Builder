@@ -30,6 +30,13 @@ For personal amusement only.
 - Locking glass ceilings now distributes Tool Factory's production over the remaining glass tools
 - i.e. if you have PC=1 and lock 6 of 12 glass ceilings, it'll make 2 of the remaining 6 tools per mNP (assuming you can afford it!)
 - or if you lock 11 you'll get 12x the 1 you didn't lock
+- Upgrading to new version now says 'upgrading to new version instead of:
+- *Molpy, molpy, molpy, molpy*
+- *Molpy, molpy, molpy, molpy*
+- *Molpy, molpy, molpy, molpy*
+- *Grapevine, grapevine*
+- More PC multiupgrades: now in a for loop!
+- Changed Tool Factory (other than the simple can afford to buy everything case) to bulk buy the largest number of tools it can buy the same amount of, then buy 1 of anything leftover
 
 ## 3.1
 - Fixed index to accept title change

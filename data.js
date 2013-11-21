@@ -3888,7 +3888,7 @@ Molpy.DefineBoosts=function()
         var fVal=Molpy.Boosts['Flipside'].power;
         var fast=0;
 		var gcCount=Molpy.GlassCeilingCount();
-        if (gcCount==12 && (fVal==0) && (pow >= 78000*i))
+        if (gcCount==12 && (fVal==0) && (pow >= 78000*i)) //everything selected and we can afford it all!
         {
             var t = Molpy.tfOrder.length;
             fast=1;
@@ -3905,25 +3905,60 @@ Molpy.DefineBoosts=function()
         }
         else
         {
-			pow=Math.floor(pow/gcCount*12);
-            while(pow&&i--)
-            {
-                var t = Molpy.tfOrder.length;
-                while(pow&&t--)
-                {
-                    var tool=Molpy.tfOrder[t];
-                    if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
-                    {
-                        var cost = 1000*(t+1);
-                        if(pow>=cost)
-                        {
-                            pow-=cost;
-                            tool.create();
-                            built++;
-                        }
-                    }
-                }
+			i=Math.floor(i/gcCount*12);//if something isn't selected, we can try building a bit more of the other things
+			var setPrice=0;
+			
+			var t = Molpy.tfOrder.length;
+			while(pow&&t--)
+			{
+				var tool=Molpy.tfOrder[t];
+				if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
+				{
+					var cost = 1000*(t+1);
+					setPrice+=cost; //figure out how much it costs for one of everything selected
+				}
             }
+			var iAfford= Math.min(i,Math.floor(pow/setPrice)); //find how many of everything can be built
+			
+            t = Molpy.tfOrder.length;
+            while(t--)
+            {
+                tool = Molpy.tfOrder[t];
+                tool.amount += iAfford;
+                tool.bought += iAfford;
+				built+=iAfford;
+				if(i%2)         
+					Molpy.CastleToolsOwned+=iAfford;
+				else
+					Molpy.SandToolsOwned+=iAfford; 
+            }              
+            pow -= setPrice*iAfford;
+			
+			if(iAfford<i) //we have some chips leftover so build 1 of what we can afford
+			{
+				t = Molpy.tfOrder.length;
+				while(t--)
+				{
+					var tool=Molpy.tfOrder[t];
+					if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
+					{
+						var cost = 1000*(t+1);
+						if(pow>=cost)
+						{
+							pow-=cost;
+							built++;
+							tool = Molpy.tfOrder[t];
+							tool.amount++;
+							tool.bought++;
+							if(i%2)         
+								Molpy.CastleToolsOwned++;
+							else
+								Molpy.SandToolsOwned++; 
+						}
+					}
+				}
+            }
+			
         }
         if(built)
         {       
@@ -4219,18 +4254,21 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Allows you to change how many copies of Glass Tools can be constructed by Tool Factory each mNP';
 			var n = me.power;
 			var str='Tool Factory produces up to '+Molpify(n,2)+' of any Glass Tool per mNP.';
-			if(n < 500 && Molpy.HasGlassBlocks(1e6*n))
+			if((n < 500 || ! Molpy.HasGlassBlocks(1e7*n)) && Molpy.HasGlassBlocks(1e6*n))
 			{
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(1)"></input> the rate by 1 at a cost of '+Molpify(1e6*n,1)+' Glass Blocks.';
 			}
-			if(n >= 50 && Molpy.HasGlassBlocks(1e7*n))
-            {
-                str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(10)"></input> the rate by 10 at a cost of '+Molpify(1e7*n,1)+' Glass Blocks.';
-            }
-			if(n >= 500 && Molpy.HasGlassBlocks(1e8*n))
-            {
-                str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(100)"></input> the rate by 100 at a cost of '+Molpify(1e8*n,1)+' Glass Blocks.';
-            }
+			for(var i = 1;i<10;i++)
+			{				
+				if((n >= 5*Math.pow(10,i) || !Molpy.HasGlassBlocks(Math.pow(10,i+7)*n)) && n < 5*Math.pow(10,i+2))
+				{
+					if(Molpy.HasGlassBlocks(Math.pow(10,i+6)*n))
+					{
+						str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory('+Math.pow(10,i)+')"></input> the rate by '+Molpify(Math.pow(10,i),1) 
+							+' at a cost of '+Molpify(Math.pow(10,i+6)*n,1)+' Glass Blocks.';
+					}else break;
+				}
+			}
 			if(!Molpy.Boosts['No Sell'].power&&me.power>0&&Molpy.HasGlassBlocks(1e5*n))
 			{
 				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlToolFactory(-1)"></input> the rate by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Blocks.';

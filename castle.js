@@ -385,7 +385,7 @@ Molpy.Up=function()
 			}
 			if(thread=='Molpy')
 			{
-				Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);			
+				Molpy.Notify('Upgraded to new version!',1);			
 				return;
 			}
 			if (thread && thread!='')
@@ -3537,9 +3537,9 @@ Molpy.Up=function()
 			{
 				var gift=1;
 				if(Molpy.Got('SGC'))gift+=Molpy.redactedClicks*Molpy.Boosts['Logicat'].bought;
-				if(Molpy.lGlass)
+				if(Molpy.lGlass>0)
 				{
-					Molpy.lGlass-=gift/10;
+					Molpy.lGlass-=gift/100;
 					Molpy.AddBlocks(gift);
 					if(gift>1&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
 				}else{
