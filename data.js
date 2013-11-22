@@ -4497,7 +4497,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Redundant Redundancy', desc:'Earn 0 badges',vis:1});
 	new Molpy.Badge({name:'Redundant', desc:'Earn at least 1 badge',vis:1});
 	new Molpy.Badge({name:'Clerical Error', desc:'Receive a badge you haven\'t earned',vis:1});
-	new Molpy.Badge({name:'Castle Price Rollback', desc:'Experience an ONG'});
+	new Molpy.Badge({name:'Castle Price Rollback', desc:'Experience an ONG<br>This is when the amount of Sand needed for making new Castles resets back to 1, and any Castle Tools you own activate.'});
 	new Molpy.Badge({name:'This Should be Automatic', desc:'Manually save 20 times'});
 	
 	new Molpy.Badge({name:'A light dusting', desc:'Have a sand dig rate of 0.1 SpmNP'});
@@ -4786,6 +4786,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'GigaTool', desc:'Make 1G Glass Tools per mNP'});
 	new Molpy.Badge({name:'TeraTool', desc:'Make 1T Glass Tools per mNP'});
 	new Molpy.Badge({name:'Scouter', desc:'Have over nine thousand Blackprints'});
+	new Molpy.Badge({name:'Getting Expensive', desc:'Each time Sand is converted into a Castle, the next Castle costs more sand.<br>But don\'t worry: the price will reset back to 1 when the timer beside the clock reaches 0.',vis:1});
 	
 	
 	//*************************************************

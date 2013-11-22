@@ -954,6 +954,14 @@ Molpy.Up=function()
 				Molpy.Boosts['Overcompensating'].power=Molpy.Boosts['Overcompensating'].startPower;
 				if(Molpy.Got('Panther Rush'))Molpy.Boosts['Panther Rush'].buyFunction();
 			}
+			if(version<3.13)
+			{
+				if(!Molpy.Earned('Getting Expensive')&&!isFinite(Molpy.castles))
+				{
+					Molpy.Notify('Added a new Badge to help very early beginners, and you seem to be beyond the point where you could easily get it normally, so here it is.',1);
+					Molpy.EarnBadge('Getting Expensive');
+				}
+			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{	
 				Molpy.Notify('Upgraded to new version!',1);		
@@ -1497,6 +1505,7 @@ Molpy.Up=function()
 				Molpy.currentCastleSand = Molpy.nextCastleSand;
 				//In which Fibbonacci occurs:
 				Molpy.nextCastleSand = Molpy.prevCastleSand+Molpy.currentCastleSand;
+				if(Molpy.nextCastleSand > 80) Molpy.EarnBadge('Getting Expensive');
 				Molpy.prevCastleSand=Molpy.currentCastleSand
 				if(!isFinite(Molpy.sand) || Molpy.nextCastleSand<=0)
 				{
