@@ -4923,7 +4923,18 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Scouter', desc:'Have over nine thousand Blackprints'});
 	new Molpy.Badge({name:'Getting Expensive', desc:'Each time Sand is converted into a Castle, the next Castle costs more sand.<br>But don\'t worry: the price will reset back to 1 when the timer beside the clock reaches 0.',vis:1});
 	
-	
+	new Molpy.Badge({name:'Plain Potato Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(5000)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Crinkle Cut Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(20000)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'BBQ Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(800000)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Corn Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(4e6)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Sour Cream and Onion Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(2e7)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Cinnamon Apple Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(1e8)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Sweet Chili Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(3e9)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Banana Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(1e11)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Nuclear Fission Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(5e12)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Silicon Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(6e14)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Blue Poker Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(1e19)+' Chips/mNP',vis:1});
+		
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
 	Molpy.MakeQuadBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});

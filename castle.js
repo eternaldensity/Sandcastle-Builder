@@ -2367,6 +2367,20 @@ Molpy.Up=function()
 			{
 				Molpy.chipsPerClick=0;
 			}
+			if(Molpy.glassPermNP>oldrate)
+			{
+				if(Molpy.glassPermNP>=5000)Molpy.EarnBadge('Plain Potato Chips');
+				if(Molpy.glassPermNP>=20000)Molpy.EarnBadge('Crinkle Cut Chips');
+				if(Molpy.glassPermNP>=800000)Molpy.EarnBadge('BBQ Chips');
+				if(Molpy.glassPermNP>=4e6)Molpy.EarnBadge('Corn Chips');
+				if(Molpy.glassPermNP>=2e7)Molpy.EarnBadge('Sour Cream and Onion Chips');
+				if(Molpy.glassPermNP>=1e8)Molpy.EarnBadge('Cinnamon Apple Chips');
+				if(Molpy.glassPermNP>=3e9)Molpy.EarnBadge('Sweet Chili Chips');
+				if(Molpy.glassPermNP>=1e11)Molpy.EarnBadge('Banana Chips');
+				if(Molpy.glassPermNP>=5e12)Molpy.EarnBadge('Nuclear Fission Chips');
+				if(Molpy.glassPermNP>=6e14)Molpy.EarnBadge('Silicon Chips');
+				if(Molpy.glassPermNP>=1e19)Molpy.EarnBadge('Blue Poker Chips');
+			}
 		}
 		
 		
@@ -2505,6 +2519,8 @@ Molpy.Up=function()
 			}
 			this.isAffordable=function()
 			{
+			
+				if(Molpy.ProtectingPrice())return 0;
 				var price=Math.floor(Molpy.priceFactor*this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
 				return isFinite(price)&&Molpy.castles>=price;
 			}
@@ -2674,6 +2690,7 @@ Molpy.Up=function()
 			}
 			this.isAffordable=function()
 			{
+				if(Molpy.ProtectingPrice())return 0;
 				var price=Math.floor(Molpy.priceFactor*this.price);
 				return isFinite(price)&&Molpy.castles>=price;
 			}
@@ -2925,6 +2942,7 @@ Molpy.Up=function()
 				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1))||0;
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1))||0;
 				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1))||0;
+				if(Molpy.ProtectingPrice()&&sp+cp+gp)return 0;
 				return castles>=cp && sand>=sp && Molpy.HasGlassBlocks(gp);
 			}
 			this.showdesc=function(keep)

@@ -32,6 +32,7 @@ For personal amusement only.
 - Add/Spend Glass Blocks now makes the following descriptions update (per mNP): Glass Block Storage, Sand Purifier, Glass Chiller
 - Cold Mould boost to pause Mould activities
 - Price Protection boost to prevent accidental buys after ASHF ends (is togglable)
+- Added a bunch of tool chip rate badges
 
 ## 3.13
 - Now you can call Molpify like this: Molpify(someNumber, decimalPlaces,2) and it won't apply all the letter prefix things, regardless of your game's scientific notation setting
