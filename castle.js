@@ -1683,6 +1683,9 @@ Molpy.Up=function()
 			amount-=waste;
 			Molpy.chipAddAmount+=amount;
 			Molpy.chipWasteAmount+=waste;
+			Molpy.Boosts['Glass Chip Storage'].hoverOnCounter=1;
+			Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
+			Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
 		}
 		Molpy.blockAddAmount=0;
 		Molpy.blockWasteAmount=0;
@@ -1727,6 +1730,9 @@ Molpy.Up=function()
 			}
 			Molpy.blockAddAmount+=amount;
 			Molpy.blockWasteAmount+=waste;
+			Molpy.Boosts['Glass Block Storage'].hoverOnCounter=1;
+			Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
+			Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
 			
 		}
 		Molpy.GlassNotifyFlush=function()
