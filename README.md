@@ -32,6 +32,7 @@ For personal amusement only.
 - Nerfed Blast Furnace a little pre-BFJ (was limited to total castles built /2, now it's /3) but buffed it with BFJ (was /10, now /5)
 - So Blast Furnace with BFJ (and Blitzing) is still more limited by the total castles built than otherwise, but if your total castles built is huge then it's better than without (i.e if you've used Molpy Down you can potentially catch back up faster)
 - Blast Furnace with Blitzing without BFJ is twice as effective as without Blitzing, which is unchanged from before but I just thought I'd mention it.
+- Fixed Tool Factory giving things it shouldn't: I forgot to copy a condition
 
 ## 3.12
 - I removed the molpies and grapevines from the wrong place

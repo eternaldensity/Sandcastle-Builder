@@ -3926,13 +3926,15 @@ Molpy.DefineBoosts=function()
             while(iAfford&&t--)
             {
                 tool = Molpy.tfOrder[t];
-                tool.amount += iAfford;
-                tool.bought += iAfford;
-				built+=iAfford;
-				if(i%2)         
-					Molpy.CastleToolsOwned+=iAfford;
-				else
-					Molpy.SandToolsOwned+=iAfford; 
+				if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
+					tool.amount += iAfford;
+					tool.bought += iAfford;
+					built+=iAfford;
+					if(i%2)         
+						Molpy.CastleToolsOwned+=iAfford;
+					else
+						Molpy.SandToolsOwned+=iAfford; 
+				}
             }              
             pow -= setPrice*iAfford;
 			
