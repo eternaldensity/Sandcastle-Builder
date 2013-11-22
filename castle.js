@@ -4438,12 +4438,15 @@ Molpy.Up=function()
 		}
 		if(left)
 		{
-			if (left) left=Molpy.FillGlassMouldWork(left);
-			if (left) left=Molpy.MakeGlassMouldWork(left);
-			if (left) left=Molpy.FillSandMouldWork(left);
-			if (left) left=Molpy.MakeSandMouldWork(left);
-
-			if(Molpy.Got('AO'))left=times;
+			if(!Molpy.Boosts['Cold Mould'].power)
+			{
+				if (left) left=Molpy.FillGlassMouldWork(left);
+				if (left) left=Molpy.MakeGlassMouldWork(left);
+				if (left) left=Molpy.FillSandMouldWork(left);
+				if (left) left=Molpy.MakeSandMouldWork(left);
+				if(Molpy.Got('AO'))left=times;
+			}
+			
 			while(left--)
 				Molpy.RewardRedacted(1,left);
 		}

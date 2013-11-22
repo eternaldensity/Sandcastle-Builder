@@ -2148,9 +2148,9 @@ Molpy.DefineBoosts=function()
 		var bl = Molpy.Boosts['Glass Block Storage'];
 		var cost=n*15;
 		if(n>=10)cost*=.9;
-		if(bl.power>=cost)
+		if(Molpy.HasGlassBlocks(cost))
 		{
-			bl.power-=cost;
+			Molpy.SpendGlassBlocks(cost);
 			bl.bought+=n;
 			bl.hoverOnCounter=1;
 			Molpy.Notify('Glass Block Storage upgraded',1);
@@ -2162,10 +2162,9 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.UpgradeSandPurifier=function()
 	{
-		var bl = Molpy.Boosts['Glass Block Storage'];
-		if(bl.power>=Molpy.SandPurifierUpgradeCost())
+		if(Molpy.HasGlassBlocks(Molpy.SandPurifierUpgradeCost()))
 		{
-			bl.power-=Molpy.SandPurifierUpgradeCost();
+			Molpy.SpendGlassBlocks(Molpy.SandPurifierUpgradeCost());
 			Molpy.Boosts['Sand Purifier'].power++;
 			Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
 			Molpy.recalculateDig=1;
@@ -2177,10 +2176,9 @@ Molpy.DefineBoosts=function()
 		{
 			var cost = Molpy.SandPurifierUpgradeCost();
 			var str = 'Glass Furnace\'s sand use is divided by '+Molpify(me.power+2,2);
-			var bl = Molpy.Boosts['Glass Block Storage'];
-			if(bl.power >= cost-10)
+			if(Molpy.HasGlassBlocks(cost-10))
 			{
-				if(bl.power>=cost)
+				if(Molpy.HasGlassBlocks(cost))
 				{
 					str+='.<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandPurifier()"></input> '+Molpify(cost,3)
 						+ ' Glass Blocks to increase this by 1.';
@@ -2205,7 +2203,7 @@ Molpy.DefineBoosts=function()
 		var cost=0;
         while( (cost = Molpy.SandPurifierUpgradeCost()) < bl.power*.99 )
         {
-            bl.power -= cost;
+            Molpy.SpendGlassBlocks(cost);
             upgrades++;
             Molpy.Boosts['Sand Purifier'].power++;
         }
@@ -2222,7 +2220,7 @@ Molpy.DefineBoosts=function()
 		var cost=0;
         while( (cost = Molpy.GlassExtruderUpgradeCost()) < ch.power*.99 )
         {
-            ch.power -= cost;
+            Molpy.SpendGlassChips(cost);
             upgrades++;
             Molpy.Boosts['Glass Extruder'].power++;
         }
@@ -2238,7 +2236,7 @@ Molpy.DefineBoosts=function()
         var extra = Math.min(Math.floor(ch.power/2.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.SandRefineryIncrement()-1));
         if (extra>20) 
         {
-            ch.power -= extra*2.5;
+            Molpy.SpendGlassChips(extra*2.5);
             Molpy.Boosts['Sand Refinery'].power+=extra;
             Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
             Molpy.Notify('Sand Refinery upgraded '+Molpify(extra,2)+' times',1);
@@ -2254,12 +2252,12 @@ Molpy.DefineBoosts=function()
 		extra = Math.min(extra, Math.floor(Molpy.Boosts['Sand Refinery'].power/Molpy.ChipsPerBlock()-Molpy.Boosts['Glass Chiller'].power-2));
         if (extra>20) 
         {
-            bl.power -= extra*4.5;
+            Molpy.SpendGlassBlocks(extra*4.5);
             Molpy.Boosts['Glass Chiller'].power+=extra;
             Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
             Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
             Molpy.recalculateDig=1;
-        }       
+        }	
     }	
 	
 	new Molpy.Boost({name:'Glass Jaw',
@@ -2893,12 +2891,10 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.UpgradeGlassExtruder=function()
 	{
-		var ch = Molpy.Boosts['Glass Chip Storage'];
-		if(ch.power>=Molpy.GlassExtruderUpgradeCost())
+		if(Molpy.HasGlassChips(Molpy.GlassExtruderUpgradeCost()))
 		{
-			ch.power-=Molpy.GlassExtruderUpgradeCost();
+			Molpy.SpendGlassChips(Molpy.GlassExtruderUpgradeCost());
 			Molpy.Boosts['Glass Extruder'].power++;
-			Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
 			Molpy.recalculateDig=1;
 			Molpy.Notify('Glass Extruder upgraded',1);
 		}
@@ -2908,10 +2904,9 @@ Molpy.DefineBoosts=function()
 		{
 			var cost = Molpy.GlassExtruderUpgradeCost();
 			var str = 'Glass Blower\'s sand use is divided by '+Molpify(me.power+2,3);
-			var ch = Molpy.Boosts['Glass Chip Storage'];
-			if(ch.power >= cost-800)
+			if(Molpy.HasGlassChips(cost-800))
 			{
-				if(ch.power>=cost)
+				if(Molpy.HasGlassChips(cost))
 				{
 					str+='.<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassExtruder()"></input> '+Molpify(cost,3)
 						+ ' Glass Chips to increase this by 1.';
@@ -3495,6 +3490,7 @@ Molpy.DefineBoosts=function()
 			Molpy.SpendGlassChips(chips);
 			times--;
 			smm.power++;
+			if(Molpy.Boosts['Expando'].power)smm.hoverOnCounter=1;
 			if(smm.power>100)
 			{
 				Molpy.Notify('Sand Mould Creation is complete',1);
@@ -3556,6 +3552,7 @@ Molpy.DefineBoosts=function()
 			Molpy.SpendSand(sand);
 			times--;
 			smf.power++;
+			if(Molpy.Boosts['Expando'].power)smf.hoverOnCounter=1;
 			if(smf.power>200)
 			{
 				Molpy.Notify('Sand Mould Filling is complete',1);
@@ -3619,6 +3616,7 @@ Molpy.DefineBoosts=function()
 			Molpy.SpendGlassChips(chips);
 			times--;
 			gmm.power++;
+			if(Molpy.Boosts['Expando'].power)gmm.hoverOnCounter=1;
 			if(gmm.power>400)
 			{
 				Molpy.Notify('Glass Mould Creation is complete',1);
@@ -4050,10 +4048,13 @@ Molpy.DefineBoosts=function()
 			{
 				  Molpy.DoBlackprintConstruction(left);
 			}
-			if (left) left=Molpy.FillGlassMouldWork(left);
-			if (left) left=Molpy.MakeGlassMouldWork(left);
-			if (left) left=Molpy.FillSandMouldWork(left);
-			if (left) left=Molpy.MakeSandMouldWork(left);
+			if(!Molpy.Boosts['Cold Mould'].power)
+			{
+				if (left) left=Molpy.FillGlassMouldWork(left);
+				if (left) left=Molpy.MakeGlassMouldWork(left);
+				if (left) left=Molpy.FillSandMouldWork(left);
+				if (left) left=Molpy.MakeSandMouldWork(left);
+			}
 		}
 		
 		var furn=Math.floor((times+Math.random()*3)/2);
@@ -4528,6 +4529,20 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.CheckDragon=function()
 	{
+	}
+	
+	new Molpy.Boost({name:'Cold Mould',
+	desc:function(me)
+	{
+		
+		return (me.power? '':'When active, ') + 'Prevents all Mould Making and Filling activities.'+(me.bought?'<br><input type="Button" onclick="Molpy.ColdMouldToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+	}
+	,glass:'10K',sand:'75E',castles:'15E', group:'bean',className:'toggle'});
+	Molpy.ColdMouldToggle=function()
+	{
+		var me=Molpy.Boosts['Cold Mould'];
+		me.power=1*!me.power;			
+		me.hoverOnCounter=1;
 	}
 	
 	
@@ -5365,6 +5380,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
+	Molpy.Boosts['Cold Mould'].department=Molpy.Got('SMM');
 				
 }
 

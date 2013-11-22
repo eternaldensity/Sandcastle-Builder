@@ -30,6 +30,7 @@ For personal amusement only.
 - Achronal Dragon to track and destroy temporal duplicates (if you want to)
 - Add/Spend Glass Chips now makes the following descriptions update (per mNP): Glass Chip Storage, Sand Refinery, Glass Extruder
 - Add/Spend Glass Blocks now makes the following descriptions update (per mNP): Glass Block Storage, Sand Purifier, Glass Chiller
+- Cold Mould boost to pause Mould activities
 
 ## 3.13
 - Now you can call Molpify like this: Molpify(someNumber, decimalPlaces,2) and it won't apply all the letter prefix things, regardless of your game's scientific notation setting
