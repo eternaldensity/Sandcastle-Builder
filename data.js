@@ -1729,9 +1729,12 @@ Molpy.DefineBoosts=function()
 	{	
 		Molpy.Boosts['Glass Block Storage'].power -= num;
 		Molpy.blockAddAmount-=num;
-		Molpy.Boosts['Glass Block Storage'].hoverOnCounter=1;
-		Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
-		Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
+		if(Molpy.Boosts['Expando'].power)
+		{
+			Molpy.Boosts['Glass Block Storage'].hoverOnCounter=1;
+			Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
+			Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
+		}
 	}
 	Molpy.HasGlassChips=function(num)
 	{	
@@ -1740,9 +1743,12 @@ Molpy.DefineBoosts=function()
 	Molpy.SpendGlassChips=function(num)
 	{	
 		Molpy.Boosts['Glass Chip Storage'].power -= num;
-		Molpy.Boosts['Glass Chip Storage'].hoverOnCounter=1;
-		Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
-		Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
+		if(Molpy.Boosts['Expando'].power)
+		{
+			Molpy.Boosts['Glass Chip Storage'].hoverOnCounter=1;
+			Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
+			Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
+		}
 		Molpy.chipAddAmount-=num;
 	}
 	
