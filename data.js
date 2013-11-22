@@ -3927,6 +3927,7 @@ Molpy.DefineBoosts=function()
             {
                 tool = Molpy.tfOrder[t];
 				if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
+				{
 					tool.amount += iAfford;
 					tool.bought += iAfford;
 					built+=iAfford;
