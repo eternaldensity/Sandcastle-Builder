@@ -2472,6 +2472,15 @@ Molpy.Up=function()
 					Molpy.CheckBuyUnlocks();
 				}
 			}
+			this.updateBuy=function()
+			{
+				$('#SandToolBuy'+this.id).toggleClass('buyable',this.isAffordable());
+			}
+			this.isAffordable=function()
+			{
+				var price=Math.floor(Molpy.priceFactor*this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
+				return isFinite(price)&&Molpy.castles>=price;
+			}
 			this.showdesc=function(keep)
 			{
 				var d=g('SandToolDescription'+this.id);
@@ -2615,6 +2624,15 @@ Molpy.Up=function()
 					Molpy.UnlockBoost('No Sell');
 					Molpy.CheckBuyUnlocks();
 				}
+			}
+			this.updateBuy=function()
+			{
+				$('#CastleToolBuy'+this.id).toggleClass('buyable',this.isAffordable());
+			}
+			this.isAffordable=function()
+			{
+				var price=Math.floor(Molpy.priceFactor*this.price);
+				return isFinite(price)&&Molpy.castles>=price;
 			}
 			this.DestroyPhase=function()
 			{
@@ -2844,6 +2862,24 @@ Molpy.Up=function()
 						Molpy.ShowGroup(this.group,this.className);
 					}
 				}				
+			}
+			this.updateBuy=function()
+			{
+				if(me.unlocked&&!me.bought)
+				{					
+					$('#BoostBuy'+this.id).toggleClass('buyable',this.isAffordable());
+				}
+			}
+			}
+			this.isAffordable=function()
+			{	
+				var sand = Molpy.sand||0;
+				var castles= Molpy.castles||0;
+				
+				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1))||0;
+				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1))||0;
+				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1))||0;
+				return castles>=cp && sand>=sp && Molpy.HasGlassBlocks(gp);
 			}
 			this.showdesc=function(keep)
 			{

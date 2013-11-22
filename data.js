@@ -4359,7 +4359,9 @@ Molpy.DefineBoosts=function()
 			if(me.power<Molpy.Boosts['PC'].power&&Molpy.HasGlassChips(1e7*Math.pow(1.2,n)))
 			{
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(1e7*Math.pow(1.2,n),2)+' Glass Chips and '+Molpify(n*2,2)+' Blackprint Pages.';
-			}
+			}else            {
+                str+='<br>It will cost '+Molpify(1e7*Math.pow(1.2,n),2)+' Glass Chips and '+Molpify(n*2,2)+' Blackprint Pages to increase this by 1.';
+            }
 			if(!Molpy.Boosts['No Sell'].power&&me.power>1&&Molpy.HasGlassChips(1e5*n))
 			{
 				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlAutomata(-1)"></input> the number of runs by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Chips.';
