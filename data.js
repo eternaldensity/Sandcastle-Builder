@@ -942,7 +942,7 @@ Molpy.DefineBoosts=function()
 			{
 				blastFactor=Math.max(5,1000*Math.pow(0.94,Molpy.Boosts['Fractal Sandcastles'].power));
 			}
-			return 'Uses '+Molpify(2000000)+' Sand to warm up, then makes Castles at a cost of ' + Molpify(blastFactor,1) + ' each';
+			return 'Uses '+Molpify(2000000)+' Sand to warm up, then makes Castles at a cost of ' + Molpify(blastFactor,1) + ' each. Can make up to a third of your total castles built (before accounting for any Flux Turbine bonus).';
 		}
 		,icon:'blastfurnace',group:'hpt'});
 	
@@ -1087,11 +1087,14 @@ Molpy.DefineBoosts=function()
 		},className:'alert',group:'cyb'
 		});	
 	
-	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',alias:'BKJ',desc:function(me)
+	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',alias:'BKJ',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.'
+		,sand:'9.8M',castles:888555222,stats:function(me)
 		{
-			return 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.<br>Power level is '+Molpify(me.power,3);
+		return 'Additional '+Molpy.redactedWord+
+			' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blizting to boost Blast Furnace if they overlap.<br>Power level is '
+			+Molpify(me.power,3);
 		}
-		,sand:'9.8M',castles:888555222,stats:'Additional '+Molpy.redactedWord+' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blizting to boost Blast Furnace if they overlap.',icon:'bkj',group:'hpt'
+		 ,icon:'bkj',group:'hpt'
 	});
 		
 	new Molpy.Boost({name:'Summon Knights Temporal',desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
@@ -1437,10 +1440,10 @@ Molpy.DefineBoosts=function()
 		Molpy.shopRepaint=1;
 	}
 		
-	new Molpy.Boost({name:'Blixtnedslag Förmögenhet, JA!',alias:'BFJ',desc:'Not Lucky gets a 20% bonus (non-cumulative) per level of Blixtnedslag Kattungar, JA! It also gets a boost from Blitzing if you get them simultaneously.',sand:111098645321,castles:7777777777,
+	new Molpy.Boost({name:'Blixtnedslag Förmögenhet, JA!',alias:'BFJ',desc:'Not Lucky gets a 20% bonus (non-cumulative) per level of Blixtnedslag Kattungar, JA!',sand:111098645321,castles:7777777777,
 		stats:function()
 		{
-			return 'Adds ' + Molpify(20*Molpy.Boosts['BKJ'].power,1)+'% to Not Lucky reward';
+			return 'Adds ' + Molpify(20*Molpy.Boosts['BKJ'].power,1)+'% to Not Lucky reward.<br>It also gets a boost from Blitzing if you get them simultaneously and allows Blitzing to improve Blast Furnace (though only up to 20% of Castles Built, before accounting for Flux Turbine).';
 		},icon:'bfj',group:'hpt'});
 	new Molpy.Boost({name:'VITSSÅGEN, JA!',alias:'VJ',
 		desc:function(me)

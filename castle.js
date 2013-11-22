@@ -3380,9 +3380,9 @@ Molpy.Up=function()
 			var castles=Math.floor(Molpy.sand/blastFactor);		
 			if(boosted)
 			{
-				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/10));
+				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/5));
 			}else{
-				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/2));
+				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/3));
 			}
 			Molpy.Notify('Blast Furnace in Operation!');
 			Molpy.SpendSand(castles*blastFactor);

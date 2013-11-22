@@ -26,8 +26,12 @@ For personal amusement only.
 - Changed Broken Rung condition: for instance while 6000 bags bought will make LaPetite visible (unchanged), 6000 bags *owned* is needed for 0 LaPetite to affect Broken Rung
 - New Badge for beginners to teach about waiting for the ONG
 - Also extended the description of Castle Price Rollback badge
-- Tried adding google analytics to track pageviews but all it does is prevent the page from loading while it tries and fails to load the .js from google, so I commented it out for now
-- Let me know if that is a terrible idea
+- Added google analytics to track pageviews.  Let me know if that is a terrible idea
+- BKJ power level moved to display on stats rather than description
+- Also improved BFJ description/stats a bit
+- Nerfed Blast Furnace a little pre-BFJ (was limited to total castles built /2, now it's /3) but buffed it with BFJ (was /10, now /5)
+- So Blast Furnace with BFJ (and Blitzing) is still more limited by the total castles built than otherwise, but if your total castles built is huge then it's better than without (i.e if you've used Molpy Down you can potentially catch back up faster)
+- Blast Furnace with Blitzing without BFJ is twice as effective as without Blitzing, which is unchanged from before but I just thought I'd mention it.
 
 ## 3.12
 - I removed the molpies and grapevines from the wrong place
