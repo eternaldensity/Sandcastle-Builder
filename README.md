@@ -20,12 +20,6 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.14159
--
-
-## 3.1415
-- 
-
 ## 3.141
 - Tracking update: convert integers to strings
 
