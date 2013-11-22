@@ -25,6 +25,7 @@ For personal amusement only.
 - faster seaish (big) upgrades of Sand Purifier and Glass Extruder (waveney)
 - Redundatracking, and some tracking bugfixes
 - Beachball boost fix: ensure change to blue is after bots have activated
+- Sawtracking
 
 ## 3.141
 - Tracking update: convert integers to strings

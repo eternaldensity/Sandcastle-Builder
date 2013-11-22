@@ -1968,11 +1968,17 @@ Molpy.Up=function()
 					Molpy.Notify(Molpy.Boosts['VJ'].name);
 					Molpy.Build(Molpy.CalcVJReward(1));
 					Molpy.Boosts['VJ'].power++;
+					var sawType='Plain';
+                    if(Molpy.Got('Swedish Chef'))sawType='Swedish Chef';
+                    if(Molpy.Got('Phonesaw'))sawType='PhoneSaw';
+                    if(Molpy.Got('Ninjasaw'))sawType='Ninjasaw';
+					
                     if(Molpy.Got('Glass Saw'))
                     {
                         var p = Molpy.Boosts['Glass Saw'].power;
 						if(p>0)
 						{
+							sawType='Glass Saw';
 							var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
 							var absMaxGlass=maxGlass;
 							var rate = Molpy.ChipsPerBlock();
@@ -1989,6 +1995,8 @@ Molpy.Up=function()
 								Molpy.Boosts['Glass Saw'].power=p*2;
 						}
                     }
+					
+					_gaq.push(['_trackEvent',Molpy.Boosts['VJ'].name,sawType,''+Molpy.Boosts['VJ'].power]);
 				}
 			}
 			if(Molpy.Got('Bag Puns')&&Molpy.Boosts['VJ'].bought!=1)
