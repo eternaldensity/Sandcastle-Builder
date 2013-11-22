@@ -3776,7 +3776,7 @@ Molpy.Up=function()
 				var salebit='';
 				if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 				{
-					salebit=' <a onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
+					salebit=' <a id="SandToolBuy'+me.id+'" onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>');
 				}
 				var price = '';
@@ -3827,7 +3827,7 @@ Molpy.Up=function()
 				var salebit='';
 				if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 				{
-					salebit=' <a onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
+					salebit=' <a id="CastleToolBuy'+me.id+'" onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>');
 				}
 				var price = '';
@@ -3870,7 +3870,7 @@ Molpy.Up=function()
 			var buy= '';
 			if(!me.bought)
 			{
-				buy=' <a onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a>';
+				buy=' <a id="BoostBuy'+me.id+'" onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a>';
 				if(me.sandPrice||me.castlePrice||me.glassPrice)
 				{
 					buy+='<span class="price"> Price: ';
