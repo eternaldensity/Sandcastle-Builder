@@ -24,6 +24,7 @@ For personal amusement only.
 - Disabled the jQuery preload of next newpix because it was not working and was spitting out errors for some
 - faster seaish (big) upgrades of Sand Purifier and Glass Extruder (waveney)
 - Redundatracking, and some tracking bugfixes
+- Beachball boost fix: ensure change to blue is after bots have activated
 
 ## 3.141
 - Tracking update: convert integers to strings

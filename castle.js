@@ -233,7 +233,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.141;
+		Molpy.version=3.1415;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -4693,7 +4693,7 @@ Molpy.Up=function()
 	{
 		var stateClass='beachsafe';
 		Molpy.ONGelapsed = new Date().getTime()-Molpy.ONGstart.getTime();
-		if(Molpy.ONGelapsed >= Molpy.ninjaTime)
+		if((Molpy.ONGelapsed-Molpy.ninjaTime)/Molpy.NPlength>1)
 		{
 			if(!Molpy.ninjad) stateClass='beachstreakextend';
 		}else stateClass='beachninjawarning';
