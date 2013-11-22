@@ -539,6 +539,7 @@ Molpy.Up=function()
 			}
 			thread=thread.split(p);
 			var version = parseFloat(thread[0]);
+			_gaq&&_gaq.push(['_trackEvent','Load','Version',version]);
 			if(version>Molpy.version)
 			{
 				alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
@@ -5287,5 +5288,9 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 Molpy.Up();
 window.onload=function()
 {
-	if(!Molpy.molpish) Molpy.Wake();
+	if(!Molpy.molpish)
+	{
+		Molpy.Wake();
+		_gaq&&_gaq.push(['_trackEvent','Setup','Complete',Molpy.version]);
+	}
 };
