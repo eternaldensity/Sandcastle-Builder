@@ -669,6 +669,10 @@ Molpy.DefineBoosts=function()
 			{
 				Molpy.Notify('Only 2mNP of discounts remain!');
 			}
+		},lockFunction:function(){
+			var pp = Molpy.Boosts['Price Protection'];
+			if(pp.power)pp.power=5;
+			else Molpy.UnlockBoost(pp.alias);
 		}
 		,startPower:0.4,startCountdown:4,group:'hpt',department:1,className:'alert'});
 	
@@ -4543,6 +4547,23 @@ Molpy.DefineBoosts=function()
 		var me=Molpy.Boosts['Cold Mould'];
 		me.power=1*!me.power;			
 		me.hoverOnCounter=1;
+	}
+	new Molpy.Boost({name:'Price Protection',
+	desc:function(me)
+	{
+		
+		return (me.power? '':'When active, ') + 'Prevents purchases for 4mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.PriceProtectionToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+	}
+	,sand:'7500',castles:'1500', group:'hpt',className:'toggle'});
+	Molpy.PriceProtectionToggle=function()
+	{
+		var me=Molpy.Boosts['Price Protection'];
+		me.power=1*!me.power;			
+		me.hoverOnCounter=1;
+	}
+	Molpy.ProtectingPrice=function()
+	{
+		return !Molpy.Got('ASHF')&&Molpy.Boosts['Price Protection'].power>1;		
 	}
 	
 	

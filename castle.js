@@ -2416,6 +2416,7 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
+				if(Molpy.ProtectingPrice())return;
 				var times = Math.pow(4,Molpy.options.sandmultibuy );
 				var bought=0;
 				var spent=0;
@@ -2584,6 +2585,7 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
+				if(Molpy.ProtectingPrice())return;
 				var times = Math.pow(4, Molpy.options.castlemultibuy);
 				var bought=0;
 				var spent=0;
@@ -2886,6 +2888,9 @@ Molpy.Up=function()
 				if(isNaN(sp)){this.power=0;sp=0;Molpy.EarnBadge('How do I Shot Mustard?')};
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));
 				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1));
+				
+				if(Molpy.ProtectingPrice()&&sp+cp+gp)return; //don't need or want price protection on free items!
+				
 				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp && Molpy.HasGlassBlocks(gp))
 				{
 					Molpy.SpendSand(sp);
@@ -4482,6 +4487,9 @@ Molpy.Up=function()
 	{
 		Molpy.toolsBuilt=0;
 		Molpy.SandToCastles();
+		
+		var pp = Molpy.Boosts['Price Protection'];
+		if(pp.power>1)pp.power--;
 		if(! (Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].power))
 			Molpy.CheckONG();
 		Molpy.CheckRedactedToggle();
