@@ -22,6 +22,7 @@ For personal amusement only.
 
 ## 3.141
 - Tracking update: convert integers to strings
+- Less hovering
 
 ## 3.14
 - Automata Control next upgrade price shown
