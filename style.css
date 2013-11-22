@@ -95,6 +95,10 @@ small
 {
 	text-decoration:line-through;
 }
+.unbuyable
+{
+	text-decoration:line-through;
+}
 
 a
 {
@@ -110,6 +114,16 @@ body.lightscheme  a:hover
 {
 	text-shadow:0px 0px 3px #111;
 	color:#000;
+}
+body.darkscheme a.unbuyable:hover
+{
+	text-shadow:0px 0px 3px #fff;
+	color:#000;
+}
+body.lightscheme  a.unbuyable:hover
+{
+	text-shadow:0px 0px 3px #111;
+	color:#fff;
 }
 .partext
 {

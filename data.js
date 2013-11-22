@@ -4441,6 +4441,53 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Knitted Beanies',desc:'Beanie Builder Glass production is multiplied by the number of million Bags owned',glass:'60T',sand:Infinity,castles:Infinity,group:'bean'});
 	new Molpy.Boost({name:'Space Elevator',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',glass:'55T',sand:Infinity,castles:Infinity});
 	
+	new Molpy.Boost({name:'Discovery Detector',sand:'2M',castles:'2M',glass:100,className:'action',group:'bean',
+        desc:function(me)
+        {
+            if (!me.bought) return 'Scans your records to see if you have missed discoveries';
+            var cost=Molpy.highestNPvisited*Molpy.highestNPvisited*10;
+            return '<input type="button" value="Scan" onclick="Molpy.RunDiscoveryDetector()"></input> costs '+Molpify(cost,2)+ ' chips to scan your records to see where you have missed discoveres';
+        }
+    }); //by waveney
+
+    Molpy.RunDiscoveryDetector=function()
+    {
+        var cost=Molpy.highestNPvisited*Molpy.highestNPvisited*10;
+        if (!Molpy.HasGlassChips(cost))
+        {
+            Molpy.Notify('Sorry you can\'t afford it at the moment');
+            return;
+        }
+        Molpy.SpendGlassChips(cost);
+
+        var miscount =0;
+        var npstart = 1;
+        for (var np=1; np<Molpy.highestNPvisited; np++)
+        {
+            var alias='discov'+np;
+            if(Molpy.Badges[alias])
+            {
+                if(Molpy.Earned(alias))
+                {
+                    if (miscount)
+                    {
+                        Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np);
+                        miscount=0;
+                    }
+                    npstart=np;
+                }
+                else
+                {
+                    miscount++;
+                }
+            }
+        }
+        if (miscount)
+        {
+            Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np);
+        }
+    }
+	
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
 		badges:['badge','Badges'],
@@ -5180,7 +5227,7 @@ Molpy.CheckBuyUnlocks=function()
 	
 	if(!isFinite(Math.pow(200,Molpy.Boosts['RB'].bought)))Molpy.UnlockBoost('Knitted Beanies');
 	if(!isFinite(Math.pow(2,Molpy.Boosts['WWB'].bought-5))) Molpy.UnlockBoost('Space Elevator');
-
+	if (Molpy.groupBadgeCounts.discov > 5 && Molpy.Earned('discov1')) Molpy.UnlockBoost('Discovery Detector');
 }
 
 Molpy.CheckDoRDRewards=function(automationLevel)

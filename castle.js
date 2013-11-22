@@ -2474,7 +2474,7 @@ Molpy.Up=function()
 			}
 			this.updateBuy=function()
 			{
-				$('#SandToolBuy'+this.id).toggleClass('buyable',this.isAffordable());
+				$('#SandToolBuy'+this.id).toggleClass('unbuyable',!this.isAffordable());
 			}
 			this.isAffordable=function()
 			{
@@ -2627,7 +2627,7 @@ Molpy.Up=function()
 			}
 			this.updateBuy=function()
 			{
-				$('#CastleToolBuy'+this.id).toggleClass('buyable',this.isAffordable());
+				$('#CastleToolBuy'+this.id).toggleClass('unbuyable',!this.isAffordable());
 			}
 			this.isAffordable=function()
 			{
@@ -2865,11 +2865,10 @@ Molpy.Up=function()
 			}
 			this.updateBuy=function()
 			{
-				if(me.unlocked&&!me.bought)
+				if(this.unlocked&&!this.bought)
 				{					
-					$('#BoostBuy'+this.id).toggleClass('buyable',this.isAffordable());
-				}
-			}
+					$('#BoostBuy'+this.id).toggleClass('unbuyable',!this.isAffordable());
+				}			
 			}
 			this.isAffordable=function()
 			{	
@@ -3817,7 +3816,7 @@ Molpy.Up=function()
 				}
 				var price = '';
 				if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+i*2))
-					price = FormatPrice(me.price,me)+(me.price<100?' Castles':' Ca');
+					price = FormatPrice(me.price,me)+(me.price==1?' Castle':(me.price<100?' Castles':' Ca'));
 				else
 					price = Molpify(1000*(i*2+1),3)+' Chips';
 				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id
@@ -3826,7 +3825,7 @@ Molpy.Up=function()
 					+formattedName+salebit+'</h2>'+
 					(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 					+'</div>':'')+
-					'<span class="price">Price: '+price+'</span>'+
+					'<div class="price">Price: '+price+'</div>'+
 					'<div id="SandToolProduction'+me.id+'"></div><div class="'
 					+Molpy.DescClass(me)+'" id="SandToolDescription'+me.id+'"></div></div></div>';
 				if(expando)me.hoverOnCounter=1;
@@ -3868,13 +3867,13 @@ Molpy.Up=function()
 				}
 				var price = '';
 				if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(i*2+1)))
-					price = FormatPrice(me.price,me)+(me.price<100?' Castles':' Ca');
+					price = FormatPrice(me.price,me)+(me.price==1?' Castle':(me.price<100?' Castles':' Ca'));
 				else
 					price = Molpify(1000*(i*2+2),3)+' Chips';
 				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name+'" class="icon"></div><h2>'+formattedName+salebit+'</h2>'+
 				(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
 				+'</div>':'')+
-				'<span class="price">Price: '+price+'</span>'+
+				'<div class="price">Price: '+price+'</div>'+
 				'<div id="CastleToolProduction'+me.id+'"></div><div class="'+Molpy.DescClass(me)+'" id="CastleToolDescription'+me.id+'"></div></div></div>';
 				if(expando)me.hoverOnCounter=1;
 				i++
@@ -3909,11 +3908,11 @@ Molpy.Up=function()
 				buy=' <a id="BoostBuy'+me.id+'" onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a>';
 				if(me.sandPrice||me.castlePrice||me.glassPrice)
 				{
-					buy+='<span class="price"> Price: ';
+					buy+='<div class="price"> Price: ';
 					if(me.sandPrice) buy +=FormatPrice(me.sandPrice,me)+' Sand '+(me.castlePrice||me.glassPrice?'+ ':'');
-					if(me.castlePrice) buy +=FormatPrice(me.castlePrice,me)+' Castles '+(me.glassPrice?'+ ':'');
+					if(me.castlePrice) buy +=FormatPrice(me.castlePrice,me)+' Castle'+plural(FormatPrice(me.castlePrice,me))+' '+(me.glassPrice?'+ ':'');
 					if(me.glassPrice) buy +=FormatPrice(me.glassPrice,me)+' Glass Block'+plural(FormatPrice(me.glassPrice));
-					buy+='</span>';
+					buy+='</div>';
 				}
 			}
 			if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
@@ -4917,6 +4916,7 @@ Molpy.Up=function()
 		{
 			var me = Molpy.SandTools[i];
 			Molpy.TickHover(me);
+			me.updateBuy();
 			
 			if(me.amount,shopRepainted)
 			{
@@ -4937,6 +4937,7 @@ Molpy.Up=function()
 		{
 			var me = Molpy.CastleTools[i];
 			Molpy.TickHover(me,shopRepainted);
+			me.updateBuy();
 			
 			var desc = g('CastleToolProduction'+me.id);
 			if(desc)
@@ -4965,6 +4966,7 @@ Molpy.Up=function()
 			if(me.unlocked)
 			{
 				Molpy.TickHover(me,tagRepaint);
+				me.updateBuy();
 			}
 		}
 		for(i in Molpy.Badges)
