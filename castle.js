@@ -4673,6 +4673,7 @@ Molpy.Up=function()
 		}
 		Molpy.CheckBeachClass();
 	}
+	Molpy.preloadedBeach=0;
 	Molpy.CheckBeachClass=function()
 	{
 		var stateClass='beachsafe';
@@ -4681,13 +4682,19 @@ Molpy.Up=function()
 		{
 			if(!Molpy.ninjad) stateClass='beachstreakextend';
 		}else stateClass='beachninjawarning';
-		if(Molpy.ONGelapsed/Molpy.NPlength>=999) stateClass='beachongwarning';
+		if(Molpy.ONGelapsed/Molpy.NPlength>=998&&!Molpy.Boosts['Coma Molpy Style'].power)
+		{
+			stateClass='beachongwarning';
+			if(!Molpy.preloadedBeach)
+			{
+				Molpy.PreloadBeach();
+			}
+		}
 		Molpy.UpdateBeachClass(stateClass);
 	}
 	Molpy.ONG=function()
 	{
 		Molpy.newpixNumber+=1;
-		
 		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',Molpy.newpixNumber]);
 		
 		if(Molpy.newpixNumber > Molpy.highestNPvisited)
@@ -4920,21 +4927,32 @@ Molpy.Up=function()
 		if(Molpy.Got('Chromatic Heresy')&&Molpy.options.colpix)
 		{	
 			if(Molpy.newpixNumber>3094)			
-				return'url(http://placekitten.com/'+x+'/'+y+')';
+				return 'http://placekitten.com/'+x+'/'+y;
 			else
-				return'url(http://178.79.159.24/Time/otcolorization/'+np+')';
+				return 'http://178.79.159.24/Time/otcolorization/'+np;
 		}else{
 			if(Molpy.newpixNumber>3094)			
-				return'url(http://placekitten.com/g/'+x+'/'+y+')';
+				return 'http://placekitten.com/g/'+x+'/'+y;
 			else
-				return'url(http://xkcd.mscha.org/frame/'+np+')';
+				return 'http://xkcd.mscha.org/frame/'+np;
 		}
+	}
+	Molpy.Url=function(address)
+	{
+		return 'url('+address+')';
 	}
 	
 	//call with argument to change to a specific np, otherwise defaults to the current np
 	Molpy.UpdateBeach=function(np)
 	{
-		g('beach').style.backgroundImage=Molpy.NewPixFor(np||Molpy.newpixNumber);
+		g('beach').style.backgroundImage=Molpy.Url(Molpy.NewPixFor(np||Molpy.newpixNumber));
+		Molpy.preloadedBeach=0;
+	}
+	Molpy.preloadedBeach=0;
+	Molpy.PreloadBeach=function(np)
+	{
+		$.get(Molpy.NewPixFor(np||Molpy.newpixNumber+1));
+		if(!np)Molpy.preloadedBeach=1;
 	}
 	/* In which we figure out how to draw stuff
 	+++++++++++++++++++++++++++++++++++++++++++*/

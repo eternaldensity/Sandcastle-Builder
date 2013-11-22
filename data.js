@@ -4438,7 +4438,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Beachball',desc:function(me)
 	{
 		
-		return (me.power? 'T':'When active, t') + 'he border of the NewPix changes colour.<br>Red = Clicking will Ninja<br>Blue = Click to gain Ninja Stealth<br>Green = All Clear<br>Yellow = less than a mNP until ONG'+(me.bought?'<br><input type="Button" onclick="Molpy.BeachballToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		return (me.power? 'T':'When active, t') + 'he border of the NewPix changes colour.<br>Red = Clicking will Ninja<br>Blue = Click to gain Ninja Stealth<br>Green = All Clear<br>Yellow = less than 2 mNP until ONG'+(me.bought?'<br><input type="Button" onclick="Molpy.BeachballToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
 	}
 	,sand:'4K',castles:200,className:'toggle'});
 	Molpy.BeachballToggle=function()

@@ -33,6 +33,8 @@ For personal amusement only.
 - Cold Mould boost to pause Mould activities
 - Price Protection boost to prevent accidental buys after ASHF ends (is togglable)
 - Added a bunch of tool chip rate badges
+- Preloading the next newpix 2mNP before the ONG (except it isn't working yet, I think)
+- Changed Beachball boost to warn 2mNP before ONG rather than 1 (because of the above)
 
 ## 3.13
 - Now you can call Molpify like this: Molpify(someNumber, decimalPlaces,2) and it won't apply all the letter prefix things, regardless of your game's scientific notation setting
