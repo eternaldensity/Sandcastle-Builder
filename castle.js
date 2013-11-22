@@ -2481,12 +2481,14 @@ Molpy.Up=function()
 			this.destroyTemp=function()
 			{
 				var cost = this.temp*5;
-				if(Molpy.HasGlassBlocks('cost'))
+				if(Molpy.HasGlassBlocks(cost))
 				{
-					Molpy.SpendBlocks(cost);
+					Molpy.SpendGlassBlocks(cost);
 					this.amount=Math.max(0,this.amount-this.temp);
 					this.temp=0;
+					this.refresh();
 					Molpy.Boosts['Achronal Dragon'].power+=cost;
+					Molpy.Boosts['Achronal Dragon'].hoverOnCounter=1;
 					Molpy.CheckDragon();
 				}
 			}
@@ -2647,12 +2649,14 @@ Molpy.Up=function()
 			this.destroyTemp=function()
 			{
 				var cost = this.temp*10;
-				if(Molpy.HasGlassBlocks('cost'))
+				if(Molpy.HasGlassBlocks(cost))
 				{
-					Molpy.SpendBlocks(cost);
+					Molpy.SpendGlassBlocks(cost);
 					this.amount=Math.max(0,this.amount-this.temp);
 					this.temp=0;
+					this.refresh();
 					Molpy.Boosts['Achronal Dragon'].power+=cost;
+					Molpy.Boosts['Achronal Dragon'].hoverOnCounter=1;
 					Molpy.CheckDragon();
 				}
 			}
@@ -2882,10 +2886,7 @@ Molpy.Up=function()
 					Molpy.SpendCastles(cp);
 					Molpy.SpendGlassBlocks(gp);
 					this.bought=1;
-					if(sp+cp+gp>0&&this.name!='Locked Crate'&&this.name!='Crate Key') //don't track free stuff or crate stuff because they happen a LOT
-					{
-						_gaq&&_gaq.push(['_trackEvent','Boosts','Buy',this.name)]);
-					}
+					_gaq&&_gaq.push(['_trackEvent','Boosts','Buy',this.name]);
 					if (this.buyFunction) this.buyFunction();
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
@@ -3107,7 +3108,7 @@ Molpy.Up=function()
 					if(baby.earned==0&&!Molpy.needlePulling)
 					{
 						baby.earned=1;
-						_gaq&&_gaq.push(['_trackEvent','Badges','Earn',baby.name)]);
+						_gaq&&_gaq.push(['_trackEvent','Badges','Earn',baby.name]);
 						if(Molpy.BadgesOwned==0) Molpy.EarnBadge('Redundant Redundancy');
 						Molpy.badgeRepaint=1;
 						Molpy.recalculateDig=1;
@@ -4387,7 +4388,7 @@ Molpy.Up=function()
 		if(Molpy.Got('Factory Automation'))
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
-			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',t)]);
+			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',t]);
 			var npb=Molpy.CastleTools['NewPixBot'];
 			if(Math.floor(Math.random()*((Molpy.Got('Safety Pumpkin')+Molpy.Got('SG'))*10+20-i))==0)
 			{
@@ -4416,7 +4417,7 @@ Molpy.Up=function()
 			Molpy.Notify('Activating Factory Automation '+t+' time'+plural(t)+' at a cost of '+Molpify(spent,4)+' Sand',1);
 
 			Molpy.FactoryAutomationRun(t);
-			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Succeed',t)]);
+			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Succeed',t]);
 			
 			Molpy.GlassNotifyFlush();
 		}
@@ -4635,7 +4636,7 @@ Molpy.Up=function()
 	{
 		Molpy.newpixNumber+=1;
 		
-		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',Molpy.newpixNumber)]);
+		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',Molpy.newpixNumber]);
 		
 		if(Molpy.newpixNumber > Molpy.highestNPvisited)
 		{

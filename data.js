@@ -887,7 +887,7 @@ Molpy.DefineBoosts=function()
 			Molpy.SpendGlassChips(chips);
 			Molpy.SpendCastles(price);
 			Molpy.newpixNumber=np;
-			_gaq&&_gaq.push(['_trackEvent','NewPix',(chips?'Memory Warp':'Time Travel'),Molpy.newpixNumber)]);			
+			_gaq&&_gaq.push(['_trackEvent','NewPix',(chips?'Memory Warp':'Time Travel'),Molpy.newpixNumber]);			
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
@@ -4517,7 +4517,7 @@ Molpy.DefineBoosts=function()
 		,sand:'2Z',castles:'8Z',glass:'7K',logic:12,className:'alert',
 		stats:function(me)
 		{
-			return 'Power is '+Molpify(me.power,3)+' out of <ED hasn\'t decided what to put here yet>';
+			return 'Power is '+Molpify(me.power,3)+' out of &lt;ED hasn\'t decided what to put here yet&gt;';
 		}
 	});
 	Molpy.CheckDragon=function()
