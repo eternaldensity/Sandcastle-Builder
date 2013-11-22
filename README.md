@@ -20,6 +20,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1415
+- Disabled the jQuery preload of next newpix because it was not working and was spitting out errors for some
+- faster seaish (big) upgrades of Sand Purifier and Glass Extruder (waveney)
+- Redundatracking, and some tracking bugfixes
+
 ## 3.141
 - Tracking update: convert integers to strings
 - Less hovering

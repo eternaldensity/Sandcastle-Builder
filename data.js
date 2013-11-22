@@ -2206,38 +2206,38 @@ Molpy.DefineBoosts=function()
 		,className:'action',group:'hpt'}
 	);
 	
-    Molpy.SeaishSandPurifier=function()
+  Molpy.SeaishSandPurifier=function()
     {
-        var upgrades = 0;
         var bl = Molpy.Boosts['Glass Block Storage'];
-		var cost=0;
-        while( (cost = Molpy.SandPurifierUpgradeCost()) < bl.power*.99 )
-        {
-            Molpy.SpendGlassBlocks(cost);
-            upgrades++;
-            Molpy.Boosts['Sand Purifier'].power++;
-        }
+    var a = 5; // the step size in prices
+    var b = 2*Molpy.SandPurifierUpgradeCost() - a;
+    var c = -2*bl.power*.99;
 
-        Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
-        Molpy.recalculateDig=1;
-        Molpy.Notify('Sand Purifier upgraded '+Molpify(upgrades,2) + ' times' ,1);
+    var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
+    var cost = Molpy.SandPurifierUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+
+	Molpy.SpendGlassBlocks(cost);
+	Molpy.Boosts['Sand Purifier'].power+= upgrades;
+
+	Molpy.recalculateDig=1;
+	Molpy.Notify('Sand Purifier upgraded '+Molpify(upgrades,2) + ' times' ,1);
     }
 
     Molpy.SeaishGlassExtruder=function()
     {
-        var upgrades = 0;
         var ch = Molpy.Boosts['Glass Chip Storage'];
-		var cost=0;
-        while( (cost = Molpy.GlassExtruderUpgradeCost()) < ch.power*.99 )
-        {
-            Molpy.SpendGlassChips(cost);
-            upgrades++;
-            Molpy.Boosts['Glass Extruder'].power++;
-        }
+    var a = 500; // the step size in prices
+    var b = 2*Molpy.GlassExtruderUpgradeCost() - a;
+    var c = -2*ch.power*.99;
 
-        Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
-        Molpy.recalculateDig=1;
-        Molpy.Notify('Glass Extruder upgraded '+Molpify(upgrades,2) + ' times' ,1);
+    var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
+    var cost = Molpy.GlassExtruderUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+
+	Molpy.SpendGlassChips(cost);
+	Molpy.Boosts['Glass Extruder'].power+= upgrades;
+
+	Molpy.recalculateDig=1;
+	Molpy.Notify('Glass Extruder upgraded '+Molpify(upgrades,2) + ' times' ,1);
     }
 
     Molpy.SeaishSandRefinery=function()

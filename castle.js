@@ -1122,7 +1122,7 @@ Molpy.Up=function()
 					Molpy.BadgesById[i].earned=0;						
 				}
 				Molpy.badgeRepaint=1;
-				_gaq.push(['_trackEvent','Coma','Complete',''+Molpy.highest]);
+				_gaq.push(['_trackEvent','Coma','Complete',''+Molpy.highestNPvisited]);
 			}
 		}
 		Molpy.showOptions=0;
@@ -2932,7 +2932,7 @@ Molpy.Up=function()
 					Molpy.SpendCastles(cp);
 					Molpy.SpendGlassBlocks(gp);
 					this.bought=1;
-					_gaq&&_gaq.push(['_trackEvent','Boosts','Buy',this.name]);
+					_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name]);
 					if (this.buyFunction) this.buyFunction();
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
@@ -3008,7 +3008,7 @@ Molpy.Up=function()
 						if(!Molpy.boostSilence)
 						{
 							Molpy.Notify('Boost Unlocked: '+baby.name,1);
-							_gaq&&_gaq.push(['_trackEvent','Boosts','Unlock',baby.name]);
+							_gaq&&_gaq.push(['_trackEvent','Boost','Unlock',baby.name]);
 						}
 						if(baby.unlockFunction)baby.unlockFunction();
 						if(baby.name==Molpy.shoppingItem)
@@ -3056,7 +3056,7 @@ Molpy.Up=function()
 						if(!Molpy.boostSilence)
 						{
 							Molpy.Notify('Boost Locked: '+me.name,1);
-							_gaq&&_gaq.push(['_trackEvent','Boosts','Lock',me.name]);
+							_gaq&&_gaq.push(['_trackEvent','Boost','Lock',me.name]);
 						}
 						Molpy.CheckBuyUnlocks();
 					}
@@ -3288,7 +3288,8 @@ Molpy.Up=function()
 						Molpy.redactedDrawType=[];
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
-						Molpy.badgeRepaint=1;	
+						Molpy.badgeRepaint=1;
+						_gaq&&_gaq.push(['_trackEvent','Redundakitty','Chain Timeout',''+Molpy.redactedChain]);	
 						Molpy.redactedChain=0;
 						Molpy.RandomiseRedactedTime();	
 					}else{
@@ -3376,6 +3377,7 @@ Molpy.Up=function()
 				Molpy.redactedDrawType=[];
 				Molpy.redactedCountup=0; //whoops forgot that!
 				Molpy.RandomiseRedactedTime();
+				_gaq&&_gaq.push(['_trackEvent','Redundakitty','Chain End',''+Molpy.redactedChain]);
 				Molpy.redactedChain=0;
 			}
 			Molpy.redactedChainMax=Math.max(Molpy.redactedChainMax,Molpy.redactedChain);
@@ -3412,12 +3414,15 @@ Molpy.Up=function()
 		}
 
 		Molpy.RewardRedacted=function(forceDepartment,automationLevel)
-		{		
+		{	
+			var event=forceDepartment?'DoRD':Molpy.redactedWord;
 			if(Molpy.Got('DoRD') &&
 				(!Math.floor(8*Math.random()) || forceDepartment))
 			{
 				if(Molpy.Got('Blast Furnace') && !Math.floor(4*Math.random()))
 				{
+					
+					_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blast Furnace']);
 					Molpy.RewardBlastFurnace();
 					return;
 				}				
@@ -3455,11 +3460,14 @@ Molpy.Up=function()
 			}
 			if(Math.floor(2*Math.random()))
 			{
+				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Not Lucky']);
 				Molpy.RewardNotLucky(automationLevel);
 			}else if(isFinite(Molpy.sand)){
+				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blitzing']);
 				Molpy.RewardBlitzing(automationLevel);
 			}else
 			{
+				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blast Furnace Fallback']);
 				Molpy.RewardBlastFurnace();
 			}
 		}
@@ -4441,7 +4449,7 @@ Molpy.Up=function()
 		if(Molpy.Got('Factory Automation'))
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
-			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',''+t]);
+			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',''+i]);
 			var npb=Molpy.CastleTools['NewPixBot'];
 			if(Math.floor(Math.random()*((Molpy.Got('Safety Pumpkin')+Molpy.Got('SG'))*10+20-i))==0)
 			{
@@ -4958,7 +4966,8 @@ Molpy.Up=function()
 	Molpy.preloadedBeach=0;
 	Molpy.PreloadBeach=function(np)
 	{
-		$.get(Molpy.NewPixFor(np||Molpy.newpixNumber+1));
+		//REMOVED because it's giving people console errors and wasn't working for me anyway:
+		//$.get(Molpy.NewPixFor(np||Molpy.newpixNumber+1));
 		if(!np)Molpy.preloadedBeach=1;
 	}
 	/* In which we figure out how to draw stuff
