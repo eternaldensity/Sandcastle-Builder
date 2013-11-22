@@ -304,7 +304,8 @@ Molpy.Up=function()
 		{
 			if(!auto)
 			{
-				Molpy.saveCount++;
+				Molpy.saveCount++;				
+				_gaq&&_gaq.push(['_trackEvent','Save','Begin']);
 				if(Molpy.saveCount>=20){
 					Molpy.UnlockBoost('Autosave Option');	
 					Molpy.EarnBadge('This Should be Automatic');
@@ -331,11 +332,14 @@ Molpy.Up=function()
 			}
 			document.cookie='CastleBuilderGame=;'; //clear old cookie
 			Molpy.Notify('Game saved');
+			auto||_gaq&&_gaq.push(['_trackEvent','Save','Complete',Molpy.saveCount]);
+			
 			Molpy.autosaveCountup=0;
 		}
 		
 		Molpy.LoadC_STARSTAR_kie=function()
 		{
+		
 			var thread='';
 			if (document.cookie.indexOf('CastleBuilderGame')>=0) 
 			{
@@ -346,8 +350,10 @@ Molpy.Up=function()
 					if(dough)
 						thread+=BeanishToCuegish(unescape(dough).split(';')[0])||'';
 				}
+				_gaq&&_gaq.push(['_trackEvent','Load','Begin']);
 				Molpy.FromNeedlePulledThing(thread);
 				Molpy.loadCount++;
+				_gaq&&_gaq.push(['_trackEvent','Load','Complete',Molpy.loadCount]);
 				Molpy.autosaveCountup=0;
 				if(g('game'))
 				{
@@ -391,7 +397,9 @@ Molpy.Up=function()
 			}
 			if (thread && thread!='')
 			{
+				_gaq&&_gaq.push(['_trackEvent','Import','Begin']);
 				Molpy.FromNeedlePulledThing(BeanishToCuegish(thread));
+				_gaq&&_gaq.push(['_trackEvent','Import','Complete']);
 				Molpy.SaveC_STARSTAR_kie();
 			}
 		}
@@ -399,8 +407,8 @@ Molpy.Up=function()
 		
 		/* In which I do save and load!
 		+++++++++++++++++++++++++++++++*/
-		Molpy.ToNeedlePulledThing=function()
-		{
+		Molpy.ToNeedlePulledThing=function(exporting)
+		{						
 			var p='P'; //Pipe seParator
 			var s='S'; //Semicolon
 			var c='C'; //Comma
@@ -516,9 +524,10 @@ Molpy.Up=function()
 			threads.push(thread);
 			return threads;
 		}
+		
 		Molpy.needlePulling=0;
 		Molpy.FromNeedlePulledThing=function(thread)
-		{
+		{					
 			Molpy.needlePulling=1; //prevent earning badges that haven't been loaded
 			var p='P'; //Pipe seParator
 			var s='S'; //Semicolon
@@ -1416,7 +1425,9 @@ Molpy.Up=function()
 				$('#beachAnchor').removeClass('unhidden').addClass('hidden');
 				$('#stats').removeClass('unhidden').addClass('hidden');
 				$('#options').removeClass('unhidden').addClass('hidden');
+				_gaq&&_gaq.push(['_trackEvent','Export','Begin']);
 				var threads = Molpy.ToNeedlePulledThing();
+				_gaq&&_gaq.push(['_trackEvent','Export','Complete']);
 				var thread='';
 				for(var i in threads)
 				{
@@ -2988,7 +2999,10 @@ Molpy.Up=function()
 						Molpy.boostRepaint=1;
 						Molpy.recalculateDig=1;
 						if(!Molpy.boostSilence)
+						{
 							Molpy.Notify('Boost Unlocked: '+baby.name,1);
+							_gaq&&_gaq.push(['_trackEvent','Boosts','Unlock',baby.name]);
+						}
 						if(baby.unlockFunction)baby.unlockFunction();
 						if(baby.name==Molpy.shoppingItem)
 							Molpy.Donkey();
@@ -3033,7 +3047,10 @@ Molpy.Up=function()
 							me.bought=0;
 						} //Orteil did this bit wrong :P
 						if(!Molpy.boostSilence)
+						{
 							Molpy.Notify('Boost Locked: '+me.name,1);
+							_gaq&&_gaq.push(['_trackEvent','Boosts','Lock',me.name]);
+						}
 						Molpy.CheckBuyUnlocks();
 					}
 				}
@@ -3137,7 +3154,7 @@ Molpy.Up=function()
 					if(baby.earned==0&&!Molpy.needlePulling)
 					{
 						baby.earned=1;
-						_gaq&&_gaq.push(['_trackEvent','Badges','Earn',baby.name]);
+						_gaq&&_gaq.push(['_trackEvent','Badge','Earn',baby.name]);
 						if(Molpy.BadgesOwned==0) Molpy.EarnBadge('Redundant Redundancy');
 						Molpy.badgeRepaint=1;
 						Molpy.recalculateDig=1;
