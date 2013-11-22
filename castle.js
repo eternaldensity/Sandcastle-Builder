@@ -332,7 +332,7 @@ Molpy.Up=function()
 			}
 			document.cookie='CastleBuilderGame=;'; //clear old cookie
 			Molpy.Notify('Game saved');
-			auto||_gaq&&_gaq.push(['_trackEvent','Save','Complete',Molpy.saveCount]);
+			auto||_gaq&&_gaq.push(['_trackEvent','Save','Complete',''+Molpy.saveCount]);
 			
 			Molpy.autosaveCountup=0;
 		}
@@ -353,7 +353,7 @@ Molpy.Up=function()
 				_gaq&&_gaq.push(['_trackEvent','Load','Begin']);
 				Molpy.FromNeedlePulledThing(thread);
 				Molpy.loadCount++;
-				_gaq&&_gaq.push(['_trackEvent','Load','Complete',Molpy.loadCount]);
+				_gaq&&_gaq.push(['_trackEvent','Load','Complete',''+Molpy.loadCount]);
 				Molpy.autosaveCountup=0;
 				if(g('game'))
 				{
@@ -539,7 +539,7 @@ Molpy.Up=function()
 			}
 			thread=thread.split(p);
 			var version = parseFloat(thread[0]);
-			_gaq&&_gaq.push(['_trackEvent','Load','Version',version]);
+			_gaq&&_gaq.push(['_trackEvent','Load','Version',''+version]);
 			if(version>Molpy.version)
 			{
 				alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
@@ -1016,7 +1016,7 @@ Molpy.Up=function()
 			if(auto || confirm('Really Molpy Down?\n(Progress will be reset but achievements will not.)'))
 			{
 				
-				auto||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Begin',Molpy.newpixNumber]);
+				auto||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Begin',''+Molpy.newpixNumber]);
 				Molpy.sandDug=0; 
 				Molpy.sand=0; 
 				Molpy.sandManual=0;
@@ -1092,7 +1092,7 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Not Ground Zero');
 				Molpy.AdjustFade();
 				Molpy.UpdateColourScheme();
-				auto||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Complete',Molpy.highestNPvisited]);
+				auto||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Complete',''+Molpy.highestNPvisited]);
 			}
 		}
 		Molpy.Coma=function()
@@ -1101,7 +1101,7 @@ Molpy.Up=function()
 			confirm('Seriously, this will reset ALL the things.\nAre you ABSOLUTELY sure?'))
 			{
 				//reset the badges
-				_gaq.push(['_trackEvent','Coma','Begin',Molpy.newpixNumber]);
+				_gaq.push(['_trackEvent','Coma','Begin',''+Molpy.newpixNumber]);
 				Molpy.options.fade=0;
 				Molpy.Down(1);				
 				Molpy.saveCount=0;
@@ -1122,7 +1122,7 @@ Molpy.Up=function()
 					Molpy.BadgesById[i].earned=0;						
 				}
 				Molpy.badgeRepaint=1;
-				_gaq.push(['_trackEvent','Coma','Complete',Molpy.highest]);
+				_gaq.push(['_trackEvent','Coma','Complete',''+Molpy.highest]);
 			}
 		}
 		Molpy.showOptions=0;
@@ -4435,7 +4435,7 @@ Molpy.Up=function()
 		if(Molpy.Got('Factory Automation'))
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
-			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',t]);
+			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',''+t]);
 			var npb=Molpy.CastleTools['NewPixBot'];
 			if(Math.floor(Math.random()*((Molpy.Got('Safety Pumpkin')+Molpy.Got('SG'))*10+20-i))==0)
 			{
@@ -4464,7 +4464,7 @@ Molpy.Up=function()
 			Molpy.Notify('Activating Factory Automation '+t+' time'+plural(t)+' at a cost of '+Molpify(spent,4)+' Sand',1);
 
 			Molpy.FactoryAutomationRun(t);
-			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Succeed',t]);
+			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Succeed',''+t]);
 			
 			Molpy.GlassNotifyFlush();
 		}
@@ -4696,7 +4696,7 @@ Molpy.Up=function()
 	Molpy.ONG=function()
 	{
 		Molpy.newpixNumber+=1;
-		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',Molpy.newpixNumber]);
+		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',''+Molpy.newpixNumber]);
 		
 		if(Molpy.newpixNumber > Molpy.highestNPvisited)
 		{
@@ -5291,6 +5291,6 @@ window.onload=function()
 	if(!Molpy.molpish)
 	{
 		Molpy.Wake();
-		_gaq&&_gaq.push(['_trackEvent','Setup','Complete',Molpy.version]);
+		_gaq&&_gaq.push(['_trackEvent','Setup','Complete',''+Molpy.version]);
 	}
 };
