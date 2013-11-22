@@ -886,7 +886,8 @@ Molpy.DefineBoosts=function()
 			}
 			Molpy.SpendGlassChips(chips);
 			Molpy.SpendCastles(price);
-			Molpy.newpixNumber=np;			
+			Molpy.newpixNumber=np;
+			_gaq&&_gaq.push(['_trackEvent','NewPix',(chips?'Memory Warp':'Time Travel'),Molpy.newpixNumber)]);			
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
@@ -4488,6 +4489,43 @@ Molpy.DefineBoosts=function()
         }
     }
 	
+	new Molpy.Boost({name:'Achronal Dragon',desc:function(me)
+		{
+			if(!me.bought) return'In the stats of this boost, you can seek and destroy temporal duplicates';			
+			
+			var str='Temporal Duplicate Scan Report:'
+			for(var i in Molpy.SandTools)
+			{
+				var t = Molpy.SandTools[i];
+				if(t.temp)
+				{
+					str+='<br>'+Molpify(t.temp,3)+' duplicates of '+t.name;
+					str+='<br><input type="button" value="Destroy" onclick="Molpy.SandTools[\''+i+'\'].destroyTemp()"></input> them all at a cost of '+Molpify(t.temp*5,3)+' Glass Blocks<br>';
+				}
+			}
+			for(var i in Molpy.CastleTools)
+			{
+				var t = Molpy.CastleTools[i];
+				if(t.temp)
+				{
+					str+='<br>'+Molpify(t.temp,3)+' duplicates of '+t.name;
+					str+='<br><input type="button" value="Destroy" onclick="Molpy.CastleTools[\''+i+'\'].destroyTemp()"></input> them all at a cost of '+Molpify(t.temp*10,3)+' Glass Blocks<br>';
+				}
+			}
+			return str;
+		}
+		,sand:'2Z',castles:'8Z',glass:'7K',logic:12,className:'alert',
+		stats:function(me)
+		{
+			return 'Power is '+Molpify(me.power,3)+' out of <ED hasn\'t decided what to put here yet>';
+		}
+	});
+	Molpy.CheckDragon=function()
+	{
+	}
+	
+	
+	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
 		badges:['badge','Badges'],
@@ -5228,6 +5266,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(!isFinite(Math.pow(200,Molpy.Boosts['RB'].bought)))Molpy.UnlockBoost('Knitted Beanies');
 	if(!isFinite(Math.pow(2,Molpy.Boosts['WWB'].bought-5))) Molpy.UnlockBoost('Space Elevator');
 	if (Molpy.groupBadgeCounts.discov > 5 && Molpy.Earned('discov1')) Molpy.UnlockBoost('Discovery Detector');
+	if (Molpy.Got('Tool Factory')) Molpy.UnlockBoost('Achronal Dragon');
 }
 
 Molpy.CheckDoRDRewards=function(automationLevel)

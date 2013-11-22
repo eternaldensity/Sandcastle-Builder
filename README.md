@@ -26,6 +26,8 @@ For personal amusement only.
 - Waveney's discovery detector
 - Finally fixed tool price formatting so that NewPixBot costs 1 Castle not 1 Castles
 - Prices are divs not spans so they don't start on the same line as the buy link
+- Some Google Analytics stuff
+- Achronal Dragon to track and destroy temporal duplicates (if you want to)
 
 ## 3.13
 - Now you can call Molpify like this: Molpify(someNumber, decimalPlaces,2) and it won't apply all the letter prefix things, regardless of your game's scientific notation setting

@@ -1005,6 +1005,8 @@ Molpy.Up=function()
 		{
 			if(auto || confirm('Really Molpy Down?\n(Progress will be reset but achievements will not.)'))
 			{
+				
+				auto||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Begin',Molpy.newpixNumber]);
 				Molpy.sandDug=0; 
 				Molpy.sand=0; 
 				Molpy.sandManual=0;
@@ -1080,6 +1082,7 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Not Ground Zero');
 				Molpy.AdjustFade();
 				Molpy.UpdateColourScheme();
+				auto||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Complete',Molpy.highestNPvisited]);
 			}
 		}
 		Molpy.Coma=function()
@@ -1088,10 +1091,12 @@ Molpy.Up=function()
 			confirm('Seriously, this will reset ALL the things.\nAre you ABSOLUTELY sure?'))
 			{
 				//reset the badges
+				_gaq.push(['_trackEvent','Coma','Begin',Molpy.newpixNumber]);
 				Molpy.options.fade=0;
 				Molpy.Down(1);				
 				Molpy.saveCount=0;
 				Molpy.loadCount=0;
+				var highest = Molpy.highestNPvisited;
 				Molpy.highestNPvisited=0;
 				Molpy.BadgesOwned=0;
 				Molpy.groupBadgeCounts={};
@@ -1107,6 +1112,7 @@ Molpy.Up=function()
 					Molpy.BadgesById[i].earned=0;						
 				}
 				Molpy.badgeRepaint=1;
+				_gaq.push(['_trackEvent','Coma','Complete',Molpy.highest]);
 			}
 		}
 		Molpy.showOptions=0;
@@ -2472,6 +2478,18 @@ Molpy.Up=function()
 					Molpy.CheckBuyUnlocks();
 				}
 			}
+			this.destroyTemp=function()
+			{
+				var cost = this.temp*5;
+				if(Molpy.HasGlassBlocks('cost'))
+				{
+					Molpy.SpendBlocks(cost);
+					this.amount=Math.max(0,this.amount-this.temp);
+					this.temp=0;
+					Molpy.Boosts['Achronal Dragon'].power+=cost;
+					Molpy.CheckDragon();
+				}
+			}
 			this.updateBuy=function()
 			{
 				$('#SandToolBuy'+this.id).toggleClass('unbuyable',!this.isAffordable());
@@ -2588,6 +2606,7 @@ Molpy.Up=function()
 					this.amount+=bought;
 					this.temp+=bought;
 					bought+=bought;
+					if(this.temp>32) Molpy.UnlockBoost('Achronal Dragon');
 				}
 				if(bought)
 					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+plural(spent)+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
@@ -2623,6 +2642,18 @@ Molpy.Up=function()
 					Molpy.CastleToolsOwned--;
 					Molpy.UnlockBoost('No Sell');
 					Molpy.CheckBuyUnlocks();
+				}
+			}
+			this.destroyTemp=function()
+			{
+				var cost = this.temp*10;
+				if(Molpy.HasGlassBlocks('cost'))
+				{
+					Molpy.SpendBlocks(cost);
+					this.amount=Math.max(0,this.amount-this.temp);
+					this.temp=0;
+					Molpy.Boosts['Achronal Dragon'].power+=cost;
+					Molpy.CheckDragon();
 				}
 			}
 			this.updateBuy=function()
@@ -2851,6 +2882,10 @@ Molpy.Up=function()
 					Molpy.SpendCastles(cp);
 					Molpy.SpendGlassBlocks(gp);
 					this.bought=1;
+					if(sp+cp+gp>0&&this.name!='Locked Crate'&&this.name!='Crate Key') //don't track free stuff or crate stuff because they happen a LOT
+					{
+						_gaq&&_gaq.push(['_trackEvent','Boosts','Buy',this.name)]);
+					}
 					if (this.buyFunction) this.buyFunction();
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
@@ -3072,6 +3107,7 @@ Molpy.Up=function()
 					if(baby.earned==0&&!Molpy.needlePulling)
 					{
 						baby.earned=1;
+						_gaq&&_gaq.push(['_trackEvent','Badges','Earn',baby.name)]);
 						if(Molpy.BadgesOwned==0) Molpy.EarnBadge('Redundant Redundancy');
 						Molpy.badgeRepaint=1;
 						Molpy.recalculateDig=1;
@@ -4351,6 +4387,7 @@ Molpy.Up=function()
 		if(Molpy.Got('Factory Automation'))
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
+			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',t)]);
 			var npb=Molpy.CastleTools['NewPixBot'];
 			if(Math.floor(Math.random()*((Molpy.Got('Safety Pumpkin')+Molpy.Got('SG'))*10+20-i))==0)
 			{
@@ -4379,6 +4416,7 @@ Molpy.Up=function()
 			Molpy.Notify('Activating Factory Automation '+t+' time'+plural(t)+' at a cost of '+Molpify(spent,4)+' Sand',1);
 
 			Molpy.FactoryAutomationRun(t);
+			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Succeed',t)]);
 			
 			Molpy.GlassNotifyFlush();
 		}
@@ -4596,6 +4634,9 @@ Molpy.Up=function()
 	Molpy.ONG=function()
 	{
 		Molpy.newpixNumber+=1;
+		
+		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',Molpy.newpixNumber)]);
+		
 		if(Molpy.newpixNumber > Molpy.highestNPvisited)
 		{
 			Molpy.highestNPvisited=Molpy.newpixNumber;
@@ -5159,7 +5200,15 @@ Molpy.Up=function()
 		setTimeout(Molpy.Loopist, 1000/Molpy.fps);
 	}	
 }
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-45954809-1']);
+_gaq.push(['_trackPageview']);
 
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
 
 
 /* In which we make it go!
