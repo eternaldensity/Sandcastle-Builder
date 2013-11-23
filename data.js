@@ -2851,7 +2851,8 @@ Molpy.DefineBoosts=function()
 			var bl=Molpy.Boosts['Glass Block Storage'];
 			var win = Math.ceil(Molpy.LogiMult('2K'));
 			win = Math.floor(win/(6-this.bought));
-			while(bl.bought*50<bl.power+win)bl.bought++; //make space!
+			
+			if(bl.bought*50<bl.power+win)bl.bought=Math.ceil((bl.power+win)/50); //make space!
 			bl.power+=win;
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
 			if(Molpy.Got('Camera'))
@@ -3254,7 +3255,13 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Constructing from Blackprints',alias:'CfB',
 		desc:function(me)
 		{
-			return 'Constructing '+Molpy.Boosts[Molpy.GetBlackprintSubject(1)].name+' from Blackprints.<br>'+Molpify(100-me.power)+' runs of Factory Automation required to complete.';
+			var subj = Molpy.Boosts[Molpy.GetBlackprintSubject(1)];
+			if(!subj)
+			{
+				Molpy.LockBoost('CfB');
+				return 'Constructing nothing. How?';
+			}
+			return 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(100-me.power)+' runs of Factory Automation required to complete.';
 		},
 		unlockFunction:function()
 		{
@@ -4480,6 +4487,7 @@ Molpy.DefineBoosts=function()
 
         var miscount =0;
         var npstart = 1;
+		var missing = 0;
         for (var np=1; np<Molpy.highestNPvisited; np++)
         {
             var alias='discov'+np;
@@ -4497,6 +4505,7 @@ Molpy.DefineBoosts=function()
                 else
                 {
                     miscount++;
+            missing++;
                 }
             }
         }
@@ -4504,6 +4513,7 @@ Molpy.DefineBoosts=function()
         {
             Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np);
         }
+		if (!missing) Molpy.Notify('You have not missed any discoveries');
     }
 	
 	new Molpy.Boost({name:'Achronal Dragon',desc:function(me)
