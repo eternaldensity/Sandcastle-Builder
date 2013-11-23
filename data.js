@@ -3918,12 +3918,8 @@ Molpy.DefineBoosts=function()
             fast=1;
             while(t--)
             {
-                tool = Molpy.tfOrder[t];
-                tool.amount += i;
-                tool.bought += i;
-            }
-            Molpy.SandToolsOwned+= 6*i;             
-            Molpy.CastleToolsOwned+= 6*i;               
+                Molpy.tfOrder[t].create(i);
+            }              
             pow -= 78000*i;
             built = i*12;   
         }
@@ -3950,13 +3946,8 @@ Molpy.DefineBoosts=function()
                 tool = Molpy.tfOrder[t];
 				if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
 				{
-					tool.amount += iAfford;
-					tool.bought += iAfford;
+					tool.create(iAfford);
 					built+=iAfford;
-					if(i%2)         
-						Molpy.CastleToolsOwned+=iAfford;
-					else
-						Molpy.SandToolsOwned+=iAfford; 
 				}
             }              
             pow -= setPrice*iAfford;
@@ -3974,13 +3965,7 @@ Molpy.DefineBoosts=function()
 						{
 							pow-=cost;
 							built++;
-							tool = Molpy.tfOrder[t];
-							tool.amount++;
-							tool.bought++;
-							if(i%2)         
-								Molpy.CastleToolsOwned++;
-							else
-								Molpy.SandToolsOwned++; 
+							Molpy.tfOrder[t].create(1);
 						}
 					}
 				}
@@ -3995,7 +3980,7 @@ Molpy.DefineBoosts=function()
                 var tool=Molpy.tfOrder[t];
                 if(isFinite(Molpy.priceFactor*tool.price)) tool.refresh();
             }
-
+			if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))built*=2;
             Molpy.toolsBuilt+=built;
             Molpy.toolsBuiltTotal+=built;
             Molpy.recalculateDig=1;
@@ -4521,11 +4506,13 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return'In the stats of this boost, you can seek and destroy temporal duplicates';			
 			
 			var str='Temporal Duplicate Scan Report:'
+			var found=0;
 			for(var i in Molpy.SandTools)
 			{
 				var t = Molpy.SandTools[i];
 				if(t.temp)
 				{
+					found=1;
 					str+='<br>'+Molpify(t.temp,3)+' duplicates of '+t.name;
 					str+='<br><input type="button" value="Destroy" onclick="Molpy.SandTools[\''+i+'\'].destroyTemp()"></input> them all at a cost of '+Molpify(t.temp*5,3)+' Glass Blocks<br>';
 				}
@@ -4535,20 +4522,36 @@ Molpy.DefineBoosts=function()
 				var t = Molpy.CastleTools[i];
 				if(t.temp)
 				{
+					found=1;
 					str+='<br>'+Molpify(t.temp,3)+' duplicates of '+t.name;
 					str+='<br><input type="button" value="Destroy" onclick="Molpy.CastleTools[\''+i+'\'].destroyTemp()"></input> them all at a cost of '+Molpify(t.temp*10,3)+' Glass Blocks<br>';
 				}
 			}
+			if(!found)str+='<br>Nothing to report.';
 			return str;
 		}
-		,sand:'2Z',castles:'8Z',glass:'7K',logic:12,className:'alert',
+		,sand:'2Z',castles:'8Z',glass:'7K',logic:12,className:'alert',group:'chron',
 		stats:function(me)
 		{
-			return 'Power is '+Molpify(me.power,3)+' out of &lt;ED hasn\'t decided what to put here yet&gt;';
+			var target=Molpy.DragonTarget()[0];
+			var str='Power is '+Molpify(me.power,3)+(target?' out of  '+Molpify(target,3)+'<br>Destroy more temporal duplicates!':'');
+			return str;
 		}
 	});
+	Molpy.DragonTarget=function()
+	{
+		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>400&&!Molpy.Got('Crystal Dragon')) return [2000,'Crystal Dragon'];
+		return [0,''];
+	}
 	Molpy.CheckDragon=function()
 	{
+		var target=Molpy.DragonTarget();
+		var me = Molpy.Boosts['Achronal Dragon'];
+		if(me.power>=target[0])
+		{
+			me.power-=target[0];
+			Molpy.UnlockBoost(target[1]);
+		}
 	}
 	
 	new Molpy.Boost({name:'Cold Mould',
@@ -4581,6 +4584,8 @@ Molpy.DefineBoosts=function()
 	{
 		return !Molpy.Got('ASHF')&&Molpy.Boosts['Price Protection'].power>1;		
 	}
+	
+	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of Glass Tools built when it is active',sand:Infinity,castles:Infinity,glass:'7P',group:'chron'});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
@@ -5458,7 +5463,8 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Flux Surge'].logic=4*(Molpy.Got('Flux Turbine')&&isFinite(Molpy.castles));
 	var finiteC = 1*isFinite(Molpy.castles);
 	var finiteP=0;
-	if(finiteC)
+	if(Molpy.Got('Crystal Dragon'))finiteP=1;
+	else if(finiteC)
 	{
 		for(var i in Molpy.SandTools)
 		{
@@ -5481,7 +5487,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 		}
 	}
 	Molpy.Boosts['Temporal Duplication'].logic=finiteC*finiteP;
-	Molpy.Boosts['Temporal Rift'].logic=3*isFinite(Molpy.castles);
+	Molpy.Boosts['Temporal Rift'].logic=3*finiteC;
 	
 	Molpy.Boosts['Crate Key'].logic=4*(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'));
 	Molpy.Boosts['Bucking the Trend'].logic=10*(Molpy.SandTools['Bucket'].amount>=10000);

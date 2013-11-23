@@ -233,7 +233,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1415;
+		Molpy.version=3.1416;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2492,11 +2492,17 @@ Molpy.Up=function()
 				if(bought)
 					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+plural(spent)+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
 			}
-			this.create=function()
+			this.create=function(n)
 			{
-				this.amount++;
-				this.bought++;
-				Molpy.SandToolsOwned++;				
+				this.amount+=n;
+				this.bought+=n;
+				Molpy.SandToolsOwned+=n;
+				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))
+				{
+					this.amount+=n;
+					this.temp+=n;
+					Molpy.SandToolsOwned+=n;					
+				}
 			}
 			this.sell=function()
 			{
@@ -2663,11 +2669,17 @@ Molpy.Up=function()
 				if(bought)
 					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+plural(spent)+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
 			}
-			this.create=function()
-			{
-				this.amount++;
-				this.bought++;
-				Molpy.CastleToolsOwned++;				
+			this.create=function(n)
+			{	
+				this.amount+=n;
+				this.bought+=n;
+				Molpy.CastleToolsOwned+=n;
+				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))
+				{
+					this.amount+=n;
+					this.temp+=n;
+					Molpy.CastleToolsOwned+=n;					
+				}			
 			}
 			this.sell=function()
 			{				

@@ -24,6 +24,7 @@ For personal amusement only.
 - Handle weird case where Constructing from Blackprints is constructing nothing (I don't even)
 - Locked Crate reward no longer uses a loop to expand block storage. That was stupid
 - Negative message on Discovery Detector (thanks waveney)
+- New dragon
 
 ## 3.1415
 - Disabled the jQuery preload of next newpix because it was not working and was spitting out errors for some
