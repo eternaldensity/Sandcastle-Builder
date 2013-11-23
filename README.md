@@ -25,6 +25,7 @@ For personal amusement only.
 - Locked Crate reward no longer uses a loop to expand block storage. That was stupid
 - Negative message on Discovery Detector (thanks waveney)
 - New dragon
+- Finally remembered to put jQuery.js back on the index page
 
 ## 3.1415
 - Disabled the jQuery preload of next newpix because it was not working and was spitting out errors for some
