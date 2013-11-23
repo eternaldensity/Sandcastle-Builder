@@ -20,6 +20,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.15
+- Bunch of numbers in the save were being parsed as ints instead of floats, leading to problems now that the numbers are large enough
+- In particular, glass storage sizes, but temporal duplicates were now able to go wrong too, and the number of active bots, and a few other things
+- Thanks for doing that for me waveney :D
+
 ## 3.143
 - Okay so the problem was that on my phone, javascript likes to think that Math.pow() should return 0 instead of Infinity for very large exponents
 - And it was fine for castle tools since I was shortcutting their prices to infinity already. So now I'm doing that for sand tools also
