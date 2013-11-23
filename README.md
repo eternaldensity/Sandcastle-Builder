@@ -20,6 +20,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.142
+- Messing with order of multiplication of sand tool rate multipliers, returning early for infinities, might fix the NaNs that only show up on my phone
+
 ## 3.1416
 - Handle weird case where Constructing from Blackprints is constructing nothing (I don't even)
 - Locked Crate reward no longer uses a loop to expand block storage. That was stupid

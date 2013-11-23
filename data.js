@@ -141,15 +141,17 @@ Molpy.DefineSandTools=function()
 		spmNP:function(){
 			var baserate = 0.6+Molpy.Got('Helping Hand')*0.2;
 			var mult = 1;
+			if(Molpy.Got('Glass Ceiling 2'))mult*=Molpy.GlassCeilingMult();
+			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Megball')) mult*=2;
 			if(Molpy.Got('Cooperation'))
 			{
 				mult*=Math.pow(1.05,Math.floor(Molpy.SandTools['Bucket'].amount/2));
 			}
+			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Stickbot'))mult*=4;
 			if(Molpy.Got('The Forty'))mult*=40;
 			if(Molpy.Got('Human Cannonball'))mult*=2*Molpy.CastleTools['Trebuchet'].amount;
-			if(Molpy.Got('Glass Ceiling 2'))mult*=Molpy.GlassCeilingMult();
 			return baserate*mult;
 		},
 		gpmNP:function()
@@ -168,6 +170,8 @@ Molpy.DefineSandTools=function()
 		{
 			var baserate = 8+Molpy.Got('Flag Bearer')*2;
 			var mult = 1;
+			if(Molpy.Got('Glass Ceiling 4'))mult*=Molpy.GlassCeilingMult();
+			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Magic Mountain'))mult*=2.5;
 			if(Molpy.Got('Standardbot'))mult*=4;
 			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Molpy.CastleTools['Scaffold'].amount);
@@ -181,7 +185,6 @@ Molpy.DefineSandTools=function()
 				}
 			}
 			if(Molpy.Got('Fly the Flag'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
-			if(Molpy.Got('Glass Ceiling '+4))mult*=Molpy.GlassCeilingMult();
 			return baserate*mult;
 		},
 		gpmNP:function()
@@ -200,6 +203,10 @@ Molpy.DefineSandTools=function()
 		{
 			var baserate = 54+Molpy.Got('Extension Ladder')*18;
 			var mult = 1;
+			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
+			if(mult==0)return 0
+			if(Molpy.Got('Glass Ceiling 6'))mult*=Molpy.GlassCeilingMult();
+			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Level Up!'))mult*=2;
 			if(Molpy.Got('Climbbot'))mult*=4;
 			if(Molpy.Got('Broken Rung'))
@@ -218,8 +225,6 @@ Molpy.DefineSandTools=function()
 				mult*=min;
 			}
 			if(Molpy.Got('Up Up and Away'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
-			if(Molpy.Got('Glass Ceiling 6'))mult*=Molpy.GlassCeilingMult();
-			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
 			return baserate*mult;
 		},
 		gpmNP:function()
@@ -237,14 +242,17 @@ Molpy.DefineSandTools=function()
 		{
 			var baserate = 600;
 			var mult = 1;
+			if(Molpy.Got('Glass Ceiling 8'))mult*=Molpy.GlassCeilingMult();
+			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Embaggening')&&Molpy.SandTools['Cuegan'].amount>14)
 				mult*=Math.pow(1.02,Molpy.SandTools['Cuegan'].amount-14);
+			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Sandbag'))
 				mult*=Math.pow(1.05,Molpy.CastleTools['River'].amount);
+			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Luggagebot'))mult*=4;
 			if(Molpy.Got('Bag Puns'))mult*=2;
 			if(Molpy.Got('Air Drop'))mult*=5;
-			if(Molpy.Got('Glass Ceiling 8'))mult*=Molpy.GlassCeilingMult();
 			return baserate*mult;
 		},
 		gpmNP:function()
@@ -262,10 +270,13 @@ Molpy.DefineSandTools=function()
 			var baserate =2e137;
 			var mult=1;
 			if(Molpy.Got('Glass Ceiling 10'))mult*=Molpy.GlassCeilingMult();
+			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Frenchbot'))
+			if(!isFinite(mult))return Infinity;
 				mult*=1e42;
 			if(Molpy.Got('Bacon'))
 				mult*=Math.pow(1.03,Molpy.CastleTools['NewPixBot'].amount);
+			if(!isFinite(mult))return Infinity;
 			return mult*baserate;			
 		},
 		gpmNP:function()
