@@ -596,7 +596,7 @@ Molpy.Up=function()
 			Molpy.redactedCountup=parseInt(pixels[20]);			
 			Molpy.redactedToggle=parseInt(pixels[21]);			
 			Molpy.redactedVisible=parseInt(pixels[22]);			
-			Molpy.lGlass=parseInt(pixels[23]);
+			Molpy.lGlass=parseFloat(pixels[23]);
 			Molpy.redactedClicks=parseInt(pixels[24]);	
 			if(version < 0.92)
 			{	
@@ -611,7 +611,7 @@ Molpy.Up=function()
 			if(version < 2.1)
 				Molpy.tempIntruderBots=parseFloat(pixels[27]);
 			
-			Molpy.totalGlassBuilt=parseInt(pixels[27])||0;
+			Molpy.totalGlassBuilt=parseFloat(pixels[27])||0;
 			Molpy.totalGlassDestroyed=parseFloat(pixels[28])||0;
 			Molpy.chipsManual=parseFloat(pixels[29])||0;
 			Molpy.redactedChain=parseFloat(pixels[30])||0;
@@ -625,11 +625,11 @@ Molpy.Up=function()
 				if (pixels[i])
 				{
 					var ice=pixels[i].split(c);
-					me.amount=parseInt(ice[0])||0;
-					me.bought=parseInt(ice[1])||0;
+					me.amount=parseFloat(ice[0])||0;
+					me.bought=parseFloat(ice[1])||0;
 					me.totalSand=parseFloat(ice[2])||0;
-					me.temp=parseInt(ice[3])||0;
-					me.totalGlass=parseInt(ice[4])||0;
+					me.temp=parseFloat(ice[3])||0;
+					me.totalGlass=parseFloat(ice[4])||0;
 					Molpy.SandToolsOwned+=me.amount;
 					me.refresh();
 				}
@@ -646,8 +646,8 @@ Molpy.Up=function()
 				if (pixels[i])
 				{
 					var ice=pixels[i].split(c);
-					me.amount=parseInt(ice[0])||0;
-					me.bought=parseInt(ice[1])||0;
+					me.amount=parseFloat(ice[0])||0;
+					me.bought=parseFloat(ice[1])||0;
 					me.totalCastlesBuilt=parseFloat(ice[2]);
 					me.totalCastlesDestroyed=parseFloat(ice[3]);
 					if(!me.totalCastlesDestroyed)me.totalCastlesDestroyed=0;//mustard cleaning
@@ -656,10 +656,10 @@ Molpy.Up=function()
 						Molpy.castlesDestroyed+=me.totalCastlesDestroyed;
 					}
 					me.totalCastlesWasted=parseFloat(ice[4]);
-					me.currentActive=parseInt(ice[5]);
-					me.temp=parseInt(ice[6])||0;
-					me.totalGlassBuilt=parseInt(ice[7])||0;
-					me.totalGlassDestroyed=parseInt(ice[8])||0;
+					me.currentActive=parseFloat(ice[5]);
+					me.temp=parseFloat(ice[6])||0;
+					me.totalGlassBuilt=parseFloat(ice[7])||0;
+					me.totalGlassDestroyed=parseFloat(ice[8])||0;
 					Molpy.CastleToolsOwned+=me.amount;
 					me.refresh();
 				}
@@ -684,7 +684,7 @@ Molpy.Up=function()
 				{
 					var ice=pixels[i].split(c);
 					me.unlocked=parseInt(ice[0]);
-					me.bought=me.unlocked&&parseInt(ice[1]); //ensure boosts that are locked aren't somehow set as bought
+					me.bought=me.unlocked&&parseFloat(ice[1]); //ensure boosts that are locked aren't somehow set as bought
 					if(version<0.92)
                     {
                         me.power=0;
