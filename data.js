@@ -4940,6 +4940,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Nuclear Fission Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(5e12)+' Chips/mNP',vis:1});
 	new Molpy.Badge({name:'Silicon Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(6e14)+' Chips/mNP',vis:1});
 	new Molpy.Badge({name:'Blue Poker Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(1e19)+' Chips/mNP',vis:1});
+	new Molpy.Badge({name:'Neat!',desc:'All your tools appear to have the same number owned',vis:1});
 		
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
@@ -5326,6 +5327,19 @@ Molpy.CheckBuyUnlocks=function()
 	if(!isFinite(Math.pow(2,Molpy.Boosts['WWB'].bought-5))) Molpy.UnlockBoost('Space Elevator');
 	if (Molpy.groupBadgeCounts.discov > 5 && Molpy.Earned('discov1')) Molpy.UnlockBoost('Discovery Detector');
 	if (Molpy.Got('Tool Factory')) Molpy.UnlockBoost('Achronal Dragon');
+	if (!Molpy.Earned('Neat!') && Molpy.SandTools['Bucket'].amount>1000000) 
+	{
+		var neatif = Molpify(Molpy.SandTools['Bucket'].amount,3);
+       		var t = Molpy.tfOrder.length;
+		var allsame = 1;
+        	while(t-- && allsame)
+        	{
+            		var tool=Molpy.tfOrder[t];
+            		if (Molpify(tool.amount,3) != neatif) allsame = 0;
+		}
+		if (allsame) Molpy.EarnBadge('Neat!');
+        }
+
 }
 
 Molpy.CheckDoRDRewards=function(automationLevel)
