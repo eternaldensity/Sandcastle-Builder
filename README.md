@@ -20,6 +20,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.143
+- Okay so the problem was that on my phone, javascript likes to think that Math.pow() should return 0 instead of Infinity for very large exponents
+- And it was fine for castle tools since I was shortcutting their prices to infinity already. So now I'm doing that for sand tools also
+
 ## 3.142
 - Messing with order of multiplication of sand tool rate multipliers, returning early for infinities, might fix the NaNs that only show up on my phone
 

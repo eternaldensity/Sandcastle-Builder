@@ -233,7 +233,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.142;
+		Molpy.version=3.143;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2460,9 +2460,10 @@ Molpy.Up=function()
 				var times = Math.pow(4,Molpy.options.sandmultibuy );
 				var bought=0;
 				var spent=0;
+				this.findPrice();
 				while (times--)
 				{
-					var price=Math.floor(Molpy.priceFactor*this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
+					var price=this.price*Molpy.priceFactor;
 					if(!isFinite(price))
 					{
 						Molpy.UnlockBoost('Tool Factory');
@@ -2473,8 +2474,7 @@ Molpy.Up=function()
 						this.bought++;
 						bought++;
 						spent+=price;
-						price=Math.floor(this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
-						this.price=price;
+						this.findPrice();
 						if (this.buyFunction) this.buyFunction(this);
 						if (this.drawFunction) this.drawFunction();
 						Molpy.shopRepaint=1;
@@ -2509,7 +2509,7 @@ Molpy.Up=function()
 				if (this.amount>0)
 				{					
 					this.amount--;
-					var price=this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount);
+					this.findPrice();
 					
 					if(this.temp>0)
 					{
@@ -2519,9 +2519,8 @@ Molpy.Up=function()
 						var d=1;
 						if(Molpy.Got('Family Discount'))d=.2;
 						if(Molpy.Boosts['ASHF'].startPower>0.5) d*=0.8; //sorry guys, no ikea-scumming
-						Molpy.Build(Math.floor(price*0.5*d),1);
+						Molpy.Build(Math.floor(this.price*0.5*d),1);
 					}
-					this.price=price;
 					if (this.sellFunction) this.sellFunction();
 					if (this.drawFunction) this.drawFunction();
 					Molpy.shopRepaint=1;
@@ -2583,8 +2582,14 @@ Molpy.Up=function()
 			{
 				Molpy.shopRepaint=1;
 				Molpy.recalculateDig=1;
-				this.price=Math.floor(this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
+				this.findPrice();
 				if (this.drawFunction) this.drawFunction();
+			}
+			this.findPrice=function()
+			{
+				if(this.amount>9000)this.price=Infinity
+				else
+					this.price=Math.floor(this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
 			}
 			
 			
