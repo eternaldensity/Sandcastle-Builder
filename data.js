@@ -4941,6 +4941,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Silicon Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(6e14)+' Chips/mNP',vis:1});
 	new Molpy.Badge({name:'Blue Poker Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(1e19)+' Chips/mNP',vis:1});
 	new Molpy.Badge({name:'Neat!',desc:'All your tools appear to have the same number owned',vis:1});
+	new Molpy.Badge({name:'Mains Power',desc:'Automata Control level at least 230',vis:1});
 		
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
@@ -5339,7 +5340,7 @@ Molpy.CheckBuyUnlocks=function()
 		}
 		if (allsame) Molpy.EarnBadge('Neat!');
         }
-
+	if (Molpy.Boosts['AC'].power >= 230)  Molpy.EarnBadge('Mains Power');
 }
 
 Molpy.CheckDoRDRewards=function(automationLevel)
