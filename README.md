@@ -20,6 +20,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.152
+- Allowed much higher production control
+
 ## 3.151
 - Missed buckets in my phone-only mustard sand-tool-rate fix, which cost me a factory automation run because I had no sand unexpectedly
 

@@ -4290,7 +4290,7 @@ Molpy.DefineBoosts=function()
 			{
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(1)"></input> the rate by 1 at a cost of '+Molpify(1e6*n,1)+' Glass Blocks.';
 			}
-			for(var i = 1;i<10;i++)
+			for(var i = 1;i<50;i++)
 			{				
 				if((n >= 5*Math.pow(10,i) || !Molpy.HasGlassBlocks(Math.pow(10,i+7)*n)) && n < 5*Math.pow(10,i+2))
 				{
