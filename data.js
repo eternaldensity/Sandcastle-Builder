@@ -4468,7 +4468,7 @@ Molpy.DefineBoosts=function()
         {
             if (!me.bought) return 'Scans your records to see if you have missed discoveries';
             var cost=Molpy.highestNPvisited*Molpy.highestNPvisited*10;
-            return '<input type="button" value="Scan" onclick="Molpy.RunDiscoveryDetector()"></input> costs '+Molpify(cost,2)+ ' chips to scan your records to see where you have missed discoveres';
+            return '<input type="button" value="Scan" onclick="Molpy.RunDiscoveryDetector()"></input> costs '+Molpify(cost,2)+ ' chips to scan your records to see where you have missed discoveries';
         }
     }); //by waveney
 
@@ -4494,7 +4494,7 @@ Molpy.DefineBoosts=function()
                 {
                     if (miscount)
                     {
-                        Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np);
+                        Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np,1);
                         miscount=0;
                     }
                     npstart=np;
@@ -4502,13 +4502,13 @@ Molpy.DefineBoosts=function()
                 else
                 {
                     miscount++;
-            missing++;
+					missing++;
                 }
             }
         }
         if (miscount)
         {
-            Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np);
+            Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np,1);
         }
 		if (!missing) Molpy.Notify('You have not missed any discoveries');
     }
@@ -4567,12 +4567,13 @@ Molpy.DefineBoosts=function()
 	}
 	
 	new Molpy.Boost({name:'Cold Mould',
-	desc:function(me)
-	{
-		
-		return (me.power? '':'When active, ') + 'Prevents all Mould Making and Filling activities.'+(me.bought?'<br><input type="Button" onclick="Molpy.ColdMouldToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
-	}
-	,glass:'10K',sand:'75E',castles:'15E', group:'bean',className:'toggle'});
+		desc:function(me)
+		{
+			
+			return (me.power? '':'When active, ') + 'Prevents all Mould Making and Filling activities.'+(me.bought?'<br><input type="Button" onclick="Molpy.ColdMouldToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		}
+		,glass:'10K',sand:'75E',castles:'15E', group:'bean',className:'toggle'
+	});
 	Molpy.ColdMouldToggle=function()
 	{
 		var me=Molpy.Boosts['Cold Mould'];
@@ -4580,12 +4581,13 @@ Molpy.DefineBoosts=function()
 		me.hoverOnCounter=1;
 	}
 	new Molpy.Boost({name:'Price Protection',
-	desc:function(me)
-	{
-		
-		return (me.power? '':'When active, ') + 'Prevents purchases for 4mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.PriceProtectionToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
-	}
-	,sand:'7500',castles:'1500', group:'hpt',className:'toggle'});
+		desc:function(me)
+		{
+			
+			return (me.power? '':'When active, ') + 'Prevents purchases for 4mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.PriceProtectionToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		}
+		,sand:'7500',castles:'1500', group:'hpt',className:'toggle'
+	});
 	Molpy.PriceProtectionToggle=function()
 	{
 		var me=Molpy.Boosts['Price Protection'];

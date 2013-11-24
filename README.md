@@ -20,6 +20,12 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.153
+- Discovery Detector messages go to log
+- Typo in Discovery Detector (yay not mine)
+- I forgot to wrap the Sand Monument images in the new URL function I'd extracted when attempting to do preloading
+- So now Sand Monument images will actually appear
+
 ## 3.152
 - Allowed much higher production control
 
