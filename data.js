@@ -4468,7 +4468,7 @@ Molpy.DefineBoosts=function()
         {
             if (!me.bought) return 'Scans your records to see if you have missed discoveries';
             var cost=Molpy.highestNPvisited*Molpy.highestNPvisited*10;
-            return '<input type="button" value="Scan" onclick="Molpy.RunDiscoveryDetector()"></input> costs '+Molpify(cost,2)+ ' chips to scan your records to see where you have missed discoveres';
+            return '<input type="button" value="Scan" onclick="Molpy.RunDiscoveryDetector()"></input> costs '+Molpify(cost,2)+ ' chips to scan your records to see where you have missed discoveries';
         }
     }); //by waveney
 
@@ -4484,7 +4484,7 @@ Molpy.DefineBoosts=function()
 
         var miscount =0;
         var npstart = 1;
-		var missing = 0;
+	var missing = 0;
         for (var np=1; np<Molpy.highestNPvisited; np++)
         {
             var alias='discov'+np;
@@ -4494,7 +4494,7 @@ Molpy.DefineBoosts=function()
                 {
                     if (miscount)
                     {
-                        Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np);
+                        Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np,1);
                         miscount=0;
                     }
                     npstart=np;
@@ -4502,15 +4502,15 @@ Molpy.DefineBoosts=function()
                 else
                 {
                     miscount++;
-            missing++;
+            	    missing++;
                 }
             }
         }
         if (miscount)
         {
-            Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np);
+            Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' since NP'+npstart,1);
         }
-		if (!missing) Molpy.Notify('You have not missed any discoveries');
+	if (!missing) Molpy.Notify('You have not missed any discoveries',1);
     }
 	
 	new Molpy.Boost({name:'Achronal Dragon',desc:function(me)
