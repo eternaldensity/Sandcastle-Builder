@@ -809,7 +809,7 @@ Molpy.DefineBoosts=function()
 			return 'Pay ' + Molpify(price,2) + ' Castles to move <input type="Button" onclick="Molpy.TimeTravel('+(-me.power)+');" value="backwards"></input> or <input type="Button" onclick="Molpy.TimeTravel('+me.power+');" value="forwards"></input> '+
 			Molpify(me.power)+' NP in Time';
 		}
-		,sand:1000,castles:30,className:'action',group:'chron',
+		,sand:1000,castles:30,className:'action',group:'chron',icon:'timetravel',
 		buyFunction:function()
 		{
 			this.power=1;
@@ -988,7 +988,7 @@ Molpy.DefineBoosts=function()
 		sand:'352.5M',castles:390625,icon:'smallbot',group:'cyb'});
 	
 	new Molpy.Boost({name:'Swell',desc:'Waves produce 29 more Castles',sand:'20K',castles:200,icon:'swell'});
-	new Molpy.Boost({name:'Flux Capacitor',desc:'It makes Time Travel possibler!',sand:88,castles:88,group:'chron'});
+	new Molpy.Boost({name:'Flux Capacitor',desc:'It makes Time Travel possibler!',sand:88,castles:88,group:'chron',icon:'fluxcap'});
 	new Molpy.Boost({name:'Bag Burning',desc:'Bags help counteract NewPixBots. This will involve burning some Bags.<br>Bag Burning is the first of several Boosts available during Judgement Dip.<br>Remember you can always sell Bags to reduce the effect of Bag Burning.',sand:'50M',castles:86,
 		stats:function()
 		{
@@ -2215,7 +2215,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
-		,className:'action',group:'hpt'}
+		,className:'action',group:'hpt',icon:'sandpurifier'}
 	);
 	
   Molpy.SeaishSandPurifier=function()
@@ -2605,7 +2605,7 @@ Molpy.DefineBoosts=function()
 		{
 			return me.desc(me)+'<br>(Also may have reduced price of Double or Nothing.)';
 		}
-		,sand:'5P',castles:'10P',glass:'500',className:'toggle'});
+		,sand:'5P',castles:'10P',glass:'500',className:'toggle',icon:'bbc'});
 		
 	Molpy.ToggleBBC=function()
 	{
@@ -2784,7 +2784,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(){this.power=1;},
-		sand:'180E',castles:'380E',glass:2500,group:'bean',className:'toggle'
+		sand:'180E',castles:'380E',glass:2500,group:'bean',className:'toggle',icon:'rrr'
 	});	Molpy.RRRToggle=function()
 	{
 		var me=Molpy.Boosts['RRR'];
@@ -2821,7 +2821,7 @@ Molpy.DefineBoosts=function()
 		{
 			return Math.min(50000, Molpy.LogiMult('.5K'));
 		}
-		,className:'alert'
+		,className:'alert',icon:'impninja'
 	});
 	new Molpy.Boost({name:'Factory Ninja',desc:
 		function(me){return 'The next '+me.power+' Ninja Builder'+plural(me.power)+' will activate Factory Automation';}
@@ -2853,7 +2853,7 @@ Molpy.DefineBoosts=function()
 		},
 		sand:function(me){ return me.power;},
 		castles:function(me){ return me.power;},
-		glass:15,logic:2,className:'action',
+		glass:15,logic:2,className:'action',icon:'lockedcrate',
 		unlockFunction:function()
 		{
 			this.power = Molpy.castles*6+Molpy.sand;
@@ -2944,7 +2944,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
-		,className:'action',group:'hpt'}
+		,className:'action',group:'hpt',icon:'glassextruder'}
 	);
 	
 	new Molpy.Boost({name:'Caged Logicat',
@@ -2961,7 +2961,7 @@ Molpy.DefineBoosts=function()
 			}else{
 				return 'Caged Logicat is sleeping. Please wait for it.';
 			}
-		},group:'bean',className:'action',
+		},group:'bean',className:'action',icon:'cagedlogicat',
 		buyFunction:function()
 		{
 			this.bought=11;
@@ -3059,7 +3059,7 @@ Molpy.DefineBoosts=function()
 			return str;
 		},buyFunction:function(){this.power=1;},
 		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Ladders, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Bags. If 35 Glass Blocks are not available each time, a Ladder/Bag is consumed before multiplying.',
-		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean'});
+		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean',icon:'lcb'});
 	Molpy.CatBagToggle=function()
 	{
 		var me=Molpy.Boosts['LCB'];
@@ -3079,7 +3079,7 @@ Molpy.DefineBoosts=function()
 			return str;
 		},buyFunction:function(){this.power=1;},
 		stats:'At a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each Wave, then at a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each River. If 45 Glass Blocks are not available each time, a Wave/River is consumed before multiplying.',
-		sand:'750S',castles:'245S',glass:'4800',className:'toggle',group:'bean'});
+		sand:'750S',castles:'245S',glass:'4800',className:'toggle',group:'bean',icon:'catamaran'});
 	Molpy.CatamaranToggle=function()
 	{
 		var me=Molpy.Boosts['Catamaran'];
@@ -3099,7 +3099,7 @@ Molpy.DefineBoosts=function()
 			return str;
 		},buyFunction:function(){this.power=1;},
 		stats:'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each '+Molpy.redactedWord+' click',
-		sand:'930PW',castles:'824PW',glass:'4800',className:'toggle',group:'bean'});
+		sand:'930PW',castles:'824PW',glass:'4800',className:'toggle',group:'bean',icon:'redundaraptor'});
 	Molpy.RedRaptorToggle=function()
 	{
 		var me=Molpy.Boosts['Redundant Raptor'];
@@ -3116,7 +3116,7 @@ Molpy.DefineBoosts=function()
 		}
 		return str;
 	},
-		className:'action',group:'bean'
+		className:'action',group:'bean',icon:'camera'
 	});
 	
 	new Molpy.Boost({name:'Memories Revisited',desc:'Allows you to quickly jump in Time to Discoveries you have made.',
@@ -3310,7 +3310,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
-		,group:'bean',
+		,group:'bean',icon:'smm',
 		classChange:function()
 		{
 			var oldClass=this.className;
@@ -3728,7 +3728,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
-		,sand:'450EW',castles:'75EW',glass:'1.8K',group:'ninj',className:'toggle'});
+		,sand:'450EW',castles:'75EW',glass:'1.8K',group:'ninj',className:'toggle',icon:'ninjasaw'});
 	Molpy.NinjasawToggle=function()
 	{
 		var ns=Molpy.Boosts['Ninjasaw'];
@@ -3831,7 +3831,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
-		,group:'bean',classChange:
+		,group:'bean',icon:'recyclingbeanies',classChange:
 		function()
 		{
 			var oldClass=this.className;
@@ -4133,7 +4133,7 @@ Molpy.DefineBoosts=function()
 		{ 
 			return (me.power? '':'When active, ') + 'All Tools, Boosts and Badges are expanded<br>'+(me.power? '<br>':'')+'<input type="Button" onclick="Molpy.ToggleExpando()" value="'+(me.power? 'Deflate':'Expand')+'"></input>';
 		}
-		,sand:800,castles:20,className:'toggle'
+		,sand:800,castles:20,className:'toggle',icon:'expando'
 	});
 	
 	new Molpy.Boost({name:'Sand to Glass',desc:'When Sand is Infinite, Sand Tools produce Glass Chips for Tool Factory', sand:Infinity,castles:Infinity,glass:'200K',group:'hpt'});
@@ -4548,7 +4548,7 @@ Molpy.DefineBoosts=function()
 			if(!found)str+='<br>Nothing to report.';
 			return str;
 		}
-		,sand:'2Z',castles:'8Z',glass:'7K',logic:12,className:'alert',group:'chron',
+		,sand:'2Z',castles:'8Z',glass:'7K',logic:12,className:'alert',group:'chron',icon:'achronaldragon',
 		stats:function(me)
 		{
 			var target=Molpy.DragonTarget()[0];
@@ -4578,7 +4578,7 @@ Molpy.DefineBoosts=function()
 			
 			return (me.power? '':'When active, ') + 'Prevents all Mould Making and Filling activities.'+(me.bought?'<br><input type="Button" onclick="Molpy.ColdMouldToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
 		}
-		,glass:'10K',sand:'75E',castles:'15E', group:'bean',className:'toggle'
+		,glass:'10K',sand:'75E',castles:'15E', group:'bean',className:'toggle',icon:'coldmould'
 	});
 	Molpy.ColdMouldToggle=function()
 	{
@@ -4592,7 +4592,7 @@ Molpy.DefineBoosts=function()
 			
 			return (me.power? '':'When active, ') + 'Prevents purchases for 4mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.PriceProtectionToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
 		}
-		,sand:'7500',castles:'1500', group:'hpt',className:'toggle'
+		,sand:'7500',castles:'1500', group:'hpt',className:'toggle',icon:'priceprotection'
 	});
 	Molpy.PriceProtectionToggle=function()
 	{
