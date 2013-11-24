@@ -4266,11 +4266,17 @@ Molpy.DefineBoosts=function()
 		},sand:Infinity,castles:Infinity,
 		buyFunction:function()
 		{
+			var lc = Molpy.Boosts['Logicat'];
 			var levels = 200*(this.power+1)-5;
-			Molpy.Boosts['Logicat'].bought-=levels;
-			Molpy.Boosts['Logicat'].power-=5*levels;
-			this.power++;
+			if(lc.bought>=levels&&confirm('Really spend '+Molpify(levels,3)+' Logicat levels on Panther Rush?'))
+			{				
+				lc.bought-=levels;
+				lc.power-=5*levels;
+				this.power++;
+				levels = 200*(this.power+1)-5;				
+			}
 			Molpy.LockBoost(this.alias);
+			if(lc.bought>=levels)Molpy.UnlockBoost(this.alias);
 		}
 	});
 	

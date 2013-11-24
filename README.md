@@ -28,6 +28,13 @@ For personal amusement only.
 - Another DD change by waveney
 - Stats shows partial blackprints, also by waveney (wish I'd thought of that! Well I hope I would have, but it's a moot point question now :P)
 - Forgot to change a number when I supposedly made Mysterious Representations activate at lower AC levels, making it go backwards
+- I updated Google Chrome and now I can't look at the console and sources at the same time. (Just felt like complaining)
+- Panther Rush checks that you have the required logicat levels when buying it
+- Panther Rush asks the user if you really want to spend the logicat levels before using them
+- Panther Rush reunlocks after usage if you have enough Logicat levels for its next (or current, if you declined to buy it) level
+- That's because the confirmation actually happens after buying so it has to lock and unlock to ensure the number of boosts owned comes out right
+- Assuming it does come out right (let me know if you see any wonky numbers: someone reported an issue with negative boosts owned a while back and though I haven't bene able to reproduce it, that doesn't mean it can't happen in some circumstances)
+- Rambled in changelog. I'm surprised I managed to avoid doing that for so long. I tend to ramble. Especially when... nevermind
 
 ## 3.152
 - Allowed much higher production control
