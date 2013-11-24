@@ -27,6 +27,7 @@ For personal amusement only.
 - So now Sand Monument images will actually appear
 - Another DD change by waveney
 - Stats shows partial blackprints, also by waveney (wish I'd thought of that! Well I hope I would have, but it's a moot point question now :P)
+- Forgot to change a number when I supposedly made Mysterious Representations activate at lower AC levels, making it go backwards
 
 ## 3.152
 - Allowed much higher production control

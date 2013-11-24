@@ -4078,7 +4078,7 @@ Molpy.DefineBoosts=function()
 		if(left>7&&Molpy.Got('Milo'))
 		{
 			var mr = Molpy.Boosts['Milo'];
-			var draft=Math.random()*(left-10);
+			var draft=Math.random()*(left-7);
 			mr.power+=draft;
 			left-=draft;			
 			var pages=0;
