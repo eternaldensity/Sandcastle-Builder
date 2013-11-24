@@ -20,6 +20,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.151
+- Missed buckets in my phone-only mustard sand-tool-rate fix, which cost me a factory automation run because I had no sand unexpectedly
+
 ## 3.15
 - Bunch of numbers in the save were being parsed as ints instead of floats, leading to problems now that the numbers are large enough
 - In particular, glass storage sizes, but temporal duplicates were now able to go wrong too, and the number of active bots, and a few other things

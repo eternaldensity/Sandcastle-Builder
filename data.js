@@ -118,12 +118,13 @@ Molpy.DefineSandTools=function()
 		spmNP:function(){
 			var baserate =0.1 + Molpy.Got('Bigger Buckets')*0.1;
 			var mult=1;
+			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
+			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Huge Buckets'))mult*=2;
 			if(Molpy.Got('Trebuchet Pong'))mult*=Math.pow(1.5,Math.floor(Molpy.CastleTools['Trebuchet'].amount/2));
 			if(Molpy.Got('Carrybot'))mult*=4;
 			if(Molpy.Got('Buccaneer'))mult*=2;
 			if(Molpy.Got('Flying Buckets'))mult*=Molpy.CastleTools['Trebuchet'].amount;
-			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
 			return mult*baserate;			
 		},
 		gpmNP:function()
