@@ -4494,7 +4494,7 @@ Molpy.DefineBoosts=function()
                 {
                     if (miscount)
                     {
-                        Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np,1);
+						Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' since NP'+npstart,1);
                         miscount=0;
                     }
                     npstart=np;

@@ -25,6 +25,8 @@ For personal amusement only.
 - Typo in Discovery Detector (yay not mine)
 - I forgot to wrap the Sand Monument images in the new URL function I'd extracted when attempting to do preloading
 - So now Sand Monument images will actually appear
+- Another DD change by waveney
+- Stats shows partial blackprints, also by waveney (wish I'd thought of that! Well I hope I would have, but it's a moot point question now :P)
 
 ## 3.152
 - Allowed much higher production control

@@ -5229,7 +5229,9 @@ Molpy.Up=function()
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['Glass Chip Storage'].power,4);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power,4);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),6)+'%';
-		g('blackstat').innerHTML='Collected '+Molpify(Molpy.Boosts['Blackprints'].power,1)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
+		g('blackstat').innerHTML='Collected '+Molpify(Molpy.Boosts['Blackprints'].power
+			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
+      
 		g('logicatstat').innerHTML=Molpify(Molpy.Boosts['Logicat'].bought,1);
 		g('totaltoolchipsstat').innerHTML=Molpify(Molpy.totalGlassBuilt,4);
 		g('destroyedtoolchipsstat').innerHTML=Molpify(Molpy.totalGlassDestroyed,4);
