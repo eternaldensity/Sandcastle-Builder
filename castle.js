@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.16;
+		Molpy.version=3.161;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -607,7 +607,7 @@ Molpy.Up=function()
 				var blitzSpeed=parseInt(pixels[28])||0;	//these were saved here in 0.911 and 2
 				var blitzTime=parseInt(pixels[29])||0;		//but now are put in the 'Blitzed' boost
 			}
-			Molpy.highestNPvisited=parseInt(pixels[25])||0;
+			Molpy.highestNPvisited=parseInt(pixels[25])||Molpy.newpixNumber;
 			Molpy.totalCastlesDown=parseFloat(pixels[26])||0;
 			if(version < 2.1)
 				Molpy.tempIntruderBots=parseFloat(pixels[27])||0;

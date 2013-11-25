@@ -20,6 +20,12 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.161
+- Messed with chance of intruder bots in a certain circumstance...
+- When loading, if highest NP visited is missing, using the current NewPix number
+- When you have Bacon, Bag Burning is locked if you pass its threshold, so millions of bags are not continually burned pointlessly forever
+- A boost for NewPixBots, related to the above item.
+
 ## 3.16
 - New Boost Icons from BlitzGirl! (mostly tagged boosts)
 - Zero more potential mustard (NaN) when loading

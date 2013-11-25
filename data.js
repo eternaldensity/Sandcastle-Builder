@@ -327,6 +327,8 @@ Molpy.DefineCastleTools=function()
 				baseval*= 10;
 			if(Molpy.Got('Bottle Battle'))
 				baseval*= 3;
+			if(Molpy.Got('Fireproof'))
+				baseval*= 1e12;
 			return baseval;
 		},
 		nextThreshold:1
@@ -843,9 +845,11 @@ Molpy.DefineBoosts=function()
 			if(t>=10)
 			{
 				Molpy.EarnBadge('Primer');
-				var incursionFactor=Molpy.Got('Flux Capacitor')?4
+				var incursionFactor=Molpy.Got('Achronal Dragon')?1.5
+					:Molpy.Got('Flux Capacitor')?4
 					:(Molpy.Got('Flux Turbine')?8
 					:20);
+				
 				if(!Math.floor(Math.random()*incursionFactor))
 				{
 					var npb=Molpy.CastleTools['NewPixBot'];
@@ -1002,7 +1006,9 @@ Molpy.DefineBoosts=function()
 				amount=Molpify(amount*100,0,1);
 				str+='<br>Currently '+amount+'%';
 			}
-			str+='<br>If the Judgement Dip level (apart from the Bag reduction) is greater than '+Molpify(Math.pow(2,Molpy.Boosts['Bag Burning'].power)+6,1,1)+', Bags will be burned to increase power.';
+			var jmax=Math.pow(2,Molpy.Boosts['Bag Burning'].power)+6;
+			str+='<br>If the Judgement Dip level (apart from the Bag reduction) is greater than '+Molpify(jmax,1,1)+', Bags will be burned to increase power.';
+			if(!isFinite(jmax)&&Molpy.Got('Bottle Battle'))Molpy.UnlockBoost('Fireproof');
 			return str;
 		}
 		,lockFunction:function()
@@ -4654,6 +4660,8 @@ Molpy.DefineBoosts=function()
 		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'
 	});
 	
+	new Molpy.Boost({name:'Fireproof',desc:'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make '+Molpify(1e12)+' times as many Glass Chips',sand:Infinity,castles:Infinity,glass:function(){return 8e9*Molpy.CastleTools['NewPixBot'].amount;},group:'cyb'}); //www.youtube.com/watch?v=84q0SXW781c
+	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -4803,7 +4811,14 @@ Molpy.DefineBadges=function()
 	}
 	Molpy.BagBurnDiv=function()
 	{
-		return Math.min(1e294, Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2)));
+		var max=1e294
+		var div = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
+		if(div>max)
+		{
+			if(Molpy.Got('Bacon'))Molpy.LockBoost('Bag Burning');
+			return max;
+		}
+		return div;
 	}
 	Molpy.JudgementDipReport=function()
 	{
@@ -4865,7 +4880,7 @@ Molpy.DefineBadges=function()
 			{
 				Molpy.UnlockBoost('Summon Knights Temporal');
 			}
-			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
+			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold&&!Molpy.Got('Fireproof'))
 			{
 				Molpy.UnlockBoost('Bag Burning');
 			}
