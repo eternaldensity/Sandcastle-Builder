@@ -35,8 +35,7 @@ For personal amusement only.
 - Remove spaces from tool icon IDs
 - New Tool Icons also from BlitzGirl! Yay!!
 - Constructing from Blackprints now does nothing if you somehow end up with less pages then needed
-- What is Friendship?
-- Hotdoge
+- Two new Tool boosts. (What is Friendship? Why does the hotdog not have any wolpeys?)
 - Another Dragon, plus one not finished yet
 
 ## 3.153
