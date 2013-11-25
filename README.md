@@ -27,6 +27,7 @@ For personal amusement only.
 - A boost for NewPixBots, related to the above item.
 - If a spendable value gets to negative (i.e. number of glass blocks), you can now still buy stuff that costs 0 of that.
 - This particularly fixes weirdness such as ASHF landing in the shop rather than in loot (because they still count as being bought for 0 because reasons)
+- Fixed Furnace Multitasking description (thanks for pointing that out eldercain)
 
 ## 3.16
 - New Boost Icons from BlitzGirl! (mostly tagged boosts)
