@@ -20,6 +20,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.16
+- New icons from BlitzGirl!
+- Zero more potential mustard (NaN) when loading
+
 ## 3.153
 - Discovery Detector messages go to log
 - Typo in Discovery Detector (yay not mine)

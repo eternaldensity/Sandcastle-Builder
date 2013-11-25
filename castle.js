@@ -233,7 +233,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.153;
+		Molpy.version=3.16;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -551,19 +551,19 @@ Molpy.Up=function()
 			Molpy.startDate=parseInt(pixels[0]);
 			
 			pixels=thread[3].split('');			//whoops used to have ';' here which wasn't splitting!
-			Molpy.options.particles=parseInt(pixels[0]);
-			Molpy.options.numbers=parseInt(pixels[1]);
-			Molpy.options.autosave=parseInt(pixels[2]);
-			Molpy.options.autoupdate=parseInt(pixels[3]);
-			Molpy.options.sea=parseInt(pixels[4]);
-			Molpy.options.colpix=parseInt(pixels[5]);
-			Molpy.options.longpostfix=parseInt(pixels[6]);
-			Molpy.options.colourscheme=parseInt(pixels[7]);
-			Molpy.options.sandmultibuy=(parseInt(pixels[8] || 0));
-			Molpy.options.castlemultibuy=(parseInt(pixels[9] || 0));
-			Molpy.options.fade=(parseInt(pixels[10] || 0));
-			Molpy.options.typo=(parseInt(pixels[11] || 0));
-			Molpy.options.science=(parseInt(pixels[12] || 0));
+			Molpy.options.particles=parseInt(pixels[0])||0;
+			Molpy.options.numbers=parseInt(pixels[1])||0;
+			Molpy.options.autosave=parseInt(pixels[2])||0;
+			Molpy.options.autoupdate=parseInt(pixels[3])||0;
+			Molpy.options.sea=parseInt(pixels[4])||0;
+			Molpy.options.colpix=parseInt(pixels[5])||0;
+			Molpy.options.longpostfix=parseInt(pixels[6])||0;
+			Molpy.options.colourscheme=parseInt(pixels[7])||0;
+			Molpy.options.sandmultibuy=(parseInt(pixels[8]))||0;
+			Molpy.options.castlemultibuy=(parseInt(pixels[9]))||0;
+			Molpy.options.fade=(parseInt(pixels[10]))||0;
+			Molpy.options.typo=(parseInt(pixels[11]))||0;
+			Molpy.options.science=(parseInt(pixels[12]))||0;
 			if(!g('game'))
 			{				
 				Molpy.AdjustFade();
@@ -572,44 +572,44 @@ Molpy.Up=function()
 			}
 			
 			pixels=thread[4].split(s);
-			Molpy.newpixNumber=parseInt(pixels[0]);
-			Molpy.sandDug=parseFloat(pixels[1]);
-			Molpy.sandManual=parseFloat(pixels[2]);
-			Molpy.sand=parseFloat(pixels[3]);
-			Molpy.castlesBuilt=parseFloat(pixels[4]);
-			Molpy.castles=parseFloat(pixels[5]);
-			Molpy.castlesDestroyed=parseFloat(pixels[6]);
-			Molpy.prevCastleSand=parseFloat(pixels[7]);
-			Molpy.nextCastleSand=parseFloat(pixels[8]);
-			Molpy.castlesSpent=parseFloat(pixels[9]);
-			Molpy.sandSpent=parseFloat(pixels[10]);
-			Molpy.beachClicks=parseInt(pixels[11]);
-			Molpy.ninjaFreeCount=parseInt(pixels[12]);
-			Molpy.ninjaStealth=parseInt(pixels[13]);
+			Molpy.newpixNumber=parseInt(pixels[0])||0;
+			Molpy.sandDug=parseFloat(pixels[1])||0;
+			Molpy.sandManual=parseFloat(pixels[2])||0;
+			Molpy.sand=parseFloat(pixels[3])||0;
+			Molpy.castlesBuilt=parseFloat(pixels[4])||0;
+			Molpy.castles=parseFloat(pixels[5])||0;
+			Molpy.castlesDestroyed=parseFloat(pixels[6])||0;
+			Molpy.prevCastleSand=parseFloat(pixels[7])||0;
+			Molpy.nextCastleSand=parseFloat(pixels[8])||0;
+			Molpy.castlesSpent=parseFloat(pixels[9])||0;
+			Molpy.sandSpent=parseFloat(pixels[10])||0;
+			Molpy.beachClicks=parseInt(pixels[11])||0;
+			Molpy.ninjaFreeCount=parseInt(pixels[12])||0;
+			Molpy.ninjaStealth=parseInt(pixels[13])||0;
 			Molpy.ninjad=parseInt(pixels[14])?1:0;
-			Molpy.saveCount=parseInt(pixels[15]);
-			Molpy.loadCount=parseInt(pixels[16]);			
-			Molpy.notifsReceived=parseInt(pixels[17]);			
-			Molpy.timeTravels=parseInt(pixels[18]);		
-			Molpy.npbONG=parseInt(pixels[19]);		
+			Molpy.saveCount=parseInt(pixels[15])||0;
+			Molpy.loadCount=parseInt(pixels[16])||0;	
+			Molpy.notifsReceived=parseInt(pixels[17])||0;			
+			Molpy.timeTravels=parseInt(pixels[18])||0;		
+			Molpy.npbONG=parseInt(pixels[19])||0;		
 			
-			Molpy.redactedCountup=parseInt(pixels[20]);			
-			Molpy.redactedToggle=parseInt(pixels[21]);			
-			Molpy.redactedVisible=parseInt(pixels[22]);			
-			Molpy.lGlass=parseFloat(pixels[23]);
-			Molpy.redactedClicks=parseInt(pixels[24]);	
+			Molpy.redactedCountup=parseInt(pixels[20])||0;			
+			Molpy.redactedToggle=parseInt(pixels[21])||0;			
+			Molpy.redactedVisible=parseInt(pixels[22])||0;			
+			Molpy.lGlass=parseFloat(pixels[23])||0;
+			Molpy.redactedClicks=parseInt(pixels[24])||0;	
 			if(version < 0.92)
 			{	
 				//three variables not needed are skipped here
-				Molpy.redactedClicks=parseInt(pixels[27]);	
+				Molpy.redactedClicks=parseInt(pixels[27])||0;	
 				
-				var blitzSpeed=parseInt(pixels[28]);	//these were saved here in 0.911 and 2
-				var blitzTime=parseInt(pixels[29]);		//but now are put in the 'Blitzed' boost
+				var blitzSpeed=parseInt(pixels[28])||0;	//these were saved here in 0.911 and 2
+				var blitzTime=parseInt(pixels[29])||0;		//but now are put in the 'Blitzed' boost
 			}
-			Molpy.highestNPvisited=parseInt(pixels[25]);
-			Molpy.totalCastlesDown=parseFloat(pixels[26]);
+			Molpy.highestNPvisited=parseInt(pixels[25])||0;
+			Molpy.totalCastlesDown=parseFloat(pixels[26])||0;
 			if(version < 2.1)
-				Molpy.tempIntruderBots=parseFloat(pixels[27]);
+				Molpy.tempIntruderBots=parseFloat(pixels[27])||0;
 			
 			Molpy.totalGlassBuilt=parseFloat(pixels[27])||0;
 			Molpy.totalGlassDestroyed=parseFloat(pixels[28])||0;
@@ -648,15 +648,15 @@ Molpy.Up=function()
 					var ice=pixels[i].split(c);
 					me.amount=parseFloat(ice[0])||0;
 					me.bought=parseFloat(ice[1])||0;
-					me.totalCastlesBuilt=parseFloat(ice[2]);
-					me.totalCastlesDestroyed=parseFloat(ice[3]);
+					me.totalCastlesBuilt=parseFloat(ice[2])||0;
+					me.totalCastlesDestroyed=parseFloat(ice[3])||0;
 					if(!me.totalCastlesDestroyed)me.totalCastlesDestroyed=0;//mustard cleaning
 					if(version<3.03)
 					{
 						Molpy.castlesDestroyed+=me.totalCastlesDestroyed;
 					}
-					me.totalCastlesWasted=parseFloat(ice[4]);
-					me.currentActive=parseFloat(ice[5]);
+					me.totalCastlesWasted=parseFloat(ice[4])||0;
+					me.currentActive=parseFloat(ice[5])||0;
 					me.temp=parseFloat(ice[6])||0;
 					me.totalGlassBuilt=parseFloat(ice[7])||0;
 					me.totalGlassDestroyed=parseFloat(ice[8])||0;
@@ -683,15 +683,15 @@ Molpy.Up=function()
 				if (pixels[i])
 				{
 					var ice=pixels[i].split(c);
-					me.unlocked=parseInt(ice[0]);
-					me.bought=me.unlocked&&parseFloat(ice[1]); //ensure boosts that are locked aren't somehow set as bought
+					me.unlocked=parseInt(ice[0])||0;
+					me.bought=me.unlocked&&parseFloat(ice[1])||0; //ensure boosts that are locked aren't somehow set as bought
 					if(version<0.92)
                     {
                         me.power=0;
                         me.countdown=0;                        
                     }else{
-                        me.power=parseFloat(ice[2]);
-                        me.countdown=parseInt(ice[3]);
+                        me.power=parseFloat(ice[2])||0;
+                        me.countdown=parseInt(ice[3])||0;
                     }
 					if(me.bought)
 					{
@@ -811,7 +811,7 @@ Molpy.Up=function()
 				var id=Molpy.Badges['discov1'].id;
 				for(var i in pixels)
 				{
-					var enhance=fromOct(parseInt(pixels[i],16));
+					var enhance=fromOct(parseInt(pixels[i]||0,16));
 					for(var j in enhance)
 					{
 						var me=Molpy.BadgesById[id+ +j];
