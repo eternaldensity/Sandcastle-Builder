@@ -3921,8 +3921,11 @@ Molpy.DefineBoosts=function()
         if(Molpy.Got('PC')) toolBuildNum=Molpy.Boosts['PC'].power;
         var tfChipBuffer=tf.power;
 		var acPower = 0;
-        if(Molpy.Boosts['AA'].power) acPower=1;
-        if(Molpy.Got('AC')) acPower=Molpy.Boosts['AC'].power;
+        if(Molpy.Boosts['AA'].power)
+		{
+			acPower=1;
+			if(Molpy.Got('AC')) acPower=Molpy.Boosts['AC'].power;
+		}
         var built=0;
         var fVal=Molpy.Boosts['Flipside'].power;
         var fast=0;
@@ -4602,7 +4605,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Friendship is Molpish',desc:'Cuegan\'s Glass production is multiplied by the number of million LaPetites, and Lapetite\'s Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)',glass:'750E',sand:Infinity,castles:Infinity,group:'bean'});
 	
-	new Molpy.Boost({name:'Space Elevator',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',glass:'55T',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Such Glass',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',glass:'55T',sand:Infinity,castles:Infinity});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment

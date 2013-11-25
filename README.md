@@ -21,7 +21,7 @@ For personal amusement only.
 ## Changelog
 
 ## 3.16
-- New icons from BlitzGirl!
+- New Boost Icons from BlitzGirl! (mostly tagged boosts)
 - Zero more potential mustard (NaN) when loading
 - Beachball Boost doesn't show ninja warning after you've ninja'd
 - Redunception doesn't notify if Expando is active
@@ -32,6 +32,8 @@ For personal amusement only.
 - When you Molpy Down with infinite castles, totalCastlesDown is set to Number.MAX_VALUE (previously it was unchanged if infinite castles) thanks EPSILON of DashNet IRC
 - Chromatic Heresy is related to 'hue', right? ;)
 - Formatting of negative decimal numbers was horribly broken. Not that there should be negative numbers, but now if there is, they're the right negative numbers!
+- Remove spaces from tool icon IDs
+- New Tool Icons also from BlitzGirl! Yay!!
 
 ## 3.153
 - Discovery Detector messages go to log

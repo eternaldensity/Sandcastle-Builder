@@ -593,6 +593,14 @@ body.lightscheme #toolBag
 {
 	background-image:url('img/bag_dark_icon.png');
 }
+body.darkscheme #toolLaPetite
+{
+	background-image:url('img/lapetite_light_icon.png');
+}
+body.lightscheme #toolLaPetite
+{
+	background-image:url('img/lapetite_dark_icon.png');
+}
 body.darkscheme #toolNewPixBot
 {
 	background-image:url('img/newpixbot_light_icon.png');
@@ -632,6 +640,14 @@ body.darkscheme #toolRiver
 body.lightscheme #toolRiver
 {
 	background-image:url('img/river_dark_icon.png');
+}
+body.darkscheme #toolBeanieBuilder
+{
+	background-image:url('img/beanie_light_icon.png');
+}
+body.lightscheme #toolBeanieBuilder
+{
+	background-image:url('img/beanie_dark_icon.png');
 }
 .boost.shop .icon
 {
