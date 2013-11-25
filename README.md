@@ -28,6 +28,8 @@ For personal amusement only.
 - Automata Control optimised when you have all glass tools: no need to make tools that are about to be spent
 - Sand particles don't need transparency
 - Don't mess with transparancy of more than 8 notifications
+- Fixed a discovery on wrong NP
+- When you Molpy Down with infinite castles, totalCastlesDown is set to Number.MAX_VALUE (previously it was unchanged if infinite castles) thanks EPSILON of DashNet IRC
 
 ## 3.153
 - Discovery Detector messages go to log

@@ -1023,6 +1023,7 @@ Molpy.Up=function()
 				Molpy.chipsManual=0;
 				if(isFinite(Molpy.castlesBuilt))
 					Molpy.totalCastlesDown+=Molpy.castlesBuilt;
+				else Molpy.totalCastlesDown=Number.MAX_VALUE;
 				Molpy.castlesBuilt=0;
 				Molpy.castles=0; 
 				Molpy.castlesDestroyed=0;

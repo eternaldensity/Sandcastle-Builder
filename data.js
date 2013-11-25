@@ -5095,7 +5095,7 @@ Molpy.DefineBadges=function()
     Molpy.MakeQuadBadge({np:1058,name:'Sorry',desc:'Cueball says sorry'});
     Molpy.MakeQuadBadge({np:1066,name:'Still Rising',desc:'Megan: It\'s still rising'});
     Molpy.MakeQuadBadge({np:1067,name:'Strange',desc:'The Sea couldn\'t wait.'});
-    Molpy.MakeQuadBadge({np:1068,name:'Find a ford',desc:'Megan: Walk up river to find a ford or turn back?'});
+    Molpy.MakeQuadBadge({np:1069,name:'Find a ford',desc:'Megan: Walk up river to find a ford or turn back?'});
     Molpy.MakeQuadBadge({np:1071,name:'Understand Everything',desc:'We don\'t understand everything yet.'});
     Molpy.MakeQuadBadge({np:1072,name:'Understand Anything',desc:'Everything is a little ambitious.  We barely understand <i>Anything</i>.'});
     Molpy.MakeQuadBadge({np:1073,name:'First Part',desc:'But that\'s what the first part of understanding everything looks like.'});
