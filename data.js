@@ -4440,6 +4440,7 @@ Molpy.DefineBoosts=function()
 			}
 			Molpy.Boosts['Blackprints'].power-=pageCost;
 			Molpy.Boosts['Logicat'].bought-=logicatCost;
+			Molpy.Boosts['Logicat'].power-=logicatCost*5;
 			Molpy.SpendGlassChips(chipCost);
 			me.power+=n;
 			Molpy.Notify('Adjusted Automata Assemble');
@@ -4575,7 +4576,7 @@ Molpy.DefineBoosts=function()
 		stats:function(me)
 		{
 			var target=Molpy.DragonTarget()[0];
-			var str='Power is '+Molpify(me.power,3)+(target?' out of  '+Molpify(target,3)+'<br>Destroy more temporal duplicates!':'');
+			var str='Power is '+Molpify(me.power,3)+(target?' out of  '+Molpify(target,3)+'.<br>Destroy more temporal duplicates!':'');
 			return str;
 		}
 	});
@@ -4583,7 +4584,7 @@ Molpy.DefineBoosts=function()
 	{
 		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Got('Crystal Dragon')) return [2000,'Crystal Dragon'];
 		if(Molpy.Boosts['AC'].power>101&&!Molpy.Got('Dragon Forge')) return [7e9,'Dragon Forge'];
-		//if(Molpy.Boosts['AC'].power>404&&!Molpy.Got('Dragon Wisdom')) return [4.5e13,'Dragon Wisdom'];
+		if(Molpy.Boosts['AC'].power>404&&!Molpy.Got('Dragon Wisdom')) return [4.5e13,'Dragon Wisdom'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
@@ -4630,7 +4631,7 @@ Molpy.DefineBoosts=function()
 		return !Molpy.Got('ASHF')&&Molpy.Boosts['Price Protection'].power>1;		
 	}
 	
-	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of Glass Tools built when it is active',sand:Infinity,castles:Infinity,glass:'7P',group:'chron'});
+	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of all Glass Tools constructed when it is active',sand:Infinity,castles:Infinity,glass:'7P',group:'chron'});
 	
 	new Molpy.Boost({name:'Friendship is Molpish',alias:'FiM',desc:'Cuegan\'s Glass production is multiplied by the number of million LaPetites, and Lapetite\'s Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)',glass:'750E',sand:Infinity,castles:Infinity});
 	
@@ -4654,11 +4655,36 @@ Molpy.DefineBoosts=function()
 		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'});
 		new Molpy.Boost({name:'Dragon Wisdom',desc:function(me)
 		{
-			var str = 'Allows you to gain Logicat Levels but I haven\'t figured out the best way to balance this yet so I am not putting it in 3.16';
+			var str = 'Allows you to gain Logicat Levels from Blackprint Pages.';
+			if(!me.bought)return str;
+			var pageCost = Molpy.Boosts['Logicat'].bought*3;
+			var powerReq=Math.pow(2,me.power+10);
+			if(Molpy.HasSpareBlackprints(pageCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
+			{	
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisom(1)"></input> Logicat Level by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(pageCost,3)+' Blackprint Pages.';
+			}else
+			{
+				str+='<br>Upgrading Logicat Level by 1 will cost '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(pageCost,3)+' Blackprint Pages.';
+			}
 			return str;
 		}
 		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'
 	});
+	Molpy.GainDragonWisdom=function(n)
+	{
+		var me = Molpy.Boosts['Dragon Wisdom'];
+		var pageCost = n*Molpy.Boosts['Logicat'].bought*3;
+		var powerReq=n*Math.pow(2,me.power+10);
+		if(Molpy.HasSpareBlackprints(pageCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
+		{
+			Molpy.Boosts['Blackprints'].power-=pageCost;
+			Molpy.Boosts['Achronal Dragon'].power-=powerReq;
+			Molpy.Boosts['Logicat'].bought+=n;
+			Molpy.Boosts['Logicat'].power+=n*5;
+			Molpy.Notify('Logicat Level gained!'); //it was so tempting to write gainned :P
+			me.power++;
+		}
+	}
 	
 	new Molpy.Boost({name:'Fireproof',desc:'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make '+Molpify(1e12)+' times as many Glass Chips',sand:Infinity,castles:Infinity,glass:function(){return 8e9*Molpy.CastleTools['NewPixBot'].amount;},group:'cyb'}); //www.youtube.com/watch?v=84q0SXW781c
 	

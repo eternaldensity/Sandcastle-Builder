@@ -136,7 +136,7 @@ function MakeRedundancy()
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ '-like';},
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ 'ish';}
 	]
-	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','diamond','ironic','golden','iron','chilled','delicious','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor','great','radioactive','glowing','speakable','unspeakable','helpful','inevitable','sudden','problematic','active','retroactive','futuristic','retro','old-fashioned','polite','upper-class','rough','pythonic','industrial'];
+	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','diamond','ironic','golden','iron','chilled','delicious','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor','great','radioactive','glowing','speakable','unspeakable','helpful','inevitable','sudden','problematic','active','retroactive','futuristic','retro','old-fashioned','polite','upper-class','rough','pythonic','industrial','achronal'];
 	
 	redundancy.adjmodifier=['very', 'somewhat','kinda','partly','not','nearly','almost','quite','not quite','almost but not quite entirely','entirely','fully','totally','a little bit','far too','incredibly','barely','most','least','hardly',
 		function(){return make(redundancy.adjective)+'ly';},
@@ -184,7 +184,7 @@ function MakeRedundancy()
 		function(noart){return (noart?'':make(redundancy.thingmods)+' ')+make(redundancy.adjectives)+' '+make(redundancy.things);}
 	];
 	redundancy.thingmods=['the', 'my', 'your'];
-	redundancy.things=['message','screen','tool','badge','boost','pointer','leopard','nothing','betrayal','food','fruit','planet','spaceship','firefly','amu<span class="faded">semen</span>t'];
+	redundancy.things=['message','screen','tool','badge','boost','pointer','leopard','nothing','betrayal','food','fruit','planet','spaceship','firefly','amu<span class="faded">semen</span>t','forge','blackprint','crate','key','information','wisdom','bot','bacon','block','chip'];
 	redundancy.transverbs=[
 		function(){return make(redundancy.transverb);},
 		function(){return make(redundancy.adverb)+' '+make(redundancy.transverb);},

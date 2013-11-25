@@ -28,6 +28,9 @@ For personal amusement only.
 - If a spendable value gets to negative (i.e. number of glass blocks), you can now still buy stuff that costs 0 of that.
 - This particularly fixes weirdness such as ASHF landing in the shop rather than in loot (because they still count as being bought for 0 because reasons)
 - Fixed Furnace Multitasking description (thanks for pointing that out eldercain)
+- Fixed a Logicat power bug in Dragon Forge (I can hardly believe I wrote that sentence and it means something)
+- Finished the other new dragon
+- Added some redundancy (it's been a while)
 
 ## 3.16
 - New Boost Icons from BlitzGirl! (mostly tagged boosts)
