@@ -26,6 +26,8 @@ For personal amusement only.
 - Beachball Boost doesn't show ninja warning after you've ninja'd
 - Redunception doesn't notify if Expando is active
 - Automata Control optimised when you have all glass tools: no need to make tools that are about to be spent
+- Sand particles don't need transparency
+- Don't mess with transparancy of more than 8 notifications
 
 ## 3.153
 - Discovery Detector messages go to log

@@ -4269,7 +4269,7 @@ Molpy.Up=function()
 					var el=me.l;
 					me.l.style.left=Math.floor(me.x)+'px';
 					me.l.style.top=Math.floor(me.y)+'px';
-					el.style.opacity=1-(me.life/(Molpy.fps*2));
+					//el.style.opacity=1-(me.life/(Molpy.fps*2));
 					if (me.life>=Molpy.fps*2)
 					{
 						me.life=-1;
@@ -4329,6 +4329,7 @@ Molpy.Up=function()
 		Molpy.notifsUpdate=function()
 		{
 			Molpy.notifsY=0;
+			var trans=0;
 			for (var i in Molpy.notifs)
 			{
 				var me=Molpy.notifs[i];
@@ -4349,11 +4350,12 @@ Molpy.Up=function()
 					el.style.left=Math.floor(-200+me.x)+'px';
 					el.style.bottom=Math.floor(-y)+'px';
 					el.style.opacity=1-Math.pow(me.life/(Molpy.fps*5),2);
-					if (me.life>=Molpy.fps*5)
+					if (me.life>=Molpy.fps*5&&trans<9)
 					{
 						me.life=-1;
 						el.style.opacity=0;
 						el.style.display='none';
+						trans++;
 					}
 				}
 			}
