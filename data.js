@@ -3581,7 +3581,7 @@ Molpy.DefineBoosts=function()
 		var sand=Math.pow(1.2,smf.bought)*100;
 		while (times) 
 		{
-			if(!Molpy.sand >=sand)
+			if(Molpy.sand <sand)
 			{
 				Molpy.Boosts['Break the Mould'].power++;
 				return times;
@@ -4427,9 +4427,9 @@ Molpy.DefineBoosts=function()
 				Molpy.Notify('You need more Blackprint Pages');
 				return;
 			}
-			if(!Molpy.Boosts['Logicat'].bought>logicatCost)
+			if(Molpy.Boosts['Logicat'].bought<=logicatCost)
 			{
-				Molpy.Notify('You need more Blackprint Pages');
+				Molpy.Notify('You need more Logicat Levels');
 				return;
 			}
 			Molpy.Boosts['Blackprints'].power-=pageCost;
@@ -4643,6 +4643,7 @@ Molpy.DefineBoosts=function()
 			}else{
                 str+='<br>It will cost '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages to increase this by 1.';
             }
+			return str;
 		}
 		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'});
 		new Molpy.Boost({name:'Dragon Wisdom',desc:function(me)
