@@ -4718,10 +4718,13 @@ Molpy.Up=function()
 	{
 		var stateClass='beachsafe';
 		Molpy.ONGelapsed = new Date().getTime()-Molpy.ONGstart.getTime();
-		if((Molpy.ONGelapsed-Molpy.ninjaTime)/Molpy.NPlength>1)
+		if(!Molpy.ninjad)
 		{
-			if(!Molpy.ninjad) stateClass='beachstreakextend';
-		}else stateClass='beachninjawarning';
+			if((Molpy.ONGelapsed-Molpy.ninjaTime)/Molpy.NPlength>1)			
+				stateClass='beachstreakextend';
+			else stateClass='beachninjawarning';
+		}
+		
 		if(Molpy.ONGelapsed/Molpy.NPlength>=998&&!Molpy.Boosts['Coma Molpy Style'].power)
 		{
 			stateClass='beachongwarning';

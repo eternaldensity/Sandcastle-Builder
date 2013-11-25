@@ -23,6 +23,8 @@ For personal amusement only.
 ## 3.16
 - New icons from BlitzGirl!
 - Zero more potential mustard (NaN) when loading
+- Beachball Boost doesn't show ninja warning after you've ninja'd
+- Redunception doesn't notify if Expando is active
 
 ## 3.153
 - Discovery Detector messages go to log

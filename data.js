@@ -2549,7 +2549,8 @@ Molpy.DefineBoosts=function()
 		{
 			if(!me.bought||Math.floor(Math.random()*10)==0) return Molpy.redundancy.longsentence;
 			var sent = Molpy.redundancy.sentence();
-			Molpy.Notify(sent,1);
+			if(!Molpy.Boosts['Expando'].power)
+				Molpy.Notify(sent,1);
 			return sent;
 		}
 		,sand:'.97G',castles:'340M',stats:'Causes the effect which results from Redunception',icon:'redunception',group:'hpt'});
@@ -4956,7 +4957,7 @@ Molpy.DefineBadges=function()
 	
 	new Molpy.Badge({name:'Strikes Twice', desc:'Attempt to receive Blitzing while you have Glassed Lightning (this will instead give Glassed Lightning more power)'});
 	new Molpy.Badge({name:'Meaning',desc:'Reach a '+Molpy.redactedWord+' streak of 42'});
-	new Molpy.Badge({name:'How do I Shot Mustard?',desc:'Buy a Locked Crate with mustarded price',stats:'To get one you will need to have Locked Crate appear in the shop immediately after spending infinite castles'});
+	new Molpy.Badge({name:'How do I Shot Mustard?',desc:'Buy a Locked Crate with mustarded price',stats:'To get one you will need to have Locked Crate appear in the shop immediately after spending infinite sand'});
 	new Molpy.Badge({name:'KiloTool', desc:'Make 1K Glass Tools per mNP'});
 	new Molpy.Badge({name:'MegaTool', desc:'Make 1M Glass Tools per mNP'});
 	new Molpy.Badge({name:'GigaTool', desc:'Make 1G Glass Tools per mNP'});
