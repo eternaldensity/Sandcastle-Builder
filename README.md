@@ -37,7 +37,7 @@ For personal amusement only.
 - Constructing from Blackprints now does nothing if you somehow end up with less pages then needed
 - What is Friendship?
 - Hotdoge
-- More Dragons
+- Another Dragon, plus one not finished yet
 
 ## 3.153
 - Discovery Detector messages go to log

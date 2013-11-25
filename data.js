@@ -4577,7 +4577,7 @@ Molpy.DefineBoosts=function()
 	{
 		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Got('Crystal Dragon')) return [2000,'Crystal Dragon'];
 		if(Molpy.Boosts['AC'].power>101&&!Molpy.Got('Dragon Forge')) return [7e9,'Dragon Forge'];
-		if(Molpy.Boosts['AC'].power>404&&!Molpy.Got('Dragon Wisdom')) return [4.5e13,'Dragon Wisdom'];
+		//if(Molpy.Boosts['AC'].power>404&&!Molpy.Got('Dragon Wisdom')) return [4.5e13,'Dragon Wisdom'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
@@ -4647,7 +4647,7 @@ Molpy.DefineBoosts=function()
 		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'});
 		new Molpy.Boost({name:'Dragon Wisdom',desc:function(me)
 		{
-			var str = '';
+			var str = 'Allows you to gain Logicat Levels but I haven\'t figured out the best way to balance this yet so I am not putting it in 3.16';
 			return str;
 		}
 		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'
