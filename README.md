@@ -30,6 +30,8 @@ For personal amusement only.
 - Don't mess with transparancy of more than 8 notifications
 - Fixed a discovery on wrong NP
 - When you Molpy Down with infinite castles, totalCastlesDown is set to Number.MAX_VALUE (previously it was unchanged if infinite castles) thanks EPSILON of DashNet IRC
+- Chromatic Heresy is related to 'hue', right? ;)
+- Formatting of negative decimal numbers was horribly broken. Not that there should be negative numbers, but now if there is, they're the right negative numbers!
 
 ## 3.153
 - Discovery Detector messages go to log

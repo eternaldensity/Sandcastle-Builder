@@ -1011,7 +1011,7 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{
 			return 'Saturation is '+(me.power>0?'':'not ')+'allowed.<br><input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
-		},sand:200,castles:10,icon:'chromatic',className:'toggle'});
+		},stats:'"huehuehuehuehuehuehue"',sand:200,castles:10,icon:'chromatic',className:'toggle'});
 	Molpy.ChromaticHeresyToggle=function()
 	{
 		var ch = Molpy.Boosts['Chromatic Heresy'];
@@ -4600,6 +4600,10 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of Glass Tools built when it is active',sand:Infinity,castles:Infinity,glass:'7P',group:'chron'});
 	
+	new Molpy.Boost({name:'Friendship is Molpish',desc:'Cuegan\'s Glass production is multiplied by the number of million LaPetites, and Lapetite\'s Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)',glass:'750E',sand:Infinity,castles:Infinity,group:'bean'});
+	
+	new Molpy.Boost({name:'Space Elevator',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',glass:'55T',sand:Infinity,castles:Infinity});
+	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
@@ -5526,6 +5530,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Crystal Streams'].logic=220*(Molpy.CastleTools['River'].amount>=6000);	
 	Molpy.Boosts['Super Visor'].logic=240*(Molpy.CastleTools['Beanie Builder'].amount>=6000);	
 	Molpy.Boosts['Crystal Helm'].logic=300*(Molpy.CastleTools['Beanie Builder'].amount>=12000);	
+	Molpy.Boosts['Friendship is Molpish'].logic=64*(Molpy.SandTools['LaPetite'].amount+Molpy.SandTools['Cuegan'].amount>6.4e10);
 				
 }
 	

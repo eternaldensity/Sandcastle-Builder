@@ -37,6 +37,7 @@ function Molpify(number, raftcastle, shrinkify)
 {
 	if(isNaN(number))return'Mustard';
 	if(!isFinite(parseFloat(number)))return'Infinite';
+	if(number<0)return '-'+Molpify(-number,raftcastle,shrinkify);
 	var molp='';
 	
 	if(shrinkify==2)shrinkify=0;
@@ -5235,7 +5236,7 @@ Molpy.Up=function()
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['Glass Chip Storage'].power,4);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power,4);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),6)+'%';
-		g('blackstat').innerHTML='Collected '+Molpify(Molpy.Boosts['Blackprints'].power
+		g('blackstat').innerHTML='Collected '+Molpify(+Molpy.Boosts['Blackprints'].power
 			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
       
 		g('logicatstat').innerHTML=Molpify(Molpy.Boosts['Logicat'].bought,1);
