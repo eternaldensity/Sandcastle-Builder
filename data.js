@@ -4637,7 +4637,7 @@ Molpy.DefineBoosts=function()
 			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
 			var pageCost=n*10;
 			var logicatCost=Math.ceil(n/20);
-			if(n<Molpy.Boosts['PC'].power&&Molpy.HasGlassChips(chipCost))
+			if(n<Molpy.Boosts['PC'].power)
 			{
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1,1)"></input> the number of runs by 1 at a cost of '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages.';
 			}else{
