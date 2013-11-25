@@ -4632,7 +4632,7 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Dragon Forge',desc:function(me)
 		{			
-			if(!me.bought) return 'Allows you increase the power of Automata Control for a different cost';
+			if(!me.bought) return 'Allows you increase the power of Automata Control using Logicat Levels and Blackprint Pages';
 			var n = Molpy.Boosts['AC'].power;
 			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
 			var pageCost=n*10;
