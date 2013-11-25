@@ -34,6 +34,10 @@ For personal amusement only.
 - Formatting of negative decimal numbers was horribly broken. Not that there should be negative numbers, but now if there is, they're the right negative numbers!
 - Remove spaces from tool icon IDs
 - New Tool Icons also from BlitzGirl! Yay!!
+- Constructing from Blackprints now does nothing if you somehow end up with less pages then needed
+- What is Friendship?
+- Hotdoge
+- More Dragons
 
 ## 3.153
 - Discovery Detector messages go to log

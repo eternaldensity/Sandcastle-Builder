@@ -544,6 +544,26 @@ body.lightscheme .badge.loot h1
 	width:32px;
 	height:32px;
 }
+.magentatext
+{
+	color:#ff4cff
+}
+.limetext
+{
+	color:#66f666
+}
+.rightjust
+{
+	text-align:right;
+}
+.cyantext
+{
+	color:#7fffff
+}
+.bigtext
+{
+	font-size:140%;
+}
 
 body.darkscheme .notif
 {

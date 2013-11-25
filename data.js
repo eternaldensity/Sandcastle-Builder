@@ -133,6 +133,7 @@ Molpy.DefineSandTools=function()
 			var mult=1;
 			if(Molpy.Got('Bucking the Trend'))mult*=2;
 			if(Molpy.Got('Crystal Well'))mult*=10;
+			if(Molpy.Got('Such Glass'))mult*=Molpy.ninjaStealth/1000;
 			return baseval*mult;
 		},
 		nextThreshold:1
@@ -161,6 +162,7 @@ Molpy.DefineSandTools=function()
 			var mult=1;
 			if(Molpy.Got('Glass Spades'))mult*=2;
 			if(Molpy.Got('Statuesque'))mult*=10;
+			if(Molpy.Got('FiM'))mult*=Molpy.SandTools['LaPetite'].amount/1e6;
 			return baseval*mult;
 		},
 		nextThreshold:2
@@ -285,6 +287,7 @@ Molpy.DefineSandTools=function()
 			var baseval = 0.063;
 			var mult=1;
 			if(Molpy.Got('Tiny Glasses'))mult*=9;
+			if(Molpy.Got('FiM'))mult*=Molpy.SandTools['Cuegan'].amount/1e6;
 			return baseval*mult;
 		},
 		nextThreshold:1
@@ -3255,6 +3258,10 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.DoBlackprintConstruction=function(times)
 	{
+		if(Molpy.blackprintCosts[Molpy.GetBlackprintSubject()]>Molpy.Boosts['Blackprints'].power)
+		{//we used up some blackprints somehow!
+			return times; //do nothing
+		}
 		var con=Molpy.Boosts['CfB'];
 		con.power+=times;
 		if(con.power>=100)
@@ -4380,13 +4387,15 @@ Molpy.DefineBoosts=function()
 			if(!me.bought) return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
 			var n = me.power;
 			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
-			if(me.power<Molpy.Boosts['PC'].power&&Molpy.HasGlassChips(1e7*Math.pow(1.2,n)))
+			var chipCost=1e7*Math.pow(1.2,n);
+			var pageCost=n*2;
+			if(n<Molpy.Boosts['PC'].power&&Molpy.HasGlassChips(chipCost))
 			{
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(1e7*Math.pow(1.2,n),2)+' Glass Chips and '+Molpify(n*2,2)+' Blackprint Pages.';
-			}else            {
-                str+='<br>It will cost '+Molpify(1e7*Math.pow(1.2,n),2)+' Glass Chips and '+Molpify(n*2,2)+' Blackprint Pages to increase this by 1.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(chipCost,2)+' Glass Chips and '+Molpify(pageCost,2)+' Blackprint Pages.';
+			}else{
+                str+='<br>It will cost '+Molpify(chipCost,2)+' Glass Chips and '+Molpify(pageCost,2)+' Blackprint Pages to increase this by 1.';
             }
-			if(!Molpy.Boosts['No Sell'].power&&me.power>1&&Molpy.HasGlassChips(1e5*n))
+			if(!Molpy.Boosts['No Sell'].power&&n>1&&Molpy.HasGlassChips(1e5*n))
 			{
 				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlAutomata(-1)"></input> the number of runs by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Chips.';
 			}
@@ -4395,25 +4404,37 @@ Molpy.DefineBoosts=function()
 		,glass:'25M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',
 		buyFunction:function(){this.power=1;}
 	});
-	Molpy.ControlAutomata=function(n)
+	Molpy.ControlAutomata=function(n,dragon)
 	{
 		var me = Molpy.Boosts['AC'];
-		var cost=1e7*Math.pow(1.2,me.power);
-		var pages=2*me.power;
-		if(n<0)
+		var chipCost=1e7*Math.pow(1.2,me.power);
+		var pageCost=2*me.power;
+		var logicatCost=0;
+		if(dragon)
 		{
-			cost=-1e5*me.power;
-			pages=0;
+			chipCost=0;
+			pageCost*=5;
+			logicatCost=Math.ceil(me.power/20);
+		}else if(n<0)
+		{
+			chipCost=-1e5*me.power;
+			pageCost=0;
 		}
-		if(Molpy.HasGlassChips(cost))
+		if(Molpy.HasGlassChips(chipCost))
 		{
-			if(!Molpy.HasSpareBlackprints(pages))
+			if(!Molpy.HasSpareBlackprints(pageCost))
 			{
 				Molpy.Notify('You need more Blackprint Pages');
 				return;
 			}
-			Molpy.Boosts['Blackprints'].power-=pages;
-			Molpy.SpendGlassChips(cost);
+			if(!Molpy.Boosts['Logicat'].bought>logicatCost)
+			{
+				Molpy.Notify('You need more Blackprint Pages');
+				return;
+			}
+			Molpy.Boosts['Blackprints'].power-=pageCost;
+			Molpy.Boosts['Logicat'].bought-=logicatCost;
+			Molpy.SpendGlassChips(chipCost);
 			me.power+=n;
 			Molpy.Notify('Adjusted Automata Assemble');
 		}
@@ -4554,7 +4575,9 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.DragonTarget=function()
 	{
-		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>400&&!Molpy.Got('Crystal Dragon')) return [2000,'Crystal Dragon'];
+		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Got('Crystal Dragon')) return [2000,'Crystal Dragon'];
+		if(Molpy.Boosts['AC'].power>101&&!Molpy.Got('Dragon Forge')) return [7e9,'Dragon Forge'];
+		if(Molpy.Boosts['AC'].power>404&&!Molpy.Got('Dragon Wisdom')) return [4.5e13,'Dragon Wisdom'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
@@ -4603,10 +4626,32 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of Glass Tools built when it is active',sand:Infinity,castles:Infinity,glass:'7P',group:'chron'});
 	
-	new Molpy.Boost({name:'Friendship is Molpish',desc:'Cuegan\'s Glass production is multiplied by the number of million LaPetites, and Lapetite\'s Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)',glass:'750E',sand:Infinity,castles:Infinity,group:'bean'});
+	new Molpy.Boost({name:'Friendship is Molpish',alias:'FiM',desc:'Cuegan\'s Glass production is multiplied by the number of million LaPetites, and Lapetite\'s Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)',glass:'750E',sand:Infinity,castles:Infinity});
 	
-	new Molpy.Boost({name:'Such Glass',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',glass:'55T',sand:Infinity,castles:Infinity});
+	new Molpy.Boost({name:'Such Glass',desc:'Glass production of Buckets is multiplied by a thousandth of the Ninja Stealth level',stats:'<div class="magentatext bigtext">Very wow</div><br><div class="cyantext rightjust bigtext">Much ninja</div><br><div class="limetext bigtext">So Bucket</div>',glass:'8Z',sand:Infinity,castles:Infinity,group:'ninj'});
 	
+	new Molpy.Boost({name:'Dragon Forge',desc:function(me)
+		{			
+			if(!me.bought) return 'Allows you increase the power of Automata Control for a different cost';
+			var n = Molpy.Boosts['AC'].power;
+			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
+			var pageCost=n*10;
+			var logicatCost=Math.ceil(n/20);
+			if(n<Molpy.Boosts['PC'].power&&Molpy.HasGlassChips(chipCost))
+			{
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1,1)"></input> the number of runs by 1 at a cost of '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages.';
+			}else{
+                str+='<br>It will cost '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages to increase this by 1.';
+            }
+		}
+		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'});
+		new Molpy.Boost({name:'Dragon Wisdom',desc:function(me)
+		{
+			var str = '';
+			return str;
+		}
+		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'
+	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
@@ -5469,6 +5514,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
 	Molpy.Boosts['Cold Mould'].department=Molpy.Got('SMM');
+	Molpy.Boosts['Such Glass'].department=1*Molpy.SandTools['Bucket'].amount>2e11*Molpy.ninjaStealth>2e8;
 				
 }
 
@@ -5533,7 +5579,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Crystal Streams'].logic=220*(Molpy.CastleTools['River'].amount>=6000);	
 	Molpy.Boosts['Super Visor'].logic=240*(Molpy.CastleTools['Beanie Builder'].amount>=6000);	
 	Molpy.Boosts['Crystal Helm'].logic=300*(Molpy.CastleTools['Beanie Builder'].amount>=12000);	
-	Molpy.Boosts['Friendship is Molpish'].logic=64*(Molpy.SandTools['LaPetite'].amount+Molpy.SandTools['Cuegan'].amount>6.4e10);
+	Molpy.Boosts['FiM'].logic=64*(Molpy.SandTools['LaPetite'].amount+Molpy.SandTools['Cuegan'].amount>6.4e10);
 				
 }
 	
