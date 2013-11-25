@@ -20,7 +20,7 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.161
+## 3.17
 - Messed with chance of intruder bots in a certain circumstance...
 - When loading, if highest NP visited is missing, using the current NewPix number
 - When you have Bacon, Bag Burning is locked if you pass its threshold, so millions of bags are not continually burned pointlessly forever
