@@ -25,6 +25,8 @@ For personal amusement only.
 - When loading, if highest NP visited is missing, using the current NewPix number
 - When you have Bacon, Bag Burning is locked if you pass its threshold, so millions of bags are not continually burned pointlessly forever
 - A boost for NewPixBots, related to the above item.
+- If a spendable value gets to negative (i.e. number of glass blocks), you can now still buy stuff that costs 0 of that.
+- This particularly fixes weirdness such as ASHF landing in the shop rather than in loot (because they still count as being bought for 0 because reasons)
 
 ## 3.16
 - New Boost Icons from BlitzGirl! (mostly tagged boosts)

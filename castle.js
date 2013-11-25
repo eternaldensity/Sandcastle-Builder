@@ -2953,7 +2953,7 @@ Molpy.Up=function()
 				
 				if(Molpy.ProtectingPrice()&&sp+cp+gp)return; //don't need or want price protection on free items!
 				
-				if (!this.bought && Molpy.castles>=cp && Molpy.sand>=sp && Molpy.HasGlassBlocks(gp))
+				if (!this.bought && (!cp||Molpy.castles>=cp) && (!sp||Molpy.sand>=sp) && (!gp||Molpy.HasGlassBlocks(gp)))
 				{
 					Molpy.SpendSand(sp);
 					Molpy.SpendCastles(cp);
@@ -2987,8 +2987,9 @@ Molpy.Up=function()
 				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1))||0;
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1))||0;
 				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1))||0;
-				if(Molpy.ProtectingPrice()&&sp+cp+gp)return 0;
-				return castles>=cp && sand>=sp && Molpy.HasGlassBlocks(gp);
+				if(!(sp+cp+gp))return 1;//free is always affordable
+				if(Molpy.ProtectingPrice())return 0;
+				return (!cp||castles>=cp) && (!sp||sand>=sp) && (!gp||Molpy.HasGlassBlocks(gp));
 			}
 			this.showdesc=function(keep)
 			{
