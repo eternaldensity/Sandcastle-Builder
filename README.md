@@ -25,6 +25,7 @@ For personal amusement only.
 - Zero more potential mustard (NaN) when loading
 - Beachball Boost doesn't show ninja warning after you've ninja'd
 - Redunception doesn't notify if Expando is active
+- Automata Control optimised when you have all glass tools: no need to make tools that are about to be spent
 
 ## 3.153
 - Discovery Detector messages go to log

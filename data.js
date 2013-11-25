@@ -635,8 +635,8 @@ Molpy.DefineBoosts=function()
 		}
 		,sand:function()
 		{
-			var p = Molpy.Boosts['Double or Nothing'].power;
-			return 100*Math.pow(2,Math.max(1,p-9));
+			var acPower = Molpy.Boosts['Double or Nothing'].power;
+			return 100*Math.pow(2,Math.max(1,acPower-9));
 		},icon:'doubleornothing',className:'action',lockFunction:function(){
 			this.power++;
 		}
@@ -788,17 +788,17 @@ Molpy.DefineBoosts=function()
 		if(!me.bought)
 			return;
 		
-		var p = Molpy.Boosts['Coma Molpy Style'].power;
-		if(p)
+		var acPower = Molpy.Boosts['Coma Molpy Style'].power;
+		if(acPower)
 		{
-			p=0; //off
+			acPower=0; //off
 			Molpy.ONGstart = ONGsnip(new Date()); //don't immediately ONG!
 		}else
 		{
-			p=1; //on		
+			acPower=1; //on		
 		}
-		g('clockface').className= p?'hidden':'unhidden';	
-		Molpy.Boosts['Coma Molpy Style'].power=p;
+		g('clockface').className= acPower?'hidden':'unhidden';	
+		Molpy.Boosts['Coma Molpy Style'].power=acPower;
 		Molpy.Boosts['Coma Molpy Style'].hoverOnCounter=1;
 		Molpy.recalculateDig=1;
 	}
@@ -2476,15 +2476,15 @@ Molpy.DefineBoosts=function()
 	stats:function(me)
 	{
 		var str ='Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 10 Glass Blocks per use.';
-		var p = Math.abs(me.power);
-		if(p <=200)
-			str+='<br>Speed is at '+p+' out of 200';
-		else if(p<=500)
-			str+='<br>Speed is at '+p+' out of 500';
-		else if(p<=800)
-			str+='<br>Speed is at '+p+' out of 800';
-		else if(p<=1200)
-			str+='<br>Speed is at '+p+' out of 1200';
+		var acPower = Math.abs(me.power);
+		if(acPower <=200)
+			str+='<br>Speed is at '+acPower+' out of 200';
+		else if(acPower<=500)
+			str+='<br>Speed is at '+acPower+' out of 500';
+		else if(acPower<=800)
+			str+='<br>Speed is at '+acPower+' out of 800';
+		else if(acPower<=1200)
+			str+='<br>Speed is at '+acPower+' out of 1200';
 		return str;
 	}
 	,group:'bean',className:'toggle',icon:'panthersalve'});
@@ -2674,12 +2674,12 @@ Molpy.DefineBoosts=function()
 	}
 	Molpy.GlassCeilingMult=function()
 	{
-		var p = 33;
+		var acPower = 33;
 		if(Molpy.Got('WWB'))
 		{
-			p*=Math.pow(2,Molpy.Boosts['WWB'].bought-5)*Molpy.CastleTools['Scaffold'].amount;
+			acPower*=Math.pow(2,Molpy.Boosts['WWB'].bought-5)*Molpy.CastleTools['Scaffold'].amount;
 		}
-		return Math.pow(p,Molpy.GlassCeilingCount());
+		return Math.pow(acPower,Molpy.GlassCeilingCount());
 	}
 	
 	Molpy.CeilingLock=function(key)
@@ -2691,18 +2691,18 @@ Molpy.DefineBoosts=function()
 				Molpy.Notify('Nope.avi');
 				return;
 			}
-			var p = key-1;
-			if(p>=0&&!Molpy.Got('Glass Ceiling '+p))
+			var acPower = key-1;
+			if(acPower>=0&&!Molpy.Got('Glass Ceiling '+acPower))
 			{
-				Molpy.Notify('You need to Own Glass Ceiling '+p+' before you can Lock Glass Ceiling '+key,1);
+				Molpy.Notify('You need to Own Glass Ceiling '+acPower+' before you can Lock Glass Ceiling '+key,1);
 				return;
 			}
-			while(p--)
+			while(acPower--)
 			{
-				if(p<0) break;
-				if(Molpy.Got('Glass Ceiling '+p))
+				if(acPower<0) break;
+				if(Molpy.Got('Glass Ceiling '+acPower))
 				{
-					Molpy.Notify('You need to Lock Glass Ceiling '+p+' before you can Lock Glass Ceiling '+key,1);
+					Molpy.Notify('You need to Lock Glass Ceiling '+acPower+' before you can Lock Glass Ceiling '+key,1);
 					return;				
 				}
 			}
@@ -2741,13 +2741,13 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.CeilingTogglable=function(key)
 	{	
-		var p = key-1;
-		if(p<0||Molpy.Got('Glass Ceiling '+p))
+		var acPower = key-1;
+		if(acPower<0||Molpy.Got('Glass Ceiling '+acPower))
 		{
-			while(p--)
+			while(acPower--)
 			{
-				if(p<0) return 1;
-				if(Molpy.Got('Glass Ceiling '+p))
+				if(acPower<0) return 1;
+				if(Molpy.Got('Glass Ceiling '+acPower))
 				{
 					return 0;					
 				}
@@ -3917,32 +3917,35 @@ Molpy.DefineBoosts=function()
     {
         var tf = Molpy.Boosts['Tool Factory'];
 		if(!tf.bought)return;
-        var i = 1;
-        if(Molpy.Got('PC')) i=Molpy.Boosts['PC'].power;
-        var pow=tf.power;
+        var toolBuildNum = 1;
+        if(Molpy.Got('PC')) toolBuildNum=Molpy.Boosts['PC'].power;
+        var tfChipBuffer=tf.power;
+		var acPower = 0;
+        if(Molpy.Boosts['AA'].power) acPower=1;
+        if(Molpy.Got('AC')) acPower=Molpy.Boosts['AC'].power;
         var built=0;
         var fVal=Molpy.Boosts['Flipside'].power;
         var fast=0;
 		var gcCount=Molpy.GlassCeilingCount();
 		if(gcCount==0)return;
-        if (gcCount==12 && (fVal==0) && (pow >= 78000*i)) //everything selected and we can afford it all!
+        if (gcCount==12 && (fVal==0) && (tfChipBuffer >= 78000*toolBuildNum)) //everything selected and we can afford it all!
         {
             var t = Molpy.tfOrder.length;
             fast=1;
             while(t--)
             {
-                Molpy.tfOrder[t].create(i);
+                Molpy.tfOrder[t].create(toolBuildNum-acPower);
             }              
-            pow -= 78000*i;
-            built = i*12;   
+            tfChipBuffer -= 78000*toolBuildNum;
+            built = toolBuildNum*12;   
         }
         else
         {
-			i=Math.floor(i/gcCount*12);//if something isn't selected, we can try building a bit more of the other things
+			toolBuildNum=Math.floor(toolBuildNum/gcCount*12);//if something isn't selected, we can try building a bit more of the other things
 			var setPrice=0;
 			
 			var t = Molpy.tfOrder.length;
-			while(pow&&t--)
+			while(tfChipBuffer&&t--)
 			{
 				var tool=Molpy.tfOrder[t];
 				if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
@@ -3951,7 +3954,7 @@ Molpy.DefineBoosts=function()
 					setPrice+=cost; //figure out how much it costs for one of everything selected
 				}
             }
-			var iAfford= Math.min(i,Math.floor(pow/setPrice)); //find how many of everything can be built
+			var iAfford= Math.min(toolBuildNum,Math.floor(tfChipBuffer/setPrice)); //find how many of everything can be built
 			
             t = Molpy.tfOrder.length;
             while(iAfford&&t--)
@@ -3963,9 +3966,9 @@ Molpy.DefineBoosts=function()
 					built+=iAfford;
 				}
             }              
-            pow -= setPrice*iAfford;
+            tfChipBuffer -= setPrice*iAfford;
 			
-			if(iAfford<i) //we have some chips leftover so build 1 of what we can afford
+			if(iAfford<toolBuildNum) //we have some chips leftover so build 1 of what we can afford
 			{
 				t = Molpy.tfOrder.length;
 				while(t--)
@@ -3974,9 +3977,9 @@ Molpy.DefineBoosts=function()
 					if(isFinite(Molpy.priceFactor*tool.price)==fVal&&Molpy.Got('Glass Ceiling '+t))
 					{
 						var cost = 1000*(t+1);
-						if(pow>=cost)
+						if(tfChipBuffer>=cost)
 						{
-							pow-=cost;
+							tfChipBuffer-=cost;
 							built++;
 							Molpy.tfOrder[t].create(1);
 						}
@@ -3999,7 +4002,7 @@ Molpy.DefineBoosts=function()
             Molpy.recalculateDig=1;
             Molpy.shopRepaint=1;
             Molpy.CheckBuyUnlocks();
-            tf.power=pow;
+            tf.power=tfChipBuffer;
 			
 			if(built>=1000)Molpy.EarnBadge('KiloTool');
 			if(built>=1e6)Molpy.EarnBadge('MegaTool');
@@ -4007,16 +4010,13 @@ Molpy.DefineBoosts=function()
 			if(built>=1e12)Molpy.EarnBadge('TeraTool');
 
         }
-        if(!Molpy.Boosts['AA'].power)return;
+        if(!acPower)return;
 
-        var p = 1;
-        if(Molpy.Got('AC')) p=Molpy.Boosts['AC'].power;
-        var i=p;
+        var i=acPower;
         var times=0;
         if (fast)
         {
-            Molpy.FastTakeTools(p);
-            Molpy.RunFastFactory(p);
+            Molpy.RunFastFactory(acPower);
             return;
         }
         while(i--)
@@ -4045,15 +4045,7 @@ Molpy.DefineBoosts=function()
 //          Molpy.Notify('Ran Factory Automation '+Molpify(times,1)+' times');
 //      }
     }
-    Molpy.FastTakeTools=function(times)
-    {
-        var t = Molpy.tfOrder.length;
-        while(t--)
-        {
-            var tool=Molpy.tfOrder[t];
-            tool.amount-= times;
-        }
-	}
+
     Molpy.RunFastFactory=function(times) //assumes player did buy AO before getting AA. probably a safe assumption
     {
         var left = times;
