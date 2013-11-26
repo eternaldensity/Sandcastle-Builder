@@ -3345,7 +3345,7 @@ Molpy.Up=function()
 					}else{
 						Molpy.redactedDrawType=['show'];
 						Molpy.RedactedJump();
-						var stay = 6 *(4+ Molpy.Got('Kitnip')+Molpy.Got('SGR')*2);
+						var stay = 6 *(4+ Molpy.Got('Kitnip')+Molpy.Got('SGC')*2);
 						Molpy.redactedToggle=stay;
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
