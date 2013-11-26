@@ -1564,7 +1564,7 @@ Molpy.Up=function()
 			}
 			if(!refund&&amount)//don't multiply if amount is 0
 			{
-				amount = Math.round(amount*Molpy.globalCastleMult);
+				amount = Math.round(amount*Molpy.globalCastleMult)||0;
 			}
 			amount = Math.max(0,amount);
 			Molpy.castlesBuilt+=amount;
