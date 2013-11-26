@@ -3249,7 +3249,7 @@ Molpy.Up=function()
 					}
 					return str;
 				}
-				,icon:args.icon+'_'+kind,
+				,icon:kind,
 				earnFunction:args.earnFunction,visibility:args.visibility,group:kind});
 		}
 		Molpy.MakeQuadBadge=function(args)

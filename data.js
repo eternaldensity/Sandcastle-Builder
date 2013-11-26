@@ -2660,7 +2660,7 @@ Molpy.DefineBoosts=function()
 			{
 				Molpy.shopRepaint=1;
 				Molpy.GlassCeilingUnlockCheck();
-			}
+			},icon:'glassceiling'+i
 		});
 		Molpy.Boosts['Glass Ceiling '+i].num=parseInt(i);
 	}

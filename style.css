@@ -843,6 +843,14 @@ body.darkscheme.heresy .badge.loot #badge_judgementdipwarning.icon
 	background-image:url('img/badge_judgementdipwarning_light_heresy_icon.png');
 }
 
+body.lightscheme .badge.loot #badge_discov.icon
+{
+	background-image:url('img/badge_discovery_dark_icon.png');
+}
+body.darkscheme .badge.loot #badge_discov.icon
+{
+	background-image:url('img/badge_discovery_light_icon.png');
+}
 
 body.darkscheme .boost.loot #boost_activeninja.icon
 {
@@ -1836,4 +1844,108 @@ body.darkscheme .boost.loot #boost_expando.icon
 body.lightscheme .boost.loot #boost_expando.icon
 {
 	background-image:url('img/boost_expando_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling0.icon
+{
+	background-image:url('img/boost_glassceiling0_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling0.icon
+{
+	background-image:url('img/boost_glassceiling0_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling1.icon
+{
+	background-image:url('img/boost_glassceiling1_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling1.icon
+{
+	background-image:url('img/boost_glassceiling1_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling2.icon
+{
+	background-image:url('img/boost_glassceiling2_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling2.icon
+{
+	background-image:url('img/boost_glassceiling2_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling3.icon
+{
+	background-image:url('img/boost_glassceiling3_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling3.icon
+{
+	background-image:url('img/boost_glassceiling3_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling4.icon
+{
+	background-image:url('img/boost_glassceiling4_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling4.icon
+{
+	background-image:url('img/boost_glassceiling4_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling5.icon
+{
+	background-image:url('img/boost_glassceiling5_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling5.icon
+{
+	background-image:url('img/boost_glassceiling5_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling6.icon
+{
+	background-image:url('img/boost_glassceiling6_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling6.icon
+{
+	background-image:url('img/boost_glassceiling6_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling7.icon
+{
+	background-image:url('img/boost_glassceiling7_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling7.icon
+{
+	background-image:url('img/boost_glassceiling7_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling8.icon
+{
+	background-image:url('img/boost_glassceiling8_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling8.icon
+{
+	background-image:url('img/boost_glassceiling8_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling9.icon
+{
+	background-image:url('img/boost_glassceiling9_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling9.icon
+{
+	background-image:url('img/boost_glassceiling9_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling10.icon
+{
+	background-image:url('img/boost_glassceiling10_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling10.icon
+{
+	background-image:url('img/boost_glassceiling10_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling11.icon
+{
+	background-image:url('img/boost_glassceiling11_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling11.icon
+{
+	background-image:url('img/boost_glassceiling11_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_glassceiling12.icon
+{
+	background-image:url('img/boost_glassceiling12_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_glassceiling12.icon
+{
+	background-image:url('img/boost_glassceiling12_light_icon.png');
 }
