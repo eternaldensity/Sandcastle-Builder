@@ -2792,7 +2792,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Run Raptor Run',alias:'RRR',
 		desc:function(me)
 		{
-			var str='Multiplies Not Lucky bonus by '+Molpify(10000)+' at a cost of 30 Glass Blocks per use';
+			var inf=!isFinite(Molpy.castles);
+			var str='Multiplies Not Lucky bonus by '+Molpify(10000)+(inf?'':' at a cost of 30 Glass Blocks per use');
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.RRRToggle()" value="'
@@ -3066,7 +3067,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Let the Cat out of the Bag',alias:'LCB',
 		desc:function(me)
 		{
-			var str='Not Lucky reward gains 1% per two Ladders and Bags owned, at a cost of 70 Glass Blocks (or 1 Ladder and 1 Bag) per use.'
+			var inf=!isFinite(Molpy.castles);
+			var str='Not Lucky reward gains 1% per two Ladders and Bags owned, at a cost of '+(inf?'1 Ladder and 1 Bag':'70 Glass Blocks (or 1 Ladder and 1 Bag)')+' per use.'
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.CatBagToggle()" value="'
@@ -3074,7 +3076,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(){this.power=1;},
-		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Ladders, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Bags. If 35 Glass Blocks are not available each time, a Ladder/Bag is consumed before multiplying.',
+		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Ladders, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Bags. If 35 Glass Blocks are not available each time (or if you have infinite Castles), a Ladder/Bag is consumed before multiplying',
 		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean',icon:'lcb'});
 	Molpy.CatBagToggle=function()
 	{
@@ -3086,7 +3088,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Catamaran',
 		desc:function(me)
 		{
-			var str='Not Lucky reward gains 1% 6 times per Wave and River owned, at a cost of 90 Glass Blocks (or 1 Waves and 1 River) per use.'
+			var inf=!isFinite(Molpy.castles);
+			var str='Not Lucky reward gains 1% 6 times per Wave and River owned, at a cost of '+(inf?'1 Wave and 1 River':'90 Glass Blocks (or 1 Wave and 1 River)')+' per use.'
 			if(me.bought)
 			{
 				str+=' <input type="Button" onclick="Molpy.CatamaranToggle()" value="'
@@ -3094,7 +3097,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(){this.power=1;},
-		stats:'At a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each Wave, then at a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each River. If 45 Glass Blocks are not available each time, a Wave/River is consumed before multiplying.',
+		stats:'At a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each Wave, then at a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each River. If 45 Glass Blocks are not available each time (or if you have infinite Castles), a Wave/River is consumed before multiplying.',
 		sand:'750S',castles:'245S',glass:'4800',className:'toggle',group:'bean',icon:'catamaran'});
 	Molpy.CatamaranToggle=function()
 	{
@@ -3106,7 +3109,9 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Redundant Raptor',
 		desc:function(me)
 		{
-			var str='Not Lucky reward gains 1% per '+Molpy.redactedWord+' click, at a cost of 120 Glass Blocks per use.'
+			var if=!isFinite(Molpy.castles);
+			var str='Not Lucky reward gains 1% per '+Molpy.redactedWord+' click'+(inf?'':', at a cost of 120 Glass Blocks per use.');
+			
 			if(me.bought)
 			{
 				str+='<br><input type="Button" onclick="Molpy.RedRaptorToggle()" value="'
@@ -3114,7 +3119,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		},buyFunction:function(){this.power=1;},
-		stats:'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each '+Molpy.redactedWord+' click',
+		stats:'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each '+Molpy.redactedWord+' click<br>The cost is waived if you have infinite Castles, since this this boost would have no effect in that circumstance',
 		sand:'930PW',castles:'824PW',glass:'4800',className:'toggle',group:'bean',icon:'redundaraptor'});
 	Molpy.RedRaptorToggle=function()
 	{
