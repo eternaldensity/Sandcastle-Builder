@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.18;
+		Molpy.version=3.181;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -4296,7 +4296,7 @@ Molpy.Up=function()
 					var el=me.l;
 					me.l.style.left=Math.floor(me.x)+'px';
 					me.l.style.top=Math.floor(me.y)+'px';
-					//el.style.opacity=1-(me.life/(Molpy.fps*2));
+					el.style.opacity=1;//-(me.life/(Molpy.fps*2));
 					if (me.life>=Molpy.fps*2)
 					{
 						me.life=-1;
@@ -4376,13 +4376,18 @@ Molpy.Up=function()
 					var el=me.l;
 					el.style.left=Math.floor(-200+me.x)+'px';
 					el.style.bottom=Math.floor(-y)+'px';
-					el.style.opacity=1-Math.pow(me.life/(Molpy.fps*5),2);
-					if (me.life>=Molpy.fps*5&&trans<9)
+					if(trans<9)
+					{
+						el.style.opacity=1-Math.pow(me.life/(Molpy.fps*5),2);
+						trans++;
+					}else{
+						el.style.opacity=1;
+					}
+					if (me.life>=Molpy.fps*5)
 					{
 						me.life=-1;
 						el.style.opacity=0;
 						el.style.display='none';
-						trans++;
 					}
 				}
 			}

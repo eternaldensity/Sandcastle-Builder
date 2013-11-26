@@ -20,6 +20,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.181
+- Factory Automation description changed to stop people asking how to upgrade it again after they temporal rift :P
+- Fixed some transparency stupidity (btw yes if there's a lot of notifications on the screen, some will not go transparent at all until the others have vanished)
+- Added an explanatory note to Bag Burning so people don't think it's broken and "fix" it with the console. *ahem*
+
 ## 3.18
 - Lots more icons from BlitzGirl
 - Temporal Rift fixed for infinite castles, like Molpy Down

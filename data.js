@@ -954,6 +954,7 @@ Molpy.DefineBoosts=function()
 				costs+=Molpify(sand);
 				if(i)costs+=', then ';
 			}
+			if(!me.power)return 'When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand, if you have at least 20 NewPixBots.<br>Can be upgraded if you have Doubleposting and ask the right person...';
 			return 'Level: '+Molpify(me.power+1,3)+'<br>When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand. Will activate less times if you don\'t have 20 bots per automation level.';
 		},
 		sand:'4.5M',castles:15700,icon:'factoryautomation',group:'hpt'});
@@ -1008,7 +1009,7 @@ Molpy.DefineBoosts=function()
 				str+='<br>Currently '+amount+'%';
 			}
 			var jmax=Math.pow(2,Molpy.Boosts['Bag Burning'].power)+6;
-			str+='<br>If the Judgement Dip level (apart from the Bag reduction) is greater than '+Molpify(jmax,1,1)+', Bags will be burned to increase power.';
+			str+='<br>If the Judgement Dip level (apart from the Bag reduction) is greater than '+Molpify(jmax,1,1)+', Bags will be burned to increase power.<br>It is also more powerful each time it is locked!';
 			if(!isFinite(jmax)&&Molpy.Got('Bottle Battle'))Molpy.UnlockBoost('Fireproof');
 			return str;
 		}
