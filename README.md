@@ -28,7 +28,7 @@ For personal amusement only.
 - Some Not Lucky boost description changes (regarding not costing glass if you have infinite castles)
 - Read TVTropes a lot
 - Glass Tools now show glass stats instead of sand/castle stats when appropriate
-- When building 0 castles, a castle multipler of infinity (from flux surge?) will now result in 0 rather than mustard (NaN)
+- When building 0 castles, a castle multiplier of infinity (from flux surge?) will now result in 0 rather than mustard (NaN)
 
 ## 3.17
 - Messed with chance of intruder bots in a certain circumstance...
