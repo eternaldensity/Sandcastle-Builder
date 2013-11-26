@@ -3732,7 +3732,7 @@ Molpy.Up=function()
 				}else{
 					gift=Math.ceil(gift/100);
 					Molpy.AddChips(gift);				
-					if(gift>1&&MMolpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Chips from '+Molpy.Boosts['SGC'].name,1);
+					if(gift>1&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Chips from '+Molpy.Boosts['SGC'].name,1);
 				}
 			}
 		}
