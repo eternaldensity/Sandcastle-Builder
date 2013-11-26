@@ -3109,7 +3109,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Redundant Raptor',
 		desc:function(me)
 		{
-			var if=!isFinite(Molpy.castles);
+			var inf=!isFinite(Molpy.castles);
 			var str='Not Lucky reward gains 1% per '+Molpy.redactedWord+' click'+(inf?'':', at a cost of 120 Glass Blocks per use.');
 			
 			if(me.bought)

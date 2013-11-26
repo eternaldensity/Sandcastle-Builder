@@ -2570,9 +2570,18 @@ Molpy.Up=function()
 				var desc = '';
 				if(Molpy.showStats)
 				{
-					desc='Total sand '+this.actionName+': '+Molpify(this.totalSand,1)+
-					'<br>Sand/mNP per '+this.single+': '+Molpify(this.storedSpmNP,1)+
-					'<br>Total '+this.plural+' bought: '+Molpify(this.bought);
+								
+					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(this.id*2)))
+					{						
+						desc='Total Sand '+this.actionName+': '+Molpify(this.totalSand,1)+
+						'<br>Sand/mNP per '+this.single+': '+Molpify(this.storedSpmNP,1);
+					}else{
+						
+						desc='Total Chips '+this.actionName+': '+Molpify(this.totalGlass,1)+
+						'<br>Glass/mNP per '+this.single+': '+Molpify(this.storedGpmNP,1);
+					}	
+					
+					desc+='<br>Total '+this.plural+' bought: '+Molpify(this.bought);
 					Molpy.EarnBadge('The Fine Print');
 				}else
 				{				
@@ -2832,12 +2841,20 @@ Molpy.Up=function()
 					actuals+='<br>Next ONG, will build '+Molpify(bN,1)+' '+w+plural(bN)+(dN?(' if '+Molpify(dN,1)+' '+w+((dN!=1)?'s are':' is')+' destroyed.'):'');
 				}
 				if(Molpy.showStats)
-				{
-					if(this.totalCastlesDestroyed)
-						desc+='Total castles '+this.actionDName+': '+Molpify(this.totalCastlesDestroyed)+
-						'<br>Total castles wasted: '+Molpify(this.totalCastlesWasted);
-					if(this.totalCastlesBuilt)
-						desc+='<br>Total castles '+this.actionBName+': +'+Molpify(this.totalCastlesBuilt);
+				{				
+					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(this.id*2+1)))
+					{
+						if(this.totalCastlesDestroyed)
+							desc+='Total Castles '+this.actionDName+': '+Molpify(this.totalCastlesDestroyed)+
+							'<br>Total Castles wasted: '+Molpify(this.totalCastlesWasted);
+						if(this.totalCastlesBuilt)
+							desc+='<br>Total Castles '+this.actionBName+': +'+Molpify(this.totalCastlesBuilt);
+					}else{
+						if(this.totalGlassDestroyed)
+							desc+='Total Chips '+this.actionDName+': '+Molpify(this.totalGlassDestroyed);
+						if(this.totalGlassBuilt)
+							desc+='<br>Total Chips '+this.actionBName+': +'+Molpify(this.totalGlassBuilt);
+					}								
 					desc+='<br>Total '+this.plural+' bought: '+Molpify(this.bought);
 					desc+='<br>'+actuals;
 					Molpy.EarnBadge('Keeping Track');

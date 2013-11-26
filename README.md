@@ -25,6 +25,9 @@ For personal amusement only.
 - Temporal Rift fixed for infinite castles, like Molpy Down
 - New Ninja boost
 - Nerfed Fireproof a bit
+- Some Not Lucky boost description changes (regarding not costing glass if you have infinite castles)
+- Read TVTropes a lot
+- Glass Tools now show glass stats instead of sand/castle stats when appropriate
 
 ## 3.17
 - Messed with chance of intruder bots in a certain circumstance...
