@@ -1630,12 +1630,17 @@ Molpy.DefineBoosts=function()
 		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:7,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
-		if(Math.random()*5<4&&isFinite(Molpy.castlesBuilt))
+		if(Math.random()*5<4))
 		{
-			Molpy.totalCastlesDown+=Molpy.castles;
-			Molpy.castlesBuilt-=Molpy.castles;
-			Molpy.Destroy(Molpy.castles);
-			Molpy.Dig(Molpy.sand);
+			if(isFinite(Molpy.castlesBuilt))
+			{
+				Molpy.totalCastlesDown+=Molpy.castles;
+				Molpy.castlesBuilt-=Molpy.castles;	
+			}else{	
+				Molpy.totalCastlesDown=Number.MAX_VALUE;
+			}
+			Molpy.Destroy(Molpy.castles);	
+			Molpy.Dig(Molpy.sand);	
 		}
 		Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
 		Molpy.ONG();

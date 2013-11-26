@@ -20,6 +20,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.18
+- Lots more icons from BlitzGirl
+- Temporal Rift fixed for infinite castles, like Molpy Down
+
 ## 3.17
 - Messed with chance of intruder bots in a certain circumstance...
 - When loading, if highest NP visited is missing, using the current NewPix number
