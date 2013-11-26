@@ -23,6 +23,8 @@ For personal amusement only.
 ## 3.18
 - Lots more icons from BlitzGirl
 - Temporal Rift fixed for infinite castles, like Molpy Down
+- New Ninja boost
+- Nerfed Fireproof a bit
 
 ## 3.17
 - Messed with chance of intruder bots in a certain circumstance...

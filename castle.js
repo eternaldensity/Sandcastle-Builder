@@ -2070,6 +2070,10 @@ Molpy.Up=function()
 			{
 				ninjaInc*=1000;
 			}
+			if(Molpy.Got('Ninja Ninja Duck'))
+			{
+				ninjaInc*=10;
+			}
 			Molpy.ninjaStealth+=ninjaInc;
 			
 			if(Molpy.Got('Ninja Builder')) 
@@ -2113,7 +2117,8 @@ Molpy.Up=function()
 			if(Molpy.ninjaStealth>4000000)
 			{
 				Molpy.EarnBadge('Ninja Unity');
-			}				
+			}	
+				
 		}
 		Molpy.CalcStealthBuild=function(vj,spend)
 		{

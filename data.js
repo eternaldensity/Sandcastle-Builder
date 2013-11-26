@@ -328,7 +328,7 @@ Molpy.DefineCastleTools=function()
 			if(Molpy.Got('Bottle Battle'))
 				baseval*= 3;
 			if(Molpy.Got('Fireproof'))
-				baseval*= 1e12;
+				baseval*= 1e10;
 			return baseval;
 		},
 		nextThreshold:1
@@ -625,7 +625,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Raise the Flag',desc:'Each Flag+Ladder pair gives clicking an extra +50 sand',
 		sand:'85K',castles:95,icon:'raisetheflag'});
 	new Molpy.Boost({name:'Hand it Up',desc:'Each Ladder+Bag pair gives clicking an extra +500 sand',
-		sand:'570K',castles:170,department:1});
+		sand:'570K',castles:170,department:1,icon:'handitup'});
 	new Molpy.Boost({name:'Riverish',desc:'Rivers destroy less castles the more you click',
 		sand:'82K',castles:290,icon:'riverish',department:1,
 		buyFunction:function()
@@ -970,7 +970,8 @@ Molpy.DefineBoosts=function()
 		}
 		,icon:'blastfurnace',group:'hpt'});
 	
-	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a cumulative 5% boost to Sand digging, Castle building, and Castle destruction (per River or Bag, respectively)',sand:'1.4M',castles:'21K'});
+	new Molpy.Boost({name:'Sandbag',desc:'Bags and Rivers give each other a cumulative 5% boost to Sand digging, Castle building, and Castle destruction (per River or Bag, respectively)',
+		sand:'1.4M',castles:'21K',icon:'sandbag'});
 	new Molpy.Boost({name:'Embaggening',desc:'Each Cuegan after the 14th gives a 2% boost to the sand dig rate of Bags',
 		sand:'3.5M',castles:'23K',icon:'embaggening'});
 	new Molpy.Boost({name:'Carrybot',desc:'NewPixBots produce double castles, Buckets produce quadruple sand',
@@ -1630,7 +1631,7 @@ Molpy.DefineBoosts=function()
 		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:7,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
-		if(Math.random()*5<4))
+		if(Math.random()*5<4)
 		{
 			if(isFinite(Molpy.castlesBuilt))
 			{
@@ -2317,7 +2318,7 @@ Molpy.DefineBoosts=function()
 		,sand:'5T',castles:'0.6T',icon:'ninjaleague',group:'ninj'});
 		
 	new Molpy.Boost({name:'Ninja Legion',desc:'Ninja Stealth is raised by 1000x as much'
-		,sand:'3P',castles:'0.9P',group:'ninj'});
+		,sand:'3P',castles:'0.9P',group:'ninj',icon:'ninjalegion'});
 		
 	new Molpy.Boost({name:'Swim Between the Flags',alias:'SBTF',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix (i.e. when changing from an odd NewPix to an even NewPix) and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T',icon:'swimbetweenflags'});
 	
@@ -2807,7 +2808,7 @@ Molpy.DefineBoosts=function()
 		me.hoverOnCounter=1;
 	}
 	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'
-		,sand:'490P',castles:'670P',glass:1500,group:'ninj'
+		,sand:'490P',castles:'670P',glass:1500,group:'ninj',icon:'ninjaclimber'
 	});
 	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.',stats:'Squares the reward from VITSSÅGEN, JA!'
 		,sand:'48E',castles:'38E',glass:100,group:'hpt',icon:'phonesaw'
@@ -2846,7 +2847,7 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	new Molpy.Boost({name:'Logicastle',desc:'The Castle outputs of Castle Tools are boosted by 50% cumulatively per Logicat Level'
-		,group:'bean',logic:2,sand:'420Z',castles:'850Z',glass:300
+		,group:'bean',logic:2,sand:'420Z',castles:'850Z',glass:300,icon:'logicastle'
 	});
 	Molpy.LogicastleMult=function()
 	{
@@ -3060,7 +3061,7 @@ Molpy.DefineBoosts=function()
 	}
 	
 	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it and don\'t lose half a Logicat point. (Uses 50 Glass Blocks)',
-		sand:'250Y',castles:'87Y',group:'bean',logic:5});
+		sand:'250Y',castles:'87Y',group:'bean',logic:5,icon:'secondchance'});
 	
 	new Molpy.Boost({name:'Let the Cat out of the Bag',alias:'LCB',
 		desc:function(me)
@@ -3168,7 +3169,7 @@ Molpy.DefineBoosts=function()
 		{
 			Molpy.Notify('See Rosetta about your Blackprints',1);
 		},
-		group:'bean'
+		group:'bean',icon:'blackprints'
 	});
 	Molpy.LogiMult=function(s)
 	{
@@ -3303,7 +3304,7 @@ Molpy.DefineBoosts=function()
 			this.power=0;
 			Molpy.LockBoost('Blackprints');
 		},
-		className:'alert',group:'bean'
+		className:'alert',group:'bean',icon:'constructblack'
 	});
 	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:120,ZK:180};
 	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','Bacon','AO','AA','SG','AE','Milo','ZK'];
@@ -3770,8 +3771,8 @@ Molpy.DefineBoosts=function()
 			return 'Increases sand dig rate by 10% per Badge earned';
 		}
 	});
-	new Molpy.Boost({name:'Keygrinder',desc:'The DoRD may produce a Crate Key if Factory Automation is at Level 10 or above',sand:'463UW',castles:'15.6SW',glass:'13K',group:'hpt',logic:20});
-	new Molpy.Boost({name:'The Key Thing',desc:'Buying a Crate Key when the Locked Crate is not available will now do something useful',sand:'18SW',castles:'47SW',glass:'19K',group:'bean',logic:25});
+	new Molpy.Boost({name:'Keygrinder',desc:'The DoRD may produce a Crate Key if Factory Automation is at Level 10 or above',sand:'463UW',castles:'15.6SW',glass:'13K',group:'hpt',logic:20,icon:'keygrinder'});
+	new Molpy.Boost({name:'The Key Thing',desc:'Buying a Crate Key when the Locked Crate is not available will now do something useful',sand:'18SW',castles:'47SW',glass:'19K',group:'bean',logic:25,icon:'keything'});
 	
 	new Molpy.Boost({name:'Window Washing Beanies',alias:'WWB',desc:
 		function(me)
@@ -3787,7 +3788,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
-		,group:'bean',classChange:
+		,group:'bean',icon:'wwb',classChange:
 		function()
 		{
 			var oldClass=this.className;
@@ -4295,7 +4296,7 @@ Molpy.DefineBoosts=function()
 	});
 	
 	new Molpy.Boost({name:'Ruthless Efficiency',desc:'Glass Block production uses a quarter as many Chips',glass:'12M',sand:'10WW',castles:'10WW', group:'hpt'});
-	new Molpy.Boost({name:'Break the Mould',desc:'Allows you to destroy an incomplete or unfilled Mould, if you decide making it was a mistake.',glass:'2M',sand:'10WWW',castles:'10WWW', group:'bean'});
+	new Molpy.Boost({name:'Break the Mould',desc:'Allows you to destroy an incomplete or unfilled Mould, if you decide making it was a mistake.',glass:'2M',sand:'10WWW',castles:'10WWW', group:'bean',icon:'breakthemould'});
 	
 	new Molpy.Boost({name:'TF Load Letter',alias:'TFLL',desc:'You can load Tool Factory with 50K Glass Chips at a time',glass:'4M',sand:Infinity,castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Booster Glass',alias:'BG',desc:'If you have Infinite Sand, clicking the NewPix gives Tool Factory 4 Glass Chips per Boost owned',glass:'8M',sand:Infinity,castles:Infinity, group:'hpt'});
@@ -4673,7 +4674,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
-		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'
+		,sand:Infinity,castles:Infinity,glass:'1Z',group:'chron',className:'action'
 	});
 	Molpy.GainDragonWisdom=function(n)
 	{
@@ -4691,7 +4692,10 @@ Molpy.DefineBoosts=function()
 		}
 	}
 	
-	new Molpy.Boost({name:'Fireproof',desc:'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make '+Molpify(1e12)+' times as many Glass Chips',sand:Infinity,castles:Infinity,glass:function(){return 8e9*Molpy.CastleTools['NewPixBot'].amount;},group:'cyb'}); //www.youtube.com/watch?v=84q0SXW781c
+	new Molpy.Boost({name:'Fireproof',desc:'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make '+Molpify(1e10)+' times as many Glass Chips',sand:Infinity,castles:Infinity,glass:function(){return 8e9*Molpy.CastleTools['NewPixBot'].amount;},group:'cyb'}); //www.youtube.com/watch?v=84q0SXW781c
+	
+	new Molpy.Boost({name:'Ninja Ninja Duck',desc:'Ninja Stealth is raised by 10x as much'
+		,sand:Infinity,castles:Infinity,glass:'',group:'ninj',icon:'ninjaduck'});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
@@ -5562,7 +5566,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
 	Molpy.Boosts['Cold Mould'].department=Molpy.Got('SMM');
 	Molpy.Boosts['Such Glass'].department=1*Molpy.SandTools['Bucket'].amount>2e11*Molpy.ninjaStealth>2e8;
-				
+	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);
 }
 
 Molpy.CheckLogicatRewards=function(automationLevel)
