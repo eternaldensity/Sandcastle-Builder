@@ -24,6 +24,7 @@ For personal amusement only.
 - Making the Discoveries category use the apropriate icon slipped my mind, again
 - Missing icon
 - Inverted statements
+- Recycling Beanies hint if you don't have enough BBs
 
 ## 3.182
 - Typo fixes from waveney (SGR, MMolpy)

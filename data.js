@@ -3857,6 +3857,8 @@ Molpy.DefineBoosts=function()
 				if(Molpy.CastleTools['Beanie Builder'].amount>(me.bought*200))
 				{
 					str+='<br><input type="Button" value="Hire" onclick="Molpy.HireRecycling()"></input> '+Molpify(200*me.bought,2)+' Beanie Builders to recycle.';
+				}else{
+					str+='<br>You need to buy '+(Molpy.CastleTools['Beanie Builder'].amount?'more':'some')+' Beanie Builders before you can upgrade this.';
 				}
 				if(Molpy.Got('Crystal Helm'))str+='<br>Reach an infinite multiplier to unlock a new Boost!';
 			}
