@@ -1755,7 +1755,7 @@ Molpy.Up=function()
 			}
 			
 		}
-		Molpy.notifyFactor=1000000000;
+		Molpy.glassNotifyFactor=1000000000;
 		Molpy.GlassNotifyFlush=function()
 		{
 			Molpy.chipAddAmount=Math.round(Molpy.chipAddAmount);
