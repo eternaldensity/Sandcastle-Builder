@@ -996,14 +996,6 @@ body.lightscheme .boost.loot #boost_department.icon
 {
 	background-image:url('img/boost_department_light_icon.png');
 }
-body.darkscheme .boost.loot #boost_doubleornothing.icon
-{
-	background-image:url('img/boost_doubleornothing_dark_icon.png');
-}
-body.lightscheme .boost.loot #boost_doubleornothing.icon
-{
-	background-image:url('img/boost_doubleornothing_light_icon.png');
-}
 body.darkscheme .boost.loot #boost_doublepost.icon
 {
 	background-image:url('img/boost_doublepost_dark_icon.png');
@@ -1987,7 +1979,7 @@ body.darkscheme .boost.loot #boost_keygrinder.icon
 }
 body.lightscheme .boost.loot #boost_keygrinder.icon
 {
-	background-image:url('img/boost_keygrinder_light_icon.png');
+	background-image:url('img/boost_keygrinder.png');
 }
 body.darkscheme .boost.loot #boost_logicastle.icon
 {
@@ -2044,4 +2036,20 @@ body.darkscheme .boost.loot #boost_wwb.icon
 body.lightscheme .boost.loot #boost_wwb.icon
 {
 	background-image:url('img/boost_wwb_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_goat.icon
+{
+	background-image:url('img/boost_goat_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_goat.icon
+{
+	background-image:url('img/boost_goat_light_icon.png');
+}
+body.darkscheme .boost.loot #boost_monty.icon
+{
+	background-image:url('img/boost_monty_dark_icon.png');
+}
+body.lightscheme .boost.loot #boost_monty.icon
+{
+	background-image:url('img/boost_monty_light_icon.png');
 }

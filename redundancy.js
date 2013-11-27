@@ -1,5 +1,6 @@
 'use strict';
-function GLRschoice(things) {return things[Math.floor(Math.random()*things.length)];}
+function flandom(n){return(Math.floor(Math.random()*n));}
+function GLRschoice(things) {return things[flandom(things.length)];}
 function EvalMaybeFunction(bacon,babies,ice)
 {
 	var B = typeof(bacon);
@@ -45,7 +46,7 @@ function MakeRedundancy()
 	redundancy.paragraph=function()
 	{
 		var str='';
-		var s = Math.floor(Math.random()*10)+2;
+		var s = flandom(10)+2;
 		while(s--)
 		{
 			str+=redundancy.sentence();
@@ -252,8 +253,8 @@ function format(gainned,level)
 	
 	level=level||0;
 	var gained=gainned;
-	if(!Math.floor(Math.random()*1.005))return gainned;
-	var n = Math.floor(Math.random()*(gainned.length-2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
+	if(!flandom(1.005))return gainned;
+	var n = flandom((gainned.length-2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
 	if(!isNaN(gainned[n]))return gainned;
 	gainned= gainned.slice(0,n+1)+gainned.slice(n);
 	gainned = format(gainned,level+1);
@@ -292,7 +293,7 @@ var InitStatementGen=function(gen)
 		var statementNames='ABCDEFGHI';
 		var operators=['and','or'];
 		var refCount=2;
-		if(!n) n = Math.floor(Math.random()*Math.ceil(Math.PI))+Math.ceil(Math.PI);
+		if(!n) n = flandom(Math.ceil(Math.PI))+Math.ceil(Math.PI);
 		StatementGen.statements={};
 		var i = n;
 		while(i--)
@@ -301,17 +302,17 @@ var InitStatementGen=function(gen)
 			var statement={};
 			StatementGen.statements[name]=statement;
 			statement.name=name;
-			statement.value=Math.floor(Math.random()*2)==0;
+			statement.value=flandom(2)==0;
 		}
 		i = n;
 		while(i--)
 		{
 			var statement = StatementGen.statements[statementNames[i]];
 			statement.refs=[];
-			var j = refCount+1*(Math.floor(Math.random()*4)==0);
+			var j = refCount+1*(flandom(4)==0);
 			while(j--)
-				statement.refs[j]=statementNames[Math.floor(Math.random()*n)];
-			statement.operator=operators[Math.floor(Math.random()*operators.length)];
+				statement.refs[j]=statementNames[flandom(n)];
+			statement.operator=operators[flandom(operators.length)];
 			StatementGen.FillClaims(statement);
 			ShuffleList(statement.claims);
 		}
@@ -336,7 +337,7 @@ var InitStatementGen=function(gen)
 					var r=StatementGen.statements[statement.refs[i]];
 					if(i)//fill in the rest with randoms
 					{
-						statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
+						statement.claims.push({name:r.name,value:flandom(2)==0});
 					}else//get this one wrong
 					{
 						statement.claims.push({name:r.name,value:!r.value});
@@ -353,7 +354,7 @@ var InitStatementGen=function(gen)
 					var r=StatementGen.statements[statement.refs[i]];
 					if(i)//fill in the rest with randoms
 					{
-						statement.claims.push({name:r.name,value:Math.floor(Math.random()*2)==0});
+						statement.claims.push({name:r.name,value:flandom(2)==0});
 					}else//get this one right
 					{
 						statement.claims.push({name:r.name,value:r.value});
@@ -375,7 +376,7 @@ var InitStatementGen=function(gen)
 	{
 		var vals=[];
 		for(var i in StatementGen.statements) vals.push(StatementGen.statements[i].value);
-		return vals[Math.floor(Math.random()*vals.length)];
+		return vals[flandom(vals.length)];
 	}
 	StatementGen.StringifyClaim=function(claim)
 	{
@@ -424,7 +425,7 @@ function ShuffleList(l)
 	{
 		for(var i in l)
 		{
-			var j = Math.floor(Math.random()*(parseInt(i)+1));
+			var j = flandom((parseInt(i)+1));
 			var temp = l[j];
 			l[j]=l[i];
 			l[i]=temp;
@@ -434,7 +435,7 @@ function SplitWord(word)
 {
 	if(word.length<=3)return [word];
 	if(word.length==4)return [word.slice(0,2),word.slice(2)];
-	var size=2+Math.floor(Math.random()*2);
+	var size=2+flandom(2);
 	return [word.slice(0,size)].concat(SplitWord(word.slice(size)));
 }
 function Wordify(words)

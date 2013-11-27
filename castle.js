@@ -546,7 +546,7 @@ Molpy.Up=function()
 				alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
 				return;
 			}
-			g('title').innerHTML=GLRschoice(['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex']);
+			g('title').innerHTML=GLRschoice(['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex','The Dwarf Fortress of Idle Games']);
 			
 			var pixels = thread[2].split(s);
 			Molpy.startDate=parseInt(pixels[0]);
@@ -983,7 +983,7 @@ Molpy.Up=function()
 			}
 			Molpy.UpdateColourScheme();
 			Molpy.AdjustFade();
-			Molpy.LockBoost('Double or Nothing');
+			Molpy.LockBoost('MHP');
 			if(Molpy.redactedVisible)
 			{
 				Molpy.redactedCountup=Molpy.redactedToggle;
@@ -2021,7 +2021,7 @@ Molpy.Up=function()
 				Molpy.UpdateBeachClass('beachsafe');
 			Molpy.HandleClickNP();	
 
-			if(Molpy.Got('Temporal Rift') && Molpy.Boosts['Temporal Rift'].countdown<5 && Math.floor(Math.random()*2)==1)
+			if(Molpy.Got('Temporal Rift') && Molpy.Boosts['Temporal Rift'].countdown<5 && flandom(2)==1)
 			{
 				Molpy.Notify('You accidentally slip through the temporal rift!,1');
 				Molpy.RiftJump();
@@ -3398,7 +3398,7 @@ Molpy.Up=function()
 			}
 			
 			
-			if(Molpy.Got('RRSR') && Math.floor(Math.random()*20)==1)
+			if(Molpy.Got('RRSR') && flandom(20)==1)
 			{
 				Molpy.redactedDrawType[level]='hide1';
 				Molpy.redactedToggle=65;
@@ -3406,7 +3406,7 @@ Molpy.Up=function()
 				Molpy.redactedCountup=Molpy.redactedChain;
 			}else
 			if (Molpy.Got('Redunception') && Molpy.redactedDrawType.length <21 
-				&& Math.floor(Math.random()*8/Molpy.redactedDrawType.length)==0)
+				&& flandom(8/Molpy.redactedDrawType.length)==0)
 			{
 				Molpy.redactedDrawType[level]='recur';
 				Molpy.redactedDrawType.push('show');
@@ -3419,7 +3419,7 @@ Molpy.Up=function()
 				}
 			}else
 			if (Molpy.Got('Logicat') && Molpy.redactedDrawType.length <21
-				&& Math.floor(Math.random()*6/Molpy.redactedDrawType.length)==0)
+				&& flandom(6/Molpy.redactedDrawType.length)==0)
 			{
 				Molpy.MakeRedactedPuzzle();
 				Molpy.redactedDrawType[level]='hide2';
@@ -4522,7 +4522,7 @@ Molpy.Up=function()
 			var i = Molpy.Boosts['Factory Automation'].power+1;
 			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',''+i,true]);
 			var npb=Molpy.CastleTools['NewPixBot'];
-			if(Math.floor(Math.random()*((Molpy.Got('Safety Pumpkin')+Molpy.Got('SG'))*10+20-i))==0)
+			if(flandom(((Molpy.Got('Safety Pumpkin')+Molpy.Got('SG'))*10+20-i))==0)
 			{
 				if(npb.amount)
 				{
@@ -4875,7 +4875,7 @@ Molpy.Up=function()
 		}
 		if(Molpy.Got('Bag Burning')&& !Molpy.Boosts['NewPixBot Navigation Code'].power)
 		{
-			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold+1 && Math.floor(Math.random()*36)==0)
+			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshold+1 && flandom(36)==0)
 			{
 				Molpy.BurnBags(1);
 			}
@@ -4889,9 +4889,9 @@ Molpy.Up=function()
 				{
 					Molpy.SpendGlassBlocks(5);
 					bbc.power=1;
-					var don = Molpy.Boosts['Double or Nothing'];
-					if(don.unlocked&&don.power>20&&Math.floor(Math.random()*8)==0)
-						Molpy.Boosts['Double or Nothing'].power--;
+					var mhp = Molpy.Boosts['MHP'];
+					if(mhp.unlocked&&mhp.power>20&&flandom(9)==0)
+						mhp.power--;
 				}else{
 					bbc.power=0;
 				}
@@ -4899,7 +4899,7 @@ Molpy.Up=function()
 		}
 		Molpy.GlassNotifyFlush();
 		if(isFinite(Molpy.castles))
-			Molpy.Boosts['Double or Nothing'].department=1*(Math.floor(Math.random()*3)==0);
+			Molpy.Boosts['MHP'].department=1*(flandom(3)==0);
 		if(Molpy.autosaveCountup>1000)
 		{
 			Molpy.Notify('You have not saved in over a NewPix!!',1);
@@ -5011,8 +5011,8 @@ Molpy.Up=function()
 	}
 	Molpy.NewPixFor=function(np)
 	{
-		var x = 200+Math.floor(Math.random()*200);
-		var y = 200+Math.floor(Math.random()*400);
+		var x = 200+flandom(200);
+		var y = 200+flandom(400);
 		if(Molpy.Got('Chromatic Heresy')&&Molpy.options.colpix)
 		{	
 			if(Molpy.newpixNumber>3094)			
@@ -5107,7 +5107,7 @@ Molpy.Up=function()
 					if(Molpy.Boosts['Chromatic Heresy'].power>0 && Molpy.Got('Technicolour Dream Cat')
 						&& Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]!='hide2')
 					{
-						className+=' '+['alert','action','toggle','',''][Math.floor(Math.random()*4)];
+						className+=' '+['alert','action','toggle','',''][flandom(4)];
 					}
 					redacteditem.className=className;
 				}

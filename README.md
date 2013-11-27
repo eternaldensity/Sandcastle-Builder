@@ -25,9 +25,13 @@ For personal amusement only.
 - Track buy/sell of tools
 - Track upgrade/downgrade boosts
 - Free Advice tells you how to get Sand/Castles to Glass, once you get Tool Factory
+- Renamed anything with threshhold to threshold
+- Shoutout to bay12forums: Just noticed some active visitors from there. I like to read stuff there on occasion (Battlefailed Saga!)
+- Line on AA description about how it stops glass-gain messages since that would be spammy otherwise
+- Removed Double or Nothing forever
 
 ## 3.183
-- Making the Discoveries category use the apropriate icon slipped my mind, again
+- Making the Discoveries category use the appropriate icon slipped my mind, again
 - Missing icon
 - Inverted statements
 - Recycling Beanies hint if you don't have enough BBs

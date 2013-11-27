@@ -344,7 +344,7 @@ Molpy.DefineCastleTools=function()
 		'Propbot',
 		'Surfbot',
 		'Smallbot'];
-	Molpy.npbDoubleThreshhold=14;
+	Molpy.npbDoubleThreshold=14;
 		
 	new Molpy.CastleTool({name:'Trebuchet',commonName:'trebuchet|trebuchets|flung|formed',desc:'Flings some castles, forming more.',price0:13,price1:1,
 		destroyC:function(){
@@ -633,36 +633,104 @@ Molpy.DefineBoosts=function()
 			this.power=Molpy.beachClicks;
 		}
 		});
-	new Molpy.Boost({name:'Double or Nothing',desc: 
+	new Molpy.Boost({name:'Monty Hall Problem',alias:'MHP',desc: 
 		function(me)
 		{
-			return '<input type="Button" value="Click" onclick="Molpy.DoubleOrNothing()"></input> to double your current castle balance or lose it all.';
-		}
-		,sand:function()
+			var str='';
+			for(var i in Molpy.MontyDoors)
+			{
+				var door = Molpy.MontyDoors[i];
+				if(door!=me.goat)
+				{
+					str+='<input type="Button" value="Choose Door '+door+'" onclick="Molpy.Monty(\''+door+'\')"><br>'
+				}else
+				{
+					str+='Door '+door+' is a goat<br>';
+				}
+			}
+			return str+'Choose a door! You might gain half your current Castles, or you might lose them all and get a Goat';
+		},
+		sand:function()
 		{
-			var acPower = Molpy.Boosts['Double or Nothing'].power;
+			var acPower = Molpy.Boosts['MHP'].power;
 			return 100*Math.pow(2,Math.max(1,acPower-9));
-		},icon:'doubleornothing',className:'action',lockFunction:function(){
+		},
+		icon:'monty',className:'action',
+		lockFunction:function(){
 			this.power++;
+			this.goat=0;
+			this.prize=0;
+		},
+		unlockFunction:function(){
+			this.prize=Molpy.GetDoor();
 		}
 	});
-	Molpy.DoubleOrNothing=function()
+	Molpy.MontyDoors=['A','B','C'];
+	Molpy.Monty=function(door)
 	{
-		if(!Molpy.Boosts['Double or Nothing'].bought)
+		var me=Molpy.Boosts['MHP'];
+		me.door=door;
+		if(!me.bought)
 		{
 			Molpy.Notify('Buy it first, silly molpy!');
 			return;
 		}
-		if(Math.floor(Math.random()*2))
+		if(me.goat)
+		{
+			if(me.door==me.goat)
+			{
+				Molpy.Notify('That door has already been opened.');
+				regturn;
+			}
+			Molpy.AwardMonty();
+		}else
+		{
+			Function('me',BeanishToCuegish(Molpy.MontyMethod))(me);
+			if(me.goat)
+			{
+				Molpy.Notify('Door '+me.goat+' is opened, revealing a goat!<br>You may switch from Door '+me.door+' if you like.',1);
+				me.hoverOnCounter=1;
+				return;
+			}else
+			{
+				Molpy.AwardMonty();				
+			}
+		}
+		
+		Molpy.LockBoost('MHP');
+	}
+	Molpy.GetDoor=function(){return GLRschoice(Molpy.MontyDoors);}
+	Molpy.AwardMonty=function()
+	{
+		var me=Molpy.Boosts['MHP'];
+		if(me.door==me.prize)
 		{
 			var amount=Molpy.castles;
-			Molpy.Build(Molpy.castles,1); 
+			Molpy.Notify('Hooray, you found the prize behind door '+me.door+'!');
+			Molpy.Build(Molpy.castles/2,1); 
 		}else{
 			Molpy.Destroy(Molpy.castles);
-			Molpy.Boosts['Double or Nothing'].power=Math.floor(Molpy.Boosts['Double or Nothing'].power/2);
+			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power*1.8));
+			Molpy.GetYourGoat();
 		}
-		Molpy.LockBoost('Double or Nothing');
 	}
+	
+	Molpy.GetYourGoat=function()
+	{
+		if(!Molpy.Got('Goat'))
+		{
+			Molpy.UnlockBoost('Goat')
+		}
+			Molpy.UnlockBoost('Goat');
+			var g = Molpy.Boosts['Goat'];
+			if(!g.bought)
+			{
+				g.buy();
+			}
+			g.power++;
+			Molpy.Notify('You got a goat!');
+	}
+	
 	new Molpy.Boost({name:'Grapevine',desc:'Increases sand dig rate by 2% per badge earned',sand:'25K',castles:25,icon:'grapevine',department:1,
 		stats:function()
 		{
@@ -853,7 +921,7 @@ Molpy.DefineBoosts=function()
 					:(Molpy.Got('Flux Turbine')?8
 					:20);
 				
-				if(!Math.floor(Math.random()*incursionFactor))
+				if(!flandom(incursionFactor))
 				{
 					var npb=Molpy.CastleTools['NewPixBot'];
 					if(!Molpy.Boosts['NewPixBot Navigation Code'].power && npb.temp<30)
@@ -1004,10 +1072,10 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Bag Burning',desc:'Bags help counteract NewPixBots. This will involve burning some Bags.<br>Bag Burning is the first of several Boosts available during Judgement Dip.<br>Remember you can always sell Bags to reduce the effect of Bag Burning.',sand:'50M',castles:86,
 		stats:function()
 		{
-			var str = 'Half of Bags beyond the 14th owned give a cumulative 40% boost to Judgement Dip threshhold.';
-			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold)
+			var str = 'Half of Bags beyond the 14th owned give a cumulative 40% boost to Judgement Dip threshold.';
+			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshold)
 			{
-				var amount = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2))-1;
+				var amount = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshold)/2))-1;
 				amount=Molpify(amount*100,0,1);
 				str+='<br>Currently '+amount+'%';
 			}
@@ -1510,13 +1578,12 @@ Molpy.DefineBoosts=function()
 		},sand:999222111000,castles:8887766554433,
 		stats:function(me)
 		{
+			if(!me.bought) return 'Look here again after you buy for secret loot!';
 			if(!me.power)
 			{
 				me.power=1;
 				Molpy.Build(8887766554433);
-			}
-			if(!me.bought) return 'Look here again after you buy for secret loot!';
-			
+			}			
 			Molpy.UnlockBoost(['Family Discount','Shopping Assistant','Late Closing Hours']);
 			return 'Gives you Swedish stuff and boosts VITSSÅGEN, JA! bonus castles';
 		},icon:'swedishchef',group:'hpt'});
@@ -2588,7 +2655,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Redunception',
 		desc:function(me)
 		{
-			if(!me.bought||Math.floor(Math.random()*10)==0) return Molpy.redundancy.longsentence;
+			if(!me.bought||flandom(10)==0) return Molpy.redundancy.longsentence;
 			var sent = Molpy.redundancy.sentence();
 			if(!Molpy.Boosts['Expando'].power)
 				Molpy.Notify(sent,1);
@@ -2653,7 +2720,7 @@ Molpy.DefineBoosts=function()
 		}
 		,stats:function(me)
 		{
-			return me.desc(me)+'<br>(Also may have reduced price of Double or Nothing.)';
+			return me.desc(me)+'<br>(Also may have reduced price of MHP.)';
 		}
 		,sand:'5P',castles:'10P',glass:'500',className:'toggle',icon:'bbc'});
 		
@@ -4431,7 +4498,7 @@ Molpy.DefineBoosts=function()
 	desc:function(me)
 	{
 		
-		return (me.power? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Blast Furnace run.'+(me.bought?'<br><input type="Button" onclick="Molpy.AutoAssembleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		return (me.power? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Blast Furnace run.'+(me.bought?'<br><input type="Button" onclick="Molpy.AutoAssembleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'')+'<br>(Supresses notifications about Glass gains so you don\'t get spammed';
 	}
 	,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'});
 	Molpy.AutoAssembleToggle=function()
@@ -4766,7 +4833,15 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Fireproof',desc:'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make '+Molpify(1e10)+' times as many Glass Chips',sand:Infinity,castles:Infinity,glass:function(){return 8e9*Molpy.CastleTools['NewPixBot'].amount;},group:'cyb'}); //www.youtube.com/watch?v=84q0SXW781c
 	
 	new Molpy.Boost({name:'Ninja Ninja Duck',desc:'Ninja Stealth is raised by 10x as much'
-		,sand:Infinity,castles:Infinity,glass:'',group:'ninj',icon:'ninjaduck'});
+		,sand:Infinity,castles:Infinity,glass:'230Z',group:'ninj',icon:'ninjaduck'});
+		
+	new Molpy.Boost({name:'Goat',desc:function(me)
+		{
+			var str = 'You have '+Molpify(me.power,3)+' goat'+plural(me.power)+'. Yay!';
+			return str;
+		}
+		,icon:'goat'
+	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
@@ -4889,7 +4964,7 @@ Molpy.DefineBadges=function()
 			return 'Judgement dip is upon us! But it can get worse. The countdown is at ' + Molpify(countdown)+
 			'NP';
 		},vis:2,icon:'judgementdipwarning',classChange:function(){return Molpy.CheckJudgeClass(this,0,'alert');}});
-	Molpy.JudgementDipThreshhold=function()
+	Molpy.JudgementDipThreshold=function()
 	{
 		if(Molpy.Boosts['NewPixBot Navigation Code'].power) return [0,Infinity];
 		var baseVal= 500000000;
@@ -4918,7 +4993,7 @@ Molpy.DefineBadges=function()
 	Molpy.BagBurnDiv=function()
 	{
 		var max=1e294
-		var div = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshhold)/2));
+		var div = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshold)/2));
 		if(div>max)
 		{
 			if(Molpy.Got('Bacon'))Molpy.LockBoost('Bag Burning');
@@ -4932,7 +5007,7 @@ Molpy.DefineBadges=function()
 		var bots = bot.amount;
 		if(Molpy.Got('Time Travel')||Molpy.newpixNumber<20)bots-=2;
 		var botCastles=bot.totalCastlesBuilt*bots;
-		var thresh = Molpy.JudgementDipThreshhold();
+		var thresh = Molpy.JudgementDipThreshold();
 		var level = Math.max(0,Math.floor(botCastles/thresh));
 		if(Molpy.Got('Bag Burning'))
 		{
@@ -4941,7 +5016,7 @@ Molpy.DefineBadges=function()
 			{
 				var rate = Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power+1,1);
 				Molpy.Boosts['Bag Burning'].power+=rate;
-				if(Molpy.SandTools['Bag'].amount<Molpy.npbDoubleThreshhold)
+				if(Molpy.SandTools['Bag'].amount<Molpy.npbDoubleThreshold)
 				{
 					Molpy.Notify('The NewPixBots extinguished the burning Bags!',1);
 					Molpy.LockBoost('Bag Burning');
@@ -4986,7 +5061,7 @@ Molpy.DefineBadges=function()
 			{
 				Molpy.UnlockBoost('Summon Knights Temporal');
 			}
-			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshhold&&!Molpy.Got('Fireproof'))
+			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshold&&!Molpy.Got('Fireproof'))
 			{
 				Molpy.UnlockBoost('Bag Burning');
 			}
@@ -5375,7 +5450,7 @@ Molpy.CheckBuyUnlocks=function()
 	var me=Molpy.SandTools['Bucket'];
 	if(me.amount>=1)Molpy.UnlockBoost('Bigger Buckets');
 	if(me.amount>=4)Molpy.UnlockBoost('Huge Buckets');
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Carrybot');
+	if(me.amount>=Molpy.npbDoubleThreshold)Molpy.UnlockBoost('Carrybot');
 	if(me.amount>=30)Molpy.UnlockBoost('Buccaneer');
 	if(me.amount>=50)Molpy.UnlockBoost('Bucket Brigade');
 	if(me.amount>=100&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Flying Buckets');
@@ -5384,7 +5459,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=1)Molpy.UnlockBoost('Helping Hand');
 	if(me.amount>=4)Molpy.UnlockBoost('Cooperation');
 	if(me.amount>=8)Molpy.UnlockBoost('Megball');
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Stickbot');
+	if(me.amount>=Molpy.npbDoubleThreshold)Molpy.UnlockBoost('Stickbot');
 	if(me.amount>=40)Molpy.UnlockBoost('The Forty');
 	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Human Cannonball');
 	
@@ -5392,21 +5467,21 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=1)Molpy.UnlockBoost('Flag Bearer');
 	if(me.amount>=2)Molpy.UnlockBoost('War Banner');
 	if(me.amount>=6)Molpy.UnlockBoost('Magic Mountain');
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Standardbot');
+	if(me.amount>=Molpy.npbDoubleThreshold)Molpy.UnlockBoost('Standardbot');
 	if(me.amount>=25)Molpy.UnlockBoost('Chequered Flag');
 	if(me.amount>=40)Molpy.UnlockBoost('Skull and Crossbones');
 	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Fly the Flag');
 	
 	me=Molpy.SandTools['Ladder'];
 	if(me.amount>=1)Molpy.UnlockBoost('Extension Ladder');
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Climbbot');
+	if(me.amount>=Molpy.npbDoubleThreshold)Molpy.UnlockBoost('Climbbot');
 	if(me.amount>=25)Molpy.UnlockBoost('Broken Rung');
 	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Up Up and Away');
 	
 	me=Molpy.CastleTools['NewPixBot'];
 	if(me.amount>=3)Molpy.UnlockBoost('Busy Bot');
 	if(me.amount>=8)Molpy.UnlockBoost('Robot Efficiency');
-	if(me.amount>=Molpy.npbDoubleThreshhold&&Molpy.Got('Robot Efficiency'))Molpy.UnlockBoost('Recursivebot');
+	if(me.amount>=Molpy.npbDoubleThreshold&&Molpy.Got('Robot Efficiency'))Molpy.UnlockBoost('Recursivebot');
 	if(me.amount>=17)Molpy.UnlockBoost('HAL-0-Kitty');
 	if(me.amount>=22 && Molpy.Got('DoRD'))Molpy.UnlockBoost('Factory Automation');
 	 
@@ -5414,30 +5489,30 @@ Molpy.CheckBuyUnlocks=function()
 	if(me.amount>=1)Molpy.UnlockBoost('Spring Fling');
 	if(me.amount>=2)Molpy.UnlockBoost('Trebuchet Pong');				
 	if(me.amount>=5)Molpy.UnlockBoost('Varied Ammo');	
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Flingbot');				
+	if(me.amount>=Molpy.npbDoubleThreshold)Molpy.UnlockBoost('Flingbot');				
 	if(me.amount>=20)Molpy.UnlockBoost('Throw Your Toys');	
 	if(me.amount>=50)Molpy.EarnBadge('Flung');	
 	
 	me=Molpy.CastleTools['Scaffold'];
 	if(me.amount>=2)Molpy.UnlockBoost('Precise Placement');
 	if(me.amount>=4)Molpy.UnlockBoost('Level Up!');
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Propbot');
+	if(me.amount>=Molpy.npbDoubleThreshold)Molpy.UnlockBoost('Propbot');
 	if(me.amount>=20)Molpy.UnlockBoost('Balancing Act');
 	
 	me=Molpy.CastleTools['Wave'];
 	if(me.amount>=2)Molpy.UnlockBoost('Swell');
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Surfbot');
+	if(me.amount>=Molpy.npbDoubleThreshold)Molpy.UnlockBoost('Surfbot');
 	if(me.amount>=30)Molpy.UnlockBoost('SBTF');
 	
 	me=Molpy.SandTools['Bag'];
 	if(me.amount>=2)Molpy.UnlockBoost('Embaggening');
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Luggagebot');
+	if(me.amount>=Molpy.npbDoubleThreshold)Molpy.UnlockBoost('Luggagebot');
 	if(me.amount>=30)Molpy.UnlockBoost('Bag Puns');
 	if((me.amount>=100)&&Molpy.Earned('Flung'))Molpy.UnlockBoost('Air Drop');
 	var you=me;
 	me = Molpy.CastleTools['River'];
 	if(me.amount&&you.amount)Molpy.UnlockBoost('Sandbag');
-	if(me.amount>=Molpy.npbDoubleThreshhold)Molpy.UnlockBoost('Smallbot');
+	if(me.amount>=Molpy.npbDoubleThreshold)Molpy.UnlockBoost('Smallbot');
 	
 	me=Molpy.SandTools['LaPetite'];
 	if(me.amount>1000)
@@ -5607,7 +5682,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	
 	var key = Molpy.Boosts['Crate Key'];
 	key.department=0;
-	if((Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'))&&automationLevel>=10&&Math.floor(Math.random()*3)==0&&Molpy.Got('Keygrinder'))
+	if((Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'))&&automationLevel>=10&&flandom(3)==0&&Molpy.Got('Keygrinder'))
 	{
 		key.department=1;						
 	}
@@ -5633,7 +5708,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
 	
 	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
-	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&Math.floor(Math.random()*4)==0);
+	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&flandom(4)==0);
 	
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
@@ -5704,7 +5779,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Super Visor'].logic=240*(Molpy.CastleTools['Beanie Builder'].amount>=6000);	
 	Molpy.Boosts['Crystal Helm'].logic=300*(Molpy.CastleTools['Beanie Builder'].amount>=12000);	
 	Molpy.Boosts['FiM'].logic=64*(Molpy.SandTools['LaPetite'].amount+Molpy.SandTools['Cuegan'].amount>6.4e10);
-				
+	Molpy.Boosts['MHP'].department=finiteC||Molpy.Got('Goat')||Molpy.Boosts['MHP'].department;
 }
 	
 Molpy.CheckASHF=function()
@@ -5769,8 +5844,9 @@ Molpy.CheckClickAchievements=function()
 		Molpy.EarnBadge('Recursion');
 		Molpy.EarnBadge('Recursion ');
 		Molpy.UnlockBoost('Fractal Sandcastles');
-	}						
+	}		
 }	
+Molpy.MontyMethod='JTI1N0J2YXIlMjUyMHIlMjUzRG1lLnByaXplJTI1M0QlMjUzRG1lLmRvb3IlMjUzRjMlMjUzQTUlMjUzQmlmJTI4TWF0aC5yYW5kb20lMjglMjkqJTI4TW9scHkuQm9vc3RzJTI1NUIlMjUyMkdvYXQlMjUyMiUyNTVELnBvd2VyJTI1MjVyJTI1MkYlMjhyLTIlMjklMjklMjUzQy4yNSUyOXJldHVybiUyNTNCdmFyJTI1MjBpJTI1M0RtZS5kb29yJTI1M0J3aGlsZSUyOGklMjUzRCUyNTNEbWUuZG9vciUyNTdDJTI1N0NpJTI1M0QlMjUzRG1lLnByaXplJTI5aSUyNTNETW9scHkuR2V0RG9vciUyOCUyOSUyNTNCbWUuZ29hdCUyNTNEaSUyNTdE';
 /**
 *
 *  Base64 encode / decode
