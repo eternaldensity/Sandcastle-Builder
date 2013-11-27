@@ -20,6 +20,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1856
+- Such Glass fix
+- Goat badge was mispelled
+
 ## 3.185
 - I can't even rename a variable without messing up, sorry waveney
 - messed around with some boost unlock conditions
