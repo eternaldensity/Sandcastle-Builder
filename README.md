@@ -23,6 +23,7 @@ For personal amusement only.
 ## 3.1856
 - Such Glass fix
 - Goat badge was mispelled
+- Renamed MHP upon TFMurphy's suggestion
 
 ## 3.185
 - I can't even rename a variable without messing up, sorry waveney
