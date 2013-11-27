@@ -23,6 +23,8 @@ For personal amusement only.
 ## 3.182
 - Typo fixes from waveney (SGR, MMolpy)
 - Badge by waveney
+- Got lost reading TVTropes, sorry. Guess I better push these bugfixes, but first:
+- When you have Panther Glaze, the descriptions of the boosts it modified show how many glass chips they produce
 
 ## 3.181
 - Factory Automation description changed to stop people asking how to upgrade it again after they temporal rift :P

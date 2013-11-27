@@ -2487,6 +2487,7 @@ Molpy.DefineBoosts=function()
 				str+=' <input type="Button" onclick="Molpy.PantherSalveToggle()" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
+			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce 100 Glass Chips';
 			return str;
 		},buyFunction:function(){this.power=1;},
 	stats:function(me)
@@ -2800,6 +2801,7 @@ Molpy.DefineBoosts=function()
 				str+=' <input type="Button" onclick="Molpy.RRRToggle()" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
+			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce 300 Glass Chips';
 			return str;
 		},buyFunction:function(){this.power=1;},
 		sand:'180E',castles:'380E',glass:2500,group:'bean',className:'toggle',icon:'rrr'
@@ -3075,6 +3077,7 @@ Molpy.DefineBoosts=function()
 				str+=' <input type="Button" onclick="Molpy.CatBagToggle()" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
+			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce 700 Glass Chips';
 			return str;
 		},buyFunction:function(){this.power=1;},
 		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Ladders, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Bags. If 35 Glass Blocks are not available each time (or if you have infinite Castles), a Ladder/Bag is consumed before multiplying',
@@ -3096,6 +3099,7 @@ Molpy.DefineBoosts=function()
 				str+=' <input type="Button" onclick="Molpy.CatamaranToggle()" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
+			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce 900 Glass Chips';
 			return str;
 		},buyFunction:function(){this.power=1;},
 		stats:'At a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each Wave, then at a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each River. If 45 Glass Blocks are not available each time (or if you have infinite Castles), a Wave/River is consumed before multiplying.',
@@ -3118,6 +3122,7 @@ Molpy.DefineBoosts=function()
 				str+='<br><input type="Button" onclick="Molpy.RedRaptorToggle()" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
+			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce '+Molpify(1200)+' Glass Chips';
 			return str;
 		},buyFunction:function(){this.power=1;},
 		stats:'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each '+Molpy.redactedWord+' click<br>The cost is waived if you have infinite Castles, since this this boost would have no effect in that circumstance',
