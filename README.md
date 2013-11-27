@@ -21,9 +21,12 @@ For personal amusement only.
 ## Changelog
 
 ## 3.1856
-- Such Glass fix
+- Such Glass fix - waveney
+- Seaish Upgrade 100% sand usage prevented - waveney
 - Goat badge was mispelled
 - Renamed MHP upon TFMurphy's suggestion
+- Fixed goat icon
+- Price Protection wait time is configurable
 
 ## 3.185
 - I can't even rename a variable without messing up, sorry waveney

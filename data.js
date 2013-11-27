@@ -728,6 +728,7 @@ Molpy.DefineBoosts=function()
 				g.buy();
 			}
 			g.power++;
+			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',g.name]);	
 			if(g.power>=2)Molpy.EarnBadge('Second Edition');
 			Molpy.Notify('You got a goat!');
 	}
@@ -757,7 +758,7 @@ Molpy.DefineBoosts=function()
 			}
 		},lockFunction:function(){
 			var pp = Molpy.Boosts['Price Protection'];
-			if(pp.power)pp.power=5;
+			if(pp.power)pp.power=pp.bought+1;
 			else Molpy.UnlockBoost(pp.alias);
 		}
 		,startPower:0.4,startCountdown:4,group:'hpt',department:1,className:'alert'});
@@ -4773,7 +4774,11 @@ Molpy.DefineBoosts=function()
 		desc:function(me)
 		{
 			
-			return (me.power? '':'When active, ') + 'Prevents purchases for 4mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.PriceProtectionToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+			return (me.power? '':'When active, ') + 'Prevents purchases for '+(me.bought?Molpify(me.bought):4)+'mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.PriceProtectionToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br><br><input type="Button" onclick="Molpy.PriceProtectionChange(1)" value="Increase Wait"></input>'+(me.bought>1?'<br><input type="Button" onclick="Molpy.PriceProtectionChange(-1)" value="Decrease Wait"></input>':''):'');
+		}
+		,buyFunction:function()
+		{
+			me.bought=4;
 		}
 		,sand:'7500',castles:'1500', group:'hpt',className:'toggle',icon:'priceprotection'
 	});
@@ -4783,6 +4788,14 @@ Molpy.DefineBoosts=function()
 		me.power=1*!me.power;			
 		me.hoverOnCounter=1;
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
+	}
+	Molpy.PriceProtectionChange=function(n)
+	{
+		var me=Molpy.Boosts['Price Protection'];
+		if(me.bought+n==0)return;
+		me.bought+=n;			
+		me.hoverOnCounter=1;
+		_gaq&&_gaq.push(['_trackEvent','Boost',(n>0?'Upgrade':'Downgrade'),me.name]);	
 	}
 	Molpy.ProtectingPrice=function()
 	{
