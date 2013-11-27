@@ -286,8 +286,9 @@ var EmergencyExport=function()
 var InitStatementGen=function(gen)
 {
 	var StatementGen=gen||{};
-	StatementGen.FillStatements=function(n)
+	StatementGen.FillStatements=function(n,level)
 	{
+		StatementGen.level=level||0;
 		var statementNames='ABCDEFGHI';
 		var operators=['and','or'];
 		var refCount=2;
@@ -378,7 +379,8 @@ var InitStatementGen=function(gen)
 	}
 	StatementGen.StringifyClaim=function(claim)
 	{
-		return 'Statement '+claim.name+' is '+claim.value;
+		var invert = Math.random()*(StatementGen.level%100)>25;
+		return 'Statement '+claim.name+' is '+(invert?'not '+!claim.value:claim.value);
 	}
 	StatementGen.StringifyStatement=function(statement,buttonFunction)
 	{

@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.182;
+		Molpy.version=3.183;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -3767,7 +3767,7 @@ Molpy.Up=function()
 		Molpy.redactedSGen=InitStatementGen();
 		Molpy.MakeRedactedPuzzle=function()
 		{
-			Molpy.redactedSGen.FillStatements();
+			Molpy.redactedSGen.FillStatements(0,Molpy.Boosts['Logicat'].bought);
 			Molpy.redactedPuzzleTarget=Molpy.redactedSGen.RandStatementValue();
 			var str='Click a statement that is '+Molpy.redactedPuzzleTarget+':';
 			var statements= Molpy.redactedSGen.StringifyStatements('Molpy.ClickRedactedPuzzle');

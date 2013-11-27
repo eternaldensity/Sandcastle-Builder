@@ -20,6 +20,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.183
+- Making the Discoveries category use the apropriate icon slipped my mind, again
+- Missing icon
+- Inverted statements
+
 ## 3.182
 - Typo fixes from waveney (SGR, MMolpy)
 - Badge by waveney

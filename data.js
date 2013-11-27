@@ -3003,7 +3003,7 @@ Molpy.DefineBoosts=function()
 	{
 		if(Molpy.HasGlassBlocks(cost))Molpy.SpendGlassBlocks(cost);
 		
-		Molpy.cagedSGen.FillStatements();
+		Molpy.cagedSGen.FillStatements(0,Molpy.Boosts['Logicat'].bought);
 		Molpy.cagedPuzzleTarget=Molpy.cagedSGen.RandStatementValue();
 		var str='Click a statement that is '+Molpy.cagedPuzzleTarget+':';
 		var statements= Molpy.cagedSGen.StringifyStatements('Molpy.ClickCagedPuzzle');
@@ -4717,7 +4717,7 @@ Molpy.DefineBoosts=function()
 		chron:['chronotech','Chronotech','boost_lateclosing'],
 		cyb:['cybernetics','Cybernetics','boost_robotefficiency'],
 		bean:['beanie tech','Beanie Tech','boost_chateau'],
-		discov:['discoveries','Discoveries',0,'Discovery','A memorable discovery'],
+		discov:['discoveries','Discoveries','badge_discov','Discovery','A memorable discovery'],
 		monums:['sand monuments','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
 		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
 		diamm:['masterpieces','Masterpieces',0,'Masterpiece','This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of','in diamond. <br>It molpifies with spikes of treeishness.'],
