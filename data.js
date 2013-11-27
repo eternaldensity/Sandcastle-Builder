@@ -2622,8 +2622,8 @@ Molpy.DefineBoosts=function()
 			{
 				var str='';
 				if(!Molpy.Got('Sand to Glass')) str+= 'To unlock Sand to Glass you need 7470 Buckets and an infinite Sand dig rate<br>';
-				if(!Molpy.Got('Castles to Glass')) str+= 'To unlock Castles to Glass you need 1515 NewPixBots and infinite Castles';
-				if(str)return str;
+				if(!Molpy.Got('Castles to Glass')) str+= 'To unlock Castles to Glass you need 1515 NewPixBots and infinite Castles<br>';
+				if(str)return str+'(The "to Glass" boosts unlock when you load the Tool Factory with chips, if you meet the requirements.)';
 			}
 			if(Molpy.Got('AA')&&!Molpy.Got('AC')&&Molpy.CastleTools['NewPixBot'].amount>=7500)
 			{
