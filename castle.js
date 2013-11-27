@@ -1755,15 +1755,16 @@ Molpy.Up=function()
 			}
 			
 		}
+		Molpy.notifyFactor=1000000000;
 		Molpy.GlassNotifyFlush=function()
 		{
 			Molpy.chipAddAmount=Math.round(Molpy.chipAddAmount);
 			Molpy.chipWasteAmount=Math.round(Molpy.chipWasteAmount);
 			Molpy.blockAddAmount=Math.round(Molpy.blockAddAmount);
 			Molpy.blockWasteAmount=Math.round(Molpy.blockWasteAmount);
-			if(Molpy.chipAddAmount>0 && !Molpy.Boosts['AA'].power && Molpy.chipAddAmount*1000000000 > Molpy.Boosts['Glass Chip Storage'].power)
+			if(Molpy.chipAddAmount>0 && !Molpy.Boosts['AA'].power && Molpy.chipAddAmount*Molpy.glassNotifyFactor > Molpy.Boosts['Glass Chip Storage'].power)
 				Molpy.Notify('Gained '+Molpify(Molpy.chipAddAmount,3)+' Glass Chip'+plural(Molpy.chipAddAmount),1);
-			if(Molpy.chipAddAmount<0 && (-Molpy.chipAddAmount*1000000000) > Molpy.Boosts['Glass Chip Storage'].power)
+			if(Molpy.chipAddAmount<0 && (-Molpy.chipAddAmount*Molpy.glassNotifyFactor) > Molpy.Boosts['Glass Chip Storage'].power)
 				Molpy.Notify('Consumed '+Molpify(-Molpy.chipAddAmount,3)+' Glass Chip'+plural(-Molpy.chipAddAmount),1);
 			Molpy.chipAddAmount=0;
 			
@@ -1771,9 +1772,9 @@ Molpy.Up=function()
 				Molpy.Notify('Not enough Chip Storage for '+Molpify(Molpy.chipWasteAmount)+' Glass Chip'+plural(Molpy.chipWasteAmount),1);
 			Molpy.chipWasteAmount=0;
 			
-			if(Molpy.blockAddAmount>0 && !Molpy.Boosts['AA'].power && Molpy.blockAddAmount*1000000000 > Molpy.Boosts['Glass Block Storage'].power)
+			if(Molpy.blockAddAmount>0 && !Molpy.Boosts['AA'].power && Molpy.blockAddAmount*Molpy.glassNotifyFactor > Molpy.Boosts['Glass Block Storage'].power)
 				Molpy.Notify('Gained '+Molpify(Molpy.blockAddAmount,3)+' Glass Block'+plural(Molpy.blockAddAmount),1);
-			if(Molpy.blockAddAmount<0 && (-Molpy.blockAddAmount*1000000000) > Molpy.Boosts['Glass Block Storage'].power)
+			if(Molpy.blockAddAmount<0 && (-Molpy.blockAddAmount*Molpy.glassNotifyFactor) > Molpy.Boosts['Glass Block Storage'].power)
 				Molpy.Notify('Consumed '+Molpify(-Molpy.blockAddAmount,3)+' Glass Block'+plural(-Molpy.blockAddAmount),1);
 			Molpy.blockAddAmount=0;
 			

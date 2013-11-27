@@ -29,6 +29,8 @@ For personal amusement only.
 - Shoutout to bay12forums: Just noticed some active visitors from there. I like to read stuff there on occasion (Battlefailed Saga!)
 - Line on AA description about how it stops glass-gain messages since that would be spammy otherwise
 - Removed Double or Nothing forever
+- waveney's thing for supressing tiny glass notifications (changed to use a variable rather than literals, so it's easier to tweak if necessary)
+- Didn't upgrade the PC upgrade limit because I don't want to.
 
 ## 3.183
 - Making the Discoveries category use the appropriate icon slipped my mind, again
