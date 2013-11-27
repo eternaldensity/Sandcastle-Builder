@@ -20,13 +20,15 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.1856
+## 3.186
 - Such Glass fix - waveney
 - Seaish Upgrade 100% sand usage prevented - waveney
 - Goat badge was mispelled
 - Renamed MHP upon TFMurphy's suggestion
 - Fixed goat icon
 - Price Protection wait time is configurable
+- Keygrinder icon fix
+- Dragon Wisdom typo fix (thanks again TFMurphy)
 
 ## 3.185
 - I can't even rename a variable without messing up, sorry waveney
