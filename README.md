@@ -20,6 +20,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.185
+- I can't even rename a variable without messing up, sorry waveney
+- messed around with some boost unlock conditions
+- new badge
+
 ## 3.184
 - More accurately determine user activity and bounce rate (don't count first 5 badges, and automatic stuff isn't counted as interaction so idlers aren't counted as active)
 - Track buy/sell of tools
