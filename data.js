@@ -217,12 +217,12 @@ Molpy.DefineSandTools=function()
 				var min =Infinity;
 				for(var i in Molpy.SandToolsById)
 				{
-					if(!+i||Molpy.SandToolsById[i-1].amount>=Molpy.SandToolsById[i-1].nextThreshold)
+					if(i==0||Molpy.SandToolsById[i-1].amount>=Molpy.SandToolsById[i-1].nextThreshold)
 						min=Math.min(min,Molpy.SandToolsById[i].amount);
 				}
 				for(var i in Molpy.CastleToolsById)
 				{
-					if(!+i||Molpy.CastleToolsById[i-1].amount>=Molpy.CastleToolsById[i-1].nextThreshold)
+					if(i==0||Molpy.CastleToolsById[i-1].amount>=Molpy.CastleToolsById[i-1].nextThreshold)
 						min=Math.min(min,Molpy.CastleToolsById[i].amount);
 				}
 				mult*=min;

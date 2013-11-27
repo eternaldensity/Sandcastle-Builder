@@ -20,6 +20,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.182
+- Typo fixes from waveney (SGR, MMolpy)
+- Badge by waveney
+
 ## 3.181
 - Factory Automation description changed to stop people asking how to upgrade it again after they temporal rift :P
 - Fixed some transparency stupidity (btw yes if there's a lot of notifications on the screen, some will not go transparent at all until the others have vanished)
