@@ -973,6 +973,10 @@ Molpy.Up=function()
 					Molpy.EarnBadge('Getting Expensive');
 				}
 			}
+			if(version<3.186)
+			{
+				if(Molpy.Got('Price Protection'))Molpy.Boosts['Price Protection'].bought=4;
+			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{	
 				Molpy.Notify('Upgraded to new version!',1);		
@@ -1985,13 +1989,14 @@ Molpy.Up=function()
 							var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
 							var absMaxGlass=maxGlass;
 							var rate = Molpy.ChipsPerBlock();
-							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
+							maxGlass=Math.min(maxGlass,Math.floor((Molpy.Boosts['Tool Factory'].power-5)/rate));
 							var leave = 0;
 							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
 							{
 								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
 							}
 							maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power - leave);
+							maxGlass=math.max(maxGlass,0);
 							Molpy.AddBlocks(maxGlass);
 							Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
 							if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)

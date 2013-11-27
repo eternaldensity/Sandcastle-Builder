@@ -4832,7 +4832,7 @@ Molpy.DefineBoosts=function()
 			var powerReq=Math.pow(2,me.power+10);
 			if(Molpy.HasSpareBlackprints(pageCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
 			{	
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisom(1)"></input> Logicat Level by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(pageCost,3)+' Blackprint Pages.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> Logicat Level by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(pageCost,3)+' Blackprint Pages.';
 			}else
 			{
 				str+='<br>Upgrading Logicat Level by 1 will cost '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(pageCost,3)+' Blackprint Pages.';

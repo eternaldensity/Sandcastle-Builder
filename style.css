@@ -1979,7 +1979,7 @@ body.darkscheme .boost.loot #boost_keygrinder.icon
 }
 body.lightscheme .boost.loot #boost_keygrinder.icon
 {
-	background-image:url('img/boost_keygrinder.png');
+	background-image:url('img/boost_keygrinder_light_icon.png');
 }
 body.darkscheme .boost.loot #boost_logicastle.icon
 {
