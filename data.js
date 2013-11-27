@@ -2360,8 +2360,15 @@ Molpy.DefineBoosts=function()
         var extra = Math.min(Math.floor(ch.power/2.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.SandRefineryIncrement()-1));
         if (extra>20) 
         {
-            Molpy.SpendGlassChips(extra*2.5);
             Molpy.Boosts['Sand Refinery'].power+=extra;
+	    var backoff = 1;
+	    while ( Molpy.CalcGlassUse() >= 100)
+	    {
+            	Molpy.Boosts['Sand Refinery'].power-=backoff;
+		extra -= backoff;
+	        backoff*=2;
+	    }
+            Molpy.SpendGlassChips(extra*2.5);
             Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
             Molpy.Notify('Sand Refinery upgraded '+Molpify(extra,2)+' times',1);
             Molpy.recalculateDig=1;
@@ -2377,8 +2384,15 @@ Molpy.DefineBoosts=function()
 		extra = Math.min(extra, Math.floor(Molpy.Boosts['Sand Refinery'].power/Molpy.ChipsPerBlock()-Molpy.Boosts['Glass Chiller'].power-2));
         if (extra>20) 
         {
-            Molpy.SpendGlassBlocks(extra*4.5);
             Molpy.Boosts['Glass Chiller'].power+=extra;
+	    var backoff = 1;
+	    while ( Molpy.CalcGlassUse() >= 100)
+	    {
+            	Molpy.Boosts['Glass Chiller'].power-=backoff;
+		extra -= backoff;
+	        backoff*=2;
+	    }
+            Molpy.SpendGlassBlocks(extra*4.5);
             Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
             Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
             Molpy.recalculateDig=1;
