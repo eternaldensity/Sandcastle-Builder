@@ -20,6 +20,12 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.184
+- More accurately determine user activity and bounce rate (don't count first 5 badges, and automatic stuff isn't counted as interaction so idlers aren't counted as active)
+- Track buy/sell of tools
+- Track upgrade/downgrade boosts
+- Free Advice tells you how to get Sand/Castles to Glass, once you get Tool Factory
+
 ## 3.183
 - Making the Discoveries category use the apropriate icon slipped my mind, again
 - Missing icon

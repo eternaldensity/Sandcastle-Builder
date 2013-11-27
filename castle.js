@@ -540,7 +540,7 @@ Molpy.Up=function()
 			}
 			thread=thread.split(p);
 			var version = parseFloat(thread[0]);
-			_gaq&&_gaq.push(['_trackEvent','Load','Version',''+version]);
+			_gaq&&_gaq.push(['_trackEvent','Load','Version',''+version,true]);
 			if(version>Molpy.version)
 			{
 				alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
@@ -2497,7 +2497,10 @@ Molpy.Up=function()
 					bought+=bought;
 				}
 				if(bought)
+				{
 					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+plural(spent)+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
+					_gaq&&_gaq.push(['_trackEvent','Buy Tool',this.name,''+bought]);
+				}
 			}
 			this.create=function(n)
 			{
@@ -2533,6 +2536,7 @@ Molpy.Up=function()
 					Molpy.shopRepaint=1;
 					Molpy.recalculateDig=1;
 					Molpy.SandToolsOwned--;
+					_gaq&&_gaq.push(['_trackEvent','Sell Tool',this.name,'1']);
 					Molpy.UnlockBoost('No Sell');
 					Molpy.CheckBuyUnlocks();
 				}
@@ -2543,11 +2547,13 @@ Molpy.Up=function()
 				if(Molpy.HasGlassBlocks(cost))
 				{
 					Molpy.SpendGlassBlocks(cost);
+					var destroy=Math.min(this.amount,this.temp);
 					this.amount=Math.max(0,this.amount-this.temp);
 					this.temp=0;
 					this.refresh();
 					Molpy.Boosts['Achronal Dragon'].power+=cost;
 					Molpy.Boosts['Achronal Dragon'].hoverOnCounter=1;
+					_gaq&&_gaq.push(['_trackEvent','Destroy Tool',this.name,''+destroy]);
 					Molpy.CheckDragon();
 				}
 			}
@@ -2688,7 +2694,10 @@ Molpy.Up=function()
 					if(this.temp>32) Molpy.UnlockBoost('Achronal Dragon');
 				}
 				if(bought)
+				{
 					Molpy.Notify('Spent '+Molpify(spent,3)+' Castle'+plural(spent)+', Bought '+Molpify(bought,3)+' '+(bought>1?this.plural:this.single),1);
+					_gaq&&_gaq.push(['_trackEvent','Buy Tool',this.name,''+bought]);
+				}
 			}
 			this.create=function(n)
 			{	
@@ -2725,6 +2734,7 @@ Molpy.Up=function()
 					Molpy.shopRepaint=1;
 					Molpy.recalculateDig=1;
 					Molpy.CastleToolsOwned--;
+					_gaq&&_gaq.push(['_trackEvent','Sell Tool',this.name,'1']);
 					Molpy.UnlockBoost('No Sell');
 					Molpy.CheckBuyUnlocks();
 				}
@@ -2735,11 +2745,13 @@ Molpy.Up=function()
 				if(Molpy.HasGlassBlocks(cost))
 				{
 					Molpy.SpendGlassBlocks(cost);
+					var destroy=Math.min(this.amount,this.temp);
 					this.amount=Math.max(0,this.amount-this.temp);
 					this.temp=0;
 					this.refresh();
 					Molpy.Boosts['Achronal Dragon'].power+=cost;
 					Molpy.Boosts['Achronal Dragon'].hoverOnCounter=1;
+					_gaq&&_gaq.push(['_trackEvent','Destroy Tool',this.name,''+destroy]);
 					Molpy.CheckDragon();
 				}
 			}
@@ -2981,7 +2993,7 @@ Molpy.Up=function()
 					Molpy.SpendCastles(cp);
 					Molpy.SpendGlassBlocks(gp);
 					this.bought=1;
-					_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name]);
+					_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name,!(sp||cp||gp)]);
 					if (this.buyFunction) this.buyFunction();
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
@@ -3058,7 +3070,7 @@ Molpy.Up=function()
 						if(!Molpy.boostSilence)
 						{
 							Molpy.Notify('Boost Unlocked: '+baby.name,1);
-							_gaq&&_gaq.push(['_trackEvent','Boost','Unlock',baby.name]);
+							_gaq&&_gaq.push(['_trackEvent','Boost','Unlock',baby.name,true]);
 						}
 						if(baby.unlockFunction)baby.unlockFunction();
 						if(baby.name==Molpy.shoppingItem)
@@ -3106,7 +3118,7 @@ Molpy.Up=function()
 						if(!Molpy.boostSilence)
 						{
 							Molpy.Notify('Boost Locked: '+me.name,1);
-							_gaq&&_gaq.push(['_trackEvent','Boost','Lock',me.name]);
+							_gaq&&_gaq.push(['_trackEvent','Boost','Lock',me.name,true]);
 						}
 						Molpy.CheckBuyUnlocks();
 					}
@@ -3201,7 +3213,7 @@ Molpy.Up=function()
 		}		
 		
 		Molpy.groupBadgeCounts={};
-		Molpy.EarnBadge=function(bacon)
+		Molpy.EarnBadge=function(bacon,camera)
 		{
 			if(typeof bacon==='string')
 			{
@@ -3211,7 +3223,7 @@ Molpy.Up=function()
 					if(baby.earned==0&&!Molpy.needlePulling)
 					{
 						baby.earned=1;
-						_gaq&&_gaq.push(['_trackEvent','Badge','Earn',baby.name]);
+						_gaq&&_gaq.push(['_trackEvent','Badge','Earn',baby.name,Molpy.BadgesOwned<6||baby.group!='badges'&&!camera]);
 						if(Molpy.BadgesOwned==0) Molpy.EarnBadge('Redundant Redundancy');
 						Molpy.badgeRepaint=1;
 						Molpy.recalculateDig=1;
@@ -3339,7 +3351,7 @@ Molpy.Up=function()
 						Molpy.shopRepaint=1;
 						Molpy.boostRepaint=1;
 						Molpy.badgeRepaint=1;
-						_gaq&&_gaq.push(['_trackEvent','Redundakitty','Chain Timeout',''+Molpy.redactedChain]);	
+						_gaq&&_gaq.push(['_trackEvent','Redundakitty','Chain Timeout',''+Molpy.redactedChain,true]);	
 						Molpy.redactedChain=0;
 						Molpy.RandomiseRedactedTime();	
 					}else{
@@ -3472,7 +3484,7 @@ Molpy.Up=function()
 				if(Molpy.Got('Blast Furnace') && !Math.floor(4*Math.random()))
 				{
 					
-					_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blast Furnace']);
+					_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blast Furnace',true]);
 					Molpy.RewardBlastFurnace();
 					return;
 				}				
@@ -3510,14 +3522,14 @@ Molpy.Up=function()
 			}
 			if(Math.floor(2*Math.random()))
 			{
-				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Not Lucky']);
+				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Not Lucky',true]);
 				Molpy.RewardNotLucky(automationLevel);
 			}else if(isFinite(Molpy.sand)){
-				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blitzing']);
+				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blitzing',true]);
 				Molpy.RewardBlitzing(automationLevel);
 			}else
 			{
-				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blast Furnace Fallback']);
+				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blast Furnace Fallback',true]);
 				Molpy.RewardBlastFurnace();
 			}
 		}
@@ -4508,7 +4520,7 @@ Molpy.Up=function()
 		if(Molpy.Got('Factory Automation'))
 		{
 			var i = Molpy.Boosts['Factory Automation'].power+1;
-			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',''+i]);
+			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Attempt',''+i,true]);
 			var npb=Molpy.CastleTools['NewPixBot'];
 			if(Math.floor(Math.random()*((Molpy.Got('Safety Pumpkin')+Molpy.Got('SG'))*10+20-i))==0)
 			{
@@ -4537,7 +4549,7 @@ Molpy.Up=function()
 			Molpy.Notify('Activating Factory Automation '+t+' time'+plural(t)+' at a cost of '+Molpify(spent,4)+' Sand',1);
 
 			Molpy.FactoryAutomationRun(t);
-			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Succeed',''+t]);
+			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Succeed',''+t,true]);
 			
 			Molpy.GlassNotifyFlush();
 		}
@@ -4581,7 +4593,7 @@ Molpy.Up=function()
 			{
 				Molpy.Notify('You already have this '+Molpy.Badges[alias].name);
 			}else{
-				Molpy.EarnBadge(alias);
+				Molpy.EarnBadge(alias,1);
 			}
 		}else
 		{
@@ -4772,7 +4784,7 @@ Molpy.Up=function()
 	Molpy.ONG=function()
 	{
 		Molpy.newpixNumber+=1;
-		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',''+Molpy.newpixNumber]);
+		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',''+Molpy.newpixNumber,true]);
 		
 		if(Molpy.newpixNumber > Molpy.highestNPvisited)
 		{
@@ -5370,6 +5382,6 @@ window.onload=function()
 	if(!Molpy.molpish)
 	{
 		Molpy.Wake();
-		_gaq&&_gaq.push(['_trackEvent','Setup','Complete',''+Molpy.version]);
+		_gaq&&_gaq.push(['_trackEvent','Setup','Complete',''+Molpy.version,true]);
 	}
 };
