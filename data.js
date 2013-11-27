@@ -633,7 +633,7 @@ Molpy.DefineBoosts=function()
 			this.power=Molpy.beachClicks;
 		}
 		});
-	new Molpy.Boost({name:'Monty Hall Problem',alias:'MHP',desc: 
+	new Molpy.Boost({name:'Monty Haul Problem',alias:'MHP',desc: 
 		function(me)
 		{
 			var str='';
