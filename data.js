@@ -5715,7 +5715,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
 	Molpy.Boosts['Cold Mould'].department=Molpy.Got('SMM');
-	Molpy.Boosts['Such Glass'].department=1*Molpy.SandTools['Bucket'].amount>2e11*Molpy.ninjaStealth>2e8;
+	Molpy.Boosts['Such Glass'].department=1*(Molpy.SandTools['Bucket'].amount>2e11)*(Molpy.ninjaStealth>2e8);
 	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);
 }
 
