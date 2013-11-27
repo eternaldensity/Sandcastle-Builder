@@ -5235,7 +5235,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Neat!',desc:'All your tools appear to have the same number owned',vis:1});
 	new Molpy.Badge({name:'Mains Power',desc:'Automata Control level at least 230',vis:1});
 	new Molpy.Badge({name:'It Hertz',desc:'Automata Control level at least 50',vis:1});
-	new Molpy.Badge({name:'Second Editon',desc:'Have at least two Goats'});
+	new Molpy.Badge({name:'Second Edition',desc:'Have at least two Goats'});
 		
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
