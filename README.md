@@ -20,6 +20,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.187
+- Small buff from Panther Rush to Panther Poke
+
 ## 3.1863
 - Wasn't using the alias for the cards everywhere (ACTUALLY fixes gold and silver card)
 
