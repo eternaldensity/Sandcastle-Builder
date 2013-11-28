@@ -33,6 +33,7 @@ For personal amusement only.
 - Aliased Glass Chip Storage and Glass Block Storage to GlassChips and GlassBlocks to make the code shorter
 - Hall of Mirrors boost (guess what that does!)
 - Prevent Hauling of fractional castles
+- Ensure Glass Saw can't leave your chip balance negative
 
 ## 3.1863
 - Wasn't using the alias for the cards everywhere (ACTUALLY fixes gold and silver card)

@@ -2014,7 +2014,7 @@ Molpy.Up=function()
 							var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
 							var absMaxGlass=maxGlass;
 							var rate = Molpy.ChipsPerBlock();
-							maxGlass=Math.min(maxGlass,Math.floor((Molpy.Boosts['Tool Factory'].power-5)/rate));
+							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
 							var leave = 0;
 							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
 							{
@@ -2024,6 +2024,7 @@ Molpy.Up=function()
 							maxGlass=Math.max(maxGlass,0);
 							Molpy.AddBlocks(maxGlass);
 							Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
+							Molpy.Boosts['Tool Factory'].power=Math.max(0,Molpy.Boosts['Tool Factory'].power);
 							if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)
 								Molpy.Boosts['Glass Saw'].power=p*2;
 						}
