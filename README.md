@@ -20,6 +20,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1861
+- Math, it needs a capital letter!
+
 ## 3.186
 - Such Glass fix - waveney
 - Seaish Upgrade 100% sand usage prevented - waveney
