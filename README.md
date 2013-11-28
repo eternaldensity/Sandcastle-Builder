@@ -20,8 +20,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1863
+- Wasn't using the alias for the cards everywhere (ACTUALLY fixes gold and silver card)
+
 ## 3.1862
-- Alais, not Aka! (fixes gold and silver card)
+- Alias, not Aka! (fixes gold and silver card)
 
 ## 3.1861
 - Math, it needs a capital letter!
