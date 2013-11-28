@@ -5756,8 +5756,8 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);
 	
 	
-	Molpy.Boosts['Silver Loyalty Card'].department=Molpy.Earned('Big Spender');
-	Molpy.Boosts['Gold Loyalty Card'].department=Molpy.Earned('Valued Customer');
+	Molpy.Boosts['SilverCard'].department=Molpy.Earned('Big Spender');
+	Molpy.Boosts['GoldCard'].department=Molpy.Earned('Valued Customer');
 }
 
 Molpy.CheckLogicatRewards=function(automationLevel)
