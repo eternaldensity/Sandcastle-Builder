@@ -27,6 +27,9 @@ For personal amusement only.
 ## 3.187
 - Small buff from Panther Rush to Panther Poke
 - Fixed out of control MHP pricing (multiply instead of a divide)
+- Waveney's stretchable glass storage (heh, I actually need that in-game right now!)
+- Apostrophe missing from a discovery (waveney fixing his own problem :P)
+- Redundancy Removal: All the simple toggle boosts use the same toggle function now (rather than copypaste with names changed)
 
 ## 3.1863
 - Wasn't using the alias for the cards everywhere (ACTUALLY fixes gold and silver card)
