@@ -662,7 +662,7 @@ Molpy.DefineBoosts=function()
 			if(!Molpy.Got('HoM'))return 0;
 			var acPower = Molpy.Boosts['MHP'].power;
 			return 100*Math.pow(2,Math.max(1,acPower-15));			
-		}
+		},
 		icon:'monty',className:'action',
 		lockFunction:function(){
 			this.power++;
@@ -715,7 +715,7 @@ Molpy.DefineBoosts=function()
 		{
 			var amount=Molpy.castles;
 			Molpy.Notify('Hooray, you found the prize behind door '+me.door+'!');
-			Molpy.Build(Molpy.castles/2,1); 
+			Molpy.Build(Math.floor(Molpy.castles/2),1); 
 			if(Molpy.Got('HoM'))
 				Molpy.AddChips(Math.floor(Molpy.Boosts['GlassChips'].power/5),1); 
 		}else{
@@ -4820,7 +4820,7 @@ Molpy.DefineBoosts=function()
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);
 	}
 	
-	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:'You can win/lose Glass Chips from the Monty Haul Problem',group:,sand:'1P',castles:'1T',glass:'1K'});
+	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:'You can win/lose Glass Chips from the Monty Haul Problem',sand:'1P',castles:'1T',glass:'1K'});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
