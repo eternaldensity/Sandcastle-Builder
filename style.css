@@ -297,7 +297,13 @@ a:active
 }
 #inventory
 {
-
+	margin: 10px;
+	padding: 10px;
+	margin-top:5px;
+	border-width: 1px;
+	border-style: solid;
+	overflow-y:auto;
+	overflow-x:hidden;
 }
 #sectionMainStats
 {
@@ -340,7 +346,7 @@ a:active
 	display: inline-block;
 	margin:5px;
 	vertical-align: top;
-	width:150px;
+	width:145px;
 	min-height:66px;
 	margin-bottom:5px;
 	border-width: 1px;
