@@ -4885,8 +4885,8 @@ Molpy.DefineBoosts=function()
 		,icon:'goat'
 	});
 	
-	new Molpy.Boost({name:'Silver Loyalty Card',aka:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1e9'});
-	new Molpy.Boost({name:'Gold Loyalty Card',aka:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'1e13'});
+	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1e9'});
+	new Molpy.Boost({name:'Gold Loyalty Card',alias:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'1e13'});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
