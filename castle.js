@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.186;
+		Molpy.version=3.1861;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1996,7 +1996,7 @@ Molpy.Up=function()
 								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
 							}
 							maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power - leave);
-							maxGlass=math.max(maxGlass,0);
+							maxGlass=Math.max(maxGlass,0);
 							Molpy.AddBlocks(maxGlass);
 							Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
 							if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)
