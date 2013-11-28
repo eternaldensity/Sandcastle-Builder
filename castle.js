@@ -977,6 +977,10 @@ Molpy.Up=function()
 			{
 				if(Molpy.Got('Price Protection'))Molpy.Boosts['Price Protection'].bought=4;
 			}
+			if(version<3.187)
+			{
+				if(Molpy.Boosts['MHP'].power>12)Molpy.Boosts['MHP'].power=12;
+			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{	
 				Molpy.Notify('Upgraded to new version!',1);		

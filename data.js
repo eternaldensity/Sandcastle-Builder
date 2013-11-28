@@ -710,7 +710,7 @@ Molpy.DefineBoosts=function()
 			Molpy.Build(Molpy.castles/2,1); 
 		}else{
 			Molpy.Destroy(Molpy.castles);
-			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power*1.8));
+			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power/1.8));
 			Molpy.GetYourGoat();
 		}
 	}

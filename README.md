@@ -26,6 +26,7 @@ For personal amusement only.
 
 ## 3.187
 - Small buff from Panther Rush to Panther Poke
+- Fixed out of control MHP pricing (multiply instead of a divide)
 
 ## 3.1863
 - Wasn't using the alias for the cards everywhere (ACTUALLY fixes gold and silver card)
