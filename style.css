@@ -218,8 +218,8 @@ a:active
 }
 #exporttext
 {
-	width:540px;
-	height:395px;
+	width:555px;
+	height:390px;
 }
 .npthumb
 {
@@ -274,12 +274,25 @@ a:active
 	margin:5px;
 	display: inline-block;
 }
-#tools
+#sandtoolSection
 {
-	margin:10px;
-	margin-left:670px;
-	height:500px;
-	overflow-y:scroll;
+	margin:0px;
+	margin-top:5px;
+	margin-left:660px;
+	height:545px;
+	width:188px;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+#castletoolSection
+{
+	position:absolute;
+	top:5px;
+	margin:0px;
+	margin-left:850px;
+	height:545px;
+	width:188px;
+	overflow-y:auto;
 	overflow-x:hidden;
 }
 #inventory
@@ -289,7 +302,7 @@ a:active
 #sectionMainStats
 {
 	position:absolute;
-	top:400px;
+	top:420px;
 	left:70px;
 	margin:10px
 }
@@ -301,13 +314,18 @@ a:active
 }
 #shop
 {
-	margin: 20px;
-	margin-top:30px;
+	margin: 10px;
+	padding: 10px;
+	margin-top:5px;
 	border-width: 1px;
 	border-style: solid;
+	max-height:200px;
+	overflow-y:auto;
+	overflow-x:hidden;
 }
 #clockwrapper{
 	position:absolute;
+	margin-top:5px;
 }
 #clockface {
 	background-color:White;
@@ -320,10 +338,23 @@ a:active
 
 .floatbox{
 	display: inline-block;
+	margin:5px;
 	vertical-align: top;
 	width:150px;
 	min-height:66px;
-	margin:10px;
+	margin-bottom:5px;
+	border-width: 1px;
+	border-style: solid;
+	padding: 4px;
+}
+
+.floatbox.tool{
+	display:block;
+	margin-bottom:5px;
+	vertical-align: top;
+	width:150px;
+	min-height:66px;
+	margin-bottom:5px;
 	border-width: 1px;
 	border-style: solid;
 	padding: 4px;

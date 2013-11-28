@@ -3985,7 +3985,7 @@ Molpy.Up=function()
 					price = FormatPrice(me.price,me)+(me.price==1?' Castle':(me.price<100?' Castles':' Ca'));
 				else
 					price = Molpify(1000*(i*2+1),3)+' Chips';
-				str+='<div class="floatbox sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id
+				str+='<div class="floatbox tool sand shop" onMouseOver="onhover(Molpy.SandToolsById['+me.id
 					+'],event)" onMouseOut="onunhover(Molpy.SandToolsById['+me.id+'],event)"><div id="tool'+me.name.replace(' ', '')
 					+'" class="icon"></div><h2>'
 					+formattedName+salebit+'</h2>'+
@@ -4036,7 +4036,7 @@ Molpy.Up=function()
 					price = FormatPrice(me.price,me)+(me.price==1?' Castle':(me.price<100?' Castles':' Ca'));
 				else
 					price = Molpify(1000*(i*2+2),3)+' Chips';
-				str+='<div class="floatbox castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id
+				str+='<div class="floatbox tool castle shop" onMouseOver="onhover(Molpy.CastleToolsById['+me.id
 					+'],event)" onMouseOut="onunhover(Molpy.CastleToolsById['+me.id+'],event)"><div id="tool'+me.name.replace(' ', '')
 					+'" class="icon"></div><h2>'+formattedName+salebit+'</h2>'
 					+(me.amount>0?'<div class="owned">Owned: '+Molpify(me.amount,3)
