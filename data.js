@@ -4887,7 +4887,21 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1e9'});
 	new Molpy.Boost({name:'Gold Loyalty Card',alias:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'1e13'});
-	
+	new Molpy.Boost({name:'Stretchable Chip Storage',desc:function(me)
+		{
+			return 'If active during a Blast furance run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.genericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
+		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
+	new Molpy.Boost({name:'Stretchable Block Storage',desc:function(me)
+		{
+			return 'If active during a Blast furance run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.genericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
+		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
+
+	Molpy.genericToggle=function(myid)
+	{
+		var me = Molpy.BoostsById[myid];
+		me.power=1*!me.power;			
+		me.hoverOnCounter=1;
+	}
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
@@ -5373,7 +5387,7 @@ Molpy.DefineBadges=function()
 	Molpy.MakeQuadBadge({np:985,name:'This Far',desc:'When Cueball asks Have you ever been this far?'});
     Molpy.MakeQuadBadge({np:989,name:'Drinking',desc:'Cueball and Megan stop to drink'});
     Molpy.MakeQuadBadge({np:999,name:'Change Direction',desc:'The picture changes orientation by 90 degrees'});
-    Molpy.MakeQuadBadge({np:1004,name:'Doesnt end',desc:'Megan says: Maybe the sea doesn\'t end'});
+    Molpy.MakeQuadBadge({np:1004,name:'Doesn\'t end',desc:'Megan says: Maybe the sea doesn\'t end'});
     Molpy.MakeQuadBadge({np:1005,name:'Very Far',desc:'Cueball says: We haven\'t walked very far'});
     Molpy.MakeQuadBadge({np:1006,name:'Not Ending',desc:'Megan doth say: Yeah.  But thats what the first part of not ending looks like.'});
     Molpy.MakeQuadBadge({np:1018,name:'Steam bottle',desc:'Megan says: If we don\'t find something today, we\'ll have to start using the steam bottle'});
@@ -5747,7 +5761,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
 	
 	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
-	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4+Boosts['Panther Rush'].power&&flandom(4)==0);
+	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4+Molpy.Boosts['Panther Rush'].power&&flandom(4)==0);
 	
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);

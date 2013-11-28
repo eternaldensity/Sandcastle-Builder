@@ -1683,11 +1683,11 @@ Molpy.Up=function()
 		Molpy.MakeChips=function()
 		{
 			var furnaceLevel=(Molpy.Boosts['Sand Refinery'].power)+1;
-			Molpy.AddChips(furnaceLevel);
+			Molpy.AddChips(furnaceLevel,1);
 		}
 		Molpy.chipAddAmount=0;
 		Molpy.chipWasteAmount=0;
-		Molpy.AddChips=function(amount)
+		Molpy.AddChips=function(amount,expand)
 		{
 			Molpy.UnlockBoost('Glass Chip Storage');
 			var ch = Molpy.Boosts['Glass Chip Storage'];
@@ -1697,10 +1697,22 @@ Molpy.Up=function()
 			}
 			ch.power+=amount;
 			var waste = Math.max(0,ch.power-(ch.bought)*10);
-			ch.power-=waste;
-			amount-=waste;
-			Molpy.chipAddAmount+=amount;
-			Molpy.chipWasteAmount+=waste;
+			if (waste && expand && Molpy.Boosts['Stretchable Chip Storage'].power)
+			{
+				ch.power -= amount;
+				ch.bought += Math.floor(amount/4.5);
+			}
+			else
+			{
+				if (waste)
+				{
+					ch.power-=waste;
+					amount-=waste;
+					Molpy.chipWasteAmount+=waste;
+					if (Molpy.chipWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Chip Storage');
+				}
+				Molpy.chipAddAmount+=amount;
+			}
 			if(Molpy.Boosts['Expando'].power)
 			{
 				Molpy.Boosts['Glass Chip Storage'].hoverOnCounter=1;
@@ -1731,9 +1743,9 @@ Molpy.Up=function()
 			}
 			ch.power-=chipsFor*rate;
 			Molpy.chipAddAmount-=chipsFor*rate;
-			Molpy.AddBlocks(chillerLevel);
+			Molpy.AddBlocks(chillerLevel,1);
 		}
-		Molpy.AddBlocks=function(amount)
+		Molpy.AddBlocks=function(amount, expand)
 		{
 			Molpy.UnlockBoost('Glass Block Storage');
 			var bl = Molpy.Boosts['Glass Block Storage'];
@@ -1743,14 +1755,23 @@ Molpy.Up=function()
 			}
 			bl.power+=amount;
 			var waste = Math.max(0,bl.power-(bl.bought)*50);
-			bl.power-=waste;
-			amount-=waste;
-			if(amount)
-            {
-				Molpy.EarnBadge('Glassblower');
+			if (waste && expand && Molpy.Boosts['Stretchable Block Storage'].power)
+			{
+				bl.power -= amount;
+				bl.bought += Math.floor(amount/13.5);
 			}
-			Molpy.blockAddAmount+=amount;
-			Molpy.blockWasteAmount+=waste;
+			else
+			{
+				if (waste)
+				{
+					bl.power-=waste;
+					amount-=waste;
+					Molpy.blockWasteAmount+=waste;
+					if (Molpy.blockWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Block Storage');
+				}
+				if(amount) Molpy.EarnBadge('Glassblower');
+				Molpy.blockAddAmount+=amount;
+			}
 			if(Molpy.Boosts['Expando'].power)
 			{
 				Molpy.Boosts['Glass Block Storage'].hoverOnCounter=1;
