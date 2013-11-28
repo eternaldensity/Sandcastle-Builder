@@ -2,6 +2,10 @@
 
 xkcd: 1190: Time: The Game
 
+This is an Idle Game written in Javascript. It is based on the xkcd comic 1190: Time, especially the forum thread about that comic. (These are known as the One True Comic and One True Thread among devotees (or 'OTTers').
+
+The game is currently hosted at http://castle.chirpingmustard.com
+
 ## Credits
 
 Code mostly by Eternal Density.
