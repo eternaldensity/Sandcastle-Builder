@@ -29,6 +29,7 @@ For personal amusement only.
 - Price Protection wait time is configurable
 - Keygrinder icon fix
 - Dragon Wisdom typo fix (thanks again TFMurphy)
+- Improved discounts from ASHF are now boosts that are available from the Department after you earn the corresponding badges
 
 ## 3.185
 - I can't even rename a variable without messing up, sorry waveney

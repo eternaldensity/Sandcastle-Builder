@@ -761,7 +761,21 @@ Molpy.DefineBoosts=function()
 			if(pp.power)pp.power=pp.bought+1;
 			else Molpy.UnlockBoost(pp.alias);
 		}
-		,startPower:0.4,startCountdown:4,group:'hpt',department:1,className:'alert'});
+		,startPower:function()
+		{
+			if(Molpy.Got('GoldCard')) return 0.6;
+			if(Molpy.Got('SilverCard')) return 0.5;
+			return 0.4;
+		}
+		,startCountdown:function()
+		{
+			if(Molpy.Got('Late Closing Hours'))
+			{
+				return 10;
+			}
+			return 5;
+		}
+		,group:'hpt',department:1,className:'alert'});
 	
 	new Molpy.Boost({name:'Overcompensating',desc: function(me){
 		return 'During LongPix, Sand Tools dig '+Molpify(me.startPower*100,1)+'% extra sand'}
@@ -4871,6 +4885,10 @@ Molpy.DefineBoosts=function()
 		,icon:'goat'
 	});
 	
+	new Molpy.Boost({name:'Silver Loyalty Card',aka:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1e9'});
+	new Molpy.Boost({name:'Gold Loyalty Card',aka:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'1e13'});
+	
+	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -5558,21 +5576,13 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.BoostsOwned++;
 	}	
 	
-	Molpy.Boosts['ASHF'].startPower=0.4;
-	if(Molpy.castlesSpent>200000000)
+	if(Molpy.castlesSpent>2e8)
 	{
 		Molpy.EarnBadge('Big Spender');
-		Molpy.Boosts['ASHF'].startPower=0.5;
 	}
-	if(Molpy.castlesSpent>80000000000)
+	if(Molpy.castlesSpent>8e12)
 	{
 		Molpy.EarnBadge('Valued Customer');
-		Molpy.Boosts['ASHF'].startPower=0.6;
-	}
-	Molpy.Boosts['ASHF'].startCountdown=5;
-	if(Molpy.Got('Late Closing Hours'))
-	{
-		Molpy.Boosts['ASHF'].startCountdown=10;
 	}
 	
 	if(Molpy.BadgesOwned>=69)
@@ -5744,6 +5754,10 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['Cold Mould'].department=Molpy.Got('SMM');
 	Molpy.Boosts['Such Glass'].department=1*(Molpy.SandTools['Bucket'].amount>2e11)*(Molpy.ninjaStealth>2e8);
 	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);
+	
+	
+	Molpy.Boosts['Silver Loyalty Card'].department=Molpy.Earned('Big Spender');
+	Molpy.Boosts['Gold Loyalty Card'].department=Molpy.Earned('Valued Customer');
 }
 
 Molpy.CheckLogicatRewards=function(automationLevel)

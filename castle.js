@@ -2534,7 +2534,7 @@ Molpy.Up=function()
 					}else{
 						var d=1;
 						if(Molpy.Got('Family Discount'))d=.2;
-						if(Molpy.Boosts['ASHF'].startPower>0.5) d*=0.8; //sorry guys, no ikea-scumming
+						d*=Molpy.Boosts['ASHF'].startPower();
 						Molpy.Build(Math.floor(this.price*0.5*d),1);
 					}
 					if (this.sellFunction) this.sellFunction();
@@ -2719,7 +2719,7 @@ Molpy.Up=function()
 			}
 			this.sell=function()
 			{				
-				var price=this.prevPrice;
+				this.findPrice();
 				if (this.amount>0)
 				{
 					if(this.temp>0)
@@ -2729,8 +2729,8 @@ Molpy.Up=function()
 					}else{					
 						var d=1;
 						if(Molpy.Got('Family Discount'))d=.2;
-						if(Molpy.Boosts['ASHF'].startPower>0.5) d*=0.7; //sorry guys, no ikea-scumming
-						Molpy.Build(price*d,1);
+						d*=Molpy.Boosts['ASHF'].startPower();
+						Molpy.Build(this.prevPrice*d,1);
 					}
 					
 					this.amount--;
