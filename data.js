@@ -2785,7 +2785,7 @@ Molpy.DefineBoosts=function()
 			+' by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock('+i+')"></input>',
 			sand: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
 			castles: function(me){ return 6*Math.pow(1000,me.num+1)*Math.pow(Molpy.glassCeilingPriceIncs[me.num],me.power)},
-			glass: 50* (+i+1), group:'hpt',
+			glass: 50* (+i+1), group:'ceil',
 			buyFunction:function(){
 				if(Molpy.Earned('Ceiling Broken'))
 					this.power=0;
@@ -4816,17 +4816,18 @@ Molpy.DefineBoosts=function()
 		return !Molpy.Got('ASHF')&&Molpy.Boosts['Price Protection'].power>1;		
 	}
 	
-	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of all Glass Tools constructed when it is active',sand:Infinity,castles:Infinity,glass:'7P',group:'chron'});
+	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of all Glass Tools constructed when it is active',sand:Infinity,castles:Infinity,glass:'7P',group:'drac'});
 	
 	new Molpy.Boost({name:'Friendship is Molpish',alias:'FiM',desc:'Cuegan\'s Glass production is multiplied by the number of million LaPetites, and Lapetite\'s Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)',glass:'750E',sand:Infinity,castles:Infinity});
 	
 	new Molpy.Boost({name:'Such Glass',desc:'Glass production of Buckets is multiplied by a thousandth of the Ninja Stealth level',stats:'<div class="magentatext bigtext">Very wow</div><br><div class="cyantext rightjust bigtext">Much ninja</div><br><div class="limetext bigtext">So Bucket</div>',glass:'8Z',sand:Infinity,castles:Infinity,group:'ninj'});
 	
 	new Molpy.Boost({name:'Dragon Forge',desc:function(me)
-		{			
-			if(!me.bought) return 'Allows you increase the power of Automata Control using Logicat Levels and Blackprint Pages';
+		{		
+			var str = 'Allows you increase the power of Automata Control using Logicat Levels and Blackprint Pages.';
+			if(!me.bought) return str;
 			var n = Molpy.Boosts['AC'].power;
-			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
+			str+='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
 			var pageCost=n*10;
 			var logicatCost=Math.ceil(n/20);
 			if(n<Molpy.Boosts['PC'].power)
@@ -4837,7 +4838,7 @@ Molpy.DefineBoosts=function()
             }
 			return str;
 		}
-		,sand:Infinity,castles:Infinity,glass:'7P',group:'chron',className:'action'});
+		,sand:Infinity,castles:Infinity,glass:'7P',group:'drac',className:'action'});
 		new Molpy.Boost({name:'Dragon Wisdom',desc:function(me)
 		{
 			var str = 'Allows you to gain Logicat Levels from Blackprint Pages.';
@@ -4853,7 +4854,7 @@ Molpy.DefineBoosts=function()
 			}
 			return str;
 		}
-		,sand:Infinity,castles:Infinity,glass:'1Z',group:'chron',className:'action'
+		,sand:Infinity,castles:Infinity,glass:'1Z',group:'drac',className:'action'
 	});
 	Molpy.GainDragonWisdom=function(n)
 	{
@@ -4898,6 +4899,8 @@ Molpy.DefineBoosts=function()
 		chron:['chronotech','Chronotech','boost_lateclosing'],
 		cyb:['cybernetics','Cybernetics','boost_robotefficiency'],
 		bean:['beanie tech','Beanie Tech','boost_chateau'],
+		ceil:['ceiling','Ceilings','boost_glassceiling12'],
+		drac:['draconic','Draconic','boost_achronaldragon'],
 		discov:['discoveries','Discoveries','badge_discov','Discovery','A memorable discovery'],
 		monums:['sand monuments','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
 		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],

@@ -296,8 +296,8 @@ Molpy.Up=function()
 			Molpy.options.fade=0;
 			Molpy.options.typo=0;
 			Molpy.options.science=0;
-			Molpy.options.showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:0,discov:0,monums:0,monumg:0,tagged:0};
-			Molpy.options.showhideNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged'];
+			Molpy.options.showhide={boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:0,discov:0,monums:0,monumg:0,tagged:0,ceil:0,drac:0};
+			Molpy.options.showhideNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
 		}
 		Molpy.DefaultOptions();
 		
@@ -3909,7 +3909,7 @@ Molpy.Up=function()
 		Molpy.RepaintLootSelection=function()
 		{
 			var str = '';
-			var groups = ['boosts','ninj','cyb','hpt','bean','chron'];
+			var groups = ['boosts','ninj','cyb','hpt','bean','chron','ceil','drac'];
 			for(var i in groups)
 			{
 				str+=Molpy.PaintLootToggle(groups[i],4);

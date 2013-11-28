@@ -329,6 +329,16 @@ a:active
 	overflow-y:auto;
 	overflow-x:hidden;
 }
+#shop.widescreen
+{
+	position: absolute;
+	top: 5px;
+	margin-top: 5px;
+	max-height: 500px;
+	margin-left: 1030px;
+}
+
+
 #clockwrapper{
 	position:absolute;
 	margin-top:5px;
