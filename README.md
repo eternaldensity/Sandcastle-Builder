@@ -30,6 +30,8 @@ For personal amusement only.
 - Waveney's stretchable glass storage (heh, I actually need that in-game right now!)
 - Apostrophe missing from a discovery (waveney fixing his own problem :P)
 - Redundancy Removal: All the simple toggle boosts use the same toggle function now (rather than copypaste with names changed)
+- Aliased Glass Chip Storage and Glass Block Storage to GlassChips and GlassBlocks to make the code shorter
+- Hall of Mirrors boost (guess what that does!)
 
 ## 3.1863
 - Wasn't using the alias for the cards everywhere (ACTUALLY fixes gold and silver card)

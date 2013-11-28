@@ -648,13 +648,21 @@ Molpy.DefineBoosts=function()
 					str+='Door '+door+' is a goat<br>';
 				}
 			}
-			return str+'Choose a door! You might gain half your current Castles, or you might lose them all and get a Goat';
+			str+='Choose a door! You might gain half your current Castles, or you might lose them all and get a Goat';
+			if(Molpy.Got('HoM')) str+='<br>With Hall of Mirrors, you also stand to gain a fifth of your Glass Chip Storage balance, or lose a third of it.';
+			return str;
 		},
 		sand:function()
 		{
 			var acPower = Molpy.Boosts['MHP'].power;
 			return 100*Math.pow(2,Math.max(1,acPower-9));
 		},
+		glass:function()
+		{
+			if(!Molpy.Got('HoM'))return 0;
+			var acPower = Molpy.Boosts['MHP'].power;
+			return 100*Math.pow(2,Math.max(1,acPower-15));			
+		}
 		icon:'monty',className:'action',
 		lockFunction:function(){
 			this.power++;
@@ -708,9 +716,13 @@ Molpy.DefineBoosts=function()
 			var amount=Molpy.castles;
 			Molpy.Notify('Hooray, you found the prize behind door '+me.door+'!');
 			Molpy.Build(Molpy.castles/2,1); 
+			if(Molpy.Got('HoM'))
+				Molpy.AddChips(Math.floor(Molpy.Boosts['GlassChips'].power/5),1); 
 		}else{
 			Molpy.Destroy(Molpy.castles);
-			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power/1.8));
+			Molpy.SpendGlassChips(Math.floor(Molpy.Boosts['GlassChips'].power/3)); 
+			if(Molpy.Got('HoM'))
+				Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power/1.8));
 			Molpy.GetYourGoat();
 		}
 	}
@@ -730,6 +742,7 @@ Molpy.DefineBoosts=function()
 			g.power++;
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',g.name]);	
 			if(g.power>=2)Molpy.EarnBadge('Second Edition');
+			if(g.power>=20)Molpy.UnlockBoost('HoM');
 			Molpy.Notify('You got a goat!');
 	}
 	
@@ -1844,29 +1857,29 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.HasGlassBlocks=function(num)
 	{	
-		return Molpy.Boosts['Glass Block Storage'].power >= num;
+		return Molpy.Boosts['GlassBlocks'].power >= num;
 	}
 	Molpy.SpendGlassBlocks=function(num)
 	{	
-		Molpy.Boosts['Glass Block Storage'].power -= num;
+		Molpy.Boosts['GlassBlocks'].power -= num;
 		Molpy.blockAddAmount-=num;
 		if(Molpy.Boosts['Expando'].power)
 		{
-			Molpy.Boosts['Glass Block Storage'].hoverOnCounter=1;
+			Molpy.Boosts['GlassBlocks'].hoverOnCounter=1;
 			Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
 			Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
 		}
 	}
 	Molpy.HasGlassChips=function(num)
 	{	
-		return Molpy.Boosts['Glass Chip Storage'].power >= num;
+		return Molpy.Boosts['GlassChips'].power >= num;
 	}
 	Molpy.SpendGlassChips=function(num)
 	{	
-		Molpy.Boosts['Glass Chip Storage'].power -= num;
+		Molpy.Boosts['GlassChips'].power -= num;
 		if(Molpy.Boosts['Expando'].power)
 		{
-			Molpy.Boosts['Glass Chip Storage'].hoverOnCounter=1;
+			Molpy.Boosts['GlassChips'].hoverOnCounter=1;
 			Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
 			Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
 		}
@@ -1876,8 +1889,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Sand Refinery',desc:
 		function(me)
 		{		
-			var ch = Molpy.Boosts['Glass Chip Storage'];
-			var bl = Molpy.Boosts['Glass Block Storage'];
+			var ch = Molpy.Boosts['GlassChips'];
+			var bl = Molpy.Boosts['GlassBlocks'];
 			var str ='';
 			if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()))
 			{
@@ -1964,8 +1977,8 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.UpgradeSandRefinery=function(n)
 	{
-		var ch = Molpy.Boosts['Glass Chip Storage'];
-		var bl = Molpy.Boosts['Glass Block Storage'];
+		var ch = Molpy.Boosts['GlassChips'];
+		var bl = Molpy.Boosts['GlassBlocks'];
 		if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()*n))
 		{
 			var chipCost = (n<20?n*3:n*2.5);
@@ -1989,7 +2002,7 @@ Molpy.DefineBoosts=function()
 	Molpy.DowngradeSandRefinery=function()
 	{
 		var sr = Molpy.Boosts['Sand Refinery'];
-		var ch = Molpy.Boosts['Glass Chip Storage'];
+		var ch = Molpy.Boosts['GlassChips'];
 		if(sr.power<1)return;
 		Molpy.AddChips(1);
 		sr.power--;
@@ -1999,7 +2012,7 @@ Molpy.DefineBoosts=function()
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Sand Refinery']);	
 	}
 	
-	new Molpy.Boost({name:'Glass Chip Storage',desc:
+	new Molpy.Boost({name:'Glass Chip Storage',alias:'GlassChips',desc:
 		function(me)
 		{
 			me.power=Math.round(me.power);
@@ -2070,7 +2083,7 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.UpgradeChipStorage=function(n)
 	{
-		var ch = Molpy.Boosts['Glass Chip Storage'];
+		var ch = Molpy.Boosts['GlassChips'];
 		var cost = n*5
 		if(n>=10)cost*=.9;
 		if(ch.power>=cost)
@@ -2156,7 +2169,7 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{		
 			var str='';
-			var bl = Molpy.Boosts['Glass Block Storage'];
+			var bl = Molpy.Boosts['GlassBlocks'];
 			if(bl.power>=5)
 			{
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
@@ -2192,7 +2205,7 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.UpgradeGlassChiller=function(n)
 	{
-		var bl = Molpy.Boosts['Glass Block Storage'];
+		var bl = Molpy.Boosts['GlassBlocks'];
 		var unitCost=5;
 		if(n>10) unitCost*=.9;
 		if(bl.power>=unitCost*n && Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*n))
@@ -2208,7 +2221,7 @@ Molpy.DefineBoosts=function()
 	Molpy.DowngradeGlassChiller=function()
 	{
 		var gc = Molpy.Boosts['Glass Chiller'];
-		var bl = Molpy.Boosts['Glass Block Storage'];
+		var bl = Molpy.Boosts['GlassBlocks'];
 		if(gc.power<1)return;
 		Molpy.AddBlocks(1);
 		gc.power--;
@@ -2218,7 +2231,7 @@ Molpy.DefineBoosts=function()
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Glass Chiller']);		
 	}
 	
-	new Molpy.Boost({name:'Glass Block Storage',desc:
+	new Molpy.Boost({name:'Glass Block Storage',alias:'GlassBlocks',desc:
 		function(me)
 		{
 			me.power=Math.round(me.power);
@@ -2281,7 +2294,7 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.UpgradeBlockStorage=function(n)
 	{
-		var bl = Molpy.Boosts['Glass Block Storage'];
+		var bl = Molpy.Boosts['GlassBlocks'];
 		var cost=n*15;
 		if(n>=10)cost*=.9;
 		if(Molpy.HasGlassBlocks(cost))
@@ -2336,7 +2349,7 @@ Molpy.DefineBoosts=function()
 	
   Molpy.SeaishSandPurifier=function()
     {
-        var bl = Molpy.Boosts['Glass Block Storage'];
+        var bl = Molpy.Boosts['GlassBlocks'];
     var a = 5; // the step size in prices
     var b = 2*Molpy.SandPurifierUpgradeCost() - a;
     var c = -2*bl.power*.99;
@@ -2353,7 +2366,7 @@ Molpy.DefineBoosts=function()
 
     Molpy.SeaishGlassExtruder=function()
     {
-        var ch = Molpy.Boosts['Glass Chip Storage'];
+        var ch = Molpy.Boosts['GlassChips'];
     var a = 500; // the step size in prices
     var b = 2*Molpy.GlassExtruderUpgradeCost() - a;
     var c = -2*ch.power*.99;
@@ -2371,7 +2384,7 @@ Molpy.DefineBoosts=function()
 
     Molpy.SeaishSandRefinery=function()
     {
-        var ch = Molpy.Boosts['Glass Chip Storage'];
+        var ch = Molpy.Boosts['GlassChips'];
         var extra = Math.min(Math.floor(ch.power/2.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.SandRefineryIncrement()-1));
         if (extra>20) 
         {
@@ -2394,7 +2407,7 @@ Molpy.DefineBoosts=function()
 
     Molpy.SeaishGlassChiller=function()
     {
-        var bl = Molpy.Boosts['Glass Block Storage'];
+        var bl = Molpy.Boosts['GlassBlocks'];
         var extra = Math.min(Math.floor(bl.power/4.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.GlassChillerIncrement()-1));
 		extra = Math.min(extra, Math.floor(Molpy.Boosts['Sand Refinery'].power/Molpy.ChipsPerBlock()-Molpy.Boosts['Glass Chiller'].power-2));
         if (extra>20) 
@@ -2976,7 +2989,7 @@ Molpy.DefineBoosts=function()
 		},
 		lockFunction:function()
 		{
-			var bl=Molpy.Boosts['Glass Block Storage'];
+			var bl=Molpy.Boosts['GlassBlocks'];
 			var win = Math.ceil(Molpy.LogiMult('2K'));
 			win = Math.floor(win/(6-this.bought));
 			
@@ -4786,8 +4799,8 @@ Molpy.DefineBoosts=function()
 		,icon:'goat'
 	});
 	
-	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1e9'});
-	new Molpy.Boost({name:'Gold Loyalty Card',alias:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'1e13'});
+	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1G'});
+	new Molpy.Boost({name:'Gold Loyalty Card',alias:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'10T'});
 	
 	
 	new Molpy.Boost({name:'Stretchable Chip Storage',desc:function(me)
@@ -4806,6 +4819,10 @@ Molpy.DefineBoosts=function()
 		me.hoverOnCounter=1;
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);
 	}
+	
+	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:'You can win/lose Glass Chips from the Monty Haul Problem',group:,sand:'1P',castles:'1T',glass:'1K'});
+	
+	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
 		boosts:['boost','Boosts'],
@@ -5519,7 +5536,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.SandToolsOwned>9000)Molpy.EarnBadge('WHAT');
 	if(Molpy.SandToolsOwned+Molpy.CastleToolsOwned>=40000)Molpy.EarnBadge('\\/\\/AR]-[AMMER');
 		
-	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['Glass Block Storage'].power>10)
+	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['GlassBlocks'].power>10)
 		Molpy.UnlockBoost('Glass Jaw');
 	
 	
