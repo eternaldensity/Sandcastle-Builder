@@ -719,10 +719,10 @@ Molpy.DefineBoosts=function()
 			if(Molpy.Got('HoM'))
 				Molpy.AddChips(Math.floor(Molpy.Boosts['GlassChips'].power/5),1); 
 		}else{
-			Molpy.Destroy(Molpy.castles);
-			Molpy.SpendGlassChips(Math.floor(Molpy.Boosts['GlassChips'].power/3)); 
+			Molpy.Destroy(Molpy.castles); 
+			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power/1.8));
 			if(Molpy.Got('HoM'))
-				Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power/1.8));
+				Molpy.SpendGlassChips(Math.floor(Molpy.Boosts['GlassChips'].power/3));
 			Molpy.GetYourGoat();
 		}
 	}

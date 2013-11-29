@@ -26,6 +26,7 @@ For personal amusement only.
 
 ## 3.188
 - Shopping Assistant tells you when you select an item which you already bought
+- Unflipped some important lines in MHP Goat
 
 ## 3.1871
 - Missed a . because HAAAAAAAAANDS (this is github's fault for complicated reasons I won't get into)
