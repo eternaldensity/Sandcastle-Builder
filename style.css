@@ -378,6 +378,7 @@ a:active
 	height:40px;
 	border-radius:50px;
 	margin-left:23px;
+	z-index:30;
 }
 
 
