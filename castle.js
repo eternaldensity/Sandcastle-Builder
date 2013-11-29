@@ -4504,7 +4504,8 @@ Molpy.Up=function()
 		
 		/*In which we announce that initialisation is complete
 		++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-		
+		$('.ui-widget-content').resizable();
+		$('.ui-widget-content').draggable();
 		
 		Molpy.LoadC_STARSTAR_kie(); //autoload saved game
 		Molpy.molpish=1;

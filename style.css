@@ -295,13 +295,20 @@ a:active
 	overflow-y:auto;
 	overflow-x:hidden;
 }
-#inventory
+#inventorywrapper
 {
 	margin: 10px;
 	padding: 10px;
 	margin-top:5px;
 	border-width: 1px;
 	border-style: solid;
+	overflow:hidden;
+}
+#inventory
+{
+	margin: 0px;
+	padding: 0px;
+	border-style: none;
 	overflow-y:auto;
 	overflow-x:hidden;
 }
@@ -318,13 +325,20 @@ a:active
 #sectionTime
 {
 }
-#shop
-{
-	margin: 10px;
+#shopwrapper
+{	margin: 10px;
 	padding: 10px;
 	margin-top:5px;
 	border-width: 1px;
 	border-style: solid;
+	overflow:hidden;
+}
+#shop
+{	margin: 0px;
+	padding: 0px;
+	border-style: none;
+	min-height:20px;
+	min-width:100px;
 	max-height:200px;
 	overflow-y:auto;
 	overflow-x:hidden;
@@ -351,6 +365,86 @@ a:active
 	border-radius:50px;
 	margin-left:23px;
 }
+
+
+.ui-resizable {
+	position: relative;
+}
+.ui-resizable-handle {
+	position: absolute;
+	font-size: 0.1px;
+	display: block;
+}
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+	display: none;
+}
+.ui-resizable-n {
+	cursor: n-resize;
+	height: 7px;
+	width: 100%;
+	top: -5px;
+	left: 0;
+}
+.ui-resizable-s {
+	cursor: s-resize;
+	height: 7px;
+	width: 100%;
+	bottom: -5px;
+	left: 0;
+}
+.ui-resizable-e {
+	cursor: e-resize;
+	width: 7px;
+	right: -5px;
+	top: 0;
+	height: 100%;
+}
+.ui-resizable-w {
+	cursor: w-resize;
+	width: 7px;
+	left: -5px;
+	top: 0;
+	height: 100%;
+}
+.ui-resizable-se {
+	cursor: se-resize;
+	width: 12px;
+	height: 12px;
+	right: 1px;
+	bottom: 1px;
+}
+.ui-resizable-sw {
+	cursor: sw-resize;
+	width: 9px;
+	height: 9px;
+	left: -5px;
+	bottom: -5px;
+}
+.ui-resizable-nw {
+	cursor: nw-resize;
+	width: 9px;
+	height: 9px;
+	left: -5px;
+	top: -5px;
+}
+.ui-resizable-ne {
+	cursor: ne-resize;
+	width: 9px;
+	height: 9px;
+	right: -5px;
+	top: -5px;
+}
+.ui-icon,
+.ui-widget-content .ui-icon {
+	background-image: url(http://code.jquery.com/ui/1.10.3/themes/smoothness/images/ui-icons_222222_256x240.png);
+}
+.ui-icon {
+	width: 16px;
+	height: 16px;
+}
+.ui-icon-gripsmall-diagonal-se { background-position: -64px -224px; }
+
 
 .floatbox{
 	display: inline-block;

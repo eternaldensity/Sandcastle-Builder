@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Resizable - Default functionality</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <style>
+  #resizable { 
+	margin: 10px;
+	padding: 10px;
+	margin-top:5px;
+	border-width: 1px;
+	border-style: solid;
+	overflow-y:auto;
+	overflow-x:hidden;  }
+  </style>
+  <script>
+  $(function() {
+    $( "#resizable" ).resizable();
+    $( "#resizable" ).draggable();
+  });
+  </script>
+</head>
+<body>
+ 
+<div id="resizable" class="ui-widget-content">blah
+</div>
+ 
+ 
+</body>
+</html>

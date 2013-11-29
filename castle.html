@@ -5,8 +5,8 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <link rel="shortcut icon" href="img/favicon.ico" />
 <link href="style.css?v=1" rel="stylesheet" type="text/css">
-
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="redundancy.js?v=1"></script>
 <script src="castle.js?v=1"></script>
 <script src="data.js?v=1"></script>
@@ -180,24 +180,30 @@
 				</div>
 			</div>				
 		</div>
-		<div id="tools">
-			<div id="sandtoolSection">
-				<div id="sandSTitle">Sand Tools:</div>
-				<div id="sandtools"></div>
-			</div>
-			<div id="castletoolSection">
-				<div id="castleSTitle">Castle Tools:</div>
-				<div id="castletools"></div>
+		<div id="toolswrapper" class="ui-widget-content">
+			<div id="tools">
+				<div id="sandtoolSection">
+					<div id="sandSTitle">Sand Tools:</div>
+					<div id="sandtools"></div>
+				</div>
+				<div id="castletoolSection">
+					<div id="castleSTitle">Castle Tools:</div>
+					<div id="castletools"></div>
+				</div>
+		</div>
+		</div>
+		<div id="shopwrapper" class="ui-widget-content">
+			<div id="shop">
+				<div id="boostTitle">Boost Shop:</div>
+				<div id="boosts">
+				</div>
 			</div>
 		</div>
-		<div id="shop">
-			<div id="boostTitle">Boost Shop:</div>
-			<div id="boosts">
+		<div id="inventorywrapper" class="ui-widget-content">
+			<div id="inventory">Loot:
+				<div id="lootselection"></div>
+				<div id="loot"></div>
 			</div>
-		</div>
-		<div id="inventory">Loot:
-			<div id="lootselection"></div>
-			<div id="loot"></div>
 		</div>
 	</div>
 	<div id="scrumptiousdonuts"></div>
