@@ -24,6 +24,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1871
+- Missed a . because HAAAAAAAAANDS
+
+
 ## 3.187
 - Small buff from Panther Rush to Panther Poke
 - Fixed out of control MHP pricing (multiply instead of a divide)
