@@ -3977,7 +3977,7 @@ Molpy.Up=function()
 				var salebit='';
 				if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 				{
-					salebit=' <a id="SandToolBuy'+me.id+'" onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
+					salebit='<br><a id="SandToolBuy'+me.id+'" onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>');
 				}
 				var price = '';
@@ -4028,7 +4028,7 @@ Molpy.Up=function()
 				var salebit='';
 				if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 				{
-					salebit=' <a id="CastleToolBuy'+me.id+'" onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
+					salebit='<br><a id="CastleToolBuy'+me.id+'" onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 						+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>');
 				}
 				var price = '';
@@ -4073,7 +4073,7 @@ Molpy.Up=function()
 			var buy= '';
 			if(!me.bought)
 			{
-				buy=' <a id="BoostBuy'+me.id+'" onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a>';
+				buy='<br><a id="BoostBuy'+me.id+'" onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a>';
 				if(me.sandPrice||me.castlePrice||me.glassPrice)
 				{
 					buy+='<div class="price"> Price: ';
@@ -4504,8 +4504,8 @@ Molpy.Up=function()
 		
 		/*In which we announce that initialisation is complete
 		++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-		$('.ui-widget-content').resizable();
-		$('.ui-widget-content').draggable();
+		$('.resizable-element').resizable();
+		$('.draggable-element').draggable();
 		
 		Molpy.LoadC_STARSTAR_kie(); //autoload saved game
 		Molpy.molpish=1;

@@ -276,11 +276,14 @@ a:active
 }
 #sandtoolSection
 {
+	position:absolute;
 	margin:0px;
 	margin-top:5px;
-	margin-left:660px;
-	height:545px;
-	width:188px;
+	left:660px;
+	min-height:80px;
+	max-height:800px;
+	min-width:188px;
+	max-width:800px;
 	overflow-y:auto;
 	overflow-x:hidden;
 }
@@ -289,19 +292,24 @@ a:active
 	position:absolute;
 	top:5px;
 	margin:0px;
-	margin-left:850px;
-	height:545px;
-	width:188px;
+	left:850px;
+	min-height:80px;
+	max-height:800px;
+	min-width:188px;
+	max-width:800px;
 	overflow-y:auto;
 	overflow-x:hidden;
 }
 #inventorywrapper
 {
+	position:absolute;
 	margin: 10px;
 	padding: 10px;
-	margin-top:5px;
+	top:700px;
 	border-width: 1px;
 	border-style: solid;
+	min-height:85px;
+	min-width:110px;
 	overflow:hidden;
 }
 #inventory
@@ -311,6 +319,8 @@ a:active
 	border-style: none;
 	overflow-y:auto;
 	overflow-x:hidden;
+	max-width:100%;
+	max-height:100%;
 }
 #sectionMainStats
 {
@@ -326,11 +336,15 @@ a:active
 {
 }
 #shopwrapper
-{	margin: 10px;
+{
+	position:absolute;
+	margin: 10px;
 	padding: 10px;
-	margin-top:5px;
+	top:540px;
 	border-width: 1px;
 	border-style: solid;
+	min-height:100px;
+	min-width:170px;
 	overflow:hidden;
 }
 #shop
@@ -338,8 +352,8 @@ a:active
 	padding: 0px;
 	border-style: none;
 	min-height:20px;
-	min-width:100px;
-	max-height:200px;
+	max-height:100%;
+	max-width:100%;
 	overflow-y:auto;
 	overflow-x:hidden;
 }
