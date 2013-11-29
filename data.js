@@ -4812,7 +4812,7 @@ Molpy.DefineBoosts=function()
 		return 'If active during a Blast furance run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
 		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	
-	Molpy.genericToggle=function(myid)
+	Molpy.GenericToggle=function(myid)
 	{
 		var me = Molpy.BoostsById[myid];
 		me.power=1*!me.power;      

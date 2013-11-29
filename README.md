@@ -25,7 +25,9 @@ For personal amusement only.
 ## Changelog
 
 ## 3.1871
-- Missed a . because HAAAAAAAAANDS
+- Missed a . because HAAAAAAAAANDS (this is github's fault for complicated reasons I won't get into)
+- So, how about capitalising a critical new function... and then not?
+- Funny how both problems were caused by me modifying waveney's code :P I guess I shouldn't.
 
 
 ## 3.187
