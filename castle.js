@@ -279,6 +279,8 @@ Molpy.Up=function()
 		Molpy.totalGlassDestroyed=0;
 		Molpy.toolsBuilt=0;
 		Molpy.toolsBuiltTotal=0;
+    		Molpy.blockspmnp = 0;
+    		Molpy.chipspmnp = 0;
 		
 		Molpy.options=[];
 		Molpy.DefaultOptions=function()
@@ -4730,6 +4732,9 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
+		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 );
+		Molpy.chipspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power *(Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power)/2 ) - Molpy.blockspmnp*Molpy.ChipsPerBlock();
+		
 		if(Molpy.Got('Sand to Glass'))
 			Molpy.DigGlass(Molpy.glassPermNP);
 		Molpy.GlassNotifyFlush()
@@ -5338,6 +5343,9 @@ Molpy.Up=function()
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['GlassChips'].power,4);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['GlassBlocks'].power,4);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),6)+'%';
+	    	g('chipspmnp').innerHTML = Molpify(Molpy.chipspmnp,3);
+    		g('blockspmnp').innerHTML = Molpify(Molpy.blockspmnp,3);
+		
 		g('blackstat').innerHTML='Collected '+Molpify(+Molpy.Boosts['Blackprints'].power
 			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
       
