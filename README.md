@@ -124,7 +124,7 @@ For personal amusement only.
 - Redunception doesn't notify if Expando is active
 - Automata Control optimised when you have all glass tools: no need to make tools that are about to be spent
 - Sand particles don't need transparency
-- Don't mess with transparancy of more than 8 notifications
+- Don't mess with transparency of more than 8 notifications
 - Fixed a discovery on wrong NP
 - When you Molpy Down with infinite castles, totalCastlesDown is set to Number.MAX_VALUE (previously it was unchanged if infinite castles) thanks EPSILON of DashNet IRC
 - Chromatic Heresy is related to 'hue', right? ;)
@@ -350,7 +350,7 @@ For personal amusement only.
 - Bunch of new NP-based badges, by waveney (cos I was taking too long getting around to adding them)
 - Fixxed some typoes
 - Safety Goggles prevents Safety Hat unlock
-- Glass Saw doesn't competely fill glass block storage (another waveney idea)
+- Glass Saw doesn't completely fill glass block storage (another waveney idea)
 - Pluralisation (i.e. conditional 's') finally moved to a function. Please report any resulting/remaining pluralisation errors. Once. ;)
 - CMS description clarified (I hope) a little.
 - Added a new link to the index: something which I only just discovered exists :P
@@ -610,7 +610,7 @@ For personal amusement only.
 
 ## 2.62
 - ASHF should not be given if there are no boosts available and you have infinite castles
-- Shopping Assistant no longer buys locked boosts (thus preventing weird zombie state for DoN or Crate Key or Castle Crusher prevening them from being given by department due to being simultaneously bought and locked)
+- Shopping Assistant no longer buys locked boosts (thus preventing weird zombie state for DoN or Crate Key or Castle Crusher preventing them from being given by department due to being simultaneously bought and locked)
 
 ## 2.61
 - Um, I wrote for instead of while and forgot to test
