@@ -4481,7 +4481,7 @@ Molpy.DefineBoosts=function()
 			if(n>0)
 				_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',me.name]);	
 			else
-				_gaq&&_gaq.push(['_trackEvent','Boost','Dowgrade',me.name]);
+				_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade',me.name]);
 		}
 	}
 	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
@@ -5600,6 +5600,7 @@ Molpy.CheckBuyUnlocks=function()
 	}
 	if(Molpy.groupBadgeCounts.discov>100)
 	{
+		Molpy.UnlockBoost('Stealth Cam');
 		Molpy.UnlockBoost('Stealth Cam');
 	}
 	if(Molpy.groupBadgeCounts.monums>10&&Molpy.Got('Memories Revisited'))
