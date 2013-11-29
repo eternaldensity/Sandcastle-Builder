@@ -274,29 +274,35 @@ a:active
 	margin:5px;
 	display: inline-block;
 }
-#sandtoolSection
+.draggable-element
 {
 	position:absolute;
-	margin:0px;
-	margin-top:5px;
-	left:660px;
-	min-height:80px;
-	max-height:800px;
-	min-width:188px;
-	max-width:800px;
-	overflow-y:auto;
-	overflow-x:hidden;
 }
-#castletoolSection
+#sandtoolwrapper
 {
-	position:absolute;
 	top:5px;
+}
+#castletoolwrapper
+{
+	top:130px;
+}
+.toolwrapper
+{
+	left:660px;
 	margin:0px;
-	left:850px;
-	min-height:80px;
+	min-height:90px;
 	max-height:800px;
 	min-width:188px;
 	max-width:800px;
+	overflow:hidden;
+	border-width: 1px;
+	border-style: solid;
+}
+.toolbox
+{
+	margin:0px;
+	max-height:100%;
+	max-width:100%;
 	overflow-y:auto;
 	overflow-x:hidden;
 }
@@ -305,9 +311,9 @@ a:active
 	position:absolute;
 	margin: 10px;
 	padding: 10px;
-	top:700px;
 	border-width: 1px;
 	border-style: solid;
+	top:540px;
 	min-height:85px;
 	min-width:110px;
 	overflow:hidden;
@@ -337,10 +343,10 @@ a:active
 }
 #shopwrapper
 {
-	position:absolute;
-	margin: 10px;
-	padding: 10px;
-	top:540px;
+	margin: 0px;
+	padding: 5px;
+	left:660px;
+	top:290px;
 	border-width: 1px;
 	border-style: solid;
 	min-height:100px;
@@ -348,7 +354,8 @@ a:active
 	overflow:hidden;
 }
 #shop
-{	margin: 0px;
+{
+	margin: 0px;
 	padding: 0px;
 	border-style: none;
 	min-height:20px;
@@ -382,9 +389,6 @@ a:active
 }
 
 
-.ui-resizable {
-	position: relative;
-}
 .ui-resizable-handle {
 	position: absolute;
 	font-size: 0.1px;
@@ -466,18 +470,6 @@ a:active
 	margin:5px;
 	vertical-align: top;
 	width:145px;
-	min-height:66px;
-	margin-bottom:5px;
-	border-width: 1px;
-	border-style: solid;
-	padding: 4px;
-}
-
-.floatbox.tool{
-	display:block;
-	margin-bottom:5px;
-	vertical-align: top;
-	width:150px;
 	min-height:66px;
 	margin-bottom:5px;
 	border-width: 1px;
