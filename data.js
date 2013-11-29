@@ -4431,6 +4431,16 @@ Molpy.DefineBoosts=function()
 					}else break;
 				}
 			}
+			if (n > 5*Math.pow(10,51)) 
+			{		
+				str += 'No further increases are possible.'
+				if (!Molpy.Earned('Nope!'))
+				{
+					Molpy.EarnBadge('Nope!');
+					me.power = 6*Math.pow(10,51);// Evens everyone up to same value could get here between 5 and 5.00999...
+					me.className = '';
+				}
+			}
 			if(!Molpy.Boosts['No Sell'].power&&me.power>0&&Molpy.HasGlassBlocks(1e5*n))
 			{
 				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlToolFactory(-1)"></input> the rate by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Blocks.';
@@ -4438,7 +4448,7 @@ Molpy.DefineBoosts=function()
 			
 			return str;
 		}
-		,glass:'30M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',
+		,glass:'30M',sand:Infinity,castles:Infinity, group:'hpt',classChange:function(){this.className = (Molpy.Earned('Nope!')?'':'toggle')},
 		buyFunction:function(){this.power=1;}
 	});
 	Molpy.ControlToolFactory=function(n)
@@ -5211,6 +5221,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Mains Power',desc:'Automata Control level at least 230',vis:1});
 	new Molpy.Badge({name:'It Hertz',desc:'Automata Control level at least 50',vis:1});
 	new Molpy.Badge({name:'Second Edition',desc:'Have at least two Goats'});
+	new Molpy.Badge({name:'Nope!',desc:'Power Control is at the limit',vis:1});
 		
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
