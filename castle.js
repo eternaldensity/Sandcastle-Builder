@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.189;
+		Molpy.version=3.1891;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -4732,8 +4732,10 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
-		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 );
-		Molpy.chipspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power *(Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power)/2 ) - Molpy.blockspmnp*Molpy.ChipsPerBlock();
+		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *Molpy.Boosts['Furnace Multitasking'].power
+			*(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 );
+		Molpy.chipspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power * Molpy.Boosts['Furnace Crossfeed'].power 
+			*(Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power)/2 ) - Molpy.blockspmnp*Molpy.ChipsPerBlock();
 		
 		if(Molpy.Got('Sand to Glass'))
 			Molpy.DigGlass(Molpy.glassPermNP);
