@@ -2717,7 +2717,7 @@ Molpy.DefineBoosts=function()
 			{
 				return 'Logicat Level required for Automata Control: '+Molpify(440*50000/Molpy.CastleTools['NewPixBot'].amount,3);
 			}
-			if(Molpy.GlassCeilingCount())
+			if(Molpy.GlassCeilingCount()&&!Molpy.Earned('Ceiling Broken'))
 			{
 				return 'To Lock or Unlock a Glass Ceiling Boost, the previous numbered Glass Ceiling Boost must be owned and all lesser numbered Glass Ceiling Boosts must not be owned.';
 			}

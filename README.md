@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.189
+- Free Advice conditional advice fix
+
 ## 3.1881
 - Fix panther salve toggle - it wasn't generic after all.
 
