@@ -26,6 +26,7 @@ For personal amusement only.
 
 ## 3.189
 - Free Advice conditional advice fix
+- Changed Imprevious Ninja to use Ninja Forgiveness instead of a countdown timer. Also it costs 1% of your Glass Chips in storage (minimum cost is 100 chips)
 
 ## 3.1881
 - Fix panther salve toggle - it wasn't generic after all.
