@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1881
+- Fix panther salve toggle - it wasn't generic after all.
+
 ## 3.188
 - Shopping Assistant tells you when you select an item which you already bought
 - Unflipped some important lines in MHP Goat

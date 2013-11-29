@@ -2616,7 +2616,7 @@ Molpy.DefineBoosts=function()
 			var str='"It\'s some kind of paste."<br>Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 10 Glass Blocks per use.<br>Also unlocks some additional boosts with use.'
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
+				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce 100 Glass Chips';
@@ -4819,10 +4819,13 @@ Molpy.DefineBoosts=function()
 		return 'If active during a Blast furance run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
 		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	
-	Molpy.GenericToggle=function(myid)
+	Molpy.GenericToggle=function(myid,negate)
 	{
 		var me = Molpy.BoostsById[myid];
-		me.power=1*!me.power;      
+		if(negate)
+			me.power=-me.power;
+		else
+			me.power=1*!me.power;      
 		me.hoverOnCounter=1;
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);
 	}
