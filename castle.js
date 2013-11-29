@@ -2162,6 +2162,7 @@ Molpy.Up=function()
 			{
 				Molpy.EarnBadge('Ninja Unity');
 			}	
+			if(Molpy.Got('Stealth Cam'))Molpy.Shutter();
 				
 		}
 		Molpy.CalcStealthBuild=function(vj,spend)

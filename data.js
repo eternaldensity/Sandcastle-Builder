@@ -4857,6 +4857,7 @@ Molpy.DefineBoosts=function()
 	}
 	
 	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:'You can win/lose Glass Chips from the Monty Haul Problem',sand:'1P',castles:'1T',glass:'1K'});
+	new Molpy.Boost({name:'Stealth Cam',desc:'Camera is activated when Ninja Stealth is increased',glass:'1M',group:'ninj'});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
@@ -5596,6 +5597,10 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.groupBadgeCounts.discov>10&&Molpy.Earned("Dude, Where's my DeLorean?"))
 	{
 		Molpy.UnlockBoost('Memories Revisited');
+	}
+	if(Molpy.groupBadgeCounts.discov>100)
+	{
+		Molpy.UnlockBoost('Stealth Cam');
 	}
 	if(Molpy.groupBadgeCounts.monums>10&&Molpy.Got('Memories Revisited'))
 	{
