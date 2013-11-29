@@ -2362,7 +2362,14 @@ Molpy.DefineBoosts=function()
     var c = -2*bl.power*.99;
 
     var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
-    var cost = Molpy.SandPurifierUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+
+    var backoff = 1;
+    while (1) {
+    	var cost = Molpy.SandPurifierUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+	if (Molpy.HasGlassBlocks(cost)) break;
+	upgrades -= backoff;
+	backoff*=2;
+    }
 
 	Molpy.SpendGlassBlocks(cost);
 	Molpy.Boosts['Sand Purifier'].power+= upgrades;
@@ -2379,7 +2386,13 @@ Molpy.DefineBoosts=function()
     var c = -2*ch.power*.99;
 
     var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
-    var cost = Molpy.GlassExtruderUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+    var backoff = 1;
+    while (1) {
+    	var cost = Molpy.GlassExtruderUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+	if (Molpy.HasGlassChips(cost)) break;
+	upgrades -= backoff;
+	backoff*=2;
+    }
 
 	Molpy.SpendGlassChips(cost);
 	Molpy.Boosts['Glass Extruder'].power+= upgrades;
