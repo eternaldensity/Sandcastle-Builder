@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1881;
+		Molpy.version=3.189;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -980,6 +980,16 @@ Molpy.Up=function()
 			if(version<3.187)
 			{
 				if(Molpy.Boosts['MHP'].power>12)Molpy.Boosts['MHP'].power=12;
+			}
+			if(version<3.189)
+			{
+				if(Molpy.Got('Impervious Ninja'))
+				{
+					var imp = Molpy.Boosts['Impervious Ninja'];
+					imp.power=Math.ceil(imp.countdown/1000);
+					imp.countdown=0;
+					Molpy.Notify('Impervious Ninja change: it now gives '+Molpify(imp.power)+' Ninja Forgiveness, rather than a countdown. Also it uses 1% of your Glass Chips (in storage) per use.',1);
+				}
 			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{	
@@ -2205,8 +2215,22 @@ Molpy.Up=function()
 		
 		Molpy.NinjaUnstealth=function()
 		{
-			if(Molpy.Got('Impervious Ninja'))return 0; //Safe
 			if(!Molpy.ninjaStealth)return 0; //Nothing to lose!
+			if(Molpy.Got('Impervious Ninja'))
+			{
+				var payment = Math.floor(Molpy.Boosts['GlassChips'].power*.01);
+				if(payment>=100)
+				{
+					Molpy.SpendGlassChips(payment);
+					Molpy.Notify('Ninja Forgiven',1);
+					Molpy.Boosts['Impervious Ninja'].power--;
+					if(Molpy.Boosts['Impervious Ninja'].power<=0)
+					{
+						Molpy.LockBoost('Impervious Ninja');
+					}
+					return 0; //Safe
+				}
+			}
 			if(Molpy.Got('Ninja Hope')&&Molpy.Boosts['Ninja Hope'].power)
 			{
 				if(Molpy.castles>=10){
@@ -3074,7 +3098,10 @@ Molpy.Up=function()
 			this.describe=function()
 			{			
 				if(!Molpy.boostSilence)
-					Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this),1);
+				{
+					var desc = EvalMaybeFunction(this.desc,this);
+					if(desc)Molpy.Notify(this.name + ': ' +desc ,1);
+				}
 			}
 			
 			Molpy.Boosts[this.alias]=this;
@@ -5292,7 +5319,7 @@ Molpy.Up=function()
 		g('ninjatimestat').innerHTML=Molpify(Molpy.ninjaTime/Molpy.NPlength,1)+'mNP';		
 		g('ninjastealthstat').innerHTML=Molpify(Molpy.ninjaStealth,1)+'NP';	
 		g('ninjaforgivestat').innerHTML=Molpify(Molpy.Boosts['Ninja Hope'].power*Molpy.Got('Ninja Hope')
-			+Molpy.Boosts['Ninja Penance'].power*Molpy.Got('Ninja Penance'));		
+			+Molpy.Boosts['Ninja Penance'].power*Molpy.Got('Ninja Penance')+Molpy.Boosts['Impervious Ninja'].power*Molpy.Got('Impervious Ninja'));		
 		
 		g('loadcountstat').innerHTML=Molpify(Molpy.loadCount,1);
 		g('savecountstat').innerHTML=Molpify(Molpy.saveCount,1);	

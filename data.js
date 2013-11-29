@@ -690,7 +690,7 @@ Molpy.DefineBoosts=function()
 				Molpy.Notify('That door has already been opened.');
 				regturn;
 			}
-			Molpy.AwardMonty();
+			Molpy.RewardMonty();
 		}else
 		{
 			Function('me',BeanishToCuegish(Molpy.MontyMethod))(me);
@@ -701,14 +701,14 @@ Molpy.DefineBoosts=function()
 				return;
 			}else
 			{
-				Molpy.AwardMonty();				
+				Molpy.RewardMonty();				
 			}
 		}
 		
 		Molpy.LockBoost('MHP');
 	}
 	Molpy.GetDoor=function(){return GLRschoice(Molpy.MontyDoors);}
-	Molpy.AwardMonty=function()
+	Molpy.RewardMonty=function()
 	{
 		var me=Molpy.Boosts['MHP'];
 		if(me.door==me.prize)
@@ -2952,10 +2952,13 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	new Molpy.Boost({name:'Impervious Ninja',desc:
-		function(me){return 'You cannot lose Ninja Stealth for '+Molpify(me.countdown,3)+'mNP';}
-		,group:'ninj',logic:2,startCountdown:function()
+		function(me){
+			if(me.power<=0)return '';
+			return 'Provides Ninja Forgiveness, up to '+Molpify(me.power)+' time'+plural(me.power)+'.<br>This costs 1% of your Glass Chips in storage, with a minimum payment of 100 Chips.';
+		}
+		,group:'ninj',logic:2,startPower:function()
 		{
-			return Math.min(50000, Molpy.LogiMult('.5K'));
+			return Math.floor(Math.min(50, Molpy.LogiMult(.5)+Molpy.ONGelapsed/(Molpy.NPlength*1000)));
 		}
 		,className:'alert',icon:'impninja'
 	});
