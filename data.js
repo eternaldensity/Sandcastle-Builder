@@ -1636,6 +1636,7 @@ Molpy.DefineBoosts=function()
 		var donkey=Molpy.Boosts['Shopping Assistant'];
 		donkey.power=0;
 		var name = prompt('Enter the name of the tool or boost you wish to buy whenever ASHF is active.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is preserved if you reload.',Molpy.shoppingItem||'Bag');
+		var notify=1;
 		if(name)
 		{
 			var item=Molpy.SandTools[name] || Molpy.CastleTools[name];
@@ -1656,13 +1657,19 @@ Molpy.DefineBoosts=function()
 				{
 					item=Molpy.Boosts[Molpy.BoostAKA[name]];
 				}
-				if(item && !item.bought)
+				if(item)
 				{
-					donkey.power=item.id;
+					if(item.bought)
+					{
+						Molpy.Notify('You have already bought '+item.name);
+						notify=0;
+					}else{
+						donkey.power=item.id;
+					}
 				}
 			}
 		}
-		Molpy.SelectShoppingItem(1)
+		Molpy.SelectShoppingItem(notify)
 	}
 	Molpy.SelectShoppingItem=function(notify)
 	{
