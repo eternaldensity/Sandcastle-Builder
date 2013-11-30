@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1892
+- Nerf Castle Crush (wondered when that would get noticed :P)
+
 ## 3.1891
 - Negative chips fix, new badge, glass production stats - waveney
 - Glass production stats take Furnace Crossfeed/Multitasking into account

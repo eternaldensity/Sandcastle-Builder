@@ -2376,6 +2376,7 @@ Molpy.DefineBoosts=function()
 
 	Molpy.recalculateDig=1;
 	Molpy.Notify('Sand Purifier upgraded '+Molpify(upgrades,2) + ' times' ,1);
+	_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Sand Purifier']);	
     }
 
     Molpy.SeaishGlassExtruder=function()
@@ -2668,7 +2669,7 @@ Molpy.DefineBoosts=function()
 		}
 		var c = Math.floor(Molpy.castles/2);
 		Molpy.Destroy(c);
-		if(Molpy.Got('Blitzing'))c*=(Molpy.Boosts['Blitzing'].power/100)
+		if(Molpy.Got('Blitzing'))c*=8;
 		Molpy.Dig(c);
 		Molpy.Boosts['Castle Crusher'].power++;
 		Molpy.LockBoost('Castle Crusher');
