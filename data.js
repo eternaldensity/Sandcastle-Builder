@@ -688,7 +688,7 @@ Molpy.DefineBoosts=function()
 			if(me.door==me.goat)
 			{
 				Molpy.Notify('That door has already been opened.');
-				regturn;
+				return;
 			}
 			Molpy.RewardMonty();
 		}else
@@ -5490,8 +5490,64 @@ Molpy.DefineBadges=function()
     Molpy.MakeQuadBadge({np:1689,name:'Weird shadows',desc:'Megan: When I stare down at mine for long enough while I walk, it starts to look really weird'});
     Molpy.MakeQuadBadge({np:1692,name:'Better than following the Sea',desc:'Megan drops a big clue as to what direction they were travelling when they started'});
 	
-	
-	
+	Molpy.MakeQuadBadge({np:1707,name:'Pass it up',desc:'Bags are handed up from Cueball to Megan'});
+	Molpy.MakeQuadBadge({np:1708,name:'Have a hand',desc:'Megan helps Cueball up the escarpment'});
+	Molpy.MakeQuadBadge({np:1713,name:'Easier up here',desc:'Cueball: It\'s prettier right by the river but it\'s easier to wlak up here'});
+	Molpy.MakeQuadBadge({np:1714,name:'Greener further up',desc:'Megan: Well, it all gets greener further up'});
+	Molpy.MakeQuadBadge({np:1718,name:'Moutains are farther',desc:'Cueball: The mountains are further away than they looked'});
+	Molpy.MakeQuadBadge({np:1739,name:'Snake!',desc:'Cueball sees a snake'});
+	Molpy.MakeQuadBadge({np:1740,name:'Fall',desc:'Cueball falls on top of Megan'});
+	Molpy.MakeQuadBadge({np:1742,name:'Are you OK?',desc:'Megan checks up on Cueball'});
+	Molpy.MakeQuadBadge({np:1743,name:'I think so',desc:'He is OK'});
+	Molpy.MakeQuadBadge({np:1744,name:'Bite you?',desc:'He hasn\'t been bitten'});
+	Molpy.MakeQuadBadge({np:1745,name:'What kind?',desc:'Megan asks about the type of snake'});
+	Molpy.MakeQuadBadge({np:1746,name:'Brownish and shiny, kind of blotchy',desc:'The snake is described'});
+	Molpy.MakeQuadBadge({np:1747,name:'Spikes over eyes?',desc:'Megan asks if it has spikes over its eyes'});
+	Molpy.MakeQuadBadge({np:1748,name:'Head and tail',desc:'Cueball: It was weird, stubby at both ends, like it forgot to have a head and tail'});
+	Molpy.MakeQuadBadge({np:1749,name:'Hmm...',desc:'Megan ponders'});
+	Molpy.MakeQuadBadge({np:1750,name:'Go around',desc:'Megan: No idea, but let\'s go around and watch your feet'});
+	Molpy.MakeQuadBadge({np:1758,name:'No snakes',desc:'Megan checks a new way up'});
+	Molpy.MakeQuadBadge({np:1793,name:'Looking Back',desc:'Megan keeps looking back'});
+	Molpy.MakeQuadBadge({np:1795,name:'Almost see the sea',desc:'Megan: I think I can almost see the sea from here'});
+	Molpy.MakeQuadBadge({np:1797,name:'Hard to tell',desc:'Cueball: I don\'t know.  It\'s hard to tell what\'s land and what\'s sky'});
+	Molpy.MakeQuadBadge({np:1802,name:'Beesnake',desc:'Megan observes a beesnake'});
+	Molpy.MakeQuadBadge({np:1821,name:'Cooler',desc:'Megan: It\'s cooler up here'});
+	Molpy.MakeQuadBadge({np:1826,name:'Quiet chirps',desc:'Cueball: Are you hearing quiet chirps?'});
+	Molpy.MakeQuadBadge({np:1828,name:'Not now',desc:'Cueball has stopped hearing them'});
+	Molpy.MakeQuadBadge({np:1830,name:'Sky chirps',desc:'Megan: I heard chirps from the sky once'});
+	Molpy.MakeQuadBadge({np:1831,name:'Stars and chips',desc:'Megan says she heard peeping while looking at stars'});
+	Molpy.MakeQuadBadge({np:1832,name:'Stars flicker',desc:'Megan thought she saw a few stars flicker'});
+	Molpy.MakeQuadBadge({np:1837,name:'Chirp',desc:'A quiet chirp'});
+	Molpy.MakeQuadBadge({np:1838,name:'Another Chirp',desc:'Another chirp - Megan looks up'});
+	Molpy.MakeQuadBadge({np:1839,name:'Chirps ahead',desc:'Cueball: It\'s coming from up ahead'});
+	Molpy.MakeQuadBadge({np:1840,name:'Chirp three',desc:'They investigate the chirps'});
+	Molpy.MakeQuadBadge({np:1844,name:'Chirp in a tree',desc:'A Chirp is in a tree'});
+	Molpy.MakeQuadBadge({np:1845,name:'Chirp in a tree 2',desc:'The sequal to chirp in a tree'});
+	Molpy.MakeQuadBadge({np:1847,name:'Chirp in a tree 3',desc:'The Chirps in trees trilogy continues'});
+	Molpy.MakeQuadBadge({np:1848,name:'Megan Chirps',desc:'Megan tries saying Chirp back'});
+	Molpy.MakeQuadBadge({np:1849,name:'Chirp in a tree 4',desc:'The chirp trilogy part 4'});
+	Molpy.MakeQuadBadge({np:1850,name:'Megan chirps again',desc:'This is getting repetative'});
+	Molpy.MakeQuadBadge({np:1852,name:'Why is it chriping',desc:'They wonder why it is chirping'});
+	Molpy.MakeQuadBadge({np:1853,name:'Chirp in a tree 5',desc:'The fifth part of the trilogy'});
+	Molpy.MakeQuadBadge({np:1854,name:'Angry',desc:'Megan: I guess it\'s angry that we\'re here'});
+	Molpy.MakeQuadBadge({np:1855,name:'Chirp in a tree 6',desc:'The chirp trilogy part IV'});
+	Molpy.MakeQuadBadge({np:1857,name:'Chirp in a tree 7',desc:'Another chirp, another raptor flying in'});
+	Molpy.MakeQuadBadge({np:1859,name:'Chirp in a tree 8',desc:'Another chirp, the other raptor is closing in'});
+	Molpy.MakeQuadBadge({np:1860,name:'Nearly There',desc:'Raptor close to Chirp'});
+	Molpy.MakeQuadBadge({np:1862,name:'What\'s it doing?',desc:'Megan: What\'s it doing? Cueball: I think it gave it something '});
+	Molpy.MakeQuadBadge({np:1863,name:'Oh Food',desc:'Megan: Oh! Food!  I bet the loud one is a baby'});
+	Molpy.MakeQuadBadge({np:1864,name:'Chirp Chirp',desc:'2 chirps in a tree'});
+	Molpy.MakeQuadBadge({np:1865,name:'Both Loud',desc:'Cueball: Now they\'re both loud'});
+	Molpy.MakeQuadBadge({np:1866,name:'CHIRP',desc:'A loud Chirp'});
+	Molpy.MakeQuadBadge({np:1867,name:'Not going to eat you',desc:'They say they are not eating them but are not believed'});
+	Molpy.MakeQuadBadge({np:1868,name:'Protecting Baby',desc:'Megan: That\'s OK.  It\'s just protecting its baby'});
+	Molpy.MakeQuadBadge({np:1869,name:'CHIRP again',desc:'The parent raptor give a loud chirp'});
+	Molpy.MakeQuadBadge({np:1870,name:'Water ahead',desc:'Megan thinks she can see water up ahead'});
+	Molpy.MakeQuadBadge({np:1874,name:'Doing a good job',desc:'Cueball: Don\'t worry!  You\'re doing a good job'});
+	Molpy.MakeQuadBadge({np:1885,name:'Hi!',desc:'Megan: leaps from a tree saying Hi!'});
+	Molpy.MakeQuadBadge({np:1886,name:'Splat!',desc:'Megan lands on Cueball!'});
+	Molpy.MakeQuadBadge({np:1888,name:'Tiny River',desc:'Megan has found a tiny river'});
+	Molpy.MakeQuadBadge({np:1890,name:'You OK?',desc:'Megan checks Cueball is OK'});
 	//Molpy.MakeQuadBadge({np:,name:'',desc:''});
 }
 
