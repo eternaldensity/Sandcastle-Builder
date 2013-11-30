@@ -28,7 +28,8 @@ For personal amusement only.
 - Nerf Castle Crush (wondered when that would get noticed :P)
 - Plug Temporal Rift hole
 - Glass Monument fix (wasn't setting previewNP back to 0 in one case)
-- A few new discoveries
+- A few new discoveries and a badge
+- Fiddled with MHP a little but don't think I fixed whatever's messing up the price displace for some :(
 
 ## 3.1891
 - Negative chips fix, new badge, glass production stats - waveney

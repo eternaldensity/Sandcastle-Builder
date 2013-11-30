@@ -654,14 +654,14 @@ Molpy.DefineBoosts=function()
 		},
 		sand:function()
 		{
-			var acPower = Molpy.Boosts['MHP'].power;
-			return 100*Math.pow(2,Math.max(1,acPower-9));
+			var p = Molpy.Boosts['MHP'].power;
+			return 100*Math.pow(2,Math.max(1,p-9));
 		},
 		glass:function()
 		{
 			if(!Molpy.Got('HoM'))return 0;
-			var acPower = Molpy.Boosts['MHP'].power;
-			return 100*Math.pow(2,Math.max(1,acPower-15));			
+			var p = Molpy.Boosts['MHP'].power;
+			return 100*Math.pow(2,Math.max(1,p-15));			
 		},
 		icon:'monty',className:'action',
 		lockFunction:function(){

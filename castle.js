@@ -4988,7 +4988,10 @@ Molpy.Up=function()
 					bbc.power=1;
 					var mhp = Molpy.Boosts['MHP'];
 					if(mhp.unlocked&&mhp.power>20&&flandom(9)==0)
+					{
 						mhp.power--;
+						Molpy.boostRepaint=1;
+					}
 				}else{
 					bbc.power=0;
 				}
