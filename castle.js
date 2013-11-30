@@ -4851,15 +4851,16 @@ Molpy.Up=function()
 	}
 	Molpy.ONG=function()
 	{
-		Molpy.newpixNumber+=1;
+		Molpy.newpixNumber+=(Molpy.newpixNumber>0?1:-1);
 		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',''+Molpy.newpixNumber,true]);
 		
-		if(Molpy.newpixNumber > Molpy.highestNPvisited)
+		var np=Math.abs(Molpy.newpixNumber);
+		if(np > Molpy.highestNPvisited)
 		{
-			Molpy.highestNPvisited=Molpy.newpixNumber;
+			Molpy.highestNPvisited=np;
 		}else //in the past
 		{
-			if(Molpy.newpixNumber > 2)
+			if(np > 2)
 			{
 				Molpy.UnlockBoost('Time Travel');
 			}
@@ -4934,7 +4935,7 @@ Molpy.Up=function()
 		
 		Molpy.Boosts['Temporal Rift'].department=0;
 		if(Molpy.newpixNumber%
-			(50-(Molpy.Got('Time Travel')+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine'))*10)==0)
+			(50-(Molpy.Got('Time Travel')+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine')+Molpy.Earned('Minus Worlds'))*10)==0)
 		{
 			Molpy.Boosts['Temporal Rift'].department=(Math.random()*6>=5)*1;
 		}
