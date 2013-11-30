@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1861;
+		Molpy.version=3.1892;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -279,6 +279,8 @@ Molpy.Up=function()
 		Molpy.totalGlassDestroyed=0;
 		Molpy.toolsBuilt=0;
 		Molpy.toolsBuiltTotal=0;
+    		Molpy.blockspmnp = 0;
+    		Molpy.chipspmnp = 0;
 		
 		Molpy.options=[];
 		Molpy.DefaultOptions=function()
@@ -976,6 +978,20 @@ Molpy.Up=function()
 			if(version<3.186)
 			{
 				if(Molpy.Got('Price Protection'))Molpy.Boosts['Price Protection'].bought=4;
+			}
+			if(version<3.187)
+			{
+				if(Molpy.Boosts['MHP'].power>12)Molpy.Boosts['MHP'].power=12;
+			}
+			if(version<3.189)
+			{
+				if(Molpy.Got('Impervious Ninja'))
+				{
+					var imp = Molpy.Boosts['Impervious Ninja'];
+					imp.power=Math.ceil(imp.countdown/1000);
+					imp.countdown=0;
+					Molpy.Notify('Impervious Ninja change: it now gives '+Molpify(imp.power)+' Ninja Forgiveness, rather than a countdown. Also it uses 1% of your Glass Chips (in storage) per use.',1);
+				}
 			}
 			if(version<Molpy.version) //hey let's do this every upgrade!
 			{	
@@ -1683,27 +1699,39 @@ Molpy.Up=function()
 		Molpy.MakeChips=function()
 		{
 			var furnaceLevel=(Molpy.Boosts['Sand Refinery'].power)+1;
-			Molpy.AddChips(furnaceLevel);
+			Molpy.AddChips(furnaceLevel,1);
 		}
 		Molpy.chipAddAmount=0;
 		Molpy.chipWasteAmount=0;
-		Molpy.AddChips=function(amount)
+		Molpy.AddChips=function(amount,expand)
 		{
-			Molpy.UnlockBoost('Glass Chip Storage');
-			var ch = Molpy.Boosts['Glass Chip Storage'];
+			Molpy.UnlockBoost('GlassChips');
+			var ch = Molpy.Boosts['GlassChips'];
 			if(!ch.bought)
 			{
 				ch.buy();
 			}
 			ch.power+=amount;
 			var waste = Math.max(0,ch.power-(ch.bought)*10);
-			ch.power-=waste;
-			amount-=waste;
-			Molpy.chipAddAmount+=amount;
-			Molpy.chipWasteAmount+=waste;
+			if (waste && expand && Molpy.Boosts['Stretchable Chip Storage'].power)
+			{
+				ch.power -= amount;
+				ch.bought += Math.floor(amount/4.5);
+			}
+			else
+			{
+				if (waste)
+				{
+					ch.power-=waste;
+					amount-=waste;
+					Molpy.chipWasteAmount+=waste;
+					if (Molpy.chipWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Chip Storage');
+				}
+				Molpy.chipAddAmount+=amount;
+			}			
 			if(Molpy.Boosts['Expando'].power)
 			{
-				Molpy.Boosts['Glass Chip Storage'].hoverOnCounter=1;
+				Molpy.Boosts['GlassChips'].hoverOnCounter=1;
 				Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
 				Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
 			}
@@ -1715,7 +1743,7 @@ Molpy.Up=function()
 			var chillerLevel=(Molpy.Boosts['Glass Chiller'].power)+1;
 			var chipsFor=chillerLevel;
 			
-			var ch = Molpy.Boosts['Glass Chip Storage'];
+			var ch = Molpy.Boosts['GlassChips'];
 			var rate=Molpy.ChipsPerBlock();
 			while(ch.power < chipsFor*rate)
 			{
@@ -1731,29 +1759,38 @@ Molpy.Up=function()
 			}
 			ch.power-=chipsFor*rate;
 			Molpy.chipAddAmount-=chipsFor*rate;
-			Molpy.AddBlocks(chillerLevel);
+			Molpy.AddBlocks(chillerLevel,1);
 		}
-		Molpy.AddBlocks=function(amount)
+		Molpy.AddBlocks=function(amount,expand)
 		{
-			Molpy.UnlockBoost('Glass Block Storage');
-			var bl = Molpy.Boosts['Glass Block Storage'];
+			Molpy.UnlockBoost('GlassBlocks');
+			var bl = Molpy.Boosts['GlassBlocks'];
 			if(!bl.bought)
 			{
 				bl.buy();
 			}
 			bl.power+=amount;
 			var waste = Math.max(0,bl.power-(bl.bought)*50);
-			bl.power-=waste;
-			amount-=waste;
-			if(amount)
-            {
-				Molpy.EarnBadge('Glassblower');
+			if (waste && expand && Molpy.Boosts['Stretchable Block Storage'].power)
+			{
+				bl.power -= amount;
+				bl.bought += Math.floor(amount/13.5);
 			}
-			Molpy.blockAddAmount+=amount;
-			Molpy.blockWasteAmount+=waste;
+			else
+			{
+				if (waste)
+				{
+				bl.power-=waste;
+				amount-=waste;
+				Molpy.blockWasteAmount+=waste;
+				if (Molpy.blockWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Block Storage');
+				}
+				if(amount) Molpy.EarnBadge('Glassblower');
+				Molpy.blockAddAmount+=amount;
+			}
 			if(Molpy.Boosts['Expando'].power)
 			{
-				Molpy.Boosts['Glass Block Storage'].hoverOnCounter=1;
+				Molpy.Boosts['GlassBlocks'].hoverOnCounter=1;
 				Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
 				Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
 			}
@@ -1766,9 +1803,9 @@ Molpy.Up=function()
 			Molpy.chipWasteAmount=Math.round(Molpy.chipWasteAmount);
 			Molpy.blockAddAmount=Math.round(Molpy.blockAddAmount);
 			Molpy.blockWasteAmount=Math.round(Molpy.blockWasteAmount);
-			if(Molpy.chipAddAmount>0 && !Molpy.Boosts['AA'].power && Molpy.chipAddAmount*Molpy.glassNotifyFactor > Molpy.Boosts['Glass Chip Storage'].power)
+			if(Molpy.chipAddAmount>0 && !Molpy.Boosts['AA'].power && Molpy.chipAddAmount*Molpy.glassNotifyFactor > Molpy.Boosts['GlassChips'].power)
 				Molpy.Notify('Gained '+Molpify(Molpy.chipAddAmount,3)+' Glass Chip'+plural(Molpy.chipAddAmount),1);
-			if(Molpy.chipAddAmount<0 && (-Molpy.chipAddAmount*Molpy.glassNotifyFactor) > Molpy.Boosts['Glass Chip Storage'].power)
+			if(Molpy.chipAddAmount<0 && (-Molpy.chipAddAmount*Molpy.glassNotifyFactor) > Molpy.Boosts['GlassChips'].power)
 				Molpy.Notify('Consumed '+Molpify(-Molpy.chipAddAmount,3)+' Glass Chip'+plural(-Molpy.chipAddAmount),1);
 			Molpy.chipAddAmount=0;
 			
@@ -1776,9 +1813,9 @@ Molpy.Up=function()
 				Molpy.Notify('Not enough Chip Storage for '+Molpify(Molpy.chipWasteAmount)+' Glass Chip'+plural(Molpy.chipWasteAmount),1);
 			Molpy.chipWasteAmount=0;
 			
-			if(Molpy.blockAddAmount>0 && !Molpy.Boosts['AA'].power && Molpy.blockAddAmount*Molpy.glassNotifyFactor > Molpy.Boosts['Glass Block Storage'].power)
+			if(Molpy.blockAddAmount>0 && !Molpy.Boosts['AA'].power && Molpy.blockAddAmount*Molpy.glassNotifyFactor > Molpy.Boosts['GlassBlocks'].power)
 				Molpy.Notify('Gained '+Molpify(Molpy.blockAddAmount,3)+' Glass Block'+plural(Molpy.blockAddAmount),1);
-			if(Molpy.blockAddAmount<0 && (-Molpy.blockAddAmount*Molpy.glassNotifyFactor) > Molpy.Boosts['Glass Block Storage'].power)
+			if(Molpy.blockAddAmount<0 && (-Molpy.blockAddAmount*Molpy.glassNotifyFactor) > Molpy.Boosts['GlassBlocks'].power)
 				Molpy.Notify('Consumed '+Molpify(-Molpy.blockAddAmount,3)+' Glass Block'+plural(-Molpy.blockAddAmount),1);
 			Molpy.blockAddAmount=0;
 			
@@ -1989,16 +2026,17 @@ Molpy.Up=function()
 							var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
 							var absMaxGlass=maxGlass;
 							var rate = Molpy.ChipsPerBlock();
-							maxGlass=Math.min(maxGlass,Math.floor((Molpy.Boosts['Tool Factory'].power-5)/rate));
+							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
 							var leave = 0;
 							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
 							{
 								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
 							}
-							maxGlass=Math.min(maxGlass,Molpy.Boosts['Glass Block Storage'].bought*50-Molpy.Boosts['Glass Block Storage'].power - leave);
+							maxGlass=Math.min(maxGlass,Molpy.Boosts['GlassBlocks'].bought*50-Molpy.Boosts['GlassBlocks'].power - leave);
 							maxGlass=Math.max(maxGlass,0);
 							Molpy.AddBlocks(maxGlass);
 							Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
+							Molpy.Boosts['Tool Factory'].power=Math.max(0,Molpy.Boosts['Tool Factory'].power);
 							if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)
 								Molpy.Boosts['Glass Saw'].power=p*2;
 						}
@@ -2124,6 +2162,7 @@ Molpy.Up=function()
 			{
 				Molpy.EarnBadge('Ninja Unity');
 			}	
+			if(Molpy.Got('Stealth Cam'))Molpy.Shutter();
 				
 		}
 		Molpy.CalcStealthBuild=function(vj,spend)
@@ -2179,8 +2218,22 @@ Molpy.Up=function()
 		
 		Molpy.NinjaUnstealth=function()
 		{
-			if(Molpy.Got('Impervious Ninja'))return 0; //Safe
 			if(!Molpy.ninjaStealth)return 0; //Nothing to lose!
+			if(Molpy.Got('Impervious Ninja'))
+			{
+				var payment = Math.floor(Molpy.Boosts['GlassChips'].power*.01);
+				if(payment>=100)
+				{
+					Molpy.SpendGlassChips(payment);
+					Molpy.Notify('Ninja Forgiven',1);
+					Molpy.Boosts['Impervious Ninja'].power--;
+					if(Molpy.Boosts['Impervious Ninja'].power<=0)
+					{
+						Molpy.LockBoost('Impervious Ninja');
+					}
+					return 0; //Safe
+				}
+			}
 			if(Molpy.Got('Ninja Hope')&&Molpy.Boosts['Ninja Hope'].power)
 			{
 				if(Molpy.castles>=10){
@@ -3048,7 +3101,10 @@ Molpy.Up=function()
 			this.describe=function()
 			{			
 				if(!Molpy.boostSilence)
-					Molpy.Notify(this.name + ': ' + EvalMaybeFunction(this.desc,this),1);
+				{
+					var desc = EvalMaybeFunction(this.desc,this);
+					if(desc)Molpy.Notify(this.name + ': ' +desc ,1);
+				}
 			}
 			
 			Molpy.Boosts[this.alias]=this;
@@ -3738,7 +3794,7 @@ Molpy.Up=function()
 			
 			bonus = Math.floor(bonus);
 			Molpy.Build(bonus);
-			if(Molpy.Got('Glass Block Storage'))
+			if(Molpy.Got('GlassBlocks'))
 			{
 				var gift=1;
 				if(Molpy.Got('SGC'))gift+=Molpy.redactedClicks*Molpy.Boosts['Logicat'].bought;
@@ -4678,6 +4734,11 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
+		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *Molpy.Boosts['Furnace Multitasking'].power
+			*(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 );
+		Molpy.chipspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power * Molpy.Boosts['Furnace Crossfeed'].power 
+			*(Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power)/2 ) - Molpy.blockspmnp*Molpy.ChipsPerBlock();
+		
 		if(Molpy.Got('Sand to Glass'))
 			Molpy.DigGlass(Molpy.glassPermNP);
 		Molpy.GlassNotifyFlush()
@@ -4723,6 +4784,7 @@ Molpy.Up=function()
 	var oldBeachClass='';
 	Molpy.UpdateBeachClass=function(stateClass)
 	{
+		stateClass=stateClass||'';
 		if(Molpy.Boosts['Beachball'].power)
 		{
 			if(oldBeachClass!=stateClass)
@@ -5266,7 +5328,7 @@ Molpy.Up=function()
 		g('ninjatimestat').innerHTML=Molpify(Molpy.ninjaTime/Molpy.NPlength,1)+'mNP';		
 		g('ninjastealthstat').innerHTML=Molpify(Molpy.ninjaStealth,1)+'NP';	
 		g('ninjaforgivestat').innerHTML=Molpify(Molpy.Boosts['Ninja Hope'].power*Molpy.Got('Ninja Hope')
-			+Molpy.Boosts['Ninja Penance'].power*Molpy.Got('Ninja Penance'));		
+			+Molpy.Boosts['Ninja Penance'].power*Molpy.Got('Ninja Penance')+Molpy.Boosts['Impervious Ninja'].power*Molpy.Got('Impervious Ninja'));		
 		
 		g('loadcountstat').innerHTML=Molpify(Molpy.loadCount,1);
 		g('savecountstat').innerHTML=Molpify(Molpy.saveCount,1);	
@@ -5282,9 +5344,12 @@ Molpy.Up=function()
 		g('redactedstat').innerHTML=Molpy.redactedWords + ": " + Molpify(Molpy.redactedClicks,1);		
 		g('redactedmaxstat').innerHTML='Max '+Molpy.redactedWord + " Chain: " + Molpify(Molpy.redactedChainMax,1);		
 		
-		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['Glass Chip Storage'].power,4);
-		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['Glass Block Storage'].power,4);
+		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['GlassChips'].power,4);
+		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['GlassBlocks'].power,4);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),6)+'%';
+	    	g('chipspmnp').innerHTML = Molpify(Molpy.chipspmnp,3);
+    		g('blockspmnp').innerHTML = Molpify(Molpy.blockspmnp,3);
+		
 		g('blackstat').innerHTML='Collected '+Molpify(+Molpy.Boosts['Blackprints'].power
 			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
       

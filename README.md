@@ -2,6 +2,10 @@
 
 xkcd: 1190: Time: The Game
 
+This is an Idle Game written in Javascript. It is based on the xkcd comic 1190: Time, especially the forum thread about that comic. (These are known as the One True Comic and One True Thread among devotees (or 'OTTers').
+
+The game is currently hosted at http://castle.chirpingmustard.com
+
 ## Credits
 
 Code mostly by Eternal Density.
@@ -19,6 +23,48 @@ Inspired by Orteil's C**kie Clicker.
 For personal amusement only.
 
 ## Changelog
+
+## 3.1892
+- Nerf Castle Crush (wondered when that would get noticed :P)
+
+## 3.1891
+- Negative chips fix, new badge, glass production stats - waveney
+- Glass production stats take Furnace Crossfeed/Multitasking into account
+- New Boost for those who forget to operate their camera
+
+## 3.189
+- Free Advice conditional advice fix
+- Changed Imprevious Ninja to use Ninja Forgiveness instead of a countdown timer. Also it costs 1% of your Glass Chips in storage (minimum cost is 100 chips)
+
+## 3.1881
+- Fix panther salve toggle - it wasn't generic after all.
+
+## 3.188
+- Shopping Assistant tells you when you select an item which you already bought
+- Unflipped some important lines in MHP Goat
+
+## 3.1871
+- Missed a . because HAAAAAAAAANDS (this is github's fault for complicated reasons I won't get into)
+- So, how about capitalising a critical new function... and then not?
+- Funny how both problems were caused by me modifying waveney's code :P I guess I shouldn't.
+
+
+## 3.187
+- Small buff from Panther Rush to Panther Poke
+- Fixed out of control MHP pricing (multiply instead of a divide)
+- Waveney's stretchable glass storage (heh, I actually need that in-game right now!)
+- Apostrophe missing from a discovery (waveney fixing his own problem :P)
+- Redundancy Removal: All the simple toggle boosts use the same toggle function now (rather than copypaste with names changed)
+- Aliased Glass Chip Storage and Glass Block Storage to GlassChips and GlassBlocks to make the code shorter
+- Hall of Mirrors boost (guess what that does!)
+- Prevent Hauling of fractional castles
+- Ensure Glass Saw can't leave your chip balance negative
+
+## 3.1863
+- Wasn't using the alias for the cards everywhere (ACTUALLY fixes gold and silver card)
+
+## 3.1862
+- Alias, not Aka! (fixes gold and silver card)
 
 ## 3.1861
 - Math, it needs a capital letter!
@@ -97,7 +143,7 @@ For personal amusement only.
 - Redunception doesn't notify if Expando is active
 - Automata Control optimised when you have all glass tools: no need to make tools that are about to be spent
 - Sand particles don't need transparency
-- Don't mess with transparancy of more than 8 notifications
+- Don't mess with transparency of more than 8 notifications
 - Fixed a discovery on wrong NP
 - When you Molpy Down with infinite castles, totalCastlesDown is set to Number.MAX_VALUE (previously it was unchanged if infinite castles) thanks EPSILON of DashNet IRC
 - Chromatic Heresy is related to 'hue', right? ;)
@@ -323,7 +369,7 @@ For personal amusement only.
 - Bunch of new NP-based badges, by waveney (cos I was taking too long getting around to adding them)
 - Fixxed some typoes
 - Safety Goggles prevents Safety Hat unlock
-- Glass Saw doesn't competely fill glass block storage (another waveney idea)
+- Glass Saw doesn't completely fill glass block storage (another waveney idea)
 - Pluralisation (i.e. conditional 's') finally moved to a function. Please report any resulting/remaining pluralisation errors. Once. ;)
 - CMS description clarified (I hope) a little.
 - Added a new link to the index: something which I only just discovered exists :P
@@ -583,7 +629,7 @@ For personal amusement only.
 
 ## 2.62
 - ASHF should not be given if there are no boosts available and you have infinite castles
-- Shopping Assistant no longer buys locked boosts (thus preventing weird zombie state for DoN or Crate Key or Castle Crusher prevening them from being given by department due to being simultaneously bought and locked)
+- Shopping Assistant no longer buys locked boosts (thus preventing weird zombie state for DoN or Crate Key or Castle Crusher preventing them from being given by department due to being simultaneously bought and locked)
 
 ## 2.61
 - Um, I wrote for instead of while and forgot to test

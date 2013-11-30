@@ -648,12 +648,20 @@ Molpy.DefineBoosts=function()
 					str+='Door '+door+' is a goat<br>';
 				}
 			}
-			return str+'Choose a door! You might gain half your current Castles, or you might lose them all and get a Goat';
+			str+='Choose a door! You might gain half your current Castles, or you might lose them all and get a Goat';
+			if(Molpy.Got('HoM')) str+='<br>With Hall of Mirrors, you also stand to gain a fifth of your Glass Chip Storage balance, or lose a third of it.';
+			return str;
 		},
 		sand:function()
 		{
 			var acPower = Molpy.Boosts['MHP'].power;
 			return 100*Math.pow(2,Math.max(1,acPower-9));
+		},
+		glass:function()
+		{
+			if(!Molpy.Got('HoM'))return 0;
+			var acPower = Molpy.Boosts['MHP'].power;
+			return 100*Math.pow(2,Math.max(1,acPower-15));			
 		},
 		icon:'monty',className:'action',
 		lockFunction:function(){
@@ -682,7 +690,7 @@ Molpy.DefineBoosts=function()
 				Molpy.Notify('That door has already been opened.');
 				regturn;
 			}
-			Molpy.AwardMonty();
+			Molpy.RewardMonty();
 		}else
 		{
 			Function('me',BeanishToCuegish(Molpy.MontyMethod))(me);
@@ -693,24 +701,28 @@ Molpy.DefineBoosts=function()
 				return;
 			}else
 			{
-				Molpy.AwardMonty();				
+				Molpy.RewardMonty();				
 			}
 		}
 		
 		Molpy.LockBoost('MHP');
 	}
 	Molpy.GetDoor=function(){return GLRschoice(Molpy.MontyDoors);}
-	Molpy.AwardMonty=function()
+	Molpy.RewardMonty=function()
 	{
 		var me=Molpy.Boosts['MHP'];
 		if(me.door==me.prize)
 		{
 			var amount=Molpy.castles;
 			Molpy.Notify('Hooray, you found the prize behind door '+me.door+'!');
-			Molpy.Build(Molpy.castles/2,1); 
+			Molpy.Build(Math.floor(Molpy.castles/2),1); 
+			if(Molpy.Got('HoM'))
+				Molpy.AddChips(Math.floor(Molpy.Boosts['GlassChips'].power/5),1); 
 		}else{
-			Molpy.Destroy(Molpy.castles);
-			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power*1.8));
+			Molpy.Destroy(Molpy.castles); 
+			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power/1.8));
+			if(Molpy.Got('HoM'))
+				Molpy.SpendGlassChips(Math.floor(Molpy.Boosts['GlassChips'].power/3));
 			Molpy.GetYourGoat();
 		}
 	}
@@ -730,6 +742,7 @@ Molpy.DefineBoosts=function()
 			g.power++;
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',g.name]);	
 			if(g.power>=2)Molpy.EarnBadge('Second Edition');
+			if(g.power>=20)Molpy.UnlockBoost('HoM');
 			Molpy.Notify('You got a goat!');
 	}
 	
@@ -1623,6 +1636,7 @@ Molpy.DefineBoosts=function()
 		var donkey=Molpy.Boosts['Shopping Assistant'];
 		donkey.power=0;
 		var name = prompt('Enter the name of the tool or boost you wish to buy whenever ASHF is active.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is preserved if you reload.',Molpy.shoppingItem||'Bag');
+		var notify=1;
 		if(name)
 		{
 			var item=Molpy.SandTools[name] || Molpy.CastleTools[name];
@@ -1643,13 +1657,19 @@ Molpy.DefineBoosts=function()
 				{
 					item=Molpy.Boosts[Molpy.BoostAKA[name]];
 				}
-				if(item && !item.bought)
+				if(item)
 				{
-					donkey.power=item.id;
+					if(item.bought)
+					{
+						Molpy.Notify('You have already bought '+item.name);
+						notify=0;
+					}else{
+						donkey.power=item.id;
+					}
 				}
 			}
 		}
-		Molpy.SelectShoppingItem(1)
+		Molpy.SelectShoppingItem(notify)
 	}
 	Molpy.SelectShoppingItem=function(notify)
 	{
@@ -1844,29 +1864,29 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.HasGlassBlocks=function(num)
 	{	
-		return Molpy.Boosts['Glass Block Storage'].power >= num;
+		return Molpy.Boosts['GlassBlocks'].power >= num;
 	}
 	Molpy.SpendGlassBlocks=function(num)
 	{	
-		Molpy.Boosts['Glass Block Storage'].power -= num;
+		Molpy.Boosts['GlassBlocks'].power -= num;
 		Molpy.blockAddAmount-=num;
 		if(Molpy.Boosts['Expando'].power)
 		{
-			Molpy.Boosts['Glass Block Storage'].hoverOnCounter=1;
+			Molpy.Boosts['GlassBlocks'].hoverOnCounter=1;
 			Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
 			Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
 		}
 	}
 	Molpy.HasGlassChips=function(num)
 	{	
-		return Molpy.Boosts['Glass Chip Storage'].power >= num;
+		return Molpy.Boosts['GlassChips'].power >= num;
 	}
 	Molpy.SpendGlassChips=function(num)
 	{	
-		Molpy.Boosts['Glass Chip Storage'].power -= num;
+		Molpy.Boosts['GlassChips'].power -= num;
 		if(Molpy.Boosts['Expando'].power)
 		{
-			Molpy.Boosts['Glass Chip Storage'].hoverOnCounter=1;
+			Molpy.Boosts['GlassChips'].hoverOnCounter=1;
 			Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
 			Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
 		}
@@ -1876,8 +1896,8 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Sand Refinery',desc:
 		function(me)
 		{		
-			var ch = Molpy.Boosts['Glass Chip Storage'];
-			var bl = Molpy.Boosts['Glass Block Storage'];
+			var ch = Molpy.Boosts['GlassChips'];
+			var bl = Molpy.Boosts['GlassBlocks'];
 			var str ='';
 			if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()))
 			{
@@ -1964,8 +1984,8 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.UpgradeSandRefinery=function(n)
 	{
-		var ch = Molpy.Boosts['Glass Chip Storage'];
-		var bl = Molpy.Boosts['Glass Block Storage'];
+		var ch = Molpy.Boosts['GlassChips'];
+		var bl = Molpy.Boosts['GlassBlocks'];
 		if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()*n))
 		{
 			var chipCost = (n<20?n*3:n*2.5);
@@ -1989,7 +2009,7 @@ Molpy.DefineBoosts=function()
 	Molpy.DowngradeSandRefinery=function()
 	{
 		var sr = Molpy.Boosts['Sand Refinery'];
-		var ch = Molpy.Boosts['Glass Chip Storage'];
+		var ch = Molpy.Boosts['GlassChips'];
 		if(sr.power<1)return;
 		Molpy.AddChips(1);
 		sr.power--;
@@ -1999,7 +2019,7 @@ Molpy.DefineBoosts=function()
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Sand Refinery']);	
 	}
 	
-	new Molpy.Boost({name:'Glass Chip Storage',desc:
+	new Molpy.Boost({name:'Glass Chip Storage',alias:'GlassChips',desc:
 		function(me)
 		{
 			me.power=Math.round(me.power);
@@ -2070,7 +2090,7 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.UpgradeChipStorage=function(n)
 	{
-		var ch = Molpy.Boosts['Glass Chip Storage'];
+		var ch = Molpy.Boosts['GlassChips'];
 		var cost = n*5
 		if(n>=10)cost*=.9;
 		if(ch.power>=cost)
@@ -2156,7 +2176,7 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{		
 			var str='';
-			var bl = Molpy.Boosts['Glass Block Storage'];
+			var bl = Molpy.Boosts['GlassBlocks'];
 			if(bl.power>=5)
 			{
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
@@ -2192,7 +2212,7 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.UpgradeGlassChiller=function(n)
 	{
-		var bl = Molpy.Boosts['Glass Block Storage'];
+		var bl = Molpy.Boosts['GlassBlocks'];
 		var unitCost=5;
 		if(n>10) unitCost*=.9;
 		if(bl.power>=unitCost*n && Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*n))
@@ -2208,7 +2228,7 @@ Molpy.DefineBoosts=function()
 	Molpy.DowngradeGlassChiller=function()
 	{
 		var gc = Molpy.Boosts['Glass Chiller'];
-		var bl = Molpy.Boosts['Glass Block Storage'];
+		var bl = Molpy.Boosts['GlassBlocks'];
 		if(gc.power<1)return;
 		Molpy.AddBlocks(1);
 		gc.power--;
@@ -2218,7 +2238,7 @@ Molpy.DefineBoosts=function()
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Glass Chiller']);		
 	}
 	
-	new Molpy.Boost({name:'Glass Block Storage',desc:
+	new Molpy.Boost({name:'Glass Block Storage',alias:'GlassBlocks',desc:
 		function(me)
 		{
 			me.power=Math.round(me.power);
@@ -2281,7 +2301,7 @@ Molpy.DefineBoosts=function()
 	});
 	Molpy.UpgradeBlockStorage=function(n)
 	{
-		var bl = Molpy.Boosts['Glass Block Storage'];
+		var bl = Molpy.Boosts['GlassBlocks'];
 		var cost=n*15;
 		if(n>=10)cost*=.9;
 		if(Molpy.HasGlassBlocks(cost))
@@ -2336,30 +2356,44 @@ Molpy.DefineBoosts=function()
 	
   Molpy.SeaishSandPurifier=function()
     {
-        var bl = Molpy.Boosts['Glass Block Storage'];
+        var bl = Molpy.Boosts['GlassBlocks'];
     var a = 5; // the step size in prices
     var b = 2*Molpy.SandPurifierUpgradeCost() - a;
     var c = -2*bl.power*.99;
 
     var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
-    var cost = Molpy.SandPurifierUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+
+    var backoff = 1;
+    while (1) {
+    	var cost = Molpy.SandPurifierUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+	if (Molpy.HasGlassBlocks(cost)) break;
+	upgrades -= backoff;
+	backoff*=2;
+    }
 
 	Molpy.SpendGlassBlocks(cost);
 	Molpy.Boosts['Sand Purifier'].power+= upgrades;
 
 	Molpy.recalculateDig=1;
 	Molpy.Notify('Sand Purifier upgraded '+Molpify(upgrades,2) + ' times' ,1);
+	_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Sand Purifier']);	
     }
 
     Molpy.SeaishGlassExtruder=function()
     {
-        var ch = Molpy.Boosts['Glass Chip Storage'];
+        var ch = Molpy.Boosts['GlassChips'];
     var a = 500; // the step size in prices
     var b = 2*Molpy.GlassExtruderUpgradeCost() - a;
     var c = -2*ch.power*.99;
 
     var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
-    var cost = Molpy.GlassExtruderUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+    var backoff = 1;
+    while (1) {
+    	var cost = Molpy.GlassExtruderUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+	if (Molpy.HasGlassChips(cost)) break;
+	upgrades -= backoff;
+	backoff*=2;
+    }
 
 	Molpy.SpendGlassChips(cost);
 	Molpy.Boosts['Glass Extruder'].power+= upgrades;
@@ -2371,7 +2405,7 @@ Molpy.DefineBoosts=function()
 
     Molpy.SeaishSandRefinery=function()
     {
-        var ch = Molpy.Boosts['Glass Chip Storage'];
+        var ch = Molpy.Boosts['GlassChips'];
         var extra = Math.min(Math.floor(ch.power/2.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.SandRefineryIncrement()-1));
         if (extra>20) 
         {
@@ -2394,7 +2428,7 @@ Molpy.DefineBoosts=function()
 
     Molpy.SeaishGlassChiller=function()
     {
-        var bl = Molpy.Boosts['Glass Block Storage'];
+        var bl = Molpy.Boosts['GlassBlocks'];
         var extra = Math.min(Math.floor(bl.power/4.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.GlassChillerIncrement()-1));
 		extra = Math.min(extra, Math.floor(Molpy.Boosts['Sand Refinery'].power/Molpy.ChipsPerBlock()-Molpy.Boosts['Glass Chiller'].power-2));
         if (extra>20) 
@@ -2420,18 +2454,11 @@ Molpy.DefineBoosts=function()
 		{
 			var str= 'Ninja Builder builds 100x as many Castles, at the cost of 1 Glass Block per NP.';
 			if(me.bought){
-				str+=' <input type="Button" onclick="Molpy.GlassJawToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 			}
 			return str;
 		}
 		,sand:'16M',castles:122500,icon:'glassjaw',group:'ninj',className:'toggle'});
-	Molpy.GlassJawToggle=function()
-	{
-		var gj=Molpy.Boosts['Glass Jaw'];
-		gj.power=(!gj.power)*1;
-		gj.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',gj.name]);	
-	}
 		
 	new Molpy.Boost({name:'Ninja League',desc:'Ninja Stealth is raised by 100x as much'
 		,sand:'5T',castles:'0.6T',icon:'ninjaleague',group:'ninj'});
@@ -2603,7 +2630,7 @@ Molpy.DefineBoosts=function()
 			var str='"It\'s some kind of paste."<br>Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 10 Glass Blocks per use.<br>Also unlocks some additional boosts with use.'
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.PantherSalveToggle()" value="'
+				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce 100 Glass Chips';
@@ -2624,15 +2651,7 @@ Molpy.DefineBoosts=function()
 		return str;
 	}
 	,group:'bean',className:'toggle',icon:'panthersalve'});
-	
-	Molpy.PantherSalveToggle=function()
-	{
-		var me=Molpy.Boosts['Panther Salve'];
-		me.power=-me.power;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
-	
+		
 	new Molpy.Boost({name:'Castle Crusher',desc:'<input type="Button" value="Crush" onclick="Molpy.CastleCrush()"></input> half your castles back into sand. (One use.)',
 	sand:function(){
 		return (Molpy.Boosts['Castle Crusher'].power+1)*120+'M';
@@ -2650,7 +2669,7 @@ Molpy.DefineBoosts=function()
 		}
 		var c = Math.floor(Molpy.castles/2);
 		Molpy.Destroy(c);
-		if(Molpy.Got('Blitzing'))c*=(Molpy.Boosts['Blitzing'].power/100)
+		if(Molpy.Got('Blitzing'))c*=8;
 		Molpy.Dig(c);
 		Molpy.Boosts['Castle Crusher'].power++;
 		Molpy.LockBoost('Castle Crusher');
@@ -2660,17 +2679,10 @@ Molpy.DefineBoosts=function()
 		desc:function(me)
 		{
 			if(!me.bought) return 'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.';
-			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.FurnaceCrossfeedToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 		},sand:'6.5G',castles:'.8G',icon:'furnacecrossfeed',group:'hpt',
 		buyFunction:function(){this.power=1;}
 	});
-	Molpy.FurnaceCrossfeedToggle=function()
-	{
-		var fc=Molpy.Boosts['Furnace Crossfeed'];
-		fc.power=(!fc.power)*1;
-		fc.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',fc.name]);	
-	}
 	
 	new Molpy.Boost({name:'Redundant Redundance Supply of Redundancy',alias:'RRSR',
 	desc:'The Department of Redundancy Department announces: You have exceeded your daily redundancy limit. Your primary redundancy supply will now be turned down. You can always switch to your redundant redundance supply of redundancy.',
@@ -2697,18 +2709,11 @@ Molpy.DefineBoosts=function()
 	desc:function(me)
 		{
 			if(!me.bought) return 'Blast Furnace acts as a Glass Blower instead of its previous purpose, only if Glass Blower is active. (This stacks with Furnace Crossfeed)';
-			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Blower instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.FurnaceMultitaskToggle()" value="'
+			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Blower instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
 				+(me.power? 'Dea':'A')+'ctivate"></input> (This stacks with Furnace Crossfeed)';
 		},sand:'48G',castles:'1.2G',icon:'furnacemultitask',group:'hpt',
 		buyFunction:function(){this.power=1;}
 	});
-	Molpy.FurnaceMultitaskToggle=function()
-	{
-		var fm=Molpy.Boosts['Furnace Multitasking'];
-		fm.power=(!fm.power)*1;
-		fm.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',fm.name]);	
-	}
 	
 	Molpy.redundancy=MakeRedundancy();
 	
@@ -2726,7 +2731,7 @@ Molpy.DefineBoosts=function()
 			{
 				return 'Logicat Level required for Automata Control: '+Molpify(440*50000/Molpy.CastleTools['NewPixBot'].amount,3);
 			}
-			if(Molpy.GlassCeilingCount())
+			if(Molpy.GlassCeilingCount()&&!Molpy.Earned('Ceiling Broken'))
 			{
 				return 'To Lock or Unlock a Glass Ceiling Boost, the previous numbered Glass Ceiling Boost must be owned and all lesser numbered Glass Ceiling Boosts must not be owned.';
 			}
@@ -2928,20 +2933,14 @@ Molpy.DefineBoosts=function()
 			var str='Multiplies Not Lucky bonus by '+Molpify(10000)+(inf?'':' at a cost of 30 Glass Blocks per use');
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.RRRToggle()" value="'
+				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce 300 Glass Chips';
 			return str;
 		},buyFunction:function(){this.power=1;},
 		sand:'180E',castles:'380E',glass:2500,group:'bean',className:'toggle',icon:'rrr'
-	});	Molpy.RRRToggle=function()
-	{
-		var me=Molpy.Boosts['RRR'];
-		me.power=(!me.power)*1;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
+	});	
 	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'
 		,sand:'490P',castles:'670P',glass:1500,group:'ninj',icon:'ninjaclimber'
 	});
@@ -2967,10 +2966,13 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	new Molpy.Boost({name:'Impervious Ninja',desc:
-		function(me){return 'You cannot lose Ninja Stealth for '+Molpify(me.countdown,3)+'mNP';}
-		,group:'ninj',logic:2,startCountdown:function()
+		function(me){
+			if(me.power<=0)return '';
+			return 'Provides Ninja Forgiveness, up to '+Molpify(me.power)+' time'+plural(me.power)+'.<br>This costs 1% of your Glass Chips in storage, with a minimum payment of 100 Chips.';
+		}
+		,group:'ninj',logic:2,startPower:function()
 		{
-			return Math.min(50000, Molpy.LogiMult('.5K'));
+			return Math.floor(Math.min(50, Molpy.LogiMult(.5)+Molpy.ONGelapsed/(Molpy.NPlength*1000)));
 		}
 		,className:'alert',icon:'impninja'
 	});
@@ -3011,7 +3013,7 @@ Molpy.DefineBoosts=function()
 		},
 		lockFunction:function()
 		{
-			var bl=Molpy.Boosts['Glass Block Storage'];
+			var bl=Molpy.Boosts['GlassBlocks'];
 			var win = Math.ceil(Molpy.LogiMult('2K'));
 			win = Math.floor(win/(6-this.bought));
 			
@@ -3206,21 +3208,15 @@ Molpy.DefineBoosts=function()
 			var str='Not Lucky reward gains 1% per two Ladders and Bags owned, at a cost of '+(inf?'1 Ladder and 1 Bag':'70 Glass Blocks (or 1 Ladder and 1 Bag)')+' per use.'
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.CatBagToggle()" value="'
+				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce 700 Glass Chips';
 			return str;
 		},buyFunction:function(){this.power=1;},
 		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Ladders, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Bags. If 35 Glass Blocks are not available each time (or if you have infinite Castles), a Ladder/Bag is consumed before multiplying',
-		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean',icon:'lcb'});
-	Molpy.CatBagToggle=function()
-	{
-		var me=Molpy.Boosts['LCB'];
-		me.power=(!me.power)*1;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
+		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean',icon:'lcb'
+	});
 	
 	new Molpy.Boost({name:'Catamaran',
 		desc:function(me)
@@ -3229,21 +3225,16 @@ Molpy.DefineBoosts=function()
 			var str='Not Lucky reward gains 1% 6 times per Wave and River owned, at a cost of '+(inf?'1 Wave and 1 River':'90 Glass Blocks (or 1 Wave and 1 River)')+' per use.'
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.CatamaranToggle()" value="'
+				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce 900 Glass Chips';
 			return str;
 		},buyFunction:function(){this.power=1;},
 		stats:'At a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each Wave, then at a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each River. If 45 Glass Blocks are not available each time (or if you have infinite Castles), a Wave/River is consumed before multiplying.',
-		sand:'750S',castles:'245S',glass:'4800',className:'toggle',group:'bean',icon:'catamaran'});
-	Molpy.CatamaranToggle=function()
-	{
-		var me=Molpy.Boosts['Catamaran'];
-		me.power=(!me.power)*1;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
+		sand:'750S',castles:'245S',glass:'4800',className:'toggle',group:'bean',icon:'catamaran'
+	});
+
 	
 	new Molpy.Boost({name:'Redundant Raptor',
 		desc:function(me)
@@ -3253,21 +3244,15 @@ Molpy.DefineBoosts=function()
 			
 			if(me.bought)
 			{
-				str+='<br><input type="Button" onclick="Molpy.RedRaptorToggle()" value="'
+				str+='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
 					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce '+Molpify(1200)+' Glass Chips';
 			return str;
 		},buyFunction:function(){this.power=1;},
 		stats:'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each '+Molpy.redactedWord+' click<br>The cost is waived if you have infinite Castles, since this this boost would have no effect in that circumstance',
-		sand:'930PW',castles:'824PW',glass:'4800',className:'toggle',group:'bean',icon:'redundaraptor'});
-	Molpy.RedRaptorToggle=function()
-	{
-		var me=Molpy.Boosts['Redundant Raptor'];
-		me.power=(!me.power)*1;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
+		sand:'930PW',castles:'824PW',glass:'4800',className:'toggle',group:'bean',icon:'redundaraptor'
+	});
 	
 	new Molpy.Boost({name:'Camera',desc:function(me)
 	{
@@ -3890,18 +3875,12 @@ Molpy.DefineBoosts=function()
 		{
 			var str= 'Ninja Builder\'s Castle output is multiplied by VITSSÅGEN, JA! and VITSSÅGEN, JA! is multipled by a tenth of Ninja Builder, each at a cost of 50 Glass Blocks';
 			if(me.bought){
-				str+=' <input type="Button" onclick="Molpy.NinjasawToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 			}
 			return str;
 		}
-		,sand:'450EW',castles:'75EW',glass:'1.8K',group:'ninj',className:'toggle',icon:'ninjasaw'});
-	Molpy.NinjasawToggle=function()
-	{
-		var ns=Molpy.Boosts['Ninjasaw'];
-		ns.power=(!ns.power)*1;
-		ns.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',ns.name]);	
-	}	
+		,sand:'450EW',castles:'75EW',glass:'1.8K',group:'ninj',className:'toggle',icon:'ninjasaw'
+	});	
 	
 	/*10000000*Math.pow(1.25,3090) is relevant because reasons
 		2.8310021220015596e+306*/
@@ -4412,18 +4391,11 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Stained Glass Launcher',desc:'Trebuchet Glass flinging is multiplied by the number of Glass Ceilings owned',glass:'15M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Glass Saw',desc:function(me)
 	{		
-		return (me.power>0? '':'When active, ') + 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and doubling with use.'+(me.bought?'<br><input type="Button" onclick="Molpy.GlassSawToggle()" value="'+(me.power>0? 'Dea':'A')+'ctivate"></input>':'');
+		return (me.power>0? '':'When active, ') + 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and doubling with use.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power>0? 'Dea':'A')+'ctivate"></input>':'');
 	}
 	,glass:'7M',sand:Infinity,castles:Infinity,className:'toggle',
 		buyFunction:function(){this.power=1;}
 	});
-	Molpy.GlassSawToggle=function()
-	{
-		var me=Molpy.Boosts['Glass Saw'];
-		me.power=-me.power;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
 	
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
@@ -4476,6 +4448,16 @@ Molpy.DefineBoosts=function()
 					}else break;
 				}
 			}
+			if (n > 5*Math.pow(10,51)) 
+			{		
+				str += 'No further increases are possible.'
+				if (!Molpy.Earned('Nope!'))
+				{
+					Molpy.EarnBadge('Nope!');
+					me.power = 6*Math.pow(10,51);// Evens everyone up to same value could get here between 5 and 5.00999...
+					me.className = '';
+				}
+			}
 			if(!Molpy.Boosts['No Sell'].power&&me.power>0&&Molpy.HasGlassBlocks(1e5*n))
 			{
 				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlToolFactory(-1)"></input> the rate by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Blocks.';
@@ -4483,7 +4465,7 @@ Molpy.DefineBoosts=function()
 			
 			return str;
 		}
-		,glass:'30M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',
+		,glass:'30M',sand:Infinity,castles:Infinity, group:'hpt',classChange:function(){this.className = (Molpy.Earned('Nope!')?'':'toggle')},
 		buyFunction:function(){this.power=1;}
 	});
 	Molpy.ControlToolFactory=function(n)
@@ -4500,7 +4482,7 @@ Molpy.DefineBoosts=function()
 			if(n>0)
 				_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',me.name]);	
 			else
-				_gaq&&_gaq.push(['_trackEvent','Boost','Dowgrade',me.name]);
+				_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade',me.name]);
 		}
 	}
 	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
@@ -4510,34 +4492,22 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	new Molpy.Boost({name:'Flipside',
-	desc:function(me)
-	{
-		
-		return (me.power? '':'When active, ') + 'Factory constructs Glass Tools that do not have infinite price, instead of Glass Tools that do have infinite price.'+(me.bought?'<br><input type="Button" onclick="Molpy.FlipsideToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
-	}
-	,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'});
-	Molpy.FlipsideToggle=function()
-	{
-		var me=Molpy.Boosts['Flipside'];
-		me.power=1*!me.power;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
+		desc:function(me)
+		{
+			
+			return (me.power? '':'When active, ') + 'Factory constructs Glass Tools that do not have infinite price, instead of Glass Tools that do have infinite price.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		}
+		,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'
+	});
 	
 	new Molpy.Boost({name:'Automata Assemble',alias:'AA',
-	desc:function(me)
-	{
-		
-		return (me.power? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Blast Furnace run.'+(me.bought?'<br><input type="Button" onclick="Molpy.AutoAssembleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'')+'<br>(Supresses notifications about Glass gains so you don\'t get spammed';
-	}
-	,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'});
-	Molpy.AutoAssembleToggle=function()
-	{
-		var me=Molpy.Boosts['AA'];
-		me.power=1*!me.power;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
+		desc:function(me)
+		{
+			
+			return (me.power? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Blast Furnace run.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'')+'<br>(Supresses notifications about Glass gains so you don\'t get spammed';
+		}
+		,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'
+	});
 	
 	new Molpy.Boost({name:'Glass Mousepy',alias:'GM',desc:'Clicks give 5% of your chips/mNP rate',glass:'10M',sand:Infinity,castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Glassed Lightning',alias:'GL',desc:function(me)
@@ -4648,17 +4618,9 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Beachball',desc:function(me)
 	{
 		
-		return (me.power? 'T':'When active, t') + 'he border of the NewPix changes colour.<br>Red = Clicking will Ninja<br>Blue = Click to gain Ninja Stealth<br>Green = All Clear<br>Yellow = less than 2 mNP until ONG'+(me.bought?'<br><input type="Button" onclick="Molpy.BeachballToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		return (me.power? 'T':'When active, t') + 'he border of the NewPix changes colour.<br>Red = Clicking will Ninja<br>Blue = Click to gain Ninja Stealth<br>Green = All Clear<br>Yellow = less than 2 mNP until ONG'+(me.bought?'<br><input type="Button" onclick="Molpy.UpdateBeachClass(); Molpy.GenericToggle('+me.id+');" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
 	}
 	,sand:'4K',castles:200,className:'toggle'});
-	Molpy.BeachballToggle=function()
-	{
-		Molpy.UpdateBeachClass('');
-		var me=Molpy.Boosts['Beachball'];
-		me.power=1*!me.power;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
 	
 	new Molpy.Boost({name:'Mushrooms',desc:'For every 10 badges, Glass Block production uses 1% less sand',	sand:Infinity,castles:Infinity,glass:'60K'});
 	new Molpy.Boost({name:'Knitted Beanies',desc:'Beanie Builder Glass production is multiplied by the number of million Bags owned',glass:'60T',sand:Infinity,castles:Infinity,group:'bean'});
@@ -4773,22 +4735,15 @@ Molpy.DefineBoosts=function()
 		desc:function(me)
 		{
 			
-			return (me.power? '':'When active, ') + 'Prevents all Mould Making and Filling activities.'+(me.bought?'<br><input type="Button" onclick="Molpy.ColdMouldToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+			return (me.power? '':'When active, ') + 'Prevents all Mould Making and Filling activities.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
 		}
 		,glass:'10K',sand:'75E',castles:'15E', group:'bean',className:'toggle',icon:'coldmould'
 	});
-	Molpy.ColdMouldToggle=function()
-	{
-		var me=Molpy.Boosts['Cold Mould'];
-		me.power=1*!me.power;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
 	new Molpy.Boost({name:'Price Protection',
 		desc:function(me)
 		{
 			
-			return (me.power? '':'When active, ') + 'Prevents purchases for '+(me.bought?Molpify(me.bought):4)+'mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.PriceProtectionToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br><br><input type="Button" onclick="Molpy.PriceProtectionChange(1)" value="Increase Wait"></input>'+(me.bought>1?'<br><input type="Button" onclick="Molpy.PriceProtectionChange(-1)" value="Decrease Wait"></input>':''):'');
+			return (me.power? '':'When active, ') + 'Prevents purchases for '+(me.bought?Molpify(me.bought):4)+'mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br><br><input type="Button" onclick="Molpy.PriceProtectionChange(1)" value="Increase Wait"></input>'+(me.bought>1?'<br><input type="Button" onclick="Molpy.PriceProtectionChange(-1)" value="Decrease Wait"></input>':''):'');
 		}
 		,buyFunction:function()
 		{
@@ -4796,13 +4751,6 @@ Molpy.DefineBoosts=function()
 		}
 		,sand:'7500',castles:'1500', group:'hpt',className:'toggle',icon:'priceprotection'
 	});
-	Molpy.PriceProtectionToggle=function()
-	{
-		var me=Molpy.Boosts['Price Protection'];
-		me.power=1*!me.power;			
-		me.hoverOnCounter=1;
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-	}
 	Molpy.PriceProtectionChange=function(n)
 	{
 		var me=Molpy.Boosts['Price Protection'];
@@ -4886,8 +4834,32 @@ Molpy.DefineBoosts=function()
 		,icon:'goat'
 	});
 	
-	new Molpy.Boost({name:'Silver Loyalty Card',aka:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1e9'});
-	new Molpy.Boost({name:'Gold Loyalty Card',aka:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'1e13'});
+	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1G'});
+	new Molpy.Boost({name:'Gold Loyalty Card',alias:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'10T'});
+	
+	
+	new Molpy.Boost({name:'Stretchable Chip Storage',desc:function(me)
+		{
+		return 'If active during a Blast furance run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
+		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
+	new Molpy.Boost({name:'Stretchable Block Storage',desc:function(me)
+		{
+		return 'If active during a Blast furance run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
+		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
+	
+	Molpy.GenericToggle=function(myid,negate)
+	{
+		var me = Molpy.BoostsById[myid];
+		if(negate)
+			me.power=-me.power;
+		else
+			me.power=1*!me.power;      
+		me.hoverOnCounter=1;
+		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);
+	}
+	
+	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:'You can win/lose Glass Chips from the Monty Haul Problem',sand:'1P',castles:'1T',glass:'1K'});
+	new Molpy.Boost({name:'Stealth Cam',desc:'Camera is activated when Ninja Stealth is increased',glass:'1M',group:'ninj'});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
@@ -5270,6 +5242,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Mains Power',desc:'Automata Control level at least 230',vis:1});
 	new Molpy.Badge({name:'It Hertz',desc:'Automata Control level at least 50',vis:1});
 	new Molpy.Badge({name:'Second Edition',desc:'Have at least two Goats'});
+	new Molpy.Badge({name:'Nope!',desc:'Power Control is at the limit',vis:1});
 		
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
@@ -5376,7 +5349,7 @@ Molpy.DefineBadges=function()
 	Molpy.MakeQuadBadge({np:985,name:'This Far',desc:'When Cueball asks Have you ever been this far?'});
     Molpy.MakeQuadBadge({np:989,name:'Drinking',desc:'Cueball and Megan stop to drink'});
     Molpy.MakeQuadBadge({np:999,name:'Change Direction',desc:'The picture changes orientation by 90 degrees'});
-    Molpy.MakeQuadBadge({np:1004,name:'Doesnt end',desc:'Megan says: Maybe the sea doesn\'t end'});
+    Molpy.MakeQuadBadge({np:1004,name:'Doesn\'t end',desc:'Megan says: Maybe the sea doesn\'t end'});
     Molpy.MakeQuadBadge({np:1005,name:'Very Far',desc:'Cueball says: We haven\'t walked very far'});
     Molpy.MakeQuadBadge({np:1006,name:'Not Ending',desc:'Megan doth say: Yeah.  But thats what the first part of not ending looks like.'});
     Molpy.MakeQuadBadge({np:1018,name:'Steam bottle',desc:'Megan says: If we don\'t find something today, we\'ll have to start using the steam bottle'});
@@ -5605,7 +5578,7 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.SandToolsOwned>9000)Molpy.EarnBadge('WHAT');
 	if(Molpy.SandToolsOwned+Molpy.CastleToolsOwned>=40000)Molpy.EarnBadge('\\/\\/AR]-[AMMER');
 		
-	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['Glass Block Storage'].power>10)
+	if(Molpy.Got('Ninja Builder')&&Molpy.Boosts['GlassBlocks'].power>10)
 		Molpy.UnlockBoost('Glass Jaw');
 	
 	
@@ -5628,6 +5601,11 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.groupBadgeCounts.discov>10&&Molpy.Earned("Dude, Where's my DeLorean?"))
 	{
 		Molpy.UnlockBoost('Memories Revisited');
+	}
+	if(Molpy.groupBadgeCounts.discov>100)
+	{
+		Molpy.UnlockBoost('Stealth Cam');
+		Molpy.UnlockBoost('Stealth Cam');
 	}
 	if(Molpy.groupBadgeCounts.monums>10&&Molpy.Got('Memories Revisited'))
 	{
@@ -5750,7 +5728,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
 	
 	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
-	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4&&flandom(4)==0);
+	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4+Molpy.Boosts['Panther Rush'].power&&flandom(4)==0);
 	
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
@@ -5759,8 +5737,8 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);
 	
 	
-	Molpy.Boosts['Silver Loyalty Card'].department=Molpy.Earned('Big Spender');
-	Molpy.Boosts['Gold Loyalty Card'].department=Molpy.Earned('Valued Customer');
+	Molpy.Boosts['SilverCard'].department=Molpy.Earned('Big Spender');
+	Molpy.Boosts['GoldCard'].department=Molpy.Earned('Valued Customer');
 }
 
 Molpy.CheckLogicatRewards=function(automationLevel)
