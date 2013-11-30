@@ -833,6 +833,8 @@ Molpy.Up=function()
 						}
 					}
 					id+=4;
+					if(version<3.1892)
+						id+=4;
 				}
 				while(id<Molpy.BadgeN)
 				{
@@ -3294,7 +3296,13 @@ Molpy.Up=function()
 						Molpy.recalculateDig=1;
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[baby.group]=1;
-						Molpy.Notify((baby.group=='badges'?'Badge Earned: ':'')+baby.name,1);
+						if(baby.group=='badges')
+						{
+							Molpy.Notify('Badge Earned: '+baby.name,1);
+						}else{
+							Molpy.Notify(Molpy.MaybeWrapFlipHoriz(baby.name,baby.np<0),1);
+						}
+						
 						Molpy.EarnBadge('Redundant');
 						Molpy.CheckBuyUnlocks();
 						if(Molpy.Earned('Badgers'))
@@ -3324,7 +3332,7 @@ Molpy.Up=function()
 		
 		Molpy.MakeSpecialBadge=function(args,kind)
 		{
-			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+args.name,alias:kind+args.np,np:args.np,
+			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+(args.np<0?'Minus ':'')+args.name,alias:kind+args.np,np:args.np,
 				desc:function(me)
 				{
 					var str = Molpy.groupNames[kind][4]+': '+args.desc+'<br><small>(in NP'+me.np+')</small>';
@@ -3344,7 +3352,7 @@ Molpy.Up=function()
 						{
 							str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould('+me.np+')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 						}
-						str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(me.np))+'"><div>';
+						str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(me.np))+(me.np<0?'flip-horizontal':'')+'"><div>';
 					}
 					return str;
 				}
@@ -3357,6 +3365,11 @@ Molpy.Up=function()
 			Molpy.MakeSpecialBadge(args,'monums');
 			Molpy.MakeSpecialBadge(args,'monumg');
 			Molpy.MakeSpecialBadge(args,'diamm');
+			if(args.np>0)
+			{
+				args.np*=-1;
+				Molpy.MakeQuadBadge(args);
+			}
 		}
 		
 		Molpy.redactedW=BeanishToCuegish("UmVkdW5kYW50");
@@ -4241,9 +4254,21 @@ Molpy.Up=function()
 			cn+=' lootbox badge '+(me.earned?'loot':'shop');
 			if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
 			
+			var str =  heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><h2>'+(me.earned||me.visibility<2?me.name:'????')
+				+'</he><div class="'+Molpy.DescClass(me)+'" id="BadgeDescription'+me.id+'"></div></div>';
+			str=Molpy.MaybeWrapFlipHoriz(str,group!='badges'&&me.np<0);
 			return r+'<div class="'+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id
-				+'],event)">'+heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><h2>'
-				+(me.earned||me.visibility<2?me.name:'????')+'</he><div class="'+Molpy.DescClass(me)+'" id="BadgeDescription'+me.id+'"></div></div></div>';			
+				+'],event)">'+str+'</div>';				 
+		}
+		
+		Molpy.MaybeWrapFlipHoriz=function(str,condition)
+		{
+			if(condition)return Molpy.WrapFlipHoriz(str);
+			return str;
+		}
+		Molpy.WrapFlipHoriz=function(str)
+		{
+			return'<div class="flip-horizontal">'+str+'</div>';
 		}
 		
 		Molpy.RepaintBadges=function()
