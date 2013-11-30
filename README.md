@@ -27,6 +27,7 @@ For personal amusement only.
 ## 3.1892
 - Nerf Castle Crush (wondered when that would get noticed :P)
 - Plug Temporal Rift hole
+- Glass Monument fix (wasn't setting previewNP back to 0 in one case)
 
 ## 3.1891
 - Negative chips fix, new badge, glass production stats - waveney

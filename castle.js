@@ -3264,7 +3264,10 @@ Molpy.Up=function()
 				if(this.np&&this.alias.indexOf('monumg')==0)
 				{
 					if(Molpy.previewNP==this.np)
-					Molpy.UpdateBeach();
+					{
+						Molpy.previewNP=0;
+						Molpy.UpdateBeach();
+					}
 				}
 			}
 			
@@ -5144,7 +5147,7 @@ Molpy.Up=function()
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
 		g('period').innerHTML=Molpy.TimePeriod;
-		$('.timeflip').toggleClass('flip-horizontal',Molpy.newpixNumber<0);
+		$('.timeflip').toggleClass('flip-horizontal',(Molpy.previewNP?Molpy.previewNP<0:Molpy.newpixNumber<0));
 		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.11?'<br>Windows?':'');
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
