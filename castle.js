@@ -2028,7 +2028,7 @@ Molpy.Up=function()
 							var rate = Molpy.ChipsPerBlock();
 							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
 							var leave = 0;
-							var bl = Molpy.Boosts['GlassBlocks'].bought;
+							var bl = Molpy.Boosts['GlassBlocks'];
 							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
 							{
 								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
