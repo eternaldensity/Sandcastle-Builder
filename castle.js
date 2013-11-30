@@ -1725,7 +1725,7 @@ Molpy.Up=function()
 					ch.power-=waste;
 					amount-=waste;
 					Molpy.chipWasteAmount+=waste;
-					if (Molpy.chipWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Chip Storage');
+					if (expand && Molpy.chipWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Chip Storage');
 				}
 				Molpy.chipAddAmount+=amount;
 			}			
@@ -1783,7 +1783,7 @@ Molpy.Up=function()
 				bl.power-=waste;
 				amount-=waste;
 				Molpy.blockWasteAmount+=waste;
-				if (Molpy.blockWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Block Storage');
+				if (expand && Molpy.blockWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Block Storage');
 				}
 				if(amount) Molpy.EarnBadge('Glassblower');
 				Molpy.blockAddAmount+=amount;
@@ -2028,12 +2028,19 @@ Molpy.Up=function()
 							var rate = Molpy.ChipsPerBlock();
 							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
 							var leave = 0;
+							var bl = Molpy.Boosts['GlassBlocks'].bought;
 							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
 							{
 								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
 							}
-							maxGlass=Math.min(maxGlass,Molpy.Boosts['GlassBlocks'].bought*50-Molpy.Boosts['GlassBlocks'].power - leave);
+							maxGlass=Math.min(maxGlass,bl.bought*50-bl.power - leave);
 							maxGlass=Math.max(maxGlass,0);
+							var backoff = 1;
+							while (bl.power+maxGlass > bl.bought*50 )
+							{
+								maxGlass -= backoff;
+								backoff *= 2;
+							}
 							Molpy.AddBlocks(maxGlass);
 							Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
 							Molpy.Boosts['Tool Factory'].power=Math.max(0,Molpy.Boosts['Tool Factory'].power);
