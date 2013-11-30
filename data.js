@@ -5523,12 +5523,12 @@ Molpy.DefineBadges=function()
 	Molpy.MakeQuadBadge({np:1839,name:'Chirps ahead',desc:'Cueball: It\'s coming from up ahead'});
 	Molpy.MakeQuadBadge({np:1840,name:'Chirp three',desc:'They investigate the chirps'});
 	Molpy.MakeQuadBadge({np:1844,name:'Chirp in a tree',desc:'A Chirp is in a tree'});
-	Molpy.MakeQuadBadge({np:1845,name:'Chirp in a tree 2',desc:'The sequal to chirp in a tree'});
+	Molpy.MakeQuadBadge({np:1845,name:'Chirp in a tree 2',desc:'The sequel to chirp in a tree'});
 	Molpy.MakeQuadBadge({np:1847,name:'Chirp in a tree 3',desc:'The Chirps in trees trilogy continues'});
 	Molpy.MakeQuadBadge({np:1848,name:'Megan Chirps',desc:'Megan tries saying Chirp back'});
 	Molpy.MakeQuadBadge({np:1849,name:'Chirp in a tree 4',desc:'The chirp trilogy part 4'});
 	Molpy.MakeQuadBadge({np:1850,name:'Megan chirps again',desc:'This is getting repetative'});
-	Molpy.MakeQuadBadge({np:1852,name:'Why is it chriping',desc:'They wonder why it is chirping'});
+	Molpy.MakeQuadBadge({np:1852,name:'Why is it chirping?',desc:'They wonder why it is chirping'});
 	Molpy.MakeQuadBadge({np:1853,name:'Chirp in a tree 5',desc:'The fifth part of the trilogy'});
 	Molpy.MakeQuadBadge({np:1854,name:'Angry',desc:'Megan: I guess it\'s angry that we\'re here'});
 	Molpy.MakeQuadBadge({np:1855,name:'Chirp in a tree 6',desc:'The chirp trilogy part IV'});
