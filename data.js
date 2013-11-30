@@ -3461,6 +3461,7 @@ Molpy.DefineBoosts=function()
 		{
 			var str = 'Allows you to make a Sand Mould of a Discovery.';
 			str+='<br>This requires 100 Factory Automation runs and consumes the NewPix number of the Discovery times 100 Glass Chips per run.<br>';
+			if(Molpy.Earned('Minus Worlds'))str+='(Squared if negative)<br>';
 			if(me.bought&&me.power>0)
 			{
 				var dname='<small>'+Molpy.Badges['discov'+me.bought].name+'</small>';
@@ -3491,6 +3492,7 @@ Molpy.DefineBoosts=function()
 		reset:function()
 		{
 			var chips =this.bought*100*(this.power-1);
+			if(chips<0)chips*=chips;
 			Molpy.AddChips(chips);
 			this.power=0;
 			Molpy.Notify(this.name+' has cancelled making <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
@@ -3501,6 +3503,7 @@ Molpy.DefineBoosts=function()
 		{
 			var str = 'Allows you to make a Glass Mould of a Sand Monument.';
 			str+='<br>This requires 400 Factory Automation runs and consumes 1000 Glass Chips plus 1% per NewPix number of the Monument per run.<br>';
+			if(Molpy.Earned('Minus Worlds'))str+='(Squared if negative)<br>';
 			if(me.bought&&me.power>0)
 			{
 				var mname='<small>'+Molpy.Badges['monums'+me.bought].name+'</small>';
@@ -3531,6 +3534,7 @@ Molpy.DefineBoosts=function()
 		reset:function()
 		{
 			var chips =Math.pow(1.01,this.bought)*1000*(this.power-1);
+			if(chips<0)chips*=chips;
 			Molpy.AddChips(chips);
 			this.power=0;
 			Molpy.Notify(this.name+' has cancelled making <small>'+Molpy.Badges['monumg'+this.bought].name+'</small>',1);
@@ -3540,6 +3544,7 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{
 			var str ='Fills a Sand Mould with Sand to make a Sand Monument.<br>This requires 200 Factory Automation runs and consumes 100 Sand plus 20% per NewPix number of the Discovery, per run.';
+			if(Molpy.Earned('Minus Worlds'))str+='(Squared if negative)<br>';
 			if(me.bought)
 			{
 				if(!me.power&&(Molpy.Boosts['SMM'].power>100))
@@ -3574,8 +3579,10 @@ Molpy.DefineBoosts=function()
 			if(!confirm('You will also lose the unfilled sand mould which will waste 100 runs of Factory Automation.\nAre you certain you want to do this?'))
 				return;
 			var chips =this.bought*100*100;
+			if(chips<0)chips*=chips;
 			Molpy.AddChips(chips);
 			var sand=Math.pow(1.2,this.bought)*100*(this.power-1);
+			if(sand<0)sand*=sand;
 			Molpy.Dig(sand);
 			this.power=0;
 			Molpy.Notify(this.name+' has cancelled filling <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
@@ -3585,6 +3592,7 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{
 			var str ='Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.<br>This requires 800 Factory Automation runs and consumes 1M Glass Blocks plus 2% per NewPix number of the Discovery, per run.';
+			if(Molpy.Earned('Minus Worlds'))str+='(Squared if negative)<br>';
 			if(me.bought)
 			{
 				if(!me.power&&(Molpy.Boosts['GMM'].power>400))
@@ -3620,8 +3628,10 @@ Molpy.DefineBoosts=function()
 				return;
 				
 			var blocks=Math.pow(1.02,this.bought)*1000000*(this.power-1);
+			if(blocks<0)blocks*=blocks;
 			Molpy.AddBlocks(blocks);
 			var chips =Math.pow(1.01,this.bought)*1000*400;
+			if(chips<0)chips*=chips;
 			Molpy.AddChips(chips);
 			this.power=0;
 			Molpy.Notify(this.name+' has cancelled filling <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
@@ -3676,6 +3686,7 @@ Molpy.DefineBoosts=function()
 			return times;
 		}
 		var chips =smm.bought*100;
+		if(chips<0)chips*=chips;
 		while (times) 
 		{
 			if(!Molpy.HasGlassChips(chips))
@@ -3738,6 +3749,7 @@ Molpy.DefineBoosts=function()
 			return times;
 		}
 		var sand=Math.pow(1.2,smf.bought)*100;
+		if(sand<0)sand*=sand;
 		while (times) 
 		{
 			if(Molpy.sand <sand)
@@ -3802,6 +3814,7 @@ Molpy.DefineBoosts=function()
 			return times;
 		}
 		var chips=Math.pow(1.01,gmm.bought)*1000;
+		if(chips<0)chips*=chips;
 		while (times) 
 		{
 			if(!Molpy.HasGlassChips(chips)) 
@@ -3864,6 +3877,7 @@ Molpy.DefineBoosts=function()
 			return times;
 		}
 		var glass=Math.pow(1.02,gmf.bought)*1000000;
+		if(glass<0)glass*=glass;
 		while (times) 
 		{
 			if(!Molpy.HasGlassBlocks(glass)) 
