@@ -1031,7 +1031,7 @@ Molpy.DefineBoosts=function()
 	
 	Molpy.CalcJumpEnergy=function(destNP)
 	{
-		var gap = Math.abs(Molpy.newpixNumber-destNP);
+		var gap = destNP-Molpy.newpixNumber;
 		var cost= gap*gap;
 		cost+=Molpy.timeTravels;
 		cost*=100;
@@ -5272,6 +5272,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'Second Edition',desc:'Have at least two Goats'});
 	new Molpy.Badge({name:'Nope!',desc:'Power Control is at the limit',vis:1});
 	new Molpy.Badge({name:'Minus Worlds',desc:'Take a jaunt to the negative NewPix',vis:1});
+	new Molpy.Badge({name:'Badge Found',desc:'Description Found',stats:'What is this, I don\'t even?'});
 		
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them
