@@ -24,6 +24,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1894
+- Some fixes and new discoveries from waveney
+- Gave the abs a workout
+- Found new badge
+
 ## 3.1893
 - I forgot something.
 - Update the descriptions too.

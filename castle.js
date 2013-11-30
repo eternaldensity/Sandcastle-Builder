@@ -4,7 +4,7 @@
 function g(id) {return document.getElementById(id);}
 function ONGsnip(time)
 {
-	if(time.getMinutes()>=30&&Molpy.newpixNumber <= 240)
+	if(time.getMinutes()>=30&&Math.abs(Molpy.newpixNumber) <= 240)
 	{
 		time.setMinutes(30);
 	}else
@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1893;
+		Molpy.version=3.1894;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -609,7 +609,7 @@ Molpy.Up=function()
 				var blitzSpeed=parseInt(pixels[28])||0;	//these were saved here in 0.911 and 2
 				var blitzTime=parseInt(pixels[29])||0;		//but now are put in the 'Blitzed' boost
 			}
-			Molpy.highestNPvisited=parseInt(pixels[25])||Molpy.newpixNumber;
+			Molpy.highestNPvisited=parseInt(pixels[25])||Math.abs(Molpy.newpixNumber);
 			Molpy.totalCastlesDown=parseFloat(pixels[26])||0;
 			if(version < 2.1)
 				Molpy.tempIntruderBots=parseFloat(pixels[27])||0;
@@ -1727,7 +1727,7 @@ Molpy.Up=function()
 					ch.power-=waste;
 					amount-=waste;
 					Molpy.chipWasteAmount+=waste;
-					if (Molpy.chipWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Chip Storage');
+					if (expand && Molpy.chipWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Chip Storage');
 				}
 				Molpy.chipAddAmount+=amount;
 			}			
@@ -1785,7 +1785,7 @@ Molpy.Up=function()
 				bl.power-=waste;
 				amount-=waste;
 				Molpy.blockWasteAmount+=waste;
-				if (Molpy.blockWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Block Storage');
+				if (expand && Molpy.blockWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Block Storage');
 				}
 				if(amount) Molpy.EarnBadge('Glassblower');
 				Molpy.blockAddAmount+=amount;
@@ -2030,12 +2030,19 @@ Molpy.Up=function()
 							var rate = Molpy.ChipsPerBlock();
 							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
 							var leave = 0;
+							var bl = Molpy.Boosts['GlassBlocks'];
 							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
 							{
 								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
 							}
-							maxGlass=Math.min(maxGlass,Molpy.Boosts['GlassBlocks'].bought*50-Molpy.Boosts['GlassBlocks'].power - leave);
+							maxGlass=Math.min(maxGlass,bl.bought*50-bl.power - leave);
 							maxGlass=Math.max(maxGlass,0);
+							var backoff = 1;
+							while (bl.power+maxGlass > bl.bought*50 )
+							{
+								maxGlass -= backoff;
+								backoff *= 2;
+							}
 							Molpy.AddBlocks(maxGlass);
 							Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
 							Molpy.Boosts['Tool Factory'].power=Math.max(0,Molpy.Boosts['Tool Factory'].power);
@@ -2274,6 +2281,7 @@ Molpy.Up=function()
 		{
 			var NP = Molpy.newpixNumber;
 			if(NP==404) Molpy.EarnBadge('Badge Not Found');
+			if(NP==-404) Molpy.EarnBadge('Badge Found');
 		}
 		
 		/* In which we calculate how much sand per milliNewPix we dig
@@ -3665,7 +3673,7 @@ Molpy.Up=function()
 		{
 			if(!automationLevel)
 			{
-				if(Molpy.newpixNumber<=400)
+				if(Math.abs(Molpy.newpixNumber)<=400)
 					Molpy.Notify('You are not Lucky (which is good)');
 				else
 					Molpy.Notify('Not Lucky!');			
@@ -4848,7 +4856,7 @@ Molpy.Up=function()
 			if(Molpy.ONGelapsed >= Molpy.ninjaTime)//already in milliseconds
 			{
 				Molpy.npbONG=1;
-				if(Molpy.newpixNumber>1) //obviously you can't have any active npb in first newpix
+				if(Math.abs(Molpy.newpixNumber)>1) //obviously you can't have any active npb in first newpix
 				{					
 					Molpy.ActivateNewPixBots(); //wasn't ninja'd so we get some free sandcastles (neat!)
 				}
