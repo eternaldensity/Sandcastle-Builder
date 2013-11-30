@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1892;
+		Molpy.version=3.1893;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -833,6 +833,8 @@ Molpy.Up=function()
 						}
 					}
 					id+=4;
+					if(version<3.1892)
+						id+=4;
 				}
 				while(id<Molpy.BadgeN)
 				{
@@ -3264,7 +3266,10 @@ Molpy.Up=function()
 				if(this.np&&this.alias.indexOf('monumg')==0)
 				{
 					if(Molpy.previewNP==this.np)
-					Molpy.UpdateBeach();
+					{
+						Molpy.previewNP=0;
+						Molpy.UpdateBeach();
+					}
 				}
 			}
 			
@@ -3291,7 +3296,13 @@ Molpy.Up=function()
 						Molpy.recalculateDig=1;
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[baby.group]=1;
-						Molpy.Notify((baby.group=='badges'?'Badge Earned: ':'')+baby.name,1);
+						if(baby.group=='badges')
+						{
+							Molpy.Notify('Badge Earned: '+baby.name,1);
+						}else{
+							Molpy.Notify(Molpy.MaybeWrapFlipHoriz(baby.name,baby.np<0),1);
+						}
+						
 						Molpy.EarnBadge('Redundant');
 						Molpy.CheckBuyUnlocks();
 						if(Molpy.Earned('Badgers'))
@@ -3321,7 +3332,7 @@ Molpy.Up=function()
 		
 		Molpy.MakeSpecialBadge=function(args,kind)
 		{
-			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+args.name,alias:kind+args.np,np:args.np,
+			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+(args.np<0?'Minus ':'')+args.name,alias:kind+args.np,np:args.np,
 				desc:function(me)
 				{
 					var str = Molpy.groupNames[kind][4]+': '+args.desc+'<br><small>(in NP'+me.np+')</small>';
@@ -3341,7 +3352,7 @@ Molpy.Up=function()
 						{
 							str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould('+me.np+')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 						}
-						str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(me.np))+'"><div>';
+						str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(me.np))+(me.np<0?'flip-horizontal':'')+'"><div>';
 					}
 					return str;
 				}
@@ -3354,6 +3365,11 @@ Molpy.Up=function()
 			Molpy.MakeSpecialBadge(args,'monums');
 			Molpy.MakeSpecialBadge(args,'monumg');
 			Molpy.MakeSpecialBadge(args,'diamm');
+			if(args.np>0)
+			{
+				args.np*=-1;
+				Molpy.MakeQuadBadge(args);
+			}
 		}
 		
 		Molpy.redactedW=BeanishToCuegish("UmVkdW5kYW50");
@@ -4238,9 +4254,21 @@ Molpy.Up=function()
 			cn+=' lootbox badge '+(me.earned?'loot':'shop');
 			if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
 			
+			var str =  heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><h2>'+(me.earned||me.visibility<2?me.name:'????')
+				+'</he><div class="'+Molpy.DescClass(me)+'" id="BadgeDescription'+me.id+'"></div></div>';
+			str=Molpy.MaybeWrapFlipHoriz(str,group!='badges'&&me.np<0);
 			return r+'<div class="'+cn+'" onMouseOver="onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="onunhover(Molpy.BadgesById['+me.id
-				+'],event)">'+heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><h2>'
-				+(me.earned||me.visibility<2?me.name:'????')+'</he><div class="'+Molpy.DescClass(me)+'" id="BadgeDescription'+me.id+'"></div></div></div>';			
+				+'],event)">'+str+'</div>';				 
+		}
+		
+		Molpy.MaybeWrapFlipHoriz=function(str,condition)
+		{
+			if(condition)return Molpy.WrapFlipHoriz(str);
+			return str;
+		}
+		Molpy.WrapFlipHoriz=function(str)
+		{
+			return'<div class="flip-horizontal">'+str+'</div>';
 		}
 		
 		Molpy.RepaintBadges=function()
@@ -4852,15 +4880,16 @@ Molpy.Up=function()
 	}
 	Molpy.ONG=function()
 	{
-		Molpy.newpixNumber+=1;
+		Molpy.newpixNumber+=(Molpy.newpixNumber>0?1:-1);
 		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',''+Molpy.newpixNumber,true]);
 		
-		if(Molpy.newpixNumber > Molpy.highestNPvisited)
+		var np=Math.abs(Molpy.newpixNumber);
+		if(np > Molpy.highestNPvisited)
 		{
-			Molpy.highestNPvisited=Molpy.newpixNumber;
+			Molpy.highestNPvisited=np;
 		}else //in the past
 		{
-			if(Molpy.newpixNumber > 2)
+			if(np > 2)
 			{
 				Molpy.UnlockBoost('Time Travel');
 			}
@@ -4935,7 +4964,7 @@ Molpy.Up=function()
 		
 		Molpy.Boosts['Temporal Rift'].department=0;
 		if(Molpy.newpixNumber%
-			(50-(Molpy.Got('Time Travel')+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine'))*10)==0)
+			(50-(Molpy.Got('Time Travel')+Molpy.Got('Flux Capacitor')+Molpy.Got('Flux Turbine')+Molpy.Earned('Minus Worlds'))*10)==0)
 		{
 			Molpy.Boosts['Temporal Rift'].department=(Math.random()*6>=5)*1;
 		}
@@ -4960,7 +4989,10 @@ Molpy.Up=function()
 					bbc.power=1;
 					var mhp = Molpy.Boosts['MHP'];
 					if(mhp.unlocked&&mhp.power>20&&flandom(9)==0)
+					{
 						mhp.power--;
+						Molpy.boostRepaint=1;
+					}
 				}else{
 					bbc.power=0;
 				}
@@ -5011,7 +5043,9 @@ Molpy.Up=function()
 	Molpy.HandlePeriods=function()
 	{
 		//check length of current newpic
-		if(Molpy.newpixNumber <= 240)
+		if(Molpy.newpixNumber<0)Molpy.EarnBadge('Minus Worlds');
+		var np = Math.abs(Molpy.newpixNumber);
+		if(np <= 240)
 		{
 			Molpy.NPlength=1800; 
 			Molpy.LockBoost('Overcompensating');
@@ -5039,11 +5073,11 @@ Molpy.Up=function()
 			if(Molpy.Got('Furnace Crossfeed'))
 				Molpy.Boosts['Furnace Multitasking'].department=1;
 		}
-		if(Molpy.newpixNumber > 241)
+		if(np > 241)
 		{
 			Molpy.EarnBadge("Have you noticed it's slower?");
 		}
-		if(Molpy.newpixNumber >= 250)
+		if(np >= 250)
 		{
 			Molpy.UnlockBoost('Overcompensating');
 		}
@@ -5053,7 +5087,7 @@ Molpy.Up=function()
 		for(var i in Molpy.Periods)
 		{
 			var per = Molpy.Periods[i];
-			if(Molpy.newpixNumber<=per[0])
+			if(np<=per[0])
 			{
 				Molpy.TimePeriod=per[1];
 				break;
@@ -5062,7 +5096,7 @@ Molpy.Up=function()
 		for(var i in Molpy.Eras)
 		{
 			var era = Molpy.Eras[i];
-			if(Molpy.newpixNumber<=era[0])
+			if(np<=era[0])
 			{
 				Molpy.TimeEra=era[1];
 				break;
@@ -5071,7 +5105,7 @@ Molpy.Up=function()
 		for(var i in Molpy.Eons)
 		{
 			var eon = Molpy.Eons[i];
-			if(Molpy.newpixNumber<=eon[0])
+			if(np<=eon[0])
 			{
 				Molpy.TimeEon=eon[1];
 				break;
@@ -5080,16 +5114,17 @@ Molpy.Up=function()
 	}
 	Molpy.NewPixFor=function(np)
 	{
+		np = Math.abs(np);
 		var x = 200+flandom(200);
 		var y = 200+flandom(400);
 		if(Molpy.Got('Chromatic Heresy')&&Molpy.options.colpix)
 		{	
-			if(Molpy.newpixNumber>3094)			
+			if(np>3094)			
 				return 'http://placekitten.com/'+x+'/'+y;
 			else
 				return 'http://178.79.159.24/Time/otcolorization/'+np;
 		}else{
-			if(Molpy.newpixNumber>3094)			
+			if(np>3094)			
 				return 'http://placekitten.com/g/'+x+'/'+y;
 			else
 				return 'http://xkcd.mscha.org/frame/'+np;
@@ -5103,7 +5138,8 @@ Molpy.Up=function()
 	//call with argument to change to a specific np, otherwise defaults to the current np
 	Molpy.UpdateBeach=function(np)
 	{
-		g('beach').style.backgroundImage=Molpy.Url(Molpy.NewPixFor(np||Molpy.newpixNumber));
+		np = np||Molpy.newpixNumber;
+		g('beach').style.backgroundImage=Molpy.Url(Molpy.NewPixFor(np));
 		Molpy.preloadedBeach=0;
 	}
 	Molpy.preloadedBeach=0;
@@ -5140,6 +5176,7 @@ Molpy.Up=function()
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
 		g('period').innerHTML=Molpy.TimePeriod;
+		$('.timeflip').toggleClass('flip-horizontal',(Molpy.previewNP?Molpy.previewNP<0:Molpy.newpixNumber<0));
 		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.11?'<br>Windows?':'');
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
