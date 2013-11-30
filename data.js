@@ -928,6 +928,7 @@ Molpy.DefineBoosts=function()
 		price+=Molpy.timeTravels;
 		if(Molpy.Got('Flux Capacitor'))price=Math.ceil(price*.2);
 		price = Math.ceil(price/Molpy.priceFactor); //BECAUSE TIME TRAVEL AMIRITE?
+		if(price<0)price*=-1;
 		if(price>Molpy.castles)
 			Molpy.Boosts['Flux Capacitor'].department=1;
 		return price;
@@ -984,13 +985,18 @@ Molpy.DefineBoosts=function()
 		chips=chips?Molpy.CalcJumpEnergy(np):0;
 		var price=Molpy.TimeTravelPrice();
 		if(chips)price=0;
-		if(np <1)
+		if(np <1&&!Molpy.Earned('Minus Worlds'))
 		{
 			Molpy.Notify('Heretic!');
 			Molpy.Notify('There is nothing before time.');
 			return;
 		}
-		if(np >Molpy.highestNPvisited)
+		if(np==0)
+		{
+			Molpy.Notify('Divide by zero error!');
+			return;
+		}
+		if(Math.abs(np) >Molpy.highestNPvisited)
 		{
 			Molpy.Notify('Wait For It');
 			return;
@@ -1756,9 +1762,19 @@ Molpy.DefineBoosts=function()
 			Molpy.Destroy(Molpy.castles);	
 			Molpy.Dig(Molpy.sand);	
 		}
-		Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
-		Molpy.ONG();
-		Molpy.LockBoost('Temporal Rift');
+		if(Molpy.Got('Temporal Rift'))
+		{
+			Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
+			if(Molpy.Earned('Minus Worlds')&&Math.floor(Math.random()*2))Molpy.newpixNumber*=-1;;
+			Molpy.ONG();
+			Molpy.LockBoost('Temporal Rift');
+		}else
+		{
+			Molpy.newpixNumber*=-1;
+			Molpy.HandlePeriods();
+			Molpy.UpdateBeach();
+			Molpy.recalculateDig=1;
+		}
 		Molpy.Notify('You wonder when you are');
 	}
 	
@@ -5023,7 +5039,8 @@ Molpy.DefineBadges=function()
 	{
 		var bot=Molpy.CastleTools['NewPixBot'];
 		var bots = bot.amount;
-		if(Molpy.Got('Time Travel')||Molpy.newpixNumber<20)bots-=2;
+		var np = Math.abs(Molpy.newpixNumber<20);
+		if(Molpy.Got('Time Travel')||np)bots-=2;
 		var botCastles=bot.totalCastlesBuilt*bots;
 		var thresh = Molpy.JudgementDipThreshold();
 		var level = Math.max(0,Math.floor(botCastles/thresh));
@@ -5050,12 +5067,12 @@ Molpy.DefineBadges=function()
 		{
 			level=Math.floor(level/2);
 		}
-		var maxDipLevel=Molpy.MaxDipLevel(Molpy.newpixNumber);
+		var maxDipLevel=Molpy.MaxDipLevel(np);
 		if(level > maxDipLevel)
 		{
 			level = maxDipLevel;
 			countdown=0;
-			while(Molpy.MaxDipLevel(Molpy.newpixNumber+countdown)<=level)
+			while(Molpy.MaxDipLevel(np+countdown)<=level)
 			{
 				countdown++;
 			}
@@ -5240,6 +5257,7 @@ Molpy.DefineBadges=function()
 	new Molpy.Badge({name:'It Hertz',desc:'Automata Control level at least 50',vis:1});
 	new Molpy.Badge({name:'Second Edition',desc:'Have at least two Goats'});
 	new Molpy.Badge({name:'Nope!',desc:'Power Control is at the limit',vis:1});
+	new Molpy.Badge({name:'Minus Worlds',desc:'Take a jaunt to the negative NewPix',vis:1});
 		
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them

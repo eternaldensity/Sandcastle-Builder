@@ -5010,7 +5010,9 @@ Molpy.Up=function()
 	Molpy.HandlePeriods=function()
 	{
 		//check length of current newpic
-		if(Molpy.newpixNumber <= 240)
+		if(Molpy.newpixNumber<0)Molpy.EarnBadge('Minus Worlds');
+		var np = Math.abs(Molpy.newpixNumber);
+		if(np <= 240)
 		{
 			Molpy.NPlength=1800; 
 			Molpy.LockBoost('Overcompensating');
@@ -5038,11 +5040,11 @@ Molpy.Up=function()
 			if(Molpy.Got('Furnace Crossfeed'))
 				Molpy.Boosts['Furnace Multitasking'].department=1;
 		}
-		if(Molpy.newpixNumber > 241)
+		if(np > 241)
 		{
 			Molpy.EarnBadge("Have you noticed it's slower?");
 		}
-		if(Molpy.newpixNumber >= 250)
+		if(np >= 250)
 		{
 			Molpy.UnlockBoost('Overcompensating');
 		}
@@ -5052,7 +5054,7 @@ Molpy.Up=function()
 		for(var i in Molpy.Periods)
 		{
 			var per = Molpy.Periods[i];
-			if(Molpy.newpixNumber<=per[0])
+			if(np<=per[0])
 			{
 				Molpy.TimePeriod=per[1];
 				break;
@@ -5061,7 +5063,7 @@ Molpy.Up=function()
 		for(var i in Molpy.Eras)
 		{
 			var era = Molpy.Eras[i];
-			if(Molpy.newpixNumber<=era[0])
+			if(np<=era[0])
 			{
 				Molpy.TimeEra=era[1];
 				break;
@@ -5070,7 +5072,7 @@ Molpy.Up=function()
 		for(var i in Molpy.Eons)
 		{
 			var eon = Molpy.Eons[i];
-			if(Molpy.newpixNumber<=eon[0])
+			if(np<=eon[0])
 			{
 				Molpy.TimeEon=eon[1];
 				break;
@@ -5079,16 +5081,17 @@ Molpy.Up=function()
 	}
 	Molpy.NewPixFor=function(np)
 	{
+		np = Math.abs(np);
 		var x = 200+flandom(200);
 		var y = 200+flandom(400);
 		if(Molpy.Got('Chromatic Heresy')&&Molpy.options.colpix)
 		{	
-			if(Molpy.newpixNumber>3094)			
+			if(np>3094)			
 				return 'http://placekitten.com/'+x+'/'+y;
 			else
 				return 'http://178.79.159.24/Time/otcolorization/'+np;
 		}else{
-			if(Molpy.newpixNumber>3094)			
+			if(np>3094)			
 				return 'http://placekitten.com/g/'+x+'/'+y;
 			else
 				return 'http://xkcd.mscha.org/frame/'+np;
@@ -5102,7 +5105,8 @@ Molpy.Up=function()
 	//call with argument to change to a specific np, otherwise defaults to the current np
 	Molpy.UpdateBeach=function(np)
 	{
-		g('beach').style.backgroundImage=Molpy.Url(Molpy.NewPixFor(np||Molpy.newpixNumber));
+		np = np||Molpy.newpixNumber;
+		g('beach').style.backgroundImage=Molpy.Url(Molpy.NewPixFor(np));
 		Molpy.preloadedBeach=0;
 	}
 	Molpy.preloadedBeach=0;
@@ -5139,6 +5143,7 @@ Molpy.Up=function()
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
 		g('period').innerHTML=Molpy.TimePeriod;
+		$('.timeflip').toggleClass('flip-horizontal',Molpy.newpixNumber<0);
 		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.11?'<br>Windows?':'');
 		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
