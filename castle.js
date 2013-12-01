@@ -550,6 +550,7 @@ Molpy.Up=function()
 			}
 			g('title').innerHTML=GLRschoice(['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex','The Dwarf Fortress of Idle Games']);
 			
+			Molpy.ClearLog();
 			var pixels = thread[2].split(s);
 			Molpy.startDate=parseInt(pixels[0]);
 			
@@ -4505,11 +4506,15 @@ Molpy.Up=function()
 				}
 			}
 		}
-		
-		Molpy.notifLog=[];
-		Molpy.notifLogNext=0;
-		Molpy.notifLogMax=39; //store 40 lines
-		Molpy.notifLogPaint=0;
+
+		Molpy.ClearLog=function()
+		{
+			Molpy.notifLog=[];
+			Molpy.notifLogNext=0;
+			Molpy.notifLogMax=39; //store 40 lines
+			Molpy.notifLogPaint=0;
+		}
+		Molpy.ClearLog();
 		Molpy.InMyPants=0;
 		Molpy.Notify=function(text,log)
 		{
