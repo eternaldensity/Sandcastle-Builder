@@ -5165,7 +5165,6 @@ Molpy.Up=function()
 	Molpy.redactedClassNames=['hidden','floatbox sand tool shop','floatbox castle tool shop',
 		'floatbox boost shop','lootbox boost loot','lootbox badge loot','lootbox badge shop'];
 	Molpy.drawFrame=0;
-	var hidClassNames=['hidden','unhidden'];
 	Molpy.Draw=function()
 	{
 		g('castlecount').innerHTML=Molpify(Molpy.castles,1) + ' castle'+plural(Molpy.castles);
@@ -5174,14 +5173,7 @@ Molpy.Up=function()
 		g('chipcount').innerHTML=Molpify(Molpy.Boosts['Tool Factory'].power,1) + ' chips';
 		g('chiprate').innerHTML=Molpify(Molpy.glassPermNP,1) + ' chips/mNP';
 		g('newtools').innerHTML='Built '+Molpify(Molpy.toolsBuilt,1)+' new tool'+plural(Molpy.toolsBuilt);
-		var sInf = (Molpy.Got('Sand to Glass')&&!isFinite(Molpy.sandPermNP))*1;
-		var cInf = (Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles))*1;
-		g('castlecount').className=hidClassNames[1-cInf];
-		g('sandcount').className=hidClassNames[1-sInf];
-		g('sandrate').className=hidClassNames[1-sInf];
-		g('chipcount').className=hidClassNames[Molpy.Got('Tool Factory')];
-		g('chiprate').className=hidClassNames[Molpy.Got('Sand to Glass')];
-		g('newtools').className=hidClassNames[Molpy.Got('Tool Factory')];
+		$('#sectionTFCounts').toggleClass('hidden',!Molpy.Got('Tool Factory'));
 		
 		g('newpixnum').innerHTML='Newpix '+Molpify(Molpy.newpixNumber,3);
 		g('eon').innerHTML=Molpy.TimeEon;
@@ -5395,8 +5387,8 @@ Molpy.Up=function()
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['GlassChips'].power,4);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['GlassBlocks'].power,4);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),6)+'%';
-	    	g('chipspmnp').innerHTML = Molpify(Molpy.chipspmnp,3);
-    		g('blockspmnp').innerHTML = Molpify(Molpy.blockspmnp,3);
+		g('chipspmnp').innerHTML = Molpify(Molpy.chipspmnp,3);
+		g('blockspmnp').innerHTML = Molpify(Molpy.blockspmnp,3);
 		
 		g('blackstat').innerHTML='Collected '+Molpify(+Molpy.Boosts['Blackprints'].power
 			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
