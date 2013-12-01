@@ -4626,8 +4626,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Super Visor',desc:'Beanie Builder Glass production is multiplied by 15',glass:'20M',sand:Infinity,castles:Infinity,group:'bean'}); //brillant
 	new Molpy.Boost({name:'Crystal Helm',desc:'Beanie Builder Glass production is multiplied by 5',glass:'30M',sand:Infinity,castles:Infinity,group:'bean'}); //paula
 	
-	new Molpy.Boost({name:'Safety Goggles',alias:'SG',desc:'The goggles, they do something!',stats:'Reduces the chance of industrial accidents and prevents Factory Automation from downgrading in shortpix!'
-		glass:'2M'		
+	new Molpy.Boost({name:'Safety Goggles',alias:'SG',desc:'The goggles, they do something!',stats:'Reduces the chance of industrial accidents and prevents Factory Automation from downgrading in shortpix!',glass:'2M'		
 	});
 		
     new Molpy.Boost({name:'Seaish Glass Chips', desc:'Allows Sand Purifier and Sand Refinery (using chips only) to increase as far as your resources allow', glass:'100K'});
@@ -4872,11 +4871,11 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Stretchable Chip Storage',desc:function(me)
 		{
-		return 'If active during a Blast furance run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
+		return 'If active during a Blast Furnace run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
 		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	new Molpy.Boost({name:'Stretchable Block Storage',desc:function(me)
 		{
-		return 'If active during a Blast furance run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
+		return 'If active during a Blast Furnace run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
 		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	
 	Molpy.GenericToggle=function(myid,negate)
@@ -4892,6 +4891,11 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:'You can win/lose Glass Chips from the Monty Haul Problem',sand:'1P',castles:'1T',glass:'1K'});
 	new Molpy.Boost({name:'Stealth Cam',desc:'Camera is activated when Ninja Stealth is increased',glass:'1M',group:'ninj'});
+	new Molpy.Boost({name:'Ninja Lockdown',
+		desc:function(me)
+		{			
+			return (me.power? '':'When active, ') + 'Prevents Ninja Stealth multipliers greater than 3x, and when toggled, locks Impervious Ninja if it is owned.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+'); Molpy.LockBoost(\'Impervious Ninja\');" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		},glass:'144Y',group:'ninj',logic:700});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment

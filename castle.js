@@ -2115,17 +2115,20 @@ Molpy.Up=function()
 			{
 				ninjaInc*=3;
 			}
-			if(Molpy.Got('Ninja League'))
+			if(!Molpy.Boosts['Ninja Lockdown'].power)
 			{
-				ninjaInc*=100;
-			}
-			if(Molpy.Got('Ninja Legion'))
-			{
-				ninjaInc*=1000;
-			}
-			if(Molpy.Got('Ninja Ninja Duck'))
-			{
-				ninjaInc*=10;
+				if(Molpy.Got('Ninja League'))
+				{
+					ninjaInc*=100;
+				}
+				if(Molpy.Got('Ninja Legion'))
+				{
+					ninjaInc*=1000;
+				}
+				if(Molpy.Got('Ninja Ninja Duck'))
+				{
+					ninjaInc*=10;
+				}
 			}
 			Molpy.ninjaStealth+=ninjaInc;
 			
