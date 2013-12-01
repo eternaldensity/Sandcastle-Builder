@@ -1862,7 +1862,7 @@ Molpy.DefineBoosts=function()
 	Molpy.GlassChillerIncrement=function()
 	{	
 		var inc = 1;
-		if(Molpy.Got('Glass Extruder'));
+		if(Molpy.Got('Glass Extruder'))
 			inc/=(Molpy.Boosts['Glass Extruder'].power+2);
 		if(Molpy.Got('Mushrooms'))
 		{
@@ -3533,8 +3533,8 @@ Molpy.DefineBoosts=function()
 		},
 		reset:function()
 		{
-			var chips =Math.pow(1.01,this.bought)*1000*(this.power-1);
-			if(chips<0)chips*=chips;
+			var chips =Math.pow(1.01,Math.abs(this.bought))*1000*(this.power-1);
+			if(this.bought<0)chips*=chips;
 			Molpy.AddChips(chips);
 			this.power=0;
 			Molpy.Notify(this.name+' has cancelled making <small>'+Molpy.Badges['monumg'+this.bought].name+'</small>',1);
@@ -3581,8 +3581,8 @@ Molpy.DefineBoosts=function()
 			var chips =this.bought*100*100;
 			if(chips<0)chips*=chips;
 			Molpy.AddChips(chips);
-			var sand=Math.pow(1.2,this.bought)*100*(this.power-1);
-			if(sand<0)sand*=sand;
+			var sand=Math.pow(1.2,Math.abs(this.bought))*100*(this.power-1);
+			if(this.bought<0)sand*=sand;
 			Molpy.Dig(sand);
 			this.power=0;
 			Molpy.Notify(this.name+' has cancelled filling <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
@@ -3627,11 +3627,11 @@ Molpy.DefineBoosts=function()
 			if(!confirm('You will also lose the unfilled glass mould which will waste 400 runs of Factory Automation.\nAre you certain you want to do this?'))
 				return;
 				
-			var blocks=Math.pow(1.02,this.bought)*1000000*(this.power-1);
-			if(blocks<0)blocks*=blocks;
+			var blocks=Math.pow(1.02,Math.abs(this.bought))*1000000*(this.power-1);
+			if(this.bought<0)blocks*=blocks;
 			Molpy.AddBlocks(blocks);
-			var chips =Math.pow(1.01,this.bought)*1000*400;
-			if(chips<0)chips*=chips;
+			var chips =Math.pow(1.01,Math.abs(this.bought))*1000*400;
+			if(this.bought<0)chips*=chips;
 			Molpy.AddChips(chips);
 			this.power=0;
 			Molpy.Notify(this.name+' has cancelled filling <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
@@ -3748,8 +3748,9 @@ Molpy.DefineBoosts=function()
 		{
 			return times;
 		}
-		var sand=Math.pow(1.2,smf.bought)*100;
-		if(sand<0)sand*=sand;
+		var b = smf.bought;
+		var sand=Math.pow(1.2,Math.abs(b))*100;
+		if(b<0)sand*=sand;
 		while (times) 
 		{
 			if(Molpy.sand <sand)
@@ -3813,8 +3814,9 @@ Molpy.DefineBoosts=function()
 		{
 			return times;
 		}
-		var chips=Math.pow(1.01,gmm.bought)*1000;
-		if(chips<0)chips*=chips;
+		var b = gmm.bought;
+		var chips=Math.pow(1.01,Math.abs(b))*1000;
+		if(b<0)chips*=chips;
 		while (times) 
 		{
 			if(!Molpy.HasGlassChips(chips)) 
@@ -3876,8 +3878,9 @@ Molpy.DefineBoosts=function()
 		{
 			return times;
 		}
-		var glass=Math.pow(1.02,gmf.bought)*1000000;
-		if(glass<0)glass*=glass;
+		var b = gmf.bought;
+		var glass=Math.pow(1.02,Math.abs(b))*1000000;
+		if(b<0)glass*=glass;
 		while (times) 
 		{
 			if(!Molpy.HasGlassBlocks(glass)) 
@@ -4404,7 +4407,7 @@ Molpy.DefineBoosts=function()
 		}
 	});
 	
-	new Molpy.Boost({name:'Safety Pumpkin',desc:'It\'s orange, comfortable, stylish, and reduces the likelihood of industrial accidents!', stats:'Also prevents Factory Automation from downgrading in shortpix!',
+	new Molpy.Boost({name:'Safety Pumpkin',desc:'It\'s orange, comfortable, stylish, and reduces the likelihood of industrial accidents!',
 		glass:'20K'
 	});
 	
@@ -4623,8 +4626,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Super Visor',desc:'Beanie Builder Glass production is multiplied by 15',glass:'20M',sand:Infinity,castles:Infinity,group:'bean'}); //brillant
 	new Molpy.Boost({name:'Crystal Helm',desc:'Beanie Builder Glass production is multiplied by 5',glass:'30M',sand:Infinity,castles:Infinity,group:'bean'}); //paula
 	
-	new Molpy.Boost({name:'Safety Goggles',alias:'SG',desc:'The goggles, they do something!',
-		glass:'2M'		
+	new Molpy.Boost({name:'Safety Goggles',alias:'SG',desc:'The goggles, they do something!',stats:'Reduces the chance of industrial accidents and prevents Factory Automation from downgrading in shortpix!',glass:'2M'		
 	});
 		
     new Molpy.Boost({name:'Seaish Glass Chips', desc:'Allows Sand Purifier and Sand Refinery (using chips only) to increase as far as your resources allow', glass:'100K'});
@@ -4870,11 +4872,11 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Stretchable Chip Storage',desc:function(me)
 		{
-		return 'If active during a Blast furance run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
+		return 'If active during a Blast Furnace run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
 		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	new Molpy.Boost({name:'Stretchable Block Storage',desc:function(me)
 		{
-		return 'If active during a Blast furance run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
+		return 'If active during a Blast Furnace run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
 		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	
 	Molpy.GenericToggle=function(myid,negate)
@@ -4890,6 +4892,11 @@ Molpy.DefineBoosts=function()
 	
 	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:'You can win/lose Glass Chips from the Monty Haul Problem',sand:'1P',castles:'1T',glass:'1K'});
 	new Molpy.Boost({name:'Stealth Cam',desc:'Camera is activated when Ninja Stealth is increased',glass:'1M',group:'ninj'});
+	new Molpy.Boost({name:'Ninja Lockdown',
+		desc:function(me)
+		{			
+			return (me.power? '':'When active, ') + 'Prevents Ninja Stealth multipliers greater than 3x, and when toggled, locks Impervious Ninja if it is owned.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+'); Molpy.LockBoost(\'Impervious Ninja\');" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		},glass:'144Y',group:'ninj',logic:700});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
