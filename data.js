@@ -1862,7 +1862,7 @@ Molpy.DefineBoosts=function()
 	Molpy.GlassChillerIncrement=function()
 	{	
 		var inc = 1;
-		if(Molpy.Got('Glass Extruder'));
+		if(Molpy.Got('Glass Extruder'))
 			inc/=(Molpy.Boosts['Glass Extruder'].power+2);
 		if(Molpy.Got('Mushrooms'))
 		{
