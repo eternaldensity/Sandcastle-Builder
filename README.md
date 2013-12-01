@@ -24,6 +24,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1895
+- Needed more abs (forgot I was using pow in some cases)
+- Safety Pumpkin's stats were out of date (now moved to Safety Goggles)
+
 ## 3.1894
 - Some fixes and new discoveries from waveney
 - Gave the abs a workout
