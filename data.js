@@ -5061,8 +5061,8 @@ Molpy.DefineBadges=function()
 	{
 		var bot=Molpy.CastleTools['NewPixBot'];
 		var bots = bot.amount;
-		var np = Math.abs(Molpy.newpixNumber<20);
-		if(Molpy.Got('Time Travel')||np)bots-=2;
+		var np = Math.abs(Molpy.newpixNumber);
+		if(Molpy.Got('Time Travel')||np<20)bots-=2;
 		var botCastles=bot.totalCastlesBuilt*bots;
 		var thresh = Molpy.JudgementDipThreshold();
 		var level = Math.max(0,Math.floor(botCastles/thresh));
