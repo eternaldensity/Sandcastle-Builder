@@ -847,5 +847,4 @@ Molpy.DefinePersist=function()
 			_gaq.push(['_trackEvent','Coma','Complete',''+Molpy.highestNPvisited]);
 		}
 	}
-		
 }

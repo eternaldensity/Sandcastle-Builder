@@ -275,7 +275,6 @@ Molpy.DefineBoosts=function()
 	Molpy.ComaMolpyStyleToggle=function()
 	{
 		var me=Molpy.Boosts['Coma Molpy Style'];
-
 		Molpy.Notify(cms[cmsline]);
 		cmsline++;
 		if(cmsline>=cms.length)
@@ -695,7 +694,7 @@ Molpy.DefineBoosts=function()
 			if(me.power <= 100) return 'Speed is at '+me.power+' out of 100';
 			return me.desc;
 		}});
-		
+
 	new Molpy.Boost({name:'The Forty',desc:'Cuegan produce 40 times as much sand',sand:40404040,castles:4040,icon:'theforty'});
 	new Molpy.Boost({name:'Chequered Flag',desc:'Racing NewPixBots activate 20% sooner',sand:101010101,castles:10101,icon:'cheqflag'});
 	new Molpy.Boost({name:'Skull and Crossbones',desc:'Pirates vs. Ninjas! Ninja Builder\'s Castle output is raised by 5% cumulatively per flag owned over 40',sand:304050607,castles:809010,icon:'skullcrossbones',group:'ninj'});
@@ -4008,5 +4007,5 @@ Molpy.DefineBoosts=function()
 		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
 		diamm:['masterpieces','Masterpieces',0,'Masterpiece','This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of','in diamond. <br>It molpifies with spikes of treeishness.'],
 	};
-	Molpy.nextBageGroup={discov:'monums',monums:'monumg',monumg:'diamm'};
+	Molpy.nextBageGroup={discov:'monums',monums:'monumg'};//,monumg:'diamm'};
 }

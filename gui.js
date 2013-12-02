@@ -5,11 +5,9 @@ Molpy.DefineGUI=function()
 	{
 		if(Molpy.showOptions)
 		{
-			Molpy.showOptions=0;
-				
+			Molpy.showOptions=0;	
 		}else{
 			Molpy.showOptions=1;
-			
 			Molpy.EarnBadge('Decisions, Decisions');
 			if(Molpy.Got('Autosave Option')){
 				g('autosaveoption').className='minifloatbox';
@@ -236,8 +234,7 @@ Molpy.DefineGUI=function()
 	{
 		if(Molpy.showStats)
 		{
-			Molpy.showStats=0;
-				
+			Molpy.showStats=0;				
 		}else{
 			Molpy.showStats=1;
 			Molpy.EarnBadge('Far End of the Bell Curve');
@@ -260,8 +257,7 @@ Molpy.DefineGUI=function()
 	{
 		if(Molpy.showExport)
 		{
-			Molpy.showExport=0;
-				
+			Molpy.showExport=0;				
 		}else{
 			Molpy.showExport=1;
 			_gaq&&_gaq.push(['_trackEvent','Export','Begin']);
@@ -909,7 +905,7 @@ Molpy.DefineGUI=function()
 		}
 		g('notiflogitems').innerHTML=str;
 	}
-	
+
 	Molpy.NewPixFor=function(np)
 	{
 		np = Math.abs(np);
@@ -960,7 +956,9 @@ Molpy.DefineGUI=function()
 		g('chipcount').innerHTML=Molpify(Molpy.Boosts['Tool Factory'].power,1) + ' chips';
 		g('chiprate').innerHTML=Molpify(Molpy.glassPermNP,1) + ' chips/mNP';
 		g('newtools').innerHTML='Built '+Molpify(Molpy.toolsBuilt,1)+' new tool'+plural(Molpy.toolsBuilt);
+
 		$('#sectionTFCounts').toggleClass('hidden',!Molpy.Got('Tool Factory'));
+
 		
 		g('newpixnum').innerHTML='Newpix '+Molpify(Molpy.newpixNumber,3);
 		g('eon').innerHTML=Molpy.TimeEon;

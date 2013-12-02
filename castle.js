@@ -31,7 +31,7 @@ var postfixes=[
 {limit:1e12,divisor:1e12,postfix:['T',' Tera']},
 {limit:1e9,divisor:1e9,postfix:['G',' Giga']},
 {limit:1e6,divisor:1e6,postfix:['M',' Mega']},
-{limit:1e4,divisor:1e3,postfix:['K',' Kilo']}, //yes this is intentional
+{limit:9e3,divisor:1e3,postfix:['K',' Kilo']}, //WHAT
 ];
 function Molpify(number, raftcastle, shrinkify)
 {
@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1898;
+		Molpy.version=3.1899;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -2483,7 +2483,7 @@ Molpy.Up=function()
 			if(cb)return;
 			
 			if(!isFinite(Molpy.castles))return; //We don't need to blast!
-			
+
 			var blastFactor=1000;
 			var boosted=0;
 			if(Molpy.Got('Fractal Sandcastles'))
