@@ -2684,7 +2684,7 @@
 	new Molpy.Boost({name:'Sand Mould Filler',alias:'SMF',desc:
 		function(me)
 		{
-			var str ='Fills a Sand Mould with Sand to make a Sand Monument.<br>This requires 200 Factory Automation runs and consumes 100 Sand plus 20% per NewPix number of the Discovery, per run.';
+			var str ='Fills a Sand Mould with Sand to make a Sand Monument.<br>This requires 200 Factory Automation runs and consumes 100 Sand plus 20% per NewPix number of the Discovery, per run.<br>';
 			if(Molpy.Earned('Minus Worlds'))str+='(Squared if negative)<br>';
 			if(me.bought)
 			{
@@ -2732,7 +2732,7 @@
 	new Molpy.Boost({name:'Glass Mould Filler',alias:'GMF',desc:
 		function(me)
 		{
-			var str ='Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.<br>This requires 800 Factory Automation runs and consumes 1M Glass Blocks plus 2% per NewPix number of the Discovery, per run.';
+			var str ='Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.<br>This requires 800 Factory Automation runs and consumes 1M Glass Blocks plus 2% per NewPix number of the Discovery, per run.<br>';
 			if(Molpy.Earned('Minus Worlds'))str+='(Squared if negative)<br>';
 			if(me.bought)
 			{

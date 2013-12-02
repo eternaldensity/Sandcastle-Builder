@@ -25,10 +25,13 @@ For personal amusement only.
 ## Changelog
 
 ## 3.2
+- Glass Ceilings are their own boost group
+- Also a Draconic boost group (even though the dragons are currently terrible)
 - Add jQuery-UI (not latest version because it has a bug with draggable stuff and the scrollbar)
 - Make lots of elements draggable and some resizable
 - Flatten HTML hierarchy since it's not necessary for layout now
 - Options/Stats/Export can be toggled on and off independently rather than replacing each other
+- Added missing linebreaks in Mould fillers
 
 ## 3.19
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P

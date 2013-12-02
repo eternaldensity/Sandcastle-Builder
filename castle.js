@@ -784,7 +784,7 @@ Molpy.Up=function()
 			}
 			Molpy.ninjad=1;
 			
-			if(oldBeachClass!='beachongwarning')
+			if(Molpy.oldBeachClass!='beachongwarning')
 				Molpy.UpdateBeachClass('beachsafe');
 			Molpy.HandleClickNP();	
 
@@ -2680,8 +2680,6 @@ Molpy.Up=function()
 		
 		/*In which we announce that initialisation is complete
 		++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-		$('.resizable-element').resizable();
-		$('.draggable-element').draggable();
 		
 		Molpy.LoadC_STARSTAR_kie(); //autoload saved game
 		Molpy.molpish=1;
@@ -2910,7 +2908,7 @@ Molpy.Up=function()
 			Molpy.npbONG=(Molpy.ONGelapsed >= Molpy.ninjaTime);//whoops
 		}
 		var npPercent = Molpy.ONGelapsed/(Molpy.NPlength*1000);
-		clockDegrees = (npPercent * 360) + 180; //rotation from top
+		Molpy.clockDegrees = (npPercent * 360) + 180; //rotation from top
 		g('ongtimer').innerHTML= 1000-Math.floor(Molpy.ONGelapsed/Molpy.NPlength);
 		if(Molpy.ONGelapsed >= Molpy.NPlength*1000)//gotta convert to milliseconds
 		{

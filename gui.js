@@ -1306,25 +1306,25 @@
 		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 	}
 	
-	var oldBeachClass='';
+	Molpy.oldBeachClass='';
 	Molpy.UpdateBeachClass=function(stateClass)
 	{
 		stateClass=stateClass||'';
 		if(Molpy.Boosts['Beachball'].power)
 		{
-			if(oldBeachClass!=stateClass)
+			if(Molpy.oldBeachClass!=stateClass)
 			{
-				$('#beach').removeClass(oldBeachClass).addClass(stateClass);
-				oldBeachClass=stateClass;
+				$('#beach').removeClass(Molpy.oldBeachClass).addClass(stateClass);
+				Molpy.oldBeachClass=stateClass;
 			}
-		}else if(oldBeachClass)
+		}else if(Molpy.oldBeachClass)
 		{
-			$('#beach').removeClass(oldBeachClass);
-			oldBeachClass='';
+			$('#beach').removeClass(Molpy.oldBeachClass);
+			Molpy.oldBeachClass='';
 		}
 	}
 	
-	var clockDegrees=0;
+	Molpy.clockDegrees=0;
 	function createClockHand()
 	{
 		var clockSizeX = 40,
@@ -1353,19 +1353,43 @@
 			Molpy.ONGelapsed = new Date().getTime()-Molpy.ONGstart.getTime();
 		}
 		var npPercent = Molpy.ONGelapsed/(Molpy.NPlength*1000);
-		clockDegrees = (npPercent * 360) + 180; //rotation from top		
+		Molpy.clockDegrees = (npPercent * 360) + 180; //rotation from top		
 
 		$("#clockface").children('div').css({ 
 			transformOrigin: "0% 0%",
-			transform: "rotate(" + clockDegrees + "deg)",
-			'-ms-transform': "rotate(" + clockDegrees + "deg)",
+			transform: "rotate(" + Molpy.clockDegrees + "deg)",
+			'-ms-transform': "rotate(" + Molpy.clockDegrees + "deg)",
 			'-ms-transform-origin': "0% 0%",
-			WebkitTransform: "rotate(" + clockDegrees + "deg)",
+			WebkitTransform: "rotate(" + Molpy.clockDegrees + "deg)",
 			'-webkit-transform-origin': "0% 0%"
         });
 	}
 	
 	Molpy.Layout=function(args)
 	{
+		this.name=args.name;
+		this.showHide=args.showHide;
+		this.positions=args.positions;
+		
+		this.ToString=function()
+		{
+		}
+		
+		this.FromString=function()
+		{
+		}
+		
+		this.ToScreen=function()
+		{
+		}
+		
+		this.FromScreen=function()
+		{
+		}
 	}
+	
+	
+	$('.resizable-element').resizable({cancel:'.editlock'});
+	$('.draggable-element').draggable({cancel:'.editlock'});
+	$('.draggable-element,.resizable-element').addClass('editlock');
 }
