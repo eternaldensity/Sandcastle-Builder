@@ -1,4 +1,4 @@
-Molpy.DefineBoosts=function()
+ï»¿Molpy.DefineBoosts=function()
 {	
 	//only add to the end!
 	new Molpy.Boost({name:'Bigger Buckets',desc:'Raises sand rate of buckets and clicks',sand:500,castles:0,stats:'Adds 0.1 S/mNP to each Bucket, before multipliers',icon:'biggerbuckets'});
@@ -624,7 +624,7 @@ Molpy.DefineBoosts=function()
 		},className:'alert',group:'cyb'
 		});	
 	
-	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',alias:'BKJ',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.'
+	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',alias:'BKJ',desc:'Antalet redundanta klickade kattungar lÃ¤ggs till blixtnedslag multiplikator.'
 		,sand:'9.8M',castles:888555222,stats:function(me)
 		{
 		return 'Additional '+Molpy.redactedWord+
@@ -719,12 +719,12 @@ Molpy.DefineBoosts=function()
 		Molpy.shopRepaint=1;
 	}
 		
-	new Molpy.Boost({name:'Blixtnedslag Förmögenhet, JA!',alias:'BFJ',desc:'Not Lucky gets a 20% bonus (non-cumulative) per level of Blixtnedslag Kattungar, JA!',sand:111098645321,castles:7777777777,
+	new Molpy.Boost({name:'Blixtnedslag FÃ¶rmÃ¶genhet, JA!',alias:'BFJ',desc:'Not Lucky gets a 20% bonus (non-cumulative) per level of Blixtnedslag Kattungar, JA!',sand:111098645321,castles:7777777777,
 		stats:function()
 		{
 			return 'Adds ' + Molpify(20*Molpy.Boosts['BKJ'].power,1)+'% to Not Lucky reward.<br>It also gets a boost from Blitzing if you get them simultaneously and allows Blitzing to improve Blast Furnace (though only up to 20% of Castles Built, before accounting for Flux Turbine).';
 		},icon:'bfj',group:'hpt'});
-	new Molpy.Boost({name:'VITSSÅGEN, JA!',alias:'VJ',
+	new Molpy.Boost({name:'VITSSÃ…GEN, JA!',alias:'VJ',
 		desc:function(me)
 		{
 			if(me.bought==0) return 'This message is dedicated to MajorDouble7 who found this bug and thus will never see this message since it is intended to stop people from magically getting this without buying it';
@@ -747,10 +747,10 @@ Molpy.DefineBoosts=function()
 		function(me)
 		{
 			if(!me.bought)
-				return 'Björk Björk Björk!';
+				return 'BjÃ¶rk BjÃ¶rk BjÃ¶rk!';
 			if(!me.power)
-				return 'Björk Björk Björk! Well that was a waste...';
-			return 'Björk Björk Björk! You\'re welcöme';
+				return 'BjÃ¶rk BjÃ¶rk BjÃ¶rk! Well that was a waste...';
+			return 'BjÃ¶rk BjÃ¶rk BjÃ¶rk! You\'re welcÃ¶me';
 		},sand:999222111000,castles:8887766554433,
 		stats:function(me)
 		{
@@ -761,7 +761,7 @@ Molpy.DefineBoosts=function()
 				Molpy.Build(8887766554433);
 			}			
 			Molpy.UnlockBoost(['Family Discount','Shopping Assistant','Late Closing Hours']);
-			return 'Gives you Swedish stuff and boosts VITSSÅGEN, JA! bonus castles';
+			return 'Gives you Swedish stuff and boosts VITSSÃ…GEN, JA! bonus castles';
 		},icon:'swedishchef',group:'hpt'});
 	new Molpy.Boost({name:'Family Discount',desc:'Permament 80% discount on all prices',sand:'24G',castles:'720G',
 		buyFunction:function(){Molpy.shopRepaint=1;},group:'hpt',icon:'familydiscount'}
@@ -1625,7 +1625,7 @@ Molpy.DefineBoosts=function()
 		
 	new Molpy.Boost({name:'Swim Between the Flags',alias:'SBTF',desc:'Each Flag gives Waves a 6% bonus to Castle production on even NewPix (i.e. when changing from an odd NewPix to an even NewPix) and to destruction on odd NewPix. The Sand production of Flags is multiplied by the number of Waves on odd NewPix and divided on even NewPix.', sand:'14G', castles: '2T',icon:'swimbetweenflags'});
 	
-	new Molpy.Boost({name:"Château d'If",
+	new Molpy.Boost({name:"ChÃ¢teau d'If",
 		desc:function(me)
 		{
 			var str = '<b>THIS FORTRESS IS HERE</b>.'
@@ -2101,7 +2101,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'
 		,sand:'490P',castles:'670P',glass:1500,group:'ninj',icon:'ninjaclimber'
 	});
-	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.',stats:'Squares the reward from VITSSÅGEN, JA!'
+	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.',stats:'Squares the reward from VITSSÃ…GEN, JA!'
 		,sand:'48E',castles:'38E',glass:100,group:'hpt',icon:'phonesaw'
 	});
 	new Molpy.Boost({name:'Logicat',desc:
@@ -3047,7 +3047,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Ninjasaw',
 		desc:function(me)
 		{
-			var str= 'Ninja Builder\'s Castle output is multiplied by VITSSÅGEN, JA! and VITSSÅGEN, JA! is multipled by a tenth of Ninja Builder, each at a cost of 50 Glass Blocks';
+			var str= 'Ninja Builder\'s Castle output is multiplied by VITSSÃ…GEN, JA! and VITSSÃ…GEN, JA! is multipled by a tenth of Ninja Builder, each at a cost of 50 Glass Blocks';
 			if(me.bought){
 				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
 			}
@@ -3516,7 +3516,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Stained Glass Launcher',desc:'Trebuchet Glass flinging is multiplied by the number of Glass Ceilings owned',glass:'15M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Glass Saw',desc:function(me)
 	{		
-		return (me.power>0? '':'When active, ') + 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and doubling with use.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power>0? 'Dea':'A')+'ctivate"></input>':'');
+		return (me.power>0? '':'When active, ') + 'VITSSÃ…GEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and doubling with use.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power>0? 'Dea':'A')+'ctivate"></input>':'');
 	}
 	,glass:'7M',sand:Infinity,castles:Infinity,className:'toggle',
 		buyFunction:function(){this.power=1;}
@@ -3731,7 +3731,7 @@ Molpy.DefineBoosts=function()
 	new Molpy.Boost({name:'Zookeeper',alias:'ZK',desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 21 AA runs.'
 		,glass:'2.5G',sand:Infinity,castles:Infinity, group:'bean'});
 		
-	new Molpy.Boost({name:'Schrödinger\'s Gingercat',alias:'SGC',desc:'Observes itself. Also causes Not Lucky to give more glass and makes '+Molpy.redactedWords+' last longer',glass:'16.2M',logic:1613});
+	new Molpy.Boost({name:'SchrÃ¶dinger\'s Gingercat',alias:'SGC',desc:'Observes itself. Also causes Not Lucky to give more glass and makes '+Molpy.redactedWords+' last longer',glass:'16.2M',logic:1613});
 	
 	new Molpy.Boost({name:'Mind Glow',desc:'Jumping to a NewPix for which you have made a Sand Monument costs half as many Glass Blocks',glass:'2M'});
 	new Molpy.Boost({name:'Memory Singer',desc:'Jumping to a NewPix for which you have made a Glass Monument costs half as many Glass Blocks',glass:'10M'});

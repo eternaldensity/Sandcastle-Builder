@@ -1,4 +1,4 @@
-Molpy.DefineBadges=function()
+﻿Molpy.DefineBadges=function()
 {	
 	new Molpy.Badge({name:'Amazon Patent',desc:'1-Click'});
 	new Molpy.Badge({name:'Oops',desc:'You clicked it again'});

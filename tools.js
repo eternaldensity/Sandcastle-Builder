@@ -1,4 +1,4 @@
-Molpy.DefineSandTools=function()
+﻿Molpy.DefineSandTools=function()
 {
 	new Molpy.SandTool({name:'Bucket',commonName:'bucket|buckets|poured',desc:'Pours a little sand',price:8,
 		spmNP:function(){

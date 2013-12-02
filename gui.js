@@ -1,4 +1,4 @@
-Molpy.DefineGUI=function()
+﻿Molpy.DefineGUI=function()
 {
 	Molpy.IsChildOf=function(child,parent)
 	{

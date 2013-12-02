@@ -1,4 +1,4 @@
-Molpy.DefinePersist=function()
+﻿Molpy.DefinePersist=function()
 {
 	Molpy.CuegishToBeanish=function(mustard)
 	{
