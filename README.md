@@ -24,7 +24,7 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.1899
+## 3.19
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P
 - Split code into separate files finally!
 
