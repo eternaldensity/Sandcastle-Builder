@@ -4912,7 +4912,7 @@ Molpy.DefineBoosts=function()
 		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
 		diamm:['masterpieces','Masterpieces',0,'Masterpiece','This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of','in diamond. <br>It molpifies with spikes of treeishness.'],
 	};
-	Molpy.nextBageGroup={discov:'monums',monums:'monumg',monumg:'diamm'};
+	Molpy.nextBageGroup={discov:'monums',monums:'monumg'];//,monumg:'diamm'};
 }
 	
 	
