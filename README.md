@@ -24,6 +24,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1898
+- I misplaced a <20 when I put abs() around the newpixnumber everywhere... which made the maximum JDip level 0. oops.
+- Un-broke index page (oi, waveney!)
+
 ## 3.1897
 - Load and Import clear the log
 - Molpy Down accounts for startPower of Boosts being a function (sorry that was breaking saves)

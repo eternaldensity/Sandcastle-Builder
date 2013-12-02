@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1897;
+		Molpy.version=3.1898;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -550,7 +550,6 @@ Molpy.Up=function()
 			}
 			g('title').innerHTML=GLRschoice(['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex','The Dwarf Fortress of Idle Games']);
 			
-			Molpy.ClearLog();
 			var pixels = thread[2].split(s);
 			Molpy.startDate=parseInt(pixels[0]);
 			
@@ -574,6 +573,7 @@ Molpy.Up=function()
 				Molpy.UpdateColourScheme();
 				return;
 			}
+			Molpy.ClearLog();
 			
 			pixels=thread[4].split(s);
 			Molpy.newpixNumber=parseInt(pixels[0])||0;
