@@ -1156,25 +1156,10 @@ Molpy.Up=function()
 			if(Molpy.showOptions)
 			{
 				Molpy.showOptions=0;
-				$('#beach').removeClass('hidden').addClass('unhidden');
-				$('#beachAnchor').removeClass('hidden').addClass('unhidden');
-				$('#options').removeClass('unhidden').addClass('hidden');
 					
 			}else{
 				Molpy.showOptions=1;
-				if(Molpy.showStats)
-				{
-					Molpy.showStats=0;
-					Molpy.shopRepaint=1;
-					Molpy.boostRepaint=1;
-				}
-				Molpy.showExport=0;
-				$('#beach').removeClass('unhidden').addClass('hidden');
-				$('#beachAnchor').removeClass('unhidden').addClass('hidden');
-				$('#stats').removeClass('unhidden').addClass('hidden');
-				$('#export').removeClass('unhidden').addClass('hidden');
-				$('#options').removeClass('hidden').addClass('unhidden');
-							
+				
 				Molpy.EarnBadge('Decisions, Decisions');
 				if(Molpy.Got('Autosave Option')){
 					g('autosaveoption').className='minifloatbox';
@@ -1207,6 +1192,7 @@ Molpy.Up=function()
 					Molpy.OptionDescription(Molpy.optionNames[i],1); //show all descriptions
 				}
 			}
+			$('#options').toggleClass('hidden',Molpy.showOptions);
 		}
 		Molpy.flashes=0;
 		Molpy.ToggleOption=function(bacon)
@@ -1401,21 +1387,12 @@ Molpy.Up=function()
 			if(Molpy.showStats)
 			{
 				Molpy.showStats=0;
-				$('#beach').removeClass('hidden').addClass('unhidden');
-				$('#beachAnchor').removeClass('hidden').addClass('unhidden');
-				$('#stats').removeClass('unhidden').addClass('hidden');
 					
 			}else{
 				Molpy.showStats=1;
-				Molpy.showOptions=0;
-				Molpy.showExport=0;
-				$('#beach').removeClass('unhidden').addClass('hidden');
-				$('#beachAnchor').removeClass('unhidden').addClass('hidden');
-				$('#options').removeClass('unhidden').addClass('hidden');
-				$('#export').removeClass('unhidden').addClass('hidden');
-				$('#stats').removeClass('hidden').addClass('unhidden');
 				Molpy.EarnBadge('Far End of the Bell Curve');
 			}
+			$('#stats').toggleClass('hidden',Molpy.showOptions);
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
@@ -1434,23 +1411,9 @@ Molpy.Up=function()
 			if(Molpy.showExport)
 			{
 				Molpy.showExport=0;
-				$('#beach').removeClass('hidden').addClass('unhidden');
-				$('#beachAnchor').removeClass('hidden').addClass('unhidden');
-				$('#export').removeClass('unhidden').addClass('hidden');
 					
 			}else{
 				Molpy.showExport=1;
-				Molpy.showOptions=0;
-				if(Molpy.showStats)
-				{
-					Molpy.showStats=0;
-					Molpy.shopRepaint=1;
-					Molpy.boostRepaint=1;
-				}
-				$('#beach').removeClass('unhidden').addClass('hidden');
-				$('#beachAnchor').removeClass('unhidden').addClass('hidden');
-				$('#stats').removeClass('unhidden').addClass('hidden');
-				$('#options').removeClass('unhidden').addClass('hidden');
 				_gaq&&_gaq.push(['_trackEvent','Export','Begin']);
 				var threads = Molpy.ToNeedlePulledThing();
 				_gaq&&_gaq.push(['_trackEvent','Export','Complete']);
@@ -1460,8 +1423,8 @@ Molpy.Up=function()
 					thread+=threads[i]
 				}
 				g('exporttext').value= CuegishToBeanish(thread);
-				$('#export').removeClass('hidden').addClass('unhidden');
 			}
+			$('#export').toggleClass('hidden',Molpy.showOptions);
 		}
 		var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1';
 		var vendors=['-webkit-','-moz-','-o-','-ms-',''];

@@ -40,127 +40,125 @@
 			<div class="navbaritem">
 				<a onclick=Molpy.StatsToggle()><h4>Stats</h4></a>
 			</div>
-		</div>
-		<div id="sectionLeft" class="draggable-element">	
-			<div id="beachAnchor">
-				<div id="sparticles">
-				</div>
-				<div id="beach" class="timeflip">
-				</div>
-			</div>
-			<div id="options" class="hidden">Options:
-				<div id="optionsItems">
-					<div class="minifloatbox">
-						<a onclick=Molpy.Down()>Molpy Down</a>
-					</div>
-					<div class="minifloatbox">
-						<a onclick=Molpy.Coma()>Coma</a>
-					</div>
-					<div id="autosaveoption" class="minifloatbox" >
-						<a onclick="Molpy.ToggleOption('autosave')">Autosave</a>
-						<div id="autosavedescription"></div>
-					</div>
-					<div id="colourschemeoption" class="minifloatbox" >
-						<a onclick="Molpy.ToggleOption('colourscheme')">Colour Scheme</a>
-						<div id="colourschemedescription"></div>
-					</div>
-					<div id="otcoloption" class="minifloatbox" >
-						<a onclick="Molpy.ToggleOption('colpix')">Show Colpix</a>
-						<div id="colpixdescription"></div>
-					</div>
-					<div id="sandnumbersoption" class="minifloatbox" >
-						<a onclick="Molpy.ToggleOption('sandnumbers')">Draw +Sand Numbers</a>
-						<div id="sandnumbersdescription"></div>
-					</div>
-					<div id="scienceoption" class="minifloatbox" >
-						<a onclick="Molpy.ToggleOption('science')">Scientific Notation</a>
-						<div id="sciencedescription"></div>
-					</div>
-					<div id="longpostfixoption" class="minifloatbox" >
-						<a onclick="Molpy.ToggleOption('longpostfix')">Use long postfixes</a>
-						<div id="longpostfixdescription"></div>
-					</div>
-					<div id="sandmultibuy" class="minifloatbox" >
-						<a onclick="Molpy.ToggleOption('sandmultibuy')">Buy N Sand tools at once</a>
-						<div id="sandmultibuydescription"></div>
-					</div>
-					<div id="castlemultibuy" class="minifloatbox" >
-						<a onclick="Molpy.ToggleOption('castlemultibuy')">Buy N Castle tools at once</a>
-						<div id="castlemultibuydescription"></div>
-					</div>
-					<div id="fadeoption" class="minifloatbox" >
-						<a onclick="Molpy.ToggleOption('fade')">Colour Scheme Fade</a>
-						<div id="fadedescription"></div>
-					</div>
-				</div>
-			</div>
-			<div id="stats" class="hidden">Stats:
-				<div id="statsTabButtons">
-					<div id="statsButtonSand" class="minifloatbox statsButton" >
-						<a onclick="Molpy.StatsTabChange('Sand')">Sand Stats</a>
-					</div>
-					<div id="statsButtonGlass" class="minifloatbox statsButton" >
-						<a onclick="Molpy.StatsTabChange('Glass')">Glass Stats</a>
-					</div>
-					<div id="statsButtonNinja" class="minifloatbox statsButton" >
-						<a onclick="Molpy.StatsTabChange('Ninja')">Ninja Stats</a>
-					</div>
-					<div id="statsButtonOther" class="minifloatbox statsButton" >
-						<a onclick="Molpy.StatsTabChange('Other')">Other Stats</a>
-					</div>
-				</div>
-				<div id="statsTabSand" class="hidden statsTab">
-					<div>Total Sand Dug: <span id="totalsandstat"/></div>
-					<div>Sand Dug by Hand: <span id="manualsandstat"/></div>
-					<div>Sand Clicks: <span id="clicksstat"/></div>
-					<div>Sand per Click: <span id="spclickstat"/></div>
-					<div>Total Sand Spent: <span id="sandspentstat"/></div><br>
-					<div>Total Castles Built: <span id="totalcastlesstat"/></div>
-					<div>Total Castles Destroyed: <span id="destroyedcastlesstat"/></div>
-					<div>Total Castles Sacrificed: <span id="downcastlesstat"/></div>
-					<div>Total Castles Spent: <span id="spentcastlesstat"/></div><br>
-					<div>Sand Tools Owned: <span id="sandtoolsownedstat"/></div>
-					<div>Castle Tools Owned: <span id="castletoolsownedstat"/></div>
-					<div>Global Sand/mNP multiplier: <span id="sandmultiplierstat"/></div>
-				</div>
-				<div id="statsTabGlass" class="hidden statsTab">
-					<div>Glass Chips Stored: <span id="glasschipstat"/></div>
-					<div>Glass Blocks Stored: <span id="glassblockstat"/></div>
-					<div>Sand used in Glass Production: <span id="sandusestat"/></div><br>
-					<div id="chipspmnp">Net chips per mNP (roughly): <span id="chipspmnpstat"></div>
-					<div id="blockspmnp">Blocks per mNP (roughly): <span id="blockspmnpstat"></div><br>
-					<div>Total Chips Made by Tools: <span id="totaltoolchipsstat"/></div>
-					<div>Total Chips Destroyed by tools: <span id="destroyedtoolchipsstat"/></div>
-					<div>Chips Made by Hand: <span id="manualchipsstat"/></div>
-					<div>Chips per Click: <span id="chipclickstat"/></div>
-				</div>
-				<div id="statsTabNinja" class="hidden statsTab">
-					<div>NewPixBot delay: <span id="ninjatimestat"/></div>
-					<div>Ninja Stealth Streak: <span id="ninjastealthstat"/></div>
-					<div>Ninja Forgiveness Available: <span id="ninjaforgivestat"/></div><br>
-				</div>
-				<div id="statsTabOther" class="hidden statsTab">
-					<div>Times Loaded: <span id="loadcountstat"/></div>
-					<div>mNP since last autosave: <span id="autosavecountstat"/></div>
-					<div>Times Saved: <span id="savecountstat"/></div>
-					<div>Notifications Received: <span id="notifstat"/></div><br>
-					<div>Boosts Owned: <span id="boostsownedstat"/></div>
-					<div>Badges Earned: <span id="badgesownedstat"/></div><br>
-					<div><span id="redactedstat"/></div>
-					<div><span id="redactedmaxstat"/></div><br>
-					<div>Logicat Level: <span id="logicatstat"/></div>
-					<div>Blackprints Collected: <span id="blackstat"/></div>
-				</div>
-				<div id="notiflog">Log of Notifications:
-					<div id="notiflogitems">
-					</div>
-				</div>
-			</div>
-			<div id="export" class="hidden">Exported Save Data: (Keep this somewhere safe)<br>
-				<textarea onkeydown=Molpy.KeyDown id="exporttext">
-				</textarea>
-			</div>
 		</div>	
+		<div id="beachAnchor" class="draggable-element">
+			<div id="sparticles">
+			</div>
+			<div id="beach" class="timeflip">
+			</div>
+		</div>
+		<div id="options" class="hidden draggable-element resizable-element">Options:
+			<div id="optionsItems">
+				<div class="minifloatbox">
+					<a onclick=Molpy.Down()>Molpy Down</a>
+				</div>
+				<div class="minifloatbox">
+					<a onclick=Molpy.Coma()>Coma</a>
+				</div>
+				<div id="autosaveoption" class="minifloatbox" >
+					<a onclick="Molpy.ToggleOption('autosave')">Autosave</a>
+					<div id="autosavedescription"></div>
+				</div>
+				<div id="colourschemeoption" class="minifloatbox" >
+					<a onclick="Molpy.ToggleOption('colourscheme')">Colour Scheme</a>
+					<div id="colourschemedescription"></div>
+				</div>
+				<div id="otcoloption" class="minifloatbox" >
+					<a onclick="Molpy.ToggleOption('colpix')">Show Colpix</a>
+					<div id="colpixdescription"></div>
+				</div>
+				<div id="sandnumbersoption" class="minifloatbox" >
+					<a onclick="Molpy.ToggleOption('sandnumbers')">Draw +Sand Numbers</a>
+					<div id="sandnumbersdescription"></div>
+				</div>
+				<div id="scienceoption" class="minifloatbox" >
+					<a onclick="Molpy.ToggleOption('science')">Scientific Notation</a>
+					<div id="sciencedescription"></div>
+				</div>
+				<div id="longpostfixoption" class="minifloatbox" >
+					<a onclick="Molpy.ToggleOption('longpostfix')">Use long postfixes</a>
+					<div id="longpostfixdescription"></div>
+				</div>
+				<div id="sandmultibuy" class="minifloatbox" >
+					<a onclick="Molpy.ToggleOption('sandmultibuy')">Buy N Sand tools at once</a>
+					<div id="sandmultibuydescription"></div>
+				</div>
+				<div id="castlemultibuy" class="minifloatbox" >
+					<a onclick="Molpy.ToggleOption('castlemultibuy')">Buy N Castle tools at once</a>
+					<div id="castlemultibuydescription"></div>
+				</div>
+				<div id="fadeoption" class="minifloatbox" >
+					<a onclick="Molpy.ToggleOption('fade')">Colour Scheme Fade</a>
+					<div id="fadedescription"></div>
+				</div>
+			</div>
+		</div>
+		<div id="stats" class="hidden draggable-element resizable-element">Stats:
+			<div id="statsTabButtons">
+				<div id="statsButtonSand" class="minifloatbox statsButton" >
+					<a onclick="Molpy.StatsTabChange('Sand')">Sand Stats</a>
+				</div>
+				<div id="statsButtonGlass" class="minifloatbox statsButton" >
+					<a onclick="Molpy.StatsTabChange('Glass')">Glass Stats</a>
+				</div>
+				<div id="statsButtonNinja" class="minifloatbox statsButton" >
+					<a onclick="Molpy.StatsTabChange('Ninja')">Ninja Stats</a>
+				</div>
+				<div id="statsButtonOther" class="minifloatbox statsButton" >
+					<a onclick="Molpy.StatsTabChange('Other')">Other Stats</a>
+				</div>
+			</div>
+			<div id="statsTabSand" class="hidden statsTab">
+				<div>Total Sand Dug: <span id="totalsandstat"/></div>
+				<div>Sand Dug by Hand: <span id="manualsandstat"/></div>
+				<div>Sand Clicks: <span id="clicksstat"/></div>
+				<div>Sand per Click: <span id="spclickstat"/></div>
+				<div>Total Sand Spent: <span id="sandspentstat"/></div><br>
+				<div>Total Castles Built: <span id="totalcastlesstat"/></div>
+				<div>Total Castles Destroyed: <span id="destroyedcastlesstat"/></div>
+				<div>Total Castles Sacrificed: <span id="downcastlesstat"/></div>
+				<div>Total Castles Spent: <span id="spentcastlesstat"/></div><br>
+				<div>Sand Tools Owned: <span id="sandtoolsownedstat"/></div>
+				<div>Castle Tools Owned: <span id="castletoolsownedstat"/></div>
+				<div>Global Sand/mNP multiplier: <span id="sandmultiplierstat"/></div>
+			</div>
+			<div id="statsTabGlass" class="hidden statsTab">
+				<div>Glass Chips Stored: <span id="glasschipstat"/></div>
+				<div>Glass Blocks Stored: <span id="glassblockstat"/></div>
+				<div>Sand used in Glass Production: <span id="sandusestat"/></div><br>
+				<div id="chipspmnp">Net chips per mNP (roughly): <span id="chipspmnpstat"></div>
+				<div id="blockspmnp">Blocks per mNP (roughly): <span id="blockspmnpstat"></div><br>
+				<div>Total Chips Made by Tools: <span id="totaltoolchipsstat"/></div>
+				<div>Total Chips Destroyed by tools: <span id="destroyedtoolchipsstat"/></div>
+				<div>Chips Made by Hand: <span id="manualchipsstat"/></div>
+				<div>Chips per Click: <span id="chipclickstat"/></div>
+			</div>
+			<div id="statsTabNinja" class="hidden statsTab">
+				<div>NewPixBot delay: <span id="ninjatimestat"/></div>
+				<div>Ninja Stealth Streak: <span id="ninjastealthstat"/></div>
+				<div>Ninja Forgiveness Available: <span id="ninjaforgivestat"/></div><br>
+			</div>
+			<div id="statsTabOther" class="hidden statsTab">
+				<div>Times Loaded: <span id="loadcountstat"/></div>
+				<div>mNP since last autosave: <span id="autosavecountstat"/></div>
+				<div>Times Saved: <span id="savecountstat"/></div>
+				<div>Notifications Received: <span id="notifstat"/></div><br>
+				<div>Boosts Owned: <span id="boostsownedstat"/></div>
+				<div>Badges Earned: <span id="badgesownedstat"/></div><br>
+				<div><span id="redactedstat"/></div>
+				<div><span id="redactedmaxstat"/></div><br>
+				<div>Logicat Level: <span id="logicatstat"/></div>
+				<div>Blackprints Collected: <span id="blackstat"/></div>
+			</div>
+			<div id="notiflog">Log of Notifications:
+				<div id="notiflogitems">
+				</div>
+			</div>
+		</div>
+		<div id="export" class="hidden draggable-element resizable-element">Exported Save Data: (Keep this somewhere safe)<br>
+			<textarea onkeydown=Molpy.KeyDown id="exporttext">
+			</textarea>
+		</div>
 		<div id="sectionSandCounts" class="floatbox infobox draggable-element">
 			<div id="castlecount"></div>
 			<div id="sandcount"></div>
