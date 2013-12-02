@@ -3716,7 +3716,7 @@ Molpy.Up=function()
 				if(finite)
 					Molpy.SpendGlassBlocks(30);
 				else if(pg)
-					Molpy.AddChips(300);
+					Molpy.AddChips(3000);
 			}
 			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].power)
 			{
@@ -3733,7 +3733,7 @@ Molpy.Up=function()
 						Molpy.SandTools['Ladder'].refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(350);
+							Molpy.AddChips(3500);
 					}
 				}
 				if(Molpy.SandTools['Bag'].amount)	
@@ -3749,7 +3749,7 @@ Molpy.Up=function()
 						Molpy.SandTools['Bag'].refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(350);
+							Molpy.AddChips(3500);
 					}
 				}
 			}
@@ -3768,7 +3768,7 @@ Molpy.Up=function()
 						Molpy.CastleTools['River'].refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(450);
+							Molpy.AddChips(4500);
 					}
 				}
 				if(Molpy.CastleTools['Wave'].amount)	
@@ -3784,7 +3784,7 @@ Molpy.Up=function()
 						Molpy.CastleTools['Wave'].refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(450);
+							Molpy.AddChips(4500);
 					}
 				}
 			}
@@ -3795,7 +3795,7 @@ Molpy.Up=function()
 					Molpy.SpendGlassBlocks(120);
 					items+=Molpy.redactedClicks*2;
 				}else if(!finite&&pg)
-					Molpy.AddChips(1200);
+					Molpy.AddChips(12000);
 			}
 			var nerf=0;
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0)
@@ -3809,7 +3809,7 @@ Molpy.Up=function()
 				}
 				else if(!finite&&pg)
 				{
-					Molpy.AddChips(100);
+					Molpy.AddChips(1000);
 				}
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
@@ -4261,7 +4261,18 @@ Molpy.Up=function()
 			if(!(Molpy.options.showhide[group]||f))return'';
 			if(f&!me.bought&&group!='badges')return''; //this is for badgesav group
 			var cn= me.className||'';		
-			var heading= '<h1>['+Molpy.groupNames[group][0]+']</h1>';	
+			var status='';
+			if(me.np)
+			{
+				var nGroup = Molpy.nextBageGroup[group];
+				var nBadge=Molpy.Badges[nGroup+me.np];
+				if(nBadge&&!nBadge.earned)
+				{
+					status=' +';
+					cn='action';
+				}
+			}
+			var heading= '<h1>['+Molpy.groupNames[group][0]+']'+status+'</h1>';	
 			if(cn&&me.earned)Molpy.UnlockBoost('Chromatic Heresy');
 			cn+=' lootbox badge '+(me.earned?'loot':'shop');
 			if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;

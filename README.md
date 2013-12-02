@@ -27,6 +27,8 @@ For personal amusement only.
 ## 3.1897
 - Load and Import clear the log
 - Molpy Down accounts for startPower of Boosts being a function (sorry that was breaking saves)
+- Buff Panther Glaze x10
+- Make np-based Badges which have upgrades to be built, more obvious. (includes a fallback if you have chromatic heresy off)
 
 ## 3.1896
 - rogue semicolon in the GlassChillerIncrement function
