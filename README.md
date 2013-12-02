@@ -24,6 +24,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.1897
+- Load and Import clear the log
+- Molpy Down accounts for startPower of Boosts being a function (sorry that was breaking saves)
+
 ## 3.1896
 - rogue semicolon in the GlassChillerIncrement function
 

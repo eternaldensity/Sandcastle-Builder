@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1896;
+		Molpy.version=3.1897;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -1102,7 +1102,7 @@ Molpy.Up=function()
 					me.bought=0;	
 					me.power=0;
 					if(me.startPower)
-						me.power=me.startPower;
+						me.power=EvalMaybeFunction(me.startPower);
 					me.countdown=0;
 				}
 				Molpy.recalculateDig=1;
