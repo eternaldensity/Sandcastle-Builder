@@ -234,7 +234,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.1896;
+		Molpy.version=3.1897;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -550,6 +550,7 @@ Molpy.Up=function()
 			}
 			g('title').innerHTML=GLRschoice(['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex','The Dwarf Fortress of Idle Games']);
 			
+			Molpy.ClearLog();
 			var pixels = thread[2].split(s);
 			Molpy.startDate=parseInt(pixels[0]);
 			
@@ -1101,7 +1102,7 @@ Molpy.Up=function()
 					me.bought=0;	
 					me.power=0;
 					if(me.startPower)
-						me.power=me.startPower;
+						me.power=EvalMaybeFunction(me.startPower);
 					me.countdown=0;
 				}
 				Molpy.recalculateDig=1;
@@ -3715,7 +3716,7 @@ Molpy.Up=function()
 				if(finite)
 					Molpy.SpendGlassBlocks(30);
 				else if(pg)
-					Molpy.AddChips(300);
+					Molpy.AddChips(3000);
 			}
 			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].power)
 			{
@@ -3732,7 +3733,7 @@ Molpy.Up=function()
 						Molpy.SandTools['Ladder'].refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(350);
+							Molpy.AddChips(3500);
 					}
 				}
 				if(Molpy.SandTools['Bag'].amount)	
@@ -3748,7 +3749,7 @@ Molpy.Up=function()
 						Molpy.SandTools['Bag'].refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(350);
+							Molpy.AddChips(3500);
 					}
 				}
 			}
@@ -3767,7 +3768,7 @@ Molpy.Up=function()
 						Molpy.CastleTools['River'].refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(450);
+							Molpy.AddChips(4500);
 					}
 				}
 				if(Molpy.CastleTools['Wave'].amount)	
@@ -3783,7 +3784,7 @@ Molpy.Up=function()
 						Molpy.CastleTools['Wave'].refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(450);
+							Molpy.AddChips(4500);
 					}
 				}
 			}
@@ -3794,7 +3795,7 @@ Molpy.Up=function()
 					Molpy.SpendGlassBlocks(120);
 					items+=Molpy.redactedClicks*2;
 				}else if(!finite&&pg)
-					Molpy.AddChips(1200);
+					Molpy.AddChips(12000);
 			}
 			var nerf=0;
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0)
@@ -3808,7 +3809,7 @@ Molpy.Up=function()
 				}
 				else if(!finite&&pg)
 				{
-					Molpy.AddChips(100);
+					Molpy.AddChips(1000);
 				}
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
@@ -4260,7 +4261,18 @@ Molpy.Up=function()
 			if(!(Molpy.options.showhide[group]||f))return'';
 			if(f&!me.bought&&group!='badges')return''; //this is for badgesav group
 			var cn= me.className||'';		
-			var heading= '<h1>['+Molpy.groupNames[group][0]+']</h1>';	
+			var status='';
+			if(me.np)
+			{
+				var nGroup = Molpy.nextBageGroup[group];
+				var nBadge=Molpy.Badges[nGroup+me.np];
+				if(nBadge&&!nBadge.earned)
+				{
+					status=' +';
+					cn='action';
+				}
+			}
+			var heading= '<h1>['+Molpy.groupNames[group][0]+']'+status+'</h1>';	
 			if(cn&&me.earned)Molpy.UnlockBoost('Chromatic Heresy');
 			cn+=' lootbox badge '+(me.earned?'loot':'shop');
 			if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
@@ -4505,11 +4517,15 @@ Molpy.Up=function()
 				}
 			}
 		}
-		
-		Molpy.notifLog=[];
-		Molpy.notifLogNext=0;
-		Molpy.notifLogMax=39; //store 40 lines
-		Molpy.notifLogPaint=0;
+
+		Molpy.ClearLog=function()
+		{
+			Molpy.notifLog=[];
+			Molpy.notifLogNext=0;
+			Molpy.notifLogMax=39; //store 40 lines
+			Molpy.notifLogPaint=0;
+		}
+		Molpy.ClearLog();
 		Molpy.InMyPants=0;
 		Molpy.Notify=function(text,log)
 		{
@@ -5387,8 +5403,11 @@ Molpy.Up=function()
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['GlassChips'].power,4);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['GlassBlocks'].power,4);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),6)+'%';
-		g('chipspmnp').innerHTML = Molpify(Molpy.chipspmnp,3);
-		g('blockspmnp').innerHTML = Molpify(Molpy.blockspmnp,3);
+
+	    $('#chipspmnp').toggleClass('hidden',!Molpy.Got('AA'));
+    	$('#blockspmnp').toggleClass('hidden',!Molpy.Got('AA'));
+	    g('chipspmnpstat').innerHTML = Molpify(Molpy.chipspmnp,3);
+    	g('blockspmnpstat').innerHTML = Molpify(Molpy.blockspmnp,3);
 		
 		g('blackstat').innerHTML='Collected '+Molpify(+Molpy.Boosts['Blackprints'].power
 			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
