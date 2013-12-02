@@ -1246,8 +1246,7 @@
 		{
 			me.showdesc(1);
 		}
-	}
-	
+	}	
 	
 	Molpy.DescClass=function(me)
 	{
@@ -1307,6 +1306,25 @@
 		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 	}
 	
+	var oldBeachClass='';
+	Molpy.UpdateBeachClass=function(stateClass)
+	{
+		stateClass=stateClass||'';
+		if(Molpy.Boosts['Beachball'].power)
+		{
+			if(oldBeachClass!=stateClass)
+			{
+				$('#beach').removeClass(oldBeachClass).addClass(stateClass);
+				oldBeachClass=stateClass;
+			}
+		}else if(oldBeachClass)
+		{
+			$('#beach').removeClass(oldBeachClass);
+			oldBeachClass='';
+		}
+	}
+	
+	var clockDegrees=0;
 	function createClockHand()
 	{
 		var clockSizeX = 40,
@@ -1345,5 +1363,9 @@
 			WebkitTransform: "rotate(" + clockDegrees + "deg)",
 			'-webkit-transform-origin': "0% 0%"
         });
+	}
+	
+	Molpy.Layout=function(args)
+	{
 	}
 }

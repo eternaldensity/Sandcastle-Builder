@@ -1281,6 +1281,7 @@ Molpy.Up=function()
 					this.amount+=bought;
 					this.temp+=bought;
 					bought+=bought;
+					this.findPrice();
 				}
 				if(bought)
 				{
@@ -1477,6 +1478,7 @@ Molpy.Up=function()
 					this.amount+=bought;
 					this.temp+=bought;
 					bought+=bought;
+					this.findPrice();
 					if(this.temp>32) Molpy.UnlockBoost('Achronal Dragon');
 				}
 				if(bought)
@@ -2899,25 +2901,6 @@ Molpy.Up=function()
 			Molpy.flashes=0;
 	}
 	
-	var oldBeachClass='';
-	Molpy.UpdateBeachClass=function(stateClass)
-	{
-		stateClass=stateClass||'';
-		if(Molpy.Boosts['Beachball'].power)
-		{
-			if(oldBeachClass!=stateClass)
-			{
-				$('#beach').removeClass(oldBeachClass).addClass(stateClass);
-				oldBeachClass=stateClass;
-			}
-		}else if(oldBeachClass)
-		{
-			$('#beach').removeClass(oldBeachClass);
-			oldBeachClass='';
-		}
-	}
-	
-	var clockDegrees=0;
 	Molpy.CheckONG=function()
 	{
 		//if there's an ONG
