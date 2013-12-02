@@ -26,6 +26,7 @@ For personal amusement only.
 
 ## 3.1899
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P
+- Split code into separate files finally!
 
 ## 3.1898
 - I misplaced a <20 when I put abs() around the newpixnumber everywhere... which made the maximum JDip level 0. oops.
