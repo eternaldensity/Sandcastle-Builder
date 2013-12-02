@@ -298,7 +298,6 @@ a:active
 	overflow:hidden;
 	min-width:595px;
 	overflow: visible;
-	margin-left:84px;
 }
 #beachAnchor
 {
@@ -321,7 +320,6 @@ a:active
 .toolwrapper
 {
 	left:660px;
-	margin:0px;
 	min-height:90px;
 	max-height:1100px;
 	min-width:188px;
@@ -332,7 +330,6 @@ a:active
 }
 .toolbox
 {
-	margin:0px;
 	max-height:100%;
 	max-width:100%;
 	overflow-y:auto;
@@ -341,7 +338,6 @@ a:active
 #inventorywrapper
 {
 	position:absolute;
-	margin: 10px;
 	padding: 10px;
 	border-width: 1px;
 	border-style: solid;
@@ -352,7 +348,6 @@ a:active
 }
 #inventory
 {
-	margin: 0px;
 	padding: 0px;
 	border-style: none;
 	overflow-y:auto;
@@ -375,7 +370,6 @@ a:active
 }
 #shopwrapper
 {
-	margin: 0px;
 	padding: 5px;
 	left:660px;
 	top:290px;
@@ -387,7 +381,6 @@ a:active
 }
 #shop
 {
-	margin: 0px;
 	padding: 0px;
 	border-style: none;
 	min-height:20px;
@@ -396,15 +389,6 @@ a:active
 	overflow-y:auto;
 	overflow-x:hidden;
 }
-#shop.widescreen
-{
-	position: absolute;
-	top: 5px;
-	margin-top: 5px;
-	max-height: 500px;
-	margin-left: 1030px;
-}
-
 
 #clockwrapper{
 	position:absolute;
@@ -416,7 +400,6 @@ a:active
 	width:40px;
 	height:40px;
 	border-radius:50px;
-	margin-left:23px;
 	z-index:30;
 }
 
@@ -503,7 +486,6 @@ a:active
 	vertical-align: top;
 	width:145px;
 	min-height:66px;
-	margin-bottom:5px;
 	border-width: 1px;
 	border-style: solid;
 	padding: 4px;
@@ -566,7 +548,7 @@ body.lightscheme .floatbox:hover{
 {
 	text-align:center;
 	width:161px;
-	margin:9px;
+	margin:10px;
 }
 body.darkscheme .infobox
 {
