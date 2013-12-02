@@ -94,131 +94,6 @@ function Molpify(number, raftcastle, shrinkify)
 	return molp;
 }
 
-function PriceSort(a,b)
-{
-	var asp = EvalMaybeFunction(a.sandPrice,a,1);
-	var acp = EvalMaybeFunction(a.castlePrice,a,1);
-	var bsp = EvalMaybeFunction(b.sandPrice,b,1);
-	var bcp = EvalMaybeFunction(b.castlePrice,b,1);
-	if (asp>bsp) return 1;
-	else if (asp<bsp) return -1;
-	else
-	if (acp>bcp) return 1;
-	else if (acp<bcp) return -1;
-	else return 0;
-}
-function ClassNameSort(a,b)
-{
-	var at = a.className||'z';
-	var bt = b.className||'z';
-	var ag = a.group;
-	var bg = b.group;
-	var an = a.name;
-	var bn = b.name
-	if (at>bt) return 1;
-	else if (at<bt) return -1;
-	else
-	if (ag>bg) return 1;
-	else if (ag<bg) return -1;
-	else
-	if (an>bn) return 1;
-	else if (an<bn) return -1;
-	else return 0;
-}
-function FormatPrice(monies,item)
-{
-	return Molpify(Math.floor(EvalMaybeFunction(monies,item,1)*Molpy.priceFactor),1);
-}
-function CuegishToBeanish(mustard)
-{
-	try{
-		return AllYourBase.SetUpUsTheBomb(escape(encodeURIComponent(mustard)));
-	}
-	catch(err)
-	{
-		return '';
-	}
-}
-function BeanishToCuegish(mustard)
-{
-	try{
-		return decodeURIComponent(unescape(AllYourBase.BelongToUs(mustard)));
-	}
-	catch(err)
-	{
-		return '';
-	}
-}
-	
-function isChildOf(child,parent)
-{
-	if(!child)return;
-	var current = child;
-	while(current = current.parentNode)
-	{
-		if(current == parent)
-			return 1;
-	}
-}
-
-function onhover(me,event)
-{
-	if(me.hoverOnCounter>0||Molpy.Boosts['Expando'].power)
-	{
-		
-		if(me.earned&&me.np&&Molpy.previewNP!=me.np&&me.alias.indexOf('monumg')==0)
-		{
-			Molpy.previewNP=me.np;
-			Molpy.UpdateBeach(me.np);
-		}
-		return;
-	}
-	me.hoverOnCounter=Math.ceil(Molpy.fps/2);
-	me.hoverOffCounter=-1;
-}
-function onunhover(me,event)
-{				
-	if(isChildOf(event.relatedTarget,event.currentTarget)) return;
-	me.hoverOffCounter=Math.ceil(Molpy.fps*1.5);
-	me.hoverOnCounter=-1;
-	
-	if(me.earned&&me.np&&Molpy.previewNP==me.np&&Molpy.Boosts['Expando'].power&&me.alias.indexOf('monumg')==0)
-	{
-		Molpy.previewNP=0;
-		Molpy.UpdateBeach();
-	}
-}
-
-function showhideButton(key)
-{
-	return '<input type="Button" value="'+(Molpy.options.showhide[key]?'Hide':'Show')+'" onclick="showhideToggle(\''+key+'\')"></input>'
-}
-function showhideToggle(key)
-{
-	Molpy.options.showhide[key]=!Molpy.options.showhide[key];
-	if(Molpy.options.showhide[key])
-	{
-		if(key=='tagged')
-		{
-			for(var k in Molpy.options.showhide)
-			{
-				Molpy.options.showhide[k]=k==key; //when showing tagged, hide all others
-			}
-		}else{
-			Molpy.options.showhide.tagged=0; //hide tagged when showing anything else
-		}
-	}
-	Molpy.shopRepaint=1;
-	Molpy.boostRepaint=1;
-	Molpy.badgeRepaint=1;
-}
-function toOct(l){
-	return l[0]|l[1]<<1|l[2]<<2|l[3]<<3;
-}
-var fromOct=function(o){
-	return [o&1&&1,o&2&&1,o&4&&1,o&8&&1];
-}
-
 /* In which the game initialisation is specified
 ++++++++++++++++++++++++++++++++++++++++++++++++*/
 var Molpy={};
@@ -2046,26 +1921,7 @@ Molpy.Up=function()
 			return (Molpy.Boosts[back]?Molpy.Boosts[back].bought:0);
 			//also, watch www.youtube.com/watch?v=tTYr3JuueF4
 		}		
-		
-		Molpy.ShowGroup=function(group,tagged)
-		{		
-			if(Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]!='hide1')
-			{
-				if(tagged)
-				{
-					if(!Molpy.options.showhide.tagged)
-					{
-						showhideToggle('tagged');
-					}
-				}else{
-					if(!Molpy.options.showhide[group])
-					{
-						showhideToggle(group);
-					}
-				}
-			}
-		}
-		
+			
 		Molpy.previewNP=0;
 		
 		Molpy.badgeRepaint=1
@@ -2222,11 +2078,11 @@ Molpy.Up=function()
 			}
 		}
 		
-		Molpy.redactedW=BeanishToCuegish("UmVkdW5kYW50");
-		Molpy.redactedWord=BeanishToCuegish("UmVkdW5kYWtpdHR5");
-		Molpy.redactedWords=BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
-		Molpy.redactedBrackets=BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
-		Molpy.redactedSpoilerValue=BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
+		Molpy.redactedW=Molpy.BeanishToCuegish("UmVkdW5kYW50");
+		Molpy.redactedWord=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
+		Molpy.redactedWords=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
+		Molpy.redactedBrackets=Molpy.BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
+		Molpy.redactedSpoilerValue=Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
 		Molpy.redactedDrawType=[];
 		Molpy.RedactedHTML=function(heading,level)
 		{

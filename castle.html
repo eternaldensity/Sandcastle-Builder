@@ -26,24 +26,44 @@
 		</div>
 		<div class="navbaritem draggable-element" id="ongtimer">Timer
 		</div>
-		<div id="sectionControls" class="draggable-element ">		
+		<div id="sectionView" class="draggable-element">		
 			<div class="navbaritem">
-				<a onclick=Molpy.SaveC_STARSTAR_kie()><h4>Save</h4></a>
-			</div>
-			<div class="navbaritem" >
-				<a onclick=Molpy.LoadC_STARSTAR_kie()><h4>Load</h4></a>
+				<a onclick="Molpy.ToggleView('sectionOptions')"><h4>Options</h4></a>
 			</div>
 			<div class="navbaritem">
-				<a onclick=Molpy.ExportToggle()><h4>Export</h4></a>
+				<a onclick="Molpy.ToggleView('sectionStats')"><h4>Stats</h4></a>
 			</div>
 			<div class="navbaritem">
-				<a onclick=Molpy.Import()><h4>Import</h4></a>
+				<a onclick="Molpy.ToggleView('sectionShop')"><h4>Shop</h4></a>
 			</div>
 			<div class="navbaritem">
-				<a onclick=Molpy.OptionsToggle()><h4>Options</h4></a>
+				<a onclick="Molpy.ToggleView('sectionInventory')"><h4>Inventory</h4></a>
 			</div>
 			<div class="navbaritem">
-				<a onclick=Molpy.StatsToggle()><h4>Stats</h4></a>
+				<a onclick="Molpy.ToggleView('sectionSandTools')"><h4>Sand Tools</h4></a>
+			</div>
+			<div class="navbaritem">
+				<a onclick="Molpy.ToggleView('sectionCastleTools')"><h4>CastleTools</h4></a>
+			</div>
+		</div>	
+		<div id="sectionFile" class="draggable-element ">		
+			<div class="minifloatbox">
+				<a onclick="Molpy.SaveC_STARSTAR_kie()"><h4>Save</h4></a>
+			</div>
+			<div class="minifloatbox" >
+				<a onclick="Molpy.LoadC_STARSTAR_kie()"><h4>Load</h4></a>
+			</div>
+			<div class="minifloatbox">
+				<a onclick="Molpy.ExportToggle()"><h4>Export</h4></a>
+			</div>
+			<div class="minifloatbox">
+				<a onclick="Molpy.Import()"><h4>Import</h4></a>
+			</div>
+			<div class="minifloatbox">
+				<a onclick=Molpy.Down()>Molpy Down</a>
+			</div>
+			<div class="minifloatbox">
+				<a onclick=Molpy.Coma()>Coma</a>
 			</div>
 		</div>	
 		<div id="beachAnchor" class="draggable-element">
@@ -52,14 +72,8 @@
 			<div id="beach" class="timeflip">
 			</div>
 		</div>
-		<div id="options" class="hidden draggable-element resizable-element">Options:
+		<div id="sectionOptions" class="hidden draggable-element resizable-element">Options:
 			<div id="optionsItems">
-				<div class="minifloatbox">
-					<a onclick=Molpy.Down()>Molpy Down</a>
-				</div>
-				<div class="minifloatbox">
-					<a onclick=Molpy.Coma()>Coma</a>
-				</div>
 				<div id="autosaveoption" class="minifloatbox" >
 					<a onclick="Molpy.ToggleOption('autosave')">Autosave</a>
 					<div id="autosavedescription"></div>
@@ -98,7 +112,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="stats" class="hidden draggable-element resizable-element">Stats:
+		<div id="sectionStats" class="hidden draggable-element resizable-element">Stats:
 			<div id="statsTabButtons">
 				<div id="statsButtonSand" class="minifloatbox statsButton" >
 					<a onclick="Molpy.StatsTabChange('Sand')">Sand Stats</a>
@@ -160,7 +174,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="export" class="hidden draggable-element resizable-element">Exported Save Data: (Keep this somewhere safe)<br>
+		<div id="sectionExport" class="hidden draggable-element resizable-element">Exported Save Data: (Keep this somewhere safe)<br>
 			<textarea onkeydown=Molpy.KeyDown id="exporttext">
 			</textarea>
 		</div>
@@ -184,26 +198,26 @@
 			<div id="version"></div>
 		</div>			
 	</div>
-	<div id="sandtoolwrapper" class="draggable-element resizable-element toolwrapper">
+	<div id="sectionSandTools" class="draggable-element resizable-element toolwrapper">
 		<div id="sandtoolbox" class="toolbox">
 			<div id="sandSTitle">Sand Tools:</div>
 			<div id="sandtools"></div>
 		</div>
 	</div>
-	<div id="castletoolwrapper" class="draggable-element resizable-element toolwrapper">
+	<div id="sectionCastleTools" class="draggable-element resizable-element toolwrapper">
 		<div id="castletoolbox" class="toolbox">
 			<div id="castleSTitle">Castle Tools:</div>
 			<div id="castletools"></div>
 		</div>
 	</div>
-	<div id="shopwrapper" class="draggable-element resizable-element">
+	<div id="sectionShop" class="draggable-element resizable-element">
 		<div id="shop">
 			<div id="boostTitle">Boost Shop:</div>
 			<div id="boosts">
 			</div>
 		</div>
 	</div>
-	<div id="inventorywrapper" class="draggable-element resizable-element">
+	<div id="sectionInventory" class="draggable-element resizable-element">
 		<div id="inventory">Loot:
 			<div id="lootselection"></div>
 			<div id="loot"></div>

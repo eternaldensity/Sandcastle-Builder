@@ -288,17 +288,6 @@ a:active
 	-ms-user-select: auto;
 	user-select: auto;
 }
-#sectionTop
-{
-	width:670px;
-	position:absolute;
-}
-#sectionLeft
-{
-	overflow:hidden;
-	min-width:595px;
-	overflow: visible;
-}
 #beachAnchor
 {
 	max-width:600px;
@@ -309,11 +298,11 @@ a:active
 {
 	position:absolute;
 }
-#sandtoolwrapper
+#sectionSandTools
 {
 	top:5px;
 }
-#castletoolwrapper
+#sectionCastleTools
 {
 	top:130px;
 }
@@ -335,7 +324,7 @@ a:active
 	overflow-y:auto;
 	overflow-x:hidden;
 }
-#inventorywrapper
+#sectionInventory
 {
 	position:absolute;
 	padding: 10px;
@@ -368,7 +357,7 @@ a:active
 #sectionTime
 {
 }
-#shopwrapper
+#sectionShop
 {
 	padding: 5px;
 	left:660px;

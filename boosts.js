@@ -162,7 +162,7 @@ Molpy.DefineBoosts=function()
 			Molpy.RewardMonty();
 		}else
 		{
-			Function('me',BeanishToCuegish(Molpy.MontyMethod))(me);
+			Function('me',Molpy.BeanishToCuegish(Molpy.MontyMethod))(me);
 			if(me.goat)
 			{
 				Molpy.Notify('Door '+me.goat+' is opened, revealing a goat!<br>You may switch from Door '+me.door+' if you like.',1);

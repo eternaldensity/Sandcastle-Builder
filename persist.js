@@ -1,5 +1,33 @@
 Molpy.DefinePersist=function()
 {
+	Molpy.CuegishToBeanish=function(mustard)
+	{
+		try{
+			return AllYourBase.SetUpUsTheBomb(escape(encodeURIComponent(mustard)));
+		}
+		catch(err)
+		{
+			return '';
+		}
+	}
+	Molpy.BeanishToCuegish=function(mustard)
+	{
+		try{
+			return decodeURIComponent(unescape(AllYourBase.BelongToUs(mustard)));
+		}
+		catch(err)
+		{
+			return '';
+		}
+	}	
+
+	Molpy.ToOct=function(l){
+		return l[0]|l[1]<<1|l[2]<<2|l[3]<<3;
+	}
+	Molpy.FromOct=function(o){
+		return [o&1&&1,o&2&&1,o&4&&1,o&8&&1];
+	}
+
 	Molpy.SaveC_STARSTAR_kie=function(auto)
 	{
 		if(!auto)
@@ -20,7 +48,7 @@ Molpy.DefinePersist=function()
 		flood.setDate(10);
 		for(var i in threads)
 		{
-			var thread=CuegishToBeanish(threads[i]);
+			var thread=Molpy.CuegishToBeanish(threads[i]);
 			var dough='CastleBuilderGame'+i+'='+escape(thread)+'; expires='+flood.toUTCString()+';'
 			document.cookie=dough;//aaand save
 				
@@ -48,7 +76,7 @@ Molpy.DefinePersist=function()
 			{
 				var dough = document.cookie.split('CastleBuilderGame'+k[i]+'=')[1];
 				if(dough)
-					thread+=BeanishToCuegish(unescape(dough).split(';')[0])||'';
+					thread+=Molpy.BeanishToCuegish(unescape(dough).split(';')[0])||'';
 			}
 			_gaq&&_gaq.push(['_trackEvent','Load','Begin']);
 			Molpy.FromNeedlePulledThing(thread);
@@ -92,13 +120,13 @@ Molpy.DefinePersist=function()
 		}
 		if(thread=='Molpy')
 		{
-			Molpy.Notify(BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
+			Molpy.Notify(Molpy.BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
 			return;
 		}
 		if (thread && thread!='')
 		{
 			_gaq&&_gaq.push(['_trackEvent','Import','Begin']);
-			Molpy.FromNeedlePulledThing(BeanishToCuegish(thread));
+			Molpy.FromNeedlePulledThing(Molpy.BeanishToCuegish(thread));
 			_gaq&&_gaq.push(['_trackEvent','Import','Complete']);
 			Molpy.SaveC_STARSTAR_kie();
 		}
@@ -216,7 +244,7 @@ Molpy.DefinePersist=function()
 		var id=Molpy.Badges['discov1'].id;			
 		while(id+3<Molpy.BadgeN)
 		{
-			thread+=toOct([Molpy.BadgesById[id].earned,Molpy.BadgesById[id+1].earned,Molpy.BadgesById[id+2].earned,Molpy.BadgesById[id+3].earned]).toString(16);
+			thread+=Molpy.ToOct([Molpy.BadgesById[id].earned,Molpy.BadgesById[id+1].earned,Molpy.BadgesById[id+2].earned,Molpy.BadgesById[id+3].earned]).toString(16);
 			id+=4;
 		}
 		thread+=p;
@@ -512,7 +540,7 @@ Molpy.DefinePersist=function()
 			var id=Molpy.Badges['discov1'].id;
 			for(var i in pixels)
 			{
-				var enhance=fromOct(parseInt(pixels[i]||0,16));
+				var enhance=Molpy.FromOct(parseInt(pixels[i]||0,16));
 				for(var j in enhance)
 				{
 					var me=Molpy.BadgesById[id+ +j];
@@ -558,7 +586,7 @@ Molpy.DefinePersist=function()
 			if(tt.bought&&tt.power!=1)
 			{
 				tt.power=1;
-				Molpy.Notify(BeanishToCuegish(BlitzGirl.Apology),1);
+				Molpy.Notify(Molpy.BeanishToCuegish(BlitzGirl.Apology),1);
 			}
 		}
 		if(version<2.8)
