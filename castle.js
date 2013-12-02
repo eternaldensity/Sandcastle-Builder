@@ -5410,8 +5410,10 @@ Molpy.Up=function()
 		g('glasschipstat').innerHTML=Molpify(Molpy.Boosts['GlassChips'].power,4);
 		g('glassblockstat').innerHTML=Molpify(Molpy.Boosts['GlassBlocks'].power,4);
 		g('sandusestat').innerHTML=Molpify(Molpy.CalcGlassUse(),6)+'%';
-	    	g('chipspmnp').innerHTML = Molpify(Molpy.chipspmnp,3);
-    		g('blockspmnp').innerHTML = Molpify(Molpy.blockspmnp,3);
+	    $('#chipspmnp').toggleClass('hidden',!Molpy.Got('AA'));
+    	$('#blockspmnp').toggleClass('hidden',!Molpy.Got('AA'));
+	    g('chipspmnpstat').innerHTML = Molpify(Molpy.chipspmnp,3);
+    	g('blockspmnpstat').innerHTML = Molpify(Molpy.blockspmnp,3);
 		
 		g('blackstat').innerHTML='Collected '+Molpify(+Molpy.Boosts['Blackprints'].power
 			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
