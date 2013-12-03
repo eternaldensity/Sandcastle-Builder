@@ -348,49 +348,35 @@ a:active
 
 #sectionSandTools
 {
-	top:5px;
 }
 #sectionCastleTools
 {
-	top:130px;
 }
 .toolwrapper
 {
-	left:660px;
 	min-height:90px;
 	max-height:1100px;
 	min-width:188px;
 	max-width:1100px;
-	overflow:hidden;
 }
 
 #sectionInventory
 {
-	position:absolute;
 	padding: 10px;
-	top:540px;
 	height:150px;
 	min-height:150px;
 	min-width:110px;
-	overflow:hidden;
 }
 
 #sectionMainStats
 {
-	position:absolute;
-	top:420px;
-	left:70px;
-	margin:10px
 }
 #sectionShop
 {
 	padding: 5px;
-	left:660px;
-	top:290px;
 	height:100px;
 	min-height:100px;
 	min-width:170px;
-	overflow:hidden;
 }
 
 #clockface {

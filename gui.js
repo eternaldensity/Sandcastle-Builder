@@ -143,6 +143,7 @@
 
 	Molpy.RefreshOptions=function()
 	{
+		if(!Molpy.molpish)return;
 		Molpy.EarnBadge('Decisions, Decisions');
 		if(Molpy.Got('Autosave Option')){
 			g('autosaveoption').className='minifloatbox';
@@ -193,6 +194,7 @@
 	
 	Molpy.RefreshExport=function()
 	{
+		if(!Molpy.molpish)return;
 		_gaq&&_gaq.push(['_trackEvent','Export','Begin']);
 		var threads = Molpy.ToNeedlePulledThing();
 		_gaq&&_gaq.push(['_trackEvent','Export','Complete']);
@@ -1439,6 +1441,7 @@
 			pixels=threads[5].split(s);
 			for (var i in Molpy.draggableOrder)
 			{
+				if(!pixels[i]) pixels[i]='0C0';
 				var pos = pixels[i].split(c);
 				this.positions[Molpy.draggableOrder[i]]={left:parseFloat(pos[0]),top:parseFloat(pos[1])};
 			}	
@@ -1447,6 +1450,7 @@
 			pixels=threads[6].split(s);
 			for (var i in Molpy.sizableOrder)
 			{
+				if(!pixels[i]) pixels[i]='0C0';
 				var pos = pixels[i].split(c);
 				this.sizes[Molpy.sizableOrder[i]]={width:parseFloat(pos[0]),height:parseFloat(pos[1])};
 			}	
@@ -1486,8 +1490,8 @@
 			this.sizes={};
 			for(var i in Molpy.draggableOrder)
 			{
-				var item = $('#section'+Molpy.draggableOrder[i])
-				this.positions[Molpy.draggableOrder[i]]=item.position();
+				var item = g('section'+Molpy.draggableOrder[i])
+				this.positions[Molpy.draggableOrder[i]]={left:parseFloat(item.style.left),top:parseFloat(item.style.top)};
 			}
 			for(var i in Molpy.sizableOrder)
 			{
@@ -1497,10 +1501,12 @@
 		}
 	}
 	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
-	Molpy.boxVisOrder=['Clock','Timer','File','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','About','SandCounts','NP','Export'];
-	Molpy.draggableOrder=['Clock','Timer','View','File','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NP','About','SandTools','CastleTools','Shop','Inventory'];
-	Molpy.sizableOrder=['View','File','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory'];
+	Molpy.boxVisOrder=['Clock','Timer','File','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layout','Codex','Alerts'];
+	Molpy.draggableOrder=['Clock','Timer','View','File','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts'];
+	Molpy.sizableOrder=['View','File','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts'];
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
+	Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
+	Molpy.activeLayout.ToScreen();
 	
 	Molpy.IsStatsVisible=function()
 	{
@@ -1508,7 +1514,7 @@
 	}
 	
 	$('.resizable-element').resizable({cancel:'.editlock'});
-	$('.draggable-element').draggable({cancel:'.editlock'});
+	$('.draggable-element').draggable({cancel:'.editlock',scroll:true,grid:[10,10],snap:true});
 	//$('.draggable-element,.resizable-element').addClass('editlock');
 	//$('.ui-resizable-handle').addClass('hidden')
 }

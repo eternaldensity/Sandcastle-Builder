@@ -103,7 +103,7 @@ Molpy.Up=function()
 	
 	Molpy.Wake=function()
 	{
-		Molpy.molpish=1;
+		Molpy.molpish=0;
 		Molpy.HardcodedData();//split some stuff into separate file
 		/* In which variables are declared
 		++++++++++++++++++++++++++++++++++*/

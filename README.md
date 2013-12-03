@@ -32,6 +32,8 @@ For personal amusement only.
 - Flatten HTML hierarchy since it's not necessary for layout now
 - Options/Stats/Export can be toggled on and off independently rather than replacing each other
 - Added missing linebreaks in Mould fillers
+- More items can be hidden
+- Moving items to the right or bottom automatically scrolls the viewport
 
 ## 3.19
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P
