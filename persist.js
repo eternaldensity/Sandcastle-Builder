@@ -721,6 +721,20 @@
 				Molpy.Notify('Impervious Ninja change: it now gives '+Molpify(imp.power)+' Ninja Forgiveness, rather than a countdown. Also it uses 1% of your Glass Chips (in storage) per use.',1);
 			}
 		}
+		if(version<3.2)
+		{
+			if(Molpy.Earned('Minus Worlds'))
+			{
+				var mm = Molpy.Boosts['Magic Mirror'];
+				mm.power = 0;
+				for (var ip = 1;ip <= Math.abs(Molpy.newpixNumber);ip++)
+				{
+					if (Molpy.Earned('discov-'+ip)) mm.power++;
+				}
+				if (mm.power >= 10) Molpy.UnlockBoost('Magic Mirror');
+				
+			}
+		}
 		if(version<Molpy.version) //hey let's do this every upgrade!
 		{	
 			Molpy.Notify('Upgraded to new version!',1);		

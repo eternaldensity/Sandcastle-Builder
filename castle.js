@@ -2047,6 +2047,10 @@ Molpy.Up=function()
 						if(Molpy.newpixNumber!=me.np&&Molpy.Got('Memories Revisited'))
 						{
 							str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',1)" value="Jump!"></input> (Uses '+Molpify(Molpy.CalcJumpEnergy(me.np),2)+' Glass Chips)'
+							if (Molpy.Got('Magic Mirror'))
+							{
+								str+='<br>'+Molpy.WrapFlipHoriz('<input type="Button" onclick="Molpy.TTT('+ (-me.np)+',1)" value="Jump!"></input> to the other side (Uses '+Molpify(Molpy.CalcJumpEnergy(-me.np),2)+' Glass Chips)')
+							}
 						}
 						if(Molpy.Got('SMM')&&!Molpy.Boosts['SMM'].power&&!Molpy.Earned('monums'+me.np))
 						{
@@ -2773,6 +2777,13 @@ Molpy.Up=function()
 				Molpy.Notify('You already have this '+Molpy.Badges[alias].name);
 			}else{
 				Molpy.EarnBadge(alias,1);
+				if (Molpy.newpixNumber < 0) {
+					if (Molpy.Boosts['Magic Mirror'].power) 
+					{
+						if (Molpy.Boosts['Magic Mirror'].power++ >= 10) Molpy.UnlockBoost('Magic Mirror');
+					}	
+					else Molpy.Boosts['Magic Mirror'].power = 1;
+				}
 			}
 		}else
 		{
