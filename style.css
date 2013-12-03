@@ -290,15 +290,6 @@ a:active
 	-ms-user-select: auto;
 	user-select: auto;
 }
-#logItems
-{
-	padding: 0px;
-	border-style: none;
-	overflow-y:auto;
-	overflow-x:hidden;
-	max-width:100%;
-	max-height:100%;
-}
 
 #beachAnchor
 {
@@ -310,6 +301,31 @@ a:active
 {
 	position:absolute;
 }
+.table-wrapper
+{
+    display: table;
+    height: 100%;
+    width: 100%;
+	overflow:hidden;
+}
+.table-header
+{
+    display: table-row;
+}
+.table-content-wrapper
+{
+    height: 100%;
+    width: 100%;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+.table-content
+{
+    display: table-row; 
+    height: 100%; 
+    width: 100%;
+}
+
 #sectionSandTools
 {
 	top:5px;
@@ -327,13 +343,7 @@ a:active
 	max-width:1100px;
 	overflow:hidden;
 }
-.toolbox
-{
-	max-height:100%;
-	max-width:100%;
-	overflow-y:auto;
-	overflow-x:hidden;
-}
+
 #sectionInventory
 {
 	position:absolute;
@@ -343,15 +353,7 @@ a:active
 	min-width:110px;
 	overflow:hidden;
 }
-#inventory
-{
-	padding: 0px;
-	border-style: none;
-	overflow-y:auto;
-	overflow-x:hidden;
-	max-width:100%;
-	max-height:100%;
-}
+
 #sectionMainStats
 {
 	position:absolute;
@@ -376,13 +378,7 @@ a:active
 }
 #shop
 {
-	padding: 0px;
-	border-style: none;
 	min-height:20px;
-	max-height:100%;
-	max-width:100%;
-	overflow-y:auto;
-	overflow-x:hidden;
 }
 
 #clockwrapper{

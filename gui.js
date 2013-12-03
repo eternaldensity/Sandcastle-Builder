@@ -1182,12 +1182,12 @@
 		drawClockHand();
 		if(Molpy.IsStatsVisible()) Molpy.PaintStats();
 		Molpy.notifsUpdate();
+		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 		if(Molpy.options.numbers)Molpy.sparticlesUpdate();
 		
 		if(Molpy.scrumptiousDonuts==1)
 		{
 			g('scrumptiousdonuts').innerHTML=Molpy.BeanishToCuegish('JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGR1U5Ukw2RDIzamslMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==');
-			Molpy.Notify('Give you up,');
 		}else if(Molpy.scrumptiousDonuts==-1){
 			g('scrumptiousdonuts').innerHTML='';
 		}
@@ -1291,9 +1291,7 @@
 		g('totaltoolchipsstat').innerHTML=Molpify(Molpy.totalGlassBuilt,4);
 		g('destroyedtoolchipsstat').innerHTML=Molpify(Molpy.totalGlassDestroyed,4);
 		g('manualchipsstat').innerHTML=Molpify(Molpy.chipsManual,4);
-		g('chipclickstat').innerHTML=Molpify(Molpy.chipsPerClick,4);
-		
-		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
+		g('chipclickstat').innerHTML=Molpify(Molpy.chipsPerClick,4);		
 	}
 	
 	Molpy.oldBeachClass='';
