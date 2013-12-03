@@ -253,11 +253,6 @@ a:active
 {
 	border-color:#0F0;
 }
-#exporttext
-{
-	width:555px;
-	height:390px;
-}
 .npthumb
 {
 	width:130px;
@@ -284,6 +279,18 @@ a:active
 	height:40px;
 	min-height:40px;
 	min-width:68px;
+}
+#sectionOptions
+{
+	height:50px;
+	min-height:40px;
+	min-width:68px;
+}
+#sectionExport
+{
+	height:250px;
+	min-height:180px;
+	min-width:180px;
 }
 .statsTab
 {

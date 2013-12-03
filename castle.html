@@ -30,26 +30,35 @@
 			<div class="vscroll-section table-wrapper">
 				<div class="table-content">
 					<div class="table-content-wrapper">
-						<div class="minifloatbox">
-							<a onclick="Molpy.ToggleView('sectionShop')"><h4>Shop</h4></a>
+						<div id="toggleFile" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('File')"><h4>File</h4></a>
 						</div>
-						<div class="minifloatbox">
-							<a onclick="Molpy.ToggleView('sectionInventory')"><h4>Inventory</h4></a>
+						<div id="toggleShop" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('Shop')"><h4>Shop</h4></a>
 						</div>
-						<div class="minifloatbox">
-							<a onclick="Molpy.ToggleView('sectionSandTools')"><h4>Sand Tools</h4></a>
+						<div id="toggleInventory" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('Inventory')"><h4>Inventory</h4></a>
 						</div>
-						<div class="minifloatbox">
-							<a onclick="Molpy.ToggleView('sectionCastleTools')"><h4>CastleTools</h4></a>
+						<div id="toggleSandTools" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('SandTools')"><h4>Sand Tools</h4></a>
+						</div>
+						<div id="toggleCastleTools" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('CastleTools')"><h4>Castle Tools</h4></a>
 						</div>		
-						<div class="minifloatbox">
-							<a onclick="Molpy.ToggleView('sectionOptions')"><h4>Options</h4></a>
+						<div id="toggleOptions" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('Options')"><h4>Options</h4></a>
 						</div>
-						<div class="minifloatbox">
-							<a onclick="Molpy.ToggleView('sectionStats')"><h4>Stats</h4></a>
+						<div id="toggleStats" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('Stats')"><h4>Stats</h4></a>
 						</div>
-						<div class="minifloatbox">
-							<a onclick="Molpy.ToggleView('sectionLog')"><h4>Log</h4></a>
+						<div id="toggleLog" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('Log')"><h4>Log</h4></a>
+						</div>
+						<div id="toggleVersion" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('About')"><h4>Version</h4></a>
+						</div>
+						<div id="toggleSandCounts" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('SandCounts')"><h4>Sand/Castle Counts</h4></a>
 						</div>
 					</div>	
 				</div>	
@@ -65,8 +74,8 @@
 						<div class="minifloatbox" >
 							<a onclick="Molpy.LoadC_STARSTAR_kie()"><h4>Load</h4></a>
 						</div>
-						<div class="minifloatbox">
-							<a onclick="Molpy.ExportToggle()"><h4>Export</h4></a>
+						<div id="toggleExport" class="minifloatbox">
+							<a onclick="Molpy.ToggleView('Export')"><h4>Export</h4></a>
 						</div>
 						<div class="minifloatbox">
 							<a onclick="Molpy.Import()"><h4>Import</h4></a>

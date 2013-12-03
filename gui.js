@@ -120,16 +120,18 @@
 	Molpy.ToggleView=function(itemName)
 	{
 		var sh = Molpy.activeLayout.boxVis;
-		sh[itemName]=1*sh[itemName];
-		$('#'+itemName).toggleClass('hidden',sh[itemName]);
-		if(sh[itemName])
+		var el = 'section'+itemName;
+		sh[el]=1*!sh[el];
+		$('#'+el).toggleClass('hidden',sh[el]);
+		$('#toggle'+itemName).toggleClass('depressed',sh[el]);
+		if(sh[el])
 		{
 			var refresh=Molpy['Refresh'+itemName];
 			if(refresh)refresh();
 		}
 	}
 
-	Molpy.RefreshsectionOptions=function()
+	Molpy.RefreshOptions=function()
 	{
 		Molpy.EarnBadge('Decisions, Decisions');
 		if(Molpy.Got('Autosave Option')){
@@ -164,7 +166,7 @@
 		}
 	}
 	
-	Molpy.RefreshsectionStats=function()
+	Molpy.RefreshStats=function()
 	{
 		Molpy.EarnBadge('Far End of the Bell Curve');
 		Molpy.shopRepaint=1;
@@ -179,7 +181,7 @@
 		$('#statsButton'+n).addClass('selectedBox');			
 	}
 	
-	Molpy.RefreshsectionExport=function()
+	Molpy.RefreshExport=function()
 	{
 		_gaq&&_gaq.push(['_trackEvent','Export','Begin']);
 		var threads = Molpy.ToNeedlePulledThing();
@@ -1363,6 +1365,13 @@
 		
 		this.ToString=function()
 		{
+			var p='P'; //Pipe seParator
+			var s='S'; //Semicolon
+			var c='C'; //Comma
+			
+			var thread='';
+			var threads=[];
+			thread+=Molpy.version+p+p;//some extra space!
 		}
 		
 		this.FromString=function(string)
@@ -1375,8 +1384,13 @@
 			{
 				var item=Molpy.draggableOrder[i];
 				var pos = this.positions[item];
+				$('#section'+item).css(pos);
+			}
+			for(var i in Molpy.sizableOrder)
+			{
+				var item=Molpy.sizableOrder[i];
 				var size = this.sizes[item];
-				$('#section'+item).css(pos).css({width:size[0],height:size[1]});
+				$('#section'+item).css({width:size[0],height:size[1]});
 			}
 		}
 		
@@ -1388,7 +1402,11 @@
 			{
 				var item = $('#section'+Molpy.draggableOrder[i])
 				this.positions[Molpy.draggableOrder[i]]=item.position();
-				this.sizes[Molpy.draggableOrder[i]]=[item.width(),item.height()];
+			}
+			for(var i in Molpy.sizableOrder)
+			{
+				var item = $('#section'+Molpy.sizableOrder[i])
+				this.sizes[Molpy.sizableOrder[i]]=[item.width(),item.height()];
 			}
 		}
 	}
@@ -1405,4 +1423,5 @@
 	$('.resizable-element').resizable({cancel:'.editlock'});
 	$('.draggable-element').draggable({cancel:'.editlock'});
 	//$('.draggable-element,.resizable-element').addClass('editlock');
+	//$('.ui-resizable-handle').addClass('hidden')
 }
