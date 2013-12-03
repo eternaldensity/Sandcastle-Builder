@@ -268,9 +268,22 @@ a:active
 	border-width: 1px;
 	border-style: solid;
 }
-#stats
+#sectionStats
 {
-	min-height:350px;
+	min-height:150px;
+	min-width:150px;
+}
+#sectionView
+{
+	height:40px;
+	min-height:40px;
+	min-width:68px;
+}
+#sectionFile
+{
+	height:40px;
+	min-height:40px;
+	min-width:68px;
 }
 .statsTab
 {
@@ -349,7 +362,8 @@ a:active
 	position:absolute;
 	padding: 10px;
 	top:540px;
-	min-height:85px;
+	height:150px;
+	min-height:150px;
 	min-width:110px;
 	overflow:hidden;
 }
@@ -372,13 +386,10 @@ a:active
 	padding: 5px;
 	left:660px;
 	top:290px;
+	height:100px;
 	min-height:100px;
 	min-width:170px;
 	overflow:hidden;
-}
-#shop
-{
-	min-height:20px;
 }
 
 #clockwrapper{
