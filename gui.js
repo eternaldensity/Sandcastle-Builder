@@ -41,21 +41,21 @@
 
 	Molpy.ShowhideButton=function(key)
 	{
-		return '<input type="Button" value="'+(Molpy.options.showhide[key]?'Hide':'Show')+'" onclick="Molpy.ShowhideToggle(\''+key+'\')"></input>'
+		return '<input type="Button" value="'+(Molpy.activeLayout.showHide[key]?'Hide':'Show')+'" onclick="Molpy.ShowhideToggle(\''+key+'\')"></input>'
 	}
 	Molpy.ShowhideToggle=function(key)
 	{
-		Molpy.options.showhide[key]=!Molpy.options.showhide[key];
-		if(Molpy.options.showhide[key])
+		Molpy.activeLayout.showHide[key]=!Molpy.activeLayout.showHide[key];
+		if(Molpy.activeLayout.showHide[key])
 		{
 			if(key=='tagged')
 			{
-				for(var k in Molpy.options.showhide)
+				for(var k in Molpy.activeLayout.showHide)
 				{
-					Molpy.options.showhide[k]=k==key; //when showing tagged, hide all others
+					Molpy.activeLayout.showHide[k]=k==key; //when showing tagged, hide all others
 				}
 			}else{
-				Molpy.options.showhide.tagged=0; //hide tagged when showing anything else
+				Molpy.activeLayout.showHide.tagged=0; //hide tagged when showing anything else
 			}
 		}
 		Molpy.shopRepaint=1;
@@ -68,12 +68,12 @@
 		{
 			if(tagged)
 			{
-				if(!Molpy.options.showhide.tagged)
+				if(!Molpy.activeLayout.showHide.tagged)
 				{
 					Molpy.ShowhideToggle('tagged');
 				}
 			}else{
-				if(!Molpy.options.showhide[group])
+				if(!Molpy.activeLayout.showHide[group])
 				{
 					Molpy.ShowhideToggle(group);
 				}
@@ -558,7 +558,7 @@
 			r='';
 		}
 		
-		if(!(Molpy.options.showhide[group]||f))return'';
+		if(!(Molpy.activeLayout.showHide[group]||f))return'';
 		if(cn)Molpy.UnlockBoost('Chromatic Heresy');
 		
 		
@@ -668,7 +668,7 @@
 		}
 		else r='';
 		
-		if(!(Molpy.options.showhide[group]||f))return'';
+		if(!(Molpy.activeLayout.showHide[group]||f))return'';
 		if(f&!me.bought&&group!='badges')return''; //this is for badgesav group
 		var cn= me.className||'';		
 		var status='';
@@ -738,7 +738,7 @@
 		
 		Molpy.badgeHTML=str;
 		str='';			
-		if(Molpy.options.showhide.badgesav){
+		if(Molpy.activeLayout.showHide.badgesav){
 			var blist=[];
 			for (var i in Molpy.Badges)
 			{
@@ -1090,7 +1090,7 @@
 		{
 			Molpy.RepaintBadges();
 		}
-		if(tagRepaint&&Molpy.options.showhide.tagged)
+		if(tagRepaint&&Molpy.activeLayout.showHide.tagged)
 		{
 			Molpy.RepaintTaggedLoot();
 		}
@@ -1375,7 +1375,9 @@
 		{
 		}
 	}
-	Molpy.activeLayout= new Molpy.Layout({name:'default'});
+	Molpy.showhideNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
+	Molpy.activeLayout= new Molpy.Layout({name:'default',showHide:{boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:0,discov:0,monums:0,monumg:0,tagged:0,ceil:0,drac:0}});
+	
 	Molpy.IsStatsVisible=function()
 	{
 		return Molpy.activeLayout.showHide['sectionStats'];
