@@ -3756,17 +3756,19 @@
 	new Molpy.Boost({name:'Space Elevator',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',glass:'55T',sand:Infinity,castles:Infinity});
 	
 	new Molpy.Boost({name:'Discovery Detector',sand:'2M',castles:'2M',glass:100,className:'action',group:'bean',
-        desc:function(me)
-        {
-            if (!me.bought) return 'Scans your records to see if you have missed discoveries';
-            var cost=Molpy.highestNPvisited*Molpy.highestNPvisited*10;
-            return '<input type="button" value="Scan" onclick="Molpy.RunDiscoveryDetector()"></input> costs '+Molpify(cost,2)+ ' chips to scan your records to see where you have missed discoveries';
-        }
-    }); //by waveney
+            desc:function(me)
+            {
+                if (!me.bought) return 'Scans your records to see if you have missed discoveries';
+                var cost=Molpy.highestNPvisited*Molpy.highestNPvisited*10;
+	        if (Molpy.Earned('Minus Worlds')) cost*=40;
+                return '<input type="button" value="Scan" onclick="Molpy.RunDiscoveryDetector()"></input> costs '+Molpify(cost,2)+ ' chips to scan your records to see where you have missed discoveries';
+            }
+        }); //by waveney
 
     Molpy.RunDiscoveryDetector=function()
     {
         var cost=Molpy.highestNPvisited*Molpy.highestNPvisited*10;
+	if (Molpy.Earned('Minus Worlds')) cost*=40;
         if (!Molpy.HasGlassChips(cost))
         {
             Molpy.Notify('Sorry you can\'t afford it at the moment');
@@ -3776,7 +3778,7 @@
 
         var miscount =0;
         var npstart = 1;
-		var missing = 0;
+	var missing = 0;
         for (var np=1; np<Molpy.highestNPvisited; np++)
         {
             var alias='discov'+np;
@@ -3786,7 +3788,7 @@
                 {
                     if (miscount)
                     {
-						Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' since NP'+npstart,1);
+			Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np,1);
                         miscount=0;
                     }
                     npstart=np;
@@ -3794,15 +3796,40 @@
                 else
                 {
                     miscount++;
-					missing++;
+	   	    missing++;
                 }
             }
         }
-        if (miscount)
-        {
-            Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np,1);
-        }
-		if (!missing) Molpy.Notify('You have not missed any discoveries');
+        if (miscount) Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' since NP'+npstart,1);
+	if (Molpy.Earned('Minus Worlds'))
+	{
+	    var miscount =0;
+            var npstart = -Molpy.highestNPvisited;
+            for (var np=npstart; np<0; np++)
+            {
+           	var alias='discov'+np;
+            	if(Molpy.Badges[alias])
+            	{
+                    if(Molpy.Earned(alias))
+                    {
+                    	if (miscount)
+                    	{
+		  	    Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' between NP'+npstart+' and NP'+np,1);
+                            miscount=0;
+                        }
+                    	npstart=np;
+                    }
+                    else
+                    {
+                        miscount++;
+	   	        missing++;
+                    }
+                }
+            }
+            if (miscount) Molpy.Notify('You have missed '+miscount+' discover'+(miscount>1?'ies':'y')+' since NP'+npstart,1);
+	}
+
+	if (!missing) Molpy.Notify('You have not missed any discoveries');
     }
 	
 	new Molpy.Boost({name:'Achronal Dragon',desc:function(me)
