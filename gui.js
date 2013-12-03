@@ -41,21 +41,21 @@
 
 	Molpy.ShowhideButton=function(key)
 	{
-		return '<input type="Button" value="'+(Molpy.activeLayout.showHide[key]?'Hide':'Show')+'" onclick="Molpy.ShowhideToggle(\''+key+'\')"></input>'
+		return '<input type="Button" value="'+(Molpy.activeLayout.lootVis[key]?'Hide':'Show')+'" onclick="Molpy.ShowhideToggle(\''+key+'\')"></input>'
 	}
 	Molpy.ShowhideToggle=function(key)
 	{
-		Molpy.activeLayout.showHide[key]=!Molpy.activeLayout.showHide[key];
-		if(Molpy.activeLayout.showHide[key])
+		Molpy.activeLayout.lootVis[key]=!Molpy.activeLayout.lootVis[key];
+		if(Molpy.activeLayout.lootVis[key])
 		{
 			if(key=='tagged')
 			{
-				for(var k in Molpy.activeLayout.showHide)
+				for(var k in Molpy.activeLayout.lootVis)
 				{
-					Molpy.activeLayout.showHide[k]=k==key; //when showing tagged, hide all others
+					Molpy.activeLayout.lootVis[k]=k==key; //when showing tagged, hide all others
 				}
 			}else{
-				Molpy.activeLayout.showHide.tagged=0; //hide tagged when showing anything else
+				Molpy.activeLayout.lootVis.tagged=0; //hide tagged when showing anything else
 			}
 		}
 		Molpy.shopRepaint=1;
@@ -68,12 +68,12 @@
 		{
 			if(tagged)
 			{
-				if(!Molpy.activeLayout.showHide.tagged)
+				if(!Molpy.activeLayout.lootVis.tagged)
 				{
 					Molpy.ShowhideToggle('tagged');
 				}
 			}else{
-				if(!Molpy.activeLayout.showHide[group])
+				if(!Molpy.activeLayout.lootVis[group])
 				{
 					Molpy.ShowhideToggle(group);
 				}
@@ -119,7 +119,7 @@
 	
 	Molpy.ToggleView=function(itemName)
 	{
-		var sh = Molpy.activeLayout.showHide;
+		var sh = Molpy.activeLayout.boxVis;
 		sh[itemName]=1*sh[itemName];
 		$('#'+itemName).toggleClass('hidden',sh[itemName]);
 		if(sh[itemName])
@@ -558,7 +558,7 @@
 			r='';
 		}
 		
-		if(!(Molpy.activeLayout.showHide[group]||f))return'';
+		if(!(Molpy.activeLayout.lootVis[group]||f))return'';
 		if(cn)Molpy.UnlockBoost('Chromatic Heresy');
 		
 		
@@ -668,7 +668,7 @@
 		}
 		else r='';
 		
-		if(!(Molpy.activeLayout.showHide[group]||f))return'';
+		if(!(Molpy.activeLayout.lootVis[group]||f))return'';
 		if(f&!me.bought&&group!='badges')return''; //this is for badgesav group
 		var cn= me.className||'';		
 		var status='';
@@ -738,7 +738,7 @@
 		
 		Molpy.badgeHTML=str;
 		str='';			
-		if(Molpy.activeLayout.showHide.badgesav){
+		if(Molpy.activeLayout.lootVis.badgesav){
 			var blist=[];
 			for (var i in Molpy.Badges)
 			{
@@ -1090,7 +1090,7 @@
 		{
 			Molpy.RepaintBadges();
 		}
-		if(tagRepaint&&Molpy.activeLayout.showHide.tagged)
+		if(tagRepaint&&Molpy.activeLayout.lootVis.tagged)
 		{
 			Molpy.RepaintTaggedLoot();
 		}
@@ -1356,31 +1356,50 @@
 	Molpy.Layout=function(args)
 	{
 		this.name=args.name||'';
-		this.showHide=args.showHide||{};
+		this.lootVis=args.lootVis||{};
+		this.boxVis=args.boxVis||{};
 		this.positions=args.positions||{};
+		this.sizes=args.sizes||{};
 		
 		this.ToString=function()
 		{
 		}
 		
-		this.FromString=function()
+		this.FromString=function(string)
 		{
 		}
 		
 		this.ToScreen=function()
 		{
+			for(var i in Molpy.draggableOrder)
+			{
+				var item=Molpy.draggableOrder[i];
+				var pos = this.positions[item];
+				var size = this.sizes[item];
+				$('#section'+item).css(pos).css({width:size[0],height:size[1]});
+			}
 		}
 		
 		this.FromScreen=function()
 		{
+			this.positions={};
+			this.sizes={};
+			for(var i in Molpy.draggableOrder)
+			{
+				var item = $('#section'+Molpy.draggableOrder[i])
+				this.positions[Molpy.draggableOrder[i]]=item.position();
+				this.sizes[Molpy.draggableOrder[i]]=[item.width(),item.height()];
+			}
 		}
 	}
-	Molpy.showhideNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
-	Molpy.activeLayout= new Molpy.Layout({name:'default',showHide:{boosts:1,ninj:0,cyb:0,hpt:0,chron:0,bean:0,badges:1,badgesav:0,discov:0,monums:0,monumg:0,tagged:0,ceil:0,drac:0}});
+	Molpy.lootVisNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
+	Molpy.draggableOrder=['Clock','Timer','View','File','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NP','About','SandTools','CastleTools','Shop','Inventory'];
+	Molpy.sizableOrder=['View','File','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory'];
+	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
 	
 	Molpy.IsStatsVisible=function()
 	{
-		return Molpy.activeLayout.showHide['sectionStats'];
+		return Molpy.activeLayout.lootVis['sectionStats'];
 	}
 	
 	$('.resizable-element').resizable({cancel:'.editlock'});

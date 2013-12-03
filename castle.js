@@ -2907,7 +2907,7 @@ Molpy.Up=function()
 		}
 		var npPercent = Molpy.ONGelapsed/(Molpy.NPlength*1000);
 		Molpy.clockDegrees = (npPercent * 360) + 180; //rotation from top
-		g('ongtimer').innerHTML= 1000-Math.floor(Molpy.ONGelapsed/Molpy.NPlength);
+		g('sectionTimer').innerHTML= 1000-Math.floor(Molpy.ONGelapsed/Molpy.NPlength);
 		if(Molpy.ONGelapsed >= Molpy.NPlength*1000)//gotta convert to milliseconds
 		{
 			Molpy.ONG();

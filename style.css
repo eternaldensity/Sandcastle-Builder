@@ -375,12 +375,6 @@ a:active
 	left:70px;
 	margin:10px
 }
-#sectionCounts
-{
-}
-#sectionTime
-{
-}
 #sectionShop
 {
 	padding: 5px;
@@ -392,10 +386,6 @@ a:active
 	overflow:hidden;
 }
 
-#clockwrapper{
-	position:absolute;
-	margin-top:5px;
-}
 #clockface {
 	background-color:White;
 	background-image:url('img/clockface.png');
