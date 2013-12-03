@@ -34,6 +34,8 @@ For personal amusement only.
 - Added missing linebreaks in Mould fillers
 - More items can be hidden
 - Moving items to the right or bottom automatically scrolls the viewport
+- Default layout
+- Dragon unlocks were checking if the potential reward was owned rather than unlocked, which was silly.
 
 ## 3.19
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P

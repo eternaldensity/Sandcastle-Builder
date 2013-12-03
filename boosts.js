@@ -3839,9 +3839,9 @@
 	});
 	Molpy.DragonTarget=function()
 	{
-		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Got('Crystal Dragon')) return [2000,'Crystal Dragon'];
-		if(Molpy.Boosts['AC'].power>101&&!Molpy.Got('Dragon Forge')) return [7e9,'Dragon Forge'];
-		if(Molpy.Boosts['AC'].power>404&&!Molpy.Got('Dragon Wisdom')) return [4.5e13,'Dragon Wisdom'];
+		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Boosts['Crystal Dragon'].unlocked) return [2000,'Crystal Dragon'];
+		if(Molpy.Boosts['AC'].power>101&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e9,'Dragon Forge'];
+		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['Dragon Wisdom'].unlocked) return [4.5e13,'Dragon Wisdom'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
