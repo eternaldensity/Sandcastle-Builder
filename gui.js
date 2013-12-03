@@ -43,9 +43,14 @@
 	{
 		return '<input type="Button" value="'+(Molpy.activeLayout.lootVis[key]?'Hide':'Show')+'" onclick="Molpy.ShowhideToggle(\''+key+'\')"></input>'
 	}
-	Molpy.ShowhideToggle=function(key)
+	Molpy.ShowhideToggle=function(key,val)
 	{
-		Molpy.activeLayout.lootVis[key]=!Molpy.activeLayout.lootVis[key];
+		if(val==undefined)
+		{
+			Molpy.activeLayout.lootVis[key]=!Molpy.activeLayout.lootVis[key];
+		}else{
+			Molpy.activeLayout.lootVis[key]=val==true;
+		}
 		if(Molpy.activeLayout.lootVis[key])
 		{
 			if(key=='tagged')
@@ -117,16 +122,21 @@
 		return Molpify(Math.floor(EvalMaybeFunction(monies,item,1)*Molpy.priceFactor),1);
 	}
 	
-	Molpy.ToggleView=function(itemName)
+	Molpy.ToggleView=function(name,val)
 	{
 		var sh = Molpy.activeLayout.boxVis;
-		var el = 'section'+itemName;
-		sh[el]=!sh[el];
-		$('#'+el).toggleClass('hidden',sh[el]);
-		$('#toggle'+itemName).toggleClass('depressed',!sh[el]);
-		if(sh[el])
+		if(val==undefined)
 		{
-			var refresh=Molpy['Refresh'+itemName];
+			sh[name]=!sh[name];
+		}else
+		{
+			sh[name]=val==true;//ensure boolean for jQuery
+		}
+		$('#'+'section'+name).toggleClass('hidden',!sh[name]);
+		$('#toggle'+name).toggleClass('depressed',sh[name]);
+		if(sh[name])
+		{
+			var refresh=Molpy['Refresh'+name];
 			if(refresh)refresh();
 		}
 	}
@@ -1413,7 +1423,7 @@
 			var pixels=threads[3].split('');
 			for (var i in Molpy.lootVisOrder)
 			{
-				var vis = parseInt(pixels[i]==1);//we want a boolean because jQuery
+				var vis = parseInt(pixels[i])==1;//we want a boolean because jQuery
 				this.lootVis[Molpy.lootVisOrder[i]]=vis;
 			}
 			
@@ -1421,7 +1431,7 @@
 			pixels=threads[4].split('');
 			for (var i in Molpy.boxVisOrder)
 			{
-				var vis = parseInt(pixels[i]==1);//ditto
+				var vis = parseInt(pixels[i])==1;//ditto
 				this.boxVis[Molpy.boxVisOrder[i]]=vis;
 			}	
 			
@@ -1444,6 +1454,18 @@
 		
 		this.ToScreen=function()
 		{
+		
+			for(var i in Molpy.lootVisOrder)
+			{
+				var el=Molpy.lootVisOrder[i];
+				Molpy.ShowhideToggle(el, this.lootVis[el]);
+			}
+			for(var i in Molpy.boxVisOrder)
+			{
+				var el=Molpy.boxVisOrder[i];
+				Molpy.ToggleView(el, this.boxVis[el]);
+			}
+			
 			for(var i in Molpy.draggableOrder)
 			{
 				var item=Molpy.draggableOrder[i];

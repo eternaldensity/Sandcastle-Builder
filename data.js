@@ -633,7 +633,6 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.groupBadgeCounts.discov>100)
 	{
 		Molpy.UnlockBoost('Stealth Cam');
-		Molpy.UnlockBoost('Stealth Cam');
 	}
 	if(Molpy.groupBadgeCounts.monums>10&&Molpy.Got('Memories Revisited'))
 	{
