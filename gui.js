@@ -1372,10 +1372,74 @@
 			var thread='';
 			var threads=[];
 			thread+=Molpy.version+p+p;//some extra space!
+			thread+=this.name.toLowerCase()+p;
+			
+			for(var i in Molpy.lootVisOrder)
+			{
+				thread+=this.lootVis[Molpy.lootVisOrder[i]]?1:0;
+			}
+			thread+=p;
+			for(var i in Molpy.boxVisOrder)
+			{
+				thread+=this.boxVis[Molpy.boxVisOrder[i]]?1:0;
+			}
+			thread+=p;
+			for(var i in Molpy.draggableOrder)
+			{
+				var item=this.positions[Molpy.draggableOrder[i]]
+				thread+=item.left+c+item.top+s;
+			}
+			thread+=p;
+			for(var i in Molpy.sizableOrder)
+			{
+				var item=this.sizes[Molpy.sizableOrder[i]]
+				thread+=item.width+c+item.height+s;
+			}
+			thread+=p;
+			
+			return thread;
 		}
 		
 		this.FromString=function(string)
 		{
+			var p='P'; //Pipe seParator
+			var s='S'; //Semicolon
+			var c='C'; //Comma
+			var threads=string.split(p);
+			var version = parseFloat(threads[0]);
+			this.name=threads[2];
+			
+			this.lootVis={};
+			var pixels=threads[3].split('');
+			for (var i in Molpy.lootVisOrder)
+			{
+				var vis = parseInt(pixels[i]==1);//we want a boolean because jQuery
+				this.lootVis[Molpy.lootVisOrder[i]]=vis;
+			}
+			
+			this.boxVis={};
+			pixels=threads[4].split('');
+			for (var i in Molpy.boxVisOrder)
+			{
+				var vis = parseInt(pixels[i]==1);//ditto
+				this.boxVis[Molpy.boxVisOrder[i]]=vis;
+			}	
+			
+			this.positions={};
+			pixels=threads[5].split(s);
+			for (var i in Molpy.draggableOrder)
+			{
+				var pos = pixels[i].split(c);
+				this.positions[Molpy.draggableOrder[i]]={left:parseFloat(pos[0]),top:parseFloat(pos[1])};
+			}	
+			
+			this.sizes={};
+			pixels=threads[6].split(s);
+			for (var i in Molpy.sizableOrder)
+			{
+				var pos = pixels[i].split(c);
+				this.sizes[Molpy.sizableOrder[i]]={width:parseFloat(pos[0]),height:parseFloat(pos[1])};
+			}	
 		}
 		
 		this.ToScreen=function()
@@ -1390,7 +1454,7 @@
 			{
 				var item=Molpy.sizableOrder[i];
 				var size = this.sizes[item];
-				$('#section'+item).css({width:size[0],height:size[1]});
+				$('#section'+item).css(size);
 			}
 		}
 		
@@ -1406,7 +1470,7 @@
 			for(var i in Molpy.sizableOrder)
 			{
 				var item = $('#section'+Molpy.sizableOrder[i])
-				this.sizes[Molpy.sizableOrder[i]]=[item.width(),item.height()];
+				this.sizes[Molpy.sizableOrder[i]]={width:item.width(),height:item.height()};
 			}
 		}
 	}
