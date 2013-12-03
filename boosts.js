@@ -331,6 +331,7 @@
 		if(price<0)price*=-1;
 		if(price>Molpy.castles)
 			Molpy.Boosts['Flux Capacitor'].department=1;
+		if(isNaN(price))price=Infinity;
 		return price;
 	}
 	
