@@ -549,6 +549,18 @@ body.lightscheme .floatbox:hover{
 	width:161px;
 	margin:10px;
 }
+.depressed
+{
+	border-width:2px;
+}
+body.lightscheme .depressed
+{
+	background-color:#ddd;
+}
+body.darkscheme .depressed
+{
+	background-color:#181818;
+}
 body.darkscheme .infobox
 {
 	background-color:#111;

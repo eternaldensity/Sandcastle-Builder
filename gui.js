@@ -121,9 +121,9 @@
 	{
 		var sh = Molpy.activeLayout.boxVis;
 		var el = 'section'+itemName;
-		sh[el]=1*!sh[el];
+		sh[el]=!sh[el];
 		$('#'+el).toggleClass('hidden',sh[el]);
-		$('#toggle'+itemName).toggleClass('depressed',sh[el]);
+		$('#toggle'+itemName).toggleClass('depressed',!sh[el]);
 		if(sh[el])
 		{
 			var refresh=Molpy['Refresh'+itemName];
@@ -1410,7 +1410,8 @@
 			}
 		}
 	}
-	Molpy.lootVisNamesOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
+	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
+	Molpy.boxVisOrder=['File','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','About','SandCounts','NP','Export'];
 	Molpy.draggableOrder=['Clock','Timer','View','File','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NP','About','SandTools','CastleTools','Shop','Inventory'];
 	Molpy.sizableOrder=['View','File','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory'];
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
