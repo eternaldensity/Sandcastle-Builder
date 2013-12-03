@@ -116,49 +116,82 @@
 	{
 		return Molpify(Math.floor(EvalMaybeFunction(monies,item,1)*Molpy.priceFactor),1);
 	}
-
-	Molpy.showOptions=0;
-	Molpy.OptionsToggle=function()
+	
+	Molpy.ToggleView=function(itemName)
 	{
-		if(Molpy.showOptions)
+		var sh = Molpy.activeLayout.showHide;
+		sh[itemName]=1*sh[itemName];
+		$('#'+itemName).toggleClass('hidden',sh[itemName]);
+		if(sh[itemName])
 		{
-			Molpy.showOptions=0;	
-		}else{
-			Molpy.showOptions=1;
-			Molpy.EarnBadge('Decisions, Decisions');
-			if(Molpy.Got('Autosave Option')){
-				g('autosaveoption').className='minifloatbox';
-			}else{
-				g('autosaveoption').className='hidden';
-			}
-			if(Molpy.Got('Chromatic Heresy')){
-				g('otcoloption').className='minifloatbox';
-			}else{
-				g('otcoloption').className='hidden';
-			}
-			if(Molpy.Got('Sand Tool Multi-Buy')){
-				g('sandmultibuy').className='minifloatbox';
-			}else{
-				g('sandmultibuy').className='hidden';
-			}
-			if(Molpy.Got('Castle Tool Multi-Buy')){
-				g('castlemultibuy').className='minifloatbox';
-			}else{
-				g('castlemultibuy').className='hidden';
-			}
-			if(Molpy.Earned('I love my flashy gif')){
-				g('fadeoption').className='minifloatbox';
-			}else{
-				g('fadeoption').className='hidden';
-			}
-			var i = Molpy.optionNames.length
-			while(i--)
-			{
-				Molpy.OptionDescription(Molpy.optionNames[i],1); //show all descriptions
-			}
+			var refresh=Molpy['Refresh'+itemName];
+			if(refresh)refresh();
 		}
-		$('#options').toggleClass('hidden',Molpy.showOptions);
 	}
+
+	Molpy.RefreshsectionOptions=function()
+	{
+		Molpy.EarnBadge('Decisions, Decisions');
+		if(Molpy.Got('Autosave Option')){
+			g('autosaveoption').className='minifloatbox';
+		}else{
+			g('autosaveoption').className='hidden';
+		}
+		if(Molpy.Got('Chromatic Heresy')){
+			g('otcoloption').className='minifloatbox';
+		}else{
+			g('otcoloption').className='hidden';
+		}
+		if(Molpy.Got('Sand Tool Multi-Buy')){
+			g('sandmultibuy').className='minifloatbox';
+		}else{
+			g('sandmultibuy').className='hidden';
+		}
+		if(Molpy.Got('Castle Tool Multi-Buy')){
+			g('castlemultibuy').className='minifloatbox';
+		}else{
+			g('castlemultibuy').className='hidden';
+		}
+		if(Molpy.Earned('I love my flashy gif')){
+			g('fadeoption').className='minifloatbox';
+		}else{
+			g('fadeoption').className='hidden';
+		}
+		var i = Molpy.optionNames.length
+		while(i--)
+		{
+			Molpy.OptionDescription(Molpy.optionNames[i],1); //show all descriptions
+		}
+	}
+	
+	Molpy.RefreshsectionStats=function()
+	{
+		Molpy.EarnBadge('Far End of the Bell Curve');
+		Molpy.shopRepaint=1;
+		Molpy.boostRepaint=1;
+		Molpy.badgeRepaint=1;
+	}
+	Molpy.StatsTabChange=function(n)
+	{
+		$('.statsTab').removeClass('unhidden').addClass('hidden');
+		$('#statsTab'+n).removeClass('hidden').addClass('unhidden');
+		$('.statsButton').removeClass('selectedBox');
+		$('#statsButton'+n).addClass('selectedBox');			
+	}
+	
+	Molpy.RefreshsectionExport=function()
+	{
+		_gaq&&_gaq.push(['_trackEvent','Export','Begin']);
+		var threads = Molpy.ToNeedlePulledThing();
+		_gaq&&_gaq.push(['_trackEvent','Export','Complete']);
+		var thread='';
+		for(var i in threads)
+		{
+			thread+=threads[i]
+		}
+		g('exporttext').value= Molpy.CuegishToBeanish(thread);
+	}
+	
 	Molpy.flashes=0;
 	Molpy.ToggleOption=function(bacon)
 	{
@@ -346,49 +379,6 @@
 	
 	createClockHand();
 	
-	Molpy.showStats=0;
-	Molpy.StatsToggle=function()
-	{
-		if(Molpy.showStats)
-		{
-			Molpy.showStats=0;				
-		}else{
-			Molpy.showStats=1;
-			Molpy.EarnBadge('Far End of the Bell Curve');
-		}
-		$('#stats').toggleClass('hidden',Molpy.showOptions);
-		Molpy.shopRepaint=1;
-		Molpy.boostRepaint=1;
-		Molpy.badgeRepaint=1;
-	}
-	Molpy.StatsTabChange=function(n)
-	{
-		$('.statsTab').removeClass('unhidden').addClass('hidden');
-		$('#statsTab'+n).removeClass('hidden').addClass('unhidden');
-		$('.statsButton').removeClass('selectedBox');
-		$('#statsButton'+n).addClass('selectedBox');			
-	}
-	
-	Molpy.showExport=0;
-	Molpy.ExportToggle=function()
-	{
-		if(Molpy.showExport)
-		{
-			Molpy.showExport=0;				
-		}else{
-			Molpy.showExport=1;
-			_gaq&&_gaq.push(['_trackEvent','Export','Begin']);
-			var threads = Molpy.ToNeedlePulledThing();
-			_gaq&&_gaq.push(['_trackEvent','Export','Complete']);
-			var thread='';
-			for(var i in threads)
-			{
-				thread+=threads[i]
-			}
-			g('exporttext').value= Molpy.CuegishToBeanish(thread);
-		}
-		$('#export').toggleClass('hidden',Molpy.showOptions);
-	}
 	var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1';
 	var vendors=['-webkit-','-moz-','-o-','-ms-',''];
 	var fadeProps=['color','border-color','background-color','background-image'];
@@ -1367,9 +1357,9 @@
 	
 	Molpy.Layout=function(args)
 	{
-		this.name=args.name;
-		this.showHide=args.showHide;
-		this.positions=args.positions;
+		this.name=args.name||'';
+		this.showHide=args.showHide||{};
+		this.positions=args.positions||{};
 		
 		this.ToString=function()
 		{
@@ -1387,9 +1377,9 @@
 		{
 		}
 	}
-	
+	Molpy.activeLayout= new Molpy.Layout({name:'default'});
 	
 	$('.resizable-element').resizable({cancel:'.editlock'});
 	$('.draggable-element').draggable({cancel:'.editlock'});
-	$('.draggable-element,.resizable-element').addClass('editlock');
+	//$('.draggable-element,.resizable-element').addClass('editlock');
 }

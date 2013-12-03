@@ -111,6 +111,8 @@ Molpy.HardcodedData=function()
 		[3094,"The Encounter Eon"]
 	]
 	
+	Molpy.titles=['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex','"The Dwarf Fortress of Idle Games" (hardly)','"Skyrim with Guns" (not really)'];
+	
 	{//#region puns	
 		Molpy.bp = [
 			"One True Comic II: The Baginning"

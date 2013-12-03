@@ -273,7 +273,7 @@
 			alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
 			return;
 		}
-		g('title').innerHTML=GLRschoice(['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex','"The Dwarf Fortress of Idle Games"','"Skyrim with Guns" (not really)']);
+		g('title').innerHTML=GLRschoice(Molpy.titles);
 		
 		var pixels = thread[2].split(s);
 		Molpy.startDate=parseInt(pixels[0]);
