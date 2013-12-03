@@ -232,6 +232,11 @@ a:active
 	-o-transform:scale(-0.98,0.98);opacity:1;
 	transform:scale(-0.98,0.98);opacity:1;
 }
+.resizable-element
+{
+	border-width: 1px;
+	border-style: solid;
+}
 .beachninjawarning
 {
 	border-color:#F00;
@@ -273,14 +278,11 @@ a:active
 	width:290px;
 	min-height:350px;
 }
-#notiflog
+#sectionLog
 {
 	top:0px;
-	margin-left:300px;
 	height:350px;
 	width:280px;
-	overflow-y:scroll;
-	overflow-x:hidden;
 	-webkit-touch-callout: auto;
 	-webkit-user-select: auto;
 	-khtml-user-select: auto;
@@ -288,6 +290,16 @@ a:active
 	-ms-user-select: auto;
 	user-select: auto;
 }
+#logItems
+{
+	padding: 0px;
+	border-style: none;
+	overflow-y:auto;
+	overflow-x:hidden;
+	max-width:100%;
+	max-height:100%;
+}
+
 #beachAnchor
 {
 	max-width:600px;
@@ -314,8 +326,6 @@ a:active
 	min-width:188px;
 	max-width:1100px;
 	overflow:hidden;
-	border-width: 1px;
-	border-style: solid;
 }
 .toolbox
 {
@@ -328,8 +338,6 @@ a:active
 {
 	position:absolute;
 	padding: 10px;
-	border-width: 1px;
-	border-style: solid;
 	top:540px;
 	min-height:85px;
 	min-width:110px;
@@ -362,8 +370,6 @@ a:active
 	padding: 5px;
 	left:660px;
 	top:290px;
-	border-width: 1px;
-	border-style: solid;
 	min-height:100px;
 	min-width:170px;
 	overflow:hidden;

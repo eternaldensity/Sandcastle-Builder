@@ -26,13 +26,7 @@
 		</div>
 		<div class="navbaritem draggable-element" id="ongtimer">Timer
 		</div>
-		<div id="sectionView" class="draggable-element">		
-			<div class="navbaritem">
-				<a onclick="Molpy.ToggleView('sectionOptions')"><h4>Options</h4></a>
-			</div>
-			<div class="navbaritem">
-				<a onclick="Molpy.ToggleView('sectionStats')"><h4>Stats</h4></a>
-			</div>
+		<div id="sectionView" class="draggable-element">
 			<div class="navbaritem">
 				<a onclick="Molpy.ToggleView('sectionShop')"><h4>Shop</h4></a>
 			</div>
@@ -44,6 +38,15 @@
 			</div>
 			<div class="navbaritem">
 				<a onclick="Molpy.ToggleView('sectionCastleTools')"><h4>CastleTools</h4></a>
+			</div>		
+			<div class="navbaritem">
+				<a onclick="Molpy.ToggleView('sectionOptions')"><h4>Options</h4></a>
+			</div>
+			<div class="navbaritem">
+				<a onclick="Molpy.ToggleView('sectionStats')"><h4>Stats</h4></a>
+			</div>
+			<div class="navbaritem">
+				<a onclick="Molpy.ToggleView('sectionLog')"><h4>Log</h4></a>
 			</div>
 		</div>	
 		<div id="sectionFile" class="draggable-element ">		
@@ -60,10 +63,10 @@
 				<a onclick="Molpy.Import()"><h4>Import</h4></a>
 			</div>
 			<div class="minifloatbox">
-				<a onclick=Molpy.Down()>Molpy Down</a>
+				<a onclick="Molpy.Down()">Molpy Down</a>
 			</div>
 			<div class="minifloatbox">
-				<a onclick=Molpy.Coma()>Coma</a>
+				<a onclick="Molpy.Coma()">Coma</a>
 			</div>
 		</div>	
 		<div id="beachAnchor" class="draggable-element">
@@ -169,9 +172,9 @@
 				<div>Logicat Level: <span id="logicatstat"/></div>
 				<div>Blackprints Collected: <span id="blackstat"/></div>
 			</div>
-			<div id="notiflog">Log of Notifications:
-				<div id="notiflogitems">
-				</div>
+		</div>
+		<div id="sectionLog" class="hidden draggable-element resizable-element">Log of Notifications:
+			<div id="logItems">
 			</div>
 		</div>
 		<div id="sectionExport" class="hidden draggable-element resizable-element">Exported Save Data: (Keep this somewhere safe)<br>

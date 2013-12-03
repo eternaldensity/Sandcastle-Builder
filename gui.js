@@ -1010,7 +1010,7 @@
 			}
 			i++;
 		}
-		g('notiflogitems').innerHTML=str;
+		g('logItems').innerHTML=str;
 	}
 
 	Molpy.NewPixFor=function(np)
@@ -1180,7 +1180,7 @@
 		}
 
 		drawClockHand();
-		if(Molpy.showStats) Molpy.PaintStats();
+		if(Molpy.IsStatsVisible()) Molpy.PaintStats();
 		Molpy.notifsUpdate();
 		if(Molpy.options.numbers)Molpy.sparticlesUpdate();
 		
@@ -1378,6 +1378,10 @@
 		}
 	}
 	Molpy.activeLayout= new Molpy.Layout({name:'default'});
+	Molpy.IsStatsVisible=function()
+	{
+		return Molpy.activeLayout.showHide['sectionStats'];
+	}
 	
 	$('.resizable-element').resizable({cancel:'.editlock'});
 	$('.draggable-element').draggable({cancel:'.editlock'});

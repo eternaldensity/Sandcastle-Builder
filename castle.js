@@ -1361,7 +1361,7 @@ Molpy.Up=function()
 				if(!d)return;
 				if(keep&&d.innerHTML)return;
 				var desc = '';
-				if(Molpy.showStats)
+				if(Molpy.IsStatsVisible())
 				{
 								
 					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(this.id*2)))
@@ -1640,7 +1640,7 @@ Molpy.Up=function()
 					dN=this.destroyC(1);
 					actuals+='<br>Next ONG, will build '+Molpify(bN,1)+' '+w+plural(bN)+(dN?(' if '+Molpify(dN,1)+' '+w+((dN!=1)?'s are':' is')+' destroyed.'):'');
 				}
-				if(Molpy.showStats)
+				if(Molpy.IsStatsVisible())
 				{				
 					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(this.id*2+1)))
 					{
@@ -1819,7 +1819,7 @@ Molpy.Up=function()
 				if(d)
 				{	
 					if(keep&&d.innerHTML)return;
-					d.innerHTML='<br>'+EvalMaybeFunction((Molpy.showStats&&this.stats)?this.stats:this.desc,this);
+					d.innerHTML='<br>'+EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this);
 				}
 			}
 			this.hidedesc=function()
@@ -1959,7 +1959,7 @@ Molpy.Up=function()
 				{
 					if(keep&&d.innerHTML)return;
 					d.innerHTML='<br>'+((this.earned||this.visibility<1)?
-						EvalMaybeFunction((Molpy.showStats&&this.stats)?this.stats:this.desc,this):'????');
+						EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this):'????');
 				}
 				if(this.earned&&this.np&&Molpy.previewNP!=this.np&&!Molpy.Boosts['Expando'].power&&this.alias.indexOf('monumg')==0)
 				{
@@ -2848,7 +2848,7 @@ Molpy.Up=function()
 			var me = Molpy.SandTools[i];
 			me.totalSand+=me.storedTotalSpmNP;
 			me.totalGlass+=me.storedTotalGpmNP;
-			if(Molpy.showStats&&me.hovered<0)me.hover();
+			if(Molpy.IsStatsVisible()&&me.hovered<0)me.hover();
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
