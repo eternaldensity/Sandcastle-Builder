@@ -410,9 +410,10 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Everything but the Kitchen Windows');
 			}
 		}
-		Molpy.MakeChips=function()
+		Molpy.MakeChips=function(times)
 		{
 			var furnaceLevel=(Molpy.Boosts['Sand Refinery'].power)+1;
+			if (times) furnaceLevel*=times;
 			Molpy.AddChips(furnaceLevel,1);
 		}
 		Molpy.chipAddAmount=0;
@@ -452,18 +453,22 @@ Molpy.Up=function()
 		}
 		Molpy.blockAddAmount=0;
 		Molpy.blockWasteAmount=0;
-		Molpy.MakeBlocks=function()
+		Molpy.MakeBlocks=function(times)
 		{
 			var chillerLevel=(Molpy.Boosts['Glass Chiller'].power)+1;
+			if (times) chillerLevel*=times;
 			var chipsFor=chillerLevel;
 			
 			var ch = Molpy.Boosts['GlassChips'];
 			var rate=Molpy.ChipsPerBlock();
+			var backoff = 1;
+
 			while(ch.power < chipsFor*rate)
 			{
-				chipsFor--;
+				chipsFor-= backoff;
+				backoff*=2;
 			}
-			if(!chipsFor)
+			if(chipsFor <= 0)
 			{
 				Molpy.Notify('Not enough Glass Chips to make any Blocks',1);
 				return;
@@ -2321,14 +2326,14 @@ Molpy.Up=function()
 				Molpy.RewardBlastFurnace();
 			}
 		}
-		Molpy.RewardBlastFurnace=function()
+		Molpy.RewardBlastFurnace=function(times)
 		{
 			var cb=0;
 			if(Molpy.Got('Furnace Crossfeed'))
 			{
 				if(Molpy.Boosts['Glass Furnace'].power && Molpy.Boosts['Furnace Crossfeed'].power)
 				{
-					Molpy.MakeChips();
+					Molpy.MakeChips(times);
 					cb=1;
 				}
 			}
@@ -2336,7 +2341,7 @@ Molpy.Up=function()
 			{
 				if(Molpy.Boosts['Glass Blower'].power && Molpy.Boosts['Furnace Multitasking'].power)
 				{
-					Molpy.MakeBlocks();
+					Molpy.MakeBlocks(times);
 					cb=1;
 				}
 			}
