@@ -1501,9 +1501,9 @@
 		}
 	}
 	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
-	Molpy.boxVisOrder=['Clock','Timer','File','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layout','Codex','Alerts'];
-	Molpy.draggableOrder=['Clock','Timer','View','File','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts'];
-	Molpy.sizableOrder=['View','File','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts'];
+	Molpy.boxVisOrder=['Clock','Timer','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layout','Codex','Alerts'];
+	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts'];
+	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts'];
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
 	Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
 	Molpy.activeLayout.ToScreen();
