@@ -418,6 +418,7 @@
 			Molpy.SpendCastles(price);
 			Molpy.newpixNumber=np;
 			_gaq&&_gaq.push(['_trackEvent','NewPix',(chips?'Memory Warp':'Time Travel'),''+Molpy.newpixNumber]);			
+			Molpy.ONGstart= ONGsnip(new Date()); 
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
