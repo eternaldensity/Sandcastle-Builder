@@ -418,6 +418,7 @@
 			Molpy.SpendCastles(price);
 			Molpy.newpixNumber=np;
 			_gaq&&_gaq.push(['_trackEvent','NewPix',(chips?'Memory Warp':'Time Travel'),''+Molpy.newpixNumber]);			
+			Molpy.ONGstart= ONGsnip(new Date()); 
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
@@ -3398,7 +3399,10 @@
 		}
 		
 		var furn=Math.floor((times+Math.random()*3)/2);
-        for(var i=0; i <furn; i++) Molpy.RewardBlastFurnace();
+		if (Molpy.Got('Stretchable Chip Storage')) Molpy.RewardBlastFurnace(furn);
+		else {
+        		for(var i=0; i <furn; i++) Molpy.RewardBlastFurnace();
+		}
 		left=times-furn;
 		Molpy.boostSilence=1;
 		if(left>7&&Molpy.Got('Milo'))

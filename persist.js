@@ -123,6 +123,19 @@
 			Molpy.Notify(Molpy.BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
 			return;
 		}
+		if(thread=='regturn')
+		{
+			if (Molpy.regturn) {
+				Molpy.Notify('Patience Patience');	
+			} else {
+				if( Molpy.Boosts['Goat'].power) Molpy.Boosts['Goat'].power++;
+				else Molpy.Boosts['Goat'].power = 1;
+				Molpy.Notify('Thankyou, have a goat!',1);	
+				Molpy.regturn=1;
+			}
+			return;
+		}
+
 		if (thread && thread!='')
 		{
 			_gaq&&_gaq.push(['_trackEvent','Import','Begin']);
