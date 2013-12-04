@@ -2170,7 +2170,7 @@
 		},
 		sand:function(me){ return me.power;},
 		castles:function(me){ return me.power;},
-		glass:15,logic:2,className:'action',icon:'lockedcrate',
+		glass:15,className:'action',icon:'lockedcrate',
 		unlockFunction:function()
 		{
 			this.power = Molpy.castles*6+Molpy.sand;
@@ -4024,6 +4024,44 @@
 			return (me.power? '':'When active, ') + 'Prevents Ninja Stealth multipliers greater than 3x, and when toggled, locks Impervious Ninja if it is owned.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+'); Molpy.LockBoost(\'Impervious Ninja\');" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
 		},glass:'144Y',group:'ninj',logic:700});
 	new Molpy.Boost({name:'Magic Mirror',desc:'Allows jumps between every discovery and the equivalent place in the Minus World',glass:'1L',group:'chron'});
+	new Molpy.Boost({name:'Locked Vault',
+		desc:function(me){
+			if(!me.bought) return 'Contains Loot';
+			return (5-me.bought)+' lock'+plural(5-me.bought)+' left to grab the loot!'
+		},
+		sand:Infinity,
+		castles:Infinity,
+		glass:'150M',logic:5,className:'action',
+		lockFunction:function()
+		{
+			if (!this.power) this.power=10;
+			Molpy.BlackprintIncrement(this.power++);
+		}
+	});
+	new Molpy.Boost({name:'Vault Key',desc:'Helps open a locked vault',glass:'5M',
+		buyFunction:function()
+		{
+			Molpy.LockBoost(this.alias);
+			var lv = Molpy.Boosts['Locked Vault'];
+			if(!lv.unlocked)
+			{			
+				Molpy.UnlockBoost(lv.alias);
+			}
+			lv.buy();
+			if(lv.bought)
+			{
+				lv.bought++;
+				if(lv.bought<5)
+				{
+					if(!Molpy.boostSilence)Molpy.Notify('One less lock on the vault');
+				}
+				else
+					Molpy.LockBoost(lv.alias);
+			}else{
+				lv.buy();
+			}
+		}
+	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={

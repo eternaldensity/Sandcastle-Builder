@@ -772,6 +772,18 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 
 Molpy.CheckLogicatRewards=function(automationLevel)
 {
+	if ((!Molpy.Boosts['AC'].power) || (Molpy.Boosts['AC'].power<60) || ((Molpy.Boosts['AC'].power<110) && (Molpy.Boosts['AC'].power-60)*25*Math.random()<1))
+	{
+		Molpy.Boosts['Locked Crate'].logic=2;
+		Molpy.Boosts['Crate Key'].logic=4*(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'));
+		Molpy.Boosts['Locked Vault'].logic=0;
+		Molpy.Boosts['Vault Key'].logic=0;
+	} else {
+		Molpy.Boosts['Locked Vault'].logic=5;
+		Molpy.Boosts['Vault Key'].logic=5;
+		Molpy.Boosts['Locked Crate'].logic=0;
+		Molpy.Boosts['Crate Key'].logic=0;
+	}
 
 	Molpy.Boosts['Redundant Raptor'].logic=2*(Molpy.Boosts['Panther Salve'].power > 500);	
 	Molpy.Boosts['Catamaran'].logic=4*(Molpy.Boosts['Panther Salve'].power > 800);
@@ -807,7 +819,6 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Temporal Duplication'].logic=finiteC*finiteP;
 	Molpy.Boosts['Temporal Rift'].logic=3*finiteC;
 	
-	Molpy.Boosts['Crate Key'].logic=4*(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'));
 	Molpy.Boosts['Bucking the Trend'].logic=10*(Molpy.SandTools['Bucket'].amount>=10000);
 	Molpy.Boosts['Crystal Well'].logic=20*(Molpy.SandTools['Bucket'].amount>=20000);
 	Molpy.Boosts['Glass Spades'].logic=30*(Molpy.SandTools['Cuegan'].amount>=10000);
