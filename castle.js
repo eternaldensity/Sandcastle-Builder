@@ -2062,7 +2062,7 @@ Molpy.Up=function()
 						{
 							str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould('+me.np+')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 						}
-						str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(me.np))+(me.np<0?'flip-horizontal':'')+'"><div>';
+						str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(abs(me.np)))+(me.np<0?'flip-horizontal':'')+'"><div>';
 					}
 					return str;
 				}
