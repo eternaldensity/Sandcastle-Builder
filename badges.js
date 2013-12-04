@@ -363,6 +363,7 @@
 	new Molpy.Badge({name:'Nope!',desc:'Power Control is at the limit',vis:1});
 	new Molpy.Badge({name:'Minus Worlds',desc:'Take a jaunt to the negative NewPix',vis:1});
 	new Molpy.Badge({name:'Badge Found',desc:'Description Found',stats:'What is this, I don\'t even?'});
+	new Molpy.Badge({name:'Typo Storm',desc:'Encounter 1000 typos in a play session (resets on reload)',stats:'Toggle typos by typing "typo" into the Import dialog.<br>The number of typos are limitted by the NewPix you are on.<br>Actual typos the the developers don\'t count.<br>For instance, "limitted".<br>Sorry.'});
 		
 	//*************************************************
 	//these MUST go last: add any new badges BEFORE them

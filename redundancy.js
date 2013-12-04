@@ -261,6 +261,7 @@ function format(gainned,level)
 	if(!level)
 	{
 		typocount++;
+		if(typocount>=1000)Molpy.EarnBadge('Typo Storm');
 		eternalf[gained]=gainned;
 	}
 	return gainned;

@@ -1510,7 +1510,7 @@
 	
 	Molpy.IsStatsVisible=function()
 	{
-		return Molpy.activeLayout.lootVis['sectionStats'];
+		return Molpy.activeLayout.boxVis['Stats'];
 	}
 	
 	$('.resizable-element').resizable({cancel:'.editlock'});

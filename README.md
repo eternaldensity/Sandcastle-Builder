@@ -38,8 +38,11 @@ For personal amusement only.
 - Dragon unlocks were checking if the potential reward was owned rather than unlocked, which was silly.
 - NaN (mustard) Time Travel price is autocorrected to Infinity
 - Resizing the height of panels is kinda ugly because I changed from height:100% to height:inherit for the scrolling bits inside the resizing bit. This is because height:100% works differently to what I need on Firefix and IE.
+- waveney did a bunch of stuff: fix Discov Detector for Minus, fixed jump pricing for Minus travel, Magic Mirror and Locked Vaults
 - Added a pane for offsite links, copied the links from the index to it.
 - Added a new link to index
+- Added a new absolutely free boost because I'm so generous
+- Added a badge. You probably don't want it
 
 ## 3.19
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P
