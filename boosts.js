@@ -437,9 +437,11 @@
 		cost+=Molpy.timeTravels;
 		cost*=100;
 		if(destNP*Molpy.newpixNumber < 0) 
-		{ // Jumps between sides costs a lot more unless returning from the Minus side without AA 
-			if (destNP < 0 || !Molpy.Boosts['AA'].bought) cost*=1000000;
+		{ // Jumps between sides costs a lot more unless returning from the Minus side without having AA 
+		  // This is so that if one goes early you can return, but going again has to be expensive
+			if (destNP < 0 || Molpy.Boosts['AA'].bought) cost*=1000000;
 		}
+		if(destNP < 0 && !Molpy.Earned('discov'+destNP)) cost*=1.1; // premium jumping using MM to unknwon discovery
 		if(Molpy.Got('Flux Capacitor'))cost*=.2;
 		if(Molpy.Got('Mind Glow')&&Molpy.Earned('monums'+destNP))cost*=.5;
 		if(Molpy.Got('Memory Singer')&&Molpy.Earned('monumg'+destNP))cost*=.5;
