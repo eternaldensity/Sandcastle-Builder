@@ -47,6 +47,7 @@ For personal amusement only.
 - Split the stats tabs into separate panels
 - Button to lock/unlock the layout, it's locked by default
 - Dragon Changes
+- Boost to start making Molpy Down a little more interesting and less painful in the later game (there will be more...)
 
 ## 3.19
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P

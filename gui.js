@@ -369,7 +369,6 @@
 				val+=fadeProps[i]+' '+Molpy.options.fade/2+'s ease-out';
 			}
 		}
-		if(!$)return;
 		var fc = $(fadeClasses);
 		for(var j in vendors)
 			fc.css(vendors[j]+'transition',val);	
@@ -1521,6 +1520,7 @@
 				var size = this.sizes[item];
 				$('#section'+item+'Body').css(size);
 			}
+			Molpy.FixLootSelectionWidth();
 		}
 		
 		this.FromScreen=function()
@@ -1539,11 +1539,15 @@
 			}
 		}
 	}
+	Molpy.FixLootSelectionWidth=function()
+	{
+		$('#lootselection').css({width:$('#sectionInventoryBody').width()});
+	}
 	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
 	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
 	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
-	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','InventoryBody','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
-	$('#sectionInventoryBody').resize(function(){$('#lootselection').css({width:$('#sectionInventoryBody').width()});});
+	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
+	$('#sectionInventoryBody').resize(Molpy.FixLootSelectionWidth);
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
 	Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
 	Molpy.activeLayout.ToScreen();

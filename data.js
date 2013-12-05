@@ -113,7 +113,7 @@ Molpy.HardcodedData=function()
 	
 	Molpy.titles=['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex','"The Dwarf Fortress of Idle Games" (hardly)','"Skyrim with Guns" (would be a far cry better than this)','Still a better love story than Twilight','Serious Business'];
 	
-	Molpy.defaultLayoutData="3.2PPdefaultP10000010000000P111101101100001110000000P517C0S1033C510S557C439S51C-2S0C0S0C40S784C664S0C664S275C40S0C40S915C578S774C816S915C429S919C883S557C0S557C216S0C439S0C664S1096C0S358C906S359C796S1096C155S1094C664S1096C365S1096C440SP366C223S465C40S800C50S314C214S368C51S280C384S268C364S537C202S537C209S545C201SnullCnullS382C100S423C135S422C95S382C195S383C60S382C59S381C209SP";
+	Molpy.defaultLayoutData="3.2PPdefaultP00010010000000P111101111100001110000000P517C0S1033C510S557C439S51C-2S0C0S0C40S784C664S0C664S275C40S0C40S915C578S1255C729S915C429S1255C805S557C0S557C216S0C439S0C664S1096C0S358C906S359C796S1096C155S1094C664S1096C365S1096C440SP366C223S465C40S800C50S314C214S368C51S280C384S268C364S537C202S537C209S545C201S1264C576S382C100S423C135S422C95S382C195S383C60S382C59S381C209SP";
 	
 	{//#region puns	
 		Molpy.bp = [
@@ -763,11 +763,11 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
 	Molpy.Boosts['Cold Mould'].department=Molpy.Got('SMM');
 	Molpy.Boosts['Such Glass'].department=1*(Molpy.SandTools['Bucket'].amount>2e11)*(Molpy.ninjaStealth>2e8);
-	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);
-	
+	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);	
 	
 	Molpy.Boosts['SilverCard'].department=Molpy.Earned('Big Spender');
 	Molpy.Boosts['GoldCard'].department=Molpy.Earned('Valued Customer');
+	Molpy.Boosts['No Need to be Neat'].department=Molpy.Earned('Neat!');
 }
 
 Molpy.CheckLogicatRewards=function(automationLevel)

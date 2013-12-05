@@ -821,10 +821,16 @@
 			Molpy.ONGstart = ONGsnip(new Date());
 			Molpy.options.sandmultibuy=0;
 			Molpy.options.castlemultibuy=0;
-						
+			
+			var keep='';
+			if(!auto&&Molpy.Got('No Need to be Neat'))
+			{
+				keep=GLRschoice(Molpy.tfOrder).name;
+			}
 			for(i in Molpy.SandTools)
 			{
 				var me = Molpy.SandTools[i];
+				if(me.name==keep)continue;
 				me.amount=0;
 				me.bought=0;
 				me.totalSand=0;
@@ -835,6 +841,7 @@
 			for(i in Molpy.CastleTools)
 			{
 				var me = Molpy.CastleTools[i];
+				if(me.name==keep)continue;
 				me.amount=0;
 				me.bought=0;
 				me.temp=0;
@@ -862,7 +869,7 @@
 			Molpy.shopRepaint=1;
 			
 			Molpy.showOptions=0;
-			Molpy.OptionsToggle();
+			Molpy.RefreshOptions();
 			
 			Molpy.UpdateBeach();
 			Molpy.HandlePeriods();

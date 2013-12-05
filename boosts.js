@@ -4072,6 +4072,7 @@
 	});
 	
 	new Molpy.Boost({name:'People Sit on Chairs',desc:'Multiplies <b>all</b> rates by 1, then adds 0',stats:'Administrivia',logic:420});
+	new Molpy.Boost({name:'No Need to be Neat',desc:'When you Molpy Down, the amount of one random type of tool is not reset to 0',glass:'50M'});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
