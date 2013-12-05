@@ -2722,6 +2722,7 @@ Molpy.Up=function()
 						Molpy.UnlockBoost('Safety Pumpkin');
 				}
 			}
+			i=Math.min(i,Math.floor(npb.amount/20));
 			var t=0;
 			var spent=0;
 			while(i--)
@@ -2734,7 +2735,6 @@ Molpy.Up=function()
 					spent+=sand;
 				}
 			}
-			t=Math.min(t,Math.floor(npb.amount/20));
 			Molpy.Notify('Activating Factory Automation '+t+' time'+plural(t)+' at a cost of '+Molpify(spent,4)+' Sand',1);
 
 			Molpy.FactoryAutomationRun(t);
