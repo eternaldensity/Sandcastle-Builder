@@ -772,7 +772,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 
 Molpy.CheckLogicatRewards=function(automationLevel)
 {
-	if ((!Molpy.Boosts['AC'].power) || (Molpy.Boosts['AC'].power<60) || ((Molpy.Boosts['AC'].power<110) && (Molpy.Boosts['AC'].power-60)*25*Math.random()<1))
+	if ((!Molpy.Boosts['AC'].power) || (Molpy.Boosts['AC'].power<60) || ((Molpy.Boosts['AC'].power<300) && (Molpy.Boosts['AC'].power-60)*2*Math.random()<1))
 	{
 		Molpy.Boosts['Locked Crate'].logic=2;
 		Molpy.Boosts['Crate Key'].logic=4*(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'));
