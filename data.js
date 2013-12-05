@@ -729,11 +729,15 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	
 	Molpy.Boosts['Fractal Fractals'].department=1*(Molpy.Boosts['Fractal Sandcastles'].power>=120);
 	
-	var key = Molpy.Boosts['Crate Key'];
-	key.department=0;
-	if((Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'))&&automationLevel>=10&&flandom(3)==0&&Molpy.Got('Keygrinder'))
-	{
-		key.department=1;						
+	if (Molpy.Boosts['AC'].power && Molpy.Boosts['AC'].power>180) {
+		Molpy.Boosts['Vault Key'].department = (Molpy.Boosts['Locked Vault'].unlocked||flandom(3)==0&&Molpy.Got('Keygrinder'))
+	} else {
+		var key = Molpy.Boosts['Crate Key'];
+		key.department=0;
+		if((Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'))&&automationLevel>=10&&flandom(3)==0&&Molpy.Got('Keygrinder'))
+		{
+			key.department=1;						
+		}
 	}
 	Molpy.CheckASHF();
 	var i = 10;
@@ -772,7 +776,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 
 Molpy.CheckLogicatRewards=function(automationLevel)
 {
-	if ((!Molpy.Boosts['AC'].power) || (Molpy.Boosts['AC'].power<60) || ((Molpy.Boosts['AC'].power<300) && (Molpy.Boosts['AC'].power-60)/200*Math.random()<1))
+	if ((!Molpy.Boosts['AC'].power) || (Molpy.Boosts['AC'].power<60) || ((Molpy.Boosts['AC'].power<300) && (Molpy.Boosts['AC'].power-60)/120*Math.random()<1))
 	{
 		Molpy.Boosts['Locked Crate'].logic=2;
 		Molpy.Boosts['Crate Key'].logic=4*(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'));
