@@ -1330,7 +1330,7 @@
 		g('blackstat').innerHTML='Collected '+Molpify(+Molpy.Boosts['Blackprints'].power
 			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
       
-		g('logicatstat').innerHTML=Molpify(Molpy.Boosts['Logicat'].bought,1);
+		g('logicatstat').innerHTML=Molpify(Molpy.Boosts['Logicat'].power/5+1,1);
 		g('totaltoolchipsstat').innerHTML=Molpify(Molpy.totalGlassBuilt,4);
 		g('destroyedtoolchipsstat').innerHTML=Molpify(Molpy.totalGlassDestroyed,4);
 		g('manualchipsstat').innerHTML=Molpify(Molpy.chipsManual,4);
