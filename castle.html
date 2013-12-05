@@ -26,34 +26,38 @@
 			<div id="beach" class="timeflip">
 			</div>
 		</div>
-		<div id="sectionSandTools" class="hidden draggable-element resizable-element toolwrapper table-wrapper">
+		<div id="sectionSandTools" class="hidden draggable-element table-wrapper">
 			<div id="sandSTitle table-header">Sand Tools:</div>
-			<div class="table-content">
+			<div id="sectionSandToolsBody" class="table-content resizable-element toolwrapper">
 				<div id="sandtools" class="table-content-wrapper">
 				</div>
 			</div>
 		</div>
-		<div id="sectionCastleTools" class="hidden draggable-element resizable-element toolwrapper table-wrapper">
+		<div id="sectionCastleTools" class="hidden draggable-element table-wrapper">
 			<div id="sandCTitle table-header">Castle Tools:</div>
-			<div class="table-content">
+			<div id="sectionCastleToolsBody" class="table-content resizable-element toolwrapper">
 				<div id="castletools" class="table-content-wrapper">
 				</div>
 			</div>
 		</div>
-		<div id="sectionShop" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionShop" class="hidden draggable-element table-wrapper">
 			<div id="boostTitle" class="table-header">Boost Shop:</div>
-			<div class="table-content">
+			<div id="sectionShopBody" class="table-content resizable-element">
 				<div id="boosts" class="table-content-wrapper">
 				</div>
 			</div>
 		</div>
-		<div id="sectionInventory" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionInventory" class="hidden draggable-element table-wrapper">
 			<div id="lootTitle" class="table-header">Loot:</div>
-			<div id="lootselection" class="table-header"></div>
-			<div id="loot" class="table-content-wrapper"></div>
+			<div id="sectionInventoryToggleBody" class="table-content resizable-element">
+				<div id="lootselection" class="table-content-wrapper"></div>
+			</div>
+			<div id="sectionInventoryBody" class="table-content resizable-element">
+				<div id="loot" class="table-content-wrapper"></div>
+			</div>
 		</div>
-		<div id="sectionView" class="hidden draggable-element resizable-element table-wrapper">
-			<div class="table-content">
+		<div id="sectionView" class="hidden draggable-element table-wrapper">
+			<div id="sectionViewBody" class="table-content resizable-element">
 				<div class="table-content-wrapper">
 					<div id="toggleFile" class="minifloatbox">
 						<a onclick="Molpy.ToggleView('File')"><h4>File</h4></a>
@@ -112,8 +116,8 @@
 				</div>	
 			</div>	
 		</div>	
-		<div id="sectionFile" class="hidden draggable-element resizable-element table-wrapper">	
-			<div class="table-content">
+		<div id="sectionFile" class="hidden draggable-element table-wrapper">	
+			<div id="sectionFileBody" class="table-content resizable-element">
 				<div class="table-content-wrapper">
 					<div class="minifloatbox">
 						<a onclick="Molpy.SaveC_STARSTAR_kie()"><h4>Save</h4></a>
@@ -136,8 +140,8 @@
 				</div>	
 			</div>
 		</div>	
-		<div id="sectionLinks" class="hidden draggable-element resizable-element table-wrapper">	
-			<div class="table-content">
+		<div id="sectionLinks" class="hidden draggable-element table-wrapper">	
+			<div id="sectionLinksBody" class="table-content resizable-element">
 				<div class="table-content-wrapper">
 					<div class="minifloatbox">
 						<a href="https://github.com/eternaldensity/Sandcastle-Builder/tree/gh-pages#sandcastle-builder" target="_blank"><h4>Readme</h4></a>
@@ -166,7 +170,7 @@
 				</div>	
 			</div>
 		</div>	
-		<div id="sectionOptions" class="hidden draggable-element rubber-wrapper table-wrapper">
+		<div id="sectionOptions" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Options:</div>
 			<div id="sectionOptionsBody" class="table-content-wrapper resizable-element">
 				<div id="optionsItems">
@@ -209,9 +213,9 @@
 				</div>
 			</div>
 		</div>
-		<div id="sectionStats" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionStats" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Stats:</div>
-			<div class="table-content">
+			<div id="sectionStatsBody" class="table-content resizable-element">
 				<div class="table-content-wrapper" id="statsTabButtons">
 					<div id="toggleSandStats" class="minifloatbox" >
 						<a onclick="Molpy.ToggleView('SandStats')">Sand Stats</a>
@@ -228,9 +232,9 @@
 				</div>
 			</div>
 		</div>
-		<div id="sectionSandStats" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionSandStats" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Sand Stats:</div>
-			<div class="table-content">
+			<div id="sectionSandStatsBody" class="table-content resizable-element">
 				<div class="table-content-wrapper">
 					<div>Total Sand Dug: <span id="totalsandstat"/></div>
 					<div>Sand Dug by Hand: <span id="manualsandstat"/></div>
@@ -247,9 +251,9 @@
 				</div>
 			</div>
 		</div>
-		<div id="sectionGlassStats" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionGlassStats" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Glass Stats:</div>
-			<div class="table-content">
+			<div id="sectionGlassStatsBody" class="table-content resizable-element">
 				<div class="table-content-wrapper">
 					<div>Glass Chips Stored: <span id="glasschipstat"/></div>
 					<div>Glass Blocks Stored: <span id="glassblockstat"/></div>
@@ -263,9 +267,9 @@
 				</div>
 			</div>
 		</div>
-		<div id="sectionNinjaStats" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionNinjaStats" class="hidden draggable-elementt table-wrapper">
 			<div class="table-header">Ninja Stats:</div>
-			<div class="table-content">
+			<div id="sectionNinjaStatsBody" class="table-content resizable-elemen">
 				<div class="table-content-wrapper">
 					<div>NewPixBot delay: <span id="ninjatimestat"/></div>
 					<div>Ninja Stealth Streak: <span id="ninjastealthstat"/></div>
@@ -273,9 +277,9 @@
 				</div>
 			</div>
 		</div>
-		<div id="sectionOtherStats" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionOtherStats" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Other Stats:</div>
-			<div class="table-content">
+			<div id="sectionOtherStatsBody" class="table-content resizable-element">
 				<div class="table-content-wrapper">
 					<div>Times Loaded: <span id="loadcountstat"/></div>
 					<div>mNP since last autosave: <span id="autosavecountstat"/></div>
@@ -291,46 +295,48 @@
 			</div>
 		</div>
 					
-		<div id="sectionLog" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionLog" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Log of Notifications:</div>
-			<div class="table-content">
+			<div id="sectionLogBody" class="table-content resizable-element">
 				<div id="logItems" class="table-content-wrapper">
 				</div>
 			</div>
 		</div>
-		<div id="sectionLayouts" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionLayouts" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Layouts</div>		
 			<div class="table-header">			
-					<div class="minifloatbox">
-						<a onclick="Molpy.SaveLayouts()">Load Layouts</a>
-					</div>
-					<div class="minifloatbox">
-						<a onclick="Molpy.LoadLayouts()">Save Layouts</a>
-					</div>	
-					<div id="toggleLockLayout" class="minifloatbox">
-						<a onclick="Molpy.LockLayoutToggle()">Lock Layout</a>
-					</div>
+				<div class="minifloatbox">
+					<a onclick="Molpy.SaveLayouts()">Load Layouts</a>
+				</div>
+				<div class="minifloatbox">
+					<a onclick="Molpy.LoadLayouts()">Save Layouts</a>
+				</div>	
+				<div id="toggleLockLayout" class="minifloatbox">
+					<a onclick="Molpy.LockLayoutToggle()">Lock Layout</a>
+				</div>
 			</div>
-			<div id="layouts" class="table-content-wrapper">
+			<div id="sectionLayoutsBody" class="table-content resizable-element">
+				<div id="layouts" class="table-content-wrapper">
+			</div>
 			</div>
 		</div>
-		<div id="sectionCodex" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionCodex" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Codex</div>
-			<div class="table-content">
+			<div id="sectionCodexBody" class="table-content resizable-element">
 				<div id="codices" class="table-content-wrapper">
 				</div>
 			</div>
 		</div>
-		<div id="sectionAlerts" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionAlerts" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Alerts</div>
-			<div class="table-content">
+			<div id="sectionAlertsBody" class="table-content resizable-element">
 				<div id="alerts" class="table-content-wrapper">
 				</div>
 			</div>
 		</div>
-		<div id="sectionExport" class="hidden draggable-element resizable-element table-wrapper">
+		<div id="sectionExport" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Exported Save Data: (Keep this somewhere safe)</div>
-			<div class="table-content">
+			<div id="sectionExportBody" class="table-content resizable-element">
 				<textarea onkeydown=Molpy.KeyDown id="exporttext" class="table-content-wrapper">
 				</textarea>
 			</div>

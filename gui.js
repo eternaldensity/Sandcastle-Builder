@@ -1519,7 +1519,7 @@
 			{
 				var item=Molpy.sizableOrder[i];
 				var size = this.sizes[item];
-				$('#section'+item).css(size);
+				$('#section'+item+'Body').css(size);
 			}
 		}
 		
@@ -1534,7 +1534,7 @@
 			}
 			for(var i in Molpy.sizableOrder)
 			{
-				var item = $('#section'+Molpy.sizableOrder[i])
+				var item = $('#section'+Molpy.sizableOrder[i]+'Body')
 				this.sizes[Molpy.sizableOrder[i]]={width:item.width(),height:item.height()};
 			}
 		}
@@ -1542,7 +1542,7 @@
 	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
 	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
 	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
-	Molpy.sizableOrder=['View','File','Links','OptionsBody','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
+	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','InventoryBody','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','InventoryToggle'];
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
 	Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
 	Molpy.activeLayout.ToScreen();

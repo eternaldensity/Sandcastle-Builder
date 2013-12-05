@@ -234,18 +234,20 @@ a:active
 }
 .resizable-element
 {
-	border-width: 1px;
-	border-style: solid;
 	min-width:60px;
 	min-height:60px;
 }
 .draggable-element
 {
 	position:absolute;
+	border-width: 1px;
+	border-style: solid;
 }
 .table-wrapper
 {
 	overflow:hidden;
+	width:auto;
+	height:auto;
 }
 .table-header /*probably don't need this after all but might as well keep it on the relevant elements just in case*/
 {
@@ -289,18 +291,18 @@ a:active
 	border-width: 1px;
 	border-style: solid;
 }
-#sectionStats
+#sectionStatsBody
 {
 	min-height:45px;
 	min-width:85px;
 }
-#sectionView
+#sectionViewBody
 {
 	height:40px;
 	min-height:40px;
 	min-width:68px;
 }
-#sectionFile
+#sectionFileBody
 {
 	height:40px;
 	min-height:40px;
@@ -312,7 +314,7 @@ a:active
 	min-height:40px;
 	min-width:68px;
 }
-#sectionExport
+#sectionExportBody
 {
 	height:250px;
 	min-height:180px;
@@ -344,12 +346,6 @@ a:active
 	display: inline-block;
 }
 
-#sectionSandTools
-{
-}
-#sectionCastleTools
-{
-}
 .toolwrapper
 {
 	min-height:90px;
@@ -358,7 +354,7 @@ a:active
 	max-width:1100px;
 }
 
-#sectionInventory
+#sectionInventoryBody
 {
 	padding: 10px;
 	height:150px;
@@ -366,10 +362,16 @@ a:active
 	min-width:110px;
 }
 
+#sectionInventoryToggleBody
+{
+	min-height:150px;
+	min-width:110px;
+}
+
 #sectionMainStats
 {
 }
-#sectionShop
+#sectionShopBody
 {
 	padding: 5px;
 	height:100px;
@@ -536,11 +538,6 @@ body.lightscheme .floatbox:hover{
 .depressed
 {
 	border-width:2px;
-}
-.rubber-wrapper
-{
-	width:auto;
-	height:auto;
 }
 body.lightscheme .depressed
 {
