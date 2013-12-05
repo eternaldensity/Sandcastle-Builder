@@ -236,12 +236,12 @@ a:active
 {
 	border-width: 1px;
 	border-style: solid;
+	min-width:60px;
+	min-height:60px;
 }
 .draggable-element
 {
 	position:absolute;
-	min-width:60px;
-	min-height:60px;
 }
 .table-wrapper
 {
@@ -306,7 +306,7 @@ a:active
 	min-height:40px;
 	min-width:68px;
 }
-#sectionOptions
+#sectionOptionsBody
 {
 	height:50px;
 	min-height:40px;
@@ -536,6 +536,11 @@ body.lightscheme .floatbox:hover{
 .depressed
 {
 	border-width:2px;
+}
+.rubber-wrapper
+{
+	width:auto;
+	height:auto;
 }
 body.lightscheme .depressed
 {
