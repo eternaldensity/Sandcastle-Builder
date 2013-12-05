@@ -3877,9 +3877,9 @@
 	});
 	Molpy.DragonTarget=function()
 	{
-		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Boosts['Crystal Dragon'].unlocked) return [2000,'Crystal Dragon'];
-		if(Molpy.Boosts['AC'].power>101&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e9,'Dragon Forge'];
-		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['Dragon Wisdom'].unlocked) return [4.5e13,'Dragon Wisdom'];
+		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Boosts['Crystal Dragon'].unlocked) return [1000,'Crystal Dragon'];
+		if(Molpy.Boosts['AC'].power>101&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e12,'Dragon Forge'];
+		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['Dragon Wisdom'].unlocked) return [4.5e16,'Dragon Wisdom'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
@@ -3938,29 +3938,29 @@
 			if(!me.bought) return str;
 			var n = Molpy.Boosts['AC'].power;
 			str+='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
-			var pageCost=n*10;
+			var pageCost=n*5
 			var logicatCost=Math.ceil(n/20);
 			if(n<Molpy.Boosts['PC'].power)
 			{
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1,1)"></input> the number of runs by 1 at a cost of '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(20,1)"></input> the number of runs by 20 at a cost of '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages.';
 			}else{
-                str+='<br>It will cost '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages to increase this by 1.';
+                str+='<br>It will cost '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages to increase this by 20.';
             }
 			return str;
 		}
 		,sand:Infinity,castles:Infinity,glass:'7P',group:'drac',className:'action'});
 		new Molpy.Boost({name:'Dragon Wisdom',desc:function(me)
 		{
-			var str = 'Allows you to gain Logicat Levels from Blackprint Pages.';
+			var str = 'Allows you to gain Logicat Levels at the expense of goats.';
 			if(!me.bought)return str;
-			var pageCost = Molpy.Boosts['Logicat'].bought*3;
-			var powerReq=Math.pow(2,me.power+10);
-			if(Molpy.HasSpareBlackprints(pageCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
+			var goatCost = Math.ceil(Molpy.Boosts['Logicat'].bought/20);
+			var powerReq=Math.pow(2,me.power+12);
+			if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
 			{	
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> Logicat Level by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(pageCost,3)+' Blackprint Pages.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(4)"></input> Logicat Level by 4 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
 			}else
 			{
-				str+='<br>Upgrading Logicat Level by 1 will cost '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(pageCost,3)+' Blackprint Pages.';
+				str+='<br>Upgrading Logicat Level by 1 will cost '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
 			}
 			return str;
 		}
@@ -3969,11 +3969,11 @@
 	Molpy.GainDragonWisdom=function(n)
 	{
 		var me = Molpy.Boosts['Dragon Wisdom'];
-		var pageCost = n*Molpy.Boosts['Logicat'].bought*3;
-		var powerReq=n*Math.pow(2,me.power+10);
-		if(Molpy.HasSpareBlackprints(pageCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
+		var goatCost = Math.ceil(Molpy.Boosts['Logicat'].bought/20);
+		var powerReq=Math.pow(2,me.power+12);
+		if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
 		{
-			Molpy.Boosts['Blackprints'].power-=pageCost;
+			Molpy.Boosts['Goat'].power-=goatCost;
 			Molpy.Boosts['Achronal Dragon'].power-=powerReq;
 			Molpy.Boosts['Logicat'].bought+=n;
 			Molpy.Boosts['Logicat'].power+=n*5;
@@ -3995,6 +3995,10 @@
 		}
 		,icon:'goat'
 	});
+	Molpy.HasGoats=function(n)
+	{
+		return Molpy.Boosts['Goat'].power>=n;
+	}
 	
 	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1G'});
 	new Molpy.Boost({name:'Gold Loyalty Card',alias:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'10T'});
