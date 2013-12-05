@@ -668,5 +668,35 @@
 	Molpy.MakeQuadBadge({np:1962,name:'How would it get started',desc:'Megan: But then, a river couldn\'t cat all the way through aa mountain, either.  Because how would it get started'});
 	Molpy.MakeQuadBadge({np:1964,name:'Top of a mountain',desc:'Megan: I wonder what the top of a mountain is like?'});
 	Molpy.MakeQuadBadge({np:1966,name:'Find out',desc:'Cueball: Let\'s find out'});
+	Molpy.MakeQuadBadge({np:2023,name:'Journey\'s End?',desc:'Cueball is pathetic'});
+	Molpy.MakeQuadBadge({np:2024,name:'Easier Spot?',desc:'Can they do it?'});
+	Molpy.MakeQuadBadge({np:2034,name:'OH!',desc:'Cueball spots Prickly'});
+	Molpy.MakeQuadBadge({np:2045,name:'Careful!',desc:'Megan: Careful!, Cueball: It\'s OK'});
+	Molpy.MakeQuadBadge({np:2048,name:'Pickly',desc:'Megan: Does it Hurt?  Cueball: It\'s a little prickly'});
+	Molpy.MakeQuadBadge({np:2049,name:'Never this close',desc:'They discuss Prickly'});
+	Molpy.MakeQuadBadge({np:2050,name:'Really Neat',desc:'Megan: It\'s really neat.'});
+	Molpy.MakeQuadBadge({np:2051,name:'Stop Bothering',desc:'Cueball: OK, we\'ll stop bothering you'});
+	Molpy.MakeQuadBadge({np:2063,name:'Prickly carries on',desc:'Prckly is no longer disturbed by them'});
+	Molpy.MakeQuadBadge({np:2074,name:'Bop',desc:'Megan bops a seed head from a plant'});
+	Molpy.MakeQuadBadge({np:2097,name:'You OK?',desc:'Megan stops, Cueball: You OK?'});
+	Molpy.MakeQuadBadge({np:2098,name:'Yup!',desc:'Why did she stop?'});
+	Molpy.MakeQuadBadge({np:2100,name:'Wet blanket again',desc:'Cueball: Maybe it\'s time to turn around'});
+	Molpy.MakeQuadBadge({np:2101,name:'World is too big',desc:'Cueball: The world is too big.  It can go on longer than we can'});
+	Molpy.MakeQuadBadge({np:2102,name:'Still going',desc:'Megan is continuing'});
+	Molpy.MakeQuadBadge({np:2103,name:'Long way from home',desc:'Cueball: But one day we wo\'nt be.  And we\'re a long way from home'});
+	Molpy.MakeQuadBadge({np:2105,name:'Cueball Questions',desc:'Cueball: Earlier I thought you wanted to turn around and go back to the sea'});
+	Molpy.MakeQuadBadge({np:2106,name:'I want to understand',desc:'Megan: I don\'t want to go back to it.  I want to <i>Understand</i> it.'});
+	Molpy.MakeQuadBadge({np:2108,name:'By Climbing?',desc:'Cueball: By Climbing? The Sea is down, not up'});
+	Molpy.MakeQuadBadge({np:2114,name:'Beautiful Wings',desc:'Megan: These bugs have such beautifl wings'});
+	Molpy.MakeQuadBadge({np:2115,name:'Thousand lifetimes',desc:'Megan gets philosophical'});
+	Molpy.MakeQuadBadge({np:2118,name:'See the top',desc:'Megan: I wanna see the top'});
+	Molpy.MakeQuadBadge({np:2119,name:'More world',desc:'Cueball: What do you think we\'ll find? Megan: More world, maybe different'});
+	Molpy.MakeQuadBadge({np:2139,name:'Chomp',desc:'It may have had beautiful wings, now it\'s lunch'});
+	Molpy.MakeQuadBadge({np:2154,name:'Bag throwing',desc:'They throw the bags up'});
+	Molpy.MakeQuadBadge({np:2158,name:'Rope',desc:'Megan throws the rope down to help Cueball up'});
+	Molpy.MakeQuadBadge({np:2166,name:'Weird',desc:'They look a weird broken tree'});
+	Molpy.MakeQuadBadge({np:2171,name:'Pfffthh',desc:'It does not taste very good'});
+	Molpy.MakeQuadBadge({np:2182,name:'Oh!',desc:'Megan sees a rock cain'});
+	Molpy.MakeQuadBadge({np:2196,name:'Hut',desc:'They see the abandoned hut'}); // Up to 2200 now
 	//Molpy.MakeQuadBadge({np:,name:'',desc:''});
 }
