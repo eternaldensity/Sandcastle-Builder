@@ -2690,6 +2690,7 @@ Molpy.Up=function()
 		
 		Molpy.LoadC_STARSTAR_kie(); //autoload saved game
 		Molpy.molpish=1;
+		Molpy.RefreshLayouts();
 		Molpy.Loopist();		
 	}
 	

@@ -199,6 +199,12 @@
 		}
 		g('exporttext').value= Molpy.CuegishToBeanish(thread);
 	}
+	Molpy.RefreshLayouts=function()
+	{
+		if(!Molpy.molpish)return;	
+		if(!Molpy.activeLayout.boxVis['Layouts'])return;
+		Molpy.layoutRepaint=1;
+	}
 	
 	Molpy.flashes=0;
 	Molpy.ToggleOption=function(bacon)
@@ -849,6 +855,32 @@
 			}
 		}
 	}
+	
+	Molpy.LayoutString=function(i)
+	{
+		var me = Molpy.layouts[i];
+		var h='<h1>'+me.name+'</h1>';
+		var str = '<div class="layout minifloatbox">'+h;
+		str+='<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts['+i+'].Activate()">Activate</a></div>';
+		str+='<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts['+i+'].Clone()">Clone</a></div>';
+		str+='<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts['+i+'].Overwrite()">Overwrite</a></div>';
+		str+='<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts['+i+'].Export()">Export</a></div>';
+		str+='<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts['+i+'].Delete()">Delete</a></div>';
+		
+		return str+'</div>';
+	}
+	Molpy.RepaintLayouts=function()
+	{
+		Molpy.layoutRepaint=0;
+		var str='';
+		for(var i in Molpy.layouts)
+		{
+			str+=Molpy.LayoutString(i);
+		}
+		g('layouts').innerHTML=str;
+	}
+	
+	
 	Molpy.AddSandParticle=function(text)
 	{
 		//pick the first free (or the oldest) notification to replace it
@@ -1097,6 +1129,10 @@
 		if(Molpy.badgeRepaint)
 		{
 			Molpy.RepaintBadges();
+		}
+		if(Molpy.layoutRepaint)
+		{
+			Molpy.RepaintLayouts();
 		}
 		if(tagRepaint&&Molpy.activeLayout.lootVis.tagged)
 		{
@@ -1504,12 +1540,15 @@
 		}
 	}
 	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
-	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layout','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
-	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
-	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
+	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
+	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
+	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
 	Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
 	Molpy.activeLayout.ToScreen();
+	
+	Molpy.layouts=[];
+	Molpy.layouts.push(Molpy.activeLayout);
 	
 	Molpy.IsStatsVisible=function()
 	{
