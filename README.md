@@ -43,6 +43,8 @@ For personal amusement only.
 - Added a new link to index
 - Added a new absolutely free boost because I'm so generous
 - Added a badge. You probably don't want it
+- Everything but the newpix is hidden until the layout loads, so you don't see an ugly mess (especially if your browser asks confirmation before running javascript)
+- Split the stats tabs into separate panels
 
 ## 3.19
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P

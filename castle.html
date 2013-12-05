@@ -20,13 +20,13 @@
 <body class="darkscheme">
 	<div id="game">
 		<div id="notifs"></div>
-		<div id="sectionClock" class="draggable-element">
+		<div id="sectionClock" class="hidden draggable-element">
 			<div id="clockface">					
 			</div>
 		</div>
-		<div class="minifloatbox draggable-element" id="sectionTimer">Timer
+		<div class="hidden minifloatbox draggable-element" id="sectionTimer">Timer
 		</div>
-		<div id="sectionView" class="draggable-element resizable-element table-wrapper">
+		<div id="sectionView" class="hidden draggable-element resizable-element table-wrapper">
 			<div class="table-content">
 				<div class="table-content-wrapper">
 					<div id="toggleFile" class="minifloatbox">
@@ -86,7 +86,7 @@
 				</div>	
 			</div>	
 		</div>	
-		<div id="sectionFile" class="draggable-element resizable-element table-wrapper">	
+		<div id="sectionFile" class="hidden draggable-element resizable-element table-wrapper">	
 			<div class="table-content">
 				<div class="table-content-wrapper">
 					<div class="minifloatbox">
@@ -110,7 +110,7 @@
 				</div>	
 			</div>
 		</div>	
-		<div id="sectionLinks" class="draggable-element resizable-element table-wrapper">	
+		<div id="sectionLinks" class="hidden draggable-element resizable-element table-wrapper">	
 			<div class="table-content">
 				<div class="table-content-wrapper">
 					<div class="minifloatbox">
@@ -136,9 +136,6 @@
 					</div>
 					<div class="minifloatbox">
 						<a href="http://tvtropes.org/pmwiki/pmwiki.php/VideoGame/SandcastleBuilder" target="_blank"><h4>TVTropes</h4></a>
-					</div>
-					<div class="minifloatbox">
-						<a href="" target="_blank"><h4>Readme</h4></a>
 					</div>
 				</div>	
 			</div>
@@ -194,69 +191,88 @@
 				</div>
 			</div>
 		</div>
-		<div id="sectionStats" class="hidden draggable-element resizable-elemen table-wrapper">
+		<div id="sectionStats" class="hidden draggable-element resizable-element table-wrapper">
 			<div class="table-header">Stats:</div>
-				<div class="table-content">
-					<div class="table-content-wrapper">
-					<div id="statsTabButtons">
-						<div id="statsButtonSand" class="minifloatbox statsButton" >
-							<a onclick="Molpy.StatsTabChange('Sand')">Sand Stats</a>
-						</div>
-						<div id="statsButtonGlass" class="minifloatbox statsButton" >
-							<a onclick="Molpy.StatsTabChange('Glass')">Glass Stats</a>
-						</div>
-						<div id="statsButtonNinja" class="minifloatbox statsButton" >
-							<a onclick="Molpy.StatsTabChange('Ninja')">Ninja Stats</a>
-						</div>
-						<div id="statsButtonOther" class="minifloatbox statsButton" >
-							<a onclick="Molpy.StatsTabChange('Other')">Other Stats</a>
-						</div>
+			<div class="table-content">
+				<div class="table-content-wrapper" id="statsTabButtons">
+					<div id="statsButtonSand" class="minifloatbox statsButton" >
+						<a onclick="Molpy.ToogleView('SandStats')">Sand Stats</a>
 					</div>
-					<div id="statsTabSand" class="hidden statsTab">
-						<div>Total Sand Dug: <span id="totalsandstat"/></div>
-						<div>Sand Dug by Hand: <span id="manualsandstat"/></div>
-						<div>Sand Clicks: <span id="clicksstat"/></div>
-						<div>Sand per Click: <span id="spclickstat"/></div>
-						<div>Total Sand Spent: <span id="sandspentstat"/></div><br>
-						<div>Total Castles Built: <span id="totalcastlesstat"/></div>
-						<div>Total Castles Destroyed: <span id="destroyedcastlesstat"/></div>
-						<div>Total Castles Sacrificed: <span id="downcastlesstat"/></div>
-						<div>Total Castles Spent: <span id="spentcastlesstat"/></div><br>
-						<div>Sand Tools Owned: <span id="sandtoolsownedstat"/></div>
-						<div>Castle Tools Owned: <span id="castletoolsownedstat"/></div>
-						<div>Global Sand/mNP multiplier: <span id="sandmultiplierstat"/></div>
+					<div id="statsButtonGlass" class="minifloatbox statsButton" >
+						<a onclick="Molpy.StatsTabChange('GlassStats')">Glass Stats</a>
 					</div>
-					<div id="statsTabGlass" class="hidden statsTab">
-						<div>Glass Chips Stored: <span id="glasschipstat"/></div>
-						<div>Glass Blocks Stored: <span id="glassblockstat"/></div>
-						<div>Sand used in Glass Production: <span id="sandusestat"/></div><br>
-						<div id="chipspmnp">Net chips per mNP (roughly): <span id="chipspmnpstat"></div>
-						<div id="blockspmnp">Blocks per mNP (roughly): <span id="blockspmnpstat"></div><br>
-						<div>Total Chips Made by Tools: <span id="totaltoolchipsstat"/></div>
-						<div>Total Chips Destroyed by tools: <span id="destroyedtoolchipsstat"/></div>
-						<div>Chips Made by Hand: <span id="manualchipsstat"/></div>
-						<div>Chips per Click: <span id="chipclickstat"/></div>
+					<div id="statsButtonNinja" class="minifloatbox statsButton" >
+						<a onclick="Molpy.StatsTabChange('NinjaStats')">Ninja Stats</a>
 					</div>
-					<div id="statsTabNinja" class="hidden statsTab">
-						<div>NewPixBot delay: <span id="ninjatimestat"/></div>
-						<div>Ninja Stealth Streak: <span id="ninjastealthstat"/></div>
-						<div>Ninja Forgiveness Available: <span id="ninjaforgivestat"/></div><br>
-					</div>
-					<div id="statsTabOther" class="hidden statsTab">
-						<div>Times Loaded: <span id="loadcountstat"/></div>
-						<div>mNP since last autosave: <span id="autosavecountstat"/></div>
-						<div>Times Saved: <span id="savecountstat"/></div>
-						<div>Notifications Received: <span id="notifstat"/></div><br>
-						<div>Boosts Owned: <span id="boostsownedstat"/></div>
-						<div>Badges Earned: <span id="badgesownedstat"/></div><br>
-						<div><span id="redactedstat"/></div>
-						<div><span id="redactedmaxstat"/></div><br>
-						<div>Logicat Level: <span id="logicatstat"/></div>
-						<div>Blackprints Collected: <span id="blackstat"/></div>
+					<div id="statsButtonOther" class="minifloatbox statsButton" >
+						<a onclick="Molpy.StatsTabChange('OtherStats')">Other Stats</a>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div id="sectionSandStats" class="hidden draggable-element resizable-element table-wrapper">
+			<div class="table-header">Sand Stats:</div>
+			<div class="table-content">
+				<div class="table-content-wrapper">
+					<div>Total Sand Dug: <span id="totalsandstat"/></div>
+					<div>Sand Dug by Hand: <span id="manualsandstat"/></div>
+					<div>Sand Clicks: <span id="clicksstat"/></div>
+					<div>Sand per Click: <span id="spclickstat"/></div>
+					<div>Total Sand Spent: <span id="sandspentstat"/></div><br>
+					<div>Total Castles Built: <span id="totalcastlesstat"/></div>
+					<div>Total Castles Destroyed: <span id="destroyedcastlesstat"/></div>
+					<div>Total Castles Sacrificed: <span id="downcastlesstat"/></div>
+					<div>Total Castles Spent: <span id="spentcastlesstat"/></div><br>
+					<div>Sand Tools Owned: <span id="sandtoolsownedstat"/></div>
+					<div>Castle Tools Owned: <span id="castletoolsownedstat"/></div>
+					<div>Global Sand/mNP multiplier: <span id="sandmultiplierstat"/></div>
+				</div>
+			</div>
+		</div>
+		<div id="sectionGlassStats" class="hidden draggable-element resizable-element table-wrapper">
+			<div class="table-header">Glass Stats:</div>
+			<div class="table-content">
+				<div class="table-content-wrapper">
+					<div>Glass Chips Stored: <span id="glasschipstat"/></div>
+					<div>Glass Blocks Stored: <span id="glassblockstat"/></div>
+					<div>Sand used in Glass Production: <span id="sandusestat"/></div><br>
+					<div id="chipspmnp">Net chips per mNP (roughly): <span id="chipspmnpstat"></div>
+					<div id="blockspmnp">Blocks per mNP (roughly): <span id="blockspmnpstat"></div><br>
+					<div>Total Chips Made by Tools: <span id="totaltoolchipsstat"/></div>
+					<div>Total Chips Destroyed by tools: <span id="destroyedtoolchipsstat"/></div>
+					<div>Chips Made by Hand: <span id="manualchipsstat"/></div>
+					<div>Chips per Click: <span id="chipclickstat"/></div>
+				</div>
+			</div>
+		</div>
+		<div id="sectionNinjaStats" class="hidden draggable-element resizable-element table-wrapper">
+			<div class="table-header">Ninja Stats:</div>
+			<div class="table-content">
+				<div class="table-content-wrapper">
+					<div>NewPixBot delay: <span id="ninjatimestat"/></div>
+					<div>Ninja Stealth Streak: <span id="ninjastealthstat"/></div>
+					<div>Ninja Forgiveness Available: <span id="ninjaforgivestat"/></div><br>
+				</div>
+			</div>
+		</div>
+		<div id="sectionOtherStats" class="hidden draggable-element resizable-element table-wrapper">
+			<div class="table-header">Other Stats:</div>
+			<div class="table-content">
+				<div class="table-content-wrapper">
+					<div>Times Loaded: <span id="loadcountstat"/></div>
+					<div>mNP since last autosave: <span id="autosavecountstat"/></div>
+					<div>Times Saved: <span id="savecountstat"/></div>
+					<div>Notifications Received: <span id="notifstat"/></div><br>
+					<div>Boosts Owned: <span id="boostsownedstat"/></div>
+					<div>Badges Earned: <span id="badgesownedstat"/></div><br>
+					<div><span id="redactedstat"/></div>
+					<div><span id="redactedmaxstat"/></div><br>
+					<div>Logicat Level: <span id="logicatstat"/></div>
+						<div>Blackprints Collected: <span id="blackstat"/></div>
+				</div>
+			</div>
+		</div>
+					
 		<div id="sectionLog" class="hidden draggable-element resizable-element table-wrapper">
 			<div class="table-header">Log of Notifications:</div>
 			<div class="table-content">
@@ -292,48 +308,48 @@
 				</textarea>
 			</div>
 		</div>
-		<div id="sectionSandCounts" class="floatbox infobox draggable-element">
+		<div id="sectionSandCounts" class="hidden floatbox infobox draggable-element">
 			<div id="castlecount"></div>
 			<div id="sandcount"></div>
 			<div id="sandrate"></div>
 		</div>
-		<div id="sectionTFCounts" class="floatbox infobox draggable-element hidden">
+		<div id="sectionTFCounts" class="hidden floatbox infobox draggable-element">
 			<div id="chipcount"></div>
 			<div id="chiprate"></div>
 			<div id="newtools"></div>
 		</div>
-		<div id="sectionNPInfo" class="floatbox infobox draggable-element">
+		<div id="sectionNPInfo" class="hidden floatbox infobox draggable-element">
 			<div id="newpixnum" class="timeflip"></div>
 			<div id="eon" class="timeflip"></div>
 			<div id="era" class="timeflip"></div>
 			<div id="period" class="timeflip"></div>
 		</div>
-		<div id="sectionAbout" class="floatbox infobox draggable-element">
+		<div id="sectionAbout" class="hidden floatbox infobox draggable-element">
 			<div id="version"></div>
 		</div>			
 	</div>
-	<div id="sectionSandTools" class="draggable-element resizable-element toolwrapper table-wrapper">
+	<div id="sectionSandTools" class="hidden draggable-element resizable-element toolwrapper table-wrapper">
 		<div id="sandSTitle table-header">Sand Tools:</div>
 		<div class="table-content">
 			<div id="sandtools" class="table-content-wrapper">
 			</div>
 		</div>
 	</div>
-	<div id="sectionCastleTools" class="draggable-element resizable-element toolwrapper table-wrapper">
+	<div id="sectionCastleTools" class="hidden draggable-element resizable-element toolwrapper table-wrapper">
 		<div id="sandCTitle table-header">Castle Tools:</div>
 		<div class="table-content">
 			<div id="castletools" class="table-content-wrapper">
 			</div>
 		</div>
 	</div>
-	<div id="sectionShop" class="draggable-element resizable-element table-wrapper">
+	<div id="sectionShop" class="hidden draggable-element resizable-element table-wrapper">
 		<div id="boostTitle" class="table-header">Boost Shop:</div>
 		<div class="table-content">
 			<div id="boosts" class="table-content-wrapper">
 			</div>
 		</div>
 	</div>
-	<div id="sectionInventory" class="draggable-element resizable-element table-wrapper">
+	<div id="sectionInventory" class="hidden draggable-element resizable-element table-wrapper">
 		<div id="lootTitle" class="table-header">Loot:</div>
 		<div id="lootselection" class="table-header"></div>
 		<div class="table-content">

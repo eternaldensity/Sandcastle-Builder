@@ -179,17 +179,11 @@
 	
 	Molpy.RefreshStats=function()
 	{
+		if(!Molpy.molpish)return;
 		Molpy.EarnBadge('Far End of the Bell Curve');
 		Molpy.shopRepaint=1;
 		Molpy.boostRepaint=1;
 		Molpy.badgeRepaint=1;
-	}
-	Molpy.StatsTabChange=function(n)
-	{
-		$('.statsTab').removeClass('unhidden').addClass('hidden');
-		$('#statsTab'+n).removeClass('hidden').addClass('unhidden');
-		$('.statsButton').removeClass('selectedBox');
-		$('#statsButton'+n).addClass('selectedBox');			
 	}
 	
 	Molpy.RefreshExport=function()
@@ -946,7 +940,7 @@
 	{
 		Molpy.notifLog=[];
 		Molpy.notifLogNext=0;
-		Molpy.notifLogMax=39; //store 40 lines
+		Molpy.notifLogMax=399; //store 400 lines
 		Molpy.notifLogPaint=0;
 	}
 	Molpy.ClearLog();
@@ -1501,9 +1495,9 @@
 		}
 	}
 	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
-	Molpy.boxVisOrder=['Clock','Timer','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layout','Codex','Alerts'];
-	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts'];
-	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts'];
+	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layout','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
+	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
+	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layout','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats'];
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
 	Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
 	Molpy.activeLayout.ToScreen();

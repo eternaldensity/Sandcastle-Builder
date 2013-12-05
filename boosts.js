@@ -4067,7 +4067,7 @@
 		}
 	});
 	
-	new Molpy.Boost({name:'People Sit in Chairs',desc:'Multiplies <b>all</b> rates by 1, then adds 0',logic:420});
+	new Molpy.Boost({name:'People Sit on Chairs',desc:'Multiplies <b>all</b> rates by 1, then adds 0',stats:'Administrivia',logic:420});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={

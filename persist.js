@@ -123,15 +123,15 @@
 			Molpy.Notify(Molpy.BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
 			return;
 		}
-		if(thread=='regturn')
+		if(thread=='Calculus')
 		{
-			if (Molpy.regturn) {
-				Molpy.Notify('Patience Patience');	
+			if (Molpy.calculus) {
+				Molpy.Notify('Stop acting the goat!');	
 			} else {
 				if( Molpy.Boosts['Goat'].power) Molpy.Boosts['Goat'].power++;
 				else Molpy.Boosts['Goat'].power = 1;
 				Molpy.Notify('Thankyou, have a goat!',1);	
-				Molpy.regturn=1;
+				Molpy.calculus=1;
 			}
 			return;
 		}
