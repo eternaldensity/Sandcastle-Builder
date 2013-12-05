@@ -2275,7 +2275,7 @@
 			}else if(me.bought>1){
 				var cost=100+Molpy.LogiMult(25);
 				if(Molpy.HasGlassBlocks(cost))
-					return '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle';
+					return '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.bought)+' Puzzle'+plural(me.bought)+' left';
 				else return 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle';
 			}else{
 				return 'Caged Logicat is sleeping. Please wait for it.';
