@@ -3744,8 +3744,8 @@
 		
 	new Molpy.Boost({name:'Schrödinger\'s Gingercat',alias:'SGC',desc:'Observes itself. Also causes Not Lucky to give more glass and makes '+Molpy.redactedWords+' last longer',glass:'16.2M',logic:1613});
 	
-	new Molpy.Boost({name:'Mind Glow',desc:'Jumping to a NewPix for which you have made a Sand Monument costs half as many Glass Blocks',glass:'2M'});
-	new Molpy.Boost({name:'Memory Singer',desc:'Jumping to a NewPix for which you have made a Glass Monument costs half as many Glass Blocks',glass:'10M'});
+	new Molpy.Boost({name:'Mind Glow',desc:'Jumping to a NewPix for which you have made a Sand Monument costs half as many Glass Chips',glass:'2M'});
+	new Molpy.Boost({name:'Memory Singer',desc:'Jumping to a NewPix for which you have made a Glass Monument costs half as many Glass Chips',glass:'10M'});
 	new Molpy.Boost({name:'Lightning Rod',alias:'LR',desc:'Glassed Lightning becomes more powerful with use',glass:'440M',sand:Infinity,castles:Infinity,
 		buyFunction:function(){this.power=Molpy.Boosts['GL'].power||400;}
 	});
