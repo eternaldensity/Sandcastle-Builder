@@ -237,6 +237,32 @@ a:active
 	border-width: 1px;
 	border-style: solid;
 }
+.draggable-element
+{
+	position:absolute;
+	min-width:60px;
+	min-height:60px;
+}
+.table-wrapper
+{
+	overflow:hidden;
+}
+.table-header /*probably don't need this after all but might as well keep it on the relevant elements just in case*/
+{
+}
+.table-content-wrapper
+{
+    height: 100%;
+    width: 100%;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+.table-content
+{
+    height: 100%; 
+    width: 100%;
+}
+
 .beachninjawarning
 {
 	border-color:#F00;
@@ -265,8 +291,8 @@ a:active
 }
 #sectionStats
 {
-	min-height:150px;
-	min-width:150px;
+	min-height:45px;
+	min-width:85px;
 }
 #sectionView
 {
@@ -316,32 +342,6 @@ a:active
 	max-width:600px;
 	margin:5px;
 	display: inline-block;
-}
-.draggable-element
-{
-	position:absolute;
-}
-.table-wrapper
-{
-    display: table;
-	overflow:hidden;
-}
-.table-header
-{
-    display: table-row;
-}
-.table-content-wrapper
-{
-    height: inherit;
-    width: 100%;
-	overflow-y:auto;
-	overflow-x:hidden;
-}
-.table-content
-{
-    display: table-row; 
-    height: inherit; 
-    width: 100%;
 }
 
 #sectionSandTools
