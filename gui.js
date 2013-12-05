@@ -1361,6 +1361,15 @@
         });
 	}
 	
+	Molpy.LockLayoutToggle=function()
+	{
+		Molpy.layoutLocked=!Molpy.layoutLocked;
+		
+		$('.draggable-element,.resizable-element').toggleClass('editlock',Molpy.layoutLocked);
+		$('.ui-resizable-handle').toggleClass('hidden',Molpy.layoutLocked);
+		$('#toggleLockLayout').toggleClass('depressed',Molpy.layoutLocked);
+	}
+	
 	Molpy.Layout=function(args)
 	{
 		this.name=args.name||'';
@@ -1508,7 +1517,6 @@
 	}
 	
 	$('.resizable-element').resizable({cancel:'.editlock'});
-	$('.draggable-element').draggable({cancel:'.editlock',scroll:true,grid:[10,10],snap:true});
-	//$('.draggable-element,.resizable-element').addClass('editlock');
-	//$('.ui-resizable-handle').addClass('hidden')
+	$('.draggable-element').draggable({cancel:'.editlock',scroll:true,grid:[10,10],snap:true});	
+	Molpy.LockLayoutToggle();
 }

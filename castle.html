@@ -20,11 +20,39 @@
 <body class="darkscheme">
 	<div id="game">
 		<div id="notifs"></div>
-		<div id="sectionClock" class="hidden draggable-element">
-			<div id="clockface">					
+		<div id="sectionBeach" class="draggable-element">
+			<div id="sparticles">
+			</div>
+			<div id="beach" class="timeflip">
 			</div>
 		</div>
-		<div class="hidden minifloatbox draggable-element" id="sectionTimer">Timer
+		<div id="sectionSandTools" class="hidden draggable-element resizable-element toolwrapper table-wrapper">
+			<div id="sandSTitle table-header">Sand Tools:</div>
+			<div class="table-content">
+				<div id="sandtools" class="table-content-wrapper">
+				</div>
+			</div>
+		</div>
+		<div id="sectionCastleTools" class="hidden draggable-element resizable-element toolwrapper table-wrapper">
+			<div id="sandCTitle table-header">Castle Tools:</div>
+			<div class="table-content">
+				<div id="castletools" class="table-content-wrapper">
+				</div>
+			</div>
+		</div>
+		<div id="sectionShop" class="hidden draggable-element resizable-element table-wrapper">
+			<div id="boostTitle" class="table-header">Boost Shop:</div>
+			<div class="table-content">
+				<div id="boosts" class="table-content-wrapper">
+				</div>
+			</div>
+		</div>
+		<div id="sectionInventory" class="hidden draggable-element resizable-element table-wrapper">
+			<div id="lootTitle" class="table-header">Loot:</div>
+			<div id="lootselection" class="table-header"></div>
+			<div class="table-content">
+				<div id="loot" class="table-content-wrapper"></div>
+			</div>
 		</div>
 		<div id="sectionView" class="hidden draggable-element resizable-element table-wrapper">
 			<div class="table-content">
@@ -57,7 +85,7 @@
 						<a onclick="Molpy.ToggleView('Stats')"><h4>Stats</h4></a>
 					</div>
 					<div id="toggleLayout" class="minifloatbox">
-						<a onclick="Molpy.ToggleView('Layout')"><h4>Layout</h4></a>
+						<a onclick="Molpy.ToggleView('Layout')"><h4>Layouts</h4></a>
 					</div>
 					<div id="toggleCodex" class="minifloatbox">
 						<a onclick="Molpy.ToggleView('Codex')"><h4>Codex</h4></a>
@@ -140,12 +168,6 @@
 				</div>	
 			</div>
 		</div>	
-		<div id="sectionBeach" class="draggable-element">
-			<div id="sparticles">
-			</div>
-			<div id="beach" class="timeflip">
-			</div>
-		</div>
 		<div id="sectionOptions" class="hidden draggable-element resizable-element table-wrapper">
 			<div class="table-header">Options:</div>
 			<div class="table-content">
@@ -195,16 +217,16 @@
 			<div class="table-header">Stats:</div>
 			<div class="table-content">
 				<div class="table-content-wrapper" id="statsTabButtons">
-					<div id="toggleSandStats" class="minifloatbox statsButton" >
+					<div id="toggleSandStats" class="minifloatbox" >
 						<a onclick="Molpy.ToggleView('SandStats')">Sand Stats</a>
 					</div>
-					<div id="toggleGlassStats" class="minifloatbox statsButton" >
+					<div id="toggleGlassStats" class="minifloatbox" >
 						<a onclick="Molpy.ToggleView('GlassStats')">Glass Stats</a>
 					</div>
-					<div id="toggleNinjaStats" class="minifloatbox statsButton" >
+					<div id="toggleNinjaStats" class="minifloatbox" >
 						<a onclick="Molpy.ToggleView('NinjaStats')">Ninja Stats</a>
 					</div>
-					<div id="toggleOtherStats" class="minifloatbox statsButton" >
+					<div id="toggleOtherStats" class="minifloatbox" >
 						<a onclick="Molpy.ToggleView('OtherStats')">Other Stats</a>
 					</div>
 				</div>
@@ -281,7 +303,18 @@
 			</div>
 		</div>
 		<div id="sectionLayout" class="hidden draggable-element resizable-element table-wrapper">
-			<div class="table-header">Layout</div>
+			<div class="table-header">Layouts</div>		
+			<div class="table-header">			
+					<div class="minifloatbox">
+						<a onclick="Molpy.SaveLayouts()">Load Layouts</a>
+					</div>
+					<div class="minifloatbox">
+						<a onclick="Molpy.LoadLayouts()">Save Layouts</a>
+					</div>	
+					<div id="toggleLockLayout" class="minifloatbox">
+						<a onclick="Molpy.LockLayoutToggle()">Lock Layout</a>
+					</div>
+			</div>
 			<div class="table-content">
 				<div id="layouts" class="table-content-wrapper">
 				</div>
@@ -326,35 +359,13 @@
 		</div>
 		<div id="sectionAbout" class="hidden floatbox infobox draggable-element">
 			<div id="version"></div>
-		</div>			
-	</div>
-	<div id="sectionSandTools" class="hidden draggable-element resizable-element toolwrapper table-wrapper">
-		<div id="sandSTitle table-header">Sand Tools:</div>
-		<div class="table-content">
-			<div id="sandtools" class="table-content-wrapper">
+		</div>		
+		<div class="hidden minifloatbox draggable-element" id="sectionTimer">Timer
+		</div>
+		<div id="sectionClock" class="hidden draggable-element">
+			<div id="clockface">					
 			</div>
-		</div>
-	</div>
-	<div id="sectionCastleTools" class="hidden draggable-element resizable-element toolwrapper table-wrapper">
-		<div id="sandCTitle table-header">Castle Tools:</div>
-		<div class="table-content">
-			<div id="castletools" class="table-content-wrapper">
-			</div>
-		</div>
-	</div>
-	<div id="sectionShop" class="hidden draggable-element resizable-element table-wrapper">
-		<div id="boostTitle" class="table-header">Boost Shop:</div>
-		<div class="table-content">
-			<div id="boosts" class="table-content-wrapper">
-			</div>
-		</div>
-	</div>
-	<div id="sectionInventory" class="hidden draggable-element resizable-element table-wrapper">
-		<div id="lootTitle" class="table-header">Loot:</div>
-		<div id="lootselection" class="table-header"></div>
-		<div class="table-content">
-			<div id="loot" class="table-content-wrapper"></div>
-		</div>
+		</div>	
 	</div>
 	<div id="scrumptiousdonuts"></div>
 </body>
