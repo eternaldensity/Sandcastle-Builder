@@ -3092,7 +3092,7 @@ Molpy.Up=function()
 		{
 			Molpy.Notify('You have not saved in over a NewPix!!',1);
 		}
-		if(Molpy.Got('Caged Logicat'))
+		if(Molpy.Got('Caged Logicat')&&!Molpy.Got('Temporal Rift'))
 			Molpy.Boosts['Caged Logicat'].bought=11;
 	}
 	

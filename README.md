@@ -31,6 +31,7 @@ For personal amusement only.
 - Put Achronal Dragon in the correct group
 - Removed borders when the layout is locked (I'll make a way to have that togglable, but not right now)
 - Prevent Bag Burning from force-molpifying the stats numbers: it used to be necessary to be readable but now it isn't
+- Having Temporal Rift prevents you from getting new Caged Logicat questions on the ONG
 
 ## 3.2
 - Glass Ceilings are their own boost group

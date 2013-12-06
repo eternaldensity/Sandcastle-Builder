@@ -885,6 +885,7 @@
 			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+Molpify(me.countdown,3)+'mNP.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
 			return 'A hole in time has opened.';
 		}
+		,stats:'Has an unfortunate negative effect on Logicat Wakefulness'
 		,logic:3,countdownFunction:function()
 		{
 			if(this.countdown==2)
