@@ -166,7 +166,7 @@
 		}
 		if(thread=='F5')
 		{
-			Molpy.ClickBeach();
+			Molpy.ClickBeach(0,1);
 			Molpy.EarnBadge('Use Your Leopard');				
 			return;
 		}

@@ -675,8 +675,13 @@ Molpy.Up=function()
 		Molpy.globalGpmNPMult=1;
 		Molpy.lastClick=0;
 		Molpy.chipsPerClick=0;
-		Molpy.ClickBeach=function()
+		Molpy.ClickBeach=function(event, leopard)
 		{
+			if(!Molpy.layoutLocked&&!leopard)
+			{
+				Molpy.Notify('You cannnot click here while the layout is unlocked but you can use your leopard');
+				return;
+			}
 			var newsand=Molpy.computedSandPerClick;
 			Molpy.Dig(newsand);
 			if(newsand&&Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(newsand,1));
@@ -939,7 +944,7 @@ Molpy.Up=function()
 			var key= String.fromCharCode(e.keyCode||e.charCode);
 			if(key=='5'&&prevKey.toLowerCase()=='f')
 			{
-				Molpy.ClickBeach();
+				Molpy.ClickBeach(e,1);
 				Molpy.EarnBadge('Use Your Leopard');
 			}
 			prevKey=key;

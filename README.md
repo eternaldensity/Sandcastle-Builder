@@ -34,6 +34,7 @@ For personal amusement only.
 - Having Temporal Rift prevents you from getting new Caged Logicat questions on the ONG
 - Instead of Tool Factory ownership controlling the TF Counts Pane, it controls visibility of the button to toggle the TF Counts Pane
 - When unlocks are checked the options pane is refreshed, so when a new option is unlocked it appears immediately rather than requiring the options to be opened again.
+- Unlocking the Layout prevents Click-digging. (But not the other ways)
 
 ## 3.2
 - Glass Ceilings are their own boost group
