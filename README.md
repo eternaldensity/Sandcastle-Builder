@@ -26,6 +26,7 @@ For personal amusement only.
 
 ## 3.201
 - Fixed Coma Molpy Style (oops I had just started debugging that when I got distracted by an Expando issue and forgot to fix it before 3.2)
+- Reduced newpix bounce to stay in the bounds of the box
 
 ## 3.2
 - Glass Ceilings are their own boost group

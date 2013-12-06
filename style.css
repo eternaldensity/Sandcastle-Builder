@@ -202,11 +202,11 @@ a:active
 }
 #beach:hover
 {
-	-webkit-transform:scale(1.05,1.05);opacity:0.9;
-	-moz-transform:scale(1.05,1.05);opacity:0.9;
-	-ms-transform:scale(1.05,1.05);opacity:0.9;
-	-o-transform:scale(1.05,1.05);opacity:0.9;
-	transform:scale(1.05,1.05);opacity:0.9;
+	-webkit-transform:scale(0.99,0.99);opacity:0.9;
+	-moz-transform:scale(0.99,0.99);opacity:0.9;
+	-ms-transform:scale(0.99,0.99);opacity:0.9;
+	-o-transform:scale(0.99,0.99);opacity:0.9;
+	transform:scale(0.99,0.99);opacity:0.9;
 }
 #beach:active
 {
@@ -218,11 +218,11 @@ a:active
 }
 #beach:hover.flip-horizontal
 {
-	-webkit-transform:scale(-1.05,1.05);opacity:0.9;
-	-moz-transform:scale(-1.05,1.05);opacity:0.9;
-	-ms-transform:scale(-1.05,1.05);opacity:0.9;
-	-o-transform:scale(-1.05,1.05);opacity:0.9;
-	transform:scale(-1.05,1.05);opacity:0.9;
+	-webkit-transform:scale(-0.99,0.99);opacity:0.9;
+	-moz-transform:scale(-0.99,0.99);opacity:0.9;
+	-ms-transform:scale(-0.99,0.99);opacity:0.9;
+	-o-transform:scale(-0.99,0.99);opacity:0.9;
+	transform:scale(-0.99,0.99);opacity:0.9;
 }
 #beach:active.flip-horizontal
 {
