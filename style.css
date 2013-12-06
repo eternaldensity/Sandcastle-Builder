@@ -335,9 +335,6 @@ a:active
 }
 #sectionLog
 {
-	top:0px;
-	height:350px;
-	width:280px;
 	-webkit-touch-callout: auto;
 	-webkit-user-select: auto;
 	-khtml-user-select: auto;

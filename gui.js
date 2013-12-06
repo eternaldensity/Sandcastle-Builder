@@ -1650,9 +1650,10 @@
 	}
 	Molpy.ImportLayout=function()
 	{
-		var thread=prompt('Paste a valid layout code here:\n(or write "default" for the default)','');
+		var thread=prompt('Paste a valid layout code here:\n(write "default" or "default2" for the defaults)','');
 		if(!thread)return;
 		if(thread=='default')thread=Molpy.defaultLayoutData;
+		if(thread=='default2')thread=Molpy.defaultLayoutData2;
 		var newLayout= new Molpy.Layout({});
 		newLayout.FromString(thread);
 		Molpy.layouts.push(newLayout);
@@ -1676,6 +1677,8 @@
 	
 	Molpy.layouts=[];
 	Molpy.layouts.push(Molpy.activeLayout);
+	Molpy.layouts.push(new Molpy.Layout({}));
+	Molpy.layouts[1].FromString(Molpy.defaultLayoutData2);
 	Molpy.LoadLayouts();
 	
 	Molpy.IsStatsVisible=function()

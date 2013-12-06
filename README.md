@@ -35,6 +35,9 @@ For personal amusement only.
 - Instead of Tool Factory ownership controlling the TF Counts Pane, it controls visibility of the button to toggle the TF Counts Pane
 - When unlocks are checked the options pane is refreshed, so when a new option is unlocked it appears immediately rather than requiring the options to be opened again.
 - Unlocking the Layout prevents Click-digging. (But not the other ways)
+- Default layout a bit less ugly
+- Added a second default layout which can be accessed via Import New and typing 'default2'
+- Yes there's still more fixed to be made but I think this is good for a first batch
 
 ## 3.2
 - Glass Ceilings are their own boost group
