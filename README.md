@@ -27,6 +27,8 @@ For personal amusement only.
 ## 3.201
 - Fixed Coma Molpy Style (oops I had just started debugging that when I got distracted by an Expando issue and forgot to fix it before 3.2)
 - Reduced newpix bounce to stay in the bounds of the box
+- Fixed Caged Logicat to display actual number of questions left (sorry I should have checked Waveney's code)
+- Put Achronal Dragon in the correct group
 
 ## 3.2
 - Glass Ceilings are their own boost group
