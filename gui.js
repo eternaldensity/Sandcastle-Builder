@@ -138,6 +138,10 @@
 		{
 			var refresh=Molpy['Refresh'+name];
 			if(refresh)refresh();
+		}else
+		{
+			var cleanup=Molpy['Cleanup'+name];
+			if(cleanup)cleanup();
 		}
 	}
 
@@ -187,6 +191,7 @@
 		Molpy.boostRepaint=1;
 		Molpy.badgeRepaint=1;
 	}
+	Molpy.CleanupStats=Molpy.RefreshStats;
 	
 	Molpy.RefreshExport=function()
 	{

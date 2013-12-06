@@ -24,8 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.22
-- 
+## 3.211
+- Alerts pane placeholder text
+- Stats wasn't refreshing stuff when hidden (I only had a function trigger on showing panels, not hide)
 
 ## 3.21
 - Fixed Coma Molpy Style (oops I had just started debugging that when I got distracted by an Expando issue and forgot to fix it before 3.2)
