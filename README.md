@@ -32,6 +32,8 @@ For personal amusement only.
 - Removed borders when the layout is locked (I'll make a way to have that togglable, but not right now)
 - Prevent Bag Burning from force-molpifying the stats numbers: it used to be necessary to be readable but now it isn't
 - Having Temporal Rift prevents you from getting new Caged Logicat questions on the ONG
+- Instead of Tool Factory ownership controlling the TF Counts Pane, it controls visibility of the button to toggle the TF Counts Pane
+- When unlocks are checked the options pane is refreshed, so when a new option is unlocked it appears immediately rather than requiring the options to be opened again.
 
 ## 3.2
 - Glass Ceilings are their own boost group

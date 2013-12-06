@@ -1133,7 +1133,7 @@
 		g('chiprate').innerHTML=Molpify(Molpy.glassPermNP,1) + ' chips/mNP';
 		g('newtools').innerHTML='Built '+Molpify(Molpy.toolsBuilt,1)+' new tool'+plural(Molpy.toolsBuilt);
 
-		$('#sectionTFCounts').toggleClass('hidden',!Molpy.Got('Tool Factory'));
+		$('#toggleTFCounts').toggleClass('hidden',!Molpy.Got('Tool Factory'));
 
 		
 		g('newpixnum').innerHTML='Newpix '+Molpify(Molpy.newpixNumber,3);
@@ -1665,7 +1665,7 @@
 		$('.layoutcontrols').css({width:$('#sectionLayoutsBody').width()});
 	}
 	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
-	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout'];
+	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts'];
 	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout'];
 	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout'];
 	$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);

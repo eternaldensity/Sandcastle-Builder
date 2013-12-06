@@ -669,6 +669,7 @@ Molpy.CheckBuyUnlocks=function()
         }
 	if (Molpy.Boosts['AC'].power >= 230)  Molpy.EarnBadge('Mains Power');
 	if (Molpy.Boosts['AC'].power >= 50)  Molpy.EarnBadge('It Hertz');
+	Molpy.RefreshOptions();
 }
 
 Molpy.jDipBoosts=['NewPixBot Navigation Code','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		
