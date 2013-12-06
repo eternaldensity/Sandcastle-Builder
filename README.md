@@ -24,6 +24,45 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.2
+- Glass Ceilings are their own boost group
+- Also a Draconic boost group (even though the dragons are currently terrible)
+- Dragon unlocks were checking if the potential reward was owned rather than unlocked, which was silly.
+- Dragon Changes (hopefully should make them more useful)
+- NaN (mustard) Time Travel price is autocorrected to Infinity
+- waveney did a bunch of stuff: fix Discov Detector for Minus, fixed jump pricing for Minus travel, Magic Mirror and Locked Vaults
+- Added a new absolutely free boost because I'm so generous
+- Added a badge. You probably don't want it
+- Boost to start making Molpy Down a little more interesting and less painful in the later game (there will be more...)
+- Fix Swim Between the Flags bug (modulus operator can have a negative result)
+- Add jQuery-UI (not latest version because it has a bug with draggable stuff and the scrollbar)
+- Make lots of elements draggable and some resizable
+- Flatten HTML hierarchy since it's not necessary for layout now
+- Options/Stats/Export can be toggled on and off independently rather than replacing each other
+- Added missing linebreaks in Mould fillers
+- More items can be hidden
+- Moving items to the right or bottom automatically scrolls the viewport
+- Default layout
+- Added a pane for offsite links, copied the links from the index to it.
+- Added a new link to index
+- Everything but the newpix is hidden until the layout loads, so you don't see an ugly mess (especially if your browser asks confirmation before running javascript)
+- Split the stats tabs into separate panels
+- Button to lock/unlock the layout, it's locked by default
+- When layout is unlocked, you can toggle Snap to Panes and Snap to Grid
+- Buttons for managing layouts: activate, rename, clone, overwrite, export, delete. 
+- You can't delete the active layout
+- Toggling visibility of panels immediately affects the active layout. Moving or resizing an element does not affect a layout at all.
+- Overwrite will store the positions, sizes, and visibility of everything in that layout
+- the Load/Save Layouts buttons store all the current layout values in cookies. (If you have moved any panes and not used Overwrite, those changes aren't saved)
+- When you load layouts, the top layout is automatically activated
+- By default, layouts are automatically saved when you save your game.
+- There's an option to not automatically save layouts, or to save layouts when the game autosaves (it still won't automatically Overwrite current positions/sizes into a layout)
+- The Autosave Option boost now unlocks after 5 saves rather than 20
+- You can get back the default layout (if you want it for some reason :P) by typing the word "default" into the Import New dialog, instead of a layout code
+- BTW, layouts are exported individually so you can share individual layouts as you wish. Also they're not encoded so you can easily edit them externally if you want
+- When you save layouts, the current screen layout is saved as 'temporary' and added to the end of the layouts list, in case you didn't Overwrite
+- Notifications are not affected by scrollbar!
+
 ## 3.19
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P
 - Split code into separate files finally!

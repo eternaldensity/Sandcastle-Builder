@@ -111,6 +111,10 @@ Molpy.HardcodedData=function()
 		[3094,"The Encounter Eon"]
 	]
 	
+	Molpy.titles=['Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandcastle Builder','Sandy Clicker','Injokes: The Game','Hotdog of Things that are on my side for 600, Alex','"The Dwarf Fortress of Idle Games" (hardly)','"Skyrim with Guns" (would be a far cry better than this)','Still a better love story than Twilight','Serious Business'];
+	
+	Molpy.defaultLayoutData="3.2PPdefaultP00010010000000P1111011111000011100000000P517C0S1033C510S557C439S51C-2S0C0S0C40S784C664S0C664S275C40S0C40S915C578S1255C729S915C429S1255C805S557C0S557C216S0C439S0C664S1096C0S358C906S359C796S1096C155S1094C664S1096C365S1096C440S1480C0SP366C223S465C40S800C50S314C214S368C51S280C384S268C364S537C202S537C209S545C201S1264C576S382C100S423C135S422C95S382C195S383C60S382C59S381C209S74C237SP";
+	
 	{//#region puns	
 		Molpy.bp = [
 			"One True Comic II: The Baginning"
@@ -371,6 +375,7 @@ Molpy.HardcodedData=function()
 		]
 	}
 	
+
 	
 	{//#REGION Lyrics :P	
 		Molpy.cms=[
@@ -488,9 +493,6 @@ Molpy.HardcodedData=function()
 			bdy,bdy,'<div class="flip">'+bdy+'</div>','<div class="flip">'+bdy+'</div>'
 			];
 	}
-	
-	
-
 }
 
 	
@@ -633,7 +635,6 @@ Molpy.CheckBuyUnlocks=function()
 	if(Molpy.groupBadgeCounts.discov>100)
 	{
 		Molpy.UnlockBoost('Stealth Cam');
-		Molpy.UnlockBoost('Stealth Cam');
 	}
 	if(Molpy.groupBadgeCounts.monums>10&&Molpy.Got('Memories Revisited'))
 	{
@@ -728,11 +729,15 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	
 	Molpy.Boosts['Fractal Fractals'].department=1*(Molpy.Boosts['Fractal Sandcastles'].power>=120);
 	
-	var key = Molpy.Boosts['Crate Key'];
-	key.department=0;
-	if((Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'))&&automationLevel>=10&&flandom(3)==0&&Molpy.Got('Keygrinder'))
-	{
-		key.department=1;						
+	if (Molpy.Boosts['AC'].power && Molpy.Boosts['AC'].power>180) {
+		Molpy.Boosts['Vault Key'].department = (Molpy.Boosts['Locked Vault'].unlocked||flandom(3)==0&&Molpy.Got('Keygrinder'))
+	} else {
+		var key = Molpy.Boosts['Crate Key'];
+		key.department=0;
+		if((Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'))&&automationLevel>=10&&flandom(3)==0&&Molpy.Got('Keygrinder'))
+		{
+			key.department=1;						
+		}
 	}
 	Molpy.CheckASHF();
 	var i = 10;
@@ -762,15 +767,27 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
 	Molpy.Boosts['Cold Mould'].department=Molpy.Got('SMM');
 	Molpy.Boosts['Such Glass'].department=1*(Molpy.SandTools['Bucket'].amount>2e11)*(Molpy.ninjaStealth>2e8);
-	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);
-	
+	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);	
 	
 	Molpy.Boosts['SilverCard'].department=Molpy.Earned('Big Spender');
 	Molpy.Boosts['GoldCard'].department=Molpy.Earned('Valued Customer');
+	Molpy.Boosts['No Need to be Neat'].department=Molpy.Earned('Neat!');
 }
 
 Molpy.CheckLogicatRewards=function(automationLevel)
 {
+	if ((!Molpy.Boosts['AC'].power) || (Molpy.Boosts['AC'].power<60) || ((Molpy.Boosts['AC'].power<300) && (Molpy.Boosts['AC'].power-60)/120*Math.random()<1))
+	{
+		Molpy.Boosts['Locked Crate'].logic=2;
+		Molpy.Boosts['Crate Key'].logic=4*(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'));
+		Molpy.Boosts['Locked Vault'].logic=0;
+		Molpy.Boosts['Vault Key'].logic=0;
+	} else {
+		Molpy.Boosts['Locked Vault'].logic=5;
+		Molpy.Boosts['Vault Key'].logic=5;
+		Molpy.Boosts['Locked Crate'].logic=0;
+		Molpy.Boosts['Crate Key'].logic=0;
+	}
 
 	Molpy.Boosts['Redundant Raptor'].logic=2*(Molpy.Boosts['Panther Salve'].power > 500);	
 	Molpy.Boosts['Catamaran'].logic=4*(Molpy.Boosts['Panther Salve'].power > 800);
@@ -806,7 +823,6 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Temporal Duplication'].logic=finiteC*finiteP;
 	Molpy.Boosts['Temporal Rift'].logic=3*finiteC;
 	
-	Molpy.Boosts['Crate Key'].logic=4*(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'));
 	Molpy.Boosts['Bucking the Trend'].logic=10*(Molpy.SandTools['Bucket'].amount>=10000);
 	Molpy.Boosts['Crystal Well'].logic=20*(Molpy.SandTools['Bucket'].amount>=20000);
 	Molpy.Boosts['Glass Spades'].logic=30*(Molpy.SandTools['Cuegan'].amount>=10000);

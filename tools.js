@@ -1,4 +1,4 @@
-Molpy.DefineSandTools=function()
+﻿Molpy.DefineSandTools=function()
 {
 	new Molpy.SandTool({name:'Bucket',commonName:'bucket|buckets|poured',desc:'Pours a little sand',price:8,
 		spmNP:function(){
@@ -66,7 +66,7 @@ Molpy.DefineSandTools=function()
 			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Molpy.CastleTools['Scaffold'].amount);
 			if(Molpy.Got('SBTF'))
 			{
-				if(Molpy.newpixNumber%2==0)//even
+				if(Math.abs(Molpy.newpixNumber)%2==0)//even
 				{
 					mult/=Math.max(1,Molpy.CastleTools['Wave'].amount);
 				}else{//odd
@@ -300,7 +300,7 @@ Molpy.DefineCastleTools=function()
 			var baseval = 24;
 			if(Molpy.Got('SBTF'))
 			{
-				if(Molpy.newpixNumber%2==1-next)//odd
+				if(Math.abs(Molpy.newpixNumber)%2==1-next)//odd
 				{
 					baseval=Math.floor(baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount));
 				}
@@ -324,7 +324,7 @@ Molpy.DefineCastleTools=function()
 			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('SBTF'))
 			{
-				if(Molpy.newpixNumber%2==next)//even
+				if(Math.abs(Molpy.newpixNumber)%2==next)//even
 				{
 					baseval=baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount);
 				}
