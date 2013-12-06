@@ -30,6 +30,7 @@ For personal amusement only.
 - Fixed Caged Logicat to display actual number of questions left (sorry I should have checked Waveney's code)
 - Put Achronal Dragon in the correct group
 - Removed borders when the layout is locked (I'll make a way to have that togglable, but not right now)
+- Prevent Bag Burning from force-molpifying the stats numbers: it used to be necessary to be readable but now it isn't
 
 ## 3.2
 - Glass Ceilings are their own boost group

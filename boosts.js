@@ -519,11 +519,11 @@
 			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshold)
 			{
 				var amount = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshold)/2))-1;
-				amount=Molpify(amount*100,0,1);
+				amount=Molpify(amount*100,0);
 				str+='<br>Currently '+amount+'%';
 			}
 			var jmax=Math.pow(2,Molpy.Boosts['Bag Burning'].power)+6;
-			str+='<br>If the Judgement Dip level (apart from the Bag reduction) is greater than '+Molpify(jmax,1,1)+', Bags will be burned to increase power.<br>It is also more powerful each time it is locked!';
+			str+='<br>If the Judgement Dip level (apart from the Bag reduction) is greater than '+Molpify(jmax,1)+', Bags will be burned to increase power.<br>It is also more powerful each time it is locked!';
 			if(!isFinite(jmax)&&Molpy.Got('Bottle Battle'))Molpy.UnlockBoost('Fireproof');
 			return str;
 		}
