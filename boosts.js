@@ -271,15 +271,15 @@
 		}
 		,sand:8500,castles:200,icon:'comamolpystyle',className:'toggle'});
 	
-	var cmsline=0;
+	Molpy.cmsline=0;
 	Molpy.ComaMolpyStyleToggle=function()
 	{
 		var me=Molpy.Boosts['Coma Molpy Style'];
-		Molpy.Notify(cms[cmsline]);
-		cmsline++;
-		if(cmsline>=cms.length)
+		Molpy.Notify(Molpy.cms[Molpy.cmsline]);
+		Molpy.cmsline++;
+		if(Molpy.cmsline>=Molpy.cms.length)
 		{
-			cmsline=0;
+			Molpy.cmsline=0;
 			if(!me.bought)
 			{
 				me.buy();
