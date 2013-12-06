@@ -243,6 +243,10 @@ a:active
 	border-width: 1px;
 	border-style: solid;
 }
+.editlock
+{
+	border-style: none;
+}
 .table-wrapper
 {
 	overflow:hidden;

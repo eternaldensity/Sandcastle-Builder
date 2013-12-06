@@ -29,6 +29,7 @@ For personal amusement only.
 - Reduced newpix bounce to stay in the bounds of the box
 - Fixed Caged Logicat to display actual number of questions left (sorry I should have checked Waveney's code)
 - Put Achronal Dragon in the correct group
+- Removed borders when the layout is locked (I'll make a way to have that togglable, but not right now)
 
 ## 3.2
 - Glass Ceilings are their own boost group
