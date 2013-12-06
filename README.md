@@ -24,7 +24,7 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.201
+## 3.21
 - Fixed Coma Molpy Style (oops I had just started debugging that when I got distracted by an Expando issue and forgot to fix it before 3.2)
 - Reduced newpix bounce to stay in the bounds of the box
 - Fixed Caged Logicat to display actual number of questions left (sorry I should have checked Waveney's code)
