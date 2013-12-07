@@ -840,7 +840,8 @@ Molpy.Up=function()
 				var fn='Factory Ninja';
 				if(Molpy.Got(fn))
 				{
-					Molpy.ActivateFactoryAutomation();
+					var runs = Molpy.ActivateFactoryAutomation();
+					if (runs == 0 && Molpy.sandPermNP == Infinity) Molpy.Earnbadge('Pure Genius');
 					!Molpy.Boosts[fn].power--
 					if(!Molpy.Boosts[fn].power)
 						Molpy.LockBoost(fn);
@@ -2733,6 +2734,7 @@ Molpy.Up=function()
 			_gaq&&_gaq.push(['_trackEvent','Factory Automation','Succeed',''+t,true]);
 			
 			Molpy.GlassNotifyFlush();
+			return t;
 		}
 	}
 	Molpy.FactoryAutomationRun=function(times)
