@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.221
+- Fixed options not refrshing on page refresh
+
 ## 3.22
 - Classic layout in classic.html
 - Loot visibility in classic works as it used to (if you save, then change what loot categories are visible, then load, it returns to how it was saved)

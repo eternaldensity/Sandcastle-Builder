@@ -824,12 +824,6 @@
 		Molpy.boostRepaint=1;
 		Molpy.badgeRepaint=1;
 		Molpy.judgeLevel=-1;
-		
-		if(Molpy.showOptions) //needs refreshing
-		{
-			Molpy.showOptions=0;
-			Molpy.OptionsToggle();
-		}
 	}
 	
 	/* In which a routine for resetting the game is presented
