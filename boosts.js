@@ -4009,11 +4009,11 @@
 	new Molpy.Boost({name:'Stretchable Chip Storage',desc:function(me)
 		{
 		return 'If active during a Blast Furnace run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
-		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
+		}, buyFunction:function() {this.power=1}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	new Molpy.Boost({name:'Stretchable Block Storage',desc:function(me)
 		{
 		return 'If active during a Blast Furnace run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
-		}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
+		}, buyFunction:function() {this.power=1},group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	
 	Molpy.GenericToggle=function(myid,negate)
 	{
