@@ -5,11 +5,12 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <link rel="shortcut icon" href="img/favicon.ico" />
 <link href="style.css?v=1" rel="stylesheet" type="text/css">
+<script type="text/javascript">var _gaq=[];var noLayout = false;</script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="redundancy.js?v=1"></script>
-<script src="castle.js?v=1"></script>
 <script src="data.js?v=1"></script>
 <script src="persist.js?v=1"></script>
+<script src="gui.js?v=1"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -20,6 +21,12 @@
   ga('send', 'pageview');
 
 </script>
+<script type="text/javascript">window.onload=function()
+{
+	Molpy.HardcodedData();
+	Molpy.DefinePersist();
+	Molpy.DefineGUI();
+};</script>
 </head>
 <body class="darkscheme">
 	<div id="index">
@@ -46,6 +53,10 @@
 		<div id="export" class="hidden">Exported Save Data: (Keep this somewhere safe)<br>
 			<textarea onkeydown=Molpy.KeyDown id="exporttext">
 			</textarea>
+		</div>
+		<div id="devtweets">
+			<a class="twitter-timeline" href="https://twitter.com/HotdogVendorED" data-widget-id="409406668296822784">Tweets by @HotdogVendorED</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 		</div>
 	</div>
 	<div id="scrumptiousdonuts"></div>

@@ -31,6 +31,7 @@ For personal amusement only.
 - When you have No Need to be Neat, the amout bought of tools doesn't reset, so you can see all the tools immediately, rather than possibly having a lot of a tool which isn't yet visible
 - Tagged boosts don't show the tagged loot section when bought if their group section is visible
 - In classic mode, the sand/castles numbers box wasn't being unhidden if you Molpy Down
+- Fixed index page to show version number and correct colour scheme from your save
 
 ## 3.221
 - Fixed options not refrshing on page refresh

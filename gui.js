@@ -230,6 +230,26 @@
 	}
 	Molpy.RefreshQuickLayout=Molpy.RefreshLayouts;
 	
+	Molpy.options=[];
+	Molpy.DefaultOptions=function()
+	{
+		Molpy.options.particles=1;
+		Molpy.options.numbers=1;
+		Molpy.options.autosave=2;
+		Molpy.options.autoupdate=1;
+		Molpy.options.sea=1;
+		Molpy.options.colpix=1;
+		Molpy.options.longpostfix=0;
+		Molpy.options.colourscheme=0;
+		Molpy.options.sandmultibuy=0;
+		Molpy.options.castlemultibuy=0;
+		Molpy.options.fade=0;
+		Molpy.options.typo=0;
+		Molpy.options.science=0;
+		Molpy.options.autosavelayouts=1;
+	}
+	Molpy.DefaultOptions();
+		
 	Molpy.flashes=0;
 	Molpy.ToggleOption=function(bacon)
 	{

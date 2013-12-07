@@ -1,7 +1,6 @@
 'use strict';
 /* In which some Helper functions are defined
 +++++++++++++++++++++++++++++++++++++++++++++*/
-function g(id) {return document.getElementById(id);}
 function ONGsnip(time)
 {
 	if(time.getMinutes()>=30&&Math.abs(Molpy.newpixNumber) <= 240)
@@ -96,7 +95,6 @@ function Molpify(number, raftcastle, shrinkify)
 
 /* In which the game initialisation is specified
 ++++++++++++++++++++++++++++++++++++++++++++++++*/
-var Molpy={};
 Molpy.Up=function()
 {
 	Molpy.molpish=0;
@@ -109,7 +107,6 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++*/
 		Molpy.Life=0; //number of gameticks that have passed
 		Molpy.fps = 30 //this is just for paint, not updates
-		Molpy.version=3.221;
 		
 		Molpy.time=new Date().getTime();
 		Molpy.newpixNumber=1; //to track which background to load, and other effects...
@@ -157,25 +154,6 @@ Molpy.Up=function()
 		Molpy.blockspmnp = 0;
 		Molpy.chipspmnp = 0;
 		
-		Molpy.options=[];
-		Molpy.DefaultOptions=function()
-		{
-			Molpy.options.particles=1;
-			Molpy.options.numbers=1;
-			Molpy.options.autosave=2;
-			Molpy.options.autoupdate=1;
-			Molpy.options.sea=1;
-			Molpy.options.colpix=1;
-			Molpy.options.longpostfix=0;
-			Molpy.options.colourscheme=0;
-			Molpy.options.sandmultibuy=0;
-			Molpy.options.castlemultibuy=0;
-			Molpy.options.fade=0;
-			Molpy.options.typo=0;
-			Molpy.options.science=0;
-			Molpy.options.autosavelayouts=1;
-		}
-		Molpy.DefaultOptions();
 		Molpy.DefinePersist();
 		Molpy.DefineGUI();
 

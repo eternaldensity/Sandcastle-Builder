@@ -1,6 +1,9 @@
 'use strict';
 function flandom(n){return(Math.floor(Math.random()*n));}
-function GLRschoice(things) {return things[flandom(things.length)];}
+function GLRschoice(things)
+{
+	return things[flandom(things.length)];
+}
 function EvalMaybeFunction(bacon,babies,ice)
 {
 	var B = typeof(bacon);
