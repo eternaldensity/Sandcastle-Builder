@@ -33,6 +33,7 @@ For personal amusement only.
 - In classic mode, the sand/castles numbers box wasn't being unhidden if you Molpy Down
 - Fixed index page to show version number and correct colour scheme from your save
 - Hilarious new badge by waveney
+- **Only saves first two layouts** to try to help prevent cookie too long until that's fixed. You can create and export more layouts but only two will save. If you want to rely on 'temporary' then only have 1 other layout. When you save layouts there will be a warning message informing you of how many were not saved.
 
 ## 3.221
 - Fixed options not refrshing on page refresh

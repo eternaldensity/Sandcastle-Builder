@@ -114,8 +114,16 @@
 			thread=Molpy.CuegishToBeanish(thread);
 			var dough='SBLayout'+i+'='+escape(thread)+'; expires='+Molpy.Flood()+';'
 			document.cookie=dough;
+			if(+i)break;
 		}i++;
-		if(!noLayout) Molpy.Notify('Saved '+i+' layout'+plural(i));
+		if(!noLayout)
+		{
+			Molpy.Notify('Saved '+i+' layout'+plural(i));
+			if(i<Molpy.layouts.length)
+			{
+				Molpy.Notify(' Did not save '+(Molpy.layouts.length-i)+' layout'+plural(Molpy.layouts.length-i)+' to save on cookie space until that\'s fixed. You can export them manually.',1);
+			}
+		}
 		while(Molpy.layoutsLoaded>i)
 		{
 			document.cookie='SBLayout'+i+'=;'; //delete any extra if there are less than previously saved
