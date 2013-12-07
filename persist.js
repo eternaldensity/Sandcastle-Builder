@@ -106,6 +106,7 @@
 	Molpy.layoutsLoaded=0;
 	Molpy.SaveLayouts=function()
 	{
+		if(noLayout)return;
 		Molpy.MakeTempLayout();
 		for(var i in Molpy.layouts)
 		{
@@ -131,6 +132,7 @@
 	}
 	Molpy.LoadLayouts=function()
 	{
+		if(noLayout)return;
 		var layouts=[];
 		for(var i=0;i<100;i++)
 		{

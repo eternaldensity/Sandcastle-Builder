@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.22
+- Classic layout in classic.html
+
 ## 3.211
 - Alerts pane placeholder text
 - Stats wasn't refreshing stuff when hidden (I only had a function trigger on showing panels, not hide)

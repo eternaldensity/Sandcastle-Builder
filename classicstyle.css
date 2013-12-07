@@ -162,8 +162,8 @@ a:active
 #sectionControls
 {
 	position:absolute;
-	top:40px;
-	margin:10px;
+	top:5px;
+	margin-left:58px;
 }
 #indexlinks
 {
@@ -202,11 +202,11 @@ a:active
 }
 #beach:hover
 {
-	-webkit-transform:scale(0.99,0.99);opacity:0.9;
-	-moz-transform:scale(0.99,0.99);opacity:0.9;
-	-ms-transform:scale(0.99,0.99);opacity:0.9;
-	-o-transform:scale(0.99,0.99);opacity:0.9;
-	transform:scale(0.99,0.99);opacity:0.9;
+	-webkit-transform:scale(1.05,1.05);opacity:0.9;
+	-moz-transform:scale(1.05,1.05);opacity:0.9;
+	-ms-transform:scale(1.05,1.05);opacity:0.9;
+	-o-transform:scale(1.05,1.05);opacity:0.9;
+	transform:scale(1.05,1.05);opacity:0.9;
 }
 #beach:active
 {
@@ -218,11 +218,11 @@ a:active
 }
 #beach:hover.flip-horizontal
 {
-	-webkit-transform:scale(-0.99,0.99);opacity:0.9;
-	-moz-transform:scale(-0.99,0.99);opacity:0.9;
-	-ms-transform:scale(-0.99,0.99);opacity:0.9;
-	-o-transform:scale(-0.99,0.99);opacity:0.9;
-	transform:scale(-0.99,0.99);opacity:0.9;
+	-webkit-transform:scale(-1.05,1.05);opacity:0.9;
+	-moz-transform:scale(-1.05,1.05);opacity:0.9;
+	-ms-transform:scale(-1.05,1.05);opacity:0.9;
+	-o-transform:scale(-1.05,1.05);opacity:0.9;
+	transform:scale(-1.05,1.05);opacity:0.9;
 }
 #beach:active.flip-horizontal
 {
@@ -232,46 +232,6 @@ a:active
 	-o-transform:scale(-0.98,0.98);opacity:1;
 	transform:scale(-0.98,0.98);opacity:1;
 }
-.resizable-element
-{
-	min-width:60px;
-	min-height:60px;
-}
-.draggable-element
-{
-	position:absolute;
-	border-width: 1px;
-	border-style: solid;
-}
-.editlock
-{
-	border-style: none;
-}
-.table-wrapper
-{
-	overflow:hidden;
-	width:auto;
-	height:auto;
-}
-.table-header /*probably don't need this after all but might as well keep it on the relevant elements just in case*/
-{
-}
-.table-footer
-{
-}
-.table-content-wrapper
-{
-    height: 100%;
-    width: 100%;
-	overflow-y:auto;
-	overflow-x:hidden;
-}
-.table-content
-{
-    height: 100%; 
-    width: 100%;
-}
-
 .beachninjawarning
 {
 	border-color:#F00;
@@ -288,6 +248,11 @@ a:active
 {
 	border-color:#0F0;
 }
+#exporttext
+{
+	width:540px;
+	height:395px;
+}
 .npthumb
 {
 	width:130px;
@@ -298,34 +263,9 @@ a:active
 	border-width: 1px;
 	border-style: solid;
 }
-#sectionStatsBody
+#sectionStats
 {
-	min-height:45px;
-	min-width:85px;
-}
-#sectionViewBody
-{
-	height:40px;
-	min-height:40px;
-	min-width:68px;
-}
-#sectionFileBody
-{
-	height:40px;
-	min-height:40px;
-	min-width:68px;
-}
-#sectionOptionsBody
-{
-	height:50px;
-	min-height:40px;
-	min-width:68px;
-}
-#sectionExportBody
-{
-	height:250px;
-	min-height:180px;
-	min-width:180px;
+	min-height:350px;
 }
 .statsTab
 {
@@ -333,8 +273,14 @@ a:active
 	width:290px;
 	min-height:350px;
 }
-#sectionLog
+#notiflog
 {
+	top:0px;
+	margin-left:300px;
+	height:350px;
+	width:280px;
+	overflow-y:scroll;
+	overflow-x:hidden;
 	-webkit-touch-callout: auto;
 	-webkit-user-select: auto;
 	-khtml-user-select: auto;
@@ -342,132 +288,73 @@ a:active
 	-ms-user-select: auto;
 	user-select: auto;
 }
-
-#beachAnchor
+#sectionTop
+{
+	width:600px;
+	position:absolute;
+}
+#sectionLeft
+{
+	overflow:hidden;
+	min-width:595px;
+	overflow: visible;
+	margin-left:10px;
+	margin-top:60px;
+}
+#sectionBeach
 {
 	max-width:600px;
-	margin:5px;
-	display: inline-block;
+	margin:10px;
+	margin-bottom:0px;
 }
-
-.toolwrapper
+#inventory
 {
-	min-height:90px;
-	max-height:1100px;
-	min-width:188px;
-	max-width:1100px;
-}
+	margin:10px;
+	margin-left:600px;
+	height:541px;
+	overflow-y:scroll;
+	overflow-x:hidden;
 
-#lootSelection
+}
+#inventory.force3columns
 {
-	padding: 10px;
-	height:150px;
-	width:inherit;
+	min-width:440px;
 }
-
 #sectionMainStats
 {
+	margin:10px
 }
-#sectionShopBody
+#sectionCounts
 {
-	padding: 5px;
-	height:100px;
-	min-height:100px;
-	min-width:170px;
 }
-
+#sectionTime
+{
+}
+#shop
+{
+	margin: 20px;
+	margin-top:30px;
+	border-width: 1px;
+	border-style: solid;
+}
+#clockwrapper{
+	position:absolute;
+}
 #clockface {
 	background-color:White;
 	background-image:url('img/clockface.png');
 	width:40px;
 	height:40px;
 	border-radius:50px;
-	z-index:30;
+	margin-left:10px;
 }
-
-
-.ui-resizable-handle {
-	position: absolute;
-	font-size: 0.1px;
-	display: block;
-}
-.ui-resizable-disabled .ui-resizable-handle,
-.ui-resizable-autohide .ui-resizable-handle {
-	display: none;
-}
-.ui-resizable-n {
-	cursor: n-resize;
-	height: 7px;
-	width: 100%;
-	top: -5px;
-	left: 0;
-}
-.ui-resizable-s {
-	cursor: s-resize;
-	height: 7px;
-	width: 100%;
-	bottom: -5px;
-	left: 0;
-}
-.ui-resizable-e {
-	cursor: e-resize;
-	width: 7px;
-	right: -5px;
-	top: 0;
-	height: 100%;
-}
-.ui-resizable-w {
-	cursor: w-resize;
-	width: 7px;
-	left: -5px;
-	top: 0;
-	height: 100%;
-}
-.ui-resizable-se {
-	cursor: se-resize;
-	width: 12px;
-	height: 12px;
-	right: 1px;
-	bottom: 1px;
-}
-.ui-resizable-sw {
-	cursor: sw-resize;
-	width: 9px;
-	height: 9px;
-	left: -5px;
-	bottom: -5px;
-}
-.ui-resizable-nw {
-	cursor: nw-resize;
-	width: 9px;
-	height: 9px;
-	left: -5px;
-	top: -5px;
-}
-.ui-resizable-ne {
-	cursor: ne-resize;
-	width: 9px;
-	height: 9px;
-	right: -5px;
-	top: -5px;
-}
-.ui-icon,
-.ui-widget-content .ui-icon {
-	background-image: url(http://code.jquery.com/ui/1.10.3/themes/smoothness/images/ui-icons_222222_256x240.png);
-}
-.ui-icon {
-	width: 16px;
-	height: 16px;
-}
-.ui-icon-gripsmall-diagonal-se { background-position: -64px -224px; }
-
 
 .floatbox{
 	display: inline-block;
-	margin:5px;
 	vertical-align: top;
-	width:145px;
+	width:150px;
 	min-height:66px;
+	margin:10px;
 	border-width: 1px;
 	border-style: solid;
 	padding: 4px;
@@ -483,16 +370,6 @@ body.lightscheme .floatbox:hover{
 	background-color:#fff
 }
 
-.navbaritem{
-	vertical-align: top;
-	min-width:48px;
-	min-height:20px;
-	margin:5px;
-	border-width: 1px;
-	border-style: solid;
-	text-align:center;
-	padding: 4px;
-}
 .lootbox{
 	display: inline-block;
 	vertical-align: top;
@@ -529,20 +406,6 @@ body.lightscheme .floatbox:hover{
 .infobox
 {
 	text-align:center;
-	width:161px;
-	margin:10px;
-}
-.depressed
-{
-	border-width:2px;
-}
-body.lightscheme .depressed
-{
-	background-color:#eee;
-}
-body.darkscheme .depressed
-{
-	background-color:#282828;
 }
 body.darkscheme .infobox
 {
@@ -693,7 +556,7 @@ body.lightscheme .badge.loot h1
 	margin:20px;
 }
 #notifs {position:fixed;left:0px;top:0px;}
-.notif
+.notif	
 {
 	font-family:'Conv_xkcd-Regular',Sans-Serif;
 	position:absolute;
