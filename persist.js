@@ -100,13 +100,13 @@
 					Molpy.UnlockBoost('Coma Molpy Style');
 				}
 			}
+			if(noLayout)Molpy.LoadLayouts(); //this seems odd, but the layout is loaded in this case so the loot visibility is set, as in classic
 		}
 	}
 	
 	Molpy.layoutsLoaded=0;
 	Molpy.SaveLayouts=function()
 	{
-		if(noLayout)return;
 		Molpy.MakeTempLayout();
 		for(var i in Molpy.layouts)
 		{
@@ -115,7 +115,7 @@
 			var dough='SBLayout'+i+'='+escape(thread)+'; expires='+Molpy.Flood()+';'
 			document.cookie=dough;
 		}i++;
-		Molpy.Notify('Saved '+i+' layout'+plural(i));
+		if(!noLayout) Molpy.Notify('Saved '+i+' layout'+plural(i));
 		while(Molpy.layoutsLoaded>i)
 		{
 			document.cookie='SBLayout'+i+'=;'; //delete any extra if there are less than previously saved
@@ -124,6 +124,7 @@
 	}
 	Molpy.MakeTempLayout=function()
 	{
+		if(noLayout)return;
 		var lastLayout=Molpy.layouts[Molpy.layouts.length-1];
 		if(lastLayout.name!='temporary')Molpy.layouts.push(new Molpy.Layout({name:'temporary'}));
 		var tempLayout=Molpy.layouts[Molpy.layouts.length-1];
@@ -132,7 +133,6 @@
 	}
 	Molpy.LoadLayouts=function()
 	{
-		if(noLayout)return;
 		var layouts=[];
 		for(var i=0;i<100;i++)
 		{
