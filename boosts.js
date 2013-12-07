@@ -3693,7 +3693,7 @@
 		if(dragon)
 		{
 			chipCost=0;
-			pageCost=5*me.power;
+			pageCost*=5;
 			logicatCost=Math.ceil(me.power/20);
 		}else if(n<0)
 		{
@@ -3940,7 +3940,7 @@
 			if(!me.bought) return str;
 			var n = Molpy.Boosts['AC'].power;
 			str+='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
-			var pageCost=n*5
+			var pageCost=n*10
 			var logicatCost=Math.ceil(n/20);
 			if(n<Molpy.Boosts['PC'].power)
 			{

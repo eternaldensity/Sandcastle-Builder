@@ -71,15 +71,15 @@
 	{		
 		if(Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]!='hide1')
 		{
-			if(tagged)
+			if(!Molpy.activeLayout.lootVis[group])
 			{
-				if(!Molpy.activeLayout.lootVis.tagged)
+				if(tagged)
 				{
-					Molpy.ShowhideToggle('tagged');
-				}
-			}else{
-				if(!Molpy.activeLayout.lootVis[group])
-				{
+					if(!Molpy.activeLayout.lootVis.tagged)
+					{
+						Molpy.ShowhideToggle('tagged');
+					}
+				}else{				
 					Molpy.ShowhideToggle(group);
 				}
 			}
@@ -1167,6 +1167,10 @@
 			{
 				$('#sectionSandCounts').toggleClass('hidden',!finite);
 				$('#sectionAbout').toggleClass('hidden',finite);
+			}else
+			{
+				$('#sectionSandCounts').removeClass('hidden');
+				$('#sectionAbout').removeClass('hidden');
 			}
 		}
 

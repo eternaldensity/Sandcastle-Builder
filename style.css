@@ -538,11 +538,11 @@ body.lightscheme .floatbox:hover{
 }
 body.lightscheme .depressed
 {
-	background-color:#eee;
+	background-color:#ddd;
 }
 body.darkscheme .depressed
 {
-	background-color:#282828;
+	background-color:#383838;
 }
 body.darkscheme .infobox
 {

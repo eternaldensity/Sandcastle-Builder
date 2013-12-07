@@ -1065,6 +1065,14 @@ Molpy.Up=function()
 			multiplier*=Math.max(0,((100-glassUse)/100));
 			Molpy.globalSpmNPMult=multiplier;
 			Molpy.sandPermNP*=Molpy.globalSpmNPMult;
+			if(isNaN(Molpy.sandPermNP))
+			{
+				Molpy.sandPermNP=0;
+			}
+			if(Molpy.globalSpmNPMult==0&&oldrate!=0)
+			{
+				Molpy.Notify('Looks like all the sand you dig is being used to make glass',1);
+			}
 						
 			if(Molpy.sandPermNP>oldrate) Molpy.CheckSandRateBadges();
 			

@@ -24,6 +24,14 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.23
+- Mustard sand rate turns to 0
+- Notify when sand rate drops to 0
+- Dragon Forge blackprint cost was showing up as half of the correct value because I forgot AC costs 2 per level
+- When you have No Need to be Neat, the amout bought of tools doesn't reset, so you can see all the tools immediately, rather than possibly having a lot of a tool which isn't yet visible
+- Tagged boosts don't show the tagged loot section when bought if their group section is visible
+- In classic mode, the sand/castles numbers box wasn't being unhidden if you Molpy Down
+
 ## 3.221
 - Fixed options not refrshing on page refresh
 - Stats should update regardless of whether the stats selector panel is visible (you still need to toggle that to go in and out of stats view for boosts and tools... maybe I should make that a separate option. But not right now.)

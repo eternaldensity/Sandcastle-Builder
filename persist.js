@@ -873,7 +873,8 @@
 				var me = Molpy.SandTools[i];
 				if(me.name==keep)continue;
 				me.amount=0;
-				me.bought=0;
+				if(!keep)
+					me.bought=0;
 				me.totalSand=0;
 				me.totalGlass=0;
 				me.temp=0;
@@ -884,7 +885,8 @@
 				var me = Molpy.CastleTools[i];
 				if(me.name==keep)continue;
 				me.amount=0;
-				me.bought=0;
+				if(!keep)
+					me.bought=0;
 				me.temp=0;
 				if(i!='NewPixBot')
 					me.totalCastlesBuilt=0;
