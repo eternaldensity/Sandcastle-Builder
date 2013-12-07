@@ -28,6 +28,7 @@ For personal amusement only.
 - Classic layout in classic.html
 - Loot visibility in classic works as it used to (if you save, then change what loot categories are visible, then load, it returns to how it was saved)
 - BTW if any panes are missing in classic you'll need to go into the regular page and toggle them to visible and save that to the first layout
+- Tool Factory data replaces sand/castle counts if you have tool factory and infinite numbers. If you have some finite numbers, the Version box gets bumped
 
 ## 3.211
 - Alerts pane placeholder text

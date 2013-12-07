@@ -1157,6 +1157,17 @@
 		g('newtools').innerHTML='Built '+Molpify(Molpy.toolsBuilt,1)+' new tool'+plural(Molpy.toolsBuilt);
 
 		$('#toggleTFCounts').toggleClass('hidden',!Molpy.Got('Tool Factory'));
+		if(noLayout)
+		{
+			var finite=isFinite(Molpy.sand)||isFinite(Molpy.castles)||isFinite(Molpy.spmNP);
+			var tf=Molpy.Got('Tool Factory');
+			$('#sectionTFCounts').toggleClass('hidden',!tf);
+			if(tf)
+			{
+				$('#sectionSandCounts').toggleClass('hidden',!finite);
+				$('#sectionAbout').toggleClass('hidden',finite);
+			}
+		}
 
 		
 		g('newpixnum').innerHTML='Newpix '+Molpify(Molpy.newpixNumber,3);
