@@ -912,6 +912,7 @@
 	Molpy.RepaintLayouts=function()
 	{
 		Molpy.layoutRepaint=0;
+		if(noLayout)return;
 		if(Molpy.activeLayout.boxVis['Layouts'])
 			{
 			var str='';
