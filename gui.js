@@ -1287,7 +1287,7 @@
 		}
 
 		drawClockHand();
-		if(Molpy.IsStatsVisible()) Molpy.PaintStats();
+		Molpy.PaintStats();
 		Molpy.notifsUpdate();
 		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 		if(Molpy.options.numbers)Molpy.sparticlesUpdate();

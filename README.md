@@ -26,6 +26,7 @@ For personal amusement only.
 
 ## 3.221
 - Fixed options not refrshing on page refresh
+- Stats should update regardless of whether the stats selector panel is visible (you still need to toggle that to go in and out of stats view for boosts and tools... maybe I should make that a separate option. But not right now.)
 
 ## 3.22
 - Classic layout in classic.html
