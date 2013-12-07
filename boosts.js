@@ -3693,7 +3693,7 @@
 		if(dragon)
 		{
 			chipCost=0;
-			pageCost*=5;
+			pageCost=5*me.power;
 			logicatCost=Math.ceil(me.power/20);
 		}else if(n<0)
 		{
