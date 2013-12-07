@@ -841,7 +841,7 @@ Molpy.Up=function()
 				if(Molpy.Got(fn))
 				{
 					var runs = Molpy.ActivateFactoryAutomation();
-					if (runs == 0 && Molpy.sandPermNP == Infinity) Molpy.Earnbadge('Pure Genius');
+					if (runs == 0 && Molpy.sandPermNP == Infinity) Molpy.EarnBadge('Pure Genius');
 					!Molpy.Boosts[fn].power--
 					if(!Molpy.Boosts[fn].power)
 						Molpy.LockBoost(fn);
