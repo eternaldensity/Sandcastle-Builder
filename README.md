@@ -24,6 +24,13 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.231
+- Timetravel wasn't refreshing discoveries (i.e. the jump button)
+- Memory warping has a (small) chance of temporal invasion
+- Changed Dragon Wisdom again (now it lets you get Panther Poke with a higher number of remaining Caged Logicat questions, so you can store up more with Zookeeper)
+- Caged Logicat shows Zookeeper progress, and updages if you're using Expando
+- On the ONG, Caged Logicat puzzles only resets to 10 remaining if you have less than 10.
+
 ## 3.23
 - Mustard sand rate turns to 0
 - Notify when sand rate drops to 0

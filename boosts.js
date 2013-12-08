@@ -345,27 +345,7 @@
 				Molpy.EarnBadge('And Back');
 			var t = Molpy.timeTravels;
 			if(t>=10)
-			{
-				Molpy.EarnBadge('Primer');
-				var incursionFactor=Molpy.Got('Achronal Dragon')?1.5
-					:Molpy.Got('Flux Capacitor')?4
-					:(Molpy.Got('Flux Turbine')?8
-					:20);
-				
-				if(!flandom(incursionFactor))
-				{
-					var npb=Molpy.CastleTools['NewPixBot'];
-					if(!Molpy.Boosts['NewPixBot Navigation Code'].power && npb.temp<30)
-					{
-						Molpy.Notify('You do not arrive alone');
-						npb.amount++;
-						npb.temp++;
-						npb.refresh();
-					}else{
-						Molpy.Notify('Temporal Incursion Prevented!');
-					}
-				}
-			}
+				Molpy.EarnBadge('Primer');			
 			if(t>=20)
 				Molpy.UnlockBoost('Flux Capacitor');
 			if(t>=30&&Molpy.Got('Flux Capacitor'))
@@ -416,18 +396,43 @@
 			}
 			Molpy.SpendGlassChips(chips);
 			Molpy.SpendCastles(price);
+			if(Molpy.Earned('discov'+Molpy.newpixNumber))Molpy.Badges['discov'+Molpy.newpixNumber].hoverOnCounter=1;
 			Molpy.newpixNumber=np;
+			if(Molpy.Earned('discov'+Molpy.newpixNumber))Molpy.Badges['discov'+Molpy.newpixNumber].hoverOnCounter=1;
 			_gaq&&_gaq.push(['_trackEvent','NewPix',(chips?'Memory Warp':'Time Travel'),''+Molpy.newpixNumber]);			
 			Molpy.ONGstart= ONGsnip(new Date()); 
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
 			Molpy.timeTravels++;
+			if(Molpy.timeTravels>=10) Molpy.HandleInvaders(chips);
 			Molpy.Boosts['Time Travel'].hoverOnCounter=1;
 			return 1;
 		}else
 		{
 			Molpy.Notify('<i>Castles</i>? Where we\'re going we do need... <i>castles</i>.');
+		}
+	}
+	
+	Molpy.HandleInvaders=function(mem)
+	{
+		var incursionFactor=Molpy.Got('Achronal Dragon')?1.5
+		:Molpy.Got('Flux Capacitor')?4
+		:(Molpy.Got('Flux Turbine')?8
+		:20);
+		if(mem)incursionFactor*=10;
+		if(!flandom(incursionFactor))
+		{
+			var npb=Molpy.CastleTools['NewPixBot'];
+			if(!Molpy.Boosts['NewPixBot Navigation Code'].power && npb.temp<30)
+			{
+				Molpy.Notify('You do not arrive alone');
+				npb.amount++;
+				npb.temp++;
+				npb.refresh();
+			}else{
+				Molpy.Notify('Temporal Incursion Prevented!');
+			}
 		}
 	}
 	
@@ -2270,18 +2275,25 @@
 	new Molpy.Boost({name:'Caged Logicat',
 		desc: function(me)
 		{
+			var str='';
 			if(me.power&&Molpy.cagedPuzzleValue)
 			{
 				return Molpy.cagedPuzzleValue;
 			}else if(me.bought>1){
 				var cost=100+Molpy.LogiMult(25);
 				if(Molpy.HasGlassBlocks(cost))
-					return '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.bought-1)+' Puzzle'+plural(me.bought-1)+' left';
-				else return 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle';
+					str= '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.bought-1)+' Puzzle'+plural(me.bought-1)+' left';
+				else str= 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle';
 			}else{
-				return 'Caged Logicat is sleeping. Please wait for it.';
+				str= 'Caged Logicat is sleeping. Please wait for it.'
 			}
-		},group:'bean',className:'action',icon:'cagedlogicat',
+			if(Molpy.Got('ZK'))
+			{	
+				str+='<br>Zookeeper is at '+Molpify(Molpy.Boosts['ZK'].power/10)+'%';
+			}
+			return str;
+		}
+		,group:'bean',className:'action',icon:'cagedlogicat',
 		buyFunction:function()
 		{
 			this.bought=11;
@@ -3422,7 +3434,7 @@
 			if(pages)
 				Molpy.BlackprintIncrement(pages);
 		}
-		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<4)
+		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<Molpy.PokeBar())
 		{
 			var zk = Molpy.Boosts['ZK'];
 			var poke=Math.random()*(left-10);
@@ -3434,6 +3446,7 @@
 				zk.power-=1000;
 			}
 			
+		if(Molpy.Boosts['Expando'].power)Molpy.Boosts['Caged Logicat'].hoverOnCounter=1;
 		}
 		Molpy.boostSilence=0;
     }
@@ -3495,7 +3508,7 @@
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
 		me.power=1*!me.power;
 		if(!me.power)Molpy.shrinkAll=1;
-		me.hoverOnCounter=1
+		me.hoverOnCounter=1;
 	}
 	
 	new Molpy.Boost({name:'Frenchbot',desc:'NewPixBots produce 1Q x castles, LaPetite produces 1W x sand', stats:'The Dip of Infinite Judgement Approaches. Do you have 101 Logicats?', 
@@ -3629,6 +3642,10 @@
 			Molpy.LockBoost(this.alias);
 		}
 	});
+	Molpy.PokeBar=function()
+	{
+		return 4+Molpy.Boosts['Panther Rush'].power+Molpy.Boosts['WiseDragon'].power;
+	}
 	new Molpy.Boost({name:'Flipside',
 		desc:function(me)
 		{
@@ -3881,7 +3898,7 @@
 	{
 		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Boosts['Crystal Dragon'].unlocked) return [1000,'Crystal Dragon'];
 		if(Molpy.Boosts['AC'].power>101&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e12,'Dragon Forge'];
-		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['Dragon Wisdom'].unlocked) return [4.5e16,'Dragon Wisdom'];
+		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e16,'WiseDragon'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
@@ -3939,7 +3956,7 @@
 			var str = 'Allows you increase the power of Automata Control using Logicat Levels and Blackprint Pages.';
 			if(!me.bought) return str;
 			var n = Molpy.Boosts['AC'].power;
-			str+='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
+			str+='<br>Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
 			var pageCost=n*10
 			var logicatCost=Math.ceil(n/20);
 			if(n<Molpy.Boosts['PC'].power)
@@ -3951,15 +3968,15 @@
 			return str;
 		}
 		,sand:Infinity,castles:Infinity,glass:'7P',group:'drac',className:'action'});
-		new Molpy.Boost({name:'Dragon Wisdom',desc:function(me)
+		new Molpy.Boost({name:'Crouching Dragon, Sleeping Panther',alias:'WiseDragon',desc:function(me)
 		{
-			var str = 'Allows you to gain Logicat Levels at the expense of goats.';
+			var str = 'Allows you to get Panther Poke with more remaining Caged Logicat Questions.<br>Currently, Panther Poke is available if you have less than '+Molpify(Molpy.PokeBar()-1)+' Caged Logicat puzzles remaining.';
 			if(!me.bought)return str;
-			var goatCost = Math.ceil(Molpy.Boosts['Logicat'].bought/20);
+			var goatCost = me.power;
 			var powerReq=Math.pow(2,me.power+12);
 			if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
 			{	
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(4)"></input> Logicat Level by 4 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
 			}else
 			{
 				str+='<br>Upgrading Logicat Level by 1 will cost '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
@@ -3970,17 +3987,16 @@
 	});
 	Molpy.GainDragonWisdom=function(n)
 	{
-		var me = Molpy.Boosts['Dragon Wisdom'];
-		var goatCost = Math.ceil(Molpy.Boosts['Logicat'].bought/20);
+		var me = Molpy.Boosts['WiseDragon'];
+		var goatCost = me.power*n;
 		var powerReq=Math.pow(2,me.power+12);
 		if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
 		{
 			Molpy.Boosts['Goat'].power-=goatCost;
 			Molpy.Boosts['Achronal Dragon'].power-=powerReq;
-			Molpy.Boosts['Logicat'].bought+=n;
-			Molpy.Boosts['Logicat'].power+=n*5;
-			Molpy.Notify('Logicat Level gained!'); //it was so tempting to write gainned :P
+			Molpy.Notify('Dragon Widsom gained!'); //it was so tempting to write gainned :P
 			me.power++;
+			me.hoverOnCounter=1;
 			_gaq&&_gaq.push(['_trackEvent','Boost','Dragon Upgrade','Logicat']);
 		}
 	}

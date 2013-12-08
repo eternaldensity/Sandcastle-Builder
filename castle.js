@@ -2034,52 +2034,6 @@ Molpy.Up=function()
 			return baby&&baby.earned;
 		}
 		
-		Molpy.MakeSpecialBadge=function(args,kind)
-		{
-			new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+(args.np<0?'Minus ':'')+args.name,alias:kind+args.np,np:args.np,
-				desc:function(me)
-				{
-					var str = Molpy.groupNames[kind][4]+': '+args.desc+'<br><small>(in NP'+me.np+')</small>';
-					if(me.group=='discov')
-					{
-						if(Molpy.newpixNumber!=me.np&&Molpy.Got('Memories Revisited'))
-						{
-							str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',1)" value="Jump!"></input> (Uses '+Molpify(Molpy.CalcJumpEnergy(me.np),2)+' Glass Chips)'
-							if (Molpy.Got('Magic Mirror'))
-							{
-								str+='<br>'+Molpy.WrapFlipHoriz('<input type="Button" onclick="Molpy.TTT('+ (-me.np)+',1)" value="Jump!"></input> to the other side (Uses '+Molpify(Molpy.CalcJumpEnergy(-me.np),2)+' Glass Chips)')
-							}
-						}
-						if(Molpy.Got('SMM')&&!Molpy.Boosts['SMM'].power&&!Molpy.Earned('monums'+me.np))
-						{
-							str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeSandMould('+me.np+')" value="Make"></input> a mould from this Discovery, which can be filled with sand to create a Monument'
-						}
-					}else if(me.group=='monums')
-					{
-						if(Molpy.Got('GMM')&&!Molpy.Boosts['GMM'].power&&!Molpy.Earned('monumg'+me.np))
-						{
-							str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould('+me.np+')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
-						}
-						str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(Math.abs(me.np)))+(me.np<0?'flip-horizontal':'')+'"><div>';
-					}
-					return str;
-				}
-				,icon:kind,
-				earnFunction:args.earnFunction,visibility:args.visibility,group:kind});
-		}
-		Molpy.MakeQuadBadge=function(args)
-		{
-			Molpy.MakeSpecialBadge(args,'discov');
-			Molpy.MakeSpecialBadge(args,'monums');
-			Molpy.MakeSpecialBadge(args,'monumg');
-			Molpy.MakeSpecialBadge(args,'diamm');
-			if(args.np>0)
-			{
-				args.np*=-1;
-				Molpy.MakeQuadBadge(args);
-			}
-		}
-		
 		Molpy.redactedW=Molpy.BeanishToCuegish("UmVkdW5kYW50");
 		Molpy.redactedWord=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
 		Molpy.redactedWords=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
@@ -3085,7 +3039,7 @@ Molpy.Up=function()
 		{
 			Molpy.Notify('You have not saved in over a NewPix!!',1);
 		}
-		if(Molpy.Got('Caged Logicat')&&!Molpy.Got('Temporal Rift'))
+		if(Molpy.Got('Caged Logicat')&&!Molpy.Got('Temporal Rift')&&Molpy.Boosts['Caged Logicat'].bought<11)
 			Molpy.Boosts['Caged Logicat'].bought=11;
 	}
 	
