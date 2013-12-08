@@ -3432,7 +3432,7 @@
 		if(left>7&&Molpy.Got('Milo'))
 		{
 			var mr = Molpy.Boosts['Milo'];
-			var s = Math.sin((Math.PI*Molpy.ONGelapsed)/(Molpy.NPlength*100));
+			var s = 0;//Math.sin((Math.PI*Molpy.ONGelapsed)/(Molpy.NPlength*100));
 			var draft=Math.random()*(1+2*s)*(left-7);
 			mr.power+=draft;
 			left-=draft;			
