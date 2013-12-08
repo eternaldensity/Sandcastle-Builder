@@ -28,6 +28,7 @@ For personal amusement only.
 - Fixed temp boosts on loading: it was using the start rather than current values of power and countdown because of another change I made to allegedly make testing easier for myself. Riiiight.
 - Finished Dragon Foundry
 - Ensure recovery of any stuck boosts
+- Minus Sand Monument images show up
 
 ## 3.232
 - Forgot to add a Refresh() method to Badges, which broke timetravel to/from NP with discoveries.
