@@ -497,7 +497,7 @@
 				}
 				if(me.countdown)
 				{
-					Molpy.GiveTempBoost(me.name,me.power,me.countdown);
+					Molpy.GiveTempBoost(me.name);
 				}
 				if(isNaN(me.power))
 					me.power=0; //compression! :P

@@ -27,6 +27,8 @@ For personal amusement only.
 ## 3.232
 - Forgot to add a Refresh() method to Badges, which broke timetravel to/from NP with discoveries.
 - Refresh Production Control and Automata Control when glass levels change (and PC when PC changes!)
+- Some tool rate badges
+- Some dragon boosts
 
 ## 3.231
 - Timetravel wasn't refreshing discoveries (i.e. the jump button)

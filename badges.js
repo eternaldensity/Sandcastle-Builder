@@ -365,6 +365,10 @@
 	new Molpy.Badge({name:'Badge Found',desc:'Description Found',stats:'What is this, I don\'t even?'});
 	new Molpy.Badge({name:'Typo Storm',desc:'Encounter 1000 typos in a play session (resets on reload)',stats:'Toggle typos by typing "typo" into the Import dialog.<br>The number of typos are limitted by the NewPix you are on.<br>Actual typos the the developers don\'t count.<br>For instance, "limitted".<br>Sorry.'});
 	new Molpy.Badge({name:'Pure Genius',desc:'Inspite of an Infinite Sand rate, you manage to have no sand to run the Factory Ninja',vis:1});
+	new Molpy.Badge({name:'PetaTool', desc:'Make 1P Glass Tools per mNP',stats:'Worry about your Tool Factory catching fire',vis:1});
+	new Molpy.Badge({name:'YottaTool', desc:'Make 1Y Glass Tools per mNP',stats:'Yours Truly',vis:1});
+	new Molpy.Badge({name:'WololoTool', desc:'Make 1W Glass Tools per mNP',stats:'Still so far to go!',vis:1});
+	new Molpy.Badge({name:'WololoWololoTool', desc:'Make 1WW Glass Tools per mNP',stats:'Really'});
 	
 	
 		

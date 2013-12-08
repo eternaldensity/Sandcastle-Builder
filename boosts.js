@@ -2129,8 +2129,13 @@
 		,sand:'55E',castles:'238E',glass:100,group:'bean',icon:'logicat'
 	});
 	new Molpy.Boost({name:'Temporal Duplication',desc:
-		function(me){return 'For '+Molpify(me.countdown,3)+'mNP, when you buy tools, get the same amount again for free!';}
-		,group:'chron',className:'alert',logic:1,startCountdown:5
+		function(me){return 'For '+Molpify(me.countdown)+'mNP, when you buy tools, get the same amount again for free!';}
+		,group:'chron',className:'alert',logic:1,
+		startCountdown:function()
+		{
+			return 5*(1+Molpy.Got('Crystal Dragon'));
+		}
+		,stats:'Also causes a double Not Lucky glass bonus during Temporal Duplication'
 		,countdownFunction:function(){
 			if(this.countdown==2)
 			{
@@ -3345,7 +3350,7 @@
                 var tool=Molpy.tfOrder[t];
                 if(isFinite(Molpy.priceFactor*tool.price)) tool.refresh();
             }
-			if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))built*=2;
+			built*=Molpy.TDFactor();
             Molpy.toolsBuilt+=built;
             Molpy.toolsBuiltTotal+=built;
             Molpy.recalculateDig=1;
@@ -3357,6 +3362,10 @@
 			if(built>=1e6)Molpy.EarnBadge('MegaTool');
 			if(built>=1e9)Molpy.EarnBadge('GigaTool');
 			if(built>=1e12)Molpy.EarnBadge('TeraTool');
+			if(built>=1e15)Molpy.EarnBadge('PetaTool');
+			if(built>=1e24)Molpy.EarnBadge('YottaTool');
+			if(built>=1e42)Molpy.EarnBadge('WololoTool');
+			if(built>=1e81)Molpy.EarnBadge('WololoWololoTool');
 
         }
         if(!acPower)return;
@@ -3601,13 +3610,13 @@
 					}else break;
 				}
 			}
-			if (n > 5*Math.pow(10,51)) 
+			if (n > 5e51) 
 			{		
 				str += 'No further increases are possible.'
 				if (!Molpy.Earned('Nope!'))
 				{
 					Molpy.EarnBadge('Nope!');
-					me.power = 6*Math.pow(10,51);// Evens everyone up to same value could get here between 5 and 5.00999...
+					me.power = 6e51;// Evens everyone up to same value could get here between 5 and 5.00999...
 					me.className = '';
 				}
 			}
@@ -3677,7 +3686,15 @@
 			return Molpy.Boosts['LR'].power||400;
 		},buyFunction:function()
 		{
-			if(Molpy.Got('LR'))Molpy.Boosts['LR'].power*=1.004;
+			if(Molpy.Got('LR'))
+			{
+				Molpy.Boosts['LR'].power*=1.004;
+				if(Molpy.Got('Thunderbird')&&Molpy.Got('Temporal Duplication'))
+				{
+					Molpy.Boosts['LR'].power*=2;
+				}
+			}
+			
 		}
 	});
 	
@@ -3905,6 +3922,8 @@
 		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Boosts['Crystal Dragon'].unlocked) return [1000,'Crystal Dragon'];
 		if(Molpy.Boosts['AC'].power>101&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e12,'Dragon Forge'];
 		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e16,'WiseDragon'];
+		if(Molpy.Boosts['AC'].power>555&&!Molpy.Boosts['Thunderbird'].unlocked&&Molpy.Got('PSOC')) return [6e36,'Thunderbird'];
+		if(Molpy.Boosts['AC'].power>777&&!Molpy.Boosts['Dragon Foundry'].unlocked&&Molpy.Got('SGC')) return [9e54,'Dragon Foundry'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
@@ -3951,7 +3970,16 @@
 		return !Molpy.Got('ASHF')&&Molpy.Boosts['Price Protection'].power>1;		
 	}
 	
-	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of all Glass Tools constructed when it is active',sand:Infinity,castles:Infinity,glass:'7P',group:'drac'});
+	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of all Glass Tools constructed when it is active.<br>Temporal Duplication\'s countdown starts at 10mNP.',sand:Infinity,castles:Infinity,glass:'7P',group:'drac'});
+	
+	Molpy.TDFactor=function()
+	{
+		if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))
+		{
+			return 2;
+		}
+		return 1;
+	}
 	
 	new Molpy.Boost({name:'Friendship is Molpish',alias:'FiM',desc:'Cuegan\'s Glass production is multiplied by the number of million LaPetites, and Lapetite\'s Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)',glass:'750E',sand:Infinity,castles:Infinity});
 	
@@ -4095,8 +4123,11 @@
 		}
 	});
 	
-	new Molpy.Boost({name:'People Sit on Chairs',desc:'Multiplies <b>all</b> rates by 1, then adds 0',stats:'Administrivia',logic:420});
+	new Molpy.Boost({name:'People Sit on Chairs',alias:'PSOC',desc:'Multiplies <b>all</b> rates by 1, then adds 0',stats:'Administrivia',logic:420});
 	new Molpy.Boost({name:'No Need to be Neat',desc:'When you Molpy Down, the amount of one random type of tool is not reset to 0',glass:'50M'});
+	new Molpy.Boost({name:'Thunderbird',desc:'If Glassed Lightning (with Lightning Rod) strikes during Temporal Duplication, its power is doubled',glass:'50W',group:'drac'});
+	new Molpy.Boost({name:'Dragon Foundry',desc:'Glassed Lightning multiplies Crystal Dragon',sand:Infinity,castles:Infinity,glass:'70WW',group:'drac'});
+	new Molpy.Boost({name:'Lucky Twin',desc:'When you are awarded Not Lucky during Temporal Duplication, the countdown is increased by 20%',sand:Infinity,castles:Infinity,glass:'70H'});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={

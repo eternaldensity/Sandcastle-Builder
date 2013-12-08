@@ -1869,8 +1869,8 @@ Molpy.Up=function()
 			if(bb)
 			{
 				if(desc)bb.desc=desc;
-				bb.power=EvalMaybeFunction(power);
-				bb.countdown=EvalMaybeFunction(countdown);
+				bb.power=EvalMaybeFunction(power||bb.startPower);
+				bb.countdown=EvalMaybeFunction(countdown||bb.startCountdown);
 				bb.unlocked=1;					
 				bb.describe();
 				bb.buy();
@@ -2249,7 +2249,7 @@ Molpy.Up=function()
 						Molpy.UnlockBoost(red.alias);
 					}else{
 						Molpy.Notify('The DoRD has provided:',1);
-						Molpy.GiveTempBoost(red.alias,red.startPower,red.startCountdown);
+						Molpy.GiveTempBoost(red.alias);
 					}
 					return;
 				}
@@ -2331,6 +2331,25 @@ Molpy.Up=function()
 				else
 					Molpy.Notify('Not Lucky!');			
 			}
+			
+			var twin = 0;
+			if(Molpy.Got('Temporal Duplication')&&Molpy.Got('GlassBlocks'))
+			{
+				twin=1;
+				Molpy.Boosts['Lucky Twin'].power++;
+				if(Molpy.Boosts['Lucky Twin'].power>=13*13) Molpy.UnlockBoost('Lucky Twin');
+				if(Molpy.Got('Lucky Twin'))
+				{
+					Molpy.Boosts['Temporal Duplication'].countdown*=1.2;
+					Molpy.Boosts['Temporal Duplication'].Refresh();
+					if(!automationLevel)
+						Molpy.Notify('Lucky Twin!');
+				}else{
+					if(!automationLevel)
+						Molpy.Notify('You are doubly not Lucky!',1);
+				}
+				
+			}
 			var bonus=0;
 			var i=0;
 			var items=0;
@@ -2365,7 +2384,7 @@ Molpy.Up=function()
 				if(finite)
 					Molpy.SpendGlassBlocks(30);
 				else if(pg)
-					Molpy.AddChips(3000);
+					Molpy.AddChips(3000*(twin+1));
 			}
 			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].power)
 			{
@@ -2382,7 +2401,7 @@ Molpy.Up=function()
 						Molpy.SandTools['Ladder'].refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(3500);
+							Molpy.AddChips(3500*(twin+1));
 					}
 				}
 				if(Molpy.SandTools['Bag'].amount)	
@@ -2398,7 +2417,7 @@ Molpy.Up=function()
 						Molpy.SandTools['Bag'].refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(3500);
+							Molpy.AddChips(3500*(twin+1));
 					}
 				}
 			}
@@ -2417,7 +2436,7 @@ Molpy.Up=function()
 						Molpy.CastleTools['River'].refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(4500);
+							Molpy.AddChips(4500*(twin+1));
 					}
 				}
 				if(Molpy.CastleTools['Wave'].amount)	
@@ -2433,7 +2452,7 @@ Molpy.Up=function()
 						Molpy.CastleTools['Wave'].refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(4500);
+							Molpy.AddChips(4500*(twin+1));
 					}
 				}
 			}
@@ -2444,7 +2463,7 @@ Molpy.Up=function()
 					Molpy.SpendGlassBlocks(120);
 					items+=Molpy.redactedClicks*2;
 				}else if(!finite&&pg)
-					Molpy.AddChips(12000);
+					Molpy.AddChips(12000*(twin+1));
 			}
 			var nerf=0;
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0)
@@ -2458,7 +2477,7 @@ Molpy.Up=function()
 				}
 				else if(!finite&&pg)
 				{
-					Molpy.AddChips(1000);
+					Molpy.AddChips(1000*(twin+1));
 				}
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
@@ -2478,14 +2497,15 @@ Molpy.Up=function()
 				if(Molpy.lGlass>0)
 				{
 					Molpy.lGlass-=gift/100;
-					Molpy.AddBlocks(gift);
-					if(gift>1&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
+					Molpy.AddBlocks(gift*(twin+1));
+					if(gift>1&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
 				}else{
 					gift=Math.ceil(gift/100);
-					Molpy.AddChips(gift);				
-					if(gift>1&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift,3)+' Glass Chips from '+Molpy.Boosts['SGC'].name,1);
+					Molpy.AddChips(gift*(twin+1));				
+					if(gift>1&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Chips from '+Molpy.Boosts['SGC'].name,1);
 				}
 			}
+			
 		}
 		Molpy.RewardBlitzing=function()
 		{
@@ -2600,7 +2620,7 @@ Molpy.Up=function()
 					Molpy.UnlockBoost(red.alias);
 				}else{
 					Molpy.Notify('Your reward from Logicat:',1);
-					Molpy.GiveTempBoost(red.alias,red.startPower,red.startCountdown);
+					Molpy.GiveTempBoost(red.alias);
 				}
 				return;
 			}
@@ -2766,7 +2786,7 @@ Molpy.Up=function()
 				if(me.countdown)
 				{
 					me.countdown--;
-					if(me.hovered)me.hovered=-2; //force redraw
+					me.Refresh();
 					if(!me.countdown)
 					{
 						Molpy.LockBoost(i);
