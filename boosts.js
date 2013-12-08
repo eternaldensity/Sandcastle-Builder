@@ -3976,6 +3976,10 @@
 	{
 		if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))
 		{
+			if(Molpy.Got('Dragon Foundry')&&Molpy.Got('GL'))
+			{
+				return Math.floor(Molpy.Boosts['GL'].power/50);
+			}
 			return 2;
 		}
 		return 1;
