@@ -24,6 +24,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.234
+- Missed flagging some temp boosts: nav code and the glass switching statuses. (Now they should unstick if stuck)
+
+
 ## 3.233
 - Fixed temp boosts on loading: it was using the start rather than current values of power and countdown because of another change I made to allegedly make testing easier for myself. Riiiight.
 - Finished Dragon Foundry

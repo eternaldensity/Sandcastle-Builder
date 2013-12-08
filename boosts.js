@@ -589,7 +589,7 @@
 				(me.power?'Uni':'I')+'nstall"></input>';
 		},sand:999999999,castles:2101,
 		stats:'When installed, this averts Judgement Dip at the cost of 99.9% of NewPixBot Castle Production.',
-		icon:'navcode',className:'toggle',group:'cyb',
+		icon:'navcode',className:'toggle',group:'cyb', startCountdown:2000,//dummy value
 		classChange:function(){return Molpy.CheckJudgeClass(this,1,'toggle',this.power);}
 	});	
 		
@@ -956,7 +956,9 @@
 		desc:function(me)
 		{
 			return (me.power?'off':'on')+' in '+Molpify(me.countdown,3)+'mNP';
-		},lockFunction:
+		}
+		,startCountdown:1500//dummy value
+		,lockFunction:
 		function()
 		{
 			Molpy.Boosts['Glass Furnace'].power = (!this.power)*1;
@@ -1329,6 +1331,8 @@
 			Molpy.Boosts['Glass Blower'].power = (!this.power)*1;
 			Molpy.Notify('Glass Blower is '+(this.power?'off':'on'));
 		}
+		,startCountdown:2500//dummy value
+		,startCountdown:2000//dummy value
 		,className:'alert',group:'hpt'
 	});
 	Molpy.SwitchGlassBlower=function(off)
