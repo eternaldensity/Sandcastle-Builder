@@ -416,7 +416,7 @@
 	
 	Molpy.HandleInvaders=function(mem)
 	{
-		var incursionFactor=Molpy.Got('Achronal Dragon')?1.5
+		var incursionFactor=Molpy.Got('AD')?1.5
 		:Molpy.Got('Flux Capacitor')?4
 		:(Molpy.Got('Flux Turbine')?8
 		:20);
@@ -3857,33 +3857,36 @@
 	if (!missing) Molpy.Notify('You have not missed any discoveries');
     }
 	
-	new Molpy.Boost({name:'Achronal Dragon',desc:function(me)
+	new Molpy.Boost({name:'Achronal Dragon',alias:'AD',desc:function(me)
 		{
-			if(!me.bought) return'In the stats of this boost, you can seek and destroy temporal duplicates';			
+			if(!me.bought) return'In the stats of this boost, you can seek and destroy temporal duplicates';	
+			if(!me.scanIndex)me.scanIndex=0;
+			if(me.scanIndex>=Molpy.tfOrder.length)
+			{
+				me.scanIndex=0;
+			}
 			
-			var str='Temporal Duplicate Scan Report:'
-			var found=0;
-			for(var i in Molpy.SandTools)
+			var looped=0;
+			while(!Molpy.tfOrder[me.scanIndex].temp)
 			{
-				var t = Molpy.SandTools[i];
-				if(t.temp)
+				me.scanIndex++;
+				if(me.scanIndex>=Molpy.tfOrder.length)
 				{
-					found=1;
-					str+='<br>'+Molpify(t.temp,3)+' duplicates of '+t.name;
-					str+='<br><input type="button" value="Destroy" onclick="Molpy.SandTools[\''+i+'\'].destroyTemp()"></input> them all at a cost of '+Molpify(t.temp*5,3)+' Glass Blocks<br>';
+					me.scanIndex=0;
+					if(looped)break;
+					looped=1;
 				}
 			}
-			for(var i in Molpy.CastleTools)
+			
+			var str='Temporal Duplicate Scan Report:';
+			var temp=Molpy.tfOrder[me.scanIndex].temp;
+			if(temp)
 			{
-				var t = Molpy.CastleTools[i];
-				if(t.temp)
-				{
-					found=1;
-					str+='<br>'+Molpify(t.temp,3)+' duplicates of '+t.name;
-					str+='<br><input type="button" value="Destroy" onclick="Molpy.CastleTools[\''+i+'\'].destroyTemp()"></input> them all at a cost of '+Molpify(t.temp*10,3)+' Glass Blocks<br>';
-				}
+				str+='<br>'+Molpify(Molpy.tfOrder[me.scanIndex].temp,3)+' duplicates of '+Molpy.tfOrder[me.scanIndex].name;
+				str+='<br><input type="button" value="Destroy" onclick="Molpy.tfOrder[\''+me.scanIndex+'\'].destroyTemp()"></input> them all at a cost of '+Molpify(temp*(me.scanIndex%2?10:5),3)+' Glass Blocks<br><input type="button" value="Find Next" onclick="Molpy.Boosts.AD.scanIndex++;Molpy.Boosts.AD.hoverOnCounter=1;"></input>';
+			}else{
+				str+='<br>Nothing to report.<br><input type="button" value="Rescan" onclick="Molpy.Boosts.AD.scanIndex=0;Molpy.Boosts.AD.hoverOnCounter=1;"></input>';
 			}
-			if(!found)str+='<br>Nothing to report.';
 			return str;
 		}
 		,sand:'2Z',castles:'8Z',glass:'7K',logic:12,className:'alert',group:'drac',icon:'achronaldragon',
@@ -3904,7 +3907,7 @@
 	Molpy.CheckDragon=function()
 	{
 		var target=Molpy.DragonTarget();
-		var me = Molpy.Boosts['Achronal Dragon'];
+		var me = Molpy.Boosts['AD'];
 		if(me.power>=target[0])
 		{
 			me.power-=target[0];
@@ -3974,7 +3977,7 @@
 			if(!me.bought)return str;
 			var goatCost = me.power;
 			var powerReq=Math.pow(2,me.power+12);
-			if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
+			if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
 			{	
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
 			}else
@@ -3990,10 +3993,10 @@
 		var me = Molpy.Boosts['WiseDragon'];
 		var goatCost = me.power*n;
 		var powerReq=Math.pow(2,me.power+12);
-		if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['Achronal Dragon'].power>=powerReq)
+		if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
 		{
 			Molpy.Boosts['Goat'].power-=goatCost;
-			Molpy.Boosts['Achronal Dragon'].power-=powerReq;
+			Molpy.Boosts['AD'].power-=powerReq;
 			Molpy.Notify('Dragon Widsom gained!'); //it was so tempting to write gainned :P
 			me.power++;
 			me.hoverOnCounter=1;

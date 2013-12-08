@@ -1334,8 +1334,8 @@ Molpy.Up=function()
 					this.amount=Math.max(0,this.amount-this.temp);
 					this.temp=0;
 					this.refresh();
-					Molpy.Boosts['Achronal Dragon'].power+=cost;
-					Molpy.Boosts['Achronal Dragon'].hoverOnCounter=1;
+					Molpy.Boosts['AD'].power+=cost;
+					Molpy.Boosts['AD'].hoverOnCounter=1;
 					_gaq&&_gaq.push(['_trackEvent','Destroy Tool',this.name,''+destroy]);
 					Molpy.CheckDragon();
 				}
@@ -1475,7 +1475,7 @@ Molpy.Up=function()
 					this.temp+=bought;
 					bought+=bought;
 					this.findPrice();
-					if(this.temp>32) Molpy.UnlockBoost('Achronal Dragon');
+					if(this.temp>32) Molpy.UnlockBoost('AD');
 				}
 				if(bought)
 				{
@@ -1533,8 +1533,8 @@ Molpy.Up=function()
 					this.amount=Math.max(0,this.amount-this.temp);
 					this.temp=0;
 					this.refresh();
-					Molpy.Boosts['Achronal Dragon'].power+=cost;
-					Molpy.Boosts['Achronal Dragon'].hoverOnCounter=1;
+					Molpy.Boosts['AD'].power+=cost;
+					Molpy.Boosts['AD'].hoverOnCounter=1;
 					_gaq&&_gaq.push(['_trackEvent','Destroy Tool',this.name,''+destroy]);
 					Molpy.CheckDragon();
 				}
