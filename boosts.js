@@ -3976,7 +3976,7 @@
 			var str = 'Allows you to get Panther Poke with more remaining Caged Logicat Questions.<br>Currently, Panther Poke is available if you have less than '+Molpify(Molpy.PokeBar()-1)+' Caged Logicat puzzles remaining.';
 			if(!me.bought)return str;
 			var goatCost = me.power;
-			var powerReq=Math.pow(2,me.power+12);
+			var powerReq=Math.pow(5,me.power+12);
 			if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
 			{	
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
@@ -3992,7 +3992,7 @@
 	{
 		var me = Molpy.Boosts['WiseDragon'];
 		var goatCost = me.power*n;
-		var powerReq=Math.pow(2,me.power+12);
+		var powerReq=Math.pow(5,me.power+12);
 		if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
 		{
 			Molpy.Boosts['Goat'].power-=goatCost;
