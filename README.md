@@ -31,6 +31,8 @@ For personal amusement only.
 - Caged Logicat shows Zookeeper progress, and updages if you're using Expando
 - On the ONG, Caged Logicat puzzles only resets to 10 remaining if you have less than 10.
 - Achronal Dragon only shows 1 tool at at time, with a button to advance through the tools.
+- Telling boosts to redraw won't expand them if they're not already visible
+- Redraw ALL the main 8 glass boosts whenever glass is added or spent
 
 ## 3.23
 - Mustard sand rate turns to 0

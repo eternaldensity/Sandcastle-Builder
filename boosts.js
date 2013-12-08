@@ -166,7 +166,7 @@
 			if(me.goat)
 			{
 				Molpy.Notify('Door '+me.goat+' is opened, revealing a goat!<br>You may switch from Door '+me.door+' if you like.',1);
-				me.hoverOnCounter=1;
+				me.Refresh();
 				return;
 			}else
 			{
@@ -304,7 +304,7 @@
 		}
 		g('clockface').className= acPower?'hidden':'unhidden';	
 		Molpy.Boosts['Coma Molpy Style'].power=acPower;
-		Molpy.Boosts['Coma Molpy Style'].hoverOnCounter=1;
+		Molpy.Boosts['Coma Molpy Style'].Refresh();
 		Molpy.recalculateDig=1;
 	}
 	new Molpy.Boost({name:'Time Travel',desc: 
@@ -396,9 +396,9 @@
 			}
 			Molpy.SpendGlassChips(chips);
 			Molpy.SpendCastles(price);
-			if(Molpy.Earned('discov'+Molpy.newpixNumber))Molpy.Badges['discov'+Molpy.newpixNumber].hoverOnCounter=1;
+			if(Molpy.Earned('discov'+Molpy.newpixNumber))Molpy.Badges['discov'+Molpy.newpixNumber].Refresh();
 			Molpy.newpixNumber=np;
-			if(Molpy.Earned('discov'+Molpy.newpixNumber))Molpy.Badges['discov'+Molpy.newpixNumber].hoverOnCounter=1;
+			if(Molpy.Earned('discov'+Molpy.newpixNumber))Molpy.Badges['discov'+Molpy.newpixNumber].Refresh();
 			_gaq&&_gaq.push(['_trackEvent','NewPix',(chips?'Memory Warp':'Time Travel'),''+Molpy.newpixNumber]);			
 			Molpy.ONGstart= ONGsnip(new Date()); 
 			Molpy.HandlePeriods();
@@ -406,7 +406,7 @@
 			Molpy.Notify('Time Travel successful! Welcome to NewPix '+Molpify(Molpy.newpixNumber));
 			Molpy.timeTravels++;
 			if(Molpy.timeTravels>=10) Molpy.HandleInvaders(chips);
-			Molpy.Boosts['Time Travel'].hoverOnCounter=1;
+			Molpy.Boosts['Time Travel'].Refresh();
 			return 1;
 		}else
 		{
@@ -557,7 +557,7 @@
 		else(ch.power=1);
 		
 		if(ch.power>10)Molpy.UnlockBoost('Beachball');
-		ch.hoverOnCounter=1;
+		ch.Refresh();
 		Molpy.UpdateColourScheme();
 		
 	}
@@ -626,7 +626,7 @@
 			npb.temp=0;
 		}
 		Molpy.scrumptiousDonuts=-1;
-		nc.hoverOnCounter=1;
+		nc.Refresh();
 		Molpy.recalculateDig=1;
 		Molpy.GiveTempBoost('Jamming',1,2000);
 	}
@@ -728,7 +728,7 @@
 		}
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
 		me.power = (!me.power)*1;
-		me.hoverOnCounter=1;
+		me.Refresh();
 		Molpy.shopRepaint=1;
 	}
 		
@@ -753,7 +753,7 @@
 	{
 		var me=Molpy.Boosts['VJ'];
 		me.bought = (me.bought==1?2:1);
-		me.hoverOnCounter=1;
+		me.Refresh();
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
 	}
 	new Molpy.Boost({name:'Swedish Chef',desc:
@@ -1040,13 +1040,8 @@
 	Molpy.SpendGlassBlocks=function(num)
 	{	
 		Molpy.Boosts['GlassBlocks'].power -= num;
-		Molpy.blockAddAmount-=num;
-		if(Molpy.Boosts['Expando'].power)
-		{
-			Molpy.Boosts['GlassBlocks'].hoverOnCounter=1;
-			Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
-			Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
-		}
+		Molpy.blockAddAmount-=num;	
+		Molpy.RefreshGlass();
 	}
 	Molpy.HasGlassChips=function(num)
 	{	
@@ -1055,13 +1050,18 @@
 	Molpy.SpendGlassChips=function(num)
 	{	
 		Molpy.Boosts['GlassChips'].power -= num;
-		if(Molpy.Boosts['Expando'].power)
-		{
-			Molpy.Boosts['GlassChips'].hoverOnCounter=1;
-			Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
-			Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
-		}
-		Molpy.chipAddAmount-=num;
+		Molpy.RefreshGlass();
+	}
+	Molpy.RefreshGlass=function()
+	{	
+		Molpy.Boosts['GlassChips'].Refresh();
+		Molpy.Boosts['Glass Furnace'].Refresh();
+		Molpy.Boosts['Sand Purifier'].Refresh();
+		Molpy.Boosts['Sand Refinery'].Refresh();
+		Molpy.Boosts['GlassBlocks'].Refresh();
+		Molpy.Boosts['Glass Blower'].Refresh();
+		Molpy.Boosts['Glass Chiller'].Refresh();
+		Molpy.Boosts['Glass Extruder'].Refresh();
 	}
 	
 	new Molpy.Boost({name:'Sand Refinery',desc:
@@ -1184,7 +1184,7 @@
 		if(sr.power<1)return;
 		Molpy.AddChips(1);
 		sr.power--;
-		sr.hoverOnCounter=1;
+		sr.Refresh();
 		Molpy.Notify('Sand Refinery downgraded',1);
 		Molpy.recalculateDig=1;			
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Sand Refinery']);	
@@ -1268,7 +1268,7 @@
 		{
 			ch.power-=cost;
 			ch.bought+=n;
-			ch.hoverOnCounter=1;
+			ch.Refresh();
 			Molpy.Notify('Glass Chip Storage upgraded',1);
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',ch.name]);	
 		}
@@ -1390,7 +1390,7 @@
 		{
 			bl.power-=unitCost*n;
 			Molpy.Boosts['Glass Chiller'].power+=n;
-			Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
+			Molpy.Boosts['Glass Chiller'].Refresh();
 			Molpy.Notify('Glass Chiller upgraded',1);
 			Molpy.recalculateDig=1;
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade','Glass Chiller']);	
@@ -1403,7 +1403,7 @@
 		if(gc.power<1)return;
 		Molpy.AddBlocks(1);
 		gc.power--;
-		gc.hoverOnCounter=1;
+		gc.Refresh();
 		Molpy.Notify('Glass Chiller downgraded',1);
 		Molpy.recalculateDig=1;
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Glass Chiller']);		
@@ -1479,7 +1479,7 @@
 		{
 			Molpy.SpendGlassBlocks(cost);
 			bl.bought+=n;
-			bl.hoverOnCounter=1;
+			bl.Refresh();
 			Molpy.Notify('Glass Block Storage upgraded',1);
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',bl.name]);	
 		}
@@ -1494,7 +1494,7 @@
 		{
 			Molpy.SpendGlassBlocks(Molpy.SandPurifierUpgradeCost());
 			Molpy.Boosts['Sand Purifier'].power++;
-			Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
+			Molpy.Boosts['Sand Purifier'].Refresh();
 			Molpy.recalculateDig=1;
 			Molpy.Notify('Sand Purifier upgraded',1);
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade','Sand Purifier']);	
@@ -1589,7 +1589,7 @@
 	        backoff*=2;
 	    }
             Molpy.SpendGlassChips(extra*2.5);
-            Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
+            Molpy.Boosts['Sand Refinery'].Refresh();
             Molpy.Notify('Sand Refinery upgraded '+Molpify(extra,2)+' times',1);
             Molpy.recalculateDig=1;
 			_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Sand Refinery']);	
@@ -1613,7 +1613,7 @@
 	        backoff*=2;
 	    }
             Molpy.SpendGlassBlocks(extra*4.5);
-            Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
+            Molpy.Boosts['Glass Chiller'].Refresh();
             Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
             Molpy.recalculateDig=1;
 			_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Glass Chiller']);	
@@ -1776,7 +1776,7 @@
 				Molpy.CastleToolsOwned-=Molpy.faCosts[fa.power];
 				Molpy.CastleTools['NewPixBot'].refresh();
 				fa.power++;				
-				Molpy.Boosts['Rosetta'].hoverOnCounter=1;
+				Molpy.Boosts['Rosetta'].Refresh();
 				Molpy.Notify('Factory Automation Upgraded',1);
 				_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',fa.name]);	
 			}
@@ -1791,7 +1791,7 @@
 			Molpy.SandToolsOwned-=500;
 			lads.refresh();
 			Molpy.UnlockBoost('Ninja Climber');			
-			Molpy.Boosts['Rosetta'].hoverOnCounter=1;
+			Molpy.Boosts['Rosetta'].Refresh();
 		}
 		
 	}
@@ -1935,7 +1935,7 @@
 		var me = Molpy.Boosts['BBC'];
 		if(me.power<0)me.power=0;
 		else me.power=-1;
-		me.hoverOnCounter=1;
+		me.Refresh();
 		Molpy.recalculateDig=1;
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
 	}
@@ -2324,7 +2324,7 @@
 			str+='<br><br>'+statements[i];
 		}
 		Molpy.cagedPuzzleValue=str;
-		Molpy.Boosts['Caged Logicat'].hoverOnCounter=1;
+		Molpy.Boosts['Caged Logicat'].Refresh();
 		Molpy.Boosts['Caged Logicat'].power=1;
 		Molpy.cagedSGen.firstTry=1;
 	}
@@ -2371,7 +2371,7 @@
 		}
 		Molpy.cagedPuzzleValue='';
 		Molpy.cagedPuzzleTarget='Oh no you don\'t!';
-		Molpy.Boosts['Caged Logicat'].hoverOnCounter=1;
+		Molpy.Boosts['Caged Logicat'].Refresh();
 		Molpy.Boosts['Caged Logicat'].power=0;
 		Molpy.Boosts['Caged Logicat'].bought--;
 	}
@@ -2859,7 +2859,7 @@
 			Molpy.SpendGlassChips(chips);
 			times--;
 			smm.power++;
-			if(Molpy.Boosts['Expando'].power)smm.hoverOnCounter=1;
+			smm.Refresh();
 			if(smm.power>100)
 			{
 				Molpy.Notify('Sand Mould Creation is complete',1);
@@ -2923,7 +2923,7 @@
 			Molpy.SpendSand(sand);
 			times--;
 			smf.power++;
-			if(Molpy.Boosts['Expando'].power)smf.hoverOnCounter=1;
+			smf.Refresh();
 			if(smf.power>200)
 			{
 				Molpy.Notify('Sand Mould Filling is complete',1);
@@ -2989,7 +2989,7 @@
 			Molpy.SpendGlassChips(chips);
 			times--;
 			gmm.power++;
-			if(Molpy.Boosts['Expando'].power)gmm.hoverOnCounter=1;
+			gmm.Refresh();
 			if(gmm.power>400)
 			{
 				Molpy.Notify('Glass Mould Creation is complete',1);
@@ -3446,7 +3446,7 @@
 				zk.power-=1000;
 			}
 			
-		if(Molpy.Boosts['Expando'].power)Molpy.Boosts['Caged Logicat'].hoverOnCounter=1;
+		Molpy.Boosts['Caged Logicat'].Refresh();
 		}
 		Molpy.boostSilence=0;
     }
@@ -3508,7 +3508,7 @@
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
 		me.power=1*!me.power;
 		if(!me.power)Molpy.shrinkAll=1;
-		me.hoverOnCounter=1;
+		me.Refresh();
 	}
 	
 	new Molpy.Boost({name:'Frenchbot',desc:'NewPixBots produce 1Q x castles, LaPetite produces 1W x sand', stats:'The Dip of Infinite Judgement Approaches. Do you have 101 Logicats?', 
@@ -3883,9 +3883,9 @@
 			if(temp)
 			{
 				str+='<br>'+Molpify(Molpy.tfOrder[me.scanIndex].temp,3)+' duplicates of '+Molpy.tfOrder[me.scanIndex].name;
-				str+='<br><input type="button" value="Destroy" onclick="Molpy.tfOrder[\''+me.scanIndex+'\'].destroyTemp()"></input> them all at a cost of '+Molpify(temp*(me.scanIndex%2?10:5),3)+' Glass Blocks<br><input type="button" value="Find Next" onclick="Molpy.Boosts.AD.scanIndex++;Molpy.Boosts.AD.hoverOnCounter=1;"></input>';
+				str+='<br><input type="button" value="Destroy" onclick="Molpy.tfOrder[\''+me.scanIndex+'\'].destroyTemp()"></input> them all at a cost of '+Molpify(temp*(me.scanIndex%2?10:5),3)+' Glass Blocks<br><input type="button" value="Find Next" onclick="Molpy.Boosts.AD.scanIndex++;Molpy.Boosts.AD.Refresh();"></input>';
 			}else{
-				str+='<br>Nothing to report.<br><input type="button" value="Rescan" onclick="Molpy.Boosts.AD.scanIndex=0;Molpy.Boosts.AD.hoverOnCounter=1;"></input>';
+				str+='<br>Nothing to report.<br><input type="button" value="Rescan" onclick="Molpy.Boosts.AD.scanIndex=0;Molpy.Boosts.AD.Refresh();"></input>';
 			}
 			return str;
 		}
@@ -3940,7 +3940,7 @@
 		var me=Molpy.Boosts['Price Protection'];
 		if(me.bought+n==0)return;
 		me.bought+=n;			
-		me.hoverOnCounter=1;
+		me.Refresh();
 		_gaq&&_gaq.push(['_trackEvent','Boost',(n>0?'Upgrade':'Downgrade'),me.name]);	
 	}
 	Molpy.ProtectingPrice=function()
@@ -3999,7 +3999,7 @@
 			Molpy.Boosts['AD'].power-=powerReq;
 			Molpy.Notify('Dragon Widsom gained!'); //it was so tempting to write gainned :P
 			me.power++;
-			me.hoverOnCounter=1;
+			me.Refresh();
 			_gaq&&_gaq.push(['_trackEvent','Boost','Dragon Upgrade','Logicat']);
 		}
 	}
@@ -4041,7 +4041,7 @@
 			me.power=-me.power;
 		else
 			me.power=1*!me.power;      
-		me.hoverOnCounter=1;
+		me.Refresh();
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);
 	}
 	

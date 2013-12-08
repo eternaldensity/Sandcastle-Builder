@@ -422,13 +422,8 @@ Molpy.Up=function()
 					if (expand && Molpy.chipWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Chip Storage');
 				}
 				Molpy.chipAddAmount+=amount;
-			}			
-			if(Molpy.Boosts['Expando'].power)
-			{
-				Molpy.Boosts['GlassChips'].hoverOnCounter=1;
-				Molpy.Boosts['Sand Refinery'].hoverOnCounter=1;
-				Molpy.Boosts['Glass Chiller'].hoverOnCounter=1;
-			}
+			}				
+			Molpy.RefreshGlass();			
 		}
 		Molpy.blockAddAmount=0;
 		Molpy.blockWasteAmount=0;
@@ -486,12 +481,8 @@ Molpy.Up=function()
 				if(amount) Molpy.EarnBadge('Glassblower');
 				Molpy.blockAddAmount+=amount;
 			}
-			if(Molpy.Boosts['Expando'].power)
-			{
-				Molpy.Boosts['GlassBlocks'].hoverOnCounter=1;
-				Molpy.Boosts['Sand Purifier'].hoverOnCounter=1;
-				Molpy.Boosts['Glass Extruder'].hoverOnCounter=1;
-			}
+			Molpy.RefreshGlass();
+			
 			
 		}
 		Molpy.glassNotifyFactor=1000000000;
@@ -1335,7 +1326,7 @@ Molpy.Up=function()
 					this.temp=0;
 					this.refresh();
 					Molpy.Boosts['AD'].power+=cost;
-					Molpy.Boosts['AD'].hoverOnCounter=1;
+					Molpy.Boosts['AD'].Refresh();
 					_gaq&&_gaq.push(['_trackEvent','Destroy Tool',this.name,''+destroy]);
 					Molpy.CheckDragon();
 				}
@@ -1534,7 +1525,7 @@ Molpy.Up=function()
 					this.temp=0;
 					this.refresh();
 					Molpy.Boosts['AD'].power+=cost;
-					Molpy.Boosts['AD'].hoverOnCounter=1;
+					Molpy.Boosts['AD'].Refresh();
 					_gaq&&_gaq.push(['_trackEvent','Destroy Tool',this.name,''+destroy]);
 					Molpy.CheckDragon();
 				}
@@ -1808,6 +1799,10 @@ Molpy.Up=function()
 				if(!(sp+cp+gp))return 1;//free is always affordable
 				if(Molpy.ProtectingPrice())return 0;
 				return (!cp||castles>=cp) && (!sp||sand>=sp) && (!gp||Molpy.HasGlassBlocks(gp));
+			}
+			this.Refresh=function()
+			{
+				if(this.hovering||Molpy.Boosts['Expando'].power)this.hoverOnCounter=1;
 			}
 			this.showdesc=function(keep)
 			{
