@@ -1062,6 +1062,8 @@
 		Molpy.Boosts['Glass Blower'].Refresh();
 		Molpy.Boosts['Glass Chiller'].Refresh();
 		Molpy.Boosts['Glass Extruder'].Refresh();
+		Molpy.Boosts['PC'].Refresh();
+		Molpy.Boosts['AC'].Refresh();
 	}
 	
 	new Molpy.Boost({name:'Sand Refinery',desc:
@@ -3630,6 +3632,7 @@
 			Molpy.SpendGlassBlocks(cost);
 			me.power+=n;
 			Molpy.Notify('Adjusted production rate of Tool Factory');
+			me.Refresh();
 			if(n>0)
 				_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',me.name]);	
 			else
