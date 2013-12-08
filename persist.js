@@ -494,6 +494,8 @@
 				{
 					Molpy.BoostsOwned++;
 					Molpy.unlockedGroups[me.group]=1;
+					if(me.startCountdown&&!me.countdown)
+						me.countdown=1; //if you own a boost with a startCountdown value or function but no countdown, something messed up
 				}
 				if(me.countdown)
 				{

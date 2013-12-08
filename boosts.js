@@ -85,7 +85,9 @@
 		{		
 			return Molpify(me.power,1)+'% Sand for '+Molpify(me.countdown,3)+'mNP';
 		}
-		,icon:'blitzing',className:'alert'});
+		,icon:'blitzing',className:'alert',
+		startCountdown:23 //only used when loading to ensure it doesn't get stuck. any true value would do here
+	});
 	new Molpy.Boost({name:'Kitnip',desc:Molpy.redactedWords+' come more often and stay longer',
 		sand:33221,castles:63,
 	icon:'kitnip'});
