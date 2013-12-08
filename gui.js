@@ -240,7 +240,7 @@
 		Molpy.options.sea=1;
 		Molpy.options.colpix=1;
 		Molpy.options.longpostfix=0;
-		Molpy.options.colourscheme=0;
+		Molpy.options.colourscheme=1;
 		Molpy.options.sandmultibuy=0;
 		Molpy.options.castlemultibuy=0;
 		Molpy.options.fade=0;

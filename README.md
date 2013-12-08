@@ -29,6 +29,7 @@ For personal amusement only.
 - Refresh Production Control and Automata Control when glass levels change (and PC when PC changes!)
 - Some tool rate badges
 - Some dragon boosts
+- Light is now the default colour scheme
 
 ## 3.231
 - Timetravel wasn't refreshing discoveries (i.e. the jump button)
