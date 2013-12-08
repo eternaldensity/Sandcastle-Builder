@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.233
+- Fixed temp boosts on loading: it was using the start rather than current values of power and countdown because of another change I made to allegedly make testing easier for myself. Riiiight.
+
 ## 3.232
 - Forgot to add a Refresh() method to Badges, which broke timetravel to/from NP with discoveries.
 - Refresh Production Control and Automata Control when glass levels change (and PC when PC changes!)
