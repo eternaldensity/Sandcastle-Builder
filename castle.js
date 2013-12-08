@@ -1943,6 +1943,10 @@ Molpy.Up=function()
 			this.classChange=args.classChange;
 			this.group=args.group||'badges';
 			
+			this.Refresh=function()
+			{
+				if(this.hovering||Molpy.Boosts['Expando'].power)this.hoverOnCounter=1;
+			}
 			this.showdesc=function(keep)
 			{
 				var d = g('BadgeDescription'+this.id);

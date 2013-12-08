@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.232
+- Forgot to add a Refresh() method to Badges, which broke timetravel to/from NP with discoveries.
+
 ## 3.231
 - Timetravel wasn't refreshing discoveries (i.e. the jump button)
 - Memory warping has a (small) chance of temporal invasion
