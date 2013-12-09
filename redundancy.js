@@ -15,6 +15,13 @@ function EvalMaybeFunction(bacon,babies,ice)
 	D = 'string';
 	return (B===D?DeMolpify(O):O);
 }
+function ZeroIfFunction(bacon)
+{
+	var B = typeof(bacon);
+	var D = 'function';
+	var O = (B===D?0:bacon);
+	return 0;
+}
 function DeMolpify(grape)
 {
 	if(!grape)return 0;

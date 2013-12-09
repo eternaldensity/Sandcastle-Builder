@@ -205,20 +205,9 @@
 	}
 	
 	
-	/* In which I do save and load!
-	+++++++++++++++++++++++++++++++*/
-	Molpy.ToNeedlePulledThing=function(exporting)
-	{						
-		var p='P'; //Pipe seParator
-		var s='S'; //Semicolon
-		var c='C'; //Comma
-		
-		var thread='';
-		var threads=[];
-		thread+=Molpy.version+p+p;//some extra space!
-		thread+=Molpy.startDate+p;
-		
-		thread+=
+	Molpy.OptionsToString=function()
+	{		
+		var str=''+
 		(Molpy.options.particles?'1':'0')+
 		(Molpy.options.numbers?'1':'0')+
 		(Molpy.options.autosave)+
@@ -232,10 +221,15 @@
 		(Molpy.options.fade)+
 		(Molpy.options.typo)+
 		(Molpy.options.science)+
-		(Molpy.options.autosavelayouts)+
-		p;
-		
-		thread+=			
+		(Molpy.options.autosavelayouts)
+		;
+		return str;
+	}
+	
+	Molpy.GamenumsToString=function()
+	{
+		var s='S'; //Semicolon
+		var str=''+
 		(Molpy.newpixNumber)+s+
 		(Molpy.sandDug)+s+
 		(Molpy.sandManual)+s+
@@ -268,59 +262,109 @@
 		(Molpy.totalGlassDestroyed)+s+
 		(Molpy.chipsManual)+s+
 		(Molpy.redactedChain)+s+
-		(Molpy.redactedChainMax)+s+
-		
-		p;
-		//sand tools:
+		(Molpy.redactedChainMax)+s
+		;
+		return str;
+	}
+	
+	Molpy.SandToolsToString=function()
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
+		var str='';
 		for(var cancerbabies in Molpy.SandTools)
 		{
 			var cb = Molpy.SandTools[cancerbabies];
-			thread += cb.amount+c+cb.bought+c+cb.totalSand+c+cb.temp+c+cb.totalGlass+s;
+			str += cb.amount+c+cb.bought+c+cb.totalSand+c+cb.temp+c+cb.totalGlass+s;
 		}
-		thread+=p;
-		//castletools:
+		return str;
+	}
+	
+	Molpy.CastleToolsToString=function()
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
+		var str='';
 		for(var cancerbabies in Molpy.CastleTools)
 		{
 			var cb = Molpy.CastleTools[cancerbabies];
-			thread += cb.amount+c+cb.bought+c+cb.totalCastlesBuilt+c+cb.totalCastlesDestroyed+c+
+			str += cb.amount+c+cb.bought+c+cb.totalCastlesBuilt+c+cb.totalCastlesDestroyed+c+
 			cb.totalCastlesWasted+c+cb.currentActive+c+cb.temp+c+cb.totalGlassBuilt+c+cb.totalGlassDestroyed+s;
 		}
-		thread+=p;
-		threads.push(thread);
-		thread='';
-		//boosts:
+		return str;
+	}
+	
+	Molpy.BoostsToString=function()
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
+		var str='';
 		for(var cancerbabies in Molpy.Boosts)
 		{
 			var cb = Molpy.Boosts[cancerbabies];
-			thread += cb.unlocked+c+cb.bought+c+cb.power+c+cb.countdown+s;
+			str += cb.unlocked+c+cb.bought+c+cb.power+c+cb.countdown+s;
 		}
-		thread+=p;
-		threads.push(thread);
-		thread='';
-		//badges:
+		return str;
+	}
+	
+	Molpy.BadgesToString=function()
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
+		var str='';
 		for(var cancerbabies in Molpy.Badges)
 		{
 			var cb = Molpy.Badges[cancerbabies];
 			if(cb.group=='badges')
-				thread += cb.earned;
+				str += cb.earned;
 		}
-		thread+=p;
-		//showhide:
-		for(var i in Molpy.options.showhideNamesOrder)
-		{
-			thread+=Molpy.options.showhide[Molpy.options.showhideNamesOrder[i]]?1:0;
-		}
-		thread+=p;
-		threads.push(thread);
-		thread='';
+		return str;
+	}
+		
+	Molpy.OtherBadgesToString=function()
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
+		var str='';
 		//stuff pretending to be badges:			
 		var id=Molpy.Badges['discov1'].id;			
 		while(id+3<Molpy.BadgeN)
 		{
-			thread+=Molpy.ToOct([Molpy.BadgesById[id].earned,Molpy.BadgesById[id+1].earned,Molpy.BadgesById[id+2].earned,Molpy.BadgesById[id+3].earned]).toString(16);
+			str+=Molpy.ToOct([Molpy.BadgesById[id].earned,Molpy.BadgesById[id+1].earned,Molpy.BadgesById[id+2].earned,Molpy.BadgesById[id+3].earned]).toString(16);
 			id+=4;
 		}
-		thread+=p;
+		return str;
+	}
+	
+	/* In which I do save and load!
+	+++++++++++++++++++++++++++++++*/
+	Molpy.ToNeedlePulledThing=function(exporting)
+	{						
+		var p = 'P';
+		var thread='';
+		var threads=[];
+		thread+=Molpy.version+p+p;//some extra space!
+		thread+=Molpy.startDate+p;
+		
+		thread+=Molpy.OptionsToString()+p;
+		
+		thread+=Molpy.GamenumsToString()+p;
+
+		thread+=Molpy.SandToolsToString()+p;
+		thread+=Molpy.CastleToolsToString()+p;
+		threads.push(thread);
+		
+		thread='';
+		thread+=Molpy.BoostsToString()+p;
+		threads.push(thread);
+		
+		thread='';
+		thread+=Molpy.BadgesToString()+p;
+		thread+=p;//used to be showhide
+		threads.push(thread);
+		
+		thread='';
+		thread+=Molpy.OtherBadgesToString()+p;
 		
 		threads.push(thread);
 		return threads;
@@ -554,15 +598,7 @@
 		}
 		if(thread[9])
 		{
-			pixels=thread[9].split('');
-		}else{
-			pixels=[];
-		}
-		for (var i in Molpy.options.showhideNamesOrder)
-		{
-			var vis = parseInt(pixels[i]);
-			if(!isNaN(vis))
-				Molpy.options.showhide[Molpy.options.showhideNamesOrder[i]]=vis;
+			//used to be showhide
 		}	
 
 		if(thread[10])

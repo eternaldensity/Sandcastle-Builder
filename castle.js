@@ -1727,7 +1727,7 @@ Molpy.Up=function()
 			if(args.startPower)
 			{
 				this.startPower=args.startPower;
-				this.power=args.startPower;
+				this.power=ZeroIfFunction(args.startPower);
 			}
 			this.startCountdown=args.startCountdown;
 			this.className=args.className;
@@ -2119,7 +2119,8 @@ Molpy.Up=function()
 				Molpy.redactedToggle*=12;
 			}
 		}
-		
+		Molpy.redactedChain=0;
+		Molpy.redactedChainMax=0;
 		Molpy.ClickRedacted=function(level)
 		{
 			level=level||0;
