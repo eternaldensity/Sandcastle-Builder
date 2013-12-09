@@ -370,32 +370,10 @@
 		return threads;
 	}
 	
-	Molpy.needlePulling=0;
-	Molpy.FromNeedlePulledThing=function(thread)
-	{					
-		Molpy.needlePulling=1; //prevent earning badges that haven't been loaded
-		var p='P'; //Pipe seParator
+	
+	Molpy.OptionsFromString=function(pixels)
+	{	
 		var s='S'; //Semicolon
-		var c='C'; //Comma
-		if(!thread)return;
-		if(thread.indexOf(p)<0)
-		{
-			p='|'; s=';'; c=','; //old style data
-		}
-		thread=thread.split(p);
-		var version = parseFloat(thread[0]);
-		_gaq&&_gaq.push(['_trackEvent','Load','Version',''+version,true]);
-		if(version>Molpy.version)
-		{
-			alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
-			return;
-		}
-		g('title').innerHTML=GLRschoice(Molpy.titles);
-		
-		var pixels = thread[2].split(s);
-		Molpy.startDate=parseInt(pixels[0]);
-		
-		pixels=thread[3].split('');			//whoops used to have ';' here which wasn't splitting!
 		Molpy.options.particles=parseInt(pixels[0])||0;
 		Molpy.options.numbers=parseInt(pixels[1])||0;
 		Molpy.options.autosave=parseInt(pixels[2])||0;
@@ -410,15 +388,12 @@
 		Molpy.options.typo=(parseInt(pixels[11]))||0;
 		Molpy.options.science=(parseInt(pixels[12]))||0;
 		Molpy.options.autosavelayouts=parseInt(pixels[13])||0;
-		if(!g('game'))
-		{				
-			Molpy.AdjustFade();
-			Molpy.UpdateColourScheme();
-			return;
-		}
-		Molpy.ClearLog();
-		
-		pixels=thread[4].split(s);
+	}
+	
+	Molpy.GamenumsFromString=function(pixels)
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
 		Molpy.newpixNumber=parseInt(pixels[0])||0;
 		Molpy.sandDug=parseFloat(pixels[1])||0;
 		Molpy.sandManual=parseFloat(pixels[2])||0;
@@ -438,21 +413,13 @@
 		Molpy.loadCount=parseInt(pixels[16])||0;	
 		Molpy.notifsReceived=parseInt(pixels[17])||0;			
 		Molpy.timeTravels=parseInt(pixels[18])||0;		
-		Molpy.npbONG=parseInt(pixels[19])||0;		
-		
+		Molpy.npbONG=parseInt(pixels[19])||0;	
+
 		Molpy.redactedCountup=parseInt(pixels[20])||0;			
 		Molpy.redactedToggle=parseInt(pixels[21])||0;			
 		Molpy.redactedVisible=parseInt(pixels[22])||0;			
 		Molpy.lGlass=parseFloat(pixels[23])||0;
-		Molpy.redactedClicks=parseInt(pixels[24])||0;	
-		if(version < 0.92)
-		{	
-			//three variables not needed are skipped here
-			Molpy.redactedClicks=parseInt(pixels[27])||0;	
-			
-			var blitzSpeed=parseInt(pixels[28])||0;	//these were saved here in 0.911 and 2
-			var blitzTime=parseInt(pixels[29])||0;		//but now are put in the 'Blitzed' boost
-		}
+		Molpy.redactedClicks=parseInt(pixels[24])||0;
 		Molpy.highestNPvisited=parseInt(pixels[25])||Math.abs(Molpy.newpixNumber);
 		Molpy.totalCastlesDown=parseFloat(pixels[26])||0;
 		if(version < 2.1)
@@ -462,9 +429,13 @@
 		Molpy.totalGlassDestroyed=parseFloat(pixels[28])||0;
 		Molpy.chipsManual=parseFloat(pixels[29])||0;
 		Molpy.redactedChain=parseFloat(pixels[30])||0;
-		Molpy.redactedChainMax=parseFloat(pixels[31])||0;
-		
-		pixels=thread[5].split(s);
+		Molpy.redactedChainMax=parseFloat(pixels[31])||0;		
+	}
+	
+	Molpy.SandToolsFromString=function(pixels)
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
 		Molpy.SandToolsOwned=0;
 		for (var i in Molpy.SandToolsById)
 		{
@@ -485,7 +456,12 @@
 				me.amount=0;me.bought=0;me.totalSand=0;me.totalGlass=0;
 			}
 		}
-		pixels=thread[6].split(s);
+	}
+	
+	Molpy.CastleToolsFromString=function(pixels,version)
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
 		Molpy.CastleToolsOwned=0;
 		for (var i in Molpy.CastleToolsById)
 		{
@@ -497,7 +473,6 @@
 				me.bought=parseFloat(ice[1])||0;
 				me.totalCastlesBuilt=parseFloat(ice[2])||0;
 				me.totalCastlesDestroyed=parseFloat(ice[3])||0;
-				if(!me.totalCastlesDestroyed)me.totalCastlesDestroyed=0;//mustard cleaning
 				if(version<3.03)
 				{
 					Molpy.castlesDestroyed+=me.totalCastlesDestroyed;
@@ -522,7 +497,12 @@
 			}
 		
 		}
-		pixels=thread[7].split(s);
+	}
+	
+	Molpy.BoostsFromString=function(pixels)
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
 		Molpy.BoostsOwned=0;
 		for (var i in Molpy.BoostsById)
 		{
@@ -532,14 +512,9 @@
 				var ice=pixels[i].split(c);
 				me.unlocked=parseInt(ice[0])||0;
 				me.bought=me.unlocked&&parseFloat(ice[1])||0; //ensure boosts that are locked aren't somehow set as bought
-				if(version<0.92)
-				{
-					me.power=0;
-					me.countdown=0;                        
-				}else{
-					me.power=parseFloat(ice[2])||0;
-					me.countdown=parseInt(ice[3])||0;
-				}
+				me.power=parseFloat(ice[2])||0;
+				me.countdown=parseInt(ice[3])||0;
+
 				if(me.bought)
 				{
 					Molpy.BoostsOwned++;
@@ -561,15 +536,12 @@
 				me.unlocked=0;me.bought=0;me.power=0;me.countdown=0;				
 			}
 		}
-		if(thread[8])
-		{
-			if(version<2.3)
-				pixels=thread[8].split(s);
-			else
-				pixels=thread[8].split('');
-		}else{
-			pixels=[];
-		}
+	}
+	
+	Molpy.BadgesFromString=function(pixels)
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
 		Molpy.BadgesOwned=0;
 		Molpy.groupBadgeCounts={};
 		for (var i in Molpy.BadgesById)
@@ -596,20 +568,12 @@
 				me.earned=0;					
 			}
 		}
-		if(thread[9])
-		{
-			//used to be showhide
-		}	
-
-		if(thread[10])
-		{
-			if(version<2.3)
-				pixels=thread[10].split(s);
-			else
-				pixels=thread[10].split('');
-		}else{
-			pixels=[];
-		}
+	}
+		
+	Molpy.OtherBadgesFromString=function(pixels,version)
+	{
+		var s='S'; //Semicolon
+		var c='C'; //Comma
 		var j=0;
 		
 		if(version<2.98)
@@ -680,10 +644,111 @@
 				id++;
 			}
 		}
+	}
+	
+	
+	
+	Molpy.needlePulling=0;
+	Molpy.FromNeedlePulledThing=function(thread)
+	{					
+		Molpy.needlePulling=1; //prevent earning badges that haven't been loaded
+		var p='P'; //Pipe seParator
+		var s='S'; //Semicolon
+		if(!thread)return;
+
+		thread=thread.split(p);
+		var version = parseFloat(thread[0]);
+		_gaq&&_gaq.push(['_trackEvent','Load','Version',''+version,true]);
+		if(version>Molpy.version)
+		{
+			alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
+			return;
+		}
+		g('title').innerHTML=GLRschoice(Molpy.titles);
+		
+		var pixels = thread[2].split(s);
+		Molpy.startDate=parseInt(pixels[0]);
+		
+		pixels=thread[3].split('');			//whoops used to have ';' here which wasn't splitting!
+		Molpy.OptionsFromString(pixels);
+		if(!g('game'))
+		{				
+			Molpy.AdjustFade();
+			Molpy.UpdateColourScheme();
+			return;
+		}
+		Molpy.ClearLog();
+		
+		pixels=thread[4].split(s);
+		Molpy.GamenumsFromString(pixels);		
+		pixels=thread[5].split(s);
+		Molpy.SandToolsFromString(pixels);
+		pixels=thread[6].split(s);
+		Molpy.CastleToolsFromString(pixels,version);
+		pixels=thread[7].split(s);
+		Molpy.BoostsFromString(pixels);
+		if(thread[8])
+		{
+			if(version<2.3)
+				pixels=thread[8].split(s);
+			else
+				pixels=thread[8].split('');
+		}else{
+			pixels=[];
+		}
+		Molpy.BadgesFromString(pixels);
+		if(thread[9])
+		{
+			//used to be showhide
+		}	
+
+		if(thread[10])
+		{
+			if(version<2.3)
+				pixels=thread[10].split(s);
+			else
+				pixels=thread[10].split('');
+		}else{
+			pixels=[];
+		}
+		Molpy.OtherBadgesFromString(pixels,version);
 		Molpy.SelectShoppingItem();
 		
 		Molpy.needlePulling=0;//badges are loaded now
+		Molpy.UpgradeOldVersions(version);
+		if(version<Molpy.version) //hey let's do this every upgrade!
+		{	
+			Molpy.Notify('Upgraded to new version!',1);		
+			if(Molpy.Boosts['Safety Hat'].unlocked&&Molpy.Got('Safety Pumpkin')&&!Molpy.Boosts['SG'].unlocked)
+				Molpy.UnlockBoost('SG');
+			else if(!Molpy.Got('SG'))
+				Molpy.UnlockBoost('Safety Hat');
+		}
+		Molpy.UpdateColourScheme();
+		Molpy.AdjustFade();
+		Molpy.LockBoost('MHP');
+		if(Molpy.redactedVisible)
+		{
+			Molpy.redactedCountup=Molpy.redactedToggle;
+			Molpy.CheckRedactedToggle();
+		}
 		
+		Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
+		Molpy.CheckSandRateBadges(); //shiny!
+		
+		Molpy.ONGstart = ONGsnip(new Date()); //if you missed the ONG before loading, too bad!
+		g('clockface').className= Molpy.Boosts['Coma Molpy Style'].power?'hidden':'unhidden';
+		Molpy.HandlePeriods();
+		Molpy.UpdateBeach();
+		Molpy.recalculateDig=1;
+		Molpy.shopRepaint=1;
+		Molpy.boostRepaint=1;
+		Molpy.badgeRepaint=1;
+		Molpy.judgeLevel=-1;
+	}
+	
+	Molpy.UpgradeOldVersions=function(version)
+	{
 		if(version<2.1)
 		{
 			Molpy.CastleTools['NewPixBot'].temp=Molpy.tempIntruderBots;
@@ -847,36 +912,8 @@
 				
 			}
 		}
-		if(version<Molpy.version) //hey let's do this every upgrade!
-		{	
-			Molpy.Notify('Upgraded to new version!',1);		
-			if(Molpy.Boosts['Safety Hat'].unlocked&&Molpy.Got('Safety Pumpkin')&&!Molpy.Boosts['SG'].unlocked)
-				Molpy.UnlockBoost('SG');
-			else if(!Molpy.Got('SG'))
-				Molpy.UnlockBoost('Safety Hat');
-		}
-		Molpy.UpdateColourScheme();
-		Molpy.AdjustFade();
-		Molpy.LockBoost('MHP');
-		if(Molpy.redactedVisible)
-		{
-			Molpy.redactedCountup=Molpy.redactedToggle;
-			Molpy.CheckRedactedToggle();
-		}
-		
-		Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
-		Molpy.CheckSandRateBadges(); //shiny!
-		
-		Molpy.ONGstart = ONGsnip(new Date()); //if you missed the ONG before loading, too bad!
-		g('clockface').className= Molpy.Boosts['Coma Molpy Style'].power?'hidden':'unhidden';
-		Molpy.HandlePeriods();
-		Molpy.UpdateBeach();
-		Molpy.recalculateDig=1;
-		Molpy.shopRepaint=1;
-		Molpy.boostRepaint=1;
-		Molpy.badgeRepaint=1;
-		Molpy.judgeLevel=-1;
 	}
+	
 	
 	/* In which a routine for resetting the game is presented
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
