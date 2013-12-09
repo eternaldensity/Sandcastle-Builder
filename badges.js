@@ -380,9 +380,12 @@
 				var str = Molpy.groupNames[kind][4]+': '+args.desc+'<br><small>(in NP'+me.np+')</small>';
 				if(me.group=='discov')
 				{
-					if(Molpy.newpixNumber!=me.np&&Molpy.Got('Memories Revisited'))
+					if(Molpy.Got('Memories Revisited')) 
 					{
-						str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',1)" value="Jump!"></input> (Uses '+Molpify(Molpy.CalcJumpEnergy(me.np),2)+' Glass Chips)'
+						if(Molpy.newpixNumber!=me.np) 
+						{
+							str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',1)" value="Jump!"></input> (Uses '+Molpify(Molpy.CalcJumpEnergy(me.np),2)+' Glass Chips)'
+						}
 						if (Molpy.Got('Magic Mirror'))
 						{
 							str+='<br>'+Molpy.WrapFlipHoriz('<input type="Button" onclick="Molpy.TTT('+ (-me.np)+',1)" value="Jump!"></input> to the other side (Uses '+Molpify(Molpy.CalcJumpEnergy(-me.np),2)+' Glass Chips)')
