@@ -37,8 +37,12 @@
 		}
 	}
 	Molpy.supportsLocalStorage=supports_html5_storage();
-
-	Molpy.SaveC_STARSTAR_kie=function(auto)
+	Molpy.LocalSaveExists=function()
+	{
+		return localStorage['version'];
+	}
+	
+	Molpy.Save=function(auto)
 	{
 		if(!auto)
 		{
@@ -51,6 +55,33 @@
 		}else{
 			if(!Molpy.Got('Autosave Option')) return;	
 		}
+		var success=0;
+		if(Molpy.supportsLocalStorage)
+		{
+			success=Molpy.SaveLocalStorage();
+			if(!Molpy.LocalSaveExists())
+			{
+				Molpy.Notify('localstorage save failed, trying cookies instead');
+				success=Molpy.SaveC_STARSTAR_kie();				
+			}
+		}else
+		{
+			success=Molpy.SaveC_STARSTAR_kie();
+		}
+		if(!success)return;	
+		Molpy.Notify('Game saved');
+		auto||_gaq&&_gaq.push(['_trackEvent','Save','Complete',''+Molpy.saveCount]);
+		
+		Molpy.autosaveCountup=0;
+		
+		if(Molpy.options.autosavelayouts>(auto||0))
+		{
+			Molpy.SaveLayouts();
+		}
+	}
+
+	Molpy.SaveC_STARSTAR_kie=function()
+	{
 		var threads = Molpy.ToNeedlePulledThing();
 		for(var i in threads)
 		{
@@ -65,16 +96,24 @@
 			}
 		}
 		document.cookie='CastleBuilderGame=;'; //clear old cookie
-		Molpy.Notify('Game saved');
-		auto||_gaq&&_gaq.push(['_trackEvent','Save','Complete',''+Molpy.saveCount]);
-		
-		Molpy.autosaveCountup=0;
-		
-		if(Molpy.options.autosavelayouts>(auto||0))
-		{
-			Molpy.SaveLayouts();
-		}
+		return 1;
 	}
+	
+	Molpy.SaveLocalStorage=function()
+	{
+		localStorage['version']=Molpy.version;
+		localStorage['startDate']=Molpy.startDate;
+		
+		localStorage['Options']=Molpy.OptionsToString();
+		localStorage['Gamenums']=Molpy.GamenumsToString();
+		localStorage['SandTools']=Molpy.SandToolsToString();
+		localStorage['CastleTools']=Molpy.CastleToolsToString();
+		localStorage['Boosts']=Molpy.BoostsToString();
+		localStorage['Badges']=Molpy.BadgesToString();
+		localStorage['OtherBadges']=Molpy.OtherBadgesToString();
+		return 1;
+	}
+	
 	Molpy.Flood=function()
 	{
 		var flood = new Date();
@@ -82,6 +121,34 @@
 		flood.setMonth(4);
 		flood.setDate(10);
 		return flood.toUTCString();
+	}
+	
+	Molpy.Load=function()
+	{
+		_gaq&&_gaq.push(['_trackEvent','Load','Begin']);
+			
+		var success;
+		if(Molpy.supportsLocalStorage&&Molpy.LocalSaveExists())
+		{
+			success=Molpy.LoadLocalStorage();
+		}else
+		{
+			success=Molpy.LoadC_STARSTAR_kie();
+		}
+			
+		if(!success)return;
+		Molpy.loadCount++;
+		_gaq&&_gaq.push(['_trackEvent','Load','Complete',''+Molpy.loadCount]);
+		Molpy.autosaveCountup=0;
+		if(g('game'))
+		{
+			Molpy.Notify('Game loaded',1);
+			if(Molpy.loadCount>=40)
+			{
+				Molpy.UnlockBoost('Coma Molpy Style');
+			}
+		}
+		if(noLayout)Molpy.LoadLayouts(); //this seems odd, but the layout is loaded in this case so the loot visibility is set, as in classic
 	}
 	
 	Molpy.LoadC_STARSTAR_kie=function()
@@ -97,21 +164,67 @@
 				if(dough)
 					thread+=Molpy.BeanishToCuegish(unescape(dough).split(';')[0])||'';
 			}
-			_gaq&&_gaq.push(['_trackEvent','Load','Begin']);
 			Molpy.FromNeedlePulledThing(thread);
-			Molpy.loadCount++;
-			_gaq&&_gaq.push(['_trackEvent','Load','Complete',''+Molpy.loadCount]);
-			Molpy.autosaveCountup=0;
-			if(g('game'))
-			{
-				Molpy.Notify('Game loaded',1);
-				if(Molpy.loadCount>=40)
-				{
-					Molpy.UnlockBoost('Coma Molpy Style');
-				}
-			}
-			if(noLayout)Molpy.LoadLayouts(); //this seems odd, but the layout is loaded in this case so the loot visibility is set, as in classic
+		}else
+		{
+			Molpy.Notify('No saved cookies were found');
+			return 0;
 		}
+		return 1;
+	}
+	
+	Molpy.LoadLocalStorage=function()
+	{
+	
+		Molpy.needlePulling=1; //prevent earning badges that haven't been loaded
+		var version = parseFloat(localStorage['version']);
+		if(!Molpy.ValidateVersion(version))return;
+		
+		Molpy.startDate=localStorage['startDate'];
+		
+		Molpy.OptionsFromString(pixels);
+		if(!g('game'))
+		{				
+			Molpy.AdjustFade();
+			Molpy.UpdateColourScheme();
+			return;
+		}
+		Molpy.ClearLog();
+		
+		pixels=thread[4].split(s);
+		Molpy.GamenumsFromString(pixels);		
+		pixels=thread[5].split(s);
+		Molpy.SandToolsFromString(pixels);
+		pixels=thread[6].split(s);
+		Molpy.CastleToolsFromString(pixels,version);
+		pixels=thread[7].split(s);
+		Molpy.BoostsFromString(pixels);
+		if(thread[8])
+		{
+			if(version<2.3)
+				pixels=thread[8].split(s);
+			else
+				pixels=thread[8].split('');
+		}else{
+			pixels=[];
+		}
+		Molpy.BadgesFromString(pixels);
+		if(thread[9])
+		{
+			//used to be showhide
+		}	
+
+		if(thread[10])
+		{
+			if(version<2.3)
+				pixels=thread[10].split(s);
+			else
+				pixels=thread[10].split('');
+		}else{
+			pixels=[];
+		}
+		Molpy.OtherBadgesFromString(pixels,version);
+		Molpy.PostLoadTasks(version);
 	}
 	
 	Molpy.layoutsLoaded=0;
@@ -656,7 +769,17 @@
 		}
 	}
 	
-	
+	Molpy.ValidateVersion=function(version)
+	{
+		_gaq&&_gaq.push(['_trackEvent','Load','Version',''+version,true]);
+		if(version>Molpy.version)
+		{
+			alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
+			return 0;
+		}
+		g('title').innerHTML=GLRschoice(Molpy.titles);
+		return 1;
+	}
 	
 	Molpy.needlePulling=0;
 	Molpy.FromNeedlePulledThing=function(thread)
@@ -669,12 +792,7 @@
 		thread=thread.split(p);
 		var version = parseFloat(thread[0]);
 		_gaq&&_gaq.push(['_trackEvent','Load','Version',''+version,true]);
-		if(version>Molpy.version)
-		{
-			alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
-			return;
-		}
-		g('title').innerHTML=GLRschoice(Molpy.titles);
+		if(!Molpy.ValidateVersion(version))return;
 		
 		var pixels = thread[2].split(s);
 		Molpy.startDate=parseInt(pixels[0]);
@@ -722,6 +840,10 @@
 			pixels=[];
 		}
 		Molpy.OtherBadgesFromString(pixels,version);
+		Molpy.PostLoadTasks(version);
+	}
+	Molpy.PostLoadTasks=function(version)
+	{
 		Molpy.SelectShoppingItem();
 		
 		Molpy.needlePulling=0;//badges are loaded now
