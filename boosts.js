@@ -1558,12 +1558,14 @@
 	backoff*=2;
     }
 
+    if (upgrades>0) {
 	Molpy.SpendGlassBlocks(cost);
 	Molpy.Boosts['Sand Purifier'].power+= upgrades;
 
 	Molpy.recalculateDig=1;
 	Molpy.Notify('Sand Purifier upgraded '+Molpify(upgrades,2) + ' times' ,1);
 	_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Sand Purifier']);	
+        }
     }
 
     Molpy.SeaishGlassExtruder=function()
@@ -1582,12 +1584,14 @@
 	backoff*=2;
     }
 
+    if (upgrades > 0) {
 	Molpy.SpendGlassChips(cost);
 	Molpy.Boosts['Glass Extruder'].power+= upgrades;
 
 	Molpy.recalculateDig=1;
 	Molpy.Notify('Glass Extruder upgraded '+Molpify(upgrades,2) + ' times' ,1);
 	_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Glass Extruder']);	
+    }
     }
 
     Molpy.SeaishSandRefinery=function()
@@ -1604,11 +1608,13 @@
 		extra -= backoff;
 	        backoff*=2;
 	    }
-            Molpy.SpendGlassChips(extra*2.5);
-            Molpy.Boosts['Sand Refinery'].Refresh();
-            Molpy.Notify('Sand Refinery upgraded '+Molpify(extra,2)+' times',1);
-            Molpy.recalculateDig=1;
+	    if (extra > 0) {
+                Molpy.SpendGlassChips(extra*2.5);
+                Molpy.Boosts['Sand Refinery'].Refresh();
+                Molpy.Notify('Sand Refinery upgraded '+Molpify(extra,2)+' times',1);
+                Molpy.recalculateDig=1;
 			_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Sand Refinery']);	
+	    }
         }       
 
     }
@@ -1628,11 +1634,13 @@
 		extra -= backoff;
 	        backoff*=2;
 	    }
-            Molpy.SpendGlassBlocks(extra*4.5);
-            Molpy.Boosts['Glass Chiller'].Refresh();
-            Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
-            Molpy.recalculateDig=1;
+	    if (extra > 0) {
+                Molpy.SpendGlassBlocks(extra*4.5);
+                Molpy.Boosts['Glass Chiller'].Refresh();
+                Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
+                Molpy.recalculateDig=1;
 			_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Glass Chiller']);	
+	    }
         }	
     }	
 	
