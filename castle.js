@@ -2656,7 +2656,7 @@ Molpy.Up=function()
 		++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 		
 		Molpy.molpish=1;
-		Molpy.LoadC_STARSTAR_kie(); //autoload saved game
+		Molpy.Load(); //autoload saved game
 		Molpy.RefreshLayouts();
 		Molpy.Loopist();		
 	}
@@ -2852,7 +2852,7 @@ Molpy.Up=function()
 		if(Molpy.options.autosave){
 			if(Molpy.autosaveCountup>=Molpy.options.autosave*5)
 			{
-				Molpy.SaveC_STARSTAR_kie(1);
+				Molpy.Save(1);
 			}
 		}
 		

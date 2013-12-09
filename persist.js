@@ -182,7 +182,7 @@
 		
 		Molpy.startDate=localStorage['startDate'];
 		
-		Molpy.OptionsFromString(pixels);
+		Molpy.OptionsFromString(localStorage['Options']);
 		if(!g('game'))
 		{				
 			Molpy.AdjustFade();
@@ -191,39 +191,13 @@
 		}
 		Molpy.ClearLog();
 		
-		pixels=thread[4].split(s);
-		Molpy.GamenumsFromString(pixels);		
-		pixels=thread[5].split(s);
-		Molpy.SandToolsFromString(pixels);
-		pixels=thread[6].split(s);
-		Molpy.CastleToolsFromString(pixels,version);
-		pixels=thread[7].split(s);
+		Molpy.GamenumsFromString(localStorage['Gamenums']);	
+		Molpy.SandToolsFromString(localStorage['SandTools']);
+		Molpy.CastleToolsFromString(localStorage['CastleTools'],version);
+		pixels=localStorage['Boosts'];
 		Molpy.BoostsFromString(pixels);
-		if(thread[8])
-		{
-			if(version<2.3)
-				pixels=thread[8].split(s);
-			else
-				pixels=thread[8].split('');
-		}else{
-			pixels=[];
-		}
-		Molpy.BadgesFromString(pixels);
-		if(thread[9])
-		{
-			//used to be showhide
-		}	
-
-		if(thread[10])
-		{
-			if(version<2.3)
-				pixels=thread[10].split(s);
-			else
-				pixels=thread[10].split('');
-		}else{
-			pixels=[];
-		}
-		Molpy.OtherBadgesFromString(pixels,version);
+		Molpy.BadgesFromString(localStorage['Badges'],version);
+		Molpy.OtherBadgesFromString(localStorage['OtherBadges'],version);
 		Molpy.PostLoadTasks(version);
 	}
 	
@@ -494,9 +468,9 @@
 	}
 	
 	
-	Molpy.OptionsFromString=function(pixels)
-	{	
-		var s='S'; //Semicolon
+	Molpy.OptionsFromString=function(thread)
+	{
+		var pixels=thread.split('');
 		Molpy.options.particles=parseInt(pixels[0])||0;
 		Molpy.options.numbers=parseInt(pixels[1])||0;
 		Molpy.options.autosave=parseInt(pixels[2])||0;
@@ -513,10 +487,12 @@
 		Molpy.options.autosavelayouts=parseInt(pixels[13])||0;
 	}
 	
-	Molpy.GamenumsFromString=function(pixels)
+	Molpy.GamenumsFromString=function(thread)
 	{
 		var s='S'; //Semicolon
 		var c='C'; //Comma
+		var pixels=thread.split(s);
+		
 		Molpy.newpixNumber=parseInt(pixels[0])||0;
 		Molpy.sandDug=parseFloat(pixels[1])||0;
 		Molpy.sandManual=parseFloat(pixels[2])||0;
@@ -555,10 +531,11 @@
 		Molpy.redactedChainMax=parseFloat(pixels[31])||0;		
 	}
 	
-	Molpy.SandToolsFromString=function(pixels)
+	Molpy.SandToolsFromString=function(thread)
 	{
 		var s='S'; //Semicolon
 		var c='C'; //Comma
+		var pixels=thread.split(s);
 		Molpy.SandToolsOwned=0;
 		for (var i in Molpy.SandToolsById)
 		{
@@ -581,10 +558,11 @@
 		}
 	}
 	
-	Molpy.CastleToolsFromString=function(pixels,version)
+	Molpy.CastleToolsFromString=function(thread,version)
 	{
 		var s='S'; //Semicolon
 		var c='C'; //Comma
+		var pixels=thread.split(s);
 		Molpy.CastleToolsOwned=0;
 		for (var i in Molpy.CastleToolsById)
 		{
@@ -622,10 +600,11 @@
 		}
 	}
 	
-	Molpy.BoostsFromString=function(pixels)
+	Molpy.BoostsFromString=function(thread)
 	{
 		var s='S'; //Semicolon
 		var c='C'; //Comma
+		var pixels=thread.split(s);
 		Molpy.BoostsOwned=0;
 		for (var i in Molpy.BoostsById)
 		{
@@ -661,10 +640,14 @@
 		}
 	}
 	
-	Molpy.BadgesFromString=function(pixels)
+	Molpy.BadgesFromString=function(thread,version)
 	{
 		var s='S'; //Semicolon
 		var c='C'; //Comma
+		if(version<2.3)
+			var pixels=thread.split(s);
+		else
+			var pixels=thread.split('');
 		Molpy.BadgesOwned=0;
 		Molpy.groupBadgeCounts={};
 		for (var i in Molpy.BadgesById)
@@ -693,11 +676,16 @@
 		}
 	}
 		
-	Molpy.OtherBadgesFromString=function(pixels,version)
+	Molpy.OtherBadgesFromString=function(thread,version)
 	{
 		var s='S'; //Semicolon
 		var c='C'; //Comma
 		var j=0;
+		if(version<2.3)
+			var pixels=thread[10].split(s);
+		else
+			var pixels=thread[10].split('');
+		
 		
 		if(version<2.98)
 		{
@@ -794,11 +782,10 @@
 		_gaq&&_gaq.push(['_trackEvent','Load','Version',''+version,true]);
 		if(!Molpy.ValidateVersion(version))return;
 		
-		var pixels = thread[2].split(s);
-		Molpy.startDate=parseInt(pixels[0]);
+		Molpy.startDate=parseInt(thread[2]);
 		
-		pixels=thread[3].split('');			//whoops used to have ';' here which wasn't splitting!
-		Molpy.OptionsFromString(pixels);
+					//whoops used to have ';' here which wasn't splitting!
+		Molpy.OptionsFromString(thread[3]);
 		if(!g('game'))
 		{				
 			Molpy.AdjustFade();
@@ -807,39 +794,14 @@
 		}
 		Molpy.ClearLog();
 		
-		pixels=thread[4].split(s);
-		Molpy.GamenumsFromString(pixels);		
-		pixels=thread[5].split(s);
-		Molpy.SandToolsFromString(pixels);
-		pixels=thread[6].split(s);
-		Molpy.CastleToolsFromString(pixels,version);
-		pixels=thread[7].split(s);
-		Molpy.BoostsFromString(pixels);
-		if(thread[8])
-		{
-			if(version<2.3)
-				pixels=thread[8].split(s);
-			else
-				pixels=thread[8].split('');
-		}else{
-			pixels=[];
-		}
-		Molpy.BadgesFromString(pixels);
-		if(thread[9])
-		{
-			//used to be showhide
-		}	
+		Molpy.GamenumsFromString(thread[4]);	
+		Molpy.SandToolsFromString(thread[5]);
+		Molpy.CastleToolsFromString(thread[6],version);
+		Molpy.BoostsFromString(thread[7]||'');
 
-		if(thread[10])
-		{
-			if(version<2.3)
-				pixels=thread[10].split(s);
-			else
-				pixels=thread[10].split('');
-		}else{
-			pixels=[];
-		}
-		Molpy.OtherBadgesFromString(pixels,version);
+		Molpy.BadgesFromString(thread[8]||'',version);
+		//thread[9] is unused
+		Molpy.OtherBadgesFromString(thread[10]||'',version);
 		Molpy.PostLoadTasks(version);
 	}
 	Molpy.PostLoadTasks=function(version)
