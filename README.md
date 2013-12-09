@@ -26,6 +26,7 @@ For personal amusement only.
 
 ## 3.24
 - Redundakitty chain variables were not initialised to 0: showed up as mustard on a new game.
+- Detect html5localstorage
 
 ## 3.234
 - Missed flagging some temp boosts: nav code and the glass switching statuses. (Now they should unstick if stuck)

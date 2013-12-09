@@ -1424,6 +1424,7 @@
 		g('destroyedtoolchipsstat').innerHTML=Molpify(Molpy.totalGlassDestroyed,4);
 		g('manualchipsstat').innerHTML=Molpify(Molpy.chipsManual,4);
 		g('chipclickstat').innerHTML=Molpify(Molpy.chipsPerClick,4);		
+		g('storagestat').innerHTML=(Molpy.supportsLocalStorage?'html5localstorage':'c**kies');		
 	}
 	
 	Molpy.oldBeachClass='';

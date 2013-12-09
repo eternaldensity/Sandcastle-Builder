@@ -27,6 +27,16 @@
 	Molpy.FromOct=function(o){
 		return [o&1&&1,o&2&&1,o&4&&1,o&8&&1];
 	}
+	
+	function supports_html5_storage()
+	{
+		try {
+			return 'localStorage' in window && window['localStorage'] !== null;
+		} catch (e) {
+			return false;
+		}
+	}
+	Molpy.supportsLocalStorage=supports_html5_storage();
 
 	Molpy.SaveC_STARSTAR_kie=function(auto)
 	{
