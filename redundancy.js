@@ -252,7 +252,7 @@ function format(gainned,level)
 	if(Molpy.options.typo)return gainned;
 	var squirpy=eternalf[gainned];
 	if(squirpy)return squirpy;
-	if(Molpy.newpixNumber<typocount) return gainned;
+	if(Math.abs(Molpy.newpixNumber)<typocount) return gainned;
 	
 	level=level||0;
 	var gained=gainned;

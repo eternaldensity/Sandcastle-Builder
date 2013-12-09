@@ -28,7 +28,7 @@ For personal amusement only.
 - Missed flagging some temp boosts: nav code and the glass switching statuses. (Now they should unstick if stuck)
 - Wasn't saving or loading the autosavelayouts option value
 - When loading in Classic, set up the correct panel visibility, so you don't get missing panels, or messy overflows as the Comic and Options and Stats and Export all try to draw at the same time
-
+- Typos now work in Minus
 
 ## 3.233
 - Fixed temp boosts on loading: it was using the start rather than current values of power and countdown because of another change I made to allegedly make testing easier for myself. Riiiight.
