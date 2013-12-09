@@ -1417,7 +1417,8 @@
     	g('blockspmnpstat').innerHTML = Molpify(Molpy.blockspmnp,3);
 		
 		g('blackstat').innerHTML='Collected '+Molpify(+Molpy.Boosts['Blackprints'].power
-			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages()|| Molpy.Boosts['AC'].power*2,1);
+			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages() ||
+				Molpy.Boosts['AC'].power*(Molpy.Boosts['Dragon Forge'].bought?10:2),1);
       
 		g('logicatstat').innerHTML=Molpify(Math.max(Molpy.Boosts['Logicat'].bought,Molpy.Boosts['Logicat'].power/5+1),1);
 		g('totaltoolchipsstat').innerHTML=Molpify(Molpy.totalGlassBuilt,4);
