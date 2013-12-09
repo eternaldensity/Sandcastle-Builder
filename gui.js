@@ -1606,12 +1606,12 @@
 			for(var i in Molpy.lootVisOrder)
 			{
 				var el=Molpy.lootVisOrder[i];
-				Molpy.ShowhideToggle(el, this.lootVis[el]);
+				Molpy.ShowhideToggle(el, this.lootVis[el]==true); //==true incase there are missing values (otherwise they would toggle instead of set to false)
 			}
 			for(var i in Molpy.boxVisOrder)
 			{
 				var el=Molpy.boxVisOrder[i];
-				Molpy.ToggleView(el, this.boxVis[el]);
+				Molpy.ToggleView(el, this.boxVis[el]==true);
 			}
 			if(noLayout)return;
 			for(var i in Molpy.draggableOrder)

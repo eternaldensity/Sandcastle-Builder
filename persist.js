@@ -157,6 +157,10 @@
 		{
 			Molpy.layoutsLoaded=i;
 			Molpy.layouts=layouts;
+			if(noLayout)
+			{
+				Molpy.layouts[0].boxVis={Clock:true,Timer:true,Beach:true,Shop:true,Inventory:true,SandTools:true,CastleTools:true,About:true,SandCounts:true,NPInfo:true};
+			}
 			Molpy.layouts[0].Activate();
 		}
 	}
@@ -228,6 +232,7 @@
 		(Molpy.options.fade)+
 		(Molpy.options.typo)+
 		(Molpy.options.science)+
+		(Molpy.options.autosavelayouts)+
 		p;
 		
 		thread+=			
@@ -360,6 +365,7 @@
 		Molpy.options.fade=(parseInt(pixels[10]))||0;
 		Molpy.options.typo=(parseInt(pixels[11]))||0;
 		Molpy.options.science=(parseInt(pixels[12]))||0;
+		Molpy.options.autosavelayouts=parseInt(pixels[13])||0;
 		if(!g('game'))
 		{				
 			Molpy.AdjustFade();
