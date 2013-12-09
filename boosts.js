@@ -116,7 +116,14 @@
 					str+='<input type="Button" value="Choose Door '+door+'" onclick="Molpy.Monty(\''+door+'\')"><br>'
 				}else
 				{
-					str+='Door '+door+' is a goat<br>';
+					if(Molpy.Got('Beret Guy'))
+					{
+						str+='<input type="Button" value="Take goat" onclick="Molpy.Monty(\''+door+'\')"><br>'
+						
+					}else
+					{
+						str+='Door '+door+' is a goat<br>';
+					}
 				}
 			}
 			str+='Choose a door! You might gain half your current Castles, or you might lose them all and get a Goat';
@@ -156,7 +163,7 @@
 		}
 		if(me.goat)
 		{
-			if(me.door==me.goat)
+			if(me.door==me.goat&&!Molpy.Got('Beret Guy'))
 			{
 				Molpy.Notify('That door has already been opened.');
 				return;
@@ -214,6 +221,7 @@
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',g.name]);	
 			if(g.power>=2)Molpy.EarnBadge('Second Edition');
 			if(g.power>=20)Molpy.UnlockBoost('HoM');
+			if(g.power>=200)Molpy.UnlockBoost('Beret Guy');
 			Molpy.Notify('You got a goat!');
 	}
 	
@@ -589,7 +597,7 @@
 				(me.power?'Uni':'I')+'nstall"></input>';
 		},sand:999999999,castles:2101,
 		stats:'When installed, this averts Judgement Dip at the cost of 99.9% of NewPixBot Castle Production.',
-		icon:'navcode',className:'toggle',group:'cyb', startCountdown:2000,//dummy value
+		icon:'navcode',className:'toggle',group:'cyb',
 		classChange:function(){return Molpy.CheckJudgeClass(this,1,'toggle',this.power);}
 	});	
 		
@@ -636,7 +644,7 @@
 		function(me)
 		{		
 			return 'You cannot access NewPixBot Navigation Code for '+Molpify(me.countdown,3)+'mNP';
-		},className:'alert',group:'cyb'
+		},className:'alert',group:'cyb',startCountdown:2000//dummy
 		});	
 	
 	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',alias:'BKJ',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.'
@@ -4138,6 +4146,7 @@
 	new Molpy.Boost({name:'Thunderbird',desc:'If Glassed Lightning (with Lightning Rod) strikes during Temporal Duplication, its power is doubled',glass:'50W',group:'drac'});
 	new Molpy.Boost({name:'Dragon Foundry',desc:'Glassed Lightning multiplies Crystal Dragon',sand:Infinity,castles:Infinity,glass:'70WW',group:'drac'});
 	new Molpy.Boost({name:'Lucky Twin',desc:'When you are awarded Not Lucky during Temporal Duplication, the countdown is increased by 20%',sand:Infinity,castles:Infinity,glass:'70H'});
+	new Molpy.Boost({name:'Beret Guy',desc:'You may choose to take a revealed Goat',stats:'...and my yard has so much grass, and I\'ll teach you tricks, and...',glass:'20T'});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
