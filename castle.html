@@ -89,6 +89,9 @@
 					<div id="toggleLayouts" class="minifloatbox">
 						<a onclick="Molpy.ToggleView('Layouts')"><h4>Layouts</h4></a>
 					</div>
+					<div id="toggleFaves" class="minifloatbox">
+						<a onclick="Molpy.ToggleView('Faves')"><h4>Faves</h4></a>
+					</div>
 					<div id="toggleCodex" class="minifloatbox">
 						<a onclick="Molpy.ToggleView('Codex')"><h4>Codex</h4></a>
 					</div>
@@ -374,10 +377,18 @@
 		</div>
 		<div id="sectionFaves" class="hidden draggable-element table-wrapper">
 			<div class="table-header">Favourites</div>		
-			<div class="table-header favecontrols">			
+			<div class="table-header">		
+				<select id="selectFave" name="selectFave" onchange="Molpy.SelectFave(this)">
+				</select>	
 			</div>
 			<div id="sectionFavesBody" class="table-content resizable-element">
-				<div id="faves" class="table-content-wrapper">
+				<div id="faveControls" class="table-content-wrapper hidden">
+					<div id="toggleFave" class="minifloatbox">
+						<a onclick="Molpy.ToggleFave()">Visible</a>
+					</div>
+					<div id="configureFave" class="minifloatbox">
+						<a onclick="Molpy.ConfigureFave()">Choose</a>
+					</div>
 				</div>
 			</div>
 		</div>

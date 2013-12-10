@@ -146,9 +146,48 @@
 		}
 	}
 	
+	Molpy.selectedFave='None';
+	Molpy.SelectFave=function(f)
+	{
+		Molpy.selectedFave=f.options[f.selectedIndex].value;
+		$('#faveControls').toggleClass('hidden',Molpy.selectedFave=='None');	
+		$('#toggleFave').toggleClass('depressed',f[Molpy.selectedFave].vis==true);	
+	}
+	
+	Molpy.ConfigureFave=function(n)
+	{
+		if(n==undefined)n=Molpy.selectedFave;
+		var f = Molpy.activeLayout.faves;
+		var def='Chromatic Heresy';
+		if(f.boost) def=f.boost.name;		
+		var name = prompt('Enter the name of the boost you wish to display as Favourite '+n+'.\nNames are case sensitive.\nLeave blank to disable.',def);
+		
+		if(name)
+		{
+			item = Molpy.Boosts[name];
+			if(!item)
+			{
+				item=Molpy.Boosts[Molpy.BoostAKA[name]];
+			}
+			if(item)
+			{
+				if(!item.bought)
+				{
+					Molpy.Notify('You do not own '+item.name);
+				}else{
+					f.boost=item;
+					Molpy.Notify('You have chosen '+item.name+' as Favourite '+n,1);
+				}
+			}
+			
+		}
+		
+	}
+	
 	Molpy.ToggleFave=function(n,val)
 	{
-		if(n==undefined)return;
+		if(n==undefined)n=Molpy.selectedFave;
+				
 		var name='sectionFave'+n;
 		var f = Molpy.activeLayout.faves;
 		if(val==undefined)
@@ -159,7 +198,7 @@
 			f[n].vis=val==true;//ensure boolean for jQuery
 		}
 		$('#'+name).toggleClass('hidden',!f[n].vis);
-		$('#toggleFave'+n).toggleClass('depressed',f[n].vis);
+		$('#toggleFave').toggleClass('depressed',f[n].vis);
 	}
 	
 	Molpy.ToggleViews=function(views)
@@ -1778,18 +1817,25 @@
 			'<div id="sectionFave'+i+'" class="hidden draggable-element table-wrapper">\
 				<div class="table-header"></div>\
 				<div id="sectionFave'+i+'Body" class="table-content resizable-element">\
-				<div id="faveContent'+i+'" class="table-content-wrapper">\
+					<div id="faveContent'+i+'" class="table-content-wrapper">Fave '+i+'\
+					</div>\
 				</div>\
-			</div>\
-		</div>';
+			</div>';
 		}
 		if(str)g('sectionFavePanes').innerHTML=str;
+		var str = '';
+		for(var i in Molpy.activeLayout.faves)
+		{
+			str+=
+			'<option id="optionFave'+i+'" value="'+i+'">'+i+' (empty)</option>';
+		}
+		if(str)g('selectFave').innerHTML='<option>None</option>'+str;
 	}
 	
 	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
-	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts'];
-	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout'];
-	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout'];
+	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves'];
+	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
+	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
 	$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);
 	$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
