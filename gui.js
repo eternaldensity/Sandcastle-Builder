@@ -1355,6 +1355,7 @@
 
 		drawClockHand();
 		Molpy.PaintStats();
+		Molpy.UpdateFaves();
 		Molpy.notifsUpdate();
 		if(Molpy.notifLogPaint)Molpy.PaintNotifLog();
 		if(Molpy.options.numbers)Molpy.sparticlesUpdate();
@@ -1468,6 +1469,27 @@
 		g('manualchipsstat').innerHTML=Molpify(Molpy.chipsManual,4);
 		g('chipclickstat').innerHTML=Molpify(Molpy.chipsPerClick,4);		
 		g('storagestat').innerHTML=(Molpy.supportsLocalStorage?'html5localstorage':'c**kies');		
+	}
+	
+	Molpy.UpdateFaves=function(force)
+	{
+		var fav = Molpy.activeLayout.faves;
+		for(var i in fav)
+		{
+			var f = fav[i];
+			if(f.boost&&(f.boost.faveRefresh||force))
+			{
+				f.BoostToScreen();
+			}
+		}
+		for(var i in fav)
+		{
+			var f = fav[i];
+			if(f.boost&&f.boost.faveRefresh)
+			{
+				f.boost.faveRefresh=0;
+			}
+		}
 	}
 	
 	Molpy.oldBeachClass='';
@@ -1823,16 +1845,17 @@
 			var c='C'; //Comma
 			var pixels=str.split(c);
 			this.boost=(pixels[0]=='n'?0:Molpy.BoostsById[parseInt(pixels[0])||0]);
+			this.boost.faveRefresh=1;
 			this.vis=pixels[1]==true;
 			this.position={left:parseFloat(pixels[2]),top:parseFloat(pixels[3])};
 			this.size={width:parseFloat(pixels[4]),height:parseFloat(pixels[5])};			
 		}
 		this.ToScreen=function()
 		{
-			$('#sectionFave'+this.i).toggleClass('hidden',!this.vis);
 			$('#sectionFave'+this.i).css(this.position);
 			$('#sectionFaveBody'+this.i).css(this.size);
 			this.BoostToScreen();
+			$('#sectionFave'+this.i).toggleClass('hidden',!this.vis);
 		}
 		this.BoostToScreen=function()
 		{
@@ -1841,7 +1864,7 @@
 			{
 				g('optionFave'+n).text=this.boost.name;
 				g('faveHeader'+n).innerHTML=this.boost.GetHeading()+this.boost.GetFormattedName();
-				g('faveContent'+n).innerHTML=this.boost.GetDesc();
+				g('faveContent'+n).innerHTML=(this.boost.unlocked?this.boost.GetDesc():'This Boost is locked!');
 				g('sectionFave'+n).className='draggable-element table-wrapper '+this.boost.GetFullClass();
 			}else
 			{

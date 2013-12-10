@@ -1775,6 +1775,7 @@ Molpy.Up=function()
 					Molpy.BoostsOwned++;
 					Molpy.CheckBuyUnlocks();
 					Molpy.unlockedGroups[this.group]=1;
+					this.Refresh();
 					if(!Molpy.boostSilence&&sp+cp>0)
 					{
 						Molpy.ShowGroup(this.group,this.className);
@@ -1803,6 +1804,8 @@ Molpy.Up=function()
 			this.Refresh=function()
 			{
 				if(this.hovering||Molpy.Boosts['Expando'].power)this.hoverOnCounter=1;
+				
+				this.faveRefresh=1;
 			}
 			this.showdesc=function(keep)
 			{
@@ -1812,6 +1815,7 @@ Molpy.Up=function()
 					if(keep&&d.innerHTML)return;
 					d.innerHTML='<br>'+this.GetDesc();
 				}
+				this.faveRefresh=1;
 			}
 			this.GetDesc=function()
 			{
@@ -1832,7 +1836,7 @@ Molpy.Up=function()
 			this.GetBuy=function()
 			{
 				var buy= '';
-				if(!this.bought)
+				if(!this.bought&&this.unlocked)
 				{
 					buy='<br><a id="BoostBuy'+this.id+'" onclick="Molpy.BoostsById['+this.id+'].buy();">Buy</a>';
 					if(this.sandPrice||this.castlePrice||this.glassPrice)
@@ -1888,6 +1892,7 @@ Molpy.Up=function()
 							_gaq&&_gaq.push(['_trackEvent','Boost','Unlock',baby.name,true]);
 						}
 						if(baby.unlockFunction)baby.unlockFunction();
+						me.Refresh();
 						if(baby.name==Molpy.shoppingItem)
 							Molpy.Donkey();
 					}
@@ -1929,7 +1934,8 @@ Molpy.Up=function()
 						{
 							Molpy.BoostsOwned--;
 							me.bought=0;
-						} //Orteil did this bit wrong :P
+							me.Refresh();
+						}
 						if(!Molpy.boostSilence)
 						{
 							Molpy.Notify('Boost Locked: '+me.name,1);
