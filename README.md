@@ -26,6 +26,7 @@ For personal amusement only.
 
 ## 3.241
 - Prevent Faves that should be hidden from becoming unhidden (just had to move a line into a differnt function)
+- Wasn't taking Layouts from cookie when loading if localstorage available but empty: instead loaded no layout.
 
 ## 3.24
 - Redundakitty chain variables were not initialised to 0: showed up as mustard on a new game.

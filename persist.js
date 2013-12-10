@@ -254,17 +254,17 @@
 		var layouts=[];
 		for(var i=0;i<100;i++)
 		{
-		
+			var dough,thread;
 			if(Molpy.supportsLocalStorage)
 			{
-				var dough=localStorage['Layout'+i];
-				if(!dough)break;
-				var thread=unescape(dough);
-			}else{
+				dough=localStorage['Layout'+i];
+				if(dough) thread=unescape(dough);
+			}
+			if(!Molpy.supportsLocalStorage||!thread)
+			{
 				var cName='SBLayout'+i+'=';
-				var dough=document.cookie.split(cName)[1];
-				if(!dough)break;
-				var thread=Molpy.BeanishToCuegish(unescape(dough).split(';')[0]);
+				dough=document.cookie.split(cName)[1];
+				if(dough) thread=Molpy.BeanishToCuegish(unescape(dough).split(';')[0]);
 			}
 			if(!thread)break;
 			var loadedLayout=new Molpy.Layout({});
