@@ -2547,7 +2547,7 @@ Molpy.Up=function()
 				if(Molpy.Got('SGC'))
 				{
 					gift=Math.floor(Molpy.Boosts['GlassBlocks'].power/50);
-					Molpy.AddBlocks(gift*(twin+1));
+					Molpy.AddBlocks(gift*(twin+1),1);
 					if(Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
 				}
 			}

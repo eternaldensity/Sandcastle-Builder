@@ -26,6 +26,7 @@ For personal amusement only.
 
 ## 3.242
 - Advanced Temporal Duplication wasn't actually making more duplicates
+- SGC should now do Stretchable Storage stuff
 
 ## 3.241
 - Prevent Faves that should be hidden from becoming unhidden (just had to move a line into a differnt function)
