@@ -1577,7 +1577,7 @@
 		this.sizes=$.extend({},args.sizes);
 		if(!Molpy.noLayout)
 		{
-			this.faves=Molpy.EmptyFavePanels(20);
+			this.faves=Molpy.EmptyFavePanes(20);
 		}
 		
 		this.ToString=function()
@@ -1611,6 +1611,12 @@
 			{
 				var item=this.sizes[Molpy.sizableOrder[i]]
 				thread+=item.width+c+item.height+s;
+			}
+			thread+=p;
+			for(var i in this.faves)
+			{
+				var item=this.faves[i];
+				thread+=item.ToString()+s;
 			}
 			thread+=p;
 			
@@ -1659,6 +1665,18 @@
 				var pos = pixels[i].split(c);
 				this.sizes[Molpy.sizableOrder[i]]={width:parseFloat(pos[0]),height:parseFloat(pos[1])};
 			}	
+			if(threads[7]&&!noLayout)
+			{
+				this.faves=[];
+				pixels=threads[7].split(s);
+				for(var i in pixels)
+				{
+					if(!pixels[i])break;
+					var fav = new Molpy.FavePane(i);
+					fav.FromString(pixels[i]);
+					this.faves.push(fav);
+				}
+			}
 		}
 		
 		this.ToScreen=function()
@@ -1687,6 +1705,10 @@
 				var size = this.sizes[item];
 				$('#section'+item+'Body').css(size);
 			}
+			for(var i in this.faves)
+			{
+				this.faves[i].ToScreen();
+			}
 			Molpy.FixPaneWidths();
 		}
 		
@@ -1696,16 +1718,20 @@
 			this.sizes={};
 			for(var i in Molpy.draggableOrder)
 			{
-				var item = g('section'+Molpy.draggableOrder[i])
+				var item = g('section'+Molpy.draggableOrder[i]);
 				this.positions[Molpy.draggableOrder[i]]={left:parseFloat(item.style.left),top:parseFloat(item.style.top)};
 			}
 			for(var i in Molpy.sizableOrder)
 			{
-				var item = $('#section'+Molpy.sizableOrder[i]+'Body')
+				var item = $('#section'+Molpy.sizableOrder[i]+'Body');
 				this.sizes[Molpy.sizableOrder[i]]={width:item.width(),height:item.height()};
 			}
 			this.lootVis=$.extend({},Molpy.activeLayout.lootVis); //because the active layout's vis settings ARE the screen settings
 			this.boxVis=$.extend({},Molpy.activeLayout.boxVis);
+			for(var i in this.faves)
+			{
+				this.faves[i].FromScreen();
+			}
 		}
 		
 		this.Export=function()
@@ -1790,25 +1816,57 @@
 		return Molpy.activeLayout.boxVis['Stats'];
 	}
 	
-	Molpy.FavePanel=function(i)
+	Molpy.FavePane=function(i)
 	{
 		this.i=i;
 		this.boost=0;
 		this.vis=false;
 		this.position={left:0,top:0};
 		this.size={width:140,height:50};
+		
+		this.ToString=function()
+		{
+			var c='C'; //Comma
+			var id = 'n';
+			if(this.boost)id=''+this.boost.id;
+			return id+c+(this.vis?1:0)+c+(this.position.left||0)+c+(this.position.top||0)+c+(this.size.width||0)+c+(this.size.height||0);
+		}
+		this.FromString=function(str)
+		{
+			var c='C'; //Comma
+			var pixels=str.split(c);
+			this.vis=pixels[1]==true;
+			this.position={left:parseFloat(pixels[2]),top:parseFloat(pixels[3])};
+			this.size={width:parseFloat(pixels[4]),height:parseFloat(pixels[5])};			
+		}
+		this.ToScreen=function()
+		{
+			$('#sectionFave'+this.i).toggleClass('hidden',!this.vis);
+			$('#sectionFave'+this.i).css(this.position);
+			$('#sectionFaveBody'+this.i).css(this.size);
+		}
+		this.FromScreen=function()
+		{	
+			var item = g('sectionFave'+this.i);
+			this.position={left:parseFloat(item.style.left),top:parseFloat(item.style.top)};		
+		
+			var item = $('#sectionFaveBody'+this.i);
+			this.size={width:item.width(),height:item.height()};
+			
+			this.vis=Molpy.activeLayout.faves[this.i].vis; //because the active layout's vis settings ARE the screen settings
+		}
 	}
 	
-	Molpy.EmptyFavePanels=function(n)
+	Molpy.EmptyFavePanes=function(n)
 	{
 		var f=[];
 		for(var i = 0; i<n;i++)
 		{
-			f.push(new Molpy.FavePanel(n));
+			f.push(new Molpy.FavePane(i));
 		}
 		return f;
 	}
-	Molpy.MakeFavePanels=function()
+	Molpy.MakeFavePanes=function()
 	{
 		var str = '';
 		for(var i in Molpy.activeLayout.faves)
@@ -1816,7 +1874,7 @@
 			str+=
 			'<div id="sectionFave'+i+'" class="hidden draggable-element table-wrapper">\
 				<div class="table-header"></div>\
-				<div id="sectionFave'+i+'Body" class="table-content resizable-element">\
+				<div id="sectionFaveBody'+i+'" class="table-content resizable-element">\
 					<div id="faveContent'+i+'" class="table-content-wrapper">Fave '+i+'\
 					</div>\
 				</div>\
@@ -1840,7 +1898,7 @@
 	$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
 	Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
-		Molpy.MakeFavePanels();
+		Molpy.MakeFavePanes();
 	Molpy.activeLayout.ToScreen();
 	
 	Molpy.layouts=[];
