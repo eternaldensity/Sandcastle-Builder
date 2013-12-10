@@ -713,9 +713,9 @@
 		var c='C'; //Comma
 		var j=0;
 		if(version<2.3)
-			var pixels=thread[10].split(s);
+			var pixels=thread.split(s);
 		else
-			var pixels=thread[10].split('');
+			var pixels=thread.split('');
 		
 		
 		if(version<2.98)
