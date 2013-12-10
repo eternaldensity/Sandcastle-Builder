@@ -157,11 +157,12 @@
 	Molpy.ConfigureFave=function(n)
 	{
 		if(n==undefined)n=Molpy.selectedFave;
-		var f = Molpy.activeLayout.faves;
+		var f = Molpy.activeLayout.faves[n];
 		var def='Chromatic Heresy';
 		if(f.boost) def=f.boost.name;		
 		var name = prompt('Enter the name of the boost you wish to display as Favourite '+n+'.\nNames are case sensitive.\nLeave blank to disable.',def);
 		
+		if(name==undefined)return;
 		if(name)
 		{
 			item = Molpy.Boosts[name];
@@ -177,9 +178,14 @@
 				}else{
 					f.boost=item;
 					Molpy.Notify('You have chosen '+item.name+' as Favourite '+n,1);
+					g('optionFave'+n).text=item.name;
+					g('faveContent'+n).innerHTML=item.GetDesc();
 				}
 			}
-			
+		}else{
+			f.boost=0;
+			g('optionFave'+n).text=n+' (empty)';
+			g('faveContent'+n).innerHTML='Fave '+n;
 		}
 		
 	}

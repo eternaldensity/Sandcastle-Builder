@@ -1810,8 +1810,12 @@ Molpy.Up=function()
 				if(d)
 				{	
 					if(keep&&d.innerHTML)return;
-					d.innerHTML='<br>'+EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this);
+					d.innerHTML='<br>'+this.GetDesc();
 				}
+			}
+			this.GetDesc=function()
+			{
+				return EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this);
 			}
 			this.hidedesc=function()
 			{					
