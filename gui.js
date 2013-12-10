@@ -1855,7 +1855,6 @@
 			$('#sectionFave'+this.i).css(this.position);
 			$('#sectionFaveBody'+this.i).css(this.size);
 			this.BoostToScreen();
-			$('#sectionFave'+this.i).toggleClass('hidden',!this.vis);
 		}
 		this.BoostToScreen=function()
 		{
@@ -1871,9 +1870,9 @@
 				g('optionFave'+n).text=n+' (empty)';
 				g('faveHeader'+n).innerHTML='';
 				g('faveContent'+n).innerHTML='Fave '+n;
-				g('sectionFave'+n).className='draggable-element table-wrapper';
-				
+				g('sectionFave'+n).className='draggable-element table-wrapper';				
 			}
+			$('#sectionFave'+this.i).toggleClass('hidden',!this.vis);
 		}
 		this.FromScreen=function()
 		{	

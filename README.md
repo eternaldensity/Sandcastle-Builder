@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.241
+- Prevent Faves that should be hidden from becoming unhidden (just had to move a line into a differnt function)
+
 ## 3.24
 - Redundakitty chain variables were not initialised to 0: showed up as mustard on a new game.
 - Detect html5localstorage
