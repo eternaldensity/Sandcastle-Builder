@@ -1892,7 +1892,7 @@ Molpy.Up=function()
 							_gaq&&_gaq.push(['_trackEvent','Boost','Unlock',baby.name,true]);
 						}
 						if(baby.unlockFunction)baby.unlockFunction();
-						me.Refresh();
+						baby.Refresh();
 						if(baby.name==Molpy.shoppingItem)
 							Molpy.Donkey();
 					}
