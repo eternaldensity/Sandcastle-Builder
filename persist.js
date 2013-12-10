@@ -254,7 +254,7 @@
 		var layouts=[];
 		for(var i=0;i<100;i++)
 		{
-			var dough,thread;
+			var dough=thread='';
 			if(Molpy.supportsLocalStorage)
 			{
 				dough=localStorage['Layout'+i];
