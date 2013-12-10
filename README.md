@@ -27,6 +27,11 @@ For personal amusement only.
 ## 3.24
 - Redundakitty chain variables were not initialised to 0: showed up as mustard on a new game.
 - Detect html5localstorage
+- Save game to localStorage if it's present, otherwise use cookies
+- Load from localStorage if it's present, otherwise load from cookies
+- Save/load layouts using localStorage
+- When saving to localStorage, remove the 2 layouts limit. Also save the ID of the selected layout rather than always defaulting to the first one
+- Classic was missing the autosavelayout option, so I copied it over (I said Classic would be missing new features!)
 
 ## 3.234
 - Missed flagging some temp boosts: nav code and the glass switching statuses. (Now they should unstick if stuck)

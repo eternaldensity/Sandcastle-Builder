@@ -948,7 +948,7 @@
 			for(var i in Molpy.layouts)
 			{
 				var me = Molpy.layouts[i];
-				str+='<div class="minifloatbox layoutcontrol'+(me==Molpy.activeLayout?' depressed':'')+'"><a onclick="Molpy.layouts['+i+'].Activate()">'+me.name+'</a></div>'
+				str+='<div class="minifloatbox layoutcontrol'+(me===Molpy.activeLayout?' depressed':'')+'"><a onclick="Molpy.layouts['+i+'].Activate()">'+me.name+'</a></div>'
 			}
 			g('quickLayouts').innerHTML=str;
 		}

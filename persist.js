@@ -198,7 +198,7 @@
 		Molpy.BoostsFromString(pixels);
 		Molpy.BadgesFromString(localStorage['Badges'],version);
 		Molpy.OtherBadgesFromString(localStorage['OtherBadges'],version);
-		Molpy.PostLoadTasks(version);
+		return Molpy.PostLoadTasks(version);
 	}
 	
 	Molpy.layoutsLoaded=0;
@@ -208,10 +208,20 @@
 		for(var i in Molpy.layouts)
 		{
 			var thread=Molpy.layouts[i].ToString();
-			thread=Molpy.CuegishToBeanish(thread);
-			var dough='SBLayout'+i+'='+escape(thread)+'; expires='+Molpy.Flood()+';'
-			document.cookie=dough;
-			if(+i)break;
+			if(Molpy.supportsLocalStorage)
+			{
+				localStorage['Layout'+i]=escape(thread);
+				if(Molpy.activeLayout===Molpy.layouts[i])
+				{
+					localStorage['activeLayoutID']=''+i;
+				}
+			}else
+			{
+				thread=Molpy.CuegishToBeanish(thread);
+				var dough='SBLayout'+i+'='+escape(thread)+'; expires='+Molpy.Flood()+';'
+				document.cookie=dough;
+				if(+i)break;
+			}
 		}i++;
 		if(!noLayout)
 		{
@@ -221,9 +231,14 @@
 				Molpy.Notify(' Did not save '+(Molpy.layouts.length-i)+' layout'+plural(Molpy.layouts.length-i)+' to save on cookie space until that\'s fixed. You can export them manually.',1);
 			}
 		}
-		while(Molpy.layoutsLoaded>i)
+		while(Molpy.layoutsLoaded>i)//delete any extra if there are less than previously saved
 		{
-			document.cookie='SBLayout'+i+'=;'; //delete any extra if there are less than previously saved
+			if(Molpy.supportsLocalStorage)
+			{
+				localStorage.removeItem('Layout'+i);
+			}else{
+				document.cookie='SBLayout'+i+'=;'; 
+			}
 			i++;
 		}
 	}
@@ -241,10 +256,18 @@
 		var layouts=[];
 		for(var i=0;i<100;i++)
 		{
-			var cName='SBLayout'+i+'=';
-			var dough=document.cookie.split(cName)[1];
-			if(!dough)break;
-			var thread=Molpy.BeanishToCuegish(unescape(dough).split(';')[0]);
+		
+			if(Molpy.supportsLocalStorage)
+			{
+				var dough=localStorage['Layout'+i];
+				if(!dough)break;
+				var thread=unescape(dough);
+			}else{
+				var cName='SBLayout'+i+'=';
+				var dough=document.cookie.split(cName)[1];
+				if(!dough)break;
+				var thread=Molpy.BeanishToCuegish(unescape(dough).split(';')[0]);
+			}
 			if(!thread)break;
 			var loadedLayout=new Molpy.Layout({});
 			loadedLayout.FromString(thread);
@@ -254,11 +277,19 @@
 		{
 			Molpy.layoutsLoaded=i;
 			Molpy.layouts=layouts;
+			var active=0;
 			if(noLayout)
 			{
-				Molpy.layouts[0].boxVis={Clock:true,Timer:true,Beach:true,Shop:true,Inventory:true,SandTools:true,CastleTools:true,About:true,SandCounts:true,NPInfo:true};
+				Molpy.layouts[active].boxVis={Clock:true,Timer:true,Beach:true,Shop:true,Inventory:true,SandTools:true,CastleTools:true,About:true,SandCounts:true,NPInfo:true};
+			}else
+			{
+				if(Molpy.supportsLocalStorage)
+				{
+					active=parseInt(localStorage['activeLayoutID'])||0;
+					if(active<0||active>=Molpy.layouts.length)active=0;
+				}
 			}
-			Molpy.layouts[0].Activate();
+			Molpy.layouts[active].Activate();
 		}
 	}
 	
@@ -802,7 +833,7 @@
 		Molpy.BadgesFromString(thread[8]||'',version);
 		//thread[9] is unused
 		Molpy.OtherBadgesFromString(thread[10]||'',version);
-		Molpy.PostLoadTasks(version);
+		return Molpy.PostLoadTasks(version);
 	}
 	Molpy.PostLoadTasks=function(version)
 	{
@@ -839,6 +870,7 @@
 		Molpy.boostRepaint=1;
 		Molpy.badgeRepaint=1;
 		Molpy.judgeLevel=-1;
+		return 1;
 	}
 	
 	Molpy.UpgradeOldVersions=function(version)
