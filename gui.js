@@ -146,6 +146,22 @@
 		}
 	}
 	
+	Molpy.ToggleFave=function(n,val)
+	{
+		if(n==undefined)return;
+		var name='sectionFave'+n;
+		var f = Molpy.activeLayout.faves;
+		if(val==undefined)
+		{
+			f[n].vis=!f[n].vis;
+		}else
+		{
+			f[n].vis=val==true;//ensure boolean for jQuery
+		}
+		$('#'+name).toggleClass('hidden',!f[n].vis);
+		$('#toggleFave'+n).toggleClass('depressed',f[n].vis);
+	}
+	
 	Molpy.ToggleViews=function(views)
 	{
 		var primary = views[0];
