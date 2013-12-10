@@ -2494,16 +2494,18 @@ Molpy.Up=function()
 			if(Molpy.Got('GlassBlocks'))
 			{
 				var gift=1;
-				if(Molpy.Got('SGC'))gift+=Molpy.redactedClicks*Molpy.Boosts['Logicat'].bought;
 				if(Molpy.lGlass>0)
 				{
-					Molpy.lGlass-=gift/100;
+					Molpy.lGlass-=1;
 					Molpy.AddBlocks(gift*(twin+1));
-					if(gift>1&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
 				}else{
-					gift=Math.ceil(gift/100);
 					Molpy.AddChips(gift*(twin+1));				
-					if(gift>1&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Chips from '+Molpy.Boosts['SGC'].name,1);
+				}
+				if(Molpy.Got('SGC'))
+				{
+					gift=Math.floor(Molpy.Boosts['GlassBlocks'].power/50);
+					Molpy.AddBlocks(gift*(twin+1));
+					if(Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
 				}
 			}
 			
