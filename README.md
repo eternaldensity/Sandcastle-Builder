@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.242
+- Advanced Temporal Duplication wasn't actually making more duplicates
+
 ## 3.241
 - Prevent Faves that should be hidden from becoming unhidden (just had to move a line into a differnt function)
 - Wasn't taking Layouts from cookie when loading if localstorage available but empty: instead loaded no layout.

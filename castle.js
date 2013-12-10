@@ -1283,9 +1283,11 @@ Molpy.Up=function()
 				Molpy.SandToolsOwned+=n;
 				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))
 				{
-					this.amount+=n;
-					this.temp+=n;
-					Molpy.SandToolsOwned+=n;					
+					var tdf=Molpy.TDFactor()-1;
+					var dups=n*tdf;
+					this.amount+=dups;
+					this.temp+=dups;
+					Molpy.SandToolsOwned+=dups;				
 				}
 			}
 			this.sell=function()
@@ -1481,9 +1483,11 @@ Molpy.Up=function()
 				Molpy.CastleToolsOwned+=n;
 				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))
 				{
-					this.amount+=n;
-					this.temp+=n;
-					Molpy.CastleToolsOwned+=n;					
+					var tdf=Molpy.TDFactor()-1;
+					var dups=n*tdf;
+					this.amount+=dups;
+					this.temp+=dups;
+					Molpy.CastleToolsOwned+=dups;					
 				}			
 			}
 			this.sell=function()
