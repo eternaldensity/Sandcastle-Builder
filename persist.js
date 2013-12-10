@@ -319,7 +319,7 @@
 		}
 		if(thread=='Molpy')
 		{
-			Molpy.Notify(Molpy.BeanishToCuegish(BlitzGirl.ChallengeAccepted),1);	
+			Molpy.Notify(Molpy.BeanishToCuegish(Molpy.BlitzGirl.ChallengeAccepted),1);	
 			return;
 		}
 
@@ -328,7 +328,7 @@
 			_gaq&&_gaq.push(['_trackEvent','Import','Begin']);
 			Molpy.FromNeedlePulledThing(Molpy.BeanishToCuegish(thread));
 			_gaq&&_gaq.push(['_trackEvent','Import','Complete']);
-			Molpy.SaveC_STARSTAR_kie();
+			Molpy.Save();
 		}
 	}
 	
@@ -889,7 +889,7 @@
 			if(tt.bought&&tt.power!=1)
 			{
 				tt.power=1;
-				Molpy.Notify(Molpy.BeanishToCuegish(BlitzGirl.Apology),1);
+				Molpy.Notify(Molpy.BeanishToCuegish(Molpy.BlitzGirl.Apology),1);
 			}
 		}
 		if(version<2.8)

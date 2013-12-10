@@ -1319,7 +1319,7 @@
 		
 		if(Molpy.scrumptiousDonuts==1)
 		{
-			g('scrumptiousdonuts').innerHTML=Molpy.BeanishToCuegish('JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGR1U5Ukw2RDIzamslMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==');
+			g('scrumptiousdonuts').innerHTML=Molpy.BeanishToCuegish(Molpy.donuts[0]);
 		}else if(Molpy.scrumptiousDonuts==-1){
 			g('scrumptiousdonuts').innerHTML='';
 		}

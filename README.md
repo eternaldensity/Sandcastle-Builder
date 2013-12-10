@@ -32,6 +32,8 @@ For personal amusement only.
 - Save/load layouts using localStorage
 - When saving to localStorage, remove the 2 layouts limit. Also save the ID of the selected layout rather than always defaulting to the first one
 - Classic was missing the autosavelayout option, so I copied it over (I said Classic would be missing new features!)
+- Made Fireproof "better"
+- Moved scrumptious donuts, made them seaish
 
 ## 3.234
 - Missed flagging some temp boosts: nav code and the glass switching statuses. (Now they should unstick if stuck)

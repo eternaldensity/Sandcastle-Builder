@@ -1124,7 +1124,7 @@ Molpy.Up=function()
 				}
 				else if(judy==0)
 				{
-					if(Molpy.Boosts['NewPixBot Navigation Code'].power)
+					if(Molpy.Boosts['NavCode'].power)
 					{
 						Molpy.Notify('Your alterations to the navigation code have saved the day!',1);
 					}else{
@@ -2856,6 +2856,22 @@ Molpy.Up=function()
 			}
 		}
 		
+		Molpy.PerformJudgement();
+		Molpy.Donkey();
+		
+		if(Math.floor(Molpy.ONGelapsed/1000)%3==0)
+			Molpy.flashes=0;
+	}
+	
+	Molpy.PerformJudgement=function()
+	{
+	
+		if(Molpy.Got('Fireproof')&&Molpy.Got('NavCode')&& !Molpy.Boosts['NavCode'].power)
+		{
+			Molpy.castles=0;
+			return;
+		}	
+	
 		if(Molpy.judgeLevel>1 && Math.floor(Molpy.ONGelapsed/1000)%25==0)
 		{
 			var j = Molpy.JDestroyAmount();
@@ -2876,10 +2892,6 @@ Molpy.Up=function()
 					Molpy.Notify('By the NewpixBots');
 			}
 		}
-		Molpy.Donkey();
-		
-		if(Math.floor(Molpy.ONGelapsed/1000)%3==0)
-			Molpy.flashes=0;
 	}
 	
 	Molpy.CheckONG=function()
@@ -3025,7 +3037,7 @@ Molpy.Up=function()
 		if(Molpy.Got('SBTF'))
 		{
 		}
-		if(Molpy.Got('Bag Burning')&& !Molpy.Boosts['NewPixBot Navigation Code'].power)
+		if(Molpy.Got('Bag Burning')&& !Molpy.Boosts['NavCode'].power)
 		{
 			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshold+1 && flandom(36)==0)
 			{

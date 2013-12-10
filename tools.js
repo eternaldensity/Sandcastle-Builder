@@ -198,7 +198,7 @@ Molpy.DefineCastleTools=function()
 			baseval*=Math.pow(2,pow);
 			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 1'))baseval*=Molpy.GlassCeilingMult();
-			if(Molpy.Boosts['NewPixBot Navigation Code'].power)
+			if(Molpy.Boosts['NavCode'].power)
 				baseval=baseval*.001;
 			if(Molpy.Got('Frenchbot'))
 				baseval*=1e210;

@@ -94,7 +94,7 @@
 		desc:function()
 		{
 			var report=Molpy.JudgementDipReport();
-			if(Molpy.Boosts['NewPixBot Navigation Code'].power) return 'The Bots have been foiled by altered navigation code';
+			if(Molpy.Boosts['NavCode'].power) return 'The Bots have been foiled by altered navigation code';
 			var level = report[0];
 			var countdown = report[1];
 			if(!level) return 'Safe. For now.';
@@ -104,7 +104,7 @@
 		},vis:2,icon:'judgementdipwarning',classChange:function(){return Molpy.CheckJudgeClass(this,0,'alert');}});
 	Molpy.JudgementDipThreshold=function()
 	{
-		if(Molpy.Boosts['NewPixBot Navigation Code'].power) return [0,Infinity];
+		if(Molpy.Boosts['NavCode'].power) return [0,Infinity];
 		var baseVal= 500000000;
 		var div = 1;
 		for(var i in Molpy.Boosts)
@@ -230,16 +230,16 @@
 		if(level>12)
 		{
 			if(Molpy.Got('Big Splash')||Molpy.Got('Irregular Rivers'))
-				Molpy.Boosts['NewPixBot Navigation Code'].department=1;
+				Molpy.Boosts['NavCode'].department=1;
 			Molpy.EarnBadge('On the 12th Dip of Judgement');
 		}
 		if(level>30)
 		{
 			if(Molpy.Got('Flux Turbine'))
 			{
-				Molpy.Boosts['NewPixBot Navigation Code'].department=1;
-				Molpy.Boosts['NewPixBot Navigation Code'].sandPrice='33K';
-				Molpy.Boosts['NewPixBot Navigation Code'].castlePrice=7400;
+				Molpy.Boosts['NavCode'].department=1;
+				Molpy.Boosts['NavCode'].sandPrice='33K';
+				Molpy.Boosts['NavCode'].castlePrice=7400;
 			}
 		}
 	}
@@ -254,7 +254,7 @@
 	new Molpy.Badge({name:'Judgement Dip',
 		desc:function()
 		{
-			if(Molpy.Boosts['NewPixBot Navigation Code'].power) return 'The Bots have been foiled by altered navigation code';
+			if(Molpy.Boosts['NavCode'].power) return 'The Bots have been foiled by altered navigation code';
 			var j=Molpy.JDestroyAmount();
 			if(j<1) return 'Safe. For now.';
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+plural(j)+' each per mNP';			

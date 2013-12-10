@@ -434,7 +434,7 @@
 		if(!flandom(incursionFactor))
 		{
 			var npb=Molpy.CastleTools['NewPixBot'];
-			if(!Molpy.Boosts['NewPixBot Navigation Code'].power && npb.temp<30)
+			if(!Molpy.Boosts['NavCode'].power && npb.temp<30)
 			{
 				Molpy.Notify('You do not arrive alone');
 				npb.amount++;
@@ -590,7 +590,7 @@
 		+' you have.',sand:'8290M',castles:2222,icon:'irregularrivers',group:'cyb'});
 	
 	Molpy.scrumptiousDonuts=-1;
-	new Molpy.Boost({name:'NewPixBot Navigation Code',desc: 
+	new Molpy.Boost({name:'NewPixBot Navigation Code',alias:'NavCode',desc: 
 		function(me)
 		{
 			return 'thisAlgorithm. BecomingSkynetCost = 999999999 <input type="Button" onclick="Molpy.NavigationCodeToggle()" value="' +
@@ -608,17 +608,15 @@
 			Molpy.Notify('Experiencing Jamming, cannot access Navigation Code');
 			if(Molpy.scrumptiousDonuts<0)
 			{
-				Molpy.Notify('Things I will never do:');
 				Molpy.scrumptiousDonuts=120;
 			}
 			return;
 		}
-		var nc = Molpy.Boosts['NewPixBot Navigation Code'];
+		var nc = Molpy.Boosts['NavCode'];
 		if(!nc.bought)
 		{
 			if(Molpy.scrumptiousDonuts<0)
 			{
-				Molpy.Notify('Things I will never do:');
 				Molpy.scrumptiousDonuts=120;
 			}
 			return;
@@ -638,13 +636,17 @@
 		Molpy.scrumptiousDonuts=-1;
 		nc.Refresh();
 		Molpy.recalculateDig=1;
-		Molpy.GiveTempBoost('Jamming',1,2000);
+		Molpy.GiveTempBoost('Jamming',1);
 	}
 	new Molpy.Boost({name:'Jamming',desc:
 		function(me)
 		{		
 			return 'You cannot access NewPixBot Navigation Code for '+Molpify(me.countdown,3)+'mNP';
-		},className:'alert',group:'cyb',startCountdown:2000//dummy
+		},className:'alert',group:'cyb',startCountdown:function()
+		{
+			if(Molpy.Got('Fireproof'))return 20;
+			return 2000;
+		}
 		});	
 	
 	new Molpy.Boost({name:'Blixtnedslag Kattungar, JA!',alias:'BKJ',desc:'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.'
@@ -4061,7 +4063,7 @@
 		}
 	}
 	
-	new Molpy.Boost({name:'Fireproof',desc:'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make '+Molpify(1e10)+' times as many Glass Chips',sand:Infinity,castles:Infinity,glass:function(){return 8e9*Molpy.CastleTools['NewPixBot'].amount;},group:'cyb'}); //www.youtube.com/watch?v=84q0SXW781c
+	new Molpy.Boost({name:'Fireproof',desc:'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make '+Molpify(1e10)+' times as many Glass Chips.<br>However they will destroy all your castles every mNP if the Navigation Code hack is not installed.<br>On the plus side, you can overcome Jamming far quicker.',sand:Infinity,castles:Infinity,glass:function(){return 8e9*Molpy.CastleTools['NewPixBot'].amount;},group:'cyb'}); //www.youtube.com/watch?v=84q0SXW781c
 	
 	new Molpy.Boost({name:'Ninja Ninja Duck',desc:'Ninja Stealth is raised by 10x as much'
 		,sand:Infinity,castles:Infinity,glass:'230Z',group:'ninj',icon:'ninjaduck'});
