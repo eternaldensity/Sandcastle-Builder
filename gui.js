@@ -151,7 +151,7 @@
 	{
 		Molpy.selectedFave=f.options[f.selectedIndex].value;
 		$('#faveControls').toggleClass('hidden',Molpy.selectedFave=='None');	
-		$('#toggleFave').toggleClass('depressed',f[Molpy.selectedFave].vis==true);	
+		$('#toggleFave').toggleClass('depressed',Molpy.activeLayout.faves[Molpy.selectedFave].vis==true);	
 	}
 	
 	Molpy.ConfigureFave=function(n)
@@ -178,16 +178,12 @@
 				}else{
 					f.boost=item;
 					Molpy.Notify('You have chosen '+item.name+' as Favourite '+n,1);
-					g('optionFave'+n).text=item.name;
-					g('faveContent'+n).innerHTML=item.GetDesc();
 				}
 			}
 		}else{
 			f.boost=0;
-			g('optionFave'+n).text=n+' (empty)';
-			g('faveContent'+n).innerHTML='Fave '+n;
-		}
-		
+		}		
+		f.BoostToScreen();
 	}
 	
 	Molpy.ToggleFave=function(n,val)
@@ -681,7 +677,6 @@
 	//r = redacted index
 	Molpy.BoostString=function(me,f,r)
 	{		
-		var cn= me.className||'';
 		var group= me.group;
 		if(r)
 		{
@@ -692,28 +687,14 @@
 		}
 		
 		if(!(Molpy.activeLayout.lootVis[group]||f))return'';
-		if(cn)Molpy.UnlockBoost('Chromatic Heresy');
+		if(me.className)Molpy.UnlockBoost('Chromatic Heresy');		
 		
-		
-		cn = r+'<div class="boost '+(me.bought?'lootbox loot ':'floatbox shop ')+cn;
-		var heading= '<h1>['+Molpy.groupNames[group][0]+']</h1>';
-		var buy= '';
-		if(!me.bought)
-		{
-			buy='<br><a id="BoostBuy'+me.id+'" onclick="Molpy.BoostsById['+me.id+'].buy();">Buy</a>';
-			if(me.sandPrice||me.castlePrice||me.glassPrice)
-			{
-				buy+='<div class="price"> Price: ';
-				if(me.sandPrice) buy +=Molpy.FormatPrice(me.sandPrice,me)+' Sand '+(me.castlePrice||me.glassPrice?'+ ':'');
-				if(me.castlePrice) buy +=Molpy.FormatPrice(me.castlePrice,me)+' Castle'+plural(Molpy.FormatPrice(me.castlePrice,me))+' '+(me.glassPrice?'+ ':'');
-				if(me.glassPrice) buy +=Molpy.FormatPrice(me.glassPrice,me)+' Glass Block'+plural(Molpy.FormatPrice(me.glassPrice));
-				buy+='</div>';
-			}
-		}
+		var cn = r+'<div class="'+me.GetFullClass();
+
 		if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
 		
 		return cn+'" onMouseOver="Molpy.Onhover(Molpy.BoostsById['+me.id+'],event)" onMouseOut="Molpy.Onunhover(Molpy.BoostsById['+me.id
-			+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+heading+'<h2>'+format(me.name)+buy+'</h2>'
+			+'],event)"><div id="boost_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+me.GetHeading()+me.GetFormattedName()
 			+'<div class="'+Molpy.DescClass(me)+'" id="BoostDescription'+me.id+'"></div></div></div>';
 	}
 	
@@ -1841,6 +1822,7 @@
 		{
 			var c='C'; //Comma
 			var pixels=str.split(c);
+			this.boost=(pixels[0]=='n'?0:Molpy.BoostsById[parseInt(pixels[0])||0]);
 			this.vis=pixels[1]==true;
 			this.position={left:parseFloat(pixels[2]),top:parseFloat(pixels[3])};
 			this.size={width:parseFloat(pixels[4]),height:parseFloat(pixels[5])};			
@@ -1850,6 +1832,25 @@
 			$('#sectionFave'+this.i).toggleClass('hidden',!this.vis);
 			$('#sectionFave'+this.i).css(this.position);
 			$('#sectionFaveBody'+this.i).css(this.size);
+			this.BoostToScreen();
+		}
+		this.BoostToScreen=function()
+		{
+			var n = this.i;
+			if(this.boost)
+			{
+				g('optionFave'+n).text=this.boost.name;
+				g('faveHeader'+n).innerHTML=this.boost.GetHeading()+this.boost.GetFormattedName();
+				g('faveContent'+n).innerHTML=this.boost.GetDesc();
+				g('sectionFave'+n).className='draggable-element table-wrapper '+this.boost.GetFullClass();
+			}else
+			{
+				g('optionFave'+n).text=n+' (empty)';
+				g('faveHeader'+n).innerHTML='';
+				g('faveContent'+n).innerHTML='Fave '+n;
+				g('sectionFave'+n).className='draggable-element table-wrapper';
+				
+			}
 		}
 		this.FromScreen=function()
 		{	
@@ -1879,7 +1880,7 @@
 		{
 			str+=
 			'<div id="sectionFave'+i+'" class="hidden draggable-element table-wrapper">\
-				<div class="table-header"></div>\
+				<div id="faveHeader'+i+'" class="table-header"></div>\
 				<div id="sectionFaveBody'+i+'" class="table-content resizable-element">\
 					<div id="faveContent'+i+'" class="table-content-wrapper">Fave '+i+'\
 					</div>\
@@ -1895,31 +1896,32 @@
 		}
 		if(str)g('selectFave').innerHTML='<option>None</option>'+str;
 	}
-	
-	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
-	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves'];
-	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
-	Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
-	$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);
-	$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
-	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
-	Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
-		Molpy.MakeFavePanes();
-	Molpy.activeLayout.ToScreen();
-	
-	Molpy.layouts=[];
-	Molpy.layouts.push(Molpy.activeLayout);
-	if(!noLayout)
+	Molpy.InitGUI=function()
 	{
-		Molpy.layouts.push(new Molpy.Layout({}));
-		Molpy.layouts[1].FromString(Molpy.defaultLayoutData2);
-		Molpy.LoadLayouts();
-		$('.resizable-element').resizable({cancel:'.editlock'});
-		$('.draggable-element').draggable({cancel:'.editlock',scroll:true,grid:[10,10],snap:true});	
-		Molpy.LockLayoutToggle();
-	}else{
-		Molpy.layoutLocked=true;
+		Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
+		Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves'];
+		Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
+		Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
+		$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);
+		$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
+		Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
+		Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
+			Molpy.MakeFavePanes();
+		Molpy.activeLayout.ToScreen();
+		
+		Molpy.layouts=[];
+		Molpy.layouts.push(Molpy.activeLayout);
+		if(!noLayout)
+		{
+			Molpy.layouts.push(new Molpy.Layout({}));
+			Molpy.layouts[1].FromString(Molpy.defaultLayoutData2);
+			Molpy.LoadLayouts();
+			$('.resizable-element').resizable({cancel:'.editlock'});
+			$('.draggable-element').draggable({cancel:'.editlock',scroll:true,grid:[10,10],snap:true});	
+			Molpy.LockLayoutToggle();
+		}else{
+			Molpy.layoutLocked=true;
+		}
 	}
-	
 	
 }

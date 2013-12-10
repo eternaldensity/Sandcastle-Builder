@@ -175,7 +175,6 @@
 	
 	Molpy.LoadLocalStorage=function()
 	{
-	
 		Molpy.needlePulling=1; //prevent earning badges that haven't been loaded
 		var version = parseFloat(localStorage['version']);
 		if(!Molpy.ValidateVersion(version))return;
@@ -194,8 +193,7 @@
 		Molpy.GamenumsFromString(localStorage['Gamenums']);	
 		Molpy.SandToolsFromString(localStorage['SandTools']);
 		Molpy.CastleToolsFromString(localStorage['CastleTools'],version);
-		pixels=localStorage['Boosts'];
-		Molpy.BoostsFromString(pixels);
+		Molpy.BoostsFromString(localStorage['Boosts']);
 		Molpy.BadgesFromString(localStorage['Badges'],version);
 		Molpy.OtherBadgesFromString(localStorage['OtherBadges'],version);
 		return Molpy.PostLoadTasks(version);

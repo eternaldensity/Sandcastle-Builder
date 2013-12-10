@@ -1817,6 +1817,35 @@ Molpy.Up=function()
 			{
 				return EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this);
 			}
+			this.GetFullClass=function()
+			{
+				return 'boost '+(this.bought?'lootbox loot ':'floatbox shop ')+(this.className||'');
+			}
+			this.GetHeading=function()
+			{
+				return '<h1>['+Molpy.groupNames[this.group][0]+']</h1>';
+			}
+			this.GetFormattedName=function()
+			{
+				return '<h2>'+format(this.name)+this.GetBuy()+'</h2>'
+			}
+			this.GetBuy=function()
+			{
+				var buy= '';
+				if(!this.bought)
+				{
+					buy='<br><a id="BoostBuy'+this.id+'" onclick="Molpy.BoostsById['+this.id+'].buy();">Buy</a>';
+					if(this.sandPrice||this.castlePrice||this.glassPrice)
+					{
+						buy+='<div class="price"> Price: ';
+						if(this.sandPrice) buy +=Molpy.FormatPrice(this.sandPrice,this)+' Sand '+(this.castlePrice||this.glassPrice?'+ ':'');
+						if(this.castlePrice) buy +=Molpy.FormatPrice(this.castlePrice,this)+' Castle'+plural(Molpy.FormatPrice(this.castlePrice,this))+' '+(this.glassPrice?'+ ':'');
+						if(this.glassPrice) buy +=Molpy.FormatPrice(this.glassPrice,this)+' Glass Block'+plural(Molpy.FormatPrice(this.glassPrice));
+						buy+='</div>';
+					}
+				}
+				return buy;
+			}
 			this.hidedesc=function()
 			{					
 				var d=g('BoostDescription'+this.id);
@@ -2653,6 +2682,7 @@ Molpy.Up=function()
 		Molpy.DefineCastleTools();
 		Molpy.DefineBoosts();
 		Molpy.DefineBadges();		
+		Molpy.InitGUI();		
 		
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();

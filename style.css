@@ -236,45 +236,6 @@ a:active
 	-o-transform:scale(-0.98,0.98);opacity:1;
 	transform:scale(-0.98,0.98);opacity:1;
 }
-.resizable-element
-{
-	min-width:60px;
-	min-height:60px;
-}
-.draggable-element
-{
-	position:absolute;
-	border-width: 1px;
-	border-style: solid;
-}
-.editlock
-{
-	border-style: none;
-}
-.table-wrapper
-{
-	overflow:hidden;
-	width:auto;
-	height:auto;
-}
-.table-header /*probably don't need this after all but might as well keep it on the relevant elements just in case*/
-{
-}
-.table-footer
-{
-}
-.table-content-wrapper
-{
-    height: 100%;
-    width: 100%;
-	overflow-y:auto;
-	overflow-x:hidden;
-}
-.table-content
-{
-    height: 100%; 
-    width: 100%;
-}
 
 .beachninjawarning
 {
@@ -535,6 +496,46 @@ body.lightscheme .floatbox:hover{
 	text-align:center;
 	width:161px;
 	margin:10px;
+}
+
+.resizable-element
+{
+	min-width:60px;
+	min-height:60px;
+}
+.draggable-element
+{
+	position:absolute;
+	border-width: 1px;
+	border-style: solid;
+}
+.editlock
+{
+	border-style: none;
+}
+.table-wrapper
+{
+	overflow:hidden;
+	width:auto;
+	height:auto;
+}
+.table-header /*probably don't need this after all but might as well keep it on the relevant elements just in case*/
+{
+}
+.table-footer
+{
+}
+.table-content-wrapper
+{
+    height: 100%;
+    width: 100%;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+.table-content
+{
+    height: 100%; 
+    width: 100%;
 }
 .depressed
 {
