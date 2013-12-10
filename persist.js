@@ -167,7 +167,7 @@
 			Molpy.FromNeedlePulledThing(thread);
 		}else
 		{
-			Molpy.Notify('No saved cookies were found');
+			Molpy.Notify&&Molpy.Notify('No saved cookies were found');
 			return 0;
 		}
 		return 1;
@@ -283,6 +283,7 @@
 				Molpy.layouts[active].boxVis={Clock:true,Timer:true,Beach:true,Shop:true,Inventory:true,SandTools:true,CastleTools:true,About:true,SandCounts:true,NPInfo:true};
 			}else
 			{
+				Molpy.layouts[active].boxVis.View=true;
 				if(Molpy.supportsLocalStorage)
 				{
 					active=parseInt(localStorage['activeLayoutID'])||0;

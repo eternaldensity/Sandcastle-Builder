@@ -444,7 +444,7 @@
 	
 	if(!g('game'))
 	{
-		Molpy.LoadC_STARSTAR_kie();
+		Molpy.Load();
 		g('indexversion').innerHTML='The Game of Time. Version '+Molpy.version;
 		return;
 	}
@@ -487,7 +487,7 @@
 				+(Molpy.redactedVisible==5&& Molpy.redactedGr=='badges'?'redacted':'')
 				+'"></div></div>';
 		}
-		var groups = ['discov','monums','monumg'];
+		var groups = ['discov','monums','monumg','diamm'];
 		for(var i in groups)
 		{
 			str +=Molpy.PaintLootToggle(groups[i],5);
@@ -1512,7 +1512,7 @@
 		var size=Molpy.layoutGrid?10:1;
 		$('.draggable-element').draggable('option','grid',[size,size])
 	}
-	
+		
 	Molpy.Layout=function(args)
 	{
 		this.name=args.name||'';
@@ -1520,6 +1520,10 @@
 		this.boxVis=$.extend({},args.boxVis);
 		this.positions=$.extend({},args.positions);
 		this.sizes=$.extend({},args.sizes);
+		if(!Molpy.noLayout)
+		{
+			this.faves=Molpy.EmptyFavePanels(20);
+		}
 		
 		this.ToString=function()
 		{
@@ -1731,6 +1735,41 @@
 		return Molpy.activeLayout.boxVis['Stats'];
 	}
 	
+	Molpy.FavePanel=function(i)
+	{
+		this.i=i;
+		this.boost=0;
+		this.vis=false;
+		this.position={left:0,top:0};
+		this.size={width:140,height:50};
+	}
+	
+	Molpy.EmptyFavePanels=function(n)
+	{
+		var f=[];
+		for(var i = 0; i<n;i++)
+		{
+			f.push(new Molpy.FavePanel(n));
+		}
+		return f;
+	}
+	Molpy.MakeFavePanels=function()
+	{
+		var str = '';
+		for(var i in Molpy.activeLayout.faves)
+		{
+			str+=
+			'<div id="sectionFave'+i+'" class="hidden draggable-element table-wrapper">\
+				<div class="table-header"></div>\
+				<div id="sectionFave'+i+'Body" class="table-content resizable-element">\
+				<div id="faveContent'+i+'" class="table-content-wrapper">\
+				</div>\
+			</div>\
+		</div>';
+		}
+		if(str)g('sectionFavePanes').innerHTML=str;
+	}
+	
 	Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
 	Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts'];
 	Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout'];
@@ -1739,6 +1778,7 @@
 	$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 	Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
 	Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
+		Molpy.MakeFavePanels();
 	Molpy.activeLayout.ToScreen();
 	
 	Molpy.layouts=[];

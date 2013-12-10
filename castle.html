@@ -307,41 +307,6 @@
 				</div>
 			</div>
 		</div>
-		<div id="sectionLayouts" class="hidden draggable-element table-wrapper">
-			<div class="table-header">Layouts</div>		
-			<div class="table-header layoutcontrols">			
-				<div class="minifloatbox">
-					<a onclick="Molpy.LoadLayouts()">Load Layouts</a>
-				</div>
-				<div class="minifloatbox">
-					<a onclick="Molpy.SaveLayouts()">Save Layouts</a>
-				</div>	
-				<div id="toggleLockLayout" class="minifloatbox">
-					<a onclick="Molpy.LockLayoutToggle()">Lock Layout</a>
-				</div>
-				<div id="toggleSnap" class="minifloatbox depressed">
-					<a onclick="Molpy.SnapLayoutToggle()">Snap to Panes</a>
-				</div>
-				<div id="toggleGrid" class="minifloatbox depressed">
-					<a onclick="Molpy.GridLayoutToggle()">Snap to Grid</a>
-				</div>
-			</div>
-			<div id="sectionLayoutsBody" class="table-content resizable-element">
-				<div id="layouts" class="table-content-wrapper">
-				</div>
-			</div>
-			<div class="table-footer layoutcontrols">			
-				<div class="minifloatbox">
-					<a onclick="Molpy.NewLayout()">New From Screen</a>
-				</div>
-				<div class="minifloatbox">
-					<a onclick="Molpy.ImportLayout()">Import New</a>
-				</div>
-				<div id="toggleQuickLayout" class="minifloatbox">
-					<a onclick="Molpy.ToggleView('QuickLayout')">Show Quick-Change</a>
-				</div>	
-			</div>
-		</div>
 		<div id="sectionQuickLayout" class="hidden draggable-element table-wrapper">
 			<div id="sectionQuickLayoutBody" class="table-content resizable-element">
 				<div id="quickLayouts" class="table-content-wrapper">
@@ -405,6 +370,53 @@
 			<div id="sectionExportBody" class="table-content resizable-element">
 				<textarea onkeydown=Molpy.KeyDown id="exporttext" class="table-content-wrapper">
 				</textarea>
+			</div>
+		</div>
+		<div id="sectionFaves" class="hidden draggable-element table-wrapper">
+			<div class="table-header">Favourites</div>		
+			<div class="table-header favecontrols">			
+			</div>
+			<div id="sectionFavesBody" class="table-content resizable-element">
+				<div id="faves" class="table-content-wrapper">
+				</div>
+			</div>
+		</div>
+		<div id="sectionFavePanes">
+		</div>
+		
+		<div id="sectionLayouts" class="hidden draggable-element table-wrapper">
+			<div class="table-header">Layouts</div>		
+			<div class="table-header layoutcontrols">			
+				<div class="minifloatbox">
+					<a onclick="Molpy.LoadLayouts()">Load Layouts</a>
+				</div>
+				<div class="minifloatbox">
+					<a onclick="Molpy.SaveLayouts()">Save Layouts</a>
+				</div>	
+				<div id="toggleLockLayout" class="minifloatbox">
+					<a onclick="Molpy.LockLayoutToggle()">Lock Layout</a>
+				</div>
+				<div id="toggleSnap" class="minifloatbox depressed">
+					<a onclick="Molpy.SnapLayoutToggle()">Snap to Panes</a>
+				</div>
+				<div id="toggleGrid" class="minifloatbox depressed">
+					<a onclick="Molpy.GridLayoutToggle()">Snap to Grid</a>
+				</div>
+			</div>
+			<div id="sectionLayoutsBody" class="table-content resizable-element">
+				<div id="layouts" class="table-content-wrapper">
+				</div>
+			</div>
+			<div class="table-footer layoutcontrols">			
+				<div class="minifloatbox">
+					<a onclick="Molpy.NewLayout()">New From Screen</a>
+				</div>
+				<div class="minifloatbox">
+					<a onclick="Molpy.ImportLayout()">Import New</a>
+				</div>
+				<div id="toggleQuickLayout" class="minifloatbox">
+					<a onclick="Molpy.ToggleView('QuickLayout')">Show Quick-Change</a>
+				</div>	
 			</div>
 		</div>
 		<div id="sectionSandCounts" class="hidden floatbox infobox draggable-element">

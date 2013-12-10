@@ -34,7 +34,8 @@ For personal amusement only.
 - Classic was missing the autosavelayout option, so I copied it over (I said Classic would be missing new features!)
 - Made Fireproof "better"
 - Moved scrumptious donuts, made them seaish
--  Schrödinger's Gingercat produces a relevant amount of glass rather than a negligible amount
+- Schrödinger's Gingercat produces a relevant amount of glass rather than a negligible amount
+- Ensure View pane is visible if you go to Layout after using Classic
 
 ## 3.234
 - Missed flagging some temp boosts: nav code and the glass switching statuses. (Now they should unstick if stuck)
