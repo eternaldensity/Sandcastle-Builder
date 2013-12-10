@@ -1158,6 +1158,10 @@ Molpy.Up=function()
 			{
 				multiplier*=Molpy.Boosts['GL'].power/100;
 			}
+			if(Molpy.Got('CFT')
+			{
+				multiplier*=Molpy.globalCastleMult;
+			}
 			
 			Molpy.globalGpmNPMult=multiplier;
 			Molpy.glassPermNP*=Molpy.globalGpmNPMult;	

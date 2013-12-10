@@ -2523,6 +2523,7 @@
 			if(!Molpy.Boosts[print].unlocked)
 			{
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return 0;
+				if(print=='CTF'&&!Molpy.Earned('Minus Worlds')) continue;
 				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
 			}
 		}
@@ -2539,6 +2540,7 @@
 			if(!Molpy.Boosts[print].unlocked)
 			{				
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return;
+				if(print=='CTF'&&!Molpy.Earned('Minus Worlds')) continue;
 				if(pages>=Molpy.blackprintCosts[print])
 					return print;
 				return;
@@ -2591,17 +2593,15 @@
 	{
 		Molpy.Boosts['Blackprints'].department=0;
 		var pages = Molpy.Boosts['Blackprints'].power;
-		if(!pages)return;
-		for(var i in Molpy.blackprintOrder)
+		var print=Molpy.GetBlackprintSubject(1);
+		if(!print)return;
+		var pboost=Molpy.Boosts[print];
+		if(!pboost.unlocked)
 		{
-			var print=Molpy.blackprintOrder[i];
-			var pboost=Molpy.Boosts[print];
-			if(!pboost.unlocked)
-			{
-				 Molpy.Boosts['Blackprints'].department=1*(pages>=Molpy.blackprintCosts[print]); 
-				 return;
-			}
+			 Molpy.Boosts['Blackprints'].department=1*(pages>=Molpy.blackprintCosts[print]); 
+			 return;
 		}
+		
 	}
 	Molpy.StartBlackprintConstruction=function()
 	{
@@ -2646,8 +2646,8 @@
 		},
 		className:'alert',group:'bean',icon:'constructblack'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:120,ZK:180};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','Bacon','AO','AA','SG','AE','Milo','ZK'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:120,ZK:180,CFT:40000};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','Bacon','AO','AA','SG','AE','Milo','ZK','CFT'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',alias:'SMM',desc:
 		function(me)
@@ -4157,6 +4157,8 @@
 	new Molpy.Boost({name:'Dragon Foundry',desc:'Glassed Lightning multiplies Crystal Dragon',sand:Infinity,castles:Infinity,glass:'70WW',group:'drac'});
 	new Molpy.Boost({name:'Lucky Twin',desc:'When you are awarded Not Lucky during Temporal Duplication, the countdown is increased by 20%',sand:Infinity,castles:Infinity,glass:'70H'});
 	new Molpy.Boost({name:'Beret Guy',desc:'You may choose to take a revealed Goat',stats:'...and my yard has so much grass, and I\'ll teach you tricks, and...',glass:'20T'});
+	
+	new Molpy.Boost({name:'Crystal Flux Turbine',alias:'CFT',desc:'The Flux Turbine bonus is applied to Glass Sand Tools',glass:'6.05GW',group:'chron'});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={

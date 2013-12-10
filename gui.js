@@ -264,6 +264,7 @@
 		Molpy.shopRepaint=1;
 		Molpy.boostRepaint=1;
 		Molpy.badgeRepaint=1;
+		Molpy.UpdateFaves(1);
 	}
 	Molpy.CleanupStats=Molpy.RefreshStats;
 	
