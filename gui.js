@@ -1929,6 +1929,7 @@
 		$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 		Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
 		Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
+		if(!noLayout)
 			Molpy.MakeFavePanes();
 		Molpy.activeLayout.ToScreen();
 		

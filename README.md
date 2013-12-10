@@ -37,6 +37,7 @@ For personal amusement only.
 - Schrödinger's Gingercat produces a relevant amount of glass rather than a negligible amount
 - Ensure View pane is visible if you go to Layout after using Classic
 - Favourites. Still has a few width-related glitches on boosts that lock and reunlock, but it works pretty well for most stuff.
+- Un-broke classic: looks like I somehow deleted a critical line.
 
 ## 3.234
 - Missed flagging some temp boosts: nav code and the glass switching statuses. (Now they should unstick if stuck)
