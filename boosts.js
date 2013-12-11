@@ -2146,7 +2146,7 @@
 	});
 	new Molpy.Boost({name:'Temporal Duplication',desc:
 		function(me){return 'For '+Molpify(me.countdown)+'mNP, when you buy tools, get the same amount again for free!';}
-		,group:'chron',className:'alert',logic:1,
+		,group:'chron',className:'alert',logic:50,
 		startCountdown:function()
 		{
 			return 5*(1+Molpy.Got('Crystal Dragon'));

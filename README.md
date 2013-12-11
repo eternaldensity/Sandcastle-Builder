@@ -31,6 +31,7 @@ For personal amusement only.
 - Prevent refreshing a fave from making it sometimes draggable when it shouldn't be
 - When loading a layout without faves, avoid getting stuck with just 1 fave.
 - Now allow up to 40 faves.
+- Temporal Duplication not available so early now
 
 ## 3.242
 - Advanced Temporal Duplication wasn't actually making more duplicates
