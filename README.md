@@ -32,6 +32,7 @@ For personal amusement only.
 - New Flux related boost
 - Tool rates for sand and glass are shown with more decimal places if <10
 - Refresh a lot of boosts that weren't beign refreshed. (for Faves)
+- Fixed a bunch of places that were still altering glass amounts directly rather than using the functions (thus not refreshing)
 
 ## 3.241
 - Prevent Faves that should be hidden from becoming unhidden (just had to move a line into a differnt function)

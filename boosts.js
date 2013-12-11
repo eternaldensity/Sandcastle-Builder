@@ -1172,15 +1172,13 @@
 	});
 	Molpy.UpgradeSandRefinery=function(n)
 	{
-		var ch = Molpy.Boosts['GlassChips'];
-		var bl = Molpy.Boosts['GlassBlocks'];
 		if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()*n))
 		{
 			var chipCost = (n<20?n*3:n*2.5);
 			var blockCost = (n<20?n:n*.9);
-			if(ch.power>=chipCost)
+			if(Molpy.HasGlassChips(chipCost))
 			{
-				ch.power-=chipCost;
+				Molpy.SpendGlassChips(chipCost);
 			}
 			else if(Molpy.HasGlassBlocks(blockCost))
 			{
@@ -1197,7 +1195,6 @@
 	Molpy.DowngradeSandRefinery=function()
 	{
 		var sr = Molpy.Boosts['Sand Refinery'];
-		var ch = Molpy.Boosts['GlassChips'];
 		if(sr.power<1)return;
 		Molpy.AddChips(1);
 		sr.power--;
@@ -1278,14 +1275,13 @@
 	});
 	Molpy.UpgradeChipStorage=function(n)
 	{
-		var ch = Molpy.Boosts['GlassChips'];
 		var cost = n*5
 		if(n>=10)cost*=.9;
-		if(ch.power>=cost)
+		if(Molpy.HasGlassChips(cost))
 		{
-			ch.power-=cost;
+			var ch = Molpy.Boosts['GlassChips'];
+			Molpy.SpendGlassChips(cost);
 			ch.bought+=n;
-			ch.Refresh();
 			Molpy.Notify('Glass Chip Storage upgraded',1);
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',ch.name]);	
 		}
@@ -1366,8 +1362,7 @@
 		function(me)
 		{		
 			var str='';
-			var bl = Molpy.Boosts['GlassBlocks'];
-			if(bl.power>=5)
+			if(Molpy.HasGlassBlocks(5))
 			{
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
 				{
@@ -1393,7 +1388,7 @@
 			}else
 				str+= 'It costs 5 Blocks to upgrade the Glass Blower\'s speed';
 			
-			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.HasGlassBlocks(bl.bought*50))
+			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.HasGlassBlocks(Molpy.Boosts['GlassBlocks'].bought*50))
 			{
 				str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeGlassChiller()"></input> the Glass Chiller (by 1) and receive a 1 Glass Block refund.';
 			}
@@ -1402,14 +1397,12 @@
 	});
 	Molpy.UpgradeGlassChiller=function(n)
 	{
-		var bl = Molpy.Boosts['GlassBlocks'];
 		var unitCost=5;
 		if(n>10) unitCost*=.9;
-		if(bl.power>=unitCost*n && Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*n))
+		if(Molpy.HasGlassBlocks(unitCost*n) && Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*n))
 		{
-			bl.power-=unitCost*n;
+			Molpy.SpendGlassBlocks(unitCost*n);
 			Molpy.Boosts['Glass Chiller'].power+=n;
-			Molpy.Boosts['Glass Chiller'].Refresh();
 			Molpy.Notify('Glass Chiller upgraded',1);
 			Molpy.recalculateDig=1;
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade','Glass Chiller']);	
@@ -1418,7 +1411,6 @@
 	Molpy.DowngradeGlassChiller=function()
 	{
 		var gc = Molpy.Boosts['Glass Chiller'];
-		var bl = Molpy.Boosts['GlassBlocks'];
 		if(gc.power<1)return;
 		Molpy.AddBlocks(1);
 		gc.power--;
@@ -1491,14 +1483,13 @@
 	});
 	Molpy.UpgradeBlockStorage=function(n)
 	{
-		var bl = Molpy.Boosts['GlassBlocks'];
 		var cost=n*15;
 		if(n>=10)cost*=.9;
 		if(Molpy.HasGlassBlocks(cost))
 		{
+			var bl = Molpy.Boosts['GlassBlocks'];
 			Molpy.SpendGlassBlocks(cost);
 			bl.bought+=n;
-			bl.Refresh();
 			Molpy.Notify('Glass Block Storage upgraded',1);
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',bl.name]);	
 		}
@@ -1546,54 +1537,54 @@
   Molpy.SeaishSandPurifier=function()
     {
         var bl = Molpy.Boosts['GlassBlocks'];
-    var a = 5; // the step size in prices
-    var b = 2*Molpy.SandPurifierUpgradeCost() - a;
-    var c = -2*bl.power*.99;
+		var a = 5; // the step size in prices
+		var b = 2*Molpy.SandPurifierUpgradeCost() - a;
+		var c = -2*bl.power*.99;
 
-    var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
+		var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
 
-    var backoff = 1;
-    while (1) {
-    	var cost = Molpy.SandPurifierUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
-	if (Molpy.HasGlassBlocks(cost)) break;
-	upgrades -= backoff;
-	backoff*=2;
-    }
+		var backoff = 1;
+		while (1) {
+			var cost = Molpy.SandPurifierUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+		if (Molpy.HasGlassBlocks(cost)) break;
+		upgrades -= backoff;
+		backoff*=2;
+		}
 
-    if (upgrades>0) {
-	Molpy.SpendGlassBlocks(cost);
-	Molpy.Boosts['Sand Purifier'].power+= upgrades;
+		if (upgrades>0) {
+			Molpy.SpendGlassBlocks(cost);
+			Molpy.Boosts['Sand Purifier'].power+= upgrades;
 
-	Molpy.recalculateDig=1;
-	Molpy.Notify('Sand Purifier upgraded '+Molpify(upgrades,2) + ' times' ,1);
-	_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Sand Purifier']);	
+			Molpy.recalculateDig=1;
+			Molpy.Notify('Sand Purifier upgraded '+Molpify(upgrades,2) + ' times' ,1);
+			_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Sand Purifier']);	
         }
     }
 
     Molpy.SeaishGlassExtruder=function()
     {
         var ch = Molpy.Boosts['GlassChips'];
-    var a = 500; // the step size in prices
-    var b = 2*Molpy.GlassExtruderUpgradeCost() - a;
-    var c = -2*ch.power*.99;
+		var a = 500; // the step size in prices
+		var b = 2*Molpy.GlassExtruderUpgradeCost() - a;
+		var c = -2*ch.power*.99;
 
-    var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
-    var backoff = 1;
-    while (1) {
-    	var cost = Molpy.GlassExtruderUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
-	if (Molpy.HasGlassChips(cost)) break;
-	upgrades -= backoff;
-	backoff*=2;
-    }
+		var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
+		var backoff = 1;
+		while (1) {
+			var cost = Molpy.GlassExtruderUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
+		if (Molpy.HasGlassChips(cost)) break;
+		upgrades -= backoff;
+		backoff*=2;
+		}
 
-    if (upgrades > 0) {
-	Molpy.SpendGlassChips(cost);
-	Molpy.Boosts['Glass Extruder'].power+= upgrades;
+		if (upgrades > 0) {
+		Molpy.SpendGlassChips(cost);
+		Molpy.Boosts['Glass Extruder'].power+= upgrades;
 
-	Molpy.recalculateDig=1;
-	Molpy.Notify('Glass Extruder upgraded '+Molpify(upgrades,2) + ' times' ,1);
-	_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Glass Extruder']);	
-    }
+		Molpy.recalculateDig=1;
+		Molpy.Notify('Glass Extruder upgraded '+Molpify(upgrades,2) + ' times' ,1);
+		_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Glass Extruder']);	
+		}
     }
 
     Molpy.SeaishSandRefinery=function()
@@ -1629,20 +1620,20 @@
         if (extra>20) 
         {
             Molpy.Boosts['Glass Chiller'].power+=extra;
-	    var backoff = 1;
-	    while ( Molpy.CalcGlassUse() >= 100)
-	    {
-            	Molpy.Boosts['Glass Chiller'].power-=backoff;
-		extra -= backoff;
-	        backoff*=2;
-	    }
-	    if (extra > 0) {
-                Molpy.SpendGlassBlocks(extra*4.5);
-                Molpy.Boosts['Glass Chiller'].Refresh();
-                Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
-                Molpy.recalculateDig=1;
-			_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Glass Chiller']);	
-	    }
+			var backoff = 1;
+			while ( Molpy.CalcGlassUse() >= 100)
+			{
+					Molpy.Boosts['Glass Chiller'].power-=backoff;
+			extra -= backoff;
+				backoff*=2;
+			}
+			if (extra > 0) {
+				Molpy.SpendGlassBlocks(extra*4.5);
+				Molpy.Boosts['Glass Chiller'].Refresh();
+				Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
+				Molpy.recalculateDig=1;
+				_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Glass Chiller']);	
+			}
         }	
     }	
 	
@@ -2221,7 +2212,7 @@
 			win = Math.floor(win/(6-this.bought));
 			
 			if(bl.bought*50<bl.power+win)bl.bought=Math.ceil((bl.power+win)/50); //make space!
-			bl.power+=win;
+			Molpy.AddBlocks(win);
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
 			if(Molpy.Got('Camera'))
 				Molpy.EarnBadge('discov'+Math.ceil(Molpy.newpixNumber*Math.random()));
