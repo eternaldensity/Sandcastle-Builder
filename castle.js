@@ -388,6 +388,7 @@ Molpy.Up=function()
 			if(!isFinite(Molpy.castles)&&!isFinite(Molpy.sand)){
 				Molpy.EarnBadge('Everything but the Kitchen Windows');
 			}
+			Molpy.Boosts['Time Travel'].Refresh();
 		}
 		Molpy.MakeChips=function(times)
 		{
@@ -1335,7 +1336,7 @@ Molpy.Up=function()
 					var destroy=Math.min(this.amount,this.temp);
 					this.amount=Math.max(0,this.amount-this.temp);
 					this.temp=0;
-					this.refresh();
+					this.Refresh();
 					Molpy.Boosts['AD'].power+=cost;
 					Molpy.Boosts['AD'].Refresh();
 					_gaq&&_gaq.push(['_trackEvent','Destroy Tool',this.name,''+destroy]);
@@ -1385,7 +1386,7 @@ Molpy.Up=function()
 				var d=g('SandToolDescription'+this.id);
 				if(d)d.innerHTML='';
 			}
-			this.refresh=function()
+			this.Refresh=function()
 			{
 				Molpy.shopRepaint=1;
 				Molpy.recalculateDig=1;
@@ -1536,7 +1537,7 @@ Molpy.Up=function()
 					var destroy=Math.min(this.amount,this.temp);
 					this.amount=Math.max(0,this.amount-this.temp);
 					this.temp=0;
-					this.refresh();
+					this.Refresh();
 					Molpy.Boosts['AD'].power+=cost;
 					Molpy.Boosts['AD'].Refresh();
 					_gaq&&_gaq.push(['_trackEvent','Destroy Tool',this.name,''+destroy]);
@@ -1690,7 +1691,7 @@ Molpy.Up=function()
 				}
 				this.price=p;
 			}
-			this.refresh=function()
+			this.Refresh=function()
 			{
 				Molpy.shopRepaint=1;
 				Molpy.recalculateDig=1;
@@ -2740,7 +2741,7 @@ Molpy.Up=function()
 				if(npb.amount)
 				{
 					npb.amount--;
-					npb.refresh();
+					npb.Refresh();
 					Molpy.Notify('Industrial Accident!',1);
 					if(i>14)
 						Molpy.UnlockBoost('Safety Pumpkin');
@@ -2841,11 +2842,11 @@ Molpy.Up=function()
 			var me = Molpy.Boosts[i];
 			if(me.bought)
 			{
-				if(me.countdown)
+				if(me.countdown>0)
 				{
 					me.countdown--;
 					me.Refresh();
-					if(!me.countdown)
+					if(me.countdown<=0)
 					{
 						Molpy.LockBoost(i);
 						me.power=0;

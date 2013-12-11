@@ -26,6 +26,8 @@ For personal amusement only.
 
 ## 3.243
 - More refresh
+- Countdown code for boosts assumed countdown was an integer which would reach 0 exactly. This is no longer true for Temporal Duplication
+- 
 
 ## 3.242
 - Advanced Temporal Duplication wasn't actually making more duplicates

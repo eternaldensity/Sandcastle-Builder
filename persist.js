@@ -579,7 +579,7 @@
 				me.temp=parseFloat(ice[3])||0;
 				me.totalGlass=parseFloat(ice[4])||0;
 				Molpy.SandToolsOwned+=me.amount;
-				me.refresh();
+				me.Refresh();
 			}
 			else
 			{
@@ -614,7 +614,7 @@
 				me.totalGlassBuilt=parseFloat(ice[7])||0;
 				me.totalGlassDestroyed=parseFloat(ice[8])||0;
 				Molpy.CastleToolsOwned+=me.amount;
-				me.refresh();
+				me.Refresh();
 			}
 			else
 			{
@@ -1092,7 +1092,7 @@
 				me.totalSand=0;
 				me.totalGlass=0;
 				me.temp=0;
-				me.refresh();
+				me.Refresh();
 			}
 			for(i in Molpy.CastleTools)
 			{
@@ -1109,7 +1109,7 @@
 				me.currentActive=0;
 				me.totalGlassBuilt=0;
 				me.totalGlassDestroyed=0;
-				me.refresh();
+				me.Refresh();
 			}
 			for(i in Molpy.Boosts)
 			{

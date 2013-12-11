@@ -440,7 +440,7 @@
 				Molpy.Notify('You do not arrive alone');
 				npb.amount++;
 				npb.temp++;
-				npb.refresh();
+				npb.Refresh();
 			}else{
 				Molpy.Notify('Temporal Incursion Prevented!');
 			}
@@ -630,7 +630,7 @@
 			npb.temp = Math.min(npb.amount,npb.temp);
 			npb.amount-=npb.temp;
 			Molpy.CastleToolsOwned-=npb.temp;
-			npb.refresh();
+			npb.Refresh();
 			Molpy.Notify(npb.temp + ' Temporal Duplicates Destroyed!');
 			npb.temp=0;
 		}
@@ -1807,7 +1807,7 @@
 		{
 			lads.amount-=500;
 			Molpy.SandToolsOwned-=500;
-			lads.refresh();
+			lads.Refresh();
 			Molpy.UnlockBoost('Ninja Climber');			
 			Molpy.Boosts['Rosetta'].Refresh();
 		}
@@ -3177,12 +3177,12 @@
 				wwb.bought++;
 				price = 444+77*wwb.bought;
 			}
-			scaf.refresh();
+			scaf.Refresh();
 		}else
 		{
 			scaf.amount-=price;
 			Molpy.CastleToolsOwned-=price;
-			scaf.refresh();
+			scaf.Refresh();
 			if(wwb.bought)wwb.bought++;
 			else
 			{
@@ -3235,7 +3235,7 @@
 		}
 		bb.amount-=price;
 		Molpy.CastleToolsOwned-=price;
-		bb.refresh();
+		bb.Refresh();
 		rb.bought++;
 		_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',rb.name]);	
 		
@@ -3377,7 +3377,7 @@
             while(t--)
             {
                 var tool=Molpy.tfOrder[t];
-                if(isFinite(Molpy.priceFactor*tool.price)) tool.refresh();
+                if(isFinite(Molpy.priceFactor*tool.price)) tool.Refresh();
             }
 			built*=Molpy.TDFactor();
             Molpy.toolsBuilt+=built;
@@ -3420,7 +3420,7 @@
             {
                 var tool=Molpy.tfOrder[t];
                 tool.amount--;
-                tool.refresh();
+                tool.Refresh();
             }
             times++;
         }
