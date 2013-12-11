@@ -24,8 +24,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.244
+- Find+Replace in All Opened Documents: Y U FAIL?
+
 ## 3.243
-- More refresh
+- More Refresh
 - Countdown code for boosts assumed countdown was an integer which would reach 0 exactly. This is no longer true for Temporal Duplication
 - Toned down colours a bit
 - Prevent refreshing a fave from making it sometimes draggable when it shouldn't be
@@ -104,7 +107,7 @@ For personal amusement only.
 - **Only saves first two layouts** to try to help prevent cookie too long until that's fixed. You can create and export more layouts but only two will save. If you want to rely on 'temporary' then only have 1 other layout. When you save layouts there will be a warning message informing you of how many were not saved.
 
 ## 3.221
-- Fixed options not refrshing on page refresh
+- Fixed options not refrshing on page Refresh
 - Stats should update regardless of whether the stats selector panel is visible (you still need to toggle that to go in and out of stats view for boosts and tools... maybe I should make that a separate option. But not right now.)
 - Prevented layout pane from trying (and failing) to redraw in classic
 
@@ -1178,7 +1181,7 @@ For personal amusement only.
 - Actually fixed DoN: now it doesn't crash on ONG. sorry everyone!
 - So it turned out the Panther Salve toggle was broken all along anyway
 - Also made Panther Salve blue
-- And refresh stuff when toggling it
+- And Refresh stuff when toggling it
 - And fixed the Panther Salve toggle actually because I was using an nonexistant function parameter
 - Also tested it :P
 - Multibuy Boosts renamed slightly
@@ -1447,7 +1450,7 @@ For personal amusement only.
 - VITSSÅGEN, JA! now toggles
 
 ### 0.9998
-- Fixed furnace-switch-description refresh-mustard
+- Fixed furnace-switch-description Refresh-mustard
 - Fiddled with show-hide-on-buy: tags override group and groups don't hide other groups
 - Experimental Chromatic Heresy
 
@@ -1711,7 +1714,7 @@ For personal amusement only.
 - Overcompensating description fixed, ensure it's 105%
 - ensure Erosion can't make Wave's destruction negative
 - notificaction/sandnumber text 8 points smaller
-- always show option descriptions, refresh them if visible after load/import
+- always show option descriptions, Refresh them if visible after load/import
 
 ### 0.94
 - track highest NP visited (doesn't reset with Molpy Down)

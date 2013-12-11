@@ -1698,7 +1698,7 @@
 		{
 			Molpy.SandTools['Bag'].amount-=50;			
 			Molpy.SandToolsOwned-=50;			
-			Molpy.SandTools['Bag'].refresh();
+			Molpy.SandTools['Bag'].Refresh();
 			Molpy.UnlockBoost('Rosetta');
 		}else{
 			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
@@ -1791,7 +1791,7 @@
 			{
 				Molpy.CastleTools['NewPixBot'].amount-=Molpy.faCosts[fa.power];
 				Molpy.CastleToolsOwned-=Molpy.faCosts[fa.power];
-				Molpy.CastleTools['NewPixBot'].refresh();
+				Molpy.CastleTools['NewPixBot'].Refresh();
 				fa.power++;		
 				fa.Refresh();
 				Molpy.Boosts['Rosetta'].Refresh();

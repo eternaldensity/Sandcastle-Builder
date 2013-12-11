@@ -2455,7 +2455,7 @@ Molpy.Up=function()
 					else 			
 					{
 						Molpy.SandTools['Ladder'].amount--;
-						Molpy.SandTools['Ladder'].refresh();
+						Molpy.SandTools['Ladder'].Refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
 							Molpy.AddChips(3500*(twin+1));
@@ -2471,7 +2471,7 @@ Molpy.Up=function()
 					else 			
 					{
 						Molpy.SandTools['Bag'].amount--;
-						Molpy.SandTools['Bag'].refresh();
+						Molpy.SandTools['Bag'].Refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
 							Molpy.AddChips(3500*(twin+1));
@@ -2490,7 +2490,7 @@ Molpy.Up=function()
 					else 				
 					{
 						Molpy.CastleTools['River'].amount--;
-						Molpy.CastleTools['River'].refresh();
+						Molpy.CastleTools['River'].Refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
 							Molpy.AddChips(4500*(twin+1));
@@ -2506,7 +2506,7 @@ Molpy.Up=function()
 					else 			
 					{
 						Molpy.CastleTools['Wave'].amount--;
-						Molpy.CastleTools['Wave'].refresh();
+						Molpy.CastleTools['Wave'].Refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
 							Molpy.AddChips(4500*(twin+1));
@@ -3163,7 +3163,7 @@ Molpy.Up=function()
 		e=e*n/o;
 		Molpy.SandTools['Bag'].amount-=n;
 		Molpy.SandToolsOwned-=n;
-		Molpy.SandTools['Bag'].refresh();
+		Molpy.SandTools['Bag'].Refresh();
 		if(n==1)
 			Molpy.Notify('A Bag was burned!',1);
 		else
