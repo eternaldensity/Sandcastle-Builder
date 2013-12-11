@@ -1578,6 +1578,7 @@
 		$('.draggable-element').draggable('option','grid',[size,size])
 	}
 		
+	Molpy.nFaves=40;
 	Molpy.Layout=function(args)
 	{
 		this.name=args.name||'';
@@ -1587,7 +1588,7 @@
 		this.sizes=$.extend({},args.sizes);
 		if(!Molpy.noLayout)
 		{
-			this.faves=Molpy.EmptyFavePanes(20);
+			this.faves=Molpy.EmptyFavePanes(Molpy.nFaves);
 		}
 		
 		this.ToString=function()
@@ -1677,12 +1678,12 @@
 			}	
 			if(threads[7]&&!noLayout)
 			{
-				this.faves=[];
+				this.faves=Molpy.EmptyFavePanes(Molpy.nFaves);
 				pixels=threads[7].split(s);
 				for(var i in pixels)
 				{
 					if(!pixels[i])break;
-					var fav = new Molpy.FavePane(i);
+					var fav = this.faves[i];
 					fav.FromString(pixels[i]);
 					this.faves.push(fav);
 				}

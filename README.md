@@ -29,6 +29,8 @@ For personal amusement only.
 - Countdown code for boosts assumed countdown was an integer which would reach 0 exactly. This is no longer true for Temporal Duplication
 - Toned down coloures a bit
 - Prevent refreshing a fave from making it sometimes draggable when it shouldn't be
+- When loading a layout without faves, avoid getting stuck with just 1 fave.
+- Now allow up to 40 faves.
 
 ## 3.242
 - Advanced Temporal Duplication wasn't actually making more duplicates
