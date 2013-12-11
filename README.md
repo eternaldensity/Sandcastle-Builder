@@ -31,6 +31,7 @@ For personal amusement only.
 - IE running locally thought it supported localStorage when it didn't, preventing run
 - New Flux related boost
 - Tool rates for sand and glass are shown with more decimal places if <10
+- Refresh a lot of boosts that weren't beign refreshed. (for Faves)
 
 ## 3.241
 - Prevent Faves that should be hidden from becoming unhidden (just had to move a line into a differnt function)

@@ -218,6 +218,7 @@
 				g.buy();
 			}
 			g.power++;
+			g.Refresh();
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',g.name]);	
 			if(g.power>=2)Molpy.EarnBadge('Second Edition');
 			if(g.power>=20)Molpy.UnlockBoost('HoM');
@@ -1512,7 +1513,6 @@
 		{
 			Molpy.SpendGlassBlocks(Molpy.SandPurifierUpgradeCost());
 			Molpy.Boosts['Sand Purifier'].power++;
-			Molpy.Boosts['Sand Purifier'].Refresh();
 			Molpy.recalculateDig=1;
 			Molpy.Notify('Sand Purifier upgraded',1);
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade','Sand Purifier']);	
@@ -1801,7 +1801,8 @@
 				Molpy.CastleTools['NewPixBot'].amount-=Molpy.faCosts[fa.power];
 				Molpy.CastleToolsOwned-=Molpy.faCosts[fa.power];
 				Molpy.CastleTools['NewPixBot'].refresh();
-				fa.power++;				
+				fa.power++;		
+				fa.Refresh();
 				Molpy.Boosts['Rosetta'].Refresh();
 				Molpy.Notify('Factory Automation Upgraded',1);
 				_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',fa.name]);	
@@ -2551,6 +2552,7 @@
 	{
 		var target = Molpy.GetBlackprintPages();
 		var b = Molpy.Boosts['Blackprints'];
+		b.Refresh();
 		b.power+=n;
 		if(b.power>9000)Molpy.EarnBadge('Scouter');
 		if(!Molpy.boostSilence)
@@ -2835,7 +2837,10 @@
 	{
 		var m = Molpy.Boosts[alias];
 		if(confirm('Do you want to cancel '+m.name+'?\nYou will have wasted '+Molpify(m.power-1)+' run'+plural(m.power-1)+' of Factory Automation.'))
+		{
 			m.reset();
+			m.Refresh();
+		}
 	}
 	
 	Molpy.MakeSandMould=function(np)
@@ -2869,7 +2874,9 @@
 			return;
 		}
 		smm.bought=np;
-		smm.power=1;		
+		smm.power=1;
+		smm.Refresh();
+		smf.Refresh();
 	}
 	Molpy.MakeSandMouldWork=function(times)
 	{
@@ -2932,7 +2939,9 @@
 		smf.bought=smm.bought;
 		smf.power=1;
 		smm.bought=1; //not that it really matters. *shrug*
-		smm.power=0;		
+		smm.power=0;
+		smm.Refresh();
+		smf.Refresh();
 	}
 	Molpy.FillSandMouldWork=function(times)
 	{
@@ -2998,7 +3007,9 @@
 			return;
 		}
 		gmm.bought=np;
-		gmm.power=1;		
+		gmm.power=1;	
+		gmm.Refresh();
+		gmf.Refresh();
 	}
 	Molpy.MakeGlassMouldWork=function(times)
 	{
@@ -3062,7 +3073,9 @@
 		gmf.bought=gmm.bought;
 		gmf.power=1;
 		gmm.bought=1; // *shrug again*
-		gmm.power=0;		
+		gmm.power=0;	
+		gmm.Refresh();
+		gmf.Refresh();	
 	}
 	Molpy.FillGlassMouldWork=function(times)
 	{
@@ -3084,6 +3097,7 @@
 			Molpy.SpendGlassBlocks(glass);
 			times--;
 			gmf.power++;
+			gmf.Refresh();
 			if(gmf.power>800)
 			{
 				Molpy.Notify('Glass Mould Filling is complete',1);
