@@ -539,6 +539,7 @@ Molpy.Up=function()
 			}
 			if(!silent&&(isFinite(Molpy.castles)||!isFinite(amount)))
 				Molpy.Notify('Spent Castles: ' + Molpify(amount,3),1);
+			Molpy.Boosts['Time Travel'].Refresh();
 		}
 		Molpy.spendSandNotifyFlag=1;
 		Molpy.spendSandNotifyCount=0;
@@ -600,6 +601,7 @@ Molpy.Up=function()
 				Molpy.destroyNotifyCount+=amount;
 				return 1;
 			}
+			Molpy.Boosts['Time Travel'].Refresh();
 			//destroying is done by trebuchets and stuff: it's different to spending
 		}
 		Molpy.sandPerClick=function()

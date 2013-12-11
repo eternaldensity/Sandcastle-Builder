@@ -1690,8 +1690,7 @@
 		}
 		
 		this.ToScreen=function()
-		{
-		
+		{		
 			for(var i in Molpy.lootVisOrder)
 			{
 				var el=Molpy.lootVisOrder[i];
@@ -1719,6 +1718,7 @@
 			{
 				this.faves[i].ToScreen();
 			}
+			
 			Molpy.FixPaneWidths();
 		}
 		
@@ -1873,7 +1873,7 @@
 				g('faveContent'+n).innerHTML='Fave '+n;
 				g('sectionFave'+n).className='draggable-element table-wrapper';				
 			}
-			$('#sectionFave'+this.i).toggleClass('hidden',!this.vis);
+			$('#sectionFave'+this.i).toggleClass('hidden',!this.vis).toggleClass('editlock',Molpy.layoutLocked);;
 		}
 		this.FromScreen=function()
 		{	
