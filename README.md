@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.243
+- More refresh
+
 ## 3.242
 - Advanced Temporal Duplication wasn't actually making more duplicates
 - SGC should now do Stretchable Storage stuff
@@ -31,11 +34,11 @@ For personal amusement only.
 - IE running locally thought it supported localStorage when it didn't, preventing run
 - New Flux related boost
 - Tool rates for sand and glass are shown with more decimal places if <10
-- Refresh a lot of boosts that weren't beign refreshed. (for Faves)
+- Refresh a lot of boosts that weren't being refreshed. (for Faves)
 - Fixed a bunch of places that were still altering glass amounts directly rather than using the functions (thus not refreshing)
 
 ## 3.241
-- Prevent Faves that should be hidden from becoming unhidden (just had to move a line into a differnt function)
+- Prevent Faves that should be hidden from becoming unhidden (just had to move a line into a different function)
 - Wasn't taking Layouts from cookie when loading if localstorage available but empty: instead loaded no layout.
 
 ## 3.24

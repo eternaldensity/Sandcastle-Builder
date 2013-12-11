@@ -706,6 +706,7 @@ Molpy.Up=function()
 					Molpy.Notify(Molpy.Boosts['VJ'].name);
 					Molpy.Build(Molpy.CalcVJReward(1));
 					Molpy.Boosts['VJ'].power++;
+					Molpy.Boosts['VJ'].Refresh();
 					var sawType='Plain';
                     if(Molpy.Got('Swedish Chef'))sawType='Swedish Chef';
                     if(Molpy.Got('Phonesaw'))sawType='PhoneSaw';
@@ -758,6 +759,7 @@ Molpy.Up=function()
 						Molpy.UnlockBoost('VJ');
 					}
 					Molpy.Boosts['Bag Puns'].power=p;
+					Molpy.Boosts['Bag Puns'].Refresh();
 				}
 			}
 			Molpy.ninjad=1;
@@ -1059,7 +1061,10 @@ Molpy.Up=function()
 				{
 					fluxLevel*=1.5;
 				}
+				var oldMult=globalCastleMult;
 				Molpy.globalCastleMult=Math.max(1,Math.pow(1.02,fluxLevel));
+				if(oldMult!=Molpy.globalCastleMult)
+					Molpy.Boosts['Flux Turbine'].Refresh();
 			}else{
 				Molpy.globalCastleMult=1;
 			}
@@ -2385,6 +2390,7 @@ Molpy.Up=function()
 			{
 				twin=1;
 				Molpy.Boosts['Lucky Twin'].power++;
+				Molpy.Boosts['Lucky Twin'].Refresh();
 				if(Molpy.Boosts['Lucky Twin'].power>=13*13) Molpy.UnlockBoost('Lucky Twin');
 				if(Molpy.Got('Lucky Twin'))
 				{
@@ -2517,6 +2523,7 @@ Molpy.Up=function()
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0)
 			{
 				Molpy.Boosts['Panther Salve'].power++;
+				Molpy.Boosts['Panther Salve'].Refresh();
 				if(finite&&Molpy.HasGlassBlocks(10))
 				{				
 					Molpy.SpendGlassBlocks(10);
