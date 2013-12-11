@@ -3123,6 +3123,11 @@ Molpy.Up=function()
 		}
 		if(Molpy.Got('Caged Logicat')&&!Molpy.Got('Temporal Rift')&&Molpy.Boosts['Caged Logicat'].bought<11)
 			Molpy.Boosts['Caged Logicat'].bought=11;
+			
+		if(Molpy.Boosts['LR'].power>500)
+		{
+			Molpy.Boosts['LR'].power*=.95;
+		}
 	}
 	
 	Molpy.BurnBags=function(n,e)
