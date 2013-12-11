@@ -1364,7 +1364,7 @@ Molpy.Up=function()
 					}else{
 						
 						desc='Total Chips '+this.actionName+': '+Molpify(this.totalGlass,1)+
-						'<br>Glass/mNP per '+this.single+': '+Molpify(this.storedGpmNP,1);
+						'<br>Glass/mNP per '+this.single+': '+Molpify(this.storedGpmNP,3);
 					}	
 					
 					desc+='<br>Total '+this.plural+' bought: '+Molpify(this.bought);
