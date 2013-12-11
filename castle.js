@@ -1158,7 +1158,7 @@ Molpy.Up=function()
 			{
 				multiplier*=Molpy.Boosts['GL'].power/100;
 			}
-			if(Molpy.Got('CFT')
+			if(Molpy.Got('CFT'))
 			{
 				multiplier*=Molpy.globalCastleMult;
 			}
