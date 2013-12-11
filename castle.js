@@ -1360,11 +1360,11 @@ Molpy.Up=function()
 					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(this.id*2)))
 					{						
 						desc='Total Sand '+this.actionName+': '+Molpify(this.totalSand,1)+
-						'<br>Sand/mNP per '+this.single+': '+Molpify(this.storedSpmNP,1);
+						'<br>Sand/mNP per '+this.single+': '+Molpify(this.storedSpmNP,(this.storedSpmNP<10?3:1));
 					}else{
 						
 						desc='Total Chips '+this.actionName+': '+Molpify(this.totalGlass,1)+
-						'<br>Glass/mNP per '+this.single+': '+Molpify(this.storedGpmNP,3);
+						'<br>Glass/mNP per '+this.single+': '+Molpify(this.storedGpmNP,(this.storedGpmNP<10?3:1));
 					}	
 					
 					desc+='<br>Total '+this.plural+' bought: '+Molpify(this.bought);

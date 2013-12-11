@@ -1304,9 +1304,9 @@
 					if(desc.innerHTML==''||desc.innerHTML.indexOf('/mNP:')>-1)
 					{
 						if(me.storedTotalGpmNP)
-							desc.innerHTML='Glass/mNP: '+Molpify(me.storedTotalGpmNP,1);	
+							desc.innerHTML='Glass/mNP: '+Molpify(me.storedTotalGpmNP,(me.storedTotalGpmNP<10?3:1));	
 						else
-							desc.innerHTML='Sand/mNP: '+Molpify(me.storedTotalSpmNP,1);					
+							desc.innerHTML='Sand/mNP: '+Molpify(me.storedTotalSpmNP,(me.storedTotalSpmNP<10?3:1));					
 					}		
 				}
 			}
