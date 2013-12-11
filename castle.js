@@ -1062,7 +1062,7 @@ Molpy.Up=function()
 				{
 					fluxLevel*=1.5;
 				}
-				var oldMult=globalCastleMult;
+				var oldMult=Molpy.globalCastleMult;
 				Molpy.globalCastleMult=Math.max(1,Math.pow(1.02,fluxLevel));
 				if(oldMult!=Molpy.globalCastleMult)
 					Molpy.Boosts['Flux Turbine'].Refresh();
