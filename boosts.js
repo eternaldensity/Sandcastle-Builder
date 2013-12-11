@@ -2523,7 +2523,7 @@
 			if(!Molpy.Boosts[print].unlocked)
 			{
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return 0;
-				if(print=='CTF'&&!Molpy.Earned('Minus Worlds')) continue;
+				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
 				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
 			}
 		}
@@ -2540,7 +2540,7 @@
 			if(!Molpy.Boosts[print].unlocked)
 			{				
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return;
-				if(print=='CTF'&&!Molpy.Earned('Minus Worlds')) continue;
+				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
 				if(pages>=Molpy.blackprintCosts[print])
 					return print;
 				return;
