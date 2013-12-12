@@ -636,6 +636,7 @@
 		var c='C'; //Comma
 		var pixels=thread.split(s);
 		Molpy.BoostsOwned=0;
+		Molpy.unlockedGroups={};
 		for (var i in Molpy.BoostsById)
 		{
 			var me=Molpy.BoostsById[i];
@@ -689,7 +690,8 @@
 				me.earned=parseInt(pixels[i])&&1||0;
 				if(me.earned)
 				{
-					Molpy.BadgesOwned++;											
+					Molpy.BadgesOwned++;
+					Molpy.unlockedGroups[me.group]=1;								
 					if(!Molpy.groupBadgeCounts[me.group])
 					{
 						Molpy.groupBadgeCounts[me.group]=1;
@@ -1162,6 +1164,8 @@
 			{
 				Molpy.BadgesById[i].earned=0;						
 			}
+			
+			Molpy.unlockedGroups={};
 			Molpy.badgeRepaint=1;
 			_gaq.push(['_trackEvent','Coma','Complete',''+Molpy.highestNPvisited]);
 		}

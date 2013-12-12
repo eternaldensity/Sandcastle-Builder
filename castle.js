@@ -479,38 +479,6 @@ Molpy.Up=function()
 				Molpy.Notify('Spent Castles: ' + Molpify(amount,3),1);
 			Molpy.Boosts['Time Travel'].Refresh();
 		}
-		Molpy.spendSandNotifyFlag=1;
-		Molpy.spendSandNotifyCount=0;
-		Molpy.SpendSand=function(amount,silent)
-		{
-			if(!amount)return;
-			Molpy.sand-=amount;
-			if(Molpy.sand<0)Molpy.sand=0;
-			Molpy.sandSpent+=amount;
-			if((isFinite(Molpy.sand)||!isFinite(amount)))
-			{
-				if(!silent&&Molpy.spendSandNotifyFlag)
-				{
-					if(Molpy.spendSandNotifyCount)
-					{
-						amount+=Molpy.spendSandNotifyCount;
-						Molpy.spendSandNotifyCount=0;
-					}				
-					if(amount){
-						if(amount >= Molpy.sand/10000000)
-							Molpy.Notify('Spent Sand: ' + Molpify(amount,3),1);
-						else
-						{
-							Molpy.spendSandNotifyCount+=amount;
-							return 1;
-						}
-					}
-				}else{
-					Molpy.spendSandNotifyCount+=amount;
-					return 1;
-				}
-			}
-		}
 		
 		Molpy.destroyNotifyFlag=1;
 		Molpy.destroyNotifyCount=0;
@@ -1665,10 +1633,15 @@ Molpy.Up=function()
 			var b = Molpy.Boosts[stuff];
 			return b&&b.Add(amount,s);
 		}
-		Molpy.Spend=function(stuff,amount)
+		Molpy.Spend=function(stuff,amount,s)
 		{
 			var b = Molpy.Boosts[stuff];
-			return b&&b.Has(amount)&&b.Spend(amount);
+			return b&&b.Has(amount)&&b.Spend(amount,s);
+		}
+		Molpy.Destroy=function(stuff,amount,s)
+		{
+			var b = Molpy.Boosts[stuff];
+			return b&&amount>=0&&b.Destroy(amount,s);
 		}
 		
 		Molpy.BoostFuncs=
@@ -1712,6 +1685,12 @@ Molpy.Up=function()
 				return 1;
 			},
 			Spend:function(amount)
+			{
+				this.Level-=amount;
+				this.Refresh();
+				return 1;
+			},
+			Destroy:function(amount)
 			{
 				this.Level-=amount;
 				this.Refresh();
@@ -1762,6 +1741,7 @@ Molpy.Up=function()
 				args.Has=Molpy.BoostFuncs.Has;
 				args.Add=Molpy.BoostFuncs.Add;
 				args.Spend=Molpy.BoostFuncs.Spend;
+				args.Destroy=Molpy.BoostFuncs.Destroy;
 				
 			}
 			if(args.Level)
@@ -1811,7 +1791,7 @@ Molpy.Up=function()
 				}
 				
 				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1));
-				if(isNaN(sp)){this.power=0;sp=0;Molpy.EarnBadge('How do I Shot Mustard?')};
+				if(isNaN(sp)||isNaN(cp)){this.power=0;sp=0;Molpy.EarnBadge('How do I Shot Mustard?')};
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));
 				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1));
 				
@@ -1819,7 +1799,7 @@ Molpy.Up=function()
 				
 				if (!this.bought && (!cp||Molpy.castles>=cp) && (!sp||Molpy.sand>=sp) && (!gp||Molpy.Has('GlassBlocks',gp)))
 				{
-					Molpy.SpendSand(sp);
+					Molpy.Spend('Sand',sp);
 					Molpy.SpendCastles(cp);
 					Molpy.Spend('GlassBlocks',gp);
 					this.bought=1;
@@ -2415,7 +2395,7 @@ Molpy.Up=function()
 				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/3));
 			}
 			Molpy.Notify('Blast Furnace in Operation!');
-			Molpy.SpendSand(castles*blastFactor);
+			Molpy.Spend('Sand',castles*blastFactor);
 			Molpy.Build(castles);
 		}
 		Molpy.RewardNotLucky=function(automationLevel)
@@ -2802,7 +2782,7 @@ Molpy.Up=function()
 				var sand = 2000000*Math.pow(10000,i);
 				if(Molpy.sand>=sand)
 				{
-					Molpy.SpendSand(sand,1);
+					Molpy.Spend('Sand',sand,1);
 					t++;
 					spent+=sand;
 				}

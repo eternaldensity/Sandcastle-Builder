@@ -1285,7 +1285,7 @@
 			}
 			return str;
 		}
-		,icon:'glasschipstore',className:'alert',group:'hpt'
+		,icon:'glasschipstore',className:'alert',group:'stuff'
 	});
 	Molpy.UpgradeChipStorage=function(n)
 	{
@@ -1527,7 +1527,7 @@
 			}
 			return str;
 		}
-		,icon:'glassblockstore',className:'alert',group:'hpt'
+		,icon:'glassblockstore',className:'alert',group:'stuff'
 	});
 	Molpy.UpgradeBlockStorage=function(n)
 	{
@@ -3003,7 +3003,7 @@
 				Molpy.Boosts['Break the Mould'].power++;
 				return times;
 			}
-			Molpy.SpendSand(sand);
+			Molpy.Spend('Sand',sand);
 			times--;
 			smf.power++;
 			smf.Refresh();
@@ -4223,7 +4223,44 @@
 		}
 		,glass:'12WW',group:'drac',className:'action'
 	});
-	new Molpy.Boost({name:'Sand',desc:function(){return Molpify(Molpy.sand,3);}
+
+	Molpy.spendSandNotifyFlag=1;
+	Molpy.spendSandNotifyCount=0;
+	new Molpy.Boost({name:'Sand',
+		Level:[function(){return Molpy.sand;},function(amount){Molpy.sand=amount;}],
+		Add:Molpy.Dig,
+		Spend:function(amount,silent)
+		{
+			if(!amount)return;
+			Molpy.sand-=amount;
+			if(Molpy.sand<0)Molpy.sand=0;
+			Molpy.sandSpent+=amount;
+			if((isFinite(Molpy.sand)||!isFinite(amount)))
+			{
+				if(!silent&&Molpy.spendSandNotifyFlag)
+				{
+					if(Molpy.spendSandNotifyCount)
+					{
+						amount+=Molpy.spendSandNotifyCount;
+						Molpy.spendSandNotifyCount=0;
+					}				
+					if(amount){
+						if(amount >= Molpy.sand/10000000)
+							Molpy.Notify('Spent Sand: ' + Molpify(amount,3),1);
+						else
+						{
+							Molpy.spendSandNotifyCount+=amount;
+							return 1;
+						}
+					}
+				}else{
+					Molpy.spendSandNotifyCount+=amount;
+					return 1;
+				}
+			}
+		},
+		Has:Molpy.BoostFuncs.Has,
+		desc:function(){return Molpify(me.Level,3);}
 		,group:'stuff'
 	});
 	
