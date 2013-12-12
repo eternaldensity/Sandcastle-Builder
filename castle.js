@@ -327,7 +327,6 @@ Molpy.Up=function()
 			}
 			if(Molpy.castlesBuilt>=2000000000000){
 				Molpy.EarnBadge('Unreachable?');
-				Molpy.UnlockBoost("Château d'If");
 			}
 									
 			
