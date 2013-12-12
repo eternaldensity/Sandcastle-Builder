@@ -24,8 +24,12 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.245
+## 3.25
 - Badge clarification (Typo Storm)
+- Advanced temporal duplication now applies to normal tool purchases
+- Temporal Duplication now shows the multiplication factor, and countdown is formatted a bit nicer
+- Gave TD a badge too
+- Refactored add/spend/has chips/blocks/goats functions to make a generic resource system, in preparation for a generic price system
 
 ## 3.244
 - Find+Replace in All Opened Documents: Y U FAIL?

@@ -2,7 +2,7 @@
 
 function g(id) {return document.getElementById(id);}
 var Molpy={};
-Molpy.version=3.245;
+Molpy.version=3.25;
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[
@@ -770,7 +770,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<Molpy.PokeBar()&&flandom(4)==0);
 	
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
-	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6);
+	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6||Molpy.Got('Thunderbird'));
 	Molpy.Boosts['Cold Mould'].department=Molpy.Got('SMM');
 	Molpy.Boosts['Such Glass'].department=1*(Molpy.SandTools['Bucket'].amount>2e11)*(Molpy.ninjaStealth>2e8);
 	Molpy.Boosts['Ninja Ninja Duck'].department=1*(Molpy.ninjaStealth>33333333);	
@@ -826,7 +826,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 			}
 		}
 	}
-	Molpy.Boosts['Temporal Duplication'].logic=finiteC*finiteP;
+	Molpy.Boosts['TDE'].logic=finiteC*finiteP;
 	Molpy.Boosts['Temporal Rift'].logic=3*finiteC;
 	
 	Molpy.Boosts['Bucking the Trend'].logic=10*(Molpy.SandTools['Bucket'].amount>=10000);

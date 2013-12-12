@@ -2192,8 +2192,12 @@
 		}
 		,sand:'55E',castles:'238E',glass:100,group:'bean',icon:'logicat'
 	});
-	new Molpy.Boost({name:'Temporal Duplication',desc:
-		function(me){return 'For '+Molpify(me.countdown)+'mNP, when you buy tools, get the same amount again for free!';}
+	new Molpy.Boost({name:'Temporal Duplication',alias:'TDE',desc:
+		function(me)
+		{
+			var tdf=Molpy.TDFactor()-1;
+			return 'For '+(me.countdown==0?'ever':me.countdown>=1000?Molpify(me.countdown/1000)+'NP':Molpify(me.countdown)+'mNP')+', when you buy tools, get '+(tdf<=2?'the same':Molpify(tdf,1)+'x that')+' amount again for free!';
+		}
 		,group:'chron',className:'alert',logic:50,
 		startCountdown:function()
 		{
@@ -3766,7 +3770,7 @@
 			if(Molpy.Got('LR'))
 			{
 				Molpy.Boosts['LR'].power*=1.004;
-				if(Molpy.Got('Thunderbird')&&Molpy.Got('Temporal Duplication'))
+				if(Molpy.Got('Thunderbird')&&Molpy.Got('TDE'))
 				{
 					Molpy.Boosts['LR'].power*=2;
 				}
@@ -4050,9 +4054,9 @@
 	
 	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of all Glass Tools constructed when it is active.<br>Temporal Duplication\'s countdown starts at 10mNP.',sand:Infinity,castles:Infinity,glass:'7P',group:'drac'});
 	
-	Molpy.TDFactor=function()
+	Molpy.TDFactor=function(buying)
 	{
-		if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))
+		if((buying||Molpy.Got('Crystal Dragon'))&&Molpy.Got('TDE'))
 		{
 			if(Molpy.Got('Dragon Foundry')&&Molpy.Got('GL'))
 			{

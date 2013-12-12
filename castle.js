@@ -1213,11 +1213,13 @@ Molpy.Up=function()
 						Molpy.CheckBuyUnlocks();
 					}
 				}
-				if(Molpy.Got('Temporal Duplication'))
+				if(Molpy.Got('TDE'))
 				{
-					this.amount+=bought;
-					this.temp+=bought;
-					bought+=bought;
+					var tdf=Molpy.TDFactor(1)-1;
+					var dups=bought*tdf;
+					this.amount+=dups;
+					this.temp+=dups;
+					bought+=dups;
 					this.findPrice();
 				}
 				if(bought)
@@ -1231,7 +1233,7 @@ Molpy.Up=function()
 				this.amount+=n;
 				this.bought+=n;
 				Molpy.SandToolsOwned+=n;
-				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))
+				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('TDE'))
 				{
 					var tdf=Molpy.TDFactor()-1;
 					var dups=n*tdf;
@@ -1412,11 +1414,13 @@ Molpy.Up=function()
 						Molpy.CheckBuyUnlocks();
 					}
 				}
-				if(Molpy.Got('Temporal Duplication'))
+				if(Molpy.Got('TDE'))
 				{
-					this.amount+=bought;
-					this.temp+=bought;
-					bought+=bought;
+					var tdf=Molpy.TDFactor(1)-1;
+					var dups=bought*tdf;
+					this.amount+=dups;
+					this.temp+=dups;
+					bought+=dups;
 					this.findPrice();
 					if(this.temp>32) Molpy.UnlockBoost('AD');
 				}
@@ -1431,7 +1435,7 @@ Molpy.Up=function()
 				this.amount+=n;
 				this.bought+=n;
 				Molpy.CastleToolsOwned+=n;
-				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('Temporal Duplication'))
+				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('TDE'))
 				{
 					var tdf=Molpy.TDFactor()-1;
 					var dups=n*tdf;
@@ -2425,7 +2429,7 @@ Molpy.Up=function()
 			}
 			
 			var twin = 0;
-			if(Molpy.Got('Temporal Duplication')&&Molpy.Got('GlassBlocks'))
+			if(Molpy.Got('TDE')&&Molpy.Got('GlassBlocks'))
 			{
 				twin=1;
 				Molpy.Boosts['Lucky Twin'].power++;
@@ -2433,8 +2437,13 @@ Molpy.Up=function()
 				if(Molpy.Boosts['Lucky Twin'].power>=13*13) Molpy.UnlockBoost('Lucky Twin');
 				if(Molpy.Got('Lucky Twin'))
 				{
-					Molpy.Boosts['Temporal Duplication'].countdown*=1.2;
-					Molpy.Boosts['Temporal Duplication'].Refresh();
+					Molpy.Boosts['TDE'].countdown*=1.2;
+					if(Molpy.Boosts['TDE'].countdown>9e45)
+					{
+						Molpy.EarnBadge('Never Alone');
+						Molpy.Boosts['TDE'].countdown=0;
+					}
+					Molpy.Boosts['TDE'].Refresh();
 					if(!automationLevel)
 						Molpy.Notify('Lucky Twin!');
 				}else{
