@@ -28,6 +28,7 @@ For personal amusement only.
 - Fixed Monty Haul Problem's Goat[s] usage
 - Put in a fix to ensure you get Château d'If if you have the Unreachable? Badge (which has the side effect of giving you Château d'If back when you Molpy down, which is okay I guess)
 - I had put in one too many >0 for temp boost countdowns when I fixed it before, so people with negative were still stuck negative.
+- Infinite block production prevented from mustarding chip storage: and if you have infinite blocks it doesn't bother making "more"
 
 ## 3.25
 - Badge clarification (Typo Storm)

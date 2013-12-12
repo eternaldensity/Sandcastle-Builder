@@ -397,15 +397,15 @@ Molpy.Up=function()
 		}
 		Molpy.MakeBlocks=function(times)
 		{
+			if(!isFinite(Molpy.Level('GlassBlocks')))return;
 			var chillerLevel=(Molpy.Boosts['Glass Chiller'].power)+1;
 			if (times) chillerLevel*=times;
 			var chipsFor=chillerLevel;
 			
-			var ch = Molpy.Boosts['GlassChips'];
 			var rate=Molpy.ChipsPerBlock();
 			var backoff = 1;
 
-			while(ch.power < chipsFor*rate)
+			while(!Molpy.Has('GlassChips',chipsFor*rate))
 			{
 				chipsFor-= backoff;
 				backoff*=2;
@@ -418,8 +418,7 @@ Molpy.Up=function()
 				Molpy.Notify('Running low on Glass Chips!');
 				chillerLevel=chipsFor;
 			}
-			ch.power-=chipsFor*rate;
-			Molpy.chipAddAmount-=chipsFor*rate;
+			Molpy.Spend('GlassChips',chipsFor*rate);
 			Molpy.Add('GlassBlocks',chillerLevel,1);
 		}
 		

@@ -586,7 +586,7 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.recalculateDig=1;
 		Molpy.BoostsOwned++;
 	}	
-	if(Molpy.Earned('Unreachable?')	Molpy.UnlockBoost("Château d'If");
+	if(Molpy.Earned('Unreachable?'))	Molpy.UnlockBoost("Château d'If");
 	
 	if(Molpy.castlesSpent>2e8)
 	{
