@@ -38,7 +38,8 @@ For personal amusement only.
 - Added a couple new boost categories, though one is still empty
 - If you want a Fave for sand or castles, you can. Dunno why you would though. They exist more for implementation reasons than to be useful
 - I think there was something else but I've forgotten. Oh yeah the amount of factory automation needed for blackprint-construction now scales.
-- Fixed some Tool Factory Chips mustard caused by infinite tools
+- Fixed some Tool Factory Chips mustard caused by infinite tools (lots of 0*infinity and infinity/infinity)
+- Also fixed for glass furnace+blower sand usage (infinity/infinity in that case)
 
 ## 3.244
 - Find+Replace in All Opened Documents: Y U FAIL?

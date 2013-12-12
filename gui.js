@@ -1867,6 +1867,7 @@
 				g('faveHeader'+n).innerHTML=this.boost.GetHeading()+this.boost.GetFormattedName();
 				g('faveContent'+n).innerHTML=(this.boost.unlocked?this.boost.GetDesc():'This Boost is locked!');
 				g('sectionFave'+n).className='draggable-element table-wrapper '+this.boost.GetFullClass();
+				this.boost.updateBuy(1);
 			}else
 			{
 				g('optionFave'+n).text=n+' (empty)';

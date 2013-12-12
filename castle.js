@@ -1779,9 +1779,9 @@ Molpy.Up=function()
 					}
 				}				
 			}
-			this.updateBuy=function()
+			this.updateBuy=function(fave)
 			{
-				if(this.unlocked&&!this.bought)
+				if(this.unlocked&&(fave||!this.bought))
 				{					
 					$('#BoostBuy'+this.id).toggleClass('unbuyable',!this.isAffordable());
 				}			

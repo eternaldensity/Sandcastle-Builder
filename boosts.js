@@ -1004,7 +1004,7 @@
 		{
 			var amount = Molpy.Boosts['Sand Refinery'].power+1;
 			amount*=Molpy.SandRefineryIncrement();
-			return amount;
+			return amount||0;
 		}
 		return 0;
 	}
@@ -1025,7 +1025,7 @@
 		{
 			var amount = Molpy.Boosts['Glass Chiller'].power+1;
 			amount*=Molpy.GlassChillerIncrement();
-			return amount;
+			return amount||0;
 		}
 		return 0;
 	}
