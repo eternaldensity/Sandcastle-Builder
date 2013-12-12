@@ -207,12 +207,12 @@
 	
 	Molpy.GetYourGoat=function()
 	{
-		if(!Molpy.Got('Goat'))
+		if(!Molpy.Got('Goats'))
 		{
-			Molpy.UnlockBoost('Goat')
+			Molpy.UnlockBoost('Goats')
 		}
-			Molpy.UnlockBoost('Goat');
-			var g = Molpy.Boosts['Goat'];
+			Molpy.UnlockBoost('Goats');
+			var g = Molpy.Boosts['Goats'];
 			if(!g.bought)
 			{
 				g.buy();
@@ -1067,7 +1067,8 @@
 		{		
 			var ch = Molpy.Boosts['GlassChips'];
 			var bl = Molpy.Boosts['GlassBlocks'];
-			var str ='';
+			var str='Causes the Glass Furnace to produce '+Molpify(me.power+1,3)+' Glass Chip'+plural(pow)+' per run';
+			if(!isFinite(me.power))return str;
 			if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()))
 			{
 				var useChips=1;
@@ -1205,7 +1206,7 @@
 			if (waste && expand && Molpy.Boosts['Stretchable Chip Storage'].power)
 			{
 				this.Spend(amount);
-				ch.bought += Math.floor(amount/4.5);
+				this.bought += Math.floor(amount/4.5);
 			}
 			else
 			{
@@ -1228,6 +1229,7 @@
 			var size=(me.bought)*10;
 			var rate = Molpy.Boosts['Sand Refinery'].power+1;
 			str+= ' Has space to store '+Molpify(size,3)+ ' Chips total.';
+			if(!isFinite(size))return str;
 			if(size-me.Level<=rate*10||Molpy.Got('AA'))
 			{
 				if(me.Has(5))
@@ -1285,7 +1287,7 @@
 			}
 			return str;
 		}
-		,icon:'glasschipstore',className:'alert',group:'stuff'
+		,icon:'glasschipstore',group:'stuff',className:'alert'
 	});
 	Molpy.UpgradeChipStorage=function(n)
 	{
@@ -1375,12 +1377,13 @@
 	new Molpy.Boost({name:'Glass Chiller',desc:
 		function(me)
 		{		
-			var str='';
+			var str='Causes the Glass Blower to produce '+Molpify(me.power+1,3)+' Glass Block'+plural(pow)+' per run';
+			if(!isFinite(me.power))return str;
 			if(Molpy.Has('GlassBlocks',5))
 			{
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
 				{
-					var pow=(Molpy.Boosts['Glass Chiller'].power)+2;
+					var pow=(me.power)+2;
 					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller(1)"></input> 5 Blocks to upgrade the Glass Blower to produce '
 						+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dig rate).';
 					
@@ -1471,16 +1474,16 @@
 		},
 		desc:function(me)
 		{
-			me.power=Math.round(me.power);
 			me.bought=Math.round(me.bought);
 			
-			var str= 'Contains '+Molpify(me.power,3)+' Glass Block'+plural(me.power)+'.';
+			var str= 'Contains '+Molpify(me.Level,3)+' Glass Block'+plural(me.Level)+'.';
 			var size=(me.bought)*50;
 			var rate = Molpy.Boosts['Glass Chiller'].power+1;
 			str+= ' Has space to store '+Molpify(size,3)+ ' Blocks total.';
-			if(size-me.power<=rate*10||Molpy.Got('AA'))
+			if(!isFinite(size))return str;
+			if(size-me.Level<=rate*10||Molpy.Got('AA'))
 			{
-				if(me.power>=15)
+				if(me.Has(15))
 				{
 					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeBlockStorage(1)"></input> 15 Blocks to build storage for 50 more.'
 				}else{
@@ -1488,7 +1491,7 @@
 				}
 				if(rate>200)
 				{
-					if(me.power>=2800)
+					if(me.Has(2800))
 					{
 						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeBlockStorage(20)"></input> 270 Blocks to build storage for '+Molpify(1000)+' more.'
 					}else{
@@ -1506,18 +1509,18 @@
 					}
 				}
 			}
-			if(me.power>30&&!Molpy.Got('Glass Chiller'))
+			if(me.Has(31)&&!Molpy.Got('Glass Chiller'))
 			{
-				if(me.power>=80)
+				if(me.Has(80))
 				{
 					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Chiller\',0,80)"></input> 80 Blocks to build a Glass Chiller to make Blocks faster.';
 				}else{
 					str+=' It costs 80 Glass Blocks to build a Glass Chiller, which can make Blocks faster.';
 				}
 			}
-			if(me.power>40&&!Molpy.Got('Sand Purifier'))
+			if(me.Has(41)&&!Molpy.Got('Sand Purifier'))
 			{
-				if(me.power>=95)
+				if(me.Has(95))
 				{
 					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Sand Purifier\',0,95)"></input> 95 Blocks';
 				}else{
@@ -1527,7 +1530,7 @@
 			}
 			return str;
 		}
-		,icon:'glassblockstore',className:'alert',group:'stuff'
+		,icon:'glassblockstore',group:'stuff',className:'alert'
 	});
 	Molpy.UpgradeBlockStorage=function(n)
 	{
@@ -1562,6 +1565,7 @@
 		{
 			var cost = Molpy.SandPurifierUpgradeCost();
 			var str = 'Glass Furnace\'s sand use is divided by '+Molpify(me.power+2,2);
+			if(!isFinite(me.power))return str;
 			if(Molpy.Has('GlassBlocks',cost-10))
 			{
 				if(Molpy.Has('GlassBlocks',cost))
@@ -1592,7 +1596,7 @@
 		var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
 
 		var backoff = 1;
-		while (1) {
+		while (upgrades) {
 			var cost = Molpy.SandPurifierUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
 			if (Molpy.Has('GlassBlocks',cost)) break;
 			upgrades -= backoff;
@@ -1618,7 +1622,7 @@
 
 		var upgrades = Math.floor((-b+Math.sqrt(b*b-4*a*c))/(2*a)); 
 		var backoff = 1;
-		while (1) {
+		while (upgrades) {
 			var cost = Molpy.GlassExtruderUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
 			if (Molpy.Has('GlassChips',cost)) break;
 			upgrades -= backoff;
@@ -1664,7 +1668,7 @@
     {
         var bl = Molpy.Boosts['GlassBlocks'];
         var extra = Math.min(Math.floor(bl.power/4.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.GlassChillerIncrement()-1));
-		extra = Math.min(extra, Math.floor(Molpy.Boosts['Sand Refinery'].power/Molpy.ChipsPerBlock()-Molpy.Boosts['Glass Chiller'].power-2));
+		extra = Math.min(extra, Math.floor(Molpy.Level('GlassChips')/1e12+Molpy.Boosts['Sand Refinery'].power/Molpy.ChipsPerBlock()-Molpy.Boosts['Glass Chiller'].power-2));
         if (extra>20) 
         {
             Molpy.Boosts['Glass Chiller'].power+=extra;
@@ -1803,7 +1807,8 @@
 				var s = Molpy.GetBlackprintSubject();
 				if(s && !Molpy.Got('CfB'))
 				{
-					str+='<br><input type="Button" value="Start" onclick="Molpy.StartBlackprintConstruction()"></input> construction of '+Molpy.Boosts[Molpy.GetBlackprintSubject()].name+' from Blackprints (requires 100 runs of Factory Automation)';
+					var c = Molpy.blackprintCosts[s];
+					str+='<br><input type="Button" value="Start" onclick="Molpy.StartBlackprintConstruction()"></input> construction of '+Molpy.Boosts[Molpy.GetBlackprintSubject()].name+' from Blackprints (requires '+Molpify(c*10)+' runs of Factory Automation)';
 				}
 			}
 			return str;
@@ -2268,7 +2273,7 @@
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
 			if(Molpy.Got('Camera'))
 				Molpy.EarnBadge('discov'+Math.ceil(Molpy.newpixNumber*Math.random()));
-			Molpy.BlackprintIncrement(this.bought);
+			Molpy.Add('Blackprints',this.bought);
 				
 		}
 	});
@@ -2327,6 +2332,7 @@
 		{
 			var cost = Molpy.GlassExtruderUpgradeCost();
 			var str = 'Glass Blower\'s sand use is divided by '+Molpify(me.power+2,3);
+			if(!isFinite(me.power))return str;
 			if(Molpy.Has('GlassChips',cost-800))
 			{
 				if(Molpy.Has('GlassChips',cost))
@@ -2523,18 +2529,63 @@
 		sand:'50P',castles:'20P',glass:'20K',group:'chron'
 	});
 	
-	new Molpy.Boost({name:'Blackprints',desc:
-		function(me)
+	new Molpy.Boost({name:'Blackprints',
+		
+		Level:Molpy.BoostFuncs.PosPowerLevel,
+		Has:function(n)
 		{
-			var pBoost=Molpy.Boosts[Molpy.GetBlackprintSubject(1)];
-			if(!pBoost)
+			var pages = this.Level;
+			if(pages<1)return 0;
+			if(this.bought)
 			{
-				Molpy.LockBoost(me.alias);
-				return 'This is not the boost you are looking for.';
+				pages-=Molpy.blackprintCosts[Molpy.GetBlackprintSubject()];
 			}
-			return '(Or Blueprints if you\'re into Chromatic Heresy)<br>Allows you to construct '+pBoost.name+' with Factory Automation';
+			return(pages>=n);
+		},
+		Add:function(n)
+		{
+			var target = Molpy.GetBlackprintPages();
+			this.Level+=n;
+			if(this.Has(9001))Molpy.EarnBadge('Scouter');
+			if(!Molpy.boostSilence)
+			{
+				if(n==1)
+					Molpy.Notify('You found a Blackprint page',1);
+				else
+					Molpy.Notify('You found '+n+' Blackprint pages',1);
+			}else
+			{
+				if(this.Has(target) && !this.Has(target+n))
+				{
+					Molpy.Notify('You now have the '+target+' Blackprint pages you require.',1);
+				}
+				return;
+			}
+				
+			if(!target)return;
+				
+			if(!this.Has(target))
+				Molpy.Notify('You need  '+Molpify(target-this.Level)+' more pages',1);
+			else if (this.Has(target+1))
+				Molpy.Notify('You have more pages than you need right now',1);
+			else
+				Molpy.Notify('You now have the '+target+' Blackprint pages you require.',1);
+		},
+		Spend:Molpy.BoostFuncs.Spend,
+		Destroy:Molpy.BoostFuncs.Destroy,
+		desc:function(me)
+		{
+		
+			var pBoost=Molpy.Boosts[Molpy.GetBlackprintSubject(1)];
+			return 'Allows you to construct '+(pBoost?pBoost.name:'new Boosts')+' with Factory Automation.<br>You have '+Molpy.BlackprintReport();
+		},
+		stats:function(me)
+		{
+			return '(Or Blueprints if you\'re into Chromatic Heresy)<br>'+me.desc();
 		}
-		,sand:function(){return Molpy.LogiMult('80YW');},castles:function(){return Molpy.LogiMult('40YW');},glass:function(){return Molpy.LogiMult('25K');},
+		,sand:function(){return Molpy.LogiMult('80YW');},
+		castles:function(){return Molpy.LogiMult('40YW');},
+		glass:function(){return Molpy.LogiMult('25K');},
 		lockFunction:function()
 		{
 			var s=Molpy.GetBlackprintSubject(1);
@@ -2552,9 +2603,18 @@
 		buyFunction:function()
 		{
 			Molpy.Notify('See Rosetta about your Blackprints',1);
+			Molpy.Boosts['Rosetta'].Refresh();
 		},
-		group:'bean',icon:'blackprints'
+		group:'stuff',icon:'blackprints'
 	});
+	
+	Molpy.BlackprintReport=function()
+	{
+		return 'Collected '+Molpify(+Molpy.Level('Blackprints')
+			+ Molpy.Boosts['Milo'].power/100,3)+' of '+Molpify(Molpy.GetBlackprintPages() ||
+				Molpy.Boosts['AC'].power*(Molpy.Boosts['Dragon Forge'].bought?10:2),1);
+	}
+	
 	Molpy.LogiMult=function(s)
 	{
 		return DeMolpify(s+'')*Molpy.Boosts['Logicat'].bought;
@@ -2568,7 +2628,7 @@
 			{
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return 0;
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
-				if(print=='BoH'&&!Molpy.Has('Goat',400)) continue;
+				if(print=='BoH'&&!Molpy.Has('Goats',400)) continue;
 				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
 			}
 		}
@@ -2577,8 +2637,7 @@
 	Molpy.GetBlackprintSubject=function(d)
 	{
 		if(!d&&!Molpy.Got('Blackprints'))return;
-		var pages = Molpy.Boosts['Blackprints'].power;
-		if(!pages)return;
+		if(Molpy.Level('Blackprints')<1)return;
 		for(var i in Molpy.blackprintOrder)
 		{
 			var print=Molpy.blackprintOrder[i];
@@ -2586,66 +2645,24 @@
 			{				
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return;
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
-				if(print=='BoH'&&!Molpy.Has('Goat',400)) continue;
-				if(pages>=Molpy.blackprintCosts[print])
+				if(print=='BoH'&&!Molpy.Has('Goats',400)) continue;
+				if(Molpy.Level('Blackprints')>=Molpy.blackprintCosts[print])
 					return print;
 				return;
 			}
 		}
-	}
-	Molpy.BlackprintIncrement=function(n)
-	{
-		var target = Molpy.GetBlackprintPages();
-		var b = Molpy.Boosts['Blackprints'];
-		b.Refresh();
-		b.power+=n;
-		if(b.power>9000)Molpy.EarnBadge('Scouter');
-		if(!Molpy.boostSilence)
-		{
-			if(n==1)
-				Molpy.Notify('You found a Blackprint page',1);
-			else
-				Molpy.Notify('You found '+n+' Blackprint pages',1);
-		}else
-		{
-			if(b.power>=target && b.power-n<target)
-			{
-				Molpy.Notify('You now have the '+target+' Blackprint pages you require.',1);
-			}
-			return;
-		}
-			
-		if(!target)return;
-			
-		if(b.power<target)
-			Molpy.Notify('You need  '+Molpify(target-b.power)+' more pages',1);
-		else if (b.power>target)
-			Molpy.Notify('You have more pages than you need right now',1);
-		else
-			Molpy.Notify('You now have the '+target+' Blackprint pages you require.',1);
-	}
-	Molpy.HasSpareBlackprints=function(n)
-	{
-		var pages = Molpy.Boosts['Blackprints'].power;
-		if(pages<1)return 0;
-		if(Molpy.Got('Blackprints'))
-		{
-			pages-=Molpy.blackprintCosts[Molpy.GetBlackprintSubject()];
-		}
-		return(pages>=n);
 	}
 	
 	//if we have enough blackprint pages for next blackprint boost, allow it as a department reward
 	Molpy.CheckBlackprintDepartment=function()
 	{
 		Molpy.Boosts['Blackprints'].department=0;
-		var pages = Molpy.Boosts['Blackprints'].power;
 		var print=Molpy.GetBlackprintSubject(1);
 		if(!print)return;
 		var pboost=Molpy.Boosts[print];
 		if(!pboost.unlocked)
 		{
-			 Molpy.Boosts['Blackprints'].department=1*(pages>=Molpy.blackprintCosts[print]); 
+			 Molpy.Boosts['Blackprints'].department=1*(Molpy.Level('Blackprints')>=Molpy.blackprintCosts[print]); 
 			 return;
 		}
 		
@@ -2657,17 +2674,19 @@
 	}
 	Molpy.DoBlackprintConstruction=function(times)
 	{
-		if(Molpy.blackprintCosts[Molpy.GetBlackprintSubject()]>Molpy.Boosts['Blackprints'].power)
+		var c = Molpy.blackprintCosts[Molpy.GetBlackprintSubject()];
+		if(c>Molpy.Level('Blackprints'))
 		{//we used up some blackprints somehow!
 			return times; //do nothing
 		}
 		var con=Molpy.Boosts['CfB'];
 		con.power+=times;
-		if(con.power>=100)
+		 
+		if(con.power>=c*10)
 		{
 			var op = con.power;
 			Molpy.LockBoost('CfB');
-			return times+op-100;
+			return times+op-c*10;
 		}
 		return 0;
 	}
@@ -2680,7 +2699,7 @@
 				Molpy.LockBoost('CfB');
 				return 'Constructing nothing. How?';
 			}
-			return 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(100-me.power)+' runs of Factory Automation required to complete.';
+			return 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(Molpy.blackprintCosts[subj.alias]*10-me.power)+' runs of Factory Automation required to complete.';
 		},
 		unlockFunction:function()
 		{
@@ -3448,7 +3467,7 @@
 			if(built>=1e15)Molpy.EarnBadge('PetaTool');
 			if(built>=1e24)Molpy.EarnBadge('YottaTool');
 			if(built>=1e42)Molpy.EarnBadge('WololoTool');
-			if(built>=1e81)Molpy.EarnBadge('WololoWololoTool');
+			if(built>=1e84)Molpy.EarnBadge('WololoWololoTool');
 
         }
         if(!acPower)return;
@@ -3526,7 +3545,7 @@
 				mr.power-=100;
 			}
 			if(pages)
-				Molpy.BlackprintIncrement(pages);
+				Molpy.Add('Blackprints',pages);
 		}
 		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<Molpy.PokeBar())
 		{
@@ -3822,7 +3841,7 @@
 		}
 		if(Molpy.Has('GlassChips',chipCost))
 		{
-			if(!Molpy.HasSpareBlackprints(pageCost))
+			if(!Molpy.Has('Blackprints',pageCost))
 			{
 				Molpy.Notify('You need more Blackprint Pages');
 				return;
@@ -4096,7 +4115,7 @@
 			if(!me.bought)return str;
 			var goatCost = me.power;
 			var powerReq=Math.pow(5,me.power+12);
-			if(Molpy.Has('Goat',goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
+			if(Molpy.Has('Goats',goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
 			{	
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
 			}else
@@ -4112,9 +4131,9 @@
 		var me = Molpy.Boosts['WiseDragon'];
 		var goatCost = me.power*n;
 		var powerReq=Math.pow(5,me.power+12);
-		if(Molpy.Has('Goat',goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
+		if(Molpy.Has('Goats',goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
 		{
-			Molpy.Spend('Goat',goatCost);
+			Molpy.Spend('Goats',goatCost);
 			Molpy.Boosts['AD'].power-=powerReq;
 			Molpy.Notify('Dragon Widsom gained!'); //it was so tempting to write gainned :P
 			me.power++;
@@ -4128,12 +4147,12 @@
 	new Molpy.Boost({name:'Ninja Ninja Duck',desc:'Ninja Stealth is raised by 10x as much'
 		,sand:Infinity,castles:Infinity,glass:'230Z',group:'ninj',icon:'ninjaduck'});
 		
-	new Molpy.Boost({name:'Goat',desc:function(me)
+	new Molpy.Boost({name:'Goats',desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' goat'+plural(me.Level)+'. Yay!';
 			return str;
 		}
-		,icon:'goat',group:'stuff',defStuff:1
+		,icon:'Goats',group:'stuff',defStuff:1
 	});
 	
 	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1G'});
@@ -4179,7 +4198,7 @@
 		lockFunction:function()
 		{
 			if (!this.power) this.power=10;
-			Molpy.BlackprintIncrement(this.power++);
+			Molpy.Add('Blackprints',this.power++);
 		}
 	});
 	new Molpy.Boost({name:'Vault Key',desc:'Helps open a locked vault',glass:'5M',

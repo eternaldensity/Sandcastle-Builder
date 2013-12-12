@@ -1575,7 +1575,7 @@ Molpy.Up=function()
 		Molpy.Level=function(stuff)
 		{
 			var b = Molpy.Boosts[stuff];
-			return b&&b.Level(amount);
+			return b&&b.Level;
 		}
 		Molpy.Has=function(stuff,amount)
 		{
@@ -1615,7 +1615,7 @@ Molpy.Up=function()
 			},
 			function(amount)
 			{
-				this.power=Math.round(Math.max(0,amount));
+				this.power=Math.round(Math.max(0,amount))||0;
 				this.Refresh();
 			}],
 			Bought0Level:[function()
@@ -1747,13 +1747,13 @@ Molpy.Up=function()
 				}
 				
 				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1));
-				if(isNaN(sp)||isNaN(cp)){this.power=0;sp=0;Molpy.EarnBadge('How do I Shot Mustard?')};
 				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));
+				if(isNaN(sp)||isNaN(cp)){this.power=0;sp=0;Molpy.EarnBadge('How do I Shot Mustard?')};
 				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1));
 				
 				if(Molpy.ProtectingPrice()&&sp+cp+gp)return; //don't need or want price protection on free items!
 				
-				if (!this.bought && (!cp||Molpy.Has('Castles',cp)) && (!sp||Molpy.sand>=sp) && (!gp||Molpy.Has('GlassBlocks',gp)))
+				if (!this.bought && Molpy.Has('Castles',cp) && Molpy.Has('Sand',sp) && Molpy.Has('GlassBlocks',gp))
 				{
 					Molpy.Spend('Sand',sp);
 					Molpy.Spend('Castles',cp);
@@ -1790,7 +1790,7 @@ Molpy.Up=function()
 				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1))||0;
 				if(!(sp+cp+gp))return 1;//free is always affordable
 				if(Molpy.ProtectingPrice())return 0;
-				return (!cp||castles>=cp) && (!sp||sand>=sp) && (!gp||Molpy.Has('GlassBlocks',gp));
+				return Molpy.Has('Castles',cp) && Molpy.Has('Sand',sp) && Molpy.Has('GlassBlocks',gp);
 			}
 			this.Refresh=function(indirect)
 			{

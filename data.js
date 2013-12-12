@@ -853,7 +853,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Super Visor'].logic=240*(Molpy.CastleTools['Beanie Builder'].amount>=6000);	
 	Molpy.Boosts['Crystal Helm'].logic=300*(Molpy.CastleTools['Beanie Builder'].amount>=12000);	
 	Molpy.Boosts['FiM'].logic=64*(Molpy.SandTools['LaPetite'].amount+Molpy.SandTools['Cuegan'].amount>6.4e10);
-	Molpy.Boosts['MHP'].department=finiteC||((Molpy.Got('Goat')||Molpy.Boosts['MHP'].department)&&!automationLevel);
+	Molpy.Boosts['MHP'].department=finiteC||((Molpy.Got('Goats')||Molpy.Boosts['MHP'].department)&&!automationLevel);
 }
 	
 Molpy.CheckASHF=function()
