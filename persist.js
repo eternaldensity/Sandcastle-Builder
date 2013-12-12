@@ -1160,6 +1160,8 @@
 			Molpy.toolsBuiltTotal=0;
 			Molpy.totalGlassBuilt=0;
 			Molpy.totalGlassDestroyed=0;
+			Molpy.redactedChain=0;
+			Molpy.redactedChainMax=0;
 			Molpy.CastleTools['NewPixBot'].totalCastlesBuilt=0; //because we normally don't reset this.
 			for (var i in Molpy.BadgesById)
 			{
