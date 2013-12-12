@@ -1704,6 +1704,7 @@ Molpy.Up=function()
 				Object.defineProperties(this, {"Level": {get: args.Level[0],set:args.Level[1]}});
 				this.Add=args.Add;
 				this.Spend=args.Spend;
+				this.Destroy=args.Destroy;
 				this.Has=args.Has;
 			}
 			this.unlocked=0;

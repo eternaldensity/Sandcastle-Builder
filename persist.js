@@ -1044,12 +1044,12 @@
 	
 	/* In which a routine for resetting the game is presented
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	Molpy.Down=function(auto)
+	Molpy.Down=function(coma)
 	{
-		if(auto || confirm('Really Molpy Down?\n(Progress will be reset but achievements will not.)'))
+		if(coma || confirm('Really Molpy Down?\n(Progress will be reset but achievements will not.)'))
 		{
 			
-			auto||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Begin',''+Molpy.newpixNumber]);
+			coma||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Begin',''+Molpy.newpixNumber]);
 			Molpy.sandDug=0; 
 			Molpy.sandManual=0;
 			Molpy.chipsManual=0;
@@ -1078,7 +1078,7 @@
 			Molpy.options.castlemultibuy=0;
 			
 			var keep='';
-			if(!auto&&Molpy.Got('No Need to be Neat'))
+			if(!coma&&Molpy.Got('No Need to be Neat'))
 			{
 				keep=GLRschoice(Molpy.tfOrder).name;
 			}
@@ -1111,9 +1111,11 @@
 				me.totalGlassDestroyed=0;
 				me.Refresh();
 			}
+			var boh = !coma&&Molpy.Got('BoH');
 			for(i in Molpy.Boosts)
 			{
 				var me = Molpy.Boosts[i];
+				if(boh&&me.group=='Stuff')continue;
 				me.unlocked=0;
 				me.bought=0;	
 				me.power=0;
@@ -1134,7 +1136,7 @@
 			Molpy.EarnBadge('Not Ground Zero');
 			Molpy.AdjustFade();
 			Molpy.UpdateColourScheme();
-			auto||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Complete',''+Molpy.highestNPvisited]);
+			coma||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Complete',''+Molpy.highestNPvisited]);
 		}
 	}
 	Molpy.Coma=function()

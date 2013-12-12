@@ -2568,6 +2568,7 @@
 			{
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return 0;
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
+				if(print=='BoH'&&!Molpy.Has('Goat',400)) continue;
 				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
 			}
 		}
@@ -2585,6 +2586,7 @@
 			{				
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return;
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
+				if(print=='BoH'&&!Molpy.Has('Goat',400)) continue;
 				if(pages>=Molpy.blackprintCosts[print])
 					return print;
 				return;
@@ -2691,8 +2693,8 @@
 		},
 		className:'alert',group:'bean',icon:'constructblack'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:120,ZK:180,CFT:40000};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','Bacon','AO','AA','SG','AE','Milo','ZK','CFT'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:120,ZK:180,CFT:40000,BoH:90000};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','Bacon','AO','AA','SG','AE','Milo','ZK','CFT','BoH'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',alias:'SMM',desc:
 		function(me)
@@ -4319,6 +4321,9 @@
 		desc:function(me){return Molpify(me.Level,3);}
 		,group:'stuff'
 	});
+	
+	
+	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down',glass:Infinity,sand:Infinity,castles:Infinity,className:'alert'});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
