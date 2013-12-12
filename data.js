@@ -651,7 +651,7 @@ Molpy.CheckBuyUnlocks=function()
 	}
 	
 	if(Molpy.HasGlassBlocks(7016280))Molpy.EarnBadge('Pyramid of Giza');
-	if(Molpy.HasGlassChips(640000))Molpy.EarnBadge('Personal Computer');	
+	if(Molpy.Has('GlassChips',640000))Molpy.EarnBadge('Personal Computer');	
 	
 	if (Molpy.Boosts['Sand Purifier'].power > 1000) Molpy.UnlockBoost('Seaish Glass Chips');
 	if (Molpy.Boosts['Glass Extruder'].power > 1000) Molpy.UnlockBoost('Seaish Glass Blocks');

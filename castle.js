@@ -394,37 +394,7 @@ Molpy.Up=function()
 		{
 			var furnaceLevel=(Molpy.Boosts['Sand Refinery'].power)+1;
 			if (times) furnaceLevel*=times;
-			Molpy.AddChips(furnaceLevel,1);
-		}
-		Molpy.chipAddAmount=0;
-		Molpy.chipWasteAmount=0;
-		Molpy.AddChips=function(amount,expand)
-		{
-			Molpy.UnlockBoost('GlassChips');
-			var ch = Molpy.Boosts['GlassChips'];
-			if(!ch.bought)
-			{
-				ch.buy();
-			}
-			ch.power+=amount;
-			var waste = Math.max(0,ch.power-(ch.bought)*10);
-			if (waste && expand && Molpy.Boosts['Stretchable Chip Storage'].power)
-			{
-				ch.power -= amount;
-				ch.bought += Math.floor(amount/4.5);
-			}
-			else
-			{
-				if (waste)
-				{
-					ch.power-=waste;
-					amount-=waste;
-					Molpy.chipWasteAmount+=waste;
-					if (expand && Molpy.chipWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Chip Storage');
-				}
-				Molpy.chipAddAmount+=amount;
-			}				
-			Molpy.RefreshGlass();			
+			Molpy.Add('GlassChips',furnaceLevel,1);
 		}
 		Molpy.blockAddAmount=0;
 		Molpy.blockWasteAmount=0;
@@ -934,7 +904,7 @@ Molpy.Up=function()
 				var payment = Math.floor(Molpy.Boosts['GlassChips'].power*.01);
 				if(payment>=100)
 				{
-					Molpy.SpendGlassChips(payment);
+					Molpy.Spend('GlassChips',payment);
 					Molpy.Notify('Ninja Forgiven',1);
 					Molpy.Boosts['Impervious Ninja'].power--;
 					if(Molpy.Boosts['Impervious Ninja'].power<=0)
@@ -1718,10 +1688,10 @@ Molpy.Up=function()
 			var b = Molpy.Boosts[stuff];
 			return b&&b.Has(amount);
 		}
-		Molpy.Add=function(stuff,amount)
+		Molpy.Add=function(stuff,amount,s)
 		{
 			var b = Molpy.Boosts[stuff];
-			return b&&b.Add(amount);
+			return b&&b.Add(amount,s);
 		}
 		Molpy.Spend=function(stuff,amount)
 		{
@@ -1731,13 +1701,21 @@ Molpy.Up=function()
 		
 		Molpy.BoostFuncs=
 		{
-			PowerLevel:[function()
+			PosPowerLevel:[function()
 			{
 				return this.power;
 			},
 			function(amount)
 			{
-				this.power=amount;
+				this.power=Math.max(0,amount);
+			}],
+			RoundPosPowerLevel:[function()
+			{
+				return this.power;
+			},
+			function(amount)
+			{
+				this.power=Math.round(Math.max(0,amount));
 			}],
 			Bought0Level:[function()
 			{
@@ -1804,10 +1782,11 @@ Molpy.Up=function()
 			this.icon=args.icon;
 			this.buyFunction=args.buyFunction;
 			this.countdownFunction=args.countdownFunction;
+			this.refreshFunction=args.refreshFunction;
 			this.IsEnabled=args.IsEnabled;
 			if(args.defStuff)
 			{
-				args.Level=Molpy.BoostFuncs.PowerLevel;
+				args.Level=Molpy.BoostFuncs.PosPowerLevel;
 				args.Has=Molpy.BoostFuncs.Has;
 				args.Add=Molpy.BoostFuncs.Add;
 				args.Spend=Molpy.BoostFuncs.Spend;
@@ -1905,11 +1884,12 @@ Molpy.Up=function()
 				if(Molpy.ProtectingPrice())return 0;
 				return (!cp||castles>=cp) && (!sp||sand>=sp) && (!gp||Molpy.HasGlassBlocks(gp));
 			}
-			this.Refresh=function()
+			this.Refresh=function(indirect)
 			{
 				if(this.hovering||Molpy.Boosts['Expando'].power)this.hoverOnCounter=1;
 				
 				this.faveRefresh=1;
+				if(!indirect&&this.refreshFunction)this.refreshFunction();
 			}
 			this.showdesc=function(keep)
 			{
@@ -2529,7 +2509,7 @@ Molpy.Up=function()
 				if(finite)
 					Molpy.SpendGlassBlocks(30);
 				else if(pg)
-					Molpy.AddChips(3000*(twin+1));
+					Molpy.Add('GlassChips',3000*(twin+1));
 			}
 			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].power)
 			{
@@ -2546,7 +2526,7 @@ Molpy.Up=function()
 						Molpy.SandTools['Ladder'].Refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(3500*(twin+1));
+							Molpy.Add('GlassChips',3500*(twin+1));
 					}
 				}
 				if(Molpy.SandTools['Bag'].amount)	
@@ -2562,7 +2542,7 @@ Molpy.Up=function()
 						Molpy.SandTools['Bag'].Refresh();
 						Molpy.SandToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(3500*(twin+1));
+							Molpy.Add('GlassChips',3500*(twin+1));
 					}
 				}
 			}
@@ -2581,7 +2561,7 @@ Molpy.Up=function()
 						Molpy.CastleTools['River'].Refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(4500*(twin+1));
+							Molpy.Add('GlassChips',4500*(twin+1));
 					}
 				}
 				if(Molpy.CastleTools['Wave'].amount)	
@@ -2597,7 +2577,7 @@ Molpy.Up=function()
 						Molpy.CastleTools['Wave'].Refresh();
 						Molpy.CastleToolsOwned--;
 						if(!finite&&pg)
-							Molpy.AddChips(4500*(twin+1));
+							Molpy.Add('GlassChips',4500*(twin+1));
 					}
 				}
 			}
@@ -2608,7 +2588,7 @@ Molpy.Up=function()
 					Molpy.SpendGlassBlocks(120);
 					items+=Molpy.redactedClicks*2;
 				}else if(!finite&&pg)
-					Molpy.AddChips(12000*(twin+1));
+					Molpy.Add('GlassChips',12000*(twin+1));
 			}
 			var nerf=0;
 			if(Molpy.Got('Panther Salve') && Molpy.Boosts['Panther Salve'].power>0)
@@ -2623,7 +2603,7 @@ Molpy.Up=function()
 				}
 				else if(!finite&&pg)
 				{
-					Molpy.AddChips(1000*(twin+1));
+					Molpy.Add('GlassChips',1000*(twin+1));
 				}
 			}
 			if(Molpy.Got('Fractal Sandcastles'))
@@ -2644,7 +2624,7 @@ Molpy.Up=function()
 					Molpy.lGlass-=1;
 					Molpy.AddBlocks(gift*(twin+1));
 				}else{
-					Molpy.AddChips(gift*(twin+1));				
+					Molpy.Add('GlassChips',gift*(twin+1));				
 				}
 				if(Molpy.Got('SGC'))
 				{
@@ -2885,9 +2865,9 @@ Molpy.Up=function()
 	
 	Molpy.Shutter=function()
 	{
-		if(Molpy.HasGlassChips(10))
+		if(Molpy.Has('GlassChips',10))
 		{
-			Molpy.SpendGlassChips(10);
+			Molpy.Spend('GlassChips',10);
 			var alias='discov'+Molpy.newpixNumber;
 			if(!Molpy.Badges[alias])
 			{
