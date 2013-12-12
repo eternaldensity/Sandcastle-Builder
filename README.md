@@ -33,6 +33,12 @@ For personal amusement only.
 - Coma and Load weren't clearing the group toggle boxes
 - Sand and Castles are unlockable... for what they're worth (which is nothing)
 - Reduced minimum resizable size
+- Ensured spending infinite glass won't result in mustard
+- Made a boost costing infinite blocks
+- Added a couple new boost categories, though one is still empty
+- If you want a Fave for sand or castles, you can. Dunno why you would though. They exist more for implementation reasons than to be useful
+- I think there was something else but I've forgotten. Oh yeah the amount of factory automation needed for blackprint-construction now scales.
+- Fixed some Tool Factory Chips mustard caused by infinite tools
 
 ## 3.244
 - Find+Replace in All Opened Documents: Y U FAIL?

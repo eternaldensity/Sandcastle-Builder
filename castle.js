@@ -461,6 +461,11 @@ Molpy.Up=function()
 			var tf=Molpy.Boosts['Tool Factory'];
 			amount=Math.min(tf.power,amount);
 			tf.power-=amount;
+			if(isNaN(tf.power))
+			{
+				Molpy.EarnBadge('Mustard Factory');
+				tf.power=0;
+			}
 			Molpy.totalGlassDestroyed+=amount;
 		}
 			
@@ -1424,35 +1429,36 @@ Molpy.Up=function()
 			{
 				var i = this.amount
 				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(Molpy.priceFactor*this.price);
-				var destroyN=EvalMaybeFunction(inf?this.destroyG:this.destroyC);
+				var destroyN=EvalMaybeFunction(inf?this.destroyG:this.destroyC)
+				var destroyT=destroyT||0;
 				if (inf)
 				{
-					if (Molpy.Boosts['Tool Factory'].power >= destroyN*i)
+					if (Molpy.Boosts['Tool Factory'].power >= destroyT)
 					{
 						this.currentActive+=i;
-						this.totalGlassDestroyed+=destroyN*i;
-						Molpy.DestroyGlass(destroyN*i);
+						this.totalGlassDestroyed+=destroyT;
+						Molpy.DestroyGlass(destroyT);
 						if(this.destroyFunction)this.destroyFunction();
 						return;
 					}
 				}
 				else 
 				{
-					if(Molpy.castles >= destroyN*i)
+					if(Molpy.castles >= destroyT)
 					{
 						this.currentActive+=i;
-						this.totalCastlesDestroyed+=destroyN*i;
-						Molpy.Destroy('Castles',destroyN*i);
+						this.totalCastlesDestroyed+=destroyT;
+						Molpy.Destroy('Castles',destroyT);
 						if(this.destroyFunction)this.destroyFunction();
 						return;
 					}
 				}
 				if(inf)
 				{
-					var iAfford = Math.min(i,Math.floor(Molpy.Boosts['Tool Factory'].power/destroyN));
+					var iAfford = Math.min(i,Math.floor(Molpy.Boosts['Tool Factory'].power/destroyN)||0);
 					this.currentActive+=iAfford;
-					this.totalGlassDestroyed+=destroyN*iAfford;
-					Molpy.DestroyGlass(destroyN*iAfford);
+					this.totalGlassDestroyed+=destroyN*iAfford||0;
+					Molpy.DestroyGlass(destroyN*iAfford||0);
 					
 				}else{
 					var iAfford = Math.min(i,Math.floor(Molpy.castles/destroyN));
@@ -2970,7 +2976,7 @@ Molpy.Up=function()
 		Molpy.ONGelapsed = new Date().getTime()-Molpy.ONGstart.getTime();
 		if(!Molpy.ninjad)
 		{
-			if((Molpy.ONGelapsed-Molpy.ninjaTime)/Molpy.NPlength>1)			
+			if(Molpy.npbONG)			
 				stateClass='beachstreakextend';
 			else stateClass='beachninjawarning';
 		}

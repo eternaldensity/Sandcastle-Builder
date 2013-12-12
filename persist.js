@@ -1115,7 +1115,7 @@
 			for(i in Molpy.Boosts)
 			{
 				var me = Molpy.Boosts[i];
-				if(boh&&me.group=='Stuff')continue;
+				if(boh&&me.group=='stuff')continue;
 				me.unlocked=0;
 				me.bought=0;	
 				me.power=0;

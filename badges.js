@@ -369,7 +369,8 @@
 	new Molpy.Badge({name:'YottaTool', desc:'Make 1Y Glass Tools per mNP',stats:'Yours Truly',vis:1});
 	new Molpy.Badge({name:'WololoTool', desc:'Make 1W Glass Tools per mNP',stats:'Still so far to go!',vis:1});
 	new Molpy.Badge({name:'WololoWololoTool', desc:'Make 1WW Glass Tools per mNP',stats:'Really'});
-	new Molpy.Badge({name:'Never Alone', desc:'Increase the Temporal Duplication countdown to 9WNP',stats:'Makes Temporal Duplication Permament'});
+	new Molpy.Badge({name:'Never Alone', desc:'Increase the Temporal Duplication countdown to 9WNP',stats:'Makes Temporal Duplication Permament(er)'});
+	new Molpy.Badge({name:'Mustard Factory', desc:'Cause a mustard incident in the Tool Factory',stats:'I think I fixed too many bugs, so this currently is not attaintable. Unless it is.',vis:2});
 	
 	
 		
