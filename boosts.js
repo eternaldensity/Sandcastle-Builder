@@ -1048,16 +1048,6 @@
 		return glassUse;
 	}
 	
-	Molpy.HasGlassBlocks=function(num)
-	{	
-		return Molpy.Boosts['GlassBlocks'].power >= num;
-	}
-	Molpy.SpendGlassBlocks=function(num)
-	{	
-		Molpy.Boosts['GlassBlocks'].power -= num;
-		Molpy.blockAddAmount-=num;	
-		Molpy.RefreshGlass();
-	}
 	Molpy.RefreshGlass=function()
 	{	
 		Molpy.Boosts['GlassChips'].Refresh(1);
@@ -1085,7 +1075,7 @@
 				if(ch.power>=3)
 				{
 					
-				}else if(Molpy.HasGlassBlocks(1))
+				}else if(Molpy.Has('GlassBlocks',1))
 				{
 					useChips=0
 				}else{
@@ -1107,7 +1097,7 @@
 					if(ch.power>=50)
 					{
 						
-					}else if(Molpy.HasGlassBlocks(18))
+					}else if(Molpy.Has('GlassBlocks',18))
 					{
 						useChips=0
 					}else{
@@ -1129,7 +1119,7 @@
 						if(ch.power>=1500)
 						{
 							
-						}else if(Molpy.HasGlassBlocks(540))
+						}else if(Molpy.Has('GlassBlocks',540))
 						{
 							useChips=0
 						}else{
@@ -1153,7 +1143,7 @@
 			}else{
 				str+= 'Currently, you have no more sand available for further upgrades';
 			}
-			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.HasGlassBlocks(ch.bought*10))
+			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.Has('GlassBlocks',ch.bought*10))
 			{
 				str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeSandRefinery()"></input> the Sand Refinery (by 1) and receive a 1 Glass Chip refund.';
 			}
@@ -1171,9 +1161,9 @@
 			{
 				Molpy.Spend('GlassChips',chipCost);
 			}
-			else if(Molpy.HasGlassBlocks(blockCost))
+			else if(Molpy.Has('GlassBlocks',blockCost))
 			{
-				Molpy.SpendGlassBlocks(blockCost);
+				Molpy.Spend('GlassBlocks',blockCost);
 			}else{
 				return;
 			}
@@ -1201,6 +1191,8 @@
 	new Molpy.Boost({name:'Glass Chip Storage',alias:'GlassChips',
 		Level:Molpy.BoostFuncs.RoundPosPowerLevel,
 		Has:Molpy.BoostFuncs.Has,
+		Spend:Molpy.BoostFuncs.Spend,
+		refreshFunction:Molpy.RefreshGlass,
 		Add:function(amount,expand)
 		{
 			Molpy.UnlockBoost('GlassChips');
@@ -1228,8 +1220,6 @@
 			}				
 			this.Refresh();			
 		},
-		Spend:Molpy.BoostFuncs.Spend,
-		refreshFunction:Molpy.RefreshGlass,
 		desc:function(me)
 		{
 			me.bought=Math.round(me.bought);
@@ -1313,10 +1303,10 @@
 	
 	Molpy.BuyGlassBoost=function(name,chips,blocks)
 	{
-		if(Molpy.Has('GlassChips',chips)&&Molpy.HasGlassBlocks(blocks))
+		if(Molpy.Has('GlassChips',chips)&&Molpy.Has('GlassBlocks',blocks))
 		{
 			Molpy.Spend('GlassChips',chips);
-			Molpy.SpendGlassBlocks(blocks);
+			Molpy.Spend('GlassBlocks',blocks);
 			Molpy.UnlockBoost(name);
 			Molpy.Boosts[name].buy();			
 		}else{
@@ -1386,7 +1376,7 @@
 		function(me)
 		{		
 			var str='';
-			if(Molpy.HasGlassBlocks(5))
+			if(Molpy.Has('GlassBlocks',5))
 			{
 				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
 				{
@@ -1412,7 +1402,7 @@
 			}else
 				str+= 'It costs 5 Blocks to upgrade the Glass Blower\'s speed';
 			
-			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.HasGlassBlocks(Molpy.Boosts['GlassBlocks'].bought*50))
+			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.Has('GlassBlocks',Molpy.Boosts['GlassBlocks'].bought*50))
 			{
 				str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeGlassChiller()"></input> the Glass Chiller (by 1) and receive a 1 Glass Block refund.';
 			}
@@ -1423,9 +1413,9 @@
 	{
 		var unitCost=5;
 		if(n>10) unitCost*=.9;
-		if(Molpy.HasGlassBlocks(unitCost*n) && Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*n))
+		if(Molpy.Has('GlassBlocks',unitCost*n) && Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*n))
 		{
-			Molpy.SpendGlassBlocks(unitCost*n);
+			Molpy.Spend('GlassBlocks',unitCost*n);
 			Molpy.Boosts['Glass Chiller'].power+=n;
 			Molpy.Notify('Glass Chiller upgraded',1);
 			Molpy.recalculateDig=1;
@@ -1436,7 +1426,7 @@
 	{
 		var gc = Molpy.Boosts['Glass Chiller'];
 		if(gc.power<1)return;
-		Molpy.AddBlocks(1);
+		Molpy.Add('GlassBlocks',1);
 		gc.power--;
 		gc.Refresh();
 		Molpy.Notify('Glass Chiller downgraded',1);
@@ -1444,8 +1434,42 @@
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Glass Chiller']);		
 	}
 	
-	new Molpy.Boost({name:'Glass Block Storage',alias:'GlassBlocks',desc:
-		function(me)
+	Molpy.blockAddAmount=0;
+	Molpy.blockWasteAmount=0;
+	new Molpy.Boost({name:'Glass Block Storage',alias:'GlassBlocks',	
+		Level:Molpy.BoostFuncs.RoundPosPowerLevel,
+		Has:Molpy.BoostFuncs.Has,
+		Spend:Molpy.BoostFuncs.Spend,
+		refreshFunction:Molpy.RefreshGlass,
+		Add:function(amount,expand)
+		{
+			Molpy.UnlockBoost('GlassBlocks');
+			if(!this.bought)
+			{
+				this.buy();
+			}
+			this.Level+=amount;
+			var waste = Math.max(0,this.Level-(this.bought)*50);
+			if (waste && expand && Molpy.Boosts['Stretchable Block Storage'].power)
+			{
+				this.Level -= amount;
+				this.bought += Math.floor(amount/13.5);
+			}
+			else
+			{
+				if (waste)
+				{
+					this.Level-=waste;
+					amount-=waste;
+					Molpy.blockWasteAmount+=waste;
+					if (expand && Molpy.blockWasteAmount > 1000000) Molpy.UnlockBoost('Stretchable Block Storage');
+				}
+				if(amount) Molpy.EarnBadge('Glassblower');
+				Molpy.blockAddAmount+=amount;
+			}
+			Molpy.RefreshGlass();			
+		},
+		desc:function(me)
 		{
 			me.power=Math.round(me.power);
 			me.bought=Math.round(me.bought);
@@ -1509,10 +1533,10 @@
 	{
 		var cost=n*15;
 		if(n>=10)cost*=.9;
-		if(Molpy.HasGlassBlocks(cost))
+		if(Molpy.Has('GlassBlocks',cost))
 		{
 			var bl = Molpy.Boosts['GlassBlocks'];
-			Molpy.SpendGlassBlocks(cost);
+			Molpy.Spend('GlassBlocks',cost);
 			bl.bought+=n;
 			Molpy.Notify('Glass Block Storage upgraded',1);
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',bl.name]);	
@@ -1524,9 +1548,9 @@
 	}
 	Molpy.UpgradeSandPurifier=function()
 	{
-		if(Molpy.HasGlassBlocks(Molpy.SandPurifierUpgradeCost()))
+		if(Molpy.Has('GlassBlocks',Molpy.SandPurifierUpgradeCost()))
 		{
-			Molpy.SpendGlassBlocks(Molpy.SandPurifierUpgradeCost());
+			Molpy.Spend('GlassBlocks',Molpy.SandPurifierUpgradeCost());
 			Molpy.Boosts['Sand Purifier'].power++;
 			Molpy.recalculateDig=1;
 			Molpy.Notify('Sand Purifier upgraded',1);
@@ -1538,9 +1562,9 @@
 		{
 			var cost = Molpy.SandPurifierUpgradeCost();
 			var str = 'Glass Furnace\'s sand use is divided by '+Molpify(me.power+2,2);
-			if(Molpy.HasGlassBlocks(cost-10))
+			if(Molpy.Has('GlassBlocks',cost-10))
 			{
-				if(Molpy.HasGlassBlocks(cost))
+				if(Molpy.Has('GlassBlocks',cost))
 				{
 					str+='.<br><input type="Button" value="Pay" onclick="Molpy.UpgradeSandPurifier()"></input> '+Molpify(cost,3)
 						+ ' Glass Blocks to increase this by 1.';
@@ -1570,13 +1594,13 @@
 		var backoff = 1;
 		while (1) {
 			var cost = Molpy.SandPurifierUpgradeCost()*upgrades +a*(upgrades-1)*upgrades/2;
-			if (Molpy.HasGlassBlocks(cost)) break;
+			if (Molpy.Has('GlassBlocks',cost)) break;
 			upgrades -= backoff;
 			backoff*=2;
 		}
 
 		if (upgrades>0) {
-			Molpy.SpendGlassBlocks(cost);
+			Molpy.Spend('GlassBlocks',cost);
 			Molpy.Boosts['Sand Purifier'].power+= upgrades;
 
 			Molpy.recalculateDig=1;
@@ -1652,7 +1676,7 @@
 				backoff*=2;
 			}
 			if (extra > 0) {
-				Molpy.SpendGlassBlocks(extra*4.5);
+				Molpy.Spend('GlassBlocks',extra*4.5);
 				Molpy.Boosts['Glass Chiller'].Refresh();
 				Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
 				Molpy.recalculateDig=1;
@@ -1706,7 +1730,7 @@
 			var oldClass=this.className;
 			var newClass = (!Molpy.Boosts['Rosetta'].unlocked
 				||!Molpy.Got('WWB')&&Molpy.CastleTools['Scaffold'].amount>=400
-				||!Molpy.Got('RB')&&Molpy.Has('GlassChips',100000)&&Molpy.HasGlassBlocks(1000)
+				||!Molpy.Got('RB')&&Molpy.Has('GlassChips',100000)&&Molpy.Has('GlassBlocks',1000)
 				)
 				?'action':'';
 			if(newClass!=oldClass)
@@ -1758,18 +1782,18 @@
 				{
 						str+='<br><input type="Button" value="Trade" onclick="Molpy.UnlockNinjaClimber()"></input> 500 Ladders to unlock Ninja Climber.';
 				}
-				if(Molpy.HasGlassBlocks(800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
+				if(Molpy.Has('GlassBlocks',800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
 				{
-					if(Molpy.HasGlassBlocks(1000))
+					if(Molpy.Has('GlassBlocks',1000))
 					{
 						str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Caged Logicat\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
 					}else{
 						str+='<br>It costs '+Molpify(1000)+' Glass Blocks to get a Caged Logicat.';
 					}
 				}
-				if(Molpy.Has('GlassChips',12500)&&Molpy.HasGlassBlocks(2500)&&!Molpy.Got('Camera'))
+				if(Molpy.Has('GlassChips',12500)&&Molpy.Has('GlassBlocks',2500)&&!Molpy.Got('Camera'))
 				{
-					if(Molpy.Has('GlassChips',25000)&&Molpy.HasGlassBlocks(5000))
+					if(Molpy.Has('GlassChips',25000)&&Molpy.Has('GlassBlocks',5000))
 					{
 						str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Camera\',25000,5000)"></input> '+Molpify(25000)+' Chips and '+Molpify(5000)+' Blocks to get a Camera';
 					}else{
@@ -1790,11 +1814,11 @@
 			var newClass = '';
 			var fa = Molpy.Boosts['Factory Automation'];
 			var bots=Molpy.CastleTools['NewPixBot'].amount;
-			if(!Molpy.Got('Panther Salve')&&Molpy.HasGlassBlocks(250)
+			if(!Molpy.Got('Panther Salve')&&Molpy.Has('GlassBlocks',250)
 				||fa.bought&&Molpy.Got('Doublepost')&&fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power]
 				||!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500
-				||Molpy.HasGlassBlocks(800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2
-				||Molpy.Has('GlassChips',12500)&&Molpy.HasGlassBlocks(2500)&&!Molpy.Got('Camera')
+				||Molpy.Has('GlassBlocks',800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2
+				||Molpy.Has('GlassChips',12500)&&Molpy.Has('GlassBlocks',2500)&&!Molpy.Got('Camera')
 				||Molpy.GetBlackprintSubject()&&!Molpy.Got('CfB')
 			)
 				newClass='action';
@@ -2236,7 +2260,7 @@
 			win = Math.floor(win/(6-this.bought));
 			
 			if(bl.bought*50<bl.power+win)bl.bought=Math.ceil((bl.power+win)/50); //make space!
-			Molpy.AddBlocks(win);
+			Molpy.Add('GlassBlocks',win);
 			Molpy.Notify('+'+Molpify(win,3)+' Glass Blocks!');
 			if(Molpy.Got('Camera'))
 				Molpy.EarnBadge('discov'+Math.ceil(Molpy.newpixNumber*Math.random()));
@@ -2328,7 +2352,7 @@
 				return Molpy.cagedPuzzleValue;
 			}else if(me.bought>1){
 				var cost=100+Molpy.LogiMult(25);
-				if(Molpy.HasGlassBlocks(cost))
+				if(Molpy.Has('GlassBlocks',cost))
 					str= '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.bought-1)+' Puzzle'+plural(me.bought-1)+' left';
 				else str= 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle';
 			}else{
@@ -2360,7 +2384,7 @@
 	Molpy.cagedSGen=InitStatementGen();
 	Molpy.MakeCagedPuzzle=function(cost)
 	{
-		if(Molpy.HasGlassBlocks(cost))Molpy.SpendGlassBlocks(cost);
+		if(Molpy.Has('GlassBlocks',cost))Molpy.Spend('GlassBlocks',cost);
 		
 		Molpy.cagedSGen.FillStatements(0,Molpy.Boosts['Logicat'].bought);
 		Molpy.cagedPuzzleTarget=Molpy.cagedSGen.RandStatementValue();
@@ -2380,9 +2404,9 @@
 		var skip=0;
 		if(!Molpy.cagedSGen.firstTry)
 		{
-			if(Molpy.HasGlassBlocks(50))
+			if(Molpy.Has('GlassBlocks',50))
 			{
-				Molpy.SpendGlassBlocks(50);
+				Molpy.Spend('GlassBlocks',50);
 			}else{
 				Molpy.Notify('You can\'t afford a seccond try.');
 				skip=1;
@@ -2407,7 +2431,7 @@
 			{
 				Molpy.Notify('Incorrect',1);
 				
-				if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.HasGlassBlocks(50))
+				if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.Has('GlassBlocks',50))
 				{
 					Molpy.cagedSGen.firstTry=0;
 					Molpy.Notify('Try Again');
@@ -2839,7 +2863,7 @@
 				
 			var blocks=Math.pow(1.02,Math.abs(this.bought))*1000000*(this.power-1);
 			if(this.bought<0)blocks*=blocks;
-			Molpy.AddBlocks(blocks);
+			Molpy.Add('GlassBlocks',blocks);
 			var chips =Math.pow(1.01,Math.abs(this.bought))*1000*400;
 			if(this.bought<0)chips*=chips;
 			Molpy.Add('GlassChips',chips);
@@ -3104,12 +3128,12 @@
 		if(b<0)glass*=glass;
 		while (times) 
 		{
-			if(!Molpy.HasGlassBlocks(glass)) 
+			if(!Molpy.Has('GlassBlocks',glass)) 
 			{
 				Molpy.Boosts['Break the Mould'].power++;
 				return times;
 			}
-			Molpy.SpendGlassBlocks(glass);
+			Molpy.Spend('GlassBlocks',glass);
 			times--;
 			gmf.power++;
 			gmf.Refresh();
@@ -3648,15 +3672,15 @@
 			if(!me.bought) return 'Allows you to change how many copies of Glass Tools can be constructed by Tool Factory each mNP';
 			var n = me.power;
 			var str='Tool Factory produces up to '+Molpify(n,2)+' of any Glass Tool per mNP.';
-			if((n < 500 || ! Molpy.HasGlassBlocks(1e7*n)) && Molpy.HasGlassBlocks(1e6*n))
+			if((n < 500 || ! Molpy.Has('GlassBlocks',1e7*n)) && Molpy.Has('GlassBlocks',1e6*n))
 			{
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(1)"></input> the rate by 1 at a cost of '+Molpify(1e6*n,1)+' Glass Blocks.';
 			}
 			for(var i = 1;i<50;i++)//nope!
 			{				
-				if((n >= 5*Math.pow(10,i) || !Molpy.HasGlassBlocks(Math.pow(10,i+7)*n)) && n < 5*Math.pow(10,i+2))
+				if((n >= 5*Math.pow(10,i) || !Molpy.Has('GlassBlocks',Math.pow(10,i+7)*n)) && n < 5*Math.pow(10,i+2))
 				{
-					if(Molpy.HasGlassBlocks(Math.pow(10,i+6)*n))
+					if(Molpy.Has('GlassBlocks',Math.pow(10,i+6)*n))
 					{
 						str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory('+Math.pow(10,i)+')"></input> the rate by '+Molpify(Math.pow(10,i),1) 
 							+' at a cost of '+Molpify(Math.pow(10,i+6)*n,1)+' Glass Blocks.';
@@ -3673,7 +3697,7 @@
 					me.className = '';
 				}
 			}
-			if(!Molpy.Boosts['No Sell'].power&&me.power>0&&Molpy.HasGlassBlocks(1e5*n))
+			if(!Molpy.Boosts['No Sell'].power&&me.power>0&&Molpy.Has('GlassBlocks',1e5*n))
 			{
 				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlToolFactory(-1)"></input> the rate by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Blocks.';
 			}
@@ -3689,9 +3713,9 @@
 		var cost=1e6*n;
 		if(n<0) cost=-1e5*n;
 		cost*=me.power;
-		if(Molpy.HasGlassBlocks(cost))
+		if(Molpy.Has('GlassBlocks',cost))
 		{
-			Molpy.SpendGlassBlocks(cost);
+			Molpy.Spend('GlassBlocks',cost);
 			me.power+=n;
 			Molpy.Notify('Adjusted production rate of Tool Factory');
 			me.Refresh();

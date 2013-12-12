@@ -650,7 +650,7 @@ Molpy.CheckBuyUnlocks=function()
 		Molpy.UnlockBoost('Memory Singer');
 	}
 	
-	if(Molpy.HasGlassBlocks(7016280))Molpy.EarnBadge('Pyramid of Giza');
+	if(Molpy.Has('GlassBlocks',7016280))Molpy.EarnBadge('Pyramid of Giza');
 	if(Molpy.Has('GlassChips',640000))Molpy.EarnBadge('Personal Computer');	
 	
 	if (Molpy.Boosts['Sand Purifier'].power > 1000) Molpy.UnlockBoost('Seaish Glass Chips');

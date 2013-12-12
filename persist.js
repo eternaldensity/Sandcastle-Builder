@@ -944,7 +944,7 @@
 					Molpy.Boosts['Stained Glass Launcher'].bought=0;
 					Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
 					Molpy.BoostsOwned--;
-					Molpy.AddBlocks(1200000); //assume all discounts were used :P
+					Molpy.Add('GlassBlocks',1200000); //assume all discounts were used :P
 				}else
 					Molpy.Boosts['Stained Glass Launcher'].unlocked=0;
 				
@@ -956,7 +956,7 @@
 					Molpy.Boosts['Crystal Peak'].bought=0;
 					Molpy.Boosts['Crystal Peak'].unlocked=0;
 					Molpy.BoostsOwned--;
-					Molpy.AddBlocks(720000);
+					Molpy.Add('GlassBlocks',720000);
 				}else
 					Molpy.Boosts['Crystal Peak'].unlocked=0;
 			}	
@@ -967,7 +967,7 @@
 					Molpy.Boosts['Cupholder'].bought=0;
 					Molpy.Boosts['Cupholder'].unlocked=0;
 					Molpy.BoostsOwned--;
-					Molpy.AddBlocks(880000);
+					Molpy.Add('GlassBlocks',880000);
 				}else
 					Molpy.Boosts['Cupholder'].unlocked=0;
 			}
@@ -978,7 +978,7 @@
 					Molpy.Boosts['Tiny Glasses'].bought=0;
 					Molpy.Boosts['Tiny Glasses'].unlocked=0;
 					Molpy.BoostsOwned--;
-					Molpy.AddBlocks(960000);
+					Molpy.Add('GlassBlocks',960000);
 				}else
 					Molpy.Boosts['Tiny Glasses'].unlocked=0;	
 			}					
