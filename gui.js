@@ -1222,7 +1222,6 @@
 		g('chiprate').innerHTML=Molpify(Molpy.glassPermNP,1) + ' chips/mNP';
 		g('newtools').innerHTML='Built '+Molpify(Molpy.toolsBuilt,1)+' new tool'+plural(Molpy.toolsBuilt);
 
-		$('#toggleTFCounts').toggleClass('hidden',!Molpy.Got('Tool Factory'));
 		if(noLayout)
 		{
 			var finite=isFinite(Molpy.sand)||isFinite(Molpy.castles)||isFinite(Molpy.spmNP);
@@ -1237,6 +1236,8 @@
 				$('#sectionSandCounts').removeClass('hidden');
 				$('#sectionAbout').removeClass('hidden');
 			}
+		}else{
+			$('#toggleTFCounts').removeClass('hidden');		
 		}
 
 		
