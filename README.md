@@ -24,6 +24,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.245
+- Badge clarification (Typo Storm)
+
 ## 3.244
 - Find+Replace in All Opened Documents: Y U FAIL?
 
