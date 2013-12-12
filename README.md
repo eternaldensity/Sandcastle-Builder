@@ -27,6 +27,7 @@ For personal amusement only.
 ## 3.251
 - Fixed Monty Haul Problem's Goat[s] usage
 - Put in a fix to ensure you get Château d'If if you have the Unreachable? Badge (which has the side effect of giving you Château d'If back when you Molpy down, which is okay I guess)
+- I had put in one too many >0 for temp boost countdowns when I fixed it before, so people with negative were still stuck negative.
 
 ## 3.25
 - Badge clarification (Typo Storm)

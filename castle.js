@@ -2830,7 +2830,7 @@ Molpy.Up=function()
 			var me = Molpy.Boosts[i];
 			if(me.bought)
 			{
-				if(me.countdown>0)
+				if(me.countdown)
 				{
 					me.countdown--;
 					me.Refresh();
