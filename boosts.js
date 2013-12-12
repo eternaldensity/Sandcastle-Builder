@@ -197,7 +197,7 @@
 			if(Molpy.Got('HoM'))
 				Molpy.Add('GlassChips',Math.floor(Molpy.Boosts['GlassChips'].power/5),1); 
 		}else{
-			Molpy.Destroy(Molpy.castles); 
+			Molpy.Destroy('Castles',Molpy.castles); 
 			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power/1.8));
 			if(Molpy.Got('HoM'))
 				Molpy.Spend('GlassChips',Math.floor(Molpy.Boosts['GlassChips'].power/3));
@@ -406,7 +406,7 @@
 				return;
 			}
 			Molpy.Spend('GlassChips',chips);
-			Molpy.SpendCastles(price);
+			Molpy.Spend('Castles',price);
 			if(Molpy.Earned('discov'+Molpy.newpixNumber))Molpy.Badges['discov'+Molpy.newpixNumber].Refresh();
 			Molpy.newpixNumber=np;
 			if(Molpy.Earned('discov'+Molpy.newpixNumber))Molpy.Badges['discov'+Molpy.newpixNumber].Refresh();
@@ -927,7 +927,7 @@
 			}else{	
 				Molpy.totalCastlesDown=Number.MAX_VALUE;
 			}
-			Molpy.Destroy(Molpy.castles);	
+			Molpy.Destroy('Castles',Molpy.castles);	
 			Molpy.Dig(Molpy.sand);	
 		}
 		if(Molpy.Got('Temporal Rift'))
@@ -1905,7 +1905,7 @@
 			return;
 		}
 		var c = Math.floor(Molpy.castles/2);
-		Molpy.Destroy(c);
+		Molpy.Destroy('Castles',c);
 		if(Molpy.Got('Blitzing'))c*=8;
 		Molpy.Dig(c);
 		Molpy.Boosts['Castle Crusher'].power++;
@@ -4227,7 +4227,7 @@
 	Molpy.spendSandNotifyFlag=1;
 	Molpy.spendSandNotifyCount=0;
 	new Molpy.Boost({name:'Sand',
-		Level:[function(){return Molpy.sand;},function(amount){Molpy.sand=amount;}],
+		Level:[function(){return Molpy.sand;},function(amount){Molpy.sand=amount;this.Refresh();}],
 		Add:Molpy.Dig,
 		Spend:function(amount,silent)
 		{
@@ -4260,7 +4260,63 @@
 			}
 		},
 		Has:Molpy.BoostFuncs.Has,
-		desc:function(){return Molpify(me.Level,3);}
+		desc:function(me){return Molpify(me.Level,3);}
+		,group:'stuff'
+	});
+	
+	Molpy.destroyNotifyFlag=1;
+	Molpy.destroyNotifyCount=0;
+	new Molpy.Boost({name:'Castles',
+		Level:[function(){return Molpy.castles;},function(amount)
+		{
+			Molpy.castles=amount;
+			this.Refresh();
+			Molpy.Boosts['Time Travel'].Refresh();
+		}],
+		Add:Molpy.Build,
+		Spend:function(amount,silent)
+		{
+			if(!amount)return;
+			amount = Math.min(amount,Molpy.castles);
+			Molpy.castles-=amount;
+			Molpy.castlesSpent+=amount;
+			if(isNaN(Molpy.castles))
+			{
+				Molpy.castles=0;
+				Molpy.EarnBadge('Mustard Cleanup');
+			}
+			if(!silent&&(isFinite(Molpy.castles)||!isFinite(amount)))
+				Molpy.Notify('Spent Castles: ' + Molpify(amount,3),1);
+		},
+		Destroy:function(amount,logsilent)
+		{
+			amount = Math.min(amount,Molpy.castles);
+			Molpy.castles-=amount;
+			Molpy.castlesDestroyed+=amount;
+			if(Molpy.destroyNotifyFlag)
+			{
+				if(Molpy.destroyNotifyCount)
+				{
+					amount+=Molpy.destroyNotifyCount;
+					Molpy.destroyNotifyCount=0;
+				}				
+				if(amount){
+					if(amount >= Molpy.castles/10000000)
+						Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,3)+ ' Castles Destroyed',!logsilent);
+					else
+					{
+						Molpy.destroyNotifyCount+=amount;
+						return 1;
+					}
+				}
+			}else{
+				Molpy.destroyNotifyCount+=amount;
+				return 1;
+			}
+			//destroying is done by trebuchets and stuff: it's different to spending
+		},
+		Has:Molpy.BoostFuncs.Has,
+		desc:function(me){return Molpify(me.Level,3);}
 		,group:'stuff'
 	});
 	

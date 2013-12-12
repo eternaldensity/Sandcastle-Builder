@@ -1051,14 +1051,12 @@
 			
 			auto||_gaq&&_gaq.push(['_trackEvent','Molpy Down','Begin',''+Molpy.newpixNumber]);
 			Molpy.sandDug=0; 
-			Molpy.sand=0; 
 			Molpy.sandManual=0;
 			Molpy.chipsManual=0;
 			if(isFinite(Molpy.castlesBuilt))
 				Molpy.totalCastlesDown+=Molpy.castlesBuilt;
 			else Molpy.totalCastlesDown=Number.MAX_VALUE;
 			Molpy.castlesBuilt=0;
-			Molpy.castles=0; 
 			Molpy.castlesDestroyed=0;
 			Molpy.prevCastleSand=0;
 			Molpy.nextCastleSand=1;
@@ -1119,6 +1117,7 @@
 				me.unlocked=0;
 				me.bought=0;	
 				me.power=0;
+				if(me.Level)me.Level=0;
 				if(me.startPower)
 					me.power=EvalMaybeFunction(me.startPower);
 				me.countdown=0;

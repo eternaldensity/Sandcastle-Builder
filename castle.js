@@ -331,58 +331,58 @@ Molpy.Up=function()
 			}
 									
 			
-			if(Molpy.castles>=1000){
+			if(Molpy.Has('Castles',1000)){
 				Molpy.EarnBadge('We Need a Bigger Beach');
 			}
-			if(Molpy.castles>=1000000){
+			if(Molpy.Has('Castles',1000000)){
 				Molpy.EarnBadge('Castle Nation');
 			}
-			if(Molpy.castles>=1000000000){
+			if(Molpy.Has('Castles',1000000000)){
 				Molpy.EarnBadge('Castle Planet');
 			}
-			if(Molpy.castles>=1000000000000){
+			if(Molpy.Has('Castles',1000000000000)){
 				Molpy.EarnBadge('Castle Star');
 			}
-			if(Molpy.castles>=8888000000000000){
+			if(Molpy.Has('Castles',8888000000000000)){
 				Molpy.EarnBadge('Castle Galaxy');
 			}
-			if(Molpy.castles>=DeMolpify('1P')){
+			if(Molpy.Has('Castles',DeMolpify('1P'))){
 				Molpy.EarnBadge('People Eating Tasty Animals');
 			}
-			if(Molpy.castles>=DeMolpify('20P')){
+			if(Molpy.Has('Castles',DeMolpify('20P'))){
 				Molpy.UnlockBoost('Free Advice');
 			}
-			if(Molpy.castles>=DeMolpify('1Y')){
+			if(Molpy.Has('Castles',DeMolpify('1Y'))){
 				Molpy.EarnBadge('Y U NO RUN OUT OF SPACE?');
 			}
-			if(Molpy.castles>=DeMolpify('1U')){
+			if(Molpy.Has('Castles',DeMolpify('1U'))){
 				Molpy.EarnBadge('Dumpty');
 			}
-			if(Molpy.castles>=DeMolpify('1S')){
+			if(Molpy.Has('Castles',DeMolpify('1S'))){
 				Molpy.EarnBadge('This is a silly number');
 			}
-			if(Molpy.castles>=DeMolpify('1H')){
+			if(Molpy.Has('Castles',DeMolpify('1H'))){
 				Molpy.EarnBadge('To Da Choppah');
 			}
-			if(Molpy.castles>=DeMolpify('1F')){
+			if(Molpy.Has('Castles',DeMolpify('1F'))){
 				Molpy.EarnBadge('Toasters');
 			}
-			if(Molpy.castles>=DeMolpify('1W')){
+			if(Molpy.Has('Castles',DeMolpify('1W'))){
 				Molpy.EarnBadge('Dubya');
 			}
-			if(Molpy.castles>=DeMolpify('1WW')){
+			if(Molpy.Has('Castles',DeMolpify('1WW'))){
 				Molpy.EarnBadge('Rub a Dub Dub');
 			}
-			if(Molpy.castles>=DeMolpify('1WWW')){
+			if(Molpy.Has('Castles',DeMolpify('1WWW'))){
 				Molpy.EarnBadge('WWW');
 			}
-			if(Molpy.castles>=DeMolpify('1WWWW')){
+			if(Molpy.Has('Castles',DeMolpify('1WWWW'))){
 				Molpy.EarnBadge('Age of Empires');
 			}
-			if(Molpy.castles>=DeMolpify('1Q')){
+			if(Molpy.Has('Castles',DeMolpify('1Q'))){
 				Molpy.EarnBadge('Queue');
 			}
-			if(Molpy.castles>=DeMolpify('1WQ')){
+			if(Molpy.Has('Castles',DeMolpify('1WQ'))){
 				Molpy.EarnBadge('What Queue');
 			}
 			if(!isFinite(Molpy.castles)&&!isFinite(Molpy.sand)){
@@ -463,53 +463,7 @@ Molpy.Up=function()
 			tf.power-=amount;
 			Molpy.totalGlassDestroyed+=amount;
 		}
-		
-		Molpy.SpendCastles=function(amount,silent)
-		{
-			if(!amount)return;
-			amount = Math.min(amount,Molpy.castles);
-			Molpy.castles-=amount;
-			Molpy.castlesSpent+=amount;
-			if(isNaN(Molpy.castles))
-			{
-				Molpy.castles=0;
-				Molpy.EarnBadge('Mustard Cleanup');
-			}
-			if(!silent&&(isFinite(Molpy.castles)||!isFinite(amount)))
-				Molpy.Notify('Spent Castles: ' + Molpify(amount,3),1);
-			Molpy.Boosts['Time Travel'].Refresh();
-		}
-		
-		Molpy.destroyNotifyFlag=1;
-		Molpy.destroyNotifyCount=0;
-		Molpy.Destroy=function(amount,logsilent)
-		{
-			amount = Math.min(amount,Molpy.castles);
-			Molpy.castles-=amount;
-			Molpy.castlesDestroyed+=amount;
-			if(Molpy.destroyNotifyFlag)
-			{
-				if(Molpy.destroyNotifyCount)
-				{
-					amount+=Molpy.destroyNotifyCount;
-					Molpy.destroyNotifyCount=0;
-				}				
-				if(amount){
-					if(amount >= Molpy.castles/10000000)
-						Molpy.Notify(amount==1?'-1 Castle':Molpify(amount,3)+ ' Castles Destroyed',!logsilent);
-					else
-					{
-						Molpy.destroyNotifyCount+=amount;
-						return 1;
-					}
-				}
-			}else{
-				Molpy.destroyNotifyCount+=amount;
-				return 1;
-			}
-			Molpy.Boosts['Time Travel'].Refresh();
-			//destroying is done by trebuchets and stuff: it's different to spending
-		}
+			
 		Molpy.sandPerClick=function()
 		{			
 			var baserate=1 + Molpy.Got('Bigger Buckets')*0.1;
@@ -852,8 +806,8 @@ Molpy.Up=function()
 			}
 			if(Molpy.Got('Ninja Hope')&&Molpy.Boosts['Ninja Hope'].power)
 			{
-				if(Molpy.castles>=10){
-					Molpy.Destroy(10);
+				if(Molpy.Has('Castles',10)){
+					Molpy.Destroy('Castles',10);
 					Molpy.Boosts['Ninja Hope'].power--;
 					Molpy.Notify('Ninja Forgiven',1);
 					return 0;
@@ -861,8 +815,8 @@ Molpy.Up=function()
 			}
 			if(Molpy.Got('Ninja Penance')&&Molpy.Boosts['Ninja Penance'].power)
 			{
-				if(Molpy.castles>=30){
-					Molpy.Destroy(30);
+				if(Molpy.Has('Castles',30)){
+					Molpy.Destroy('Castles',30);
 					Molpy.Boosts['Ninja Penance'].power--;
 					Molpy.Notify('Ninja Forgiven',1);
 					return 0;
@@ -1166,8 +1120,8 @@ Molpy.Up=function()
 					{
 						Molpy.UnlockBoost('Tool Factory');
 						Molpy.EarnBadge(this.name+' Shop Failed');
-					}else if (Molpy.castles>=price){
-						Molpy.SpendCastles(price,1);
+					}else if (Molpy.Has('Castles',price)){
+						Molpy.Spend('Castles',price,1);
 						this.amount++;
 						this.bought++;
 						bought++;
@@ -1262,7 +1216,7 @@ Molpy.Up=function()
 			
 				if(Molpy.ProtectingPrice())return 0;
 				var price=Math.floor(Molpy.priceFactor*this.basePrice*Math.pow(Molpy.sandToolPriceFactor,this.amount));
-				return isFinite(price)&&Molpy.castles>=price;
+				return isFinite(price)&&Molpy.Has('Castles',price);
 			}
 			this.showdesc=function(keep)
 			{
@@ -1367,8 +1321,8 @@ Molpy.Up=function()
 					{
 						Molpy.UnlockBoost('Tool Factory');
 						Molpy.EarnBadge(this.name+' Shop Failed');
-					}else if (Molpy.castles>=price){
-						Molpy.SpendCastles(price,1);
+					}else if (Molpy.Has('Castles',price)){
+						Molpy.Spend('Castles',price,1);
 						this.amount++;
 						this.bought++;
 						bought++;
@@ -1464,7 +1418,7 @@ Molpy.Up=function()
 			{
 				if(Molpy.ProtectingPrice())return 0;
 				var price=Math.floor(Molpy.priceFactor*this.price);
-				return isFinite(price)&&Molpy.castles>=price;
+				return isFinite(price)&&Molpy.Has('Castles',price);
 			}
 			this.DestroyPhase=function()
 			{
@@ -1488,7 +1442,7 @@ Molpy.Up=function()
 					{
 						this.currentActive+=i;
 						this.totalCastlesDestroyed+=destroyN*i;
-						Molpy.Destroy(destroyN*i);
+						Molpy.Destroy('Castles',destroyN*i);
 						if(this.destroyFunction)this.destroyFunction();
 						return;
 					}
@@ -1511,7 +1465,7 @@ Molpy.Up=function()
 					this.totalCastlesDestroyed+=destroyN*iAfford;
 					this.totalCastlesWasted+=waste;
 					
-					Molpy.Destroy(destroyN*iAfford+waste);
+					Molpy.Destroy('Castles',destroyN*iAfford+waste);
 				}
 				if(this.destroyFunction)this.destroyFunction();
 				
@@ -1653,6 +1607,7 @@ Molpy.Up=function()
 			function(amount)
 			{
 				this.power=Math.max(0,amount);
+				this.Refresh();
 			}],
 			RoundPosPowerLevel:[function()
 			{
@@ -1661,6 +1616,7 @@ Molpy.Up=function()
 			function(amount)
 			{
 				this.power=Math.round(Math.max(0,amount));
+				this.Refresh();
 			}],
 			Bought0Level:[function()
 			{
@@ -1669,6 +1625,7 @@ Molpy.Up=function()
 			function(amount)
 			{
 				this.bought=amount;
+				this.Refresh();
 			}],
 			Bought1Level:[function()
 			{
@@ -1677,23 +1634,21 @@ Molpy.Up=function()
 			function(amount)
 			{
 				this.bought=amount+1;
+				this.Refresh();
 			}],
 			Add:function(amount)
 			{
 				this.Level+=amount;
-				this.Refresh();
 				return 1;
 			},
 			Spend:function(amount)
 			{
 				this.Level-=amount;
-				this.Refresh();
 				return 1;
 			},
 			Destroy:function(amount)
 			{
 				this.Level-=amount;
-				this.Refresh();
 				return 1;
 			},
 			Has:function(amount)
@@ -1797,10 +1752,10 @@ Molpy.Up=function()
 				
 				if(Molpy.ProtectingPrice()&&sp+cp+gp)return; //don't need or want price protection on free items!
 				
-				if (!this.bought && (!cp||Molpy.castles>=cp) && (!sp||Molpy.sand>=sp) && (!gp||Molpy.Has('GlassBlocks',gp)))
+				if (!this.bought && (!cp||Molpy.Has('Castles',cp)) && (!sp||Molpy.sand>=sp) && (!gp||Molpy.Has('GlassBlocks',gp)))
 				{
 					Molpy.Spend('Sand',sp);
-					Molpy.SpendCastles(cp);
+					Molpy.Spend('Castles',cp);
 					Molpy.Spend('GlassBlocks',gp);
 					this.bought=1;
 					_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name,!(sp||cp||gp)]);
@@ -2971,7 +2926,7 @@ Molpy.Up=function()
 			dAmount = Math.ceil(Math.min(Molpy.castles*.9, dAmount));
 			if(Molpy.castles)
 			{
-				var failed = Molpy.Destroy(dAmount,1);
+				var failed = Molpy.Destroy('Castles',dAmount,1);
 				Molpy.CastleTools['NewPixBot'].totalCastlesDestroyed+=dAmount;
 				if(!failed)
 					Molpy.Notify('By the NewpixBots');
@@ -3095,7 +3050,7 @@ Molpy.Up=function()
 			}
 		}
 		Molpy.destroyNotifyFlag=1;
-		Molpy.Destroy(0);
+		Molpy.Destroy('Castles',0);
 		
 		if(Molpy.nextCastleSand>1)
 			Molpy.EarnBadge('Castle Price Rollback');

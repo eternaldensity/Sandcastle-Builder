@@ -500,8 +500,9 @@ body.lightscheme .floatbox:hover{
 
 .resizable-element
 {
-	min-width:60px;
-	min-height:60px;
+	min-width:40px;
+	min-width:40px;
+	min-height:10px;
 }
 .draggable-element
 {

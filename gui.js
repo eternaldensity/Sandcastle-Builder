@@ -178,6 +178,8 @@
 				}else{
 					f.boost=item;
 					Molpy.Notify('You have chosen '+item.name+' as Favourite '+n,1);
+					Molpy.UnlockBoost('Sand');
+					Molpy.UnlockBoost('Castles');
 				}
 			}
 		}else{

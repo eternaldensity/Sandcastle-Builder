@@ -31,6 +31,8 @@ For personal amusement only.
 - Gave TD a badge too
 - Refactored add/spend/has chips/blocks/goats functions to make a generic resource system, in preparation for a generic price system
 - Coma and Load weren't clearing the group toggle boxes
+- Sand and Castles are unlockable... for what they're worth (which is nothing)
+- Reduced minimum resizable size
 
 ## 3.244
 - Find+Replace in All Opened Documents: Y U FAIL?
