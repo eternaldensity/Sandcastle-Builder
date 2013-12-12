@@ -533,7 +533,7 @@
 	Molpy.RepaintLootSelection=function()
 	{
 		var str = '';
-		var groups = ['boosts','ninj','cyb','hpt','bean','chron','ceil','drac'];
+		var groups = ['boosts','stuff','land','ninj','cyb','hpt','bean','chron','ceil','drac'];
 		for(var i in groups)
 		{
 			str+=Molpy.PaintLootToggle(groups[i],4);
@@ -1922,7 +1922,7 @@
 	}
 	Molpy.InitGUI=function()
 	{
-		Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac'];
+		Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac','stuff','land'];
 		Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves'];
 		Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
 		Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];

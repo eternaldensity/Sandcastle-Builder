@@ -1708,6 +1708,78 @@ Molpy.Up=function()
 			return this;
 		}
 		
+		Molpy.Level=function(stuff)
+		{
+			var b = Molpy.Boosts[stuff];
+			return b&&b.Level(amount);
+		}
+		Molpy.Has=function(stuff,amount)
+		{
+			var b = Molpy.Boosts[stuff];
+			return b&&b.Has(amount);
+		}
+		Molpy.Add=function(stuff,amount)
+		{
+			var b = Molpy.Boosts[stuff];
+			return b&&b.Add(amount);
+		}
+		Molpy.Spend=function(stuff,amount)
+		{
+			var b = Molpy.Boosts[stuff];
+			return b&&b.Has(amount)&&b.Spend(amount);
+		}
+		
+		Molpy.BoostFuncs=
+		{
+			PowerLevel:[function()
+			{
+				return this.power;
+			},
+			function(amount)
+			{
+				this.power=amount;
+			}],
+			Bought0Level:[function()
+			{
+				return this.bought;
+			},
+			function(amount)
+			{
+				this.bought=amount;
+			}],
+			Bought1Level:[function()
+			{
+				return this.bought-1;
+			},
+			function(amount)
+			{
+				this.bought=amount+1;
+			}],
+			Add:function(amount)
+			{
+				this.Level+=amount;
+				this.Refresh();
+				return 1;
+			},
+			Spend:function(amount)
+			{
+				this.Level-=amount;
+				this.Refresh();
+				return 1;
+			},
+			Has:function(amount)
+			{
+				return (amount<=0||this.Level>=amount)*1;
+			},
+			BoolPowEnabled:function(amount)
+			{
+				return (this.Level==true)*1;
+			},
+			PosPowEnabled:function(amount)
+			{
+				return (this.Level>0)*1;
+			}
+		};
 		
 		Molpy.boostRepaint=1;
 		Molpy.boostHTML='';
@@ -1732,6 +1804,22 @@ Molpy.Up=function()
 			this.icon=args.icon;
 			this.buyFunction=args.buyFunction;
 			this.countdownFunction=args.countdownFunction;
+			this.IsEnabled=args.IsEnabled;
+			if(args.defStuff)
+			{
+				args.Level=Molpy.BoostFuncs.PowerLevel;
+				args.Has=Molpy.BoostFuncs.Has;
+				args.Add=Molpy.BoostFuncs.Add;
+				args.Spend=Molpy.BoostFuncs.Spend;
+				
+			}
+			if(args.Level)
+			{
+				Object.defineProperties(this, {"Level": {get: args.Level[0],set:args.Level[1]}});
+				this.Add=args.Add;
+				this.Spend=args.Spend;
+				this.Has=args.Has;
+			}
 			this.unlocked=0;
 			this.bought=0;
 			this.department=args.department; //allow unlock by the department (this is not a saved value)

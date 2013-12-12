@@ -4041,7 +4041,7 @@
 			if(!me.bought)return str;
 			var goatCost = me.power;
 			var powerReq=Math.pow(5,me.power+12);
-			if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
+			if(Molpy.Has('Goat',goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
 			{	
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
 			}else
@@ -4057,9 +4057,9 @@
 		var me = Molpy.Boosts['WiseDragon'];
 		var goatCost = me.power*n;
 		var powerReq=Math.pow(5,me.power+12);
-		if(Molpy.HasGoats(goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
+		if(Molpy.Has('Goat',goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
 		{
-			Molpy.Boosts['Goat'].power-=goatCost;
+			Molpy.Spend('Goat',goatCost);
 			Molpy.Boosts['AD'].power-=powerReq;
 			Molpy.Notify('Dragon Widsom gained!'); //it was so tempting to write gainned :P
 			me.power++;
@@ -4075,15 +4075,11 @@
 		
 	new Molpy.Boost({name:'Goat',desc:function(me)
 		{
-			var str = 'You have '+Molpify(me.power,3)+' goat'+plural(me.power)+'. Yay!';
+			var str = 'You have '+Molpify(me.Level,3)+' goat'+plural(me.Level)+'. Yay!';
 			return str;
 		}
-		,icon:'goat'
+		,icon:'goat',group:'stuff',defStuff:1
 	});
-	Molpy.HasGoats=function(n)
-	{
-		return Molpy.Boosts['Goat'].power>=n;
-	}
 	
 	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1G'});
 	new Molpy.Boost({name:'Gold Loyalty Card',alias:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',sand:'10T'});
@@ -4164,6 +4160,19 @@
 	new Molpy.Boost({name:'Beret Guy',desc:'You may choose to take a revealed Goat',stats:'...and my yard has so much grass, and I\'ll teach you tricks, and...',glass:'20T'});
 	
 	new Molpy.Boost({name:'Crystal Flux Turbine',alias:'CFT',desc:'The Flux Turbine bonus is applied to Glass Sand Tools',glass:'6.05GW',group:'chron'});
+	new Molpy.Boost({name:'Shadow Dragon',alias:'ShadwDrgn',
+		desc:function(me)
+		{
+			if(!me.bought)return 'Puts unused Logicat puzzles to some use';
+			var str='';
+			str+='Not yet implemented';
+			return str;
+		}
+		,glass:'12WW',group:'drac',className:'action'
+	});
+	new Molpy.Boost({name:'Sand',desc:function(){return Molpify(Molpy.sand,3);}
+		,group:'stuff'
+	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
@@ -4176,6 +4185,8 @@
 		bean:['beanie tech','Beanie Tech','boost_chateau'],
 		ceil:['ceiling','Ceilings','boost_glassceiling12'],
 		drac:['draconic','Draconic','boost_achronaldragon'],
+		stuff:['stuff','Stuff'],
+		land:['land','Land'],
 		discov:['discoveries','Discoveries','badge_discov','Discovery','A memorable discovery'],
 		monums:['sand monuments','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
 		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
