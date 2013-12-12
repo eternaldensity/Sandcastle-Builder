@@ -24,6 +24,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.251
+- Fixed Monty Haul Problem's Goat[s] usage
+
+
 ## 3.25
 - Badge clarification (Typo Storm)
 - Advanced temporal duplication now applies to normal tool purchases

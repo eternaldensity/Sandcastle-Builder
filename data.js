@@ -2,7 +2,7 @@
 
 function g(id) {return document.getElementById(id);}
 var Molpy={};
-Molpy.version=3.25;
+Molpy.version=3.251;
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[
@@ -920,7 +920,7 @@ Molpy.CheckClickAchievements=function()
 		Molpy.UnlockBoost('Fractal Sandcastles');
 	}		
 }	
-Molpy.MontyMethod='JTI1N0J2YXIlMjUyMHIlMjUzRG1lLnByaXplJTI1M0QlMjUzRG1lLmRvb3IlMjUzRjMlMjUzQTUlMjUzQmlmJTI4TWF0aC5yYW5kb20lMjglMjkqJTI4TW9scHkuQm9vc3RzJTI1NUIlMjUyMkdvYXQlMjUyMiUyNTVELnBvd2VyJTI1MjVyJTI1MkYlMjhyLTIlMjklMjklMjUzQy4yNSUyOXJldHVybiUyNTNCdmFyJTI1MjBpJTI1M0RtZS5kb29yJTI1M0J3aGlsZSUyOGklMjUzRCUyNTNEbWUuZG9vciUyNTdDJTI1N0NpJTI1M0QlMjUzRG1lLnByaXplJTI5aSUyNTNETW9scHkuR2V0RG9vciUyOCUyOSUyNTNCbWUuZ29hdCUyNTNEaSUyNTdE';
+Molpy.MontyMethod='JTI1N0J2YXIlMjUyMHIlMjUzRG1lLnByaXplJTI1M0QlMjUzRG1lLmRvb3IlMjUzRjMlMjUzQTUlMjUzQmlmJTI4TWF0aC5yYW5kb20lMjglMjkqJTI4TW9scHkuTGV2ZWwlMjglMjUyMkdvYXRzJTI1MjIlMjklMjUyNXIlMjUyRiUyOHItMiUyOSUyOSUyNTNDLjI1JTI5cmV0dXJuJTI1M0J2YXIlMjUyMGklMjUzRG1lLmRvb3IlMjUzQndoaWxlJTI4aSUyNTNEJTI1M0RtZS5kb29yJTI1N0MlMjU3Q2klMjUzRCUyNTNEbWUucHJpemUlMjlpJTI1M0RNb2xweS5HZXREb29yJTI4JTI5JTI1M0JtZS5nb2F0JTI1M0RpJTI1N0Q=';
 /**
 *
 *  Base64 encode / decode
