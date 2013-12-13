@@ -2209,8 +2209,8 @@
 			return 5*(1+Molpy.Got('Crystal Dragon'));
 		}
 		,stats:'Also causes a double Not Lucky glass bonus during Temporal Duplication'
-		,countdownFunction:function(){
-			if(this.countdown==2)
+		,countdownFunction:function(){			
+			if(Math.round(this.countdown)==2)
 			{
 				Molpy.Notify('Temporal Duplication runs out in 2mNP!');
 			}
