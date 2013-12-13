@@ -1786,7 +1786,7 @@
 				{
 						str+='<br><input type="Button" value="Trade" onclick="Molpy.UnlockNinjaClimber()"></input> 500 Ladders to unlock Ninja Climber.';
 				}
-				if(Molpy.Has('GlassBlocks',800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2)
+				if(Molpy.Has('GlassBlocks',800)&&!Molpy.Got('Caged Logicat')&&Molpy.Has('Logicat',5))
 				{
 					if(Molpy.Has('GlassBlocks',1000))
 					{
@@ -1822,7 +1822,7 @@
 			if(!Molpy.Got('Panther Salve')&&Molpy.Has('GlassBlocks',250)
 				||fa.bought&&Molpy.Got('Doublepost')&&fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power]
 				||!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500
-				||Molpy.Has('GlassBlocks',800)&&!Molpy.Got('Caged Logicat')&&Molpy.Boosts['Logicat'].bought>2
+				||Molpy.Has('GlassBlocks',800)&&!Molpy.Got('Caged Logicat')&&Molpy.Has('Logicat',5)
 				||Molpy.Has('GlassChips',12500)&&Molpy.Has('GlassBlocks',2500)&&!Molpy.Got('Camera')
 				||Molpy.GetBlackprintSubject()&&!Molpy.Got('CfB')
 			)
@@ -2189,8 +2189,41 @@
 	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.',stats:'Squares the reward from VITSSÅGEN, JA!'
 		,sand:'48E',castles:'38E',glass:100,group:'hpt',icon:'phonesaw'
 	});
-	new Molpy.Boost({name:'Logicat',desc:
-		function(me)
+	new Molpy.Boost({name:'Logicat',
+		Level:[function(){return this.bought;},
+			function(amount)
+			{
+				var dif = amount-this.bought;
+				this.bought=amount;
+				this.power+=dif*5;
+				this.Refresh();
+			}],
+		Add:function(levels,points)
+		{
+			if(levels>0)this.Level+=levels;
+			if(points>0)
+			{
+				this.power+=points;
+				while(this.power>=this.bought*5)
+				{
+					Molpy.RewardLogicat(this.Level);
+					this.bought++;
+				}
+				this.Refresh();
+			}
+		},
+		Has:function(amount){return (this.Level>=amount+1)*1;},
+		Spend:Molpy.BoostFuncs.Spend,
+		Destroy:function(levels,points)
+		{
+			if(levels>0)this.Level-=levels;
+			if(points>0)
+			{
+				this.power-=points;
+				this.Refresh();
+			}
+		},
+		desc:function(me)
 		{
 			var ans=Math.ceil((me.bought*5-Math.floor(me.power))/(1+Molpy.Boosts['Panther Rush'].power/2));
 			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>Needs '+ans+' correct answer'+plural(ans)+' to reach Logicat Level '+(me.bought+1);
@@ -2231,7 +2264,7 @@
 		function(me){return 'The next '+me.power+' Ninja Builder'+plural(me.power)+' will activate Factory Automation';}
 		,group:'ninj',logic:3,className:'alert',startPower:function()
 		{
-			return Math.ceil(Molpy.Boosts['Logicat'].bought/5)
+			return Math.ceil(Molpy.Level('Logicat')/5)
 		}
 	});
 	new Molpy.Boost({name:'Logicastle',desc:'The Castle outputs of Castle Tools are boosted by 50% cumulatively per Logicat Level'
@@ -2239,7 +2272,7 @@
 	});
 	Molpy.LogicastleMult=function()
 	{
-		if(Molpy.Got('Logicastle'))return Math.pow(1.5,Molpy.Boosts['Logicat'].bought);
+		if(Molpy.Got('Logicastle'))return Math.pow(1.5,Molpy.Level('Logicat'));
 		return 1;
 	}
 	new Molpy.Boost({name:'Flux Surge',desc:
@@ -2396,7 +2429,7 @@
 	{
 		if(Molpy.Has('GlassBlocks',cost))Molpy.Spend('GlassBlocks',cost);
 		
-		Molpy.cagedSGen.FillStatements(0,Molpy.Boosts['Logicat'].bought);
+		Molpy.cagedSGen.FillStatements(0,Molpy.Level('Logicat'));
 		Molpy.cagedPuzzleTarget=Molpy.cagedSGen.RandStatementValue();
 		var str='Click a statement that is '+Molpy.cagedPuzzleTarget+':';
 		var statements= Molpy.cagedSGen.StringifyStatements('Molpy.ClickCagedPuzzle');
@@ -2429,13 +2462,7 @@
 			if(clickedVal==Molpy.cagedPuzzleTarget)
 			{
 				Molpy.Notify('Correct',1);
-				var lc = Molpy.Boosts['Logicat'];
-				lc.power+=1+(Molpy.Boosts['Panther Rush'].power)/2;
-				while(lc.power>=lc.bought*5)
-				{
-					Molpy.RewardLogicat(lc.bought);
-					lc.bought++;
-				}
+				Molpy.Add('Logicat',0,1+(Molpy.Boosts['Panther Rush'].power)/2);
 			}
 			else
 			{
@@ -2447,7 +2474,7 @@
 					Molpy.Notify('Try Again');
 					return;
 				}
-				Molpy.Boosts['Logicat'].power-=0.5;
+				Molpy.Destroy('Logicat',0,0.5);
 			}
 		}
 		Molpy.cagedPuzzleValue='';
@@ -3557,9 +3584,8 @@
 			{
 				Molpy.Boosts['Panther Poke'].buyFunction();
 				zk.power-=1000;
-			}
-			
-		Molpy.Boosts['Caged Logicat'].Refresh();
+			}			
+			Molpy.Boosts['Caged Logicat'].Refresh();
 		}
 		Molpy.boostSilence=0;
     }
@@ -3846,14 +3872,13 @@
 				Molpy.Notify('You need more Blackprint Pages');
 				return;
 			}
-			if(Molpy.Boosts['Logicat'].bought<=logicatCost)
+			if(Molpy.Has('Logicat',logicatCost))
 			{
 				Molpy.Notify('You need more Logicat Levels');
 				return;
 			}
-			Molpy.Boosts['Blackprints'].power-=pageCost;
-			Molpy.Boosts['Logicat'].bought-=logicatCost;
-			Molpy.Boosts['Logicat'].power-=logicatCost*5;
+			Molpy.Spend('Blackprints',pageCost);
+			Molpy.Spend('Logicat',logicatCost);
 			Molpy.Spend('GlassChips',chipCost);
 			me.power+=n;
 			Molpy.Notify('Adjusted Automata Assemble');
@@ -4152,7 +4177,7 @@
 			var str = 'You have '+Molpify(me.Level,3)+' goat'+plural(me.Level)+'. Yay!';
 			return str;
 		}
-		,icon:'Goats',group:'stuff',defStuff:1
+		,icon:'goat',group:'stuff',defStuff:1
 	});
 	
 	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',sand:'1G'});
@@ -4199,6 +4224,13 @@
 		{
 			if (!this.power) this.power=10;
 			Molpy.Add('Blackprints',this.power++);
+			if(Molpy.Got('Camera'))
+			{
+				for(var i=0;i<10;i++)
+				{
+					Molpy.EarnBadge('discov'+Math.ceil(Molpy.newpixNumber*Math.random()));
+				}
+			}
 		}
 	});
 	new Molpy.Boost({name:'Vault Key',desc:'Helps open a locked vault',glass:'5M',
@@ -4342,7 +4374,14 @@
 	});
 	
 	
-	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down',glass:Infinity,sand:Infinity,castles:Infinity,className:'alert'});
+	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down',glass:Infinity,sand:Infinity,castles:Infinity,className:'alert'});	
+	new Molpy.Boost({name:'Bonemeal',desc:function(me)
+		{
+			var str = 'You have '+Molpify(me.Level,3)+' bonemeal.';
+			return str;
+		}
+		,icon:'bonemeal',group:'stuff',defStuff:1
+	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={

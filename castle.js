@@ -2584,7 +2584,7 @@ Molpy.Up=function()
 		Molpy.redactedSGen=InitStatementGen();
 		Molpy.MakeRedactedPuzzle=function()
 		{
-			Molpy.redactedSGen.FillStatements(0,Molpy.Boosts['Logicat'].bought);
+			Molpy.redactedSGen.FillStatements(0,Molpy.Level('Logicat'));
 			Molpy.redactedPuzzleTarget=Molpy.redactedSGen.RandStatementValue();
 			var str='Click a statement that is '+Molpy.redactedPuzzleTarget+':';
 			var statements= Molpy.redactedSGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
@@ -2615,13 +2615,7 @@ Molpy.Up=function()
 				if(clickedVal==Molpy.redactedPuzzleTarget)
 				{
 					Molpy.Notify('Correct',1);
-					var lc = Molpy.Boosts['Logicat'];
-					lc.power+=1+(Molpy.Boosts['Panther Rush'].power)/2;
-					while(lc.power>=lc.bought*5)
-					{
-						Molpy.RewardLogicat(lc.bought);
-						lc.bought++;
-					}
+					Molpy.Add('Logicat',0,1+(Molpy.Boosts['Panther Rush'].power)/2);
 				}
 				else
 				{
@@ -2633,7 +2627,7 @@ Molpy.Up=function()
 						Molpy.Notify('Try Again');
 						return;
 					}
-					Molpy.Boosts['Logicat'].power-=0.5;
+					Molpy.Destroy('Logicat',0,0.5);
 				}
 			}
 		
@@ -2923,10 +2917,9 @@ Molpy.Up=function()
 			var j = Molpy.JDestroyAmount();
 			var dAmount = j*Molpy.CastleTools['NewPixBot'].amount*25;
 			if(!Molpy.Boosts['Bacon'].unlocked)
-			if(!isFinite(dAmount)&&Molpy.Got('Frenchbot')&&Molpy.Boosts['Logicat'].bought>100)
+			if(!isFinite(dAmount)&&Molpy.Got('Frenchbot')&&Molpy.Has('Logicat',100))
 			{
-				Molpy.Boosts['Logicat'].bought-=100;
-				Molpy.Boosts['Logicat'].power-=500;
+				Molpy.Spend('Logicat',100);
 				Molpy.UnlockBoost('Bacon');
 			}
 			dAmount = Math.ceil(Math.min(Molpy.castles*.9, dAmount));
