@@ -327,7 +327,6 @@ Molpy.Up=function()
 			}
 			if(Molpy.castlesBuilt>=2000000000000){
 				Molpy.EarnBadge('Unreachable?');
-				Molpy.UnlockBoost("Château d'If");
 			}
 									
 			
@@ -398,15 +397,15 @@ Molpy.Up=function()
 		}
 		Molpy.MakeBlocks=function(times)
 		{
+			if(!isFinite(Molpy.Level('GlassBlocks')))return;
 			var chillerLevel=(Molpy.Boosts['Glass Chiller'].power)+1;
 			if (times) chillerLevel*=times;
 			var chipsFor=chillerLevel;
 			
-			var ch = Molpy.Boosts['GlassChips'];
 			var rate=Molpy.ChipsPerBlock();
 			var backoff = 1;
 
-			while(ch.power < chipsFor*rate)
+			while(!Molpy.Has('GlassChips',chipsFor*rate))
 			{
 				chipsFor-= backoff;
 				backoff*=2;
@@ -419,8 +418,7 @@ Molpy.Up=function()
 				Molpy.Notify('Running low on Glass Chips!');
 				chillerLevel=chipsFor;
 			}
-			ch.power-=chipsFor*rate;
-			Molpy.chipAddAmount-=chipsFor*rate;
+			Molpy.Spend('GlassChips',chipsFor*rate);
 			Molpy.Add('GlassBlocks',chillerLevel,1);
 		}
 		
@@ -848,6 +846,7 @@ Molpy.Up=function()
 			var NP = Molpy.newpixNumber;
 			if(NP==404) Molpy.EarnBadge('Badge Not Found');
 			if(NP==-404) Molpy.EarnBadge('Badge Found');
+			if(NP==2101) Molpy.EarnBadge('War was beginning.');
 		}
 		
 		/* In which we calculate how much sand per milliNewPix we dig
@@ -2831,7 +2830,7 @@ Molpy.Up=function()
 			var me = Molpy.Boosts[i];
 			if(me.bought)
 			{
-				if(me.countdown>0)
+				if(me.countdown)
 				{
 					me.countdown--;
 					me.Refresh();
