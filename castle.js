@@ -846,6 +846,7 @@ Molpy.Up=function()
 			var NP = Molpy.newpixNumber;
 			if(NP==404) Molpy.EarnBadge('Badge Not Found');
 			if(NP==-404) Molpy.EarnBadge('Badge Found');
+			if(NP==2101) Molpy.EarnBadge('War was beginning.');
 		}
 		
 		/* In which we calculate how much sand per milliNewPix we dig

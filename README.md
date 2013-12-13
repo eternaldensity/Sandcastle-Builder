@@ -31,6 +31,7 @@ For personal amusement only.
 - Temporal Duplication warns that it's about to run out even if the countdown is not an integer
 - Infinite block production prevented from mustarding chip storage: and if you have infinite blocks it doesn't bother making "more"
 - TF counts toggle button always visible in Layout mode
+- In NP 2101
 
 ## 3.25
 - Badge clarification (Typo Storm)
