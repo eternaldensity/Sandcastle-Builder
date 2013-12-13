@@ -24,6 +24,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.252
+- Moved logicat levels to the new system so spending/gaining them is simpler code-wise
+- Looked at the countdown timer stuff: doesn't look like Temporal Duplication should be dying when it's countdown is 0. Let me know if it happens again
+- Waveney's latest bunch of discoveries
+
 ## 3.251
 - Fixed Monty Haul Problem's Goat[s] usage
 - Put in a fix to ensure you get Château d'If if you have the Unreachable? Badge (which has the side effect of giving you Château d'If back when you Molpy down, which is okay I guess)

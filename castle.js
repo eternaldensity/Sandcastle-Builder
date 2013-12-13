@@ -2832,6 +2832,7 @@ Molpy.Up=function()
 					{
 						Molpy.LockBoost(i);
 						me.power=0;
+						me.countdown=0;
 					}else
 					{
 						if(me.countdownFunction)me.countdownFunction();
