@@ -16,7 +16,9 @@ Quite a bit of code by waveney.
 
 Icons by ChronosDragon, BlitzGirl, and StormAngel/cmyk.
 
-'NewPix' by Randall Munroe. 'Colpix' by various.
+'NewPix' by Randall Munroe, under a Creative Commons Attribution-NonCommercial 2.5 License. http://creativecommons.org/licenses/by-nc/2.5/ (these are actually hotlinked from http://imgs.xkcd.com/ via http://xkcd.mscha.org/ ) This means that this game cannot be used for any commercial purpose (including YouTube monetisation)
+
+'Colpix' by various. (These are coloured modifications of Randall Munroe's work)
 
 Inspired by Orteil's C**kie Clicker.
 
