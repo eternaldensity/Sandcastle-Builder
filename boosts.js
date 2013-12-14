@@ -2388,16 +2388,20 @@
 	);
 	
 	new Molpy.Boost({name:'Caged Logicat',
+		Level:Molpy.BoostFuncs.Bought1Level,
+		Has:Molpy.BoostFuncs.Has,
+		Spend:Molpy.BoostFuncs.Spend,
+		Add:Molpy.BoostFuncs.Add,
 		desc: function(me)
 		{
 			var str='';
-			if(me.power&&Molpy.cagedPuzzleValue)
+			if(Molpy.cagedPuzzleValue)
 			{
 				return Molpy.cagedPuzzleValue;
-			}else if(me.bought>1){
+			}else if(me.Has(1)){
 				var cost=100+Molpy.LogiMult(25);
 				if(Molpy.Has('GlassBlocks',cost))
-					str= '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.bought-1)+' Puzzle'+plural(me.bought-1)+' left';
+					str= '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.Level)+' Puzzle'+plural(me.Level)+' left';
 				else str= 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle';
 			}else{
 				str= 'Caged Logicat is sleeping. Please wait for it.'
@@ -2411,12 +2415,12 @@
 		,group:'bean',className:'action',icon:'cagedlogicat',
 		buyFunction:function()
 		{
-			this.bought=11;
+			this.Level=10;
 		},classChange:
 		function()
 		{
 			var oldClass=this.className;
-			var newClass = this.bought>1?'action':'';
+			var newClass = this.Has(1)?'action':'';
 			if(newClass!=oldClass)
 			{
 				this.className=newClass;
@@ -2440,11 +2444,16 @@
 		}
 		Molpy.cagedPuzzleValue=str;
 		Molpy.Boosts['Caged Logicat'].Refresh();
-		Molpy.Boosts['Caged Logicat'].power=1;
 		Molpy.cagedSGen.firstTry=1;
 	}
 	Molpy.ClickCagedPuzzle=function(name)
 	{
+		if(!Molpy.cagedPuzzleValue)
+		{
+			Molpy.Destroy('Logicat',1);
+			Molpy.Spend('Caged Logicat',1);
+			return;			
+		}
 		var skip=0;
 		if(!Molpy.cagedSGen.firstTry)
 		{
@@ -2479,10 +2488,8 @@
 			}
 		}
 		Molpy.cagedPuzzleValue='';
-		Molpy.cagedPuzzleTarget='Oh no you don\'t!';
-		Molpy.Boosts['Caged Logicat'].Refresh();
-		Molpy.Boosts['Caged Logicat'].power=0;
-		Molpy.Boosts['Caged Logicat'].bought--;
+		Molpy.cagedPuzzleTarget='';
+		Molpy.Spend('Caged Logicat',1);
 	}
 	
 	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it and don\'t lose half a Logicat point. (Uses 50 Glass Blocks)',
@@ -3782,7 +3789,7 @@
 	}
 	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
 		buyFunction:function(){
-			Molpy.Boosts['Caged Logicat'].bought+=1+Molpy.Boosts['Panther Rush'].power;
+			Molpy.Add('Caged Logicat',1+Molpy.Boosts['Panther Rush'].power);
 			Molpy.LockBoost(this.alias);
 		}
 	});
@@ -4275,7 +4282,7 @@
 		{
 			if(!me.bought)return 'Puts unused Logicat puzzles to some use';
 			var str='';
-			str+='Not yet implemented';
+			str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this ';
 			return str;
 		}
 		,glass:'12WW',group:'drac',className:'action'
@@ -4389,7 +4396,7 @@
 	new Molpy.Boost({name:'Wisdom of the Ages',alias:'WotA',
 		Level:[function()
 		{
-			return me.bought*Math.ceil(0.2*Math.abs(Molpy.newpixNumber)-me.power);
+			return this.bought*Math.ceil(0.2*Math.abs(Molpy.newpixNumber)-this.power);
 		},
 		function(){}],
 		desc:function(me)

@@ -3114,16 +3114,16 @@ Molpy.Up=function()
 		if(Molpy.Got('Caged Logicat')&&!Molpy.Got('Temporal Rift'))
 		{
 			var cl = Molpy.Boosts['Caged Logicat'];
-			if(cl.bought<11)
+			if(!cl.Has(10))
 			{
-				cl.bought=11;
+				cl.Level=10;
 			}
 			else
 			{
-				if(cl.bought>50)Molpy.UnlockBoost('WotA');
-				cl.bought=Math.min(cl.bought,11+Molpy.Level('WotA'));
+				if(cl.Has(50))Molpy.UnlockBoost('WotA');
+				cl.Level=Math.min(cl.Level,10+Molpy.Level('WotA'));
 			}
-			
+		}	
 		if(Molpy.Boosts['LR'].power>500)
 		{
 			Molpy.Boosts['LR'].power*=.95;
