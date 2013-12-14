@@ -1135,7 +1135,7 @@
 				}					
 				
 			}else{
-				str+= 'Currently, you have no more sand available for further upgrades';
+				str+='<br>Currently, you have no more sand available for further upgrades';
 			}
 			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.Has('GlassBlocks',ch.bought*10))
 			{
@@ -1393,14 +1393,16 @@
 					}
 					
 				}else{
-					str+= 'Currently, you have no more sand available for further upgrades';
+					str+='<br>Currently, you have no more sand available for further upgrades';
 				}
 			}else
 				str+= 'It costs 5 Blocks to upgrade the Glass Blower\'s speed';
 			
-			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.Has('GlassBlocks',Molpy.Boosts['GlassBlocks'].bought*50))
+			if(!Molpy.Boosts['No Sell'].power&&me.power>1)
 			{
-				str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeGlassChiller()"></input> the Glass Chiller (by 1) and receive a 1 Glass Block refund.';
+				//todo
+					str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeGlassChiller()">\
+						</input> the Glass Chiller (by 1) and receive a 1 Glass Block refund.';
 			}
 			return str;
 		},icon:'glasschiller',className:'action',group:'hpt'
@@ -2082,7 +2084,7 @@
 			var acPower = key-1;
 			if(acPower>=0&&!Molpy.Got('Glass Ceiling '+acPower))
 			{
-				Molpy.Notify('You need to Own Glass Ceiling '+acPower+' before you can Lock Glass Ceiling '+key,1);
+				Molpy.Notify('You need to own Glass Ceiling '+acPower+' before you can Lock Glass Ceiling '+key,1);
 				return;
 			}
 			while(acPower--)
@@ -2564,8 +2566,9 @@
 	new Molpy.Boost({name:'Blackprints',
 		
 		Level:Molpy.BoostFuncs.PosPowerLevel,
-		Has:function(n)
+		Has:function(n,all)
 		{
+			if(all)return n<=0||this.Level>=n;
 			var pages = this.Level;
 			if(pages<1)return 0;
 			if(this.bought)
@@ -2578,7 +2581,7 @@
 		{
 			var target = Molpy.GetBlackprintPages();
 			this.Level+=n;
-			if(this.Has(9001))Molpy.EarnBadge('Scouter');
+			if(this.Has(9001,1))Molpy.EarnBadge('Scouter');
 			if(!Molpy.boostSilence)
 			{
 				if(n==1)
@@ -2587,7 +2590,7 @@
 					Molpy.Notify('You found '+n+' Blackprint pages',1);
 			}else
 			{
-				if(this.Has(target) && !this.Has(target+n))
+				if(this.Has(target,1) && !this.Has(target+n,1))
 				{
 					Molpy.Notify('You now have the '+target+' Blackprint pages you require.',1);
 				}
@@ -2596,9 +2599,9 @@
 				
 			if(!target)return;
 				
-			if(!this.Has(target))
-				Molpy.Notify('You need  '+Molpify(target-this.Level)+' more pages',1);
-			else if (this.Has(target+1))
+			if(!this.Has(target,1))
+				Molpy.Notify('You need '+Molpify(target-this.Level)+' more pages',1);
+			else if (this.Has(target+1,1))
 				Molpy.Notify('You have more pages than you need right now',1);
 			else
 				Molpy.Notify('You now have the '+target+' Blackprint pages you require.',1);
@@ -2747,8 +2750,8 @@
 		},
 		className:'alert',group:'bean',icon:'constructblack'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:120,ZK:180,CFT:40000,BoH:90000};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','BG','Bacon','AO','AA','SG','AE','Milo','ZK','CFT','BoH'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:150,ZK:220,CFT:40000,BoH:90000};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','AO','AA','AE','BG','Bacon','SG','Milo','ZK','CFT','BoH'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',alias:'SMM',desc:
 		function(me)

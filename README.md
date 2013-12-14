@@ -33,6 +33,7 @@ For personal amusement only.
 - Some Dragon Foundry and Thunderbird nerfs
 - Finally implemented Shadow Dragon to take care of extra logicat puzzles you have no use for
 - Bag of Holding now costs to use!!
+- Fixed some silliness that was causing the wrong Blackprints message to be shown in some cases
 
 ## 3.251
 - Fixed Monty Haul Problem's Goat[s] usage
