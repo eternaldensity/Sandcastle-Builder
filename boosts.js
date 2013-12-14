@@ -3925,7 +3925,7 @@
 				Molpy.Notify('You need more Blackprint Pages');
 				return;
 			}
-			if(Molpy.Has('Logicat',logicatCost))
+			if(!Molpy.Has('Logicat',logicatCost))
 			{
 				Molpy.Notify('You need more Logicat Levels');
 				return;
