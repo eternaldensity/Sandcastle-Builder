@@ -1808,6 +1808,7 @@
 				if(s && !Molpy.Got('CfB'))
 				{
 					var c = Molpy.blackprintCosts[s];
+					if(!Molpy.Got('AE'))c=Math.min(c,40);
 					str+='<br><input type="Button" value="Start" onclick="Molpy.StartBlackprintConstruction()"></input> construction of '+Molpy.Boosts[Molpy.GetBlackprintSubject()].name+' from Blackprints (requires '+Molpify(c*10)+' runs of Factory Automation)';
 				}
 			}
@@ -2709,6 +2710,7 @@
 		var con=Molpy.Boosts['CfB'];
 		con.power+=times;
 		 
+		if(!Molpy.Got('AE'))c=Math.min(c,40);
 		if(con.power>=c*10)
 		{
 			var op = con.power;
@@ -2726,7 +2728,9 @@
 				Molpy.LockBoost('CfB');
 				return 'Constructing nothing. How?';
 			}
-			return 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(Molpy.blackprintCosts[subj.alias]*10-me.power)+' runs of Factory Automation required to complete.';
+			var c = Molpy.blackprintCosts[subj.alias];
+			if(!Molpy.Got('AE'))c=Math.min(c,40);
+			return 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(c*10-me.power)+' runs of Factory Automation required to complete.';
 		},
 		unlockFunction:function()
 		{

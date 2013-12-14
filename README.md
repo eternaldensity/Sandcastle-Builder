@@ -28,6 +28,7 @@ For personal amusement only.
 - Moved logicat levels to the new system so spending/gaining them is simpler code-wise
 - Looked at the countdown timer stuff: doesn't look like Temporal Duplication should be dying when it's countdown is 0. Let me know if it happens again
 - Waveney's latest bunch of discoveries
+- Constructing from Blackprints capped at 400 FA runs until you have Automata Engineers
 
 ## 3.251
 - Fixed Monty Haul Problem's Goat[s] usage
