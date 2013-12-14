@@ -3823,7 +3823,7 @@
 				Molpy.Boosts['LR'].power*=1.004;
 				if(Molpy.Got('Thunderbird')&&Molpy.Got('TDE'))
 				{
-					Molpy.Boosts['LR'].power*=2;
+					Molpy.Boosts['LR'].power*=1.5;
 				}
 			}
 			
@@ -4055,7 +4055,7 @@
 		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e16,'WiseDragon'];
 		if(Molpy.Boosts['AC'].power>555&&!Molpy.Boosts['Thunderbird'].unlocked&&Molpy.Got('PSOC')) return [6e36,'Thunderbird'];
 		if(Molpy.Boosts['AC'].power>777&&!Molpy.Boosts['Dragon Foundry'].unlocked&&Molpy.Earned('Nope!')) return [9e54,'Dragon Foundry'];
-		//if(Molpy.Boosts['AC'].power>888&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')) return [9e96,'ShadwDrgn'];
+		if(Molpy.Boosts['AC'].power>888&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')) return [9e96,'ShadwDrgn'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
@@ -4110,7 +4110,7 @@
 		{
 			if(Molpy.Got('Dragon Foundry')&&Molpy.Got('GL'))
 			{
-				return Math.floor(Molpy.Boosts['GL'].power/50);
+				return Math.floor(Molpy.Boosts['GL'].power/5000);
 			}
 			return 2;
 		}
@@ -4264,8 +4264,8 @@
 	
 	new Molpy.Boost({name:'People Sit on Chairs',alias:'PSOC',desc:'Multiplies <b>all</b> rates by 1, then adds 0',stats:'Administrivia',logic:420});
 	new Molpy.Boost({name:'No Need to be Neat',desc:'When you Molpy Down, the amount of one random type of tool is not reset to 0',glass:'50M'});
-	new Molpy.Boost({name:'Thunderbird',desc:'If Glassed Lightning (with Lightning Rod) strikes during Temporal Duplication, its power is doubled',glass:'50W',group:'drac'});
-	new Molpy.Boost({name:'Dragon Foundry',desc:'Glassed Lightning multiplies Crystal Dragon',sand:Infinity,castles:Infinity,glass:'70WW',group:'drac'});
+	new Molpy.Boost({name:'Thunderbird',desc:'If Glassed Lightning (with Lightning Rod) strikes during Temporal Duplication, its power is increased by 50%',glass:'50W',group:'drac'});
+	new Molpy.Boost({name:'Dragon Foundry',desc:'Crystal Dragon\'s effect is multiplied by 1% of Glassed Lightning',stats:'Remember to power up Glassed Lightning with Thunderbird, or else this will have a detrimental effect on Temporal Duplication!',sand:Infinity,castles:Infinity,glass:'70WW',group:'drac'});
 	new Molpy.Boost({name:'Lucky Twin',desc:'When you are awarded Not Lucky during Temporal Duplication, the countdown is increased by 20%',sand:Infinity,castles:Infinity,glass:'70H'});
 	new Molpy.Boost({name:'Beret Guy',desc:'You may choose to take a revealed Goat',stats:'...and my yard has so much grass, and I\'ll teach you tricks, and...',glass:'20T'});
 	
