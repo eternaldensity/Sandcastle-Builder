@@ -207,23 +207,12 @@
 	
 	Molpy.GetYourGoat=function()
 	{
-		if(!Molpy.Got('Goats'))
-		{
-			Molpy.UnlockBoost('Goats')
-		}
-			Molpy.UnlockBoost('Goats');
-			var g = Molpy.Boosts['Goats'];
-			if(!g.bought)
-			{
-				g.buy();
-			}
-			g.power++;
-			g.Refresh();
-			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',g.name]);	
-			if(g.power>=2)Molpy.EarnBadge('Second Edition');
-			if(g.power>=20)Molpy.UnlockBoost('HoM');
-			if(g.power>=200)Molpy.UnlockBoost('Beret Guy');
-			Molpy.Notify('You got a goat!');
+		Molpy.Add('Goats',1);
+		_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',g.name]);	
+		if(g.power>=2)Molpy.EarnBadge('Second Edition');
+		if(g.power>=20)Molpy.UnlockBoost('HoM');
+		if(g.power>=200)Molpy.UnlockBoost('Beret Guy');
+		Molpy.Notify('You got a goat!');
 	}
 	
 	new Molpy.Boost({name:'Grapevine',desc:'Increases sand dig rate by 2% per badge earned',sand:'25K',castles:25,icon:'grapevine',department:1,
@@ -1048,18 +1037,22 @@
 		return glassUse;
 	}
 	
+	Molpy.ChainRefresh=function(mrob)
+	{
+		Molpy.Boosts[mrob].Refresh(1);
+	}
 	Molpy.RefreshGlass=function()
 	{	
-		Molpy.Boosts['GlassChips'].Refresh(1);
-		Molpy.Boosts['Glass Furnace'].Refresh(1);
-		Molpy.Boosts['Sand Purifier'].Refresh(1);
-		Molpy.Boosts['Sand Refinery'].Refresh(1);
-		Molpy.Boosts['GlassBlocks'].Refresh(1);
-		Molpy.Boosts['Glass Blower'].Refresh(1);
-		Molpy.Boosts['Glass Chiller'].Refresh(1);
-		Molpy.Boosts['Glass Extruder'].Refresh(1);
-		Molpy.Boosts['PC'].Refresh(1);
-		Molpy.Boosts['AC'].Refresh(1);
+		Molpy.ChainRefresh('GlassChips');
+		Molpy.ChainRefresh('Glass Furnace');
+		Molpy.ChainRefresh('Sand Purifier');
+		Molpy.ChainRefresh('Sand Refinery');
+		Molpy.ChainRefresh('GlassBlocks');
+		Molpy.ChainRefresh('Glass Blower');
+		Molpy.ChainRefresh('Glass Chiller');
+		Molpy.ChainRefresh('Glass Extruder');
+		Molpy.ChainRefresh('PC');
+		Molpy.ChainRefresh('AC');
 	}
 	
 	new Molpy.Boost({name:'Sand Refinery',desc:
@@ -2401,14 +2394,14 @@
 			}else if(me.Has(1)){
 				var cost=100+Molpy.LogiMult(25);
 				if(Molpy.Has('GlassBlocks',cost))
-					str= '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.Level)+' Puzzle'+plural(me.Level)+' left';
-				else str= 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle';
+					str= '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.Level)+' Puzzle'+plural(me.Level)+' left.';
+				else str= 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle.';
 			}else{
 				str= 'Caged Logicat is sleeping. Please wait for it.'
 			}
 			if(Molpy.Got('ZK'))
 			{	
-				str+='<br>Zookeeper is at '+Molpify(Molpy.Boosts['ZK'].power/10)+'%';
+				str+='<br>Zookeeper is at '+Molpify(Molpy.Boosts['ZK'].power/10)+'%.';
 			}
 			return str;
 		}
@@ -2426,6 +2419,10 @@
 				this.className=newClass;
 				return 1;
 			}
+		},
+		refreshFunction:function()
+		{
+			Molpy.ChainRefresh('ShadwDrgn');
 		}
 	});	
 
@@ -4062,7 +4059,7 @@
 		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e16,'WiseDragon'];
 		if(Molpy.Boosts['AC'].power>555&&!Molpy.Boosts['Thunderbird'].unlocked&&Molpy.Got('PSOC')) return [6e36,'Thunderbird'];
 		if(Molpy.Boosts['AC'].power>777&&!Molpy.Boosts['Dragon Foundry'].unlocked&&Molpy.Earned('Nope!')) return [9e54,'Dragon Foundry'];
-		if(Molpy.Boosts['AC'].power>888&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')) return [9e96,'ShadwDrgn'];
+		if(Molpy.Boosts['AC'].power>888&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')&&Molpy.Has('Caged Logicat',100)) return [9e96,'ShadwDrgn'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
@@ -4147,7 +4144,7 @@
 		,sand:Infinity,castles:Infinity,glass:'7P',group:'drac',className:'action'});
 		new Molpy.Boost({name:'Crouching Dragon, Sleeping Panther',alias:'WiseDragon',desc:function(me)
 		{
-			var str = 'Allows you to get Panther Poke with more remaining Caged Logicat Questions.<br>Currently, Panther Poke is available if you have less than '+Molpify(Molpy.PokeBar()-1)+' Caged Logicat puzzles remaining.';
+			var str = 'Allows you to get Panther Poke with more remaining Caged Logicat puzzles.<br>Currently, Panther Poke is available if you have less than '+Molpify(Molpy.PokeBar()-1)+' Caged Logicat puzzles remaining.';
 			if(!me.bought)return str;
 			var goatCost = me.power;
 			var powerReq=Math.pow(5,me.power+12);
@@ -4280,13 +4277,29 @@
 	new Molpy.Boost({name:'Shadow Dragon',alias:'ShadwDrgn',
 		desc:function(me)
 		{
-			if(!me.bought)return 'Puts unused Logicat puzzles to some use';
-			var str='';
-			str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this ';
+			var str='Puts unused Caged Logicat puzzles to some use.';
+			if(!me.bought)return str;
+			if(Molpy.Has('Caged Logicat',100))
+			{
+				str+='<br><input type="Button" value="Deal" onclick="Molpy.ShadowStrike(1)"></input> with the Caged Logicat infestation...';
+			}else
+			{
+				str+='<br>A minimum level of 100 Caged Logicat puzzles is required to use Shadow Dragon.';
+			}
 			return str;
 		}
 		,glass:'12WW',group:'drac',className:'action'
 	});
+	Molpy.ShadowStrike=function()
+	{
+		var l = Molpy.Level('Caged Logicat')/100;
+		var n = Math.ceil(l);
+		var p = n-l;
+		if(Math.random()<p*p)n = 1;
+		Molpy.Notify('You turned '+Molpify(Molpy.Level('Caged Logicat'))+' Caged Logicat puzzles into '+Molpify(n)+' Bonemeal.',1);
+		Molpy.Add('Bonemeal',n);
+		Molpy.Spend('Caged Logicat',Molpy.Level('Caged Logicat'));
+	}
 
 	Molpy.spendSandNotifyFlag=1;
 	Molpy.spendSandNotifyCount=0;
@@ -4385,7 +4398,7 @@
 	});
 	
 	
-	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down',glass:Infinity,sand:Infinity,castles:Infinity,className:'alert'});	
+	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal',glass:Infinity,sand:Infinity,castles:Infinity,className:'alert'});	
 	new Molpy.Boost({name:'Bonemeal',desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' bonemeal.';
@@ -4401,9 +4414,9 @@
 		function(){}],
 		desc:function(me)
 		{
-			return 'Lets you keep more leftover Caged Logicat questions as Time progresses.<br>Currently you can start an ONG with a maximum of '+Molpify(10+me.Level)+' Caged Logicat questions.';
+			return 'Lets you keep more leftover Caged Logicat puzzles as Time progresses.<br>Currently you can start an ONG with a maximum of '+Molpify(10+me.Level)+' Caged Logicat puzzles.';
 		},
-		stats:'Protip: Temporal Rifts don\'t afect Caged Logicat questions',
+		stats:'Protip: Temporal Rifts don\'t affect Caged Logicat puzzles',
 		unlockFunction:function(me){me.power=Math.abs(Molpy.newpixNumber);}
 	});
 	

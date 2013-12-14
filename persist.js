@@ -1109,7 +1109,7 @@
 				me.totalGlassDestroyed=0;
 				me.Refresh();
 			}
-			var boh = !coma&&Molpy.Got('BoH');
+			var boh = !coma&&Molpy.Got('BoH')&&Molpy.Spend('Bonemeal',10);
 			for(i in Molpy.Boosts)
 			{
 				var me = Molpy.Boosts[i];

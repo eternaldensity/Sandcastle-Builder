@@ -31,6 +31,8 @@ For personal amusement only.
 - Figured out and fixed Temporal Duplication: removed the 'fix temp boosts stuck at 0' code :P
 - I'd forgotten that Temp Boosts mean that html can get typos in it. So now any string with a < in it won't get typo'd (fixes weirdness like stuck strikethroughs in log)
 - Some Dragon Foundry and Thunderbird nerfs
+- Finally implemented Shadow Dragon to take care of extra logicat puzzles you have no use for
+- Bag of Holding now costs to use!!
 
 ## 3.251
 - Fixed Monty Haul Problem's Goat[s] usage

@@ -1667,6 +1667,14 @@ Molpy.Up=function()
 			PosPowEnabled:function(amount)
 			{
 				return (this.Level>0)*1;
+			},
+			RefreshPowerBuy:function()
+			{
+				if(this.power&&!this.bought)
+				{
+					Molpy.UnlockBoost(this.alias);
+					this.buy();
+				}
 			}
 		};
 		
@@ -1691,9 +1699,6 @@ Molpy.Up=function()
 			this.glassPrice=args.glass||0;
 			this.stats=args.stats;
 			this.icon=args.icon;
-			this.buyFunction=args.buyFunction;
-			this.countdownFunction=args.countdownFunction;
-			this.refreshFunction=args.refreshFunction;
 			this.IsEnabled=args.IsEnabled;
 			if(args.defStuff)
 			{
@@ -1702,7 +1707,7 @@ Molpy.Up=function()
 				args.Add=Molpy.BoostFuncs.Add;
 				args.Spend=Molpy.BoostFuncs.Spend;
 				args.Destroy=Molpy.BoostFuncs.Destroy;
-				
+				args.refreshFunction=Molpy.BoostFuncs.RefreshPowerBuy;				
 			}
 			if(args.Level)
 			{
@@ -1712,6 +1717,9 @@ Molpy.Up=function()
 				this.Destroy=args.Destroy;
 				this.Has=args.Has;
 			}
+			this.buyFunction=args.buyFunction;
+			this.countdownFunction=args.countdownFunction;
+			this.refreshFunction=args.refreshFunction;
 			this.unlocked=0;
 			this.bought=0;
 			this.department=args.department; //allow unlock by the department (this is not a saved value)
