@@ -2564,7 +2564,7 @@ Molpy.Up=function()
 		{
 			if(Molpy.Got('GL'))
 			{
-				Molpy.Boosts['GL'].countdown*=1.21; //GW :P
+				Molpy.Boosts['GL'].countdown=Math.min(500,Molpy.Boosts['GL'].countdown*=1.21); //GW :P
 				Molpy.Notify('Lightning struck the same place twice!');
 				Molpy.EarnBadge('Strikes Twice');
 				Molpy.UnlockBoost('LR');

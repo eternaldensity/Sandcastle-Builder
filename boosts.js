@@ -2763,7 +2763,7 @@
 		{
 			var op = con.power;
 			Molpy.LockBoost('CfB');
-			return times+op-c*10;
+			return Math.max(0,times+op-c*10);
 		}
 		return 0;
 	}
@@ -4462,7 +4462,7 @@
 			return 'Lets you keep more leftover Caged Logicat puzzles as Time progresses.<br>Currently you can start an ONG with a maximum of '+Molpify(10+me.Level)+' Caged Logicat puzzles.';
 		},
 		stats:'Protip: Temporal Rifts don\'t affect Caged Logicat puzzles',
-		unlockFunction:function(me){me.power=Math.abs(Molpy.newpixNumber);}
+		unlockFunction:function(){this.power=Math.abs(Molpy.newpixNumber);}
 	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment

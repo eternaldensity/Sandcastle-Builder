@@ -24,6 +24,12 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.261
+- Fixed some backwards logic (dragon forge, glass saw)
+- New boost had a crash bug
+- Prevent blackprint construction from reporting using negative FA runs
+- Prevent Glassed Lightning from having over 500 countdown (also done on upgrade)
+
 ## 3.26
 - Moved logicat levels to the new system so spending/gaining them is simpler code-wise
 - Waveney's latest bunch of discoveries

@@ -1037,6 +1037,11 @@
 				
 			}
 		}
+		if(version<3.261)
+		{
+			if(Molpy.Boosts['WotA'].unlocked)Molpy.Boosts['WotA'].unlockFunction();
+			if(Molpy.Boosts['GL'].countdown>500)Molpy.Boosts['GL'].countdown=500;
+		}
 	}
 	
 	
