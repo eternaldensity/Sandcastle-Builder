@@ -861,7 +861,7 @@ Molpy.Up=function()
 			{
 				var me=Molpy.SandTools[i];
 				me.storedSpmNP=EvalMaybeFunction(me.spmNP,me);
-				me.storedTotalSpmNP=me.amount*me.storedSpmNP;
+				me.storedTotalSpmNP=me.amount*me.storedSpmNP||0;
 				Molpy.sandPermNP+=me.storedTotalSpmNP;
 			}
 			var ninjaFactor =1;
@@ -1231,11 +1231,10 @@ Molpy.Up=function()
 				{
 								
 					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(this.id*2)))
-					{						
+					{
 						desc='Total Sand '+this.actionName+': '+Molpify(this.totalSand,1)+
 						'<br>Sand/mNP per '+this.single+': '+Molpify(this.storedSpmNP,(this.storedSpmNP<10?3:1));
 					}else{
-						
 						desc='Total Chips '+this.actionName+': '+Molpify(this.totalGlass,1)+
 						'<br>Glass/mNP per '+this.single+': '+Molpify(this.storedGpmNP,(this.storedGpmNP<10?3:1));
 					}	
@@ -2554,8 +2553,9 @@ Molpy.Up=function()
 				if(Molpy.Got('SGC'))
 				{
 					gift=Math.floor(Molpy.Boosts['GlassBlocks'].power/50);
+					var b = Molpy.Level('GlassBlocks');
 					Molpy.Add('GlassBlocks',gift*(twin+1),1);
-					if(Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
+					if(isFinite(b)&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
 				}
 			}
 			

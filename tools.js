@@ -66,11 +66,13 @@
 			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Molpy.CastleTools['Scaffold'].amount);
 			if(Molpy.Got('SBTF'))
 			{
+				var waves=Molpy.CastleTools['Wave'].amount;
 				if(Math.abs(Molpy.newpixNumber)%2==0)//even
 				{
-					mult/=Math.max(1,Molpy.CastleTools['Wave'].amount);
+					if(!isFinite(waves))return 0;
+					mult/=Math.max(1,waves);
 				}else{//odd
-					mult*=Molpy.CastleTools['Wave'].amount;
+					mult*=waves;
 				}
 			}
 			if(Molpy.Got('Fly the Flag'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;

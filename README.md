@@ -24,6 +24,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.262
+- Prevent mustard Flag sand rate when you have infinite waves
+- Suppress SGC message if you have infinite blocks
+
 ## 3.261
 - Fixed some backwards logic (dragon forge, glass saw)
 - New boost had a crash bug
