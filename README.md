@@ -37,7 +37,7 @@ For personal amusement only.
 - More infinite glass issues
 - Option descriptions were refreshing whenever tools were bought, which I think was causing some weirdness (colourscheme toggle was hard to click)
 - Toggling No Sell updates faves
-- Some stuff to help a bit with infinite glass but there's probably still some mustard left.
+- Some stuff to help with infinite glass mustard, including glass saw, tool factory, and refinery/chiller fixes
 
 ## 3.251
 - Fixed Monty Haul Problem's Goat[s] usage
