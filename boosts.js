@@ -2240,7 +2240,7 @@
 		,group:'chron',className:'alert',logic:50,
 		startCountdown:function()
 		{
-			return 5*(1+Molpy.Got('Crystal Dragon'));
+			return 5*(1+Molpy.Got('Crystal Dragon'))*!Molpy.Earned('Never Alone');
 		}
 		,stats:'Also causes a double Not Lucky glass bonus during Temporal Duplication'
 		,countdownFunction:function(){			
