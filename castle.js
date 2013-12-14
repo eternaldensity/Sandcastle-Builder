@@ -603,7 +603,7 @@ Molpy.Up=function()
 								backoff *= 2;
 							}
 							Molpy.Add('GlassBlocks',maxGlass);
-							Molpy.Add('Tool Factory',-maxGlass*rate);
+							Molpy.Spend('Tool Factory',maxGlass*rate);
 							if(Molpy.Has('Tool Factory',absMaxGlass*rate*2))
 								Molpy.Boosts['Glass Saw'].power=p*2;
 						}
