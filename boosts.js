@@ -1195,7 +1195,7 @@
 		}
 		if(sr.power<n)return;
 		Molpy.Add('GlassChips',n);
-		sr.power=Math.floor(sr.power-n);
+		sr.power=Math.floor(sr.power-n)||0;
 		Molpy.Notify('Sand Refinery downgraded',1);
 		Molpy.recalculateDig=1;			
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Sand Refinery']);	
@@ -1211,9 +1211,9 @@
 		refreshFunction:Molpy.RefreshGlass,
 		Add:function(amount,expand)
 		{
-			Molpy.UnlockBoost('GlassChips');
 			if(!this.bought)
 			{
+				Molpy.UnlockBoost('GlassChips');
 				this.buy();
 			}
 			this.Level+=amount;
@@ -1467,7 +1467,7 @@
 		}
 		if(gc.power<n)return;
 		Molpy.Add('GlassBlocks',n);
-		gc.power=Math.floor(gc.power-n);
+		gc.power=Math.floor(gc.power-n)||0;
 		Molpy.Notify('Glass Chiller downgraded',1);
 		Molpy.recalculateDig=1;
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Glass Chiller']);		
@@ -1482,9 +1482,9 @@
 		refreshFunction:Molpy.RefreshGlass,
 		Add:function(amount,expand)
 		{
-			Molpy.UnlockBoost('GlassBlocks');
 			if(!this.bought)
 			{
+				Molpy.UnlockBoost('GlassBlocks');
 				this.buy();
 			}
 			this.Level+=amount;
@@ -3394,8 +3394,9 @@
 		if(!isFinite(Math.pow(200,rb.bought)))Molpy.UnlockBoost('Knitted Beanies');
 	}
 	
-	new Molpy.Boost({name:'Tool Factory',desc:
-		function(me)
+	new Molpy.Boost({name:'Tool Factory',
+		defStuff:1,
+		desc:function(me)
 		{
 			var str='Produces Glass Tools from Glass Chips.<br>Lock Glass Ceilings to prevent a tool from being produced.<br>This will concentrate more production of the remaining tools.';
 			if(!me.bought)return str;
@@ -3429,7 +3430,7 @@
 		if(Molpy.Has('GlassChips',amount))
 		{
 			Molpy.Spend('GlassChips',amount);
-			Molpy.Boosts['Tool Factory'].power+=amount;
+			Molpy.Add('Tool Factory',amount);
 			if(Molpy.SandTools['Bucket'].amount>=7470&&Molpy.Got('Tool Factory')&&!isFinite(Molpy.sandPermNP))Molpy.UnlockBoost('Sand to Glass');
 			if(Molpy.CastleTools['NewPixBot'].amount>=1515&&Molpy.Got('Tool Factory')&&!isFinite(Molpy.castles))Molpy.UnlockBoost('Castles to Glass');
 			_gaq&&_gaq.push(['_trackEvent','Boost','Load Tool Factory',''+amount]);	
@@ -3451,7 +3452,7 @@
 		if(!tf.bought)return;
         var toolBuildNum = 1;
         if(Molpy.Got('PC')) toolBuildNum=Molpy.Boosts['PC'].power;
-        var tfChipBuffer=tf.power;
+        var tfChipBuffer=tf.Level;
 		var acPower = 0;
         if(Molpy.Boosts['AA'].power)
 		{
@@ -3537,7 +3538,7 @@
             Molpy.recalculateDig=1;
             Molpy.shopRepaint=1;
             Molpy.CheckBuyUnlocks();
-            tf.power=tfChipBuffer;
+            tf.Level=tfChipBuffer;
 			
 			if(built>=1000)Molpy.EarnBadge('KiloTool');
 			if(built>=1e6)Molpy.EarnBadge('MegaTool');

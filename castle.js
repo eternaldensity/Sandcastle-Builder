@@ -587,7 +587,7 @@ Molpy.Up=function()
 							var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
 							var absMaxGlass=maxGlass;
 							var rate = Molpy.ChipsPerBlock();
-							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Boosts['Tool Factory'].power/rate));
+							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Level('Tool Factory')/rate));
 							var leave = 0;
 							var bl = Molpy.Boosts['GlassBlocks'];
 							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
@@ -595,7 +595,7 @@ Molpy.Up=function()
 								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
 							}
 							maxGlass=Math.min(maxGlass,bl.bought*50-bl.power - leave);
-							maxGlass=Math.max(maxGlass,0);
+							maxGlass=Math.max(maxGlass,0)||0;
 							var backoff = 1;
 							while (bl.power+maxGlass > bl.bought*50 )
 							{
@@ -603,9 +603,8 @@ Molpy.Up=function()
 								backoff *= 2;
 							}
 							Molpy.Add('GlassBlocks',maxGlass);
-							Molpy.Boosts['Tool Factory'].power-=maxGlass*rate;
-							Molpy.Boosts['Tool Factory'].power=Math.max(0,Molpy.Boosts['Tool Factory'].power);
-							if(Molpy.Boosts['Tool Factory'].power > absMaxGlass*rate*2)
+							Molpy.Add('Tool Factory',maxGlass*rate);
+							if(Molpy.Has('Tool Factory',absMaxGlass*rate*2))
 								Molpy.Boosts['Glass Saw'].power=p*2;
 						}
                     }
