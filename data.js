@@ -502,7 +502,7 @@ Molpy.HardcodedData=function()
 
 	
 
-Molpy.CheckBuyUnlocks=function()
+Molpy.CheckBuyUnlocks=function(tool)
 {
 	if(Molpy.needlePulling)return;
 	var me=Molpy.SandTools['Bucket'];
@@ -675,7 +675,7 @@ Molpy.CheckBuyUnlocks=function()
         }
 	if (Molpy.Boosts['AC'].power >= 230)  Molpy.EarnBadge('Mains Power');
 	if (Molpy.Boosts['AC'].power >= 50)  Molpy.EarnBadge('It Hertz');
-	Molpy.RefreshOptions();
+	if(!tool) Molpy.RefreshOptions();
 }
 
 Molpy.jDipBoosts=['NavCode','Irregular Rivers','Big Splash','Stacked','Minigun','Ninja Assistants'];		

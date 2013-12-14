@@ -559,7 +559,6 @@
 		if(ch.power>10)Molpy.UnlockBoost('Beachball');
 		ch.Refresh();
 		Molpy.UpdateColourScheme();
-		
 	}
 	new Molpy.Boost({name:'Flux Turbine',desc:'Castles lost via Molpy Down or Temporal Rift boost the rate of building new Castles',
 		sand:1985,castles:121,
@@ -731,6 +730,7 @@
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
 		me.power = (!me.power)*1;
 		me.Refresh();
+		Molpy.UpdateFaves(1);
 		Molpy.shopRepaint=1;
 	}
 		
@@ -1006,7 +1006,7 @@
 		{
 			inc*=Math.pow(.99,Math.floor(Molpy.BadgesOwned/10));
 		}
-		return inc;
+		return inc||0;
 	}
 	Molpy.GlassBlowerSandUse=function(force)
 	{
@@ -1027,7 +1027,7 @@
 		{
 			inc*=Math.pow(.99,Math.floor(Molpy.BadgesOwned/10));
 		}
-		return inc;
+		return inc||0;
 	}
 	Molpy.CalcGlassUse=function()
 	{
@@ -1137,9 +1137,18 @@
 			}else{
 				str+='<br>Currently, you have no more sand available for further upgrades';
 			}
-			if(!Molpy.Boosts['No Sell'].power&&me.power>1 && !Molpy.Has('GlassBlocks',ch.bought*10))
+			if(!Molpy.Boosts['No Sell'].power&&me.power>1)
 			{
-				str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeSandRefinery()"></input> the Sand Refinery (by 1) and receive a 1 Glass Chip refund.';
+				
+				
+				if(me.power>200)
+				{
+					str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeSandRefinery(1)">\
+						</input> the Sand Refinery by an amount of your choosing.';
+				}else{
+					str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeSandRefinery()">\
+						</input> the Sand Refinery (by 1) and receive a 1 Glass Chip refund.';
+				}
 			}
 			return str;
 		}
@@ -1170,10 +1179,23 @@
 	Molpy.DowngradeSandRefinery=function()
 	{
 		var sr = Molpy.Boosts['Sand Refinery'];
-		if(sr.power<1)return;
-		Molpy.Add('GlassChips',1);
-		sr.power--;
-		sr.Refresh();
+		var n = 1;
+		if(choose)
+		{
+			n = prompt('Enter a number of levels (e.g. '+Molpify(sr.power/10,0,1)+') or a percentage of the current value, by which to reduce Sand Refinery\'s power:','10%');
+			if(!n)return;
+			if(n.indexOf('%')>0)
+			{
+				n = sr.power*parseFloat(n.split('%')[0])/100;
+			}else
+			{
+				n=DeMolpify(n);
+			}
+			if(!n)return;
+		}
+		if(sr.power<n)return;
+		Molpy.Add('GlassChips',n);
+		sr.power=Math.floor(sr.power-n);
 		Molpy.Notify('Sand Refinery downgraded',1);
 		Molpy.recalculateDig=1;			
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Sand Refinery']);	
@@ -1370,39 +1392,45 @@
 	new Molpy.Boost({name:'Glass Chiller',desc:
 		function(me)
 		{		
-			var str='Causes the Glass Blower to produce '+Molpify(me.power+1,3)+' Glass Block'+plural(pow)+' per run';
-			if(!isFinite(me.power))return str;
-			if(Molpy.Has('GlassBlocks',5))
+			var str='Causes the Glass Blower to produce '+Molpify(me.power+1,3)+' Glass Block'+plural(pow)+' per run.';
+			if(isFinite(me.power))
 			{
-				if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
+				if(Molpy.Has('GlassBlocks',5))
 				{
-					var pow=(me.power)+2;
-					str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller(1)"></input> 5 Blocks to upgrade the Glass Blower to produce '
-						+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dig rate).';
-					
-					if(Molpy.Boosts['Glass Extruder'].power>10&&Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*20))
+					if(Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()))
 					{
-						var pow=(Molpy.Boosts['Glass Chiller'].power)+21;
-						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller(20)"></input> 90 Blocks to upgrade the Glass Blower to produce '
+						var pow=(me.power)+2;
+						str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller(1)"></input> 5 Blocks to upgrade the Glass Blower to produce '
 							+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dig rate).';
-							
-						if (Molpy.Got('Seaish Glass Blocks'))
+						
+						if(Molpy.Boosts['Glass Extruder'].power>10&&Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement()*20))
 						{
-							str += '<br><input type="Button" value="Seaish Upgrade" onclick="Molpy.SeaishGlassChiller()"></input>';
+							var pow=(Molpy.Boosts['Glass Chiller'].power)+21;
+							str+= '<br><input type="Button" value="Pay" onclick="Molpy.UpgradeGlassChiller(20)"></input> 90 Blocks to upgrade the Glass Blower to produce '
+								+Molpify(pow,3)+' Glass Block'+plural(pow)+' per NP (will use '+Molpify(pow*Molpy.GlassChillerIncrement(),2)+'% of Sand dig rate).';
+								
+							if (Molpy.Got('Seaish Glass Blocks'))
+							{
+								str += '<br><input type="Button" value="Seaish Upgrade" onclick="Molpy.SeaishGlassChiller()"></input>';
+							}
 						}
+						
+					}else{
+						str+='<br>Currently, you have no more sand available for further upgrades.';
 					}
-					
-				}else{
-					str+='<br>Currently, you have no more sand available for further upgrades';
-				}
-			}else
-				str+= 'It costs 5 Blocks to upgrade the Glass Blower\'s speed';
-			
+				}else
+					str+= 'It costs 5 Blocks to upgrade the Glass Blower\'s speed.';
+			}
 			if(!Molpy.Boosts['No Sell'].power&&me.power>1)
 			{
-				//todo
+				if(me.power>200)
+				{
+					str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeGlassChiller(1)">\
+						</input> the Glass Chiller by an amount of your choosing.';
+				}else{
 					str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeGlassChiller()">\
 						</input> the Glass Chiller (by 1) and receive a 1 Glass Block refund.';
+				}
 			}
 			return str;
 		},icon:'glasschiller',className:'action',group:'hpt'
@@ -1420,13 +1448,26 @@
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade','Glass Chiller']);	
 		}
 	}
-	Molpy.DowngradeGlassChiller=function()
+	Molpy.DowngradeGlassChiller=function(choose)
 	{
 		var gc = Molpy.Boosts['Glass Chiller'];
-		if(gc.power<1)return;
-		Molpy.Add('GlassBlocks',1);
-		gc.power--;
-		gc.Refresh();
+		var n = 1;
+		if(choose)
+		{
+			n = prompt('Enter a number of levels (e.g. '+Molpify(gc.power/10,0,1)+') or a percentage of the current value, by which to reduce Glass Chiller\'s power:','10%');
+			if(!n)return;
+			if(n.indexOf('%')>0)
+			{
+				n = gc.power*parseFloat(n.split('%')[0])/100;
+			}else
+			{
+				n=DeMolpify(n);
+			}
+			if(!n)return;
+		}
+		if(gc.power<n)return;
+		Molpy.Add('GlassBlocks',n);
+		gc.power=Math.floor(gc.power-n);
 		Molpy.Notify('Glass Chiller downgraded',1);
 		Molpy.recalculateDig=1;
 		_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade','Glass Chiller']);		

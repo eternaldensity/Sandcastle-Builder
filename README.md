@@ -34,6 +34,9 @@ For personal amusement only.
 - Finally implemented Shadow Dragon to take care of extra logicat puzzles you have no use for
 - Bag of Holding now costs to use!!
 - Fixed some silliness that was causing the wrong Blackprints message to be shown in some cases
+- More infinite glass issues
+- Option descriptions were refreshing whenever tools were bought, which I think was causing some weirdness (colourscheme toggle was hard to click)
+- Toggling No Sell updates faves
 
 ## 3.251
 - Fixed Monty Haul Problem's Goat[s] usage

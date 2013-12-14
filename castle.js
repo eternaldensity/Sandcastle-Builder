@@ -1136,7 +1136,7 @@ Molpy.Up=function()
 						Molpy.shopRepaint=1;
 						Molpy.recalculateDig=1;
 						Molpy.SandToolsOwned++;
-						Molpy.CheckBuyUnlocks();
+						Molpy.CheckBuyUnlocks(1);
 					}
 				}
 				if(Molpy.Got('TDE'))
@@ -1192,7 +1192,7 @@ Molpy.Up=function()
 					Molpy.SandToolsOwned--;
 					_gaq&&_gaq.push(['_trackEvent','Sell Tool',this.name,'1']);
 					Molpy.UnlockBoost('No Sell');
-					Molpy.CheckBuyUnlocks();
+					Molpy.CheckBuyUnlocks(1);
 				}
 			}
 			this.destroyTemp=function()
@@ -1337,7 +1337,7 @@ Molpy.Up=function()
 						Molpy.shopRepaint=1;
 						Molpy.recalculateDig=1;
 						Molpy.CastleToolsOwned++;
-						Molpy.CheckBuyUnlocks();
+						Molpy.CheckBuyUnlocks(1);
 					}
 				}
 				if(Molpy.Got('TDE'))
@@ -1395,7 +1395,7 @@ Molpy.Up=function()
 					Molpy.CastleToolsOwned--;
 					_gaq&&_gaq.push(['_trackEvent','Sell Tool',this.name,'1']);
 					Molpy.UnlockBoost('No Sell');
-					Molpy.CheckBuyUnlocks();
+					Molpy.CheckBuyUnlocks(1);
 				}
 			}
 			this.destroyTemp=function()
