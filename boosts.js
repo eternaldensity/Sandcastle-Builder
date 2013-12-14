@@ -1139,8 +1139,6 @@
 			}
 			if(!Molpy.Boosts['No Sell'].power&&me.power>1)
 			{
-				
-				
 				if(me.power>200)
 				{
 					str+='<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeSandRefinery(1)">\
@@ -1176,7 +1174,7 @@
 			_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade','Sand Refinery']);	
 		}		
 	}
-	Molpy.DowngradeSandRefinery=function()
+	Molpy.DowngradeSandRefinery=function(choose)
 	{
 		var sr = Molpy.Boosts['Sand Refinery'];
 		var n = 1;
@@ -4454,7 +4452,7 @@
 	new Molpy.Boost({name:'Wisdom of the Ages',alias:'WotA',
 		Level:[function()
 		{
-			return this.bought*Math.ceil(0.2*Math.abs(Molpy.newpixNumber)-this.power);
+			return this.bought*Math.maximum(-9,Math.ceil(0.2*Math.abs(Molpy.newpixNumber)-this.power));
 		},
 		function(){}],
 		desc:function(me)
