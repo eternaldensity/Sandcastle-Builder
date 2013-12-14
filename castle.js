@@ -3111,8 +3111,18 @@ Molpy.Up=function()
 		{
 			Molpy.Notify('You have not saved in over a NewPix!!',1);
 		}
-		if(Molpy.Got('Caged Logicat')&&!Molpy.Got('Temporal Rift')&&Molpy.Boosts['Caged Logicat'].bought<11)
-			Molpy.Boosts['Caged Logicat'].bought=11;
+		if(Molpy.Got('Caged Logicat')&&!Molpy.Got('Temporal Rift'))
+		{
+			var cl = Molpy.Boosts['Caged Logicat'];
+			if(cl.bought<11)
+			{
+				cl.bought=11;
+			}
+			else
+			{
+				if(cl.bought>50)Molpy.UnlockBoost('WotA');
+				cl.bought=Math.min(cl.bought,11+Molpy.Level('WotA'));
+			}
 			
 		if(Molpy.Boosts['LR'].power>500)
 		{

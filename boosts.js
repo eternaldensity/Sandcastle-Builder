@@ -2229,7 +2229,7 @@
 			var ans=Math.ceil((me.bought*5-Math.floor(me.power))/(1+Molpy.Boosts['Panther Rush'].power/2));
 			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>Needs '+ans+' correct answer'+plural(ans)+' to reach Logicat Level '+(me.bought+1);
 		}
-		,sand:'55E',castles:'238E',glass:100,group:'bean',icon:'logicat'
+		,sand:'55E',castles:'238E',glass:100,group:'stuff',icon:'logicat'
 	});
 	new Molpy.Boost({name:'Temporal Duplication',alias:'TDE',desc:
 		function(me)
@@ -4385,6 +4385,19 @@
 			return str;
 		}
 		,icon:'bonemeal',group:'stuff',defStuff:1
+	});
+	new Molpy.Boost({name:'Wisdom of the Ages',alias:'WotA',
+		Level:[function()
+		{
+			return me.bought*Math.ceil(0.2*Math.abs(Molpy.newpixNumber)-me.power);
+		},
+		function(){}],
+		desc:function(me)
+		{
+			return 'Lets you keep more leftover Caged Logicat questions as Time progresses.<br>Currently you can start an ONG with a maximum of '+Molpify(10+me.Level)+' Caged Logicat questions.';
+		},
+		stats:'Protip: Temporal Rifts don\'t afect Caged Logicat questions',
+		unlockFunction:function(me){me.power=Math.abs(Molpy.newpixNumber);}
 	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
