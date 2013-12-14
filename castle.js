@@ -2883,10 +2883,10 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
-		Molpy.blockspmnp = (Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *Molpy.Boosts['Furnace Multitasking'].power)?
-			(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 ):0;
-		Molpy.chipspmnp = (Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power * Molpy.Boosts['Furnace Crossfeed'].power)? 
-			((Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power)/2 ) - Molpy.blockspmnp*Molpy.ChipsPerBlock()):0;
+		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *Molpy.Boosts['Furnace Multitasking'].power
+			*(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 )||0;
+		Molpy.chipspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power * Molpy.Boosts['Furnace Crossfeed'].power 
+			*(Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power)/2 ) - Molpy.blockspmnp*Molpy.ChipsPerBlock()||0;
 		
 		if(Molpy.Got('Sand to Glass'))
 			Molpy.DigGlass(Molpy.glassPermNP);

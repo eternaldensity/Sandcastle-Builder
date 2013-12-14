@@ -24,7 +24,7 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.252
+## 3.26
 - Moved logicat levels to the new system so spending/gaining them is simpler code-wise
 - Waveney's latest bunch of discoveries
 - Constructing from Blackprints capped at 400 FA runs until you have Automata Engineers
