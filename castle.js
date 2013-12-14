@@ -1816,7 +1816,7 @@ Molpy.Up=function()
 			}
 			this.GetDesc=function()
 			{
-				return EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this);
+				return EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:format(this.desc),this);
 			}
 			this.GetFullClass=function()
 			{

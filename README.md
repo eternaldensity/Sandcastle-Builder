@@ -29,6 +29,7 @@ For personal amusement only.
 - Waveney's latest bunch of discoveries
 - Constructing from Blackprints capped at 400 FA runs until you have Automata Engineers
 - Figured out and fixed Temporal Duplication: removed the 'fix temp boosts stuck at 0' code :P
+- I'd forgotten that Temp Boosts mean that html can get typos it it. So now any string with a < in it won't get typo'd (fixes weirdness like stuck strikethroughs in log)
 
 ## 3.251
 - Fixed Monty Haul Problem's Goat[s] usage

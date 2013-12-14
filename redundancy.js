@@ -257,6 +257,7 @@ var typocount=0;
 function format(gainned,level)
 {
 	if(Molpy.options.typo)return gainned;
+	if(gainned.indexOf('<')>-1)return gainned; //don't mess with no html!
 	var squirpy=eternalf[gainned];
 	if(squirpy)return squirpy;
 	if(Math.abs(Molpy.newpixNumber)<typocount) return gainned;
