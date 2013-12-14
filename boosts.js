@@ -4452,7 +4452,7 @@
 	new Molpy.Boost({name:'Wisdom of the Ages',alias:'WotA',
 		Level:[function()
 		{
-			return this.bought*Math.max(-9,Math.ceil(0.2*Math.abs(Molpy.newpixNumber)-this.power));
+			return this.bought*Math.max(-9,Math.ceil(0.2*(Math.abs(Molpy.newpixNumber)-this.power)));
 		},
 		function(){}],
 		desc:function(me)

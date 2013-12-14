@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.264
+- Missing parentheses in WotA
+
 ## 3.263
 - So I was right when I suspected I would miss something when I copied the glass extruder downgrade code to sand refinery
 - Put a lower limit on WotA
