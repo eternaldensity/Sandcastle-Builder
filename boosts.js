@@ -2748,7 +2748,12 @@
 	}
 	Molpy.DoBlackprintConstruction=function(times)
 	{
-		var c = Molpy.blackprintCosts[Molpy.GetBlackprintSubject()];
+		var s = Molpy.GetBlackprintSubject();
+		if(!s)
+		{
+			return times; //condition for subject no longer met!
+		}
+		var c = Molpy.blackprintCosts[s];
 		if(c>Molpy.Level('Blackprints'))
 		{//we used up some blackprints somehow!
 			return times; //do nothing
@@ -2776,7 +2781,9 @@
 			}
 			var c = Molpy.blackprintCosts[subj.alias];
 			if(!Molpy.Got('AE'))c=Math.min(c,40);
-			return 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(c*10-me.power)+' runs of Factory Automation required to complete.';
+			str = 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(c*10-me.power)+' runs of Factory Automation required to complete.';
+			if(subj.alias=='BoH')str+='<br>To construct Bag of Holding you must retain at least 400 goats, otherwise construction will stall.';
+			return str;
 		},
 		unlockFunction:function()
 		{

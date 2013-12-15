@@ -30,6 +30,8 @@ For personal amusement only.
 - Prevent Magic Mirror from letting you jump to where you are
 - Blackprints' Has check was failing if there was no next blackprint subject
 - Fixed a toolfactory mustard issue.
+- Warn about the 400 goat requirement for BoH
+- When constructing from blackprints, do nothing if the subject is missing (so if you sell your goats while making BoH it'll just stall rather than continue and fail)
 
 ## 3.264
 - Missing parentheses in WotA
