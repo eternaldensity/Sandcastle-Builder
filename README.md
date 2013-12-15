@@ -29,6 +29,7 @@ For personal amusement only.
 ## 3.265
 - Prevent Magic Mirror from letting you jump to where you are
 - Blackprints' Has check was failing if there was no next blackprint subject
+- Fixed a toolfactory mustard issue.
 
 ## 3.264
 - Missing parentheses in WotA

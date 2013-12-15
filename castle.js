@@ -452,18 +452,13 @@ Molpy.Up=function()
 		Molpy.DigGlass=function(amount)
 		{
 			Molpy.totalGlassBuilt+=amount;
-			Molpy.Boosts['Tool Factory'].power+=amount;
+			Molpy.Add('Tool Factory',amount);
 		}
 		Molpy.DestroyGlass=function(amount)
 		{
 			var tf=Molpy.Boosts['Tool Factory'];
-			amount=Math.min(tf.power,amount);
-			tf.power-=amount;
-			if(isNaN(tf.power))
-			{
-				Molpy.EarnBadge('Mustard Factory');
-				tf.power=0;
-			}
+			amount=Math.min(tf.Level,amount);
+			tf.Destroy(amount);
 			Molpy.totalGlassDestroyed+=amount;
 		}
 			
@@ -601,6 +596,10 @@ Molpy.Up=function()
 							{
 								maxGlass -= backoff;
 								backoff *= 2;
+							}
+							if(!isFinite(maxGlass))
+							{
+								Molpy.EarnBadge('Mustard Factory');
 							}
 							Molpy.Add('GlassBlocks',maxGlass);
 							Molpy.Spend('Tool Factory',maxGlass*rate);
@@ -1609,7 +1608,7 @@ Molpy.Up=function()
 			},
 			function(amount)
 			{
-				this.power=Math.max(0,amount);
+				this.power=Math.max(0,amount)||0;
 				this.Refresh();
 			}],
 			RoundPosPowerLevel:[function()
