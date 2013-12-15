@@ -2612,7 +2612,8 @@
 			if(pages<1)return 0;
 			if(this.bought)
 			{
-				pages-=Molpy.blackprintCosts[Molpy.GetBlackprintSubject()];
+				var s = Molpy.GetBlackprintSubject();
+				if(s) pages-=Molpy.blackprintCosts[s];
 			}
 			return(pages>=n);
 		},
@@ -2648,8 +2649,7 @@
 		Spend:Molpy.BoostFuncs.Spend,
 		Destroy:Molpy.BoostFuncs.Destroy,
 		desc:function(me)
-		{
-		
+		{		
 			var pBoost=Molpy.Boosts[Molpy.GetBlackprintSubject(1)];
 			return 'Allows you to construct '+(pBoost?pBoost.name:'new Boosts')+' with Factory Automation.<br>You have '+Molpy.BlackprintReport();
 		},
@@ -2664,7 +2664,7 @@
 		{
 			var s=Molpy.GetBlackprintSubject(1);
 			if(!s)return;
-			this.power-=Molpy.GetBlackprintPages();
+			this.Spend(Molpy.blackprintCosts[s]);
 			Molpy.UnlockBoost(s);
 			Molpy.Boosts[s].buy();
 			if(Molpy.Boosts[s].bought)
