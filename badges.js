@@ -389,7 +389,7 @@
 						{
 							str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',1)" value="Jump!"></input> (Uses '+Molpify(Molpy.CalcJumpEnergy(me.np),2)+' Glass Chips)'
 						}
-						if (Molpy.Got('Magic Mirror'))
+						if (Molpy.Got('Magic Mirror')&&Molpy.newpixNumber!=-me.np)
 						{
 							str+='<br>'+Molpy.WrapFlipHoriz('<input type="Button" onclick="Molpy.TTT('+ (-me.np)+',1)" value="Jump!"></input> to the other side (Uses '+Molpify(Molpy.CalcJumpEnergy(-me.np),2)+' Glass Chips)')
 						}

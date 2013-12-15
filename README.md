@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.27
+- Prevent Magic Mirror from letting you jump to where you are
+
 ## 3.264
 - Missing parentheses in WotA
 
