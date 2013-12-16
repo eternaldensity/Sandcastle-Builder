@@ -393,6 +393,10 @@ Molpy.Up=function()
 		{
 			var furnaceLevel=(Molpy.Boosts['Sand Refinery'].power)+1;
 			if (times) furnaceLevel*=times;
+			if(Molpy.Got('Glass Goat')&&Molpy.Has('Goats',1))
+			{
+				furnaceLevel*=Molpy.Level('Goats');
+			}
 			Molpy.Add('GlassChips',furnaceLevel,1);
 		}
 		Molpy.MakeBlocks=function(times)
@@ -419,6 +423,10 @@ Molpy.Up=function()
 				chillerLevel=chipsFor;
 			}
 			Molpy.Spend('GlassChips',chipsFor*rate);
+			if(Molpy.Got('Glass Goat')&&Molpy.Has('Goats',1))
+			{
+				chillerLevel*=Molpy.Level('Goats');
+			}
 			Molpy.Add('GlassBlocks',chillerLevel,1);
 		}
 		
@@ -497,6 +505,10 @@ Molpy.Up=function()
 			if(Molpy.Got('Bag Puns'))
 			{
 				baserate+= baserate*(4/10)*Math.max(-2,Math.floor((Molpy.SandTools['Bag'].amount-25)/5));
+			}
+			if(Molpy.Got('Bone Clicker')&&Molpy.Has('Bonemeal',1))
+			{
+				baserate*=Molpy.Level('Bonemeal');
 			}
 			return baserate;
 		}
@@ -1064,6 +1076,10 @@ Molpy.Up=function()
 				if(Molpy.Got('GM'))
 				{
 					Molpy.chipsPerClick+=Molpy.glassPermNP/20;
+				}
+				if(Molpy.Got('Bone Clicker')&&Molpy.Has('Bonemeal',1))
+				{
+					Molpy.chipsPerClick*=Molpy.Level('Bonemeal');
 				}
 			}else
 			{

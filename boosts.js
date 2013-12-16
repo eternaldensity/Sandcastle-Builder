@@ -4475,7 +4475,8 @@
 	});
 	
 	
-	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal',glass:Infinity,sand:Infinity,castles:Infinity,className:'alert'});	
+	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal',
+		glass:Infinity,sand:Infinity,castles:Infinity,className:'alert',downFunction:Molpy.AwardDown});	
 	new Molpy.Boost({name:'Bonemeal',desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' bonemeal.';
@@ -4568,6 +4569,31 @@
 		}
 		,icon:'hatchlings',group:'drac',defStuff:1
 	});
+	
+	Molpy.downBoosts=['Glass Goat','Bone Clicker','Double Department','Spare Tools','Doubletap','Single Double','Sandblast','Short Saw'];
+	Molpy.AwardDown=function()
+	{
+		var availRewards =[];
+		for(var i in Molpy.downboosts)
+		{
+			var d = Molpy.Boosts[Molpy.downBoosts[i]];
+			if(!d.unlocked)availRewards.push(d);
+		}
+		Molpy.UnlockBoost(GLRschoice[availRewards].alias);
+	}
+	
+	new Molpy.Boost({name:'Glass Goat',desc:'Glass produced by Glass Furnace/Blower is multiplied by the number of Goats you have, if any.',
+		sand:'5M',castles:'20K',downFunction:Molpy.AwardDown});
+	new Molpy.Boost({name:'Bone Clicker',desc:'Sand and Glass Chips from clicking are multliplied by the amount of Bonemeal you have, if any.',
+		sand:'5K',castles:12,downFunction:Molpy.AwardDown});
+	new Molpy.Boost({name:'Double Department',desc:Molpy.redactedWords+' activate the DoRD twice when they would activate it once.',
+		sand:'70M',castles:'50K',downFunction:Molpy.AwardDown});
+	new Molpy.Boost({name:'Spare Tools',desc:'Every dig-click gives you a free random tool',stats:'Free tools are temporal duplicates',
+		sand:'2G',castles:'7M',downFunction:Molpy.AwardDown});
+	new Molpy.Boost({name:'Doubletap',desc:'Every dig-click counts twice.',sand:'1K',castles:6,downFunction:Molpy.AwardDown});
+	new Molpy.Boost({name:'Single Double',desc:'Double your castles.<br>(Single use only)',sand:'80K',castles:500,downFunction:Molpy.AwardDown});
+	new Molpy.Boost({name:'Sandblast',desc:'Recieve 1000 sand per Badge you own.<br>(Single use only)',sand:100,castles:2,downFunction:Molpy.AwardDown});
+	new Molpy.Boost({name:'Short Saw',desc:'VITSSÅGEN, JA! occurs 5 times as often',sand:'5T',castles:'40G',downFunction:Molpy.AwardDown});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={

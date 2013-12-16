@@ -1120,7 +1120,7 @@
 			{
 				var me = Molpy.Boosts[i];
 				if(boh&&me.group=='stuff')continue;
-				if(!coma&&me.downFunction)downFunctions.push(me.downFunction);
+				if(!coma&&me.bought&&me.downFunction)downFunctions.push(me.downFunction);
 				me.unlocked=0;
 				me.bought=0;	
 				me.power=0;
