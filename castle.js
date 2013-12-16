@@ -517,7 +517,7 @@ Molpy.Up=function()
 		Molpy.globalGpmNPMult=1;
 		Molpy.lastClick=0;
 		Molpy.chipsPerClick=0;
-		Molpy.ClickBeach=function(event, leopard)
+		Molpy.ClickBeach=function(event, leopard, recursion)
 		{
 			if(!Molpy.layoutLocked&&!leopard)
 			{
@@ -581,7 +581,8 @@ Molpy.Up=function()
 				}
 			}else if(Molpy.Got('VJ'))
 			{
-				if(Molpy.beachClicks%100==0)
+				var sawmod=Molpy.Got('Short Saw')?20:100;
+				if(Molpy.beachClicks%sawmod==0)
 				{
 					Molpy.Notify(Molpy.Boosts['VJ'].name);
 					Molpy.Build(Molpy.CalcVJReward(1));
@@ -645,6 +646,12 @@ Molpy.Up=function()
 					Molpy.Boosts['Bag Puns'].Refresh();
 				}
 			}
+			
+			if(Molpy.Got('Spare Tools'))
+			{
+				GLRschoice(Molpy.tfOrder).create(1).Refresh();
+			}
+			
 			Molpy.ninjad=1;
 			
 			if(Molpy.oldBeachClass!='beachongwarning')
@@ -656,6 +663,8 @@ Molpy.Up=function()
 				Molpy.Notify('You accidentally slip through the temporal rift!,1');
 				Molpy.RiftJump();
 			}
+			
+			if(!recursion&&Molpy.Got('Doubletap')) Molpy.ClickBeach(event, leopard,1);
 		}
 		g('beach').onclick=Molpy.ClickBeach;	
 		
@@ -1203,6 +1212,7 @@ Molpy.Up=function()
 					this.temp+=dups;
 					Molpy.SandToolsOwned+=dups;				
 				}
+				return this;
 			}
 			this.sell=function()
 			{
@@ -1403,7 +1413,8 @@ Molpy.Up=function()
 					this.amount+=dups;
 					this.temp+=dups;
 					Molpy.CastleToolsOwned+=dups;					
-				}			
+				}
+				return this;
 			}
 			this.sell=function()
 			{				
@@ -2284,6 +2295,10 @@ Molpy.Up=function()
 			if( Molpy.redactedDrawType.length<16)
 			{
 				Molpy.RewardRedacted();
+				if(Molpy.Got('Double Department'))
+				{
+					Molpy.RewardRedacted();
+				}
 				Molpy.GlassNotifyFlush();
 			}
 			if(Molpy.redactedClicks>=2)

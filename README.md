@@ -33,6 +33,7 @@ For personal amusement only.
 - Added mustard
 - Boosts that raise a tool's outputs based on the number you have of another tool are now capped at 8000 tools. Except Bacon.
 - Added a few dragon things. And something mysterious.
+- Added a few new boosts that are kinda tricky to get because they involve Molpy Down and Bag of Holding...
 
 ## 3.265
 - Prevent Magic Mirror from letting you jump to where you are
