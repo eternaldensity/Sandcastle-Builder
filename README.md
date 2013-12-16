@@ -26,11 +26,14 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.2711
+- Fixed Glass Saw
+
 ## 3.271
 - Missed Nest condition
 - Previous nerfing wasn't quite enough
 - Making glass blocks now destroys the chips which subtracts from the amount of chips gained so it reports gains accurately
-- Production Control is now set to its maximum if have Nope! once you buy it after Moplpy Down
+- Production Control is now set to its maximum if have Nope! once you buy it after Molpy Down
 
 ## 3.27
 - Infinite Saw rename fix
