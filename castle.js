@@ -422,7 +422,7 @@ Molpy.Up=function()
 				Molpy.Notify('Running low on Glass Chips!');
 				chillerLevel=chipsFor;
 			}
-			Molpy.Spend('GlassChips',chipsFor*rate);
+			Molpy.Destroy('GlassChips',chipsFor*rate);
 			if(Molpy.Got('Glass Goat')&&Molpy.Has('Goats',1))
 			{
 				chillerLevel*=Molpy.Level('Goats');

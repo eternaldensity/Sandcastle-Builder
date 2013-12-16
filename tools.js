@@ -7,7 +7,7 @@
 			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Huge Buckets'))mult*=2;
-			if(Molpy.Got('Trebuchet Pong'))mult*=Math.pow(1.5,Math.min(Math.floor(Molpy.CastleTools['Trebuchet'].amount/2,8000)));
+			if(Molpy.Got('Trebuchet Pong'))mult*=Math.pow(1.5,Math.min(Math.floor(Molpy.CastleTools['Trebuchet'].amount/2,2000)));
 			if(Molpy.Got('Carrybot'))mult*=4;
 			if(Molpy.Got('Buccaneer'))mult*=2;
 			if(Molpy.Got('Flying Buckets'))mult*=Molpy.CastleTools['Trebuchet'].amount;
@@ -63,7 +63,7 @@
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Magic Mountain'))mult*=2.5;
 			if(Molpy.Got('Standardbot'))mult*=4;
-			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Math.min(Molpy.CastleTools['Scaffold'].amount,8000));
+			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Math.min(Molpy.CastleTools['Scaffold'].amount,2000));
 			if(Molpy.Got('SBTF'))
 			{
 				var waves=Molpy.CastleTools['Wave'].amount;
@@ -139,7 +139,7 @@
 				mult*=Math.pow(1.02,Math.min(Molpy.SandTools['Cuegan'].amount-14,8000));
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Sandbag'))
-				mult*=Math.pow(1.05,Math.min(Molpy.CastleTools['River'].amount,8000));
+				mult*=Math.pow(1.05,Math.min(Molpy.CastleTools['River'].amount,2000));
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Luggagebot'))mult*=4;
 			if(Molpy.Got('Bag Puns'))mult*=2;

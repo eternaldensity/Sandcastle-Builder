@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.271
+- Missed Nest condition
+- Previous nerfing wasn't quite enough
+- Making glass blocks now destroys the chips which subtracts from the amount of chips gained so it reports gains accurately
+
 ## 3.27
 - Infinite Saw rename fix
 - New mustard badge

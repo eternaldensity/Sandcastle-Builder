@@ -1206,6 +1206,12 @@
 		Level:Molpy.BoostFuncs.RoundPosPowerLevel,
 		Has:Molpy.BoostFuncs.Has,
 		Spend:Molpy.BoostFuncs.Spend,
+		Destroy:function(amount)
+		{
+			this.Level-=amount;
+			Molpy.chipAddAmount-=amount;
+			return 1;
+		},
 		refreshFunction:Molpy.RefreshGlass,
 		Add:function(amount,expand)
 		{
@@ -2711,6 +2717,7 @@
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return 0;
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
 				if(print=='BoH'&&!Molpy.Has('Goats',400)) continue;
+				if(print=='Nest'&&!Molpy.Got('DNS')) continue;
 				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
 			}
 		}
@@ -2728,6 +2735,7 @@
 				if(print=='TFLL'&&!Molpy.Got('Tool Factory')) return;
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
 				if(print=='BoH'&&!Molpy.Has('Goats',400)) continue;
+				if(print=='Nest'&&!Molpy.Got('DNS')) continue;
 				if(Molpy.Level('Blackprints')>=Molpy.blackprintCosts[print])
 					return print;
 				return;
