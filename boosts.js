@@ -208,10 +208,10 @@
 	Molpy.GetYourGoat=function()
 	{
 		Molpy.Add('Goats',1);
-		_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',g.name]);	
-		if(g.power>=2)Molpy.EarnBadge('Second Edition');
-		if(g.power>=20)Molpy.UnlockBoost('HoM');
-		if(g.power>=200)Molpy.UnlockBoost('Beret Guy');
+		_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade','Goats']);	
+		if(Molpy.Has('Goats',2))Molpy.EarnBadge('Second Edition');
+		if(Molpy.Has('Goats',20))Molpy.UnlockBoost('HoM');
+		if(Molpy.Has('Goats',200))Molpy.UnlockBoost('Beret Guy');
 		Molpy.Notify('You got a goat!');
 	}
 	
@@ -240,7 +240,7 @@
 			}
 		},lockFunction:function(){
 			var pp = Molpy.Boosts['Price Protection'];
-			if(pp.power)pp.power=pp.bought+1;
+			if(pp.IsEnabled)pp.power=pp.bought+1;
 			else Molpy.UnlockBoost(pp.alias);
 		}
 		,startPower:function()
@@ -267,9 +267,9 @@
 	new Molpy.Boost({name:'Coma Molpy Style',desc: 
 		function(me)
 		{ 
-			return (me.power? '':'When active, ') + 'the ONG clock is frozen.<br>(Castle Tools do not activate and ninjas stay stealthed) <br><input type="Button" onclick="Molpy.ComaMolpyStyleToggle()" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+			return (me.IsEnabled? '':'When active, ') + 'the ONG clock is frozen.<br>(Castle Tools do not activate and ninjas stay stealthed.)<br><input type="Button" onclick="Molpy.ComaMolpyStyleToggle()" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';
 		}
-		,sand:8500,castles:200,icon:'comamolpystyle',className:'toggle'});
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:8500,castles:200,icon:'comamolpystyle',className:'toggle'});
 	
 	Molpy.cmsline=0;
 	Molpy.ComaMolpyStyleToggle=function()
@@ -540,7 +540,7 @@
 	new Molpy.Boost({name:'Chromatic Heresy',desc:
 		function(me)
 		{
-			return 'Saturation is '+(me.power>0?'':'not ')+'allowed.<br><input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
+			return 'Saturation is '+(me.IsEnabled?'':'not ')+'allowed.<br><input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
 		},stats:'"huehuehuehuehuehuehue"',sand:200,castles:10,icon:'chromatic',className:'toggle'});
 	Molpy.ChromaticHeresyToggle=function()
 	{
@@ -582,11 +582,11 @@
 	new Molpy.Boost({name:'NewPixBot Navigation Code',alias:'NavCode',desc: 
 		function(me)
 		{
-			return 'thisAlgorithm. BecomingSkynetCost = 999999999 <input type="Button" onclick="Molpy.NavigationCodeToggle()" value="' +
-				(me.power?'Uni':'I')+'nstall"></input>';
+			return 'thisAlgorithm. BecomingSkynetCost = 999999999<br><input type="Button" onclick="Molpy.NavigationCodeToggle()" value="' +
+				(me.IsEnabled?'Uni':'I')+'nstall"></input>';
 		},sand:999999999,castles:2101,
 		stats:'When installed, this averts Judgement Dip at the cost of 99.9% of NewPixBot Castle Production.',
-		icon:'navcode',className:'toggle',group:'cyb',
+		icon:'navcode',className:'toggle',group:'cyb',IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
 		classChange:function(){return Molpy.CheckJudgeClass(this,1,'toggle',this.power);}
 	});	
 		
@@ -619,7 +619,7 @@
 			npb.amount-=npb.temp;
 			Molpy.CastleToolsOwned-=npb.temp;
 			npb.Refresh();
-			Molpy.Notify(npb.temp + ' Temporal Duplicates Destroyed!');
+			Molpy.Notify(Molpify(npb.temp,1) + ' Temporal Duplicates Destroyed!');
 			npb.temp=0;
 		}
 		Molpy.scrumptiousDonuts=-1;
@@ -715,8 +715,8 @@
 	new Molpy.Boost({name:'No Sell',desc:
 		function(me)
 		{
-			return '<input type="Button" onclick="Molpy.NoSellToggle()" value="'+(me.power? 'Show':'Hide')+'"></input> the Sell links on tools.<br>Also affects the Downgrade/Decrease buttons on some Glass-related boosts';
-		},sand:3333,castles:55,icon:'nosell',className:'toggle'});
+			return '<input type="Button" onclick="Molpy.NoSellToggle()" value="'+(me.IsEnabled? 'Show':'Hide')+'"></input> the Sell links on tools.<br>Also affects the Downgrade/Decrease buttons on some Glass-related boosts';
+		},IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:3333,castles:55,icon:'nosell',className:'toggle'});
 	
 	Molpy.NoSellToggle=function()
 	{
@@ -941,30 +941,30 @@
 			if(!me.bought) return 'Turns Sand into Glass';
 			var pow=Molpy.Boosts['Sand Refinery'].power+1;
 			var cost=Molpify(Molpy.GlassFurnaceSandUse(1),2);
-			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dig rate to produce '+Molpify(pow,3)+' Glass Chip'+plural(pow)+' per NP.<br>';
+			var str= (me.IsEnabled?'U':'When active, u')+'ses '+cost+'% of Sand dig rate to produce '+Molpify(pow,3)+' Glass Chip'+plural(pow)+' per NP.<br>';
 			
 			if(Molpy.Got('Glass Furnace Switching'))
 			{
-			 str+='Currently '+(me.power?'Dea':'A')+'ctivating.';
+			 str+='Currently '+(me.IsEnabled?'Dea':'A')+'ctivating.';
 			}else{
-				str+='<br><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.power+')"></input>';
+				str+='<br><input type="Button" value="'+(me.IsEnabled?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassFurnace('+me.IsEnabled+')"></input>';
 			}			
 			return str;
 		}
-		,sand:'80M',castles:'0.5M',icon:'glassfurnace',className:'toggle',group:'hpt'});
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:'80M',castles:'0.5M',icon:'glassfurnace',className:'toggle',group:'hpt'});
 	new Molpy.Boost({name:'Glass Furnace Switching',
 		desc:function(me)
 		{
-			return (me.power?'off':'on')+' in '+Molpify(me.countdown,3)+'mNP';
+			return (me.IsEnabled?'off':'on')+' in '+Molpify(me.countdown,3)+'mNP';
 		}
 		,startCountdown:1500//dummy value
 		,lockFunction:
 		function()
 		{
-			Molpy.Boosts['Glass Furnace'].power = (!this.power)*1;
-			Molpy.Notify('Glass Furnace is '+(this.power?'off':'on'));
+			Molpy.Boosts['Glass Furnace'].IsEnabled = (!this.IsEnabled)*1;
+			Molpy.Notify('Glass Furnace is '+(this.IsEnabled?'off':'on'));
 		}
-		,className:'alert',group:'hpt'
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,className:'alert',group:'hpt'
 	});
 	Molpy.SwitchGlassFurnace=function(off)
 	{
@@ -979,7 +979,7 @@
 			return;
 		}
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',this.name]);	
-		this.power=off;
+		this.IsEnabled=off;
 		Molpy.GiveTempBoost('Glass Furnace Switching',off,1500);
 	}
 	//check whether we can further reduce the sand rate to use any for various means
@@ -1344,32 +1344,31 @@
 			if(!me.bought) return 'Makes Glass Blocks from Glass Chips';
 			var pow=Molpy.Boosts['Glass Chiller'].power+1;
 			var cost=Molpify(Molpy.GlassBlowerSandUse(1),2);
-			var str= (me.power?'U':'When active, u')+'ses '+cost+'% of Sand dig rate to produce '+Molpify(pow,3)+' Glass Block'+plural(pow)
+			var str= (me.IsEnabled?'U':'When active, u')+'ses '+cost+'% of Sand dig rate to produce '+Molpify(pow,3)+' Glass Block'+plural(pow)
 				+' from '+Molpy.ChipsPerBlock()+' Glass Chips (each) per NP.<br>';			
 			
 			if(Molpy.Got('Glass Blower Switching'))
 			{
-			 str+='Currently '+(me.power?'Dea':'A')+'ctivating.';
+			 str+='Currently '+(me.IsEnabled?'Dea':'A')+'ctivating.';
 			}else{
-				str+='<br><input type="Button" value="'+(me.power?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassBlower('+me.power+')"></input>';
+				str+='<br><input type="Button" value="'+(me.IsEnabled?'Dea':'A')+'ctivate" onclick="Molpy.SwitchGlassBlower('+me.IsEnabled+')"></input>';
 			}			
 			return str;			
 			
 		}
-		,icon:'glassblower',className:'toggle',group:'hpt'});
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,icon:'glassblower',className:'toggle',group:'hpt'});
 	new Molpy.Boost({name:'Glass Blower Switching',
 		desc:function(me)
 		{
-			return (me.power?'off':'on')+' in '+Molpify(me.countdown,3)+'mNP';
+			return (me.IsEnabled?'off':'on')+' in '+Molpify(me.countdown,3)+'mNP';
 		},lockFunction:
 		function()
 		{
 			Molpy.Boosts['Glass Blower'].power = (!this.power)*1;
-			Molpy.Notify('Glass Blower is '+(this.power?'off':'on'));
+			Molpy.Notify('Glass Blower is '+(this.IsEnabled?'off':'on'));
 		}
 		,startCountdown:2500//dummy value
-		,startCountdown:2000//dummy value
-		,className:'alert',group:'hpt'
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,className:'alert',group:'hpt'
 	});
 	Molpy.SwitchGlassBlower=function(off)
 	{
@@ -1547,18 +1546,18 @@
 			{
 				if(me.Has(80))
 				{
-					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Chiller\',0,80)"></input> 80 Blocks to build a Glass Chiller to make Blocks faster.';
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Chiller\',0,80)"></input> 80 Blocks to build a Glass Chiller to make Blocks faster.';
 				}else{
-					str+=' It costs 80 Glass Blocks to build a Glass Chiller, which can make Blocks faster.';
+					str+='<br>It costs 80 Glass Blocks to build a Glass Chiller, which can make Blocks faster.';
 				}
 			}
 			if(me.Has(41)&&!Molpy.Got('Sand Purifier'))
 			{
 				if(me.Has(95))
 				{
-					str+= ' <input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Sand Purifier\',0,95)"></input> 95 Blocks';
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Sand Purifier\',0,95)"></input> 95 Blocks';
 				}else{
-					str+=' It costs 95 Glass Blocks';
+					str+='<br>It costs 95 Glass Blocks';
 				}
 				str+=' to build a Sand Purifier, which makes the Glass Furnace use less sand.';
 			}
@@ -1728,11 +1727,11 @@
 		{
 			var str= 'Ninja Builder builds 100x as many Castles, at the cost of 1 Glass Block per NP.';
 			if(me.bought){
-				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+				str+='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';
 			}
 			return str;
 		}
-		,sand:'16M',castles:122500,icon:'glassjaw',group:'ninj',className:'toggle'});
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:'16M',castles:122500,icon:'glassjaw',group:'ninj',className:'toggle'});
 		
 	new Molpy.Boost({name:'Ninja League',desc:'Ninja Stealth is raised by 100x as much'
 		,sand:'5T',castles:'0.6T',icon:'ninjaleague',group:'ninj'});
@@ -1907,12 +1906,12 @@
 			var str='"It\'s some kind of paste."<br>Not Lucky gets a cumulative 1% bonus from each item owned, at a cost of 10 Glass Blocks per use.<br>Also unlocks some additional boosts with use.'
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'
-					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
+				str+='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'
+					+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce '+Molpify(1000)+' Glass Chips';
 			return str;
-		},buyFunction:function(){this.power=1;},
+		},IsEnabled:Molpy.BoostFuncs.PosPowEnabled,buyFunction:function(){this.IsEnabled=1;},
 	stats:function(me)
 	{
 		var str ='Not Lucky\'s reward is 1% higher for every Tool, Boost, and Badge owned. Consumes 10 Glass Blocks per use.';
@@ -1956,9 +1955,9 @@
 		desc:function(me)
 		{
 			if(!me.bought) return 'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.';
-			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
-		},sand:'6.5G',castles:'.8G',icon:'furnacecrossfeed',group:'hpt',className:'toggle',
-		buyFunction:function(){this.power=1;}
+			return (me.IsEnabled?'':'When activated, ')+'Blast Furnace acts as a Glass Furnace instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';
+		},IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:'6.5G',castles:'.8G',icon:'furnacecrossfeed',group:'hpt',className:'toggle',
+		buyFunction:function(){this.IsEnabled=1;}
 	});
 	
 	new Molpy.Boost({name:'Redundant Redundance Supply of Redundancy',alias:'RRSR',
@@ -1976,7 +1975,7 @@
 		{
 			if(!me.bought||flandom(10)==0) return Molpy.redundancy.longsentence;
 			var sent = Molpy.redundancy.sentence();
-			if(!Molpy.Boosts['Expando'].power)
+			if(!Molpy.Boosts['Expando'].IsEnabled)
 				Molpy.Notify(sent,1);
 			return sent;
 		}
@@ -1986,10 +1985,10 @@
 	desc:function(me)
 		{
 			if(!me.bought) return 'Blast Furnace acts as a Glass Blower instead of its previous purpose, only if Glass Blower is active. (This stacks with Furnace Crossfeed)';
-			return (me.power?'':'When activated, ')+'Blast Furnace acts as a Glass Blower instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
-				+(me.power? 'Dea':'A')+'ctivate"></input> (This stacks with Furnace Crossfeed)';
-		},sand:'48G',castles:'1.2G',icon:'furnacemultitask',group:'hpt',className:'toggle',
-		buyFunction:function(){this.power=1;}
+			return (me.IsEnabled?'':'When activated, ')+'Blast Furnace acts as a Glass Blower instead of its previous purpose, only if Glass Furnace is active.<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
+				+(me.IsEnabled? 'Dea':'A')+'ctivate"></input> (This stacks with Furnace Crossfeed)';
+		},IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:'48G',castles:'1.2G',icon:'furnacemultitask',group:'hpt',className:'toggle',
+		buyFunction:function(){this.IsEnabled=1;}
 	});
 	
 	Molpy.redundancy=MakeRedundancy();
@@ -2000,8 +1999,9 @@
 			if(Molpy.Got('Tool Factory'))
 			{
 				var str='';
-				if(!Molpy.Got('Sand to Glass')) str+= 'To unlock Sand to Glass you need 7470 Buckets and an infinite Sand dig rate<br>';
-				if(!Molpy.Got('Castles to Glass')) str+= 'To unlock Castles to Glass you need 1515 NewPixBots and infinite Castles<br>';
+				if(!Molpy.Got('Sand to Glass')) str+= 'To unlock Sand to Glass you need 7470 Buckets and an infinite Sand dig rate.<br>';
+				if(!Molpy.Got('Castles to Glass')) str+= 'To unlock Castles to Glass you need 1515 NewPixBots and infinite Castles.<br>';
+				if(!Molpy.Got('Lucky Twin')) str+= 'Lucky Twin unlock is at '+Molpify(Molpy.Boosts['Lucky Twin'].power)+' out of '+Molpify(13*13)+'.<br>';
 				if(str)return str+'(The "to Glass" boosts unlock when you load the Tool Factory with chips, if you meet the requirements.)';
 			}
 			if(Molpy.Got('AA')&&!Molpy.Got('AC')&&Molpy.CastleTools['NewPixBot'].amount>=7500)
@@ -2210,12 +2210,14 @@
 			var str='Multiplies Not Lucky bonus by '+Molpify(10000)+(inf?'':' at a cost of 30 Glass Blocks per use');
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
-					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
+				str+='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
+					+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce '+Molpify(3000)+' Glass Chips';
 			return str;
-		},buyFunction:function(){this.power=1;},
+		},
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
+		buyFunction:function(){this.IsEnabled=1;},
 		sand:'180E',castles:'380E',glass:2500,group:'bean',className:'toggle',icon:'rrr'
 	});	
 	new Molpy.Boost({name:'Ninja Climber',desc:'Multiplies Ninja Builder\'s Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level'
@@ -2540,12 +2542,14 @@
 			var str='Not Lucky reward gains 1% per two Ladders and Bags owned, at a cost of '+(inf?'1 Ladder and 1 Bag':'70 Glass Blocks (or 1 Ladder and 1 Bag)')+' per use.'
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
-					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
+				str+='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
+					+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce '+Molpify(700)+' Glass Chips';
 			return str;
-		},buyFunction:function(){this.power=1;},
+		},
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
+		buyFunction:function(){this.IsEnabled=1;},
 		stats:'At a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Ladders, then at a cost of 35 Glass Blocks, multiplies Not Lucky by 1.01 for each pair of Bags. If 35 Glass Blocks are not available each time (or if you have infinite Castles), a Ladder/Bag is consumed before multiplying',
 		sand:'750U',castles:'245U',glass:'1200',className:'toggle',group:'bean',icon:'lcb'
 	});
@@ -2557,12 +2561,14 @@
 			var str='Not Lucky reward gains 1% 6 times per Wave and River owned, at a cost of '+(inf?'1 Wave and 1 River':'90 Glass Blocks (or 1 Wave and 1 River)')+' per use.'
 			if(me.bought)
 			{
-				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
-					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
+				str+='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
+					+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce '+Molpify(9000)+' Glass Chips';
 			return str;
-		},buyFunction:function(){this.power=1;},
+		},
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
+		buyFunction:function(){this.IsEnabled=1;},
 		stats:'At a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each Wave, then at a cost of 45 Glass Blocks, multiplies Not Lucky by 1.01 6 times for each River. If 45 Glass Blocks are not available each time (or if you have infinite Castles), a Wave/River is consumed before multiplying.',
 		sand:'750S',castles:'245S',glass:'4800',className:'toggle',group:'bean',icon:'catamaran'
 	});
@@ -2577,11 +2583,13 @@
 			if(me.bought)
 			{
 				str+='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
-					+(me.power>0? 'Dea':'A')+'ctivate"></input>';	
+					+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';	
 			}
 			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce '+Molpify(12000)+' Glass Chips';
 			return str;
-		},buyFunction:function(){this.power=1;},
+		},
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
+		buyFunction:function(){this.IsEnabled=1;},
 		stats:'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each '+Molpy.redactedWord+' click<br>The cost is waived if you have infinite Castles, since this this boost would have no effect in that circumstance',
 		sand:'930PW',castles:'824PW',glass:'4800',className:'toggle',group:'bean',icon:'redundaraptor'
 	});
@@ -3004,6 +3012,7 @@
 			Molpy.Notify('You don\'t need to make this mould');
 			return;
 		}
+		Molpy.Badges['discov'+np].Refresh();
 		var smm=Molpy.Boosts['SMM'];
 		var smf=Molpy.Boosts['SMF'];
 		if(smf.power&&smf.bought==np)
@@ -3049,6 +3058,7 @@
 			if(smm.power>100)
 			{
 				Molpy.Notify('Sand Mould Creation is complete',1);
+				if(Molpy.Boosts['Draft Dragon'].IsEnabled) Molpy.FillSandMould(smm.bought);
 				return times;
 			}
 		}
@@ -3116,6 +3126,7 @@
 			{
 				Molpy.Notify('Sand Mould Filling is complete',1);
 				Molpy.EarnBadge('monums'+smf.bought);
+				if(Molpy.Boosts['Draft Dragon'].IsEnabled&&Molpy.Earned('discov'+ smf.bought)&&!Molpy.Earned('monumg'+ smf.bought)) Molpy.MakeGlassMould(smf.bought);
 				smf.bought=1;
 				smf.power=0;
 				return times;
@@ -3137,6 +3148,7 @@
 			Molpy.Notify('You don\'t need to make this mould');
 			return;
 		}
+		Molpy.Badges['monums'+np].Refresh();
 		var gmm=Molpy.Boosts['GMM'];
 		var gmf=Molpy.Boosts['GMF'];
 		if(gmf.power&&gmf.bought==np)
@@ -3182,7 +3194,8 @@
 			gmm.Refresh();
 			if(gmm.power>400)
 			{
-				Molpy.Notify('Glass Mould Creation is complete',1);
+				Molpy.Notify('Glass Mould Creation is complete',1);				
+				if(Molpy.Boosts['Draft Dragon'].IsEnabled) Molpy.FillGlassMould(gmm.bought);
 				return times;
 			}
 		}
@@ -3250,8 +3263,16 @@
 			{
 				Molpy.Notify('Glass Mould Filling is complete',1);
 				Molpy.EarnBadge('monumg'+gmf.bought);
-				gmf.bought=1;
+				if(Molpy.Got('Magic Mirror')&&Molpy.Boosts['Draft Dragon'].IsEnabled)
+				{				
+					if(Molpy.Earned('discov'+ -gmf.bought))
+					{
+						if(!Molpy.Earned('monums'+ -gmf.bought)) Molpy.MakeSandMould(-gmf.bought);
+						else if(!Molpy.Earned('monumg'+ -gmf.bought)) Molpy.MakeGlassMould(-gmf.bought);
+					}
+				}
 				gmf.power=0;
+				gmf.bought=1;
 				return times;
 			}
 		}
@@ -3263,11 +3284,11 @@
 		{
 			var str= 'Ninja Builder\'s Castle output is multiplied by VITSSÅGEN, JA! and VITSSÅGEN, JA! is multipled by a tenth of Ninja Builder, each at a cost of 50 Glass Blocks';
 			if(me.bought){
-				str+=' <input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>';
+				str+='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';
 			}
 			return str;
 		}
-		,sand:'450EW',castles:'75EW',glass:'1.8K',group:'ninj',className:'toggle',icon:'ninjasaw'
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:'450EW',castles:'75EW',glass:'1.8K',group:'ninj',className:'toggle',icon:'ninjasaw'
 	});	
 	
 	/*10000000*Math.pow(1.25,3090) is relevant because reasons
@@ -3459,7 +3480,7 @@
         if(Molpy.Got('PC')) toolBuildNum=Molpy.Boosts['PC'].power;
         var tfChipBuffer=tf.Level;
 		var acPower = 0;
-        if(Molpy.Boosts['AA'].power)
+        if(Molpy.Boosts['AA'].IsEnabled)
 		{
 			acPower=1;
 			if(Molpy.Got('AC')) acPower=Molpy.Boosts['AC'].power;
@@ -3600,7 +3621,7 @@
 			{
 				  Molpy.DoBlackprintConstruction(left);
 			}
-			if(!Molpy.Boosts['Cold Mould'].power)
+			if(!Molpy.Boosts['Cold Mould'].IsEnabled)
 			{
 				if (left) left=Molpy.FillGlassMouldWork(left);
 				if (left) left=Molpy.MakeGlassMouldWork(left);
@@ -3672,9 +3693,9 @@
 	new Molpy.Boost({name:'Expando',desc: 
 		function(me)
 		{ 
-			return (me.power? '':'When active, ') + 'All Tools, Boosts and Badges are expanded<br>'+(me.power? '<br>':'')+'<input type="Button" onclick="Molpy.ToggleExpando()" value="'+(me.power? 'Deflate':'Expand')+'"></input>';
-		}
-		,sand:800,castles:20,className:'toggle',icon:'expando'
+			return (me.IsEnabled? '':'When active, ') + 'All Tools, Boosts and Badges are expanded<br>'+(me.IsEnabled? '<br>':'')+'<input type="Button" onclick="Molpy.ToggleExpando()" value="'+(me.IsEnabled? 'Deflate':'Expand')+'"></input>';
+		},
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:800,castles:20,className:'toggle',icon:'expando'
 	});
 	
 	new Molpy.Boost({name:'Sand to Glass',desc:'When Sand is Infinite, Sand Tools produce Glass Chips for Tool Factory', sand:Infinity,castles:Infinity,glass:'200K',group:'hpt'});
@@ -3703,8 +3724,8 @@
 			return;
 		}
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);	
-		me.power=1*!me.power;
-		if(!me.power)Molpy.shrinkAll=1;
+		me.IsEnabled=1*!me.IsEnabled;
+		if(!me.IsEnabled)Molpy.shrinkAll=1;
 		me.Refresh();
 	}
 	
@@ -3739,10 +3760,11 @@
 	new Molpy.Boost({name:'Stained Glass Launcher',desc:'Trebuchet Glass flinging is multiplied by the number of Glass Ceilings owned',glass:'15M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Glass Saw',desc:function(me)
 	{		
-		return (me.power>0? '':'When active, ') + 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and doubling with use.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power>0? 'Dea':'A')+'ctivate"></input>':'');
-	}
-	,glass:'7M',sand:Infinity,castles:Infinity,className:'toggle',
-		buyFunction:function(){this.power=1;}
+		return (me.IsEnabled? '':'When active, ') + 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and doubling with use.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+	},
+	IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
+	glass:'7M',sand:Infinity,castles:Infinity,className:'toggle',
+		buyFunction:function(){this.IsEnabled=1;}
 	});
 	
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
@@ -3848,18 +3870,18 @@
 		desc:function(me)
 		{
 			
-			return (me.power? '':'When active, ') + 'Factory constructs Glass Tools that do not have infinite price, instead of Glass Tools that do have infinite price.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+			return (me.IsEnabled? '':'When active, ') + 'Factory constructs Glass Tools that do not have infinite price, instead of Glass Tools that do have infinite price.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
-		,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'
 	});
 	
 	new Molpy.Boost({name:'Automata Assemble',alias:'AA',
 		desc:function(me)
 		{
 			
-			return (me.power? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Blast Furnace run.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'')+'<br>(Supresses notifications about Glass gains so you don\'t get spammed';
+			return (me.IsEnabled? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Blast Furnace run.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'')+'<br>(Supresses notifications about Glass gains so you don\'t get spammed';
 		}
-		,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'
 	});
 	
 	new Molpy.Boost({name:'Glass Mousepy',alias:'GM',desc:'Clicks give 5% of your chips/mNP rate',glass:'10M',sand:Infinity,castles:Infinity, group:'hpt'});
@@ -3977,9 +3999,9 @@
 	new Molpy.Boost({name:'Beachball',desc:function(me)
 	{
 		
-		return (me.power? 'T':'When active, t') + 'he border of the NewPix changes colour.<br>Red = Clicking will Ninja<br>Blue = Click to gain Ninja Stealth<br>Green = All Clear<br>Yellow = less than 2 mNP until ONG'+(me.bought?'<br><input type="Button" onclick="Molpy.UpdateBeachClass(); Molpy.GenericToggle('+me.id+');" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
+		return (me.IsEnabled? 'T':'When active, t') + 'he border of the NewPix changes colour.<br>Red = Clicking will Ninja<br>Blue = Click to gain Ninja Stealth<br>Green = All Clear<br>Yellow = less than 2 mNP until ONG'+(me.bought?'<br><input type="Button" onclick="Molpy.UpdateBeachClass(); Molpy.GenericToggle('+me.id+');" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 	}
-	,sand:'4K',castles:200,className:'toggle'});
+	,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:'4K',castles:200,className:'toggle'});
 	
 	new Molpy.Boost({name:'Mushrooms',desc:'For every 10 badges, Glass Block production uses 1% less sand',	sand:Infinity,castles:Infinity,glass:'60K'});
 	new Molpy.Boost({name:'Knitted Beanies',desc:'Beanie Builder Glass production is multiplied by the number of million Bags owned',glass:'60T',sand:Infinity,castles:Infinity,group:'bean'});
@@ -4105,8 +4127,9 @@
 	Molpy.DragonTarget=function()
 	{
 		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Boosts['Crystal Dragon'].unlocked) return [1000,'Crystal Dragon'];
-		if(Molpy.Boosts['AC'].power>101&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e12,'Dragon Forge'];
-		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e16,'WiseDragon'];
+		if(Molpy.Boosts['AC'].power>101&&!Molpy.Boosts['Draft Dragon'].unlocked&&Molpy.groupBadgeCounts.monumg>40) return [2e12,'Draft Dragon'];
+		if(Molpy.Boosts['AC'].power>300&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e16,'Dragon Forge'];
+		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e20,'WiseDragon'];
 		if(Molpy.Boosts['AC'].power>555&&!Molpy.Boosts['Thunderbird'].unlocked&&Molpy.Got('PSOC')) return [6e36,'Thunderbird'];
 		if(Molpy.Boosts['AC'].power>777&&!Molpy.Boosts['Dragon Foundry'].unlocked&&Molpy.Earned('Nope!')) return [9e54,'Dragon Foundry'];
 		if(Molpy.Boosts['AC'].power>888&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')&&Molpy.Has('Caged Logicat',100)) return [9e96,'ShadwDrgn'];
@@ -4127,21 +4150,21 @@
 		desc:function(me)
 		{
 			
-			return (me.power? '':'When active, ') + 'Prevents all Mould Making and Filling activities.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
-		}
-		,glass:'10K',sand:'75E',castles:'15E', group:'bean',className:'toggle',icon:'coldmould'
+			return (me.IsEnabled? '':'When active, ') + 'Prevents all Mould Making and Filling activities.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		},		
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,glass:'10K',sand:'75E',castles:'15E', group:'bean',className:'toggle',icon:'coldmould'
 	});
 	new Molpy.Boost({name:'Price Protection',
 		desc:function(me)
 		{
 			
-			return (me.power? '':'When active, ') + 'Prevents purchases for '+(me.bought?Molpify(me.bought):4)+'mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br><br><input type="Button" onclick="Molpy.PriceProtectionChange(1)" value="Increase Wait"></input>'+(me.bought>1?'<br><input type="Button" onclick="Molpy.PriceProtectionChange(-1)" value="Decrease Wait"></input>':''):'');
+			return (me.IsEnabled? '':'When active, ') + 'Prevents purchases for '+(me.bought?Molpify(me.bought):4)+'mNP after Affordable Swedish Home Furniture finishes (unless it starts again).'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input><br><br><input type="Button" onclick="Molpy.PriceProtectionChange(1)" value="Increase Wait"></input>'+(me.bought>1?'<br><input type="Button" onclick="Molpy.PriceProtectionChange(-1)" value="Decrease Wait"></input>':''):'');
 		}
 		,buyFunction:function()
 		{
 			me.bought=4;
 		}
-		,sand:'7500',castles:'1500', group:'hpt',className:'toggle',icon:'priceprotection'
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:'7500',castles:'1500', group:'hpt',className:'toggle',icon:'priceprotection'
 	});
 	Molpy.PriceProtectionChange=function(n)
 	{
@@ -4244,12 +4267,14 @@
 	
 	new Molpy.Boost({name:'Stretchable Chip Storage',desc:function(me)
 		{
-		return 'If active during a Blast Furnace run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
-		}, buyFunction:function() {this.power=1}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
+		return 'If active during a Blast Furnace run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input><br>':'');
+		},
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, buyFunction:function() {this.IsEnabled=1}, group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	new Molpy.Boost({name:'Stretchable Block Storage',desc:function(me)
 		{
-		return 'If active during a Blast Furnace run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.power? 'Dea':'A')+'ctivate"></input><br>':'');
-		}, buyFunction:function() {this.power=1},group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
+		return 'If active during a Blast Furnace run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input><br>':'');
+		},
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, buyFunction:function() {this.IsEnabled=1},group:'hpt', sand:Infinity, castles:Infinity, glass:'1M',className:'toggle'});
 	
 	Molpy.GenericToggle=function(myid,negate)
 	{
@@ -4267,8 +4292,9 @@
 	new Molpy.Boost({name:'Ninja Lockdown',
 		desc:function(me)
 		{			
-			return (me.power? '':'When active, ') + 'Prevents Ninja Stealth multipliers greater than 3x, and when toggled, locks Impervious Ninja if it is owned.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+'); Molpy.LockBoost(\'Impervious Ninja\');" value="'+(me.power? 'Dea':'A')+'ctivate"></input>':'');
-		},glass:'144Y',group:'ninj',logic:700});
+			return (me.IsEnabled? '':'When active, ') + 'Prevents Ninja Stealth multipliers greater than 3x, and when toggled, locks Impervious Ninja if it is owned.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+'); Molpy.LockBoost(\'Impervious Ninja\');" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		},
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,glass:'144Y',group:'ninj',logic:700});
 	new Molpy.Boost({name:'Magic Mirror',desc:'Allows jumps between every discovery and the equivalent place in the Minus World',glass:'1L',group:'chron'});
 	new Molpy.Boost({name:'Locked Vault',
 		desc:function(me){
@@ -4468,6 +4494,15 @@
 		},
 		stats:'Protip: Temporal Rifts don\'t affect Caged Logicat puzzles',
 		unlockFunction:function(){this.power=Math.abs(Molpy.newpixNumber);}
+	});
+	
+	new Molpy.Boost({name:'Draft Dragon',
+		desc:function(me)
+		{
+			return (me.IsEnabled? 'C':'When active, c') + 'auses sand/glass monument production to proceed automatically after you start making a mould.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+');" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		},buyFunction:function(){this.IsEnabled=1;},
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
+		group:'drac',className:'toggle',glass:'50F'
 	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment

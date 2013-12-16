@@ -394,13 +394,13 @@
 							str+='<br>'+Molpy.WrapFlipHoriz('<input type="Button" onclick="Molpy.TTT('+ (-me.np)+',1)" value="Jump!"></input> to the other side (Uses '+Molpify(Molpy.CalcJumpEnergy(-me.np),2)+' Glass Chips)')
 						}
 					}
-					if(Molpy.Got('SMM')&&!Molpy.Boosts['SMM'].power&&!Molpy.Earned('monums'+me.np))
+					if(Molpy.Got('SMM')&&!(Molpy.Boosts['SMM'].power||Molpy.Boosts['SMF'].power&&Molpy.Boosts['SMF'].bought==me.np)&&!Molpy.Earned('monums'+me.np))
 					{
 						str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeSandMould('+me.np+')" value="Make"></input> a mould from this Discovery, which can be filled with sand to create a Monument'
 					}
 				}else if(me.group=='monums')
 				{
-					if(Molpy.Got('GMM')&&!Molpy.Boosts['GMM'].power&&!Molpy.Earned('monumg'+me.np))
+					if(Molpy.Got('GMM')&&!(Molpy.Boosts['GMM'].power||Molpy.Boosts['GMF'].power&&Molpy.Boosts['GMF'].bought==me.np)&&!Molpy.Earned('monumg'+me.np))
 					{
 						str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould('+me.np+')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 					}

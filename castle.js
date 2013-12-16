@@ -585,7 +585,7 @@ Molpy.Up=function()
 							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Level('Tool Factory')/rate));
 							var leave = 0;
 							var bl = Molpy.Boosts['GlassBlocks'];
-							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].power)
+							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].IsEnabled)
 							{
 								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
 							}
@@ -652,7 +652,7 @@ Molpy.Up=function()
 				if(p>20)Molpy.UnlockBoost('Swedish Chef');
 			}
 			if(Molpy.Got('Phonesaw')) mult*=mult;
-			if(includeNinja&&Molpy.Boosts['Ninjasaw'].power)
+			if(includeNinja&&Molpy.Boosts['Ninjasaw'].IsEnabled)
 			{
 				if(Molpy.Has('GlassBlocks',50))
 				{
@@ -673,7 +673,7 @@ Molpy.Up=function()
 			{
 				ninjaInc*=3;
 			}
-			if(!Molpy.Boosts['Ninja Lockdown'].power)
+			if(!Molpy.Boosts['Ninja Lockdown'].IsEnabled)
 			{
 				if(Molpy.Got('Ninja League'))
 				{
@@ -744,7 +744,7 @@ Molpy.Up=function()
 			{
 				stealthBuild=Math.floor(stealthBuild*Math.pow(1.05,Math.max(-1,Molpy.SandTools['Flag'].amount-40)));
 			}
-			if(Molpy.Boosts['Glass Jaw'].power)
+			if(Molpy.Boosts['Glass Jaw'].IsEnabled)
 			{
 				if(Molpy.Has('GlassBlocks',1))
 				{
@@ -761,7 +761,7 @@ Molpy.Up=function()
 					Molpy.recalculateDig=1;
 				}
 			}
-			if(vj&&Molpy.Boosts['Ninjasaw'].power&&Molpy.Boosts['VJ'].power)
+			if(vj&&Molpy.Boosts['Ninjasaw'].power&&Molpy.Boosts['VJ'].IsEnabled)
 			{
 				if(Molpy.Has('GlassBlocks',50))
 				{
@@ -994,7 +994,7 @@ Molpy.Up=function()
 				}
 				else if(judy==0)
 				{
-					if(Molpy.Boosts['NavCode'].power)
+					if(Molpy.Boosts['NavCode'].IsEnabled)
 					{
 						Molpy.Notify('Your alterations to the navigation code have saved the day!',1);
 					}else{
@@ -1657,14 +1657,21 @@ Molpy.Up=function()
 			{
 				return (amount<=0||this.Level>=amount)*1;
 			},
-			BoolPowEnabled:function(amount)
+			BoolPowEnabled:[function()
 			{
-				return (this.Level==true)*1;
+				return (this.power==true)*1;
 			},
-			PosPowEnabled:function(amount)
+			function(val){
+				this.power=val;
+			}],
+			PosPowEnabled:[function()
 			{
-				return (this.Level>0)*1;
+				return (this.power>0)*1;
 			},
+			function(val)
+			{
+				this.power=val;
+			}],
 			RefreshPowerBuy:function()
 			{
 				if(this.power&&!this.bought)
@@ -1696,7 +1703,6 @@ Molpy.Up=function()
 			this.glassPrice=args.glass||0;
 			this.stats=args.stats;
 			this.icon=args.icon;
-			this.IsEnabled=args.IsEnabled;
 			if(args.defStuff)
 			{
 				args.Level=Molpy.BoostFuncs.PosPowerLevel;
@@ -1713,6 +1719,10 @@ Molpy.Up=function()
 				this.Spend=args.Spend;
 				this.Destroy=args.Destroy;
 				this.Has=args.Has;
+			}
+			if(args.IsEnabled)
+			{
+				Object.defineProperties(this, {"IsEnabled": {get: args.IsEnabled[0],set:args.IsEnabled[1]}});
 			}
 			this.buyFunction=args.buyFunction;
 			this.countdownFunction=args.countdownFunction;
@@ -1804,7 +1814,7 @@ Molpy.Up=function()
 			}
 			this.Refresh=function(indirect)
 			{
-				if(this.hovering||Molpy.Boosts['Expando'].power)this.hoverOnCounter=1;
+				if(this.hovering||Molpy.Boosts['Expando'].IsEnabled)this.hoverOnCounter=1;
 				
 				this.faveRefresh=1;
 				if(!indirect&&this.refreshFunction)this.refreshFunction();
@@ -1986,7 +1996,7 @@ Molpy.Up=function()
 			
 			this.Refresh=function()
 			{
-				if(this.hovering||Molpy.Boosts['Expando'].power)this.hoverOnCounter=1;
+				if(this.hovering||Molpy.Boosts['Expando'].IsEnabled)this.hoverOnCounter=1;
 			}
 			this.showdesc=function(keep)
 			{
@@ -2319,7 +2329,7 @@ Molpy.Up=function()
 			var cb=0;
 			if(Molpy.Got('Furnace Crossfeed'))
 			{
-				if(Molpy.Boosts['Glass Furnace'].power && Molpy.Boosts['Furnace Crossfeed'].power)
+				if(Molpy.Boosts['Glass Furnace'].power && Molpy.Boosts['Furnace Crossfeed'].IsEnabled)
 				{
 					Molpy.MakeChips(times);
 					cb=1;
@@ -2327,7 +2337,7 @@ Molpy.Up=function()
 			}
 			if(Molpy.Got('Furnace Multitasking'))
 			{
-				if(Molpy.Boosts['Glass Blower'].power && Molpy.Boosts['Furnace Multitasking'].power)
+				if(Molpy.Boosts['Glass Blower'].power && Molpy.Boosts['Furnace Multitasking'].IsEnabled)
 				{
 					Molpy.MakeBlocks(times);
 					cb=1;
@@ -2434,7 +2444,7 @@ Molpy.Up=function()
 				else if(pg)
 					Molpy.Add('GlassChips',3000*(twin+1));
 			}
-			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].power)
+			if(Molpy.Got('LCB') && Molpy.Boosts['LCB'].IsEnabled)
 			{
 				if(Molpy.SandTools['Ladder'].amount)	
 				{
@@ -2469,7 +2479,7 @@ Molpy.Up=function()
 					}
 				}
 			}
-			if(Molpy.Got('Catamaran') && Molpy.Boosts['Catamaran'].power)
+			if(Molpy.Got('Catamaran') && Molpy.Boosts['Catamaran'].IsEnabled)
 			{
 				if(Molpy.CastleTools['River'].amount)
 				{
@@ -2504,7 +2514,7 @@ Molpy.Up=function()
 					}
 				}
 			}
-			if(Molpy.Got('Redundant Raptor') && Molpy.Boosts['Redundant Raptor'].power)
+			if(Molpy.Got('Redundant Raptor') && Molpy.Boosts['Redundant Raptor'].IsEnabled)
 			{
 				if(finite&&Molpy.Has('GlassBlocks',120))				
 				{
@@ -2554,7 +2564,7 @@ Molpy.Up=function()
 					gift=Math.floor(Molpy.Boosts['GlassBlocks'].power/50);
 					var b = Molpy.Level('GlassBlocks');
 					Molpy.Add('GlassBlocks',gift*(twin+1),1);
-					if(isFinite(b)&&Molpy.Boosts['AA'].power) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
+					if(isFinite(b)&&Molpy.Boosts['AA'].IsEnabled) Molpy.Notify(Molpify(gift*(twin+1),3)+' Glass Blocks from '+Molpy.Boosts['SGC'].name,1);
 				}
 			}
 			
@@ -2767,7 +2777,7 @@ Molpy.Up=function()
 		}
 		if(left)
 		{
-			if(!Molpy.Boosts['Cold Mould'].power)
+			if(!Molpy.Boosts['Cold Mould'].IsEnabled)
 			{
 				if (left) left=Molpy.FillGlassMouldWork(left);
 				if (left) left=Molpy.MakeGlassMouldWork(left);
@@ -2821,7 +2831,7 @@ Molpy.Up=function()
 		
 		var pp = Molpy.Boosts['Price Protection'];
 		if(pp.power>1)pp.power--;
-		if(! (Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].power))
+		if(! (Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].IsEnabled))
 			Molpy.CheckONG();
 		Molpy.CheckRedactedToggle();
 		
@@ -2913,7 +2923,7 @@ Molpy.Up=function()
 	Molpy.PerformJudgement=function()
 	{
 	
-		if(Molpy.Got('Fireproof')&&Molpy.Got('NavCode')&& !Molpy.Boosts['NavCode'].power)
+		if(Molpy.Got('Fireproof')&&Molpy.Got('NavCode')&& !Molpy.Boosts['NavCode'].IsEnabled)
 		{
 			Molpy.castles=0;
 			return;
@@ -2980,7 +2990,7 @@ Molpy.Up=function()
 			else stateClass='beachninjawarning';
 		}
 		
-		if(Molpy.ONGelapsed/Molpy.NPlength>=998&&!Molpy.Boosts['Coma Molpy Style'].power)
+		if(Molpy.ONGelapsed/Molpy.NPlength>=998&&!Molpy.Boosts['Coma Molpy Style'].IsEnabled)
 		{
 			stateClass='beachongwarning';
 			if(!Molpy.preloadedBeach)
@@ -3014,11 +3024,11 @@ Molpy.Up=function()
 		Molpy.UpdateBeach();
 		//various machines fire and do stuff
 		
-		if(Molpy.Boosts['Glass Furnace'].power)
+		if(Molpy.Boosts['Glass Furnace'].IsEnabled)
 		{
 			Molpy.MakeChips();
 		}
-		if(Molpy.Boosts['Glass Blower'].power)
+		if(Molpy.Boosts['Glass Blower'].IsEnabled)
 		{
 			Molpy.MakeBlocks();
 		}
@@ -3083,7 +3093,7 @@ Molpy.Up=function()
 		if(Molpy.Got('SBTF'))
 		{
 		}
-		if(Molpy.Got('Bag Burning')&& !Molpy.Boosts['NavCode'].power)
+		if(Molpy.Got('Bag Burning')&& !Molpy.Boosts['NavCode'].IsEnabled)
 		{
 			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshold+1 && flandom(36)==0)
 			{

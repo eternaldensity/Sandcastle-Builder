@@ -32,6 +32,12 @@ For personal amusement only.
 - Fixed a toolfactory mustard issue.
 - Warn about the 400 goat requirement for BoH
 - When constructing from blackprints, do nothing if the subject is missing (so if you sell your goats while making BoH it'll just stall rather than continue and fail)
+- Free Advice shows Lucky Twin unlock progress
+- Some refactoring for whether boosts are enabled, so make it easier in the future to change visual style for enabled vs disabled boosts in a universal fashion
+- Discoveries and Sand Monuments now hide their Make buttons when the monument is being filled (also they refresh straight away to ensure the description redraws)
+- New Dragon to ease the drudgery of mould related tasks
+- Goat unlocks were broken
+- Navcode bots-destroyed message lacked numeric formatting (because it used to be for 30 max)
 
 ## 3.264
 - Missing parentheses in WotA
