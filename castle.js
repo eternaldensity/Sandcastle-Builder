@@ -1830,8 +1830,11 @@ Molpy.Up=function()
 				
 				if (!this.bought && Molpy.Has('Castles',cp) && Molpy.Has('Sand',sp) && Molpy.Has('GlassBlocks',gp))
 				{
-					Molpy.Spend('Sand',sp);
-					Molpy.Spend('Castles',cp);
+					if(isFinite(Molpy.sandPermNP) || !Molpy.Got('Cracks'))
+					{
+						Molpy.Spend('Sand',sp);
+						Molpy.Spend('Castles',cp);
+					}
 					Molpy.Spend('GlassBlocks',gp);
 					this.bought=1;
 					_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name,!(sp||cp||gp)]);

@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.272
+- Molpy Down boosts were too slow to get
+- Prizes group
+- Some new prizes
+
 ## 3.2711
 - Fixed Glass Saw
 

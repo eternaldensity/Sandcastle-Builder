@@ -196,18 +196,22 @@
 			Molpy.Build(Math.floor(Molpy.castles/2),1); 
 			if(Molpy.Got('HoM'))
 				Molpy.Add('GlassChips',Math.floor(Molpy.Boosts['GlassChips'].power/5),1); 
+			if(Molpy.Got('Gruff'))
+			{
+				Molpy.GetYourGoat(2);
+			}
 		}else{
 			Molpy.Destroy('Castles',Molpy.castles); 
 			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power/1.8));
 			if(Molpy.Got('HoM'))
 				Molpy.Spend('GlassChips',Math.floor(Molpy.Boosts['GlassChips'].power/3));
-			Molpy.GetYourGoat();
+			Molpy.GetYourGoat(1);
 		}
 	}
 	
-	Molpy.GetYourGoat=function()
+	Molpy.GetYourGoat=function(n)
 	{
-		Molpy.Add('Goats',1);
+		Molpy.Add('Goats',n);
 		_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade','Goats']);	
 		if(Molpy.Has('Goats',2))Molpy.EarnBadge('Second Edition');
 		if(Molpy.Has('Goats',20))Molpy.UnlockBoost('HoM');
@@ -4491,20 +4495,35 @@
 		,group:'stuff'
 	});	
 	
-	Molpy.downBoosts=['Glass Goat','Bone Clicker','Double Department','Spare Tools','Doubletap','Single Double','Sandblast','Short Saw'];
-	Molpy.AwardDown=function()
+	Molpy.prizes=[
+		['Glass Goat','Bone Clicker','Double Department','Spare Tools','Doubletap','Single Double','Sandblast','Short Saw','Gruff'],
+		['Cracks','Soul Drain']
+	];
+	Molpy.AwardPrize=function(l)
 	{
+		l=l||0;
+		if(l>=Molpy.prizes.length)return;
 		var availRewards =[];
-		for(var i in Molpy.downBoosts)
+		for(var i in Molpy.prizes[l])
 		{
-			var d = Molpy.Boosts[Molpy.downBoosts[i]];
+			var d = Molpy.Boosts[Molpy.prizes[l][i]];
 			if(!d.unlocked)availRewards.push(d);
 		}
-		Molpy.UnlockBoost(GLRschoice(availRewards).alias);
+		if(availRewards.length>0)
+		{
+			Molpy.UnlockBoost(GLRschoice(availRewards).alias);
+		}else{
+			Molpy.AwardPrize(l+1);
+		}
+	}
+	Molpy.AwardPrize2=function
+	{
+		Molpy.AwardPrize();
+		Molpy.AwardPrize();
 	}
 	
 	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal',
-		glass:Infinity,sand:Infinity,castles:Infinity,className:'alert',downFunction:Molpy.AwardDown});	
+		glass:Infinity,sand:Infinity,castles:Infinity,className:'alert',downFunction:Molpy.AwardPrize2,group:'prize'});	
 	new Molpy.Boost({name:'Bonemeal',desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' bonemeal.';
@@ -4599,28 +4618,32 @@
 	});
 		
 	new Molpy.Boost({name:'Glass Goat',desc:'Glass produced by Glass Furnace/Blower is multiplied by the number of Goats you have, if any.',
-		sand:'5M',castles:'20K',downFunction:Molpy.AwardDown});
+		sand:'5M',castles:'20K',downFunction:Molpy.AwardPrize,group:'prize'});
 	new Molpy.Boost({name:'Bone Clicker',desc:'Sand and Glass Chips from clicking are multliplied by the amount of Bonemeal you have, if any.',
-		sand:'5K',castles:12,downFunction:Molpy.AwardDown});
+		sand:'5K',castles:12,downFunction:Molpy.AwardPrize,group:'prize'});
 	new Molpy.Boost({name:'Double Department',desc:Molpy.redactedWords+' activate the DoRD twice when they would activate it once.',
-		sand:'70M',castles:'50K',downFunction:Molpy.AwardDown});
+		sand:'70M',castles:'50K',downFunction:Molpy.AwardPrize2,group:'prize'});
 	new Molpy.Boost({name:'Spare Tools',desc:'Every dig-click builds you a free random tool',
-		sand:'2G',castles:'7M',downFunction:Molpy.AwardDown});
-	new Molpy.Boost({name:'Doubletap',desc:'Every dig-click counts twice.',sand:'1K',castles:6,downFunction:Molpy.AwardDown});
+		sand:'2G',castles:'7M',downFunction:Molpy.AwardPrize,group:'prize'});
+	new Molpy.Boost({name:'Doubletap',desc:'Every dig-click counts twice.',sand:'1K',castles:6,downFunction:Molpy.AwardPrize2,group:'prize'});
 	new Molpy.Boost({name:'Single Double',
 		desc:function(me)
 		{
 			return 'Builds the amount of castles you have.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.Add(\'Castles\',Molpy.Level(\'Castles\'));Molpy.LockBoost(\'Single Double\');" value="Use"></input>':'');
 		},
-		sand:'80K',castles:500,downFunction:Molpy.AwardDown,		
+		sand:'80K',castles:500,downFunction:Molpy.AwardPrize,group:'prize'		
 	});
 	new Molpy.Boost({name:'Sandblast',
 		desc:function(me)
 		{
 			return 'Recieve 1M sand per Badge you own.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.Add(\'Sand\',Molpy.BadgesOwned*1000000);Molpy.LockBoost(\'Sandblast\');" value="Use"></input>':'');
 		},
-		sand:100,castles:2,downFunction:Molpy.AwardDown});
-	new Molpy.Boost({name:'Short Saw',desc:'VITSSÅGEN, JA! occurs 5 times as often',sand:'5T',castles:'40G',downFunction:Molpy.AwardDown});
+		sand:100,castles:2,downFunction:Molpy.AwardPrize,group:'prize'
+	});
+	new Molpy.Boost({name:'Short Saw',desc:'VITSSÅGEN, JA! occurs 5 times as often',sand:'5T',castles:'40G',downFunction:Molpy.AwardPrize2,group:'prize'});
+	new Molpy.Boost({name:'Gruff',desc:'When you win the Monty Haul prize, you get 2 goats',sand:'2P',castles:'75T',downFunction:Molpy.AwardPrize,group:'prize'});
+	new Molpy.Boost({name:'Between the Cracks',alias:'Cracks',desc:'If you have infinite Sand production, Boost boost purchases do not spend any Sand or Castles',sand:'15E',castles:'80P',downFunction:Molpy.AwardPrize,group:'prize'});
+	new Molpy.Boost({name:'Soul Drain',desc:'Shadow Dragon has a 10% chance of producing bonemeal when Not Lucky occurs',sand:'60G',castles:'290M',downFunction:Molpy.AwardPrize2,group:'prize'});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={
@@ -4635,6 +4658,7 @@
 		drac:['draconic','Draconic','boost_achronaldragon'],
 		stuff:['stuff','Stuff'],
 		land:['land','Land'],
+		prize:['prize','Prizes'],
 		discov:['discoveries','Discoveries','badge_discov','Discovery','A memorable discovery'],
 		monums:['sand monuments','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
 		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
