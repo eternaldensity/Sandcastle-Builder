@@ -407,7 +407,7 @@ Molpy.Up=function()
 
 			while(!Molpy.Has('GlassChips',chipsFor*rate))
 			{
-				chipsFor-= backoff;
+				chipsFor=(chipsFor-backoff)||0;
 				backoff*=2;
 			}
 			if(chipsFor <= 0)
@@ -599,7 +599,7 @@ Molpy.Up=function()
 							}
 							if(!isFinite(maxGlass))
 							{
-								Molpy.EarnBadge('Mustard Factory');
+								Molpy.EarnBadge('Infinite Saw');
 							}
 							Molpy.Add('GlassBlocks',maxGlass);
 							Molpy.Spend('Tool Factory',maxGlass*rate);
@@ -1541,6 +1541,11 @@ Molpy.Up=function()
 			this.findPrice=function()
 			{			
 				var i = this.amount;
+				if(isNaN(i))
+				{
+					this.price=NaN;
+					return;
+				}
 				if(i>1500)
 				{	//don't even bother
 					this.prevPrice=Infinity;

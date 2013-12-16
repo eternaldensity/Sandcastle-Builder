@@ -573,7 +573,7 @@
 			if (pixels[i])
 			{
 				var ice=pixels[i].split(c);
-				me.amount=parseFloat(ice[0])||0;
+				me.amount=parseFloat(ice[0]);
 				me.bought=parseFloat(ice[1])||0;
 				me.totalSand=parseFloat(ice[2])||0;
 				me.temp=parseFloat(ice[3])||0;
@@ -600,7 +600,7 @@
 			if (pixels[i])
 			{
 				var ice=pixels[i].split(c);
-				me.amount=parseFloat(ice[0])||0;
+				me.amount=parseFloat(ice[0]);
 				me.bought=parseFloat(ice[1])||0;
 				me.totalCastlesBuilt=parseFloat(ice[2])||0;
 				me.totalCastlesDestroyed=parseFloat(ice[3])||0;

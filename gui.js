@@ -576,7 +576,8 @@
 		Molpy.CalcPriceFactor();			
 		var redactedIndex=-1;
 		var expando=Molpy.Boosts['Expando'].power;
-		var toolsUnlocked=1;			
+		var toolsUnlocked=1;
+		var toolMustard=0;
 		for (var i in Molpy.SandTools)
 		{
 			if(Molpy.SandTools[i].bought>=Molpy.SandTools[i].nextThreshold)toolsUnlocked++;
@@ -599,7 +600,12 @@
 			if(i==redactedIndex) str+= Molpy.RedactedHTML();
 			var me=Molpy.SandToolsById[i];
 			var formattedName = format(me.name);
-			if(Molpy.Got('Glass Ceiling '+(i*2))) formattedName = 'Glass '+formattedName;
+			if(isNaN(me.amount))
+			{
+				formattedName = 'Mustard '+formattedName;
+				toolMustard++;
+			}
+			else if(Molpy.Got('Glass Ceiling '+(i*2))) formattedName = 'Glass '+formattedName;
 			var salebit='';
 			if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 			{
@@ -609,6 +615,8 @@
 			var price = '';
 			if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+i*2))
 				price = Molpy.FormatPrice(me.price,me)+(me.price==1?' Castle':(me.price<100?' Castles':' Ca'));
+			else if(isNaN(me.price))
+				price = 'Mustard';
 			else
 				price = Molpify(1000*(i*2+1),3)+' Chips';
 			str+='<div class="floatbox tool sand shop" onMouseOver="Molpy.Onhover(Molpy.SandToolsById['+me.id
@@ -650,7 +658,12 @@
 			if(i==redactedIndex) str+= Molpy.RedactedHTML();
 			var me=Molpy.CastleToolsById[i];
 			var formattedName = format(me.name);
-			if(Molpy.Got('Glass Ceiling '+(i*2+1))) formattedName = 'Glass '+formattedName;
+			if(isNaN(me.amount))
+			{
+				formattedName = 'Mustard '+formattedName;
+				toolMustard++;
+			}
+			else if(Molpy.Got('Glass Ceiling '+(i*2+1))) formattedName = 'Glass '+formattedName;
 			var salebit='';
 			if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
 			{
@@ -660,6 +673,8 @@
 			var price = '';
 			if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(i*2+1)))
 				price = Molpy.FormatPrice(me.price,me)+(me.price==1?' Castle':(me.price<100?' Castles':' Ca'));
+			else if(isNaN(me.price))
+				price = 'Mustard';
 			else
 				price = Molpify(1000*(i*2+2),3)+' Chips';
 			str+='<div class="floatbox tool castle shop" onMouseOver="Molpy.Onhover(Molpy.CastleToolsById['+me.id
@@ -671,6 +686,10 @@
 				+'<div id="CastleToolProduction'+me.id+'"></div><div class="'+Molpy.DescClass(me)+'" id="CastleToolDescription'+me.id+'"></div></div></div>';
 			if(expando)me.hoverOnCounter=1;
 			i++
+		}
+		if(toolMustard==12)
+		{
+			Molpy.EarnBadge('Mustard Tools');
 		}
 		if(i==redactedIndex) str+= Molpy.RedactedHTML();
 		g('castletools').innerHTML=str;		

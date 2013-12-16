@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.266
+- Infinite Saw rename fix
+- New mustard badge
+- Fixed an infinite loop
+
 ## 3.265
 - Prevent Magic Mirror from letting you jump to where you are
 - Blackprints' Has check was failing if there was no next blackprint subject
