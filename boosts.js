@@ -2804,8 +2804,8 @@
 		},
 		className:'alert',group:'bean',icon:'constructblack'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:150,ZK:220,CFT:40000,BoH:90000};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','AO','AA','AE','BG','Bacon','SG','Milo','ZK','CFT','BoH'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:150,ZK:220,CFT:40000,BoH:90000,Nest:5e6};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','AO','AA','AE','BG','Bacon','SG','Milo','ZK','CFT','BoH','Nest'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',alias:'SMM',desc:
 		function(me)
@@ -4133,6 +4133,7 @@
 		if(Molpy.Boosts['AC'].power>555&&!Molpy.Boosts['Thunderbird'].unlocked&&Molpy.Got('PSOC')) return [6e36,'Thunderbird'];
 		if(Molpy.Boosts['AC'].power>777&&!Molpy.Boosts['Dragon Foundry'].unlocked&&Molpy.Earned('Nope!')) return [9e54,'Dragon Foundry'];
 		if(Molpy.Boosts['AC'].power>888&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')&&Molpy.Has('Caged Logicat',100)) return [9e96,'ShadwDrgn'];
+		if(Molpy.Boosts['AC'].power>4000&&!Molpy.Boosts['DQ'].unlocked&&Molpy.Got('Nest')&&Molpy.Has('Bonemeal',2000)) return [9e96,'DQ'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
@@ -4504,12 +4505,68 @@
 		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
 		group:'drac',className:'toggle',glass:'50F'
 	});	
-	new Molpy.Boost({name:'Mustard',desc:function(me)
+	new Molpy.Boost({name:'Mustard',
+		desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' mustard.';
 			return str;
 		}
 		,icon:'mustard',group:'stuff',defStuff:1
+	});
+	new Molpy.Boost({name:'Mysterious Maps',alias:'Maps',
+		desc:function(me)
+		{
+			var str = 'You have '+Molpify(me.Level,3)+' map'+plural(me.Level);
+			if(Molpy.Got('DNS')||!me.bought)
+			{
+				return str+'.';
+			}
+			str+=' out of 200.<br>The next map can be found at NP '+me.bought;
+			return str;
+		},
+		stats:'You need to ninja-unstealth to find a map.'
+		,buyFunction:Molpy.RandomiseMap
+		,icon:'maps',group:'stuff',defStuff:1
+	});
+	
+	Molpy.RandomiseMap=function()	
+	{
+		var np;
+		while((np = Math.ceil(Math.random()*Molpy.highestNPvisited)*(Math.random()>.5?1:-1))==Molpy.newpixNumber);
+		Molpy.Boosts['Maps'].bought=np;
+	}
+	
+	new Molpy.Boost({name:'Dragon Nesting Site',alias:'DNS',
+		desc:function(me){return 'You have found the location of an ancient dragon nesting site.'+(Molpy.Got('Nest')?'':'<br>Now to figure out how to build the nest...');},
+		group:'drac'
+	});
+	new Molpy.Boost({name:'Dragon Nest',alias:'Nest',
+		desc:function(me){return 'This is a dragon nest.'+(Molpy.Got('DQ')?'':'<br>To obtain a queen, you need Automata Control of at least 4000, and 2000 Bonemeal.');},
+		group:'drac',sand:Infinity,castles:Infinity,glass:Infinity
+	});
+	new Molpy.Boost({name:'Dragon Queen',alias:'DQ',
+		desc:function(me){return 'The queen of the dragons.';},
+		group:'drac',sand:Infinity,castles:Infinity,glass:Infinity,
+		buyFunction:function()
+		{
+			if(!Molpy.Spend('Bonemeal',2000))Molpy.LockBoost(this.alias);
+		}
+	});
+	new Molpy.Boost({name:'Dragon Eggs',alias:'Eggs',
+		desc:function(me)
+		{
+			var str = 'You have '+Molpify(me.Level,3)+' egg'+plural(me.Level);
+			return str+'.';
+		}
+		,icon:'egg',group:'drac',defStuff:1
+	});
+	new Molpy.Boost({name:'Dragon Hatchlings',alias:'Hatchlings',
+		desc:function(me)
+		{
+			var str = 'You have '+Molpify(me.Level,3)+' hatchlings'+plural(me.Level);
+			return str+'.';
+		}
+		,icon:'hatchlings',group:'drac',defStuff:1
 	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment

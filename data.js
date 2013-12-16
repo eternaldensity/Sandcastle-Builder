@@ -2,7 +2,7 @@
 
 function g(id) {return document.getElementById(id);}
 var Molpy={};
-Molpy.version=3.266;
+Molpy.version=3.27;
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[
@@ -855,6 +855,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Crystal Helm'].logic=300*(Molpy.CastleTools['Beanie Builder'].amount>=12000);	
 	Molpy.Boosts['FiM'].logic=64*(Molpy.SandTools['LaPetite'].amount+Molpy.SandTools['Cuegan'].amount>6.4e10);
 	Molpy.Boosts['MHP'].department=finiteC||((Molpy.Got('Goats')||Molpy.Boosts['MHP'].department)&&!automationLevel);
+	Molpy.Boosts['Maps'].logic=3000*(Molpy.BoostsOwned+Molpy.BadgesOwned>=2750);
 }
 	
 Molpy.CheckASHF=function()

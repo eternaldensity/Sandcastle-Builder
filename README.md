@@ -26,11 +26,13 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.266
+## 3.27
 - Infinite Saw rename fix
 - New mustard badge
 - Fixed an infinite loop
 - Added mustard
+- Boosts that raise a tool's outputs based on the number you have of another tool are now capped at 8000 tools. Except Bacon.
+- Added a few dragon things. And something mysterious.
 
 ## 3.265
 - Prevent Magic Mirror from letting you jump to where you are

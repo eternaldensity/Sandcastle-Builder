@@ -1115,10 +1115,12 @@
 				me.Refresh();
 			}
 			var boh = !coma&&Molpy.Got('BoH')&&Molpy.Spend('Bonemeal',10);
+			var downFunctions=[];
 			for(i in Molpy.Boosts)
 			{
 				var me = Molpy.Boosts[i];
 				if(boh&&me.group=='stuff')continue;
+				if(!coma&&me.downFunction)downFunctions.push(me.downFunction);
 				me.unlocked=0;
 				me.bought=0;	
 				me.power=0;
@@ -1127,6 +1129,7 @@
 					me.power=EvalMaybeFunction(me.startPower);
 				me.countdown=0;
 			}
+			for(var i in downFunctions){downFunctions[i]();}
 			Molpy.recalculateDig=1;
 			Molpy.boostRepaint=1;
 			Molpy.shopRepaint=1;

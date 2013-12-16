@@ -7,7 +7,7 @@
 			if(Molpy.Got('Glass Ceiling 0'))mult*=Molpy.GlassCeilingMult();
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Huge Buckets'))mult*=2;
-			if(Molpy.Got('Trebuchet Pong'))mult*=Math.pow(1.5,Math.floor(Molpy.CastleTools['Trebuchet'].amount/2));
+			if(Molpy.Got('Trebuchet Pong'))mult*=Math.pow(1.5,Math.min(Math.floor(Molpy.CastleTools['Trebuchet'].amount/2,8000)));
 			if(Molpy.Got('Carrybot'))mult*=4;
 			if(Molpy.Got('Buccaneer'))mult*=2;
 			if(Molpy.Got('Flying Buckets'))mult*=Molpy.CastleTools['Trebuchet'].amount;
@@ -34,7 +34,7 @@
 			if(Molpy.Got('Megball')) mult*=2;
 			if(Molpy.Got('Cooperation'))
 			{
-				mult*=Math.pow(1.05,Math.floor(Molpy.SandTools['Bucket'].amount/2));
+				mult*=Math.pow(1.05,Math.floor(Math.min(Molpy.SandTools['Bucket'].amount/2,8000)));
 			}
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Stickbot'))mult*=4;
@@ -63,7 +63,7 @@
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Magic Mountain'))mult*=2.5;
 			if(Molpy.Got('Standardbot'))mult*=4;
-			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Molpy.CastleTools['Scaffold'].amount);
+			if(Molpy.Got('Balancing Act')) mult*=Math.pow(1.05,Math.min(Molpy.CastleTools['Scaffold'].amount,8000));
 			if(Molpy.Got('SBTF'))
 			{
 				var waves=Molpy.CastleTools['Wave'].amount;
@@ -136,10 +136,10 @@
 			if(Molpy.Got('Glass Ceiling 8'))mult*=Molpy.GlassCeilingMult();
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Embaggening')&&Molpy.SandTools['Cuegan'].amount>14)
-				mult*=Math.pow(1.02,Molpy.SandTools['Cuegan'].amount-14);
+				mult*=Math.pow(1.02,Math.min(Molpy.SandTools['Cuegan'].amount-14,8000));
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Sandbag'))
-				mult*=Math.pow(1.05,Molpy.CastleTools['River'].amount);
+				mult*=Math.pow(1.05,Math.min(Molpy.CastleTools['River'].amount,8000));
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Luggagebot'))mult*=4;
 			if(Molpy.Got('Bag Puns'))mult*=2;
@@ -270,7 +270,7 @@ Molpy.DefineCastleTools=function()
 		destroyC:function()
 		{
 			var baseval = 6;	
-			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);			
+			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Math.min(Molpy.SandTools['Flag'].amount,8000));			
 			if(Molpy.Got('Precise Placement')) baseval-=Math.floor(Molpy.SandTools['Ladder'].amount*0.5);
 			return Math.max(0,Math.floor(baseval));
 		},
@@ -279,7 +279,7 @@ Molpy.DefineCastleTools=function()
 			var baseval = 22;
 			if(Molpy.Got('Propbot'))baseval*=4;
 			if(Molpy.Got('Stacked')) baseval*=Molpy.CastleTools['NewPixBot'].amount;
-			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Molpy.SandTools['Flag'].amount);
+			if(Molpy.Got('Balancing Act')) baseval*=Math.pow(1.05,Math.min(Molpy.SandTools['Flag'].amount,8000));
 			baseval*=Molpy.LogicastleMult();
 			if(Molpy.Got('Glass Ceiling 5'))baseval*=Molpy.GlassCeilingMult();
 			return Math.floor(baseval);
@@ -304,7 +304,7 @@ Molpy.DefineCastleTools=function()
 			{
 				if(Math.abs(Molpy.newpixNumber)%2==1-next)//odd
 				{
-					baseval=Math.floor(baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount));
+					baseval=Math.floor(baseval*Math.pow(1.06,Math.min(Molpy.SandTools['Flag'].amount,8000)));
 				}
 			}
 			
@@ -328,7 +328,7 @@ Molpy.DefineCastleTools=function()
 			{
 				if(Math.abs(Molpy.newpixNumber)%2==next)//even
 				{
-					baseval=baseval*Math.pow(1.06,Molpy.SandTools['Flag'].amount);
+					baseval=baseval*Math.pow(1.06,Math.min(Molpy.SandTools['Flag'].amount,8000));
 				}
 			}
 			if(Molpy.Got('Glass Ceiling 7'))baseval*=Molpy.GlassCeilingMult();
@@ -364,7 +364,7 @@ Molpy.DefineCastleTools=function()
 			}
 			var mult=1;
 			if(Molpy.Got('Sandbag'))
-				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
+				mult*=Math.pow(1.05,Math.min(Molpy.SandTools['Bag'].amount,8000));
 			return Math.floor(baseval*mult);
 		},
 		buildC:function()
@@ -373,7 +373,7 @@ Molpy.DefineCastleTools=function()
 			baseval*=Molpy.LogicastleMult();
 			var mult=1;
 			if(Molpy.Got('Sandbag'))
-				mult*=Math.pow(1.05,Molpy.SandTools['Bag'].amount);
+				mult*=Math.pow(1.05,Math.min(Molpy.SandTools['Bag'].amount,8000));
 			if(Molpy.Got('Smallbot'))mult*=4;
 			if(Molpy.Got('Irregular Rivers')) mult*=Molpy.CastleTools['NewPixBot'].amount;
 			if(Molpy.Got('Glass Ceiling 9'))mult*=Molpy.GlassCeilingMult();

@@ -843,6 +843,21 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Ninja Shortcomings');
 			}
 			Molpy.ninjaStealth=0;
+			
+			if(Molpy.Got('Maps'))
+			{
+				if(Molpy.newpixNumber==Molpy.Boosts['Maps'].bought)
+				{
+					Molpy.Add('Maps',1);
+					if(Molpy.Has('Maps',200))
+					{
+						Molpy.UnlockBoost('DNS');
+					}else{
+						Molpy.Notify('You found a new map!',1);
+						Molpy.RandomiseMap();
+					}
+				}
+			}
 			return 1;
 		}
 		
@@ -1739,6 +1754,7 @@ Molpy.Up=function()
 			this.buyFunction=args.buyFunction;
 			this.countdownFunction=args.countdownFunction;
 			this.refreshFunction=args.refreshFunction;
+			this.downFunction=args.downFunction;
 			this.unlocked=0;
 			this.bought=0;
 			this.department=args.department; //allow unlock by the department (this is not a saved value)
