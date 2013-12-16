@@ -929,6 +929,7 @@
 			if(Molpy.Earned('Minus Worlds')&&Math.floor(Math.random()*2))Molpy.newpixNumber*=-1;;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
+			if(Molpy.Got('Void Goat')&&Molpy.Got('Flux Surge'))Molpy.Add('Goat',1);
 		}else
 		{
 			Molpy.newpixNumber*=-1;
@@ -3654,7 +3655,7 @@
 			var mr = Molpy.Boosts['Milo'];
 			var s = 0;//Math.sin((Math.PI*Molpy.ONGelapsed)/(Molpy.NPlength*100));
 			var draft=Math.random()*(1+2*s)*(left-7);
-			mr.power+=draft;
+			mr.power+=draft*(Molpy.Got('Rush Job')?5:1);
 			left-=draft;			
 			var pages=0;
 			while(mr.power>=100)
@@ -4497,7 +4498,7 @@
 	
 	Molpy.prizes=[
 		['Glass Goat','Bone Clicker','Double Department','Spare Tools','Doubletap','Single Double','Sandblast','Short Saw','Gruff'],
-		['Cracks','Soul Drain']
+		['Cracks','Soul Drain','Rush Job','Void Goat']
 	];
 	Molpy.AwardPrize=function(l)
 	{
@@ -4516,7 +4517,7 @@
 			Molpy.AwardPrize(l+1);
 		}
 	}
-	Molpy.AwardPrize2=function
+	Molpy.AwardPrize2=function()
 	{
 		Molpy.AwardPrize();
 		Molpy.AwardPrize();
@@ -4644,6 +4645,8 @@
 	new Molpy.Boost({name:'Gruff',desc:'When you win the Monty Haul prize, you get 2 goats',sand:'2P',castles:'75T',downFunction:Molpy.AwardPrize,group:'prize'});
 	new Molpy.Boost({name:'Between the Cracks',alias:'Cracks',desc:'If you have infinite Sand production, Boost boost purchases do not spend any Sand or Castles',sand:'15E',castles:'80P',downFunction:Molpy.AwardPrize,group:'prize'});
 	new Molpy.Boost({name:'Soul Drain',desc:'Shadow Dragon has a 10% chance of producing bonemeal when Not Lucky occurs',sand:'60G',castles:'290M',downFunction:Molpy.AwardPrize2,group:'prize'});
+	new Molpy.Boost({name:'Rush Job',desc:'Mysterious Representations produces Blackprints 5 times as fast',sand:'50E',castles:'600P',downFunction:Molpy.AwardPrize,group:'prize'});
+	new Molpy.Boost({name:'Void Goat',desc:'Travel through a Temporal Rift yields a Goat if you have Flux Surge',sand:'40Z',castles:'900E',downFunction:Molpy.AwardPrize,group:'prize'});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={

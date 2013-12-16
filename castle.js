@@ -2445,6 +2445,7 @@ Molpy.Up=function()
 				else
 					Molpy.Notify('Not Lucky!');			
 			}
+			if(Molpy.Got('Soul Drain')&&Molpy.Got('ShadwDrgn')&&Math.random()>=.9) Molpy.Add('Bonemeal',1);
 			
 			var twin = 0;
 			if(Molpy.Got('TDE')&&Molpy.Got('GlassBlocks'))
