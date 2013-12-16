@@ -3809,8 +3809,17 @@
 		desc:function(me)
 		{
 			if(!me.bought) return 'Allows you to change how many copies of Glass Tools can be constructed by Tool Factory each mNP';
+			if(Molpy.Earned('Nope!'))
+			{
+				me.power = 6e51;
+			}
 			var n = me.power;
 			var str='Tool Factory produces up to '+Molpify(n,2)+' of any Glass Tool per mNP.';
+			if(Molpy.Earned('Nope!'))
+			{
+				return str;
+			}
+			
 			if((n < 500 || ! Molpy.Has('GlassBlocks',1e7*n)) && Molpy.Has('GlassBlocks',1e6*n))
 			{
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(1)"></input> the rate by 1 at a cost of '+Molpify(1e6*n,1)+' Glass Blocks.';
