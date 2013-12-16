@@ -577,7 +577,7 @@
 		var redactedIndex=-1;
 		var expando=Molpy.Boosts['Expando'].power;
 		var toolsUnlocked=1;
-		var toolMustard=0;
+		Molpy.mustardTools=0;
 		for (var i in Molpy.SandTools)
 		{
 			if(Molpy.SandTools[i].bought>=Molpy.SandTools[i].nextThreshold)toolsUnlocked++;
@@ -603,7 +603,7 @@
 			if(isNaN(me.amount))
 			{
 				formattedName = 'Mustard '+formattedName;
-				toolMustard++;
+				Molpy.mustardTools++;
 			}
 			else if(Molpy.Got('Glass Ceiling '+(i*2))) formattedName = 'Glass '+formattedName;
 			var salebit='';
@@ -661,7 +661,7 @@
 			if(isNaN(me.amount))
 			{
 				formattedName = 'Mustard '+formattedName;
-				toolMustard++;
+				Molpy.mustardTools++;
 			}
 			else if(Molpy.Got('Glass Ceiling '+(i*2+1))) formattedName = 'Glass '+formattedName;
 			var salebit='';
@@ -687,7 +687,7 @@
 			if(expando)me.hoverOnCounter=1;
 			i++
 		}
-		if(toolMustard==12)
+		if(Molpy.mustardTools==12)
 		{
 			Molpy.EarnBadge('Mustard Tools');
 		}

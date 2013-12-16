@@ -4503,6 +4503,13 @@
 		},buyFunction:function(){this.IsEnabled=1;},
 		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
 		group:'drac',className:'toggle',glass:'50F'
+	});	
+	new Molpy.Boost({name:'Mustard',desc:function(me)
+		{
+			var str = 'You have '+Molpify(me.Level,3)+' mustard.';
+			return str;
+		}
+		,icon:'mustard',group:'stuff',defStuff:1
 	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment

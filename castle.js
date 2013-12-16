@@ -524,9 +524,16 @@ Molpy.Up=function()
 				{
 					Molpy.chipsPerClick+=Molpy.glassPermNP/20;
 				}
-				Molpy.Boosts['Tool Factory'].power+=Molpy.chipsPerClick;
-				Molpy.chipsManual+=Molpy.chipsPerClick;
-				if(Molpy.chipsPerClick&&Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(Molpy.chipsPerClick,1));
+				Molpy.Add('Tool Factory',Molpy.chipsPerClick);
+				if(isNaN(Molpy.chipsPerClick)&&Molpy.mustardTools)				
+				{
+					Molpy.Add('Mustard',Molpy.mustardTools);
+					if(Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(Molpy.mustardTools,1)+' mustard');
+				}else
+				{
+					Molpy.chipsManual+=Molpy.chipsPerClick;
+					if(Molpy.chipsPerClick&&Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(Molpy.chipsPerClick,1));
+				}
 			}
 			Molpy.beachClicks+=1;
 			Molpy.CheckClickAchievements();

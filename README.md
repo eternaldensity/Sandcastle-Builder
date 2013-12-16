@@ -30,6 +30,7 @@ For personal amusement only.
 - Infinite Saw rename fix
 - New mustard badge
 - Fixed an infinite loop
+- Added mustard
 
 ## 3.265
 - Prevent Magic Mirror from letting you jump to where you are
