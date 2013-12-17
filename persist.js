@@ -1051,7 +1051,7 @@
 		if(version<3.272)
 		{
 			if(Molpy.Got('Glass Saw')&&Molpy.Boosts['Glass Saw'].power==0)
-				Molpy.Boosts['Glass Saw'].power = Molpy.Level('GlassBlocks')/1e9; //something like that
+				Molpy.Boosts['Glass Saw'].power = Molpy.Boosts['GlassBlocks'].bought/1e8; //something like that
 		}
 	}
 	
