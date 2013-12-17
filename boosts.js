@@ -3898,7 +3898,7 @@
 	});
 	Molpy.PokeBar=function()
 	{
-		return 4+Molpy.Boosts['Panther Rush'].power+Molpy.Boosts['WiseDragon'].power;
+		return 4+Molpy.Boosts['Panther Rush'].power*(1+Molpy.Boosts['WiseDragon'].power);
 	}
 	new Molpy.Boost({name:'Flipside',
 		desc:function(me)
@@ -4258,7 +4258,7 @@
 			var powerReq=Math.pow(5,me.power+12);
 			if(Molpy.Has('Goats',goatCost)&&Molpy.Boosts['AD'].power>=powerReq)
 			{	
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 (times the Panther Rush level) at a cost of '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';
 			}else
 			{
 				str+='<br>Upgrading Logicat Level by 1 will cost '+Molpify(powerReq,3)+' Achronal Dragon power and '+Molpify(goatCost,3)+' goat'+plural(goatCost)+'.';

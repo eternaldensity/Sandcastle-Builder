@@ -30,6 +30,7 @@ For personal amusement only.
 - Molpy Down boosts were too slow to get
 - Prizes group
 - Some new prizes
+- CD,SP's influence on the maximum logicat puzzle number is now multiplied by the Panther Rush level (so the 100 puzzle requirement for Shadow Dragon is less ridiculously high now)
 
 ## 3.2711
 - Fixed Glass Saw
