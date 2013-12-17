@@ -4370,7 +4370,7 @@
 	{
 		var me = Molpy.BoostsById[myid];
 		if(negate)
-			me.power=-me.power;
+			me.power=-me.power||1;
 		else
 			me.power=1*!me.power;      
 		me.Refresh();

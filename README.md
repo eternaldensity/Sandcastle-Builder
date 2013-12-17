@@ -35,6 +35,7 @@ For personal amusement only.
 - Boosts and Badges with no icon of their own use the icon of the group
 - Typos can be applied before a < now (rather than avoiding strings with them entirely)
 - Added a way to reset mustard tools. Also mustard tools are prevented from mustarding the sand-click-dig rate
+- Glass Saw was fixed but the code to unstick people stuck by the bug was in the wrong place. That's been fixed now but also a hopefully useful value for Glass Saw has been guessed so they don't have to start at 1 and click many thousands of times achieving nothing to get it back to a useful power again
 
 ## 3.2711
 - Fixed Glass Saw

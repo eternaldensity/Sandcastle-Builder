@@ -626,8 +626,10 @@ Molpy.Up=function()
 							Molpy.Spend('Tool Factory',maxGlass*rate);
 							if(Molpy.Has('Tool Factory',absMaxGlass*rate*2))
 								Molpy.Boosts['Glass Saw'].power=p*2;
+						}else{
+							if(!p) Molpy.Boosts['Glass Saw'].power=1;
 						}
-                    }else if(!p) Molpy.Boosts['Glass Saw'].power=1;
+                    }
 					
 					_gaq.push(['_trackEvent',Molpy.Boosts['VJ'].name,sawType,''+Molpy.Boosts['VJ'].power]);
 				}

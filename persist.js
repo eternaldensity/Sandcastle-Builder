@@ -1048,6 +1048,11 @@
 			if(Molpy.Boosts['WotA'].unlocked)Molpy.Boosts['WotA'].unlockFunction();
 			if(Molpy.Boosts['GL'].countdown>500)Molpy.Boosts['GL'].countdown=500;
 		}
+		if(version<3.272)
+		{
+			if(Molpy.Got('Glass Saw')&&Molpy.Boosts['Glass Saw'].power==0)
+				Molpy.Boosts['Glass Saw'].power = Molpy.Level('GlassBlocks')/1e9; //something like that
+		}
 	}
 	
 	
