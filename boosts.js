@@ -157,7 +157,7 @@
 		},
 		glass:function()
 		{
-			if(!Molpy.(IsEnabled'HoM'))return 0;
+			if(!Molpy.IsEnabled('HoM'))return 0;
 			var p = Molpy.Boosts['MHP'].power;
 			return 100*Math.pow(2,Math.max(1,p-15));			
 		},
@@ -2324,7 +2324,7 @@
 		function(me)
 		{
 			var tdf=Molpy.TDFactor()-1;
-			return 'For '+(me.countdown==0?'ever':me.countdown>=1000?Molpify(me.countdown/1000)+'NP':Molpify(me.countdown)+'mNP')+', when you buy tools, get '+(tdf<=2?'the same':Molpify(tdf,1)+'x that')+' amount again for free!';
+			return 'For '+(me.countdown==0?'ever':me.countdown>=1000?Molpify(me.countdown/1000)+'NP':Molpify(me.countdown)+'mNP')+', when you buy tools, get '+(tdf==1?'the same':Molpify(tdf,1)+'x that')+' amount again for free!';
 		}
 		,group:'chron',className:'alert',logic:50,
 		startCountdown:function()
@@ -4292,7 +4292,7 @@
 		{
 			if(Molpy.Got('Dragon Foundry')&&Molpy.Got('GL'))
 			{
-				return Math.floor(Molpy.Boosts['GL'].power/5000);
+				return Math.ceil(Molpy.Boosts['GL'].power/5000);
 			}
 			return 2;
 		}
