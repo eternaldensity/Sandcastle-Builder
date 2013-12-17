@@ -536,7 +536,7 @@
 	Molpy.RepaintLootSelection=function()
 	{
 		var str = '';
-		var groups = ['boosts','stuff','land','ninj','cyb','hpt','bean','chron','ceil','drac'];
+		var groups = ['boosts','stuff','land','ninj','cyb','hpt','bean','chron','ceil','drac','prize'];
 		for(var i in groups)
 		{
 			str+=Molpy.PaintLootToggle(groups[i],4);

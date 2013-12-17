@@ -3039,6 +3039,19 @@
 		}
 	}
 	
+	Molpy.StartCheapestSandMould=function()
+	{
+		var first=Molpy.newpixNumber>0?'discov1':'discov-1'
+		for(var i = Molpy.Badges[first].id;i<Molpy.BadgesById.length-1;i+=8)
+		{
+			if(Molpy.BadgesById[i].earned&&!Molpy.BadgesById[i+1].earned)
+			{
+				Molpy.MakeSandMould(Molpy.BadgesById[i+1].np);
+				return 1;
+			}
+		}
+		return 0;
+	}
 	Molpy.MakeSandMould=function(np)
 	{
 		var mname='monums'+np;
@@ -3080,7 +3093,11 @@
 		var smm=Molpy.Boosts['SMM'];
 		if(smm.power==0||smm.power>100)
 		{
-			return times;
+			if(smm.power==0&&Molpy.Got('Archimedes')&&Molpy.Spend('Bonemeal',10))
+			{
+				if(!Molpy.StartCheapestSandMould())return times;
+			}else
+				return times;
 		}
 		var chips =smm.bought*100;
 		if(chips<0)chips*=chips;
@@ -3211,12 +3228,29 @@
 		gmm.Refresh();
 		gmf.Refresh();
 	}
+	Molpy.StartCheapestGlassMould=function()
+	{
+		var first=Molpy.newpixNumber>0?'monums1':'monums-1'
+		for(var i = Molpy.Badges[first].id;i<Molpy.BadgesById.length-1;i+=8)
+		{
+			if(Molpy.BadgesById[i].earned&&!Molpy.BadgesById[i+1].earned)
+			{
+				Molpy.MakeGlassMould(Molpy.BadgesById[i+1].np);
+				return 1;
+			}
+		}
+		return 0;
+	}
 	Molpy.MakeGlassMouldWork=function(times)
 	{
 		var gmm=Molpy.Boosts['GMM'];
 		if(gmm.power==0||gmm.power>400)
 		{
-			return times;
+			if(gmm.power==0&&Molpy.Got('Archimedes')&&Molpy.Spend('Bonemeal',10))
+			{
+				if(!Molpy.StartCheapestGlassMould())return times;
+			}else
+				return times;
 		}
 		var b = gmm.bought;
 		var chips=Math.pow(1.01,Math.abs(b))*1000;
@@ -4531,14 +4565,15 @@
 	
 	Molpy.prizes=[
 		['Glass Goat','Bone Clicker','Double Department','Spare Tools','Doubletap','Single Double','Sandblast','Short Saw','Gruff'],
-		['Cracks','Soul Drain','Rush Job','Void Goat','Factory Expansion','Mustard Automation','Musical Chairs','Glass Trolling']
+		['Cracks','Soul Drain','Rush Job','Void Goat','Factory Expansion','Mustard Automation','Musical Chairs','Glass Trolling','Fast Forward'],
+		['Archimedes','Month']
 	];
 	Molpy.AwardPrize=function(l)
 	{
 		l=l||0;
 		if(l>=Molpy.prizes.length)return;
-		for(var i in Molpy.prizes[l])
 		var availRewards =[];
+		for(var i in Molpy.prizes[l])
 		{
 			var d = Molpy.Boosts[Molpy.prizes[l][i]];
 			if(!d.unlocked)availRewards.push(d);
@@ -4652,38 +4687,68 @@
 	});
 		
 	new Molpy.Boost({name:'Glass Goat',desc:'Glass produced by Glass Furnace/Blower is multiplied by the number of Goats you have, if any.',
-		sand:'5M',castles:'20K',downFunction:Molpy.AwardPrize,group:'prize'});
+		sand:'5M',castles:'20K',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
 	new Molpy.Boost({name:'Bone Clicker',desc:'Sand and Glass Chips from clicking are multliplied by the amount of Bonemeal you have, if any.',
-		sand:'5K',castles:12,downFunction:Molpy.AwardPrize,group:'prize'});
+		sand:'5K',castles:12,downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
 	new Molpy.Boost({name:'Double Department',desc:Molpy.redactedWords+' activate the DoRD twice when they would activate it once.',
-		sand:'70M',castles:'50K',downFunction:Molpy.AwardPrize2,group:'prize'});
+		sand:'70M',castles:'50K',downFunction:Molpy.AwardPrize2,group:'prize',stats:Molpy.prizeText[2]});
 	new Molpy.Boost({name:'Spare Tools',desc:'Every dig-click builds you a free random tool',
-		sand:'2G',castles:'7M',downFunction:Molpy.AwardPrize,group:'prize'});
-	new Molpy.Boost({name:'Doubletap',desc:'Every dig-click counts twice.',sand:'1K',castles:6,downFunction:Molpy.AwardPrize2,group:'prize'});
+		sand:'2G',castles:'7M',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
+	new Molpy.Boost({name:'Doubletap',desc:'Every dig-click counts twice.',sand:'1K',castles:6,downFunction:Molpy.AwardPrize2,group:'prize',stats:Molpy.prizeText[2]});
 	new Molpy.Boost({name:'Single Double',
 		desc:function(me)
 		{
 			return 'Builds the amount of castles you have.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.Add(\'Castles\',Molpy.Level(\'Castles\'));Molpy.LockBoost(\'Single Double\');" value="Use"></input>':'');
 		},
-		sand:'80K',castles:500,downFunction:Molpy.AwardPrize,group:'prize'		
+		sand:'80K',castles:500,downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]	,className:'action'
 	});
 	new Molpy.Boost({name:'Sandblast',
 		desc:function(me)
 		{
 			return 'Recieve 1M sand per Badge you own.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.Add(\'Sand\',Molpy.BadgesOwned*1000000);Molpy.LockBoost(\'Sandblast\');" value="Use"></input>':'');
 		},
-		sand:100,castles:2,downFunction:Molpy.AwardPrize,group:'prize'
+		sand:100,castles:2,downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1],className:'action'
 	});
-	new Molpy.Boost({name:'Short Saw',desc:'VITSSÅGEN, JA! occurs 5 times as often',sand:'5T',castles:'40G',downFunction:Molpy.AwardPrize2,group:'prize'});
-	new Molpy.Boost({name:'Gruff',desc:'When you win the Monty Haul prize, you get 2 goats',sand:'2P',castles:'75T',downFunction:Molpy.AwardPrize,group:'prize'});
-	new Molpy.Boost({name:'Between the Cracks',alias:'Cracks',desc:'If you have infinite Sand production, Boost boost purchases do not spend any Sand or Castles',sand:'15E',castles:'80P',downFunction:Molpy.AwardPrize,group:'prize'});
-	new Molpy.Boost({name:'Soul Drain',desc:'Shadow Dragon has a 10% chance of producing bonemeal when Not Lucky occurs',sand:'60G',castles:'290M',downFunction:Molpy.AwardPrize,group:'prize'});
-	new Molpy.Boost({name:'Rush Job',desc:'Mysterious Representations produces Blackprints 5 times as fast',sand:'50E',castles:'600P',glass:'400K',downFunction:Molpy.AwardPrize,group:'prize'});
-	new Molpy.Boost({name:'Void Goat',desc:'Travel through a Temporal Rift yields a Goat if you have Flux Surge',sand:'40Z',castles:'900E',glass:'50K',downFunction:Molpy.AwardPrize,group:'prize'});
-	new Molpy.Boost({name:'Factory Expansion',desc:'More Factory Automation levels are available through Rosetta',sand:'85Y',castles:'25Z',glass:'10M',downFunction:Molpy.AwardPrize,group:'prize'});
-	new Molpy.Boost({name:'Mustard Automation',desc:'Automata Assemble can run with Mustard Tools, at a cost of 20 Mustard per run',glass:'70G',downFunction:Molpy.AwardPrize,group:'prize'});
-	new Molpy.Boost({name:'Musical Chairs',desc:'Doubles the effect of People Sit on Chairs',glass:'40P',downFunction:Molpy.AwardPrize2,group:'prize'});
-	new Molpy.Boost({name:'Glass Trolling',desc:'If you type "OK, GLASS" into the import box, the cost of making Glass Blocks from Glass Chips is reduced by a factor of 5 until the next ONG',glass:'500',downFunction:Molpy.AwardPrize,group:'prize',IsEnabled:Molpy.BoostFuncs.BoolPowEnabled});
+	new Molpy.Boost({name:'Short Saw',desc:'VITSSÅGEN, JA! occurs 5 times as often',sand:'5T',castles:'40G',downFunction:Molpy.AwardPrize2,group:'prize',stats:Molpy.prizeText[2]});
+	new Molpy.Boost({name:'Gruff',desc:'When you win the Monty Haul prize, you get 2 goats',sand:'2P',castles:'75T',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
+	new Molpy.Boost({name:'Between the Cracks',alias:'Cracks',desc:'If you have infinite Sand production, Boost boost purchases do not spend any Sand or Castles',
+		sand:'15E',castles:'80P',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
+	new Molpy.Boost({name:'Soul Drain',desc:'Shadow Dragon has a 10% chance of producing bonemeal when Not Lucky occurs',
+		sand:'60G',castles:'290M',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
+	new Molpy.Boost({name:'Rush Job',desc:'Mysterious Representations produces Blackprints 5 times as fast',
+		sand:'50E',castles:'600P',glass:'400K',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
+	new Molpy.Boost({name:'Void Goat',desc:'Travel through a Temporal Rift yields a Goat if you have Flux Surge',
+		sand:'40Z',castles:'900E',glass:'50K',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
+	new Molpy.Boost({name:'Factory Expansion',desc:'More Factory Automation levels are available through Rosetta',
+		sand:'85Y',castles:'25Z',glass:'10M',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
+	new Molpy.Boost({name:'Mustard Automation',desc:'Automata Assemble can run with Mustard Tools, at a cost of 20 Mustard per run',glass:'70G',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1]});
+	new Molpy.Boost({name:'Musical Chairs',desc:'Doubles the effect of People Sit on Chairs',glass:'40P',downFunction:Molpy.AwardPrize2,group:'prize',stats:Molpy.prizeText[2]});
+	new Molpy.Boost({name:'Glass Trolling',desc:'If you type "OK, GLASS" into the import box, the cost of making Glass Blocks from Glass Chips is reduced by a factor of 5 until the next ONG',glass:'500',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1],IsEnabled:Molpy.BoostFuncs.BoolPowEnabled});
+	new Molpy.Boost({name:'Fast Forward',
+		desc:function(me)
+		{
+			return 'Go directly to the highest NewPix visited. Do not pass Go. Do not collect 200 goats.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.FastForward()" value="Use"></input>':'');
+		},
+		sand:'17F',castles:'90S',glass:'40G',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1],className:'action'
+	});
+	Molpy.FastForward=function()
+	{
+		Molpy.newpixNumber=Molpy.highestNewpixvisited;
+		Molpy.UpdateBeach();
+		Molpy.HandlePeriods();
+		Molpy.LockBoost('Fast Forward');
+		Molpy.Add('Goats',1);
+	}
+	new Molpy.Boost({name:'Archimedes\'s Lever',alias:'Archimedes',
+		desc:'If a Monument Maker is idle, it will start making the cheapest monument available at a cost of 10 Bonemeal.',
+		stats:'Only makes Minus Monuments if you are in Minus NewPix.<br>'+Molpy.prizeText[1],glass:'360W',downFunction:Molpy.AwardPrize,group:'prize'});
 	
+	new Molpy.Boost({name:'Would have been useful a month ago',alias:'Month',
+		desc:function(me)
+		{
+			return 'Instantly win the game.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="'+Molpy.BeanishToCuegish(Molpy.wintext)+';Molpy.LockBoost(\'Month\');" value="Use"></input>':'');
+		},
+		glass:'40WW',downFunction:Molpy.AwardPrize2,group:'prize',stats:Molpy.prizeText[2],className:'action'
+	});
 	//END OF BOOSTS, add new ones immediately before this comment
 }
