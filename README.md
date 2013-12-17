@@ -32,6 +32,7 @@ For personal amusement only.
 - Some new prizes
 - CD,SP's influence on the maximum logicat puzzle number is now multiplied by the Panther Rush level (so the 100 puzzle requirement for Shadow Dragon is less ridiculously high now)
 - Improve Automata Assemble description
+- Boosts and Badges with no icon of their own use the icon of the group
 
 ## 3.2711
 - Fixed Glass Saw

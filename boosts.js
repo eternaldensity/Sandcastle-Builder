@@ -1,5 +1,25 @@
 ﻿Molpy.DefineBoosts=function()
 {	
+	Molpy.groupNames={
+		boosts:['boost','Boosts'],
+		badges:['badge','Badges'],
+		hpt:['hill people tech','Hill People Tech','department'],
+		ninj:['ninjutsu','Ninjutsu','ninjabuilder'],
+		chron:['chronotech','Chronotech','lateclosing'],
+		cyb:['cybernetics','Cybernetics','robotefficiency'],
+		bean:['beanie tech','Beanie Tech','chateau'],
+		ceil:['ceiling','Ceilings','glassceiling12'],
+		drac:['draconic','Draconic','achronaldragon'],
+		stuff:['stuff','Stuff'],
+		land:['land','Land'],
+		prize:['prize','Prizes'],
+		discov:['discoveries','Discoveries','discov','Discovery','A memorable discovery'],
+		monums:['sand monuments','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
+		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
+		diamm:['masterpieces','Masterpieces',0,'Masterpiece','This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of','in diamond. <br>It molpifies with spikes of treeishness.'],
+	};
+	Molpy.nextBageGroup={discov:'monums',monums:'monumg'};//,monumg:'diamm'};
+
 	//only add to the end!
 	new Molpy.Boost({name:'Bigger Buckets',desc:'Raises sand rate of buckets and clicks',sand:500,castles:0,stats:'Adds 0.1 S/mNP to each Bucket, before multipliers',icon:'biggerbuckets'});
 	new Molpy.Boost({name:'Huge Buckets',desc:'Doubles sand rate of buckets and clicks',sand:800,castles:2,icon:'hugebuckets'});
@@ -4666,23 +4686,4 @@
 	new Molpy.Boost({name:'Glass Trolling',desc:'If you type "OK, GLASS" into the import box, the cost of making Glass Blocks from Glass Chips is reduced by a factor of 5 until the next ONG',glass:'500',downFunction:Molpy.AwardPrize,group:'prize',IsEnabled:Molpy.BoostFuncs.BoolPowEnabled});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
-	Molpy.groupNames={
-		boosts:['boost','Boosts'],
-		badges:['badge','Badges'],
-		hpt:['hill people tech','Hill People Tech','boost_department'],
-		ninj:['ninjutsu','Ninjutsu','boost_ninjabuilder'],
-		chron:['chronotech','Chronotech','boost_lateclosing'],
-		cyb:['cybernetics','Cybernetics','boost_robotefficiency'],
-		bean:['beanie tech','Beanie Tech','boost_chateau'],
-		ceil:['ceiling','Ceilings','boost_glassceiling12'],
-		drac:['draconic','Draconic','boost_achronaldragon'],
-		stuff:['stuff','Stuff'],
-		land:['land','Land'],
-		prize:['prize','Prizes'],
-		discov:['discoveries','Discoveries','badge_discov','Discovery','A memorable discovery'],
-		monums:['sand monuments','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
-		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
-		diamm:['masterpieces','Masterpieces',0,'Masterpiece','This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of','in diamond. <br>It molpifies with spikes of treeishness.'],
-	};
-	Molpy.nextBageGroup={discov:'monums',monums:'monumg'};//,monumg:'diamm'};
 }

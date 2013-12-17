@@ -408,8 +408,7 @@
 					str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(Math.abs(me.np)))+'"><div>';
 				}
 				return str;
-			}
-			,icon:kind,
+			},
 			earnFunction:args.earnFunction,visibility:args.visibility,group:kind});
 	}
 	Molpy.MakeQuadBadge=function(args)

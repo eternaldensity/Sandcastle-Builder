@@ -1761,7 +1761,6 @@ Molpy.Up=function()
 			this.castlePrice=args.castles||0;
 			this.glassPrice=args.glass||0;
 			this.stats=args.stats;
-			this.icon=args.icon;
 			if(args.defStuff)
 			{
 				args.Level=Molpy.BoostFuncs.PosPowerLevel;
@@ -1804,6 +1803,7 @@ Molpy.Up=function()
 			this.className=args.className;
 			this.classChange=args.classChange;
 			this.group=args.group||'boosts';
+			this.icon=args.icon||Molpy.groupNames[this.group][2];
 			this.lockFunction=args.lockFunction;
 			this.unlockFunction=args.unlockFunction;
 			this.reset=args.reset;
@@ -2046,7 +2046,6 @@ Molpy.Up=function()
 			this.alias=args.alias||args.name;
 			this.desc=args.desc
 			this.stats=args.stats;
-			this.icon=args.icon;
 			this.earnFunction=args.earnFunction;
 			this.earned=0;
 			this.order=this.id;
@@ -2056,6 +2055,7 @@ Molpy.Up=function()
 			this.className=args.className;
 			this.classChange=args.classChange;
 			this.group=args.group||'badges';
+			this.icon=args.icon||Molpy.groupNames[this.group][2];
 			
 			this.Refresh=function()
 			{
