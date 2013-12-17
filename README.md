@@ -27,13 +27,14 @@ For personal amusement only.
 ## Changelog
 
 ## 3.272
-- Molpy Down boosts were too slow to get
-- Prizes group
+- Molpy Down boosts (aka prizes) were too slow to get
+- Prizes group actually shows up (oops)
 - Some new prizes
+- Prize stats text added
 - CD,SP's influence on the maximum logicat puzzle number is now multiplied by the Panther Rush level (so the 100 puzzle requirement for Shadow Dragon is less ridiculously high now)
 - Improve Automata Assemble description
 - Boosts and Badges with no icon of their own use the icon of the group
-- Typos can be applied before a < now (rather than avoiding strings with them entirely)
+- Typos can be applied before a < now (rather than avoiding strings with them entirely) so it should be a bit easier to go for the badge now
 - Added a way to reset mustard tools. Also mustard tools are prevented from mustarding the sand-click-dig rate
 - Glass Saw was fixed but the code to unstick people stuck by the bug was in the wrong place. That's been fixed now but also a hopefully useful value for Glass Saw has been guessed so they don't have to start at 1 and click many thousands of times achieving nothing to get it back to a useful power again
 
