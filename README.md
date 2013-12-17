@@ -34,6 +34,7 @@ For personal amusement only.
 - Improve Automata Assemble description
 - Boosts and Badges with no icon of their own use the icon of the group
 - Typos can be applied before a < now (rather than avoiding strings with them entirely)
+- Added a way to reset mustard tools. Also mustard tools are prevented from mustarding the sand-click-dig rate
 
 ## 3.2711
 - Fixed Glass Saw

@@ -480,31 +480,31 @@ Molpy.Up=function()
 			if(Molpy.Got('Helpful Hands'))
 			{
 				var pairs = Math.min(Molpy.SandTools['Bucket'].amount, Molpy.SandTools['Cuegan'].amount);
-				baserate+=0.5*pairs;
+				baserate+=0.5*pairs||0;
 			}
 			if(Molpy.Got('True Colours'))
 			{
 				var pairs = Math.min(Molpy.SandTools['Flag'].amount, Molpy.SandTools['Cuegan'].amount);
-				baserate+=5*pairs;
+				baserate+=5*pairs||0;
 			}
 			if(Molpy.Got('Raise the Flag'))
 			{
 				var pairs = Math.min(Molpy.SandTools['Flag'].amount, Molpy.SandTools['Ladder'].amount);
-				baserate+=50*pairs;
+				baserate+=50*pairs||0;
 			}
 			if(Molpy.Got('Hand it Up'))
 			{
 				var pairs = Math.min(Molpy.SandTools['Bag'].amount, Molpy.SandTools['Ladder'].amount);
-				baserate+=500*pairs;
+				baserate+=500*pairs||0;
 			}
 			if(Molpy.Got('Bucket Brigade'))
 			{
-				baserate+=Molpy.sandPermNP*0.01*Math.floor(Molpy.SandTools['Bucket'].amount/50);
+				baserate+=Molpy.sandPermNP*0.01*Math.floor(Molpy.SandTools['Bucket'].amount/50)||0;
 			}
 			
 			if(Molpy.Got('Bag Puns'))
 			{
-				baserate+= baserate*(4/10)*Math.max(-2,Math.floor((Molpy.SandTools['Bag'].amount-25)/5));
+				baserate+= baserate*(4/10)*Math.max(-2,Math.floor((Molpy.SandTools['Bag'].amount-25)/5))||0;
 			}
 			if(Molpy.Got('Bone Clicker')&&Molpy.Has('Bonemeal',1))
 			{
@@ -537,15 +537,16 @@ Molpy.Up=function()
 					Molpy.chipsPerClick+=Molpy.glassPermNP/20;
 				}
 				Molpy.Add('Tool Factory',Molpy.chipsPerClick);
-				if(isNaN(Molpy.chipsPerClick)&&Molpy.mustardTools)				
-				{
-					Molpy.Add('Mustard',Molpy.mustardTools);
-					if(Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(Molpy.mustardTools,1)+' mustard');
-				}else
+				if(Molpy.chipsPerClick)
 				{
 					Molpy.chipsManual+=Molpy.chipsPerClick;
 					if(Molpy.chipsPerClick&&Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(Molpy.chipsPerClick,1));
 				}
+			}
+			if(Molpy.mustardTools)				
+			{
+				Molpy.Add('Mustard',Molpy.mustardTools);
+				if(Molpy.options.numbers) Molpy.AddSandParticle('+'+Molpify(Molpy.mustardTools,1)+' mustard');
 			}
 			Molpy.beachClicks+=1;
 			Molpy.CheckClickAchievements();
@@ -902,9 +903,9 @@ Molpy.Up=function()
 			for (var i in Molpy.SandTools)
 			{
 				var me=Molpy.SandTools[i];
-				me.storedSpmNP=EvalMaybeFunction(me.spmNP,me);
-				me.storedTotalSpmNP=me.amount*me.storedSpmNP||0;
-				Molpy.sandPermNP+=me.storedTotalSpmNP;
+				me.storedSpmNP=EvalMaybeFunction(me.spmNP,me)||0;
+				me.storedTotalSpmNP=me.amount*me.storedSpmNP;
+				Molpy.sandPermNP+=me.storedTotalSpmNP||0;
 			}
 			var ninjaFactor =1;
 			if(Molpy.Got('Busy Bot'))ninjaFactor+=0.1;
@@ -928,7 +929,7 @@ Molpy.Up=function()
 				multiplier*=Molpy.Boosts['Blitzing'].power/100;
 			}
 			Molpy.computedSandPerClick=Molpy.sandPerClick()*multiplier;
-			if(!isFinite(Molpy.computedSandPerClick))Molpy.computedSandPerClick=0; //you can't dig infinite sand
+			if(!isFinite(Molpy.computedSandPerClick)||!isFinite(Molpy.sand))Molpy.computedSandPerClick=0; //you can't dig infinite sand
 			
 			//stuff beyond here doesn't apply to clicks
 			if(Molpy.Got('Overcompensating')) 
@@ -1065,7 +1066,7 @@ Molpy.Up=function()
 				var tf=!isFinite(Molpy.priceFactor*me.price)*1*inf;
 				me.storedGpmNP=EvalMaybeFunction(me.gpmNP,me)*tf;
 				me.storedTotalGpmNP=me.amount*me.storedGpmNP;
-				Molpy.glassPermNP+=me.storedTotalGpmNP;
+				Molpy.glassPermNP+=me.storedTotalGpmNP||0;
 			}				
 			if(Molpy.Got('GL'))
 			{
@@ -1763,17 +1764,18 @@ Molpy.Up=function()
 			this.stats=args.stats;
 			if(args.defStuff)
 			{
-				args.Level=Molpy.BoostFuncs.PosPowerLevel;
-				args.Has=Molpy.BoostFuncs.Has;
-				args.Add=Molpy.BoostFuncs.Add;
-				args.Spend=Molpy.BoostFuncs.Spend;
-				args.Destroy=Molpy.BoostFuncs.Destroy;
-				args.refreshFunction=Molpy.BoostFuncs.RefreshPowerBuy;				
+				args.Level=args.Level||Molpy.BoostFuncs.PosPowerLevel;
+				args.Has=args.Has||Molpy.BoostFuncs.Has;
+				args.Add=args.Add||Molpy.BoostFuncs.Add;
+				args.Spend=args.Spend||Molpy.BoostFuncs.Spend;
+				args.Destroy=args.Destroy||Molpy.BoostFuncs.Destroy;
+				args.refreshFunction=args.refreshFunction||Molpy.BoostFuncs.RefreshPowerBuy;				
 			}
 			if(args.Level)
 			{
 				Object.defineProperties(this, {"Level": {get: args.Level[0],set:args.Level[1]}});
 				this.Add=args.Add;
+				this.AddSuper=args.AddSuper; //ugh
 				this.Spend=args.Spend;
 				this.Destroy=args.Destroy;
 				this.Has=args.Has;

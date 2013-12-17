@@ -4628,7 +4628,16 @@
 			var str = 'You have '+Molpify(me.Level,3)+' mustard.';
 			return str;
 		}
-		,icon:'mustard',group:'stuff',defStuff:1
+		,icon:'mustard',group:'stuff',defStuff:1,
+		AddSuper:Molpy.BoostFuncs.Add,
+		Add:function(amount)
+		{
+			this.AddSuper(amount);
+			if(!Molpy.Got('Mustard Sale')&&Molpy.Spend(this.alias,2000))
+			{
+				Molpy.UnlockBoost('Mustard Sale');
+			}
+		}
 	});
 	new Molpy.Boost({name:'Mysterious Maps',alias:'Maps',
 		desc:function(me)
@@ -4750,5 +4759,23 @@
 		},
 		glass:'40WW',downFunction:Molpy.AwardPrize2,group:'prize',stats:Molpy.prizeText[2],className:'action'
 	});
+	
+	new Molpy.Boost({name:'Mustard Sale',
+		desc:function(me)
+		{
+			return 'Set the amount of a random Tool to 0 owned at a cost of 500 Mustard.'+(me.bought?'<br><input type="Button" onclick="Molpy.MustardSale();" value="Use"></input>':'');
+		},glass:'2M',className:'action'
+	});
+	Molpy.MustardSale=function()
+	{
+		if(Molpy.Spend('Mustard',500))
+		{
+			var tool=GLRschoice(Molpy.tfOrder);
+			tool.amount=0;
+			tool.temp=0;
+			tool.Refresh();
+			Molpy.Notify('Reset '+tool.name);
+		}
+	}
 	//END OF BOOSTS, add new ones immediately before this comment
 }

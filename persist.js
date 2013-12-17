@@ -874,6 +874,7 @@
 		Molpy.boostRepaint=1;
 		Molpy.badgeRepaint=1;
 		Molpy.judgeLevel=-1;
+		Molpy.CalculateDigSpeed();
 		return 1;
 	}
 	
