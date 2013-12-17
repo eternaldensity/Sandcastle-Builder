@@ -3105,7 +3105,7 @@
 		{
 			if(!Molpy.Has('GlassChips',chips))
 			{
-				Molpy.Boosts['Break the Mould'].power++;
+				Molpy.Boosts['Break the Mould'].power+=times;
 				return times;
 			}
 			Molpy.Spend('GlassChips',chips);
@@ -3172,7 +3172,7 @@
 		{
 			if(Molpy.sand <sand)
 			{
-				Molpy.Boosts['Break the Mould'].power++;
+				Molpy.Boosts['Break the Mould'].power+=times;
 				return times;
 			}
 			Molpy.Spend('Sand',sand);
@@ -3259,7 +3259,7 @@
 		{
 			if(!Molpy.Has('GlassChips',chips)) 
 			{
-				Molpy.Boosts['Break the Mould'].power++;
+				Molpy.Boosts['Break the Mould'].power+=times;
 				return times;
 			}
 			Molpy.Spend('GlassChips',chips);
@@ -3326,7 +3326,7 @@
 		{
 			if(!Molpy.Has('GlassBlocks',glass)) 
 			{
-				Molpy.Boosts['Break the Mould'].power++;
+				Molpy.Boosts['Break the Mould'].power+=times;
 				return times;
 			}
 			Molpy.Spend('GlassBlocks',glass);

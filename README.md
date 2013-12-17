@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.274
+- Break the Mould unlocks quicker: it wasn't counting the amount of factory automation you had and was just counting a fail once per machine per run.
+
 ## 3.273
 - Castle destruction has been completely wrong for several versions, how did no one notice until recently?
 
