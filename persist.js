@@ -321,6 +321,11 @@
 			Molpy.Notify(Molpy.BeanishToCuegish(Molpy.BlitzGirl.ChallengeAccepted),1);	
 			return;
 		}
+		if(thread=='OK, GLASS'&&Molpy.Got('Glass Trolling'))
+		{
+			Molpy.Boosts['Glass Trolling'].IsEnabled=1;	
+			return;
+		}
 
 		if (thread && thread!='')
 		{

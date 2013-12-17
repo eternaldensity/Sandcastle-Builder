@@ -1633,6 +1633,11 @@ Molpy.Up=function()
 			var b = Molpy.Boosts[stuff];
 			return b&&b.Level;
 		}
+		Molpy.IsEnabled=function(stuff)
+		{
+			var b = Molpy.Boosts[stuff];
+			return b&&b.IsEnabled;
+		}
 		Molpy.Has=function(stuff,amount)
 		{
 			var b = Molpy.Boosts[stuff];
@@ -3207,6 +3212,8 @@ Molpy.Up=function()
 		{
 			Molpy.Boosts['LR'].power*=.95;
 		}
+		
+		Molpy.Boosts['Glass Trolling'].IsEnabled=0;	
 	}
 	
 	Molpy.BurnBags=function(n,e)
