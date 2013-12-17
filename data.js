@@ -675,6 +675,7 @@ Molpy.CheckBuyUnlocks=function(tool)
         }
 	if (Molpy.Boosts['AC'].power >= 230)  Molpy.EarnBadge('Mains Power');
 	if (Molpy.Boosts['AC'].power >= 50)  Molpy.EarnBadge('It Hertz');
+	if (Molpy.Boosts['AC'].power >= 500)  Molpy.UnlockBoost('Rob');
 	
 	Molpy.faCosts=[55,65,85,115,145,175,205,240,280,330,440,560,700,900,1200,1500];
 	if(Molpy.Got('Factory Expansion'))

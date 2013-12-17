@@ -824,16 +824,17 @@
 			return 'Buys '+Molpy.shoppingItemName+' whenever possible, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
 		},sand:'18G',castles:'650G',icon:'shopassist',className:'action',group:'hpt'
 	});
-	Molpy.ChooseShoppingItem=function()
+	Molpy.ChooseShoppingItem=function(mule)
 	{
-		var donkey=Molpy.Boosts['Shopping Assistant'];
+		var donkey=(mule?Molpy.BoostsById[mule]:Molpy.Boosts['Shopping Assistant']);
+		var shoppingItem = (mule?(Molpy.BoostsById[Math.abs(donkey.power)].name || ''):(Molpy.shoppingItem || 'Bag'));
 		donkey.power=0;
-		var name = prompt('Enter the name of the tool or boost you wish to buy whenever ASHF is active.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is preserved if you reload.',Molpy.shoppingItem||'Bag');
+		var name = prompt('Enter the name of the tool or boost you wish to buy'+(mule?'':' whenever ASHF is active')+'.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is preserved if you reload.',shoppingItem);
 		var notify=1;
 		if(name)
 		{
 			var item=Molpy.SandTools[name] || Molpy.CastleTools[name];
-			if(item)
+			if(!mule && item)
 			{
 				for(var i in Molpy.tfOrder)
 				{
@@ -862,7 +863,8 @@
 				}
 			}
 		}
-		Molpy.SelectShoppingItem(notify)
+		if (mule) { Molpy.Boosts['Rob'].Refresh() }
+		else { Molpy.SelectShoppingItem(notify) }
 	}
 	Molpy.SelectShoppingItem=function(notify)
 	{
@@ -908,6 +910,19 @@
 			if(item)
 				item.buy();
 			Molpy.priceFactor=factor;
+		} else if (Molpy.Got('Rob') && (Molpy.Got('ASHF') || !(Molpy.Boosts['Rob'].power&1))) {
+			for (var thingy=0; thingy <= Molpy.Boosts['Rob'].bought+1; thingy++) {
+				var item = Molpy.BoostsById[thingy+1].power;
+				if (item>0) Molpy.BoostsById[item].buy();
+			}
+		}
+	}
+
+	Molpy.Mule=function(id) {
+		if (Molpy.Got('Rob') && (Molpy.Got('ASHF') || !(Molpy.Boosts['Rob'].power&1))) {
+			for (var thingy=0; thingy <= Molpy.Boosts['Rob'].bought+1; thingy++) {
+				if (id == Molpy.BoostsById[thingy+1].power) Molpy.BoostsById[id].buy();
+			}
 		}
 	}
 	
@@ -4759,7 +4774,7 @@
 		},
 		glass:'40WW',downFunction:Molpy.AwardPrize2,group:'prize',stats:Molpy.prizeText[2],className:'action'
 	});
-	
+
 	new Molpy.Boost({name:'Mustard Sale',
 		desc:function(me)
 		{
@@ -4776,6 +4791,49 @@
 			tool.Refresh();
 			Molpy.Notify('Reset '+tool.name);
 		}
+	}
+
+	new Molpy.Boost({name:'Robotic Shopper',alias:'Rob',
+		desc:function(me)
+		{
+			if (!me.bought) return "An advanced shopping assistant, with more control and able to shop for many things";
+			var large = (me.power &2);
+			var str = '';
+			if (!large) str += '<small>';
+			str += 'Shop for me <input '+(large?'':'class=smallbutton ')+'type=button onclick="Molpy.ToggleBit('+(me.id)+',0)" value="'+((me.power&1)?'in ASHF only':'Always')+'"></input>';
+			str += '<br><input '+(large?'':'class=smallbutton ')+'type=button onclick="Molpy.ToggleBit('+(me.id)+',1)" value="'+((me.power&2)?'Small Size text':'Normal Size text')+'"></input>';
+
+			for (thingy = 0; thingy <= me.bought; thingy++)
+			{
+				var item=Molpy.BoostsById[thingy+1];
+				if (item.power) {
+					str += '<br><a onclick="Molpy.ChooseShoppingItem('+(thingy+1)+')">'+Molpy.BoostsById[Math.abs(item.power)].name+'</a> ';
+					str += '<input '+(large?'':'class=smallbutton ')+'type=button value="'+(item.power<0?'Off':'On')+'" onclick="Molpy.GenericToggle('+(thingy+1)+',1)" </input>';
+				} else {
+					str += '<br><a onclick="Molpy.ChooseShoppingItem('+(thingy+1)+')">Not currently used</a>';
+				}
+			}
+			if (Molpy.Boosts['AC'].power >= 500*Math.pow(2,me.bought) && me.bought<5)
+			{
+				str += '<br><input '+(large?'':'class=smallbutton ')+'type=button onclick="Molpy.Robot_Upgrade()" value="Upgrade"></input> Costs Infinite Glass';
+			}
+			if (!large) str += "</small>";
+			return str;
+		},
+		sand:Infinity,castles:Infinity,glass:Infinity,group:'cyb'
+	});
+
+	Molpy.Robot_Upgrade=function() {
+		me = Molpy.Boosts['Rob'];
+		if (Molpy.Spend('GlassBlocks',Infinity)) {
+			me.bought++;
+			Molpy.BoostsById[me.bought].power = 0;
+			Molpy.Notify('Robotic Shopper upgraded');
+		}
+	}
+
+	Molpy.ToggleBit=function(myid,bit) {
+		Molpy.BoostsById[myid].power ^= (1<<bit);
 	}
 	//END OF BOOSTS, add new ones immediately before this comment
 }
