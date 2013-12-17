@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.273
+- Castle destruction has been completely wrong for several versions, how did no one notice until recently?
+
 ## 3.272
 - Molpy Down boosts (aka prizes) were too slow to get
 - Prizes group actually shows up (oops)

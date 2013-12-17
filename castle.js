@@ -1478,7 +1478,7 @@ Molpy.Up=function()
 				var i = this.amount
 				var inf = Molpy.Got('Castles to Glass')&&!isFinite(Molpy.castles)&&!isFinite(Molpy.priceFactor*this.price);
 				var destroyN=EvalMaybeFunction(inf?this.destroyG:this.destroyC)
-				var destroyT=destroyT||0;
+				var destroyT=destroyN*i||0;
 				if (inf)
 				{
 					if (Molpy.Boosts['Tool Factory'].power >= destroyT)
