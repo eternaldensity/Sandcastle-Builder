@@ -147,7 +147,7 @@
 				}
 			}
 			str+='Choose a door! You might gain half your current Castles, or you might lose them all and get a Goat';
-			if(Molpy.Got('HoM')) str+='<br>With Hall of Mirrors, you also stand to gain a fifth of your Glass Chip Storage balance, or lose a third of it.';
+			if(Molpy.IsEnabled('HoM')) str+='<br>With Hall of Mirrors, you also stand to gain a fifth of your Glass Chip Storage balance, or lose a third of it.';
 			return str;
 		},
 		sand:function()
@@ -157,7 +157,7 @@
 		},
 		glass:function()
 		{
-			if(!Molpy.Got('HoM'))return 0;
+			if(!Molpy.(IsEnabled'HoM'))return 0;
 			var p = Molpy.Boosts['MHP'].power;
 			return 100*Math.pow(2,Math.max(1,p-15));			
 		},
@@ -214,7 +214,7 @@
 			var amount=Molpy.castles;
 			Molpy.Notify('Hooray, you found the prize behind door '+me.door+'!');
 			Molpy.Build(Math.floor(Molpy.castles/2),1); 
-			if(Molpy.Got('HoM'))
+			if(Molpy.IsEnabled('HoM'))
 				Molpy.Add('GlassChips',Math.floor(Molpy.Boosts['GlassChips'].power/5),1); 
 			if(Molpy.Got('Gruff'))
 			{
@@ -223,7 +223,7 @@
 		}else{
 			Molpy.Destroy('Castles',Molpy.castles); 
 			Molpy.Boosts['MHP'].power=Math.ceil(Math.floor(Molpy.Boosts['MHP'].power/1.8));
-			if(Molpy.Got('HoM'))
+			if(Molpy.IsEnabled('HoM'))
 				Molpy.Spend('GlassChips',Math.floor(Molpy.Boosts['GlassChips'].power/3));
 			Molpy.GetYourGoat(1);
 		}
@@ -4392,7 +4392,12 @@
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);
 	}
 	
-	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:'You can win/lose Glass Chips from the Monty Haul Problem',sand:'1P',castles:'1T',glass:'1K'});
+	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:function(me)
+	{		
+		return (me.IsEnabled? 'Y':'When active, y') + 'ou can win/lose Glass Chips from the Monty Haul Problem'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+	},
+	buyFunction:function(){this.IsEnabled=1;},className:'toggle',
+	IsEnabled:Molpy.BoostFuncs.PosPowEnabled,sand:'1P',castles:'1T',glass:'1K'});
 	new Molpy.Boost({name:'Stealth Cam',desc:'Camera is activated when Ninja Stealth is increased',glass:'1M',group:'ninj'});
 	new Molpy.Boost({name:'Ninja Lockdown',
 		desc:function(me)
