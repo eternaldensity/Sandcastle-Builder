@@ -651,7 +651,7 @@
 				me.unlocked=parseInt(ice[0])||0;
 				me.bought=me.unlocked&&parseFloat(ice[1])||0; //ensure boosts that are locked aren't somehow set as bought
 				me.power=parseFloat(ice[2])||0;
-				me.countdown=parseInt(ice[3])||0;
+				me.countdown=parseFloat(ice[3])||0;
 
 				if(me.bought)
 				{

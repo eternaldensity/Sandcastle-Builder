@@ -28,6 +28,7 @@ For personal amusement only.
 
 ## 3.274
 - Break the Mould unlocks quicker: it wasn't counting the amount of factory automation you had and was just counting a fail once per machine per run.
+- Countdowns are loaded as a float rather than an int (why didn't waveny fix that with the other things a month ago?? Probably didn't expect me to get crazy with the Temporal Duplication countdown)
 
 ## 3.273
 - Castle destruction has been completely wrong for several versions, how did no one notice until recently?
