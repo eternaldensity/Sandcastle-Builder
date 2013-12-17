@@ -257,7 +257,8 @@ var typocount=0;
 function format(gainned,level)
 {
 	if(Molpy.options.typo)return gainned;
-	if(gainned.indexOf('<')>-1)return gainned; //don't mess with no html!
+	var angle=gainned.indexOf('<');
+	if(angle==0)return gainned; //don't mess with no html!
 	var squirpy=eternalf[gainned];
 	if(squirpy)return squirpy;
 	if(Math.abs(Molpy.newpixNumber)<typocount) return gainned;
@@ -265,7 +266,7 @@ function format(gainned,level)
 	level=level||0;
 	var gained=gainned;
 	if(!flandom(1.005))return gainned;
-	var n = flandom((gainned.length-2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
+	var n = flandom(angle>0?(angle):(gainned.length-2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
 	if(!isNaN(gainned[n]))return gainned;
 	gainned= gainned.slice(0,n+1)+gainned.slice(n);
 	gainned = format(gainned,level+1);
