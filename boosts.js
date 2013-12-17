@@ -471,10 +471,17 @@
 		{
 			var costs = '';			
 			var i = me.power+1;
+			var n = 0;
 			while(i--)
 			{
 				var sand = 2000000*Math.pow(100000,i);
 				costs+=Molpify(sand);
+				n++;
+				if(n>5)	
+				{
+					costs+=', then... ';
+					break;
+				}
 				if(i)costs+=', then ';
 			}
 			if(!me.power)return 'When NewPixBots activate, so does the Department of Redundancy Department at a cost of '+costs+' Sand, if you have at least 20 NewPixBots.<br>Can be upgraded if you have Doubleposting and ask the right person...';
@@ -1800,7 +1807,6 @@
 			Molpy.Notify('<b>THEY ARE HEAVY</b>',1);
 		}
 	}
-	Molpy.faCosts=[55,65,85,115,145,175,205,240,280,330,440,560,700,900,1200,1500];
 	new Molpy.Boost({name:'Rosetta',
 		desc:function(me)
 		{
@@ -3595,9 +3601,15 @@
         var times=0;
         if (fast)
         {
-            Molpy.RunFastFactory(acPower);
-            return;
         }
+		if(Molpy.mustardTools)
+		{
+			if(Molpy.Got('Mustard Automation')&&Molpy.Spend('Mustard',20))
+			{
+				Molpy.RunFastFactory(acPower);
+			}
+            return;
+		}
         while(i--)
         {
             var on = 1;
@@ -4498,14 +4510,14 @@
 	
 	Molpy.prizes=[
 		['Glass Goat','Bone Clicker','Double Department','Spare Tools','Doubletap','Single Double','Sandblast','Short Saw','Gruff'],
-		['Cracks','Soul Drain','Rush Job','Void Goat']
+		['Cracks','Soul Drain','Rush Job','Void Goat','Factory Expansion','Mustard Automation']
 	];
 	Molpy.AwardPrize=function(l)
 	{
 		l=l||0;
 		if(l>=Molpy.prizes.length)return;
-		var availRewards =[];
 		for(var i in Molpy.prizes[l])
+		var availRewards =[];
 		{
 			var d = Molpy.Boosts[Molpy.prizes[l][i]];
 			if(!d.unlocked)availRewards.push(d);
@@ -4645,8 +4657,10 @@
 	new Molpy.Boost({name:'Gruff',desc:'When you win the Monty Haul prize, you get 2 goats',sand:'2P',castles:'75T',downFunction:Molpy.AwardPrize,group:'prize'});
 	new Molpy.Boost({name:'Between the Cracks',alias:'Cracks',desc:'If you have infinite Sand production, Boost boost purchases do not spend any Sand or Castles',sand:'15E',castles:'80P',downFunction:Molpy.AwardPrize,group:'prize'});
 	new Molpy.Boost({name:'Soul Drain',desc:'Shadow Dragon has a 10% chance of producing bonemeal when Not Lucky occurs',sand:'60G',castles:'290M',downFunction:Molpy.AwardPrize2,group:'prize'});
-	new Molpy.Boost({name:'Rush Job',desc:'Mysterious Representations produces Blackprints 5 times as fast',sand:'50E',castles:'600P',downFunction:Molpy.AwardPrize,group:'prize'});
-	new Molpy.Boost({name:'Void Goat',desc:'Travel through a Temporal Rift yields a Goat if you have Flux Surge',sand:'40Z',castles:'900E',downFunction:Molpy.AwardPrize,group:'prize'});
+	new Molpy.Boost({name:'Rush Job',desc:'Mysterious Representations produces Blackprints 5 times as fast',sand:'50E',castles:'600P',glass:'400K',downFunction:Molpy.AwardPrize,group:'prize'});
+	new Molpy.Boost({name:'Void Goat',desc:'Travel through a Temporal Rift yields a Goat if you have Flux Surge',sand:'40Z',castles:'900E',glass:'50K',downFunction:Molpy.AwardPrize,group:'prize'});
+	new Molpy.Boost({name:'Factory Expansion',desc:'More Factory Automation levels are available through Rosetta',sand:'85Y',castles:'25Z',glass:'10M',downFunction:Molpy.AwardPrize,group:'prize'});
+	new Molpy.Boost({name:'Mustard Automation',desc:'Automata Assemble can run with Mustard Tools, at a cost of 20 Mustard per run',glass:'70G',downFunction:Molpy.AwardPrize,group:'prize'});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 	Molpy.groupNames={

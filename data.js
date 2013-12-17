@@ -675,6 +675,14 @@ Molpy.CheckBuyUnlocks=function(tool)
         }
 	if (Molpy.Boosts['AC'].power >= 230)  Molpy.EarnBadge('Mains Power');
 	if (Molpy.Boosts['AC'].power >= 50)  Molpy.EarnBadge('It Hertz');
+	
+	Molpy.faCosts=[55,65,85,115,145,175,205,240,280,330,440,560,700,900,1200,1500];
+	if(Molpy.Got('Factory Expansion'))
+	{
+		for(var n = 1e6;isFinite(n);n*=1000)
+			Molpy.faCosts.push(n);	
+	}
+	
 	if(!tool) Molpy.RefreshOptions();
 }
 
