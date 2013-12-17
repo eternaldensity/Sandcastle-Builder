@@ -3913,7 +3913,7 @@
 		desc:function(me)
 		{
 			
-			return (me.IsEnabled? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Blast Furnace run.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'')+'<br>(Supresses notifications about Glass gains so you don\'t get spammed';
+			return (me.IsEnabled? 'A':'When active, a') + 'fter Tool Factory runs, if all Tool prices are Infinite, uses 1 of each Tool to perform a Blast Furnace run.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'')+'<br>(Without extra power from Automata Control, will not run Blast Furnace every time.)<br>(Supresses notifications about Glass gains so you don\'t get spammed)';
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,glass:'50M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle'
 	});
