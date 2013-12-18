@@ -4598,7 +4598,7 @@
 	Molpy.prizes=[
 		['Glass Goat','Bone Clicker','Double Department','Spare Tools','Doubletap','Single Double','Sandblast','Short Saw','Gruff'],
 		['Cracks','Soul Drain','Rush Job','Void Goat','Factory Expansion','Mustard Automation','Musical Chairs','Glass Trolling','Fast Forward'],
-		['Archimedes','Month']
+		['Archimedes','Month','Eww','GoatONG','Mustard Injector','Crunch']
 	];
 	Molpy.AwardPrize=function(l)
 	{
@@ -4665,7 +4665,7 @@
 		Add:function(amount)
 		{
 			this.AddSuper(amount);
-			if(!Molpy.Got('Mustard Sale')&&Molpy.Spend(this.alias,2000))
+			if(!Molpy.Boosts['Mustard Sale'].unlocked&&Molpy.Spend(this.alias,2000))
 			{
 				Molpy.UnlockBoost('Mustard Sale');
 			}
@@ -4870,10 +4870,62 @@
 			Molpy.Boosts['Rob'].Refresh();
 		}
 	}
-
 	Molpy.ToggleBit=function(myid,bit) {
 		Molpy.BoostsById[myid].power ^= (1<<bit);
 		Molpy.Boosts['Rob'].Refresh();
 	}
+	
+	new Molpy.Boost({name:'Eww',
+		desc:function(me)
+		{
+			return 'Convert 1K Mustard into 20 Bonemeal'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Mustard\',1000))Molpy.Add(\'Bonemeal\',5)" value="Use"></input>':'');
+		},
+		glass:'789G',sand:'2W',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1],className:'action'
+	});
+	
+	new Molpy.Boost({name:'GoatONG',
+		desc:function(me)
+		{
+			return 'Spend a Goat and cause an ONG<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Goat\',1))Molpy.ONG();Molpy.LockBoost(\'GoatONG\')" value="Use"></input>':'');
+		},
+		glass:'789G',sand:'2W',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1],className:'action'
+	});
+	
+	new Molpy.Boost({name:'Mustard Injector',
+		desc:function(me)
+		{
+			return 'Spend 200 Mustard to convert a random tool to Mustard'+(me.bought?'<br><input type="Button" onclick="Molpy.MustardInjector()" value="Use"></input>':'');
+		},
+		sand:Infinity,castles:'50GW',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1],className:'action'
+	});
+	Molpy.MustardInjector=function()
+	{
+		if(Molpy.Spend('Mustard',200))
+		{
+			var tool=GLRschoice(Molpy.tfOrder);
+			tool.amount=NaN;
+			tool.temp=0;
+			tool.Refresh();
+			Molpy.Notify('Mustarded '+tool.name);
+		}
+	}
+	
+	new Molpy.Boost({name:'Crunchy with Mustard',alias:'Crunch',
+		desc:function(me)
+		{
+			return 'Pay 5K Mustard to reset your '+Molpy.redactedWord+' click count to 0 and gain 1 Bonemeal per 20'+(me.bought?'<br><input type="Button" onclick="Molpy.RedactedCrunch()" value="Use"></input>':'');
+		},
+		castles:Infinity,glass:'800SW',downFunction:Molpy.AwardPrize,group:'prize',stats:Molpy.prizeText[1],className:'action'
+	});
+	Molpy.RedactedCrunch=function()
+	{
+		if(Molpy.Spend('Mustard',5000))
+		{
+			Molpy.Add('Bonemeal',Math.floor(Molpy.redactedClicks/20));
+			Molpy.redactedClicks=0;
+			Molpy.Notify('Crunch!');
+		}
+	}
+	
 	//END OF BOOSTS, add new ones immediately before this comment
 }
