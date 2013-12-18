@@ -1560,6 +1560,7 @@
 			}
 			else
 			{
+				if (!Molpy.Got('Stretchable Block Storage') && this.Level == Infinity) waste=amount;
 				if (waste)
 				{
 					this.Level-=waste;
@@ -4412,7 +4413,7 @@
 		else
 			me.power=1*!me.power;      
 		me.Refresh();
-        if (myid <=5) Molpy.Boosts['Rob'].Refresh();
+	        if (myid <=6) Molpy.Boosts['Rob'].Refresh();
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);
 	}
 	
@@ -4872,14 +4873,14 @@
 			if (!large) str += "</small>";
 			return str;
 		},
-		sand:Infinity,castles:Infinity,glass:Infinity,group:'cyb'
+		sand:Infinity,castles:Infinity,glass:Infinity,group:'cyb',class:'action'
 	});
 
 	Molpy.Robot_Upgrade=function() {
 		me = Molpy.Boosts['Rob'];
 		if (Molpy.Spend('GlassBlocks',Infinity)) {
 			me.bought++;
-			Molpy.BoostsById[me.bought].power = 0;
+			Molpy.BoostsById[me.bought+1].power = 0;
 			Molpy.Notify('Robotic Shopper upgraded');
 			Molpy.Boosts['Rob'].Refresh();
 		}
