@@ -856,6 +856,7 @@
 		Molpy.UpdateColourScheme();
 		Molpy.AdjustFade();
 		Molpy.LockBoost('MHP');
+		Molpy.LockBoost('Panther Rush');
 		if(Molpy.redactedVisible)
 		{
 			Molpy.redactedCountup=Molpy.redactedToggle;

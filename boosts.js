@@ -3876,15 +3876,14 @@
 		{
 			var lc = Molpy.Boosts['Logicat'];
 			var levels = 200*(this.power+1)-5;
-			if(lc.bought>=levels&&confirm('Really spend '+Molpify(levels,3)+' Logicat levels on Panther Rush?'))
+			if(Molpy.Got('Logicat',levels)&&confirm('Really spend '+Molpify(levels,3)+' Logicat levels on Panther Rush?'))
 			{				
-				lc.bought-=levels;
-				lc.power-=5*levels;
+				Molpy.Spend('Logicat',levels);
 				this.power++;
 				levels = 200*(this.power+1)-5;				
 			}
 			Molpy.LockBoost(this.alias);
-			if(lc.bought>=levels)Molpy.UnlockBoost(this.alias);
+			if(Molpy.Got('Logicat',levels))Molpy.UnlockBoost(this.alias);
 		}
 	});
 	

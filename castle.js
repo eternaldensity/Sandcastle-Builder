@@ -1846,8 +1846,8 @@ Molpy.Up=function()
 					}
 					Molpy.Spend('GlassBlocks',gp);
 					this.bought=1;
-					_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name,!(sp||cp||gp)]);
 					if (this.buyFunction) this.buyFunction();
+					_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name,!(sp||cp||gp)]);
 					Molpy.boostRepaint=1;
 					Molpy.recalculateDig=1;
 					Molpy.BoostsOwned++;
