@@ -4396,7 +4396,7 @@
 	
 	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:function(me)
 	{		
-		return (me.IsEnabled? 'Y':'When active, y') + 'ou can win/lose Glass Chips from the Monty Haul Problem'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		return (me.IsEnabled? 'Y':'When active, y') + 'ou can win/lose Glass Chips from the Monty Haul Problem'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',1))Molpy.GenericToggle('+me.id+',1)" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input> (costs 1 Goat to toggle)':'');
 	},
 	buyFunction:function(){this.IsEnabled=1;},className:'toggle',
 	IsEnabled:Molpy.BoostFuncs.PosPowEnabled,sand:'1P',castles:'1T',glass:'1K'});
