@@ -2325,7 +2325,8 @@
 		desc:function(me)
 		{
 			var ans=Math.ceil((me.bought*5-Math.floor(me.power))/(1+Molpy.Boosts['Panther Rush'].power/2));
-			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+me.bought+'.<br>Needs '+ans+' correct answer'+plural(ans)+' to reach Logicat Level '+(me.bought+1);
+			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+Molpify(me.bought,1)
+				+'.<br>Needs '+ans+' correct answer'+plural(ans)+' to level up.';
 		}
 		,sand:'55E',castles:'238E',glass:100,group:'stuff',icon:'logicat'
 	});
@@ -3866,7 +3867,7 @@
 	new Molpy.Boost({name:'Stained Glass Launcher',desc:'Trebuchet Glass flinging is multiplied by the number of Glass Ceilings owned',glass:'15M',sand:Infinity,castles:Infinity});
 	new Molpy.Boost({name:'Glass Saw',desc:function(me)
 	{		
-		return (me.IsEnabled? '':'When active, ') + 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and doubling with use.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		return (me.IsEnabled? '':'When active, ') + 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and doubling with use.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'')+'<br>Current maximum is '+Molpify(Math.abs(me.power),1)+' Blocks per Glass Ceiling';
 	},
 	IsEnabled:Molpy.BoostFuncs.PosPowEnabled,
 	glass:'7M',sand:Infinity,castles:Infinity,className:'toggle',

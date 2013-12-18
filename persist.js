@@ -1189,7 +1189,7 @@
 			
 			Molpy.unlockedGroups={};
 			Molpy.badgeRepaint=1;
-			Molpy.
+			Molpy.UpdateFaves(1);
 			_gaq.push(['_trackEvent','Coma','Complete',''+Molpy.highestNPvisited]);
 		}
 	}
