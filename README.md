@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.276
+- Finally got Panther Rush to behave itself. Also messed around with costs a bit.
+
 ## 3.275
 - Switching Glass Furnace broke the Molpy.IsEnabled function
 - Made Panther Rush cheaper for faster logicat progression

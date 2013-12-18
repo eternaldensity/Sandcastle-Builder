@@ -856,7 +856,6 @@
 		Molpy.UpdateColourScheme();
 		Molpy.AdjustFade();
 		Molpy.LockBoost('MHP');
-		Molpy.LockBoost('Panther Rush');
 		if(Molpy.redactedVisible)
 		{
 			Molpy.redactedCountup=Molpy.redactedToggle;
@@ -1040,8 +1039,7 @@
 				{
 					if (Molpy.Earned('discov-'+ip)) mm.power++;
 				}
-				if (mm.power >= 10) Molpy.UnlockBoost('Magic Mirror');
-				
+				if (mm.power >= 10) Molpy.UnlockBoost('Magic Mirror');		
 			}
 		}
 		if(version<3.261)

@@ -2324,7 +2324,7 @@
 		},
 		desc:function(me)
 		{
-			var ans=Math.ceil((me.bought*5-Math.floor(me.power))/(1+Molpy.Boosts['Panther Rush'].power/2));
+			var ans=Math.ceil((me.bought*5-Math.floor(me.power))/(1+Molpy.Level('Panther Rush')/2));
 			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+Molpify(me.bought,1)
 				+'.<br>Needs '+ans+' correct answer'+plural(ans)+' to level up.';
 		}
@@ -2575,7 +2575,7 @@
 			if(clickedVal==Molpy.cagedPuzzleTarget)
 			{
 				Molpy.Notify('Correct',1);
-				Molpy.Add('Logicat',0,1+(Molpy.Boosts['Panther Rush'].power)/2);
+				Molpy.Add('Logicat',0,1+Molpy.Level('Panther Rush')/2);
 			}
 			else
 			{
@@ -2587,7 +2587,7 @@
 					Molpy.Notify('Try Again');
 					return;
 				}
-				Molpy.Destroy('Logicat',0,0.5);
+				Molpy.Destroy('Logicat',0,0.5+Molpy.Level('Panther Rush')/2);
 			}
 		}
 		Molpy.cagedPuzzleValue='';
@@ -3877,26 +3877,32 @@
 	Molpy.rushCost=80;
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
-			return 'Each time you buy this, uses '+Molpify(Molpy.rushCost*(me.power+1)-5,3)+' Logicat levels to increase the points awarded by correct Logicat answers by 0.5.<br>It will immediately relock and will become available again when you have '
-				+Molpify(Molpy.rushCost*(me.power+2),3)+' Logicat levels';
+			return 'Uses '+Molpify(Molpy.CalcRushCost(),3)+' Logicat levels to increase the value of Logicat answers by 0.5.<br>Single use: available again when you have '
+				+Molpify(Molpy.CalcRushCost(1)+5,3)+' Logicat levels.'+(me.Level?'<br>Currently at '+Molpify(me.Level/2,1)+' points':'')+(me.bought?'<br><input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>':'');
 		},glass:function()
 		{
-			return 30000000+Molpy.Boosts['Panther Rush'].power*10000000;
-		},sand:Infinity,castles:Infinity,
-		buyFunction:function()
-		{
-			var lc = Molpy.Boosts['Logicat'];
-			var levels = Molpy.rushCost*(this.power+1)-5;
-			if(Molpy.Got('Logicat',levels)&&confirm('Really spend '+Molpify(levels,3)+' Logicat levels on Panther Rush?'))
-			{				
-				Molpy.Spend('Logicat',levels);
-				this.power++;
-				levels = Molpy.rushCost*(this.power+1)-5;				
-			}
-			Molpy.LockBoost(this.alias);
-			if(Molpy.Got('Logicat',levels))Molpy.UnlockBoost(this.alias);
-		}
+			return Math.pow(10,Molpy.Boosts['Panther Rush'].power+7);
+		},sand:Infinity,castles:Infinity,className:'action',defStuff:1
 	});
+	Molpy.Boosts['Panther Rush'].refreshFunction=undefined;
+	Molpy.CalcRushCost=function(p)
+	{
+		var l = Molpy.Level('Panther Rush')+(p||0);
+		return (Molpy.rushCost+l)*(l+1);
+	}
+	Molpy.PantherRush=function()
+	{
+		var pr = Molpy.Boosts['Panther Rush'];
+		var levels = Molpy.CalcRushCost();
+		if(Molpy.Has('Logicat',levels+5)&&confirm('Really spend '+Molpify(levels,3)+' Logicat levels on Panther Rush?'))
+		{				
+			if(Molpy.Spend('Logicat',levels))
+				pr.Add(1);
+			levels = Molpy.CalcRushCost();		
+			Molpy.LockBoost(pr.alias);
+			if(Molpy.Has('Logicat',levels+5))Molpy.UnlockBoost(pr.alias);		
+		}
+	}
 	
 	new Molpy.Boost({name:'Ruthless Efficiency',desc:'Glass Block production uses a quarter as many Chips',glass:'12M',sand:'10WW',castles:'10WW', group:'hpt'});
 	new Molpy.Boost({name:'Break the Mould',desc:'Allows you to destroy an incomplete or unfilled Mould, if you decide making it was a mistake.',glass:'2M',sand:'10WWW',castles:'10WWW', group:'bean',icon:'breakthemould'});
@@ -3974,13 +3980,13 @@
 	}
 	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
 		buyFunction:function(){
-			Molpy.Add('Caged Logicat',1+Molpy.Boosts['Panther Rush'].power);
+			Molpy.Add('Caged Logicat',1+Molpy.Level('Panther Rush'));
 			Molpy.LockBoost(this.alias);
 		}
 	});
 	Molpy.PokeBar=function()
 	{
-		return 4+Molpy.Boosts['Panther Rush'].power*(1+Molpy.Boosts['WiseDragon'].power);
+		return 4+Molpy.Level('Panther Rush')*(1+Molpy.Boosts['WiseDragon'].power);
 	}
 	new Molpy.Boost({name:'Flipside',
 		desc:function(me)
@@ -4242,7 +4248,7 @@
 	});
 	Molpy.DragonTarget=function()
 	{
-		if(Molpy.Got('Tool Factory')&&Molpy.Boosts['Logicat'].bought>900/(Molpy.Boosts['Panther Rush'].power+1)&&!Molpy.Boosts['Crystal Dragon'].unlocked) return [1000,'Crystal Dragon'];
+		if(Molpy.Got('Tool Factory')&&Molpy.Has('Logicat',1200/(Molpy.Level('Panther Rush')+1))&&!Molpy.Boosts['Crystal Dragon'].unlocked) return [1000,'Crystal Dragon'];
 		if(Molpy.Boosts['AC'].power>101&&!Molpy.Boosts['Draft Dragon'].unlocked&&Molpy.groupBadgeCounts.monumg>40) return [2e12,'Draft Dragon'];
 		if(Molpy.Boosts['AC'].power>300&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e16,'Dragon Forge'];
 		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e20,'WiseDragon'];

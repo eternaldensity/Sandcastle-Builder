@@ -2,7 +2,7 @@
 
 function g(id) {return document.getElementById(id);}
 var Molpy={};
-Molpy.version=3.275;
+Molpy.version=3.276;
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[
@@ -850,7 +850,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Tiny Glasses'].logic=90*(Molpy.SandTools['LaPetite'].amount>=8000);
 	Molpy.Boosts['Glass Saw'].logic=150*(Molpy.glassPermNP>=4000);
 	
-	Molpy.Boosts['Panther Rush'].logic=Molpy.rushCost*(Molpy.Boosts['Panther Rush'].power+1);
+	Molpy.Boosts['Panther Rush'].logic=Molpy.CalcRushCost()+5;
 	
 	Molpy.Boosts['AC'].logic=440*(Molpy.Got('AA')&&(Molpy.CastleTools['NewPixBot'].amount>=7500?50000/Molpy.CastleTools['NewPixBot'].amount:0));
 	Molpy.Boosts['Flipside'].logic=220*Molpy.Got('AA');
