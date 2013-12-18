@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.277
+- Prevent Time Lord
+
 ## 3.276
 - Finally got Panther Rush to behave itself. Also messed around with costs a bit.
 - Mucked around with how Prizes work: the tiers are clearly separated and you need to get a new Bag to progress from tier to tier.

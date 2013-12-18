@@ -2,7 +2,7 @@
 
 function g(id) {return document.getElementById(id);}
 var Molpy={};
-Molpy.version=3.276;
+Molpy.version=3.277;
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[
@@ -837,7 +837,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 		}
 	}
 	Molpy.Boosts['TDE'].logic=finiteC*finiteP;
-	Molpy.Boosts['Temporal Rift'].logic=3*finiteC;
+	Molpy.Boosts['Temporal Rift'].logic=3*finiteC*!Molpy.timeLord;
 	
 	Molpy.Boosts['Bucking the Trend'].logic=10*(Molpy.SandTools['Bucket'].amount>=10000);
 	Molpy.Boosts['Crystal Well'].logic=20*(Molpy.SandTools['Bucket'].amount>=20000);

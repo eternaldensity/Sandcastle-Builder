@@ -953,6 +953,11 @@
 		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:7,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
+		if(Molpy.timeLord)
+		{
+			Molpy.Notify('You are not a Time Lord');
+		}
+		Molpy.timeLord=1;
 		if(Math.random()*5<4)
 		{
 			if(isFinite(Molpy.castlesBuilt))
