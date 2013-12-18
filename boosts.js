@@ -1026,7 +1026,7 @@
 			return;
 		}
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',this.name]);	
-		this.IsEnabled=off;
+		Molpy.Boosts['Glass Furnace Switching'].IsEnabled=off;
 		Molpy.GiveTempBoost('Glass Furnace Switching',off,1500);
 	}
 	//check whether we can further reduce the sand rate to use any for various means
@@ -1419,7 +1419,7 @@
 		},lockFunction:
 		function()
 		{
-			Molpy.Boosts['Glass Blower'].power = (!this.power)*1;
+			Molpy.Boosts['Glass Blower'].IsEnabled = (!this.IsEnabled)*1;
 			Molpy.Notify('Glass Blower is '+(this.IsEnabled?'off':'on'));
 		}
 		,startCountdown:2500//dummy value
@@ -1437,7 +1437,8 @@
 			Molpy.Notify('Not enough Sand available for further machinery');
 			return;
 		}
-		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',this.name]);	
+		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',this.name]);
+		Molpy.Boosts['Glass Blower Switching'].IsEnabled=off;
 		Molpy.GiveTempBoost('Glass Blower Switching',off,2500);
 	}
 	
@@ -4678,6 +4679,13 @@
 		,icon:'maps',group:'stuff',defStuff:1
 	});
 	
+	Molpy.ClearMap=function()	
+	{
+		if(Molpy.groupBadgeCounts.monumg>0) //todo finish this
+		Molpy.Boosts['Maps'].bought=-1
+		Molpy.Boosts['Maps'].Refresh();
+	}
+	
 	Molpy.RandomiseMap=function()	
 	{
 		var np;
@@ -4837,11 +4845,13 @@
 			me.bought++;
 			Molpy.BoostsById[me.bought].power = 0;
 			Molpy.Notify('Robotic Shopper upgraded');
+			Molpy.Boosts['Rob'].Refresh();
 		}
 	}
 
 	Molpy.ToggleBit=function(myid,bit) {
 		Molpy.BoostsById[myid].power ^= (1<<bit);
+		Molpy.Boosts['Rob'].Refresh();
 	}
 	//END OF BOOSTS, add new ones immediately before this comment
 }

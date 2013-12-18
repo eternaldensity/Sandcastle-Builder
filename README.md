@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.275
+- Switching Glass Furnace broke the Molpy.IsEnabled function
+
 ## 3.274
 - Break the Mould unlocks quicker: it wasn't counting the amount of factory automation you had and was just counting a fail once per machine per run.
 - Countdowns are loaded as a float rather than an int (why didn't waveny fix that with the other things a month ago?? Probably didn't expect me to get crazy with the Temporal Duplication countdown)

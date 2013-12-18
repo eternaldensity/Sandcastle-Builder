@@ -878,7 +878,7 @@ Molpy.Up=function()
 						Molpy.UnlockBoost('DNS');
 					}else{
 						Molpy.Notify('You found a new map!',1);
-						Molpy.RandomiseMap();
+						Molpy.ClearMap();
 					}
 				}
 			}
