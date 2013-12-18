@@ -3867,10 +3867,11 @@
 		buyFunction:function(){this.IsEnabled=1;}
 	});
 	
+	Molpy.rushCost=80;
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
-			return 'Each time you buy this, uses '+Molpify(200*(me.power+1)-5,3)+' Logicat levels to increase the points awarded by correct Logicat answers by 0.5.<br>It will immediately relock and will become available again when you have '
-				+Molpify(200*(me.power+2),3)+' Logicat levels';
+			return 'Each time you buy this, uses '+Molpify(Molpy.rushCost*(me.power+1)-5,3)+' Logicat levels to increase the points awarded by correct Logicat answers by 0.5.<br>It will immediately relock and will become available again when you have '
+				+Molpify(Molpy.rushCost*(me.power+2),3)+' Logicat levels';
 		},glass:function()
 		{
 			return 30000000+Molpy.Boosts['Panther Rush'].power*10000000;
@@ -3878,12 +3879,12 @@
 		buyFunction:function()
 		{
 			var lc = Molpy.Boosts['Logicat'];
-			var levels = 200*(this.power+1)-5;
+			var levels = Molpy.rushCost*(this.power+1)-5;
 			if(Molpy.Got('Logicat',levels)&&confirm('Really spend '+Molpify(levels,3)+' Logicat levels on Panther Rush?'))
 			{				
 				Molpy.Spend('Logicat',levels);
 				this.power++;
-				levels = 200*(this.power+1)-5;				
+				levels = Molpy.rushCost*(this.power+1)-5;				
 			}
 			Molpy.LockBoost(this.alias);
 			if(Molpy.Got('Logicat',levels))Molpy.UnlockBoost(this.alias);
