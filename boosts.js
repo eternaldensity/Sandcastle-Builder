@@ -3671,6 +3671,8 @@
         var times=0;
         if (fast)
         {
+			Molpy.RunFastFactory(acPower);
+			return;
         }
 		if(Molpy.mustardTools)
 		{
