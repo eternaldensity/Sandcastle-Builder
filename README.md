@@ -31,6 +31,7 @@ For personal amusement only.
 - Countdowns are loaded as a float rather than an int (why didn't waveny fix that with the other things a month ago?? Probably didn't expect me to get crazy with the Temporal Duplication countdown)
 - Hall of Mirrors is now a toggle (and it'll be off if you already have it but it defaults to on when you buy it) (toggling costs a goat to discourage from toggling it off before buying MHP and then on again after you've bought it)
 - Temporal Duplication factor negative fix, and formula fix
+- Glass Storages now offer machine purchases when you have infinite (important after Molpy Down) (oops!)
 
 ## 3.273
 - Castle destruction has been completely wrong for several versions, how did no one notice until recently?

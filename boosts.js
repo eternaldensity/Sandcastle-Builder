@@ -1295,34 +1295,6 @@
 			var size=(me.bought)*10;
 			var rate = Molpy.Boosts['Sand Refinery'].power+1;
 			str+= ' Has space to store '+Molpify(size,3)+ ' Chips total.';
-			if(!isFinite(size))return str;
-			if(size-me.Level<=rate*10||Molpy.Got('AA'))
-			{
-				if(me.Has(5))
-				{
-					str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage(1)"></input> 5 Chips to build storage for 10 more.'
-				}else{
-					str+='<br>It costs 5 Glass Chips to store 10 more.';
-				}
-				if(rate>150)
-				{
-					if(me.Has(90))
-					{
-						str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage(20)"></input> 90 Chips to build storage for 200 more.'
-					}else{
-						str+='<br>It costs 90 Glass Chips to store 200 more.';
-					}
-					if(me.bought>250)
-					{
-						var n = Math.floor(me.Level/12)*2 //ensure even to prevent fractional chips
-						if(n>20)
-						{
-							str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage('+n+')"></input> '+Molpify(n*4.5,3)+' Chips to build storage for '
-								+Molpify(n*10,3)+' more.'
-						}
-					}
-				}
-			}
 			if(me.Has(11)&&!Molpy.Got('Sand Refinery'))
 			{
 				if(me.Has(30))
@@ -1350,6 +1322,35 @@
 					str+='<br>It costs '+Molpify(10000)+' Glass Chips';
 				}
 				str+=' to build a Glass Extruder which makes the Glass Blower use less Sand.';
+			}
+			
+			if(!isFinite(size))return str;
+			if(size-me.Level<=rate*10||Molpy.Got('AA'))
+			{
+				if(me.Has(5))
+				{
+					str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage(1)"></input> 5 Chips to build storage for 10 more.'
+				}else{
+					str+='<br>It costs 5 Glass Chips to store 10 more.';
+				}
+				if(rate>150)
+				{
+					if(me.Has(90))
+					{
+						str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage(20)"></input> 90 Chips to build storage for 200 more.'
+					}else{
+						str+='<br>It costs 90 Glass Chips to store 200 more.';
+					}
+					if(me.bought>250)
+					{
+						var n = Math.floor(me.Level/12)*2 //ensure even to prevent fractional chips
+						if(n>20)
+						{
+							str+='<br><input type="Button" value="Pay" onclick="Molpy.UpgradeChipStorage('+n+')"></input> '+Molpify(n*4.5,3)+' Chips to build storage for '
+								+Molpify(n*10,3)+' more.'
+						}
+					}
+				}
 			}
 			return str;
 		}
@@ -1567,7 +1568,27 @@
 			var size=(me.bought)*50;
 			var rate = Molpy.Boosts['Glass Chiller'].power+1;
 			str+= ' Has space to store '+Molpify(size,3)+ ' Blocks total.';
+			if(me.Has(31)&&!Molpy.Got('Glass Chiller'))
+			{
+				if(me.Has(80))
+				{
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Chiller\',0,80)"></input> 80 Blocks to build a Glass Chiller to make Blocks faster.';
+				}else{
+					str+='<br>It costs 80 Glass Blocks to build a Glass Chiller, which can make Blocks faster.';
+				}
+			}
+			if(me.Has(41)&&!Molpy.Got('Sand Purifier'))
+			{
+				if(me.Has(95))
+				{
+					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Sand Purifier\',0,95)"></input> 95 Blocks';
+				}else{
+					str+='<br>It costs 95 Glass Blocks';
+				}
+				str+=' to build a Sand Purifier, which makes the Glass Furnace use less sand.';
+			}
 			if(!isFinite(size))return str;
+			
 			if(size-me.Level<=rate*10||Molpy.Got('AA'))
 			{
 				if(me.Has(15))
@@ -1595,25 +1616,6 @@
 						}
 					}
 				}
-			}
-			if(me.Has(31)&&!Molpy.Got('Glass Chiller'))
-			{
-				if(me.Has(80))
-				{
-					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Glass Chiller\',0,80)"></input> 80 Blocks to build a Glass Chiller to make Blocks faster.';
-				}else{
-					str+='<br>It costs 80 Glass Blocks to build a Glass Chiller, which can make Blocks faster.';
-				}
-			}
-			if(me.Has(41)&&!Molpy.Got('Sand Purifier'))
-			{
-				if(me.Has(95))
-				{
-					str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Sand Purifier\',0,95)"></input> 95 Blocks';
-				}else{
-					str+='<br>It costs 95 Glass Blocks';
-				}
-				str+=' to build a Sand Purifier, which makes the Glass Furnace use less sand.';
 			}
 			return str;
 		}
