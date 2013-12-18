@@ -32,6 +32,8 @@ For personal amusement only.
 - Hall of Mirrors is now a toggle (and it'll be off if you already have it but it defaults to on when you buy it) (toggling costs a goat to discourage from toggling it off before buying MHP and then on again after you've bought it)
 - Temporal Duplication factor negative fix, and formula fix
 - Glass Storages now offer machine purchases when you have infinite (important after Molpy Down) (oops!)
+- Shopping Assistant would seem to work for boosts with an alias but it wouldn't actually buy. Fixed now.
+- Waveney's robotic shopper thing maybe works?
 
 ## 3.273
 - Castle destruction has been completely wrong for several versions, how did no one notice until recently?

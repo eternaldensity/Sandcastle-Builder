@@ -1972,8 +1972,8 @@ Molpy.Up=function()
 						}
 						if(baby.unlockFunction)baby.unlockFunction();
 						baby.Refresh();
-						Molpy.Notify('Horse' + baby.name);
-						if(baby.name==Molpy.shoppingItem) { Molpy.Donkey() }
+						//Molpy.Notify('Horse' + baby.name);
+						if(baby.alias==Molpy.shoppingItem) { Molpy.Donkey() }
 						else { Molpy.Mule(baby.id); }
 					}
 				}

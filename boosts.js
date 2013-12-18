@@ -827,7 +827,7 @@
 	Molpy.ChooseShoppingItem=function(mule)
 	{
 		var donkey=(mule?Molpy.BoostsById[mule]:Molpy.Boosts['Shopping Assistant']);
-		var shoppingItem = (mule?(Molpy.BoostsById[Math.abs(donkey.power)].name || ''):(Molpy.shoppingItem || 'Bag'));
+		var shoppingItem = (mule?(Molpy.BoostsById[Math.abs(donkey.power)].alias || ''):(Molpy.shoppingItem || 'Bag'));
 		donkey.power=0;
 		var name = prompt('Enter the name of the tool or boost you wish to buy'+(mule?'':' whenever ASHF is active')+'.\nNames are case sensitive.\nLeave blank to disable.\nYour choice is preserved if you reload.',shoppingItem);
 		var notify=1;
