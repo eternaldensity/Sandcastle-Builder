@@ -4401,6 +4401,7 @@
 		else
 			me.power=1*!me.power;      
 		me.Refresh();
+        if (myid <=5) Molpy.Boosts['Rob'].Refresh();
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',me.name]);
 	}
 	
