@@ -1107,9 +1107,8 @@
 		{		
 			var ch = Molpy.Boosts['GlassChips'];
 			var bl = Molpy.Boosts['GlassBlocks'];
-			var str='Causes the Glass Furnace to produce '+Molpify(me.power+1,3)+' Glass Chip'+plural(pow)+' per run';
-			if(!isFinite(me.power))return str;
-			if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()))
+			var str='Causes the Glass Furnace to produce '+Molpify(me.power+1,3)+' Glass Chip'+plural(pow)+' per run.';
+			if(isFinite(me.power)&&Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()))
 			{
 				var useChips=1;
 				var afford=1;
@@ -1120,7 +1119,7 @@
 				{
 					useChips=0
 				}else{
-					str+= 'It costs 3 Chips to upgrade the Glass Furnace\'s speed';
+					str+= 'It costs 3 Chips to upgrade the Glass Furnace\'s speed.';
 					afford=0;
 				}
 				if(afford)
@@ -1142,7 +1141,7 @@
 					{
 						useChips=0
 					}else{
-						str+= '<br>It costs 50 Chips to upgrade the Glass Furnace\'s speed by 20';
+						str+= '<br>It costs 50 Chips to upgrade the Glass Furnace\'s speed by 20.';
 						afford=0;
 					}
 					if(afford)
@@ -1182,7 +1181,12 @@
 				}					
 				
 			}else{
-				str+='<br>Currently, you have no more sand available for further upgrades';
+				if(isFinite(me.power))
+				{
+					str+='<br>Currently, you have no more sand available for further upgrades';
+				}else{
+					str+='<br>You have no need for further upgrades.';
+				}
 			}
 			if(!Molpy.Boosts['No Sell'].power&&me.power>1)
 			{
@@ -1473,6 +1477,8 @@
 					}
 				}else
 					str+= 'It costs 5 Blocks to upgrade the Glass Blower\'s speed.';
+			}else{
+				str+='<br>You have no need for further upgrades.';
 			}
 			if(!Molpy.Boosts['No Sell'].power&&me.power>1)
 			{

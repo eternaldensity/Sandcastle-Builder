@@ -1151,6 +1151,7 @@
 			
 			Molpy.UpdateBeach();
 			Molpy.HandlePeriods();
+			Molpy.UpdateFaves(1);
 			Molpy.EarnBadge('Not Ground Zero');
 			Molpy.AdjustFade();
 			Molpy.UpdateColourScheme();
@@ -1188,6 +1189,7 @@
 			
 			Molpy.unlockedGroups={};
 			Molpy.badgeRepaint=1;
+			Molpy.
 			_gaq.push(['_trackEvent','Coma','Complete',''+Molpy.highestNPvisited]);
 		}
 	}

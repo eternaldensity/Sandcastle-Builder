@@ -29,6 +29,7 @@ For personal amusement only.
 ## 3.275
 - Switching Glass Furnace broke the Molpy.IsEnabled function
 - Made Panther Rush cheaper for faster logicat progression
+- some refinery/chiller description cleanup
 
 ## 3.274
 - Break the Mould unlocks quicker: it wasn't counting the amount of factory automation you had and was just counting a fail once per machine per run.
