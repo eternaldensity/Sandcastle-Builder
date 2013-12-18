@@ -1555,6 +1555,7 @@
 			}
 			else
 			{
+				if (!Molpy.Got('Stretchable Block Storage') && this.Level == Infinity) waste=amount;
 				if (waste)
 				{
 					this.Level-=waste;
