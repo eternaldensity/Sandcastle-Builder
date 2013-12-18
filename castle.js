@@ -2131,6 +2131,7 @@ Molpy.Up=function()
 						{
 							Molpy.recalculateDig=1;
 						}
+						if(baby.group=='monumg'&&Molpy.Got('Maps'))Molpy.Boosts['Maps'].Refresh();
 						if(!Molpy.groupBadgeCounts[baby.group])
 						{
 							Molpy.groupBadgeCounts[baby.group]=1;

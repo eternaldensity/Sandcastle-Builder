@@ -4679,18 +4679,31 @@
 			{
 				return str+'.';
 			}
-			str+=' out of 200.<br>The next map can be found at NP '+me.bought;
+			str+=' out of 200.';
+			if(me.bought>-1 || Molpy.EnoughMonumgForMaps()&&Molpy.RandomiseMap())
+			{
+				str+='<br>The next map can be found at NP '+me.bought;
+			}else{
+				str+='<br>You must construct additional Glass Monuments before you are able to decypher the next map.';
+			}
 			return str;
 		},
-		stats:'You need to ninja-unstealth to find a map.'
+		stats:function(me){return me.desc(me)+'<br>You need to ninja-unstealth to find a map.';}
 		,buyFunction:Molpy.RandomiseMap
 		,icon:'maps',group:'stuff',defStuff:1
 	});
-	
+	Molpy.EnoughMonumgForMaps=function()
+	{
+		return Molpy.groupBadgeCounts.monumg>Molpy.Level('Maps')*5+Molpy.mapMonumg;
+	}
 	Molpy.ClearMap=function()	
 	{
-		if(Molpy.groupBadgeCounts.monumg>0) //todo finish this
-		Molpy.Boosts['Maps'].bought=-1
+		if(Molpy.EnoughMonumgForMaps())
+		{
+			Molpy.RandomiseMap();
+		}else{
+			Molpy.Boosts['Maps'].bought=-1
+		}
 		Molpy.Boosts['Maps'].Refresh();
 	}
 	
@@ -4699,6 +4712,7 @@
 		var np;
 		while((np = Math.ceil(Math.random()*Molpy.highestNPvisited)*(Math.random()>.5?1:-1))==Molpy.newpixNumber);
 		Molpy.Boosts['Maps'].bought=np;
+		return 1;
 	}
 	
 	new Molpy.Boost({name:'Dragon Nesting Site',alias:'DNS',

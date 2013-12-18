@@ -31,6 +31,7 @@ For personal amusement only.
 - Made Panther Rush cheaper for faster logicat progression
 - some refinery/chiller description cleanup
 - Logicat level is formatted in Logicat description
+- Changed the way maps work: you need 300 glass monuments to get the first map, and 5 more glass monuments to decypher each subsequent map. So you'll still end up needing most of the current available glass monuments to get 100 maps but you can start getting maps a lot sooner and then push forward NewPix to get at more maps.
 
 ## 3.274
 - Break the Mould unlocks quicker: it wasn't counting the amount of factory automation you had and was just counting a fail once per machine per run.
