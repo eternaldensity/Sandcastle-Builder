@@ -4935,6 +4935,10 @@
 			Molpy.Notify('Crunch!');
 		}
 	}
+	new Molpy.Boost({name:'Bag of Moulding',alias:'BoM',desc:'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal',
+		glass:Infinity,sand:Infinity,castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(1,{Bonemeal:200,Mustard:500,Blackprints:20}),group:'prize'});	
+	new Molpy.Boost({name:'Bag of Folding',alias:'BoF',desc:'Toggle Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal',
+		glass:Infinity,sand:Infinity,castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(2,{Bonemeal:3000,Goats:30,Blackprints:500}),group:'prize'});	
 		
 	//END OF BOOSTS, add new ones immediately before this comment
 }
