@@ -4293,7 +4293,7 @@
 		{
 			if(Molpy.Got('Dragon Foundry')&&Molpy.Got('GL'))
 			{
-				return Math.ceil(Molpy.Boosts['GL'].power/5000);
+				return 1+Math.floor(Molpy.Boosts['GL'].power/10000);
 			}
 			return 2;
 		}
