@@ -1055,6 +1055,45 @@
 	}
 	
 	
+	Molpy.MakePrizeList=function()
+	{
+		Molpy.prizeList=[];
+		for(var i in Molpy.Boosts)
+		{
+			var me=Molpy.Boosts[i];
+			var t=EvalMaybeFunction(me.tier,'low');
+			if(!Molpy.prizeList[t])Molpy.prizeList[t]=[''];
+			if(t!=EvalMaybeFunction(me.tier,'high'))
+			{
+				Molpy.prizeList[t][0]=me.alias;
+			}else{
+				Molpy.prizeList[t].push(me.alias);
+			}
+		}
+	}
+	
+	Molpy.AwardPrizes=function(prizeCounts)
+	{
+		if(!Molpy.prizeList) Molpy.MakePrizeList();
+		for(var i in prizeCounts)
+		{
+			var c = prizeCounts[i];
+			var p = Molpy.prizeList[i];
+			var l = p.length;
+			if(c>=l)
+			{
+				Molpy.UnlockBoost(p);
+			}else if(c==l-1)
+			{
+				Molpy.UnlockBoost(p.slice(1));				
+			}else{
+				p = p.slice(0);
+				ShuffleList(p);
+				Molpy.UnlockBoost(p.slice(l-c));	
+			}
+		}
+	}
+	
 	/* In which a routine for resetting the game is presented
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	Molpy.Down=function(coma)
@@ -1125,12 +1164,21 @@
 				me.Refresh();
 			}
 			var boh = !coma&&Molpy.Got('BoH')&&Molpy.Spend('Bonemeal',10);
-			var downFunctions=[];
+			var prizeCounts=[];
 			for(i in Molpy.Boosts)
 			{
 				var me = Molpy.Boosts[i];
 				if(boh&&me.group=='stuff')continue;
-				if(!coma&&me.bought&&me.downFunction)downFunctions.push(me.downFunction);
+				if(!coma&&me.bought&&me.prizes)
+				{
+					var t = EvalMaybeFunction(me.tier,'spend');
+					if(!prizeCounts[t])
+					{
+						prizeCounts[t]=me.prizes;
+					}else{
+						prizeCounts[t]+=me.prizes;
+					}
+				}
 				me.unlocked=0;
 				me.bought=0;	
 				me.power=0;
@@ -1139,7 +1187,7 @@
 					me.power=EvalMaybeFunction(me.startPower);
 				me.countdown=0;
 			}
-			for(var i in downFunctions){downFunctions[i]();}
+			Molpy.AwardPrizes(prizeCounts);
 			Molpy.recalculateDig=1;
 			Molpy.boostRepaint=1;
 			Molpy.shopRepaint=1;

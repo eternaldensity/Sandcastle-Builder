@@ -1643,8 +1643,18 @@ Molpy.Up=function()
 		}
 		Molpy.Has=function(stuff,amount)
 		{
-			var b = Molpy.Boosts[stuff];
-			return b&&b.Has(amount);
+			if(typeof(stuff)==='object')
+			{
+				for(var i in stuff)
+				{
+					if(!Molpy.Has(i,stuff[i]))return 0;
+				}
+				return 1;
+			}else
+			{
+				var b = Molpy.Boosts[stuff];
+				return b&&b.Has(amount);
+			}
 		}
 		Molpy.Add=function(stuff,amount,s)
 		{
@@ -1653,8 +1663,39 @@ Molpy.Up=function()
 		}
 		Molpy.Spend=function(stuff,amount,s)
 		{
-			var b = Molpy.Boosts[stuff];
-			return b&&b.Has(amount)&&b.Spend(amount,s);
+			if(typeof(stuff)==='object')
+			{
+				if(!Molpy.Has(stuff))return 0;
+				for(var i in stuff)
+				{
+					Molpy.Spend(i,stuff[i])
+				}
+				return 1;
+			}else
+			{
+				var b = Molpy.Boosts[stuff];
+				return b&&b.Has(amount)&&b.Spend(amount,s);
+			}
+		}
+		Molpy.PriceString=function(stuff,amount)
+		{
+			if(typeof(stuff)==='object')
+			{
+				var str='';
+				var first=1;
+				for(var i in stuff)
+				{
+					str+=Molpy.PriceString(i,stuff[i]);
+					if(first)
+						first=0;
+					else
+						str+=' and ';
+				}
+				return str;
+			}else
+			{
+				return stuff+ ' ' + Molpify(amount,2); //todo: use a nice display name rather than alias
+			}
 		}
 		Molpy.Destroy=function(stuff,amount,s)
 		{
@@ -1764,6 +1805,8 @@ Molpy.Up=function()
 			this.castlePrice=args.castles||0;
 			this.glassPrice=args.glass||0;
 			this.stats=args.stats;
+			this.tier=args.tier;
+			this.prizes=args.prizes;
 			if(args.defStuff)
 			{
 				args.Level=args.Level||Molpy.BoostFuncs.PosPowerLevel;
@@ -1789,7 +1832,6 @@ Molpy.Up=function()
 			this.buyFunction=args.buyFunction;
 			this.countdownFunction=args.countdownFunction;
 			this.refreshFunction=args.refreshFunction;
-			this.downFunction=args.downFunction;
 			this.unlocked=0;
 			this.bought=0;
 			this.department=args.department; //allow unlock by the department (this is not a saved value)
@@ -1898,7 +1940,9 @@ Molpy.Up=function()
 			}
 			this.GetDesc=function()
 			{
-				return format(EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this));
+				return format(EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this))+
+					format(this.prizes&&Molpy.IsStatsVisible()&&('<br>Gives '+Molpify(this.prizes)+' random Prize'+plural(this.prizes)
+						+' from tier L'+EvalMaybeFunction(this.tier,'show'))||'');
 			}
 			this.GetFullClass=function()
 			{
@@ -1906,7 +1950,7 @@ Molpy.Up=function()
 			}
 			this.GetHeading=function()
 			{
-				return '<h1>['+Molpy.groupNames[this.group][0]+']</h1>';
+				return '<h1>['+Molpy.groupNames[this.group][0]+((this.tier!=undefined && ' L'+Molpify(EvalMaybeFunction(this.tier)))||'')+']</h1>';
 			}
 			this.GetFormattedName=function()
 			{
