@@ -4875,7 +4875,7 @@
 			if (!large) str += "</small>";
 			return str;
 		},
-		sand:Infinity,castles:Infinity,glass:Infinity,group:'cyb',class:'action'
+		sand:Infinity,castles:Infinity,glass:Infinity,group:'cyb',className:'action'
 	});
 
 	Molpy.Robot_Upgrade=function() {
@@ -4889,7 +4889,7 @@
 	}
 	Molpy.ToggleBit=function(myid,bit) {
 		Molpy.BoostsById[myid].power ^= (1<<bit);
-		Molpy.Boosts['Rob'].Refresh();
+		Molpy.BoostsbyId[myid].Refresh();
 	}
 	
 	new Molpy.Boost({name:'Eww',
