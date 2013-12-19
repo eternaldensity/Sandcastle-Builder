@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.2771
+- Unbroke Achronal Dragon (oops that was a simple silly mistake which I should have spotted but didn't test because it was 'so simple' :(
+
 ## 3.277
 - Prevent Time Lord
 - Some waveney Rob fixes

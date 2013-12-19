@@ -4038,7 +4038,7 @@
 		desc:function(me)
 		{
 			if(!me.bought) return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
-			var n = me.power;
+			var n = me.Level;
 			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
 			var chipCost=1e7*Math.pow(1.2,n);
 			var pageCost=n*2;
@@ -4054,23 +4054,23 @@
 			}
 			return str;
 		}
-		,glass:'25M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',
-		buyFunction:function(){this.power=1;}
+		,glass:'25M',sand:Infinity,castles:Infinity, group:'hpt',className:'toggle',defStuff:1,
+		buyFunction:function(){this.Level=1;}
 	});
 	Molpy.ControlAutomata=function(n,dragon)
 	{
 		var me = Molpy.Boosts['AC'];
-		var chipCost=1e7*Math.pow(1.2,me.power);
-		var pageCost=2*me.power;
+		var chipCost=1e7*Math.pow(1.2,me.Level);
+		var pageCost=2*me.Level;
 		var logicatCost=0;
 		if(dragon)
 		{
 			chipCost=0;
 			pageCost*=5;
-			logicatCost=Math.ceil(me.power/20);
+			logicatCost=Math.ceil(me.Level/20);
 		}else if(n<0)
 		{
-			chipCost=-1e5*me.power;
+			chipCost=-1e5*me.Level;
 			pageCost=0;
 		}
 		if(Molpy.Has('GlassChips',chipCost))
@@ -4088,7 +4088,7 @@
 			Molpy.Spend('Blackprints',pageCost);
 			Molpy.Spend('Logicat',logicatCost);
 			Molpy.Spend('GlassChips',chipCost);
-			me.power+=n;
+			me.Add(n);
 			Molpy.Notify('Adjusted Automata Assemble');
 			if(n>0)
 				_gaq&&_gaq.push(['_trackEvent','Boost',(dragon?'Dragon Upgrade':'Upgrade'),me.name]);
