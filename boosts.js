@@ -4270,7 +4270,7 @@
 	{
 		var target=Molpy.DragonTarget();
 		var me = Molpy.Boosts['AD'];
-		if(me.Has(target[0])
+		if(me.Has(target[0]))
 		{
 			me.Spend(target[0]);
 			Molpy.UnlockBoost(target[1]);
