@@ -3475,6 +3475,7 @@
 			}
 		}
 		if(!isFinite(Math.pow(2,wwb.bought-5))) Molpy.UnlockBoost('Space Elevator');
+		wwb.Refresh();
 	}
 	
 	new Molpy.Boost({name:'Recycling Beanies',alias:'RB',desc:
