@@ -511,7 +511,7 @@
 	
 	createClockHand();
 	
-	var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1';
+	var fadeClasses='body , .floatbox , .lootbox , .minifloatbox , .floatsquare , .infobox , .icon , .descshow , .deschide , .badge.shop h1, #toolSTitle, #toolCTitle, #boostTitle';
 	var vendors=['-webkit-','-moz-','-o-','-ms-',''];
 	var fadeProps=['color','border-color','background-color','background-image'];
 	
@@ -526,7 +526,7 @@
 			if(id) id= ' id="'+id+'"';
 			var r = (Molpy.redactedVisible==kind&&Molpy.redactedGr==gr);
 			if(r)id='';
-			str+= '<div class="floatsquare loot '+type+'"><h3>'+Molpy.groupNames[gr][1]+'</h3><br>'+Molpy.ShowhideButton(gr)
+			str+= '<div class="floatsquare loot '+(r?'redacted-area ':'')+type+'"><h3>'+Molpy.groupNames[gr][1]+'</h3><br>'+Molpy.ShowhideButton(gr)
 				+'<div class="icon'
 				+(r?' redacted"':'"')
 				+id+'></div></div>';
@@ -543,9 +543,10 @@
 		}
 		if(Molpy.BadgesOwned)
 		{
-			str+= '<div class="floatsquare badge loot"><h3>Badges<br>Earned</h3>'
+			var r=Molpy.redactedVisible==5&& Molpy.redactedGr=='badges';
+			str+= '<div class="floatsquare badge loot'+(r?' redacted-area':'')+'"><h3>Badges<br>Earned</h3>'
 				+Molpy.ShowhideButton('badges')+'<div class="icon '
-				+(Molpy.redactedVisible==5&& Molpy.redactedGr=='badges'?'redacted':'')
+				+(r?'redacted':'')
 				+'"></div></div>';
 		}
 		var groups = ['discov','monums','monumg','diamm'];
@@ -555,9 +556,10 @@
 		}
 		if(Molpy.BadgeN-Molpy.BadgesOwned)
 		{
-			str+= '<div class="floatsquare badge shop"><h3>Badges<br>Available</h3>'
+			var r = Molpy.redactedVisible==6;
+			str+= '<div class="floatsquare badge shop'+(r?' redacted-area':'')+'"><h3>Badges<br>Available</h3>'
 				+Molpy.ShowhideButton('badgesav')+'<div class="icon '
-				+(Molpy.redactedVisible==6?'redacted':'')
+				+(r?'redacted':'')
 				+'"></div></div>';
 		}
 		if(Molpy.Boosts['Chromatic Heresy'].unlocked)
@@ -592,6 +594,7 @@
 			}
 			redactedIndex=Molpy.redactedViewIndex;
 		}
+		$('#toolSTitle').toggleClass('redacted-area sand',Molpy.redactedVisible==1);
 
 		var str='';
 		var i=0;
@@ -650,6 +653,7 @@
 			}
 			redactedIndex=Molpy.redactedViewIndex;
 		}
+		$('#toolCTitle').toggleClass('redacted-area castle',Molpy.redactedVisible==2);
 					
 		str='';
 		i=0;
@@ -749,6 +753,7 @@
 			}
 			redactedIndex=Molpy.redactedViewIndex;
 		}
+		$('#boostTitle').toggleClass('redacted-area boost',Molpy.redactedVisible==3);
 		var str='';
 		var r = 0;
 		for (var i in Molpy.BoostsInShop)
@@ -1294,9 +1299,9 @@
 		}
 		if(tagRepaint) Molpy.RepaintLootSelection();
 		if(Molpy.redactedVisible)
-		{		
-			var redacteditem=g('redacteditem');
-			if(redacteditem)
+		{	
+			var ra = $('.redacted-area');
+			if(ra)
 			{
 				Molpy.drawFrame++;
 				if(Molpy.drawFrame>=Molpy.fps/3)Molpy.drawFrame=0;
@@ -1306,9 +1311,14 @@
 					if(Molpy.Boosts['Chromatic Heresy'].power>0 && Molpy.Got('Technicolour Dream Cat')
 						&& Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]!='hide2')
 					{
-						className+=' '+['alert','action','toggle','',''][flandom(4)];
+						ra.removeClass(Molpy.redactedAreaClass);
+						Molpy.redactedAreaClass=['alert','action','toggle','',''][flandom(4)];
+						className+=' '+Molpy.redactedAreaClass;
+						ra.addClass(Molpy.redactedAreaClass);
+						
 					}
-					redacteditem.className=className;
+					var redacteditem=g('redacteditem');
+					if(redacteditem) redacteditem.className=className;
 				}
 			}
 		}
