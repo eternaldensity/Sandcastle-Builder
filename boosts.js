@@ -4212,7 +4212,8 @@
 	if (!missing) Molpy.Notify('You have not missed any discoveries');
     }
 	
-	new Molpy.Boost({name:'Achronal Dragon',alias:'AD',desc:function(me)
+	new Molpy.Boost({name:'Achronal Dragon',alias:'AD',
+		desc:function(me)
 		{
 			if(!me.bought) return'In the stats of this boost, you can seek and destroy temporal duplicates';	
 			if(!me.scanIndex)me.scanIndex=0;
@@ -4250,27 +4251,28 @@
 			var target=Molpy.DragonTarget()[0];
 			var str='Power is '+Molpify(me.power,3)+(target?' out of  '+Molpify(target,3)+'.<br>Destroy more temporal duplicates!':'');
 			return str;
-		}
+		},
+		defStuff:1
 	});
 	Molpy.DragonTarget=function()
 	{
 		if(Molpy.Got('Tool Factory')&&Molpy.Has('Logicat',1200/(Molpy.Level('Panther Rush')+1))&&!Molpy.Boosts['Crystal Dragon'].unlocked) return [1000,'Crystal Dragon'];
-		if(Molpy.Boosts['AC'].power>101&&!Molpy.Boosts['Draft Dragon'].unlocked&&Molpy.groupBadgeCounts.monumg>40) return [2e12,'Draft Dragon'];
-		if(Molpy.Boosts['AC'].power>300&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e16,'Dragon Forge'];
-		if(Molpy.Boosts['AC'].power>404&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e20,'WiseDragon'];
-		if(Molpy.Boosts['AC'].power>555&&!Molpy.Boosts['Thunderbird'].unlocked&&Molpy.Got('PSOC')) return [6e36,'Thunderbird'];
-		if(Molpy.Boosts['AC'].power>777&&!Molpy.Boosts['Dragon Foundry'].unlocked&&Molpy.Earned('Nope!')) return [9e54,'Dragon Foundry'];
-		if(Molpy.Boosts['AC'].power>888&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')&&Molpy.Has('Caged Logicat',100)) return [9e96,'ShadwDrgn'];
-		if(Molpy.Boosts['AC'].power>4000&&!Molpy.Boosts['DQ'].unlocked&&Molpy.Got('Nest')&&Molpy.Has('Bonemeal',2000)) return [9e96,'DQ'];
+		if(Molpy.Has('AC',101)&&!Molpy.Boosts['Draft Dragon'].unlocked&&Molpy.groupBadgeCounts.monumg>40) return [2e12,'Draft Dragon'];
+		if(Molpy.Has('AC',300)&&!Molpy.Boosts['Dragon Forge'].unlocked) return [7e16,'Dragon Forge'];
+		if(Molpy.Has('AC',404)&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e20,'WiseDragon'];
+		if(Molpy.Has('AC',555)&&!Molpy.Boosts['Thunderbird'].unlocked&&Molpy.Got('PSOC')) return [6e36,'Thunderbird'];
+		if(Molpy.Has('AC',777)&&!Molpy.Boosts['Dragon Foundry'].unlocked&&Molpy.Earned('Nope!')) return [3e55,'Dragon Foundry'];
+		if(Molpy.Has('AC',888)&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')&&Molpy.Has('Caged Logicat',100)) return [9e96,'ShadwDrgn'];
+		if(Molpy.Has('AC',4000)&&!Molpy.Boosts['DQ'].unlocked&&Molpy.Got('Nest')&&Molpy.Has('Bonemeal',2000)) return [Infinity,'DQ'];
 		return [0,''];
 	}
 	Molpy.CheckDragon=function()
 	{
 		var target=Molpy.DragonTarget();
 		var me = Molpy.Boosts['AD'];
-		if(me.power>=target[0])
+		if(me.Has(target[0])
 		{
-			me.power-=target[0];
+			me.Spend(target[0]);
 			Molpy.UnlockBoost(target[1]);
 		}
 	}
