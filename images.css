@@ -131,106 +131,118 @@ body.lightscheme .tool .icon.redacted,  body.lightscheme .badge.loot .icon.redac
 	background-image:url('img/redacted_grey_icon.png');
 }
 
-body.darkscheme.heresy .boost.loot.toggle, body.lightscheme.heresy .boost.shop.toggle, body.lightscheme.heresy .badge.toggle:hover
+body.darkscheme.heresy .boost.loot.toggle, body.lightscheme.heresy .boost.shop.toggle, body.lightscheme.heresy .badge.toggle:hover,
+body.darkscheme.heresy  .boost.redacted-area.toggle, body.lightscheme.heresy  .badge.redacted-area.toggle:hover
 {
 	background-color:#d0d0e8;
 }
-body.lightscheme.heresy .boost.loot.toggle, body.darkscheme.heresy .boost.shop.toggle, body.darkscheme.heresy .badge.toggle:hover
+body.lightscheme.heresy .boost.loot.toggle, body.darkscheme.heresy .boost.shop.toggle, body.darkscheme.heresy .badge.toggle:hover,
+body.lightscheme.heresy  .boost.redacted-area.toggle, body.darkscheme.heresy  .badge.redacted-area.toggle:hover
 {
 	background-color:#224;
 }
 
-body.darkscheme.heresy .boost.loot.toggle:hover, body.lightscheme.heresy .boost.shop.toggle:hover, body.lightscheme.heresy .badge.toggle
+body.darkscheme.heresy .boost.loot.toggle:hover, body.lightscheme.heresy .boost.shop.toggle:hover, body.lightscheme.heresy .badge.toggle,
+body.darkscheme.heresy  .boost.redacted-area.toggle:hover, body.darkscheme.heresy  .badge.redacted-area.toggle
 {
 	background-color:#d8d8ff;
 }
-body.lightscheme.heresy .boost.loot.toggle:hover, body.darkscheme.heresy .boost.shop.toggle:hover, body.darkscheme.heresy .badge.toggle
+body.lightscheme.heresy .boost.loot.toggle:hover, body.darkscheme.heresy .boost.shop.toggle:hover, body.darkscheme.heresy .badge.toggle,
+body.lightscheme.heresy  .boost.redacted-area.toggle:hover, body.darkscheme.heresy  .badge.redacted-area.toggle
 {
 	background-color:#0a0a20;
 }
 
-body.darkscheme.heresy .boost.loot.alert, body.lightscheme.heresy .boost.shop.alert, body.lightscheme.heresy .badge.alert:hover
+body.darkscheme.heresy .boost.loot.alert, body.lightscheme.heresy .boost.shop.alert, body.lightscheme.heresy .badge.alert:hover,
+body.darkscheme.heresy  .boost.redacted-area.alert, body.lightscheme.heresy  .badge.redacted-area.alert:hover
 {
 	background-color:#fdd;
 }
-body.lightscheme.heresy .boost.loot.alert, body.darkscheme.heresy .boost.shop.alert, body.darkscheme.heresy .badge.alert:hover
+body.lightscheme.heresy .boost.loot.alert, body.darkscheme.heresy .boost.shop.alert, body.darkscheme.heresy .badge.alert:hover,
+body.lightscheme.heresy  .boost.redacted-area.alert, body.darkscheme.heresy  .badge.redacted-area.alert:hover
 {
 	background-color:#522;
 }
 
-body.darkscheme.heresy .boost.loot.alert:hover, body.lightscheme.heresy .boost.shop.alert:hover, body.lightscheme.heresy .badge.alert
+body.darkscheme.heresy .boost.loot.alert:hover, body.lightscheme.heresy .boost.shop.alert:hover, body.lightscheme.heresy .badge.alert,
+body.darkscheme.heresy  .boost.redacted-area.alert:hover, body.lightscheme.heresy  .badge.redacted-area.alert
 {
 	background-color:#FFF2F2;
 }
-body.lightscheme.heresy .boost.loot.alert:hover, body.darkscheme.heresy .boost.shop.alert:hover, body.darkscheme.heresy .badge.alert
+body.lightscheme.heresy .boost.loot.alert:hover, body.darkscheme.heresy .boost.shop.alert:hover, body.darkscheme.heresy .badge.alert,
+body.lightscheme.heresy  .boost.redacted-area.alert:hover, body.darkscheme.heresy  .badge.redacted-area.alert
 {
 	background-color:#200b0b;
 }
 
-body.darkscheme.heresy .boost.loot.action, body.lightscheme.heresy .boost.shop.action, body.lightscheme.heresy .badge.action:hover
+body.darkscheme.heresy .boost.loot.action, body.lightscheme.heresy .boost.shop.action, body.lightscheme.heresy .badge.action:hover,
+body.darkscheme.heresy  .boost.redacted-area.action, body.lightscheme.heresy  .badge.redacted-area.action:hover
 {
 	background-color:#ffd;
 }
-body.lightscheme.heresy .boost.loot.action, body.darkscheme.heresy .boost.shop.action, body.darkscheme.heresy .badge.action:hover
+body.lightscheme.heresy .boost.loot.action, body.darkscheme.heresy .boost.shop.action, body.darkscheme.heresy .badge.action:hover,
+body.lightscheme.heresy  .boost.redacted-area.action, body.darkscheme.heresy  .badge.redacted-area.action:hover
 {
 	background-color:#552;
 }
 
-body.darkscheme.heresy .boost.loot.action:hover, body.lightscheme.heresy .boost.shop.action:hover, body.lightscheme.heresy .badge.action
+body.darkscheme.heresy .boost.loot.action:hover, body.lightscheme.heresy .boost.shop.action:hover, body.lightscheme.heresy .badge.action,
+body.darkscheme.heresy  .boost.redacted-area.action:hover, body.lightcheme.heresy  .badge.redacted-area.action
 {
 	background-color:#FFFFF2;
 }
-body.lightscheme.heresy .boost.loot.action:hover, body.darkscheme.heresy .boost.shop.action:hover, body.darkscheme.heresy .badge.action
+body.lightscheme.heresy .boost.loot.action:hover, body.darkscheme.heresy .boost.shop.action:hover, body.darkscheme.heresy .badge.action,
+body.lightscheme.heresy  .boost.redacted-area.action:hover, body.darkscheme.heresy  .badge.redacted-area.action
 {
 	background-color:#20200b;
 }
 
-body.darkscheme.heresy #redacteditem.castle.shop.alert
+body.darkscheme.heresy #redacteditem.castle.shop.alert, body.darkscheme.heresy .castle.redacted-area.alert
 {
 	background-color:#181838
 }
-body.lightscheme.heresy #redacteditem.castle.shop.alert
+body.lightscheme.heresy #redacteditem.castle.shop.alert, body.lightscheme.heresy .castle.redacted-area.alert
 {
 	background-color:#d8d8f0
 }
-body.darkscheme.heresy #redacteditem.castle.shop.action
+body.darkscheme.heresy #redacteditem.castle.shop.action, body.darkscheme.heresy .castle.redacted-area.action
 {
 	background-color:#522
 }
-body.lightscheme.heresy #redacteditem.castle.shop.action
+body.lightscheme.heresy #redacteditem.castle.shop.action, body.lightscheme.heresy .castle.redacted-area.action
 {
 	background-color:#fdd
 }
-body.darkscheme.heresy #redacteditem.castle.shop.toggle
+body.darkscheme.heresy #redacteditem.castle.shop.toggle, body.darkscheme.heresy .castle.redacted-area.toggle
 {
 	background-color:#552
 }
-body.lightscheme.heresy #redacteditem.castle.shop.toggle
+body.lightscheme.heresy #redacteditem.castle.shop.toggle, body.lightscheme.heresy .castle.redacted-area.toggle
 {
 	background-color:#ffd
 }
 
-body.darkscheme.heresy #redacteditem.sand.shop.alert
+body.darkscheme.heresy #redacteditem.sand.shop.alert, body.darkscheme.heresy .sand.redacted-area.alert
 {
 	background-color:#101038
 }
-body.lightscheme.heresy #redacteditem.sand.shop.alert
+body.lightscheme.heresy #redacteditem.sand.shop.alert, body.lightscheme.heresy .sand.redacted-area.alert
 {
 	background-color:#e0e0ff
 }
-body.darkscheme.heresy #redacteditem.sand.shop.action
+body.darkscheme.heresy #redacteditem.sand.shop.action, body.darkscheme.heresy .sand.redacted-area.action
 {
 	background-color:#5f1818
 }
-body.lightscheme.heresy #redacteditem.sand.shop.action
+body.lightscheme.heresy #redacteditem.sand.shop.action, body.lightscheme.heresy .sand.redacted-area.action
 {
 	background-color:#ffd8d8
 }
-body.darkscheme.heresy #redacteditem.sand.shop.toggle
+body.darkscheme.heresy #redacteditem.sand.shop.toggle, body.darkscheme.heresy .sand.redacted-area.toggle
 {
 	background-color:#5f5f18
 }
-body.lightscheme.heresy #redacteditem.sand.shop.toggle
+body.lightscheme.heresy #redacteditem.sand.shop.toggle, body.lightscheme.heresy .sand.redacted-area.toggle
 {
 	background-color:#ffffd8
 }
