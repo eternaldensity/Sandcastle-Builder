@@ -1285,6 +1285,7 @@
 			}
 			else
 			{
+				if (!Molpy.Got('Stretchable Chip Storage') && this.Level == Infinity) Molpy.UnlockBoost('Stretchable Chip Storage');
 				if (waste)
 				{
 					this.Level-=waste;
@@ -1560,7 +1561,7 @@
 			}
 			else
 			{
-				if (!Molpy.Got('Stretchable Block Storage') && this.Level == Infinity) waste=amount;
+				if (!Molpy.Got('Stretchable Block Storage') && this.Level == Infinity) Molpy.UnlockBoost('Stretchable Block Storage');
 				if (waste)
 				{
 					this.Level-=waste;
