@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.281
+- Some prices went missing
+- GoatONG wasn't working
+- That's all I have time to fix right now :(
+
 ## 3.28
 - waveney fixed glass storage (which he also broke)
 - I hadn't quite fixed shopping assistant for aliased boosts.
