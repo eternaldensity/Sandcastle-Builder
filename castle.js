@@ -2420,7 +2420,7 @@ Molpy.Up=function()
 				if(availRewards.length)
 				{
 					var red=GLRschoice(availRewards);
-					if((EvalMaybeFunction(red.sandPrice,red)+EvalMaybeFunction(red.castlePrice,red)+EvalMaybeFunction(red.glassPrice,red)))
+					if((EvalMaybeFunction(red.price.Sand,red)+EvalMaybeFunction(red.price.Castles,red)+EvalMaybeFunction(red.price.GlassBlocks,red)))
 					{
 						Molpy.Notify('The DoRD has produced:',1);
 						Molpy.UnlockBoost(red.alias);
@@ -2796,7 +2796,7 @@ Molpy.Up=function()
 			if(availRewards.length)
 			{
 				var red=GLRschoice(availRewards);
-				if((EvalMaybeFunction(red.sandPrice,red)+EvalMaybeFunction(red.castlePrice,red)+EvalMaybeFunction(red.glassPrice,red)))
+				if((EvalMaybeFunction(red.price.Sand,red)+EvalMaybeFunction(red.price.Castles,red)+EvalMaybeFunction(red.price.GlassBlocks,red)))
 				{
 					Molpy.Notify('Logicat rewards you with:',1);
 					Molpy.UnlockBoost(red.alias);
