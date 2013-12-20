@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.282
+- glassfix
+
 ## 3.281
 - Some prices went missing
 - GoatONG wasn't working
