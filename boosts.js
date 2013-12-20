@@ -2892,10 +2892,10 @@
 					str+='<br>Making a mould from '+dname+' is complete. The Sand Mould Filler is required next.';
 				}else{
 					str+='<br>'+(me.power-1)+'% complete making a mould from '+dname;
-					if(Molpy.Got('Break the Mould'))
-					{
-						str+='<br><input type="Button" onclick="Molpy.BreakMould(\''+me.alias+'\')" value="Break the Mould"></input> to cancel';
-					}
+				}
+				if(Molpy.Got('Break the Mould'))
+				{
+					str+='<br><input type="Button" onclick="Molpy.BreakMould(\''+me.alias+'\')" value="Break the Mould"></input> to cancel';
 				}
 			}
 			return str;
@@ -2934,10 +2934,10 @@
 					str+='<br>Making a mould from '+mname+' is complete. The Glass Mould Filler is required next.';
 				}else{
 					str+='<br>'+Molpify((me.power-1)/4,2)+'% complete making a mould from '+mname;
-					if(Molpy.Got('Break the Mould'))
-					{
-						str+='<br><input type="Button" onclick="Molpy.BreakMould(\''+me.alias+'\')" value="Break the Mould"></input> to cancel';
-					}
+				}
+				if(Molpy.Got('Break the Mould'))
+				{
+					str+='<br><input type="Button" onclick="Molpy.BreakMould(\''+me.alias+'\')" value="Break the Mould"></input> to cancel';
 				}
 			}
 			return str;
@@ -3155,6 +3155,8 @@
 	Molpy.FillSandMould=function(np)
 	{
 		var mname='monums'+np;
+		var smm=Molpy.Boosts['SMM'];
+		var smf=Molpy.Boosts['SMF'];
 		if(!Molpy.Badges[mname])
 		{
 			Molpy.Notify('No such mould exists');
@@ -3165,8 +3167,6 @@
 			Molpy.Notify('You don\'t need to make this mould');
 			return;
 		}
-		var smm=Molpy.Boosts['SMM'];
-		var smf=Molpy.Boosts['SMF'];
 		if(!smf.bought)
 		{
 			Molpy.Notify('You don\'t have the Sand Mould Filler!');
@@ -3461,6 +3461,7 @@
 				price = 444+77*wwb.bought;
 			}
 			scaf.Refresh();
+			wwb.Refresh();
 		}else
 		{
 			scaf.amount-=price;
