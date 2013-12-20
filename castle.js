@@ -2933,13 +2933,13 @@ Molpy.Up=function()
 				Molpy.Notify('You already have this '+Molpy.Badges[alias].name);
 			}else{
 				Molpy.EarnBadge(alias,1);
-				if (Molpy.newpixNumber < 0) {
-					if (Molpy.Boosts['Magic Mirror'].power) 
-					{
-						if (Molpy.Boosts['Magic Mirror'].power++ >= 10) Molpy.UnlockBoost('Magic Mirror');
-					}	
-					else Molpy.Boosts['Magic Mirror'].power = 1;
-				}
+			}
+			if (Molpy.newpixNumber < 0) {
+				if (Molpy.Boosts['Magic Mirror'].power) 
+				{
+					if (Molpy.Boosts['Magic Mirror'].power++ >= 10) Molpy.UnlockBoost('Magic Mirror');
+				}	
+				else Molpy.Boosts['Magic Mirror'].power = 1;
 			}
 		}else
 		{
