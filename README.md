@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.285
+- This fixes crate keys. Because of weird reasons.
+
 ## 3.2842
 - Fix Caged Logicat purchase
 

@@ -1878,7 +1878,7 @@ Molpy.Up=function()
 			
 			this.buy=function()
 			{
-				if(!this.unlocked)return; //shopping assistant tried to buy it when it was locked
+				if(!this.unlocked||this.bought)return; //shopping assistant tried to buy it when it was locked
 
 				var realPrice=this.CalcPrice(this.price);
 				var free=Molpy.IsFree(realPrice);
