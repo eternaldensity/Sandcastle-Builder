@@ -1895,7 +1895,7 @@ Molpy.Up=function()
 				Molpy.CheckBuyUnlocks();
 				Molpy.unlockedGroups[this.group]=1;
 				this.Refresh();
-				if(!Molpy.boostSilence&&!free)
+				if(!Molpy.boostSilence&&!free&&this.bought)
 				{
 					Molpy.ShowGroup(this.group,this.className);
 				}								

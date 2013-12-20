@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.2841
+- Finally fixed the old problem of showing the loot section of boosts which were bought and immediately locked
+
 ## 3.284
 - Zookeeper was broken
 
