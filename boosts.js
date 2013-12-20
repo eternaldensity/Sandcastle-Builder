@@ -3767,7 +3767,7 @@
 			if(pages)
 				Molpy.Add('Blackprints',pages);
 		}
-		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<Molpy.PokeBar())
+		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('Caged Logicat')&&!Molpy.Has('Caged Logicat').bought,Molpy.PokeBar())
 		{
 			var zk = Molpy.Boosts['ZK'];
 			var poke=Math.random()*(left-10);
@@ -3987,7 +3987,8 @@
 	}
 	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
 		buyFunction:function(){
-			Molpy.Add('Caged Logicat',1+Molpy.Level('Panther Rush'));
+			if(Molpy.Got('Caged Logicat'))
+				Molpy.Add('Caged Logicat',1+Molpy.Level('Panther Rush'));
 			Molpy.LockBoost(this.alias);
 		}
 	});
@@ -4493,7 +4494,7 @@
 		{
 			var str='Puts unused Caged Logicat puzzles to some use.';
 			if(!me.bought)return str;
-			if(Molpy.Has('Caged Logicat',100))
+			if(Molpy.Got('Caged Logicat')&&Molpy.Has('Caged Logicat',100))
 			{
 				str+='<br><input type="Button" value="Deal" onclick="Molpy.ShadowStrike(1)"></input> with the Caged Logicat infestation...';
 			}else

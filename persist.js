@@ -1171,7 +1171,7 @@
 			{
 				var me = Molpy.Boosts[i];
 				if(boh&&me.group=='stuff')continue;
-				if(bom&&!me.prizes&&(me.name.indexOf('Mould')>-1)||typeof(me.desc)==='string'&&me.desc.indexOf('Mould')>-1)continue;
+				if(bom&&!me.prizes&&(me.name.indexOf('Mould')>-1||typeof(me.desc)==='string'&&me.desc.indexOf('Mould')>-1))continue;
 				if(bof&&!me.prizes&&me.className=='toggle')continue;
 				if(!coma&&me.bought&&me.prizes)
 				{
@@ -1186,7 +1186,6 @@
 				me.unlocked=0;
 				me.bought=0;	
 				me.power=0;
-				if(me.Level)me.Level=0;
 				if(me.startPower)
 					me.power=EvalMaybeFunction(me.startPower);
 				me.countdown=0;
