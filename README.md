@@ -32,6 +32,8 @@ For personal amusement only.
 - Redid boost pricing! Fortunately I'd already done half the work with prize level costs
 - Prices show stuff in the correct order (it was "stuff number and" rather than "and number stuff" :P (though I switched to + rather than and)
 - Added a way to get goats: by ninjaing!
+- Prevent MHP buttons from getting into the log
+- TFLL's unlock condition removed but now it costs TF chips (yay new pricing system!)
 
 ## 3.278
 - Refresh WWB

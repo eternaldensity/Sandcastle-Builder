@@ -611,13 +611,13 @@
 			}
 			else if(Molpy.Got('Glass Ceiling '+(i*2))) formattedName = 'Glass '+formattedName;
 			var salebit='';
-			if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
+			if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('TF')))
 			{
 				salebit='<br><a id="SandToolBuy'+me.id+'" onclick="Molpy.SandToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 					+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.SandToolsById['+me.id+'].sell();">Sell</a>');
 			}
 			var price = '';
-			if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+i*2))
+			if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('TF')||!Molpy.Got('Glass Ceiling '+i*2))
 				price = Molpy.FormatPrice(me.price,me)+(me.price==1?' Castle':(me.price<100?' Castles':' Ca'));
 			else if(isNaN(me.price))
 				price = 'Mustard';
@@ -670,13 +670,13 @@
 			}
 			else if(Molpy.Got('Glass Ceiling '+(i*2+1))) formattedName = 'Glass '+formattedName;
 			var salebit='';
-			if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('Tool Factory')))
+			if(isFinite(Molpy.priceFactor*me.price)||!(Molpy.Earned(me.name+' Shop Failed')&&Molpy.Got('TF')))
 			{
 				salebit='<br><a id="CastleToolBuy'+me.id+'" onclick="Molpy.CastleToolsById['+me.id+'].buy();">Buy&nbsp;'+nBuy+'</a>'
 					+(Molpy.Boosts['No Sell'].power?'':' <a onclick="Molpy.CastleToolsById['+me.id+'].sell();">Sell</a>');
 			}
 			var price = '';
-			if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(i*2+1)))
+			if(isFinite(Molpy.priceFactor*me.price)||!Molpy.Got('TF')||!Molpy.Got('Glass Ceiling '+(i*2+1)))
 				price = Molpy.FormatPrice(me.price,me)+(me.price==1?' Castle':(me.price<100?' Castles':' Ca'));
 			else if(isNaN(me.price))
 				price = 'Mustard';
@@ -1243,14 +1243,14 @@
 		g('castlecount').innerHTML=Molpify(Molpy.castles,1) + ' castle'+plural(Molpy.castles);
 		g('sandcount').innerHTML=Molpify(Molpy.sand,1) + ' sand'+(isFinite(Molpy.castles)?' of ' + Molpify(Molpy.nextCastleSand,1) + ' needed':'');
 		g('sandrate').innerHTML=Molpify(Molpy.sandPermNP,1) + ' sand/mNP';
-		g('chipcount').innerHTML=Molpify(Molpy.Boosts['Tool Factory'].power,1) + ' chips';
+		g('chipcount').innerHTML=Molpify(Molpy.Boosts['TF'].power,1) + ' chips';
 		g('chiprate').innerHTML=Molpify(Molpy.glassPermNP,1) + ' chips/mNP';
 		g('newtools').innerHTML='Built '+Molpify(Molpy.toolsBuilt,1)+' new tool'+plural(Molpy.toolsBuilt);
 
 		if(noLayout)
 		{
 			var finite=isFinite(Molpy.sand)||isFinite(Molpy.castles)||isFinite(Molpy.spmNP);
-			var tf=Molpy.Got('Tool Factory');
+			var tf=Molpy.Got('TF');
 			$('#sectionTFCounts').toggleClass('hidden',!tf);
 			if(tf)
 			{

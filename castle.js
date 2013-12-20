@@ -460,11 +460,11 @@ Molpy.Up=function()
 		Molpy.DigGlass=function(amount)
 		{
 			Molpy.totalGlassBuilt+=amount;
-			Molpy.Add('Tool Factory',amount);
+			Molpy.Add('TF',amount);
 		}
 		Molpy.DestroyGlass=function(amount)
 		{
-			var tf=Molpy.Boosts['Tool Factory'];
+			var tf=Molpy.Boosts['TF'];
 			amount=Math.min(tf.Level,amount);
 			tf.Destroy(amount);
 			Molpy.totalGlassDestroyed+=amount;
@@ -536,7 +536,7 @@ Molpy.Up=function()
 				{
 					Molpy.chipsPerClick+=Molpy.glassPermNP/20;
 				}
-				Molpy.Add('Tool Factory',Molpy.chipsPerClick);
+				Molpy.Add('TF',Molpy.chipsPerClick);
 				if(Molpy.chipsPerClick)
 				{
 					Molpy.chipsManual+=Molpy.chipsPerClick;
@@ -606,7 +606,7 @@ Molpy.Up=function()
 							var maxGlass=Molpy.GlassCeilingCount()*10000000*p;
 							var absMaxGlass=maxGlass;
 							var rate = Molpy.ChipsPerBlock();
-							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Level('Tool Factory')/rate));
+							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Level('TF')/rate));
 							var leave = 0;
 							var bl = Molpy.Boosts['GlassBlocks'];
 							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].IsEnabled)
@@ -626,8 +626,8 @@ Molpy.Up=function()
 								Molpy.EarnBadge('Infinite Saw');
 							}
 							Molpy.Add('GlassBlocks',maxGlass);
-							Molpy.Spend('Tool Factory',maxGlass*rate);
-							if(Molpy.Has('Tool Factory',absMaxGlass*rate*2))
+							Molpy.Spend('TF',maxGlass*rate);
+							if(Molpy.Has('TF',absMaxGlass*rate*2))
 								Molpy.Boosts['Glass Saw'].power=p*2;
 						}else{
 							if(!p) Molpy.Boosts['Glass Saw'].power=1;
@@ -1174,7 +1174,7 @@ Molpy.Up=function()
 					var price=this.price*Molpy.priceFactor;
 					if(!isFinite(price))
 					{
-						Molpy.UnlockBoost('Tool Factory');
+						Molpy.UnlockBoost('TF');
 						Molpy.EarnBadge(this.name+' Shop Failed');
 					}else if (Molpy.Has('Castles',price)){
 						Molpy.Spend('Castles',price,1);
@@ -1283,7 +1283,7 @@ Molpy.Up=function()
 				if(Molpy.IsStatsVisible())
 				{
 								
-					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(this.id*2)))
+					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('TF')||!Molpy.Got('Glass Ceiling '+(this.id*2)))
 					{
 						desc='Total Sand '+this.actionName+': '+Molpify(this.totalSand,1)+
 						'<br>Sand/mNP per '+this.single+': '+Molpify(this.storedSpmNP,(this.storedSpmNP<10?3:1));
@@ -1374,7 +1374,7 @@ Molpy.Up=function()
 					var price=Math.floor(Molpy.priceFactor*this.price);
 					if(!isFinite(price))
 					{
-						Molpy.UnlockBoost('Tool Factory');
+						Molpy.UnlockBoost('TF');
 						Molpy.EarnBadge(this.name+' Shop Failed');
 					}else if (Molpy.Has('Castles',price)){
 						Molpy.Spend('Castles',price,1);
@@ -1483,7 +1483,7 @@ Molpy.Up=function()
 				var destroyT=destroyN*i||0;
 				if (inf)
 				{
-					if (Molpy.Boosts['Tool Factory'].power >= destroyT)
+					if (Molpy.Boosts['TF'].power >= destroyT)
 					{
 						this.currentActive+=i;
 						this.totalGlassDestroyed+=destroyT;
@@ -1505,7 +1505,7 @@ Molpy.Up=function()
 				}
 				if(inf)
 				{
-					var iAfford = Math.min(i,Math.floor(Molpy.Boosts['Tool Factory'].power/destroyN)||0);
+					var iAfford = Math.min(i,Math.floor(Molpy.Boosts['TF'].power/destroyN)||0);
 					this.currentActive+=iAfford;
 					this.totalGlassDestroyed+=destroyN*iAfford||0;
 					Molpy.DestroyGlass(destroyN*iAfford||0);
@@ -1565,7 +1565,7 @@ Molpy.Up=function()
 				}
 				if(Molpy.IsStatsVisible())
 				{				
-					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('Tool Factory')||!Molpy.Got('Glass Ceiling '+(this.id*2+1)))
+					if(isFinite(Molpy.priceFactor*this.price)||!Molpy.Got('TF')||!Molpy.Got('Glass Ceiling '+(this.id*2+1)))
 					{
 						if(this.totalCastlesDestroyed)
 							desc+='Total Castles '+this.actionDName+': '+Molpify(this.totalCastlesDestroyed)+
@@ -1818,7 +1818,7 @@ Molpy.Up=function()
 				this.price=args.price;
 			}else
 			{
-				this.price={Sand:args.sand||0,Castles:args.castles||0,GlassBlocks:args.glass||0};
+				this.price={Sand:args.Sand||0,Castles:args.Castles||0,GlassBlocks:args.GlassBlocks||0};
 			}
 			this.stats=args.stats;
 			this.tier=args.tier;
@@ -3255,9 +3255,9 @@ Molpy.Up=function()
 		if(!Molpy.Got('Temporal Rift'))
 		{
 			Molpy.timeLord=0;
-			if(Molpy.Got('Caged Logicat'))
+			if(Molpy.Got('LogiQuestion'))
 			{
-				var cl = Molpy.Boosts['Caged Logicat'];
+				var cl = Molpy.Boosts['LogiQuestion'];
 				if(!cl.Has(10))
 				{
 					cl.Level=10;

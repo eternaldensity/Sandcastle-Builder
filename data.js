@@ -660,7 +660,7 @@ Molpy.CheckBuyUnlocks=function(tool)
 	if(!isFinite(Math.pow(200,Molpy.Boosts['RB'].bought)))Molpy.UnlockBoost('Knitted Beanies');
 	if(!isFinite(Math.pow(2,Molpy.Boosts['WWB'].bought-5))) Molpy.UnlockBoost('Space Elevator');
 	if (Molpy.groupBadgeCounts.discov > 5 && Molpy.Earned('discov1')) Molpy.UnlockBoost('Discovery Detector');
-	if (Molpy.Got('Tool Factory')) Molpy.UnlockBoost('AD');
+	if (Molpy.Got('TF')) Molpy.UnlockBoost('AD');
 	if (!Molpy.Earned('Neat!') && Molpy.SandTools['Bucket'].amount>1000000) 
 	{
 		var neatif = Molpify(Molpy.SandTools['Bucket'].amount,3);
@@ -776,8 +776,8 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['Ruthless Efficiency'].department=1*(Molpy.Boosts['Glass Chiller'].power>=1234);
 	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
 	
-	Molpy.Boosts['PC'].department=1*(Molpy.Got('Tool Factory')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
-	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('Caged Logicat')&&Molpy.Boosts['Caged Logicat'].bought<Molpy.PokeBar()&&flandom(4)==0);
+	Molpy.Boosts['PC'].department=1*(Molpy.Got('TF')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
+	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('LogiQuestion')&&Molpy.Boosts['LogiQuestion'].bought<Molpy.PokeBar()&&flandom(4)==0);
 	
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6||Molpy.Got('Thunderbird'));
