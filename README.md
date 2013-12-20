@@ -26,6 +26,13 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.284
+- Zookeeper was broken
+
+## 3.283
+- So basically I forgot to change the DoRD and Logicat rewards to check whether boosts cost anything using the new pricing system.
+- Also some prices were manually set using the old system (navcode and ceilings 10 and 11)
+
 ## 3.282
 - glassfix
 

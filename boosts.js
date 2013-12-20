@@ -3767,7 +3767,7 @@
 			if(pages)
 				Molpy.Add('Blackprints',pages);
 		}
-		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('LogiQuestion')&&!Molpy.Has('LogiQuestion').bought,Molpy.PokeBar())
+		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('LogiQuestion')&&!Molpy.Has('LogiQuestion',Molpy.PokeBar()))
 		{
 			var zk = Molpy.Boosts['ZK'];
 			var poke=Math.random()*(left-10);
