@@ -1893,7 +1893,7 @@
 				{
 					if(Molpy.Has('GlassBlocks',1000))
 					{
-						str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'Caged Logicat\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
+						str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'LogiQuestion\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
 					}else{
 						str+='<br>It costs '+Molpify(1000)+' Glass Blocks to get a Caged Logicat.';
 					}
