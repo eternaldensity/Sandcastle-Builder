@@ -555,6 +555,7 @@ Molpy.Up=function()
 				if(Molpy.npbONG==1)
 				{
 					Molpy.StealthClick();
+					Molpy.Boosts['Ninja Ritual'].Level=0;
 				}else if(Molpy.npbONG==0){
 					if(Molpy.NinjaUnstealth())
 					{
@@ -567,6 +568,8 @@ Molpy.Up=function()
 							Molpy.EarnBadge('Ninja Strike');
 						}
 					}
+					if(Molpy.Got('Ninja Ritual'))Molpy.Add('Goats',1+Math.floor(Molpy.Boosts['Ninja Ritual'].Level++/5));
+					else if(Molpy.Has('Goats',10))Molpy.UnlockBoost('Ninja Ritual');
 					if(Molpy.CastleTools['NewPixBot'].currentActive>=1000)
 					{
 						Molpy.EarnBadge('KiloNinja Strike');
@@ -867,6 +870,7 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Ninja Shortcomings');
 			}
 			Molpy.ninjaStealth=0;
+			Molpy.Boosts['Ninja Ritual'].Level=0;
 			
 			if(Molpy.Got('Maps'))
 			{

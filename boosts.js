@@ -4971,7 +4971,13 @@
 	new Molpy.Boost({name:'Bag of Folding',alias:'BoF',desc:'Toggle Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal',
 		glass:Infinity,sand:Infinity,castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(2,{Bonemeal:3000,Goats:30,Blackprints:500}),group:'prize'});	
 		
-	new Molpy.Boost({name:'Ninja Ritural',desc:'When you ninja the NewPixBots, receive a Goat',price:{Goats:50},group:'ninj'});
+	new Molpy.Boost({name:'Ninja Ritual',
+		desc:function(me)
+		{
+			return 'When you ninja the NewPixBots, receive a Goat.'+(me.bought?'<br>Receive an extra goat for every 5 consecutive Ninjas.<br> Currently at '+Molpify(me.Level,1)+' consecutive Ninja'+plural(me.Level)+'.':'');
+		},
+		price:{Goats:300},group:'ninj',defStuff:1
+	});
 		
 	//END OF BOOSTS, add new ones immediately before this comment
 }

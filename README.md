@@ -27,7 +27,11 @@ For personal amusement only.
 ## Changelog
 
 ## 3.28
--
+- waveney fixed glass storage (which he also broke)
+- I hadn't quite fixed shopping assistant for aliased boosts.
+- Redid boost pricing! Fortunately I'd already done half the work with prize level costs
+- Prices show stuff in the correct order (it was "stuff number and" rather than "and number stuff" :P (though I switched to + rather than and)
+- Added a way to get goats: by ninjaing!
 
 ## 3.278
 - Refresh WWB
