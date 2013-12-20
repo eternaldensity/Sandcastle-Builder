@@ -1258,7 +1258,7 @@
 	
 	Molpy.chipAddAmount=0;
 	Molpy.chipWasteAmount=0;	
-	new Molpy.Boost({name:'Glass Chip Storage',alias:'GlassChips',
+	new Molpy.Boost({name:'Glass Chip Storage',single:'Glass&nbsp;Chip',alias:'GlassChips',
 		Level:Molpy.BoostFuncs.RoundPosPowerLevel,
 		Has:Molpy.BoostFuncs.Has,
 		Spend:Molpy.BoostFuncs.Spend,
@@ -1539,7 +1539,7 @@
 	
 	Molpy.blockAddAmount=0;
 	Molpy.blockWasteAmount=0;
-	new Molpy.Boost({name:'Glass Block Storage',alias:'GlassBlocks',	
+	new Molpy.Boost({name:'Glass Block Storage',single:'Glass&nbsp;Block',alias:'GlassBlocks',	
 		Level:Molpy.BoostFuncs.RoundPosPowerLevel,
 		Has:Molpy.BoostFuncs.Has,
 		Spend:Molpy.BoostFuncs.Spend,
@@ -2294,7 +2294,7 @@
 	new Molpy.Boost({name:'Phonesaw',desc:'I saw what you did there. Or heard.',stats:'Squares the reward from VITSSÅGEN, JA!'
 		,sand:'48E',castles:'38E',glass:100,group:'hpt',icon:'phonesaw'
 	});
-	new Molpy.Boost({name:'Logicat',
+	new Molpy.Boost({name:'Logicat',single:'Logicat&nbsp;Level',
 		Level:[function(){return this.bought;},
 			function(amount)
 			{
@@ -2492,7 +2492,7 @@
 		,className:'action',group:'hpt',icon:'glassextruder'}
 	);
 	
-	new Molpy.Boost({name:'Caged Logicat',
+	new Molpy.Boost({name:'Caged Logicat',single:'Logicat&nbsp;Question',
 		Level:Molpy.BoostFuncs.Bought1Level,
 		Has:Molpy.BoostFuncs.Has,
 		Spend:Molpy.BoostFuncs.Spend,
@@ -2679,8 +2679,7 @@
 		sand:'50P',castles:'20P',glass:'20K',group:'chron'
 	});
 	
-	new Molpy.Boost({name:'Blackprints',
-		
+	new Molpy.Boost({name:'Blackprints',single:'Blackprint',		
 		Level:Molpy.BoostFuncs.PosPowerLevel,
 		Has:function(n,all)
 		{
@@ -3526,7 +3525,7 @@
 		if(!isFinite(Math.pow(200,rb.bought)))Molpy.UnlockBoost('Knitted Beanies');
 	}
 	
-	new Molpy.Boost({name:'Tool Factory',
+	new Molpy.Boost({name:'Tool Factory', single:'Tool Factory Chip',
 		defStuff:1,
 		desc:function(me)
 		{
@@ -4386,7 +4385,7 @@
 	new Molpy.Boost({name:'Ninja Ninja Duck',desc:'Ninja Stealth is raised by 10x as much'
 		,sand:Infinity,castles:Infinity,glass:'230Z',group:'ninj',icon:'ninjaduck'});
 		
-	new Molpy.Boost({name:'Goats',desc:function(me)
+	new Molpy.Boost({name:'Goats', singular:'Goat',plural:'Goats',desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' goat'+plural(me.Level)+'. Yay!';
 			return str;
@@ -4518,11 +4517,23 @@
 
 	Molpy.spendSandNotifyFlag=1;
 	Molpy.spendSandNotifyCount=0;
-	new Molpy.Boost({name:'Sand',
-		Level:[function(){return Molpy.sand;},function(amount){Molpy.sand=amount;this.Refresh();}],
+	new Molpy.Boost({name:'Sand',plural:'Sand',
+		Level:[function(){return Molpy.sand;},
+			function(amount)
+			{
+				if(isNaN(amount))
+				{
+					amount=0;
+					Molpy.EarnBadge('Mustard Cleanup');
+				}
+				Molpy.sand=amount;
+				this.Refresh();
+			}
+		],
 		Add:Molpy.Dig,
 		Spend:function(amount,silent)
 		{
+			if(!isFinite(Molpy.sandPermNP) &&Molpy.Got('Cracks'))amount=0;
 			if(!amount)return;
 			Molpy.sand-=amount;
 			if(Molpy.sand<0)Molpy.sand=0;
@@ -4558,16 +4569,24 @@
 	
 	Molpy.destroyNotifyFlag=1;
 	Molpy.destroyNotifyCount=0;
-	new Molpy.Boost({name:'Castles',
-		Level:[function(){return Molpy.castles;},function(amount)
-		{
-			Molpy.castles=amount;
-			this.Refresh();
-			Molpy.Boosts['Time Travel'].Refresh();
-		}],
+	new Molpy.Boost({name:'Castles',single:'Castle',
+		Level:[function(){return Molpy.castles;},
+			function(amount)
+			{
+				if(isNaN(amount))
+				{
+					amount=0;
+					Molpy.EarnBadge('Mustard Cleanup');
+				}
+				Molpy.castles=amount;
+				this.Refresh();
+				Molpy.Boosts['Time Travel'].Refresh();
+			}	
+		],
 		Add:Molpy.Build,
 		Spend:function(amount,silent)
 		{
+			if(!isFinite(Molpy.sandPermNP) &&Molpy.Got('Cracks'))amount=0;
 			if(!amount)return;
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
@@ -4673,7 +4692,7 @@
 		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
 		group:'drac',className:'toggle',glass:'50F'
 	});	
-	new Molpy.Boost({name:'Mustard',
+	new Molpy.Boost({name:'Mustard',plural:'Mustard',
 		desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' mustard.';
@@ -4690,7 +4709,7 @@
 			}
 		}
 	});
-	new Molpy.Boost({name:'Mysterious Maps',alias:'Maps',
+	new Molpy.Boost({name:'Mysterious Maps',singular:'Map',plural:'Maps',alias:'Maps',
 		desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' map'+plural(me.Level);
@@ -4949,6 +4968,8 @@
 		glass:Infinity,sand:Infinity,castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(1,{Bonemeal:200,Mustard:500,Blackprints:20}),group:'prize'});	
 	new Molpy.Boost({name:'Bag of Folding',alias:'BoF',desc:'Toggle Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal',
 		glass:Infinity,sand:Infinity,castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(2,{Bonemeal:3000,Goats:30,Blackprints:500}),group:'prize'});	
+		
+	new Molpy.Boost({name:'Ninja Ritural',desc:'When you ninja the NewPixBots, receive a Goat',price:{Goats:50},group:'ninj'});
 		
 	//END OF BOOSTS, add new ones immediately before this comment
 }

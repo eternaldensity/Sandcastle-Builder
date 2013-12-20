@@ -305,7 +305,7 @@
 	new Molpy.Badge({name:'On the 12th Dip of Judgement',desc:'Reach Judgement Dip level 12'});
 	new Molpy.Badge({name:'Machine Learning',desc:'Unlock all the Judgement Dip Boosts'});
 	new Molpy.Badge({name:'Blitz and Pieces',desc:'Get Blitz Power to 1M%'});
-	new Molpy.Badge({name:'Mustard Cleanup',desc:'Your numbers got too big!',vis:2});
+	new Molpy.Badge({name:'Mustard Cleanup',desc:'The amount of some Stuff you had was not a number, and was corrected to 0',vis:2});
 	new Molpy.Badge({name:'Pyramid of Giza',desc:'Have 7,016,280 Glass Blocks'});
 	new Molpy.Badge({name:'Personal Computer',desc:'Have 640K Glass Chips'});
 	new Molpy.Badge({name:'I love my flashy gif',desc:'Change the colourscheme 20 times in a mNP',vis:1});
@@ -337,7 +337,7 @@
 	
 	new Molpy.Badge({name:'Strikes Twice', desc:'Attempt to receive Blitzing while you have Glassed Lightning (this will instead give Glassed Lightning more power)'});
 	new Molpy.Badge({name:'Meaning',desc:'Reach a '+Molpy.redactedWord+' streak of 42'});
-	new Molpy.Badge({name:'How do I Shot Mustard?',desc:'Buy a Locked Crate with mustarded price',stats:'To get one you will need to have Locked Crate appear in the shop immediately after spending infinite sand'});
+	new Molpy.Badge({name:'How do I Shot Mustard?',desc:'The price of something was not a number, and was corrected to 0',stats:'One way to get this is to have Locked Crate appear in the shop immediately after spending infinite sand'});
 	new Molpy.Badge({name:'KiloTool', desc:'Make 1K Glass Tools per mNP'});
 	new Molpy.Badge({name:'MegaTool', desc:'Make 1M Glass Tools per mNP'});
 	new Molpy.Badge({name:'GigaTool', desc:'Make 1G Glass Tools per mNP'});

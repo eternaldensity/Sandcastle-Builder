@@ -1683,17 +1683,27 @@ Molpy.Up=function()
 				var first=1;
 				for(var i in stuff)
 				{
-					str+=Molpy.PriceString(i,stuff[i]);
 					if(first)
 						first=0;
 					else
-						str+=' and ';
+						str+=' + ';
+					var b = Molpy.Boosts[i];
+					var s = stuff[i];
+					str+=Molpy.PriceString(s==1?b.single:b.plural,s);
 				}
 				return str;
 			}else
 			{
-				return stuff+ ' ' + Molpify(amount,2); //todo: use a nice display name rather than alias
+				return Molpify(amount,2)+ '&nbsp;' + stuff; //todo: use a nice display name rather than alias
 			}
+		}
+		Molpy.IsFree=function(stuff)
+		{
+			for(var i in stuff)
+			{
+				if(stuff[i])return 0;
+			}
+			return 1;
 		}
 		Molpy.Destroy=function(stuff,amount,s)
 		{
@@ -1799,9 +1809,13 @@ Molpy.Up=function()
 			this.name=args.name;
 			this.alias=args.alias||args.name;
 			this.desc=args.desc;
-			this.sandPrice=args.sand||0;
-			this.castlePrice=args.castles||0;
-			this.glassPrice=args.glass||0;
+			if(args.price)
+			{
+				this.price=args.price;
+			}else
+			{
+				this.price={Sand:args.sand||0,Castles:args.castles||0,GlassBlocks:args.glass||0};
+			}
 			this.stats=args.stats;
 			this.tier=args.tier;
 			this.prizes=args.prizes;
@@ -1838,6 +1852,8 @@ Molpy.Up=function()
 			this.hovered=0;
 			this.power=0;
 			this.countdown=0;
+			this.single=args.single||args.name;
+			this.plural=args.plural||((args.single||args.name)+'s');
 			if(args.startPower)
 			{
 				this.startPower=args.startPower;
@@ -1859,46 +1875,26 @@ Molpy.Up=function()
 			this.buy=function()
 			{
 				if(!this.unlocked)return; //shopping assistant tried to buy it when it was locked
-				if(isNaN(Molpy.sand))
+
+				var realPrice=this.CalcPrice(this.price);
+				var free=Molpy.IsFree(realPrice);
+				if(free||!Molpy.ProtectingPrice())
 				{
-					Molpy.sand=0;
-					Molpy.EarnBadge('Mustard Cleanup');
+					if(!Molpy.Spend(realPrice))return;
 				}
-				if(isNaN(Molpy.castles))
+				this.bought=1;
+				if (this.buyFunction) this.buyFunction();
+				_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name,!free]);
+				Molpy.boostRepaint=1;
+				Molpy.recalculateDig=1;
+				Molpy.BoostsOwned++;
+				Molpy.CheckBuyUnlocks();
+				Molpy.unlockedGroups[this.group]=1;
+				this.Refresh();
+				if(!Molpy.boostSilence&&!free)
 				{
-					Molpy.castles=0;
-					Molpy.EarnBadge('Mustard Cleanup');
-				}
-				
-				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1));
-				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1));
-				if(isNaN(sp)||isNaN(cp)){this.power=0;sp=0;Molpy.EarnBadge('How do I Shot Mustard?')};
-				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1));
-				
-				if(Molpy.ProtectingPrice()&&sp+cp+gp)return; //don't need or want price protection on free items!
-				
-				if (!this.bought && Molpy.Has('Castles',cp) && Molpy.Has('Sand',sp) && Molpy.Has('GlassBlocks',gp))
-				{
-					if(isFinite(Molpy.sandPermNP) || !Molpy.Got('Cracks'))
-					{
-						Molpy.Spend('Sand',sp);
-						Molpy.Spend('Castles',cp);
-					}
-					Molpy.Spend('GlassBlocks',gp);
-					this.bought=1;
-					if (this.buyFunction) this.buyFunction();
-					_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name,!(sp||cp||gp)]);
-					Molpy.boostRepaint=1;
-					Molpy.recalculateDig=1;
-					Molpy.BoostsOwned++;
-					Molpy.CheckBuyUnlocks();
-					Molpy.unlockedGroups[this.group]=1;
-					this.Refresh();
-					if(!Molpy.boostSilence&&sp+cp>0)
-					{
-						Molpy.ShowGroup(this.group,this.className);
-					}
-				}				
+					Molpy.ShowGroup(this.group,this.className);
+				}								
 			}
 			this.updateBuy=function(fave)
 			{
@@ -1909,15 +1905,25 @@ Molpy.Up=function()
 			}
 			this.isAffordable=function()
 			{	
-				var sand = Molpy.sand||0;
-				var castles= Molpy.castles||0;
-				
-				var sp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.sandPrice,this,1))||0;
-				var cp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.castlePrice,this,1))||0;
-				var gp = Math.floor(Molpy.priceFactor*EvalMaybeFunction(this.glassPrice,this,1))||0;
-				if(!(sp+cp+gp))return 1;//free is always affordable
+				var realPrice=this.CalcPrice(this.price);
+				if(Molpy.IsFree(realPrice))return 1;
 				if(Molpy.ProtectingPrice())return 0;
-				return Molpy.Has('Castles',cp) && Molpy.Has('Sand',sp) && Molpy.Has('GlassBlocks',gp);
+				return Molpy.Has(realPrice);
+			}
+			this.CalcPrice=function(stuff)
+			{
+				var p = {};
+				for(var i in stuff)
+				{
+					var v = Math.floor(Molpy.priceFactor*EvalMaybeFunction(stuff[i],this,1));
+					if(isNaN(v))
+					{
+						v=0;
+						Molpy.EarnBadge('How do I Shot Mustard?');
+					}
+					if(v) p[i]=v;
+				}
+				return p;
 			}
 			this.Refresh=function(indirect)
 			{
@@ -1960,12 +1966,11 @@ Molpy.Up=function()
 				if(!this.bought&&this.unlocked)
 				{
 					buy='<br><a id="BoostBuy'+this.id+'" onclick="Molpy.BoostsById['+this.id+'].buy();">Buy</a>';
-					if(this.sandPrice||this.castlePrice||this.glassPrice)
+					var realPrice=this.CalcPrice(this.price);
+					if(!Molpy.IsFree(realPrice))
 					{
 						buy+='<div class="price"> Price: ';
-						if(this.sandPrice) buy +=Molpy.FormatPrice(this.sandPrice,this)+' Sand '+(this.castlePrice||this.glassPrice?'+ ':'');
-						if(this.castlePrice) buy +=Molpy.FormatPrice(this.castlePrice,this)+' Castle'+plural(Molpy.FormatPrice(this.castlePrice,this))+' '+(this.glassPrice?'+ ':'');
-						if(this.glassPrice) buy +=Molpy.FormatPrice(this.glassPrice,this)+' Glass Block'+plural(Molpy.FormatPrice(this.glassPrice));
+						buy+=Molpy.PriceString(realPrice);
 						buy+='</div>';
 					}
 				}
