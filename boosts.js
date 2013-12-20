@@ -1285,6 +1285,7 @@
 			}
 			else
 			{
+				if (!Molpy.Got('Stretchable Chip Storage') && this.Level == Infinity) Molpy.UnlockBoost('Stretchable Chip Storage');
 				if (waste)
 				{
 					this.Level-=waste;
@@ -1560,7 +1561,7 @@
 			}
 			else
 			{
-				if (!Molpy.Got('Stretchable Block Storage') && this.Level == Infinity) waste=amount;
+				if (!Molpy.Got('Stretchable Block Storage') && this.Level == Infinity) Molpy.UnlockBoost('Stretchable Block Storage');
 				if (waste)
 				{
 					this.Level-=waste;
@@ -3474,6 +3475,7 @@
 			}
 		}
 		if(!isFinite(Math.pow(2,wwb.bought-5))) Molpy.UnlockBoost('Space Elevator');
+		wwb.Refresh();
 	}
 	
 	new Molpy.Boost({name:'Recycling Beanies',alias:'RB',desc:
@@ -4896,7 +4898,7 @@
 			if (!large) str += "</small>";
 			return str;
 		},
-		sand:Infinity,castles:Infinity,glass:Infinity,group:'cyb',class:'action'
+		sand:Infinity,castles:Infinity,glass:Infinity,group:'cyb',className:'action'
 	});
 
 	Molpy.Robot_Upgrade=function() {
@@ -4910,7 +4912,7 @@
 	}
 	Molpy.ToggleBit=function(myid,bit) {
 		Molpy.BoostsById[myid].power ^= (1<<bit);
-		Molpy.Boosts['Rob'].Refresh();
+		Molpy.BoostsbyId[myid].Refresh();
 	}
 	
 	new Molpy.Boost({name:'Eww',
