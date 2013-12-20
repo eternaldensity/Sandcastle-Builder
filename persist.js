@@ -1183,6 +1183,7 @@
 						prizeCounts[t]+=me.prizes;
 					}
 				}
+				if(me.Level)me.Level=0;
 				me.unlocked=0;
 				me.bought=0;	
 				me.power=0;

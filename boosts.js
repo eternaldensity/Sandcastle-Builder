@@ -4295,7 +4295,7 @@
 		}
 		,buyFunction:function()
 		{
-			me.bought=4;
+			this.bought=4;
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,sand:'7500',castles:'1500', group:'hpt',className:'toggle',icon:'priceprotection'
 	});

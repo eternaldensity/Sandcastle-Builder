@@ -30,6 +30,7 @@ For personal amusement only.
 - Refresh WWB
 - Now you can Break the Mould from a Mould Maker even when construction is finished, in case things get weirdly stuck.
 - Fixed some Molpy Down bugs
+- Price protection purchase *always* crashed
 
 ## 3.2771
 - Unbroke Achronal Dragon (oops that was a simple silly mistake which I should have spotted but didn't test because it was 'so simple' :(
