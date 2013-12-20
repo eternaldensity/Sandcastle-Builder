@@ -238,8 +238,7 @@
 			if(Molpy.Got('Flux Turbine'))
 			{
 				Molpy.Boosts['NavCode'].department=1;
-				Molpy.Boosts['NavCode'].sandPrice='33K';
-				Molpy.Boosts['NavCode'].castlePrice=7400;
+				Molpy.Boosts['NavCode'].price={Sand:'33K',Castles:7400};
 			}
 		}
 	}

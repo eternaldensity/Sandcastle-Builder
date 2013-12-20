@@ -86,18 +86,20 @@
 		}
 	}
 	
+	Molpy.priceComparisons=['GlassBlocks','Sand','Castles'];
 	Molpy.PriceSort=function(a,b)
 	{
-		var asp = EvalMaybeFunction(a.sandPrice,a,1);
-		var acp = EvalMaybeFunction(a.castlePrice,a,1);
-		var bsp = EvalMaybeFunction(b.sandPrice,b,1);
-		var bcp = EvalMaybeFunction(b.castlePrice,b,1);
-		if (asp>bsp) return 1;
-		else if (asp<bsp) return -1;
-		else
-		if (acp>bcp) return 1;
-		else if (acp<bcp) return -1;
-		else return 0;
+		var p1 = a.CalcPrice(a.price);
+		var p2 = b.CalcPrice(b.price);
+		for(var i in Molpy.priceComparisons)
+		{
+			var stuff=Molpy.priceComparisons[i];
+			var s1=p1[stuff]||0;
+			var s2=p2[stuff]||0;
+			if (s1>s2) return 1;
+			else if (s1<s2) return -1;
+		}
+		return 0;
 	}
 	Molpy.ClassNameSort=function(a,b)
 	{
