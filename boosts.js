@@ -4664,7 +4664,7 @@
 	
 	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal',
 		GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(0,{Bonemeal:20}),group:'prize'});	
-	new Molpy.Boost({name:'Bonemeal',desc:function(me)
+	new Molpy.Boost({name:'Bonemeal',plural:'Bonemeal',desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' bonemeal.';
 			return str;
@@ -4792,7 +4792,7 @@
 	new Molpy.Boost({name:'Bone Clicker',desc:'Sand and Glass Chips from clicking are multliplied by the amount of Bonemeal you have, if any.',
 		sand:'5K',Castles:12,group:'prize',prizes:1,tier:1});
 	new Molpy.Boost({name:'Double Department',desc:Molpy.redactedWords+' activate the DoRD twice when they would activate it once.',
-		sand:'70M',castles:'50K',group:'prize',prizes:2,tier:1});
+		sand:'70M',castles:'50K',group:'prize',prizes:1,tier:1});
 	new Molpy.Boost({name:'Spare Tools',desc:'Every dig-click builds you a free random tool',
 		sand:'2G',castles:'7M',group:'prize',prizes:1,tier:1});
 	new Molpy.Boost({name:'Doubletap',desc:'Every dig-click counts twice.',sand:'1K',Castles:6,group:'prize',prizes:2,tier:1});
@@ -4808,7 +4808,7 @@
 		{
 			return 'Recieve 1M sand per Badge you own.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.Add(\'Sand\',Molpy.BadgesOwned*1000000);Molpy.LockBoost(\'Sandblast\');" value="Use"></input>':'');
 		},
-		Sand:100,Castles:2,group:'prize',prizes:1,tier:1,className:'action'
+		Sand:100,Castles:2,group:'prize',prizes:2,tier:1,className:'action'
 	});
 	new Molpy.Boost({name:'Short Saw',desc:'VITSSÅGEN, JA! occurs 5 times as often',sand:'5T',castles:'40G',group:'prize',prizes:1,tier:1});
 	new Molpy.Boost({name:'Gruff',desc:'When you win the Monty Haul prize, you get 2 goats',sand:'2P',castles:'75T',group:'prize',prizes:1,tier:2});
@@ -4927,7 +4927,7 @@
 		{
 			return 'Spend a Goat and cause an ONG<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Goat\',1))Molpy.ONG();Molpy.LockBoost(\'GoatONG\')" value="Use"></input>':'');
 		},
-		glass:'789G',sand:'2W',group:'prize',prizes:1,tier:3,className:'action'
+		glass:'789G',sand:'2W',group:'prize',prizes:2,tier:3,className:'action'
 	});
 	
 	new Molpy.Boost({name:'Mustard Injector',

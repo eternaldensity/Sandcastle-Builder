@@ -1072,6 +1072,14 @@
 		}
 	}
 	
+	Molpy.LockPrize=function(id)
+	{
+		var t = EvalMaybeFunction(Molpy.BoostsById[id].tier,'spend');
+		var list=[];
+		list[t]=Molpy.BoostsById[id].prizes;
+		Molpy.AwardPrizes(list);		
+	}
+	
 	Molpy.AwardPrizes=function(prizeCounts)
 	{
 		if(!Molpy.prizeList) Molpy.MakePrizeList();
@@ -1087,9 +1095,9 @@
 			{
 				Molpy.UnlockBoost(p.slice(1));				
 			}else{
-				p = p.slice(0);
+				p = p.slice(1);
 				ShuffleList(p);
-				Molpy.UnlockBoost(p.slice(l-c));	
+				Molpy.UnlockBoost(p.slice(l-1-c));	
 			}
 		}
 	}

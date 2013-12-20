@@ -1950,7 +1950,7 @@ Molpy.Up=function()
 			{
 				return format(EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this))+
 					format(this.prizes&&Molpy.IsStatsVisible()&&('<br>Gives '+Molpify(this.prizes)+' random Prize'+plural(this.prizes)
-						+' from tier L'+EvalMaybeFunction(this.tier,'show'))||'');
+						+' from tier L'+EvalMaybeFunction(this.tier,'show')+' when Locked or Reset.')||'');
 			}
 			this.GetFullClass=function()
 			{
@@ -2067,6 +2067,7 @@ Molpy.Up=function()
 							me.bought=0;
 							me.Refresh();
 						}
+						if(me.prizes)Molpy.LockPrize(me.id);
 						if(!Molpy.boostSilence)
 						{
 							Molpy.Notify('Boost Locked: '+me.name,1);

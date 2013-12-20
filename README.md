@@ -34,6 +34,7 @@ For personal amusement only.
 - Added a way to get goats: by ninjaing!
 - Prevent MHP buttons from getting into the log
 - TFLL's unlock condition removed but now it costs TF chips (yay new pricing system!)
+- Prizes give prizes when locked (i.e. using singleuse prizes!)
 
 ## 3.278
 - Refresh WWB
