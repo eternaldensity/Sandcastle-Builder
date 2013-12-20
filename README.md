@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.28
+-
+
 ## 3.278
 - Refresh WWB
 - Now you can Break the Mould from a Mould Maker even when construction is finished, in case things get weirdly stuck.

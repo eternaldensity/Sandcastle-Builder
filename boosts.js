@@ -874,7 +874,7 @@
 			var item=Molpy.tfOrder[-(donkey.power+1)];
 			if(item)
 			{
-				Molpy.shoppingItem=item.name;
+				Molpy.shoppingItem=item.alias;
 				Molpy.shoppingItemName=item.plural;
 				if(notify)
 					Molpy.Notify(item.plural + ' will be purchased whenever ASHF is active if possible',1);
@@ -885,7 +885,7 @@
 			var item = Molpy.BoostsById[donkey.power];
 			if(item && !item.bought)
 			{
-				Molpy.shoppingItem=item.name;
+				Molpy.shoppingItem=item.alias;
 				Molpy.shoppingItemName=item.name;				
 				if(notify)
 					Molpy.Notify(item.name + ' will be purchased when ASHF is active if possible',1);
