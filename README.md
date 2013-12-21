@@ -28,6 +28,7 @@ For personal amusement only.
 
 ## 3.286
 - negative tools were causing infinite loops on factory automation and price calculation
+- on loading prevent negative tools also
 
 ## 3.285
 - This fixes crate keys. Because of weird reasons.
