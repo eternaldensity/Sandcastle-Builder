@@ -1169,7 +1169,7 @@ Molpy.Up=function()
 				var bought=0;
 				var spent=0;
 				this.findPrice();
-				while (times--)
+				while (times-->0)
 				{
 					var price=this.price*Molpy.priceFactor;
 					if(!isFinite(price))
@@ -1369,7 +1369,7 @@ Molpy.Up=function()
 				var times = Math.pow(4, Molpy.options.castlemultibuy);
 				var bought=0;
 				var spent=0;
-				while (times--)
+				while (times-->0)
 				{
 					var price=Math.floor(Molpy.priceFactor*this.price);
 					if(!isFinite(price))
@@ -1610,7 +1610,7 @@ Molpy.Up=function()
 				this.prevPrice=this.price0;
 				this.nextPrice=this.price1;
 				var p = this.prevPrice+this.nextPrice;
-				while(i--)
+				while(i-->0)
 				{
 					this.prevPrice=this.nextPrice;
 					this.nextPrice=p;
@@ -2871,10 +2871,10 @@ Molpy.Up=function()
 						Molpy.UnlockBoost('Safety Pumpkin');
 				}
 			}
-			i=Math.min(i,Math.floor(npb.amount/20));
+			i=Math.max(0,Math.min(i,Math.floor(npb.amount/20)));
 			var t=0;
 			var spent=0;
-			while(i--)
+			while(i-->0)
 			{
 				var sand = 2000000*Math.pow(10000,i);
 				if(Molpy.sand>=sand)
@@ -3177,13 +3177,13 @@ Molpy.Up=function()
 			}else
 			{
 				var i = Molpy.CastleToolsN;
-				while(i--)
+				while(i-->0)
 				{
 					Molpy.CastleToolsById[i].DestroyPhase();
 				}
 			
 				i = Molpy.CastleToolsN;
-				while(i--)
+				while(i-->0)
 				{
 					var t = Molpy.CastleToolsById[i];
 					if(t.name!='NewPixBot')
