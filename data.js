@@ -837,7 +837,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 		}
 	}
 	Molpy.Boosts['TDE'].logic=finiteC*finiteP;
-	Molpy.Boosts['Temporal Rift'].logic=3*finiteC*!Molpy.timeLord;
+	Molpy.Boosts['Temporal Rift'].logic=3*finiteC*!Molpy.IsEnabled('Time Lord');
 	
 	Molpy.Boosts['Bucking the Trend'].logic=10*(Molpy.SandTools['Bucket'].amount>=10000);
 	Molpy.Boosts['Crystal Well'].logic=20*(Molpy.SandTools['Bucket'].amount>=20000);

@@ -3255,7 +3255,7 @@ Molpy.Up=function()
 		}
 		if(!Molpy.Got('Temporal Rift'))
 		{
-			Molpy.timeLord=0;
+			Molpy.Boosts['Time Lord'].Level=0;
 			if(Molpy.Got('LogiQuestion'))
 			{
 				var cl = Molpy.Boosts['LogiQuestion'];
