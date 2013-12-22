@@ -982,7 +982,7 @@
 			if(Molpy.Got('Flux Surge'))
 			{
 				var c = Molpy.Got('Temporal Duplication')+1;
-				Molpy.Add('FluxCrystal',c);
+				Molpy.Add('FluxCrystals',c);
 				if(Molpy.Got('Void Goat'))Molpy.Add('Goat',1);
 			}
 		}else
@@ -993,7 +993,7 @@
 			Molpy.recalculateDig=1;
 			
 			var c = Math.floor(Math.random()*Molpy.Level('Time Lord')*(Molpy.Got('Temporal Duplication')+1));
-			Molpy.Add('FluxCrystal',c);
+			Molpy.Add('FluxCrystals',c);
 		}
 		Molpy.Notify('You wonder when you are');
 	}
@@ -5001,13 +5001,15 @@
 			var str = 'You can travel through '+Molpify(me.bought+1)+' Temporal Rift'+plural(me.bought+1)+' per NewPix.';
 			if(me.bought)
 			{
+				var p = me.bought*10;
+				str+='<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:'+p+'}))Molpy.Add(\'Time Lord\',0,1);" value="Pay"></input> '+Molpify(p,1)+' Flux Crystals to increase this by 1.';
 			}
 			return str;
 		},
 		group:'chron',className:'action'
 	});
 	
-	new Molpy.Boost({name:'Flux Crystal',alias:'FluxCrystal',singular:'Flux&npbs;Crystal',stats:'Available when you travel through a Temporal Rift during a Flux Surge',
+	new Molpy.Boost({name:'Flux Crystals',alias:'FluxCrystals',singular:'Flux&npbs;Crystal',stats:'Available when you travel through a Temporal Rift during a Flux Surge',
 		desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' Flux Crystals.';
