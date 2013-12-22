@@ -954,7 +954,7 @@
 		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:7,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
-		if(!Molpy.isEnabled('Time Lord'))
+		if(!Molpy.IsEnabled('Time Lord'))
 		{
 			Molpy.Notify('You are not a Time Lord');
 			Molpy.UnlockBoost('Time Lord');
@@ -4976,8 +4976,17 @@
 	});
 		
 	new Molpy.Boost({name:'Time Lord',
-		Level:Molpy.BostFuncs.PosPowerLevel,
-		
+		Level:Molpy.BoostFuncs.PosPowerLevel,		
+		Add:function(levels,cap)
+		{
+			if(levels>0)this.Level+=levels;
+			if(cap>0&&this.bought>0)
+			{
+				this.bought+=cap;
+				this.Refresh();
+			}
+		},
+		IsEnabled:[function(){return this.level<=this.bought;}],
 		desc:function(me)
 		{
 			var str = 'You can travel through '+Molpify(me.bought+1)+' Temporal Rift'+plural(me.bought+1)+' per NewPix.';
@@ -4986,5 +4995,6 @@
 			}
 			return str;
 		}
+	});
 	//END OF BOOSTS, add new ones immediately before this comment
 }

@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.287
+- More Time Lord fix
+
 ## 3.286
 - negative tools were causing infinite loops on factory automation and price calculation
 - on loading prevent negative tools also
