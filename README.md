@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.288
+- Added a little info to GL stats
+
 ## 3.287
 - More Time Lord fix: it's now a boost that you can level up to do more jumping per ONG!
 - Ninja Lockdown is now styled as a Toggle because it is.

@@ -4025,6 +4025,7 @@
 		{		
 			return Molpify(me.power,1)+'% Glass for '+Molpify(me.countdown,3)+'mNP';
 		}
+		,stats:'Loses 5% power per ONG if above 500%',
 		,icon:'blitzing',className:'alert',startCountdown:25,startPower:function()
 		{
 			return Molpy.Boosts['LR'].power||400;
