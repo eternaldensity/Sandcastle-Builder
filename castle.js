@@ -870,7 +870,6 @@ Molpy.Up=function()
 				Molpy.EarnBadge('Ninja Shortcomings');
 			}
 			Molpy.ninjaStealth=0;
-			Molpy.Boosts['Ninja Ritual'].Level=0;
 			
 			if(Molpy.Got('Maps'))
 			{
@@ -3203,8 +3202,23 @@ Molpy.Up=function()
 		if(Molpy.ninjad==0)
 		{
 			var hadStealth = Molpy.ninjaStealth;
-			if(Molpy.NinjaUnstealth())
-				if(hadStealth)Molpy.EarnBadge('Ninja Holidip');
+			if(Molpy.NinjaUnstealth()&&hadStealth)Molpy.EarnBadge('Ninja Holidip');
+			
+			
+			if(Molpy.Got('Ninja Ritual'))
+			{
+				if(!Molpy.Got('Ninja Herder'))
+				{
+					if(Molpy.Has('Ninja Ritual',10))
+					{
+						Molpy.EarnBadge('Lost Goats');
+						Molpy.UnlockBoost('Ninja Herder');
+					}
+					Molpy.Boosts['Ninja Ritual'].Level=0;
+				}else{
+					Molpy.Add('Goats',1+Math.floor(Molpy.Boosts['Ninja Ritual'].Level++/5));
+				}
+			}
 		}
 		Molpy.ninjad=0;//reset ninja flag
 		Molpy.npbONG=0;//reset newpixbot flag

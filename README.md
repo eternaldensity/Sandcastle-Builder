@@ -27,7 +27,9 @@ For personal amusement only.
 ## Changelog
 
 ## 3.287
-- More Time Lord fix
+- More Time Lord fix: it's now a boost that you can level up to do more jumping per ONG!
+- Ninja Lockdown is now styled as a Toggle because it is.
+- Another boost to help get goats and a related badge
 
 ## 3.286
 - negative tools were causing infinite loops on factory automation and price calculation

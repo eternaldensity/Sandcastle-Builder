@@ -372,7 +372,7 @@
 	new Molpy.Badge({name:'Infinite Saw', desc:'Use Glass Saw to make infinite Glass Blocks'});
 	new Molpy.Badge({name:'War was beginning.',desc:'What happen?',stats:function(){return Molpy.BeanishToCuegish(GLRschoice(Molpy.wing0));},vis:1});
 	new Molpy.Badge({name:'Mustard Tools', desc:'Get mustard on all your tools'});
-	
+	new Molpy.Badge({name:'Lost Goats', desc:'Miss out on getting some goats due to a Ninja Holidip', stats:'See: Ninja Ritual Boost and Ninja Holiday Badge'});
 	
 		
 	Molpy.MakeSpecialBadge=function(args,kind)

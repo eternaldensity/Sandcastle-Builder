@@ -954,10 +954,11 @@
 		,stats:'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',startCountdown:7,group:'chron',className:'action'});
 	Molpy.RiftJump=function()
 	{
-		if(!Molpy.IsEnabled('Time Lord'))
+		if(Molpy.IsEnabled('Time Lord'))
 		{
 			Molpy.Notify('You are not a Time Lord');
 			Molpy.UnlockBoost('Time Lord');
+			return;
 		}
 		Molpy.Add('Time Lord',1);
 		if(Math.random()*5<4)
@@ -978,13 +979,21 @@
 			if(Molpy.Earned('Minus Worlds')&&Math.floor(Math.random()*2))Molpy.newpixNumber*=-1;;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
-			if(Molpy.Got('Void Goat')&&Molpy.Got('Flux Surge'))Molpy.Add('Goat',1);
+			if(Molpy.Got('Flux Surge'))
+			{
+				var c = Molpy.Got('Temporal Duplication')+1;
+				Molpy.Add('FluxCrystal',c);
+				if(Molpy.Got('Void Goat'))Molpy.Add('Goat',1);
+			}
 		}else
 		{
 			Molpy.newpixNumber*=-1;
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.recalculateDig=1;
+			
+			var c = Math.floor(Math.random()*Molpy.Level('Time Lord')*(Molpy.Got('Temporal Duplication')+1));
+			Molpy.Add('FluxCrystal',c);
 		}
 		Molpy.Notify('You wonder when you are');
 	}
@@ -4430,7 +4439,7 @@
 		{			
 			return (me.IsEnabled? '':'When active, ') + 'Prevents Ninja Stealth multipliers greater than 3x, and when toggled, locks Impervious Ninja if it is owned.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+'); Molpy.LockBoost(\'Impervious Ninja\');" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		},
-		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,GlassBlocks:'144Y',group:'ninj',logic:700});
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,GlassBlocks:'144Y',group:'ninj',className:'toggle',logic:700});
 	new Molpy.Boost({name:'Magic Mirror',desc:'Allows jumps between every discovery and the equivalent place in the Minus World',GlassBlocks:'1L',group:'chron'});
 	new Molpy.Boost({name:'Locked Vault',
 		desc:function(me){
@@ -4663,7 +4672,7 @@
 		GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(0,{Bonemeal:20}),group:'prize'});	
 	new Molpy.Boost({name:'Bonemeal',plural:'Bonemeal',desc:function(me)
 		{
-			var str = 'You have '+Molpify(me.Level,3)+' bonemeal.';
+			var str = 'You have '+Molpify(me.Level,3)+' Bonemeal.';
 			return str;
 		}
 		,icon:'bonemeal',group:'stuff',defStuff:1
@@ -4693,7 +4702,7 @@
 	new Molpy.Boost({name:'Mustard',plural:'Mustard',
 		desc:function(me)
 		{
-			var str = 'You have '+Molpify(me.Level,3)+' mustard.';
+			var str = 'You have '+Molpify(me.Level,3)+' Mustard.';
 			return str;
 		}
 		,icon:'mustard',group:'stuff',defStuff:1,
@@ -4986,7 +4995,7 @@
 				this.Refresh();
 			}
 		},
-		IsEnabled:[function(){return this.level<=this.bought;}],
+		IsEnabled:[function(){return this.Level>this.bought;}],
 		desc:function(me)
 		{
 			var str = 'You can travel through '+Molpify(me.bought+1)+' Temporal Rift'+plural(me.bought+1)+' per NewPix.';
@@ -4994,7 +5003,19 @@
 			{
 			}
 			return str;
-		}
+		},
+		group:'chron',className:'action'
 	});
+	
+	new Molpy.Boost({name:'Flux Crystal',alias:'FluxCrystal',singular:'Flux&npbs;Crystal',stats:'Available when you travel through a Temporal Rift during a Flux Surge',
+		desc:function(me)
+		{
+			var str = 'You have '+Molpify(me.Level,3)+' Flux Crystals.';
+			return str;
+		}
+		,icon:'fcrystal',group:'stuff',defStuff:1
+	});
+	
+	new Molpy.Boost({name:'Ninja Herder',desc:'Ninja Ritual activates on a Ninja Holidip',stats:'See: Ninja Ritual Boost and Ninja Holidip Badge',price:{Goats:1200}});
 	//END OF BOOSTS, add new ones immediately before this comment
 }
