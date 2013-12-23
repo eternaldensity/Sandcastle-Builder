@@ -4726,7 +4726,7 @@
 				return str+'.';
 			}
 			str+=' out of 200.';
-			if(me.bought>-1 || Molpy.EnoughMonumgForMaps()&&Molpy.RandomiseMap())
+			if(me.bought!=Math.PI || Molpy.EnoughMonumgForMaps()&&Molpy.RandomiseMap())
 			{
 				str+='<br>The next map can be found at NP '+me.bought;
 			}else{
@@ -4734,9 +4734,9 @@
 			}
 			return str;
 		},
-		stats:function(me){return me.desc(me)+'<br>You need to ninja-unstealth to find a map.';}
+		stats:function(me){return me.desc(me)+'<br>Use your Camera at the specified NewPix to collect more Maps.';}
 		,buyFunction:Molpy.RandomiseMap
-		,icon:'maps',group:'stuff',defStuff:1
+		,icon:'maps',group:'stuff',defStuff:1,price:{Blackprints:20}
 	});
 	Molpy.EnoughMonumgForMaps=function()
 	{
@@ -4748,7 +4748,7 @@
 		{
 			Molpy.RandomiseMap();
 		}else{
-			Molpy.Boosts['Maps'].bought=-1
+			Molpy.Boosts['Maps'].bought=Math.PI;
 		}
 		Molpy.Boosts['Maps'].Refresh();
 	}
@@ -5013,7 +5013,7 @@
 	new Molpy.Boost({name:'Flux Crystals',alias:'FluxCrystals',singular:'Flux&npbs;Crystal',stats:'Available when you travel through a Temporal Rift during a Flux Surge',
 		desc:function(me)
 		{
-			var str = 'You have '+Molpify(me.Level,3)+' Flux Crystals.';
+			var str = 'You have '+Molpify(me.Level,3)+' Flux Crystal'+plural(me.Level)+'.';
 			return str;
 		}
 		,icon:'fcrystal',group:'stuff',defStuff:1

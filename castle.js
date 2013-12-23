@@ -871,20 +871,6 @@ Molpy.Up=function()
 			}
 			Molpy.ninjaStealth=0;
 			
-			if(Molpy.Got('Maps'))
-			{
-				if(Molpy.newpixNumber==Molpy.Boosts['Maps'].bought)
-				{
-					Molpy.Add('Maps',1);
-					if(Molpy.Has('Maps',200))
-					{
-						Molpy.UnlockBoost('DNS');
-					}else{
-						Molpy.Notify('You found a new map!',1);
-						Molpy.ClearMap();
-					}
-				}
-			}
 			return 1;
 		}
 		
@@ -2918,9 +2904,24 @@ Molpy.Up=function()
 	
 	Molpy.Shutter=function()
 	{
-		if(Molpy.Has('GlassChips',10))
-		{
-			Molpy.Spend('GlassChips',10);
+		if(Molpy.Spend('GlassChips',10))
+		{			
+			if(Molpy.Got('Maps'))
+			{
+				if(Molpy.newpixNumber==Molpy.Boosts['Maps'].bought)
+				{
+					Molpy.Add('Maps',1);
+					if(Molpy.Has('Maps',200))
+					{
+						Molpy.UnlockBoost('DNS');
+					}else{
+						Molpy.Notify('You found a new map!',1);
+						Molpy.ClearMap();
+					}
+					return;
+				}
+			}
+		
 			var alias='discov'+Molpy.newpixNumber;
 			if(!Molpy.Badges[alias])
 			{

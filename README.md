@@ -29,6 +29,9 @@ For personal amusement only.
 ## 3.288
 - Added a little info to GL stats
 - Handle Meteorpix
+- Plural Flux Crystals in description
+- Blackprints have a cost so they aren't treated as a temp boost (which caused the first map to become mustard instead)
+- Negative map targets now persist
 
 ## 3.287
 - More Time Lord fix: it's now a boost that you can level up to do more jumping per ONG!
