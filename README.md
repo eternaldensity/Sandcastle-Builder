@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.29
+- Fix shopping assistant for tools
+
 ## 3.289
 - Reduced Ninja Herder requirement (shouldn't have been so high)
 - Reduced Panther Rush cost (it's linear now rather than exponential)

@@ -880,7 +880,7 @@
 			var item=Molpy.tfOrder[-(donkey.power+1)];
 			if(item)
 			{
-				Molpy.shoppingItem=item.alias;
+				Molpy.shoppingItem=item.alias||item.name;
 				Molpy.shoppingItemName=item.plural;
 				if(notify)
 					Molpy.Notify(item.plural + ' will be purchased whenever ASHF is active if possible',1);
