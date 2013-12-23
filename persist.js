@@ -1175,6 +1175,7 @@
 			var boh = !coma&&Molpy.Got('BoH')&&Molpy.Spend('Bonemeal',10);
 			var bom = !coma&&Molpy.Got('BoM')&&Molpy.Spend('Bonemeal',100);
 			var bof = !coma&&Molpy.Got('BoF')&&Molpy.Spend('Bonemeal',1000);
+			var boj = !coma&&Molpy.Got('BoJ')&&Molpy.Spend('Bonemeal',10000);
 			var prizeCounts=[];
 			for(i in Molpy.Boosts)
 			{
@@ -1182,6 +1183,7 @@
 				if(boh&&me.group=='stuff')continue;
 				if(bom&&!me.prizes&&(me.name.indexOf('Mould')>-1||typeof(me.desc)==='string'&&me.desc.indexOf('Mould')>-1))continue;
 				if(bof&&!me.prizes&&me.className=='toggle')continue;
+				if(boj&&!me.prizes&&me.group=='chon')continue;
 				if(!coma&&me.bought&&me.prizes)
 				{
 					var t = EvalMaybeFunction(me.tier,'spend');

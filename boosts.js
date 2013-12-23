@@ -4711,7 +4711,7 @@
 		Add:function(amount)
 		{
 			this.AddSuper(amount);
-			if(!Molpy.Boosts['Mustard Sale'].unlocked&&Molpy.Spend(this.alias,2000))
+			if(!Molpy.Boosts['Mustard Sale'].unlocked&&Molpy.Got(this.alias,2000))
 			{
 				Molpy.UnlockBoost('Mustard Sale');
 			}
@@ -4808,14 +4808,14 @@
 		{
 			return 'Builds the amount of castles you have.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.Add(\'Castles\',Molpy.Level(\'Castles\'));Molpy.LockBoost(\'Single Double\');" value="Use"></input>':'');
 		},
-		Sand:'80K',Castles:500,group:'prize',prizes:1,tier:1,className:'action'
+		price:{Sand:'80K',Castles:500,Goats:5},group:'prize',prizes:1,tier:1,className:'action'
 	});
 	new Molpy.Boost({name:'Sandblast',
 		desc:function(me)
 		{
 			return 'Recieve 1M sand per Badge you own.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.Add(\'Sand\',Molpy.BadgesOwned*1000000);Molpy.LockBoost(\'Sandblast\');" value="Use"></input>':'');
 		},
-		Sand:100,Castles:2,group:'prize',prizes:2,tier:1,className:'action'
+		price:{Sand:100,Castles:2},group:'prize',prizes:1,tier:1,className:'action'
 	});
 	new Molpy.Boost({name:'Short Saw',desc:'VITSSÅGEN, JA! occurs 5 times as often',Sand:'5T',Castles:'40G',group:'prize',prizes:1,tier:1});
 	new Molpy.Boost({name:'Gruff',desc:'When you win the Monty Haul prize, you get 2 goats',Sand:'2P',Castles:'75T',group:'prize',prizes:1,tier:2});
@@ -4837,7 +4837,7 @@
 		{
 			return 'Go directly to the highest NewPix visited. Do not pass Go. Do not collect 200 goats.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.FastForward()" value="Use"></input>':'');
 		},
-		Sand:'17F',Castles:'90S',GlassBlocks:'40G',group:'prize',prizes:1,tier:2,className:'action'
+		price:{Sand:'17F',Castles:'90S',GlassBlocks:'40G',FluxCrystals:5},group:'prize',prizes:1,tier:2,className:'action'
 	});
 	Molpy.FastForward=function()
 	{
@@ -4856,14 +4856,14 @@
 		{
 			return 'Instantly win the game.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="'+Molpy.BeanishToCuegish(Molpy.wintext)+';Molpy.LockBoost(\'Month\');" value="Use"></input>':'');
 		},
-		GlassBlocks:'40WW',group:'prize',prizes:2,tier:3,className:'action'
+		price:{GlassBlocks:'40WW',Bonemeal:80,Goats:120,Mustard:240},group:'prize',prizes:2,tier:3,className:'action'
 	});
 
 	new Molpy.Boost({name:'Mustard Sale',
 		desc:function(me)
 		{
 			return 'Set the amount of a random Tool to 0 owned at a cost of 500 Mustard.'+(me.bought?'<br><input type="Button" onclick="Molpy.MustardSale();" value="Use"></input>':'');
-		},GlassBlocks:'2M',className:'action'
+		},price:{GlassBlocks:'2M',Mustard:'6K'},className:'action'
 	});
 	Molpy.MustardSale=function()
 	{
@@ -4904,7 +4904,7 @@
 			if (!large) str += "</small>";
 			return str;
 		},
-		Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity,group:'cyb',className:'action'
+		price:{Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity},group:'cyb',className:'action'
 	});
 
 	Molpy.Robot_Upgrade=function() {
@@ -4926,7 +4926,7 @@
 		{
 			return 'Convert 1K Mustard into 20 Bonemeal'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Mustard\',1000))Molpy.Add(\'Bonemeal\',5)" value="Use"></input>':'');
 		},
-		GlassBlocks:'789G',Sand:'2W',group:'prize',prizes:1,tier:3,className:'action'
+		price:{GlassBlocks:'789G',Sand:'2W',Mustard:'1K'},group:'prize',prizes:1,tier:3,className:'action'
 	});
 	
 	new Molpy.Boost({name:'GoatONG',
@@ -4934,7 +4934,7 @@
 		{
 			return 'Spend a Goat and cause an ONG<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',1))Molpy.ONG();Molpy.LockBoost(\'GoatONG\')" value="Use"></input>':'');
 		},
-		GlassBlocks:'789G',Sand:'2W',group:'prize',prizes:2,tier:3,className:'action'
+		price:{GlassBlocks:'789G',Sand:'2W'},group:'prize',prizes:2,tier:3,className:'action'
 	});
 	
 	new Molpy.Boost({name:'Mustard Injector',
@@ -4942,7 +4942,7 @@
 		{
 			return 'Spend 200 Mustard to convert a random tool to Mustard'+(me.bought?'<br><input type="Button" onclick="Molpy.MustardInjector()" value="Use"></input>':'');
 		},
-		Sand:Infinity,Castles:'50GW',group:'prize',prizes:1,tier:3,className:'action'
+		price:{Sand:Infinity,Castles:'50GW'},group:'prize',prizes:1,tier:3,className:'action'
 	});
 	Molpy.MustardInjector=function()
 	{
@@ -4961,7 +4961,7 @@
 		{
 			return 'Pay 5K Mustard to reset your '+Molpy.redactedWord+' click count to 0 and gain 1 Bonemeal per 20'+(me.bought?'<br><input type="Button" onclick="Molpy.RedactedCrunch()" value="Use"></input>':'');
 		},
-		Castles:Infinity,GlassBlocks:'800SW',group:'prize',prizes:1,tier:3,className:'action'
+		price:{Castles:Infinity,GlassBlocks:'800SW'},group:'prize',prizes:1,tier:3,className:'action'
 	});
 	Molpy.RedactedCrunch=function()
 	{
@@ -4973,9 +4973,11 @@
 		}
 	}
 	new Molpy.Boost({name:'Bag of Moulding',alias:'BoM',desc:'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal',
-		GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(1,{Bonemeal:200,Mustard:500,Blackprints:20}),group:'prize'});	
+		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Mustard:1000},className:'alert',prizes:2,tier:Molpy.TierFunction(1,{Bonemeal:200,Mustard:500,Blackprints:20}),group:'prize'
+	});	
 	new Molpy.Boost({name:'Bag of Folding',alias:'BoF',desc:'Toggle Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal',
-		GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(2,{Bonemeal:3000,Goats:30,Blackprints:500}),group:'prize'});	
+		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Goats:60},className:'alert',prizes:2,tier:Molpy.TierFunction(2,{Bonemeal:3000,Goats:30,Blackprints:500}),group:'prize'
+	});	
 		
 	new Molpy.Boost({name:'Ninja Ritual',
 		desc:function(me)
@@ -5028,6 +5030,10 @@
 		},
 		price:{Sand:Infinity,Castles:Infinity,Logicat:500},group:'prize',prizes:1,tier:3,className:'action'
 	});
+	
+	new Molpy.Boost({name:'Bag of Jolting',alias:'BoJ',desc:'Chronotech Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of '+Molpify(10000)+' Bonemeal',
+		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,FluxCrystals:600},className:'alert',prizes:2,tier:Molpy.TierFunction(3,{Bonemeal:5000,Logicat:10,FluxCrystals:5}),group:'prize'
+	});	
 	
 	
 	
