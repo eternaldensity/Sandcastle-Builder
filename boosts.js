@@ -4393,7 +4393,7 @@
 	new Molpy.Boost({name:'Ninja Ninja Duck',desc:'Ninja Stealth is raised by 10x as much'
 		,Sand:Infinity,Castles:Infinity,GlassBlocks:'230Z',group:'ninj',icon:'ninjaduck'});
 		
-	new Molpy.Boost({name:'Goats', singular:'Goat',plural:'Goats',desc:function(me)
+	new Molpy.Boost({name:'Goats', single:'Goat',plural:'Goats',desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' goat'+plural(me.Level)+'. Yay!';
 			return str;
@@ -4717,7 +4717,7 @@
 			}
 		}
 	});
-	new Molpy.Boost({name:'Mysterious Maps',singular:'Map',plural:'Maps',alias:'Maps',
+	new Molpy.Boost({name:'Mysterious Maps',single:'Map',plural:'Maps',alias:'Maps',
 		desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' map'+plural(me.Level);
@@ -5012,7 +5012,7 @@
 		group:'chron',className:'action'
 	});
 	
-	new Molpy.Boost({name:'Flux Crystals',alias:'FluxCrystals',singular:'Flux&npbs;Crystal',stats:'Available when you travel through a Temporal Rift during a Flux Surge',
+	new Molpy.Boost({name:'Flux Crystals',alias:'FluxCrystals',single:'Flux&nbsp;Crystal',stats:'Available when you travel through a Temporal Rift during a Flux Surge',
 		desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' Flux Crystal'+plural(me.Level)+'.';
@@ -5031,11 +5031,29 @@
 		price:{Sand:Infinity,Castles:Infinity,Logicat:500},group:'prize',prizes:1,tier:3,className:'action'
 	});
 	
-	new Molpy.Boost({name:'Bag of Jolting',alias:'BoJ',desc:'Chronotech Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of '+Molpify(10000)+' Bonemeal',
+	new Molpy.Boost({name:'Bag of Jolting',alias:'BoJ',desc:'Chronotech Boosts aren\'t reset when you Molpy Down, at a cost of '+Molpify(10000)+' Bonemeal',
 		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,FluxCrystals:600},className:'alert',prizes:2,tier:Molpy.TierFunction(3,{Bonemeal:5000,Logicat:10,FluxCrystals:5}),group:'prize'
-	});	
+	});		
 	
+	new Molpy.Boost({name:'Crystal Memories',desc:'Gain a Flux Crystal whenever you use Memories Revisited during Flux Surge.',price:{GlassBlocks:'2T',FluxCrystals:800},group:'prize',prizes:1,tier:4});
 	
+	new Molpy.Boost({name:'Twice Tools',
+		desc:function(me)
+		{
+			return 'Double the number of a random Tool at a cost of 5 Flux Crystals.'+(me.bought?'<br><input type="Button" onclick="Molpy.TwiceTools();" value="Use"></input>':'');
+		}
+		,className:'action',price:{Sand:Infinity,Castles:Infinity,FluxCrystals:400},group:'prize',prizes:1,tier:4});
+		
+	Molpy.TwiceTools=function()
+	{
+		if(Molpy.Spend('FluxCrystals',5))
+		{
+			var tool=GLRschoice(Molpy.tfOrder);
+			tool.amount*=2;
+			tool.Refresh();
+			Molpy.Notify('Doubled '+tool.name);
+		}
+	}
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 }
