@@ -28,6 +28,7 @@ For personal amusement only.
 
 ## 3.288
 - Added a little info to GL stats
+- Handle Meteorpix
 
 ## 3.287
 - More Time Lord fix: it's now a boost that you can level up to do more jumping per ONG!

@@ -1198,19 +1198,37 @@
 		g('logItems').innerHTML=str;
 	}
 
+	Molpy.subPixLetters=['','a','b','c','d','e'];
+	Molpy.FormatNP=function(np,format)
+	{
+		var minus = (np<0);
+		np = Math.abs(np);
+		
+		var floor = Math.floor(np);
+		if(floor!=np)
+		{
+			var subPix = Math.round(6*(np-floor));
+			if(format) floor=Molpify(floor,3);
+			np = floor+Molpy.subPixLetters[subPix];
+		}
+		return(minus?'-':'')+np;		
+	}
 	Molpy.NewPixFor=function(np)
 	{
-		np = Math.abs(np);
+		np = Math.abs(np);		
+		np = Molpy.FormatNP(np);
+		var floor = Math.floor(np);
+		
 		var x = 200+flandom(200);
 		var y = 200+flandom(400);
 		if(Molpy.Got('Chromatic Heresy')&&Molpy.options.colpix)
 		{	
-			if(np>3094)			
+			if(floor>3094)			
 				return 'http://placekitten.com/'+x+'/'+y;
 			else
 				return 'http://178.79.159.24/Time/otcolorization/'+np;
 		}else{
-			if(np>3094)			
+			if(floor>3094)			
 				return 'http://placekitten.com/g/'+x+'/'+y;
 			else
 				return 'http://xkcd.mscha.org/frame/'+np;
@@ -1268,7 +1286,7 @@
 		}
 
 		
-		g('newpixnum').innerHTML='Newpix '+Molpify(Molpy.newpixNumber,3);
+		g('newpixnum').innerHTML='Newpix '+Molpy.FormatNP(Molpy.newpixNumber,1);
 		g('eon').innerHTML=Molpy.TimeEon;
 		g('era').innerHTML=Molpy.TimeEra;
 		g('period').innerHTML=Molpy.TimePeriod;

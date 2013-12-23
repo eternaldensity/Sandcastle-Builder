@@ -3084,6 +3084,8 @@ Molpy.Up=function()
 			Molpy.npbONG=(Molpy.ONGelapsed >= Molpy.ninjaTime);//whoops
 		}
 		var npPercent = Molpy.ONGelapsed/(Molpy.NPlength*1000);
+		Molpy.CheckSubPix(npPercent);
+		
 		Molpy.clockDegrees = (npPercent * 360) + 180; //rotation from top
 		g('sectionTimer').innerHTML= 1000-Math.floor(Molpy.ONGelapsed/Molpy.NPlength);
 		if(Molpy.ONGelapsed >= Molpy.NPlength*1000)//gotta convert to milliseconds
@@ -3125,11 +3127,34 @@ Molpy.Up=function()
 		}
 		Molpy.UpdateBeachClass(stateClass);
 	}
+	Molpy.currentSubFrame=0;
+	Molpy.CheckSubPix=function(npPercent)
+	{
+		var realSubFrame=0;
+		if(Math.floor(Math.abs(Molpy.newpixNumber))==2440)
+		{
+			realSubFrame=Math.floor(npPercent*6);
+		}
+		if(realSubFrame>=6)realSubFrame=0;
+		if(Molpy.newpixNumber>0)
+		{
+			Molpy.newpixNumber=Math.floor(Molpy.newpixNumber)+realSubFrame/6;
+		}else{
+			Molpy.newpixNumber=Math.ceil(Molpy.newpixNumber)-realSubFrame/6;
+		}
+		if(realSubFrame>Molpy.currentSubFrame)
+		{
+			Molpy.Notify('MeteorONG!');
+			Molpy.UpdateBeach();			
+			Molpy.currentSubFrame=realSubFrame;
+		}
+	}
 	Molpy.ONG=function()
 	{
 		Molpy.newpixNumber+=(Molpy.newpixNumber>0?1:-1);
 		_gaq&&_gaq.push(['_trackEvent','NewPix','ONG',''+Molpy.newpixNumber,true]);
 		
+		Molpy.currentSubFrame=0;
 		var np=Math.abs(Molpy.newpixNumber);
 		if(np > Molpy.highestNPvisited)
 		{

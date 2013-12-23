@@ -4024,9 +4024,9 @@
 	new Molpy.Boost({name:'Glassed Lightning',alias:'GL',desc:function(me)
 		{		
 			return Molpify(me.power,1)+'% Glass for '+Molpify(me.countdown,3)+'mNP';
-		}
-		,stats:'Loses 5% power per ONG if above 500%',
-		,icon:'blitzing',className:'alert',startCountdown:25,startPower:function()
+		},
+		stats:'Loses 5% power per ONG if above 500%',
+		icon:'blitzing',className:'alert',startCountdown:25,startPower:function()
 		{
 			return Molpy.Boosts['LR'].power||400;
 		},buyFunction:function()
@@ -5019,6 +5019,6 @@
 		,icon:'fcrystal',group:'stuff',defStuff:1
 	});
 	
-	new Molpy.Boost({name:'Ninja Herder',desc:'Ninja Ritual activates on a Ninja Holidip',stats:'See: Ninja Ritual Boost and Ninja Holidip Badge',price:{Goats:1200}});
+	new Molpy.Boost({name:'Ninja Herder',desc:'Ninja Ritual activates on a Ninja Holidip',stats:'See: Ninja Ritual Boost and Ninja Holidip Badge',group:'ninj',price:{Goats:1200}});
 	//END OF BOOSTS, add new ones immediately before this comment
 }

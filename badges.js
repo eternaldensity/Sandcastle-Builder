@@ -830,5 +830,6 @@
 	Molpy.MakeQuadBadge({np:2377,name:'Take a rest',desc:'Cueball: No, you need to rest.  I\'ll wake you if I get tired'});
 	Molpy.MakeQuadBadge({np:2379,name:'Hit it',desc:'Megan: Or if something is trying to eat you, and you need me to hit it'});
 	Molpy.MakeQuadBadge({np:2393,name:'Nighttime',desc:'This is the clue for 11,000 years in the future'}); //to NP2400
+	Molpy.MakeQuadBadge({np:2440.5,name:'METEOR!',desc:'Wow, it\'s a meteor!'});
 	//Molpy.MakeQuadBadge({np:,name:'',desc:''});
 }
