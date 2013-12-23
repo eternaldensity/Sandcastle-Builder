@@ -414,12 +414,11 @@
 		}
 		if(Molpy.castles >=price)
 		{
-			if(!Molpy.Has('GlassChips',chips))
+			if(!Molpy.Spend('GlassChips',chips))
 			{
 				Molpy.Notify('Great Scott, there\'s a hole in the glass tank!');
 				return;
 			}
-			Molpy.Spend('GlassChips',chips);
 			Molpy.Spend('Castles',price);
 			if(Molpy.Earned('discov'+Molpy.newpixNumber))Molpy.Badges['discov'+Molpy.newpixNumber].Refresh();
 			Molpy.newpixNumber=np;
@@ -432,6 +431,12 @@
 			Molpy.timeTravels++;
 			if(Molpy.timeTravels>=10) Molpy.HandleInvaders(chips);
 			Molpy.Boosts['Time Travel'].Refresh();
+			if(chips&&Molpy.Got('Crystal Memories')&&Molpy.Got('Flux Surge'))
+			{
+				var c = Molpy.Got('TDE')+1;
+				Molpy.Boosts['Flux Surge'].countdown*=.5;
+				Molpy.Add('FluxCrystals',c);
+			}
 			return 1;
 		}else
 		{
@@ -981,7 +986,7 @@
 			Molpy.LockBoost('Temporal Rift');
 			if(Molpy.Got('Flux Surge'))
 			{
-				var c = Molpy.Got('Temporal Duplication')+1;
+				var c = Molpy.Got('TDE')+1;
 				Molpy.Add('FluxCrystals',c);
 				if(Molpy.Got('Void Goat'))Molpy.Add('Goat',1);
 			}
@@ -992,7 +997,7 @@
 			Molpy.UpdateBeach();
 			Molpy.recalculateDig=1;
 			
-			var c = Math.floor(Math.random()*Molpy.Level('Time Lord')*(Molpy.Got('Temporal Duplication')+1));
+			var c = Math.floor(Math.random()*Molpy.Level('Time Lord')*(Molpy.Got('TDE')+1));
 			Molpy.Add('FluxCrystals',c);
 		}
 		Molpy.Notify('You wonder when you are');
@@ -5035,7 +5040,7 @@
 		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,FluxCrystals:600},className:'alert',prizes:2,tier:Molpy.TierFunction(3,{Bonemeal:5000,Logicat:10,FluxCrystals:5}),group:'prize'
 	});		
 	
-	new Molpy.Boost({name:'Crystal Memories',desc:'Gain a Flux Crystal whenever you use Memories Revisited during Flux Surge.',price:{GlassBlocks:'2T',FluxCrystals:800},group:'prize',prizes:1,tier:4});
+	new Molpy.Boost({name:'Crystal Memories',desc:'Gain a Flux Crystal whenever you use Memories Revisited during Flux Surge, at a cost of half the Flux Surge countdown.',price:{GlassBlocks:'2T',FluxCrystals:800},group:'prize',prizes:1,tier:4});
 	
 	new Molpy.Boost({name:'Twice Tools',
 		desc:function(me)

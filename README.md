@@ -33,6 +33,7 @@ For personal amusement only.
 - Blackprints have a cost so they aren't treated as a temp boost (which caused the first map to become mustard instead)
 - Negative map targets now persist
 - New prizes
+- Fixed some accidental references to Temporal Duplication which should have been TDE
 
 ## 3.287
 - More Time Lord fix: it's now a boost that you can level up to do more jumping per ONG!
