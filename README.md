@@ -32,6 +32,7 @@ For personal amusement only.
 - Plural Flux Crystals in description
 - Blackprints have a cost so they aren't treated as a temp boost (which caused the first map to become mustard instead)
 - Negative map targets now persist
+- New prizes
 
 ## 3.287
 - More Time Lord fix: it's now a boost that you can level up to do more jumping per ONG!

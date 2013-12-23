@@ -2846,13 +2846,12 @@
 		{//we used up some blackprints somehow!
 			return times; //do nothing
 		}
-		var con=Molpy.Boosts['CfB'];
-		con.power+=times;
+		Molpy.Add('CfB',times);
 		 
 		if(!Molpy.Got('AE'))c=Math.min(c,40);
-		if(con.power>=c*10)
+		if(Molpy.Has('CfB',c*10))
 		{
-			var op = con.power;
+			var op = Molpy.Level('CfB');
 			Molpy.LockBoost('CfB');
 			return Math.max(0,times+op-c*10);
 		}
@@ -2869,7 +2868,7 @@
 			}
 			var c = Molpy.blackprintCosts[subj.alias];
 			if(!Molpy.Got('AE'))c=Math.min(c,40);
-			str = 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(c*10-me.power)+' runs of Factory Automation required to complete.';
+			str = 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(c*10-me.Level)+' runs of Factory Automation required to complete.';
 			if(subj.alias=='BoH')str+='<br>To construct Bag of Holding you must retain at least 400 goats, otherwise construction will stall.';
 			return str;
 		},
@@ -2879,9 +2878,10 @@
 		},
 		lockFunction:function()
 		{
-			this.power=0;
+			this.Level=0;
 			Molpy.LockBoost('Blackprints');
 		},
+		defStuff:1,
 		className:'alert',group:'bean',icon:'constructblack'
 	});
 	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:150,ZK:220,CFT:40000,BoH:90000,Nest:5e6};
@@ -5017,8 +5017,19 @@
 			return str;
 		}
 		,icon:'fcrystal',group:'stuff',defStuff:1
-	});
+	});	
 	
 	new Molpy.Boost({name:'Ninja Herder',desc:'Ninja Ritual activates on a Ninja Holidip',stats:'See: Ninja Ritual Boost and Ninja Holidip Badge',group:'ninj',price:{Goats:1200}});
+	
+	new Molpy.Boost({name:'Negator',
+		desc:function(me)
+		{
+			return 'Flip in and out of Minus worlds at a cost of 1 Flux Crystal'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:1})){Molpy.newpixNumber*=-1;Molpy.UpdateBeach()}" value="Flip"></input>':'');
+		},
+		price:{Sand:Infinity,Castles:Infinity,Logicat:500},group:'prize',prizes:1,tier:3,className:'action'
+	});
+	
+	
+	
 	//END OF BOOSTS, add new ones immediately before this comment
 }
