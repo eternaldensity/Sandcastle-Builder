@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.289
+- Reduced Ninja Herder requirement (shouldn't have been so high)
+- Reduced Panther Rush cost (it's linear now rather than exponential)
+- Buzz Saw to make your Glass Sawing easier (well, mine. because I'm bored of it)
+
 ## 3.288
 - Added a little info to GL stats
 - Handle Meteorpix

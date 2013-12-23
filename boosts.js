@@ -1294,7 +1294,7 @@
 			}
 			this.Level+=amount;
 			var waste = Math.max(0,this.Level-(this.bought)*10);
-			if (waste && expand && Molpy.Boosts['Stretchable Chip Storage'].power)
+			if (waste && expand && Molpy.Boosts['Stretchable Chip Storage'].IsEnabled)
 			{
 				this.Spend(amount);
 				this.bought += Math.floor(amount/4.5);
@@ -1570,7 +1570,7 @@
 			}
 			this.Level+=amount;
 			var waste = Math.max(0,this.Level-(this.bought)*50);
-			if (waste && expand && Molpy.Boosts['Stretchable Block Storage'].power)
+			if (waste && expand && Molpy.Boosts['Stretchable Block Storage'].IsEnabled)
 			{
 				this.Level -= amount;
 				this.bought += Math.floor(amount/13.5);
@@ -3906,7 +3906,7 @@
 	Molpy.CalcRushCost=function(p)
 	{
 		var l = Molpy.Level('Panther Rush')+(p||0);
-		return (Molpy.rushCost+l)*(l+1);
+		return Molpy.rushCost*(l+1);
 	}
 	Molpy.PantherRush=function()
 	{
@@ -5059,6 +5059,8 @@
 			Molpy.Notify('Doubled '+tool.name);
 		}
 	}
+	
+	new Molpy.Boost({name:'Buzz Saw',desc:'Glass Saw\'s power will go up 50% faster and it will expand Glass Storage if necessary (and possible).',price:{GlassBlocks:'12E',Goats:12}});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 }

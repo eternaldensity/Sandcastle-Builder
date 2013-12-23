@@ -609,26 +609,37 @@ Molpy.Up=function()
 							maxGlass=Math.min(maxGlass,Math.floor(Molpy.Level('TF')/rate));
 							var leave = 0;
 							var bl = Molpy.Boosts['GlassBlocks'];
-							if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].IsEnabled)
+							if(Molpy.Got('Buzz Saw')&&Molpy.Boosts['Stretchable Block Storage'].IsEnabled)
 							{
-								leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
-							}
-							maxGlass=Math.min(maxGlass,bl.bought*50-bl.power - leave);
-							maxGlass=Math.max(maxGlass,0)||0;
-							var backoff = 1;
-							while (bl.power+maxGlass > bl.bought*50 )
-							{
-								maxGlass -= backoff;
-								backoff *= 2;
+								maxGlass=Math.max(maxGlass,0)||0;
+							}else{
+								if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].IsEnabled)
+								{
+									leave = Molpy.Boosts['Glass Chiller'].power *(1+Molpy.Boosts['AC'].power)/2*10; // 10 mnp space
+								}
+								maxGlass=Math.min(maxGlass,bl.bought*50-bl.power - leave);
+								maxGlass=Math.max(maxGlass,0)||0;
+								var backoff = 1;
+								while (bl.power+maxGlass > bl.bought*50 )
+								{
+									maxGlass -= backoff;
+									backoff *= 2;
+								}
 							}
 							if(!isFinite(maxGlass))
 							{
 								Molpy.EarnBadge('Infinite Saw');
 							}
-							Molpy.Add('GlassBlocks',maxGlass);
+							Molpy.Add('GlassBlocks',maxGlass,Molpy.Got('Buzz Saw'));
 							Molpy.Spend('TF',maxGlass*rate);
 							if(Molpy.Has('TF',absMaxGlass*rate*2))
-								Molpy.Boosts['Glass Saw'].power=p*2;
+								Molpy.Boosts['Glass Saw'].power=p*(2+Molpy.Got('Buzz Saw'));
+								
+							if(maxGlass && p > 1e15 && maxGlass/absMaxGlass<.01)
+							{
+								Molpy.UnlockBoost('Buzz Saw');
+								Molpy.UnlockBoost('Stretchable Block Storage');
+							}
 						}else{
 							if(!p) Molpy.Boosts['Glass Saw'].power=1;
 						}
@@ -3235,7 +3246,7 @@ Molpy.Up=function()
 			{
 				if(!Molpy.Got('Ninja Herder'))
 				{
-					if(Molpy.Has('Ninja Ritual',10))
+					if(Molpy.Has('Ninja Ritual',5))
 					{
 						Molpy.EarnBadge('Lost Goats');
 						Molpy.UnlockBoost('Ninja Herder');
