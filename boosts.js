@@ -4772,6 +4772,7 @@
 		desc:function(me)
 		{
 			var str= 'The queen of the dragons.';
+			return str; //not going to be ready for a while
 			if(me.bought)
 			{
 				str+='<br><input type="Button" onclick="if(Molpy.Spend({Goats:10}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses 10 Goats)';

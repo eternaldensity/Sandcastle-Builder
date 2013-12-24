@@ -28,6 +28,8 @@ For personal amusement only.
 
 ## 3.29
 - Fix shopping assistant for tools
+- Some Prizes
+- A little work on DQ but won't be ready for quite a while
 
 ## 3.289
 - Reduced Ninja Herder requirement (shouldn't have been so high)
