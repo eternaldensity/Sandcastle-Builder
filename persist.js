@@ -435,12 +435,12 @@
 		{
 			var cb = Molpy.Boosts[cancerbabies];
 			str += cb.unlocked+c+cb.bought+c+cb.power+c+cb.countdown;
-			if(cancerbabies.data)
+			if(cb.data)
 			{
 				str+=c;
-				for(var coffee in cancerbabies.data)
+				for(var coffee in cb.data)
 				{
-					str+=c+cancerbabies.data[coffee];
+					str+=c+cb.data[coffee];
 				}
 			}			
 			str+=s;

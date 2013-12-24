@@ -4774,7 +4774,7 @@
 			var str= 'The queen of the dragons.';
 			if(me.bought)
 			{
-				str+='<br><input type="Button" onclick="if(Molpy.Spend({Goats:10})Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses 10 Goats)';
+				str+='<br><input type="Button" onclick="if(Molpy.Spend({Goats:10}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses 10 Goats)';
 			}
 			return str;
 		},
@@ -4784,8 +4784,7 @@
 	new Molpy.Boost({name:'Dragon Eggs',alias:'Eggs',single:'Dragon&nbsp;Egg',
 		desc:function(me)
 		{
-			var str = 'You have '+Molpify(me.Level,3)+' egg'+plural(me.Level);
-			str+='.<br> They hatch in '+MolpifyCountdown(me.countdown)+'.';
+			var str = 'You have '+Molpify(me.Level,3)+' egg'+plural(me.Level)+'. Hatching in '+MolpifyCountdown(me.countdown,1)+'.';
 			return str;
 		}
 		,icon:'egg',group:'drac',defStuff:1,

@@ -93,9 +93,9 @@ function Molpify(number, raftcastle, shrinkify)
 	return molp;
 }
 
-function MolpifyCountdown(mNP)
+function MolpifyCountdown(mNP,p)
 {
-	return mNP==0?'ever':mNP>=1000?Molpify(mNP/1000)+'NP':Molpify(mNP)+'mNP'
+	return mNP==0?'ever':mNP>=1000?Molpify(mNP/1000,p)+'NP':Molpify(mNP)+'mNP'
 }
 /* In which the game initialisation is specified
 ++++++++++++++++++++++++++++++++++++++++++++++++*/
