@@ -654,8 +654,9 @@ Molpy.CheckBuyUnlocks=function(tool)
 	if(Molpy.Has('GlassBlocks',7016280))Molpy.EarnBadge('Pyramid of Giza');
 	if(Molpy.Has('GlassChips',640000))Molpy.EarnBadge('Personal Computer');	
 	
-	if (Molpy.Boosts['Sand Purifier'].power > 1000) Molpy.UnlockBoost('Seaish Glass Chips');
-	if (Molpy.Boosts['Glass Extruder'].power > 1000) Molpy.UnlockBoost('Seaish Glass Blocks');
+	var upLevel=(Molpy.Got('Riser')?1:1000);
+	if (Molpy.Boosts['Sand Purifier'].power > upLevel) Molpy.UnlockBoost('Seaish Glass Chips');
+	if (Molpy.Boosts['Glass Extruder'].power > upLevel) Molpy.UnlockBoost('Seaish Glass Blocks');
 	
 	if(!isFinite(Math.pow(200,Molpy.Boosts['RB'].bought)))Molpy.UnlockBoost('Knitted Beanies');
 	if(!isFinite(Math.pow(2,Molpy.Boosts['WWB'].bought-5))) Molpy.UnlockBoost('Space Elevator');

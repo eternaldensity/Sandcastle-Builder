@@ -93,6 +93,10 @@ function Molpify(number, raftcastle, shrinkify)
 	return molp;
 }
 
+function MolpifyCountdown(mNP)
+{
+	return mNP==0?'ever':mNP>=1000?Molpify(mNP/1000)+'NP':Molpify(mNP)+'mNP'
+}
 /* In which the game initialisation is specified
 ++++++++++++++++++++++++++++++++++++++++++++++++*/
 Molpy.Up=function()
@@ -2899,18 +2903,41 @@ Molpy.Up=function()
 		}
 		if(left)
 		{
-			if(!Molpy.Boosts['Cold Mould'].IsEnabled)
+			left=Molpy.DoMouldWork(left);
+			if(Molpy.Got('AO'))
 			{
-				if (left) left=Molpy.FillGlassMouldWork(left);
-				if (left) left=Molpy.MakeGlassMouldWork(left);
-				if (left) left=Molpy.FillSandMouldWork(left);
-				if (left) left=Molpy.MakeSandMouldWork(left);
-				if(Molpy.Got('AO'))left=times;
+				left=times;
 			}
 			
 			while(left--)
 				Molpy.RewardRedacted(1,left);
 		}
+	}
+	
+	Molpy.DoMouldWork=function(left)
+	{	
+		if(!Molpy.Boosts['Cold Mould'].IsEnabled)
+		{
+			if (left) left=Molpy.FillGlassMouldWork(left);
+			if (left) left=Molpy.MakeGlassMouldWork(left);
+			if (left) left=Molpy.FillSandMouldWork(left);
+			if (left) left=Molpy.MakeSandMouldWork(left);
+			
+			
+			if(Molpy.Got('AO')&&Molpy.Got('Mould Press'))
+			{
+				while(left)
+				{
+					var start=left;
+					left=Molpy.FillGlassMouldWork(left);
+					if (left) left=Molpy.MakeGlassMouldWork(left);
+					if (left) left=Molpy.FillSandMouldWork(left);
+					if (left) left=Molpy.MakeSandMouldWork(left);	
+					if(start==left)break;					
+				}
+			}
+		}
+		return left
 	}
 	
 	Molpy.Shutter=function()

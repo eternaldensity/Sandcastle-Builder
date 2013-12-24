@@ -103,7 +103,7 @@
 		Sand:'25K',Castles:88,icon:'ninjapenance',startPower:2,group:'ninj'}); 
 	new Molpy.Boost({name:'Blitzing',desc:function(me)
 		{		
-			return Molpify(me.power,1)+'% Sand for '+Molpify(me.countdown,3)+'mNP';
+			return Molpify(me.power,1)+'% Sand for '+MolpifyCountdown(me.countdown);
 		}
 		,icon:'blitzing',className:'alert',
 		startCountdown:23 //only used when loading to ensure it doesn't get stuck. any true value would do here
@@ -252,7 +252,7 @@
 		}
 	});
 	new Molpy.Boost({name:'Affordable Swedish Home Furniture',alias:'ASHF',desc: function(me){return Molpify(me.power*100,1)+'% off all items for '
-		+Molpify(me.countdown,3)+'mNP'}
+		+MolpifyCountdown(me.countdown)}
 		,buyFunction:function(){
 			Molpy.shopRepaint=1;
 			Molpy.CalcPriceFactor();
@@ -667,7 +667,7 @@
 	new Molpy.Boost({name:'Jamming',desc:
 		function(me)
 		{		
-			return 'You cannot access NewPixBot Navigation Code for '+Molpify(me.countdown,3)+'mNP';
+			return 'You cannot access NewPixBot Navigation Code for '+MolpifyCountdown(me.countdown);
 		},className:'alert',group:'cyb',startCountdown:function()
 		{
 			if(Molpy.Got('Fireproof'))return 20;
@@ -941,7 +941,7 @@
 	new Molpy.Boost({name:'Temporal Rift',
 		desc:function(me)
 		{
-			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+Molpify(me.countdown,3)+'mNP.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
+			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+MolpifyCountdown(me.countdown)+'.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
 			return 'A hole in time has opened.';
 		}
 		,stats:'Has an unfortunate negative effect on Logicat Wakefulness'
@@ -1023,7 +1023,7 @@
 	new Molpy.Boost({name:'Glass Furnace Switching',
 		desc:function(me)
 		{
-			return (me.IsEnabled?'off':'on')+' in '+Molpify(me.countdown,3)+'mNP';
+			return (me.IsEnabled?'off':'on')+' in '+MolpifyCountdown(me.countdown);
 		}
 		,startCountdown:1500//dummy value
 		,lockFunction:
@@ -1048,7 +1048,7 @@
 		}
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',this.name]);	
 		Molpy.Boosts['Glass Furnace Switching'].IsEnabled=off;
-		Molpy.GiveTempBoost('Glass Furnace Switching',off,1500);
+		Molpy.GiveTempBoost('Glass Furnace Switching',off,(Molpy.Got('Lubrication')&&Molpy.Spend({Mustard:100})?15:1500));
 	}
 	//check whether we can further reduce the sand rate to use any for various means
 	Molpy.CheckSandRateAvailable=function(increment)
@@ -1441,7 +1441,7 @@
 	new Molpy.Boost({name:'Glass Blower Switching',
 		desc:function(me)
 		{
-			return (me.IsEnabled?'off':'on')+' in '+Molpify(me.countdown,3)+'mNP';
+			return (me.IsEnabled?'off':'on')+' in '+MolpifyCountdown(me.countdown);
 		},lockFunction:
 		function()
 		{
@@ -1465,7 +1465,7 @@
 		}
 		_gaq&&_gaq.push(['_trackEvent','Boost','Toggle',this.name]);
 		Molpy.Boosts['Glass Blower Switching'].IsEnabled=off;
-		Molpy.GiveTempBoost('Glass Blower Switching',off,2500);
+		Molpy.GiveTempBoost('Glass Blower Switching',off,(Molpy.Got('Lubrication')&&Molpy.Spend({Mustard:100})?25:2500));
 	}
 	
 	new Molpy.Boost({name:'Glass Chiller',desc:
@@ -2357,7 +2357,7 @@
 		function(me)
 		{
 			var tdf=Molpy.TDFactor()-1;
-			return 'For '+(me.countdown==0?'ever':me.countdown>=1000?Molpify(me.countdown/1000)+'NP':Molpify(me.countdown)+'mNP')+', when you buy tools, get '+(tdf==1?'the same':Molpify(tdf,1)+'x that')+' amount again for free!';
+			return 'For '+MolpifyCountdown(me.countdown)+', when you buy tools, get '+(tdf==1?'the same':Molpify(tdf,1)+'x that')+' amount again for free!';
 		}
 		,group:'chron',className:'alert',logic:50,
 		startCountdown:function()
@@ -2399,7 +2399,7 @@
 		return 1;
 	}
 	new Molpy.Boost({name:'Flux Surge',desc:
-		function(me){return 'Increases the effect of Flux Turbine for the next '+Molpify(me.countdown,3)+'mNP';}
+		function(me){return 'Increases the effect of Flux Turbine for '+MolpifyCountdown(me.countdown);}
 		,group:'chron',startCountdown:function()
 		{
 			return Math.min(12500, Molpy.LogiMult(80));
@@ -3750,13 +3750,7 @@
 			{
 				  Molpy.DoBlackprintConstruction(left);
 			}
-			if(!Molpy.Boosts['Cold Mould'].IsEnabled)
-			{
-				if (left) left=Molpy.FillGlassMouldWork(left);
-				if (left) left=Molpy.MakeGlassMouldWork(left);
-				if (left) left=Molpy.FillSandMouldWork(left);
-				if (left) left=Molpy.MakeSandMouldWork(left);
-			}
+			Molpy.DoMouldWork(left);
 		}
 		
 		var furn=Math.floor((times+Math.random()*3)/2);
@@ -4028,7 +4022,7 @@
 	new Molpy.Boost({name:'Glass Mousepy',alias:'GM',desc:'Clicks give 5% of your chips/mNP rate',GlassBlocks:'10M',Sand:Infinity,Castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Glassed Lightning',alias:'GL',desc:function(me)
 		{		
-			return Molpify(me.power,1)+'% Glass for '+Molpify(me.countdown,3)+'mNP';
+			return Molpify(me.power,1)+'% Glass for '+MolpifyCountdown(me.countdown);
 		},
 		stats:'Loses 5% power per ONG if above 500%',
 		icon:'blitzing',className:'alert',startCountdown:25,startPower:function()
@@ -4775,20 +4769,37 @@
 		group:'drac',Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity
 	});
 	new Molpy.Boost({name:'Dragon Queen',alias:'DQ',
-		desc:function(me){return 'The queen of the dragons.';},
-		group:'drac',Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity,
-		buyFunction:function()
+		desc:function(me)
 		{
-			if(!Molpy.Spend('Bonemeal',2000))Molpy.LockBoost(this.alias);
-		}
+			var str= 'The queen of the dragons.';
+			if(me.bought)
+			{
+				str+='<br><input type="Button" onclick="if(Molpy.Spend({Goats:10})Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses 10 Goats)';
+			}
+			return str;
+		},
+		group:'drac', className:'action',
+		price:{Bonemeal:'25K',Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity}
 	});
-	new Molpy.Boost({name:'Dragon Eggs',alias:'Eggs',
+	new Molpy.Boost({name:'Dragon Eggs',alias:'Eggs',single:'Dragon&nbsp;Egg',
 		desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' egg'+plural(me.Level);
-			return str+'.';
+			str+='.<br> They hatch in '+MolpifyCountdown(me.countdown)+'.';
+			return str;
 		}
-		,icon:'egg',group:'drac',defStuff:1
+		,icon:'egg',group:'drac',defStuff:1,
+		AddSuper:Molpy.BoostFuncs.Add,
+		Add:function(amount)
+		{
+			this.AddSuper(amount);
+			this.countdown+=1000/Math.ceil(this.Level/5);
+		},
+		lockFunction:function()
+		{
+			Molpy.Add('Hatchlings',this.Level);
+			this.Level=0;
+		}
 	});
 	new Molpy.Boost({name:'Dragon Hatchlings',alias:'Hatchlings',
 		desc:function(me)
@@ -4796,7 +4807,13 @@
 			var str = 'You have '+Molpify(me.Level,3)+' hatchlings'+plural(me.Level);
 			return str+'.';
 		}
-		,icon:'hatchlings',group:'drac',defStuff:1
+		,icon:'hatchlings',group:'drac',defStuff:1,
+		Add:function(amount)
+		{
+			if(!this.data)this.data=[];
+			this.data.push(amount);
+			this.Level+=amount;
+		}
 	});
 		
 	new Molpy.Boost({name:'Glass Goat',desc:'Glass produced by Glass Furnace/Blower is multiplied by the number of Goats you have, if any.',
@@ -4980,7 +4997,7 @@
 	new Molpy.Boost({name:'Bag of Moulding',alias:'BoM',desc:'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal',
 		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Mustard:1000},className:'alert',prizes:2,tier:Molpy.TierFunction(1,{Bonemeal:200,Mustard:500,Blackprints:20}),group:'prize'
 	});	
-	new Molpy.Boost({name:'Bag of Folding',alias:'BoF',desc:'Toggle Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal',
+	new Molpy.Boost({name:'Bag of Folding',alias:'BoF',desc:'Toggle Boosts (apart from Prizes, Glass Furnace, and Glass Blower) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal',
 		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Goats:60},className:'alert',prizes:2,tier:Molpy.TierFunction(2,{Bonemeal:3000,Goats:30,Blackprints:500}),group:'prize'
 	});	
 		
@@ -5061,6 +5078,14 @@
 	}
 	
 	new Molpy.Boost({name:'Buzz Saw',desc:'Glass Saw\'s power will go up 50% faster and it will expand Glass Storage if necessary (and possible).',price:{GlassBlocks:'12E',Goats:12}});
+	
+	new Molpy.Boost({name:'Lubrication',desc:'Glass Furnace and Glass Blower\'s switching time is reduced by 99% (uses 100 Mustard per toggle).',price:{Mustard:'6K'},group:'prize',prizes:1,tier:4});
+	new Molpy.Boost({name:'Riser',desc:'Unlocks the Seaish Glass boosts much sooner.',price:{Mustard:'3K',Sand:Infinity},group:'prize',prizes:1,tier:4});
+	new Molpy.Boost({name:'Mould Press',desc:'If you have Automation Optimiser, Mould tasks run again to use up any leftover Factory Automation runs.',price:{Goats:300,LogiQuestion:'2K',Castles:Infinity,GlassBlocks:Infinity},group:'prize',prizes:1,tier:4});
+	
+	
+	
+	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 }

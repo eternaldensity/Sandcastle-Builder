@@ -434,7 +434,16 @@
 		for(var cancerbabies in Molpy.Boosts)
 		{
 			var cb = Molpy.Boosts[cancerbabies];
-			str += cb.unlocked+c+cb.bought+c+cb.power+c+cb.countdown+s;
+			str += cb.unlocked+c+cb.bought+c+cb.power+c+cb.countdown;
+			if(cancerbabies.data)
+			{
+				str+=c;
+				for(var coffee in cancerbabies.data)
+				{
+					str+=c+cancerbabies.data[coffee];
+				}
+			}			
+			str+=s;
 		}
 		return str;
 	}
@@ -666,6 +675,17 @@
 					me.power=0; //compression! :P
 				if(isNaN(me.countdown))
 					me.countdown=0;
+					
+				var bacon=pixels[i].split(c+c)[1];
+				if(bacon)
+				{
+					bacon=bacon.split(c);
+					me.data=[];
+					for(var i in bacon)
+					{
+						me.data[i]=bacon[i];
+					}
+				}
 			}
 			else
 			{
@@ -1182,7 +1202,7 @@
 				var me = Molpy.Boosts[i];
 				if(boh&&me.group=='stuff')continue;
 				if(bom&&!me.prizes&&(me.name.indexOf('Mould')>-1||typeof(me.desc)==='string'&&me.desc.indexOf('Mould')>-1))continue;
-				if(bof&&!me.prizes&&me.className=='toggle')continue;
+				if(bof&&!me.prizes&&me.className=='toggle'&&me.name!='Glass Furnace'&&me.name!='Glass Blower')continue;
 				if(boj&&!me.prizes&&me.group=='chon')continue;
 				if(!coma&&me.bought&&me.prizes)
 				{
