@@ -2205,6 +2205,58 @@ Molpy.Up=function()
 			return baby&&baby.earned;
 		}
 		
+		
+		Molpy.Hands=[];
+		Molpy.HandsById=[];
+		Molpy.HandN=0;
+		Molpy.Hand=function(args)
+		{
+			this.CharactersById=[]; //no name indexed array for characters because you can have duplicates
+			this.CharacterN=0;
+			
+			this.id=Molpy.HandN;
+			this.name=args.name;
+			
+			
+			
+			
+			Molpy.Hands[this.name]=this;
+			Molpy.HandsById[this.id]=this;
+			Molpy.HandN++;
+			return this;
+		}	
+		
+		new Molpy.Hand({name:'Dragons'});//player
+		new Molpy.Hand({name:'Castle'});//enemy!
+		
+		Molpy.Characters=[];//this is the list of all types of character. a hand will contain copies of these.
+		Molpy.CharactersById=[];
+		Molpy.CharacterN=0;
+		Molpy.Character=function(args)
+		{
+			this.id=Molpy.CharacterN;
+			this.name=args.name;
+			this.tier=args.tier;
+			this.health=this.maxhealth=args.health;
+			this.attack=args.attack;
+			this.cooldown=this.maxcooldown=args.cooldown;
+			this.space=args.space;
+			this.inventory=[];
+			this.intel=args.intel;//intelligence affects what actions can be performed by this character
+			
+			
+			
+			
+			Molpy.Characters[this.name]=this;
+			Molpy.CharactersById[this.id]=this;
+			Molpy.CharacterN++;
+			return this;
+		}
+		
+		
+		
+		
+		
 		Molpy.redactedW=Molpy.BeanishToCuegish("UmVkdW5kYW50");
 		Molpy.redactedWord=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
 		Molpy.redactedWords=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
@@ -2828,6 +2880,7 @@ Molpy.Up=function()
 		Molpy.DefineCastleTools();
 		Molpy.DefineBoosts();
 		Molpy.DefineBadges();		
+		Molpy.DefineCharacters();		
 		Molpy.InitGUI();		
 		
 		Molpy.UpdateBeach();
