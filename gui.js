@@ -309,6 +309,7 @@
 		Molpy.options.typo=0;
 		Molpy.options.science=0;
 		Molpy.options.autosavelayouts=1;
+		Molpy.options.autoscroll=0;
 	}
 	Molpy.DefaultOptions();
 		
@@ -370,11 +371,15 @@
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
+		}else if(bacon=='autoscroll')
+		{
+			Molpy.options.autoscroll++;
+			if(Molpy.options.autoscroll>=2)Molpy.options.autoscroll=0;
 		}else return;
 		
 		Molpy.OptionDescription(bacon,1); //update description
 	}
-	Molpy.optionNames=['autosave','colourscheme','sandnumbers','colpix','longpostfix','sandmultibuy','castlemultibuy','fade','science'];
+	Molpy.optionNames=['autosave','colourscheme','sandnumbers','colpix','longpostfix','sandmultibuy','castlemultibuy','fade','science', 'autoscroll'];
 	if(!noLayout) Molpy.optionNames.push('autosavelayouts');
 	Molpy.OptionDescription=function(bacon,caffeination)
 	{
@@ -453,6 +458,13 @@
 			}else if(bacon=='castlemultibuy')
 			{
 				desc = Math.pow(4,Molpy.options.castlemultibuy) + ' tool' + plural(Molpy.options.castlemultibuy+1)
+			}else if(bacon=='autoscroll')
+			{
+				if(!Molpy.options.autoscroll){
+					desc="No";
+				}else{
+					desc="Yes";
+				}
 			}else{
 				return;
 			}
@@ -1195,8 +1207,9 @@
 			}
 			i++;
 		}
-		g('logItems').innerHTML=str;
-		g('logItems').scrollTop = g('logItems').scrollHeight;
+		var log = g('logItems');
+		log.innerHTML=str;
+		if (Molpy.options.autoscroll) log.scrollTop = log.scrollHeight;
 	}
 
 	Molpy.subPixLetters=['','a','b','c','d','e'];
