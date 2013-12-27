@@ -1196,6 +1196,7 @@
 			i++;
 		}
 		g('logItems').innerHTML=str;
+		g('logItems').scrollTop = g('logItems').scrollHeight;
 	}
 
 	Molpy.subPixLetters=['','a','b','c','d','e'];
