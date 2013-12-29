@@ -4097,6 +4097,7 @@
 			Molpy.Spend('Logicat',logicatCost);
 			Molpy.Spend('GlassChips',chipCost);
 			me.Add(n);
+			if(dragon) Molpy.Boosts['Dragon Forge'].Refresh();
 			Molpy.Notify('Adjusted Automata Assemble');
 			if(n>0)
 				_gaq&&_gaq.push(['_trackEvent','Boost',(dragon?'Dragon Upgrade':'Upgrade'),me.name]);

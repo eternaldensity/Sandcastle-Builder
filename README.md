@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.291
+- Dragon Forge wasn't refreshed when upgrading with it
+
 ## 3.29
 - Fix shopping assistant for tools
 - Some Prizes
