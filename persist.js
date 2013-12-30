@@ -353,7 +353,8 @@
 		(Molpy.options.fade)+
 		(Molpy.options.typo)+
 		(Molpy.options.science)+
-		(Molpy.options.autosavelayouts)
+		(Molpy.options.autosavelayouts)+
+		(Molpy.options.autoscroll)
 		;
 		return str;
 	}
@@ -529,6 +530,7 @@
 		Molpy.options.typo=(parseInt(pixels[11]))||0;
 		Molpy.options.science=(parseInt(pixels[12]))||0;
 		Molpy.options.autosavelayouts=parseInt(pixels[13])||0;
+		Molpy.options.autoscroll=parseInt(pixels[14])||0;
 	}
 	
 	Molpy.GamenumsFromString=function(thread)
