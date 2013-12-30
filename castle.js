@@ -641,8 +641,7 @@ Molpy.Up=function()
 								
 							if(maxGlass && p > 1e15 && maxGlass/absMaxGlass<.01)
 							{
-								Molpy.UnlockBoost('Buzz Saw');
-								Molpy.UnlockBoost('Stretchable Block Storage');
+								Molpy.UnlockBoost(['Buzz Saw','Stretchable Block Storage']);
 							}
 						}else{
 							if(!p) Molpy.Boosts['Glass Saw'].power=1;

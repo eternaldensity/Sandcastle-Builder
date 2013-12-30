@@ -1577,7 +1577,8 @@
 			}
 			else
 			{
-				if (!Molpy.Got('Stretchable Block Storage') && this.Level == Infinity) Molpy.UnlockBoost('Stretchable Block Storage');
+				if (!Molpy.Got('Stretchable Block Storage') && !isFinite(this.Level)) Molpy.UnlockBoost('Stretchable Block Storage');
+				if (!Molpy.Got('Buzz Saw') && !isFinite(this.bought)) Molpy.UnlockBoost('Buzz Saw');
 				if (waste)
 				{
 					this.Level-=waste;

@@ -26,13 +26,12 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.291
-- Dragon Forge wasn't refreshed when upgrading with it
-
 ## 3.29
 - Fix shopping assistant for tools
 - Some Prizes
 - A little work on DQ but won't be ready for quite a while
+- Dragon Forge wasn't refreshed when upgrading with it
+- Unlock Buzz Saw if you have infinite glass storage space
 
 ## 3.289
 - Reduced Ninja Herder requirement (shouldn't have been so high)
