@@ -523,6 +523,7 @@ Molpy.Up=function()
 		Molpy.chipsPerClick=0;
 		Molpy.ClickBeach=function(event, leopard, recursion)
 		{
+			Molpy.previewNP=0;
 			if(!Molpy.layoutLocked&&!leopard)
 			{
 				Molpy.Notify('You cannnot click here while the layout is unlocked but you can use your leopard');
@@ -2125,11 +2126,6 @@ Molpy.Up=function()
 					if(keep&&d.innerHTML)return;
 					d.innerHTML='<br>'+((this.earned||this.visibility<1)?
 						EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this):'????');
-				}
-				if(this.earned&&this.np&&Molpy.previewNP!=this.np&&!Molpy.Boosts['Expando'].power&&this.alias.indexOf('monumg')==0)
-				{
-					Molpy.previewNP=this.np;
-					Molpy.UpdateBeach(this.np);
 				}
 			}
 			this.hidedesc=function()
