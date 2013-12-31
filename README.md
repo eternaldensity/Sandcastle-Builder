@@ -26,6 +26,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.291
+- The Autoscroll option was not added to Classic
+- Changed Autoscroll option to say "Autoscroll Log"
+
 ## 3.29
 - Fix shopping assistant for tools
 - Some Prizes
@@ -34,6 +38,7 @@ For personal amusement only.
 - Unlock Buzz Saw if you have infinite glass storage space
 - Some changes to help prevent being stuck showing the wrong NewPix (from Glass Monuments) which in some cases was causing stuff to be flipped (for Minus) when it oughtn't be
 - Made Time Lord more expensive due to complaints about it being too useful or something
+- Log Autoscroll by AmauryLepicard, with option
 
 ## 3.289
 - Reduced Ninja Herder requirement (shouldn't have been so high)
