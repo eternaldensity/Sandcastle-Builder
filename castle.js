@@ -1882,10 +1882,9 @@ Molpy.Up=function()
 
 				var realPrice=this.CalcPrice(this.price);
 				var free=Molpy.IsFree(realPrice);
-				if(free||!Molpy.ProtectingPrice())
-				{
-					if(!Molpy.Spend(realPrice))return;
-				}
+				if(Molpy.ProtectingPrice()&&!free) return;
+				if(!free && !Molpy.Spend(realPrice))return;
+				
 				this.bought=1;
 				if (this.buyFunction) this.buyFunction();
 				_gaq&&_gaq.push(['_trackEvent','Boost','Buy',this.name,!free]);

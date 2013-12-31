@@ -29,6 +29,7 @@ For personal amusement only.
 ## 3.291
 - The Autoscroll option was not added to Classic
 - Changed Autoscroll option to say "Autoscroll Log"
+- Price Protection logic was wrong for boosts
 
 ## 3.29
 - Fix shopping assistant for tools
