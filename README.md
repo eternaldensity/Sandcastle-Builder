@@ -33,6 +33,7 @@ For personal amusement only.
 - Dragon Forge wasn't refreshed when upgrading with it
 - Unlock Buzz Saw if you have infinite glass storage space
 - Some changes to help prevent being stuck showing the wrong NewPix (from Glass Monuments) which in some cases was causing stuff to be flipped (for Minus) when it oughtn't be
+- Made Time Lord more expensive due to complaints about it being too useful or something
 
 ## 3.289
 - Reduced Ninja Herder requirement (shouldn't have been so high)

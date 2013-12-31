@@ -5028,7 +5028,7 @@
 			var str = 'You can travel through '+Molpify(me.bought+1)+' Temporal Rift'+plural(me.bought+1)+' per NewPix.';
 			if(me.bought)
 			{
-				var p = me.bought*10;
+				var p = me.bought*20;
 				str+='<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:'+p+'}))Molpy.Add(\'Time Lord\',0,1);" value="Pay"></input> '+Molpify(p,1)+' Flux Crystals to increase this by 1.';
 			}
 			return str;
