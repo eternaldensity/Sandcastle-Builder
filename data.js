@@ -2,7 +2,7 @@
 
 function g(id) {return document.getElementById(id);}
 var Molpy={};
-Molpy.version=3.291;
+Molpy.version=3.292;
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[
@@ -654,7 +654,7 @@ Molpy.CheckBuyUnlocks=function(tool)
 	if(Molpy.Has('GlassBlocks',7016280))Molpy.EarnBadge('Pyramid of Giza');
 	if(Molpy.Has('GlassChips',640000))Molpy.EarnBadge('Personal Computer');	
 	
-	var upLevel=(Molpy.Got('Riser')?1:1000);
+	var upLevel=(Molpy.Got('Riser')?1:500);
 	if (Molpy.Boosts['Sand Purifier'].power > upLevel) Molpy.UnlockBoost('Seaish Glass Chips');
 	if (Molpy.Boosts['Glass Extruder'].power > upLevel) Molpy.UnlockBoost('Seaish Glass Blocks');
 	

@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.292
+- Seaish boosts only take 500 purifier/extruder level rather than 1000
+
 ## 3.291
 - The Autoscroll option was not added to Classic
 - Changed Autoscroll option to say "Autoscroll Log"
