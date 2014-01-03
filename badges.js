@@ -603,8 +603,8 @@
     Molpy.MakeQuadBadge({np:1438,name:'Cueball Helps',desc:'Cueball helps Megan up'});
     Molpy.MakeQuadBadge({np:1458,name:'Beesnake',desc:'Megan looks at the Beesnake'});
     Molpy.MakeQuadBadge({np:1476,name:'Campsite 2',desc:'They find a second campsite'});
-    Molpy.MakeQuadBadge({np:1477,name:'Oof',desc:'Megan: Oof'});
-    Molpy.MakeQuadBadge({np:1479,name:'Megans OK',desc:'Megan says she is ok'});
+    Molpy.MakeQuadBadge({np:1495,name:'Oof',desc:'Megan: Oof'});
+    Molpy.MakeQuadBadge({np:1497,name:'Megans OK',desc:'Megan says she is ok'});
     Molpy.MakeQuadBadge({np:1502,name:'WOW',desc:'Megan looks out and says Wow'});
     Molpy.MakeQuadBadge({np:1503,name:'Baobabs',desc:'Baobab trees'});
     Molpy.MakeQuadBadge({np:1510,name:'Baobabs close',desc:'They look up close to the first Baobab'});
