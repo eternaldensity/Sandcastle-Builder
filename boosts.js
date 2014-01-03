@@ -1765,10 +1765,15 @@
         var extra = Math.min(Math.floor(ch.power/2.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.SandRefineryIncrement()-1));
         if (extra>20) 
         {
+            var origpower = Molpy.Boosts['Sand Refinery'].power;
             Molpy.Boosts['Sand Refinery'].power+=extra;
 	    var backoff = 1;
 	    while ( Molpy.CalcGlassUse() >= 100)
 	    {
+		if (backoff > extra) {
+            	    Molpy.Boosts['Sand Refinery'].power = origpower;
+		    return;
+		}
             	Molpy.Boosts['Sand Refinery'].power-=backoff;
 		extra -= backoff;
 	        backoff*=2;
@@ -1788,24 +1793,29 @@
     {
         var bl = Molpy.Boosts['GlassBlocks'];
         var extra = Math.min(Math.floor(bl.power/4.51),Math.floor((100 - Molpy.CalcGlassUse())/Molpy.GlassChillerIncrement()-1));
-		extra = Math.min(extra, Math.floor(Molpy.Level('GlassChips')/1e12+Molpy.Boosts['Sand Refinery'].power/Molpy.ChipsPerBlock()-Molpy.Boosts['Glass Chiller'].power-2));
+	extra = Math.min(extra, Math.floor(Molpy.Level('GlassChips')/1e12+Molpy.Boosts['Sand Refinery'].power/Molpy.ChipsPerBlock()-Molpy.Boosts['Glass Chiller'].power-2));
         if (extra>20) 
         {
+            var origpower = Molpy.Boosts['Glass Chiller'].power;
             Molpy.Boosts['Glass Chiller'].power+=extra;
-			var backoff = 1;
-			while ( Molpy.CalcGlassUse() >= 100)
-			{
-					Molpy.Boosts['Glass Chiller'].power-=backoff;
-			extra -= backoff;
-				backoff*=2;
-			}
-			if (extra > 0) {
-				Molpy.Spend('GlassBlocks',extra*4.5);
-				Molpy.Boosts['Glass Chiller'].Refresh();
-				Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
-				Molpy.recalculateDig=1;
-				_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Glass Chiller']);	
-			}
+	    var backoff = 1;
+	    while ( Molpy.CalcGlassUse() >= 100)
+	    {
+		if (backoff > extra) {
+            	    Molpy.Boosts['Sand Refinery'].power = origpower;
+		    return;
+		}
+		Molpy.Boosts['Glass Chiller'].power-=backoff;
+	 	extra -= backoff;
+		backoff*=2;
+	    }
+	    if (extra > 0) {
+		Molpy.Spend('GlassBlocks',extra*4.5);
+		Molpy.Boosts['Glass Chiller'].Refresh();
+		Molpy.Notify('Glass Chiller upgraded '+Molpify(extra,2)+' times',1);
+		Molpy.recalculateDig=1;
+		_gaq&&_gaq.push(['_trackEvent','Boost','Seaish Upgrade','Glass Chiller']);	
+	    }
         }	
     }	
 	
