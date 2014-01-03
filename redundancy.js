@@ -278,7 +278,7 @@ function format(gainned,level)
 	}
 	return gainned;
 }
-var EmergencyExport=function()
+function EmergencyExport()
 {
 	var thread='';
 	if (document.cookie.indexOf('CastleBuilderGame')>=0) 
@@ -297,13 +297,15 @@ var EmergencyExport=function()
 	}
 }
 
-var InitStatementGen=function(gen)
+function InitStatementGen(gen)
 {
 	var StatementGen=gen||{};
 	StatementGen.FillStatements=function(n,level)
 	{
 		StatementGen.level=level||0;
-		var statementNames='ABCDEFGHI';
+		var statementNames='ABCDEFGHIJ';
+		var shuffledNames=statementNames.split('');
+		ShuffleList(shuffledNames);
 		var operators=['and','or'];
 		var refCount=2;
 		if(!n) n = flandom(Math.ceil(Math.PI))+Math.ceil(Math.PI);
@@ -311,12 +313,17 @@ var InitStatementGen=function(gen)
 		var i = n;
 		while(i--)
 		{
-			var name=statementNames[i];
 			var statement={};
-			StatementGen.statements[name]=statement;
-			statement.name=name;
+			StatementGen.statements[statementNames[i]]=statement;
+			statement.name=shuffledNames[i];
 			statement.value=flandom(2)==0;
-		}
+		}//we have now made a list of statements each with a truth value
+		
+		
+		var groupSize = flandom(n)+1;
+		var dist3 = Math.abs(groupSize-3)*2;
+		if(flandom(dist3+1))groupSize = flandom(n)+1
+		
 		i = n;
 		while(i--)
 		{

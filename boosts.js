@@ -2619,7 +2619,7 @@
 		Molpy.Spend('LogiQuestion',1);
 	}
 	
-	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it and don\'t lose half a Logicat point. (Uses 50 Glass Blocks)',
+	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it. (The second attempt costs 50 Glass Blocks per incorrect answer, and gives less points per correct answer.)',
 		Sand:'250Y',Castles:'87Y',group:'bean',logic:5,icon:'secondchance'});
 	
 	new Molpy.Boost({name:'Let the Cat out of the Bag',alias:'LCB',
