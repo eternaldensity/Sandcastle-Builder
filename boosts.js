@@ -5094,7 +5094,7 @@
 	new Molpy.Boost({name:'Riser',desc:'Unlocks the Seaish Glass boosts much sooner.',price:{Mustard:'3K',Sand:Infinity},group:'prize',prizes:1,tier:4});
 	new Molpy.Boost({name:'Mould Press',desc:'If you have Automation Optimiser, Mould tasks run again to use up any leftover Factory Automation runs.',price:{Goats:300,LogiQuestion:'2K',Castles:Infinity,GlassBlocks:Infinity},group:'prize',prizes:1,tier:4});
 	
-	new Molpy.Boost({name:'Now Where Was I',desc:function(me){
+	new Molpy.Boost({name:'Now Where Was I?',desc:function(me){
 			if (!me.bought || Molpy.newpixNumber == Molpy.highestNPvisited) return 'Allows direct Jump to your highest NewPix';
 			var jumpcost=Molpy.CalcJumpEnergy(Molpy.highestNPvisited);
 			var str = '<input type="Button" ';

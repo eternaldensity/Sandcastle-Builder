@@ -1556,12 +1556,12 @@ Molpy.Up=function()
 				var bN = EvalMaybeFunction(inf?this.buildG:this.buildC);
 				var dN = EvalMaybeFunction(inf?this.destroyG:this.destroyC);
 				var w=inf?'Chip':'Castle';
-				var actuals ='<br>Builds '+Molpify(bN,1)+' '+w+plural(bN)+(dN?(' if '+Molpify(dN,1)+' '+w+((dN!=1)?'s are':' is')+' destroyed.'):'')+' Per tool.';
+				var actuals ='<br>Each builds '+Molpify(bN,1)+' '+w+plural(bN)+(dN?(' if it destroys '+Molpify(dN,1)+' '+w+plural(dN)):'');
 				if(this.name=='Wave'&&Molpy.Got('SBTF')&&!inf)
 				{
 					bN=this.buildC(1);
 					dN=this.destroyC(1);
-					actuals+='<br>Next ONG, will build '+Molpify(bN,1)+' '+w+plural(bN)+(dN?(' if '+Molpify(dN,1)+' '+w+((dN!=1)?'s are':' is')+' destroyed.'):'');
+					actuals+='<br>Next ONG, each will build '+Molpify(bN,1)+' '+w+plural(bN)+(dN?(' if it destroys'+Molpify(dN,1)+' '+w+plural(dN)):'');
 				}
 				if(Molpy.IsStatsVisible())
 				{				

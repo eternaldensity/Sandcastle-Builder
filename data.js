@@ -638,9 +638,9 @@ Molpy.CheckBuyUnlocks=function(tool)
 	{
 		Molpy.UnlockBoost('Memories Revisited');
 	}
-	if(Molpy.groupBadgeCounts.discov>50&&Molpy.Got("Memories Revisited"))
+	if(Molpy.groupBadgeCounts.discov>50&&Molpy.Got('Memories Revisited')&&Math.abs(Molpy.newpixNumber-Molpy.highestNPvisited)>=20)
 	{
-		Molpy.UnlockBoost('Now Where Was I');
+		Molpy.UnlockBoost('Now Where Was I?');
 	}
 	if(Molpy.groupBadgeCounts.discov>100)
 	{

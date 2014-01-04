@@ -1,0 +1,123 @@
+Solvable boolean logic puzzles.
+
+1 statement:
+A: A							unsolvable
+
+A: !A							paradox
+
+A: A||!A						true (tautology)
+
+A: A&&!A						false (contradiction)
+
+
+2 statements:
+A: true
+B: A							true
+B: !A							false
+B: A||B							true
+B: A||!B						true
+B: !A||B						unsolvable
+B: !A||!B						paradox
+B: A&&B							unsolvable
+B: A&&!B						paradox
+B: !A&&B						false
+B: !A&&!B						false
+
+A: false
+B: repeat the above ten items but reversing A and !A
+
+
+A: B
+B: A							unsolvable
+
+A: B
+B: !A							paradox
+(repeat the above two items in reverse for A: !B)
+
+A: A&&B							A is false to avoid paradox below
+B: A&&!B						B is false because A is false
+
+A: A||B							A is true to avoid paradox below
+B: A||!B						B is true because A is true
+
+Can flip the !s around to reverse the roles of A and B or to make them unequal
+
+A: A||!B						Same as A: !B, B: !A
+B: !A||B						A and B are unequal but which is what is unsolvable
+
+
+3 statements:
+A: B
+B: C
+C: A							unsolvable
+
+A: !B
+B: C
+C: A							paradox
+
+A: !B
+B: !C
+C: A							unsolvable
+
+A: !B
+B: !C
+C: !A							paradox
+
+A: !C							true because C must be false
+B: C							false because C must be false
+C: A&&B							false because A and B are exclusive
+
+A: B&&!C						false because B is false
+B: A&&C							false because C must be false
+C: A&&B							false because A and B are exclusive
+
+A: !C							
+B: C							
+C: A&&!B						paradox: if C is true A is true and false while B is false and true, if C is false then A is true and B is false which means C is true
+
+A: C							
+B: !C							
+C: A&&!B						unsolvable: consistent whether C is true or false
+
+A: B&&C							false because C must be false
+B: !C							true because C must be false
+C: A&&!B						false: if it was true, B is both false and true
+
+A: C							false because C must be false
+B: C							false because C must be false
+C: A&&!B						false: if it was true, B would be both false and true
+
+A: !C							true because C must be false
+B: !C							true because C must be false
+C: A&&!B						false: if it was true, A would be both true and false
+
+A: !C							true because C must be false
+B: !C&&!A						false because A must be false
+C: A&&!B						false: if it was true, A would be both true and false
+
+
+
+
+A: C
+B: C
+C: !A||!B						paradox
+
+A: C							true
+B: C							true
+C: !A||B						true: if false, contradiction
+
+
+
+Generating puzzle:
+Method 1: generate a contradiction, then provide an || "something that's true"
+Method 2: generate a contradiction, then provide an && "something that's false"
+Method 3: generate something that is valid in two states then add a contradiction to one possibility
+Method 4: generate a tautological statement
+
+Start with core, then add in some extra statements which branch off.
+
+
+Core:
+if 1 statement, make it a tautology or contradiction about itself
+if 2 statements, choose values, decide &&/||, force one with a paradox
+
