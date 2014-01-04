@@ -638,6 +638,10 @@ Molpy.CheckBuyUnlocks=function(tool)
 	{
 		Molpy.UnlockBoost('Memories Revisited');
 	}
+	if(Molpy.groupBadgeCounts.discov>50&&Molpy.Got("Memories Revisited"))
+	{
+		Molpy.UnlockBoost('Now Where Was I');
+	}
 	if(Molpy.groupBadgeCounts.discov>100)
 	{
 		Molpy.UnlockBoost('Stealth Cam');
@@ -793,7 +797,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 
 Molpy.CheckLogicatRewards=function(automationLevel)
 {
-	if ((!Molpy.Boosts['AC'].power) || (Molpy.Boosts['AC'].power<60) || ((Molpy.Boosts['AC'].power<300) && (Molpy.Boosts['AC'].power-60)/120*Math.random()<1))
+	if ((!Molpy.Boosts['AC'].power) || (Molpy.Boosts['AC'].power<60) || ((Molpy.Boosts['AC'].power<300) && (Molpy.Boosts['AC'].power+180)/240*Math.random()<1))
 	{
 		Molpy.Boosts['Locked Crate'].logic=2;
 		Molpy.Boosts['Crate Key'].logic=4*(Molpy.Boosts['Locked Crate'].unlocked||Molpy.Got('The Key Thing'));

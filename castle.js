@@ -1556,7 +1556,7 @@ Molpy.Up=function()
 				var bN = EvalMaybeFunction(inf?this.buildG:this.buildC);
 				var dN = EvalMaybeFunction(inf?this.destroyG:this.destroyC);
 				var w=inf?'Chip':'Castle';
-				var actuals ='<br>Builds '+Molpify(bN,1)+' '+w+plural(bN)+(dN?(' if '+Molpify(dN,1)+' '+w+((dN!=1)?'s are':' is')+' destroyed.'):'');
+				var actuals ='<br>Builds '+Molpify(bN,1)+' '+w+plural(bN)+(dN?(' if '+Molpify(dN,1)+' '+w+((dN!=1)?'s are':' is')+' destroyed.'):'')+' Per tool.';
 				if(this.name=='Wave'&&Molpy.Got('SBTF')&&!inf)
 				{
 					bN=this.buildC(1);
