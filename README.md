@@ -34,6 +34,7 @@ For personal amusement only.
 - Castle Tool text clarified (waveney started it but I redid it my way)
 - Fast Forward was utterly broken (took you to newpix NaN)
 - Getting prizes from locking prizes wasn't taking into account that you might already have some prizes
+- Bag of Holding nerfed to only hold 1W of each kind of Stuff. Having additional Bags of Something multiplies this by 1W for each.
 
 ## 3.291
 - The Autoscroll option was not added to Classic

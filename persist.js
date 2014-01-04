@@ -1210,11 +1210,17 @@
 			var bom = !coma&&Molpy.Got('BoM')&&Molpy.Spend('Bonemeal',100);
 			var bof = !coma&&Molpy.Got('BoF')&&Molpy.Spend('Bonemeal',1000);
 			var boj = !coma&&Molpy.Got('BoJ')&&Molpy.Spend('Bonemeal',10000);
+			var bagCount = boh+bom+bof+boj;
+			var maxKeep = Math.pow(1e42,bagCount);
 			var prizeCounts=[];
 			for(i in Molpy.Boosts)
 			{
 				var me = Molpy.Boosts[i];
-				if(boh&&me.group=='stuff')continue;
+				if(boh&&me.group=='stuff')
+				{
+					me.Level=Math.min(me.Level,maxKeep);
+					continue;
+				}
 				if(bom&&!me.prizes&&(me.name.indexOf('Mould')>-1||typeof(me.desc)==='string'&&me.desc.indexOf('Mould')>-1))continue;
 				if(bof&&!me.prizes&&me.className=='toggle'&&me.name!='Glass Furnace'&&me.name!='Glass Blower')continue;
 				if(boj&&!me.prizes&&me.group=='chon')continue;
