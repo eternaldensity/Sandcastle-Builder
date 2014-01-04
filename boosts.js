@@ -2582,13 +2582,13 @@
 		Molpy.cagedPuzzleValue=str;
 		Molpy.Boosts['LogiQuestion'].Refresh();
 		Molpy.cagedSGen.firstTry=1;
+		Molpy.Spend('LogiQuestion',1);
 	}
 	Molpy.ClickCagedPuzzle=function(name)
 	{
 		if(!Molpy.cagedPuzzleValue)
 		{
 			Molpy.Destroy('Logicat',1);
-			Molpy.Spend('LogiQuestion',1);
 			return;			
 		}
 		var skip=0;
@@ -2626,7 +2626,6 @@
 		}
 		Molpy.cagedPuzzleValue='';
 		Molpy.cagedPuzzleTarget='';
-		Molpy.Spend('LogiQuestion',1);
 	}
 	
 	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it. (The second attempt costs 50 Glass Blocks per incorrect answer, and gives less points per correct answer.)',
