@@ -28,6 +28,11 @@ For personal amusement only.
 
 ## 3.292
 - Seaish boosts only take 500 purifier/extruder level rather than 1000
+- Now Where Was I boost by waveney
+- Fix to Rob for Classic by waveney
+- Logicat puzzle deducted as soon as you pay for one (so it can't also be used for Shadow Dragon): also waveney
+- Castle Tool text clarified (waveney started it but I redid it my way)
+- Fast Forward was utterly broken (took you to newpix NaN)
 
 ## 3.291
 - The Autoscroll option was not added to Classic

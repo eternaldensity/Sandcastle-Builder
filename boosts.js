@@ -4874,7 +4874,7 @@
 	});
 	Molpy.FastForward=function()
 	{
-		Molpy.newpixNumber=Molpy.highestNewpixvisited;
+		Molpy.newpixNumber=Molpy.highestNPvisited;
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
 		Molpy.LockBoost('Fast Forward');
