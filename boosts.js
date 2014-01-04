@@ -5095,8 +5095,30 @@
 	new Molpy.Boost({name:'Riser',desc:'Unlocks the Seaish Glass boosts much sooner.',price:{Mustard:'3K',Sand:Infinity},group:'prize',prizes:1,tier:4});
 	new Molpy.Boost({name:'Mould Press',desc:'If you have Automation Optimiser, Mould tasks run again to use up any leftover Factory Automation runs.',price:{Goats:300,LogiQuestion:'2K',Castles:Infinity,GlassBlocks:Infinity},group:'prize',prizes:1,tier:4});
 	
-	
-	
+	new Molpy.Boost({name:'Now Where Was I',desc:function(me){
+			if (!me.bought || Molpy.newpixNumber == Molpy.highestNPvisited) return 'Allows direct Jump to your highest NewPix';
+			var jumpcost=Molpy.CalcJumpEnergy(Molpy.highestNPvisited);
+			var str = '<input type="Button" ';
+			if (Molpy.Earned('discov'+Molpy.highestNPvisited)) {
+				str += 'onclick="Molpy.TTT('+Molpy.highestNPvisited+',1)" value="Jump!"></input> (Uses '+Molpify(jumpcost,2)+' Glass Chips)'
+			} else {
+				str += 'onclick="Molpy.NowWhereWasI()" value="Jump"> (Uses '+Molpify(jumpcost*2,2)+' Glass Chips and a Goat)';
+			}
+			str += ' to your highest NewPix';
+			return str;
+			}, className:'action', group:'chron', price:{Sand:Infinity,Castles:Infinity,Goats:50}});
+
+	Molpy.NowWhereWasI=function(){
+		if (Molpy.newpixNumber == Molpy.highestNPvisited) return;
+		var jumpcost= Molpy.CalcJumpEnergy(Molpy.highestNPvisited);
+		if (Molpy.Spend({GlassChips:jumpcost,Goats:1})) {
+			Molpy.TTT(Molpy.highestNPvisited,jumpcost)
+		} else if (Molpy.Has('GlassChips',jumpcost)) {
+			Molpy.Notify('You need to sacrifice a goat for this')
+		} else {
+			Molpy.Notify('Without the chips you will have to do this the hard way')
+		}
+	}	
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
