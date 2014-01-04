@@ -1119,10 +1119,22 @@
 				Molpy.UnlockBoost(p.slice(1));				
 			}else{
 				p = p.slice(1);
+				p=Molpy.NotGot(p);
 				ShuffleList(p);
-				Molpy.UnlockBoost(p.slice(l-1-c));	
+				l = p.length;
+				Molpy.UnlockBoost(p.slice(l-c));	
 			}
 		}
+	}
+	Molpy.NotGot=function(prizes)
+	{
+		var ng=[];
+		for(var i in prizes)
+		{
+			var p = prizes[i];
+			if(!Molpy.Got(p)) ng.push(p);
+		}
+		return ng;
 	}
 	
 	/* In which a routine for resetting the game is presented

@@ -2057,8 +2057,11 @@
 	});
 	
 	new Molpy.Boost({name:'Redundant Redundance Supply of Redundancy',alias:'RRSR',
-	desc:'The Department of Redundancy Department announces: You have exceeded your daily redundancy limit. Your primary redundancy supply will now be turned down. You can always switch to your redundant redundance supply of redundancy.',
-	stats: Molpy.redactedWords+' appear more often, but they are rare until you buy this.',Sand:'42G',Castles:'4.2G',buyFunction:Molpy.RandomiseRedactedTime,icon:'redred',group:'hpt',lockFunction:function(){Molpy.Notify('Primary Redundancy Supply Reengaged',1);}});
+		desc:'The Department of Redundancy Department announces: You have exceeded your daily redundancy limit. Your primary redundancy supply will now be turned down. You can always switch to your redundant redundance supply of redundancy.',
+		stats: Molpy.redactedWords+' appear more often, but they are rare until you buy this.',Sand:'42G',Castles:'4.2G',
+		buyFunction:Molpy.RandomiseRedactedTime,icon:'redred',group:'hpt',
+		lockFunction:function(){Molpy.Notify('Primary Redundancy Supply Reengaged',1);}
+	});
 	
 	new Molpy.Boost({name:'Flying Buckets',desc:'Sand rate of Buckets is multiplied by the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',Sand:'120G',Castles:'2T'});
 	new Molpy.Boost({name:'Human Cannonball',desc:'Sand rate of Cuegan is multiplied by two times the number of Trebuchets you own. Trebuchets produce ten times as many Castles.',Sand:'240G',Castles:'4T'});
@@ -5105,7 +5108,7 @@
 			}
 			str += ' to your highest NewPix';
 			return str;
-			}, className:'action', group:'chron', price:{Sand:Infinity,Castles:Infinity,Goats:50}});
+			}, className:'action', group:'chron', price:{Sand:Infinity,Castles:Infinity,Goats:50,FluxCrystals:25}});
 
 	Molpy.NowWhereWasI=function(){
 		if (Molpy.newpixNumber == Molpy.highestNPvisited) return;

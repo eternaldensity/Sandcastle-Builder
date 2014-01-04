@@ -33,6 +33,7 @@ For personal amusement only.
 - Logicat puzzle deducted as soon as you pay for one (so it can't also be used for Shadow Dragon): also waveney
 - Castle Tool text clarified (waveney started it but I redid it my way)
 - Fast Forward was utterly broken (took you to newpix NaN)
+- Getting prizes from locking prizes wasn't taking into account that you might already have some prizes
 
 ## 3.291
 - The Autoscroll option was not added to Classic
