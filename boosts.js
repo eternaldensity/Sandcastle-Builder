@@ -4531,7 +4531,7 @@
 		var n = Math.ceil(l);
 		var p = n-l;
 		if(Math.random()<p*p)n = 1;
-		Molpy.Notify('You turned '+Molpify(Molpy.Level('LogiQuestion'))+' Caged Logicat puzzles into '+Molpify(n)+' Bonemeal.',1);
+		Molpy.Notify('The Shadow Dragon was '+(n==1?'greedy':'generous')+' and turned '+Molpify(Molpy.Level('LogiQuestion'))+' Caged Logicat puzzles into '+Molpify(n)+' Bonemeal.',1);
 		Molpy.Add('Bonemeal',n);
 		Molpy.Spend('LogiQuestion',Molpy.Level('LogiQuestion'));
 	}
