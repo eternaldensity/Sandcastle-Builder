@@ -35,6 +35,8 @@ For personal amusement only.
 - Fast Forward was utterly broken (took you to newpix NaN)
 - Getting prizes from locking prizes wasn't taking into account that you might already have some prizes
 - Bag of Holding nerfed to only hold 1W of each kind of Stuff. Having additional Bags of Something multiplies this by 1W for each.
+- Shadow Dragon shows greedy/generous in bonemeal reward message
+- Ninja Lockdown prevents Impervious Ninja from being given when enabled
 
 ## 3.291
 - The Autoscroll option was not added to Classic

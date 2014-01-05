@@ -815,6 +815,8 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['LCB'].logic=6*(Molpy.Boosts['Panther Salve'].power > 1200);	
 	Molpy.Boosts['Ninjasaw'].logic=16*(Molpy.Got('Phonesaw'));
 	
+	Molpy.Boosts['Impervious Ninja'].logic=2*!Molpy.IsEnabled('Ninja Lockdown');
+	
 	Molpy.Boosts['Flux Surge'].logic=4*(Molpy.Got('Flux Turbine')&&isFinite(Molpy.castles));
 	var finiteC = 1*isFinite(Molpy.castles);
 	var finiteP=0;

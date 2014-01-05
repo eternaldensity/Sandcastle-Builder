@@ -2391,7 +2391,7 @@
 			if(me.power<=0)return '';
 			return 'Provides Ninja Forgiveness, up to '+Molpify(me.power)+' time'+plural(me.power)+'.<br>This costs 1% of your Glass Chips in storage, with a minimum payment of 100 Chips.';
 		}
-		,group:'ninj',logic:2,startPower:function()
+		,group:'ninj',startPower:function()
 		{
 			return Math.floor(Math.min(50, Molpy.LogiMult(.5)+Molpy.ONGelapsed/(Molpy.NPlength*1000)));
 		}
