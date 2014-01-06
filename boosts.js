@@ -4702,7 +4702,7 @@
 		{
 			return 'Lets you keep more leftover Caged Logicat puzzles as Time progresses.<br>Currently you can start an ONG with a maximum of '+Molpify(10+me.Level)+' Caged Logicat puzzles.';
 		},
-		stats:'Protip: Temporal Rifts don\'t affect Caged Logicat puzzles',
+		stats:'More Caged Logicats are retained through an ONG as you progress further from the Beginning of Time, compared to the NewPix in which this was unlocked.<br>Protip: Temporal Rifts don\'t affect Caged Logicat puzzles',
 		unlockFunction:function(){this.power=Math.abs(Molpy.newpixNumber);}
 	});
 	

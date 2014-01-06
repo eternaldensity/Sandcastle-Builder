@@ -38,6 +38,7 @@ For personal amusement only.
 - Shadow Dragon shows greedy/generous in bonemeal reward message
 - Ninja Lockdown prevents Impervious Ninja from being given when enabled
 - Factory Automation costs are not increased if you don't have AA (important for Bag of Moulding)
+- WotA stats has more text.
 
 ## 3.291
 - The Autoscroll option was not added to Classic
