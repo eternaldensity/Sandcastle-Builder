@@ -63,37 +63,37 @@ A: !B
 B: !C
 C: !A							paradox
 
-A: !C							true because C must be false
-B: C							false because C must be false
-C: A&&B							false because A and B are exclusive
+A: B&&C							false because B and C are exclusive
+B: !A							true because A must be false
+C: A							false because A must be false
 
-A: B&&!C						false because B is false
-B: A&&C							false because C must be false
-C: A&&B							false because A and B are exclusive
+A: B&&C							false because B and C are exclusive
+B: C&&!A						false because C is false
+C: B&&A							false because A must be false
 
-A: !C							
-B: C							
-C: A&&!B						paradox: if C is true A is true and false while B is false and true, if C is false then A is true and B is false which means C is true
+A: B&&!C						paradox: if A is true B is true and false while C is false and true, if A is false then B is true and C is false which means A is true
+B: !A							
+C: A							
 
-A: C							
-B: !C							
-C: A&&!B						unsolvable: consistent whether C is true or false
+A: B&&!C						unsolvable: consistent whether A is true or false
+B: A							
+C: !A							
 
-A: B&&C							false because C must be false
-B: !C							true because C must be false
-C: A&&!B						false: if it was true, B is both false and true
+A: B&&!C						false: if it was true, C is both false and true
+B: C&&A							false because A must be false
+C: !A							true because A must be false
 
-A: C							false because C must be false
-B: C							false because C must be false
-C: A&&!B						false: if it was true, B would be both false and true
+A: B&&!C						false: if it was true, C would be both false and true
+B: A							false because A must be false
+C: A							false because A must be false
 
-A: !C							true because C must be false
-B: !C							true because C must be false
-C: A&&!B						false: if it was true, A would be both true and false
+A: B&&!C						false: if it was true, B would be both true and false
+B: !A							true because A must be false
+C: !A							true because A must be false
 
-A: !C							true because C must be false
-B: !C&&!A						false because A must be false
-C: A&&!B						false: if it was true, A would be both true and false
+A: B&&!C						false: if it was true, B would be both true and false
+B: !A							true because A must be false
+C: !A&&!B						false because B must be false
 
 
 

@@ -130,12 +130,19 @@ Molpy.DefinePuzzles=function()
 						}
 					}else{
 						a.operator='and';
-						var r = randbool();
-						a.claims=[{name:a.name,value:!randbool},{name:b.name,value:b.value^randbool}];	
 						b.claims=[{name:c.name,value:b.value^c.value}];
 						c.claims=[{name:a.name,value:!c.value}];
 					}
 				}else{
+					if(a.value)
+					{
+					}else{
+						a.operator='and';
+						var r = randbool();
+						a.claims=[{name:b.name,value:!b.value^randbool},{name:c.name,value:c.value^randbool}];
+						b.claims=[{name:a.name,value:!b.value}];					
+						c.claims=[{name:a.name,value:!c.value}];	
+					}
 				}
 			},
 			function(group4)
