@@ -75,18 +75,37 @@ Molpy.DefinePuzzles=function()
 				completedStatements=[];	
 			}
 		}
-		this.FillStatements=[
-			function(group0){}, //no statements: nothing to do
-			function(group1)
+		this.AddStatementLastToChain(group,n)
+		{
+			var last=group[n-1];
+			var pen=group[n-2];
+			var first=group[0];
+			if(pen.claims.length==1)
 			{
-				var a = group1[0];
+				if(pen.claims[0].name==pen.name) 
+				{
+					pen.claims=[{name:last.name,value:pen.value^last.value}];
+					last.claims[{name:last.name,value:true}]; //tells us nothing about last because pen's claim told us nothing about pen
+				else{
+					pen.claims=[{name:last.name,value:pen.value^last.value}];					
+					last.claims=[{name:first.name,value:first.value^last.value}];						
+				}
+			}else
+			{
+				this.FillStatements[1]([last]);//can't fit into chain so make it a single
+			}
+		}
+		this.FillStatements=function(group,n)
+		{
+			if(n==0)//no statements: nothing to do
+			else if(n==1)
+			{
+				var a = group[0];
 				a.operator=(a.value?'or':'and');	//tautology or contradiction
 				a.claims=[{name:a.name,value:true},{name:a.name,value:false}];
-			},
-			function(group2)
-			{
-				var a = group2[0];
-				var b = group2[1];
+			}else if(n==2){
+				var a = group[0];
+				var b = group[1];
 				if(a.value)
 				{
 					a.operator='or';
@@ -103,50 +122,26 @@ Molpy.DefinePuzzles=function()
 					var r = randbool();
 					a.claims=[{name:a.name,value:!randbool},{name:b.name,value:b.value^randbool}];	
 					b.claims=[{name:a.name,value:!b.value}];
-				}
-				
-				
-			},
-			function(group3)
-			{
-				var a = group2[0];
-				var b = group2[1];
-				var c = group2[2];
+				}				
+			}else if(n==3){
+				var a = group[0];
+				var b = group[1];
+				var c = group[2];
 				
 				if(randbool())
 				{					
-					if(a.value)
-					{
-						a.operator='or';
-						if(randbool())
-						{
-							a.claims=[{name:a.name,value:false},{name:b.name,value:b.value}];
-							b.claims=[{name:c.name,value:b.value^c.value}];
-							c.claims=[{name:c.name,value:true}];//tells us nothing
-						}else{
-							a.claims=[{name:a.name,value:true},{name:b.name,value:!b.value}];
-							b.claims=[{name:c.name,value:b.value^c.value}];					
-							c.claims=[{name:a.name,value:c.value}];					
-						}
-					}else{
-						a.operator='and';
-						b.claims=[{name:c.name,value:b.value^c.value}];
-						c.claims=[{name:a.name,value:!c.value}];
-					}
+					this.FillStatements(group,n-1);
+					this.AddStatementLastToChain(group,n);					
 				}else{
-					if(a.value)
-					{
-					}else{
-						a.operator='and';
-						var r = randbool();
-						a.claims=[{name:b.name,value:!b.value^randbool},{name:c.name,value:c.value^randbool}];
-						b.claims=[{name:a.name,value:!b.value}];					
-						c.claims=[{name:a.name,value:!c.value}];	
-					}
+					a.operator=(a.value?'or':'and');
+					var r = randbool();
+					a.claims=[{name:b.name,value:!b.value^randbool},{name:c.name,value:c.value^randbool}];
+					b.claims=[{name:a.name,value:a.value^b.value}];					
+					c.claims=[{name:a.name,value:a.value^c.value}];						
 				}
-			},
-			function(group4)
-			{
+			}else{				
+				this.FillStatements(group,n-1);
+				this.AddStatementLastToChain(group,n);	
 			}
 		]
 	}
