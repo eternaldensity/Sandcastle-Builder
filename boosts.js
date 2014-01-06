@@ -1937,7 +1937,7 @@
 				if(s && !Molpy.Got('CfB'))
 				{
 					var c = Molpy.blackprintCosts[s];
-					if(!Molpy.Got('AE'))c=Math.min(c,40);
+					if(!(Molpy.Got('AE')&&Molpy.Got('AA')))c=Math.min(c,40);
 					str+='<br><input type="Button" value="Start" onclick="Molpy.StartBlackprintConstruction()"></input> construction of '+Molpy.Boosts[Molpy.GetBlackprintSubject()].name+' from Blackprints (requires '+Molpify(c*10)+' runs of Factory Automation)';
 				}
 			}

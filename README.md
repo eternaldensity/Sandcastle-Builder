@@ -37,6 +37,7 @@ For personal amusement only.
 - Bag of Holding nerfed to only hold 1W of each kind of Stuff. Having additional Bags of Something multiplies this by 1W for each.
 - Shadow Dragon shows greedy/generous in bonemeal reward message
 - Ninja Lockdown prevents Impervious Ninja from being given when enabled
+- Factory Automation costs are not increased if you don't have AA (important for Bag of Moulding)
 
 ## 3.291
 - The Autoscroll option was not added to Classic
