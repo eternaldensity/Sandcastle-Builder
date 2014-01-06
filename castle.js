@@ -3019,12 +3019,21 @@ Molpy.Up=function()
 			}else{
 				Molpy.EarnBadge(alias,1);
 			}
-			if (Molpy.newpixNumber < 0) {
-				if (Molpy.Boosts['Magic Mirror'].power) 
+			if (Molpy.newpixNumber < 0&&!Molpy.Boosts['Magic Mirror'].unlocked)
+			{
+				var minus=0;
+				for(var i = Molpy.Badges['discov-1'].id;i<Molpy.BadgesById.length-1;i+=8)
 				{
-					if (Molpy.Boosts['Magic Mirror'].power++ >= 10) Molpy.UnlockBoost('Magic Mirror');
+					if (Molpy.Badges[i].earned)
+					{
+						minus++;
+						if (minus >= 10)
+						{
+							Molpy.UnlockBoost('Magic Mirror');	
+							break;
+						}
+					}
 				}	
-				else Molpy.Boosts['Magic Mirror'].power = 1;
 			}
 		}else
 		{

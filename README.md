@@ -39,6 +39,7 @@ For personal amusement only.
 - Ninja Lockdown prevents Impervious Ninja from being given when enabled
 - Factory Automation costs are not increased if you don't have AA (important for Bag of Moulding)
 - WotA stats has more text.
+- Magic Mirror is now unlocked when you activate the Camera if you currently have 10 or more Minus Discoveries (rather than keeping a counter of how many minus discoveries have been made)
 
 ## 3.291
 - The Autoscroll option was not added to Classic
