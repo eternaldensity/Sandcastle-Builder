@@ -79,19 +79,39 @@ Molpy.DefinePuzzles=function()
 			function(group0){}, //no statements: nothing to do
 			function(group1)
 			{
-				var s = group1[0];
-				if(s.value) //tautology or contradiction
-				{
-					s.operator='or';
-				}else{
-					s.operator='and';
-				}
-				s.claims=[];
-				s.claims.push({name:s.name,value:true});
-				s.claims.push({name:s.name,value:false});
+				var a = group1[0];
+				a.operator=(a.value?'or':'and');	//tautology or contradiction
+				a.claims=[{name:a.name,value:true},{name:a.name,value:false}];
 			},
 			function(group2)
 			{
+				var a = group2[0];
+				var b = group2[1];
+				if(a.value)
+				{
+					a.operator='or';
+					if(randbool())
+					{
+						a.claims=[{name:a.name,value:false},{name:b.name,value:b.value}];
+						b.claims=[{name:b.name,value:true}]; //tells us nothing
+					}else{
+						a.claims=[{name:a.name,value:true},{name:b.name,value:!b.value}];
+						b.claims=[{name:a.name,value:b.value}];					
+					}
+				}else{
+					a.operator='and';
+					if(randbool())
+					{
+						a.claims=[{name:a.name,value:false},{name:b.name,value:!b.value}];
+						b.claims=[{name:a.name,value:!b.value}];
+					}else{
+						a.claims=[{name:a.name,value:true},{name:b.name,value:b.value}];
+						b.claims=[{name:a.name,value:!b.value}];
+						
+					}
+				}
+				
+				
 			},
 			function(group3)
 			{

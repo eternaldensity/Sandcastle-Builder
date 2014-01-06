@@ -1,5 +1,6 @@
 'use strict';
 function flandom(n){return(Math.floor(Math.random()*n));}
+function randbool(){return(Math.floor(Math.random()*2)==0);}
 function GLRschoice(things)
 {
 	return things[flandom(things.length)];
