@@ -1242,6 +1242,18 @@
 					me.power=EvalMaybeFunction(me.startPower);
 				me.countdown=0;
 			}
+
+			if(Molpy.Earned('Minus Worlds'))
+			{
+				var mm = Molpy.Boosts['Magic Mirror'];
+				mm.power = 0;
+				for (var ip = 1;ip <= Math.abs(Molpy.newpixNumber);ip++)
+				{
+					if (Molpy.Earned('discov-'+ip)) mm.power++;
+				}
+				if (mm.power >= 10) Molpy.UnlockBoost('Magic Mirror');		
+			}
+
 			Molpy.AwardPrizes(prizeCounts);
 			Molpy.recalculateDig=1;
 			Molpy.boostRepaint=1;
