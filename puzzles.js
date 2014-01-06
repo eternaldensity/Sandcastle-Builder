@@ -18,6 +18,7 @@ Molpy.DefinePuzzles=function()
 			{
 				var statement={};
 				statements[i]=statement;
+				statement.id=i;
 				statement.name=shuffledNames[i];
 				statement.value=flandom(2)==0;
 			}//we have now made a list of statements each with a truth value
@@ -28,7 +29,7 @@ Molpy.DefinePuzzles=function()
 				var dist3 = Math.abs(groupSize-3)*2;
 				if(flandom(dist3+1))groupSize = flandom(n)+1
 				var group = statements.splice(groupSize);
-				this.FillStatements(group);
+				this.FillStatements[groupSize](group);
 				completedStatements=completedStatements.concat(group)
 			}
 			
@@ -72,11 +73,32 @@ Molpy.DefinePuzzles=function()
 					
 				Molpy.Notify(Molpify(correct)+' answer'+plural(correct)+' correct, '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect',1);
 				completedStatements=[];	
-				
-					
-				
-				
 			}
 		}
+		this.FillStatements=[
+			function(group0){}, //no statements: nothing to do
+			function(group1)
+			{
+				var s = group1[0];
+				if(s.value) //tautology or contradiction
+				{
+					s.operator='or';
+				}else{
+					s.operator='and';
+				}
+				s.claims=[];
+				s.claims.push({name:s.name,value:true});
+				s.claims.push({name:s.name,value:false});
+			},
+			function(group2)
+			{
+			},
+			function(group3)
+			{
+			},
+			function(group4)
+			{
+			}
+		]
 	}
 }
