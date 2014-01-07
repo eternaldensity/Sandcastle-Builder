@@ -90,7 +90,7 @@ Molpy.DefinePuzzles=function()
 				{
 					pen.claims=[{name:last.name,value:pen.value^last.value}];
 					last.claims[{name:last.name,value:true}]; //tells us nothing about last because pen's claim told us nothing about pen
-				else{
+				}else{
 					pen.claims=[{name:last.name,value:pen.value^last.value}];					
 					last.claims=[{name:first.name,value:first.value^last.value}];						
 				}
@@ -101,7 +101,7 @@ Molpy.DefinePuzzles=function()
 		}
 		this.FillStatements=function(group,n)
 		{
-			if(n==0)//no statements: nothing to do
+			if(n==0)return;//no statements: nothing to do
 			else if(n==1)
 			{
 				var a = group[0];
