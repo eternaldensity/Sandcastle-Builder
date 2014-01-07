@@ -28,8 +28,8 @@ Molpy.DefinePuzzles=function()
 				var groupSize = flandom(n)+1;
 				var dist3 = Math.abs(groupSize-3)*2;
 				if(flandom(dist3+1))groupSize = flandom(n)+1
-				var group = statements.splice(groupSize);
-				this.FillStatements[groupSize](group);
+				var group = statements.splice(0,groupSize);
+				this.FillStatements(group,groupSize);
 				completedStatements=completedStatements.concat(group)
 				if(flandom(statements.length/2)==0)
 				{
@@ -79,7 +79,7 @@ Molpy.DefinePuzzles=function()
 				completedStatements=[];	
 			}
 		}
-		this.AddStatementLastToChain(group,n)
+		this.AddStatementLastToChain=function(group,n)
 		{
 			var last=group[n-1];
 			var pen=group[n-2];
@@ -96,7 +96,7 @@ Molpy.DefinePuzzles=function()
 				}
 			}else
 			{
-				this.FillStatements[1]([last]);//can't fit into chain so make it a single
+				this.FillStatements([last],1);//can't fit into chain so make it a single
 			}
 		}
 		this.FillStatements=function(group,n)
