@@ -31,6 +31,10 @@ Molpy.DefinePuzzles=function()
 				var group = statements.splice(groupSize);
 				this.FillStatements[groupSize](group);
 				completedStatements=completedStatements.concat(group)
+				if(flandom(statements.length/2)==0)
+				{
+					this.AttachStatements(statements,completedStatements);
+				}
 			}
 			
 			ShuffleList(completedStatements);
@@ -143,6 +147,40 @@ Molpy.DefinePuzzles=function()
 				this.FillStatements(group,n-1);
 				this.AddStatementLastToChain(group,n);	
 			}
-		]
+		}
+		this.AttachStatements=function(extra,main)
+		{
+			for(var i in extra)
+			{
+				var e = extra[i];
+				var a = GLRschoice(main);
+				var b = GLRschoice(main);
+				main.push(e);
+				if(a===b)
+				{
+					e.claims=[{name:a.name,value:e.value^a.value}];
+				}else{
+					e.claims=[{name:a.name,value:a.value},{name:b.name,value:b.value}];
+					if(randbool())
+					{
+						e.operator='or';
+						if(e.value)
+						{
+							e.claims[0].value=randbool();
+						}else{
+							e.claims[0].value=!a.value;
+							e.claims[1].value=!b.value;
+						}
+					}else{
+						e.operator='and';
+						if(!e.value)
+						{
+							e.claims[0].value=randbool();
+							e.claims[1].value=!b.value;
+						}
+					}
+				}
+			}
+		}
 	}
 }

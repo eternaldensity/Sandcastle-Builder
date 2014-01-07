@@ -2874,7 +2874,8 @@ Molpy.Up=function()
 		Molpy.DefineCastleTools();
 		Molpy.DefineBoosts();
 		Molpy.DefineBadges();		
-		Molpy.DefineCharacters();		
+		Molpy.DefineCharacters();	
+		Molpy.DefinePuzzles();
 		Molpy.InitGUI();		
 		
 		Molpy.UpdateBeach();
