@@ -1,7 +1,11 @@
 Molpy.DefinePuzzles=function()
 {
-	Molpy.Puzzle=function()
+	Molpy.PuzzleGens={};
+	Molpy.Puzzle=function(name)
 	{
+		this.name=name;
+		Molpy.PuzzleGens[name]=this;
+		
 		this.operators=['and','or'];
 		this.Generate=function()
 		{
@@ -36,8 +40,13 @@ Molpy.DefinePuzzles=function()
 					this.AttachStatements(statements,completedStatements);
 				}
 			}
+			for(var i in completedStatements)
+			{
+				ShuffleList(completedStatements[i].claims);
+			}
 			
 			ShuffleList(completedStatements);
+			this.guess=[];
 			
 			this.Check=function(guess)
 			{
@@ -78,6 +87,8 @@ Molpy.DefinePuzzles=function()
 				Molpy.Notify(Molpify(correct)+' answer'+plural(correct)+' correct, '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect',1);
 				completedStatements=[];	
 			}
+			
+			return this.StringifyStatements(completedStatements);
 		}
 		this.AddStatementLastToChain=function(group,n)
 		{
@@ -182,5 +193,43 @@ Molpy.DefinePuzzles=function()
 				}
 			}
 		}
+		this.SelectGuess=function(guessBox)
+		{
+			var index = parseInt(guessBox.name.split('selectGuess')[1]);
+			var value = guessBox.options[guessBox.selectedIndex].value;
+			this.guess[index]=value;
+		}
+		this.StringifyStatements=function(completedStatements)
+		{
+			var str='';
+			for(var id in completedStatements)
+			{
+				str+='<br><br>'+this.StringifyStatement(completedStatements[id],id);
+			}
+			return str;
+		}
+		this.StringifyStatement=function(statement,id)
+		{
+			var str = statement.name+':';
+
+			for(var i in statement.claims)
+			{
+				i = parseInt(i);
+				str+= ' ' + this.StringifyClaim(statement.claims[i]);
+				if(i<statement.claims.length-1)
+				{
+					str+=' '+statement.operator;
+				}
+			}
+			//str+= ' ('+statement.value+')';
+			str+='<br><select id="selectGuess'+id+'" name="selectGuess'+id+'" onchange="Molpy.PuzzleGens[\''+this.name+'\'].SelectGuess(this)"><option>No Guess</option><option>True</option><option>False</option></select>';
+			return str;
+		}
+		this.StringifyClaim=function(claim)
+		{
+			var invert = Math.random()*(this.level%100)>25;
+			return claim.name+' is '+(invert?'not '+!claim.value:claim.value==true);
+		}
+		
 	}
 }
