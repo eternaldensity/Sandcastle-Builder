@@ -25,9 +25,9 @@ Molpy.DefinePuzzles=function()
 			var completedStatements=[];
 			while(completedStatements.length<n)
 			{
-				var groupSize = flandom(n)+1;
+				var groupSize = flandom(statements.length)+1;
 				var dist3 = Math.abs(groupSize-3)*2;
-				if(flandom(dist3+1))groupSize = flandom(n)+1
+				if(flandom(dist3+1))groupSize = flandom(statements.length)+1
 				var group = statements.splice(0,groupSize);
 				this.FillStatements(group,groupSize);
 				completedStatements=completedStatements.concat(group)
@@ -89,7 +89,7 @@ Molpy.DefinePuzzles=function()
 				if(pen.claims[0].name==pen.name) 
 				{
 					pen.claims=[{name:last.name,value:pen.value^last.value}];
-					last.claims[{name:last.name,value:true}]; //tells us nothing about last because pen's claim told us nothing about pen
+					last.claims=[{name:last.name,value:true}]; //tells us nothing about last because pen's claim told us nothing about pen
 				}else{
 					pen.claims=[{name:last.name,value:pen.value^last.value}];					
 					last.claims=[{name:first.name,value:first.value^last.value}];						
@@ -145,7 +145,7 @@ Molpy.DefinePuzzles=function()
 				}
 			}else{				
 				this.FillStatements(group,n-1);
-				this.AddStatementLastToChain(group,n);	
+				this.AddStatementLastToChain(group,n-1);	
 			}
 		}
 		this.AttachStatements=function(extra,main)
