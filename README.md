@@ -53,6 +53,8 @@ For personal amusement only.
 - Glass Saw didn't refresh on use
 - Prevent Zookeeper from refreshing Caged Logicat while it is displaying a puzzle
 - Buffed Glass Saw a lot
+- Notification about awarding Temporal Duplication wasn't accounting for owning Temporal Duplication because it was bought *after* it was described
+- Changed Dragon Forge rounding so you'll get a minimum 0.04x rather than 0x duplication multiplier without a charged Lightning Rod
 
 ## 3.291
 - The Autoscroll option was not added to Classic

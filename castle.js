@@ -1199,7 +1199,7 @@ Molpy.Up=function()
 				if(Molpy.Got('TDE'))
 				{
 					var tdf=Molpy.TDFactor(1)-1;
-					var dups=bought*tdf;
+					var dups=Math.floor(bought*tdf);
 					this.amount+=dups;
 					this.temp+=dups;
 					bought+=dups;
@@ -1219,7 +1219,7 @@ Molpy.Up=function()
 				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('TDE'))
 				{
 					var tdf=Molpy.TDFactor()-1;
-					var dups=n*tdf;
+					var dups=Math.floor(n*tdf);
 					this.amount+=dups;
 					this.temp+=dups;
 					Molpy.SandToolsOwned+=dups;				
@@ -1399,7 +1399,7 @@ Molpy.Up=function()
 				if(Molpy.Got('TDE'))
 				{
 					var tdf=Molpy.TDFactor(1)-1;
-					var dups=bought*tdf;
+					var dups=Math.floor(bought*tdf);
 					this.amount+=dups;
 					this.temp+=dups;
 					bought+=dups;
@@ -1420,7 +1420,7 @@ Molpy.Up=function()
 				if(Molpy.Got('Crystal Dragon')&&Molpy.Got('TDE'))
 				{
 					var tdf=Molpy.TDFactor()-1;
-					var dups=n*tdf;
+					var dups=Math.floor(n*tdf);
 					this.amount+=dups;
 					this.temp+=dups;
 					Molpy.CastleToolsOwned+=dups;					
@@ -2044,9 +2044,9 @@ Molpy.Up=function()
 				if(desc)bb.desc=desc;
 				bb.power=EvalMaybeFunction(power||bb.startPower);
 				bb.countdown=EvalMaybeFunction(countdown||bb.startCountdown);
-				bb.unlocked=1;					
+				bb.unlocked=1;	
+				bb.buy();				
 				bb.describe();
-				bb.buy();
 				Molpy.recalculateDig=1;
 			}
 		}

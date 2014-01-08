@@ -2371,7 +2371,7 @@
 		function(me)
 		{
 			var tdf=Molpy.TDFactor()-1;
-			return 'For '+MolpifyCountdown(me.countdown)+', when you buy tools, get '+(tdf==1?'the same':Molpify(tdf,1)+'x that')+' amount again for free!';
+			return 'For '+MolpifyCountdown(me.countdown)+', when you buy tools, get '+(tdf==1?'the same':Molpify(tdf,3)+'x that')+' amount again for free!';
 		}
 		,group:'chron',className:'alert',logic:50,
 		startCountdown:function()
@@ -3667,7 +3667,7 @@
                 var tool=Molpy.tfOrder[t];
                 if(isFinite(Molpy.priceFactor*tool.price)) tool.Refresh();
             }
-			built*=Molpy.TDFactor();
+			built=Math.floor(built*Molpy.TDFactor());
             Molpy.toolsBuilt+=built;
             Molpy.toolsBuiltTotal+=built;
             Molpy.recalculateDig=1;
@@ -3931,17 +3931,6 @@
 			{
 				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory(1)"></input> the rate by 1 at a cost of '+Molpify(1e6*n,1)+' Glass Blocks.';
 			}
-			for(var i = 1;i<50;i++)//nope!
-			{				
-				if((n >= 5*Math.pow(10,i) || !Molpy.Has('GlassBlocks',Math.pow(10,i+7)*n)) && n < 5*Math.pow(10,i+2))
-				{
-					if(Molpy.Has('GlassBlocks',Math.pow(10,i+6)*n))
-					{
-						str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory('+Math.pow(10,i)+')"></input> the rate by '+Molpify(Math.pow(10,i),1) 
-							+' at a cost of '+Molpify(Math.pow(10,i+6)*n,1)+' Glass Blocks.';
-					}else break;
-				}
-			}
 			if (n > 5e51) 
 			{		
 				str += 'No further increases are possible.'
@@ -3950,6 +3939,15 @@
 					Molpy.EarnBadge('Nope!');
 					me.power = 6e51;// Evens everyone up to same value could get here between 5 and 5.00999...
 					me.className = '';
+				}
+			}else{
+				var affordPow = Math.floor(Math.log(Molpy.Level('GlassBlocks')/n)*Math.LOG10E)-6;
+				var numPow= Math.floor(Math.log(n/5)*Math.LOG10E);
+				var i=Math.max(Math.min(49,affordPow,numPow),0);
+				if(i)
+				{
+					str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlToolFactory('+Math.pow(10,i)+')"></input> the rate by '+Molpify(Math.pow(10,i),1) 
+						+' at a cost of '+Molpify(Math.pow(10,i+6)*n,1)+' Glass Blocks.';
 				}
 			}
 			if(!Molpy.Boosts['No Sell'].power&&me.power>0&&Molpy.Has('GlassBlocks',1e5*n))
@@ -4317,7 +4315,7 @@
 		{
 			if(Molpy.Got('Dragon Foundry')&&Molpy.Got('GL'))
 			{
-				return 1+Math.floor(Molpy.Boosts['GL'].power/10000);
+				return 1+Molpy.Boosts['GL'].power/10000;
 			}
 			return 2;
 		}
