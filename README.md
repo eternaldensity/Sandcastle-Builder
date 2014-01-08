@@ -47,6 +47,7 @@ For personal amusement only.
 - Puzzles are possibly a little less interesting though: statements are made up of less parts (1 or sometimes 2, but no triples. I'll probably work on that, and add 'implies' at some point.)
 - Unlock Buzz Saw if you already have infinite glass
 - Added a way to avoid infinite sand (to allow blizting) when you have an infinite sand dig rate)
+- Lightning Strikes Twice used to boost the power of Glassed Lightning but I changed it to boost the countdown a while ago. Now it does *both*
 
 ## 3.291
 - The Autoscroll option was not added to Classic
