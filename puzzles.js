@@ -15,7 +15,7 @@ Molpy.DefinePuzzles=function()
 			this.level=Molpy.Level('Logicat');
 			var statementNames='ABCDEFGHIJ';
 			var shuffledNames=statementNames.split('');
-			ShuffleList(shuffledNames);
+			//ShuffleList(shuffledNames);
 			var n = flandom(Math.ceil(Math.PI))+Math.ceil(Math.PI);
 			
 			var statements=[];
@@ -29,6 +29,7 @@ Molpy.DefinePuzzles=function()
 				statement.value=flandom(2)==0;
 			}//we have now made a list of statements each with a truth value
 			var completedStatements=[];
+			this.groupNumber=1;
 			while(completedStatements.length<n)
 			{
 				var groupSize = flandom(statements.length)+1;
@@ -41,13 +42,14 @@ Molpy.DefinePuzzles=function()
 				{
 					this.AttachStatements(statements,completedStatements);
 				}
+				this.groupNumber++;
 			}
 			for(var i in completedStatements)
 			{
-				ShuffleList(completedStatements[i].claims);
+				//ShuffleList(completedStatements[i].claims);
 			}
 			
-			ShuffleList(completedStatements);
+			//ShuffleList(completedStatements);
 			this.guess=[];
 			for(var i in completedStatements)
 			{
@@ -129,6 +131,13 @@ Molpy.DefinePuzzles=function()
 		}
 		this.FillStatements=function(group,n)
 		{
+			for(var i in group)
+			{
+				if(group[i].groupSize)break;
+				group[i].groupNumber=this.groupNumber;
+				group[i].groupSize=n;
+			}
+			
 			if(n==0)return;//no statements: nothing to do
 			else if(n==1)
 			{
@@ -170,7 +179,7 @@ Molpy.DefinePuzzles=function()
 				if(randbool())
 				{					
 					this.FillStatements(group,n-1);
-					this.AddStatementLastToChain(group,n-1);					
+					this.AddStatementLastToChain(group,n);					
 				}else{
 					a.operator=(a.value?'or':'and');
 					var r = randbool();
@@ -183,7 +192,7 @@ Molpy.DefinePuzzles=function()
 				}
 			}else{				
 				this.FillStatements(group,n-1);
-				this.AddStatementLastToChain(group,n-1);	
+				this.AddStatementLastToChain(group,n);	
 			}
 		}
 		this.AttachStatements=function(extra,main)
@@ -242,7 +251,7 @@ Molpy.DefinePuzzles=function()
 					str+=' '+statement.operator;
 				}
 			}
-			str+= ' ('+statement.value+', '+statement.reason+')';
+			str+= ' ('+statement.value+', '+statement.reason+', group:'+statement.groupNumber+', groupSize:'+statement.groupSize+')';
 			str+='<br><select id="selectGuess'+id+'" name="selectGuess'+id+'" onchange="Molpy.PuzzleGens[\''+this.name+'\'].SelectGuess(this)">';
 			for(var i in this.guessOptions)
 			{
