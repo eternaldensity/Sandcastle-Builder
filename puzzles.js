@@ -47,6 +47,10 @@ Molpy.DefinePuzzles=function()
 			
 			ShuffleList(completedStatements);
 			this.guess=[];
+			for(var i in completedStatements)
+			{
+				this.guess.push('No Guess');
+			}
 			
 			this.Check=function(guess)
 			{
@@ -87,8 +91,17 @@ Molpy.DefinePuzzles=function()
 				Molpy.Notify(Molpify(correct)+' answer'+plural(correct)+' correct, '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect',1);
 				completedStatements=[];	
 			}
+			this.StringifyStatements=function()
+			{
+				var str='';
+				for(var id in completedStatements)
+				{
+					str+='<br><br>'+this.StringifyStatement(completedStatements[id],id);
+				}
+				return str+'<br><br><input type="Button" value="Submit Guesses" onclick="Molpy.PuzzleGens[\''+this.name+'\'].Submit()"></input>';
+			}
 			
-			return this.StringifyStatements(completedStatements);
+			return this.StringifyStatements();
 		}
 		this.AddStatementLastToChain=function(group,n)
 		{
@@ -199,15 +212,7 @@ Molpy.DefinePuzzles=function()
 			var value = guessBox.options[guessBox.selectedIndex].value;
 			this.guess[index]=value;
 		}
-		this.StringifyStatements=function(completedStatements)
-		{
-			var str='';
-			for(var id in completedStatements)
-			{
-				str+='<br><br>'+this.StringifyStatement(completedStatements[id],id);
-			}
-			return str;
-		}
+		this.guessOptions=['No Guess','True','False'];
 		this.StringifyStatement=function(statement,id)
 		{
 			var str = statement.name+':';
@@ -222,7 +227,13 @@ Molpy.DefinePuzzles=function()
 				}
 			}
 			//str+= ' ('+statement.value+')';
-			str+='<br><select id="selectGuess'+id+'" name="selectGuess'+id+'" onchange="Molpy.PuzzleGens[\''+this.name+'\'].SelectGuess(this)"><option>No Guess</option><option>True</option><option>False</option></select>';
+			str+='<br><select id="selectGuess'+id+'" name="selectGuess'+id+'" onchange="Molpy.PuzzleGens[\''+this.name+'\'].SelectGuess(this)">';
+			for(var i in this.guessOptions)
+			{
+				var select=(this.guess[id]==this.guessOptions[i]?' selected="selected"':'');
+				str+='<option'+select+'>'+this.guessOptions[i]+'</option>';
+			}
+			str+='</select>';
 			return str;
 		}
 		this.StringifyClaim=function(claim)
@@ -230,6 +241,15 @@ Molpy.DefinePuzzles=function()
 			var invert = Math.random()*(this.level%100)>25;
 			return claim.name+' is '+(invert?'not '+!claim.value:claim.value==true);
 		}
-		
+		this.Submit=function()
+		{
+			var neatGuess=[];
+			for(var i in this.guess)
+			{
+				if(this.guess[i]=='True')neatGuess[i]=true;
+				else if(this.guess[i]=='False')neatGuess[i]=false;
+			}
+			this.Check(neatGuess);
+		}		
 	}
 }
