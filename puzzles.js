@@ -8,14 +8,14 @@ Molpy.DefinePuzzles=function()
 		Molpy.PuzzleGens[name]=this;
 		
 		this.operators=['and','or'];
-		this.Generate=function()
+		this.Generate=function(scoreMultiplier)
 		{
 			this.firstTry=1;
 			this.active=true;
 			this.level=Molpy.Level('Logicat');
 			var statementNames='ABCDEFGHIJ';
 			var shuffledNames=statementNames.split('');
-			//ShuffleList(shuffledNames);
+			ShuffleList(shuffledNames);
 			var n = flandom(Math.ceil(Math.PI))+Math.ceil(Math.PI);
 			
 			var statements=[];
@@ -46,10 +46,10 @@ Molpy.DefinePuzzles=function()
 			}
 			for(var i in completedStatements)
 			{
-				//ShuffleList(completedStatements[i].claims);
+				ShuffleList(completedStatements[i].claims);
 			}
 			
-			//ShuffleList(completedStatements);
+			ShuffleList(completedStatements);
 			this.guess=[];
 			for(var i in completedStatements)
 			{
@@ -89,8 +89,9 @@ Molpy.DefinePuzzles=function()
 				}
 				var diff = correct-incorrect;				
 				var points = .5+Molpy.Level('Panther Rush')/2;
-				if(diff>0) Molpy.Add('Logicat',0, diff*(this.firstTry*.5+points));
-				else if (diff < 0)Molpy.Destroy('Logicat',0,-diff*(!this.firstTry+points));
+				if(scoreMultiplier<=0)scoreMultiplier=1;
+				if(diff>0) Molpy.Add('Logicat',0, diff*(this.firstTry*.5+points)*scoreMultiplier);
+				else if (diff < 0)Molpy.Destroy('Logicat',0,-diff*(!this.firstTry+points)*scoreMultiplier);
 					
 				Molpy.Notify(Molpify(correct)+' answer'+plural(correct)+' correct, '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect',1);
 				completedStatements=[];	
@@ -251,7 +252,7 @@ Molpy.DefinePuzzles=function()
 					str+=' '+statement.operator;
 				}
 			}
-			str+= ' ('+statement.value+', '+statement.reason+', group:'+statement.groupNumber+', groupSize:'+statement.groupSize+')';
+			//str+= ' ('+statement.value+', '+statement.reason+', group:'+statement.groupNumber+', groupSize:'+statement.groupSize+')';
 			str+='<br><select id="selectGuess'+id+'" name="selectGuess'+id+'" onchange="Molpy.PuzzleGens[\''+this.name+'\'].SelectGuess(this)">';
 			for(var i in this.guessOptions)
 			{

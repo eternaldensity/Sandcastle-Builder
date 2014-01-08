@@ -1915,7 +1915,7 @@
 				{
 						str+='<br><input type="Button" value="Trade" onclick="Molpy.UnlockNinjaClimber()"></input> 500 Ladders to unlock Ninja Climber.';
 				}
-				if(Molpy.Has('GlassBlocks',800)&&!Molpy.Got('LogiQuestion')&&Molpy.Has('Logicat',5))
+				if(Molpy.Has('GlassBlocks',800)&&!Molpy.Got('LogiPuzzle')&&Molpy.Has('Logicat',5))
 				{
 					if(Molpy.Has('GlassBlocks',1000))
 					{
@@ -1952,7 +1952,7 @@
 			if(!Molpy.Got('Panther Salve')&&Molpy.Has('GlassBlocks',250)
 				||fa.bought&&Molpy.Got('Doublepost')&&fa.power<Molpy.faCosts.length&&bots>=Molpy.faCosts[fa.power]
 				||!Molpy.Boosts['Ninja Climber'].unlocked&&Molpy.Got('Skull and Crossbones')&&Molpy.SandTools['Ladder'].amount>=500
-				||Molpy.Has('GlassBlocks',800)&&!Molpy.Got('LogiQuestion')&&Molpy.Has('Logicat',5)
+				||Molpy.Has('GlassBlocks',800)&&!Molpy.Got('LogiPuzzle')&&Molpy.Has('Logicat',5)
 				||Molpy.Has('GlassChips',12500)&&Molpy.Has('GlassBlocks',2500)&&!Molpy.Got('Camera')
 				||Molpy.GetBlackprintSubject()&&!Molpy.Got('CfB')
 			)
@@ -2523,7 +2523,7 @@
 		,className:'action',group:'hpt',icon:'glassextruder'}
 	);
 	
-	new Molpy.Boost({name:'Caged Logicat',alias:'LogiQuestion',single:'Logicat&nbsp;Question',
+	new Molpy.Boost({name:'Caged Logicat',alias:'LogiPuzzle',single:'Logicat&nbsp;Puzzle',
 		Level:Molpy.BoostFuncs.Bought1Level,
 		Has:Molpy.BoostFuncs.Has,
 		Spend:Molpy.BoostFuncs.Spend,
@@ -2571,7 +2571,7 @@
 
 	new Molpy.Puzzle('caged',function()
 		{
-			Molpy.Boosts['LogiQuestion'].Refresh();
+			Molpy.Boosts['LogiPuzzle'].Refresh();
 		}
 	);
 	Molpy.MakeCagedPuzzle=function(cost)
@@ -2581,14 +2581,14 @@
 			Molpy.Notify('You need to pay'+Molpy.PriceString(cost)+' to be asked a Caged Logicat puzzle.');
 			return;
 		}
-		if(!Molpy.Spend('LogiQuestion',1))
+		if(!Molpy.Spend('LogiPuzzle',1))
 		{
 			Molpy.Notify('No Logicat puzzles are available.');
 			return;
 		}
 		
 		Molpy.PuzzleGens.caged.Generate();
-		Molpy.Boosts['LogiQuestion'].Refresh();
+		Molpy.Boosts['LogiPuzzle'].Refresh();
 	}
 	
 	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it. (The second attempt costs 50 Glass Blocks per incorrect answer, and gives less points per correct answer.)',
@@ -3749,7 +3749,7 @@
 			if(pages)
 				Molpy.Add('Blackprints',pages);
 		}
-		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('LogiQuestion')&&!Molpy.Has('LogiQuestion',Molpy.PokeBar()))
+		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('LogiPuzzle')&&!Molpy.Has('LogiPuzzle',Molpy.PokeBar()))
 		{
 			var zk = Molpy.Boosts['ZK'];
 			var poke=Math.random()*(left-10);
@@ -3760,7 +3760,7 @@
 				Molpy.Boosts['Panther Poke'].buyFunction();
 				zk.power-=1000;
 			}			
-			Molpy.Boosts['LogiQuestion'].Refresh();
+			Molpy.Boosts['LogiPuzzle'].Refresh();
 		}
 		Molpy.boostSilence=0;
     }
@@ -3965,8 +3965,8 @@
 	}
 	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
 		buyFunction:function(){
-			if(Molpy.Got('LogiQuestion'))
-				Molpy.Add('LogiQuestion',1+Molpy.Level('Panther Rush'));
+			if(Molpy.Got('LogiPuzzle'))
+				Molpy.Add('LogiPuzzle',1+Molpy.Level('Panther Rush'));
 			Molpy.LockBoost(this.alias);
 		}
 	});
@@ -4244,7 +4244,7 @@
 		if(Molpy.Has('AC',404)&&!Molpy.Boosts['WiseDragon'].unlocked) return [4.5e20,'WiseDragon'];
 		if(Molpy.Has('AC',555)&&!Molpy.Boosts['Thunderbird'].unlocked&&Molpy.Got('PSOC')) return [6e36,'Thunderbird'];
 		if(Molpy.Has('AC',777)&&!Molpy.Boosts['Dragon Foundry'].unlocked&&Molpy.Earned('Nope!')) return [3e55,'Dragon Foundry'];
-		if(Molpy.Has('AC',888)&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')&&Molpy.Has('LogiQuestion',100)) return [9e96,'ShadwDrgn'];
+		if(Molpy.Has('AC',888)&&!Molpy.Boosts['ShadwDrgn'].unlocked&&Molpy.Got('SGC')&&Molpy.Has('LogiPuzzle',100)) return [9e96,'ShadwDrgn'];
 		if(Molpy.Has('AC',4000)&&!Molpy.Boosts['DQ'].unlocked&&Molpy.Got('Nest')&&Molpy.Has('Bonemeal',2000)) return [Infinity,'DQ'];
 		return [0,''];
 	}
@@ -4474,7 +4474,7 @@
 		{
 			var str='Puts unused Caged Logicat puzzles to some use.';
 			if(!me.bought)return str;
-			if(Molpy.Got('LogiQuestion')&&Molpy.Has('LogiQuestion',100))
+			if(Molpy.Got('LogiPuzzle')&&Molpy.Has('LogiPuzzle',100))
 			{
 				str+='<br><input type="Button" value="Deal" onclick="Molpy.ShadowStrike(1)"></input> with the Caged Logicat infestation...';
 			}else
@@ -4487,13 +4487,13 @@
 	});
 	Molpy.ShadowStrike=function()
 	{
-		var l = Molpy.Level('LogiQuestion')/100;
+		var l = Molpy.Level('LogiPuzzle')/100;
 		var n = Math.ceil(l);
 		var p = n-l;
 		if(Math.random()<p*p)n = 1;
-		Molpy.Notify('The Shadow Dragon was '+(n==1?'greedy':'generous')+' and turned '+Molpify(Molpy.Level('LogiQuestion'))+' Caged Logicat puzzles into '+Molpify(n)+' Bonemeal.',1);
+		Molpy.Notify('The Shadow Dragon was '+(n==1?'greedy':'generous')+' and turned '+Molpify(Molpy.Level('LogiPuzzle'))+' Caged Logicat puzzles into '+Molpify(n)+' Bonemeal.',1);
 		Molpy.Add('Bonemeal',n);
-		Molpy.Spend('LogiQuestion',Molpy.Level('LogiQuestion'));
+		Molpy.Spend('LogiPuzzle',Molpy.Level('LogiPuzzle'));
 	}
 
 	Molpy.spendSandNotifyFlag=1;

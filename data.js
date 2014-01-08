@@ -782,7 +782,7 @@ Molpy.CheckDoRDRewards=function(automationLevel)
 	Molpy.Boosts['Break the Mould'].department=1*(Molpy.Boosts['Break the Mould'].power>=100);
 	
 	Molpy.Boosts['PC'].department=1*(Molpy.Got('TF')&&Molpy.CastleTools['NewPixBot'].amount>=5000);
-	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('LogiQuestion')&&!Molpy.Has('LogiQuestion',Molpy.PokeBar())&&flandom(4)==0);
+	Molpy.Boosts['Panther Poke'].department=1*(automationLevel>8&&Molpy.redactedClicks>2500&&Molpy.Got('LogiPuzzle')&&!Molpy.Has('LogiPuzzle',Molpy.PokeBar())&&flandom(4)==0);
 	
 	Molpy.Boosts['GM'].department=1*(Molpy.chipsManual>=1e6);
 	Molpy.Boosts['GL'].department=1*(Molpy.chipsManual>=5e6||Molpy.Got('Thunderbird'));

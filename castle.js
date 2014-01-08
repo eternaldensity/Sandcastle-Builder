@@ -3300,9 +3300,9 @@ Molpy.Up=function()
 		if(!Molpy.Got('Temporal Rift'))
 		{
 			Molpy.Boosts['Time Lord'].Level=0;
-			if(Molpy.Got('LogiQuestion'))
+			if(Molpy.Got('LogiPuzzle'))
 			{
-				var cl = Molpy.Boosts['LogiQuestion'];
+				var cl = Molpy.Boosts['LogiPuzzle'];
 				if(!cl.Has(10))
 				{
 					cl.Level=10;
