@@ -28,6 +28,7 @@ For personal amusement only.
 
 ## 3.293
 - Mucked around with how hover/refresh work to prevent extra redrawing of Caged Logicat
+- Lightning Strikes Twice was (accidentally) capping the Glassed Lightning power to 500!
 
 ## 3.292
 - Seaish boosts only take 500 purifier/extruder level rather than 1000
