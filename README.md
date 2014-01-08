@@ -45,6 +45,7 @@ For personal amusement only.
 - Lower reward and higher penalty on the second chance. Second chance is offered if you have at least 1 incorrect answer, but is optional (you are informed how many are incorrect)
 - New option of combining some multiple of 10 puzzles together to save time (e.g. if you have 51 to 60 puzzles available you may pay for 50 puzzles answer a puzzle, and get 50 times the reward or penalty)
 - Puzzles are possibly a little less interesting though: statements are made up of less parts (1 or sometimes 2, but no triples. I'll probably work on that, and add 'implies' at some point.)
+- Unlock Buzz Saw if you already have infinite glass
 
 ## 3.291
 - The Autoscroll option was not added to Classic

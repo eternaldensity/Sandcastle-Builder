@@ -635,6 +635,7 @@ Molpy.Up=function()
 							{
 								Molpy.EarnBadge('Infinite Saw');
 							}
+							if(!isFinite(bl.Level))Molpy.UnlockBoost('Buzz Saw');
 							Molpy.Add('GlassBlocks',maxGlass,Molpy.Got('Buzz Saw'));
 							Molpy.Spend('TF',maxGlass*rate);
 							if(Molpy.Has('TF',absMaxGlass*rate*2))
