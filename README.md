@@ -52,6 +52,7 @@ For personal amusement only.
 - Recycling Beanies wasn't refreshing on upgrade.
 - Glass Saw didn't refresh on use
 - Prevent Zookeeper from refreshing Caged Logicat while it is displaying a puzzle
+- Buffed Glass Saw a lot
 
 ## 3.291
 - The Autoscroll option was not added to Classic

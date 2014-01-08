@@ -639,7 +639,9 @@ Molpy.Up=function()
 							if(!isFinite(bl.Level))Molpy.UnlockBoost('Buzz Saw');
 							Molpy.Add('GlassBlocks',maxGlass,Molpy.Got('Buzz Saw'));
 							Molpy.Spend('TF',maxGlass*rate);
-							if(Molpy.Has('TF',absMaxGlass*rate*2))
+							if(Molpy.Has('TF',absMaxGlass*rate*10))
+								Molpy.Boosts['Glass Saw'].power=p*(10+5*Molpy.Got('Buzz Saw'));
+							else if(Molpy.Has('TF',absMaxGlass*rate*2))
 								Molpy.Boosts['Glass Saw'].power=p*(2+Molpy.Got('Buzz Saw'));
 								
 							if(maxGlass && p > 1e15 && maxGlass/absMaxGlass<.01)
