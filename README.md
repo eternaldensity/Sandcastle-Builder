@@ -50,6 +50,8 @@ For personal amusement only.
 - Lightning Strikes Twice used to boost the power of Glassed Lightning but I changed it to boost the countdown a while ago. Now it does *both*
 - Added a use for vacuum: getting more blackprints
 - Recycling Beanies wasn't refreshing on upgrade.
+- Glass Saw didn't refresh on use
+- Prevent Zookeeper from refreshing Caged Logicat while it is displaying a puzzle
 
 ## 3.291
 - The Autoscroll option was not added to Classic

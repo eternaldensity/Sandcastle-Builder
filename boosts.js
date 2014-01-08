@@ -2528,7 +2528,7 @@
 		Has:Molpy.BoostFuncs.Has,
 		Spend:Molpy.BoostFuncs.Spend,
 		Add:Molpy.BoostFuncs.Add,
-		desc: function(me)
+		desc:function(me)
 		{
 			var str='';
 			if(Molpy.PuzzleGens.caged.active)
@@ -3776,8 +3776,8 @@
 			{
 				Molpy.Boosts['Panther Poke'].buyFunction();
 				zk.power-=1000;
-			}			
-			Molpy.Boosts['LogiPuzzle'].Refresh();
+			}	
+			if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
 		}
 		Molpy.boostSilence=0;
     }

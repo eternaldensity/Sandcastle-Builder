@@ -649,6 +649,7 @@ Molpy.Up=function()
 						}else{
 							if(!p) Molpy.Boosts['Glass Saw'].power=1;
 						}
+						Molpy.Boosts['Glass Saw'].Refresh();
                     }
 					
 					_gaq.push(['_trackEvent',Molpy.Boosts['VJ'].name,sawType,''+Molpy.Boosts['VJ'].power]);
