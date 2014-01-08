@@ -681,6 +681,7 @@
 				'<div id="SandToolProduction'+me.id+'"></div><div class="'
 				+Molpy.DescClass(me)+'" id="SandToolDescription'+me.id+'"></div></div></div>';
 			if(expando)me.hoverOnCounter=1;
+			me.hovering=0;
 			i++
 		}
 		if(i==redactedIndex) str+= Molpy.RedactedHTML();
@@ -738,6 +739,7 @@
 				'<div class="price">Price: '+price+'</div>'
 				+'<div id="CastleToolProduction'+me.id+'"></div><div class="'+Molpy.DescClass(me)+'" id="CastleToolDescription'+me.id+'"></div></div></div>';
 			if(expando)me.hoverOnCounter=1;
+			me.hovering=0;
 			i++
 		}
 		if(Molpy.mustardTools==12)
@@ -809,6 +811,7 @@
 			if(r==redactedIndex) str+= Molpy.RedactedHTML();
 			var me=Molpy.BoostsInShop[i];
 			str+=Molpy.BoostString(me,1);
+			me.hovering=0;
 			r++;
 		}
 		if(r==redactedIndex) str+= Molpy.RedactedHTML();

@@ -1858,7 +1858,6 @@ Molpy.Up=function()
 			this.department=args.department; //allow unlock by the department (this is not a saved value)
 			this.logic=args.logic; //allow unlock by logicat (this is not a saved value)
 			this.order=this.id;
-			this.hovered=0;
 			this.power=0;
 			this.countdown=0;
 			this.single=args.single||args.name;
@@ -3000,7 +2999,6 @@ Molpy.Up=function()
 					}else
 					{
 						if(me.countdownFunction)me.countdownFunction();
-						if(me.hovered<0)me.hover();
 					}
 				}
 			}
@@ -3036,7 +3034,6 @@ Molpy.Up=function()
 			var me = Molpy.SandTools[i];
 			me.totalSand+=me.storedTotalSpmNP;
 			me.totalGlass+=me.storedTotalGpmNP;
-			if(Molpy.IsStatsVisible()&&me.hovered<0)me.hover();
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
