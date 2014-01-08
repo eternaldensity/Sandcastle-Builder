@@ -48,6 +48,8 @@ For personal amusement only.
 - Unlock Buzz Saw if you already have infinite glass
 - Added a way to avoid infinite sand (to allow blizting) when you have an infinite sand dig rate)
 - Lightning Strikes Twice used to boost the power of Glassed Lightning but I changed it to boost the countdown a while ago. Now it does *both*
+- Added a use for vacuum: getting more blackprints
+- Recycling Beanies wasn't refreshing on upgrade.
 
 ## 3.291
 - The Autoscroll option was not added to Classic

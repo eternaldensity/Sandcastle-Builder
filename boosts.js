@@ -1919,7 +1919,7 @@
 				{
 					if(Molpy.Has('GlassBlocks',1000))
 					{
-						str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'LogiQuestion\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
+						str+= '<br><input type="Button" value="Pay" onclick="Molpy.BuyGlassBoost(\'LogiPuzzle\',0,1000)"></input> '+Molpify(1000)+' Blocks to get a Caged Logicat';
 					}else{
 						str+='<br>It costs '+Molpify(1000)+' Glass Blocks to get a Caged Logicat.';
 					}
@@ -2779,6 +2779,7 @@
 			if(!Molpy.Boosts[print].unlocked)
 			{
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
+				if(print=='VS'&&!Molpy.Has('Vacuum',2)) continue;
 				if(print=='BoH'&&!Molpy.Has('Goats',400)) continue;
 				if(print=='Nest'&&!Molpy.Got('DNS')) continue;
 				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
@@ -2796,6 +2797,7 @@
 			if(!Molpy.Boosts[print].unlocked)
 			{				
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
+				if(print=='VS'&&!Molpy.Has('Vacuum',2)) continue;
 				if(print=='BoH'&&!Molpy.Has('Goats',400)) continue;
 				if(print=='Nest'&&!Molpy.Got('DNS')) continue;
 				if(Molpy.Level('Blackprints')>=Molpy.blackprintCosts[print])
@@ -2874,8 +2876,8 @@
 		defStuff:1,
 		className:'alert',group:'bean',icon:'constructblack'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:150,ZK:220,CFT:40000,BoH:90000,Nest:5e6};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','AO','AA','AE','BG','Bacon','SG','Milo','ZK','CFT','BoH','Nest'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:150,ZK:220,VS:5000,CFT:40000,BoH:90000,Nest:5e6};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','AO','AA','AE','BG','Bacon','SG','Milo','ZK','VS','CFT','BoH','Nest'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',alias:'SMM',desc:
 		function(me)
@@ -3521,6 +3523,7 @@
 		Molpy.CastleToolsOwned-=price;
 		bb.Refresh();
 		rb.bought++;
+		rb.Refresh();
 		_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',rb.name]);	
 		
 		if(!isFinite(Math.pow(200,rb.bought)))Molpy.UnlockBoost('Knitted Beanies');
@@ -3752,14 +3755,16 @@
 			var draft=Math.random()*(1+2*s)*(left-7);
 			mr.power+=draft*(Molpy.Got('Rush Job')?5:1);
 			left-=draft;			
-			var pages=0;
-			while(mr.power>=100)
-			{
-				pages++;
-				mr.power-=100;
-			}
+			var pages=Math.floor(mr.power/100);
+			mr.power-=100*pages;			
 			if(pages)
-				Molpy.Add('Blackprints',pages);
+			{
+				if(Molpy.Got('VS'))
+				{
+					pages*=Math.pow(1.01,Molpy.Level('Vacuum'));
+				}
+				Molpy.Add('Blackprints',Math.floor(pages));
+			}
 		}
 		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('LogiPuzzle')&&!Molpy.Has('LogiPuzzle',Molpy.PokeBar()))
 		{
@@ -4664,7 +4669,7 @@
 		}
 		,icon:'bonemeal',group:'stuff',defStuff:1
 	});
-	new Molpy.Boost({name:'Wisdom of the Ages',alias:'WotA',price:{LogiQuestion:625},
+	new Molpy.Boost({name:'Wisdom of the Ages',alias:'WotA',price:{LogiPuzzle:625},
 		Level:[function()
 		{
 			return this.bought*Math.max(-9,Math.ceil(0.2*(Math.abs(Molpy.newpixNumber)-this.power)));
@@ -5068,7 +5073,7 @@
 	
 	new Molpy.Boost({name:'Lubrication',desc:'Glass Furnace and Glass Blower\'s switching time is reduced by 99% (uses 100 Mustard per toggle).',price:{Mustard:'6K'},group:'prize',prizes:1,tier:4});
 	new Molpy.Boost({name:'Riser',desc:'Unlocks the Seaish Glass boosts much sooner.',price:{Mustard:'3K',Sand:Infinity},group:'prize',prizes:1,tier:4});
-	new Molpy.Boost({name:'Mould Press',desc:'If you have Automation Optimiser, Mould tasks run again to use up any leftover Factory Automation runs.',price:{Goats:300,LogiQuestion:'2K',Castles:Infinity,GlassBlocks:Infinity},group:'prize',prizes:1,tier:4});
+	new Molpy.Boost({name:'Mould Press',desc:'If you have Automation Optimiser, Mould tasks run again to use up any leftover Factory Automation runs.',price:{Goats:300,LogiPuzzle:'2K',Castles:Infinity,GlassBlocks:Infinity},group:'prize',prizes:1,tier:4});
 	
 	new Molpy.Boost({name:'Now Where Was I?',desc:function(me){
 			if (!me.bought || Molpy.newpixNumber == Molpy.highestNPvisited) return 'Allows direct Jump to your highest NewPix';
@@ -5110,6 +5115,7 @@
 		}
 		,icon:'vacuum',group:'stuff',defStuff:1
 	});	
+	new Molpy.Boost({name:'Void Starer',alias:'VS',desc:'The number of Blackprints produced by Mysterious Representations is boosted by 1% per Vacuum.<br>(It is still rounded down to a whole number of Blackprints.)',price:{FluxCrystals:40,Vacuum:60}});
 		
 	
 	
