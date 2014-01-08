@@ -2246,42 +2246,8 @@ Molpy.Up=function()
 			Molpy.CharacterN++;
 			return this;
 		}
+
 		
-		
-		
-		
-		
-		Molpy.redactedW=Molpy.BeanishToCuegish("UmVkdW5kYW50");
-		Molpy.redactedWord=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
-		Molpy.redactedWords=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
-		Molpy.redactedBrackets=Molpy.BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
-		Molpy.redactedSpoilerValue=Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
-		Molpy.redactedDrawType=[];
-		Molpy.RedactedHTML=function(heading,level)
-		{
-			level=level||0;
-			var drawType = Molpy.redactedDrawType[level];
-			var spoiler = '';
-			var label = 'Hide';
-			if(drawType=='show') label='Show';
-			heading=heading?'<h1>'+Molpy.redactedBrackets+'</h1>':'';
-			var countdown=(level==0?'&nbsp;<span id="redactedcountdown" class="faded">'+Molpify(Molpy.redactedToggle-Molpy.redactedCountup)+'</span>':'');
-			var str = '<div id="redacteditem">'+heading+'<div class="icon redacted"></div><h2">'
-				+Molpy.redactedWord+countdown+'</h2><div><b>Spoiler:</b><input type="button" value="'
-				+label+'" onclick="Molpy.ClickRedacted('+level+')"</input>';
-			if(drawType=='recur')
-			{
-				str+=Molpy.RedactedHTML(heading,level+1);
-			}else if( drawType=='hide1')
-			{
-				str+=Molpy.redactedSpoilerValue;
-			}else if( drawType=='hide2')
-			{
-				str+=Molpy.redactedPuzzleValue;
-			}
-				
-			return str+'</div></div>';
-		}
 		
 		Molpy.redactedCountup=0;
 		Molpy.redactedToggle=0; //disabled
@@ -2379,7 +2345,7 @@ Molpy.Up=function()
 			if (Molpy.Got('Logicat') && Molpy.redactedDrawType.length <21
 				&& flandom(6/Molpy.redactedDrawType.length)==0)
 			{
-				Molpy.MakeRedactedPuzzle();
+				Molpy.PuzzleGens.redacted.Generate();
 				Molpy.redactedDrawType[level]='hide2';
 				Molpy.RedactedJump();
 				if(Molpy.redactedToggle<20)
@@ -2768,64 +2734,7 @@ Molpy.Up=function()
 			if(blitzSpeed>=1000000) Molpy.EarnBadge('Blitz and Pieces');
 			Molpy.GiveTempBoost('Blitzing',blitzSpeed,blitzTime);
 		}
-		
-		Molpy.redactedSGen=InitStatementGen();
-		Molpy.MakeRedactedPuzzle=function()
-		{
-			Molpy.redactedSGen.FillStatements(0,Molpy.Level('Logicat'));
-			Molpy.redactedPuzzleTarget=Molpy.redactedSGen.RandStatementValue();
-			var str='Click a statement that is '+Molpy.redactedPuzzleTarget+':';
-			var statements= Molpy.redactedSGen.StringifyStatements('Molpy.ClickRedactedPuzzle');
-			for(var i in statements)
-			{
-				str+='<br><br>'+statements[i];
-			}
-			Molpy.redactedPuzzleValue=str;
-			Molpy.redactedSGen.firstTry=1;
-		}
-		Molpy.ClickRedactedPuzzle=function(name)
-		{
-			var skip=0;
-			if(!Molpy.redactedSGen.firstTry)
-			{
-				if(Molpy.Has('GlassBlocks',50))
-				{
-					Molpy.Spend('GlassBlocks',50);
-				}else{
-					Molpy.Notify('You can\'t afford a seccond try.');
-					skip=1;
-				}
-			}
-			
-			if(!skip)
-			{
-				var clickedVal=Molpy.redactedSGen.StatementValue(name);
-				if(clickedVal==Molpy.redactedPuzzleTarget)
-				{
-					Molpy.Notify('Correct',1);
-					Molpy.Add('Logicat',0,1+(Molpy.Boosts['Panther Rush'].power)/2);
-				}
-				else
-				{
-					Molpy.Notify('Incorrect',1);
-					
-					if(Molpy.redactedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.Has('GlassBlocks',50))
-					{
-						Molpy.redactedSGen.firstTry=0;
-						Molpy.Notify('Try Again');
-						return;
-					}
-					Molpy.Destroy('Logicat',0,0.5);
-				}
-			}
-		
-			Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]='show';
-			
-			Molpy.redactedPuzzleTarget='Oh no you don\'t!';
-			Molpy.shopRepaint=1;
-			Molpy.boostRepaint=1;
-			Molpy.badgeRepaint=1;
-		}
+				
 		Molpy.RewardLogicat=function(level)
 		{
 			Molpy.CheckLogicatRewards(0);
@@ -2871,11 +2780,11 @@ Molpy.Up=function()
 		}		
 
 		Molpy.DefineSandTools();
-		Molpy.DefineCastleTools();
+		Molpy.DefineCastleTools();	
+		Molpy.DefinePuzzles();
 		Molpy.DefineBoosts();
 		Molpy.DefineBadges();		
-		Molpy.DefineCharacters();	
-		Molpy.DefinePuzzles();
+		Molpy.DefineCharacters();
 		Molpy.InitGUI();		
 		
 		Molpy.UpdateBeach();

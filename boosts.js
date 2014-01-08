@@ -2531,9 +2531,9 @@
 		desc: function(me)
 		{
 			var str='';
-			if(Molpy.cagedPuzzleValue)
+			if(Molpy.PuzzleGens.caged.active)
 			{
-				return Molpy.cagedPuzzleValue;
+				return Molpy.PuzzleGens.caged.StringifyStatements();
 			}else if(me.Has(1)){
 				var cost=100+Molpy.LogiMult(25);
 				if(Molpy.Has('GlassBlocks',cost))
@@ -2569,66 +2569,26 @@
 		}
 	});	
 
-	Molpy.cagedSGen=InitStatementGen();
+	new Molpy.Puzzle('caged',function()
+		{
+			Molpy.Boosts['LogiQuestion'].Refresh();
+		}
+	);
 	Molpy.MakeCagedPuzzle=function(cost)
 	{
-		if(Molpy.Has('GlassBlocks',cost))Molpy.Spend('GlassBlocks',cost);
-		
-		Molpy.cagedSGen.FillStatements(0,Molpy.Level('Logicat'));
-		Molpy.cagedPuzzleTarget=Molpy.cagedSGen.RandStatementValue();
-		var str='Click a statement that is '+Molpy.cagedPuzzleTarget+':';
-		var statements= Molpy.cagedSGen.StringifyStatements('Molpy.ClickCagedPuzzle');
-		for(var i in statements)
+		if(!Molpy.Spend('GlassBlocks',cost))
 		{
-			str+='<br><br>'+statements[i];
+			Molpy.Notify('You need to pay'+Molpy.PriceString(cost)+' to be asked a Caged Logicat puzzle.');
+			return;
 		}
-		Molpy.cagedPuzzleValue=str;
+		if(!Molpy.Spend('LogiQuestion',1))
+		{
+			Molpy.Notify('No Logicat puzzles are available.');
+			return;
+		}
+		
+		Molpy.PuzzleGens.caged.Generate();
 		Molpy.Boosts['LogiQuestion'].Refresh();
-		Molpy.cagedSGen.firstTry=1;
-		Molpy.Spend('LogiQuestion',1);
-	}
-	Molpy.ClickCagedPuzzle=function(name)
-	{
-		if(!Molpy.cagedPuzzleValue)
-		{
-			Molpy.Destroy('Logicat',1);
-			return;			
-		}
-		var skip=0;
-		if(!Molpy.cagedSGen.firstTry)
-		{
-			if(Molpy.Has('GlassBlocks',50))
-			{
-				Molpy.Spend('GlassBlocks',50);
-			}else{
-				Molpy.Notify('You can\'t afford a seccond try.');
-				skip=1;
-			}
-		}
-		
-		if(!skip)
-		{
-			var clickedVal=Molpy.cagedSGen.StatementValue(name);
-			if(clickedVal==Molpy.cagedPuzzleTarget)
-			{
-				Molpy.Notify('Correct',1);
-				Molpy.Add('Logicat',0,1+Molpy.Level('Panther Rush')/2);
-			}
-			else
-			{
-				Molpy.Notify('Incorrect',1);
-				
-				if(Molpy.cagedSGen.firstTry&&Molpy.Got('Second Chance')&&Molpy.Has('GlassBlocks',50))
-				{
-					Molpy.cagedSGen.firstTry=0;
-					Molpy.Notify('Try Again');
-					return;
-				}
-				Molpy.Destroy('Logicat',0,0.5+Molpy.Level('Panther Rush')/2);
-			}
-		}
-		Molpy.cagedPuzzleValue='';
-		Molpy.cagedPuzzleTarget='';
 	}
 	
 	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it. (The second attempt costs 50 Glass Blocks per incorrect answer, and gives less points per correct answer.)',

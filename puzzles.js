@@ -1,15 +1,17 @@
 Molpy.DefinePuzzles=function()
 {
 	Molpy.PuzzleGens={};
-	Molpy.Puzzle=function(name)
+	Molpy.Puzzle=function(name,cleanupFunction)
 	{
 		this.name=name;
+		this.cleanupFunction=cleanupFunction;
 		Molpy.PuzzleGens[name]=this;
 		
 		this.operators=['and','or'];
 		this.Generate=function()
 		{
 			this.firstTry=1;
+			this.active=true;
 			this.level=Molpy.Level('Logicat');
 			var statementNames='ABCDEFGHIJ';
 			var shuffledNames=statementNames.split('');
@@ -90,18 +92,18 @@ Molpy.DefinePuzzles=function()
 					
 				Molpy.Notify(Molpify(correct)+' answer'+plural(correct)+' correct, '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect',1);
 				completedStatements=[];	
+				this.active=false;
+				this.cleanupFunction();
 			}
 			this.StringifyStatements=function()
 			{
 				var str='';
 				for(var id in completedStatements)
 				{
-					str+='<br><br>'+this.StringifyStatement(completedStatements[id],id);
+					str+=this.StringifyStatement(completedStatements[id],id)+'<br><br>';
 				}
-				return str+'<br><br><input type="Button" value="Submit Guesses" onclick="Molpy.PuzzleGens[\''+this.name+'\'].Submit()"></input>';
+				return str+'<input type="Button" value="Submit Guesses" onclick="Molpy.PuzzleGens[\''+this.name+'\'].Submit()"></input>';
 			}
-			
-			return this.StringifyStatements();
 		}
 		this.AddStatementLastToChain=function(group,n)
 		{

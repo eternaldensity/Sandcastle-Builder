@@ -586,6 +586,40 @@
 		
 		g('lootselection').innerHTML=str;
 	}
+	
+	
+	
+	Molpy.redactedW=Molpy.BeanishToCuegish("UmVkdW5kYW50");
+	Molpy.redactedWord=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
+	Molpy.redactedWords=Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
+	Molpy.redactedBrackets=Molpy.BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
+	Molpy.redactedSpoilerValue=Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
+	Molpy.redactedDrawType=[];
+	Molpy.RedactedHTML=function(heading,level)
+	{
+		level=level||0;
+		var drawType = Molpy.redactedDrawType[level];
+		var spoiler = '';
+		var label = 'Hide';
+		if(drawType=='show') label='Show';
+		heading=heading?'<h1>'+Molpy.redactedBrackets+'</h1>':'';
+		var countdown=(level==0?'&nbsp;<span id="redactedcountdown" class="faded">'+Molpify(Molpy.redactedToggle-Molpy.redactedCountup)+'</span>':'');
+		var str = '<div id="redacteditem">'+heading+'<div class="icon redacted"></div><h2">'
+			+Molpy.redactedWord+countdown+'</h2><div><b>Spoiler:</b><input type="button" value="'
+			+label+'" onclick="Molpy.ClickRedacted('+level+')"</input>';
+		if(drawType=='recur')
+		{
+			str+=Molpy.RedactedHTML(heading,level+1);
+		}else if( drawType=='hide1')
+		{
+			str+=Molpy.redactedSpoilerValue;
+		}else if( drawType=='hide2')
+		{
+			str+=Molpy.PuzzleGens.redacted.StringifyStatements();
+		}
+			
+		return str+'</div></div>';
+	}
 
 	Molpy.RepaintShop=function()
 	{
@@ -2013,6 +2047,16 @@
 		}else{
 			Molpy.layoutLocked=true;
 		}
+		
+		new Molpy.Puzzle('redacted',function()
+			{
+				Molpy.redactedDrawType[Molpy.redactedDrawType.length-1]='show';
+				
+				Molpy.shopRepaint=1;
+				Molpy.boostRepaint=1;
+				Molpy.badgeRepaint=1;
+			}
+		);
 	}
 	
 }
