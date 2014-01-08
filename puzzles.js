@@ -116,9 +116,11 @@ Molpy.DefinePuzzles=function()
 				{
 					pen.claims=[{name:last.name,value:pen.value==last.value}];
 					last.claims=[{name:last.name,value:true}]; //tells us nothing about last because pen's claim told us nothing about pen
+					last.reason='dummy added to chain';
 				}else{
 					pen.claims=[{name:last.name,value:pen.value==last.value}];					
-					last.claims=[{name:first.name,value:first.value==last.value}];						
+					last.claims=[{name:first.name,value:first.value==last.value}];	
+					last.reason='added to chain';
 				}
 			}else
 			{
@@ -131,7 +133,8 @@ Molpy.DefinePuzzles=function()
 			else if(n==1)
 			{
 				var a = group[0];
-				a.operator=(a.value?'or':'and');	//tautology or contradiction
+				a.operator=(a.value?'or':'and');
+				a.reason=(a.value?'tautology':'contradiction');
 				a.claims=[{name:a.name,value:true},{name:a.name,value:false}];
 			}else if(n==2){
 				var a = group[0];
@@ -142,16 +145,22 @@ Molpy.DefinePuzzles=function()
 					if(randbool())
 					{
 						a.claims=[{name:a.name,value:false},{name:b.name,value:b.value}];
+						a.reason='force both values with paradox';
 						b.claims=[{name:b.name,value:true}]; //tells us nothing
+						b.reason='dummy';
 					}else{
 						a.claims=[{name:a.name,value:true},{name:b.name,value:!b.value}];
-						b.claims=[{name:a.name,value:b.value}];					
+						a.reason='invalid value would force contradiction';
+						b.claims=[{name:a.name,value:b.value}];				
+						b.reason='valid claim to contradict';
 					}
 				}else{
 					a.operator='and';
 					var r = randbool();
-					a.claims=[{name:a.name,value:!r},{name:b.name,value:b.value==r}];	
-					b.claims=[{name:a.name,value:!b.value}];
+					a.claims=[{name:a.name,value:!r},{name:b.name,value:b.value!=r}];	
+					a.reason=(r?'incorrect values lead to paradox':'if true, forces contradiction');
+					b.claims=[{name:a.name,value:!b.value}];			
+					b.reason=(r?'valid but unnecessary':'valid claim to contradict');
 				}				
 			}else if(n==3){
 				var a = group[0];
@@ -161,13 +170,16 @@ Molpy.DefinePuzzles=function()
 				if(randbool())
 				{					
 					this.FillStatements(group,n-1);
-					this.AddStatementLastToChain(group,n);					
+					this.AddStatementLastToChain(group,n-1);					
 				}else{
 					a.operator=(a.value?'or':'and');
 					var r = randbool();
 					a.claims=[{name:b.name,value:!b.value==r},{name:c.name,value:c.value==r}];
-					b.claims=[{name:a.name,value:a.value==b.value}];					
-					c.claims=[{name:a.name,value:a.value==c.value}];						
+					a.reason='critical statement of a triple';
+					b.claims=[{name:a.name,value:a.value==b.value}];	
+					b.reason='valid, part of triple';
+					c.claims=[{name:a.name,value:a.value==c.value}];		
+					c.reason='valid, part of triple';
 				}
 			}else{				
 				this.FillStatements(group,n-1);
@@ -185,8 +197,10 @@ Molpy.DefinePuzzles=function()
 				if(a===b)
 				{
 					e.claims=[{name:a.name,value:e.value==a.value}];
+					e.reason='attached singleton';
 				}else{
 					e.claims=[{name:a.name,value:a.value},{name:b.name,value:b.value}];
+					e.reason='doubly attached';
 					if(randbool())
 					{
 						e.operator='or';
@@ -228,7 +242,7 @@ Molpy.DefinePuzzles=function()
 					str+=' '+statement.operator;
 				}
 			}
-			str+= ' ('+statement.value+')';
+			str+= ' ('+statement.value+', '+statement.reason+')';
 			str+='<br><select id="selectGuess'+id+'" name="selectGuess'+id+'" onchange="Molpy.PuzzleGens[\''+this.name+'\'].SelectGuess(this)">';
 			for(var i in this.guessOptions)
 			{
