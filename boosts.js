@@ -2361,9 +2361,9 @@
 		},
 		desc:function(me)
 		{
-			var ans=Math.ceil((me.bought*5-Math.floor(me.power))/(1+Molpy.Level('Panther Rush')/2));
+			var ans=me.bought*5-me.power;
 			return 'Statement A: Statement A is true.<br><br>Logicat Level is: '+Molpify(me.bought,1)
-				+'.<br>Needs '+ans+' correct answer'+plural(ans)+' to level up.';
+				+'.<br>Needs '+ans+' point'+plural(ans)+' to level up.';
 		}
 		,Sand:'55E',Castles:'238E',GlassBlocks:100,group:'stuff',icon:'logicat'
 	});
@@ -2603,7 +2603,7 @@
 		Molpy.Boosts['LogiPuzzle'].Refresh();
 	}
 	
-	new Molpy.Boost({name:'Second Chance',desc:'If you answer a Logicat Puzzle incorrectly, you get a second attempt at it. (The second attempt costs 50 Glass Blocks per incorrect answer, and gives less points per correct answer.)',
+	new Molpy.Boost({name:'Second Chance',desc:'If you provide at least two answers to a Logicat Puzzle and at least one is incorrect, you get a second attempt at it. (The second attempt costs 50 Glass Blocks per incorrect answer, and gives less points per correct answer.)',
 		Sand:'250Y',Castles:'87Y',group:'bean',logic:5,icon:'secondchance'});
 	
 	new Molpy.Boost({name:'Let the Cat out of the Bag',alias:'LCB',

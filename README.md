@@ -29,6 +29,9 @@ For personal amusement only.
 ## 3.293
 - Mucked around with how hover/refresh work to prevent extra redrawing of Caged Logicat
 - Lightning Strikes Twice was (accidentally) capping the Glassed Lightning power to 500!
+- Single Caged Logicat puzzle now gives you points (oops) also on answering a puzzle you are shown the number of points awarded.
+- Logicat report (correct/incorrect/points) is notified before the rewards (thought it still breaks if you have a LOT of rewards, I'll deal with that later)
+- Second Chance not offered if you only answer one question
 
 ## 3.292
 - Seaish boosts only take 500 purifier/extruder level rather than 1000

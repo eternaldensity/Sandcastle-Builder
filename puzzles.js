@@ -77,7 +77,7 @@ Molpy.DefinePuzzles=function()
 					else incorrect++;
 				}
 				
-				if(incorrect)
+				if(incorrect>0 && correct+incorrect>1)
 				{
 					this.tryCost = {GlassBlocks:50*incorrect};
 					if(this.firstTry && Molpy.Got('Second Chance') && Molpy.Has(this.tryCost) && confirm('You have '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect. Retry?'))					
@@ -89,11 +89,22 @@ Molpy.DefinePuzzles=function()
 				}
 				var diff = correct-incorrect;				
 				var points = .5+Molpy.Level('Panther Rush')/2;
-				if(scoreMultiplier<=0)scoreMultiplier=1;
-				if(diff>0) Molpy.Add('Logicat',0, diff*(this.firstTry*.5+points)*scoreMultiplier);
-				else if (diff < 0)Molpy.Destroy('Logicat',0,-diff*(!this.firstTry+points)*scoreMultiplier);
+				scoreMultiplier=Math.max(scoreMultiplier||1,1);
+				var score=0;
+				if(diff>0)
+				{
+					score = diff*(this.firstTry*.5+points)*scoreMultiplier;
+				}else if (diff < 0){
+					score = diff*(!this.firstTry+points)*scoreMultiplier;
+				}
 					
-				Molpy.Notify(Molpify(correct)+' answer'+plural(correct)+' correct, '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect',1);
+				Molpy.Notify(Molpify(correct)+' answer'+plural(correct)+' correct, '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect. You earned '+Molpify(score)+' point'+plural(score),1);
+				if(diff>0)
+				{
+					Molpy.Add('Logicat',0, score);
+				}else if (diff < 0){
+					Molpy.Destroy('Logicat',0,-score);
+				}
 				completedStatements=[];	
 				this.active=false;
 				this.cleanupFunction();
