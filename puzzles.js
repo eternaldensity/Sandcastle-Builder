@@ -71,24 +71,24 @@ Molpy.DefinePuzzles=function()
 				var incorrect = 0;
 				for(var i in guess)
 				{
-					if(completedStatements[i]==guess[i]) correct++;
+					if(completedStatements[i].value==guess[i]) correct++;
 					else incorrect++;
 				}
 				
 				if(incorrect)
 				{
 					this.tryCost = {GlassBlocks:50*incorrect};
-					if(this.firstTry && Molpy.Got('Second Chance') && Molpy.Has(this.tryCost))					
+					if(this.firstTry && Molpy.Got('Second Chance') && Molpy.Has(this.tryCost) && confirm('You have '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect. Retry?'))					
 					{						
 						this.firstTry=0;
 						Molpy.Notify('You may Try Again for '+Molpy.PriceString(this.tryCost));
 						return;
 					}
 				}
+				var diff = correct-incorrect;				
 				var points = .5+Molpy.Level('Panther Rush')/2;
-				var gain = correct*(this.firstTry*.5+points)-incorrect*points;
-				if(gain>0) Molpy.Add('Logicat',0, gain);
-				else if (gain < 0)Molpy.Destroy('Logicat',0,-gain);
+				if(diff>0) Molpy.Add('Logicat',0, diff*(this.firstTry*.5+points));
+				else if (diff < 0)Molpy.Destroy('Logicat',0,-diff*(!this.firstTry+points));
 					
 				Molpy.Notify(Molpify(correct)+' answer'+plural(correct)+' correct, '+Molpify(incorrect)+' answer'+plural(incorrect)+' incorrect',1);
 				completedStatements=[];	
@@ -114,11 +114,11 @@ Molpy.DefinePuzzles=function()
 			{
 				if(pen.claims[0].name==pen.name) 
 				{
-					pen.claims=[{name:last.name,value:pen.value^last.value}];
+					pen.claims=[{name:last.name,value:pen.value==last.value}];
 					last.claims=[{name:last.name,value:true}]; //tells us nothing about last because pen's claim told us nothing about pen
 				}else{
-					pen.claims=[{name:last.name,value:pen.value^last.value}];					
-					last.claims=[{name:first.name,value:first.value^last.value}];						
+					pen.claims=[{name:last.name,value:pen.value==last.value}];					
+					last.claims=[{name:first.name,value:first.value==last.value}];						
 				}
 			}else
 			{
@@ -150,7 +150,7 @@ Molpy.DefinePuzzles=function()
 				}else{
 					a.operator='and';
 					var r = randbool();
-					a.claims=[{name:a.name,value:!randbool},{name:b.name,value:b.value^randbool}];	
+					a.claims=[{name:a.name,value:!r},{name:b.name,value:b.value==r}];	
 					b.claims=[{name:a.name,value:!b.value}];
 				}				
 			}else if(n==3){
@@ -165,9 +165,9 @@ Molpy.DefinePuzzles=function()
 				}else{
 					a.operator=(a.value?'or':'and');
 					var r = randbool();
-					a.claims=[{name:b.name,value:!b.value^randbool},{name:c.name,value:c.value^randbool}];
-					b.claims=[{name:a.name,value:a.value^b.value}];					
-					c.claims=[{name:a.name,value:a.value^c.value}];						
+					a.claims=[{name:b.name,value:!b.value==r},{name:c.name,value:c.value==r}];
+					b.claims=[{name:a.name,value:a.value==b.value}];					
+					c.claims=[{name:a.name,value:a.value==c.value}];						
 				}
 			}else{				
 				this.FillStatements(group,n-1);
@@ -184,7 +184,7 @@ Molpy.DefinePuzzles=function()
 				main.push(e);
 				if(a===b)
 				{
-					e.claims=[{name:a.name,value:e.value^a.value}];
+					e.claims=[{name:a.name,value:e.value==a.value}];
 				}else{
 					e.claims=[{name:a.name,value:a.value},{name:b.name,value:b.value}];
 					if(randbool())
@@ -228,7 +228,7 @@ Molpy.DefinePuzzles=function()
 					str+=' '+statement.operator;
 				}
 			}
-			//str+= ' ('+statement.value+')';
+			str+= ' ('+statement.value+')';
 			str+='<br><select id="selectGuess'+id+'" name="selectGuess'+id+'" onchange="Molpy.PuzzleGens[\''+this.name+'\'].SelectGuess(this)">';
 			for(var i in this.guessOptions)
 			{
