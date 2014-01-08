@@ -616,6 +616,7 @@ Molpy.Up=function()
 							var bl = Molpy.Boosts['GlassBlocks'];
 							if(Molpy.Got('Buzz Saw')&&Molpy.Boosts['Stretchable Block Storage'].IsEnabled)
 							{
+								sawType='Buzz Saw';
 								maxGlass=Math.max(maxGlass,0)||0;
 							}else{
 								if (Molpy.Boosts['AA'].power && Molpy.Boosts['Glass Blower'].IsEnabled)
@@ -2712,7 +2713,7 @@ Molpy.Up=function()
 		{
 			if(Molpy.Got('GL'))
 			{
-				Molpy.Boosts['GL'].countdown=Math.min(500,Molpy.Boosts['GL'].countdown*=1.21); //GW :P
+				Molpy.Boosts['GL'].power=Math.min(500,Molpy.Boosts['GL'].power*=1.21); //GW :P
 				Molpy.Notify('Lightning struck the same place twice!');
 				Molpy.EarnBadge('Strikes Twice');
 				Molpy.UnlockBoost('LR');
@@ -2941,7 +2942,11 @@ Molpy.Up=function()
 						if (minus >= 10)
 						{
 							Molpy.UnlockBoost('Magic Mirror');	
-							break;
+							if(isFinite(Molpy.sandPermNP))break;
+						}
+						if(minus>=50)
+						{
+							Molpy.UnlockBoost('Vacuum Cleaner');
 						}
 					}
 				}	
@@ -3043,7 +3048,11 @@ Molpy.Up=function()
 				Molpy.Save(1);
 			}
 		}
-		
+		if(Molpy.IsEnabled('Vacuum Cleaner')&&Molpy.Has('Sand',Infinity)&&Molpy.Spend('FluxCrystals',1))
+		{
+			Molpy.Boosts['Sand'].Level=0;
+			Molpy.Add('Vacuum',1);
+		}
 		Molpy.PerformJudgement();
 		Molpy.Donkey();
 		

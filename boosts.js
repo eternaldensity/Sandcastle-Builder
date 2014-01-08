@@ -5095,6 +5095,23 @@
 		}
 	}	
 	
+	new Molpy.Boost({name:'Vacuum Cleaner',desc:function(me)
+		{
+			return (me.IsEnabled? 'U':'When active, u') + 'ses one Flux Crystal per mNP to destroy Infinite Sand.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		}
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Sand:Infinity,Castles:Infinity,GlassChips:'33T',Goats:10,FluxCrystals:50},icon:'vacuumcleaner',className:'toggle',group:'hpt'
+	});
+	
+	new Molpy.Boost({name:'Vacuum',stats:'Produced by Vacuum Cleaner',
+		desc:function(me)
+		{
+			var str = 'You have '+Molpify(me.Level,3)+' Vacuum'+plural(me.Level)+'.';
+			return str;
+		}
+		,icon:'vacuum',group:'stuff',defStuff:1
+	});	
+		
+	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 }
