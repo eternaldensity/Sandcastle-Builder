@@ -839,6 +839,7 @@
 		{
 			var me=blist[i];
 			str+=Molpy.BoostString(me,0,r==redactedIndex);
+			me.hovering=0;
 			r++;
 		}
 		
@@ -922,6 +923,7 @@
 		{
 			var me=blist[i];					
 			str+=Molpy.BadgeString(me,0,r==redactedIndex);
+			me.hovering=0;
 			r++;
 		}
 		if(r==redactedIndex) str+= Molpy.RedactedHTML(1);

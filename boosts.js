@@ -4868,7 +4868,7 @@
 		{
 			return 'Instantly win the game.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="'+Molpy.BeanishToCuegish(Molpy.wintext)+';Molpy.LockBoost(\'Month\');" value="Use"></input>':'');
 		},
-		price:{GlassBlocks:'40WW',Bonemeal:80,Goats:120,Mustard:240},group:'prize',prizes:2,tier:3,className:'action'
+		price:{GlassBlocks:'40WW',Bonemeal:80,Goats:120,Mustard:240},group:'prize',prizes:1,tier:3,className:'action'
 	});
 
 	new Molpy.Boost({name:'Mustard Sale',
@@ -4944,9 +4944,9 @@
 	new Molpy.Boost({name:'GoatONG',
 		desc:function(me)
 		{
-			return 'Spend a Goat and cause an ONG<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',1))Molpy.ONG();Molpy.LockBoost(\'GoatONG\')" value="Use"></input>':'');
+			return 'Spend 10 Goats and cause an ONG<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',10))Molpy.ONG();Molpy.LockBoost(\'GoatONG\')" value="Use"></input>':'');
 		},
-		price:{GlassBlocks:'789G',Sand:'2W'},group:'prize',prizes:2,tier:3,className:'action'
+		price:{GlassBlocks:'789G',Sand:'2W',Vacuum:10},group:'prize',prizes:0,tier:3,className:'action'
 	});
 	
 	new Molpy.Boost({name:'Mustard Injector',
@@ -4954,7 +4954,7 @@
 		{
 			return 'Spend 200 Mustard to convert a random tool to Mustard'+(me.bought?'<br><input type="Button" onclick="Molpy.MustardInjector()" value="Use"></input>':'');
 		},
-		price:{Sand:Infinity,Castles:'50GW'},group:'prize',prizes:1,tier:3,className:'action'
+		price:{Sand:Infinity,Castles:'50GW'},group:'prize',prizes:2,tier:3,className:'action'
 	});
 	Molpy.MustardInjector=function()
 	{

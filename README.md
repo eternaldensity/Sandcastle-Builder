@@ -26,6 +26,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.294
+- GoatONG was a bit too powerful due to the 'locking it gives 2 prizes which could include itself especially if you savescum' effect.
+- Redrawing the boosts (for various occasional reasons) removes the descriptions but it wasn't informing the boosts of this so they weren't redrawing them. (Yeah I should just change it to draw the descriptions when drawing the shop in the first place)
+
 ## 3.293
 - Mucked around with how hover/refresh work to prevent extra redrawing of Caged Logicat
 - Lightning Strikes Twice was (accidentally) capping the Glassed Lightning power to 500!
