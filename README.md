@@ -40,6 +40,11 @@ For personal amusement only.
 - Factory Automation costs are not increased if you don't have AA (important for Bag of Moulding)
 - WotA stats has more text.
 - Magic Mirror is now unlocked when you activate the Camera if you currently have 10 or more Minus Discoveries (rather than keeping a counter of how many minus discoveries have been made)
+- Hall of Mirrors mentions change to MHP cost
+- Major Logicat Puzzle change: puzzles are guaranteed solvable, you can answer any number of questions you like (including none) and are rewarded based on the difference between the number of correct and incorrect answers.
+- Lower reward and higher penalty on the second chance. Second chance is offered if you have at least 1 incorrect answer, but is optional (you are informed how many are incorrect)
+- New option of combining some multiple of 10 puzzles together to save time (e.g. if you have 51 to 60 puzzles available you may pay for 50 puzzles answer a puzzle, and get 50 times the reward or penalty)
+- Puzzles are possibly a little less interesting though: statements are made up of less parts (1 or sometimes 2, but no triples. I'll probably work on that, and add 'implies' at some point.)
 
 ## 3.291
 - The Autoscroll option was not added to Classic

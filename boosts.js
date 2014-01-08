@@ -2535,10 +2535,22 @@
 			{
 				return Molpy.PuzzleGens.caged.StringifyStatements();
 			}else if(me.Has(1)){
+				var tens=Math.floor((me.Level-1)/10)*10;
+				if(tens)
+				{
+					var cost=(100+Molpy.LogiMult(25))*tens;
+					if(Molpy.Has('GlassBlocks',cost))
+						str= '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+','+tens+')"></input> '
+						+Molpify(cost,3)+' Glass Blocks to solve '+Molpify(tens)+ ' puzzles at a time. (Multiplies reward/loss by the number of puzzles.)<br>';
+				}
 				var cost=100+Molpy.LogiMult(25);
 				if(Molpy.Has('GlassBlocks',cost))
-					str= '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.Level)+' Puzzle'+plural(me.Level)+' left.';
-				else str= 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle.';
+				{
+					str+= '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle('+cost+')"></input> '
+					+Molpify(cost,3)+' Glass Blocks for a puzzle.<br>'+Molpify(me.Level)+' Puzzle'+plural(me.Level)+' left.';
+				}else{
+					str+= 'It costs '+Molpify(cost,3)+' Glass Blocks for a puzzle.';
+				}
 			}else{
 				str= 'Caged Logicat is sleeping. Please wait for it.'
 			}
@@ -2574,20 +2586,20 @@
 			Molpy.Boosts['LogiPuzzle'].Refresh();
 		}
 	);
-	Molpy.MakeCagedPuzzle=function(cost)
+	Molpy.MakeCagedPuzzle=function(cost,puzzles)
 	{
 		if(!Molpy.Spend('GlassBlocks',cost))
 		{
 			Molpy.Notify('You need to pay'+Molpy.PriceString(cost)+' to be asked a Caged Logicat puzzle.');
 			return;
 		}
-		if(!Molpy.Spend('LogiPuzzle',1))
+		if(!Molpy.Spend('LogiPuzzle',puzzles||1))
 		{
 			Molpy.Notify('No Logicat puzzles are available.');
 			return;
 		}
 		
-		Molpy.PuzzleGens.caged.Generate();
+		Molpy.PuzzleGens.caged.Generate(puzzles);
 		Molpy.Boosts['LogiPuzzle'].Refresh();
 	}
 	
@@ -4403,7 +4415,7 @@
 	
 	new Molpy.Boost({name:'Hall of Mirrors',alias:'HoM',desc:function(me)
 	{		
-		return (me.IsEnabled? 'Y':'When active, y') + 'ou can win/lose Glass Chips from the Monty Haul Problem'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',1))Molpy.GenericToggle('+me.id+',1)" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input> (costs 1 Goat to toggle)':'');
+		return (me.IsEnabled? 'Y':'When active, y') + 'ou can win/lose Glass Chips from the Monty Haul Problem. (Also causes MHP to cost glass.)'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',1))Molpy.GenericToggle('+me.id+',1)" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input> (costs 1 Goat to toggle)':'');
 	},
 	buyFunction:function(){this.IsEnabled=1;},className:'toggle',
 	IsEnabled:Molpy.BoostFuncs.PosPowEnabled,Sand:'1P',Castles:'1T',GlassBlocks:'1K'});
