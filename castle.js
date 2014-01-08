@@ -1935,7 +1935,11 @@ Molpy.Up=function()
 			}
 			this.Refresh=function(indirect)
 			{
-				if(this.hovering||Molpy.Boosts['Expando'].IsEnabled)this.hoverOnCounter=1;
+				if(this.hovering||Molpy.Boosts['Expando'].IsEnabled)
+				{
+					this.hoverOnCounter=1;
+					this.hovering=0;
+				}
 				
 				this.faveRefresh=1;
 				if(!indirect&&this.refreshFunction)this.refreshFunction();
@@ -2120,7 +2124,11 @@ Molpy.Up=function()
 			
 			this.Refresh=function()
 			{
-				if(this.hovering||Molpy.Boosts['Expando'].IsEnabled)this.hoverOnCounter=1;
+				if(this.hovering||Molpy.Boosts['Expando'].IsEnabled)
+				{
+					this.hoverOnCounter=1;
+					this.hovering=0;
+				}
 			}
 			this.showdesc=function(keep)
 			{

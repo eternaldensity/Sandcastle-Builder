@@ -2,7 +2,7 @@
 
 function g(id) {return document.getElementById(id);}
 var Molpy={};
-Molpy.version=3.292;
+Molpy.version=3.293;
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[

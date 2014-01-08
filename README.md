@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.293
+- Mucked around with how hover/refresh work to prevent extra redrawing of Caged Logicat
+
 ## 3.292
 - Seaish boosts only take 500 purifier/extruder level rather than 1000
 - Now Where Was I boost by waveney
@@ -55,12 +58,6 @@ For personal amusement only.
 - Buffed Glass Saw a lot
 - Notification about awarding Temporal Duplication wasn't accounting for owning Temporal Duplication because it was bought *after* it was described
 - Changed Dragon Forge rounding so you'll get a minimum 0.04x rather than 0x duplication multiplier without a charged Lightning Rod
-
-### haven't yet done:
-- rewrite notifications entirely
-- dragon queen stuff
-- limit how many discoveries (etc) get drawn at a time
-- lots of other stuff that's on github that I haven't got to yet but I know it's there
 
 ## 3.291
 - The Autoscroll option was not added to Classic

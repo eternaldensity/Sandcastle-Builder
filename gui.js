@@ -1494,8 +1494,11 @@
 			me.hoverOnCounter--;
 			if(me.hoverOnCounter<=0)
 			{
-				me.hovering=1;
-				me.showdesc();
+				if(!me.hovering)
+				{
+					me.hovering=1;
+					me.showdesc();
+				}
 				repaint=0;
 				Molpy.UnlockBoost('Expando');
 			}
