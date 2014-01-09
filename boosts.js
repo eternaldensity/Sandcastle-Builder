@@ -5110,7 +5110,7 @@
 	
 	new Molpy.Boost({name:'Vacuum Cleaner',desc:function(me)
 		{
-			return (me.IsEnabled? 'U':'When active, u') + 'ses one Flux Crystal per mNP to destroy Infinite Sand.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+			return (me.IsEnabled? 'U':'When active, u') + 'ses two Flux Crystals per mNP to destroy Infinite Sand.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Sand:Infinity,Castles:Infinity,GlassChips:'330T',Goats:100,FluxCrystals:500},icon:'vacuumcleaner',className:'toggle',group:'hpt'
 	});

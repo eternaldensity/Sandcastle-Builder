@@ -3056,7 +3056,7 @@ Molpy.Up=function()
 				Molpy.Save(1);
 			}
 		}
-		if(Molpy.IsEnabled('Vacuum Cleaner')&&Molpy.Has('Sand',Infinity)&&Molpy.Spend('FluxCrystals',1))
+		if(Molpy.IsEnabled('Vacuum Cleaner')&&Molpy.Has('Sand',Infinity)&&Molpy.Spend('FluxCrystals',2))
 		{
 			Molpy.Boosts['Sand'].Level=0;
 			Molpy.Add('Vacuum',1);

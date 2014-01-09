@@ -284,8 +284,9 @@ Molpy.DefinePuzzles=function()
 		}
 		this.StringifyClaim=function(claim)
 		{
-			var invert = Math.random()*(this.level%100)>25;
-			return claim.name+' is '+(invert?'not '+!claim.value:claim.value==true);
+			if(claim.invert==undefined)
+				claim.invert = Math.random()*(this.level%100)>25;
+			return claim.name+' is '+(claim.invert?'not '+!claim.value:claim.value==true);
 		}
 		this.Submit=function()
 		{
