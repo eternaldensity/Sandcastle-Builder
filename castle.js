@@ -689,6 +689,7 @@ Molpy.Up=function()
 				Molpy.Notify('You accidentally slip through the temporal rift!,1');
 				Molpy.RiftJump();
 			}
+			Molpy.Donkey();
 			
 			if(!recursion&&Molpy.Got('Doubletap')) Molpy.ClickBeach(event, leopard,1);
 		}
@@ -1692,12 +1693,13 @@ Molpy.Up=function()
 				var first=1;
 				for(var i in stuff)
 				{
+					var b = Molpy.Boosts[i];
+					var s = stuff[i];
+					if(!s)continue;
 					if(first)
 						first=0;
 					else
 						str+=' + ';
-					var b = Molpy.Boosts[i];
-					var s = stuff[i];
 					str+=Molpy.PriceString(s==1?b.single:b.plural,s);
 				}
 				return str;
@@ -3056,7 +3058,7 @@ Molpy.Up=function()
 				Molpy.Save(1);
 			}
 		}
-		if(Molpy.IsEnabled('Vacuum Cleaner')&&Molpy.Has('Sand',Infinity)&&Molpy.Spend('FluxCrystals',2))
+		if(Molpy.IsEnabled('Vacuum Cleaner')&&Molpy.Has('Sand',Infinity)&&Molpy.Spend(Molpy.VacCost))
 		{
 			Molpy.Boosts['Sand'].Level=0;
 			Molpy.Add('Vacuum',1);

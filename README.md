@@ -26,6 +26,15 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.298
+- Nerf flux crystal-> vacuum some more (also now it needs Qubes because why not?)
+- Major nerf to Void Starer (didn't think that through :P)
+- Logarithmic price increase for Time Lord upgrades
+- Panther Rush price increased now that logicat pays out higher
+- Higher Panther Rush has some exotic costs
+- I'm feeling super generous so now comic-clicks activate shopping assistant.
+- Zookeper implementation made more efficient
+
 ## 3.297
 - Fix for Vacuum Cleaner unlock so it's available if you already have Magic Mirror
 - Button to clear Logicat guesses if you want to start over

@@ -1936,8 +1936,7 @@
 				var s = Molpy.GetBlackprintSubject();
 				if(s && !Molpy.Got('CfB'))
 				{
-					var c = Molpy.blackprintCosts[s];
-					if(!(Molpy.Got('AE')&&Molpy.Got('AA')))c=Math.min(c,40);
+					var c = LimitConstructionRuns(s);
 					str+='<br><input type="Button" value="Start" onclick="Molpy.StartBlackprintConstruction()"></input> construction of '+Molpy.Boosts[Molpy.GetBlackprintSubject()].name+' from Blackprints (requires '+Molpify(c*10)+' runs of Factory Automation)';
 				}
 			}
@@ -1964,6 +1963,12 @@
 			}
 		}
 	});
+	Molpy.LimitConstructionRuns=function(s)
+	{
+		var c = Molpy.blackprintCosts[s];
+		if(!(Molpy.Got('AE')&&Molpy.Got('AA')))c=Math.min(c,40);
+		return c;
+	}
 	Molpy.UpgradeFactoryAutomation=function()
 	{	
 		var fa = Molpy.Boosts['Factory Automation'];
@@ -2843,14 +2848,13 @@
 		{
 			return times; //condition for subject no longer met!
 		}
-		var c = Molpy.blackprintCosts[s];
-		if(c>Molpy.Level('Blackprints'))
+		if(Molpy.blackprintCosts[s]>Molpy.Level('Blackprints'))
 		{//we used up some blackprints somehow!
 			return times; //do nothing
 		}
-		Molpy.Add('CfB',times);
-		 
-		if(!Molpy.Got('AE'))c=Math.min(c,40);
+		Molpy.Add('CfB',times);		 
+		
+		var c = LimitConstructionRuns(s);
 		if(Molpy.Has('CfB',c*10))
 		{
 			var op = Molpy.Level('CfB');
@@ -2868,8 +2872,7 @@
 				Molpy.LockBoost('CfB');
 				return 'Constructing nothing. How?';
 			}
-			var c = Molpy.blackprintCosts[subj.alias];
-			if(!Molpy.Got('AE'))c=Math.min(c,40);
+			var c = LimitConstructionRuns(subj.alias);
 			str = 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(c*10-me.Level)+' runs of Factory Automation required to complete.';
 			if(subj.alias=='BoH')str+='<br>To construct Bag of Holding you must retain at least 400 goats, otherwise construction will stall.';
 			return str;
@@ -3772,7 +3775,7 @@
 			{
 				if(Molpy.Got('VS'))
 				{
-					pages*=Math.pow(1.01,Molpy.Level('Vacuum'));
+					pages*=Math.pow(1.01,Molpy.Level('Vacuum')/1000);
 				}
 				Molpy.Add('Blackprints',Math.floor(pages));
 			}
@@ -3783,11 +3786,11 @@
 			var poke=Math.random()*(left-10);
 			zk.power+=poke;
 			left-=poke;
-			while(zk.power>=1000)
-			{
-				Molpy.Boosts['Panther Poke'].buyFunction();
-				zk.power-=1000;
-			}	
+			if(zk.power<0)zk.power=0; //how?
+			var zooVisits = Math.floor(zk.power/1000);
+			zk.power-=zooVisits*1000;
+			Molpy.Boosts['Panther Poke'].buyFunction(zooVisits);
+			
 			if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
 		}
 		Molpy.boostSilence=0;
@@ -3887,33 +3890,36 @@
 		buyFunction:function(){this.IsEnabled=1;}
 	});
 	
-	Molpy.rushCost=80;
 	new Molpy.Boost({name:'Panther Rush',desc:function(me)
 		{
-			return 'Uses '+Molpify(Molpy.CalcRushCost(),3)+' Logicat levels to increase the value of Logicat answers by 0.5.<br>Single use: available again when you have '
-				+Molpify(Molpy.CalcRushCost(1)+5,3)+' Logicat levels.'+(me.Level?'<br>Currently at '+Molpify(me.Level/2,1)+' points':'')+(me.bought?'<br><input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>':'');
+			return 'Uses '+Molpy.PriceString(Molpy.CalcRushCost())+' to increase the value of Logicat answers by 0.5.<br>Single use: available again when you have '
+				+Molpy.PriceString(Molpy.CalcRushCost(1,1))+'.'+(me.Level?'<br>Currently at '+Molpify(me.Level/2,1)+' points':'')+(me.bought?'<br><input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>':'');
 		},GlassBlocks:function()
 		{
 			return Math.pow(10,Molpy.Boosts['Panther Rush'].power+7);
 		},Sand:Infinity,Castles:Infinity,className:'action',defStuff:1
 	});
 	Molpy.Boosts['Panther Rush'].refreshFunction=undefined;
-	Molpy.CalcRushCost=function(p)
+	Molpy.CalcRushCost=function(nextLevel,feather)
 	{
-		var l = Molpy.Level('Panther Rush')+(p||0);
-		return Molpy.rushCost*(l+1);
+		var l = Molpy.Level('Panther Rush')+(nextLevel||0);
+		var m = Math.max(1,l-9);
+		return {
+			Logicat:300*(l+1)*m+(5*feather||0),
+			Blackprints:2000*(m-1)*l,
+			Vacuum:(m-1)*l};
 	}
 	Molpy.PantherRush=function()
 	{
 		var pr = Molpy.Boosts['Panther Rush'];
-		var levels = Molpy.CalcRushCost();
-		if(Molpy.Has('Logicat',levels+5)&&confirm('Really spend '+Molpify(levels,3)+' Logicat levels on Panther Rush?'))
+		var cost = Molpy.CalcRushCost();
+		if(Molpy.Has(cost)&&confirm('Really spend '+Molpify(levels,3)+' Logicat levels on Panther Rush?'))
 		{				
-			if(Molpy.Spend('Logicat',levels))
+			if(Molpy.Spend(cost))
 				pr.Add(1);
-			levels = Molpy.CalcRushCost();		
+			var fCost = Molpy.CalcRushCost(0,1);		
 			Molpy.LockBoost(pr.alias);
-			if(Molpy.Has('Logicat',levels+5))Molpy.UnlockBoost(pr.alias);		
+			if(Molpy.Has(fCost))Molpy.UnlockBoost(pr.alias);		
 		}
 	}
 	
@@ -3990,9 +3996,10 @@
 		}
 	}
 	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
-		buyFunction:function(){
+		buyFunction:function(n){
+			if(!n)n=1;
 			if(Molpy.Got('LogiPuzzle'))
-				Molpy.Add('LogiPuzzle',1+Molpy.Level('Panther Rush'));
+				Molpy.Add('LogiPuzzle',n*(1+Molpy.Level('Panther Rush')));
 			Molpy.LockBoost(this.alias);
 		}
 	});
@@ -4735,7 +4742,7 @@
 		},
 		stats:function(me){return me.desc(me)+'<br>Use your Camera at the specified NewPix to collect more Maps.';}
 		,buyFunction:Molpy.RandomiseMap
-		,icon:'maps',group:'stuff',defStuff:1,price:{Blackprints:20}
+		,icon:'maps',group:'stuff',defStuff:1,price:{Blackprints:function(me){return 200*(me.Level+1)}}
 	});
 	Molpy.EnoughMonumgForMaps=function()
 	{
@@ -5026,7 +5033,7 @@
 			var str = 'You can travel through '+Molpify(me.bought+1)+' Temporal Rift'+plural(me.bought+1)+' per NewPix.';
 			if(me.bought)
 			{
-				var p = me.bought*20;
+				var p = 20*me.bought*(1+Math.floor(Math.log(me.bought)*Math.LOG10E));
 				str+='<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:'+p+'}))Molpy.Add(\'Time Lord\',0,1);" value="Pay"></input> '+Molpify(p,1)+' Flux Crystals to increase this by 1.';
 			}
 			return str;
@@ -5108,9 +5115,10 @@
 		}
 	}	
 	
+	Molpy.VacCost={FluxCrystals:10,QQ:10};
 	new Molpy.Boost({name:'Vacuum Cleaner',desc:function(me)
 		{
-			return (me.IsEnabled? 'U':'When active, u') + 'ses two Flux Crystals per mNP to destroy Infinite Sand.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+			return (me.IsEnabled? 'U':'When active, u') + 'ses '+Molpy.PriceString(Molpy.VacCost)+' per mNP to destroy Infinite Sand.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Sand:Infinity,Castles:Infinity,GlassChips:'330T',Goats:100,FluxCrystals:500},icon:'vacuumcleaner',className:'toggle',group:'hpt'
 	});
@@ -5123,7 +5131,7 @@
 		}
 		,icon:'vacuum',group:'stuff',defStuff:1
 	});	
-	new Molpy.Boost({name:'Void Starer',alias:'VS',desc:'The number of Blackprints produced by Mysterious Representations is boosted by 1% per Vacuum.<br>(It is still rounded down to a whole number of Blackprints.)',price:{FluxCrystals:40,Vacuum:60}});
+	new Molpy.Boost({name:'Void Starer',alias:'VS',desc:'The number of Blackprints produced by Mysterious Representations is boosted by 1% per 1K Vacuums.<br>(It is still rounded down to a whole number of Blackprints.)',price:{FluxCrystals:40,Vacuum:60}});
 	
 	new Molpy.Boost({name:'Question Qube',alias:'QQ',
 		desc:function(me)
