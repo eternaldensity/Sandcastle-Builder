@@ -26,6 +26,13 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.297
+- Fix for Vacuum Cleaner unlock so it's available if you already have Magic Mirror
+- Button to clear Logicat guesses if you want to start over
+- Blackprints' description has a little more info
+- Claim inversion is remembered (i.e. the 'not' in puzzles is only randomised once so it doesn't keep changing)
+- Nerfed Flux Crystals->Vacuum exchange rate
+
 ## 3.296
 - Zookeeper description points out the benefit of having over 1K AA runs available for it
 - Did something interesting for large numbers of logicat rewards.
