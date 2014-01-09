@@ -2946,7 +2946,7 @@ Molpy.Up=function()
 				var minus=0;
 				for(var i = Molpy.Badges['discov-1'].id;i<Molpy.BadgesById.length-1;i+=8)
 				{
-					if (Molpy.Badges[i].earned)
+					if (Molpy.BadgesById[i].earned)
 					{
 						minus++;
 						if (minus >= 10)
@@ -2954,7 +2954,7 @@ Molpy.Up=function()
 							Molpy.UnlockBoost('Magic Mirror');	
 							if(isFinite(Molpy.sandPermNP))break;
 						}
-						if(minus>=50)
+						if(minus>=100)
 						{
 							Molpy.UnlockBoost('Vacuum Cleaner');
 						}

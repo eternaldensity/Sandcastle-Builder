@@ -30,6 +30,8 @@ For personal amusement only.
 - Zookeeper description points out the benefit of having over 1K AA runs available for it
 - Did something interesting for large numbers of logicat rewards.
 - Prevent message spam from Shopping Assistant item (e.g. keys) and prevent switching to the tab of auto-bought items (e.g. crates)
+- Magic Mirror unlock fix was actually broken and crashing
+- Made Vacuum Cleaner more expensive
 
 ## 3.295
 - Expando fixed for tools and boosts in shop
