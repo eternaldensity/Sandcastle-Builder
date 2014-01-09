@@ -34,6 +34,7 @@ For personal amusement only.
 - Higher Panther Rush has some exotic costs
 - I'm feeling super generous so now comic-clicks activate shopping assistant.
 - Zookeper implementation made more efficient
+- Increased costs of Bags of Something (specifically blackprints)
 
 ## 3.297
 - Fix for Vacuum Cleaner unlock so it's available if you already have Magic Mirror

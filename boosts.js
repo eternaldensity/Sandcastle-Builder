@@ -4675,8 +4675,9 @@
 	}
 	
 	new Molpy.Boost({name:'Bag of Holding',alias:'BoH',desc:'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal.<br>Holds '+
-	Molpify(1e42)+' of each Stuff.',
-		GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,className:'alert',prizes:2,tier:Molpy.TierFunction(0,{Bonemeal:20}),group:'prize'});	
+		Molpify(1e42)+' of each Stuff.',
+		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity}
+		,className:'alert',prizes:2,tier:Molpy.TierFunction(0,{Bonemeal:20}),group:'prize'});	
 	new Molpy.Boost({name:'Bonemeal',plural:'Bonemeal',desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' Bonemeal.';
@@ -5002,10 +5003,11 @@
 		}
 	}
 	new Molpy.Boost({name:'Bag of Moulding',alias:'BoM',desc:'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal.<br>Capacity of Bag of Holding is multiplied by '+Molpify(1e42),
-		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Mustard:1000},className:'alert',prizes:2,tier:Molpy.TierFunction(1,{Bonemeal:200,Mustard:500,Blackprints:20}),group:'prize'
+		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Mustard:1000,Blackprints:'20K'},
+		className:'alert',prizes:2,tier:Molpy.TierFunction(1,{Bonemeal:200,Mustard:500,Blackprints:800}),group:'prize'
 	});	
 	new Molpy.Boost({name:'Bag of Folding',alias:'BoF',desc:'Toggle Boosts (apart from Prizes, Glass Furnace, and Glass Blower) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal.<br>Capacity of Bag of Holding is multiplied by '+Molpify(1e42),
-		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Goats:60},className:'alert',prizes:2,tier:Molpy.TierFunction(2,{Bonemeal:3000,Goats:30,Blackprints:500}),group:'prize'
+		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Goats:60,Blackprints:'800K'},className:'alert',prizes:2,tier:Molpy.TierFunction(2,{Bonemeal:3000,Goats:30,Blackprints:'5K'}),group:'prize'
 	});	
 		
 	new Molpy.Boost({name:'Ninja Ritual',
@@ -5061,7 +5063,7 @@
 	});
 	
 	new Molpy.Boost({name:'Bag of Jolting',alias:'BoJ',desc:'Chronotech Boosts aren\'t reset when you Molpy Down, at a cost of '+Molpify(10000)+' Bonemeal.<br>Capacity of Bag of Holding is multiplied by '+Molpify(1e42),
-		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,FluxCrystals:600},className:'alert',prizes:2,tier:Molpy.TierFunction(3,{Bonemeal:5000,Logicat:10,FluxCrystals:5}),group:'prize'
+		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,FluxCrystals:600,Blackprints:'15M'},className:'alert',prizes:2,tier:Molpy.TierFunction(3,{Bonemeal:5000,Logicat:750,FluxCrystals:50}),group:'prize'
 	});		
 	
 	new Molpy.Boost({name:'Crystal Memories',desc:'Gain a Flux Crystal whenever you use Memories Revisited during Flux Surge, at a cost of half the Flux Surge countdown.',price:{GlassBlocks:'2T',FluxCrystals:800},group:'prize',prizes:1,tier:4});
