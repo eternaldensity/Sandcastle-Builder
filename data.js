@@ -872,6 +872,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['FiM'].logic=64*(Molpy.SandTools['LaPetite'].amount+Molpy.SandTools['Cuegan'].amount>6.4e10);
 	Molpy.Boosts['MHP'].department=finiteC||((Molpy.Got('Goats')||Molpy.Boosts['MHP'].department)&&!automationLevel);
 	Molpy.Boosts['Maps'].logic=3000*(Molpy.EnoughMonumgForMaps());
+	Molpy.Boosts['Mario'].logic=Molpy.Level('Logicat')*2+10000;
 }
 Molpy.mapMonumg=300;
 	

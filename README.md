@@ -32,6 +32,7 @@ For personal amusement only.
 - Prevent message spam from Shopping Assistant item (e.g. keys) and prevent switching to the tab of auto-bought items (e.g. crates)
 - Magic Mirror unlock fix was actually broken and crashing
 - Made Vacuum Cleaner more expensive
+- Active puzzle prevents Caged Logicat untagged
 
 ## 3.295
 - Expando fixed for tools and boosts in shop

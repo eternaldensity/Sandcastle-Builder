@@ -2578,7 +2578,7 @@
 		function()
 		{
 			var oldClass=this.className;
-			var newClass = this.Has(1)?'action':'';
+			var newClass = (this.Has(1)||Molpy.PuzzleGens.caged.active)?'action':'';
 			if(newClass!=oldClass)
 			{
 				this.className=newClass;
@@ -3741,6 +3741,7 @@
 
     Molpy.RunFastFactory=function(times) //assumes player did buy AO before getting AA. probably a safe assumption
     {
+		if(times&&Molpy.IsEnabled('Mario')&&Molpy.Spend('QQ',1))Molpy.RewardLogicat(Molpy.Level('QQ'));
         var left = times;
 		if(Molpy.Got('AE'))
 		{
@@ -5134,6 +5135,14 @@
 			}
 			return str;
 		},icon:'qq',group:'stuff',defStuff:1
+	});
+	
+	new Molpy.Boost({name:'Italian Plumber',alias:'Mario',desc:function(me)
+		{
+			return (me.IsEnabled? 'O':'When active, o') +'pens a Question Qube every time Automata Assemble runs.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
+				+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		}
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Vacuum:'20K',QQ:'600K'},className:'toggle'
 	});
 		
 	
