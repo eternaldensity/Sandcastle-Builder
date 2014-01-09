@@ -914,12 +914,12 @@
 			var name=Molpy.shoppingItem;
 			var item = Molpy.SandTools[name] || Molpy.CastleTools[name] || Molpy.Boosts[name];
 			if(item)
-				item.buy();
+				item.buy(1);
 			Molpy.priceFactor=factor;
 		} else if (Molpy.Got('Rob') && (Molpy.Got('ASHF') || !(Molpy.Boosts['Rob'].power&1))) {
 			for (var thingy=0; thingy <= Molpy.Boosts['Rob'].bought+1; thingy++) {
 				var item = Molpy.BoostsById[thingy+1].power;
-				if (item>0) Molpy.BoostsById[item].buy();
+				if (item>0) Molpy.BoostsById[item].buy(1);
 			}
 		}
 	}
@@ -2340,10 +2340,20 @@
 			if(points>0)
 			{
 				this.power+=points;
+				var rewards=0;
 				while(this.power>=this.bought*5)
 				{
-					Molpy.RewardLogicat(this.Level);
+					rewards++;
 					this.bought++;
+				}
+				if(rewards>5)
+				{
+					Molpy.Add('QQ',rewards-5);
+					rewards=5;
+				}
+				while(rewards--)
+				{					
+					Molpy.RewardLogicat(this.Level);
 				}
 				this.Refresh();
 			}
@@ -2462,7 +2472,7 @@
 					Molpy.UnlockBoost(lc.alias);
 				return;
 			}
-			lc.buy();
+			lc.buy(1);
 			if(lc.bought)
 			{
 				lc.bought++;
@@ -2474,7 +2484,7 @@
 					Molpy.LockBoost(lc.alias);
 			}else{
 				lc.power/=4;
-				lc.buy();
+				lc.buy(1);
 			}
 		}
 	});
@@ -4110,7 +4120,7 @@
 		,GlassBlocks:'100M',Sand:Infinity,Castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Mysterious Representations',alias:'Milo',desc:'Allows Automata Assemble to create Blackprints.<br>Needs at least 15 AA runs.'
 		,GlassBlocks:'500M',Sand:Infinity,Castles:Infinity, group:'hpt'});
-	new Molpy.Boost({name:'Zookeeper',alias:'ZK',desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 21 AA runs.'
+	new Molpy.Boost({name:'Zookeeper',alias:'ZK',desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 21 AA runs.<br>If you have over 1K AA runs, you may get a double dose of Panther Poke (thus getting more out of Crouching Dragon).'
 		,GlassBlocks:'2.5G',Sand:Infinity,Castles:Infinity, group:'bean'});
 		
 	new Molpy.Boost({name:'Schrödinger\'s Gingercat',alias:'SGC',desc:'Observes itself. Also causes Not Lucky to give more glass and makes '+Molpy.redactedWords+' last longer',GlassBlocks:'16.2M',logic:1613});
@@ -4435,9 +4445,8 @@
 			if(!me.bought) return 'Contains Loot';
 			return (5-me.bought)+' lock'+plural(5-me.bought)+' left to grab the loot!'
 		},
-		Sand:Infinity,
-		Castles:Infinity,
-		GlassBlocks:'150M',logic:5,className:'action',
+		price:{Sand:Infinity,Castles:Infinity,GlassBlocks:'150M'},
+		logic:5,className:'action',
 		lockFunction:function()
 		{
 			if (!this.power) this.power=10;
@@ -4460,7 +4469,7 @@
 			{			
 				Molpy.UnlockBoost(lv.alias);
 			}
-			lv.buy();
+			lv.buy(1);
 			if(lv.bought)
 			{
 				lv.bought++;
@@ -4471,7 +4480,7 @@
 				else
 					Molpy.LockBoost(lv.alias);
 			}else{
-				lv.buy();
+				lv.buy(1);
 			}
 		}
 	});
@@ -5114,6 +5123,18 @@
 		,icon:'vacuum',group:'stuff',defStuff:1
 	});	
 	new Molpy.Boost({name:'Void Starer',alias:'VS',desc:'The number of Blackprints produced by Mysterious Representations is boosted by 1% per Vacuum.<br>(It is still rounded down to a whole number of Blackprints.)',price:{FluxCrystals:40,Vacuum:60}});
+	
+	new Molpy.Boost({name:'Question Qube',alias:'QQ',
+		desc:function(me)
+		{
+			var str = 'You have '+Molpify(me.Level,3)+' Question Qube'+plural(me.Level)+'.';
+			if(me.Has(1))
+			{
+				str+='<br><input type="Button" onclick="Molpy.Spend({QQ:1});Molpy.RewardLogicat(Molpy.Level(\'QQ\'))" value="?"></input>';
+			}
+			return str;
+		},icon:'qq',group:'stuff',defStuff:1
+	});
 		
 	
 	

@@ -1880,7 +1880,7 @@ Molpy.Up=function()
 			//(because the order we create them can't be changed after we save)
 			
 			
-			this.buy=function()
+			this.buy=function(auto)
 			{
 				if(!this.unlocked||this.bought)return; //shopping assistant tried to buy it when it was locked
 
@@ -1898,7 +1898,7 @@ Molpy.Up=function()
 				Molpy.CheckBuyUnlocks();
 				Molpy.unlockedGroups[this.group]=1;
 				this.Refresh();
-				if(!Molpy.boostSilence&&!free&&this.bought)
+				if(!Molpy.boostSilence&&!free&&this.bought&&!auto)
 				{
 					Molpy.ShowGroup(this.group,this.className);
 				}								
@@ -2011,28 +2011,27 @@ Molpy.Up=function()
 			return this;
 		}	
 		
-		Molpy.UnlockBoost=function(bacon)
+		Molpy.UnlockBoost=function(bacon,auto)
 		{
 			if(typeof bacon==='string')
 			{
-				var baby=Molpy.Boosts[bacon];
-				if(baby)
+				var me=Molpy.Boosts[bacon];
+				if(me)
 				{
-					if(baby.unlocked==0)
+					if(me.unlocked==0)
 					{
-						baby.unlocked=1;
+						me.unlocked=1;
 						Molpy.boostRepaint=1;
 						Molpy.recalculateDig=1;
-						if(!Molpy.boostSilence)
+						if(!Molpy.boostSilence&&!(Molpy.Got('ASHF')&&me.alias==Molpy.shoppingItem))
 						{
-							Molpy.Notify('Boost Unlocked: '+baby.name,1);
-							_gaq&&_gaq.push(['_trackEvent','Boost','Unlock',baby.name,true]);
+							Molpy.Notify('Boost Unlocked: '+me.name,1);
+							_gaq&&_gaq.push(['_trackEvent','Boost','Unlock',me.name,true]);
 						}
-						if(baby.unlockFunction)baby.unlockFunction();
-						baby.Refresh();
-						//Molpy.Notify('Horse' + baby.name);
-						if(baby.alias==Molpy.shoppingItem) { Molpy.Donkey() }
-						else { Molpy.Mule(baby.id); }
+						if(me.unlockFunction)me.unlockFunction();
+						me.Refresh();
+						if(me.alias==Molpy.shoppingItem) { Molpy.Donkey() }
+						else { Molpy.Mule(me.id); }
 					}
 				}
 			}else{ //yo wolpy I heard you like bacon...
@@ -2048,7 +2047,7 @@ Molpy.Up=function()
 				bb.power=EvalMaybeFunction(power||bb.startPower);
 				bb.countdown=EvalMaybeFunction(countdown||bb.startCountdown);
 				bb.unlocked=1;	
-				bb.buy();				
+				bb.buy(1);				
 				bb.describe();
 				Molpy.recalculateDig=1;
 			}
@@ -2075,7 +2074,7 @@ Molpy.Up=function()
 							me.Refresh();
 						}
 						if(me.prizes)Molpy.LockPrize(me.id);
-						if(!Molpy.boostSilence)
+						if(!Molpy.boostSilence&&!(Molpy.Got('ASHF')&&me.alias==Molpy.shoppingItem))
 						{
 							Molpy.Notify('Boost Locked: '+me.name,1);
 							_gaq&&_gaq.push(['_trackEvent','Boost','Lock',me.name,true]);
@@ -2447,7 +2446,7 @@ Molpy.Up=function()
 					if(!Molpy.IsFree(red.CalcPrice(red.price)))
 					{
 						Molpy.Notify('The DoRD has produced:',1);
-						Molpy.UnlockBoost(red.alias);
+						Molpy.UnlockBoost(red.alias,1);
 					}else{
 						Molpy.Notify('The DoRD has provided:',1);
 						Molpy.GiveTempBoost(red.alias);
@@ -2767,7 +2766,7 @@ Molpy.Up=function()
 				if(!Molpy.IsFree(red.CalcPrice(red.price)))
 				{
 					Molpy.Notify('Logicat rewards you with:',1);
-					Molpy.UnlockBoost(red.alias);
+					Molpy.UnlockBoost(red.alias,1);
 				}else{
 					Molpy.Notify('Your reward from Logicat:',1);
 					Molpy.GiveTempBoost(red.alias);
