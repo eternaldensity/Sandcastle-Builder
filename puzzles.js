@@ -16,10 +16,10 @@ Molpy.DefinePuzzles=function()
 			var statementNames='ABCDEFGHIJ';
 			var shuffledNames=statementNames.split('');
 			ShuffleList(shuffledNames);
-			var n = flandom(Math.ceil(Math.PI))+Math.ceil(Math.PI);
+			this.n = flandom(Math.ceil(Math.PI))+Math.ceil(Math.PI);
 			
 			var statements=[];
-			var i = n;
+			var i = this.n;
 			while(i--)
 			{
 				var statement={};
@@ -30,7 +30,7 @@ Molpy.DefinePuzzles=function()
 			}//we have now made a list of statements each with a truth value
 			var completedStatements=[];
 			this.groupNumber=1;
-			while(completedStatements.length<n)
+			while(completedStatements.length<this.n)
 			{
 				var groupSize = flandom(statements.length)+1;
 				var dist3 = Math.abs(groupSize-3)*2;
@@ -50,12 +50,6 @@ Molpy.DefinePuzzles=function()
 			}
 			
 			ShuffleList(completedStatements);
-			this.guess=[];
-			for(var i in completedStatements)
-			{
-				this.guess.push('No Guess');
-			}
-			
 			this.Check=function(guess)
 			{
 				if(!completedStatements)return;
@@ -109,15 +103,30 @@ Molpy.DefinePuzzles=function()
 				this.active=false;
 				this.cleanupFunction();
 			}
-			this.StringifyStatements=function()
+			this.StringifyStatements=function(noWrap)
 			{
 				var str='';
 				for(var id in completedStatements)
 				{
 					str+=this.StringifyStatement(completedStatements[id],id)+'<br><br>';
 				}
-				return str+'<input type="Button" value="Submit Guesses" onclick="Molpy.PuzzleGens[\''+this.name+'\'].Submit()"></input>';
+				str+='<input type="Button" value="Clear Guesses" onclick="Molpy.PuzzleGens[\''+this.name+'\'].Clear()"></input><br>';
+				str+='<input type="Button" value="Submit Guesses" onclick="Molpy.PuzzleGens[\''+this.name+'\'].Submit()"></input>';
+				if(!noWrap)str='<div id="'+this.name+'Puzzle" class="logipuzzle">'+str+'</div>';
+				return str;
 			}
+			this.Clear();
+		}
+		this.Clear=function()
+		{			
+			this.guess=[];
+			var i = this.n;
+			while(i--)
+			{
+				this.guess.push('No Guess');
+			}
+			var d = g(this.name+'Puzzle');
+			if(d)d.innerHTML=this.StringifyStatements(1);
 		}
 		this.AddStatementLastToChain=function(group,n)
 		{

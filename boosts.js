@@ -2739,7 +2739,7 @@
 		desc:function(me)
 		{		
 			var pBoost=Molpy.Boosts[Molpy.GetBlackprintSubject(1)];
-			return 'Allows you to construct '+(pBoost?pBoost.name:'new Boosts')+' with Factory Automation.<br>You have '+Molpy.BlackprintReport();
+			return 'Allows you to construct '+(pBoost?pBoost.name:'new Boosts')+' with Factory Automation. (See Rosetta to start construction.)<br>You have '+Molpy.BlackprintReport();
 		},
 		stats:function(me)
 		{
