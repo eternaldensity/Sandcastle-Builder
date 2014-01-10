@@ -1936,7 +1936,7 @@
 				var s = Molpy.GetBlackprintSubject();
 				if(s && !Molpy.Got('CfB'))
 				{
-					var c = LimitConstructionRuns(s);
+					var c = Molpy.LimitConstructionRuns(s);
 					str+='<br><input type="Button" value="Start" onclick="Molpy.StartBlackprintConstruction()"></input> construction of '+Molpy.Boosts[Molpy.GetBlackprintSubject()].name+' from Blackprints (requires '+Molpify(c*10)+' runs of Factory Automation)';
 				}
 			}
@@ -2795,6 +2795,7 @@
 			{
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
 				if(print=='VS'&&!Molpy.Has('Vacuum',2)) continue;
+				if(print=='VV'&&!Molpy.Got('VS')) continue;
 				if(print=='BoH'&&!Molpy.Has('Goats',400)) continue;
 				if(print=='Nest'&&!Molpy.Got('DNS')) continue;
 				return Molpy.blackprintCosts[print]; //number of pages needed for next blackprint boost
@@ -2813,6 +2814,7 @@
 			{				
 				if(print=='CFT'&&!Molpy.Earned('Minus Worlds')) continue;
 				if(print=='VS'&&!Molpy.Has('Vacuum',2)) continue;
+				if(print=='VV'&&!Molpy.Got('VS')) continue;
 				if(print=='BoH'&&!Molpy.Has('Goats',400)) continue;
 				if(print=='Nest'&&!Molpy.Got('DNS')) continue;
 				if(Molpy.Level('Blackprints')>=Molpy.blackprintCosts[print])
@@ -2854,7 +2856,7 @@
 		}
 		Molpy.Add('CfB',times);		 
 		
-		var c = LimitConstructionRuns(s);
+		var c = Molpy.LimitConstructionRuns(s);
 		if(Molpy.Has('CfB',c*10))
 		{
 			var op = Molpy.Level('CfB');
@@ -2872,7 +2874,7 @@
 				Molpy.LockBoost('CfB');
 				return 'Constructing nothing. How?';
 			}
-			var c = LimitConstructionRuns(subj.alias);
+			var c = Molpy.LimitConstructionRuns(subj.alias);
 			str = 'Constructing '+subj.name+' from Blackprints.<br>'+Molpify(c*10-me.Level)+' runs of Factory Automation required to complete.';
 			if(subj.alias=='BoH')str+='<br>To construct Bag of Holding you must retain at least 400 goats, otherwise construction will stall.';
 			return str;
@@ -2889,8 +2891,8 @@
 		defStuff:1,
 		className:'alert',group:'bean',icon:'constructblack'
 	});
-	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:150,ZK:220,VS:5000,CFT:40000,BoH:90000,Nest:5e6};
-	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','AO','AA','AE','BG','Bacon','SG','Milo','ZK','VS','CFT','BoH','Nest'];
+	Molpy.blackprintCosts={SMM:10,SMF:15,GMM:25,GMF:30,TFLL:80,BG:120,Bacon:40,AO:150,AA:200,SG:5,AE:60,Milo:150,ZK:220,VS:5000,CFT:40000,BoH:90000,VV:750000,Nest:5e6};
+	Molpy.blackprintOrder=['SMM','SMF','GMM','GMF','TFLL','AO','AA','AE','BG','Bacon','SG','Milo','ZK','VS','CFT','BoH','VV','Nest'];
 	
 	new Molpy.Boost({name:'Sand Mould Maker',alias:'SMM',desc:
 		function(me)
@@ -3773,11 +3775,7 @@
 			mr.power-=100*pages;			
 			if(pages)
 			{
-				if(Molpy.Got('VS'))
-				{
-					pages*=Math.pow(1.01,Molpy.Level('Vacuum')/1000);
-				}
-				Molpy.Add('Blackprints',Math.floor(pages));
+				Molpy.Add('Blackprints',Molpy.VoidStare(pages));
 			}
 		}
 		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('LogiPuzzle')&&!Molpy.Has('LogiPuzzle',Molpy.PokeBar()))
@@ -4458,7 +4456,8 @@
 		lockFunction:function()
 		{
 			if (!this.power) this.power=10;
-			Molpy.Add('Blackprints',this.power++);
+			var pages = this.power++;
+			Molpy.Add('Blackprints',Molpy.VoidStare(pages));
 			if(Molpy.Got('Camera'))
 			{
 				for(var i=0;i<10;i++)
@@ -5133,7 +5132,18 @@
 		}
 		,icon:'vacuum',group:'stuff',defStuff:1
 	});	
-	new Molpy.Boost({name:'Void Starer',alias:'VS',desc:'The number of Blackprints produced by Mysterious Representations is boosted by 1% per 1K Vacuums.<br>(It is still rounded down to a whole number of Blackprints.)',price:{FluxCrystals:40,Vacuum:60}});
+	new Molpy.Boost({name:'Void Starer',alias:'VS',desc:'The number of Blackprints produced by Mysterious Representations is boosted by 1% per 1K Vacuums.<br>(It is still rounded down to a whole number of Blackprints.)<br>Consumes 1 Vacuum if any benefit occurs.',price:{FluxCrystals:40,Vacuum:60}});
+	Molpy.VoidStare=function(pages)
+	{
+		if(Molpy.Got('VS'))
+		{
+			var oldPages=pages;
+			pages*=Math.pow(1.01,Molpy.Level('Vacuum')/1000);
+			pages = Math.floor(pages);
+			if(pages>oldPages)Molpy.Spend('Vacuum',1) //impossible to increase pages if vacuum was 0, obviously
+		}
+		return pages;
+	}
 	
 	new Molpy.Boost({name:'Question Qube',alias:'QQ',
 		desc:function(me)
@@ -5153,6 +5163,10 @@
 				+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Vacuum:'20K',QQ:'600K'},className:'toggle'
+	});
+	
+	new Molpy.Boost({name:'Void Vault',alias:'VV',desc:'Void Starer bonus applies to the Blackprints in Locked Vaults.<br>Consumes 1 Vacuum per Locked Vault opened.',
+		price:{Blackprints:'32G',Vacuum:'40K',QQ:'7M'}
 	});
 		
 	

@@ -35,6 +35,7 @@ For personal amusement only.
 - I'm feeling super generous so now comic-clicks activate shopping assistant.
 - Zookeper implementation made more efficient
 - Increased costs of Bags of Something (specifically blackprints)
+- Boost to make Vaults relevant again
 
 ## 3.297
 - Fix for Vacuum Cleaner unlock so it's available if you already have Magic Mirror
