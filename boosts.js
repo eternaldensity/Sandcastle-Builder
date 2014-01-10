@@ -4954,7 +4954,7 @@
 	new Molpy.Boost({name:'Eww',
 		desc:function(me)
 		{
-			return 'Convert 1K Mustard into 20 Bonemeal'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Mustard\',1000))Molpy.Add(\'Bonemeal\',5)" value="Use"></input>':'');
+			return 'Convert 1K Mustard into 20 Bonemeal'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Mustard\',1000))Molpy.Add(\'Bonemeal\',20)" value="Use"></input>':'');
 		},
 		price:{GlassBlocks:'789G',Sand:'2W',Mustard:'1K'},group:'prize',prizes:1,tier:3,className:'action'
 	});

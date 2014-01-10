@@ -1210,7 +1210,7 @@
 				}
 				if(bom&&!me.prizes&&(me.name.indexOf('Mould')>-1||typeof(me.desc)==='string'&&me.desc.indexOf('Mould')>-1))continue;
 				if(bof&&!me.prizes&&me.className=='toggle'&&me.name!='Glass Furnace'&&me.name!='Glass Blower')continue;
-				if(boj&&!me.prizes&&me.group=='chon')continue;
+				if(boj&&!me.prizes&&me.group=='chron')continue;
 				if(!coma&&me.bought&&me.prizes)
 				{
 					var t = EvalMaybeFunction(me.tier,'spend');
