@@ -31,6 +31,8 @@ For personal amusement only.
 - Vacuum Cleaner was activating at the wrong time so it wasn't letting you get Blitzing from logicats
 - Lightning Strikes Twice wasn't refreshing GL or TDE
 - Beachball boost adds a purple border for Temporal Rift
+- Rosetta now refreshes when you click Start Construction (so having her as a Fave should work)
+- Buying a glass boost from Rosetta should now Refresh her also
 
 ## 3.298
 - Nerf flux crystal-> vacuum some more (also now it needs Qubes because why not?)

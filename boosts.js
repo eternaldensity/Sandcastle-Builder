@@ -1403,7 +1403,8 @@
 			Molpy.Spend('GlassChips',chips);
 			Molpy.Spend('GlassBlocks',blocks);
 			Molpy.UnlockBoost(name);
-			Molpy.Boosts[name].buy();			
+			Molpy.Boosts[name].buy();	
+			Molpy.Boosts['Rosetta'].Refresh();//in case it was a Rosetta boost		
 		}else{
 			Molpy.Notify('You require more <span class="strike">Vespene Gas</span>Glass',1)
 		}
@@ -2842,6 +2843,7 @@
 	{
 		if(Molpy.Got('CfB'))return;
 		Molpy.UnlockBoost('CfB')
+		Molpy.Boosts['Rosetta'].Refresh();
 	}
 	Molpy.DoBlackprintConstruction=function(times)
 	{
