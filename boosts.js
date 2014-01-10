@@ -3911,7 +3911,7 @@
 	{
 		var pr = Molpy.Boosts['Panther Rush'];
 		var cost = Molpy.CalcRushCost();
-		if(Molpy.Has(cost)&&confirm('Really spend '+Molpify(levels,3)+' Logicat levels on Panther Rush?'))
+		if(Molpy.Has(cost)&&pr.Level>12||confirm('Really spend '+Molpy.PriceString(cost)+' on Panther Rush?'))
 		{				
 			if(Molpy.Spend(cost))
 				pr.Add(1);
