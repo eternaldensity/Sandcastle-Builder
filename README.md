@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.299
+- String-based prices were not working right in most cases.
+- Vacuum Cleaner was activating at the wrong time so it wasn't letting you get Blitzing from logicats
+- Lightning Strikes Twice wasn't refreshing GL or TDE
+
 ## 3.298
 - Nerf flux crystal-> vacuum some more (also now it needs Qubes because why not?)
 - Major nerf to Void Starer (didn't think that through :P)

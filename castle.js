@@ -1661,13 +1661,13 @@ Molpy.Up=function()
 			}else
 			{
 				var b = Molpy.Boosts[stuff];
-				return b&&b.Has(amount);
+				return b&&b.Has(EvalMaybeFunction(amount,0,1));
 			}
 		}
 		Molpy.Add=function(stuff,amount,s)
 		{
 			var b = Molpy.Boosts[stuff];
-			return b&&b.Add(amount,s);
+			return b&&b.Add(EvalMaybeFunction(amount,0,1),s);
 		}
 		Molpy.Spend=function(stuff,amount,s)
 		{
@@ -1681,6 +1681,7 @@ Molpy.Up=function()
 				return 1;
 			}else
 			{
+				amount=EvalMaybeFunction(amount,0,1);
 				var b = Molpy.Boosts[stuff];
 				return b&&b.Has(amount)&&b.Spend(amount,s);
 			}
@@ -1705,7 +1706,7 @@ Molpy.Up=function()
 				return str;
 			}else
 			{
-				return Molpify(amount,2)+ '&nbsp;' + stuff; //todo: use a nice display name rather than alias
+				return Molpify(EvalMaybeFunction(amount,0,1),2)+ '&nbsp;' + stuff; //todo: use a nice display name rather than alias
 			}
 		}
 		Molpy.IsFree=function(stuff)
@@ -2727,9 +2728,13 @@ Molpy.Up=function()
 			{
 				Molpy.Boosts['GL'].countdown=Math.min(500,Molpy.Boosts['GL'].countdown*=1.21); //GW :P
 				Molpy.Boosts['GL'].power=Molpy.Boosts['GL'].power*=1.21; //GW :P
+				Molpy.Boosts['GL'].Refresh();
+				Molpy.Boosts['TDE'].Refresh();
 				Molpy.Notify('Lightning struck the same place twice!');
 				Molpy.EarnBadge('Strikes Twice');
 				Molpy.UnlockBoost('LR');
+				if(Molpy.Got('LR'))
+				
 				return;
 			}
 			var blitzSpeed=800,blitzTime=23;
@@ -3039,6 +3044,11 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
+		if(Molpy.IsEnabled('Vacuum Cleaner')&&Molpy.Has('Sand',Infinity)&&Molpy.Spend(Molpy.VacCost))
+		{
+			Molpy.Boosts['Sand'].Level=0;
+			Molpy.Add('Vacuum',1);
+		}
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *Molpy.Boosts['Furnace Multitasking'].power
 			*(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 )||0;
 		Molpy.chipspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power * Molpy.Boosts['Furnace Crossfeed'].power 
@@ -3058,11 +3068,6 @@ Molpy.Up=function()
 			{
 				Molpy.Save(1);
 			}
-		}
-		if(Molpy.IsEnabled('Vacuum Cleaner')&&Molpy.Has('Sand',Infinity)&&Molpy.Spend(Molpy.VacCost))
-		{
-			Molpy.Boosts['Sand'].Level=0;
-			Molpy.Add('Vacuum',1);
 		}
 		Molpy.PerformJudgement();
 		Molpy.Donkey();
