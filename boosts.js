@@ -4457,7 +4457,8 @@
 		{
 			if (!this.power) this.power=10;
 			var pages = this.power++;
-			Molpy.Add('Blackprints',Molpy.VoidStare(pages));
+			if(Molpy.Got('VV'))pages=Molpy.VoidStare(pages);
+			Molpy.Add('Blackprints',pages);
 			if(Molpy.Got('Camera'))
 			{
 				for(var i=0;i<10;i++)
