@@ -2471,6 +2471,7 @@ Molpy.Up=function()
 			}else
 			{
 				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blast Furnace Fallback',true]);
+				Molpy.Notify('Furnace Fallback',1);
 				Molpy.RewardBlastFurnace();
 			}
 		}

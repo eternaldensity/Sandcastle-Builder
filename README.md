@@ -36,6 +36,7 @@ For personal amusement only.
 - Zookeper implementation made more efficient
 - Increased costs of Bags of Something (specifically blackprints)
 - Boost to make Vaults relevant again
+- If a Blast Furnace run is given out as a fallback reward, a notification is provided (because otherwise it can look like an empty Logicat reward)
 
 ## 3.297
 - Fix for Vacuum Cleaner unlock so it's available if you already have Magic Mirror
