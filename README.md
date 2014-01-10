@@ -30,6 +30,7 @@ For personal amusement only.
 - String-based prices were not working right in most cases.
 - Vacuum Cleaner was activating at the wrong time so it wasn't letting you get Blitzing from logicats
 - Lightning Strikes Twice wasn't refreshing GL or TDE
+- Beachball boost adds a purple border for Temporal Rift
 
 ## 3.298
 - Nerf flux crystal-> vacuum some more (also now it needs Qubes because why not?)

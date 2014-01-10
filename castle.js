@@ -3147,7 +3147,8 @@ Molpy.Up=function()
 				stateClass='beachstreakextend';
 			else stateClass='beachninjawarning';
 		}
-		
+		if(Molpy.Got('Temporal Rift'))
+			stateClass='beachriftwarning';
 		if(Molpy.ONGelapsed/Molpy.NPlength>=998&&!Molpy.Boosts['Coma Molpy Style'].IsEnabled)
 		{
 			stateClass='beachongwarning';
