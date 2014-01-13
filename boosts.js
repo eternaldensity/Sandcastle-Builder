@@ -999,6 +999,7 @@
 			
 			var c = Math.floor(Math.random()*Molpy.Level('Time Lord')*(Molpy.Got('TDE')+1));
 			Molpy.Add('FluxCrystals',c);
+			if (Molpy.Level('Time Lord')>50) Molpy.UnlockBoost('Flux Harvest');
 		}
 		Molpy.Notify('You wonder when you are');
 	}
@@ -5172,6 +5173,32 @@
 		price:{Blackprints:'32G',Vacuum:'40K',QQ:'7M'}
 	});
 		
+	new Molpy.Boost({name:'Flux Harvest',className:'action', group:'chron',  price:{Blackprints:'1G',QQ:'1M'},
+			desc:function(me) {
+				if (!me.bought) return 'Easy harvesting of flux crystals from remaining rifts';
+				return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
+				}
+	});
+
+	Molpy.FluxHarvest=function(){
+		if (Molpy.Level('Time Lord')+100 > Molpy.Boosts['Time Lord'].bought) {// just do a loop
+			while (!Molpy.IsEnabled('Time Lord')) {
+				var c = Math.floor(Math.random()*Molpy.Level('Time Lord')*(Molpy.Got('TDE')+1));
+				Molpy.Add('FluxCrystals',c);
+				Molpy.Add('Time Lord',1);
+			}
+		} else { // Use maths to approximate then modify by a small random element
+			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord')+1;
+			if (levels> 0) {
+				var c = (Molpy.Boosts['Time Lord'].bought+1)*( Molpy.Boosts['Time Lord'].bought+2)/2 - 
+					 Molpy.Level('Time Lord')*(Molpy.Level('Time Lord')+1)/2;
+				if (!Molpy.Got('TDE')) c/=2;
+				c = Math.floor(c*.9 + c*.2*Math.random());
+				Molpy.Add('FluxCrystals',c);
+				Molpy.Add('Time Lord',levels);
+			}
+		}
+	};
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
