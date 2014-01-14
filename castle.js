@@ -3048,10 +3048,18 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Dig(Molpy.sandPermNP);
-		if(Molpy.IsEnabled('Vacuum Cleaner')&&Molpy.Has('Sand',Infinity)&&Molpy.Spend(Molpy.VacCost))
+		if(Molpy.IsEnabled('Vacuum Cleaner')&&Molpy.Has('Sand',Infinity)&&Molpy.Has(Molpy.VacCost))
 		{
 			Molpy.Boosts['Sand'].Level=0;
-			Molpy.Add('Vacuum',1);
+			var vacs=Molpy.Level('TS')||1;
+			if(vacs>1)
+			{
+				vacs=Math.min(vacs,Molpy.Level('FluxCrystals')/(Molpy.VacCost.FluxCrystals));
+				vacs=Math.min(vacs,Molpy.Level('QQ')/(Molpy.VacCost.QQ));
+				vacs=Math.floor(vacs);
+			}
+			Molpy.Spend({FluxCrystals:Molpy.VacCost.FluxCrysals*vacs,QQ:Molpy.VacCost.QQ*vacs});			
+			Molpy.Add('Vacuum',vacs);
 		}
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *Molpy.Boosts['Furnace Multitasking'].power
 			*(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 )||0;

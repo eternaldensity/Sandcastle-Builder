@@ -5129,12 +5129,15 @@
 			var str = 'You have '+Molpify(me.Level,3)+' Vacuum'+plural(me.Level)+'.';
 			return str;
 		}
-		,icon:'vacuum',group:'stuff',defStuff:1
+		,icon:'vacuum',group:'stuff',defStuff:1,refreshFunction:function()
+		{
+			Molpy.ChainRefresh('TS');
+		}
 	});	
 	new Molpy.Boost({name:'Void Starer',alias:'VS',
 		desc:function(me)
 		{
-			return (me.IsEnabled? 'T':'When active, t') + 'he number of Blackprints produced by Mysterious Representations is boosted by 1% per 1K Vacuums.<br>(It is still rounded down to a whole number of Blackprints.)<br>Consumes 1 Vacuum if any benefit occurs.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+			return (me.IsEnabled? 'T':'When active, t') + 'he number of Blackprints produced by Mysterious Representations is boosted by 1% per 100 Vacuums.<br>(It is still rounded down to a whole number of Blackprints.)<br>Consumes 1 Vacuum if any benefit occurs.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,className:'toggle',
 		price:{FluxCrystals:40,Vacuum:60}});
@@ -5143,7 +5146,7 @@
 		if(Molpy.IsEnabled(staretype))
 		{
 			var oldPages=pages;
-			pages*=Math.pow(1.01,Molpy.Level('Vacuum')/1000);
+			pages*=Math.pow(1.01,Molpy.Level('Vacuum')/100);
 			pages = Math.floor(pages);
 			if(pages>oldPages)Molpy.Spend('Vacuum',1) //impossible to increase pages if vacuum was 0, obviously
 		}
@@ -5206,8 +5209,55 @@
 		}
 	};
 	
-	new Molpy.Boost({name:'This Sucks',desc:function(me){}
+	new Molpy.Boost({name:'This Sucks',alias:'TS',
+		desc:function(me)
+		{
+			if(!me.bought) return 'Allows you to increase the Vacuum-generation rate of Vacuum Cleaner.';
+			var n = me.Level;
+			var str='Vacuum Cleaner attempts to make up to '+Molpify(n,2)+' Vacuums.';
+			var cost={Vacuum:Math.abs(2000-n)*n,Blackprints:Math.floor(n*1000*Math.pow(1.01,Molpy.Level('Vacuum')/100))};
+			if(Molpy.Has(cost))
+			{
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.SuckMore(1)"></input> the vacuum rate by 1 at a cost of '+Molpy.PriceString(cost)+'.';
+			}else{
+                str+='<br>It will cost '+Molpy.PriceString(cost)+' to increase this by 1.';
+            }
+			var downCost={QQ:1000*n};
+			if(!Molpy.Boosts['No Sell'].power&&n>1)
+			{
+				if(Molpy.Has(downCost))
+				{
+					str+='<br><input type="Button" value="Decrease" onclick="Molpy.SuckMore(-1)"></input> the vacuum rate by 1 at a cost of '+Molpy.PriceString(cost)+'.';
+				}else{
+					str+='<br>It will cost '+Molpy.PriceString(downCost)+' to decrease this by 1.';
+				}
+			}
+			return str;
+		}
+		,price:{GlassBlocks:'60W',Sand:Infinity,Castles:Infinity,Vacuum:'50K'}, group:'hpt',className:'toggle',defStuff:1,
+		buyFunction:function(){this.Level=1;}
 	});
+	Molpy.SuckMore=function(n)//or less
+	{
+		var me = Molpy.Boosts['TS'];
+		var cost={Vacuum:Math.abs(2000-n)*n,Blackprints:Math.floor(n*1000*Math.pow(1.01,Molpy.Level('Vacuum')/100))};
+		if(n<0)
+		{
+			cost={QQ:1000*n};
+		}
+		if(Molpy.Spend(cost))
+		{
+			me.Add(n);
+			Molpy.Notify('Adjusted This Sucks');
+			if(n>0)
+				_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',me.name]);
+			else
+				_gaq&&_gaq.push(['_trackEvent','Boost','Dowgrade',me.name]);
+		}else{
+			me.Refresh();
+			Molpy.Notify('Could not afford to adjust This Sucks');
+		}
+	}
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment

@@ -32,6 +32,8 @@ For personal amusement only.
 - Toggles for Void Starer and Void Vault
 - Prevent Ladder sand/mNP mustard
 - Why is glass/click worked out twice? That'll need sorting out some time. Anyhow, Bone Clicker now actually really works
+- Un-unerfed Void Starer a bit
+- Added a new boost which sucks
 
 ## 3.299
 - String-based prices were not working right in most cases.
