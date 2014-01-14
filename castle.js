@@ -541,6 +541,10 @@ Molpy.Up=function()
 				{
 					Molpy.chipsPerClick+=Molpy.glassPermNP/20;
 				}
+				if(Molpy.Got('Bone Clicker')&&Molpy.Has('Bonemeal',1))
+				{
+					Molpy.chipsPerClick*=Molpy.Level('Bonemeal');
+				}
 				Molpy.Add('TF',Molpy.chipsPerClick);
 				if(Molpy.chipsPerClick)
 				{
