@@ -4055,13 +4055,12 @@
 			if(!me.bought) return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
 			var n = me.Level;
 			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
-			var chipCost=1e7*Math.pow(1.2,n);
-			var pageCost=n*2;
-			if(n<Molpy.Boosts['PC'].power&&Molpy.Has('GlassChips',chipCost))
+			var cost={GlassChips:1e7*Math.pow(1.2,n),Blackprints:n*2};
+			if(n<Molpy.Boosts['PC'].power&&Molpy.Has('GlassChips',cost.GlassChips))
 			{
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpify(chipCost,2)+' Glass Chips and '+Molpify(pageCost,2)+' Blackprint Pages.';
+				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpy.PriceString(cost)+'.';
 			}else{
-                str+='<br>It will cost '+Molpify(chipCost,2)+' Glass Chips and '+Molpify(pageCost,2)+' Blackprint Pages to increase this by 1.';
+                str+='<br>It will cost '+Molpy.PriceString(cost)+' to increase this by 1.';
             }
 			if(!Molpy.Boosts['No Sell'].power&&n>1&&Molpy.Has('GlassChips',1e5*n))
 			{
@@ -4075,34 +4074,30 @@
 	Molpy.ControlAutomata=function(n,dragon)
 	{
 		var me = Molpy.Boosts['AC'];
-		var chipCost=1e7*Math.pow(1.2,me.Level);
-		var pageCost=2*me.Level;
-		var logicatCost=0;
+		var cost={GlassChips:1e7*Math.pow(1.2,me.Level),Blackprints:2*me.Level,Logicat:0};
 		if(dragon)
 		{
-			chipCost=0;
-			pageCost*=5;
-			logicatCost=Math.ceil(me.Level/20);
+			cost.GlassChips=0;
+			cost.Blackprints*=5;
+			cost.Logicat=Math.ceil(me.Level/20);
 		}else if(n<0)
 		{
-			chipCost=-1e5*me.Level;
-			pageCost=0;
+			cost.GlassChips=-1e5*me.Level;
+			cost.Blackprints=0;
 		}
-		if(Molpy.Has('GlassChips',chipCost))
+		if(Molpy.Has('GlassChips',cost.GlassChips))
 		{
-			if(!Molpy.Has('Blackprints',pageCost))
+			if(!Molpy.Has('Blackprints',cost.Blackprints))
 			{
 				Molpy.Notify('You need more Blackprint Pages');
 				return;
 			}
-			if(!Molpy.Has('Logicat',logicatCost))
+			if(!Molpy.Has('Logicat',cost.Logicat))
 			{
 				Molpy.Notify('You need more Logicat Levels');
 				return;
 			}
-			Molpy.Spend('Blackprints',pageCost);
-			Molpy.Spend('Logicat',logicatCost);
-			Molpy.Spend('GlassChips',chipCost);
+			Molpy.Spend(cost);
 			me.Add(n);
 			if(dragon) Molpy.Boosts['Dragon Forge'].Refresh();
 			Molpy.Notify('Adjusted Automata Assemble');
@@ -5180,7 +5175,7 @@
 		{
 			return (me.IsEnabled? '':'When active, ') + 'Void Starer bonus applies to the Blackprints in Locked Vaults.<br>Consumes 1 Vacuum per Locked Vault opened.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
-		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,className:'toggle'
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,className:'toggle',
 		price:{Blackprints:'32G',Vacuum:'40K',QQ:'7M'}
 	});
 		
@@ -5210,6 +5205,9 @@
 			}
 		}
 	};
+	
+	new Molpy.Boost({name:'This Sucks',desc:function(me){}
+	});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
