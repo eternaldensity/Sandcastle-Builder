@@ -5141,7 +5141,8 @@
 		{
 			return (me.IsEnabled? 'T':'When active, t') + 'he number of Blackprints produced by Mysterious Representations is boosted by 1% per 1K Vacuums.<br>(It is still rounded down to a whole number of Blackprints.)<br>Consumes 1 Vacuum if any benefit occurs.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
-		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{FluxCrystals:40,Vacuum:60}});
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,className:'toggle',
+		price:{FluxCrystals:40,Vacuum:60}});
 	Molpy.VoidStare=function(pages,staretype)
 	{
 		if(Molpy.IsEnabled(staretype))
@@ -5179,7 +5180,7 @@
 		{
 			return (me.IsEnabled? '':'When active, ') + 'Void Starer bonus applies to the Blackprints in Locked Vaults.<br>Consumes 1 Vacuum per Locked Vault opened.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
-		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,className:'toggle'
 		price:{Blackprints:'32G',Vacuum:'40K',QQ:'7M'}
 	});
 		
