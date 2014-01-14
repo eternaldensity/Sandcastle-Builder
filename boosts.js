@@ -5158,7 +5158,7 @@
 				str+='<br><input type="Button" onclick="Molpy.Spend({QQ:1});Molpy.RewardLogicat(Molpy.Level(\'QQ\'))" value="?"></input>';
 			}
 			return str;
-		},icon:'qq',group:'stuff',defStuff:1
+		},icon:'qq',group:'stuff',defStuff:1,className:'action'
 	});
 	
 	new Molpy.Boost({name:'Italian Plumber',alias:'Mario',desc:function(me)
