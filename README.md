@@ -26,6 +26,10 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.2991
+- Fix Panther Rush Logicat Level calculation
+
+
 ## 3.299
 - String-based prices were not working right in most cases.
 - Vacuum Cleaner was activating at the wrong time so it wasn't letting you get Blitzing from logicats

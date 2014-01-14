@@ -857,7 +857,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['Tiny Glasses'].logic=90*(Molpy.SandTools['LaPetite'].amount>=8000);
 	Molpy.Boosts['Glass Saw'].logic=150*(Molpy.glassPermNP>=4000);
 	
-	Molpy.Boosts['Panther Rush'].logic=Molpy.CalcRushCost()+5;
+	Molpy.Boosts['Panther Rush'].logic=Molpy.CalcRushCost(0,1);
 	
 	Molpy.Boosts['AC'].logic=440*(Molpy.Got('AA')&&(Molpy.CastleTools['NewPixBot'].amount>=7500?50000/Molpy.CastleTools['NewPixBot'].amount:0));
 	Molpy.Boosts['Flipside'].logic=220*Molpy.Got('AA');
