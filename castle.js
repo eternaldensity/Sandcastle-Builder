@@ -1849,6 +1849,7 @@ Molpy.Up=function()
 				Object.defineProperties(this, {"Level": {get: args.Level[0],set:args.Level[1]}});
 				this.Add=args.Add;
 				this.AddSuper=args.AddSuper; //ugh
+				this.HasSuper=args.HasSuper; //more ugh
 				this.Spend=args.Spend;
 				this.Destroy=args.Destroy;
 				this.Has=args.Has;

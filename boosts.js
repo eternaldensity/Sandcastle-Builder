@@ -4544,7 +4544,7 @@
 		Add:Molpy.Dig,
 		Spend:function(amount,silent)
 		{
-			if(!isFinite(Molpy.sandPermNP) &&Molpy.Got('Cracks'))amount=0;
+			if(!isFinite(Molpy.sandPermNP) &&Molpy.IsEnabled('Cracks'))amount=0;
 			if(!amount)return;
 			Molpy.sand-=amount;
 			if(Molpy.sand<0)Molpy.sand=0;
@@ -4573,7 +4573,13 @@
 				}
 			}
 		},
-		Has:Molpy.BoostFuncs.Has,
+		Has:function(amount)
+		{
+			if(!isFinite(Molpy.sandPermNP)&&Molpy.IsEnabled('Cracks'))
+				return 1;
+			return(this.HasSuper(amount));
+		},
+		HasSuper:Molpy.BoostFuncs.Has,
 		desc:function(me){return Molpify(me.Level,3);}
 		,group:'stuff'
 	});
@@ -4597,7 +4603,7 @@
 		Add:Molpy.Build,
 		Spend:function(amount,silent)
 		{
-			if(!isFinite(Molpy.sandPermNP) &&Molpy.Got('Cracks'))amount=0;
+			if(!isFinite(Molpy.sandPermNP) &&Molpy.IsEnabled('Cracks'))amount=0;
 			if(!amount)return;
 			amount = Math.min(amount,Molpy.castles);
 			Molpy.castles-=amount;
@@ -4637,7 +4643,13 @@
 			}
 			//destroying is done by trebuchets and stuff: it's different to spending
 		},
-		Has:Molpy.BoostFuncs.Has,
+		Has:function(amount)
+		{
+			if(!isFinite(Molpy.sandPermNP)&&Molpy.IsEnabled('Cracks'))
+				return 1;
+			return(this.HasSuper(amount));
+		},
+		HasSuper:Molpy.BoostFuncs.Has,
 		desc:function(me){return Molpify(me.Level,3);}
 		,group:'stuff'
 	});	
@@ -4847,7 +4859,12 @@
 	});
 	new Molpy.Boost({name:'Short Saw',desc:'VITSSÅGEN, JA! occurs 5 times as often',Sand:'5T',Castles:'40G',group:'prize',prizes:1,tier:1});
 	new Molpy.Boost({name:'Gruff',desc:'When you win the Monty Haul prize, you get 2 goats',Sand:'2P',Castles:'75T',group:'prize',prizes:1,tier:2});
-	new Molpy.Boost({name:'Between the Cracks',alias:'Cracks',desc:'If you have infinite Sand production, Boost boost purchases do not spend any Sand or Castles',
+	new Molpy.Boost({name:'Between the Cracks',alias:'Cracks',
+		desc:function(me)
+		{
+			return (me.IsEnabled? 'I':'When active, i') + 'if you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		}
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,className:'toggle',
 		Sand:'15E',Castles:'80P',group:'prize',prizes:1,tier:2});
 	new Molpy.Boost({name:'Soul Drain',desc:'Shadow Dragon has a 10% chance of producing bonemeal when Not Lucky occurs',
 		Sand:'60G',Castles:'290M',group:'prize',prizes:1,tier:2});

@@ -34,6 +34,7 @@ For personal amusement only.
 - Why is glass/click worked out twice? That'll need sorting out some time. Anyhow, Bone Clicker now actually really works
 - Un-unerfed Void Starer a bit
 - Added a new boost which sucks
+- Between the Cracks is now a toggle, also it works on checking if you have sand/castles rather than just when buying sand/castles. So now it bypasses Fireproof and Vacuum Cleaner
 
 ## 3.299
 - String-based prices were not working right in most cases.
