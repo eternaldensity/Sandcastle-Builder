@@ -3059,7 +3059,7 @@ Molpy.Up=function()
 				vacs=Math.min(vacs,Molpy.Level('QQ')/(Molpy.VacCost.QQ));
 				vacs=Math.floor(vacs);
 			}
-			Molpy.Spend({FluxCrystals:Molpy.VacCost.FluxCrysals*vacs,QQ:Molpy.VacCost.QQ*vacs});			
+			Molpy.Spend({FluxCrystals:Molpy.VacCost.FluxCrystals*vacs,QQ:Molpy.VacCost.QQ*vacs});			
 			Molpy.Add('Vacuum',vacs);
 		}
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *Molpy.Boosts['Furnace Multitasking'].power

@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.2992
+- Vacuum wasn't using Flux Crystals
+
 ## 3.2991
 - Fix Panther Rush Logicat Level calculation
 - tag QQ
@@ -35,6 +38,7 @@ For personal amusement only.
 - Un-unerfed Void Starer a bit
 - Added a new boost which sucks
 - Between the Cracks is now a toggle, also it works on checking if you have sand/castles rather than just when buying sand/castles. So now it bypasses Fireproof and Vacuum Cleaner
+- waveney's new boost to make obtaining flux crystals easier
 
 ## 3.299
 - String-based prices were not working right in most cases.
