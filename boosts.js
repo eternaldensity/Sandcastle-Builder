@@ -5149,7 +5149,9 @@
 		,icon:'vacuum',group:'stuff',defStuff:1,refreshFunction:function()
 		{
 			Molpy.ChainRefresh('TS');
-		}
+			this.refreshSuper();
+		},
+		refreshSuper:Molpy.BoostFuncs.RefreshPowerBuy
 	});	
 	new Molpy.Boost({name:'Void Starer',alias:'VS',
 		desc:function(me)

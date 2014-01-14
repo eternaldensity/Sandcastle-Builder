@@ -1861,6 +1861,7 @@ Molpy.Up=function()
 			this.buyFunction=args.buyFunction;
 			this.countdownFunction=args.countdownFunction;
 			this.refreshFunction=args.refreshFunction;
+			this.refreshSuper=args.refreshSuper; //okay this is getting out of hand
 			this.unlocked=0;
 			this.bought=0;
 			this.department=args.department; //allow unlock by the department (this is not a saved value)

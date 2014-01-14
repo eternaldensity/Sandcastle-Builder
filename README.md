@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.2993
+- Unbroke Vacuum unlock (accidentally replaced the refreshFunction). This hadn't affected functionality except that your vacuum count wasn't visible if you didn't already have vacuum
+
 ## 3.2992
 - Vacuum wasn't using Flux Crystals
 
