@@ -203,6 +203,8 @@
 		{
 			f[n].vis=val==true;//ensure boolean for jQuery
 		}
+		if(f[n].vis&&f[n].boost)
+			f[n].boost.Refresh();
 		$('#'+name).toggleClass('hidden',!f[n].vis);
 		$('#toggleFave').toggleClass('depressed',f[n].vis);
 	}

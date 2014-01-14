@@ -898,6 +898,7 @@
 		Molpy.judgeLevel=-1;
 		Molpy.CalculateDigSpeed();
 		Molpy.currentSubFrame=0;
+		Molpy.UpdateFaves(1);
 		return 1;
 	}
 	

@@ -31,6 +31,7 @@ For personal amusement only.
 - Missing parentheses in Panther Rush were making it lock when it shouldn't.
 - Notification when a Key tries to buy a Crate/Vault and fails (to prevent empty logicat message)
 - Panther Rush was unlocking regardless of blackprints and vacuum.
+- Faves refresh on Load and when you make them Visible
 
 ## 3.2992
 - Vacuum wasn't using Flux Crystals
