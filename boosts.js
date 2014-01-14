@@ -2492,6 +2492,10 @@
 			}else{
 				lc.power/=4;
 				lc.buy(1);
+				if(!lc.bought)
+				{
+					Molpy.Notify('Locked Crate price reduced (or infinite).');
+				}
 			}
 		}
 	});
@@ -3914,13 +3918,13 @@
 	{
 		var pr = Molpy.Boosts['Panther Rush'];
 		var cost = Molpy.CalcRushCost();
-		if(Molpy.Has(cost)&&pr.Level>12||confirm('Really spend '+Molpy.PriceString(cost).replace(/&nbsp;/g,' ')+' on Panther Rush?'))
+		if(Molpy.Has(cost)&&(pr.Level>12||confirm('Really spend '+Molpy.PriceString(cost).replace(/&nbsp;/g,' ')+' on Panther Rush?')))
 		{				
 			if(Molpy.Spend(cost))
 				pr.Add(1);
 			var fCost = Molpy.CalcRushCost(0,1);		
 			Molpy.LockBoost(pr.alias);
-			if(Molpy.Has(fCost))Molpy.UnlockBoost(pr.alias);		
+			if(Molpy.Has(fCost))Molpy.UnlockBoost(pr.alias);
 		}
 	}
 	
@@ -4487,6 +4491,10 @@
 					Molpy.LockBoost(lv.alias);
 			}else{
 				lv.buy(1);
+				if(!lv.bought)
+				{
+					Molpy.Notify('Locked Vault is not affordable.');
+				}
 			}
 		}
 	});

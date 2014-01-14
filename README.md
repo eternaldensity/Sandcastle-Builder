@@ -28,6 +28,8 @@ For personal amusement only.
 
 ## 3.2993
 - Unbroke Vacuum unlock (accidentally replaced the refreshFunction). This hadn't affected functionality except that your vacuum count wasn't visible if you didn't already have vacuum
+- Missing parentheses in Panther Rush were making it lock when it shouldn't.
+- Notification when a Key tries to buy a Crate/Vault and fails (to prevent empty logicat message)
 
 ## 3.2992
 - Vacuum wasn't using Flux Crystals
