@@ -29,7 +29,7 @@ For personal amusement only.
 ## 3.2991
 - Fix Panther Rush Logicat Level calculation
 - tag QQ
-- 
+- Toggles for Void Starer and Void Vault
 
 ## 3.299
 - String-based prices were not working right in most cases.

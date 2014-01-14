@@ -3778,7 +3778,7 @@
 			mr.power-=100*pages;			
 			if(pages)
 			{
-				Molpy.Add('Blackprints',Molpy.VoidStare(pages));
+				Molpy.Add('Blackprints',Molpy.VoidStare(pages,'VS'));
 			}
 		}
 		if(left>10&&Molpy.redactedClicks>2500&&Molpy.Got('ZK')&&Molpy.Boosts['Logicat'].bought>=4&&Molpy.Got('LogiPuzzle')&&!Molpy.Has('LogiPuzzle',Molpy.PokeBar()))
@@ -4460,7 +4460,7 @@
 		{
 			if (!this.power) this.power=10;
 			var pages = this.power++;
-			if(Molpy.Got('VV'))pages=Molpy.VoidStare(pages);
+			if(Molpy.Got('VV'))pages=Molpy.VoidStare(pages,'VV');
 			Molpy.Add('Blackprints',pages);
 			if(Molpy.Got('Camera'))
 			{
@@ -5136,10 +5136,15 @@
 		}
 		,icon:'vacuum',group:'stuff',defStuff:1
 	});	
-	new Molpy.Boost({name:'Void Starer',alias:'VS',desc:'The number of Blackprints produced by Mysterious Representations is boosted by 1% per 1K Vacuums.<br>(It is still rounded down to a whole number of Blackprints.)<br>Consumes 1 Vacuum if any benefit occurs.',price:{FluxCrystals:40,Vacuum:60}});
-	Molpy.VoidStare=function(pages)
+	new Molpy.Boost({name:'Void Starer',alias:'VS',
+		desc:function(me)
+		{
+			return (me.IsEnabled? 'T':'When active, t') + 'he number of Blackprints produced by Mysterious Representations is boosted by 1% per 1K Vacuums.<br>(It is still rounded down to a whole number of Blackprints.)<br>Consumes 1 Vacuum if any benefit occurs.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		}
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{FluxCrystals:40,Vacuum:60}});
+	Molpy.VoidStare=function(pages,staretype)
 	{
-		if(Molpy.Got('VS'))
+		if(Molpy.IsEnabled(staretype))
 		{
 			var oldPages=pages;
 			pages*=Math.pow(1.01,Molpy.Level('Vacuum')/1000);
@@ -5169,7 +5174,12 @@
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Vacuum:'20K',QQ:'600K'},className:'toggle'
 	});
 	
-	new Molpy.Boost({name:'Void Vault',alias:'VV',desc:'Void Starer bonus applies to the Blackprints in Locked Vaults.<br>Consumes 1 Vacuum per Locked Vault opened.',
+	new Molpy.Boost({name:'Void Vault',alias:'VV',
+		desc:function(me)
+		{
+			return (me.IsEnabled? '':'When active, ') + 'Void Starer bonus applies to the Blackprints in Locked Vaults.<br>Consumes 1 Vacuum per Locked Vault opened.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+		}
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
 		price:{Blackprints:'32G',Vacuum:'40K',QQ:'7M'}
 	});
 		
