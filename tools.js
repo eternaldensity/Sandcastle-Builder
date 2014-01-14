@@ -95,7 +95,7 @@
 			var baserate = 54+Molpy.Got('Extension Ladder')*18;
 			var mult = 1;
 			if(Molpy.Got('Ninja Climber'))mult*=Molpy.ninjaStealth;
-			if(mult==0)return 0
+			if(mult==0)return 0;
 			if(Molpy.Got('Glass Ceiling 6'))mult*=Molpy.GlassCeilingMult();
 			if(!isFinite(mult))return Infinity;
 			if(Molpy.Got('Level Up!'))mult*=2;
@@ -113,9 +113,16 @@
 					if(i==0||Molpy.CastleToolsById[i-1].amount>=Molpy.CastleToolsById[i-1].nextThreshold)
 						min=Math.min(min,Molpy.CastleToolsById[i].amount);
 				}
+				if(min==0)return 0;
 				mult*=min;
 			}
-			if(Molpy.Got('Up Up and Away'))mult*=10*Molpy.CastleTools['Trebuchet'].amount;
+			if(Molpy.Got('Up Up and Away'))
+			{
+				var treb=Molpy.CastleTools['Trebuchet'].amount;
+				if(treb==0)return 0;
+				if(!isFinite(treb))return Infinity;
+				mult*=10*treb;
+			}
 			return baserate*mult;
 		},
 		gpmNP:function()
