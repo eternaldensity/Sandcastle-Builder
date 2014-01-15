@@ -5055,7 +5055,7 @@
 		IsEnabled:[function(){return this.Level>this.bought;}],
 		desc:function(me)
 		{
-			var str = 'You can travel through '+Molpify(me.bought+1)+' Temporal Rift'+plural(me.bought+1)+' per NewPix.';
+			var str = 'You can travel through '+Molpify(me.bought+1)+' Temporal Rift'+plural(me.bought+1)+' per NewPix. You can travel through '+Molpify((me.bought+1)-me.Level)+' more Temporal Rift'+plural((me.bought+1)-me.Level)+'.';
 			if(me.bought)
 			{
 				var p = 20*me.bought*(1+Math.floor(Math.log(me.bought)*Math.LOG10E));
