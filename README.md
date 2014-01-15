@@ -29,6 +29,7 @@ For personal amusement only.
 ## 3.2994
 - Badges can be faves!
 - In stats view the alias of boosts and badges is shown. This can be used to refer to it in Shopping Assistant or Faves instead of the full name.
+- Time Lord shows remaining jumps (thanks ddrdude/eqbot)
 
 ## 3.2993
 - Unbroke Vacuum unlock (accidentally replaced the refreshFunction). This hadn't affected functionality except that your vacuum count wasn't visible if you didn't already have vacuum
