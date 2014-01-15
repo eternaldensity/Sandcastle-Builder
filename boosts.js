@@ -4971,7 +4971,7 @@
 	}
 	Molpy.ToggleBit=function(myid,bit) {
 		Molpy.BoostsById[myid].power ^= (1<<bit);
-		Molpy.BoostsbyId[myid].Refresh();
+		Molpy.BoostsById[myid].Refresh();
 	}
 	
 	new Molpy.Boost({name:'Eww',
