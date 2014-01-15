@@ -5211,7 +5211,7 @@
 		
 	new Molpy.Boost({name:'Flux Harvest',className:'action', group:'chron',  price:{Blackprints:'1G',QQ:'1M'},
 			desc:function(me) {
-				if (!me.bought) return 'Easy harvesting of flux crystals from remaining rifts';
+				if (!me.bought || Molpy.IsEnabled('Time Lord')) return 'Easy harvesting of flux crystals from remaining rifts';
 				return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
 				}
 	});
@@ -5232,6 +5232,8 @@
 				c = Math.floor(c*.9 + c*.2*Math.random());
 				Molpy.Add('FluxCrystals',c);
 				Molpy.Add('Time Lord',levels);
+			} else {
+				Molpy.Notify("No Rifts left to harvest");
 			}
 		}
 	};
