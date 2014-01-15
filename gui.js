@@ -1384,8 +1384,6 @@
 		$('#stuffBonemealCount').toggleClass('hidden', !Molpy.Got('Bonemeal'));
 		$('#stuffVacuumCount').toggleClass('hidden', !Molpy.Got('Vacuum'));
 		
-		$('#incomeSandRate').innerHTML='Sand: ' + Molpify(Molpy.sandPermNP,1) + '/mNP';
-		$('#incomeSandClickRate').innerHTML='Sand/click: ' + Molpify(Molpy.computedSandPerClick,1);
 		$('#incomeChipRate').toggleClass('hidden',!tf);
 		$('#incomeChipClickRate').toggleClass('hidden',!tf);
 		$('#incomeNewTools').toggleClass('hidden',!tf);
