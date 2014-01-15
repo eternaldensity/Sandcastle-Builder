@@ -1967,7 +1967,15 @@ Molpy.Up=function()
 			{
 				return format(EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this))+
 					format(this.prizes&&Molpy.IsStatsVisible()&&('<br>Gives '+Molpify(this.prizes)+' random Prize'+plural(this.prizes)
-						+' from tier L'+EvalMaybeFunction(this.tier,'show')+' when Locked or Reset.')||'');
+						+' from tier L'+EvalMaybeFunction(this.tier,'show')+' when Locked or Reset.')||'')+this.GetAlias();
+			}
+			this.GetAlias=function()
+			{
+				if(Molpy.IsStatsVisible()&&this.name!=this.alias)
+				{
+					return '<br>(Alias: '+this.alias+')';
+				}
+				return '';
 			}
 			this.GetFullClass=function()
 			{
@@ -2154,7 +2162,15 @@ Molpy.Up=function()
 			this.GetDesc=function()
 			{
 				return format(((this.earned||this.visibility<1)?
-						EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this):'????'));
+						EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this):'????'))+this.GetAlias();
+			}
+			this.GetAlias=function()
+			{
+				if((this.earned||this.visibility<1)&&Molpy.IsStatsVisible()&&this.name!=this.alias)
+				{
+					return '<br>(Alias: '+this.alias+')';
+				}
+				return '';
 			}
 			this.GetFullClass=function()
 			{
