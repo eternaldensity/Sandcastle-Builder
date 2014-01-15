@@ -1825,6 +1825,7 @@ Molpy.Up=function()
 			this.name=args.name;
 			this.alias=args.alias||args.name;
 			this.desc=args.desc;
+			this.boost=true;
 			if(args.price)
 			{
 				this.price=args.price;
@@ -2107,6 +2108,7 @@ Molpy.Up=function()
 		Molpy.badgeHTML='';
 		Molpy.Badges=[];
 		Molpy.BadgesById=[];
+		Molpy.BadgeAKA=[];
 		Molpy.BadgeN=0;
 		Molpy.BadgesOwned=0;
 		var order=0;
@@ -2121,6 +2123,7 @@ Molpy.Up=function()
 			this.earnFunction=args.earnFunction;
 			this.earned=0;
 			this.order=this.id;
+			this.badge=true;
 			if(order) this.order=order+this.id/1000;
 			//(because the order we create them can't be changed after we save)
 			this.visibility=args.vis||0; //0 is normal, 1 is hidden description, 2 is hidden name, 3 is invisible
@@ -2136,6 +2139,7 @@ Molpy.Up=function()
 					this.hoverOnCounter=1;
 					this.hovering=0;
 				}
+				this.faveRefresh=1;
 			}
 			this.showdesc=function(keep)
 			{
@@ -2143,9 +2147,26 @@ Molpy.Up=function()
 				if(d)
 				{
 					if(keep&&d.innerHTML)return;
-					d.innerHTML='<br>'+((this.earned||this.visibility<1)?
-						EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this):'????');
+					d.innerHTML='<br>'+this.GetDesc();
 				}
+				this.faveRefresh=1;
+			}
+			this.GetDesc=function()
+			{
+				return format(((this.earned||this.visibility<1)?
+						EvalMaybeFunction((Molpy.IsStatsVisible()&&this.stats)?this.stats:this.desc,this):'????'));
+			}
+			this.GetFullClass=function()
+			{
+				return 'badge lootbox'+(this.earned?' loot ':' shop ')+(this.className||'');
+			}
+			this.GetHeading=function()
+			{
+				return '<h1>['+Molpy.groupNames[this.group][0]+']</h1>';
+			}
+			this.GetFormattedName=function()
+			{
+				return '<h2>'+format((this.earned||this.visibility<2?this.name:'????'))+'</h2>';
 			}
 			this.hidedesc=function()
 			{
@@ -2163,6 +2184,7 @@ Molpy.Up=function()
 			
 			Molpy.Badges[this.alias]=this;
 			Molpy.BadgesById[this.id]=this;
+			Molpy.BadgeAKA[this.name]=this.alias;
 			Molpy.BadgeN++;
 			return this;
 		}		

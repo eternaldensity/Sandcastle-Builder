@@ -162,7 +162,7 @@
 		var f = Molpy.activeLayout.faves[n];
 		var def='Chromatic Heresy';
 		if(f.boost) def=f.boost.name;		
-		var name = prompt('Enter the name of the boost you wish to display as Favourite '+n+'.\nNames are case sensitive.\nLeave blank to disable.',def);
+		var name = prompt('Enter the name of the boost or badge you wish to display as Favourite '+n+'.\nNames are case sensitive.\nLeave blank to disable.',def);
 		
 		if(name==undefined)return;
 		if(name)
@@ -172,9 +172,17 @@
 			{
 				item=Molpy.Boosts[Molpy.BoostAKA[name]];
 			}
+			if(!item)
+			{
+				item=Molpy.Badges[name];
+			}
+			if(!item)
+			{
+				item=Molpy.Badges[Molpy.BadgeAKA[name]];
+			}
 			if(item)
 			{
-				if(!item.bought)
+				if(!(item.bought||item.earned))
 				{
 					Molpy.Notify('You do not own '+item.name);
 				}else{
@@ -878,13 +886,12 @@
 				cn='action';
 			}
 		}
-		var heading= '<h1>['+Molpy.groupNames[group][0]+']'+status+'</h1>';	
+		var heading= me.GetHeading();	
 		if(cn&&me.earned)Molpy.UnlockBoost('Chromatic Heresy');
-		cn+=' lootbox badge '+(me.earned?'loot':'shop');
+		cn=me.GetFullClass();
 		if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
 		
-		var str =  heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div><h2>'+(me.earned||me.visibility<2?me.name:'????')
-			+'</he><div class="'+Molpy.DescClass(me)+'" id="BadgeDescription'+me.id+'"></div></div>';
+		var str =  heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+me.GetFormattedName()+'<div class="'+Molpy.DescClass(me)+'" id="BadgeDescription'+me.id+'"></div></div>';
 		str=Molpy.MaybeWrapFlipHoriz(str,group!='badges'&&me.np<0);
 		return r+'<div class="'+cn+'" onMouseOver="Molpy.Onhover(Molpy.BadgesById['+me.id+'],event)" onMouseOut="Molpy.Onunhover(Molpy.BadgesById['+me.id
 			+'],event)">'+str+'</div>';				 
@@ -1948,14 +1955,24 @@
 		{
 			var c='C'; //Comma
 			var id = 'n';
-			if(this.boost)id=''+this.boost.id;
+			if(this.boost)
+			{
+				id=''+this.boost.id;
+				if(Molpy.BoostsById[id]!==this.boost)
+				{
+					id=1-id;
+				}
+			}
 			return id+c+(this.vis?1:0)+c+(this.position.left||0)+c+(this.position.top||0)+c+(this.size.width||0)+c+(this.size.height||0);
 		}
 		this.FromString=function(str)
 		{
 			var c='C'; //Comma
 			var pixels=str.split(c);
-			this.boost=(pixels[0]=='n'?0:Molpy.BoostsById[parseInt(pixels[0])||0]);
+			var n = pixels[0];
+			this.boost=(n=='n'?0
+				:(n>=0?Molpy.BoostsById[parseInt(n)||0]
+				:Molpy.BadgesById[1-parseInt(n)||0]));
 			this.boost.faveRefresh=1;
 			this.vis=pixels[1]==true;
 			this.position={left:parseFloat(pixels[2]),top:parseFloat(pixels[3])};
@@ -1974,9 +1991,14 @@
 			{
 				g('optionFave'+n).text=this.boost.name;
 				g('faveHeader'+n).innerHTML=this.boost.GetHeading()+this.boost.GetFormattedName();
-				g('faveContent'+n).innerHTML=(this.boost.unlocked?this.boost.GetDesc():'This Boost is locked!');
+				if(this.boost.boost)
+				{
+					g('faveContent'+n).innerHTML=(this.boost.unlocked?this.boost.GetDesc():'This Boost is locked!');
+					this.boost.updateBuy(1);
+				}else{
+					g('faveContent'+n).innerHTML=(this.boost.earned?this.boost.GetDesc():'This Badge is unearned!');					
+				}
 				g('sectionFave'+n).className='draggable-element table-wrapper '+this.boost.GetFullClass();
-				this.boost.updateBuy(1);
 			}else
 			{
 				g('optionFave'+n).text=n+' (empty)';
