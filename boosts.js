@@ -988,7 +988,7 @@
 			{
 				var c = Molpy.Got('TDE')+1;
 				Molpy.Add('FluxCrystals',c);
-				if(Molpy.Got('Void Goat'))Molpy.Add('Goat',1);
+				if(Molpy.Got('Void Goat'))Molpy.Add('Goats',1);
 			}
 		}else
 		{
