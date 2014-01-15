@@ -1130,6 +1130,7 @@
 			var ch = Molpy.Boosts['GlassChips'];
 			var bl = Molpy.Boosts['GlassBlocks'];
 			var str='Causes the Glass Furnace to produce '+Molpify(me.power+1,3)+' Glass Chip'+plural(pow)+' per run.';
+			if (!Molpy.Boosts['Glass Furnace'].IsEnabled) return str;
 			if(isFinite(me.power)&&Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()))
 			{
 				var useChips=1;
@@ -1474,6 +1475,8 @@
 		function(me)
 		{		
 			var str='Causes the Glass Blower to produce '+Molpify(me.power+1,3)+' Glass Block'+plural(pow)+' per run.';
+			if (!Molpy.Boosts['Glass Blower'].IsEnabled) return str;
+
 			if(isFinite(me.power))
 			{
 				if(Molpy.Has('GlassBlocks',5))
