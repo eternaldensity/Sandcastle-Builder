@@ -2088,9 +2088,9 @@
 	Molpy.InitGUI=function()
 	{
 		Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac','stuff','land','prize'];
-		Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves'];
-		Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
-		Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
+		Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves', 'StuffCounts', 'IncomeCounts'];
+		Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves', 'StuffCounts', 'IncomeCounts'];
+		Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves', 'StuffCounts', 'IncomeCounts'];
 		$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);
 		$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 		Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
