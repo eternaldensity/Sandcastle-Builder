@@ -26,6 +26,9 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.2995
+- Some description improvements
+
 ## 3.2994
 - Badges can be faves!
 - In stats view the alias of boosts and badges is shown. This can be used to refer to it in Shopping Assistant or Faves instead of the full name.

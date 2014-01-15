@@ -826,8 +826,8 @@
 			if(!me.bought)
 				return 'We do your shopping for you! For a small fee...';
 			if(!Molpy.shoppingItem)
-				return '<input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> an item to automatically buy when '+'ASHF'+' is active';
-			return 'Buys '+Molpy.shoppingItemName+' whenever possible, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
+				return '<input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> an item to automatically buy when ASHF is active';
+			return 'Buys '+Molpy.shoppingItemName+' whenever possible, during ASHF, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
 		},Sand:'18G',Castles:'650G',icon:'shopassist',className:'action',group:'hpt'
 	});
 	Molpy.ChooseShoppingItem=function(mule)
@@ -2988,7 +2988,7 @@
 	new Molpy.Boost({name:'Sand Mould Filler',alias:'SMF',desc:
 		function(me)
 		{
-			var str ='Fills a Sand Mould with Sand to make a Sand Monument.<br>This requires 200 Factory Automation runs and consumes 100 Sand plus 20% per NewPix number of the Discovery, per run.<br>';
+			var str ='Fills a Sand Mould with Sand to make a Sand Monument.<br>This requires 200 Factory Automation runs and consumes 100 Sand plus 20% cumulatively per NewPix number of the Discovery, per run.<br>';
 			if(Molpy.Earned('Minus Worlds'))str+='(Squared if negative)<br>';
 			if(me.bought)
 			{
@@ -3036,7 +3036,7 @@
 	new Molpy.Boost({name:'Glass Mould Filler',alias:'GMF',desc:
 		function(me)
 		{
-			var str ='Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.<br>This requires 800 Factory Automation runs and consumes 1M Glass Blocks plus 2% per NewPix number of the Discovery, per run.<br>';
+			var str ='Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.<br>This requires 800 Factory Automation runs and consumes 1M Glass Blocks plus 2% cumulatively per NewPix number of the Discovery, per run.<br>';
 			if(Molpy.Earned('Minus Worlds'))str+='(Squared if negative)<br>';
 			if(me.bought)
 			{
@@ -3943,7 +3943,7 @@
 				me.power = 6e51;
 			}
 			var n = me.power;
-			var str='Tool Factory produces up to '+Molpify(n,2)+' of any Glass Tool per mNP.';
+			var str='Tool Factory produces up to '+Molpify(n*12,2)+' Glass Tools per mNP (distributed evenly between each type of Glass Tool).';
 			if(Molpy.Earned('Nope!'))
 			{
 				return str;
