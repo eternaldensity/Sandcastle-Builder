@@ -988,7 +988,7 @@
 			{
 				var c = Molpy.Got('TDE')+1;
 				Molpy.Add('FluxCrystals',c);
-				if(Molpy.Got('Void Goat'))Molpy.Add('Goat',1);
+				if(Molpy.Got('Void Goat'))Molpy.Add('Goats',1);
 			}
 		}else
 		{
@@ -1130,6 +1130,7 @@
 			var ch = Molpy.Boosts['GlassChips'];
 			var bl = Molpy.Boosts['GlassBlocks'];
 			var str='Causes the Glass Furnace to produce '+Molpify(me.power+1,3)+' Glass Chip'+plural(pow)+' per run.';
+			if (!Molpy.Boosts['Glass Furnace'].IsEnabled) return str;
 			if(isFinite(me.power)&&Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement()))
 			{
 				var useChips=1;
@@ -1474,6 +1475,8 @@
 		function(me)
 		{		
 			var str='Causes the Glass Blower to produce '+Molpify(me.power+1,3)+' Glass Block'+plural(pow)+' per run.';
+			if (!Molpy.Boosts['Glass Blower'].IsEnabled) return str;
+
 			if(isFinite(me.power))
 			{
 				if(Molpy.Has('GlassBlocks',5))
@@ -4971,7 +4974,7 @@
 	}
 	Molpy.ToggleBit=function(myid,bit) {
 		Molpy.BoostsById[myid].power ^= (1<<bit);
-		Molpy.BoostsbyId[myid].Refresh();
+		Molpy.BoostsById[myid].Refresh();
 	}
 	
 	new Molpy.Boost({name:'Eww',
@@ -5211,7 +5214,7 @@
 		
 	new Molpy.Boost({name:'Flux Harvest',className:'action', group:'chron',  price:{Blackprints:'1G',QQ:'1M'},
 			desc:function(me) {
-				if (!me.bought) return 'Easy harvesting of flux crystals from remaining rifts';
+				if (!me.bought || Molpy.IsEnabled('Time Lord')) return 'Easy harvesting of flux crystals from remaining rifts';
 				return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
 				}
 	});
@@ -5232,6 +5235,8 @@
 				c = Math.floor(c*.9 + c*.2*Math.random());
 				Molpy.Add('FluxCrystals',c);
 				Molpy.Add('Time Lord',levels);
+			} else {
+				Molpy.Notify("No Rifts left to harvest");
 			}
 		}
 	};
