@@ -1813,6 +1813,7 @@ Molpy.Up=function()
 		Molpy.boostHTML='';
 		Molpy.Boosts=[];
 		Molpy.BoostsById=[];
+		Molpy.BoostsByGroup=[];
 		Molpy.BoostN=0;
 		Molpy.BoostsInShop=[];
 		Molpy.BoostsOwned=0;
@@ -2021,6 +2022,10 @@ Molpy.Up=function()
 			
 			Molpy.Boosts[this.alias]=this;
 			Molpy.BoostsById[this.id]=this;
+			if(!Molpy.BoostsByGroup[this.group]){
+				Molpy.BoostsByGroup[this.group]=[];
+			}
+			Molpy.BoostsByGroup[this.group].push(this.name);
 			if(this.name!=this.alias)
 			{
 				Molpy.BoostAKA[this.name]=this.alias;
