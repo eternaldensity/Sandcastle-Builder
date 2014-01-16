@@ -26,7 +26,7 @@ For personal amusement only.
 
 ## Changelog
 
-## 3.2995
+## 3.3
 - Some description improvements
 - Prevent too much panther poking
 - Stuff and Income sections by LucidCrux: see your current Stuff amounts all in one handy place, also sand/chip/tool rates and per click
