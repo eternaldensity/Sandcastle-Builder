@@ -1362,9 +1362,7 @@
 			g('stuffTFChipCount').innerHTML='TF Chips: ' + Molpify(Molpy.Boosts['TF'].Level,3);
 			for(var i in Molpy.BoostsByGroup['stuff'])
 			{
-				var bst = Molpy.Boosts[Molpy.BoostsByGroup['stuff'][i]];
-				if(bst == undefined) bst = Molpy.Boosts[Molpy.BoostAKA[Molpy.BoostsByGroup['stuff'][i]]];
-				
+				var bst = Molpy.Boosts[Molpy.BoostsByGroup['stuff'][i]];				
 				if(bst.alias == "Sand" || bst.alias == "Castles") continue;
 				if($('#stuff' + bst.alias + 'Count').length == 0)
 				{

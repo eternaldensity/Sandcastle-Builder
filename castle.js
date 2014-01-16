@@ -2025,7 +2025,7 @@ Molpy.Up=function()
 			if(!Molpy.BoostsByGroup[this.group]){
 				Molpy.BoostsByGroup[this.group]=[];
 			}
-			Molpy.BoostsByGroup[this.group].push(this.name);
+			Molpy.BoostsByGroup[this.group].push(this.alias);
 			if(this.name!=this.alias)
 			{
 				Molpy.BoostAKA[this.name]=this.alias;
