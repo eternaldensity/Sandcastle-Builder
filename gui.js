@@ -1355,6 +1355,39 @@
 		$('.timeflip').toggleClass('flip-horizontal',(Molpy.previewNP?Molpy.previewNP<0:Molpy.newpixNumber<0));
 		g('version').innerHTML= '<br>Version: '+Molpy.version + (Molpy.version==3.11?'<br>Windows?':'');
 		
+		g('stuffCastleCount').innerHTML='Castles: ' + Molpify(Molpy.castles,3);
+		g('stuffSandCount').innerHTML='Sand: ' + Molpify(Molpy.sand,3);
+		g('stuffTFChipCount').innerHTML='TF Chips: ' + Molpify(Molpy.Boosts['TF'].power,3);
+		g('stuffChipCount').innerHTML='Chips: ' + Molpify(Molpy.Boosts['GlassChips'].Level,3);
+		g('stuffBlockCount').innerHTML='Blocks: ' + Molpify(Molpy.Boosts['GlassBlocks'].Level,3);
+		g('stuffGoatCount').innerHTML='Goats: ' + Molpify(Molpy.Boosts['Goats'].Level,3);
+		g('stuffLogicatCount').innerHTML='Logicat Levels: ' + Molpify(Molpy.Boosts['Logicat'].bought,3);
+		g('stuffQuestionQubeCount').innerHTML='Question Qubes: ' + Molpify(Molpy.Boosts['QQ'].Level,3);
+		g('stuffFluxCrystalCount').innerHTML='Flux Crystals: ' + Molpify(Molpy.Boosts['FluxCrystals'].Level,3);
+		g('stuffBonemealCount').innerHTML='Bonemeal: ' + Molpify(Molpy.Boosts['Bonemeal'].Level,3);
+		g('stuffVacuumCount').innerHTML='Vacuums: ' + Molpify(Molpy.Boosts['Vacuum'].Level,3);
+		
+		g('incomeSandRate').innerHTML='Sand: ' + Molpify(Molpy.sandPermNP,1) + '/mNP';
+		g('incomeSandClickRate').innerHTML='Sand/click: ' + Molpify(Molpy.computedSandPerClick,1);
+		g('incomeChipRate').innerHTML='TF Chips: ' + Molpify(Molpy.glassPermNP,1) + '/mNP';
+		g('incomeChipClickRate').innerHTML='TF Chips/click: ' + Molpify(Molpy.chipsPerClick, 1);
+		g('incomeNewTools').innerHTML='Tools: ' + Molpify(Molpy.toolsBuilt,1) + ' built this mNP';
+		
+		var tf=Molpy.Got('TF');
+		$('#stuffTFChipCount').toggleClass('hidden',!tf);
+		$('#stuffChipCount').toggleClass('hidden',!tf);
+		$('#stuffBlockCount').toggleClass('hidden',!tf);
+		$('#stuffGoatCount').toggleClass('hidden', !Molpy.Got('Goats'));
+		$('#stuffLogicatCount').toggleClass('hidden', !Molpy.Got('Logicat'));
+		$('#stuffQuestionQubeCount').toggleClass('hidden', !Molpy.Got('QQ'));
+		$('#stuffFluxCrystalCount').toggleClass('hidden', !Molpy.Got('FluxCrystals'));
+		$('#stuffBonemealCount').toggleClass('hidden', !Molpy.Got('Bonemeal'));
+		$('#stuffVacuumCount').toggleClass('hidden', !Molpy.Got('Vacuum'));
+		
+		$('#incomeChipRate').toggleClass('hidden',!tf);
+		$('#incomeChipClickRate').toggleClass('hidden',!tf);
+		$('#incomeNewTools').toggleClass('hidden',!tf);
+		
 		var repainted=Molpy.shopRepaint||Molpy.boostRepaint||Molpy.badgeRepaint;
 		var tagRepaint=Molpy.boostRepaint||Molpy.badgeRepaint;
 		var shopRepainted=Molpy.shopRepaint;
@@ -2055,9 +2088,9 @@
 	Molpy.InitGUI=function()
 	{
 		Molpy.lootVisOrder=['boosts','ninj','cyb','hpt','chron','bean','badges','badgesav','discov','monums','monumg','tagged','ceil','drac','stuff','land','prize'];
-		Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves'];
-		Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
-		Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves'];
+		Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves', 'StuffCounts', 'IncomeCounts'];
+		Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves', 'StuffCounts', 'IncomeCounts'];
+		Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves', 'StuffCounts', 'IncomeCounts'];
 		$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);
 		$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 		Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
