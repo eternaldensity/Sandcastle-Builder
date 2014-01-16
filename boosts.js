@@ -3103,6 +3103,7 @@
 		{
 			if(Molpy.BadgesById[i].earned&&!Molpy.BadgesById[i+1].earned)
 			{
+				Molpy.Spend('Bonemeal',10);
 				Molpy.MakeSandMould(Molpy.BadgesById[i+1].np);
 				return 1;
 			}
@@ -3150,7 +3151,7 @@
 		var smm=Molpy.Boosts['SMM'];
 		if(smm.power==0||smm.power>100)
 		{
-			if(smm.power==0&&Molpy.Got('Archimedes')&&Molpy.Spend('Bonemeal',10))
+			if(smm.power==0&&Molpy.Got('Archimedes')&&Molpy.Has('Bonemeal',10))
 			{
 				if(!Molpy.StartCheapestSandMould())return times;
 			}else
@@ -3292,6 +3293,7 @@
 		{
 			if(Molpy.BadgesById[i].earned&&!Molpy.BadgesById[i+1].earned)
 			{
+				Molpy.Spend('Bonemeal',10)
 				Molpy.MakeGlassMould(Molpy.BadgesById[i+1].np);
 				return 1;
 			}
@@ -3303,7 +3305,7 @@
 		var gmm=Molpy.Boosts['GMM'];
 		if(gmm.power==0||gmm.power>400)
 		{
-			if(gmm.power==0&&Molpy.Got('Archimedes')&&Molpy.Spend('Bonemeal',10))
+			if(gmm.power==0&&Molpy.Got('Archimedes')&&Molpy.Has('Bonemeal',10))
 			{
 				if(!Molpy.StartCheapestGlassMould())return times;
 			}else

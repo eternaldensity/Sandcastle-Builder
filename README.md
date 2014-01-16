@@ -34,6 +34,7 @@ For personal amusement only.
 - Furnace/Blower fix - waveney
 - More Time Lord info - waveney
 - Rob Refresh fix = waveney
+- Archimedes only spends bonemeal if he finds a mould to start
 
 ## 3.2994
 - Badges can be faves!
