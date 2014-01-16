@@ -3797,7 +3797,8 @@
 			if(zk.power<0)zk.power=0; //how?
 			var zooVisits = Math.floor(zk.power/1000);
 			zk.power-=zooVisits*1000;
-			Molpy.Boosts['Panther Poke'].buyFunction(zooVisits);
+			if(zooVisits)
+				Molpy.Boosts['Panther Poke'].buyFunction(zooVisits);
 			
 			if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
 		}

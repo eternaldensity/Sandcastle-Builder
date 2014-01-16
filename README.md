@@ -28,6 +28,12 @@ For personal amusement only.
 
 ## 3.2995
 - Some description improvements
+- Prevent too much panther poking
+- Stuff and Income sections by LucidCrux: see your current Stuff amounts all in one handy place, also sand/chip/tool rates and per click
+- Void Goat fix - waveney
+- Furnace/Blower fix - waveney
+- More Time Lord info - waveney
+- Rob Refresh fix = waveney
 
 ## 3.2994
 - Badges can be faves!
