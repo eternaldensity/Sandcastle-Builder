@@ -35,6 +35,7 @@ For personal amusement only.
 - More Time Lord info - waveney
 - Rob Refresh fix = waveney
 - Archimedes only spends bonemeal if he finds a mould to start
+- Restored colouring on upgradable badges (e.g. a Discovery you don't have the Sand Monument of will be yellow)
 
 ## 3.2994
 - Badges can be faves!

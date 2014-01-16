@@ -2174,11 +2174,26 @@ Molpy.Up=function()
 			}
 			this.GetFullClass=function()
 			{
-				return 'badge lootbox'+(this.earned?' loot ':' shop ')+(this.className||'');
+				var cn= 'badge lootbox '+(this.earned?'loot ':'shop ')+(this.className||'');				
+				if(this.HasUpgrade())
+					cn+=' action';
+				return cn;
+			}
+			this.HasUpgrade=function()
+			{
+				if(this.np)
+				{
+					var nGroup = Molpy.nextBageGroup[this.group];
+					var nBadge=Molpy.Badges[nGroup+this.np];
+					if(nBadge&&!nBadge.earned)
+					{
+						return true;
+					}
+				}
 			}
 			this.GetHeading=function()
 			{
-				return '<h1>['+Molpy.groupNames[this.group][0]+']</h1>';
+				return '<h1>['+Molpy.groupNames[this.group][0]+(this.HasUpgrade()?'+':'')+']</h1>';
 			}
 			this.GetFormattedName=function()
 			{

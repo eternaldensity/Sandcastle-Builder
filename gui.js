@@ -874,21 +874,10 @@
 		
 		if(!(Molpy.activeLayout.lootVis[group]||f))return'';
 		if(f&!me.bought&&group!='badges')return''; //this is for badgesav group
-		var cn= me.className||'';		
 		var status='';
-		if(me.np)
-		{
-			var nGroup = Molpy.nextBageGroup[group];
-			var nBadge=Molpy.Badges[nGroup+me.np];
-			if(nBadge&&!nBadge.earned)
-			{
-				status=' +';
-				cn='action';
-			}
-		}
 		var heading= me.GetHeading();	
+		var cn=me.GetFullClass();
 		if(cn&&me.earned)Molpy.UnlockBoost('Chromatic Heresy');
-		cn=me.GetFullClass();
 		if(Molpy.Boosts['Expando'].power)me.hoverOnCounter=1;
 		
 		var str =  heading+'<div id="badge_'+(me.icon?me.icon:me.id)+'" class="icon"></div>'+me.GetFormattedName()+'<div class="'+Molpy.DescClass(me)+'" id="BadgeDescription'+me.id+'"></div></div>';

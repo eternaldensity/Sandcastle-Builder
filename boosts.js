@@ -13,10 +13,10 @@
 		stuff:['stuff','Stuff'],
 		land:['land','Land'],
 		prize:['prize','Prizes'],
-		discov:['discoveries','Discoveries','discov','Discovery','A memorable discovery'],
-		monums:['sand monuments','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
-		monumg:['glass monuments','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
-		diamm:['masterpieces','Masterpieces',0,'Masterpiece','This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of','in diamond. <br>It molpifies with spikes of treeishness.'],
+		discov:['discovery','Discoveries','discov','Discovery','A memorable discovery'],
+		monums:['sand monument','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
+		monumg:['glass monument','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
+		diamm:['masterpiece','Masterpieces',0,'Masterpiece','This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of','in diamond. <br>It molpifies with spikes of treeishness.'],
 	};
 	Molpy.nextBageGroup={discov:'monums',monums:'monumg'};//,monumg:'diamm'};
 
