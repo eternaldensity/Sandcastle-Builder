@@ -1357,18 +1357,20 @@
 		
 		if(!noLayout)
 		{
-			g('stuffCastleCount').innerHTML='Castles: ' + Molpify(Molpy.castles,3);
 			g('stuffSandCount').innerHTML='Sand: ' + Molpify(Molpy.sand,3);
-			g('stuffTFChipCount').innerHTML='TF Chips: ' + Molpify(Molpy.Boosts['TF'].power,3);
-			g('stuffChipCount').innerHTML='Chips: ' + Molpify(Molpy.Boosts['GlassChips'].Level,3);
-			g('stuffBlockCount').innerHTML='Blocks: ' + Molpify(Molpy.Boosts['GlassBlocks'].Level,3);
-			g('stuffGoatCount').innerHTML='Goats: ' + Molpify(Molpy.Boosts['Goats'].Level,3);
-			g('stuffLogicatCount').innerHTML='Logicat Levels: ' + Molpify(Molpy.Boosts['Logicat'].bought,3);
-			g('stuffQuestionQubeCount').innerHTML='Question Qubes: ' + Molpify(Molpy.Boosts['QQ'].Level,3);
-			g('stuffFluxCrystalCount').innerHTML='Flux Crystals: ' + Molpify(Molpy.Boosts['FluxCrystals'].Level,3);
-			g('stuffBonemealCount').innerHTML='Bonemeal: ' + Molpify(Molpy.Boosts['Bonemeal'].Level,3);
-			g('stuffVacuumCount').innerHTML='Vacuums: ' + Molpify(Molpy.Boosts['Vacuum'].Level,3);
-			g('stuffMustardCount').innerHTML='Mustard: ' + Molpify(Molpy.Boosts['Mustard'].Level,3);
+			g('stuffCastleCount').innerHTML='Castles: ' + Molpify(Molpy.castles,3);
+			g('stuffTFChipCount').innerHTML='TF Chips: ' + Molpify(Molpy.Boosts['TF'].Level,3);
+			for(var i in Molpy.BoostsByGroup['stuff'])
+			{
+				var bst = Molpy.Boosts[Molpy.BoostsByGroup['stuff'][i]];				
+				if(bst.alias == "Sand" || bst.alias == "Castles") continue;
+				if($('#stuff' + bst.alias + 'Count').length == 0)
+				{
+					$("#sectionStuffCounts").append("<div id=\"stuff" + bst.alias + "Count\"></div>");
+				}
+				g('stuff' + bst.alias + 'Count').innerHTML=bst.plural + ': ' + Molpify(bst.Level,3);
+				$('#stuff' + bst.alias + 'Count').toggleClass('hidden', !Molpy.Got(bst.alias));
+			}
 			
 			g('incomeSandRate').innerHTML='Sand: ' + Molpify(Molpy.sandPermNP,1) + '/mNP';
 			g('incomeSandClickRate').innerHTML='Sand/click: ' + Molpify(Molpy.computedSandPerClick,1);
@@ -1377,17 +1379,7 @@
 			g('incomeNewTools').innerHTML='Tools: ' + Molpify(Molpy.toolsBuilt,1) + ' built this mNP';
 			
 			var tf=Molpy.Got('TF');
-			$('#stuffTFChipCount').toggleClass('hidden',!tf);
-			$('#stuffChipCount').toggleClass('hidden',!tf);
-			$('#stuffBlockCount').toggleClass('hidden',!tf);
-			$('#stuffGoatCount').toggleClass('hidden', !Molpy.Got('Goats'));
-			$('#stuffLogicatCount').toggleClass('hidden', !Molpy.Got('Logicat'));
-			$('#stuffQuestionQubeCount').toggleClass('hidden', !Molpy.Got('QQ'));
-			$('#stuffFluxCrystalCount').toggleClass('hidden', !Molpy.Got('FluxCrystals'));
-			$('#stuffBonemealCount').toggleClass('hidden', !Molpy.Got('Bonemeal'));
-			$('#stuffVacuumCount').toggleClass('hidden', !Molpy.Got('Vacuum'));
-			$('#stuffMustardCount').toggleClass('hidden', !Molpy.Got('Mustard'));
-			
+			$('#stuffTFChipCount').toggleClass('hidden',!tf);		
 			$('#incomeChipRate').toggleClass('hidden',!tf);
 			$('#incomeChipClickRate').toggleClass('hidden',!tf);
 			$('#incomeNewTools').toggleClass('hidden',!tf);
