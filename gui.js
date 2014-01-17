@@ -616,6 +616,8 @@
 				score++;
 				g('idlescore').innerHTML='Score: '+Molpify(score,3);
 				localStorage['idlescore']=score;
+				if(score%1000==0)
+					_gaq&&_gaq.push(['_trackEvent','PureIdle','Milestone',''+score]);
 				setTimeout(Molpy.Idle, 1000);
 			}
 		}
