@@ -3626,7 +3626,7 @@
         var fast=0;
 		var gcCount=Molpy.GlassCeilingCount();
 		if(gcCount==0)return;
-        if (gcCount==12 && (fVal==0) && (tfChipBuffer >= 78000*toolBuildNum)) //everything selected and we can afford it all!
+        if (gcCount==12 && (fVal==0) && (tfChipBuffer >= 78000*toolBuildNum) && toolBuildNum>acPower) //everything selected and we can afford it all!
         {
             var t = Molpy.tfOrder.length;
             fast=1;
@@ -3736,7 +3736,7 @@
             var t = Molpy.tfOrder.length;
             while(on&&t--)
             {
-                if(isFinite(Molpy.priceFactor*Molpy.tfOrder[t].price)) on=0;
+                if((isFinite(Molpy.priceFactor*Molpy.tfOrder[t].price)  && !fVal) || Molpy.tfOrder[t].amount<=0) on=0;
             }
             if(!on)break;
             var t = Molpy.tfOrder.length;
