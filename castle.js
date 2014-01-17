@@ -1950,7 +1950,9 @@ Molpy.Up=function()
 			Molpy.BoostN++;
 			if(this.icon)
 			{
-				addCSSRule(document.styleSheets[1], '#boost_' + this.icon, "background-image:url('img/boost_" + this.icon + "_grey_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.shop #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_grey_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.png' )");
 			}
 			return this;
 		}	
@@ -2143,6 +2145,11 @@ Molpy.Up=function()
 			Molpy.BadgesById[this.id]=this;
 			Molpy.BadgeAKA[this.name]=this.alias;
 			Molpy.BadgeN++;
+			if(this.icon)
+			{
+				addCSSRule(document.styleSheets[1], '.darkscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
+			}
 			return this;
 		}		
 		
