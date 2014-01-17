@@ -38,6 +38,7 @@ For personal amusement only.
 - Archimedes only spends bonemeal if he finds a mould to start
 - Restored colouring on upgradable badges (e.g. a Discovery you don't have the Sand Monument of will be yellow)
 - Fixed a discovery typo which waveney made :P
+- Missing tool refresh in toolfactory
 
 ## 3.2994
 - Badges can be faves!

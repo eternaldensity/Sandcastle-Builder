@@ -3632,7 +3632,8 @@
             fast=1;
             while(t--)
             {
-                Molpy.tfOrder[t].create(toolBuildNum-acPower);
+				Molpy.tfOrder[t].create(toolBuildNum-acPower);
+				Molpy.tfOrder[t].Refresh();
             }              
             tfChipBuffer -= 78000*toolBuildNum;
             built = toolBuildNum*12;   
