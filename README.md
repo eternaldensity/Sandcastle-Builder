@@ -30,12 +30,14 @@ For personal amusement only.
 - Some description improvements
 - Prevent too much panther poking
 - Stuff and Income sections by LucidCrux: see your current Stuff amounts all in one handy place, also sand/chip/tool rates and per click
+- Stuff section is now dynamically generated from all Stuff boosts that exist (thanks LucidCrux!)
 - Void Goat fix - waveney
 - Furnace/Blower fix - waveney
 - More Time Lord info - waveney
 - Rob Refresh fix = waveney
 - Archimedes only spends bonemeal if he finds a mould to start
 - Restored colouring on upgradable badges (e.g. a Discovery you don't have the Sand Monument of will be yellow)
+- Fixed a discovery typo which waveney made :P
 
 ## 3.2994
 - Badges can be faves!

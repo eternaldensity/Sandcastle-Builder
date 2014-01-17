@@ -582,7 +582,7 @@
     Molpy.MakeQuadBadge({np:1363,name:'Berries Picked',desc:'Cueball picks some berries'});
     Molpy.MakeQuadBadge({np:1368,name:'Sticks',desc:'Cueball finds the first traces of people'});
     Molpy.MakeQuadBadge({np:1378,name:'Berries Eaten',desc:'Cueball gives berries to Megan'});
-    Molpy.MakeQuadBadge({np:1380,name:'Campsite',desc:'Cueball: Tere are people here.  Or were.  I found some sort of campsite'});
+    Molpy.MakeQuadBadge({np:1380,name:'Campsite',desc:'Cueball: There are people here.  Or were.  I found some sort of campsite'});
     Molpy.MakeQuadBadge({np:1381,name:'Recent?',desc:'Megan asks if is recent, Cueball says it has been empty for a while'});
     Molpy.MakeQuadBadge({np:1383,name:'Thirsty',desc:'They go to the river'});
     Molpy.MakeQuadBadge({np:1386,name:'Left Behind?',desc:'They discuss what is in the camp'});
