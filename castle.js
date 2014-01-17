@@ -1948,6 +1948,10 @@ Molpy.Up=function()
 				Molpy.BoostAKA[this.name]=this.alias;
 			}
 			Molpy.BoostN++;
+			if(this.icon)
+			{
+				addCSSRule(document.styleSheets[1], '#boost_' + this.icon, "background-image:url('img/boost_" + this.icon + "_grey_icon.png' )");
+			}
 			return this;
 		}	
 		
