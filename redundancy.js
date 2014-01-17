@@ -1,4 +1,87 @@
 'use strict';
+var postfixes=[
+	{limit:1e210,divisor:1e210,postfix:['Q',' Quita']},
+	{limit:1e42,divisor:1e42,postfix:['W',' Wololo']},
+	{limit:1e39,divisor:1e39,postfix:['L',' Lotta']},
+	{limit:1e36,divisor:1e36,postfix:['F',' Ferro']},
+	{limit:1e33,divisor:1e33,postfix:['H',' Helo']}, //or Ballard
+	{limit:1e30,divisor:1e30,postfix:['S',' Squilli']},
+	{limit:1e27,divisor:1e27,postfix:['U',' Umpty']},
+
+	{limit:1e24,divisor:1e24,postfix:['Y',' Yotta']},
+	{limit:1e21,divisor:1e21,postfix:['Z',' Zeta']},
+	{limit:1e18,divisor:1e18,postfix:['E',' Exa']},
+	{limit:1e15,divisor:1e15,postfix:['P',' Peta']},
+	{limit:1e12,divisor:1e12,postfix:['T',' Tera']},
+	{limit:1e9,divisor:1e9,postfix:['G',' Giga']},
+	{limit:1e6,divisor:1e6,postfix:['M',' Mega']},
+	{limit:9e3,divisor:1e3,postfix:['K',' Kilo']}, //WHAT
+];
+function Molpify(number, raftcastle, shrinkify)
+{
+	if(isNaN(number))return'Mustard';
+	if(!isFinite(parseFloat(number)))return'Infinite';
+	if(number<0)return '-'+Molpify(-number,raftcastle,shrinkify);
+	var molp='';
+	
+	if(shrinkify==2)shrinkify=0;
+	else if(Molpy&&!shrinkify)shrinkify=!Molpy.options.science;
+	
+	if(shrinkify)
+	{
+		for (var i in postfixes)
+		{	
+			var p = postfixes[i];
+			if(number>=p.limit)
+			{
+				return Molpify(number / p.divisor, raftcastle,1)+p.postfix[Molpy.options.longpostfix];
+			}
+		}
+	}else{
+		if(number==3)return 'Math.floor(Math.PI)';
+		if(number==4)return 'Math.ceil(Math.PI)';
+	}
+	
+	if(raftcastle>0)
+	{
+		var numCopy=number;
+		//get the right number of decimal places to stick on the end:
+		var raft=numCopy*Math.pow(10,raftcastle)-Math.floor(numCopy)*Math.pow(10,raftcastle);
+		var sraft = Math.floor(raft)+'';
+		if((sraft).length>raftcastle)
+		{
+			numCopy++;
+			sraft=''; //rounded decimal part up to 1
+		}else if(raft) while(sraft.length<raftcastle)
+		{
+			sraft='0'+sraft; //needs leading zeroes because it's a number like 1.01
+		}
+		molp=Molpify(numCopy,0,shrinkify)+(raft?('.'+sraft):''); //stick them on the end if there are any
+	}else
+	{
+		number = Math.floor(number);
+		//drop the decimal bit
+		var sep = (number+'').indexOf('e') ==-1; //true if not in exponential notation
+		number=(number+'').split('').reverse(); //convert to string, then array of chars, then backwards
+		for(var i in number)
+		{
+			if(sep&&i%3==0 &&i>0) molp=','+molp;//stick commas in every 3rd spot but not 0th
+			molp=number[i]+molp;
+		}
+		if(!sep)
+		{
+			var dot=molp.indexOf('.')+1;
+			var exp=molp.indexOf('e');
+			molp=molp.slice(0,dot)+molp.slice(dot,exp).slice(0,6)+molp.slice(exp);//truncate after 6 decimal places
+		}
+	}
+	return molp;
+}
+
+function MolpifyCountdown(mNP,p)
+{
+	return mNP==0?'ever':mNP>=1000?Molpify(mNP/1000,p)+'NP':Molpify(mNP)+'mNP'
+}
 function flandom(n){return(Math.floor(Math.random()*n));}
 function randbool(){return(Math.floor(Math.random()*2)==0);}
 function GLRschoice(things)

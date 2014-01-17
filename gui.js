@@ -1,5 +1,70 @@
 ﻿Molpy.DefineGUI=function()
 {
+	function Molpify(number, raftcastle, shrinkify)
+	{
+		if(isNaN(number))return'Mustard';
+		if(!isFinite(parseFloat(number)))return'Infinite';
+		if(number<0)return '-'+Molpify(-number,raftcastle,shrinkify);
+		var molp='';
+		
+		if(shrinkify==2)shrinkify=0;
+		else if(Molpy&&!shrinkify)shrinkify=!Molpy.options.science;
+		
+		if(shrinkify)
+		{
+			for (var i in postfixes)
+			{	
+				var p = postfixes[i];
+				if(number>=p.limit)
+				{
+					return Molpify(number / p.divisor, raftcastle,1)+p.postfix[Molpy.options.longpostfix];
+				}
+			}
+		}else{
+			if(number==3)return 'Math.floor(Math.PI)';
+			if(number==4)return 'Math.ceil(Math.PI)';
+		}
+		
+		if(raftcastle>0)
+		{
+			var numCopy=number;
+			//get the right number of decimal places to stick on the end:
+			var raft=numCopy*Math.pow(10,raftcastle)-Math.floor(numCopy)*Math.pow(10,raftcastle);
+			var sraft = Math.floor(raft)+'';
+			if((sraft).length>raftcastle)
+			{
+				numCopy++;
+				sraft=''; //rounded decimal part up to 1
+			}else if(raft) while(sraft.length<raftcastle)
+			{
+				sraft='0'+sraft; //needs leading zeroes because it's a number like 1.01
+			}
+			molp=Molpify(numCopy,0,shrinkify)+(raft?('.'+sraft):''); //stick them on the end if there are any
+		}else
+		{
+			number = Math.floor(number);
+			//drop the decimal bit
+			var sep = (number+'').indexOf('e') ==-1; //true if not in exponential notation
+			number=(number+'').split('').reverse(); //convert to string, then array of chars, then backwards
+			for(var i in number)
+			{
+				if(sep&&i%3==0 &&i>0) molp=','+molp;//stick commas in every 3rd spot but not 0th
+				molp=number[i]+molp;
+			}
+			if(!sep)
+			{
+				var dot=molp.indexOf('.')+1;
+				var exp=molp.indexOf('e');
+				molp=molp.slice(0,dot)+molp.slice(dot,exp).slice(0,6)+molp.slice(exp);//truncate after 6 decimal places
+			}
+		}
+		return molp;
+	}
+
+	function MolpifyCountdown(mNP,p)
+	{
+		return mNP==0?'ever':mNP>=1000?Molpify(mNP/1000,p)+'NP':Molpify(mNP)+'mNP'
+	}
 	Molpy.IsChildOf=function(child,parent)
 	{
 		if(!child)return;
@@ -529,7 +594,31 @@
 	if(!g('game'))
 	{
 		Molpy.Load();
-		g('indexversion').innerHTML='The Game of Time. Version '+Molpy.version;
+		if(g('indexversion'))
+		{
+			g('indexversion').innerHTML='The Game of Time. Version '+Molpy.version;
+		}else{			
+			Molpy.StartIdle=function()
+			{
+				if(!Molpy.supportsLocalStorage)
+				{
+					g('idlescore').innerHTML='localstorage not supported';
+					return;
+				}
+				var score =localStorage['idlescore']||0;
+				g('idlescore').innerHTML='Score: '+Molpify(score,3);
+				localStorage['idlescore']=score;
+				setTimeout(Molpy.Idle, 1000);
+			}
+			Molpy.Idle=function()
+			{
+				var score =localStorage['idlescore']||0;
+				score++;
+				g('idlescore').innerHTML='Score: '+Molpify(score,3);
+				localStorage['idlescore']=score;
+				setTimeout(Molpy.Idle, 1000);
+			}
+		}
 		return;
 	}
 	
@@ -2109,5 +2198,4 @@
 			}
 		);
 	}
-	
 }

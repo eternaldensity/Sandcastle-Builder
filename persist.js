@@ -822,7 +822,8 @@
 			alert('Error : you are a time traveller attempting to load a save from v'+version+' with v'+Molpy.version+'.');
 			return 0;
 		}
-		g('title').innerHTML=GLRschoice(Molpy.titles);
+		if(!g('pureidle'))
+			g('title').innerHTML=GLRschoice(Molpy.titles);
 		return 1;
 	}
 	
