@@ -2468,7 +2468,7 @@
 		}
 	});
 	new Molpy.Boost({name:'Crate Key',desc:'Quarters the price of Locked Crate',stats:'Quarters the price of Locked Crate, and does something else if you have already bought Locked Crate.', icon:'cratekey',
-		,GlassBlocks:function()
+		GlassBlocks:function()
 		{return Molpy.LogiMult(20);},
 		buyFunction:function()
 		{
@@ -4853,7 +4853,7 @@
 	new Molpy.Boost({name:'Bone Clicker',desc:'Sand and Glass Chips from clicking are multliplied by the amount of Bonemeal you have, if any.',
 		Sand:'5K',Castles:12,group:'prize',prizes:1,tier:1, icon:'boneclicker'});
 	new Molpy.Boost({name:'Double Department',desc:Molpy.redactedWords+' activate the DoRD twice when they would activate it once.',
-		Sand:'70M',Castles:'50K',group:'prize',prizes:1,tier:1, icon:doubledepartment});
+		Sand:'70M',Castles:'50K',group:'prize',prizes:1,tier:1, icon:'doubledepartment'});
 	new Molpy.Boost({name:'Spare Tools',desc:'Every dig-click builds you a free random tool',
 		Sand:'2G',Castles:'7M',group:'prize',prizes:1,tier:1, icon:'sparetools'});
 	new Molpy.Boost({name:'Doubletap',desc:'Every dig-click counts twice.',Sand:'1K',Castles:6,group:'prize',prizes:2,tier:1, icon:'doubletap'});
