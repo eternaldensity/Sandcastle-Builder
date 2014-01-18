@@ -2148,7 +2148,7 @@ Molpy.Up=function()
 			if(this.icon)
 			{
 				addCSSRule(document.styleSheets[1], '.darkscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.darkscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
 			}
 			return this;
 		}		
