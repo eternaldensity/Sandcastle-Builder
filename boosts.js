@@ -251,7 +251,7 @@
 			return 'Increases sand dig rate by 2% per Badge earned';
 		}
 	});
-	new Molpy.Boost({name:'Affordable Swedish Home Furniture',alias:'ASHF',desc: function(me){return Molpify(me.power*100,1)+'% off all items for '
+	new Molpy.Boost({name:'Affordable Swedish Home Furniture',alias:'ASHF', icon:'ashf', desc: function(me){return Molpify(me.power*100,1)+'% off all items for '
 		+MolpifyCountdown(me.countdown)}
 		,buyFunction:function(){
 			Molpy.shopRepaint=1;
@@ -597,7 +597,7 @@
 		ch.Refresh();
 		Molpy.UpdateColourScheme();
 	}
-	new Molpy.Boost({name:'Flux Turbine',desc:'Castles lost via Molpy Down or Temporal Rift boost the rate of building new Castles',
+	new Molpy.Boost({name:'Flux Turbine', icon:'fluxturbine', desc:'Castles lost via Molpy Down or Temporal Rift boost the rate of building new Castles',
 		Sand:1985,Castles:121,
 		stats:function()
 		{
@@ -664,7 +664,7 @@
 		Molpy.recalculateDig=1;
 		Molpy.GiveTempBoost('Jamming',1);
 	}
-	new Molpy.Boost({name:'Jamming',desc:
+	new Molpy.Boost({name:'Jamming', icon:'jamming', desc:
 		function(me)
 		{		
 			return 'You cannot access NewPixBot Navigation Code for '+MolpifyCountdown(me.countdown);
@@ -685,7 +685,7 @@
 		 ,icon:'bkj',group:'hpt'
 	});
 		
-	new Molpy.Boost({name:'Summon Knights Temporal',desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
+	new Molpy.Boost({name:'Summon Knights Temporal', icon:'summonknighttemporal', desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
 		Sand:function()
 		{
 			var me=Molpy.Boosts['Summon Knights Temporal'];
@@ -938,7 +938,7 @@
 	new Molpy.Boost({name:'Broken Rung',desc:'Multiplies the Sand output of Ladders by the amount of the tool you have least of.',
 		Sand:'1769M',Castles: '450K',icon:'brokenrung'});
 	
-	new Molpy.Boost({name:'Temporal Rift',
+	new Molpy.Boost({name:'Temporal Rift', icon:'temporalrift',
 		desc:function(me)
 		{
 			if(me.bought)return 'A hole in Time has opened. You can not determine where it leads, but it will close in '+MolpifyCountdown(me.countdown)+'.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
@@ -1021,7 +1021,7 @@
 			return str;
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,Sand:'80M',Castles:'0.5M',icon:'glassfurnace',className:'toggle',group:'hpt'});
-	new Molpy.Boost({name:'Glass Furnace Switching',
+	new Molpy.Boost({name:'Glass Furnace Switching', icon:'glassfurnaceswitching',
 		desc:function(me)
 		{
 			return (me.IsEnabled?'off':'on')+' in '+MolpifyCountdown(me.countdown);
@@ -1441,7 +1441,7 @@
 			
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,icon:'glassblower',className:'toggle',group:'hpt'});
-	new Molpy.Boost({name:'Glass Blower Switching',
+	new Molpy.Boost({name:'Glass Blower Switching', icon:'glassblowerswitching',
 		desc:function(me)
 		{
 			return (me.IsEnabled?'off':'on')+' in '+MolpifyCountdown(me.countdown);
@@ -2102,7 +2102,7 @@
 	
 	Molpy.redundancy=MakeRedundancy();
 	
-	new Molpy.Boost({name:'Free Advice',
+	new Molpy.Boost({name:'Free Advice', icon:'freeadvice',
 		desc:function(me)
 		{
 			if(Molpy.Got('TF'))
@@ -2387,7 +2387,7 @@
 		}
 		,Sand:'55E',Castles:'238E',GlassBlocks:100,group:'stuff',icon:'logicat'
 	});
-	new Molpy.Boost({name:'Temporal Duplication',alias:'TDE',desc:
+	new Molpy.Boost({name:'Temporal Duplication',alias:'TDE', icon:'temporalduplication' ,desc:
 		function(me)
 		{
 			var tdf=Molpy.TDFactor()-1;
@@ -2417,7 +2417,7 @@
 		}
 		,className:'alert',icon:'impninja'
 	});
-	new Molpy.Boost({name:'Factory Ninja',desc:
+	new Molpy.Boost({name:'Factory Ninja', icon:'factoryninja', desc:
 		function(me){return 'The next '+me.power+' Ninja Builder'+plural(me.power)+' will activate Factory Automation';}
 		,group:'ninj',logic:3,className:'alert',startPower:function()
 		{
@@ -2432,7 +2432,7 @@
 		if(Molpy.Got('Logicastle'))return Math.pow(1.5,Molpy.Level('Logicat'));
 		return 1;
 	}
-	new Molpy.Boost({name:'Flux Surge',desc:
+	new Molpy.Boost({name:'Flux Surge', icon:'fluxsurge', desc:
 		function(me){return 'Increases the effect of Flux Turbine for '+MolpifyCountdown(me.countdown);}
 		,group:'chron',startCountdown:function()
 		{
@@ -2701,7 +2701,7 @@
 		className:'action',group:'bean',icon:'camera'
 	});
 	
-	new Molpy.Boost({name:'Memories Revisited',desc:'Allows you to quickly jump in Time to Discoveries you have made.',
+	new Molpy.Boost({name:'Memories Revisited', icon:'memoriesrevisited', desc:'Allows you to quickly jump in Time to Discoveries you have made.',
 		Sand:'50P',Castles:'20P',GlassBlocks:'20K',group:'chron'
 	});
 	
@@ -2946,7 +2946,7 @@
 			Molpy.Notify(this.name+' has cancelled making <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
 		}
 	});
-	new Molpy.Boost({name:'Glass Mould Maker',alias:'GMM',desc:
+	new Molpy.Boost({name:'Glass Mould Maker',alias:'GMM', icon:'glassmouldmaker', desc:
 		function(me)
 		{
 			var str = 'Allows you to make a Glass Mould of a Sand Monument.';
@@ -2988,7 +2988,7 @@
 			Molpy.Notify(this.name+' has cancelled making <small>'+Molpy.Badges['monumg'+this.bought].name+'</small>',1);
 		}
 	});
-	new Molpy.Boost({name:'Sand Mould Filler',alias:'SMF',desc:
+	new Molpy.Boost({name:'Sand Mould Filler',alias:'SMF', icon:'sandmouldfiller', desc:
 		function(me)
 		{
 			var str ='Fills a Sand Mould with Sand to make a Sand Monument.<br>This requires 200 Factory Automation runs and consumes 100 Sand plus 20% cumulatively per NewPix number of the Discovery, per run.<br>';
@@ -3036,7 +3036,7 @@
 			Molpy.Notify(this.name+' has cancelled filling <small>'+Molpy.Badges['monums'+this.bought].name+'</small>',1);
 		}
 	});
-	new Molpy.Boost({name:'Glass Mould Filler',alias:'GMF',desc:
+	new Molpy.Boost({name:'Glass Mould Filler',alias:'GMF', icon:'glassmouldfiller', desc:
 		function(me)
 		{
 			var str ='Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.<br>This requires 800 Factory Automation runs and consumes 1M Glass Blocks plus 2% cumulatively per NewPix number of the Discovery, per run.<br>';
@@ -3556,7 +3556,7 @@
 		if(!isFinite(Math.pow(200,rb.bought)))Molpy.UnlockBoost('Knitted Beanies');
 	}
 	
-	new Molpy.Boost({name:'Tool Factory', alias:'TF', single:'Tool Factory Chip',
+	new Molpy.Boost({name:'Tool Factory', alias:'TF', icon:'toolfactory', single:'Tool Factory Chip',
 		defStuff:1,
 		desc:function(me)
 		{
@@ -3808,7 +3808,7 @@
 		Molpy.boostSilence=0;
     }
 	
-	new Molpy.Boost({name:'Panther Glaze',desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',Sand:Infinity,Castles:Infinity,GlassBlocks:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
+	new Molpy.Boost({name:'Panther Glaze', icon:'pantherglaze', desc:'Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>',Sand:Infinity,Castles:Infinity,GlassBlocks:'45K',group:'bean',stats:'If you have Infinite Castles, Not Lucky related boosts don\'t use glass blocks. Instead they produce glass chips.<br><small>Oh and Catamaran/LCB always consume tools</small>',logic:65});
 	new Molpy.Boost({name:'Badgers',desc:function(me)
 		{
 			return GLRschoice(['Badgers? Badgers? We don\'t need no ch*rpin\' Badgers! This is Sacred Ground and I\'ll have no more heresy. Surely you mean Molpies.','Exactly! No, wait - No! There are no badgers involved at all!','For every 10 badges, Glass Chip production uses 1% less sand']);
@@ -3833,8 +3833,8 @@
 		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,Sand:800,Castles:20,className:'toggle',icon:'expando'
 	});
 	
-	new Molpy.Boost({name:'Sand to Glass',desc:'When Sand is Infinite, Sand Tools produce Glass Chips for Tool Factory', Sand:Infinity,Castles:Infinity,GlassBlocks:'200K',group:'hpt'});
-	new Molpy.Boost({name:'Castles to Glass',desc:'When Castles are Infinite, Castle Tools produce Glass Chips for Tool Factory', Sand:Infinity,Castles:Infinity,GlassBlocks:'2M',group:'hpt'});
+	new Molpy.Boost({name:'Sand to Glass', icon:'sandtoglass', desc:'When Sand is Infinite, Sand Tools produce Glass Chips for Tool Factory', Sand:Infinity,Castles:Infinity,GlassBlocks:'200K',group:'hpt'});
+	new Molpy.Boost({name:'Castles to Glass', icon:'castlestoglass', desc:'When Castles are Infinite, Castle Tools produce Glass Chips for Tool Factory', Sand:Infinity,Castles:Infinity,GlassBlocks:'2M',group:'hpt'});
 	
 	var loveline=0;
 	Molpy.ToggleExpando=function()
@@ -3864,9 +3864,9 @@
 		me.Refresh();
 	}
 	
-	new Molpy.Boost({name:'Frenchbot',desc:'NewPixBots produce 1Q x castles, LaPetite produces 1W x sand', stats:'The Dip of Infinite Judgement Approaches. Do you have 101 Logicats?', 
+	new Molpy.Boost({name:'Frenchbot', icon:'frenchbot', desc:'NewPixBots produce 1Q x castles, LaPetite produces 1W x sand', stats:'The Dip of Infinite Judgement Approaches. Do you have 101 Logicats?', 
 		Sand:'10Q',Castles:'10Q',GlassBlocks:'.5M',group:'cyb'});
-	new Molpy.Boost({name:'Bacon',desc:'Knowledge is Power - France is Bacon.<br>NewPixBots produce 10x, LaPetite sand production is boosted by 3% cumulatively per NewPixBot', 
+	new Molpy.Boost({name:'Bacon', icon:'bacon', desc:'Knowledge is Power - France is Bacon.<br>NewPixBots produce 10x, LaPetite sand production is boosted by 3% cumulatively per NewPixBot', 
 		Sand:'10WQ',Castles:'10WQ',GlassBlocks:'.75M',group:'cyb'
 	}); //note: it doesn't say 10x *castles*
 	
@@ -3935,13 +3935,13 @@
 		}
 	}
 	
-	new Molpy.Boost({name:'Ruthless Efficiency',desc:'Glass Block production uses a quarter as many Chips',GlassBlocks:'12M',Sand:'10WW',Castles:'10WW', group:'hpt'});
+	new Molpy.Boost({name:'Ruthless Efficiency', icon:'ruthlessefficiency', desc:'Glass Block production uses a quarter as many Chips',GlassBlocks:'12M',Sand:'10WW',Castles:'10WW', group:'hpt'});
 	new Molpy.Boost({name:'Break the Mould',desc:'Allows you to destroy an incomplete or unfilled Mould, if you decide making it was a mistake.',GlassBlocks:'2M',Sand:'10WWW',Castles:'10WWW', group:'bean',icon:'breakthemould'});
 	
-	new Molpy.Boost({name:'TF Load Letter',alias:'TFLL',desc:'You can load Tool Factory with 50K Glass Chips at a time',GlassBlocks:'4M',price:{Sand:Infinity,Castles:Infinity,TF:'50K'}, group:'hpt'});
-	new Molpy.Boost({name:'Booster Glass',alias:'BG',desc:'If you have Infinite Sand, clicking the NewPix gives Tool Factory 4 Glass Chips per Boost owned',GlassBlocks:'8M',Sand:Infinity,Castles:Infinity, group:'hpt'});
-	new Molpy.Boost({name:'Automation Optimiser',alias:'AO',desc:'Mould Processing does not prevent the standard tasks of Factory Automation from occuring',GlassBlocks:'20M',Sand:Infinity,Castles:Infinity, group:'hpt'});
-	new Molpy.Boost({name:'Production Control',alias:'PC',
+	new Molpy.Boost({name:'TF Load Letter',alias:'TFLL', icon:'tfloadletter', desc:'You can load Tool Factory with 50K Glass Chips at a time',GlassBlocks:'4M',price:{Sand:Infinity,Castles:Infinity,TF:'50K'}, group:'hpt'});
+	new Molpy.Boost({name:'Booster Glass',alias:'BG', icon:'boosterglass', desc:'If you have Infinite Sand, clicking the NewPix gives Tool Factory 4 Glass Chips per Boost owned',GlassBlocks:'8M',Sand:Infinity,Castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Automation Optimiser',alias:'AO', icon:'automationoptimiser', desc:'Mould Processing does not prevent the standard tasks of Factory Automation from occuring',GlassBlocks:'20M',Sand:Infinity,Castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Production Control',alias:'PC', icon:'productioncontrol',
 		desc:function(me)
 		{
 			if(!me.bought) return 'Allows you to change how many copies of Glass Tools can be constructed by Tool Factory each mNP';
@@ -4007,7 +4007,7 @@
 				_gaq&&_gaq.push(['_trackEvent','Boost','Downgrade',me.name]);
 		}
 	}
-	new Molpy.Boost({name:'Panther Poke',desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
+	new Molpy.Boost({name:'Panther Poke', icon:'pantherpoke', desc:'Keeps the Caged Logicat awake a little longer.', group:'bean',
 		buyFunction:function(n){
 			if(!n)n=1;
 			if(Molpy.Got('LogiPuzzle'))
@@ -4019,7 +4019,7 @@
 	{
 		return 4+Molpy.Level('Panther Rush')*(1+Molpy.Boosts['WiseDragon'].power);
 	}
-	new Molpy.Boost({name:'Flipside',
+	new Molpy.Boost({name:'Flipside', icon:'flipside',
 		desc:function(me)
 		{
 			
@@ -4028,7 +4028,7 @@
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,GlassBlocks:'50M',Sand:Infinity,Castles:Infinity, group:'hpt',className:'toggle'
 	});
 	
-	new Molpy.Boost({name:'Automata Assemble',alias:'AA',
+	new Molpy.Boost({name:'Automata Assemble',alias:'AA', icon:'automataassemble',
 		desc:function(me)
 		{
 			
@@ -4037,7 +4037,7 @@
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,GlassBlocks:'50M',Sand:Infinity,Castles:Infinity, group:'hpt',className:'toggle'
 	});
 	
-	new Molpy.Boost({name:'Glass Mousepy',alias:'GM',desc:'Clicks give 5% of your chips/mNP rate',GlassBlocks:'10M',Sand:Infinity,Castles:Infinity, group:'hpt'});
+	new Molpy.Boost({name:'Glass Mousepy',alias:'GM', icon:'glassmousepy', desc:'Clicks give 5% of your chips/mNP rate',GlassBlocks:'10M',Sand:Infinity,Castles:Infinity, group:'hpt'});
 	new Molpy.Boost({name:'Glassed Lightning',alias:'GL',desc:function(me)
 		{		
 			return Molpify(me.power,1)+'% Glass for '+MolpifyCountdown(me.countdown);
@@ -4060,7 +4060,7 @@
 		}
 	});
 	
-	new Molpy.Boost({name:'Automata Control',alias:'AC',
+	new Molpy.Boost({name:'Automata Control',alias:'AC', icon:'automatacontrol',
 		desc:function(me)
 		{
 			if(!me.bought) return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
@@ -4118,26 +4118,26 @@
 				_gaq&&_gaq.push(['_trackEvent','Boost','Dowgrade',me.name]);
 		}
 	}
-	new Molpy.Boost({name:'Bottle Battle',desc:'NewPixBot Glass production is multiplied by 3',GlassBlocks:'10M',Sand:Infinity,Castles:Infinity,group:'cyb'});
+	new Molpy.Boost({name:'Bottle Battle', icon:'bottlebattle', desc:'NewPixBot Glass production is multiplied by 3',GlassBlocks:'10M',Sand:Infinity,Castles:Infinity,group:'cyb'});
 	new Molpy.Boost({name:'Leggy',desc:'Scaffold Glass production is multiplied by 8',GlassBlocks:'15M',Sand:Infinity,Castles:Infinity,icon:'leggy'});
 	new Molpy.Boost({name:'Clear Wash',desc:'Wave Glass production is multiplied by 10',GlassBlocks:'15M',Sand:Infinity,Castles:Infinity, icon:'clearwash'});
 	new Molpy.Boost({name:'Crystal Streams',desc:'River Glass production is multiplied by 12',GlassBlocks:'20M',Sand:Infinity,Castles:Infinity, icon:'crystalstreams'});
-	new Molpy.Boost({name:'Super Visor',desc:'Beanie Builder Glass production is multiplied by 15',GlassBlocks:'20M',Sand:Infinity,Castles:Infinity,group:'bean'}); //brillant
-	new Molpy.Boost({name:'Crystal Helm',desc:'Beanie Builder Glass production is multiplied by 5',GlassBlocks:'30M',Sand:Infinity,Castles:Infinity,group:'bean'}); //paula
+	new Molpy.Boost({name:'Super Visor', icon:'supervisor', desc:'Beanie Builder Glass production is multiplied by 15',GlassBlocks:'20M',Sand:Infinity,Castles:Infinity,group:'bean'}); //brillant
+	new Molpy.Boost({name:'Crystal Helm', icon:'crystalhelm', desc:'Beanie Builder Glass production is multiplied by 5',GlassBlocks:'30M',Sand:Infinity,Castles:Infinity,group:'bean'}); //paula
 	
 	new Molpy.Boost({name:'Safety Goggles',alias:'SG',desc:'The goggles, they do something!',stats:'Reduces the chance of industrial accidents and prevents Factory Automation from downgrading in shortpix!',GlassBlocks:'2M', icon:'safetygoggles'});
 		
     new Molpy.Boost({name:'Seaish Glass Chips', desc:'Allows Sand Purifier and Sand Refinery (using chips only) to increase as far as your resources allow', GlassBlocks:'100K', icon:'seaishglasschips'});
     new Molpy.Boost({name:'Seaish Glass Blocks', desc:'Allows Glass Extruder and Glass Chiller to increase as far as your resources allow', GlassBlocks:'100K', icon:'seaishglassblocks'});
 
-	new Molpy.Boost({name:'Automata Engineers',alias:'AE',desc:'Allows Automata Assemble to perform Blackprint Construction and Mould related tasks'
+	new Molpy.Boost({name:'Automata Engineers',alias:'AE', icon:'automataengineers', desc:'Allows Automata Assemble to perform Blackprint Construction and Mould related tasks'
 		,GlassBlocks:'100M',Sand:Infinity,Castles:Infinity, group:'hpt'});
-	new Molpy.Boost({name:'Mysterious Representations',alias:'Milo',desc:'Allows Automata Assemble to create Blackprints.<br>Needs at least 15 AA runs.'
+	new Molpy.Boost({name:'Mysterious Representations',alias:'Milo', icon:'milo', desc:'Allows Automata Assemble to create Blackprints.<br>Needs at least 15 AA runs.'
 		,GlassBlocks:'500M',Sand:Infinity,Castles:Infinity, group:'hpt'});
-	new Molpy.Boost({name:'Zookeeper',alias:'ZK',desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 21 AA runs.<br>If you have over 1K AA runs, you may get a double dose of Panther Poke (thus getting more out of Crouching Dragon).'
+	new Molpy.Boost({name:'Zookeeper',alias:'ZK', icon:'zookeeper', desc:'Allows Automata Assemble to provide Panther Poke.<br>Needs at least 21 AA runs.<br>If you have over 1K AA runs, you may get a double dose of Panther Poke (thus getting more out of Crouching Dragon).'
 		,GlassBlocks:'2.5G',Sand:Infinity,Castles:Infinity, group:'bean'});
 		
-	new Molpy.Boost({name:'Schrödinger\'s Gingercat',alias:'SGC',desc:'Observes itself. Also causes Not Lucky to give more glass and makes '+Molpy.redactedWords+' last longer',GlassBlocks:'16.2M',logic:1613, icon:'sgc'});
+	new Molpy.Boost({name:'Schrödinger\'s Gingercat',alias:'SGC', desc:'Observes itself. Also causes Not Lucky to give more glass and makes '+Molpy.redactedWords+' last longer',GlassBlocks:'16.2M',logic:1613, icon:'sgc'});
 	
 	new Molpy.Boost({name:'Mind Glow',desc:'Jumping to a NewPix for which you have made a Sand Monument costs half as many Glass Chips',GlassBlocks:'2M', icon:'mindglow'});
 	new Molpy.Boost({name:'Memory Singer',desc:'Jumping to a NewPix for which you have made a Glass Monument costs half as many Glass Chips',GlassBlocks:'10M', icon:'memorysinger'});
@@ -4153,10 +4153,10 @@
 	,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,Sand:'4K',Castles:200, icon:'beachball', className:'toggle'});
 	
 	new Molpy.Boost({name:'Mushrooms',desc:'For every 10 badges, Glass Block production uses 1% less sand',	Sand:Infinity,Castles:Infinity,GlassBlocks:'60K', icon:'mushrooms'});
-	new Molpy.Boost({name:'Knitted Beanies',desc:'Beanie Builder Glass production is multiplied by the number of million Bags owned',GlassBlocks:'60T',Sand:Infinity,Castles:Infinity,group:'bean'});
+	new Molpy.Boost({name:'Knitted Beanies', icon:'knittedbeanies', desc:'Beanie Builder Glass production is multiplied by the number of million Bags owned',GlassBlocks:'60T',Sand:Infinity,Castles:Infinity,group:'bean'});
 	new Molpy.Boost({name:'Space Elevator',desc:'Scaffold Glass production is multiplied by a ten thousandth of the number of Ladders owned',stats:'Spaaaaaace!',GlassBlocks:'55T',Sand:Infinity,Castles:Infinity, icon:'spaceelevator'});
 	
-	new Molpy.Boost({name:'Discovery Detector',Sand:'2M',Castles:'2M',GlassBlocks:100,className:'action',group:'bean',
+	new Molpy.Boost({name:'Discovery Detector', icon:'discoverydetector', Sand:'2M',Castles:'2M',GlassBlocks:100,className:'action',group:'bean',
             desc:function(me)
             {
                 if (!me.bought) return 'Scans your records to see if you have missed discoveries';
@@ -4331,7 +4331,7 @@
 		return !Molpy.Got('ASHF')&&Molpy.Boosts['Price Protection'].power>1;		
 	}
 	
-	new Molpy.Boost({name:'Crystal Dragon',desc:'Temporal Duplication makes duplicates of all Glass Tools constructed when it is active.<br>Temporal Duplication\'s countdown starts at 10mNP.',Sand:Infinity,Castles:Infinity,GlassBlocks:'7P',group:'drac'});
+	new Molpy.Boost({name:'Crystal Dragon', icon:'crystaldragon', desc:'Temporal Duplication makes duplicates of all Glass Tools constructed when it is active.<br>Temporal Duplication\'s countdown starts at 10mNP.',Sand:Infinity,Castles:Infinity,GlassBlocks:'7P',group:'drac'});
 	
 	Molpy.TDFactor=function(buying)
 	{
@@ -4348,9 +4348,9 @@
 	
 	new Molpy.Boost({name:'Friendship is Molpish',alias:'FiM',desc:'Cuegan\'s Glass production is multiplied by the number of million LaPetites, and Lapetite\'s Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)',GlassBlocks:'750E',Sand:Infinity,Castles:Infinity, icon:'fim'});
 	
-	new Molpy.Boost({name:'Such Glass',desc:'Glass production of Buckets is multiplied by a thousandth of the Ninja Stealth level',stats:'<div class="magentatext bigtext">Very wow</div><br><div class="cyantext rightjust bigtext">Much ninja</div><br><div class="limetext bigtext">So Bucket</div>',GlassBlocks:'8Z',Sand:Infinity,Castles:Infinity,group:'ninj'});
+	new Molpy.Boost({name:'Such Glass', icon:'suchglass', desc:'Glass production of Buckets is multiplied by a thousandth of the Ninja Stealth level',stats:'<div class="magentatext bigtext">Very wow</div><br><div class="cyantext rightjust bigtext">Much ninja</div><br><div class="limetext bigtext">So Bucket</div>',GlassBlocks:'8Z',Sand:Infinity,Castles:Infinity,group:'ninj'});
 	
-	new Molpy.Boost({name:'Dragon Forge',desc:function(me)
+	new Molpy.Boost({name:'Dragon Forge', icon:'dragonforge', desc:function(me)
 		{		
 			var str = 'Allows you increase the power of Automata Control using Logicat Levels and Blackprint Pages.';
 			if(!me.bought) return str;
@@ -4367,7 +4367,7 @@
 			return str;
 		}
 		,Sand:Infinity,Castles:Infinity,GlassBlocks:'7P',group:'drac',className:'action'});
-		new Molpy.Boost({name:'Crouching Dragon, Sleeping Panther',alias:'WiseDragon',desc:function(me)
+		new Molpy.Boost({name:'Crouching Dragon, Sleeping Panther',alias:'WiseDragon', icon:'wisedragon', desc:function(me)
 		{
 			var str = 'Allows you to get Panther Poke with more remaining Caged Logicat puzzles.<br>Currently, Panther Poke is available if you have less than '+Molpify(Molpy.PokeBar()-1)+' Caged Logicat puzzles remaining.';
 			if(!me.bought)return str;
@@ -4400,7 +4400,7 @@
 		}
 	}
 	
-	new Molpy.Boost({name:'Fireproof',desc:'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make '+Molpify(1e10)+' times as many Glass Chips.<br>However they will destroy all your castles every mNP if the Navigation Code hack is not installed.<br>On the plus side, you can overcome Jamming far quicker.',Sand:Infinity,Castles:Infinity,GlassBlocks:function(){return 8e9*Molpy.CastleTools['NewPixBot'].amount;},group:'cyb'}); //www.youtube.com/watch?v=84q0SXW781c
+	new Molpy.Boost({name:'Fireproof', icon:'fireproof', desc:'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make '+Molpify(1e10)+' times as many Glass Chips.<br>However they will destroy all your castles every mNP if the Navigation Code hack is not installed.<br>On the plus side, you can overcome Jamming far quicker.',Sand:Infinity,Castles:Infinity,GlassBlocks:function(){return 8e9*Molpy.CastleTools['NewPixBot'].amount;},group:'cyb'}); //www.youtube.com/watch?v=84q0SXW781c
 	
 	new Molpy.Boost({name:'Ninja Ninja Duck',desc:'Ninja Stealth is raised by 10x as much'
 		,Sand:Infinity,Castles:Infinity,GlassBlocks:'230Z',group:'ninj',icon:'ninjaduck'});
@@ -4413,16 +4413,16 @@
 		,icon:'goat',group:'stuff',defStuff:1
 	});
 	
-	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard',desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',Sand:'1G'});
-	new Molpy.Boost({name:'Gold Loyalty Card',alias:'GoldCard',desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',Sand:'10T'});
+	new Molpy.Boost({name:'Silver Loyalty Card',alias:'SilverCard', icon:'silvercard', desc:'Affordable Swedish Home Furniture discount increased to 50% off',group:'hpt',Sand:'1G'});
+	new Molpy.Boost({name:'Gold Loyalty Card',alias:'GoldCard', icon:'goldcard', desc:'Affordable Swedish Home Furniture discount increased to 60% off',group:'hpt',Sand:'10T'});
 	
 	
-	new Molpy.Boost({name:'Stretchable Chip Storage',desc:function(me)
+	new Molpy.Boost({name:'Stretchable Chip Storage', icon:'strechablechipstorage', desc:function(me)
 		{
 		return 'If active during a Blast Furnace run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input><br>':'');
 		},
 		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, buyFunction:function() {this.IsEnabled=1}, group:'hpt', Sand:Infinity, Castles:Infinity, GlassBlocks:'1M',className:'toggle'});
-	new Molpy.Boost({name:'Stretchable Block Storage',desc:function(me)
+	new Molpy.Boost({name:'Stretchable Block Storage', icon:'strechableblockstorage', desc:function(me)
 		{
 		return 'If active during a Blast Furnace run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input><br>':'');
 		},
@@ -4446,14 +4446,14 @@
 	},
 	buyFunction:function(){this.IsEnabled=1;},className:'toggle',
 	IsEnabled:Molpy.BoostFuncs.PosPowEnabled,Sand:'1P',Castles:'1T',GlassBlocks:'1K', icon:'hallofmirrors'});
-	new Molpy.Boost({name:'Stealth Cam',desc:'Camera is activated when Ninja Stealth is increased',GlassBlocks:'1M',group:'ninj'});
-	new Molpy.Boost({name:'Ninja Lockdown',
+	new Molpy.Boost({name:'Stealth Cam', icon:'stealthcam', desc:'Camera is activated when Ninja Stealth is increased',GlassBlocks:'1M',group:'ninj'});
+	new Molpy.Boost({name:'Ninja Lockdown', icon:'ninjalockdown',
 		desc:function(me)
 		{			
 			return (me.IsEnabled? '':'When active, ') + 'Prevents Ninja Stealth multipliers greater than 3x, and when toggled, locks Impervious Ninja if it is owned.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+'); Molpy.LockBoost(\'Impervious Ninja\');" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		},
 		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,GlassBlocks:'144Y',group:'ninj',className:'toggle',logic:700});
-	new Molpy.Boost({name:'Magic Mirror',desc:'Allows jumps between every discovery and the equivalent place in the Minus World',GlassBlocks:'1L',group:'chron'});
+	new Molpy.Boost({name:'Magic Mirror', icon:'magicmirror', desc:'Allows jumps between every discovery and the equivalent place in the Minus World',GlassBlocks:'1L',group:'chron'});
 	new Molpy.Boost({name:'Locked Vault',
 		desc:function(me){
 			if(!me.bought) return 'Contains Loot';
@@ -4507,13 +4507,13 @@
 	
 	new Molpy.Boost({name:'People Sit on Chairs',alias:'PSOC',desc:'Multiplies <b>all</b> rates by 1, then adds 0',stats:'Administrivia',logic:420, icon:'psoc'});
 	new Molpy.Boost({name:'No Need to be Neat',desc:'When you Molpy Down, the amount of one random type of tool is not reset to 0',GlassBlocks:'50M', icon:'noneedtobeneat'});
-	new Molpy.Boost({name:'Thunderbird',desc:'If Glassed Lightning (with Lightning Rod) strikes during Temporal Duplication, its power is increased by 50%',GlassBlocks:'50W',group:'drac'});
-	new Molpy.Boost({name:'Dragon Foundry',desc:'Crystal Dragon\'s effect is multiplied by 1% of Glassed Lightning',stats:'Remember to power up Glassed Lightning with Thunderbird, or else this will have a detrimental effect on Temporal Duplication!',Sand:Infinity,Castles:Infinity,GlassBlocks:'70WW',group:'drac'});
+	new Molpy.Boost({name:'Thunderbird', icon:'thunderbird', desc:'If Glassed Lightning (with Lightning Rod) strikes during Temporal Duplication, its power is increased by 50%',GlassBlocks:'50W',group:'drac'});
+	new Molpy.Boost({name:'Dragon Foundry', icon:'dragonfoundry', desc:'Crystal Dragon\'s effect is multiplied by 1% of Glassed Lightning',stats:'Remember to power up Glassed Lightning with Thunderbird, or else this will have a detrimental effect on Temporal Duplication!',Sand:Infinity,Castles:Infinity,GlassBlocks:'70WW',group:'drac'});
 	new Molpy.Boost({name:'Lucky Twin',desc:'When you are awarded Not Lucky during Temporal Duplication, the countdown is increased by 20%',Sand:Infinity,Castles:Infinity,GlassBlocks:'70H', icon:'luckytwin'});
 	new Molpy.Boost({name:'Beret Guy',desc:'You may choose to take a revealed Goat',stats:'...and my yard has so much grass, and I\'ll teach you tricks, and...',GlassBlocks:'20T', icon:'beretguy'});
 	
-	new Molpy.Boost({name:'Crystal Flux Turbine',alias:'CFT',desc:'The Flux Turbine bonus is applied to Glass Sand Tools',GlassBlocks:'6.05GW',group:'chron'});
-	new Molpy.Boost({name:'Shadow Dragon',alias:'ShadwDrgn',
+	new Molpy.Boost({name:'Crystal Flux Turbine',alias:'CFT', icon:'crystalfluxturbine', desc:'The Flux Turbine bonus is applied to Glass Sand Tools',GlassBlocks:'6.05GW',group:'chron'});
+	new Molpy.Boost({name:'Shadow Dragon',alias:'ShadwDrgn', icon:'shadowdragon',
 		desc:function(me)
 		{
 			var str='Puts unused Caged Logicat puzzles to some use.';
@@ -4723,7 +4723,7 @@
 		unlockFunction:function(){this.power=Math.abs(Molpy.newpixNumber);}
 	});
 	
-	new Molpy.Boost({name:'Draft Dragon',
+	new Molpy.Boost({name:'Draft Dragon', icon:'draftdragon',
 		desc:function(me)
 		{
 			return (me.IsEnabled? 'C':'When active, c') + 'auses sand/glass monument production to proceed automatically after you start making a mould.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+');" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
@@ -4731,7 +4731,7 @@
 		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
 		group:'drac',className:'toggle',GlassBlocks:'50F'
 	});	
-	new Molpy.Boost({name:'Mustard',plural:'Mustard',
+	new Molpy.Boost({name:'Mustard', icon:'mustard', plural:'Mustard',
 		desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' Mustard.';
@@ -4792,15 +4792,15 @@
 		return 1;
 	}
 	
-	new Molpy.Boost({name:'Dragon Nesting Site',alias:'DNS',
+	new Molpy.Boost({name:'Dragon Nesting Site',alias:'DNS', icon:'dragonnestingsite',
 		desc:function(me){return 'You have found the location of an ancient dragon nesting site.'+(Molpy.Got('Nest')?'':'<br>Now to figure out how to build the nest...');},
 		group:'drac'
 	});
-	new Molpy.Boost({name:'Dragon Nest',alias:'Nest',
+	new Molpy.Boost({name:'Dragon Nest',alias:'Nest', icon:'dragonnest',
 		desc:function(me){return 'This is a dragon nest.'+(Molpy.Got('DQ')?'':'<br>To obtain a queen, you need Automata Control of at least 4000, and 2000 Bonemeal.');},
 		group:'drac',Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity
 	});
-	new Molpy.Boost({name:'Dragon Queen',alias:'DQ',
+	new Molpy.Boost({name:'Dragon Queen',alias:'DQ', icon:'dragonqueen',
 		desc:function(me)
 		{
 			var str= 'The queen of the dragons.';
@@ -4872,26 +4872,26 @@
 		price:{Sand:100,Castles:2},group:'prize',prizes:1,tier:1, icon:'sandblast', className:'action'
 	});
 	new Molpy.Boost({name:'Short Saw',desc:'VITSSÅGEN, JA! occurs 5 times as often',Sand:'5T',Castles:'40G',group:'prize',prizes:1,tier:1, icon:'shortsaw'});
-	new Molpy.Boost({name:'Gruff',desc:'When you win the Monty Haul prize, you get 2 goats',Sand:'2P',Castles:'75T',group:'prize',prizes:1,tier:2});
-	new Molpy.Boost({name:'Between the Cracks',alias:'Cracks',
+	new Molpy.Boost({name:'Gruff', icon:'gruff', desc:'When you win the Monty Haul prize, you get 2 goats',Sand:'2P',Castles:'75T',group:'prize',prizes:1,tier:2});
+	new Molpy.Boost({name:'Between the Cracks',alias:'Cracks', icon:'betweenthecracks',
 		desc:function(me)
 		{
 			return (me.IsEnabled? 'I':'When active, i') + 'if you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,className:'toggle',
 		Sand:'15E',Castles:'80P',group:'prize',prizes:1,tier:2});
-	new Molpy.Boost({name:'Soul Drain',desc:'Shadow Dragon has a 10% chance of producing bonemeal when Not Lucky occurs',
+	new Molpy.Boost({name:'Soul Drain', icon:'souldrain', desc:'Shadow Dragon has a 10% chance of producing bonemeal when Not Lucky occurs',
 		Sand:'60G',Castles:'290M',group:'prize',prizes:1,tier:2});
-	new Molpy.Boost({name:'Rush Job',desc:'Mysterious Representations produces Blackprints 5 times as fast',
+	new Molpy.Boost({name:'Rush Job', icon:'rushjob', desc:'Mysterious Representations produces Blackprints 5 times as fast',
 		Sand:'50E',Castles:'600P',GlassBlocks:'400K',group:'prize',prizes:1,tier:2});
-	new Molpy.Boost({name:'Void Goat',desc:'Travel through a Temporal Rift yields a Goat if you have Flux Surge',
+	new Molpy.Boost({name:'Void Goat', icon:'voidgoat', desc:'Travel through a Temporal Rift yields a Goat if you have Flux Surge',
 		Sand:'40Z',Castles:'900E',GlassBlocks:'50K',group:'prize',prizes:1,tier:2});
-	new Molpy.Boost({name:'Factory Expansion',desc:'More Factory Automation levels are available through Rosetta',
+	new Molpy.Boost({name:'Factory Expansion', icon:'factoryexpansion', desc:'More Factory Automation levels are available through Rosetta',
 		Sand:'85Y',Castles:'25Z',GlassBlocks:'10M',group:'prize',prizes:1,tier:2});
-	new Molpy.Boost({name:'Mustard Automation',desc:'Automata Assemble can run with Mustard Tools, at a cost of 20 Mustard per run',GlassBlocks:'70G',group:'prize',prizes:1,tier:2});
-	new Molpy.Boost({name:'Musical Chairs',desc:'Doubles the effect of People Sit on Chairs',GlassBlocks:'40P',group:'prize',prizes:2,tier:2});
-	new Molpy.Boost({name:'Glass Trolling',desc:'If you type "OK, GLASS" into the import box, the cost of making Glass Blocks from Glass Chips is reduced by a factor of 5 until the next ONG',GlassBlocks:'500',group:'prize',prizes:1,tier:2});
-	new Molpy.Boost({name:'Fast Forward',
+	new Molpy.Boost({name:'Mustard Automation', icon:'mustardautomation', desc:'Automata Assemble can run with Mustard Tools, at a cost of 20 Mustard per run',GlassBlocks:'70G',group:'prize',prizes:1,tier:2});
+	new Molpy.Boost({name:'Musical Chairs', icon:'musicalchairs', desc:'Doubles the effect of People Sit on Chairs',GlassBlocks:'40P',group:'prize',prizes:2,tier:2});
+	new Molpy.Boost({name:'Glass Trolling', icon:'glasstrolling', desc:'If you type "OK, GLASS" into the import box, the cost of making Glass Blocks from Glass Chips is reduced by a factor of 5 until the next ONG',GlassBlocks:'500',group:'prize',prizes:1,tier:2});
+	new Molpy.Boost({name:'Fast Forward', icon:'fastforward',
 		desc:function(me)
 		{
 			return 'Go directly to the highest NewPix visited. Do not pass Go. Do not collect 200 goats.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="Molpy.FastForward()" value="Use"></input>':'');
@@ -4906,11 +4906,11 @@
 		Molpy.LockBoost('Fast Forward');
 		Molpy.Add('Goats',1);
 	}
-	new Molpy.Boost({name:'Archimedes\'s Lever',alias:'Archimedes',
+	new Molpy.Boost({name:'Archimedes\'s Lever',alias:'Archimedes', icon:'archimedesslever',
 		desc:'If a Monument Maker is idle, it will start making the cheapest monument available at a cost of 10 Bonemeal.',
 		stats:'Only makes Minus Monuments if you are in Minus NewPix.<br>',GlassBlocks:'360W',group:'prize',prizes:1,tier:3});
 	
-	new Molpy.Boost({name:'Would have been useful a month ago',alias:'Month',
+	new Molpy.Boost({name:'Would have been useful a month ago',alias:'Month', icon:'month',
 		desc:function(me)
 		{
 			return 'Instantly win the game.<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="'+Molpy.BeanishToCuegish(Molpy.wintext)+';Molpy.LockBoost(\'Month\');" value="Use"></input>':'');
@@ -4918,7 +4918,7 @@
 		price:{GlassBlocks:'40WW',Bonemeal:80,Goats:120,Mustard:240},group:'prize',prizes:1,tier:3,className:'action'
 	});
 
-	new Molpy.Boost({name:'Mustard Sale',
+	new Molpy.Boost({name:'Mustard Sale', icon:'mustardsale',
 		desc:function(me)
 		{
 			return 'Set the amount of a random Tool to 0 owned at a cost of 500 Mustard.'+(me.bought?'<br><input type="Button" onclick="Molpy.MustardSale();" value="Use"></input>':'');
@@ -4936,7 +4936,7 @@
 		}
 	}
 
-	new Molpy.Boost({name:'Robotic Shopper',alias:'Rob',
+	new Molpy.Boost({name:'Robotic Shopper',alias:'Rob', icon:'roboticshopper',
 		desc:function(me)
 		{
 			if (!me.bought) return "An advanced shopping assistant, with more control and able to shop for many things";
@@ -4980,7 +4980,7 @@
 		Molpy.BoostsById[myid].Refresh();
 	}
 	
-	new Molpy.Boost({name:'Eww',
+	new Molpy.Boost({name:'Eww', icon:'eww',
 		desc:function(me)
 		{
 			return 'Convert 1K Mustard into 20 Bonemeal'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Mustard\',1000))Molpy.Add(\'Bonemeal\',20)" value="Use"></input>':'');
@@ -4988,7 +4988,7 @@
 		price:{GlassBlocks:'789G',Sand:'2W',Mustard:'1K'},group:'prize',prizes:1,tier:3,className:'action'
 	});
 	
-	new Molpy.Boost({name:'GoatONG',
+	new Molpy.Boost({name:'GoatONG', icon:'goatong',
 		desc:function(me)
 		{
 			return 'Spend 10 Goats and cause an ONG<br>(Single use only)'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',10))Molpy.ONG();Molpy.LockBoost(\'GoatONG\')" value="Use"></input>':'');
@@ -4996,7 +4996,7 @@
 		price:{GlassBlocks:'789G',Sand:'2W',Vacuum:10},group:'prize',prizes:0,tier:3,className:'action'
 	});
 	
-	new Molpy.Boost({name:'Mustard Injector',
+	new Molpy.Boost({name:'Mustard Injector', icon:'mustardinjector',
 		desc:function(me)
 		{
 			return 'Spend 200 Mustard to convert a random tool to Mustard'+(me.bought?'<br><input type="Button" onclick="Molpy.MustardInjector()" value="Use"></input>':'');
@@ -5015,7 +5015,7 @@
 		}
 	}
 	
-	new Molpy.Boost({name:'Crunchy with Mustard',alias:'Crunch',
+	new Molpy.Boost({name:'Crunchy with Mustard',alias:'Crunch', icon:'crunch',
 		desc:function(me)
 		{
 			return 'Pay 5K Mustard to reset your '+Molpy.redactedWord+' click count to 0 and gain 1 Bonemeal per 20'+(me.bought?'<br><input type="Button" onclick="Molpy.RedactedCrunch()" value="Use"></input>':'');
@@ -5031,15 +5031,15 @@
 			Molpy.Notify('Crunch!');
 		}
 	}
-	new Molpy.Boost({name:'Bag of Moulding',alias:'BoM',desc:'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal.<br>Capacity of Bag of Holding is multiplied by '+Molpify(1e42),
+	new Molpy.Boost({name:'Bag of Moulding',alias:'BoM', icon:'bagofmoulding', desc:'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal.<br>Capacity of Bag of Holding is multiplied by '+Molpify(1e42),
 		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Mustard:1000,Blackprints:'20K'},
 		className:'alert',prizes:2,tier:Molpy.TierFunction(1,{Bonemeal:200,Mustard:500,Blackprints:800}),group:'prize'
 	});	
-	new Molpy.Boost({name:'Bag of Folding',alias:'BoF',desc:'Toggle Boosts (apart from Prizes, Glass Furnace, and Glass Blower) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal.<br>Capacity of Bag of Holding is multiplied by '+Molpify(1e42),
+	new Molpy.Boost({name:'Bag of Folding',alias:'BoF', icon:'bagoffolding', desc:'Toggle Boosts (apart from Prizes, Glass Furnace, and Glass Blower) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal.<br>Capacity of Bag of Holding is multiplied by '+Molpify(1e42),
 		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,Goats:60,Blackprints:'800K'},className:'alert',prizes:2,tier:Molpy.TierFunction(2,{Bonemeal:3000,Goats:30,Blackprints:'5K'}),group:'prize'
 	});	
 		
-	new Molpy.Boost({name:'Ninja Ritual',
+	new Molpy.Boost({name:'Ninja Ritual', icon:'ninjaritual',
 		desc:function(me)
 		{
 			return 'When you ninja the NewPixBots, receive a Goat.'+(me.bought?'<br>Receive an extra goat for every 5 consecutive Ninjas.<br> Currently at '+Molpify(me.Level,1)+' consecutive Ninja'+plural(me.Level)+'.':'');
@@ -5047,7 +5047,7 @@
 		price:{Goats:300},group:'ninj',defStuff:1
 	});
 		
-	new Molpy.Boost({name:'Time Lord',
+	new Molpy.Boost({name:'Time Lord', icon:'timelord',
 		Level:Molpy.BoostFuncs.PosPowerLevel,		
 		Add:function(levels,cap)
 		{
@@ -5078,12 +5078,12 @@
 			var str = 'You have '+Molpify(me.Level,3)+' Flux Crystal'+plural(me.Level)+'.';
 			return str;
 		}
-		,icon:'fcrystal',group:'stuff',defStuff:1
+		,icon:'fluxcrystal',group:'stuff',defStuff:1
 	});	
 	
-	new Molpy.Boost({name:'Ninja Herder',desc:'Ninja Ritual activates on a Ninja Holidip',stats:'See: Ninja Ritual Boost and Ninja Holidip Badge',group:'ninj',price:{Goats:1200}});
+	new Molpy.Boost({name:'Ninja Herder', icon:'ninjaherder', desc:'Ninja Ritual activates on a Ninja Holidip',stats:'See: Ninja Ritual Boost and Ninja Holidip Badge',group:'ninj',price:{Goats:1200}});
 	
-	new Molpy.Boost({name:'Negator',
+	new Molpy.Boost({name:'Negator', icon:'negator',
 		desc:function(me)
 		{
 			return 'Flip in and out of Minus worlds at a cost of 1 Flux Crystal'+(me.bought?'<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:1})){Molpy.newpixNumber*=-1;Molpy.UpdateBeach()}" value="Flip"></input>':'');
@@ -5091,13 +5091,13 @@
 		price:{Sand:Infinity,Castles:Infinity,Logicat:500},group:'prize',prizes:1,tier:3,className:'action'
 	});
 	
-	new Molpy.Boost({name:'Bag of Jolting',alias:'BoJ',desc:'Chronotech Boosts aren\'t reset when you Molpy Down, at a cost of '+Molpify(10000)+' Bonemeal.<br>Capacity of Bag of Holding is multiplied by '+Molpify(1e42),
+	new Molpy.Boost({name:'Bag of Jolting',alias:'BoJ', icon:'bagofjolting', desc:'Chronotech Boosts aren\'t reset when you Molpy Down, at a cost of '+Molpify(10000)+' Bonemeal.<br>Capacity of Bag of Holding is multiplied by '+Molpify(1e42),
 		price:{GlassBlocks:Infinity,Sand:Infinity,Castles:Infinity,FluxCrystals:600,Blackprints:'15M'},className:'alert',prizes:2,tier:Molpy.TierFunction(3,{Bonemeal:5000,Logicat:750,FluxCrystals:50}),group:'prize'
 	});		
 	
-	new Molpy.Boost({name:'Crystal Memories',desc:'Gain a Flux Crystal whenever you use Memories Revisited during Flux Surge, at a cost of half the Flux Surge countdown.',price:{GlassBlocks:'2T',FluxCrystals:800},group:'prize',prizes:1,tier:4});
+	new Molpy.Boost({name:'Crystal Memories', icon:'crystalmemories', desc:'Gain a Flux Crystal whenever you use Memories Revisited during Flux Surge, at a cost of half the Flux Surge countdown.',price:{GlassBlocks:'2T',FluxCrystals:800},group:'prize',prizes:1,tier:4});
 	
-	new Molpy.Boost({name:'Twice Tools',
+	new Molpy.Boost({name:'Twice Tools', icon:'twicetools',
 		desc:function(me)
 		{
 			return 'Double the number of a random Tool at a cost of 5 Flux Crystals.'+(me.bought?'<br><input type="Button" onclick="Molpy.TwiceTools();" value="Use"></input>':'');
@@ -5115,13 +5115,13 @@
 		}
 	}
 	
-	new Molpy.Boost({name:'Buzz Saw',desc:'Glass Saw\'s power will go up 50% faster and it will expand Glass Storage if necessary (and possible).',price:{GlassBlocks:'12E',Goats:12}});
+	new Molpy.Boost({name:'Buzz Saw', icon:'buzzsaw', desc:'Glass Saw\'s power will go up 50% faster and it will expand Glass Storage if necessary (and possible).',price:{GlassBlocks:'12E',Goats:12}});
 	
-	new Molpy.Boost({name:'Lubrication',desc:'Glass Furnace and Glass Blower\'s switching time is reduced by 99% (uses 100 Mustard per toggle).',price:{Mustard:'6K'},group:'prize',prizes:1,tier:4});
-	new Molpy.Boost({name:'Riser',desc:'Unlocks the Seaish Glass boosts much sooner.',price:{Mustard:'3K',Sand:Infinity},group:'prize',prizes:1,tier:4});
-	new Molpy.Boost({name:'Mould Press',desc:'If you have Automation Optimiser, Mould tasks run again to use up any leftover Factory Automation runs.',price:{Goats:300,LogiPuzzle:'2K',Castles:Infinity,GlassBlocks:Infinity},group:'prize',prizes:1,tier:4});
+	new Molpy.Boost({name:'Lubrication', icon:'lubrication', desc:'Glass Furnace and Glass Blower\'s switching time is reduced by 99% (uses 100 Mustard per toggle).',price:{Mustard:'6K'},group:'prize',prizes:1,tier:4});
+	new Molpy.Boost({name:'Riser', icon:'riser', desc:'Unlocks the Seaish Glass boosts much sooner.',price:{Mustard:'3K',Sand:Infinity},group:'prize',prizes:1,tier:4});
+	new Molpy.Boost({name:'Mould Press', icon:'mouldpress', desc:'If you have Automation Optimiser, Mould tasks run again to use up any leftover Factory Automation runs.',price:{Goats:300,LogiPuzzle:'2K',Castles:Infinity,GlassBlocks:Infinity},group:'prize',prizes:1,tier:4});
 	
-	new Molpy.Boost({name:'Now Where Was I?',desc:function(me){
+	new Molpy.Boost({name:'Now Where Was I?', icon:'nowwherewasi', desc:function(me){
 			if (!me.bought || Molpy.newpixNumber == Molpy.highestNPvisited) return 'Allows direct Jump to your highest NewPix';
 			var jumpcost=Molpy.CalcJumpEnergy(Molpy.highestNPvisited);
 			var str = '<input type="Button" ';
@@ -5147,14 +5147,14 @@
 	}	
 	
 	Molpy.VacCost={FluxCrystals:10,QQ:10};
-	new Molpy.Boost({name:'Vacuum Cleaner',desc:function(me)
+	new Molpy.Boost({name:'Vacuum Cleaner', icon:'vacuumcleaner', desc:function(me)
 		{
 			return (me.IsEnabled? 'U':'When active, u') + 'ses '+Molpy.PriceString(Molpy.VacCost)+' per mNP to destroy Infinite Sand.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Sand:Infinity,Castles:Infinity,GlassChips:'330T',Goats:100,FluxCrystals:500},icon:'vacuumcleaner',className:'toggle',group:'hpt'
 	});
 	
-	new Molpy.Boost({name:'Vacuum',stats:'Produced by Vacuum Cleaner',
+	new Molpy.Boost({name:'Vacuum', icon:'vacuum', stats:'Produced by Vacuum Cleaner',
 		desc:function(me)
 		{
 			var str = 'You have '+Molpify(me.Level,3)+' Vacuum'+plural(me.Level)+'.';
@@ -5167,7 +5167,7 @@
 		},
 		refreshSuper:Molpy.BoostFuncs.RefreshPowerBuy
 	});	
-	new Molpy.Boost({name:'Void Starer',alias:'VS',
+	new Molpy.Boost({name:'Void Starer',alias:'VS', icon:'voidstarer',
 		desc:function(me)
 		{
 			return (me.IsEnabled? 'T':'When active, t') + 'he number of Blackprints produced by Mysterious Representations is boosted by 1% per 100 Vacuums.<br>(It is still rounded down to a whole number of Blackprints.)<br>Consumes 1 Vacuum if any benefit occurs.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
@@ -5198,7 +5198,7 @@
 		},icon:'qq',group:'stuff',defStuff:1,className:'action'
 	});
 	
-	new Molpy.Boost({name:'Italian Plumber',alias:'Mario',desc:function(me)
+	new Molpy.Boost({name:'Italian Plumber',alias:'Mario', icon:'italianplumber', desc:function(me)
 		{
 			return (me.IsEnabled? 'O':'When active, o') +'pens a Question Qube every time Automata Assemble runs.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
 				+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
@@ -5206,7 +5206,7 @@
 		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Vacuum:'20K',QQ:'600K'},className:'toggle'
 	});
 	
-	new Molpy.Boost({name:'Void Vault',alias:'VV',
+	new Molpy.Boost({name:'Void Vault',alias:'VV', icon:'voidvault',
 		desc:function(me)
 		{
 			return (me.IsEnabled? '':'When active, ') + 'Void Starer bonus applies to the Blackprints in Locked Vaults.<br>Consumes 1 Vacuum per Locked Vault opened.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
@@ -5215,7 +5215,7 @@
 		price:{Blackprints:'32G',Vacuum:'40K',QQ:'7M'}
 	});
 		
-	new Molpy.Boost({name:'Flux Harvest',className:'action', group:'chron',  price:{Blackprints:'1G',QQ:'1M'},
+	new Molpy.Boost({name:'Flux Harvest', icon:'fluxharvest', className:'action', group:'chron',  price:{Blackprints:'1G',QQ:'1M'},
 			desc:function(me) {
 				if (!me.bought || Molpy.IsEnabled('Time Lord')) return 'Easy harvesting of flux crystals from remaining rifts';
 				return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
@@ -5244,7 +5244,7 @@
 		}
 	};
 	
-	new Molpy.Boost({name:'This Sucks',alias:'TS',
+	new Molpy.Boost({name:'This Sucks',alias:'TS', icon:'thissucks',
 		desc:function(me)
 		{
 			if(!me.bought) return 'Allows you to increase the Vacuum-generation rate of Vacuum Cleaner.';
