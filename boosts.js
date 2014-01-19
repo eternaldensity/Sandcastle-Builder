@@ -3750,17 +3750,21 @@
             times++;
         }
         Molpy.RunFastFactory(times);
-		
-//      if(times)
-//      {
-//          Molpy.GlassNotifyFlush();
-//          Molpy.Notify('Ran Factory Automation '+Molpify(times,1)+' times');
-//      }
     }
 
     Molpy.RunFastFactory=function(times) //assumes player did buy AO before getting AA. probably a safe assumption
     {
-		if(times&&Molpy.IsEnabled('Mario')&&Molpy.Spend('QQ',1))Molpy.RewardLogicat(Molpy.Level('QQ'));
+	if(times&&Molpy.IsEnabled('Mario')) {
+		var l = Molpy.Level('Mario')+1;
+		var cost=l*(l+1)/2;
+		Molpy.boostSilence = 1;
+		if (Molpy.Spend('QQ',cost)) {
+			while (l--) {
+				Molpy.RewardLogicat(Molpy.Level('QQ'));
+			}
+		}
+		Molpy.boostSilence = 0;
+	}
         var left = times;
 		if(Molpy.Got('AE'))
 		{
@@ -4568,7 +4572,7 @@
 			Molpy.sandSpent+=amount;
 			if((isFinite(Molpy.sand)||!isFinite(amount)))
 			{
-				if(!silent&&Molpy.spendSandNotifyFlag)
+				if(!Molpy.boostSilence&&!silent&&Molpy.spendSandNotifyFlag)
 				{
 					if(Molpy.spendSandNotifyCount)
 					{
@@ -4632,7 +4636,7 @@
 				Molpy.castles=0;
 				Molpy.EarnBadge('Mustard Cleanup');
 			}
-			if(!silent&&(isFinite(Molpy.castles)||!isFinite(amount)))
+			if(!Molpy.boostSilence&&!silent&&(isFinite(Molpy.castles)||!isFinite(amount)))
 				Molpy.Notify('Spent Castles: ' + Molpify(amount,3),1);
 		},
 		Destroy:function(amount,logsilent)
@@ -5209,7 +5213,8 @@
 			return (me.IsEnabled? 'O':'When active, o') +'pens a Question Qube every time Automata Assemble runs.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
 				+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
 		}
-		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Vacuum:'20K',QQ:'600K'},className:'toggle'
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Vacuum:'20K',QQ:'600K'},className:'toggle',
+		Level:Molpy.BoostFuncs.PosPowerLevel		
 	});
 	
 	new Molpy.Boost({name:'Void Vault',alias:'VV',

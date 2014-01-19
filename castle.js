@@ -2457,7 +2457,7 @@ Molpy.Up=function()
 			}else
 			{
 				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blast Furnace Fallback',true]);
-				Molpy.Notify('Furnace Fallback',1);
+				if (!Molpy.boostSilence) Molpy.Notify('Furnace Fallback',1);
 				Molpy.RewardBlastFurnace();
 			}
 		}
@@ -2507,7 +2507,7 @@ Molpy.Up=function()
 			}else{
 				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/3));
 			}
-			Molpy.Notify('Blast Furnace in Operation!');
+			if (!Molpy.boostSilence) Molpy.Notify('Blast Furnace in Operation!');
 			Molpy.Spend('Sand',castles*blastFactor);
 			Molpy.Build(castles);
 		}
@@ -2758,7 +2758,7 @@ Molpy.Up=function()
 				var red=GLRschoice(availRewards);
 				if(!Molpy.IsFree(red.CalcPrice(red.price)))
 				{
-					Molpy.Notify('Logicat rewards you with:',1);
+					if (!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:',1);
 					Molpy.UnlockBoost(red.alias,1);
 				}else{
 					Molpy.Notify('Your reward from Logicat:',1);
