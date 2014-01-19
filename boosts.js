@@ -4560,6 +4560,7 @@
 		Add:Molpy.Dig,
 		Spend:function(amount,silent)
 		{
+			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) amount=0;
 			if(!isFinite(Molpy.sandPermNP) &&Molpy.IsEnabled('Cracks'))amount=0;
 			if(!amount)return;
 			Molpy.sand-=amount;
@@ -4591,6 +4592,7 @@
 		},
 		Has:function(amount)
 		{
+			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) return 1;
 			if(!isFinite(Molpy.sandPermNP)&&Molpy.IsEnabled('Cracks'))
 				return 1;
 			return(this.HasSuper(amount));
@@ -4619,6 +4621,7 @@
 		Add:Molpy.Build,
 		Spend:function(amount,silent)
 		{
+			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) amount=0;
 			if(!isFinite(Molpy.sandPermNP) &&Molpy.IsEnabled('Cracks'))amount=0;
 			if(!amount)return;
 			amount = Math.min(amount,Molpy.castles);
@@ -4661,6 +4664,7 @@
 		},
 		Has:function(amount)
 		{
+			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) return 1;
 			if(!isFinite(Molpy.sandPermNP)&&Molpy.IsEnabled('Cracks'))
 				return 1;
 			return(this.HasSuper(amount));
@@ -5274,19 +5278,20 @@
 		,price:{GlassBlocks:'60W',Sand:Infinity,Castles:Infinity,Vacuum:'50K'}, group:'hpt',className:'toggle',defStuff:1,
 		buyFunction:function(){this.Level=1;}
 	});
-	Molpy.SuckMore=function(n)//or less
+	Molpy.SuckMore=function(num)//or less
 	{
 		var me = Molpy.Boosts['TS'];
+		var n = me.Level;
 		var cost={Vacuum:Math.abs(2000-n)*n,Blackprints:Math.floor(n*1000*Math.pow(1.01,Molpy.Level('Vacuum')/100))};
-		if(n<0)
+		if(num<0)
 		{
 			cost={QQ:1000*n};
 		}
 		if(Molpy.Spend(cost))
 		{
-			me.Add(n);
+			me.Add(num);
 			Molpy.Notify('Adjusted This Sucks');
-			if(n>0)
+			if(num>0)
 				_gaq&&_gaq.push(['_trackEvent','Boost','Upgrade',me.name]);
 			else
 				_gaq&&_gaq.push(['_trackEvent','Boost','Dowgrade',me.name]);
@@ -5295,11 +5300,17 @@
 			Molpy.Notify('Could not afford to adjust This Sucks');
 		}
 	}
-	new Molpy.Boost({name:'Safety Net',desc:'Stops a temporal rift, rifting to shortpix, it does not prevent you Jumping to shortpix',
+	new Molpy.Boost({name:'Safety Net',desc:'Stops temporal rifts to shortpix. Does not prevent intentional Jumps to shortpix',
 			price:{Sand:Infinity,Castles:Infinity}, group:'chron'});
 	new Molpy.Boost({name:'Safety Blanket',desc:'Stops you losing longpix only boosts when you jump or rift to shortpix (They stop working, but remain)',
 			price:{Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity}, group:'chron'});
-	
+	new Molpy.Boost({name:'Aleph One',desc:function(me) {
+				var str='When active, as long as the sand/castle numbers are not mustard, allows an infinite amount of sand/castles to be spent without affecting the sand/castle supply.';
+				if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';
+				return str
+				},
+			IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, group:'bean',className:'toggle',
+			price:{Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity,QQ:'10M',Blackprints:'10M'}});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 }
