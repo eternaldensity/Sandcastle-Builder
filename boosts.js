@@ -980,7 +980,8 @@
 		}
 		if(Molpy.Got('Temporal Rift'))
 		{
-			Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
+			if (Molpy.Got('Safety Net')) Molpy.newpixNumber=Math.round(Math.random()*(Molpy.highestNPvisited-240)+240) 
+			else Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
 			if(Molpy.Earned('Minus Worlds')&&Math.floor(Math.random()*2))Molpy.newpixNumber*=-1;;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
@@ -1904,7 +1905,7 @@
 				
 				var fa = Molpy.Boosts['Factory Automation'];
 				var bots=Molpy.CastleTools['NewPixBot'].amount;
-				if(fa.bought && Molpy.Got('Doublepost'))
+				if(fa.bought && Molpy.Got('Doublepost') && Molpy.NPlength>1800)
 				{
 					if(fa.power<Molpy.faCosts.length)
 					{
@@ -5294,6 +5295,10 @@
 			Molpy.Notify('Could not afford to adjust This Sucks');
 		}
 	}
+	new Molpy.Boost({name:'Safety Net',desc:'Stops a temporal rift, rifting to shortpix, it does not prevent you Jumping to shortpix',
+			price:{Sand:Infinity,Castles:Infinity}, group:'chron'});
+	new Molpy.Boost({name:'Safety Blanket',desc:'Stops you losing longpix only boosts when you jump or rift to shortpix (They stop working, but remain)',
+			price:{Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity}, group:'chron'});
 	
 	
 	//END OF BOOSTS, add new ones immediately before this comment
