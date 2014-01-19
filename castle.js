@@ -645,7 +645,7 @@ Molpy.Up=function()
 			Molpy.EarnBadge('No Ninja');
 			Molpy.ninjaFreeCount++; 
 			var ninjaInc = 1;
-			if(Molpy.Got('Active Ninja'))
+			if(Molpy.Got('Active Ninja') && Molpy.NPlength > 1800)
 			{
 				ninjaInc*=3;
 			}
@@ -865,7 +865,7 @@ Molpy.Up=function()
 			if(!isFinite(Molpy.computedSandPerClick)||!isFinite(Molpy.sand))Molpy.computedSandPerClick=0; //you can't dig infinite sand
 			
 			//stuff beyond here doesn't apply to clicks
-			if(Molpy.Got('Overcompensating')) 
+			if(Molpy.Got('Overcompensating') && Molpy.NPlength>1800) 
 			{
 				multiplier+=Molpy.Boosts['Overcompensating'].power;
 			}
@@ -2457,14 +2457,14 @@ Molpy.Up=function()
 			}else
 			{
 				_gaq&&_gaq.push(['_trackEvent',event,'Reward','Blast Furnace Fallback',true]);
-				Molpy.Notify('Furnace Fallback',1);
+				if (!Molpy.boostSilence) Molpy.Notify('Furnace Fallback',1);
 				Molpy.RewardBlastFurnace();
 			}
 		}
 		Molpy.RewardBlastFurnace=function(times)
 		{
 			var cb=0;
-			if(Molpy.Got('Furnace Crossfeed'))
+			if(Molpy.Got('Furnace Crossfeed') && Molpy.NPlength > 1800)
 			{
 				if(Molpy.Boosts['Glass Furnace'].power && Molpy.Boosts['Furnace Crossfeed'].IsEnabled)
 				{
@@ -2472,7 +2472,7 @@ Molpy.Up=function()
 					cb=1;
 				}
 			}
-			if(Molpy.Got('Furnace Multitasking'))
+			if(Molpy.Got('Furnace Multitasking') && Molpy.NPlength > 1800)
 			{
 				if(Molpy.Boosts['Glass Blower'].power && Molpy.Boosts['Furnace Multitasking'].IsEnabled)
 				{
@@ -2507,7 +2507,7 @@ Molpy.Up=function()
 			}else{
 				castles=Math.floor(Math.min(castles,Molpy.castlesBuilt/3));
 			}
-			Molpy.Notify('Blast Furnace in Operation!');
+			if (!Molpy.boostSilence) Molpy.Notify('Blast Furnace in Operation!');
 			Molpy.Spend('Sand',castles*blastFactor);
 			Molpy.Build(castles);
 		}
@@ -2758,7 +2758,7 @@ Molpy.Up=function()
 				var red=GLRschoice(availRewards);
 				if(!Molpy.IsFree(red.CalcPrice(red.price)))
 				{
-					Molpy.Notify('Logicat rewards you with:',1);
+					if (!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:',1);
 					Molpy.UnlockBoost(red.alias,1);
 				}else{
 					Molpy.Notify('Your reward from Logicat:',1);
@@ -3043,9 +3043,9 @@ Molpy.Up=function()
 			Molpy.Add('Vacuum',vacs);
 		}
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power *Molpy.Boosts['Furnace Multitasking'].power
-			*(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 )||0;
+			*(Molpy.NPlength>1800)*(Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power)/2 )||0;
 		Molpy.chipspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power * Molpy.Boosts['Furnace Crossfeed'].power 
-			*(Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power)/2 ) - Molpy.blockspmnp*Molpy.ChipsPerBlock()||0;
+			*(Molpy.NPlength>1800)*(Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power)/2 ) - Molpy.blockspmnp*Molpy.ChipsPerBlock()||0;
 		
 		if(Molpy.Got('Sand to Glass'))
 			Molpy.DigGlass(Molpy.glassPermNP);
@@ -3381,20 +3381,27 @@ Molpy.Up=function()
 		if(np <= 240)
 		{
 			Molpy.NPlength=1800; 
-			Molpy.LockBoost('Overcompensating');
-			Molpy.LockBoost('Doublepost');
-			Molpy.LockBoost('Active Ninja');
-			Molpy.LockBoost('Furnace Crossfeed');
-			Molpy.LockBoost('Furnace Multitasking');
-			Molpy.Boosts['Doublepost'].department=0;	//prevent the department from unlocking these
-			Molpy.Boosts['Active Ninja'].department=0;
-			Molpy.Boosts['Furnace Crossfeed'].department=0;
-			Molpy.Boosts['Furnace Multitasking'].department=0;
-			var fa = Molpy.Boosts['Factory Automation'];
-			if(fa.power>0 &&!Molpy.Got('SG'))
-			{
-				fa.power=0;
-				Molpy.Notify('Factory Automation Downgraded',1);
+			if (Molpy.Got('Doublepost')) {
+				Molpy.Boosts['Safety Net'].power++;
+				if (Molpy.Boosts['Safety Net'].power >= 10) Molpy.UnlockBoost('Safety Net');
+				if (Molpy.Got('Safety Net') && Molpy.Boosts['Safety Net'].power >= 50) Molpy.UnlockBoost('Safety Blanket');
+			}
+			if (!Molpy.Got('Safety Blanket')) {
+				Molpy.LockBoost('Overcompensating');
+				Molpy.LockBoost('Doublepost');
+				Molpy.LockBoost('Active Ninja');
+				Molpy.LockBoost('Furnace Crossfeed');
+				Molpy.LockBoost('Furnace Multitasking');
+				Molpy.Boosts['Doublepost'].department=0;	//prevent the department from unlocking these
+				Molpy.Boosts['Active Ninja'].department=0;
+				Molpy.Boosts['Furnace Crossfeed'].department=0;
+				Molpy.Boosts['Furnace Multitasking'].department=0;
+				var fa = Molpy.Boosts['Factory Automation'];
+				if(fa.power>0 &&!Molpy.Got('SG'))
+				{
+					fa.power=0;
+					Molpy.Notify('Factory Automation Downgraded',1);
+				}
 			}
 		}else
 		{		
