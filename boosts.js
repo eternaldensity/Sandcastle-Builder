@@ -1708,8 +1708,19 @@
 			}
 			return str;
 		}
-		,className:'action',group:'hpt',icon:'sandpurifier'}
-	);
+		,className:'action',group:'hpt',icon:'sandpurifier'
+		,classChange:
+      		function()
+      		{
+        		var oldClass=this.className;
+ 	      		var newClass = this.power==0?'action':'';
+        		if(newClass!=oldClass)
+        		{
+          			this.className=newClass;
+          			return 1;
+          		}
+      		}
+	});
 	
   Molpy.SeaishSandPurifier=function()
     {
@@ -2544,8 +2555,19 @@
 			}
 			return str;
 		}
-		,className:'action',group:'hpt',icon:'glassextruder'}
-	);
+		,className:'action',group:'hpt',icon:'glassextruder'
+		,classChange:
+      		function()
+      		{
+        		var oldClass=this.className;
+ 	      		var newClass = this.power==0?'action':'';
+        		if(newClass!=oldClass)
+        		{
+          			this.className=newClass;
+          			return 1;
+          		}
+      		}
+	});
 	
 	new Molpy.Boost({name:'Caged Logicat',alias:'LogiPuzzle',single:'Logicat&nbsp;Puzzle',
 		Level:Molpy.BoostFuncs.Bought1Level,
