@@ -1,21 +1,21 @@
 ﻿Molpy.DefineBoosts=function()
 {	
 	Molpy.groupNames={
-		boosts:['boost','Boosts'],
-		badges:['badge','Badges'],
-		hpt:['hill people tech','Hill People Tech','department'],
-		ninj:['ninjutsu','Ninjutsu','ninjabuilder'],
-		chron:['chronotech','Chronotech','lateclosing'],
-		cyb:['cybernetics','Cybernetics','robotefficiency'],
-		bean:['beanie tech','Beanie Tech','chateau'],
+		boosts:['boost','Boosts', 'boost'],
+		badges:['badge','Badges', 'badge'],
+		hpt:['hill people tech','Hill People Tech','hillpeopletech'],
+		ninj:['ninjutsu','Ninjutsu','ninjutsu'],
+		chron:['chronotech','Chronotech','chronotech'],
+		cyb:['cybernetics','Cybernetics','cybernetics'],
+		bean:['beanie tech','Beanie Tech','beanietech'],
 		ceil:['ceiling','Ceilings','glassceiling12'],
-		drac:['draconic','Draconic','achronaldragon'],
+		drac:['draconic','Draconic','draconic'],
 		stuff:['stuff','Stuff'],
 		land:['land','Land'],
-		prize:['prize','Prizes'],
+		prize:['prize','Prizes','prizes'],
 		discov:['discovery','Discoveries','discov','Discovery','A memorable discovery'],
-		monums:['sand monument','Sand Monuments',0,'Sand Monument', 'A sand structure commemorating'],
-		monumg:['glass monument','Glass Monuments',0,'Glass Monument','A glass sculpture commemorating'],
+		monums:['sand monument','Sand Monuments','sandmonuments','Sand Monument', 'A sand structure commemorating'],
+		monumg:['glass monument','Glass Monuments','glassmonuments','Glass Monument','A glass sculpture commemorating'],
 		diamm:['masterpiece','Masterpieces',0,'Masterpiece','This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of','in diamond. <br>It molpifies with spikes of treeishness.'],
 	};
 	Molpy.nextBageGroup={discov:'monums',monums:'monumg'};//,monumg:'diamm'};
@@ -685,7 +685,7 @@
 		 ,icon:'bkj',group:'hpt'
 	});
 		
-	new Molpy.Boost({name:'Summon Knights Temporal', icon:'summonknighttemporal', desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
+	new Molpy.Boost({name:'Summon Knights Temporal', icon:'summonknightstemporal', desc:'<input type="Button" onclick="Molpy.Novikov()" value="Reduce"></input> the temporal incursion of Judgement Dip',
 		Sand:function()
 		{
 			var me=Molpy.Boosts['Summon Knights Temporal'];
@@ -5078,7 +5078,7 @@
 			var str = 'You have '+Molpify(me.Level,3)+' Flux Crystal'+plural(me.Level)+'.';
 			return str;
 		}
-		,icon:'fluxcrystal',group:'stuff',defStuff:1
+		,icon:'fluxcrystals',group:'stuff',defStuff:1
 	});	
 	
 	new Molpy.Boost({name:'Ninja Herder', icon:'ninjaherder', desc:'Ninja Ritual activates on a Ninja Holidip',stats:'See: Ninja Ritual Boost and Ninja Holidip Badge',group:'ninj',price:{Goats:1200}});

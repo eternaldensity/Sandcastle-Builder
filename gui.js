@@ -635,7 +635,7 @@
 		if(Molpy.unlockedGroups[gr])
 		{
 			var type=kind==4?'boost':'badge';
-			var id = type+'_'+Molpy.groupNames[gr][2]||'';
+			var id = Molpy.groupNames[gr][2]||'';
 			if(id) id= ' id="'+id+'"';
 			var r = (Molpy.redactedVisible==kind&&Molpy.redactedGr==gr);
 			if(r)id='';

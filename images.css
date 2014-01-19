@@ -280,3 +280,83 @@ body.darkscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/badge_discovery_light_icon.png');
 }
+.darkscheme .loot #ninjutsu
+{
+	background-image:url('img/ninjutsu_dark_icon.png');
+}
+.lightscheme .loot #ninjutsu
+{
+	background-image:url('img/ninjutsu_light_icon.png');
+}
+.darkscheme .loot #cybernetics
+{
+	background-image:url('img/cybernetics_dark_icon.png');
+}
+.lightscheme .loot #cybernetics
+{
+	background-image:url('img/cybernetics_light_icon.png');
+}
+.darkscheme .loot #hillpeopletech
+{
+	background-image:url('img/hillpeopletech_dark_icon.png');
+}
+.lightscheme .loot #hillpeopletech
+{
+	background-image:url('img/hillpeopletech_light_icon.png');
+}
+.darkscheme .loot #beanietech
+{
+	background-image:url('img/beanietech_dark_icon.png');
+}
+.lightscheme .loot #beanietech
+{
+	background-image:url('img/beanietech_light_icon.png');
+}
+.darkscheme .loot #chronotech
+{
+	background-image:url('img/chronotech_dark_icon.png');
+}
+.lightscheme .loot #chronotech
+{
+	background-image:url('img/chronotech_light_icon.png');
+}
+.darkscheme .loot #draconic
+{
+	background-image:url('img/draconic_dark_icon.png');
+}
+.lightscheme .loot #draconic
+{
+	background-image:url('img/draconic_light_icon.png');
+}
+.darkscheme .loot #prizes
+{
+	background-image:url('img/prizes_dark_icon.png');
+}
+.lightscheme .loot #prizes
+{
+	background-image:url('img/prizes_light_icon.png');
+}
+.darkscheme .loot #discov
+{
+	background-image:url('img/badge_discovery_light_icon.png');
+}
+.lightscheme .loot #discov
+{
+	background-image:url('img/badge_discovery_dark_icon.png');
+}
+.darkscheme .loot #sandmonuments
+{
+	background-image:url('img/sandmonuments_light_icon.png');
+}
+.lightscheme .loot #sandmonuments
+{
+	background-image:url('img/sandmonuments_dark_icon.png');
+}
+.darkscheme .loot #glassmonuments
+{
+	background-image:url('img/glassmonuments_light_icon.png');
+}
+.lightscheme .loot #glassmonuments
+{
+	background-image:url('img/glassmonuments_dark_icon.png');
+}
