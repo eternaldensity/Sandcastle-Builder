@@ -616,6 +616,8 @@
 				score++;
 				g('idlescore').innerHTML='Score: '+Molpify(score,3);
 				localStorage['idlescore']=score;
+				if(score%1000==0)
+					_gaq&&_gaq.push(['_trackEvent','PureIdle','Milestone',''+score]);
 				setTimeout(Molpy.Idle, 1000);
 			}
 		}
@@ -1672,6 +1674,9 @@
 		g('castletoolsownedstat').innerHTML=Molpify(Molpy.CastleToolsOwned,4);			
 		g('boostsownedstat').innerHTML=Molpify(Molpy.BoostsOwned,4);			
 		g('badgesownedstat').innerHTML=Molpify(Molpy.BadgesOwned,4);		
+		g('discoveriesstat').innerHTML=Molpify(Molpy.groupBadgeCounts.discov,4);		
+		g('sandmonstat').innerHTML=Molpify(Molpy.groupBadgeCounts.monums,4);		
+		g('glassmonstat').innerHTML=Molpify(Molpy.groupBadgeCounts.monumg,4);		
 		
 		g('sandmultiplierstat').innerHTML=Molpify(Molpy.globalSpmNPMult*100,4)+'%';			
 		g('redactedstat').innerHTML=Molpy.redactedWords + ": " + Molpify(Molpy.redactedClicks,1);		

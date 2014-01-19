@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+## 3.301
+- LucidCrux: grey versions icons for boosts in shop!! wow! (also some fancy CSS stuff I need to learn)
+- mart0258: Flipside fix
+- Something new in the Index. It's boring.
+
 ## 3.3
 - Some description improvements
 - Prevent too much panther poking
