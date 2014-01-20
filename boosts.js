@@ -1758,7 +1758,7 @@
       		function()
       		{
         		var oldClass=this.className;
- 	      		var newClass = IsFinite(this.power)?'action':'';
+ 	      		var newClass = isFinite(this.power)?'action':'';
         		if(newClass!=oldClass)
         		{
           			this.className=newClass;
