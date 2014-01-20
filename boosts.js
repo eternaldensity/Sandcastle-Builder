@@ -2707,7 +2707,7 @@
 				str+='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
 					+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>';	
 			}
-			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce '+Molpify(700)+' Glass Chips';
+			if(Molpy.Got('Panther Glaze')) str+='<br>Panther Glaze causes this to produce '+Molpify(7000)+' Glass Chips';
 			return str;
 		},
 		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,
