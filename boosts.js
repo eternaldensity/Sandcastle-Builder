@@ -1230,7 +1230,7 @@
 		function()
 			{
 				var oldClass=this.className;
-				var newClass = !isFinite(this.power)?'action':'';
+				var newClass = isFinite(this.power)?'action':'';
 				if(newClass!=oldClass)
 				{
 					this.className=newClass;
@@ -1399,7 +1399,7 @@
 		function()
 			{
 				var oldClass=this.className;
-				var newClass = !isFinite(this.power)?'alert':'';
+				var newClass = isFinite(this.power)?'alert':'';
 				if(newClass!=oldClass)
 				{
 					this.className=newClass;
@@ -1547,7 +1547,7 @@
 			function()
 			{
 				var oldClass=this.className;
-				var newClass = !isFinite(this.power)?'action':'';
+				var newClass = isFinite(this.power)?'action':'';
 				if(newClass!=oldClass)
 				{
 					this.className=newClass;
@@ -1694,7 +1694,7 @@
 		function()
 			{
 				var oldClass=this.className;
-				var newClass = !isFinite(this.power)?'alert':'';
+				var newClass = isFinite(this.power)?'alert':'';
 				if(newClass!=oldClass)
 				{
 					this.className=newClass;
@@ -1758,7 +1758,7 @@
       		function()
       		{
         		var oldClass=this.className;
- 	      		var newClass = !IsFinite(this.power)?'action':'';
+ 	      		var newClass = IsFinite(this.power)?'action':'';
         		if(newClass!=oldClass)
         		{
           			this.className=newClass;
@@ -2605,7 +2605,7 @@
       		function()
       		{
         		var oldClass=this.className;
- 	      		var newClass = !isFinite(this.power)?'action':'';
+ 	      		var newClass = isFinite(this.power)?'action':'';
         		if(newClass!=oldClass)
         		{
           			this.className=newClass;
@@ -3657,7 +3657,7 @@
 			{
 				var oldClass=this.className;
 				var toolcheck = !isFinite(Molpy.SandTools['Bucket'].amount)&&!isFinite(Molpy.SandTools['Cuegan'].amount)&&!isFinite(Molpy.SandTools['Flag'].amount)&&!isFinite(Molpy.SandTools['Ladder'].amount)&&!isFinite(Molpy.SandTools['Bag'].amount)&&!isFinite(Molpy.SandTools['LaPetite'].amount)&&!isFinite(Molpy.CastleTools['NewPixBot'].amount)&&!isFinite(Molpy.CastleTools['Trebuchet'].amount)&&!isFinite(Molpy.CastleTools['Scaffold'].amount)&&!isFinite(Molpy.CastleTools['Wave'].amount)&&!isFinite(Molpy.CastleTools['River'].amount)&&!isFinite(Molpy.CastleTools['Beanie Builder'].amount);
-				var newClass = toolcheck?'action':'';
+				var newClass = !toolcheck?'action':'';
 				if(newClass!=oldClass)
 				{
 					this.className=newClass;
@@ -4361,7 +4361,7 @@
 		function()
 			{
 				var oldClass=this.className;
-				var newClass = (!isFinite(this.power)&&Molpy.DragonTarget()[0]==0)?'alert':''; //If power is infinite, and the next target isn't ready, no reason to see it.
+				var newClass = (isFinite(this.power)||Molpy.DragonTarget()[0]!=0)?'alert':''; //If power is infinite, and the next target isn't ready, no reason to see it.
 				if(newClass!=oldClass)
 				{
 					this.className=newClass;
@@ -4520,7 +4520,7 @@
 			function()
 			{
 				var oldClass=this.className;
-				var newClass = !isFinite(Molpy.Boosts['GlassChips'].power)?'toggle':'';
+				var newClass = isFinite(Molpy.Boosts['GlassChips'].power)?'toggle':'';
 				if(newClass!=oldClass)
 				{
 					this.className=newClass;
@@ -4537,7 +4537,7 @@
 			function()
 			{
 				var oldClass=this.className;
-				var newClass = !isFinite(Molpy.Boosts['GlassBlocks'].power)?'toggle':'';
+				var newClass = isFinite(Molpy.Boosts['GlassBlocks'].power)?'toggle':'';
 				if(newClass!=oldClass)
 				{
 					this.className=newClass;
