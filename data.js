@@ -10,7 +10,7 @@ function addCSSRule(sheet, selector, rules, index) {
 	}
 }
 var Molpy={};
-Molpy.version=3.301;
+Molpy.version=3.31;
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[
