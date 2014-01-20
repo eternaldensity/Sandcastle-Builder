@@ -5278,6 +5278,7 @@
 				Molpy.Notify("No Rifts left to harvest");
 			}
 		}
+		Molpy.Boosts['Flux Harvest'].Refresh();
 	};
 	
 	new Molpy.Boost({name:'This Sucks',alias:'TS',
