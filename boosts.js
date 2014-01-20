@@ -1226,6 +1226,17 @@
 			return str;
 		}
 		,icon:'sandrefinery',className:'action',group:'hpt'
+		,classChange:
+		function()
+			{
+				var oldClass=this.className;
+				var newClass = !isFinite(this.power)?'action':'';
+				if(newClass!=oldClass)
+				{
+					this.className=newClass;
+					return 1;
+				}
+			}
 	});
 	Molpy.UpgradeSandRefinery=function(n)
 	{
@@ -1384,6 +1395,17 @@
 			return str;
 		}
 		,icon:'glasschipstore',group:'stuff',className:'alert'
+		,classChange:
+		function()
+			{
+				var oldClass=this.className;
+				var newClass = !isFinite(this.power)?'alert':'';
+				if(newClass!=oldClass)
+				{
+					this.className=newClass;
+					return 1;
+				}
+			}
 	});
 	Molpy.UpgradeChipStorage=function(n)
 	{
@@ -1521,6 +1543,17 @@
 			}
 			return str;
 		},icon:'glasschiller',className:'action',group:'hpt'
+		,classChange:
+			function()
+			{
+				var oldClass=this.className;
+				var newClass = !isFinite(this.power)?'action':'';
+				if(newClass!=oldClass)
+				{
+					this.className=newClass;
+					return 1;
+				}
+			}
 	});
 	Molpy.UpgradeGlassChiller=function(n)
 	{
@@ -1657,6 +1690,17 @@
 			return str;
 		}
 		,icon:'glassblockstore',group:'stuff',className:'alert'
+		,classChange:
+		function()
+			{
+				var oldClass=this.className;
+				var newClass = !isFinite(this.power)?'alert':'';
+				if(newClass!=oldClass)
+				{
+					this.className=newClass;
+					return 1;
+				}
+			}
 	});
 	Molpy.UpgradeBlockStorage=function(n)
 	{
@@ -1714,7 +1758,7 @@
       		function()
       		{
         		var oldClass=this.className;
- 	      		var newClass = this.power==0?'action':'';
+ 	      		var newClass = !IsFinite(this.power)?'action':'';
         		if(newClass!=oldClass)
         		{
           			this.className=newClass;
@@ -2561,7 +2605,7 @@
       		function()
       		{
         		var oldClass=this.className;
- 	      		var newClass = this.power==0?'action':'';
+ 	      		var newClass = !isFinite(this.power)?'action':'';
         		if(newClass!=oldClass)
         		{
           			this.className=newClass;
@@ -3608,6 +3652,18 @@
 		}
 	
 		,Sand:Infinity,Castles:Infinity,GlassBlocks:10005,group:'hpt',className:'action'
+		,classChange:
+		function()
+			{
+				var oldClass=this.className;
+				var toolcheck = !isFinite(Molpy.SandTools['Bucket'].amount)&&!isFinite(Molpy.SandTools['Cuegan'].amount)&&!isFinite(Molpy.SandTools['Flag'].amount)&&!isFinite(Molpy.SandTools['Ladder'].amount)&&!isFinite(Molpy.SandTools['Bag'].amount)&&!isFinite(Molpy.SandTools['LaPetite'].amount)&&!isFinite(Molpy.CastleTools['NewPixBot'].amount)&&!isFinite(Molpy.CastleTools['Trebuchet'].amount)&&!isFinite(Molpy.CastleTools['Scaffold'].amount)&&!isFinite(Molpy.CastleTools['Wave'].amount)&&!isFinite(Molpy.CastleTools['River'].amount)&&!isFinite(Molpy.CastleTools['Beanie Builder'].amount);
+				var newClass = toolcheck?'action':'';
+				if(newClass!=oldClass)
+				{
+					this.className=newClass;
+					return 1;
+				}
+			}
 	});
 	
 	Molpy.LoadToolFactory=function(amount)
@@ -4301,6 +4357,17 @@
 			return str;
 		},
 		defStuff:1
+		,classChange:
+		function()
+			{
+				var oldClass=this.className;
+				var newClass = (!isFinite(this.power)&&Molpy.DragonTarget()[0]==0)?'alert':''; //If power is infinite, and the next target isn't ready, no reason to see it.
+				if(newClass!=oldClass)
+				{
+					this.className=newClass;
+					return 1;
+				}
+			}
 	});
 	Molpy.DragonTarget=function()
 	{
@@ -4448,12 +4515,36 @@
 		{
 		return 'If active during a Blast Furnace run and there is not enough chip storage, that run is used to expand the chip storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input><br>':'');
 		},
-		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, buyFunction:function() {this.IsEnabled=1}, group:'hpt', Sand:Infinity, Castles:Infinity, GlassBlocks:'1M',className:'toggle'});
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, buyFunction:function() {this.IsEnabled=1}, group:'hpt', Sand:Infinity, Castles:Infinity, GlassBlocks:'1M',className:'toggle'
+		,classChange:
+			function()
+			{
+				var oldClass=this.className;
+				var newClass = !isFinite(Molpy.Boosts['GlassChips'].power)?'toggle':'';
+				if(newClass!=oldClass)
+				{
+					this.className=newClass;
+					return 1;
+				}
+			}				
+		});
 	new Molpy.Boost({name:'Stretchable Block Storage', icon:'strechableblockstorage', desc:function(me)
 		{
 		return 'If active during a Blast Furnace run and there is not enough block storage, that run is used to expand the block storage instead'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'+(me.IsEnabled? 'Dea':'A')+'ctivate"></input><br>':'');
 		},
-		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, buyFunction:function() {this.IsEnabled=1},group:'hpt', Sand:Infinity, Castles:Infinity, GlassBlocks:'1M',className:'toggle'});
+		IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, buyFunction:function() {this.IsEnabled=1},group:'hpt', Sand:Infinity, Castles:Infinity, GlassBlocks:'1M',className:'toggle'
+		,classChange:
+			function()
+			{
+				var oldClass=this.className;
+				var newClass = !isFinite(Molpy.Boosts['GlassBlocks'].power)?'toggle':'';
+				if(newClass!=oldClass)
+				{
+					this.className=newClass;
+					return 1;
+				}
+			}
+		});
 	
 	Molpy.GenericToggle=function(myid,negate)
 	{
