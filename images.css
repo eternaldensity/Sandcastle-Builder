@@ -336,6 +336,14 @@ body.darkscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/prizes_light_icon.png');
 }
+.darkscheme .loot #badge_badge
+{
+	background-image:url('img/badge_badge_light_icon.png');
+}
+.lightscheme .loot #badge_badge
+{
+	background-image:url('img/badge_badge_dark_icon.png');
+}
 .darkscheme .loot #discov
 {
 	background-image:url('img/badge_discovery_light_icon.png');
@@ -344,19 +352,19 @@ body.darkscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/badge_discovery_dark_icon.png');
 }
-.darkscheme .loot #sandmonuments
+.darkscheme .loot #sandmonument
 {
-	background-image:url('img/sandmonuments_light_icon.png');
+	background-image:url('img/sandmonument_light_icon.png');
 }
-.lightscheme .loot #sandmonuments
+.lightscheme .loot #sandmonument
 {
-	background-image:url('img/sandmonuments_dark_icon.png');
+	background-image:url('img/sandmonument_dark_icon.png');
 }
-.darkscheme .loot #glassmonuments
+.darkscheme .loot #glassmonument
 {
-	background-image:url('img/glassmonuments_light_icon.png');
+	background-image:url('img/glassmonument_light_icon.png');
 }
-.lightscheme .loot #glassmonuments
+.lightscheme .loot #glassmonument
 {
-	background-image:url('img/glassmonuments_dark_icon.png');
+	background-image:url('img/glassmonument_dark_icon.png');
 }
