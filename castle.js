@@ -2433,7 +2433,7 @@ Molpy.Up=function()
 					var red=GLRschoice(availRewards);
 					if(!Molpy.IsFree(red.CalcPrice(red.price)))
 					{
-						Molpy.Notify('The DoRD has produced:',1);
+						if (!Molpy.boostSilence) Molpy.Notify('The DoRD has produced:',1);
 						Molpy.UnlockBoost(red.alias,1);
 					}else{
 						Molpy.Notify('The DoRD has provided:',1);
@@ -3320,6 +3320,7 @@ Molpy.Up=function()
 		if(!Molpy.Got('Temporal Rift'))
 		{
 			Molpy.Boosts['Time Lord'].Level=0;
+			Molpy.Boosts['Flux Harvest'].Refresh();
 			if(Molpy.Got('LogiPuzzle'))
 			{
 				var cl = Molpy.Boosts['LogiPuzzle'];
