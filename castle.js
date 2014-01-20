@@ -3320,6 +3320,7 @@ Molpy.Up=function()
 		if(!Molpy.Got('Temporal Rift'))
 		{
 			Molpy.Boosts['Time Lord'].Level=0;
+			Molpy.Boosts['Flux Harvest'].Refresh();
 			if(Molpy.Got('LogiPuzzle'))
 			{
 				var cl = Molpy.Boosts['LogiPuzzle'];
