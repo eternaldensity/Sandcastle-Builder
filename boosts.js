@@ -980,7 +980,7 @@
 		}
 		if(Molpy.Got('Temporal Rift'))
 		{
-			if (Molpy.Got('Safety Net')) Molpy.newpixNumber=Math.round(Math.random()*(Molpy.highestNPvisited-240)+240) 
+			if (Molpy.Got('Safety Net')) Molpy.newpixNumber=Math.round(Math.random()*(Molpy.highestNPvisited-241)+241) 
 			else Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
 			if(Molpy.Earned('Minus Worlds')&&Math.floor(Math.random()*2))Molpy.newpixNumber*=-1;;
 			Molpy.ONG();
