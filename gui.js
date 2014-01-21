@@ -605,15 +605,25 @@
 					g('idlescore').innerHTML='localstorage not supported';
 					return;
 				}
-				var score =localStorage['idlescore']||0;
+				var score =parseFloat(localStorage['idlescore'])||0;
+				var prestige =parseFloat(localStorage['idleprestige'])||0;
+				if(!Molpy.forcedReload)
+				{
+					prestige+=score;
+					score=0;
+				}
 				g('idlescore').innerHTML='Score: '+Molpify(score,3);
+				g('idleprestige').innerHTML='Prestige: '+Molpify(prestige,3);
 				localStorage['idlescore']=score;
+				localStorage['idleprestige']=prestige;
 				setTimeout(Molpy.Idle, 1000);
 			}
 			Molpy.Idle=function()
 			{
-				var score =localStorage['idlescore']||0;
-				score++;
+				var score =parseFloat(localStorage['idlescore'])||0;
+				var prestige =parseFloat(localStorage['idleprestige'])||0;
+				inc=1+Math.max(0,Math.floor(Math.log(prestige)*Math.LOG2E));
+				score+=inc;
 				g('idlescore').innerHTML='Score: '+Molpify(score,3);
 				localStorage['idlescore']=score;
 				if(score%1000==0)

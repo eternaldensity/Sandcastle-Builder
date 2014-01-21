@@ -46,6 +46,9 @@ For personal amusement only.
 ## Unponderable:
 - Lots of untagging of tagged items which don't need to be tagged
 
+## ED:
+- I didn't really do any programming and I still feel like I'm spending all my free time on this
+
 ## 3.301
 - LucidCrux: grey versions icons for boosts in shop!! wow! (also some fancy CSS stuff I need to learn)
 - mart0258: Flipside fix

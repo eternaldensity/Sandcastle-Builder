@@ -177,6 +177,7 @@
 	{
 		Molpy.needlePulling=1; //prevent earning badges that haven't been loaded
 		var version = parseFloat(localStorage['version']);
+		Molpy.PreLoadTasks(version);
 		if(!Molpy.ValidateVersion(version))return;
 		
 		Molpy.startDate=localStorage['startDate'];
@@ -837,6 +838,7 @@
 
 		thread=thread.split(p);
 		var version = parseFloat(thread[0]);
+		Molpy.PreLoadTasks(version);
 		_gaq&&_gaq.push(['_trackEvent','Load','Version',''+version,true]);
 		if(!Molpy.ValidateVersion(version))return;
 		
@@ -861,6 +863,13 @@
 		//thread[9] is unused
 		Molpy.OtherBadgesFromString(thread[10]||'',version);
 		return Molpy.PostLoadTasks(version);
+	}
+	Molpy.PreLoadTasks=function(version)
+	{
+		if(version<Molpy.version) //hey let's do this every upgrade!
+		{	
+			Molpy.forcedReload=true;
+		}
 	}
 	Molpy.PostLoadTasks=function(version)
 	{
