@@ -27,14 +27,24 @@ For personal amusement only.
 ## Changelog
 
 ## 3.31
-- Waveney: Safety Net Boost to stop Temporal rifts rifting to shortpix
-- Waveney: Safety Blanket Boost to stop losing longpix only boosts when on shortpix
-- Waveney: Aleph One Boost to allow unlimited Infinite purchases of sand and glass
-- Waveney: This Sucks upgrades actually cost the quoted prices
-- Waveney: Discovery and Monument counts in stats
-- Waveney: Reduction to Italian Plumber Spam
-- Waveney: Upgrades to Italian Plumber
-- Waveney: Valued Customer badge description corrected
+
+### Waveney:
+- Safety Net Boost to stop Temporal rifts rifting to shortpix
+- Safety Blanket Boost to stop losing longpix only boosts when on shortpix
+- Aleph One Boost to allow unlimited Infinite purchases of sand and glass
+- This Sucks upgrades actually cost the quoted prices
+- Discovery and Monument counts in stats
+- Reduction to Italian Plumber Spam
+- Upgrades to Italian Plumber
+- Valued Customer badge description corrected
+
+### LucidCrux:
+- Lots of new icons!
+- Significant changes to icon code to reduce the amount of CSS required (currently breaks the 4 coloured icons)
+- LCB typo fix
+
+## Unponderable:
+- Lots of untagging of tagged items which don't need to be tagged
 
 ## 3.301
 - LucidCrux: grey versions icons for boosts in shop!! wow! (also some fancy CSS stuff I need to learn)
