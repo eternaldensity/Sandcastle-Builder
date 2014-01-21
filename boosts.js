@@ -3833,7 +3833,7 @@
     Molpy.RunFastFactory=function(times) //assumes player did buy AO before getting AA. probably a safe assumption
     {
 	if(times&&Molpy.IsEnabled('Mario')) {
-		var l = Molpy.Level('Mario')+1;
+		var l = Molpy.Boosts['Mario'].bought;
 		var cost=l*(l+1)/2;
 		Molpy.boostSilence = 1;
 		if (Molpy.Spend('QQ',cost)) {
@@ -5322,12 +5322,37 @@
 	
 	new Molpy.Boost({name:'Italian Plumber',alias:'Mario', icon:'italianplumber', desc:function(me)
 		{
-			return (me.IsEnabled? 'O':'When active, o') +'pens a Question Qube every time Automata Assemble runs.'+(me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+')" value="'
-				+(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+			var lvls = me.bought;
+			var uses = lvls*(lvls+1)/2;
+			var str = (me.IsEnabled? 'O':'When active, o') +'pens '+(lvls ==1?'a':Molpify(lvls,4))+
+				  ' Question Qube'+plural(lvls)+' every time Automata Assemble runs'+
+				  (lvls>1?', but uses '+Molpify(uses,4)+' Qubes':'')+'.'+
+				  (me.bought?'<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'
+				  +(me.IsEnabled? 'Dea':'A')+'ctivate"></input>':'');
+			if (me.bought) {
+				var UpgradePrice={Vacuum:1000,QQ:(50000*lvls)};
+				if (Molpy.Has(UpgradePrice)) {
+					str += '<br><input type="button" onclick="Molpy.SuperMario()" value="Upgrade"></input>' +
+						'<br>To open ' + (Molpify(lvls+1,4)) + ' Qubes, using ' + ((lvls+1)*(lvls+2)/2) + 
+						' Qubes.  Costs: ' + Molpy.PriceString(UpgradePrice);
+				}
+			}
+			return str
 		}
-		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Vacuum:'20K',QQ:'600K'},className:'toggle',
-		Level:Molpy.BoostFuncs.PosPowerLevel		
+		,IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,price:{Vacuum:'20K',QQ:'600K'},className:'toggle'
 	});
+
+	Molpy.SuperMario=function(){
+		var me = Molpy.Boosts['Mario'];
+		var lvls = me.bought;
+		var UpgradePrice={Vacuum:1000,QQ:(50000*lvls)};
+		if (Molpy.Spend(UpgradePrice)) {
+			me.bought++;
+			Molpy.Notify("Italian Plumber Upgraded");
+			me.Refresh();
+		}
+
+	}
 	
 	new Molpy.Boost({name:'Void Vault',alias:'VV', icon:'voidvault',
 		desc:function(me)
@@ -5365,6 +5390,7 @@
 				Molpy.Notify("No Rifts left to harvest");
 			}
 		}
+		Molpy.Boosts['Flux Harvest'].Refresh();
 	};
 	
 	new Molpy.Boost({name:'This Sucks',alias:'TS', icon:'thissucks',

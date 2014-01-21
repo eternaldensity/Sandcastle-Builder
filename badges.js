@@ -275,7 +275,7 @@
 		desc:function(){return 'Spend '+Molpify(DeMolpify('200M'))+' Castles total';}
 		});
 	new Molpy.Badge({name:'Valued Customer',
-		desc:function(){return 'Spend '+Molpify(DeMolpify('80G'))+' Castles total';}
+		desc:function(){return 'Spend '+Molpify(DeMolpify('8T'))+' Castles total';}
 		});
 	new Molpy.Badge({name:'Beachscaper',desc:'Have 200 Sand Tools'});
 	new Molpy.Badge({name:'Beachmover',desc:'Have 100 Castle Tools'});

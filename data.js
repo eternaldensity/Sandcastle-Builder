@@ -10,7 +10,7 @@ function addCSSRule(sheet, selector, rules, index) {
 	}
 }
 var Molpy={};
-Molpy.version=3.301;
+Molpy.version=3.31;
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[
@@ -881,7 +881,7 @@ Molpy.CheckLogicatRewards=function(automationLevel)
 	Molpy.Boosts['MHP'].department=finiteC||((Molpy.Got('Goats')||Molpy.Boosts['MHP'].department)&&!automationLevel);
 	Molpy.Boosts['Maps'].logic=3000*(Molpy.EnoughMonumgForMaps());
 	Molpy.Boosts['Mario'].logic=Molpy.Level('Logicat')*2+10000;
-	Molpy.Boosts['TS'].logic=Molpy.Level('Vacuum')*Molpy.Level('Vacuum')>=8000;
+	Molpy.Boosts['TS'].logic=Molpy.Level('Vacuum')*(Molpy.Level('Vacuum')>=8000);
 	Molpy.Boosts['Aleph One'].logic=111111111;
 }
 Molpy.mapMonumg=300;
