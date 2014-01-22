@@ -30,6 +30,7 @@ For personal amusement only.
 - Larger upgrades to Time Lord
 - Larger upgrades to Dragon Forge
 - A number of small fixes
+- Factory Expansion stops at 61 runs unless 'Between the Cracks' or 'Aleph One' 
 
 
 ## 3.31
