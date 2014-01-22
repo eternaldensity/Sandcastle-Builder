@@ -14,6 +14,14 @@ function ONGsnip(time)
 	time.setMilliseconds(0); 
 	return time;
 }
+jQuery.fn.canColorBorder=function()
+{
+	return this.each(function() {
+		var borderColorButton = $("<div class='ui-border-color-button'></div>");
+		$(this).append(borderColorButton);
+	});
+}
+
 /* In which the game initialisation is specified
 ++++++++++++++++++++++++++++++++++++++++++++++++*/
 Molpy.Up=function()
