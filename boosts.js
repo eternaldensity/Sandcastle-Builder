@@ -4696,7 +4696,7 @@
 		Add:Molpy.Dig,
 		Spend:function(amount,silent)
 		{
-			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) amount=0;
+			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount=0;
 			if(!isFinite(Molpy.sandPermNP) &&Molpy.IsEnabled('Cracks'))amount=0;
 			if(!amount)return;
 			Molpy.sand-=amount;
@@ -4728,7 +4728,7 @@
 		},
 		Has:function(amount)
 		{
-			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) return 1;
+			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) return 1;
 			if(!isFinite(Molpy.sandPermNP)&&Molpy.IsEnabled('Cracks'))
 				return 1;
 			return(this.HasSuper(amount));
@@ -4757,7 +4757,7 @@
 		Add:Molpy.Build,
 		Spend:function(amount,silent)
 		{
-			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) amount=0;
+			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount=0;
 			if(!isFinite(Molpy.sandPermNP) &&Molpy.IsEnabled('Cracks'))amount=0;
 			if(!amount)return;
 			amount = Math.min(amount,Molpy.castles);
@@ -4800,7 +4800,7 @@
 		},
 		Has:function(amount)
 		{
-			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) return 1;
+			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) return 1;
 			if(!isFinite(Molpy.sandPermNP)&&Molpy.IsEnabled('Cracks'))
 				return 1;
 			return(this.HasSuper(amount));
