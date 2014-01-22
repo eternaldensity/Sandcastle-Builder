@@ -3474,8 +3474,10 @@ Molpy.Up=function()
 	+++++++++++++++++++++++++++++++++++*/
 	Molpy.Loopist=function()
 	{
+		var t = Molpy.time;
+		Molpy.time = new Date().getTime();
 		Molpy.ketchupTime=0;
-		Molpy.lateness+=((new Date().getTime()-Molpy.time));
+		Molpy.lateness+=(Molpy.time-t);
 		Molpy.lateness=Math.min(Molpy.lateness, 7200);//don't ketchup up too much
 		while(Molpy.lateness > Molpy.NPlength)
 		{
@@ -3499,7 +3501,6 @@ Molpy.Up=function()
 			throw e;
 			return;
 		}
-		Molpy.time=new Date().getTime();
 		setTimeout(Molpy.Loopist, 1000/Molpy.fps);
 	}	
 }
