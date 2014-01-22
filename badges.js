@@ -1,431 +1,1008 @@
-﻿Molpy.DefineBadges=function()
-{	
-	new Molpy.Badge({name:'Amazon Patent',desc:'1-Click'});
-	new Molpy.Badge({name:'Oops',desc:'You clicked it again'});
-	new Molpy.Badge({name:'Just Starting',desc:'10 clicks'});
-	new Molpy.Badge({name:'Busy Clicking',desc:'100 clicks'});
-	new Molpy.Badge({name:'Click Storm',desc:'1,000 clicks'});
-	new Molpy.Badge({name:'Getting Sick of Clicking',desc:'Dig 100K sand by clicking'});
-	new Molpy.Badge({name:'Why am I still clicking?',desc:'Dig 5M sand by clicking'});
-	new Molpy.Badge({name:'Click Master',desc:'Dig 100M sand by clicking',visiblity:2});
-	
-	new Molpy.Badge({name:'Rook',desc:'Make a castle'});
-	new Molpy.Badge({name:'Enough for Chess',desc:'Make '+Molpify(4)+' castles'});
-	new Molpy.Badge({name:'Fortified',desc:'Make 40 castles'});
-	new Molpy.Badge({name:'All Along the Watchtower',desc:'Make 320 castles'});
-	new Molpy.Badge({name:'Megopolis',desc:'Make 1,000 castles'});
-	new Molpy.Badge({name:'Kingdom',desc:'Make 100K castles'});
-	new Molpy.Badge({name:'Empire',desc:'Make 10M castles'});
-	new Molpy.Badge({name:'Reign of Terror',desc:'Make 1G castles',vis:2});
-	
-	new Molpy.Badge({name:'We Need a Bigger Beach',desc:'Have 1K castles'});
-	new Molpy.Badge({name:'Castle Nation',desc:'Have 1M castles'});
-	new Molpy.Badge({name:'Castle Planet',desc:'Have 1G castles'});
-	new Molpy.Badge({name:'Castle Star',desc:'Have 1T castles'});
-	new Molpy.Badge({name:'Castle Galaxy',desc:'Have 8,888T',vis:1});
-	
-	new Molpy.Badge({name:'Barn',desc:'Have 50 sand'});
-	new Molpy.Badge({name:'Storehouse',desc:'Have 200 sand'});
-	new Molpy.Badge({name:'Bigger Barn',desc:'Have 500 sand'});
-	new Molpy.Badge({name:'Warehouse',desc:'Have 8K sand'});
-	new Molpy.Badge({name:'Sand Silo',desc:'Have 300K sand'});
-	new Molpy.Badge({name:'Silicon Valley',desc:'Have 7M sand'});
-	new Molpy.Badge({name:'Seaish Sands',desc:'Have 420M sand',vis:1});
-	new Molpy.Badge({name:'You can do what you want',desc:'Have 123,456,789 sand',vis:2});
-	
-	new Molpy.Badge({name:'Ninja', desc:'Ninja a NewPixBot',stats:'The pope starts to dig some sand. A black figure swings from a rope from the ceiling.'});
-	new Molpy.Badge({name:'No Ninja', desc:'Click for sand after not ninjaing NewPixBot'});
-	new Molpy.Badge({name:'Ninja Stealth', desc:'Make non-ninjaing clicks 6 newpix in a row'});
-	new Molpy.Badge({name:'Ninja Dedication', desc:'Reach ninja stealth streak 16'});
-	new Molpy.Badge({name:'Ninja Madness', desc:'Reach ninja stealth streak 26'});
-	new Molpy.Badge({name:'Ninja Omnipresence', desc:'Reach ninja stealth streak 36'});
-	new Molpy.Badge({name:'Ninja Strike', desc:'Ninja 10 NewPixBots simultaneously'});
-	new Molpy.Badge({name:'Ninja Holidip', desc:'Lose ninja stealth by not clicking'});
-	
-	new Molpy.Badge({name:'Wipeout', desc:'Destroy a total of 500 castles with waves'});
-	new Molpy.Badge({name:'Redundant Redundancy', desc:'Earn 0 badges',vis:1});
-	new Molpy.Badge({name:'Redundant', desc:'Earn at least 1 badge',vis:1});
-	new Molpy.Badge({name:'Clerical Error', desc:'Receive a badge you haven\'t earned',vis:1});
-	new Molpy.Badge({name:'Castle Price Rollback', desc:'Experience an ONG<br>This is when the amount of Sand needed for making new Castles resets back to 1, and any Castle Tools you own activate.'});
-	new Molpy.Badge({name:'This Should be Automatic', desc:'Manually save 20 times'});
-	
-	new Molpy.Badge({name:'A light dusting', desc:'Have a sand dig rate of 0.1 SpmNP'});
-	new Molpy.Badge({name:'Sprinkle', desc:'Have a sand dig rate of 0.8 SpmNP'});
-	new Molpy.Badge({name:'Trickle', desc:'Have a sand dig rate of 6 SpmNP'});
-	new Molpy.Badge({name:'Pouring it on', desc:'Have a sand dig rate of 25 SpmNP'});
-	new Molpy.Badge({name:'Hundred Year Storm', desc:'Have a sand dig rate of 100 SpmNP'});
-	new Molpy.Badge({name:'Thundering Typhoon!', desc:'Have a sand dig rate of 400 SpmNP'});
-	new Molpy.Badge({name:'Sandblaster', desc:'Have a sand dig rate of 1,600 SpmNP'});
-	new Molpy.Badge({name:'Where is all this coming from?', desc:'Have a sand dig rate of 7,500 SpmNP'});
-	new Molpy.Badge({name:'Seaish Sandstorm', desc:'Have a sand dig rate of 30K SpmNP',vis:1});
-	new Molpy.Badge({name:'WHOOSH', desc:'Have a sand dig rate of 500,500 SpmNP',vis:1});
-	new Molpy.Badge({name:'We want some two!', desc:'Have a sand dig rate of 2,222,222 SpmNP',vis:1});
-	new Molpy.Badge({name:'Bittorrent', desc:'Have a sand dig rate of 10,101,010 SpmNP',vis:1});
-	new Molpy.Badge({name:'WARP SPEEEED', desc:'Have a sand dig rate of 299,792,458 SpmNP',vis:1});
-	new Molpy.Badge({name:'Maxed out the display', desc:'Have a sand dig rate of 8,888,888,888.8 SpmNP',vis:2});
-	
-	new Molpy.Badge({name:'Store ALL of the sand',desc:'Have 782,222,222,144 sand',vis:2});		
-	
-	new Molpy.Badge({name:'Notified',desc:'Receive a notification'});
-	new Molpy.Badge({name:'Thousands of Them!',desc:'Receive 2000 notifications',vis:1});
-	new Molpy.Badge({name:'Decisions, Decisions',desc:'With an option on additional decisions',vis:1});
-	new Molpy.Badge({name:'Night and Dip',desc:'Change Colour Schemes',vis:1});
-	new Molpy.Badge({name:'Far End of the Bell Curve',desc:'View Stats',vis:1});
-	new Molpy.Badge({name:'The Fine Print',desc:'View the stats of a Sand Tool',vis:1});
-	new Molpy.Badge({name:'Keeping Track',desc:'View the stats of a Castle Tool',vis:1});
-	
-	new Molpy.Badge({name:'Ninja Shortcomings',desc:'Lose a Ninja Stealth Streak of between 30 and 35'});
-	new Molpy.Badge({name:'Not Ground Zero',desc:'Molpy Down',vis:1});
-	new Molpy.Badge({name:'Not So '+Molpy.redactedW,desc:'Click 2 '+Molpy.redactedWords,vis:1});
-	new Molpy.Badge({name:"Don't Litter!",desc:'Click 14 '+Molpy.redactedWords,vis:1});
-	new Molpy.Badge({name:'Y U NO BELIEVE ME?',desc:'Click 101 '+Molpy.redactedWords,vis:1});
-	new Molpy.Badge({name:"Have you noticed it's slower?",desc:'Experience the LongPix'});
-	Molpy.CheckJudgeClass=function(me,level,name,force)
-		{
-			var oldClass=me.className;
-			var newClass = (force||Molpy.judgeLevel>level)?name:'';
-			if(newClass!=oldClass)
-			{
-				me.className=newClass;
-				return 1;
-			}
-		}
-	new Molpy.Badge({name:'Judgement Dip Warning',
-		desc:function()
-		{
-			var report=Molpy.JudgementDipReport();
-			if(Molpy.Boosts['NavCode'].power) return 'The Bots have been foiled by altered navigation code';
+﻿/**************************************************************
+ * Badges
+ * 
+ * New badges should only be added to the END of the list
+ * and before the Discoveries section!
+ *************************************************************/
+
+Molpy.DefineBadges = function() {
+	new Molpy.Badge({
+		name: 'Amazon Patent',
+		desc: '1-Click'
+	});
+	new Molpy.Badge({
+		name: 'Oops',
+		desc: 'You clicked it again'
+	});
+	new Molpy.Badge({
+		name: 'Just Starting',
+		desc: '10 clicks'
+	});
+	new Molpy.Badge({
+		name: 'Busy Clicking',
+		desc: '100 clicks'
+	});
+	new Molpy.Badge({
+		name: 'Click Storm',
+		desc: '1,000 clicks'
+	});
+	new Molpy.Badge({
+		name: 'Getting Sick of Clicking',
+		desc: 'Dig 100K sand by clicking'
+	});
+	new Molpy.Badge({
+		name: 'Why am I still clicking?',
+		desc: 'Dig 5M sand by clicking'
+	});
+	new Molpy.Badge({
+		name: 'Click Master',
+		desc: 'Dig 100M sand by clicking',
+		visiblity: 2
+	});
+	new Molpy.Badge({
+		name: 'Rook',
+		desc: 'Make a castle'
+	});
+	new Molpy.Badge({
+		name: 'Enough for Chess',
+		desc: 'Make ' + Molpify(4) + ' castles'
+	});
+	new Molpy.Badge({
+		name: 'Fortified',
+		desc: 'Make 40 castles'
+	});
+	new Molpy.Badge({
+		name: 'All Along the Watchtower',
+		desc: 'Make 320 castles'
+	});
+	new Molpy.Badge({
+		name: 'Megopolis',
+		desc: 'Make 1,000 castles'
+	});
+	new Molpy.Badge({
+		name: 'Kingdom',
+		desc: 'Make 100K castles'
+	});
+	new Molpy.Badge({
+		name: 'Empire',
+		desc: 'Make 10M castles'
+	});
+	new Molpy.Badge({
+		name: 'Reign of Terror',
+		desc: 'Make 1G castles',
+		vis: 2
+	});
+	new Molpy.Badge({
+		name: 'We Need a Bigger Beach',
+		desc: 'Have 1K castles'
+	});
+	new Molpy.Badge({
+		name: 'Castle Nation',
+		desc: 'Have 1M castles'
+	});
+	new Molpy.Badge({
+		name: 'Castle Planet',
+		desc: 'Have 1G castles'
+	});
+	new Molpy.Badge({
+		name: 'Castle Star',
+		desc: 'Have 1T castles'
+	});
+	new Molpy.Badge({
+		name: 'Castle Galaxy',
+		desc: 'Have 8,888T',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Barn',
+		desc: 'Have 50 sand'
+	});
+	new Molpy.Badge({
+		name: 'Storehouse',
+		desc: 'Have 200 sand'
+	});
+	new Molpy.Badge({
+		name: 'Bigger Barn',
+		desc: 'Have 500 sand'
+	});
+	new Molpy.Badge({
+		name: 'Warehouse',
+		desc: 'Have 8K sand'
+	});
+	new Molpy.Badge({
+		name: 'Sand Silo',
+		desc: 'Have 300K sand'
+	});
+	new Molpy.Badge({
+		name: 'Silicon Valley',
+		desc: 'Have 7M sand'
+	});
+	new Molpy.Badge({
+		name: 'Seaish Sands',
+		desc: 'Have 420M sand',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'You can do what you want',
+		desc: 'Have 123,456,789 sand',
+		vis: 2
+	});
+	new Molpy.Badge({
+		name: 'Ninja',
+		desc: 'Ninja a NewPixBot',
+		stats: 'The pope starts to dig some sand. A black figure swings from a rope from the ceiling.'
+	});
+	new Molpy.Badge({
+		name: 'No Ninja',
+		desc: 'Click for sand after not ninjaing NewPixBot'
+	});
+	new Molpy.Badge({
+		name: 'Ninja Stealth',
+		desc: 'Make non-ninjaing clicks 6 newpix in a row'
+	});
+	new Molpy.Badge({
+		name: 'Ninja Dedication',
+		desc: 'Reach ninja stealth streak 16'
+	});
+	new Molpy.Badge({
+		name: 'Ninja Madness',
+		desc: 'Reach ninja stealth streak 26'
+	});
+	new Molpy.Badge({
+		name: 'Ninja Omnipresence',
+		desc: 'Reach ninja stealth streak 36'
+	});
+	new Molpy.Badge({
+		name: 'Ninja Strike',
+		desc: 'Ninja 10 NewPixBots simultaneously'
+	});
+	new Molpy.Badge({
+		name: 'Ninja Holidip',
+		desc: 'Lose ninja stealth by not clicking'
+	});
+	new Molpy.Badge({
+		name: 'Wipeout',
+		desc: 'Destroy a total of 500 castles with waves'
+	});
+	new Molpy.Badge({
+		name: 'Redundant Redundancy',
+		desc: 'Earn 0 badges',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Redundant',
+		desc: 'Earn at least 1 badge',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Clerical Error',
+		desc: 'Receive a badge you haven\'t earned',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Castle Price Rollback',
+		desc: 'Experience an ONG<br>This is when the amount of Sand needed for making new Castles resets back to 1, and any Castle Tools you own activate.'
+	});
+	new Molpy.Badge({
+		name: 'This Should be Automatic',
+		desc: 'Manually save 20 times'
+	});
+	new Molpy.Badge({
+		name: 'A light dusting',
+		desc: 'Have a sand dig rate of 0.1 SpmNP'
+	});
+	new Molpy.Badge({
+		name: 'Sprinkle',
+		desc: 'Have a sand dig rate of 0.8 SpmNP'
+	});
+	new Molpy.Badge({
+		name: 'Trickle',
+		desc: 'Have a sand dig rate of 6 SpmNP'
+	});
+	new Molpy.Badge({
+		name: 'Pouring it on',
+		desc: 'Have a sand dig rate of 25 SpmNP'
+	});
+	new Molpy.Badge({
+		name: 'Hundred Year Storm',
+		desc: 'Have a sand dig rate of 100 SpmNP'
+	});
+	new Molpy.Badge({
+		name: 'Thundering Typhoon!',
+		desc: 'Have a sand dig rate of 400 SpmNP'
+	});
+	new Molpy.Badge({
+		name: 'Sandblaster',
+		desc: 'Have a sand dig rate of 1,600 SpmNP'
+	});
+	new Molpy.Badge({
+		name: 'Where is all this coming from?',
+		desc: 'Have a sand dig rate of 7,500 SpmNP'
+	});
+	new Molpy.Badge({
+		name: 'Seaish Sandstorm',
+		desc: 'Have a sand dig rate of 30K SpmNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'WHOOSH',
+		desc: 'Have a sand dig rate of 500,500 SpmNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'We want some two!',
+		desc: 'Have a sand dig rate of 2,222,222 SpmNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Bittorrent',
+		desc: 'Have a sand dig rate of 10,101,010 SpmNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'WARP SPEEEED',
+		desc: 'Have a sand dig rate of 299,792,458 SpmNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Maxed out the display',
+		desc: 'Have a sand dig rate of 8,888,888,888.8 SpmNP',
+		vis: 2
+	});
+	new Molpy.Badge({
+		name: 'Store ALL of the sand',
+		desc: 'Have 782,222,222,144 sand',
+		vis: 2
+	});
+	new Molpy.Badge({
+		name: 'Notified',
+		desc: 'Receive a notification'
+	});
+	new Molpy.Badge({
+		name: 'Thousands of Them!',
+		desc: 'Receive 2000 notifications',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Decisions, Decisions',
+		desc: 'With an option on additional decisions',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Night and Dip',
+		desc: 'Change Colour Schemes',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Far End of the Bell Curve',
+		desc: 'View Stats',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'The Fine Print',
+		desc: 'View the stats of a Sand Tool',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Keeping Track',
+		desc: 'View the stats of a Castle Tool',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Ninja Shortcomings',
+		desc: 'Lose a Ninja Stealth Streak of between 30 and 35'
+	});
+	new Molpy.Badge({
+		name: 'Not Ground Zero',
+		desc: 'Molpy Down',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Not So ' + Molpy.redactedW,
+		desc: 'Click 2 ' + Molpy.redactedWords,
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: "Don't Litter!",
+		desc: 'Click 14 ' + Molpy.redactedWords,
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Y U NO BELIEVE ME?',
+		desc: 'Click 101 ' + Molpy.redactedWords,
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: "Have you noticed it's slower?",
+		desc: 'Experience the LongPix'
+	});
+	new Molpy.Badge({
+		name: 'Judgement Dip Warning',
+		icon: 'judgementdipwarning',
+		vis: 2,
+		
+		desc: function() {
+			var report = Molpy.JudgementDipReport();
+			if(Molpy.Boosts['NavCode'].power)
+				return 'The Bots have been foiled by altered navigation code';
 			var level = report[0];
 			var countdown = report[1];
 			if(!level) return 'Safe. For now.';
-			if(level==1) return 'The countdown is at ' + Molpify(countdown)+'NP';
-			return 'Judgement dip is upon us! But it can get worse. The countdown is at ' + Molpify(countdown)+
-			'NP';
-		},vis:2,icon:'judgementdipwarning',classChange:function(){return Molpy.CheckJudgeClass(this,0,'alert');}});
-	Molpy.JudgementDipThreshold=function()
-	{
-		if(Molpy.Boosts['NavCode'].power) return [0,Infinity];
-		var baseVal= 500000000;
+			if(level == 1)
+				return 'The countdown is at ' + Molpify(countdown) + 'NP';
+			return 'Judgement dip is upon us! But it can get worse. The countdown is at ' + Molpify(countdown) + 'NP';
+		},
+		
+		classChange: function() {
+			return Molpy.CheckJudgeClass(this, 0, 'alert');
+		}
+	});
+	
+	Molpy.CheckJudgeClass = function(me, level, name, force) {
+		var oldClass = me.className;
+		var newClass = (force || Molpy.judgeLevel > level) ? name : '';
+		if(newClass != oldClass) {
+			me.className = newClass;
+			return 1;
+		}
+	}
+	
+	Molpy.JudgementDipThreshold = function() {
+		if(Molpy.Boosts['NavCode'].power) return [0, Infinity];
+		var baseVal = 500000000;
 		var div = 1;
-		for(var i in Molpy.Boosts)
-		{
-			if(Molpy.Got(i))
-			{
+		for( var i in Molpy.Boosts) {
+			if(Molpy.Got(i)) {
 				var gr = Molpy.Boosts[i].group;
-				if(gr=='cyb'||gr=='chron'||gr=='hpt')
-				{
+				if(gr == 'cyb' || gr == 'chron' || gr == 'hpt') {
 					div++;
-					if(div>25)
-						div*=1.35;
-					if(div>40)
-						div*=1.35;
+					if(div > 25) div *= 1.35;
+					if(div > 40) div *= 1.35;
 				}
 			}
 		}
-		if(Molpy.Got('Bag Burning'))
-		{
-			div/=Molpy.BagBurnDiv();
+		if(Molpy.Got('Bag Burning')) {
+			div /= Molpy.BagBurnDiv();
 		}
-		return baseVal/div;
+		return baseVal / div;
 	}
-	Molpy.BagBurnDiv=function()
-	{
-		var max=1e294
-		var div = Math.pow(1.4,Math.max(0,(Molpy.SandTools['Bag'].amount-Molpy.npbDoubleThreshold)/2));
-		if(div>max)
-		{
-			if(Molpy.Got('Bacon'))Molpy.LockBoost('Bag Burning');
+	
+	Molpy.BagBurnDiv = function() {
+		var max = 1e294
+		var div = Math.pow(1.4,	Math.max(0, (Molpy.SandTools['Bag'].amount - Molpy.npbDoubleThreshold) / 2));
+		if(div > max) {
+			if(Molpy.Got('Bacon')) Molpy.LockBoost('Bag Burning');
 			return max;
 		}
 		return div;
 	}
-	Molpy.JudgementDipReport=function()
-	{
-		var bot=Molpy.CastleTools['NewPixBot'];
+	
+	Molpy.JudgementDipReport = function() {
+		var bot = Molpy.CastleTools['NewPixBot'];
 		var bots = bot.amount;
 		var np = Math.abs(Molpy.newpixNumber);
-		if(Molpy.Got('Time Travel')||np<20)bots-=2;
-		var botCastles=bot.totalCastlesBuilt*bots;
+		if(Molpy.Got('Time Travel') || np < 20) bots -= 2;
+		var botCastles = bot.totalCastlesBuilt * bots;
 		var thresh = Molpy.JudgementDipThreshold();
-		var level = Math.max(0,Math.floor(botCastles/thresh));
-		if(Molpy.Got('Bag Burning'))
-		{
-			var nobagLevel = Math.max(0,Math.floor((Molpy.BagBurnDiv()/thresh)*botCastles));
-			if(nobagLevel>Math.pow(2,Molpy.Boosts['Bag Burning'].power)+6)
-			{
-				var rate = Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power+1,1);
-				Molpy.Boosts['Bag Burning'].power+=rate;
-				if(Molpy.SandTools['Bag'].amount<Molpy.npbDoubleThreshold)
-				{
-					Molpy.Notify('The NewPixBots extinguished the burning Bags!',1);
+		var level = Math.max(0, Math.floor(botCastles / thresh));
+		if(Molpy.Got('Bag Burning')) {
+			var nobagLevel = Math.max(0, Math.floor((Molpy.BagBurnDiv() / thresh) * botCastles));
+			if(nobagLevel > Math.pow(2, Molpy.Boosts['Bag Burning'].power) + 6) {
+				var rate = Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power + 1, 1);
+				Molpy.Boosts['Bag Burning'].power += rate;
+				if(Molpy.SandTools['Bag'].amount < Molpy.npbDoubleThreshold) {
+					Molpy.Notify('The NewPixBots extinguished the burning Bags!', 1);
 					Molpy.LockBoost('Bag Burning');
 				}
 			}
 		}
-		var countdown = ((level+1)*thresh - botCastles);
-		countdown/=(bot.buildC()*bot.amount*bot.amount);
-		if(Molpy.Got('Doublepost'))countdown/=2;
-		countdown/=Molpy.globalCastleMult; //this is a bit approximate because of its rounding, but close enough for this, hopefully
-		if(isNaN(countdown)||countdown<0)countdown=0;
-		if(Molpy.Boosts['Coma Molpy Style'].power)
-		{
-			level=Math.floor(level/2);
+		var countdown = ((level + 1) * thresh - botCastles);
+		countdown /= (bot.buildC() * bot.amount * bot.amount);
+		if(Molpy.Got('Doublepost')) countdown /= 2;
+		countdown /= Molpy.globalCastleMult; // this is a bit approximate because of its rounding, but close enough for this, hopefully
+		if(isNaN(countdown) || countdown < 0) countdown = 0;
+		if(Molpy.Boosts['Coma Molpy Style'].power) {
+			level = Math.floor(level / 2);
 		}
-		var maxDipLevel=Molpy.MaxDipLevel(np);
-		if(level > maxDipLevel)
-		{
+		var maxDipLevel = Molpy.MaxDipLevel(np);
+		if(level > maxDipLevel) {
 			level = maxDipLevel;
-			countdown=0;
-			while(Molpy.MaxDipLevel(np+countdown)<=level)
-			{
+			countdown = 0;
+			while(Molpy.MaxDipLevel(np + countdown) <= level) {
 				countdown++;
 			}
 		}
-		
+
 		Molpy.RewardDipLevel(level);
-		return [level,Math.ceil(countdown)];
+		return [level, Math.ceil(countdown)];
 	}
-	Molpy.MaxDipLevel=function(np)
-	{
-		var maxDipLevel=Math.floor(Math.pow(2,Math.max(0,(np-200))*Math.max(0,np-200)/250+np/2-20));
+	
+	Molpy.MaxDipLevel = function(np) {
+		var maxDipLevel = Math.floor(Math.pow(2, Math.max(0, (np - 200))
+			* Math.max(0, np - 200) / 250 + np / 2 - 20));
 		return maxDipLevel;
 	}
-	Molpy.RewardDipLevel=function(level)
-	{
 	
-		if(level>3)
-		{
-			if(Molpy.Got('Time Travel') && 
-				!(Molpy.Got('Overcompensating')||Molpy.Got('Doublepost')))
-			{
+	Molpy.RewardDipLevel = function(level) {
+		if(level > 3) {
+			if(Molpy.Got('Time Travel') && !(Molpy.Got('Overcompensating') || Molpy.Got('Doublepost')))
 				Molpy.UnlockBoost('Summon Knights Temporal');
-			}
-			if(Molpy.SandTools['Bag'].amount>Molpy.npbDoubleThreshold&&!Molpy.Got('Fireproof'))
-			{
+			if(Molpy.SandTools['Bag'].amount > Molpy.npbDoubleThreshold && !Molpy.Got('Fireproof'))
 				Molpy.UnlockBoost('Bag Burning');
-			}
 		}
-		if(level>4)
-		{
-			Molpy.Boosts['Ninja Assistants'].department=1;
+		if(level > 4) {
+			Molpy.Boosts['Ninja Assistants'].department = 1;
 		}
-		if(level>5)
-		{
-			Molpy.Boosts['Minigun'].department=1;
+		if(level > 5) {
+			Molpy.Boosts['Minigun'].department = 1;
 		}
-		if(level>6)
-		{
-				Molpy.Boosts['Stacked'].department=1;
+		if(level > 6) {
+			Molpy.Boosts['Stacked'].department = 1;
 		}
-		if(level>7)
-		{
-			if(Molpy.Got('Minigun')||Molpy.Got('Stacked'))
-				Molpy.Boosts['Big Splash'].department=1;
+		if(level > 7) {
+			if(Molpy.Got('Minigun') || Molpy.Got('Stacked'))
+				Molpy.Boosts['Big Splash'].department = 1;
 		}
-		if(level>8)
-		{
-			if(Molpy.Got('Stacked')||Molpy.Got('Big Splash'))
-				Molpy.Boosts['Irregular Rivers'].department=1;
+		if(level > 8) {
+			if(Molpy.Got('Stacked') || Molpy.Got('Big Splash'))
+				Molpy.Boosts['Irregular Rivers'].department = 1;
 		}
-		if(level>12)
-		{
-			if(Molpy.Got('Big Splash')||Molpy.Got('Irregular Rivers'))
-				Molpy.Boosts['NavCode'].department=1;
+		if(level > 12) {
+			if(Molpy.Got('Big Splash') || Molpy.Got('Irregular Rivers'))
+				Molpy.Boosts['NavCode'].department = 1;
 			Molpy.EarnBadge('On the 12th Dip of Judgement');
 		}
-		if(level>30)
-		{
-			if(Molpy.Got('Flux Turbine'))
-			{
-				Molpy.Boosts['NavCode'].department=1;
-				Molpy.Boosts['NavCode'].price={Sand:'33K',Castles:7400};
+		if(level > 30) {
+			if(Molpy.Got('Flux Turbine')) {
+				Molpy.Boosts['NavCode'].department = 1;
+				Molpy.Boosts['NavCode'].price = {Sand: '33K', Castles: 7400};
 			}
 		}
 	}
-	Molpy.JDestroyAmount=function()
-	{
-		var j=Molpy.judgeLevel-1;
-		if(j<1)return 0;
-		var a=Math.pow(j,1+Math.min(1,j/1000000)-Math.min(1,j/1e150));
-		var b=Math.max(1,Math.min(1e12,j/1e150));
-		return a*b;
-	}
-	new Molpy.Badge({name:'Judgement Dip',
-		desc:function()
-		{
-			if(Molpy.Boosts['NavCode'].power) return 'The Bots have been foiled by altered navigation code';
-			var j=Molpy.JDestroyAmount();
-			if(j<1) return 'Safe. For now.';
-			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle'+plural(j)+' each per mNP';			
-		}
-		,vis:3,icon:'judgementdip',classChange:function(){return Molpy.CheckJudgeClass(this,1,'alert');}});
-	new Molpy.Badge({name:'Fast Forward',desc:'Travel Back to the Future',vis:1});
-	new Molpy.Badge({name:'And Back',desc:'Return to the Past',vis:1});
-	new Molpy.Badge({name:'Primer',desc:'Travel through Time 10 Times',vis:1});
-	new Molpy.Badge({name:'Wimey',desc:'Travel through Time 40 Times',vis:1});
-	new Molpy.Badge({name:'Hot Tub',desc:'Travel through Time 160 Times',vis:1});
-	new Molpy.Badge({name:"Dude, Where's my DeLorean?",desc:'Travel through Time 640 Times',vis:1});
-	new Molpy.Badge({name:'Use Your Leopard',desc:'Get a click by using your leopard to simulate reloading the page',stats:'Type F5 into the Import dialog'});
-	new Molpy.Badge({name:'Badge Not Found',desc:'Description Not Found'});
-	new Molpy.Badge({name:'Fractals Forever',desc:'Reach Fractal Level 60, and Fractal Sandcastles will be retained if you Molpy Down.'});
-	new Molpy.Badge({name:'Recursion',
-		desc:function(){return 'Yo Dawg, we heard you earned '+Molpify(DeMolpify('50G'))+' Sand by clicking...';}
-		});
-	new Molpy.Badge({name:'Big Spender',
-		desc:function(){return 'Spend '+Molpify(DeMolpify('200M'))+' Castles total';}
-		});
-	new Molpy.Badge({name:'Valued Customer',
-		desc:function(){return 'Spend '+Molpify(DeMolpify('8T'))+' Castles total';}
-		});
-	new Molpy.Badge({name:'Beachscaper',desc:'Have 200 Sand Tools'});
-	new Molpy.Badge({name:'Beachmover',desc:'Have 100 Castle Tools'});
-	new Molpy.Badge({name:'Better This Way',desc:'Purchase 50 Boosts',stats:'So you\'re telling me Badgers build the castle by firing boots at the sand with trebuchets?'});
-	new Molpy.Badge({name:'Recursion ',desc:'To Earn Recursion, you must first earn Recursion'});
-	new Molpy.Badge({name:'Beachomancer',desc:'Have 1000 Sand Tools'});
-	new Molpy.Badge({name:'Beachineer',desc:'Have 500 Castle Tools'});
-	new Molpy.Badge({name:'Glass Factory',desc:'Have 80M sand'});
-	new Molpy.Badge({name:'Glassblower',desc:'Make a Glass Block',vis:1});
-	new Molpy.Badge({name:'Ninja Pact',desc:'Have a ninja stealth streak over 4K'});
-	new Molpy.Badge({name:'Ninja Unity',desc:'Have a ninja stealth streak over 4M'});
-	new Molpy.Badge({name:'Unreachable?', desc:'Build a total of 2T Castles. (I GUESS <b>SUPPOSE <i>MAYBE</i></b> IT WILL BE AN ISLAND <b>AGAIN</b>.))',vis:1});
-	new Molpy.Badge({name:'Flung',desc:'Have 50 Trebuchets'});
-	new Molpy.Badge({name:'People Eating Tasty Animals',desc:'Have 1 Peta Castle'});
-	new Molpy.Badge({name:'Y U NO RUN OUT OF SPACE?',desc:'Have 1 Yotta Castle'});
-	new Molpy.Badge({name:'Dumpty',desc:'Have 1 Umpty Castle'});
-	new Molpy.Badge({name:'This is a silly number',desc:'Have 1 Squilli Castle'});
-	new Molpy.Badge({name:'To Da Choppah',desc:'Have 1 Helo Castle'});
-	new Molpy.Badge({name:'Toasters',desc:'Have 1 Ferro Castle'});
-	new Molpy.Badge({name:'All Your Base',desc:'Have 2101 Sand Tools'});
-	new Molpy.Badge({name:'Look Before You Leap',desc:'Have 3000 Sand Tools'});
-	new Molpy.Badge({name:'Fully Armed and Operational Battlestation',desc:'Have 4000 Castle Tools'});
-	new Molpy.Badge({name:'WHAT',desc:'Have over nine thousand Sand Tools',vis:1});
-	new Molpy.Badge({name:'\\/\\/AR]-[AMMER',desc:'Have 40K Tools',vis:1});
-	new Molpy.Badge({name:'Ceiling Broken',desc:'Have all 10 Glass Ceiling Boosts',stats:'allegedly'});
-	new Molpy.Badge({name:'On the 12th Dip of Judgement',desc:'Reach Judgement Dip level 12'});
-	new Molpy.Badge({name:'Machine Learning',desc:'Unlock all the Judgement Dip Boosts'});
-	new Molpy.Badge({name:'Blitz and Pieces',desc:'Get Blitz Power to 1M%'});
-	new Molpy.Badge({name:'Mustard Cleanup',desc:'The amount of some Stuff you had was not a number, and was corrected to 0',vis:2});
-	new Molpy.Badge({name:'Pyramid of Giza',desc:'Have 7,016,280 Glass Blocks'});
-	new Molpy.Badge({name:'Personal Computer',desc:'Have 640K Glass Chips'});
-	new Molpy.Badge({name:'I love my flashy gif',desc:'Change the colourscheme 20 times in a mNP',vis:1});
-	new Molpy.Badge({name:'Dubya',desc:'Have at least a Wololo Castles',vis:1});
-	new Molpy.Badge({name:'Rub a Dub Dub',desc:'Have at least a Wololo Wololo Castles',vis:1});
-	new Molpy.Badge({name:'WWW',desc:'Have at least a Wololo Wololo Wololo Castles',vis:1});
-	new Molpy.Badge({name:'Age of Empires',desc:'Have at least a Wololo Wololo Wololo Wololo Castles',vis:1});
 	
-	for(var i in Molpy.SandToolsById)
-	{
-		var t = Molpy.SandToolsById[i];
-		new Molpy.Badge({name:t.name+' Shop Failed',desc:'The price of '+t.name+' is too ch*rping high!',vis:2});
-	}
-	for(var i in Molpy.CastleToolsById)
-	{
-		var t = Molpy.CastleToolsById[i];
-		new Molpy.Badge({name:t.name+' Shop Failed',desc:'The price of '+t.name+' is too ch*rping high!',vis:2});
+	Molpy.JDestroyAmount = function() {
+		var j = Molpy.judgeLevel - 1;
+		if(j < 1) return 0;
+		var a = Math.pow(j, 1 + Math.min(1, j / 1000000) - Math.min(1, j / 1e150));
+		var b = Math.max(1, Math.min(1e12, j / 1e150));
+		return a * b;
 	}
 	
-	new Molpy.Badge({name:'Queue',desc:'Have at least a Quita Castles',vis:1});
-	new Molpy.Badge({name:'What Queue',desc:'Have at least a Wololo Quita Castles',vis:1});
-	new Molpy.Badge({name:'Everything but the Kitchen Windows',desc:'Have Infinite Sand and Castles'});
-	new Molpy.Badge({name:'Ceiling Disintegrated',desc:'Have all 12 Glass Ceiling Boosts',vis:1});
-	
-	
-	new Molpy.Badge({name:'KiloNinja Strike', desc:'Ninja 1K NewPixBots simultaneously',vis:1});
-	new Molpy.Badge({name:'MegaNinja Strike', desc:'Ninja 1M NewPixBots simultaneously',vis:1});
-	new Molpy.Badge({name:'GigaNinja Strike', desc:'Ninja 1G NewPixBots simultaneously',vis:1});
-	
-	new Molpy.Badge({name:'Strikes Twice', desc:'Attempt to receive Blitzing while you have Glassed Lightning (this will instead give Glassed Lightning more power)'});
-	new Molpy.Badge({name:'Meaning',desc:'Reach a '+Molpy.redactedWord+' streak of 42'});
-	new Molpy.Badge({name:'How do I Shot Mustard?',desc:'The price of something was not a number, and was corrected to 0',stats:'One way to get this is to have Locked Crate appear in the shop immediately after spending infinite sand'});
-	new Molpy.Badge({name:'KiloTool', desc:'Make 1K Glass Tools per mNP'});
-	new Molpy.Badge({name:'MegaTool', desc:'Make 1M Glass Tools per mNP'});
-	new Molpy.Badge({name:'GigaTool', desc:'Make 1G Glass Tools per mNP'});
-	new Molpy.Badge({name:'TeraTool', desc:'Make 1T Glass Tools per mNP'});
-	new Molpy.Badge({name:'Scouter', desc:'Have over nine thousand Blackprints'});
-	new Molpy.Badge({name:'Getting Expensive', desc:'Each time Sand is converted into a Castle, the next Castle costs more sand.<br>But don\'t worry: the price will reset back to 1 when the timer beside the clock reaches 0.',vis:1});
-	
-	new Molpy.Badge({name:'Plain Potato Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(5000)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Crinkle Cut Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(20000)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'BBQ Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(800000)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Corn Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(4e6)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Sour Cream and Onion Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(2e7)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Cinnamon Apple Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(1e8)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Sweet Chili Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(3e9)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Banana Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(1e11)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Nuclear Fission Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(5e12)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Silicon Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(6e14)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Blue Poker Chips',desc:'Have a Glass Chip production rate from Glass Tools of at least '+Molpify(1e19)+' Chips/mNP',vis:1});
-	new Molpy.Badge({name:'Neat!',desc:'All your tools appear to have the same number owned',stats:'Requies at least a million of each tool',vis:1});
-	new Molpy.Badge({name:'Mains Power',desc:'Automata Control level at least 230',vis:1});
-	new Molpy.Badge({name:'It Hertz',desc:'Automata Control level at least 50',vis:1});
-	new Molpy.Badge({name:'Second Edition',desc:'Have at least two Goats'});
-	new Molpy.Badge({name:'Nope!',desc:'Power Control is at the limit',vis:1});
-	new Molpy.Badge({name:'Minus Worlds',desc:'Take a jaunt to the negative NewPix',vis:1});
-	new Molpy.Badge({name:'Badge Found',desc:'Description Found',stats:'What is this, I don\'t even?'});
-	new Molpy.Badge({name:'Typo Storm',desc:'Encounter 1000 different typos in a play session (resets on reload)',stats:'Toggle typo mode by typing "typo" into the Import dialog.<br>The number of typos are limitted by the NewPix you are on.<br>Actual typos the the developers don\'t count.<br>For instance, "limitted".<br>Sorry.'});
-	new Molpy.Badge({name:'Pure Genius',desc:'Inspite of an Infinite Sand rate, you manage to have no sand to run the Factory Ninja',vis:1});
-	new Molpy.Badge({name:'PetaTool', desc:'Make 1P Glass Tools per mNP',stats:'Worry about your Tool Factory catching fire',vis:1});
-	new Molpy.Badge({name:'YottaTool', desc:'Make 1Y Glass Tools per mNP',stats:'Yours Truly',vis:1});
-	new Molpy.Badge({name:'WololoTool', desc:'Make 1W Glass Tools per mNP',stats:'Still so far to go!',vis:1});
-	new Molpy.Badge({name:'WololoWololoTool', desc:'Make 1WW Glass Tools per mNP',stats:'Really'});
-	new Molpy.Badge({name:'Never Alone', desc:'Increase the Temporal Duplication countdown to 9WNP',stats:'Makes Temporal Duplication Permament(er)'});
-	new Molpy.Badge({name:'Infinite Saw', desc:'Use Glass Saw to make infinite Glass Blocks'});
-	new Molpy.Badge({name:'War was beginning.',desc:'What happen?',stats:function(){return Molpy.BeanishToCuegish(GLRschoice(Molpy.wing0));},vis:1});
-	new Molpy.Badge({name:'Mustard Tools', desc:'Get mustard on all your tools'});
-	new Molpy.Badge({name:'Lost Goats', desc:'Miss out on getting some goats due to a Ninja Holidip', stats:'See: Ninja Ritual Boost and Ninja Holiday Badge'});
-	
+	new Molpy.Badge({
+		name: 'Judgement Dip',
+		icon: 'judgementdip',
+		vis: 3,
 		
-	Molpy.MakeSpecialBadge=function(args,kind)
-	{
-		new Molpy.Badge({name:Molpy.groupNames[kind][3]+': '+(args.np<0?'Minus ':'')+args.name,alias:kind+args.np,np:args.np,
-			desc:function(me)
-			{
-				var str = Molpy.groupNames[kind][4]+': '+args.desc+'<br><small>(in NP'+me.np+')</small>';
-				if(me.group=='discov')
-				{
-					if(Molpy.Got('Memories Revisited')) 
-					{
-						if(Molpy.newpixNumber!=me.np) 
-						{
-							str+='<br><input type="Button" onclick="Molpy.TTT('+me.np+',1)" value="Jump!"></input> (Uses '+Molpify(Molpy.CalcJumpEnergy(me.np),2)+' Glass Chips)'
+		desc: function() {
+			if(Molpy.Boosts['NavCode'].power)
+				return 'The Bots have been foiled by altered navigation code';
+			var j = Molpy.JDestroyAmount();
+			if(j < 1) return 'Safe. For now.';
+			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle' + plural(j) + ' each per mNP';
+		},
+		
+		classChange: function() {
+			return Molpy.CheckJudgeClass(this, 1, 'alert');
+		}
+	});
+	new Molpy.Badge({
+		name: 'Fast Forward',
+		desc: 'Travel Back to the Future',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'And Back',
+		desc: 'Return to the Past',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Primer',
+		desc: 'Travel through Time 10 Times',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Wimey',
+		desc: 'Travel through Time 40 Times',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Hot Tub',
+		desc: 'Travel through Time 160 Times',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: "Dude, Where's my DeLorean?",
+		desc: 'Travel through Time 640 Times',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Use Your Leopard',
+		desc: 'Get a click by using your leopard to simulate reloading the page',
+		stats: 'Type F5 into the Import dialog'
+	});
+	new Molpy.Badge({
+		name: 'Badge Not Found',
+		desc: 'Description Not Found'
+	});
+	new Molpy.Badge({
+		name: 'Fractals Forever',
+		desc: 'Reach Fractal Level 60, and Fractal Sandcastles will be retained if you Molpy Down.'
+	});
+	new Molpy.Badge({
+		name: 'Recursion',
+		desc: function() {
+			return 'Yo Dawg, we heard you earned ' + Molpify(DeMolpify('50G'))
+				+ ' Sand by clicking...';
+		}
+	});
+	new Molpy.Badge({
+		name: 'Big Spender',
+		desc: function() {
+			return 'Spend ' + Molpify(DeMolpify('200M')) + ' Castles total';
+		}
+	});
+	new Molpy.Badge({
+		name: 'Valued Customer',
+		desc: function() {
+			return 'Spend ' + Molpify(DeMolpify('8T')) + ' Castles total';
+		}
+	});
+	new Molpy.Badge({
+		name: 'Beachscaper',
+		desc: 'Have 200 Sand Tools'
+	});
+	new Molpy.Badge({
+		name: 'Beachmover',
+		desc: 'Have 100 Castle Tools'
+	});
+	new Molpy.Badge({
+		name: 'Better This Way',
+		desc: 'Purchase 50 Boosts',
+		stats: 'So you\'re telling me Badgers build the castle by firing boots at the sand with trebuchets?'
+	});
+	new Molpy.Badge({
+		name: 'Recursion ',
+		desc: 'To Earn Recursion, you must first earn Recursion'
+	});
+	new Molpy.Badge({
+		name: 'Beachomancer',
+		desc: 'Have 1000 Sand Tools'
+	});
+	new Molpy.Badge({
+		name: 'Beachineer',
+		desc: 'Have 500 Castle Tools'
+	});
+	new Molpy.Badge({
+		name: 'Glass Factory',
+		desc: 'Have 80M sand'
+	});
+	new Molpy.Badge({
+		name: 'Glassblower',
+		desc: 'Make a Glass Block',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Ninja Pact',
+		desc: 'Have a ninja stealth streak over 4K'
+	});
+	new Molpy.Badge({
+		name: 'Ninja Unity',
+		desc: 'Have a ninja stealth streak over 4M'
+	});
+	new Molpy.Badge({
+		name: 'Unreachable?',
+		desc: 'Build a total of 2T Castles. (I GUESS <b>SUPPOSE <i>MAYBE</i></b> IT WILL BE AN ISLAND <b>AGAIN</b>.))',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Flung',
+		desc: 'Have 50 Trebuchets'
+	});
+	new Molpy.Badge({
+		name: 'People Eating Tasty Animals',
+		desc: 'Have 1 Peta Castle'
+	});
+	new Molpy.Badge({
+		name: 'Y U NO RUN OUT OF SPACE?',
+		desc: 'Have 1 Yotta Castle'
+	});
+	new Molpy.Badge({
+		name: 'Dumpty',
+		desc: 'Have 1 Umpty Castle'
+	});
+	new Molpy.Badge({
+		name: 'This is a silly number',
+		desc: 'Have 1 Squilli Castle'
+	});
+	new Molpy.Badge({
+		name: 'To Da Choppah',
+		desc: 'Have 1 Helo Castle'
+	});
+	new Molpy.Badge({
+		name: 'Toasters',
+		desc: 'Have 1 Ferro Castle'
+	});
+	new Molpy.Badge({
+		name: 'All Your Base',
+		desc: 'Have 2101 Sand Tools'
+	});
+	new Molpy.Badge({
+		name: 'Look Before You Leap',
+		desc: 'Have 3000 Sand Tools'
+	});
+	new Molpy.Badge({
+		name: 'Fully Armed and Operational Battlestation',
+		desc: 'Have 4000 Castle Tools'
+	});
+	new Molpy.Badge({
+		name: 'WHAT',
+		desc: 'Have over nine thousand Sand Tools',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: '\\/\\/AR]-[AMMER',
+		desc: 'Have 40K Tools',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Ceiling Broken',
+		desc: 'Have all 10 Glass Ceiling Boosts',
+		stats: 'allegedly'
+	});
+	new Molpy.Badge({
+		name: 'On the 12th Dip of Judgement',
+		desc: 'Reach Judgement Dip level 12'
+	});
+	new Molpy.Badge({
+		name: 'Machine Learning',
+		desc: 'Unlock all the Judgement Dip Boosts'
+	});
+	new Molpy.Badge({
+		name: 'Blitz and Pieces',
+		desc: 'Get Blitz Power to 1M%'
+	});
+	new Molpy.Badge({
+		name: 'Mustard Cleanup',
+		desc: 'The amount of some Stuff you had was not a number, and was corrected to 0',
+		vis: 2
+	});
+	new Molpy.Badge({
+		name: 'Pyramid of Giza',
+		desc: 'Have 7,016,280 Glass Blocks'
+	});
+	new Molpy.Badge({
+		name: 'Personal Computer',
+		desc: 'Have 640K Glass Chips'
+	});
+	new Molpy.Badge({
+		name: 'I love my flashy gif',
+		desc: 'Change the colourscheme 20 times in a mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Dubya',
+		desc: 'Have at least a Wololo Castles',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Rub a Dub Dub',
+		desc: 'Have at least a Wololo Wololo Castles',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'WWW',
+		desc: 'Have at least a Wololo Wololo Wololo Castles',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Age of Empires',
+		desc: 'Have at least a Wololo Wololo Wololo Wololo Castles',
+		vis: 1
+	});
+
+	for( var i in Molpy.SandToolsById) {
+		var t = Molpy.SandToolsById[i];
+		new Molpy.Badge({
+			name: t.name + ' Shop Failed',
+			desc: 'The price of ' + t.name + ' is too ch*rping high!',
+			vis: 2
+		});
+	}
+	
+	for( var i in Molpy.CastleToolsById) {
+		var t = Molpy.CastleToolsById[i];
+		new Molpy.Badge({
+			name: t.name + ' Shop Failed',
+			desc: 'The price of ' + t.name + ' is too ch*rping high!',
+			vis: 2
+		});
+	}
+
+	new Molpy.Badge({
+		name: 'Queue',
+		desc: 'Have at least a Quita Castles',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'What Queue',
+		desc: 'Have at least a Wololo Quita Castles',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Everything but the Kitchen Windows',
+		desc: 'Have Infinite Sand and Castles'
+	});
+	new Molpy.Badge({
+		name: 'Ceiling Disintegrated',
+		desc: 'Have all 12 Glass Ceiling Boosts',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'KiloNinja Strike',
+		desc: 'Ninja 1K NewPixBots simultaneously',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'MegaNinja Strike',
+		desc: 'Ninja 1M NewPixBots simultaneously',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'GigaNinja Strike',
+		desc: 'Ninja 1G NewPixBots simultaneously',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Strikes Twice',
+		desc: 'Attempt to receive Blitzing while you have Glassed Lightning (this will instead give Glassed Lightning more power)'
+	});
+	new Molpy.Badge({
+		name: 'Meaning',
+		desc: 'Reach a ' + Molpy.redactedWord + ' streak of 42'
+	});
+	new Molpy.Badge({
+		name: 'How do I Shot Mustard?',
+		desc: 'The price of something was not a number, and was corrected to 0',
+		stats: 'One way to get this is to have Locked Crate appear in the shop immediately after spending infinite sand'
+	});
+	new Molpy.Badge({
+		name: 'KiloTool',
+		desc: 'Make 1K Glass Tools per mNP'
+	});
+	new Molpy.Badge({
+		name: 'MegaTool',
+		desc: 'Make 1M Glass Tools per mNP'
+	});
+	new Molpy.Badge({
+		name: 'GigaTool',
+		desc: 'Make 1G Glass Tools per mNP'
+	});
+	new Molpy.Badge({
+		name: 'TeraTool',
+		desc: 'Make 1T Glass Tools per mNP'
+	});
+	new Molpy.Badge({
+		name: 'Scouter',
+		desc: 'Have over nine thousand Blackprints'
+	});
+	new Molpy.Badge({
+		name: 'Getting Expensive',
+		desc: 'Each time Sand is converted into a Castle, the next Castle costs more sand.<br>But don\'t worry: the price will reset back to 1 when the timer beside the clock reaches 0.',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Plain Potato Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(5000) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Crinkle Cut Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(20000) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'BBQ Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(800000) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Corn Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(4e6) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Sour Cream and Onion Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(2e7) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Cinnamon Apple Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(1e8) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Sweet Chili Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(3e9) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Banana Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(1e11) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Nuclear Fission Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(5e12) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Silicon Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(6e14) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Blue Poker Chips',
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(1e19) + ' Chips/mNP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Neat!',
+		desc: 'All your tools appear to have the same number owned',
+		stats: 'Requies at least a million of each tool',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Mains Power',
+		desc: 'Automata Control level at least 230',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'It Hertz',
+		desc: 'Automata Control level at least 50',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Second Edition',
+		desc: 'Have at least two Goats'
+	});
+	new Molpy.Badge({
+		name: 'Nope!',
+		desc: 'Power Control is at the limit',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Minus Worlds',
+		desc: 'Take a jaunt to the negative NewPix',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Badge Found',
+		desc: 'Description Found',
+		stats: 'What is this, I don\'t even?'
+	});
+	new Molpy.Badge({
+		name: 'Typo Storm',
+		desc: 'Encounter 1000 different typos in a play session (resets on reload)',
+		stats: 'Toggle typo mode by typing "typo" into the Import dialog.<br>'
+			+ 'The number of typos are limitted by the NewPix you are on.<br>'
+			+ 'Actual typos the the developers make don\'t count.<br>'
+			+ 'For instance, "limitted".<br>'
+			+ 'Sorry.'
+	});
+	new Molpy.Badge({
+		name: 'Pure Genius',
+		desc: 'Inspite of an Infinite Sand rate, you manage to have no sand to run the Factory Ninja',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'PetaTool',
+		desc: 'Make 1P Glass Tools per mNP',
+		stats: 'Worry about your Tool Factory catching fire',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'YottaTool',
+		desc: 'Make 1Y Glass Tools per mNP',
+		stats: 'Yours Truly',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'WololoTool',
+		desc: 'Make 1W Glass Tools per mNP',
+		stats: 'Still so far to go!',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'WololoWololoTool',
+		desc: 'Make 1WW Glass Tools per mNP',
+		stats: 'Really'
+	});
+	new Molpy.Badge({
+		name: 'Never Alone',
+		desc: 'Increase the Temporal Duplication countdown to 9WNP',
+		stats: 'Makes Temporal Duplication Permament(er)'
+	});
+	new Molpy.Badge({
+		name: 'Infinite Saw',
+		desc: 'Use Glass Saw to make infinite Glass Blocks'
+	});
+	new Molpy.Badge({
+		name: 'War was beginning.',
+		desc: 'What happen?',
+		stats: function() {
+			return Molpy.BeanishToCuegish(GLRschoice(Molpy.wing0));
+		},
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Mustard Tools',
+		desc: 'Get mustard on all your tools'
+	});
+	new Molpy.Badge({
+		name: 'Lost Goats',
+		desc: 'Miss out on getting some goats due to a Ninja Holidip',
+		stats: 'See: Ninja Ritual Boost and Ninja Holiday Badge'
+	});
+
+	Molpy.MakeSpecialBadge = function(args, kind) {
+		new Molpy.Badge({
+			name: Molpy.groupNames[kind][3] + ': ' + (args.np < 0 ? 'Minus ' : '') + args.name,
+			alias: kind + args.np,
+			np: args.np,
+			desc: function(me) {
+				var str = Molpy.groupNames[kind][4] + ': ' + args.desc + '<br><small>(in NP' + me.np + ')</small>';
+				if(me.group == 'discov') {
+					if(Molpy.Got('Memories Revisited')) {
+						if(Molpy.newpixNumber != me.np) {
+							str += '<br><input type="Button" onclick="Molpy.TTT(' + me.np + ',1)" value="Jump!"></input> (Uses '
+								+ Molpify(Molpy.CalcJumpEnergy(me.np), 2) + ' Glass Chips)'
 						}
-						if (Molpy.Got('Magic Mirror')&&Molpy.newpixNumber!=-me.np)
-						{
-							str+='<br>'+Molpy.WrapFlipHoriz('<input type="Button" onclick="Molpy.TTT('+ (-me.np)+',1)" value="Jump!"></input> to the other side (Uses '+Molpify(Molpy.CalcJumpEnergy(-me.np),2)+' Glass Chips)')
+						if(Molpy.Got('Magic Mirror')
+							&& Molpy.newpixNumber != -me.np) {
+							str += '<br>' + Molpy.WrapFlipHoriz('<input type="Button" onclick="Molpy.TTT(' + (-me.np)
+								+ ',1)" value="Jump!"></input> to the other side (Uses '
+								+ Molpify(Molpy.CalcJumpEnergy(-me.np), 2) + ' Glass Chips)')
 						}
 					}
-					if(Molpy.Got('SMM')&&!(Molpy.Boosts['SMM'].power||Molpy.Boosts['SMF'].power&&Molpy.Boosts['SMF'].bought==me.np)&&!Molpy.Earned('monums'+me.np))
-					{
-						str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeSandMould('+me.np+')" value="Make"></input> a mould from this Discovery, which can be filled with sand to create a Monument'
+					if(Molpy.Got('SMM') && !(Molpy.Boosts['SMM'].power || Molpy.Boosts['SMF'].power
+						&& Molpy.Boosts['SMF'].bought == me.np)	&& !Molpy.Earned('monums' + me.np)) {
+						str += '<br><br>Sudo <input type="Button" onclick="Molpy.MakeSandMould(' + me.np
+							+ ')" value="Make"></input> a mould from this Discovery, which can be filled with sand to create a Monument'
 					}
-				}else if(me.group=='monums')
-				{
-					if(Molpy.Got('GMM')&&!(Molpy.Boosts['GMM'].power||Molpy.Boosts['GMF'].power&&Molpy.Boosts['GMF'].bought==me.np)&&!Molpy.Earned('monumg'+me.np))
-					{
-						str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould('+me.np+')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
+				} else if(me.group == 'monums') {
+					if(Molpy.Got('GMM') && !(Molpy.Boosts['GMM'].power || Molpy.Boosts['GMF'].power
+						&& Molpy.Boosts['GMF'].bought == me.np) && !Molpy.Earned('monumg' + me.np)) {
+						str += '<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould(' + me.np
+							+ ')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 					}
-					str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(Math.abs(me.np)))+'"><div>';
+					str += '<div class="npthumb" style="background-image: '
+						+ Molpy.Url(Molpy.NewPixFor(Math.abs(me.np))) + '"><div>';
 				}
 				return str;
 			},
-			earnFunction:args.earnFunction,visibility:args.visibility,group:kind});
+			earnFunction: args.earnFunction,
+			visibility: args.visibility,
+			group: kind
+		});
 	}
-	Molpy.MakeQuadBadge=function(args)
-	{
-		Molpy.MakeSpecialBadge(args,'discov');
-		Molpy.MakeSpecialBadge(args,'monums');
-		Molpy.MakeSpecialBadge(args,'monumg');
-		Molpy.MakeSpecialBadge(args,'diamm');
-		if(args.np>0)
-		{
-			args.np*=-1;
+	
+	Molpy.MakeQuadBadge = function(args) {
+		Molpy.MakeSpecialBadge(args, 'discov');
+		Molpy.MakeSpecialBadge(args, 'monums');
+		Molpy.MakeSpecialBadge(args, 'monumg');
+		Molpy.MakeSpecialBadge(args, 'diamm');
+		if(args.np > 0) {
+			args.np *= -1;
 			Molpy.MakeQuadBadge(args);
 		}
 	}
 		
 		
-	//*************************************************
-	//these MUST go last: add any new badges BEFORE them
+/**************************************************************
+ * Discoveries
+ * 
+ * These MUST go last: add any new badges BEFORE them!
+ *************************************************************/
 	Molpy.MakeQuadBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});
 	Molpy.MakeQuadBadge({np:16,name:'Dip',desc:'when Cueball dipped his toe in the fluid'});
 	Molpy.MakeQuadBadge({np:25,name:'Start of Construction',desc:'when Megan began building the first castle'});
@@ -523,8 +1100,7 @@
 	Molpy.MakeQuadBadge({np:970,name:'What a Drag',desc:'when we saw (with enhancement) that LaPetite was dragging something to the castle'});
 	Molpy.MakeQuadBadge({np:971,name:'All Gone',desc:'the completion of The Fading'});
 	Molpy.MakeQuadBadge({np:972,name:'New Ground',desc:'when we saw a completely new scene'});
-	Molpy.MakeQuadBadge({np:973,name:'Walkers',desc:'the first time we saw Cuegan walking on their journey'});
-	
+	Molpy.MakeQuadBadge({np:973,name:'Walkers',desc:'the first time we saw Cuegan walking on their journey'});	
 	//the next bunch were written by waveney (thanks!)
 	Molpy.MakeQuadBadge({np:985,name:'This Far',desc:'When Cueball asks Have you ever been this far?'});
     Molpy.MakeQuadBadge({np:989,name:'Drinking',desc:'Cueball and Megan stop to drink'});
@@ -639,8 +1215,7 @@
     Molpy.MakeQuadBadge({np:1687,name:'What are you doing?',desc:'Megan asks what Cueball is doing?'});
     Molpy.MakeQuadBadge({np:1688,name:'Cueball has been making shapes',desc:'He explains what he is doing'});
     Molpy.MakeQuadBadge({np:1689,name:'Weird shadows',desc:'Megan: When I stare down at mine for long enough while I walk, it starts to look really weird'});
-    Molpy.MakeQuadBadge({np:1692,name:'Better than following the Sea',desc:'Megan drops a big clue as to what direction they were travelling when they started'});
-	
+    Molpy.MakeQuadBadge({np:1692,name:'Better than following the Sea',desc:'Megan drops a big clue as to what direction they were travelling when they started'});	
 	Molpy.MakeQuadBadge({np:1707,name:'Pass it up',desc:'Bags are handed up from Cueball to Megan'});
 	Molpy.MakeQuadBadge({np:1708,name:'Have a hand',desc:'Megan helps Cueball up the escarpment'});
 	Molpy.MakeQuadBadge({np:1713,name:'Easier up here',desc:'Cueball: It\'s prettier right by the river but it\'s easier to wlak up here'});
@@ -756,8 +1331,7 @@
 	Molpy.MakeQuadBadge({np:2166,name:'Weird',desc:'They look a weird broken tree'});
 	Molpy.MakeQuadBadge({np:2171,name:'Pfffthh',desc:'It does not taste very good'});
 	Molpy.MakeQuadBadge({np:2182,name:'Oh!',desc:'Megan sees a rock cain'});
-	Molpy.MakeQuadBadge({np:2196,name:'Hut',desc:'They see the abandoned hut'}); 
-	
+	Molpy.MakeQuadBadge({np:2196,name:'Hut',desc:'They see the abandoned hut'}); 	
 	Molpy.MakeQuadBadge({np:2202,name:'Hello?',desc:'Is there anybody in?'});
 	Molpy.MakeQuadBadge({np:2205,name:'See Anything?',desc:'Megan looks in the hut'});
 	Molpy.MakeQuadBadge({np:2206,name:'Stuff',desc:'Megan finds some funiture, shelves and a broken bowl'});
