@@ -31,6 +31,7 @@ For personal amusement only.
 - Larger upgrades to Dragon Forge
 - A number of small fixes
 - Factory Expansion stops at 61 runs unless 'Between the Cracks' or 'Aleph One' 
+- Option to sort boosts by Price or Name (Not for the tagged items)
 
 
 ## 3.31

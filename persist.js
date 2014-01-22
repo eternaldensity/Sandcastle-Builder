@@ -355,7 +355,8 @@
 		(Molpy.options.typo)+
 		(Molpy.options.science)+
 		(Molpy.options.autosavelayouts)+
-		(Molpy.options.autoscroll)
+		(Molpy.options.autoscroll)+
+		(Molpy.options.boostsort)
 		;
 		return str;
 	}
@@ -532,6 +533,7 @@
 		Molpy.options.science=(parseInt(pixels[12]))||0;
 		Molpy.options.autosavelayouts=parseInt(pixels[13])||0;
 		Molpy.options.autoscroll=parseInt(pixels[14])||0;
+		Molpy.options.boostsort=parseInt(pixels[15])||0;
 	}
 	
 	Molpy.GamenumsFromString=function(thread)
@@ -1169,6 +1171,7 @@
 			Molpy.ONGstart = ONGsnip(new Date());
 			Molpy.options.sandmultibuy=0;
 			Molpy.options.castlemultibuy=0;
+			Molpy.options.boostsort=0;
 			
 			var keep='';
 			if(!coma&&Molpy.Got('No Need to be Neat'))
