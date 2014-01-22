@@ -5198,6 +5198,7 @@
 			{
 				this.bought+=cap;
 				this.Refresh();
+				Molpy.Boosts['Flux Harvest'].Refresh();
 			}
 		},
 		IsEnabled:[function(){return this.Level>this.bought;}],
