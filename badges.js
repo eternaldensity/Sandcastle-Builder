@@ -373,7 +373,11 @@
 	new Molpy.Badge({name:'War was beginning.',desc:'What happen?',stats:function(){return Molpy.BeanishToCuegish(GLRschoice(Molpy.wing0));},vis:1});
 	new Molpy.Badge({name:'Mustard Tools', desc:'Get mustard on all your tools'});
 	new Molpy.Badge({name:'Lost Goats', desc:'Miss out on getting some goats due to a Ninja Holidip', stats:'See: Ninja Ritual Boost and Ninja Holiday Badge'});
-	
+	new Molpy.Badge({name:'Microwave',desc:'Automata Control level at least 1G',vis:1});
+	new Molpy.Badge({name:'Ultaviolet',desc:'Automata Control level at least 1T',vis:1});
+	new Molpy.Badge({name:'X Rays',desc:'Automata Control level at least 30P',vis:1});
+	new Molpy.Badge({name:'Gamma Rays',desc:'Automata Control level at least 10E',vis:1});
+	new Molpy.Badge({name:'Planck Limit',desc:'Automata Control level at limit',vis:1});
 		
 	Molpy.MakeSpecialBadge=function(args,kind)
 	{
@@ -404,7 +408,7 @@
 					{
 						str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould('+me.np+')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 					}
-					str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(Math.abs(me.np)))+'"><div>';
+					str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(Math.abs(me.np)))+'"></div>';
 				}
 				return str;
 			},

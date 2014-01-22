@@ -4146,19 +4146,24 @@
 	new Molpy.Boost({name:'Automata Control',alias:'AC', icon:'automatacontrol',
 		desc:function(me)
 		{
-			if(!me.bought) return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
+			if(!me.bought) return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation '+
+						'after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
 			var n = me.Level;
 			var str='Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
 			var cost={GlassChips:1e7*Math.pow(1.2,n),Blackprints:n*2};
-			if(n<Molpy.Boosts['PC'].power&&Molpy.Has('GlassChips',cost.GlassChips))
-			{
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input> the number of runs by 1 at a cost of '+Molpy.PriceString(cost)+'.';
-			}else{
-                str+='<br>It will cost '+Molpy.PriceString(cost)+' to increase this by 1.';
-            }
-			if(!Molpy.Boosts['No Sell'].power&&n>1&&Molpy.Has('GlassChips',1e5*n))
-			{
-				str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlAutomata(-1)"></input> the number of runs by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Chips.';
+			if (!Molpy.Earned('Planck Limit')) {
+				if(n<Molpy.Boosts['PC'].power&&Molpy.Has('GlassChips',cost.GlassChips))
+				{
+					str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(1)"></input>'+
+				       		' the number of runs by 1 at a cost of '+Molpy.PriceString(cost)+'.';
+				}else{
+                			str+='<br>It will cost '+Molpy.PriceString(cost)+' to increase this by 1.';
+            			}
+				if(!Molpy.Boosts['No Sell'].power&&n>1&&Molpy.Has('GlassChips',1e5*n))
+				{
+					str+='<br><input type="Button" value="Decrease" onclick="Molpy.ControlAutomata(-1)"></input> '+
+						'the number of runs by 1 at a cost of '+Molpify(1e5*n,1)+' Glass Chips.';
+				}
 			}
 			return str;
 		}
@@ -4172,8 +4177,8 @@
 		if(dragon)
 		{
 			cost.GlassChips=0;
-			cost.Blackprints*=5;
-			cost.Logicat=Math.ceil(me.Level/20);
+			cost.Blackprints*=5*n/20;
+			cost.Logicat=Math.ceil(me.Level*n/(20*20));
 		}else if(n<0)
 		{
 			cost.GlassChips=-1e5*me.Level;
@@ -4199,6 +4204,14 @@
 				_gaq&&_gaq.push(['_trackEvent','Boost',(dragon?'Dragon Upgrade':'Upgrade'),me.name]);
 			else
 				_gaq&&_gaq.push(['_trackEvent','Boost','Dowgrade',me.name]);
+			if (me.Level >= 1e9) Molpy.EarnBadge('Microwave');
+			if (me.Level >= 1e12) Molpy.EarnBadge('Ultraviolet');
+			if (me.Level >= 3e16) Molpy.EarnBadge('X Rays');
+			if (me.Level >= 1e19) Molpy.EarnBadge('Gamma Rays');
+			if (me.Level >= 1e34) {
+				me.Level = 6.2e34;
+				Molpy.EarnBadge('Planck Limit');
+			}
 		}
 	}
 	new Molpy.Boost({name:'Bottle Battle', icon:'bottlebattle', desc:'NewPixBot Glass production is multiplied by 3',GlassBlocks:'10M',Sand:Infinity,Castles:Infinity,group:'cyb'});
@@ -4450,14 +4463,21 @@
 			if(!me.bought) return str;
 			var n = Molpy.Boosts['AC'].power;
 			str+='<br>Automata Assemble attempts up to '+Molpify(n,2)+' Factory Automation runs.';
-			var pageCost=n*10
-			var logicatCost=Math.ceil(n/20);
-			if(n<Molpy.Boosts['PC'].power)
-			{
-				str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(20,1)"></input> the number of runs by 20 at a cost of '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages.';
-			}else{
-                str+='<br>It will cost '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+' Blackprint Pages to increase this by 20.';
-            }
+			if (!Molpy.Earned('Planck Limit')) {
+				var pageCost=n*10
+				var logicatCost=Math.ceil(n/20);
+				if(n<Molpy.Boosts['PC'].power)
+				{
+					var mult=1;
+					while (Molpy.Has({Logicat:mult*logicatCost*10,Blackprints:pageCost*mult*10}) && (n+20*mult*10 <= 1e34)) mult*=10;
+					str+='<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata('+(20*mult)+',1)">' + 
+					     '</input> the number of runs by '+(20*mult)+' at a cost of '+Molpify(logicatCost*mult)+' Logicat Levels and '+
+					     Molpify(pageCost*mult,2)+' Blackprint Pages.';
+				}else{
+                			str+='<br>It will cost '+Molpify(logicatCost)+' Logicat Levels and '+Molpify(pageCost,2)+
+					     ' Blackprint Pages to increase this by 20.';
+            			}
+			}
 			return str;
 		}
 		,Sand:Infinity,Castles:Infinity,GlassBlocks:'7P',group:'drac',className:'action'});
@@ -4676,7 +4696,7 @@
 		Add:Molpy.Dig,
 		Spend:function(amount,silent)
 		{
-			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) amount=0;
+			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount=0;
 			if(!isFinite(Molpy.sandPermNP) &&Molpy.IsEnabled('Cracks'))amount=0;
 			if(!amount)return;
 			Molpy.sand-=amount;
@@ -4708,7 +4728,7 @@
 		},
 		Has:function(amount)
 		{
-			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) return 1;
+			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) return 1;
 			if(!isFinite(Molpy.sandPermNP)&&Molpy.IsEnabled('Cracks'))
 				return 1;
 			return(this.HasSuper(amount));
@@ -4737,7 +4757,7 @@
 		Add:Molpy.Build,
 		Spend:function(amount,silent)
 		{
-			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) amount=0;
+			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount=0;
 			if(!isFinite(Molpy.sandPermNP) &&Molpy.IsEnabled('Cracks'))amount=0;
 			if(!amount)return;
 			amount = Math.min(amount,Molpy.castles);
@@ -4780,7 +4800,7 @@
 		},
 		Has:function(amount)
 		{
-			if(Molpy.Got('Aleph One') && !isNaN(this.Level)) return 1;
+			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) return 1;
 			if(!isFinite(Molpy.sandPermNP)&&Molpy.IsEnabled('Cracks'))
 				return 1;
 			return(this.HasSuper(amount));
@@ -5178,6 +5198,7 @@
 			{
 				this.bought+=cap;
 				this.Refresh();
+				Molpy.Boosts['Flux Harvest'].Refresh();
 			}
 		},
 		IsEnabled:[function(){return this.Level>this.bought;}],
@@ -5186,8 +5207,13 @@
 			var str = 'You can travel through '+Molpify(me.bought+1)+' Temporal Rift'+plural(me.bought+1)+' per NewPix. You can travel through '+Molpify((me.bought+1)-me.Level)+' more Temporal Rift'+plural((me.bought+1)-me.Level)+'.';
 			if(me.bought)
 			{
+				var add=1;
 				var p = 20*me.bought*(1+Math.floor(Math.log(me.bought)*Math.LOG10E));
-				str+='<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:'+p+'}))Molpy.Add(\'Time Lord\',0,1);" value="Pay"></input> '+Molpify(p,1)+' Flux Crystals to increase this by 1.';
+				while (Molpy.Has('FluxCrystals',p*add*10)) add*=10;
+				if (add > me.bought/1000000) {
+					str+='<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:'+p*add+'}))Molpy.Add(\'Time Lord\',0,'+add+
+						');" value="Pay"></input> '+Molpify(p*add,1)+' Flux Crystals to increase this by '+add+'.';
+				}
 			}
 			return str;
 		},

@@ -693,8 +693,8 @@ Molpy.CheckBuyUnlocks=function(tool)
 	Molpy.faCosts=[55,65,85,115,145,175,205,240,280,330,440,560,700,900,1200,1500];
 	if(Molpy.Got('Factory Expansion'))
 	{
-		for(var n = 1e6;isFinite(n);n*=1000)
-			Molpy.faCosts.push(n);	
+		if (Molpy.Got('Cracks') || Molpy.Got('Aleph One')) for(var n = 1e6;isFinite(n);n*=1000) Molpy.faCosts.push(n)	
+		else for(var n = 1e6;Molpy.faCosts.length < 60;n*=1000) Molpy.faCosts.push(n);	
 	}
 	
 	if(!tool) Molpy.RefreshOptions();

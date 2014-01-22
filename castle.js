@@ -2848,6 +2848,7 @@ Molpy.Up=function()
 						Molpy.UnlockBoost('Safety Pumpkin');
 				}
 			}
+			if (!Molpy.Got('Cracks') && !Molpy.Got('Aleph One')) i = Math.min(i,61);
 			i=Math.max(0,Math.min(i,Math.floor(npb.amount/20)));
 			var t=0;
 			var spent=0;
