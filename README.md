@@ -28,6 +28,8 @@ For personal amusement only.
 
 ### Waveney
 - Larger upgrades to Time Lord
+- Larger upgrades to Dragon Forge
+- A number of small fixes
 
 
 ## 3.31
