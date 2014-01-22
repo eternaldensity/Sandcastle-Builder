@@ -446,6 +446,8 @@
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
+			Molpy.UpdateFaves();
+
 		}else if(bacon=='autoscroll')
 		{
 			Molpy.options.autoscroll++;
