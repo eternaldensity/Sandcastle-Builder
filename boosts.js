@@ -5186,8 +5186,13 @@
 			var str = 'You can travel through '+Molpify(me.bought+1)+' Temporal Rift'+plural(me.bought+1)+' per NewPix. You can travel through '+Molpify((me.bought+1)-me.Level)+' more Temporal Rift'+plural((me.bought+1)-me.Level)+'.';
 			if(me.bought)
 			{
+				var add=1;
 				var p = 20*me.bought*(1+Math.floor(Math.log(me.bought)*Math.LOG10E));
-				str+='<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:'+p+'}))Molpy.Add(\'Time Lord\',0,1);" value="Pay"></input> '+Molpify(p,1)+' Flux Crystals to increase this by 1.';
+				while (Molpy.Has('FluxCrystals',p*add*10)) add*=10;
+				if (add > me.bought/1000000) {
+					str+='<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:'+p*add+'}))Molpy.Add(\'Time Lord\',0,'+add+
+						');" value="Pay"></input> '+Molpify(p*add,1)+' Flux Crystals to increase this by '+add+'.';
+				}
 			}
 			return str;
 		},

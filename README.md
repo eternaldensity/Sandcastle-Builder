@@ -26,6 +26,10 @@ For personal amusement only.
 
 ## Changelog
 
+### Waveney
+- Larger upgrades to Time Lord
+
+
 ## 3.31
 
 ### Waveney:
