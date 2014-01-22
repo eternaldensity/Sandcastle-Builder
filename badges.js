@@ -943,6 +943,12 @@ Molpy.DefineBadges = function() {
 		desc: 'Miss out on getting some goats due to a Ninja Holidip',
 		stats: 'See: Ninja Ritual Boost and Ninja Holiday Badge'
 	});
+	
+/**************************************************************
+ * Discoveries
+ * 
+ * These MUST go last: add any new badges BEFORE them!
+ *************************************************************/
 
 	Molpy.MakeSpecialBadge = function(args, kind) {
 		new Molpy.Badge({
@@ -997,12 +1003,6 @@ Molpy.DefineBadges = function() {
 		}
 	}
 		
-		
-/**************************************************************
- * Discoveries
- * 
- * These MUST go last: add any new badges BEFORE them!
- *************************************************************/
 	Molpy.MakeQuadBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});
 	Molpy.MakeQuadBadge({np:16,name:'Dip',desc:'when Cueball dipped his toe in the fluid'});
 	Molpy.MakeQuadBadge({np:25,name:'Start of Construction',desc:'when Megan began building the first castle'});
