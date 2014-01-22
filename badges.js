@@ -408,7 +408,7 @@
 					{
 						str+='<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould('+me.np+')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 					}
-					str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(Math.abs(me.np)))+'"><div>';
+					str+='<div class="npthumb" style="background-image: '+Molpy.Url(Molpy.NewPixFor(Math.abs(me.np)))+'"></div>';
 				}
 				return str;
 			},
