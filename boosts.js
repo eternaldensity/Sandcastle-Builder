@@ -1863,7 +1863,7 @@
 	    while ( Molpy.CalcGlassUse() >= 100)
 	    {
 		if (backoff > extra) {
-            	    Molpy.Boosts['Sand Refinery'].power = origpower;
+            	    Molpy.Boosts['Glass Chiller'].power = origpower;
 		    return;
 		}
 		Molpy.Boosts['Glass Chiller'].power-=backoff;
