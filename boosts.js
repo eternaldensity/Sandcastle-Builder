@@ -437,6 +437,7 @@
 				Molpy.Boosts['Flux Surge'].countdown*=.5;
 				Molpy.Add('FluxCrystals',c);
 			}
+			Molpy.Boosts['Now Where Was I'].Refresh();
 			Molpy.UpdateFaves();
 			return 1;
 		}else

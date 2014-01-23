@@ -3357,6 +3357,7 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Boosts['Glass Trolling'].IsEnabled=0;	
+		Molpy.Boosts['Now Where Was I'].Refresh();
 		Molpy.UpdateFaves();
 	}
 	
