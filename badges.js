@@ -943,6 +943,31 @@ Molpy.DefineBadges = function() {
 		desc: 'Miss out on getting some goats due to a Ninja Holidip',
 		stats: 'See: Ninja Ritual Boost and Ninja Holiday Badge'
 	});
+	new Molpy.Badge({
+		name: 'Microwave',
+		desc: 'Automata Control level at least 1G',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Ultaviolet',
+		desc: 'Automata Control level at least 1T',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'X Rays',
+		desc: 'Automata Control level at least 30P',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Gamma Rays',
+		desc: 'Automata Control level at least 10E',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Planck Limit',
+		desc: 'Automata Control level at limit',
+		vis: 1
+	});
 	
 /**************************************************************
  * Discoveries
@@ -982,7 +1007,7 @@ Molpy.DefineBadges = function() {
 							+ ')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 					}
 					str += '<div class="npthumb" style="background-image: '
-						+ Molpy.Url(Molpy.NewPixFor(Math.abs(me.np))) + '"><div>';
+						+ Molpy.Url(Molpy.NewPixFor(Math.abs(me.np))) + '"></div>';
 				}
 				return str;
 			},

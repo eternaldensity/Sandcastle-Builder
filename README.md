@@ -26,6 +26,14 @@ For personal amusement only.
 
 ## Changelog
 
+### Waveney
+- Larger upgrades to Time Lord
+- Larger upgrades to Dragon Forge
+- A number of small fixes
+- Factory Expansion stops at 61 runs unless 'Between the Cracks' or 'Aleph One' 
+- Option to sort boosts by Price or Name (Not for the tagged items)
+
+
 ## 3.31
 
 ### Waveney:

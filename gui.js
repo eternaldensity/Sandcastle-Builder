@@ -152,6 +152,11 @@
 	}
 	
 	Molpy.priceComparisons=['GlassBlocks','Sand','Castles'];
+	Molpy.NameSort=function(a,b) {
+		var n1=a.alias;
+		var n2=b.alias;
+		return n1>n2;
+	}
 	Molpy.PriceSort=function(a,b)
 	{
 		var p1 = a.CalcPrice(a.price);
@@ -385,6 +390,7 @@
 		Molpy.options.science=0;
 		Molpy.options.autosavelayouts=1;
 		Molpy.options.autoscroll=0;
+		Molpy.options.boostsort=0;
 	}
 	Molpy.DefaultOptions();
 		
@@ -446,15 +452,24 @@
 			Molpy.shopRepaint=1;
 			Molpy.boostRepaint=1;
 			Molpy.badgeRepaint=1;
+			Molpy.UpdateFaves();
+
 		}else if(bacon=='autoscroll')
 		{
 			Molpy.options.autoscroll++;
 			if(Molpy.options.autoscroll>=2)Molpy.options.autoscroll=0;
+		}else if(bacon=='boostsort')
+		{
+			Molpy.options.boostsort++;
+			if(Molpy.options.boostsort>=2)Molpy.options.boostsort=0;
+			Molpy.shopRepaint=1;
+			Molpy.boostRepaint=1;
 		}else return;
 		
 		Molpy.OptionDescription(bacon,1); //update description
 	}
-	Molpy.optionNames=['autosave','colourscheme','sandnumbers','colpix','longpostfix','sandmultibuy','castlemultibuy','fade','science', 'autoscroll'];
+	Molpy.optionNames=['autosave','colourscheme','sandnumbers','colpix','longpostfix','sandmultibuy','castlemultibuy','fade','science', 
+				'autoscroll','boostsort'];
 	if(!noLayout) Molpy.optionNames.push('autosavelayouts');
 	Molpy.OptionDescription=function(bacon,caffeination)
 	{
@@ -539,6 +554,13 @@
 					desc="No";
 				}else{
 					desc="Yes";
+				}
+			}else if(bacon=='boostsort')
+			{
+				if(Molpy.options.boostsort){
+					desc="Name";
+				}else{
+					desc="Price";
 				}
 			}else{
 				return;
@@ -898,7 +920,8 @@
 				if (me.unlocked) alist.push(me);
 			}
 		}
-		alist.sort(Molpy.PriceSort);
+		if (Molpy.options.boostsort > 0) alist.sort(Molpy.NameSort)
+		else alist.sort(Molpy.PriceSort)
 		Molpy.BoostsInShop=[];
 		for (var i in alist)
 		{
@@ -937,7 +960,8 @@
 				blist.push(me);
 			}
 		}
-		blist.sort(Molpy.PriceSort);
+		if (Molpy.options.boostsort > 0) blist.sort(Molpy.NameSort)
+		else blist.sort(Molpy.PriceSort)
 		redactedIndex=-1;
 		if(Molpy.redactedVisible==4)
 		{
