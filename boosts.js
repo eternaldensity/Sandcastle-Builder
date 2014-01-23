@@ -437,7 +437,7 @@
 				Molpy.Boosts['Flux Surge'].countdown*=.5;
 				Molpy.Add('FluxCrystals',c);
 			}
-			Molpy.Boosts['Now Where Was I'].Refresh();
+			Molpy.Boosts['Now Where Was I?'].Refresh();
 			Molpy.UpdateFaves();
 			return 1;
 		}else
@@ -5482,6 +5482,15 @@
 				},
 			IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, group:'bean',className:'toggle',
 			price:{Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity,QQ:'1G',Blackprints:'10G'}});
+	new Molpy.Boost({name:'Western Paradox',group:'ninj',price:{Sand:Infinity,Castles:Infinity,Goats:1000},
+			IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,classname:'toggle',
+			desc:function(me) {
+				var str = 'When activte trebles the time before the NewPixBots activate.';
+				if (me.bought) str +='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'+
+				  		     (me.IsEnabled? 'Dea':'A')+'ctivate"></input>';
+				return str
+			}
+	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 }

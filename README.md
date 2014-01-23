@@ -33,6 +33,7 @@ For personal amusement only.
 - Factory Expansion stops at 61 runs unless 'Between the Cracks' or 'Aleph One' 
 - Option to sort boosts by Price or Name (Not for the tagged items)
 - Highest Newpix can be in Minus Worlds
+- Western Paradox Boost to increase time before NewPixBots operate
 
 
 ## 3.31
