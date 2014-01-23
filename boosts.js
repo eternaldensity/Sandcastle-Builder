@@ -5481,7 +5481,7 @@
 				return str
 				},
 			IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, group:'bean',className:'toggle',
-			price:{Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity,QQ:'10M',Blackprints:'10M'}});
+			price:{Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity,QQ:'1G',Blackprints:'10G'}});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 }
