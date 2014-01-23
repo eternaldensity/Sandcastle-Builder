@@ -402,7 +402,7 @@
 			Molpy.Notify('Divide by zero error!');
 			return;
 		}
-		if(Math.abs(np) >Molpy.highestNPvisited)
+		if(Math.abs(np) > Math.abs(Molpy.highestNPvisited))
 		{
 			Molpy.Notify('Wait For It');
 			return;
@@ -980,8 +980,8 @@
 		}
 		if(Molpy.Got('Temporal Rift'))
 		{
-			if (Molpy.Got('Safety Net')) Molpy.newpixNumber=Math.round(Math.random()*(Molpy.highestNPvisited-241)+241) 
-			else Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
+			if (Molpy.Got('Safety Net')) Molpy.newpixNumber=Math.round(Math.random()*(Math.abs(Molpy.highestNPvisited)-241)+241) 
+			else Molpy.newpixNumber=Math.round(Math.random()*Math.abs(Molpy.highestNPvisited));
 			if(Molpy.Earned('Minus Worlds')&&Math.floor(Math.random()*2))Molpy.newpixNumber*=-1;;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
@@ -4276,7 +4276,7 @@
         var miscount =0;
         var npstart = 1;
 	var missing = 0;
-        for (var np=1; np<Molpy.highestNPvisited; np++)
+        for (var np=1; np<Math.abs(Molpy.highestNPvisited); np++)
         {
             var alias='discov'+np;
             if(Molpy.Badges[alias])
@@ -4301,7 +4301,7 @@
 	if (Molpy.Earned('Minus Worlds'))
 	{
 	    var miscount =0;
-            var npstart = -Molpy.highestNPvisited;
+            var npstart = -Math.abs(Molpy.highestNPvisited);
             for (var np=npstart; np<0; np++)
             {
            	var alias='discov'+np;

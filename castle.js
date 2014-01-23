@@ -3197,9 +3197,9 @@ Molpy.Up=function()
 		
 		Molpy.currentSubFrame=0;
 		var np=Math.abs(Molpy.newpixNumber);
-		if(np > Molpy.highestNPvisited)
+		if(np > Math.abs(Molpy.highestNPvisited))
 		{
-			Molpy.highestNPvisited=np;
+			Molpy.highestNPvisited=Molpy.newpixNumber;
 		}else //in the past
 		{
 			if(np > 2)
