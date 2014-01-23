@@ -402,7 +402,7 @@
 			Molpy.Notify('Divide by zero error!');
 			return;
 		}
-		if(Math.abs(np) >Molpy.highestNPvisited)
+		if(Math.abs(np) > Math.abs(Molpy.highestNPvisited))
 		{
 			Molpy.Notify('Wait For It');
 			return;
@@ -437,6 +437,8 @@
 				Molpy.Boosts['Flux Surge'].countdown*=.5;
 				Molpy.Add('FluxCrystals',c);
 			}
+			Molpy.Boosts['Now Where Was I?'].Refresh();
+			Molpy.UpdateFaves();
 			return 1;
 		}else
 		{
@@ -980,8 +982,8 @@
 		}
 		if(Molpy.Got('Temporal Rift'))
 		{
-			if (Molpy.Got('Safety Net')) Molpy.newpixNumber=Math.round(Math.random()*(Molpy.highestNPvisited-241)+241) 
-			else Molpy.newpixNumber=Math.round(Math.random()*Molpy.highestNPvisited);
+			if (Molpy.Got('Safety Net')) Molpy.newpixNumber=Math.round(Math.random()*(Math.abs(Molpy.highestNPvisited)-241)+241) 
+			else Molpy.newpixNumber=Math.round(Math.random()*Math.abs(Molpy.highestNPvisited));
 			if(Molpy.Earned('Minus Worlds')&&Math.floor(Math.random()*2))Molpy.newpixNumber*=-1;;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
@@ -1863,7 +1865,7 @@
 	    while ( Molpy.CalcGlassUse() >= 100)
 	    {
 		if (backoff > extra) {
-            	    Molpy.Boosts['Sand Refinery'].power = origpower;
+            	    Molpy.Boosts['Glass Chiller'].power = origpower;
 		    return;
 		}
 		Molpy.Boosts['Glass Chiller'].power-=backoff;
@@ -4168,7 +4170,7 @@
 			return str;
 		}
 		,GlassBlocks:'25M',Sand:Infinity,Castles:Infinity, group:'hpt',className:'toggle',defStuff:1,
-		buyFunction:function(){this.Level=1;}
+		buyFunction:function(){this.Level=(Molpy.Earned('Planck Limit')?6.2e34:1);}
 	});
 	Molpy.ControlAutomata=function(n,dragon)
 	{
@@ -4276,7 +4278,7 @@
         var miscount =0;
         var npstart = 1;
 	var missing = 0;
-        for (var np=1; np<Molpy.highestNPvisited; np++)
+        for (var np=1; np<Math.abs(Molpy.highestNPvisited); np++)
         {
             var alias='discov'+np;
             if(Molpy.Badges[alias])
@@ -4301,7 +4303,7 @@
 	if (Molpy.Earned('Minus Worlds'))
 	{
 	    var miscount =0;
-            var npstart = -Molpy.highestNPvisited;
+            var npstart = -Math.abs(Molpy.highestNPvisited);
             for (var np=npstart; np<0; np++)
             {
            	var alias='discov'+np;
@@ -5479,7 +5481,16 @@
 				return str
 				},
 			IsEnabled:Molpy.BoostFuncs.BoolPowEnabled, group:'bean',className:'toggle',
-			price:{Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity,QQ:'10M',Blackprints:'10M'}});
+			price:{Sand:Infinity,Castles:Infinity,GlassBlocks:Infinity,QQ:'1G',Blackprints:'10G'}});
+	new Molpy.Boost({name:'Western Paradox',group:'ninj',price:{Sand:Infinity,Castles:Infinity,Goats:1000},
+			IsEnabled:Molpy.BoostFuncs.BoolPowEnabled,classname:'toggle',
+			desc:function(me) {
+				var str = 'When activte trebles the time before the NewPixBots activate.';
+				if (me.bought) str +='<br><input type="Button" onclick="Molpy.GenericToggle('+me.id+',1)" value="'+
+				  		     (me.IsEnabled? 'Dea':'A')+'ctivate"></input>';
+				return str
+			}
+	});
 	
 	//END OF BOOSTS, add new ones immediately before this comment
 }

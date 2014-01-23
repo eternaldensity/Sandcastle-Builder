@@ -853,6 +853,7 @@ Molpy.Up=function()
 			if(Molpy.Got('Stealthy Bot'))ninjaFactor+=0.1;
 			if(Molpy.Got('Chequered Flag'))ninjaFactor+=0.2;
 			Molpy.ninjaTime = Molpy.baseNinjaTime/ninjaFactor;
+			if(Molpy.IsEnabled('Western Paradox')) Molpy.ninjaTime*=3;
 			if(Molpy.Got('Molpies'))//molpy molpy molpy molpy molpy
 			{
 				multiplier+=0.01*Molpy.BadgesOwned;
@@ -3197,9 +3198,9 @@ Molpy.Up=function()
 		
 		Molpy.currentSubFrame=0;
 		var np=Math.abs(Molpy.newpixNumber);
-		if(np > Molpy.highestNPvisited)
+		if(np > Math.abs(Molpy.highestNPvisited))
 		{
-			Molpy.highestNPvisited=np;
+			Molpy.highestNPvisited=Molpy.newpixNumber;
 		}else //in the past
 		{
 			if(np > 2)
@@ -3283,6 +3284,7 @@ Molpy.Up=function()
 					Molpy.Boosts['Ninja Ritual'].Level=0;
 				}else{
 					Molpy.Add('Goats',1+Math.floor(Molpy.Boosts['Ninja Ritual'].Level++/5));
+					if (Molpy.Boosts['Ninja Ritual'].Level > 10) Molpy.UnlockBoost('Western Paradox');
 				}
 			}
 		}
@@ -3357,6 +3359,8 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Boosts['Glass Trolling'].IsEnabled=0;	
+		Molpy.Boosts['Now Where Was I?'].Refresh();
+		Molpy.UpdateFaves();
 	}
 	
 	Molpy.BurnBags=function(n,e)
