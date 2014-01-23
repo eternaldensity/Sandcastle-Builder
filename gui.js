@@ -1888,7 +1888,7 @@
 			this.faves=Molpy.EmptyFavePanes(Molpy.nFaves);
 		}
 		
-		this.ToString=function()
+		this.toString=function()
 		{
 			var p='P'; //Pipe seParator
 			var s='S'; //Semicolon
@@ -1924,13 +1924,13 @@
 			for(var i in this.faves)
 			{
 				var item=this.faves[i];
-				thread+=item.ToString()+s;
+				thread+=item.toString()+s;
 			}
 			thread+=p;
 			for(var i in this.borderColors)
 			{
 				var item=this.borderColors[i];
-				thread+=item.ToString()+s;
+				thread+=(item.borderColor||item)+s;
 			}
 			thread+=p;
 			
@@ -2034,13 +2034,12 @@
 			}
 			for(var i in this.borderColors)
 			{
-				var item=Molpy.borderColorOrder[i];
-				var color=this.borderColors[item];
+				var color=this.borderColors[i];
 				for(var j=0; j<11; j++)
 				{
-					$('#section'+item).removeClass('borderColor'+j);
+					$('#section'+i).removeClass('borderColor'+j);
 				}
-				$('#section'+item).addClass('borderColor'+color);
+				$('#section'+i).addClass('borderColor'+color);
 			}
 			
 			Molpy.FixPaneWidths();
@@ -2072,7 +2071,7 @@
 		this.Export=function()
 		{
 			Molpy.ToggleView('Export',true);
-			g('exporttext').value=this.ToString();
+			g('exporttext').value=this.toString();
 		}
 		this.Overwrite=function()
 		{
@@ -2159,7 +2158,7 @@
 		this.position={left:0,top:0};
 		this.size={width:140,height:50};
 		
-		this.ToString=function()
+		this.toString=function()
 		{
 			var c='C'; //Comma
 			var id = 'n';

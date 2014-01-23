@@ -35,6 +35,14 @@ For personal amusement only.
 - Highest Newpix can be in Minus Worlds
 - Western Paradox Boost to increase time before NewPixBots operate
 
+### LucidCrux:
+- Borders of layout elements can be toggled and have colours changed! (unlock layout, then click the little square in the topleft corner of the panel you want to change)
+- Major code reformat
+- Lots of work merging in all the changes
+
+### snnw:
+- some timing fixes to ensure every NP really contains 1000 mNP
+- remove top-level vertical scrollbar if page is zoomed out far enough
 
 ## 3.31
 

@@ -206,7 +206,7 @@
 		Molpy.MakeTempLayout();
 		for(var i in Molpy.layouts)
 		{
-			var thread=Molpy.layouts[i].ToString();
+			var thread=Molpy.layouts[i].toString();
 			if(Molpy.supportsLocalStorage)
 			{
 				localStorage['Layout'+i]=escape(thread);
