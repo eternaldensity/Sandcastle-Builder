@@ -4170,7 +4170,7 @@
 			return str;
 		}
 		,GlassBlocks:'25M',Sand:Infinity,Castles:Infinity, group:'hpt',className:'toggle',defStuff:1,
-		buyFunction:function(){this.Level=1;}
+		buyFunction:function(){this.Level=(Molpy.Earned('Planck Limit')?6.2e34:1);}
 	});
 	Molpy.ControlAutomata=function(n,dragon)
 	{
