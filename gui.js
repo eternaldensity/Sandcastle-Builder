@@ -1800,6 +1800,12 @@
 		$('#toggleSnap').toggleClass('hidden',Molpy.layoutLocked);
 		$('#toggleGrid').toggleClass('hidden',Molpy.layoutLocked);
 		$('#toggleLockLayout').toggleClass('depressed',Molpy.layoutLocked);
+		//toggling hidden doesn't work for some reason, would be nice if it did
+		if(Molpy.layoutLocked){
+			$('.ui-border-color-button').hide();
+		}else{
+			$('.ui-border-color-button').show();
+		}
 	}
 	Molpy.SnapLayoutToggle=function()
 	{
@@ -1816,6 +1822,33 @@
 		var size=Molpy.layoutGrid?10:1;
 		$('.draggable-element').draggable('option','grid',[size,size])
 	}
+	
+	//Handles player clicking, not needed for loading layouts
+	Molpy.CycleBorderClick=function(e)
+	{
+		var sectionName = $(e.target).parent().attr('id').match(/section(.+)/)[1];
+		Molpy.CyclePanelBorder(sectionName);
+	}
+	
+	//Does the actual Color cycling
+	Molpy.CyclePanelBorder=function(panelName)
+	{
+		var newColor = ++Molpy.activeLayout.borderColors[panelName] || (Molpy.activeLayout.borderColors[panelName] = 0);
+		if(newColor >= 11)
+		{
+			Molpy.activeLayout.borderColors[panelName] = newColor = 0;
+		}
+		var thisPanel = $('#section' + panelName).removeClass('bordercolor' + (newColor-1) + ' bordercolor10').addClass('borderActive bordercolor' + newColor);
+		var borderbutton = thisPanel.find('.ui-border-color-button').removeClass('bordercolor' + (newColor-1) + ' bordercolor10');
+		if(newColor != 0)
+		{
+			borderbutton.css('border-color', '');
+			borderbutton.addClass('bordercolor' + newColor);
+		} else {
+			thisPanel.removeClass('borderActive');
+			borderbutton.css('border-color', '#999');
+		}
+	}
 		
 	Molpy.nFaves=40;
 	Molpy.Layout=function(args)
@@ -1825,6 +1858,7 @@
 		this.boxVis=$.extend({},args.boxVis);
 		this.positions=$.extend({},args.positions);
 		this.sizes=$.extend({},args.sizes);
+		this.borderColors=$.extend({},args.borderColors)
 		if(!Molpy.noLayout)
 		{
 			this.faves=Molpy.EmptyFavePanes(Molpy.nFaves);
@@ -1866,6 +1900,12 @@
 			for(var i in this.faves)
 			{
 				var item=this.faves[i];
+				thread+=item.ToString()+s;
+			}
+			thread+=p;
+			for(var i in this.borderColors)
+			{
+				var item=this.borderColors[i];
 				thread+=item.ToString()+s;
 			}
 			thread+=p;
@@ -1927,6 +1967,16 @@
 					this.faves.push(fav);
 				}
 			}
+			if(threads[8]&&!noLayout)
+			{
+				this.borderColors={};
+				pixels=threads[8].split(s);
+				for (var i in Molpy.borderColorOrder)
+				{
+					if(!pixels[i]) pixels[i]='0';
+					this.borderColors[Molpy.borderColorOrder[i]]={borderColor: pixels[i]};
+				}
+			}
 		}
 		
 		this.ToScreen=function()
@@ -1958,6 +2008,16 @@
 			{
 				this.faves[i].ToScreen();
 			}
+			for(var i in this.borderColors)
+			{
+				var item=Molpy.borderColorOrder[i];
+				var color=this.borderColors[item];
+				for(var j=0; j<11; j++)
+				{
+					$('#section'+item).removeClass('borderColor'+j);
+				}
+				$('#section'+item).addClass('borderColor'+color);
+			}
 			
 			Molpy.FixPaneWidths();
 		}
@@ -1982,6 +2042,7 @@
 			{
 				this.faves[i].FromScreen();
 			}
+			this.borderColors=$.extend({},Molpy.activeLayout.borderColors);
 		}
 		
 		this.Export=function()
@@ -2181,6 +2242,7 @@
 		Molpy.boxVisOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves', 'StuffCounts', 'IncomeCounts'];
 		Molpy.draggableOrder=['Clock','Timer','View','File','Links','Beach','Options','Stats','Log','Export','SandCounts','TFCounts','NPInfo','About','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves', 'StuffCounts', 'IncomeCounts'];
 		Molpy.sizableOrder=['View','File','Links','Options','Stats','Log','Export','SandTools','CastleTools','Shop','Inventory','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','Faves', 'StuffCounts', 'IncomeCounts'];
+		Molpy.borderColorOrder=['Clock','Timer','View','File','Links','Beach','Shop','Inventory','SandTools','CastleTools','Options','Stats','Log','Export','About','SandCounts','NPInfo','Layouts','Codex','Alerts','SandStats','GlassStats','NinjaStats','OtherStats','QuickLayout','TFCounts','Faves', 'StuffCounts', 'IncomeCounts'];
 		$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);
 		$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 		Molpy.activeLayout= new Molpy.Layout({name:'default',lootVis:{boosts:1,badges:1}});
@@ -2197,7 +2259,8 @@
 			Molpy.layouts[1].FromString(Molpy.defaultLayoutData2);
 			Molpy.LoadLayouts();
 			$('.resizable-element').resizable({cancel:'.editlock'});
-			$('.draggable-element').draggable({cancel:'.editlock',scroll:true,grid:[10,10],snap:true});	
+			$('.draggable-element').draggable({cancel:'.editlock',scroll:true,grid:[10,10],snap:true}).canColorBorder();
+			$('.ui-border-color-button').click(Molpy.CycleBorderClick);
 			Molpy.LockLayoutToggle();
 		}else{
 			Molpy.layoutLocked=true;

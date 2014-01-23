@@ -767,3 +767,64 @@ body.lightscheme .boost.loot a:hover
 	background-color:#F5F5F5;
 	color:#000;
 }
+.ui-border-color-button
+{
+	background-color: #999;
+	border-style: solid;
+	border-width: 5px;
+	border-color: #999;
+	width: 4px;
+	height: 4px;
+	position: absolute;
+	display: block;
+	top: 7px;
+	left: 7px;
+}
+.borderActive
+{
+	border: 1px solid;
+}
+.bordercolor0
+{
+	border: none;
+}
+.bordercolor1
+{
+	border-color: #FFFFFF;
+}
+.bordercolor2
+{
+	border-color: #000000;
+}
+.bordercolor3
+{
+	border-color: #FF0000;
+}
+.bordercolor4
+{
+	border-color: #00FF00;
+}
+.bordercolor5
+{
+	border-color: #0000FF;
+}
+.bordercolor6
+{
+	border-color: #FF9000;
+}
+.bordercolor7
+{
+	border-color: #FFF000;
+}
+.bordercolor8
+{
+	border-color: #9000FF;
+}
+.bordercolor9
+{
+	border-color: #FF00F0;
+}
+.bordercolor10
+{
+	border-color: #00FFF0;
+}
