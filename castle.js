@@ -3357,6 +3357,7 @@ Molpy.Up=function()
 		}
 		
 		Molpy.Boosts['Glass Trolling'].IsEnabled=0;	
+		Molpy.UpdateFaves();
 	}
 	
 	Molpy.BurnBags=function(n,e)

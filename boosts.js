@@ -437,6 +437,7 @@
 				Molpy.Boosts['Flux Surge'].countdown*=.5;
 				Molpy.Add('FluxCrystals',c);
 			}
+			Molpy.UpdateFaves();
 			return 1;
 		}else
 		{
