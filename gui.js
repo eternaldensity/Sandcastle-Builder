@@ -1283,7 +1283,7 @@
 				var bst = Molpy.BoostsByGroup['stuff'][i];
 				if(bst.alias == "Sand" || bst.alias == "Castles") continue;
 				if($('#stuff' + bst.alias + 'Count').length == 0) {
-					$("#sectionStuffCounts").append("<div id=\"stuff" + bst.alias + "Count\"></div>");
+					$("#sectionStuffCountsBody").append("<div id=\"stuff" + bst.alias + "Count\"></div>");
 				}
 				g('stuff' + bst.alias + 'Count').innerHTML = bst.plural + ': ' + Molpify(bst.Level, 3);
 				$('#stuff' + bst.alias + 'Count').toggleClass('hidden', !Molpy.Got(bst.alias));
@@ -1664,10 +1664,10 @@
 				var item = this.faves[i];
 				thread += item.toString() + s;
 			}
-			thread += p;
-			for( var i in this.borderColors) {
-				var item = this.borderColors[i];
-				thread += (item.borderColor || item) + s;
+			thread+=p;
+			for(var i in this.borderColors) {
+				var item=this.borderColors[i];
+				thread += item + s;
 			}
 			thread += p;
 
@@ -1732,9 +1732,7 @@
 				pixels = threads[8].split(s);
 				for( var i in Molpy.borderColorOrder) {
 					if(!pixels[i]) pixels[i] = '0';
-					this.borderColors[Molpy.borderColorOrder[i]] = {
-						borderColor: pixels[i]
-					};
+					this.borderColors[Molpy.borderColorOrder[i]] = parseInt(pixels[i]) || 0;
 				}
 			}
 		}
@@ -1767,7 +1765,7 @@
 				for( var j = 0; j < 11; j++) {
 					$('#section' + i).removeClass('borderColor' + j);
 				}
-				$('#section' + i).addClass('borderColor' + color);
+				$('#section' + i).addClass('borderColor' + color).toggleClass('borderActive', color != 0);
 			}
 
 			Molpy.FixPaneWidths();

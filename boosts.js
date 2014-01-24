@@ -1054,7 +1054,7 @@ Molpy.DefineBoosts = function() {
 		alias: 'BKJ',
 		icon: 'bkj',
 		group: 'hpt',
-		desc: 'Antalet redundanta klickade kattungar läggs till blixtnedslag multiplikator.',
+		desc: 'Antalet klickade redundanta kattungar läggs till blixtnedslagsmultiplikatorn.',
 		Sand: '9.8M',
 		Castles: 888555222,
 		
