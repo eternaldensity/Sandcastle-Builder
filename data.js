@@ -785,6 +785,7 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	Molpy.Boosts['SilverCard'].department = Molpy.Earned('Big Spender');
 	Molpy.Boosts['GoldCard'].department = Molpy.Earned('Valued Customer');
 	Molpy.Boosts['No Need to be Neat'].department = Molpy.Earned('Neat!');
+	if (!Molpy.IsEnabled('Time Lord')) Molpy.Boosts['Temporal Rift'].department = 0;
 }
 
 Molpy.CheckLogicatRewards = function(automationLevel) {
