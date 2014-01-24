@@ -1480,7 +1480,7 @@
 				if(bst.alias == "Sand" || bst.alias == "Castles") continue;
 				if($('#stuff' + bst.alias + 'Count').length == 0)
 				{
-					$("#sectionStuffCounts").append("<div id=\"stuff" + bst.alias + "Count\"></div>");
+					$("#sectionStuffCountsBody").append("<div id=\"stuff" + bst.alias + "Count\"></div>");
 				}
 				g('stuff' + bst.alias + 'Count').innerHTML=bst.plural + ': ' + Molpify(bst.Level,3);
 				$('#stuff' + bst.alias + 'Count').toggleClass('hidden', !Molpy.Got(bst.alias));
@@ -1864,8 +1864,6 @@
 		}
 		var thisPanel = $('#section' + panelName).removeClass('bordercolor' + (newColor-1) + ' bordercolor10').addClass('borderActive bordercolor' + newColor);
 		var borderbutton = thisPanel.find('.ui-border-color-button').removeClass('bordercolor' + (newColor-1) + ' bordercolor10');
-		Molpy.SetPanelBorder(panelName,newColor);
-
 		if(newColor != 0)
 		{
 			borderbutton.css('border-color', '');

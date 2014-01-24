@@ -47,6 +47,7 @@ For personal amusement only.
 ### ED:
 - fix up some issues with the border colour thing
 - Swedish gramma fix (it's still Greek to me)
+- Fixed the Stuff Counts and Income Counts to actually use the layout system properly (resizable element has to be separate from the draggable)
 
 ## 3.31
 
