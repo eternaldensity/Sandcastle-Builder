@@ -7,7 +7,7 @@ var postfixes=[
 	{limit:1e33,divisor:1e33,postfix:['H',' Helo']}, //or Ballard
 	{limit:1e30,divisor:1e30,postfix:['S',' Squilli']},
 	{limit:1e27,divisor:1e27,postfix:['U',' Umpty']},
-
+	
 	{limit:1e24,divisor:1e24,postfix:['Y',' Yotta']},
 	{limit:1e21,divisor:1e21,postfix:['Z',' Zeta']},
 	{limit:1e18,divisor:1e18,postfix:['E',' Exa']},
@@ -17,122 +17,108 @@ var postfixes=[
 	{limit:1e6,divisor:1e6,postfix:['M',' Mega']},
 	{limit:9e3,divisor:1e3,postfix:['K',' Kilo']}, //WHAT
 ];
-function Molpify(number, raftcastle, shrinkify)
-{
-	if(isNaN(number))return'Mustard';
-	if(!isFinite(parseFloat(number)))return'Infinite';
-	if(number<0)return '-'+Molpify(-number,raftcastle,shrinkify);
-	var molp='';
-	
-	if(shrinkify==2)shrinkify=0;
-	else if(Molpy&&!shrinkify)shrinkify=!Molpy.options.science;
-	
-	if(shrinkify)
-	{
-		for (var i in postfixes)
-		{	
+
+function Molpify(number, raftcastle, shrinkify) {
+	if(isNaN(number)) return 'Mustard';
+	if(!isFinite(parseFloat(number))) return 'Infinite';
+	if(number < 0) return '-' + Molpify(-number, raftcastle, shrinkify);
+	var molp = '';
+
+	if(shrinkify == 2)
+		shrinkify = 0;
+	else if(Molpy && !shrinkify) shrinkify = !Molpy.options.science;
+
+	if(shrinkify) {
+		for( var i in postfixes) {
 			var p = postfixes[i];
-			if(number>=p.limit)
-			{
-				return Molpify(number / p.divisor, raftcastle,1)+p.postfix[Molpy.options.longpostfix];
+			if(number >= p.limit) {
+				return Molpify(number / p.divisor, raftcastle, 1) + p.postfix[Molpy.options.longpostfix];
 			}
 		}
-	}else{
-		if(number==3)return 'Math.floor(Math.PI)';
-		if(number==4)return 'Math.ceil(Math.PI)';
+	} else {
+		if(number == 3) return 'Math.floor(Math.PI)';
+		if(number == 4) return 'Math.ceil(Math.PI)';
 	}
-	
-	if(raftcastle>0)
-	{
-		var numCopy=number;
+
+	if(raftcastle > 0) {
+		var numCopy = number;
 		//get the right number of decimal places to stick on the end:
-		var raft=numCopy*Math.pow(10,raftcastle)-Math.floor(numCopy)*Math.pow(10,raftcastle);
-		var sraft = Math.floor(raft)+'';
-		if((sraft).length>raftcastle)
-		{
+		var raft = numCopy * Math.pow(10, raftcastle) - Math.floor(numCopy) * Math.pow(10, raftcastle);
+		var sraft = Math.floor(raft) + '';
+		if((sraft).length > raftcastle) {
 			numCopy++;
-			sraft=''; //rounded decimal part up to 1
-		}else if(raft) while(sraft.length<raftcastle)
-		{
-			sraft='0'+sraft; //needs leading zeroes because it's a number like 1.01
+			sraft = ''; //rounded decimal part up to 1
+		} else if(raft) while(sraft.length < raftcastle) {
+			sraft = '0' + sraft; //needs leading zeroes because it's a number like 1.01
 		}
-		molp=Molpify(numCopy,0,shrinkify)+(raft?('.'+sraft):''); //stick them on the end if there are any
-	}else
-	{
+		molp = Molpify(numCopy, 0, shrinkify) + (raft ? ('.' + sraft) : ''); //stick them on the end if there are any
+	} else {
 		number = Math.floor(number);
 		//drop the decimal bit
-		var sep = (number+'').indexOf('e') ==-1; //true if not in exponential notation
-		number=(number+'').split('').reverse(); //convert to string, then array of chars, then backwards
-		for(var i in number)
-		{
-			if(sep&&i%3==0 &&i>0) molp=','+molp;//stick commas in every 3rd spot but not 0th
-			molp=number[i]+molp;
+		var sep = (number + '').indexOf('e') == -1; //true if not in exponential notation
+		number = (number + '').split('').reverse(); //convert to string, then array of chars, then backwards
+		for( var i in number) {
+			if(sep && i % 3 == 0 && i > 0) molp = ',' + molp;//stick commas in every 3rd spot but not 0th
+			molp = number[i] + molp;
 		}
-		if(!sep)
-		{
-			var dot=molp.indexOf('.')+1;
-			var exp=molp.indexOf('e');
-			molp=molp.slice(0,dot)+molp.slice(dot,exp).slice(0,6)+molp.slice(exp);//truncate after 6 decimal places
+		if(!sep) {
+			var dot = molp.indexOf('.') + 1;
+			var exp = molp.indexOf('e');
+			molp = molp.slice(0, dot) + molp.slice(dot, exp).slice(0, 6) + molp.slice(exp);//truncate after 6 decimal places
 		}
 	}
 	return molp;
 }
 
-function MolpifyCountdown(mNP,p)
-{
-	return mNP==0?'ever':mNP>=1000?Molpify(mNP/1000,p)+'NP':Molpify(mNP)+'mNP'
+function MolpifyCountdown(mNP, p) {
+	return mNP == 0 ? 'ever' : mNP >= 1000 ? Molpify(mNP / 1000, p) + 'NP' : Molpify(mNP) + 'mNP'
 }
-function flandom(n){return(Math.floor(Math.random()*n));}
-function randbool(){return(Math.floor(Math.random()*2)==0);}
-function GLRschoice(things)
-{
+function flandom(n) {
+	return(Math.floor(Math.random() * n));
+}
+function randbool() {
+	return(Math.floor(Math.random() * 2) == 0);
+}
+function GLRschoice(things) {
 	return things[flandom(things.length)];
 }
-function EvalMaybeFunction(bacon,babies,ice)
-{
-	var B = typeof(bacon);
+function EvalMaybeFunction(bacon, babies, ice) {
+	var B = typeof (bacon);
 	var D = 'function';
-	var O = (B===D?bacon(babies):bacon);
+	var O = (B === D ? bacon(babies) : bacon);
 	if(!ice) return O;
-	
-	B = typeof(O);
+
+	B = typeof (O);
 	D = 'string';
-	return (B===D?DeMolpify(O):O);
+	return(B === D ? DeMolpify(O) : O);
 }
-function ZeroIfFunction(bacon)
-{
-	var B = typeof(bacon);
+function ZeroIfFunction(bacon) {
+	var B = typeof (bacon);
 	var D = 'function';
-	var O = (B===D?0:bacon);
+	var O = (B === D ? 0 : bacon);
 	return 0;
 }
-function DeMolpify(grape)
-{
-	if(!grape)return 0;
+function DeMolpify(grape) {
+	if(!grape) return 0;
 	var fix = grape.slice(-1);
-	if(isNaN(parseFloat(fix)))
-	{
-		for (var i in postfixes)
-		{	
+	if(isNaN(parseFloat(fix))) {
+		for( var i in postfixes) {
 			var vine = postfixes[i];
-			if(vine.postfix[0]==fix.toUpperCase())
-			{
-				return DeMolpify(grape.slice(0,-1))*vine.divisor;
+			if(vine.postfix[0] == fix.toUpperCase()) {
+				return DeMolpify(grape.slice(0, -1)) * vine.divisor;
 			}
 		}
-		return DeMolpify(grape.slice(0,-1)); //weird character found!
+		return DeMolpify(grape.slice(0, -1)); //weird character found!
 	}
 	return parseFloat(grape); //no postfix found
 }
 
-	function make(thinglist,arg)
-	{
-		return EvalMaybeFunction(GLRschoice(thinglist),arg);
-	}
-	function capitalise(string)
-	{
-		return string.charAt(0).toUpperCase()+string.slice(1);
-	}
+function make(thinglist, arg) {
+	return EvalMaybeFunction(GLRschoice(thinglist), arg);
+}
+function capitalise(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
 	
 function MakeRedundancy()
 {	
@@ -323,96 +309,87 @@ function MakeRedundancy()
 	return redundancy;
 }
 var red
-var par=function(stuff)
-{
-	return '<p>'+stuff+'</p>';
+var par = function(stuff) {
+	return '<p>' + stuff + '</p>';
 }
-var maketext=function()
-{
-	if(!red)red=MakeRedundancy();
-	g('redundantpar').className='partext';
+var maketext = function() {
+	if(!red) red = MakeRedundancy();
+	g('redundantpar').className = 'partext';
 	var str = par(red.paragraph());
 	var i = 6;
-	while(i--) str+= '<br>'+par(red.paragraph());
-	g('redundantpar').innerHTML=str;
+	while(i--)
+		str += '<br>' + par(red.paragraph());
+	g('redundantpar').innerHTML = str;
 }
-var eternalf=[];
-var typocount=0;
-function format(gainned,level)
-{
-	if(Molpy.options.typo)return gainned;
-	var angle=gainned.indexOf('<');
-	if(angle==0)return gainned; //don't mess with no html!
-	var squirpy=eternalf[gainned];
-	if(squirpy)return squirpy;
-	if(Math.abs(Molpy.newpixNumber)<typocount) return gainned;
-	
-	level=level||0;
-	var gained=gainned;
-	if(!flandom(1.005))return gainned;
-	var n = flandom(angle>0?(angle):(gainned.length-2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
-	if(!isNaN(gainned[n]))return gainned;
-	gainned= gainned.slice(0,n+1)+gainned.slice(n);
-	gainned = format(gainned,level+1);
-	if(!level)
-	{
+var eternalf = [];
+var typocount = 0;
+function format(gainned, level) {
+	if(Molpy.options.typo) return gainned;
+	var angle = gainned.indexOf('<');
+	if(angle == 0) return gainned; //don't mess with no html!
+	var squirpy = eternalf[gainned];
+	if(squirpy) return squirpy;
+	if(Math.abs(Molpy.newpixNumber) < typocount) return gainned;
+
+	level = level || 0;
+	var gained = gainned;
+	if(!flandom(1.005)) return gainned;
+	var n = flandom(angle > 0 ? (angle) : (gainned.length - 2));//irony: for a minute this wouldn't compile because I typo'd it as 'gained'
+	if(!isNaN(gainned[n])) return gainned;
+	gainned = gainned.slice(0, n + 1) + gainned.slice(n);
+	gainned = format(gainned, level + 1);
+	if(!level) {
 		typocount++;
-		if(typocount>=1000)Molpy.EarnBadge('Typo Storm');
-		eternalf[gained]=gainned;
+		if(typocount >= 1000) Molpy.EarnBadge('Typo Storm');
+		eternalf[gained] = gainned;
 	}
 	return gainned;
 }
-function EmergencyExport()
-{
-	var thread='';
-	if (document.cookie.indexOf('CastleBuilderGame')>=0) 
-	{
-		var k=['',0,1,2,3,4];
-		for(var i in k)
-		{
-			var dough = document.cookie.split('CastleBuilderGame'+k[i]+'=')[1];
-			if(dough)
-				thread+=unescape(dough).split(';')[0]||'';
+function EmergencyExport() {
+	var thread = '';
+	if(document.cookie.indexOf('CastleBuilderGame') >= 0) {
+		var k = ['', 0, 1, 2, 3, 4];
+		for( var i in k) {
+			var dough = document.cookie.split('CastleBuilderGame' + k[i] + '=')[1];
+			if(dough) thread += unescape(dough).split(';')[0] || '';
 		}
-		g('exporttext').value=thread;
-		g('export').className='unhidden';
-		g('otthercomic').className='hidden;'
-		
+		g('exporttext').value = thread;
+		g('export').className = 'unhidden';
+		g('otthercomic').className = 'hidden;'
+
 	}
 }
 
-function ShuffleList(l)
-	{
-		for(var i in l)
-		{
-			var j = flandom((parseInt(i)+1));
-			var temp = l[j];
-			l[j]=l[i];
-			l[i]=temp;
-		}			
+function ShuffleList(l) {
+	for( var i in l) {
+		var j = flandom((parseInt(i) + 1));
+		var temp = l[j];
+		l[j] = l[i];
+		l[i] = temp;
 	}
-function SplitWord(word)
-{
-	if(word.length<=3)return [word];
-	if(word.length==4)return [word.slice(0,2),word.slice(2)];
-	var size=2+flandom(2);
-	return [word.slice(0,size)].concat(SplitWord(word.slice(size)));
 }
-function Wordify(words)
-{
-	words=words.split(' ');
-	var split=[];
-	for(var i in words)
-	{
+function SplitWord(word) {
+	if(word.length <= 3) return [word];
+	if(word.length == 4) return [word.slice(0, 2), word.slice(2)];
+	var size = 2 + flandom(2);
+	return [word.slice(0, size)].concat(SplitWord(word.slice(size)));
+}
+function Wordify(words) {
+	words = words.split(' ');
+	var split = [];
+	for( var i in words) {
 		console.debug(words[i].length);
-		split=split.concat(SplitWord(words[i]));
+		split = split.concat(SplitWord(words[i]));
 	}
-	console.debug(split.reduce(function(prev,next,i,a){return prev+' '+next;}));
+	console.debug(split.reduce(function(prev, next, i, a) {
+		return prev + ' ' + next;
+	}));
 	ShuffleList(split);
-	return split.reduce(function(prev,next,i,a){return prev+' '+next;});	
+	return split.reduce(function(prev, next, i, a) {
+		return prev + ' ' + next;
+	});
 }
 
-function plural(n)
-{
-	return n==1?'':'s';
+function plural(n) {
+	return n == 1 ? '' : 's';
 }
