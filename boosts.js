@@ -3741,8 +3741,9 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		reset: function() {
-			var chips = this.bought * 100 * (this.power - 1);
+			var chips = this.bought * 100;
 			if(chips < 0) chips *= chips;
+			chips *= (this.power - 1);
 			Molpy.Add('GlassChips', chips);
 			this.power = 0;
 			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monums' + this.bought].name + '</small>', 1);
@@ -3782,8 +3783,9 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		reset: function() {
-			var chips = Math.pow(1.01, Math.abs(this.bought)) * 1000 * (this.power - 1);
+			var chips = Math.pow(1.01, Math.abs(this.bought)) * 1000;
 			if(this.bought < 0) chips *= chips;
+			chips *= (this.power - 1);
 			Molpy.Add('GlassChips', chips);
 			this.power = 0;
 			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monumg' + this.bought].name + '</small>', 1);
@@ -3829,8 +3831,9 @@ Molpy.DefineBoosts = function() {
 			var chips = this.bought * 100 * 100;
 			if(chips < 0) chips *= chips;
 			Molpy.Add('GlassChips', chips);
-			var sand = Math.pow(1.2, Math.abs(this.bought)) * 100 * (this.power - 1);
+			var sand = Math.pow(1.2, Math.abs(this.bought)) * 100;
 			if(this.bought < 0) sand *= sand;
+			sand *= (this.power - 1);
 			Molpy.Dig(sand);
 			this.power = 0;
 			Molpy.Notify(this.name + ' has cancelled filling <small>' + Molpy.Badges['monums' + this.bought].name + '</small>', 1);
@@ -3873,8 +3876,9 @@ Molpy.DefineBoosts = function() {
 		reset: function() {
 			if(!confirm('You will also lose the unfilled glass mould which will waste 400 runs of Factory Automation.\nAre you certain you want to do this?'))
 				return;
-			var blocks = Math.pow(1.02, Math.abs(this.bought)) * 1000000 * (this.power - 1);
+			var blocks = Math.pow(1.02, Math.abs(this.bought)) * 1000000;
 			if(this.bought < 0) blocks *= blocks;
+			blocks *= (this.power - 1);
 			Molpy.Add('GlassBlocks', blocks);
 			var chips = Math.pow(1.01, Math.abs(this.bought)) * 1000 * 400;
 			if(this.bought < 0) chips *= chips;
