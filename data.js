@@ -1,16 +1,13 @@
 'use strict';
 
-function g(id) {return document.getElementById(id);}
-function addCSSRule(sheet, selector, rules, index) {
-	if(sheet.insertRule) {
-		sheet.insertRule(selector + '{' + rules + '}', index);
-	}
-	else {
-		sheet.addRule(selector, rules, index);
-	}
-}
 var Molpy={};
 Molpy.version=3.31;
+
+/**************************************************************
+ * Game Strings
+ * 
+ * String constants that are used throughout the game.
+ *************************************************************/
 Molpy.HardcodedData=function()
 {	
 	Molpy.Periods=[
