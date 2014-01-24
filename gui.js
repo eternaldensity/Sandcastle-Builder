@@ -1864,6 +1864,8 @@
 		}
 		var thisPanel = $('#section' + panelName).removeClass('bordercolor' + (newColor-1) + ' bordercolor10').addClass('borderActive bordercolor' + newColor);
 		var borderbutton = thisPanel.find('.ui-border-color-button').removeClass('bordercolor' + (newColor-1) + ' bordercolor10');
+		Molpy.SetPanelBorder(panelName,newColor);
+
 		if(newColor != 0)
 		{
 			borderbutton.css('border-color', '');
@@ -2039,7 +2041,7 @@
 				{
 					$('#section'+i).removeClass('borderColor'+j);
 				}
-				$('#section'+i).addClass('borderColor'+color);
+				$('#section'+i).addClass('borderColor'+color).toggleClass('borderActive',color!=0);
 			}
 			
 			Molpy.FixPaneWidths();
