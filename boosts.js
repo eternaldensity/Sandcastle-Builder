@@ -15,7 +15,7 @@ Molpy.DefineBoosts = function() {
 		bean: ['beanie tech', 'Beanie Tech', 'beanietech'],
 		ceil: ['ceiling', 'Ceilings', 'glassceiling12'],
 		drac: ['draconic', 'Draconic', 'draconic'],
-		stuff: ['stuff', 'Stuff'],
+		stuff: ['stuff', 'Stuff', 'stuff'],
 		land: ['land', 'Land'],
 		prize: ['prize', 'Prizes', 'prizes'],
 		discov: ['discovery', 'Discoveries', 'discov', 'Discovery', 'A memorable discovery'],
@@ -891,6 +891,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Chromatic Heresy',
 		icon: 'chromatic',
+		heresy: true,
 		className: 'toggle',
 		
 		desc: function(me) {
@@ -1105,6 +1106,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Fractal Sandcastles',
 		icon: 'fractals',
+		gifIcon: true,
 		className: 'alert',
 		
 		desc: function(me) {
@@ -3231,6 +3233,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Technicolour Dream Cat',
 		icon: 'dreamcat',
+		heresy: true,
 		desc: Molpy.redactedWords + ' are multicoloured (if Chromatic Heresy is enabled)',
 		Sand: '320K',
 		Castles: '90K',
@@ -6291,7 +6294,7 @@ Molpy.DefineBoosts = function() {
 		single: 'Map',
 		plural: 'Maps',
 		alias: 'Maps',
-		icon: 'maps',
+		icon: 'mysteriousmap',
 		group: 'stuff',
 		
 		desc: function(me) {
@@ -7261,7 +7264,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Question Qube',
 		alias: 'QQ',
-		icon: 'qq',
+		icon: 'questionqube',
 		group: 'stuff',
 		className: 'action',
 		
@@ -7459,6 +7462,7 @@ Molpy.DefineBoosts = function() {
 	
 	new Molpy.Boost({
 		name: 'Safety Net',
+		icon: 'safetynet',
 		group: 'chron',
 		desc: 'Stops temporal rifts to shortpix. Does not prevent intentional Jumps to shortpix',
 		
@@ -7469,6 +7473,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({
 		name: 'Safety Blanket',
+		icon: 'safetyblanket',
 		group: 'chron',
 		desc: 'Stops you losing longpix only boosts when you jump or rift to shortpix (They stop working, but remain)',
 		
@@ -7480,6 +7485,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({
 		name: 'Aleph One',
+		icon: 'alephone',
 		group: 'bean',
 		className: 'toggle',
 		
@@ -7502,6 +7508,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({
 		name: 'Western Paradox',
+		icon: 'westernparadox',
 		group: 'ninj',
 		classname: 'toggle',
 		

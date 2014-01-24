@@ -319,6 +319,7 @@ Molpy.DefineBadges = function() {
 	new Molpy.Badge({
 		name: 'Judgement Dip Warning',
 		icon: 'judgementdipwarning',
+		heresy: true,
 		vis: 2,
 		
 		desc: function() {
@@ -471,6 +472,7 @@ Molpy.DefineBadges = function() {
 	new Molpy.Badge({
 		name: 'Judgement Dip',
 		icon: 'judgementdip',
+		heresy: 'true',
 		vis: 3,
 		
 		desc: function() {
