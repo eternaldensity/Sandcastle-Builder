@@ -2759,6 +2759,7 @@ Molpy.Up = function() {
 		var np = Math.abs(Molpy.newpixNumber);
 		if(np > Math.abs(Molpy.highestNPvisited)) {
 			Molpy.highestNPvisited = Molpy.newpixNumber;
+			if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
 		} else //in the past
 		{
 			if(np > 2) {

@@ -968,6 +968,11 @@ Molpy.DefineBadges = function() {
 		desc: 'Automata Control level at limit',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'Below the Horizon',
+		desc: 'The Highest Newpix Number is in Minus Worlds',
+		vis: 1
+	});
 	
 /**************************************************************
  * Discoveries
