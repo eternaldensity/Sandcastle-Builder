@@ -844,7 +844,8 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 
 	Molpy.Boosts['Panther Rush'].logic = Molpy.CalcRushCost(0, 1).Logicat * Molpy.Has(Molpy.CalcRushCost(0, 1));
 
-	Molpy.Boosts['AC'].logic = 440 * (Molpy.Got('AA') && (Molpy.CastleTools['NewPixBot'].amount >= 7500 ? 50000 / Molpy.CastleTools['NewPixBot'].amount : 0));
+	Molpy.Boosts['AC'].logic = 440 * (Molpy.Got('AA') && (isFinite(Molpy.CastleTools['NewPixBot'].amount)? 
+					(Molpy.CastleTools['NewPixBot'].amount >= 7500 ? 50000 / Molpy.CastleTools['NewPixBot'].amount : 0):1));
 	Molpy.Boosts['Flipside'].logic = 220 * Molpy.Got('AA');
 
 	Molpy.Boosts['Bottle Battle'].logic = 150 * (Molpy.CastleTools['NewPixBot'].amount >= 10000);
