@@ -44,6 +44,10 @@ For personal amusement only.
 - some timing fixes to ensure every NP really contains 1000 mNP
 - remove top-level vertical scrollbar if page is zoomed out far enough
 
+### ED:
+- fix up some issues with the border colour thing
+- Swedish gramma fix (it's still Greek to me)
+
 ## 3.31
 
 ### Waveney:

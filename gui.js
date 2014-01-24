@@ -1930,7 +1930,7 @@
 			for(var i in this.borderColors)
 			{
 				var item=this.borderColors[i];
-				thread+=(item.borderColor||item)+s;
+				thread+=item+s;
 			}
 			thread+=p;
 			
@@ -1998,7 +1998,7 @@
 				for (var i in Molpy.borderColorOrder)
 				{
 					if(!pixels[i]) pixels[i]='0';
-					this.borderColors[Molpy.borderColorOrder[i]]={borderColor: pixels[i]};
+					this.borderColors[Molpy.borderColorOrder[i]]=parseInt(pixels[i])||0;
 				}
 			}
 		}
