@@ -1596,6 +1596,8 @@ Molpy.Up = function() {
 			this.classChange = args.classChange;
 			this.group = args.group || 'boosts';
 			this.icon = args.icon || Molpy.groupNames[this.group][2];
+			this.heresy = args.heresy || false;
+			this.gifIcon = args.gifIcon || false;
 			this.lockFunction = args.lockFunction;
 			this.unlockFunction = args.unlockFunction;
 			this.reset = args.reset;
@@ -1719,10 +1721,17 @@ Molpy.Up = function() {
 				Molpy.BoostAKA[this.name] = this.alias;
 			}
 			Molpy.BoostN++;
-			if(this.icon) {
+			if(this.gifIcon){
+				addCSSRule(document.styleSheets[1], '.darkscheme #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.gif' )");
+			} else if(this.icon) {
 				addCSSRule(document.styleSheets[1], '.shop #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_grey_icon.png' )");
 				addCSSRule(document.styleSheets[1], '.darkscheme .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.png' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.png' )");
+			}
+			if(this.heresy){
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_heresy_icon.png' )");
 			}
 			return this;
 		}
@@ -1831,6 +1840,8 @@ Molpy.Up = function() {
 			this.classChange = args.classChange;
 			this.group = args.group || 'badges';
 			this.icon = args.icon || Molpy.groupNames[this.group][2];
+			this.heresy = args.heresy || false;
+			this.gifIcon = args.gifIcon || false;
 
 			this.Refresh = function() {
 				if(this.hovering || Molpy.Boosts['Expando'].IsEnabled) {
@@ -1892,9 +1903,16 @@ Molpy.Up = function() {
 			Molpy.BadgesById[this.id] = this;
 			Molpy.BadgeAKA[this.name] = this.alias;
 			Molpy.BadgeN++;
-			if(this.icon) {
+			if(this.gifIcon){
+				addCSSRule(document.styleSheets[1], '.darkscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.gif' )");
+			} else if(this.icon) {
 				addCSSRule(document.styleSheets[1], '.darkscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.png' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
+			}
+			if(this.heresy){
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
 			}
 			return this;
 		}
