@@ -5098,7 +5098,20 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Got('LR')) {
 				Molpy.Boosts['LR'].power *= 1.004;
 				if(Molpy.Got('Thunderbird') && Molpy.Got('TDE')) {
-					Molpy.Boosts['LR'].power *= 1.5;
+					var newLRPower = Molpy.Boosts['LR'].power *= 1.5;
+					
+					if(newLRPower >= 1e24)
+						Molpy.UnlockBoost('Kite and Key');
+					if(newLRPower >= 1e73)
+						Molpy.UnlockBoost('Lightning in a Bottle');
+					
+					if(Molpy.Got('Kite and Key'))
+						Molpy.Boosts['Kite and Key'].power = Math.sqrt(newLRPower);
+					if(Molpy.Got('Lightning in a Bottle'))
+						if(newLRPower > 1e250)
+							Molpy.Boosts['Lightning in a Bottle'].power = 1e252;
+						else
+							Molpy.Boosts['Lightning in a Bottle'].power = newLRPower - 1e36;
 				}
 			}
 		}
@@ -7523,6 +7536,51 @@ Molpy.DefineBoosts = function() {
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str
+		}
+	});
+	new Molpy.Boost({
+		name: 'Kite and Key',
+		icon: 'kiteandkey',
+		group: 'bean',
+		
+		desc: function(me){
+			return 'Restores a small portion of your Glassed Lightning power when you Molpy Down.<br>'
+				+ 'Your Glassed Lightning power can not fall below ' + Molpify(me.power, 1) + '.';
+		},
+		
+		GlassBlocks: '1KW',
+		Sand: Infinity,
+		Castles: Infinity,
+		
+		buyFunction: function() {
+			if(this.power < 400)
+				this.power = Math.sqrt(Molpy.Boosts['LR'].power) || 400;
+			if(Molpy.Boosts['LR'].power < this.power)
+				Molpy.Boosts['LR'].power = this.power;
+		}
+	});
+	new Molpy.Boost({
+		name: 'Lightning in a Bottle',
+		icon: 'lightninginabottle',
+		group: 'bean',
+		
+		desc: function(me){
+			return 'Restores a lot of your Glassed Lightning power when you Molpy Down.<br>'
+				+ 'Capped at ' + Molpify(1e252, 1) + ' stored power.<br>'
+				+ 'Your Glassed Lightning power can not fall below ' + Molpify(me.power,1) + '.';
+		},
+		
+		GlassBlocks: '1WWW',
+		Sand: Infinity,
+		Castles: Infinity,
+		
+		buyFunction: function() {
+			if(this.power < 400)
+				this.power = (Molpy.Boosts['LR'].power - 1e36) || 400;
+				if(this.power > 1e252)
+					this.power = 1e252;
+			if(Molpy.Boosts['LR'].power < this.power)
+				Molpy.Boosts['LR'].power = this.power;
 		}
 	});
 

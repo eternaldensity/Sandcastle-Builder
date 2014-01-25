@@ -39,6 +39,7 @@ For personal amusement only.
 - Borders of layout elements can be toggled and have colours changed! (unlock layout, then click the little square in the topleft corner of the panel you want to change)
 - Major code reformat
 - Lots of work merging in all the changes
+- Kite and Key and Lightning in a Bottle boost to store Glassed Lighting % boost
 
 ### snnw:
 - some timing fixes to ensure every NP really contains 1000 mNP

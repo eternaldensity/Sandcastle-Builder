@@ -2877,7 +2877,17 @@ Molpy.Up = function() {
 			}
 		}
 		if(Molpy.Boosts['LR'].power > 500) {
-			Molpy.Boosts['LR'].power *= .95;
+			var MinPower = 0;
+			var LRdecrease = Molpy.Boosts['LR'].power * .95;
+			if(Molpy.Got('Lightning in a Bottle')){
+				MinPower = Molpy.Boosts['Lightning in a Bottle'].power;
+			} else if(Molpy.Got('Kite and Key')){
+				MinPower = Molpy.Boosts['Kite and Key'].power;
+			}
+			if(LRdecrease < MinPower)
+				Molpy.Boosts['LR'].power = MinPower;
+			else
+				Molpy.Boosts['LR'].power *= .95;
 		}
 
 		Molpy.Boosts['Glass Trolling'].IsEnabled = 0;
