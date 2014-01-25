@@ -5106,12 +5106,20 @@ Molpy.DefineBoosts = function() {
 						Molpy.UnlockBoost('Lightning in a Bottle');
 					
 					if(Molpy.Got('Kite and Key'))
-						Molpy.Boosts['Kite and Key'].power = Math.sqrt(newLRPower);
-					if(Molpy.Got('Lightning in a Bottle'))
-						if(newLRPower > 1e250)
-							Molpy.Boosts['Lightning in a Bottle'].power = 1e252;
+						if(isFinite(newLRPower))
+							Molpy.Boosts['Kite and Key'].power = Math.sqrt(newLRPower);
 						else
-							Molpy.Boosts['Lightning in a Bottle'].power = newLRPower - 1e36;
+							Molpy.Boosts['Kite and Key'].power = 1e155;
+						
+					if(Molpy.Got('Lightning in a Bottle'))
+						if(isFinite(newLRPower)){
+							if(newLRPower > 1e288)
+								Molpy.Boosts['Lightning in a Bottle'].power = 1e252;
+							else
+								Molpy.Boosts['Lightning in a Bottle'].power = newLRPower * 1e-36;
+						} else {
+							Molpy.Boosts['Lightning in a Bottle'].power = 1e252;
+						}
 				}
 			}
 		}
@@ -7576,7 +7584,7 @@ Molpy.DefineBoosts = function() {
 		
 		buyFunction: function() {
 			if(this.power < 400)
-				this.power = (Molpy.Boosts['LR'].power - 1e36) || 400;
+				this.power = (Molpy.Boosts['LR'].power * 1e-36) || 400;
 				if(this.power > 1e252)
 					this.power = 1e252;
 			if(Molpy.Boosts['LR'].power < this.power)
