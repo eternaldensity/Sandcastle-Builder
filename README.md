@@ -34,6 +34,7 @@ For personal amusement only.
 - Option to sort boosts by Price or Name (Not for the tagged items)
 - Highest Newpix can be in Minus Worlds
 - Western Paradox Boost to increase time before NewPixBots operate
+- The Pope - new boost with a choice of small effects
 
 ### LucidCrux:
 - Borders of layout elements can be toggled and have colours changed! (unlock layout, then click the little square in the topleft corner of the panel you want to change)

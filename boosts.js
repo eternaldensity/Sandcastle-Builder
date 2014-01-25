@@ -353,7 +353,9 @@ Molpy.DefineBoosts = function() {
 		
 		unlockFunction: function() {
 			this.prize = Molpy.GetDoor();
-		}
+		},
+
+		loadFunction: function() { Molpy.LockBoost('MHP') }
 	});
 	
 	Molpy.MontyDoors = ['A', 'B', 'C'];
@@ -1319,6 +1321,7 @@ Molpy.DefineBoosts = function() {
 				+ ' whenever possible, during ASHF, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
 		},
 		
+		loadFunction: Molpy.SelectShoppingItem,	
 		Sand: '18G',
 		Castles: '650G'
 	});
@@ -3030,7 +3033,7 @@ Molpy.DefineBoosts = function() {
 					this.bought++;
 				}
 				if(rewards > 5) {
-					Molpy.Add('QQ', rewards - 5);
+					Molpy.Add('QQ', Math.Floor((rewards - 5)*Molpy.Papal('QQs')));
 					rewards = 5;
 				}
 				while(rewards--) {
@@ -5903,7 +5906,7 @@ Molpy.DefineBoosts = function() {
 			if(!this.power) this.power = 10;
 			var pages = this.power++;
 			if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
-			Molpy.Add('Blackprints', pages);
+			Molpy.Add('Blackprints', pages*Molpy.Papal('BlackP'));
 			if(Molpy.Got('Camera')) {
 				for( var i = 0; i < 10; i++) {
 					Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
@@ -6014,7 +6017,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.ShadowStrike = function() {
-		var l = Molpy.Level('LogiPuzzle') / 100;
+		var l = Molpy.Level('LogiPuzzle')*Molpy.Papal('Bonemeal') / 100;
 		var n = Math.ceil(l);
 		var p = n - l;
 		if(Math.random() < p * p) n = 1;
@@ -7380,7 +7383,8 @@ Molpy.DefineBoosts = function() {
 			if(levels > 0) {
 				var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - Molpy.Level('Time Lord') * (Molpy.Level('Time Lord') + 1) / 2;
 				if(!Molpy.Got('TDE')) c /= 2;
-				c = Math.floor(c * .9 + c * .2 * Math.random());
+				c*=Molpy.Papal("Flux");
+				//c = Math.floor(c * .9 + c * .2 * Math.random());
 				Molpy.Add('FluxCrystals', c);
 				Molpy.Add('Time Lord', levels);
 			} else {
@@ -7529,6 +7533,88 @@ Molpy.DefineBoosts = function() {
 			return str
 		}
 	});
+
+	Molpy.PapalDecrees = {
+		Sand: {desc:'20% more Sand from Sand Tools', value:1.2, avail: function() { return isFinite(Molpy.sandPermNP)}},
+		Castles: {desc:'10% more Castles from Castle Tools', value:1.1, avail: function() { return isFinite(Molpy.castles)}},
+		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.chipspmnp)}},
+		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.blockspmnp)}},
+		Flux: {desc:'10% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest')}},
+		BlackP: {desc:'10% more Black prints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180}},
+		GlassSand: {desc:'10% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
+		GlassCastle: {desc:'10% more Glass Chips from Glass Castle Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
+		GlassSaw: {desc:'10% more Glass Blocks from using the Glass Saw', value:1.1, avail: function() { return Molpy.Got('Glass Saw') && !Molpy.Earned('Infinite Saw')}},
+		QQs: {desc:'10% more Question Qubes from the Logicat', value:1.1, avail: function() { return Molpy.Got('QQ') }},
+		Goats: {desc:'10% more Goats from Ninja Ritual', value:1.1, avail: function() { return Molpy.Got('Ninja Ritual')}},
+		Bonemeal: {desc:'10% more Bonemeal from the Shadow Dragon', value:1.1, avail: function() { return Molpy.Got('ShadwDrgn')}},
+	}
+	Molpy.Decreename = '';
+	new Molpy.Boost({
+		name: 'The Pope',
+		icon: 'the_pope',
+		group: 'bean',
+		className: 'action',
+		logic: 2,
+		
+		price: {
+			Sand: 50000,
+			Castles: 20000
+		},
+		
+		desc: function(me) {
+			var str = 'Gives one selectable small boost until after the next ONG.';
+			if (!me.bought) return str;
+			if (me.power) {
+				str += '<br>The current decree is: ' + Molpy.Decree.desc;
+			} else {
+				str += '<br>Select a boost:';
+				for (var dec in Molpy.PapalDecrees) {
+					var decree = Molpy.PapalDecrees[dec];
+					if (decree.avail()) str += '<br><input type="radio" onclick="Molpy.SelectPapalDecree(\''+dec+'\')"></input> '+ decree.desc;
+				}
+			}
+			return str
+		},
+
+		reset: function() {
+			this.power = 0;
+			Molpy.Decreename = '';
+			this.Refresh();
+		},
+
+		loadFunction: function() {
+			if (this.power) {
+				Molpy.Decreename = '';
+				var i=1;
+				for (var name in Molpy.PapalDecrees) { 
+					if (i++ == this.power) {
+						Molpy.Decreename = name;
+						Molpy.Decree = Molpy.PapalDecrees[name];
+						return;
+					}
+				}
+			}
+		}
+	});
+
+	Molpy.SelectPapalDecree = function(name) {
+		Molpy.Decreename = '';
+		var i=1;
+		for (var dec in Molpy.PapalDecrees) { 
+			if (dec == name) {
+				Molpy.Decree = Molpy.PapalDecrees[name];
+				Molpy.Boosts['The Pope'].power = i;
+				Molpy.Decreename = name;
+				break;
+			}
+			i++;
+		}
+		Molpy.Boosts['The Pope'].Refresh();
+	}
+
+	Molpy.Papal = function(raptor) {
+		return (Molpy.Decreename == raptor)? Molpy.Decree.value : 1
+	}
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }

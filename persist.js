@@ -726,8 +726,6 @@
 		}
 	}
 	Molpy.PostLoadTasks = function(version) {
-		Molpy.SelectShoppingItem();
-
 		Molpy.needlePulling = 0;//badges are loaded now
 		Molpy.UpgradeOldVersions(version);
 		if(version < Molpy.version) //hey let's do this every upgrade!
@@ -737,9 +735,13 @@
 				Molpy.UnlockBoost('SG');
 			else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
 		}
+		for( var i in Molpy.Boosts) {
+			var me = Molpy.Boosts[i];
+			if(me.loadFunction) me.loadFunction();
+		}
+
 		Molpy.UpdateColourScheme();
 		Molpy.AdjustFade();
-		Molpy.LockBoost('MHP');
 		if(Molpy.redactedVisible) {
 			Molpy.redactedCountup = Molpy.redactedToggle;
 			Molpy.CheckRedactedToggle();
