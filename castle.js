@@ -18,6 +18,7 @@ function addCSSRule(sheet, selector, rules, index) {
 jQuery.fn.canColorBorder = function() {
 	return this.each(function() {
 		var borderColorButton = $("<div class='ui-border-color-button'></div>");
+		borderColorButton.click(Molpy.CycleBorderClick);
 		$(this).append(borderColorButton);
 	});
 }
