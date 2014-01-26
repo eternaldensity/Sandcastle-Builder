@@ -1405,7 +1405,11 @@ Molpy.DefineBoosts = function() {
 		} else if(Molpy.Got('Rob') && (Molpy.Got('ASHF') || !(Molpy.Boosts['Rob'].power & 1))) {
 			for( var thingy = 0; thingy <= Molpy.Boosts['Rob'].bought + 1; thingy++) {
 				var item = Molpy.BoostsById[thingy + 1].power;
-				if(item > 0) Molpy.BoostsById[item].buy(1);
+				if(item > 0) {
+					if (Molpy.Boosts['Rob'].power & 4) Molpy.boostSilence++;
+					Molpy.BoostsById[item].buy(1);
+					if (Molpy.Boosts['Rob'].power & 4) Molpy.boostSilence--;
+				}
 			}
 		}
 	}
@@ -1413,7 +1417,11 @@ Molpy.DefineBoosts = function() {
 	Molpy.Mule = function(id) {
 		if(Molpy.Got('Rob') && (Molpy.Got('ASHF') || !(Molpy.Boosts['Rob'].power & 1))) {
 			for( var thingy = 0; thingy <= Molpy.Boosts['Rob'].bought + 1; thingy++) {
-				if(id == Molpy.BoostsById[thingy + 1].power) Molpy.BoostsById[id].buy();
+				if(id == Molpy.BoostsById[thingy + 1].power) { 
+					if (Molpy.Boosts['Rob'].power & 4) Molpy.boostSilence++;
+					Molpy.BoostsById[id].buy(1);
+					if (Molpy.Boosts['Rob'].power & 4) Molpy.boostSilence--;
+				}
 			}
 		}
 	}
@@ -4558,13 +4566,13 @@ Molpy.DefineBoosts = function() {
 		if(times && Molpy.IsEnabled('Mario')) {
 			var l = Molpy.Boosts['Mario'].bought;
 			var cost = l * (l + 1) / 2;
-			Molpy.boostSilence = 1;
+			Molpy.boostSilence++;
 			if(Molpy.Spend('QQ', cost)) {
 				while(l--) {
 					Molpy.RewardLogicat(Molpy.Level('QQ'));
 				}
 			}
-			Molpy.boostSilence = 0;
+			Molpy.boostSilence--;
 		}
 		var left = times;
 		if(Molpy.Got('AE')) {
@@ -4582,7 +4590,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.RewardBlastFurnace();
 		}
 		left = times - furn;
-		Molpy.boostSilence = 1;
+		Molpy.boostSilence++;
 		if(left > 7 && Molpy.Got('Milo')) {
 			var mr = Molpy.Boosts['Milo'];
 			var s = 0;// Math.sin((Math.PI*Molpy.ONGelapsed)/(Molpy.NPlength*100));
@@ -4608,7 +4616,7 @@ Molpy.DefineBoosts = function() {
 
 			if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
 		}
-		Molpy.boostSilence = 0;
+		Molpy.boostSilence--;
 	}
 
 	new Molpy.Boost({
@@ -6745,6 +6753,7 @@ Molpy.DefineBoosts = function() {
 			if(!large) str += '<small>';
 			str += 'Shop for me <input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',0)" value="' + ((me.power & 1) ? 'in ASHF only' : 'Always') + '"></input>';
 			str += '<br><input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',1)" value="' + ((me.power & 2) ? 'Small Size text' : 'Normal Size text') + '"></input>';
+			str += '<input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',2)" value="' + ((me.power & 4) ? 'Notifies off' : 'Notifies on') + '"></input>';
 
 			for(var thingy = 0; thingy <= me.bought; thingy++) {
 				var item = Molpy.BoostsById[thingy + 1];
