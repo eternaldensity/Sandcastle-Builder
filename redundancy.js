@@ -18,7 +18,7 @@ var postfixes=[
 	{limit:9e3,divisor:1e3,postfix:['K',' Kilo']}, //WHAT
 ];
 
-function Molpify(number, raftcastle, shrinkify) {
+function InnerMolpify(number, raftcastle, shrinkify) {
 	if(isNaN(number)) return 'Mustard';
 	if(!isFinite(parseFloat(number))) return 'Infinite';
 	if(number < 0) return '-' + Molpify(-number, raftcastle, shrinkify);
@@ -32,7 +32,7 @@ function Molpify(number, raftcastle, shrinkify) {
 		for( var i in postfixes) {
 			var p = postfixes[i];
 			if(number >= p.limit) {
-				return Molpify(number / p.divisor, raftcastle, 1) + p.postfix[Molpy.options.longpostfix];
+				return InnerMolpify(number / p.divisor, raftcastle, 1) + p.postfix[Molpy.options.longpostfix];
 			}
 		}
 	} else {
@@ -51,7 +51,7 @@ function Molpify(number, raftcastle, shrinkify) {
 		} else if(raft) while(sraft.length < raftcastle) {
 			sraft = '0' + sraft; //needs leading zeroes because it's a number like 1.01
 		}
-		molp = Molpify(numCopy, 0, shrinkify) + (raft ? ('.' + sraft) : ''); //stick them on the end if there are any
+		molp = InnerMolpify(numCopy, 0, shrinkify) + (raft ? ('.' + sraft) : ''); //stick them on the end if there are any
 	} else {
 		number = Math.floor(number);
 		//drop the decimal bit
@@ -69,6 +69,15 @@ function Molpify(number, raftcastle, shrinkify) {
 	}
 	return molp;
 }
+	function Molpify(number, raftcastle, shrinkify) {
+		var molp = InnerMolpify(number,raftcastle, shrinkify);
+		if (Molpy.options.european && !molp.match(/Math\.PI/)) {
+			molp = molp.replace('.','~');
+			molp = molp.replace(/,/g,'.');
+			molp = molp.replace('~',',');
+		}
+		return molp;
+	}
 
 function MolpifyCountdown(mNP, p) {
 	return mNP == 0 ? 'ever' : mNP >= 1000 ? Molpify(mNP / 1000, p) + 'NP' : Molpify(mNP) + 'mNP'
