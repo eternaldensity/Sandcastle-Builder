@@ -1245,6 +1245,10 @@ Molpy.Up = function() {
 					_gaq && _gaq.push(['_trackEvent', 'Destroy Tool', this.name, '' + destroy]);
 					Molpy.CheckDragon();
 				}
+				else
+				{
+					Molpy.Notify('Not nearly glassy enough.', 1);
+				}
 			}
 			this.updateBuy = function() {
 				$('#CastleToolBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
