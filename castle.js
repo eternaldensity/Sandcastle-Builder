@@ -2601,7 +2601,9 @@ Molpy.Up = function() {
 			}
 			if(me.unlocked) {
 				if(me.classChange) {
-					if(me.classChange()) {
+					var newclass = me.classChange();
+					if (newclass != me.className) {
+						me.className = newclass;
 						Molpy.boostRepaint = 1;
 					}
 				}
@@ -2611,7 +2613,9 @@ Molpy.Up = function() {
 			var me = Molpy.Badges[i];
 			if(me.earned) {
 				if(me.classChange) {
-					if(me.classChange()) {
+					var newclass = me.classChange();
+					if (newclass != me.className) {
+						me.className = newclass;
 						Molpy.badgeRepaint = 1;
 					}
 				}

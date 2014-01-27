@@ -1000,10 +1000,6 @@ Molpy.DefineBoosts = function() {
 		Castles: 2101,
 		stats: 'When installed, this averts Judgement Dip at the cost of 99.9% of NewPixBot Castle Production.',
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
-		
-//		classChange: function() {
-//			return Molpy.CheckJudgeClass(this, 1, 'toggle', this.power);
-//		}
 	});
 
 	Molpy.NavigationCodeToggle = function() {
@@ -1087,9 +1083,7 @@ Molpy.DefineBoosts = function() {
 		
 		stats: 'The Bots forget half their past/future slavery. Costs 50% more each time. BTW you need to switch out of Stats view to activate it.',
 		
-		classChange: function() {
-			return Molpy.CheckJudgeClass(this, 0, 'action');
-		}
+		classChange: function() { return Molpy.judgeLevel > 0 ? 'action': ''},
 	});
 	
 	Molpy.Novikov = function() {
@@ -1737,14 +1731,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = isFinite(this.power) ? 'action' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return isFinite(this.power) ? 'action' : '' },
 	});
 	
 	Molpy.UpgradeSandRefinery = function(n) {
@@ -1890,14 +1877,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = isFinite(this.power) ? 'alert' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return isFinite(this.power) ? 'alert' : '' },
 	});
 	
 	Molpy.UpgradeChipStorage = function(n) {
@@ -2040,14 +2020,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = isFinite(this.power) ? 'action' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return isFinite(this.power) ? 'action' : '' },
 	});
 	
 	Molpy.UpgradeGlassChiller = function(n) {
@@ -2179,14 +2152,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = isFinite(this.power) ? 'alert' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return isFinite(this.power) ? 'alert' : ''},
 	});
 	
 	Molpy.UpgradeBlockStorage = function(n) {
@@ -2240,14 +2206,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = isFinite(this.power) ? 'action' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return isFinite(this.power) ? 'action' : '' },
 	});
 
 	Molpy.SeaishSandPurifier = function() {
@@ -2423,14 +2382,9 @@ Molpy.DefineBoosts = function() {
 		Castles: '12.5T',
 		
 		classChange: function() {
-			var oldClass = this.className;
-			var newClass = (!Molpy.Boosts['Rosetta'].unlocked || !Molpy.Got('WWB')
-				&& Molpy.CastleTools['Scaffold'].amount >= 400 || !Molpy.Got('RB')
-				&& Molpy.Has('GlassChips', 100000) && Molpy.Has('GlassBlocks', 1000)) ? 'action' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
+			return (!Molpy.Boosts['Rosetta'].unlocked || !Molpy.Got('WWB')
+			&& Molpy.CastleTools['Scaffold'].amount >= 400 || !Molpy.Got('RB')
+			&& Molpy.Has('GlassChips', 100000) && Molpy.Has('GlassBlocks', 1000)) ? 'action' : '';
 		}
 	});
 
@@ -2505,8 +2459,6 @@ Molpy.DefineBoosts = function() {
 		Castles: '32T',
 		
 		classChange: function() {
-			var oldClass = this.className;
-			var newClass = '';
 			var fa = Molpy.Boosts['Factory Automation'];
 			var bots = Molpy.CastleTools['NewPixBot'].amount;
 			if(!Molpy.Got('Panther Salve') && Molpy.Has('GlassBlocks', 250) || fa.bought
@@ -2515,11 +2467,8 @@ Molpy.DefineBoosts = function() {
 				&& Molpy.Got('Skull and Crossbones') && Molpy.SandTools['Ladder'].amount >= 500
 				|| Molpy.Has('GlassBlocks', 800) && !Molpy.Got('LogiPuzzle') && Molpy.Has('Logicat', 5)
 				|| Molpy.Has('GlassChips', 12500) && Molpy.Has('GlassBlocks', 2500) && !Molpy.Got('Camera')
-				|| Molpy.GetBlackprintSubject() && !Molpy.Got('CfB')) newClass = 'action';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
+				|| Molpy.GetBlackprintSubject() && !Molpy.Got('CfB')) return 'action';
+			return '';
 		}
 	});
 	
@@ -3286,14 +3235,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = isFinite(this.power) ? 'action' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return isFinite(this.power) ? 'action' : '' },
 	});
 
 	new Molpy.Boost({
@@ -3341,14 +3283,7 @@ Molpy.DefineBoosts = function() {
 			this.Level = 10;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = (this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		},
+		classChange: function() { return (this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
 		refreshFunction: function() {
 			Molpy.ChainRefresh('ShadwDrgn');
 		}
@@ -3742,14 +3677,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = (this.power > 0 && this.power <= 100) ? 'alert' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		},
+		classChange: function() { return (this.power > 0 && this.power <= 100) ? 'alert' : '' },
 		
 		reset: function() {
 			var chips = this.bought * 100;
@@ -3784,14 +3712,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = (this.power > 0 && this.power <= 400) ? 'alert' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		},
+		classChange: function() { return (this.power > 0 && this.power <= 400) ? 'alert' : '' },
 		
 		reset: function() {
 			var chips = Math.pow(1.01, Math.abs(this.bought)) * 1000;
@@ -3827,14 +3748,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = (Molpy.Boosts['SMM'].power > 100 || this.power > 0 && this.power <= 200) ? 'alert' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		},
+		classChange: function() { return (Molpy.Boosts['SMM'].power > 100 || this.power > 0 && this.power <= 200) ? 'alert' : '' },
 		
 		reset: function() {
 			if(!confirm('You will also lose the unfilled sand mould which will waste 100 runs of Factory Automation.\nAre you certain you want to do this?'))
@@ -3875,14 +3789,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = (Molpy.Boosts['GMM'].power > 400 || this.power > 0 && this.power <= 800) ? 'alert' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		},
+		classChange: function() { return (Molpy.Boosts['GMM'].power > 400 || this.power > 0 && this.power <= 800) ? 'alert' : '' },
 		
 		reset: function() {
 			if(!confirm('You will also lose the unfilled glass mould which will waste 400 runs of Factory Automation.\nAre you certain you want to do this?'))
@@ -4268,15 +4175,8 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = this.bought && isFinite(Math.pow(2, this.bought - 5))
-				&& Molpy.CastleTools['Scaffold'].amount >= 444 + this.bought * 77 ? 'action' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return this.bought && isFinite(Math.pow(2, this.bought - 5))
+			&& Molpy.CastleTools['Scaffold'].amount >= 444 + this.bought * 77 ? 'action' : ''},
 	});
 	
 	Molpy.GetWWB = function(seaish) {
@@ -4333,15 +4233,8 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = this.bought && isFinite(Math.pow(200, this.bought))
-				&& Molpy.CastleTools['Beanie Builder'].amount >= this.bought * 200 - 20 ? 'action' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return this.bought && isFinite(Math.pow(200, this.bought))
+			&& Molpy.CastleTools['Beanie Builder'].amount >= this.bought * 200 - 20 ? 'action' : ''},
 	});
 	
 	Molpy.HireRecycling = function() {
@@ -4396,7 +4289,6 @@ Molpy.DefineBoosts = function() {
 		GlassBlocks: 10005,
 		
 		classChange: function() {
-			var oldClass = this.className;
 			var toolcheck = !isFinite(Molpy.SandTools['Bucket'].amount)
 				&& !isFinite(Molpy.SandTools['Cuegan'].amount)
 				&& !isFinite(Molpy.SandTools['Flag'].amount)
@@ -4409,11 +4301,7 @@ Molpy.DefineBoosts = function() {
 				&& !isFinite(Molpy.CastleTools['Wave'].amount)
 				&& !isFinite(Molpy.CastleTools['River'].amount)
 				&& !isFinite(Molpy.CastleTools['Beanie Builder'].amount);
-			var newClass = !toolcheck ? 'action' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
+			return !toolcheck ? 'action' : '';
 		}
 	});
 
@@ -5003,9 +4891,7 @@ Molpy.DefineBoosts = function() {
 		Sand: Infinity,
 		Castles: Infinity,
 		
-		classChange: function() {
-			this.className = (Molpy.Earned('Nope!') ? '' : 'toggle')
-		},
+		classChange: function() { return Molpy.Earned('Nope!') ? '' : 'toggle' },
 		
 		buyFunction: function() {
 			this.power = 1;
@@ -5504,14 +5390,6 @@ Molpy.DefineBoosts = function() {
 		
 		defStuff: 1,
 		
-//		classChange: function() {
-//			var oldClass = this.className;
-//			var newClass = (isFinite(this.power) || Molpy.DragonTarget()[0] != 0) ? 'alert' : ''; // If power is infinite, and the next target isn't ready, no reason to see it.
-//			if(newClass != oldClass) {
-//				this.className = newClass;
-//				return 1;
-//			}
-//		}
 	});
 	
 	Molpy.DragonTarget = function() {
@@ -5788,14 +5666,7 @@ Molpy.DefineBoosts = function() {
 		Castles: Infinity,
 		GlassBlocks: '1M',
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = isFinite(Molpy.Boosts['GlassChips'].power) ? 'toggle' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return isFinite(Molpy.Boosts['GlassChips'].power) ? 'toggle' : ''},
 	});
 	new Molpy.Boost({
 		name: 'Stretchable Block Storage',
@@ -5818,14 +5689,7 @@ Molpy.DefineBoosts = function() {
 		Castles: Infinity,
 		GlassBlocks: '1M',
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = isFinite(Molpy.Boosts['GlassBlocks'].power) ? 'toggle' : '';
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+		classChange: function() { return isFinite(Molpy.Boosts['GlassBlocks'].power) ? 'toggle' : ''},
 	});
 
 	Molpy.GenericToggle = function(myid, negate) {
