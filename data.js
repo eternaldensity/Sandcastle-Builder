@@ -785,6 +785,7 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	Molpy.Boosts['SilverCard'].department = Molpy.Earned('Big Spender');
 	Molpy.Boosts['GoldCard'].department = Molpy.Earned('Valued Customer');
 	Molpy.Boosts['No Need to be Neat'].department = Molpy.Earned('Neat!');
+	if (!Molpy.IsEnabled('Time Lord')) Molpy.Boosts['Temporal Rift'].department = 0;
 }
 
 Molpy.CheckLogicatRewards = function(automationLevel) {
@@ -844,7 +845,8 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 
 	Molpy.Boosts['Panther Rush'].logic = Molpy.CalcRushCost(0, 1).Logicat * Molpy.Has(Molpy.CalcRushCost(0, 1));
 
-	Molpy.Boosts['AC'].logic = 440 * (Molpy.Got('AA') && (Molpy.CastleTools['NewPixBot'].amount >= 7500 ? 50000 / Molpy.CastleTools['NewPixBot'].amount : 0));
+	Molpy.Boosts['AC'].logic = 440 * (Molpy.Got('AA') && (isFinite(Molpy.CastleTools['NewPixBot'].amount)? 
+					(Molpy.CastleTools['NewPixBot'].amount >= 7500 ? 50000 / Molpy.CastleTools['NewPixBot'].amount : 0):1));
 	Molpy.Boosts['Flipside'].logic = 220 * Molpy.Got('AA');
 
 	Molpy.Boosts['Bottle Battle'].logic = 150 * (Molpy.CastleTools['NewPixBot'].amount >= 10000);

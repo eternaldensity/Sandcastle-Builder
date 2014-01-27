@@ -334,19 +334,8 @@ Molpy.DefineBadges = function() {
 			return 'Judgement dip is upon us! But it can get worse. The countdown is at ' + Molpify(countdown) + 'NP';
 		},
 		
-		classChange: function() {
-			return Molpy.CheckJudgeClass(this, 0, 'alert');
-		}
+		classChange: function() { return Molpy.judgeLevel > 0 ? 'action': ''},
 	});
-	
-	Molpy.CheckJudgeClass = function(me, level, name, force) {
-		var oldClass = me.className;
-		var newClass = (force || Molpy.judgeLevel > level) ? name : '';
-		if(newClass != oldClass) {
-			me.className = newClass;
-			return 1;
-		}
-	}
 	
 	Molpy.JudgementDipThreshold = function() {
 		if(Molpy.Boosts['NavCode'].power) return [0, Infinity];
@@ -482,10 +471,8 @@ Molpy.DefineBadges = function() {
 			if(j < 1) return 'Safe. For now.';
 			return 'The NewPixBots destroy ' + Molpify(j) + ' Castle' + plural(j) + ' each per mNP';
 		},
-		
-		classChange: function() {
-			return Molpy.CheckJudgeClass(this, 1, 'alert');
-		}
+
+		classChange: function() { return Molpy.judgeLevel > 1 ? 'alert': ''},
 	});
 	new Molpy.Badge({
 		name: 'Fast Forward',
@@ -968,6 +955,11 @@ Molpy.DefineBadges = function() {
 	new Molpy.Badge({
 		name: 'Planck Limit',
 		desc: 'Automata Control level at limit',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Below the Horizon',
+		desc: 'The Highest Newpix Number is in Minus Worlds',
 		vis: 1
 	});
 	

@@ -301,7 +301,7 @@
 			+ (Molpy.options.colpix ? '1' : '0') + (Molpy.options.longpostfix ? '1' : '0')
 			+ (Molpy.options.colourscheme) + (Molpy.options.sandmultibuy) + (Molpy.options.castlemultibuy)
 			+ (Molpy.options.fade) + (Molpy.options.typo) + (Molpy.options.science) + (Molpy.options.autosavelayouts)
-			+ (Molpy.options.autoscroll) + (Molpy.options.boostsort);
+			+ (Molpy.options.autoscroll) + (Molpy.options.boostsort) + (Molpy.options.european);
 		return str;
 	}
 
@@ -437,6 +437,7 @@
 		Molpy.options.autosavelayouts = parseInt(pixels[13]) || 0;
 		Molpy.options.autoscroll = parseInt(pixels[14]) || 0;
 		Molpy.options.boostsort = parseInt(pixels[15]) || 0;
+		Molpy.options.european = parseInt(pixels[16]) || 0;
 	}
 
 	Molpy.GamenumsFromString = function(thread) {
@@ -726,8 +727,6 @@
 		}
 	}
 	Molpy.PostLoadTasks = function(version) {
-		Molpy.SelectShoppingItem();
-
 		Molpy.needlePulling = 0;//badges are loaded now
 		Molpy.UpgradeOldVersions(version);
 		if(version < Molpy.version) //hey let's do this every upgrade!
@@ -737,9 +736,13 @@
 				Molpy.UnlockBoost('SG');
 			else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
 		}
+		for( var i in Molpy.Boosts) {
+			var me = Molpy.Boosts[i];
+			if(me.loadFunction) me.loadFunction();
+		}
+
 		Molpy.UpdateColourScheme();
 		Molpy.AdjustFade();
-		Molpy.LockBoost('MHP');
 		if(Molpy.redactedVisible) {
 			Molpy.redactedCountup = Molpy.redactedToggle;
 			Molpy.CheckRedactedToggle();
@@ -975,6 +978,7 @@
 			Molpy.options.sandmultibuy = 0;
 			Molpy.options.castlemultibuy = 0;
 			Molpy.options.boostsort = 0;
+			Molpy.options.european = 0;
 
 			var keep = '';
 			if(!coma && Molpy.Got('No Need to be Neat')) {

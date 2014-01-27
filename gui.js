@@ -1,8 +1,8 @@
 ﻿Molpy.DefineGUI = function() {
-	function Molpify(number, raftcastle, shrinkify) {
+	function InnerMolpify(number, raftcastle, shrinkify) {
 		if(isNaN(number)) return 'Mustard';
 		if(!isFinite(parseFloat(number))) return 'Infinite';
-		if(number < 0) return '-' + Molpify(-number, raftcastle, shrinkify);
+		if(number < 0) return '-' + InnerMolpify(-number, raftcastle, shrinkify);
 		var molp = '';
 
 		if(shrinkify == 2)
@@ -13,7 +13,7 @@
 			for( var i in postfixes) {
 				var p = postfixes[i];
 				if(number >= p.limit) {
-					return Molpify(number / p.divisor, raftcastle, 1) + p.postfix[Molpy.options.longpostfix];
+					return InnerMolpify(number / p.divisor, raftcastle, 1) + p.postfix[Molpy.options.longpostfix];
 				}
 			}
 		} else {
@@ -32,7 +32,7 @@
 			} else if(raft) while(sraft.length < raftcastle) {
 				sraft = '0' + sraft; //needs leading zeroes because it's a number like 1.01
 			}
-			molp = Molpify(numCopy, 0, shrinkify) + (raft ? ('.' + sraft) : ''); //stick them on the end if there are any
+			molp = InnerMolpify(numCopy, 0, shrinkify) + (raft ? ('.' + sraft) : ''); //stick them on the end if there are any
 		} else {
 			number = Math.floor(number);
 			//drop the decimal bit
@@ -47,6 +47,15 @@
 				var exp = molp.indexOf('e');
 				molp = molp.slice(0, dot) + molp.slice(dot, exp).slice(0, 6) + molp.slice(exp);//truncate after 6 decimal places
 			}
+		}
+		return molp;
+	}
+	function Molpify(number, raftcastle, shrinkify) {
+		var molp = InnerMolpify(number,raftcastle, shrinkify);
+		if (Molpy.options.european && !molp.match(/Math\.PI/)) {
+			molp = molp.replace('.','~');
+			molp = molp.replace(/,/g,'.');
+			molp = molp.replace('~',',');
 		}
 		return molp;
 	}
@@ -337,6 +346,7 @@
 		Molpy.options.autosavelayouts = 1;
 		Molpy.options.autoscroll = 0;
 		Molpy.options.boostsort = 0;
+		Molpy.options.european = 0;
 	}
 	Molpy.DefaultOptions();
 
@@ -395,13 +405,20 @@
 			if(Molpy.options.boostsort >= 2) Molpy.options.boostsort = 0;
 			Molpy.shopRepaint = 1;
 			Molpy.boostRepaint = 1;
+		} else if(bacon == 'european') {
+			Molpy.options.european++;
+			if(Molpy.options.european > 1) Molpy.options.european = 0;
+			Molpy.shopRepaint = 1;
+			Molpy.boostRepaint = 1;
+			Molpy.badgeRepaint = 1;
+			Molpy.UpdateFaves();
 		} else
 			return;
 
 		Molpy.OptionDescription(bacon, 1); //update description
 	}
 	Molpy.optionNames = ['autosave', 'colourscheme', 'sandnumbers', 'colpix', 'longpostfix', 'sandmultibuy',
-			'castlemultibuy', 'fade', 'science', 'autoscroll', 'boostsort'];
+			'castlemultibuy', 'fade', 'science', 'autoscroll', 'boostsort','european'];
 	if(!noLayout) Molpy.optionNames.push('autosavelayouts');
 	Molpy.OptionDescription = function(bacon, caffeination) {
 		var desc = '';
@@ -479,6 +496,12 @@
 					desc = "Name";
 				} else {
 					desc = "Price";
+				}
+			} else if(bacon == 'european') {
+				if(Molpy.options.european) {
+					desc = "Yes";
+				} else {
+					desc = "No";
 				}
 			} else {
 				return;

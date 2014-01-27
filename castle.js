@@ -325,7 +325,7 @@ Molpy.Up = function() {
 			if(Molpy.Got('Glass Goat') && Molpy.Has('Goats', 1)) {
 				furnaceLevel *= Molpy.Level('Goats');
 			}
-			Molpy.Add('GlassChips', furnaceLevel, 1);
+			Molpy.Add('GlassChips', Math.floor(furnaceLevel*Molpy.Papal('Chips')), 1);
 		}
 		Molpy.MakeBlocks = function(times) {
 			if(!isFinite(Molpy.Level('GlassBlocks'))) return;
@@ -351,7 +351,7 @@ Molpy.Up = function() {
 			if(Molpy.Got('Glass Goat') && Molpy.Has('Goats', 1)) {
 				chillerLevel *= Molpy.Level('Goats');
 			}
-			Molpy.Add('GlassBlocks', chillerLevel, 1);
+			Molpy.Add('GlassBlocks', Math.floor(chillerLevel*Molpy.Papal('Blocks')), 1);
 		}
 
 		Molpy.glassNotifyFactor = 1000000000;
@@ -533,7 +533,7 @@ Molpy.Up = function() {
 								Molpy.EarnBadge('Infinite Saw');
 							}
 							if(!isFinite(bl.Level)) Molpy.UnlockBoost('Buzz Saw');
-							Molpy.Add('GlassBlocks', maxGlass, Molpy.Got('Buzz Saw'));
+							Molpy.Add('GlassBlocks', Math.floor(maxGlass*Molpy.Papal('GlassSaw')), Molpy.Got('Buzz Saw'));
 							Molpy.Spend('TF', maxGlass * rate);
 							if(Molpy.Has('TF', absMaxGlass * rate * 10))
 								Molpy.Boosts['Glass Saw'].power = p * (10 + 5 * Molpy.Got('Buzz Saw'));
@@ -1307,9 +1307,11 @@ Molpy.Up = function() {
 				var buildN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
 				buildN *= this.currentActive;
 				if(inf) {
+					buildN = Math.floor(buildN*Molpy.Papal('GlassCastle'));
 					Molpy.DigGlass(buildN);
 					this.totalGlassBuilt += buildN;
 				} else {
+					buildN = Math.floor(buildN*Molpy.Papal('Castles'));
 					Molpy.Build(buildN);
 					if(isNaN(this.totalCastlesBuilt)) {
 						this.totalCastlesBuilt = 0;
@@ -1583,6 +1585,7 @@ Molpy.Up = function() {
 			this.countdownFunction = args.countdownFunction;
 			this.refreshFunction = args.refreshFunction;
 			this.refreshSuper = args.refreshSuper; //okay this is getting out of hand
+			this.loadFunction = args.loadFunction;
 			this.unlocked = 0;
 			this.bought = 0;
 			this.department = args.department; //allow unlock by the department (this is not a saved value)
@@ -2621,7 +2624,9 @@ Molpy.Up = function() {
 			}
 			if(me.unlocked) {
 				if(me.classChange) {
-					if(me.classChange()) {
+					var newclass = me.classChange();
+					if (newclass != me.className) {
+						me.className = newclass;
 						Molpy.boostRepaint = 1;
 					}
 				}
@@ -2631,7 +2636,9 @@ Molpy.Up = function() {
 			var me = Molpy.Badges[i];
 			if(me.earned) {
 				if(me.classChange) {
-					if(me.classChange()) {
+					var newclass = me.classChange();
+					if (newclass != me.className) {
+						me.className = newclass;
 						Molpy.badgeRepaint = 1;
 					}
 				}
@@ -2645,7 +2652,7 @@ Molpy.Up = function() {
 			me.totalGlass += me.storedTotalGpmNP;
 		}
 
-		Molpy.Dig(Molpy.sandPermNP);
+		Molpy.Dig(Molpy.sandPermNP*Molpy.Papal('Sand'));
 		if(Molpy.IsEnabled('Vacuum Cleaner') && Molpy.Has('Sand', Infinity) && Molpy.Has(Molpy.VacCost)) {
 			Molpy.Boosts['Sand'].Level = 0;
 			var vacs = Molpy.Level('TS') || 1;
@@ -2668,7 +2675,7 @@ Molpy.Up = function() {
 			* (Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power) / 2) - Molpy.blockspmnp
 			* Molpy.ChipsPerBlock() || 0;
 
-		if(Molpy.Got('Sand to Glass')) Molpy.DigGlass(Molpy.glassPermNP);
+		if(Molpy.Got('Sand to Glass')) Molpy.DigGlass(Math.floor(Molpy.glassPermNP*Molpy.Papal('GlassSand')));
 		Molpy.GlassNotifyFlush()
 		Molpy.RunToolFactory();
 		if(Molpy.recalculateDig) Molpy.CalculateDigSpeed();
@@ -2782,6 +2789,7 @@ Molpy.Up = function() {
 		var np = Math.abs(Molpy.newpixNumber);
 		if(np > Math.abs(Molpy.highestNPvisited)) {
 			Molpy.highestNPvisited = Molpy.newpixNumber;
+			if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
 		} else //in the past
 		{
 			if(np > 2) {
@@ -2847,7 +2855,7 @@ Molpy.Up = function() {
 					}
 					Molpy.Boosts['Ninja Ritual'].Level = 0;
 				} else {
-					Molpy.Add('Goats', 1 + Math.floor(Molpy.Boosts['Ninja Ritual'].Level++ / 5));
+					Molpy.Add('Goats', Math.floor((1 + Molpy.Boosts['Ninja Ritual'].Level++ / 5))*Molpy.Papal('Goats'));
 					if(Molpy.Boosts['Ninja Ritual'].Level > 10) Molpy.UnlockBoost('Western Paradox');
 				}
 			}
@@ -2915,6 +2923,7 @@ Molpy.Up = function() {
 
 		Molpy.Boosts['Glass Trolling'].IsEnabled = 0;
 		Molpy.Boosts['Now Where Was I?'].Refresh();
+		Molpy.Boosts['The Pope'].reset();
 		Molpy.UpdateFaves();
 	}
 
