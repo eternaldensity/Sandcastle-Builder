@@ -1609,8 +1609,16 @@
 		if(newColor >= 11) {
 			Molpy.activeLayout.borderColors[panelName] = newColor = 0;
 		}
-		var thisPanel = $('#section' + panelName).removeClass('bordercolor' + (newColor - 1) + ' bordercolor10').addClass('borderActive bordercolor' + newColor);
-		var borderbutton = thisPanel.find('.ui-border-color-button').removeClass('bordercolor' + (newColor - 1) + ' bordercolor10');
+		
+		var thisPanel = $('#section' + panelName);
+		var borderbutton = thisPanel.find('.ui-border-color-button')
+		for(var i=0; i<11; i++){
+			thisPanel.removeClass('bordercolor' + i);
+			borderbutton.removeClass('bordercolor' + i);
+		}
+		
+		thisPanel.addClass('borderActive bordercolor' + newColor);
+		Molpy.activeLayout.borderColors[panelName] = newColor;
 		if(newColor != 0) {
 			borderbutton.css('border-color', '');
 			borderbutton.addClass('bordercolor' + newColor);
@@ -1665,8 +1673,8 @@
 				thread += item.toString() + s;
 			}
 			thread+=p;
-			for(var i in this.borderColors) {
-				var item=this.borderColors[i];
+			for(var i in Molpy.borderColorOrder) {
+				var item=this.borderColors[Molpy.borderColorOrder[i]] || 0;
 				thread += item + s;
 			}
 			thread += p;
@@ -1760,12 +1768,10 @@
 			for( var i in this.faves) {
 				this.faves[i].ToScreen();
 			}
-			for( var i in this.borderColors) {
-				var color = this.borderColors[i];
-				for( var j = 0; j < 11; j++) {
-					$('#section' + i).removeClass('borderColor' + j);
-				}
-				$('#section' + i).addClass('borderColor' + color).toggleClass('borderActive', color != 0);
+			for( var i in Molpy.borderColorOrder) {
+				var item = Molpy.borderColorOrder[i];
+				this.borderColors[item]--;
+				Molpy.CyclePanelBorder(item);
 			}
 
 			Molpy.FixPaneWidths();
@@ -2007,7 +2013,6 @@
 			Molpy.LoadLayouts();
 			$('.resizable-element').resizable({cancel: '.editlock'});
 			$('.draggable-element').draggable({cancel: '.editlock', scroll: true, grid: [10, 10], snap: true}).canColorBorder();
-			$('.ui-border-color-button').click(Molpy.CycleBorderClick);
 			Molpy.LockLayoutToggle();
 		} else {
 			Molpy.layoutLocked = true;
