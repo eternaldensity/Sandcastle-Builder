@@ -891,6 +891,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Chromatic Heresy',
 		icon: 'chromatic',
+		heresy: true,
 		className: 'toggle',
 		
 		desc: function(me) {
@@ -1105,6 +1106,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Fractal Sandcastles',
 		icon: 'fractals',
+		gifIcon: true,
 		className: 'alert',
 		
 		desc: function(me) {
@@ -3231,6 +3233,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Technicolour Dream Cat',
 		icon: 'dreamcat',
+		heresy: true,
 		desc: Molpy.redactedWords + ' are multicoloured (if Chromatic Heresy is enabled)',
 		Sand: '320K',
 		Castles: '90K',

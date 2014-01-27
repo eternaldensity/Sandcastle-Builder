@@ -221,7 +221,6 @@ body.lightscheme.heresy #redacteditem.castle.shop.toggle, body.lightscheme.heres
 {
 	background-color:#ffd
 }
-
 body.darkscheme.heresy #redacteditem.sand.shop.alert, body.darkscheme.heresy .sand.redacted-area.alert
 {
 	background-color:#101038
@@ -246,32 +245,6 @@ body.lightscheme.heresy #redacteditem.sand.shop.toggle, body.lightscheme.heresy 
 {
 	background-color:#ffffd8
 }
-
-body.lightscheme.heresy .badge.loot #badge_judgementdip.icon
-{
-	background-image:url('img/badge_judgementdip_dark_heresy_icon.png');
-}
-body.darkscheme.heresy .badge.loot #badge_judgementdip.icon
-{
-	background-image:url('img/badge_judgementdip_light_heresy_icon.png');
-}
-body.lightscheme .badge.loot #badge_judgementdipwarning.icon
-{
-	background-image:url('img/badge_judgementdipwarning_dark_icon.png');
-}
-body.darkscheme .badge.loot #badge_judgementdipwarning.icon
-{
-	background-image:url('img/badge_judgementdipwarning_light_icon.png');
-}
-body.lightscheme.heresy .badge.loot #badge_judgementdipwarning.icon
-{
-	background-image:url('img/badge_judgementdipwarning_dark_heresy_icon.png');
-}
-body.darkscheme.heresy .badge.loot #badge_judgementdipwarning.icon
-{
-	background-image:url('img/badge_judgementdipwarning_light_heresy_icon.png');
-}
-
 body.lightscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/badge_discovery_dark_icon.png');
@@ -377,4 +350,12 @@ body.darkscheme .badge.loot #badge_discov.icon
 .lightscheme .loot #glassmonument
 {
 	background-image:url('img/glassmonument_dark_icon.png');
+}
+.darkscheme .loot #tagged
+{
+	background-image:url('img/tagged_dark_icon.png');
+}
+.lightscheme .loot #tagged
+{
+	background-image:url('img/tagged_light_icon.png');
 }

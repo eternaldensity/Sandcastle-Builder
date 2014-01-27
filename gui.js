@@ -600,7 +600,7 @@
 		}
 		if(Molpy.Boosts['Chromatic Heresy'].unlocked) {
 			str += '<div class="floatsquare boost loot alert"><h3>Tagged<br>Items</h3>' + Molpy.ShowhideButton('tagged')
-				+ '<div id="boost_chromatic" class="icon ' + (Molpy.redactedVisible == 7 ? 'redacted' : '') + '"></div></div>';
+				+ '<div id="tagged" class="icon ' + (Molpy.redactedVisible == 7 ? 'redacted' : '') + '"></div></div>';
 		}
 
 		g('lootselection').innerHTML = str;
