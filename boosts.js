@@ -5504,14 +5504,14 @@ Molpy.DefineBoosts = function() {
 		
 		defStuff: 1,
 		
-		classChange: function() {
-			var oldClass = this.className;
-			var newClass = (isFinite(this.power) || Molpy.DragonTarget()[0] != 0) ? 'alert' : ''; // If power is infinite, and the next target isn't ready, no reason to see it.
-			if(newClass != oldClass) {
-				this.className = newClass;
-				return 1;
-			}
-		}
+//		classChange: function() {
+//			var oldClass = this.className;
+//			var newClass = (isFinite(this.power) || Molpy.DragonTarget()[0] != 0) ? 'alert' : ''; // If power is infinite, and the next target isn't ready, no reason to see it.
+//			if(newClass != oldClass) {
+//				this.className = newClass;
+//				return 1;
+//			}
+//		}
 	});
 	
 	Molpy.DragonTarget = function() {
