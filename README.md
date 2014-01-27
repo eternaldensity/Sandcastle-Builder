@@ -26,32 +26,32 @@ For personal amusement only.
 
 ## Changelog
 
-### Waveney:
+#### Waveney:
 - Larger upgrades to Time Lord
 - Larger upgrades to Dragon Forge
 - A number of small fixes
-- Factory Expansion stops at 61 runs unless 'Between the Cracks' or 'Aleph One' 
+- Factory Expansion stops at 61 runs unless 'Between the Cracks' or 'Aleph One'
 - Option to sort boosts by Price or Name (Not for the tagged items)
 - Highest Newpix can be in Minus Worlds
 - Western Paradox Boost to increase time before NewPixBots operate
 
-### LucidCrux:
+#### LucidCrux:
 - Borders of layout elements can be toggled and have colours changed! (unlock layout, then click the little square in the topleft corner of the panel you want to change)
 - Major code reformat
 - Lots of work merging in all the changes
 
-### snnw:
+#### snnw:
 - some timing fixes to ensure every NP really contains 1000 mNP
 - remove top-level vertical scrollbar if page is zoomed out far enough
 
-### ED:
+#### ED:
 - fix up some issues with the border colour thing
 - Swedish gramma fix (it's still Greek to me)
 - Fixed the Stuff Counts and Income Counts to actually use the layout system properly (resizable element has to be separate from the draggable)
 
-## 3.31
+### 3.31
 
-### Waveney:
+#### Waveney:
 - Safety Net Boost to stop Temporal rifts rifting to shortpix
 - Safety Blanket Boost to stop losing longpix only boosts when on shortpix
 - Aleph One Boost to allow unlimited Infinite purchases of sand and glass
@@ -61,23 +61,23 @@ For personal amusement only.
 - Upgrades to Italian Plumber
 - Valued Customer badge description corrected
 
-### LucidCrux:
+#### LucidCrux:
 - Lots of new icons!
 - Significant changes to icon code to reduce the amount of CSS required (currently breaks the 4 coloured icons)
 - LCB typo fix
 
-## Unponderable:
+#### Unponderable:
 - Lots of untagging of tagged items which don't need to be tagged
 
-## ED:
+#### ED:
 - I didn't really do any programming and I still feel like I'm spending all my free time on this
 
-## 3.301
+### 3.301
 - LucidCrux: grey versions icons for boosts in shop!! wow! (also some fancy CSS stuff I need to learn)
 - mart0258: Flipside fix
 - Something new in the Index. It's boring.
 
-## 3.3
+### 3.3
 - Some description improvements
 - Prevent too much panther poking
 - Stuff and Income sections by LucidCrux: see your current Stuff amounts all in one handy place, also sand/chip/tool rates and per click
@@ -91,22 +91,22 @@ For personal amusement only.
 - Fixed a discovery typo which waveney made :P
 - Missing tool refresh in toolfactory
 
-## 3.2994
+### 3.2994
 - Badges can be faves!
 - In stats view the alias of boosts and badges is shown. This can be used to refer to it in Shopping Assistant or Faves instead of the full name.
 - Time Lord shows remaining jumps (thanks ddrdude/eqbot)
 
-## 3.2993
+### 3.2993
 - Unbroke Vacuum unlock (accidentally replaced the refreshFunction). This hadn't affected functionality except that your vacuum count wasn't visible if you didn't already have vacuum
 - Missing parentheses in Panther Rush were making it lock when it shouldn't.
 - Notification when a Key tries to buy a Crate/Vault and fails (to prevent empty logicat message)
 - Panther Rush was unlocking regardless of blackprints and vacuum.
 - Faves refresh on Load and when you make them Visible
 
-## 3.2992
+### 3.2992
 - Vacuum wasn't using Flux Crystals
 
-## 3.2991
+### 3.2991
 - Fix Panther Rush Logicat Level calculation
 - tag QQ
 - Toggles for Void Starer and Void Vault
@@ -117,7 +117,7 @@ For personal amusement only.
 - Between the Cracks is now a toggle, also it works on checking if you have sand/castles rather than just when buying sand/castles. So now it bypasses Fireproof and Vacuum Cleaner
 - waveney's new boost to make obtaining flux crystals easier
 
-## 3.299
+### 3.299
 - String-based prices were not working right in most cases.
 - Vacuum Cleaner was activating at the wrong time so it wasn't letting you get Blitzing from logicats
 - Lightning Strikes Twice wasn't refreshing GL or TDE
@@ -125,7 +125,7 @@ For personal amusement only.
 - Rosetta now refreshes when you click Start Construction (so having her as a Fave should work)
 - Buying a glass boost from Rosetta should now Refresh her also
 
-## 3.298
+### 3.298
 - Nerf flux crystal-> vacuum some more (also now it needs Qubes because why not?)
 - Major nerf to Void Starer (didn't think that through :P)
 - Logarithmic price increase for Time Lord upgrades
@@ -139,14 +139,14 @@ For personal amusement only.
 - Bag of Jolting was broken all along
 - Eww effect didn't match description
 
-## 3.297
+### 3.297
 - Fix for Vacuum Cleaner unlock so it's available if you already have Magic Mirror
 - Button to clear Logicat guesses if you want to start over
 - Blackprints' description has a little more info
 - Claim inversion is remembered (i.e. the 'not' in puzzles is only randomised once so it doesn't keep changing)
 - Nerfed Flux Crystals->Vacuum exchange rate
 
-## 3.296
+### 3.296
 - Zookeeper description points out the benefit of having over 1K AA runs available for it
 - Did something interesting for large numbers of logicat rewards.
 - Prevent message spam from Shopping Assistant item (e.g. keys) and prevent switching to the tab of auto-bought items (e.g. crates)
@@ -154,21 +154,21 @@ For personal amusement only.
 - Made Vacuum Cleaner more expensive
 - Active puzzle prevents Caged Logicat untagged
 
-## 3.295
+### 3.295
 - Expando fixed for tools and boosts in shop
 
-## 3.294
+### 3.294
 - GoatONG was a bit too powerful due to the 'locking it gives 2 prizes which could include itself especially if you savescum' effect.
 - Redrawing the boosts (for various occasional reasons) removes the descriptions but it wasn't informing the boosts of this so they weren't redrawing them. (Yeah I should just change it to draw the descriptions when drawing the shop in the first place)
 
-## 3.293
+### 3.293
 - Mucked around with how hover/refresh work to prevent extra redrawing of Caged Logicat
 - Lightning Strikes Twice was (accidentally) capping the Glassed Lightning power to 500!
 - Single Caged Logicat puzzle now gives you points (oops) also on answering a puzzle you are shown the number of points awarded.
 - Logicat report (correct/incorrect/points) is notified before the rewards (thought it still breaks if you have a LOT of rewards, I'll deal with that later)
 - Second Chance not offered if you only answer one question
 
-## 3.292
+### 3.292
 - Seaish boosts only take 500 purifier/extruder level rather than 1000
 - Now Where Was I boost by waveney
 - Fix to Rob for Classic by waveney
@@ -198,12 +198,12 @@ For personal amusement only.
 - Notification about awarding Temporal Duplication wasn't accounting for owning Temporal Duplication because it was bought *after* it was described
 - Changed Dragon Forge rounding so you'll get a minimum 0.04x rather than 0x duplication multiplier without a charged Lightning Rod
 
-## 3.291
+### 3.291
 - The Autoscroll option was not added to Classic
 - Changed Autoscroll option to say "Autoscroll Log"
 - Price Protection logic was wrong for boosts
 
-## 3.29
+### 3.29
 - Fix shopping assistant for tools
 - Some Prizes
 - A little work on DQ but won't be ready for quite a while
@@ -213,12 +213,12 @@ For personal amusement only.
 - Made Time Lord more expensive due to complaints about it being too useful or something
 - Log Autoscroll by AmauryLepicard, with option
 
-## 3.289
+### 3.289
 - Reduced Ninja Herder requirement (shouldn't have been so high)
 - Reduced Panther Rush cost (it's linear now rather than exponential)
 - Buzz Saw to make your Glass Sawing easier (well, mine. because I'm bored of it)
 
-## 3.288
+### 3.288
 - Added a little info to GL stats
 - Handle Meteorpix
 - Plural Flux Crystals in description
@@ -227,40 +227,40 @@ For personal amusement only.
 - New prizes
 - Fixed some accidental references to Temporal Duplication which should have been TDE
 
-## 3.287
+### 3.287
 - More Time Lord fix: it's now a boost that you can level up to do more jumping per ONG!
 - Ninja Lockdown is now styled as a Toggle because it is.
 - Another boost to help get goats and a related badge
 
-## 3.286
+### 3.286
 - negative tools were causing infinite loops on factory automation and price calculation
 - on loading prevent negative tools also
 
-## 3.285
+### 3.285
 - This fixes crate keys. Because of weird reasons.
 
-## 3.2842
+### 3.2842
 - Fix Caged Logicat purchase
 
-## 3.2841
+### 3.2841
 - Finally fixed the old problem of showing the loot section of boosts which were bought and immediately locked
 
-## 3.284
+### 3.284
 - Zookeeper was broken
 
-## 3.283
+### 3.283
 - So basically I forgot to change the DoRD and Logicat rewards to check whether boosts cost anything using the new pricing system.
 - Also some prices were manually set using the old system (navcode and ceilings 10 and 11)
 
-## 3.282
+### 3.282
 - glassfix
 
-## 3.281
+### 3.281
 - Some prices went missing
 - GoatONG wasn't working
 - That's all I have time to fix right now :(
 
-## 3.28
+### 3.28
 - waveney fixed glass storage (which he also broke)
 - I hadn't quite fixed shopping assistant for aliased boosts.
 - Redid boost pricing! Fortunately I'd already done half the work with prize level costs
@@ -270,25 +270,25 @@ For personal amusement only.
 - TFLL's unlock condition removed but now it costs TF chips (yay new pricing system!)
 - Prizes give prizes when locked (i.e. using singleuse prizes!)
 
-## 3.278
+### 3.278
 - Refresh WWB
 - Now you can Break the Mould from a Mould Maker even when construction is finished, in case things get weirdly stuck.
 - Fixed some Molpy Down bugs
 - Price protection purchase *always* crashed
 
-## 3.2771
+### 3.2771
 - Unbroke Achronal Dragon (oops that was a simple silly mistake which I should have spotted but didn't test because it was 'so simple' :(
 
-## 3.277
+### 3.277
 - Prevent Time Lord
 - Some waveney Rob fixes
 - Technicolour Dream Cat now has a wider-reaching effect
 
-## 3.276
+### 3.276
 - Finally got Panther Rush to behave itself. Also messed around with costs a bit.
 - Mucked around with how Prizes work: the tiers are clearly separated and you need to get a new Bag to progress from tier to tier.
 
-## 3.275
+### 3.275
 - Switching Glass Furnace broke the Molpy.IsEnabled function
 - Made Panther Rush cheaper for faster logicat progression
 - some refinery/chiller description cleanup
@@ -298,7 +298,7 @@ For personal amusement only.
 - Mustard Sale unlock condition was still wrong
 - Prize section visiblity wasn't being saved
 
-## 3.274
+### 3.274
 - Break the Mould unlocks quicker: it wasn't counting the amount of factory automation you had and was just counting a fail once per machine per run.
 - Countdowns are loaded as a float rather than an int (why didn't waveny fix that with the other things a month ago?? Probably didn't expect me to get crazy with the Temporal Duplication countdown)
 - Hall of Mirrors is now a toggle (and it'll be off if you already have it but it defaults to on when you buy it) (toggling costs a goat to discourage from toggling it off before buying MHP and then on again after you've bought it)
@@ -307,7 +307,7 @@ For personal amusement only.
 - Shopping Assistant would seem to work for boosts with an alias but it wouldn't actually buy. Fixed now.
 - Waveney's robotic shopper thing maybe works?
 
-## 3.273
+### 3.273
 - Castle destruction has been completely wrong for several versions, how did no one notice until recently?
 
 ## 3.272
@@ -322,16 +322,16 @@ For personal amusement only.
 - Added a way to reset mustard tools. Also mustard tools are prevented from mustarding the sand-click-dig rate
 - Glass Saw was fixed but the code to unstick people stuck by the bug was in the wrong place. That's been fixed now but also a hopefully useful value for Glass Saw has been guessed so they don't have to start at 1 and click many thousands of times achieving nothing to get it back to a useful power again
 
-## 3.2711
+### 3.2711
 - Fixed Glass Saw
 
-## 3.271
+### 3.271
 - Missed Nest condition
 - Previous nerfing wasn't quite enough
 - Making glass blocks now destroys the chips which subtracts from the amount of chips gained so it reports gains accurately
 - Production Control is now set to its maximum if have Nope! once you buy it after Molpy Down
 
-## 3.27
+### 3.27
 - Infinite Saw rename fix
 - New mustard badge
 - Fixed an infinite loop
@@ -340,7 +340,7 @@ For personal amusement only.
 - Added a few dragon things. And something mysterious.
 - Added a few new boosts that are kinda tricky to get because they involve Molpy Down and Bag of Holding...
 
-## 3.265
+### 3.265
 - Prevent Magic Mirror from letting you jump to where you are
 - Blackprints' Has check was failing if there was no next blackprint subject
 - Fixed a toolfactory mustard issue.
@@ -353,24 +353,24 @@ For personal amusement only.
 - Goat unlocks were broken
 - Navcode bots-destroyed message lacked numeric formatting (because it used to be for 30 max)
 
-## 3.264
+### 3.264
 - Missing parentheses in WotA
 
-## 3.263
+### 3.263
 - So I was right when I suspected I would miss something when I copied the glass extruder downgrade code to sand refinery
 - Put a lower limit on WotA
 
-## 3.262
+### 3.262
 - Prevent mustard Flag sand rate when you have infinite waves
 - Suppress SGC message if you have infinite blocks
 
-## 3.261
+### 3.261
 - Fixed some backwards logic (dragon forge, glass saw)
 - New boost had a crash bug
 - Prevent blackprint construction from reporting using negative FA runs
 - Prevent Glassed Lightning from having over 500 countdown (also done on upgrade)
 
-## 3.26
+### 3.26
 - Moved logicat levels to the new system so spending/gaining them is simpler code-wise
 - Waveney's latest bunch of discoveries
 - Constructing from Blackprints capped at 400 FA runs until you have Automata Engineers
@@ -385,7 +385,7 @@ For personal amusement only.
 - Toggling No Sell updates faves
 - Some stuff to help with infinite glass mustard, including glass saw, tool factory, and refinery/chiller fixes
 
-## 3.251
+### 3.251
 - Fixed Monty Haul Problem's Goat[s] usage
 - Put in a fix to ensure you get Château d'If if you have the Unreachable? Badge (which has the side effect of giving you Château d'If back when you Molpy down, which is okay I guess)
 - I had put in one too many >0 for temp boost countdowns when I fixed it before, so people with negative were still stuck negative.
@@ -394,7 +394,7 @@ For personal amusement only.
 - TF counts toggle button always visible in Layout mode
 - In NP 2101
 
-## 3.25
+### 3.25
 - Badge clarification (Typo Storm)
 - Advanced temporal duplication now applies to normal tool purchases
 - Temporal Duplication now shows the multiplication factor, and countdown is formatted a bit nicer
@@ -411,10 +411,10 @@ For personal amusement only.
 - Fixed some Tool Factory Chips mustard caused by infinite tools (lots of 0*infinity and infinity/infinity)
 - Also fixed for glass furnace+blower sand usage (infinity/infinity in that case)
 
-## 3.244
+### 3.244
 - Find+Replace in All Opened Documents: Y U FAIL?
 
-## 3.243
+### 3.243
 - More Refresh
 - Countdown code for boosts assumed countdown was an integer which would reach 0 exactly. This is no longer true for Temporal Duplication
 - Toned down colours a bit
@@ -423,7 +423,7 @@ For personal amusement only.
 - Now allow up to 40 faves.
 - Temporal Duplication not available so early now
 
-## 3.242
+### 3.242
 - Advanced Temporal Duplication wasn't actually making more duplicates
 - SGC should now do Stretchable Storage stuff
 - Toggling stats view redraws faves
@@ -433,11 +433,11 @@ For personal amusement only.
 - Refresh a lot of boosts that weren't being refreshed. (for Faves)
 - Fixed a bunch of places that were still altering glass amounts directly rather than using the functions (thus not refreshing)
 
-## 3.241
+### 3.241
 - Prevent Faves that should be hidden from becoming unhidden (just had to move a line into a different function)
 - Wasn't taking Layouts from cookie when loading if localstorage available but empty: instead loaded no layout.
 
-## 3.24
+### 3.24
 - Redundakitty chain variables were not initialised to 0: showed up as mustard on a new game.
 - Detect html5localstorage
 - Save game to localStorage if it's present, otherwise use cookies
@@ -452,27 +452,27 @@ For personal amusement only.
 - Favourites. Still has a few width-related glitches on boosts that lock and reunlock, but it works pretty well for most stuff.
 - Un-broke classic: looks like I somehow deleted a critical line.
 
-## 3.234
+### 3.234
 - Missed flagging some temp boosts: nav code and the glass switching statuses. (Now they should unstick if stuck)
 - Wasn't saving or loading the autosavelayouts option value
 - When loading in Classic, set up the correct panel visibility, so you don't get missing panels, or messy overflows as the Comic and Options and Stats and Export all try to draw at the same time
 - Typos now work in Minus
 - Added Beret Guy
 
-## 3.233
+### 3.233
 - Fixed temp boosts on loading: it was using the start rather than current values of power and countdown because of another change I made to allegedly make testing easier for myself. Riiiight.
 - Finished Dragon Foundry
 - Ensure recovery of any stuck boosts
 - Minus Sand Monument images show up
 
-## 3.232
+### 3.232
 - Forgot to add a Refresh() method to Badges, which broke timetravel to/from NP with discoveries.
 - Refresh Production Control and Automata Control when glass levels change (and PC when PC changes!)
 - Some tool rate badges
 - Some dragon boosts
 - Light is now the default colour scheme
 
-## 3.231
+### 3.231
 - Timetravel wasn't refreshing discoveries (i.e. the jump button)
 - Memory warping has a (small) chance of temporal invasion
 - Changed Dragon Wisdom again (now it lets you get Panther Poke with a higher number of remaining Caged Logicat questions, so you can store up more with Zookeeper)
@@ -482,7 +482,7 @@ For personal amusement only.
 - Telling boosts to redraw won't expand them if they're not already visible
 - Redraw ALL the main 8 glass boosts whenever glass is added or spent
 
-## 3.23
+### 3.23
 - Mustard sand rate turns to 0
 - Notify when sand rate drops to 0
 - Dragon Forge blackprint cost was showing up as half of the correct value because I forgot AC costs 2 per level
@@ -493,22 +493,22 @@ For personal amusement only.
 - Hilarious new badge by waveney
 - **Only saves first two layouts** to try to help prevent cookie too long until that's fixed. You can create and export more layouts but only two will save. If you want to rely on 'temporary' then only have 1 other layout. When you save layouts there will be a warning message informing you of how many were not saved.
 
-## 3.221
+### 3.221
 - Fixed options not refrshing on page Refresh
 - Stats should update regardless of whether the stats selector panel is visible (you still need to toggle that to go in and out of stats view for boosts and tools... maybe I should make that a separate option. But not right now.)
 - Prevented layout pane from trying (and failing) to redraw in classic
 
-## 3.22
+### 3.22
 - Classic layout in classic.html
 - Loot visibility in classic works as it used to (if you save, then change what loot categories are visible, then load, it returns to how it was saved)
 - BTW if any panes are missing in classic you'll need to go into the regular page and toggle them to visible and save that to the first layout
 - Tool Factory data replaces sand/castle counts if you have tool factory and infinite numbers. If you have some finite numbers, the Version box gets bumped
 
-## 3.211
+### 3.211
 - Alerts pane placeholder text
 - Stats wasn't refreshing stuff when hidden (I only had a function trigger on showing panels, not hide)
 
-## 3.21
+### 3.21
 - Fixed Coma Molpy Style (oops I had just started debugging that when I got distracted by an Expando issue and forgot to fix it before 3.2)
 - Reduced newpix bounce to stay in the bounds of the box
 - Fixed Caged Logicat to display actual number of questions left (sorry I should have checked Waveney's code)
@@ -523,7 +523,7 @@ For personal amusement only.
 - Added a second default layout which can be accessed via Import New and typing 'default2'
 - Yes there's still more fixed to be made but I think this is good for a first batch
 
-## 3.2
+### 3.2
 - Glass Ceilings are their own boost group
 - Also a Draconic boost group (even though the dragons are currently terrible)
 - Dragon unlocks were checking if the potential reward was owned rather than unlocked, which was silly.
@@ -548,7 +548,7 @@ For personal amusement only.
 - Split the stats tabs into separate panels
 - Button to lock/unlock the layout, it's locked by default
 - When layout is unlocked, you can toggle Snap to Panes and Snap to Grid
-- Buttons for managing layouts: activate, rename, clone, overwrite, export, delete. 
+- Buttons for managing layouts: activate, rename, clone, overwrite, export, delete.
 - You can't delete the active layout
 - Toggling visibility of panels immediately affects the active layout. Moving or resizing an element does not affect a layout at all.
 - Overwrite will store the positions, sizes, and visibility of everything in that layout
@@ -562,40 +562,40 @@ For personal amusement only.
 - When you save layouts, the current screen layout is saved as 'temporary' and added to the end of the layouts list, in case you didn't Overwrite
 - Notifications are not affected by scrollbar!
 
-## 3.19
+### 3.19
 - Glass Monuments no longer tease that there's something to get after them, because it's not available yet so implying that there is something that players can't get yet would be mean so I'm not doing that any more :P
 - Split code into separate files finally!
 
-## 3.1898
+### 3.1898
 - I misplaced a <20 when I put abs() around the newpixnumber everywhere... which made the maximum JDip level 0. oops.
 - Un-broke index page (oi, waveney!)
 
-## 3.1897
+### 3.1897
 - Load and Import clear the log
 - Molpy Down accounts for startPower of Boosts being a function (sorry that was breaking saves)
 - Buff Panther Glaze x10
 - Make np-based Badges which have upgrades to be built, more obvious. (includes a fallback if you have chromatic heresy off)
 - Hide glass per mNP stats if you don't have AA
 
-## 3.1896
+### 3.1896
 - rogue semicolon in the GlassChillerIncrement function
 
-## 3.1895
+### 3.1895
 - Needed more abs (forgot I was using pow in some cases)
 - Safety Pumpkin's stats were out of date (now moved to Safety Goggles)
 - Fixed waveney's spelling of Furnace (I've made the same typo myself a lot :P)
 - Added way to get Ninja Shortcomings if it was missed before the big Ninja Stealth multipliers
 
-## 3.1894
+### 3.1894
 - Some fixes and new discoveries from waveney
 - Gave the abs a workout
 - Found new badge
 
-## 3.1893
+### 3.1893
 - I forgot something.
 - Update the descriptions too.
 
-## 3.1892
+### 3.1892
 - Nerf Castle Crush (wondered when that would get noticed :P)
 - Plug Temporal Rift hole
 - Glass Monument fix (wasn't setting previewNP back to 0 in one case)
@@ -603,29 +603,28 @@ For personal amusement only.
 - Fiddled with MHP a little but don't think I fixed whatever's messing up the price displace for some :(
 - I forgot something.
 
-## 3.1891
+### 3.1891
 - Negative chips fix, new badge, glass production stats - waveney
 - Glass production stats take Furnace Crossfeed/Multitasking into account
 - New Boost for those who forget to operate their camera
 
-## 3.189
+### 3.189
 - Free Advice conditional advice fix
 - Changed Imprevious Ninja to use Ninja Forgiveness instead of a countdown timer. Also it costs 1% of your Glass Chips in storage (minimum cost is 100 chips)
 
-## 3.1881
+### 3.1881
 - Fix panther salve toggle - it wasn't generic after all.
 
-## 3.188
+### 3.188
 - Shopping Assistant tells you when you select an item which you already bought
 - Unflipped some important lines in MHP Goat
 
-## 3.1871
+### 3.1871
 - Missed a . because HAAAAAAAAANDS (this is github's fault for complicated reasons I won't get into)
 - So, how about capitalising a critical new function... and then not?
 - Funny how both problems were caused by me modifying waveney's code :P I guess I shouldn't.
 
-
-## 3.187
+### 3.187
 - Small buff from Panther Rush to Panther Poke
 - Fixed out of control MHP pricing (multiply instead of a divide)
 - Waveney's stretchable glass storage (heh, I actually need that in-game right now!)
@@ -636,16 +635,16 @@ For personal amusement only.
 - Prevent Hauling of fractional castles
 - Ensure Glass Saw can't leave your chip balance negative
 
-## 3.1863
+### 3.1863
 - Wasn't using the alias for the cards everywhere (ACTUALLY fixes gold and silver card)
 
-## 3.1862
+### 3.1862
 - Alias, not Aka! (fixes gold and silver card)
 
-## 3.1861
+### 3.1861
 - Math, it needs a capital letter!
 
-## 3.186
+### 3.186
 - Such Glass fix - waveney
 - Seaish Upgrade 100% sand usage prevented - waveney
 - Goat badge was mispelled
@@ -656,12 +655,12 @@ For personal amusement only.
 - Dragon Wisdom typo fix (thanks again TFMurphy)
 - Improved discounts from ASHF are now boosts that are available from the Department after you earn the corresponding badges
 
-## 3.185
+### 3.185
 - I can't even rename a variable without messing up, sorry waveney
 - messed around with some boost unlock conditions
 - new badge
 
-## 3.184
+### 3.184
 - More accurately determine user activity and bounce rate (don't count first 5 badges, and automatic stuff isn't counted as interaction so idlers aren't counted as active)
 - Track buy/sell of tools
 - Track upgrade/downgrade boosts
@@ -673,24 +672,24 @@ For personal amusement only.
 - waveney's thing for supressing tiny glass notifications (changed to use a variable rather than literals, so it's easier to tweak if necessary)
 - Didn't upgrade the PC upgrade limit because I don't want to.
 
-## 3.183
+### 3.183
 - Making the Discoveries category use the appropriate icon slipped my mind, again
 - Missing icon
 - Inverted statements
 - Recycling Beanies hint if you don't have enough BBs
 
-## 3.182
+### 3.182
 - Typo fixes from waveney (SGR, MMolpy)
 - Badge by waveney
 - Got lost reading TVTropes, sorry. Guess I better push these bugfixes, but first:
 - When you have Panther Glaze, the descriptions of the boosts it modified show how many glass chips they produce
 
-## 3.181
+### 3.181
 - Factory Automation description changed to stop people asking how to upgrade it again after they temporal rift :P
 - Fixed some transparency stupidity (btw yes if there's a lot of notifications on the screen, some will not go transparent at all until the others have vanished)
 - Added an explanatory note to Bag Burning so people don't think it's broken and "fix" it with the console. *ahem*
 
-## 3.18
+### 3.18
 - Lots more icons from BlitzGirl
 - Temporal Rift fixed for infinite castles, like Molpy Down
 - New Ninja boost
@@ -700,7 +699,7 @@ For personal amusement only.
 - Glass Tools now show glass stats instead of sand/castle stats when appropriate
 - When building 0 castles, a castle multiplier of infinity (from flux surge?) will now result in 0 rather than mustard (NaN)
 
-## 3.17
+### 3.17
 - Messed with chance of intruder bots in a certain circumstance...
 - When loading, if highest NP visited is missing, using the current NewPix number
 - When you have Bacon, Bag Burning is locked if you pass its threshold, so millions of bags are not continually burned pointlessly forever
@@ -712,7 +711,7 @@ For personal amusement only.
 - Finished the other new dragon
 - Added some redundancy (it's been a while)
 
-## 3.16
+### 3.16
 - New Boost Icons from BlitzGirl! (mostly tagged boosts)
 - Zero more potential mustard (NaN) when loading
 - Beachball Boost doesn't show ninja warning after you've ninja'd
@@ -730,7 +729,7 @@ For personal amusement only.
 - Two new Tool boosts. (What is Friendship? Why does the hotdog not have any wolpeys?)
 - Another Dragon, plus one not finished yet
 
-## 3.153
+### 3.153
 - Discovery Detector messages go to log
 - Typo in Discovery Detector (yay not mine)
 - I forgot to wrap the Sand Monument images in the new URL function I'd extracted when attempting to do preloading
@@ -746,43 +745,43 @@ For personal amusement only.
 - Assuming it does come out right (let me know if you see any wonky numbers: someone reported an issue with negative boosts owned a while back and though I haven't bene able to reproduce it, that doesn't mean it can't happen in some circumstances)
 - Rambled in changelog. I'm surprised I managed to avoid doing that for so long. I tend to ramble. Especially when... nevermind
 
-## 3.152
+### 3.152
 - Allowed much higher production control
 
-## 3.151
+### 3.151
 - Missed buckets in my phone-only mustard sand-tool-rate fix, which cost me a factory automation run because I had no sand unexpectedly
 
-## 3.15
+### 3.15
 - Bunch of numbers in the save were being parsed as ints instead of floats, leading to problems now that the numbers are large enough
 - In particular, glass storage sizes, but temporal duplicates were now able to go wrong too, and the number of active bots, and a few other things
 - Thanks for doing that for me waveney :D
 
-## 3.143
+### 3.143
 - Okay so the problem was that on my phone, javascript likes to think that Math.pow() should return 0 instead of Infinity for very large exponents
 - And it was fine for castle tools since I was shortcutting their prices to infinity already. So now I'm doing that for sand tools also
 
-## 3.142
+### 3.142
 - Messing with order of multiplication of sand tool rate multipliers, returning early for infinities, might fix the NaNs that only show up on my phone
 
-## 3.1416
+### 3.1416
 - Handle weird case where Constructing from Blackprints is constructing nothing (I don't even)
 - Locked Crate reward no longer uses a loop to expand block storage. That was stupid
 - Negative message on Discovery Detector (thanks waveney)
 - New dragon
 - Finally remembered to put jQuery.js back on the index page
 
-## 3.1415
+### 3.1415
 - Disabled the jQuery preload of next newpix because it was not working and was spitting out errors for some
 - faster seaish (big) upgrades of Sand Purifier and Glass Extruder (waveney)
 - Redundatracking, and some tracking bugfixes
 - Beachball boost fix: ensure change to blue is after bots have activated
 - Sawtracking
 
-## 3.141
+### 3.141
 - Tracking update: convert integers to strings
 - Less hovering
 
-## 3.14
+### 3.14
 - Automata Control next upgrade price shown
 - Strikethrough on unaffordable stuff
 - Waveney's discovery detector
@@ -798,7 +797,7 @@ For personal amusement only.
 - Preloading the next newpix 2mNP before the ONG (except it isn't working yet, I think)
 - Changed Beachball boost to warn 2mNP before ONG rather than 1 (because of the above)
 
-## 3.13
+### 3.13
 - Now you can call Molpify like this: Molpify(someNumber, decimalPlaces,2) and it won't apply all the letter prefix things, regardless of your game's scientific notation setting
 - The 'enough chips for making blocks' check was backwards all along
 - Changed Broken Rung condition: for instance while 6000 bags bought will make LaPetite visible (unchanged), 6000 bags *owned* is needed for 0 LaPetite to affect Broken Rung
@@ -812,14 +811,14 @@ For personal amusement only.
 - Blast Furnace with Blitzing without BFJ is twice as effective as without Blitzing, which is unchanged from before but I just thought I'd mention it.
 - Fixed Tool Factory giving things it shouldn't: I forgot to copy a condition
 
-## 3.12
+### 3.12
 - I removed the molpies and grapevines from the wrong place
 - The previous Tool Factory changes broke Tool Factory (and all your tools) if you didn't have Tool Factory
 - If you don't have an earlier save, sorry but your tools are gone and I can't get them back. If you remember how many you had, feel free to edit them back in
 - Also suggest suitable punishments for me
 - So yeah I should test what happens if you *don't* have features that I'm changing as well as if you do.
 
-## 3.11
+### 3.11
 - Panther Rush description missing word
 - Ensure WWB/RB's unlock Boosts will unlock if you're already eligible for them.
 - Don't show trade/hint for WWB when infinite factor
@@ -842,7 +841,7 @@ For personal amusement only.
 - DestroyPhase function no longer loops once per castle tool owned (which is kinda slow when you get millions), instead uses division :P
 - A single over nine thousand joke wasn't enough. Especially since I made it months ago.
 
-## 3.1
+### 3.1
 - Fixed index to accept title change
 - Panther Rush description improved so players don't expect to see it in their Loot
 - Fixed castle display so it shows "1 castle" for that first castle rather than "1 castles"
@@ -853,7 +852,7 @@ For personal amusement only.
 - Fixed another Beach CSS problem: turned out all the recent issues there were caused by using .background instead of .backgroundImage
 - A couple new Glass Tool boosts
 
-## 3.09
+### 3.09
 - If Locked Crate prices is mustarded, it becomes free (apart from the glass). Sorry I thought that couldn't happen in the wild.
 - And a Badge because why not?
 - More of Waveney's Discoveries
@@ -862,7 +861,7 @@ For personal amusement only.
 - Toggling Stats wasn't redrawing Badges
 - Added Mushrooms as a counterpart to Badgers
 
-## 3.08
+### 3.08
 - Mys*t*erious typo fixed
 - Unneeded Factory Automation Upgraded message removed from Ninja Climber
 - Mysterious Representations now works from AC level 15 (Zookeeper still works from 21), updated descriptions accordingly
@@ -883,7 +882,7 @@ For personal amusement only.
 - With Booster Glass, show +numbers on click (if the click-numbers option is enabled)
 - Fixed stupid CSS weirdness preventing the resizing of Colpix
 
-## 3.07
+### 3.07
 - Moved AdjustFade so it's accessible to the index page (so the version number shows up again)
 - Changed Locksmith to Mysterious Representations, which produces pages directly.
 - Removed Zookeeper notification (just wait for Caged Logicat to show up)
@@ -891,17 +890,17 @@ For personal amusement only.
 - Actually fixed Overcompensating
 - If Panther Rush is stuck in Loot from earlier bug, run its buy function to fix
 
-## 3.06
+### 3.06
 - On buying a Crate Key, it will try to buy Locked Crate before using up the key making the Crate cheaper (so the key will be used to remove a lock, when it previously it was wasted)
 - Added stats view for Trebuchet Pong, Grapevine, Ch*rpies, and Facebugs
 - Beachball
 - Exponential boosts now say "boosts by x% cumulatively per thing" to distinguish them from linear increases
 - Wasn't Molpifying the division numbers for sand purifier or glass extruder
 
-## 3.05
+### 3.05
 - Fixed Expando/Glass Monument interaction
 
-## 3.04
+### 3.04
 - Prevent Locksmith from awarding ASHF when you already have it
 - Overcompensating's buff wasn't applied to saves which already had Overcompensating owned
 - Fix panther rush on-buy crash (fortunately it was in calculating the levels so it didn't waste any levels)
@@ -912,7 +911,7 @@ For personal amusement only.
 - Glass Saw is a toggle now
 - Molpy Down refreshes the Options
 
-## 3.03
+### 3.03
 - Changed all occurrences of "% of sand dug" to "% of sand dig rate", so glass-production costs are clearer (thanks Vidyogamasta for pointing that out... 2 weeks ago)
 - Waveney's improvement to Glass Saw: instead of leaving 5% of Block Storage empty, it leaves space equal to 10mNP worth of Automata Assemble's Factory Automation (so it'll still fill block storage if you don't have AA going)
 - Automata Assemble now uses same function for running FA in all cases
@@ -928,10 +927,10 @@ For personal amusement only.
 - Seaish upgrade for Glass Chiller is limited so it won't use more chips than the Glass Furnace is making
 - *The Sea is Big*
 
-## 3.021
+### 3.021
 - Was missing a return so the castle tool price calc was still horribly slow
 
-## 3.02
+### 3.02
 - Added Upgrade x10 button to Production Control
 - Downgrade buttons on Production Control, Automata Control, Sand Refinery, and Glass Chiller are all hidden by No Sell
 - But did anyone ever use those apart from accidentally?
@@ -939,7 +938,7 @@ For personal amusement only.
 - If no Blackprint-construction remains, the Blackprints-needed stat shows the amount needed for Automata Control
 - Panther Rush now uses up 5 less Logicat levels, but still unlocks at the same point, meaning when you buy it you can't have less than 5 levels left
 
-## 3.01
+### 3.01
 - Shopping donkey doesn't buy if no item (i.e. prevent crash.)
 - Logicat's "correct answers needed" display now accounts for Panther Rush
 - Bunch of new NP-based badges, by waveney (cos I was taking too long getting around to adding them)
@@ -952,7 +951,7 @@ For personal amusement only.
 - Shorten Not Lucky message after np400
 - Added an ONG countdown timer. For free!
 
-## 3.0
+### 3.0
 - Bottle Battle in cyb group
 - Panther Rush description improved
 - Stat for chips per click
@@ -961,10 +960,10 @@ For personal amusement only.
 - It's half a point per level which means it's about as powerful before : at level 1, 10 answers is worth 15 answers and at level 2, 10 answers is worth 20. (it used to give 5 extra questions per level)
 - Split DoRD/Logicat reward logic into two separate functions
 
-## 2.991
+### 2.991
 - Beanie Builder upgrades are now in the beanish tech group
 
-## 2.99
+### 2.99
 - Smashing a crate open only gives whole blocks
 - Prevent infinite castles down
 - Missing 1* for Ruthless Efficiency department flag
@@ -977,20 +976,20 @@ For personal amusement only.
 - Extra way to get Safety Goggles apart from the Safety Hat way
 - Fixed AC price and upgrade cost. And now it uses some Blackprint Pages too
 
-## 2.981
+### 2.981
 - Colpix option description fix
 
-## 2.98
+### 2.98
 - Finally fixed AC upgrade price mustard!
 - Compressed advanced badge save-storage (and fixed backward compatibility)
 - Don't notify about chip/block gains if Automata Assemble is on
 - Wording fix: Colpix
 - Mustard when finishing blackprint construction
 
-## 2.97
+### 2.97
 - Changed AC upgrades back to using chips, and changed the pricing
 
-## 2.96
+### 2.96
 - The goggles, they unlock
 - Glass Saw only doubles in power if you have double it's power in glass left over.
 - Optimisation of Automata Assemble
@@ -1001,7 +1000,7 @@ For personal amusement only.
 - Some new Ninja Badges
 - Fixed some typos
 
-## 2.95
+### 2.95
 - Single lettter typo
 - Glasss Saw power multipler should worrk now
 - Automata Assemble lets you upgrade glass storage any time.
@@ -1009,7 +1008,7 @@ For personal amusement only.
 - Earning a Badge when you have Badgers recalculates sand dig rate
 - DeMolpify function now handles empty string or undefined value (returns 0) which should prevent stack overflow
 
-## 2.94
+### 2.94
 - Furnace Multitasking description was wrong after buy
 - block gain/loss messages were not consistent with chips
 - Performance increase if you have all Glass Tools enabled for Tool Factory and can afford them
@@ -1017,12 +1016,12 @@ For personal amusement only.
 - Fiddled with Glass Saw a bit
 - Safety stuff
 
-## 2.93
+### 2.93
 - Shopping Assistant remembers your choice. (BTW it doesn't work for Bigger Buckets. But you probably already have that)
 - I think I fixed the issue of free boosts not being bought on occasion: castles were NaN after spending infinite castles
 - A bunch more boosts for glass castle tools
 
-## 2.92
+### 2.92
 - Flipside now not available until after you get Automata Assemble, since it's not really useful until then.
 - Glass Mousepy
 - Caged Logicat untagged if sleeping
@@ -1033,7 +1032,7 @@ For personal amusement only.
 - Boost to control AA power separate from TF power (defaults to current behaviour until you get it, and it starts at the current level)
 - Finite/infinite tool price checks include the Price Factor now
 
-## 2.91
+### 2.91
 - TFLL now allows you to load 10K if you don't have 50K
 - Waves additionally show how many castles will be destroyed/built on the next ONG, if you have SBTF
 - Panther Salve now shows progress towards LCB (oops)
@@ -1043,12 +1042,12 @@ For personal amusement only.
 - Boost to allow construction of Glass Tools of finite price instead of infinite price
 - Finally a new way to get Factory Automation runs
 
-## 2.9
+### 2.9
 - Production Control for Tool Factory
 - Panther Poke! This requires 2500 redactedclicks before you have any chance of seeing it
 - Moved Blackprints stat into Other, and added Logicat Level to Other stats
 
-## 2.898
+### 2.898
 - ONG performance increase - less looping on destruction
 - Prevent fractional glass chips/blocks in storage, and prevent fractional size upgrades
 - Larger upgrade increments for Sand Refinery and Glass Chiller (finally!)
@@ -1056,7 +1055,7 @@ For personal amusement only.
 - Buffed TFLL a little
 - BG buffed a little also (it's not meant to be particularly powerful)
 
-## 2.897
+### 2.897
 - Clarification on SBtF description and some explanation on its stats.
 - stats tabs
 - Logicastle description fix
@@ -1065,7 +1064,7 @@ For personal amusement only.
 - Notification log text is selectable
 - Prevent Glass Saw from wasting chips making blocks for which you do not have storage space
 
-## 2.896
+### 2.896
 - Show glass prices of tools when appropriate
 - Raised Glass Saw limit by factor of 1000
 - Prevent Caged Logicat from tiring out
@@ -1076,16 +1075,16 @@ For personal amusement only.
 - Glass gain/use messages show more decimal places (oops)
 - New boost to make glass block production more efficient.
 
-## 2.895
+### 2.895
 - Fixed SGL unlock
 - And some other unlocks
 - New Glass Block related boost
 - Fixed Export toggle
 
-## 2.894
+### 2.894
 - Some Glass multiplier boosts, mostly for sand tools
 
-## 2.893
+### 2.893
 - Fixed ONGs with Backing Out boost
 - Improved description of Molpies boost
 - Fix Logicat message text
@@ -1093,18 +1092,18 @@ For personal amusement only.
 - ASHF updates the price factor before activating Shopping Assistant.
 - Prevent 0 fractal level from multiplying Not Lucky by 0 (though I think that could only happen if you have 0 sand or infinite castles, so it's probably unimportant)
 
-## 2.892
+### 2.892
 - Made it possible to get Flux Capacitor if time travel costs more castles than you have
 - Fixed logic for use of glass ceiling badges: they were being checked as if they were boosts
 - Fixed description of factory automation: wasn't showing correct prices
 - I think I fixed the swich between sand and glass production more properly now
 
-## 2.891
+### 2.891
 - Fixed ch*rped up boost order, and tried to fix the side effects.
 - Errors in filling glass mould fixed
 - Updated Backing Out a bit and fixed typo in price
 
-## 2.89
+### 2.89
 - Fixed Molpy Down/Coma button layout :P
 - Tool Factory glass display
 - Improved detection on when to recalc glass rate
@@ -1112,15 +1111,15 @@ For personal amusement only.
 - Completed missing Bacon feature
 - Updated Tool Factory description slightly but significantly
 
-## 2.882
+### 2.882
 - Missing Molpy Down button
 - Panther Salve negative value when disabled was being used in stats display
 - Incorrect variable name in Badgers boost
 
-## 2.881
+### 2.881
 - Prevent newpix background image transition from messing with the old opacity and transform transitions
 
-## 2.88
+### 2.88
 - Kitties Galore was in the department always instead of only after 64 clicks!
 - Fade now applies to the newpix also
 - Frivolous: prevent blank space when past T** E** with placeholders
@@ -1132,7 +1131,7 @@ For personal amusement only.
 - JDip countdown is sanitized to 0 if not a number, or negative
 - Tweaked the maximum JDip algorithm a bit
 
-## 2.87
+### 2.87
 - Fixed Glass Ceiling 0 not becoming available due to GCB Badge overwriting its department flag
 - Made a way to unlock Castles to Glass
 - Clarified descriptions of Sand to Glass and Castles to Glass a little
@@ -1140,7 +1139,7 @@ For personal amusement only.
 - Undid yesterday's nerf to Temporal Duplication
 - Nerfed LaPetite a bit to ensure BBC is required for Infinite Sand rate
 
-## 2.86
+### 2.86
 - Added an extra little feature to the Flashy Gif badge (which took me some nopix of fiddling because it is fun to try to new things with css)
 - You can how earn blackprint pages even when there is no need to do so.
 - Prevent Mustard/Infinite sand dig clicks
@@ -1153,13 +1152,12 @@ For personal amusement only.
 - Added 1 higher Factory Automation level
 - Safety Pumpkin
 
-## 2.85
+### 2.85
 - Fixed Logicat issue caused by Bacon Mustard in the level reduction
 - If you missed any Logicat rewards, you'll catch up next time you answer one.
 - Added Safety Hat boost! Yay now we can all have Safety Hats in the Hotdog!
 
-
-## 2.84
+### 2.84
 - Wasn't doing glass mould work in factory automation
 - Prevent tool descriptions from hiding sand rate and ninja status
 - 2 Boosts for a new tool (one of them requires high logicat and very high JDip)
@@ -1167,25 +1165,25 @@ For personal amusement only.
 - Fiddled with JDip levels and destruction amounts a bunch. A lot actually.
 - Yeah I didn't get time to do other important stuff because I spent so long on JDip
 
-## 2.83
+### 2.83
 - Maybe there will never be a version 28. Maybe glass ceilings shouldn't lock on every load until then.
 
-## 2.82
+### 2.82
 - Now properly importing old save: because lists don't work that way in javascript
 
-## 2.81
+### 2.81
 - Now using more c**kies to save
 
-## 2.8
+### 2.8
 - Tool Factory now does something
 - Rewrote tool declaration code to use arguments dictionary like boosts and badges
 - Fixed 2 Glass Ceiling prices: sorry I'm forcing a rebuy if you have them already :P
 - Incomplete: Boosts for making tools produce glass
 
-## 2.71
+### 2.71
 - Prevent Expando from crashing when you haven't unlocked all Tools
 
-## 2.7
+### 2.7
 - Mould Spelling
 - Fixed: crashes on some notifications because I missed the "Molpy."
 - Spending finite sand/castles when you have infinite of the same, does not notify
@@ -1200,17 +1198,17 @@ For personal amusement only.
 - Only one free redacted from playing a song before purchase (unless you can't afford it)
 - A couple of index changes: index and otthercomic
 
-## 2.63
+### 2.63
 - Some little improvements to Shopping Assistant and key unlocking
 
-## 2.62
+### 2.62
 - ASHF should not be given if there are no boosts available and you have infinite castles
 - Shopping Assistant no longer buys locked boosts (thus preventing weird zombie state for DoN or Crate Key or Castle Crusher preventing them from being given by department due to being simultaneously bought and locked)
 
-## 2.61
+### 2.61
 - Um, I wrote for instead of while and forgot to test
 
-## 2.6
+### 2.6
 - Castles are not built when you have infinite
 - Sand is not turned into castles if you have infinite castles
 - Fixed Badges Earned redacted icon not showing due to missing s
@@ -1223,44 +1221,44 @@ For personal amusement only.
 - Fiddled with new tool numbers
 - Glass Ceiling stuff
 
-## 2.59
+### 2.59
 - Some new badges
 
-## 2.58
+### 2.58
 - Logicat rewards now exclude boosts with their logicat level set to 0
 - Nerfed WWB a little and increased the cost a bit
 - The limit on Panther Salve and friends is now applied *after* it's boosted by Fractal Sandcastles
 - Some more Factory Automation levels
 - Not Lucky from Factory Automation doesn't show the 'not lucky' message
 
-## 2.57
+### 2.57
 - Yeah I wasn't passing the automationLevel into the new function. oops.
 
-## 2.56
+### 2.56
 - Moved some code around so department/logicat rewards are checked just before rewarding, rather than when other boosts are checked
 
-## 2.55
+### 2.55
 - Improved Broken Rung to only count visible tools
 
-## 2.54
+### 2.54
 - Brutal nerfing of Window Washers (though now it's cheaper to upgrade)
 - Also nerfed LCB yet again
 - A couple of totally minor new things
 - Prevent Catmaran and LCB from using glass if you have no relevant tools to boost with
 - Infinite castles prevents Flux Surge, Temporal Duplication or Temporal Rift from being Logicat rewards
 
-## 2.53
-- Flashy badge was too hard on my phone 
+### 2.53
+- Flashy badge was too hard on my phone
 - Fixed a price
 
-## 2.52
+### 2.52
 - Deal with infinite prices (partially)
 
-## 2.51
+### 2.51
 - Forgot to subtract traded scaffolds from CastleToolsOwned, leading to erroneous badge earn
 - New postfix! It's worth 5 Ws
 
-## 2.5
+### 2.5
 - I (might) love waffles
 - Second Chance improved
 - Locked Crate description improved to fit some usage changes
@@ -1270,26 +1268,26 @@ For personal amusement only.
 - And recycling! (not quite complete: needs a button to power it up further)
 - Took the easy way out of the stats-space issue, for now.
 
-## 2.4
+### 2.4
 - Second Chance was free to use for uncaged Logicats
 - Logicat results are now put in the log
 - Got rid of redundant non decrementing countdowns on Redunception
 - Got rid of redundant Redundant icon on Badges Earned when there's one on Discoveries
 - Half the Erosion boost was still being applied to Wave destruction without earning it.
 
-## 2.33
+### 2.33
 - Uh, how did that = get in there?
 
-## 2.32
+### 2.32
 - Ensure Time Travel's power is 1 on buy (that was for a feature I never ended up making, whereby you could power up Time Travel to make bigger jumps. Now there's a better way of doing that.)
 - Upgrade for person who has bought Time Travel and is stuck with it on power 0
 - Apology
 
-## 2.31
+### 2.31
 - Fixed erroneous save failed messages
 - Factory Ninja is buffed based on logicat level
 
-## 2.3
+### 2.3
 - Glass Block/Chip display decimal places is more consistent.
 - zero temporal duplcate tool count when Molpy Down
 - Trebuchet multliplier boosts weren't stacking properly
@@ -1808,7 +1806,6 @@ For personal amusement only.
 - Swim Between the Flags boosts for Flags and Rivers
 - Fix to Erosion which had weird math
 
-
 ### 1.0
 - Glass Block stuff
 - Glass Furnace can actually switch off now.
@@ -1892,7 +1889,6 @@ For personal amusement only.
 - Exa, Yotta and Zeta postfixes
 - More BlitzGirl icons!
 - Removed accidental overpowering of BKJ: forgot to remove some code when I reversed how its power works
-
 
 ### 0.997
 - New Department Boost: Blixtnedslag Förmögenhet, JA! available after you get Blixtnedslag Kattungar, JA! powered up enough
