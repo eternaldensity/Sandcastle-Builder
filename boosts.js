@@ -1001,9 +1001,9 @@ Molpy.DefineBoosts = function() {
 		stats: 'When installed, this averts Judgement Dip at the cost of 99.9% of NewPixBot Castle Production.',
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
-		classChange: function() {
-			return Molpy.CheckJudgeClass(this, 1, 'toggle', this.power);
-		}
+//		classChange: function() {
+//			return Molpy.CheckJudgeClass(this, 1, 'toggle', this.power);
+//		}
 	});
 
 	Molpy.NavigationCodeToggle = function() {
