@@ -2986,17 +2986,16 @@ Molpy.DefineBoosts = function() {
 			if(levels > 0) this.Level += levels;
 			if(points > 0) {
 				this.power += points;
-				var rewards = 0;
-				while(this.power >= this.bought * 5) {
-					rewards++;
-					this.bought++;
-				}
-				if(rewards > 5) {
-					Molpy.Add('QQ', Math.floor((rewards - 5)*Molpy.Papal('QQs')));
-					rewards = 5;
-				}
-				while(rewards--) {
-					Molpy.RewardLogicat(this.Level);
+				var rewards = Math.ceil(this.bought*5 - this.power);
+				if (rewards > 0) {
+					this.bought+=Math.floor(extra*Molpy.Papal('Logicats'));
+					if(rewards > 5) {
+						Molpy.Add('QQ', Math.floor((rewards - 5)*Molpy.Papal('QQs')));
+						rewards = 5;
+					}
+					while(rewards--) {
+						Molpy.RewardLogicat(this.Level);
+					}
 				}
 				this.Refresh();
 			}
@@ -5341,7 +5340,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' since NP' + npstart, 1);
 		if(Molpy.Earned('Minus Worlds')) {
 			var miscount = 0;
-			var npstart = -Molpy.highestNPvisited;
+			var npstart = -Math.abs(Molpy.highestNPvisited);
 			for( var np = npstart; np < 0; np++) {
 				var alias = 'discov' + np;
 				if(Molpy.Badges[alias]) {
@@ -5797,12 +5796,12 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		logic: 5,
-		
+
 		lockFunction: function() {
 			if(!this.power) this.power = 10;
 			var pages = this.power++;
 			if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
-			Molpy.Add('Blackprints', pages*Molpy.Papal('BlackP'));
+			Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
 			if(Molpy.Got('Camera')) {
 				for( var i = 0; i < 10; i++) {
 					Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
@@ -5913,13 +5912,13 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.ShadowStrike = function() {
-		var l = Molpy.Level('LogiPuzzle')*Molpy.Papal('Bonemeal') / 100;
+		var l = Molpy.Level('LogiPuzzle') / 100;
 		var n = Math.ceil(l);
 		var p = n - l;
 		if(Math.random() < p * p) n = 1;
 		Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned '
 			+ Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
-		Molpy.Add('Bonemeal', n);
+		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
 	}
 
@@ -7271,11 +7270,14 @@ Molpy.DefineBoosts = function() {
 
 	Molpy.FluxHarvest = function() {
 		if(Molpy.Level('Time Lord') + 100 > Molpy.Boosts['Time Lord'].bought) {// just do a loop
+			var totalc = 0;
 			while(!Molpy.IsEnabled('Time Lord')) {
 				var c = Math.floor(Math.random() * Molpy.Level('Time Lord') * (Molpy.Got('TDE') + 1));
+				totalc += c;
 				Molpy.Add('FluxCrystals', c);
 				Molpy.Add('Time Lord', 1);
-			}
+			};
+			Molpy.Add('FluxCrystals', totalc*Molpy.Papal("Flux"));
 		} else { // Use maths to approximate then modify by a small random element
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
@@ -7414,7 +7416,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Western Paradox',
 		icon: 'westernparadox',
 		group: 'ninj',
-		classname: 'toggle',
+		className: 'toggle',
 		
 		price: {
 			Sand: Infinity,
@@ -7425,7 +7427,7 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		desc: function(me) {
-			var str = 'When activte trebles the time before the NewPixBots activate.';
+			var str = 'When active trebles the time before the NewPixBots activate.';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
@@ -7493,6 +7495,7 @@ Molpy.DefineBoosts = function() {
 		QQs: {desc:'10% more Question Qubes from the Logicat', value:1.1, avail: function() { return Molpy.Got('QQ') }},
 		Goats: {desc:'10% more Goats from Ninja Ritual', value:1.1, avail: function() { return Molpy.Got('Ninja Ritual')}},
 		Bonemeal: {desc:'10% more Bonemeal from the Shadow Dragon', value:1.1, avail: function() { return Molpy.Got('ShadwDrgn')}},
+		Logicats: {desc:'10% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
 	}
 	Molpy.Decreename = '';
 	new Molpy.Boost({
