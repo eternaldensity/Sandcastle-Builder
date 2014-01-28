@@ -2986,17 +2986,16 @@ Molpy.DefineBoosts = function() {
 			if(levels > 0) this.Level += levels;
 			if(points > 0) {
 				this.power += points;
-				var rewards = 0;
-				while(this.power >= this.bought * 5) {
-					rewards++;
-					this.bought++;
-				}
-				if(rewards > 5) {
-					Molpy.Add('QQ', Math.floor((rewards - 5)*Molpy.Papal('QQs')));
-					rewards = 5;
-				}
-				while(rewards--) {
-					Molpy.RewardLogicat(this.Level);
+				var rewards = Math.ceil(this.bought*5 - this.power);
+				if (rewards > 0) {
+					this.bought+=Math.floor(extra*Molpy.Papal('Logicats'));
+					if(rewards > 5) {
+						Molpy.Add('QQ', Math.floor((rewards - 5)*Molpy.Papal('QQs')));
+						rewards = 5;
+					}
+					while(rewards--) {
+						Molpy.RewardLogicat(this.Level);
+					}
 				}
 				this.Refresh();
 			}
@@ -7496,6 +7495,7 @@ Molpy.DefineBoosts = function() {
 		QQs: {desc:'10% more Question Qubes from the Logicat', value:1.1, avail: function() { return Molpy.Got('QQ') }},
 		Goats: {desc:'10% more Goats from Ninja Ritual', value:1.1, avail: function() { return Molpy.Got('Ninja Ritual')}},
 		Bonemeal: {desc:'10% more Bonemeal from the Shadow Dragon', value:1.1, avail: function() { return Molpy.Got('ShadwDrgn')}},
+		Logicats: {desc:'10% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
 	}
 	Molpy.Decreename = '';
 	new Molpy.Boost({
