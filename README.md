@@ -37,7 +37,7 @@ For personal amusement only.
 - Highest Newpix can be in Minus Worlds
 - Western Paradox Boost to increase time before NewPixBots operate
 - The Pope - new boost with a choice of small effects
-- (BTW The Pope is an OTT refrence: The 'pope' is the first poster on a newpage)
+- (BTW The Pope is an OTT reference: The 'pope' is the first poster on a newpage)
 - Fertiliser - new boost that can increase a Flux Harvest
 - Option for European formatted numbers
 - Simplified code for changing tagged states
