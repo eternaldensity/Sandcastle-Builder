@@ -1879,7 +1879,8 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() { return isFinite(this.power) ? 'alert' : '' },
+		// deactivate if chips are infinite and all chip-related boosts are bought
+		classChange: function() { return (isFinite(this.power) && Molpy.Got('Sand Refinery') && Molpy.Got('Glass Blower') && Molpy.Got('Glass Extruder')) ? 'alert' : '' },
 	});
 	
 	Molpy.UpgradeChipStorage = function(n) {
@@ -2154,7 +2155,8 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() { return isFinite(this.power) ? 'alert' : ''},
+		// deactivate if blocks are infinite and all block-related boosts are owned
+		classChange: function() { return (isFinite(this.power) || !Molpy.Got('Glass Chiller') || !Molpy.Got('Sand Purifier')) ? 'alert' : ''},
 	});
 	
 	Molpy.UpgradeBlockStorage = function(n) {
@@ -2556,7 +2558,10 @@ Molpy.DefineBoosts = function() {
 		
 		Castles: function() {
 			return (Molpy.Boosts['Castle Crusher'].power + 1) * 380 + 'M';
-		}
+		},
+		
+		// deactivate if sand is infinite
+		classChange: function() { return isFinite(Molpy.sand) ? 'action' : '' }
 	});
 
 	Molpy.CastleCrush = function() {
@@ -3238,7 +3243,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		classChange: function() { return isFinite(this.power) ? 'action' : '' },
+		classChange: function() { return isFinite(this.power) ? 'action' : '' }
 	});
 
 	new Molpy.Boost({
@@ -3287,6 +3292,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		classChange: function() { return (this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
+		
 		refreshFunction: function() {
 			Molpy.ChainRefresh('ShadwDrgn');
 		}
@@ -3423,7 +3429,7 @@ Molpy.DefineBoosts = function() {
 				str += '<br><input type="Button" onclick="Molpy.Shutter()" value="Snap!"></input> (Uses 10 Glass Chips)';
 			}
 			return str;
-		}
+		}		
 	});
 	new Molpy.Boost({
 		name: 'Memories Revisited',
@@ -4179,7 +4185,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		classChange: function() { return this.bought && isFinite(Math.pow(2, this.bought - 5))
-			&& Molpy.CastleTools['Scaffold'].amount >= 444 + this.bought * 77 ? 'action' : ''},
+			&& Molpy.CastleTools['Scaffold'].amount >= 444 + this.bought * 77 ? 'action' : ''}
 	});
 	
 	Molpy.GetWWB = function(seaish) {
@@ -5308,6 +5314,7 @@ Molpy.DefineBoosts = function() {
 			return '<input type="button" value="Scan" onclick="Molpy.RunDiscoveryDetector()"></input> costs '
 				+ Molpify(cost, 2) + ' chips to scan your records to see where you have missed discoveries';
 		}
+		
 	}); // by waveney
 
 	Molpy.RunDiscoveryDetector = function() {
@@ -5411,6 +5418,9 @@ Molpy.DefineBoosts = function() {
 				+ (target ? ' out of  ' + Molpify(target, 3) + '.<br>Destroy more temporal duplicates!' : '');
 			return str;
 		},
+		
+		// deactivate if power is Infinite and all tools are Mustard
+		classChange: function() { return (isFinite(Molpy.Boosts['AD'].power) || Molpy.mustardTools >= Molpy.SandToolsById.length + Molpy.CastleToolsById.length) ? 'alert' : ''},
 		
 		defStuff: 1,
 		
@@ -5573,7 +5583,11 @@ Molpy.DefineBoosts = function() {
 		
 		Sand: Infinity,
 		Castles: Infinity,
-		GlassBlocks: '7P'
+		GlassBlocks: '7P',
+		
+		// deactivate when reached max
+		classChange: function() {
+			return (Molpy.Boosts['AC'].Level = 6.2e34) ? 'action' : '';}
 	});
 	new Molpy.Boost({
 		name: 'Crouching Dragon, Sleeping Panther',
@@ -5909,7 +5923,10 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		GlassBlocks: '12WW'
+		GlassBlocks: '12WW',
+		
+		// deactivate if not enough logicats
+		classChange: function() { return (Molpy.Got('LogiPuzzle') && Molpy.Has('LogiPuzzle', 100)) ? 'action' : '' },
 	});
 	
 	Molpy.ShadowStrike = function() {
@@ -6557,7 +6574,10 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		prizes: 1,
-		tier: 2
+		tier: 2,
+		
+		// deactivate if on highest newPix
+		classChange: function() { return Molpy.highestNPvisited != Molpy.newpixNumber ? 'action' : '' }
 	});
 	
 	Molpy.FastForward = function() {
@@ -7067,7 +7087,10 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			Goats: 50,
 			FluxCrystals: 25
-		}
+		},
+		
+		// deactivate if on highest newPix
+		classChange: function() { return Molpy.highestNPvisited != Molpy.newpixNumber ? 'action' : '' },
 	});
 
 	Molpy.NowWhereWasI = function() {
@@ -7178,6 +7201,9 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
+		// deactivate if no QQs
+		classChange: function() { return Molpy.Boosts['QQ'].Has(1) ? 'action' : '' },
+		
 		defStuff: 1
 	});
 	new Molpy.Boost({
@@ -7266,7 +7292,10 @@ Molpy.DefineBoosts = function() {
 			if(!me.bought || Molpy.IsEnabled('Time Lord'))
 				return 'Easy harvesting of flux crystals from remaining rifts';
 			return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
-		}
+		},
+		
+		// deactivate if no Time Lord
+		classChange: function() { return !Molpy.IsEnabled('Time Lord') ? 'action' : '' },
 	});
 
 	Molpy.FluxHarvest = function() {
@@ -7540,7 +7569,10 @@ Molpy.DefineBoosts = function() {
 					}
 				}
 			}
-		}
+		},
+		
+		// deactivate if decreed
+		classChange: function() { return !Molpy.Boosts['The Pope'].power ? 'action' : '' },
 	});
 
 	Molpy.SelectPapalDecree = function(name) {
