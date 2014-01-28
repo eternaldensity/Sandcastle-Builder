@@ -37,6 +37,7 @@ For personal amusement only.
 - Highest Newpix can be in Minus Worlds
 - Western Paradox Boost to increase time before NewPixBots operate
 - The Pope - new boost with a choice of small effects
+- (BTW The Pope is an OTT refrence: The 'pope' is the first poster on a newpage)
 - Fertiliser - new boost that can increase a Flux Harvest
 - Option for European formatted numbers
 - Simplified code for changing tagged states
@@ -58,6 +59,7 @@ For personal amusement only.
 - Swedish gramma fix (it's still Greek to me)
 - Fixed the Stuff Counts and Income Counts to actually use the layout system properly (resizable element has to be separate from the draggable)
 - Kept track of the changelog (I hope) and accepted pull requests and updated the version number
+- removed an errant space from a description of a new boost
 
 #### Unponderable:
 - Notify when you try to use Achronal Dragon but don't have enough glass
