@@ -47,6 +47,7 @@ For personal amusement only.
 - Lots of work merging in all the changes
 - Kite and Key and Lightning in a Bottle boost to store Glassed Lighting % boost
 - More new icons
+- Linked export buttons
 
 #### snnw:
 - some timing fixes to ensure every NP really contains 1000 mNP
@@ -56,6 +57,7 @@ For personal amusement only.
 - fix up some issues with the border colour thing
 - Swedish gramma fix (it's still Greek to me)
 - Fixed the Stuff Counts and Income Counts to actually use the layout system properly (resizable element has to be separate from the draggable)
+- Kept track of the changelog (I hope) and accepted pull requests and updated the version number
 
 #### Unponderable:
 - Notify when you try to use Achronal Dragon but don't have enough glass
