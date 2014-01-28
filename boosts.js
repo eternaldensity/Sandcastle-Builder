@@ -2992,7 +2992,7 @@ Molpy.DefineBoosts = function() {
 					this.bought++;
 				}
 				if(rewards > 5) {
-					Molpy.Add('QQ', Math.Floor((rewards - 5)*Molpy.Papal('QQs')));
+					Molpy.Add('QQ', Math.floor((rewards - 5)*Molpy.Papal('QQs')));
 					rewards = 5;
 				}
 				while(rewards--) {
