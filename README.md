@@ -26,6 +26,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.322
+
+#### Waveney:
+- Many small fixes for the Pope
+- Fixes for Western Paradox
+- Performance improvements for large Logicat rewards
+
 ### 3.321
 
 #### LucidCrux:
