@@ -7449,6 +7449,8 @@ Molpy.DefineBoosts = function() {
 		buyFunction: function() {
 			if(this.power < 400)
 				this.power = Math.sqrt(Molpy.Boosts['LR'].power) || 400;
+			if(this.power > 1e155)
+				this.power = 1e155;
 			if(Molpy.Boosts['LR'].power < this.power)
 				Molpy.Boosts['LR'].power = this.power;
 		}
