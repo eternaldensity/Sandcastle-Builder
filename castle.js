@@ -4,8 +4,6 @@
  * 
  * This section contains the non-Molpy functions.
  *************************************************************/
-function g(id) {return document.getElementById(id);}
-
 function addCSSRule(sheet, selector, rules, index) {
 	if(sheet.insertRule) {
 		sheet.insertRule(selector + '{' + rules + '}', index);

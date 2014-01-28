@@ -1,4 +1,5 @@
 'use strict';
+function g(id) {return document.getElementById(id);}
 var postfixes=[
 	{limit:1e210,divisor:1e210,postfix:['Q',' Quita']},
 	{limit:1e42,divisor:1e42,postfix:['W',' Wololo']},

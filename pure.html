@@ -18,8 +18,9 @@ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www')
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
-  ga('create', 'UA-45954809-1', 'chirpingmustard.com');
-  ga('send', 'pageview');
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-45954809-1']);
+_gaq.push(['_trackPageview']);
 
 </script>
 <script type="text/javascript">window.onload=function()
