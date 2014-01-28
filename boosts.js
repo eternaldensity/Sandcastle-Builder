@@ -396,7 +396,7 @@ Molpy.DefineBoosts = function() {
 		var me = Molpy.Boosts['MHP'];
 		if(me.door == me.prize) {
 			var amount = Molpy.castles;
-			Molpy.Notify('Hooray, you found the prize behind door ' + me.door + '!');
+			Molpy.Notify('Hooray, you found the prize behind door ' + me.door + '!',true);
 			Molpy.Build(Math.floor(Molpy.castles / 2), 1);
 			if(Molpy.IsEnabled('HoM')) Molpy.Add('GlassChips', Math.floor(Molpy.Boosts['GlassChips'].power / 5), 1);
 			if(Molpy.Got('Gruff')) Molpy.GetYourGoat(2);
@@ -414,7 +414,11 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Has('Goats', 2)) Molpy.EarnBadge('Second Edition');
 		if(Molpy.Has('Goats', 20)) Molpy.UnlockBoost('HoM');
 		if(Molpy.Has('Goats', 200)) Molpy.UnlockBoost('Beret Guy');
-		Molpy.Notify('You got a goat!');
+		if (n== 1) 
+			Molpy.Notify('You got a goat!',true);
+		else
+			Molpy.Notify('You got '+n+' goats!',true);
+		
 	}
 
 	new Molpy.Boost({
