@@ -26,6 +26,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.321
+
+#### LucidCrux:
+- Fix for Pope QQ
+- Fix for Kite and Key
+
 ### 3.32
 
 #### Waveney:
