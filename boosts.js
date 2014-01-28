@@ -5797,7 +5797,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		logic: 5,
-		
+
 		lockFunction: function() {
 			if(!this.power) this.power = 10;
 			var pages = this.power++;
@@ -5913,13 +5913,13 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.ShadowStrike = function() {
-		var l = Molpy.Level('LogiPuzzle')*Molpy.Papal('Bonemeal') / 100;
+		var l = Molpy.Level('LogiPuzzle') / 100;
 		var n = Math.ceil(l);
 		var p = n - l;
 		if(Math.random() < p * p) n = 1;
 		Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned '
 			+ Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
-		Molpy.Add('Bonemeal', n);
+		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
 	}
 
@@ -7414,7 +7414,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Western Paradox',
 		icon: 'westernparadox',
 		group: 'ninj',
-		classname: 'toggle',
+		className: 'toggle',
 		
 		price: {
 			Sand: Infinity,
