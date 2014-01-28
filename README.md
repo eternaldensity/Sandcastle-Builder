@@ -26,6 +26,8 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.32
+
 #### Waveney:
 - Larger upgrades to Time Lord
 - Larger upgrades to Dragon Forge
@@ -44,6 +46,7 @@ For personal amusement only.
 - Major code reformat
 - Lots of work merging in all the changes
 - Kite and Key and Lightning in a Bottle boost to store Glassed Lighting % boost
+- More new icons
 
 #### snnw:
 - some timing fixes to ensure every NP really contains 1000 mNP
@@ -53,6 +56,15 @@ For personal amusement only.
 - fix up some issues with the border colour thing
 - Swedish gramma fix (it's still Greek to me)
 - Fixed the Stuff Counts and Income Counts to actually use the layout system properly (resizable element has to be separate from the draggable)
+
+#### Unponderable:
+- Notify when you try to use Achronal Dragon but don't have enough glass
+
+#### D0rako:
+- Fix to Ninja Ritual
+
+#### AluisioASG:
+- Fixed the formatting of basically the entire changelog since 1.0
 
 ### 3.31
 
