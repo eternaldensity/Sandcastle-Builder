@@ -2668,10 +2668,17 @@ Molpy.Up = function() {
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
 			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800)
 			* (Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power) / 2) || 0;
-		Molpy.chipspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power
-			* Molpy.Boosts['Furnace Crossfeed'].power * (Molpy.NPlength > 1800)
-			* (Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power) / 2) - Molpy.blockspmnp
-			* Molpy.ChipsPerBlock() || 0;
+		if ( Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power
+			* Molpy.Boosts['Furnace Crossfeed'].power * (Molpy.NPlength > 1800)) {
+			if (!isFinite(Molpy.Boosts['Sand Refinery'].power) {
+			 	Molpy.chipspmnp = (Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power) / 2) - Molpy.blockspmnp
+							* Molpy.ChipsPerBlock() || 0;
+			} else {
+				Molpy.chipspmnp = Infinity
+			}
+		} else {
+			Molpy.chipspmnp = 0
+		}
 
 		if(Molpy.Got('Sand to Glass')) Molpy.DigGlass(Math.floor(Molpy.glassPermNP*Molpy.Papal('GlassSand')));
 		Molpy.GlassNotifyFlush()
