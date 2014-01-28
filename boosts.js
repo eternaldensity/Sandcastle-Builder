@@ -5341,7 +5341,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' since NP' + npstart, 1);
 		if(Molpy.Earned('Minus Worlds')) {
 			var miscount = 0;
-			var npstart = -Molpy.highestNPvisited;
+			var npstart = -Math.abs(Molpy.highestNPvisited);
 			for( var np = npstart; np < 0; np++) {
 				var alias = 'discov' + np;
 				if(Molpy.Badges[alias]) {
