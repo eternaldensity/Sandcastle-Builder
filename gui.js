@@ -186,6 +186,8 @@
 		}
 		$('#' + 'section' + name).toggleClass('hidden', !sh[name]);
 		$('#toggle' + name).toggleClass('depressed', sh[name]);
+		if(name == 'Export')
+			$('.exportButton').toggleClass('depressed', sh[name]);
 		if(sh[name]) {
 			var refresh = Molpy['Refresh' + name];
 			if(refresh) refresh();
@@ -1023,7 +1025,7 @@
 		str += '<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts[' + i + '].Rename()">Rename</a></div>';
 		str += '<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts[' + i + '].Clone()">Clone</a></div>';
 		str += '<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts[' + i + '].Overwrite()">Overwrite</a></div>';
-		str += '<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts[' + i + '].Export()">Export</a></div>';
+		str += '<div class="minifloatbox layoutcontrol exportButton"><a onclick="Molpy.layouts[' + i + '].Export()">Export</a></div>';
 		if(me != Molpy.activeLayout)
 			str += '<div class="minifloatbox layoutcontrol"><a onclick="Molpy.layouts[' + i + '].Delete()">Delete</a></div>';
 
@@ -1826,7 +1828,7 @@
 		}
 
 		this.Export = function() {
-			Molpy.ToggleView('Export', true);
+			Molpy.ToggleView('Export');
 			g('exporttext').value = this.toString();
 		}
 		this.Overwrite = function() {
