@@ -5802,7 +5802,7 @@ Molpy.DefineBoosts = function() {
 			if(!this.power) this.power = 10;
 			var pages = this.power++;
 			if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
-			Molpy.Add('Blackprints', pages*Molpy.Papal('BlackP'));
+			Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
 			if(Molpy.Got('Camera')) {
 				for( var i = 0; i < 10; i++) {
 					Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
@@ -7425,7 +7425,7 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		desc: function(me) {
-			var str = 'When activte trebles the time before the NewPixBots activate.';
+			var str = 'When active trebles the time before the NewPixBots activate.';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
