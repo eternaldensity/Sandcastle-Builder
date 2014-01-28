@@ -466,7 +466,7 @@ Molpy.Up = function() {
 			}
 			Molpy.beachClicks += 1;
 			Molpy.CheckClickAchievements();
-			if(Molpy.ninjad == 0 && (!isFinite(Molpy.CastleTools['NewPixBot'].amount) || Molpy.CastleTools['NewPixBot'].amount) {
+			if(Molpy.ninjad == 0 && (!isFinite(Molpy.CastleTools['NewPixBot'].amount) || Molpy.CastleTools['NewPixBot'].amount)) {
 				if(Molpy.npbONG == 1) {
 					Molpy.StealthClick();
 					Molpy.Boosts['Ninja Ritual'].Level = 0;
