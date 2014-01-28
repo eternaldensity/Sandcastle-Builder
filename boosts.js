@@ -7271,11 +7271,14 @@ Molpy.DefineBoosts = function() {
 
 	Molpy.FluxHarvest = function() {
 		if(Molpy.Level('Time Lord') + 100 > Molpy.Boosts['Time Lord'].bought) {// just do a loop
+			var totalc = 0;
 			while(!Molpy.IsEnabled('Time Lord')) {
 				var c = Math.floor(Math.random() * Molpy.Level('Time Lord') * (Molpy.Got('TDE') + 1));
+				totalc += c;
 				Molpy.Add('FluxCrystals', c);
 				Molpy.Add('Time Lord', 1);
-			}
+			};
+			Molpy.Add('FluxCrystals', totalc*Molpy.Papal("Flux"));
 		} else { // Use maths to approximate then modify by a small random element
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
