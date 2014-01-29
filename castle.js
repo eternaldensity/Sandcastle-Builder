@@ -163,7 +163,7 @@ Molpy.Up = function() {
 				if(Molpy.Got('Fractal Sandcastles')) {
 					var m = 1.35;
 					if(Molpy.Got('Fractal Fractals')) m = 1.5;
-					Molpy.Build(Math.floor(Math.pow(m, Molpy.Boosts['Fractal Sandcastles'].power)));
+					Molpy.Build(Math.floor(Math.pow(m, Molpy.Boosts['Fractal Sandcastles'].power*Molpy.Papal('Fractal'))));
 					Molpy.Boosts['Fractal Sandcastles'].power++;
 					if(Molpy.Boosts['Fractal Sandcastles'].power >= 60) {
 						Molpy.EarnBadge('Fractals Forever');
@@ -617,6 +617,7 @@ Molpy.Up = function() {
 				if(Molpy.Got('Ninja Ninja Duck')) {
 					ninjaInc *= 10;
 				}
+				ninjaInc *= Molpy.Papal('Ninja');
 			}
 			Molpy.ninjaStealth += ninjaInc;
 
@@ -2205,7 +2206,7 @@ Molpy.Up = function() {
 			var blastFactor = 1000;
 			var boosted = 0;
 			if(Molpy.Got('Fractal Sandcastles')) {
-				blastFactor = Math.max(5, 1000 * Math.pow(0.94, Molpy.Boosts['Fractal Sandcastles'].power));
+				blastFactor = Math.max(5, 1000 * Math.pow(0.94, Molpy.Boosts['Fractal Sandcastles'].power*Molpy.Papal('Fractal')));
 				if(Molpy.Got('Blitzing')) {
 					if(Molpy.Got('BKJ')) {
 						blastFactor /= Math.max(1, (Molpy.Boosts['Blitzing'].power - 800) / 600);
