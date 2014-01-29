@@ -5559,11 +5559,11 @@ Molpy.DefineBoosts = function() {
 						Blackprints: pageCost * mult * 10
 					}) && (n + 20 * mult * 10 <= 1e34))
 						mult *= 10;
-					str += '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' + (20 * mult) + ',1)">'
-						+ '</input> the number of runs by ' + (20 * mult) + ' at a cost of '
-						+ Molpify(logicatCost * mult) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) + ' Blackprint Pages.';
+					str += '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' + Molpify(20 * mult) + ',1)">'
+						+ '</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of '
+						+ Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) + ' Blackprint Pages.';
 				} else {
-					str += '<br>It will cost ' + Molpify(logicatCost) + ' Logicat Levels and ' + Molpify(pageCost, 2)
+					str += '<br>It will cost ' + Molpify(logicatCost,2) + ' Logicat Levels and ' + Molpify(pageCost, 2)
 						+ ' Blackprint Pages to increase this by 20.';
 				}
 			}
@@ -7485,8 +7485,8 @@ Molpy.DefineBoosts = function() {
 	Molpy.PapalDecrees = {
 		Sand: {desc:'20% more Sand from Sand Tools', value:1.2, avail: function() { return isFinite(Molpy.sandPermNP)}},
 		Castles: {desc:'10% more Castles from Castle Tools', value:1.1, avail: function() { return isFinite(Molpy.castles)}},
-		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.chipspmnp)}},
-		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.blockspmnp)}},
+		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.chipspmnp)&&Molpy.chipspmnp>0}},
+		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.blockspmnp)&&Molpy.blockspmnp>0}},
 		Flux: {desc:'10% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest')}},
 		BlackP: {desc:'10% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180}},
 		GlassSand: {desc:'10% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
@@ -7496,6 +7496,14 @@ Molpy.DefineBoosts = function() {
 		Goats: {desc:'10% more Goats from Ninja Ritual', value:1.1, avail: function() { return Molpy.Got('Ninja Ritual')}},
 		Bonemeal: {desc:'10% more Bonemeal from the Shadow Dragon', value:1.1, avail: function() { return Molpy.Got('ShadwDrgn')}},
 		Logicats: {desc:'10% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
+		Fractal: {desc: 'Fractal Sandcastles are 10% better', value:1.1, avail: function() {return Molpy.Got('Fractal Sandcastles') && isFinite(Molpy.castles) }},
+		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League')}},
+		//: {desc:'', value:1.1, avail: function() {}},
+	}
+	Molpy.Hash = function(brown) {
+		var res = 0;
+		for (var c in brown.split('')) { res = res*2 + c.charCodeAt() };
+		return res;
 	}
 	Molpy.Decreename = '';
 	new Molpy.Boost({
@@ -7534,9 +7542,8 @@ Molpy.DefineBoosts = function() {
 		loadFunction: function() {
 			if (this.power) {
 				Molpy.Decreename = '';
-				var i=1;
 				for (var name in Molpy.PapalDecrees) { 
-					if (i++ == this.power) {
+					if (Molpy.Hash(name) == this.power) {
 						Molpy.Decreename = name;
 						Molpy.Decree = Molpy.PapalDecrees[name];
 						return;
@@ -7547,17 +7554,9 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.SelectPapalDecree = function(name) {
-		Molpy.Decreename = '';
-		var i=1;
-		for (var dec in Molpy.PapalDecrees) { 
-			if (dec == name) {
-				Molpy.Decree = Molpy.PapalDecrees[name];
-				Molpy.Boosts['The Pope'].power = i;
-				Molpy.Decreename = name;
-				break;
-			}
-			i++;
-		}
+		Molpy.Decree = Molpy.PapalDecrees[name];
+		Molpy.Boosts['The Pope'].power = Molpy.Hash(name);
+		Molpy.Decreename = name;
 		Molpy.Boosts['The Pope'].Refresh();
 	}
 
