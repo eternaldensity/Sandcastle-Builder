@@ -133,8 +133,8 @@
 
 	Molpy.priceComparisons = ['GlassBlocks', 'Sand', 'Castles'];
 	Molpy.NameSort = function(a, b) {
-		var n1 = a.alias;
-		var n2 = b.alias;
+		var n1 = a.name;
+		var n2 = b.name;
 		return n1 > n2;
 	}
 	Molpy.PriceSort = function(a, b) {
