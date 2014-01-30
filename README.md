@@ -26,12 +26,7 @@ For personal amusement only.
 
 ## Changelog
 
-### unkown
-
-#### LucidCrux:
-- Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
-
-### 3.322
+### 3.33
 
 #### Waveney:
 - Many small fixes for the Pope
@@ -39,6 +34,15 @@ For personal amusement only.
 - Performance improvements for large Logicat rewards
 - More Papal Decrees (Logicats, Ninja Stealth, Fractal Sandcastles, Tool Factory)
 - (Note due to an error any decree selected prior to this upgrade will be not be selected afterwards)
+
+#### D0rako:
+- Some boost tag/untag fixes
+
+#### mart0258:
+- MHP result is now logged
+
+#### LucidCrux:
+- Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
 
 ### 3.321
 
