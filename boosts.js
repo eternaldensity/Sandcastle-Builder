@@ -5004,7 +5004,7 @@ Molpy.DefineBoosts = function() {
 		startCountdown: 25,
 		
 		startPower: function() {
-			return Molpy.Boosts['LR'].power || 400;
+			return Molpy.Got('LR') ? (Molpy.Boosts['LR'].power || 400) : 400;
 		},
 		
 		buyFunction: function() {
