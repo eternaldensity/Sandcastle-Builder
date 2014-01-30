@@ -1317,7 +1317,7 @@ Molpy.DefineBoosts = function() {
 				+ ' whenever possible, during ASHF, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
 		},
 		
-		loadFunction: Molpy.SelectShoppingItem,	
+		loadFunction: function() { Molpy.SelectShoppingItem() },	
 		Sand: '18G',
 		Castles: '650G'
 	});
