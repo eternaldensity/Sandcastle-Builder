@@ -1321,7 +1321,7 @@ Molpy.DefineBoosts = function() {
 				+ ' whenever possible, during ASHF, taking a 5% handling fee. You may <input type="Button" value="Choose" onclick="Molpy.ChooseShoppingItem()"></input> a different item (or none) at any time.';
 		},
 		
-		loadFunction: Molpy.SelectShoppingItem,	
+		loadFunction: function() { Molpy.SelectShoppingItem() },	
 		Sand: '18G',
 		Castles: '650G'
 	});
@@ -3271,7 +3271,7 @@ Molpy.DefineBoosts = function() {
 					var cost = (100 + Molpy.LogiMult(25)) * tens;
 					if(Molpy.Has('GlassBlocks', cost))
 						str = '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle(' + cost + ',' + tens + ')"></input> '
-							+ Molpify(cost, 3) + ' Glass Blocks to solve ' + Molpify(tens)
+							+ Molpify(cost, 3) + ' Glass Blocks to solve ' + Molpify(tens,1)
 							+ ' puzzles at a time. (Multiplies reward/loss by the number of puzzles.)<br>';
 				}
 				var cost = 100 + Molpy.LogiMult(25);
@@ -4363,7 +4363,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.tfOrder[t].create(toolBuildNum - acPower);
 				Molpy.tfOrder[t].Refresh();
 			}
-			tfChipBuffer -= 78000 * toolBuildNum;
+			tfChipBuffer -= Math.ceil(Molpy.Papal('ToolF')*78000 * toolBuildNum);
 			built = toolBuildNum * 12;
 		} else {
 			toolBuildNum = Math.floor(toolBuildNum / gcCount * 12);// if something isn't selected, we can try building a bit more of the other things
@@ -4376,6 +4376,7 @@ Molpy.DefineBoosts = function() {
 					setPrice += cost; // figure out how much it costs for one of everything selected
 				}
 			}
+			setPrice = Math.ceil(setPrice*Molpy.Papal('ToolF'));
 			var iAfford = Math.min(toolBuildNum, Math.floor(tfChipBuffer / setPrice)); // find  how many of everything can be built
 			t = Molpy.tfOrder.length;
 			while(iAfford && t--) {
@@ -4393,7 +4394,7 @@ Molpy.DefineBoosts = function() {
 				while(t--) {
 					var tool = Molpy.tfOrder[t];
 					if(isFinite(Molpy.priceFactor * tool.price) == fVal && Molpy.Got('Glass Ceiling ' + t)) {
-						var cost = 1000 * (t + 1);
+						var cost = Math.ceil(1000 * (t + 1) * Molpy.Papal('ToolF'));
 						if(tfChipBuffer >= cost) {
 							tfChipBuffer -= cost;
 							built++;
@@ -4442,23 +4443,33 @@ Molpy.DefineBoosts = function() {
 			}
 			return;
 		}
-		while(i--) {
-			var on = 1;
-			var t = Molpy.tfOrder.length;
-			while(on && t--) {
-				if((isFinite(Molpy.priceFactor * Molpy.tfOrder[t].price) && !fVal) || Molpy.tfOrder[t].amount <= 0)
-					on = 0;
-			}
-			if(!on) break;
-			var t = Molpy.tfOrder.length;
-			while(t--) {
-				var tool = Molpy.tfOrder[t];
-				tool.amount--;
-				tool.Refresh();
-			}
-			times++;
+		var t = Molpy.tfOrder.length;
+		var minnum = Infinity;
+		while(t--) {
+			var tool = Molpy.tfOrder[t];
+			minnum = Math.min(tool.amount,minnum);
 		}
-		Molpy.RunFastFactory(times);
+		if (isFinite(minnum)) {	
+			while(i--) {
+				var on = 1;
+				var t = Molpy.tfOrder.length;
+				while(on && t--) {
+					if((isFinite(Molpy.priceFactor * Molpy.tfOrder[t].price) && !fVal) || Molpy.tfOrder[t].amount <= 0)
+						on = 0;
+				}
+				if(!on) break;
+				var t = Molpy.tfOrder.length;
+				while(t--) {
+					var tool = Molpy.tfOrder[t];
+					tool.amount--;
+					tool.Refresh();
+				}
+				times++;
+			}
+			Molpy.RunFastFactory(times);
+		} else {
+			Molpy.RunFastFactory(acPower);
+		}
 	}
 
 	Molpy.RunFastFactory = function(times) // assumes player did buy AO before getting AA. probably a safe assumption
@@ -5975,7 +5986,7 @@ Molpy.DefineBoosts = function() {
 		Spend: function(amount, silent) {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount = 0;
 			if(!isFinite(Molpy.sandPermNP) && Molpy.IsEnabled('Cracks')) amount = 0;
-			if(!amount) return;
+			if(!amount) return 1;
 			Molpy.sand -= amount;
 			if(Molpy.sand < 0) Molpy.sand = 0;
 			Molpy.sandSpent += amount;
@@ -7321,7 +7332,8 @@ Molpy.DefineBoosts = function() {
 				var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - Molpy.Level('Time Lord') * (Molpy.Level('Time Lord') + 1) / 2;
 				if(!Molpy.Got('TDE')) c /= 2;
 				c*=Molpy.Papal("Flux");
-				if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',1000)) c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
+				if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',Math.ceil(1000+Molpy.Boosts['Bonemeal'].power/50))) 
+					c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
 				c = Math.floor(c * .9 + c * .2 * Math.random());
 				Molpy.Add('FluxCrystals', c);
 				Molpy.Add('Time Lord', levels);
@@ -7535,6 +7547,7 @@ Molpy.DefineBoosts = function() {
 		Logicats: {desc:'10% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
 		Fractal: {desc: 'Fractal Sandcastles are 10% better', value:1.1, avail: function() {return Molpy.Got('Fractal Sandcastles') && isFinite(Molpy.castles) }},
 		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League')}},
+		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function() {Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -7586,6 +7599,7 @@ Molpy.DefineBoosts = function() {
 						return;
 					}
 				}
+				this.power = 0;
 			}
 		},
 		
@@ -7610,7 +7624,7 @@ Molpy.DefineBoosts = function() {
 		className: 'toggle',
 		price: {Bonemeal:'1M',FluxCrystals:'10M',QQ:'1G'},
 		desc: function(me) {
-			var str = 'When active, after consuming 1000 Bonemeal, gives a 0.1% bonus per 1000 Bonemeal to a Flux Harvest using over 100 temporal rifts.';
+			var str = 'When active, after consuming 1000 Bonemeal + 2%, gives a 0.1% bonus per 1000 Bonemeal to a Flux Harvest using over 100 temporal rifts.';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str

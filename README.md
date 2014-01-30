@@ -37,7 +37,7 @@ For personal amusement only.
 - Many small fixes for the Pope
 - Small fixes for Western Paradox
 - Performance improvements for large Logicat rewards
-- More Papal Decrees (Logicats, Ninja Stealth, Fractal Sandcastles)
+- More Papal Decrees (Logicats, Ninja Stealth, Fractal Sandcastles, Tool Factory)
 - (Note due to an error any decree selected prior to this upgrade will be not be selected afterwards)
 
 ### 3.321
