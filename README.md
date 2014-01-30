@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+### unkown
+
+#### LucidCrux:
+- Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
+
 ### 3.322
 
 #### Waveney:
