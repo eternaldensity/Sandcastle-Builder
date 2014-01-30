@@ -3262,7 +3262,7 @@ Molpy.DefineBoosts = function() {
 					var cost = (100 + Molpy.LogiMult(25)) * tens;
 					if(Molpy.Has('GlassBlocks', cost))
 						str = '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle(' + cost + ',' + tens + ')"></input> '
-							+ Molpify(cost, 3) + ' Glass Blocks to solve ' + Molpify(tens)
+							+ Molpify(cost, 3) + ' Glass Blocks to solve ' + Molpify(tens,1)
 							+ ' puzzles at a time. (Multiplies reward/loss by the number of puzzles.)<br>';
 				}
 				var cost = 100 + Molpy.LogiMult(25);
@@ -4353,7 +4353,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.tfOrder[t].create(toolBuildNum - acPower);
 				Molpy.tfOrder[t].Refresh();
 			}
-			tfChipBuffer -= 78000 * toolBuildNum;
+			tfChipBuffer -= Math.ceil(Molpy.Papal('ToolF')*78000 * toolBuildNum);
 			built = toolBuildNum * 12;
 		} else {
 			toolBuildNum = Math.floor(toolBuildNum / gcCount * 12);// if something isn't selected, we can try building a bit more of the other things
@@ -4366,6 +4366,7 @@ Molpy.DefineBoosts = function() {
 					setPrice += cost; // figure out how much it costs for one of everything selected
 				}
 			}
+			setPrice = Math.ceil(setPrice*Molpy.Papal('ToolF'));
 			var iAfford = Math.min(toolBuildNum, Math.floor(tfChipBuffer / setPrice)); // find  how many of everything can be built
 			t = Molpy.tfOrder.length;
 			while(iAfford && t--) {
@@ -4383,7 +4384,7 @@ Molpy.DefineBoosts = function() {
 				while(t--) {
 					var tool = Molpy.tfOrder[t];
 					if(isFinite(Molpy.priceFactor * tool.price) == fVal && Molpy.Got('Glass Ceiling ' + t)) {
-						var cost = 1000 * (t + 1);
+						var cost = Math.ceil(1000 * (t + 1) * Molpy.Papal('ToolF'));
 						if(tfChipBuffer >= cost) {
 							tfChipBuffer -= cost;
 							built++;
@@ -7498,6 +7499,7 @@ Molpy.DefineBoosts = function() {
 		Logicats: {desc:'10% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
 		Fractal: {desc: 'Fractal Sandcastles are 10% better', value:1.1, avail: function() {return Molpy.Got('Fractal Sandcastles') && isFinite(Molpy.castles) }},
 		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League')}},
+		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function( Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal){}},
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -7549,6 +7551,7 @@ Molpy.DefineBoosts = function() {
 						return;
 					}
 				}
+				this.power = 0;
 			}
 		}
 	});
