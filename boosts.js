@@ -7285,7 +7285,8 @@ Molpy.DefineBoosts = function() {
 				var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - Molpy.Level('Time Lord') * (Molpy.Level('Time Lord') + 1) / 2;
 				if(!Molpy.Got('TDE')) c /= 2;
 				c*=Molpy.Papal("Flux");
-				if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',1000)) c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
+				if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',Math.ceil(1000+Molpy.Boosts['Bonemeal'].power/50))) 
+					c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
 				c = Math.floor(c * .9 + c * .2 * Math.random());
 				Molpy.Add('FluxCrystals', c);
 				Molpy.Add('Time Lord', levels);
@@ -7573,7 +7574,7 @@ Molpy.DefineBoosts = function() {
 		className: 'toggle',
 		price: {Bonemeal:'1M',FluxCrystals:'10M',QQ:'1G'},
 		desc: function(me) {
-			var str = 'When active, after consuming 1000 Bonemeal, gives a 0.1% bonus per 1000 Bonemeal to a Flux Harvest using over 100 temporal rifts.';
+			var str = 'When active, after consuming 1000 Bonemeal + 2%, gives a 0.1% bonus per 1000 Bonemeal to a Flux Harvest using over 100 temporal rifts.';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str
