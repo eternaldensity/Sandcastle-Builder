@@ -4433,23 +4433,33 @@ Molpy.DefineBoosts = function() {
 			}
 			return;
 		}
-		while(i--) {
-			var on = 1;
-			var t = Molpy.tfOrder.length;
-			while(on && t--) {
-				if((isFinite(Molpy.priceFactor * Molpy.tfOrder[t].price) && !fVal) || Molpy.tfOrder[t].amount <= 0)
-					on = 0;
-			}
-			if(!on) break;
-			var t = Molpy.tfOrder.length;
-			while(t--) {
-				var tool = Molpy.tfOrder[t];
-				tool.amount--;
-				tool.Refresh();
-			}
-			times++;
+		var t = Molpy.tfOrder.length;
+		var minnum = Infinity;
+		while(t--) {
+			var tool = Molpy.tfOrder[t];
+			minnum = Math.min(tool.amount,minnum);
 		}
-		Molpy.RunFastFactory(times);
+		if (isFinite(minnum)) {	
+			while(i--) {
+				var on = 1;
+				var t = Molpy.tfOrder.length;
+				while(on && t--) {
+					if((isFinite(Molpy.priceFactor * Molpy.tfOrder[t].price) && !fVal) || Molpy.tfOrder[t].amount <= 0)
+						on = 0;
+				}
+				if(!on) break;
+				var t = Molpy.tfOrder.length;
+				while(t--) {
+					var tool = Molpy.tfOrder[t];
+					tool.amount--;
+					tool.Refresh();
+				}
+				times++;
+			}
+			Molpy.RunFastFactory(times);
+		} else {
+			Molpy.RunFastFactory(acPower);
+		}
 	}
 
 	Molpy.RunFastFactory = function(times) // assumes player did buy AO before getting AA. probably a safe assumption
@@ -7500,7 +7510,7 @@ Molpy.DefineBoosts = function() {
 		Logicats: {desc:'10% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
 		Fractal: {desc: 'Fractal Sandcastles are 10% better', value:1.1, avail: function() {return Molpy.Got('Fractal Sandcastles') && isFinite(Molpy.castles) }},
 		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League')}},
-		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function( Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal){}},
+		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function() {Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
