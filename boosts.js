@@ -5004,7 +5004,7 @@ Molpy.DefineBoosts = function() {
 		startCountdown: 25,
 		
 		startPower: function() {
-			return Molpy.Boosts['LR'].power || 400;
+			return Molpy.Got('LR') ? (Molpy.Boosts['LR'].power || 400) : 400;
 		},
 		
 		buyFunction: function() {
@@ -5076,7 +5076,7 @@ Molpy.DefineBoosts = function() {
 		
 		buyFunction: function() {
 			this.Level = (Molpy.Earned('Planck Limit') ? 6.2e34 : 1);
-		}
+		},
 		
 		// deactivate when reached max
 		classChange: function() { return (Molpy.Earned('Planck Limit')) ? 'action' : '';}
@@ -5256,6 +5256,8 @@ Molpy.DefineBoosts = function() {
 		
 		buyFunction: function() {
 			this.power = Molpy.Boosts['GL'].power || 400;
+			if(Molpy.Boosts['Kite and Key'].power > this.power) this.power = Molpy.Boosts['Kite and Key'].power;
+			if(Molpy.Boosts['Lightning in a Bottle'].power > this.power) this.power = Molpy.Boosts['Lightning in a Bottle'].power;
 		}
 	});
 	new Molpy.Boost({
@@ -7475,8 +7477,8 @@ Molpy.DefineBoosts = function() {
 		group: 'bean',
 		
 		desc: function(me){
-			return 'Restores a small portion of your Glassed Lightning power when you Molpy Down.<br>'
-				+ 'Your Glassed Lightning power can not fall below ' + Molpify(me.power, 1) + '.';
+			return 'Restores a small portion of your Lightning Rod power when you Molpy Down.<br>'
+				+ 'Your Lightning Rod power can not fall below ' + Molpify(me.power, 1) + '.';
 		},
 		
 		GlassBlocks: '1KW',
@@ -7498,9 +7500,9 @@ Molpy.DefineBoosts = function() {
 		group: 'bean',
 		
 		desc: function(me){
-			return 'Restores a lot of your Glassed Lightning power when you Molpy Down.<br>'
+			return 'Restores a lot of your Lightning Rod power when you Molpy Down.<br>'
 				+ 'Capped at ' + Molpify(1e252, 1) + ' stored power.<br>'
-				+ 'Your Glassed Lightning power can not fall below ' + Molpify(me.power,1) + '.';
+				+ 'Your Lightning Rod power can not fall below ' + Molpify(me.power,1) + '.';
 		},
 		
 		GlassBlocks: '1WWW',
