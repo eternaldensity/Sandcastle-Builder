@@ -5961,7 +5961,7 @@ Molpy.DefineBoosts = function() {
 		Spend: function(amount, silent) {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount = 0;
 			if(!isFinite(Molpy.sandPermNP) && Molpy.IsEnabled('Cracks')) amount = 0;
-			if(!amount) return;
+			if(!amount) return 1;
 			Molpy.sand -= amount;
 			if(Molpy.sand < 0) Molpy.sand = 0;
 			Molpy.sandSpent += amount;
