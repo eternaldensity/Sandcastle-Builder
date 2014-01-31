@@ -1,4 +1,4 @@
-﻿Molpy.DefineGUI = function() {
+Molpy.DefineGUI = function() {
 	function InnerMolpify(number, raftcastle, shrinkify) {
 		if(isNaN(number)) return 'Mustard';
 		if(!isFinite(parseFloat(number))) return 'Infinite';
@@ -1140,6 +1140,7 @@
 	Molpy.ClearLog = function() {
 		Molpy.notifLog = [];
 		Molpy.notifLogNext = 0;
+		Molpy.notifLogCurrent = 0;
 		Molpy.notifLogMax = 399; //store 400 lines
 		Molpy.notifLogPaint = 0;
 	}
@@ -1186,10 +1187,20 @@
 			Molpy.EarnBadge('Thousands of Them!');
 		}
 		if(log) {
-			Molpy.notifLog[Molpy.notifLogNext] = text;
-			Molpy.notifLogNext++;
-			if(Molpy.notifLogNext > Molpy.notifLogMax) Molpy.notifLogNext = 0;
-			Molpy.notifLogPaint = 1;
+			if (Molpy.notifLog[Molpy.notifLogNext]==null)
+				Molpy.notifLog[Molpy.notifLogNext] = new Object();
+			
+			if (Molpy.notifLog[Molpy.notifLogCurrent].text == text) {
+				Molpy.notifLog[Molpy.notifLogCurrent].qty++;
+				Molpy.notifLogPaint = 1;
+			} else {
+				Molpy.notifLog[Molpy.notifLogNext].text = text;
+				Molpy.notifLog[Molpy.notifLogNext].qty=1;
+				
+				Molpy.notifLogCurrent=Molpy.notifLogNext++;
+				if(Molpy.notifLogNext > Molpy.notifLogMax) Molpy.notifLogNext = 0;
+				Molpy.notifLogPaint = 1;
+			}
 		}
 	}
 
@@ -1198,17 +1209,24 @@
 		var str = '';
 		var i = Molpy.notifLogNext;
 		while(i <= Molpy.notifLogMax) {
-			var line = Molpy.notifLog[i];
+			if (Molpy.notifLog[i] == null) break
+			var line = Molpy.notifLog[i].text;
 			if(line) {
-				str += line + '<br>';
+				str += line;
+				if (Molpy.notifLog[i].qty>1)
+					str += ' (x'+Molpy.notifLog[i].qty+')';
+				str += '<br>';
 			}
 			i++;
 		}
 		i = 0;
 		while(i < Molpy.notifLogNext) {
-			var line = Molpy.notifLog[i];
+			var line = Molpy.notifLog[i].text;
 			if(line) {
-				str += line + '<br>';
+				str += line;
+				if (Molpy.notifLog[i].qty>1)
+					str += ' (x'+Molpy.notifLog[i].qty+')';
+				str += '<br>';
 			}
 			i++;
 		}
