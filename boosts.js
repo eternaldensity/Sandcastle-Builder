@@ -3491,49 +3491,18 @@ Molpy.DefineBoosts = function() {
 		Destroy: Molpy.BoostFuncs.Destroy,
 		
 		desc: function(me) {
-			var pBoost = Molpy.Boosts[Molpy.GetBlackprintSubject(1)];
-			return 'Allows you to construct ' + (pBoost ? pBoost.name : 'new Boosts')
-				+ ' with Factory Automation. (See Rosetta to start construction.)<br>You have '
-				+ Molpy.BlackprintReport();
+			return 'You have ' + Molpy.BlackprintReport() + ' Blackprints.';
 		},
 		
 		stats: function(me) {
 			return '(Or Blueprints if you\'re into Chromatic Heresy)<br>' + me.desc();
 		},
 		
-		Sand: function() {
-			return Molpy.LogiMult('80YW');
-		},
-		
-		Castles: function() {
-			return Molpy.LogiMult('40YW');
-		},
-		
-		GlassBlocks: function() {
-			return Molpy.LogiMult('25K');
-		},
-		
-		lockFunction: function() {
-			var s = Molpy.GetBlackprintSubject(1);
-			if(!s) return;
-			this.Spend(Molpy.blackprintCosts[s]);
-			Molpy.UnlockBoost(s);
-			Molpy.Boosts[s].buy();
-			if(Molpy.Boosts[s].bought) {
-				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed', 1);
-			} else {
-				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed and is available for purchase', 1);
-			}
-		},
-		
-		buyFunction: function() {
-			Molpy.Notify('See Rosetta about your Blackprints', 1);
-			Molpy.Boosts['Rosetta'].Refresh();
-		}
+		defStuff: 1
 	});
 
 	Molpy.BlackprintReport = function() {
-		return 'Collected ' + Molpify(+Molpy.Level('Blackprints') + Molpy.Boosts['Milo'].power / 100, 3) + ' of '
+		return 'collected ' + Molpify(+Molpy.Level('Blackprints') + Molpy.Boosts['Milo'].power / 100, 3) + ' of '
 			+ Molpify(Molpy.GetBlackprintPages() || Molpy.Boosts['AC'].power * (Molpy.Boosts['Dragon Forge'].bought ? 10 : 2), 1);
 	}
 
@@ -3557,7 +3526,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.GetBlackprintSubject = function(d) {
-		if(!d && !Molpy.Got('Blackprints')) return;
+		if(!d && !Molpy.Got('Blackprint Plans')) return;
 		if(Molpy.Level('Blackprints') < 1) return;
 		for( var i in Molpy.blackprintOrder) {
 			var print = Molpy.blackprintOrder[i];
@@ -3575,12 +3544,12 @@ Molpy.DefineBoosts = function() {
 
 	// if we have enough blackprint pages for next blackprint boost, allow it as a department reward
 	Molpy.CheckBlackprintDepartment = function() {
-		Molpy.Boosts['Blackprints'].department = 0;
+		Molpy.Boosts['Blackprint Plans'].department = 0;
 		var print = Molpy.GetBlackprintSubject(1);
 		if(!print) return;
 		var pboost = Molpy.Boosts[print];
 		if(!pboost.unlocked) {
-			Molpy.Boosts['Blackprints'].department = 1 * (Molpy.Level('Blackprints') >= Molpy.blackprintCosts[print]);
+			Molpy.Boosts['Blackprint Plans'].department = 1 * (Molpy.Level('Blackprints') >= Molpy.blackprintCosts[print]);
 			return;
 		}
 	}
@@ -3624,7 +3593,7 @@ Molpy.DefineBoosts = function() {
 				return 'Constructing nothing. How?';
 			}
 			var c = Molpy.LimitConstructionRuns(subj.alias);
-			str = 'Constructing ' + subj.name + ' from Blackprints.<br>' + Molpify(c * 10 - me.Level) + ' runs of Factory Automation required to complete.';
+			str = 'Constructing ' + subj.name + ' from Blackprint Plans.<br>' + Molpify(c * 10 - me.Level) + ' runs of Factory Automation required to complete.';
 			if(subj.alias == 'BoH')
 				str += '<br>To construct Bag of Holding you must retain at least 400 goats, otherwise construction will stall.';
 			return str;
@@ -3636,7 +3605,7 @@ Molpy.DefineBoosts = function() {
 		
 		lockFunction: function() {
 			this.Level = 0;
-			Molpy.LockBoost('Blackprints');
+			Molpy.LockBoost('Blackprint Plans');
 		},
 		
 		defStuff: 1
@@ -5438,7 +5407,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		
-		// deactivate if power is Infinite, all tools are Mustard and nothing can be built
+		// deactivate if power is Infinite, all tools are Mustard and nothing can be made
 		classChange: function() { return (isFinite(Molpy.Boosts['AD'].power) || Molpy.mustardTools < Molpy.SandToolsById.length + Molpy.CastleToolsById.length || Molpy.DragonTarget()[0]) ? 'alert' : ''},
 		
 		defStuff: 1,
@@ -7630,6 +7599,46 @@ Molpy.DefineBoosts = function() {
 			return str
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+	});
+	
+	new Molpy.Boost({
+		name: 'Blackprint Plans',
+		icon: 'blackprints',
+		group: 'bean',
+		desc: function(me) {
+			var pBoost = Molpy.Boosts[Molpy.GetBlackprintSubject(1)];
+			return 'Allows you to construct ' + (pBoost ? pBoost.name : 'new Boosts')
+				+ ' with Factory Automation. (See Rosetta to start construction.)'
+		},
+		
+		stats: function(me) {
+			return '(Or Blueprints if you\'re into Chromatic Heresy)<br>' + me.desc();
+		},
+		
+		Sand: function() {
+			return Molpy.LogiMult('80YW');
+		},
+		
+		Castles: function() {
+			return Molpy.LogiMult('40YW');
+		},
+		
+		GlassBlocks: function() {
+			return Molpy.LogiMult('25K');
+		},
+		
+		lockFunction: function() {
+			var s = Molpy.GetBlackprintSubject(1);
+			if(!s) return;
+			Molpy.Spend({Blackprints:Molpy.blackprintCosts[s]});
+			Molpy.UnlockBoost(s);
+			Molpy.Boosts[s].buy();
+			if(Molpy.Boosts[s].bought) {
+				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed', 1);
+			} else {
+				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed and is available for purchase', 1);
+			}
+		}
 	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
