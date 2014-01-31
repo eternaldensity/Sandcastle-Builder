@@ -69,7 +69,6 @@ Molpy.Up = function() {
 		Molpy.sandManual = 0; //total sand dug through user clicks
 		Molpy.chipsManual = 0;
 		Molpy.castlesBuilt = 0; //total castles built throughout the game
-		Molpy.castles = 0; //current castle balance
 		Molpy.castlesDestroyed = 0; //total castles destroyed by other structures throughout the game
 		Molpy.sandPermNP = 0; //sand per milliNewPix (recaculated when stuff is bought)
 		Molpy.glassPermNP = 0;
@@ -160,7 +159,7 @@ Molpy.Up = function() {
 		};
 		Molpy.SandToCastles = function() {
 			Molpy.buildNotifyFlag = 0;
-			while(Molpy.Boosts['Sand'].power >= Molpy.nextCastleSand && isFinite(Molpy.castles)) {
+			while(Molpy.Boosts['Sand'].power >= Molpy.nextCastleSand && isFinite(Molpy.Boosts['Castles'].power)) {
 				if(Molpy.Got('Fractal Sandcastles')) {
 					var m = 1.35;
 					if(Molpy.Got('Fractal Fractals')) m = 1.5;
@@ -180,7 +179,7 @@ Molpy.Up = function() {
 				Molpy.prevCastleSand = Molpy.currentCastleSand;
 				if(!isFinite(Molpy.Boosts['Sand'].power) || Molpy.nextCastleSand <= 0) {
 					Molpy.nextCastleSand = 1;
-					Molpy.castles = Infinity;
+					Molpy.Boosts['Castles'].power = Infinity;
 					Molpy.castlesBuilt = Infinity;
 					return;
 				}
@@ -192,8 +191,8 @@ Molpy.Up = function() {
 				Molpy.Boosts['Sand'].power = 0;
 				Molpy.EarnBadge('Mustard Cleanup');
 			}
-			if(isNaN(Molpy.castles)) {
-				Molpy.castles = 0;
+			if(isNaN(Molpy.Boosts['Castles'].power)) {
+				Molpy.Boosts['Castles'].power = 0;
 				Molpy.EarnBadge('Mustard Cleanup');
 			}
 			if(isNaN(Molpy.castlesBuilt)) {
@@ -204,7 +203,9 @@ Molpy.Up = function() {
 		Molpy.buildNotifyFlag = 1;
 		Molpy.buildNotifyCount = 0;
 		Molpy.Build = function(amount, refund) {
-			if(!isFinite(Molpy.castles)) {
+			var currentCastles = Molpy.Boosts['Castles'].power; //avoid multiple lookups
+			
+			if(!isFinite(currentCastles)) {
 				amount = 0; //no point in adding any more
 			}
 			if(!refund && amount)//don't multiply if amount is 0
@@ -213,8 +214,8 @@ Molpy.Up = function() {
 			}
 			amount = Math.max(0, amount);
 			Molpy.castlesBuilt += amount;
-			Molpy.castles += amount;
-			if(amount && !isFinite(Molpy.castles)) Molpy.recalculateDig = 1;
+			currentCastles += amount;
+			if(amount && !isFinite(currentCastles)) Molpy.recalculateDig = 1;
 
 			if(Molpy.buildNotifyFlag) {
 				if(Molpy.buildNotifyCount) {
@@ -222,7 +223,7 @@ Molpy.Up = function() {
 					Molpy.buildNotifyCount = 0;
 				}
 				if(amount) {
-					if(amount >= Molpy.castles / 10000000)
+					if(amount >= currentCastles / 10000000)
 						Molpy.Notify(amount == 1 ? '+1 Castle' : Molpify(amount, 3) + ' Castles Built', 1);
 					else
 						Molpy.buildNotifyCount += amount;
@@ -313,10 +314,11 @@ Molpy.Up = function() {
 			if(Molpy.Has('Castles', DeMolpify('1WQ'))) {
 				Molpy.EarnBadge('What Queue');
 			}
-			if(!isFinite(Molpy.castles) && !isFinite(Molpy.Boosts['Sand'].power)) {
+			if(!isFinite(currentCastles) && !isFinite(Molpy.Boosts['Sand'].power)) {
 				Molpy.EarnBadge('Everything but the Kitchen Windows');
 			}
 			Molpy.Boosts['Time Travel'].Refresh();
+			Molpy.Boosts['Castles'].power = currentCastles;
 		};
 		Molpy.MakeChips = function(times) {
 			var furnaceLevel = (Molpy.Boosts['Sand Refinery'].power) + 1;
@@ -1261,7 +1263,7 @@ Molpy.Up = function() {
 			};
 			this.DestroyPhase = function() {
 				var i = this.amount;
-				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.castles) && !isFinite(Molpy.priceFactor * this.price);
+				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var destroyN = EvalMaybeFunction(inf ? this.destroyG : this.destroyC);
 				var destroyT = destroyN * i || 0;
 				if(inf) {
@@ -1273,7 +1275,7 @@ Molpy.Up = function() {
 						return;
 					}
 				} else {
-					if(Molpy.castles >= destroyT) {
+					if(Molpy.Boosts['Castles'].power >= destroyT) {
 						this.currentActive += i;
 						this.totalCastlesDestroyed += destroyT;
 						Molpy.Destroy('Castles', destroyT);
@@ -1288,10 +1290,10 @@ Molpy.Up = function() {
 					Molpy.DestroyGlass(destroyN * iAfford || 0);
 
 				} else {
-					var iAfford = Math.min(i, Math.floor(Molpy.castles / destroyN));
+					var iAfford = Math.min(i, Math.floor(Molpy.Boosts['Castles'].power / destroyN));
 					var waste = 0;
 					if(iAfford < i) {
-						waste = Molpy.castles - destroyN * iAfford;
+						waste = Molpy.Boosts['Castles'].power - destroyN * iAfford;
 					}
 					this.currentActive += iAfford;
 					this.totalCastlesDestroyed += destroyN * iAfford;
@@ -1303,7 +1305,7 @@ Molpy.Up = function() {
 
 			};
 			this.BuildPhase = function() {
-				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.castles) && !isFinite(Molpy.priceFactor * this.price);
+				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var buildN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
 				buildN *= this.currentActive;
 				if(inf) {
@@ -1326,7 +1328,7 @@ Molpy.Up = function() {
 				if(!d) return;
 				if(keep && d.innerHTML) return;
 				var desc = '';
-				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.castles) && !isFinite(Molpy.priceFactor * this.price);
+				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var bN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
 				var dN = EvalMaybeFunction(inf ? this.destroyG : this.destroyC);
 				var w = inf ? 'Chip' : 'Castle';
@@ -2202,7 +2204,7 @@ Molpy.Up = function() {
 			}
 			if(cb) return;
 
-			if(!isFinite(Molpy.castles)) return; //We don't need to blast!
+			if(!isFinite(Molpy.Boosts['Castles'].power)) return; //We don't need to blast!
 
 			var blastFactor = 1000;
 			var boosted = 0;
@@ -2277,7 +2279,7 @@ Molpy.Up = function() {
 				bonus *= (1 + 0.2 * Molpy.Boosts['BKJ'].power);
 				if(Molpy.Got('Blitzing')) bonus *= Math.min(2, (Molpy.Boosts['Blitzing'].power - 800) / 200);
 			}
-			var finite = isFinite(Molpy.castles);
+			var finite = isFinite(Molpy.Boosts['Castles'].power);
 			var pg = Molpy.Got('Panther Glaze');
 			if(Molpy.Got('RRR') && Molpy.Boosts['RRR'].power && Molpy.Has('GlassBlocks', 30)) {
 				bonus *= 10000;
@@ -2704,7 +2706,7 @@ Molpy.Up = function() {
 	Molpy.PerformJudgement = function() {
 
 		if(Molpy.Got('Fireproof') && Molpy.Got('NavCode') && !Molpy.Boosts['NavCode'].IsEnabled) {
-			Molpy.castles = 0;
+			Molpy.Boosts['Castles'].power = 0;
 			return;
 		}
 
@@ -2716,8 +2718,8 @@ Molpy.Up = function() {
 					Molpy.Spend('Logicat', 100);
 					Molpy.UnlockBoost('Bacon');
 				}
-			dAmount = Math.ceil(Math.min(Molpy.castles * .9, dAmount));
-			if(Molpy.castles) {
+			dAmount = Math.ceil(Math.min(Molpy.Boosts['Castles'].power * .9, dAmount));
+			if(Molpy.Boosts['Castles'].power) {
 				var failed = Molpy.Destroy('Castles', dAmount, 1);
 				Molpy.CastleTools['NewPixBot'].totalCastlesDestroyed += dAmount;
 				if(!failed) Molpy.Notify('By the NewpixBots');
@@ -2897,7 +2899,7 @@ Molpy.Up = function() {
 			}
 		}
 		Molpy.GlassNotifyFlush();
-		if(isFinite(Molpy.castles)) Molpy.Boosts['MHP'].department = 1 * (flandom(3) == 0);
+		if(isFinite(Molpy.Boosts['Castles'].power)) Molpy.Boosts['MHP'].department = 1 * (flandom(3) == 0);
 		if(Molpy.autosaveCountup > 1000) {
 			Molpy.Notify('You have not saved in over a NewPix!!', 1);
 		}

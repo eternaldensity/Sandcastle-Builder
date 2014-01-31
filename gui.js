@@ -1289,15 +1289,16 @@ Molpy.DefineGUI = function() {
 			'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
 	Molpy.drawFrame = 0;
 	Molpy.Draw = function() {
-		g('castlecount').innerHTML = Molpify(Molpy.castles, 1) + ' castle' + plural(Molpy.castles);
-		g('sandcount').innerHTML = Molpify(Molpy.Boosts['Sand'].power, 1) + ' sand' + (isFinite(Molpy.castles) ? ' of ' + Molpify(Molpy.nextCastleSand, 1) + ' needed' : '');
+		var castleAmt = Molpy.Boosts['Castles'].power; //so we don't need lots of lookups
+		g('castlecount').innerHTML = Molpify(castleAmt, 1) + ' castle' + plural(castleAmt);
+		g('sandcount').innerHTML = Molpify(Molpy.Boosts['Sand'].power, 1) + ' sand' + (isFinite(castleAmt) ? ' of ' + Molpify(Molpy.nextCastleSand, 1) + ' needed' : '');
 		g('sandrate').innerHTML = Molpify(Molpy.sandPermNP, 1) + ' sand/mNP';
 		g('chipcount').innerHTML = Molpify(Molpy.Boosts['TF'].power, 1) + ' chips';
 		g('chiprate').innerHTML = Molpify(Molpy.glassPermNP, 1) + ' chips/mNP';
 		g('newtools').innerHTML = 'Built ' + Molpify(Molpy.toolsBuilt, 1) + ' new tool' + plural(Molpy.toolsBuilt);
 
 		if(noLayout) {
-			var finite = isFinite(Molpy.Boosts['Sand'].power) || isFinite(Molpy.castles) || isFinite(Molpy.spmNP);
+			var finite = isFinite(Molpy.Boosts['Sand'].power) || isFinite(castleAmt) || isFinite(Molpy.spmNP);
 			var tf = Molpy.Got('TF');
 			$('#sectionTFCounts').toggleClass('hidden', !tf);
 			if(tf) {
@@ -1320,7 +1321,7 @@ Molpy.DefineGUI = function() {
 
 		if(!noLayout) {
 			g('stuffSandCount').innerHTML = 'Sand: ' + Molpify(Molpy.Boosts['Sand'].power, 3);
-			g('stuffCastleCount').innerHTML = 'Castles: ' + Molpify(Molpy.castles, 3);
+			g('stuffCastleCount').innerHTML = 'Castles: ' + Molpify(castleAmt, 3);
 			g('stuffTFChipCount').innerHTML = 'TF Chips: ' + Molpify(Molpy.Boosts['TF'].Level, 3);
 			for( var i in Molpy.BoostsByGroup['stuff']) {
 				var bst = Molpy.BoostsByGroup['stuff'][i];
