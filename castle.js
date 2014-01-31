@@ -2654,7 +2654,7 @@ Molpy.Up = function() {
 		Molpy.Dig(Molpy.sandPermNP*Molpy.Papal('Sand'));
 		if(Molpy.IsEnabled('Vacuum Cleaner') && Molpy.Has('Sand', Infinity) && Molpy.Has(Molpy.VacCost)) {
 			Molpy.Boosts['Sand'].Level = 0;
-			var vacs = Molpy.Level('TS') || 1;
+			var vacs = Math.floor((Molpy.Level('TS') || 1)*Molpy.Papal('Dyson'));
 			if(vacs > 1) {
 				vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
 				vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ));
