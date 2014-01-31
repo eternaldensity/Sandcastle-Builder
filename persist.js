@@ -307,7 +307,7 @@
 
 	Molpy.GamenumsToString = function() {
 		var s = 'S'; //Semicolon
-		var str = '' + (Molpy.newpixNumber) + s + (Molpy.sandDug) + s + (Molpy.sandManual) + s + (Molpy.sand) + s
+		var str = '' + (Molpy.newpixNumber) + s + (Molpy.Boosts['Sand'].bought) + s + (Molpy.sandManual) + s + (Molpy.sand) + s
 			+ (Molpy.castlesBuilt) + s + (Molpy.castles) + s + (Molpy.castlesDestroyed) + s + (Molpy.prevCastleSand)
 			+ s + (Molpy.nextCastleSand) + s + (Molpy.castlesSpent) + s + (Molpy.sandSpent) + s + (Molpy.beachClicks)
 			+ s + (Molpy.ninjaFreeCount) + s + (Molpy.ninjaStealth) + s + (Molpy.ninjad) + s + (Molpy.saveCount) + s
@@ -446,7 +446,7 @@
 		var pixels = thread.split(s);
 
 		Molpy.newpixNumber = parseInt(pixels[0]) || 0;
-		Molpy.sandDug = parseFloat(pixels[1]) || 0;
+		Molpy.Boosts['Sand'].bought = parseFloat(pixels[1]) || 0;
 		Molpy.sandManual = parseFloat(pixels[2]) || 0;
 		Molpy.sand = parseFloat(pixels[3]) || 0;
 		Molpy.castlesBuilt = parseFloat(pixels[4]) || 0;
@@ -480,7 +480,7 @@
 		Molpy.chipsManual = parseFloat(pixels[29]) || 0;
 		Molpy.redactedChain = parseFloat(pixels[30]) || 0;
 		Molpy.redactedChainMax = parseFloat(pixels[31]) || 0;
-	}
+	};
 
 	Molpy.SandToolsFromString = function(thread) {
 		var s = 'S'; //Semicolon
@@ -950,7 +950,7 @@
 		if(coma || confirm('Really Molpy Down?\n(Progress will be reset but achievements will not.)')) {
 
 			coma || _gaq && _gaq.push(['_trackEvent', 'Molpy Down', 'Begin', '' + Molpy.newpixNumber]);
-			Molpy.sandDug = 0;
+			Molpy.Boosts['Sand'].bought = 0;
 			Molpy.sandManual = 0;
 			Molpy.chipsManual = 0;
 			if(isFinite(Molpy.castlesBuilt))
