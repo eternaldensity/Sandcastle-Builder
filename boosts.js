@@ -1494,7 +1494,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.totalCastlesDown = Number.MAX_VALUE;
 			}
 			Molpy.Destroy('Castles', Molpy.castles);
-			Molpy.Dig(Molpy.sand);
+			Molpy.Dig(Molpy.Boosts['Sand'].power);
 		}
 		if(Molpy.Got('Temporal Rift')) {
 			if(Molpy.Got('Safety Net'))
@@ -2565,7 +2565,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate if sand is infinite
-		classChange: function() { return isFinite(Molpy.sand) ? 'action' : '' }
+		classChange: function() { return isFinite(Molpy.Boosts['Sand'].power) ? 'action' : '' }
 	});
 
 	Molpy.CastleCrush = function() {
@@ -3147,7 +3147,7 @@ Molpy.DefineBoosts = function() {
 		GlassBlocks: 15,
 		
 		unlockFunction: function() {
-			this.power = Molpy.castles * 6 + Molpy.sand;
+			this.power = Molpy.castles * 6 + Molpy.Boosts['Sand'].power;
 		},
 		
 		lockFunction: function() {
@@ -3935,14 +3935,14 @@ Molpy.DefineBoosts = function() {
 			return times;
 		}
 		var b = smf.bought;
-		var sand = Math.pow(1.2, Math.abs(b)) * 100;
-		if(b < 0) sand *= sand;
+		var sandToSpend = Math.pow(1.2, Math.abs(b)) * 100;
+		if(b < 0) sandToSpend *= sandToSpend;
 		while(times) {
-			if(Molpy.sand < sand) {
+			if(Molpy.Boosts['Sand'].power < sandToSpend) {
 				Molpy.Boosts['Break the Mould'].power += times;
 				return times;
 			}
-			Molpy.Spend('Sand', sand);
+			Molpy.Spend('Sand', sandToSpend);
 			times--;
 			smf.power++;
 			smf.Refresh();
@@ -5969,14 +5969,14 @@ Molpy.DefineBoosts = function() {
 		
 		Level: [
 		        function() {
-		        	return Molpy.sand;
+		        	return this.power;
 		        },
 		        function(amount) {
 		        	if(isNaN(amount)) {
 		        		amount = 0;
 		        		Molpy.EarnBadge('Mustard Cleanup');
 		        	}
-		        	Molpy.sand = amount;
+		        	this.power = amount;
 		        	this.Refresh();
 		        }
 		],
@@ -5987,17 +5987,17 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount = 0;
 			if(!isFinite(Molpy.sandPermNP) && Molpy.IsEnabled('Cracks')) amount = 0;
 			if(!amount) return 1;
-			Molpy.sand -= amount;
-			if(Molpy.sand < 0) Molpy.sand = 0;
+			this.power -= amount;
+			if(this.power < 0) this.power = 0;
 			Molpy.sandSpent += amount;
-			if((isFinite(Molpy.sand) || !isFinite(amount))) {
+			if((isFinite(this.power) || !isFinite(amount))) {
 				if(!Molpy.boostSilence && !silent && Molpy.spendSandNotifyFlag) {
 					if(Molpy.spendSandNotifyCount) {
 						amount += Molpy.spendSandNotifyCount;
 						Molpy.spendSandNotifyCount = 0;
 					}
 					if(amount) {
-						if(amount >= Molpy.sand / 10000000)
+						if(amount >= this.power / 10000000)
 							Molpy.Notify('Spent Sand: ' + Molpify(amount, 3), 1);
 						else {
 							Molpy.spendSandNotifyCount += amount;
