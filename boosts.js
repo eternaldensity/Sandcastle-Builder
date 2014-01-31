@@ -2986,7 +2986,7 @@ Molpy.DefineBoosts = function() {
 			if(levels > 0) this.Level += levels;
 			if(points > 0) {
 				this.power += points;
-				var rewards = Math.ceil(this.bought*5 - this.power);
+				var rewards = Math.ceil(this.power - this.bought*5);
 				if (rewards > 0) {
 					this.bought+=Math.floor(rewards*Molpy.Papal('Logicats'));
 					if(rewards > 5) {
