@@ -1260,7 +1260,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:1826,name:'Quiet chirps',desc:'Cueball: Are you hearing quiet chirps?'});
 	Molpy.MakeQuadBadge({np:1828,name:'Not now',desc:'Cueball has stopped hearing them'});
 	Molpy.MakeQuadBadge({np:1830,name:'Sky chirps',desc:'Megan: I heard chirps from the sky once'});
-	Molpy.MakeQuadBadge({np:1831,name:'Stars and chirps',desc:'Megan says she heard peeping while looking at stars'});
+	Molpy.MakeQuadBadge({np:1831,name:'Stars and chirps',desc:'Megan says she heard chirping while looking at stars'});
 	Molpy.MakeQuadBadge({np:1832,name:'Stars flicker',desc:'Megan thought she saw a few stars flicker'});
 	Molpy.MakeQuadBadge({np:1837,name:'Chirp',desc:'A quiet chirp'});
 	Molpy.MakeQuadBadge({np:1838,name:'Another Chirp',desc:'Another chirp - Megan looks up'});
