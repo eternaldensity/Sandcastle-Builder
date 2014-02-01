@@ -7592,6 +7592,13 @@ Molpy.DefineBoosts = function() {
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
+	new Molpy.Boost({
+		name: 'Black Hole',
+		icon: 'blackhole',
+		group: 'hpt',
+		price: {Blackprints:Infinity,FluxCrystals:Infinity,QQ:'10T',Vacuum:'10M'},
+		desc: 'Doubles the Vacuum from the Vacuum Cleaner'
+	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }

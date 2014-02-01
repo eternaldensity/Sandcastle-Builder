@@ -2664,6 +2664,7 @@ Molpy.Up = function() {
 				FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
 				QQ: Molpy.VacCost.QQ * vacs
 			});
+			if (Molpy.Got('Black Hole')) vacs*=2;
 			Molpy.Add('Vacuum', vacs);
 		}
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
