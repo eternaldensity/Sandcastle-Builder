@@ -5569,8 +5569,7 @@ Molpy.DefineBoosts = function() {
 					while(Molpy.Has({
 						Logicat: mult * logicatCost * 10,
 						Blackprints: pageCost * mult * 10
-					}) && (n + 20 * mult * 10 <= 1e34))
-						mult *= 10;
+					}) && (n + 20 * mult * 10 <= 1e34) && (n <= 20 * mult)) mult *= 10;
 					str += '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' + Molpify(20 * mult) + ',1)">'
 						+ '</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of '
 						+ Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) + ' Blackprint Pages.';
