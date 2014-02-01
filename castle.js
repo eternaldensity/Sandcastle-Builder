@@ -2666,7 +2666,7 @@ Molpy.Up = function() {
 			});
 			if (Molpy.Got('Black Hole')) vacs*=2;
 			Molpy.Add('Vacuum', vacs);
-			if (!isFinite(vacs)) Molpy.UnlockBoost('Black Hole');
+			if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 		}
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
 			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800)
