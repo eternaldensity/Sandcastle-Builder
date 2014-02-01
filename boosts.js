@@ -6888,7 +6888,7 @@ Molpy.DefineBoosts = function() {
 				if(add > me.bought / 1000000) {
 					str += '<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:' + p * add
 						+ '}))Molpy.Add(\'Time Lord\',0,' + add + ');" value="Pay"></input> ' + Molpify(p * add, 1)
-						+ ' Flux Crystals to increase this by ' + add + '.';
+						+ ' Flux Crystals to increase this by ' + Molpify(add) + '.';
 				}
 			}
 			return str;
