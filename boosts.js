@@ -2989,7 +2989,7 @@ Molpy.DefineBoosts = function() {
 				var rewards = Math.floor((this.power - this.bought*5)/5);
 				if (rewards > 0) {
 					this.bought+=Math.floor(rewards*Molpy.Papal('Logicats'));
-					if (Molpy.Papal('Logicats')) this.power = this.bought*5;
+					if (Molpy.Papal('Logicats') > 1) this.power = this.bought*5;
 					if(rewards > 5) {
 						Molpy.Add('QQ', Math.floor((rewards - 5)*Molpy.Papal('QQs')));
 						rewards = 5;
