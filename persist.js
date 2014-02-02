@@ -307,8 +307,8 @@
 
 	Molpy.GamenumsToString = function() {
 		var s = 'S'; //Semicolon
-		var str = '' + (Molpy.newpixNumber) + s + (Molpy.Boosts['Sand'].bought) + s + (Molpy.sandManual) + s + (Molpy.sand) + s
-			+ (Molpy.castlesBuilt) + s + (Molpy.castles) + s + (Molpy.castlesDestroyed) + s + (Molpy.prevCastleSand)
+		var str = '' + (Molpy.newpixNumber) + s + (Molpy.Boosts['Sand'].bought) + s + (Molpy.sandManual) + s + (Molpy.Boosts['Sand'].power) + s
+			+ (Molpy.castlesBuilt) + s + (Molpy.Boosts['Castles'].power) + s + (Molpy.castlesDestroyed) + s + (Molpy.prevCastleSand)
 			+ s + (Molpy.nextCastleSand) + s + (Molpy.castlesSpent) + s + (Molpy.sandSpent) + s + (Molpy.beachClicks)
 			+ s + (Molpy.ninjaFreeCount) + s + (Molpy.ninjaStealth) + s + (Molpy.ninjad) + s + (Molpy.saveCount) + s
 			+ (Molpy.loadCount) + s + (Molpy.notifsReceived) + s + (Molpy.timeTravels) + s + (Molpy.npbONG) + s +
@@ -448,9 +448,9 @@
 		Molpy.newpixNumber = parseInt(pixels[0]) || 0;
 		Molpy.Boosts['Sand'].bought = parseFloat(pixels[1]) || 0;
 		Molpy.sandManual = parseFloat(pixels[2]) || 0;
-		Molpy.sand = parseFloat(pixels[3]) || 0;
+		Molpy.Boosts['Sand'].power = parseFloat(pixels[3]) || 0;
 		Molpy.castlesBuilt = parseFloat(pixels[4]) || 0;
-		Molpy.castles = parseFloat(pixels[5]) || 0;
+		Molpy.Boosts['Castles'].power = parseFloat(pixels[5]) || 0;
 		Molpy.castlesDestroyed = parseFloat(pixels[6]) || 0;
 		Molpy.prevCastleSand = parseFloat(pixels[7]) || 0;
 		Molpy.nextCastleSand = parseFloat(pixels[8]) || 0;
@@ -865,7 +865,7 @@
 			if(Molpy.Got('Panther Rush')) Molpy.Boosts['Panther Rush'].buyFunction();
 		}
 		if(version < 3.13) {
-			if(!Molpy.Earned('Getting Expensive') && !isFinite(Molpy.castles)) {
+			if(!Molpy.Earned('Getting Expensive') && !isFinite(Molpy.Boosts['Castles'].power)) {
 				Molpy.Notify('Added a new Badge to help very early beginners, and you seem to be beyond the point where you could easily get it normally, so here it is.', 1);
 				Molpy.EarnBadge('Getting Expensive');
 			}
