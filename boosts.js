@@ -6883,7 +6883,7 @@ Molpy.DefineBoosts = function() {
 			if(me.bought) {
 				var add = 1;
 				var p = 20 * me.bought * (1 + Math.floor(Math.log(me.bought) * Math.LOG10E));
-				while(Molpy.Has('FluxCrystals', p * add * 10))
+				while(Molpy.Has('FluxCrystals', p * add * 10) && isFinite(add) )
 					add *= 10;
 				if(add > me.bought / 1000000) {
 					str += '<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:' + p * add
@@ -7273,7 +7273,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		desc: function(me) {
-			if(!me.bought || Molpy.IsEnabled('Time Lord'))
+			if(!me.bought || Molpy.IsEnabled('Time Lord') && isFinite(Molpy.Boosts['FluxCrystals'].power))
 				return 'Easy harvesting of flux crystals from remaining rifts';
 			return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
 		}
