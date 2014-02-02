@@ -48,6 +48,7 @@ For personal amusement only.
 
 #### ED:
 - Add a few changelog entries, fix version number :P
+- My 'Swedish advisor' made another suggestion.
 
 ### 3.321
 
