@@ -5566,13 +5566,19 @@ Molpy.DefineBoosts = function() {
 				var logicatCost = Math.ceil(n / 20);
 				if(n < Molpy.Boosts['PC'].power) {
 					var mult = 1;
+					var strs = [];
 					while(Molpy.Has({
 						Logicat: mult * logicatCost * 10,
 						Blackprints: pageCost * mult * 10
-					}) && (n + 20 * mult * 10 <= 1e34) && (n <= 20 * mult)) mult *= 10;
-					str += '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' + Molpify(20 * mult) + ',1)">'
-						+ '</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of '
-						+ Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) + ' Blackprint Pages.';
+						}) && (n + 20 * mult * 10 <= 1e34) && (n > 20 * mult)) {
+						mult *= 10;
+						strs.push( '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' +
+						       	Molpify(20 * mult) + ',1)">' +
+							'</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of ' +
+							Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) +
+						       	' Blackprint Pages.');
+					};
+					str += strs.slice(-3).join('');
 				} else {
 					str += '<br>It will cost ' + Molpify(logicatCost,2) + ' Logicat Levels and ' + Molpify(pageCost, 2)
 						+ ' Blackprint Pages to increase this by 20.';
@@ -6892,7 +6898,9 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 			return str;
-		}
+		},
+
+		classChange: function() { return isFinite(this.bought) ? 'action': ''},
 	});
 	new Molpy.Boost({
 		name: 'Flux Crystals',

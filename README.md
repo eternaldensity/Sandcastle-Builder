@@ -35,6 +35,7 @@ For personal amusement only.
 - More Papal Decrees (Logicats, Ninja Stealth, Fractal Sandcastles, Tool Factory)
 - (Note due to an error any decree selected prior to this upgrade will be not be selected afterwards)
 - Black Hole Boost
+- More choice for Dragon Forge Updates to AC
 
 ### 3.321
 
