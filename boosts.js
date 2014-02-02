@@ -2995,9 +2995,10 @@ Molpy.DefineBoosts = function() {
 			if(levels > 0) this.Level += levels;
 			if(points > 0) {
 				this.power += points;
-				var rewards = Math.ceil(this.bought*5 - this.power);
+				var rewards = Math.floor((this.power - this.bought*5)/5);
 				if (rewards > 0) {
-					this.bought+=Math.floor(extra*Molpy.Papal('Logicats'));
+					this.bought+=Math.floor(rewards*Molpy.Papal('Logicats'));
+					if (Molpy.Papal('Logicats') > 1) this.power = this.bought*5;
 					if(rewards > 5) {
 						Molpy.Add('QQ', Math.floor((rewards - 5)*Molpy.Papal('QQs')));
 						rewards = 5;
@@ -5584,14 +5585,19 @@ Molpy.DefineBoosts = function() {
 				var logicatCost = Math.ceil(n / 20);
 				if(n < Molpy.Boosts['PC'].power) {
 					var mult = 1;
+					var strs = [];
 					while(Molpy.Has({
 						Logicat: mult * logicatCost * 10,
 						Blackprints: pageCost * mult * 10
-					}) && (n + 20 * mult * 10 <= 1e34))
+						}) && (n + 20 * mult * 10 <= 1e34) && (n > 20 * mult)) {
 						mult *= 10;
-					str += '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' + Molpify(20 * mult) + ',1)">'
-						+ '</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of '
-						+ Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) + ' Blackprint Pages.';
+						strs.push( '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' +
+						       	Molpify(20 * mult) + ',1)">' +
+							'</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of ' +
+							Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) +
+						       	' Blackprint Pages.');
+					};
+					str += strs.slice(-3).join('');
 				} else {
 					str += '<br>It will cost ' + Molpify(logicatCost,2) + ' Logicat Levels and ' + Molpify(pageCost, 2)
 						+ ' Blackprint Pages to increase this by 20.';
@@ -6911,16 +6917,18 @@ Molpy.DefineBoosts = function() {
 			if(me.bought) {
 				var add = 1;
 				var p = 20 * me.bought * (1 + Math.floor(Math.log(me.bought) * Math.LOG10E));
-				while(Molpy.Has('FluxCrystals', p * add * 10))
+				while(Molpy.Has('FluxCrystals', p * add * 10) && isFinite(add) )
 					add *= 10;
 				if(add > me.bought / 1000000) {
 					str += '<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:' + p * add
 						+ '}))Molpy.Add(\'Time Lord\',0,' + add + ');" value="Pay"></input> ' + Molpify(p * add, 1)
-						+ ' Flux Crystals to increase this by ' + add + '.';
+						+ ' Flux Crystals to increase this by ' + Molpify(add) + '.';
 				}
 			}
 			return str;
-		}
+		},
+
+		classChange: function() { return isFinite(this.bought) ? 'action': ''},
 	});
 	new Molpy.Boost({
 		name: 'Flux Crystals',
@@ -7307,7 +7315,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		desc: function(me) {
-			if(!me.bought || Molpy.IsEnabled('Time Lord'))
+			if(!me.bought || Molpy.IsEnabled('Time Lord') && isFinite(Molpy.Boosts['FluxCrystals'].power))
 				return 'Easy harvesting of flux crystals from remaining rifts';
 			return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
 		},
@@ -7536,7 +7544,7 @@ Molpy.DefineBoosts = function() {
 		Castles: {desc:'10% more Castles from Castle Tools', value:1.1, avail: function() { return isFinite(Molpy.castles)}},
 		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.chipspmnp)&&Molpy.chipspmnp>0}},
 		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.blockspmnp)&&Molpy.blockspmnp>0}},
-		Flux: {desc:'10% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest')}},
+		Flux: {desc:'10% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest') && isFinite(Molpy.Level('FluxCrystals'))}},
 		BlackP: {desc:'10% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180}},
 		GlassSand: {desc:'10% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
 		GlassCastle: {desc:'10% more Glass Chips from Glass Castle Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
@@ -7547,7 +7555,8 @@ Molpy.DefineBoosts = function() {
 		Logicats: {desc:'10% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
 		Fractal: {desc: 'Fractal Sandcastles are 10% better', value:1.1, avail: function() {return Molpy.Got('Fractal Sandcastles') && isFinite(Molpy.castles) }},
 		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League')}},
-		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function() {Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
+		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function() {return Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
+		Dyson: {desc: '10% more Vacuums from the Vacuum Cleaner', value:1.1, avail: function() { return Molpy.Level('TS') > 10 }},
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -7630,6 +7639,13 @@ Molpy.DefineBoosts = function() {
 			return str
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+	});
+	new Molpy.Boost({
+		name: 'Black Hole',
+		icon: 'blackhole',
+		group: 'hpt',
+		price: {Blackprints:Infinity,FluxCrystals:Infinity,QQ:'10T',Vacuum:'10M'},
+		desc: 'Doubles the Vacuum from the Vacuum Cleaner'
 	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
