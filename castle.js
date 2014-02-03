@@ -467,7 +467,13 @@ Molpy.Up = function() {
 			if(Molpy.ninjad == 0 && (!isFinite(Molpy.CastleTools['NewPixBot'].amount) || Molpy.CastleTools['NewPixBot'].amount)) {
 				if(Molpy.npbONG == 1) {
 					Molpy.StealthClick();
-					Molpy.Boosts['Ninja Ritual'].Level = 0;
+					if(Molpy.Boosts['Ritual Sacrifice'].isEnabled && Molpy.Boosts['Goats'].bought >= 5) {
+						Molpy.Spend({Goats: 5});
+					} else if(Molpy.Boosts['Ritual Rift'].isEnabled && Molpy.Boosts['Flux Crystals'].bought >= (Molpy.Boosts['Ninja Ritual'].level / 10)) {
+						Molpy.Spend({FluxCrystals: (Molpy.Boosts['Ninja Ritual'].power / 10)});
+					} else {
+						Molpy.Boosts['Ninja Ritual'].Level = 0;
+					}
 				} else if(Molpy.npbONG == 0) {
 					if(Molpy.NinjaUnstealth()) {
 						if(Molpy.CastleTools['NewPixBot'].currentActive) {
@@ -477,8 +483,15 @@ Molpy.Up = function() {
 							Molpy.EarnBadge('Ninja Strike');
 						}
 					}
-					if(Molpy.Got('Ninja Ritual'))
+					if(Molpy.Got('Ninja Ritual')) {
 						Molpy.Add('Goats', 1 + Math.floor(Molpy.Boosts['Ninja Ritual'].Level++ / 5));
+						if(Molpy.Boosts['Ninja Ritual'].Level > 10)
+							Molpy.UnlockBoost('Western Paradox');
+						if(Molpy.Boosts['Ninja Ritual'].Level > 24)
+							Molpy.UnlockBoost('Ritual Sacrifice');
+						if(Molpy.Boosts['Ninja Ritual'].Level > 39 && Molpy.Boosts['Time Lord'].bought > 8)
+							Molpy.UnlockBoost('Ritual Rift');
+					}
 					else if(Molpy.Has('Goats', 10)) Molpy.UnlockBoost('Ninja Ritual');
 					if(Molpy.CastleTools['NewPixBot'].currentActive >= 1000) {
 						Molpy.EarnBadge('KiloNinja Strike');
@@ -2856,7 +2869,6 @@ Molpy.Up = function() {
 			if(Molpy.NinjaUnstealth() && hadStealth) Molpy.EarnBadge('Ninja Holidip');
 
 			if(Molpy.Got('Ninja Ritual')) {
-				if(Molpy.Boosts['Ninja Ritual'].Level > 10) Molpy.UnlockBoost('Western Paradox');
 				if(!Molpy.Got('Ninja Herder')) {
 					if(Molpy.Has('Ninja Ritual', 5)) {
 						Molpy.EarnBadge('Lost Goats');

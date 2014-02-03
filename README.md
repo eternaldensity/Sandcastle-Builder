@@ -45,6 +45,8 @@ For personal amusement only.
 
 #### LucidCrux:
 - Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
+- Western Paradox does not require Ninja Herder
+- New Boosts: Ritual Sacrifice and Ritual Rift
 
 #### ED:
 - Add a few changelog entries, fix version number :P

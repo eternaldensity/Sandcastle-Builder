@@ -7646,7 +7646,48 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		price: {Blackprints:Infinity,FluxCrystals:Infinity,QQ:'10T',Vacuum:'10M'},
 		desc: 'Doubles the Vacuum from the Vacuum Cleaner'
+	});	
+	new Molpy.Boost({
+		name: 'Ritual Sacrifice',
+		icon: 'ritualsacrifice',
+		group: 'ninj',
+		className: 'toggle',
+		
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		
+		desc: function(me) {
+			var str = 'When you interupt a Ninja Ritual streak longer than 25 and less than 101, sacrifice 5 goats keep it going.';
+			if(me.bought)
+				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
+					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str
+		},
+	
+		price: {Goats: 375},
 	});
+	new Molpy.Boost({
+		name: 'Ritual Rift',
+		icon: 'ritualrift',
+		group: 'ninj',
+		className: 'toggle',
+		
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		
+		desc: function(me) {
+			var str = 'If Ninja Ritual is interupted, use streak/10 flux crystals to warp time to before it happened, keeping the streak alive.<br>'
+				+ 'Current cost: ' + (Molpy.Boost['Ninja Ritual'].level / 10) + ' Flux Crystals';
+			if(me.bought)
+				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
+					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str
+		},
+		
+		price: {
+			Goats: 450,
+			FluxCrystals:750
+			},
+	});
+	
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }
