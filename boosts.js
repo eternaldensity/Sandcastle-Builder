@@ -7508,7 +7508,7 @@ Molpy.DefineBoosts = function() {
 		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.chipspmnp)&&Molpy.chipspmnp>0}},
 		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.blockspmnp)&&Molpy.blockspmnp>0}},
 		Flux: {desc:'10% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest') && isFinite(Molpy.Level('FluxCrystals'))}},
-		BlackP: {desc:'10% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180}},
+		BlackP: {desc:'10% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180 && isFinite(Molpy.Level('Blackprints'))}},
 		GlassSand: {desc:'10% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
 		GlassCastle: {desc:'10% more Glass Chips from Glass Castle Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
 		GlassSaw: {desc:'10% more Glass Blocks from using the Glass Saw', value:1.1, avail: function() { return Molpy.Got('Glass Saw') && !Molpy.Earned('Infinite Saw')}},
