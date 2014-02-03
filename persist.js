@@ -308,7 +308,7 @@
 	Molpy.GamenumsToString = function() {
 		var s = 'S'; //Semicolon
 		var str = '' + (Molpy.newpixNumber) + s + (Molpy.Boosts['Sand'].bought) + s + (Molpy.sandManual) + s + (Molpy.sand) + s
-			+ (Molpy.castlesBuilt) + s + (Molpy.castles) + s + (Molpy.castlesDestroyed) + s + (Molpy.prevCastleSand)
+			+ (Molpy.Boosts['Castles'].bought) + s + (Molpy.castles) + s + (Molpy.castlesDestroyed) + s + (Molpy.prevCastleSand)
 			+ s + (Molpy.nextCastleSand) + s + (Molpy.castlesSpent) + s + (Molpy.sandSpent) + s + (Molpy.beachClicks)
 			+ s + (Molpy.ninjaFreeCount) + s + (Molpy.ninjaStealth) + s + (Molpy.ninjad) + s + (Molpy.saveCount) + s
 			+ (Molpy.loadCount) + s + (Molpy.notifsReceived) + s + (Molpy.timeTravels) + s + (Molpy.npbONG) + s +
@@ -449,7 +449,7 @@
 		Molpy.Boosts['Sand'].bought = parseFloat(pixels[1]) || 0;
 		Molpy.sandManual = parseFloat(pixels[2]) || 0;
 		Molpy.sand = parseFloat(pixels[3]) || 0;
-		Molpy.castlesBuilt = parseFloat(pixels[4]) || 0;
+		Molpy.Boosts['Castles'].bought = parseFloat(pixels[4]) || 0;
 		Molpy.castles = parseFloat(pixels[5]) || 0;
 		Molpy.castlesDestroyed = parseFloat(pixels[6]) || 0;
 		Molpy.prevCastleSand = parseFloat(pixels[7]) || 0;
@@ -953,11 +953,11 @@
 			Molpy.Boosts['Sand'].bought = 0;
 			Molpy.sandManual = 0;
 			Molpy.chipsManual = 0;
-			if(isFinite(Molpy.castlesBuilt))
-				Molpy.totalCastlesDown += Molpy.castlesBuilt;
+			if(isFinite(Molpy.Boosts['Castles'].bought))
+				Molpy.totalCastlesDown += Molpy.Boosts['Castles'].bought;
 			else
 				Molpy.totalCastlesDown = Number.MAX_VALUE;
-			Molpy.castlesBuilt = 0;
+			Molpy.Boosts['Castles'].bought = 0;
 			Molpy.castlesDestroyed = 0;
 			Molpy.prevCastleSand = 0;
 			Molpy.nextCastleSand = 1;
