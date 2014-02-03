@@ -2187,13 +2187,13 @@ Molpy.Up = function() {
 		};
 		Molpy.RewardBlastFurnace = function(times) {
 			var cb = 0;
-			if(Molpy.Got('Furnace Crossfeed') && Molpy.NPlength > 1800) {
+			if(Molpy.Got('Furnace Crossfeed') && Molpy.NPlength > 1800 && isFinite(Molpy.Boosts['GlassChips'].power)) {
 				if(Molpy.Boosts['Glass Furnace'].power && Molpy.Boosts['Furnace Crossfeed'].IsEnabled) {
 					Molpy.MakeChips(times);
 					cb = 1;
 				}
 			}
-			if(Molpy.Got('Furnace Multitasking') && Molpy.NPlength > 1800) {
+			if(Molpy.Got('Furnace Multitasking') && Molpy.NPlength > 1800 && isFinite(Molpy.Boosts['GlassBlocks'].power)) {
 				if(Molpy.Boosts['Glass Blower'].power && Molpy.Boosts['Furnace Multitasking'].IsEnabled) {
 					Molpy.MakeBlocks(times);
 					cb = 1;
