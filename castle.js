@@ -468,7 +468,7 @@ Molpy.Up = function() {
 				if(Molpy.npbONG == 1) {
 					Molpy.StealthClick();
 					var saveRitual = false;
-					if(Molpy.Boosts['Ritual Sacrifice'].isEnabled && Molpy.Boosts['Ninja Ritual'].power >= 25 && Molpy.Boosts['Ninja Ritual'].power < 101) {
+					if(Molpy.Boosts['Ritual Sacrifice'].IsEnabled && Molpy.Boosts['Ninja Ritual'].power >= 25 && Molpy.Boosts['Ninja Ritual'].power < 101) {
 						if(Molpy.Spend({Goats: 5})) {
 							saveRitual = true;
 							Molpy.Notify('Sacrificed 5 Goats to continue Ninja Ritual');
@@ -476,7 +476,7 @@ Molpy.Up = function() {
 							Molpy.Notify('You need 5 Goats for Ritual Sacrifice');
 						}
 					}
-					if(Molpy.Boosts['Ritual Rift'].isEnabled && !saveRitual) {
+					if(Molpy.Boosts['Ritual Rift'].IsEnabled && !saveRitual) {
 						var ritualRiftCost = Math.floor(Molpy.Boosts['Ninja Ritual'].power / 10);
 						if(Molpy.Spend({FluxCrystals: ritualRiftCost})) {
 							saveRitual = true;
