@@ -2856,6 +2856,7 @@ Molpy.Up = function() {
 			if(Molpy.NinjaUnstealth() && hadStealth) Molpy.EarnBadge('Ninja Holidip');
 
 			if(Molpy.Got('Ninja Ritual')) {
+				if(Molpy.Boosts['Ninja Ritual'].Level > 10) Molpy.UnlockBoost('Western Paradox');
 				if(!Molpy.Got('Ninja Herder')) {
 					if(Molpy.Has('Ninja Ritual', 5)) {
 						Molpy.EarnBadge('Lost Goats');
@@ -2864,7 +2865,6 @@ Molpy.Up = function() {
 					Molpy.Boosts['Ninja Ritual'].Level = 0;
 				} else {
 					Molpy.Add('Goats', Math.floor((1 + Molpy.Boosts['Ninja Ritual'].Level++ / 5)*Molpy.Papal('Goats')));
-					if(Molpy.Boosts['Ninja Ritual'].Level > 10) Molpy.UnlockBoost('Western Paradox');
 				}
 			}
 		}
