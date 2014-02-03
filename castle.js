@@ -467,11 +467,25 @@ Molpy.Up = function() {
 			if(Molpy.ninjad == 0 && (!isFinite(Molpy.CastleTools['NewPixBot'].amount) || Molpy.CastleTools['NewPixBot'].amount)) {
 				if(Molpy.npbONG == 1) {
 					Molpy.StealthClick();
-					if(Molpy.Boosts['Ritual Sacrifice'].isEnabled && Molpy.Boosts['Goats'].bought >= 5) {
-						Molpy.Spend({Goats: 5});
-					} else if(Molpy.Boosts['Ritual Rift'].isEnabled && Molpy.Boosts['Flux Crystals'].bought >= (Molpy.Boosts['Ninja Ritual'].level / 10)) {
-						Molpy.Spend({FluxCrystals: (Molpy.Boosts['Ninja Ritual'].power / 10)});
-					} else {
+					var saveRitual = false;
+					if(Molpy.Boosts['Ritual Sacrifice'].isEnabled && Molpy.Boosts['Ninja Ritual'].power >= 25 && Molpy.Boosts['Ninja Ritual'].power < 101) {
+						if(Molpy.Spend({Goats: 5})) {
+							saveRitual = true;
+							Molpy.Notify('Sacrificed 5 Goats to continue Ninja Ritual');
+						} else {
+							Molpy.Notify('You need 5 Goats for Ritual Sacrifice');
+						}
+					}
+					if(Molpy.Boosts['Ritual Rift'].isEnabled && !saveRitual) {
+						var ritualRiftCost = Math.floor(Molpy.Boosts['Ninja Ritual'].power / 10);
+						if(Molpy.Spend({FluxCrystals: ritualRiftCost})) {
+							saveRitual = true;
+							Molpy.Notify('Warped back in time with ' + ritualRiftCost + ' Flux Crystals to continue Ninja Ritual.');
+						} else {
+							Molpy.Notify('Not enough Flux Crystals for Ritual Rift.');
+						}
+					}
+					if(!saveRitual){
 						Molpy.Boosts['Ninja Ritual'].Level = 0;
 					}
 				} else if(Molpy.npbONG == 0) {
