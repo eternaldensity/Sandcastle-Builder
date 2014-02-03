@@ -2654,7 +2654,7 @@ Molpy.Up = function() {
 		Molpy.Dig(Molpy.sandPermNP*Molpy.Papal('Sand'));
 		if(Molpy.IsEnabled('Vacuum Cleaner') && Molpy.Has('Sand', Infinity) && Molpy.Has(Molpy.VacCost)) {
 			Molpy.Boosts['Sand'].Level = 0;
-			var vacs = Molpy.Level('TS') || 1;
+			var vacs = Math.floor((Molpy.Level('TS') || 1)*Molpy.Papal('Dyson'));
 			if(vacs > 1) {
 				vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
 				vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ));
@@ -2664,7 +2664,9 @@ Molpy.Up = function() {
 				FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
 				QQ: Molpy.VacCost.QQ * vacs
 			});
+			if (Molpy.Got('Black Hole')) vacs*=2;
 			Molpy.Add('Vacuum', vacs);
+			if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 		}
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
 			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800)

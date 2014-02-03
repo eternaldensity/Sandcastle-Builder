@@ -34,6 +34,8 @@ For personal amusement only.
 - Performance improvements for large Logicat rewards
 - More Papal Decrees (Logicats, Ninja Stealth, Fractal Sandcastles, Tool Factory)
 - (Note due to an error any decree selected prior to this upgrade will be not be selected afterwards)
+- Black Hole Boost
+- More choice for Dragon Forge Updates to AC
 
 #### D0rako:
 - Some boost tag/untag fixes
@@ -46,6 +48,7 @@ For personal amusement only.
 
 #### ED:
 - Add a few changelog entries, fix version number :P
+- My 'Swedish advisor' made another suggestion.
 
 ### 3.321
 
