@@ -893,6 +893,14 @@
 			if(Molpy.Got('Glass Saw') && Molpy.Boosts['Glass Saw'].power == 0)
 				Molpy.Boosts['Glass Saw'].power = Molpy.Boosts['GlassBlocks'].bought / 1e8; //something like that
 		}
+		if(version < 3.33) {
+			if(Molpy.Got('Blackprints')){
+				Molpy.UnlockBoost('Blackprint Plans');
+				Molpy.Boosts['Blackprint Plans'].bought = 1;
+				Molpy.boostRepaint = 1;
+				Molpy.BoostsOwned++;
+			}
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
