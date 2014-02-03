@@ -1487,9 +1487,9 @@ Molpy.DefineBoosts = function() {
 		}
 		Molpy.Add('Time Lord', 1);
 		if(Math.random() * 5 < 4) {
-			if(isFinite(Molpy.castlesBuilt)) {
+			if(isFinite(Molpy.Boosts['Castles'].bought)) {
 				Molpy.totalCastlesDown += Molpy.castles;
-				Molpy.castlesBuilt -= Molpy.castles;
+				Molpy.Boosts['Castles'].bought -= Molpy.castles;
 			} else {
 				Molpy.totalCastlesDown = Number.MAX_VALUE;
 			}
@@ -6917,7 +6917,7 @@ Molpy.DefineBoosts = function() {
 			if(me.bought) {
 				var add = 1;
 				var p = 20 * me.bought * (1 + Math.floor(Math.log(me.bought) * Math.LOG10E));
-				while(Molpy.Has('FluxCrystals', p * add * 10) && isFinite(add) )
+				while(Molpy.Has('FluxCrystals', p * add * 10) && isFinite(add) && (add <= me.bought))
 					add *= 10;
 				if(add > me.bought / 1000000) {
 					str += '<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:' + p * add
@@ -7545,7 +7545,7 @@ Molpy.DefineBoosts = function() {
 		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.chipspmnp)&&Molpy.chipspmnp>0}},
 		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.blockspmnp)&&Molpy.blockspmnp>0}},
 		Flux: {desc:'10% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest') && isFinite(Molpy.Level('FluxCrystals'))}},
-		BlackP: {desc:'10% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180}},
+		BlackP: {desc:'10% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180 && isFinite(Molpy.Level('Blackprints'))}},
 		GlassSand: {desc:'10% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
 		GlassCastle: {desc:'10% more Glass Chips from Glass Castle Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
 		GlassSaw: {desc:'10% more Glass Blocks from using the Glass Saw', value:1.1, avail: function() { return Molpy.Got('Glass Saw') && !Molpy.Earned('Infinite Saw')}},
@@ -7646,7 +7646,14 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		price: {Blackprints:Infinity,FluxCrystals:Infinity,QQ:'10T',Vacuum:'10M'},
 		desc: 'Doubles the Vacuum from the Vacuum Cleaner'
-	});	
+	});
+	new Molpy.Boost({
+		name: 'Overtime',
+		icon: 'overtime',
+		group: 'hpt',
+		price: {Blackprints:'1W',FluxCrystals:'1W',QQ:'1M',Goats:1000,Vacuum:1000},
+		desc: 'When on longpix, the Vacuum Cleaner runs twice every mnp'
+	});
 	new Molpy.Boost({
 		name: 'Ritual Sacrifice',
 		icon: 'ritualsacrifice',
@@ -7663,7 +7670,7 @@ Molpy.DefineBoosts = function() {
 			return str
 		},
 	
-		price: {Goats: 375},
+		price: {Goats: 375}
 	});
 	new Molpy.Boost({
 		name: 'Ritual Rift',
@@ -7685,9 +7692,8 @@ Molpy.DefineBoosts = function() {
 		price: {
 			Goats: 450,
 			FluxCrystals:750
-			},
+			}
 	});
-	
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }

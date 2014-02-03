@@ -69,7 +69,7 @@ Molpy.Up = function() {
 		Molpy.sandManual = 0; //total sand dug through user clicks
 		Molpy.chipsManual = 0;
 		Molpy.sand = 0; //current sand balance
-		Molpy.castlesBuilt = 0; //total castles built throughout the game
+		Molpy.Boosts['Castles'].bought = 0; //total castles built throughout the game
 		Molpy.castles = 0; //current castle balance
 		Molpy.castlesDestroyed = 0; //total castles destroyed by other structures throughout the game
 		Molpy.sandPermNP = 0; //sand per milliNewPix (recaculated when stuff is bought)
@@ -180,7 +180,7 @@ Molpy.Up = function() {
 				if(!isFinite(Molpy.sand) || Molpy.nextCastleSand <= 0) {
 					Molpy.nextCastleSand = 1;
 					Molpy.castles = Infinity;
-					Molpy.castlesBuilt = Infinity;
+					Molpy.Boosts['Castles'].bought = Infinity;
 					return;
 				}
 			}
@@ -195,8 +195,8 @@ Molpy.Up = function() {
 				Molpy.castles = 0;
 				Molpy.EarnBadge('Mustard Cleanup');
 			}
-			if(isNaN(Molpy.castlesBuilt)) {
-				Molpy.castlesBuilt = 0;
+			if(isNaN(Molpy.Boosts['Castles'].bought)) {
+				Molpy.Boosts['Castles'].bought = 0;
 				Molpy.EarnBadge('Mustard Cleanup');
 			}
 		};
@@ -211,7 +211,7 @@ Molpy.Up = function() {
 				amount = Math.round(amount * Molpy.globalCastleMult) || 0;
 			}
 			amount = Math.max(0, amount);
-			Molpy.castlesBuilt += amount;
+			Molpy.Boosts['Castles'].bought += amount;
 			Molpy.castles += amount;
 			if(amount && !isFinite(Molpy.castles)) Molpy.recalculateDig = 1;
 
@@ -230,31 +230,31 @@ Molpy.Up = function() {
 				Molpy.buildNotifyCount += amount;
 			}
 
-			if(Molpy.castlesBuilt >= 1) {
+			if(Molpy.Boosts['Castles'].bought >= 1) {
 				Molpy.EarnBadge('Rook');
 			}
-			if(Molpy.castlesBuilt >= 4) {
+			if(Molpy.Boosts['Castles'].bought >= 4) {
 				Molpy.EarnBadge('Enough for Chess');
 			}
-			if(Molpy.castlesBuilt >= 40) {
+			if(Molpy.Boosts['Castles'].bought >= 40) {
 				Molpy.EarnBadge('Fortified');
 			}
-			if(Molpy.castlesBuilt >= 320) {
+			if(Molpy.Boosts['Castles'].bought >= 320) {
 				Molpy.EarnBadge('All Along the Watchtower');
 			}
-			if(Molpy.castlesBuilt >= 1000) {
+			if(Molpy.Boosts['Castles'].bought >= 1000) {
 				Molpy.EarnBadge('Megopolis');
 			}
-			if(Molpy.castlesBuilt >= 100000) {
+			if(Molpy.Boosts['Castles'].bought >= 100000) {
 				Molpy.EarnBadge('Kingdom');
 			}
-			if(Molpy.castlesBuilt >= 10000000) {
+			if(Molpy.Boosts['Castles'].bought >= 10000000) {
 				Molpy.EarnBadge('Empire');
 			}
-			if(Molpy.castlesBuilt >= 1000000000) {
+			if(Molpy.Boosts['Castles'].bought >= 1000000000) {
 				Molpy.EarnBadge('Reign of Terror');
 			}
-			if(Molpy.castlesBuilt >= 2000000000000) {
+			if(Molpy.Boosts['Castles'].bought >= 2000000000000) {
 				Molpy.EarnBadge('Unreachable?');
 			}
 
@@ -2214,13 +2214,13 @@ Molpy.Up = function() {
 		};
 		Molpy.RewardBlastFurnace = function(times) {
 			var cb = 0;
-			if(Molpy.Got('Furnace Crossfeed') && Molpy.NPlength > 1800) {
+			if(Molpy.Got('Furnace Crossfeed') && Molpy.NPlength > 1800 && isFinite(Molpy.Boosts['GlassChips'].power)) {
 				if(Molpy.Boosts['Glass Furnace'].power && Molpy.Boosts['Furnace Crossfeed'].IsEnabled) {
 					Molpy.MakeChips(times);
 					cb = 1;
 				}
 			}
-			if(Molpy.Got('Furnace Multitasking') && Molpy.NPlength > 1800) {
+			if(Molpy.Got('Furnace Multitasking') && Molpy.NPlength > 1800 && isFinite(Molpy.Boosts['GlassBlocks'].power)) {
 				if(Molpy.Boosts['Glass Blower'].power && Molpy.Boosts['Furnace Multitasking'].IsEnabled) {
 					Molpy.MakeBlocks(times);
 					cb = 1;
@@ -2245,9 +2245,9 @@ Molpy.Up = function() {
 			}
 			var castles = Math.floor(Molpy.sand / blastFactor);
 			if(boosted) {
-				castles = Math.floor(Math.min(castles, Molpy.castlesBuilt / 5));
+				castles = Math.floor(Math.min(castles, Molpy.Boosts['Castles'].bought / 5));
 			} else {
-				castles = Math.floor(Math.min(castles, Molpy.castlesBuilt / 3));
+				castles = Math.floor(Math.min(castles, Molpy.Boosts['Castles'].bought / 3));
 			}
 			if(!Molpy.boostSilence) Molpy.Notify('Blast Furnace in Operation!');
 			Molpy.Spend('Sand', castles * blastFactor);
@@ -2381,7 +2381,7 @@ Molpy.Up = function() {
 				bonus *= Math.ceil((Molpy.Boosts['Fractal Sandcastles'].power + 1) / 10);
 				nerf = 1;
 			}
-			if(nerf) bonus = Math.min(bonus, Molpy.castlesBuilt / (50)); //just to keep things sane
+			if(nerf) bonus = Math.min(bonus, Molpy.Boosts['Castles'].bought / (50)); //just to keep things sane
 
 			bonus = Math.floor(bonus);
 			Molpy.Build(bonus);
@@ -2681,19 +2681,23 @@ Molpy.Up = function() {
 		Molpy.Dig(Molpy.sandPermNP*Molpy.Papal('Sand'));
 		if(Molpy.IsEnabled('Vacuum Cleaner') && Molpy.Has('Sand', Infinity) && Molpy.Has(Molpy.VacCost)) {
 			Molpy.Boosts['Sand'].Level = 0;
-			var vacs = Math.floor((Molpy.Level('TS') || 1)*Molpy.Papal('Dyson'));
-			if(vacs > 1) {
-				vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
-				vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ));
-				vacs = Math.floor(vacs);
+			var sucks = 1;
+			if (Molpy.Got('Overtime') && Molpy.NPlength > 1800) sucks++;
+			while (sucks--) {
+				var vacs = Math.floor((Molpy.Level('TS') || 1)*Molpy.Papal('Dyson'));
+				if(vacs > 1) {
+					vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
+					vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ));
+					vacs = Math.floor(vacs);
+				}
+				Molpy.Spend({
+					FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
+					QQ: Molpy.VacCost.QQ * vacs
+				});
+				if (Molpy.Got('Black Hole')) vacs*=2;
+				Molpy.Add('Vacuum', vacs);
+				if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 			}
-			Molpy.Spend({
-				FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
-				QQ: Molpy.VacCost.QQ * vacs
-			});
-			if (Molpy.Got('Black Hole')) vacs*=2;
-			Molpy.Add('Vacuum', vacs);
-			if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 		}
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
 			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800)
@@ -2999,6 +3003,7 @@ Molpy.Up = function() {
 				if(Molpy.Boosts['Safety Net'].power >= 10) Molpy.UnlockBoost('Safety Net');
 				if(Molpy.Got('Safety Net') && Molpy.Boosts['Safety Net'].power >= 50)
 					Molpy.UnlockBoost('Safety Blanket');
+				if (Molpy.Boosts['Safety Net'].power >= 222 && Molpy.Got('Vacuum Cleaner')) Molpy.UnlockBoost('Overtime') 
 			}
 			if(!Molpy.Got('Safety Blanket')) {
 				Molpy.LockBoost('Overcompensating');
