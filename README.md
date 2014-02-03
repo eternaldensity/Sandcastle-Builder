@@ -36,6 +36,7 @@ For personal amusement only.
 - (Note due to an error any decree selected prior to this upgrade will be not be selected afterwards)
 - Black Hole Boost
 - More choice for Dragon Forge Updates to AC
+- Overtime Boost
 
 ### 3.321
 

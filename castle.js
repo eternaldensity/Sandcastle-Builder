@@ -2654,19 +2654,23 @@ Molpy.Up = function() {
 		Molpy.Dig(Molpy.sandPermNP*Molpy.Papal('Sand'));
 		if(Molpy.IsEnabled('Vacuum Cleaner') && Molpy.Has('Sand', Infinity) && Molpy.Has(Molpy.VacCost)) {
 			Molpy.Boosts['Sand'].Level = 0;
-			var vacs = Math.floor((Molpy.Level('TS') || 1)*Molpy.Papal('Dyson'));
-			if(vacs > 1) {
-				vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
-				vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ));
-				vacs = Math.floor(vacs);
+			var sucks = 1;
+			if (Molpy.Got('Overtime') && Molpy.NPlength > 1800) sucks++;
+			while (sucks--) {
+				var vacs = Math.floor((Molpy.Level('TS') || 1)*Molpy.Papal('Dyson'));
+				if(vacs > 1) {
+					vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
+					vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ));
+					vacs = Math.floor(vacs);
+				}
+				Molpy.Spend({
+					FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
+					QQ: Molpy.VacCost.QQ * vacs
+				});
+				if (Molpy.Got('Black Hole')) vacs*=2;
+				Molpy.Add('Vacuum', vacs);
+				if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 			}
-			Molpy.Spend({
-				FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
-				QQ: Molpy.VacCost.QQ * vacs
-			});
-			if (Molpy.Got('Black Hole')) vacs*=2;
-			Molpy.Add('Vacuum', vacs);
-			if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 		}
 		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
 			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800)
@@ -2973,6 +2977,7 @@ Molpy.Up = function() {
 				if(Molpy.Boosts['Safety Net'].power >= 10) Molpy.UnlockBoost('Safety Net');
 				if(Molpy.Got('Safety Net') && Molpy.Boosts['Safety Net'].power >= 50)
 					Molpy.UnlockBoost('Safety Blanket');
+				if (Molpy.Boosts['Safety Net'].power >= 222 && Molpy.Got('Vacuum Cleaner')) Molpy.UnlockBoost('Overtime') 
 			}
 			if(!Molpy.Got('Safety Blanket')) {
 				Molpy.LockBoost('Overcompensating');
