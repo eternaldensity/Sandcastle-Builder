@@ -6889,7 +6889,7 @@ Molpy.DefineBoosts = function() {
 			if(me.bought) {
 				var add = 1;
 				var p = 20 * me.bought * (1 + Math.floor(Math.log(me.bought) * Math.LOG10E));
-				while(Molpy.Has('FluxCrystals', p * add * 10) && isFinite(add) )
+				while(Molpy.Has('FluxCrystals', p * add * 10) && isFinite(add) && (add <= me.bought))
 					add *= 10;
 				if(add > me.bought / 1000000) {
 					str += '<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:' + p * add
