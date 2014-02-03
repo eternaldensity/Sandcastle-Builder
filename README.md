@@ -40,6 +40,7 @@ For personal amusement only.
 
 #### D0rako:
 - Some boost tag/untag fixes
+- Separate Blackprints from Blackprint Plans
 
 #### mart0258:
 - MHP result is now logged
@@ -48,10 +49,14 @@ For personal amusement only.
 - Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
 - Western Paradox does not require Ninja Herder
 - New Boosts: Ritual Sacrifice and Ritual Rift
+- Some code refactoring
 
 #### ED:
 - Add a few changelog entries, fix version number :P
 - My 'Swedish advisor' made another suggestion.
+
+#### eqbot
+- Some code refactoring
 
 ### 3.321
 
