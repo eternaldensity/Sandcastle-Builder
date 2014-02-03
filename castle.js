@@ -148,7 +148,7 @@ Molpy.Up = function() {
 			if(newSand >= 420000000) {
 				Molpy.EarnBadge('Seaish Sands');
 			}
-			if(newSandand >= 123456789) {
+			if(newSand >= 123456789) {
 				Molpy.EarnBadge('You can do what you want');
 			}
 			if(newSand >= 782222222144) {
