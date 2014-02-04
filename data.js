@@ -808,8 +808,8 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 
 	Molpy.Boosts['Impervious Ninja'].logic = 2 * !Molpy.IsEnabled('Ninja Lockdown');
 
-	Molpy.Boosts['Flux Surge'].logic = 4 * (Molpy.Got('Flux Turbine') && isFinite(Molpy.castles));
-	var finiteC = 1 * isFinite(Molpy.castles);
+	Molpy.Boosts['Flux Surge'].logic = 4 * (Molpy.Got('Flux Turbine') && isFinite(Molpy.Boosts['Castles'].power));
+	var finiteC = 1 * isFinite(Molpy.Boosts['Castles'].power);
 	var finiteP = 0;
 	if(Molpy.Got('Crystal Dragon'))
 		finiteP = 1;
@@ -871,7 +871,7 @@ Molpy.CheckASHF = function() {
 		Molpy.Boosts['ASHF'].department = 1;
 		return;
 	}
-	if(!isFinite(Molpy.castles)) return;
+	if(!isFinite(Molpy.Boosts['Castles'].power)) return;
 	for( var i in Molpy.SandTools) {
 		if(isFinite(Molpy.priceFactor * Molpy.SandTools[i].price)) {
 			Molpy.Boosts['ASHF'].department = 1;
