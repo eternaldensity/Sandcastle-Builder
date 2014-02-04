@@ -50,6 +50,7 @@ For personal amusement only.
 - Western Paradox does not require Ninja Herder
 - New Boosts: Ritual Sacrifice and Ritual Rift
 - Some code refactoring
+- More icons
 
 #### ED:
 - Add a few changelog entries, fix version number :P
