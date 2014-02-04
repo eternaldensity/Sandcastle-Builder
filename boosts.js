@@ -2980,15 +2980,15 @@ Molpy.DefineBoosts = function() {
 		group: 'stuff',
 		
 		Level: [
-		        function() {
-		        	return this.bought;
-		        },
-		        function(amount) {
-		        	var dif = amount - this.bought;
+				function() {
+					return this.bought;
+				},
+				function(amount) {
+					var dif = amount - this.bought;
 					this.bought = amount;
 					this.power += dif * 5;
 					this.Refresh();
-		        }
+				}
 		],
 		
 		Add: function(levels, points) {
@@ -3797,9 +3797,12 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.StartCheapestSandMould = function() {
+		if (!Molpy.Has('Bonemeal', 10)) return; 
+		var smf = Molpy.Boosts['SMF'];
 		var first = Molpy.newpixNumber > 0 ? 'discov1' : 'discov-1'
 		for( var i = Molpy.Badges[first].id; i < Molpy.BadgesById.length - 1; i += 8) {
-			if(Molpy.BadgesById[i].earned && !Molpy.BadgesById[i + 1].earned) {
+			if(Molpy.BadgesById[i].earned && !Molpy.BadgesById[i + 1].earned && 
+				smf.bought!=Molpy.BadgesById[i+1].np) {
 				Molpy.Spend('Bonemeal', 10);
 				Molpy.MakeSandMould(Molpy.BadgesById[i + 1].np);
 				return 1;
@@ -3873,10 +3876,20 @@ Molpy.DefineBoosts = function() {
 		var smf = Molpy.Boosts['SMF'];
 		if(!Molpy.Badges[mname]) {
 			Molpy.Notify('No such mould exists');
+			if (smm.bought == np) 
+			{
+				// If you managed to make a mould for something you already made
+				smm.reset(); 
+			}
 			return;
 		}
 		if(Molpy.Earned(mname)) {
 			Molpy.Notify('You don\'t need to make this mould');
+			if (smm.bought == np) 
+			{
+				// If you managed to make a mould for something you already made
+				smm.reset(); 
+			}
 			return;
 		}
 		if(!smf.bought) {
@@ -3931,6 +3944,8 @@ Molpy.DefineBoosts = function() {
 
 	Molpy.MakeGlassMould = function(np) {
 		var mname = 'monumg' + np;
+		var gmm = Molpy.Boosts['GMM'];
+		var gmf = Molpy.Boosts['GMF'];
 		if(!Molpy.Badges[mname]) {
 			Molpy.Notify('No such mould exists');
 			return;
@@ -3940,8 +3955,6 @@ Molpy.DefineBoosts = function() {
 			return;
 		}
 		Molpy.Badges['monums' + np].Refresh();
-		var gmm = Molpy.Boosts['GMM'];
-		var gmf = Molpy.Boosts['GMF'];
 		if(gmf.power && gmf.bought == np) {
 			Molpy.Notify('You already made this mould and are presently filling it with glass');
 			return;
@@ -3961,9 +3974,12 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.StartCheapestGlassMould = function() {
+		if (!Molpy.Has('Bonemeal', 10)) return; 
+		var gmf = Molpy.Boosts['GMF'];
 		var first = Molpy.newpixNumber > 0 ? 'monums1' : 'monums-1'
 		for( var i = Molpy.Badges[first].id; i < Molpy.BadgesById.length - 1; i += 8) {
-			if(Molpy.BadgesById[i].earned && !Molpy.BadgesById[i + 1].earned) {
+			if(Molpy.BadgesById[i].earned && !Molpy.BadgesById[i + 1].earned &&
+				gmf.bought!=Molpy.BadgesById[i+1].np) {
 				Molpy.Spend('Bonemeal', 10)
 				Molpy.MakeGlassMould(Molpy.BadgesById[i + 1].np);
 				return 1;
@@ -4002,17 +4018,26 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.FillGlassMould = function(np) {
+		var gmm = Molpy.Boosts['GMM'];
+		var gmf = Molpy.Boosts['GMF'];
 		var mname = 'monumg' + np;
 		if(!Molpy.Badges[mname]) {
 			Molpy.Notify('No such mould exists');
+			if (gmm.bought == np) 
+			{
+				gmm.reset(); 
+			}
 			return;
 		}
 		if(Molpy.Earned(mname)) {
 			Molpy.Notify('You don\'t need to make this mould');
+			if (gmm.bought == np) 
+			{
+				// If you managed to make a mould for something you already made
+				gmm.reset(); 
+			}
 			return;
 		}
-		var gmm = Molpy.Boosts['GMM'];
-		var gmf = Molpy.Boosts['GMF'];
 		if(!gmf.bought) {
 			Molpy.Notify('You don\'t have the Glass Mould Filler!');
 			return;
@@ -5561,10 +5586,10 @@ Molpy.DefineBoosts = function() {
 						}) && (n + 20 * mult * 10 <= 1e34) && (n > 20 * mult)) {
 						mult *= 10;
 						strs.push( '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' +
-						       	Molpify(20 * mult) + ',1)">' +
+							   	Molpify(20 * mult) + ',1)">' +
 							'</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of ' +
 							Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) +
-						       	' Blackprint Pages.');
+							   	' Blackprint Pages.');
 					};
 					str += strs.slice(-3).join('');
 				} else {
@@ -5943,17 +5968,17 @@ Molpy.DefineBoosts = function() {
 		group: 'stuff',
 		
 		Level: [
-		        function() {
-		        	return this.power;
-		        },
-		        function(amount) {
-		        	if(isNaN(amount)) {
-		        		amount = 0;
-		        		Molpy.EarnBadge('Mustard Cleanup');
-		        	}
-		        	this.power = amount;
-		        	this.Refresh();
-		        }
+				function() {
+					return this.power;
+				},
+				function(amount) {
+					if(isNaN(amount)) {
+						amount = 0;
+						Molpy.EarnBadge('Mustard Cleanup');
+					}
+					this.power = amount;
+					this.Refresh();
+				}
 		],
 		
 		Add: Molpy.Dig,
@@ -6009,18 +6034,18 @@ Molpy.DefineBoosts = function() {
 		group: 'stuff',
 		
 		Level: [
-		        function() {
-		        	return this.power;
-		        },
-		        function(amount) {
-		        	if(isNaN(amount)) {
-		        		amount = 0;
-		        		Molpy.EarnBadge('Mustard Cleanup');
-		        	}
-		        	this.power = amount;
-		        	this.Refresh();
-		        	Molpy.Boosts['Time Travel'].Refresh();
-		        }
+				function() {
+					return this.power;
+				},
+				function(amount) {
+					if(isNaN(amount)) {
+						amount = 0;
+						Molpy.EarnBadge('Mustard Cleanup');
+					}
+					this.power = amount;
+					this.Refresh();
+					Molpy.Boosts['Time Travel'].Refresh();
+				}
 		],
 		
 		Add: Molpy.Build,
@@ -6141,10 +6166,10 @@ Molpy.DefineBoosts = function() {
 		price: {LogiPuzzle: 625},
 		
 		Level: [
-		        function() {
-		        	return this.bought * Math.max(-9, Math.ceil(0.2 * (Math.abs(Molpy.newpixNumber) - this.power)));
-		        },
-		        function() {}
+				function() {
+					return this.bought * Math.max(-9, Math.ceil(0.2 * (Math.abs(Molpy.newpixNumber) - this.power)));
+				},
+				function() {}
 		],
 		
 		desc: function(me) {

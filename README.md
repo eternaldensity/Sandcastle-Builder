@@ -44,6 +44,7 @@ For personal amusement only.
 
 #### mart0258:
 - MHP result is now logged
+- Archimedes won't construct moulds already being filled. 
 
 #### LucidCrux:
 - Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
