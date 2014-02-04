@@ -74,9 +74,13 @@ Molpy.DefineGUI = function() {
 	Molpy.Onhover = function(me, event) {
 		if(me.hoverOnCounter > 0 || Molpy.Boosts['Expando'].power) {
 
-			if(me.earned && me.np && Molpy.previewNP != me.np && me.alias.indexOf('monumg') == 0) {
-				Molpy.previewNP = me.np;
-				Molpy.UpdateBeach(me.np);
+			if(me.earned && me.np ) {
+				if (Molpy.previewNP != me.np && me.alias.indexOf('monumg') == 0) {
+					Molpy.previewNP = me.np;
+					Molpy.UpdateBeach(me.np);
+				} else 	if(me.alias.indexOf('monums') == 0) {
+					g('img-monums' + me.np).style.backgroundImage = Molpy.Url(Molpy.ThumbNewPixFor(Math.abs(me.np)));
+				}
 			}
 			return;
 		}
@@ -1267,6 +1271,14 @@ Molpy.DefineGUI = function() {
 				return 'http://xkcd.mscha.org/frame/' + np;
 		}
 	}
+	Molpy.ThumbNewPixFor = function(np) {
+		np = Math.abs(np);
+		np = Molpy.FormatNP(np);
+		var floor = Math.floor(np);
+		if(floor > 3094) return 'http://placekitten.com/g/' + x + '/' + y;
+		else return 'http://xkcd.mscha.org/frame/' + np;
+	}
+
 	Molpy.Url = function(address) {
 		return 'url(' + address + ')';
 	}

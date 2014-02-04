@@ -32,11 +32,14 @@ For personal amusement only.
 - Many small fixes for the Pope
 - Small fixes for Western Paradox
 - Performance improvements for large Logicat rewards
-- More Papal Decrees (Logicats, Ninja Stealth, Fractal Sandcastles, Tool Factory)
+- More Papal Decrees (Logicats, Ninja Stealth, Fractal Sandcastles, Tool Factory, Vacuums)
 - (Note due to an error any decree selected prior to this upgrade will be not be selected afterwards)
 - Black Hole Boost
 - More choice for Dragon Forge Updates to AC
 - Overtime Boost
+- Several small nerfs
+- Sand monument thumbnails only displayed after a mouseover
+- Fixes for Infinite Flux Crystals 
 
 #### D0rako:
 - Some boost tag/untag fixes
