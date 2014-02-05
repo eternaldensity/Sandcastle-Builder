@@ -4510,17 +4510,25 @@ Molpy.DefineBoosts = function() {
 			}
 		}
 		if(left > 10 && Molpy.redactedClicks > 2500 && Molpy.Got('ZK') && Molpy.Boosts['Logicat'].bought >= 4
-			&& Molpy.Got('LogiPuzzle') && !Molpy.Has('LogiPuzzle', Molpy.PokeBar())) {
-			var zk = Molpy.Boosts['ZK'];
-			var poke = Math.random() * (left - 10);
-			zk.power += poke;
-			left -= poke;
-			if(zk.power < 0) zk.power = 0; // how?
-			var zooVisits = Math.floor(zk.power / 1000);
-			zk.power -= zooVisits * 1000;
-			if(zooVisits) Molpy.Boosts['Panther Poke'].buyFunction(zooVisits);
+			&& Molpy.Got('LogiPuzzle')) {
+			if (Molpy.Has('LogiPuzzle', Molpy.PokeBar()))
+			{
+				if (Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) && Molpy.Got('ShadwDrgn')) {
+					Molpy.ShadowStrike(1);
+				}
+			}
+			else {
+				var zk = Molpy.Boosts['ZK'];
+				var poke = Math.random() * (left - 10);
+				zk.power += poke;
+				left -= poke;
+				if(zk.power < 0) zk.power = 0; // how?
+				var zooVisits = Math.floor(zk.power / 1000);
+				zk.power -= zooVisits * 1000;
+				if(zooVisits) Molpy.Boosts['Panther Poke'].buyFunction(zooVisits);
 
-			if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
+				if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
+			}
 		}
 		Molpy.boostSilence--;
 	}
@@ -5952,10 +5960,10 @@ Molpy.DefineBoosts = function() {
 		var n = Math.ceil(l);
 		var p = n - l;
 		if(Math.random() < p * p) n = 1;
-		Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned '
-			+ Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
+		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
+		if (n >= 10) Molpy.UnlockBoost('Shadow Feeder');
 	}
 
 	Molpy.spendSandNotifyFlag = 1;
@@ -7728,6 +7736,26 @@ Molpy.DefineBoosts = function() {
 			} else {
 				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed and is available for purchase', 1);
 			}
+		}
+	});
+
+	new Molpy.Boost({
+		name: 'Shadow Feeder',
+		icon: 'shadowdragon',
+		group: 'bean',
+		className: 'toggle',
+
+		desc: function(me) {
+			var str = (me.IsEnabled ? 'I' : 'When active, i') + 'f at the Crouching Dragon limit when Zookeeper runs, activate the Shadow Dragon.';
+			if(me.bought)
+				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+
+		price: {
+			Bonemeal: 10000
 		}
 	});
 
