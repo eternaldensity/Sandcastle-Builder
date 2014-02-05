@@ -4768,11 +4768,30 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			return 'Uses ' + Molpy.PriceString(Molpy.CalcRushCost())
-				+ ' to increase the value of Logicat answers by 0.5.<br>Single use: available again when you have '
+			var rushcost = Molpy.CalcRushCost();
+			var str = 'Uses ' + Molpy.PriceString(rushcost) + ' to increase the value of Logicat answers by 0.5.<br>';
+		      	if (rushcost.Vacuum) {
+				if (Molpy.Has('Mustard',rushcost.Vacuum)) str += 'You can use Mustard intead of Vacuums.<br>';
+				if (Molpy.Has('Bonemeal',rushcost.Vacuum*10)) str += 'You can use 10xBonemeal intead of Vacuums.<br>';
+			}	
+		
+			str += 'Single use: available again when you have '
 				+ Molpy.PriceString(Molpy.CalcRushCost(1, 1)) + '.'
-				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '')
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>' : '');
+				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
+			if (me.bought) {
+				str += '<br>';
+				if (!rushcost.Vacuum) {
+					str += '<input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>';
+				} else {
+					if (Molpy.Has('Vacuum',rushcost.Vacuum)) str +=
+						'<input type="Button" onclick="Molpy.PantherRush()" value="Use Vacuums"></input>';
+					if (Molpy.Has('Mustard',rushcost.Vacuum)) str +=
+						'<input type="Button" onclick="Molpy.PantherRush(1)" value="Use Mustard"></input>';
+					if (Molpy.Has('Bonemeal',rushcost.Vacuum*10)) str +=
+						'<input type="Button" onclick="Molpy.PantherRush(2)" value="Use Bonemeal"></input>';
+				}
+			}
+			return str;
 		},
 		
 		GlassBlocks: function() {
@@ -4789,16 +4808,26 @@ Molpy.DefineBoosts = function() {
 	Molpy.CalcRushCost = function(nextLevel, feather) {
 		var l = Molpy.Level('Panther Rush') + (nextLevel || 0);
 		var m = Math.max(1, l - 9);
+		var v = Math.max(1, l - 19);
 		return {
 			Logicat: 300 * (l + 1) * m + (5 * feather || 0),
 			Blackprints: 2000 * (m - 1) * l,
-			Vacuum: (m - 1) * l
+			Vacuum: (v - 1) * l
 		};
 	}
 	
-	Molpy.PantherRush = function() {
+	Molpy.PantherRush = function(stuff) {
 		var pr = Molpy.Boosts['Panther Rush'];
 		var cost = Molpy.CalcRushCost();
+		if (stuff) {
+			if (stuff == 1) {
+				cost['Mustard'] = cost.Vacuum;
+				delete cost['Vacuum'];
+			} else if (stuff == 2) {
+				cost['Bonemeal'] = cost.Vacuum*10;
+				delete cost['Vacuum'];
+			}
+		}
 		if(Molpy.Has(cost)
 			&& (pr.Level > 12 || confirm('Really spend ' + Molpy.PriceString(cost).replace(/&nbsp;/g, ' ')
 				+ ' on Panther Rush?'))) {

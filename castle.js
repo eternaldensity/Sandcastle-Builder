@@ -2608,7 +2608,7 @@ Molpy.Up = function() {
 							Molpy.UnlockBoost('Magic Mirror');
 							if(isFinite(Molpy.sandPermNP)) break;
 						}
-						if(minus >= 100) {
+						if(minus >= 50) {
 							Molpy.UnlockBoost('Vacuum Cleaner');
 						}
 					}
