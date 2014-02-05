@@ -7109,8 +7109,8 @@ Molpy.DefineBoosts = function() {
 			FluxCrystals: 25
 		},
 		
-		// deactivate if on highest newPix
-		classChange: function() { return Molpy.highestNPvisited != Molpy.newpixNumber ? 'action' : '' },
+		// deactivate if on highest newPix or no flux
+		classChange: function() { return (Molpy.highestNPvisited != Molpy.newpixNumber && Molpy.Has('FluxCrystals') ) ? 'action' : '' },
 	});
 
 	Molpy.NowWhereWasI = function() {
