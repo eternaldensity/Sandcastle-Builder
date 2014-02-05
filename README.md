@@ -40,6 +40,9 @@ For personal amusement only.
 - Several small nerfs
 - Sand monument thumbnails only displayed after a mouseover
 - Fixes for Infinite Flux Crystals 
+- Reduced the start point to get Vacuum Cleaner
+- Reduced the Vacuum costs of Panther rush (slightly)
+- Allow Mustard or Bonemeal to be used instead of Vacuum for Panther Rush
 
 #### D0rako:
 - Some boost tag/untag fixes
