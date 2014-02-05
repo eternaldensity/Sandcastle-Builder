@@ -900,6 +900,12 @@
 				Molpy.boostRepaint = 1;
 				Molpy.BoostsOwned++;
 			}
+			if(Molpy.Has('Blackprints', 1)){
+				Molpy.UnlockBoost('Blackprints');
+				Molpy.Boosts['Blackprints'].bought = 1;
+				Molpy.boostRepaint = 1;
+				Molpy.BoostsOwned++;
+			}
 		}
 	}
 
