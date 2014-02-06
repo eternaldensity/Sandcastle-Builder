@@ -65,7 +65,6 @@ Molpy.Up = function() {
 		Molpy.ninjad = 0; //ninja flag for newpixbots
 		Molpy.npbONG = 0; //activation flag for newpixbots
 
-
 		Molpy.sandManual = 0; //total sand dug through user clicks
 		Molpy.chipsManual = 0;
 		Molpy.castlesDestroyed = 0; //total castles destroyed by other structures throughout the game
@@ -73,7 +72,6 @@ Molpy.Up = function() {
 		Molpy.glassPermNP = 0;
 		Molpy.prevCastleSand = 0; //sand cost of previous castle
 		Molpy.nextCastleSand = 1; //sand cost of next castle
-		Molpy.castlesSpent = 0; //castles spent in shop
 		Molpy.beachClicks = 0; //number of times beach has been clicked for sand
 		Molpy.ninjaFreeCount = 0; //newpix with no clicks in ninja period (but with clicks later)
 		Molpy.ninjaStealth = 0; //streak of uninterrupted ninja-free newpix
