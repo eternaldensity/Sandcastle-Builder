@@ -74,7 +74,6 @@ Molpy.Up = function() {
 		Molpy.prevCastleSand = 0; //sand cost of previous castle
 		Molpy.nextCastleSand = 1; //sand cost of next castle
 		Molpy.castlesSpent = 0; //castles spent in shop
-		Molpy.sandSpent = 0; //sand spent on Boosts		
 		Molpy.beachClicks = 0; //number of times beach has been clicked for sand
 		Molpy.ninjaFreeCount = 0; //newpix with no clicks in ninja period (but with clicks later)
 		Molpy.ninjaStealth = 0; //streak of uninterrupted ninja-free newpix
