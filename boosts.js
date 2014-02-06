@@ -6017,7 +6017,6 @@ Molpy.DefineBoosts = function() {
 					this.Refresh();
 				}
 		],
-		
 		Add: Molpy.Dig,
 		
 		Spend: function(amount, silent) {
@@ -6026,7 +6025,8 @@ Molpy.DefineBoosts = function() {
 			if(!amount) return 1;
 			this.power -= amount;
 			if(this.power < 0) this.power = 0;
-			Molpy.sandSpent += amount;
+			//Makes Sand Spent if it's undefined.
+			(this['spent'] !== undefined) ? this['spent'] += amount : this['spent'] = amount;
 			if((isFinite(this.power) || !isFinite(amount))) {
 				if(!Molpy.boostSilence && !silent && Molpy.spendSandNotifyFlag) {
 					if(Molpy.spendSandNotifyCount) {
@@ -6059,6 +6059,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			return Molpify(me.Level, 3);
 		}
+		
 	});
 
 	Molpy.destroyNotifyFlag = 1;
