@@ -74,9 +74,13 @@ Molpy.DefineGUI = function() {
 	Molpy.Onhover = function(me, event) {
 		if(me.hoverOnCounter > 0 || Molpy.Boosts['Expando'].power) {
 
-			if(me.earned && me.np && Molpy.previewNP != me.np && me.alias.indexOf('monumg') == 0) {
-				Molpy.previewNP = me.np;
-				Molpy.UpdateBeach(me.np);
+			if(me.earned && me.np ) {
+				if (Molpy.previewNP != me.np && me.alias.indexOf('monumg') == 0) {
+					Molpy.previewNP = me.np;
+					Molpy.UpdateBeach(me.np);
+				} else 	if(me.alias.indexOf('monums') == 0) {
+					g('img-monums' + me.np).style.backgroundImage = Molpy.Url(Molpy.ThumbNewPixFor(Math.abs(me.np)));
+				}
 			}
 			return;
 		}
@@ -1267,6 +1271,14 @@ Molpy.DefineGUI = function() {
 				return 'http://xkcd.mscha.org/frame/' + np;
 		}
 	}
+	Molpy.ThumbNewPixFor = function(np) {
+		np = Math.abs(np);
+		np = Molpy.FormatNP(np);
+		var floor = Math.floor(np);
+		if(floor > 3094) return 'http://placekitten.com/g/' + x + '/' + y;
+		else return 'http://xkcd.mscha.org/frame/' + np;
+	}
+
 	Molpy.Url = function(address) {
 		return 'url(' + address + ')';
 	}
@@ -1289,15 +1301,16 @@ Molpy.DefineGUI = function() {
 			'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
 	Molpy.drawFrame = 0;
 	Molpy.Draw = function() {
-		g('castlecount').innerHTML = Molpify(Molpy.castles, 1) + ' castle' + plural(Molpy.castles);
-		g('sandcount').innerHTML = Molpify(Molpy.sand, 1) + ' sand' + (isFinite(Molpy.castles) ? ' of ' + Molpify(Molpy.nextCastleSand, 1) + ' needed' : '');
+		var castleAmt = Molpy.Boosts['Castles'].power; //so we don't need lots of lookups
+		g('castlecount').innerHTML = Molpify(castleAmt, 1) + ' castle' + plural(castleAmt);
+		g('sandcount').innerHTML = Molpify(Molpy.Boosts['Sand'].power, 1) + ' sand' + (isFinite(castleAmt) ? ' of ' + Molpify(Molpy.nextCastleSand, 1) + ' needed' : '');
 		g('sandrate').innerHTML = Molpify(Molpy.sandPermNP, 1) + ' sand/mNP';
 		g('chipcount').innerHTML = Molpify(Molpy.Boosts['TF'].power, 1) + ' chips';
 		g('chiprate').innerHTML = Molpify(Molpy.glassPermNP, 1) + ' chips/mNP';
 		g('newtools').innerHTML = 'Built ' + Molpify(Molpy.toolsBuilt, 1) + ' new tool' + plural(Molpy.toolsBuilt);
 
 		if(noLayout) {
-			var finite = isFinite(Molpy.sand) || isFinite(Molpy.castles) || isFinite(Molpy.spmNP);
+			var finite = isFinite(Molpy.Boosts['Sand'].power) || isFinite(castleAmt) || isFinite(Molpy.spmNP);
 			var tf = Molpy.Got('TF');
 			$('#sectionTFCounts').toggleClass('hidden', !tf);
 			if(tf) {
@@ -1319,8 +1332,8 @@ Molpy.DefineGUI = function() {
 		g('version').innerHTML = '<br>Version: ' + Molpy.version + (Molpy.version == 3.11 ? '<br>Windows?' : '');
 
 		if(!noLayout) {
-			g('stuffSandCount').innerHTML = 'Sand: ' + Molpify(Molpy.sand, 3);
-			g('stuffCastleCount').innerHTML = 'Castles: ' + Molpify(Molpy.castles, 3);
+			g('stuffSandCount').innerHTML = 'Sand: ' + Molpify(Molpy.Boosts['Sand'].power, 3);
+			g('stuffCastleCount').innerHTML = 'Castles: ' + Molpify(castleAmt, 3);
 			g('stuffTFChipCount').innerHTML = 'TF Chips: ' + Molpify(Molpy.Boosts['TF'].Level, 3);
 			for( var i in Molpy.BoostsByGroup['stuff']) {
 				var bst = Molpy.BoostsByGroup['stuff'][i];

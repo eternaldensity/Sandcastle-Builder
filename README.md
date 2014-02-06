@@ -32,23 +32,39 @@ For personal amusement only.
 - Many small fixes for the Pope
 - Small fixes for Western Paradox
 - Performance improvements for large Logicat rewards
-- More Papal Decrees (Logicats, Ninja Stealth, Fractal Sandcastles, Tool Factory)
+- More Papal Decrees (Logicats, Ninja Stealth, Fractal Sandcastles, Tool Factory, Vacuums)
 - (Note due to an error any decree selected prior to this upgrade will be not be selected afterwards)
 - Black Hole Boost
 - More choice for Dragon Forge Updates to AC
+- Overtime Boost
+- Several small nerfs
+- Sand monument thumbnails only displayed after a mouseover
+- Fixes for Infinite Flux Crystals 
+- Reduced the start point to get Vacuum Cleaner
+- Reduced the Vacuum costs of Panther rush (slightly)
+- Allow Mustard or Bonemeal to be used instead of Vacuum for Panther Rush
 
 #### D0rako:
 - Some boost tag/untag fixes
+- Separate Blackprints from Blackprint Plans
 
 #### mart0258:
 - MHP result is now logged
+- Archimedes won't construct moulds already being filled. 
 
 #### LucidCrux:
 - Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
+- Western Paradox does not require Ninja Herder
+- New Boosts: Ritual Sacrifice and Ritual Rift
+- Some code refactoring
+- More icons
 
 #### ED:
 - Add a few changelog entries, fix version number :P
 - My 'Swedish advisor' made another suggestion.
+
+#### eqbot
+- Some code refactoring
 
 ### 3.321
 
