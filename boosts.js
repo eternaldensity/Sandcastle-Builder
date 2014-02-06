@@ -4275,7 +4275,9 @@ Molpy.DefineBoosts = function() {
 			var str = 'Produces Glass Tools from Glass Chips.<br>Lock Glass Ceilings to prevent a tool from being produced.<br>This will concentrate more production of the remaining tools.';
 			if(!me.bought) return str;
 			if(Molpy.Got('TFLL') && Molpy.Has('GlassChips', 50000)) {
-				if(Molpy.Has('GlassChips', 1e10)) {
+				if(Molpy.Has('GlassChips', 1e13)) {
+					str += '<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1e13)"></input> with 10T Glass Chips';
+				} else if(Molpy.Has('GlassChips', 1e10)) {
 					str += '<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1e10)"></input> with 10G Glass Chips';
 				} else if(Molpy.Has('GlassChips', 1e7)) {
 					str += '<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1e7)"></input> with 10M Glass Chips';
