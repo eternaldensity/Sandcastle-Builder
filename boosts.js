@@ -4513,7 +4513,7 @@ Molpy.DefineBoosts = function() {
 			&& Molpy.Got('LogiPuzzle')) {
 			if (Molpy.Has('LogiPuzzle', Molpy.PokeBar()))
 			{
-				if (Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) && Molpy.Got('ShadwDrgn')) {
+				if (Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) && Molpy.Got('ShadwDrgn') && Molpy.Spend('Bonemeal', 5)) {
 					Molpy.ShadowStrike(1);
 				}
 			}
@@ -7746,7 +7746,7 @@ Molpy.DefineBoosts = function() {
 		className: 'toggle',
 
 		desc: function(me) {
-			var str = (me.IsEnabled ? 'I' : 'When active, i') + 'f at the Crouching Dragon limit when Zookeeper runs, activate the Shadow Dragon.';
+			var str = (me.IsEnabled ? 'I' : 'When active, i') + 'f at the Crouching Dragon limit when Zookeeper runs, spends 5 Bonemeal to activate the Shadow Dragon.';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
