@@ -1473,11 +1473,94 @@ Molpy.DefineBoosts = function() {
 		
 		lockFunction: function(me) {
 			this.countdown = 0; // prevent reopening every time you load :P
+			this.changeState('expired');
 		},
 		
 		stats: 'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',
-		startCountdown: 7
+		startCountdown: function() {
+			Molpy.Boosts['Temporal Rift'].createRift();
+			return 7;
+		}
 	});
+	
+	//stuff for temporal rift animation
+	Molpy.extend(Molpy.Boosts['Temporal Rift'], {
+		showRift: false,
+		riftIMG: null,
+		riftDiv: null,
+		variation: 0,
+		frame: 1,
+		frameRate: 4,
+		rateDelay: 99,
+		riftState: 'closed', //closed, expired, active
+		
+		variationSizes: [[84, 63], [80, 64], [83,83], [138, 127], [71, 66], [146, 96], [103, 83], [103, 90]],
+		animationOrder: [1, 2, 3, 4, 3, 4, 3, 2, 1, 1, 2],
+		
+		createRift: function() {
+			console.log('creating rift');
+			//create the image and div if needed
+			if(this.riftDiv == null){
+				this.riftDiv = $('<div id="temporalRift" onclick="Molpy.RiftJump()"></div>');
+				this.riftDiv.appendTo('#sectionBeach');
+				this.riftIMG = $('<img id="riftIMG" src=""></img>');
+				this.riftDiv.append(this.riftIMG);
+			}
+			
+			//set the divs location
+			this.riftDiv.css('top', (Math.floor(Math.random() * 366) - 25));
+			this.riftDiv.css('left', (Math.floor(Math.random() * 523) - 25));
+					
+			//set the rift variation
+			this.variation = Math.floor(Math.random()*8);
+			this.frame = 1;
+			this.rateDelay = 99; //so it draws the first frame
+			this.riftIMG.css('width', this.variationSizes[this.variation][0] + 'px');
+			this.riftIMG.css('height', this.variationSizes[this.variation][1] + 'px');
+			this.riftDiv.css('width', this.variationSizes[this.variation][0] + 'px');
+			this.riftDiv.css('height', this.variationSizes[this.variation][1] + 'px');
+			
+			//set the divs rotation
+			this.riftDiv.removeClass('rotate90 rotate180 rotate270');
+			var rotateStr = '';
+			var rotate = Math.floor(Math.random() * 4);
+			if(rotate == 1) rotateStr = 'rotate90';
+			else if(rotate == 2) rotateStr = 'rotate180';
+			else if(rotate == 3) rotateStr = 'rotate270';
+			this.riftDiv.addClass(rotateStr);
+			
+			this.showRift = true;
+			
+			this.changeState('active');
+			this.updateRiftIMG();
+			
+			this.riftDiv.show();
+		},
+		
+		updateRiftIMG: function() {
+			if(!this.showRift || this.riftState != 'active' || !this.riftIMG) return;
+			this.rateDelay++;
+			if(this.rateDelay < this.frameRate) return;
+			this.rateDelay = 0; //new frame started
+			if(this.frame > this.animationOrder.length) this.frame = 1;
+			this.riftIMG.attr('src', ('img/rifts/rift_' + (this.variation + 1) + '_' + this.animationOrder[this.frame - 1] + '.png'));
+			this.frame++;
+		},
+		
+		clearRift: function() {
+			if(!this.riftDiv) return;
+			this.riftDiv.hide();
+			this.showRift = false;
+		},
+		
+		changeState: function(state) {
+			if(state == 'closed') this.clearRift();
+			else if(state == 'expired') {
+				this.riftIMG.attr('src', ('img/rifts/rift_' + (this.variation + 1) + '_1.png'));
+			}
+			this.riftState = state;
+		}
+	}, false);
 	
 	Molpy.RiftJump = function() {
 		if(Molpy.IsEnabled('Time Lord')) {

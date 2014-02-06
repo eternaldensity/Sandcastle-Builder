@@ -113,6 +113,7 @@
 		}
 
 		if(!success) return;
+		Molpy.Boosts['Temporal Rift'].changeState('closed');
 		Molpy.loadCount++;
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
 		Molpy.autosaveCountup = 0;
@@ -292,6 +293,7 @@
 			Molpy.FromNeedlePulledThing(Molpy.BeanishToCuegish(thread));
 			_gaq && _gaq.push(['_trackEvent', 'Import', 'Complete']);
 			Molpy.Save();
+			Molpy.Boosts['Temporal Rift'].changeState('closed');
 		}
 	}
 
