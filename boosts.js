@@ -641,7 +641,7 @@ Molpy.DefineBoosts = function() {
 				var c = Molpy.Got('TDE') + 1;
 				Molpy.Boosts['Flux Surge'].countdown *= .5;
 				Molpy.Add('FluxCrystals', c);
-				Molpy.Notify('Great Scott! '+c+' flux crystals materialized.');
+				Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+(c>1?'s':'')+' materialized.');
 			}
 			Molpy.Boosts['Now Where Was I?'].Refresh();
 			Molpy.UpdateFaves();
@@ -1591,7 +1591,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Got('Flux Surge')) {
 				var c = Molpy.Got('TDE') + 1;
 				Molpy.Add('FluxCrystals', c);
-				Molpy.Notify('Great Scott! '+c+' flux crystals materialized.');
+				Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+(c>1?'s':'')+' materialized.');
 				if(Molpy.Got('Void Goat')) Molpy.Add('Goats', 1);
 			}
 		} else {
@@ -1602,7 +1602,7 @@ Molpy.DefineBoosts = function() {
 
 			var c = Math.floor(Math.random() * Molpy.Level('Time Lord') * (Molpy.Got('TDE') + 1));
 			Molpy.Add('FluxCrystals', c);
-			Molpy.Notify('Great Scott! '+c+' flux crystals materialized.');
+			Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+(c>1?'s':'')+' materialized.');
 			if(Molpy.Level('Time Lord') > 50) Molpy.UnlockBoost('Flux Harvest');
 		}
 		Molpy.Notify('You wonder when you are');
@@ -7454,7 +7454,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Add('Time Lord', 1);
 			};
 			Molpy.Add('FluxCrystals', totalc*Molpy.Papal("Flux"));
-			Molpy.Notify('Chronoreaper activated. Havested '+(c+totalc*Molpy.Papal("Flux"))+' flux crystals.');
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+(c>1?'s':'')+.');
 		} else { // Use maths to approximate then modify by a small random element
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
@@ -7465,7 +7465,7 @@ Molpy.DefineBoosts = function() {
 					c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
 				c = Math.floor(c * .9 + c * .2 * Math.random());
 				Molpy.Add('FluxCrystals', c);
-				Molpy.Notify('Chronoreaper activated. Havested '+c+' flux crystals.');
+				Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+(c>1?'s':'')+.');
 				Molpy.Add('Time Lord', levels);
 			} else {
 				Molpy.Notify("No Rifts left to harvest");
