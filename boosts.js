@@ -4975,7 +4975,8 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.PokeBar = function() {
-		return 4 + Molpy.Level('Panther Rush') * (1 + Molpy.Boosts['WiseDragon'].power);
+		return Math.floor(4 + Molpy.Level('Panther Rush') * (1 + Molpy.Boosts['WiseDragon'].power) *
+			(Molpy.Boosts['WiseDragon'].power ? Math.max(1,Math.log(Molpy.Level('AC'))-10,1) : 1 ));
 	}
 	
 	new Molpy.Boost({
