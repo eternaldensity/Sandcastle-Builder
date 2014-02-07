@@ -32,6 +32,12 @@ function ONGsnip(time) {
 	return time;
 }
 
+Molpy.extend = function(obj, args, overwrite){
+	for(var i in args){
+		if(!obj[i] || overwrite == true) obj[i] = args[i];
+	}
+}
+
 /**************************************************************
  * Molpy Initialization
  *************************************************************/
@@ -2962,6 +2968,8 @@ Molpy.Up = function() {
 		Molpy.Boosts['Now Where Was I?'].Refresh();
 		Molpy.Boosts['The Pope'].reset();
 		Molpy.UpdateFaves();
+		
+		Molpy.Boosts['Temporal Rift'].changeState('closed');
 	};
 
 	Molpy.BurnBags = function(n, e) {

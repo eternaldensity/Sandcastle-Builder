@@ -201,11 +201,11 @@ a:active
 }
 #beach:hover
 {
-	-webkit-transform:scale(1.05,1.05);opacity:0.9;
-	-moz-transform:scale(1.05,1.05);opacity:0.9;
-	-ms-transform:scale(1.05,1.05);opacity:0.9;
-	-o-transform:scale(1.05,1.05);opacity:0.9;
-	transform:scale(1.05,1.05);opacity:0.9;
+	-webkit-transform:scale(0.99,0.99);opacity:0.9;
+	-moz-transform:scale(0.99,0.99);opacity:0.9;
+	-ms-transform:scale(0.99,0.99);opacity:0.9;
+	-o-transform:scale(0.99,0.99);opacity:0.9;
+	transform:scale(0.99,0.99);opacity:0.9;
 }
 #beach:active
 {
@@ -306,9 +306,10 @@ a:active
 }
 #sectionBeach
 {
-	max-width:600px;
-	margin:10px;
-	margin-bottom:0px;
+	max-width:560px;
+	margin-left:10px;
+	overflow:hidden;
+	position:relative;
 }
 #inventory
 {
@@ -622,4 +623,35 @@ body.lightscheme .boost.loot a:hover
 {
 	background-color:#F5F5F5;
 	color:#000;
+}
+#temporalRift
+{
+	position: absolute;
+	transform-origin: center center;
+    -webkit-transform-origin: center center;
+    -ms-transform-origin: center center;
+    cursor: pointer;
+    z-index: 99999999;
+    vertical-align: bottom;
+}
+.rotate90
+{
+	transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+.rotate180
+{
+	transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+}
+.rotate270
+{
+	transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }

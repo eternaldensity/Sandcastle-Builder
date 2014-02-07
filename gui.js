@@ -1468,6 +1468,8 @@ Molpy.DefineGUI = function() {
 		Molpy.shrinkAll = 0;
 
 		Molpy.CheckBeachClass();
+		
+		Molpy.Boosts['Temporal Rift'].updateRiftIMG();
 	}
 
 	Molpy.TickHover = function(me, repaint) {
