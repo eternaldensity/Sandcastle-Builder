@@ -58,6 +58,7 @@ For personal amusement only.
 - New Boosts: Ritual Sacrifice and Ritual Rift
 - Some code refactoring
 - More icons
+- More discoveries
 
 #### ED:
 - Add a few changelog entries, fix version number :P
