@@ -58,6 +58,8 @@ For personal amusement only.
 - New Boosts: Ritual Sacrifice and Ritual Rift
 - Some code refactoring
 - More icons
+- Time rifts are now visible images on pix
+- Remove lock button on in-shop ceilings
 
 #### ED:
 - Add a few changelog entries, fix version number :P
