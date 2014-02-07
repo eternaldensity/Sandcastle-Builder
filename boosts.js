@@ -2875,7 +2875,13 @@ Molpy.DefineBoosts = function() {
 			name: 'Glass Ceiling ' + i,
 			icon: 'glassceiling' + i,
 			group: 'ceil',
-			desc: 'Multiplies ' + Molpy.glassCeilingDescText[i] + ' by 33 per Glass Ceiling.<br><input type="Button" value="Lock" onclick="Molpy.CeilingLock(' + i + ')"></input>',
+			
+			desc: function(me) {
+				var str = 'Multiplies ' + Molpy.glassCeilingDescText[i] + ' by 33 per Glass Ceiling.<br>';
+				if(me.bought)
+					str += '<input type="Button" value="Lock" onclick="Molpy.CeilingLock(' + i + ')"></input>';
+				return str;
+			},
 			
 			Sand: function(me) {
 				return 6 * Math.pow(1000, me.num + 1) * Math.pow(Molpy.glassCeilingPriceIncs[me.num], me.power)
@@ -4358,9 +4364,7 @@ Molpy.DefineBoosts = function() {
 			var str = 'Produces Glass Tools from Glass Chips.<br>Lock Glass Ceilings to prevent a tool from being produced.<br>This will concentrate more production of the remaining tools.';
 			if(!me.bought) return str;
 			if(Molpy.Got('TFLL') && Molpy.Has('GlassChips', 50000)) {
-				if(Molpy.Has('GlassChips', 1e13)) {
-					str += '<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1e13)"></input> with 10T Glass Chips';
-				} else if(Molpy.Has('GlassChips', 1e10)) {
+				if(Molpy.Has('GlassChips', 1e10)) {
 					str += '<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1e10)"></input> with 10G Glass Chips';
 				} else if(Molpy.Has('GlassChips', 1e7)) {
 					str += '<br><input type="Button" value="Load" onclick="Molpy.LoadToolFactory(1e7)"></input> with 10M Glass Chips';
@@ -4595,25 +4599,17 @@ Molpy.DefineBoosts = function() {
 			}
 		}
 		if(left > 10 && Molpy.redactedClicks > 2500 && Molpy.Got('ZK') && Molpy.Boosts['Logicat'].bought >= 4
-			&& Molpy.Got('LogiPuzzle')) {
-			if (Molpy.Has('LogiPuzzle', Molpy.PokeBar()))
-			{
-				if (Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) && Molpy.Got('ShadwDrgn') && Molpy.Spend('Bonemeal', 5)) {
-					Molpy.ShadowStrike(1);
-				}
-			}
-			else {
-				var zk = Molpy.Boosts['ZK'];
-				var poke = Math.random() * (left - 10);
-				zk.power += poke;
-				left -= poke;
-				if(zk.power < 0) zk.power = 0; // how?
-				var zooVisits = Math.floor(zk.power / 1000);
-				zk.power -= zooVisits * 1000;
-				if(zooVisits) Molpy.Boosts['Panther Poke'].buyFunction(zooVisits);
+			&& Molpy.Got('LogiPuzzle') && !Molpy.Has('LogiPuzzle', Molpy.PokeBar())) {
+			var zk = Molpy.Boosts['ZK'];
+			var poke = Math.random() * (left - 10);
+			zk.power += poke;
+			left -= poke;
+			if(zk.power < 0) zk.power = 0; // how?
+			var zooVisits = Math.floor(zk.power / 1000);
+			zk.power -= zooVisits * 1000;
+			if(zooVisits) Molpy.Boosts['Panther Poke'].buyFunction(zooVisits);
 
-				if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
-			}
+			if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
 		}
 		Molpy.boostSilence--;
 	}
@@ -4861,30 +4857,11 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			var rushcost = Molpy.CalcRushCost();
-			var str = 'Uses ' + Molpy.PriceString(rushcost) + ' to increase the value of Logicat answers by 0.5.<br>';
-		      	if (rushcost.Vacuum) {
-				if (Molpy.Has('Mustard',rushcost.Vacuum)) str += 'You can use Mustard intead of Vacuums.<br>';
-				if (Molpy.Has('Bonemeal',rushcost.Vacuum*10)) str += 'You can use 10xBonemeal intead of Vacuums.<br>';
-			}	
-		
-			str += 'Single use: available again when you have '
+			return 'Uses ' + Molpy.PriceString(Molpy.CalcRushCost())
+				+ ' to increase the value of Logicat answers by 0.5.<br>Single use: available again when you have '
 				+ Molpy.PriceString(Molpy.CalcRushCost(1, 1)) + '.'
-				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
-			if (me.bought) {
-				str += '<br>';
-				if (!rushcost.Vacuum) {
-					str += '<input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>';
-				} else {
-					if (Molpy.Has('Vacuum',rushcost.Vacuum)) str +=
-						'<input type="Button" onclick="Molpy.PantherRush()" value="Use Vacuums"></input>';
-					if (Molpy.Has('Mustard',rushcost.Vacuum)) str +=
-						'<input type="Button" onclick="Molpy.PantherRush(1)" value="Use Mustard"></input>';
-					if (Molpy.Has('Bonemeal',rushcost.Vacuum*10)) str +=
-						'<input type="Button" onclick="Molpy.PantherRush(2)" value="Use Bonemeal"></input>';
-				}
-			}
-			return str;
+				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '')
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>' : '');
 		},
 		
 		GlassBlocks: function() {
@@ -4901,26 +4878,16 @@ Molpy.DefineBoosts = function() {
 	Molpy.CalcRushCost = function(nextLevel, feather) {
 		var l = Molpy.Level('Panther Rush') + (nextLevel || 0);
 		var m = Math.max(1, l - 9);
-		var v = Math.max(1, l - 19);
 		return {
 			Logicat: 300 * (l + 1) * m + (5 * feather || 0),
 			Blackprints: 2000 * (m - 1) * l,
-			Vacuum: (v - 1) * l
+			Vacuum: (m - 1) * l
 		};
 	}
 	
-	Molpy.PantherRush = function(stuff) {
+	Molpy.PantherRush = function() {
 		var pr = Molpy.Boosts['Panther Rush'];
 		var cost = Molpy.CalcRushCost();
-		if (stuff) {
-			if (stuff == 1) {
-				cost['Mustard'] = cost.Vacuum;
-				delete cost['Vacuum'];
-			} else if (stuff == 2) {
-				cost['Bonemeal'] = cost.Vacuum*10;
-				delete cost['Vacuum'];
-			}
-		}
 		if(Molpy.Has(cost)
 			&& (pr.Level > 12 || confirm('Really spend ' + Molpy.PriceString(cost).replace(/&nbsp;/g, ' ')
 				+ ' on Panther Rush?'))) {
@@ -6074,10 +6041,10 @@ Molpy.DefineBoosts = function() {
 		var n = Math.ceil(l);
 		var p = n - l;
 		if(Math.random() < p * p) n = 1;
-		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
+		Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned '
+			+ Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
-		if (n >= 10) Molpy.UnlockBoost('Shadow Feeder');
 	}
 
 	Molpy.spendSandNotifyFlag = 1;
@@ -6102,6 +6069,7 @@ Molpy.DefineBoosts = function() {
 					this.Refresh();
 				}
 		],
+		
 		Add: Molpy.Dig,
 		
 		Spend: function(amount, silent) {
@@ -6110,8 +6078,7 @@ Molpy.DefineBoosts = function() {
 			if(!amount) return 1;
 			this.power -= amount;
 			if(this.power < 0) this.power = 0;
-			//Makes Sand Spent if it's undefined.
-			(this['spent'] !== undefined) ? this['spent'] += amount : this['spent'] = amount;
+			Molpy.sandSpent += amount;
 			if((isFinite(this.power) || !isFinite(amount))) {
 				if(!Molpy.boostSilence && !silent && Molpy.spendSandNotifyFlag) {
 					if(Molpy.spendSandNotifyCount) {
@@ -6144,7 +6111,6 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			return Molpify(me.Level, 3);
 		}
-		
 	});
 
 	Molpy.destroyNotifyFlag = 1;
@@ -6179,7 +6145,7 @@ Molpy.DefineBoosts = function() {
 			if(!amount) return;
 			amount = Math.min(amount, this.power);
 			this.power -= amount;
-			(this['spent'] !== undefined) ? this['spent'] += amount : this['spent'] = amount;
+			Molpy.castlesSpent += amount;
 			if(isNaN(this.power)) {
 				this.power = 0;
 				Molpy.EarnBadge('Mustard Cleanup');
@@ -7851,26 +7817,6 @@ Molpy.DefineBoosts = function() {
 			} else {
 				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed and is available for purchase', 1);
 			}
-		}
-	});
-
-	new Molpy.Boost({
-		name: 'Shadow Feeder',
-		icon: 'shadowdragon',
-		group: 'bean',
-		className: 'toggle',
-
-		desc: function(me) {
-			var str = (me.IsEnabled ? 'I' : 'When active, i') + 'f at the Crouching Dragon limit when Zookeeper runs, spends 5 Bonemeal to activate the Shadow Dragon.';
-			if(me.bought)
-				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
-			return str;
-		},
-
-		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
-
-		price: {
-			Bonemeal: 10000
 		}
 	});
 
