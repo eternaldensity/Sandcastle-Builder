@@ -1489,7 +1489,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:2667,name:'Something',desc:'A Beanie returns carrying something.'});
 	Molpy.MakeQuadBadge({np:2669,name:'I Wonder',desc:'Cueball: They seem to know what they\'re doing.  Megan: Yeah. I wonder what that is.'});
 	Molpy.MakeQuadBadge({np:2670,name:'What is that?',desc:'Megan: That. What is that?'});
-	Molpy.MakeQuadBadge({np:2671,name:'A Beanish explination',desc:'The something turns out to be...something.'});
+	Molpy.MakeQuadBadge({np:2671,name:'A Beanish explanation',desc:'The something turns out to be...something.'});
 	Molpy.MakeQuadBadge({np:2672,name:'-ow-',desc:'Cueball: It\'s some kind of paste. Does it hurt?  Megan: Not-ow-Not Really.'});
 	Molpy.MakeQuadBadge({np:2675,name:'All patched up',desc:'Megan: Um, thank you.'});
 	Molpy.MakeQuadBadge({np:2676,name:'This way',desc:'The Beanies seem to want Cueball and Megan to follow them.'});
@@ -1514,7 +1514,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:2715,name:'A picture\'s worth',desc:'Cueball draws in the dirt to communicate.'});
 	Molpy.MakeQuadBadge({np:2717,name:'My turn',desc:'The Beanie adds to the drawing.'});
 	Molpy.MakeQuadBadge({np:2720,name:'Motion picture',desc:'Cueball describes their journey with pictures.'});
-	Molpy.MakeQuadBadge({np:2722,name:'Coinkydink',desc:'The one Beanish word Cueball just so happens to be very useful.'});
+	Molpy.MakeQuadBadge({np:2722,name:'Coinkydink',desc:'The one Beanish word Cueball knows just so happens to be very useful.'});
 	Molpy.MakeQuadBadge({np:2723,name:'Gibberish',desc:'The Beanie talks more Beanish.'});
 	Molpy.MakeQuadBadge({np:2724,name:'Failure to communicate',desc:'Unfortunately, Cueball and Megan didn\'t magically learn Beanish.'});
 	Molpy.MakeQuadBadge({np:2727,name:'Why is that happening?',desc:'Megan: Yes! The sea is rising.  Cueball: Why is that happening?'});
@@ -1526,8 +1526,8 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:2735,name:'Speech!',desc:'Cueball: Oh, speech! There\'s someone we can talk to?'});
 	Molpy.MakeQuadBadge({np:2736,name:'Trilogy',desc:'The Beanie draws the sun\'s path in the sky.'});
 	Molpy.MakeQuadBadge({np:2737,name:'I get it',desc:'Cueball: I get it- It\'s less than a day away. Then let\'s do it.'});
-	Molpy.MakeQuadBadge({np:2739,name:'Packing up',desc:'The Beanies start packing pu their equipment.'});
-	Molpy.MakeQuadBadge({np:2762,name:'Rabbit',desc:'A rabbit pops it\'s head up.'});
+	Molpy.MakeQuadBadge({np:2739,name:'Packing up',desc:'The Beanies start packing up their equipment.'});
+	Molpy.MakeQuadBadge({np:2762,name:'Rabbit',desc:'A rabbit pops its head up.'});
 	Molpy.MakeQuadBadge({np:2763,name:'See it?',desc:'A Beanie points out the rabbit.'});
 	Molpy.MakeQuadBadge({np:2777,name:'Wildlife',desc:'A rabbit and beasnake roam in the bushes.'});
 	Molpy.MakeQuadBadge({np:2789,name:'Beneath the leaves',desc:'The group sits down beneath a tree to eat.'});
