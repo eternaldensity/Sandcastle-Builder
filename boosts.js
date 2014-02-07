@@ -7680,7 +7680,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Overtime',
 		icon: 'overtime',
 		group: 'hpt',
-		price: {Blackprints:'1W',FluxCrystals:'1W',QQ:'1M',Goats:1000,Vacuum:1000},
+		price: {Blackprints:'1M',FluxCrystals:'1M',QQ:'1M',Goats:1000,Vacuum:1000},
 		desc: 'When on longpix, the Vacuum Cleaner runs twice every mnp'
 	});
 	new Molpy.Boost({
