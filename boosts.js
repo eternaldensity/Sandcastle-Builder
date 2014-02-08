@@ -5068,7 +5068,8 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.PokeBar = function() {
-		return 4 + Molpy.Level('Panther Rush') * (1 + Molpy.Boosts['WiseDragon'].power);
+		return Math.floor(4 + Molpy.Level('Panther Rush') * (1 + Molpy.Boosts['WiseDragon'].power) *
+			(Molpy.Boosts['WiseDragon'].power ? Math.max(1,Math.log(Molpy.Level('AC'))-10,1) : 1 ));
 	}
 	
 	new Molpy.Boost({
@@ -7485,7 +7486,12 @@ Molpy.DefineBoosts = function() {
 				Blackprints: Math.floor(n * 1000 * Math.pow(1.01, Molpy.Level('Vacuum') / 100))
 			};
 			if(Molpy.Has(cost)) {
-				str += '<br><input type="Button" value="Increase" onclick="Molpy.SuckMore(1)"></input> the vacuum rate by 1 at a cost of ' + Molpy.PriceString(cost) + '.';
+				var mult=1;
+				while (me.Level >= 10*mult && 
+					Molpy.Has('Vacuum',cost.Vacuum*mult*10) && 
+					Molpy.Has('Blackprints',cost.Blackprints*mult*10)) mult *=10;
+				str += '<br><input type="Button" value="Increase" onclick="Molpy.SuckMore(' + mult +
+	       				')"></input> the vacuum rate by ' + Molpify(mult,2) + ' at a cost of ' + Molpy.PriceString(cost) + '.';
 			} else {
 				str += '<br>It will cost ' + Molpy.PriceString(cost) + ' to increase this by 1.';
 			}
@@ -7521,8 +7527,8 @@ Molpy.DefineBoosts = function() {
 		var me = Molpy.Boosts['TS'];
 		var n = me.Level;
 		var cost = {
-			Vacuum: Math.abs(2000 - n) * n,
-			Blackprints: Math.floor(n * 1000 * Math.pow(1.01, Molpy.Level('Vacuum') / 100))
+			Vacuum: (Math.abs(2000 - n) * n) *num,
+			Blackprints: (Math.floor(n * 1000 * Math.pow(1.01, Molpy.Level('Vacuum') / 100))) *num
 		};
 		if(num < 0) {
 			cost = {QQ: 1000 * n};
@@ -7768,7 +7774,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Overtime',
 		icon: 'overtime',
 		group: 'hpt',
-		price: {Blackprints:'1W',FluxCrystals:'1W',QQ:'1M',Goats:1000,Vacuum:1000},
+		price: {Blackprints:'1M',FluxCrystals:'1M',QQ:'1M',Goats:1000,Vacuum:1000},
 		desc: 'When on longpix, the Vacuum Cleaner runs twice every mnp'
 	});
 	new Molpy.Boost({
