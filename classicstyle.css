@@ -623,3 +623,6 @@ body.lightscheme .boost.loot a:hover
 	background-color:#F5F5F5;
 	color:#000;
 }
+.logipuzzle td {
+	vertical-align:middle;
+}

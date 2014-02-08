@@ -95,7 +95,7 @@ Molpy.DefinePuzzles = function() {
 			this.StringifyStatements = function(noWrap) {
 				var str = '';
 				for( var id in completedStatements) {
-					str += this.StringifyStatement(completedStatements[id], id) + '<br><br>';
+					str += this.StringifyStatement(completedStatements[id], id) + '<br>';
 				}
 				str += '<input type="Button" value="Clear Guesses" onclick="Molpy.PuzzleGens[\'' + this.name + '\'].Clear()"></input><br>';
 				str += '<input type="Button" value="Submit Guesses" onclick="Molpy.PuzzleGens[\'' + this.name + '\'].Submit()"></input>';
@@ -222,12 +222,10 @@ Molpy.DefinePuzzles = function() {
 				}
 			}
 		}
-		this.SelectGuess = function(guessBox) {
-			var index = parseInt(guessBox.name.split('selectGuess')[1]);
-			var value = guessBox.options[guessBox.selectedIndex].value;
-			this.guess[index] = value;
-		}
 		this.guessOptions = ['No Guess', 'True', 'False'];
+		this.SelectGuess = function(id,sel) {
+			this.guess[id] = this.guessOptions[sel];
+		}
 		this.StringifyStatement = function(statement, id) {
 			var str = statement.name + ':';
 
@@ -238,13 +236,17 @@ Molpy.DefinePuzzles = function() {
 					str += ' ' + statement.operator;
 				}
 			}
-			//str+= ' ('+statement.value+', '+statement.reason+', group:'+statement.groupNumber+', groupSize:'+statement.groupSize+')';
-			str += '<br><select id="selectGuess' + id + '" name="selectGuess' + id + '" onchange="Molpy.PuzzleGens[\'' + this.name + '\'].SelectGuess(this)">';
-			for( var i in this.guessOptions) {
-				var select = (this.guess[id] == this.guessOptions[i] ? ' selected="selected"' : '');
-				str += '<option' + select + '>' + this.guessOptions[i] + '</option>';
-			}
-			str += '</select>';
+			str += '<br><table class=logipuzzle><tr><td><input type=radio name="selectGuess' + id + '" ' +
+				'onclick="Molpy.PuzzleGens[\'' + this.name + '\'].SelectGuess(' + id + ',0)" ' + 
+				(this.guess[id] == this.guessOptions[0] ? ' checked' : '') + 
+				'><td><small>No<br>Guess</small>';
+			str += '<td><input type=radio name="selectGuess' + id + '" ' + 
+				'onclick="Molpy.PuzzleGens[\'' + this.name + '\'].SelectGuess(' + id + ',1)" ' + 
+				(this.guess[id] == this.guessOptions[1] ? ' checked' : '') + '>T';
+			str += '<td><input type=radio name="selectGuess' + id + '" ' +
+				'onclick="Molpy.PuzzleGens[\'' + this.name + '\'].SelectGuess(' + id + ',2)" ' + 
+				(this.guess[id] == this.guessOptions[2] ? ' checked' : '') + '>F';
+			str += '</table>';
 			return str;
 		}
 		this.StringifyClaim = function(claim) {
@@ -254,8 +256,7 @@ Molpy.DefinePuzzles = function() {
 		this.Submit = function() {
 			var neatGuess = [];
 			for( var i in this.guess) {
-				if(this.guess[i] == 'True')
-					neatGuess[i] = true;
+				if(this.guess[i] == 'True') neatGuess[i] = true;
 				else if(this.guess[i] == 'False') neatGuess[i] = false;
 			}
 			this.Check(neatGuess);

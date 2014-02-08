@@ -45,6 +45,7 @@ For personal amusement only.
 - Allow Mustard or Bonemeal to be used instead of Vacuum for Panther Rush
 - Larger Upgrades to This Sucks
 - Small Buff Crouching Dragon, Sleeping Panther for high AC values
+- Reformatted Logicats to use radio buttons
 
 #### D0rako:
 - Some boost tag/untag fixes
