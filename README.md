@@ -66,7 +66,8 @@ For personal amusement only.
 - Some code refactoring
 - More icons
 - More discoveries
-- Rift Pix!
+- Time rifts are now visible images on pix
+- Remove lock button on in-shop ceilings
 
 #### ED:
 - Add a few changelog entries, fix version number :P
