@@ -47,6 +47,7 @@ For personal amusement only.
 - Small Buff Crouching Dragon, Sleeping Panther for high AC values
 - Reformatted Logicats to use radio buttons
 - Fix for incorrect (low, even negative) boost count
+- Fix for thumbnails on sand monuments not being thumbnails
 
 #### D0rako:
 - Some boost tag/untag fixes
@@ -61,6 +62,7 @@ For personal amusement only.
 - Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
 - Western Paradox does not require Ninja Herder
 - New Boosts: Ritual Sacrifice and Ritual Rift
+- Panel border fix
 - Some code refactoring
 - More icons
 - More discoveries
@@ -82,6 +84,9 @@ For personal amusement only.
 
 #### Dorus 
 - Scale TF Load Letter into 10T
+
+#### GeneralYouri
+- Log + export being hidden by newpic
 
 ### 3.321
 
