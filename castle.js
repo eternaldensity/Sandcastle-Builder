@@ -181,7 +181,7 @@ Molpy.Up = function() {
 				Molpy.prevCastleSand = Molpy.currentCastleSand;
 				if(!isFinite(Molpy.Boosts['Sand'].power) || Molpy.nextCastleSand <= 0) {
 					Molpy.nextCastleSand = 1;
-					Molpy.Boosts['Castles'].power;
+					Molpy.Boosts['Castles'].power = Infinity;
 					Molpy.Boosts['Castles'].bought = Infinity;
 					return;
 				}
