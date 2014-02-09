@@ -1633,7 +1633,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({
 		name: 'Glass Furnace Switching',
-		icon: 'glassfurnaceswitching',
+		icon: 'switching',
 		className: 'alert',
 		group: 'hpt',
 		
@@ -2029,7 +2029,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({
 		name: 'Glass Blower Switching',
-		icon: 'glassblowerswitching',
+		icon: 'switching',
 		className: 'alert',
 		group: 'hpt',
 		
