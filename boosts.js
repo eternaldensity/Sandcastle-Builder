@@ -7459,7 +7459,7 @@ Molpy.DefineBoosts = function() {
 			};
 			var d = totalc*Molpy.Papal("Flux")
 			Molpy.Add('FluxCrystals', d);
-			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c+d)+' flux crystal'+plural(c+d)+.');
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c+d)+' flux crystal'+plural(c+d)+'.');
 		} else { // Use maths to approximate then modify by a small random element
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
@@ -7470,7 +7470,7 @@ Molpy.DefineBoosts = function() {
 					c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
 				c = Math.floor(c * .9 + c * .2 * Math.random());
 				Molpy.Add('FluxCrystals', c);
-				Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+.');
+				Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+'.');
 				Molpy.Add('Time Lord', levels);
 			} else {
 				Molpy.Notify("No Rifts left to harvest");
