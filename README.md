@@ -56,6 +56,7 @@ For personal amusement only.
 #### mart0258:
 - MHP result is now logged
 - Archimedes won't construct moulds already being filled. 
+- Reduce duplicate notifications
 - Ensure caged logicat doesn't keep active puzzle on reload
 
 #### LucidCrux:
