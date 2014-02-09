@@ -3385,8 +3385,11 @@ Molpy.DefineBoosts = function() {
 		
 		refreshFunction: function() {
 			Molpy.ChainRefresh('ShadwDrgn');
-		}
-	});
+		},
+
+        loadFunction: function() { Molpy.PuzzleGens.caged.active=false; }
+
+    });
 
 	new Molpy.Puzzle('caged', function() {
 		Molpy.Boosts['LogiPuzzle'].Refresh();
