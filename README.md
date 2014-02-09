@@ -46,6 +46,7 @@ For personal amusement only.
 - Larger Upgrades to This Sucks
 - Small Buff Crouching Dragon, Sleeping Panther for high AC values
 - Reformatted Logicats to use radio buttons
+- Fix for incorrect (low, even negative) boost count
 
 #### D0rako:
 - Some boost tag/untag fixes
@@ -54,6 +55,7 @@ For personal amusement only.
 #### mart0258:
 - MHP result is now logged
 - Archimedes won't construct moulds already being filled. 
+- Ensure caged logicat doesn't keep active puzzle on reload
 
 #### LucidCrux:
 - Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
@@ -62,13 +64,24 @@ For personal amusement only.
 - Some code refactoring
 - More icons
 - More discoveries
+- Rift Pix!
 
 #### ED:
 - Add a few changelog entries, fix version number :P
 - My 'Swedish advisor' made another suggestion.
+- Merging, some minor fixes such as use of plural()
 
 #### eqbot
-- Some code refactoring
+- Some code refactoring (pretty important actually - ED)
+
+#### Unponderable
+- Flux Crystal notifications
+
+#### mrkeldon
+- Boost for auto shadowdragon
+
+#### Dorus 
+- Scale TF Load Letter into 10T
 
 ### 3.321
 
