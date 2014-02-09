@@ -43,6 +43,9 @@ For personal amusement only.
 - Reduced the start point to get Vacuum Cleaner
 - Reduced the Vacuum costs of Panther rush (slightly)
 - Allow Mustard or Bonemeal to be used instead of Vacuum for Panther Rush
+- Larger Upgrades to This Sucks
+- Small Buff Crouching Dragon, Sleeping Panther for high AC values
+- Reformatted Logicats to use radio buttons
 
 #### D0rako:
 - Some boost tag/untag fixes

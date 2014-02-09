@@ -856,3 +856,6 @@ body.lightscheme .boost.loot a:hover
     -ms-transform: rotate(270deg);
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
+.logipuzzle td {
+	vertical-align:middle;
+}

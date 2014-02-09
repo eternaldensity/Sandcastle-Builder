@@ -1825,9 +1825,7 @@ Molpy.Up = function() {
 						Molpy.recalculateDig = 1;
 
 						if(me.lockFunction) me.lockFunction();
-						if(me.bought == 1)
-						;
-						{
+						if(me.bought) {
 							Molpy.BoostsOwned--;
 							me.bought = 0;
 							me.Refresh();
