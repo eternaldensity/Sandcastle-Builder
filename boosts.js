@@ -1978,7 +1978,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate if chips are infinite and all chip-related boosts are bought
-		classChange: function() { return (isFinite(this.power) && Molpy.Got('Sand Refinery') && Molpy.Got('Glass Blower') && Molpy.Got('Glass Extruder')) ? 'alert' : '' },
+		classChange: function() { return (isFinite(this.power) || !Molpy.Got('Sand Refinery') || !Molpy.Got('Glass Blower') || !Molpy.Got('Glass Extruder')) ? 'alert' : '' },
 	});
 	
 	Molpy.UpgradeChipStorage = function(n) {
@@ -5228,7 +5228,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate when reached max
-		classChange: function() { return (!Molpy.Earned('Planck Limit')) ? 'action' : '';}
+		classChange: function() { return (!Molpy.Earned('Planck Limit')) ? 'toggle' : '';}
 	});
 	
 	Molpy.ControlAutomata = function(n, dragon) {
@@ -5716,7 +5716,7 @@ Molpy.DefineBoosts = function() {
 			var str = 'Allows you increase the power of Automata Control using Logicat Levels and Blackprint Pages.';
 			if(!me.bought) return str;
 			var n = Molpy.Boosts['AC'].power;
-			str += '<br>Automata Assemble attempts up to ' + Molpify(n, 2) + ' Factory Automation runs.';
+			str += '<br>Automata Assemble attempts up to ' + Molpify(n, 2) + ' extra runs.';
 			if(!Molpy.Earned('Planck Limit')) {
 				var pageCost = n * 10
 				var logicatCost = Math.ceil(n / 20);
@@ -5864,9 +5864,7 @@ Molpy.DefineBoosts = function() {
 		
 		Sand: Infinity,
 		Castles: Infinity,
-		GlassBlocks: '1M',
-		
-		classChange: function() { return isFinite(Molpy.Boosts['GlassChips'].power) ? 'toggle' : ''},
+		GlassBlocks: '1M'
 	});
 	new Molpy.Boost({
 		name: 'Stretchable Block Storage',
@@ -5887,9 +5885,7 @@ Molpy.DefineBoosts = function() {
 		
 		Sand: Infinity,
 		Castles: Infinity,
-		GlassBlocks: '1M',
-		
-		classChange: function() { return isFinite(Molpy.Boosts['GlassBlocks'].power) ? 'toggle' : ''},
+		GlassBlocks: '1M'
 	});
 
 	Molpy.GenericToggle = function(myid, negate) {
