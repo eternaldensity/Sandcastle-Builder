@@ -2521,7 +2521,7 @@ Molpy.Up = function() {
 			var spent = 0;
 			while(i-- > 0) {
 				var sandToSpend = 2000000 * Math.pow(10000, i);
-				if(Molpy.Boosts['Sand'].power >= sandToSpend) {
+				if(Molpy.Has('Sand', sandToSpend)) {
 					Molpy.Spend('Sand', sandToSpend, 1);
 					t++;
 					spent += sandToSpend;
