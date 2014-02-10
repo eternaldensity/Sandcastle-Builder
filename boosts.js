@@ -1502,6 +1502,7 @@ Molpy.DefineBoosts = function() {
 		frame: 1,
 		frameRate: 4,
 		rateDelay: 99,
+		fadeCountdown: 2700, //roughly 50 mNP since this gets updates on draw, not mNP (because countdown is for something else)
 		riftState: 'closed', //closed, expired, active
 		
 		variationSizes: [[84, 63], [80, 64], [83,83], [138, 127], [71, 66], [146, 96], [103, 83], [103, 90]],
@@ -1547,7 +1548,17 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		updateRiftIMG: function() {
-			if(!this.showRift || this.riftState != 'active' || !this.riftIMG) return;
+			if(!this.showRift || !this.riftIMG) return;
+			if(this.riftState == 'expired') {
+				this.fadeCountdown --;
+				var fade = 0.3 + (0.7 * (this.fadeCountdown / 2700));
+				this.riftDiv.css({opacity: fade})
+				if(this.fadeCountdown <= 0){
+					this.changeState('closed');
+				}
+			} else if(this.riftState != 'active') {
+				return;
+			}
 			this.rateDelay++;
 			if(this.rateDelay < this.frameRate) return;
 			this.rateDelay = 0; //new frame started
