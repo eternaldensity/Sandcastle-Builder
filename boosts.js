@@ -4947,7 +4947,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Spend(cost)) pr.Add(1);
 			var fCost = Molpy.CalcRushCost(0, 1);
 			Molpy.LockBoost(pr.alias);
-			if(Molpy.Has(fCost)) Molpy.UnlockBoost(pr.alias);
+			if(Molpy.Has('Logicat',fCost.Logicat)) Molpy.UnlockBoost(pr.alias);
 		}
 	}
 
