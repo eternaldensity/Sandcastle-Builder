@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.332;
+Molpy.version=3.333;
 
 /**************************************************************
  * Game Strings
@@ -843,7 +843,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Tiny Glasses'].logic = 90 * (Molpy.SandTools['LaPetite'].amount >= 8000);
 	Molpy.Boosts['Glass Saw'].logic = 150 * (Molpy.glassPermNP >= 4000);
 
-	Molpy.Boosts['Panther Rush'].logic = Molpy.CalcRushCost(0, 1).Logicat * Molpy.Has(Molpy.CalcRushCost(0, 1));
+	Molpy.Boosts['Panther Rush'].logic = Molpy.Has('Logicat',Molpy.CalcRushCost(0, 1).Logicat);
 
 	Molpy.Boosts['AC'].logic = 440 * (Molpy.Got('AA') && (isFinite(Molpy.CastleTools['NewPixBot'].amount)? 
 					(Molpy.CastleTools['NewPixBot'].amount >= 7500 ? 50000 / Molpy.CastleTools['NewPixBot'].amount : 0):1));

@@ -1989,7 +1989,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate if chips are infinite and all chip-related boosts are bought
-		classChange: function() { return (isFinite(this.power) && Molpy.Got('Sand Refinery') && Molpy.Got('Glass Blower') && Molpy.Got('Glass Extruder')) ? 'alert' : '' },
+		classChange: function() { return (isFinite(this.power) || !Molpy.Got('Sand Refinery') || !Molpy.Got('Glass Blower') || !Molpy.Got('Glass Extruder')) ? 'alert' : '' },
 	});
 	
 	Molpy.UpgradeChipStorage = function(n) {
@@ -3406,7 +3406,7 @@ Molpy.DefineBoosts = function() {
 			this.Level = 10;
 		},
 		
-		classChange: function() { return (this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
+		classChange: function() { return ((Molpy.Level('AC') > 1000) || this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
 		
 		refreshFunction: function() {
 			Molpy.ChainRefresh('ShadwDrgn');
@@ -4035,7 +4035,7 @@ Molpy.DefineBoosts = function() {
 		var sandToSpend = Math.pow(1.2, Math.abs(b)) * 100;
 		if(b < 0) sandToSpend *= sandToSpend;
 		while(times) {
-			if(Molpy.Boosts['Sand'].power < sandToSpend) {
+			if(!Molpy.Has('Sand',sandToSpend)) {
 				Molpy.Boosts['Break the Mould'].power += times;
 				return times;
 			}
@@ -4958,7 +4958,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Spend(cost)) pr.Add(1);
 			var fCost = Molpy.CalcRushCost(0, 1);
 			Molpy.LockBoost(pr.alias);
-			if(Molpy.Has(fCost)) Molpy.UnlockBoost(pr.alias);
+			if(Molpy.Has('Logicat',fCost.Logicat)) Molpy.UnlockBoost(pr.alias);
 		}
 	}
 
@@ -5239,7 +5239,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate when reached max
-		classChange: function() { return (!Molpy.Earned('Planck Limit')) ? 'action' : '';}
+		classChange: function() { return (!Molpy.Earned('Planck Limit')) ? 'toggle' : '';}
 	});
 	
 	Molpy.ControlAutomata = function(n, dragon) {
@@ -5727,7 +5727,7 @@ Molpy.DefineBoosts = function() {
 			var str = 'Allows you increase the power of Automata Control using Logicat Levels and Blackprint Pages.';
 			if(!me.bought) return str;
 			var n = Molpy.Boosts['AC'].power;
-			str += '<br>Automata Assemble attempts up to ' + Molpify(n, 2) + ' Factory Automation runs.';
+			str += '<br>Automata Assemble attempts up to ' + Molpify(n, 2) + ' extra runs.';
 			if(!Molpy.Earned('Planck Limit')) {
 				var pageCost = n * 10
 				var logicatCost = Math.ceil(n / 20);
@@ -5735,20 +5735,21 @@ Molpy.DefineBoosts = function() {
 					var mult = 1;
 					var strs = [];
 					while(Molpy.Has({
-						Logicat: mult * logicatCost * 10,
-						Blackprints: pageCost * mult * 10
-						}) && (n + 20 * mult * 10 <= 1e34) && (n > 20 * mult)) {
-						mult *= 10;
-						strs.push( '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' +
-							   	Molpify(20 * mult) + ',1)">' +
+						Logicat: mult * logicatCost,
+						Blackprints: pageCost * mult
+						}) && (mult <= 1e33) && (n > 20 * mult)) {
+						strs.push( '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' + (20 * mult) + ',1)">' +
 							'</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of ' +
-							Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) +
-							   	' Blackprint Pages.');
+							Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) + ' Blackprint Pages.');
+						mult *= 10;
 					};
-					str += strs.slice(-3).join('');
+					if (strs.length) str += strs.slice(-3).join('');
+					else {
+						str += '<br>It will cost ' + Molpify(logicatCost,2) + ' Logicat Levels and ' + Molpify(pageCost, 2)
+							+ ' Blackprint Pages to increase this by 20.';
+					}
 				} else {
-					str += '<br>It will cost ' + Molpify(logicatCost,2) + ' Logicat Levels and ' + Molpify(pageCost, 2)
-						+ ' Blackprint Pages to increase this by 20.';
+					str += '<br>Automata Control cannot be currently upgraded.'
 				}
 			}
 			return str;
@@ -5874,9 +5875,7 @@ Molpy.DefineBoosts = function() {
 		
 		Sand: Infinity,
 		Castles: Infinity,
-		GlassBlocks: '1M',
-		
-		classChange: function() { return isFinite(Molpy.Boosts['GlassChips'].power) ? 'toggle' : ''},
+		GlassBlocks: '1M'
 	});
 	new Molpy.Boost({
 		name: 'Stretchable Block Storage',
@@ -5897,9 +5896,7 @@ Molpy.DefineBoosts = function() {
 		
 		Sand: Infinity,
 		Castles: Infinity,
-		GlassBlocks: '1M',
-		
-		classChange: function() { return isFinite(Molpy.Boosts['GlassBlocks'].power) ? 'toggle' : ''},
+		GlassBlocks: '1M'
 	});
 
 	Molpy.GenericToggle = function(myid, negate) {
@@ -6098,7 +6095,7 @@ Molpy.DefineBoosts = function() {
 		GlassBlocks: '12WW',
 		
 		// deactivate if not enough logicats
-		classChange: function() { return (Molpy.Got('LogiPuzzle') && Molpy.Has('LogiPuzzle', 100)) ? 'action' : '' },
+		classChange: function() { return ((Molpy.Level('AC') > 2000) || (Molpy.Got('LogiPuzzle') && Molpy.Has('LogiPuzzle', 100))) ? 'action' : '' },
 	});
 	
 	Molpy.ShadowStrike = function() {
@@ -7480,11 +7477,16 @@ Molpy.DefineBoosts = function() {
 				var c = Math.floor(Math.random() * Molpy.Level('Time Lord') * (Molpy.Got('TDE') + 1));
 				totalc += c;
 				Molpy.Add('FluxCrystals', c);
-				Molpy.Add('Time Lord', 1);
+				var addn = 1;
+				var curlvl = Molpy.Level('Time Lord');
+				while (curlvl == Molpy.Level('Time Lord')) {
+					Molpy.Add('Time Lord', addn);
+					addn *= 10;
+				}
 			};
-			var d = totalc*Molpy.Papal("Flux")
-			Molpy.Add('FluxCrystals', d);
-			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c+d)+' flux crystal'+plural(c+d)+'.');
+			var d = Math.floor(totalc*Molpy.Papal("Flux"));
+			if (d) Molpy.Add('FluxCrystals', d);
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(totalc+d)+' flux crystal'+plural(totalc+d)+'.');
 		} else { // Use maths to approximate then modify by a small random element
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
@@ -7896,7 +7898,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Shadow Feeder',
 		icon: 'shadowdragon',
-		group: 'bean',
+		group: 'drac',
 		className: 'toggle',
 
 		desc: function(me) {
