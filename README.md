@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.331
+
+#### LucidCrux:
+- Something went wrong, should be unwrong now.
+
 ### 3.33
 
 #### Waveney:
