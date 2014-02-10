@@ -110,6 +110,7 @@ Molpy.Up = function() {
 			var newSand = Molpy.Boosts['Sand'].power;
 			var oldSand = newSand;
 			if(!isFinite(newSand)) amount = 0; //because why bother?
+			if(!Molpy.Boosts['Sand'].unlocked) Molpy.Boosts['Sand'].unlocked = 1;
 			Molpy.Boosts['Sand'].bought += amount;
 			newSand += amount;
 			if(isNaN(Molpy.Boosts['Sand'].bought)) Molpy.Boosts['Sand'].bought = 0;
@@ -215,6 +216,7 @@ Molpy.Up = function() {
 				amount = Math.round(amount * Molpy.globalCastleMult) || 0;
 			}
 			amount = Math.max(0, amount);
+			if(!Molpy.Boosts['Castles'].unlocked) Molpy.Boosts['Castles'].unlocked = 1; //quick fix for the castles built not loading.
 			Molpy.Boosts['Castles'].bought += amount;
 			currentCastles += amount;
 			if(amount && !isFinite(currentCastles)) Molpy.recalculateDig = 1;
