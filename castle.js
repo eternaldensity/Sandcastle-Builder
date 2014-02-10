@@ -611,6 +611,15 @@ Molpy.Up = function() {
 			Molpy.Donkey();
 
 			if(!recursion && Molpy.Got('Doubletap')) Molpy.ClickBeach(event, leopard, 1);
+			
+			if(isNaN(Molpy.Boosts['Sand'].power)) {
+				Molpy.Boosts['Sand'].power = 0;
+				Molpy.EarnBadge('Mustard Cleanup');
+			}
+			if(isNaN(Molpy.Boosts['Castles'].power)) {
+				Molpy.Boosts['Castles'].power = 0;
+				Molpy.EarnBadge('Mustard Cleanup');
+			}
 		};
 		g('beach').onclick = Molpy.ClickBeach;
 
