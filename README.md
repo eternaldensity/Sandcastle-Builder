@@ -26,6 +26,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.333
+
+#### Waveney
+- Dragon Forge fixes
+- Panther Rush unlocks on Logicats only
+- Stop Tag changing at high AC level for Shadow Dragon and Caged Logicats
+
 ### 3.332
 
 #### LucidCrux:
