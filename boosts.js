@@ -3395,7 +3395,7 @@ Molpy.DefineBoosts = function() {
 			this.Level = 10;
 		},
 		
-		classChange: function() { return (this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
+		classChange: function() { return (Molpy.Level('AC') > 1000) || this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
 		
 		refreshFunction: function() {
 			Molpy.ChainRefresh('ShadwDrgn');
@@ -6087,7 +6087,7 @@ Molpy.DefineBoosts = function() {
 		GlassBlocks: '12WW',
 		
 		// deactivate if not enough logicats
-		classChange: function() { return (Molpy.Got('LogiPuzzle') && Molpy.Has('LogiPuzzle', 100)) ? 'action' : '' },
+		classChange: function() { return ((Molpy.Level('AC') > 2000) || (Molpy.Got('LogiPuzzle') && Molpy.Has('LogiPuzzle', 100))) ? 'action' : '' },
 	});
 	
 	Molpy.ShadowStrike = function() {
