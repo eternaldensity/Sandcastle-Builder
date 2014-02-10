@@ -3395,7 +3395,7 @@ Molpy.DefineBoosts = function() {
 			this.Level = 10;
 		},
 		
-		classChange: function() { return (Molpy.Level('AC') > 1000) || this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
+		classChange: function() { return ((Molpy.Level('AC') > 1000) || this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
 		
 		refreshFunction: function() {
 			Molpy.ChainRefresh('ShadwDrgn');
@@ -5724,20 +5724,21 @@ Molpy.DefineBoosts = function() {
 					var mult = 1;
 					var strs = [];
 					while(Molpy.Has({
-						Logicat: mult * logicatCost * 10,
-						Blackprints: pageCost * mult * 10
-						}) && (n + 20 * mult * 10 <= 1e34) && (n > 20 * mult)) {
-						mult *= 10;
-						strs.push( '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' +
-							   	Molpify(20 * mult) + ',1)">' +
+						Logicat: mult * logicatCost,
+						Blackprints: pageCost * mult
+						}) && (mult <= 1e33) && (n > 20 * mult)) {
+						strs.push( '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' + (20 * mult) + ',1)">' +
 							'</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of ' +
-							Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) +
-							   	' Blackprint Pages.');
+							Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) + ' Blackprint Pages.');
+						mult *= 10;
 					};
-					str += strs.slice(-3).join('');
+					if (strs.length) str += strs.slice(-3).join('');
+					else {
+						str += '<br>It will cost ' + Molpify(logicatCost,2) + ' Logicat Levels and ' + Molpify(pageCost, 2)
+							+ ' Blackprint Pages to increase this by 20.';
+					}
 				} else {
-					str += '<br>It will cost ' + Molpify(logicatCost,2) + ' Logicat Levels and ' + Molpify(pageCost, 2)
-						+ ' Blackprint Pages to increase this by 20.';
+					str += '<br>Automata Control cannot be currently upgraded.'
 				}
 			}
 			return str;
