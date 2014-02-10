@@ -5728,11 +5728,9 @@ Molpy.DefineBoosts = function() {
 						Blackprints: pageCost * mult * 10
 						}) && (n + 20 * mult * 10 <= 1e34) && (n > 20 * mult)) {
 						mult *= 10;
-						strs.push( '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' +
-							   	Molpify(20 * mult) + ',1)">' +
-							'</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of ' +
-							Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) +
-							   	' Blackprint Pages.');
+						strs.push( '<br><input type="Button" value="Increase" onclick="Molpy.ControlAutomata(' + (20 * mult) + ',1)">'
+								+ '</input> the number of runs by ' + Molpify(20 * mult) + ' at a cost of '
+								+ Molpify(logicatCost * mult,2) + ' Logicat Levels and ' + Molpify(pageCost * mult, 2) + ' Blackprint Pages.');
 					};
 					str += strs.slice(-3).join('');
 				} else {
