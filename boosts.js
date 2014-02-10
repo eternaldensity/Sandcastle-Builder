@@ -1978,7 +1978,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate if chips are infinite and all chip-related boosts are bought
-		classChange: function() { return (isFinite(this.power) || Molpy.Got('Sand Refinery') || Molpy.Got('Glass Blower') || Molpy.Got('Glass Extruder')) ? 'alert' : '' },
+		classChange: function() { return (isFinite(this.power) || !Molpy.Got('Sand Refinery') || !Molpy.Got('Glass Blower') || !Molpy.Got('Glass Extruder')) ? 'alert' : '' },
 	});
 	
 	Molpy.UpgradeChipStorage = function(n) {
