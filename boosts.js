@@ -1557,7 +1557,7 @@ Molpy.DefineBoosts = function() {
 		changeState: function(state) {
 			if(state == 'closed') this.clearRift();
 			else if(state == 'expired') {
-				this.riftIMG.attr('src', ('img/rifts/rift_' + (this.variation + 1) + '_1.png'));
+				if(this.riftIMG) this.riftIMG.attr('src', ('img/rifts/rift_' + (this.variation + 1) + '_1.png'));
 			}
 			this.riftState = state;
 		}
