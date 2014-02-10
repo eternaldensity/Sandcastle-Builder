@@ -5228,7 +5228,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate when reached max
-		classChange: function() { return (!Molpy.Earned('Planck Limit')) ? 'action' : '';}
+		classChange: function() { return (!Molpy.Earned('Planck Limit')) ? 'toggle' : '';}
 	});
 	
 	Molpy.ControlAutomata = function(n, dragon) {
