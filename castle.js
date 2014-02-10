@@ -114,7 +114,6 @@ Molpy.Up = function() {
 			Molpy.Boosts['Sand'].bought += amount;
 			newSand += amount;
 			if(isNaN(Molpy.Boosts['Sand'].bought)) Molpy.Boosts['Sand'].bought = 0;
-
 			var gap = Math.ceil(newSand) - newSand;
 			if(gap && gap < sandEpsilon) {
 				newSand = Math.ceil(newSand);
@@ -611,6 +610,7 @@ Molpy.Up = function() {
 			Molpy.Donkey();
 
 			if(!recursion && Molpy.Got('Doubletap')) Molpy.ClickBeach(event, leopard, 1);
+			Molpy.SandToCastles();
 		};
 		g('beach').onclick = Molpy.ClickBeach;
 
