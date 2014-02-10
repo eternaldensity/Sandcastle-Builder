@@ -5220,7 +5220,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate when reached max
-		classChange: function() { return (Molpy.Earned('Planck Limit')) ? 'action' : '';}
+		classChange: function() { return (!Molpy.Earned('Planck Limit')) ? 'action' : '';}
 	});
 	
 	Molpy.ControlAutomata = function(n, dragon) {
@@ -5740,7 +5740,7 @@ Molpy.DefineBoosts = function() {
 		GlassBlocks: '7P',
 		
 		// deactivate when reached max
-		classChange: function() { return (Molpy.Earned('Planck Limit')) ? 'action' : '';}
+		classChange: function() { return (!Molpy.Earned('Planck Limit')) ? 'action' : '';}
 	});
 	new Molpy.Boost({
 		name: 'Crouching Dragon, Sleeping Panther',
