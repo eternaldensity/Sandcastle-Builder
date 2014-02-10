@@ -303,6 +303,14 @@ body.darkscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/chronotech_light_icon.png');
 }
+.darkscheme .loot #glassceiling12
+{
+	background-image:url('img/boost_glassceiling12_dark_icon.png');
+}
+.lightscheme .loot #glassceiling12
+{
+	background-image:url('img/boost_glassceiling12_light_icon.png');
+}
 .darkscheme .loot #draconic
 {
 	background-image:url('img/draconic_dark_icon.png');

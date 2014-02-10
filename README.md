@@ -43,6 +43,11 @@ For personal amusement only.
 - Reduced the start point to get Vacuum Cleaner
 - Reduced the Vacuum costs of Panther rush (slightly)
 - Allow Mustard or Bonemeal to be used instead of Vacuum for Panther Rush
+- Larger Upgrades to This Sucks
+- Small Buff Crouching Dragon, Sleeping Panther for high AC values
+- Reformatted Logicats to use radio buttons
+- Fix for incorrect (low, even negative) boost count
+- Fix for thumbnails on sand monuments not being thumbnails
 
 #### D0rako:
 - Some boost tag/untag fixes
@@ -51,20 +56,39 @@ For personal amusement only.
 #### mart0258:
 - MHP result is now logged
 - Archimedes won't construct moulds already being filled. 
+- Reduce duplicate notifications
+- Ensure caged logicat doesn't keep active puzzle on reload
 
 #### LucidCrux:
 - Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
 - Western Paradox does not require Ninja Herder
 - New Boosts: Ritual Sacrifice and Ritual Rift
+- Panel border fix
 - Some code refactoring
 - More icons
+- More discoveries
+- Time rifts are now visible images on pix
+- Remove lock button on in-shop ceilings
 
 #### ED:
 - Add a few changelog entries, fix version number :P
 - My 'Swedish advisor' made another suggestion.
+- Merging, some minor fixes such as use of plural()
 
 #### eqbot
-- Some code refactoring
+- Some code refactoring (pretty important actually - ED)
+
+#### Unponderable
+- Flux Crystal notifications
+
+#### mrkeldon
+- Boost for auto shadowdragon
+
+#### Dorus 
+- Scale TF Load Letter into 10T
+
+#### GeneralYouri
+- Log + export being hidden by newpic
 
 ### 3.321
 
