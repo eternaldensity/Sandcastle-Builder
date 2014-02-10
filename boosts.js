@@ -7893,6 +7893,5 @@ Molpy.DefineBoosts = function() {
 			Bonemeal: 10000
 		}
 	});
-
 	// END OF BOOSTS, add new ones immediately before this comment
 }
