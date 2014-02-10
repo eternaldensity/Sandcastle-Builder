@@ -1477,8 +1477,16 @@ Molpy.DefineBoosts = function() {
 			this.changeState('expired');
 		},
 		
+		loadFunction: function(me) {
+			if(this.bought){
+				this.createRift();
+			} else {
+				this.changeState('closed');
+			}
+		},
+		
 		buyFunction: function(me) {
-			Molpy.Boosts['Temporal Rift'].createRift();
+			this.createRift();
 		},
 		
 		stats: 'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',
@@ -1500,7 +1508,6 @@ Molpy.DefineBoosts = function() {
 		animationOrder: [1, 2, 3, 4, 3, 4, 3, 2, 1, 1, 2],
 		
 		createRift: function() {
-			console.log('creating rift');
 			//create the image and div if needed
 			if(this.riftDiv == null){
 				this.riftDiv = $('<div id="temporalRift" onclick="Molpy.RiftJump()"></div>');
