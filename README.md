@@ -26,6 +26,20 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.332
+
+#### LucidCrux:
+- fix broken Rift load
+
+#### mart0258:
+- Infinite sand -> infinite castles fix (it got disabled unintentionally)
+- Automata Control tag fix
+
+#### LucidCrux:
+- fix broken Rift load
+
+
+
 ### 3.331
 
 #### LucidCrux:
