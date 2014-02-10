@@ -4024,7 +4024,7 @@ Molpy.DefineBoosts = function() {
 		var sandToSpend = Math.pow(1.2, Math.abs(b)) * 100;
 		if(b < 0) sandToSpend *= sandToSpend;
 		while(times) {
-			if(Molpy.Boosts['Sand'].power < sandToSpend) {
+			if(!Molpy.Has('Sand',sandToSpend)) {
 				Molpy.Boosts['Break the Mould'].power += times;
 				return times;
 			}
