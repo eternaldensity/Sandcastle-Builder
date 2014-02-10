@@ -32,6 +32,25 @@ For personal amusement only.
 - Dragon Forge fixes
 - Panther Rush unlocks on Logicats only
 - Stop Tag changing at high AC level for Shadow Dragon and Caged Logicats
+- Flux Harvest notification fix
+- Precision loss in Flux Harvest fixed
+
+#### LucidCrux:
+- Remove redundant formatting
+
+#### D0rako:
+- Automata Control was changing to wrong tag
+- Now Where Was I fix
+- Dragon Forge description update (I forgot to do that months ago - ED)
+- Prevent stretchable storage from untagging so BoF still works on them
+- Chip Storage tag fix
+
+#### eqbot
+- total castles/sand dug fix
+
+#### ED
+- some changelog, version number
+- Shadow Feeder was in wrong category
 
 ### 3.332
 
@@ -44,7 +63,6 @@ For personal amusement only.
 
 #### LucidCrux:
 - fix broken Rift load
-
 
 
 ### 3.331

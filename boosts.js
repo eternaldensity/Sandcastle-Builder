@@ -7887,7 +7887,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Shadow Feeder',
 		icon: 'shadowdragon',
-		group: 'bean',
+		group: 'drac',
 		className: 'toggle',
 
 		desc: function(me) {
