@@ -7472,9 +7472,9 @@ Molpy.DefineBoosts = function() {
 				Molpy.Add('FluxCrystals', c);
 				Molpy.Add('Time Lord', 1);
 			};
-			var d = totalc*Molpy.Papal("Flux")
-			Molpy.Add('FluxCrystals', d);
-			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c+d)+' flux crystal'+plural(c+d)+'.');
+			var d = Math.floor(totalc*Molpy.Papal("Flux"));
+			if (d) Molpy.Add('FluxCrystals', d);
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(totalc+d)+' flux crystal'+plural(totalc+d)+'.');
 		} else { // Use maths to approximate then modify by a small random element
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
