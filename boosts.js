@@ -5863,9 +5863,7 @@ Molpy.DefineBoosts = function() {
 		
 		Sand: Infinity,
 		Castles: Infinity,
-		GlassBlocks: '1M',
-		
-		classChange: function() { return isFinite(Molpy.Boosts['GlassChips'].power) ? 'toggle' : ''},
+		GlassBlocks: '1M'
 	});
 	new Molpy.Boost({
 		name: 'Stretchable Block Storage',
@@ -5886,9 +5884,7 @@ Molpy.DefineBoosts = function() {
 		
 		Sand: Infinity,
 		Castles: Infinity,
-		GlassBlocks: '1M',
-		
-		classChange: function() { return isFinite(Molpy.Boosts['GlassBlocks'].power) ? 'toggle' : ''},
+		GlassBlocks: '1M'
 	});
 
 	Molpy.GenericToggle = function(myid, negate) {
