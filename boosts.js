@@ -7470,7 +7470,12 @@ Molpy.DefineBoosts = function() {
 				var c = Math.floor(Math.random() * Molpy.Level('Time Lord') * (Molpy.Got('TDE') + 1));
 				totalc += c;
 				Molpy.Add('FluxCrystals', c);
-				Molpy.Add('Time Lord', 1);
+				var addn = 1;
+				var curlvl = Molpy.Level('Time Lord');
+				while (curlvl == Molpy.Level('Time Lord')) {
+					Molpy.Add('Time Lord', addn);
+					addn *= 10;
+				}
 			};
 			var d = Math.floor(totalc*Molpy.Papal("Flux"));
 			if (d) Molpy.Add('FluxCrystals', d);
