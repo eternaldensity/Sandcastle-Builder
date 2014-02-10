@@ -5716,7 +5716,7 @@ Molpy.DefineBoosts = function() {
 			var str = 'Allows you increase the power of Automata Control using Logicat Levels and Blackprint Pages.';
 			if(!me.bought) return str;
 			var n = Molpy.Boosts['AC'].power;
-			str += '<br>Automata Assemble attempts up to ' + Molpify(n, 2) + ' Factory Automation runs.';
+			str += '<br>Automata Assemble attempts up to ' + Molpify(n, 2) + ' extra runs.';
 			if(!Molpy.Earned('Planck Limit')) {
 				var pageCost = n * 10
 				var logicatCost = Math.ceil(n / 20);
