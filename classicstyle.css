@@ -658,3 +658,19 @@ body.lightscheme .boost.loot a:hover
 .logipuzzle td {
 	vertical-align:middle;
 }
+.logipuz input[type=radio] {
+	display:none;
+}
+.logipuz input[type=radio] + label {
+	display:inline-block;
+	margin:2px;
+	padding:4px;
+	background-color: #80FF80;
+	border-color: #ddd;
+	vertical-align: middle;
+	color:black;
+}
+.logipuz input[type=radio]:checked + label {
+	background-image:none;
+	background-color:#FF8080;
+}
