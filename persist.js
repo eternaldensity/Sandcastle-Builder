@@ -1022,6 +1022,13 @@
 				me.totalGlassDestroyed = 0;
 				me.Refresh();
 			}
+			for(i in Molpy.SandTools) {
+				Molpy.SandToolsOwned += Molpy.SandTools[i].amount;
+			}
+			for(i in Molpy.CastleTools) {
+				Molpy.CastleToolsOwned += Molpy.CastleTools[i].amount;
+			}
+			
 			var boh = !coma && Molpy.Got('BoH') && Molpy.Spend('Bonemeal', 10);
 			var bom = !coma && Molpy.Got('BoM') && Molpy.Spend('Bonemeal', 100);
 			var bof = !coma && Molpy.Got('BoF') && Molpy.Spend('Bonemeal', 1000);
