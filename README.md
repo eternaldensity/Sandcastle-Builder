@@ -26,6 +26,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.334
+
+#### Waveney
+- Change format of Radio Buttons for Logicats
+- Fixed Tool counts after Molpy Down
+- Fixed Chip rate calulation
+
 ### 3.333
 
 #### Waveney
