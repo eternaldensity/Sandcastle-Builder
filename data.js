@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.333;
+Molpy.version=3.334;
 
 /**************************************************************
  * Game Strings
