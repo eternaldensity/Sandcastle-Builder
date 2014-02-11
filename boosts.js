@@ -1502,7 +1502,9 @@ Molpy.DefineBoosts = function() {
 		frame: 1,
 		frameRate: 4,
 		rateDelay: 99,
-		fadeCountdown: 2700, //roughly 50 mNP since this gets updates on draw, not mNP (because countdown is for something else)
+		//roughly 50 mNP since this gets updates on draw, something to remember if fps ever becomes changeable
+		//wasn't sure how to implement mNP updates without adding other calls elsewhere in the code since countdown is used for being active
+		fadeCountdown: 2700,
 		riftState: 'closed', //closed, expired, active
 		
 		variationSizes: [[84, 63], [80, 64], [83,83], [138, 127], [71, 66], [146, 96], [103, 83], [103, 90]],
@@ -1543,6 +1545,7 @@ Molpy.DefineBoosts = function() {
 			
 			this.changeState('active');
 			this.updateRiftIMG();
+			this.riftDiv.css({opacity: 1});
 			
 			this.riftDiv.show();
 		},
@@ -1551,11 +1554,13 @@ Molpy.DefineBoosts = function() {
 			if(!this.showRift || !this.riftIMG) return;
 			if(this.riftState == 'expired') {
 				this.fadeCountdown --;
-				var fade = 0.3 + (0.7 * (this.fadeCountdown / 2700));
-				this.riftDiv.css({opacity: fade})
+				var fade = 0.2 + (0.77 * (this.fadeCountdown / 2700));
+				//opacity should hopefully work in most cases since jQuery tries to do things cross browser
+				this.riftDiv.css({opacity: fade});
 				if(this.fadeCountdown <= 0){
 					this.changeState('closed');
 				}
+				return;
 			} else if(this.riftState != 'active') {
 				return;
 			}
@@ -1575,7 +1580,8 @@ Molpy.DefineBoosts = function() {
 		
 		changeState: function(state) {
 			if(state == 'closed') this.clearRift();
-			else if(state == 'expired') {				
+			else if(state == 'expired') {	
+				this.fadeCountdown = 2700;
 				this.riftIMG.attr('src', ('img/rifts/rift_' + (this.variation + 1) + '_1.png'));
 			}
 			this.riftState = state;
