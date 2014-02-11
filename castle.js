@@ -2718,7 +2718,7 @@ Molpy.Up = function() {
 			* (Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power) / 2) || 0;
 		if ( Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power
 			* Molpy.Boosts['Furnace Crossfeed'].power * (Molpy.NPlength > 1800)) {
-			if (!isFinite(Molpy.Boosts['Sand Refinery'].power)) {
+			if (isFinite(Molpy.Boosts['Sand Refinery'].power)) {
 			 	Molpy.chipspmnp = (Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power) / 2) - Molpy.blockspmnp
 							* Molpy.ChipsPerBlock() || 0;
 			} else {
