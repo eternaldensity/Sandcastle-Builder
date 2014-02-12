@@ -70,15 +70,16 @@ function InnerMolpify(number, raftcastle, shrinkify) {
 	}
 	return molp;
 }
-	function Molpify(number, raftcastle, shrinkify) {
-		var molp = InnerMolpify(number,raftcastle, shrinkify);
-		if (Molpy.options.european && !molp.match(/Math\.PI/)) {
-			molp = molp.replace('.','~');
-			molp = molp.replace(/,/g,'.');
-			molp = molp.replace('~',',');
-		}
-		return molp;
+
+function Molpify(number, raftcastle, shrinkify) {
+	var molp = InnerMolpify(number,raftcastle, shrinkify);
+	if (Molpy.options.european && !molp.match(/Math\.PI/)) {
+		molp = molp.replace('.','~');
+		molp = molp.replace(/,/g,'.');
+		molp = molp.replace('~',',');
 	}
+	return molp;
+}
 
 function MolpifyCountdown(mNP, p) {
 	return mNP == 0 ? 'ever' : mNP >= 1000 ? Molpify(mNP / 1000, p) + 'NP' : Molpify(mNP) + 'mNP'

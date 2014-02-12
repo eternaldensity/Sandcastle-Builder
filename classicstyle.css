@@ -655,3 +655,22 @@ body.lightscheme .boost.loot a:hover
     -ms-transform: rotate(270deg);
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
+.logipuzzle td {
+	vertical-align:middle;
+}
+.logipuz input[type=radio] {
+	display:none;
+}
+.logipuz input[type=radio] + label {
+	display:inline-block;
+	margin:2px;
+	padding:4px;
+	background-color: #80FF80;
+	border-color: #ddd;
+	vertical-align: middle;
+	color:black;
+}
+.logipuz input[type=radio]:checked + label {
+	background-image:none;
+	background-color:#FF8080;
+}

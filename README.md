@@ -26,6 +26,61 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.3331
+
+#### Waveney
+- Change format of Radio Buttons for Logicats
+- Fixed Tool counts after Molpy Down
+- Fixed Chip rate calulation
+
+#### LucidCrux:
+- Fixed Mustard to 0 when clicking beach
+- Rifts now fade over time
+- Refactored Badges and Boosts
+
+#### ED:
+- Two new timetravel badges
+
+### 3.333
+
+#### Waveney
+- Dragon Forge fixes
+- Panther Rush unlocks on Logicats only
+- Stop Tag changing at high AC level for Shadow Dragon and Caged Logicats
+- Flux Harvest notification fix
+- Precision loss in Flux Harvest fixed
+
+#### LucidCrux:
+- Remove redundant formatting
+
+#### D0rako:
+- Automata Control was changing to wrong tag
+- Now Where Was I fix
+- Dragon Forge description update (I forgot to do that months ago - ED)
+- Prevent stretchable storage from untagging so BoF still works on them
+- Chip Storage tag fix
+
+#### eqbot
+- total castles/sand dug fix
+
+#### ED
+- some changelog, version number
+- Shadow Feeder was in wrong category
+
+### 3.332
+
+#### LucidCrux:
+- fix broken Rift load
+
+#### mart0258:
+- Infinite sand -> infinite castles fix (it got disabled unintentionally)
+- Automata Control tag fix
+
+### 3.331
+
+#### LucidCrux:
+- Something went wrong, should be unwrong now.
+
 ### 3.33
 
 #### Waveney:
@@ -43,6 +98,11 @@ For personal amusement only.
 - Reduced the start point to get Vacuum Cleaner
 - Reduced the Vacuum costs of Panther rush (slightly)
 - Allow Mustard or Bonemeal to be used instead of Vacuum for Panther Rush
+- Larger Upgrades to This Sucks
+- Small Buff Crouching Dragon, Sleeping Panther for high AC values
+- Reformatted Logicats to use radio buttons
+- Fix for incorrect (low, even negative) boost count
+- Fix for thumbnails on sand monuments not being thumbnails
 
 #### D0rako:
 - Some boost tag/untag fixes
@@ -51,20 +111,39 @@ For personal amusement only.
 #### mart0258:
 - MHP result is now logged
 - Archimedes won't construct moulds already being filled. 
+- Reduce duplicate notifications
+- Ensure caged logicat doesn't keep active puzzle on reload
 
 #### LucidCrux:
 - Fix Kite and Key, Lightning in a Bottle. They now also refer correctly to Lightning Rod instead of Glassed Lightning.
 - Western Paradox does not require Ninja Herder
 - New Boosts: Ritual Sacrifice and Ritual Rift
+- Panel border fix
 - Some code refactoring
 - More icons
+- More discoveries
+- Time rifts are now visible images on pix
+- Remove lock button on in-shop ceilings
 
 #### ED:
 - Add a few changelog entries, fix version number :P
 - My 'Swedish advisor' made another suggestion.
+- Merging, some minor fixes such as use of plural()
 
 #### eqbot
-- Some code refactoring
+- Some code refactoring (pretty important actually - ED)
+
+#### Unponderable
+- Flux Crystal notifications
+
+#### mrkeldon
+- Boost for auto shadowdragon
+
+#### Dorus 
+- Scale TF Load Letter into 10T
+
+#### GeneralYouri
+- Log + export being hidden by newpic
 
 ### 3.321
 

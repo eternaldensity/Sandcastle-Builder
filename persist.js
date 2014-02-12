@@ -113,7 +113,6 @@
 		}
 
 		if(!success) return;
-		Molpy.Boosts['Temporal Rift'].changeState('closed');
 		Molpy.loadCount++;
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
 		Molpy.autosaveCountup = 0;
@@ -293,7 +292,6 @@
 			Molpy.FromNeedlePulledThing(Molpy.BeanishToCuegish(thread));
 			_gaq && _gaq.push(['_trackEvent', 'Import', 'Complete']);
 			Molpy.Save();
-			Molpy.Boosts['Temporal Rift'].changeState('closed');
 		}
 	}
 
@@ -1024,6 +1022,13 @@
 				me.totalGlassDestroyed = 0;
 				me.Refresh();
 			}
+			for(i in Molpy.SandTools) {
+				Molpy.SandToolsOwned += Molpy.SandTools[i].amount;
+			}
+			for(i in Molpy.CastleTools) {
+				Molpy.CastleToolsOwned += Molpy.CastleTools[i].amount;
+			}
+			
 			var boh = !coma && Molpy.Got('BoH') && Molpy.Spend('Bonemeal', 10);
 			var bom = !coma && Molpy.Got('BoM') && Molpy.Spend('Bonemeal', 100);
 			var bof = !coma && Molpy.Got('BoF') && Molpy.Spend('Bonemeal', 1000);
