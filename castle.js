@@ -1601,6 +1601,7 @@ Molpy.Up = function() {
 			this.group = args.group || 'boosts';
 			this.icon = args.icon || Molpy.groupNames[this.group][2];
 			
+			// Do conditional assignments
 			if(args.defStuff) {
 				args.Level = args.Level || Molpy.BoostFuncs.PosPowerLevel;
 				args.Has = args.Has || Molpy.BoostFuncs.Has;
@@ -1612,6 +1613,7 @@ Molpy.Up = function() {
 			}
 			
 			if(args.Level) {
+				this.Level = {}; // Clear automatic assignment
 				Object.defineProperties(this, {
 					"Level": {
 						get: args.Level[0],
@@ -1627,6 +1629,7 @@ Molpy.Up = function() {
 			}
 			
 			if(args.IsEnabled) {
+				this.IsEnabled = {}; // Clear automatic assignment
 				Object.defineProperties(this, {
 					"IsEnabled": {
 						get: args.IsEnabled[0],
@@ -1635,11 +1638,9 @@ Molpy.Up = function() {
 				});
 			}
 			
-			if(args.startPower) {
-				this.startPower = args.startPower;
-				this.power = ZeroIfFunction(args.startPower);
-			}
+			if(args.startPower) this.power = ZeroIfFunction(args.startPower);
 
+			// Methods
 			this.buy = function(auto) {
 				if(!this.unlocked || this.bought) return; //shopping assistant tried to buy it when it was locked
 
