@@ -373,8 +373,8 @@
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var str = '';
-		for( var idNum in Molpy.Badges) {
-			var badge = Molpy.Badges[idNum];
+		for( var which in Molpy.Badges) {
+			var badge = Molpy.Badges[which];
 			if(badge.group == 'badges') str += badge.earned;
 		}
 		return str;
