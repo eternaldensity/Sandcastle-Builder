@@ -33,6 +33,11 @@ For personal amusement only.
 - Fixed Tool counts after Molpy Down
 - Fixed Chip rate calulation
 
+#### LucidCrux:
+- Fixed Mustard to 0 when clicking beach
+- Rifts now fade over time
+- Refactored Badges and Boosts
+
 ### 3.333
 
 #### Waveney
@@ -67,10 +72,6 @@ For personal amusement only.
 #### mart0258:
 - Infinite sand -> infinite castles fix (it got disabled unintentionally)
 - Automata Control tag fix
-
-#### LucidCrux:
-- fix broken Rift load
-
 
 ### 3.331
 

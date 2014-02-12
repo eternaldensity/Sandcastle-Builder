@@ -1576,23 +1576,33 @@ Molpy.Up = function() {
 		Molpy.boostSilence = 0;
 		var order = 0;
 		Molpy.Boost = function(args) {
+			// Notes
+			// .department allows unlock by the department (this is not a saved value)
+			// .logic allows unlock by logicat (this is not a saved value)
+			
 			this.id = Molpy.BoostN;
-			this.name = args.name;
-			this.alias = args.alias || args.name;
-			this.desc = args.desc;
+			this.order = this.id;
+			if(order) this.order = order + this.id / 1000; //(because the order we create them can't be changed after we save)
 			this.boost = true;
-			if(args.price) {
-				this.price = args.price;
-			} else {
-				this.price = {
-					Sand: args.Sand || 0,
-					Castles: args.Castles || 0,
-					GlassBlocks: args.GlassBlocks || 0
-				};
+			this.unlocked = 0;
+			this.bought = 0;
+			this.power = 0;
+			this.countdown = 0;
+			
+			// Assign all properties passed in
+			for(var prop in args) {
+				if(typeof args[prop] !== 'undefined' )
+					this[prop] = args[prop];
 			}
-			this.stats = args.stats;
-			this.tier = args.tier;
-			this.prizes = args.prizes;
+			
+			// Special Assignments
+			this.alias = args.alias || args.name;
+			this.single = args.single || args.name;
+			this.plural = args.plural || ((args.single || args.name) + 's');
+			this.group = args.group || 'boosts';
+			this.icon = args.icon || Molpy.groupNames[this.group][2];
+			
+			// Conditional assignments
 			if(args.defStuff) {
 				args.Level = args.Level || Molpy.BoostFuncs.PosPowerLevel;
 				args.Has = args.Has || Molpy.BoostFuncs.Has;
@@ -1600,8 +1610,11 @@ Molpy.Up = function() {
 				args.Spend = args.Spend || Molpy.BoostFuncs.Spend;
 				args.Destroy = args.Destroy || Molpy.BoostFuncs.Destroy;
 				args.refreshFunction = args.refreshFunction || Molpy.BoostFuncs.RefreshPowerBuy;
+				delete this.defStuff;
 			}
+			
 			if(args.Level) {
+				this.Level = {}; // Clear automatic assignment
 				Object.defineProperties(this, {
 					"Level": {
 						get: args.Level[0],
@@ -1615,7 +1628,9 @@ Molpy.Up = function() {
 				this.Destroy = args.Destroy;
 				this.Has = args.Has;
 			}
+			
 			if(args.IsEnabled) {
+				this.IsEnabled = {}; // Clear automatic assignment
 				Object.defineProperties(this, {
 					"IsEnabled": {
 						get: args.IsEnabled[0],
@@ -1623,38 +1638,10 @@ Molpy.Up = function() {
 					}
 				});
 			}
-			this.buyFunction = args.buyFunction;
-			this.countdownFunction = args.countdownFunction;
-			this.refreshFunction = args.refreshFunction;
-			this.refreshSuper = args.refreshSuper; //okay this is getting out of hand
-			this.loadFunction = args.loadFunction;
-			this.unlocked = 0;
-			this.bought = 0;
-			this.department = args.department; //allow unlock by the department (this is not a saved value)
-			this.logic = args.logic; //allow unlock by logicat (this is not a saved value)
-			this.order = this.id;
-			this.power = 0;
-			this.countdown = 0;
-			this.single = args.single || args.name;
-			this.plural = args.plural || ((args.single || args.name) + 's');
-			if(args.startPower) {
-				this.startPower = args.startPower;
-				this.power = ZeroIfFunction(args.startPower);
-			}
-			this.startCountdown = args.startCountdown;
-			this.className = args.className;
-			this.classChange = args.classChange;
-			this.group = args.group || 'boosts';
-			this.icon = args.icon || Molpy.groupNames[this.group][2];
-			this.heresy = args.heresy || false;
-			this.gifIcon = args.gifIcon || false;
-			this.lockFunction = args.lockFunction;
-			this.unlockFunction = args.unlockFunction;
-			this.reset = args.reset;
+			
+			if(args.startPower) this.power = ZeroIfFunction(args.startPower);
 
-			if(order) this.order = order + this.id / 1000;
-			//(because the order we create them can't be changed after we save)
-
+			// Methods
 			this.buy = function(auto) {
 				if(!this.unlocked || this.bought) return; //shopping assistant tried to buy it when it was locked
 
@@ -1676,17 +1663,20 @@ Molpy.Up = function() {
 					Molpy.ShowGroup(this.group, this.className);
 				}
 			};
+			
 			this.updateBuy = function(fave) {
 				if(this.unlocked && (fave || !this.bought)) {
 					$('#BoostBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
 				}
 			};
+			
 			this.isAffordable = function() {
 				var realPrice = this.CalcPrice(this.price);
 				if(Molpy.IsFree(realPrice)) return 1;
 				if(Molpy.ProtectingPrice()) return 0;
 				return Molpy.Has(realPrice);
 			};
+			
 			this.CalcPrice = function(stuff) {
 				var p = {};
 				for( var i in stuff) {
@@ -1699,6 +1689,7 @@ Molpy.Up = function() {
 				}
 				return p;
 			};
+			
 			this.Refresh = function(indirect) {
 				if(this.hovering || Molpy.Boosts['Expando'].IsEnabled) {
 					this.hoverOnCounter = 1;
@@ -1708,6 +1699,7 @@ Molpy.Up = function() {
 				this.faveRefresh = 1;
 				if(!indirect && this.refreshFunction) this.refreshFunction();
 			};
+			
 			this.showdesc = function(keep) {
 				var d = g('BoostDescription' + this.id);
 				if(d) {
@@ -1716,6 +1708,7 @@ Molpy.Up = function() {
 				}
 				this.faveRefresh = 1;
 			};
+			
 			this.GetDesc = function() {
 				return format(EvalMaybeFunction((Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this))
 					+ format(this.prizes && Molpy.IsStatsVisible() && ('<br>Gives ' + Molpify(this.prizes)
@@ -1723,22 +1716,27 @@ Molpy.Up = function() {
 							+ ' when Locked or Reset.') || '')
 					+ this.GetAlias();
 			};
+			
 			this.GetAlias = function() {
 				if(Molpy.IsStatsVisible() && this.name != this.alias) {
 					return '<br>(Alias: ' + this.alias + ')';
 				}
 				return '';
 			};
+			
 			this.GetFullClass = function() {
 				return 'boost ' + (this.bought ? 'lootbox loot ' : 'floatbox shop ') + (this.className || '');
 			};
+			
 			this.GetHeading = function() {
 				return '<h1>[' + Molpy.groupNames[this.group][0]
 					+ ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '') + ']</h1>';
 			};
+			
 			this.GetFormattedName = function() {
 				return '<h2>' + format(this.name) + this.GetBuy() + '</h2>';
 			};
+			
 			this.GetBuy = function() {
 				var buy = '';
 				if(!this.bought && this.unlocked) {
@@ -1750,10 +1748,12 @@ Molpy.Up = function() {
 				}
 				return buy;
 			};
+			
 			this.hidedesc = function() {
 				var d = g('BoostDescription' + this.id);
 				if(d) d.innerHTML = '';
 			};
+			
 			this.describe = function() {
 				if(!Molpy.boostSilence) {
 					var desc = EvalMaybeFunction(this.desc, this);
@@ -1761,6 +1761,7 @@ Molpy.Up = function() {
 				}
 			};
 
+			// Add the boost to lists
 			Molpy.Boosts[this.alias] = this;
 			Molpy.BoostsById[this.id] = this;
 			if(!Molpy.BoostsByGroup[this.group]) {
@@ -1770,7 +1771,8 @@ Molpy.Up = function() {
 			if(this.name != this.alias) {
 				Molpy.BoostAKA[this.name] = this.alias;
 			}
-			Molpy.BoostN++;
+
+			// Create CSS styles for the boost
 			if(this.gifIcon){
 				addCSSRule(document.styleSheets[1], '.darkscheme #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.gif' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.gif' )");
@@ -1783,6 +1785,9 @@ Molpy.Up = function() {
 				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_heresy_icon.png' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_heresy_icon.png' )");
 			}
+			
+			Molpy.BoostN++;
+			
 			return this;
 		};
 
@@ -1872,25 +1877,24 @@ Molpy.Up = function() {
 		var order = 0;
 		Molpy.Badge = function(args) {
 			this.id = Molpy.BadgeN;
-			this.np = args.np;
-			this.name = args.name;
-			this.alias = args.alias || args.name;
-			this.desc = args.desc;
-			this.stats = args.stats;
-			this.earnFunction = args.earnFunction;
-			this.earned = 0;
 			this.order = this.id;
+			if(order) this.order = order + this.id / 1000; //(because the order we create them can't be changed after we save)
+			this.earned = 0;
 			this.badge = true;
-			if(order) this.order = order + this.id / 1000;
-			//(because the order we create them can't be changed after we save)
+			
+			// Assign all properties passed in
+			for(var prop in args) {
+				if(typeof args[prop] !== 'undefined' )
+					this[prop] = args[prop];
+			}
+			
+			// Special assignments
+			this.alias = args.alias || args.name;
 			this.visibility = args.vis || 0; //0 is normal, 1 is hidden description, 2 is hidden name, 3 is invisible
-			this.className = args.className;
-			this.classChange = args.classChange;
 			this.group = args.group || 'badges';
 			this.icon = args.icon || Molpy.groupNames[this.group][2];
-			this.heresy = args.heresy || false;
-			this.gifIcon = args.gifIcon || false;
 
+			// Methods
 			this.Refresh = function() {
 				if(this.hovering || Molpy.Boosts['Expando'].IsEnabled) {
 					this.hoverOnCounter = 1;
@@ -1898,6 +1902,7 @@ Molpy.Up = function() {
 				}
 				this.faveRefresh = 1;
 			};
+			
 			this.showdesc = function(keep) {
 				var d = g('BadgeDescription' + this.id);
 				if(d) {
@@ -1906,21 +1911,25 @@ Molpy.Up = function() {
 				}
 				this.faveRefresh = 1;
 			};
+			
 			this.GetDesc = function() {
 				return format(((this.earned || this.visibility < 1) ? EvalMaybeFunction(
 						(Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this) : '????')) + this.GetAlias();
 			};
+			
 			this.GetAlias = function() {
 				if((this.earned || this.visibility < 1) && Molpy.IsStatsVisible() && this.name != this.alias) {
 					return '<br>(Alias: ' + this.alias + ')';
 				}
 				return '';
 			};
+			
 			this.GetFullClass = function() {
 				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
 				if(this.HasUpgrade()) cn += ' action';
 				return cn;
 			};
+			
 			this.HasUpgrade = function() {
 				if(this.np) {
 					var nGroup = Molpy.nextBageGroup[this.group];
@@ -1930,12 +1939,15 @@ Molpy.Up = function() {
 					}
 				}
 			};
+			
 			this.GetHeading = function() {
 				return '<h1>[' + Molpy.groupNames[this.group][0] + (this.HasUpgrade() ? '+' : '') + ']</h1>';
 			};
+			
 			this.GetFormattedName = function() {
 				return '<h2>' + format((this.earned || this.visibility < 2 ? this.name : '????')) + '</h2>';
 			};
+			
 			this.hidedesc = function() {
 				var d = g('BadgeDescription' + this.id);
 				if(d) d.innerHTML = '';
@@ -1947,10 +1959,12 @@ Molpy.Up = function() {
 				}
 			};
 
+			// Add Badge to lists
 			Molpy.Badges[this.alias] = this;
 			Molpy.BadgesById[this.id] = this;
 			Molpy.BadgeAKA[this.name] = this.alias;
-			Molpy.BadgeN++;
+			
+			// Create CSS style for badge
 			if(this.gifIcon){
 				addCSSRule(document.styleSheets[1], '.darkscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.gif' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.gif' )");
@@ -1962,6 +1976,9 @@ Molpy.Up = function() {
 				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
 			}
+			
+			Molpy.BadgeN++;
+			
 			return this;
 		};
 
