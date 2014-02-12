@@ -1590,18 +1590,19 @@ Molpy.Up = function() {
 			this.countdown = 0;
 			
 			// Assign all properties passed in
-			for(var prop in args)
+			for(var prop in args) {
 				if(typeof args[prop] !== 'undefined' )
 					this[prop] = args[prop];
+			}
 			
-			// Do special Assignments
+			// Special Assignments
 			this.alias = args.alias || args.name;
 			this.single = args.single || args.name;
 			this.plural = args.plural || ((args.single || args.name) + 's');
 			this.group = args.group || 'boosts';
 			this.icon = args.icon || Molpy.groupNames[this.group][2];
 			
-			// Do conditional assignments
+			// Conditional assignments
 			if(args.defStuff) {
 				args.Level = args.Level || Molpy.BoostFuncs.PosPowerLevel;
 				args.Has = args.Has || Molpy.BoostFuncs.Has;
@@ -1876,25 +1877,24 @@ Molpy.Up = function() {
 		var order = 0;
 		Molpy.Badge = function(args) {
 			this.id = Molpy.BadgeN;
-			this.np = args.np;
-			this.name = args.name;
-			this.alias = args.alias || args.name;
-			this.desc = args.desc;
-			this.stats = args.stats;
-			this.earnFunction = args.earnFunction;
-			this.earned = 0;
 			this.order = this.id;
+			if(order) this.order = order + this.id / 1000; //(because the order we create them can't be changed after we save)
+			this.earned = 0;
 			this.badge = true;
-			if(order) this.order = order + this.id / 1000;
-			//(because the order we create them can't be changed after we save)
+			
+			// Assign all properties passed in
+			for(var prop in args) {
+				if(typeof args[prop] !== 'undefined' )
+					this[prop] = args[prop];
+			}
+			
+			// Special assignments
+			this.alias = args.alias || args.name;
 			this.visibility = args.vis || 0; //0 is normal, 1 is hidden description, 2 is hidden name, 3 is invisible
-			this.className = args.className;
-			this.classChange = args.classChange;
 			this.group = args.group || 'badges';
 			this.icon = args.icon || Molpy.groupNames[this.group][2];
-			this.heresy = args.heresy || false;
-			this.gifIcon = args.gifIcon || false;
 
+			// Methods
 			this.Refresh = function() {
 				if(this.hovering || Molpy.Boosts['Expando'].IsEnabled) {
 					this.hoverOnCounter = 1;
@@ -1902,6 +1902,7 @@ Molpy.Up = function() {
 				}
 				this.faveRefresh = 1;
 			};
+			
 			this.showdesc = function(keep) {
 				var d = g('BadgeDescription' + this.id);
 				if(d) {
@@ -1910,21 +1911,25 @@ Molpy.Up = function() {
 				}
 				this.faveRefresh = 1;
 			};
+			
 			this.GetDesc = function() {
 				return format(((this.earned || this.visibility < 1) ? EvalMaybeFunction(
 						(Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this) : '????')) + this.GetAlias();
 			};
+			
 			this.GetAlias = function() {
 				if((this.earned || this.visibility < 1) && Molpy.IsStatsVisible() && this.name != this.alias) {
 					return '<br>(Alias: ' + this.alias + ')';
 				}
 				return '';
 			};
+			
 			this.GetFullClass = function() {
 				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
 				if(this.HasUpgrade()) cn += ' action';
 				return cn;
 			};
+			
 			this.HasUpgrade = function() {
 				if(this.np) {
 					var nGroup = Molpy.nextBageGroup[this.group];
@@ -1934,12 +1939,15 @@ Molpy.Up = function() {
 					}
 				}
 			};
+			
 			this.GetHeading = function() {
 				return '<h1>[' + Molpy.groupNames[this.group][0] + (this.HasUpgrade() ? '+' : '') + ']</h1>';
 			};
+			
 			this.GetFormattedName = function() {
 				return '<h2>' + format((this.earned || this.visibility < 2 ? this.name : '????')) + '</h2>';
 			};
+			
 			this.hidedesc = function() {
 				var d = g('BadgeDescription' + this.id);
 				if(d) d.innerHTML = '';
@@ -1951,10 +1959,12 @@ Molpy.Up = function() {
 				}
 			};
 
+			// Add Badge to lists
 			Molpy.Badges[this.alias] = this;
 			Molpy.BadgesById[this.id] = this;
 			Molpy.BadgeAKA[this.name] = this.alias;
-			Molpy.BadgeN++;
+			
+			// Create CSS style for badge
 			if(this.gifIcon){
 				addCSSRule(document.styleSheets[1], '.darkscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.gif' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.gif' )");
@@ -1966,6 +1976,9 @@ Molpy.Up = function() {
 				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
 			}
+			
+			Molpy.BadgeN++;
+			
 			return this;
 		};
 
