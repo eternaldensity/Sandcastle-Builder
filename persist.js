@@ -348,15 +348,15 @@
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var str = '';
-		for( var idNum in Molpy.Boosts) {
-			var boost = Molpy.Boosts[idNum];
+		for( var which in Molpy.Boosts) {
+			var boost = Molpy.Boosts[which];
 			var saveData = boost.saveData
 			var fencePost = '';
 			for(var num in saveData){
 				str += fencePost + boost[saveData[num][0]];
 				fencePost = c;
 			}
-			/* Not sure if we hav
+			/* No good way to save arrays right now
 			if(cb.data) {
 				str += c;
 				for( var coffee in cb.data) {
