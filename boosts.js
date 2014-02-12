@@ -6898,6 +6898,9 @@ Molpy.DefineBoosts = function() {
 		
 		defStuff: 1,
 		
+		defSave: 1,
+		saveData: {4:['data',[]]},
+		
 		Add: function(amount) {
 			if(!this.data) this.data = [];
 			this.data.push(amount);

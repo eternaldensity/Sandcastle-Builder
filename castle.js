@@ -1640,6 +1640,21 @@ Molpy.Up = function() {
 			}
 			
 			if(args.startPower) this.power = ZeroIfFunction(args.startPower);
+			
+			// SaveData in in the format: saveOrder: [propertyName, defaultValue, type]
+			// Valid types: 'int' 'float' 'array' Anything else will be assigned directly without processing
+			var defSaveData = {
+					0:['unlocked', 0, 'int'],
+					1:['bought', 0, 'float'],
+					2:['power', 0, 'float'],
+					3:['countdown', 0, 'float']
+			};
+			if(!this.saveData){
+				this.saveData = defSaveData;
+			} else if(args.defSave){
+				delete this.defSave
+				Molpy.extend(this.saveData, defSaveData, false); // Add the default properties to save without overwriting
+			}
 
 			// Methods
 			this.buy = function(auto) {
@@ -1760,6 +1775,11 @@ Molpy.Up = function() {
 					if(desc) Molpy.Notify(this.name + ': ' + desc, 1);
 				}
 			};
+			
+			this.resetSaveData = function() {
+				for(var i in this.saveData)
+					this[saveData[i][0]] = this.saveData[i][1];
+			}
 
 			// Add the boost to lists
 			Molpy.Boosts[this.alias] = this;
