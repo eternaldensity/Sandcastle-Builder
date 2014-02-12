@@ -4950,19 +4950,15 @@ Molpy.DefineBoosts = function() {
 	Molpy.MakeGlassCeiling(10);
 	Molpy.MakeGlassCeiling(11);
 	Molpy.Boosts['Glass Ceiling 10'].price = {
-		price:{
-			Sand: '6FQ',
-			Castles: '6FQ',
-			GlassBlocks: '100K'
-		},
+		Sand: '6FQ',
+		Castles: '6FQ',
+		GlassBlocks: '100K'
 	};
 	Molpy.Boosts['Glass Ceiling 10'].logic = 80;
 	Molpy.Boosts['Glass Ceiling 11'].price = {
-		price:{
-			Sand: '6WQ',
-			Castles: '6WQ',
-			GlassBlocks: '350K'
-		},
+		Sand: '6WQ',
+		Castles: '6WQ',
+		GlassBlocks: '350K'
 	};
 	Molpy.Boosts['Glass Ceiling 11'].logic = 90;
 
@@ -6897,6 +6893,9 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		defStuff: 1,
+		
+		defSave: 1,
+		saveData: {4:['data',[]]},
 		
 		Add: function(amount) {
 			if(!this.data) this.data = [];
