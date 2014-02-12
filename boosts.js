@@ -4868,6 +4868,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.DoMouldWork(left);
 		}
 
+		Molpy.boostSilence++;
 		var furn = Math.floor((times + Math.random() * 3) / 2);
 		if(Molpy.Got('Stretchable Chip Storage'))
 			Molpy.RewardBlastFurnace(furn);
@@ -4876,7 +4877,6 @@ Molpy.DefineBoosts = function() {
 				Molpy.RewardBlastFurnace();
 		}
 		left = times - furn;
-		Molpy.boostSilence++;
 		if(left > 7 && Molpy.Got('Milo')) {
 			var mr = Molpy.Boosts['Milo'];
 			var s = 0;// Math.sin((Math.PI*Molpy.ONGelapsed)/(Molpy.NPlength*100));
