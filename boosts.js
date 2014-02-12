@@ -657,9 +657,16 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.TimeTravel = function(NP) {
+		var oldNP=Molpy.newpixNumber;
 		if(Molpy.TTT(Molpy.newpixNumber + NP, 0)) {
-			if(NP > 0) Molpy.EarnBadge('Fast Forward');
-			if(NP < 0) Molpy.EarnBadge('And Back');
+			if(oldNP>0)
+			{
+				if(NP > 0) Molpy.EarnBadge('Fast Forward');
+				if(NP < 0) Molpy.EarnBadge('And Back');
+			}else if(oldNP<0){
+				if(NP > 0) Molpy.EarnBadge('Forward to the Past');
+				if(NP < 0) Molpy.EarnBadge('Stuck in Reverse');
+			}
 			var t = Molpy.timeTravels;
 			if(t >= 10) Molpy.EarnBadge('Primer');
 			if(t >= 20) Molpy.UnlockBoost('Flux Capacitor');

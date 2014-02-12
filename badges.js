@@ -962,6 +962,16 @@ Molpy.DefineBadges = function() {
 		desc: 'The Highest Newpix Number is in Minus Worlds',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'Forward to the Past',
+		desc: 'Travel to a less negative Newpix',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Stuck in Reverse',
+		desc: 'Travel to a more negative Newpix',
+		vis: 1
+	});
 	
 /**************************************************************
  * Discoveries

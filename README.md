@@ -26,7 +26,7 @@ For personal amusement only.
 
 ## Changelog
 
-### 3.334
+### 3.3331
 
 #### Waveney
 - Change format of Radio Buttons for Logicats
@@ -37,6 +37,9 @@ For personal amusement only.
 - Fixed Mustard to 0 when clicking beach
 - Rifts now fade over time
 - Refactored Badges and Boosts
+
+#### ED:
+- Two new timetravel badges
 
 ### 3.333
 
