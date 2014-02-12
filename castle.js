@@ -121,10 +121,11 @@ Molpy.Up = function() {
 				Molpy.Boosts['Sand'].bought = Math.ceil(Molpy.Boosts['Sand'].bought);
 				Molpy.EarnBadge('Clerical Error');
 			}
-			Molpy.SandToCastles();
 			if(isFinite(previousSand) != isFinite(newSand) || isFinite(oldSand) != isFinite(newSand))
 				Molpy.recalculateDig = 1;
 			previousSand = newSand;
+			Molpy.Boosts['Sand'].power = newSand;
+			Molpy.SandToCastles();
 
 			if(newSand >= 50) {
 				Molpy.EarnBadge('Barn');
@@ -158,7 +159,6 @@ Molpy.Up = function() {
 			if(newSand >= 782222222144) {
 				Molpy.EarnBadge('Store ALL of the sand');
 			}
-			Molpy.Boosts['Sand'].power = newSand;
 		};
 		Molpy.SandToCastles = function() {
 			Molpy.buildNotifyFlag = 0;
