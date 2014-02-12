@@ -348,15 +348,22 @@
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var str = '';
-		for( var cancerbabies in Molpy.Boosts) {
-			var cb = Molpy.Boosts[cancerbabies];
-			str += cb.unlocked + c + cb.bought + c + cb.power + c + cb.countdown;
+		for( var idNum in Molpy.Boosts) {
+			var boost = Molpy.Boosts[idNum];
+			var saveData = boost.saveData
+			var fencePost = '';
+			for(var num in saveData){
+				str += fencePost + boost[saveData[num][0]];
+				fencePost = c;
+			}
+			/* Not sure if we hav
 			if(cb.data) {
 				str += c;
 				for( var coffee in cb.data) {
 					str += c + cb.data[coffee];
 				}
 			}
+			*/
 			str += s;
 		}
 		return str;
@@ -366,9 +373,9 @@
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var str = '';
-		for( var cancerbabies in Molpy.Badges) {
-			var cb = Molpy.Badges[cancerbabies];
-			if(cb.group == 'badges') str += cb.earned;
+		for( var idNum in Molpy.Badges) {
+			var badge = Molpy.Badges[idNum];
+			if(badge.group == 'badges') str += badge.earned;
 		}
 		return str;
 	}
@@ -573,6 +580,9 @@
 					me[saveData[num][0]] = loadedValue;
 				}
 				
+				// Make sure locked boosts didn't bug out and save a bought amount
+				if(!me.unlocked) me.bought = 0;
+				
 				if(me.bought) {
 					Molpy.BoostsOwned++;
 					Molpy.unlockedGroups[me.group] = 1;
@@ -582,9 +592,6 @@
 				if(me.countdown) {
 					Molpy.GiveTempBoost(me.name, me.power, me.countdown);
 				}
-				
-				// Mmake sure locked boosts didn't bug out and save a bought amount
-				if(!me.unlocked) me.bought = 0;
 				
 				// It would be nice if these could be changed or moved, they are not very dynamic
 				if(isNaN(me.power)) me.power = 0; //compression! :P
