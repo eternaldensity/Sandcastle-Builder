@@ -1658,11 +1658,9 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		stats: 'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',
-		startCountdown: 7
-	});
-	
-	//stuff for temporal rift animation
-	Molpy.extend(Molpy.Boosts['Temporal Rift'], {
+		startCountdown: 7,
+		
+		//stuff for temporal rift animation
 		showRift: false,
 		riftIMG: null,
 		riftDiv: null,
@@ -1754,7 +1752,7 @@ Molpy.DefineBoosts = function() {
 			}
 			this.riftState = state;
 		}
-	}, false);
+	});
 	
 	Molpy.RiftJump = function() {
 		if(Molpy.IsEnabled('Time Lord')) {
