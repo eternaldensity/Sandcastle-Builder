@@ -6584,7 +6584,7 @@ Molpy.DefineBoosts = function() {
 			if(!amount) return;
 			amount = Math.min(amount, this.power);
 			this.power -= amount;
-			(this['spent'] !== undefined) ? this['spent'] += amount : this['spent'] = amount;
+			this['spent'] += amount;
 			if(isNaN(this.power)) {
 				this.power = 0;
 				Molpy.EarnBadge('Mustard Cleanup');

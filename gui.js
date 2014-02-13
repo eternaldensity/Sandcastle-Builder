@@ -1506,7 +1506,7 @@ Molpy.DefineGUI = function() {
 		g('totalcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].bought, 4);
 		g('destroyedcastlesstat').innerHTML = Molpify(Molpy.castlesDestroyed, 4);
 		g('downcastlesstat').innerHTML = Molpify(Molpy.totalCastlesDown, 4);
-		g('spentcastlesstat').innerHTML = Molpify((Molpy.Boosts['Castles'].spent == undefined) ? 0 : Molpy.Boosts['Castles'].spent, 4);
+		g('spentcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].spent, 4);
 
 		g('ninjatimestat').innerHTML = Molpify(Molpy.ninjaTime / Molpy.NPlength, 1) + 'mNP';
 		g('ninjastealthstat').innerHTML = Molpify(Molpy.ninjaStealth, 1) + 'NP';
