@@ -906,7 +906,7 @@ Molpy.CheckClickAchievements = function() {
 	if(c >= 3333) {
 		Molpy.UnlockBoost('True Colours');
 	}
-	c = Molpy.sandManual;
+	c = Molpy.Boosts['Sand'].manualDug;
 	if(c >= 100000) {
 		Molpy.EarnBadge('Getting Sick of Clicking');
 	}

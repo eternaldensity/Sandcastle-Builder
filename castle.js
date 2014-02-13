@@ -71,7 +71,6 @@ Molpy.Up = function() {
 		Molpy.ninjad = 0; //ninja flag for newpixbots
 		Molpy.npbONG = 0; //activation flag for newpixbots
 
-		//manualDug Molpy.sandManual = 0; //total sand dug through user clicks
 		Molpy.chipsManual = 0;
 		//sandPermNP Molpy.sandPermNP = 0; //sand per milliNewPix (recaculated when stuff is bought)
 		Molpy.glassPermNP = 0;
@@ -444,8 +443,8 @@ Molpy.Up = function() {
 			var newsand = Molpy.computedSandPerClick;
 			Molpy.Dig(newsand);
 			if(newsand && Molpy.options.numbers) Molpy.AddSandParticle('+' + Molpify(newsand, 1));
-			Molpy.sandManual += newsand;
-			if(isNaN(Molpy.sandManual)) Molpy.sandManual = 0;
+			Molpy.Boosts['Sand'].manualDug += newsand;
+			if(isNaN(Molpy.Boosts['Sand'].manualDug)) Molpy.Boosts['Sand'].manualDug = 0;
 			if(!isFinite(Molpy.Boosts['Sand'].power) && Molpy.Got('BG')) {
 				Molpy.chipsPerClick = Molpy.BoostsOwned * 4;
 				if(Molpy.Got('GM')) {
