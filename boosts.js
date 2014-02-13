@@ -6538,7 +6538,7 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 		},
-		
+		spent: 0,
 		Has: function(amount) {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) return 1;
 			if(!isFinite(Molpy.sandPermNP) && Molpy.IsEnabled('Cracks')) return 1;
@@ -6593,6 +6593,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Spent Castles: ' + Molpify(amount, 3), 1);
 		},
 		
+		spent: 0,
 		// destroying is done by trebuchets and stuff: it's different to spending
 		Destroy: function(amount, logsilent) {
 			amount = Math.min(amount, this.power);
