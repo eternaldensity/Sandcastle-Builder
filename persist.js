@@ -348,15 +348,22 @@
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var str = '';
-		for( var cancerbabies in Molpy.Boosts) {
-			var cb = Molpy.Boosts[cancerbabies];
-			str += cb.unlocked + c + cb.bought + c + cb.power + c + cb.countdown;
+		for( var which in Molpy.Boosts) {
+			var boost = Molpy.Boosts[which];
+			var saveData = boost.saveData
+			var fencePost = '';
+			for(var num in saveData){
+				str += fencePost + boost[saveData[num][0]];
+				fencePost = c;
+			}
+			/* No good way to save arrays right now
 			if(cb.data) {
 				str += c;
 				for( var coffee in cb.data) {
 					str += c + cb.data[coffee];
 				}
 			}
+			*/
 			str += s;
 		}
 		return str;
@@ -366,9 +373,9 @@
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var str = '';
-		for( var cancerbabies in Molpy.Badges) {
-			var cb = Molpy.Badges[cancerbabies];
-			if(cb.group == 'badges') str += cb.earned;
+		for( var which in Molpy.Badges) {
+			var badge = Molpy.Badges[which];
+			if(badge.group == 'badges') str += badge.earned;
 		}
 		return str;
 	}
@@ -550,25 +557,47 @@
 		var pixels = thread.split(s);
 		Molpy.BoostsOwned = 0;
 		Molpy.unlockedGroups = {};
-		for( var i in Molpy.BoostsById) {
-			var me = Molpy.BoostsById[i];
-			if(pixels[i]) {
-				var ice = pixels[i].split(c);
-				me.unlocked = parseInt(ice[0]) || 0;
-				me.bought = me.unlocked && parseFloat(ice[1]) || 0; //ensure boosts that are locked aren't somehow set as bought
-				me.power = parseFloat(ice[2]) || 0;
-				me.countdown = parseFloat(ice[3]) || 0;
-
+		
+		for( var idNum in Molpy.BoostsById) {
+			var me = Molpy.BoostsById[idNum];
+			var saveData = me.saveData;
+			
+			// If save data exists for that boost, load it
+			if(pixels[idNum]) {
+				var savedValueList = pixels[idNum].split(c);
+				for(var num in saveData){
+					var loadedValue = null; // Just to avoid editor warnings of 'var may not be defined'
+					
+					// Load differently based on data type
+					if(saveData[num][2] == 'int')
+						loadedValue = parseInt(savedValueList[num]) || saveData[num][1];
+					else if(saveData[num][2] == 'float')
+						loadedValue = parseFloat(savedValueList[num]) || saveData[num][1];
+					//else if(saveData[num][2] == 'array')
+						// Not sure how to handle this yet
+					else
+						loadedValue = savedValueList[num] || saveData[num][1];
+					me[saveData[num][0]] = loadedValue;
+				}
+				
+				// Make sure locked boosts didn't bug out and save a bought amount
+				if(!me.unlocked) me.bought = 0;
+				
 				if(me.bought) {
 					Molpy.BoostsOwned++;
 					Molpy.unlockedGroups[me.group] = 1;
 				}
+				
+				// If it has a countdown, then it was only a temporary boost
 				if(me.countdown) {
 					Molpy.GiveTempBoost(me.name, me.power, me.countdown);
 				}
+				
+				// It would be nice if these could be changed or moved, they are not very dynamic
 				if(isNaN(me.power)) me.power = 0; //compression! :P
 				if(isNaN(me.countdown)) me.countdown = 0;
-
+				
+				/*
 				var bacon = pixels[i].split(c + c)[1];
 				if(bacon) {
 					bacon = bacon.split(c);
@@ -577,12 +606,11 @@
 						me.data[i] = bacon[i];
 					}
 				}
+				*/
+			// If no data was saved for the boost, set them to defaults
 			} else {
-				me.unlocked = 0;
-				me.bought = 0;
-				me.power = 0;
-				me.countdown = 0;
-			}
+				me.resetSaveData();
+			}			
 		}
 	}
 

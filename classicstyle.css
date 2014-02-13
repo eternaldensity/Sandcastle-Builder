@@ -655,9 +655,6 @@ body.lightscheme .boost.loot a:hover
     -ms-transform: rotate(270deg);
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
-.logipuzzle td {
-	vertical-align:middle;
-}
 .logipuz input[type=radio] {
 	display:none;
 }
@@ -665,12 +662,14 @@ body.lightscheme .boost.loot a:hover
 	display:inline-block;
 	margin:2px;
 	padding:4px;
-	background-color: #80FF80;
+	background-color: #C0C0C0;
 	border-color: #ddd;
 	vertical-align: middle;
 	color:black;
+	cursor:pointer;
 }
 .logipuz input[type=radio]:checked + label {
 	background-image:none;
-	background-color:#FF8080;
+	background-color:#606060;
+	color:white;
 }
