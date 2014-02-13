@@ -8129,7 +8129,7 @@ Molpy.DefineBoosts = function() {
 	}
 	Molpy.Hash = function(brown) {
 		var res = 0;
-		for (var c in brown.split('')) { res = res*2 + c.charCodeAt() };
+		for (var c in brown.split('')) { res = (((res<<1) + c.charCodeAt()) & 0x7FFFFFFF) + (res>>>16)};
 		return res;
 	}
 	Molpy.Decreename = '';
