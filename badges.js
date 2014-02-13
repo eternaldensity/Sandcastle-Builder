@@ -389,7 +389,7 @@ Molpy.DefineBadges = function() {
 		var countdown = ((level + 1) * thresh - botCastles);
 		countdown /= (bot.buildC() * bot.amount * bot.amount);
 		if(Molpy.Got('Doublepost')) countdown /= 2;
-		countdown /= Molpy.globalCastleMult; // this is a bit approximate because of its rounding, but close enough for this, hopefully
+		countdown /= Molpy.Boosts['Castles'].globalMult; // this is a bit approximate because of its rounding, but close enough for this, hopefully
 		if(isNaN(countdown) || countdown < 0) countdown = 0;
 		if(Molpy.Boosts['Coma Molpy Style'].power) {
 			level = Math.floor(level / 2);

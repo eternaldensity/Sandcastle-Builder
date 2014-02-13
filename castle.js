@@ -83,7 +83,6 @@ Molpy.Up = function() {
 		Molpy.autosaveCountup = 0;
 		Molpy.highestNPvisited = 1; //keep track of where the player has been
 		Molpy.timeTravels = 0; //number of times timetravel has been used
-		//globalMult Molpy.globalCastleMult = 1; //for boosting castle gains
 		Molpy.lGlass = 0;
 		Molpy.totalGlassBuilt = 0;
 		Molpy.totalGlassDestroyed = 0;
@@ -209,7 +208,7 @@ Molpy.Up = function() {
 			}
 			if(!refund && amount)//don't multiply if amount is 0
 			{
-				amount = Math.round(amount * Molpy.globalCastleMult) || 0;
+				amount = Math.round(amount * Molpy.Boosts['Castles'].globalMult) || 0;
 			}
 			amount = Math.max(0, amount);
 			if(!Molpy.Boosts['Castles'].unlocked) Molpy.Boosts['Castles'].unlocked = 1; //quick fix for the castles built not loading.
@@ -855,11 +854,11 @@ Molpy.Up = function() {
 				if(Molpy.Got('Flux Surge')) {
 					fluxLevel *= 1.5;
 				}
-				var oldMult = Molpy.globalCastleMult;
-				Molpy.globalCastleMult = Math.max(1, Math.pow(1.02, fluxLevel));
-				if(oldMult != Molpy.globalCastleMult) Molpy.Boosts['Flux Turbine'].Refresh();
+				var oldMult = Molpy.Boosts['Castles'].globalMult;
+				Molpy.Boosts['Castles'].globalMult = Math.max(1, Math.pow(1.02, fluxLevel));
+				if(oldMult != Molpy.Boosts['Castles'].globalMult) Molpy.Boosts['Flux Turbine'].Refresh();
 			} else {
-				Molpy.globalCastleMult = 1;
+				Molpy.Boosts['Castles'].globalMult = 1;
 			}
 			Molpy.shopRepaint = 1;
 			Molpy.CalculateGlassRate();
@@ -936,7 +935,7 @@ Molpy.Up = function() {
 				multiplier *= Molpy.Boosts['GL'].power / 100;
 			}
 			if(Molpy.Got('CFT')) {
-				multiplier *= Molpy.globalCastleMult;
+				multiplier *= Molpy.Boosts['Castles'].globalMult;
 			}
 
 			Molpy.globalGpmNPMult = multiplier;

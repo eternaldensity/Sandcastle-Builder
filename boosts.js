@@ -1066,7 +1066,7 @@ Molpy.DefineBoosts = function() {
 		stats: function() {
 			if(!Molpy.Got('Flux Turbine'))
 				return 'All castle gains are boosted by 2% per natural logarithm of castles wiped by Molpy Down, except refunds which are not affected.';
-			return 'Multiplies all Castle gains by ' + Molpify(Molpy.globalCastleMult * 100, 2)
+			return 'Multiplies all Castle gains by ' + Molpify(Molpy.Boosts['Castles'].globalMult * 100, 2)
 				+ '% (But refunds when selling remain unchanged.)';
 		}
 	});
