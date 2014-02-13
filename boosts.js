@@ -1770,10 +1770,10 @@ Molpy.DefineBoosts = function() {
 		Molpy.Add('Time Lord', 1);
 		if(Math.random() * 5 < 4) {
 			if(isFinite(Molpy.Boosts['Castles'].totalBuilt)) {
-				Molpy.totalCastlesDown += Molpy.Boosts['Castles'].power;
+				Molpy.Boosts['Castles'].totalDown += Molpy.Boosts['Castles'].power;
 				Molpy.Boosts['Castles'].totalBuilt -= Molpy.Boosts['Castles'].power;
 			} else {
-				Molpy.totalCastlesDown = Number.MAX_VALUE;
+				Molpy.Boosts['Castles'].totalDown = Number.MAX_VALUE;
 			}
 			Molpy.Destroy('Castles', Molpy.Boosts['Castles'].power);
 			Molpy.Dig(Molpy.Boosts['Sand'].power);

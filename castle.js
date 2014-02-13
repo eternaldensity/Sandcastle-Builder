@@ -85,7 +85,6 @@ Molpy.Up = function() {
 		Molpy.autosaveCountup = 0;
 		Molpy.highestNPvisited = 1; //keep track of where the player has been
 		Molpy.timeTravels = 0; //number of times timetravel has been used
-		//totalDown Molpy.totalCastlesDown = 0; //cumulative castles built and then wiped by Molpy Down throughout all games
 		//globalMult Molpy.globalCastleMult = 1; //for boosting castle gains
 		Molpy.lGlass = 0;
 		Molpy.totalGlassBuilt = 0;
@@ -851,10 +850,10 @@ Molpy.Up = function() {
 			Molpy.CalcReportJudgeLevel();
 
 			if(Molpy.Got('Flux Turbine')) {
-				if(!isFinite(Molpy.totalCastlesDown)) {
-					Molpy.totalCastlesDown = Number.MAX_VALUE;
+				if(!isFinite(Molpy.Boosts['Castles'].totalDown)) {
+					Molpy.Boosts['Castles'].totalDown = Number.MAX_VALUE;
 				}
-				var fluxLevel = Math.log(Molpy.totalCastlesDown);
+				var fluxLevel = Math.log(Molpy.Boosts['Castles'].totalDown);
 				if(Molpy.Got('Flux Surge')) {
 					fluxLevel *= 1.5;
 				}
