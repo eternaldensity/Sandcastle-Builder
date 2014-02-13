@@ -239,10 +239,10 @@ Molpy.DefinePuzzles = function() {
 			}
 			str += '<br><div class=logipuz>';
 			for (var i in this.guessOptions) {
-				str += '<input type=radio name="selectGuess' + id + '" id=Guess' + id + '_' + i +
+				str += '<input type=radio name="selectGuess' + this.name + id + '" id=Guess' + this.name + id + '_' + i +
 					' onclick="Molpy.PuzzleGens[\'' + this.name + '\'].SelectGuess(' + id + ',' + i + ')" ' + 
 					(this.guess[id] == this.guessOptions[i] ? ' checked' : '') + '>'
-				str += '<label for=Guess' + id + '_' + i + '><small>' + this.guessOptions[i] + '</small></label>';
+				str += '<label for=Guess' + this.name + id + '_' + i + '><small>' + this.guessOptions[i] + '</small></label>';
 			}
 			str += '</div>';
 			
