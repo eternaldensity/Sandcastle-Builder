@@ -600,10 +600,10 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	}
 	if(Molpy.Earned('Unreachable?')) Molpy.UnlockBoost("Château d'If");
 
-	if(Molpy.Boosts['Castles'].spent > 2e8) {
+	if(Molpy.castlesSpent > 2e8) {
 		Molpy.EarnBadge('Big Spender');
 	}
-	if(Molpy.Boosts['Castles'].spent > 8e12) {
+	if(Molpy.castlesSpent > 8e12) {
 		Molpy.EarnBadge('Valued Customer');
 	}
 
@@ -842,6 +842,10 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Cupholder'].logic = 80 * (Molpy.SandTools['Bag'].amount >= 12000);
 	Molpy.Boosts['Tiny Glasses'].logic = 90 * (Molpy.SandTools['LaPetite'].amount >= 8000);
 	Molpy.Boosts['Glass Saw'].logic = 150 * (Molpy.glassPermNP >= 4000);
+	
+	
+	Molpy.Boosts['Glass Ceiling 10'].logic = 80*Molpy.Earned('Ceiling Broken');
+	Molpy.Boosts['Glass Ceiling 11'].logic = 90*Molpy.Earned('Ceiling Broken');
 
 	Molpy.Boosts['Panther Rush'].logic = Molpy.Has('Logicat',Molpy.CalcRushCost(0, 1).Logicat);
 
