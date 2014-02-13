@@ -6597,7 +6597,7 @@ Molpy.DefineBoosts = function() {
 		Destroy: function(amount, logsilent) {
 			amount = Math.min(amount, this.power);
 			this.power -= amount;
-			Molpy.castlesDestroyed += amount;
+			this.totalDestroyed += amount;
 			if(Molpy.destroyNotifyFlag) {
 				if(Molpy.destroyNotifyCount) {
 					amount += Molpy.destroyNotifyCount;

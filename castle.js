@@ -73,7 +73,6 @@ Molpy.Up = function() {
 
 		Molpy.sandManual = 0; //total sand dug through user clicks
 		Molpy.chipsManual = 0;
-		//totalDestroyed Molpy.castlesDestroyed = 0; //total castles destroyed by other structures throughout the game
 		Molpy.sandPermNP = 0; //sand per milliNewPix (recaculated when stuff is bought)
 		Molpy.glassPermNP = 0;
 		//prevCastleSand Molpy.prevCastleSand = 0; //sand cost of previous castle

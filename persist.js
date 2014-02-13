@@ -308,7 +308,7 @@
 	Molpy.GamenumsToString = function() {
 		var s = 'S'; //Semicolon
 		var str = '' + (Molpy.newpixNumber) + s + (Molpy.Boosts['Sand'].bought) + s + (Molpy.sandManual) + s + (Molpy.sand) + s
-			+ (Molpy.Boosts['Castles'].totalBuilt) + s + (Molpy.Boosts['Castles'].power) + s + (Molpy.castlesDestroyed) + s + (Molpy.prevCastleSand)
+			+ (Molpy.Boosts['Castles'].totalBuilt) + s + (Molpy.Boosts['Castles'].power) + s + (Molpy.Boosts['Castles'].totalDestroyed) + s + (Molpy.prevCastleSand)
 			+ s + (Molpy.nextCastleSand) + s + (Molpy.Boosts['Castles'].spent) + s + (Molpy.Boosts['Sand'].spent) + s + (Molpy.beachClicks)
 			+ s + (Molpy.ninjaFreeCount) + s + (Molpy.ninjaStealth) + s + (Molpy.ninjad) + s + (Molpy.saveCount) + s
 			+ (Molpy.loadCount) + s + (Molpy.notifsReceived) + s + (Molpy.timeTravels) + s + (Molpy.npbONG) + s +
@@ -458,7 +458,7 @@
 		Molpy.Boosts['Sand'].power = parseFloat(pixels[3]) || 0;
 		Molpy.Boosts['Castles'].totalBuilt = parseFloat(pixels[4]) || 0;
 		Molpy.Boosts['Castles'].power = parseFloat(pixels[5]) || 0;
-		Molpy.castlesDestroyed = parseFloat(pixels[6]) || 0;
+		Molpy.Boosts['Castles'].totalDestroyed = parseFloat(pixels[6]) || 0;
 		Molpy.prevCastleSand = parseFloat(pixels[7]) || 0;
 		Molpy.nextCastleSand = parseFloat(pixels[8]) || 0;
 		Molpy.Boosts['Castles'].spent = parseFloat(pixels[9]) || 0;
@@ -528,7 +528,7 @@
 				me.totalCastlesBuilt = parseFloat(ice[2]) || 0;
 				me.totalCastlesDestroyed = parseFloat(ice[3]) || 0;
 				if(version < 3.03) {
-					Molpy.castlesDestroyed += me.totalCastlesDestroyed;
+					Molpy.Boosts['Castles'].totalDestroyed += me.totalCastlesDestroyed;
 				}
 				me.totalCastlesWasted = parseFloat(ice[4]) || 0;
 				me.currentActive = parseFloat(ice[5]) || 0;
@@ -1000,7 +1000,7 @@
 			else
 				Molpy.totalCastlesDown = Number.MAX_VALUE;
 			Molpy.Boosts['Castles'].totalBuilt = 0;
-			Molpy.castlesDestroyed = 0;
+			Molpy.Boosts['Castles'].totalDestroyed = 0;
 			Molpy.prevCastleSand = 0;
 			Molpy.nextCastleSand = 1;
 			Molpy.ninjaFreeCount = 0;
