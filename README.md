@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+#### Waveney
+- Changed colours of Logicat Buttons to Greys
+- Fixed bugs on Panther Rush and logicats
+
+
 ### 3.3331
 
 #### Waveney
