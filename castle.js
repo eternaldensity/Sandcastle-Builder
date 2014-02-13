@@ -106,14 +106,14 @@ Molpy.Up = function() {
 			var oldSand = newSand;
 			if(!isFinite(newSand)) amount = 0; //because why bother?
 			if(!Molpy.Boosts['Sand'].unlocked) Molpy.Boosts['Sand'].unlocked = 1;
-			Molpy.Boosts['Sand'].bought += amount;
+			Molpy.Boosts['Sand'].totalDug += amount;
 			newSand += amount;
-			if(isNaN(Molpy.Boosts['Sand'].bought)) Molpy.Boosts['Sand'].bought = 0;
+			if(isNaN(Molpy.Boosts['Sand'].totalDug)) Molpy.Boosts['Sand'].totalDug = 0;
 
 			var gap = Math.ceil(newSand) - newSand;
 			if(gap && gap < sandEpsilon) {
 				newSand = Math.ceil(newSand);
-				Molpy.Boosts['Sand'].bought = Math.ceil(Molpy.Boosts['Sand'].bought);
+				Molpy.Boosts['Sand'].totalDug = Math.ceil(Molpy.Boosts['Sand'].totalDug);
 				Molpy.EarnBadge('Clerical Error');
 			}
 			if(isFinite(previousSand) != isFinite(newSand) || isFinite(oldSand) != isFinite(newSand))
@@ -131,7 +131,6 @@ Molpy.Up = function() {
 			if(newSand >= 500) {
 				Molpy.EarnBadge('Bigger Barn');
 			}
-			if(Molpy.Boosts['Sand'].bought >= 5000) Molpy.UnlockBoost('Molpies');
 			if(newSand >= 8000) {
 				Molpy.EarnBadge('Warehouse');
 			}
@@ -154,6 +153,8 @@ Molpy.Up = function() {
 			if(newSand >= 782222222144) {
 				Molpy.EarnBadge('Store ALL of the sand');
 			}
+			
+			if(Molpy.Boosts['Sand'].totalDug >= 5000) Molpy.UnlockBoost('Molpies');
 		};
 		Molpy.SandToCastles = function() {
 			Molpy.buildNotifyFlag = 0;
