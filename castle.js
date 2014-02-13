@@ -71,9 +71,9 @@ Molpy.Up = function() {
 		Molpy.ninjad = 0; //ninja flag for newpixbots
 		Molpy.npbONG = 0; //activation flag for newpixbots
 
-		Molpy.sandManual = 0; //total sand dug through user clicks
+		//manualDug Molpy.sandManual = 0; //total sand dug through user clicks
 		Molpy.chipsManual = 0;
-		Molpy.sandPermNP = 0; //sand per milliNewPix (recaculated when stuff is bought)
+		//sandPermNP Molpy.sandPermNP = 0; //sand per milliNewPix (recaculated when stuff is bought)
 		Molpy.glassPermNP = 0;
 		Molpy.beachClicks = 0; //number of times beach has been clicked for sand
 		Molpy.ninjaFreeCount = 0; //newpix with no clicks in ninja period (but with clicks later)

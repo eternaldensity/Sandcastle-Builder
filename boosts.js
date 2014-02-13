@@ -6549,6 +6549,20 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			return Molpify(me.Level, 3);
+		},
+		
+		sandPermNP: 0, // Sand per milliNewPix (recaculated when stuff is bought)
+		
+		// Saved Special Properties
+		totalDug: 0, // Total sand dug throughout the game
+		spent: 0, // Sand spent in shop
+		manualDug: 0, // Total sand dug through user clicks
+		
+		defSave: 1,
+		saveData: {
+			4:['totalDug', 0, 'float'],
+			5:['spent', 0, 'float'],
+			6:['manualDug', 0, 'float'],
 		}
 	});
 
