@@ -1769,9 +1769,9 @@ Molpy.DefineBoosts = function() {
 		}
 		Molpy.Add('Time Lord', 1);
 		if(Math.random() * 5 < 4) {
-			if(isFinite(Molpy.Boosts['Castles'].bought)) {
+			if(isFinite(Molpy.Boosts['Castles'].totalBuilt)) {
 				Molpy.totalCastlesDown += Molpy.Boosts['Castles'].power;
-				Molpy.Boosts['Castles'].bought -= Molpy.Boosts['Castles'].power;
+				Molpy.Boosts['Castles'].totalBuilt -= Molpy.Boosts['Castles'].power;
 			} else {
 				Molpy.totalCastlesDown = Number.MAX_VALUE;
 			}

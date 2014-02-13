@@ -183,7 +183,7 @@ Molpy.Up = function() {
 				if(!isFinite(Molpy.Boosts['Sand'].power) || Molpy.nextCastleSand <= 0) {
 					Molpy.nextCastleSand = 1;
 					Molpy.Boosts['Castles'].power = Infinity;
-					Molpy.Boosts['Castles'].bought = Infinity;
+					Molpy.Boosts['Castles'].totalBuilt = Infinity;
 					return;
 				}
 			}
@@ -198,8 +198,8 @@ Molpy.Up = function() {
 				Molpy.Boosts['Castles'].power = 0;
 				Molpy.EarnBadge('Mustard Cleanup');
 			}
-			if(isNaN(Molpy.Boosts['Castles'].bought)) {
-				Molpy.Boosts['Castles'].bought = 0;
+			if(isNaN(Molpy.Boosts['Castles'].totalBuilt)) {
+				Molpy.Boosts['Castles'].totalBuilt = 0;
 				Molpy.EarnBadge('Mustard Cleanup');
 			}
 		};
@@ -217,7 +217,7 @@ Molpy.Up = function() {
 			}
 			amount = Math.max(0, amount);
 			if(!Molpy.Boosts['Castles'].unlocked) Molpy.Boosts['Castles'].unlocked = 1; //quick fix for the castles built not loading.
-			Molpy.Boosts['Castles'].bought += amount;
+			Molpy.Boosts['Castles'].totalBuilt += amount;
 			currentCastles += amount;
 			if(amount && !isFinite(currentCastles)) Molpy.recalculateDig = 1;
 
@@ -236,31 +236,31 @@ Molpy.Up = function() {
 				Molpy.buildNotifyCount += amount;
 			}
 
-			if(Molpy.Boosts['Castles'].bought >= 1) {
+			if(Molpy.Boosts['Castles'].totalBuilt >= 1) {
 				Molpy.EarnBadge('Rook');
 			}
-			if(Molpy.Boosts['Castles'].bought >= 4) {
+			if(Molpy.Boosts['Castles'].totalBuiltht >= 4) {
 				Molpy.EarnBadge('Enough for Chess');
 			}
-			if(Molpy.Boosts['Castles'].bought >= 40) {
+			if(Molpy.Boosts['Castles'].totalBuilt >= 40) {
 				Molpy.EarnBadge('Fortified');
 			}
-			if(Molpy.Boosts['Castles'].bought >= 320) {
+			if(Molpy.Boosts['Castles'].totalBuilt >= 320) {
 				Molpy.EarnBadge('All Along the Watchtower');
 			}
-			if(Molpy.Boosts['Castles'].bought >= 1000) {
+			if(Molpy.Boosts['Castles'].totalBuilt >= 1000) {
 				Molpy.EarnBadge('Megopolis');
 			}
-			if(Molpy.Boosts['Castles'].bought >= 100000) {
+			if(Molpy.Boosts['Castles'].totalBuilt >= 100000) {
 				Molpy.EarnBadge('Kingdom');
 			}
-			if(Molpy.Boosts['Castles'].bought >= 10000000) {
+			if(Molpy.Boosts['Castles'].totalBuilt >= 10000000) {
 				Molpy.EarnBadge('Empire');
 			}
-			if(Molpy.Boosts['Castles'].bought >= 1000000000) {
+			if(Molpy.Boosts['Castles'].totalBuilt >= 1000000000) {
 				Molpy.EarnBadge('Reign of Terror');
 			}
-			if(Molpy.Boosts['Castles'].bought >= 2000000000000) {
+			if(Molpy.Boosts['Castles'].totalBuilt >= 2000000000000) {
 				Molpy.EarnBadge('Unreachable?');
 			}
 
@@ -2296,9 +2296,9 @@ Molpy.Up = function() {
 			}
 			var castles = Math.floor(Molpy.Boosts['Sand'].power / blastFactor);
 			if(boosted) {
-				castles = Math.floor(Math.min(castles, Molpy.Boosts['Castles'].bought / 5));
+				castles = Math.floor(Math.min(castles, Molpy.Boosts['Castles'].totalBuilt / 5));
 			} else {
-				castles = Math.floor(Math.min(castles, Molpy.Boosts['Castles'].bought / 3));
+				castles = Math.floor(Math.min(castles, Molpy.Boosts['Castles'].totalBuilt / 3));
 			}
 			if(!Molpy.boostSilence) Molpy.Notify('Blast Furnace in Operation!');
 			Molpy.Spend('Sand', castles * blastFactor);
@@ -2432,7 +2432,7 @@ Molpy.Up = function() {
 				bonus *= Math.ceil((Molpy.Boosts['Fractal Sandcastles'].power + 1) / 10);
 				nerf = 1;
 			}
-			if(nerf) bonus = Math.min(bonus, Molpy.Boosts['Castles'].bought / (50)); //just to keep things sane
+			if(nerf) bonus = Math.min(bonus, Molpy.Boosts['Castles'].totalBuilt / (50)); //just to keep things sane
 
 			bonus = Math.floor(bonus);
 			Molpy.Build(bonus);
