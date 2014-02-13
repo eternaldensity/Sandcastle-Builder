@@ -75,8 +75,6 @@ Molpy.Up = function() {
 		Molpy.chipsManual = 0;
 		Molpy.sandPermNP = 0; //sand per milliNewPix (recaculated when stuff is bought)
 		Molpy.glassPermNP = 0;
-		//prevCastleSand Molpy.prevCastleSand = 0; //sand cost of previous castle
-		//nextCastleSand Molpy.nextCastleSand = 1; //sand cost of next castle
 		Molpy.beachClicks = 0; //number of times beach has been clicked for sand
 		Molpy.ninjaFreeCount = 0; //newpix with no clicks in ninja period (but with clicks later)
 		Molpy.ninjaStealth = 0; //streak of uninterrupted ninja-free newpix
@@ -160,7 +158,7 @@ Molpy.Up = function() {
 		};
 		Molpy.SandToCastles = function() {
 			Molpy.buildNotifyFlag = 0;
-			while(Molpy.Boosts['Sand'].power >= Molpy.nextCastleSand && isFinite(Molpy.Boosts['Castles'].power)) {
+			while(Molpy.Boosts['Sand'].power >= Molpy.Boosts['Castles'].nextCastleSand && isFinite(Molpy.Boosts['Castles'].power)) {
 				if(Molpy.Got('Fractal Sandcastles')) {
 					var m = 1.35;
 					if(Molpy.Got('Fractal Fractals')) m = 1.5;
@@ -172,14 +170,14 @@ Molpy.Up = function() {
 				} else {
 					Molpy.Build(1);
 				}
-				Molpy.Boosts['Sand'].power -= Molpy.nextCastleSand;
-				Molpy.currentCastleSand = Molpy.nextCastleSand;
+				Molpy.Boosts['Sand'].power -= Molpy.Boosts['Castles'].nextCastleSand;
+				Molpy.currentCastleSand = Molpy.Boosts['Castles'].nextCastleSand;
 				//In which Fibbonacci occurs:
-				Molpy.nextCastleSand = Molpy.prevCastleSand + Molpy.currentCastleSand;
-				if(Molpy.nextCastleSand > 80) Molpy.EarnBadge('Getting Expensive');
-				Molpy.prevCastleSand = Molpy.currentCastleSand;
-				if(!isFinite(Molpy.Boosts['Sand'].power) || Molpy.nextCastleSand <= 0) {
-					Molpy.nextCastleSand = 1;
+				Molpy.Boosts['Castles'].nextCastleSand = Molpy.Boosts['Castles'].prevCastleSand + Molpy.currentCastleSand;
+				if(Molpy.Boosts['Castles'].nextCastleSand > 80) Molpy.EarnBadge('Getting Expensive');
+				Molpy.Boosts['Castles'].prevCastleSand = Molpy.currentCastleSand;
+				if(!isFinite(Molpy.Boosts['Sand'].power) || Molpy.Boosts['Castles'].nextCastleSand <= 0) {
+					Molpy.Boosts['Castles'].nextCastleSand = 1;
 					Molpy.Boosts['Castles'].power = Infinity;
 					Molpy.Boosts['Castles'].totalBuilt = Infinity;
 					return;
@@ -2926,9 +2924,9 @@ Molpy.Up = function() {
 		Molpy.destroyNotifyFlag = 1;
 		Molpy.Destroy('Castles', 0);
 
-		if(Molpy.nextCastleSand > 1) Molpy.EarnBadge('Castle Price Rollback');
-		Molpy.prevCastleSand = 0; //sand cost of previous castle
-		Molpy.nextCastleSand = 1; //sand cost of next castle
+		if(Molpy.Boosts['Castles'].nextCastleSand > 1) Molpy.EarnBadge('Castle Price Rollback');
+		Molpy.Boosts['Castles'].prevCastleSand = 0; //sand cost of previous castle
+		Molpy.Boosts['Castles'].nextCastleSand = 1; //sand cost of next castle
 		Molpy.SandToCastles();
 
 		if(Molpy.ninjad == 0) {

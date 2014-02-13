@@ -308,8 +308,8 @@
 	Molpy.GamenumsToString = function() {
 		var s = 'S'; //Semicolon
 		var str = '' + (Molpy.newpixNumber) + s + (Molpy.Boosts['Sand'].bought) + s + (Molpy.sandManual) + s + (Molpy.sand) + s
-			+ (Molpy.Boosts['Castles'].totalBuilt) + s + (Molpy.Boosts['Castles'].power) + s + (Molpy.Boosts['Castles'].totalDestroyed) + s + (Molpy.prevCastleSand)
-			+ s + (Molpy.nextCastleSand) + s + (Molpy.Boosts['Castles'].spent) + s + (Molpy.Boosts['Sand'].spent) + s + (Molpy.beachClicks)
+			+ (Molpy.Boosts['Castles'].totalBuilt) + s + (Molpy.Boosts['Castles'].power) + s + (Molpy.Boosts['Castles'].totalDestroyed) + s + (Molpy.Boosts['Castles'].prevCastleSand)
+			+ s + (Molpy.Boosts['Castles'].nextCastleSand) + s + (Molpy.Boosts['Castles'].spent) + s + (Molpy.Boosts['Sand'].spent) + s + (Molpy.beachClicks)
 			+ s + (Molpy.ninjaFreeCount) + s + (Molpy.ninjaStealth) + s + (Molpy.ninjad) + s + (Molpy.saveCount) + s
 			+ (Molpy.loadCount) + s + (Molpy.notifsReceived) + s + (Molpy.timeTravels) + s + (Molpy.npbONG) + s +
 
@@ -459,8 +459,8 @@
 		Molpy.Boosts['Castles'].totalBuilt = parseFloat(pixels[4]) || 0;
 		Molpy.Boosts['Castles'].power = parseFloat(pixels[5]) || 0;
 		Molpy.Boosts['Castles'].totalDestroyed = parseFloat(pixels[6]) || 0;
-		Molpy.prevCastleSand = parseFloat(pixels[7]) || 0;
-		Molpy.nextCastleSand = parseFloat(pixels[8]) || 0;
+		Molpy.Boosts['Castles'].prevCastleSand = parseFloat(pixels[7]) || 0;
+		Molpy.Boosts['Castles'].nextCastleSand = parseFloat(pixels[8]) || 0;
 		Molpy.Boosts['Castles'].spent = parseFloat(pixels[9]) || 0;
 		Molpy.Boosts['Sand'].spent = parseFloat(pixels[10]) || 0;
 		Molpy.beachClicks = parseInt(pixels[11]) || 0;
@@ -1001,8 +1001,8 @@
 				Molpy.Boosts['Castles'].totalDown = Number.MAX_VALUE;
 			Molpy.Boosts['Castles'].totalBuilt = 0;
 			Molpy.Boosts['Castles'].totalDestroyed = 0;
-			Molpy.prevCastleSand = 0;
-			Molpy.nextCastleSand = 1;
+			Molpy.Boosts['Castles'].prevCastleSand = 0;
+			Molpy.Boosts['Castles'].nextCastleSand = 1;
 			Molpy.ninjaFreeCount = 0;
 			Molpy.ninjaStealth = 0;
 

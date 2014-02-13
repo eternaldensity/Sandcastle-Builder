@@ -6629,8 +6629,6 @@ Molpy.DefineBoosts = function() {
 			return Molpify(me.Level, 3);
 		},
 		
-		prevCastleSand: 0,
-		nextCastleSand: 0,
 		globalMult: 1,
 		
 		// Saved Special Properties
@@ -6638,6 +6636,8 @@ Molpy.DefineBoosts = function() {
 		totalDestroyed: 0, // Total castles destroyed by other structures throughout the game
 		totalDown: 0, // Cumulative castles built and then wiped by Molpy Down throughout all games
 		spent: 0, // Castles spent in shop
+		prevCastleSand: 0,
+		nextCastleSand: 0,
 		
 		defSave: 1,
 		saveData: {
@@ -6645,6 +6645,8 @@ Molpy.DefineBoosts = function() {
 			5:['totalDestroyed', 0, 'float'],
 			6:['totalDown', 0, 'float'],
 			7:['spent', 0, 'float'],
+			8:['prevCastleSand', 0, 'float'],
+			9:['nextCastleSand', 0, 'float'],
 		}
 		
 	});
