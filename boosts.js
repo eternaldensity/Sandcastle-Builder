@@ -4954,13 +4954,11 @@ Molpy.DefineBoosts = function() {
 		Castles: '6FQ',
 		GlassBlocks: '100K'
 	};
-	Molpy.Boosts['Glass Ceiling 10'].logic = 80;
 	Molpy.Boosts['Glass Ceiling 11'].price = {
 		Sand: '6WQ',
 		Castles: '6WQ',
 		GlassBlocks: '350K'
 	};
-	Molpy.Boosts['Glass Ceiling 11'].logic = 90;
 
 	new Molpy.Boost({
 		name: 'Expando',
