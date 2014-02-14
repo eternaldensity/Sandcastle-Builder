@@ -71,8 +71,6 @@ Molpy.Up = function() {
 		Molpy.ninjad = 0; //ninja flag for newpixbots
 		Molpy.npbONG = 0; //activation flag for newpixbots
 
-		Molpy.chipsManual = 0;
-		Molpy.glassPermNP = 0;
 		Molpy.beachClicks = 0; //number of times beach has been clicked for sand
 		Molpy.ninjaFreeCount = 0; //newpix with no clicks in ninja period (but with clicks later)
 		Molpy.ninjaStealth = 0; //streak of uninterrupted ninja-free newpix
@@ -81,8 +79,6 @@ Molpy.Up = function() {
 		Molpy.autosaveCountup = 0;
 		Molpy.highestNPvisited = 1; //keep track of where the player has been
 		Molpy.lGlass = 0;
-		Molpy.totalGlassBuilt = 0;
-		Molpy.totalGlassDestroyed = 0;
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
 		Molpy.blockspmnp = 0;
@@ -383,14 +379,14 @@ Molpy.Up = function() {
 			Molpy.blockWasteAmount = 0;
 		};
 		Molpy.DigGlass = function(amount) {
-			Molpy.totalGlassBuilt += amount;
+			Molpy.Boosts['TF'].totalLoaded += amount;
 			Molpy.Add('TF', amount);
 		};
 		Molpy.DestroyGlass = function(amount) {
 			var tf = Molpy.Boosts['TF'];
 			amount = Math.min(tf.Level, amount);
 			tf.Destroy(amount);
-			Molpy.totalGlassDestroyed += amount;
+			Molpy.Boosts['TF'].totalDestroyed += amount;
 		};
 
 		Molpy.sandPerClick = function() {
@@ -430,7 +426,6 @@ Molpy.Up = function() {
 		Molpy.globalSpmNPMult = 1;
 		Molpy.globalGpmNPMult = 1;
 		Molpy.lastClick = 0;
-		Molpy.chipsPerClick = 0;
 		Molpy.ClickBeach = function(event, leopard, recursion) {
 			Molpy.previewNP = 0;
 			if(!Molpy.layoutLocked && !leopard) {
@@ -442,21 +437,17 @@ Molpy.Up = function() {
 			if(newsand && Molpy.options.numbers) Molpy.AddSandParticle('+' + Molpify(newsand, 1));
 			Molpy.Boosts['Sand'].manualDug += newsand;
 			if(isNaN(Molpy.Boosts['Sand'].manualDug)) Molpy.Boosts['Sand'].manualDug = 0;
-			if(!isFinite(Molpy.Boosts['Sand'].power) && Molpy.Got('BG')) {
-				Molpy.chipsPerClick = Molpy.BoostsOwned * 4;
-				if(Molpy.Got('GM')) {
-					Molpy.chipsPerClick += Molpy.glassPermNP / 20;
-				}
-				if(Molpy.Got('Bone Clicker') && Molpy.Has('Bonemeal', 1)) {
-					Molpy.chipsPerClick *= Molpy.Level('Bonemeal');
-				}
-				Molpy.Add('TF', Molpy.chipsPerClick);
-				if(Molpy.chipsPerClick) {
-					Molpy.chipsManual += Molpy.chipsPerClick;
-					if(Molpy.chipsPerClick && Molpy.options.numbers)
-						Molpy.AddSandParticle('+' + Molpify(Molpy.chipsPerClick, 1));
-				}
+			
+			// Tool Factory
+			Molpy.Boosts['TF'].calculateLoadedPerClick();
+			var TFLoaded = Molpy.Boosts['TF'].loadedPerClick;
+			if(TFLoaded){
+				Molpy.Add('TF', TFLoaded);
+				Molpy.Boosts['TF'].manualLoaded += TFLoaded;
+				if(Molpy.options.numbers)
+					Molpy.AddSandParticle('+' + Molpify(TFLoaded, 1));
 			}
+			
 			if(Molpy.mustardTools) {
 				Molpy.Add('Mustard', Molpy.mustardTools);
 				if(Molpy.options.numbers) Molpy.AddSandParticle('+' + Molpify(Molpy.mustardTools, 1) + ' mustard');
@@ -915,8 +906,8 @@ Molpy.Up = function() {
 		};
 
 		Molpy.CalculateGlassRate = function() {
-			var oldrate = Molpy.glassPermNP;
-			Molpy.glassPermNP = 0;
+			var oldrate = Molpy.Boosts['TF'].loadedPermNP;
+			var newRate = 0;
 			var multiplier = 1;
 			var inf = (Molpy.Got('Sand to Glass') && !isFinite(Molpy.Boosts['Sand'].power)) * 1;
 			if(!inf && oldrate == 0) return;
@@ -926,7 +917,7 @@ Molpy.Up = function() {
 				var tf = !isFinite(Molpy.priceFactor * me.price) * 1 * inf;
 				me.storedGpmNP = EvalMaybeFunction(me.gpmNP, me) * tf;
 				me.storedTotalGpmNP = me.amount * me.storedGpmNP;
-				Molpy.glassPermNP += me.storedTotalGpmNP || 0;
+				newRate += me.storedTotalGpmNP || 0;
 			}
 			if(Molpy.Got('GL')) {
 				multiplier *= Molpy.Boosts['GL'].power / 100;
@@ -936,32 +927,25 @@ Molpy.Up = function() {
 			}
 
 			Molpy.globalGpmNPMult = multiplier;
-			Molpy.glassPermNP *= Molpy.globalGpmNPMult;
+			newRate *= Molpy.globalGpmNPMult;
 
-			if(!isFinite(Molpy.Boosts['Sand'].power) && Molpy.Got('BG')) {
-				Molpy.chipsPerClick = Molpy.BoostsOwned * 4;
-				if(Molpy.Got('GM')) {
-					Molpy.chipsPerClick += Molpy.glassPermNP / 20;
-				}
-				if(Molpy.Got('Bone Clicker') && Molpy.Has('Bonemeal', 1)) {
-					Molpy.chipsPerClick *= Molpy.Level('Bonemeal');
-				}
-			} else {
-				Molpy.chipsPerClick = 0;
+			Molpy.Boosts['TF'].calculateLoadedPerClick;
+			
+			if(newRate > oldrate) {
+				if(newRate >= 5000) Molpy.EarnBadge('Plain Potato Chips');
+				if(newRate >= 20000) Molpy.EarnBadge('Crinkle Cut Chips');
+				if(newRate >= 800000) Molpy.EarnBadge('BBQ Chips');
+				if(newRate >= 4e6) Molpy.EarnBadge('Corn Chips');
+				if(newRate >= 2e7) Molpy.EarnBadge('Sour Cream and Onion Chips');
+				if(newRate >= 1e8) Molpy.EarnBadge('Cinnamon Apple Chips');
+				if(newRate >= 3e9) Molpy.EarnBadge('Sweet Chili Chips');
+				if(newRate >= 1e11) Molpy.EarnBadge('Banana Chips');
+				if(newRate >= 5e12) Molpy.EarnBadge('Nuclear Fission Chips');
+				if(newRate >= 6e14) Molpy.EarnBadge('Silicon Chips');
+				if(newRate >= 1e19) Molpy.EarnBadge('Blue Poker Chips');
 			}
-			if(Molpy.glassPermNP > oldrate) {
-				if(Molpy.glassPermNP >= 5000) Molpy.EarnBadge('Plain Potato Chips');
-				if(Molpy.glassPermNP >= 20000) Molpy.EarnBadge('Crinkle Cut Chips');
-				if(Molpy.glassPermNP >= 800000) Molpy.EarnBadge('BBQ Chips');
-				if(Molpy.glassPermNP >= 4e6) Molpy.EarnBadge('Corn Chips');
-				if(Molpy.glassPermNP >= 2e7) Molpy.EarnBadge('Sour Cream and Onion Chips');
-				if(Molpy.glassPermNP >= 1e8) Molpy.EarnBadge('Cinnamon Apple Chips');
-				if(Molpy.glassPermNP >= 3e9) Molpy.EarnBadge('Sweet Chili Chips');
-				if(Molpy.glassPermNP >= 1e11) Molpy.EarnBadge('Banana Chips');
-				if(Molpy.glassPermNP >= 5e12) Molpy.EarnBadge('Nuclear Fission Chips');
-				if(Molpy.glassPermNP >= 6e14) Molpy.EarnBadge('Silicon Chips');
-				if(Molpy.glassPermNP >= 1e19) Molpy.EarnBadge('Blue Poker Chips');
-			}
+			
+			Molpy.Boosts['TF'].loadedPermNP = newRate;
 		};
 
 		/**************************************************************
@@ -2757,7 +2741,7 @@ Molpy.Up = function() {
 			Molpy.chipspmnp = 0;
 		}
 
-		if(Molpy.Got('Sand to Glass')) Molpy.DigGlass(Math.floor(Molpy.glassPermNP*Molpy.Papal('GlassSand')));
+		if(Molpy.Got('Sand to Glass')) Molpy.DigGlass(Math.floor(Molpy.Boosts['TF'].loadedPermNP*Molpy.Papal('GlassSand')));
 		Molpy.GlassNotifyFlush();
 		Molpy.RunToolFactory();
 		if(Molpy.recalculateDig) Molpy.CalculateDigSpeed();

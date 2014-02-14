@@ -640,7 +640,7 @@ Molpy.DefineBoosts = function() {
 		
 		buyFunction: function() {
 			this.power = 1;
-		}
+		},
 		
 		// Saved Unique Properties
 		travelCount: 0, 
@@ -4695,7 +4695,37 @@ Molpy.DefineBoosts = function() {
 				&& !isFinite(Molpy.CastleTools['River'].amount)
 				&& !isFinite(Molpy.CastleTools['Beanie Builder'].amount);
 			return !toolcheck ? 'action' : '';
+		},
+		
+		calculateLoadedPerClick: function() {
+			if(!isFinite(Molpy.Boosts['Sand'].power) && Molpy.Got('BG')) {
+				this.loadedPerClick = Molpy.BoostsOwned * 4;
+				if(Molpy.Got('GM')) {
+					this.loadedPerClick  += this.loadedPermNP / 20;
+				}
+				if(Molpy.Got('Bone Clicker') && Molpy.Has('Bonemeal', 1)) {
+					this.loadedPerClick  *= Molpy.Level('Bonemeal');
+				}
+			} else {
+				this.loadedPerClick = 0;
+			}
+		},
+		
+		loadedPermNP: 0, // Numer loaded per mNP
+		loadedPerClick: 0,
+		
+		// Unique saved properties
+		totalLoaded: 0,
+		totalDestroyed: 0,
+		manualLoaded: 0, // Loaded due to beach clicks
+		
+		defSave: 1,
+		saveData: {
+			4:['totalLoaded', 0, 'float'],
+			5:['totalDestroyed', 0, 'float'],
+			6:['manualLoaded', 0, 'float'],
 		}
+		
 	});
 
 	Molpy.LoadToolFactory = function(amount) {
@@ -8153,8 +8183,8 @@ Molpy.DefineBoosts = function() {
 		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.blockspmnp)&&Molpy.blockspmnp>0}},
 		Flux: {desc:'10% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest') && isFinite(Molpy.Level('FluxCrystals'))}},
 		BlackP: {desc:'10% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180 && isFinite(Molpy.Level('Blackprints'))}},
-		GlassSand: {desc:'10% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
-		GlassCastle: {desc:'10% more Glass Chips from Glass Castle Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.glassPermNP)}},
+		GlassSand: {desc:'10% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.Boosts['TF'].loadedPermNP)}},
+		GlassCastle: {desc:'10% more Glass Chips from Glass Castle Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.Boosts['TF'].loadedPermNP)}},
 		GlassSaw: {desc:'10% more Glass Blocks from using the Glass Saw', value:1.1, avail: function() { return Molpy.Got('Glass Saw') && !Molpy.Earned('Infinite Saw')}},
 		QQs: {desc:'10% more Question Qubes from the Logicat', value:1.1, avail: function() { return Molpy.Got('QQ') }},
 		Goats: {desc:'10% more Goats from Ninja Ritual', value:1.1, avail: function() { return Molpy.Got('Ninja Ritual')}},

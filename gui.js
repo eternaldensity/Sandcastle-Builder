@@ -1294,7 +1294,7 @@ Molpy.DefineGUI = function() {
 		g('sandcount').innerHTML = Molpify(Molpy.Boosts['Sand'].power, 1) + ' sand' + (isFinite(castleAmt) ? ' of ' + Molpify(Molpy.Boosts['Castles'].nextCastleSand, 1) + ' needed' : '');
 		g('sandrate').innerHTML = Molpify(Molpy.Boosts['Sand'].sandPermNP, 1) + ' sand/mNP';
 		g('chipcount').innerHTML = Molpify(Molpy.Boosts['TF'].power, 1) + ' chips';
-		g('chiprate').innerHTML = Molpify(Molpy.glassPermNP, 1) + ' chips/mNP';
+		g('chiprate').innerHTML = Molpify(Molpy.Boosts['TF'].loadedPermNP, 1) + ' chips/mNP';
 		g('newtools').innerHTML = 'Built ' + Molpify(Molpy.toolsBuilt, 1) + ' new tool' + plural(Molpy.toolsBuilt);
 
 		if(noLayout) {
@@ -1335,8 +1335,8 @@ Molpy.DefineGUI = function() {
 
 			g('incomeSandRate').innerHTML = 'Sand: ' + Molpify(Molpy.Boosts['Sand'].sandPermNP, 1) + '/mNP';
 			g('incomeSandClickRate').innerHTML = 'Sand/click: ' + Molpify(Molpy.Boosts['Sand'].sandPerClick, 1);
-			g('incomeChipRate').innerHTML = 'TF Chips: ' + Molpify(Molpy.glassPermNP, 1) + '/mNP';
-			g('incomeChipClickRate').innerHTML = 'TF Chips/click: ' + Molpify(Molpy.chipsPerClick, 1);
+			g('incomeChipRate').innerHTML = 'TF Chips: ' + Molpify(Molpy.Boosts['TF'].loadedPermNP, 1) + '/mNP';
+			g('incomeChipClickRate').innerHTML = 'TF Chips/click: ' + Molpify(Molpy.Boosts['TF'].loadedPerClick, 1);
 			g('incomeNewTools').innerHTML = 'Tools: ' + Molpify(Molpy.toolsBuilt, 1) + ' built this mNP';
 
 			var tf = Molpy.Got('TF');
@@ -1543,10 +1543,10 @@ Molpy.DefineGUI = function() {
 		g('blackstat').innerHTML = Molpy.BlackprintReport();
 
 		g('logicatstat').innerHTML = Molpify(Molpy.Boosts['Logicat'].bought, 1);
-		g('totaltoolchipsstat').innerHTML = Molpify(Molpy.totalGlassBuilt, 4);
-		g('destroyedtoolchipsstat').innerHTML = Molpify(Molpy.totalGlassDestroyed, 4);
-		g('manualchipsstat').innerHTML = Molpify(Molpy.chipsManual, 4);
-		g('chipclickstat').innerHTML = Molpify(Molpy.chipsPerClick, 4);
+		g('totaltoolchipsstat').innerHTML = Molpify(Molpy.Boosts['TF'].totalLoaded, 4);
+		g('destroyedtoolchipsstat').innerHTML = Molpify(Molpy.Boosts['TF'].totalDestroyed, 4);
+		g('manualchipsstat').innerHTML = Molpify(Molpy.Boosts['TF'].manualLoaded, 4);
+		g('chipclickstat').innerHTML = Molpify(Molpy.Boosts['TF'].loadedPerClick, 4);
 		g('storagestat').innerHTML = (Molpy.supportsLocalStorage ? 'html5localstorage' : 'c**kies');
 	}
 

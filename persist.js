@@ -315,7 +315,7 @@
 
 			(Molpy.redactedCountup) + s + (Molpy.redactedToggle) + s + (Molpy.redactedVisible) + s + (Molpy.lGlass) + s
 			+ (Molpy.redactedClicks) + s + (Molpy.highestNPvisited) + s + (Molpy.Boosts['Castles'].totalDown) + s
-			+ (Molpy.totalGlassBuilt) + s + (Molpy.totalGlassDestroyed) + s + (Molpy.chipsManual) + s
+			+ (Molpy.Boosts['TF'].totalLoaded) + s + (Molpy.Boosts['TF'].totalDestroyed) + s + (Molpy.Boosts['TF'].manualLoaded) + s
 			+ (Molpy.redactedChain) + s + (Molpy.redactedChainMax) + s;
 		return str;
 	}
@@ -474,9 +474,9 @@
 		Molpy.Boosts['Castles'].totalDown = parseFloat(pixels[26]) || 0;
 		if(version < 2.1) Molpy.tempIntruderBots = parseFloat(pixels[27]) || 0;
 
-		Molpy.totalGlassBuilt = parseFloat(pixels[27]) || 0;
-		Molpy.totalGlassDestroyed = parseFloat(pixels[28]) || 0;
-		Molpy.chipsManual = parseFloat(pixels[29]) || 0;
+		Molpy.Boosts['TF'].totalLoaded = parseFloat(pixels[27]) || 0;
+		Molpy.Boosts['TF'].totalDestroyed = parseFloat(pixels[28]) || 0;
+		Molpy.Boosts['TF'].manualLoaded = parseFloat(pixels[29]) || 0;
 		Molpy.redactedChain = parseFloat(pixels[30]) || 0;
 		Molpy.redactedChainMax = parseFloat(pixels[31]) || 0;
 	};
@@ -985,7 +985,7 @@
 			coma || _gaq && _gaq.push(['_trackEvent', 'Molpy Down', 'Begin', '' + Molpy.newpixNumber]);
 			Molpy.Boosts['Sand'].totalDug = 0;
 			Molpy.Boosts['Sand'].manualDug = 0;
-			Molpy.chipsManual = 0;
+			Molpy.Boosts['TF'].manualLoaded = 0;
 			if(isFinite(Molpy.Boosts['Castles'].totalBuilt))
 				Molpy.Boosts['Castles'].totalDown += Molpy.Boosts['Castles'].totalBuilt;
 			else
@@ -1122,8 +1122,8 @@
 			Molpy.Boosts['Time Travel'].travelCount = 0;
 			Molpy.Boosts['Castles'].totalDown = 0;
 			Molpy.toolsBuiltTotal = 0;
-			Molpy.totalGlassBuilt = 0;
-			Molpy.totalGlassDestroyed = 0;
+			Molpy.Boosts['TF'].totalLoaded = 0;
+			Molpy.Boosts['TF'].totalDestroyed = 0;
 			Molpy.redactedChain = 0;
 			Molpy.redactedChainMax = 0;
 			Molpy.CastleTools['NewPixBot'].totalCastlesBuilt = 0; //because we normally don't reset this.
