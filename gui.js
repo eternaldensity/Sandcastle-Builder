@@ -1334,7 +1334,7 @@ Molpy.DefineGUI = function() {
 			}
 
 			g('incomeSandRate').innerHTML = 'Sand: ' + Molpify(Molpy.Boosts['Sand'].sandPermNP, 1) + '/mNP';
-			g('incomeSandClickRate').innerHTML = 'Sand/click: ' + Molpify(Molpy.computedSandPerClick, 1);
+			g('incomeSandClickRate').innerHTML = 'Sand/click: ' + Molpify(Molpy.Boosts['Sand'].sandPerClick, 1);
 			g('incomeChipRate').innerHTML = 'TF Chips: ' + Molpify(Molpy.glassPermNP, 1) + '/mNP';
 			g('incomeChipClickRate').innerHTML = 'TF Chips/click: ' + Molpify(Molpy.chipsPerClick, 1);
 			g('incomeNewTools').innerHTML = 'Tools: ' + Molpify(Molpy.toolsBuilt, 1) + ' built this mNP';
@@ -1501,7 +1501,7 @@ Molpy.DefineGUI = function() {
 		g('totalsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].totalDug, 4);
 		g('manualsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].manualDugs, 4);
 		g('clicksstat').innerHTML = Molpify(Molpy.beachClicks, 4);
-		g('spclickstat').innerHTML = Molpify(Molpy.computedSandPerClick, 4);
+		g('spclickstat').innerHTML = Molpify(Molpy.Boosts['Sand'].sandPerClick, 4);
 		g('sandspentstat').innerHTML = Molpify((Molpy.Boosts['Sand'].spent == undefined) ? 0 : Molpy.Boosts['Sand'].spent, 4);
 		g('totalcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].totalBuilt, 4);
 		g('destroyedcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].totalDestroyed, 4);

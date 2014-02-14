@@ -428,7 +428,6 @@ Molpy.Up = function() {
 			}
 			return baserate;
 		};
-		Molpy.computedSandPerClick = 1;
 		Molpy.globalSpmNPMult = 1;
 		Molpy.globalGpmNPMult = 1;
 		Molpy.lastClick = 0;
@@ -439,7 +438,7 @@ Molpy.Up = function() {
 				Molpy.Notify('You cannnot click here while the layout is unlocked but you can use your leopard');
 				return;
 			}
-			var newsand = Molpy.computedSandPerClick;
+			var newsand = Molpy.Boosts['Sand'].sandPerClick;
 			Molpy.Dig(newsand);
 			if(newsand && Molpy.options.numbers) Molpy.AddSandParticle('+' + Molpify(newsand, 1));
 			Molpy.Boosts['Sand'].manualDug += newsand;
@@ -818,8 +817,8 @@ Molpy.Up = function() {
 			if(Molpy.Got('Blitzing')) {
 				multiplier *= Molpy.Boosts['Blitzing'].power / 100;
 			}
-			Molpy.computedSandPerClick = Molpy.sandPerClick() * multiplier;
-			if(!isFinite(Molpy.computedSandPerClick) || !isFinite(Molpy.Boosts['Sand'].power)) Molpy.computedSandPerClick = 0; //you can't dig infinite sand
+			Molpy.Boosts['Sand'].sandPerClick = Molpy.sandPerClick() * multiplier;
+			if(!isFinite(Molpy.Boosts['Sand'].sandPerClick) || !isFinite(Molpy.Boosts['Sand'].power)) Molpy.Boosts['Sand'].sandPerClick = 0; //you can't dig infinite sand
 
 			//stuff beyond here doesn't apply to clicks
 			if(Molpy.Got('Overcompensating') && Molpy.NPlength > 1800) {

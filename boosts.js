@@ -6552,6 +6552,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		sandPermNP: 0, // Sand per milliNewPix (recaculated when stuff is bought)
+		sandPerClick: 1,
 		
 		// Saved Special Properties
 		totalDug: 0, // Total sand dug throughout the game
