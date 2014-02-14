@@ -4696,7 +4696,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Has('GlassChips', amount)) {
 			Molpy.Spend('GlassChips', amount);
 			Molpy.Add('TF', amount);
-			if(Molpy.SandTools['Bucket'].amount >= 7470 && Molpy.Got('TF') && !isFinite(Molpy.sandPermNP))
+			if(Molpy.SandTools['Bucket'].amount >= 7470 && Molpy.Got('TF') && !isFinite(Molpy.Boosts['Sand'].sandPermNP))
 				Molpy.UnlockBoost('Sand to Glass');
 			if(Molpy.CastleTools['NewPixBot'].amount >= 1515 && Molpy.Got('TF') && !isFinite(Molpy.Boosts['Castles'].power))
 				Molpy.UnlockBoost('Castles to Glass');
@@ -6512,7 +6512,7 @@ Molpy.DefineBoosts = function() {
 		
 		Spend: function(amount, silent) {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount = 0;
-			if(!isFinite(Molpy.sandPermNP) && Molpy.IsEnabled('Cracks')) amount = 0;
+			if(!isFinite(Molpy.Boosts['Sand'].sandPermNP) && Molpy.IsEnabled('Cracks')) amount = 0;
 			if(!amount) return 1;
 			this.power -= amount;
 			if(this.power < 0) this.power = 0;
@@ -6541,7 +6541,7 @@ Molpy.DefineBoosts = function() {
 		
 		Has: function(amount) {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) return 1;
-			if(!isFinite(Molpy.sandPermNP) && Molpy.IsEnabled('Cracks')) return 1;
+			if(!isFinite(Molpy.Boosts['Sand'].sandPermNP) && Molpy.IsEnabled('Cracks')) return 1;
 			return(this.HasSuper(amount));
 		},
 		
@@ -6594,7 +6594,7 @@ Molpy.DefineBoosts = function() {
 		
 		Spend: function(amount, silent) {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount = 0;
-			if(!isFinite(Molpy.sandPermNP) && Molpy.IsEnabled('Cracks')) amount = 0;
+			if(!isFinite(Molpy.Boosts['Sand'].sandPermNP) && Molpy.IsEnabled('Cracks')) amount = 0;
 			if(!amount) return;
 			amount = Math.min(amount, this.power);
 			this.power -= amount;
@@ -6633,7 +6633,7 @@ Molpy.DefineBoosts = function() {
 		
 		Has: function(amount) {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) return 1;
-			if(!isFinite(Molpy.sandPermNP) && Molpy.IsEnabled('Cracks')) return 1;
+			if(!isFinite(Molpy.Boosts['Sand'].sandPermNP) && Molpy.IsEnabled('Cracks')) return 1;
 			return(this.HasSuper(amount));
 		},
 		
@@ -8143,7 +8143,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.PapalDecrees = {
-		Sand: {desc:'20% more Sand from Sand Tools', value:1.2, avail: function() { return isFinite(Molpy.sandPermNP)}},
+		Sand: {desc:'20% more Sand from Sand Tools', value:1.2, avail: function() { return isFinite(Molpy.Boosts['Sand'].sandPermNP)}},
 		Castles: {desc:'10% more Castles from Castle Tools', value:1.1, avail: function() { return isFinite(Molpy.Boosts['Castles'].power)}},
 		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.chipspmnp)&&Molpy.chipspmnp>0}},
 		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.blockspmnp)&&Molpy.blockspmnp>0}},

@@ -72,7 +72,6 @@ Molpy.Up = function() {
 		Molpy.npbONG = 0; //activation flag for newpixbots
 
 		Molpy.chipsManual = 0;
-		//sandPermNP Molpy.sandPermNP = 0; //sand per milliNewPix (recaculated when stuff is bought)
 		Molpy.glassPermNP = 0;
 		Molpy.beachClicks = 0; //number of times beach has been clicked for sand
 		Molpy.ninjaFreeCount = 0; //newpix with no clicks in ninja period (but with clicks later)
@@ -418,7 +417,7 @@ Molpy.Up = function() {
 				baserate += 500 * pairs || 0;
 			}
 			if(Molpy.Got('Bucket Brigade')) {
-				baserate += Molpy.sandPermNP * 0.01 * Math.floor(Molpy.SandTools['Bucket'].amount / 50) || 0;
+				baserate += Molpy.Boosts['Sand'].sandPermNP * 0.01 * Math.floor(Molpy.SandTools['Bucket'].amount / 50) || 0;
 			}
 
 			if(Molpy.Got('Bag Puns')) {
@@ -665,7 +664,7 @@ Molpy.Up = function() {
 				var fn = 'Factory Ninja';
 				if(Molpy.Got(fn)) {
 					var runs = Molpy.ActivateFactoryAutomation();
-					if(runs == 0 && Molpy.sandPermNP == Infinity) Molpy.EarnBadge('Pure Genius');
+					if(runs == 0 && Molpy.Boosts['Sand'].sandPermNP == Infinity) Molpy.EarnBadge('Pure Genius');
 					!Molpy.Boosts[fn].power--;
 					if(!Molpy.Boosts[fn].power) Molpy.LockBoost(fn);
 				}
@@ -790,14 +789,14 @@ Molpy.Up = function() {
 		Molpy.CalculateDigSpeed = function() {
 			Molpy.recalculateDig = 0;
 
-			var oldrate = Molpy.sandPermNP;
-			Molpy.sandPermNP = 0;
+			var oldrate = Molpy.Boosts['Sand'].sandPermNP;
+			Molpy.Boosts['Sand'].sandPermNP = 0;
 			var multiplier = 1;
 			for( var i in Molpy.SandTools) {
 				var me = Molpy.SandTools[i];
 				me.storedSpmNP = EvalMaybeFunction(me.spmNP, me) || 0;
 				me.storedTotalSpmNP = me.amount * me.storedSpmNP;
-				Molpy.sandPermNP += me.storedTotalSpmNP || 0;
+				Molpy.Boosts['Sand'].sandPermNP += me.storedTotalSpmNP || 0;
 			}
 			var ninjaFactor = 1;
 			if(Molpy.Got('Busy Bot')) ninjaFactor += 0.1;
@@ -834,15 +833,15 @@ Molpy.Up = function() {
 			var glassUse = Molpy.CalcGlassUse();
 			multiplier *= Math.max(0, ((100 - glassUse) / 100));
 			Molpy.globalSpmNPMult = multiplier;
-			Molpy.sandPermNP *= Molpy.globalSpmNPMult;
-			if(isNaN(Molpy.sandPermNP)) {
-				Molpy.sandPermNP = 0;
+			Molpy.Boosts['Sand'].sandPermNP *= Molpy.globalSpmNPMult;
+			if(isNaN(Molpy.Boosts['Sand'].sandPermNP)) {
+				Molpy.Boosts['Sand'].sandPermNP = 0;
 			}
 			if(Molpy.globalSpmNPMult == 0 && oldrate != 0) {
 				Molpy.Notify('Looks like all the sand you dig is being used to make glass', 1);
 			}
 
-			if(Molpy.sandPermNP > oldrate) Molpy.CheckSandRateBadges();
+			if(Molpy.Boosts['Sand'].sandPermNP > oldrate) Molpy.CheckSandRateBadges();
 
 			Molpy.CalcReportJudgeLevel();
 
@@ -864,7 +863,7 @@ Molpy.Up = function() {
 			Molpy.CalculateGlassRate();
 		};
 		Molpy.CheckSandRateBadges = function() {
-			var sr = Molpy.sandPermNP;
+			var sr = Molpy.Boosts['Sand'].sandPermNP;
 			if(sr >= 0.1) Molpy.EarnBadge('A light dusting');
 			if(sr >= 0.8) Molpy.EarnBadge('Sprinkle');
 			if(sr >= 6) Molpy.EarnBadge('Trickle');
@@ -2650,7 +2649,7 @@ Molpy.Up = function() {
 						minus++;
 						if(minus >= 10) {
 							Molpy.UnlockBoost('Magic Mirror');
-							if(isFinite(Molpy.sandPermNP)) break;
+							if(isFinite(Molpy.Boosts['Sand'].sandPermNP)) break;
 						}
 						if(minus >= 50) {
 							Molpy.UnlockBoost('Vacuum Cleaner');
@@ -2724,7 +2723,7 @@ Molpy.Up = function() {
 			me.totalGlass += me.storedTotalGpmNP;
 		}
 
-		Molpy.Dig(Molpy.sandPermNP*Molpy.Papal('Sand'));
+		Molpy.Dig(Molpy.Boosts['Sand'].sandPermNP*Molpy.Papal('Sand'));
 		if(Molpy.IsEnabled('Vacuum Cleaner') && Molpy.Has('Sand', Infinity) && Molpy.Has(Molpy.VacCost)) {
 			Molpy.Boosts['Sand'].Level = 0;
 			var sucks = 1;

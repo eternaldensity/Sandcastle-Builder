@@ -1292,7 +1292,7 @@ Molpy.DefineGUI = function() {
 		var castleAmt = Molpy.Boosts['Castles'].power; //so we don't need lots of lookups
 		g('castlecount').innerHTML = Molpify(castleAmt, 1) + ' castle' + plural(castleAmt);
 		g('sandcount').innerHTML = Molpify(Molpy.Boosts['Sand'].power, 1) + ' sand' + (isFinite(castleAmt) ? ' of ' + Molpify(Molpy.Boosts['Castles'].nextCastleSand, 1) + ' needed' : '');
-		g('sandrate').innerHTML = Molpify(Molpy.sandPermNP, 1) + ' sand/mNP';
+		g('sandrate').innerHTML = Molpify(Molpy.Boosts['Sand'].sandPermNP, 1) + ' sand/mNP';
 		g('chipcount').innerHTML = Molpify(Molpy.Boosts['TF'].power, 1) + ' chips';
 		g('chiprate').innerHTML = Molpify(Molpy.glassPermNP, 1) + ' chips/mNP';
 		g('newtools').innerHTML = 'Built ' + Molpify(Molpy.toolsBuilt, 1) + ' new tool' + plural(Molpy.toolsBuilt);
@@ -1333,7 +1333,7 @@ Molpy.DefineGUI = function() {
 				$('#stuff' + bst.alias + 'Count').toggleClass('hidden', !Molpy.Got(bst.alias));
 			}
 
-			g('incomeSandRate').innerHTML = 'Sand: ' + Molpify(Molpy.sandPermNP, 1) + '/mNP';
+			g('incomeSandRate').innerHTML = 'Sand: ' + Molpify(Molpy.Boosts['Sand'].sandPermNP, 1) + '/mNP';
 			g('incomeSandClickRate').innerHTML = 'Sand/click: ' + Molpify(Molpy.computedSandPerClick, 1);
 			g('incomeChipRate').innerHTML = 'TF Chips: ' + Molpify(Molpy.glassPermNP, 1) + '/mNP';
 			g('incomeChipClickRate').innerHTML = 'TF Chips/click: ' + Molpify(Molpy.chipsPerClick, 1);
