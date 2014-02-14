@@ -6516,7 +6516,6 @@ Molpy.DefineBoosts = function() {
 			if(!amount) return 1;
 			this.power -= amount;
 			if(this.power < 0) this.power = 0;
-			//Makes Sand Spent if it's undefined.
 			this['spent'] += amount;
 			if((isFinite(this.power) || !isFinite(amount))) {
 				if(!Molpy.boostSilence && !silent && Molpy.spendSandNotifyFlag) {
