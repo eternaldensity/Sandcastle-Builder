@@ -4868,7 +4868,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.DoMouldWork(left);
 		}
 
-		Molpy.boostSilence++;
 		var furn = Math.floor((times + Math.random() * 3) / 2);
 		if(Molpy.Got('Stretchable Chip Storage'))
 			Molpy.RewardBlastFurnace(furn);
@@ -4877,6 +4876,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.RewardBlastFurnace();
 		}
 		left = times - furn;
+		Molpy.boostSilence++;
 		if(left > 7 && Molpy.Got('Milo')) {
 			var mr = Molpy.Boosts['Milo'];
 			var s = 0;// Math.sin((Math.PI*Molpy.ONGelapsed)/(Molpy.NPlength*100));
@@ -4950,14 +4950,18 @@ Molpy.DefineBoosts = function() {
 	Molpy.MakeGlassCeiling(10);
 	Molpy.MakeGlassCeiling(11);
 	Molpy.Boosts['Glass Ceiling 10'].price = {
-		Sand: '6FQ',
-		Castles: '6FQ',
-		GlassBlocks: '100K'
+		price:{
+			Sand: '6FQ',
+			Castles: '6FQ',
+			GlassBlocks: '100K'
+		},
 	};
 	Molpy.Boosts['Glass Ceiling 11'].price = {
-		Sand: '6WQ',
-		Castles: '6WQ',
-		GlassBlocks: '350K'
+		price:{
+			Sand: '6WQ',
+			Castles: '6WQ',
+			GlassBlocks: '350K'
+		},
 	};
 
 	new Molpy.Boost({
@@ -5193,18 +5197,16 @@ Molpy.DefineBoosts = function() {
 			str += 'Single use: available again when you have ' + Molpy.PriceString(Molpy.CalcRushCost(1, 1)) + '.'
 				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
 			if (me.bought) {
-				if (Molpy.Has('Blackprints',rushcost.Blackprints)) {
-					str += '<br>';
-					if (!rushcost.Vacuum) {
-						str += '<input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>';
-					} else {
-						if (Molpy.Has('Vacuum',rushcost.Vacuum)) str +=
-							'<input type="Button" onclick="Molpy.PantherRush()" value="Use Vacuums"></input>';
-						if (Molpy.Has('Mustard',rushcost.Vacuum)) str +=
-							'<input type="Button" onclick="Molpy.PantherRush(1)" value="Use Mustard"></input>';
-						if (Molpy.Has('Bonemeal',rushcost.Vacuum*10)) str +=
-							'<input type="Button" onclick="Molpy.PantherRush(2)" value="Use Bonemeal"></input>';
-					}
+				str += '<br>';
+				if (!rushcost.Vacuum) {
+					str += '<input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>';
+				} else {
+					if (Molpy.Has('Vacuum',rushcost.Vacuum)) str +=
+						'<input type="Button" onclick="Molpy.PantherRush()" value="Use Vacuums"></input>';
+					if (Molpy.Has('Mustard',rushcost.Vacuum)) str +=
+						'<input type="Button" onclick="Molpy.PantherRush(1)" value="Use Mustard"></input>';
+					if (Molpy.Has('Bonemeal',rushcost.Vacuum*10)) str +=
+						'<input type="Button" onclick="Molpy.PantherRush(2)" value="Use Bonemeal"></input>';
 				}
 			}
 			return str;
@@ -6536,7 +6538,7 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 		},
-		
+		spent: 0,
 		Has: function(amount) {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) return 1;
 			if(!isFinite(Molpy.sandPermNP) && Molpy.IsEnabled('Cracks')) return 1;
@@ -6591,6 +6593,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Spent Castles: ' + Molpify(amount, 3), 1);
 		},
 		
+		spent: 0,
 		// destroying is done by trebuchets and stuff: it's different to spending
 		Destroy: function(amount, logsilent) {
 			amount = Math.min(amount, this.power);
@@ -6893,9 +6896,6 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		defStuff: 1,
-		
-		defSave: 1,
-		saveData: {4:['data',[]]},
 		
 		Add: function(amount) {
 			if(!this.data) this.data = [];
@@ -8127,7 +8127,7 @@ Molpy.DefineBoosts = function() {
 	}
 	Molpy.Hash = function(brown) {
 		var res = 0;
-		for (var c in brown.split('')) { res = (((res<<1) + c.charCodeAt()) & 0x7FFFFFFF) + (res>>>16)};
+		for (var c in brown.split('')) { res = res*2 + c.charCodeAt() };
 		return res;
 	}
 	Molpy.Decreename = '';
