@@ -4954,13 +4954,11 @@ Molpy.DefineBoosts = function() {
 		Castles: '6FQ',
 		GlassBlocks: '100K'
 	};
-	Molpy.Boosts['Glass Ceiling 10'].logic = 80;
 	Molpy.Boosts['Glass Ceiling 11'].price = {
 		Sand: '6WQ',
 		Castles: '6WQ',
 		GlassBlocks: '350K'
 	};
-	Molpy.Boosts['Glass Ceiling 11'].logic = 90;
 
 	new Molpy.Boost({
 		name: 'Expando',
@@ -6537,7 +6535,7 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 		},
-		
+		spent: 0,
 		Has: function(amount) {
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) return 1;
 			if(!isFinite(Molpy.Boosts['Sand'].sandPermNP) && Molpy.IsEnabled('Cracks')) return 1;
@@ -6607,6 +6605,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Spent Castles: ' + Molpify(amount, 3), 1);
 		},
 		
+		spent: 0,
 		// destroying is done by trebuchets and stuff: it's different to spending
 		Destroy: function(amount, logsilent) {
 			amount = Math.min(amount, this.power);
@@ -6930,7 +6929,6 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		defStuff: 1,
-		
 		defSave: 1,
 		saveData: {4:['data',[]]},
 		

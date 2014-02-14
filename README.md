@@ -26,10 +26,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.3332
+
 #### Waveney
 - Changed colours of Logicat Buttons to Greys
 - Fixed bugs on Panther Rush and logicats
 
+#### ED:
+- Prevent Glass Ceiling 10 and 11 from being awarded by Logicat until you have Ceiling Broken
 
 ### 3.3331
 
