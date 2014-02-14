@@ -161,7 +161,7 @@
 		Molpy.GamenumsFromString(localStorage['Gamenums']);
 		Molpy.SandToolsFromString(localStorage['SandTools']);
 		Molpy.CastleToolsFromString(localStorage['CastleTools'], version);
-		Molpy.BoostsFromString(localStorage['Boosts']);
+		Molpy.BoostsFromString(localStorage['Boosts'], version);
 		Molpy.BadgesFromString(localStorage['Badges'], version);
 		Molpy.OtherBadgesFromString(localStorage['OtherBadges'], version);
 		return Molpy.PostLoadTasks(version);
@@ -356,14 +356,6 @@
 				str += fencePost + boost[saveData[num][0]];
 				fencePost = c;
 			}
-			/* No good way to save arrays right now
-			if(cb.data) {
-				str += c;
-				for( var coffee in cb.data) {
-					str += c + cb.data[coffee];
-				}
-			}
-			*/
 			str += s;
 		}
 		return str;
@@ -566,6 +558,15 @@
 			if(pixels[idNum]) {
 				var savedValueList = pixels[idNum].split(c);
 				for(var num in saveData){
+					
+					if(version < 3) { // !!!!CHANGE THIS WHEN ACTUALLY USED
+						// Only load old stored values of unlocked, bought, power, and countdown to prevent
+						// values loaded in GamenumsFromString from being overwritten with default values
+						if(num >= 4) break;
+						// Sand.power and Castles.power are stored in gamenums in old versions, too
+						if(num == 2 && (me == Molpy.Boosts['Sand'] || me == Molpy.Boosts['Castle'])) continue;
+					}
+					
 					var loadedValue = null; // Just to avoid editor warnings of 'var may not be defined'
 					
 					// Load differently based on data type
@@ -597,16 +598,6 @@
 				if(isNaN(me.power)) me.power = 0; //compression! :P
 				if(isNaN(me.countdown)) me.countdown = 0;
 				
-				/*
-				var bacon = pixels[i].split(c + c)[1];
-				if(bacon) {
-					bacon = bacon.split(c);
-					me.data = [];
-					for( var i in bacon) {
-						me.data[i] = bacon[i];
-					}
-				}
-				*/
 			// If no data was saved for the boost, set them to defaults
 			} else {
 				me.resetSaveData();
@@ -741,7 +732,7 @@
 		Molpy.GamenumsFromString(thread[4]);
 		Molpy.SandToolsFromString(thread[5]);
 		Molpy.CastleToolsFromString(thread[6], version);
-		Molpy.BoostsFromString(thread[7] || '');
+		Molpy.BoostsFromString(thread[7] || '', version);
 
 		Molpy.BadgesFromString(thread[8] || '', version);
 		//thread[9] is unused
