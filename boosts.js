@@ -641,12 +641,18 @@ Molpy.DefineBoosts = function() {
 		buyFunction: function() {
 			this.power = 1;
 		}
+		
+		// Saved Unique Properties
+		travelCount: 0, 
+		
+		defSave: 1,
+		saveData: {4:['travelCount', 0, 'int']}
 	});
 
 	Molpy.TimeTravelPrice = function() {
 		var price = Molpy.newpixNumber;
 		price += Molpy.Boosts['Castles'].power * Molpy.newpixNumber / 3094;
-		price += Molpy.timeTravels;
+		price += Molpy.Boosts['Time Travel'].travelCount;
 		if(Molpy.Got('Flux Capacitor')) price = Math.ceil(price * .2);
 		price = Math.ceil(price / Molpy.priceFactor); // BECAUSE TIME TRAVEL
 														// AMIRITE?
@@ -667,7 +673,7 @@ Molpy.DefineBoosts = function() {
 				if(NP > 0) Molpy.EarnBadge('Forward to the Past');
 				if(NP < 0) Molpy.EarnBadge('Stuck in Reverse');
 			}
-			var t = Molpy.timeTravels;
+			var t = Molpy.Boosts['Time Travel'].travelCount;
 			if(t >= 10) Molpy.EarnBadge('Primer');
 			if(t >= 20) Molpy.UnlockBoost('Flux Capacitor');
 			if(t >= 30 && Molpy.Got('Flux Capacitor')) Molpy.UnlockBoost('Flux Turbine');
@@ -713,8 +719,8 @@ Molpy.DefineBoosts = function() {
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			Molpy.Notify('Time Travel successful! Welcome to NewPix ' + Molpify(Molpy.newpixNumber));
-			Molpy.timeTravels++;
-			if(Molpy.timeTravels >= 10) Molpy.HandleInvaders(chips);
+			Molpy.Boosts['Time Travel'].travelCount++;
+			if(Molpy.Boosts['Time Travel'].travelCount >= 10) Molpy.HandleInvaders(chips);
 			Molpy.Boosts['Time Travel'].Refresh();
 			if(chips && Molpy.Got('Crystal Memories') && Molpy.Got('Flux Surge')) {
 				var c = Molpy.Got('TDE') + 1;
@@ -749,7 +755,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.CalcJumpEnergy = function(destNP) {
 		var gap = destNP - Molpy.newpixNumber;
 		var cost = gap * gap;
-		cost += Molpy.timeTravels;
+		cost += Molpy.Boosts['Time Travel'].travelCount;
 		cost *= 100;
 		// Jumps between sides costs a lot more unless returning from the Minus side without having AA This is so
 		// that if one goes early you can return, but going again has to be expensive

@@ -311,7 +311,7 @@
 			+ (Molpy.Boosts['Castles'].totalBuilt) + s + (Molpy.Boosts['Castles'].power) + s + (Molpy.Boosts['Castles'].totalDestroyed) + s + (Molpy.Boosts['Castles'].prevCastleSand)
 			+ s + (Molpy.Boosts['Castles'].nextCastleSand) + s + (Molpy.Boosts['Castles'].spent) + s + (Molpy.Boosts['Sand'].spent) + s + (Molpy.beachClicks)
 			+ s + (Molpy.ninjaFreeCount) + s + (Molpy.ninjaStealth) + s + (Molpy.ninjad) + s + (Molpy.saveCount) + s
-			+ (Molpy.loadCount) + s + (Molpy.notifsReceived) + s + (Molpy.timeTravels) + s + (Molpy.npbONG) + s +
+			+ (Molpy.loadCount) + s + (Molpy.notifsReceived) + s + (Molpy.Boosts['Time Travel'].travelCount) + s + (Molpy.npbONG) + s +
 
 			(Molpy.redactedCountup) + s + (Molpy.redactedToggle) + s + (Molpy.redactedVisible) + s + (Molpy.lGlass) + s
 			+ (Molpy.redactedClicks) + s + (Molpy.highestNPvisited) + s + (Molpy.Boosts['Castles'].totalDown) + s
@@ -462,7 +462,7 @@
 		Molpy.saveCount = parseInt(pixels[15]) || 0;
 		Molpy.loadCount = parseInt(pixels[16]) || 0;
 		Molpy.notifsReceived = parseInt(pixels[17]) || 0;
-		Molpy.timeTravels = parseInt(pixels[18]) || 0;
+		Molpy.Boosts['Time Travel'].travelCount = parseInt(pixels[18]) || 0;
 		Molpy.npbONG = parseInt(pixels[19]) || 0;
 
 		Molpy.redactedCountup = parseInt(pixels[20]) || 0;
@@ -1119,7 +1119,7 @@
 			Molpy.BadgesOwned = 0;
 			Molpy.groupBadgeCounts = {};
 			Molpy.redactedClicks = 0;
-			Molpy.timeTravels = 0;
+			Molpy.Boosts['Time Travel'].travelCount = 0;
 			Molpy.Boosts['Castles'].totalDown = 0;
 			Molpy.toolsBuiltTotal = 0;
 			Molpy.totalGlassBuilt = 0;

@@ -80,7 +80,6 @@ Molpy.Up = function() {
 		Molpy.loadCount = 0; //number of times gave has been loaded
 		Molpy.autosaveCountup = 0;
 		Molpy.highestNPvisited = 1; //keep track of where the player has been
-		Molpy.timeTravels = 0; //number of times timetravel has been used
 		Molpy.lGlass = 0;
 		Molpy.totalGlassBuilt = 0;
 		Molpy.totalGlassDestroyed = 0;
