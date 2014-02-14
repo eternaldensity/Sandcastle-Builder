@@ -1502,7 +1502,7 @@ Molpy.DefineGUI = function() {
 		g('manualsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].manualDugs, 4);
 		g('clicksstat').innerHTML = Molpify(Molpy.beachClicks, 4);
 		g('spclickstat').innerHTML = Molpify(Molpy.Boosts['Sand'].sandPerClick, 4);
-		g('sandspentstat').innerHTML = Molpify((Molpy.Boosts['Sand'].spent == undefined) ? 0 : Molpy.Boosts['Sand'].spent, 4);
+		g('sandspentstat').innerHTML = Molpify(Molpy.Boosts['Sand'].spent, 4);
 		g('totalcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].totalBuilt, 4);
 		g('destroyedcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].totalDestroyed, 4);
 		g('downcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].totalDown, 4);
