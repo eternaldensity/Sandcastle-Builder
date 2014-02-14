@@ -24,6 +24,8 @@ Molpy.DefineBoosts = function() {
 		diamm: ['masterpiece', 'Masterpieces', 0,'Masterpiece',	'This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of', 'in diamond. <br>It molpifies with spikes of treeishness.'],
 	};
 	
+	Molpy.unlockedGroups['stuff'] = 1; // Stuff is always unlocked because Sand and Castles are always unlocked
+	
 	Molpy.nextBageGroup = {discov: 'monums', monums: 'monumg'};// ,monumg:'diamm'};
 
 	new Molpy.Boost({
@@ -6556,6 +6558,8 @@ Molpy.DefineBoosts = function() {
 		plural: 'Sand',
 		icon: 'sand',
 		group: 'stuff',
+		unlocked: 1,
+		bought: 1,
 		
 		Level: [
 				function() {
@@ -6626,6 +6630,12 @@ Molpy.DefineBoosts = function() {
 			4:['totalDug', 0, 'float'],
 			5:['spent', 0, 'float'],
 			6:['manualDug', 0, 'float'],
+		},
+		
+		loadFunction: function() {
+			this.unlocked = 1;
+			this.bought = 1;
+			Molpy.unlockedGroups['stuff'] = 1;
 		}
 	});
 
@@ -6637,6 +6647,8 @@ Molpy.DefineBoosts = function() {
 		single: 'Castle',
 		icon: 'castles',
 		group: 'stuff',
+		unlocked: 1,
+		bought: 1,
 		
 		Level: [
 				function() {
@@ -6715,7 +6727,7 @@ Molpy.DefineBoosts = function() {
 		totalDown: 0, // Cumulative castles built and then wiped by Molpy Down throughout all games
 		spent: 0, // Castles spent in shop
 		prevCastleSand: 0,
-		nextCastleSand: 0,
+		nextCastleSand: 1,
 		
 		defSave: 1,
 		saveData: {
@@ -6725,6 +6737,12 @@ Molpy.DefineBoosts = function() {
 			7:['spent', 0, 'float'],
 			8:['prevCastleSand', 0, 'float'],
 			9:['nextCastleSand', 0, 'float'],
+		},
+		
+		loadFunction: function() {
+			this.unlocked = 1;
+			this.bought = 1;
+			Molpy.unlockedGroups['stuff'] = 1;
 		}
 		
 	});
