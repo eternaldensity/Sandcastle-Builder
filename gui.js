@@ -1537,8 +1537,8 @@ Molpy.DefineGUI = function() {
 
 		$('#chipspmnp').toggleClass('hidden', !Molpy.Got('AA'));
 		$('#blockspmnp').toggleClass('hidden', !Molpy.Got('AA'));
-		g('chipspmnpstat').innerHTML = Molpify(Molpy.chipspmnp, 3);
-		g('blockspmnpstat').innerHTML = Molpify(Molpy.blockspmnp, 3);
+		g('chipspmnpstat').innerHTML = Molpify(Molpy.Boosts['GlassChips'].chipsPermNP, 3);
+		g('blockspmnpstat').innerHTML = Molpify(Molpy.Boosts['GlassBlocks'].blocksPermNP, 3);
 
 		g('blackstat').innerHTML = Molpy.BlackprintReport();
 

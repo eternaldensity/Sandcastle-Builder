@@ -78,11 +78,8 @@ Molpy.Up = function() {
 		Molpy.loadCount = 0; //number of times gave has been loaded
 		Molpy.autosaveCountup = 0;
 		Molpy.highestNPvisited = 1; //keep track of where the player has been
-		Molpy.lGlass = 0;
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
-		Molpy.blockspmnp = 0;
-		Molpy.chipspmnp = 0;
 
 		Molpy.DefinePersist();
 		Molpy.DefineGUI();
@@ -2414,8 +2411,8 @@ Molpy.Up = function() {
 			Molpy.Build(bonus);
 			if(Molpy.Got('GlassBlocks')) {
 				var gift = 1;
-				if(Molpy.lGlass > 0) {
-					Molpy.lGlass -= 1;
+				if(Molpy.Boosts['GlassBlocks'].luckyGlass > 0) {
+					Molpy.Boosts['GlassBlocks'].luckyGlass -= 1;
 					Molpy.Add('GlassBlocks', gift * (twin + 1));
 				} else {
 					Molpy.Add('GlassChips', gift * (twin + 1));
@@ -2726,20 +2723,8 @@ Molpy.Up = function() {
 				if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 			}
 		}
-		Molpy.blockspmnp = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
-			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800)
-			* (Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power) / 2) || 0;
-		if ( Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Furnace'].power
-			* Molpy.Boosts['Furnace Crossfeed'].power * (Molpy.NPlength > 1800)) {
-			if (isFinite(Molpy.Boosts['Sand Refinery'].power)) {
-			 	Molpy.chipspmnp = (Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power) / 2) - Molpy.blockspmnp
-							* Molpy.ChipsPerBlock() || 0;
-			} else {
-				Molpy.chipspmnp = Infinity;
-			}
-		} else {
-			Molpy.chipspmnp = 0;
-		}
+		Molpy.Boosts['GlassBlocks'].calculateBlocksPermNP();
+		Molpy.Boosts['GlassChips'].calculateChipsPermNP();
 
 		if(Molpy.Got('Sand to Glass')) Molpy.DigGlass(Math.floor(Molpy.Boosts['TF'].loadedPermNP*Molpy.Papal('GlassSand')));
 		Molpy.GlassNotifyFlush();
@@ -2876,7 +2861,7 @@ Molpy.Up = function() {
 		if(Molpy.Boosts['Glass Blower'].IsEnabled) {
 			Molpy.MakeBlocks();
 		}
-		Molpy.lGlass = Molpy.Boosts['Glass Chiller'].power + 1; //reset amount of glass available to Not Lucky
+		Molpy.Boosts['GlassBlocks'].luckyGlass = Molpy.Boosts['Glass Chiller'].power + 1; //reset amount of glass available to Not Lucky
 
 		var activateTimes = 1 + Molpy.Got('Doublepost');
 		Molpy.buildNotifyFlag = 0;

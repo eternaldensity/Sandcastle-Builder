@@ -313,7 +313,7 @@
 			+ s + (Molpy.ninjaFreeCount) + s + (Molpy.ninjaStealth) + s + (Molpy.ninjad) + s + (Molpy.saveCount) + s
 			+ (Molpy.loadCount) + s + (Molpy.notifsReceived) + s + (Molpy.Boosts['Time Travel'].travelCount) + s + (Molpy.npbONG) + s +
 
-			(Molpy.redactedCountup) + s + (Molpy.redactedToggle) + s + (Molpy.redactedVisible) + s + (Molpy.lGlass) + s
+			(Molpy.redactedCountup) + s + (Molpy.redactedToggle) + s + (Molpy.redactedVisible) + s + (Molpy.Boosts['GlassBlocks'].luckyGlass) + s
 			+ (Molpy.redactedClicks) + s + (Molpy.highestNPvisited) + s + (Molpy.Boosts['Castles'].totalDown) + s
 			+ (Molpy.Boosts['TF'].totalLoaded) + s + (Molpy.Boosts['TF'].totalDestroyed) + s + (Molpy.Boosts['TF'].manualLoaded) + s
 			+ (Molpy.redactedChain) + s + (Molpy.redactedChainMax) + s;
@@ -468,7 +468,7 @@
 		Molpy.redactedCountup = parseInt(pixels[20]) || 0;
 		Molpy.redactedToggle = parseInt(pixels[21]) || 0;
 		Molpy.redactedVisible = parseInt(pixels[22]) || 0;
-		Molpy.lGlass = parseFloat(pixels[23]) || 0;
+		Molpy.Boosts['GlassBlocks'].luckyGlass = parseFloat(pixels[23]) || 0;
 		Molpy.redactedClicks = parseInt(pixels[24]) || 0;
 		Molpy.highestNPvisited = parseInt(pixels[25]) || Math.abs(Molpy.newpixNumber);
 		Molpy.Boosts['Castles'].totalDown = parseFloat(pixels[26]) || 0;

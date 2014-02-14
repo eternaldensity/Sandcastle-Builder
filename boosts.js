@@ -2177,6 +2177,21 @@ Molpy.DefineBoosts = function() {
 		
 		// deactivate if chips are infinite and all chip-related boosts are bought
 		classChange: function() { return (isFinite(this.power) || !Molpy.Got('Sand Refinery') || !Molpy.Got('Glass Blower') || !Molpy.Got('Glass Extruder')) ? 'alert' : '' },
+		
+		chipsPermNP: 0,
+		
+		calculateChipsPermNP: function() {
+			if (Molpy.Boosts['AA'].power != 0 && Molpy.Boosts['Glass Furnace'].power != 0
+			    && Molpy.Boosts['Furnace Crossfeed'].power != 0 && Molpy.NPlength > 1800) {
+				if (isFinite(Molpy.Boosts['Sand Refinery'].power)) {
+					this.chipsPermNP = (Molpy.Boosts['Sand Refinery'].power * (1 + Molpy.Boosts['AC'].power) / 2) - Molpy.Boosts['GlassBlocks'].blocksPermNP * Molpy.ChipsPerBlock() || 0;
+				} else {
+					this.chipsPermNP = Infinity;
+				}
+			} else {
+				this.chipsPermNP = 0;
+			}
+		}
 	});
 	
 	Molpy.UpgradeChipStorage = function(n) {
@@ -2453,6 +2468,20 @@ Molpy.DefineBoosts = function() {
 		
 		// deactivate if blocks are infinite and all block-related boosts are owned
 		classChange: function() { return (isFinite(this.power) || !Molpy.Got('Glass Chiller') || !Molpy.Got('Sand Purifier')) ? 'alert' : ''},
+		
+		blocksPermNP: 0,
+		
+		calculateBlocksPermNP: function() {
+			this.blocksPermNP = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
+			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800)
+			* (Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power) / 2) || 0;
+		},
+		
+		// Unique saved properties
+		luckyGlass: 0, // Amount available for Not Lucky Bonus
+		
+		defSave: 1,
+		saveData: {4:['luckyGlass', 0, 'float']}
 	});
 	
 	Molpy.UpgradeBlockStorage = function(n) {
@@ -8179,8 +8208,8 @@ Molpy.DefineBoosts = function() {
 	Molpy.PapalDecrees = {
 		Sand: {desc:'20% more Sand from Sand Tools', value:1.2, avail: function() { return isFinite(Molpy.Boosts['Sand'].sandPermNP)}},
 		Castles: {desc:'10% more Castles from Castle Tools', value:1.1, avail: function() { return isFinite(Molpy.Boosts['Castles'].power)}},
-		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.chipspmnp)&&Molpy.chipspmnp>0}},
-		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.blockspmnp)&&Molpy.blockspmnp>0}},
+		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.Boosts['GlassChips'].chipsPermNP)&&Molpy.Boosts['GlassChips'].chipsPermNP>0}},
+		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.Boosts['GlassBlocks'].blocksPermNP)&&Molpy.Boosts['GlassBlocks'].blocksPermNP>0}},
 		Flux: {desc:'10% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest') && isFinite(Molpy.Level('FluxCrystals'))}},
 		BlackP: {desc:'10% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180 && isFinite(Molpy.Level('Blackprints'))}},
 		GlassSand: {desc:'10% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.Boosts['TF'].loadedPermNP)}},
