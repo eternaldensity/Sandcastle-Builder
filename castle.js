@@ -225,7 +225,7 @@ Molpy.Up = function() {
 			if(Molpy.Boosts['Castles'].totalBuilt >= 1) {
 				Molpy.EarnBadge('Rook');
 			}
-			if(Molpy.Boosts['Castles'].totalBuiltht >= 4) {
+			if(Molpy.Boosts['Castles'].totalBuilt >= 4) {
 				Molpy.EarnBadge('Enough for Chess');
 			}
 			if(Molpy.Boosts['Castles'].totalBuilt >= 40) {

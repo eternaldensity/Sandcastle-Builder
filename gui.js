@@ -1499,7 +1499,7 @@ Molpy.DefineGUI = function() {
 
 	Molpy.PaintStats = function() {
 		g('totalsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].totalDug, 4);
-		g('manualsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].manualDugs, 4);
+		g('manualsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].manualDug, 4);
 		g('clicksstat').innerHTML = Molpify(Molpy.beachClicks, 4);
 		g('spclickstat').innerHTML = Molpify(Molpy.Boosts['Sand'].sandPerClick, 4);
 		g('sandspentstat').innerHTML = Molpify(Molpy.Boosts['Sand'].spent, 4);
