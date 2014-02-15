@@ -1138,6 +1138,25 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.ClearLog();
 	Molpy.InMyPants = 0;
+    
+    LogEntry = function() {
+        this.text="";
+        this.qty=0;
+        this.date=new Date();
+        this.newpixNumber=0; 
+        this.getLine = function()  {
+            str = "<div title=\'Newpix " + this.newpixNumber +
+                " Date: "+this.date + "'>";
+            
+            str += this.text;
+            if (this.qty>1)
+                str += ' (x'+this.qty+')';
+            str += '</div>';
+            return str; 
+        }
+        
+    };
+    
 	Molpy.Notify = function(text, log) {
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
@@ -1180,14 +1199,16 @@ Molpy.DefineGUI = function() {
 		}
 		if(log) {
 			if (Molpy.notifLog[Molpy.notifLogNext]==null)
-				Molpy.notifLog[Molpy.notifLogNext] = new Object();
+				Molpy.notifLog[Molpy.notifLogNext] = new LogEntry();
 			
-			if (Molpy.notifLog[Molpy.notifLogCurrent].text == text) {
+			if (Molpy.notifLog[Molpy.notifLogCurrent].text == text &&
+                Molpy.notifLog[Molpy.notifLogCurrent].newpixNumber==Molpy.newpixNumber) {
 				Molpy.notifLog[Molpy.notifLogCurrent].qty++;
 				Molpy.notifLogPaint = 1;
 			} else {
 				Molpy.notifLog[Molpy.notifLogNext].text = text;
 				Molpy.notifLog[Molpy.notifLogNext].qty=1;
+                Molpy.notifLog[Molpy.notifLogNext].newpixNumber=Molpy.newpixNumber;
 				
 				Molpy.notifLogCurrent=Molpy.notifLogNext++;
 				if(Molpy.notifLogNext > Molpy.notifLogMax) Molpy.notifLogNext = 0;
@@ -1204,10 +1225,7 @@ Molpy.DefineGUI = function() {
 			if (Molpy.notifLog[i] == null) break
 			var line = Molpy.notifLog[i].text;
 			if(line) {
-				str += line;
-				if (Molpy.notifLog[i].qty>1)
-					str += ' (x'+Molpy.notifLog[i].qty+')';
-				str += '<br>';
+                str += Molpy.notifLog[i].getLine();
 			}
 			i++;
 		}
@@ -1215,10 +1233,7 @@ Molpy.DefineGUI = function() {
 		while(i < Molpy.notifLogNext) {
 			var line = Molpy.notifLog[i].text;
 			if(line) {
-				str += line;
-				if (Molpy.notifLog[i].qty>1)
-					str += ' (x'+Molpy.notifLog[i].qty+')';
-				str += '<br>';
+                str += Molpy.notifLog[i].getLine();
 			}
 			i++;
 		}
