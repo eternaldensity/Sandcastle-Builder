@@ -1209,6 +1209,7 @@ Molpy.DefineGUI = function() {
 				Molpy.notifLog[Molpy.notifLogNext].text = text;
 				Molpy.notifLog[Molpy.notifLogNext].qty=1;
 				Molpy.notifLog[Molpy.notifLogNext].newpixNumber=Molpy.newpixNumber;
+				Molpy.notifLog[Molpy.notifLogNext].date=new Date();
 				
 				Molpy.notifLogCurrent=Molpy.notifLogNext++;
 				if(Molpy.notifLogNext > Molpy.notifLogMax) Molpy.notifLogNext = 0;
