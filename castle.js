@@ -1751,7 +1751,7 @@ Molpy.Up = function() {
 			
 			this.resetSaveData = function() {
 				for(var i in this.saveData)
-					this[saveData[i][0]] = this.saveData[i][1];
+					this.saveData[i][0] = this.saveData[i][1];
 			}
 
 			// Add the boost to lists
