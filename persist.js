@@ -568,7 +568,7 @@
 		}
 	}
 
-	Molpy.BoostsFromString = function(thread) {
+	Molpy.BoostsFromString = function(thread, version) {
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var pixels = thread.split(s);

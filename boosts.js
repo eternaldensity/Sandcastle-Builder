@@ -6736,7 +6736,7 @@ Molpy.DefineBoosts = function() {
 			6:['totalDown', 0, 'float'],
 			7:['spent', 0, 'float'],
 			8:['prevCastleSand', 0, 'float'],
-			9:['nextCastleSand', 0, 'float'],
+			9:['nextCastleSand', 1, 'float'],
 		},
 		
 		loadFunction: function() {
