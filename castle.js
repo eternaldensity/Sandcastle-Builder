@@ -1578,11 +1578,11 @@ Molpy.Up = function() {
 			// Conditional assignments
 			if(args.defStuff) {
 				args.Level = args.Level || Molpy.BoostFuncs.PosPowerLevel;
-				args.Has = args.Has || Molpy.BoostFuncs.Has;
-				args.Add = args.Add || Molpy.BoostFuncs.Add;
-				args.Spend = args.Spend || Molpy.BoostFuncs.Spend;
-				args.Destroy = args.Destroy || Molpy.BoostFuncs.Destroy;
-				args.refreshFunction = args.refreshFunction || Molpy.BoostFuncs.RefreshPowerBuy;
+				this.Has = args.Has || Molpy.BoostFuncs.Has;
+				this.Add = args.Add || Molpy.BoostFuncs.Add;
+				this.Spend = args.Spend || Molpy.BoostFuncs.Spend;
+				this.Destroy = args.Destroy || Molpy.BoostFuncs.Destroy;
+				this.refreshFunction = args.refreshFunction || Molpy.BoostFuncs.RefreshPowerBuy;
 				delete this.defStuff;
 			}
 			
@@ -1594,12 +1594,6 @@ Molpy.Up = function() {
 						set: args.Level[1]
 					}
 				});
-				this.Add = args.Add;
-				this.AddSuper = args.AddSuper; //ugh
-				this.HasSuper = args.HasSuper; //more ugh
-				this.Spend = args.Spend;
-				this.Destroy = args.Destroy;
-				this.Has = args.Has;
 			}
 			
 			if(args.IsEnabled) {
