@@ -1291,10 +1291,10 @@ Molpy.DefineGUI = function() {
 	Molpy.Draw = function() {
 		var castleAmt = Molpy.Boosts['Castles'].power; //so we don't need lots of lookups
 		g('castlecount').innerHTML = Molpify(castleAmt, 1) + ' castle' + plural(castleAmt);
-		g('sandcount').innerHTML = Molpify(Molpy.Boosts['Sand'].power, 1) + ' sand' + (isFinite(castleAmt) ? ' of ' + Molpify(Molpy.nextCastleSand, 1) + ' needed' : '');
-		g('sandrate').innerHTML = Molpify(Molpy.sandPermNP, 1) + ' sand/mNP';
+		g('sandcount').innerHTML = Molpify(Molpy.Boosts['Sand'].power, 1) + ' sand' + (isFinite(castleAmt) ? ' of ' + Molpify(Molpy.Boosts['Castles'].nextCastleSand, 1) + ' needed' : '');
+		g('sandrate').innerHTML = Molpify(Molpy.Boosts['Sand'].sandPermNP, 1) + ' sand/mNP';
 		g('chipcount').innerHTML = Molpify(Molpy.Boosts['TF'].power, 1) + ' chips';
-		g('chiprate').innerHTML = Molpify(Molpy.glassPermNP, 1) + ' chips/mNP';
+		g('chiprate').innerHTML = Molpify(Molpy.Boosts['TF'].loadedPermNP, 1) + ' chips/mNP';
 		g('newtools').innerHTML = 'Built ' + Molpify(Molpy.toolsBuilt, 1) + ' new tool' + plural(Molpy.toolsBuilt);
 
 		if(noLayout) {
@@ -1333,10 +1333,10 @@ Molpy.DefineGUI = function() {
 				$('#stuff' + bst.alias + 'Count').toggleClass('hidden', !Molpy.Got(bst.alias));
 			}
 
-			g('incomeSandRate').innerHTML = 'Sand: ' + Molpify(Molpy.sandPermNP, 1) + '/mNP';
-			g('incomeSandClickRate').innerHTML = 'Sand/click: ' + Molpify(Molpy.computedSandPerClick, 1);
-			g('incomeChipRate').innerHTML = 'TF Chips: ' + Molpify(Molpy.glassPermNP, 1) + '/mNP';
-			g('incomeChipClickRate').innerHTML = 'TF Chips/click: ' + Molpify(Molpy.chipsPerClick, 1);
+			g('incomeSandRate').innerHTML = 'Sand: ' + Molpify(Molpy.Boosts['Sand'].sandPermNP, 1) + '/mNP';
+			g('incomeSandClickRate').innerHTML = 'Sand/click: ' + Molpify(Molpy.Boosts['Sand'].sandPerClick, 1);
+			g('incomeChipRate').innerHTML = 'TF Chips: ' + Molpify(Molpy.Boosts['TF'].loadedPermNP, 1) + '/mNP';
+			g('incomeChipClickRate').innerHTML = 'TF Chips/click: ' + Molpify(Molpy.Boosts['TF'].loadedPerClick, 1);
 			g('incomeNewTools').innerHTML = 'Tools: ' + Molpify(Molpy.toolsBuilt, 1) + ' built this mNP';
 
 			var tf = Molpy.Got('TF');
@@ -1498,15 +1498,15 @@ Molpy.DefineGUI = function() {
 	}
 
 	Molpy.PaintStats = function() {
-		g('totalsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].bought, 4);
-		g('manualsandstat').innerHTML = Molpify(Molpy.sandManual, 4);
+		g('totalsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].totalDug, 4);
+		g('manualsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].manualDug, 4);
 		g('clicksstat').innerHTML = Molpify(Molpy.beachClicks, 4);
-		g('spclickstat').innerHTML = Molpify(Molpy.computedSandPerClick, 4);
-		g('sandspentstat').innerHTML = Molpify((Molpy.Boosts['Sand'].spent == undefined) ? 0 : Molpy.Boosts['Sand'].spent, 4);
-		g('totalcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].bought, 4);
-		g('destroyedcastlesstat').innerHTML = Molpify(Molpy.castlesDestroyed, 4);
-		g('downcastlesstat').innerHTML = Molpify(Molpy.totalCastlesDown, 4);
-		g('spentcastlesstat').innerHTML = Molpify((Molpy.Boosts['Castles'].spent == undefined) ? 0 : Molpy.Boosts['Castles'].spent, 4);
+		g('spclickstat').innerHTML = Molpify(Molpy.Boosts['Sand'].sandPerClick, 4);
+		g('sandspentstat').innerHTML = Molpify(Molpy.Boosts['Sand'].spent, 4);
+		g('totalcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].totalBuilt, 4);
+		g('destroyedcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].totalDestroyed, 4);
+		g('downcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].totalDown, 4);
+		g('spentcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].spent, 4);
 
 		g('ninjatimestat').innerHTML = Molpify(Molpy.ninjaTime / Molpy.NPlength, 1) + 'mNP';
 		g('ninjastealthstat').innerHTML = Molpify(Molpy.ninjaStealth, 1) + 'NP';
@@ -1537,16 +1537,16 @@ Molpy.DefineGUI = function() {
 
 		$('#chipspmnp').toggleClass('hidden', !Molpy.Got('AA'));
 		$('#blockspmnp').toggleClass('hidden', !Molpy.Got('AA'));
-		g('chipspmnpstat').innerHTML = Molpify(Molpy.chipspmnp, 3);
-		g('blockspmnpstat').innerHTML = Molpify(Molpy.blockspmnp, 3);
+		g('chipspmnpstat').innerHTML = Molpify(Molpy.Boosts['GlassChips'].chipsPermNP, 3);
+		g('blockspmnpstat').innerHTML = Molpify(Molpy.Boosts['GlassBlocks'].blocksPermNP, 3);
 
 		g('blackstat').innerHTML = Molpy.BlackprintReport();
 
 		g('logicatstat').innerHTML = Molpify(Molpy.Boosts['Logicat'].bought, 1);
-		g('totaltoolchipsstat').innerHTML = Molpify(Molpy.totalGlassBuilt, 4);
-		g('destroyedtoolchipsstat').innerHTML = Molpify(Molpy.totalGlassDestroyed, 4);
-		g('manualchipsstat').innerHTML = Molpify(Molpy.chipsManual, 4);
-		g('chipclickstat').innerHTML = Molpify(Molpy.chipsPerClick, 4);
+		g('totaltoolchipsstat').innerHTML = Molpify(Molpy.Boosts['TF'].totalLoaded, 4);
+		g('destroyedtoolchipsstat').innerHTML = Molpify(Molpy.Boosts['TF'].totalDestroyed, 4);
+		g('manualchipsstat').innerHTML = Molpify(Molpy.Boosts['TF'].manualLoaded, 4);
+		g('chipclickstat').innerHTML = Molpify(Molpy.Boosts['TF'].loadedPerClick, 4);
 		g('storagestat').innerHTML = (Molpy.supportsLocalStorage ? 'html5localstorage' : 'c**kies');
 	}
 

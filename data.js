@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.3332;
+Molpy.version=4;
 
 /**************************************************************
  * Game Strings
@@ -776,8 +776,8 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	Molpy.Boosts['Panther Poke'].department = 1 * (automationLevel > 8 && Molpy.redactedClicks > 2500
 		&& Molpy.Got('LogiPuzzle') && !Molpy.Has('LogiPuzzle', Molpy.PokeBar()) && flandom(4) == 0);
 
-	Molpy.Boosts['GM'].department = 1 * (Molpy.chipsManual >= 1e6);
-	Molpy.Boosts['GL'].department = 1 * (Molpy.chipsManual >= 5e6 || Molpy.Got('Thunderbird'));
+	Molpy.Boosts['GM'].department = 1 * (Molpy.Boosts['TF'].manualLoaded >= 1e6);
+	Molpy.Boosts['GL'].department = 1 * (Molpy.Boosts['TF'].manualLoaded >= 5e6 || Molpy.Got('Thunderbird'));
 	Molpy.Boosts['Cold Mould'].department = Molpy.Got('SMM');
 	Molpy.Boosts['Such Glass'].department = 1 * (Molpy.SandTools['Bucket'].amount > 2e11) * (Molpy.ninjaStealth > 2e8);
 	Molpy.Boosts['Ninja Ninja Duck'].department = 1 * (Molpy.ninjaStealth > 33333333);
@@ -841,7 +841,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Crystal Peak'].logic = 70 * (Molpy.SandTools['Ladder'].amount >= 15000);
 	Molpy.Boosts['Cupholder'].logic = 80 * (Molpy.SandTools['Bag'].amount >= 12000);
 	Molpy.Boosts['Tiny Glasses'].logic = 90 * (Molpy.SandTools['LaPetite'].amount >= 8000);
-	Molpy.Boosts['Glass Saw'].logic = 150 * (Molpy.glassPermNP >= 4000);
+	Molpy.Boosts['Glass Saw'].logic = 150 * (Molpy.Boosts['TF'].loadedPermNP >= 4000);
 	
 	
 	Molpy.Boosts['Glass Ceiling 10'].logic = 80*Molpy.Earned('Ceiling Broken');
@@ -910,7 +910,7 @@ Molpy.CheckClickAchievements = function() {
 	if(c >= 3333) {
 		Molpy.UnlockBoost('True Colours');
 	}
-	c = Molpy.sandManual;
+	c = Molpy.Boosts['Sand'].manualDug;
 	if(c >= 100000) {
 		Molpy.EarnBadge('Getting Sick of Clicking');
 	}

@@ -158,10 +158,10 @@
 		}
 		Molpy.ClearLog();
 
-		Molpy.GamenumsFromString(localStorage['Gamenums']);
+		Molpy.GamenumsFromString(localStorage['Gamenums'], version);
 		Molpy.SandToolsFromString(localStorage['SandTools']);
 		Molpy.CastleToolsFromString(localStorage['CastleTools'], version);
-		Molpy.BoostsFromString(localStorage['Boosts']);
+		Molpy.BoostsFromString(localStorage['Boosts'], version);
 		Molpy.BadgesFromString(localStorage['Badges'], version);
 		Molpy.OtherBadgesFromString(localStorage['OtherBadges'], version);
 		return Molpy.PostLoadTasks(version);
@@ -307,16 +307,22 @@
 
 	Molpy.GamenumsToString = function() {
 		var s = 'S'; //Semicolon
-		var str = '' + (Molpy.newpixNumber) + s + (Molpy.Boosts['Sand'].bought) + s + (Molpy.sandManual) + s + (Molpy.sand) + s
-			+ (Molpy.Boosts['Castles'].bought) + s + (Molpy.Boosts['Castles'].power) + s + (Molpy.castlesDestroyed) + s + (Molpy.prevCastleSand)
-			+ s + (Molpy.nextCastleSand) + s + (Molpy.Boosts['Castles'].spent) + s + (Molpy.Boosts['Sand'].spent) + s + (Molpy.beachClicks)
-			+ s + (Molpy.ninjaFreeCount) + s + (Molpy.ninjaStealth) + s + (Molpy.ninjad) + s + (Molpy.saveCount) + s
-			+ (Molpy.loadCount) + s + (Molpy.notifsReceived) + s + (Molpy.timeTravels) + s + (Molpy.npbONG) + s +
-
-			(Molpy.redactedCountup) + s + (Molpy.redactedToggle) + s + (Molpy.redactedVisible) + s + (Molpy.lGlass) + s
-			+ (Molpy.redactedClicks) + s + (Molpy.highestNPvisited) + s + (Molpy.totalCastlesDown) + s
-			+ (Molpy.totalGlassBuilt) + s + (Molpy.totalGlassDestroyed) + s + (Molpy.chipsManual) + s
-			+ (Molpy.redactedChain) + s + (Molpy.redactedChainMax) + s;
+		var str = '' + (Molpy.newpixNumber) + s
+		          + (Molpy.beachClicks) + s
+		          + (Molpy.ninjaFreeCount) + s
+		          + (Molpy.ninjaStealth) + s
+		          + (Molpy.ninjad) + s
+		          + (Molpy.saveCount) + s
+		          + (Molpy.loadCount) + s
+		          + (Molpy.notifsReceived) + s
+		          + (Molpy.npbONG) + s
+		          + (Molpy.redactedCountup) + s
+		          + (Molpy.redactedToggle) + s
+		          + (Molpy.redactedVisible) + s
+		          + (Molpy.redactedClicks) + s
+		          + (Molpy.highestNPvisited) + s
+		          + (Molpy.redactedChain) + s
+		          + (Molpy.redactedChainMax) + s;
 		return str;
 	}
 
@@ -356,14 +362,6 @@
 				str += fencePost + boost[saveData[num][0]];
 				fencePost = c;
 			}
-			/* No good way to save arrays right now
-			if(cb.data) {
-				str += c;
-				for( var coffee in cb.data) {
-					str += c + cb.data[coffee];
-				}
-			}
-			*/
 			str += s;
 		}
 		return str;
@@ -447,46 +445,65 @@
 		Molpy.options.european = parseInt(pixels[16]) || 0;
 	}
 
-	Molpy.GamenumsFromString = function(thread) {
+	Molpy.GamenumsFromString = function(thread, version) {
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var pixels = thread.split(s);
 
-		Molpy.newpixNumber = parseInt(pixels[0]) || 0;
-		Molpy.Boosts['Sand'].bought = parseFloat(pixels[1]) || 0;
-		Molpy.sandManual = parseFloat(pixels[2]) || 0;
-		Molpy.Boosts['Sand'].power = parseFloat(pixels[3]) || 0;
-		Molpy.Boosts['Castles'].bought = parseFloat(pixels[4]) || 0;
-		Molpy.Boosts['Castles'].power = parseFloat(pixels[5]) || 0;
-		Molpy.castlesDestroyed = parseFloat(pixels[6]) || 0;
-		Molpy.prevCastleSand = parseFloat(pixels[7]) || 0;
-		Molpy.nextCastleSand = parseFloat(pixels[8]) || 0;
-		Molpy.Boosts['Castles'].spent = parseFloat(pixels[9]) || 0;
-		Molpy.Boosts['Sand'].spent = parseFloat(pixels[10]) || 0;
-		Molpy.beachClicks = parseInt(pixels[11]) || 0;
-		Molpy.ninjaFreeCount = parseInt(pixels[12]) || 0;
-		Molpy.ninjaStealth = parseInt(pixels[13]) || 0;
-		Molpy.ninjad = parseInt(pixels[14]) ? 1 : 0;
-		Molpy.saveCount = parseInt(pixels[15]) || 0;
-		Molpy.loadCount = parseInt(pixels[16]) || 0;
-		Molpy.notifsReceived = parseInt(pixels[17]) || 0;
-		Molpy.timeTravels = parseInt(pixels[18]) || 0;
-		Molpy.npbONG = parseInt(pixels[19]) || 0;
-
-		Molpy.redactedCountup = parseInt(pixels[20]) || 0;
-		Molpy.redactedToggle = parseInt(pixels[21]) || 0;
-		Molpy.redactedVisible = parseInt(pixels[22]) || 0;
-		Molpy.lGlass = parseFloat(pixels[23]) || 0;
-		Molpy.redactedClicks = parseInt(pixels[24]) || 0;
-		Molpy.highestNPvisited = parseInt(pixels[25]) || Math.abs(Molpy.newpixNumber);
-		Molpy.totalCastlesDown = parseFloat(pixels[26]) || 0;
-		if(version < 2.1) Molpy.tempIntruderBots = parseFloat(pixels[27]) || 0;
-
-		Molpy.totalGlassBuilt = parseFloat(pixels[27]) || 0;
-		Molpy.totalGlassDestroyed = parseFloat(pixels[28]) || 0;
-		Molpy.chipsManual = parseFloat(pixels[29]) || 0;
-		Molpy.redactedChain = parseFloat(pixels[30]) || 0;
-		Molpy.redactedChainMax = parseFloat(pixels[31]) || 0;
+		if(version < 4) { //!!!! CHANGE THIS WHEN ACTUALLY USED
+			Molpy.newpixNumber = parseInt(pixels[0]) || 0;
+			Molpy.Boosts['Sand'].totalDug = parseFloat(pixels[1]) || 0;
+			Molpy.Boosts['Sand'].manualDug = parseFloat(pixels[2]) || 0;
+			Molpy.Boosts['Sand'].power = parseFloat(pixels[3]) || 0;
+			Molpy.Boosts['Castles'].totalBuilt = parseFloat(pixels[4]) || 0;
+			Molpy.Boosts['Castles'].power = parseFloat(pixels[5]) || 0;
+			Molpy.Boosts['Castles'].totalDestroyed = parseFloat(pixels[6]) || 0;
+			Molpy.Boosts['Castles'].prevCastleSand = parseFloat(pixels[7]) || 0;
+			Molpy.Boosts['Castles'].nextCastleSand = parseFloat(pixels[8]) || 0;
+			Molpy.Boosts['Castles'].spent = parseFloat(pixels[9]) || 0;
+			Molpy.Boosts['Sand'].spent = parseFloat(pixels[10]) || 0;
+			Molpy.beachClicks = parseInt(pixels[11]) || 0;
+			Molpy.ninjaFreeCount = parseInt(pixels[12]) || 0;
+			Molpy.ninjaStealth = parseInt(pixels[13]) || 0;
+			Molpy.ninjad = parseInt(pixels[14]) ? 1 : 0;
+			Molpy.saveCount = parseInt(pixels[15]) || 0;
+			Molpy.loadCount = parseInt(pixels[16]) || 0;
+			Molpy.notifsReceived = parseInt(pixels[17]) || 0;
+			Molpy.Boosts['Time Travel'].travelCount = parseInt(pixels[18]) || 0;
+			Molpy.npbONG = parseInt(pixels[19]) || 0;
+	
+			Molpy.redactedCountup = parseInt(pixels[20]) || 0;
+			Molpy.redactedToggle = parseInt(pixels[21]) || 0;
+			Molpy.redactedVisible = parseInt(pixels[22]) || 0;
+			Molpy.Boosts['GlassBlocks'].luckyGlass = parseFloat(pixels[23]) || 0;
+			Molpy.redactedClicks = parseInt(pixels[24]) || 0;
+			Molpy.highestNPvisited = parseInt(pixels[25]) || Math.abs(Molpy.newpixNumber);
+			Molpy.Boosts['Castles'].totalDown = parseFloat(pixels[26]) || 0;
+			if(version < 2.1) Molpy.tempIntruderBots = parseFloat(pixels[27]) || 0;
+	
+			Molpy.Boosts['TF'].totalLoaded = parseFloat(pixels[27]) || 0;
+			Molpy.Boosts['TF'].totalDestroyed = parseFloat(pixels[28]) || 0;
+			Molpy.Boosts['TF'].manualLoaded = parseFloat(pixels[29]) || 0;
+			Molpy.redactedChain = parseFloat(pixels[30]) || 0;
+			Molpy.redactedChainMax = parseFloat(pixels[31]) || 0;
+		} else {
+			Molpy.newpixNumber = parseInt(pixels[0]) || 0;
+			Molpy.beachClicks = parseInt(pixels[1]) || 0;
+			Molpy.ninjaFreeCount = parseInt(pixels[2]) || 0;
+			Molpy.ninjaStealth = parseInt(pixels[3]) || 0;
+			Molpy.ninjad = parseInt(pixels[4]) ? 1 : 0;
+			Molpy.saveCount = parseInt(pixels[5]) || 0;
+			Molpy.loadCount = parseInt(pixels[6]) || 0;
+			Molpy.notifsReceived = parseInt(pixels[7]) || 0;
+			Molpy.npbONG = parseInt(pixels[8]) || 0;
+			Molpy.redactedCountup = parseInt(pixels[9]) || 0;
+			Molpy.redactedToggle = parseInt(pixels[10]) || 0;
+			Molpy.redactedVisible = parseInt(pixels[11]) || 0;
+			Molpy.redactedClicks = parseInt(pixels[12]) || 0;
+			Molpy.highestNPvisited = parseInt(pixels[13]) || Math.abs(Molpy.newpixNumber);
+			Molpy.redactedChain = parseFloat(pixels[14]) || 0;
+			Molpy.redactedChainMax = parseFloat(pixels[15]) || 0;
+		}
 	};
 
 	Molpy.SandToolsFromString = function(thread) {
@@ -528,7 +545,7 @@
 				me.totalCastlesBuilt = parseFloat(ice[2]) || 0;
 				me.totalCastlesDestroyed = parseFloat(ice[3]) || 0;
 				if(version < 3.03) {
-					Molpy.castlesDestroyed += me.totalCastlesDestroyed;
+					Molpy.Boosts['Castles'].totalDestroyed += me.totalCastlesDestroyed;
 				}
 				me.totalCastlesWasted = parseFloat(ice[4]) || 0;
 				me.currentActive = parseFloat(ice[5]) || 0;
@@ -551,7 +568,7 @@
 		}
 	}
 
-	Molpy.BoostsFromString = function(thread) {
+	Molpy.BoostsFromString = function(thread, version) {
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var pixels = thread.split(s);
@@ -566,6 +583,15 @@
 			if(pixels[idNum]) {
 				var savedValueList = pixels[idNum].split(c);
 				for(var num in saveData){
+					
+					if(version < 4) { // !!!!CHANGE THIS WHEN ACTUALLY USED
+						// Only load old stored values of unlocked, bought, power, and countdown to prevent
+						// values loaded in GamenumsFromString from being overwritten with default values
+						if(num >= 4) break;
+						// Sand.power and Castles.power are stored in gamenums in old versions, too
+						if(num == 2 && (me == Molpy.Boosts['Sand'] || me == Molpy.Boosts['Castle'])) continue;
+					}
+					
 					var loadedValue = null; // Just to avoid editor warnings of 'var may not be defined'
 					
 					// Load differently based on data type
@@ -597,16 +623,6 @@
 				if(isNaN(me.power)) me.power = 0; //compression! :P
 				if(isNaN(me.countdown)) me.countdown = 0;
 				
-				/*
-				var bacon = pixels[i].split(c + c)[1];
-				if(bacon) {
-					bacon = bacon.split(c);
-					me.data = [];
-					for( var i in bacon) {
-						me.data[i] = bacon[i];
-					}
-				}
-				*/
 			// If no data was saved for the boost, set them to defaults
 			} else {
 				me.resetSaveData();
@@ -738,10 +754,10 @@
 		}
 		Molpy.ClearLog();
 
-		Molpy.GamenumsFromString(thread[4]);
+		Molpy.GamenumsFromString(thread[4], version);
 		Molpy.SandToolsFromString(thread[5]);
 		Molpy.CastleToolsFromString(thread[6], version);
-		Molpy.BoostsFromString(thread[7] || '');
+		Molpy.BoostsFromString(thread[7] || '', version);
 
 		Molpy.BadgesFromString(thread[8] || '', version);
 		//thread[9] is unused
@@ -992,17 +1008,17 @@
 		if(coma || confirm('Really Molpy Down?\n(Progress will be reset but achievements will not.)')) {
 
 			coma || _gaq && _gaq.push(['_trackEvent', 'Molpy Down', 'Begin', '' + Molpy.newpixNumber]);
-			Molpy.Boosts['Sand'].bought = 0;
-			Molpy.sandManual = 0;
-			Molpy.chipsManual = 0;
-			if(isFinite(Molpy.Boosts['Castles'].bought))
-				Molpy.totalCastlesDown += Molpy.Boosts['Castles'].bought;
+			Molpy.Boosts['Sand'].totalDug = 0;
+			Molpy.Boosts['Sand'].manualDug = 0;
+			Molpy.Boosts['TF'].manualLoaded = 0;
+			if(isFinite(Molpy.Boosts['Castles'].totalBuilt))
+				Molpy.Boosts['Castles'].totalDown += Molpy.Boosts['Castles'].totalBuilt;
 			else
-				Molpy.totalCastlesDown = Number.MAX_VALUE;
-			Molpy.Boosts['Castles'].bought = 0;
-			Molpy.castlesDestroyed = 0;
-			Molpy.prevCastleSand = 0;
-			Molpy.nextCastleSand = 1;
+				Molpy.Boosts['Castles'].totalDown = Number.MAX_VALUE;
+			Molpy.Boosts['Castles'].totalBuilt = 0;
+			Molpy.Boosts['Castles'].totalDestroyed = 0;
+			Molpy.Boosts['Castles'].prevCastleSand = 0;
+			Molpy.Boosts['Castles'].nextCastleSand = 1;
 			Molpy.ninjaFreeCount = 0;
 			Molpy.ninjaStealth = 0;
 
@@ -1128,11 +1144,11 @@
 			Molpy.BadgesOwned = 0;
 			Molpy.groupBadgeCounts = {};
 			Molpy.redactedClicks = 0;
-			Molpy.timeTravels = 0;
-			Molpy.totalCastlesDown = 0;
+			Molpy.Boosts['Time Travel'].travelCount = 0;
+			Molpy.Boosts['Castles'].totalDown = 0;
 			Molpy.toolsBuiltTotal = 0;
-			Molpy.totalGlassBuilt = 0;
-			Molpy.totalGlassDestroyed = 0;
+			Molpy.Boosts['TF'].totalLoaded = 0;
+			Molpy.Boosts['TF'].totalDestroyed = 0;
 			Molpy.redactedChain = 0;
 			Molpy.redactedChainMax = 0;
 			Molpy.CastleTools['NewPixBot'].totalCastlesBuilt = 0; //because we normally don't reset this.
