@@ -2805,7 +2805,7 @@ Molpy.DefineBoosts = function() {
 			var fa = Molpy.Boosts['Factory Automation'];
 			var bots = Molpy.CastleTools['NewPixBot'].amount;
 			if(!Molpy.Got('Panther Salve') && Molpy.Has('GlassBlocks', 250) || fa.bought
-				&& Molpy.Got('Doublepost') && fa.power < Molpy.faCosts.length
+				&& Molpy.Got('Doublepost') && fa.power < Molpy.faCosts.length && Molpy.NPlength > 1800
 				&& bots >= Molpy.faCosts[fa.power] || !Molpy.Boosts['Ninja Climber'].unlocked
 				&& Molpy.Got('Skull and Crossbones') && Molpy.SandTools['Ladder'].amount >= 500
 				|| Molpy.Has('GlassBlocks', 800) && !Molpy.Got('LogiPuzzle') && Molpy.Has('Logicat', 5)
