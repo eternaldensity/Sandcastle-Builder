@@ -450,7 +450,7 @@
 		var c = 'C'; //Comma
 		var pixels = thread.split(s);
 
-		if(version < 4) { //!!!! CHANGE THIS WHEN ACTUALLY USED
+		if(version < 3.3332) { 
 			Molpy.newpixNumber = parseInt(pixels[0]) || 0;
 			Molpy.Boosts['Sand'].totalDug = parseFloat(pixels[1]) || 0;
 			Molpy.Boosts['Sand'].manualDug = parseFloat(pixels[2]) || 0;
@@ -584,7 +584,7 @@
 				var savedValueList = pixels[idNum].split(c);
 				for(var num in saveData){
 					
-					if(version < 4) { // !!!!CHANGE THIS WHEN ACTUALLY USED
+					if(version < 3.3332) {
 						// Only load old stored values of unlocked, bought, power, and countdown to prevent
 						// values loaded in GamenumsFromString from being overwritten with default values
 						if(num >= 4) break;
