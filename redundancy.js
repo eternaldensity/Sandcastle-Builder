@@ -73,6 +73,9 @@ function InnerMolpify(number, raftcastle, shrinkify) {
 
 function Molpify(number, raftcastle, shrinkify) {
 	var molp = InnerMolpify(number,raftcastle, shrinkify);
+	if (Molpy.options.smalldecimal) {
+		if (molp.indexOf('.')) molp = molp.replace(/\.([0-9]*)/,'.<small>$1</small>');
+	}
 	if (Molpy.options.european && !molp.match(/Math\.PI/)) {
 		molp = molp.replace('.','~');
 		molp = molp.replace(/,/g,'.');
