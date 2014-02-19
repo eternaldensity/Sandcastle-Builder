@@ -7261,7 +7261,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			return 'Go directly to the highest NewPix visited. Do not pass Go. Do not collect 200 goats.<br>(Single use only)'
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.FastForward()" value="Use"></input>' : '');
+				+ ((me.bought && Molpy.Got('Time Travel')) ? '<br><input type="Button" onclick="Molpy.FastForward()" value="Use"></input>' : '');
 		},
 		
 		price: {
