@@ -5257,7 +5257,7 @@ Molpy.DefineBoosts = function() {
 					str += 'You can use 10xBonemeal intead of Vacuums.<br>';
 			}
 
-			str += 'Single use: available again when you have ' + Molpy.PriceString(Molpy.CalcRushCost(1, 1)) + '.'
+			str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
 				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
 			if (me.bought) {
 				if (Molpy.Has('Blackprints',rushcost.Blackprints)) {
