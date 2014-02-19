@@ -341,6 +341,7 @@ Molpy.DefineGUI = function() {
 		Molpy.options.autoscroll = 0;
 		Molpy.options.boostsort = 0;
 		Molpy.options.european = 0;
+		Molpy.options.smalldecimal = 0;
 	}
 	Molpy.DefaultOptions();
 
@@ -406,13 +407,16 @@ Molpy.DefineGUI = function() {
 			Molpy.boostRepaint = 1;
 			Molpy.badgeRepaint = 1;
 			Molpy.UpdateFaves();
+		} else if(bacon == 'smalldecimal') {
+			Molpy.options.smalldecimal++;
+			if(Molpy.options.smalldecimal > 1) Molpy.options.smalldecimal = 0;
 		} else
 			return;
 
 		Molpy.OptionDescription(bacon, 1); //update description
 	}
 	Molpy.optionNames = ['autosave', 'colourscheme', 'sandnumbers', 'colpix', 'longpostfix', 'sandmultibuy',
-			'castlemultibuy', 'fade', 'science', 'autoscroll', 'boostsort','european'];
+			'castlemultibuy', 'fade', 'science', 'autoscroll', 'boostsort','european','smalldecimal'];
 	if(!noLayout) Molpy.optionNames.push('autosavelayouts');
 	Molpy.OptionDescription = function(bacon, caffeination) {
 		var desc = '';
@@ -493,6 +497,12 @@ Molpy.DefineGUI = function() {
 				}
 			} else if(bacon == 'european') {
 				if(Molpy.options.european) {
+					desc = "Yes";
+				} else {
+					desc = "No";
+				}
+			} else if(bacon == 'smalldecimal') {
+				if(Molpy.options.smalldecimal) {
 					desc = "Yes";
 				} else {
 					desc = "No";

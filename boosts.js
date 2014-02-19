@@ -3858,7 +3858,7 @@ Molpy.DefineBoosts = function() {
 			if(all) return n <= 0 || this.Level >= n;
 			var pages = this.Level;
 			if(pages < 1) return 0;
-			if(this.bought) {
+			if(Molpy.Boosts['Blackprint Plans'].bought) {
 				var s = Molpy.GetBlackprintSubject();
 				if(s) pages -= Molpy.blackprintCosts[s];
 			}
@@ -5257,7 +5257,7 @@ Molpy.DefineBoosts = function() {
 					str += 'You can use 10xBonemeal intead of Vacuums.<br>';
 			}
 
-			str += 'Single use: available again when you have ' + Molpy.PriceString(Molpy.CalcRushCost(1, 1)) + '.'
+			str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
 				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
 			if (me.bought) {
 				if (Molpy.Has('Blackprints',rushcost.Blackprints)) {
@@ -5287,7 +5287,9 @@ Molpy.DefineBoosts = function() {
 			Sand: Infinity,
 			Castles: Infinity,
 		},
-		defStuff: 1
+		defStuff: 1,
+
+		loadFunction: function() { if (Molpy.Earned('Einstein Says No')) Molpy.Level('Panther Rush') = 1079252850 *2; }
 	});
 	
 	Molpy.Boosts['Panther Rush'].refreshFunction = undefined;
@@ -5321,7 +5323,12 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Spend(cost)) pr.Add(1);
 			var fCost = Molpy.CalcRushCost(0, 1);
 			Molpy.LockBoost(pr.alias);
-			if(Molpy.Has('Logicat',fCost.Logicat)) Molpy.UnlockBoost(pr.alias);
+			var speed = pr.Level/2;
+			if (speed >= 80) Molpy.EarnBadge('Panther Pelts');
+			if (speed >= 1225) Molpy.EarnBadge('Mach 1');
+			if (speed >= 40320) Molpy.EarnBadge('Escape Velocity');
+			if (speed >= 1079252850) Molpy.EarnBadge('Einstein Says No');
+			if(Molpy.Has('Logicat',fCost.Logicat) && !Molpy.Earned('Einstein Says No') ) Molpy.UnlockBoost(pr.alias);
 		}
 	}
 
@@ -7253,8 +7260,11 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			return 'Go directly to the highest NewPix visited. Do not pass Go. Do not collect 200 goats.<br>(Single use only)'
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.FastForward()" value="Use"></input>' : '');
+			var str = "";
+			if (!Molpy.Got('Time Travel')) str += 'When you have Time Travel. ';
+			str += 'Go directly to the highest NewPix visited. Do not pass Go. Do not collect 200 goats.<br>(Single use only)'
+			if (me.bought && Molpy.Got('Time Travel')) str += '<br><input type="Button" onclick="Molpy.FastForward()" value="Use"></input>';
+			return str;
 		},
 		
 		price: {
