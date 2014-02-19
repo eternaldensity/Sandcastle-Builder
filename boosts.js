@@ -3858,7 +3858,7 @@ Molpy.DefineBoosts = function() {
 			if(all) return n <= 0 || this.Level >= n;
 			var pages = this.Level;
 			if(pages < 1) return 0;
-			if(this.bought) {
+			if(Molpy.Boosts['Blackprint Plans'].bought) {
 				var s = Molpy.GetBlackprintSubject();
 				if(s) pages -= Molpy.blackprintCosts[s];
 			}
