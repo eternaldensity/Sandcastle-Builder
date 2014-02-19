@@ -972,6 +972,26 @@ Molpy.DefineBadges = function() {
 		desc: 'Travel to a more negative Newpix',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'Panther Pelts',
+		desc: 'Panther Rush at least 80',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Mach 1',
+		desc: 'Panther Rush at least 1225',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Escape Velocity',
+		desc: 'Panther Rush at least 40320',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Einstein Says No',
+		desc: 'Panther Rush at the Limit',
+		vis: 1
+	});
 	
 /**************************************************************
  * Discoveries
