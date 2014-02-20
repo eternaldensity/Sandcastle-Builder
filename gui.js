@@ -1155,11 +1155,11 @@ Molpy.DefineGUI = function() {
 		this.date=new Date();
 		this.newpixNumber=0; 
 		this.getLine = function()  {
-			str = "<div title=\'Newpix " + this.newpixNumber + " Date: "+this.date;
+			str = "<div title=\"Newpix " + this.newpixNumber + " Date: "+this.date;
 			if (this.note!="")
-				str += "&#13;"+this.note;
+				str += "&#13;"+this.note.replace(/"/g, "&quot;");
 			
-			str +=  "'>" + this.text;
+			str +=  "\">" + this.text;
 			if (this.qty>1)
 				str += ' (x'+this.qty+')';
 			str += '</div>';
