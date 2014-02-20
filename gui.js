@@ -1155,19 +1155,21 @@ Molpy.DefineGUI = function() {
 		this.date=new Date();
 		this.newpixNumber=0; 
 		this.getLine = function()  {
-			str = "<div title=\'Newpix " + this.newpixNumber +
-				" Date: "+this.date + "'>";
+			str = "<div title=\"Newpix " + this.newpixNumber + " Date: "+this.date;
+			if (this.note!="")
+				str += "&#13;"+this.note.replace(/"/g, "&quot;");
 			
-			str += this.text;
+			str +=  "\">" + this.text;
 			if (this.qty>1)
 				str += ' (x'+this.qty+')';
 			str += '</div>';
 			return str; 
 		}
+		this.note="";
 		
 	};
 	
-	Molpy.Notify = function(text, log) {
+	Molpy.Notify = function(text, log, note) {
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
 		//pick the first free (or the oldest) notification to replace it
@@ -1220,6 +1222,9 @@ Molpy.DefineGUI = function() {
 				Molpy.notifLog[Molpy.notifLogNext].qty=1;
 				Molpy.notifLog[Molpy.notifLogNext].newpixNumber=Molpy.newpixNumber;
 				Molpy.notifLog[Molpy.notifLogNext].date=new Date();
+				
+				if (note!=null)
+					Molpy.notifLog[Molpy.notifLogNext].note = note;
 				
 				Molpy.notifLogCurrent=Molpy.notifLogNext++;
 				if(Molpy.notifLogNext > Molpy.notifLogMax) Molpy.notifLogNext = 0;
