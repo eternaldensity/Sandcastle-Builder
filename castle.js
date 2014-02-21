@@ -37,7 +37,11 @@ Molpy.extend = function(obj, args, overwrite){
 		if(!obj[i] || overwrite == true) obj[i] = args[i];
 	}
 }
-
+/**************************************************************
+ * Debug cheats
+ *************************************************************/
+ var ac = 0 // auto click per mNP
+ var ak = 0 // auto kitty
 /**************************************************************
  * Molpy Initialization
  *************************************************************/
@@ -2737,6 +2741,22 @@ Molpy.Up = function() {
 		Molpy.Donkey();
 
 		if(Math.floor(Molpy.ONGelapsed / 1000) % 3 == 0) Molpy.flashes = 0;
+		
+		var kitty = document.getElementById("redacteditem")
+		if (ak && kitty){
+			if(Molpy.PuzzleGens.redacted.active){
+				Molpy.PuzzleGens.redacted.Submit()
+			} else {
+				kitty.getElementsByTagName("input")[Math.min(kitty.getElementsByTagName("input").length - 1,5)].click();
+			}
+		}
+		
+		for (var i = ac; i > 0; i--) {
+			if (Molpy.oldBeachClass == "beachsafe" || Molpy.oldBeachClass == "beachstreakextend"){ 
+				Molpy.ClickBeach();
+			}
+		}
+		
 	};
 
 	Molpy.PerformJudgement = function() {
@@ -3098,6 +3118,7 @@ Molpy.Up = function() {
 		}
 		setTimeout(Molpy.Loopist, 1000 / Molpy.fps);
 	};
+
 };
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-45954809-1']);
