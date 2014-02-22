@@ -52,6 +52,9 @@ Molpy.Up = function() {
 		Molpy.molpish = 0;
 		Molpy.HardcodedData();//split some stuff into separate file
 		
+		 Molpy.availD = [];
+		 Molpy.availL = [];
+		
 		/**************************************************************
 		 * Variables
 		 * 
@@ -2198,16 +2201,16 @@ Molpy.Up = function() {
 
 				Molpy.CheckDoRDRewards(automationLevel);
 
-				var availRewards = [];
+				Molpy.availD = [];
 				for( var i in Molpy.Boosts) {
 					var me = Molpy.Boosts[i];
 					if(!me.unlocked && me.department) {
-						availRewards.push(me);
+						Molpy.availD.push(me);
 					}
 				}
 
-				if(availRewards.length) {
-					var red = GLRschoice(availRewards);
+				if(Molpy.availD.length) {
+					var red = GLRschoice(Molpy.availD);
 					if(!Molpy.IsFree(red.CalcPrice(red.price))) {
 						if(!Molpy.boostSilence) Molpy.Notify('The DoRD has produced:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
@@ -2457,16 +2460,16 @@ Molpy.Up = function() {
 
 		Molpy.RewardLogicat = function(level) {
 			Molpy.CheckLogicatRewards(0);
-			var availRewards = [];
+			Molpy.availL = [];
 			for( var i in Molpy.Boosts) {
 				var me = Molpy.Boosts[i];
 				if(!me.unlocked && me.logic && level >= me.logic) {
-					availRewards.push(me);
+					Molpy.availL.push(me);
 				}
 			}
 
-			if(availRewards.length) {
-				var red = GLRschoice(availRewards);
+			if(Molpy.availL.length) {
+				var red = GLRschoice(Molpy.availL);
 				if(!Molpy.IsFree(red.CalcPrice(red.price))) {
 					if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
 					Molpy.UnlockBoost(red.alias, 1);
