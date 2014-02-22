@@ -33,6 +33,8 @@ For personal amusement only.
 - Fixed bugs on Panther Rush and logicats
 - Panther Rush Badges
 - Option for decimal parts of numbers to be smaller
+- Small performance improvement
+- Logicats work in Faves and non faves at the same time
 
 #### ED:
 - Prevent Glass Ceiling 10 and 11 from being awarded by Logicat until you have Ceiling Broken
