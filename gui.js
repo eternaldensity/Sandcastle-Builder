@@ -1415,7 +1415,7 @@ Molpy.DefineGUI = function() {
 				}
 			}
 		}
-		if(repainted) Molpy.AdjustFade();
+		if(repainted && Molpy.options.fade) Molpy.AdjustFade();
 		for( var i in Molpy.SandTools) {
 			var me = Molpy.SandTools[i];
 			Molpy.TickHover(me);
@@ -1995,6 +1995,7 @@ Molpy.DefineGUI = function() {
 		this.BoostToScreen = function() {
 			var n = this.i;
 			if(this.boost) {
+				Molpy.DisplayingFave =1;
 				g('optionFave' + n).text = this.boost.name;
 				g('faveHeader' + n).innerHTML = this.boost.GetHeading() + this.boost.GetFormattedName();
 				if(this.boost.boost) {
@@ -2004,6 +2005,7 @@ Molpy.DefineGUI = function() {
 					g('faveContent' + n).innerHTML = (this.boost.earned ? this.boost.GetDesc() : 'This Badge is unearned!');
 				}
 				g('sectionFave' + n).className = 'draggable-element table-wrapper ' + this.boost.GetFullClass();
+				Molpy.DisplayingFave =0;
 			} else {
 				g('optionFave' + n).text = n + ' (empty)';
 				g('faveHeader' + n).innerHTML = '';
