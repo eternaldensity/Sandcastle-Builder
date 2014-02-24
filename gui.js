@@ -1141,6 +1141,9 @@ Molpy.DefineGUI = function() {
 
 	Molpy.ClearLog = function() {
 		Molpy.notifLog = [];
+		Molpy.notifLog[0] = [];
+		Molpy.currentLog = 0;
+		Molpy.selectedLog = 0;
 		Molpy.notifLogNext = 0;
 		Molpy.notifLogCurrent = 0;
 		Molpy.notifLogMax = 399; //store 400 lines
@@ -1168,6 +1171,28 @@ Molpy.DefineGUI = function() {
 		this.note="";
 		
 	};
+	
+	Molpy.LogONG = function(){
+		Molpy.currentLog++;
+		Molpy.notifLog[Molpy.currentLog] = [];
+		Molpy.notifLogNext = 0;
+		Molpy.notifLogCurrent = 0;
+		if(Molpy.options.autoscroll) Molpy.selectedLog = Molpy.currentLog;
+	}
+	
+	Molpy.LogBack = function(){
+		if (Molpy.selectedLog > 0){
+			Molpy.selectedLog--;
+			Molpy.notifLogPaint = 1;
+		}
+	}
+	
+	Molpy.LogForward = function(){
+		if (Molpy.selectedLog < Molpy.currentLog){
+			Molpy.selectedLog++;
+			Molpy.notifLogPaint = 1;
+		}
+	}
 	
 	Molpy.Notify = function(text, log, note) {
 		if(Molpy.InMyPants) text += ' in my pants';
@@ -1210,21 +1235,21 @@ Molpy.DefineGUI = function() {
 			Molpy.EarnBadge('Thousands of Them!');
 		}
 		if(log) {
-			if (Molpy.notifLog[Molpy.notifLogNext]==null)
-				Molpy.notifLog[Molpy.notifLogNext] = new LogEntry();
+			if (Molpy.notifLog[Molpy.currentLog][Molpy.notifLogNext]==null)
+				Molpy.notifLog[Molpy.currentLog][Molpy.notifLogNext] = new LogEntry();
 			
-			if (Molpy.notifLog[Molpy.notifLogCurrent].text == text &&
-				Molpy.notifLog[Molpy.notifLogCurrent].newpixNumber==Molpy.newpixNumber) {
-				Molpy.notifLog[Molpy.notifLogCurrent].qty++;
+			if (Molpy.notifLog[Molpy.currentLog][Molpy.notifLogCurrent].text == text &&
+				Molpy.notifLog[Molpy.currentLog][Molpy.notifLogCurrent].newpixNumber==Molpy.newpixNumber) {
+				Molpy.notifLog[Molpy.currentLog][Molpy.notifLogCurrent].qty++;
 				Molpy.notifLogPaint = 1;
 			} else {
-				Molpy.notifLog[Molpy.notifLogNext].text = text;
-				Molpy.notifLog[Molpy.notifLogNext].qty=1;
-				Molpy.notifLog[Molpy.notifLogNext].newpixNumber=Molpy.newpixNumber;
-				Molpy.notifLog[Molpy.notifLogNext].date=new Date();
+				Molpy.notifLog[Molpy.currentLog][Molpy.notifLogNext].text = text;
+				Molpy.notifLog[Molpy.currentLog][Molpy.notifLogNext].qty=1;
+				Molpy.notifLog[Molpy.currentLog][Molpy.notifLogNext].newpixNumber=Molpy.newpixNumber;
+				Molpy.notifLog[Molpy.currentLog][Molpy.notifLogNext].date=new Date();
 				
 				if (note!=null)
-					Molpy.notifLog[Molpy.notifLogNext].note = note;
+					Molpy.notifLog[Molpy.currentLog][Molpy.notifLogNext].note = note;
 				
 				Molpy.notifLogCurrent=Molpy.notifLogNext++;
 				if(Molpy.notifLogNext > Molpy.notifLogMax) Molpy.notifLogNext = 0;
@@ -1236,20 +1261,20 @@ Molpy.DefineGUI = function() {
 	Molpy.PaintNotifLog = function() {
 		Molpy.notifLogPaint = 0;
 		var str = '';
-		var i = Molpy.notifLogNext;
+		var i = Molpy.notifLog[Molpy.selectedLog].length;
 		while(i <= Molpy.notifLogMax) {
-			if (Molpy.notifLog[i] == null) break
-			var line = Molpy.notifLog[i].text;
+			if (Molpy.notifLog[Molpy.selectedLog][i] == null) break
+			var line = Molpy.notifLog[Molpy.selectedLog][i].text;
 			if(line) {
-				str += Molpy.notifLog[i].getLine();
+				str += Molpy.notifLog[Molpy.selectedLog][i].getLine();
 			}
 			i++;
 		}
 		i = 0;
-		while(i < Molpy.notifLogNext) {
-			var line = Molpy.notifLog[i].text;
+		while(i < Molpy.notifLog[Molpy.selectedLog].length) {
+			var line = Molpy.notifLog[Molpy.selectedLog][i].text;
 			if(line) {
-				str += Molpy.notifLog[i].getLine();
+				str += Molpy.notifLog[Molpy.selectedLog][i].getLine();
 			}
 			i++;
 		}
