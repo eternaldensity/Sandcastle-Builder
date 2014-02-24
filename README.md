@@ -38,9 +38,25 @@ For personal amusement only.
 
 #### ED:
 - Prevent Glass Ceiling 10 and 11 from being awarded by Logicat until you have Ceiling Broken
+- Alias for Chateau
+-
+
+#### LucidCrux
+- Rift Fade
+- Boost save/load changes
+- Glass Ceiling price fix
+- More major refactor work (lots and lots of changes and fixes)
+
+#### eqbot
+- Fix clicking not turning sand into castles
+- Some sand/castles changes using LucidCrux's changes
 
 #### mart0258:
 - Date stamp notifications
+- Fix blast furnace spam
+
+#### Bakasan15:
+- Log split up by ONG (use Back/Forward buttons. With autoscroll enabled, it'll automatically move forward when an ONG happens
 
 ### 3.3331
 

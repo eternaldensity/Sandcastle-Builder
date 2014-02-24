@@ -2697,6 +2697,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({
 		name: "Château d'If",
+		alias:'Chateau',
 		icon: 'chateau',
 		group: 'bean',
 		
