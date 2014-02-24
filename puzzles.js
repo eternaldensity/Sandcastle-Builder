@@ -24,27 +24,27 @@ Molpy.DefinePuzzles = function() {
 				statement.name = shuffledNames[i];
 				statement.value = flandom(2) == 0;
 			}//we have now made a list of statements each with a truth value
-			var completedStatements = [];
+			this.completedStatements = [];
 			this.groupNumber = 1;
-			while(completedStatements.length < this.n) {
+			while(this.completedStatements.length < this.n) {
 				var groupSize = flandom(statements.length) + 1;
 				var dist3 = Math.abs(groupSize - 3) * 2;
 				if(flandom(dist3 + 1)) groupSize = flandom(statements.length) + 1
 				var group = statements.splice(0, groupSize);
 				this.FillStatements(group, groupSize);
-				completedStatements = completedStatements.concat(group)
+				this.completedStatements = this.completedStatements.concat(group)
 				if(flandom(statements.length / 2) == 0) {
-					this.AttachStatements(statements, completedStatements);
+					this.AttachStatements(statements, this.completedStatements);
 				}
 				this.groupNumber++;
 			}
-			for( var i in completedStatements) {
-				ShuffleList(completedStatements[i].claims);
+			for( var i in this.completedStatements) {
+				ShuffleList(this.completedStatements[i].claims);
 			}
 
-			ShuffleList(completedStatements);
+			ShuffleList(this.completedStatements);
 			this.Check = function(guess) {
-				if(!completedStatements) return;
+				if(!this.completedStatements) return;
 				var skip = 0;
 				if(!this.firstTry) {
 					if(!Molpy.Spend(this.tryCost)) {
@@ -56,7 +56,7 @@ Molpy.DefinePuzzles = function() {
 				var correct = 0;
 				var incorrect = 0;
 				for( var i in guess) {
-					if(completedStatements[i].value == guess[i])
+					if(this.completedStatements[i].value == guess[i])
 						correct++;
 					else
 						incorrect++;
@@ -88,14 +88,14 @@ Molpy.DefinePuzzles = function() {
 				} else if(diff < 0) {
 					Molpy.Destroy('Logicat', 0, -score);
 				}
-				completedStatements = [];
+				this.completedStatements = [];
 				this.active = false;
 				this.cleanupFunction();
 			}
 			this.StringifyStatements = function(noWrap) {
 				var str = '';
-				for( var id in completedStatements) {
-					str += this.StringifyStatement(completedStatements[id], id) + '<br>';
+				for( var id in this.completedStatements) {
+					str += this.StringifyStatement(this.completedStatements[id], id) + '<br>';
 				}
 				str += '<input type="Button" value="Clear Guesses" onclick="Molpy.PuzzleGens[\'' + this.name + '\'].Clear()"></input><br>';
 				str += '<input type="Button" value="Submit Guesses" onclick="Molpy.PuzzleGens[\'' + this.name + '\'].Submit()"></input>';
@@ -258,6 +258,7 @@ Molpy.DefinePuzzles = function() {
 			for( var i in this.guess) {
 				if(this.guess[i] == 'True') neatGuess[i] = true;
 				else if(this.guess[i] == 'False') neatGuess[i] = false;
+				else if (ak) neatGuess[i] = this.completedStatements[i].value;
 			}
 			this.Check(neatGuess);
 		}

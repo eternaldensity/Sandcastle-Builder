@@ -37,7 +37,11 @@ Molpy.extend = function(obj, args, overwrite){
 		if(!obj[i] || overwrite == true) obj[i] = args[i];
 	}
 }
-
+/**************************************************************
+ * Debug cheats
+ *************************************************************/
+ var ac = 0 // auto click per mNP
+ var ak = 0 // auto kitty
 /**************************************************************
  * Molpy Initialization
  *************************************************************/
@@ -47,6 +51,9 @@ Molpy.Up = function() {
 	Molpy.Wake = function() {
 		Molpy.molpish = 0;
 		Molpy.HardcodedData();//split some stuff into separate file
+		
+		 Molpy.availD = [];
+		 Molpy.availL = [];
 		
 		/**************************************************************
 		 * Variables
@@ -2194,16 +2201,16 @@ Molpy.Up = function() {
 
 				Molpy.CheckDoRDRewards(automationLevel);
 
-				var availRewards = [];
+				Molpy.availD = [];
 				for( var i in Molpy.Boosts) {
 					var me = Molpy.Boosts[i];
 					if(!me.unlocked && me.department) {
-						availRewards.push(me);
+						Molpy.availD.push(me);
 					}
 				}
 
-				if(availRewards.length) {
-					var red = GLRschoice(availRewards);
+				if(Molpy.availD.length) {
+					var red = GLRschoice(Molpy.availD);
 					if(!Molpy.IsFree(red.CalcPrice(red.price))) {
 						if(!Molpy.boostSilence) Molpy.Notify('The DoRD has produced:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
@@ -2453,16 +2460,16 @@ Molpy.Up = function() {
 
 		Molpy.RewardLogicat = function(level) {
 			Molpy.CheckLogicatRewards(0);
-			var availRewards = [];
+			Molpy.availL = [];
 			for( var i in Molpy.Boosts) {
 				var me = Molpy.Boosts[i];
 				if(!me.unlocked && me.logic && level >= me.logic) {
-					availRewards.push(me);
+					Molpy.availL.push(me);
 				}
 			}
 
-			if(availRewards.length) {
-				var red = GLRschoice(availRewards);
+			if(Molpy.availL.length) {
+				var red = GLRschoice(Molpy.availL);
 				if(!Molpy.IsFree(red.CalcPrice(red.price))) {
 					if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
 					Molpy.UnlockBoost(red.alias, 1);
@@ -2737,6 +2744,22 @@ Molpy.Up = function() {
 		Molpy.Donkey();
 
 		if(Math.floor(Molpy.ONGelapsed / 1000) % 3 == 0) Molpy.flashes = 0;
+		
+		var kitty = document.getElementById("redacteditem")
+		if (ak && kitty){
+			if(Molpy.PuzzleGens.redacted.active){
+				Molpy.PuzzleGens.redacted.Submit()
+			} else {
+				kitty.getElementsByTagName("input")[Math.min(kitty.getElementsByTagName("input").length - 1,5)].click();
+			}
+		}
+		
+		for (var i = ac; i > 0; i--) {
+			if (Molpy.oldBeachClass == "beachsafe" || Molpy.oldBeachClass == "beachstreakextend"){ 
+				Molpy.ClickBeach();
+			}
+		}
+		
 	};
 
 	Molpy.PerformJudgement = function() {
@@ -3098,6 +3121,7 @@ Molpy.Up = function() {
 		}
 		setTimeout(Molpy.Loopist, 1000 / Molpy.fps);
 	};
+
 };
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-45954809-1']);
