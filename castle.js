@@ -2843,6 +2843,7 @@ Molpy.Up = function() {
 		}
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.ONGstart = ONGsnip(new Date());
+		Molpy.LogONG();
 		Molpy.Notify('ONG!', 1);
 
 		Molpy.HandlePeriods();
