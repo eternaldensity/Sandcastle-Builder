@@ -598,7 +598,7 @@ Molpy.CheckBuyUnlocks = function(tool) {
 		Molpy.recalculateDig = 1;
 		Molpy.BoostsOwned++;
 	}
-	if(Molpy.Earned('Unreachable?')) Molpy.UnlockBoost("Château d'If");
+	if(Molpy.Earned('Unreachable?')) Molpy.UnlockBoost("Chateau");
 
 	if(Molpy.Boosts['Castles'].spent > 2e8) {
 		Molpy.EarnBadge('Big Spender');
