@@ -1738,7 +1738,7 @@ Molpy.DefineGUI = function() {
 		this.positions = $.extend({}, args.positions);
 		this.sizes = $.extend({}, args.sizes);
 		this.borderColors = $.extend({}, args.borderColors)
-		if(!Molpy.noLayout) {
+		if(!noLayout) {
 			this.faves = Molpy.EmptyFavePanes(Molpy.nFaves);
 		}
 
