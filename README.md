@@ -26,6 +26,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.3333
+
+#### Waveney
+- Refactored the options handling and grouped related options
+- Fixed Chateau Bug
+
 ### 3.3332
 
 #### Waveney
