@@ -1959,7 +1959,7 @@ Molpy.DefineBoosts = function() {
 				} else if(Molpy.Has('GlassBlocks', 1)) {
 					useChips = 0
 				} else {
-					str += 'It costs 3 Chips to upgrade the Glass Furnace\'s speed.';
+					str += '<br>It costs 3 Chips to upgrade the Glass Furnace\'s speed.';
 					afford = 0;
 				}
 				if(afford) {

@@ -40,6 +40,7 @@ For personal amusement only.
 - Prevent Glass Ceiling 10 and 11 from being awarded by Logicat until you have Ceiling Broken
 - Alias for Chateau
 - Fix notification crash when earning badge with description as a function
+- Found an oooooold missing linebreak in descripton of cost of buying Sand Refinery
 
 #### LucidCrux
 - Rift Fade
