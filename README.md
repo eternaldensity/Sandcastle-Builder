@@ -39,7 +39,7 @@ For personal amusement only.
 #### ED:
 - Prevent Glass Ceiling 10 and 11 from being awarded by Logicat until you have Ceiling Broken
 - Alias for Chateau
--
+- Fix notification crash when earning badge with description as a function
 
 #### LucidCrux
 - Rift Fade
