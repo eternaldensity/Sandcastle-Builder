@@ -71,10 +71,11 @@ function InnerMolpify(number, raftcastle, shrinkify) {
 	return molp;
 }
 
+var DecimalFormats = [['',''],['<small>','</small>'],['<span class=decimaltext>','</span>'],['<i>','</i>']];
 function Molpify(number, raftcastle, shrinkify) {
 	var molp = InnerMolpify(number,raftcastle, shrinkify);
 	if (Molpy.options.smalldecimal) {
-		if (molp.indexOf('.')) molp = molp.replace(/\.([0-9]*)/,'.<small>$1</small>');
+		if (molp.indexOf('.')) molp = molp.replace(/\.([0-9]*)/,'.' + DecimalFormats[Molpy.options.smalldecimal][0] + '$1' + DecimalFormats[Molpy.options.smalldecimal][1]);
 	}
 	if (Molpy.options.european && !molp.match(/Math\.PI/)) {
 		molp = molp.replace('.','~');

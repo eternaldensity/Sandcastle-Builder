@@ -31,6 +31,7 @@ For personal amusement only.
 #### Waveney
 - Refactored the options handling and grouped related options
 - Fixed Chateau Bug
+- More options for making the decimal parts of numbers clearer
 
 ### 3.3332
 

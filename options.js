@@ -160,8 +160,9 @@ new Molpy.Option({
 
 new Molpy.Option({
 	name: 'smalldecimal',
-	title: 'Small decimal digits',		
-	range: 1,
+	title: 'Decimal Settings',		
+	text: ['Normal','Small','Shaded','Italic'],
+	range: 3,
 });
 
 new Molpy.Option({
