@@ -33,6 +33,7 @@ For personal amusement only.
 - Fixed Chateau Bug
 - More options for making the decimal parts of numbers clearer
 - Option to choose the logicat colour scheme
+- Discoveries as Faves work if/when badges are added
 
 ### 3.3332
 

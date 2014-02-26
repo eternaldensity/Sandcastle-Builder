@@ -998,6 +998,7 @@ Molpy.DefineBadges = function() {
  * 
  * These MUST go last: add any new badges BEFORE them!
  *************************************************************/
+	Molpy.DiscoveriesStartAt = Molpy.BadgeN;
 
 	Molpy.MakeSpecialBadge = function(args, kind) {
 		new Molpy.Badge({
