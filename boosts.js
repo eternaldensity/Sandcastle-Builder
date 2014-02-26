@@ -1808,7 +1808,7 @@ Molpy.DefineBoosts = function() {
 
 			var c = Math.floor(Math.random() * Molpy.Level('Time Lord') * (Molpy.Got('TDE') + 1));
 			Molpy.Add('FluxCrystals', c);
-			Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+plural(c)+' materialized.');
+			if (c) Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+plural(c)+' materialized.');
 			if(Molpy.Level('Time Lord') > 50) Molpy.UnlockBoost('Flux Harvest');
 		}
 		Molpy.Notify('You wonder when you are');
