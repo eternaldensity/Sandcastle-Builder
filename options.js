@@ -123,6 +123,17 @@ new Molpy.Option({
 });
 
 new Molpy.Option({
+	name: 'logicatcol',
+	title: 'Logicat Colours',
+	visability: function() {return Molpy.Got('Chromatic Heresy') && Molpy.Got('LogiPuzzle') }, 
+	onchange: function() { 
+		Molpy.boostRepaint = 1;
+		Molpy.UpdateFaves();
+	},
+	text: ['Greys','Colours'],
+});
+
+new Molpy.Option({
 	name: 'numbers',
 	title: 'Draw +Sand Numbers',		
 	defaultval: 1,
@@ -254,7 +265,8 @@ new Molpy.Option({
 			(Molpy.options.autoscroll) + 
 			(Molpy.options.boostsort) + 
 			(Molpy.options.european) + 
-			(Molpy.options.smalldecimal);
+			(Molpy.options.smalldecimal) +
+			(Molpy.options.logicatcol);
 		return str;
 	}
 
@@ -278,7 +290,7 @@ new Molpy.Option({
 		Molpy.options.boostsort = parseInt(pixels[15]) || 0;
 		Molpy.options.european = parseInt(pixels[16]) || 0;
 		Molpy.options.smalldecimal = parseInt(pixels[17]) || 0;
-
+		Molpy.options.logicatcol = parseInt(pixels[18]) || 0;
 
 		for (var opi in Molpy.Options) {
 			var opt=Molpy.Options[opi];

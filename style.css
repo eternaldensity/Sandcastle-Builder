@@ -874,6 +874,13 @@ body.lightscheme .boost.loot a:hover
 	background-color:#606060;
 	color:white;
 }
+.logipuz.collogipuz input[type=radio] + label {
+	background-color: #80FF80;
+}
+.logipuz.collogipuz input[type=radio]:checked + label {
+	background-color:#FF8080;
+	color:black;
+}
 body.darkscheme .decimaltext {
 	color:#ccc;
 }
