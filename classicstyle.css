@@ -673,3 +673,9 @@ body.lightscheme .boost.loot a:hover
 	background-color:#606060;
 	color:white;
 }
+body.darkscheme .decimaltext {
+	color:#ccc;
+}
+body.lightscheme .decimaltext {
+	color:#444;
+}
