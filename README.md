@@ -32,6 +32,7 @@ For personal amusement only.
 - Refactored the options handling and grouped related options
 - Fixed Chateau Bug
 - More options for making the decimal parts of numbers clearer
+- Option to choose the logicat colour scheme
 
 ### 3.3332
 
