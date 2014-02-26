@@ -314,6 +314,14 @@ a:active
 	-ms-user-select: auto;
 	user-select: auto;
 }
+#logItems
+{
+	position:absolute;
+	bottom:24px;
+	max-height:calc(100% - 40px);
+	padding-bottom:1px;
+	height:auto;
+}
 
 #beachAnchor
 {

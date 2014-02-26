@@ -1052,8 +1052,9 @@ Molpy.DefineGUI = function() {
 			i++;
 		}
 		var log = g('logItems');
+		var scroll = log.scrollHeight
 		log.innerHTML = str;
-		if(Molpy.options.autoscroll) log.scrollTop = log.scrollHeight;
+		if(Molpy.options.autoscroll) log.scrollTop += log.scrollHeight - scroll
 	}
 
 	Molpy.subPixLetters = ['', 'a', 'b', 'c', 'd', 'e'];
