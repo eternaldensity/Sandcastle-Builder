@@ -915,6 +915,7 @@ Molpy.DefineGUI = function() {
 	Molpy.ClearLog = function() {
 		Molpy.notifLog = [];
 		Molpy.notifLog[0] = [];
+		Molpy.notifLog[0].np = Molpy.newpixNumber;
 		Molpy.currentLog = 0;
 		Molpy.selectedLog = 0;
 		Molpy.notifLogNext = 0;
@@ -948,6 +949,7 @@ Molpy.DefineGUI = function() {
 	Molpy.LogONG = function(){
 		Molpy.currentLog++;
 		Molpy.notifLog[Molpy.currentLog] = [];
+		Molpy.notifLog[Molpy.currentLog].np = Molpy.newpixNumber;
 		Molpy.notifLogNext = 0;
 		Molpy.notifLogCurrent = 0;
 		if(Molpy.options.autoscroll) Molpy.selectedLog = Molpy.currentLog;
@@ -1051,6 +1053,8 @@ Molpy.DefineGUI = function() {
 			}
 			i++;
 		}
+		var title = g('logTitle');
+		title.innerHTML = "Notification log for Newpix " + Molpy.notifLog[Molpy.selectedLog].np
 		var log = g('logItems');
 		var scroll = log.scrollHeight
 		log.innerHTML = str;
