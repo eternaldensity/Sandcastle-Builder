@@ -1808,7 +1808,7 @@ Molpy.DefineBoosts = function() {
 
 			var c = Math.floor(Math.random() * Molpy.Level('Time Lord') * (Molpy.Got('TDE') + 1));
 			Molpy.Add('FluxCrystals', c);
-			Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+plural(c)+' materialized.');
+			if (c) Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+plural(c)+' materialized.');
 			if(Molpy.Level('Time Lord') > 50) Molpy.UnlockBoost('Flux Harvest');
 		}
 		Molpy.Notify('You wonder when you are');
@@ -3376,7 +3376,7 @@ Molpy.DefineBoosts = function() {
 			if(levels > 0) this.Level += levels;
 			if(points > 0) {
 				this.power += points;
-				var rewards = Math.floor((this.power - this.bought*5)/5);
+				var rewards = Math.floor((this.power - this.bought*5)/5 +1);
 				if (rewards > 0) {
 					this.bought+=Math.floor(rewards*Molpy.Papal('Logicats'));
 					if (Molpy.Papal('Logicats') > 1) this.power = this.bought*5;
@@ -6251,7 +6251,11 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: function() {
 				return 8e9 * Molpy.CastleTools['NewPixBot'].amount;
-			}
+			},
+		buyFunction: function() {
+			if (Molpy.Got('Jamming')) Molpy.Boosts['Jamming'].countdown = 20;
+			},
+
 		},
 	}); // www.youtube.com/watch?v=84q0SXW781c
 	new Molpy.Boost({
@@ -8023,6 +8027,7 @@ Molpy.DefineBoosts = function() {
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
 				var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - Molpy.Level('Time Lord') * (Molpy.Level('Time Lord') + 1) / 2;
+				if (isNaN(c)) c = Infinity;
 				if(!Molpy.Got('TDE')) c /= 2;
 				c*=Molpy.Papal("Flux");
 				if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',Math.ceil(1000+Molpy.Boosts['Bonemeal'].power/50))) 

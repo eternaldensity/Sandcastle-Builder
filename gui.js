@@ -1769,7 +1769,8 @@ Molpy.DefineGUI = function() {
 			if(this.boost) {
 				id = '' + this.boost.id;
 				if(Molpy.BoostsById[id] !== this.boost) {
-					id = 1 - id;
+					if (id >= Molpy.DiscoveriesStartAt) { id = -1000000 -id +Molpy.DiscoveriesStartAt; }
+					else { id = 1 - id; }
 				}
 			}
 			return id + c + (this.vis ? 1 : 0) + c + (this.position.left || 0) + c + (this.position.top || 0) + c + (this.size.width || 0) + c + (this.size.height || 0);
@@ -1778,7 +1779,10 @@ Molpy.DefineGUI = function() {
 			var c = 'C'; //Comma
 			var pixels = str.split(c);
 			var n = pixels[0];
-			this.boost = (n == 'n' ? 0 : (n >= 0 ? Molpy.BoostsById[parseInt(n) || 0] : Molpy.BadgesById[1 - parseInt(n) || 0]));
+			if (n == 'n') { this.boost = 0 }
+			else if (n >= 0) { this.boost = Molpy.BoostsById[parseInt(n) || 0] }
+			else if (n > -1000000) { this.boost = Molpy.BadgesById[1 - parseInt(n) || 0] }
+			else { this.boost = Molpy.BadgesById[Molpy.DiscoveriesStartAt + 1000000 + parseInt(n) || 0] };
 			this.boost.faveRefresh = 1;
 			this.vis = pixels[1] == true;
 			this.position = {

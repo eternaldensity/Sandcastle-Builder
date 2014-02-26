@@ -238,7 +238,7 @@ Molpy.DefinePuzzles = function() {
 					str += ' ' + statement.operator;
 				}
 			}
-			str += '<br><div class=logipuz>';
+			str += '<br><div class="logipuz' + (Molpy.options.logicatcol?' collogipuz':'') + '">';
 			for (var i in this.guessOptions) {
 				str += '<input type=radio name="selectGuess' + name + id + '" id=Guess' + name + id + '_' + i +
 					' onclick="Molpy.PuzzleGens[\'' + this.name + '\'].SelectGuess(' + id + ',' + i + ')" ' + 
