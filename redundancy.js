@@ -341,7 +341,8 @@ var typocount = 0;
 function format(gainned, level) {
 	if(Molpy.options.typo) return gainned;
 	var angle = gainned.indexOf('<');
-	if(angle == 0) return gainned; //don't mess with no html!
+	var amper = gainned.indexOf('&');
+	if(angle == 0 || amper >= 0) return gainned; //don't mess with no html!
 	var squirpy = eternalf[gainned];
 	if(squirpy) return squirpy;
 	if(Math.abs(Molpy.newpixNumber) < typocount) return gainned;
