@@ -6251,7 +6251,11 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: function() {
 				return 8e9 * Molpy.CastleTools['NewPixBot'].amount;
-			}
+			},
+		buyFunction: function() {
+			if (Molpy.Got('Jamming')) Molpy.Boosts['Jamming'].countdown = 20;
+			},
+
 		},
 	}); // www.youtube.com/watch?v=84q0SXW781c
 	new Molpy.Boost({
