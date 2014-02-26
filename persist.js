@@ -156,9 +156,8 @@
 			Molpy.UpdateColourScheme();
 			return;
 		}
-		Molpy.ClearLog();
-
 		Molpy.GamenumsFromString(localStorage['Gamenums'], version);
+		Molpy.ClearLog();
 		Molpy.SandToolsFromString(localStorage['SandTools']);
 		Molpy.CastleToolsFromString(localStorage['CastleTools'], version);
 		Molpy.BoostsFromString(localStorage['Boosts'], version);
