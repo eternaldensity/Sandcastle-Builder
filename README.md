@@ -34,6 +34,8 @@ For personal amusement only.
 - More options for making the decimal parts of numbers clearer
 - Option to choose the logicat colour scheme
 - Discoveries as Faves work if/when badges are added
+- Finally found why logicat needed negative points to go up
+- Fireproof now reduces current Jamming
 
 ### 3.3332
 
