@@ -36,6 +36,7 @@ For personal amusement only.
 - Discoveries as Faves work if/when badges are added
 - Finally found why logicat needed negative points to go up
 - Fireproof now reduces current Jamming
+- Lodestone Boost
 
 ### 3.3332
 

@@ -24,8 +24,8 @@ Molpy.DefaultOptions = function() {
 	for (var opi in Molpy.Options) {
 		var opt=Molpy.Options[opi];
 		opt.value = opt.defaultval;
-        Molpy.options[opt.name] = opt.value;
-        if (opt.onchange) opt.onchange();
+        	Molpy.options[opt.name] = opt.value;
+        	if (opt.onchange) opt.onchange();
 	}
 }
 
@@ -55,6 +55,11 @@ Molpy.ClickOption = function(id) {
 	Molpy.options[opt.name] = opt.value;
 	if (opt.onchange) opt.onchange();
 	Molpy.RefreshOptions();
+}
+
+Molpy.Setoption = function(opt,val) {
+	Molpy.options[opt] = val;
+	Molpy.Options[opt].value = val;
 }
 
 // These options are defined in the display order

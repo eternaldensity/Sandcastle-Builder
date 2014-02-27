@@ -3666,12 +3666,14 @@ Molpy.DefineBoosts = function() {
 							+ Molpify(cost, 3) + ' Glass Blocks to solve ' + Molpify(tens,1)
 							+ ' puzzles at a time. (Multiplies reward/loss by the number of puzzles.)<br>';
 				}
-				var cost = 100 + Molpy.LogiMult(25);
-				if(Molpy.Has('GlassBlocks', cost)) {
-					str += '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle(' + cost + ')"></input> '
-						+ Molpify(cost, 3) + ' Glass Blocks for a puzzle.<br>' + Molpify(me.Level) + ' Puzzle' + plural(me.Level) + ' left.';
-				} else {
-					str += 'It costs ' + Molpify(cost, 3) + ' Glass Blocks for a puzzle.';
+				if (Molpy.Level('Logicat') < 1000000) {
+					var cost = 100 + Molpy.LogiMult(25);
+					if(Molpy.Has('GlassBlocks', cost)) {
+						str += '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle(' + cost + ')"></input> '
+							+ Molpify(cost, 3) + ' Glass Blocks for a puzzle.<br>' + Molpify(me.Level) + ' Puzzle' + plural(me.Level) + ' left.';
+					} else {
+						str += 'It costs ' + Molpify(cost, 3) + ' Glass Blocks for a puzzle.';
+					}
 				}
 			} else {
 				str = 'Caged Logicat is sleeping. Please wait for it.'
@@ -3874,10 +3876,10 @@ Molpy.DefineBoosts = function() {
 				if(n == 1)
 					Molpy.Notify('You found a Blackprint page', 1);
 				else
-					Molpy.Notify('You found ' + n + ' Blackprint pages', 1);
+					Molpy.Notify('You found ' + Molpify(n) + ' Blackprint pages', 1);
 			} else {
 				if(this.Has(target, 1) && !this.Has(target + n, 1)) {
-					Molpy.Notify('You now have the ' + target + ' Blackprint pages you require.', 1);
+					Molpy.Notify('You now have the ' + Molpify(target) + ' Blackprint pages you require.', 1);
 				}
 				return;
 			}
@@ -3889,7 +3891,7 @@ Molpy.DefineBoosts = function() {
 			else if(this.Has(target + 1, 1))
 				Molpy.Notify('You have more pages than you need right now', 1);
 			else
-				Molpy.Notify('You now have the ' + target + ' Blackprint pages you require.', 1);
+				Molpy.Notify('You now have the ' + Molpify(target) + ' Blackprint pages you require.', 1);
 		},
 		
 		Spend: Molpy.BoostFuncs.Spend,
@@ -5593,10 +5595,9 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			if(!me.bought)
-				return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation '
-					+ 'after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
+				return 'Allows you to change the number of times Automata Assemble runs after Tool Factory.';
 			var n = me.Level;
-			var str = 'Automata Assemble attempts up to ' + Molpify(n, 2) + ' Factory Automation runs.';
+			var str = 'Automata Assemble attempts up to ' + Molpify(n, 2) + ' runs.';
 			var cost = {
 				GlassChips: 1e7 * Math.pow(1.2, n),
 				Blackprints: n * 2
@@ -6897,6 +6898,16 @@ Molpy.DefineBoosts = function() {
 			str += ' out of 200.';
 			if(me.bought != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
 				str += '<br>The next map can be found at NP ' + me.bought;
+				if (Molpy.Got('Lodestone')) {
+					var search=0;
+					while (1) {
+						if (Molpy.Earned('discov'+(me.bought+search))) break;
+						if (Molpy.Earned('discov'+(me.bought-search))) { search = -search; break;}
+						search++
+					}
+					str += '<br><input type="Button" onclick="Molpy.TTT(' + (me.bought+search) + 
+						',1)" value="Nearest Jump!"></input>';
+				}
 			} else {
 				str += '<br>You must construct additional Glass Monuments before you are able to decypher the next map.';
 			}
@@ -8456,6 +8467,14 @@ Molpy.DefineBoosts = function() {
 		price: {
 			Bonemeal: 10000
 		}
+	});
+
+	new Molpy.Boost({
+		name: 'Lodestone',
+		icon: 'lodestone',
+		group: 'hpt',
+		price: {FluxCrystals:Infinity, Goats:100},
+		desc: 'Gives Mysterious Maps a Jump to the nearest discovery to the next map',
 	});
 	// END OF BOOSTS, add new ones immediately before this comment
 }
