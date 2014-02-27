@@ -2599,6 +2599,7 @@ Molpy.Up = function() {
 					if(Molpy.Has('Maps', 200)) {
 						Molpy.UnlockBoost('DNS');
 					} else {
+						if(Molpy.Has('Maps', 50)) Molpy.UnlockBoost('Lodestone');
 						Molpy.Notify('You found a new map!', 1);
 						Molpy.ClearMap();
 					}

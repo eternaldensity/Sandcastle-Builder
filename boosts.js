@@ -6896,6 +6896,16 @@ Molpy.DefineBoosts = function() {
 			str += ' out of 200.';
 			if(me.bought != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
 				str += '<br>The next map can be found at NP ' + me.bought;
+				if (Molpy.Got('Lodestone')) {
+					var search=0;
+					while (1) {
+						if (Molpy.Earned('discov'+(me.bought+search))) break;
+						if (Molpy.Earned('discov'+(me.bought-search))) { search = -search; break;}
+						search++
+					}
+					str += '<br><input type="Button" onclick="Molpy.TTT(' + (me.bought+search) + 
+						',1)" value="Nearest Jump!"></input>';
+				}
 			} else {
 				str += '<br>You must construct additional Glass Monuments before you are able to decypher the next map.';
 			}
@@ -8455,6 +8465,14 @@ Molpy.DefineBoosts = function() {
 		price: {
 			Bonemeal: 10000
 		}
+	});
+
+	new Molpy.Boost({
+		name: 'Lodestone',
+		icon: 'lodestone',
+		group: 'hpt',
+		price: {FluxCrystals:Infinity, Goats:100},
+		desc: 'Gives Mysterious Maps a Jump to the nearest discovery to the next map',
 	});
 	// END OF BOOSTS, add new ones immediately before this comment
 }
