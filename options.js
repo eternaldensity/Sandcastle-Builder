@@ -57,6 +57,11 @@ Molpy.ClickOption = function(id) {
 	Molpy.RefreshOptions();
 }
 
+Molpy.Setoption = function(opt,val) {
+	Molpy.options[opt] = val;
+	MOlpy.Options[opt].value = val;
+}
+
 // These options are defined in the display order
 
 
