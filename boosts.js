@@ -3666,12 +3666,14 @@ Molpy.DefineBoosts = function() {
 							+ Molpify(cost, 3) + ' Glass Blocks to solve ' + Molpify(tens,1)
 							+ ' puzzles at a time. (Multiplies reward/loss by the number of puzzles.)<br>';
 				}
-				var cost = 100 + Molpy.LogiMult(25);
-				if(Molpy.Has('GlassBlocks', cost)) {
-					str += '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle(' + cost + ')"></input> '
-						+ Molpify(cost, 3) + ' Glass Blocks for a puzzle.<br>' + Molpify(me.Level) + ' Puzzle' + plural(me.Level) + ' left.';
-				} else {
-					str += 'It costs ' + Molpify(cost, 3) + ' Glass Blocks for a puzzle.';
+				if (Molpy.Level('Logicat') < 1000000) {
+					var cost = 100 + Molpy.LogiMult(25);
+					if(Molpy.Has('GlassBlocks', cost)) {
+						str += '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle(' + cost + ')"></input> '
+							+ Molpify(cost, 3) + ' Glass Blocks for a puzzle.<br>' + Molpify(me.Level) + ' Puzzle' + plural(me.Level) + ' left.';
+					} else {
+						str += 'It costs ' + Molpify(cost, 3) + ' Glass Blocks for a puzzle.';
+					}
 				}
 			} else {
 				str = 'Caged Logicat is sleeping. Please wait for it.'
