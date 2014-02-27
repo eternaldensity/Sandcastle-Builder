@@ -5593,10 +5593,9 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			if(!me.bought)
-				return 'Allows you to change the number of times Automata Assemble tries to run Factory Automation '
-					+ 'after Tool Factory.<br>(Otherwise it defaults to the level from Production Control)';
+				return 'Allows you to change the number of times Automata Assemble runs after Tool Factory.';
 			var n = me.Level;
-			var str = 'Automata Assemble attempts up to ' + Molpify(n, 2) + ' Factory Automation runs.';
+			var str = 'Automata Assemble attempts up to ' + Molpify(n, 2) + ' runs.';
 			var cost = {
 				GlassChips: 1e7 * Math.pow(1.2, n),
 				Blackprints: n * 2
