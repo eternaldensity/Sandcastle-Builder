@@ -988,7 +988,7 @@ Molpy.DefineGUI = function() {
 		var i = highestI;
 
 		var x = Math.floor($(window).width() / 2);
-		var y = Math.floor($(window).height());
+		var y = Math.floor($(window).height() * 0.95);
 		x += (Math.random() - 0.5) * 40;
 
 		var me = Molpy.notifs[i];
