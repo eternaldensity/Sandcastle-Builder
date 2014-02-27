@@ -3874,10 +3874,10 @@ Molpy.DefineBoosts = function() {
 				if(n == 1)
 					Molpy.Notify('You found a Blackprint page', 1);
 				else
-					Molpy.Notify('You found ' + n + ' Blackprint pages', 1);
+					Molpy.Notify('You found ' + Molpify(n) + ' Blackprint pages', 1);
 			} else {
 				if(this.Has(target, 1) && !this.Has(target + n, 1)) {
-					Molpy.Notify('You now have the ' + target + ' Blackprint pages you require.', 1);
+					Molpy.Notify('You now have the ' + Molpify(target) + ' Blackprint pages you require.', 1);
 				}
 				return;
 			}
@@ -3889,7 +3889,7 @@ Molpy.DefineBoosts = function() {
 			else if(this.Has(target + 1, 1))
 				Molpy.Notify('You have more pages than you need right now', 1);
 			else
-				Molpy.Notify('You now have the ' + target + ' Blackprint pages you require.', 1);
+				Molpy.Notify('You now have the ' + Molpify(target) + ' Blackprint pages you require.', 1);
 		},
 		
 		Spend: Molpy.BoostFuncs.Spend,
