@@ -24,6 +24,8 @@ Molpy.DefaultOptions = function() {
 	for (var opi in Molpy.Options) {
 		var opt=Molpy.Options[opi];
 		opt.value = opt.defaultval;
+        Molpy.options[opt.name] = opt.value;
+        if (opt.onchange) opt.onchange();
 	}
 }
 

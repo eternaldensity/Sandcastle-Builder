@@ -3426,9 +3426,9 @@ Molpy.DefineBoosts = function() {
 		className: 'alert',
 		
 		desc: function(me) {
-			var tdf = Molpy.TDFactor() - 1;
+			var tdf = Molpy.TDFactor(true) - 1;
 			return 'For ' + MolpifyCountdown(me.countdown) + ', when you buy tools, get '
-				+ (tdf == 1 ? 'the same' : Molpify(tdf, 3) + 'x that') + ' amount again for free!';
+				+ (tdf <= 1 ? 'the same' : Molpify(tdf, 3) + 'x that') + ' amount again for free!';
 		},
 		
 		logic: 50,
@@ -6118,7 +6118,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.TDFactor = function(buying) {
 		if((buying || Molpy.Got('Crystal Dragon')) && Molpy.Got('TDE')) {
 			if(Molpy.Got('Dragon Foundry') && Molpy.Got('GL')) {
-				return 1 + Molpy.Boosts['GL'].power / 10000;
+				return 2 + Molpy.Boosts['GL'].power / 10000;
 			}
 			return 2;
 		}
