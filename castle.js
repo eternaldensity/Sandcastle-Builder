@@ -1983,7 +1983,7 @@ Molpy.Up = function() {
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[baby.group] = 1;
 						if(baby.group == 'badges') {
-							Molpy.Notify('Badge Earned: ' + baby.name, 1, EvalMaybeFunction(baby.desc));
+							Molpy.Notify('Badge Earned: ' + baby.name, 1, 0, 0, EvalMaybeFunction(baby.desc));
 						} else {
 							Molpy.Notify(Molpy.MaybeWrapFlipHoriz(baby.name, baby.np < 0), 1);
 						}
