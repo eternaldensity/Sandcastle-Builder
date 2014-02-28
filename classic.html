@@ -123,10 +123,16 @@
 						<div>Logicat Level: <span id="logicatstat"></span></div>
 						<div>Blackprints Collected: <span id="blackstat"></span></div>
 						<div>Save Storage Method: <span id="storagestat"></span></div>
-					</div>
-					<div id="notiflog">Log of Notifications:
-						<div id="logItems">
+					</div>	
+					<div id="sectionLog">
+						<div id="logTitle" class=""></div>
+						<div id="sectionLogBody" class="">
+							<div id="logItems" class="">
+							</div>
 						</div>
+						<input type="Button" value="Back" onclick="Molpy.LogBack()">
+						<input type="Button" value="Forward" onclick="Molpy.LogForward()">
+						<input id="logCurrent" type="Button" value="Current" onclick="Molpy.LogCurrent()">
 					</div>
 				</div>
 				<div id="sectionExport" class="hidden">Exported Save Data: (Keep this somewhere safe)<br>
