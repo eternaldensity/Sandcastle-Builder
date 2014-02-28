@@ -915,20 +915,20 @@ Molpy.DefineGUI = function() {
 	LogEntry = function() {
 		this.text="";
 		this.qty=0;
-		this.date=new Date();
-		this.newpixNumber=0; 
 		this.getLine = function()  {
-			str = "<div title=\"Newpix " + this.newpixNumber + " Date: "+this.date;
+			str = "<div ";
 			if (this.details!="")
-				str += "&#13;"+this.details.replace(/"/g, "&quot;");
-			
+				str += "title=\"&#13;"+this.details.replace(/"/g, "&quot;") + "\"";
+			if (this.clas != "")
+				str += "class=\"" + this.clas
 			str +=  "\">" + this.text;
 			if (this.qty>1)
 				str += ' (x'+this.qty+')';
 			str += '</div>';
 			return str; 
 		}
-		this.details="";		
+		this.details="";
+		this.clas="";
 	};
 	
 	Molpy.ClearLog = function() {
@@ -983,7 +983,7 @@ Molpy.DefineGUI = function() {
 		g('logCurrent').value="Current";
 	}
 	
-	Molpy.Notify = function(text, log, color, title, details) {
+	Molpy.Notify = function(text, log, clas, title, details) {
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
 		//pick the first free (or the oldest) notification to replace it
@@ -1030,9 +1030,8 @@ Molpy.DefineGUI = function() {
 				Molpy.logBuffer += Molpy.notifLog.getLine();
 				Molpy.notifLog.text = text;
 				Molpy.notifLog.qty=1;
-				Molpy.notifLog.newpixNumber=Molpy.newpixNumber;
-				Molpy.notifLog.date=new Date();
 				Molpy.notifLog.details = details || "";
+				Molpy.notifLog.clas = clas || "";
 				Molpy.logUpdatePaint = 1;
 			}
 		}
