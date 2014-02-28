@@ -37,6 +37,7 @@ For personal amusement only.
 - Finally found why logicat needed negative points to go up
 - Fireproof now reduces current Jamming
 - Lodestone Boost
+- Larger upgrades to Panther Rush
 
 ### 3.3332
 
