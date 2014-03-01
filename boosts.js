@@ -4943,6 +4943,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Got('Stretchable Chip Storage'))
 			Molpy.RewardBlastFurnace(furn);
 		else {
+			furn = Math.min(furn,10000);
 			for( var i = 0; i < furn; i++)
 				Molpy.RewardBlastFurnace();
 		}
