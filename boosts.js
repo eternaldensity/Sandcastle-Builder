@@ -7911,7 +7911,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.VoidStare = function(pages, staretype) {
-		if(Molpy.IsEnabled(staretype)) {
+		if(Molpy.IsEnabled(staretype) && isFinite(Molpy.Boosts['Blackprints'].power)) {
 			var oldPages = pages;
 			pages *= Math.pow(1.01, Molpy.Level('Vacuum') / 100);
 			pages = Math.floor(pages);
