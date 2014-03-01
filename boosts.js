@@ -1706,6 +1706,8 @@ Molpy.DefineBoosts = function() {
 					
 			//set the rift variation
 			this.variation = Math.floor(Math.random()*8);
+			//prevent rift image flickering
+			this.riftIMG.attr('src', ('img/rifts/rift_' + (this.variation + 1) + '_1.png'));
 			this.frame = 1;
 			this.rateDelay = 99; //so it draws the first frame
 			this.riftIMG.css('width', this.variationSizes[this.variation][0] + 'px');

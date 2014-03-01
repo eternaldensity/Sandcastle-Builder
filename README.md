@@ -43,6 +43,7 @@ For personal amusement only.
 - Bonus for 'lightning strikes twice' now properly includes the Thunderbird bonus and
   has been set to a consistent 10% bonus on top of everything else instead.
 - The double strike bonus is capped at 50k without Thunderbird and Temporal Duplication
+- Fix rift image flickering
 
 ### 3.3332
 
