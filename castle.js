@@ -2422,17 +2422,9 @@ Molpy.Up = function() {
 			}
 
 		};
-		Molpy.RewardBlitzing = function() {
+		Molpy.RewardBlitzing = function() {			
 			if(Molpy.Got('GL')) {
-				Molpy.Boosts['GL'].countdown = Math.min(500, Molpy.Boosts['GL'].countdown *= 1.21); //GW :P
-				Molpy.Boosts['GL'].power = Molpy.Boosts['GL'].power *= 1.21; //GW :P
-				Molpy.Boosts['GL'].Refresh();
-				Molpy.Boosts['TDE'].Refresh();
-				Molpy.Notify('Lightning struck the same place twice!');
-				Molpy.EarnBadge('Strikes Twice');
-				Molpy.UnlockBoost('LR');
-				if(Molpy.Got('LR'))
-
+				Molpy.Boosts['GL'].onBlitz();
 				return;
 			}
 			var blitzSpeed = 800, blitzTime = 23;

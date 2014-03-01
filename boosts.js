@@ -5557,23 +5557,32 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		buyFunction: function() {
+			this.checkUnlocks(false);
+		},
+		
+		checkUnlocks: function(blitz) {
+			// Bonus from lightning striking twice
+			var blitzBonus = 0;
+			if(blitz) blitzBonus = .1;
+			
 			if(Molpy.Got('LR')) {
-				Molpy.Boosts['LR'].power *= 1.004;
+				// If we have thunderbird and duplication, power is raised 50% and special boosts might get unlocked
 				if(Molpy.Got('Thunderbird') && Molpy.Got('TDE')) {
-					var newLRPower = Molpy.Boosts['LR'].power *= 1.5;
+					var newLRPower = Molpy.Boosts['LR'].power *= (1.5 + blitzBonus);
 					
 					if(newLRPower >= 1e24)
 						Molpy.UnlockBoost('Kite and Key');
 					if(newLRPower >= 1e73)
 						Molpy.UnlockBoost('Lightning in a Bottle');
 					
-					if(Molpy.Got('Kite and Key'))
+					if(Molpy.Got('Kite and Key')) {
 						if(isFinite(newLRPower))
 							Molpy.Boosts['Kite and Key'].power = Math.sqrt(newLRPower);
 						else
 							Molpy.Boosts['Kite and Key'].power = 1e155;
+					}
 						
-					if(Molpy.Got('Lightning in a Bottle'))
+					if(Molpy.Got('Lightning in a Bottle')) {
 						if(isFinite(newLRPower)){
 							if(newLRPower > 1e288)
 								Molpy.Boosts['Lightning in a Bottle'].power = 1e252;
@@ -5582,8 +5591,29 @@ Molpy.DefineBoosts = function() {
 						} else {
 							Molpy.Boosts['Lightning in a Bottle'].power = 1e252;
 						}
+					}
+					this.power = Molpy.Boosts['LR'].power;
+				} else {
+					// If only LR is unlocked, we don't get the 50% boost, just a tiny one
+					// and the power for both LR and GL is capped at 25k
+					var newLRPower = Molpy.Boosts['LR'].power * (1.004 + blitzBonus);
+					this.power = Molpy.Boosts['LR'].power = Math.min(50000, newLRPower);
 				}
+			} else {
+				// If not even LR is unlocked, we just get a small temporary boost to GL power
+				this.power = Math.min(50000, (this.power * (1.004 + blitzBonus)));
 			}
+		},
+		
+		onBlitz: function(){
+			this.checkUnlocks(true);
+			Molpy.Notify('Lightning struck the same place twice: 10% power bonus!');
+			Molpy.EarnBadge('Strikes Twice');
+			Molpy.UnlockBoost('LR');
+			
+			this.countdown = Math.min(500, this.countdown *= 1.21);
+			this.Refresh();
+			Molpy.Boosts['TDE'].Refresh();
 		}
 	});
 	new Molpy.Boost({

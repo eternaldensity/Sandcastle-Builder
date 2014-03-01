@@ -38,6 +38,12 @@ For personal amusement only.
 - Fireproof now reduces current Jamming
 - Lodestone Boost
 
+#### LucidCrux
+- Kite and Key and Lightning in a Bottle can now unlock when 'lightning strikes twice'.
+- Bonus for 'lightning strikes twice' now properly includes the Thunderbird bonus and
+  has been set to a consistent 10% bonus on top of everything else instead.
+- The double strike bonus is capped at 50k without Thunderbird and Temporal Duplication
+
 ### 3.3332
 
 #### Waveney
