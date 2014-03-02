@@ -8090,6 +8090,8 @@ Molpy.DefineBoosts = function() {
 				while (me.Level >= 10*mult && 
 					Molpy.Has('Vacuum',cost.Vacuum*mult*10) && 
 					Molpy.Has('Blackprints',cost.Blackprints*mult*10)) mult *=10;
+				cost.Vacuum *= mult;
+				cost.Blackprints *= mult;
 				str += '<br><input type="Button" value="Increase" onclick="Molpy.SuckMore(' + mult +
 	       				')"></input> the vacuum rate by ' + Molpify(mult,2) + ' at a cost of ' + Molpy.PriceString(cost) + '.';
 			} else {
