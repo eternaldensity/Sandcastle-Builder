@@ -781,7 +781,7 @@ Molpy.Up = function() {
 			for( var i in Molpy.SandTools) {
 				var me = Molpy.SandTools[i];
 				me.storedSpmNP = EvalMaybeFunction(me.spmNP, me) || 0;
-				me.storedTotalSpmNP = me.amount * me.storedSpmNP;
+				me.storedTotalSpmNP = isFinite(me.amount) ? me.amount * me.storedSpmNP : Infinity;
 				Molpy.Boosts['Sand'].sandPermNP += me.storedTotalSpmNP || 0;
 			}
 			var ninjaFactor = 1;
@@ -913,7 +913,7 @@ Molpy.Up = function() {
 				var me = Molpy.SandTools[i];
 				var tf = !isFinite(Molpy.priceFactor * me.price) * 1 * inf;
 				me.storedGpmNP = EvalMaybeFunction(me.gpmNP, me) * tf;
-				me.storedTotalGpmNP = me.amount * me.storedGpmNP;
+				me.storedTotalGpmNP = isFinite(me.amount) ? me.amount * me.storedGpmNP : Infinity;
 				newRate += me.storedTotalGpmNP || 0;
 			}
 			if(Molpy.Got('GL')) {
@@ -2422,17 +2422,9 @@ Molpy.Up = function() {
 			}
 
 		};
-		Molpy.RewardBlitzing = function() {
+		Molpy.RewardBlitzing = function() {			
 			if(Molpy.Got('GL')) {
-				Molpy.Boosts['GL'].countdown = Math.min(500, Molpy.Boosts['GL'].countdown *= 1.21); //GW :P
-				Molpy.Boosts['GL'].power = Molpy.Boosts['GL'].power *= 1.21; //GW :P
-				Molpy.Boosts['GL'].Refresh();
-				Molpy.Boosts['TDE'].Refresh();
-				Molpy.Notify('Lightning struck the same place twice!');
-				Molpy.EarnBadge('Strikes Twice');
-				Molpy.UnlockBoost('LR');
-				if(Molpy.Got('LR'))
-
+				Molpy.Boosts['GL'].onBlitz();
 				return;
 			}
 			var blitzSpeed = 800, blitzTime = 23;
@@ -2695,8 +2687,8 @@ Molpy.Up = function() {
 		if(Molpy.recalculateDig) Molpy.CalculateDigSpeed();
 		for( var i in Molpy.SandTools) {
 			var me = Molpy.SandTools[i];
-			me.totalSand += me.storedTotalSpmNP;
-			me.totalGlass += me.storedTotalGpmNP;
+			me.totalSand = isFinite(me.storedTotalSpmNP) ? me.totalSand + me.storedTotalSpmNP : Infinity;
+			me.totalGlass = isFinite(me.storedTotalGpmNP) ? me.totalGlass + me.storedTotalGpmNP : Infinity;
 		}
 
 		Molpy.Dig(Molpy.Boosts['Sand'].sandPermNP*Molpy.Papal('Sand'));
