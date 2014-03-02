@@ -919,6 +919,12 @@
 				Molpy.BoostsOwned++;
 			}
 		}
+		if(version < 3.3333) {
+			Molpy.Boosts['Sand'].countdown = 0;
+			Molpy.Boosts['Castles'].countdown = 0;
+			Molpy.Boosts['Time Travel'].countdown = 0;
+			Molpy.Boosts['GlassBlocks'].countdown = 0;
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
