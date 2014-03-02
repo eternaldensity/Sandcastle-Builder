@@ -1235,12 +1235,12 @@ Molpy.DefineGUI = function() {
 				var desc = g('SandToolProduction' + me.id);
 				if(desc) {
 					if(desc.innerHTML == '' || desc.innerHTML.indexOf('/mNP:') > -1) {
-						if(me.storedTotalGpmNP)
-							desc.innerHTML = 'Glass/mNP: '
-								+ Molpify(me.storedTotalGpmNP, (me.storedTotalGpmNP < 10 ? 3 : 1));
+						if(isNaN(me.amount))
+							desc.innerHTML = 'Mustard/click: 1';
+						else if(me.storedTotalGpmNP)
+							desc.innerHTML = 'Glass/mNP: ' + Molpify(me.storedTotalGpmNP, (me.storedTotalGpmNP < 10 ? 3 : 1));
 						else
-							desc.innerHTML = 'Sand/mNP: '
-								+ Molpify(me.storedTotalSpmNP, (me.storedTotalSpmNP < 10 ? 3 : 1));
+							desc.innerHTML = 'Sand/mNP: ' + Molpify(me.storedTotalSpmNP, (me.storedTotalSpmNP < 10 ? 3 : 1));
 					}
 				}
 			}
@@ -1252,18 +1252,20 @@ Molpy.DefineGUI = function() {
 
 			var desc = g('CastleToolProduction' + me.id);
 			if(desc) {
+				var fullDesc = '';
+				if(isNaN(me.amount))
+						fullDesc += 'Mustard/click: 1<br>';
 				if(desc.innerHTML == '' || desc.innerHTML.indexOf('Active:') > -1 || desc.innerHTML.indexOf("Ninja'd") > -1) {
 					if(me.currentActive && Molpy.ninjaTime > Molpy.ONGelapsed) {
 						if(Molpy.ninjad) {
-							desc.innerHTML = "Ninja'd!";
+							fullDesc += "Ninja'd!";
 						} else {
-							desc.innerHTML = 'Active: ' + Molpify(me.currentActive, 3) + '<br>Timer: '
+							fullDesc += 'Active: ' + Molpify(me.currentActive, 3) + '<br>Timer: '
 								+ Molpify(Math.ceil((Molpy.ninjaTime - Molpy.ONGelapsed) / Molpy.NPlength));
 						}
-					} else {
-						desc.innerHTML = '';
 					}
 				}
+				desc.innerHTML = fullDesc;
 			}
 		}
 		for(i in Molpy.Boosts) {
