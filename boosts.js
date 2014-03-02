@@ -4943,6 +4943,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Got('Stretchable Chip Storage'))
 			Molpy.RewardBlastFurnace(furn);
 		else {
+			furn = Math.min(furn,10000);
 			for( var i = 0; i < furn; i++)
 				Molpy.RewardBlastFurnace();
 		}
@@ -5263,19 +5264,29 @@ Molpy.DefineBoosts = function() {
 			str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
 				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
 			if (me.bought) {
-				if (Molpy.Has('Blackprints',rushcost.Blackprints)) {
-					str += '<br>';
+				var mult = 1;
+				var strs = [];
+				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
+					Molpy.Has('Logicat',rushcost.Logicat*mult) && mult<me.Level) {
+					var mstr = '';
 					if (!rushcost.Vacuum) {
-						str += '<input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>';
+						mstr += '<input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>';
 					} else {
-						if (Molpy.Has('Vacuum',rushcost.Vacuum)) str +=
-							'<input type="Button" onclick="Molpy.PantherRush()" value="Use Vacuums"></input>';
-						if (Molpy.Has('Mustard',rushcost.Vacuum)) str +=
-							'<input type="Button" onclick="Molpy.PantherRush(1)" value="Use Mustard"></input>';
-						if (Molpy.Has('Bonemeal',rushcost.Vacuum*10)) str +=
-							'<input type="Button" onclick="Molpy.PantherRush(2)" value="Use Bonemeal"></input>';
+						if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
+							'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
+						if (Molpy.Has('Mustard',rushcost.Vacuum*mult)) mstr +=
+							'<input type="Button" onclick="Molpy.PantherRush(1,'+mult+')" value="Use Mustard"></input>';
+						if (Molpy.Has('Bonemeal',rushcost.Vacuum*10*mult)) mstr +=
+							'<input type="Button" onclick="Molpy.PantherRush(2,'+mult+')" value="Use Bonemeal"></input>';
+					}
+					if (mstr) {
+						strs.push('<br>' + (mult>1?'Raise by ' + Molpify(mult/2) + '<br>':'') + mstr);
+						mult *= 10;
+					} else {
+						break;
 					}
 				}
+				if (strs.length) str += strs.slice(-3).join('');
 			}
 			return str;
 		},
@@ -5308,7 +5319,7 @@ Molpy.DefineBoosts = function() {
 		};
 	}
 	
-	Molpy.PantherRush = function(stuff) {
+	Molpy.PantherRush = function(stuff,n) {
 		var pr = Molpy.Boosts['Panther Rush'];
 		var cost = Molpy.CalcRushCost();
 		if (stuff) {
@@ -5320,10 +5331,15 @@ Molpy.DefineBoosts = function() {
 				delete cost['Vacuum'];
 			}
 		}
+		if (n) {
+			for (var coin in cost) cost[coin] *=n;
+		} else {
+			n = 1;
+		}
 		if(Molpy.Has(cost)
 			&& (pr.Level > 12 || confirm('Really spend ' + Molpy.PriceString(cost).replace(/&nbsp;/g, ' ')
 				+ ' on Panther Rush?'))) {
-			if(Molpy.Spend(cost)) pr.Add(1);
+			if(Molpy.Spend(cost)) pr.Add(n);
 			var fCost = Molpy.CalcRushCost(0, 1);
 			Molpy.LockBoost(pr.alias);
 			var speed = pr.Level/2;
@@ -7896,7 +7912,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.VoidStare = function(pages, staretype) {
-		if(Molpy.IsEnabled(staretype)) {
+		if(Molpy.IsEnabled(staretype) && isFinite(Molpy.Boosts['Blackprints'].power)) {
 			var oldPages = pages;
 			pages *= Math.pow(1.01, Molpy.Level('Vacuum') / 100);
 			pages = Math.floor(pages);
@@ -8074,6 +8090,8 @@ Molpy.DefineBoosts = function() {
 				while (me.Level >= 10*mult && 
 					Molpy.Has('Vacuum',cost.Vacuum*mult*10) && 
 					Molpy.Has('Blackprints',cost.Blackprints*mult*10)) mult *=10;
+				cost.Vacuum *= mult;
+				cost.Blackprints *= mult;
 				str += '<br><input type="Button" value="Increase" onclick="Molpy.SuckMore(' + mult +
 	       				')"></input> the vacuum rate by ' + Molpify(mult,2) + ' at a cost of ' + Molpy.PriceString(cost) + '.';
 			} else {

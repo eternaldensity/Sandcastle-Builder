@@ -12,7 +12,6 @@ Molpy.Option = function(args) {
 	this.onchange = args.onchange || 0;
 	this.range = args.range || 1;
 	this.text = args.text || ["No","Yes"];
-	this.value = Molpy.options[args.name];
 	this.breakafter = args.breakafter || 0;
 
 	Molpy.Options[this.name] = this;
@@ -23,8 +22,7 @@ Molpy.Option = function(args) {
 Molpy.DefaultOptions = function() {
 	for (var opi in Molpy.Options) {
 		var opt=Molpy.Options[opi];
-		opt.value = opt.defaultval;
-        	Molpy.options[opt.name] = opt.value;
+        	Molpy.options[opt.name] = opt.defaultval;
         	if (opt.onchange) opt.onchange();
 	}
 }
@@ -36,30 +34,28 @@ Molpy.RefreshOptions = function() {
 	for (var opi in Molpy.OptionsById) {
 		var opt=Molpy.OptionsById[opi];
 		if (EvalMaybeFunction(opt.visability) > 0) {
-			str += '<div id=' + opt.name + ' class=minifloatbox><a onclick=Molpy.ClickOption(' + opt.id + ')>' + opt.title +
+			str += '<div id=' + opt.name + 'option class=minifloatbox><a onclick=Molpy.ToggleOption(\'' + opt.name + '\')>' + opt.title +
 				'</a><div id=' + opt.name + 'descripton><br>';
 			var texts = EvalMaybeFunction(opt.text,opt);
-			if (typeof(texts) === 'object') str += texts[opt.value]
+			if (typeof(texts) === 'object') str += texts[Molpy.options[opt.name]]
 			else str += texts;
 			str += '</div></div>';
 			if (opt.breakafter) str += '<br>';
 		}
 	}
-	g('optionItems').innerHTML = str;
+	g('optionsItems').innerHTML = str;
 }
 
-Molpy.ClickOption = function(id) {
-	opt = Molpy.OptionsById[id];
-	opt.value++;
-	if (opt.value > opt.range) opt.value=0;
-	Molpy.options[opt.name] = opt.value;
+Molpy.ToggleOption = function(id) {
+	opt = Molpy.Options[id];
+	Molpy.options[opt.name]++;
+	if (Molpy.options[opt.name] > opt.range) Molpy.options[opt.name]=0;
 	if (opt.onchange) opt.onchange();
 	Molpy.RefreshOptions();
 }
 
 Molpy.Setoption = function(opt,val) {
 	Molpy.options[opt] = val;
-	Molpy.Options[opt].value = val;
 }
 
 // These options are defined in the display order
@@ -298,11 +294,6 @@ new Molpy.Option({
 		Molpy.options.european = parseInt(pixels[16]) || 0;
 		Molpy.options.smalldecimal = parseInt(pixels[17]) || 0;
 		Molpy.options.logicatcol = parseInt(pixels[18]) || 0;
-
-		for (var opi in Molpy.Options) {
-			var opt=Molpy.Options[opi];
-			opt.value = Molpy.options[opt.name];
-		}
 	}
 
 
