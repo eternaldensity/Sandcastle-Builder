@@ -44,6 +44,7 @@ For personal amusement only.
   has been set to a consistent 10% bonus on top of everything else instead.
 - The double strike bonus is capped at 50k without Thunderbird and Temporal Duplication
 - Fix rift image flickering
+- Fix targeted time travel with mustard castles
 
 ### 3.3332
 

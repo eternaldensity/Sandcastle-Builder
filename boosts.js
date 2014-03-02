@@ -707,7 +707,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('In the future, you\'ll pay for this!');
 			return;
 		}
-		if(Molpy.Boosts['Castles'].power >= price) {
+		if(Molpy.Boosts['Castles'].power >= price || chips) {
 			if(!Molpy.Spend('GlassChips', chips)) {
 				Molpy.Notify('Great Scott, there\'s a hole in the glass tank!');
 				return;
