@@ -6292,9 +6292,12 @@ Molpy.DefineBoosts = function() {
 		name: 'Fireproof',
 		icon: 'fireproof',
 		group: 'cyb',
-		desc: 'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make ' + Molpify(1e10) + ' times as many Glass Chips.<br>'
+		desc: function() { 
+			return 'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make ' + Molpify(1e10) + ' times as many Glass Chips.<br>'
 			+ 'However they will destroy all your castles every mNP if the Navigation Code hack is not installed.<br>'
-			+ 'On the plus side, you can overcome Jamming far quicker.',
+			+ 'On the plus side, you can overcome Jamming far quicker.';
+		},
+	
 		price:{	
 			Sand: Infinity,
 			Castles: Infinity,
