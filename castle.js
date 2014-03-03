@@ -1030,6 +1030,7 @@ Molpy.Up = function() {
 					_gaq && _gaq.push(['_trackEvent', 'Buy Tool', this.name, '' + bought]);
 				}
 			};
+			
 			this.create = function(n) {
 				this.amount += n;
 				this.bought += n;
@@ -1043,6 +1044,7 @@ Molpy.Up = function() {
 				}
 				return this;
 			};
+			
 			this.sell = function() {
 				if(this.amount > 0) {
 					this.amount--;
@@ -1067,6 +1069,7 @@ Molpy.Up = function() {
 					Molpy.CheckBuyUnlocks(1);
 				}
 			};
+			
 			this.destroyTemp = function() {
 				var cost = this.temp * 5;
 				if(Molpy.Has('GlassBlocks', cost)) {
@@ -1080,15 +1083,18 @@ Molpy.Up = function() {
 					Molpy.CheckDragon();
 				}
 			};
+			
 			this.updateBuy = function() {
 				$('#SandToolBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
 			};
+			
 			this.isAffordable = function() {
 
 				if(Molpy.ProtectingPrice()) return 0;
 				var price = Math.floor(Molpy.priceFactor * this.basePrice * Math.pow(Molpy.sandToolPriceFactor, this.amount));
 				return isFinite(price) && Molpy.Has('Castles', price);
 			};
+			
 			this.showdesc = function(keep) {
 				var d = g('SandToolDescription' + this.id);
 				if(!d) return;
@@ -1113,22 +1119,30 @@ Molpy.Up = function() {
 				}
 				d.innerHTML = '<br>' + desc;
 			};
+			
 			this.hidedesc = function() {
 				var d = g('SandToolDescription' + this.id);
 				if(d) d.innerHTML = '';
 			};
+			
 			this.Refresh = function() {
 				Molpy.shopRepaint = 1;
 				Molpy.recalculateDig = 1;
 				this.findPrice();
 				if(this.drawFunction) this.drawFunction();
 			};
+			
 			this.findPrice = function() {
 				if(this.amount > 9000)
 					this.price = Infinity;
 				else
 					this.price = Math.floor(this.basePrice * Math.pow(Molpy.sandToolPriceFactor, this.amount));
 			};
+			
+			this.GetFormattedName = function() {
+				return '' + format(this.name);
+			};
+			
 			this.getDiv = function() {
 				if(this.divElement) return this.divElement;
 				return Molpy.newObjectDiv('tool', false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
@@ -1217,6 +1231,7 @@ Molpy.Up = function() {
 					_gaq && _gaq.push(['_trackEvent', 'Buy Tool', this.name, '' + bought]);
 				}
 			};
+			
 			this.create = function(n) {
 				this.amount += n;
 				this.bought += n;
@@ -1230,6 +1245,7 @@ Molpy.Up = function() {
 				}
 				return this;
 			};
+			
 			this.sell = function() {
 				this.findPrice();
 				if(this.amount > 0) {
@@ -1255,6 +1271,7 @@ Molpy.Up = function() {
 					Molpy.CheckBuyUnlocks(1);
 				}
 			};
+			
 			this.destroyTemp = function() {
 				var cost = this.temp * 10;
 				if(Molpy.Has('GlassBlocks', cost)) {
@@ -1272,14 +1289,17 @@ Molpy.Up = function() {
 					Molpy.Notify('Not nearly glassy enough.', 1);
 				}
 			};
+			
 			this.updateBuy = function() {
 				$('#CastleToolBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
 			};
+			
 			this.isAffordable = function() {
 				if(Molpy.ProtectingPrice()) return 0;
 				var price = Math.floor(Molpy.priceFactor * this.price);
 				return isFinite(price) && Molpy.Has('Castles', price);
 			};
+			
 			this.DestroyPhase = function() {
 				var i = this.amount;
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
@@ -1323,6 +1343,7 @@ Molpy.Up = function() {
 				if(this.destroyFunction) this.destroyFunction();
 
 			};
+			
 			this.BuildPhase = function() {
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var buildN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
@@ -1342,6 +1363,7 @@ Molpy.Up = function() {
 				}
 				this.currentActive = 0;
 			};
+			
 			this.showdesc = function(keep) {
 				var d = g('CastleToolDescription' + this.id);
 				if(!d) return;
@@ -1380,10 +1402,12 @@ Molpy.Up = function() {
 				}
 				d.innerHTML = '<br>' + desc;
 			};
+			
 			this.hidedesc = function(event) {
 				var d = g('CastleToolDescription' + this.id);
 				if(d) d.innerHTML = '';
 			};
+			
 			this.findPrice = function() {
 				var i = this.amount;
 				if(isNaN(i)) {
@@ -1406,12 +1430,18 @@ Molpy.Up = function() {
 				}
 				this.price = p;
 			};
+			
 			this.Refresh = function() {
 				Molpy.shopRepaint = 1;
 				Molpy.recalculateDig = 1;
 				this.findPrice();
 				if(this.drawFunction) this.drawFunction();
 			};
+			
+			this.GetFormattedName = function() {
+				return '' + format(this.name);
+			};
+			
 			this.getDiv = function() {
 				if(this.divElement) return this.divElement;
 				return Molpy.newObjectDiv('tool', false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
@@ -1721,12 +1751,12 @@ Molpy.Up = function() {
 			};
 			
 			this.GetHeading = function() {
-				return '<h1>[' + Molpy.groupNames[this.group][0]
-					+ ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '') + ']</h1>';
+				return "" + Molpy.groupNames[this.group][0]
+				     + ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '');
 			};
 			
 			this.GetFormattedName = function() {
-				return '<h2>' + format(this.name) + this.GetBuy() + '</h2>';
+				return '' + format(this.name);
 			};
 			
 			this.GetBuy = function() {
@@ -1943,11 +1973,11 @@ Molpy.Up = function() {
 			};
 			
 			this.GetHeading = function() {
-				return '<h1>[' + Molpy.groupNames[this.group][0] + (this.HasUpgrade() ? '+' : '') + ']</h1>';
+				return '' + Molpy.groupNames[this.group][0] + (this.HasUpgrade() ? '+' : '');
 			};
 			
 			this.GetFormattedName = function() {
-				return '<h2>' + format((this.earned || this.visibility < 2 ? this.name : '????')) + '</h2>';
+				return '' + format((this.earned || this.visibility < 2 ? this.name : '????'));
 			};
 			
 			this.hidedesc = function() {

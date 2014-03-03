@@ -58,6 +58,20 @@ Molpy.DefineGUI = function() {
 			if(current == parent) return 1;
 		}
 	}
+	
+	Molpy.onMouseOver = function(e) {
+		// Can add argument later if we want
+		// Calls change to $().mouseover({arg1: 1, arg2: 3}, Molpy.onMouseOver)
+		// and are referenced thus: e.data.arg1, e.data.arg2
+		if(Molpy.Boosts['Expando'].IsEnabled) return;
+		$(this).find('.description').show();
+		if(!Molpy.Boosts['Expando'].unlocked) Molpy.UnlockBoost('Expando');
+	}
+	
+	Molpy.onMouseOut = function(e) {
+		if(Molpy.Boosts['Expando'].IsEnabled) return;
+		$(this).find('.description').hide();
+	}
 
 	Molpy.Onhover = function(me, event) {
 		if(me.hoverOnCounter > 0 || Molpy.Boosts['Expando'].power) {
@@ -1922,29 +1936,40 @@ Molpy.DefineGUI = function() {
 		});
 	}
 	
-	Molpy.newObjectDiv = function(objType, group, name, icon, price, production, desc) {
-		var groupHTML = '';
+	Molpy.newObjectDiv = function(type, object) {
+		var headingHTML = '';
 		var purchaseHTML = '';
 		var productionHTML = '';
 		
-		if(group) groupHTML = '	<H1 class="groupTitle">[' + group + ']</H1>';
-		if(price) {
-			purchaseHTML = '	<div class="purchase "><span class="buySpan">Buy</span> <span class="sellSpan">Sell</span></div>'
-				         + '	<div class="price ">'
-				         + Molpy.createPriceInnerHTML(price)
-				         + '	</div>';
-		}
-		if(production) productionHTML = '	<div class="production" />';
+		if(object.group) headingHTML = '	<H1 class="groupTitle">[' + object.GetHeading() + ']</H1>';
 		
-		var divHTML = '<div class="objDiv ' + objType + '">'
-			        + groupHTML
-			        + '	<div class="icon ' + icon + '" />'
-			        + '	<H2 class="objName">' + name + '</H2><br />'
+		//Only do purchase and price divs if object is a tool or is purchasable and in the shop
+		if(type == 'tool' || (object.price && !object.bought)) {
+			var price = object.price;
+			var realPrice = object.CalcPrice(price);
+			
+			if(!Molpy.IsFree(realPrice)) {
+				purchaseHTML = '	<div class="purchase "><a class="buySpan">Buy</a>' + (type == 'tool' ?  '<a class="sellSpan">Sell</a>' : '') + '</div>'
+					         + '	<div class="price ">'
+					         + Molpy.createPriceInnerHTML(price)
+					         + '	</div>';
+			}
+		}
+		
+		if(type == 'tool') productionHTML = '	<div class="production" />';
+		
+		var divHTML = '<div class="objDiv ' + object.GetFullClass() + '">'
+			        + '	<div class="icon ' + type + '_' + (object.icon ? object.icon : object.id) + '" />'
+			        + headingHTML
+			        + '	<H2 class="objName">' + object.GetFormattedName() + '</H2>'
 			        + purchaseHTML
 			        + productionHTML
-			        + '	<div class="description">' + desc + '</div>'
+			        + '	<br /><div class="description">' + object.GetDesc() + '</div>'
 			        + '</div>';
-		return $(divHTML);
+		
+		var div = $(divHTML);
+		div.mouseover(Molpy.onMouseOver).mouseout(Molpy.onMouseOut);
+		return div;
 	}
 	
 	Molpy.createPriceInnerHTML = function(price) {
