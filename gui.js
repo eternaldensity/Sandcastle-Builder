@@ -1921,4 +1921,44 @@ Molpy.DefineGUI = function() {
 			Molpy.badgeRepaint = 1;
 		});
 	}
+	
+	/*Molpy.newObjectDiv = function(purchase, production) {
+		var purchaseHTML = ''
+		var productionHTML = '';
+		
+		if(purchase) purchaseHTML = '	<div class="purchase"><span class="buySpan" /><span class="sellSpan" /></div>'
+			                      + '	<div class="price" />';
+		if(production) productionHTML = '	<div class="production" />';
+		
+		var divHTML = '<div class="objDiv">'
+			        + '	<div class="groupTitle" />'
+			        + '	<div class="icon" />'
+			        + '	<div class="objName" />'
+			        + purchaseHTML
+			        + productionHTML
+			        + '	<div class="description" />'
+			        + '</div>';
+		return $(divHTML);
+	}*/
+	
+	Molpy.newObjectDiv = function(objType, group, name, icon, price, production, desc) {
+		var groupHTML = '';
+		var purchaseHTML = '';
+		var productionHTML = '';
+		
+		if(group) groupHTML = '	<H1 class="groupTitle">[' + group + ']</H1>';
+		if(purchase) purchaseHTML = '	<div class="purchase"><span class="buySpan">Buy</span> <span class="sellSpan">Sell</span></div>'
+			                      + '	<div class="price" />';
+		if(production) productionHTML = '	<div class="production" />';
+		
+		var divHTML = '<div class="objDiv ' + objType + '">'
+			        + groupHTML
+			        + '	<div class="icon ' + icon + '" />'
+			        + '	<H2 class="objName">' + name + '</H2>'
+			        + purchaseHTML
+			        + productionHTML
+			        + '	<div class="description">' + desc + '</div>'
+			        + '</div>';
+		return $(divHTML);
+	}
 }

@@ -984,6 +984,7 @@ Molpy.Up = function() {
 			this.background = args.background;
 			this.buyFunction = args.buyFunction;
 			this.drawFunction = args.drawFunction;
+			this.divElement = Molpy.newObjectDiv(tool, false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
 
 			this.amount = 0;
 			this.bought = 0;
@@ -1166,6 +1167,7 @@ Molpy.Up = function() {
 			this.buyFunction = args.buyFunction;
 			this.drawFunction = args.drawFunction;
 			this.destroyFunction = args.destroyFunction;
+			this.divElement = Molpy.newObjectDiv(tool, false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
 
 			this.amount = 0;
 			this.bought = 0;
@@ -1761,17 +1763,20 @@ Molpy.Up = function() {
 
 			// Create CSS styles for the boost
 			if(this.gifIcon){
-				addCSSRule(document.styleSheets[1], '.darkscheme #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.gif' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.gif' )");
 			} else if(this.icon) {
-				addCSSRule(document.styleSheets[1], '.shop #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_grey_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.darkscheme .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.shop .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_grey_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.png' )");
 			}
 			if(this.heresy){
-				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_heresy_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_heresy_icon.png' )");
 			}
+			
+			//create the div
+			this.divElement = Molpy.newObjectDiv(boost, this.group, this.name, 'boost_'+this.icon, this.price, false, this.desc);
 			
 			Molpy.BoostN++;
 			
@@ -1953,16 +1958,19 @@ Molpy.Up = function() {
 			
 			// Create CSS style for badge
 			if(this.gifIcon){
-				addCSSRule(document.styleSheets[1], '.darkscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.gif' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.gif' )");
 			} else if(this.icon) {
-				addCSSRule(document.styleSheets[1], '.darkscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
 			}
 			if(this.heresy){
-				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
 			}
+			
+			//create the div
+			this.divElement = Molpy.newObjectDiv(badge, this.group, this.name, 'badge_'+this.icon, false, false, this.desc);
 			
 			Molpy.BadgeN++;
 			
