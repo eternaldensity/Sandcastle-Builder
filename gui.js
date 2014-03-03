@@ -1922,43 +1922,39 @@ Molpy.DefineGUI = function() {
 		});
 	}
 	
-	/*Molpy.newObjectDiv = function(purchase, production) {
-		var purchaseHTML = ''
-		var productionHTML = '';
-		
-		if(purchase) purchaseHTML = '	<div class="purchase"><span class="buySpan" /><span class="sellSpan" /></div>'
-			                      + '	<div class="price" />';
-		if(production) productionHTML = '	<div class="production" />';
-		
-		var divHTML = '<div class="objDiv">'
-			        + '	<div class="groupTitle" />'
-			        + '	<div class="icon" />'
-			        + '	<div class="objName" />'
-			        + purchaseHTML
-			        + productionHTML
-			        + '	<div class="description" />'
-			        + '</div>';
-		return $(divHTML);
-	}*/
-	
 	Molpy.newObjectDiv = function(objType, group, name, icon, price, production, desc) {
 		var groupHTML = '';
 		var purchaseHTML = '';
 		var productionHTML = '';
 		
 		if(group) groupHTML = '	<H1 class="groupTitle">[' + group + ']</H1>';
-		if(purchase) purchaseHTML = '	<div class="purchase"><span class="buySpan">Buy</span> <span class="sellSpan">Sell</span></div>'
-			                      + '	<div class="price" />';
+		if(price) {
+			purchaseHTML = '	<div class="purchase "><span class="buySpan">Buy</span> <span class="sellSpan">Sell</span></div>'
+				         + '	<div class="price ">'
+				         + Molpy.createPriceInnerHTML(price)
+				         + '	</div>';
+		}
 		if(production) productionHTML = '	<div class="production" />';
 		
 		var divHTML = '<div class="objDiv ' + objType + '">'
 			        + groupHTML
 			        + '	<div class="icon ' + icon + '" />'
-			        + '	<H2 class="objName">' + name + '</H2>'
+			        + '	<H2 class="objName">' + name + '</H2><br />'
 			        + purchaseHTML
 			        + productionHTML
 			        + '	<div class="description">' + desc + '</div>'
 			        + '</div>';
 		return $(divHTML);
+	}
+	
+	Molpy.createPriceInnerHTML = function(price) {
+		var innerHTML = 'Price:';
+		for(var p in price) {
+			var pNum = price[p];
+			//change all number representations into a number (40,000 40k 4e4)
+			pNum = isNaN(pNum) ? DeMolpify(pNum) : pNum;
+			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum) + ' ' + p;
+		}
+		return innerHTML;
 	}
 }

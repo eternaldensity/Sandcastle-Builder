@@ -984,7 +984,7 @@ Molpy.Up = function() {
 			this.background = args.background;
 			this.buyFunction = args.buyFunction;
 			this.drawFunction = args.drawFunction;
-			this.divElement = Molpy.newObjectDiv(tool, false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
+			this.divElement = null;
 
 			this.amount = 0;
 			this.bought = 0;
@@ -1129,6 +1129,10 @@ Molpy.Up = function() {
 				else
 					this.price = Math.floor(this.basePrice * Math.pow(Molpy.sandToolPriceFactor, this.amount));
 			};
+			this.getDiv = function() {
+				if(this.divElement) return this.divElement;
+				return Molpy.newObjectDiv('tool', false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
+			}
 
 			Molpy.SandTools[this.name] = this;
 			Molpy.SandToolsById[this.id] = this;
@@ -1167,7 +1171,7 @@ Molpy.Up = function() {
 			this.buyFunction = args.buyFunction;
 			this.drawFunction = args.drawFunction;
 			this.destroyFunction = args.destroyFunction;
-			this.divElement = Molpy.newObjectDiv(tool, false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
+			this.divElement = null;
 
 			this.amount = 0;
 			this.bought = 0;
@@ -1408,6 +1412,10 @@ Molpy.Up = function() {
 				this.findPrice();
 				if(this.drawFunction) this.drawFunction();
 			};
+			this.getDiv = function() {
+				if(this.divElement) return this.divElement;
+				return Molpy.newObjectDiv('tool', false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
+			}
 
 			Molpy.CastleTools[this.name] = this;
 			Molpy.CastleToolsById[this.id] = this;
@@ -1749,6 +1757,11 @@ Molpy.Up = function() {
 				for(var i in this.saveData)
 					this.saveData[i][0] = this.saveData[i][1];
 			}
+			
+			this.getDiv = function() {
+				if(this.divElement) return this.divElement;
+				return Molpy.newObjectDiv('boost', this.group, this.name, 'boost_'+this.icon, this.price, false, this.GetDesc());
+			}
 
 			// Add the boost to lists
 			Molpy.Boosts[this.alias] = this;
@@ -1774,9 +1787,6 @@ Molpy.Up = function() {
 				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_heresy_icon.png' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_heresy_icon.png' )");
 			}
-			
-			//create the div
-			this.divElement = Molpy.newObjectDiv(boost, this.group, this.name, 'boost_'+this.icon, this.price, false, this.desc);
 			
 			Molpy.BoostN++;
 			
@@ -1950,6 +1960,11 @@ Molpy.Up = function() {
 					}
 				}
 			};
+			
+			this.getDiv = function() {
+				if(this.divElement) return this.divElement;
+				return Molpy.newObjectDiv('badge', this.group, this.name, 'badge_'+this.icon, false, false, this.GetDesc());
+			}
 
 			// Add Badge to lists
 			Molpy.Badges[this.alias] = this;
@@ -1968,9 +1983,6 @@ Molpy.Up = function() {
 				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
 			}
-			
-			//create the div
-			this.divElement = Molpy.newObjectDiv(badge, this.group, this.name, 'badge_'+this.icon, false, false, this.desc);
 			
 			Molpy.BadgeN++;
 			
