@@ -8089,7 +8089,7 @@ Molpy.DefineBoosts = function() {
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
 				var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - Molpy.Level('Time Lord') * (Molpy.Level('Time Lord') + 1) / 2;
-				if (isNaN(c)) c = Infinity;
+				if (isNaN(c) || c == 0) c = Infinity;
 				if(!Molpy.Got('TDE')) c /= 2;
 				c*=Molpy.Papal("Flux");
 				if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',Math.ceil(1000+Molpy.Boosts['Bonemeal'].power/50))) 
