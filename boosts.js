@@ -6253,7 +6253,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var str = 'Allows you to get Panther Poke with more remaining Caged Logicat puzzles.<br>'
-				+ 'Currently, Panther Poke is available if you have less than ' + Molpify(Molpy.PokeBar() - 1) + ' Caged Logicat puzzles remaining.';
+				+ 'Currently, Panther Poke is available if you have less than ' + Molpify(Molpy.PokeBar() - 1,1) + ' Caged Logicat puzzles remaining.';
 			if(!me.bought) return str;
 			var goatCost = me.power;
 			var powerReq = Math.pow(5, me.power + 12);
@@ -8089,7 +8089,7 @@ Molpy.DefineBoosts = function() {
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
 				var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - Molpy.Level('Time Lord') * (Molpy.Level('Time Lord') + 1) / 2;
-				if (isNaN(c)) c = Infinity;
+				if (isNaN(c) || c == 0) c = Infinity;
 				if(!Molpy.Got('TDE')) c /= 2;
 				c*=Molpy.Papal("Flux");
 				if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',Math.ceil(1000+Molpy.Boosts['Bonemeal'].power/50))) 
