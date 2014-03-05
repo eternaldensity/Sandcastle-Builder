@@ -60,6 +60,7 @@ For personal amusement only.
 #### ED
 - Started fixing log for classic
 - Did some testing
+- Refresh boost/badge on class (tag) change, to update faves
 
 ### 3.3332
 

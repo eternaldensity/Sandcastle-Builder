@@ -2666,6 +2666,7 @@ Molpy.Up = function() {
 					var newclass = me.classChange();
 					if (newclass != me.className) {
 						me.className = newclass;
+						me.Refresh();
 						Molpy.boostRepaint = 1;
 					}
 				}
@@ -2678,6 +2679,7 @@ Molpy.Up = function() {
 					var newclass = me.classChange();
 					if (newclass != me.className) {
 						me.className = newclass;
+						me.Refresh();
 						Molpy.badgeRepaint = 1;
 					}
 				}
