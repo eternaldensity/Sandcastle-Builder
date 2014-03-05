@@ -49,6 +49,18 @@ For personal amusement only.
 - Fix infinite tools producing mustard
 - Mustard tools show Mustard per click
 
+#### Bakasan15
+- Less intrusive log autoscroll
+- Current log button
+- Colours in log entries
+
+#### mart0258
+- TDE fixes, particularly the 0x multiplier
+
+#### ED
+- Started fixing log for classic
+- Did some testing
+
 ### 3.3332
 
 #### Waveney
