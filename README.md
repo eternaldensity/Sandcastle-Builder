@@ -61,6 +61,7 @@ For personal amusement only.
 - Started fixing log for classic
 - Did some testing
 - Refresh boost/badge on class (tag) change, to update faves
+- Shadow Feeder only activates a limited number of times per NP (increase with Panther Rush or CDSP) (maybe still too high)
 
 ### 3.3332
 
