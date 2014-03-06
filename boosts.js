@@ -5273,7 +5273,7 @@ Molpy.DefineBoosts = function() {
 					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 )) {
 					var mstr = '';
 					if (!rushcost.Vacuum) {
-						mstr += '<input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>';
+						mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
 					} else {
 						if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
 							'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
