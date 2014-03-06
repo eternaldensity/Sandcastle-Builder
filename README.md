@@ -31,7 +31,9 @@ For personal amusement only.
 #### Waveney
 - Fixed error on load for Index and Pure 
 - Fixed Panther Rush upgrades to levels 1 and 2
-- More Colouredoptions for decimal numbers
+- More Coloured options for decimal numbers
+- Stop rifting to Minus until you have chips
+- Better Stuff Sorting
 
 ### 3.3333
 
