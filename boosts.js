@@ -7354,6 +7354,7 @@ Molpy.DefineBoosts = function() {
 	
 	Molpy.FastForward = function() {
 		Molpy.newpixNumber = Molpy.highestNPvisited;
+		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
 		Molpy.LockBoost('Fast Forward');
