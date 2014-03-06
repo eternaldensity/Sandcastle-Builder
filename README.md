@@ -26,6 +26,17 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.33331
+
+#### Waveney
+- Fixed error on load for Index and Pure 
+- Fixed Panther Rush upgrades to levels 1 and 2
+- More Coloured options for decimal numbers
+- Stop rifting to Minus until you have chips
+- Better Stuff Sorting
+- Molpy Down and Coma got lost on Clasic
+- Fast Forward bug fix
+
 ### 3.3333
 
 #### Waveney

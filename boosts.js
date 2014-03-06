@@ -1793,7 +1793,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.newpixNumber = Math.round(Math.random() * (Math.abs(Molpy.highestNPvisited) - 241) + 241)
 			else
 				Molpy.newpixNumber = Math.round(Math.random() * Math.abs(Molpy.highestNPvisited));
-			if(Molpy.Earned('Minus Worlds') && Math.floor(Math.random() * 2)) Molpy.newpixNumber *= -1;
+			if(Molpy.Earned('Minus Worlds') && Molpy.Has('GlassChips',1000) && Math.floor(Math.random() * 2)) Molpy.newpixNumber *= -1;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
 			if(Molpy.Got('Flux Surge')) {
@@ -5270,10 +5270,10 @@ Molpy.DefineBoosts = function() {
 				var mult = 1;
 				var strs = [];
 				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
-					Molpy.Has('Logicat',rushcost.Logicat*mult) && mult<me.Level) {
+					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 )) {
 					var mstr = '';
 					if (!rushcost.Vacuum) {
-						mstr += '<input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>';
+						mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
 					} else {
 						if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
 							'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
@@ -7354,6 +7354,7 @@ Molpy.DefineBoosts = function() {
 	
 	Molpy.FastForward = function() {
 		Molpy.newpixNumber = Molpy.highestNPvisited;
+		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
 		Molpy.LockBoost('Fast Forward');
