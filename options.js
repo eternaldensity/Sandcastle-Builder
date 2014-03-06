@@ -175,8 +175,9 @@ new Molpy.Option({
 new Molpy.Option({
 	name: 'smalldecimal',
 	title: 'Decimal Settings',		
-	text: ['Normal','Small','Shaded','Italic'],
-	range: 3,
+	text: ['Normal','Small','Shaded','Italic','Red','Lime','Orange','Mauve','Teal','Blue'],
+	range: 9,
+	breakafter: 1,
 });
 
 new Molpy.Option({

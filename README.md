@@ -26,6 +26,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.33331
+
+#### Waveney
+- Fixed error on load for Index and Pure 
+- Fixed Panther Rush upgrades to levels 1 and 2
+- More Colouredoptions for decimal numbers
+
 ### 3.3333
 
 #### Waveney
