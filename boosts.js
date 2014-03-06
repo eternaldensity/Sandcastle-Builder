@@ -6493,6 +6493,9 @@ Molpy.DefineBoosts = function() {
 					Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 				}
 			}
+			if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
+				Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
+			}
 		}
 	});
 	new Molpy.Boost({
