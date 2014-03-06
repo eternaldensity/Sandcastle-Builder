@@ -1793,7 +1793,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.newpixNumber = Math.round(Math.random() * (Math.abs(Molpy.highestNPvisited) - 241) + 241)
 			else
 				Molpy.newpixNumber = Math.round(Math.random() * Math.abs(Molpy.highestNPvisited));
-			if(Molpy.Earned('Minus Worlds') && Math.floor(Math.random() * 2)) Molpy.newpixNumber *= -1;
+			if(Molpy.Earned('Minus Worlds') && Molpy.Has('GlassChips',1000) && Math.floor(Math.random() * 2)) Molpy.newpixNumber *= -1;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
 			if(Molpy.Got('Flux Surge')) {
