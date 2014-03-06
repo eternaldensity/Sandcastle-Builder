@@ -34,6 +34,8 @@ For personal amusement only.
 - More Coloured options for decimal numbers
 - Stop rifting to Minus until you have chips
 - Better Stuff Sorting
+- Molpy Down and Coma got lost on Clasic
+- Fast Forward bug fix
 
 ### 3.3333
 
