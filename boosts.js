@@ -8512,13 +8512,20 @@ Molpy.DefineBoosts = function() {
 
 		desc: function(me) {
 			var str = (me.IsEnabled ? 'I' : 'When active, i') + 'f at the Crouching Dragon limit (i.e. you have 100 Logicat Puzzles unsolved) when Zookeeper runs, spends 5 Bonemeal to activate the Shadow Dragon.';
-			str+='<br>Has '+Molpify(Molpy.PokeBar()-me.Level) + ' uses left this NewPix';
+			if(me.IsEnabled){
+				var uses = Molpy.PokeBar()-me.Level;
+				str+='<br>Has '+Molpify(uses) + ' use'+plural(uses)+' left this NewPix';
+			}
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
 		},
+		
+		unlockFunction: function() {
+			this.Level=1;
+		},
 
-		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 
 		price: {
 			Bonemeal: 10000

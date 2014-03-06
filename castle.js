@@ -2948,7 +2948,7 @@ Molpy.Up = function() {
 					cl.Level = Math.min(cl.Level, 10 + Molpy.Level('WotA'));
 				}
 			}
-			if(Molpy.Got('Shadow Feeder')) Molpy.Boosts['Shadow Feeder'].Level=0;
+			if(Molpy.IsEnabled('Shadow Feeder')) Molpy.Boosts['Shadow Feeder'].Level=1;
 		}
 		if(Molpy.Boosts['LR'].power > 500) {
 			var MinPower = 0;
