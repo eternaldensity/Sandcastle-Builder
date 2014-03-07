@@ -81,7 +81,7 @@ Molpy.Up = function() {
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
 		
-		Molpy.displayedObjects = {} // List of objects (boosts, badges, tools, etc) currently being displayed
+		Molpy.dispObjects = {shop: [], tools: [], boosts: [], badges: [], faves: []} // Lists of objects currently being displayed
 		Molpy.mouseIsOver = null;
 
 		Molpy.DefinePersist();
