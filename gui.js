@@ -1947,9 +1947,13 @@ Molpy.DefineGUI = function() {
 		var buysell = object.getBuySell();
 		if(buysell != '') {
 			var price = object.getPrice();
-			//var realPrice = object.CalcPrice(price);			
-			if(price != '') { //!Molpy.IsFree(realPrice)
+			var owned = object.getOwned();
+			var ownedHTML = '';
+			
+			if(owned != '') ownedHTML = '<div class="owned">Owned: ' + owned + '</div>';		
+			if(price != '') {
 				purchaseHTML = '	<div class="purchase ">' + buysell + '</div>'
+				             + ownedHTML
 					         + '	<div class="price ">'
 					         + Molpy.createPriceHTML(price)
 					         + '	</div>';
