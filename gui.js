@@ -63,12 +63,14 @@ Molpy.DefineGUI = function() {
 		// Can add argument later if we want
 		// Calls change to $().mouseover({arg1: 1, arg2: 3}, Molpy.onMouseOver)
 		// and are referenced thus: e.data.arg1, e.data.arg2
+		Molpy.mouseIsOver = e.data.overID;
 		if(Molpy.Boosts['Expando'].IsEnabled) return;
 		$(this).find('.description').show();
 		if(!Molpy.Boosts['Expando'].unlocked) Molpy.UnlockBoost('Expando');
 	}
 	
 	Molpy.onMouseOut = function(e) {
+		if(Molpy.mouseIsOver == e.data.overID) Molpy.mouseIsOver = null;
 		if(Molpy.Boosts['Expando'].IsEnabled) return;
 		$(this).find('.description').hide();
 	}
@@ -392,6 +394,7 @@ Molpy.DefineGUI = function() {
 		}
 		return str;
 	}
+	
 	Molpy.RepaintLootSelection = function() {
 		var str = '';
 		var groups = ['boosts', 'stuff', 'land', 'ninj', 'cyb', 'hpt', 'bean', 'chron', 'ceil', 'drac', 'prize'];
@@ -445,6 +448,87 @@ Molpy.DefineGUI = function() {
 		}
 
 		return str + '</div></div>';
+	}	
+	Molpy.getRedactedDiv = function(heading, level) {
+		return $(Molpy.RedactedHTML(heading, level));
+	}
+	
+	/*Molpy.repaintAllObjectDivs = function() {
+	 	Molpy.CalcPriceFactor();
+	 	
+		//TODO cycle through Molpy.displayedObjects and repaint them
+	}
+	
+	Molpy.repaintLoot = function() {
+		
+	}
+	
+	Molpy.repaintShop = function() {
+		Molpy.shopRepaint = 0;
+		Molpy.CalcPriceFactor();
+		var redactedIndex = -1;
+		var expando = Molpy.Boosts['Expando'].power;
+	}
+	
+	Molpy.repaintFaves = function() {
+	
+	}
+	
+	*/
+	
+	Molpy.repaintTools = function() {
+		Molpy.RepaintSandTools();
+		Molpy.RepaintCastleTools();
+	}
+	
+	Molpy.repaintSandTools = function() {
+		Molpy.CalcPriceFactor();
+		
+		var sToolDiv = $('#sandtools');
+		var toolsUnlocked = 1;
+		var i = 0;
+		
+		sToolDiv.empty();		
+
+		while(i < Math.min(toolsUnlocked, Molpy.SandToolsN)) {
+			var nh = false;
+			var tool = Molpy.SandToolsById[i];
+			
+			if(tool.bought >= tool.nextThreshold) toolsUnlocked ++;
+			
+			// If mouse is currently hovering over this tool, it will start hovered
+			var overID = '' + tool.name + tool.id;
+			if(Molpy.mouseIsOver == overID) nh = true;
+			
+			sToolDiv.append(tool.getDiv({forceNew: true, hover: true, nohide: nh}));
+			
+			i ++;
+		}
+	}
+	
+	Molpy.repaintCastleTools = function() {
+		Molpy.CalcPriceFactor();
+		
+		var cToolDiv = $('#castletools');	
+		var toolsUnlocked = 1;	
+		var i = 0;
+		
+		cToolDiv.empty();
+		
+		while(i < Math.min(toolsUnlocked, Molpy.CastleToolsN)) {
+			var nh = false;
+			var tool = Molpy.CastleToolsById[i];
+			
+			if(tool.bought >= tool.nextThreshold) toolsUnlocked ++;	
+			
+			// If mouse is currently hovering over this tool, it will start hovered
+			var overID = '' + tool.name + tool.id;
+			if(Molpy.mouseIsOver == overID) nh = true;
+			
+			cToolDiv.append(tool.getDiv({forceNew: true, hover: true, nohide: nh}));
+			
+			i ++;
+		}
 	}
 
 	Molpy.RepaintShop = function() {
@@ -452,6 +536,7 @@ Molpy.DefineGUI = function() {
 		Molpy.CalcPriceFactor();
 		var redactedIndex = -1;
 		var expando = Molpy.Boosts['Expando'].power;
+		
 		var toolsUnlocked = 1;
 		Molpy.mustardTools = 0;
 		for( var i in Molpy.SandTools) {
@@ -1974,7 +2059,8 @@ Molpy.DefineGUI = function() {
 		
 		var div = $(divHTML);
 		if(flags.hover) {
-			div.mouseover(Molpy.onMouseOver).mouseout(Molpy.onMouseOut);
+			var oid = '' + object.name + object.id;
+			div.mouseover({overID: oid}, Molpy.onMouseOver).mouseout({overID: oid}, Molpy.onMouseOut);
 			if(!Molpy.Boosts['Expando'].IsEnabled && !flags.nohide) {
 				div.find('.description').hide();
 			}

@@ -82,6 +82,7 @@ Molpy.Up = function() {
 		Molpy.toolsBuiltTotal = 0;
 		
 		Molpy.displayedObjects = {} // List of objects (boosts, badges, tools, etc) currently being displayed
+		Molpy.mouseIsOver = null;
 
 		Molpy.DefinePersist();
 		Molpy.DefineGUI();
@@ -1164,9 +1165,9 @@ Molpy.Up = function() {
 			
 			this.getPrice = function() {
 				var price = '';
-				if(isFinite(Molpy.priceFactor * me.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + i * 2))
+				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + i * 2))
 					price = {Castles: (Math.floor(EvalMaybeFunction(this.price, this, 1) * Molpy.priceFactor))};
-				else if(!isNaN(me.price))
+				else if(!isNaN(this.price))
 					price = {GlassChips: 1000 * (i * 2 + 1)};
 				return price;
 			}
@@ -1176,7 +1177,7 @@ Molpy.Up = function() {
 				var buysell = '';
 				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
 					buysell = '<a class="buySpan' + this.id + '" onclick="Molpy.SandToolsById[' + this.id + '].buy();">Buy&nbsp;'
-						+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.SandToolsById[' + me.id + '].sell();">Sell</a>');
+						+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.SandToolsById[' + this.id + '].sell();">Sell</a>');
 				}
 				return buysell;
 			}
@@ -1562,9 +1563,9 @@ Molpy.Up = function() {
 			
 			this.getPrice = function() {
 				var price = '';
-				if(isFinite(Molpy.priceFactor * me.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + i * 2 + 1))
+				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + i * 2 + 1))
 					price = {Castles: (Math.floor(EvalMaybeFunction(this.price, this, 1) * Molpy.priceFactor))};
-				else if(!isNaN(me.price))
+				else if(!isNaN(this.price))
 					price = {GlassChips: 1000 * (i * 2 + 2)};
 				return price;
 			}
@@ -1574,7 +1575,7 @@ Molpy.Up = function() {
 				var buysell = '';
 				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
 					buysell = '<a class="buySpan' + this.id + '" onclick="Molpy.CastleToolsById[' + this.id + '].buy();">Buy&nbsp;'
-						+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.CastleToolsById[' + me.id + '].sell();">Sell</a>');
+						+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.CastleToolsById[' + this.id + '].sell();">Sell</a>');
 				}
 				return buysell;
 			}
