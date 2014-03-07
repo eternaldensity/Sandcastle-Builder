@@ -433,11 +433,19 @@ Molpy.DefineGUI = function() {
 	Molpy.redactedDivList = {
 			1: $('#sandtools'),
 			2: $('#castletools'),
-	}
+			3: $('#boosts'),
+			4: $('#loot'),
+			5: $('#loot'),
+			6: $('#loot'),
+			7: $('#loot')};
 	Molpy.redactedTitleList = {
 			1: $('#toolSTitle'),
-			2: $('#toolCTitle')
-	}
+			2: $('#toolCTitle'),
+			3: $('#boostTitle'),
+			4: $('#lootTitle'),
+			5: $('#lootTitle'),
+			6: $('#lootTitle'),
+			7: $('#lootTitle')};
 	
 	Molpy.RedactedHTML = function(heading, level) {
 		level = level || 0;
