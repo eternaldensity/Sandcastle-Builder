@@ -26,6 +26,17 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.33331
+
+#### Waveney
+- Fixed error on load for Index and Pure 
+- Fixed Panther Rush upgrades to levels 1 and 2
+- More Coloured options for decimal numbers
+- Stop rifting to Minus until you have chips
+- Better Stuff Sorting
+- Molpy Down and Coma got lost on Clasic
+- Fast Forward bug fix
+
 ### 3.3333
 
 #### Waveney
@@ -36,6 +47,33 @@ For personal amusement only.
 - Discoveries as Faves work if/when badges are added
 - Finally found why logicat needed negative points to go up
 - Fireproof now reduces current Jamming
+- Lodestone Boost
+- Larger upgrades to Panther Rush
+
+#### LucidCrux
+- Kite and Key and Lightning in a Bottle can now unlock when 'lightning strikes twice'.
+- Bonus for 'lightning strikes twice' now properly includes the Thunderbird bonus and
+  has been set to a consistent 10% bonus on top of everything else instead.
+- The double strike bonus is capped at 50k without Thunderbird and Temporal Duplication
+- Fix rift image flickering
+- Fix targeted time travel with mustard castles
+- Fix infinite tools producing mustard
+- Mustard tools show Mustard per click
+
+#### Bakasan15
+- Less intrusive log autoscroll
+- Current log button
+- Colours in log entries
+
+#### mart0258
+- TDE fixes, particularly the 0x multiplier
+
+#### ED
+- Started fixing log for classic
+- Did some testing
+- Refresh boost/badge on class (tag) change, to update faves
+- Shadow Feeder only activates a limited number of times per NP (increase with Panther Rush or CDSP) (maybe still too high)
+- Vaults can now give flux crystals under the right circumstances!
 
 ### 3.3332
 

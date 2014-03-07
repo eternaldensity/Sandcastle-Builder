@@ -265,7 +265,7 @@
 			return;
 		}
 		if(thread == 'typo') {
-			Molpy.options.typo = 1 * !Molpy.options.typo;
+			Molpy.Setoption('typo',1 * !Molpy.options.typo);
 			return;
 		}
 		if(thread == 'F5') {
@@ -919,6 +919,12 @@
 				Molpy.BoostsOwned++;
 			}
 		}
+		if(version < 3.3333) {
+			Molpy.Boosts['Sand'].countdown = 0;
+			Molpy.Boosts['Castles'].countdown = 0;
+			Molpy.Boosts['Time Travel'].countdown = 0;
+			Molpy.Boosts['GlassBlocks'].countdown = 0;
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
@@ -1001,11 +1007,7 @@
 			Molpy.startDate = parseInt(new Date().getTime());
 			Molpy.newpixNumber = 1;
 			Molpy.ONGstart = ONGsnip(new Date());
-			Molpy.options.sandmultibuy = 0;
-			Molpy.options.castlemultibuy = 0;
-			Molpy.options.boostsort = 0;
-			Molpy.options.european = 0;
-			Molpy.options.smalldecimal = 0;
+			Molpy.DefaultOptions();
 
 			var keep = '';
 			if(!coma && Molpy.Got('No Need to be Neat')) {
@@ -1104,10 +1106,10 @@
 			&& confirm('Seriously, this will reset ALL the things.\nAre you ABSOLUTELY sure?')) {
 			//reset the badges
 			_gaq.push(['_trackEvent', 'Coma', 'Begin', '' + Molpy.newpixNumber]);
-			Molpy.options.fade = 0;
 			Molpy.Down(1);
 			Molpy.saveCount = 0;
 			Molpy.loadCount = 0;
+			Molpy.DefaultOptions();
 			var highest = Molpy.highestNPvisited;
 			Molpy.highestNPvisited = 0;
 			Molpy.BadgesOwned = 0;

@@ -781,7 +781,7 @@ Molpy.Up = function() {
 			for( var i in Molpy.SandTools) {
 				var me = Molpy.SandTools[i];
 				me.storedSpmNP = EvalMaybeFunction(me.spmNP, me) || 0;
-				me.storedTotalSpmNP = me.amount * me.storedSpmNP;
+				me.storedTotalSpmNP = isFinite(me.amount) ? me.amount * me.storedSpmNP : Infinity;
 				Molpy.Boosts['Sand'].sandPermNP += me.storedTotalSpmNP || 0;
 			}
 			var ninjaFactor = 1;
@@ -913,7 +913,7 @@ Molpy.Up = function() {
 				var me = Molpy.SandTools[i];
 				var tf = !isFinite(Molpy.priceFactor * me.price) * 1 * inf;
 				me.storedGpmNP = EvalMaybeFunction(me.gpmNP, me) * tf;
-				me.storedTotalGpmNP = me.amount * me.storedGpmNP;
+				me.storedTotalGpmNP = isFinite(me.amount) ? me.amount * me.storedGpmNP : Infinity;
 				newRate += me.storedTotalGpmNP || 0;
 			}
 			if(Molpy.Got('GL')) {
@@ -1983,7 +1983,7 @@ Molpy.Up = function() {
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[baby.group] = 1;
 						if(baby.group == 'badges') {
-							Molpy.Notify('Badge Earned: ' + baby.name, 1, EvalMaybeFunction(baby.desc));
+							Molpy.Notify('Badge Earned: ' + baby.name, 1, 0, 0, EvalMaybeFunction(baby.desc));
 						} else {
 							Molpy.Notify(Molpy.MaybeWrapFlipHoriz(baby.name, baby.np < 0), 1);
 						}
@@ -2422,17 +2422,9 @@ Molpy.Up = function() {
 			}
 
 		};
-		Molpy.RewardBlitzing = function() {
+		Molpy.RewardBlitzing = function() {			
 			if(Molpy.Got('GL')) {
-				Molpy.Boosts['GL'].countdown = Math.min(500, Molpy.Boosts['GL'].countdown *= 1.21); //GW :P
-				Molpy.Boosts['GL'].power = Molpy.Boosts['GL'].power *= 1.21; //GW :P
-				Molpy.Boosts['GL'].Refresh();
-				Molpy.Boosts['TDE'].Refresh();
-				Molpy.Notify('Lightning struck the same place twice!');
-				Molpy.EarnBadge('Strikes Twice');
-				Molpy.UnlockBoost('LR');
-				if(Molpy.Got('LR'))
-
+				Molpy.Boosts['GL'].onBlitz();
 				return;
 			}
 			var blitzSpeed = 800, blitzTime = 23;
@@ -2599,6 +2591,7 @@ Molpy.Up = function() {
 					if(Molpy.Has('Maps', 200)) {
 						Molpy.UnlockBoost('DNS');
 					} else {
+						if(Molpy.Has('Maps', 50)) Molpy.UnlockBoost('Lodestone');
 						Molpy.Notify('You found a new map!', 1);
 						Molpy.ClearMap();
 					}
@@ -2673,6 +2666,7 @@ Molpy.Up = function() {
 					var newclass = me.classChange();
 					if (newclass != me.className) {
 						me.className = newclass;
+						me.Refresh();
 						Molpy.boostRepaint = 1;
 					}
 				}
@@ -2685,6 +2679,7 @@ Molpy.Up = function() {
 					var newclass = me.classChange();
 					if (newclass != me.className) {
 						me.className = newclass;
+						me.Refresh();
 						Molpy.badgeRepaint = 1;
 					}
 				}
@@ -2694,8 +2689,8 @@ Molpy.Up = function() {
 		if(Molpy.recalculateDig) Molpy.CalculateDigSpeed();
 		for( var i in Molpy.SandTools) {
 			var me = Molpy.SandTools[i];
-			me.totalSand += me.storedTotalSpmNP;
-			me.totalGlass += me.storedTotalGpmNP;
+			me.totalSand = isFinite(me.storedTotalSpmNP) ? me.totalSand + me.storedTotalSpmNP : Infinity;
+			me.totalGlass = isFinite(me.storedTotalGpmNP) ? me.totalGlass + me.storedTotalGpmNP : Infinity;
 		}
 
 		Molpy.Dig(Molpy.Boosts['Sand'].sandPermNP*Molpy.Papal('Sand'));
@@ -2953,6 +2948,7 @@ Molpy.Up = function() {
 					cl.Level = Math.min(cl.Level, 10 + Molpy.Level('WotA'));
 				}
 			}
+			if(Molpy.IsEnabled('Shadow Feeder')) Molpy.Boosts['Shadow Feeder'].Level=1;
 		}
 		if(Molpy.Boosts['LR'].power > 500) {
 			var MinPower = 0;

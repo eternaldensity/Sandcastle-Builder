@@ -276,20 +276,33 @@ a:active
 	width:290px;
 	min-height:350px;
 }
-#notiflog
+#sectionLog
 {
 	top:0px;
 	margin-left:300px;
 	height:350px;
 	width:280px;
-	overflow-y:scroll;
+	display: block;
 	overflow-x:hidden;
+	position: relative;
 	-webkit-touch-callout: auto;
 	-webkit-user-select: auto;
 	-khtml-user-select: auto;
 	-moz-user-select: auto;
 	-ms-user-select: auto;
 	user-select: auto;
+}
+#sectionLogBody
+{
+	height: 311px;
+}
+#logItems
+{
+	overflow-y: auto;
+	position:absolute;
+	bottom:25px;
+	max-height: 311px;
+	padding-bottom:1px;
 }
 #sectionTop
 {
