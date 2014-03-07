@@ -1793,7 +1793,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.newpixNumber = Math.round(Math.random() * (Math.abs(Molpy.highestNPvisited) - 241) + 241)
 			else
 				Molpy.newpixNumber = Math.round(Math.random() * Math.abs(Molpy.highestNPvisited));
-			if(Molpy.Earned('Minus Worlds') && Math.floor(Math.random() * 2)) Molpy.newpixNumber *= -1;
+			if(Molpy.Earned('Minus Worlds') && Molpy.Has('GlassChips',1000) && Math.floor(Math.random() * 2)) Molpy.newpixNumber *= -1;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
 			if(Molpy.Got('Flux Surge')) {
@@ -4966,8 +4966,9 @@ Molpy.DefineBoosts = function() {
 			&& Molpy.Got('LogiPuzzle')) {
 			if (Molpy.Has('LogiPuzzle', Molpy.PokeBar()))
 			{
-				if (Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) && Molpy.Got('ShadwDrgn') && Molpy.Spend('Bonemeal', 5)) {
+				if (Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) && Molpy.Got('ShadwDrgn') && !Molpy.Has('Shadow Feeder',Molpy.PokeBar()) && Molpy.Spend('Bonemeal', 5)) {
 					Molpy.ShadowStrike(1);
+					Molpy.Add('Shadow Feeder',1);
 				}
 			}
 			else {
@@ -5269,10 +5270,10 @@ Molpy.DefineBoosts = function() {
 				var mult = 1;
 				var strs = [];
 				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
-					Molpy.Has('Logicat',rushcost.Logicat*mult) && mult<me.Level) {
+					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 )) {
 					var mstr = '';
 					if (!rushcost.Vacuum) {
-						mstr += '<input type="Button" onclick="Molpy.PantherRush()" value="Use"></input>';
+						mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
 					} else {
 						if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
 							'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
@@ -6253,7 +6254,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var str = 'Allows you to get Panther Poke with more remaining Caged Logicat puzzles.<br>'
-				+ 'Currently, Panther Poke is available if you have less than ' + Molpify(Molpy.PokeBar() - 1) + ' Caged Logicat puzzles remaining.';
+				+ 'Currently, Panther Poke is available if you have less than ' + Molpify(Molpy.PokeBar() - 1,1) + ' Caged Logicat puzzles remaining.';
 			if(!me.bought) return str;
 			var goatCost = me.power;
 			var powerReq = Math.pow(5, me.power + 12);
@@ -6292,9 +6293,12 @@ Molpy.DefineBoosts = function() {
 		name: 'Fireproof',
 		icon: 'fireproof',
 		group: 'cyb',
-		desc: 'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make ' + Molpify(1e10) + ' times as many Glass Chips.<br>'
+		desc: function() { 
+			return 'The NewPixBots have become immune to fire. Bored of destroying infinite castles, they now make ' + Molpify(1e10) + ' times as many Glass Chips.<br>'
 			+ 'However they will destroy all your castles every mNP if the Navigation Code hack is not installed.<br>'
-			+ 'On the plus side, you can overcome Jamming far quicker.',
+			+ 'On the plus side, you can overcome Jamming far quicker.';
+		},
+	
 		price:{	
 			Sand: Infinity,
 			Castles: Infinity,
@@ -6488,6 +6492,9 @@ Molpy.DefineBoosts = function() {
 				for( var i = 0; i < 10; i++) {
 					Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 				}
+			}
+			if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
+				Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
 			}
 		}
 	});
@@ -7347,6 +7354,7 @@ Molpy.DefineBoosts = function() {
 	
 	Molpy.FastForward = function() {
 		Molpy.newpixNumber = Molpy.highestNPvisited;
+		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
 		Molpy.LockBoost('Fast Forward');
@@ -8086,7 +8094,7 @@ Molpy.DefineBoosts = function() {
 			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
 			if(levels > 0) {
 				var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - Molpy.Level('Time Lord') * (Molpy.Level('Time Lord') + 1) / 2;
-				if (isNaN(c)) c = Infinity;
+				if (isNaN(c) || c == 0) c = Infinity;
 				if(!Molpy.Got('TDE')) c /= 2;
 				c*=Molpy.Papal("Flux");
 				if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',Math.ceil(1000+Molpy.Boosts['Bonemeal'].power/50))) 
@@ -8504,15 +8512,24 @@ Molpy.DefineBoosts = function() {
 		icon: 'shadowdragon',
 		group: 'drac',
 		className: 'toggle',
+		defStuff:1,
 
 		desc: function(me) {
-			var str = (me.IsEnabled ? 'I' : 'When active, i') + 'f at the Crouching Dragon limit when Zookeeper runs, spends 5 Bonemeal to activate the Shadow Dragon.';
+			var str = (me.IsEnabled ? 'I' : 'When active, i') + 'f at the Crouching Dragon limit (i.e. you have 100 Logicat Puzzles unsolved) when Zookeeper runs, spends 5 Bonemeal to activate the Shadow Dragon.';
+			if(me.IsEnabled){
+				var uses = Molpy.PokeBar()-me.Level;
+				str+='<br>Has '+Molpify(uses) + ' use'+plural(uses)+' left this NewPix';
+			}
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
 		},
+		
+		unlockFunction: function() {
+			this.Level=1;
+		},
 
-		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 
 		price: {
 			Bonemeal: 10000

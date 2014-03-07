@@ -26,6 +26,17 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.33331
+
+#### Waveney
+- Fixed error on load for Index and Pure 
+- Fixed Panther Rush upgrades to levels 1 and 2
+- More Coloured options for decimal numbers
+- Stop rifting to Minus until you have chips
+- Better Stuff Sorting
+- Molpy Down and Coma got lost on Clasic
+- Fast Forward bug fix
+
 ### 3.3333
 
 #### Waveney
@@ -48,6 +59,21 @@ For personal amusement only.
 - Fix targeted time travel with mustard castles
 - Fix infinite tools producing mustard
 - Mustard tools show Mustard per click
+
+#### Bakasan15
+- Less intrusive log autoscroll
+- Current log button
+- Colours in log entries
+
+#### mart0258
+- TDE fixes, particularly the 0x multiplier
+
+#### ED
+- Started fixing log for classic
+- Did some testing
+- Refresh boost/badge on class (tag) change, to update faves
+- Shadow Feeder only activates a limited number of times per NP (increase with Panther Rush or CDSP) (maybe still too high)
+- Vaults can now give flux crystals under the right circumstances!
 
 ### 3.3332
 

@@ -154,7 +154,7 @@ Molpy.DefineGUI = function() {
 				return 1;
 			else if(s1 < s2) return -1;
 		}
-		return 0;
+		return a.name > b.name;
 	}
 	Molpy.ClassNameSort = function(a, b) {
 		var at = a.className || 'z';
