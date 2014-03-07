@@ -519,7 +519,7 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.repaintAllObjectDivs = function() {
 	 	Molpy.CalcPriceFactor();
-	 	Molpy.repaintLoog();
+	 	Molpy.repaintLoot();
 	 	Molpy.repaintShop();
 	 	Molpy.repaintTools();
 	 	Moply.repaintFaves();
@@ -538,9 +538,7 @@ Molpy.DefineGUI = function() {
 		
 		Molpy.removeGroupDivs(Molpy.dispObjects.shop);
 		Molpy.dispObjects.shop = [];
-		$('#boosts').empty();
-		
-		Molpy.CalcPriceFactor();
+		$('#boosts').empty(); //TODO this shouldn't be needed, need fixed
 
 		var shopList = [];
 		for( var i in Molpy.Boosts) {
@@ -553,20 +551,55 @@ Molpy.DefineGUI = function() {
 		else
 			shopList.sort(Molpy.PriceSort);
 		
-		for( var i in shopList) {
-			var nh = false;
-			var boost = shopList[i];
-			
-			// If mouse is currently hovering over this tool, it will start hovered
-			var overID = '' + boost.name + boost.id;
-			if(Molpy.mouseIsOver == overID) nh = true;
-			
-			$('#boosts').append(boost.getDiv({forceNew: true, hover: true, nohide: nh}));
-			
-			Molpy.dispObjects.shop.push[boost];
+		Molpy.addGroupToDiv($('#boosts'), shopList, shopList.length - 1, 'shop', {autoAdd: true, recalc: true});
+	}
+	
+	Molpy.repaintTools = function(args) {
+		Molpy.toolsNeedRepaint = 0;
+		
+		Molpy.removeGroupDivs(Molpy.dispObjects.tools);
+		Molpy.dispObjects.tools = [];
+		
+		Molpy.CalcPriceFactor();
+		
+		Molpy.repaintSandTools({skipClear: true, recalc: false});
+		Molpy.repaintCastleTools({skipClear: true, recalc: false});
+	}
+	
+	Molpy.repaintSandTools = function(args) {
+		Molpy.sandToolsNeedRepaint = 0;
+		
+		// Remove all Sand Tools from dispObjects for a fresh start
+		if(!args.skipClear) {
+			Molpy.removeGroupFromDispObjectsCategory(Molpy.SandTools, 'tools');
 		}
-
-		Molpy.repaintRedacted();
+		
+		var toolsUnlocked = 1;
+		for(var i in SandToolsById){
+			if(SandToolsById[i].bought >= SandToolsById[i].nextThreshold) toolsUnlocked ++;	
+		}
+		var max = Math.min(toolsUnlocked -1 , Molpy.SandToolsN - 1);
+		
+		var dorecalc = args.recalc == false ? false : true;
+		Molpy.addGroupToDiv($('#sandtools'), Molpy.SandToolsById, max, 'tools', {autoAdd: true, recalc: dorecalc});
+	}
+	
+	Molpy.repaintCastleTools = function(args) {
+		Molpy.castleToolsNeedRepaint = 0;
+		
+		// Remove all Castle Tools from dispObjects for a fresh start
+		if(!args.skipClear) {
+			Molpy.removeGroupFromDispObjectsCategory(Molpy.CastleTools, 'tools');
+		}
+		
+		var toolsUnlocked = 1;
+		for(var i in CastleToolsById){
+			if(CastleToolsById[i].bought >= CastleToolsById[i].nextThreshold) toolsUnlocked ++;	
+		}
+		var max = Math.min(toolsUnlocked - 1, Molpy.CastleToolsN - 1);
+		
+		var dorecalc = args.recalc == false ? false : true;
+		Molpy.addGroupToDiv($('#castletools'), Molpy.CastleToolsById, max, 'tools', {autoAdd: true, recalc: dorecalc});
 	}
 	
 	/*
@@ -575,64 +608,6 @@ Molpy.DefineGUI = function() {
 	}
 	
 	*/
-	
-	Molpy.repaintTools = function() {
-		Molpy.toolsNeedRepaint = 0;
-		
-		Molpy.removeGroupDivs(Molpy.dispObjects.tools);
-		Molpy.dispObjects.tools = [];
-		
-		Molpy.repaintSandTools({skipClear: true});
-		Molpy.repaintCastleTools({skipClear: true});
-	}
-	
-	Molpy.repaintSandTools = function(args) {
-		Molpy.sandToolsNeedRepaint = 0;
-		// Remove all Sand Tools from dispObjects for a fresh start
-		if(!args.skipClear) {
-			Molpy.removeGroupFromDispObjectsCategory(Molpy.SandTools, 'tools');
-		}
-		Molpy.repaintToolGroup($('#sandtools'), Molpy.SandToolsN, Molpy.SandToolsById, true);
-	}
-	
-	Molpy.repaintCastleTools = function(args) {
-		Molpy.castleToolsNeedRepaint = 0;
-		// Remove all Castle Tools from dispObjects for a fresh start
-		if(!args.skipClear) {
-			Molpy.removeGroupFromDispObjectsCategory(Molpy.CastleTools, 'tools');
-		}
-		Molpy.repaintToolGroup($('#castletools'), Molpy.CastleToolsN, Molpy.CastleToolsById, true);
-	}
-	
-	Molpy.repaintToolGroup = function(toolDiv, maxToolID, idList, autoAdd) {
-		Molpy.CalcPriceFactor();
-		
-		var toolsUnlocked = 1;	
-		var i = 0;
-		
-		while(i < Math.min(toolsUnlocked, maxToolID)) {
-			var nh = false;
-			var tool = idList[i];
-			
-			if(tool.bought >= tool.nextThreshold) toolsUnlocked ++;	
-			
-			// If mouse is currently hovering over this tool, it will start hovered
-			var overID = '' + tool.name + tool.id;
-			if(Molpy.mouseIsOver == overID) nh = true;
-			
-			toolDiv.append(tool.getDiv({forceNew: true, hover: true, nohide: nh}));
-			
-			if(autoAdd) {
-				Molpy.dispObjects.tools.push[tool];
-			} else {
-				if($.inArray(Molpy.dispObjects.tools, tool) == -1) Molpy.dispObjects.tools.push[tool];
-			}
-			
-			i ++;
-		}
-		
-		Molpy.repaintRedacted();
-	}
 	
 	Molpy.repaintRedacted = function() {
 		if(Molpy.redactedVisible == 0) return; // Don't repaint because redacted is not active
@@ -658,6 +633,35 @@ Molpy.DefineGUI = function() {
 			redDiv.prepend(Molpy.getRedactedDiv());
 		else
 			redDiv.find(':nth-child(' + Molpy.redactedViewIndex + ')').before(Molpy.getRedactedDiv());	
+	}
+	
+	Molpy.addGroupToDiv = function(whichDiv, group, maxIndex, dispCat, args) {
+		if(args.recalc) Molpy.CalcPriceFactor();
+		
+		var fnew = args.forceNew || true;
+		var addHover = args.hover || true;
+		
+		var i = 0;	
+		while(i <= maxIndex) {
+			var nh = false;
+			var object = group[i];
+			
+			// If mouse is currently hovering over this tool, it will start hovered
+			var overID = '' + object.name + object.id;
+			if(Molpy.mouseIsOver == overID) nh = true;
+			
+			whichDiv.append(object.getDiv({forceNew: fnew, hover: addHover, nohide: nh}));
+			
+			if(args.autoAdd) {
+				Molpy.dispObjects[dispCat].push[object];
+			} else {
+				if($.inArray(Molpy.dispObjects[dispCat], object) == -1) Molpy.dispObjects[dispCat].push[object];
+			}
+			
+			i ++;
+		}
+		
+		Molpy.repaintRedacted();
 	}
 
 	Molpy.RepaintShop = function() {
