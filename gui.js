@@ -477,15 +477,16 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.removeGroupFromDispObjectsCategory = function(group, category) {
 		for(var i in group) {
-			var tool = group[i];
-			var index = $.inArray(Molpy.dispObjects[category], tool);
+			var thing = group[i];
+			var index = $.inArray(Molpy.dispObjects[category], thing);
 			if(index > -1) {
+				Molpy.removeDiv(thing);
 				Molpy.dispObjects[category].splice(index, 1);
 			}
 		}
 	}
 	
-	/*
+
 	Molpy.removeAllObjectDivs = function() {
 		for(var i in Molpy.SandTool)
 			Molpy.removeDiv(Molpy.SandTool[i]);
@@ -499,9 +500,13 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.removeAllDisplayedDivs = function() {
 		for(var grp in Molpy.dispObjects) {
-			for(var obj in Molpy.dispObjects[grp]) {
-				Molpy.removeDiv(Molpy.dispObjects[grp][obj]);
-			}
+			Molpy.removeGroupDivs(Molpy.dispObjects[grp]);
+		}
+	}
+	
+	Molpy.removeGroupDivs = function(group) {
+		for(var obj in group) {
+			Molpy.removeDiv(group[obj]);
 		}
 	}
 	
@@ -516,24 +521,55 @@ Molpy.DefineGUI = function() {
 	 	Molpy.CalcPriceFactor();
 	 	Molpy.repaintLoog();
 	 	Molpy.repaintShop();
-	 	Molpy.repaintTools():
+	 	Molpy.repaintTools();
 	 	Moply.repaintFaves();
 	 	
 	}
 	
+	/*
 	Molpy.repaintLoot = function() {
 		Molpy.dispObjects.boosts = [];
 		Molpy.dispObjects.badges = [];
 	}
-	
+	*/
+
 	Molpy.repaintShop = function() {
+		Molpy.shopNeedRepaint = 0;
+		
+		Molpy.removeGroupDivs(Molpy.dispObjects.shop);
 		Molpy.dispObjects.shop = [];
-		Molpy.shopRepaint = 0;
+		$('#boosts').empty();
+		
 		Molpy.CalcPriceFactor();
-		var redactedIndex = -1;
-		var expando = Molpy.Boosts['Expando'].power;
+
+		var shopList = [];
+		for( var i in Molpy.Boosts) {
+			var boost = Molpy.Boosts[i];
+			if(!boost.bought && boost.unlocked) shopList.push(boost);
+		}
+	
+		if(Molpy.options.boostsort > 0)
+			shopList.sort(Molpy.NameSort);
+		else
+			shopList.sort(Molpy.PriceSort);
+		
+		for( var i in shopList) {
+			var nh = false;
+			var boost = shopList[i];
+			
+			// If mouse is currently hovering over this tool, it will start hovered
+			var overID = '' + boost.name + boost.id;
+			if(Molpy.mouseIsOver == overID) nh = true;
+			
+			$('#boosts').append(boost.getDiv({forceNew: true, hover: true, nohide: nh}));
+			
+			Molpy.dispObjects.shop.push[boost];
+		}
+
+		Molpy.repaintRedacted();
 	}
 	
+	/*
 	Molpy.repaintFaves = function() {
 		Molpy.dispObjects.faves = [];
 	}
@@ -541,12 +577,17 @@ Molpy.DefineGUI = function() {
 	*/
 	
 	Molpy.repaintTools = function() {
+		Molpy.toolsNeedRepaint = 0;
+		
+		Molpy.removeGroupDivs(Molpy.dispObjects.tools);
 		Molpy.dispObjects.tools = [];
+		
 		Molpy.repaintSandTools({skipClear: true});
 		Molpy.repaintCastleTools({skipClear: true});
 	}
 	
 	Molpy.repaintSandTools = function(args) {
+		Molpy.sandToolsNeedRepaint = 0;
 		// Remove all Sand Tools from dispObjects for a fresh start
 		if(!args.skipClear) {
 			Molpy.removeGroupFromDispObjectsCategory(Molpy.SandTools, 'tools');
@@ -555,6 +596,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.repaintCastleTools = function(args) {
+		Molpy.castleToolsNeedRepaint = 0;
 		// Remove all Castle Tools from dispObjects for a fresh start
 		if(!args.skipClear) {
 			Molpy.removeGroupFromDispObjectsCategory(Molpy.CastleTools, 'tools');
@@ -580,7 +622,7 @@ Molpy.DefineGUI = function() {
 			
 			toolDiv.append(tool.getDiv({forceNew: true, hover: true, nohide: nh}));
 			
-			if(autoadd) {
+			if(autoAdd) {
 				Molpy.dispObjects.tools.push[tool];
 			} else {
 				if($.inArray(Molpy.dispObjects.tools, tool) == -1) Molpy.dispObjects.tools.push[tool];
@@ -619,34 +661,12 @@ Molpy.DefineGUI = function() {
 	}
 
 	Molpy.RepaintShop = function() {
-		//TODO deal with all the redacted stuff in a new redacted draw method
 		Molpy.shopRepaint = 0;
-		
-		//var redactedIndex = -1;
-		//if(Molpy.redactedVisible == 1) {
-		//	if(Molpy.redactedViewIndex == -1) {
-		//		Molpy.redactedViewIndex = Math.floor((toolsUnlocked) * Math.random());
-		//	}
-		//	redactedIndex = Molpy.redactedViewIndex;
-		//}
-		//$('#toolSTitle').toggleClass('redacted-area sand', Molpy.redactedVisible == 1);
 
-		//if(i == redactedIndex) str += Molpy.RedactedHTML();
-
-		//redactedIndex = -1;
-		//if(Molpy.redactedVisible == 2) {
-		//	if(Molpy.redactedViewIndex == -1) {
-		//		Molpy.redactedViewIndex = Math.floor((toolsUnlocked) * Math.random());
-		//	}
-		//	redactedIndex = Molpy.redactedViewIndex;
-		//}
-		//$('#toolCTitle').toggleClass('redacted-area castle', Molpy.redactedVisible == 2);
-		
 		//TODO move mustard tool badge check to achronal dragon and mustard sale, perhaps somewhere else
 		//if(Molpy.mustardTools == 12) {
 		//	Molpy.EarnBadge('Mustard Tools');
 		//}
-		//if(i == redactedIndex) str += Molpy.RedactedHTML();
 		
 		Molpy.repaintTools();
 	}
@@ -677,41 +697,8 @@ Molpy.DefineGUI = function() {
 
 	Molpy.RepaintBoosts = function() {
 		Molpy.boostRepaint = 0;
-		var alist = [];
-		for( var i in Molpy.Boosts) {
-			var me = Molpy.Boosts[i];
-			if(!me.bought) {
-				if(me.unlocked) alist.push(me);
-			}
-		}
-		if(Molpy.options.boostsort > 0)
-			alist.sort(Molpy.NameSort)
-		else
-			alist.sort(Molpy.PriceSort)
-		Molpy.BoostsInShop = [];
-		for( var i in alist) {
-			Molpy.BoostsInShop.push(alist[i]);
-		}
-
-		var redactedIndex = -1;
-		if(Molpy.redactedVisible == 3) {
-			if(Molpy.redactedViewIndex == -1) {
-				Molpy.redactedViewIndex = Math.floor((Molpy.BoostsInShop.length + 1) * Math.random());
-			}
-			redactedIndex = Molpy.redactedViewIndex;
-		}
-		$('#boostTitle').toggleClass('redacted-area boost', Molpy.redactedVisible == 3);
-		var str = '';
-		var r = 0;
-		for( var i in Molpy.BoostsInShop) {
-			if(r == redactedIndex) str += Molpy.RedactedHTML();
-			var me = Molpy.BoostsInShop[i];
-			str += Molpy.BoostString(me, 1);
-			me.hovering = 0;
-			r++;
-		}
-		if(r == redactedIndex) str += Molpy.RedactedHTML();
-		g('boosts').innerHTML = str;
+		
+		Molpy.repaintShop();
 
 		var blist = [];
 		for( var i in Molpy.Boosts) {
