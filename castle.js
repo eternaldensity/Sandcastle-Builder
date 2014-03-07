@@ -2503,9 +2503,32 @@ Molpy.Up = function() {
 		};
 
 		Molpy.RedactedJump = function() {
-			//JUMP!
-			Molpy.redactedVisible = Math.ceil((Molpy.redactableThings + 2) * Math.random());
-			if(Molpy.redactedVisible > Molpy.redactableThings) Molpy.redactedVisible = 4;
+			// If no possible spots are open, then no redacteds can spawn
+			var possible = false;
+			for(var i in Molpy.redactedDivList)
+				if(Molpy.redactedDivList[i].is(':visible')) {
+					possible = true;
+					break;
+				}
+			if(!possible) Molpy.redactedVisible = 0;
+			
+			// There is at least one valid spawn location, grab a random one
+			var valid = false;
+			var loopNum = 0;
+			var randNum = 0;
+			while(loopNum < 50 && valid == false) {
+				randNum = Math.ceil((Molpy.redactableThings + 2) * Math.random());
+				if(randNum > Molpy.redactableThings) randNum = 4;
+				if(Molpy.redactedDivList[randNum].is(':visible')) {
+					Molpy.redactedVisible = randNum;
+					valid = true;
+				}
+				loopNum ++;
+			}
+			
+			// Unlucky RNG, didn't find a valid spawn location 
+			if(!valid) Molpy.redactedVisible = 0;
+			
 			Molpy.redactedViewIndex = -1;
 		};
 

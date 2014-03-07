@@ -423,12 +423,22 @@ Molpy.DefineGUI = function() {
 		g('lootselection').innerHTML = str;
 	}
 
+	Molpy.redactedDiv = null;
 	Molpy.redactedW = Molpy.BeanishToCuegish("UmVkdW5kYW50");
 	Molpy.redactedWord = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
 	Molpy.redactedWords = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
 	Molpy.redactedBrackets = Molpy.BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
 	Molpy.redactedSpoilerValue = Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
 	Molpy.redactedDrawType = [];
+	Molpy.redactedDivList = {
+			1: $('#sandtools'),
+			2: $('#castletools'),
+	}
+	Molpy.redactedTitleList = {
+			1: $('#toolSTitle'),
+			2: $('#toolCTitle')
+	}
+	
 	Molpy.RedactedHTML = function(heading, level) {
 		level = level || 0;
 		var drawType = Molpy.redactedDrawType[level];
@@ -448,9 +458,13 @@ Molpy.DefineGUI = function() {
 		}
 
 		return str + '</div></div>';
-	}	
-	Molpy.getRedactedDiv = function(heading, level) {
-		return $(Molpy.RedactedHTML(heading, level));
+	}
+	
+	Molpy.getRedactedDiv = function(heading, level, forceNew) {
+		if(!Molpy.redactedDiv || forceNew)
+			Molpy.redactedDiv = $(Molpy.RedactedHTML(heading, level));
+		
+		return Molpy.redactedDiv;
 	}
 	
 	/*
@@ -528,6 +542,36 @@ Molpy.DefineGUI = function() {
 			
 			i ++;
 		}
+		
+		Molpy.repaintRedacted();
+	}
+	
+	Molpy.redactedDivIndexList = {}
+	
+	Molpy.repaintRedacted = function() {
+		if(Molpy.redactedVisible == 0) return; // Don't repaint because redacted is not active
+		
+		var redDiv = Molpy.redactedDivList[Molpy.redactedVisible];
+		
+		// Make sure the div is an open one, if not, re jump and set it again
+		if(!redDiv.is(':visible')) {
+			Molpy.RedactedJump();
+			if(Molpy.redactedVisible == 0) return; // No available spots to spawn
+			redDiv = Molpy.redactedDivList[Molpy.redactedVisible];
+		}
+		
+		// If an position is invalid, get a random new position
+		if(Molpy.redactedViewIndex == -1 || Molpy.redactedViewIndex > redDiv.size()) {
+			var maxPos = redDiv.size();
+			Molpy.redactedViewIndex = Math.floor(maxPos * Math.random());
+		}
+		
+		Molpy.redactedTitleList[Molpy.redactedVisible].toggleClass('redacted-area', true);
+		
+		if(Molpy.redactedViewIndex == 0)
+			redDiv.prepend(Molpy.getRedactedDiv());
+		else
+			redDiv.find(':nth-child(' + Molpy.redactedViewIndex + ')').before(Molpy.getRedactedDiv());	
 	}
 
 	Molpy.RepaintShop = function() {
