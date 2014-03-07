@@ -4002,7 +4002,7 @@ Molpy.DefineBoosts = function() {
 				return 'Constructing nothing. How?';
 			}
 			var c = Molpy.LimitConstructionRuns(subj.alias);
-			str = 'Constructing ' + subj.name + ' from Blackprint Plans.<br>' + Molpify(c * 10 - me.Level) + ' runs of Factory Automation required to complete.';
+			str = 'Constructing ' + subj.name + ' from Blackprint Plans.<br>' + Molpify(c * 10 - me.Level, 1) + ' runs of Factory Automation required to complete.';
 			if(subj.alias == 'BoH')
 				str += '<br>To construct Bag of Holding you must retain at least 400 goats, otherwise construction will stall.';
 			return str;
@@ -4942,14 +4942,9 @@ Molpy.DefineBoosts = function() {
 
 		Molpy.boostSilence++;
 		var furn = Math.floor((times + Math.random() * 3) / 2);
-		if(Molpy.Got('Stretchable Chip Storage'))
-			Molpy.RewardBlastFurnace(furn);
-		else {
-			furn = Math.min(furn,10000);
-			for( var i = 0; i < furn; i++)
-				Molpy.RewardBlastFurnace();
-		}
+		Molpy.RewardBlastFurnace(furn);
 		left = times - furn;
+
 		if(left > 7 && Molpy.Got('Milo')) {
 			var mr = Molpy.Boosts['Milo'];
 			var s = 0;// Math.sin((Math.PI*Molpy.ONGelapsed)/(Molpy.NPlength*100));

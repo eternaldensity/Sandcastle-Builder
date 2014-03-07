@@ -415,8 +415,11 @@ Molpy.DefineBadges = function() {
 	
 	Molpy.RewardDipLevel = function(level) {
 		if(level > 3) {
-			if(Molpy.Got('Time Travel') && !(Molpy.Got('Overcompensating') || Molpy.Got('Doublepost')))
+			if(Molpy.Got('Time Travel') && !(Molpy.Got('Overcompensating') || Molpy.Got('Doublepost')) &&
+				isFinite(Molpy.CastleTools['NewPixBot'].totalCastlesBuilt)) 
+			{
 				Molpy.UnlockBoost('Summon Knights Temporal');
+			}
 			if(Molpy.SandTools['Bag'].amount > Molpy.npbDoubleThreshold && !Molpy.Got('Fireproof'))
 				Molpy.UnlockBoost('Bag Burning');
 		}

@@ -1999,7 +1999,8 @@ Molpy.Up = function() {
 						} else {
 							Molpy.groupBadgeCounts[baby.group]++;
 						}
-						Molpy.ShowGroup(baby.group, baby.className);
+						if (baby.group != 'monumg' && baby.group != 'monums')
+							Molpy.ShowGroup(baby.group, baby.className);
 
 					}
 				}
@@ -2226,11 +2227,10 @@ Molpy.Up = function() {
 				Molpy.RewardBlitzing(automationLevel);
 			} else {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
-				if(!Molpy.boostSilence) Molpy.Notify('Furnace Fallback', 1);
-				Molpy.RewardBlastFurnace();
+				Molpy.RewardBlastFurnace(1, 'Furnace Fallback');
 			}
 		};
-		Molpy.RewardBlastFurnace = function(times) {
+		Molpy.RewardBlastFurnace = function(times, message) {
 			var cb = 0;
 			if(Molpy.Got('Furnace Crossfeed') && Molpy.NPlength > 1800 && isFinite(Molpy.Boosts['GlassChips'].power)) {
 				if(Molpy.Boosts['Glass Furnace'].power && Molpy.Boosts['Furnace Crossfeed'].IsEnabled) {
@@ -2244,6 +2244,8 @@ Molpy.Up = function() {
 					cb = 1;
 				}
 			}
+			if(!Molpy.boostSilence && (cb || isFinite(Molpy.Boosts['Castles'].power)) ) 
+				Molpy.Notify(message || 'Blast Furnace in Operation!');
 			if(cb) return;
 
 			if(!isFinite(Molpy.Boosts['Castles'].power)) return; //We don't need to blast!
@@ -2267,7 +2269,6 @@ Molpy.Up = function() {
 			} else {
 				castles = Math.floor(Math.min(castles, Molpy.Boosts['Castles'].totalBuilt / 3));
 			}
-			if(!Molpy.boostSilence) Molpy.Notify('Blast Furnace in Operation!');
 			Molpy.Spend('Sand', castles * blastFactor);
 			Molpy.Build(castles);
 		};
