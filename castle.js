@@ -1087,10 +1087,6 @@ Molpy.Up = function() {
 				}
 			};
 			
-			this.updateBuy = function() {
-				$('#SandToolBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
-			};
-			
 			this.isAffordable = function() {
 
 				if(Molpy.ProtectingPrice()) return 0;
@@ -1173,11 +1169,12 @@ Molpy.Up = function() {
 			}
 			
 			this.getBuySell = function() {
-				var nBuy = Math.pow(4, Molpy.options.sandmultibuy);
+				var numBuy = Math.pow(4, Molpy.options.sandmultibuy);
+				var noBuy = this.isAffordable() ? '' : ' unbuyable';
 				var buysell = '';
 				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
-					buysell = '<a class="buySpan' + this.id + '" onclick="Molpy.SandToolsById[' + this.id + '].buy();">Buy&nbsp;'
-						+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.SandToolsById[' + this.id + '].sell();">Sell</a>');
+					buysell = '<a class="buySpan' + this.id + noBuy + '" onclick="Molpy.SandToolsById[' + this.id + '].buy();">Buy&nbsp;'
+						+ numBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.SandToolsById[' + this.id + '].sell();">Sell</a>');
 				}
 				return buysell;
 			}
@@ -1234,6 +1231,13 @@ Molpy.Up = function() {
 				if(this.divElement) return true;
 				return false;
 			}
+			
+			// Methods for Div Refresh / Updates
+			
+			this.refreshBuy = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
+			};
 			
 			// Create CSS style for tool
 			if(this.gifIcon){
@@ -1390,10 +1394,6 @@ Molpy.Up = function() {
 				{
 					Molpy.Notify('Not nearly glassy enough.', 1);
 				}
-			};
-			
-			this.updateBuy = function() {
-				$('#CastleToolBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
 			};
 			
 			this.isAffordable = function() {
@@ -1571,11 +1571,12 @@ Molpy.Up = function() {
 			}
 			
 			this.getBuySell = function() {
-				var nBuy = Math.pow(4, Molpy.options.castlemultibuy);
+				var numBuy = Math.pow(4, Molpy.options.castlemultibuy);
+				var noBuy = this.isAffordable() ? '' : ' unbuyable';
 				var buysell = '';
 				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
-					buysell = '<a class="buySpan' + this.id + '" onclick="Molpy.CastleToolsById[' + this.id + '].buy();">Buy&nbsp;'
-						+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.CastleToolsById[' + this.id + '].sell();">Sell</a>');
+					buysell = '<a class="buySpan' + this.id + noBuy + '" onclick="Molpy.CastleToolsById[' + this.id + '].buy();">Buy&nbsp;'
+						+ numBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.CastleToolsById[' + this.id + '].sell();">Sell</a>');
 				}
 				return buysell;
 			}
@@ -1651,6 +1652,12 @@ Molpy.Up = function() {
 				if(this.divElement) return true;
 				return false;
 			}
+			
+			// Methods for Div Refresh / Updates
+			this.refreshBuy = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
+			};
 			
 			// Create CSS style for tool
 			if(this.gifIcon){
@@ -1904,12 +1911,6 @@ Molpy.Up = function() {
 				}
 			};
 			
-			this.updateBuy = function(fave) {
-				if(this.unlocked && (fave || !this.bought)) {
-					$('#BoostBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
-				}
-			};
-			
 			this.isAffordable = function() {
 				var realPrice = this.CalcPrice(this.price);
 				if(Molpy.IsFree(realPrice)) return 1;
@@ -2000,7 +2001,8 @@ Molpy.Up = function() {
 			this.getBuySell = function() {
 				var buy = '';
 				if(!this.bought && this.unlocked) {
-					buy = '<a class="buySpan' + this.id + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
+					var noBuy = this.isAffordable() ? '' : ' unbuyable';
+					buy = '<a class="buySpan' + this.id + noBuy + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
 				}
 				return buy;
 			}
@@ -2033,6 +2035,15 @@ Molpy.Up = function() {
 				if(this.divElement) return true;
 				return false;
 			}
+			
+			// Methods for Div Refresh / Updates
+			
+			this.refreshBuy = function(fave) {
+				if(!this.divElement) return;
+				if(this.unlocked && (fave || !this.bought)) {
+					this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
+				}
+			};
 
 			// Add the boost to lists
 			Molpy.Boosts[this.alias] = this;

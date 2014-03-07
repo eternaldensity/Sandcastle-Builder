@@ -453,7 +453,26 @@ Molpy.DefineGUI = function() {
 		return $(Molpy.RedactedHTML(heading, level));
 	}
 	
-	/*Molpy.repaintAllObjectDivs = function() {
+	/*
+	Molpy.resetAllDivs = function() {
+		for(var i in Molpy.SandTool)
+			Molpy.resetDiv(Molpy.SandTool[i]);
+		for(var i in Molpy.CastleTool)
+			Molpy.resetDiv(Molpy.CastleTool[i]);
+		for(var i in Molpy.Boosts)
+			Molpy.resetDiv(Molpy.Boosts[i]);
+		for(var i in Molpy.Badges)
+			Molpy.resetDiv(Molpy.Badges[i]);
+	}
+	
+	Molpy.resetDiv = function(object) {
+		if(object.hasDiv) {
+			object.divElement.remove();
+			object.divElement = null;
+		}
+	}
+	
+	Molpy.repaintAllObjectDivs = function() {
 	 	Molpy.CalcPriceFactor();
 	 	
 		//TODO cycle through Molpy.displayedObjects and repaint them
@@ -477,47 +496,27 @@ Molpy.DefineGUI = function() {
 	*/
 	
 	Molpy.repaintTools = function() {
-		Molpy.RepaintSandTools();
-		Molpy.RepaintCastleTools();
+		Molpy.repaintSandTools();
+		Molpy.repaintCastleTools();
 	}
 	
 	Molpy.repaintSandTools = function() {
-		Molpy.CalcPriceFactor();
-		
-		var sToolDiv = $('#sandtools');
-		var toolsUnlocked = 1;
-		var i = 0;
-		
-		sToolDiv.empty();		
-
-		while(i < Math.min(toolsUnlocked, Molpy.SandToolsN)) {
-			var nh = false;
-			var tool = Molpy.SandToolsById[i];
-			
-			if(tool.bought >= tool.nextThreshold) toolsUnlocked ++;
-			
-			// If mouse is currently hovering over this tool, it will start hovered
-			var overID = '' + tool.name + tool.id;
-			if(Molpy.mouseIsOver == overID) nh = true;
-			
-			sToolDiv.append(tool.getDiv({forceNew: true, hover: true, nohide: nh}));
-			
-			i ++;
-		}
+		Molpy.repaintToolGroup($('#sandtools'), Molpy.SandToolsN, Molpy.SandToolsById);
 	}
 	
 	Molpy.repaintCastleTools = function() {
+		Molpy.repaintToolGroup($('#castletools'), Molpy.CastleToolsN, Molpy.CastleToolsById);
+	}
+	
+	Molpy.repaintToolGroup = function(toolDiv, maxToolID, idList) {
 		Molpy.CalcPriceFactor();
 		
-		var cToolDiv = $('#castletools');	
 		var toolsUnlocked = 1;	
 		var i = 0;
 		
-		cToolDiv.empty();
-		
-		while(i < Math.min(toolsUnlocked, Molpy.CastleToolsN)) {
+		while(i < Math.min(toolsUnlocked, maxToolID)) {
 			var nh = false;
-			var tool = Molpy.CastleToolsById[i];
+			var tool = idList[i];
 			
 			if(tool.bought >= tool.nextThreshold) toolsUnlocked ++;	
 			
@@ -525,122 +524,43 @@ Molpy.DefineGUI = function() {
 			var overID = '' + tool.name + tool.id;
 			if(Molpy.mouseIsOver == overID) nh = true;
 			
-			cToolDiv.append(tool.getDiv({forceNew: true, hover: true, nohide: nh}));
+			toolDiv.append(tool.getDiv({forceNew: true, hover: true, nohide: nh}));
 			
 			i ++;
 		}
 	}
 
 	Molpy.RepaintShop = function() {
+		//TODO deal with all the redacted stuff in a new redacted draw method
 		Molpy.shopRepaint = 0;
-		Molpy.CalcPriceFactor();
-		var redactedIndex = -1;
-		var expando = Molpy.Boosts['Expando'].power;
 		
-		var toolsUnlocked = 1;
-		Molpy.mustardTools = 0;
-		for( var i in Molpy.SandTools) {
-			if(Molpy.SandTools[i].bought >= Molpy.SandTools[i].nextThreshold) toolsUnlocked++;
-		}
+		//var redactedIndex = -1;
+		//if(Molpy.redactedVisible == 1) {
+		//	if(Molpy.redactedViewIndex == -1) {
+		//		Molpy.redactedViewIndex = Math.floor((toolsUnlocked) * Math.random());
+		//	}
+		//	redactedIndex = Molpy.redactedViewIndex;
+		//}
+		//$('#toolSTitle').toggleClass('redacted-area sand', Molpy.redactedVisible == 1);
 
-		if(Molpy.redactedVisible == 1) {
-			if(Molpy.redactedViewIndex == -1) {
-				Molpy.redactedViewIndex = Math.floor((toolsUnlocked) * Math.random());
-			}
-			redactedIndex = Molpy.redactedViewIndex;
-		}
-		$('#toolSTitle').toggleClass('redacted-area sand', Molpy.redactedVisible == 1);
+		//if(i == redactedIndex) str += Molpy.RedactedHTML();
 
-		var str = '';
-		var i = 0;
-		var nBuy = Math.pow(4, Molpy.options.sandmultibuy);
-		while(i < Math.min(toolsUnlocked, Molpy.SandToolsN)) {
-			if(i == redactedIndex) str += Molpy.RedactedHTML();
-			var me = Molpy.SandToolsById[i];
-			var formattedName = format(me.name);
-			if(isNaN(me.amount)) {
-				formattedName = 'Mustard ' + formattedName;
-				Molpy.mustardTools++;
-			} else if(Molpy.Got('Glass Ceiling ' + (i * 2))) formattedName = 'Glass ' + formattedName;
-			var salebit = '';
-			if(isFinite(Molpy.priceFactor * me.price) || !(Molpy.Earned(me.name + ' Shop Failed') && Molpy.Got('TF'))) {
-				salebit = '<br><a id="SandToolBuy' + me.id + '" onclick="Molpy.SandToolsById[' + me.id + '].buy();">Buy&nbsp;'
-					+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a onclick="Molpy.SandToolsById[' + me.id + '].sell();">Sell</a>');
-			}
-			var price = '';
-			if(isFinite(Molpy.priceFactor * me.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + i * 2))
-				price = Molpy.FormatPrice(me.price, me) + (me.price == 1 ? ' Castle' : (me.price < 100 ? ' Castles' : ' Ca'));
-			else if(isNaN(me.price))
-				price = 'Mustard';
-			else
-				price = Molpify(1000 * (i * 2 + 1), 3) + ' Chips';
-			str += '<div class="floatbox tool sand shop" onMouseOver="Molpy.Onhover(Molpy.SandToolsById[' + me.id
-				+ '],event)" onMouseOut="Molpy.Onunhover(Molpy.SandToolsById[' + me.id + '],event)"><div id="tool'
-				+ me.name.replace(' ', '') + '" class="icon"></div><h2>' + formattedName + salebit + '</h2>'
-				+ (me.amount > 0 ? '<div class="owned">Owned: ' + Molpify(me.amount, 3) + '</div>' : '')
-				+ '<div class="price">Price: ' + price + '</div>' + '<div id="SandToolProduction' + me.id
-				+ '"></div><div class="' + Molpy.DescClass(me) + '" id="SandToolDescription' + me.id
-				+ '"></div></div></div>';
-			if(expando) me.hoverOnCounter = 1;
-			me.hovering = 0;
-			i++
-		}
-		if(i == redactedIndex) str += Molpy.RedactedHTML();
-		g('sandtools').innerHTML = str;
-
-		toolsUnlocked = 1;
-		for( var i in Molpy.CastleTools) {
-			if(Molpy.CastleTools[i].bought >= Molpy.CastleTools[i].nextThreshold) toolsUnlocked++;
-		}
-
-		redactedIndex = -1;
-		if(Molpy.redactedVisible == 2) {
-			if(Molpy.redactedViewIndex == -1) {
-				Molpy.redactedViewIndex = Math.floor((toolsUnlocked) * Math.random());
-			}
-			redactedIndex = Molpy.redactedViewIndex;
-		}
-		$('#toolCTitle').toggleClass('redacted-area castle', Molpy.redactedVisible == 2);
-
-		str = '';
-		i = 0;
-		var nBuy = Math.pow(4, Molpy.options.castlemultibuy);
-		while(i < Math.min(toolsUnlocked, Molpy.CastleToolsN)) {
-			if(i == redactedIndex) str += Molpy.RedactedHTML();
-			var me = Molpy.CastleToolsById[i];
-			var formattedName = format(me.name);
-			if(isNaN(me.amount)) {
-				formattedName = 'Mustard ' + formattedName;
-				Molpy.mustardTools++;
-			} else if(Molpy.Got('Glass Ceiling ' + (i * 2 + 1))) formattedName = 'Glass ' + formattedName;
-			var salebit = '';
-			if(isFinite(Molpy.priceFactor * me.price) || !(Molpy.Earned(me.name + ' Shop Failed') && Molpy.Got('TF'))) {
-				salebit = '<br><a id="CastleToolBuy' + me.id + '" onclick="Molpy.CastleToolsById[' + me.id + '].buy();">Buy&nbsp;'
-					+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a onclick="Molpy.CastleToolsById[' + me.id + '].sell();">Sell</a>');
-			}
-			var price = '';
-			if(isFinite(Molpy.priceFactor * me.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + (i * 2 + 1)))
-				price = Molpy.FormatPrice(me.price, me) + (me.price == 1 ? ' Castle' : (me.price < 100 ? ' Castles' : ' Ca'));
-			else if(isNaN(me.price))
-				price = 'Mustard';
-			else
-				price = Molpify(1000 * (i * 2 + 2), 3) + ' Chips';
-			str += '<div class="floatbox tool castle shop" onMouseOver="Molpy.Onhover(Molpy.CastleToolsById[' + me.id
-				+ '],event)" onMouseOut="Molpy.Onunhover(Molpy.CastleToolsById[' + me.id + '],event)"><div id="tool'
-				+ me.name.replace(' ', '') + '" class="icon"></div><h2>' + formattedName + salebit + '</h2>'
-				+ (me.amount > 0 ? '<div class="owned">Owned: ' + Molpify(me.amount, 3) + '</div>' : '')
-				+ '<div class="price">Price: ' + price + '</div>' + '<div id="CastleToolProduction' + me.id
-				+ '"></div><div class="' + Molpy.DescClass(me) + '" id="CastleToolDescription' + me.id
-				+ '"></div></div></div>';
-			if(expando) me.hoverOnCounter = 1;
-			me.hovering = 0;
-			i++
-		}
-		if(Molpy.mustardTools == 12) {
-			Molpy.EarnBadge('Mustard Tools');
-		}
-		if(i == redactedIndex) str += Molpy.RedactedHTML();
-		g('castletools').innerHTML = str;
+		//redactedIndex = -1;
+		//if(Molpy.redactedVisible == 2) {
+		//	if(Molpy.redactedViewIndex == -1) {
+		//		Molpy.redactedViewIndex = Math.floor((toolsUnlocked) * Math.random());
+		//	}
+		//	redactedIndex = Molpy.redactedViewIndex;
+		//}
+		//$('#toolCTitle').toggleClass('redacted-area castle', Molpy.redactedVisible == 2);
+		
+		//TODO move mustard tool badge check to achronal dragon and mustard sale, perhaps somewhere else
+		//if(Molpy.mustardTools == 12) {
+		//	Molpy.EarnBadge('Mustard Tools');
+		//}
+		//if(i == redactedIndex) str += Molpy.RedactedHTML();
+		
+		Molpy.repaintTools();
 	}
 
 	//f= force (show regardless of group visibility
@@ -1327,7 +1247,7 @@ Molpy.DefineGUI = function() {
 		for( var i in Molpy.SandTools) {
 			var me = Molpy.SandTools[i];
 			Molpy.TickHover(me);
-			me.updateBuy();
+			me.refreshBuy();
 
 			if(me.amount, shopRepainted) {
 				var desc = g('SandToolProduction' + me.id);
@@ -1346,7 +1266,7 @@ Molpy.DefineGUI = function() {
 		for(i in Molpy.CastleTools) {
 			var me = Molpy.CastleTools[i];
 			Molpy.TickHover(me, shopRepainted);
-			me.updateBuy();
+			me.refreshBuy();
 
 			var desc = g('CastleToolProduction' + me.id);
 			if(desc) {
@@ -1370,7 +1290,7 @@ Molpy.DefineGUI = function() {
 			var me = Molpy.Boosts[i];
 			if(me.unlocked) {
 				Molpy.TickHover(me, tagRepaint);
-				me.updateBuy();
+				me.refreshBuy();
 			}
 		}
 		for(i in Molpy.Badges) {
@@ -1915,7 +1835,7 @@ Molpy.DefineGUI = function() {
 				g('faveHeader' + n).innerHTML = this.boost.getHeading() + this.boost.getFormattedName();
 				if(this.boost.boost) {
 					g('faveContent' + n).innerHTML = (this.boost.unlocked ? this.boost.getDesc() : 'This Boost is locked!');
-					this.boost.updateBuy(1);
+					this.boost.refreshBuy(1);
 				} else {
 					g('faveContent' + n).innerHTML = (this.boost.earned ? this.boost.getDesc() : 'This Badge is unearned!');
 				}
