@@ -80,6 +80,8 @@ Molpy.Up = function() {
 		Molpy.highestNPvisited = 1; //keep track of where the player has been
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
+		
+		Molpy.displayedObjects = {} // List of objects (boosts, badges, tools, etc) currently being displayed
 
 		Molpy.DefinePersist();
 		Molpy.DefineGUI();
@@ -980,7 +982,7 @@ Molpy.Up = function() {
 			this.storedTotalGpmNP = 0;
 			this.nextThreshold = args.nextThreshold;
 			this.pic = args.pic;
-			this.icon = args.icon;
+			this.icon = args.icon || 'generic';
 			this.background = args.background;
 			this.buyFunction = args.buyFunction;
 			this.drawFunction = args.drawFunction;
@@ -1095,6 +1097,7 @@ Molpy.Up = function() {
 				return isFinite(price) && Molpy.Has('Castles', price);
 			};
 			
+			//TODO remove show/hide desc after new div stuff is in place
 			this.showdesc = function(keep) {
 				var d = g('SandToolDescription' + this.id);
 				if(!d) return;
@@ -1139,18 +1142,116 @@ Molpy.Up = function() {
 					this.price = Math.floor(this.basePrice * Math.pow(Molpy.sandToolPriceFactor, this.amount));
 			};
 			
-			this.GetFormattedName = function() {
-				return '' + format(this.name);
+			// Methods for Div Creation
+			this.getFullClass = function() {
+				return 'floatbox tool sand shop';
+			}
+			
+			this.getHeading = function() {return '';}
+			
+			this.getFormattedName = function() {
+				var fname = '' + format(this.name);
+				if(isNaN(this.amount))
+					fname = 'Mustard ' + fname;
+				else if(Molpy.Got('Glass Ceiling ' + (this.id * 2)))
+					fname = 'Glass ' + fname;
+				return fname;
 			};
 			
-			this.getDiv = function() {
-				if(this.divElement) return this.divElement;
-				return Molpy.newObjectDiv('tool', false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
+			this.getOwned = function() {
+				return Molpify(this.amount, 3);
 			}
+			
+			this.getPrice = function() {
+				var price = '';
+				if(isFinite(Molpy.priceFactor * me.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + i * 2))
+					price = {Castles: (Math.floor(EvalMaybeFunction(this.price, this, 1) * Molpy.priceFactor))};
+				else if(!isNaN(me.price))
+					price = {GlassChips: 1000 * (i * 2 + 1)};
+				return price;
+			}
+			
+			this.getBuySell = function() {
+				var nBuy = Math.pow(4, Molpy.options.sandmultibuy);
+				var buysell = '';
+				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
+					buysell = '<a class="buySpan' + this.id + '" onclick="Molpy.SandToolsById[' + this.id + '].buy();">Buy&nbsp;'
+						+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.SandToolsById[' + me.id + '].sell();">Sell</a>');
+				}
+				return buysell;
+			}
+			
+			this.getProduction = function() {
+				var production = '';
+				if(isNaN(this.amount))
+					production = 'Mustard/click: 1';
+				else if(this.storedTotalGpmNP)
+					production = 'Glass/mNP: ' + Molpify(this.storedTotalGpmNP, (this.storedTotalGpmNP < 10 ? 3 : 1));
+				else
+					production = 'Sand/mNP: ' + Molpify(this.storedTotalSpmNP, (this.storedTotalSpmNP < 10 ? 3 : 1));
+				
+				return production;				
+			}
+			
+			this.getDesc = function() {
+				var desc = '';
+				if(Molpy.IsStatsVisible()) {
+					if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF')
+						|| !Molpy.Got('Glass Ceiling ' + (this.id * 2))) {
+						desc = 'Total Sand ' + this.actionName + ': ' + Molpify(this.totalSand, 1) + '<br>Sand/mNP per '
+							+ this.single + ': ' + Molpify(this.storedSpmNP, (this.storedSpmNP < 10 ? 3 : 1));
+					} else {
+						desc = 'Total Chips ' + this.actionName + ': ' + Molpify(this.totalGlass, 1)
+							+ '<br>Glass/mNP per ' + this.single + ': '
+							+ Molpify(this.storedGpmNP, (this.storedGpmNP < 10 ? 3 : 1));
+					}
 
+					desc += '<br>Total ' + this.plural + ' bought: ' + Molpify(this.bought);
+					Molpy.EarnBadge('The Fine Print'); //TODO this probably needs to go somewhere else
+				} else {
+					desc = this.desc;
+				}
+				
+				return desc;
+			}
+			
+			// Args:
+			//    forceNew (T/F): force recreation of the object's div
+			//    hover (T/F): add hover mechanics to the div
+			//    nohide (T/F): don't automatically hide the description when the div is created, useful for clicking a div's buttons
+			this.getDiv = function(args) {
+				if(this.divElement) {
+					if(!args.forceNew)
+						return this.divElement;
+					this.divElement.remove();
+				}
+				this.divElement = Molpy.newObjectDiv('tool', this, {hover: (args.hover || false), nohide: (args.nohide || false)});
+				return this.divElement;
+			}
+			
+			this.hasDiv = function() {
+				if(this.divElement) return true;
+				return false;
+			}
+			
+			// Create CSS style for tool
+			if(this.gifIcon){
+				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.gif' )");
+			} else if(this.icon) {
+				addCSSRule(document.styleSheets[1], '.darkscheme .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.png' )");
+			}
+			if(this.heresy){
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_heresy_icon.png' )");
+			}
+			
 			Molpy.SandTools[this.name] = this;
 			Molpy.SandToolsById[this.id] = this;
+			
 			Molpy.SandToolsN++;
+			
 			return this;
 		};
 
@@ -1180,7 +1281,7 @@ Molpy.Up = function() {
 			this.currentActive = 0;
 			this.nextThreshold = args.nextThreshold;
 			this.pic = args.pic;
-			this.icon = args.icon;
+			this.icon = args.icon || 'generic';
 			this.background = args.background;
 			this.buyFunction = args.buyFunction;
 			this.drawFunction = args.drawFunction;
@@ -1364,6 +1465,7 @@ Molpy.Up = function() {
 				this.currentActive = 0;
 			};
 			
+			//TODO remove show/hide desc when new div stuff is done
 			this.showdesc = function(keep) {
 				var d = g('CastleToolDescription' + this.id);
 				if(!d) return;
@@ -1438,13 +1540,128 @@ Molpy.Up = function() {
 				if(this.drawFunction) this.drawFunction();
 			};
 			
-			this.GetFormattedName = function() {
-				return '' + format(this.name);
+			// Methods for Div Creation
+			this.getFullClass = function() {
+				return 'floatbox tool castle shop';
+			}
+			
+			this.getHeading = function() {return '';}
+			
+			this.getFormattedName = function() {
+				var fname = '' + format(this.name);
+				if(isNaN(this.amount))
+					fname = 'Mustard ' + fname;
+				else if(Molpy.Got('Glass Ceiling ' + (this.id * 2 + 1)))
+					fname = 'Glass ' + fname;
+				return fname;
 			};
 			
-			this.getDiv = function() {
-				if(this.divElement) return this.divElement;
-				return Molpy.newObjectDiv('tool', false, this.name, 'tool_'+this.icon, this.price, true, this.desc);
+			this.getOwned = function() {
+				return Molpify(this.amount, 3);
+			}
+			
+			this.getPrice = function() {
+				var price = '';
+				if(isFinite(Molpy.priceFactor * me.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + i * 2 + 1))
+					price = {Castles: (Math.floor(EvalMaybeFunction(this.price, this, 1) * Molpy.priceFactor))};
+				else if(!isNaN(me.price))
+					price = {GlassChips: 1000 * (i * 2 + 2)};
+				return price;
+			}
+			
+			this.getBuySell = function() {
+				var nBuy = Math.pow(4, Molpy.options.castlemultibuy);
+				var buysell = '';
+				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
+					buysell = '<a class="buySpan' + this.id + '" onclick="Molpy.CastleToolsById[' + this.id + '].buy();">Buy&nbsp;'
+						+ nBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.CastleToolsById[' + me.id + '].sell();">Sell</a>');
+				}
+				return buysell;
+			}
+			
+			this.getProduction = function() {
+				var production = '';
+				if(isNaN(this.amount))
+					production += 'Mustard/click: 1';
+				if(this.currentActive && Molpy.ninjaTime > Molpy.ONGelapsed) {
+					if(Molpy.ninjad) {
+						production += "Ninja'd!";
+					} else {
+						production += 'Active: ' + Molpify(this.currentActive, 3) + '<br>Timer: '
+							+ Molpify(Math.ceil((Molpy.ninjaTime - Molpy.ONGelapsed) / Molpy.NPlength));
+					}
+				}
+				
+				return production;				
+			}
+			
+			this.getDesc = function() {
+				var desc = '';
+				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
+				var bN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
+				var dN = EvalMaybeFunction(inf ? this.destroyG : this.destroyC);
+				var w = inf ? 'Chip' : 'Castle';
+				var actuals = '<br>Each builds ' + Molpify(bN, 1) + ' ' + w + plural(bN)
+					+ (dN ? (' if it destroys ' + Molpify(dN, 1) + ' ' + w + plural(dN)) : '');
+				if(this.name == 'Wave' && Molpy.Got('SBTF') && !inf) {
+					bN = this.buildC(1);
+					dN = this.destroyC(1);
+					actuals += '<br>Next ONG, each will build ' + Molpify(bN, 1) + ' ' + w + plural(bN)
+						+ (dN ? (' if it destroys' + Molpify(dN, 1) + ' ' + w + plural(dN)) : '');
+				}
+				if(Molpy.IsStatsVisible()) {
+					if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + (this.id * 2 + 1))) {
+						if(this.totalCastlesDestroyed)
+							desc += 'Total Castles ' + this.actionDName + ': ' + Molpify(this.totalCastlesDestroyed)
+								+ '<br>Total Castles wasted: ' + Molpify(this.totalCastlesWasted);
+						if(this.totalCastlesBuilt)
+							desc += '<br>Total Castles ' + this.actionBName + ': +' + Molpify(this.totalCastlesBuilt);
+					} else {
+						if(this.totalGlassDestroyed)
+							desc += 'Total Chips ' + this.actionDName + ': ' + Molpify(this.totalGlassDestroyed);
+						if(this.totalGlassBuilt)
+							desc += '<br>Total Chips ' + this.actionBName + ': +' + Molpify(this.totalGlassBuilt);
+					}
+					desc += '<br>Total ' + this.plural + ' bought: ' + Molpify(this.bought);
+					desc += '<br>' + actuals;
+					Molpy.EarnBadge('Keeping Track');
+				} else {
+					desc = this.desc + actuals;
+				}
+				
+				return desc;
+			}
+			
+			// Args:
+			//    forceNew (T/F): force recreation of the object's div
+			//    hover (T/F): add hover mechanics to the div
+			//    nohide (T/F): don't automatically hide the description when the div is created, useful for clicking a div's buttons
+			this.getDiv = function(args) {
+				if(this.divElement) {
+					if(!args.forceNew)
+						return this.divElement;
+					this.divElement.remove();
+				}
+				this.divElement = Molpy.newObjectDiv('tool', this, {hover: (args.hover || false), nohide: (args.nohide || false)});
+				return this.divElement;
+			}
+			
+			this.hasDiv = function() {
+				if(this.divElement) return true;
+				return false;
+			}
+			
+			// Create CSS style for tool
+			if(this.gifIcon){
+				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.gif' )");
+			} else if(this.icon) {
+				addCSSRule(document.styleSheets[1], '.darkscheme .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.png' )");
+			}
+			if(this.heresy){
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_heresy_icon.png' )");
 			}
 
 			Molpy.CastleTools[this.name] = this;
@@ -1722,21 +1939,14 @@ Molpy.Up = function() {
 				if(!indirect && this.refreshFunction) this.refreshFunction();
 			};
 			
+			//TODO remove show/hide desc after new divs are in
 			this.showdesc = function(keep) {
 				var d = g('BoostDescription' + this.id);
 				if(d) {
 					if(keep && d.innerHTML) return;
-					d.innerHTML = '<br>' + this.GetDesc();
+					d.innerHTML = '<br>' + this.getDesc();
 				}
 				this.faveRefresh = 1;
-			};
-			
-			this.GetDesc = function() {
-				return format(EvalMaybeFunction((Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this))
-					+ format(this.prizes && Molpy.IsStatsVisible() && ('<br>Gives ' + Molpify(this.prizes)
-							+ ' random Prize' + plural(this.prizes) + ' from tier L' + EvalMaybeFunction(this.tier, 'show')
-							+ ' when Locked or Reset.') || '')
-					+ this.GetAlias();
 			};
 			
 			this.GetAlias = function() {
@@ -1744,31 +1954,6 @@ Molpy.Up = function() {
 					return '<br>(Alias: ' + this.alias + ')';
 				}
 				return '';
-			};
-			
-			this.GetFullClass = function() {
-				return 'boost ' + (this.bought ? 'lootbox loot ' : 'floatbox shop ') + (this.className || '');
-			};
-			
-			this.GetHeading = function() {
-				return "" + Molpy.groupNames[this.group][0]
-				     + ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '');
-			};
-			
-			this.GetFormattedName = function() {
-				return '' + format(this.name);
-			};
-			
-			this.GetBuy = function() {
-				var buy = '';
-				if(!this.bought && this.unlocked) {
-					buy = '<br><a id="BoostBuy' + this.id + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
-					var realPrice = this.CalcPrice(this.price);
-					if(!Molpy.IsFree(realPrice)) {
-						buy += '<div class="price"> Price: ' + Molpy.PriceString(realPrice) + '</div>';
-					}
-				}
-				return buy;
 			};
 			
 			this.hidedesc = function() {
@@ -1788,9 +1973,64 @@ Molpy.Up = function() {
 					this.saveData[i][0] = this.saveData[i][1];
 			}
 			
-			this.getDiv = function() {
-				if(this.divElement) return this.divElement;
-				return Molpy.newObjectDiv('boost', this.group, this.name, 'boost_'+this.icon, this.price, false, this.GetDesc());
+			// Methods for Div Creation
+			this.getFullClass = function() {
+				return 'boost ' + (this.bought ? 'lootbox loot ' : 'floatbox shop ') + (this.className || '');
+			}
+			
+			this.getHeading = function() {
+				return "" + Molpy.groupNames[this.group][0]
+			     + ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '');
+			}
+			
+			this.getFormattedName = function() {
+				return '' + format(this.name);
+			};
+			
+			this.getOwned = function() {return '';}
+			
+			this.getPrice = function() {
+				var p = '';
+				var realPrice = this.CalcPrice(this.price);
+				if(!Molpy.IsFree(realPrice)) p = realPrice;
+				return p;
+			}
+			
+			this.getBuySell = function() {
+				var buy = '';
+				if(!this.bought && this.unlocked) {
+					buy = '<a class="buySpan' + this.id + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
+				}
+				return buy;
+			}
+			
+			this.getProduction = function() {return '';}
+			
+			this.getDesc = function() {
+				return format(EvalMaybeFunction((Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this))
+				     + format(this.prizes && Molpy.IsStatsVisible() && ('<br>Gives ' + Molpify(this.prizes)
+				            + ' random Prize' + plural(this.prizes) + ' from tier L' + EvalMaybeFunction(this.tier, 'show')
+				            + ' when Locked or Reset.') || '')
+				     + this.GetAlias();
+			}
+			
+			// Args:
+			//    forceNew (T/F): force recreation of the object's div
+			//    hover (T/F): add hover mechanics to the div
+			//    nohide (T/F): don't automatically hide the description when the div is created, useful for clicking a div's buttons
+			this.getDiv = function(args) {
+				if(this.divElement) {
+					if(!args.forceNew)
+						return this.divElement;
+					this.divElement.remove();
+				}
+				this.divElement = Molpy.newObjectDiv('boost', this, {hover: (args.hover || false), nohide: (args.nohide || false)});
+				return this.divElement;
+			}
+			
+			this.hasDiv = function() {
+				if(this.divElement) return true;
+				return false;
 			}
 
 			// Add the boost to lists
@@ -1935,18 +2175,14 @@ Molpy.Up = function() {
 				this.faveRefresh = 1;
 			};
 			
+			//TODO get rid of show/hide after new divs in
 			this.showdesc = function(keep) {
 				var d = g('BadgeDescription' + this.id);
 				if(d) {
 					if(keep && d.innerHTML) return;
-					d.innerHTML = '<br>' + this.GetDesc();
+					d.innerHTML = '<br>' + this.getDesc();
 				}
 				this.faveRefresh = 1;
-			};
-			
-			this.GetDesc = function() {
-				return format(((this.earned || this.visibility < 1) ? EvalMaybeFunction(
-						(Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this) : '????')) + this.GetAlias();
 			};
 			
 			this.GetAlias = function() {
@@ -1954,12 +2190,6 @@ Molpy.Up = function() {
 					return '<br>(Alias: ' + this.alias + ')';
 				}
 				return '';
-			};
-			
-			this.GetFullClass = function() {
-				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
-				if(this.HasUpgrade()) cn += ' action';
-				return cn;
 			};
 			
 			this.HasUpgrade = function() {
@@ -1970,14 +2200,6 @@ Molpy.Up = function() {
 						return true;
 					}
 				}
-			};
-			
-			this.GetHeading = function() {
-				return '' + Molpy.groupNames[this.group][0] + (this.HasUpgrade() ? '+' : '');
-			};
-			
-			this.GetFormattedName = function() {
-				return '' + format((this.earned || this.visibility < 2 ? this.name : '????'));
 			};
 			
 			this.hidedesc = function() {
@@ -1991,9 +2213,51 @@ Molpy.Up = function() {
 				}
 			};
 			
-			this.getDiv = function() {
-				if(this.divElement) return this.divElement;
-				return Molpy.newObjectDiv('badge', this.group, this.name, 'badge_'+this.icon, false, false, this.GetDesc());
+			// Methods for Div Creation
+			this.getFullClass = function() {
+				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
+				if(this.HasUpgrade()) cn += ' action';
+				return cn;
+			}
+			
+			this.getHeading = function() {
+				return '' + Molpy.groupNames[this.group][0] + (this.HasUpgrade() ? '+' : '');
+			}
+			
+			this.getFormattedName = function() {
+				return '' + format((this.earned || this.visibility < 2 ? this.name : '????'));
+			};
+			
+			this.getOwned = function() {return '';}
+			
+			this.getPrice = function() {return '';}
+			
+			this.getBuySell = function() {return '';}
+			
+			this.getProduction = function() {return '';}
+			
+			this.getDesc = function() {
+				var text = EvalMaybeFunction((Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this);
+				return format(((this.earned || this.visibility < 1) ? text : '????')) + this.GetAlias();
+			}
+			
+			// Args:
+			//    forceNew (T/F): force recreation of the object's div
+			//    hover (T/F): add hover mechanics to the div
+			//    nohide (T/F): don't automatically hide the description when the div is created, useful for clicking a div's buttons
+			this.getDiv = function(args) {
+				if(this.divElement) {
+					if(!args.forceNew)
+						return this.divElement;
+					this.divElement.remove();
+				}
+				this.divElement = Molpy.newObjectDiv('badge', this, {hover: (args.hover || false), nohide: (args.nohide || false)});
+				return this.divElement;
+			}
+			
+			this.hasDiv = function() {
+				if(this.divElement) return true;
+				return false;
 			}
 
 			// Add Badge to lists

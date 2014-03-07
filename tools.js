@@ -2,6 +2,7 @@
 	new Molpy.SandTool({
 		name: 'Bucket',
 		commonName: 'bucket|buckets|poured',
+		icon: 'bucket',
 		desc: 'Pours a little sand',
 		price: 8,
 		
@@ -34,6 +35,7 @@
 	new Molpy.SandTool({
 		name: 'Cuegan',
 		commonName: 'cuegan|cuegans|tossed',
+		icon: 'cuegan',
 		desc: 'Megan and Cueball toss in a bit of extra sand',
 		price: 50,
 		
@@ -68,6 +70,7 @@
 	new Molpy.SandTool({
 		name: 'Flag',
 		commonName: 'flag|flags|marked',
+		icon: 'flag',
 		desc: 'Marks out even more sand',
 		price: 420,
 		
@@ -108,6 +111,7 @@
 	new Molpy.SandTool({
 		name: 'Ladder',
 		commonName: 'ladder|ladders|reached',
+		icon: 'ladder',
 		desc: 'Reaches higher sand',
 		price: 1700,
 		
@@ -155,6 +159,7 @@
 	new Molpy.SandTool({
 		name: 'Bag',
 		commonName: 'bag|bags|carried',
+		icon: 'bag',
 		desc: 'Carries sand from far away',
 		price: 12000,
 		
@@ -187,6 +192,7 @@
 	new Molpy.SandTool({
 		name: 'LaPetite',
 		commonName: 'LaPetite|LaPetites|rescued',
+		icon: 'lapetite',
 		desc: 'Rescues sand via raft',
 		price: DeMolpify('2WQ'),
 		
@@ -219,6 +225,7 @@ Molpy.DefineCastleTools = function() {
 	new Molpy.CastleTool({
 		name: 'NewPixBot',
 		commonName: 'newpixbot|newpixbots|unautomated|automated',
+		icon: 'newpixbot',
 		desc: 'Automates castles after the ONG\n(if not ninja\'d)',
 		price0: 1,
 		price1: 0,
@@ -262,6 +269,7 @@ Molpy.DefineCastleTools = function() {
 	new Molpy.CastleTool({
 		name: 'Trebuchet',
 		commonName: 'trebuchet|trebuchets|flung|formed',
+		icon: 'trebuchet',
 		desc: 'Flings some castles, forming more.',
 		price0: 13,
 		price1: 1,
@@ -305,6 +313,7 @@ Molpy.DefineCastleTools = function() {
 	new Molpy.CastleTool({
 		name: 'Scaffold',
 		commonName: 'scaffold|scaffolds|squished|raised',
+		icon: 'scaffold',
 		desc: 'Squishes some castles, raising a place to put more.',
 		price0: 60,
 		price1: 100,
@@ -340,6 +349,7 @@ Molpy.DefineCastleTools = function() {
 	new Molpy.CastleTool({
 		name: 'Wave',
 		commonName: 'wave|waves|swept|deposited',
+		icon: 'wave',
 		desc: 'Sweeps away some castles, depositing more in their place.',
 		price0: 300,
 		price1: 80,
@@ -394,6 +404,7 @@ Molpy.DefineCastleTools = function() {
 	new Molpy.CastleTool({
 		name: 'River',
 		commonName: 'river|rivers|washed|left',
+		icon: 'river',
 		desc: 'Washes away many castles, but leaves many more new ones.',
 		price0: 1800,
 		price1: 1520,
@@ -437,6 +448,7 @@ Molpy.DefineCastleTools = function() {
 	new Molpy.CastleTool({
 		name: 'Beanie Builder',
 		commonName: 'beanie builder|beanie builders|escavated|recreated',
+		icon: 'beaniebuilder',
 		desc: 'Excavate some castles and recreate copies elsewhere.',
 		price0: DeMolpify('40Q'),
 		price1: DeMolpify('60Q'),

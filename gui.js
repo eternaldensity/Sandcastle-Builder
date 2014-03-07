@@ -572,13 +572,13 @@ Molpy.DefineGUI = function() {
 		if(!(Molpy.activeLayout.lootVis[group] || f)) return '';
 		if(me.className) Molpy.UnlockBoost('Chromatic Heresy');
 
-		var cn = r + '<div class="' + me.GetFullClass();
+		var cn = r + '<div class="' + me.getFullClass();
 
 		if(Molpy.Boosts['Expando'].power) me.hoverOnCounter = 1;
 
 		return cn + '" onMouseOver="Molpy.Onhover(Molpy.BoostsById[' + me.id
 			+ '],event)" onMouseOut="Molpy.Onunhover(Molpy.BoostsById[' + me.id + '],event)"><div id="boost_'
-			+ (me.icon ? me.icon : me.id) + '" class="icon"></div>' + me.GetHeading() + me.GetFormattedName()
+			+ (me.icon ? me.icon : me.id) + '" class="icon"></div>' + me.getHeading() + me.getFormattedName()
 			+ '<div class="' + Molpy.DescClass(me) + '" id="BoostDescription' + me.id + '"></div></div></div>';
 	}
 
@@ -664,13 +664,13 @@ Molpy.DefineGUI = function() {
 		if(!(Molpy.activeLayout.lootVis[group] || f)) return '';
 		if(f & !me.bought && group != 'badges') return ''; //this is for badgesav group
 		var status = '';
-		var heading = me.GetHeading();
-		var cn = me.GetFullClass();
+		var heading = me.getHeading();
+		var cn = me.getFullClass();
 		if(cn && me.earned) Molpy.UnlockBoost('Chromatic Heresy');
 		if(Molpy.Boosts['Expando'].power) me.hoverOnCounter = 1;
 
 		var str = heading + '<div id="badge_' + (me.icon ? me.icon : me.id) + '" class="icon"></div>'
-			+ me.GetFormattedName() + '<div class="' + Molpy.DescClass(me) + '" id="BadgeDescription' + me.id + '"></div></div>';
+			+ me.getFormattedName() + '<div class="' + Molpy.DescClass(me) + '" id="BadgeDescription' + me.id + '"></div></div>';
 		str = Molpy.MaybeWrapFlipHoriz(str, group != 'badges' && me.np < 0);
 		return r + '<div class="' + cn + '" onMouseOver="Molpy.Onhover(Molpy.BadgesById[' + me.id
 			+ '],event)" onMouseOut="Molpy.Onunhover(Molpy.BadgesById[' + me.id + '],event)">' + str + '</div>';
@@ -1827,14 +1827,14 @@ Molpy.DefineGUI = function() {
 			if(this.boost) {
 				Molpy.DisplayingFave =1;
 				g('optionFave' + n).text = this.boost.name;
-				g('faveHeader' + n).innerHTML = this.boost.GetHeading() + this.boost.GetFormattedName();
+				g('faveHeader' + n).innerHTML = this.boost.getHeading() + this.boost.getFormattedName();
 				if(this.boost.boost) {
-					g('faveContent' + n).innerHTML = (this.boost.unlocked ? this.boost.GetDesc() : 'This Boost is locked!');
+					g('faveContent' + n).innerHTML = (this.boost.unlocked ? this.boost.getDesc() : 'This Boost is locked!');
 					this.boost.updateBuy(1);
 				} else {
-					g('faveContent' + n).innerHTML = (this.boost.earned ? this.boost.GetDesc() : 'This Badge is unearned!');
+					g('faveContent' + n).innerHTML = (this.boost.earned ? this.boost.getDesc() : 'This Badge is unearned!');
 				}
-				g('sectionFave' + n).className = 'draggable-element table-wrapper ' + this.boost.GetFullClass();
+				g('sectionFave' + n).className = 'draggable-element table-wrapper ' + this.boost.getFullClass();
 				Molpy.DisplayingFave =0;
 			} else {
 				g('optionFave' + n).text = n + ' (empty)';
@@ -1936,49 +1936,55 @@ Molpy.DefineGUI = function() {
 		});
 	}
 	
-	Molpy.newObjectDiv = function(type, object) {
+	Molpy.newObjectDiv = function(type, object, flags) {
 		var headingHTML = '';
 		var purchaseHTML = '';
 		var productionHTML = '';
 		
-		if(object.group) headingHTML = '	<H1 class="groupTitle">[' + object.GetHeading() + ']</H1>';
+		var heading = object.getHeading();
+		if(heading != '') headingHTML = '	<H1 class="groupTitle">[' + heading + ']</H1>';
 		
-		//Only do purchase and price divs if object is a tool or is purchasable and in the shop
-		if(type == 'tool' || (object.price && !object.bought)) {
-			var price = object.price;
-			var realPrice = object.CalcPrice(price);
-			
-			if(!Molpy.IsFree(realPrice)) {
-				purchaseHTML = '	<div class="purchase "><a class="buySpan">Buy</a>' + (type == 'tool' ?  '<a class="sellSpan">Sell</a>' : '') + '</div>'
+		var buysell = object.getBuySell();
+		if(buysell != '') {
+			var price = object.getPrice();
+			//var realPrice = object.CalcPrice(price);			
+			if(price != '') { //!Molpy.IsFree(realPrice)
+				purchaseHTML = '	<div class="purchase ">' + buysell + '</div>'
 					         + '	<div class="price ">'
-					         + Molpy.createPriceInnerHTML(price)
+					         + Molpy.createPriceHTML(price)
 					         + '	</div>';
 			}
 		}
 		
-		if(type == 'tool') productionHTML = '	<div class="production" />';
+		var production = object.getProduction();
+		if(production != '') productionHTML = '	<div class="production">' + production + '</div>';
 		
-		var divHTML = '<div class="objDiv ' + object.GetFullClass() + '">'
-			        + '	<div class="icon ' + type + '_' + (object.icon ? object.icon : object.id) + '" />'
+		var divHTML = '<div class="objDiv ' + object.getFullClass() + '">'
+			        + '	<div class="icon ' + type + '_' + (object.icon ? object.icon : 'generic') + '" />'
 			        + headingHTML
-			        + '	<H2 class="objName">' + object.GetFormattedName() + '</H2>'
+			        + '	<H2 class="objName">' + object.getFormattedName() + '</H2>'
 			        + purchaseHTML
 			        + productionHTML
-			        + '	<br /><div class="description">' + object.GetDesc() + '</div>'
+			        + '	<div class="description"><br />' + object.getDesc() + '</div>'
 			        + '</div>';
 		
 		var div = $(divHTML);
-		div.mouseover(Molpy.onMouseOver).mouseout(Molpy.onMouseOut);
+		if(flags.hover) {
+			div.mouseover(Molpy.onMouseOver).mouseout(Molpy.onMouseOut);
+			if(!Molpy.Boosts['Expando'].IsEnabled && !flags.nohide) {
+				div.find('.description').hide();
+			}
+		}
 		return div;
 	}
 	
-	Molpy.createPriceInnerHTML = function(price) {
+	Molpy.createPriceHTML = function(price) {
 		var innerHTML = 'Price:';
 		for(var p in price) {
 			var pNum = price[p];
 			//change all number representations into a number (40,000 40k 4e4)
 			pNum = isNaN(pNum) ? DeMolpify(pNum) : pNum;
-			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum) + ' ' + p;
+			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum, 1) + ' ' + p;
 		}
 		return innerHTML;
 	}
