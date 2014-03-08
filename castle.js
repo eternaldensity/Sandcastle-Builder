@@ -81,7 +81,7 @@ Molpy.Up = function() {
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
 		
-		Molpy.dispObjects = {shop: [], tools: [], boosts: [], badges: [], faves: []} // Lists of objects currently being displayed
+		Molpy.dispObjects = {shop: [], tools: [], boosts: [], badges: [], tagged: [], faves: []} // Lists of objects currently being displayed
 		Molpy.mouseIsOver = null;
 
 		Molpy.DefinePersist();
@@ -2229,6 +2229,7 @@ Molpy.Up = function() {
 			this.getFullClass = function() {
 				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
 				if(this.HasUpgrade()) cn += ' action';
+				if(this.np < 0) cn += 'flip-horizontal';
 				return cn;
 			}
 			

@@ -434,10 +434,10 @@ Molpy.DefineGUI = function() {
 			1: $('#sandtools'),
 			2: $('#castletools'),
 			3: $('#boosts'),
-			4: $('#loot'),
-			5: $('#loot'),
-			6: $('#loot'),
-			7: $('#loot')};
+			4: $('#loot'), // in a boost group
+			5: $('#loot'), // in a badge  group
+			6: $('#loot'), // in badges available
+			7: $('#loot')}; // in tagged list
 	Molpy.redactedTitleList = {
 			1: $('#toolSTitle'),
 			2: $('#toolCTitle'),
@@ -505,13 +505,14 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.removeGroupDivs = function(group) {
+		console.log('remove objs in group: ' + group);
 		for(var obj in group) {
 			Molpy.removeDiv(group[obj]);
 		}
 	}
 	
 	Molpy.removeDiv = function(object) {
-		if(object.hasDiv) {
+		if(object.hasDiv()) {
 			object.divElement.remove();
 			object.divElement = null;
 		}
@@ -524,21 +525,78 @@ Molpy.DefineGUI = function() {
 	 	Molpy.repaintTools();
 	 	Moply.repaintFaves();
 	 	
+	 	Molpy.UnlockBoost('Chromatic Heresy');
 	}
 	
-	/*
-	Molpy.repaintLoot = function() {
+	
+	Molpy.repaintLoot = function(showTagged) {
+		//clear out all the old loot stuff
+		console.log('boost to remove: ' + Molpy.dispObjects.boosts);
+		Molpy.removeGroupDivs(Molpy.dispObjects.boosts);
+		Molpy.removeGroupDivs(Molpy.dispObjects.badges);
+		Molpy.removeGroupDivs(Molpy.dispObjects.tagged);
 		Molpy.dispObjects.boosts = [];
 		Molpy.dispObjects.badges = [];
+		Molpy.dispObjects.tagged = [];
+		
+		var taggedList = [];
+		
+		// Setup Boost list for use
+		var boostList = [];
+		for(var i in Molpy.Boosts) {
+			var me = Molpy.Boosts[i];
+			if(me.bought && Molpy.activeLayout.lootVis[me.group]) boostList.push(me);
+			if(me.bought && me.className) taggedList.push(me);
+		}
+		
+		if(Molpy.options.boostsort > 0)
+			boostList.sort(Molpy.NameSort);
+		else
+			boostList.sort(Molpy.PriceSort);
+		
+		// Setup Badge list for use
+		var badgeList = [];
+		var badgeAvList = [];
+		var monumentList = [];
+		for( var i in Molpy.Badges) {
+			var me = Molpy.Badges[i];
+			// Badges Available are a special case
+			if(!me.bought && me.group == 'badges' && Molpy.activeLayout.lootVis.badgeav)
+				badgeAvList.push(me);
+			else if(me.earned){
+				if(Molpy.activeLayout.lootVis[me.group]) {
+					if(me.group == 'badges')
+						badgeList.push(me);
+					// Do the discvoery/monument checks explicity just in case other badge types are added later
+					if(me.group == 'discov'
+					   || me.group == 'monums'
+					   || me.group == 'monumg'
+					   || me.group == 'diamm')
+						monumentList.push(me);
+				}
+				if(me.className) taggedList.push(me);
+			}
+		}
+		
+		//repack it all into a single sorted Badge List
+		badgeList.concat(badgeAvList, monumentList);
+		
+		//TODO somewhere here is where pagnation and filtering type stuff would probably go
+		
+		if(showTagged)
+			Molpy.addGroupToDiv($('#loot'), taggedList, taggedList.length - 1, 'tagged', {autoAdd: true, recalc: false});
+		else {
+			Molpy.addGroupToDiv($('#loot'), boostList, boostList.length - 1, 'boosts', {autoAdd: true, recalc: false});
+			Molpy.addGroupToDiv($('#loot'), badgeList, badgeList.length - 1, 'badges', {autoAdd: true, recalc: false});
+		}
 	}
-	*/
+	
 
 	Molpy.repaintShop = function() {
 		Molpy.shopNeedRepaint = 0;
 		
 		Molpy.removeGroupDivs(Molpy.dispObjects.shop);
 		Molpy.dispObjects.shop = [];
-		$('#boosts').empty(); //TODO this shouldn't be needed, need fixed
 
 		var shopList = [];
 		for( var i in Molpy.Boosts) {
@@ -555,6 +613,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.repaintTools = function(args) {
+		if(!args) args = {};
 		Molpy.toolsNeedRepaint = 0;
 		
 		Molpy.removeGroupDivs(Molpy.dispObjects.tools);
@@ -567,6 +626,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.repaintSandTools = function(args) {
+		if(!args) args = {};
 		Molpy.sandToolsNeedRepaint = 0;
 		
 		// Remove all Sand Tools from dispObjects for a fresh start
@@ -575,8 +635,8 @@ Molpy.DefineGUI = function() {
 		}
 		
 		var toolsUnlocked = 1;
-		for(var i in SandToolsById){
-			if(SandToolsById[i].bought >= SandToolsById[i].nextThreshold) toolsUnlocked ++;	
+		for(var i in Molpy.SandToolsById){
+			if(Molpy.SandToolsById[i].bought >= Molpy.SandToolsById[i].nextThreshold) toolsUnlocked ++;	
 		}
 		var max = Math.min(toolsUnlocked -1 , Molpy.SandToolsN - 1);
 		
@@ -585,6 +645,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.repaintCastleTools = function(args) {
+		if(!args) args = {};
 		Molpy.castleToolsNeedRepaint = 0;
 		
 		// Remove all Castle Tools from dispObjects for a fresh start
@@ -593,13 +654,22 @@ Molpy.DefineGUI = function() {
 		}
 		
 		var toolsUnlocked = 1;
-		for(var i in CastleToolsById){
-			if(CastleToolsById[i].bought >= CastleToolsById[i].nextThreshold) toolsUnlocked ++;	
+		for(var i in Molpy.CastleToolsById){
+			if(Molpy.CastleToolsById[i].bought >= Molpy.CastleToolsById[i].nextThreshold) toolsUnlocked ++;	
 		}
 		var max = Math.min(toolsUnlocked - 1, Molpy.CastleToolsN - 1);
 		
 		var dorecalc = args.recalc == false ? false : true;
 		Molpy.addGroupToDiv($('#castletools'), Molpy.CastleToolsById, max, 'tools', {autoAdd: true, recalc: dorecalc});
+	}
+	
+	Molpy.repaintBoosts = function() {
+		Molpy.repaintShop();
+		Molpy.repaintLoot();
+	}
+	
+	Molpy.repaintBadges = function() {
+		Molpy.repaintLoot();
 	}
 	
 	/*
@@ -621,9 +691,9 @@ Molpy.DefineGUI = function() {
 			redDiv = Molpy.redactedDivList[Molpy.redactedVisible];
 		}
 		
-		// If an position is invalid, get a random new position
-		if(Molpy.redactedViewIndex == -1 || Molpy.redactedViewIndex > redDiv.size()) {
-			var maxPos = redDiv.size();
+		// If a position is invalid, get a random new position
+		if(Molpy.redactedViewIndex == -1 || Molpy.redactedViewIndex > (redDiv.size() + 1)) {
+			var maxPos = redDiv.size() + 1;
 			Molpy.redactedViewIndex = Math.floor(maxPos * Math.random());
 		}
 		
@@ -631,11 +701,14 @@ Molpy.DefineGUI = function() {
 		
 		if(Molpy.redactedViewIndex == 0)
 			redDiv.prepend(Molpy.getRedactedDiv());
+		else if(Molpy.redactedViewIndex > redDiv.size())
+			redDiv.append(Molpy.getRedactedDiv());
 		else
 			redDiv.find(':nth-child(' + Molpy.redactedViewIndex + ')').before(Molpy.getRedactedDiv());	
 	}
 	
 	Molpy.addGroupToDiv = function(whichDiv, group, maxIndex, dispCat, args) {
+		if(!args) args = {};
 		if(args.recalc) Molpy.CalcPriceFactor();
 		
 		var fnew = args.forceNew || true;
@@ -653,9 +726,9 @@ Molpy.DefineGUI = function() {
 			whichDiv.append(object.getDiv({forceNew: fnew, hover: addHover, nohide: nh}));
 			
 			if(args.autoAdd) {
-				Molpy.dispObjects[dispCat].push[object];
+				var suc = Molpy.dispObjects[dispCat].push(object);
 			} else {
-				if($.inArray(Molpy.dispObjects[dispCat], object) == -1) Molpy.dispObjects[dispCat].push[object];
+				if($.inArray(Molpy.dispObjects[dispCat], object) == -1) Molpy.dispObjects[dispCat].push(object);
 			}
 			
 			i ++;
@@ -675,185 +748,24 @@ Molpy.DefineGUI = function() {
 		Molpy.repaintTools();
 	}
 
-	//f= force (show regardless of group visibility
-	//r = redacted index
-	Molpy.BoostString = function(me, f, r) {
-		var group = me.group;
-		if(r) {
-			r = Molpy.RedactedHTML(1);
-			Molpy.redactedGr = group;
-		} else {
-			r = '';
-		}
-
-		if(!(Molpy.activeLayout.lootVis[group] || f)) return '';
-		if(me.className) Molpy.UnlockBoost('Chromatic Heresy');
-
-		var cn = r + '<div class="' + me.getFullClass();
-
-		if(Molpy.Boosts['Expando'].power) me.hoverOnCounter = 1;
-
-		return cn + '" onMouseOver="Molpy.Onhover(Molpy.BoostsById[' + me.id
-			+ '],event)" onMouseOut="Molpy.Onunhover(Molpy.BoostsById[' + me.id + '],event)"><div id="boost_'
-			+ (me.icon ? me.icon : me.id) + '" class="icon"></div>' + me.getHeading() + me.getFormattedName()
-			+ '<div class="' + Molpy.DescClass(me) + '" id="BoostDescription' + me.id + '"></div></div></div>';
-	}
-
 	Molpy.RepaintBoosts = function() {
 		Molpy.boostRepaint = 0;
 		
 		Molpy.repaintShop();
 
-		var blist = [];
-		for( var i in Molpy.Boosts) {
-			var me = Molpy.Boosts[i];
-			if(me.bought) {
-				blist.push(me);
-			}
-		}
-		if(Molpy.options.boostsort > 0)
-			blist.sort(Molpy.NameSort)
-		else
-			blist.sort(Molpy.PriceSort)
-		redactedIndex = -1;
-		if(Molpy.redactedVisible == 4) {
-			if(Molpy.redactedViewIndex == -1) {
-				Molpy.redactedViewIndex = Math.floor((blist.length) * Math.random());
-			}
-			redactedIndex = Molpy.redactedViewIndex;
-		}
-		str = '';
-		r = 0;
-		for( var i in blist) {
-			var me = blist[i];
-			str += Molpy.BoostString(me, 0, r == redactedIndex);
-			me.hovering = 0;
-			r++;
-		}
-
-		Molpy.boostHTML = str;
-		g('loot').innerHTML = Molpy.boostHTML + Molpy.badgeHTML;
-	}
-
-	//f= force (show regardless of group visibility
-	//r = redacted index
-	Molpy.BadgeString = function(me, f, r) {
-		var group = me.group
-		if(r) {
-			r = Molpy.RedactedHTML(1);
-			Molpy.redactedGr = group;
-		} else
-			r = '';
-
-		if(!(Molpy.activeLayout.lootVis[group] || f)) return '';
-		if(f & !me.bought && group != 'badges') return ''; //this is for badgesav group
-		var status = '';
-		var heading = me.getHeading();
-		var cn = me.getFullClass();
-		if(cn && me.earned) Molpy.UnlockBoost('Chromatic Heresy');
-		if(Molpy.Boosts['Expando'].power) me.hoverOnCounter = 1;
-
-		var str = heading + '<div id="badge_' + (me.icon ? me.icon : me.id) + '" class="icon"></div>'
-			+ me.getFormattedName() + '<div class="' + Molpy.DescClass(me) + '" id="BadgeDescription' + me.id + '"></div></div>';
-		str = Molpy.MaybeWrapFlipHoriz(str, group != 'badges' && me.np < 0);
-		return r + '<div class="' + cn + '" onMouseOver="Molpy.Onhover(Molpy.BadgesById[' + me.id
-			+ '],event)" onMouseOut="Molpy.Onunhover(Molpy.BadgesById[' + me.id + '],event)">' + str + '</div>';
-	}
-
-	Molpy.MaybeWrapFlipHoriz = function(str, condition) {
-		if(condition) return Molpy.WrapFlipHoriz(str);
-		return str;
-	}
-	Molpy.WrapFlipHoriz = function(str) {
-		return '<div class="flip-horizontal">' + str + '</div>';
+		Molpy.repaintLoot();
 	}
 
 	Molpy.RepaintBadges = function() {
 		Molpy.badgeRepaint = 0;
-		var str = '';
-		var blist = [];
-		for( var i in Molpy.Badges) {
-			var me = Molpy.Badges[i];
-			if(me.earned) {
-				blist.push(me);
-			}
-		}
-		var redactedIndex = -1;
-		if(Molpy.redactedVisible == 5) {
-			if(Molpy.redactedViewIndex == -1) {
-				Molpy.redactedViewIndex = Math.floor((blist.length + 1) * Math.random());
-			}
-			redactedIndex = Molpy.redactedViewIndex;
-		}
-		var r = 0;
-		//do some sorting here?
-		for( var i in blist) {
-			var me = blist[i];
-			str += Molpy.BadgeString(me, 0, r == redactedIndex);
-			me.hovering = 0;
-			r++;
-		}
-		if(r == redactedIndex) str += Molpy.RedactedHTML(1);
-
-		Molpy.badgeHTML = str;
-		str = '';
-		if(Molpy.activeLayout.lootVis.badgesav) {
-			var blist = [];
-			for( var i in Molpy.Badges) {
-				var me = Molpy.Badges[i];
-				if(!me.earned && me.group == 'badges') {
-					blist.push(me);
-				}
-			}
-
-			var redactedIndex = -1;
-			if(Molpy.redactedVisible == 6) {
-				if(Molpy.redactedViewIndex == -1) {
-					Molpy.redactedViewIndex = Math.floor((blist.length + 1) * Math.random());
-				}
-				redactedIndex = Molpy.redactedViewIndex;
-			}
-			var r = 0;
-			//do some sorting here?
-			for( var i in blist) {
-				var me = blist[i];
-				str += Molpy.BadgeString(me, 1, r == redactedIndex);
-				r++;
-			}
-			if(r == redactedIndex) str += Molpy.RedactedHTML(1);
-		}
-		Molpy.badgeHTML += str;
-		g('loot').innerHTML = Molpy.boostHTML + Molpy.badgeHTML;
+		
+		Molpy.repaintLoot();
 	}
 
 	Molpy.RepaintTaggedLoot = function() {
-		var str = '';
-		var blist = [];
-		for( var i in Molpy.Boosts) {
-			var me = Molpy.Boosts[i];
-			if(me.bought && me.className) {
-				blist.push(me);
-			}
-		}
-		blist.sort(Molpy.ClassNameSort);
-		for( var i in blist) {
-			var me = blist[i];
-			str += Molpy.BoostString(me, 1);
-		}
-
-		blist = [];
-		for( var i in Molpy.Badges) {
-			var me = Molpy.Badges[i];
-			if(me.earned && me.className) {
-				blist.push(me);
-			}
-		}
-		for( var i in blist) {
-			var me = blist[i];
-			str += Molpy.BadgeString(me, 1);
-		}
-		g('loot').innerHTML = str;
+		Molpy.repaintLoot(true);
 	}
+	
 	//the numbers that fly up when you click the pic for sand
 	Molpy.sParticles = [];
 	var str = '';
