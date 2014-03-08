@@ -1232,12 +1232,44 @@ Molpy.Up = function() {
 				return false;
 			}
 			
-			// Methods for Div Refresh / Updates
+			// Methods for Div Updates
 			
-			this.refreshBuy = function() {
+			this.repaint = function() {
+				if(!this.divElement) return;
+				
+				var parent = this.divElement.parent();
+				var index = this.divElement.index();
+				Molpy.removeDiv(this);
+				
+				// If mouse is currently hovering over this, it will start hovered
+				var nh = false;
+				var overID = '' + this.name + this.id;
+				if(Molpy.mouseIsOver == overID) nh = true;
+				
+				this.getDiv({forceNew: true, nohide: nh});
+				parent.find(':nth-child(' + index + ')').before(this.divElement);
+				
+			}
+			
+			this.updateAll = function() {
+				// Might as well just repaint it
+				this.repaint();
+			}
+			
+			this.updateBuy = function() {
 				if(!this.divElement) return;
 				this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
 			};
+			
+			this.updatePrice = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.price').innerHTML = Molpy.createPriceHTML(this.getPrice());
+			}
+			
+			this.updateProduction = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.production').innerHTML = this.getProduction();
+			}
 			
 			// Create CSS style for tool
 			if(this.gifIcon){
@@ -1653,11 +1685,43 @@ Molpy.Up = function() {
 				return false;
 			}
 			
-			// Methods for Div Refresh / Updates
-			this.refreshBuy = function() {
+			// Methods for Div Updates
+			
+			this.repaint = function() {
+				if(!this.divElement) return;
+				
+				var parent = this.divElement.parent();
+				var index = this.divElement.index();
+				Molpy.removeDiv(this);
+				
+				// If mouse is currently hovering over this, it will start hovered
+				var nh = false;
+				var overID = '' + this.name + this.id;
+				if(Molpy.mouseIsOver == overID) nh = true;
+				
+				this.getDiv({forceNew: true, nohide: nh});
+				parent.find(':nth-child(' + index + ')').before(this.divElement);				
+			}
+			
+			this.updateAll = function() {
+				// Might as well just repaint it
+				this.repaint();
+			}
+			
+			this.updateBuy = function() {
 				if(!this.divElement) return;
 				this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
 			};
+			
+			this.updatePrice = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.price').innerHTML = Molpy.createPriceHTML(this.getPrice());
+			}
+			
+			this.updateProduction = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.production').innerHTML = this.getProduction();
+			}
 			
 			// Create CSS style for tool
 			if(this.gifIcon){
@@ -2036,14 +2100,45 @@ Molpy.Up = function() {
 				return false;
 			}
 			
-			// Methods for Div Refresh / Updates
+			// Methods for Div Updates
 			
-			this.refreshBuy = function(fave) {
+			this.repaint = function() {
+				if(!this.divElement) return;
+				
+				var parent = this.divElement.parent();
+				var index = this.divElement.index();
+				Molpy.removeDiv(this);
+				
+				// If mouse is currently hovering over this, it will start hovered
+				var nh = false;
+				var overID = '' + this.name + this.id;
+				if(Molpy.mouseIsOver == overID) nh = true;
+				
+				this.getDiv({forceNew: true, nohide: nh});
+				parent.find(':nth-child(' + index + ')').before(this.divElement);		
+			}
+			
+			this.updateAll = function() {
+				// Might as well just repaint it
+				this.repaint();
+			}
+			
+			this.updateBuy = function(fave) {
 				if(!this.divElement) return;
 				if(this.unlocked && (fave || !this.bought)) {
 					this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
 				}
 			};
+			
+			this.updatePrice = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.price').innerHTML = Molpy.createPriceHTML(this.getPrice());
+			}
+			
+			this.updateProduction = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.production').innerHTML = this.getProduction();
+			}
 
 			// Add the boost to lists
 			Molpy.Boosts[this.alias] = this;
@@ -2271,6 +2366,29 @@ Molpy.Up = function() {
 			this.hasDiv = function() {
 				if(this.divElement) return true;
 				return false;
+			}
+			
+			// Methods for Div Updates
+			
+			this.repaint = function() {
+				if(!this.divElement) return;
+				
+				var parent = this.divElement.parent();
+				var index = this.divElement.index();
+				Molpy.removeDiv(this);
+				
+				// If mouse is currently hovering over this, it will start hovered
+				var nh = false;
+				var overID = '' + this.name + this.id;
+				if(Molpy.mouseIsOver == overID) nh = true;
+				
+				this.getDiv({forceNew: true, nohide: nh});
+				parent.find(':nth-child(' + index + ')').before(this.divElement);		
+			}
+			
+			this.updateAll = function() {
+				// Might as well just repaint it
+				this.repaint();
 			}
 
 			// Add Badge to lists

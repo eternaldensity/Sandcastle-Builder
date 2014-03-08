@@ -1232,60 +1232,24 @@ Molpy.DefineGUI = function() {
 				}
 			}
 		}
+		
 		if(repainted && Molpy.options.fade) Molpy.AdjustFade();
+		
 		for( var i in Molpy.SandTools) {
 			var me = Molpy.SandTools[i];
-			Molpy.TickHover(me);
-			me.refreshBuy();
-
-			if(me.amount, shopRepainted) {
-				var desc = g('SandToolProduction' + me.id);
-				if(desc) {
-					if(desc.innerHTML == '' || desc.innerHTML.indexOf('/mNP:') > -1) {
-						if(isNaN(me.amount))
-							desc.innerHTML = 'Mustard/click: 1';
-						else if(me.storedTotalGpmNP)
-							desc.innerHTML = 'Glass/mNP: ' + Molpify(me.storedTotalGpmNP, (me.storedTotalGpmNP < 10 ? 3 : 1));
-						else
-							desc.innerHTML = 'Sand/mNP: ' + Molpify(me.storedTotalSpmNP, (me.storedTotalSpmNP < 10 ? 3 : 1));
-					}
-				}
-			}
+			me.updateBuy();
 		}
+		
 		for(i in Molpy.CastleTools) {
 			var me = Molpy.CastleTools[i];
-			Molpy.TickHover(me, shopRepainted);
-			me.refreshBuy();
-
-			var desc = g('CastleToolProduction' + me.id);
-			if(desc) {
-				var fullDesc = '';
-				if(isNaN(me.amount))
-						fullDesc += 'Mustard/click: 1<br>';
-				if(desc.innerHTML == '' || desc.innerHTML.indexOf('Active:') > -1 || desc.innerHTML.indexOf("Ninja'd") > -1) {
-					if(me.currentActive && Molpy.ninjaTime > Molpy.ONGelapsed) {
-						if(Molpy.ninjad) {
-							fullDesc += "Ninja'd!";
-						} else {
-							fullDesc += 'Active: ' + Molpify(me.currentActive, 3) + '<br>Timer: '
-								+ Molpify(Math.ceil((Molpy.ninjaTime - Molpy.ONGelapsed) / Molpy.NPlength));
-						}
-					}
-				}
-				desc.innerHTML = fullDesc;
-			}
+			me.updateBuy();
 		}
+		
 		for(i in Molpy.Boosts) {
 			var me = Molpy.Boosts[i];
-			if(me.unlocked) {
-				Molpy.TickHover(me, tagRepaint);
-				me.refreshBuy();
+			if(me.unlocked && !me.bought) {
+				me.updateBuy();
 			}
-		}
-		for(i in Molpy.Badges) {
-			var me = Molpy.Badges[i];
-			//todo: skip badges which are hidden
-			Molpy.TickHover(me, tagRepaint);
 		}
 
 		drawClockHand();
@@ -1309,38 +1273,6 @@ Molpy.DefineGUI = function() {
 		Molpy.CheckBeachClass();
 		
 		Molpy.Boosts['Temporal Rift'].updateRiftIMG();
-	}
-
-	Molpy.TickHover = function(me, repaint) {
-		if(Molpy.Boosts['Expando'].power) {
-			me.hoverOffCounter = -1;//prevent hide
-			if(!me.hovering) {
-				me.hoverOnCounter = 1;//force show if not shown
-			}
-		} else {
-			if(Molpy.shrinkAll) me.hoverOffCounter = Math.ceil(Molpy.fps * 3.6);
-		}
-		if(me.hoverOnCounter > 0) {
-			me.hoverOnCounter--;
-			if(me.hoverOnCounter <= 0) {
-				if(!me.hovering) {
-					me.hovering = 1;
-					me.showdesc();
-				}
-				repaint = 0;
-				Molpy.UnlockBoost('Expando');
-			}
-		}
-		if(me.hoverOffCounter > 0) {
-			me.hoverOffCounter--;
-			if(me.hoverOffCounter <= 0) {
-				me.hovering = 0;
-				me.hidedesc();
-			}
-		}
-		if(repaint && me.hovering) {
-			me.showdesc(1);
-		}
 	}
 
 	Molpy.DescClass = function(me) {
@@ -1824,7 +1756,7 @@ Molpy.DefineGUI = function() {
 				g('faveHeader' + n).innerHTML = this.boost.getHeading() + this.boost.getFormattedName();
 				if(this.boost.boost) {
 					g('faveContent' + n).innerHTML = (this.boost.unlocked ? this.boost.getDesc() : 'This Boost is locked!');
-					this.boost.refreshBuy(1);
+					this.boost.updateBuy(1);
 				} else {
 					g('faveContent' + n).innerHTML = (this.boost.earned ? this.boost.getDesc() : 'This Badge is unearned!');
 				}
