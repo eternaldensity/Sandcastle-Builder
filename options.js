@@ -129,7 +129,7 @@ new Molpy.Option({
 	title: 'Logicat Colours',
 	visability: function() {return Molpy.Got('Chromatic Heresy') && Molpy.Got('LogiPuzzle') }, 
 	onchange: function() { 
-		Molpy.Boosts['logicat'].repaint();
+		Molpy.Boosts['Logicat'].repaint();
 		Molpy.UpdateFaves();
 	},
 	text: ['Greys','Colours'],

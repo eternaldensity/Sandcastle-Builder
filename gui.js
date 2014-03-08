@@ -521,7 +521,7 @@ Molpy.DefineGUI = function() {
 	 	Molpy.repaintLoot();
 	 	Molpy.repaintShop();
 	 	Molpy.repaintTools();
-	 	Moply.repaintFaves();
+	 	Molpy.repaintFaves();
 	}
 	
 	
@@ -1210,7 +1210,7 @@ Molpy.DefineGUI = function() {
 
 		//TODO want to repaint as little as possible, favoring updates instead
 		if(Molpy.allNeedRepaint) {
-			Moply.repaintAll();
+			Molpy.repaintAll();
 		}
 		if(Molpy.shopNeedRepaint) {
 			Molpy.repaintShop();
