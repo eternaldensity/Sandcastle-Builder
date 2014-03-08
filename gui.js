@@ -505,7 +505,6 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.removeGroupDivs = function(group) {
-		console.log('remove objs in group: ' + group);
 		for(var obj in group) {
 			Molpy.removeDiv(group[obj]);
 		}
@@ -531,7 +530,6 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.repaintLoot = function(showTagged) {
 		//clear out all the old loot stuff
-		console.log('boost to remove: ' + Molpy.dispObjects.boosts);
 		Molpy.removeGroupDivs(Molpy.dispObjects.boosts);
 		Molpy.removeGroupDivs(Molpy.dispObjects.badges);
 		Molpy.removeGroupDivs(Molpy.dispObjects.tagged);
@@ -561,7 +559,7 @@ Molpy.DefineGUI = function() {
 		for( var i in Molpy.Badges) {
 			var me = Molpy.Badges[i];
 			// Badges Available are a special case
-			if(!me.bought && me.group == 'badges' && Molpy.activeLayout.lootVis.badgeav)
+			if(!me.bought && me.group == 'badges' && Molpy.activeLayout.lootVis.badgesav)
 				badgeAvList.push(me);
 			else if(me.earned){
 				if(Molpy.activeLayout.lootVis[me.group]) {
@@ -579,7 +577,7 @@ Molpy.DefineGUI = function() {
 		}
 		
 		//repack it all into a single sorted Badge List
-		badgeList.concat(badgeAvList, monumentList);
+		badgeList = badgeList.concat(badgeAvList, monumentList);
 		
 		//TODO somewhere here is where pagnation and filtering type stuff would probably go
 		
