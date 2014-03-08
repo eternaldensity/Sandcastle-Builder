@@ -848,7 +848,7 @@ Molpy.Up = function() {
 			} else {
 				Molpy.Boosts['Castles'].globalMult = 1;
 			}
-			Molpy.shopRepaint = 1;
+			Molpy.shopNeedRepaint = 1;
 			Molpy.CalculateGlassRate();
 		};
 		Molpy.CheckSandRateBadges = function() {
@@ -951,7 +951,7 @@ Molpy.Up = function() {
 		/**************************************************************
 		 * Boost Shop
 		 *************************************************************/
-		Molpy.shopRepaint = 1;
+		Molpy.shopNeedRepaint = 1;
 		Molpy.sandToolPriceFactor = 1.1;
 		Molpy.SandTools = [];
 		Molpy.SandToolsById = [];
@@ -1013,7 +1013,7 @@ Molpy.Up = function() {
 						this.findPrice();
 						if(this.buyFunction) this.buyFunction(this);
 						if(this.drawFunction) this.drawFunction();
-						Molpy.shopRepaint = 1;
+						Molpy.toolsNeedRepaint = 1;
 						Molpy.recalculateDig = 1;
 						Molpy.SandToolsOwned++;
 						Molpy.CheckBuyUnlocks(1);
@@ -1064,7 +1064,7 @@ Molpy.Up = function() {
 					}
 					if(this.sellFunction) this.sellFunction();
 					if(this.drawFunction) this.drawFunction();
-					Molpy.shopRepaint = 1;
+					Molpy.toolsNeedRepaint = 1;
 					Molpy.recalculateDig = 1;
 					Molpy.SandToolsOwned--;
 					_gaq && _gaq.push(['_trackEvent', 'Sell Tool', this.name, '1']);
@@ -1126,7 +1126,7 @@ Molpy.Up = function() {
 			};
 			
 			this.Refresh = function() {
-				Molpy.shopRepaint = 1;
+				Molpy.toolsNeedRepaint = 1;
 				Molpy.recalculateDig = 1;
 				this.findPrice();
 				if(this.drawFunction) this.drawFunction();
@@ -1173,7 +1173,7 @@ Molpy.Up = function() {
 				var noBuy = this.isAffordable() ? '' : ' unbuyable';
 				var buysell = '';
 				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
-					buysell = '<a class="buySpan' + this.id + noBuy + '" onclick="Molpy.SandToolsById[' + this.id + '].buy();">Buy&nbsp;'
+					buysell = '<a class="buySpan' + noBuy + '" onclick="Molpy.SandToolsById[' + this.id + '].buy();">Buy&nbsp;'
 						+ numBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.SandToolsById[' + this.id + '].sell();">Sell</a>');
 				}
 				return buysell;
@@ -1252,8 +1252,9 @@ Molpy.Up = function() {
 			}
 			
 			this.updateAll = function() {
-				// Might as well just repaint it
-				this.repaint();
+				this.updateBuy();
+				this.updatePrice();
+				this.updateProduction();
 			}
 			
 			this.updateBuy = function() {
@@ -1348,7 +1349,7 @@ Molpy.Up = function() {
 						this.findPrice();
 						if(this.buyFunction) this.buyFunction(this);
 						if(this.drawFunction) this.drawFunction();
-						Molpy.shopRepaint = 1;
+						Molpy.toolsNeedRepaint = 1;
 						Molpy.recalculateDig = 1;
 						Molpy.CastleToolsOwned++;
 						Molpy.CheckBuyUnlocks(1);
@@ -1401,7 +1402,7 @@ Molpy.Up = function() {
 					this.findPrice();
 					if(this.sellFunction) this.sellFunction();
 					if(this.drawFunction) this.drawFunction();
-					Molpy.shopRepaint = 1;
+					Molpy.toolsNeedRepaint = 1;
 					Molpy.recalculateDig = 1;
 					Molpy.CastleToolsOwned--;
 					_gaq && _gaq.push(['_trackEvent', 'Sell Tool', this.name, '1']);
@@ -1567,7 +1568,7 @@ Molpy.Up = function() {
 			};
 			
 			this.Refresh = function() {
-				Molpy.shopRepaint = 1;
+				Molpy.toolsNeedRepaint = 1;
 				Molpy.recalculateDig = 1;
 				this.findPrice();
 				if(this.drawFunction) this.drawFunction();
@@ -1607,7 +1608,7 @@ Molpy.Up = function() {
 				var noBuy = this.isAffordable() ? '' : ' unbuyable';
 				var buysell = '';
 				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
-					buysell = '<a class="buySpan' + this.id + noBuy + '" onclick="Molpy.CastleToolsById[' + this.id + '].buy();">Buy&nbsp;'
+					buysell = '<a class="buySpan' + noBuy + '" onclick="Molpy.CastleToolsById[' + this.id + '].buy();">Buy&nbsp;'
 						+ numBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.CastleToolsById[' + this.id + '].sell();">Sell</a>');
 				}
 				return buysell;
@@ -1704,8 +1705,9 @@ Molpy.Up = function() {
 			}
 			
 			this.updateAll = function() {
-				// Might as well just repaint it
-				this.repaint();
+				this.updateBuy();
+				this.updatePrice();
+				this.updateProduction();
 			}
 			
 			this.updateBuy = function() {
@@ -1866,7 +1868,7 @@ Molpy.Up = function() {
 			}
 		};
 
-		Molpy.boostRepaint = 1;
+		Molpy.boostNeedRepaint = 1;
 		Molpy.boostHTML = '';
 		Molpy.Boosts = [];
 		Molpy.BoostsById = [];
@@ -1964,7 +1966,7 @@ Molpy.Up = function() {
 				this.bought = 1;
 				if(this.buyFunction) this.buyFunction();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Buy', this.name, !free]);
-				Molpy.boostRepaint = 1;
+				Molpy.boostNeedRepaint = 1;
 				Molpy.recalculateDig = 1;
 				Molpy.BoostsOwned++;
 				Molpy.CheckBuyUnlocks();
@@ -2066,7 +2068,7 @@ Molpy.Up = function() {
 				var buy = '';
 				if(!this.bought && this.unlocked) {
 					var noBuy = this.isAffordable() ? '' : ' unbuyable';
-					buy = '<a class="buySpan' + this.id + noBuy + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
+					buy = '<a class="buySpan' + noBuy + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
 				}
 				return buy;
 			}
@@ -2119,8 +2121,9 @@ Molpy.Up = function() {
 			}
 			
 			this.updateAll = function() {
-				// Might as well just repaint it
-				this.repaint();
+				this.updateBuy();
+				this.updatePrice();
+				this.updateProduction();
 			}
 			
 			this.updateBuy = function(fave) {
@@ -2176,7 +2179,7 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 0) {
 						me.unlocked = 1;
-						Molpy.boostRepaint = 1;
+						Molpy.boostNeedRepaint = 1;
 						Molpy.recalculateDig = 1;
 						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem)) {
 							Molpy.Notify('Boost Unlocked: ' + me.name, 1);
@@ -2215,8 +2218,9 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 1) {
 						me.unlocked = 0;
-						Molpy.boostRepaint = 1;
-						Molpy.shopRepaint = 1;
+						Molpy.removeDiv(me);
+						Molpy.shopNeedUpdate = 1;
+						Molpy.toolsNeedUpdate = 1;
 						Molpy.recalculateDig = 1;
 
 						if(me.lockFunction) me.lockFunction();
@@ -2246,7 +2250,7 @@ Molpy.Up = function() {
 
 		Molpy.previewNP = 0;
 
-		Molpy.badgeRepaint = 1;
+		Molpy.badgeNeedRepaint = 1;
 		Molpy.badgeHTML = '';
 		Molpy.Badges = [];
 		Molpy.BadgesById = [];
@@ -2386,10 +2390,7 @@ Molpy.Up = function() {
 				parent.find(':nth-child(' + index + ')').before(this.divElement);		
 			}
 			
-			this.updateAll = function() {
-				// Might as well just repaint it
-				this.repaint();
-			}
+			this.updateAll = function() {} //badges don't really update, would be nice to get rid of this
 
 			// Add Badge to lists
 			Molpy.Badges[this.alias] = this;
@@ -2423,7 +2424,7 @@ Molpy.Up = function() {
 						baby.earned = 1;
 						_gaq && _gaq.push(['_trackEvent', 'Badge', 'Earn', baby.name, Molpy.BadgesOwned < 6 || baby.group != 'badges' && !camera]);
 						if(Molpy.BadgesOwned == 0) Molpy.EarnBadge('Redundant Redundancy');
-						Molpy.badgeRepaint = 1;
+						Molpy.badgeNeedRepaint = 1;
 						Molpy.recalculateDig = 1;
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[baby.group] = 1;
@@ -2520,9 +2521,7 @@ Molpy.Up = function() {
 					if(Molpy.redactedVisible) {
 						Molpy.redactedVisible = 0; //hide because the redacted was missed
 						Molpy.redactedDrawType = [];
-						Molpy.shopRepaint = 1;
-						Molpy.boostRepaint = 1;
-						Molpy.badgeRepaint = 1;
+						Molpy.redactedRemove();
 						_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + Molpy.redactedChain, true]);
 						Molpy.redactedChain = 0;
 						Molpy.RandomiseRedactedTime();
@@ -2531,9 +2530,7 @@ Molpy.Up = function() {
 						Molpy.RedactedJump();
 						var stay = 6 * (4 + Molpy.Got('Kitnip') + Molpy.Got('SGC') * 2);
 						Molpy.redactedToggle = stay;
-						Molpy.shopRepaint = 1;
-						Molpy.boostRepaint = 1;
-						Molpy.badgeRepaint = 1;
+						Molpy.redactedRepaint();
 					}
 				}
 			} else {//initial setup
@@ -2553,9 +2550,7 @@ Molpy.Up = function() {
 		Molpy.redactedChainMax = 0;
 		Molpy.ClickRedacted = function(level) {
 			level = level || 0;
-			Molpy.shopRepaint = 1;
-			Molpy.boostRepaint = 1;
-			Molpy.badgeRepaint = 1;
+			Molpy.redactedRemove();
 			if(Molpy.redactedDrawType[level] != 'show') {
 				Molpy.UnlockBoost('Technicolour Dream Cat');
 				Molpy.redactedDrawType[level] = 'show';
@@ -3135,7 +3130,7 @@ Molpy.Up = function() {
 					if (newclass != me.className) {
 						me.className = newclass;
 						me.Refresh();
-						Molpy.boostRepaint = 1;
+						Molpy.boostNeedRepaint = 1;
 					}
 				}
 			}
@@ -3148,7 +3143,7 @@ Molpy.Up = function() {
 					if (newclass != me.className) {
 						me.className = newclass;
 						me.Refresh();
-						Molpy.badgeRepaint = 1;
+						Molpy.badgeNeedRepaint = 1;
 					}
 				}
 			}
@@ -3392,7 +3387,7 @@ Molpy.Up = function() {
 					var mhp = Molpy.Boosts['MHP'];
 					if(mhp.unlocked && mhp.power > 20 && flandom(9) == 0) {
 						mhp.power--;
-						Molpy.boostRepaint = 1;
+						Molpy.boostNeedRepaint = 1;
 					}
 				} else {
 					bbc.power = 0;

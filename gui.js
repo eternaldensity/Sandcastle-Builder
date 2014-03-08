@@ -121,9 +121,7 @@ Molpy.DefineGUI = function() {
 				Molpy.activeLayout.lootVis.tagged = 0; //hide tagged when showing anything else
 			}
 		}
-		Molpy.shopRepaint = 1;
-		Molpy.boostRepaint = 1;
-		Molpy.badgeRepaint = 1;
+		Molpy.lootNeedRepaint = 1;
 	}
 	Molpy.ShowGroup = function(group, tagged) {
 		if(Molpy.redactedDrawType[Molpy.redactedDrawType.length - 1] != 'hide1') {
@@ -278,9 +276,7 @@ Molpy.DefineGUI = function() {
 	Molpy.RefreshStats = function() {
 		if(!Molpy.molpish) return;
 		Molpy.EarnBadge('Far End of the Bell Curve');
-		Molpy.shopRepaint = 1;
-		Molpy.boostRepaint = 1;
-		Molpy.badgeRepaint = 1;
+		Molpy.allNeedRepaint = 1;
 		Molpy.UpdateFaves(1);
 	}
 	Molpy.CleanupStats = Molpy.RefreshStats;
@@ -298,7 +294,7 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.RefreshLayouts = function() {
 		if(!Molpy.molpish) return;
-		Molpy.layoutRepaint = 1;
+		Molpy.layoutNeedRepaint = 1;
 	}
 	Molpy.RefreshQuickLayout = Molpy.RefreshLayouts;
 
@@ -470,6 +466,8 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.getRedactedDiv = function(heading, level, forceNew) {
 		if(!Molpy.redactedDiv || forceNew)
+			if(forceNew)
+				Molpy.redactedDiv.remove();
 			Molpy.redactedDiv = $(Molpy.RedactedHTML(heading, level));
 		
 		return Molpy.redactedDiv;
@@ -517,18 +515,19 @@ Molpy.DefineGUI = function() {
 		}
 	}
 	
-	Molpy.repaintAllObjectDivs = function() {
+	Molpy.repaintAll = function() {
+		Molpy.allNeedRepaint = 0;
 	 	Molpy.CalcPriceFactor();
 	 	Molpy.repaintLoot();
 	 	Molpy.repaintShop();
 	 	Molpy.repaintTools();
 	 	Moply.repaintFaves();
-	 	
-	 	Molpy.UnlockBoost('Chromatic Heresy');
 	}
 	
 	
-	Molpy.repaintLoot = function(showTagged) {
+	Molpy.repaintLoot = function() {
+		Molpy.lootNeedRepaint = 0;
+		
 		//clear out all the old loot stuff
 		Molpy.removeGroupDivs(Molpy.dispObjects.boosts);
 		Molpy.removeGroupDivs(Molpy.dispObjects.badges);
@@ -559,7 +558,7 @@ Molpy.DefineGUI = function() {
 		for( var i in Molpy.Badges) {
 			var me = Molpy.Badges[i];
 			// Badges Available are a special case
-			if(!me.bought && me.group == 'badges' && Molpy.activeLayout.lootVis.badgesav)
+			if(!me.earned && me.group == 'badges' && Molpy.activeLayout.lootVis.badgesav)
 				badgeAvList.push(me);
 			else if(me.earned){
 				if(Molpy.activeLayout.lootVis[me.group]) {
@@ -581,12 +580,14 @@ Molpy.DefineGUI = function() {
 		
 		//TODO somewhere here is where pagnation and filtering type stuff would probably go
 		
-		if(showTagged)
+		if(Molpy.activeLayout.lootVis.tagged)
 			Molpy.addGroupToDiv($('#loot'), taggedList, taggedList.length - 1, 'tagged', {autoAdd: true, recalc: false});
 		else {
 			Molpy.addGroupToDiv($('#loot'), boostList, boostList.length - 1, 'boosts', {autoAdd: true, recalc: false});
 			Molpy.addGroupToDiv($('#loot'), badgeList, badgeList.length - 1, 'badges', {autoAdd: true, recalc: false});
 		}
+		
+		Molpy.UnlockBoost('Chromatic Heresy');
 	}
 	
 
@@ -662,20 +663,23 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.repaintBoosts = function() {
+		Molpy.boostNeedRepaint = 0;
+		Molpy.badgesNeedRepaint = 0; // This includes all badge calls
 		Molpy.repaintShop();
 		Molpy.repaintLoot();
+		Molpy.repaintFaves();
 	}
 	
 	Molpy.repaintBadges = function() {
+		Molpy.badgeNeedRepaint = 0;
 		Molpy.repaintLoot();
+		Molpy.repaintFaves();
 	}
 	
-	/*
 	Molpy.repaintFaves = function() {
-		Molpy.dispObjects.faves = [];
+		Molpy.favesNeedRepaint = 0;
+		//Molpy.dispObjects.faves = [];
 	}
-	
-	*/
 	
 	Molpy.repaintRedacted = function() {
 		if(Molpy.redactedVisible == 0) return; // Don't repaint because redacted is not active
@@ -705,6 +709,12 @@ Molpy.DefineGUI = function() {
 			redDiv.find(':nth-child(' + Molpy.redactedViewIndex + ')').before(Molpy.getRedactedDiv());	
 	}
 	
+	Molpy.removeRedacted = function() {
+		Molpy.redactedDiv.remove();
+		Molpy.redactedDiv = null;
+		Molpy.redactedTitleList[Molpy.redactedVisible].toggleClass('redacted-area', false);
+	}
+	
 	Molpy.addGroupToDiv = function(whichDiv, group, maxIndex, dispCat, args) {
 		if(!args) args = {};
 		if(args.recalc) Molpy.CalcPriceFactor();
@@ -717,7 +727,7 @@ Molpy.DefineGUI = function() {
 			var nh = false;
 			var object = group[i];
 			
-			// If mouse is currently hovering over this tool, it will start hovered
+			// If mouse is currently hovering over this, it will start hovered
 			var overID = '' + object.name + object.id;
 			if(Molpy.mouseIsOver == overID) nh = true;
 			
@@ -732,37 +742,38 @@ Molpy.DefineGUI = function() {
 			i ++;
 		}
 		
-		Molpy.repaintRedacted();
+		//Molpy.repaintRedacted();
+	}
+	
+	Molpy.updateShop = function() {
+		for(var i in dispObjects.shop)
+			dispObjects.shop[i].updateAll();
+	}
+	
+	Molpy.updateTools = function() {
+		for(var i in dispObjects.tools)
+			dispObjects.tools[i].updateAll();
+	}
+	
+	Molpy.updateLoot = function() {
+		for(var grp in dispObjects)
+			if(grp != 'boosts' || grp != 'tagged') continue;
+			for(var i in dispObject[grp])
+				dispObjects[grp][i].updateAll();
+	}
+	
+	Molpy.updateBoosts = function() {
+		for(var grp in dispObjects)
+			if(grp != 'boosts' || grp != 'tagged' || grp != 'faves') continue;
+			for(var i in dispObject[grp])
+				dispObjects[grp][i].updateAll();
 	}
 
-	Molpy.RepaintShop = function() {
-		Molpy.shopRepaint = 0;
-
-		//TODO move mustard tool badge check to achronal dragon and mustard sale, perhaps somewhere else
+	//TODO move mustard tool badge check to achronal dragon and mustard sale, perhaps somewhere else
+	// was in RepaintShop before
 		//if(Molpy.mustardTools == 12) {
 		//	Molpy.EarnBadge('Mustard Tools');
 		//}
-		
-		Molpy.repaintTools();
-	}
-
-	Molpy.RepaintBoosts = function() {
-		Molpy.boostRepaint = 0;
-		
-		Molpy.repaintShop();
-
-		Molpy.repaintLoot();
-	}
-
-	Molpy.RepaintBadges = function() {
-		Molpy.badgeRepaint = 0;
-		
-		Molpy.repaintLoot();
-	}
-
-	Molpy.RepaintTaggedLoot = function() {
-		Molpy.repaintLoot(true);
-	}
 	
 	//the numbers that fly up when you click the pic for sand
 	Molpy.sParticles = [];
@@ -815,7 +826,7 @@ Molpy.DefineGUI = function() {
 		return str + '</div>';
 	}
 	Molpy.RepaintLayouts = function() {
-		Molpy.layoutRepaint = 0;
+		Molpy.layoutNeedRepaint = 0;
 		if(noLayout) return;
 		if(Molpy.activeLayout.boxVis['Layouts']) {
 			var str = '';
@@ -1194,26 +1205,37 @@ Molpy.DefineGUI = function() {
 			$('#incomeNewTools').toggleClass('hidden', !tf);
 		}
 
-		var repainted = Molpy.shopRepaint || Molpy.boostRepaint || Molpy.badgeRepaint;
-		var tagRepaint = Molpy.boostRepaint || Molpy.badgeRepaint;
-		var shopRepainted = Molpy.shopRepaint;
+		var repainted = Molpy.shopNeedRepaint || Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint;
+		var lootSelectionNeedRepaint = Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint;
 
-		if(Molpy.shopRepaint) {
-			Molpy.RepaintShop();
+		//TODO want to repaint as little as possible, favoring updates instead
+		if(Molpy.allNeedRepaint) {
+			Moply.repaintAll();
 		}
-		if(Molpy.boostRepaint) {
-			Molpy.RepaintBoosts();
+		if(Molpy.shopNeedRepaint) {
+			Molpy.repaintShop();
 		}
-		if(Molpy.badgeRepaint) {
-			Molpy.RepaintBadges();
+		if(Molpy.boostNeedRepaint) {
+			Molpy.repaintBoosts();
 		}
-		if(Molpy.layoutRepaint) {
+		if(Molpy.badgeNeedRepaint) {
+			Molpy.repaintBadges();
+		}
+		if(Molpy.layoutNeedRepaint) {
 			Molpy.RepaintLayouts();
 		}
-		if(tagRepaint && Molpy.activeLayout.lootVis.tagged) {
-			Molpy.RepaintTaggedLoot();
+		if(lootSelectionNeedRepaint) Molpy.RepaintLootSelection();
+		
+		if(Molpy.shopNeedUpdate) {
+			Molpy.updateShop();
 		}
-		if(tagRepaint) Molpy.RepaintLootSelection();
+		if(Molpy.toolsNeedUpdate) {
+			Molpy.updateTools();
+		}
+		if(Molpy.lootNeedUpdate) {
+			Molpy.updateLoot();
+		}
+		
 		if(Molpy.redactedVisible) {
 			var ra = $('.redacted-area');
 			if(ra) {
@@ -1235,21 +1257,10 @@ Molpy.DefineGUI = function() {
 		
 		if(repainted && Molpy.options.fade) Molpy.AdjustFade();
 		
-		for( var i in Molpy.SandTools) {
-			var me = Molpy.SandTools[i];
-			me.updateBuy();
-		}
-		
-		for(i in Molpy.CastleTools) {
-			var me = Molpy.CastleTools[i];
-			me.updateBuy();
-		}
-		
-		for(i in Molpy.Boosts) {
-			var me = Molpy.Boosts[i];
-			if(me.unlocked && !me.bought) {
-				me.updateBuy();
-			}
+		for( var grp in Molpy.dispObjects) {
+			if(grp != 'tools' || grp != 'shop') continue;
+			for(var i in Molpy.dispObjects[grp])
+				Molpy.dispObjects[grp][i].updateBuy();
 		}
 
 		drawClockHand();
@@ -1643,13 +1654,13 @@ Molpy.DefineGUI = function() {
 		this.Activate = function() {
 			Molpy.activeLayout = this;
 			this.ToScreen();
-			Molpy.layoutRepaint = 1;
+			Molpy.layoutNeedRepaint = 1;
 		}
 		this.Clone = function() {
 			var clone = new Molpy.Layout(this);
 			clone.name += ' clone';
 			Molpy.layouts.push(clone);
-			Molpy.layoutRepaint = 1;
+			Molpy.layoutNeedRepaint = 1;
 		}
 		this.Delete = function() {
 			if(Molpy.layouts.length < 2) {
@@ -1660,7 +1671,7 @@ Molpy.DefineGUI = function() {
 				var i = Molpy.layouts.indexOf(this);
 				if(i >= 0) {
 					Molpy.layouts.splice(i, 1);
-					Molpy.layoutRepaint = 1;
+					Molpy.layoutNeedRepaint = 1;
 				}
 			}
 		}
@@ -1669,7 +1680,7 @@ Molpy.DefineGUI = function() {
 			str = str.replace(/\W/g, '').toLowerCase();
 			if(!str) return;
 			this.name = str;
-			Molpy.layoutRepaint = 1;
+			Molpy.layoutNeedRepaint = 1;
 		}
 
 	}
@@ -1678,7 +1689,7 @@ Molpy.DefineGUI = function() {
 		newLayout.FromScreen();
 		newLayout.name = "new";
 		Molpy.layouts.push(newLayout);
-		Molpy.layoutRepaint = 1;
+		Molpy.layoutNeedRepaint = 1;
 	}
 	Molpy.ImportLayout = function() {
 		var thread = prompt('Paste a valid layout code here:\n(write "default" or "default2" for the defaults)', '');
@@ -1688,7 +1699,7 @@ Molpy.DefineGUI = function() {
 		var newLayout = new Molpy.Layout({});
 		newLayout.FromString(thread);
 		Molpy.layouts.push(newLayout);
-		Molpy.layoutRepaint = 1;
+		Molpy.layoutNeedRepaint = 1;
 	}
 
 	Molpy.FixPaneWidths = function() {
@@ -1855,11 +1866,9 @@ Molpy.DefineGUI = function() {
 
 		new Molpy.Puzzle('redacted', function() {
 			Molpy.redactedDrawType[Molpy.redactedDrawType.length - 1] = 'show';
-
-			Molpy.shopRepaint = 1;
-			Molpy.boostRepaint = 1;
-			Molpy.badgeRepaint = 1;
 		});
+		
+		Molpy.allNeedRepaint = 1;
 	}
 	
 	Molpy.newObjectDiv = function(type, object, flags) {

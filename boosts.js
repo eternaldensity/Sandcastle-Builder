@@ -515,7 +515,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		buyFunction: function() {
-			Molpy.shopRepaint = 1;
+			Molpy.shopNeedUpdate = 1;
 			Molpy.CalcPriceFactor();
 			Molpy.Donkey();
 		},
@@ -1386,7 +1386,7 @@ Molpy.DefineBoosts = function() {
 		me.power = (!me.power) * 1;
 		me.Refresh();
 		Molpy.UpdateFaves(1);
-		Molpy.shopRepaint = 1;
+		Molpy.toolsNeedRepaint = 1;
 	}
 
 	new Molpy.Boost({
@@ -1476,7 +1476,8 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		buyFunction: function() {
-			Molpy.shopRepaint = 1;
+			Molpy.shopNeedRepaint = 1;
+			Molpy.toolsNeedRepaint = 1;
 		},
 	});
 	
@@ -3182,11 +3183,13 @@ Molpy.DefineBoosts = function() {
 					this.power = 0;
 				else
 					this.power++;
-				Molpy.shopRepaint = 1;
+				Molpy.shopNeedRepaint = 1;
+				Molpy.toolsNeedRepaint = 1;
 				Molpy.GlassCeilingUnlockCheck();
 			},
 			lockFunction: function(me) {
-				Molpy.shopRepaint = 1;
+				Molpy.shopNeedRepaint = 1;
+				Molpy.toolsNeedRepaint = 1;
 				Molpy.GlassCeilingUnlockCheck();
 			}
 		});
@@ -3254,7 +3257,7 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 			if(me.unlocked) {
-				if(Molpy.CeilingClass(me, i)) Molpy.boostRepaint = 1;
+				if(Molpy.CeilingClass(me, i)) Molpy.boostNeedRepaint = 1;
 			}
 		}
 	}
@@ -4862,7 +4865,8 @@ Molpy.DefineBoosts = function() {
 			Molpy.toolsBuilt += built;
 			Molpy.toolsBuiltTotal += built;
 			Molpy.recalculateDig = 1;
-			Molpy.shopRepaint = 1;
+			Molpy.shopNeedUpdate = 1;
+			Molpy.toolsNeedUpdate = 1;
 			Molpy.CheckBuyUnlocks();
 			tf.Level = tfChipBuffer;
 

@@ -208,7 +208,7 @@
 			Molpy.layouts.push(new Molpy.Layout({name: 'temporary'}));
 		var tempLayout = Molpy.layouts[Molpy.layouts.length - 1];
 		tempLayout.FromScreen();
-		Molpy.layoutRepaint = 1;
+		Molpy.layoutNeedRepaint = 1;
 	}
 	Molpy.LoadLayouts = function() {
 		var layouts = [];
@@ -768,9 +768,7 @@
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
 		Molpy.recalculateDig = 1;
-		Molpy.shopRepaint = 1;
-		Molpy.boostRepaint = 1;
-		Molpy.badgeRepaint = 1;
+		Molpy.allNeedRepaint = 1;
 		Molpy.judgeLevel = -1;
 		Molpy.CalculateDigSpeed();
 		Molpy.currentSubFrame = 0;
@@ -909,13 +907,11 @@
 			if(Molpy.Got('Blackprints')){
 				Molpy.UnlockBoost('Blackprint Plans');
 				Molpy.Boosts['Blackprint Plans'].bought = 1;
-				Molpy.boostRepaint = 1;
 				Molpy.BoostsOwned++;
 			}
 			else if(Molpy.Has('Blackprints', 1)){
 				Molpy.UnlockBoost('Blackprints');
 				Molpy.Boosts['Blackprints'].bought = 1;
-				Molpy.boostRepaint = 1;
 				Molpy.BoostsOwned++;
 			}
 		}
@@ -1086,8 +1082,7 @@
 			Molpy.Boosts['Lightning in a Bottle'].power = LiBPower;
 			
 			Molpy.recalculateDig = 1;
-			Molpy.boostRepaint = 1;
-			Molpy.shopRepaint = 1;
+			Molpy.allNeedRepaint = 1;
 
 			Molpy.showOptions = 0;
 			Molpy.RefreshOptions();
@@ -1128,9 +1123,10 @@
 			}
 
 			Molpy.unlockedGroups = {};
-			Molpy.badgeRepaint = 1;
 			Molpy.UpdateFaves(1);
 			_gaq.push(['_trackEvent', 'Coma', 'Complete', '' + Molpy.highestNPvisited]);
+			
+			Molpy.allNeedRepaint = 1;
 		}
 	}
 }

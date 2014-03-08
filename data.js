@@ -594,7 +594,7 @@ Molpy.CheckBuyUnlocks = function(tool) {
 		Molpy.UnlockBoost('Fractal Sandcastles');
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.Boosts['Fractal Sandcastles'].bought = 1; //woo freebie!
-		Molpy.boostRepaint = 1;
+		Molpy.boostNeedRepaint = 1;
 		Molpy.recalculateDig = 1;
 		Molpy.BoostsOwned++;
 	}

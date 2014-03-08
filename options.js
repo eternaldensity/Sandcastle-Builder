@@ -96,8 +96,7 @@ new Molpy.Option({
 	name: 'boostsort',
 	title: 'Sort Boosts by',		
 	onchange: function() {
-		Molpy.shopRepaint = 1;
-		Molpy.boostRepaint = 1;
+		Molpy.boostNeedRepaint = 1;
 	},
 	text: ['Price','Name'],
 	breakafter: 1,
@@ -130,7 +129,7 @@ new Molpy.Option({
 	title: 'Logicat Colours',
 	visability: function() {return Molpy.Got('Chromatic Heresy') && Molpy.Got('LogiPuzzle') }, 
 	onchange: function() { 
-		Molpy.boostRepaint = 1;
+		Molpy.Boosts['logicat'].repaint();
 		Molpy.UpdateFaves();
 	},
 	text: ['Greys','Colours'],
@@ -147,9 +146,7 @@ new Molpy.Option({
 	name: 'science',
 	title: 'Scientific Notation',		
 	onchange: function() {
-		Molpy.shopRepaint = 1;
-		Molpy.boostRepaint = 1;
-		Molpy.badgeRepaint = 1;
+		Molpy.allNeedRepaint = 1;
 		Molpy.UpdateFaves();
 	},
 
@@ -158,16 +155,17 @@ new Molpy.Option({
 new Molpy.Option({
 	name: 'longpostfix',
 	title: 'Use long postfixes',		
-	onchange: function() { Molpy.shopRepaint = 1 },
+	onchange: function() {
+		Molpy.allNeedRepaint = 1;
+		Molpy.UpdateFaves();
+		},
 });
 
 new Molpy.Option({
 	name: 'european',
 	title: 'European format numbers',		
 	onchange: function() {
-		Molpy.shopRepaint = 1;
-		Molpy.boostRepaint = 1;
-		Molpy.badgeRepaint = 1;
+		Molpy.allNeedRepaint = 1;
 		Molpy.UpdateFaves();
 	},
 });
@@ -185,7 +183,7 @@ new Molpy.Option({
 	title: 'Buy N Sand tools at once',		
 	range: 5,
 	visability: function() {return Molpy.Got('Sand Tool Multi-Buy')}, 
-	onchange: function() { Molpy.shopRepaint = 1 },
+	onchange: function() { Molpy.toolsNeedRepaint = 1 },
 	text: function() { return Math.pow(4, Molpy.options.sandmultibuy) + ' tool' + plural(Molpy.options.sandmultibuy + 1) },
 	
 });
@@ -195,7 +193,7 @@ new Molpy.Option({
 	title: 'Buy N Castle tools at once',		
 	range: 5,
 	visability: function() {return Molpy.Got('Castle Tool Multi-Buy')}, 
-	onchange: function() { Molpy.shopRepaint = 1 },
+	onchange: function() { Molpy.toolsNeedRepaint = 1 },
 	text: function() { return Math.pow(4, Molpy.options.castlemultibuy) + ' tool' + plural(Molpy.options.castlemultibuy + 1) },
 });
 
