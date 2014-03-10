@@ -8076,7 +8076,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		desc: function(me) {
-			if(!me.bought || Molpy.IsEnabled('Time Lord') && isFinite(Molpy.Boosts['FluxCrystals'].power))
+			if(!me.bought || (Molpy.IsEnabled('Time Lord') && isFinite(Molpy.Boosts['FluxCrystals'].power)))
 				return 'Easy harvesting of flux crystals from remaining rifts';
 			return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
 		},
