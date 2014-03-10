@@ -5306,7 +5306,7 @@ Molpy.DefineBoosts = function() {
 		},
 		defStuff: 1,
 
-		loadFunction: function() { if (Molpy.Earned('Einstein Says No')) Molpy.Level('Panther Rush') = 1079252850 *2; }
+		loadFunction: function() { if (Molpy.Earned('Einstein Says No')) Molpy.Boost['Panther Rush'].level = 1079252850 *2; }
 	});
 	
 	Molpy.Boosts['Panther Rush'].refreshFunction = undefined;
