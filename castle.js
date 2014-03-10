@@ -2179,7 +2179,7 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 0) {
 						me.unlocked = 1;
-						Molpy.boostNeedRepaint = 1;
+						Molpy.shopNeedRepaint = 1;
 						Molpy.recalculateDig = 1;
 						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem)) {
 							Molpy.Notify('Boost Unlocked: ' + me.name, 1);
@@ -2521,7 +2521,7 @@ Molpy.Up = function() {
 					if(Molpy.redactedVisible) {
 						Molpy.redactedVisible = 0; //hide because the redacted was missed
 						Molpy.redactedDrawType = [];
-						Molpy.redactedRemove();
+						Molpy.removeRedacted();
 						_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + Molpy.redactedChain, true]);
 						Molpy.redactedChain = 0;
 						Molpy.RandomiseRedactedTime();
@@ -2530,7 +2530,7 @@ Molpy.Up = function() {
 						Molpy.RedactedJump();
 						var stay = 6 * (4 + Molpy.Got('Kitnip') + Molpy.Got('SGC') * 2);
 						Molpy.redactedToggle = stay;
-						Molpy.redactedRepaint();
+						Molpy.repaintRedacted();
 					}
 				}
 			} else {//initial setup
@@ -2550,7 +2550,7 @@ Molpy.Up = function() {
 		Molpy.redactedChainMax = 0;
 		Molpy.ClickRedacted = function(level) {
 			level = level || 0;
-			Molpy.redactedRemove();
+			Molpy.removeRedacted();
 			if(Molpy.redactedDrawType[level] != 'show') {
 				Molpy.UnlockBoost('Technicolour Dream Cat');
 				Molpy.redactedDrawType[level] = 'show';
@@ -3197,6 +3197,8 @@ Molpy.Up = function() {
 		Molpy.Donkey();
 
 		if(Math.floor(Molpy.ONGelapsed / 1000) % 3 == 0) Molpy.flashes = 0;
+		
+		Molpy.toolsNeedRepaint = 1;
 	};
 
 	Molpy.PerformJudgement = function() {

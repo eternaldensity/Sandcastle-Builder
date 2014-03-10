@@ -712,7 +712,9 @@ Molpy.DefineGUI = function() {
 	Molpy.removeRedacted = function() {
 		Molpy.redactedDiv.remove();
 		Molpy.redactedDiv = null;
-		Molpy.redactedTitleList[Molpy.redactedVisible].toggleClass('redacted-area', false);
+		for(var i in Molpy.redactedTitleList) {
+			Molpy.redactedTitleList[i].toggleClass('redacted-area', false);
+		}
 	}
 	
 	Molpy.addGroupToDiv = function(whichDiv, group, maxIndex, dispCat, args) {
@@ -1205,21 +1207,28 @@ Molpy.DefineGUI = function() {
 			$('#incomeNewTools').toggleClass('hidden', !tf);
 		}
 
-		var repainted = Molpy.shopNeedRepaint || Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint;
+		var repainted = Molpy.shopNeedRepaint || Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint || Molpy.toolsNeedRepaint || Molpy.lootNeedRepaint;
 		var lootSelectionNeedRepaint = Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint;
+		//var updated = Molpy.shopNeedUpdate || Molpy.toolsNeedUpdate || Molpy.lootNeedUpdate;
 
 		//TODO want to repaint as little as possible, favoring updates instead
 		if(Molpy.allNeedRepaint) {
 			Molpy.repaintAll();
-		}
-		if(Molpy.shopNeedRepaint) {
-			Molpy.repaintShop();
 		}
 		if(Molpy.boostNeedRepaint) {
 			Molpy.repaintBoosts();
 		}
 		if(Molpy.badgeNeedRepaint) {
 			Molpy.repaintBadges();
+		}
+		if(Molpy.lootNeedRepaint) {
+			Molpy.repaintLoot();
+		}
+		if(Molpy.shopNeedRepaint) {
+			Molpy.repaintShop();
+		}
+		if(Molpy.toolsNeedRepaint) {
+			Molpy.repaintTools();
 		}
 		if(Molpy.layoutNeedRepaint) {
 			Molpy.RepaintLayouts();
@@ -1257,10 +1266,12 @@ Molpy.DefineGUI = function() {
 		
 		if(repainted && Molpy.options.fade) Molpy.AdjustFade();
 		
-		for( var grp in Molpy.dispObjects) {
-			if(grp != 'tools' || grp != 'shop') continue;
-			for(var i in Molpy.dispObjects[grp])
-				Molpy.dispObjects[grp][i].updateBuy();
+		if(repainted) {
+			for( var grp in Molpy.dispObjects) {
+				if(!(grp == 'tools' || grp == 'shop')) continue;
+				for(var i in Molpy.dispObjects[grp])
+					Molpy.dispObjects[grp][i].updateBuy();
+			}
 		}
 
 		drawClockHand();
