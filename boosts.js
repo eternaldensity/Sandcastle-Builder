@@ -6847,7 +6847,10 @@ Molpy.DefineBoosts = function() {
 		icon: 'bagofholding',
 		group: 'prize',
 		className: 'alert',
-		desc: 'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal.<br>Holds ' + Molpify(1e42) + ' of each Stuff.',
+		desc: function() {
+			return 'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal.<br>Holds ' + 
+				Molpify(1e42) + ' of each Stuff.'
+		},
 		
 		price: {
 			Sand: Infinity,
@@ -7582,7 +7585,10 @@ Molpy.DefineBoosts = function() {
 		icon: 'bagofmoulding',
 		group: 'prize',
 		className: 'alert',
-		desc: 'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42),
+		desc: function() {
+			return 'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal.' +
+				'<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42)
+		},
 			
 		price: {
 			Sand: Infinity,
@@ -7606,7 +7612,10 @@ Molpy.DefineBoosts = function() {
 		icon: 'bagoffolding',
 		group: 'prize',
 		className: 'alert',		
-		desc: 'Toggle Boosts (apart from Prizes, Glass Furnace, and Glass Blower) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42),
+		desc: function() {
+			return 'Toggle Boosts (apart from Prizes, Glass Furnace, and Glass Blower) aren\'t reset when you Molpy Down, ' +
+				'at a cost of 1000 Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42)
+		},
 			
 		price: {
 			Sand: Infinity,
@@ -7728,7 +7737,10 @@ Molpy.DefineBoosts = function() {
 		icon: 'bagofjolting',
 		group: 'prize',
 		className: 'alert',
-		desc: 'Chronotech Boosts aren\'t reset when you Molpy Down, at a cost of ' + Molpify(10000) + ' Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42),
+		desc: function() {
+			return 'Chronotech Boosts aren\'t reset when you Molpy Down, at a cost of ' + Molpify(10000) + 
+				' Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42)
+		},
 		
 		price: {
 			Sand: Infinity,
@@ -8064,7 +8076,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		desc: function(me) {
-			if(!me.bought || Molpy.IsEnabled('Time Lord') && isFinite(Molpy.Boosts['FluxCrystals'].power))
+			if(!me.bought || (Molpy.IsEnabled('Time Lord') && isFinite(Molpy.Boosts['FluxCrystals'].power)))
 				return 'Easy harvesting of flux crystals from remaining rifts';
 			return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
 		},
