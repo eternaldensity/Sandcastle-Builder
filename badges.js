@@ -298,18 +298,18 @@ Molpy.DefineBadges = function() {
 		vis: 1
 	});
 	new Molpy.Badge({
-		name: 'Not So ' + Molpy.redactedW,
-		desc: 'Click 2 ' + Molpy.redactedWords,
+		name: 'Not So ' + Molpy.Redacted.word2,
+		desc: 'Click 2 ' + Molpy.Redacted.words,
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: "Don't Litter!",
-		desc: 'Click 14 ' + Molpy.redactedWords,
+		desc: 'Click 14 ' + Molpy.Redacted.words,
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Y U NO BELIEVE ME?',
-		desc: 'Click 101 ' + Molpy.redactedWords,
+		desc: 'Click 101 ' + Molpy.Redacted.words,
 		vis: 1
 	});
 	new Molpy.Badge({
@@ -747,7 +747,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Meaning',
-		desc: 'Reach a ' + Molpy.redactedWord + ' streak of 42'
+		desc: 'Reach a ' + Molpy.Redacted.word + ' streak of 42'
 	});
 	new Molpy.Badge({
 		name: 'How do I Shot Mustard?',

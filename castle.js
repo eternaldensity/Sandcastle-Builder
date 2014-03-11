@@ -2056,135 +2056,175 @@ Molpy.Up = function() {
 			Molpy.CharacterN++;
 			return this;
 		};
+		
+		Molpy.Redacted = function(args) {
+			this.possibleLocations = 6;
+			this.drawType = [];
+			
+			this.word2 = Molpy.BeanishToCuegish("UmVkdW5kYW50");
+			this.word = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
+			this.words = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
+			this.brackets = Molpy.BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
+			this.spoiler = Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
+			
+			this.totalClicks = 0;
+			this.chainCurrent = 0;
+			this.chainMax = 0;
+			
+			this.countup = 0;
+			this.toggle = 0;
+			this.location = 0; // Which section it will appear in
+			this.group = ''; // Which group it will appear in
+			this.dispIndex = -1;
+			
+			this.checkToggle = function() {
+				if(this.toggle) {
+					this.countup++;
+					var redC = g('redactedcountdown');
+					if(redC) redC.innerHTML = Molpify(this.toggle - this.countup);
 
-		Molpy.redactedCountup = 0;
-		Molpy.redactedToggle = 0; //disabled
-		Molpy.redactedVisible = 0; //hidden
-		Molpy.redactedGr = ''; //for boosts keep track of which group it's in
-		Molpy.redactedViewIndex = -1;
-		Molpy.redactableThings = 6;
-		Molpy.redactedClicks = 0;
-		Molpy.CheckRedactedToggle = function() {
-			if(Molpy.redactedToggle) {
-				Molpy.redactedCountup++;
-				var redC = g('redactedcountdown');
-				if(redC) redC.innerHTML = Molpify(Molpy.redactedToggle - Molpy.redactedCountup);
-
-				if(Molpy.redactedCountup >= Molpy.redactedToggle) {
-					Molpy.redactedCountup = 0;
-					if(Molpy.redactedVisible) {
-						Molpy.redactedVisible = 0; //hide because the redacted was missed
-						Molpy.redactedDrawType = [];
-						Molpy.shopRepaint = 1;
-						Molpy.boostRepaint = 1;
-						Molpy.badgeRepaint = 1;
-						_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + Molpy.redactedChain, true]);
-						Molpy.redactedChain = 0;
-						Molpy.RandomiseRedactedTime();
-					} else {
-						Molpy.redactedDrawType = ['show'];
-						Molpy.RedactedJump();
-						var stay = 6 * (4 + Molpy.Got('Kitnip') + Molpy.Got('SGC') * 2);
-						Molpy.redactedToggle = stay;
-						Molpy.shopRepaint = 1;
-						Molpy.boostRepaint = 1;
-						Molpy.badgeRepaint = 1;
+					if(this.countup >= this.toggle) {
+						this.countup = 0;
+						if(this.location) {
+							this.location = 0; //hide because the redacted was missed
+							this.drawType = [];
+							Molpy.shopRepaint = 1;
+							Molpy.boostRepaint = 1;
+							Molpy.badgeRepaint = 1;
+							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
+							this.chainCurrent = 0;
+							this.randomiseTime();
+						} else {
+							this.drawType = ['show'];
+							this.jump();
+							var stay = 6 * (4 + Molpy.Got('Kitnip') + Molpy.Got('SGC') * 2);
+							this.toggle = stay;
+							Molpy.shopRepaint = 1;
+							Molpy.boostRepaint = 1;
+							Molpy.badgeRepaint = 1;
+						}
 					}
+				} else {//initial setup
+					this.randomiseTime();
 				}
-			} else {//initial setup
-				Molpy.RandomiseRedactedTime();
-			}
-		};
-		Molpy.RandomiseRedactedTime = function() {
-			var min = 200 - 80 * (Molpy.Got('Kitnip') + Molpy.Got('Kitties Galore')) - 30 * Molpy.Got('RRSR');
-			var spread = 90 - 20 * (Molpy.Got('Kitnip') + Molpy.Got('Kitties Galore') + Molpy.Got('RRSR'));
-			Molpy.redactedToggle = min + Math.ceil(spread * Math.random());
-			Molpy.redactedGr = '';
-			if(Molpy.Boosts['RRSR'].unlocked && !Molpy.Boosts['RRSR'].bought) {
-				Molpy.redactedToggle *= 12;
-			}
-		};
-		Molpy.redactedChain = 0;
-		Molpy.redactedChainMax = 0;
-		Molpy.ClickRedacted = function(level) {
-			level = level || 0;
-			Molpy.shopRepaint = 1;
-			Molpy.boostRepaint = 1;
-			Molpy.badgeRepaint = 1;
-			if(Molpy.redactedDrawType[level] != 'show') {
-				Molpy.UnlockBoost('Technicolour Dream Cat');
-				Molpy.redactedDrawType[level] = 'show';
-				while(Molpy.redactedDrawType.length > level + 1)
-					Molpy.redactedDrawType.pop(); //we don't need to remember those now
-				Molpy.RedactedJump();
-				return;
-			}
+			};
+			
+			this.randomiseTime = function() {
+				var min = 200 - 80 * (Molpy.Got('Kitnip') + Molpy.Got('Kitties Galore')) - 30 * Molpy.Got('RRSR');
+				var spread = 90 - 20 * (Molpy.Got('Kitnip') + Molpy.Got('Kitties Galore') + Molpy.Got('RRSR'));
+				this.toggle = min + Math.ceil(spread * Math.random());
+				this.group = '';
+				if(Molpy.Boosts['RRSR'].unlocked && !Molpy.Boosts['RRSR'].bought) {
+					this.toggle *= 12;
+				}
+			};
+			
+			this.onClick = function(level) {
+				level = level || 0;
+				Molpy.shopRepaint = 1;
+				Molpy.boostRepaint = 1;
+				Molpy.badgeRepaint = 1;
+				if(this.drawType[level] != 'show') {
+					Molpy.UnlockBoost('Technicolour Dream Cat');
+					this.drawType[level] = 'show';
+					while(this.drawType.length > level + 1)
+						this.drawType.pop(); //we don't need to remember those now
+					this.jump();
+					return;
+				}
 
-			if(Molpy.Got('RRSR') && flandom(20) == 1) {
-				Molpy.redactedDrawType[level] = 'hide1';
-				Molpy.redactedToggle = 65;
-				Molpy.redactedChain++;
-				Molpy.redactedCountup = Molpy.redactedChain;
-			} else if(Molpy.Got('Redunception') && Molpy.redactedDrawType.length < 21
-				&& flandom(8 / Molpy.redactedDrawType.length) == 0) {
-				Molpy.redactedDrawType[level] = 'recur';
-				Molpy.redactedDrawType.push('show');
-				Molpy.RedactedJump();
-				Molpy.redactedChain++;
-				if(Molpy.redactedDrawType.length < 5 && Molpy.redactedToggle < 5) {
-					Molpy.redactedToggle = 5;
-					Molpy.redactedCountup = Molpy.redactedChain;
+				if(Molpy.Got('RRSR') && flandom(20) == 1) {
+					this.drawType[level] = 'hide1';
+					this.toggle = 65;
+					this.chainCurrent++;
+					this.countup = this.chainCurrent;
+				} else if(Molpy.Got('Redunception') && this.drawType.length < 21
+					&& flandom(8 / this.drawType.length) == 0) {
+					this.drawType[level] = 'recur';
+					this.drawType.push('show');
+					this.jump();
+					this.chainCurrent++;
+					if(this.drawType.length < 5 && this.toggle < 5) {
+						this.toggle = 5;
+						this.countup = this.chainCurrent;
+					}
+				} else if(Molpy.Got('Logicat') && this.drawType.length < 21
+					&& flandom(6 / this.drawType.length) == 0) {
+					Molpy.PuzzleGens.redacted.Generate();
+					this.drawType[level] = 'hide2';
+					this.jump();
+					if(this.toggle < 20) {
+						this.toggle = 20;
+					}
+					this.countup = 0;
+					this.chainCurrent++;
+				} else { // it goes away.					
+					var item = g('redacteditem');
+					if(item) item.className = 'hidden';
+					this.location = 0;
+					this.dispIndex = -1;
+					this.drawType = [];
+					this.countup = 0;
+					this.randomiseTime();
+					_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
+					this.chainCurrent = 0;
 				}
-			} else if(Molpy.Got('Logicat') && Molpy.redactedDrawType.length < 21
-				&& flandom(6 / Molpy.redactedDrawType.length) == 0) {
-				Molpy.PuzzleGens.redacted.Generate();
-				Molpy.redactedDrawType[level] = 'hide2';
-				Molpy.RedactedJump();
-				if(Molpy.redactedToggle < 20) {
-					Molpy.redactedToggle = 20;
-				}
-				Molpy.redactedCountup = 0;
-				Molpy.redactedChain++;
-			} else { // it goes away.					
-				var item = g('redacteditem');
-				if(item) item.className = 'hidden';
-				Molpy.redactedVisible = 0;
-				Molpy.redactedViewIndex = -1;
-				Molpy.redactedDrawType = [];
-				Molpy.redactedCountup = 0; //whoops forgot that!
-				Molpy.RandomiseRedactedTime();
-				_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + Molpy.redactedChain]);
-				Molpy.redactedChain = 0;
-			}
-			Molpy.redactedChainMax = Math.max(Molpy.redactedChainMax, Molpy.redactedChain);
-			if(Molpy.redactedChainMax >= 42) Molpy.EarnBadge('Meaning');
+				this.chainMax = Math.max(this.chainMax, this.chainCurrent);
+				if(this.chainMax >= 42) Molpy.EarnBadge('Meaning');
 
-			Molpy.redactedClicks++;
-			if(Molpy.redactedDrawType.length < 16) {
-				Molpy.RewardRedacted();
-				if(Molpy.Got('Double Department')) {
+				this.clicks++;
+				if(this.drawType.length < 16) {
 					Molpy.RewardRedacted();
+					if(Molpy.Got('Double Department')) {
+						Molpy.RewardRedacted();
+					}
+					Molpy.GlassNotifyFlush();
 				}
-				Molpy.GlassNotifyFlush();
-			}
-			if(Molpy.redactedClicks >= 2) Molpy.EarnBadge('Not So ' + Molpy.redactedW);
-			if(Molpy.redactedClicks >= 14) Molpy.EarnBadge("Don't Litter!");
-			if(Molpy.redactedClicks >= 16) Molpy.UnlockBoost('Kitnip');
-			if(Molpy.redactedClicks >= 32) Molpy.UnlockBoost('DoRD');
-			if(Molpy.redactedClicks >= 64) Molpy.Boosts['Kitties Galore'].department = 1;
-			if(Molpy.redactedClicks >= 128) Molpy.EarnBadge('Y U NO BELIEVE ME?');
-			if(Molpy.redactedClicks >= 256) Molpy.UnlockBoost('BKJ');
-		};
+				if(this.clicks >= 2) Molpy.EarnBadge('Not So ' + Molpy.Redacted.word2);
+				if(this.clicks >= 14) Molpy.EarnBadge("Don't Litter!");
+				if(this.clicks >= 16) Molpy.UnlockBoost('Kitnip');
+				if(this.clicks >= 32) Molpy.UnlockBoost('DoRD');
+				if(this.clicks >= 64) Molpy.Boosts['Kitties Galore'].department = 1;
+				if(this.clicks >= 128) Molpy.EarnBadge('Y U NO BELIEVE ME?');
+				if(this.clicks >= 256) Molpy.UnlockBoost('BKJ');
+			};
+			
+			this.jump = function() {
+				//JUMP!
+				this.location = Math.ceil((this.possibleLocations + 2) * Math.random());
+				if(this.location > this.possibleLocations) this.location = 4;
+				this.dispIndex = -1;
+			};
+			
+			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop',
+			              'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
+			this.tempAreaClass = '';
 
-		Molpy.RedactedJump = function() {
-			//JUMP!
-			Molpy.redactedVisible = Math.ceil((Molpy.redactableThings + 2) * Math.random());
-			if(Molpy.redactedVisible > Molpy.redactableThings) Molpy.redactedVisible = 4;
-			Molpy.redactedViewIndex = -1;
-		};
+			this.getHTML = function(heading, level) {
+				level = level || 0;
+				var drawType = this.drawType[level];
+				var spoiler = '';
+				var label = 'Hide';
+				if(drawType == 'show') label = 'Show';
+				heading = heading ? '<h1>' + Molpy.Redacted.brackets + '</h1>' : '';
+				var countdown = (level == 0 ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '');
+				var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
+					+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
+				if(drawType == 'recur') {
+					str += getHTML(heading, level + 1);
+				} else if(drawType == 'hide1') {
+					str += Molpy.Redacted.spoiler;
+				} else if(drawType == 'hide2') {
+					str += Molpy.PuzzleGens.redacted.StringifyStatements();
+				}
+
+				return str + '</div></div>';
+			}
+		}
+		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?
 
 		Molpy.RewardRedacted = function(forceDepartment, automationLevel) {
-			var event = forceDepartment ? 'DoRD' : Molpy.redactedWord;
+			var event = forceDepartment ? 'DoRD' : Molpy.Redacted.word;
 			if(Molpy.Got('DoRD') && (!Math.floor(8 * Math.random()) || forceDepartment)) {
 				if(Molpy.Got('Blast Furnace') && !Math.floor(4 * Math.random())) {
 					_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace', true]);
@@ -2316,7 +2356,7 @@ Molpy.Up = function() {
 			var bb = Molpy.BoostsOwned + Molpy.BadgesOwned;
 			bonus += bb;
 			items += bb;
-			bonus += Molpy.redactedClicks * 10;
+			bonus += Molpy.Redacted.totalClicks * 10;
 			if(Molpy.Got('BFJ')) {
 				bonus *= (1 + 0.2 * Molpy.Boosts['BKJ'].power);
 				if(Molpy.Got('Blitzing')) bonus *= Math.min(2, (Molpy.Boosts['Blitzing'].power - 800) / 200);
@@ -2380,7 +2420,7 @@ Molpy.Up = function() {
 			if(Molpy.Got('Redundant Raptor') && Molpy.Boosts['Redundant Raptor'].IsEnabled) {
 				if(finite && Molpy.Has('GlassBlocks', 120)) {
 					Molpy.Spend('GlassBlocks', 120);
-					items += Molpy.redactedClicks * 2;
+					items += Molpy.Redacted.totalClicks * 2;
 				} else if(!finite && pg) Molpy.Add('GlassChips', 12000 * (twin + 1));
 			}
 			var nerf = 0;
@@ -2643,7 +2683,7 @@ Molpy.Up = function() {
 		var pp = Molpy.Boosts['Price Protection'];
 		if(pp.power > 1) pp.power--;
 		if(!(Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].IsEnabled)) Molpy.CheckONG();
-		Molpy.CheckRedactedToggle();
+		Molpy.Redacted.checkToggle();
 
 		for( var i in Molpy.Boosts)//count down any boosts with a countdown
 		{
