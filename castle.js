@@ -2059,13 +2059,13 @@ Molpy.Up = function() {
 		
 		Molpy.Redacted = function(args) {
 			this.possibleLocations = 6;
-			drawType = [];
+			this.drawType = [];
 			
-			word2 = Molpy.BeanishToCuegish("UmVkdW5kYW50");
-			word = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
-			words = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
-			brackets = Molpy.BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
-			spoiler = Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
+			this.word2 = Molpy.BeanishToCuegish("UmVkdW5kYW50");
+			this.word = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
+			this.words = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
+			this.brackets = Molpy.BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
+			this.spoiler = Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
 			
 			this.totalClicks = 0;
 			this.chainCurrent = 0;
@@ -2078,136 +2078,136 @@ Molpy.Up = function() {
 			this.dispIndex = -1;
 			
 			this.checkToggle = function() {
-				if(toggle) {
-					countup++;
+				if(this.toggle) {
+					this.countup++;
 					var redC = g('redactedcountdown');
-					if(redC) redC.innerHTML = Molpify(toggle - countup);
+					if(redC) redC.innerHTML = Molpify(this.toggle - this.countup);
 
-					if(countup >= toggle) {
-						countup = 0;
-						if(location) {
-							location = 0; //hide because the redacted was missed
-							drawType = [];
+					if(this.countup >= this.toggle) {
+						this.countup = 0;
+						if(this.location) {
+							this.location = 0; //hide because the redacted was missed
+							this.drawType = [];
 							Molpy.shopRepaint = 1;
 							Molpy.boostRepaint = 1;
 							Molpy.badgeRepaint = 1;
-							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + chainCurrent, true]);
-							chainCurrent = 0;
-							randomiseTime();
+							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
+							this.chainCurrent = 0;
+							this.randomiseTime();
 						} else {
-							drawType = ['show'];
-							jump();
+							this.drawType = ['show'];
+							this.jump();
 							var stay = 6 * (4 + Molpy.Got('Kitnip') + Molpy.Got('SGC') * 2);
-							toggle = stay;
+							this.toggle = stay;
 							Molpy.shopRepaint = 1;
 							Molpy.boostRepaint = 1;
 							Molpy.badgeRepaint = 1;
 						}
 					}
 				} else {//initial setup
-					randomiseTime();
+					this.randomiseTime();
 				}
 			};
 			
 			this.randomiseTime = function() {
 				var min = 200 - 80 * (Molpy.Got('Kitnip') + Molpy.Got('Kitties Galore')) - 30 * Molpy.Got('RRSR');
 				var spread = 90 - 20 * (Molpy.Got('Kitnip') + Molpy.Got('Kitties Galore') + Molpy.Got('RRSR'));
-				toggle = min + Math.ceil(spread * Math.random());
-				group = '';
+				this.toggle = min + Math.ceil(spread * Math.random());
+				this.group = '';
 				if(Molpy.Boosts['RRSR'].unlocked && !Molpy.Boosts['RRSR'].bought) {
-					toggle *= 12;
+					this.toggle *= 12;
 				}
 			};
 			
-			onClick = function(level) {
+			this.onClick = function(level) {
 				level = level || 0;
 				Molpy.shopRepaint = 1;
 				Molpy.boostRepaint = 1;
 				Molpy.badgeRepaint = 1;
-				if(drawType[level] != 'show') {
+				if(this.drawType[level] != 'show') {
 					Molpy.UnlockBoost('Technicolour Dream Cat');
-					drawType[level] = 'show';
-					while(drawType.length > level + 1)
-						drawType.pop(); //we don't need to remember those now
-					jump();
+					this.drawType[level] = 'show';
+					while(this.drawType.length > level + 1)
+						this.drawType.pop(); //we don't need to remember those now
+					this.jump();
 					return;
 				}
 
 				if(Molpy.Got('RRSR') && flandom(20) == 1) {
-					drawType[level] = 'hide1';
-					toggle = 65;
-					chainCurrent++;
-					countup = chainCurrent;
-				} else if(Molpy.Got('Redunception') && drawType.length < 21
-					&& flandom(8 / drawType.length) == 0) {
-					drawType[level] = 'recur';
-					drawType.push('show');
-					jump();
-					chainCurrent++;
-					if(drawType.length < 5 && toggle < 5) {
-						toggle = 5;
-						countup = chainCurrent;
+					this.drawType[level] = 'hide1';
+					this.toggle = 65;
+					this.chainCurrent++;
+					this.countup = this.chainCurrent;
+				} else if(Molpy.Got('Redunception') && this.drawType.length < 21
+					&& flandom(8 / this.drawType.length) == 0) {
+					this.drawType[level] = 'recur';
+					this.drawType.push('show');
+					this.jump();
+					this.chainCurrent++;
+					if(this.drawType.length < 5 && this.toggle < 5) {
+						this.toggle = 5;
+						this.countup = this.chainCurrent;
 					}
-				} else if(Molpy.Got('Logicat') && drawType.length < 21
-					&& flandom(6 / drawType.length) == 0) {
+				} else if(Molpy.Got('Logicat') && this.drawType.length < 21
+					&& flandom(6 / this.drawType.length) == 0) {
 					Molpy.PuzzleGens.redacted.Generate();
-					drawType[level] = 'hide2';
-					jump();
-					if(toggle < 20) {
-						toggle = 20;
+					this.drawType[level] = 'hide2';
+					this.jump();
+					if(this.toggle < 20) {
+						this.toggle = 20;
 					}
-					countup = 0;
-					chainCurrent++;
+					this.countup = 0;
+					this.chainCurrent++;
 				} else { // it goes away.					
 					var item = g('redacteditem');
 					if(item) item.className = 'hidden';
-					location = 0;
-					dispIndex = -1;
-					drawType = [];
-					countup = 0;
-					randomiseTime();
-					_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + chainCurrent]);
-					chainCurrent = 0;
+					this.location = 0;
+					this.dispIndex = -1;
+					this.drawType = [];
+					this.countup = 0;
+					this.randomiseTime();
+					_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
+					this.chainCurrent = 0;
 				}
-				chainMax = Math.max(chainMax, chainCurrent);
-				if(chainMax >= 42) Molpy.EarnBadge('Meaning');
+				this.chainMax = Math.max(this.chainMax, this.chainCurrent);
+				if(this.chainMax >= 42) Molpy.EarnBadge('Meaning');
 
-				clicks++;
-				if(drawType.length < 16) {
+				this.clicks++;
+				if(this.drawType.length < 16) {
 					Molpy.RewardRedacted();
 					if(Molpy.Got('Double Department')) {
 						Molpy.RewardRedacted();
 					}
 					Molpy.GlassNotifyFlush();
 				}
-				if(clicks >= 2) Molpy.EarnBadge('Not So ' + Molpy.Redacted.word2);
-				if(clicks >= 14) Molpy.EarnBadge("Don't Litter!");
-				if(clicks >= 16) Molpy.UnlockBoost('Kitnip');
-				if(clicks >= 32) Molpy.UnlockBoost('DoRD');
-				if(clicks >= 64) Molpy.Boosts['Kitties Galore'].department = 1;
-				if(clicks >= 128) Molpy.EarnBadge('Y U NO BELIEVE ME?');
-				if(clicks >= 256) Molpy.UnlockBoost('BKJ');
+				if(this.clicks >= 2) Molpy.EarnBadge('Not So ' + Molpy.Redacted.word2);
+				if(this.clicks >= 14) Molpy.EarnBadge("Don't Litter!");
+				if(this.clicks >= 16) Molpy.UnlockBoost('Kitnip');
+				if(this.clicks >= 32) Molpy.UnlockBoost('DoRD');
+				if(this.clicks >= 64) Molpy.Boosts['Kitties Galore'].department = 1;
+				if(this.clicks >= 128) Molpy.EarnBadge('Y U NO BELIEVE ME?');
+				if(this.clicks >= 256) Molpy.UnlockBoost('BKJ');
 			};
 			
-			jump = function() {
+			this.jump = function() {
 				//JUMP!
-				location = Math.ceil((possibleLocations + 2) * Math.random());
-				if(location > possibleLocations) location = 4;
-				dispIndex = -1;
+				this.location = Math.ceil((this.possibleLocations + 2) * Math.random());
+				if(this.location > this.possibleLocations) this.location = 4;
+				this.dispIndex = -1;
 			};
 			
-			classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop',
+			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop',
 			              'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
-			tempAreaClass = '';
+			this.tempAreaClass = '';
 
-			getHTML = function(heading, level) {
+			this.getHTML = function(heading, level) {
 				level = level || 0;
-				var drawType = drawType[level];
+				var drawType = this.drawType[level];
 				var spoiler = '';
 				var label = 'Hide';
 				if(drawType == 'show') label = 'Show';
 				heading = heading ? '<h1>' + Molpy.Redacted.brackets + '</h1>' : '';
-				var countdown = (level == 0 ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(toggle - countup) + '</span>' : '');
+				var countdown = (level == 0 ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '');
 				var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
 					+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
 				if(drawType == 'recur') {
@@ -2221,6 +2221,7 @@ Molpy.Up = function() {
 				return str + '</div></div>';
 			}
 		}
+		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?
 
 		Molpy.RewardRedacted = function(forceDepartment, automationLevel) {
 			var event = forceDepartment ? 'DoRD' : Molpy.Redacted.word;

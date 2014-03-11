@@ -1098,8 +1098,6 @@ Molpy.DefineGUI = function() {
 	}
 	/* In which we figure out how to draw stuff
 	+++++++++++++++++++++++++++++++++++++++++++*/
-	Molpy.redactedClassNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop',
-			'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
 	Molpy.drawFrame = 0;
 	Molpy.Draw = function() {
 		var castleAmt = Molpy.Boosts['Castles'].power; //so we don't need lots of lookups
