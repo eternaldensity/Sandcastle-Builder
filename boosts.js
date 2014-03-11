@@ -318,7 +318,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Kitnip',
 		icon: 'kitnip',
-		desc: Molpy.redactedWords + ' come more often and stay longer',
+		desc: Molpy.Redacted.words + ' come more often and stay longer',
 		price:{
 			Sand: 33221,
 			Castles: 63
@@ -329,7 +329,7 @@ Molpy.DefineBoosts = function() {
 		alias: 'DoRD',
 		icon: 'department',
 		group: 'hpt',
-		desc: Molpy.redactedWords + ' sometimes unlock special boosts',
+		desc: Molpy.Redacted.words + ' sometimes unlock special boosts',
 		price:{
 			Sand: 23456,
 			Castles: 78
@@ -784,7 +784,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Kitties Galore',
 		icon: 'kittiesgalore',
-		desc: 'Even more ' + Molpy.redactedWords,
+		desc: 'Even more ' + Molpy.Redacted.words,
 		price:{
 			Sand: '2.5M',
 			Castles: 4400
@@ -794,7 +794,7 @@ Molpy.DefineBoosts = function() {
 		name: 'HAL-0-Kitty',
 		icon: 'halokitty',
 		group: 'cyb',
-		desc: 'NewPixBots build an extra Castle per 9 ' + Molpy.redactedWords,
+		desc: 'NewPixBots build an extra Castle per 9 ' + Molpy.Redacted.words,
 		price:{
 			Sand: 9000,
 			Castles: 2001
@@ -1208,7 +1208,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		stats: function(me) {
-			return 'Additional ' + Molpy.redactedWord
+			return 'Additional ' + Molpy.Redacted.word
 				+ ' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blizting to boost Blast Furnace if they overlap.<br>'
 				+ 'Power level is ' + Molpify(me.power, 3);
 		}
@@ -2953,12 +2953,12 @@ Molpy.DefineBoosts = function() {
 		icon: 'redred',
 		group: 'hpt',
 		desc: 'The Department of Redundancy Department announces: You have exceeded your daily redundancy limit. Your primary redundancy supply will now be turned down. You can always switch to your redundant redundance supply of redundancy.',
-		stats: Molpy.redactedWords + ' appear more often, but they are rare until you buy this.',
+		stats: Molpy.Redacted.words + ' appear more often, but they are rare until you buy this.',
 		price:{
 			Sand: '42G',
 			Castles: '4.2G',
 		},
-		buyFunction: Molpy.RandomiseRedactedTime,
+		buyFunction: Molpy.Redacted.randomiseTime,
 		
 		lockFunction: function() {
 			Molpy.Notify('Primary Redundancy Supply Reengaged', 1);
@@ -3594,7 +3594,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Technicolour Dream Cat',
 		icon: 'dreamcat',
 		heresy: true,
-		desc: Molpy.redactedWords + ' are multicoloured (if Chromatic Heresy is enabled)',
+		desc: Molpy.Redacted.words + ' are multicoloured (if Chromatic Heresy is enabled)',
 		price:{
 			Sand: '320K',
 			Castles: '90K',
@@ -3803,7 +3803,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var inf = !isFinite(Molpy.Boosts['Castles'].power);
-			var str = 'Not Lucky reward gains 1% per ' + Molpy.redactedWord + ' click' + (inf ? '' : ', at a cost of 120 Glass Blocks per use.');
+			var str = 'Not Lucky reward gains 1% per ' + Molpy.Redacted.word + ' click' + (inf ? '' : ', at a cost of 120 Glass Blocks per use.');
 
 			if(me.bought) {
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
@@ -3819,7 +3819,7 @@ Molpy.DefineBoosts = function() {
 			this.IsEnabled = 1;
 		},
 		
-		stats: 'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each ' + Molpy.redactedWord
+		stats: 'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each ' + Molpy.Redacted.word
 			+ ' click<br>The cost is waived if you have infinite Castles, since this this boost would have no effect in that circumstance',
 		price:{
 			Sand: '930PW',
@@ -4962,7 +4962,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Add('Blackprints', Molpy.VoidStare(pages, 'VS'));
 			}
 		}
-		if(left > 10 && Molpy.redactedClicks > 2500 && Molpy.Got('ZK') && Molpy.Boosts['Logicat'].bought >= 4
+		if(left > 10 && Molpy.Redacted.totalClicks > 2500 && Molpy.Got('ZK') && Molpy.Boosts['Logicat'].bought >= 4
 			&& Molpy.Got('LogiPuzzle')) {
 			if (Molpy.Has('LogiPuzzle', Molpy.PokeBar()))
 			{
@@ -5846,7 +5846,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Schrödinger\'s Gingercat',
 		alias: 'SGC',
 		icon: 'sgc',
-		desc: 'Observes itself. Also causes Not Lucky to give more glass and makes ' + Molpy.redactedWords + ' last longer',
+		desc: 'Observes itself. Also causes Not Lucky to give more glass and makes ' + Molpy.Redacted.words + ' last longer',
 		price:{ GlassBlocks: '16.2M', },
 		logic: 1613
 	});
@@ -7127,7 +7127,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Double Department',
 		icon: 'doubledepartment',
 		group: 'prize',
-		desc: Molpy.redactedWords + ' activate the DoRD twice when they would activate it once.',
+		desc: Molpy.Redacted.words + ' activate the DoRD twice when they would activate it once.',
 		price:{
 			Sand: '70M',
 			Castles: '50K',
@@ -7555,8 +7555,8 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			return 'Pay 5K Mustard to reset your ' + Molpy.redactedWord + ' click count to 0 and gain 1 Bonemeal per 20'
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.RedactedCrunch()" value="Use"></input>' : '');
+			return 'Pay 5K Mustard to reset your ' + Molpy.Redacted.word + ' click count to 0 and gain 1 Bonemeal per 20'
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.Boosts[\'Crunch\'].crunch()" value="Use"></input>' : '');
 		},
 		
 		price: {
@@ -7565,16 +7565,16 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		prizes: 1,
-		tier: 3
-	});
-	
-	Molpy.RedactedCrunch = function() {
-		if(Molpy.Spend('Mustard', 5000)) {
-			Molpy.Add('Bonemeal', Math.floor(Molpy.redactedClicks / 20));
-			Molpy.redactedClicks = 0;
-			Molpy.Notify('Crunch!');
+		tier: 3,
+		
+		crunch: function() {
+			if(Molpy.Spend('Mustard', 5000)) {
+				Molpy.Add('Bonemeal', Math.floor(Molpy.Redacted.totalClicks / 20));
+				Molpy.Redacted.totalClicks = 0;
+				Molpy.Notify('Crunch!');
+			}
 		}
-	}
+	});
 	
 	new Molpy.Boost({
 		name: 'Bag of Moulding',
