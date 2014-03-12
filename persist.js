@@ -925,6 +925,9 @@
 			Molpy.Boosts['Time Travel'].countdown = 0;
 			Molpy.Boosts['GlassBlocks'].countdown = 0;
 		}
+		if(version < 3.33332) {
+			Molpy.Boosts['Time Lord'].power = Molpy.Boosts['Time Lord'].bought +1 - Molpy.Level('Time Lord'); // Count down rather than up
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
