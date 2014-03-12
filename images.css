@@ -166,6 +166,18 @@ body.darkscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/stuff_light_icon.png');
 }
+.darkscheme .loot #badges
+{
+	background-image:url('img/badge_light_icon.png');
+}
+.lightscheme .loot #badges
+{
+	background-image:url('img/badge_dark_icon.png');
+}
+#badgesAv
+{
+	background-image:url('img/badge_grey_icon.png');
+}
 .darkscheme .loot #ninjutsu
 {
 	background-image:url('img/ninjutsu_dark_icon.png');

@@ -1277,12 +1277,12 @@ Molpy.Up = function() {
 				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.gif' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.gif' )");
 			} else if(this.icon) {
-				addCSSRule(document.styleSheets[1], '.darkscheme .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.png' )");
 			}
 			if(this.heresy){
-				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_heresy_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_heresy_icon.png' )");
 			}
 			
 			Molpy.SandTools[this.name] = this;
@@ -1730,12 +1730,12 @@ Molpy.Up = function() {
 				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.gif' )");
 				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.gif' )");
 			} else if(this.icon) {
-				addCSSRule(document.styleSheets[1], '.darkscheme .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.png' )");
 			}
 			if(this.heresy){
-				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_heresy_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_heresy_icon.png' )");
 			}
 
 			Molpy.CastleTools[this.name] = this;
@@ -1975,6 +1975,7 @@ Molpy.Up = function() {
 				if(!Molpy.boostSilence && !free && this.bought && !auto) {
 					Molpy.ShowGroup(this.group, this.className);
 				}
+				Molpy.lootAddBoost(this);
 			};
 			
 			this.isAffordable = function() {
@@ -2220,6 +2221,7 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 1) {
 						me.unlocked = 0;
+						Molpy.lootRemoveBoost(me);
 						Molpy.removeDiv(me);
 						Molpy.shopNeedUpdate = 1;
 						Molpy.toolsNeedUpdate = 1;
@@ -2424,6 +2426,7 @@ Molpy.Up = function() {
 				if(baby) {
 					if(baby.earned == 0 && !Molpy.needlePulling) {
 						baby.earned = 1;
+						Molpy.lootAddBadge(baby);
 						_gaq && _gaq.push(['_trackEvent', 'Badge', 'Earn', baby.name, Molpy.BadgesOwned < 6 || baby.group != 'badges' && !camera]);
 						if(Molpy.BadgesOwned == 0) Molpy.EarnBadge('Redundant Redundancy');
 						Molpy.badgeNeedRepaint = 1;
@@ -2433,7 +2436,7 @@ Molpy.Up = function() {
 						if(baby.group == 'badges') {
 							Molpy.Notify('Badge Earned: ' + baby.name, 1, 0, 0, EvalMaybeFunction(baby.desc));
 						} else {
-							Molpy.Notify(Molpy.MaybeWrapFlipHoriz(baby.name, baby.np < 0), 1);
+							Molpy.Notify((baby.np < 0 ? '<div class="flip-horizontal">' + baby.name + '</div>' : baby.name), 1);
 						}
 
 						Molpy.EarnBadge('Redundant');
@@ -2518,7 +2521,7 @@ Molpy.Up = function() {
 			
 			this.countup = 0;
 			this.toggle = 0;
-			this.possibleLocations = 6;
+			this.possibleLocations = 7;
 			this.location = 0; // Which section it will appear in
 			this.group = ''; // Which group it will appear in
 			this.dispIndex = -1;
@@ -2722,6 +2725,109 @@ Molpy.Up = function() {
 			}
 		}
 		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?
+		
+		Molpy.lootBoosts = [];
+		Molpy.lootBadges = [];
+		Molpy.lootBadgesAv = [];
+		Molpy.lootTagged = [];
+		
+		Molpy.lootBuildLists = function () {
+			Molpy.lootTagged = [];
+			Molpy.lootBoosts = [];
+			Molpy.lootBadges = [];
+			Molpy.lootBadgesAv = [];
+			
+			// Setup Boost list for use
+			for(var i in Molpy.Boosts) {
+				var me = Molpy.Boosts[i];
+				if(me.bought) Molpy.lootBoosts.push(me);
+				if(me.bought && me.className) Molpy.lootTagged.push(me);
+			}
+			
+			// Setup Badge list for use
+			for( var i in Molpy.Badges) {
+				var me = Molpy.Badges[i];
+				if(!me.earned && me.group == 'badges')
+					Molpy.lootBadgesAv.push(me);
+				else if(me.earned){
+					Molpy.lootBadges.push(me);
+					if(me.className) Molpy.lootTagged.push(me);
+				}
+			}
+			
+			Molpy.lootBoosts.sort(Molpy.NameSort);
+			Molpy.lootBadgesAv.sort(Molpy.NameSort);
+			Molpy.lootBadges.sort(Molpy.NameSort);
+			Molpy.lootTagged.sort(Molpy.ClassNameSort);
+		}
+		
+		Molpy.lootAddBoost = function(boost) {
+			if(Molpy.lootBoosts.length < 4) {
+				Molpy.lootBoosts.push(boost);
+				Molpy.lootBoosts.sort(Molpy.NameSort);
+			} else
+				Molpy.lootSortedInsert(boost, Molpy.lootBoosts);
+			
+			if(boost.className) {
+				if(Molpy.lootTagged.length < 4) {
+					Molpy.lootTagged.push(boost);
+					Molpy.lootTagged.sort(Molpy.ClassNameSort);
+				} else
+					Molpy.lootSortedInsert(boost, Molpy.lootTagged, 0, Molpy.lootTagged.length, true);
+			}
+		}
+		
+		Molpy.lootAddBadge = function(badge) {
+			if(Molpy.lootBadges.length < 4) {
+				Molpy.lootBadges.push(badge);
+				Molpy.lootBadges.sort(Molpy.NameSort);
+			} else
+				Molpy.lootSortedInsert(badge, Molpy.lootBadges);
+			
+			if(badge.className) {
+				if(Molpy.lootTagged.length < 4) {
+					Molpy.lootTagged.push(badge);
+					Molpy.lootTagged.sort(Molpy.ClassNameSort);
+				} else
+					Molpy.lootSortedInsert(badge, Molpy.lootTagged, 0, Molpy.lootTagged.length, true);
+			}
+			
+			//remove badge from available list if it is in there
+			var index = $.inArray(Molpy.lootBadgesAv, badge);
+			if(index > -1)
+				Molpy.lootBadgesAv.splice(index, 1);
+		}
+		
+		Molpy.lootSortedInsert = function(object, array) {
+			array.splice(Molpy.lootFindInsert(object, array) + 1, 0, object)
+		}
+		
+		Molpy.lootRemoveBoost = function(boost) {
+			var index = $.inArray(Molpy.lootBadgesAv, boost);
+			if(index > -1)
+				Molpy.lootBadgesAv.splice(index, 1);
+		}
+		
+		Molpy.lootFindInsert = function(object, array, start, end, tagged) {
+			start = start || 0;
+			end = end || array.length;
+			tagged = tagged || false;
+			var pivot = Math.floor(start + (end - start) / 2);
+			if (end-start <= 1 || array[pivot] === object) return pivot;
+			
+			// Figure out if we need to look before or after pivot for insertion point
+			var searchAfter = true; 
+			if(tagged)
+				searchAfter = Molpy.ClassNameSort(object, array[pivot]) > 0 ? true : false;
+			else
+				searchAfter = Molpy.NameSort(object, array[pivot]) > 0 ? true : false;
+			
+			if(searchAfter) {
+				return Molpy.lootFindInsert(object, array, pivot, end);
+			} else {
+				return Molpy.lootFindInsert(object, array, start, pivot);
+			}
+		}
 
 		Molpy.RewardRedacted = function(forceDepartment, automationLevel) {
 			var event = forceDepartment ? 'DoRD' : Molpy.Redacted.word;
