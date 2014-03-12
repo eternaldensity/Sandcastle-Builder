@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.33332
+
+#### Waveney
+- Fixed Flux Harvest getting infinite Flux crystals WAY too soon
+
 ### 3.33331
 
 #### Waveney
