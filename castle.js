@@ -2526,7 +2526,7 @@ Molpy.Up = function() {
 		Molpy.DefineBadges();
 		Molpy.DefineCharacters();
 		Molpy.InitGUI();
-        Molpy.DefaultOptions();
+	        Molpy.DefaultOptions();
 		Molpy.UpdateColourScheme();
 
 		Molpy.UpdateBeach();
