@@ -1161,10 +1161,10 @@ Molpy.Up = function() {
 			
 			this.getPrice = function() {
 				var price = '';
-				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + i * 2))
+				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + this.id * 2))
 					price = {Castles: (Math.floor(EvalMaybeFunction(this.price, this, 1) * Molpy.priceFactor))};
 				else if(!isNaN(this.price))
-					price = {GlassChips: 1000 * (i * 2 + 1)};
+					price = {GlassChips: 1000 * (this.id * 2 + 1)};
 				return price;
 			}
 			
@@ -1596,10 +1596,10 @@ Molpy.Up = function() {
 			
 			this.getPrice = function() {
 				var price = '';
-				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + i * 2 + 1))
+				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + this.id * 2 + 1))
 					price = {Castles: (Math.floor(EvalMaybeFunction(this.price, this, 1) * Molpy.priceFactor))};
 				else if(!isNaN(this.price))
-					price = {GlassChips: 1000 * (i * 2 + 2)};
+					price = {GlassChips: 1000 * (this.id * 2 + 2)};
 				return price;
 			}
 			
@@ -2711,6 +2711,7 @@ Molpy.Up = function() {
 			}
 			
 			this.removeDiv = function() {
+				if(!this.divElement) return;
 				this.divElement.remove();
 				this.divElement = null;
 				for(var i in Molpy.Redacted.titleList) {

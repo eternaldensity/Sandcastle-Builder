@@ -45,7 +45,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Enough for Chess',
-		desc: function() { return 'Make ' + Molpify(4) + ' castles'}
+		desc: 'Make ' + Molpify(4) + ' castles'
 	});
 	new Molpy.Badge({
 		name: 'Fortified',
@@ -298,18 +298,18 @@ Molpy.DefineBadges = function() {
 		vis: 1
 	});
 	new Molpy.Badge({
-		name: 'Not So ' + Molpy.Redacted.word2,
-		desc: 'Click 2 ' + Molpy.Redacted.words,
+		name: 'Not So ' + Molpy.redactedW,
+		desc: 'Click 2 ' + Molpy.redactedWords,
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: "Don't Litter!",
-		desc: 'Click 14 ' + Molpy.Redacted.words,
+		desc: 'Click 14 ' + Molpy.redactedWords,
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Y U NO BELIEVE ME?',
-		desc: 'Click 101 ' + Molpy.Redacted.words,
+		desc: 'Click 101 ' + Molpy.redactedWords,
 		vis: 1
 	});
 	new Molpy.Badge({
@@ -747,7 +747,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Meaning',
-		desc: 'Reach a ' + Molpy.Redacted.word + ' streak of 42'
+		desc: 'Reach a ' + Molpy.redactedWord + ' streak of 42'
 	});
 	new Molpy.Badge({
 		name: 'How do I Shot Mustard?',
@@ -781,57 +781,57 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Plain Potato Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(5000) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(5000) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Crinkle Cut Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(20000) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(20000) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'BBQ Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(800000) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(800000) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Corn Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(4e6) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(4e6) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Sour Cream and Onion Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(2e7) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(2e7) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Cinnamon Apple Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(1e8) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(1e8) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Sweet Chili Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(3e9) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(3e9) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Banana Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(1e11) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(1e11) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Nuclear Fission Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(5e12) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(5e12) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Silicon Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(6e14) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(6e14) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Blue Poker Chips',
-		desc: function() { return 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(1e19) + ' Chips/mNP'},
+		desc: 'Have a Glass Chip production rate from Glass Tools of at least ' + Molpify(1e19) + ' Chips/mNP',
 		vis: 1
 	});
 	new Molpy.Badge({
@@ -1013,11 +1013,10 @@ Molpy.DefineBadges = function() {
 							str += '<br><input type="Button" onclick="Molpy.TTT(' + me.np + ',1)" value="Jump!"></input> (Uses '
 								+ Molpify(Molpy.CalcJumpEnergy(me.np), 2) + ' Glass Chips)'
 						}
-						if(Molpy.Got('Magic Mirror')
-							&& Molpy.newpixNumber != -me.np) {
-							str += '<br>' + Molpy.WrapFlipHoriz('<input type="Button" onclick="Molpy.TTT(' + (-me.np)
+						if(Molpy.Got('Magic Mirror') && Molpy.newpixNumber != -me.np) {
+							str += '<br><div class="flip-horizontal"><input type="Button" onclick="Molpy.TTT(' + (-me.np)
 								+ ',1)" value="Jump!"></input> to the other side (Uses '
-								+ Molpify(Molpy.CalcJumpEnergy(-me.np), 2) + ' Glass Chips)')
+								+ Molpify(Molpy.CalcJumpEnergy(-me.np), 2) + ' Glass Chips)</div>';
 						}
 					}
 					if(Molpy.Got('SMM') && !(Molpy.Boosts['SMM'].power || Molpy.Boosts['SMF'].power

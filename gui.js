@@ -392,6 +392,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.RepaintLootSelection = function() {
+		Molpy.lootSelectionNeedRepaint = 0;
 		var str = '';
 		var groups = ['boosts', 'stuff', 'land', 'ninj', 'cyb', 'hpt', 'bean', 'chron', 'ceil', 'drac', 'prize'];
 		for( var i in groups) {
@@ -689,27 +690,27 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.updateShop = function() {
-		for(var i in dispObjects.shop)
-			dispObjects.shop[i].updateAll();
+		for(var i in Molpy.dispObjects.shop)
+			Molpy.dispObjects.shop[i].updateAll();
 	}
 	
 	Molpy.updateTools = function() {
-		for(var i in dispObjects.tools)
-			dispObjects.tools[i].updateAll();
+		for(var i in Molpy.dispObjects.tools)
+			Molpy.dispObjects.tools[i].updateAll();
 	}
 	
 	Molpy.updateLoot = function() {
-		for(var grp in dispObjects)
+		for(var grp in Molpy.dispObjects)
 			if(grp != 'boosts' || grp != 'tagged') continue;
-			for(var i in dispObject[grp])
-				dispObjects[grp][i].updateAll();
+			for(var i in Molpy.dispObject[grp])
+				Molpy.dispObjects[grp][i].updateAll();
 	}
 	
 	Molpy.updateBoosts = function() {
-		for(var grp in dispObjects)
+		for(var grp in Molpy.dispObjects)
 			if(grp != 'boosts' || grp != 'tagged' || grp != 'faves') continue;
-			for(var i in dispObject[grp])
-				dispObjects[grp][i].updateAll();
+			for(var i in Molpy.dispObject[grp])
+				Molpy.dispObjects[grp][i].updateAll();
 	}
 
 	//TODO move mustard tool badge check to achronal dragon and mustard sale, perhaps somewhere else
@@ -1147,7 +1148,8 @@ Molpy.DefineGUI = function() {
 		}
 
 		var repainted = Molpy.shopNeedRepaint || Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint || Molpy.toolsNeedRepaint || Molpy.lootNeedRepaint;
-		var lootSelectionNeedRepaint = Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint;
+		Molpy.lootSelectionNeedRepaint = Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint || Molpy.lootSelectionNeedRepaint;
+		
 		//var updated = Molpy.shopNeedUpdate || Molpy.toolsNeedUpdate || Molpy.lootNeedUpdate;
 
 		//TODO want to repaint as little as possible, favoring updates instead
@@ -1172,7 +1174,7 @@ Molpy.DefineGUI = function() {
 		if(Molpy.layoutNeedRepaint) {
 			Molpy.RepaintLayouts();
 		}
-		if(lootSelectionNeedRepaint) Molpy.RepaintLootSelection();
+		if(Molpy.lootSelectionNeedRepaint) Molpy.RepaintLootSelection();
 		
 		if(Molpy.shopNeedUpdate) {
 			Molpy.updateShop();
