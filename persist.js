@@ -698,7 +698,7 @@
 		return 1;
 	}
 
-	Molpy.needlePulling = 1;
+	Molpy.needlePulling = 0;
 	Molpy.FromNeedlePulledThing = function(thread) {
 		Molpy.needlePulling = 1; //prevent earning badges that haven't been loaded
 		var p = 'P'; //Pipe seParator
