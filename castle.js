@@ -2504,9 +2504,6 @@ Molpy.Up = function() {
 		};
 		
 		Molpy.Redacted = function(args) {
-			this.possibleLocations = 6;
-			this.drawType = [];
-			
 			this.word2 = Molpy.BeanishToCuegish("UmVkdW5kYW50");
 			this.word = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
 			this.words = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
@@ -2519,9 +2516,33 @@ Molpy.Up = function() {
 			
 			this.countup = 0;
 			this.toggle = 0;
+			this.possibleLocations = 6;
 			this.location = 0; // Which section it will appear in
 			this.group = ''; // Which group it will appear in
 			this.dispIndex = -1;
+			this.drawType = [];
+			this.divElement = null;
+			
+			this.divList = {
+					1: $('#sandtools'),
+					2: $('#castletools'),
+					3: $('#boosts'),
+					4: $('#loot'), // in a boost group
+					5: $('#loot'), // in a badge  group
+					6: $('#loot'), // in badges available
+					7: $('#loot')}; // in tagged list
+			this.titleList = {
+					1: $('#toolSTitle'),
+					2: $('#toolCTitle'),
+					3: $('#boostTitle'),
+					4: $('#lootTitle'),
+					5: $('#lootTitle'),
+					6: $('#lootTitle'),
+					7: $('#lootTitle')};
+			
+			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop',
+					              'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
+			this.tempAreaClass = '';
 			
 			this.checkToggle = function() {
 				if(this.toggle) {
@@ -2533,7 +2554,7 @@ Molpy.Up = function() {
 						if(this.location) {
 							this.location = 0; //hide because the redacted was missed
 							this.drawType = [];
-							Molpy.removeRedacted();
+							this.removeDiv();
 							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
 							this.chainCurrent = 0;
 							this.randomiseTime();
@@ -2562,7 +2583,7 @@ Molpy.Up = function() {
 			
 			this.onClick = function(level) {
 				level = level || 0;
-				Molpy.removeRedacted();
+				this.removeDiv();
 				if(this.drawType[level] != 'show') {
 					Molpy.UnlockBoost('Technicolour Dream Cat');
 					this.drawType[level] = 'show';
@@ -2631,8 +2652,8 @@ Molpy.Up = function() {
 			this.jump = function() {
 				// If no possible spots are open, then no redacteds can spawn
 				var possible = false;
-				for(var i in Molpy.redactedDivList)
-					if(Molpy.redactedDivList[i].is(':visible')) {
+				for(var i in this.divList)
+					if(this.divList[i].is(':visible')) {
 						possible = true;
 						break;
 					}
@@ -2645,7 +2666,7 @@ Molpy.Up = function() {
 				while(loopNum < 50 && valid == false) {
 					randNum = Math.ceil((this.possibleLocations + 2) * Math.random());
 					if(randNum > this.possibleLocations) randNum = 4;
-					if(Molpy.redactedDivList[randNum].is(':visible')) {
+					if(this.divList[randNum].is(':visible')) {
 						this.location = randNum;
 						valid = true;
 					}
@@ -2657,10 +2678,6 @@ Molpy.Up = function() {
 				
 				this.dispIndex = -1;
 			};
-			
-			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop',
-			              'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
-			this.tempAreaClass = '';
 
 			this.getHTML = function(heading, level) {
 				level = level || 0;
@@ -2681,6 +2698,24 @@ Molpy.Up = function() {
 				}
 
 				return str + '</div></div>';
+			}
+			
+			this.getDiv = function(heading, level, forceNew) {
+				if(!this.divElement || forceNew)
+					if(forceNew) {
+						this.removeDiv();
+					}
+				this.divElement = $(this.getHTML(heading, level));
+				
+				return this.divElement;
+			}
+			
+			this.removeDiv = function() {
+				this.divElement.remove();
+				this.divElement = null;
+				for(var i in Molpy.Redacted.titleList) {
+					Molpy.Redacted.titleList[i].toggleClass('redacted-area', false);
+				}
 			}
 		}
 		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?

@@ -418,32 +418,6 @@ Molpy.DefineGUI = function() {
 
 		g('lootselection').innerHTML = str;
 	}
-
-	Molpy.redactedDivList = {
-			1: $('#sandtools'),
-			2: $('#castletools'),
-			3: $('#boosts'),
-			4: $('#loot'), // in a boost group
-			5: $('#loot'), // in a badge  group
-			6: $('#loot'), // in badges available
-			7: $('#loot')}; // in tagged list
-	Molpy.redactedTitleList = {
-			1: $('#toolSTitle'),
-			2: $('#toolCTitle'),
-			3: $('#boostTitle'),
-			4: $('#lootTitle'),
-			5: $('#lootTitle'),
-			6: $('#lootTitle'),
-			7: $('#lootTitle')};
-	
-	Molpy.getRedactedDiv = function(heading, level, forceNew) {
-		if(!Molpy.redactedDiv || forceNew)
-			if(forceNew)
-				Molpy.redactedDiv.remove();
-			Molpy.redactedDiv = $(Molpy.RedactedHTML(heading, level));
-		
-		return Molpy.redactedDiv;
-	}
 	
 	Molpy.removeGroupFromDispObjectsCategory = function(group, category) {
 		for(var i in group) {
@@ -654,39 +628,34 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.repaintRedacted = function() {
-		if(Molpy.redactedVisible == 0) return; // Don't repaint because redacted is not active
+		if(Molpy.Redacted.location == 0) return; // Don't repaint because redacted is not active
 		
-		var redDiv = Molpy.redactedDivList[Molpy.redactedVisible];
+		var redDiv = Molpy.Redacted.divList[Molpy.Redacted.location];
 		
 		// Make sure the div is an open one, if not, re jump and set it again
 		if(!redDiv.is(':visible')) {
-			Molpy.RedactedJump();
-			if(Molpy.redactedVisible == 0) return; // No available spots to spawn
-			redDiv = Molpy.redactedDivList[Molpy.redactedVisible];
+			Molpy.Redacted.jump();
+			if(Molpy.Redacted.location == 0) return; // No available spots to spawn
+			redDiv = Molpy.Redacted.divList[Molpy.Redacted.location];
 		}
 		
 		// If a position is invalid, get a random new position
-		if(Molpy.redactedViewIndex == -1 || Molpy.redactedViewIndex > (redDiv.size() + 1)) {
+		if(Molpy.Redacted.dispIndex == -1 || Molpy.Redacted.dispIndex > (redDiv.size() + 1)) {
 			var maxPos = redDiv.size() + 1;
-			Molpy.redactedViewIndex = Math.floor(maxPos * Math.random());
+			Molpy.Redacted.dispIndex = Math.floor(maxPos * Math.random());
 		}
 		
-		Molpy.redactedTitleList[Molpy.redactedVisible].toggleClass('redacted-area', true);
+		Molpy.Redacted.titleList[Molpy.Redacted.location].toggleClass('redacted-area', true);
 		
-		if(Molpy.redactedViewIndex == 0)
-			redDiv.prepend(Molpy.getRedactedDiv());
-		else if(Molpy.redactedViewIndex > redDiv.size())
-			redDiv.append(Molpy.getRedactedDiv());
+		// Take it out of where it is in case it exists already
+		Molpy.Redacted.getDiv().detach();
+		
+		if(Molpy.Redacted.dispIndex == 0)
+			redDiv.prepend(Molpy.Redacted.getDiv());
+		else if(Molpy.Redacted.dispIndex > redDiv.size())
+			redDiv.append(Molpy.Redacted.getDiv());
 		else
-			redDiv.find(':nth-child(' + Molpy.redactedViewIndex + ')').before(Molpy.getRedactedDiv());	
-	}
-	
-	Molpy.removeRedacted = function() {
-		Molpy.redactedDiv.remove();
-		Molpy.redactedDiv = null;
-		for(var i in Molpy.redactedTitleList) {
-			Molpy.redactedTitleList[i].toggleClass('redacted-area', false);
-		}
+			redDiv.find(':nth-child(' + Molpy.Redacted.dispIndex + ')').before(Molpy.Redacted.getDiv());	
 	}
 	
 	Molpy.addGroupToDiv = function(whichDiv, group, maxIndex, dispCat, args) {
