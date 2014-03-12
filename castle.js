@@ -1246,8 +1246,8 @@ Molpy.Up = function() {
 				var overID = '' + this.name + this.id;
 				if(Molpy.mouseIsOver == overID) nh = true;
 				
-				this.getDiv({forceNew: true, nohide: nh});
-				parent.find(':nth-child(' + index + ')').before(this.divElement);
+				this.getDiv({forceNew: true, hover: true, nohide: nh});
+				parent.children().eq(index).before(this.divElement);
 				
 			}
 			
@@ -1700,8 +1700,8 @@ Molpy.Up = function() {
 				var overID = '' + this.name + this.id;
 				if(Molpy.mouseIsOver == overID) nh = true;
 				
-				this.getDiv({forceNew: true, nohide: nh});
-				parent.find(':nth-child(' + index + ')').before(this.divElement);				
+				this.getDiv({forceNew: true, hover: true, nohide: nh});
+				parent.children().eq(index).before(this.divElement);			
 			}
 			
 			this.updateAll = function() {
@@ -2002,6 +2002,8 @@ Molpy.Up = function() {
 					this.hoverOnCounter = 1;
 					this.hovering = 0;
 				}
+				
+				this.repaint();
 
 				this.faveRefresh = 1;
 				if(!indirect && this.refreshFunction) this.refreshFunction();
@@ -2116,8 +2118,8 @@ Molpy.Up = function() {
 				var overID = '' + this.name + this.id;
 				if(Molpy.mouseIsOver == overID) nh = true;
 				
-				this.getDiv({forceNew: true, nohide: nh});
-				parent.find(':nth-child(' + index + ')').before(this.divElement);		
+				this.getDiv({forceNew: true, hover: true, nohide: nh});
+				parent.children().eq(index).before(this.divElement);		
 			}
 			
 			this.updateAll = function() {
@@ -2386,8 +2388,8 @@ Molpy.Up = function() {
 				var overID = '' + this.name + this.id;
 				if(Molpy.mouseIsOver == overID) nh = true;
 				
-				this.getDiv({forceNew: true, nohide: nh});
-				parent.find(':nth-child(' + index + ')').before(this.divElement);		
+				this.getDiv({forceNew: true, hover: true, nohide: nh});
+				parent.children().eq(index).before(this.divElement);		
 			}
 			
 			this.updateAll = function() {} //badges don't really update, would be nice to get rid of this
