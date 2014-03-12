@@ -111,7 +111,7 @@
 		} else {
 			success = Molpy.LoadC_STARSTAR_kie();
 		}
-
+		Molpy.needlePulling = 0;
 		if(!success) return;
 		Molpy.loadCount++;
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
