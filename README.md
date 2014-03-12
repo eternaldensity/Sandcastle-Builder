@@ -31,6 +31,9 @@ For personal amusement only.
 #### LucidCrux
 - RedaCtedredactEdrEdactEdredACteDreDacTedreDacteDrEdactedRedActedreda
 
+#### Waveney
+- Fixed Flux Harvest getting infinite Flux crystals WAY too soon
+
 ### 3.33331
 
 #### Waveney

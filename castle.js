@@ -2977,7 +2977,7 @@ Molpy.Up = function() {
 			Molpy.Notify('You have not saved in over a NewPix!!', 1);
 		}
 		if(!Molpy.Got('Temporal Rift')) {
-			Molpy.Boosts['Time Lord'].Level = 0;
+			Molpy.Boosts['Time Lord'].reset();
 			Molpy.Boosts['Flux Harvest'].Refresh();
 			if(Molpy.Got('LogiPuzzle')) {
 				var cl = Molpy.Boosts['LogiPuzzle'];
