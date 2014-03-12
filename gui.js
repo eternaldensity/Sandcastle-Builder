@@ -124,7 +124,7 @@ Molpy.DefineGUI = function() {
 		Molpy.lootNeedRepaint = 1;
 	}
 	Molpy.ShowGroup = function(group, tagged) {
-		if(Molpy.redactedDrawType[Molpy.redactedDrawType.length - 1] != 'hide1') {
+		if(Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide1') {
 			if(!Molpy.activeLayout.lootVis[group]) {
 				if(tagged) {
 					if(!Molpy.activeLayout.lootVis.tagged) {
@@ -383,7 +383,7 @@ Molpy.DefineGUI = function() {
 			var type = kind == 4 ? 'boost' : 'badge';
 			var id = Molpy.groupNames[gr][2] || '';
 			if(id) id = ' id="' + id + '"';
-			var r = (Molpy.redactedVisible == kind && Molpy.redactedGr == gr);
+			var r = (Molpy.Redacted.location == kind && Molpy.Redacted.group == gr);
 			if(r) id = '';
 			str += '<div class="floatsquare loot ' + (r ? 'redacted-area ' : '') + type + '"><h3>' + Molpy.groupNames[gr][1]
 				+ '</h3><br>' + Molpy.ShowhideButton(gr) + '<div class="icon' + (r ? ' redacted"' : '"') + id + '></div></div>';
@@ -398,7 +398,7 @@ Molpy.DefineGUI = function() {
 			str += Molpy.PaintLootToggle(groups[i], 4);
 		}
 		if(Molpy.BadgesOwned) {
-			var r = Molpy.redactedVisible == 5 && Molpy.redactedGr == 'badges';
+			var r = Molpy.Redacted.location == 5 && Molpy.Redacted.group == 'badges';
 			str += '<div class="floatsquare badge loot' + (r ? ' redacted-area' : '') + '"><h3>Badges<br>Earned</h3>'
 				+ Molpy.ShowhideButton('badges') + '<div class="icon ' + (r ? 'redacted' : '') + '"></div></div>';
 		}
@@ -407,25 +407,18 @@ Molpy.DefineGUI = function() {
 			str += Molpy.PaintLootToggle(groups[i], 5);
 		}
 		if(Molpy.BadgeN - Molpy.BadgesOwned) {
-			var r = Molpy.redactedVisible == 6;
+			var r = Molpy.Redacted.location == 6;
 			str += '<div class="floatsquare badge shop' + (r ? ' redacted-area' : '') + '"><h3>Badges<br>Available</h3>'
 				+ Molpy.ShowhideButton('badgesav') + '<div class="icon ' + (r ? 'redacted' : '') + '"></div></div>';
 		}
 		if(Molpy.Boosts['Chromatic Heresy'].unlocked) {
 			str += '<div class="floatsquare boost loot alert"><h3>Tagged<br>Items</h3>' + Molpy.ShowhideButton('tagged')
-				+ '<div id="tagged" class="icon ' + (Molpy.redactedVisible == 7 ? 'redacted' : '') + '"></div></div>';
+				+ '<div id="tagged" class="icon ' + (Molpy.Redacted.location == 7 ? 'redacted' : '') + '"></div></div>';
 		}
 
 		g('lootselection').innerHTML = str;
 	}
 
-	Molpy.redactedDiv = null;
-	Molpy.redactedW = Molpy.BeanishToCuegish("UmVkdW5kYW50");
-	Molpy.redactedWord = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
-	Molpy.redactedWords = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
-	Molpy.redactedBrackets = Molpy.BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
-	Molpy.redactedSpoilerValue = Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGYkJ5ZWNDRDR0SjAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
-	Molpy.redactedDrawType = [];
 	Molpy.redactedDivList = {
 			1: $('#sandtools'),
 			2: $('#castletools'),
@@ -442,27 +435,6 @@ Molpy.DefineGUI = function() {
 			5: $('#lootTitle'),
 			6: $('#lootTitle'),
 			7: $('#lootTitle')};
-	
-	Molpy.RedactedHTML = function(heading, level) {
-		level = level || 0;
-		var drawType = Molpy.redactedDrawType[level];
-		var spoiler = '';
-		var label = 'Hide';
-		if(drawType == 'show') label = 'Show';
-		heading = heading ? '<h1>' + Molpy.redactedBrackets + '</h1>' : '';
-		var countdown = (level == 0 ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(Molpy.redactedToggle - Molpy.redactedCountup) + '</span>' : '');
-		var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.redactedWord
-			+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.ClickRedacted(' + level + ')"</input>';
-		if(drawType == 'recur') {
-			str += Molpy.RedactedHTML(heading, level + 1);
-		} else if(drawType == 'hide1') {
-			str += Molpy.redactedSpoilerValue;
-		} else if(drawType == 'hide2') {
-			str += Molpy.PuzzleGens.redacted.StringifyStatements();
-		}
-
-		return str + '</div></div>';
-	}
 	
 	Molpy.getRedactedDiv = function(heading, level, forceNew) {
 		if(!Molpy.redactedDiv || forceNew)
@@ -1146,8 +1118,6 @@ Molpy.DefineGUI = function() {
 	}
 	/* In which we figure out how to draw stuff
 	+++++++++++++++++++++++++++++++++++++++++++*/
-	Molpy.redactedClassNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop',
-			'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
 	Molpy.drawFrame = 0;
 	Molpy.Draw = function() {
 		var castleAmt = Molpy.Boosts['Castles'].power; //so we don't need lots of lookups
@@ -1245,18 +1215,18 @@ Molpy.DefineGUI = function() {
 			Molpy.updateLoot();
 		}
 		
-		if(Molpy.redactedVisible) {
+		if(Molpy.Redacted.location) {
 			var ra = $('.redacted-area');
 			if(ra) {
 				Molpy.drawFrame++;
 				if(Molpy.drawFrame >= Molpy.fps / 3) Molpy.drawFrame = 0;
 				if(repainted || Molpy.drawFrame == 0) {
-					var className = Molpy.redactedClassNames[Molpy.redactedVisible];
-					if(Molpy.Boosts['Chromatic Heresy'].power > 0 && Molpy.Got('Technicolour Dream Cat') && Molpy.redactedDrawType[Molpy.redactedDrawType.length - 1] != 'hide2') {
-						ra.removeClass(Molpy.redactedAreaClass);
-						Molpy.redactedAreaClass = ['alert', 'action', 'toggle', '', ''][flandom(4)];
-						className += ' ' + Molpy.redactedAreaClass;
-						ra.addClass(Molpy.redactedAreaClass);
+					var className = Molpy.Redacted.classNames[Molpy.Redacted.location];
+					if(Molpy.Boosts['Chromatic Heresy'].power > 0 && Molpy.Got('Technicolour Dream Cat') && Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide2') {
+						ra.removeClass(Molpy.Redacted.tempAreaClass);
+						Molpy.Redacted.tempAreaClass = ['alert', 'action', 'toggle', '', ''][flandom(4)];
+						className += ' ' + Molpy.Redacted.tempAreaClass;
+						ra.addClass(Molpy.Redacted.tempAreaClass);
 					}
 					var redacteditem = g('redacteditem');
 					if(redacteditem) redacteditem.className = className;
@@ -1333,8 +1303,8 @@ Molpy.DefineGUI = function() {
 		g('glassmonstat').innerHTML = Molpify((Molpy.groupBadgeCounts.monumg || 0), 4);
 
 		g('sandmultiplierstat').innerHTML = Molpify(Molpy.globalSpmNPMult * 100, 4) + '%';
-		g('redactedstat').innerHTML = Molpy.redactedWords + ": " + Molpify(Molpy.redactedClicks, 1);
-		g('redactedmaxstat').innerHTML = 'Max ' + Molpy.redactedWord + " Chain: " + Molpify(Molpy.redactedChainMax, 1);
+		g('redactedstat').innerHTML = Molpy.Redacted.words + ": " + Molpify(Molpy.Redacted.totalClicks, 1);
+		g('redactedmaxstat').innerHTML = 'Max ' + Molpy.Redacted.word + " Chain: " + Molpify(Molpy.Redacted.chainMax, 1);
 
 		g('glasschipstat').innerHTML = Molpify(Molpy.Boosts['GlassChips'].power, 4);
 		g('glassblockstat').innerHTML = Molpify(Molpy.Boosts['GlassBlocks'].power, 4);
@@ -1876,7 +1846,7 @@ Molpy.DefineGUI = function() {
 		}
 
 		new Molpy.Puzzle('redacted', function() {
-			Molpy.redactedDrawType[Molpy.redactedDrawType.length - 1] = 'show';
+			Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] = 'show';
 		});
 		
 		Molpy.allNeedRepaint = 1;

@@ -234,7 +234,7 @@ Molpy.DefineCastleTools = function() {
 		buildC: function() {
 			var baseval = 1;
 			if(Molpy.Got('Robot Efficiency')) baseval++;
-			if(Molpy.Got('HAL-0-Kitty')) baseval += Math.floor(Molpy.redactedClicks / 9);
+			if(Molpy.Got('HAL-0-Kitty')) baseval += Math.floor(Molpy.Redacted.totalClicks / 9);
 			var pow = 0;
 			for( var i in Molpy.npbDoublers) {
 				var me = Molpy.Boosts[Molpy.npbDoublers[i]];

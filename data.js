@@ -625,7 +625,7 @@ Molpy.CheckBuyUnlocks = function(tool) {
 
 	if(Molpy.Got('Ninja Builder') && Molpy.Boosts['GlassBlocks'].power > 10) Molpy.UnlockBoost('Glass Jaw');
 
-	if(Molpy.redactedClicks >= 554 && (Molpy.Got('Overcompensating') || Molpy.Got('Doublepost'))) {
+	if(Molpy.Redacted.totalClicks >= 554 && (Molpy.Got('Overcompensating') || Molpy.Got('Doublepost'))) {
 		Molpy.UnlockBoost('RRSR');
 	} else {
 		Molpy.LockBoost('RRSR'); //prevent use in shortpix!
@@ -710,16 +710,16 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 		Molpy.Boosts['Ninja Legion'].department = 1;
 	}
 
-	if(Molpy.redactedClicks >= 320 && (Molpy.Got('Overcompensating') || Molpy.Got('Doublepost'))) {
+	if(Molpy.Redacted.totalClicks >= 320 && (Molpy.Got('Overcompensating') || Molpy.Got('Doublepost'))) {
 		Molpy.Boosts['Redunception'].department = 1;
 	} else {
 		Molpy.LockBoost('Redunception'); //prevent use in shortpix!
 		Molpy.Boosts['Redunception'].department = 0;
 	}
-	if(Molpy.redactedClicks >= 776) {
+	if(Molpy.Redacted.totalClicks >= 776) {
 		Molpy.Boosts['Logicat'].department = 1;
 	}
-	if(Molpy.redactedClicks >= 431) {
+	if(Molpy.Redacted.totalClicks >= 431) {
 		Molpy.Boosts['Technicolour Dream Cat'].department = 1;
 	}
 
@@ -773,7 +773,7 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	Molpy.Boosts['Break the Mould'].department = 1 * (Molpy.Boosts['Break the Mould'].power >= 100);
 
 	Molpy.Boosts['PC'].department = 1 * (Molpy.Got('TF') && Molpy.CastleTools['NewPixBot'].amount >= 5000);
-	Molpy.Boosts['Panther Poke'].department = 1 * (automationLevel > 8 && Molpy.redactedClicks > 2500
+	Molpy.Boosts['Panther Poke'].department = 1 * (automationLevel > 8 && Molpy.Redacted.totalClicks > 2500
 		&& Molpy.Got('LogiPuzzle') && !Molpy.Has('LogiPuzzle', Molpy.PokeBar()) && flandom(4) == 0);
 
 	Molpy.Boosts['GM'].department = 1 * (Molpy.Boosts['TF'].manualLoaded >= 1e6);
