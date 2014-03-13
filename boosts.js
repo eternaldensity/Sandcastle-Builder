@@ -5351,8 +5351,7 @@ Molpy.DefineBoosts = function() {
 			n = 1;
 		}
 		if(Molpy.Has(cost)
-			&& (pr.Level > 12 || confirm('Really spend ' + Molpy.PriceString(cost).replace(/&nbsp;/g, ' ')
-				+ ' on Panther Rush?'))) {
+			&& (pr.Level > 12 || confirm('Really spend ' + (Molpy.PriceString(cost).replace(/&nbsp;/g, ' ').replace(/(<([^>]+)>)/ig,"")) + ' on Panther Rush?'))) {
 			if(Molpy.Spend(cost)) pr.Add(n);
 			var fCost = Molpy.CalcRushCost(0, 1);
 			Molpy.LockBoost(pr.alias);
@@ -8169,7 +8168,7 @@ Molpy.DefineBoosts = function() {
 			};
 			if(!Molpy.Boosts['No Sell'].power && n > 1) {
 				if(Molpy.Has(downCost)) {
-					str += '<br><input type="Button" value="Decrease" onclick="Molpy.SuckMore(-1)"></input> the vacuum rate by 1 at a cost of ' + Molpy.PriceString(cost) + '.';
+					str += '<br><input type="Button" value="Decrease" onclick="Molpy.SuckMore(-1)"></input> the vacuum rate by 1 at a cost of ' + Molpy.PriceString(downCost) + '.';
 				} else {
 					str += '<br>It will cost ' + Molpy.PriceString(downCost) + ' to decrease this by 1.';
 				}
