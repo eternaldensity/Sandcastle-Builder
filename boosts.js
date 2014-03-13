@@ -3667,7 +3667,7 @@ Molpy.DefineBoosts = function() {
 							+ Molpify(cost, 3) + ' Glass Blocks to solve ' + Molpify(tens,1)
 							+ ' puzzles at a time. (Multiplies reward/loss by the number of puzzles.)<br>';
 				}
-				if (Molpy.Level('Logicat') < 1000000) {
+				if (me.multiBuy < 20) {
 					var cost = 100 + Molpy.LogiMult(25);
 					if(Molpy.Has('GlassBlocks', cost)) {
 						str += '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle(' + cost + ')"></input> '
@@ -3687,6 +3687,7 @@ Molpy.DefineBoosts = function() {
 		
 		buyFunction: function() {
 			this.Level = 10;
+			this.multiBuy = 0;
 		},
 		
 		classChange: function() { return ((Molpy.Level('AC') > 1000) || this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
@@ -3695,15 +3696,25 @@ Molpy.DefineBoosts = function() {
 			Molpy.ChainRefresh('ShadwDrgn');
 		},
 
-        loadFunction: function() { Molpy.PuzzleGens.caged.active=false; }
+        	loadFunction: function() { Molpy.PuzzleGens.caged.active=false; },
 
-    });
+		// Unique saved properties
+		multiBuy: 0,
+		
+		defSave: 1,
+		saveData: {
+			4:['multiBuy', 0, 'int'],
+		}
+
+    	});
 
 	new Molpy.Puzzle('caged', function() {
 		Molpy.Boosts['LogiPuzzle'].Refresh();
 	});
 	
 	Molpy.MakeCagedPuzzle = function(cost, puzzles) {
+		if (puzzles && puzzles > 1) Molpy.Boosts['LogiPuzzle'].multiBuy++
+		else Molpy.Boosts['LogiPuzzle'].multiBuy = 0;
 		if(!Molpy.Spend('GlassBlocks', cost)) {
 			Molpy.Notify('You need to pay' + Molpy.PriceString(cost) + ' to be asked a Caged Logicat puzzle.');
 			return;

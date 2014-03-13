@@ -35,6 +35,7 @@ For personal amusement only.
 - Fixed Flux Harvest getting infinite Flux crystals WAY too soon
 - Finished off creating discoveries up to T** **D
 - Several minor bug fixes
+- Single use logipuzzle button now disapears after 20 consecutive uses of the multi-buy button
 
 ### 3.33331
 
