@@ -33,6 +33,8 @@ For personal amusement only.
 
 #### Waveney
 - Fixed Flux Harvest getting infinite Flux crystals WAY too soon
+- Finished off creating discoveries up to T** **D
+- Several minor bug fixes
 
 ### 3.33331
 
