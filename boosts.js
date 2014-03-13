@@ -8168,7 +8168,7 @@ Molpy.DefineBoosts = function() {
 			};
 			if(!Molpy.Boosts['No Sell'].power && n > 1) {
 				if(Molpy.Has(downCost)) {
-					str += '<br><input type="Button" value="Decrease" onclick="Molpy.SuckMore(-1)"></input> the vacuum rate by 1 at a cost of ' + Molpy.PriceString(cost) + '.';
+					str += '<br><input type="Button" value="Decrease" onclick="Molpy.SuckMore(-1)"></input> the vacuum rate by 1 at a cost of ' + Molpy.PriceString(downCost) + '.';
 				} else {
 					str += '<br>It will cost ' + Molpy.PriceString(downCost) + ' to decrease this by 1.';
 				}
