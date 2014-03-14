@@ -85,8 +85,10 @@ Molpy.DefinePuzzles = function() {
 				Molpy.Notify(Molpify(correct) + ' answer' + plural(correct) + ' correct, ' + Molpify(incorrect) + ' answer' + plural(incorrect) + ' incorrect. You earned ' + Molpify(score) + ' point' + plural(score), 1);
 				if(diff > 0) {
 					Molpy.Add('Logicat', 0, score);
+					Molpy.UpdateFaves(1);
 				} else if(diff < 0) {
 					Molpy.Destroy('Logicat', 0, -score);
+					Molpy.UpdateFaves(1);
 				}
 				completedStatements = [];
 				this.active = false;
