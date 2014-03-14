@@ -561,7 +561,7 @@ Molpy.DefineGUI = function() {
 
 		var redactedIndex = -1;
 		if(Molpy.Redacted.location == 3) {
-			if(Molpy.Redacted.dispIndex == -1) {
+			if(Molpy.Redacted.dispIndex == -1 || Molpy.Redacted.dispIndex > Molpy.BoostsInShop.length + 1) {
 				Molpy.Redacted.dispIndex = Math.floor((Molpy.BoostsInShop.length + 1) * Math.random());
 			}
 			redactedIndex = Molpy.Redacted.dispIndex;
