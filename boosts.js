@@ -4890,14 +4890,14 @@ Molpy.DefineBoosts = function() {
 
 		var i = acPower;
 		var times = 0;
-		if(fast) {
-			Molpy.RunFastFactory(acPower);
-			return;
-		}
 		if(Molpy.mustardTools) {
 			if(Molpy.Got('Mustard Automation') && Molpy.Spend('Mustard', 20)) {
 				Molpy.RunFastFactory(acPower);
 			}
+			return;
+		}
+		if(fast) {
+			Molpy.RunFastFactory(acPower);
 			return;
 		}
 		var t = Molpy.tfOrder.length;
