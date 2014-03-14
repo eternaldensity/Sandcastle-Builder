@@ -423,7 +423,7 @@ Molpy.DefineGUI = function() {
 	Molpy.removeGroupFromDispObjectsCategory = function(group, category) {
 		for(var i in group) {
 			var thing = group[i];
-			var index = $.inArray(Molpy.dispObjects[category], thing);
+			var index = $.inArray(thing, Molpy.dispObjects[category]);
 			if(index > -1) {
 				Molpy.removeDiv(thing);
 				Molpy.dispObjects[category].splice(index, 1);
@@ -608,9 +608,15 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.repaintRedacted = function() {
+		Molpy.redactedNeedRepaint = 0;
 		if(Molpy.Redacted.location == 0) return; // Don't repaint because redacted is not active
 		
+		// Take it out of where it is in case it exists already
+		Molpy.Redacted.getDiv().detach();
+		
 		var redDiv = Molpy.Redacted.divList[Molpy.Redacted.location];
+		
+		console.log(redDiv);
 		
 		// Make sure the div is an open one, if not, re jump and set it again
 		if(!redDiv.is(':visible')) {
@@ -625,45 +631,51 @@ Molpy.DefineGUI = function() {
 		var maxIndex = 0;
 		var lootArray = null;
 		if(Molpy.Redacted.location <= 3) {
-			maxIndex = redDiv.size() + 1;
+			maxIndex = redDiv.children().length + 1;
 		} else if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 7) {
 			if(Molpy.Redacted.location == 4) lootArray = Molpy.BoostsBought;
 			else if(Molpy.Redacted.location == 5) lootArray = Molpy.BadgesEarned;
 			else if(Molpy.Redacted.location == 6) lootArray = Molpy.BadgesAvailable;
 			else if(Molpy.Redacted.location == 7) lootArray = Molpy.TaggedLoot;
-			maxIndex = lootArray.length;
+			maxIndex = lootArray.length + 1;
 			Molpy.lootSelectionNeedRepaint = 1;
 		}
+		console.log('max: ' + maxIndex + '   dispIndex: ' + Molpy.Redacted.dispIndex);
 		
 		// If a position is invalid, get a random new position
 		if(Molpy.Redacted.dispIndex == -1 || Molpy.Redacted.dispIndex > maxIndex) {
 			Molpy.Redacted.dispIndex = Math.floor(maxIndex * Math.random());
+			console.log('new dispIndex: ' + Molpy.Redacted.dispIndex);
 		}
 		
 		if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 6) {		
 			Molpy.Redacted.group = lootArray[Molpy.Redacted.dispIndex].group;
 		}
 		
+		console.log('group: ' + Molpy.Redacted.group);
+		
 		// Figure out where it will go
 		var specialIndex = -1;
 		if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 7) {
-			if(Molpy.activeLayout.lootVis[Molpy.Redacted.group])
+			console.log('object: ' + lootArray[Molpy.Redacted.dispIndex].name);
+			if(lootArray[Molpy.Redacted.dispIndex] && lootArray[Molpy.Redacted.dispIndex].hasDiv()) {
 				var div = lootArray[Molpy.Redacted.dispIndex].getDiv({});
+				console.log(div);
 				if(div) specialIndex = div.index();
+			}
 		} else {
 			specialIndex = Molpy.Redacted.dispIndex;
 		}
-		console.log(specialIndex);
+		console.log('specIndex: ' + specialIndex);
 		
-		// Take it out of where it is in case it exists already
-		Molpy.Redacted.getDiv().detach();
-		
-		if(specialIndex == 0)
+		if(specialIndex == 0) {
 			redDiv.prepend(Molpy.Redacted.getDiv());
-		else if(specialIndex > redDiv.size())
+		}
+		else if(specialIndex > redDiv.children().length) {
 			redDiv.append(Molpy.Redacted.getDiv());
-		else if(specialIndex > 0)
+		} else if(specialIndex > 0){
 			redDiv.children().eq(specialIndex).before(Molpy.Redacted.getDiv());
+		}
 	}
 	
 	Molpy.addGroupToDiv = function(whichDiv, group, maxIndex, dispCat, args) {
@@ -687,13 +699,13 @@ Molpy.DefineGUI = function() {
 			if(args.autoAdd) {
 				var suc = Molpy.dispObjects[dispCat].push(object);
 			} else {
-				if($.inArray(Molpy.dispObjects[dispCat], object) == -1) Molpy.dispObjects[dispCat].push(object);
+				if($.inArray(object, Molpy.dispObjects[dispCat]) == -1) Molpy.dispObjects[dispCat].push(object);
 			}
 			
 			i ++;
 		}
 		
-		//Molpy.repaintRedacted();
+		Molpy.redactedNeedRepaint = 1;
 	}
 	
 	Molpy.updateShop = function() {
@@ -1221,6 +1233,9 @@ Molpy.DefineGUI = function() {
 					Molpy.dispObjects[grp][i].updateBuy();
 			}
 		}
+		
+		if(Molpy.redactedNeedRepaint)
+			Molpy.repaintRedacted();
 
 		drawClockHand();
 		Molpy.PaintStats();

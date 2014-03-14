@@ -157,11 +157,18 @@ body.darkscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/badge_discovery_light_icon.png');
 }
+.darkscheme .loot #boost
+{
+	background-image:url('img/boost_dark_icon.png');
+}
+.lightscheme .loot #boost
+{
+	background-image:url('img/boost_light_icon.png');
+}
 .darkscheme .loot #stuff
 {
 	background-image:url('img/stuff_dark_icon.png');
 }
-
 .lightscheme .loot #stuff
 {
 	background-image:url('img/stuff_light_icon.png');

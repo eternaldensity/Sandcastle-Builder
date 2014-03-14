@@ -2047,7 +2047,7 @@ Molpy.Up = function() {
 			
 			// Methods for Div Creation
 			this.getFullClass = function() {
-				return 'boost ' + (this.bought ? 'lootbox loot ' : 'floatbox shop ') + (this.className || '');
+				return 'boost ' + (this.bought || this.countdown > 0 ? 'lootbox loot ' : 'floatbox shop ') + (this.className || '');
 			}
 			
 			this.getHeading = function() {
@@ -2594,6 +2594,7 @@ Molpy.Up = function() {
 			this.onClick = function(level) {
 				level = level || 0;
 				this.removeDiv();
+				Molpy.lootSelectionNeedRepaint = 1;
 				if(this.drawType[level] != 'show') {
 					Molpy.UnlockBoost('Technicolour Dream Cat');
 					this.drawType[level] = 'show';
@@ -2700,7 +2701,7 @@ Molpy.Up = function() {
 				var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
 					+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
 				if(drawType == 'recur') {
-					str += getHTML(heading, level + 1);
+					str += this.getHTML(heading, level + 1);
 				} else if(drawType == 'hide1') {
 					str += Molpy.Redacted.spoiler;
 				} else if(drawType == 'hide2') {
@@ -2711,11 +2712,12 @@ Molpy.Up = function() {
 			}
 			
 			this.getDiv = function(heading, level, forceNew) {
-				if(!this.divElement || forceNew)
+				if(!this.divElement || forceNew) {
 					if(forceNew) {
 						this.removeDiv();
 					}
-				this.divElement = $(this.getHTML(heading, level));
+					this.divElement = $(this.getHTML(heading, level));
+				}
 				
 				return this.divElement;
 			}
@@ -2743,7 +2745,9 @@ Molpy.Up = function() {
 			for(var i in Molpy.Boosts) {
 				var me = Molpy.Boosts[i];
 				if(me.bought) Molpy.BoostsBought.push(me);
-				if(me.bought && me.className && me.className != '') Molpy.TaggedLoot.push(me);
+				if(me.bought && me.className && me.className != '') {
+					Molpy.TaggedLoot.push(me);
+				}
 			}
 			
 			// Setup Badge list for use
@@ -2796,7 +2800,7 @@ Molpy.Up = function() {
 			}
 			
 			//remove badge from available list if it is in there
-			var index = $.inArray(Molpy.BadgesAvailable, badge);
+			var index = $.inArray(badge, Molpy.BadgesAvailable);
 			if(index > -1)
 				Molpy.BadgesAvailable.splice(index, 1);
 		}
@@ -2806,9 +2810,24 @@ Molpy.Up = function() {
 		}
 		
 		Molpy.lootRemoveBoost = function(boost) {
-			var index = $.inArray(Molpy.BadgesAvailable, boost);
+			var index = $.inArray(boost, Molpy.BadgesAvailable);
 			if(index > -1)
 				Molpy.BadgesAvailable.splice(index, 1);
+		}
+		
+		Molpy.lootCheckTagged = function(object) {
+			if(!object.className || object.className == '') {
+				var index = $.inArray(object, Molpy.TaggedLoot);
+				if(index > -1) {
+					Molpy.TaggedLoot.splice(index, 1);
+				}
+			} else {
+				var index = $.inArray(object, Molpy.TaggedLoot);
+				if(index <= -1) {
+					Molpy.TaggedLoot.push(object);
+					Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
+				}
+			}
 		}
 		
 		Molpy.lootFindInsert = function(object, array, start, end, tagged) {
@@ -3315,6 +3334,7 @@ Molpy.Up = function() {
 					var newclass = me.classChange();
 					if (newclass != me.className) {
 						me.className = newclass;
+						Molpy.lootCheckTagged(me);
 						me.Refresh();
 						Molpy.boostNeedRepaint = 1;
 					}
@@ -3328,6 +3348,7 @@ Molpy.Up = function() {
 					var newclass = me.classChange();
 					if (newclass != me.className) {
 						me.className = newclass;
+						Molpy.lootCheckTagged(me);
 						me.Refresh();
 						Molpy.badgeNeedRepaint = 1;
 					}

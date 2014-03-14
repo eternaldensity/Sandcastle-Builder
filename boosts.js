@@ -3282,6 +3282,7 @@ Molpy.DefineBoosts = function() {
 		var newClass = Molpy.Earned('Ceiling Broken') ? '' : (Molpy.CeilingTogglable(key) ? 'action' : 'alert');
 		if(newClass != oldClass) {
 			me.className = newClass;
+			Molpy.lootCheckTagged(me);
 			return 1;
 		}
 	}
@@ -5443,6 +5444,7 @@ Molpy.DefineBoosts = function() {
 					Molpy.EarnBadge('Nope!');
 					me.power = 6e51;// Evens everyone up to same value could get here between 5 and 5.00999...
 					me.className = '';
+					Molpy.lootCheckTagged(me);
 				}
 			} else {
 				var affordPow = Math.floor(Math.log(Molpy.Level('GlassBlocks') / n) * Math.LOG10E) - 6;
