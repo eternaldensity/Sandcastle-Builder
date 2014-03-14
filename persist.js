@@ -113,6 +113,7 @@
 		}
 		
 		Molpy.BuildLootLists();
+		Molpy.needlePulling = 0;
 		if(!success) return;
 		Molpy.loadCount++;
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
@@ -922,6 +923,9 @@
 			Molpy.Boosts['Castles'].countdown = 0;
 			Molpy.Boosts['Time Travel'].countdown = 0;
 			Molpy.Boosts['GlassBlocks'].countdown = 0;
+		}
+		if(version < 3.33332) {
+			Molpy.Boosts['Time Lord'].power = Molpy.Boosts['Time Lord'].bought +1 - Molpy.Level('Time Lord'); // Count down rather than up
 		}
 	}
 
