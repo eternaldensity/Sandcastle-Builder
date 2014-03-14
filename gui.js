@@ -483,23 +483,23 @@ Molpy.DefineGUI = function() {
 		Molpy.dispObjects.badges = [];
 		Molpy.dispObjects.tagged = [];
 		
-		var taggedList = Molpy.lootTagged;
+		var taggedList = Molpy.TaggedLoot;
 		
 		// Setup Boost list for use
 		var boostList = [];
-		for(var i in Molpy.lootBoosts) {
-			var me = Molpy.lootBoosts[i];
+		for(var i in Molpy.BoostsBought) {
+			var me = Molpy.BoostsBought[i];
 			if(Molpy.activeLayout.lootVis[me.group]) boostList.push(me);
 		}
 		
 		// Setup Badge list for use
 		var badgeList = [];
-		for(var i in Molpy.lootBadges) {
-			var me = Molpy.lootBadges[i];
+		for(var i in Molpy.BadgesEarned) {
+			var me = Molpy.BadgesEarned[i];
 			if(Molpy.activeLayout.lootVis[me.group]) badgeList.push(me);
 		}
-		for(var i in Molpy.lootBadgesAv) {
-			var me = Molpy.lootBadgesAv[i];
+		for(var i in Molpy.BadgesAvailable) {
+			var me = Molpy.BadgesAvailable[i];
 			if(Molpy.activeLayout.lootVis.badgesav) badgeList.push(me);
 		}
 		
@@ -627,10 +627,10 @@ Molpy.DefineGUI = function() {
 		if(Molpy.Redacted.location <= 3) {
 			maxIndex = redDiv.size() + 1;
 		} else if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 7) {
-			if(Molpy.Redacted.location == 4) lootArray = Molpy.lootBoosts;
-			else if(Molpy.Redacted.location == 5) lootArray = Molpy.lootBadges;
-			else if(Molpy.Redacted.location == 6) lootArray = Molpy.lootBadgesAv;
-			else if(Molpy.Redacted.location == 7) lootArray = Molpy.lootTagged;
+			if(Molpy.Redacted.location == 4) lootArray = Molpy.BoostsBought;
+			else if(Molpy.Redacted.location == 5) lootArray = Molpy.BadgesEarned;
+			else if(Molpy.Redacted.location == 6) lootArray = Molpy.BadgesAvailable;
+			else if(Molpy.Redacted.location == 7) lootArray = Molpy.TaggedLoot;
 			maxIndex = lootArray.length;
 			Molpy.lootSelectionNeedRepaint = 1;
 		}
@@ -653,6 +653,7 @@ Molpy.DefineGUI = function() {
 		} else {
 			specialIndex = Molpy.Redacted.dispIndex;
 		}
+		console.log(specialIndex);
 		
 		// Take it out of where it is in case it exists already
 		Molpy.Redacted.getDiv().detach();
@@ -1154,7 +1155,7 @@ Molpy.DefineGUI = function() {
 		}
 
 		var repainted = Molpy.allNeedRepaint || Molpy.shopNeedRepaint || Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint || Molpy.toolsNeedRepaint || Molpy.lootNeedRepaint;
-		Molpy.lootSelectionNeedRepaint = Molpy.allNeedRepaint || Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint || Molpy.lootNeedRepaint;
+		Molpy.lootSelectionNeedRepaint = Molpy.allNeedRepaint || Molpy.boostNeedRepaint || Molpy.badgeNeedRepaint || Molpy.lootNeedRepaint || Molpy.lootSelectionNeedRepaint;
 		
 		//var updated = Molpy.shopNeedUpdate || Molpy.toolsNeedUpdate || Molpy.lootNeedUpdate;
 
@@ -1832,6 +1833,8 @@ Molpy.DefineGUI = function() {
 	Molpy.newObjectDiv = function(type, object, flags) {
 		var headingHTML = '';
 		var purchaseHTML = '';
+		var ownedHTML = '';
+		var priceHTML = '';
 		var productionHTML = '';
 		
 		var heading = object.getHeading();
@@ -1839,19 +1842,17 @@ Molpy.DefineGUI = function() {
 		
 		var buysell = object.getBuySell();
 		if(buysell != '') {
-			var price = object.getPrice();
-			var owned = object.getOwned();
-			var ownedHTML = '';
-			
-			if(owned != '') ownedHTML = '<div class="owned">Owned: ' + owned + '</div>';		
+			var price = object.getPrice();		
 			if(price != '') {
-				purchaseHTML = '	<div class="purchase ">' + buysell + '</div>'
-				             + ownedHTML
-					         + '	<div class="price ">'
-					         + Molpy.createPriceHTML(price)
-					         + '	</div>';
+				purchaseHTML = '	<div class="purchase ">' + buysell + '</div>';
+				priceHTML = '	<div class="price ">'
+				          + Molpy.createPriceHTML(price)
+				          + '	</div>';
 			}
 		}
+		
+		var owned = object.getOwned();
+		if(owned != '') ownedHTML = '<div class="owned">Owned: ' + owned + '</div>';
 		
 		var production = object.getProduction();
 		if(production != '') productionHTML = '	<div class="production">' + production + '</div>';
@@ -1861,6 +1862,8 @@ Molpy.DefineGUI = function() {
 			        + headingHTML
 			        + '	<H2 class="objName">' + object.getFormattedName() + '</H2>'
 			        + purchaseHTML
+			        + ownedHTML
+			        + priceHTML
 			        + productionHTML
 			        + '	<div class="description"><br />' + object.getDesc() + '</div>'
 			        + '</div>';

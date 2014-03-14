@@ -21,7 +21,7 @@ Molpy.DefineBoosts = function() {
 		discov: ['discovery', 'Discoveries', 'discov', 'Discovery', 'A memorable discovery'],
 		monums: ['sand monument', 'Sand Monuments', 'sandmonument', 'Sand Monument', 'A sand structure commemorating'],
 		monumg: ['glass monument', 'Glass Monuments', 'glassmonument', 'Glass Monument', 'A glass sculpture commemorating'],
-		diamm: ['masterpiece', 'Masterpieces', 0,'Masterpiece',	'This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of', 'in diamond. <br>It molpifies with spikes of treeishness.'],
+		diamm: ['masterpiece', 'Masterpieces', 'masterpiece' ,'Masterpiece',	'This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of', 'in diamond. <br>It molpifies with spikes of treeishness.'],
 	};
 	
 	Molpy.unlockedGroups['stuff'] = 1; // Stuff is always unlocked because Sand and Castles are always unlocked

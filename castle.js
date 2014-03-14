@@ -1875,6 +1875,7 @@ Molpy.Up = function() {
 		Molpy.BoostsByGroup = [];
 		Molpy.BoostN = 0;
 		Molpy.BoostsInShop = [];
+		Molpy.BoostsBought = [];
 		Molpy.BoostsOwned = 0;
 		Molpy.BoostAKA = [];
 		Molpy.boostSilence = 0;
@@ -2259,6 +2260,8 @@ Molpy.Up = function() {
 		Molpy.Badges = [];
 		Molpy.BadgesById = [];
 		Molpy.BadgeAKA = [];
+		Molpy.BadgesEarned = [];
+		Molpy.BadgesAvailable = [];
 		Molpy.BadgeN = 0;
 		Molpy.BadgesOwned = 0;
 		var order = 0;
@@ -2401,17 +2404,19 @@ Molpy.Up = function() {
 			Molpy.BadgesById[this.id] = this;
 			Molpy.BadgeAKA[this.name] = this.alias;
 			
-			// Create CSS style for badge
-			if(this.gifIcon){
-				addCSSRule(document.styleSheets[1], '.darkscheme .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.gif' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.gif' )");
-			} else if(this.icon) {
-				addCSSRule(document.styleSheets[1], '.darkscheme .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
-			}
-			if(this.heresy){
-				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
+			// Create CSS style for badges with unique icons
+			if(this.icon != 'discov' && this.icon != 'sandmonument' && this.icon != 'glassmonument' && this.icon != 'masterpiece') {
+				if(this.gifIcon){
+					addCSSRule(document.styleSheets[1], '.darkscheme .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.gif' )");
+					addCSSRule(document.styleSheets[1], '.lightscheme .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.gif' )");
+				} else if(this.icon) {
+					addCSSRule(document.styleSheets[1], '.darkscheme .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.png' )");
+					addCSSRule(document.styleSheets[1], '.lightscheme .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
+				}
+				if(this.heresy){
+					addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
+					addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
+				}
 			}
 			
 			Molpy.BadgeN++;
@@ -2726,76 +2731,74 @@ Molpy.Up = function() {
 		}
 		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?
 		
-		Molpy.lootBoosts = [];
-		Molpy.lootBadges = [];
-		Molpy.lootBadgesAv = [];
-		Molpy.lootTagged = [];
+		Molpy.TaggedLoot = [];
 		
-		Molpy.lootBuildLists = function () {
-			Molpy.lootTagged = [];
-			Molpy.lootBoosts = [];
-			Molpy.lootBadges = [];
-			Molpy.lootBadgesAv = [];
+		Molpy.BuildLootLists = function () {
+			Molpy.TaggedLoot = [];
+			Molpy.BoostsBought = [];
+			Molpy.BadgesEarned = [];
+			Molpy.BadgesAvailable = [];
 			
 			// Setup Boost list for use
 			for(var i in Molpy.Boosts) {
 				var me = Molpy.Boosts[i];
-				if(me.bought) Molpy.lootBoosts.push(me);
-				if(me.bought && me.className) Molpy.lootTagged.push(me);
+				if(me.bought) Molpy.BoostsBought.push(me);
+				if(me.bought && me.className && me.className != '') Molpy.TaggedLoot.push(me);
 			}
 			
 			// Setup Badge list for use
-			for( var i in Molpy.Badges) {
-				var me = Molpy.Badges[i];
-				if(!me.earned && me.group == 'badges')
-					Molpy.lootBadgesAv.push(me);
+			for( var i in Molpy.BadgesById) {
+				var me = Molpy.BadgesById[i];
+				if(!me.earned && me.group == 'badges'){
+					Molpy.BadgesAvailable.push(me);
+				}
 				else if(me.earned){
-					Molpy.lootBadges.push(me);
-					if(me.className) Molpy.lootTagged.push(me);
+					Molpy.BadgesEarned.push(me);
+					if(me.className && me.className != '') Molpy.TaggedLoot.push(me);
 				}
 			}
 			
-			Molpy.lootBoosts.sort(Molpy.NameSort);
-			Molpy.lootBadgesAv.sort(Molpy.NameSort);
-			Molpy.lootBadges.sort(Molpy.NameSort);
-			Molpy.lootTagged.sort(Molpy.ClassNameSort);
+			Molpy.BoostsBought.sort(Molpy.NameSort);
+			Molpy.BadgesAvailable.sort(Molpy.NameSort);
+			Molpy.BadgesEarned.sort(Molpy.NameSort);
+			Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
 		}
 		
 		Molpy.lootAddBoost = function(boost) {
-			if(Molpy.lootBoosts.length < 4) {
-				Molpy.lootBoosts.push(boost);
-				Molpy.lootBoosts.sort(Molpy.NameSort);
+			if(Molpy.BoostsBought.length < 4) {
+				Molpy.BoostsBought.push(boost);
+				Molpy.BoostsBought.sort(Molpy.NameSort);
 			} else
-				Molpy.lootSortedInsert(boost, Molpy.lootBoosts);
+				Molpy.lootSortedInsert(boost, Molpy.BoostsBought);
 			
-			if(boost.className) {
-				if(Molpy.lootTagged.length < 4) {
-					Molpy.lootTagged.push(boost);
-					Molpy.lootTagged.sort(Molpy.ClassNameSort);
+			if(boost.className && boost.className != '') {
+				if(Molpy.TaggedLoot.length < 4) {
+					Molpy.TaggedLoot.push(boost);
+					Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
 				} else
-					Molpy.lootSortedInsert(boost, Molpy.lootTagged, 0, Molpy.lootTagged.length, true);
+					Molpy.lootSortedInsert(boost, Molpy.TaggedLoot, 0, Molpy.TaggedLoot.length, true);
 			}
 		}
 		
 		Molpy.lootAddBadge = function(badge) {
-			if(Molpy.lootBadges.length < 4) {
-				Molpy.lootBadges.push(badge);
-				Molpy.lootBadges.sort(Molpy.NameSort);
+			if(Molpy.BadgesEarned.length < 4) {
+				Molpy.BadgesEarned.push(badge);
+				Molpy.BadgesEarned.sort(Molpy.NameSort);
 			} else
-				Molpy.lootSortedInsert(badge, Molpy.lootBadges);
+				Molpy.lootSortedInsert(badge, Molpy.BadgesEarned);
 			
-			if(badge.className) {
-				if(Molpy.lootTagged.length < 4) {
-					Molpy.lootTagged.push(badge);
-					Molpy.lootTagged.sort(Molpy.ClassNameSort);
+			if(badge.className && badge.className != '') {
+				if(Molpy.TaggedLoot.length < 4) {
+					Molpy.TaggedLoot.push(badge);
+					Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
 				} else
-					Molpy.lootSortedInsert(badge, Molpy.lootTagged, 0, Molpy.lootTagged.length, true);
+					Molpy.lootSortedInsert(badge, Molpy.TaggedLoot, 0, Molpy.TaggedLoot.length, true);
 			}
 			
 			//remove badge from available list if it is in there
-			var index = $.inArray(Molpy.lootBadgesAv, badge);
+			var index = $.inArray(Molpy.BadgesAvailable, badge);
 			if(index > -1)
-				Molpy.lootBadgesAv.splice(index, 1);
+				Molpy.BadgesAvailable.splice(index, 1);
 		}
 		
 		Molpy.lootSortedInsert = function(object, array) {
@@ -2803,9 +2806,9 @@ Molpy.Up = function() {
 		}
 		
 		Molpy.lootRemoveBoost = function(boost) {
-			var index = $.inArray(Molpy.lootBadgesAv, boost);
+			var index = $.inArray(Molpy.BadgesAvailable, boost);
 			if(index > -1)
-				Molpy.lootBadgesAv.splice(index, 1);
+				Molpy.BadgesAvailable.splice(index, 1);
 		}
 		
 		Molpy.lootFindInsert = function(object, array, start, end, tagged) {

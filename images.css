@@ -251,27 +251,35 @@ body.darkscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/badge_badge_dark_icon.png');
 }
-.darkscheme .loot #discov
+.darkscheme .shop .badge_badge
+{
+	background-image:url('img/badge_badge_grey_icon.png');
+}
+.lightscheme .shop .badge_badge
+{
+	background-image:url('img/badge_badge_grey_icon.png');
+}
+.darkscheme .loot #discov, .darkscheme .loot .badge_discov
 {
 	background-image:url('img/badge_discovery_light_icon.png');
 }
-.lightscheme .loot #discov
+.lightscheme .loot #discov, .lightscheme .loot .badge_discov
 {
 	background-image:url('img/badge_discovery_dark_icon.png');
 }
-.darkscheme .loot #sandmonument
+.darkscheme .loot #sandmonument, .darkscheme .loot .badge_sandmonument
 {
 	background-image:url('img/sandmonument_light_icon.png');
 }
-.lightscheme .loot #sandmonument
+.lightscheme .loot #sandmonument, .lightscheme .loot .badge_sandmonument
 {
 	background-image:url('img/sandmonument_dark_icon.png');
 }
-.darkscheme .loot #glassmonument
+.darkscheme .loot #glassmonument, .darkscheme .loot .badge_glassmonument
 {
 	background-image:url('img/glassmonument_light_icon.png');
 }
-.lightscheme .loot #glassmonument
+.lightscheme .loot #glassmonument, .lightscheme .loot .badge_glassmonument
 {
 	background-image:url('img/glassmonument_dark_icon.png');
 }

@@ -111,7 +111,8 @@
 		} else {
 			success = Molpy.LoadC_STARSTAR_kie();
 		}
-
+		
+		Molpy.BuildLootLists();
 		if(!success) return;
 		Molpy.loadCount++;
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
@@ -772,7 +773,7 @@
 		Molpy.judgeLevel = -1;
 		Molpy.CalculateDigSpeed();
 		Molpy.currentSubFrame = 0;
-		Molpy.lootBuildLists();
+		Molpy.BuildLootLists();
 		Molpy.UpdateFaves(1);
 		return 1;
 	}
