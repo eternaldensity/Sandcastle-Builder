@@ -2643,7 +2643,7 @@ Molpy.Up = function() {
 				this.chainMax = Math.max(this.chainMax, this.chainCurrent);
 				if(this.chainMax >= 42) Molpy.EarnBadge('Meaning');
 
-				this.clicks++;
+				this.totalClicks++;
 				if(this.drawType.length < 16) {
 					Molpy.RewardRedacted();
 					if(Molpy.Got('Double Department')) {
@@ -2651,13 +2651,13 @@ Molpy.Up = function() {
 					}
 					Molpy.GlassNotifyFlush();
 				}
-				if(this.clicks >= 2) Molpy.EarnBadge('Not So ' + Molpy.Redacted.word2);
-				if(this.clicks >= 14) Molpy.EarnBadge("Don't Litter!");
-				if(this.clicks >= 16) Molpy.UnlockBoost('Kitnip');
-				if(this.clicks >= 32) Molpy.UnlockBoost('DoRD');
-				if(this.clicks >= 64) Molpy.Boosts['Kitties Galore'].department = 1;
-				if(this.clicks >= 128) Molpy.EarnBadge('Y U NO BELIEVE ME?');
-				if(this.clicks >= 256) Molpy.UnlockBoost('BKJ');
+				if(this.totalClicks >= 2) Molpy.EarnBadge('Not So ' + Molpy.Redacted.word2);
+				if(this.totalClicks >= 14) Molpy.EarnBadge("Don't Litter!");
+				if(this.totalClicks >= 16) Molpy.UnlockBoost('Kitnip');
+				if(this.totalClicks >= 32) Molpy.UnlockBoost('DoRD');
+				if(this.totalClicks >= 64) Molpy.Boosts['Kitties Galore'].department = 1;
+				if(this.totalClicks >= 128) Molpy.EarnBadge('Y U NO BELIEVE ME?');
+				if(this.totalClicks >= 256) Molpy.UnlockBoost('BKJ');
 			};
 			
 			this.jump = function() {
