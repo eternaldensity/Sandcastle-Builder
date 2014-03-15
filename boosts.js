@@ -5976,7 +5976,7 @@ Molpy.DefineBoosts = function() {
 		var miscount = 0;
 		var npstart = 1;
 		var missing = 0;
-		for( var np = 1; np < Math.abs(Molpy.highestNPvisited); np++) {
+		for( var np = 1; np < Math.abs(Molpy.highestNPvisited); np+= 0.5) {
 			var alias = 'discov' + np;
 			if(Molpy.Badges[alias]) {
 				if(Molpy.Earned(alias)) {
@@ -5996,7 +5996,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Earned('Minus Worlds')) {
 			var miscount = 0;
 			var npstart = -Math.abs(Molpy.highestNPvisited);
-			for( var np = npstart; np < 0; np++) {
+			for( var np = npstart; np < 0; np+= 0.5) {
 				var alias = 'discov' + np;
 				if(Molpy.Badges[alias]) {
 					if(Molpy.Earned(alias)) {

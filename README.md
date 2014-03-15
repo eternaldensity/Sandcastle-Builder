@@ -37,6 +37,12 @@ For personal amusement only.
 - Several minor bug fixes
 - Single use logipuzzle button now disapears after 20 consecutive uses of the multi-buy button
 
+#### JadeE1024
+- Redacted Rescue
+- Fave updates
+- Mustard Automation fix
+- Fixed the Jammed Jamming
+
 ### 3.33331
 
 #### Waveney
