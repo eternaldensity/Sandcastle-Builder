@@ -2111,7 +2111,7 @@ Molpy.DefineBoosts = function() {
 				if(!Molpy.Got('Stretchable Chip Storage') && this.Level == Infinity)
 					Molpy.UnlockBoost('Stretchable Chip Storage');
 				if(waste) {
-					this.Level -= waste;
+					this.Level = this.bought * 10;
 					amount -= waste;
 					Molpy.chipWasteAmount += waste;
 					if(expand && Molpy.chipWasteAmount > 1000000)
@@ -6500,6 +6500,9 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 			if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
+				var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
+				if (c && !Molpy.boostSilence) 
+					Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
 				Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
 			}
 		}

@@ -322,12 +322,13 @@ Molpy.Up = function() {
 			if(!isFinite(Molpy.Level('GlassBlocks'))) return;
 			var chillerLevel = (Molpy.Boosts['Glass Chiller'].power) + 1;
 			if(times) chillerLevel *= times;
-			var chipsFor = chillerLevel;
 
 			var rate = Molpy.ChipsPerBlock();
+			var chipsFor = Math.min(chillerLevel, (Molpy.Boosts['GlassChips'].Level + Molpy.chipWasteAmount) / rate);
+			var need = (chipsFor * rate - Molpy.chipWasteAmount) || 0;
 			var backoff = 1;
 
-			while(!Molpy.Has('GlassChips', chipsFor * rate)) {
+			while(!Molpy.Has('GlassChips', need)) {
 				chipsFor = (chipsFor - backoff) || 0;
 				backoff *= 2;
 			}
@@ -338,7 +339,13 @@ Molpy.Up = function() {
 				Molpy.Notify('Running low on Glass Chips!');
 				chillerLevel = chipsFor;
 			}
-			Molpy.Destroy('GlassChips', chipsFor * rate);
+			var cost = chipsFor * rate;
+			
+			// First, spend from surplus waste
+			cost = (cost - Molpy.chipWasteAmount) || 0; 
+			Molpy.chipWasteAmount = (cost > 0) ? Molpy.chipWasteAmount-cost : 0;
+			
+			Molpy.Destroy('GlassChips', cost);
 			if(Molpy.Got('Glass Goat') && Molpy.Has('Goats', 1)) {
 				chillerLevel *= Molpy.Level('Goats');
 			}
