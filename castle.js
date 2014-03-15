@@ -2211,7 +2211,7 @@ Molpy.Up = function() {
 				var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
 					+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
 				if(drawType == 'recur') {
-					str += getHTML(heading, level + 1);
+					str += this.getHTML(heading, level + 1);
 				} else if(drawType == 'hide1') {
 					str += Molpy.Redacted.spoiler;
 				} else if(drawType == 'hide2') {
