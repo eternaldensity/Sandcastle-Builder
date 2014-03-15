@@ -699,3 +699,6 @@ body.darkscheme .decimaltext {
 body.lightscheme .decimaltext {
 	color:#444;
 }
+.rosetta {
+	text-shadow: 5px -5px 15px white, -5px 5px 10px #888, 5px 5px 15px #444, -5px -5px 10px black, 2px 2px, -2px -2px;
+}
