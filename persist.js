@@ -111,7 +111,7 @@
 		} else {
 			success = Molpy.LoadC_STARSTAR_kie();
 		}
-
+		Molpy.needlePulling = 0;
 		if(!success) return;
 		Molpy.loadCount++;
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
@@ -305,13 +305,13 @@
 		          + (Molpy.loadCount) + s
 		          + (Molpy.notifsReceived) + s
 		          + (Molpy.npbONG) + s
-		          + (Molpy.redactedCountup) + s
-		          + (Molpy.redactedToggle) + s
-		          + (Molpy.redactedVisible) + s
-		          + (Molpy.redactedClicks) + s
+		          + (Molpy.Redacted.countup) + s
+		          + (Molpy.Redacted.toggle) + s
+		          + (Molpy.Redacted.location) + s
+		          + (Molpy.Redacted.totalClicks) + s
 		          + (Molpy.highestNPvisited) + s
-		          + (Molpy.redactedChain) + s
-		          + (Molpy.redactedChainMax) + s;
+		          + (Molpy.Redacted.chainCurrent) + s
+		          + (Molpy.Redacted.chainMax) + s;
 		return str;
 	}
 
@@ -440,11 +440,11 @@
 			Molpy.Boosts['Time Travel'].travelCount = parseInt(pixels[18]) || 0;
 			Molpy.npbONG = parseInt(pixels[19]) || 0;
 	
-			Molpy.redactedCountup = parseInt(pixels[20]) || 0;
-			Molpy.redactedToggle = parseInt(pixels[21]) || 0;
-			Molpy.redactedVisible = parseInt(pixels[22]) || 0;
+			Molpy.Redacted.countup = parseInt(pixels[20]) || 0;
+			Molpy.Redacted.toggle = parseInt(pixels[21]) || 0;
+			Molpy.Redacted.location = parseInt(pixels[22]) || 0;
 			Molpy.Boosts['GlassBlocks'].luckyGlass = parseFloat(pixels[23]) || 0;
-			Molpy.redactedClicks = parseInt(pixels[24]) || 0;
+			Molpy.Redacted.totalClicks = parseInt(pixels[24]) || 0;
 			Molpy.highestNPvisited = parseInt(pixels[25]) || Math.abs(Molpy.newpixNumber);
 			Molpy.Boosts['Castles'].totalDown = parseFloat(pixels[26]) || 0;
 			if(version < 2.1) Molpy.tempIntruderBots = parseFloat(pixels[27]) || 0;
@@ -452,8 +452,8 @@
 			Molpy.Boosts['TF'].totalLoaded = parseFloat(pixels[27]) || 0;
 			Molpy.Boosts['TF'].totalDestroyed = parseFloat(pixels[28]) || 0;
 			Molpy.Boosts['TF'].manualLoaded = parseFloat(pixels[29]) || 0;
-			Molpy.redactedChain = parseFloat(pixels[30]) || 0;
-			Molpy.redactedChainMax = parseFloat(pixels[31]) || 0;
+			Molpy.Redacted.chainCurrent = parseFloat(pixels[30]) || 0;
+			Molpy.Redacted.chainMax = parseFloat(pixels[31]) || 0;
 		} else {
 			Molpy.newpixNumber = parseInt(pixels[0]) || 0;
 			Molpy.beachClicks = parseInt(pixels[1]) || 0;
@@ -464,13 +464,13 @@
 			Molpy.loadCount = parseInt(pixels[6]) || 0;
 			Molpy.notifsReceived = parseInt(pixels[7]) || 0;
 			Molpy.npbONG = parseInt(pixels[8]) || 0;
-			Molpy.redactedCountup = parseInt(pixels[9]) || 0;
-			Molpy.redactedToggle = parseInt(pixels[10]) || 0;
-			Molpy.redactedVisible = parseInt(pixels[11]) || 0;
-			Molpy.redactedClicks = parseInt(pixels[12]) || 0;
+			Molpy.Redacted.countup = parseInt(pixels[9]) || 0;
+			Molpy.Redacted.toggle = parseInt(pixels[10]) || 0;
+			Molpy.Redacted.location = parseInt(pixels[11]) || 0;
+			Molpy.Redacted.totalClicks = parseInt(pixels[12]) || 0;
 			Molpy.highestNPvisited = parseInt(pixels[13]) || Math.abs(Molpy.newpixNumber);
-			Molpy.redactedChain = parseFloat(pixels[14]) || 0;
-			Molpy.redactedChainMax = parseFloat(pixels[15]) || 0;
+			Molpy.Redacted.chainCurrent = parseFloat(pixels[14]) || 0;
+			Molpy.Redacted.chainMax = parseFloat(pixels[15]) || 0;
 		}
 	};
 
@@ -698,7 +698,7 @@
 		return 1;
 	}
 
-	Molpy.needlePulling = 0;
+	Molpy.needlePulling = 1;
 	Molpy.FromNeedlePulledThing = function(thread) {
 		Molpy.needlePulling = 1; //prevent earning badges that haven't been loaded
 		var p = 'P'; //Pipe seParator
@@ -755,9 +755,9 @@
 
 		Molpy.UpdateColourScheme();
 		Molpy.AdjustFade();
-		if(Molpy.redactedVisible) {
-			Molpy.redactedCountup = Molpy.redactedToggle;
-			Molpy.CheckRedactedToggle();
+		if(Molpy.Redacted.location) {
+			Molpy.Redacted.countup = Molpy.Redacted.toggle;
+			Molpy.Redacted.checkToggle();
 		}
 
 		Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
@@ -924,6 +924,9 @@
 			Molpy.Boosts['Castles'].countdown = 0;
 			Molpy.Boosts['Time Travel'].countdown = 0;
 			Molpy.Boosts['GlassBlocks'].countdown = 0;
+		}
+		if(version < 3.33332) {
+			Molpy.Boosts['Time Lord'].power = Molpy.Boosts['Time Lord'].bought +1 - Molpy.Level('Time Lord'); // Count down rather than up
 		}
 	}
 
@@ -1114,14 +1117,15 @@
 			Molpy.highestNPvisited = 0;
 			Molpy.BadgesOwned = 0;
 			Molpy.groupBadgeCounts = {};
-			Molpy.redactedClicks = 0;
+			Molpy.Redacted.totalClicks = 0;
+			Molpy.Redacted.chainCurrent = 0;
+			Molpy.Redacted.chainMax = 0;
 			Molpy.Boosts['Time Travel'].travelCount = 0;
 			Molpy.Boosts['Castles'].totalDown = 0;
 			Molpy.toolsBuiltTotal = 0;
 			Molpy.Boosts['TF'].totalLoaded = 0;
 			Molpy.Boosts['TF'].totalDestroyed = 0;
-			Molpy.redactedChain = 0;
-			Molpy.redactedChainMax = 0;
+			
 			Molpy.CastleTools['NewPixBot'].totalCastlesBuilt = 0; //because we normally don't reset this.
 			for( var i in Molpy.BadgesById) {
 				Molpy.BadgesById[i].earned = 0;

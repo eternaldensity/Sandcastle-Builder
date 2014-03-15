@@ -318,7 +318,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Kitnip',
 		icon: 'kitnip',
-		desc: Molpy.redactedWords + ' come more often and stay longer',
+		desc: Molpy.Redacted.words + ' come more often and stay longer',
 		price:{
 			Sand: 33221,
 			Castles: 63
@@ -329,7 +329,7 @@ Molpy.DefineBoosts = function() {
 		alias: 'DoRD',
 		icon: 'department',
 		group: 'hpt',
-		desc: Molpy.redactedWords + ' sometimes unlock special boosts',
+		desc: Molpy.Redacted.words + ' sometimes unlock special boosts',
 		price:{
 			Sand: 23456,
 			Castles: 78
@@ -784,7 +784,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Kitties Galore',
 		icon: 'kittiesgalore',
-		desc: 'Even more ' + Molpy.redactedWords,
+		desc: 'Even more ' + Molpy.Redacted.words,
 		price:{
 			Sand: '2.5M',
 			Castles: 4400
@@ -794,7 +794,7 @@ Molpy.DefineBoosts = function() {
 		name: 'HAL-0-Kitty',
 		icon: 'halokitty',
 		group: 'cyb',
-		desc: 'NewPixBots build an extra Castle per 9 ' + Molpy.redactedWords,
+		desc: 'NewPixBots build an extra Castle per 9 ' + Molpy.Redacted.words,
 		price:{
 			Sand: 9000,
 			Castles: 2001
@@ -1208,7 +1208,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		stats: function(me) {
-			return 'Additional ' + Molpy.redactedWord
+			return 'Additional ' + Molpy.Redacted.word
 				+ ' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blizting to boost Blast Furnace if they overlap.<br>'
 				+ 'Power level is ' + Molpify(me.power, 3);
 		}
@@ -1777,7 +1777,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.UnlockBoost('Time Lord');
 			return;
 		}
-		Molpy.Add('Time Lord', 1);
+		Molpy.Add('Time Lord', -1);
 		if(Math.random() * 5 < 4) {
 			if(isFinite(Molpy.Boosts['Castles'].totalBuilt)) {
 				Molpy.Boosts['Castles'].totalDown += Molpy.Boosts['Castles'].power;
@@ -1808,10 +1808,9 @@ Molpy.DefineBoosts = function() {
 			Molpy.UpdateBeach();
 			Molpy.recalculateDig = 1;
 
-			var c = Math.floor(Math.random() * Molpy.Level('Time Lord') * (Molpy.Got('TDE') + 1));
+			var c = Math.floor(Math.random() * (Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1) * (Molpy.Got('TDE') + 1));
 			Molpy.Add('FluxCrystals', c);
 			if (c) Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+plural(c)+' materialized.');
-			if(Molpy.Level('Time Lord') > 50) Molpy.UnlockBoost('Flux Harvest');
 		}
 		Molpy.Notify('You wonder when you are');
 	}
@@ -2953,12 +2952,12 @@ Molpy.DefineBoosts = function() {
 		icon: 'redred',
 		group: 'hpt',
 		desc: 'The Department of Redundancy Department announces: You have exceeded your daily redundancy limit. Your primary redundancy supply will now be turned down. You can always switch to your redundant redundance supply of redundancy.',
-		stats: Molpy.redactedWords + ' appear more often, but they are rare until you buy this.',
+		stats: Molpy.Redacted.words + ' appear more often, but they are rare until you buy this.',
 		price:{
 			Sand: '42G',
 			Castles: '4.2G',
 		},
-		buyFunction: Molpy.RandomiseRedactedTime,
+		buyFunction: Molpy.Redacted.randomiseTime,
 		
 		lockFunction: function() {
 			Molpy.Notify('Primary Redundancy Supply Reengaged', 1);
@@ -3594,7 +3593,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Technicolour Dream Cat',
 		icon: 'dreamcat',
 		heresy: true,
-		desc: Molpy.redactedWords + ' are multicoloured (if Chromatic Heresy is enabled)',
+		desc: Molpy.Redacted.words + ' are multicoloured (if Chromatic Heresy is enabled)',
 		price:{
 			Sand: '320K',
 			Castles: '90K',
@@ -3668,7 +3667,7 @@ Molpy.DefineBoosts = function() {
 							+ Molpify(cost, 3) + ' Glass Blocks to solve ' + Molpify(tens,1)
 							+ ' puzzles at a time. (Multiplies reward/loss by the number of puzzles.)<br>';
 				}
-				if (Molpy.Level('Logicat') < 1000000) {
+				if (me.multiBuy < 20) {
 					var cost = 100 + Molpy.LogiMult(25);
 					if(Molpy.Has('GlassBlocks', cost)) {
 						str += '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle(' + cost + ')"></input> '
@@ -3688,6 +3687,7 @@ Molpy.DefineBoosts = function() {
 		
 		buyFunction: function() {
 			this.Level = 10;
+			this.multiBuy = 0;
 		},
 		
 		classChange: function() { return ((Molpy.Level('AC') > 1000) || this.Has(1) || Molpy.PuzzleGens.caged.active) ? 'action' : '' },
@@ -3696,15 +3696,25 @@ Molpy.DefineBoosts = function() {
 			Molpy.ChainRefresh('ShadwDrgn');
 		},
 
-        loadFunction: function() { Molpy.PuzzleGens.caged.active=false; }
+        	loadFunction: function() { Molpy.PuzzleGens.caged.active=false; },
 
-    });
+		// Unique saved properties
+		multiBuy: 0,
+		
+		defSave: 1,
+		saveData: {
+			4:['multiBuy', 0, 'int'],
+		}
+
+    	});
 
 	new Molpy.Puzzle('caged', function() {
 		Molpy.Boosts['LogiPuzzle'].Refresh();
 	});
 	
 	Molpy.MakeCagedPuzzle = function(cost, puzzles) {
+		if (puzzles && puzzles > 1) Molpy.Boosts['LogiPuzzle'].multiBuy++
+		else Molpy.Boosts['LogiPuzzle'].multiBuy = 0;
 		if(!Molpy.Spend('GlassBlocks', cost)) {
 			Molpy.Notify('You need to pay' + Molpy.PriceString(cost) + ' to be asked a Caged Logicat puzzle.');
 			return;
@@ -3803,7 +3813,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var inf = !isFinite(Molpy.Boosts['Castles'].power);
-			var str = 'Not Lucky reward gains 1% per ' + Molpy.redactedWord + ' click' + (inf ? '' : ', at a cost of 120 Glass Blocks per use.');
+			var str = 'Not Lucky reward gains 1% per ' + Molpy.Redacted.word + ' click' + (inf ? '' : ', at a cost of 120 Glass Blocks per use.');
 
 			if(me.bought) {
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
@@ -3819,7 +3829,7 @@ Molpy.DefineBoosts = function() {
 			this.IsEnabled = 1;
 		},
 		
-		stats: 'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each ' + Molpy.redactedWord
+		stats: 'At a cost of 120 Glass Blocks, multiplies Not Lucky by 1.01 twice for each ' + Molpy.Redacted.word
 			+ ' click<br>The cost is waived if you have infinite Castles, since this this boost would have no effect in that circumstance',
 		price:{
 			Sand: '930PW',
@@ -4880,14 +4890,14 @@ Molpy.DefineBoosts = function() {
 
 		var i = acPower;
 		var times = 0;
-		if(fast) {
-			Molpy.RunFastFactory(acPower);
-			return;
-		}
 		if(Molpy.mustardTools) {
 			if(Molpy.Got('Mustard Automation') && Molpy.Spend('Mustard', 20)) {
 				Molpy.RunFastFactory(acPower);
 			}
+			return;
+		}
+		if(fast) {
+			Molpy.RunFastFactory(acPower);
 			return;
 		}
 		var t = Molpy.tfOrder.length;
@@ -4962,11 +4972,12 @@ Molpy.DefineBoosts = function() {
 				Molpy.Add('Blackprints', Molpy.VoidStare(pages, 'VS'));
 			}
 		}
-		if(left > 10 && Molpy.redactedClicks > 2500 && Molpy.Got('ZK') && Molpy.Boosts['Logicat'].bought >= 4
+		if(left > 10 && Molpy.Redacted.totalClicks > 2500 && Molpy.Got('ZK') && Molpy.Boosts['Logicat'].bought >= 4
 			&& Molpy.Got('LogiPuzzle')) {
 			if (Molpy.Has('LogiPuzzle', Molpy.PokeBar()))
 			{
-				if (Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) && Molpy.Got('ShadwDrgn') && !Molpy.Has('Shadow Feeder',Molpy.PokeBar()) && Molpy.Spend('Bonemeal', 5)) {
+				if (Molpy.Got('Shadow Feeder') && Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) &&
+					Molpy.Got('ShadwDrgn') && !Molpy.Has('Shadow Feeder',Molpy.PokeBar()) && Molpy.Spend('Bonemeal', 5)) {
 					Molpy.ShadowStrike(1);
 					Molpy.Add('Shadow Feeder',1);
 				}
@@ -5306,7 +5317,7 @@ Molpy.DefineBoosts = function() {
 		},
 		defStuff: 1,
 
-		loadFunction: function() { if (Molpy.Earned('Einstein Says No')) Molpy.Level('Panther Rush') = 1079252850 *2; }
+		loadFunction: function() { if (Molpy.Earned('Einstein Says No')) Molpy.Boost['Panther Rush'].level = 1079252850 *2; }
 	});
 	
 	Molpy.Boosts['Panther Rush'].refreshFunction = undefined;
@@ -5340,8 +5351,7 @@ Molpy.DefineBoosts = function() {
 			n = 1;
 		}
 		if(Molpy.Has(cost)
-			&& (pr.Level > 12 || confirm('Really spend ' + Molpy.PriceString(cost).replace(/&nbsp;/g, ' ')
-				+ ' on Panther Rush?'))) {
+			&& (pr.Level > 12 || confirm('Really spend ' + (Molpy.PriceString(cost).replace(/&nbsp;/g, ' ').replace(/(<([^>]+)>)/ig,"")) + ' on Panther Rush?'))) {
 			if(Molpy.Spend(cost)) pr.Add(n);
 			var fCost = Molpy.CalcRushCost(0, 1);
 			Molpy.LockBoost(pr.alias);
@@ -5846,7 +5856,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Schrödinger\'s Gingercat',
 		alias: 'SGC',
 		icon: 'sgc',
-		desc: 'Observes itself. Also causes Not Lucky to give more glass and makes ' + Molpy.redactedWords + ' last longer',
+		desc: 'Observes itself. Also causes Not Lucky to give more glass and makes ' + Molpy.Redacted.words + ' last longer',
 		price:{ GlassBlocks: '16.2M', },
 		logic: 1613
 	});
@@ -5966,7 +5976,7 @@ Molpy.DefineBoosts = function() {
 		var miscount = 0;
 		var npstart = 1;
 		var missing = 0;
-		for( var np = 1; np < Math.abs(Molpy.highestNPvisited); np++) {
+		for( var np = 1; np < Math.abs(Molpy.highestNPvisited); np+= 0.5) {
 			var alias = 'discov' + np;
 			if(Molpy.Badges[alias]) {
 				if(Molpy.Earned(alias)) {
@@ -5986,7 +5996,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Earned('Minus Worlds')) {
 			var miscount = 0;
 			var npstart = -Math.abs(Molpy.highestNPvisited);
-			for( var np = npstart; np < 0; np++) {
+			for( var np = npstart; np < 0; np+= 0.5) {
 				var alias = 'discov' + np;
 				if(Molpy.Badges[alias]) {
 					if(Molpy.Earned(alias)) {
@@ -6305,9 +6315,10 @@ Molpy.DefineBoosts = function() {
 			GlassBlocks: function() {
 				return 8e9 * Molpy.CastleTools['NewPixBot'].amount;
 			},
+		},
+
 		buyFunction: function() {
 			if (Molpy.Got('Jamming')) Molpy.Boosts['Jamming'].countdown = 20;
-			},
 
 		},
 	}); // www.youtube.com/watch?v=84q0SXW781c
@@ -6847,7 +6858,10 @@ Molpy.DefineBoosts = function() {
 		icon: 'bagofholding',
 		group: 'prize',
 		className: 'alert',
-		desc: 'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal.<br>Holds ' + Molpify(1e42) + ' of each Stuff.',
+		desc: function() {
+			return 'Stuff isn\'t reset when you Molpy Down, at a cost of 10 Bonemeal.<br>Holds ' + 
+				Molpify(1e42) + ' of each Stuff.'
+		},
 		
 		price: {
 			Sand: Infinity,
@@ -7127,7 +7141,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Double Department',
 		icon: 'doubledepartment',
 		group: 'prize',
-		desc: Molpy.redactedWords + ' activate the DoRD twice when they would activate it once.',
+		desc: Molpy.Redacted.words + ' activate the DoRD twice when they would activate it once.',
 		price:{
 			Sand: '70M',
 			Castles: '50K',
@@ -7555,8 +7569,8 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			return 'Pay 5K Mustard to reset your ' + Molpy.redactedWord + ' click count to 0 and gain 1 Bonemeal per 20'
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.RedactedCrunch()" value="Use"></input>' : '');
+			return 'Pay 5K Mustard to reset your ' + Molpy.Redacted.word + ' click count to 0 and gain 1 Bonemeal per 20'
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.Boosts[\'Crunch\'].crunch()" value="Use"></input>' : '');
 		},
 		
 		price: {
@@ -7565,16 +7579,16 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		prizes: 1,
-		tier: 3
-	});
-	
-	Molpy.RedactedCrunch = function() {
-		if(Molpy.Spend('Mustard', 5000)) {
-			Molpy.Add('Bonemeal', Math.floor(Molpy.redactedClicks / 20));
-			Molpy.redactedClicks = 0;
-			Molpy.Notify('Crunch!');
+		tier: 3,
+		
+		crunch: function() {
+			if(Molpy.Spend('Mustard', 5000)) {
+				Molpy.Add('Bonemeal', Math.floor(Molpy.Redacted.totalClicks / 20));
+				Molpy.Redacted.totalClicks = 0;
+				Molpy.Notify('Crunch!');
+			}
 		}
-	}
+	});
 	
 	new Molpy.Boost({
 		name: 'Bag of Moulding',
@@ -7582,7 +7596,10 @@ Molpy.DefineBoosts = function() {
 		icon: 'bagofmoulding',
 		group: 'prize',
 		className: 'alert',
-		desc: 'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42),
+		desc: function() {
+			return 'Mould Boosts (apart from Prizes) aren\'t reset when you Molpy Down, at a cost of 100 Bonemeal.' +
+				'<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42)
+		},
 			
 		price: {
 			Sand: Infinity,
@@ -7606,7 +7623,10 @@ Molpy.DefineBoosts = function() {
 		icon: 'bagoffolding',
 		group: 'prize',
 		className: 'alert',		
-		desc: 'Toggle Boosts (apart from Prizes, Glass Furnace, and Glass Blower) aren\'t reset when you Molpy Down, at a cost of 1000 Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42),
+		desc: function() {
+			return 'Toggle Boosts (apart from Prizes, Glass Furnace, and Glass Blower) aren\'t reset when you Molpy Down, ' +
+				'at a cost of 1000 Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42)
+		},
 			
 		price: {
 			Sand: Infinity,
@@ -7646,23 +7666,25 @@ Molpy.DefineBoosts = function() {
 		Level: Molpy.BoostFuncs.PosPowerLevel,
 		
 		Add: function(levels, cap) {
-			if(levels > 0) this.Level += levels;
+			this.Level += levels;
 			if(cap > 0 && this.bought > 0) {
 				this.bought += cap;
+				this.Level += cap;
 				this.Refresh();
 				Molpy.Boosts['Flux Harvest'].Refresh();
+				if (this.bought >= 50) Molpy.UnlockBoost('Flux Harvest');
 				if (this.bought > 1000) Molpy.UnlockBoost('Fertiliser');
 			}
 		},
 		
 		IsEnabled: [function() {
-			return this.Level > this.bought;
+			return this.Level == 0 ;
 		}],
 		
 		desc: function(me) {
 			var str = 'You can travel through ' + Molpify(me.bought + 1) + ' Temporal Rift' + plural(me.bought + 1)
-				+ ' per NewPix. You can travel through ' + Molpify((me.bought + 1) - me.Level) + ' more Temporal Rift'
-				+ plural((me.bought + 1) - me.Level) + '.';
+				+ ' per NewPix. You can travel through ' + Molpify(me.Level) + ' more Temporal Rift'
+				+ plural(me.Level) + '.';
 			if(me.bought) {
 				var add = 1;
 				var p = 20 * me.bought * (1 + Math.floor(Math.log(me.bought) * Math.LOG10E));
@@ -7678,6 +7700,8 @@ Molpy.DefineBoosts = function() {
 		},
 
 		classChange: function() { return isFinite(this.bought) ? 'action': ''},
+
+		reset: function() { this.Level = this.bought +1},
 	});
 	new Molpy.Boost({
 		name: 'Flux Crystals',
@@ -7728,7 +7752,10 @@ Molpy.DefineBoosts = function() {
 		icon: 'bagofjolting',
 		group: 'prize',
 		className: 'alert',
-		desc: 'Chronotech Boosts aren\'t reset when you Molpy Down, at a cost of ' + Molpify(10000) + ' Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42),
+		desc: function() {
+			return 'Chronotech Boosts aren\'t reset when you Molpy Down, at a cost of ' + Molpify(10000) + 
+				' Bonemeal.<br>Capacity of Bag of Holding is multiplied by ' + Molpify(1e42)
+		},
 		
 		price: {
 			Sand: Infinity,
@@ -8064,7 +8091,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		desc: function(me) {
-			if(!me.bought || Molpy.IsEnabled('Time Lord') && isFinite(Molpy.Boosts['FluxCrystals'].power))
+			if(!me.bought || (Molpy.IsEnabled('Time Lord') && isFinite(Molpy.Boosts['FluxCrystals'].power)))
 				return 'Easy harvesting of flux crystals from remaining rifts';
 			return '<input type=button onclick="Molpy.FluxHarvest()" value="Harvest"></input> flux crystals from your remaining rifts';
 		},
@@ -8074,38 +8101,37 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.FluxHarvest = function() {
-		if(Molpy.Level('Time Lord') + 100 > Molpy.Boosts['Time Lord'].bought) {// just do a loop
+		if(Molpy.IsEnabled('Time Lord')) {
+			Molpy.Notify("No Rifts left to harvest");
+			return;
+		}
+		var levels = Molpy.Level('Time Lord');
+		if( levels < 100) {// just do a loop
 			var totalc = 0;
+			var chk = levels+10;
 			while(!Molpy.IsEnabled('Time Lord')) {
-				var c = Math.floor(Math.random() * Molpy.Level('Time Lord') * (Molpy.Got('TDE') + 1));
+				if (chk-- < 0) {Molpy.Notify("EEEK"); break; }
+				var c = Math.floor(Math.random() * (Molpy.Boosts['Time Lord'].bought + 2 - Molpy.Level('Time Lord')) * (Molpy.Got('TDE') + 1));
 				totalc += c;
 				Molpy.Add('FluxCrystals', c);
-				var addn = 1;
-				var curlvl = Molpy.Level('Time Lord');
-				while (curlvl == Molpy.Level('Time Lord')) {
-					Molpy.Add('Time Lord', addn);
-					addn *= 10;
-				}
+				Molpy.Add('Time Lord', -1);
 			};
 			var d = Math.floor(totalc*Molpy.Papal("Flux"));
 			if (d) Molpy.Add('FluxCrystals', d);
 			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(totalc+d)+' flux crystal'+plural(totalc+d)+'.');
 		} else { // Use maths to approximate then modify by a small random element
-			var levels = Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1;
-			if(levels > 0) {
-				var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - Molpy.Level('Time Lord') * (Molpy.Level('Time Lord') + 1) / 2;
-				if (isNaN(c) || c == 0) c = Infinity;
-				if(!Molpy.Got('TDE')) c /= 2;
-				c*=Molpy.Papal("Flux");
-				if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',Math.ceil(1000+Molpy.Boosts['Bonemeal'].power/50))) 
-					c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
-				c = Math.floor(c * .9 + c * .2 * Math.random());
-				Molpy.Add('FluxCrystals', c);
-				Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+'.');
-				Molpy.Add('Time Lord', levels);
-			} else {
-				Molpy.Notify("No Rifts left to harvest");
-			}
+			var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - 
+				 (Molpy.Boosts['Time Lord'].bought + 2 - Molpy.Level('Time Lord')) * 
+				  (Molpy.Boosts['Time Lord'].bought + 3 - Molpy.Level('Time Lord'))/ 2;
+			if (isNaN(c)) c = Infinity;
+			if(!Molpy.Got('TDE')) c /= 2;
+			c*=Molpy.Papal("Flux");
+			if (Molpy.IsEnabled('Fertiliser') && Molpy.Spend('Bonemeal',Math.ceil(1000+Molpy.Boosts['Bonemeal'].power/50))) 
+				c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
+			c = Math.floor(c * .9 + c * .2 * Math.random());
+			Molpy.Add('FluxCrystals', c);
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+'.');
+			Molpy.Add('Time Lord', -levels);
 		}
 		Molpy.Boosts['Flux Harvest'].Refresh();
 	};
@@ -8142,7 +8168,7 @@ Molpy.DefineBoosts = function() {
 			};
 			if(!Molpy.Boosts['No Sell'].power && n > 1) {
 				if(Molpy.Has(downCost)) {
-					str += '<br><input type="Button" value="Decrease" onclick="Molpy.SuckMore(-1)"></input> the vacuum rate by 1 at a cost of ' + Molpy.PriceString(cost) + '.';
+					str += '<br><input type="Button" value="Decrease" onclick="Molpy.SuckMore(-1)"></input> the vacuum rate by 1 at a cost of ' + Molpy.PriceString(downCost) + '.';
 				} else {
 					str += '<br>It will cost ' + Molpy.PriceString(downCost) + ' to decrease this by 1.';
 				}

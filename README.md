@@ -26,6 +26,23 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.33332
+
+#### LucidCrux
+- RedaCtedredactEdrEdactEdredACteDreDacTedreDacteDrEdactedRedActedreda
+
+#### Waveney
+- Fixed Flux Harvest getting infinite Flux crystals WAY too soon
+- Finished off creating discoveries up to T** **D
+- Several minor bug fixes
+- Single use logipuzzle button now disapears after 20 consecutive uses of the multi-buy button
+
+#### JadeE1024
+- Redacted Rescue
+- Fave updates
+- Mustard Automation fix
+- Fixed the Jammed Jamming
+
 ### 3.33331
 
 #### Waveney
