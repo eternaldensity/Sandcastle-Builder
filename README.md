@@ -26,6 +26,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.33333
+
+#### LucidCrux
+- Fixed two critical kitty bugs one affecting unlocks and another RRSR
+
+#### Waveney
+- Fixed one kitty bug
+
 ### 3.33332
 
 #### LucidCrux

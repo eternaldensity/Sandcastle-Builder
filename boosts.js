@@ -2957,7 +2957,9 @@ Molpy.DefineBoosts = function() {
 			Sand: '42G',
 			Castles: '4.2G',
 		},
-		buyFunction: Molpy.Redacted.randomiseTime,
+		buyFunction: function () {
+			Molpy.Redacted.randomiseTime();
+		},
 		
 		lockFunction: function() {
 			Molpy.Notify('Primary Redundancy Supply Reengaged', 1);
