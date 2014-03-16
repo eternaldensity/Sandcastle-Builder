@@ -3307,6 +3307,7 @@ Molpy.Up = function() {
 	Molpy.Think = function() {
 		Molpy.toolsBuilt = 0;
 		Molpy.SandToCastles();
+		Molpy.checkLootNums();
 
 		var pp = Molpy.Boosts['Price Protection'];
 		if(pp.power > 1) pp.power--;

@@ -337,6 +337,27 @@ a:active
 {
 	min-width:440px;
 }
+#lootNavigation
+{
+	padding: 10px;
+	height: 40px;
+	width: inherit;
+}
+
+#navLimit, #navButtons
+{
+	display: inline;
+	vertical-align: middle;
+}
+
+#navLimit
+{
+	float: left;
+}
+#navButtons
+{
+	float: right;
+}
 #sectionMainStats
 {
 	margin:10px
