@@ -6954,6 +6954,7 @@ Molpy.DefineBoosts = function() {
 			if(!Molpy.Boosts['Mustard Sale'].unlocked && Molpy.Got(this.alias, 2000)) {
 				Molpy.UnlockBoost('Mustard Sale');
 			}
+			return amount;
 		}
 	});
 	new Molpy.Boost({
@@ -8357,7 +8358,7 @@ Molpy.DefineBoosts = function() {
 		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League')}},
 		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function() {return Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
 		Dyson: {desc: '10% more Vacuums from the Vacuum Cleaner', value:1.1, avail: function() { return Molpy.Level('TS') > 10 }},
-		Mustard: {desc:'10% more Mustard', value:1.1, avail: function() { return Molpy.Has('Mustard',100} },
+		Mustard: {desc:'10% more Mustard', value:1.1, avail: function() { return Molpy.Has('Mustard',100) } },
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
