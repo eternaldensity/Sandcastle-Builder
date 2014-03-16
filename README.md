@@ -30,6 +30,7 @@ For personal amusement only.
 
 #### Waveney
 - Cress boost for Mustard
+- Papal decree for Mustard
 
 ### 3.33333
 

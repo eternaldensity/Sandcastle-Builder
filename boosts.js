@@ -6948,8 +6948,9 @@ Molpy.DefineBoosts = function() {
 		AddSuper: Molpy.BoostFuncs.Add,
 		
 		Add: function(amount) {
-			if (Molpy.Got('Cress') && Molpy.IsEnabled('Cress')) amount = Math.floor(amount * (Molpy.Boosts['Goats'].power/1000));
-			this.AddSuper(amount);
+			if (Molpy.Got('Cress') && Molpy.IsEnabled('Cress')) amount = amount * (Molpy.Boosts['Goats'].power/1000);
+			amount *= Molpy.Papal('Mustard');
+			this.AddSuper(Math.floor(amount));
 			if(!Molpy.Boosts['Mustard Sale'].unlocked && Molpy.Got(this.alias, 2000)) {
 				Molpy.UnlockBoost('Mustard Sale');
 			}
@@ -8356,6 +8357,7 @@ Molpy.DefineBoosts = function() {
 		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League')}},
 		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function() {return Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
 		Dyson: {desc: '10% more Vacuums from the Vacuum Cleaner', value:1.1, avail: function() { return Molpy.Level('TS') > 10 }},
+		Mustard: {desc:'10% more Mustard', value:1.1, avail: function() { return Molpy.Has('Mustard',100} },
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
