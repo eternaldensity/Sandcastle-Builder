@@ -341,19 +341,12 @@ a:active
 #lootNavigation
 {
 	padding: 10px;
-	height: 40px;
-	width: inherit;
 }
 
 #navLimit, #navButtons
 {
 	display: inline;
 	vertical-align: middle;
-}
-
-#navLimit
-{
-	float: left;
 }
 
 #navButtons, #searchButtons
@@ -364,7 +357,6 @@ a:active
 #lootSearch
 {
 	padding: 3px 10px 3px 10px;
-	width: inherit;
 }
 
 #searchContainer
@@ -378,6 +370,7 @@ a:active
 {
 	width: 100%;
 }
+
 #sectionMainStats
 {
 	margin:10px
