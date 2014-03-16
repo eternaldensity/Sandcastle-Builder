@@ -6298,7 +6298,7 @@ Molpy.DefineBoosts = function() {
 			me.power++;
 			me.Refresh();
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
-			if (me.power>400) Molpy.UnlockBoost('Cress');
+			if (me.power>444) Molpy.UnlockBoost('Cress');
 		}
 	}
 

@@ -929,7 +929,7 @@
 			Molpy.Boosts['Time Lord'].power = Molpy.Boosts['Time Lord'].bought +1 - Molpy.Level('Time Lord'); // Count down rather than up
 		}
 		if(version < 3.34) {
-			if (Molpy.Boosts['WiseDragon'].power > 400) Molpy.UnlockBoost('Cress');
+			if (Molpy.Boosts['WiseDragon'].power > 444) Molpy.UnlockBoost('Cress');
 		}
 	}
 
