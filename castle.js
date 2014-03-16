@@ -2256,7 +2256,7 @@ Molpy.Up = function() {
 						if(!Molpy.boostSilence) Molpy.Notify('The DoRD has produced:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else {
-						Molpy.Notify('The DoRD has provided:', 1);
+						if(!Molpy.boostSilence) Molpy.Notify('The DoRD has provided:', 1);
 						Molpy.GiveTempBoost(red.alias);
 					}
 					return;
