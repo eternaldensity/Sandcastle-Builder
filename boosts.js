@@ -6298,6 +6298,7 @@ Molpy.DefineBoosts = function() {
 			me.power++;
 			me.Refresh();
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
+			if (me.power>444) Molpy.UnlockBoost('Cress');
 		}
 	}
 
@@ -6947,7 +6948,9 @@ Molpy.DefineBoosts = function() {
 		AddSuper: Molpy.BoostFuncs.Add,
 		
 		Add: function(amount) {
-			this.AddSuper(amount);
+			if (Molpy.Got('Cress') && Molpy.IsEnabled('Cress')) amount = amount * (Molpy.Boosts['Goats'].power/1000);
+			amount *= Molpy.Papal('Mustard');
+			this.AddSuper(Math.floor(amount));
 			if(!Molpy.Boosts['Mustard Sale'].unlocked && Molpy.Got(this.alias, 2000)) {
 				Molpy.UnlockBoost('Mustard Sale');
 			}
@@ -8354,6 +8357,7 @@ Molpy.DefineBoosts = function() {
 		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League')}},
 		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function() {return Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
 		Dyson: {desc: '10% more Vacuums from the Vacuum Cleaner', value:1.1, avail: function() { return Molpy.Level('TS') > 10 }},
+		Mustard: {desc:'10% more Mustard', value:1.1, avail: function() { return Molpy.Has('Mustard',100} },
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -8570,6 +8574,19 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		price: {FluxCrystals:Infinity, Goats:100},
 		desc: 'Gives Mysterious Maps a Jump to the nearest discovery to the next map',
+	});
+
+	new Molpy.Boost({
+		name: 'Cress',
+		icon: 'cress',
+		group: 'ninj',
+		price: { Mustard:10000, Goats:10000 },
+		desc: function(me) {
+			var str = 'When active increases Mustard gains by a thousandth of your Goats.'
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 	});
 	// END OF BOOSTS, add new ones immediately before this comment
 }
