@@ -172,7 +172,8 @@
 		</div>
 		<div id="inventory">Loot:
 			<div id="lootSearch" class="table-header">
-				<input id="lootSearchBox" type="text" size="20" onkeypress="Molpy.lootSearchBoxChanged(event)"> <input id="searchBoosts" type="checkbox">:Boosts <input id="searchBadges" type="checkbox">:Badges <input id="lootSearchButton" class="navButton" type="button" value="Search" onclick="Molpy.searchLoot()">
+				<div id="searchButtons"><input id="searchBoosts" type="checkbox">:Boosts <input id="searchBadges" type="checkbox">:Badges <input id="lootSearchButton" class="navButton" type="button" value="Search" onclick="Molpy.searchLoot()"></div>
+				<span id="searchContainer"><input id="lootSearchBox" type="text" onkeypress="Molpy.lootSearchBoxChanged(event)"></span>
 			</div>
 			<div id="lootselection"></div>
 			<div id="lootNavigation">
