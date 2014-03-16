@@ -113,11 +113,12 @@ Molpy.DefineGUI = function() {
 			Molpy.activeLayout.lootVis[key] = val == true;
 		}
 		if(Molpy.activeLayout.lootVis[key]) {
-			if(key == 'tagged') {
+			if(key == 'tagged' || key == 'search') {
 				for( var k in Molpy.activeLayout.lootVis) {
 					Molpy.activeLayout.lootVis[k] = k == key; //when showing tagged, hide all others
 				}
 			} else {
+				Molpy.activeLayout.lootVis.search = 0;
 				Molpy.activeLayout.lootVis.tagged = 0; //hide tagged when showing anything else
 			}
 		}
@@ -510,6 +511,21 @@ Molpy.DefineGUI = function() {
 	    }
 	}
 	
+	Molpy.searchList = [];
+	Molpy.lootSearchBoxChanged = function(e) {
+		if (!e) e = window.event;
+	    var keyCode = e.keyCode || e.which;
+	    if (keyCode == '13'){
+	      // Enter pressed
+	      Molpy.searchLoot();
+	    }
+	}
+	Molpy.searchLoot = function() {
+		Molpy.ShowhideToggle('search', true);
+		Molpy.newSearch = 1;
+		Molpy.lootNeedRepaint = 1;
+	}
+	
 	Molpy.repaintLoot = function() {
 		Molpy.lootNeedRepaint = 0;
 		
@@ -520,38 +536,66 @@ Molpy.DefineGUI = function() {
 		Molpy.removeGroupDivs(Molpy.dispObjects.boosts);
 		Molpy.removeGroupDivs(Molpy.dispObjects.badges);
 		Molpy.removeGroupDivs(Molpy.dispObjects.tagged);
+		Molpy.removeGroupDivs(Molpy.dispObjects.search);
 		Molpy.dispObjects.boosts = [];
 		Molpy.dispObjects.badges = [];
 		Molpy.dispObjects.tagged = [];
+		Molpy.dispObjects.search = [];
 		
 		var taggedList = Molpy.TaggedLoot;
-		
-		// Setup Boost list for use
 		var boostList = [];
-		for(var i in Molpy.BoostsBought) {
-			var me = Molpy.BoostsBought[i];
-			if(Molpy.activeLayout.lootVis[me.group]) boostList.push(me);
-		}
-		
-		// Setup Badge list for use
 		var badgeList = [];
-		for(var i in Molpy.BadgesEarned) {
-			var me = Molpy.BadgesEarned[i];
-			if(Molpy.activeLayout.lootVis[me.group]) badgeList.push(me);
-		}
-		for(var i in Molpy.BadgesAvailable) {
-			var me = Molpy.BadgesAvailable[i];
-			if(Molpy.activeLayout.lootVis.badgesav) badgeList.push(me);
-		}
 		
 		var maxPageNum = 1;
 		var startIndex = 0;
 		var endIndex = 0;
 		
-		if(Molpy.activeLayout.lootVis.tagged)
+		if(Molpy.activeLayout.lootVis.search) {
+			if(Molpy.newSearch) {
+				Molpy.searchList = [];
+				Molpy.newSearch = 0;
+				var searchText = $('#lootSearchBox').val().toLowerCase();
+				if($('#searchBoosts').prop('checked')){
+					for(var i in Molpy.BoostsBought) {
+						var me = Molpy.BoostsBought[i];
+						if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
+					}
+				}
+				if($('#searchBadges').prop('checked')){
+					for(var i in Molpy.BadgesEarned) {
+						var me = Molpy.BadgesEarned[i];
+						if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
+					}
+					for(var i in Molpy.BadgesAvailable) {
+						var me = Molpy.BadgesAvailable[i];
+						if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
+					}
+				}
+			}
+			maxPageNum = Math.ceil(Molpy.searchList.length / Molpy.lootPerPage);
+		}
+		else if(Molpy.activeLayout.lootVis.tagged) {
 			maxPageNum = Math.ceil(taggedList.length / Molpy.lootPerPage);
-		else
+		}
+		else {
+			// Setup Boost list for use
+			for(var i in Molpy.BoostsBought) {
+				var me = Molpy.BoostsBought[i];
+				if(Molpy.activeLayout.lootVis[me.group]) boostList.push(me);
+			}
+			
+			// Setup Badge list for use
+			for(var i in Molpy.BadgesEarned) {
+				var me = Molpy.BadgesEarned[i];
+				if(Molpy.activeLayout.lootVis[me.group]) badgeList.push(me);
+			}
+			for(var i in Molpy.BadgesAvailable) {
+				var me = Molpy.BadgesAvailable[i];
+				if(Molpy.activeLayout.lootVis.badgesav) badgeList.push(me);
+			}
+			
 			maxPageNum = Math.ceil((boostList.length + badgeList.length) / Molpy.lootPerPage);
+		}
 		
 		if(Molpy.lootPageNum == 'max') Molpy.lootPageNum = maxPageNum;
 		
@@ -559,7 +603,9 @@ Molpy.DefineGUI = function() {
 		startIndex = (Molpy.lootPageNum - 1 ) * Molpy.lootPerPage;
 		endIndex = startIndex + Molpy.lootPerPage - 1;
 		
-		if(Molpy.activeLayout.lootVis.tagged && taggedList.length > 0) {
+		if(Molpy.activeLayout.lootVis.search && Molpy.searchList.length> 0){
+			Molpy.addGroupToDiv($('#loot'), Molpy.searchList, startIndex, endIndex, 'search', {autoAdd: true, recalc: false});
+		} else if(Molpy.activeLayout.lootVis.tagged && taggedList.length > 0) {
 			Molpy.addGroupToDiv($('#loot'), taggedList, startIndex, endIndex, 'tagged', {autoAdd: true, recalc: false});
 		} else if(!(boostList.length == 0 && badgeList.length == 0)) {
 			var boostStartIndex = 0;
@@ -721,8 +767,11 @@ Molpy.DefineGUI = function() {
 			Molpy.Redacted.dispIndex = Math.floor(maxIndex * Math.random());
 		}
 		
-		if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 6) {		
-			Molpy.Redacted.group = lootArray[Molpy.Redacted.dispIndex - 1].group;
+		if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 6) {
+			if(Molpy.Redacted.dispIndex > lootArray.length -1)
+				Molpy.Redacted.group = lootArray[lootArray.length - 1].group;
+			else
+				Molpy.Redacted.group = lootArray[Molpy.Redacted.dispIndex].group;
 		}
 		
 		console.log('group: ' + Molpy.Redacted.group);
@@ -1868,7 +1917,7 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.InitGUI = function() {
 		Molpy.lootVisOrder = ['boosts', 'ninj', 'cyb', 'hpt', 'chron', 'bean', 'badges', 'badgesav', 'discov',
-				'monums', 'monumg', 'tagged', 'ceil', 'drac', 'stuff', 'land', 'prize'];
+				'monums', 'monumg', 'tagged', 'ceil', 'drac', 'stuff', 'land', 'prize', 'search'];
 		Molpy.boxVisOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Shop', 'Inventory', 'SandTools',
 				'CastleTools', 'Options', 'Stats', 'Log', 'Export', 'About', 'SandCounts', 'NPInfo', 'Layouts',
 				'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout', 'TFCounts',

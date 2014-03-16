@@ -54,6 +54,9 @@
 		</div>
 		<div id="sectionInventory" class="hidden draggable-element table-wrapper">
 			<div id="lootTitle" class="table-header">Loot:</div>
+			<div id="lootSearch" class="table-header">
+				<input id="lootSearchBox" type="text" size="20" onkeypress="Molpy.lootSearchBoxChanged(event)"> <input id="searchBoosts" type="checkbox">:Boosts <input id="searchBadges" type="checkbox">:Badges <input id="lootSearchButton" class="navButton" type="button" value="Search" onclick="Molpy.searchLoot()">
+			</div>
 			<div id="lootselection" class="table-header"></div>
 			<div id="sectionInventoryBody" class="table-content resizable-element">
 				<div id="lootNavigation">
