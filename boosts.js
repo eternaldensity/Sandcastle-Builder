@@ -6298,6 +6298,7 @@ Molpy.DefineBoosts = function() {
 			me.power++;
 			me.Refresh();
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
+			if (me.power>400) Molpy.UnlockBoost('Cress');
 		}
 	}
 
@@ -6947,6 +6948,7 @@ Molpy.DefineBoosts = function() {
 		AddSuper: Molpy.BoostFuncs.Add,
 		
 		Add: function(amount) {
+			if (Molpy.Got('Cress') && Molpy.IsEnabled('Cress')) amount = Math.floor(amount * (Molpy.Boosts['Goats'].power/1000));
 			this.AddSuper(amount);
 			if(!Molpy.Boosts['Mustard Sale'].unlocked && Molpy.Got(this.alias, 2000)) {
 				Molpy.UnlockBoost('Mustard Sale');
@@ -8570,6 +8572,19 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		price: {FluxCrystals:Infinity, Goats:100},
 		desc: 'Gives Mysterious Maps a Jump to the nearest discovery to the next map',
+	});
+
+	new Molpy.Boost({
+		name: 'Cress',
+		icon: 'cress',
+		group: 'ninj',
+		price: { Mustard:10000, Goats:10000 },
+		desc: function(me) {
+			var str = 'When active increases Mustard gains by a thousandth of your Goats.'
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 	});
 	// END OF BOOSTS, add new ones immediately before this comment
 }
