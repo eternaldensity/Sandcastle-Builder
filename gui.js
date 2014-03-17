@@ -415,8 +415,9 @@ Molpy.DefineGUI = function() {
 				+ Molpy.ShowhideButton('badgesav') + '<div id ="badgesAv" class="icon ' + (r ? 'redacted' : '') + '"></div></div>';
 		}
 		if(Molpy.Boosts['Chromatic Heresy'].unlocked) {
-			str += '<div class="floatsquare boost loot alert"><h3>Tagged<br>Items</h3>' + Molpy.ShowhideButton('tagged')
-				+ '<div id="tagged" class="icon ' + (Molpy.Redacted.location == 7 ? 'redacted' : '') + '"></div></div>';
+			var r = Molpy.Redacted.location == 7;
+			str += '<div class="floatsquare boost loot' + (r ? ' redacted-area' : ' alert') + '"><h3>Tagged<br>Items</h3>'
+			    + Molpy.ShowhideButton('tagged') + '<div id="tagged" class="icon ' + (r ? 'redacted' : '') + '"></div></div>';
 		}
 
 		g('lootselection').innerHTML = str;
