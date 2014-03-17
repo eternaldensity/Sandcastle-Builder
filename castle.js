@@ -2550,8 +2550,8 @@ Molpy.Up = function() {
 					6: $('#lootTitle'),
 					7: $('#lootTitle')};
 			
-			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop',
-					              'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
+			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop', 'floatbox boost shop',
+			                   'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop', 'lootbox boost loot'];
 			this.tempAreaClass = '';
 			
 			this.checkToggle = function() {
@@ -2671,6 +2671,7 @@ Molpy.Up = function() {
 				if(!possible) this.location = 0;
 				
 				// There is at least one valid spawn location, grab a random one
+				//TODO this can be made better by making a list of valid first and selecting from that instead
 				var valid = false;
 				var loopNum = 0;
 				var randNum = 0;
@@ -2693,13 +2694,13 @@ Molpy.Up = function() {
 			this.getHTML = function(heading, level) {
 				level = level || 0;
 				var drawType = this.drawType[level];
-				var spoiler = '';
-				var label = 'Hide';
-				if(drawType == 'show') label = 'Show';
+				var label = (drawType == 'show') ? 'Show' : 'Hide';
+				
 				heading = heading ? '<h1>' + Molpy.Redacted.brackets + '</h1>' : '';
-				var countdown = (level == 0 ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '');
+				var countdown = (level == 0) ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '';
 				var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
 					+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
+				
 				if(drawType == 'recur') {
 					str += this.getHTML(heading, level + 1);
 				} else if(drawType == 'hide1') {

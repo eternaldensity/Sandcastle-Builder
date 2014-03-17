@@ -792,7 +792,7 @@ Molpy.DefineGUI = function() {
 		if(specialIndex == 0) {
 			redDiv.prepend(Molpy.Redacted.getDiv());
 		}
-		else if(specialIndex > redDiv.children().length) {
+		else if(specialIndex > redDiv.children().length - 1) {
 			redDiv.append(Molpy.Redacted.getDiv());
 		} else if(specialIndex > 0){
 			redDiv.children().eq(specialIndex).before(Molpy.Redacted.getDiv());
