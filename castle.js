@@ -1105,37 +1105,6 @@ Molpy.Up = function() {
 				return isFinite(price) && Molpy.Has('Castles', price);
 			};
 			
-			//TODO remove show/hide desc after new div stuff is in place
-			this.showdesc = function(keep) {
-				var d = g('SandToolDescription' + this.id);
-				if(!d) return;
-				if(keep && d.innerHTML) return;
-				var desc = '';
-				if(Molpy.IsStatsVisible()) {
-
-					if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF')
-						|| !Molpy.Got('Glass Ceiling ' + (this.id * 2))) {
-						desc = 'Total Sand ' + this.actionName + ': ' + Molpify(this.totalSand, 1) + '<br>Sand/mNP per '
-							+ this.single + ': ' + Molpify(this.storedSpmNP, (this.storedSpmNP < 10 ? 3 : 1));
-					} else {
-						desc = 'Total Chips ' + this.actionName + ': ' + Molpify(this.totalGlass, 1)
-							+ '<br>Glass/mNP per ' + this.single + ': '
-							+ Molpify(this.storedGpmNP, (this.storedGpmNP < 10 ? 3 : 1));
-					}
-
-					desc += '<br>Total ' + this.plural + ' bought: ' + Molpify(this.bought);
-					Molpy.EarnBadge('The Fine Print');
-				} else {
-					desc = this.desc;
-				}
-				d.innerHTML = '<br>' + desc;
-			};
-			
-			this.hidedesc = function() {
-				var d = g('SandToolDescription' + this.id);
-				if(d) d.innerHTML = '';
-			};
-			
 			this.Refresh = function() {
 				Molpy.toolsNeedRepaint = 1;
 				Molpy.recalculateDig = 1;
@@ -1519,51 +1488,6 @@ Molpy.Up = function() {
 					this.totalCastlesBuilt += buildN;
 				}
 				this.currentActive = 0;
-			};
-			
-			//TODO remove show/hide desc when new div stuff is done
-			this.showdesc = function(keep) {
-				var d = g('CastleToolDescription' + this.id);
-				if(!d) return;
-				if(keep && d.innerHTML) return;
-				var desc = '';
-				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
-				var bN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
-				var dN = EvalMaybeFunction(inf ? this.destroyG : this.destroyC);
-				var w = inf ? 'Chip' : 'Castle';
-				var actuals = '<br>Each builds ' + Molpify(bN, 1) + ' ' + w + plural(bN)
-					+ (dN ? (' if it destroys ' + Molpify(dN, 1) + ' ' + w + plural(dN)) : '');
-				if(this.name == 'Wave' && Molpy.Got('SBTF') && !inf) {
-					bN = this.buildC(1);
-					dN = this.destroyC(1);
-					actuals += '<br>Next ONG, each will build ' + Molpify(bN, 1) + ' ' + w + plural(bN)
-						+ (dN ? (' if it destroys' + Molpify(dN, 1) + ' ' + w + plural(dN)) : '');
-				}
-				if(Molpy.IsStatsVisible()) {
-					if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + (this.id * 2 + 1))) {
-						if(this.totalCastlesDestroyed)
-							desc += 'Total Castles ' + this.actionDName + ': ' + Molpify(this.totalCastlesDestroyed)
-								+ '<br>Total Castles wasted: ' + Molpify(this.totalCastlesWasted);
-						if(this.totalCastlesBuilt)
-							desc += '<br>Total Castles ' + this.actionBName + ': +' + Molpify(this.totalCastlesBuilt);
-					} else {
-						if(this.totalGlassDestroyed)
-							desc += 'Total Chips ' + this.actionDName + ': ' + Molpify(this.totalGlassDestroyed);
-						if(this.totalGlassBuilt)
-							desc += '<br>Total Chips ' + this.actionBName + ': +' + Molpify(this.totalGlassBuilt);
-					}
-					desc += '<br>Total ' + this.plural + ' bought: ' + Molpify(this.bought);
-					desc += '<br>' + actuals;
-					Molpy.EarnBadge('Keeping Track');
-				} else {
-					desc = this.desc + actuals;
-				}
-				d.innerHTML = '<br>' + desc;
-			};
-			
-			this.hidedesc = function(event) {
-				var d = g('CastleToolDescription' + this.id);
-				if(d) d.innerHTML = '';
 			};
 			
 			this.findPrice = function() {
@@ -2022,25 +1946,10 @@ Molpy.Up = function() {
 			};
 			
 			this.Refresh = function(indirect) {
-				if(this.hovering || Molpy.Boosts['Expando'].IsEnabled) {
-					this.hoverOnCounter = 1;
-					this.hovering = 0;
-				}
-				
 				this.repaint();
 
 				this.faveRefresh = 1;
 				if(!indirect && this.refreshFunction) this.refreshFunction();
-			};
-			
-			//TODO remove show/hide desc after new divs are in
-			this.showdesc = function(keep) {
-				var d = g('BoostDescription' + this.id);
-				if(d) {
-					if(keep && d.innerHTML) return;
-					d.innerHTML = '<br>' + this.getDesc();
-				}
-				this.faveRefresh = 1;
 			};
 			
 			this.GetAlias = function() {
@@ -2048,11 +1957,6 @@ Molpy.Up = function() {
 					return '<br>(Alias: ' + this.alias + ')';
 				}
 				return '';
-			};
-			
-			this.hidedesc = function() {
-				var d = g('BoostDescription' + this.id);
-				if(d) d.innerHTML = '';
 			};
 			
 			this.describe = function() {
@@ -2308,20 +2212,6 @@ Molpy.Up = function() {
 
 			// Methods
 			this.Refresh = function() {
-				if(this.hovering || Molpy.Boosts['Expando'].IsEnabled) {
-					this.hoverOnCounter = 1;
-					this.hovering = 0;
-				}
-				this.faveRefresh = 1;
-			};
-			
-			//TODO get rid of show/hide after new divs in
-			this.showdesc = function(keep) {
-				var d = g('BadgeDescription' + this.id);
-				if(d) {
-					if(keep && d.innerHTML) return;
-					d.innerHTML = '<br>' + this.getDesc();
-				}
 				this.faveRefresh = 1;
 			};
 			
@@ -2338,17 +2228,6 @@ Molpy.Up = function() {
 					var nBadge = Molpy.Badges[nGroup + this.np];
 					if(nBadge && !nBadge.earned) {
 						return true;
-					}
-				}
-			};
-			
-			this.hidedesc = function() {
-				var d = g('BadgeDescription' + this.id);
-				if(d) d.innerHTML = '';
-				if(this.np && this.alias.indexOf('monumg') == 0) {
-					if(Molpy.previewNP == this.np) {
-						Molpy.previewNP = 0;
-						Molpy.UpdateBeach();
 					}
 				}
 			};

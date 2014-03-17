@@ -1361,11 +1361,6 @@ Molpy.DefineGUI = function() {
 		Molpy.Boosts['Temporal Rift'].updateRiftIMG();
 	}
 
-	Molpy.DescClass = function(me) {
-		if(me.hovering) return 'descshow';
-		return 'deschide';
-	}
-
 	Molpy.PaintStats = function() {
 		g('totalsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].totalDug, 4);
 		g('manualsandstat').innerHTML = Molpify(Molpy.Boosts['Sand'].manualDug, 4);
