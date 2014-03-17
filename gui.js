@@ -838,12 +838,6 @@ Molpy.DefineGUI = function() {
 			for(var i in Molpy.dispObject[grp])
 				Molpy.dispObjects[grp][i].updateAll();
 	}
-
-	//TODO move mustard tool badge check to achronal dragon and mustard sale, perhaps somewhere else
-	// was in RepaintShop before
-		//if(Molpy.mustardTools == 12) {
-		//	Molpy.EarnBadge('Mustard Tools');
-		//}
 	
 	//the numbers that fly up when you click the pic for sand
 	Molpy.sParticles = [];

@@ -1084,6 +1084,17 @@ Molpy.Up = function() {
 					Molpy.Add('AD', cost);
 					_gaq && _gaq.push(['_trackEvent', 'Destroy Tool', this.name, '' + destroy]);
 					Molpy.CheckDragon();
+					
+					if(!Molpy.Badges['Mustard Tools'].earned) {
+						var mustardTools = 0;
+						for(var i in Molpy.SandToolsById){
+							if(isNaN(Molpy.SandToolsById[i].amount)) mustardTools ++;	
+						}
+						for(var i in Molpy.CastleToolsById){
+							if(isNaN(Molpy.CastleToolsById[i].amount)) mustardTools ++;	
+						}
+						if(mustardTools == 12) Molpy.EarnBadge('Mustard Tools');
+					}
 				}
 			};
 			
@@ -1422,6 +1433,17 @@ Molpy.Up = function() {
 					Molpy.Add('AD', cost);
 					_gaq && _gaq.push(['_trackEvent', 'Destroy Tool', this.name, '' + destroy]);
 					Molpy.CheckDragon();
+					
+					if(!Molpy.Badges['Mustard Tools'].earned) {
+						var mustardTools = 0;
+						for(var i in Molpy.SandToolsById){
+							if(isNaN(Molpy.SandToolsById[i].amount)) mustardTools ++;	
+						}
+						for(var i in Molpy.CastleToolsById){
+							if(isNaN(Molpy.CastleToolsById[i].amount)) mustardTools ++;	
+						}
+						if(mustardTools == 12) Molpy.EarnBadge('Mustard Tools');
+					}
 				}
 				else
 				{
