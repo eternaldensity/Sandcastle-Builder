@@ -5113,6 +5113,7 @@ Molpy.DefineBoosts = function() {
 		me.IsEnabled = 1 * !me.IsEnabled;
 		if(!me.IsEnabled) Molpy.shrinkAll = 1;
 		me.Refresh();
+		Molpy.allNeedRepaint = 1;
 	}
 
 	new Molpy.Boost({
