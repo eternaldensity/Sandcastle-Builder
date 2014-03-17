@@ -26,6 +26,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4
+
+#### Waveney
+- Cress boost for Mustard
+- Papal decree for Mustard
+
 ### 3.33333
 
 #### LucidCrux
