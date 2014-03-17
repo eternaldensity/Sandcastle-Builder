@@ -74,30 +74,21 @@ Molpy.DefineGUI = function() {
 		if(Molpy.Boosts['Expando'].IsEnabled) return;
 		$(this).find('.description').hide();
 	}
-
-	Molpy.Onhover = function(me, event) {
-		if(me.hoverOnCounter > 0 || Molpy.Boosts['Expando'].power) {
-
-			if(me.earned && me.np ) {
-				if (Molpy.previewNP != me.np && me.alias.indexOf('monumg') == 0) {
-					Molpy.previewNP = me.np;
-					Molpy.UpdateBeach(me.np);
-				} else 	if(me.alias.indexOf('monums') == 0) {
-					g('img-monums' + me.np).style.backgroundImage = Molpy.Url(Molpy.ThumbNewPixFor(Math.abs(me.np)));
-				}
-			}
-			return;
+	
+	Molpy.monumentOver = function(e) {
+		Molpy.onMouseOver.call(this, e);
+		if(e.data.alias.indexOf('monumg') == 0 && Molpy.previewNP != e.data.np) {
+			Molpy.previewNP = e.data.np;
+			Molpy.UpdateBeach(e.data.np);
+		} else if(e.data.alias.indexOf('monums') == 0) {
+			g('img-monums' + e.data.np).style.backgroundImage = Molpy.Url(Molpy.ThumbNewPixFor(Math.abs(e.data.np)));
 		}
-		me.hoverOnCounter = Math.ceil(Molpy.fps / 2);
-		me.hoverOffCounter = -1;
+		
 	}
-	Molpy.Onunhover = function(me, event) {
-		if(Molpy.IsChildOf(event.relatedTarget, event.currentTarget)) return;
-		me.hoverOffCounter = Math.ceil(Molpy.fps * 1.5);
-		me.hoverOnCounter = -1;
-
-		if(me.earned && me.np && Molpy.previewNP == me.np && Molpy.Boosts['Expando'].power
-			&& me.alias.indexOf('monumg') == 0) {
+	
+	Molpy.monumentOut = function(e) {
+		Molpy.onMouseOut.call(this, e);
+		if(e.data.alias.indexOf('monumg') == 0 && Molpy.previewNP == e.data.np) {
 			Molpy.previewNP = 0;
 			Molpy.UpdateBeach();
 		}
@@ -2008,7 +1999,11 @@ Molpy.DefineGUI = function() {
 		var div = $(divHTML);
 		if(flags.hover) {
 			var oid = '' + object.name + object.id;
-			div.mouseover({overID: oid}, Molpy.onMouseOver).mouseout({overID: oid}, Molpy.onMouseOut);
+			if(object.earned && object.np) {
+				div.mouseover({overID: oid, np: object.np, alias: object.alias}, Molpy.monumentOver).mouseout({overID: oid, np: object.np, alias: object.alias}, Molpy.monumentOut);
+			} else {
+				div.mouseover({overID: oid}, Molpy.onMouseOver).mouseout({overID: oid}, Molpy.onMouseOut);
+			}
 			if(!Molpy.Boosts['Expando'].IsEnabled && !flags.nohide) {
 				div.find('.description').hide();
 			}
