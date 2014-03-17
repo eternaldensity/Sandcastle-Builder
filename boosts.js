@@ -4018,7 +4018,7 @@ Molpy.DefineBoosts = function() {
 				return 'Constructing nothing. How?';
 			}
 			var c = Molpy.LimitConstructionRuns(subj.alias);
-			str = 'Constructing ' + subj.name + ' from Blackprint Plans.<br>' + Molpify(c * 10 - me.Level) + ' runs of Factory Automation required to complete.';
+			str = 'Constructing ' + subj.name + ' from Blackprint Plans.<br>' + Molpify(c * 10 - me.Level,3) + ' runs of Factory Automation required to complete.';
 			if(subj.alias == 'BoH')
 				str += '<br>To construct Bag of Holding you must retain at least 400 goats, otherwise construction will stall.';
 			return str;
@@ -4054,7 +4054,7 @@ Molpy.DefineBoosts = function() {
 		CFT: 40000,
 		BoH: 90000,
 		VV: 750000,
-		Nest: 5e6
+		Nest: 5e12
 	};
 	
 	Molpy.blackprintOrder = ['SMM', 'SMF', 'GMM', 'GMF', 'TFLL', 'AO', 'AA', 'AE', 'BG', 'Bacon', 'SG', 'Milo', 'ZK', 'VS', 'CFT', 'BoH', 'VV', 'Nest'];
@@ -6099,7 +6099,7 @@ Molpy.DefineBoosts = function() {
 			return [3e55, 'Dragon Foundry'];
 		if(Molpy.Has('AC', 888) && !Molpy.Boosts['ShadwDrgn'].unlocked && Molpy.Got('SGC') && Molpy.Has('LogiPuzzle', 100))
 			return [9e96, 'ShadwDrgn'];
-		if(Molpy.Has('AC', 4000) && !Molpy.Boosts['DQ'].unlocked && Molpy.Got('Nest') && Molpy.Has('Bonemeal', 2000))
+		if(Molpy.Has('AC', 1e6) && !Molpy.Boosts['DQ'].unlocked && Molpy.Got('Nest') && Molpy.Has('Bonemeal', 1e10))
 			return [Infinity, 'DQ'];
 		return [0, ''];
 	}
@@ -6977,7 +6977,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Got('DNS') || !me.bought) {
 				return str + '.';
 			}
-			str += ' out of 200.';
+			if (!Molpy.Got('DNS')) str += ' out of 80.';
 			if(me.bought != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
 				str += '<br>The next map can be found at NP ' + me.bought;
 				if (Molpy.Got('Lodestone')) {
@@ -7036,6 +7036,7 @@ Molpy.DefineBoosts = function() {
 		alias: 'DNS',
 		icon: 'dragonnestingsite',
 		group: 'drac',
+		price: {Bonemeal: 1e9},
 		
 		desc: function(me) {
 			return 'You have found the location of an ancient dragon nesting site.'
@@ -7049,7 +7050,7 @@ Molpy.DefineBoosts = function() {
 		group: 'drac',
 		desc: function(me) {
 			return 'This is a dragon nest.'
-				+ (Molpy.Got('DQ') ? '' : '<br>To obtain a queen, you need Automata Control of at least 4000, and 2000 Bonemeal.');
+				+ (Molpy.Got('DQ') ? '' : '<br>To obtain a queen, you need Automata Control of at least ' + Molpify(1e6) + ' and ' + Molpify(1e10) + ' Bonemeal.');
 		},
 		price:{
 			Sand: Infinity,
@@ -7066,6 +7067,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var str = 'The queen of the dragons.';
+			str += '<br>Not yet coded you will have to: Wait for it...';
 			return str; // not going to be ready for a while
 			if(me.bought) {
 				str += '<br><input type="Button" onclick="if(Molpy.Spend({Goats:10}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses 10 Goats)';
@@ -7074,7 +7076,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		price: {
-			Bonemeal: '25K',
+			Bonemeal: 1e11,
 			Sand: Infinity,
 			Castles: Infinity,
 			GlassBlocks: Infinity

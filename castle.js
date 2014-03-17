@@ -3257,13 +3257,10 @@ Molpy.Up = function() {
 			if(Molpy.Got('Maps')) {
 				if(Molpy.newpixNumber == Molpy.Boosts['Maps'].bought) {
 					Molpy.Add('Maps', 1);
-					if(Molpy.Has('Maps', 200)) {
-						Molpy.UnlockBoost('DNS');
-					} else {
-						if(Molpy.Has('Maps', 50)) Molpy.UnlockBoost('Lodestone');
-						Molpy.Notify('You found a new map!', 1);
-						Molpy.ClearMap();
-					}
+					if(Molpy.Has('Maps', 80))  Molpy.UnlockBoost('DNS'); 
+					if(Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
+					Molpy.Notify('You found a new map!', 1);
+					Molpy.ClearMap();
 					return;
 				}
 			}
