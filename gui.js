@@ -769,7 +769,6 @@ Molpy.DefineGUI = function() {
 		if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 7) {
 			if(lootArray[Molpy.Redacted.dispIndex] && lootArray[Molpy.Redacted.dispIndex].hasDiv()) {
 				var div = lootArray[Molpy.Redacted.dispIndex].getDiv({});
-				console.log(div);
 				if(div) specialIndex = div.index();
 			}
 		} else {
@@ -839,12 +838,6 @@ Molpy.DefineGUI = function() {
 			for(var i in Molpy.dispObject[grp])
 				Molpy.dispObjects[grp][i].updateAll();
 	}
-
-	//TODO move mustard tool badge check to achronal dragon and mustard sale, perhaps somewhere else
-	// was in RepaintShop before
-		//if(Molpy.mustardTools == 12) {
-		//	Molpy.EarnBadge('Mustard Tools');
-		//}
 	
 	//the numbers that fly up when you click the pic for sand
 	Molpy.sParticles = [];
@@ -1366,11 +1359,6 @@ Molpy.DefineGUI = function() {
 		Molpy.CheckBeachClass();
 		
 		Molpy.Boosts['Temporal Rift'].updateRiftIMG();
-	}
-
-	Molpy.DescClass = function(me) {
-		if(me.hovering) return 'descshow';
-		return 'deschide';
 	}
 
 	Molpy.PaintStats = function() {
