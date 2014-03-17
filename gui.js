@@ -729,8 +729,6 @@ Molpy.DefineGUI = function() {
 		
 		var redDiv = Molpy.Redacted.divList[Molpy.Redacted.location];
 		
-		console.log(redDiv);
-		
 		// Make sure the div is an open one, if not, re jump and set it again
 		if(!redDiv.is(':visible')) {
 			Molpy.Redacted.jump();
@@ -766,8 +764,6 @@ Molpy.DefineGUI = function() {
 				Molpy.Redacted.group = lootArray[Molpy.Redacted.dispIndex].group;
 		}
 		
-		console.log('group: ' + Molpy.Redacted.group);
-		
 		// Figure out where it will go
 		var specialIndex = -1;
 		if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 7) {
@@ -779,7 +775,6 @@ Molpy.DefineGUI = function() {
 		} else {
 			specialIndex = Molpy.Redacted.dispIndex;
 		}
-		console.log('specIndex: ' + specialIndex);
 		
 		if(specialIndex == 0) {
 			redDiv.prepend(Molpy.Redacted.getDiv());
