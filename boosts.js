@@ -21,7 +21,7 @@ Molpy.DefineBoosts = function() {
 		discov: ['discovery', 'Discoveries', 'discov', 'Discovery', 'A memorable discovery'],
 		monums: ['sand monument', 'Sand Monuments', 'sandmonument', 'Sand Monument', 'A sand structure commemorating'],
 		monumg: ['glass monument', 'Glass Monuments', 'glassmonument', 'Glass Monument', 'A glass sculpture commemorating'],
-		diamm: ['masterpiece', 'Masterpieces', 0,'Masterpiece',	'This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of', 'in diamond. <br>It molpifies with spikes of treeishness.'],
+		diamm: ['masterpiece', 'Masterpieces', 'masterpiece' ,'Masterpiece',	'This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of', 'in diamond. <br>It molpifies with spikes of treeishness.'],
 	};
 	
 	Molpy.unlockedGroups['stuff'] = 1; // Stuff is always unlocked because Sand and Castles are always unlocked
@@ -515,7 +515,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		buyFunction: function() {
-			Molpy.shopRepaint = 1;
+			Molpy.shopNeedUpdate = 1;
 			Molpy.CalcPriceFactor();
 			Molpy.Donkey();
 		},
@@ -1386,7 +1386,7 @@ Molpy.DefineBoosts = function() {
 		me.power = (!me.power) * 1;
 		me.Refresh();
 		Molpy.UpdateFaves(1);
-		Molpy.shopRepaint = 1;
+		Molpy.toolsNeedRepaint = 1;
 	}
 
 	new Molpy.Boost({
@@ -1476,7 +1476,8 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		buyFunction: function() {
-			Molpy.shopRepaint = 1;
+			Molpy.shopNeedRepaint = 1;
+			Molpy.toolsNeedRepaint = 1;
 		},
 	});
 	
@@ -3183,11 +3184,13 @@ Molpy.DefineBoosts = function() {
 					this.power = 0;
 				else
 					this.power++;
-				Molpy.shopRepaint = 1;
+				Molpy.shopNeedRepaint = 1;
+				Molpy.toolsNeedRepaint = 1;
 				Molpy.GlassCeilingUnlockCheck();
 			},
 			lockFunction: function(me) {
-				Molpy.shopRepaint = 1;
+				Molpy.shopNeedRepaint = 1;
+				Molpy.toolsNeedRepaint = 1;
 				Molpy.GlassCeilingUnlockCheck();
 			}
 		});
@@ -3255,7 +3258,7 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 			if(me.unlocked) {
-				if(Molpy.CeilingClass(me, i)) Molpy.boostRepaint = 1;
+				if(Molpy.CeilingClass(me, i)) Molpy.boostNeedRepaint = 1;
 			}
 		}
 	}
@@ -3280,6 +3283,7 @@ Molpy.DefineBoosts = function() {
 		var newClass = Molpy.Earned('Ceiling Broken') ? '' : (Molpy.CeilingTogglable(key) ? 'action' : 'alert');
 		if(newClass != oldClass) {
 			me.className = newClass;
+			Molpy.lootCheckTagged(me);
 			return 1;
 		}
 	}
@@ -4874,7 +4878,8 @@ Molpy.DefineBoosts = function() {
 			Molpy.toolsBuilt += built;
 			Molpy.toolsBuiltTotal += built;
 			Molpy.recalculateDig = 1;
-			Molpy.shopRepaint = 1;
+			Molpy.shopNeedUpdate = 1;
+			Molpy.toolsNeedUpdate = 1;
 			Molpy.CheckBuyUnlocks();
 			tf.Level = tfChipBuffer;
 
@@ -5108,6 +5113,7 @@ Molpy.DefineBoosts = function() {
 		me.IsEnabled = 1 * !me.IsEnabled;
 		if(!me.IsEnabled) Molpy.shrinkAll = 1;
 		me.Refresh();
+		Molpy.allNeedRepaint = 1;
 	}
 
 	new Molpy.Boost({
@@ -5451,6 +5457,7 @@ Molpy.DefineBoosts = function() {
 					Molpy.EarnBadge('Nope!');
 					me.power = 6e51;// Evens everyone up to same value could get here between 5 and 5.00999...
 					me.className = '';
+					Molpy.lootCheckTagged(me);
 				}
 			} else {
 				var affordPow = Math.floor(Math.log(Molpy.Level('GlassBlocks') / n) * Math.LOG10E) - 6;

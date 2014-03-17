@@ -32,6 +32,12 @@ For personal amusement only.
 - Cress boost for Mustard
 - Papal decree for Mustard
 
+#### Lucid Crux
+- Major Refactor / Redo of the way HTML is generated and div are drawn
+- Redundikitties should no longer appear in sections turned off in the section list
+- Loot pages
+- Loot searching
+
 ### 3.33333
 
 #### LucidCrux

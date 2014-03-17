@@ -80,6 +80,9 @@ Molpy.Up = function() {
 		Molpy.highestNPvisited = 1; //keep track of where the player has been
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
+		
+		Molpy.dispObjects = {shop: [], tools: [], boosts: [], badges: [], tagged: [], search: [], faves: []} // Lists of objects currently being displayed
+		Molpy.mouseIsOver = null;
 
 		Molpy.DefinePersist();
 		Molpy.DefineGUI();
@@ -845,7 +848,7 @@ Molpy.Up = function() {
 			} else {
 				Molpy.Boosts['Castles'].globalMult = 1;
 			}
-			Molpy.shopRepaint = 1;
+			Molpy.shopNeedRepaint = 1;
 			Molpy.CalculateGlassRate();
 		};
 		Molpy.CheckSandRateBadges = function() {
@@ -948,7 +951,7 @@ Molpy.Up = function() {
 		/**************************************************************
 		 * Boost Shop
 		 *************************************************************/
-		Molpy.shopRepaint = 1;
+		Molpy.shopNeedRepaint = 1;
 		Molpy.sandToolPriceFactor = 1.1;
 		Molpy.SandTools = [];
 		Molpy.SandToolsById = [];
@@ -980,10 +983,11 @@ Molpy.Up = function() {
 			this.storedTotalGpmNP = 0;
 			this.nextThreshold = args.nextThreshold;
 			this.pic = args.pic;
-			this.icon = args.icon;
+			this.icon = args.icon || 'generic';
 			this.background = args.background;
 			this.buyFunction = args.buyFunction;
 			this.drawFunction = args.drawFunction;
+			this.divElement = null;
 
 			this.amount = 0;
 			this.bought = 0;
@@ -1009,7 +1013,7 @@ Molpy.Up = function() {
 						this.findPrice();
 						if(this.buyFunction) this.buyFunction(this);
 						if(this.drawFunction) this.drawFunction();
-						Molpy.shopRepaint = 1;
+						Molpy.toolsNeedRepaint = 1;
 						Molpy.recalculateDig = 1;
 						Molpy.SandToolsOwned++;
 						Molpy.CheckBuyUnlocks(1);
@@ -1029,6 +1033,7 @@ Molpy.Up = function() {
 					_gaq && _gaq.push(['_trackEvent', 'Buy Tool', this.name, '' + bought]);
 				}
 			};
+			
 			this.create = function(n) {
 				this.amount += n;
 				this.bought += n;
@@ -1042,6 +1047,7 @@ Molpy.Up = function() {
 				}
 				return this;
 			};
+			
 			this.sell = function() {
 				if(this.amount > 0) {
 					this.amount--;
@@ -1058,7 +1064,7 @@ Molpy.Up = function() {
 					}
 					if(this.sellFunction) this.sellFunction();
 					if(this.drawFunction) this.drawFunction();
-					Molpy.shopRepaint = 1;
+					Molpy.toolsNeedRepaint = 1;
 					Molpy.recalculateDig = 1;
 					Molpy.SandToolsOwned--;
 					_gaq && _gaq.push(['_trackEvent', 'Sell Tool', this.name, '1']);
@@ -1066,6 +1072,7 @@ Molpy.Up = function() {
 					Molpy.CheckBuyUnlocks(1);
 				}
 			};
+			
 			this.destroyTemp = function() {
 				var cost = this.temp * 5;
 				if(Molpy.Has('GlassBlocks', cost)) {
@@ -1079,15 +1086,15 @@ Molpy.Up = function() {
 					Molpy.CheckDragon();
 				}
 			};
-			this.updateBuy = function() {
-				$('#SandToolBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
-			};
+			
 			this.isAffordable = function() {
 
 				if(Molpy.ProtectingPrice()) return 0;
 				var price = Math.floor(Molpy.priceFactor * this.basePrice * Math.pow(Molpy.sandToolPriceFactor, this.amount));
 				return isFinite(price) && Molpy.Has('Castles', price);
 			};
+			
+			//TODO remove show/hide desc after new div stuff is in place
 			this.showdesc = function(keep) {
 				var d = g('SandToolDescription' + this.id);
 				if(!d) return;
@@ -1112,26 +1119,177 @@ Molpy.Up = function() {
 				}
 				d.innerHTML = '<br>' + desc;
 			};
+			
 			this.hidedesc = function() {
 				var d = g('SandToolDescription' + this.id);
 				if(d) d.innerHTML = '';
 			};
+			
 			this.Refresh = function() {
-				Molpy.shopRepaint = 1;
+				Molpy.toolsNeedRepaint = 1;
 				Molpy.recalculateDig = 1;
 				this.findPrice();
 				if(this.drawFunction) this.drawFunction();
 			};
+			
 			this.findPrice = function() {
 				if(this.amount > 9000)
 					this.price = Infinity;
 				else
 					this.price = Math.floor(this.basePrice * Math.pow(Molpy.sandToolPriceFactor, this.amount));
 			};
+			
+			// Methods for Div Creation
+			this.getFullClass = function() {
+				return 'floatbox tool sand shop';
+			}
+			
+			this.getHeading = function() {return '';}
+			
+			this.getFormattedName = function() {
+				var fname = '' + format(this.name);
+				if(isNaN(this.amount))
+					fname = 'Mustard ' + fname;
+				else if(Molpy.Got('Glass Ceiling ' + (this.id * 2)))
+					fname = 'Glass ' + fname;
+				return fname;
+			};
+			
+			this.getOwned = function() {
+				return Molpify(this.amount, 3);
+			}
+			
+			this.getPrice = function() {
+				var price = '';
+				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + this.id * 2))
+					price = {Castles: (Math.floor(EvalMaybeFunction(this.price, this, 1) * Molpy.priceFactor))};
+				else if(!isNaN(this.price))
+					price = {GlassChips: 1000 * (this.id * 2 + 1)};
+				return price;
+			}
+			
+			this.getBuySell = function() {
+				var numBuy = Math.pow(4, Molpy.options.sandmultibuy);
+				var noBuy = this.isAffordable() ? '' : ' unbuyable';
+				var buysell = '';
+				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
+					buysell = '<a class="buySpan' + noBuy + '" onclick="Molpy.SandToolsById[' + this.id + '].buy();">Buy&nbsp;'
+						+ numBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.SandToolsById[' + this.id + '].sell();">Sell</a>');
+				}
+				return buysell;
+			}
+			
+			this.getProduction = function() {
+				var production = '';
+				if(isNaN(this.amount))
+					production = 'Mustard/click: 1';
+				else if(this.storedTotalGpmNP)
+					production = 'Glass/mNP: ' + Molpify(this.storedTotalGpmNP, (this.storedTotalGpmNP < 10 ? 3 : 1));
+				else
+					production = 'Sand/mNP: ' + Molpify(this.storedTotalSpmNP, (this.storedTotalSpmNP < 10 ? 3 : 1));
+				
+				return production;				
+			}
+			
+			this.getDesc = function() {
+				var desc = '';
+				if(Molpy.IsStatsVisible()) {
+					if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF')
+						|| !Molpy.Got('Glass Ceiling ' + (this.id * 2))) {
+						desc = 'Total Sand ' + this.actionName + ': ' + Molpify(this.totalSand, 1) + '<br>Sand/mNP per '
+							+ this.single + ': ' + Molpify(this.storedSpmNP, (this.storedSpmNP < 10 ? 3 : 1));
+					} else {
+						desc = 'Total Chips ' + this.actionName + ': ' + Molpify(this.totalGlass, 1)
+							+ '<br>Glass/mNP per ' + this.single + ': '
+							+ Molpify(this.storedGpmNP, (this.storedGpmNP < 10 ? 3 : 1));
+					}
 
+					desc += '<br>Total ' + this.plural + ' bought: ' + Molpify(this.bought);
+					Molpy.EarnBadge('The Fine Print'); //TODO this probably needs to go somewhere else
+				} else {
+					desc = this.desc;
+				}
+				
+				return desc;
+			}
+			
+			// Args:
+			//    forceNew (T/F): force recreation of the object's div
+			//    hover (T/F): add hover mechanics to the div
+			//    nohide (T/F): don't automatically hide the description when the div is created, useful for clicking a div's buttons
+			this.getDiv = function(args) {
+				if(this.divElement) {
+					if(!args.forceNew)
+						return this.divElement;
+					this.divElement.remove();
+				}
+				this.divElement = Molpy.newObjectDiv('tool', this, {hover: (args.hover || false), nohide: (args.nohide || false)});
+				return this.divElement;
+			}
+			
+			this.hasDiv = function() {
+				if(this.divElement) return true;
+				return false;
+			}
+			
+			// Methods for Div Updates
+			
+			this.repaint = function() {
+				if(!this.divElement) return;
+				
+				var parent = this.divElement.parent();
+				var index = this.divElement.index();
+				Molpy.removeDiv(this);
+				
+				// If mouse is currently hovering over this, it will start hovered
+				var nh = false;
+				var overID = '' + this.name + this.id;
+				if(Molpy.mouseIsOver == overID) nh = true;
+				
+				this.getDiv({forceNew: true, hover: true, nohide: nh});
+				parent.children().eq(index).before(this.divElement);
+				
+			}
+			
+			this.updateAll = function() {
+				this.updateBuy();
+				this.updatePrice();
+				this.updateProduction();
+			}
+			
+			this.updateBuy = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
+			};
+			
+			this.updatePrice = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.price').innerHTML = Molpy.createPriceHTML(this.getPrice());
+			}
+			
+			this.updateProduction = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.production').innerHTML = this.getProduction();
+			}
+			
+			// Create CSS style for tool
+			if(this.gifIcon){
+				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.gif' )");
+			} else if(this.icon) {
+				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.png' )");
+			}
+			if(this.heresy){
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_heresy_icon.png' )");
+			}
+			
 			Molpy.SandTools[this.name] = this;
 			Molpy.SandToolsById[this.id] = this;
+			
 			Molpy.SandToolsN++;
+			
 			return this;
 		};
 
@@ -1161,11 +1319,12 @@ Molpy.Up = function() {
 			this.currentActive = 0;
 			this.nextThreshold = args.nextThreshold;
 			this.pic = args.pic;
-			this.icon = args.icon;
+			this.icon = args.icon || 'generic';
 			this.background = args.background;
 			this.buyFunction = args.buyFunction;
 			this.drawFunction = args.drawFunction;
 			this.destroyFunction = args.destroyFunction;
+			this.divElement = null;
 
 			this.amount = 0;
 			this.bought = 0;
@@ -1190,7 +1349,7 @@ Molpy.Up = function() {
 						this.findPrice();
 						if(this.buyFunction) this.buyFunction(this);
 						if(this.drawFunction) this.drawFunction();
-						Molpy.shopRepaint = 1;
+						Molpy.toolsNeedRepaint = 1;
 						Molpy.recalculateDig = 1;
 						Molpy.CastleToolsOwned++;
 						Molpy.CheckBuyUnlocks(1);
@@ -1211,6 +1370,7 @@ Molpy.Up = function() {
 					_gaq && _gaq.push(['_trackEvent', 'Buy Tool', this.name, '' + bought]);
 				}
 			};
+			
 			this.create = function(n) {
 				this.amount += n;
 				this.bought += n;
@@ -1224,6 +1384,7 @@ Molpy.Up = function() {
 				}
 				return this;
 			};
+			
 			this.sell = function() {
 				this.findPrice();
 				if(this.amount > 0) {
@@ -1241,7 +1402,7 @@ Molpy.Up = function() {
 					this.findPrice();
 					if(this.sellFunction) this.sellFunction();
 					if(this.drawFunction) this.drawFunction();
-					Molpy.shopRepaint = 1;
+					Molpy.toolsNeedRepaint = 1;
 					Molpy.recalculateDig = 1;
 					Molpy.CastleToolsOwned--;
 					_gaq && _gaq.push(['_trackEvent', 'Sell Tool', this.name, '1']);
@@ -1249,6 +1410,7 @@ Molpy.Up = function() {
 					Molpy.CheckBuyUnlocks(1);
 				}
 			};
+			
 			this.destroyTemp = function() {
 				var cost = this.temp * 10;
 				if(Molpy.Has('GlassBlocks', cost)) {
@@ -1266,14 +1428,13 @@ Molpy.Up = function() {
 					Molpy.Notify('Not nearly glassy enough.', 1);
 				}
 			};
-			this.updateBuy = function() {
-				$('#CastleToolBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
-			};
+			
 			this.isAffordable = function() {
 				if(Molpy.ProtectingPrice()) return 0;
 				var price = Math.floor(Molpy.priceFactor * this.price);
 				return isFinite(price) && Molpy.Has('Castles', price);
 			};
+			
 			this.DestroyPhase = function() {
 				var i = this.amount;
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
@@ -1317,6 +1478,7 @@ Molpy.Up = function() {
 				if(this.destroyFunction) this.destroyFunction();
 
 			};
+			
 			this.BuildPhase = function() {
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var buildN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
@@ -1336,6 +1498,8 @@ Molpy.Up = function() {
 				}
 				this.currentActive = 0;
 			};
+			
+			//TODO remove show/hide desc when new div stuff is done
 			this.showdesc = function(keep) {
 				var d = g('CastleToolDescription' + this.id);
 				if(!d) return;
@@ -1374,10 +1538,12 @@ Molpy.Up = function() {
 				}
 				d.innerHTML = '<br>' + desc;
 			};
+			
 			this.hidedesc = function(event) {
 				var d = g('CastleToolDescription' + this.id);
 				if(d) d.innerHTML = '';
 			};
+			
 			this.findPrice = function() {
 				var i = this.amount;
 				if(isNaN(i)) {
@@ -1400,12 +1566,177 @@ Molpy.Up = function() {
 				}
 				this.price = p;
 			};
+			
 			this.Refresh = function() {
-				Molpy.shopRepaint = 1;
+				Molpy.toolsNeedRepaint = 1;
 				Molpy.recalculateDig = 1;
 				this.findPrice();
 				if(this.drawFunction) this.drawFunction();
 			};
+			
+			// Methods for Div Creation
+			this.getFullClass = function() {
+				return 'floatbox tool castle shop';
+			}
+			
+			this.getHeading = function() {return '';}
+			
+			this.getFormattedName = function() {
+				var fname = '' + format(this.name);
+				if(isNaN(this.amount))
+					fname = 'Mustard ' + fname;
+				else if(Molpy.Got('Glass Ceiling ' + (this.id * 2 + 1)))
+					fname = 'Glass ' + fname;
+				return fname;
+			};
+			
+			this.getOwned = function() {
+				return Molpify(this.amount, 3);
+			}
+			
+			this.getPrice = function() {
+				var price = '';
+				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + this.id * 2 + 1))
+					price = {Castles: (Math.floor(EvalMaybeFunction(this.price, this, 1) * Molpy.priceFactor))};
+				else if(!isNaN(this.price))
+					price = {GlassChips: 1000 * (this.id * 2 + 2)};
+				return price;
+			}
+			
+			this.getBuySell = function() {
+				var numBuy = Math.pow(4, Molpy.options.castlemultibuy);
+				var noBuy = this.isAffordable() ? '' : ' unbuyable';
+				var buysell = '';
+				if(isFinite(Molpy.priceFactor * this.price) || !(Molpy.Earned(this.name + ' Shop Failed') && Molpy.Got('TF'))) {
+					buysell = '<a class="buySpan' + noBuy + '" onclick="Molpy.CastleToolsById[' + this.id + '].buy();">Buy&nbsp;'
+						+ numBuy + '</a>' + (Molpy.Boosts['No Sell'].power ? '' : ' <a class="sellSpan" onclick="Molpy.CastleToolsById[' + this.id + '].sell();">Sell</a>');
+				}
+				return buysell;
+			}
+			
+			this.getProduction = function() {
+				var production = '';
+				if(isNaN(this.amount))
+					production += 'Mustard/click: 1';
+				if(this.currentActive && Molpy.ninjaTime > Molpy.ONGelapsed) {
+					if(Molpy.ninjad) {
+						production += "Ninja'd!";
+					} else {
+						production += 'Active: ' + Molpify(this.currentActive, 3) + '<br>Timer: '
+							+ Molpify(Math.ceil((Molpy.ninjaTime - Molpy.ONGelapsed) / Molpy.NPlength));
+					}
+				}
+				
+				return production;				
+			}
+			
+			this.getDesc = function() {
+				var desc = '';
+				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
+				var bN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
+				var dN = EvalMaybeFunction(inf ? this.destroyG : this.destroyC);
+				var w = inf ? 'Chip' : 'Castle';
+				var actuals = '<br>Each builds ' + Molpify(bN, 1) + ' ' + w + plural(bN)
+					+ (dN ? (' if it destroys ' + Molpify(dN, 1) + ' ' + w + plural(dN)) : '');
+				if(this.name == 'Wave' && Molpy.Got('SBTF') && !inf) {
+					bN = this.buildC(1);
+					dN = this.destroyC(1);
+					actuals += '<br>Next ONG, each will build ' + Molpify(bN, 1) + ' ' + w + plural(bN)
+						+ (dN ? (' if it destroys' + Molpify(dN, 1) + ' ' + w + plural(dN)) : '');
+				}
+				if(Molpy.IsStatsVisible()) {
+					if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + (this.id * 2 + 1))) {
+						if(this.totalCastlesDestroyed)
+							desc += 'Total Castles ' + this.actionDName + ': ' + Molpify(this.totalCastlesDestroyed)
+								+ '<br>Total Castles wasted: ' + Molpify(this.totalCastlesWasted);
+						if(this.totalCastlesBuilt)
+							desc += '<br>Total Castles ' + this.actionBName + ': +' + Molpify(this.totalCastlesBuilt);
+					} else {
+						if(this.totalGlassDestroyed)
+							desc += 'Total Chips ' + this.actionDName + ': ' + Molpify(this.totalGlassDestroyed);
+						if(this.totalGlassBuilt)
+							desc += '<br>Total Chips ' + this.actionBName + ': +' + Molpify(this.totalGlassBuilt);
+					}
+					desc += '<br>Total ' + this.plural + ' bought: ' + Molpify(this.bought);
+					desc += '<br>' + actuals;
+					Molpy.EarnBadge('Keeping Track');
+				} else {
+					desc = this.desc + actuals;
+				}
+				
+				return desc;
+			}
+			
+			// Args:
+			//    forceNew (T/F): force recreation of the object's div
+			//    hover (T/F): add hover mechanics to the div
+			//    nohide (T/F): don't automatically hide the description when the div is created, useful for clicking a div's buttons
+			this.getDiv = function(args) {
+				if(this.divElement) {
+					if(!args.forceNew)
+						return this.divElement;
+					this.divElement.remove();
+				}
+				this.divElement = Molpy.newObjectDiv('tool', this, {hover: (args.hover || false), nohide: (args.nohide || false)});
+				return this.divElement;
+			}
+			
+			this.hasDiv = function() {
+				if(this.divElement) return true;
+				return false;
+			}
+			
+			// Methods for Div Updates
+			
+			this.repaint = function() {
+				if(!this.divElement) return;
+				
+				var parent = this.divElement.parent();
+				var index = this.divElement.index();
+				Molpy.removeDiv(this);
+				
+				// If mouse is currently hovering over this, it will start hovered
+				var nh = false;
+				var overID = '' + this.name + this.id;
+				if(Molpy.mouseIsOver == overID) nh = true;
+				
+				this.getDiv({forceNew: true, hover: true, nohide: nh});
+				parent.children().eq(index).before(this.divElement);			
+			}
+			
+			this.updateAll = function() {
+				this.updateBuy();
+				this.updatePrice();
+				this.updateProduction();
+			}
+			
+			this.updateBuy = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
+			};
+			
+			this.updatePrice = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.price').innerHTML = Molpy.createPriceHTML(this.getPrice());
+			}
+			
+			this.updateProduction = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.production').innerHTML = this.getProduction();
+			}
+			
+			// Create CSS style for tool
+			if(this.gifIcon){
+				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.gif' )");
+			} else if(this.icon) {
+				addCSSRule(document.styleSheets[1], '.darkscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_icon.png' )");
+			}
+			if(this.heresy){
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .tool_' + this.icon + '.icon', "background-image:url('img/tool_" + this.icon + "_dark_heresy_icon.png' )");
+			}
 
 			Molpy.CastleTools[this.name] = this;
 			Molpy.CastleToolsById[this.id] = this;
@@ -1537,13 +1868,14 @@ Molpy.Up = function() {
 			}
 		};
 
-		Molpy.boostRepaint = 1;
+		Molpy.boostNeedRepaint = 1;
 		Molpy.boostHTML = '';
 		Molpy.Boosts = [];
 		Molpy.BoostsById = [];
 		Molpy.BoostsByGroup = [];
 		Molpy.BoostN = 0;
 		Molpy.BoostsInShop = [];
+		Molpy.BoostsBought = [];
 		Molpy.BoostsOwned = 0;
 		Molpy.BoostAKA = [];
 		Molpy.boostSilence = 0;
@@ -1635,7 +1967,7 @@ Molpy.Up = function() {
 				this.bought = 1;
 				if(this.buyFunction) this.buyFunction();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Buy', this.name, !free]);
-				Molpy.boostRepaint = 1;
+				Molpy.boostNeedRepaint = 1;
 				Molpy.recalculateDig = 1;
 				Molpy.BoostsOwned++;
 				Molpy.CheckBuyUnlocks();
@@ -1644,12 +1976,7 @@ Molpy.Up = function() {
 				if(!Molpy.boostSilence && !free && this.bought && !auto) {
 					Molpy.ShowGroup(this.group, this.className);
 				}
-			};
-			
-			this.updateBuy = function(fave) {
-				if(this.unlocked && (fave || !this.bought)) {
-					$('#BoostBuy' + this.id).toggleClass('unbuyable', !this.isAffordable());
-				}
+				Molpy.lootAddBoost(this);
 			};
 			
 			this.isAffordable = function() {
@@ -1677,26 +2004,21 @@ Molpy.Up = function() {
 					this.hoverOnCounter = 1;
 					this.hovering = 0;
 				}
+				
+				this.repaint();
 
 				this.faveRefresh = 1;
 				if(!indirect && this.refreshFunction) this.refreshFunction();
 			};
 			
+			//TODO remove show/hide desc after new divs are in
 			this.showdesc = function(keep) {
 				var d = g('BoostDescription' + this.id);
 				if(d) {
 					if(keep && d.innerHTML) return;
-					d.innerHTML = '<br>' + this.GetDesc();
+					d.innerHTML = '<br>' + this.getDesc();
 				}
 				this.faveRefresh = 1;
-			};
-			
-			this.GetDesc = function() {
-				return format(EvalMaybeFunction((Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this))
-					+ format(this.prizes && Molpy.IsStatsVisible() && ('<br>Gives ' + Molpify(this.prizes)
-							+ ' random Prize' + plural(this.prizes) + ' from tier L' + EvalMaybeFunction(this.tier, 'show')
-							+ ' when Locked or Reset.') || '')
-					+ this.GetAlias();
 			};
 			
 			this.GetAlias = function() {
@@ -1704,31 +2026,6 @@ Molpy.Up = function() {
 					return '<br>(Alias: ' + this.alias + ')';
 				}
 				return '';
-			};
-			
-			this.GetFullClass = function() {
-				return 'boost ' + (this.bought ? 'lootbox loot ' : 'floatbox shop ') + (this.className || '');
-			};
-			
-			this.GetHeading = function() {
-				return '<h1>[' + Molpy.groupNames[this.group][0]
-					+ ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '') + ']</h1>';
-			};
-			
-			this.GetFormattedName = function() {
-				return '<h2>' + format(this.name) + this.GetBuy() + '</h2>';
-			};
-			
-			this.GetBuy = function() {
-				var buy = '';
-				if(!this.bought && this.unlocked) {
-					buy = '<br><a id="BoostBuy' + this.id + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
-					var realPrice = this.CalcPrice(this.price);
-					if(!Molpy.IsFree(realPrice)) {
-						buy += '<div class="price"> Price: ' + Molpy.PriceString(realPrice) + '</div>';
-					}
-				}
-				return buy;
 			};
 			
 			this.hidedesc = function() {
@@ -1747,6 +2044,108 @@ Molpy.Up = function() {
 				for(var i in this.saveData)
 					this.saveData[i][0] = this.saveData[i][1];
 			}
+			
+			// Methods for Div Creation
+			this.getFullClass = function() {
+				return 'boost ' + (this.bought || this.countdown > 0 ? 'lootbox loot ' : 'floatbox shop ') + (this.className || '');
+			}
+			
+			this.getHeading = function() {
+				return "" + Molpy.groupNames[this.group][0]
+			     + ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '');
+			}
+			
+			this.getFormattedName = function() {
+				return '' + format(this.name);
+			};
+			
+			this.getOwned = function() {return '';}
+			
+			this.getPrice = function() {
+				var p = '';
+				var realPrice = this.CalcPrice(this.price);
+				if(!Molpy.IsFree(realPrice)) p = realPrice;
+				return p;
+			}
+			
+			this.getBuySell = function() {
+				var buy = '';
+				if(!this.bought && this.unlocked) {
+					var noBuy = this.isAffordable() ? '' : ' unbuyable';
+					buy = '<a class="buySpan' + noBuy + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
+				}
+				return buy;
+			}
+			
+			this.getProduction = function() {return '';}
+			
+			this.getDesc = function() {
+				return format(EvalMaybeFunction((Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this))
+				     + format(this.prizes && Molpy.IsStatsVisible() && ('<br>Gives ' + Molpify(this.prizes)
+				            + ' random Prize' + plural(this.prizes) + ' from tier L' + EvalMaybeFunction(this.tier, 'show')
+				            + ' when Locked or Reset.') || '')
+				     + this.GetAlias();
+			}
+			
+			// Args:
+			//    forceNew (T/F): force recreation of the object's div
+			//    hover (T/F): add hover mechanics to the div
+			//    nohide (T/F): don't automatically hide the description when the div is created, useful for clicking a div's buttons
+			this.getDiv = function(args) {
+				if(this.divElement) {
+					if(!args.forceNew)
+						return this.divElement;
+					this.divElement.remove();
+				}
+				this.divElement = Molpy.newObjectDiv('boost', this, {hover: (args.hover || false), nohide: (args.nohide || false)});
+				return this.divElement;
+			}
+			
+			this.hasDiv = function() {
+				if(this.divElement) return true;
+				return false;
+			}
+			
+			// Methods for Div Updates
+			
+			this.repaint = function() {
+				if(!this.divElement) return;
+				
+				var parent = this.divElement.parent();
+				var index = this.divElement.index();
+				Molpy.removeDiv(this);
+				
+				// If mouse is currently hovering over this, it will start hovered
+				var nh = false;
+				var overID = '' + this.name + this.id;
+				if(Molpy.mouseIsOver == overID) nh = true;
+				
+				this.getDiv({forceNew: true, hover: true, nohide: nh});
+				parent.children().eq(index).before(this.divElement);		
+			}
+			
+			this.updateAll = function() {
+				this.updateBuy();
+				this.updatePrice();
+				this.updateProduction();
+			}
+			
+			this.updateBuy = function(fave) {
+				if(!this.divElement) return;
+				if(this.unlocked && (fave || !this.bought)) {
+					this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
+				}
+			};
+			
+			this.updatePrice = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.price').innerHTML = Molpy.createPriceHTML(this.getPrice());
+			}
+			
+			this.updateProduction = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.production').innerHTML = this.getProduction();
+			}
 
 			// Add the boost to lists
 			Molpy.Boosts[this.alias] = this;
@@ -1761,16 +2160,16 @@ Molpy.Up = function() {
 
 			// Create CSS styles for the boost
 			if(this.gifIcon){
-				addCSSRule(document.styleSheets[1], '.darkscheme #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.gif' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.gif' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.gif' )");
 			} else if(this.icon) {
-				addCSSRule(document.styleSheets[1], '.shop #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_grey_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.darkscheme .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.shop .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_grey_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_icon.png' )");
 			}
 			if(this.heresy){
-				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_heresy_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot #boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_dark_heresy_icon.png' )");
+				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .boost_' + this.icon + '.icon', "background-image:url('img/boost_" + this.icon + "_light_heresy_icon.png' )");
 			}
 			
 			Molpy.BoostN++;
@@ -1784,7 +2183,7 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 0) {
 						me.unlocked = 1;
-						Molpy.boostRepaint = 1;
+						Molpy.shopNeedRepaint = 1;
 						Molpy.recalculateDig = 1;
 						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem)) {
 							Molpy.Notify('Boost Unlocked: ' + me.name, 1);
@@ -1823,8 +2222,10 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 1) {
 						me.unlocked = 0;
-						Molpy.boostRepaint = 1;
-						Molpy.shopRepaint = 1;
+						Molpy.lootRemoveBoost(me);
+						Molpy.removeDiv(me);
+						Molpy.shopNeedUpdate = 1;
+						Molpy.toolsNeedUpdate = 1;
 						Molpy.recalculateDig = 1;
 
 						if(me.lockFunction) me.lockFunction();
@@ -1854,11 +2255,13 @@ Molpy.Up = function() {
 
 		Molpy.previewNP = 0;
 
-		Molpy.badgeRepaint = 1;
+		Molpy.badgeNeedRepaint = 1;
 		Molpy.badgeHTML = '';
 		Molpy.Badges = [];
 		Molpy.BadgesById = [];
 		Molpy.BadgeAKA = [];
+		Molpy.BadgesEarned = [];
+		Molpy.BadgesAvailable = [];
 		Molpy.BadgeN = 0;
 		Molpy.BadgesOwned = 0;
 		var order = 0;
@@ -1890,18 +2293,14 @@ Molpy.Up = function() {
 				this.faveRefresh = 1;
 			};
 			
+			//TODO get rid of show/hide after new divs in
 			this.showdesc = function(keep) {
 				var d = g('BadgeDescription' + this.id);
 				if(d) {
 					if(keep && d.innerHTML) return;
-					d.innerHTML = '<br>' + this.GetDesc();
+					d.innerHTML = '<br>' + this.getDesc();
 				}
 				this.faveRefresh = 1;
-			};
-			
-			this.GetDesc = function() {
-				return format(((this.earned || this.visibility < 1) ? EvalMaybeFunction(
-						(Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this) : '????')) + this.GetAlias();
 			};
 			
 			this.GetAlias = function() {
@@ -1909,12 +2308,6 @@ Molpy.Up = function() {
 					return '<br>(Alias: ' + this.alias + ')';
 				}
 				return '';
-			};
-			
-			this.GetFullClass = function() {
-				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
-				if(this.HasUpgrade()) cn += ' action';
-				return cn;
 			};
 			
 			this.HasUpgrade = function() {
@@ -1927,14 +2320,6 @@ Molpy.Up = function() {
 				}
 			};
 			
-			this.GetHeading = function() {
-				return '<h1>[' + Molpy.groupNames[this.group][0] + (this.HasUpgrade() ? '+' : '') + ']</h1>';
-			};
-			
-			this.GetFormattedName = function() {
-				return '<h2>' + format((this.earned || this.visibility < 2 ? this.name : '????')) + '</h2>';
-			};
-			
 			this.hidedesc = function() {
 				var d = g('BadgeDescription' + this.id);
 				if(d) d.innerHTML = '';
@@ -1945,23 +2330,93 @@ Molpy.Up = function() {
 					}
 				}
 			};
+			
+			// Methods for Div Creation
+			this.getFullClass = function() {
+				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
+				if(this.HasUpgrade()) cn += ' action';
+				if(this.np < 0) cn += 'flip-horizontal';
+				return cn;
+			}
+			
+			this.getHeading = function() {
+				return '' + Molpy.groupNames[this.group][0] + (this.HasUpgrade() ? '+' : '');
+			}
+			
+			this.getFormattedName = function() {
+				return '' + format((this.earned || this.visibility < 2 ? this.name : '????'));
+			};
+			
+			this.getOwned = function() {return '';}
+			
+			this.getPrice = function() {return '';}
+			
+			this.getBuySell = function() {return '';}
+			
+			this.getProduction = function() {return '';}
+			
+			this.getDesc = function() {
+				var text = EvalMaybeFunction((Molpy.IsStatsVisible() && this.stats) ? this.stats : this.desc, this);
+				return format(((this.earned || this.visibility < 1) ? text : '????')) + this.GetAlias();
+			}
+			
+			// Args:
+			//    forceNew (T/F): force recreation of the object's div
+			//    hover (T/F): add hover mechanics to the div
+			//    nohide (T/F): don't automatically hide the description when the div is created, useful for clicking a div's buttons
+			this.getDiv = function(args) {
+				if(this.divElement) {
+					if(!args.forceNew)
+						return this.divElement;
+					this.divElement.remove();
+				}
+				this.divElement = Molpy.newObjectDiv('badge', this, {hover: (args.hover || false), nohide: (args.nohide || false)});
+				return this.divElement;
+			}
+			
+			this.hasDiv = function() {
+				if(this.divElement) return true;
+				return false;
+			}
+			
+			// Methods for Div Updates
+			
+			this.repaint = function() {
+				if(!this.divElement) return;
+				
+				var parent = this.divElement.parent();
+				var index = this.divElement.index();
+				Molpy.removeDiv(this);
+				
+				// If mouse is currently hovering over this, it will start hovered
+				var nh = false;
+				var overID = '' + this.name + this.id;
+				if(Molpy.mouseIsOver == overID) nh = true;
+				
+				this.getDiv({forceNew: true, hover: true, nohide: nh});
+				parent.children().eq(index).before(this.divElement);		
+			}
+			
+			this.updateAll = function() {} //badges don't really update, would be nice to get rid of this
 
 			// Add Badge to lists
 			Molpy.Badges[this.alias] = this;
 			Molpy.BadgesById[this.id] = this;
 			Molpy.BadgeAKA[this.name] = this.alias;
 			
-			// Create CSS style for badge
-			if(this.gifIcon){
-				addCSSRule(document.styleSheets[1], '.darkscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.gif' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.gif' )");
-			} else if(this.icon) {
-				addCSSRule(document.styleSheets[1], '.darkscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
-			}
-			if(this.heresy){
-				addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
-				addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot #badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
+			// Create CSS style for badges with unique icons
+			if(this.icon != 'discov' && this.icon != 'sandmonument' && this.icon != 'glassmonument' && this.icon != 'masterpiece') {
+				if(this.gifIcon){
+					addCSSRule(document.styleSheets[1], '.darkscheme .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.gif' )");
+					addCSSRule(document.styleSheets[1], '.lightscheme .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.gif' )");
+				} else if(this.icon) {
+					addCSSRule(document.styleSheets[1], '.darkscheme .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_icon.png' )");
+					addCSSRule(document.styleSheets[1], '.lightscheme .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_icon.png' )");
+				}
+				if(this.heresy){
+					addCSSRule(document.styleSheets[1], '.darkscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_light_heresy_icon.png' )");
+					addCSSRule(document.styleSheets[1], '.lightscheme.heresy .loot .badge_' + this.icon + '.icon', "background-image:url('img/badge_" + this.icon + "_dark_heresy_icon.png' )");
+				}
 			}
 			
 			Molpy.BadgeN++;
@@ -1976,16 +2431,17 @@ Molpy.Up = function() {
 				if(baby) {
 					if(baby.earned == 0 && !Molpy.needlePulling) {
 						baby.earned = 1;
+						Molpy.lootAddBadge(baby);
 						_gaq && _gaq.push(['_trackEvent', 'Badge', 'Earn', baby.name, Molpy.BadgesOwned < 6 || baby.group != 'badges' && !camera]);
 						if(Molpy.BadgesOwned == 0) Molpy.EarnBadge('Redundant Redundancy');
-						Molpy.badgeRepaint = 1;
+						Molpy.badgeNeedRepaint = 1;
 						Molpy.recalculateDig = 1;
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[baby.group] = 1;
 						if(baby.group == 'badges') {
 							Molpy.Notify('Badge Earned: ' + baby.name, 1, 0, 0, EvalMaybeFunction(baby.desc));
 						} else {
-							Molpy.Notify(Molpy.MaybeWrapFlipHoriz(baby.name, baby.np < 0), 1);
+							Molpy.Notify((baby.np < 0 ? '<div class="flip-horizontal">' + baby.name + '</div>' : baby.name), 1);
 						}
 
 						Molpy.EarnBadge('Redundant');
@@ -2058,9 +2514,6 @@ Molpy.Up = function() {
 		};
 		
 		Molpy.Redacted = function(args) {
-			this.possibleLocations = 6;
-			this.drawType = [];
-			
 			this.word2 = Molpy.BeanishToCuegish("UmVkdW5kYW50");
 			this.word = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
 			this.words = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
@@ -2073,24 +2526,45 @@ Molpy.Up = function() {
 			
 			this.countup = 0;
 			this.toggle = 0;
+			this.possibleLocations = 7;
 			this.location = 0; // Which section it will appear in
 			this.group = ''; // Which group it will appear in
 			this.dispIndex = -1;
+			this.drawType = [];
+			this.divElement = null;
+			
+			this.divList = {
+					1: $('#sandtools'),
+					2: $('#castletools'),
+					3: $('#boosts'),
+					4: $('#loot'), // in a boost group
+					5: $('#loot'), // in a badge  group
+					6: $('#loot'), // in badges available
+					7: $('#loot')}; // in tagged list
+			this.titleList = {
+					1: $('#toolSTitle'),
+					2: $('#toolCTitle'),
+					3: $('#boostTitle'),
+					4: $('#lootTitle'),
+					5: $('#lootTitle'),
+					6: $('#lootTitle'),
+					7: $('#lootTitle')};
+			
+			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop', 'floatbox boost shop',
+			                   'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop', 'lootbox boost loot'];
+			this.tempAreaClass = '';
 			
 			this.checkToggle = function() {
 				if(this.toggle) {
 					this.countup++;
 					var redC = g('redactedcountdown');
 					if(redC) redC.innerHTML = Molpify(this.toggle - this.countup);
-
 					if(this.countup >= this.toggle) {
 						this.countup = 0;
 						if(this.location) {
 							this.location = 0; //hide because the redacted was missed
 							this.drawType = [];
-							Molpy.shopRepaint = 1;
-							Molpy.boostRepaint = 1;
-							Molpy.badgeRepaint = 1;
+							this.removeDiv();
 							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
 							this.chainCurrent = 0;
 							this.randomiseTime();
@@ -2099,9 +2573,7 @@ Molpy.Up = function() {
 							this.jump();
 							var stay = 6 * (4 + Molpy.Got('Kitnip') + Molpy.Got('SGC') * 2);
 							this.toggle = stay;
-							Molpy.shopRepaint = 1;
-							Molpy.boostRepaint = 1;
-							Molpy.badgeRepaint = 1;
+							Molpy.repaintRedacted();
 						}
 					}
 				} else {//initial setup
@@ -2121,9 +2593,8 @@ Molpy.Up = function() {
 			
 			this.onClick = function(level) {
 				level = level || 0;
-				Molpy.shopRepaint = 1;
-				Molpy.boostRepaint = 1;
-				Molpy.badgeRepaint = 1;
+				this.removeDiv();
+				Molpy.lootSelectionNeedRepaint = 1;
 				if(this.drawType[level] != 'show') {
 					Molpy.UnlockBoost('Technicolour Dream Cat');
 					this.drawType[level] = 'show';
@@ -2190,26 +2661,46 @@ Molpy.Up = function() {
 			};
 			
 			this.jump = function() {
-				//JUMP!
-				this.location = Math.ceil((this.possibleLocations + 2) * Math.random());
-				if(this.location > this.possibleLocations) this.location = 4;
+				// If no possible spots are open, then no redacteds can spawn
+				var possible = false;
+				for(var i in this.divList)
+					if(this.divList[i].is(':visible')) {
+						possible = true;
+						break;
+					}
+				if(!possible) this.location = 0;
+				
+				// There is at least one valid spawn location, grab a random one
+				//TODO this can be made better by making a list of valid first and selecting from that instead
+				var valid = false;
+				var loopNum = 0;
+				var randNum = 0;
+				while(loopNum < 50 && valid == false) {
+					randNum = Math.ceil((this.possibleLocations + 2) * Math.random());
+					if(randNum > this.possibleLocations) randNum = 4;
+					if(this.divList[randNum].is(':visible')) {
+						this.location = randNum;
+						valid = true;
+					}
+					loopNum ++;
+				}
+				
+				// Unlucky RNG, didn't find a valid spawn location 
+				if(!valid) this.location = 0;
+				
 				this.dispIndex = -1;
 			};
-			
-			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop',
-			              'floatbox boost shop', 'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop'];
-			this.tempAreaClass = '';
 
 			this.getHTML = function(heading, level) {
 				level = level || 0;
 				var drawType = this.drawType[level];
-				var spoiler = '';
-				var label = 'Hide';
-				if(drawType == 'show') label = 'Show';
+				var label = (drawType == 'show') ? 'Show' : 'Hide';
+				
 				heading = heading ? '<h1>' + Molpy.Redacted.brackets + '</h1>' : '';
-				var countdown = (level == 0 ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '');
+				var countdown = (level == 0) ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '';
 				var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
 					+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
+				
 				if(drawType == 'recur') {
 					str += this.getHTML(heading, level + 1);
 				} else if(drawType == 'hide1') {
@@ -2220,8 +2711,146 @@ Molpy.Up = function() {
 
 				return str + '</div></div>';
 			}
+			
+			this.getDiv = function(heading, level, forceNew) {
+				if(!this.divElement || forceNew) {
+					if(forceNew) {
+						this.removeDiv();
+					}
+					this.divElement = $(this.getHTML(heading, level));
+				}
+				
+				return this.divElement;
+			}
+			
+			this.removeDiv = function() {
+				if(!this.divElement) return;
+				this.divElement.remove();
+				this.divElement = null;
+				for(var i in Molpy.Redacted.titleList) {
+					Molpy.Redacted.titleList[i].toggleClass('redacted-area', false);
+				}
+			}
 		}
 		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?
+		
+		Molpy.TaggedLoot = [];
+		
+		Molpy.BuildLootLists = function () {
+			Molpy.TaggedLoot = [];
+			Molpy.BoostsBought = [];
+			Molpy.BadgesEarned = [];
+			Molpy.BadgesAvailable = [];
+			
+			// Setup Boost list for use
+			for(var i in Molpy.Boosts) {
+				var me = Molpy.Boosts[i];
+				if(me.bought) Molpy.BoostsBought.push(me);
+				if(me.bought && me.className && me.className != '') {
+					Molpy.TaggedLoot.push(me);
+				}
+			}
+			
+			// Setup Badge list for use
+			for( var i in Molpy.BadgesById) {
+				var me = Molpy.BadgesById[i];
+				if(!me.earned && me.group == 'badges'){
+					Molpy.BadgesAvailable.push(me);
+				}
+				else if(me.earned){
+					Molpy.BadgesEarned.push(me);
+					if(me.className && me.className != '') Molpy.TaggedLoot.push(me);
+				}
+			}
+			
+			Molpy.BoostsBought.sort(Molpy.NameSort);
+			Molpy.BadgesAvailable.sort(Molpy.NameSort);
+			Molpy.BadgesEarned.sort(Molpy.NameSort);
+			Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
+		}
+		
+		Molpy.lootAddBoost = function(boost) {
+			if(Molpy.BoostsBought.length < 4) {
+				Molpy.BoostsBought.push(boost);
+				Molpy.BoostsBought.sort(Molpy.NameSort);
+			} else
+				Molpy.lootSortedInsert(boost, Molpy.BoostsBought);
+			
+			if(boost.className && boost.className != '') {
+				if(Molpy.TaggedLoot.length < 4) {
+					Molpy.TaggedLoot.push(boost);
+					Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
+				} else
+					Molpy.lootSortedInsert(boost, Molpy.TaggedLoot, 0, Molpy.TaggedLoot.length, true);
+			}
+		}
+		
+		Molpy.lootAddBadge = function(badge) {
+			if(Molpy.BadgesEarned.length < 4) {
+				Molpy.BadgesEarned.push(badge);
+				Molpy.BadgesEarned.sort(Molpy.NameSort);
+			} else
+				Molpy.lootSortedInsert(badge, Molpy.BadgesEarned);
+			
+			if(badge.className && badge.className != '') {
+				if(Molpy.TaggedLoot.length < 4) {
+					Molpy.TaggedLoot.push(badge);
+					Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
+				} else
+					Molpy.lootSortedInsert(badge, Molpy.TaggedLoot, 0, Molpy.TaggedLoot.length, true);
+			}
+			
+			//remove badge from available list if it is in there
+			var index = $.inArray(badge, Molpy.BadgesAvailable);
+			if(index > -1)
+				Molpy.BadgesAvailable.splice(index, 1);
+		}
+		
+		Molpy.lootSortedInsert = function(object, array) {
+			array.splice(Molpy.lootFindInsert(object, array) + 1, 0, object)
+		}
+		
+		Molpy.lootRemoveBoost = function(boost) {
+			var index = $.inArray(boost, Molpy.BadgesAvailable);
+			if(index > -1)
+				Molpy.BadgesAvailable.splice(index, 1);
+		}
+		
+		Molpy.lootCheckTagged = function(object) {
+			if(!object.className || object.className == '') {
+				var index = $.inArray(object, Molpy.TaggedLoot);
+				if(index > -1) {
+					Molpy.TaggedLoot.splice(index, 1);
+				}
+			} else {
+				var index = $.inArray(object, Molpy.TaggedLoot);
+				if(index <= -1) {
+					Molpy.TaggedLoot.push(object);
+					Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
+				}
+			}
+		}
+		
+		Molpy.lootFindInsert = function(object, array, start, end, tagged) {
+			start = start || 0;
+			end = end || array.length;
+			tagged = tagged || false;
+			var pivot = Math.floor(start + (end - start) / 2);
+			if (end-start <= 1 || array[pivot] === object) return pivot;
+			
+			// Figure out if we need to look before or after pivot for insertion point
+			var searchAfter = true; 
+			if(tagged)
+				searchAfter = Molpy.ClassNameSort(object, array[pivot]) > 0 ? true : false;
+			else
+				searchAfter = Molpy.NameSort(object, array[pivot]) > 0 ? true : false;
+			
+			if(searchAfter) {
+				return Molpy.lootFindInsert(object, array, pivot, end);
+			} else {
+				return Molpy.lootFindInsert(object, array, start, pivot);
+			}
+		}
 
 		Molpy.RewardRedacted = function(forceDepartment, automationLevel) {
 			var event = forceDepartment ? 'DoRD' : Molpy.Redacted.word;
@@ -2679,6 +3308,7 @@ Molpy.Up = function() {
 	Molpy.Think = function() {
 		Molpy.toolsBuilt = 0;
 		Molpy.SandToCastles();
+		Molpy.checkLootNums();
 
 		var pp = Molpy.Boosts['Price Protection'];
 		if(pp.power > 1) pp.power--;
@@ -2706,8 +3336,9 @@ Molpy.Up = function() {
 					var newclass = me.classChange();
 					if (newclass != me.className) {
 						me.className = newclass;
+						Molpy.lootCheckTagged(me);
 						me.Refresh();
-						Molpy.boostRepaint = 1;
+						Molpy.boostNeedRepaint = 1;
 					}
 				}
 			}
@@ -2719,8 +3350,9 @@ Molpy.Up = function() {
 					var newclass = me.classChange();
 					if (newclass != me.className) {
 						me.className = newclass;
+						Molpy.lootCheckTagged(me);
 						me.Refresh();
-						Molpy.badgeRepaint = 1;
+						Molpy.badgeNeedRepaint = 1;
 					}
 				}
 			}
@@ -2774,6 +3406,8 @@ Molpy.Up = function() {
 		Molpy.Donkey();
 
 		if(Math.floor(Molpy.ONGelapsed / 1000) % 3 == 0) Molpy.flashes = 0;
+		
+		Molpy.toolsNeedRepaint = 1;
 	};
 
 	Molpy.PerformJudgement = function() {
@@ -2964,7 +3598,7 @@ Molpy.Up = function() {
 					var mhp = Molpy.Boosts['MHP'];
 					if(mhp.unlocked && mhp.power > 20 && flandom(9) == 0) {
 						mhp.power--;
-						Molpy.boostRepaint = 1;
+						Molpy.boostNeedRepaint = 1;
 					}
 				} else {
 					bbc.power = 0;

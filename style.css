@@ -345,6 +345,39 @@ a:active
 	width:inherit;
 }
 
+#lootNavigation
+{
+	padding: 10px;
+}
+
+#navLimit, #navButtons
+{
+	display: inline;
+	vertical-align: middle;
+}
+
+#navButtons, #searchButtons
+{
+	float: right;
+}
+
+#lootSearch
+{
+	padding: 3px 10px 3px 10px;
+}
+
+#searchContainer
+{
+	display: block;
+	overflow: hidden;
+	min-width: 50px;
+}
+
+#lootSearchBox
+{
+	width: 100%;
+}
+
 #sectionMainStats
 {
 }
