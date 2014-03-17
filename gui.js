@@ -769,7 +769,6 @@ Molpy.DefineGUI = function() {
 		if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 7) {
 			if(lootArray[Molpy.Redacted.dispIndex] && lootArray[Molpy.Redacted.dispIndex].hasDiv()) {
 				var div = lootArray[Molpy.Redacted.dispIndex].getDiv({});
-				console.log(div);
 				if(div) specialIndex = div.index();
 			}
 		} else {

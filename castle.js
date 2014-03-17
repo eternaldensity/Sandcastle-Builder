@@ -2811,9 +2811,16 @@ Molpy.Up = function() {
 		}
 		
 		Molpy.lootRemoveBoost = function(boost) {
-			var index = $.inArray(boost, Molpy.BadgesAvailable);
-			if(index > -1)
-				Molpy.BadgesAvailable.splice(index, 1);
+			var index = $.inArray(boost, Molpy.BoostsBought);
+			if(index > -1) {
+				Molpy.BoostsBought.splice(index, 1);
+				Molpy.lootNeedRepaint = 1;
+			}
+			index = $.inArray(boost, Molpy.TaggedLoot);
+			if(index > -1) {
+				Molpy.TaggedLoot.splice(index, 1);
+				Molpy.lootNeedRepaint = 1;
+			}
 		}
 		
 		Molpy.lootCheckTagged = function(object) {
