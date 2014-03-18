@@ -23,13 +23,13 @@ Molpy.DefaultOptions = function() {
 	for (var opi in Molpy.Options) {
 		var opt=Molpy.Options[opi];
         	Molpy.options[opt.name] = opt.defaultval;
-        	if (opt.onchange) opt.onchange();
+        	if (opt.onchange) opt.onchange(0);
 	}
 }
 
-Molpy.RefreshOptions = function() {
+Molpy.RefreshOptions = function(manual) {
 	if(!Molpy.molpish) return;
-	Molpy.EarnBadge('Decisions, Decisions');
+	if (manual) Molpy.EarnBadge('Decisions, Decisions');
 	str = '';
 	for (var opi in Molpy.OptionsById) {
 		var opt=Molpy.OptionsById[opi];
@@ -50,8 +50,8 @@ Molpy.ToggleOption = function(id) {
 	opt = Molpy.Options[id];
 	Molpy.options[opt.name]++;
 	if (Molpy.options[opt.name] > opt.range) Molpy.options[opt.name]=0;
-	if (opt.onchange) opt.onchange();
-	Molpy.RefreshOptions();
+	if (opt.onchange) opt.onchange(1);
+	Molpy.RefreshOptions(1);
 }
 
 Molpy.Setoption = function(opt,val) {
@@ -107,8 +107,8 @@ new Molpy.Option({
 	name: 'colourscheme',
 	title: 'Colour Scheme',
 	visability: function() {return Molpy.Got('Chromatic Heresy')}, 
-	onchange: function() {
-		Molpy.EarnBadge('Night and Dip');
+	onchange: function(manual) {
+		if (manual) Molpy.EarnBadge('Night and Dip');
 		Molpy.UpdateColourScheme();
 		Molpy.flashes++;
 		if(Molpy.flashes == 30) Molpy.EarnBadge('I love my flashy gif');

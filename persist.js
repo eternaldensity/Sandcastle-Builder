@@ -700,7 +700,7 @@
 		return 1;
 	}
 
-	Molpy.needlePulling = 0;
+	Molpy.needlePulling = 1;
 	Molpy.FromNeedlePulledThing = function(thread) {
 		Molpy.needlePulling = 1; //prevent earning badges that haven't been loaded
 		var p = 'P'; //Pipe seParator
@@ -928,7 +928,9 @@
 			Molpy.Boosts['Time Lord'].power = Molpy.Boosts['Time Lord'].bought +1 - Molpy.Level('Time Lord'); // Count down rather than up
 		}
 		if(version < 3.34) {
-			if (Molpy.Boosts['WiseDragon'].power > 444) Molpy.UnlockBoost('Cress');
+			if (Molpy.Boosts['WiseDragon'].power > 444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
+			if (Molpy.Has('Maps', 80)) Molpy.UnlockBoost('DNS'); 
+			if (Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
 		}
 	}
 
@@ -1094,7 +1096,7 @@
 			Molpy.allNeedRepaint = 1;
 
 			Molpy.showOptions = 0;
-			Molpy.RefreshOptions();
+			Molpy.RefreshOptions(0);
 
 			Molpy.UpdateBeach();
 			Molpy.HandlePeriods();
