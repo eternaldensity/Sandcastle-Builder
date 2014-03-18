@@ -691,7 +691,6 @@ Molpy.CheckBuyUnlocks = function(tool) {
 				Molpy.faCosts.push(n);
 	}
 
-	if(!tool) Molpy.RefreshOptions();
 }
 
 Molpy.jDipBoosts = ['NavCode', 'Irregular Rivers', 'Big Splash', 'Stacked', 'Minigun', 'Ninja Assistants'];

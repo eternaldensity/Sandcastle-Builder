@@ -1096,7 +1096,7 @@
 			Molpy.allNeedRepaint = 1;
 
 			Molpy.showOptions = 0;
-			Molpy.RefreshOptions();
+			Molpy.RefreshOptions(0);
 
 			Molpy.UpdateBeach();
 			Molpy.HandlePeriods();
