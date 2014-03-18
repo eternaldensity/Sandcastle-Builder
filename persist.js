@@ -1104,6 +1104,7 @@
 			Molpy.EarnBadge('Not Ground Zero');
 			Molpy.AdjustFade();
 			Molpy.UpdateColourScheme();
+			Molpy.BuildLootLists();
 			coma || _gaq && _gaq.push(['_trackEvent', 'Molpy Down', 'Complete', '' + Molpy.highestNPvisited]);
 		}
 	}
@@ -1138,6 +1139,7 @@
 			Molpy.UpdateFaves(1);
 			_gaq.push(['_trackEvent', 'Coma', 'Complete', '' + Molpy.highestNPvisited]);
 			
+			Molpy.BuildLootLists();
 			Molpy.allNeedRepaint = 1;
 		}
 	}

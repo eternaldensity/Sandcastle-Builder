@@ -8290,7 +8290,7 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		desc: function(me) {
-			var str = 'When active trebles the time before the NewPixBots activate.';
+			var str = 'When active, triples the time before the NewPixBots activate.';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
