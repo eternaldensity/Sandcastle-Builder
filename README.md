@@ -33,6 +33,8 @@ For personal amusement only.
 - Papal decree for Mustard
 - Reduce the number Maps needed for the Dragon Nesting Site
 - Raised the costs for The Dragon Nest and Dragon Queen
+- LucidCrux's Loot Page and serach controls as seperate layoutable panes
+- Mustard works again
 
 #### Lucid Crux
 - Major Refactor / Redo of the way HTML is generated and div are drawn

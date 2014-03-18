@@ -313,7 +313,8 @@
 		          + (Molpy.Redacted.totalClicks) + s
 		          + (Molpy.highestNPvisited) + s
 		          + (Molpy.Redacted.chainCurrent) + s
-		          + (Molpy.Redacted.chainMax) + s;
+		          + (Molpy.Redacted.chainMax) + s
+		          + (Molpy.lootPerPage) + s;
 		return str;
 	}
 
@@ -473,6 +474,7 @@
 			Molpy.highestNPvisited = parseInt(pixels[13]) || Math.abs(Molpy.newpixNumber);
 			Molpy.Redacted.chainCurrent = parseFloat(pixels[14]) || 0;
 			Molpy.Redacted.chainMax = parseFloat(pixels[15]) || 0;
+			Molpy.lootPerPage = parseInt(pixels[16]) || 20;
 		}
 	};
 
@@ -764,6 +766,7 @@
 
 		Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
 		Molpy.CheckSandRateBadges(); //shiny!
+		Molpy.MustardCheck();
 
 		Molpy.ONGstart = ONGsnip(new Date()); //if you missed the ONG before loading, too bad!
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
@@ -1141,6 +1144,7 @@
 			
 			Molpy.BuildLootLists();
 			Molpy.allNeedRepaint = 1;
+			Molpy.mustardTools = 0;
 		}
 	}
 }

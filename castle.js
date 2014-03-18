@@ -963,6 +963,18 @@ Molpy.Up = function() {
 		Molpy.CastleToolsOwned = 0;
 		Molpy.priceFactor = 1;
 
+		Molpy.mustardTools = 0;
+		Molpy.MustardCheck = function() {
+			Molpy.mustardTools = 0;
+			for(var i in Molpy.SandToolsById){
+				if(isNaN(Molpy.SandToolsById[i].amount)) Molpy.mustardTools ++;	
+			}
+			for(var i in Molpy.CastleToolsById){
+				if(isNaN(Molpy.CastleToolsById[i].amount)) Molpy.mustardTools ++;	
+			}
+			if(Molpy.mustardTools == 12) Molpy.EarnBadge('Mustard Tools');
+		};
+
 		Molpy.SandTool = function(args) {
 			this.id = Molpy.SandToolsN;
 			this.name = args.name;
@@ -1084,17 +1096,7 @@ Molpy.Up = function() {
 					Molpy.Add('AD', cost);
 					_gaq && _gaq.push(['_trackEvent', 'Destroy Tool', this.name, '' + destroy]);
 					Molpy.CheckDragon();
-					
-					if(!Molpy.Badges['Mustard Tools'].earned) {
-						var mustardTools = 0;
-						for(var i in Molpy.SandToolsById){
-							if(isNaN(Molpy.SandToolsById[i].amount)) mustardTools ++;	
-						}
-						for(var i in Molpy.CastleToolsById){
-							if(isNaN(Molpy.CastleToolsById[i].amount)) mustardTools ++;	
-						}
-						if(mustardTools == 12) Molpy.EarnBadge('Mustard Tools');
-					}
+					Molpy.MustardCheck();
 				}
 			};
 			
@@ -1402,17 +1404,7 @@ Molpy.Up = function() {
 					Molpy.Add('AD', cost);
 					_gaq && _gaq.push(['_trackEvent', 'Destroy Tool', this.name, '' + destroy]);
 					Molpy.CheckDragon();
-					
-					if(!Molpy.Badges['Mustard Tools'].earned) {
-						var mustardTools = 0;
-						for(var i in Molpy.SandToolsById){
-							if(isNaN(Molpy.SandToolsById[i].amount)) mustardTools ++;	
-						}
-						for(var i in Molpy.CastleToolsById){
-							if(isNaN(Molpy.CastleToolsById[i].amount)) mustardTools ++;	
-						}
-						if(mustardTools == 12) Molpy.EarnBadge('Mustard Tools');
-					}
+					Molpy.MustardCheck();
 				}
 				else
 				{
@@ -1563,7 +1555,7 @@ Molpy.Up = function() {
 			this.getProduction = function() {
 				var production = '';
 				if(isNaN(this.amount))
-					production += 'Mustard/click: 1';
+					production += 'Mustard/click: 1<br>';
 				if(this.currentActive && Molpy.ninjaTime > Molpy.ONGelapsed) {
 					if(Molpy.ninjad) {
 						production += "Ninja'd!";
