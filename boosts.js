@@ -7429,8 +7429,14 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			return 'Set the amount of a random Tool to 0 owned at a cost of 500 Mustard.'
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.MustardSale();" value="Use"></input>' : '');
+			var str = 'Set the amount of a random Tool to 0 owned at a cost of 500 Mustard.'
+			if (me.bought) {
+				str += '<br><input type="Button" onclick="Molpy.MustardSale(0);" value="Use"></input>';
+				var all=500*2*Molpy.tfOrder.length;
+				if (Molpy.Has('Mustard',all)) str += '<br>For a cost of ' + Molpify(all) + ' Mustard, set all to 0.<br>' +
+					'<input type="button" onclick="Molpy.MustardSale(1);" value="Set all"></input>';
+			}
+			return str;
 		},
 		
 		price: {
@@ -7439,13 +7445,27 @@ Molpy.DefineBoosts = function() {
 		}
 	});
 	
-	Molpy.MustardSale = function() {
-		if(Molpy.Spend('Mustard', 500)) {
-			var tool = GLRschoice(Molpy.tfOrder);
-			tool.amount = 0;
-			tool.temp = 0;
-			tool.Refresh();
-			Molpy.Notify('Reset ' + tool.name);
+	Molpy.MustardSale = function(mode) {
+		if (mode == 0) {
+			if(Molpy.Spend('Mustard', 500)) {
+				var tool = GLRschoice(Molpy.tfOrder);
+				tool.amount = 0;
+				tool.temp = 0;
+				tool.Refresh();
+				Molpy.Notify('Reset ' + tool.name);
+			}
+		} else {
+			var all=500*2*Molpy.tfOrder.length;
+			if(Molpy.Spend('Mustard', all)) {
+				var t = Molpy.tfOrder.length;
+				while(t--) {
+					var tool = Molpy.tfOrder[t];
+					tool.amount = 0;
+					tool.temp = 0;
+					tool.Refresh();
+				}
+				Molpy.Notify('Reset all tools');
+			}
 		}
 	}
 
@@ -7553,8 +7573,14 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			return 'Spend 200 Mustard to convert a random tool to Mustard'
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.MustardInjector()" value="Use"></input>' : '');
+			var str = 'Spend 200 Mustard to convert a random tool to Mustard.'
+			if (me.bought) {
+				str += '<br><input type="Button" onclick="Molpy.MustardInjector(0);" value="Use"></input>';
+				var all=200*2*Molpy.tfOrder.length;
+				if (Molpy.Has('Mustard',all)) str += '<br>For a cost of ' + Molpify(all) + ' Mustard, set all Tools to Mustard.<br>' +
+					'<input type="button" onclick="Molpy.MustardInjector(1);" value="Set all"></input>';
+			}
+			return str;
 		},
 		
 		price: {
@@ -7566,13 +7592,27 @@ Molpy.DefineBoosts = function() {
 		tier: 3
 	});
 	
-	Molpy.MustardInjector = function() {
-		if(Molpy.Spend('Mustard', 200)) {
-			var tool = GLRschoice(Molpy.tfOrder);
-			tool.amount = NaN;
-			tool.temp = 0;
-			tool.Refresh();
-			Molpy.Notify('Mustarded ' + tool.name);
+	Molpy.MustardInjector = function(mode) {
+		if (mode == 0) {
+			if(Molpy.Spend('Mustard', 200)) {
+				var tool = GLRschoice(Molpy.tfOrder);
+				tool.amount = NaN;
+				tool.temp = 0;
+				tool.Refresh();
+				Molpy.Notify('Mustarded ' + tool.name);
+			}
+		} else {
+			var all=200*2*Molpy.tfOrder.length;
+			if(Molpy.Spend('Mustard', all)) {
+				var t = Molpy.tfOrder.length;
+				while(t--) {
+					var tool = Molpy.tfOrder[t];
+					tool.amount = NaN;
+					tool.temp = 0;
+					tool.Refresh();
+				}
+				Molpy.Notify('Mustarded all tools');
+			}
 		}
 	}
 
