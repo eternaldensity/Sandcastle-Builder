@@ -1896,18 +1896,18 @@ Molpy.DefineGUI = function() {
 		Molpy.boxVisOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Shop', 'Inventory', 'SandTools',
 				'CastleTools', 'Options', 'Stats', 'Log', 'Export', 'About', 'SandCounts', 'NPInfo', 'Layouts',
 				'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout', 'TFCounts',
-				'Faves', 'StuffCounts', 'IncomeCounts'];
+				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
 		Molpy.draggableOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Options', 'Stats', 'Log',
 				'Export', 'SandCounts', 'TFCounts', 'NPInfo', 'About', 'SandTools', 'CastleTools', 'Shop', 'Inventory',
 				'Layouts', 'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout',
-				'Faves', 'StuffCounts', 'IncomeCounts'];
+				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
 		Molpy.sizableOrder = ['View', 'File', 'Links', 'Options', 'Stats', 'Log', 'Export', 'SandTools', 'CastleTools',
 				'Shop', 'Inventory', 'Layouts', 'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats',
-				'OtherStats', 'QuickLayout', 'Faves', 'StuffCounts', 'IncomeCounts'];
+				'OtherStats', 'QuickLayout', 'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
 		Molpy.borderColorOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Shop', 'Inventory', 'SandTools',
 				'CastleTools', 'Options', 'Stats', 'Log', 'Export', 'About', 'SandCounts', 'NPInfo', 'Layouts',
 				'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout', 'TFCounts',
-				'Faves', 'StuffCounts', 'IncomeCounts'];
+				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
 		$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);
 		$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 		Molpy.activeLayout = new Molpy.Layout({
