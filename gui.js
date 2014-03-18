@@ -1834,7 +1834,7 @@ Molpy.DefineGUI = function() {
 			if(this.boost) {
 				Molpy.DisplayingFave =1;
 				g('optionFave' + n).text = this.boost.name;
-				g('faveHeader' + n).innerHTML = this.boost.getHeading() + this.boost.getFormattedName();
+				g('faveHeader' + n).innerHTML = '<H1 class="groupTitle">[' + this.boost.getHeading() + ']</H1><H2 class="objName">' + this.boost.getFormattedName() + '</H2>';
 				if(this.boost.boost) {
 					g('faveContent' + n).innerHTML = (this.boost.unlocked ? this.boost.getDesc() : 'This Boost is locked!');
 					this.boost.updateBuy(1);
