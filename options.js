@@ -58,8 +58,27 @@ Molpy.Setoption = function(opt,val) {
 	Molpy.options[opt] = val;
 }
 
-// These options are defined in the display order
+Molpy.OptionsToString = function() {
+	var str = '';
+	for (var opt in Molpy.OptionSaveOrder) str += Molpy.options[Molpy.OptionSaveOrder[opt]];
+	return str;
+};
 
+Molpy.OptionsFromString = function(thread) {
+	var pixels = thread.split('');
+	for (var opt in Molpy.OptionSaveOrder) {
+		var name = Molpy.OptionSaveOrder[opt]
+		Molpy.options[name] = parseInt(pixels[opt])
+		if (isNaN(Molpy.options[name])) Molpy.options[name] = Molpy.Options[name].defaultval;
+	}
+};
+
+// ALWAYS add to the end of this list
+Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpax', 'longpostfix', 'colourscheme',
+			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll',
+			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit' ];
+	
+// These options are defined in the display order
 
 new Molpy.Option({
 	name: 'autosave',
@@ -67,7 +86,7 @@ new Molpy.Option({
 	defaultval: 2,
 	range: 9,
 	visability: function() {return Molpy.Got('Autosave Option')}, 
-	text: function()  {
+	text: function() {
 		var auto = Molpy.options.autosave;
 		if(auto) {
 			return 'Every ' + auto * 5 + 'milliNewPix';
@@ -90,6 +109,24 @@ new Molpy.Option({
 new Molpy.Option({
 	name: 'autoscroll',
 	title: 'Autoscroll Log',		
+});
+
+new Molpy.Option({
+	name: 'loglimit',
+	title: 'Kept logs',
+	defaultval: 3,
+	range: 9,	
+	text: function() {
+		val = Molpy.options.loglimit;
+		if(val) {
+			return '' + val + ' ONGs of logs';
+		} else {
+			return 'No limit';
+		}
+	},
+	onchange: function() {
+		Molpy.CleanLogs();
+	},
 });
 
 new Molpy.Option({
@@ -249,7 +286,7 @@ new Molpy.Option({
 
 // Save and Load ALWAYS add to the end of the lists - Each is saved as ONE character
 //
-	Molpy.OptionsToString = function() {
+/*	Molpy.OptionsToString = function() {
 		var str = '' + (Molpy.options.particles ? '1' : '0') + 
 			(Molpy.options.numbers ? '1' : '0') +
 			(Molpy.options.autosave) + 
@@ -268,7 +305,9 @@ new Molpy.Option({
 			(Molpy.options.boostsort) + 
 			(Molpy.options.european) + 
 			(Molpy.options.smalldecimal) +
-			(Molpy.options.logicatcol);
+			(Molpy.options.logicatcol) +
+			(Molpy.options.loglimit) +
+			;
 		return str;
 	}
 
@@ -293,8 +332,9 @@ new Molpy.Option({
 		Molpy.options.european = parseInt(pixels[16]) || 0;
 		Molpy.options.smalldecimal = parseInt(pixels[17]) || 0;
 		Molpy.options.logicatcol = parseInt(pixels[18]) || 0;
+		Molpy.options.loglimit = parseInt(pixels[18]) || 3;
 	}
-
+*/
 
 
 

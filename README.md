@@ -34,8 +34,10 @@ For personal amusement only.
 - Reduce the number Maps needed for the Dragon Nesting Site
 - Raised the costs for The Dragon Nest and Dragon Queen
 - LucidCrux's Loot Page and serach controls as seperate layoutable panes
-- Mustard works again
+- Mustard Tools work again
 - Mustard Sale and Injector can now do all tools if you have enough Mustard
+- Fix very long standing options default error
+- Option for how many ONGs of logs to keep (default 3)
 
 #### Lucid Crux
 - Major Refactor / Redo of the way HTML is generated and div are drawn

@@ -1030,6 +1030,18 @@ Molpy.DefineGUI = function() {
 	Molpy.ClearLog();
 	Molpy.InMyPants = 0;
 	
+	Molpy.CleanLogs = function() { //gets rid of older logs
+		if (!Molpy.options.loglimit) return;
+		if (Molpy.logArchive.length > Molpy.options.loglimit) {
+			Molpy.logArchive.shift();
+			Molpy.currentLog--;
+			Molpy.selectedLog--;
+			if (Molpy.selectedLog < 0) Molpy.selectedLog = 0;
+			Molpy.notifLogPaint = 1;
+			Molpy.CleanLogs(); // In case more need to go
+		}
+	}
+
 	Molpy.LogONG = function(){
 		Molpy.currentLog++;
 		Molpy.logArchive[Molpy.currentLog] = [];
@@ -1038,6 +1050,7 @@ Molpy.DefineGUI = function() {
 		Molpy.selectedLog = Molpy.currentLog;
 		Molpy.logArchive[Molpy.currentLog].string = ""
 		Molpy.notifLogPaint = 1;
+		Molpy.CleanLogs();
 	}
 	
 	Molpy.LogBack = function(){
