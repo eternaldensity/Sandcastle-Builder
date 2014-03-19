@@ -68,8 +68,8 @@ Molpy.OptionsFromString = function(thread) {
 	var pixels = thread.split('');
 	for (var opt in Molpy.OptionSaveOrder) {
 		var name = Molpy.OptionSaveOrder[opt]
-		if (pixels.length >= opt) Molpy.options[name] = parseInt(pixels[opt])
-		else Molpy.options[name] = Molpy.Options[name].defaultval;
+		Molpy.options[name] = parseInt(pixels[opt])
+		if (isNaN(Molpy.options[name])) Molpy.options[name] = Molpy.Options[name].defaultval;
 	}
 };
 
@@ -125,7 +125,7 @@ new Molpy.Option({
 		}
 	},
 	onchange: function() {
-		//Molpy.CleanLogs();
+		Molpy.CleanLogs();
 	},
 });
 

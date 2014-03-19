@@ -37,6 +37,7 @@ For personal amusement only.
 - Mustard Tools work again
 - Mustard Sale and Injector can now do all tools if you have enough Mustard
 - Fix very long standing options default error
+- Option for how many ONGs of logs to keep (default 3)
 
 #### Lucid Crux
 - Major Refactor / Redo of the way HTML is generated and div are drawn
