@@ -3357,7 +3357,7 @@ Molpy.Up = function() {
 					}
 					Molpy.Boosts['Ninja Ritual'].Level = 0;
 				} else {
-					Molpy.Add('Goats', Math.floor((1 + Molpy.Boosts['Ninja Ritual'].Level++ / 5)*Molpy.Papal('Goats')));
+					Molpy.NinjaRitual();
 				}
 			}
 		}

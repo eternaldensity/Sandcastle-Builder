@@ -5063,6 +5063,9 @@ Molpy.DefineBoosts = function() {
 					Molpy.Got('ShadwDrgn') && !Molpy.Has('Shadow Feeder',Molpy.PokeBar()) && Molpy.Spend('Bonemeal', 5)) {
 					Molpy.ShadowStrike(1);
 					Molpy.Add('Shadow Feeder',1);
+					if (Molpy.Got('Shadow Ninja') && 
+						(Molpy.Level('Ninja Ritual') > 777) && 
+						(Math.log(Molpy.Level('Ninja Ritual'))*Math.random()>5) ) Molpy.NinjaRitual();
 				}
 			}
 			else {
@@ -7841,6 +7844,10 @@ Molpy.DefineBoosts = function() {
 		price: {Goats: 300},
 		defStuff: 1
 	});
+	Molpy.NinjaRitual = function() {
+		Molpy.Add('Goats', Math.floor((1 + Molpy.Boosts['Ninja Ritual'].Level++ / 5)*Molpy.Papal('Goats')));
+		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && Molpy.Got('Shadow Feeder')) Molpy.UnlockBoost('Shadow Ninja');
+	};
 	new Molpy.Boost({
 		name: 'Time Lord',
 		icon: 'timelord',
@@ -8773,6 +8780,14 @@ Molpy.DefineBoosts = function() {
 		group: 'chron',
 		price: {FluxCrystals:Infinity, Blackprints:Infinity, Goats:10000},
 		desc: 'There is a mnp every 1.8 seconds, irrespective of the length of the ONG'
+	});
+
+	new Molpy.Boost({
+		name: 'Shadow Ninja',
+		icon: 'shadninja',
+		group: 'ninj',
+		desc: 'When the shadow feeder runs, it may also do a Ninja Ritual',
+		price: {Goats: 50000, FluxCrystals:Infinity, Mustard:10000},
 	});
 
 	// END OF BOOSTS, add new ones immediately before this comment

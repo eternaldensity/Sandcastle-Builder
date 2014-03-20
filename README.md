@@ -40,6 +40,7 @@ For personal amusement only.
 - Option for how many ONGs of logs to keep (default 3)
 - Time Dilation Boost
 - Many minor errors removed (and probably some added)
+- Shadow Ninja Boost
 
 #### Lucid Crux
 - Major Refactor / Redo of the way HTML is generated and div are drawn
