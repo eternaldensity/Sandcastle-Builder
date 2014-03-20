@@ -44,6 +44,8 @@ For personal amusement only.
 - Redundikitties should no longer appear in sections turned off in the section list
 - Loot pages
 - Loot searching
+- Hover is instant
+- More random refactoring
 
 ### 3.33333
 
