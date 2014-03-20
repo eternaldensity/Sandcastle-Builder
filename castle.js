@@ -450,7 +450,7 @@ Molpy.Up = function() {
 			
 			if(Molpy.mustardTools) {
 				var added = Molpy.Add('Mustard', Molpy.mustardTools);
-				if(Molpy.options.numbers) Molpy.AddSandParticle('+' + added + ' mustard');
+				if(Molpy.options.numbers) Molpy.AddSandParticle('+' + Molpify(added,1) + ' mustard');
 			}
 			Molpy.beachClicks += 1;
 			Molpy.CheckClickAchievements();
