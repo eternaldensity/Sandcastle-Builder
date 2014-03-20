@@ -3470,7 +3470,7 @@ Molpy.Up = function() {
 				if(Molpy.Got('Safety Net') && Molpy.Boosts['Safety Net'].power >= 50)
 					Molpy.UnlockBoost('Safety Blanket');
 				if (Molpy.Boosts['Safety Net'].power >= 222 && Molpy.Got('Vacuum Cleaner')) Molpy.UnlockBoost('Overtime') 
-				if (Molpy.Boosts['Safety Net'].power >= 555 && Molpy.Got('Overtime')) Molpy.UnlockBoost('Time Dialation') 
+				if (Molpy.Boosts['Safety Net'].power >= 555 && Molpy.Got('Overtime')) Molpy.UnlockBoost('Time Dilation') 
 			}
 			if(!Molpy.Got('Safety Blanket')) {
 				Molpy.LockBoost('Overcompensating');

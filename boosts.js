@@ -8768,7 +8768,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({
-		name: 'Time Dialation',
+		name: 'Time Dilation',
 		icon: 'dialation',
 		group: 'chron',
 		price: {FluxCrystals:Infinity, Blackprints:Infinity, Goats:10000},

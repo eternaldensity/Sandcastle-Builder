@@ -38,7 +38,7 @@ For personal amusement only.
 - Mustard Sale and Injector can now do all tools if you have enough Mustard
 - Fix very long standing options default error
 - Option for how many ONGs of logs to keep (default 3)
-- Time Dialation Boost
+- Time Dilation Boost
 - Many minor errors removed (and probably some added)
 
 #### Lucid Crux
