@@ -1429,6 +1429,23 @@ Molpy.DefineBoosts = function() {
 			if(me.power <= 20) return 'Speed is at ' + me.power + ' out of 20';
 			if(me.power <= 88) return 'Speed is at ' + me.power + ' out of 88';
 			return 'Speed is at ' + Molpify(me.power);
+		},
+		
+		getReward: function(includeNinja) {
+			var mult = 1000000;
+			if(Molpy.Got('Swedish Chef')) {
+				mult *= 100;
+			} else {
+				if(this.power > 20) Molpy.UnlockBoost('Swedish Chef');
+			}
+			if(Molpy.Got('Phonesaw')) mult *= mult;
+			if(includeNinja && Molpy.Boosts['Ninjasaw'].IsEnabled) {
+				if(Molpy.Has('GlassBlocks', 50)) {
+					Molpy.Spend('GlassBlocks', 50);
+					mult *= Molpy.CalcStealthBuild(0, 1) / 10;
+				}
+			}
+			return this.power * mult;
 		}
 	});
 	
@@ -2034,6 +2051,16 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		classChange: function() { return isFinite(this.power) ? 'action' : '' },
+		
+		makeChips: function(times) {
+			if(!isFinite(Molpy.Level('GlassChips'))) return;
+			var furnaceLevel = (this.power) + 1;
+			if(times) furnaceLevel *= times;
+			if(Molpy.Got('Glass Goat') && Molpy.Has('Goats', 1)) {
+				furnaceLevel *= Molpy.Level('Goats');
+			}
+			Molpy.Add('GlassChips', Math.floor(furnaceLevel*Molpy.Papal('Chips')), 1);
+		}
 	});
 	
 	Molpy.UpgradeSandRefinery = function(n) {
@@ -2339,6 +2366,33 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		classChange: function() { return isFinite(this.power) ? 'action' : '' },
+		
+		makeBlocks: function(times) {
+			if(!isFinite(Molpy.Level('GlassBlocks'))) return;
+			var chillerLevel = (this.power) + 1;
+			if(times) chillerLevel *= times;
+			var chipsFor = chillerLevel;
+
+			var rate = Molpy.ChipsPerBlock();
+			var backoff = 1;
+
+			while(!Molpy.Has('GlassChips', chipsFor * rate)) {
+				chipsFor = (chipsFor - backoff) || 0;
+				backoff *= 2;
+			}
+			if(chipsFor <= 0) {
+				Molpy.Notify('Not enough Glass Chips to make any Blocks', 1);
+				return;
+			} else if(chipsFor < chillerLevel) {
+				Molpy.Notify('Running low on Glass Chips!');
+				chillerLevel = chipsFor;
+			}
+			Molpy.Destroy('GlassChips', chipsFor * rate);
+			if(Molpy.Got('Glass Goat') && Molpy.Has('Goats', 1)) {
+				chillerLevel *= Molpy.Level('Goats');
+			}
+			Molpy.Add('GlassBlocks', Math.floor(chillerLevel*Molpy.Papal('Blocks')), 1);
+		}
 	});
 	
 	Molpy.UpgradeGlassChiller = function(n) {
@@ -4763,6 +4817,28 @@ Molpy.DefineBoosts = function() {
 			}
 		},
 		
+		clickBeach: function() {
+			this.calculateLoadedPerClick();
+			var TFLoaded = this.loadedPerClick;
+			if(TFLoaded){
+				Molpy.Add('TF', TFLoaded);
+				this.manualLoaded += TFLoaded;
+				if(Molpy.options.numbers)
+					Molpy.AddSandParticle('+' + Molpify(TFLoaded, 1));
+			}
+		},
+		
+		digGlass: function(amount) {
+			this.totalLoaded += amount;
+			Molpy.Add('TF', amount);
+		},
+		
+		destroyGlass: function(amount) {
+			amount = Math.min(this.Level, amount);
+			this.Destroy(amount);
+			this.totalDestroyed += amount;
+		},
+		
 		loadedPermNP: 0, // Numer loaded per mNP
 		loadedPerClick: 0,
 		
@@ -6706,6 +6782,51 @@ Molpy.DefineBoosts = function() {
 			return Molpify(me.Level, 3);
 		},
 		
+		calculateSandPerClick: function(multiplier) {
+			multiplier = multiplier || 1;
+			var baserate = 1 + Molpy.Got('Bigger Buckets') * 0.1;
+			var mult = 1;
+			if(Molpy.Got('Huge Buckets')) mult *= 2;
+			if(Molpy.Got('Buccaneer')) mult *= 2;
+			baserate *= mult;
+			if(Molpy.Got('Helpful Hands')) {
+				var pairs = Math.min(Molpy.SandTools['Bucket'].amount, Molpy.SandTools['Cuegan'].amount);
+				baserate += 0.5 * pairs || 0;
+			}
+			if(Molpy.Got('True Colours')) {
+				var pairs = Math.min(Molpy.SandTools['Flag'].amount, Molpy.SandTools['Cuegan'].amount);
+				baserate += 5 * pairs || 0;
+			}
+			if(Molpy.Got('Raise the Flag')) {
+				var pairs = Math.min(Molpy.SandTools['Flag'].amount, Molpy.SandTools['Ladder'].amount);
+				baserate += 50 * pairs || 0;
+			}
+			if(Molpy.Got('Hand it Up')) {
+				var pairs = Math.min(Molpy.SandTools['Bag'].amount, Molpy.SandTools['Ladder'].amount);
+				baserate += 500 * pairs || 0;
+			}
+			if(Molpy.Got('Bucket Brigade')) {
+				baserate += this.sandPermNP * 0.01 * Math.floor(Molpy.SandTools['Bucket'].amount / 50) || 0;
+			}
+
+			if(Molpy.Got('Bag Puns')) {
+				baserate += baserate * (4 / 10) * Math.max(-2, Math.floor((Molpy.SandTools['Bag'].amount - 25) / 5)) || 0;
+			}
+			if(Molpy.Got('Bone Clicker') && Molpy.Has('Bonemeal', 1)) {
+				baserate *= Molpy.Level('Bonemeal');
+			}
+			this.sandPerClick = baserate * multiplier;
+		},
+		
+		clickBeach: function() {
+			Molpy.Dig(this.sandPerClick);
+			Molpy.Boosts['Sand'].manualDug += this.sandPerClick;
+			
+			if(this.sandPerClick && Molpy.options.numbers) Molpy.AddSandParticle('+' + Molpify(this.sandPerClick, 1));
+			
+			if(isNaN(Molpy.Boosts['Sand'].manualDug)) Molpy.Boosts['Sand'].manualDug = 0;
+		},
+		
 		sandPermNP: 0, // Sand per milliNewPix (recaculated when stuff is bought)
 		sandPerClick: 1,
 		
@@ -6962,6 +7083,13 @@ Molpy.DefineBoosts = function() {
 				Molpy.UnlockBoost('Mustard Sale');
 			}
 			return amount;
+		},
+		
+		clickBeach: function() {
+			if(Molpy.mustardTools) {
+				var added = Molpy.Add('Mustard', Molpy.mustardTools);
+				if(Molpy.options.numbers) Molpy.AddSandParticle('+' + Molpify(added,1) + ' mustard');
+			}
 		}
 	});
 	new Molpy.Boost({
