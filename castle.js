@@ -59,7 +59,8 @@ Molpy.Up = function() {
 		Molpy.time = new Date().getTime();
 		Molpy.newpixNumber = 1; //to track which background to load, and other effects...
 		Molpy.ONGstart = ONGsnip(new Date()); //contains the time of the previous ONG
-		Molpy.NPlength = 1800; //seconds in current NewPix (or milliseconds in milliNewPix)
+		Molpy.NPlength = 1800; //seconds in current NewPix 
+		Molpy.mNPlength = 1800; //milliseconds in milliNewPix
 		Molpy.updateFactor = 1; //increase to update more often
 
 		Molpy.options = [];
@@ -3469,6 +3470,7 @@ Molpy.Up = function() {
 				if(Molpy.Got('Safety Net') && Molpy.Boosts['Safety Net'].power >= 50)
 					Molpy.UnlockBoost('Safety Blanket');
 				if (Molpy.Boosts['Safety Net'].power >= 222 && Molpy.Got('Vacuum Cleaner')) Molpy.UnlockBoost('Overtime') 
+				if (Molpy.Boosts['Safety Net'].power >= 555 && Molpy.Got('Overtime')) Molpy.UnlockBoost('Time Dilation') 
 			}
 			if(!Molpy.Got('Safety Blanket')) {
 				Molpy.LockBoost('Overcompensating');
@@ -3493,6 +3495,8 @@ Molpy.Up = function() {
 			if(Molpy.Got('Glass Furnace')) Molpy.Boosts['Furnace Crossfeed'].department = 1;
 			if(Molpy.Got('Furnace Crossfeed')) Molpy.Boosts['Furnace Multitasking'].department = 1;
 		}
+		Molpy.mNPlength = (Molpy.Got('Time Dialation')?1800:Molpy.NPlength);
+
 		if(np > 241) {
 			Molpy.EarnBadge("Have you noticed it's slower?");
 		}
@@ -3534,7 +3538,7 @@ Molpy.Up = function() {
 		Molpy.ketchupTime = 0;
 		Molpy.lateness += (Molpy.time - t);
 		Molpy.lateness = Math.min(Molpy.lateness, 7200);//don't ketchup up too much
-		while(Molpy.lateness > Molpy.NPlength) {
+		while(Molpy.lateness > Molpy.mNPlength) {
 			try {
 				Molpy.Think();
 			} catch(e) {
@@ -3543,7 +3547,7 @@ Molpy.Up = function() {
 				return;
 			}
 			Molpy.ketchupTime = 1;
-			Molpy.lateness -= Molpy.NPlength;
+			Molpy.lateness -= Molpy.mNPlength;
 		}
 		Molpy.ketchupTime = 0;
 		try {
