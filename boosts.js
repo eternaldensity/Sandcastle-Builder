@@ -8074,8 +8074,8 @@ Molpy.DefineBoosts = function() {
 			FluxCrystals: 25
 		},
 		
-		// deactivate if on highest newPix or no flux
-		classChange: function() { return (Molpy.highestNPvisited != Molpy.newpixNumber && Molpy.Has('FluxCrystals', 1) ) ? 'action' : '' },
+		// deactivate if on highest newPix or no Goats
+		classChange: function() { return (Molpy.highestNPvisited != Molpy.newpixNumber && Molpy.Has('Goats', 1) ) ? 'action' : '' },
 	});
 
 	Molpy.NowWhereWasI = function() {
@@ -8766,5 +8766,14 @@ Molpy.DefineBoosts = function() {
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 	});
+
+	new Molpy.Boost({
+		name: 'Time Dialation',
+		icon: 'dialation',
+		group: 'chron',
+		price: {FluxCrystals:Infinity, Blackprints:Infinity, Goats:10000},
+		desc: 'There is a mnp every 1.8 seconds, irrespective of the length of the ONG'
+	});
+
 	// END OF BOOSTS, add new ones immediately before this comment
 }
