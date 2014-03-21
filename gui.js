@@ -1367,7 +1367,6 @@ Molpy.DefineGUI = function() {
 		if(Molpy.scrumptiousDonuts > 0) {
 			Molpy.scrumptiousDonuts--;
 		}
-		Molpy.shrinkAll = 0;
 
 		Molpy.CheckBeachClass();
 		

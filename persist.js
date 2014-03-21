@@ -765,17 +765,17 @@
 		}
 
 		Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
-		Molpy.CheckSandRateBadges(); //shiny!
+		Molpy.Boosts['Sand'].checkSandRateBadges(); //shiny!
 		Molpy.MustardCheck();
 
 		Molpy.ONGstart = ONGsnip(new Date()); //if you missed the ONG before loading, too bad!
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
-		Molpy.recalculateDig = 1;
+		Molpy.recalculateRates = 1;
 		Molpy.allNeedRepaint = 1;
 		Molpy.judgeLevel = -1;
-		Molpy.CalculateDigSpeed();
+		Molpy.calculateRates();
 		Molpy.currentSubFrame = 0;
 		Molpy.BuildLootLists();
 		Molpy.UpdateFaves(1);
@@ -1095,7 +1095,7 @@
 			Molpy.Boosts['Kite and Key'].power = KaKPower;
 			Molpy.Boosts['Lightning in a Bottle'].power = LiBPower;
 			
-			Molpy.recalculateDig = 1;
+			Molpy.recalculateRates = 1;
 			Molpy.allNeedRepaint = 1;
 
 			Molpy.showOptions = 0;
