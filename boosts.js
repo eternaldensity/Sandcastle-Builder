@@ -8220,6 +8220,8 @@ Molpy.DefineBoosts = function() {
 						+ '<br>To open ' + (Molpify(lvls + 1, 4)) + ' Qubes, using ' + ((lvls + 1) * (lvls + 2) / 2)
 						+ ' Qubes.  Costs: ' + Molpy.PriceString(UpgradePrice);
 				}
+				if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Vacuum',1000))	
+					str += '<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeMario()">\</input>';
 			}
 			return str
 		},
@@ -8242,6 +8244,15 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Spend(UpgradePrice)) {
 			me.bought++;
 			Molpy.Notify("Italian Plumber Upgraded");
+			me.Refresh();
+		}
+	};
+
+	Molpy.DowngradeMario = function() {
+		var me = Molpy.Boosts['Mario'];
+		if(Molpy.Spend('Vacuum',1000)) {
+			me.bought--;
+			Molpy.Notify("Italian Plumber Downgraded");
 			me.Refresh();
 		}
 	}
