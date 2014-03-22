@@ -6588,10 +6588,8 @@ Molpy.DefineBoosts = function() {
 			var pages = this.power++;
 			if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
 			Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
-			if(Molpy.Got('Camera')) {
-				for( var i = 0; i < 10; i++) {
-					Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-				}
+			if(Molpy.Got('Camera') && (Math.random() < 0.1) ) {
+				Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 			}
 			if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
 				Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
