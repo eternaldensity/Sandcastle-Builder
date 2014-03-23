@@ -5065,6 +5065,7 @@ Molpy.DefineBoosts = function() {
 					Molpy.Add('Shadow Feeder',1);
 					if (Molpy.Got('Shadow Ninja') && 
 						(Molpy.Level('Ninja Ritual') > 777) && 
+						(!Molpy.IsEnabled('Mario')) &&
 						(Math.log(Molpy.Level('Ninja Ritual'))*Math.random()>5) ) Molpy.NinjaRitual();
 				}
 			}
@@ -7844,7 +7845,8 @@ Molpy.DefineBoosts = function() {
 	});
 	Molpy.NinjaRitual = function() {
 		Molpy.Add('Goats', Math.floor((1 + Molpy.Boosts['Ninja Ritual'].Level++ / 5)*Molpy.Papal('Goats')));
-		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && Molpy.Got('Shadow Feeder')) Molpy.UnlockBoost('Shadow Ninja');
+		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && 
+			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
 	};
 	new Molpy.Boost({
 		name: 'Time Lord',
@@ -8795,7 +8797,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Shadow Ninja',
 		icon: 'shadninja',
 		group: 'ninj',
-		desc: 'When the shadow feeder runs, it may also do a Ninja Ritual',
+		desc: 'When the shadow feeder runs and the Italian Plumber is not active, it may also do a Ninja Ritual',
 		price: {Goats: 50000, FluxCrystals:Infinity, Mustard:10000},
 	});
 
