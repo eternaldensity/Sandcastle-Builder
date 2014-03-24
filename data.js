@@ -596,7 +596,7 @@ Molpy.CheckBuyUnlocks = function(tool) {
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.Boosts['Fractal Sandcastles'].bought = 1; //woo freebie!
 		Molpy.boostNeedRepaint = 1;
-		Molpy.recalculateDig = 1;
+		Molpy.recalculateRates = 1;
 		Molpy.BoostsOwned++;
 	}
 	if(Molpy.Earned('Unreachable?')) Molpy.UnlockBoost("Chateau");
