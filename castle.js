@@ -67,8 +67,6 @@ Molpy.Up = function() {
 
 		Molpy.lateness = 0;
 		Molpy.ketchupTime = 0;
-		Molpy.baseNinjaTime = 12 * 60 * 1000; //12 minutes for newpixbot delay
-		Molpy.ninjaTime = Molpy.baseNinjaTime;
 		Molpy.ninjad = 0; //ninja flag for newpixbots
 		Molpy.npbONG = 0; //activation flag for newpixbots
 
@@ -440,8 +438,8 @@ Molpy.Up = function() {
 		Molpy.calculateRates = function() {
 			Molpy.recalculateRates = 0;
 			
-			Molpy.Tools['NewPixBot'].calculateNinjaTime();
-			Molpy.Boosts['Sand'].calculateRates();
+			Molpy.CastleTools['NewPixBot'].calculateNinjaTime();
+			Molpy.Boosts['Sand'].calculateSandRates();
 			Molpy.Boosts['Castles'].calculateGlobalMult();
 			Molpy.Boosts['TF'].calculateLoadedPermNP();
 			Molpy.CalcReportJudgeLevel();
@@ -514,6 +512,12 @@ Molpy.Up = function() {
 		};
 
 		Molpy.SandTool = function(args) {
+			// Assign all properties passed in
+			for(var prop in args) {
+				if(typeof args[prop] !== 'undefined' )
+					this[prop] = args[prop];
+			}
+			
 			this.id = Molpy.SandToolsN;
 			this.name = args.name;
 			args.commonName = args.commonName.split('|');
@@ -814,6 +818,12 @@ Molpy.Up = function() {
 		};
 
 		Molpy.CastleTool = function(args) {
+			// Assign all properties passed in
+			for(var prop in args) {
+				if(typeof args[prop] !== 'undefined' )
+					this[prop] = args[prop];
+			}
+			
 			this.id = Molpy.CastleToolsN;
 			this.name = args.name;
 			args.commonName = args.commonName.split('|');
@@ -1094,12 +1104,12 @@ Molpy.Up = function() {
 				var production = '';
 				if(isNaN(this.amount))
 					production += 'Mustard/click: 1<br>';
-				if(this.currentActive && Molpy.ninjaTime > Molpy.ONGelapsed) {
+				if(this.currentActive && Molpy.CastleTools['NewPixBot'].ninjaTime > Molpy.ONGelapsed) {
 					if(Molpy.ninjad) {
 						production += "Ninja'd!";
 					} else {
 						production += 'Active: ' + Molpify(this.currentActive, 3) + '<br>Timer: '
-							+ Molpify(Math.ceil((Molpy.ninjaTime - Molpy.ONGelapsed) / Molpy.NPlength));
+							+ Molpify(Math.ceil((Molpy.CastleTools['NewPixBot'].ninjaTime - Molpy.ONGelapsed) / Molpy.NPlength));
 					}
 				}
 				
@@ -2873,7 +2883,7 @@ Molpy.Up = function() {
 		//if there's an ONG
 		Molpy.ONGelapsed = new Date().getTime() - Molpy.ONGstart.getTime();
 		if(Molpy.npbONG == 'mustard') {
-			Molpy.npbONG = (Molpy.ONGelapsed >= Molpy.ninjaTime);//whoops
+			Molpy.npbONG = (Molpy.ONGelapsed >= Molpy.CastleTools['NewPixBot'].ninjaTime);//whoops
 		}
 		var npPercent = Molpy.ONGelapsed / (Molpy.NPlength * 1000);
 		Molpy.CheckSubPix(npPercent);
@@ -2884,7 +2894,7 @@ Molpy.Up = function() {
 		{
 			Molpy.ONG();
 		} else if(Molpy.npbONG == 0 && Molpy.ninjad == 0) {
-			if(Molpy.ONGelapsed >= Molpy.ninjaTime)//already in milliseconds
+			if(Molpy.ONGelapsed >= Molpy.CastleTools['NewPixBot'].ninjaTime)//already in milliseconds
 			{
 				Molpy.npbONG = 1;
 				if(Math.abs(Molpy.newpixNumber) > 1) //obviously you can't have any active npb in first newpix
