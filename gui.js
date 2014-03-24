@@ -1666,6 +1666,14 @@ Molpy.DefineGUI = function() {
 					this.borderColors[Molpy.borderColorOrder[i]] = parseInt(pixels[i]) || 0;
 				}
 			}
+
+			if ((this.boxVis['LootNavigation'] == 0) && (this.positions['LootNavigation'].left == 0) && 
+					(this.positions['LootNavigation'].top == 0) && !noLayout) {
+				this.boxVis['LootNavigation'] = 1;
+				this.positions['LootNavigation'].left = this.positions['Inventory'].left;
+				this.positions['LootNavigation'].top = this.positions['Inventory'].top;
+				this.positions['Inventory'].top+=25;
+			}
 		}
 
 		this.ToScreen = function() {
