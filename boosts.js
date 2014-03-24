@@ -1128,8 +1128,6 @@ Molpy.DefineBoosts = function() {
 			Castles: 2222
 		},
 	});
-
-	Molpy.scrumptiousDonuts = -1;
 	
 	new Molpy.Boost({
 		name: 'NewPixBot Navigation Code',
@@ -1154,13 +1152,11 @@ Molpy.DefineBoosts = function() {
 	Molpy.NavigationCodeToggle = function() {
 		if(Molpy.Got('Jamming')) {
 			Molpy.Notify('Experiencing Jamming, cannot access Navigation Code');
-			if(Molpy.scrumptiousDonuts < 0) Molpy.scrumptiousDonuts = 120;
 			return;
 		}
 		
 		var nc = Molpy.Boosts['NavCode'];
 		if(!nc.bought) {
-			if(Molpy.scrumptiousDonuts < 0) Molpy.scrumptiousDonuts = 120;
 			return;
 		}
 		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', nc.name]);
@@ -1175,7 +1171,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify(Molpify(npb.temp, 1) + ' Temporal Duplicates Destroyed!');
 			npb.temp = 0;
 		}
-		Molpy.scrumptiousDonuts = -1;
 		nc.Refresh();
 		Molpy.recalculateDig = 1;
 		Molpy.GiveTempBoost('Jamming', 1);

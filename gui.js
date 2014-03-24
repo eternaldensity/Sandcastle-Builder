@@ -1359,14 +1359,6 @@ Molpy.DefineGUI = function() {
 		if(Molpy.logUpdatePaint) Molpy.PaintLogUpdate();		
 		if(Molpy.options.numbers) Molpy.sparticlesUpdate();
 
-		if(Molpy.scrumptiousDonuts == 1) {
-			g('scrumptiousdonuts').innerHTML = Molpy.BeanishToCuegish(Molpy.donuts[0]);
-		} else if(Molpy.scrumptiousDonuts == -1) {
-			g('scrumptiousdonuts').innerHTML = '';
-		}
-		if(Molpy.scrumptiousDonuts > 0) {
-			Molpy.scrumptiousDonuts--;
-		}
 		Molpy.shrinkAll = 0;
 
 		Molpy.CheckBeachClass();
