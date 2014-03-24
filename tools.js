@@ -260,7 +260,18 @@ Molpy.DefineCastleTools = function() {
 			return baseval;
 		},
 		
-		nextThreshold: 1
+		nextThreshold: 1,
+		baseNinjaTime: 12 * 60 * 1000, //12 minutes for newpixbot delay
+		ninjaTime: this.baseNinjaTime,
+		
+		calculateNinjaTime: function() {
+			var ninjaFactor = 1;
+			if(Molpy.Got('Busy Bot')) ninjaFactor += 0.1;
+			if(Molpy.Got('Stealthy Bot')) ninjaFactor += 0.1;
+			if(Molpy.Got('Chequered Flag')) ninjaFactor += 0.2;
+			this.ninjaTime = this.baseNinjaTime / ninjaFactor;
+			if(Molpy.IsEnabled('Western Paradox')) this.ninjaTime *= 3;
+		}
 	});
 
 	Molpy.npbDoublers = ['Carrybot', 'Stickbot', 'Standardbot', 'Climbbot', 'Luggagebot', 'Recursivebot', 'Flingbot', 'Propbot', 'Surfbot', 'Smallbot'];
