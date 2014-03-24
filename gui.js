@@ -1358,8 +1358,8 @@ Molpy.DefineGUI = function() {
 		if(Molpy.notifLogPaint) Molpy.PaintNotifLog();
 		if(Molpy.logUpdatePaint) Molpy.PaintLogUpdate();		
 		if(Molpy.options.numbers) Molpy.sparticlesUpdate();
-
 		Molpy.shrinkAll = 0;
+
 
 		Molpy.CheckBeachClass();
 		
@@ -1377,7 +1377,7 @@ Molpy.DefineGUI = function() {
 		g('downcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].totalDown, 4);
 		g('spentcastlesstat').innerHTML = Molpify(Molpy.Boosts['Castles'].spent, 4);
 
-		g('ninjatimestat').innerHTML = Molpify(Molpy.ninjaTime / Molpy.NPlength, 1) + 'mNP';
+		g('ninjatimestat').innerHTML = Molpify(Molpy.CastleTools['NewPixBot'].ninjaTime / Molpy.NPlength, 1) + 'mNP';
 		g('ninjastealthstat').innerHTML = Molpify(Molpy.ninjaStealth, 1) + 'NP';
 		g('ninjaforgivestat').innerHTML = Molpify(Molpy.Boosts['Ninja Hope'].power * Molpy.Got('Ninja Hope')
 			+ Molpy.Boosts['Ninja Penance'].power * Molpy.Got('Ninja Penance') + Molpy.Boosts['Impervious Ninja'].power
