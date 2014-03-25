@@ -4,6 +4,7 @@
 <title id="title">Sandcastle Builder</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <link rel="shortcut icon" href="img/favicon.ico" />
+<link href="common.css?v=1" rel="stylesheet" type="text/css">
 <link href="classicstyle.css?v=1" rel="stylesheet" type="text/css">
 <link href="images.css?v=1" rel="stylesheet" type="text/css">
 
@@ -56,8 +57,7 @@
 				<div id="sectionBeach">
 					<div id="sparticles">
 					</div>
-					<div id="beach" class="timeflip">					
-						<div id="scrumptiousdonuts"></div>
+					<div id="beach" class="timeflip">		
 					</div>
 				</div>
 				<div id="sectionOptions" class="hidden">Options:
@@ -171,7 +171,19 @@
 			</div>				
 		</div>
 		<div id="inventory">Loot:
+			<div id="lootSearch" class="table-header">
+				<div id="searchButtons"><input id="searchBoosts" type="checkbox">:Boosts <input id="searchBadges" type="checkbox">:Badges <input id="lootSearchButton" class="navButton" type="button" value="Search" onclick="Molpy.searchLoot()"></div>
+				<span id="searchContainer"><input id="lootSearchBox" type="text" onkeypress="Molpy.lootSearchBoxChanged(event)"></span>
+			</div>
 			<div id="lootselection"></div>
+			<div id="lootNavigation">
+				<div id="navLimit">
+					Per Page: <input id="navPerPage" type="text" size="4" maxlength="2" onkeypress="Molpy.lootNavBoxChanged(event)">
+				</div>
+				<div id="navButtons">
+					<input id="navFirst" class="navButton" type="button" value="&lt;&lt;" onclick="Molpy.changeLootPage('first')">&nbsp;&nbsp;<input id="navPrevious" class="navButton" type="button" value="&lt;" onclick="Molpy.changeLootPage(-1)">&nbsp;&nbsp;<input id="navPageNum" type="text" size="3" maxlength="3" onkeypress="Molpy.lootNavBoxChanged(event)"> / <span id="navMaxPages">99</span>&nbsp;&nbsp;<input id="navNext" class="navButton" type="button" value="&gt;" onclick="Molpy.changeLootPage(1)">&nbsp;&nbsp;<input id="navLast" class="navButton" type="button" value="&gt;&gt;" onclick="Molpy.changeLootPage('max')">
+				</div>
+			</div>
 			<div id="loot"></div>
 		</div>
 		<div id="shop">

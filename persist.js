@@ -111,6 +111,8 @@
 		} else {
 			success = Molpy.LoadC_STARSTAR_kie();
 		}
+		
+		Molpy.BuildLootLists();
 		Molpy.needlePulling = 0;
 		if(!success) return;
 		Molpy.loadCount++;
@@ -208,7 +210,7 @@
 			Molpy.layouts.push(new Molpy.Layout({name: 'temporary'}));
 		var tempLayout = Molpy.layouts[Molpy.layouts.length - 1];
 		tempLayout.FromScreen();
-		Molpy.layoutRepaint = 1;
+		Molpy.layoutNeedRepaint = 1;
 	}
 	Molpy.LoadLayouts = function() {
 		var layouts = [];
@@ -273,12 +275,8 @@
 			Molpy.EarnBadge('Use Your Leopard');
 			return;
 		}
-		if(thread == 'scrumptious donuts') {
-			Molpy.scrumptiousDonuts = 1;
-			return;
-		}
 		if(thread == 'Molpy') {
-			Molpy.Notify(Molpy.BeanishToCuegish(Molpy.BlitzGirl.ChallengeAccepted), 1);
+			Molpy.Notify(Molpy.BeanishToCuegish(Molpy.MolpyText), 1);
 			return;
 		}
 		if(thread == 'OK, GLASS' && Molpy.Got('Glass Trolling')) {
@@ -311,7 +309,8 @@
 		          + (Molpy.Redacted.totalClicks) + s
 		          + (Molpy.highestNPvisited) + s
 		          + (Molpy.Redacted.chainCurrent) + s
-		          + (Molpy.Redacted.chainMax) + s;
+		          + (Molpy.Redacted.chainMax) + s
+		          + (Molpy.lootPerPage) + s;
 		return str;
 	}
 
@@ -471,6 +470,7 @@
 			Molpy.highestNPvisited = parseInt(pixels[13]) || Math.abs(Molpy.newpixNumber);
 			Molpy.Redacted.chainCurrent = parseFloat(pixels[14]) || 0;
 			Molpy.Redacted.chainMax = parseFloat(pixels[15]) || 0;
+			Molpy.lootPerPage = parseInt(pixels[16]) || 20;
 		}
 	};
 
@@ -761,19 +761,19 @@
 		}
 
 		Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
-		Molpy.CheckSandRateBadges(); //shiny!
+		Molpy.Boosts['Sand'].checkSandRateBadges(); //shiny!
+		Molpy.MustardCheck();
 
 		Molpy.ONGstart = ONGsnip(new Date()); //if you missed the ONG before loading, too bad!
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
-		Molpy.recalculateDig = 1;
-		Molpy.shopRepaint = 1;
-		Molpy.boostRepaint = 1;
-		Molpy.badgeRepaint = 1;
+		Molpy.recalculateRates = 1;
+		Molpy.allNeedRepaint = 1;
 		Molpy.judgeLevel = -1;
-		Molpy.CalculateDigSpeed();
+		Molpy.calculateRates();
 		Molpy.currentSubFrame = 0;
+		Molpy.BuildLootLists();
 		Molpy.UpdateFaves(1);
 		return 1;
 	}
@@ -909,13 +909,11 @@
 			if(Molpy.Got('Blackprints')){
 				Molpy.UnlockBoost('Blackprint Plans');
 				Molpy.Boosts['Blackprint Plans'].bought = 1;
-				Molpy.boostRepaint = 1;
 				Molpy.BoostsOwned++;
 			}
 			else if(Molpy.Has('Blackprints', 1)){
 				Molpy.UnlockBoost('Blackprints');
 				Molpy.Boosts['Blackprints'].bought = 1;
-				Molpy.boostRepaint = 1;
 				Molpy.BoostsOwned++;
 			}
 		}
@@ -927,6 +925,11 @@
 		}
 		if(version < 3.33332) {
 			Molpy.Boosts['Time Lord'].power = Molpy.Boosts['Time Lord'].bought +1 - Molpy.Level('Time Lord'); // Count down rather than up
+		}
+		if(version < 3.34) {
+			if (Molpy.Boosts['WiseDragon'].power > 444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
+			if (Molpy.Has('Maps', 80)) Molpy.UnlockBoost('DNS'); 
+			if (Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
 		}
 	}
 
@@ -1088,12 +1091,11 @@
 			Molpy.Boosts['Kite and Key'].power = KaKPower;
 			Molpy.Boosts['Lightning in a Bottle'].power = LiBPower;
 			
-			Molpy.recalculateDig = 1;
-			Molpy.boostRepaint = 1;
-			Molpy.shopRepaint = 1;
+			Molpy.recalculateRates = 1;
+			Molpy.allNeedRepaint = 1;
 
 			Molpy.showOptions = 0;
-			Molpy.RefreshOptions();
+			Molpy.RefreshOptions(0);
 
 			Molpy.UpdateBeach();
 			Molpy.HandlePeriods();
@@ -1101,6 +1103,7 @@
 			Molpy.EarnBadge('Not Ground Zero');
 			Molpy.AdjustFade();
 			Molpy.UpdateColourScheme();
+			Molpy.BuildLootLists();
 			coma || _gaq && _gaq.push(['_trackEvent', 'Molpy Down', 'Complete', '' + Molpy.highestNPvisited]);
 		}
 	}
@@ -1132,9 +1135,12 @@
 			}
 
 			Molpy.unlockedGroups = {};
-			Molpy.badgeRepaint = 1;
 			Molpy.UpdateFaves(1);
 			_gaq.push(['_trackEvent', 'Coma', 'Complete', '' + Molpy.highestNPvisited]);
+			
+			Molpy.BuildLootLists();
+			Molpy.allNeedRepaint = 1;
+			Molpy.mustardTools = 0;
 		}
 	}
 }

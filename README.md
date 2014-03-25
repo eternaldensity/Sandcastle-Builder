@@ -26,6 +26,36 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4
+
+#### Waveney
+- Cress boost for Mustard
+- Papal decree for Mustard
+- Reduce the number Maps needed for the Dragon Nesting Site
+- Raised the costs for The Dragon Nest and Dragon Queen
+- LucidCrux's Loot Page and search controls as seperate layoutable panes
+- Mustard Tools work again
+- Mustard Sale and Injector can now do all tools if you have enough Mustard
+- Fix very long standing options default error
+- Option for how many ONGs of logs to keep (default 3)
+- Time Dilation Boost
+- Many minor errors removed (and probably some added)
+- Shadow Ninja Boost
+- Downgrade for the Italian Plumber
+- Some nerfing
+
+#### Lucid Crux
+- Major Refactor / Redo of the way HTML is generated and div are drawn
+- Redundikitties should no longer appear in sections turned off in the section list
+- Loot pages
+- Loot searching
+- Hover is instant
+- More random refactoring
+- A few new icons
+
+#### ED
+- Fixed a bug
+
 ### 3.33333
 
 #### LucidCrux
