@@ -51,6 +51,7 @@ For personal amusement only.
 - Loot searching
 - Hover is instant
 - More random refactoring
+- A few new icons
 
 #### ED
 - Fixed a bug
