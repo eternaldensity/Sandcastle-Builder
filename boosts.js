@@ -9151,7 +9151,7 @@ Molpy.DefineBoosts = function() {
 
 	new Molpy.Boost({
 		name: 'Time Dilation',
-		icon: 'dialation',
+		icon: 'timedialation',
 		group: 'chron',
 		price: {FluxCrystals:Infinity, Blackprints:Infinity, Goats:10000},
 		desc: 'There is a mnp every 1.8 seconds, irrespective of the length of the ONG'
@@ -9159,7 +9159,7 @@ Molpy.DefineBoosts = function() {
 
 	new Molpy.Boost({
 		name: 'Shadow Ninja',
-		icon: 'shadninja',
+		icon: 'shadowninja',
 		group: 'ninj',
 		desc: 'When the shadow feeder runs and the Italian Plumber is not active, it may also do a Ninja Ritual',
 		price: {Goats: 50000, FluxCrystals:Infinity, Mustard:10000},
