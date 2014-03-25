@@ -353,3 +353,11 @@ body.darkscheme .depressed
 {
 	border-color: #00FFF0;
 }
+.hidden
+{
+	display:none;
+}
+.unhidden
+{
+	display:block;
+}

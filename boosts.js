@@ -1128,8 +1128,6 @@ Molpy.DefineBoosts = function() {
 			Castles: 2222
 		},
 	});
-
-	Molpy.scrumptiousDonuts = -1;
 	
 	new Molpy.Boost({
 		name: 'NewPixBot Navigation Code',
@@ -1154,13 +1152,11 @@ Molpy.DefineBoosts = function() {
 	Molpy.NavigationCodeToggle = function() {
 		if(Molpy.Got('Jamming')) {
 			Molpy.Notify('Experiencing Jamming, cannot access Navigation Code');
-			if(Molpy.scrumptiousDonuts < 0) Molpy.scrumptiousDonuts = 120;
 			return;
 		}
 		
 		var nc = Molpy.Boosts['NavCode'];
 		if(!nc.bought) {
-			if(Molpy.scrumptiousDonuts < 0) Molpy.scrumptiousDonuts = 120;
 			return;
 		}
 		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', nc.name]);
@@ -1175,7 +1171,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify(Molpify(npb.temp, 1) + ' Temporal Duplicates Destroyed!');
 			npb.temp = 0;
 		}
-		Molpy.scrumptiousDonuts = -1;
 		nc.Refresh();
 		Molpy.recalculateRates = 1;
 		Molpy.GiveTempBoost('Jamming', 1);
@@ -9156,7 +9151,7 @@ Molpy.DefineBoosts = function() {
 
 	new Molpy.Boost({
 		name: 'Time Dilation',
-		icon: 'dialation',
+		icon: 'timedilation',
 		group: 'chron',
 		price: {FluxCrystals:Infinity, Blackprints:Infinity, Goats:10000},
 		desc: 'There is a mnp every 1.8 seconds, irrespective of the length of the ONG'
@@ -9164,7 +9159,7 @@ Molpy.DefineBoosts = function() {
 
 	new Molpy.Boost({
 		name: 'Shadow Ninja',
-		icon: 'shadninja',
+		icon: 'shadowninja',
 		group: 'ninj',
 		desc: 'When the shadow feeder runs and the Italian Plumber is not active, it may also do a Ninja Ritual',
 		price: {Goats: 50000, FluxCrystals:Infinity, Mustard:10000},

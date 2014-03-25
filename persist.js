@@ -275,12 +275,8 @@
 			Molpy.EarnBadge('Use Your Leopard');
 			return;
 		}
-		if(thread == 'scrumptious donuts') {
-			Molpy.scrumptiousDonuts = 1;
-			return;
-		}
 		if(thread == 'Molpy') {
-			Molpy.Notify(Molpy.BeanishToCuegish(Molpy.BlitzGirl.ChallengeAccepted), 1);
+			Molpy.Notify(Molpy.BeanishToCuegish(Molpy.MolpyText), 1);
 			return;
 		}
 		if(thread == 'OK, GLASS' && Molpy.Got('Glass Trolling')) {
