@@ -59,20 +59,36 @@ Molpy.DefineGUI = function() {
 		}
 	}
 	
+	Molpy.hoverTimer = 0;
+	Molpy.hovering = false;
+	
 	Molpy.onMouseOver = function(e) {
 		// Can add argument later if we want
 		// Calls change to $().mouseover({arg1: 1, arg2: 3}, Molpy.onMouseOver)
 		// and are referenced thus: e.data.arg1, e.data.arg2
-		Molpy.mouseIsOver = e.data.overID;
 		if(Molpy.Boosts['Expando'].IsEnabled) return;
-		$(this).find('.description').show();
+		
+		var over = e.data.overID;
+		var div = this;
+		setTimeout(function(){
+			if(Molpy.mouseIsOver == over) $(div).find('.description').show();
+		}, 200);
+		
+		Molpy.mouseIsOver = over;
+		
+		Molpy.hovering = true;
+		
 		if(!Molpy.Boosts['Expando'].unlocked) Molpy.UnlockBoost('Expando');
 	}
 	
 	Molpy.onMouseOut = function(e) {
-		if(Molpy.mouseIsOver == e.data.overID) Molpy.mouseIsOver = null;
 		if(Molpy.Boosts['Expando'].IsEnabled) return;
-		$(this).find('.description').hide();
+		var div = this;
+		setTimeout(function(){
+			if(Molpy.mouseIsOver != e.data.overID) $(div).find('.description').hide();
+		}, 500);
+		Molpy.mouseIsOver = null;
+		Molpy.hovering = false;
 	}
 	
 	Molpy.monumentOver = function(e) {
