@@ -1360,7 +1360,6 @@ Molpy.Up = function() {
 		Molpy.BoostsById = [];
 		Molpy.BoostsByGroup = [];
 		Molpy.BoostN = 0;
-		Molpy.BoostsInShop = [];
 		Molpy.BoostsBought = [];
 		Molpy.BoostsOwned = 0;
 		Molpy.BoostAKA = [];

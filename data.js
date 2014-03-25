@@ -871,7 +871,7 @@ Molpy.mapMonumg = 300;
 
 Molpy.CheckASHF = function() {
 	Molpy.Boosts['ASHF'].department = 0;
-	if(Molpy.BoostsInShop.length) {
+	if(Molpy.dispObjects.shop.length) {
 		Molpy.Boosts['ASHF'].department = 1;
 		return;
 	}
