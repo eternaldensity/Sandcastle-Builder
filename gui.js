@@ -86,7 +86,7 @@ Molpy.DefineGUI = function() {
 		var div = this;
 		setTimeout(function(){
 			if(Molpy.mouseIsOver != e.data.overID) $(div).find('.description').hide();
-		}, 500);
+		}, 1000);
 		Molpy.mouseIsOver = null;
 		Molpy.hovering = false;
 	}
