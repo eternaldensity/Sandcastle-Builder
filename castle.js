@@ -1485,7 +1485,7 @@ Molpy.Up = function() {
 			};
 			
 			this.Refresh = function(indirect) {
-				this.repaint();
+				if(!indirect) this.repaint();
 
 				this.faveRefresh = 1;
 				if(!indirect && this.refreshFunction) this.refreshFunction();
