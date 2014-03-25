@@ -133,3 +133,11 @@
     z-index: 99999999;
     vertical-align: bottom;
 }
+.hidden
+{
+	display:none;
+}
+.unhidden
+{
+	display:block;
+}
