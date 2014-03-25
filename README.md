@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4004
+
+#### Waveney
+- One more (bug predates 3.4)
+
 ### 3.4003
 
 #### Waveney

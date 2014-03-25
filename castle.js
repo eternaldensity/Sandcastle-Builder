@@ -2775,7 +2775,7 @@ Molpy.Up = function() {
 					}
 				}
 			}
-			if(me.unlocked) {
+			if(me.bought) {
 				if(me.classChange) {
 					var newclass = me.classChange();
 					if (newclass != me.className) {
