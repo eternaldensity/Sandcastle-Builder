@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.4;
+Molpy.version=3.4001;
 
 /**************************************************************
  * Game Strings
@@ -871,7 +871,7 @@ Molpy.mapMonumg = 300;
 
 Molpy.CheckASHF = function() {
 	Molpy.Boosts['ASHF'].department = 0;
-	if(Molpy.BoostsInShop.length) {
+	if(Molpy.dispObjects.shop.length) {
 		Molpy.Boosts['ASHF'].department = 1;
 		return;
 	}
