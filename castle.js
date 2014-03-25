@@ -177,7 +177,7 @@ Molpy.Up = function() {
 						}
 					}
 					if(Molpy.Got('Ninja Ritual')) {
-						Molpy.Add('Goats', 1 + Math.floor(Molpy.Boosts['Ninja Ritual'].Level++ / 5));
+						Molpy.NinjaRitual();
 						if(Molpy.Boosts['Ninja Ritual'].Level > 10)
 							Molpy.UnlockBoost('Western Paradox');
 						if(Molpy.Boosts['Ninja Ritual'].Level > 24)
