@@ -3154,7 +3154,7 @@ Molpy.Up = function() {
 			if(Molpy.Got('Glass Furnace')) Molpy.Boosts['Furnace Crossfeed'].department = 1;
 			if(Molpy.Got('Furnace Crossfeed')) Molpy.Boosts['Furnace Multitasking'].department = 1;
 		}
-		Molpy.mNPlength = (Molpy.Got('Time Dialation')?1800:Molpy.NPlength);
+		Molpy.mNPlength = (Molpy.Got('Time Dilation')?1800:Molpy.NPlength);
 
 		if(np > 241) {
 			Molpy.EarnBadge("Have you noticed it's slower?");
