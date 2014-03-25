@@ -1964,9 +1964,9 @@ Molpy.DefineGUI = function() {
 		
 		var buysell = object.getBuySell();
 		if(buysell != '') {
+			purchaseHTML = '	<div class="purchase ">' + buysell + '</div>';
 			var price = object.getPrice();		
 			if(price != '') {
-				purchaseHTML = '	<div class="purchase ">' + buysell + '</div>';
 				priceHTML = '	<div class="price ">'
 				          + Molpy.createPriceHTML(price)
 				          + '	</div>';

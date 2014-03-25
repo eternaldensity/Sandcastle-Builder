@@ -26,6 +26,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4002
+- More fixes for Bugs
+
+### 3.4001
+
+#### Waveney
+- Fixes for Bugs
+
 ### 3.4
 
 #### Waveney
