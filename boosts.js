@@ -7961,6 +7961,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Reset all tools');
 			}
 		}
+		Molpy.MustardCheck();
 	}
 
 	new Molpy.Boost({
@@ -9147,6 +9148,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+		className: 'toggle',
 	});
 
 	new Molpy.Boost({
