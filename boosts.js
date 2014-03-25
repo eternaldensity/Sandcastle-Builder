@@ -9147,6 +9147,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+		className: 'toggle',
 	});
 
 	new Molpy.Boost({
