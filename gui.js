@@ -1358,8 +1358,6 @@ Molpy.DefineGUI = function() {
 		if(Molpy.notifLogPaint) Molpy.PaintNotifLog();
 		if(Molpy.logUpdatePaint) Molpy.PaintLogUpdate();		
 		if(Molpy.options.numbers) Molpy.sparticlesUpdate();
-		Molpy.shrinkAll = 0;
-
 
 		Molpy.CheckBeachClass();
 		
