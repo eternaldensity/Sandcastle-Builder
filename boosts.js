@@ -9151,7 +9151,7 @@ Molpy.DefineBoosts = function() {
 
 	new Molpy.Boost({
 		name: 'Time Dilation',
-		icon: 'timedialation',
+		icon: 'timedilation',
 		group: 'chron',
 		price: {FluxCrystals:Infinity, Blackprints:Infinity, Goats:10000},
 		desc: 'There is a mnp every 1.8 seconds, irrespective of the length of the ONG'
