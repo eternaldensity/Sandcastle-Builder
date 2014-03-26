@@ -26,6 +26,16 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4005
+
+#### Waveney
+- 2 more fixes
+
+#### Lucid Crux
+- Fixed scrolling/accessing loot bugs
+- Fixed load problems for classic users
+- other fixes
+
 ### 3.4004
 
 #### Waveney
