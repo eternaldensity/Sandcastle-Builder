@@ -26,6 +26,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4006
+
+#### Waveney
+- Fixed Mysterious Maps bug
+- Partial solution to NavPane layout on Chrome
+- Improve a few thigs
+
 ### 3.4005
 
 #### Waveney
@@ -35,6 +42,9 @@ For personal amusement only.
 - Fixed scrolling/accessing loot bugs
 - Fixed load problems for classic users
 - other fixes
+
+#### ED
+- Fixed a Bug
 
 ### 3.4004
 
