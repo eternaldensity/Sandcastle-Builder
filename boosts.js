@@ -6750,8 +6750,7 @@ Molpy.DefineBoosts = function() {
 		if (n < 1000000) {
 			if(Math.random() < p * p) n = 1;
 		} else {
-			p = Math.random();
-			if (p*p > 0.5) n = 1;
+			if (Math.random() < 0.25) n = 1;
 		}
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
