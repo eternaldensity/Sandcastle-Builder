@@ -1485,7 +1485,7 @@ Molpy.Up = function() {
 			};
 			
 			this.Refresh = function(indirect) {
-				this.repaint();
+				if(!indirect) this.repaint();
 
 				this.faveRefresh = 1;
 				if(!indirect && this.refreshFunction) this.refreshFunction();
@@ -2002,12 +2002,13 @@ Molpy.Up = function() {
 					if(this.countup >= this.toggle) {
 						this.countup = 0;
 						if(this.location) {
+							this.removeDiv();
 							this.location = 0; //hide because the redacted was missed
 							this.drawType = [];
-							this.removeDiv();
 							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
 							this.chainCurrent = 0;
 							this.randomiseTime();
+							Molpy.lootSelectionNeedRepaint = 1;
 						} else {
 							this.drawType = ['show'];
 							this.jump();
