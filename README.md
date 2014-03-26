@@ -31,7 +31,8 @@ For personal amusement only.
 #### Waveney
 - Fixed Mysterious Maps bug
 - Partial solution to NavPane layout on Chrome
-- Improve a few thigs
+- Improve a few things
+- Shadow Strike was misbehaving for large numbers of puzzles
 
 ### 3.4005
 
