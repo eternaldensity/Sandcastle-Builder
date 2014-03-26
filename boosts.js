@@ -6158,7 +6158,7 @@ Molpy.DefineBoosts = function() {
 			}
 
 			var looped = 0;
-			while(!Molpy.tfOrder[me.scanIndex].temp) {
+			while(isNaN(Molpy.tfOrder[me.scanIndex].amount) || !Molpy.tfOrder[me.scanIndex].temp) {
 				me.scanIndex++;
 				if(me.scanIndex >= Molpy.tfOrder.length) {
 					me.scanIndex = 0;
@@ -8109,6 +8109,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Mustarded all tools');
 			}
 		}
+		Molpy.MustardCheck();
 	}
 
 	new Molpy.Boost({
