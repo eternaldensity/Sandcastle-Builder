@@ -8212,7 +8212,13 @@ Molpy.DefineBoosts = function() {
 		defStuff: 1
 	});
 	Molpy.NinjaRitual = function() {
-		Molpy.Add('Goats', Math.floor((1 + Molpy.Boosts['Ninja Ritual'].Level++ / 5)*Molpy.Papal('Goats')));
+		var oldlvl = Molpy.Level('Ninja Ritual');
+		var mult=1;
+		Molpy.Add('Goats', Math.floor((1 + oldlvl / 5)*Molpy.Papal('Goats')));
+		while (Molpy.Level('Ninja Ritual') <= oldlvl) {
+			Molpy.Boosts('Ninja Ritual').Level +=mult; 
+			mult*=10; 
+		};
 		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
 	};
