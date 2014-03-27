@@ -763,6 +763,7 @@
 		Molpy.CheckBuyUnlocks(); //in case any new achievements have already been earned
 		Molpy.Boosts['Sand'].checkSandRateBadges(); //shiny!
 		Molpy.MustardCheck();
+		Molpy.RefreshOptions();
 
 		Molpy.ONGstart = ONGsnip(new Date()); //if you missed the ONG before loading, too bad!
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
