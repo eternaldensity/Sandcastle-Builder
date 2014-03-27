@@ -1461,7 +1461,7 @@ Molpy.Up = function() {
 				if(!Molpy.boostSilence && !free && this.bought && !auto) {
 					Molpy.ShowGroup(this.group, this.className);
 				}
-				Molpy.lootAddBoost(this);
+				if(this.bought) Molpy.lootAddBoost(this);
 			};
 			
 			this.isAffordable = function() {
