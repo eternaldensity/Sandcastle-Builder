@@ -26,13 +26,15 @@ For personal amusement only.
 
 ## Changelog
 
-### 3.4006
+### 3.41
 
 #### Waveney
 - Fixed Mysterious Maps bug
 - Partial solution to NavPane layout on Chrome
 - Improve a few things
 - Shadow Strike was misbehaving for large numbers of puzzles
+- Ninja Tortoise Boost
+- Many bugs removed
 
 ### 3.4005
 
