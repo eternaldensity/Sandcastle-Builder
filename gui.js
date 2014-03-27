@@ -852,6 +852,7 @@ Molpy.DefineGUI = function() {
 	g('notifs').innerHTML = str;
 	Molpy.notifsReceived = 0;
 	Molpy.notifsUpdate = function() {
+		var dy = 10 + Molpy.notifsY/100;
 		Molpy.notifsY = 0;
 		var trans = 0;
 		for( var i in Molpy.notifs) {
@@ -861,9 +862,9 @@ Molpy.DefineGUI = function() {
 
 				var y = me.y;
 				if(me.life < Molpy.fps / 2) {
-					y -= 10;
+					y -= dy;
 				} else {
-					y -= 10 * (1 - (me.life - Molpy.fps / 2) / (Molpy.fps * 5));
+					y -= dy * (1 - (me.life - Molpy.fps / 2) / (Molpy.fps * 5));
 				}
 				me.y = y;
 				me.life++;
