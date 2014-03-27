@@ -158,7 +158,7 @@ new Molpy.Option({
 	name: 'colpix',
 	title: 'Show Colpix',
 	onchange: function() { Molpy.UpdateColourScheme() },
-	defaultval: 1,
+	defaultval: 0,
 });
 
 new Molpy.Option({

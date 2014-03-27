@@ -6747,7 +6747,11 @@ Molpy.DefineBoosts = function() {
 		var l = Molpy.Level('LogiPuzzle') / 100;
 		var n = Math.ceil(l);
 		var p = n - l;
-		if(Math.random() < p * p) n = 1;
+		if (n < 1000000) {
+			if(Math.random() < p * p) n = 1;
+		} else {
+			if (Math.random() < 0.25) n = 1;
+		}
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
@@ -8208,9 +8212,18 @@ Molpy.DefineBoosts = function() {
 		defStuff: 1
 	});
 	Molpy.NinjaRitual = function() {
-		Molpy.Add('Goats', Math.floor((1 + Molpy.Boosts['Ninja Ritual'].Level++ / 5)*Molpy.Papal('Goats')));
+		var oldlvl = Molpy.Level('Ninja Ritual');
+		var mult=1;
+		if (Molpy.Got('Zooman')) mult = 20;
+		Molpy.Add('Goats', Math.floor((1 + oldlvl / 5)*Molpy.Papal('Goats')));
+		while (Molpy.Level('Ninja Ritual') <= oldlvl) {
+			Molpy.Boosts['Ninja Ritual'].Level +=mult; 
+			mult*=10; 
+		};
+		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult; 
 		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
+		if (Molpy.Level('Ninja Ritual') > 77777) Molpy.UnlockBoost('zooman');
 	};
 	new Molpy.Boost({
 		name: 'Time Lord',
@@ -9164,6 +9177,14 @@ Molpy.DefineBoosts = function() {
 		group: 'ninj',
 		desc: 'When the shadow feeder runs and the Italian Plumber is not active, it may also do a Ninja Ritual',
 		price: {Goats: 50000, FluxCrystals:Infinity, Mustard:10000},
+	});
+
+	new Molpy.Boost({
+		name: 'Ninja Tortoise',
+		icon: 'tortoise',
+		alias: 'Zooman', // Because
+		desc: 'Increases the rate Ninja Ritual streak grows',
+		price: {Goats: 1e7, Mustard: 1e7},
 	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
