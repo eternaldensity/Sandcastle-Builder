@@ -35,6 +35,7 @@ For personal amusement only.
 - Shadow Strike was misbehaving for large numbers of puzzles
 - Ninja Tortoise Boost
 - Many bugs removed
+- Tangled Tessaract Boost
 
 #### LucidCrux
 - Discoveries and Monuments now sorted by NP number
