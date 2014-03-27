@@ -1,120 +1,24 @@
-body.darkscheme #toolBucket
-{
-	background-image:url('img/bucket_light_icon.png');
-}
-body.lightscheme #toolBucket
-{
-	background-image:url('img/bucket_dark_icon.png');
-}
-body.darkscheme #toolCuegan
-{
-	background-image:url('img/cuegan2_light_icon.png');
-}
-body.lightscheme #toolCuegan
-{
-	background-image:url('img/cuegan2_dark_icon.png');
-}
-body.darkscheme #toolFlag
-{
-	background-image:url('img/flag_light_icon.png');
-}
-body.lightscheme #toolFlag
-{
-	background-image:url('img/flag_dark_icon.png');
-}
-body.darkscheme #toolLadder
-{
-	background-image:url('img/ladder_light_icon.png');
-}
-body.lightscheme #toolLadder
-{
-	background-image:url('img/ladder_dark_icon.png');
-}
-body.darkscheme #toolBag
-{
-	background-image:url('img/bag_light_icon.png');
-}
-body.lightscheme #toolBag
-{
-	background-image:url('img/bag_dark_icon.png');
-}
-body.darkscheme #toolLaPetite
-{
-	background-image:url('img/lapetite_light_icon.png');
-}
-body.lightscheme #toolLaPetite
-{
-	background-image:url('img/lapetite_dark_icon.png');
-}
-body.darkscheme #toolNewPixBot
-{
-	background-image:url('img/newpixbot_light_icon.png');
-}
-body.lightscheme #toolNewPixBot
-{
-	background-image:url('img/newpixbot_dark_icon.png');
-}
-body.darkscheme #toolTrebuchet
-{
-	background-image:url('img/trebuchet_light_icon.png');
-}
-body.lightscheme #toolTrebuchet
-{
-	background-image:url('img/trebuchet_dark_icon.png');
-}
-body.darkscheme #toolScaffold
-{
-	background-image:url('img/scaffold_light_icon.png');
-}
-body.lightscheme #toolScaffold
-{
-	background-image:url('img/scaffold_dark_icon.png');
-}
-body.darkscheme #toolWave
-{
-	background-image:url('img/wave_light_icon.png');
-}
-body.lightscheme #toolWave
-{
-	background-image:url('img/wave_dark_icon.png');
-}
-body.darkscheme #toolRiver
-{
-	background-image:url('img/river_light_icon.png');
-}
-body.lightscheme #toolRiver
-{
-	background-image:url('img/river_dark_icon.png');
-}
-body.darkscheme #toolBeanieBuilder
-{
-	background-image:url('img/beanie_light_icon.png');
-}
-body.lightscheme #toolBeanieBuilder
-{
-	background-image:url('img/beanie_dark_icon.png');
-}
-.boost.shop .icon
+.boost.shop .boost_generic
 {
 	background-image:url('img/boost_grey_icon.png');
 }
-body.darkscheme .boost.loot .icon
+body.darkscheme .boost.loot .boost_generic
 {
 	background-image:url('img/boost_dark_icon.png');
 }
-body.lightscheme .boost.loot .icon
+body.lightscheme .boost.loot .boost_generic
 {
 	background-image:url('img/boost_light_icon.png');
 }
-.badge.shop .icon
+.badge.shop .badge_generic
 {
 	background-image:url('img/badge_grey_icon.png');
 }
-body.darkscheme .badge.loot .icon
+body.darkscheme .badge.loot .badge_generic
 {
 	background-image:url('img/badge_light_icon.png');
 }
-body.lightscheme .badge.loot .icon
+body.lightscheme .badge.loot .badge_generic
 {
 	background-image:url('img/badge_dark_icon.png');
 }
@@ -253,14 +157,33 @@ body.darkscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/badge_discovery_light_icon.png');
 }
+.darkscheme .loot #boost
+{
+	background-image:url('img/boost_dark_icon.png');
+}
+.lightscheme .loot #boost
+{
+	background-image:url('img/boost_light_icon.png');
+}
 .darkscheme .loot #stuff
 {
 	background-image:url('img/stuff_dark_icon.png');
 }
-
 .lightscheme .loot #stuff
 {
 	background-image:url('img/stuff_light_icon.png');
+}
+.darkscheme .loot #badges
+{
+	background-image:url('img/badge_light_icon.png');
+}
+.lightscheme .loot #badges
+{
+	background-image:url('img/badge_dark_icon.png');
+}
+#badgesAv
+{
+	background-image:url('img/badge_grey_icon.png');
 }
 .darkscheme .loot #ninjutsu
 {
@@ -327,35 +250,43 @@ body.darkscheme .badge.loot #badge_discov.icon
 {
 	background-image:url('img/prizes_light_icon.png');
 }
-.darkscheme .loot #badge_badge
+.darkscheme .loot .badge_badge
 {
 	background-image:url('img/badge_badge_light_icon.png');
 }
-.lightscheme .loot #badge_badge
+.lightscheme .loot .badge_badge
 {
 	background-image:url('img/badge_badge_dark_icon.png');
 }
-.darkscheme .loot #discov
+.darkscheme .shop .badge_badge
+{
+	background-image:url('img/badge_badge_grey_icon.png');
+}
+.lightscheme .shop .badge_badge
+{
+	background-image:url('img/badge_badge_grey_icon.png');
+}
+.darkscheme .loot #discov, .darkscheme .loot .badge_discov
 {
 	background-image:url('img/badge_discovery_light_icon.png');
 }
-.lightscheme .loot #discov
+.lightscheme .loot #discov, .lightscheme .loot .badge_discov
 {
 	background-image:url('img/badge_discovery_dark_icon.png');
 }
-.darkscheme .loot #sandmonument
+.darkscheme .loot #sandmonument, .darkscheme .loot .badge_sandmonument
 {
 	background-image:url('img/sandmonument_light_icon.png');
 }
-.lightscheme .loot #sandmonument
+.lightscheme .loot #sandmonument, .lightscheme .loot .badge_sandmonument
 {
 	background-image:url('img/sandmonument_dark_icon.png');
 }
-.darkscheme .loot #glassmonument
+.darkscheme .loot #glassmonument, .darkscheme .loot .badge_glassmonument
 {
 	background-image:url('img/glassmonument_light_icon.png');
 }
-.lightscheme .loot #glassmonument
+.lightscheme .loot #glassmonument, .lightscheme .loot .badge_glassmonument
 {
 	background-image:url('img/glassmonument_dark_icon.png');
 }

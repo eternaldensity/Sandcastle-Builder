@@ -26,6 +26,95 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.41
+
+#### Waveney
+- Fixed Mysterious Maps bug
+- Partial solution to NavPane layout on Chrome
+- Improve a few things
+- Shadow Strike was misbehaving for large numbers of puzzles
+- Ninja Tortoise Boost
+- Many bugs removed
+
+#### LucidCrux
+- Discoveries and Monuments now sorted by NP number
+- Scroll position is (hopefully) kept with repaints
+- Fixed tagged loot sort errors
+- Fixed auto-use boosts from showing in loot (hopefully caught them all)
+- Fixed some boosts not updating until hiding/showing again
+- Search may work better
+
+### 3.4005
+
+#### Waveney
+- 2 more fixes
+
+#### LucidCrux
+- Fixed scrolling/accessing loot bugs
+- Fixed load problems for classic users
+- other fixes
+
+#### ED
+- Fixed a Bug
+
+### 3.4004
+
+#### Waveney
+- One more (bug predates 3.4)
+
+### 3.4003
+
+#### Waveney
+- Even more fixes for Bugs
+
+### 3.4002
+
+#### Waveney
+- More fixes for Bugs
+
+### 3.4001
+
+#### Waveney
+- Fixes for Bugs
+
+### 3.4
+
+#### Waveney
+- Cress boost for Mustard
+- Papal decree for Mustard
+- Reduce the number Maps needed for the Dragon Nesting Site
+- Raised the costs for The Dragon Nest and Dragon Queen
+- LucidCrux's Loot Page and search controls as seperate layoutable panes
+- Mustard Tools work again
+- Mustard Sale and Injector can now do all tools if you have enough Mustard
+- Fix very long standing options default error
+- Option for how many ONGs of logs to keep (default 3)
+- Time Dilation Boost
+- Many minor errors removed (and probably some added)
+- Shadow Ninja Boost
+- Downgrade for the Italian Plumber
+- Some nerfing
+
+#### LucidCrux
+- Major Refactor / Redo of the way HTML is generated and div are drawn
+- Redundikitties should no longer appear in sections turned off in the section list
+- Loot pages
+- Loot searching
+- Hover is instant
+- More random refactoring
+- A few new icons
+
+#### ED
+- Fixed a bug
+
+### 3.33333
+
+#### LucidCrux
+- Fixed two critical kitty bugs one affecting unlocks and another RRSR
+
+#### Waveney
+- Fixed one kitty bug
+
 ### 3.33332
 
 #### LucidCrux
