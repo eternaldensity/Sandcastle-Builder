@@ -39,6 +39,7 @@ For personal amusement only.
 - Fixed tagged loot sort errors
 - Fixed auto-use boosts from showing in loot (hopefully caught them all)
 - Fixed some boosts not updating until hiding/showing again
+- Search may work better
 
 ### 3.4005
 
