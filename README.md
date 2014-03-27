@@ -33,12 +33,20 @@ For personal amusement only.
 - Partial solution to NavPane layout on Chrome
 - Improve a few thigs
 
+#### LucidCrux
+- Discoveries and Monuments now sorted by NP number
+- Scroll position is (hopefully) kept with repaints
+- Fixed tagged loot sort errors
+- Fixed auto-use boosts from showing in loot (hopefully caught them all)
+- Fixed some boosts not updating until hiding/showing again
+- Search may work better
+
 ### 3.4005
 
 #### Waveney
 - 2 more fixes
 
-#### Lucid Crux
+#### LucidCrux
 - Fixed scrolling/accessing loot bugs
 - Fixed load problems for classic users
 - other fixes
@@ -84,7 +92,7 @@ For personal amusement only.
 - Downgrade for the Italian Plumber
 - Some nerfing
 
-#### Lucid Crux
+#### LucidCrux
 - Major Refactor / Redo of the way HTML is generated and div are drawn
 - Redundikitties should no longer appear in sections turned off in the section list
 - Loot pages

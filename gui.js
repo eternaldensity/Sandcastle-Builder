@@ -546,7 +546,6 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.searchLoot = function() {
 		Molpy.ShowhideToggle('search', true);
-		Molpy.newSearch = 1;
 		Molpy.restoreLootScroll = false;
 		Molpy.lootNeedRepaint = 1;
 	}
@@ -578,25 +577,22 @@ Molpy.DefineGUI = function() {
 		var endIndex = 0;
 		
 		if(Molpy.activeLayout.lootVis.search) {
-			if(Molpy.newSearch) {
-				Molpy.searchList = [];
-				Molpy.newSearch = 0;
-				var searchText = $('#lootSearchBox').val().toLowerCase();
-				if($('#searchBoosts').prop('checked')){
-					for(var i in Molpy.BoostsBought) {
-						var me = Molpy.BoostsBought[i];
-						if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
-					}
+			Molpy.searchList = [];
+			var searchText = $('#lootSearchBox').val().toLowerCase();
+			if($('#searchBoosts').prop('checked')){
+				for(var i in Molpy.BoostsBought) {
+					var me = Molpy.BoostsBought[i];
+					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
 				}
-				if($('#searchBadges').prop('checked')){
-					for(var i in Molpy.BadgesEarned) {
-						var me = Molpy.BadgesEarned[i];
-						if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
-					}
-					for(var i in Molpy.BadgesAvailable) {
-						var me = Molpy.BadgesAvailable[i];
-						if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
-					}
+			}
+			if($('#searchBadges').prop('checked')){
+				for(var i in Molpy.BadgesEarned) {
+					var me = Molpy.BadgesEarned[i];
+					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
+				}
+				for(var i in Molpy.BadgesAvailable) {
+					var me = Molpy.BadgesAvailable[i];
+					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
 				}
 			}
 			maxPageNum = Math.ceil(Molpy.searchList.length / Molpy.lootPerPage);
