@@ -338,7 +338,6 @@ Molpy.DefineBadges = function() {
 	});
 	
 	Molpy.JudgementDipThreshold = function() {
-		if(Molpy.Boosts['NavCode'].power) return [0, Infinity];
 		var baseVal = 500000000;
 		var div = 1;
 		for( var i in Molpy.Boosts) {
@@ -368,6 +367,7 @@ Molpy.DefineBadges = function() {
 	}
 	
 	Molpy.JudgementDipReport = function() {
+		if(Molpy.Boosts['NavCode'].power) return [0, Infinity];
 		var bot = Molpy.CastleTools['NewPixBot'];
 		var bots = bot.amount;
 		var np = Math.abs(Molpy.newpixNumber);
