@@ -6158,7 +6158,7 @@ Molpy.DefineBoosts = function() {
 			}
 
 			var looped = 0;
-			while(!Molpy.tfOrder[me.scanIndex].temp) {
+			while(isNaN(Molpy.tfOrder[me.scanIndex].amount) || !Molpy.tfOrder[me.scanIndex].temp) {
 				me.scanIndex++;
 				if(me.scanIndex >= Molpy.tfOrder.length) {
 					me.scanIndex = 0;
@@ -7468,9 +7468,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' map' + plural(me.Level);
-			if(Molpy.Got('DNS') || !me.bought) {
-				return str + '.';
-			}
+			if(!me.bought)  return str + '.';
 			if (!Molpy.Got('DNS')) str += ' out of 80.';
 			if(me.bought != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
 				str += '<br>The next map can be found at NP ' + me.bought;
@@ -8109,6 +8107,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Mustarded all tools');
 			}
 		}
+		Molpy.MustardCheck();
 	}
 
 	new Molpy.Boost({
