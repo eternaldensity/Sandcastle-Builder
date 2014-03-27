@@ -8214,13 +8214,16 @@ Molpy.DefineBoosts = function() {
 	Molpy.NinjaRitual = function() {
 		var oldlvl = Molpy.Level('Ninja Ritual');
 		var mult=1;
+		if (Molpy.Got('Zooman')) mult = 20;
 		Molpy.Add('Goats', Math.floor((1 + oldlvl / 5)*Molpy.Papal('Goats')));
 		while (Molpy.Level('Ninja Ritual') <= oldlvl) {
-			Molpy.Boosts('Ninja Ritual').Level +=mult; 
+			Molpy.Boosts['Ninja Ritual'].Level +=mult; 
 			mult*=10; 
 		};
+		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult; 
 		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
+		if (Molpy.Level('Ninja Ritual') > 7777) Molpy.UnlockBoost('zooman');
 	};
 	new Molpy.Boost({
 		name: 'Time Lord',
@@ -9174,6 +9177,14 @@ Molpy.DefineBoosts = function() {
 		group: 'ninj',
 		desc: 'When the shadow feeder runs and the Italian Plumber is not active, it may also do a Ninja Ritual',
 		price: {Goats: 50000, FluxCrystals:Infinity, Mustard:10000},
+	});
+
+	new Molpy.Boost({
+		name: 'Ninja Tortoise',
+		icon: 'tortoise',
+		alias: 'Zooman', // Because
+		desc: 'Increases the rate Ninja Ritual streak grows',
+		price: {Goats: 1e7, Mustard: 1e7},
 	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
