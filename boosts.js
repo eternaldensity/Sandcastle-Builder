@@ -8223,7 +8223,7 @@ Molpy.DefineBoosts = function() {
 		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult; 
 		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
-		if (Molpy.Level('Ninja Ritual') > 7777) Molpy.UnlockBoost('zooman');
+		if (Molpy.Level('Ninja Ritual') > 77777) Molpy.UnlockBoost('zooman');
 	};
 	new Molpy.Boost({
 		name: 'Time Lord',

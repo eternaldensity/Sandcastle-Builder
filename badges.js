@@ -938,7 +938,7 @@ Molpy.DefineBadges = function() {
 		vis: 1
 	});
 	new Molpy.Badge({
-		name: 'Ultaviolet',
+		name: 'Ultraviolet',
 		desc: 'Automata Control level at least 1T',
 		vis: 1
 	});
