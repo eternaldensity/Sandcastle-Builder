@@ -8223,7 +8223,7 @@ Molpy.DefineBoosts = function() {
 		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult; 
 		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
-		if (Molpy.Level('Ninja Ritual') > 77777) Molpy.UnlockBoost('zooman');
+		if (Molpy.Level('Ninja Ritual') > 77777) Molpy.UnlockBoost('Zooman');
 	};
 	new Molpy.Boost({
 		name: 'Time Lord',
@@ -9185,6 +9185,7 @@ Molpy.DefineBoosts = function() {
 		alias: 'Zooman', // Because
 		desc: 'Increases the rate Ninja Ritual streak grows',
 		price: {Goats: 1e7, Mustard: 1e7},
+		group: 'ninj',
 	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
