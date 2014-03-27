@@ -147,10 +147,11 @@ Molpy.DefineGUI = function() {
 	}
 
 	Molpy.priceComparisons = ['GlassBlocks', 'Sand', 'Castles'];
+	Molpy.IDSort = function(a,b) {
+		return a.id > b.id;
+	}
 	Molpy.NameSort = function(a, b) {
-		var n1 = a.name;
-		var n2 = b.name;
-		return n1 > n2;
+		return a.name > b.name;
 	}
 	Molpy.PriceSort = function(a, b) {
 		var p1 = a.CalcPrice(a.price);
@@ -600,6 +601,10 @@ Molpy.DefineGUI = function() {
 			for(var i in Molpy.BadgesAvailable) {
 				var me = Molpy.BadgesAvailable[i];
 				if(Molpy.activeLayout.lootVis.badgesav) badgeList.push(me);
+			}
+			for(var i in Molpy.DiscovMonumEarned) {
+				var me = Molpy.DiscovMonumEarned[i];
+				if(Molpy.activeLayout.lootVis[me.group]) badgeList.push(me);
 			}
 			
 			maxPageNum = Math.ceil((boostList.length + badgeList.length) / Molpy.lootPerPage);
