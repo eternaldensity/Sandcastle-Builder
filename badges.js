@@ -1256,7 +1256,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:1602,name:'Food and water',desc:'Cueball: There\'s food and water here.  I don\'t want to go all the way back down, walk along the sea for a few more days, then have to turn around'});
 	Molpy.MakeQuadBadge({np:1603,name:'Sea is too big',desc:'Cueball: Maybe the Sea is too big to understand.  We can\'t answer every question'});
 	Molpy.MakeQuadBadge({np:1604,name:'Answer <i>Any</i> question',desc:'Megan: No.  But I think we can answer <i>any</i> question'});
-	Molpy.MakeQuadBadge({np:1605,name:'No need to turn around',desc:'Megan: Still, I agree.  No need to tur around yet'});
+	Molpy.MakeQuadBadge({np:1605,name:'No need to turn around',desc:'Megan: Still, I agree.  No need to turn around yet'});
 	Molpy.MakeQuadBadge({np:1606,name:'Neat mountains',desc:'Megan: And those mountains <i>do</i> look neat'});
 	Molpy.MakeQuadBadge({np:1608,name:'Stock up',desc:'Megan goes back for food, Cueball will get the water'});
 	Molpy.MakeQuadBadge({np:1616,name:'Squirpy',desc:'Megan sees the squirpy'});
