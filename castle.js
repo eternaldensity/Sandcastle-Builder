@@ -1895,7 +1895,7 @@ Molpy.Up = function() {
 						} else {
 							Molpy.groupBadgeCounts[baby.group]++;
 						}
-						if (baby.group != 'monumg' && baby.group != 'monums')
+						if (Molpy.options.autoshow==1 || (baby.group != 'monumg' && baby.group != 'monums'))
 							Molpy.ShowGroup(baby.group, baby.className);
 
 					}

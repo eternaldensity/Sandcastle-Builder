@@ -251,6 +251,14 @@ new Molpy.Option({
 });
 
 new Molpy.Option({
+	name: 'autoshow'.
+	title: 'Auto show',
+	range: 3
+	defaultval: 1
+	text: ['Never', 'Always', 'No discoveries']
+}
+
+new Molpy.Option({
 	name: 'typo',
 	title: 'typo',		
 	visability: -1,
