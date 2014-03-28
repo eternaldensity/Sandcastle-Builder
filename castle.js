@@ -2609,7 +2609,7 @@ Molpy.Up = function() {
 					if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
 					Molpy.UnlockBoost(red.alias, 1);
 				} else {
-					Molpy.Notify('Your reward from Logicat:', 1);
+					if(!Molpy.boostSilence) Molpy.Notify('Your reward from Logicat:', 1);
 					Molpy.GiveTempBoost(red.alias);
 				}
 				return;
