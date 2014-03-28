@@ -5034,6 +5034,8 @@ Molpy.DefineBoosts = function() {
 			minnum = Math.min(tool.amount,minnum);
 		}
 		if (isFinite(minnum)) {	
+			// Molpy.Notify('Got Here ' + acPower);
+			i = Math.min(i,1000);
 			while(i--) {
 				var on = 1;
 				var t = Molpy.tfOrder.length;
@@ -5046,9 +5048,13 @@ Molpy.DefineBoosts = function() {
 				while(t--) {
 					var tool = Molpy.tfOrder[t];
 					tool.amount--;
-					tool.Refresh();
 				}
 				times++;
+			}
+			var t = Molpy.tfOrder.length;
+			while(t--) {
+				var tool = Molpy.tfOrder[t];
+				tool.Refresh();
 			}
 			Molpy.RunFastFactory(times);
 		} else {
@@ -8941,7 +8947,8 @@ Molpy.DefineBoosts = function() {
 	}
 	Molpy.Hash = function(brown) {
 		var res = 0;
-		for (var c in brown.split('')) { res = (((res<<1) + c.charCodeAt()) & 0x7FFFFFFF) + (res>>>16)};
+		var chrs = brown.split('');
+		for (var c in chrs) { res = (((res<<1) + chrs[c].charCodeAt()) & 0x7FFFFFFF) + (res>>>16)};
 		return res;
 	}
 	Molpy.Decreename = '';
