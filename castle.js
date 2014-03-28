@@ -1774,8 +1774,8 @@ Molpy.Up = function() {
 			// Methods for Div Creation
 			this.getFullClass = function() {
 				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
-				if(this.HasUpgrade()) cn += ' action';
-				if(this.np < 0) cn += 'flip-horizontal';
+				if(this.HasUpgrade()) cn += ' action ';
+				if(this.np < 0) cn += 'flip-horizontal ';
 				return cn;
 			}
 			
@@ -3225,6 +3225,7 @@ Molpy.Up = function() {
 	/**************************************************************
 	 * In which loopists do their thing
 	 *************************************************************/
+	Molpy.Stop = 0;
 	Molpy.Loopist = function() {
 		var t = Molpy.time;
 		Molpy.time = new Date().getTime();
@@ -3233,7 +3234,7 @@ Molpy.Up = function() {
 		Molpy.lateness = Math.min(Molpy.lateness, 7200);//don't ketchup up too much
 		while(Molpy.lateness > Molpy.mNPlength) {
 			try {
-				Molpy.Think();
+				if(!Molpy.Stop) Molpy.Think();
 			} catch(e) {
 				alert('Something went wrong in Molpy.Think() ' + (Molpy.ketchupTime ? 'while ketching up: ' : ': ') + e + '\n\n' + e.stack);
 				throw e;

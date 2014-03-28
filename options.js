@@ -60,21 +60,24 @@ Molpy.Setoption = function(opt,val) {
 
 Molpy.OptionsToString = function() {
 	var str = '';
-	for (var opt in Molpy.OptionSaveOrder) str += Molpy.options[Molpy.OptionSaveOrder[opt]];
+	for (var opt in Molpy.OptionSaveOrder) str += Molpy.options[Molpy.OptionSaveOrder[opt]] || 0;
 	return str;
 };
 
 Molpy.OptionsFromString = function(thread) {
+	thread = thread.replace(/N/g,'');
+	thread = thread.replace(/A/g,'0');
 	var pixels = thread.split('');
 	for (var opt in Molpy.OptionSaveOrder) {
-		var name = Molpy.OptionSaveOrder[opt]
-		Molpy.options[name] = parseInt(pixels[opt])
+		var name = Molpy.OptionSaveOrder[opt];
+		//Molpy.Notify("Doing " + opt + ' - ' + name);
+		Molpy.options[name] = parseInt(pixels[opt]);
 		if (isNaN(Molpy.options[name])) Molpy.options[name] = Molpy.Options[name].defaultval;
 	}
 };
 
 // ALWAYS add to the end of this list. NEVER EVER remove an option
-Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpax', 'longpostfix', 'colourscheme',
+Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpix', 'longpostfix', 'colourscheme',
 			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll',
 			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit' ];
 	
