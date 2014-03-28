@@ -1774,8 +1774,8 @@ Molpy.Up = function() {
 			// Methods for Div Creation
 			this.getFullClass = function() {
 				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
-				if(this.HasUpgrade()) cn += ' action';
-				if(this.np < 0) cn += 'flip-horizontal';
+				if(this.HasUpgrade()) cn += ' action ';
+				if(this.np < 0) cn += 'flip-horizontal ';
 				return cn;
 			}
 			
