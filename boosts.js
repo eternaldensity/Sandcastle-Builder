@@ -8941,7 +8941,8 @@ Molpy.DefineBoosts = function() {
 	}
 	Molpy.Hash = function(brown) {
 		var res = 0;
-		for (var c in brown.split('')) { res = (((res<<1) + c.charCodeAt()) & 0x7FFFFFFF) + (res>>>16)};
+		var chrs = brown.split('');
+		for (var c in chrs) { res = (((res<<1) + chrs[c].charCodeAt()) & 0x7FFFFFFF) + (res>>>16)};
 		return res;
 	}
 	Molpy.Decreename = '';
