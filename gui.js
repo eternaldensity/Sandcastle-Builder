@@ -2062,7 +2062,7 @@ Molpy.DefineGUI = function() {
 			var pNum = price[p];
 			//change all number representations into a number (40,000 40k 4e4)
 			pNum = isNaN(pNum) ? DeMolpify(pNum) : pNum;
-			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum, 1) + ' ' + p;
+			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum, 2) + ' ' + p;
 		}
 		return innerHTML;
 	}
