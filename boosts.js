@@ -2369,9 +2369,11 @@ Molpy.DefineBoosts = function() {
 			var chipsFor = chillerLevel;
 
 			var rate = Molpy.ChipsPerBlock();
+			var chipsFor = Math.min(chillerLevel, (Molpy.Boosts['GlassChips'].Level + Molpy.chipWasteAmount) / rate);
+			var need = (chipsFor * rate - Molpy.chipWasteAmount) || 0;
 			var backoff = 1;
 
-			while(!Molpy.Has('GlassChips', chipsFor * rate)) {
+			while(!Molpy.Has('GlassChips', need)) {
 				chipsFor = (chipsFor - backoff) || 0;
 				backoff *= 2;
 			}
@@ -2382,6 +2384,12 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Running low on Glass Chips!');
 				chillerLevel = chipsFor;
 			}
+			var cost = chipsFor * rate;
+			
+			// Spend from surplus waste
+			cost = (cost - Molpy.chipWasteAmount) || 0; 
+			Molpy.chipWasteAmount = (cost > 0) ? Molpy.chipWasteAmount-cost : 0;
+			
 			Molpy.Destroy('GlassChips', chipsFor * rate);
 			if(Molpy.Got('Glass Goat') && Molpy.Has('Goats', 1)) {
 				chillerLevel *= Molpy.Level('Goats');
@@ -3078,7 +3086,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			if(!me.bought || flandom(10) == 0) return Molpy.redundancy.longsentence;
 			var sent = Molpy.redundancy.sentence();
-			if(!Molpy.Boosts['Expando'].IsEnabled) Molpy.Notify(sent, 1);
+			//if(!Molpy.Boosts['Expando'].IsEnabled) Molpy.Notify(sent, 1);
 			return sent;
 		},
 		
@@ -7029,8 +7037,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Boosts['Castles'].prevCastleSand = Molpy.currentCastleSand;
 				if(!isFinite(this.power) || Molpy.Boosts['Castles'].nextCastleSand <= 0) {
 					Molpy.Boosts['Castles'].nextCastleSand = 1;
-					Molpy.Boosts['Castles'].power = Infinity;
-					Molpy.Boosts['Castles'].totalBuilt = Infinity;
+					Molpy.Boosts['Castles'].build(Infinity, 0);
 					return;
 				}
 			}
@@ -7167,10 +7174,14 @@ Molpy.DefineBoosts = function() {
 					if(amount >= this.power / 10000000)
 						Molpy.Notify(amount == 1 ? '+1 Castle' : Molpify(amount, 3) + ' Castles Built', 1);
 					else
+					{
 						this.buildNotifyCount += amount;
+						if (!isFinite(this.buildNotifyCount)) this.buildNotifyCount=0;
+					}
 				}
 			} else {
 				this.buildNotifyCount += amount;
+				if (!isFinite(this.buildNotifyCount)) this.buildNotifyCount=0;
 			}
 
 			if(this.totalBuilt >= 1) {
@@ -8694,7 +8705,7 @@ Molpy.DefineBoosts = function() {
 			};
 			var d = Math.floor(totalc*Molpy.Papal("Flux"));
 			if (d) Molpy.Add('FluxCrystals', d);
-			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(totalc+d)+' flux crystal'+plural(totalc+d)+'.');
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(totalc+d)+' flux crystal'+plural(totalc+d)+'.', true);
 		} else { // Use maths to approximate then modify by a small random element
 			var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - 
 				 (Molpy.Boosts['Time Lord'].bought + 2 - Molpy.Level('Time Lord')) * 
@@ -8706,7 +8717,7 @@ Molpy.DefineBoosts = function() {
 				c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
 			c = Math.floor(c * .9 + c * .2 * Math.random());
 			Molpy.Add('FluxCrystals', c);
-			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+'.');
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+'.', true);
 			Molpy.Add('Time Lord', -levels);
 		}
 		Molpy.Boosts['Flux Harvest'].Refresh();
