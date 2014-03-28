@@ -1458,7 +1458,7 @@ Molpy.Up = function() {
 				Molpy.CheckBuyUnlocks();
 				Molpy.unlockedGroups[this.group] = 1;
 				this.Refresh();
-				if(!Molpy.boostSilence && !free && this.bought && !auto) {
+				if(!Molpy.boostSilence && !free && this.bought && !auto && Molpy.options.autoshow) {
 					Molpy.ShowGroup(this.group, this.className);
 				}
 				if(this.bought) Molpy.lootAddBoost(this);
@@ -1895,8 +1895,11 @@ Molpy.Up = function() {
 						} else {
 							Molpy.groupBadgeCounts[baby.group]++;
 						}
-						if (Molpy.options.autoshow==1 || (baby.group != 'monumg' && baby.group != 'monums'))
-							Molpy.ShowGroup(baby.group, baby.className);
+						if (Molpy.options.autoshow!=0)
+						{
+							if (Molpy.options.autoshow==1 || (baby.group != 'monumg' && baby.group != 'monums'))
+								Molpy.ShowGroup(baby.group, baby.className);
+						}
 
 					}
 				}
