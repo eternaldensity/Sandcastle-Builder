@@ -129,6 +129,7 @@ Molpy.DefineGUI = function() {
 				Molpy.activeLayout.lootVis.tagged = 0; //hide tagged when showing anything else
 			}
 		}
+		Molpy.restoreLootScroll = false;
 		Molpy.lootPageNum = 1;
 		Molpy.lootNeedRepaint = 1;
 	}
@@ -147,10 +148,11 @@ Molpy.DefineGUI = function() {
 	}
 
 	Molpy.priceComparisons = ['GlassBlocks', 'Sand', 'Castles'];
+	Molpy.IDSort = function(a,b) {
+		return a.id > b.id;
+	}
 	Molpy.NameSort = function(a, b) {
-		var n1 = a.name;
-		var n2 = b.name;
-		return n1 > n2;
+		return a.name > b.name;
 	}
 	Molpy.PriceSort = function(a, b) {
 		var p1 = a.CalcPrice(a.price);
@@ -481,6 +483,19 @@ Molpy.DefineGUI = function() {
 	 	Molpy.repaintFaves();
 	}
 	
+	Molpy.restoreLootScroll = true;
+	
+	Molpy.getScrollLoc = function(divString) {
+		var div = $(divString);
+		var pos = [div.scrollTop(), div.scrollLeft()];
+		return pos;
+	}
+	
+	Molpy.setScrollLoc = function(divString, pos) {
+		var div = $(divString);
+		div.scrollTop(pos[0]).scrollLeft(pos[1]);
+	}
+	
 	Molpy.lootPerPage = 20;
 	Molpy.lootPerPageBox = $('#navPerPage');
 	Molpy.lootPageNum = 1;
@@ -494,6 +509,7 @@ Molpy.DefineGUI = function() {
 			Molpy.lootPageNum = 1;
 		else if(change == 'max')
 			Molpy.lootPageNum = 'max';
+		Molpy.restoreLootScroll = false;
 		Molpy.lootNeedRepaint = 1;
 	}
 	
@@ -530,12 +546,14 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.searchLoot = function() {
 		Molpy.ShowhideToggle('search', true);
-		Molpy.newSearch = 1;
+		Molpy.restoreLootScroll = false;
 		Molpy.lootNeedRepaint = 1;
 	}
 	
 	Molpy.repaintLoot = function() {
 		Molpy.lootNeedRepaint = 0;
+		
+		var pos = Molpy.getScrollLoc('#loot');
 		
 		if(Molpy.lootPerPage < 1) Molpy.lootPerPage = 1;
 		if(Molpy.lootPageNum < 1) Molpy.lootPageNum = 1;
@@ -559,25 +577,22 @@ Molpy.DefineGUI = function() {
 		var endIndex = 0;
 		
 		if(Molpy.activeLayout.lootVis.search) {
-			if(Molpy.newSearch) {
-				Molpy.searchList = [];
-				Molpy.newSearch = 0;
-				var searchText = $('#lootSearchBox').val().toLowerCase();
-				if($('#searchBoosts').prop('checked')){
-					for(var i in Molpy.BoostsBought) {
-						var me = Molpy.BoostsBought[i];
-						if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
-					}
+			Molpy.searchList = [];
+			var searchText = $('#lootSearchBox').val().toLowerCase();
+			if($('#searchBoosts').prop('checked')){
+				for(var i in Molpy.BoostsBought) {
+					var me = Molpy.BoostsBought[i];
+					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
 				}
-				if($('#searchBadges').prop('checked')){
-					for(var i in Molpy.BadgesEarned) {
-						var me = Molpy.BadgesEarned[i];
-						if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
-					}
-					for(var i in Molpy.BadgesAvailable) {
-						var me = Molpy.BadgesAvailable[i];
-						if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
-					}
+			}
+			if($('#searchBadges').prop('checked')){
+				for(var i in Molpy.BadgesEarned) {
+					var me = Molpy.BadgesEarned[i];
+					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
+				}
+				for(var i in Molpy.BadgesAvailable) {
+					var me = Molpy.BadgesAvailable[i];
+					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
 				}
 			}
 			maxPageNum = Math.ceil(Molpy.searchList.length / Molpy.lootPerPage);
@@ -600,6 +615,10 @@ Molpy.DefineGUI = function() {
 			for(var i in Molpy.BadgesAvailable) {
 				var me = Molpy.BadgesAvailable[i];
 				if(Molpy.activeLayout.lootVis.badgesav) badgeList.push(me);
+			}
+			for(var i in Molpy.DiscovMonumEarned) {
+				var me = Molpy.DiscovMonumEarned[i];
+				if(Molpy.activeLayout.lootVis[me.group]) badgeList.push(me);
 			}
 			
 			maxPageNum = Math.ceil((boostList.length + badgeList.length) / Molpy.lootPerPage);
@@ -638,6 +657,9 @@ Molpy.DefineGUI = function() {
 			Molpy.addGroupToDiv($('#loot'), badgeList, badgeStartIndex, badgeEndIndex, 'badges', {autoAdd: true, recalc: false});
 		}
 		
+		if(Molpy.restoreLootScroll) Molpy.setScrollLoc('#loot', pos);
+		Molpy.restoreLootScroll = true;
+		
 		Molpy.lootPerPageBox.val(Molpy.lootPerPage);
 		Molpy.lootPageNumBox.val(Molpy.lootPageNum);
 		Molpy.lootPageNumMax.text(maxPageNum);
@@ -648,6 +670,8 @@ Molpy.DefineGUI = function() {
 
 	Molpy.repaintShop = function() {
 		Molpy.shopNeedRepaint = 0;
+		
+		var pos = Molpy.getScrollLoc('#boosts');
 		
 		Molpy.removeGroupDivs(Molpy.dispObjects.shop);
 		Molpy.dispObjects.shop = [];
@@ -664,6 +688,8 @@ Molpy.DefineGUI = function() {
 			shopList.sort(Molpy.PriceSort);
 		
 		Molpy.addGroupToDiv($('#boosts'), shopList, 0, shopList.length - 1, 'shop', {autoAdd: true, recalc: true});
+		
+		Molpy.setScrollLoc('#boosts', pos);
 	}
 	
 	Molpy.repaintTools = function(args) {
@@ -683,6 +709,8 @@ Molpy.DefineGUI = function() {
 		if(!args) args = {};
 		Molpy.sandToolsNeedRepaint = 0;
 		
+		var pos = Molpy.getScrollLoc('#sandtools');
+		
 		// Remove all Sand Tools from dispObjects for a fresh start
 		if(!args.skipClear) {
 			Molpy.removeGroupFromDispObjectsCategory(Molpy.SandTools, 'tools');
@@ -696,11 +724,15 @@ Molpy.DefineGUI = function() {
 		
 		var dorecalc = args.recalc == false ? false : true;
 		Molpy.addGroupToDiv($('#sandtools'), Molpy.SandToolsById, 0, max, 'tools', {autoAdd: true, recalc: dorecalc});
+		
+		Molpy.setScrollLoc('#sandtools', pos);
 	}
 	
 	Molpy.repaintCastleTools = function(args) {
 		if(!args) args = {};
 		Molpy.castleToolsNeedRepaint = 0;
+		
+		var pos = Molpy.getScrollLoc('#castletools');
 		
 		// Remove all Castle Tools from dispObjects for a fresh start
 		if(!args.skipClear) {
@@ -715,6 +747,8 @@ Molpy.DefineGUI = function() {
 		
 		var dorecalc = args.recalc == false ? false : true;
 		Molpy.addGroupToDiv($('#castletools'), Molpy.CastleToolsById, 0, max, 'tools', {autoAdd: true, recalc: dorecalc});
+		
+		Molpy.setScrollLoc('#castletools', pos);
 	}
 	
 	Molpy.repaintBoosts = function() {

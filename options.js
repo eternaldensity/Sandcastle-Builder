@@ -5,14 +5,14 @@ Molpy.OptionsById = [];
 
 Molpy.Option = function(args) {
 	this.id = Molpy.OptionsN;
-	this.name = args.name;
-	this.title = args.title;
-	this.defaultval = args.defaultval || 0;
-	this.visability = args.visability || 1;
-	this.onchange = args.onchange || 0;
-	this.range = args.range || 1;
-	this.text = args.text || ["No","Yes"];
-	this.breakafter = args.breakafter || 0;
+	this.name = args.name;			// Name of option - needed for all
+	this.title = args.title || args.name;	// Title to appear on options pane
+	this.defaultval = args.defaultval || 0;	// Default value of option
+	this.visability = args.visability || 1;	// Visability of option (maybe function)
+	this.onchange = args.onchange || 0;	// Function - Action to take when it changes
+	this.range = args.range || 1;		// Highest value (currently 1-9)
+	this.text = args.text || ["No","Yes"];	// Text for option, if an array it is indexed by the value (maybe function)
+	this.breakafter = args.breakafter || 0;	// Put a line break after the option to format the options pane
 
 	Molpy.Options[this.name] = this;
 	Molpy.OptionsById[this.id] = this;
@@ -73,7 +73,7 @@ Molpy.OptionsFromString = function(thread) {
 	}
 };
 
-// ALWAYS add to the end of this list
+// ALWAYS add to the end of this list. NEVER EVER remove an option
 Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpax', 'longpostfix', 'colourscheme',
 			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll',
 			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit' ];
@@ -158,7 +158,7 @@ new Molpy.Option({
 	name: 'colpix',
 	title: 'Show Colpix',
 	onchange: function() { Molpy.UpdateColourScheme() },
-	defaultval: 1,
+	defaultval: 0,
 });
 
 new Molpy.Option({
@@ -260,21 +260,18 @@ new Molpy.Option({ //Not Used
 	name: 'sea',
 	title: '',		
 	visability: -1,
-	defaultval: 1,
 });
 
 new Molpy.Option({ //Not Used
 	name: 'particles',
 	title: '',		
 	visability: -1,
-	defaultval: 1,
 });
 
 new Molpy.Option({ //Not Used
 	name: 'autoupdate',
 	title: '',		
 	visability: -1,
-	defaultval: 1,
 });
 
 /*

@@ -3434,14 +3434,20 @@ Molpy.DefineBoosts = function() {
 				this.power += points;
 				var rewards = Math.floor((this.power - this.bought*5)/5 +1);
 				if (rewards > 0) {
-					this.bought+=Math.floor(rewards*Molpy.Papal('Logicats'));
-					if (Molpy.Papal('Logicats') > 1) this.power = this.bought*5;
-					if(rewards > 5) {
-						Molpy.Add('QQ', Math.floor((rewards - 5)*Molpy.Papal('QQs')));
-						rewards = 5;
-					}
-					while(rewards--) {
-						Molpy.RewardLogicat(this.Level);
+					if (Molpy.Got('Tangled Tessaract') && Molpy.IsEnabled('Tangled Tessaract')) {
+						this.bought+=Math.floor(rewards*3*Molpy.Papal('Logicats'));
+						this.power = this.bought*5;
+					} else {
+						this.bought+=Math.floor(rewards*Molpy.Papal('Logicats'));
+						if (Molpy.Papal('Logicats') > 1) this.power = this.bought*5;
+						if(rewards > 5) {
+							Molpy.Add('QQ', Math.floor((rewards - 5)*Molpy.Papal('QQs')));
+							if (Molpy.Has('QQ','1P')) Molpy.UnlockBoost('Tangled Tessaract');
+							rewards = 5;
+						}
+						while(rewards--) {
+							Molpy.RewardLogicat(this.Level);
+						}
 					}
 				}
 				this.Refresh();
@@ -5028,6 +5034,8 @@ Molpy.DefineBoosts = function() {
 			minnum = Math.min(tool.amount,minnum);
 		}
 		if (isFinite(minnum)) {	
+			// Molpy.Notify('Got Here ' + acPower);
+			i = Math.min(i,1000);
 			while(i--) {
 				var on = 1;
 				var t = Molpy.tfOrder.length;
@@ -5040,9 +5048,13 @@ Molpy.DefineBoosts = function() {
 				while(t--) {
 					var tool = Molpy.tfOrder[t];
 					tool.amount--;
-					tool.Refresh();
 				}
 				times++;
+			}
+			var t = Molpy.tfOrder.length;
+			while(t--) {
+				var tool = Molpy.tfOrder[t];
+				tool.Refresh();
 			}
 			Molpy.RunFastFactory(times);
 		} else {
@@ -6747,7 +6759,11 @@ Molpy.DefineBoosts = function() {
 		var l = Molpy.Level('LogiPuzzle') / 100;
 		var n = Math.ceil(l);
 		var p = n - l;
-		if(Math.random() < p * p) n = 1;
+		if (n < 1000000) {
+			if(Math.random() < p * p) n = 1;
+		} else {
+			if (Math.random() < 0.25) n = 1;
+		}
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
@@ -7468,9 +7484,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' map' + plural(me.Level);
-			if(Molpy.Got('DNS') || !me.bought) {
-				return str + '.';
-			}
+			if(!me.bought)  return str + '.';
 			if (!Molpy.Got('DNS')) str += ' out of 80.';
 			if(me.bought != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
 				str += '<br>The next map can be found at NP ' + me.bought;
@@ -8210,9 +8224,18 @@ Molpy.DefineBoosts = function() {
 		defStuff: 1
 	});
 	Molpy.NinjaRitual = function() {
-		Molpy.Add('Goats', Math.floor((1 + Molpy.Boosts['Ninja Ritual'].Level++ / 5)*Molpy.Papal('Goats')));
+		var oldlvl = Molpy.Level('Ninja Ritual');
+		var mult=1;
+		if (Molpy.Got('Zooman')) mult = 20;
+		Molpy.Add('Goats', Math.floor((1 + oldlvl / 5)*Molpy.Papal('Goats')));
+		while (Molpy.Level('Ninja Ritual') <= oldlvl) {
+			Molpy.Boosts['Ninja Ritual'].Level +=mult; 
+			mult*=10; 
+		};
+		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult; 
 		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
+		if (Molpy.Level('Ninja Ritual') > 77777) Molpy.UnlockBoost('Zooman');
 	};
 	new Molpy.Boost({
 		name: 'Time Lord',
@@ -8924,7 +8947,8 @@ Molpy.DefineBoosts = function() {
 	}
 	Molpy.Hash = function(brown) {
 		var res = 0;
-		for (var c in brown.split('')) { res = (((res<<1) + c.charCodeAt()) & 0x7FFFFFFF) + (res>>>16)};
+		var chrs = brown.split('');
+		for (var c in chrs) { res = (((res<<1) + chrs[c].charCodeAt()) & 0x7FFFFFFF) + (res>>>16)};
 		return res;
 	}
 	Molpy.Decreename = '';
@@ -9167,6 +9191,30 @@ Molpy.DefineBoosts = function() {
 		desc: 'When the shadow feeder runs and the Italian Plumber is not active, it may also do a Ninja Ritual',
 		price: {Goats: 50000, FluxCrystals:Infinity, Mustard:10000},
 	});
+
+	new Molpy.Boost({
+		name: 'Ninja Tortoise',
+		icon: 'tortoise',
+		alias: 'Zooman', // Because
+		desc: 'Increases the rate Ninja Ritual streak grows',
+		price: {Goats: 1e7, Mustard: 1e7},
+		group: 'ninj',
+	});
+
+	new Molpy.Boost({
+		name: 'Tangled Tessaract',
+		icon: 'tessaract',
+		desc: function(me) {
+			var str = 'When active you get 3 times as many Logicat Levels, but no rewards from puzzles.';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+		className: 'toggle',
+		price: {QQ: '1P', Mustard: 1e8},
+		group: 'bean',
+	});
+
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }

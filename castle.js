@@ -1461,7 +1461,7 @@ Molpy.Up = function() {
 				if(!Molpy.boostSilence && !free && this.bought && !auto) {
 					Molpy.ShowGroup(this.group, this.className);
 				}
-				Molpy.lootAddBoost(this);
+				if(this.bought) Molpy.lootAddBoost(this);
 			};
 			
 			this.isAffordable = function() {
@@ -1485,7 +1485,7 @@ Molpy.Up = function() {
 			};
 			
 			this.Refresh = function(indirect) {
-				if(!indirect) this.repaint();
+				Molpy.boostNeedRepaint = 1;
 
 				this.faveRefresh = 1;
 				if(!indirect && this.refreshFunction) this.refreshFunction();
@@ -1774,8 +1774,8 @@ Molpy.Up = function() {
 			// Methods for Div Creation
 			this.getFullClass = function() {
 				var cn = 'badge lootbox ' + (this.earned ? 'loot ' : 'shop ') + (this.className || '');
-				if(this.HasUpgrade()) cn += ' action';
-				if(this.np < 0) cn += 'flip-horizontal';
+				if(this.HasUpgrade()) cn += ' action ';
+				if(this.np < 0) cn += 'flip-horizontal ';
 				return cn;
 			}
 			
@@ -2182,6 +2182,7 @@ Molpy.Up = function() {
 			Molpy.BoostsBought = [];
 			Molpy.BadgesEarned = [];
 			Molpy.BadgesAvailable = [];
+			Molpy.DiscovMonumEarned = [];
 			
 			// Setup Boost list for use
 			for(var i in Molpy.Boosts) {
@@ -2198,12 +2199,22 @@ Molpy.Up = function() {
 				if(!me.earned && me.group == 'badges'){
 					Molpy.BadgesAvailable.push(me);
 				}
-				else if(me.earned){
-					Molpy.BadgesEarned.push(me);
+				else if(me.earned) {
+					if(me.group == 'discov'
+					   || me.group == 'monums'
+					   || me.group == 'monumg'
+					   || me.group == 'diamm') {
+						Molpy.DiscovMonumEarned.push(me);
+					}
+					else if(me.group == 'badges') {
+						Molpy.BadgesEarned.push(me);
+					}
+					
 					if(me.className && me.className != '') Molpy.TaggedLoot.push(me);
 				}
 			}
 			
+			// Don't need to sort DiscovMonum because it is already in ID order
 			Molpy.BoostsBought.sort(Molpy.NameSort);
 			Molpy.BadgesAvailable.sort(Molpy.NameSort);
 			Molpy.BadgesEarned.sort(Molpy.NameSort);
@@ -2217,29 +2228,25 @@ Molpy.Up = function() {
 			} else
 				Molpy.lootSortedInsert(boost, Molpy.BoostsBought);
 			
-			if(boost.className && boost.className != '') {
-				if(Molpy.TaggedLoot.length < 4) {
-					Molpy.TaggedLoot.push(boost);
-					Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
-				} else
-					Molpy.lootSortedInsert(boost, Molpy.TaggedLoot, 0, Molpy.TaggedLoot.length, true);
-			}
+			Molpy.lootMaybeAddTagged(boost);
 		}
 		
 		Molpy.lootAddBadge = function(badge) {
+			if(badge.group == 'discov'
+			   || badge.group == 'monums'
+			   || badge.group == 'monumg'
+			   || badge.group == 'diamm') {
+				Molpy.lootAddDiscovMonum(badge);
+				return;
+			}
+			
 			if(Molpy.BadgesEarned.length < 4) {
 				Molpy.BadgesEarned.push(badge);
 				Molpy.BadgesEarned.sort(Molpy.NameSort);
 			} else
 				Molpy.lootSortedInsert(badge, Molpy.BadgesEarned);
 			
-			if(badge.className && badge.className != '') {
-				if(Molpy.TaggedLoot.length < 4) {
-					Molpy.TaggedLoot.push(badge);
-					Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
-				} else
-					Molpy.lootSortedInsert(badge, Molpy.TaggedLoot, 0, Molpy.TaggedLoot.length, true);
-			}
+			Molpy.lootMaybeAddTagged(badge);
 			
 			//remove badge from available list if it is in there
 			var index = $.inArray(badge, Molpy.BadgesAvailable);
@@ -2247,8 +2254,31 @@ Molpy.Up = function() {
 				Molpy.BadgesAvailable.splice(index, 1);
 		}
 		
-		Molpy.lootSortedInsert = function(object, array) {
-			array.splice(Molpy.lootFindInsert(object, array) + 1, 0, object)
+		Molpy.lootAddDiscovMonum = function(obj) {
+			if(Molpy.DiscovMonumEarned.length < 4) {
+				Molpy.DiscovMonumEarned.push(obj);
+				Molpy.DiscovMonumEarned.sort(Molpy.IDSort);
+			} else
+				Molpy.lootSortedInsert(obj, Molpy.DiscovMonumEarned, 0, Molpy.DiscovMonumEarned.length, 'id');
+			
+			Molpy.lootMaybeAddTagged(obj);
+		}
+		
+		Molpy.lootMaybeAddTagged = function(obj) {
+			if(obj.className && obj.className != '') {
+				if(Molpy.TaggedLoot.length < 4) {
+					Molpy.TaggedLoot.push(obj);
+					Molpy.TaggedLoot.sort(Molpy.ClassNameSort);
+				} else
+					Molpy.lootSortedInsert(obj, Molpy.TaggedLoot, 0, Molpy.TaggedLoot.length, 'className');
+			}
+		}
+		
+		Molpy.lootSortedInsert = function(object, array, start, end, sort) {
+			start = start || 0;
+			end = end || array.length;
+			sort = sort || 'name';
+			array.splice(Molpy.lootFindInsert(object, array, start, end, sort) + 1, 0, object)
 		}
 		
 		Molpy.lootRemoveBoost = function(boost) {
@@ -2279,24 +2309,26 @@ Molpy.Up = function() {
 			}
 		}
 		
-		Molpy.lootFindInsert = function(object, array, start, end, tagged) {
+		Molpy.lootFindInsert = function(object, array, start, end, sort) {
 			start = start || 0;
 			end = end || array.length;
-			tagged = tagged || false;
+			sort = sort || 'name';
 			var pivot = Math.floor(start + (end - start) / 2);
 			if (end-start <= 1 || array[pivot] === object) return pivot;
 			
 			// Figure out if we need to look before or after pivot for insertion point
 			var searchAfter = true; 
-			if(tagged)
+			if(sort == 'className')
 				searchAfter = Molpy.ClassNameSort(object, array[pivot]) > 0 ? true : false;
+			else if(sort == 'id')
+				searchAfter = Molpy.IDSort(object, array[pivot]) > 0 ? true : false;
 			else
 				searchAfter = Molpy.NameSort(object, array[pivot]) > 0 ? true : false;
 			
 			if(searchAfter) {
-				return Molpy.lootFindInsert(object, array, pivot, end);
+				return Molpy.lootFindInsert(object, array, pivot, end, sort);
 			} else {
-				return Molpy.lootFindInsert(object, array, start, pivot);
+				return Molpy.lootFindInsert(object, array, start, pivot, sort);
 			}
 		}
 
@@ -3192,6 +3224,7 @@ Molpy.Up = function() {
 	/**************************************************************
 	 * In which loopists do their thing
 	 *************************************************************/
+	Molpy.Stop = 0;
 	Molpy.Loopist = function() {
 		var t = Molpy.time;
 		Molpy.time = new Date().getTime();
@@ -3200,7 +3233,7 @@ Molpy.Up = function() {
 		Molpy.lateness = Math.min(Molpy.lateness, 7200);//don't ketchup up too much
 		while(Molpy.lateness > Molpy.mNPlength) {
 			try {
-				Molpy.Think();
+				if(!Molpy.Stop) Molpy.Think();
 			} catch(e) {
 				alert('Something went wrong in Molpy.Think() ' + (Molpy.ketchupTime ? 'while ketching up: ' : ': ') + e + '\n\n' + e.stack);
 				throw e;
