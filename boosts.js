@@ -5034,6 +5034,8 @@ Molpy.DefineBoosts = function() {
 			minnum = Math.min(tool.amount,minnum);
 		}
 		if (isFinite(minnum)) {	
+			// Molpy.Notify('Got Here ' + acPower);
+			i = Math.min(i,1000);
 			while(i--) {
 				var on = 1;
 				var t = Molpy.tfOrder.length;
@@ -5046,9 +5048,13 @@ Molpy.DefineBoosts = function() {
 				while(t--) {
 					var tool = Molpy.tfOrder[t];
 					tool.amount--;
-					tool.Refresh();
 				}
 				times++;
+			}
+			var t = Molpy.tfOrder.length;
+			while(t--) {
+				var tool = Molpy.tfOrder[t];
+				tool.Refresh();
 			}
 			Molpy.RunFastFactory(times);
 		} else {

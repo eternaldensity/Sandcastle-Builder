@@ -36,6 +36,8 @@ For personal amusement only.
 - Ninja Tortoise Boost
 - Many bugs removed
 - Tangled Tessaract Boost
+- Limited tool production for high AC when on the inefficient path
+- Raptorification of DeMolpify function
 
 #### LucidCrux
 - Discoveries and Monuments now sorted by NP number
