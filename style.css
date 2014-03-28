@@ -21,6 +21,10 @@ html,body
 {
 	border-color:#A22;
 }
+.beachsafewarning
+{
+	border-color:#2AA;
+}
 .beachongwarning
 {
 	border-color:#AA2;
