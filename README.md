@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.411
+
+#### Waveney
+- Fix options bug
+
 ### 3.41
 
 #### Waveney
@@ -34,7 +39,7 @@ For personal amusement only.
 - Improve a few things
 - Shadow Strike was misbehaving for large numbers of puzzles
 - Ninja Tortoise Boost
-- Many bugs removed
+- Many bugs removed (some probably added)
 - Tangled Tessaract Boost
 - Limited tool production for high AC when on the inefficient path
 - Raptorification of DeMolpify function

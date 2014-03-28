@@ -9213,6 +9213,7 @@ Molpy.DefineBoosts = function() {
 		className: 'toggle',
 		price: {QQ: '1P', Mustard: 1e8},
 		group: 'bean',
+		className: 'toggle',
 	});
 
 
