@@ -634,8 +634,8 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	}
 
 	if(Molpy.GlassCeilingCount()) Molpy.GlassCeilingUnlockCheck();
-	if(Molpy.SandToolsOwned >= 123) Molpy.UnlockBoost('Sand Tool Multi-Buy');
-	if(Molpy.CastleToolsOwned >= 234) Molpy.UnlockBoost('Castle Tool Multi-Buy');
+	if(Molpy.SandToolsOwned >= 123 || isNaN(Molpy.SandToolsOwned)) Molpy.UnlockBoost('Sand Tool Multi-Buy');
+	if(Molpy.CastleToolsOwned >= 234 || isNaN(Molpy.CastleToolsOwned)) Molpy.UnlockBoost('Castle Tool Multi-Buy');
 
 	if(Molpy.Got('NavCode')) //just in case they didn't earn it the normal way
 	{
