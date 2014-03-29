@@ -660,8 +660,8 @@ Molpy.DefineGUI = function() {
 		if(Molpy.restoreLootScroll) Molpy.setScrollLoc('#loot', pos);
 		Molpy.restoreLootScroll = true;
 		
-		Molpy.lootPerPageBox.val(Molpy.lootPerPage);
-		Molpy.lootPageNumBox.val(Molpy.lootPageNum);
+		if(!Molpy.lootPerPageBox.is(':focus')) Molpy.lootPerPageBox.val(Molpy.lootPerPage);
+		if(!Molpy.lootPageNumBox.is(':focus')) Molpy.lootPageNumBox.val(Molpy.lootPageNum);
 		Molpy.lootPageNumMax.text(maxPageNum);
 		
 		Molpy.UnlockBoost('Chromatic Heresy');
