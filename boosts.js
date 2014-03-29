@@ -8620,8 +8620,8 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		price: {
-			Vacuum: '20K',
-			QQ: '600K'
+			Vacuum: '10',
+			QQ: '300k'
 		}
 	});
 

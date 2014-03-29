@@ -26,6 +26,15 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.412
+
+#### LucidCrux
+- Fixed classic scroll jumping (hopefully)
+- Increase classic items per page limit to 3 digits
+- Navigation boxes don't refresh if being typed in
+- Discoveries and Monuments now included in badge search
+- Italian plumber is much cheaper and easier to get, upgrades still cost the same
+
 ### 3.411
 
 #### Waveney
