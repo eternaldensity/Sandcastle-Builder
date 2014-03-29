@@ -487,6 +487,7 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.getScrollLoc = function(divString) {
 		var div = $(divString);
+		var pos = [0,0];
 		var pos = [div.scrollTop(), div.scrollLeft()];
 		return pos;
 	}
@@ -552,8 +553,10 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.repaintLoot = function() {
 		Molpy.lootNeedRepaint = 0;
+		var pos = null;
 		
-		var pos = Molpy.getScrollLoc('#loot');
+		if(!noLayout) pos = Molpy.getScrollLoc('#loot');
+		if(noLayout) pos = Molpy.getScrollLoc('#inventory');
 		
 		if(Molpy.lootPerPage < 1) Molpy.lootPerPage = 1;
 		if(Molpy.lootPageNum < 1) Molpy.lootPageNum = 1;
@@ -661,7 +664,12 @@ Molpy.DefineGUI = function() {
 			Molpy.addGroupToDiv($('#loot'), badgeList, badgeStartIndex, badgeEndIndex, 'badges', {autoAdd: true, recalc: false});
 		}
 		
-		if(Molpy.restoreLootScroll) Molpy.setScrollLoc('#loot', pos);
+		if(Molpy.restoreLootScroll) {
+			if(!noLayout)
+				Molpy.setScrollLoc('#loot', pos);
+			else
+				Molpy.setScrollLoc('#inventory', pos);
+		}
 		Molpy.restoreLootScroll = true;
 		
 		if(!Molpy.lootPerPageBox.is(':focus')) Molpy.lootPerPageBox.val(Molpy.lootPerPage);
@@ -674,8 +682,9 @@ Molpy.DefineGUI = function() {
 
 	Molpy.repaintShop = function() {
 		Molpy.shopNeedRepaint = 0;
+		var pos = null;
 		
-		var pos = Molpy.getScrollLoc('#boosts');
+		if(!noLayout) pos = Molpy.getScrollLoc('#boosts');
 		
 		Molpy.removeGroupDivs(Molpy.dispObjects.shop);
 		Molpy.dispObjects.shop = [];
@@ -693,7 +702,7 @@ Molpy.DefineGUI = function() {
 		
 		Molpy.addGroupToDiv($('#boosts'), shopList, 0, shopList.length - 1, 'shop', {autoAdd: true, recalc: true});
 		
-		Molpy.setScrollLoc('#boosts', pos);
+		if(!noLayout) Molpy.setScrollLoc('#boosts', pos);
 	}
 	
 	Molpy.repaintTools = function(args) {
@@ -712,8 +721,9 @@ Molpy.DefineGUI = function() {
 	Molpy.repaintSandTools = function(args) {
 		if(!args) args = {};
 		Molpy.sandToolsNeedRepaint = 0;
+		var pos = null;
 		
-		var pos = Molpy.getScrollLoc('#sandtools');
+		if(!noLayout) pos = Molpy.getScrollLoc('#sandtools');
 		
 		// Remove all Sand Tools from dispObjects for a fresh start
 		if(!args.skipClear) {
@@ -729,14 +739,15 @@ Molpy.DefineGUI = function() {
 		var dorecalc = args.recalc == false ? false : true;
 		Molpy.addGroupToDiv($('#sandtools'), Molpy.SandToolsById, 0, max, 'tools', {autoAdd: true, recalc: dorecalc});
 		
-		Molpy.setScrollLoc('#sandtools', pos);
+		if(!noLayout) Molpy.setScrollLoc('#sandtools', pos);
 	}
 	
 	Molpy.repaintCastleTools = function(args) {
 		if(!args) args = {};
 		Molpy.castleToolsNeedRepaint = 0;
+		var pos = null;
 		
-		var pos = Molpy.getScrollLoc('#castletools');
+		if(!noLayout) pos = Molpy.getScrollLoc('#castletools');
 		
 		// Remove all Castle Tools from dispObjects for a fresh start
 		if(!args.skipClear) {
@@ -752,7 +763,7 @@ Molpy.DefineGUI = function() {
 		var dorecalc = args.recalc == false ? false : true;
 		Molpy.addGroupToDiv($('#castletools'), Molpy.CastleToolsById, 0, max, 'tools', {autoAdd: true, recalc: dorecalc});
 		
-		Molpy.setScrollLoc('#castletools', pos);
+		if(!noLayout) Molpy.setScrollLoc('#castletools', pos);
 	}
 	
 	Molpy.repaintBoosts = function() {
