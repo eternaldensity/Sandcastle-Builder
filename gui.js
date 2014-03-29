@@ -594,6 +594,10 @@ Molpy.DefineGUI = function() {
 					var me = Molpy.BadgesAvailable[i];
 					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
 				}
+				for(var i in Molpy.DiscovMonumEarned) {
+					var me = Molpy.DiscovMonumEarned[i];
+					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
+				}
 			}
 			maxPageNum = Math.ceil(Molpy.searchList.length / Molpy.lootPerPage);
 		}
