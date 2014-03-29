@@ -178,7 +178,7 @@
 			<div id="lootselection"></div>
 			<div id="lootNavigation">
 				<div id="navLimit">
-					Per Page: <input id="navPerPage" type="text" size="4" maxlength="2" onkeypress="Molpy.lootNavBoxChanged(event)">
+					Per Page: <input id="navPerPage" type="text" size="4" maxlength="3" onkeypress="Molpy.lootNavBoxChanged(event)">
 				</div>
 				<div id="navButtons">
 					<input id="navFirst" class="navButton" type="button" value="&lt;&lt;" onclick="Molpy.changeLootPage('first')">&nbsp;&nbsp;<input id="navPrevious" class="navButton" type="button" value="&lt;" onclick="Molpy.changeLootPage(-1)">&nbsp;&nbsp;<input id="navPageNum" type="text" size="3" maxlength="3" onkeypress="Molpy.lootNavBoxChanged(event)"> / <span id="navMaxPages">99</span>&nbsp;&nbsp;<input id="navNext" class="navButton" type="button" value="&gt;" onclick="Molpy.changeLootPage(1)">&nbsp;&nbsp;<input id="navLast" class="navButton" type="button" value="&gt;&gt;" onclick="Molpy.changeLootPage('max')">
