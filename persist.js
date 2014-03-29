@@ -1063,7 +1063,10 @@
 			for(i in Molpy.Boosts) {
 				var me = Molpy.Boosts[i];
 				if(boh && me.group == 'stuff') {
-					me.Level = Math.min(me.Level, maxKeep);
+					if(!isFinite(me.Level))
+						me.Level = maxKeep;
+					else
+						me.Level = Math.min(me.Level, maxKeep);
 					continue;
 				}
 				if(bom && !me.prizes && (me.name.indexOf('Mould') > -1 || typeof (me.desc) === 'string' && me.desc.indexOf('Mould') > -1))
