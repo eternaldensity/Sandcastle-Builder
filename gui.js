@@ -487,7 +487,6 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.getScrollLoc = function(divString) {
 		var div = $(divString);
-		var pos = [0,0];
 		var pos = [div.scrollTop(), div.scrollLeft()];
 		return pos;
 	}
@@ -709,13 +708,15 @@ Molpy.DefineGUI = function() {
 		if(!args) args = {};
 		Molpy.toolsNeedRepaint = 0;
 		
-		Molpy.removeGroupDivs(Molpy.dispObjects.tools);
-		Molpy.dispObjects.tools = [];
+		// this causes scroll location to mess up, but is faster
+		// would be good to write it so skipclear can be true
+		//Molpy.removeGroupDivs(Molpy.dispObjects.tools);
+		//Molpy.dispObjects.tools = [];
 		
 		Molpy.CalcPriceFactor();
 		
-		Molpy.repaintSandTools({skipClear: true, recalc: false});
-		Molpy.repaintCastleTools({skipClear: true, recalc: false});
+		Molpy.repaintSandTools({skipClear: false, recalc: false});
+		Molpy.repaintCastleTools({skipClear: false, recalc: false});
 	}
 	
 	Molpy.repaintSandTools = function(args) {
