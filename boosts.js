@@ -3788,9 +3788,17 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('You need to pay' + Molpy.PriceString(cost) + ' to be asked a Caged Logicat puzzle.');
 			return;
 		}
-		if(!Molpy.Spend('LogiPuzzle', puzzles || 1)) {
-			Molpy.Notify('No Logicat puzzles are available.');
-			return;
+		if (puzzles && puzzles > 1) {
+			if(!Molpy.Has('LogiPuzzle', 1)) {
+				Molpy.Notify('No Logicat puzzles are available.');
+				return;
+			}
+			Molpy.Boosts['LogiPuzzle'].Level = 0;
+		} else {
+			if(!Molpy.Spend('LogiPuzzle', puzzles)) {
+				Molpy.Notify('No Logicat puzzles are available.');
+				return;
+			}
 		}
 
 		Molpy.PuzzleGens.caged.Generate(puzzles);
