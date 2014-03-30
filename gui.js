@@ -488,14 +488,12 @@ Molpy.DefineGUI = function() {
 	Molpy.getScrollLoc = function(divString) {
 		var div = $(divString);
 		var pos = [div.scrollTop(), div.scrollLeft()];
-		console.log(divString + ':(get)' + pos[0] + ',' + pos[1]);
 		return pos;
 	}
 	
 	Molpy.setScrollLoc = function(divString, pos) {
 		var div = $(divString);
 		div.scrollTop(pos[0]).scrollLeft(pos[1]);
-		console.log(divString + ':(set)' + pos[0] + ',' + pos[1]);
 	}
 	
 	Molpy.lootPerPage = 20;
