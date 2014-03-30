@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.411;
+Molpy.version=3.412;
 
 /**************************************************************
  * Game Strings
@@ -867,6 +867,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Mario'].logic = 200 * (Molpy.Boosts['QQ'].power >= 250000);
 	Molpy.Boosts['TS'].logic = Molpy.Level('Vacuum') * (Molpy.Level('Vacuum') >= 8000);
 	Molpy.Boosts['Aleph One'].logic = 111111111;
+	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
 }
 Molpy.mapMonumg = 300;
 

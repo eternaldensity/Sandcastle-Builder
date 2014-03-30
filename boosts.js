@@ -5114,12 +5114,25 @@ Molpy.DefineBoosts = function() {
 			{
 				if (Molpy.Got('Shadow Feeder') && Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) &&
 					Molpy.Got('ShadwDrgn') && !Molpy.Has('Shadow Feeder',Molpy.PokeBar()) && Molpy.Spend('Bonemeal', 5)) {
-					Molpy.ShadowStrike(1);
-					Molpy.Add('Shadow Feeder',1);
-					if (Molpy.Got('Shadow Ninja') && 
-						(Molpy.Level('Ninja Ritual') > 777) && 
-						(!Molpy.IsEnabled('Mario')) &&
-						(Math.log(Molpy.Level('Ninja Ritual'))*Math.random()>5) ) Molpy.NinjaRitual();
+					if (Molpy.Got('Bananananas') && Molpy.PuzzleGens.caged.active && (Molpy.PuzzleGens.caged.puzzles < Molpy.Level('LogiPuzzle'))) {
+						Molpy.PuzzleGens.caged.puzzles = Math.ceil(Molpy.Level('LogiPuzzle'));
+						Molpy.Boosts['LogiPuzzle'].power = 0;
+						Molpy.Boosts['LogiPuzzle'].Refresh();
+					} else if (Molpy.Got('Bananananas') && !Molpy.PuzzleGens.caged.active ) {
+						var puz = Math.floor((Molpy.Level('LogiPuzzle') - 1) / 10) * 10;
+						var cost = (100 + Molpy.LogiMult(25)) * puz;
+						if(Molpy.Spend('GlassBlocks', cost)) {
+							Molpy.PuzzleGens.caged.Generate(puz);
+							Molpy.Boosts['LogiPuzzle'].Refresh();
+						}
+					} else {
+						Molpy.ShadowStrike(1);
+						Molpy.Add('Shadow Feeder',1);
+						if (Molpy.Got('Shadow Ninja') && 
+							(Molpy.Level('Ninja Ritual') > 777) && 
+							(!Molpy.IsEnabled('Mario')) &&
+							(Math.log(Molpy.Level('Ninja Ritual'))*Math.random()>5) ) Molpy.NinjaRitual();
+					}
 				}
 			}
 			else {
@@ -9225,6 +9238,13 @@ Molpy.DefineBoosts = function() {
 		className: 'toggle',
 	});
 
+	new Molpy.Boost({
+		name: 'Bananananas',
+		icon: 'banana',
+		group: 'drac',
+		desc: 'When the Shadow Feeder runs, and the number of Puzzles available is more those being solved, it replaces that number, otherwise the shadow feeder converts them to bonemeal',
+		price: {Bonemeal: 123454321},
+	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }

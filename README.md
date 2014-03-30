@@ -28,6 +28,9 @@ For personal amusement only.
 
 ### 3.412
 
+#### Waveney
+- Bananananas Boost
+
 #### LucidCrux
 - Fixed classic scroll jumping (hopefully)
 - Increase classic items per page limit to 3 digits
