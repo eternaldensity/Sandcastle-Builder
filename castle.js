@@ -1458,7 +1458,7 @@ Molpy.Up = function() {
 				Molpy.CheckBuyUnlocks();
 				Molpy.unlockedGroups[this.group] = 1;
 				this.Refresh();
-				if(!Molpy.boostSilence && !free && this.bought && !auto) {
+				if(!Molpy.boostSilence && !free && this.bought && !auto && Molpy.options.autoshow) {
 					Molpy.ShowGroup(this.group, this.className);
 				}
 				if(this.bought) Molpy.lootAddBoost(this);
@@ -1895,7 +1895,11 @@ Molpy.Up = function() {
 						} else {
 							Molpy.groupBadgeCounts[baby.group]++;
 						}
-						Molpy.ShowGroup(baby.group, baby.className);
+						if (Molpy.options.autoshow!=0)
+						{
+							if (Molpy.options.autoshow==1 || (baby.group != 'monumg' && baby.group != 'monums'))
+								Molpy.ShowGroup(baby.group, baby.className);
+						}
 
 					}
 				}
@@ -2357,7 +2361,7 @@ Molpy.Up = function() {
 						if(!Molpy.boostSilence) Molpy.Notify('The DoRD has produced:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else {
-						Molpy.Notify('The DoRD has provided:', 1);
+						if(!Molpy.boostSilence) Molpy.Notify('The DoRD has provided:', 1);
 						Molpy.GiveTempBoost(red.alias);
 					}
 					return;
@@ -2375,11 +2379,10 @@ Molpy.Up = function() {
 				Molpy.RewardBlitzing(automationLevel);
 			} else {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
-				if(!Molpy.boostSilence) Molpy.Notify('Furnace Fallback', 1);
-				Molpy.RewardBlastFurnace();
+				Molpy.RewardBlastFurnace(1, 'Furnace Fallback');
 			}
 		};
-		Molpy.RewardBlastFurnace = function(times) {
+		Molpy.RewardBlastFurnace = function(times, message) {
 			var cb = 0;
 			if(Molpy.Got('Furnace Crossfeed') && Molpy.NPlength > 1800 && isFinite(Molpy.Boosts['GlassChips'].power)) {
 				if(Molpy.Boosts['Glass Furnace'].power && Molpy.Boosts['Furnace Crossfeed'].IsEnabled) {
@@ -2393,6 +2396,8 @@ Molpy.Up = function() {
 					cb = 1;
 				}
 			}
+			if(!Molpy.boostSilence && (cb || isFinite(Molpy.Boosts['Castles'].power)) ) 
+				Molpy.Notify(message || 'Blast Furnace in Operation!');
 			if(cb) return;
 
 			if(!isFinite(Molpy.Boosts['Castles'].power)) return; //We don't need to blast!
@@ -2416,7 +2421,6 @@ Molpy.Up = function() {
 			} else {
 				castles = Math.floor(Math.min(castles, Molpy.Boosts['Castles'].totalBuilt / 3));
 			}
-			if(!Molpy.boostSilence) Molpy.Notify('Blast Furnace in Operation!');
 			Molpy.Spend('Sand', castles * blastFactor);
 			Molpy.Boosts['Castles'].build(castles);
 		};
@@ -2608,7 +2612,7 @@ Molpy.Up = function() {
 					if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
 					Molpy.UnlockBoost(red.alias, 1);
 				} else {
-					Molpy.Notify('Your reward from Logicat:', 1);
+					if(!Molpy.boostSilence) Molpy.Notify('Your reward from Logicat:', 1);
 					Molpy.GiveTempBoost(red.alias);
 				}
 				return;
