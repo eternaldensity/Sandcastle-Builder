@@ -552,8 +552,10 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.repaintLoot = function() {
 		Molpy.lootNeedRepaint = 0;
+		var pos = null;
 		
-		var pos = Molpy.getScrollLoc('#loot');
+		if(!noLayout) pos = Molpy.getScrollLoc('#loot');
+		if(noLayout) pos = Molpy.getScrollLoc('#inventory');
 		
 		if(Molpy.lootPerPage < 1) Molpy.lootPerPage = 1;
 		if(Molpy.lootPageNum < 1) Molpy.lootPageNum = 1;
@@ -592,6 +594,10 @@ Molpy.DefineGUI = function() {
 				}
 				for(var i in Molpy.BadgesAvailable) {
 					var me = Molpy.BadgesAvailable[i];
+					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
+				}
+				for(var i in Molpy.DiscovMonumEarned) {
+					var me = Molpy.DiscovMonumEarned[i];
 					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
 				}
 			}
@@ -657,11 +663,16 @@ Molpy.DefineGUI = function() {
 			Molpy.addGroupToDiv($('#loot'), badgeList, badgeStartIndex, badgeEndIndex, 'badges', {autoAdd: true, recalc: false});
 		}
 		
-		if(Molpy.restoreLootScroll) Molpy.setScrollLoc('#loot', pos);
+		if(Molpy.restoreLootScroll) {
+			if(!noLayout)
+				Molpy.setScrollLoc('#loot', pos);
+			else
+				Molpy.setScrollLoc('#inventory', pos);
+		}
 		Molpy.restoreLootScroll = true;
 		
-		Molpy.lootPerPageBox.val(Molpy.lootPerPage);
-		Molpy.lootPageNumBox.val(Molpy.lootPageNum);
+		if(!Molpy.lootPerPageBox.is(':focus')) Molpy.lootPerPageBox.val(Molpy.lootPerPage);
+		if(!Molpy.lootPageNumBox.is(':focus')) Molpy.lootPageNumBox.val(Molpy.lootPageNum);
 		Molpy.lootPageNumMax.text(maxPageNum);
 		
 		Molpy.UnlockBoost('Chromatic Heresy');
@@ -670,8 +681,9 @@ Molpy.DefineGUI = function() {
 
 	Molpy.repaintShop = function() {
 		Molpy.shopNeedRepaint = 0;
+		var pos = null;
 		
-		var pos = Molpy.getScrollLoc('#boosts');
+		if(!noLayout) pos = Molpy.getScrollLoc('#boosts');
 		
 		Molpy.removeGroupDivs(Molpy.dispObjects.shop);
 		Molpy.dispObjects.shop = [];
@@ -689,27 +701,30 @@ Molpy.DefineGUI = function() {
 		
 		Molpy.addGroupToDiv($('#boosts'), shopList, 0, shopList.length - 1, 'shop', {autoAdd: true, recalc: true});
 		
-		Molpy.setScrollLoc('#boosts', pos);
+		if(!noLayout) Molpy.setScrollLoc('#boosts', pos);
 	}
 	
 	Molpy.repaintTools = function(args) {
 		if(!args) args = {};
 		Molpy.toolsNeedRepaint = 0;
 		
-		Molpy.removeGroupDivs(Molpy.dispObjects.tools);
-		Molpy.dispObjects.tools = [];
+		// this causes scroll location to mess up, but is faster
+		// would be good to write it so skipclear can be true
+		//Molpy.removeGroupDivs(Molpy.dispObjects.tools);
+		//Molpy.dispObjects.tools = [];
 		
 		Molpy.CalcPriceFactor();
 		
-		Molpy.repaintSandTools({skipClear: true, recalc: false});
-		Molpy.repaintCastleTools({skipClear: true, recalc: false});
+		Molpy.repaintSandTools({skipClear: false, recalc: false});
+		Molpy.repaintCastleTools({skipClear: false, recalc: false});
 	}
 	
 	Molpy.repaintSandTools = function(args) {
 		if(!args) args = {};
 		Molpy.sandToolsNeedRepaint = 0;
+		var pos = null;
 		
-		var pos = Molpy.getScrollLoc('#sandtools');
+		if(!noLayout) pos = Molpy.getScrollLoc('#sandtools');
 		
 		// Remove all Sand Tools from dispObjects for a fresh start
 		if(!args.skipClear) {
@@ -725,14 +740,15 @@ Molpy.DefineGUI = function() {
 		var dorecalc = args.recalc == false ? false : true;
 		Molpy.addGroupToDiv($('#sandtools'), Molpy.SandToolsById, 0, max, 'tools', {autoAdd: true, recalc: dorecalc});
 		
-		Molpy.setScrollLoc('#sandtools', pos);
+		if(!noLayout) Molpy.setScrollLoc('#sandtools', pos);
 	}
 	
 	Molpy.repaintCastleTools = function(args) {
 		if(!args) args = {};
 		Molpy.castleToolsNeedRepaint = 0;
+		var pos = null;
 		
-		var pos = Molpy.getScrollLoc('#castletools');
+		if(!noLayout) pos = Molpy.getScrollLoc('#castletools');
 		
 		// Remove all Castle Tools from dispObjects for a fresh start
 		if(!args.skipClear) {
@@ -748,7 +764,7 @@ Molpy.DefineGUI = function() {
 		var dorecalc = args.recalc == false ? false : true;
 		Molpy.addGroupToDiv($('#castletools'), Molpy.CastleToolsById, 0, max, 'tools', {autoAdd: true, recalc: dorecalc});
 		
-		Molpy.setScrollLoc('#castletools', pos);
+		if(!noLayout) Molpy.setScrollLoc('#castletools', pos);
 	}
 	
 	Molpy.repaintBoosts = function() {
@@ -1012,6 +1028,7 @@ Molpy.DefineGUI = function() {
 	g('notifs').innerHTML = str;
 	Molpy.notifsReceived = 0;
 	Molpy.notifsUpdate = function() {
+		var dy = 10 + Molpy.notifsY/100;
 		Molpy.notifsY = 0;
 		var trans = 0;
 		for( var i in Molpy.notifs) {
@@ -1021,9 +1038,9 @@ Molpy.DefineGUI = function() {
 
 				var y = me.y;
 				if(me.life < Molpy.fps / 2) {
-					y -= 10;
+					y -= dy;
 				} else {
-					y -= 10 * (1 - (me.life - Molpy.fps / 2) / (Molpy.fps * 5));
+					y -= dy * (1 - (me.life - Molpy.fps / 2) / (Molpy.fps * 5));
 				}
 				me.y = y;
 				me.life++;
@@ -2061,7 +2078,7 @@ Molpy.DefineGUI = function() {
 			var pNum = price[p];
 			//change all number representations into a number (40,000 40k 4e4)
 			pNum = isNaN(pNum) ? DeMolpify(pNum) : pNum;
-			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum, 1) + ' ' + p;
+			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum, 2) + ' ' + p;
 		}
 		return innerHTML;
 	}

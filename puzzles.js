@@ -14,6 +14,7 @@ Molpy.DefinePuzzles = function() {
 			var shuffledNames = statementNames.split('');
 			ShuffleList(shuffledNames);
 			this.n = flandom(Math.ceil(Math.PI)) + Math.ceil(Math.PI);
+			this.puzzles = scoreMultiplier || 1;
 
 			var statements = [];
 			var i = this.n;
@@ -74,12 +75,11 @@ Molpy.DefinePuzzles = function() {
 				}
 				var diff = correct - incorrect;
 				var points = .5 + Molpy.Level('Panther Rush') / 2;
-				scoreMultiplier = Math.max(scoreMultiplier || 1, 1);
 				var score = 0;
 				if(diff > 0) {
-					score = diff * (this.firstTry * .5 + points) * scoreMultiplier;
+					score = diff * (this.firstTry * .5 + points) * this.puzzles;
 				} else if(diff < 0) {
-					score = diff * (!this.firstTry + points) * scoreMultiplier;
+					score = diff * (!this.firstTry + points) * this.puzzles;
 				}
 
 				Molpy.Notify(Molpify(correct) + ' answer' + plural(correct) + ' correct, ' + Molpify(incorrect) + ' answer' + plural(incorrect) + ' incorrect. You earned ' + Molpify(score) + ' point' + plural(score), 1);
@@ -96,6 +96,7 @@ Molpy.DefinePuzzles = function() {
 			}
 			this.StringifyStatements = function(noWrap) {
 				var str = '';
+				if (this.puzzles && this.puzzles > 1) str += '['+Molpify(this.puzzles,1)+' Puzzles]<br>';
 				for( var id in completedStatements) {
 					str += this.StringifyStatement(completedStatements[id], id) + '<br>';
 				}

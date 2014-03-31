@@ -2134,7 +2134,7 @@ Molpy.DefineBoosts = function() {
 				if(!Molpy.Got('Stretchable Chip Storage') && this.Level == Infinity)
 					Molpy.UnlockBoost('Stretchable Chip Storage');
 				if(waste) {
-					this.Level -= waste;
+					this.Level = this.bought * 10;
 					amount -= waste;
 					Molpy.chipWasteAmount += waste;
 					if(expand && Molpy.chipWasteAmount > 1000000)
@@ -2369,9 +2369,11 @@ Molpy.DefineBoosts = function() {
 			var chipsFor = chillerLevel;
 
 			var rate = Molpy.ChipsPerBlock();
+			var chipsFor = Math.min(chillerLevel, (Molpy.Boosts['GlassChips'].Level + Molpy.chipWasteAmount) / rate);
+			var need = (chipsFor * rate - Molpy.chipWasteAmount) || 0;
 			var backoff = 1;
 
-			while(!Molpy.Has('GlassChips', chipsFor * rate)) {
+			while(!Molpy.Has('GlassChips', need)) {
 				chipsFor = (chipsFor - backoff) || 0;
 				backoff *= 2;
 			}
@@ -2382,6 +2384,12 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Running low on Glass Chips!');
 				chillerLevel = chipsFor;
 			}
+			var cost = chipsFor * rate;
+			
+			// Spend from surplus waste
+			cost = (cost - Molpy.chipWasteAmount) || 0; 
+			Molpy.chipWasteAmount = (cost > 0) ? Molpy.chipWasteAmount-cost : 0;
+			
 			Molpy.Destroy('GlassChips', chipsFor * rate);
 			if(Molpy.Got('Glass Goat') && Molpy.Has('Goats', 1)) {
 				chillerLevel *= Molpy.Level('Goats');
@@ -3078,7 +3086,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			if(!me.bought || flandom(10) == 0) return Molpy.redundancy.longsentence;
 			var sent = Molpy.redundancy.sentence();
-			if(!Molpy.Boosts['Expando'].IsEnabled) Molpy.Notify(sent, 1);
+			//if(!Molpy.Boosts['Expando'].IsEnabled) Molpy.Notify(sent, 1);
 			return sent;
 		},
 		
@@ -3780,9 +3788,17 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('You need to pay' + Molpy.PriceString(cost) + ' to be asked a Caged Logicat puzzle.');
 			return;
 		}
-		if(!Molpy.Spend('LogiPuzzle', puzzles || 1)) {
-			Molpy.Notify('No Logicat puzzles are available.');
-			return;
+		if (puzzles && puzzles > 1) {
+			if(!Molpy.Has('LogiPuzzle', 1)) {
+				Molpy.Notify('No Logicat puzzles are available.');
+				return;
+			}
+			Molpy.Boosts['LogiPuzzle'].Level = 0;
+		} else {
+			if(!Molpy.Spend('LogiPuzzle', puzzles)) {
+				Molpy.Notify('No Logicat puzzles are available.');
+				return;
+			}
 		}
 
 		Molpy.PuzzleGens.caged.Generate(puzzles);
@@ -5085,14 +5101,9 @@ Molpy.DefineBoosts = function() {
 
 		Molpy.boostSilence++;
 		var furn = Math.floor((times + Math.random() * 3) / 2);
-		if(Molpy.Got('Stretchable Chip Storage'))
-			Molpy.RewardBlastFurnace(furn);
-		else {
-			furn = Math.min(furn,10000);
-			for( var i = 0; i < furn; i++)
-				Molpy.RewardBlastFurnace();
-		}
+		Molpy.RewardBlastFurnace(furn);
 		left = times - furn;
+
 		if(left > 7 && Molpy.Got('Milo')) {
 			var mr = Molpy.Boosts['Milo'];
 			var s = 0;// Math.sin((Math.PI*Molpy.ONGelapsed)/(Molpy.NPlength*100));
@@ -5111,12 +5122,25 @@ Molpy.DefineBoosts = function() {
 			{
 				if (Molpy.Got('Shadow Feeder') && Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) &&
 					Molpy.Got('ShadwDrgn') && !Molpy.Has('Shadow Feeder',Molpy.PokeBar()) && Molpy.Spend('Bonemeal', 5)) {
-					Molpy.ShadowStrike(1);
-					Molpy.Add('Shadow Feeder',1);
-					if (Molpy.Got('Shadow Ninja') && 
-						(Molpy.Level('Ninja Ritual') > 777) && 
-						(!Molpy.IsEnabled('Mario')) &&
-						(Math.log(Molpy.Level('Ninja Ritual'))*Math.random()>5) ) Molpy.NinjaRitual();
+					if (Molpy.Got('Bananananas') && Molpy.PuzzleGens.caged.active && (Molpy.PuzzleGens.caged.puzzles < Molpy.Level('LogiPuzzle'))) {
+						Molpy.PuzzleGens.caged.puzzles = Math.ceil(Molpy.Level('LogiPuzzle'));
+						Molpy.Boosts['LogiPuzzle'].power = 0;
+						Molpy.Boosts['LogiPuzzle'].Refresh();
+					} else if (Molpy.Got('Bananananas') && !Molpy.PuzzleGens.caged.active ) {
+						var puz = Math.floor((Molpy.Level('LogiPuzzle') - 1) / 10) * 10;
+						var cost = (100 + Molpy.LogiMult(25)) * puz;
+						if(Molpy.Spend('GlassBlocks', cost)) {
+							Molpy.PuzzleGens.caged.Generate(puz);
+							Molpy.Boosts['LogiPuzzle'].Refresh();
+						}
+					} else {
+						Molpy.ShadowStrike(1);
+						Molpy.Add('Shadow Feeder',1);
+						if (Molpy.Got('Shadow Ninja') && 
+							(Molpy.Level('Ninja Ritual') > 777) && 
+							(!Molpy.IsEnabled('Mario')) &&
+							(Math.log(Molpy.Level('Ninja Ritual'))*Math.random()>5) ) Molpy.NinjaRitual();
+					}
 				}
 			}
 			else {
@@ -6642,6 +6666,9 @@ Molpy.DefineBoosts = function() {
 				Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 			}
 			if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
+				var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
+				if (c && !Molpy.boostSilence) 
+					Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
 				Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
 			}
 		}
@@ -7043,8 +7070,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Boosts['Castles'].prevCastleSand = Molpy.currentCastleSand;
 				if(!isFinite(this.power) || Molpy.Boosts['Castles'].nextCastleSand <= 0) {
 					Molpy.Boosts['Castles'].nextCastleSand = 1;
-					Molpy.Boosts['Castles'].power = Infinity;
-					Molpy.Boosts['Castles'].totalBuilt = Infinity;
+					Molpy.Boosts['Castles'].build(Infinity, 0);
 					return;
 				}
 			}
@@ -7181,10 +7207,14 @@ Molpy.DefineBoosts = function() {
 					if(amount >= this.power / 10000000)
 						Molpy.Notify(amount == 1 ? '+1 Castle' : Molpify(amount, 3) + ' Castles Built', 1);
 					else
+					{
 						this.buildNotifyCount += amount;
+						if (!isFinite(this.buildNotifyCount)) this.buildNotifyCount=0;
+					}
 				}
 			} else {
 				this.buildNotifyCount += amount;
+				if (!isFinite(this.buildNotifyCount)) this.buildNotifyCount=0;
 			}
 
 			if(this.totalBuilt >= 1) {
@@ -8620,8 +8650,8 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		price: {
-			Vacuum: '20K',
-			QQ: '600K'
+			Vacuum: '50',
+			QQ: '500k'
 		}
 	});
 
@@ -8708,7 +8738,7 @@ Molpy.DefineBoosts = function() {
 			};
 			var d = Math.floor(totalc*Molpy.Papal("Flux"));
 			if (d) Molpy.Add('FluxCrystals', d);
-			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(totalc+d)+' flux crystal'+plural(totalc+d)+'.');
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(totalc+d)+' flux crystal'+plural(totalc+d)+'.', true);
 		} else { // Use maths to approximate then modify by a small random element
 			var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - 
 				 (Molpy.Boosts['Time Lord'].bought + 2 - Molpy.Level('Time Lord')) * 
@@ -8720,7 +8750,7 @@ Molpy.DefineBoosts = function() {
 				c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
 			c = Math.floor(c * .9 + c * .2 * Math.random());
 			Molpy.Add('FluxCrystals', c);
-			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+'.');
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+'.', true);
 			Molpy.Add('Time Lord', -levels);
 		}
 		Molpy.Boosts['Flux Harvest'].Refresh();
@@ -9216,6 +9246,13 @@ Molpy.DefineBoosts = function() {
 		className: 'toggle',
 	});
 
+	new Molpy.Boost({
+		name: 'Bananananas',
+		icon: 'banana',
+		group: 'drac',
+		desc: 'When the Shadow Feeder runs, and the number of Puzzles available is more those being solved, it replaces that number, otherwise the shadow feeder converts them to bonemeal',
+		price: {Bonemeal: 123454321},
+	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }

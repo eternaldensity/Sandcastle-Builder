@@ -65,12 +65,11 @@ Molpy.OptionsToString = function() {
 };
 
 Molpy.OptionsFromString = function(thread) {
-	thread = thread.replace(/N/g,'');
-	thread = thread.replace(/A/g,'0');
+	thread = thread.replace(/N/g,'');	// This is a fudge to remove a bug introduced in 3.4
+	thread = thread.replace(/A/g,'0');	// and fixed in 3.411
 	var pixels = thread.split('');
 	for (var opt in Molpy.OptionSaveOrder) {
 		var name = Molpy.OptionSaveOrder[opt];
-		//Molpy.Notify("Doing " + opt + ' - ' + name);
 		Molpy.options[name] = parseInt(pixels[opt]);
 		if (isNaN(Molpy.options[name])) Molpy.options[name] = Molpy.Options[name].defaultval;
 	}
@@ -79,7 +78,7 @@ Molpy.OptionsFromString = function(thread) {
 // ALWAYS add to the end of this list. NEVER EVER remove an option
 Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpix', 'longpostfix', 'colourscheme',
 			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll',
-			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit' ];
+			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow' ];
 	
 // These options are defined in the display order
 
@@ -251,6 +250,14 @@ new Molpy.Option({
 			return Molpify(f / 2, 1) + 's';
 		}
 	}
+});
+
+new Molpy.Option({
+	name: 'autoshow',
+	title: 'Auto show new things',
+	range: 2,
+	defaultval: 1,
+	text: ['Never', 'Always', 'No discoveries']
 });
 
 new Molpy.Option({

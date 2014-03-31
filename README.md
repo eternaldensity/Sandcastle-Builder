@@ -26,6 +26,24 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.412
+
+#### Waveney
+- Bananananas Boost
+
+#### LucidCrux
+- Fixed classic scroll jumping (hopefully)
+- Increase classic items per page limit to 3 digits
+- Navigation boxes don't refresh if being typed in
+- Discoveries and Monuments now included in badge search
+- Italian plumber is much cheaper and easier to get, upgrades still cost the same
+
+#### mart0258
+- Auto show for new things: Never, Always, Not discoveries
+- Silenced a few things
+- Logged Flux Harvest
+- Notifies about flux crystals from Vaults
+
 ### 3.411
 
 #### Waveney

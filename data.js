@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.411;
+Molpy.version=3.412;
 
 /**************************************************************
  * Game Strings
@@ -634,8 +634,8 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	}
 
 	if(Molpy.GlassCeilingCount()) Molpy.GlassCeilingUnlockCheck();
-	if(Molpy.SandToolsOwned >= 123) Molpy.UnlockBoost('Sand Tool Multi-Buy');
-	if(Molpy.CastleToolsOwned >= 234) Molpy.UnlockBoost('Castle Tool Multi-Buy');
+	if(Molpy.SandToolsOwned >= 123 || isNaN(Molpy.SandToolsOwned)) Molpy.UnlockBoost('Sand Tool Multi-Buy');
+	if(Molpy.CastleToolsOwned >= 234 || isNaN(Molpy.CastleToolsOwned)) Molpy.UnlockBoost('Castle Tool Multi-Buy');
 
 	if(Molpy.Got('NavCode')) //just in case they didn't earn it the normal way
 	{
@@ -864,9 +864,10 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['FiM'].logic = 64 * (Molpy.SandTools['LaPetite'].amount + Molpy.SandTools['Cuegan'].amount > 6.4e10);
 	Molpy.Boosts['MHP'].department = finiteC || ((Molpy.Got('Goats') || Molpy.Boosts['MHP'].department) && !automationLevel);
 	Molpy.Boosts['Maps'].logic = 3000 * (Molpy.EnoughMonumgForMaps());
-	Molpy.Boosts['Mario'].logic = Molpy.Level('Logicat') * 2 + 10000;
+	Molpy.Boosts['Mario'].logic = 200 * (Molpy.Boosts['QQ'].power >= 250000);
 	Molpy.Boosts['TS'].logic = Molpy.Level('Vacuum') * (Molpy.Level('Vacuum') >= 8000);
 	Molpy.Boosts['Aleph One'].logic = 111111111;
+	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
 }
 Molpy.mapMonumg = 300;
 
