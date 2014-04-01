@@ -3795,7 +3795,7 @@ Molpy.DefineBoosts = function() {
 			}
 			Molpy.Boosts['LogiPuzzle'].Level = 0;
 		} else {
-			if(!Molpy.Spend('LogiPuzzle', puzzles)) {
+			if(!Molpy.Spend('LogiPuzzle', 1)) {
 				Molpy.Notify('No Logicat puzzles are available.');
 				return;
 			}
@@ -9252,6 +9252,17 @@ Molpy.DefineBoosts = function() {
 		group: 'drac',
 		desc: 'When the Shadow Feeder runs, and the number of Puzzles available is more those being solved, it replaces that number, otherwise the shadow feeder converts them to bonemeal',
 		price: {Bonemeal: 123454321},
+	});
+	new Molpy.Boost({ // Placeholder for future
+		name: 'Diamonds',
+		icon: 'diamond',
+		group: 'stuff',
+		stats: 'From defeating knights', 
+		desc: function(me) {
+			var str = 'You have ' + Molpify(me.Level, 3) + ' Diamond' + plural(me.Level) + '.';
+			return str;
+		},
+		defStuff: 1
 	});
 
 	// END OF BOOSTS, add new ones immediately before this comment

@@ -26,10 +26,16 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4121
+
+#### Waveney
+- Unbroke single logic puzzle
+
 ### 3.412
 
 #### Waveney
 - Bananananas Boost
+- Fixes for very large Logicat Puzzle numbers and other things
 
 #### LucidCrux
 - Fixed classic scroll jumping (hopefully)
