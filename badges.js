@@ -995,6 +995,36 @@ Molpy.DefineBadges = function() {
 		desc: 'Panther Rush at the Limit',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'Mega Ritual',
+		desc: 'Ninja Ritual > 1M',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Tera Ritual',
+		desc: 'Ninja Ritual > 1T',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Had Enough Ritual?',
+		desc: 'Ninja Ritual > 1E',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Yearly Ritual',
+		desc: 'Ninja Ritual > 365Y',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Wololololo Ritual',
+		desc: 'Ninja Ritual > 1WW',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'The Ritual is worn out',
+		desc: 'Ninja Ritual at the Limit',
+		vis: 1
+	});
 	
 /**************************************************************
  * Discoveries

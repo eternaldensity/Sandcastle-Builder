@@ -5478,7 +5478,7 @@ Molpy.DefineBoosts = function() {
 		},
 		defStuff: 1,
 
-		loadFunction: function() { if (Molpy.Earned('Einstein Says No')) Molpy.Boosts['Panther Rush'].level = 1079252850 *2; }
+		loadFunction: function() { if (Molpy.Earned('Einstein Says No')) Molpy.Boosts['Panther Rush'].Level = 1079252850 *2; }
 	});
 	
 	Molpy.Boosts['Panther Rush'].refreshFunction = undefined;
@@ -8274,23 +8274,33 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		price: {Goats: 300},
-		defStuff: 1
+		defStuff: 1,
+		loadFunction: function() { if (Molpy.Earned('The Ritual is worn out')) this.Level = Infinity },
 	});
 	Molpy.NinjaRitual = function() {
 		var oldlvl = Molpy.Level('Ninja Ritual');
 		var mult=1;
 		if (Molpy.Got('Zooman')) mult = 20;
-		Molpy.Add('Goats', Math.floor((1 + oldlvl / 5)*Molpy.Papal('Goats')));
+		if (Molpy.Earned('The Ritual is worn out')) Molpy.Boosts('Ninja Ritual').Level = Infinity;
+		Molpy.Add('Goats', Math.floor((1 + oldlvl * (Molpy.Got('CMNT')?Molpy.Level('Panther Rush'):1) / 5)*Molpy.Papal('Goats')));
 		while (Molpy.Level('Ninja Ritual') <= oldlvl) {
 			Molpy.Boosts['Ninja Ritual'].Level +=mult; 
 			mult*=10; 
 		};
 		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult; 
-		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && 
+		if (Molpy.Got('Mutant Tortoise')) Molpy.Boosts['Ninja Ritual'].Level = Math.floor(Molpy.Boosts['Ninja Ritual'].Level *1.005); 
+		var lvl = Molpy.Level('Ninja Ritual');
+		if (lvl > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
-		if (Molpy.Level('Ninja Ritual') > 77777) Molpy.UnlockBoost('Zooman');
-		if (Molpy.Level('Ninja Ritual') > 77777777) Molpy.UnlockBoost('Mutant Tortoise');
-		if (Molpy.Level('Ninja Ritual') > '777Z') Molpy.UnlockBoost('CMNT');
+		if (lvl > 77777) Molpy.UnlockBoost('Zooman');
+		if (lvl > 100000) Molpy.EarnBadge('Mega Ritual');
+		if (lvl > 77777777) Molpy.UnlockBoost('Mutant Tortoise');
+		if (lvl > 1e12) Molpy.EarnBadge('Tera Ritual');
+		if (lvl > 1e18) Molpy.EarnBadge('Had Enough Ritual?');
+		if (lvl > 777e21) Molpy.UnlockBoost('CMNT');
+		if (lvl > 365e24) Molpy.EarnBadge('Yearly Ritual');
+		if (lvl > 1e84) Molpy.EarnBadge('Wololololo Ritual');
+		if (lvl > 1e300) Molpy.EarnBadge('The Ritual is worn out');
 	};
 	new Molpy.Boost({
 		name: 'Time Lord',
@@ -9343,12 +9353,23 @@ Molpy.DefineBoosts = function() {
 		}
 	}
 	new Molpy.Boost({
-		name: 'Mutant Tortiose',
+		name: 'Mutant Tortoise',
 		icon: 'sixlegs',
+		group: 'ninj',
+		desc: 'Do Tortoises run that fast?',
+		stats: 'Speeds up the rate of Ninja Ritual Growth',
+		price: {Vacuum:'1P'},
 	});
 	new Molpy.Boost({
 		name: 'Centenarian Mutant Ninja Tortoise',
 		alias: 'CMNT',
+		icon: 'cmnt',
+		desc: 'Do Tortoises eat Panthers?',
+		stats: 'Get more Goats from the Ninja Ritual',
+		price: {
+			Goats:'1S',
+			Vacuum:'1Z',
+		},
 	});
 
 
