@@ -7134,15 +7134,20 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		Spend: function(amount, silent) {
+			var ret=1;
 			if(Molpy.IsEnabled('Aleph One') && !isNaN(this.Level)) amount = 0;
 			if(!isFinite(Molpy.Boosts['Sand'].sandPermNP) && Molpy.IsEnabled('Cracks')) amount = 0;
-			if(!amount) return;
-			amount = Math.min(amount, this.power);
+			if(!amount) return 1;
+			if (amount > this.power) {
+				amount = Math.min(amount, this.power);
+				ret = 0;
+			}
 			this.power -= amount;
 			this['spent'] += amount;
 			Molpy.mustardCleanup();
 			if(!Molpy.boostSilence && !silent && (isFinite(this.power) || !isFinite(amount)))
 				Molpy.Notify('Spent Castles: ' + Molpify(amount, 3), 1);
+			return ret;
 		},
 		
 		spent: 0,
@@ -7581,14 +7586,32 @@ Molpy.DefineBoosts = function() {
 				+ (Molpy.Got('Nest') ? '' : '<br>Now to figure out how to build the nest...');
 		}
 	});
+	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal',
+				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds']; // Always add to the END of this list
 	new Molpy.Boost({
 		name: 'Dragon Nest',
 		alias: 'Nest',
 		icon: 'dragonnest',
 		group: 'drac',
 		desc: function(me) {
-			return 'This is a dragon nest.'
-				+ (Molpy.Got('DQ') ? '' : '<br>To obtain a queen, you need Automata Control of at least ' + Molpify(1e6) + ' and ' + Molpify(1e10) + ' Bonemeal.');
+			var str = 'This is a dragon nest.';
+			if (!Molpy.Got('DQ')) {
+				str += '<br>To obtain a queen, you need Automata Control of at least ' + Molpify(1e6) + ' and ' + Molpify(1e10) + ' Bonemeal.';
+			} else if (Molpy.Got('Eggs')) { // TODO Invert logic when the next bits are ready to be released
+				str = '<br>Please line the nest:<div class=NestLiners>';
+				var lining=me.power;
+				for (var thing in Molpy.NestLinings) {
+					stuff = Molpy.NestLinings[thing];
+					if (Molpy.Has(stuff,Infinity)) {
+						str += '<br>'+Molpy.Boost[stuff].name+':<br>';
+						str += '<div id=Liner'+stuff.id+'>';
+						str += slider({value:(lining.charAt(thing) || 0), range:9, animate:true});
+						str += '</div>';
+					}
+				}
+				str += '/div>';
+			}
+			return str;
 		},
 		price:{
 			Sand: Infinity,
@@ -8266,6 +8289,8 @@ Molpy.DefineBoosts = function() {
 		if (Molpy.Level('Ninja Ritual') > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
 		if (Molpy.Level('Ninja Ritual') > 77777) Molpy.UnlockBoost('Zooman');
+		if (Molpy.Level('Ninja Ritual') > 77777777) Molpy.UnlockBoost('Mutant Tortoise');
+		if (Molpy.Level('Ninja Ritual') > '777Z') Molpy.UnlockBoost('CMNT');
 	};
 	new Molpy.Boost({
 		name: 'Time Lord',
@@ -8824,6 +8849,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Spend(cost)) {
 			me.Add(num);
 			Molpy.Notify('Adjusted This Sucks');
+			if (me.Level > 4444) Molpy.UnlockBoost('blackhat');
 			if(num > 0)
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', me.name]);
 			else
@@ -9264,6 +9290,67 @@ Molpy.DefineBoosts = function() {
 		},
 		defStuff: 1
 	});
+	new Molpy.Boost({
+		name: 'What if we tried more power?',
+		alias: 'blackhat',
+		group: 'hpt',
+		desc: function(me) {
+			var str = 'Significantly improves the Black Hole';
+			if (me.bought) {
+				if (Molpy.Got('DQ')) str += ' and other things';
+				str += '.<br>Power currently '+(me.power || 1);
+				for (thing in Molpy.NestLinings) {
+					var stuff = Molpy.Boosts[Molpy.NestLinings[thing]];
+					if (stuff.Level == Infinity && ((me.bought & (1<<thing)) == 0)) {
+						str += '<br>Spend Infinite <input type=button onclick="Molpy.MorePower('+thing+')" value="'+stuff.plural+
+							'"></input> to raise the power by 1.';
+					}
+				}
+			}
+			return str;
+		},
+		price: {
+			Sand: Infinity,
+			Castles: Infinity,
+			GlassBlocks: Infinity,
+			Blackprints: Infinity,
+			FluxCrystals: Infinity,
+			Vacuum:'1G',
+		},
+		className: 'action',
+		classChange: function() { 
+			for (thing in Molpy.NestLinings) {
+				var stuff = Molpy.Boosts[Molpy.NestLinings[thing]];
+				if (stuff.Level == Infinity && ((this.bought & (1<<thing)) == 0)) return 'action';
+			}
+			return '';
+		},
+		buyFunction: function() { this.power = 1 },
+		Level: Molpy.BoostFuncs.PosPowerLevel,
+	});
+	Molpy.MorePower = function(thing) {
+		var stuff = Molpy.Boosts[Molpy.NestLinings[thing]];
+		var me = Molpy.Boosts['blackhat'];
+		if ((me.bought & (1<<thing)) == 0) {
+			if (Molpy.Spend(stuff.alias,Infinity)) {
+				me.bought |= (1<<thing);
+				me.power += 1;
+				me.Refresh();
+				Molpy.Notify('More Power to the Black Hole',1);
+			} else {
+				Molpy.Notify('You need Infinite '+stuff.name+' to upgrade');
+			}
+		}
+	}
+	new Molpy.Boost({
+		name: 'Mutant Tortiose',
+		icon: 'sixlegs',
+	});
+	new Molpy.Boost({
+		name: 'Centenarian Mutant Ninja Tortoise',
+		alias: 'CMNT',
+	});
+
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }
