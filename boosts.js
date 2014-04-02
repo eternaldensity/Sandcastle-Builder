@@ -6042,7 +6042,7 @@ Molpy.DefineBoosts = function() {
 		icon: 'lightningrod',
 		desc: function() {
 			var str = 'Glassed Lightning becomes more powerful with use';
-			if(!Molpy.Got('Thunderbird')) str += '<br>Capped at ' + Molpify(25,000) + ' with out Thunderbird and Temporal Duplication.';
+			if(!Molpy.Got('Thunderbird')) str += '<br>Capped at ' + Molpify(25,000) + ' without Thunderbird and Temporal Duplication.';
 			return str;
 		},
 		price:{
