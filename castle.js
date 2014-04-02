@@ -2862,7 +2862,10 @@ Molpy.Up = function() {
 					FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
 					QQ: Molpy.VacCost.QQ * vacs
 				});
-				if (Molpy.Got('Black Hole')) vacs*=2;
+				if (Molpy.Got('Black Hole')) {
+					if (Molpy.Got('blackhat')) vacs *= Math.floor(2+Math.pow(1.03,Math.pow(2.8,Molpy.Level('blackhat'))));
+					else vacs*=2;
+				}
 				Molpy.Add('Vacuum', vacs);
 				if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 			}

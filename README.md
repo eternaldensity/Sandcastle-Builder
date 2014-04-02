@@ -26,6 +26,16 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.42
+
+#### Waveney
+- New Boosts - "What if we tried more power?", "Mutant Tortoise", "Sentenarian Mutant Ninja Tortoise"
+- Fixed a few things
+- New Badges for Ninja Ritual
+
+#### AmauryLepicard
+- Added a Clear Log button
+
 ### 3.4121
 
 #### Waveney
