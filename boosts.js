@@ -5478,7 +5478,10 @@ Molpy.DefineBoosts = function() {
 		},
 		defStuff: 1,
 
-		loadFunction: function() { if (Molpy.Earned('Einstein Says No')) Molpy.Boosts['Panther Rush'].Level = 1079252850 *2; }
+		BuyFunction: function() { 
+			if (!this.Level) this.Level = 1;
+			if (Molpy.Earned('Einstein Says No')) this.Level = 1079252850 *2; 
+		}
 	});
 	
 	Molpy.Boosts['Panther Rush'].refreshFunction = undefined;
@@ -5593,7 +5596,6 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			if(!me.bought)
 				return 'Allows you to change how many copies of Glass Tools can be constructed by Tool Factory each mNP';
-			if(Molpy.Earned('Nope!')) me.power = 6e51;
 			var n = me.power;
 			var str = 'Tool Factory produces up to ' + Molpify(n * 12, 2) + ' Glass Tools per mNP (distributed evenly between each type of Glass Tool).';
 			if(Molpy.Earned('Nope!')) {
@@ -5639,7 +5641,8 @@ Molpy.DefineBoosts = function() {
 		classChange: function() { return Molpy.Earned('Nope!') ? '' : 'toggle' },
 		
 		buyFunction: function() {
-			this.power = 1;
+			this.power |= 1;
+			if(Molpy.Earned('Nope!')) this.power = 6e51;
 		}
 	});
 	
@@ -7592,6 +7595,29 @@ Molpy.DefineBoosts = function() {
 	});
 	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal',
 				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds']; // Always add to the END of this list
+	$(function() {
+		$( "#NestLiners > span" ).each(function() {
+			var thing = parseInt( $( this ).text());
+			var nest = Molpy.Boosts['Nest'];
+			$( this ).empty().slider({
+				range: 9,
+				min: 0,
+				value: (nest.power.charAt(thing) || 0),
+				animate: true,
+				slide: function( event, ui ) {
+					$( "#amount"+thing ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+				}
+			});
+		});
+		$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+			" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+	});
+
+/*
+						str += '<div id=Liner'+stuff.id+'>';
+						str += slider({value:(lining.charAt(thing) || 0), range:9, animate:true});
+						str += '</div>';
+*/
 	new Molpy.Boost({
 		name: 'Dragon Nest',
 		alias: 'Nest',
@@ -7600,20 +7626,17 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = 'This is a dragon nest.';
 			if (!Molpy.Got('DQ')) {
-				str += '<br>To obtain a queen, you need Automata Control of at least ' + Molpify(1e6) + ' and ' + Molpify(1e10) + ' Bonemeal.';
+				str += '<br>To obtain a queen, you need Automata Control of at least ' + Molpify(1e6) + ' and '+Molpify(1e10) + ' Bonemeal.';
 			} else if (Molpy.Got('Eggs')) { // TODO Invert logic when the next bits are ready to be released
-				str = '<br>Please line the nest:<div class=NestLiners>';
-				var lining=me.power;
+				str = '<br>Please line the nest:<div id=NestLiners>';
 				for (var thing in Molpy.NestLinings) {
 					stuff = Molpy.NestLinings[thing];
 					if (Molpy.Has(stuff,Infinity)) {
-						str += '<br>'+Molpy.Boost[stuff].name+':<br>';
-						str += '<div id=Liner'+stuff.id+'>';
-						str += slider({value:(lining.charAt(thing) || 0), range:9, animate:true});
-						str += '</div>';
-					}
+						str += '<br>'+Molpy.Boosts[stuff].name+':<br><span>'+thing+'</span>'+
+							'<label for=ammount'+thing+' ></label>';
+					};
 				}
-				str += '/div>';
+				str += '</div>';
 			}
 			return str;
 		},
@@ -7622,6 +7645,7 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: Infinity
 		},
+		changeClass: function() { return Molpy.Got('Eggs')?'action':'' },
 	});
 	new Molpy.Boost({
 		name: 'Dragon Queen',
