@@ -3111,9 +3111,9 @@ Molpy.Up = function() {
 		if(Molpy.Boosts['LR'].power > 500) {
 			var MinPower = 0;
 			var LRdecrease = Molpy.Boosts['LR'].power * .95;
-			if(Molpy.Got('Lightning in a Bottle')){
+			if(Molpy.Boosts['Lightning in a Bottle'].power > 0){
 				MinPower = Molpy.Boosts['Lightning in a Bottle'].power;
-			} else if(Molpy.Got('Kite and Key')){
+			} else if(Molpy.Boosts['Kite and Key'].power > 0){
 				MinPower = Molpy.Boosts['Kite and Key'].power;
 			}
 			if(LRdecrease < MinPower)

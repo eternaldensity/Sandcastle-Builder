@@ -5757,6 +5757,8 @@ Molpy.DefineBoosts = function() {
 			if(blitz) blitzBonus = .1;
 			
 			if(Molpy.Got('LR')) {
+				// Set LR power incase it gets screwed up for some unknown reason
+				Molpy.Boosts['LR'].power = Math.max(Molpy.Boosts['LR'].power, Molpy.Boosts['Kite and Key'].power, Molpy.Boosts['Lightning in a Bottle'].power);
 				// If we have thunderbird and duplication, power is raised 50% and special boosts might get unlocked
 				if(Molpy.Got('Thunderbird') && Molpy.Got('TDE')) {
 					var newLRPower = Molpy.Boosts['LR'].power *= (1.5 + blitzBonus);
@@ -6038,7 +6040,11 @@ Molpy.DefineBoosts = function() {
 		name: 'Lightning Rod',
 		alias: 'LR',
 		icon: 'lightningrod',
-		desc: 'Glassed Lightning becomes more powerful with use',
+		desc: function() {
+			var str = 'Glassed Lightning becomes more powerful with use';
+			if(!Molpy.Got('Thunderbird')) str += '<br>Capped at ' + Molpify(25,000) + ' without Thunderbird and Temporal Duplication.';
+			return str;
+		},
 		price:{
 			Sand: Infinity,
 			Castles: Infinity,
@@ -6046,9 +6052,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		buyFunction: function() {
-			this.power = Molpy.Boosts['GL'].power || 400;
-			if(Molpy.Boosts['Kite and Key'].power > this.power) this.power = Molpy.Boosts['Kite and Key'].power;
-			if(Molpy.Boosts['Lightning in a Bottle'].power > this.power) this.power = Molpy.Boosts['Lightning in a Bottle'].power;
+			this.power = Math.max(400, Molpy.Boosts['GL'].power, Molpy.Boosts['Kite and Key'].power, Molpy.Boosts['Lightning in a Bottle'].power);
 		}
 	});
 	new Molpy.Boost({
