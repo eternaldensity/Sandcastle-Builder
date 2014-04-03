@@ -32,6 +32,8 @@ For personal amusement only.
 - New Boosts - "What if we tried more power?", "Mutant Tortoise", "Sentenarian Mutant Ninja Tortoise"
 - Fixed a few things
 - New Badges for Ninja Ritual
+- Fixed the New Boosts disapearing on upgrading bug (with a lot of help from Guizmus)
+- Note this will still happen when you do this upgrade - it is a saving bug from the previous version
 
 #### AmauryLepicard
 - Added a Clear Log button
