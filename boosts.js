@@ -7595,29 +7595,7 @@ Molpy.DefineBoosts = function() {
 	});
 	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal',
 				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds']; // Always add to the END of this list
-	$(function() {
-		$( "#NestLiners > span" ).each(function() {
-			var thing = parseInt( $( this ).text());
-			var nest = Molpy.Boosts['Nest'];
-			$( this ).empty().slider({
-				range: 9,
-				min: 0,
-				value: (nest.power.charAt(thing) || 0),
-				animate: true,
-				slide: function( event, ui ) {
-					$( "#amount"+thing ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-				}
-			});
-		});
-		$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-			" - $" + $( "#slider-range" ).slider( "values", 1 ) );
-	});
 
-/*
-						str += '<div id=Liner'+stuff.id+'>';
-						str += slider({value:(lining.charAt(thing) || 0), range:9, animate:true});
-						str += '</div>';
-*/
 	new Molpy.Boost({
 		name: 'Dragon Nest',
 		alias: 'Nest',
@@ -7628,12 +7606,14 @@ Molpy.DefineBoosts = function() {
 			if (!Molpy.Got('DQ')) {
 				str += '<br>To obtain a queen, you need Automata Control of at least ' + Molpify(1e6) + ' and '+Molpify(1e10) + ' Bonemeal.';
 			} else if (Molpy.Got('Eggs')) { // TODO Invert logic when the next bits are ready to be released
-				str = '<br>Please line the nest:<div id=NestLiners>';
+				str = '<br>Please line the nest:<div id=NestLiners align=center>';
 				for (var thing in Molpy.NestLinings) {
 					stuff = Molpy.NestLinings[thing];
 					if (Molpy.Has(stuff,Infinity)) {
-						str += '<br>'+Molpy.Boosts[stuff].name+':<br><span>'+thing+'</span>'+
-							'<label for=ammount'+thing+' ></label>';
+						str += '<br>'+Molpy.Boosts[stuff].name+
+							':<br><button onclick="Molpy.Liner('+thing+',-10)" >&#9664;</button> ' +
+							+ Molpify((me.Liners[thing])|| 0,1) + '% ' +
+							'<button onclick="Molpy.Liner('+thing+',10)" >&#9654;</button>';
 					};
 				}
 				str += '</div>';
@@ -7646,7 +7626,23 @@ Molpy.DefineBoosts = function() {
 			GlassBlocks: Infinity
 		},
 		changeClass: function() { return Molpy.Got('Eggs')?'action':'' },
+		Liners: [],
+		saveData: {
+			4:['Liners', 0, 'array'],
+		},
+		defSave: 1,
 	});
+
+	Molpy.Liner = function(thing,change) {
+		var nest = Molpy.Boosts['Nest'];
+		var rest = 0;
+		for (var inf in Molpy.NestLinings) if (inf != thing) rest += (nest.Liners[inf] || 0);
+		var cur = (nest.Liners[thing] || 0);
+		if (cur+change < 0 || (!Molpy.Got('Marketting') && ((rest+cur+change) > 100))) return;
+		nest.Liners[thing] = (nest.Liners[thing] || 0) + change;
+		nest.Refresh();
+	}
+
 	new Molpy.Boost({
 		name: 'Dragon Queen',
 		alias: 'DQ',
@@ -9392,12 +9388,18 @@ Molpy.DefineBoosts = function() {
 		name: 'Centenarian Mutant Ninja Tortoise',
 		alias: 'CMNT',
 		icon: 'cmnt',
+		group: 'ninj',
 		desc: 'Do Tortoises eat Panthers?',
 		stats: 'Get more Goats from the Ninja Ritual',
 		price: {
 			Goats:'1S',
 			Vacuum:'1Z',
 		},
+	});
+	new Molpy.Boost({ // Hook for the future
+		name: 'Marketting',
+		desc: 'Numbers don\'t have to add up',
+		group: 'hpt',
 	});
 
 

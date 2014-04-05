@@ -347,8 +347,19 @@
 			var saveData = boost.saveData
 			var fencePost = '';
 			for(var num in saveData){
-				str += fencePost + boost[saveData[num][0]];
-				fencePost = c;
+				if (saveData[num][2] != 'array') {
+					str += fencePost + boost[saveData[num][0]];
+					fencePost = c;
+				} else {
+					var ting = saveData[num][0];
+					str += fencePost + boost[ting].length;
+					fencePost = c;
+					if (boost[ting].length) {
+						for (idx =0; idx < boost[ting].length; idx++) {
+							str += fencePost + boost[ting][idx];
+						}
+					}
+				}
 			}
 			str += s;
 		}
@@ -550,6 +561,7 @@
 			// If save data exists for that boost, load it
 			if(pixels[idNum]) {
 				var savedValueList = pixels[idNum].split(c);
+				var savednum=0;
 				for(var num in saveData){
 					
 					if(version < 3.3332) {
@@ -564,14 +576,17 @@
 					
 					// Load differently based on data type
 					if(saveData[num][2] == 'int')
-						loadedValue = parseInt(savedValueList[num]) || saveData[num][1];
+						me[saveData[num][0]] = parseInt(savedValueList[savednum++]) || saveData[num][1];
 					else if(saveData[num][2] == 'float')
-						loadedValue = parseFloat(savedValueList[num]) || saveData[num][1];
-					//else if(saveData[num][2] == 'array')
-						// Not sure how to handle this yet
-					else
-						loadedValue = savedValueList[num] || saveData[num][1];
-					me[saveData[num][0]] = loadedValue;
+						me[saveData[num][0]] = parseFloat(savedValueList[savednum++]) || saveData[num][1];
+					else if(saveData[num][2] == 'array') { // Arrays store length + data(always float)
+						var ting = saveData[num][0];
+						var siz = parseInt(savedValueList[savednum++]) || saveData[num][1] || 0; // 1st value is length
+						for (idx = 0; idx < siz; idx++) {
+							me[ting][idx] = parseFloat(savedValueList[savednum++]) || 0;
+						}
+					} else
+						me[saveData[num][0]] = savedValueList[savednum++] || saveData[num][1];
 				}
 				
 				// Make sure locked boosts didn't bug out and save a bought amount
