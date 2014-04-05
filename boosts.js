@@ -3785,7 +3785,7 @@ Molpy.DefineBoosts = function() {
 		if (puzzles && puzzles > 1) Molpy.Boosts['LogiPuzzle'].multiBuy++
 		else Molpy.Boosts['LogiPuzzle'].multiBuy = 0;
 		if(!Molpy.Spend('GlassBlocks', cost)) {
-			Molpy.Notify('You need to pay' + Molpy.PriceString(cost) + ' to be asked a Caged Logicat puzzle.');
+			Molpy.Notify('You need to pay ' + Molpy.PriceString('Glass Blocks', cost) + ' to be asked a Caged Logicat puzzle.');
 			return;
 		}
 		if (puzzles && puzzles > 1) {
