@@ -1507,7 +1507,7 @@ Molpy.Up = function() {
 			
 			this.resetSaveData = function() {
 				for(var i in this.saveData)
-					this.saveData[i][0] = this.saveData[i][1];
+					this[this.saveData[i][0]] = this.saveData[i][1];
 			}
 			
 			// Methods for Div Creation
@@ -2951,8 +2951,10 @@ Molpy.Up = function() {
 		if(!Molpy.ninjad) {
 			if(Molpy.npbONG)
 				stateClass = 'beachstreakextend';
-			else
+			else {
 				stateClass = 'beachninjawarning';
+				if (Molpy.Got('Shadow Ninja') && ((Molpy.ONGelapsed+4000) >= Molpy.CastleTools['NewPixBot'].ninjaTime)) stateClass = 'beachritualwarning'
+			}
 		}
 		if(Molpy.Got('Temporal Rift')) stateClass = 'beachriftwarning';
 		if(Molpy.ONGelapsed / Molpy.NPlength >= 998 && !Molpy.Boosts['Coma Molpy Style'].IsEnabled) {
