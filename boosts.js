@@ -7611,10 +7611,12 @@ Molpy.DefineBoosts = function() {
 				for (var thing in Molpy.NestLinings) {
 					stuff = Molpy.NestLinings[thing];
 					if (Molpy.Has(stuff,Infinity)) {
-						str += '<br>'+Molpy.Boosts[stuff].name+
-							':<br><button onclick="Molpy.Liner('+thing+',-10)" >&#9664;</button> ' +
+						str += '<br>'+Molpy.Boosts[stuff].plural+':<br>' +
+							'<button class=NestLine onclick="Molpy.Liner('+thing+',-10)" >&#9664;&#9664;</button>' +
+							'<button class=NestLine onclick="Molpy.Liner('+thing+',-1)" >&#9664;</button> ' +
 							+ Molpify((me.Liners[thing])|| 0,1) + '% ' +
-							'<button onclick="Molpy.Liner('+thing+',10)" >&#9654;</button>';
+							'<button class=NestLine onclick="Molpy.Liner('+thing+',1)" >&#9654;</button>'+
+							'<button class=NestLine onclick="Molpy.Liner('+thing+',10)" >&#9654;&#9654;</button><p>';
 					};
 				}
 				str += '</div>';
