@@ -2082,7 +2082,7 @@ Molpy.DefineBoosts = function() {
 		if(choose) {
 			n = prompt('Enter a number of levels (e.g. ' + Molpify(sr.power / 10, 0, 1)
 				+ ') or a percentage of the current value, by which to reduce Sand Refinery\'s power:', '10%');
-			if(!n) return;
+			if(!n || n < 0) return;
 			if(n.indexOf('%') > 0) {
 				n = sr.power * parseFloat(n.split('%')[0]) / 100;
 			} else {
@@ -2416,7 +2416,7 @@ Molpy.DefineBoosts = function() {
 		if(choose) {
 			n = prompt('Enter a number of levels (e.g. ' + Molpify(gc.power / 10, 0, 1)
 				+ ') or a percentage of the current value, by which to reduce Glass Chiller\'s power:', '10%');
-			if(!n) return;
+			if(!n || n < 0) return;
 			if(n.indexOf('%') > 0) {
 				n = gc.power * parseFloat(n.split('%')[0]) / 100;
 			} else {
