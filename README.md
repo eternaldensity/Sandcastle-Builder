@@ -34,6 +34,7 @@ For personal amusement only.
 - New Badges for Ninja Ritual
 - Fixed the New Boosts disapearing on upgrading bug (with a lot of help from Guizmus)
 - Note this will still happen when you do this upgrade - it is a saving bug from the previous version
+- New Beach colour when the NewPixBots are about to actvate (only used when you have Shadow Ninja)
 
 #### AmauryLepicard
 - Added a Clear Log button
