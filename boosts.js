@@ -2534,7 +2534,8 @@ Molpy.DefineBoosts = function() {
 		
 		calculateBlocksPermNP: function() {
 			this.blocksPermNP = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
-			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800)
+			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800) 
+			* (Molpy.mustardTools == 0)
 			* (Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power) / 2) || 0;
 		},
 		

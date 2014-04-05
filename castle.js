@@ -1109,7 +1109,7 @@ Molpy.Up = function() {
 						production += "Ninja'd!";
 					} else {
 						production += 'Active: ' + Molpify(this.currentActive, 3) + '<br>Timer: '
-							+ Molpify(Math.ceil((Molpy.CastleTools['NewPixBot'].ninjaTime - Molpy.ONGelapsed) / Molpy.NPlength));
+							+ Molpify(Math.ceil((Molpy.CastleTools['NewPixBot'].ninjaTime - Molpy.ONGelapsed) / Molpy.mNPlength));
 					}
 				}
 				
