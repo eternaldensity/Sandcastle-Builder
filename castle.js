@@ -1109,7 +1109,7 @@ Molpy.Up = function() {
 						production += "Ninja'd!";
 					} else {
 						production += 'Active: ' + Molpify(this.currentActive, 3) + '<br>Timer: '
-							+ Molpify(Math.ceil((Molpy.CastleTools['NewPixBot'].ninjaTime - Molpy.ONGelapsed) / Molpy.NPlength));
+							+ Molpify(Math.ceil((Molpy.CastleTools['NewPixBot'].ninjaTime - Molpy.ONGelapsed) / Molpy.mNPlength));
 					}
 				}
 				
@@ -1441,11 +1441,11 @@ Molpy.Up = function() {
 			}
 
 			// Methods
-			this.buy = function(auto) {
+			this.buy = function(auto,freebe) {
 				if(!this.unlocked || this.bought) return; //shopping assistant tried to buy it when it was locked
 
 				var realPrice = this.CalcPrice(this.price);
-				var free = Molpy.IsFree(realPrice);
+				var free = freebe || Molpy.IsFree(realPrice);
 				if(Molpy.ProtectingPrice() && !free) return;
 				if(!free && !Molpy.Spend(realPrice)) return;
 

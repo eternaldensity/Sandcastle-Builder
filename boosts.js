@@ -2534,7 +2534,8 @@ Molpy.DefineBoosts = function() {
 		
 		calculateBlocksPermNP: function() {
 			this.blocksPermNP = Molpy.Boosts['AA'].power * Molpy.Boosts['Glass Blower'].power
-			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800)
+			* Molpy.Boosts['Furnace Multitasking'].power * (Molpy.NPlength > 1800) 
+			* (Molpy.mustardTools == 0)
 			* (Molpy.Boosts['Glass Chiller'].power * (1 + Molpy.Boosts['AC'].power) / 2) || 0;
 		},
 		
@@ -5438,11 +5439,11 @@ Molpy.DefineBoosts = function() {
 
 			str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
 				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
-			if (me.bought) {
+			if (me.bought && !Molpy.Earned('Einstien Says No') ) {
 				var mult = 1;
 				var strs = [];
 				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
-					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 )) {
+					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252050*2)) {
 					var mstr = '';
 					if (!rushcost.Vacuum) {
 						mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
@@ -5470,9 +5471,6 @@ Molpy.DefineBoosts = function() {
 			GlassBlocks: function() {
 				return Math.pow(10, Molpy.Boosts['Panther Rush'].power + 7);
 			},
-		},
-		
-		price:{
 			Sand: Infinity,
 			Castles: Infinity,
 		},
@@ -5481,7 +5479,10 @@ Molpy.DefineBoosts = function() {
 		BuyFunction: function() { 
 			if (!this.Level) this.Level = 1;
 			if (Molpy.Earned('Einstein Says No')) this.Level = 1079252850 *2; 
-		}
+		},
+
+		classChange: function() { return Molpy.Earned('Einstein Says No')?'': 'action' },
+
 	});
 	
 	Molpy.Boosts['Panther Rush'].refreshFunction = undefined;
@@ -5518,13 +5519,15 @@ Molpy.DefineBoosts = function() {
 			&& (pr.Level > 12 || confirm('Really spend ' + (Molpy.PriceString(cost).replace(/&nbsp;/g, ' ').replace(/(<([^>]+)>)/ig,"")) + ' on Panther Rush?'))) {
 			if(Molpy.Spend(cost)) pr.Add(n);
 			var fCost = Molpy.CalcRushCost(0, 1);
-			Molpy.LockBoost(pr.alias);
 			var speed = pr.Level/2;
 			if (speed >= 80) Molpy.EarnBadge('Panther Pelts');
 			if (speed >= 1225) Molpy.EarnBadge('Mach 1');
 			if (speed >= 40320) Molpy.EarnBadge('Escape Velocity');
-			if (speed >= 1079252850) Molpy.EarnBadge('Einstein Says No');
-			if(Molpy.Has('Logicat',fCost.Logicat) && !Molpy.Earned('Einstein Says No') ) Molpy.UnlockBoost(pr.alias);
+			if (speed >= 1079252850) Molpy.EarnBadge('Einstein Says No')
+			else {
+				Molpy.LockBoost(pr.alias);
+				if(Molpy.Has('Logicat',fCost.Logicat) ) Molpy.UnlockBoost(pr.alias);
+			}
 		}
 	}
 
@@ -7610,10 +7613,12 @@ Molpy.DefineBoosts = function() {
 				for (var thing in Molpy.NestLinings) {
 					stuff = Molpy.NestLinings[thing];
 					if (Molpy.Has(stuff,Infinity)) {
-						str += '<br>'+Molpy.Boosts[stuff].name+
-							':<br><button onclick="Molpy.Liner('+thing+',-10)" >&#9664;</button> ' +
+						str += '<br>'+Molpy.Boosts[stuff].plural+':<br>' +
+							'<button class=NestLine onclick="Molpy.Liner('+thing+',-10)" >&#9664;&#9664;</button>' +
+							'<button class=NestLine onclick="Molpy.Liner('+thing+',-1)" >&#9664;</button> ' +
 							+ Molpify((me.Liners[thing])|| 0,1) + '% ' +
-							'<button onclick="Molpy.Liner('+thing+',10)" >&#9654;</button>';
+							'<button class=NestLine onclick="Molpy.Liner('+thing+',1)" >&#9654;</button>'+
+							'<button class=NestLine onclick="Molpy.Liner('+thing+',10)" >&#9654;&#9654;</button><p>';
 					};
 				}
 				str += '</div>';
