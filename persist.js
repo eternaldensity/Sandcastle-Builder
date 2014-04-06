@@ -947,6 +947,12 @@
 			if (Molpy.Has('Maps', 80)) Molpy.UnlockBoost('DNS'); 
 			if (Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
 		}
+		if(version < 3.42) {
+			if (Molpy.Earned('Einstein Says No') && !Molpy.Got('Panther Rush')) {
+				Molpy.UnlockBoost('Panther Rush');
+				Molpy.Boost['Panther Rush'].buy(1,1);
+			}
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
