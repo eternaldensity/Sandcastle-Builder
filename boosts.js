@@ -8322,7 +8322,7 @@ Molpy.DefineBoosts = function() {
 		if (lvl > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
 		if (lvl > 77777) Molpy.UnlockBoost('Zooman');
-		if (lvl > 100000) Molpy.EarnBadge('Mega Ritual');
+		if (lvl > 1000000) Molpy.EarnBadge('Mega Ritual');
 		if (lvl > 77777777) Molpy.UnlockBoost('Mutant Tortoise');
 		if (lvl > 1e12) Molpy.EarnBadge('Tera Ritual');
 		if (lvl > 1e18) Molpy.EarnBadge('Had Enough Ritual?');
