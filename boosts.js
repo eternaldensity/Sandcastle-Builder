@@ -8316,7 +8316,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['Ninja Ritual'].Level +=mult; 
 			mult*=10; 
 		};
-		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult; 
+		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult + Math.floor(Molpy.Boosts['Ninja Ritual'].Level/1000); 
 		if (Molpy.Got('Mutant Tortoise')) Molpy.Boosts['Ninja Ritual'].Level = Math.floor(Molpy.Boosts['Ninja Ritual'].Level *1.005); 
 		var lvl = Molpy.Level('Ninja Ritual');
 		if (lvl > 777 && !isFinite(Molpy.Level('Time Lord')) && 
