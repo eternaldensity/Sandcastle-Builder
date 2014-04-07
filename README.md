@@ -41,6 +41,10 @@ For personal amusement only.
 #### AmauryLepicard
 - Added a Clear Log button
 
+#### LucidCrux
+- New Icons for boosts
+- Glassed Lightning and Lightning Rod changes
+
 ### 3.4121
 
 #### Waveney
