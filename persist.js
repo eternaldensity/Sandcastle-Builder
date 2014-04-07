@@ -950,8 +950,8 @@
 		if(version < 3.42) {
 			if (Molpy.Earned('Einstein Says No') && !Molpy.Got('Panther Rush')) {
 				Molpy.UnlockBoost('Panther Rush');
-				Molpy.Boost['Panther Rush'].buy(1,1);
-				Molpy.Boost['Panther Rush'].Level = 1079252050*2;
+				Molpy.Boosts['Panther Rush'].buy(1,1);
+				Molpy.Boosts['Panther Rush'].Level = 1079252050*2;
 			}
 		}
 	}
