@@ -1109,7 +1109,7 @@ Molpy.Up = function() {
 						production += "Ninja'd!";
 					} else {
 						production += 'Active: ' + Molpify(this.currentActive, 3) + '<br>Timer: '
-							+ Molpify(Math.ceil((Molpy.CastleTools['NewPixBot'].ninjaTime - Molpy.ONGelapsed) / Molpy.NPlength));
+							+ Molpify(Math.ceil((Molpy.CastleTools['NewPixBot'].ninjaTime - Molpy.ONGelapsed) / Molpy.mNPlength));
 					}
 				}
 				
@@ -1441,11 +1441,11 @@ Molpy.Up = function() {
 			}
 
 			// Methods
-			this.buy = function(auto) {
+			this.buy = function(auto,freebe) {
 				if(!this.unlocked || this.bought) return; //shopping assistant tried to buy it when it was locked
 
 				var realPrice = this.CalcPrice(this.price);
-				var free = Molpy.IsFree(realPrice);
+				var free = freebe || Molpy.IsFree(realPrice);
 				if(Molpy.ProtectingPrice() && !free) return;
 				if(!free && !Molpy.Spend(realPrice)) return;
 
@@ -1507,7 +1507,7 @@ Molpy.Up = function() {
 			
 			this.resetSaveData = function() {
 				for(var i in this.saveData)
-					this.saveData[i][0] = this.saveData[i][1];
+					this[this.saveData[i][0]] = this.saveData[i][1];
 			}
 			
 			// Methods for Div Creation
@@ -2862,7 +2862,10 @@ Molpy.Up = function() {
 					FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
 					QQ: Molpy.VacCost.QQ * vacs
 				});
-				if (Molpy.Got('Black Hole')) vacs*=2;
+				if (Molpy.Got('Black Hole')) {
+					if (Molpy.Got('blackhat')) vacs *= Math.floor(2+Math.pow(1.03,Math.pow(2.8,Molpy.Level('blackhat'))));
+					else vacs*=2;
+				}
 				Molpy.Add('Vacuum', vacs);
 				if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 			}
@@ -2948,8 +2951,10 @@ Molpy.Up = function() {
 		if(!Molpy.ninjad) {
 			if(Molpy.npbONG)
 				stateClass = 'beachstreakextend';
-			else
+			else {
 				stateClass = 'beachninjawarning';
+				if (Molpy.Got('Shadow Ninja') && ((Molpy.ONGelapsed+4000) >= Molpy.CastleTools['NewPixBot'].ninjaTime)) stateClass = 'beachritualwarning'
+			}
 		}
 		if(Molpy.Got('Temporal Rift')) stateClass = 'beachriftwarning';
 		if(Molpy.ONGelapsed / Molpy.NPlength >= 998 && !Molpy.Boosts['Coma Molpy Style'].IsEnabled) {
@@ -3108,9 +3113,9 @@ Molpy.Up = function() {
 		if(Molpy.Boosts['LR'].power > 500) {
 			var MinPower = 0;
 			var LRdecrease = Molpy.Boosts['LR'].power * .95;
-			if(Molpy.Got('Lightning in a Bottle')){
+			if(Molpy.Boosts['Lightning in a Bottle'].power > 0){
 				MinPower = Molpy.Boosts['Lightning in a Bottle'].power;
-			} else if(Molpy.Got('Kite and Key')){
+			} else if(Molpy.Boosts['Kite and Key'].power > 0){
 				MinPower = Molpy.Boosts['Kite and Key'].power;
 			}
 			if(LRdecrease < MinPower)

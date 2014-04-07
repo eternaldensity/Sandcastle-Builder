@@ -26,6 +26,25 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.42
+
+#### Waveney
+- New Boosts - "What if we tried more power?", "Mutant Tortoise", "Centenarian Mutant Ninja Tortoise"
+- Fixed a few things
+- New Badges for Ninja Ritual
+- Fixed the New Boosts disapearing on upgrading bug (with a lot of help from Guizmus)
+- Note this will still happen when you do this upgrade - it is a saving bug from the previous version
+- New Beach colour when the NewPixBots are about to actvate (only used when you have Shadow Ninja)
+- Saving can now handle arrays
+- Fixed Panther Rush limit actions
+
+#### AmauryLepicard
+- Added a Clear Log button
+
+#### LucidCrux
+- New Icons for boosts
+- Glassed Lightning and Lightning Rod changes
+
 ### 3.4121
 
 #### Waveney
