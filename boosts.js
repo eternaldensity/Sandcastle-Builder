@@ -7643,7 +7643,7 @@ Molpy.DefineBoosts = function() {
 		var rest = 0;
 		for (var inf in Molpy.NestLinings) if (inf != thing) rest += (nest.Liners[inf] || 0);
 		var cur = (nest.Liners[thing] || 0);
-		if (cur+change < 0 || (!Molpy.Got('Marketting') && ((rest+cur+change) > 100))) return;
+		if (cur+change < 0 || (!Molpy.Got('Marketing') && ((rest+cur+change) > 100))) return;
 		nest.Liners[thing] = (nest.Liners[thing] || 0) + change;
 		nest.Refresh();
 	}
@@ -8316,7 +8316,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['Ninja Ritual'].Level +=mult; 
 			mult*=10; 
 		};
-		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult + Math.floor(Molpy.Boosts['Ninja Ritual'].Level/1000); 
+		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult + Math.floor(Molpy.Boosts['Ninja Ritual'].Level/10000); 
 		if (Molpy.Got('Mutant Tortoise')) Molpy.Boosts['Ninja Ritual'].Level = Math.floor(Molpy.Boosts['Ninja Ritual'].Level *1.005); 
 		var lvl = Molpy.Level('Ninja Ritual');
 		if (lvl > 777 && !isFinite(Molpy.Level('Time Lord')) && 
@@ -9338,7 +9338,7 @@ Molpy.DefineBoosts = function() {
 			if (me.bought) {
 				if (Molpy.Got('DQ')) str += ' and other things';
 				str += '.<br>Power currently '+(me.power || 1);
-				for (thing in Molpy.NestLinings) {
+				for (var thing in Molpy.NestLinings) {
 					var stuff = Molpy.Boosts[Molpy.NestLinings[thing]];
 					if (stuff.Level == Infinity && ((me.bought & (1<<thing)) == 0)) {
 						str += '<br>Spend Infinite <input type=button onclick="Molpy.MorePower('+thing+')" value="'+stuff.plural+
@@ -9358,7 +9358,7 @@ Molpy.DefineBoosts = function() {
 		},
 		className: 'action',
 		classChange: function() { 
-			for (thing in Molpy.NestLinings) {
+			for (var thing in Molpy.NestLinings) {
 				var stuff = Molpy.Boosts[Molpy.NestLinings[thing]];
 				if (stuff.Level == Infinity && ((this.bought & (1<<thing)) == 0)) return 'action';
 			}
@@ -9402,7 +9402,7 @@ Molpy.DefineBoosts = function() {
 		},
 	});
 	new Molpy.Boost({ // Hook for the future
-		name: 'Marketting',
+		name: 'Marketing',
 		desc: 'Numbers don\'t have to add up',
 		group: 'hpt',
 	});
