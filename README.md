@@ -26,6 +26,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4202
+
+#### Waveney
+- Downgrade for CDSP
+- Mega means millions, not 100 thousands
+- Generic way to give builds names as well as numbers
+- A few tweaks and a very small buff
+
 ### 3.4201
 
 #### Waveney

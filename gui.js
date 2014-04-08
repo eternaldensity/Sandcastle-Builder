@@ -348,7 +348,7 @@ Molpy.DefineGUI = function() {
 	if(!g('game')) {
 		Molpy.Load();
 		if(g('indexversion')) {
-			g('indexversion').innerHTML = 'The Game of Time. Version ' + Molpy.version;
+			g('indexversion').innerHTML = 'The Game of Time. Version ' + Molpy.version + (Molpy.versionName?' '+Molpy.versionName:'');
 		} else {
 			Molpy.StartIdle = function() {
 				if(!Molpy.supportsLocalStorage) {
@@ -1318,7 +1318,7 @@ Molpy.DefineGUI = function() {
 		g('era').innerHTML = Molpy.TimeEra;
 		g('period').innerHTML = Molpy.TimePeriod;
 		$('.timeflip').toggleClass('flip-horizontal', (Molpy.previewNP ? Molpy.previewNP < 0 : Molpy.newpixNumber < 0));
-		g('version').innerHTML = '<br>Version: ' + Molpy.version + (Molpy.version == 3.11 ? '<br>Windows?' : '');
+		g('version').innerHTML = '<br>Version: ' + Molpy.version  + (Molpy.versionName?'<br>'+Molpy.versionName:'');
 
 		if(!noLayout) {
 			g('stuffSandCount').innerHTML = 'Sand: ' + Molpify(Molpy.Boosts['Sand'].power, 3);
