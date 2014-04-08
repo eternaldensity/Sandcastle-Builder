@@ -26,6 +26,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4202
+
+#### Waveney
+- Downgrade for CDSP
+- Mega means millions, not 100 thousands
+- 
+
 ### 3.4201
 
 #### Waveney

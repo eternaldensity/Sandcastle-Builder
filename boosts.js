@@ -6447,6 +6447,9 @@ Molpy.DefineBoosts = function() {
 				str += '<br>Upgrading Logicat Level by 1 will cost ' + Molpify(powerReq, 3)
 					+ ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			}
+			goatCost--;
+			if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Goats',goatCost)) {
+				str += '<br><input type=button value=Downgrade onclick="Molpy.GainDragonWisdom(-1)"></input> this by one level at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			return str;
 		},
 		
@@ -6459,16 +6462,22 @@ Molpy.DefineBoosts = function() {
 	
 	Molpy.GainDragonWisdom = function(n) {
 		var me = Molpy.Boosts['WiseDragon'];
-		var goatCost = me.power * n;
-		var powerReq = Math.pow(5, me.power + 12);
-		if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
-			Molpy.Spend('Goats', goatCost);
-			Molpy.Boosts['AD'].power -= powerReq;
-			Molpy.Notify('Dragon Widsom gained!'); // it was so tempting to write gainned :P
-			me.power++;
+		if (n > 0) {
+			var goatCost = me.power * n;
+			var powerReq = Math.pow(5, me.power + 12);
+			if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
+				Molpy.Spend('Goats', goatCost);
+				Molpy.Boosts['AD'].power -= powerReq;
+				Molpy.Notify('Dragon Widsom gained!'); // it was so tempting to write gainned :P
+				me.power++;
+				me.Refresh();
+				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
+				if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
+			}
+		} else if (Molpy.Spend('Goats', me.power-1)) {
+			me.power--;
 			me.Refresh();
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
-			if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
+			Molpy.Notify('Dragon Widsom lost!'); 
 		}
 	}
 
@@ -8299,7 +8308,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			return 'When you ninja the NewPixBots, receive a Goat.'
 				+ (me.bought ? '<br>Receive an extra goat for every 5 consecutive Ninjas.<br> Currently at '
-					+ Molpify(me.Level, 1) + ' consecutive Ninja' + plural(me.Level) + '.' : '');
+					+ Molpify(me.Level, 2) + ' consecutive Ninja' + plural(me.Level) + '.' : '');
 		},
 		
 		price: {Goats: 300},
