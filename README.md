@@ -31,7 +31,7 @@ For personal amusement only.
 #### Waveney
 - Downgrade for CDSP
 - Mega means millions, not 100 thousands
-- 
+- Generic way to give builds names as well as numbers
 
 ### 3.4201
 

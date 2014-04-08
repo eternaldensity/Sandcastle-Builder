@@ -6450,6 +6450,7 @@ Molpy.DefineBoosts = function() {
 			goatCost--;
 			if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Goats',goatCost)) {
 				str += '<br><input type=button value=Downgrade onclick="Molpy.GainDragonWisdom(-1)"></input> this by one level at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
+			};
 			return str;
 		},
 		
