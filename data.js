@@ -1,7 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.4201;
+Molpy.version=3.4202;
+Molpy.versionName=''; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
