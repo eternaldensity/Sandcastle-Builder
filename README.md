@@ -32,6 +32,7 @@ For personal amusement only.
 - Downgrade for CDSP
 - Mega means millions, not 100 thousands
 - Generic way to give builds names as well as numbers
+- A few tweaks and a very small buff
 
 ### 3.4201
 
