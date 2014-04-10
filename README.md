@@ -26,6 +26,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.4203
+
+#### Waveney
+- Speed of light typo
+
 ### 3.4202
 
 #### Waveney

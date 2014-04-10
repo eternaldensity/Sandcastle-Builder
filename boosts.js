@@ -5443,7 +5443,7 @@ Molpy.DefineBoosts = function() {
 				var mult = 1;
 				var strs = [];
 				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
-					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252050*2)) {
+					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252850*2)) {
 					var mstr = '';
 					if (!rushcost.Vacuum) {
 						mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
