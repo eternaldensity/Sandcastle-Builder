@@ -5439,7 +5439,7 @@ Molpy.DefineBoosts = function() {
 
 			str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
 				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
-			if (me.bought && !Molpy.Earned('Einstetn Says No') ) {
+			if (me.bought && !Molpy.Earned('Einstein Says No') ) {
 				var mult = 1;
 				var strs = [];
 				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
