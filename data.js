@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.4202;
+Molpy.version=3.4203;
 Molpy.versionName=''; // Appended to the numerical version on screen
 
 /**************************************************************
@@ -849,7 +849,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Glass Ceiling 10'].logic = 80*Molpy.Earned('Ceiling Broken');
 	Molpy.Boosts['Glass Ceiling 11'].logic = 90*Molpy.Earned('Ceiling Broken');
 
-	Molpy.Boosts['Panther Rush'].logic = Molpy.Has('Logicat',Molpy.CalcRushCost(0, 1).Logicat) && !Molpy.Earned('Einstein Says No');
+	Molpy.Boosts['PR'].logic = Molpy.Has('Logicat',Molpy.CalcRushCost(0, 1).Logicat) && !Molpy.Earned('Einstein Says No');
 
 	Molpy.Boosts['AC'].logic = 440 * (Molpy.Got('AA') && (isFinite(Molpy.CastleTools['NewPixBot'].amount)? 
 					(Molpy.CastleTools['NewPixBot'].amount >= 7500 ? 50000 / Molpy.CastleTools['NewPixBot'].amount : 0):1));

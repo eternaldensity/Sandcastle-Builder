@@ -890,7 +890,7 @@
 		}
 		if(version < 3.07) {
 			Molpy.Boosts['Overcompensating'].power = Molpy.Boosts['Overcompensating'].startPower;
-			if(Molpy.Got('Panther Rush')) Molpy.Boosts['Panther Rush'].buyFunction();
+			if(Molpy.Got('PR')) Molpy.Boosts['PR'].buyFunction();
 		}
 		if(version < 3.13) {
 			if(!Molpy.Earned('Getting Expensive') && !isFinite(Molpy.Boosts['Castles'].power)) {
@@ -948,10 +948,10 @@
 			if (Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
 		}
 		if(version < 3.42) {
-			if (Molpy.Earned('Einstein Says No') && !Molpy.Got('Panther Rush')) {
-				Molpy.UnlockBoost('Panther Rush');
-				Molpy.Boosts['Panther Rush'].buy(1,1);
-				Molpy.Boosts['Panther Rush'].Level = 1079252050*2;
+			if (Molpy.Earned('Einstein Says No') && !Molpy.Got('PR')) {
+				Molpy.UnlockBoost('PR');
+				Molpy.Boosts['PR'].buy(1,1);
+				Molpy.Boosts['PR'].Level = 1079252050*2;
 			}
 		}
 	}

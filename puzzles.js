@@ -74,7 +74,7 @@ Molpy.DefinePuzzles = function() {
 					}
 				}
 				var diff = correct - incorrect;
-				var points = .5 + Molpy.Level('Panther Rush') / 2;
+				var points = .5 + Molpy.Level('PR') / 2;
 				var score = 0;
 				if(diff > 0) {
 					score = diff * (this.firstTry * .5 + points) * this.puzzles;
