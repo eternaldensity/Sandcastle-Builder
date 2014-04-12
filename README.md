@@ -30,6 +30,11 @@ For personal amusement only.
 
 #### Waveney
 - Speed of light typo
+- Downgrade for CCDSP without bug
+- Nerf so it is very hard to get to Infinite Goats without Centanarian Mutant Ninja Tortoise (it should now behave as intended, not as I originally coded it)
+- Badge typos fixed
+- Few tweaks
+- Hooks for further dranconic developments (you can't get at these yet)
 
 ### 3.4202
 
