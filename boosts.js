@@ -5439,11 +5439,11 @@ Molpy.DefineBoosts = function() {
 
 			str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
 				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
-			if (me.bought && !Molpy.Earned('Einstien Says No') ) {
+			if (me.bought && !Molpy.Earned('Einstetn Says No') ) {
 				var mult = 1;
 				var strs = [];
 				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
-					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252050*2)) {
+					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252850*2)) {
 					var mstr = '';
 					if (!rushcost.Vacuum) {
 						mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
@@ -9174,7 +9174,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var str = 'If Ninja Ritual is interupted, use streak/10 flux crystals to warp time to before it happened, keeping the streak alive.<br>'
-				+ 'Current cost: ' + Math.floor(Molpy.Boosts['Ninja Ritual'].power / 10) + ' Flux Crystals';
+				+ 'Current cost: ' + Molpify(Math.floor(Molpy.Boosts['Ninja Ritual'].power / 10)) + ' Flux Crystals';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
