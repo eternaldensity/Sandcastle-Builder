@@ -5426,6 +5426,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Panther Rush',
 		icon: 'pantherrush',
+		alias: 'PR',
 		className: 'action',
 		
 		desc: function(me) {
@@ -5439,11 +5440,11 @@ Molpy.DefineBoosts = function() {
 
 			str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
 				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
-			if (me.bought && !Molpy.Earned('Einstien Says No') ) {
+			if (me.bought && !Molpy.Earned('Einstein Says No') ) {
 				var mult = 1;
 				var strs = [];
 				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
-					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252050*2)) {
+					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252850*2)) {
 					var mstr = '';
 					if (!rushcost.Vacuum) {
 						mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
@@ -5469,7 +5470,7 @@ Molpy.DefineBoosts = function() {
 		
 		price:{
 			GlassBlocks: function() {
-				return Math.pow(10, Molpy.Boosts['Panther Rush'].power + 7);
+				return Math.pow(10, Molpy.Boosts['PR'].power + 7);
 			},
 			Sand: Infinity,
 			Castles: Infinity,
@@ -5485,10 +5486,10 @@ Molpy.DefineBoosts = function() {
 
 	});
 	
-	Molpy.Boosts['Panther Rush'].refreshFunction = undefined;
+	Molpy.Boosts['PR'].refreshFunction = undefined;
 	
 	Molpy.CalcRushCost = function(nextLevel, feather) {
-		var l = Molpy.Level('Panther Rush') + (nextLevel || 0);
+		var l = Molpy.Level('PR') + (nextLevel || 0);
 		var m = Math.max(1, l - 9);
 		var v = Math.max(1, l - 19);
 		return {
@@ -5499,7 +5500,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.PantherRush = function(stuff,n) {
-		var pr = Molpy.Boosts['Panther Rush'];
+		var pr = Molpy.Boosts['PR'];
 		var cost = Molpy.CalcRushCost();
 		if (stuff) {
 			if (stuff == 1) {
@@ -5516,7 +5517,7 @@ Molpy.DefineBoosts = function() {
 			n = 1;
 		}
 		if(Molpy.Has(cost)
-			&& (pr.Level > 12 || confirm('Really spend ' + (Molpy.PriceString(cost).replace(/&nbsp;/g, ' ').replace(/(<([^>]+)>)/ig,"")) + ' on Panther Rush?'))) {
+			&& (pr.Level > 12 || confirm('Really spend ' + (Molpy.PriceString(cost).replace(/&nbsp;/g, ' ').replace(/(<([^>]+)>)/ig,"")) + ' on PR?'))) {
 			if(Molpy.Spend(cost)) pr.Add(n);
 			var fCost = Molpy.CalcRushCost(0, 1);
 			var speed = pr.Level/2;
@@ -5673,13 +5674,13 @@ Molpy.DefineBoosts = function() {
 		desc: 'Keeps the Caged Logicat awake a little longer.',
 		buyFunction: function(n) {
 			if(!n) n = 1;
-			if(Molpy.Got('LogiPuzzle')) Molpy.Add('LogiPuzzle', n * (1 + Molpy.Level('Panther Rush')));
+			if(Molpy.Got('LogiPuzzle')) Molpy.Add('LogiPuzzle', n * (1 + Molpy.Level('PR')));
 			Molpy.LockBoost(this.alias);
 		}
 	});
 	
 	Molpy.PokeBar = function() {
-		return Math.floor(4 + Molpy.Level('Panther Rush') * (1 + Molpy.Boosts['WiseDragon'].power) *
+		return Math.floor(4 + Molpy.Level('PR') * (1 + Molpy.Boosts['WiseDragon'].power) *
 			(Molpy.Boosts['WiseDragon'].power ? Math.max(1,Math.log(Molpy.Level('AC'))-10,1) : 1 ));
 	}
 	
@@ -6248,7 +6249,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.DragonTarget = function() {
-		if(Molpy.Got('TF') && Molpy.Has('Logicat', 1200 / (Molpy.Level('Panther Rush') + 1)) && !Molpy.Boosts['Crystal Dragon'].unlocked)
+		if(Molpy.Got('TF') && Molpy.Has('Logicat', 1200 / (Molpy.Level('PR') + 1)) && !Molpy.Boosts['Crystal Dragon'].unlocked)
 			return [1000, 'Crystal Dragon'];
 		if(Molpy.Has('AC', 101) && !Molpy.Boosts['Draft Dragon'].unlocked && Molpy.groupBadgeCounts.monumg > 40)
 			return [2e12, 'Draft Dragon'];
@@ -6448,7 +6449,7 @@ Molpy.DefineBoosts = function() {
 					+ ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			}
 			goatCost--;
-			if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Goats',goatCost)) {
+			if(!Molpy.Boosts['No Sell'].power && me.power > 1 && Molpy.Has('Goats',goatCost)) {
 				str += '<br><input type=button value=Downgrade onclick="Molpy.GainDragonWisdom(-1)"></input> this by one level at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			};
 			return str;
@@ -7607,7 +7608,7 @@ Molpy.DefineBoosts = function() {
 		}
 	});
 	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal',
-				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds']; // Always add to the END of this list
+				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses']; // Always add to the END of this list
 
 	new Molpy.Boost({
 		name: 'Dragon Nest',
@@ -8320,14 +8321,18 @@ Molpy.DefineBoosts = function() {
 		var oldlvl = Molpy.Level('Ninja Ritual');
 		var mult=1;
 		if (Molpy.Got('Zooman')) mult = 20;
-		if (Molpy.Earned('The Ritual is worn out')) Molpy.Boosts('Ninja Ritual').Level = Infinity;
-		Molpy.Add('Goats', Math.floor((1 + oldlvl * (Molpy.Got('CMNT')?Molpy.Level('Panther Rush'):1) / 5)*Molpy.Papal('Goats')));
-		while (Molpy.Level('Ninja Ritual') <= oldlvl) {
-			Molpy.Boosts['Ninja Ritual'].Level +=mult; 
-			mult*=10; 
+		if (Molpy.Earned('The Ritual is worn out')) {
+			Molpy.Add('Goats', Math.floor((1e298 * (Molpy.Got('CMNT')?Molpy.Level('PR'):1) / 5)*Molpy.Papal('Goats')));
+			
+		} else {
+			Molpy.Add('Goats', Math.floor((1 + oldlvl * (Molpy.Got('CMNT')?Molpy.Level('PR'):1) / 5)*Molpy.Papal('Goats')));
+			while (Molpy.Level('Ninja Ritual') <= oldlvl) {
+				Molpy.Boosts['Ninja Ritual'].Level +=mult; 
+				mult*=10; 
+			};
+			if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult + Math.floor(Molpy.Boosts['Ninja Ritual'].Level/10000); 
+			if (Molpy.Got('Mutant Tortoise')) Molpy.Boosts['Ninja Ritual'].Level = Math.floor(Molpy.Boosts['Ninja Ritual'].Level *1.005); 
 		};
-		if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult + Math.floor(Molpy.Boosts['Ninja Ritual'].Level/10000); 
-		if (Molpy.Got('Mutant Tortoise')) Molpy.Boosts['Ninja Ritual'].Level = Math.floor(Molpy.Boosts['Ninja Ritual'].Level *1.005); 
 		var lvl = Molpy.Level('Ninja Ritual');
 		if (lvl > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
@@ -8339,7 +8344,7 @@ Molpy.DefineBoosts = function() {
 		if (lvl > 777e21) Molpy.UnlockBoost('CMNT');
 		if (lvl > 365e24) Molpy.EarnBadge('Yearly Ritual');
 		if (lvl > 1e84) Molpy.EarnBadge('Wololololo Ritual');
-		if (lvl > 1e300) Molpy.EarnBadge('The Ritual is worn out');
+		if (lvl > 1e298) Molpy.EarnBadge('The Ritual is worn out');
 	};
 	new Molpy.Boost({
 		name: 'Time Lord',
@@ -9265,6 +9270,7 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		price: {FluxCrystals:Infinity, Goats:100},
 		desc: 'Gives Mysterious Maps a Jump to the nearest discovery to the next map',
+		buyFunction: function() { Molpy.Boosts['Maps'].Refresh(); },
 	});
 
 	new Molpy.Boost({
@@ -9415,6 +9421,27 @@ Molpy.DefineBoosts = function() {
 		name: 'Marketing',
 		desc: 'Numbers don\'t have to add up',
 		group: 'hpt',
+	});
+	new Molpy.Boost({ // Hook for the future
+		name: 'Gold',
+		desc: function(me) {
+			if (!me.bought) return 'Gold, Gold, Gold, Gold!';
+			if (!me.power) return 'Gold whats that?';
+			if (me.power > 1) return 'You have ' + Molpify(me.power,3) + ' Gold';
+			if (me.power > 0.001) return 'You have ' + Molpify(me.power*1000,3) + ' Silver';
+			return 'You have ' + Molpify(me.power*1000000,3) + ' Copper';
+		},
+		group: 'stuff',
+		defStuff : 1,
+	});
+	new Molpy.Boost({ // Hook for the future
+		name: 'Princesses',
+		desc: function (me) {
+			if (me.power == 1) return 'You have one Tasty Princess';
+			return 'You have ' + Molpify(me.power) + ' Tasty Princesses';
+		},
+		group: 'stuff',
+		defStuff : 1,
 	});
 
 
