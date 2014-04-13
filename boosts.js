@@ -9258,7 +9258,7 @@ Molpy.DefineBoosts = function() {
 		group: 'ninj',
 		price: { Mustard:10000, Goats:10000 },
 		desc: function(me) {
-			var str = 'When active increases Mustard gains by a thousandth of your Goats.'
+			var str = 'When active multiplies Mustard gains by a thousandth of your Goats.'
 			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
 		},
