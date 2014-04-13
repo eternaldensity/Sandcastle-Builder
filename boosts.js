@@ -9179,7 +9179,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var str = 'If Ninja Ritual is interupted, use streak/10 flux crystals to warp time to before it happened, keeping the streak alive.<br>'
-				+ 'Current cost: ' + Math.floor(Molpy.Boosts['Ninja Ritual'].power / 10) + ' Flux Crystals';
+				+ 'Current cost: ' + Molpify(Math.floor(Molpy.Boosts['Ninja Ritual'].power / 10)) + ' Flux Crystals';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
