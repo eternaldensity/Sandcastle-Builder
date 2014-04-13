@@ -784,7 +784,7 @@
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
-		Molpy.recalculateRates = 1;
+		Molpy.RatesRecalculate();
 		Molpy.allNeedRepaint = 1;
 		Molpy.judgeLevel = -1;
 		Molpy.calculateRates();
@@ -1117,7 +1117,7 @@
 			Molpy.Boosts['Kite and Key'].power = KaKPower;
 			Molpy.Boosts['Lightning in a Bottle'].power = LiBPower;
 			
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 			Molpy.allNeedRepaint = 1;
 
 			Molpy.showOptions = 0;

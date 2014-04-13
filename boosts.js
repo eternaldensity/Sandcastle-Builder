@@ -619,7 +619,7 @@ Molpy.DefineBoosts = function() {
 		g('clockface').className = acPower ? 'hidden' : 'unhidden';
 		Molpy.Boosts['Coma Molpy Style'].power = acPower;
 		Molpy.Boosts['Coma Molpy Style'].Refresh();
-		Molpy.recalculateRates = 1;
+		Molpy.RatesRecalculate();
 	}
 	
 	new Molpy.Boost({
@@ -1172,7 +1172,7 @@ Molpy.DefineBoosts = function() {
 			npb.temp = 0;
 		}
 		nc.Refresh();
-		Molpy.recalculateRates = 1;
+		Molpy.RatesRecalculate();
 		Molpy.GiveTempBoost('Jamming', 1);
 	}
 	
@@ -1819,7 +1819,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.newpixNumber *= -1;
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 
 			var c = Math.floor(Math.random() * (Molpy.Boosts['Time Lord'].bought - Molpy.Level('Time Lord') + 1) * (Molpy.Got('TDE') + 1));
 			Molpy.Add('FluxCrystals', c);
@@ -2071,7 +2071,7 @@ Molpy.DefineBoosts = function() {
 			}
 			Molpy.Boosts['Sand Refinery'].power += n;
 			Molpy.Notify('Sand Refinery upgraded', 1);
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Sand Refinery']);
 		}
 	}
@@ -2094,7 +2094,7 @@ Molpy.DefineBoosts = function() {
 		Molpy.Add('GlassChips', n);
 		sr.power = Math.floor(sr.power - n) || 0;
 		Molpy.Notify('Sand Refinery downgraded', 1);
-		Molpy.recalculateRates = 1;
+		Molpy.RatesRecalculate();
 		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', 'Sand Refinery']);
 	}
 
@@ -2405,7 +2405,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Spend('GlassBlocks', unitCost * n);
 			Molpy.Boosts['Glass Chiller'].power += n;
 			Molpy.Notify('Glass Chiller upgraded', 1);
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Glass Chiller']);
 		}
 	}
@@ -2428,7 +2428,7 @@ Molpy.DefineBoosts = function() {
 		Molpy.Add('GlassBlocks', n);
 		gc.power = Math.floor(gc.power - n) || 0;
 		Molpy.Notify('Glass Chiller downgraded', 1);
-		Molpy.recalculateRates = 1;
+		Molpy.RatesRecalculate();
 		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', 'Glass Chiller']);
 	}
 
@@ -2566,7 +2566,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Has('GlassBlocks', Molpy.SandPurifierUpgradeCost())) {
 			Molpy.Spend('GlassBlocks', Molpy.SandPurifierUpgradeCost());
 			Molpy.Boosts['Sand Purifier'].power++;
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 			Molpy.Notify('Sand Purifier upgraded', 1);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Sand Purifier']);
 		}
@@ -2620,7 +2620,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Spend('GlassBlocks', cost);
 			Molpy.Boosts['Sand Purifier'].power += upgrades;
 
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 			Molpy.Notify('Sand Purifier upgraded ' + Molpify(upgrades, 2) + ' times', 1);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Sand Purifier']);
 		}
@@ -2645,7 +2645,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Spend('GlassChips', cost);
 			Molpy.Boosts['Glass Extruder'].power += upgrades;
 
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 			Molpy.Notify('Glass Extruder upgraded ' + Molpify(upgrades, 2) + ' times', 1);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Glass Extruder']);
 		}
@@ -2671,7 +2671,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Spend('GlassChips', extra * 2.5);
 				Molpy.Boosts['Sand Refinery'].Refresh();
 				Molpy.Notify('Sand Refinery upgraded ' + Molpify(extra, 2) + ' times', 1);
-				Molpy.recalculateRates = 1;
+				Molpy.RatesRecalculate();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Sand Refinery']);
 			}
 		}
@@ -2699,7 +2699,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Spend('GlassBlocks', extra * 4.5);
 				Molpy.Boosts['Glass Chiller'].Refresh();
 				Molpy.Notify('Glass Chiller upgraded ' + Molpify(extra, 2) + ' times', 1);
-				Molpy.recalculateRates = 1;
+				Molpy.RatesRecalculate();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Glass Chiller']);
 			}
 		}
@@ -3194,7 +3194,7 @@ Molpy.DefineBoosts = function() {
 		else
 			me.power = -1;
 		me.Refresh();
-		Molpy.recalculateRates = 1;
+		Molpy.RatesRecalculate();
 		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', me.name]);
 	}
 	
@@ -3679,7 +3679,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Has('GlassChips', Molpy.GlassExtruderUpgradeCost())) {
 			Molpy.Spend('GlassChips', Molpy.GlassExtruderUpgradeCost());
 			Molpy.Boosts['Glass Extruder'].power++;
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 			Molpy.Notify('Glass Extruder upgraded', 1);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Glass Extruder']);
 		}
@@ -5014,7 +5014,7 @@ Molpy.DefineBoosts = function() {
 			built = Math.floor(built * Molpy.TDFactor());
 			Molpy.toolsBuilt += built;
 			Molpy.toolsBuiltTotal += built;
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 			Molpy.shopNeedUpdate = 1;
 			Molpy.toolsNeedUpdate = 1;
 			Molpy.CheckBuyUnlocks();
@@ -7018,7 +7018,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.EarnBadge('Clerical Error');
 			}
 			if(isFinite(this.previousSand) != isFinite(newSand) || isFinite(oldSand) != isFinite(newSand))
-				Molpy.recalculateRates = 1;
+				Molpy.RatesRecalculate();
 			
 			this.previousSand = newSand;
 			this.power = newSand;
@@ -7222,7 +7222,7 @@ Molpy.DefineBoosts = function() {
 			if(!this.unlocked) this.unlocked = 1; //quick fix for the castles built not loading.
 			this.totalBuilt += amount;
 			this.power += amount;
-			if(amount && !isFinite(this.power)) Molpy.recalculateRates = 1;
+			if(amount && !isFinite(this.power)) Molpy.RatesRecalculate();
 
 			if(this.buildNotifyFlag) {
 				if(this.buildNotifyCount) {
@@ -7700,7 +7700,7 @@ Molpy.DefineBoosts = function() {
 		
 		Add: function(amount) {
 			this.AddSuper(amount);
-			this.countdown += 1000 / Math.ceil(this.Level / 5);
+			this.countdown += 2000 / Math.ceil(this.Level / 5);
 		},
 		
 		lockFunction: function() {
@@ -7721,7 +7721,7 @@ Molpy.DefineBoosts = function() {
 		
 		defStuff: 1,
 		defSave: 1,
-		saveData: {4:['data',[]]},
+		saveData: {4:['data',0,'array']},
 		
 		Add: function(amount) {
 			if(!this.data) this.data = [];
@@ -9436,6 +9436,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({ // Hook for the future
 		name: 'Princesses',
+		single: 'Princess',
 		desc: function (me) {
 			if (me.power == 1) return 'You have one Tasty Princess';
 			return 'You have ' + Molpify(me.power) + ' Tasty Princesses';
