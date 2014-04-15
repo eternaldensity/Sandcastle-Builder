@@ -6701,7 +6701,7 @@ Molpy.DefineBoosts = function() {
 					Molpy.LockBoost(lv.alias);
 			} else {
 				lv.buy(1);
-				if(!lv.bought) {
+				if(!lv.bought && !Molpy.boostSilence) {
 					Molpy.Notify('Locked Vault is not affordable.');
 				}
 			}
