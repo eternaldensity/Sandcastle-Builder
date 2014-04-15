@@ -2425,7 +2425,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['Castles'].build(castles);
 		};
 		Molpy.RewardNotLucky = function(automationLevel) {
-			if(!automationLevel) {
+			if(!automationLevel && !Molpy.boostSilence) {
 				if(Math.abs(Molpy.newpixNumber) <= 400)
 					Molpy.Notify('You are not Lucky (which is good)');
 				else
@@ -2446,9 +2446,9 @@ Molpy.Up = function() {
 						Molpy.Boosts['TDE'].countdown = 0;
 					}
 					Molpy.Boosts['TDE'].Refresh();
-					if(!automationLevel) Molpy.Notify('Lucky Twin!');
+					if(!automationLevel && !Molpy.boostSilence) Molpy.Notify('Lucky Twin!');
 				} else {
-					if(!automationLevel) Molpy.Notify('You are doubly not Lucky!', 1);
+					if(!automationLevel && !Molpy.boostSilence) Molpy.Notify('You are doubly not Lucky!', 1);
 				}
 
 			}
@@ -2568,7 +2568,7 @@ Molpy.Up = function() {
 					gift = Math.floor(Molpy.Boosts['GlassBlocks'].power / 50);
 					var b = Molpy.Level('GlassBlocks');
 					Molpy.Add('GlassBlocks', gift * (twin + 1), 1);
-					if(isFinite(b) && Molpy.Boosts['AA'].IsEnabled)
+					if(isFinite(b) && Molpy.Boosts['AA'].IsEnabled && !Molpy.boostSilence)
 						Molpy.Notify(Molpify(gift * (twin + 1), 3) + ' Glass Blocks from ' + Molpy.Boosts['SGC'].name,
 								1);
 				}

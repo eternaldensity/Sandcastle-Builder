@@ -3786,7 +3786,7 @@ Molpy.DefineBoosts = function() {
 		if (puzzles && puzzles > 1) Molpy.Boosts['LogiPuzzle'].multiBuy++
 		else Molpy.Boosts['LogiPuzzle'].multiBuy = 0;
 		if(!Molpy.Spend('GlassBlocks', cost)) {
-			Molpy.Notify('You need to pay' + Molpy.PriceString(cost) + ' to be asked a Caged Logicat puzzle.');
+			Molpy.Notify('You need to pay ' + Molpy.PriceString('Glass Blocks', cost) + ' to be asked a Caged Logicat puzzle.');
 			return;
 		}
 		if (puzzles && puzzles > 1) {
@@ -6715,7 +6715,7 @@ Molpy.DefineBoosts = function() {
 					Molpy.LockBoost(lv.alias);
 			} else {
 				lv.buy(1);
-				if(!lv.bought) {
+				if(!lv.bought && !Molpy.boostSilence) {
 					Molpy.Notify('Locked Vault is not affordable.');
 				}
 			}
@@ -9279,7 +9279,7 @@ Molpy.DefineBoosts = function() {
 		group: 'ninj',
 		price: { Mustard:10000, Goats:10000 },
 		desc: function(me) {
-			var str = 'When active increases Mustard gains by a thousandth of your Goats.'
+			var str = 'When active multiplies Mustard gains by a thousandth of your Goats.'
 			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
 		},
