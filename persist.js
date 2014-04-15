@@ -352,11 +352,13 @@
 					fencePost = c;
 				} else {
 					var ting = saveData[num][0];
-					str += fencePost + boost[ting].length;
-					fencePost = c;
-					if (boost[ting].length) {
-						for (idx =0; idx < boost[ting].length; idx++) {
-							str += fencePost + boost[ting][idx];
+					if (boost[ting]) {
+						str += fencePost + boost[ting].length;
+						fencePost = c;
+						if (boost[ting].length) {
+							for (idx =0; idx < boost[ting].length; idx++) {
+								str += fencePost + boost[ting][idx];
+							}
 						}
 					}
 				}
