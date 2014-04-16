@@ -29,9 +29,11 @@ For personal amusement only.
 ### 3.421
 
 #### Waveney
-- CMNT price reduction
+- CMNT price reduction (should only take a couple of days to afford now)
 - Miscelaneous bugs removed
 - Ensure rate recalculations are made when needed
+- More Draconic Foundations (you will have to wait for it)
+- Stuck Time lord fixed
 
 #### mart0258
 - More silencing
