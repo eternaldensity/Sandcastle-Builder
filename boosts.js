@@ -9414,7 +9414,7 @@ Molpy.DefineBoosts = function() {
 		stats: 'Get more Goats from the Ninja Ritual',
 		price: {
 			Goats:'1S',
-			Vacuum:'1Z',
+			Vacuum:'3.33E',
 		},
 	});
 	new Molpy.Boost({ // Hook for the future

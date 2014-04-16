@@ -26,6 +26,17 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.421
+
+#### Waveney
+- CMNT price reduction
+- Miscelaneous bugs removed
+- Ensure rate recalculations are made when needed
+
+#### mart0258
+- More silencing
+- typos and mustard removed
+
 ### 3.4203
 
 #### Waveney
