@@ -359,7 +359,7 @@ Molpy.Up = function() {
 			if(Molpy.Got('Ninja Climber')) {
 				stealthBuild *= Molpy.SandTools['Ladder'].amount;
 				if(spend) {
-					Molpy.recalculateRates = 1;
+					Molpy.RatesRecalculate();
 				}
 			}
 			if(vj && Molpy.Boosts['Ninjasaw'].power && Molpy.Boosts['VJ'].IsEnabled) {
@@ -435,8 +435,12 @@ Molpy.Up = function() {
 
 		/* In which we calculate how much sand per milliNewPix we dig
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+		Molpy.RatesRecalculate = function(times) {
+			Molpy.recalculateRates = Math.max(Molpy.recalculateRates,(times||1))
+		}
 		Molpy.calculateRates = function() {
-			Molpy.recalculateRates = 0;
+			if (Molpy.recalculateRates > 1) Molpy.recalculateRates--;
+			else Molpy.recalculateRates = 0;
 			
 			Molpy.CastleTools['NewPixBot'].calculateNinjaTime();
 			Molpy.Boosts['Sand'].calculateSandRates();
@@ -568,7 +572,7 @@ Molpy.Up = function() {
 						if(this.buyFunction) this.buyFunction(this);
 						if(this.drawFunction) this.drawFunction();
 						Molpy.toolsNeedRepaint = 1;
-						Molpy.recalculateRates = 1;
+						Molpy.RatesRecalculate();
 						Molpy.SandToolsOwned++;
 						Molpy.CheckBuyUnlocks(1);
 					}
@@ -619,7 +623,7 @@ Molpy.Up = function() {
 					if(this.sellFunction) this.sellFunction();
 					if(this.drawFunction) this.drawFunction();
 					Molpy.toolsNeedRepaint = 1;
-					Molpy.recalculateRates = 1;
+					Molpy.RatesRecalculate();
 					Molpy.SandToolsOwned--;
 					_gaq && _gaq.push(['_trackEvent', 'Sell Tool', this.name, '1']);
 					Molpy.UnlockBoost('No Sell');
@@ -651,7 +655,7 @@ Molpy.Up = function() {
 			
 			this.Refresh = function() {
 				Molpy.toolsNeedRepaint = 1;
-				Molpy.recalculateRates = 1;
+				Molpy.RatesRecalculate();
 				this.findPrice();
 				if(this.drawFunction) this.drawFunction();
 			};
@@ -880,7 +884,7 @@ Molpy.Up = function() {
 						if(this.buyFunction) this.buyFunction(this);
 						if(this.drawFunction) this.drawFunction();
 						Molpy.toolsNeedRepaint = 1;
-						Molpy.recalculateRates = 1;
+						Molpy.RatesRecalculate();
 						Molpy.CastleToolsOwned++;
 						Molpy.CheckBuyUnlocks(1);
 					}
@@ -933,7 +937,7 @@ Molpy.Up = function() {
 					if(this.sellFunction) this.sellFunction();
 					if(this.drawFunction) this.drawFunction();
 					Molpy.toolsNeedRepaint = 1;
-					Molpy.recalculateRates = 1;
+					Molpy.RatesRecalculate();
 					Molpy.CastleToolsOwned--;
 					_gaq && _gaq.push(['_trackEvent', 'Sell Tool', this.name, '1']);
 					Molpy.UnlockBoost('No Sell');
@@ -1055,7 +1059,7 @@ Molpy.Up = function() {
 			
 			this.Refresh = function() {
 				Molpy.toolsNeedRepaint = 1;
-				Molpy.recalculateRates = 1;
+				Molpy.RatesRecalculate();
 				this.findPrice();
 				if(this.drawFunction) this.drawFunction();
 			};
@@ -1453,7 +1457,7 @@ Molpy.Up = function() {
 				if(this.buyFunction) this.buyFunction();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Buy', this.name, !free]);
 				Molpy.boostNeedRepaint = 1;
-				Molpy.recalculateRates = 1;
+				Molpy.RatesRecalculate(4);
 				Molpy.BoostsOwned++;
 				Molpy.CheckBuyUnlocks();
 				Molpy.unlockedGroups[this.group] = 1;
@@ -1649,7 +1653,7 @@ Molpy.Up = function() {
 					if(me.unlocked == 0) {
 						me.unlocked = 1;
 						Molpy.shopNeedRepaint = 1;
-						Molpy.recalculateRates = 1;
+						Molpy.RatesRecalculate();
 						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem)) {
 							Molpy.Notify('Boost Unlocked: ' + me.name, 1);
 							_gaq && _gaq.push(['_trackEvent', 'Boost', 'Unlock', me.name, true]);
@@ -1678,7 +1682,7 @@ Molpy.Up = function() {
 				bb.unlocked = 1;
 				bb.buy(1);
 				bb.describe();
-				Molpy.recalculateRates = 1;
+				Molpy.RatesRecalculate();
 			}
 		};
 		Molpy.LockBoost = function(bacon) {
@@ -1691,7 +1695,7 @@ Molpy.Up = function() {
 						Molpy.removeDiv(me);
 						Molpy.shopNeedUpdate = 1;
 						Molpy.toolsNeedUpdate = 1;
-						Molpy.recalculateRates = 1;
+						Molpy.RatesRecalculate();
 
 						if(me.lockFunction) me.lockFunction();
 						if(me.bought) {
@@ -1875,7 +1879,7 @@ Molpy.Up = function() {
 						_gaq && _gaq.push(['_trackEvent', 'Badge', 'Earn', baby.name, Molpy.BadgesOwned < 6 || baby.group != 'badges' && !camera]);
 						if(Molpy.BadgesOwned == 0) Molpy.EarnBadge('Redundant Redundancy');
 						Molpy.badgeNeedRepaint = 1;
-						Molpy.recalculateRates = 1;
+						Molpy.RatesRecalculate();
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[baby.group] = 1;
 						if(baby.group == 'badges') {
@@ -1887,7 +1891,7 @@ Molpy.Up = function() {
 						Molpy.EarnBadge('Redundant');
 						Molpy.CheckBuyUnlocks();
 						if(Molpy.Earned('Badgers')) {
-							Molpy.recalculateRates = 1;
+							Molpy.RatesRecalculate();
 						}
 						if(baby.group == 'monumg' && Molpy.Got('Maps')) Molpy.Boosts['Maps'].Refresh();
 						if(!Molpy.groupBadgeCounts[baby.group]) {
@@ -2425,7 +2429,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['Castles'].build(castles);
 		};
 		Molpy.RewardNotLucky = function(automationLevel) {
-			if(!automationLevel) {
+			if(!automationLevel && !Molpy.boostSilence) {
 				if(Math.abs(Molpy.newpixNumber) <= 400)
 					Molpy.Notify('You are not Lucky (which is good)');
 				else
@@ -2446,9 +2450,9 @@ Molpy.Up = function() {
 						Molpy.Boosts['TDE'].countdown = 0;
 					}
 					Molpy.Boosts['TDE'].Refresh();
-					if(!automationLevel) Molpy.Notify('Lucky Twin!');
+					if(!automationLevel && !Molpy.boostSilence) Molpy.Notify('Lucky Twin!');
 				} else {
-					if(!automationLevel) Molpy.Notify('You are doubly not Lucky!', 1);
+					if(!automationLevel && !Molpy.boostSilence) Molpy.Notify('You are doubly not Lucky!', 1);
 				}
 
 			}
@@ -2568,7 +2572,7 @@ Molpy.Up = function() {
 					gift = Math.floor(Molpy.Boosts['GlassBlocks'].power / 50);
 					var b = Molpy.Level('GlassBlocks');
 					Molpy.Add('GlassBlocks', gift * (twin + 1), 1);
-					if(isFinite(b) && Molpy.Boosts['AA'].IsEnabled)
+					if(isFinite(b) && Molpy.Boosts['AA'].IsEnabled && !Molpy.boostSilence)
 						Molpy.Notify(Molpify(gift * (twin + 1), 3) + ' Glass Blocks from ' + Molpy.Boosts['SGC'].name,
 								1);
 				}
@@ -2662,7 +2666,7 @@ Molpy.Up = function() {
 		Molpy.Boosts['Castles'].buildNotifyFlag = 1;
 		Molpy.Boosts['Castles'].build(0);
 		Molpy.ActivateFactoryAutomation();
-		Molpy.recalculateRates = 1;
+		Molpy.RatesRecalculate();
 	};
 	Molpy.ActivateFactoryAutomation = function() {
 		if(Molpy.Got('Factory Automation')) {

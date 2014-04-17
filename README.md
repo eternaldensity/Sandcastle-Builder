@@ -26,11 +26,26 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.421
+
+#### Waveney
+- CMNT price reduction (should only take a couple of days to afford now)
+- Miscelaneous bugs removed (and probably some added)
+- Ensure rate recalculations are made when needed
+- More Draconic Foundations (you will still have to wait for it)
+- Stuck Time lord fixed
+- CDSP downgrade changes and the ability to easily switch between high and low power with one click
+- A new badge
+
+#### mart0258
+- More silencing
+- typos and mustard removed
+
 ### 3.4203
 
 #### Waveney
 - Speed of light typo
-- Downgrade for CCDSP without bug
+- Downgrade for CDSP without bug
 - Nerf so it is very hard to get to Infinite Goats without Centanarian Mutant Ninja Tortoise (it should now behave as intended, not as I originally coded it)
 - Badge typos fixed
 - Few tweaks
