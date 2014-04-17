@@ -35,6 +35,7 @@ For personal amusement only.
 - More Draconic Foundations (you will still have to wait for it)
 - Stuck Time lord fixed
 - CDSP downgrade changes and the ability to easily switch between high and low power with one click
+- A new badge
 
 #### mart0258
 - More silencing
