@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.421;
+Molpy.version=3.4211;
 Molpy.versionName='Wrong order for a lift off'; // Appended to the numerical version on screen
 
 /**************************************************************

@@ -6443,7 +6443,7 @@ Molpy.DefineBoosts = function() {
 			var goatCost = me.power;
 			var powerReq = Math.pow(5, me.bought + 12);
 			if (me.bought > me.power+1) powerReq = 0;
-			if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].bought >= powerReq) {
+			if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
 				str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 (times the Panther Rush level) at a cost of '
 					+ Molpify(powerReq, 3) + ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			} else {
@@ -6451,7 +6451,7 @@ Molpy.DefineBoosts = function() {
 					+ ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			}
 			goatCost--;
-			if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Goats',goatCost)) {
+			if(!Molpy.Boosts['No Sell'].power && me.power > 1 && Molpy.Has('Goats',goatCost)) {
 				str += '<br><input type=button value=Downgrade onclick="Molpy.GainDragonWisdom(-1)"></input> this by one level'
 				str += ' at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			};
