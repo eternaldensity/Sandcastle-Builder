@@ -352,11 +352,13 @@
 					fencePost = c;
 				} else {
 					var ting = saveData[num][0];
-					str += fencePost + boost[ting].length;
-					fencePost = c;
-					if (boost[ting].length) {
-						for (idx =0; idx < boost[ting].length; idx++) {
-							str += fencePost + boost[ting][idx];
+					if (boost[ting]) {
+						str += fencePost + boost[ting].length;
+						fencePost = c;
+						if (boost[ting].length) {
+							for (idx =0; idx < boost[ting].length; idx++) {
+								str += fencePost + boost[ting][idx];
+							}
 						}
 					}
 				}
@@ -758,7 +760,7 @@
 		Molpy.UpgradeOldVersions(version);
 		if(version < Molpy.version) //hey let's do this every upgrade!
 		{
-			Molpy.Notify('Upgraded to new version! '+Molpy.version + ' '+ Molpy.versionName, 1);
+			Molpy.Notify('Upgraded to new version! '+Molpy.version + '<br>'+ Molpy.versionName, 1);
 			if(Molpy.Boosts['Safety Hat'].unlocked && Molpy.Got('Safety Pumpkin') && !Molpy.Boosts['SG'].unlocked)
 				Molpy.UnlockBoost('SG');
 			else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
@@ -784,7 +786,7 @@
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
-		Molpy.recalculateRates = 1;
+		Molpy.RatesRecalculate();
 		Molpy.allNeedRepaint = 1;
 		Molpy.judgeLevel = -1;
 		Molpy.calculateRates();
@@ -954,6 +956,10 @@
 				Molpy.Boosts['PR'].Level = 1079252050*2;
 			}
 		}
+		if(version < 3.421) {
+			if (Molpy.Boosts['WiseDragon'].bought) Molpy.Boosts['WiseDragon'].bought = (Molpy.Boosts['WiseDragon'].power || 0)+1;
+		}
+
 	}
 
 	Molpy.MakePrizeList = function() {
@@ -1117,7 +1123,7 @@
 			Molpy.Boosts['Kite and Key'].power = KaKPower;
 			Molpy.Boosts['Lightning in a Bottle'].power = LiBPower;
 			
-			Molpy.recalculateRates = 1;
+			Molpy.RatesRecalculate();
 			Molpy.allNeedRepaint = 1;
 
 			Molpy.showOptions = 0;

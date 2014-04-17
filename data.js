@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.4203;
-Molpy.versionName=''; // Appended to the numerical version on screen
+Molpy.version=3.421;
+Molpy.versionName='Wrong order for a lift off'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
@@ -599,7 +599,7 @@ Molpy.CheckBuyUnlocks = function(tool) {
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.Boosts['Fractal Sandcastles'].bought = 1; //woo freebie!
 		Molpy.boostNeedRepaint = 1;
-		Molpy.recalculateRates = 1;
+		Molpy.RatesRecalculate();
 		Molpy.BoostsOwned++;
 	}
 	if(Molpy.Earned('Unreachable?')) Molpy.UnlockBoost("Chateau");
