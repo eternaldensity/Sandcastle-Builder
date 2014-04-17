@@ -29,6 +29,11 @@ For personal amusement only.
 ### 3.421
 
 #### Waveney
+- A couple of CDSP bugs caused by a global edit that was shouldn't have been
+
+### 3.421
+
+#### Waveney
 - CMNT price reduction (should only take a couple of days to afford now)
 - Miscelaneous bugs removed (and probably some added)
 - Ensure rate recalculations are made when needed
