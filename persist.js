@@ -760,7 +760,7 @@
 		Molpy.UpgradeOldVersions(version);
 		if(version < Molpy.version) //hey let's do this every upgrade!
 		{
-			Molpy.Notify('Upgraded to new version! '+Molpy.version + ' '+ Molpy.versionName, 1);
+			Molpy.Notify('Upgraded to new version! '+Molpy.version + '<br>'+ Molpy.versionName, 1);
 			if(Molpy.Boosts['Safety Hat'].unlocked && Molpy.Got('Safety Pumpkin') && !Molpy.Boosts['SG'].unlocked)
 				Molpy.UnlockBoost('SG');
 			else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
@@ -956,6 +956,10 @@
 				Molpy.Boosts['PR'].Level = 1079252050*2;
 			}
 		}
+		if(version < 3.421) {
+			if (Molpy.Boosts['WiseDragon'].bought) Molpy.Boosts['WiseDragon'].bought = (Molpy.Boosts['WiseDragon'].power || 0)+1;
+		}
+
 	}
 
 	Molpy.MakePrizeList = function() {

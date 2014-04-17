@@ -6437,11 +6437,13 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var str = 'Allows you to get Panther Poke with more remaining Caged Logicat puzzles.<br>'
-				+ 'Currently, Panther Poke is available if you have less than ' + Molpify(Molpy.PokeBar() - 1,1) + ' Caged Logicat puzzles remaining.';
+				+ 'Currently, Panther Poke is available if you have less than ' + Molpify(Molpy.PokeBar() - 1,1) 
+				+ ' Caged Logicat puzzles remaining.';
 			if(!me.bought) return str;
 			var goatCost = me.power;
-			var powerReq = Math.pow(5, me.power + 12);
-			if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
+			var powerReq = Math.pow(5, me.bought + 12);
+			if (me.bought > me.power+1) powerReq = 0;
+			if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].bought >= powerReq) {
 				str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 (times the Panther Rush level) at a cost of '
 					+ Molpify(powerReq, 3) + ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			} else {
@@ -6449,9 +6451,15 @@ Molpy.DefineBoosts = function() {
 					+ ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			}
 			goatCost--;
-			if(!Molpy.Boosts['No Sell'].power && me.power > 1 && Molpy.Has('Goats',goatCost)) {
-				str += '<br><input type=button value=Downgrade onclick="Molpy.GainDragonWisdom(-1)"></input> this by one level at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
+			if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Goats',goatCost)) {
+				str += '<br><input type=button value=Downgrade onclick="Molpy.GainDragonWisdom(-1)"></input> this by one level'
+				str += ' at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			};
+			if (Molpy.Earned('Sleeping Dragon, Crouching Panther')) {
+				str += '<br>Now at ' + ((me.bought == me.power+1)?'high':'low') + ' power';
+				str += '<input type=button value="Switch" onclick="Molpy.Boosts[\'WiseDragon\'].control()"></input>';
+				str += ' this will cost ' + Molpify(me.bought*(me.bought+1)/2) + ' Goats.';
+			}
 			return str;
 		},
 		
@@ -6460,6 +6468,12 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: '1Z'
 		},
+		control: function() {
+			if (Molpy.Spend('Goats',this.bought*(this.bought+1)/2)) {
+				this.power = (this.bought > this.power+1)?this.bought-1:1;
+				this.Refresh();
+			}
+		},
 	});
 	
 	Molpy.GainDragonWisdom = function(n) {
@@ -6467,17 +6481,20 @@ Molpy.DefineBoosts = function() {
 		if (n > 0) {
 			var goatCost = me.power * n;
 			var powerReq = Math.pow(5, me.power + 12);
+			if (me.bought > me.power +1+n) powerReq = 0;
 			if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
 				Molpy.Spend('Goats', goatCost);
 				Molpy.Boosts['AD'].power -= powerReq;
 				Molpy.Notify('Dragon Widsom gained!'); // it was so tempting to write gainned :P
-				me.power++;
+				me.power+=n;
+				me.bought = Math.max(me.bought,me.power+1);
 				me.Refresh();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
 				if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
+				if (me.power>468) Molpy.EarnBadge('Sleeping Dragon, Crouching Panther');
 			}
-		} else if (Molpy.Spend('Goats', me.power-1)) {
-			me.power--;
+		} else if (Molpy.Spend('Goats', me.power-1)) {	
+			me.power += n;
 			me.Refresh();
 			Molpy.Notify('Dragon Widsom lost!'); 
 		}
@@ -9348,6 +9365,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'What if we tried more power?',
 		alias: 'blackhat',
+		icon: 'blackhat',
 		group: 'hpt',
 		desc: function(me) {
 			var str = 'Significantly improves the Black Hole';

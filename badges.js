@@ -1025,6 +1025,12 @@ Molpy.DefineBadges = function() {
 		desc: 'Ninja Ritual at the Limit',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'Sleeping Dragon, Crouching Panther',
+		desc: 'Crouching Dragon, Sleeping Panther > 468',
+		stats: 'You may find this useful...',
+		vis: 1
+	});
 	
 /**************************************************************
  * Discoveries
