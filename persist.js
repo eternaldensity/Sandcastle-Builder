@@ -91,6 +91,7 @@
 		localStorage['Boosts'] = Molpy.BoostsToString();
 		localStorage['Badges'] = Molpy.BadgesToString();
 		localStorage['OtherBadges'] = Molpy.OtherBadgesToString();
+		localStorage['NPdata'] = Molpy.NPDataToString();
 		return 1;
 	}
 
@@ -165,6 +166,7 @@
 		Molpy.BoostsFromString(localStorage['Boosts'], version);
 		Molpy.BadgesFromString(localStorage['Badges'], version);
 		Molpy.OtherBadgesFromString(localStorage['OtherBadges'], version);
+		Molpy.NPDataFromString(localStorage['NPdata'], version);
 		return Molpy.PostLoadTasks(version);
 	}
 
@@ -392,6 +394,35 @@
 		return str;
 	}
 
+	Molpy.NPdataToString = function() {
+		var s = 'S'; //Semicolon
+		var c = 'C'; //Comma
+		var str = '';
+		var lowest = 0;
+		var highest = 0;
+		// See what range to save if any
+		for (var np = -Math.abs(Molpy.highestNPvisited); np <=(Math.abs(Molpy.highestNPvisited); np++) {
+			if (Molpy.NPdata[np].DragonType) {
+				if (!lowest) lowest = np;
+				highest = np;
+			}
+		}
+		if (!lowest) return str;
+		str += lowest + s + highest
+		for (var np=lowest; np<=highest; np++) {
+			var dd = Molpy.NPdata[np];
+			str += s;
+		        if (dd.DragonType || dd.ammount) {
+				str += dd.DragonType + c + dd.ammount + c + dd.defence + c + dd.attack + c + dd.dig + c + dd.state + c + dd.countdown;
+				if (dd.breath || dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.breath || 0);
+				if (dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.magic1 || 0);
+				if (dd.magic2 || dd.magic3) str += c + (dd.magic2 || 0);
+				if (dd.magic3) str += c + (dd.magic3 || 0);
+			}
+		}
+		return str;
+	}
+
 	/* In which I do save and load!
 	+++++++++++++++++++++++++++++++*/
 	Molpy.ToNeedlePulledThing = function(exporting) {
@@ -420,6 +451,9 @@
 
 		thread = '';
 		thread += Molpy.OtherBadgesToString() + p;
+
+		thread = '';
+		thread += Molpy.NPDataToString() + p;
 
 		threads.push(thread);
 		return threads;
@@ -705,6 +739,33 @@
 		}
 	}
 
+	Molpy.NPdataFromString = function(thread,version) {
+		var s = 'S'; //Semicolon
+		var c = 'C'; //Comma
+		Molpy.ClearNPdata();
+		var pixels = thread.split(s);
+		return if (!pixels[0]);
+		var lowest = parseFloat(pixels.shift());
+		var highest = parseFloat(pixels.shift());
+		for (np = lowest; np<=highest; np++) {
+			dd = Molpy.NPdatap[np];
+			var pretzels = pixels.shift().split(c);
+			if (pretzels[0]) {
+				dd.DragonType = parseInt(pretzels.shift());
+				dd.ammount = parseFloat(pretzels.shift());
+				dd.Defence = parseFloat(pretzels.shift());
+				dd.Attack = parseFloat(pretzels.shift());
+				dd.Dig = parseFloat(pretzels.shift());
+				dd.State = parseInt(pretzels.shift());
+				dd.countdown = parseFloat(pretzels.shift());
+				dd.breath = parseFloat(pretzels.shift() || 0);
+				dd.magic1 = parseFloat(pretzels.shift() || 0);
+				dd.magic2 = parseFloat(pretzels.shift() || 0);
+				dd.magic3 = parseFloat(pretzels.shift() || 0);
+			}
+		}
+	}
+
 	Molpy.ValidateVersion = function(version) {
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Version', '' + version, true]);
 		if(version > Molpy.version) {
@@ -747,6 +808,7 @@
 		Molpy.BadgesFromString(thread[8] || '', version);
 		//thread[9] is unused
 		Molpy.OtherBadgesFromString(thread[10] || '', version);
+		Molpy.NPDataFromString(thread[11] || '', version);
 		return Molpy.PostLoadTasks(version);
 	}
 	Molpy.PreLoadTasks = function(version) {

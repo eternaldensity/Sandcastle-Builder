@@ -26,7 +26,12 @@ For personal amusement only.
 
 ## Changelog
 
-### 3.421
+#### Waveney
+- Caged logicat single puzzle buy will reapear if no multi buy button shown
+- Lots of behind the sceens dragon stuff
+
+
+### 3.4211
 
 #### Waveney
 - A couple of CDSP bugs caused by a global edit that was shouldn't have been

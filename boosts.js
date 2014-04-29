@@ -3737,7 +3737,7 @@ Molpy.DefineBoosts = function() {
 							+ Molpify(cost, 3) + ' Glass Blocks to solve ' + Molpify(tens,1)
 							+ ' puzzles at a time. (Multiplies reward/loss by the number of puzzles.)<br>';
 				}
-				if (me.multiBuy < 20) {
+				if (me.multiBuy < 20 || tens == 0) {
 					var cost = 100 + Molpy.LogiMult(25);
 					if(Molpy.Has('GlassBlocks', cost)) {
 						str += '<input type="Button" value="Pay" onclick="Molpy.MakeCagedPuzzle(' + cost + ')"></input> '
@@ -7685,6 +7685,9 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var str = 'The queen of the dragons.';
+			if(me.bought) {
+				Molpy.UnlockBoost('RDKM');
+			}
 			str += '<br>Not yet coded you will have to: Wait for it...';
 			return str; // not going to be ready for a while
 			if(me.bought) {
@@ -9432,27 +9435,27 @@ Molpy.DefineBoosts = function() {
 		stats: 'Get more Goats from the Ninja Ritual',
 		price: {
 			Goats:'1S',
-			Vacuum:'3.333E',
+			Vacuum:'6.666E',
 		},
 	});
-	new Molpy.Boost({ // Hook for the future
+	new Molpy.Boost({
 		name: 'Marketing',
 		desc: 'Numbers don\'t have to add up',
 		group: 'hpt',
 	});
-	new Molpy.Boost({ // Hook for the future
+	new Molpy.Boost({
 		name: 'Gold',
 		desc: function(me) {
 			if (!me.bought) return 'Gold, Gold, Gold, Gold!';
 			if (!me.power) return 'Gold whats that?';
-			if (me.power > 1) return 'You have ' + Molpify(me.power,3) + ' Gold';
-			if (me.power > 0.001) return 'You have ' + Molpify(me.power*1000,3) + ' Silver';
+			if (me.power >= 1) return 'You have ' + Molpify(me.power,3) + ' Gold';
+			if (me.power >= 0.001) return 'You have ' + Molpify(me.power*1000,3) + ' Silver';
 			return 'You have ' + Molpify(me.power*1000000,3) + ' Copper';
 		},
 		group: 'stuff',
 		defStuff : 1,
 	});
-	new Molpy.Boost({ // Hook for the future
+	new Molpy.Boost({
 		name: 'Princesses',
 		single: 'Princess',
 		desc: function (me) {
@@ -9462,7 +9465,48 @@ Molpy.DefineBoosts = function() {
 		group: 'stuff',
 		defStuff : 1,
 	});
+	new Molpy.Boost({
+		name: 'Raptorish Dragon Keeping Manual',
+		alias: 'RDKM',
+		group: 'drac',
+		icon: 'rdkm'
+		desc: function (me) {
+			var str = 'This has lots of useful information that will change as you do things.';
+			if (!me.bought) return str;
+			str += '<br><ol>';
+			if (!Molpy.level('Eggs')) {
+				str += '<li>Line the nest before you start laying eggs';
+				str += '<li>Linings of Sand and Castles give offence';
+				str += '<li>Linings of Glass Chips and Blocks give defence';
+				str += '<li>Linings of Blackprints and Flux Crystals give digging';
+				if (Molpy.Has('Goats',infinity) || Molpy.Has('Mustard',infinity)) {
+					str += '<li>Linings of Goats and Mustard give breath effects.';
+					if (Moply.Dragons.Level <= Molpy.Dragon['Wyrm'].Level) str += '  When you have the rght types of dragons.';
+					}
+				if (Molpy.Has('Bonemeal',infinity) || Molpy.Has('Vacuums',infinity)) str += '<li>Linings of Bonemeal and Vacuums give magic';
+				if (Molpy.Has('Logicats',infinity) || Molpy.Has('QQ',infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
+				if (Molpy.Has('Diamonds',infinity) || Molpy.Has('Gold',infinity)) str += '<li>Linings of Diamonds and Gold give better magic';
+			};
+			if (Molpy.level('Eggs')) {
+				str += '<li>You need to wait for the eggs to hatch';
+			}
+			if (Molpy.level('Hatchlings')) {
+				str += '<li>When the eggs hatch, the Hatchlings will mature for many mnp.
+				str += '<li>You will be notified when the Hatchlings are getting restless and want their own teritories
+				str += '<li>To give a clutch of dragons their own teritory. Go to a NP without any Dragons, a low positive number is recommended for early clutches';
+				str += '<li>If there are too many hatchlings for the NP the strongest will eat the rest';
+				str += '<li>Once released they have to survive the locals and then can start digging for treasure';
+			);
+			if (Molpy.level('DragonNewts')) {
+				str += '<li>DragonNewts are Dragon whanabees, high on spirit, low on abailities.';
+			}
+			if (Molpy.level('Wyrm')) {
+				str += '<li>Wyrms are the first real dragons, but they can\'t fly or breeth on knights';
+			}
 
+			return str + '</ol>';
+		},
+		price: { Goats:infinity },
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }
