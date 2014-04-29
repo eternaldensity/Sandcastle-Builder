@@ -8335,7 +8335,7 @@ Molpy.DefineBoosts = function() {
 		
 		price: {Goats: 300},
 		defStuff: 1,
-		loadFunction: function() { if (Molpy.Earned('The Ritual is worn out')) this.Level = Infinity },
+		loadFunction: function() { if (Molpy.Earned('The Ritual is worn out')) this.Level = 1e298 },
 	});
 	Molpy.NinjaRitual = function() {
 		var oldlvl = Molpy.Level('Ninja Ritual');
