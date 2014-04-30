@@ -1,3 +1,5 @@
+/*
+
 Molpy.Constants = { // Rank 0:simple, 1:harder, 2:10+, 3:complex
 	Pi:	{name:'&pi;',				rank:0,	value:3.141592653589793},
 	Phi:	{name:'&phi;',				rank:0, value:1.618033988749894},
@@ -20,18 +22,29 @@ Molpy.Constants = { // Rank 0:simple, 1:harder, 2:10+, 3:complex
 	Third:	{name:'A third',			rank:0, value:0.333333333333333},
 
 }
+*/
 
+Molpy.Dragons = []
+Molpy.DragonTypes = [];
+Molpy.DragonsById = [];
+Molpy.DragonN = 0;
+	
+Molpy.Dragon = function(args) {
+	this.id = Molpy.DragonN++;
+	for(var prop in args) {
+		if(typeof args[prop] !== 'undefined' ) this[prop] = args[prop];
+	}
+	Molpy.Dragons[this.name] = this;
+	Molpy.DragonsById[this.id] = this;
+	Molpy.DragonTypes[this.id] = this.name + 's';
 
-Molpy.DefineCharacters = function() {
+	// Methods here if any
+}
+
+Molpy.DefineDragons = function() {
 
 	new Molpy.Character({
 		name: 'Dragling',
-		tier: 0,
-		health: 1,
-		attack: 1,
-		cooldown: 100,
-		space: 1,
-		intel: 1,
 		legs: 4,
 		wings: 0,
 		fly: 0,
@@ -40,12 +53,6 @@ Molpy.DefineCharacters = function() {
 	});
 	new Molpy.Character({
 		name: 'DragonNewt',
-		tier: 1,
-		health: 1,
-		attack: 1,
-		cooldown: 100,
-		space: 1,
-		intel: 1,
 		legs: 2,
 		wings: 0,
 		fly: 0,
@@ -54,42 +61,22 @@ Molpy.DefineCharacters = function() {
 	});
 	new Molpy.Character({
 		name: 'Wyrm',
-		tier: 2,
-		health: 1,
-		attack: 1,
-		cooldown: 100,
-		space: 1,
-		intel: 1,
 		legs: 0,
 		wings: 2,
 		fly: 1,
 		heads: 1,
 		arms: 0,
-		breath: ['fire'],
 	});
 	new Molpy.Character({
 		name: 'Wyvern',
-		tier: 3,
-		health: 1,
-		attack: 1,
-		cooldown: 100,
-		space: 1,
-		intel: 1,
 		legs: 2,
 		wings: 2,
 		fly: 1,
 		heads: 1,
 		arms: 0,
-		breath: ['fire'],
 	});
 	new Molpy.Character({
 		name: 'Dragon',
-		tier: 4,
-		health: 1,
-		attack: 1,
-		cooldown: 100,
-		space: 1,
-		intel: 1,
 		legs: 2,
 		wings: 2,
 		fly: 1,
@@ -99,131 +86,54 @@ Molpy.DefineCharacters = function() {
 	});
 	new Molpy.Character({
 		name: 'Noble Dragon',
-		tier: 5,
-		health: 1,
-		attack: 1,
-		cooldown: 100,
-		space: 1,
-		intel: 1,
 		legs: 2,
-		wings: 0,
-		fly: 0,
+		wings: 2,
+		fly: 1,
 		heads: 1,
 		arms: 2,
 		breath: ['fire'],
+		magic: 1
 	});
 	new Molpy.Character({
 		name: 'Imperial Dragon',
-		tier: 0,
-		health: 1,
-		attack: 1,
-		cooldown: 100,
-		space: 1,
-		intel: 1,
 		legs: 4,
-		wings: 0,
-		fly: 0,
-		heads: 1,
-		arms: 2,
+		wings: 2,
+		fly: 1,
+		heads: 3,
+		arms: 6,
+		breath: ['fire','ice','poison'],
+		magic: 2
 	});
 	new Molpy.Character({
-		name: 'Infinite Dragon',
-		tier: 0,
-		health: 1,
-		attack: 1,
-		cooldown: 100,
-		space: 1,
-		intel: 1,
-		legs: 4,
-		wings: 0,
-		fly: 0,
-		heads: 1,
-		arms: 2,
+		name: 'NogarDragoN',
+		legs: 66,
+		wings: 66,
+		fly: 1,
+		heads: 9,
+		arms: 66,
+		breath: ['fire','ice','poison'],
+		magic: 3
 	});
 
-}
-// First char -(no a), !an, + the, @his, else a...
-Opponents {
-name: 'Serf',
-armed: ['stick', '-bare hands', 'turnip', '-bad words', 'bowl of dish waster', ]
-reward: {Copper:'1-10'},
-exp: 1,
+};
 
-name: 'Peasant'
-armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock']
-reward: {Copper:'10-1000'},
-exp: '1K',
-
-name: 'Page',
-armed: ['dagger', 'staff', 'nice cup of tea', 'stileto', 'buckler', 'spear', 'crossbow', ]
-reward: {Silver:'1-100'},
-exp: '1M',
-
-name: 'Squire',
-armed: ['short sword', 'side sword','bow and arrows','mace','mandolin','polearm','!axe','hammer',]
-reward: {Silver:'100-10000'},
-exp: '1G',
-
-name: 'Knight',
-armed: ['long sword', '+arming sword', 'battle axe', 'morning star', 'lance',]
-reward: {Gold:'10-1000',Diamonds:'0.5'},
-exp: '1P',
-
-name: 'Baron',
-armed: ['bastard sword','flaming sword','hailstorm','tax demand',]
-reward: {Gold:'1K-1M',Diamonds:'1-5'},
-exp: '1E',
-
-name: 'Lord',
-armed: ['great sword','great axe','Kazoo','court jester']
-reward: {Gold:'100K-10G',Princesses:'0.25',Diamonds:'1-1000'},
-exp: '1Z',
-
-name: 'Duke',
-armed: ['+Duchess','horde of servants','-both gardeners','whip', ]
-reward: {Gold:'1M-100T',Princesses:'0.75',Diamonds:'10-1M'},
-exp: '1Y',
-
-name: 'Emperor',
-armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers'],
-reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'100-1T'},
-exp: '1U',
-
-name: 'Paladin',
-armed: ['+Dragon slaying sword','Holy hand grenade','lot of bad puns','+Sword of the isles','' ],
-reward: {Gold:'100M-1Y',Princesses:'10-10K',Diamonds:'1K-1Z'},
-exp: '1S',
-
-name: 'Hero',
-armed: ['+sword of sharpness','-Eds Axe','+Punsaw','Donut','-both feet','pea shooter','@fist of steel',],
-reward: {Gold:'1G-1H',Princesses:'100-10M',Diamonds:'1M-1F'},
-exp: '1F',
-
-name: 'Demi-god',
-armed: ['pen (mightier than the sword)', 'cleaving axe','pitch fork', 'ballon',''],
-reward: {Gold:'10G-1WW',Princesses:'1K-10G',Diamonds:'1T-1W'},
-exp: '1W',
-
-name: 'Superhero',
-armed: ['-bare hands','turnip','bazooka','+Imperial Dragon Banishing Sword','+Great Cleaver', ],
-reward: {Gold:'10T-1WWW',Princesses:'1M-10P',Diamonds:'1T-1WW'},
-exp: '1WW',
-
-name: 'God',
-armed: ['+staff of might','+staff of comand','-dice','@holy symbol','@lightning strikes'],
-reward: {Gold:'10P-1Q',Princesses:'1G-10Y',Diamonds:'1T-1WWW'},
-exp: '1WWW',
-
-name: 'Panetheon',
-armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic']
-reward: {Gold:'10E-1WWQ',Princesses:'1T-10L',Diamonds:'1T-1Q'},
-exp: '1Q',
-
+Molpy.Opponents = [];
+Molpy.OpponentsById = [];
+Molpy.OpponentN = 0;
 	
 Molpy.Opponent = function(args) {
-	
-	this.attacks: function() {
-		var str = 'A '+this.name+' armed with ';
+	this.id = Molpy.OpponentN++;
+	for(var prop in args) {
+		if(typeof args[prop] !== 'undefined' ) this[prop] = args[prop];
+	}
+	Molpy.Opponents[this.name] = this;
+	Molpy.OpponentsById[this.id] = this;
+
+	// Methods
+	this.attackstxt = function(n) {
+		var str = '' + ((n && n > 1)?Molpify(n):'A') + ' ' + this.name;
+		if (n > 1) str += 's';
+		str += ' armed with ';
 		var weapon = GLRschoice(this.armed);
 		var first = weapon.charAt(0);
 		var rest = weapon.substr(1);
@@ -244,9 +154,16 @@ Molpy.Opponent = function(args) {
 			break;
 		}
 		str += rest;
+		return str;
 	}
 
-	this.takeReward: function() {
+	this.attackval = function() { // [physical,magical]
+		if (this.id < 10) return [Math.floor(Math.pow(42,Math.exp(this.id/2))),0];
+		return [Infinity,Math.floor(Math.pow(42,Math.exp(this.id-10)))];
+	};
+
+	this.takeReward = function(n) {
+		var rwds= [];
 		for (var stuff in this.reward) {
 			var num = 0;
 			var range = this.reward.stuff;
@@ -259,17 +176,130 @@ Molpy.Opponent = function(args) {
 				if (Math.random() < range) num = 1;
 			}
 			if (num) {
+				num *= (n||1);
+				Molpy.rwds.push(stuff + ': ' + Molpify(num,2));
 				if (stuff == 'copper') { stuff = 'Gold'; num/=1000000; }
 				else if (stuff == 'silver') { stuff = 'Gold'; num/=1000; }
 				Molpy.Add(stuff,num);
 			}
 		}
+		if (rwds.length && !Molpy.boostSilence) {
+			Molpy.Notify('After the fight you get ' + rwds.join('+ '),1);
+		}
 	}
 
-	this.experience: function() {
+	this.experience = function() {
 		return DeMolpify(this.exp);		
 	}
-}
+};
+
+// First char of armed: -(no a), !an, + the, @his, else a...
+Molpy.DefineOpponents = function() {
+	new Molpy.Opponent ({
+		name: 'Serf',
+		armed: ['stick', '-bare hands', 'turnip', '-bad words', 'bowl of dish water'],
+		reward: {Copper:'1-10'},
+		exp: 1,
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Peasant',
+		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock'],
+		reward: {Copper:'10-1000'},
+		exp: '1K',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Page',
+		armed: ['dagger', 'staff', 'nice cup of tea', 'stileto', 'buckler', 'spear', 'crossbow', '-puns'],
+		reward: {Silver:'1-100'},
+		exp: '1M',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Squire',
+		armed: ['short sword', 'side sword','bow and arrows','mace','mandolin','polearm','!axe','hammer'],
+		reward: {Silver:'100-10000'},
+		exp: '1G',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Knight',
+		armed: ['long sword', '+arming sword', 'battle axe', 'morning star', 'lance'],
+		reward: {Gold:'10-1000',Diamonds:0.5},
+		exp: '1P',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Baron',
+		armed: ['bastard sword','flaming sword','hailstorm','tax demand'],
+		reward: {Gold:'1K-1M',Diamonds:'1-5'},
+		exp: '1E',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Lord',
+		armed: ['great sword','great axe','Kazoo','court jester'],
+		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'1-50'},
+		exp: '1Z',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Duke',
+		armed: ['+Duchess','horde of servants','-both gardeners','whip'],
+		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50-50K'},
+		exp: '1Y',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Emperor',
+		armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers'],
+		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'50K-60M'},
+		exp: '1U',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Paladin',
+		armed: ['+Dragon slaying sword','Holy hand grenade','lot of bad puns','+Sword of the isles'],
+		reward: {Gold:'100M-1Z',Princesses:'10-10K',Diamonds:'60M-80G'},
+		exp: '1S',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Hero',
+		armed: ['+sword of sharpness','-Eds Axe','+Punsaw','Donut','-both feet','pea shooter','@fist of steel'],
+		reward: {Gold:'1G-1Y',Princesses:'100-10M',Diamonds:'70G-100T'},
+		exp: '1F',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Demi-god',
+		armed: ['pen (mightier than the sword)', 'cleaving axe','pitch fork', 'ballon'],
+		reward: {Gold:'10G-1U',Princesses:'1K-10G',Diamonds:'80T-120P'},
+		exp: '1W',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Superhero',
+		armed: ['-bare hands','turnip','bazooka','+Imperial Dragon Banishing Sword','+Great Cleaver' ],
+		reward: {Gold:'1T-1S',Princesses:'1M-10P',Diamonds:'90P-150E'},
+		exp: '1GW',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'God',
+		armed: ['+staff of might','+staff of comand','-dice','@holy symbol','@lightning strikes'],
+		reward: {Gold:'10P-1F',Princesses:'1G-10Y',Diamonds:'100E-200Z'},
+		exp: '1UW',
+	});
+
+	new Molpy.Opponent ({
+	 	name: 'Panetheon',
+		armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic'],
+		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'120Z-500Y'},
+		exp: '1WW',
+	});
+};
 
 
 /* Ideas
@@ -297,29 +327,39 @@ Molpy.Opponent = function(args) {
  *
  * Princesses are stuff, the more you have the more knights you attract
  * Pyramid of features:
- *
- *
- * 1: 2 legs, 4 legs, Big Teeth, Spines, Tusks
- * 2: Fire, 3 heads, Wings, Fly, Poison
- * 3: Ice, Water, Gas, Magic, 9 heads
- * 4: 
- *
- * Have to use fire/or other breath to reduce a knight to a diamond
- * Peasant, serf, Page, Squire, Knight, Lord, Baron, Duke, Emperor, Paladin, Hero, Demi-god, Super-Hero, God, 		Pantheon
- * 0        0     0     0       1       10    100    1e4   1e8      1e16     1e32  1e64      1e128+i     1e256+16i  Inf +Inf i
- * Exp: 1   10    100   1000    10K     100K  1M     10M   100M     1G       10G   100G      1T          10T            100T
- *
- * Dragling,     DragonNewt,    Wyrm,         Wyvern,       Dragon,         Imperial Dragon  Complex Dragon	Infinite Dragon
- * Legs  4	2		0		2		2		4		4+4i		Inf
- * ARms	 0	2		0		0		2		2		4+4i		Inf
- * Heads 1	1		1		1		1		3		9+9i		Inf
- * Breath 0	0		Fire		Fire|Ice	Fire|Ice|pois	3		18		Inf
- * Fly	  N	N		Y		Y		Y		Y		Y		Y
- * Wings  N	N		Y		Y		Y		Y		Y		Y
- * Princesses
- * 	 0	0		0		0-1		1-10		1-1000		1K-1M		Inf?
- *
+
+TODO
+
+Dragons
+	What						Written	Tested					
+-9	RDKM						Y	y
+-8	NPdata persistence				y	
+-7	Nestlining					y	y
+1	Lay eggs					Y	Y
+2	Feed hatchlings <- Goats, Princesses		Y
+3	Fledge
+4	Locals attack
+5	Automatc Digging (intially slow)
+6	Health effects
+7	Beach Digging
+8	Redundattacks
+9	Opponents 
+	9.1	Abilities
+	9.2	Attack
+	9.3	Rewards
+10	Multiple Maps -> Multiple Nests, Multiple Queens, 
+11	NPdata
+
+Other
+1	Fading (~1k CDSP) cyclic AC boost
+2	Panthers Ignore Einstein
 
 
 
 */
+
+Molpy.ClearNPdata = function() {
+
+};
+
+

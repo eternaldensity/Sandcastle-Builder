@@ -6545,6 +6545,13 @@ Molpy.DefineBoosts = function() {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' goat' + plural(me.Level) + '. Yay!';
 			return str;
 		},
+
+		AddSuper: Molpy.BoostFuncs.Add,
+		Add: function(amount) {
+			this.AddSuper(amount);
+			if (!isFinite(this.Level)) Molpy.UnlockBoost('RDKM');
+		},
+		
 		
 		defStuff: 1
 	});
@@ -7532,8 +7539,8 @@ Molpy.DefineBoosts = function() {
 		
 		Add: function(amount) {
 			if (Molpy.Got('Cress') && Molpy.IsEnabled('Cress')) amount = amount * (Molpy.Boosts['Goats'].power/1000);
-			amount *= Molpy.Papal('Mustard');
-			this.AddSuper(Math.floor(amount));
+			amount = Math.floor(ammount*Molpy.Papal('Mustard'));
+			this.AddSuper(amount);
 			if(!Molpy.Boosts['Mustard Sale'].unlocked && Molpy.Got(this.alias, 2000)) {
 				Molpy.UnlockBoost('Mustard Sale');
 			}
@@ -7626,6 +7633,10 @@ Molpy.DefineBoosts = function() {
 	});
 	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal',
 				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses']; // Always add to the END of this list
+	Molpy.DragonStats = ['offence','defence','digging','breath','magic1','magic2','magic3'];
+	Molpy.DragonProperties = {offence:['Sand','Castles'],defence:['GlassChips','GlassBlocks'],digging:['Blackprints','FluxCrystals'],
+				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicats','QQ'],magic3:['Diamonds','Princesses']};
+				// Gold is intentionally not in this list, if anything is ever added to this list think about the Hatchling data
 
 	new Molpy.Boost({
 		name: 'Dragon Nest',
@@ -7664,6 +7675,20 @@ Molpy.DefineBoosts = function() {
 			4:['Liners', 0, 'array'],
 		},
 		defSave: 1,
+		nestprops: function() {
+			var props=[];
+			for (prop in Molpy.DragonStats) {
+				var pair = Molpy.DragonProperties[Molpy.DragonStats[prop]];
+				var stat1 = 0;
+				var stat2 = 0;
+				for (var line in Liners) {
+					if (pair[0] == Molpy.NestLinings[line]) stat1 = this.Liners[line];
+					if (pair[1] == Molpy.NestLinings[line]) stat2 = this.Liners[line];
+				}
+				props[prop] = stat1*stat2/10000;
+			}
+			return props;
+		}
 	});
 
 	Molpy.Liner = function(thing,change) {
@@ -7675,8 +7700,13 @@ Molpy.DefineBoosts = function() {
 		nest.Liners[thing] = (nest.Liners[thing] || 0) + change;
 		nest.Refresh();
 	}
+	Molpy.EggCost = function() {
+		var eggs = Molpy.Boosts['Eggs'].Level;
+		if (eggs < 6 && Molpy.Level('DQ') < 6) return DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs]);
+		return infinity;
+	}
 
-	new Molpy.Boost({
+	new Molpy.Boost({ 
 		name: 'Dragon Queen',
 		alias: 'DQ',
 		icon: 'dragonqueen',
@@ -7687,11 +7717,13 @@ Molpy.DefineBoosts = function() {
 			var str = 'The queen of the dragons.';
 			if(me.bought) {
 				Molpy.UnlockBoost('RDKM');
-			}
-			str += '<br>Not yet coded you will have to: Wait for it...';
-			return str; // not going to be ready for a while
-			if(me.bought) {
-				str += '<br><input type="Button" onclick="if(Molpy.Spend({Goats:10}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses 10 Goats)';
+			/*
+				str += '<br>Not yet coded you will have to: Wait for it...';
+				return str; // not going to be ready for a while
+			*/
+				var eggcost = Molpy.EggCost();
+				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal:'+ eggcost + '}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
+				str += '<br>Hatchlings will mature into ' + Molpy.DragonTypes[me.Level];
 			}
 			return str;
 		},
@@ -7701,8 +7733,13 @@ Molpy.DefineBoosts = function() {
 			Sand: Infinity,
 			Castles: Infinity,
 			GlassBlocks: Infinity
-		}
+		},
+		experience: 0,
+		defSave: 1,
+		defStuff: 1,
+		saveData: {4:['experience',0,'float']},
 	});
+
 	new Molpy.Boost({
 		name: 'Dragon Eggs',
 		alias: 'Eggs',
@@ -7725,9 +7762,11 @@ Molpy.DefineBoosts = function() {
 		
 		lockFunction: function() {
 			Molpy.Add('Hatchlings', this.Level);
+			Molpy.Notify((this.Level > 1)?'A clutch of '+this.Level+' eggs have hatched':'An egg has hatched',1);
 			this.Level = 0;
 		}
 	});
+
 	new Molpy.Boost({
 		name: 'Dragon Hatchlings',
 		alias: 'Hatchlings',
@@ -7735,20 +7774,110 @@ Molpy.DefineBoosts = function() {
 		group: 'drac',
 		
 		desc: function(me) {
+			if (!me.Level) return 'You don\'t have any hatchlings at the moment';
 			var str = 'You have ' + Molpify(me.Level, 3) + ' hatchlings' + plural(me.Level);
-			return str + '.';
+			if (me.clutches.length > 1) str += ' in ' + this.clutches.length + ' clutches.<p>';
+			str += 'Hatchlings will mature into ' + Molpy.DragonTypes[Molpy.Level('DQ')] + '<br>';
+			for (var cl in clutches) {
+				if (me.clutches.length > 1) {
+					str += 'Clutch ' + (cl+1) + ':<br>';
+				}
+				if (me.age[cl] < 1000) {
+					str += 'Is restless and wants it\'s own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
+						cl+')><input><br>';
+				} else if (me.diet[cl]) {
+					str += 'Is maturing and will be ready to Fledge in ' + (this.age[cl]-1000) + 'mNP.<br>';
+				} else {
+					str += 'Is hungry ';
+					var cls = me.clutches[cl];
+					if (Molpy.Has('Goats',cls*1e6)) str += '<input type=button value="Feed '+Molpify(cls*1e6)+
+						' Goats"> onclick="Molpy.DragonFeed('+cl+',1)"></input><br>';
+					if (Molpy.Has('Princesses',cls*10)) str += '<input type=button value="Feed '+Molpify(cls*10)+
+						' Princesses"> onclick="Molpy.DragonFeed('+cl+',3)"></input><br>';
+				}
+			}
+			return str;
 		},
 		
 		defStuff: 1,
 		defSave: 1,
-		saveData: {4:['data',0,'array']},
+		clutches: [],
+		properties: [],
+		diet: [],
+		age: [],
+		saveData: {4:['clutches',0,'array'],
+			   5:['diet',0,'array'],
+			   6:['age',0,'array'],
+			   7:['properties',0,'array']},
 		
 		Add: function(amount) {
-			if(!this.data) this.data = [];
-			this.data.push(amount);
+			this.clutches.push(amount);
+			this.diet.push(0);
+			this.age.push(3000);
+			this.properties.push(Molpy.Boosts['Nest'].nestprops());
 			this.Level += amount;
+			this.countdown = 3000;
+		},
+
+		countdownFunction: function() {
+			var cleanup = 0;
+			for (var cl in this.clutches) {
+				this.age[cl]--;
+				if (this.age[cl] == 0) {
+					Molpy.Notify('A Clutch of Hatchlings have fledged on their own',1);
+					this.clutches[cl] = 0;
+					cleanup++;
+				} else if (this.age[cl] == 1000) {
+					Molpy.Notify('A Clutch of Hatchlings is ready to Fledge',1);
+				} else if (this.age[cl] == 2500 && this.diet[cl]==0) { //  Ravinous
+					if (this.clutches[cl+1]) {
+						this.clutches[cl+1] = 0;
+						Molpy.DragonFeed(cl,2);
+						cleanup++;
+						cl++;
+						Molpy.Notify('A hungry Clutch of Hatchlings have eaten another clutch',1);
+					} else {
+						this.clutches[cl] = 0;
+						cleanup++;
+						Molpy.Notify('A hungry Clutch of Hatchlings have starved to death',1);
+						Molpy.DragonExperience(-Math.pow(1000,Molpy.DragonLevel));
+					}
+
+				} else if (this.age[cl] == 2900 && this.diet[cl]==0) { //  Not Fed
+					Molpy.Notify('A Clutch of Hatchlings need feeding');
+				}
+			}
+			while (cleanup--) {
+				for (var cl in this.clutches) {
+					if (this.clutches[cl] == 0) {
+						this.clutches.splice(cl,1);
+						this.age.splice(cl,1);
+						this.diet.splice(cl,1);
+						this.properties.splice(cl,Molpy.DragonStats.length);
+						break;
+					}
+				}
+			}
 		}
 	});
+
+	Molpy.DragonFeed = function(clutch,food){
+		var hatch = Molpy.Boosts['Hatchlings'];
+		var cls = hatch.clutches[clutch];
+		switch (food) {
+		case 1:
+			if (Molpy.Spend('Goats',cls*1e6)) hatch.diet[clutch]=1;
+			break;
+		case 2:
+			hatch.diet[clutch]=2; // Other Hatchlings!
+			break;
+		case 3:
+			if (Molpy.Spend('Princesses',cls*10)) hatch.diet[clutch]=3;
+			break;
+		};
+		hatch.Refresh();
+	}
+
 	new Molpy.Boost({
 		name: 'Glass Goat',
 		icon: 'glassgoat',
@@ -8872,7 +9001,7 @@ Molpy.DefineBoosts = function() {
 			};
 			if(Molpy.Has(cost)) {
 				var mult=1;
-				while (me.Level >= 10*mult && 
+				while ((mult==1 || me.Level >= 10*mult) && 
 					Molpy.Has('Vacuum',cost.Vacuum*mult*10) && 
 					Molpy.Has('Blackprints',cost.Blackprints*mult*10)) mult *=10;
 				cost.Vacuum *= mult;
@@ -8918,6 +9047,7 @@ Molpy.DefineBoosts = function() {
 			Blackprints: (Math.floor(n * 1000 * Math.pow(1.01, Molpy.Level('Vacuum') / 100))) *num
 		};
 		if(num < 0) {
+			if (n < 2) return;
 			cost = {QQ: 1000 * n};
 		}
 		if(Molpy.Spend(cost)) {
@@ -9269,7 +9399,7 @@ Molpy.DefineBoosts = function() {
 				str+='<br>Has '+Molpify(uses) + ' use'+plural(uses)+' left this NewPix';
 			}
 			if(me.bought)
-				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
 		},
 		
@@ -9435,7 +9565,7 @@ Molpy.DefineBoosts = function() {
 		stats: 'Get more Goats from the Ninja Ritual',
 		price: {
 			Goats:'1S',
-			Vacuum:'6.666E',
+			Vacuum:'3.333E',
 		},
 	});
 	new Molpy.Boost({
@@ -9469,44 +9599,51 @@ Molpy.DefineBoosts = function() {
 		name: 'Raptorish Dragon Keeping Manual',
 		alias: 'RDKM',
 		group: 'drac',
-		icon: 'rdkm'
+		icon: 'rdkm',
 		desc: function (me) {
-			var str = 'This has lots of useful information that will change as you do things.';
+			var str = 'This has lots of useful information that will change as you do things...';
 			if (!me.bought) return str;
-			str += '<br><ol>';
-			if (!Molpy.level('Eggs')) {
+			str += '<br><ul class=rdkm>';
+			if (!Molpy.Level('Eggs')) {
 				str += '<li>Line the nest before you start laying eggs';
 				str += '<li>Linings of Sand and Castles give offence';
 				str += '<li>Linings of Glass Chips and Blocks give defence';
 				str += '<li>Linings of Blackprints and Flux Crystals give digging';
-				if (Molpy.Has('Goats',infinity) || Molpy.Has('Mustard',infinity)) {
+				if (Molpy.Has('Goats',Infinity) && Molpy.Has('Mustard',Infinity)) {
 					str += '<li>Linings of Goats and Mustard give breath effects.';
 					if (Moply.Dragons.Level <= Molpy.Dragon['Wyrm'].Level) str += '  When you have the rght types of dragons.';
 					}
-				if (Molpy.Has('Bonemeal',infinity) || Molpy.Has('Vacuums',infinity)) str += '<li>Linings of Bonemeal and Vacuums give magic';
-				if (Molpy.Has('Logicats',infinity) || Molpy.Has('QQ',infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
-				if (Molpy.Has('Diamonds',infinity) || Molpy.Has('Gold',infinity)) str += '<li>Linings of Diamonds and Gold give better magic';
+				if (Molpy.Has('Bonemeal',Infinity) && Molpy.Has('Vacuums',Infinity)) str += '<li>Linings of Bonemeal and Vacuums give magic';
+				if (Molpy.Has('Logicats',Infinity) && Molpy.Has('QQ',Infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
+				if (Molpy.Has('Diamonds',Infinity) && Molpy.Has('Princesses',Infinity)) str += '<li>Linings of Diamonds and Princesses give better magic';
+				if (Molpy.Has('Gold',Infinity)) str += '<li>Linings of Gold have no effect';
 			};
-			if (Molpy.level('Eggs')) {
+			if (Molpy.Level('Eggs')) {
 				str += '<li>You need to wait for the eggs to hatch';
 			}
-			if (Molpy.level('Hatchlings')) {
-				str += '<li>When the eggs hatch, the Hatchlings will mature for many mnp.
-				str += '<li>You will be notified when the Hatchlings are getting restless and want their own teritories
-				str += '<li>To give a clutch of dragons their own teritory. Go to a NP without any Dragons, a low positive number is recommended for early clutches';
+			if (Molpy.Level('Hatchlings')) {
+				str += '<li>When the eggs hatch, the Hatchlings will mature for many mnp.';
+				str += '<li>Hatchlings need feeding, the better the food, the better the Dragon.';
+				str += '<li>You will be notified when the Hatchlings are getting restless and want to fledge to their own teritories';
+				str += '<li>To give a clutch of Hatchlings their own teritory. Go to a NP without any Dragons, a low positive number is recommended for early clutches';
+				str += '<li>If you fail to give them their own territory after a while they will escape to another plane';
 				str += '<li>If there are too many hatchlings for the NP the strongest will eat the rest';
-				str += '<li>Once released they have to survive the locals and then can start digging for treasure';
-			);
-			if (Molpy.level('DragonNewts')) {
-				str += '<li>DragonNewts are Dragon whanabees, high on spirit, low on abailities.';
-			}
-			if (Molpy.level('Wyrm')) {
-				str += '<li>Wyrms are the first real dragons, but they can\'t fly or breeth on knights';
-			}
+				str += '<li>Once released they have to survive the locals and they can then can start digging for treasure';
+			};
+			if (Molpy.Level('Dragonlings')) {
+				str += '<li>Dragonlings are feeble creatures, they need looking after';
+			};
+			if (Molpy.Level('DragonNewts')) {
+				str += '<li>DragonNewts are Dragon whanabees, high on spirits, low on abilities but not entirely useless.';
+			};
+			if (Molpy.Level('Wyrm')) {
+				str += '<li>Wyrms are the first real dragons, lacking arms or magic they can\'t dig';
+			};
 
-			return str + '</ol>';
+			return str + '</ul>';
 		},
-		price: { Goats:infinity },
+		price: { Goats:Infinity },
+	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }

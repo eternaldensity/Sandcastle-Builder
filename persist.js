@@ -91,7 +91,7 @@
 		localStorage['Boosts'] = Molpy.BoostsToString();
 		localStorage['Badges'] = Molpy.BadgesToString();
 		localStorage['OtherBadges'] = Molpy.OtherBadgesToString();
-		localStorage['NPdata'] = Molpy.NPDataToString();
+		localStorage['NPdata'] = Molpy.NPdataToString();
 		return 1;
 	}
 
@@ -166,7 +166,7 @@
 		Molpy.BoostsFromString(localStorage['Boosts'], version);
 		Molpy.BadgesFromString(localStorage['Badges'], version);
 		Molpy.OtherBadgesFromString(localStorage['OtherBadges'], version);
-		Molpy.NPDataFromString(localStorage['NPdata'], version);
+		Molpy.NPdataFromString(localStorage['NPdata'], version);
 		return Molpy.PostLoadTasks(version);
 	}
 
@@ -401,8 +401,8 @@
 		var lowest = 0;
 		var highest = 0;
 		// See what range to save if any
-		for (var np = -Math.abs(Molpy.highestNPvisited); np <=(Math.abs(Molpy.highestNPvisited); np++) {
-			if (Molpy.NPdata[np].DragonType) {
+		for (var np = -Math.abs(Molpy.highestNPvisited); np <=Math.abs(Molpy.highestNPvisited); np++) {
+			if (Molpy.NPdata && Molpy.NPdata[np].DragonType) {
 				if (!lowest) lowest = np;
 				highest = np;
 			}
@@ -453,7 +453,7 @@
 		thread += Molpy.OtherBadgesToString() + p;
 
 		thread = '';
-		thread += Molpy.NPDataToString() + p;
+		thread += Molpy.NPdataToString() + p;
 
 		threads.push(thread);
 		return threads;
@@ -743,8 +743,9 @@
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		Molpy.ClearNPdata();
+		if (!thread) return;
 		var pixels = thread.split(s);
-		return if (!pixels[0]);
+		if (!pixels[0]) return;
 		var lowest = parseFloat(pixels.shift());
 		var highest = parseFloat(pixels.shift());
 		for (np = lowest; np<=highest; np++) {
@@ -808,7 +809,7 @@
 		Molpy.BadgesFromString(thread[8] || '', version);
 		//thread[9] is unused
 		Molpy.OtherBadgesFromString(thread[10] || '', version);
-		Molpy.NPDataFromString(thread[11] || '', version);
+		Molpy.NPdataFromString(thread[11] || '', version);
 		return Molpy.PostLoadTasks(version);
 	}
 	Molpy.PreLoadTasks = function(version) {

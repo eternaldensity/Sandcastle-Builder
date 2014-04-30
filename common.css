@@ -634,3 +634,12 @@ body.lightscheme .decimaltext {
 	padding:0;
 	font-size:80%;
 }
+.rdkm ul {
+	padding:0;
+	margin-left:0;
+}
+.rdkm li {
+	list-style:disc;
+	list-style-position:outside;
+	margin-left:-25px;
+}
