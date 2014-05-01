@@ -217,6 +217,9 @@
 					<div id="toggleNinjaStats" class="minifloatbox" >
 						<a onclick="Molpy.ToggleView('NinjaStats')">Ninja Stats</a>
 					</div>
+					<div id="toggleDragonStats" class="minifloatbox" >
+						<a onclick="Molpy.ToggleView('DragonStats')">Dragon Stats</a>
+					</div>
 					<div id="toggleOtherStats" class="minifloatbox" >
 						<a onclick="Molpy.ToggleView('OtherStats')">Other Stats</a>
 					</div>
@@ -265,6 +268,17 @@
 					<div>NewPixBot delay: <span id="ninjatimestat"></span></div>
 					<div>Ninja Stealth Streak: <span id="ninjastealthstat"></span></div>
 					<div>Ninja Forgiveness Available: <span id="ninjaforgivestat"></span></div><br>
+				</div>
+			</div>
+		</div>
+		<div id="sectionDragonStats" class="hidden draggable-element table-wrapper">
+			<div class="table-header">Dragon Stats:</div>
+			<div id="sectionDragonStatsBody" class="table-content resizable-element">
+				<div class="table-content-wrapper">
+					<div>Dragon Type: <span id="dragontypestat"></span></div>
+					<div>Dragon Numbers: <span id="dragonnumbersstat"></span></div><br>
+					<div>NPs with Dragons: <span id="npswithdragonsstat"></span></div>
+					<div>Dragon Digging Rate: <span id="dragondiggingstat"></span></div><br>
 				</div>
 			</div>
 		</div>
@@ -460,6 +474,14 @@
 		</div>
 		<div id="sectionClock" class="hidden draggable-element">
 			<div id="clockface">					
+			</div>
+		</div>	
+		<div id="sectionDragonsNP" class="hidden draggable-element">
+			<div id="DragonsNP">					
+			</div>
+		</div>	
+		<div id="sectionDragonOverview" class="hidden draggable-element">
+			<div id="dragonoverview">					
 			</div>
 		</div>	
 	</div>

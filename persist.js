@@ -617,6 +617,7 @@
 						me[saveData[num][0]] = parseFloat(savedValueList[savednum++]) || saveData[num][1];
 					else if(saveData[num][2] == 'array') { // Arrays store length + data(always float)
 						var ting = saveData[num][0];
+						me[ting] = [];
 						var siz = parseInt(savedValueList[savednum++]) || saveData[num][1] || 0; // 1st value is length
 						for (idx = 0; idx < siz; idx++) {
 							me[ting][idx] = parseFloat(savedValueList[savednum++]) || 0;

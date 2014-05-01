@@ -26,17 +26,47 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5 - Here Be Dragons
+
 #### Waveney
 - Caged logicat single puzzle buy will reapear if no multi buy button shown
+- New option to give the minimum number of decimal digits displayed
+- Many bug fixes
 - Lots of behind the sceens dragon stuff
 
+- !!! HERE BE DRAGONS !!!
+
+- The Dragon Queen can lay eggs in lined nests, eggs can hatch, need feeding then they fledge
+	Y						Y		y		y
+- Fledglings need to survive the locals when they are released
+	n
+- Dragons can then dig for stuff (you might be able to help by clicking on the beach)
+	n				n
+- They might find Diamonds...  (And other stuff)
+	n			n
+- You can upgrade dragons a few levels, but not yet all the way
+	n
+- Redundakitties can be nasty dragon hating oponents - you can choose to hide (no digging) or fight
+	n
+- Win or lose a fight you gain experience.  Lose and you may lose dragons.  Win and there will be rewards.
+	n						n				n
+- Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Glass Chips and Blocks
+	y
+- Many new Dragon related Boosts
+	p
+- New Pane for the state of the Dragons in the current NP
+	n
+- Dragon Stats
+	n
+- Dragon Overview Pane
+	n
 
 ### 3.4211
 
 #### Waveney
 - A couple of CDSP bugs caused by a global edit that was shouldn't have been
 
-### 3.421
+### 3.421 - Wrong order for a Lift off
 
 #### Waveney
 - CMNT price reduction (should only take a couple of days to afford now)

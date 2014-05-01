@@ -43,7 +43,7 @@ Molpy.Dragon = function(args) {
 
 Molpy.DefineDragons = function() {
 
-	new Molpy.Character({
+	new Molpy.Dragon({
 		name: 'Dragling',
 		legs: 4,
 		wings: 0,
@@ -51,7 +51,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 	});
-	new Molpy.Character({
+	new Molpy.Dragon({
 		name: 'DragonNewt',
 		legs: 2,
 		wings: 0,
@@ -59,7 +59,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 2,
 	});
-	new Molpy.Character({
+	new Molpy.Dragon({
 		name: 'Wyrm',
 		legs: 0,
 		wings: 2,
@@ -67,7 +67,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 	});
-	new Molpy.Character({
+	new Molpy.Dragon({
 		name: 'Wyvern',
 		legs: 2,
 		wings: 2,
@@ -75,7 +75,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 	});
-	new Molpy.Character({
+	new Molpy.Dragon({
 		name: 'Dragon',
 		legs: 2,
 		wings: 2,
@@ -84,7 +84,7 @@ Molpy.DefineDragons = function() {
 		arms: 2,
 		breath: ['fire'],
 	});
-	new Molpy.Character({
+	new Molpy.Dragon({
 		name: 'Noble Dragon',
 		legs: 2,
 		wings: 2,
@@ -94,7 +94,7 @@ Molpy.DefineDragons = function() {
 		breath: ['fire'],
 		magic: 1
 	});
-	new Molpy.Character({
+	new Molpy.Dragon({
 		name: 'Imperial Dragon',
 		legs: 4,
 		wings: 2,
@@ -104,7 +104,7 @@ Molpy.DefineDragons = function() {
 		breath: ['fire','ice','poison'],
 		magic: 2
 	});
-	new Molpy.Character({
+	new Molpy.Dragon({
 		name: 'NogarDragoN',
 		legs: 66,
 		wings: 66,
@@ -116,6 +116,8 @@ Molpy.DefineDragons = function() {
 	});
 
 };
+
+
 
 Molpy.Opponents = [];
 Molpy.OpponentsById = [];
@@ -336,8 +338,8 @@ Dragons
 -8	NPdata persistence				y	
 -7	Nestlining					y	y
 1	Lay eggs					Y	Y
-2	Feed hatchlings <- Goats, Princesses		Y
-3	Fledge
+2	Feed hatchlings <- Goats, Princesses		Y	y
+3	Fledge						y	y
 4	Locals attack
 5	Automatc Digging (intially slow)
 6	Health effects
@@ -349,6 +351,40 @@ Dragons
 	9.3	Rewards
 10	Multiple Maps -> Multiple Nests, Multiple Queens, 
 11	NPdata
+12	Dragon Pane (Whats here)
+12.1	For classic
+13	Dragon Stats
+13.1	For Classic
+14	Dragon Overview Pane
+14.1	For classic
+
+UNlocks DragonNewts 1 Diamond
+	Wyrm 1K Diamonds, + exp
+	Wyvern 1M Diamonds, +exp, + event
+	Dragon 1T Diamonds, +exp, + event
+	Noble D 1Y Diamonds, X Princesses, +exp, + event
+	Imperial Infinite Diamonds, Y Princesses, +exp, + event
+	NogarDragon Infinite Diamonds, Infinite Princesses, +exp, + event
+
+Dig Finds (Other than Diamonds)
+* Big Teeth
+* Spines
+* Tusks
+* Adamintine armour in bits
+* Mouthwash (to reduce bad breath backfires)
+* Coal (for fires)
+* Magic Rings
+* Magic Books
+* Magic Teeth
+* Backet and spade (better digging)
+* Bad dreams!
+* Luck Rings
+* Gold/Silver/Copper
+* Ooo Shinny!
+* Healing Potion
+* Strength Potion
+*
+
 
 Other
 1	Fading (~1k CDSP) cyclic AC boost
@@ -358,8 +394,72 @@ Other
 
 */
 
-Molpy.ClearNPdata = function() {
+Molpy.NPdata = [];
 
+Molpy.ClearNPdata = function() {
+	MolpyNPdata = [];
 };
 
+Molpy.MaxDragons = function() {
+	if (Molpy.newpixnumber < 0) return Molpy.newpixnumber;
+	return 1+Math.floor(Molpy.newpixnumber/100);
+} 
 
+Molpy.DragonFledge = function(clutch) {
+	var npd = Molpy.NPdata[Molpy.newpixnumber];
+	var dq = Molpy.Boosts['DQ'];
+	var hatch = Molpy.Boosts['Hatchlings'];
+	var lim = Molpy.MaxDragons();
+	var waste = 0;
+	var oldDT = 0;
+	var oldDN = 0;
+	var fight = 1;
+
+	if (npd && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.ammount)))	{ // Replace
+		oldDT = npd.DragonType;
+		oldDN = npd.ammount;
+		fight = 0;
+	}
+	npd.DragonType = dq.Level;
+	npd.ammount = hatch.clutches[clutch];
+	if (npd.ammount > lim) {
+		waste = Math.max(npd.ammount - lim,0);
+		npd.ammount = lim;
+	}
+	npd.defence, npd.attack, npd.dig, npd.breath, npd.magic1, npd.magic2, npd.magic3 = 
+		hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
+	npd.countdown = 0;
+	npd.state = 'healthy';
+	switch (hatch.diet[clutch]) {
+	case 1: // Goats
+		npd.breath/=2;
+		npd.magic1 = npd.magic2 = npd.magic3 = 0;
+		break;
+	case 2: // Hatchlings!
+		npd.magic1 /=2; 
+		npd.magic2 = npd.magic3 = 0;
+		break;
+	case 3: // Princesses
+		break;
+	}
+
+	Molpy.Notify(Molpify(npd.ammount) + ' ' + Molpy.DragonTypes[npd.DragonType] + ' have fledged at NP'+Molpy.newpixnumber,1);
+	if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonTypes[oldDT]);
+	if (waste) Molpy.Notify('There was not enough space for '+Molpfy(waste)+' of them');
+	hatch.clutches[clutch] = 0;
+	hatch.clean(1);
+
+	if (fight) Molpy.LocalsAttack();
+}
+
+Molpy.LocalsAttack = function() {
+	// Select locals
+	// Work out their attack and defense values
+	// fight a round
+	// if clear result (Dragon || Opponents) Killed
+	// There may be injuries to the dragon needing time to heal
+	// give rewards and experience
+	// Notify
+	
+
+}

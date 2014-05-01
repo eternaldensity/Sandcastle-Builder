@@ -210,6 +210,18 @@ new Molpy.Option({
 });
 
 new Molpy.Option({
+	name: 'mindecimal',
+	title: 'Minimum Decimal Digits',		
+	range: 5,
+	onchange: function() {
+		Molpy.allNeedRepaint = 1;
+		Molpy.UpdateFaves();
+	},
+	text: function() { return Molpy.options.mindecimal },
+
+});
+
+new Molpy.Option({
 	name: 'smalldecimal',
 	title: 'Decimal Settings',		
 	text: ['Normal','Small','Shaded','Italic','Red','Lime','Orange','Mauve','Teal','Blue'],
