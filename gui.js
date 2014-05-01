@@ -1319,6 +1319,15 @@ Molpy.DefineGUI = function() {
 		g('period').innerHTML = Molpy.TimePeriod;
 		$('.timeflip').toggleClass('flip-horizontal', (Molpy.previewNP ? Molpy.previewNP < 0 : Molpy.newpixNumber < 0));
 		g('version').innerHTML = '<br>Version: ' + Molpy.version  + (Molpy.versionName?'<br>'+Molpy.versionName:'');
+		var npd = Molpy.NPdata[Molpy.newpixNumber];
+		if (npd && npd.ammount) {
+			var str = Molpify(npd.ammount) + ' ' + Molpy.DragonsById[Molpy.Level('DQ')].name + (npd.ammount > 1?'s':'') + '<br>';
+			str += ['Digging','Recovering','Hiding'][npd.state];
+			if (npd.state > 0) str += ' for ' + MolpifyCountdown(npd.countdown, 1);
+			g('DragonsNP').innerHTML = str;
+		} else {
+			g('DragonsNP').innerHTML = 'No Dragons here';
+		}
 
 		if(!noLayout) {
 			g('stuffSandCount').innerHTML = 'Sand: ' + Molpify(Molpy.Boosts['Sand'].power, 3);
@@ -1447,6 +1456,11 @@ Molpy.DefineGUI = function() {
 		g('ninjaforgivestat').innerHTML = Molpify(Molpy.Boosts['Ninja Hope'].power * Molpy.Got('Ninja Hope')
 			+ Molpy.Boosts['Ninja Penance'].power * Molpy.Got('Ninja Penance') + Molpy.Boosts['Impervious Ninja'].power
 			* Molpy.Got('Impervious Ninja'));
+
+		g('dragontypestat').innerHTML = Molpy.DragonsById[Molpy.Level('DQ')].name;
+		g('dragonnumbersstat').innerHTML = Molpify(Molpy.TotalDragons, 1);
+		g('npswithdragonsstat').innerHTML = Molpify(Molpy.TotalNPsWithDragons, 1);
+		g('dragondiggingstat').innerHTML = Molpify(Molpy.DragonDigRate, 1);
 
 		g('loadcountstat').innerHTML = Molpify(Molpy.loadCount, 1);
 		g('savecountstat').innerHTML = Molpify(Molpy.saveCount, 1);
@@ -1974,18 +1988,22 @@ Molpy.DefineGUI = function() {
 		Molpy.boxVisOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Shop', 'Inventory', 'SandTools',
 				'CastleTools', 'Options', 'Stats', 'Log', 'Export', 'About', 'SandCounts', 'NPInfo', 'Layouts',
 				'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout', 'TFCounts',
-				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
+				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation',
+				'DragonStats','DragonsNP','DragonOverview'];
 		Molpy.draggableOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Options', 'Stats', 'Log',
 				'Export', 'SandCounts', 'TFCounts', 'NPInfo', 'About', 'SandTools', 'CastleTools', 'Shop', 'Inventory',
 				'Layouts', 'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout',
-				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
+				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation',
+				'DragonStats','DragonsNP','DragonOverview'];
 		Molpy.sizableOrder = ['View', 'File', 'Links', 'Options', 'Stats', 'Log', 'Export', 'SandTools', 'CastleTools',
 				'Shop', 'Inventory', 'Layouts', 'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats',
-				'OtherStats', 'QuickLayout', 'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
+				'OtherStats', 'QuickLayout', 'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation',
+				'DragonStats','DragonsNP','DragonOverview'];
 		Molpy.borderColorOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Shop', 'Inventory', 'SandTools',
 				'CastleTools', 'Options', 'Stats', 'Log', 'Export', 'About', 'SandCounts', 'NPInfo', 'Layouts',
 				'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout', 'TFCounts',
-				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
+				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation',
+				'DragonStats','DragonsNP','DragonOverview'];
 		$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);
 		$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 		Molpy.activeLayout = new Molpy.Layout({

@@ -24,8 +24,6 @@ Molpy.Constants = { // Rank 0:simple, 1:harder, 2:10+, 3:complex
 }
 */
 
-Molpy.Dragons = []
-Molpy.DragonTypes = [];
 Molpy.DragonsById = [];
 Molpy.DragonN = 0;
 	
@@ -33,10 +31,9 @@ Molpy.Dragon = function(args) {
 	this.id = Molpy.DragonN++;
 	for(var prop in args) {
 		if(typeof args[prop] !== 'undefined' ) this[prop] = args[prop];
-	}
-	Molpy.Dragons[this.name] = this;
+	};
+	var name = this.name;
 	Molpy.DragonsById[this.id] = this;
-	Molpy.DragonTypes[this.id] = this.name + 's';
 
 	// Methods here if any
 }
@@ -50,6 +47,11 @@ Molpy.DefineDragons = function() {
 		fly: 0,
 		heads: 1,
 		arms: 0,
+		upgrade: {Diamonds:1},
+		exp: 100,
+		condition: function() { return true },
+		desc: 'These small timid creatures hide in the shadows and under leaves keeping out of the way of fierce cats',
+		digbase: 0.01,
 	});
 	new Molpy.Dragon({
 		name: 'DragonNewt',
@@ -58,6 +60,11 @@ Molpy.DefineDragons = function() {
 		fly: 0,
 		heads: 1,
 		arms: 2,
+		upgrade: {Diamonds:100},
+		exp: '1M',
+		condition: function() { return false },
+		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
+		digbase: 1,
 	});
 	new Molpy.Dragon({
 		name: 'Wyrm',
@@ -66,6 +73,11 @@ Molpy.DefineDragons = function() {
 		fly: 1,
 		heads: 1,
 		arms: 0,
+		upgrade: {Diamonds:'10K'},
+		exp: '1T',
+		condition: function() { return false },
+		desc: 'These are monstorous, limbless creatures, with a big bite.',
+		digbase: 100,
 	});
 	new Molpy.Dragon({
 		name: 'Wyvern',
@@ -74,6 +86,11 @@ Molpy.DefineDragons = function() {
 		fly: 1,
 		heads: 1,
 		arms: 0,
+		upgrade: {Diamonds:'1G'},
+		exp: '1T',
+		condition: function() { return false },
+		desc: 'These can fly.  They fight and dig with their legs, some have a bad breath.',
+		digbase: 10000,
 	});
 	new Molpy.Dragon({
 		name: 'Dragon',
@@ -83,6 +100,11 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 2,
 		breath: ['fire'],
+		upgrade: {Diamonds:'1T',Princesses:1},
+		exp: '1T',
+		condition: function() { return false },
+		desc: 'Tradional Welsh Dragon',
+		digbase: 1000000,
 	});
 	new Molpy.Dragon({
 		name: 'Noble Dragon',
@@ -92,7 +114,12 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 2,
 		breath: ['fire'],
-		magic: 1
+		magic: 1,
+		upgrade: {Diamonds:'1T',Princesses:1},
+		exp: '1T',
+		condition: function() { return false },
+		desc: 'Very large magical dragon',
+		digbase: 100000000,
 	});
 	new Molpy.Dragon({
 		name: 'Imperial Dragon',
@@ -102,7 +129,12 @@ Molpy.DefineDragons = function() {
 		heads: 3,
 		arms: 6,
 		breath: ['fire','ice','poison'],
-		magic: 2
+		magic: 2,
+		upgrade: {Diamonds:'1T',Princesses:1},
+		exp: '1T',
+		condition: function() { return false },
+		desc: 'These are the makers of ledgends, attacking with many heads in many ways, mortals don\'t want to be in the ssame universe as this.',
+		digbase: 10000000000,
 	});
 	new Molpy.Dragon({
 		name: 'NogarDragoN',
@@ -112,11 +144,15 @@ Molpy.DefineDragons = function() {
 		heads: 9,
 		arms: 66,
 		breath: ['fire','ice','poison'],
-		magic: 3
+		magic: 3,
+		upgrade: {Diamonds:'1T',Princesses:1},
+		exp: '1T',
+		condition: function() { return false },
+		desc: '!', // later
+		digbase: 1000000000000,
 	});
 
 };
-
 
 
 Molpy.Opponents = [];
@@ -303,6 +339,151 @@ Molpy.DefineOpponents = function() {
 	});
 };
 
+// NPdata **********************************************************
+
+Molpy.NPdata = [];
+
+Molpy.ClearNPdata = function() {
+	MolpyNPdata = [];
+};
+
+// Digging *********************************************************
+
+Molpy.DragonDigRecalcNeeded = 1;
+Molpy.DragonDigRate = 0;
+Molpy.DigValue = 0;
+Molpy.TotalDragons = 0;
+Molpy.TotalNPsWithDragons = 0;
+
+Molpy.DragonDigRecalc = function() {
+	Molpy.DragonDigRecalcNeeded = 0;
+	var td = 0;
+	var nps = 0;
+	var drags = 0;
+	for (var dpx in Molpy.NPdata) {
+		dnp = Molpy.NPdata[dpx];
+		if (dnp.ammount) {
+			if (dnp.state == 0) td += dnp.ammount*dnp.dig*Molpy.DragonsById[Molpy.Level('DQ')].digbase;
+			nps++;
+			drags += dnp.amount;
+		}
+	}
+	if (Molpy.Got('Bucket and Spade')) td *=2;
+	if (Molpy.Got('Strength Potion')) td *=5;
+	if (Molpy.Got('Lucky Ring')) td *=5;
+	Molpy.DragonDigRate = td;
+	Molpy.TotalDragons = drags;
+	Molpy.TotalNPsWithDragons = nps;
+}
+
+Molpy.DragonDigging = function() {
+	if (Molpy.DragonDigRecalcNeeded) Molpy.DragonDigRecalc();
+	Molpy.DigValue += Molpy.DragonDigRate*Math.random();
+	if (Molpy.DigValue < 1) return;
+	var finds = Math.floor(Molpy.DigValue);
+	Molpy.DigValue -= finds;
+	// Find coins
+	
+	// Find Diamonds
+	
+	// Find Things
+	
+}
+
+// Fledging ********************************************************
+
+Molpy.MaxDragons = function() {
+	if (Molpy.newpixNumber < 0) return Molpy.newpixNumber;
+	return 1+Math.floor(Molpy.newpixNumber/100);
+} 
+
+Molpy.DragonFledge = function(clutch) {
+	var npd = Molpy.NPdata[Molpy.newpixNumber];
+	var dq = Molpy.Boosts['DQ'];
+	var hatch = Molpy.Boosts['Hatchlings'];
+	var lim = Molpy.MaxDragons();
+	var waste = 0;
+	var oldDT = 0;
+	var oldDN = 0;
+	var fight = 1;
+	if (!npd) npd = Molpy.NPdata[Molpy.newpixNumber] = {};
+
+	if (npd && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.ammount)))	{ // Replace
+		oldDT = npd.DragonType;
+		oldDN = npd.ammount;
+		fight = 0;
+	}
+	npd.DragonType = dq.Level;
+	npd.ammount = hatch.clutches[clutch];
+	if (npd.ammount > lim) {
+		waste = Math.max(npd.ammount - lim,0);
+		npd.ammount = lim;
+	}
+	npd.defence, npd.attack, npd.dig, npd.breath, npd.magic1, npd.magic2, npd.magic3 = 
+		hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
+	npd.countdown = 0;
+	npd.state = 0;
+	switch (hatch.diet[clutch]) {
+	case 1: // Goats
+		npd.breath/=2;
+		npd.magic1 = npd.magic2 = npd.magic3 = 0;
+		break;
+	case 2: // Hatchlings!
+		npd.magic1 /=2; 
+		npd.magic2 = npd.magic3 = 0;
+		break;
+	case 3: // Princesses
+		break;
+	}
+
+	Molpy.Notify(Molpify(npd.ammount) + ' ' + Molpy.DragonsById[npd.DragonType].name + ' have fledged at NP'+Molpy.newpixNumber,1);
+	if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name);
+	if (waste) Molpy.Notify('There was not enough space for '+Molpfy(waste)+' of them');
+	hatch.clutches[clutch] = 0;
+	hatch.clean(1);
+	Molpy.DragonDigRecalcNeeded = 1;
+
+	if (fight) Molpy.LocalsAttack();
+}
+
+Molpy.LocalsAttack = function() {
+	// Select locals
+	// Work out their attack and defense values
+	// fight a round
+	// if clear result (Dragon || Opponents) Killed
+	// There may be injuries to the dragon needing time to heal
+	// give rewards and experience
+	// Notify
+	
+
+}
+
+// Type 0: to display, 1: action, 2: cost text
+Molpy.DragonUpgrade = function(type) {
+	var dq=Molpy.Boosts['DQ'];
+	switch (type) {
+	case 0:
+		return (dq.experience >= Molpy.DragonsById[dq.Level].exp && Molpy.DragonsById[dq.Level].condition());
+	case 1:
+		if (dq.experience >= Molpy.DragonsById[dq.Level].exp && Molpy.DragonsById[dq.Level].condition()) {
+			if (Molpy.Spend(Molpy.DragonsById[dq.Level].upgrade)) {
+				dq.Level++;
+				Molpy.Boosts['DQ'].Refresh();
+				Molpy.Notify('Hatchlings now mature into '+ Molpy.DragonsById[dq.Level].name,1) + 's';
+			} else {
+				Molpy.Notify('You can\'t afford the upgrade yet');
+			}
+		} else {
+			Molpy.Notify('You can\'t upgrade yet');
+		}
+
+
+	case 2:
+		return Molpy.createPriceHTML(Molpy.DragonsById[dq.Level].upgrade);
+	}
+}
+
+
 
 /* Ideas
  *
@@ -341,7 +522,7 @@ Dragons
 2	Feed hatchlings <- Goats, Princesses		Y	y
 3	Fledge						y	y
 4	Locals attack
-5	Automatc Digging (intially slow)
+5	Automatc Digging (intially slow)		1
 6	Health effects
 7	Beach Digging
 8	Redundattacks
@@ -357,8 +538,10 @@ Dragons
 13.1	For Classic
 14	Dragon Overview Pane
 14.1	For classic
+15	Dragon Upgrades					y	y
 
-UNlocks DragonNewts 1 Diamond
+
+UNlocks DragonNewts 1 Diamond, + exp
 	Wyrm 1K Diamonds, + exp
 	Wyvern 1M Diamonds, +exp, + event
 	Dragon 1T Diamonds, +exp, + event
@@ -366,7 +549,7 @@ UNlocks DragonNewts 1 Diamond
 	Imperial Infinite Diamonds, Y Princesses, +exp, + event
 	NogarDragon Infinite Diamonds, Infinite Princesses, +exp, + event
 
-Dig Finds (Other than Diamonds)
+Dig Finds (Other than Diamonds & Gold)
 * Big Teeth
 * Spines
 * Tusks
@@ -379,11 +562,9 @@ Dig Finds (Other than Diamonds)
 * Backet and spade (better digging)
 * Bad dreams!
 * Luck Rings
-* Gold/Silver/Copper
 * Ooo Shinny!
 * Healing Potion
 * Strength Potion
-*
 
 
 Other
@@ -394,72 +575,3 @@ Other
 
 */
 
-Molpy.NPdata = [];
-
-Molpy.ClearNPdata = function() {
-	MolpyNPdata = [];
-};
-
-Molpy.MaxDragons = function() {
-	if (Molpy.newpixnumber < 0) return Molpy.newpixnumber;
-	return 1+Math.floor(Molpy.newpixnumber/100);
-} 
-
-Molpy.DragonFledge = function(clutch) {
-	var npd = Molpy.NPdata[Molpy.newpixnumber];
-	var dq = Molpy.Boosts['DQ'];
-	var hatch = Molpy.Boosts['Hatchlings'];
-	var lim = Molpy.MaxDragons();
-	var waste = 0;
-	var oldDT = 0;
-	var oldDN = 0;
-	var fight = 1;
-
-	if (npd && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.ammount)))	{ // Replace
-		oldDT = npd.DragonType;
-		oldDN = npd.ammount;
-		fight = 0;
-	}
-	npd.DragonType = dq.Level;
-	npd.ammount = hatch.clutches[clutch];
-	if (npd.ammount > lim) {
-		waste = Math.max(npd.ammount - lim,0);
-		npd.ammount = lim;
-	}
-	npd.defence, npd.attack, npd.dig, npd.breath, npd.magic1, npd.magic2, npd.magic3 = 
-		hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
-	npd.countdown = 0;
-	npd.state = 'healthy';
-	switch (hatch.diet[clutch]) {
-	case 1: // Goats
-		npd.breath/=2;
-		npd.magic1 = npd.magic2 = npd.magic3 = 0;
-		break;
-	case 2: // Hatchlings!
-		npd.magic1 /=2; 
-		npd.magic2 = npd.magic3 = 0;
-		break;
-	case 3: // Princesses
-		break;
-	}
-
-	Molpy.Notify(Molpify(npd.ammount) + ' ' + Molpy.DragonTypes[npd.DragonType] + ' have fledged at NP'+Molpy.newpixnumber,1);
-	if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonTypes[oldDT]);
-	if (waste) Molpy.Notify('There was not enough space for '+Molpfy(waste)+' of them');
-	hatch.clutches[clutch] = 0;
-	hatch.clean(1);
-
-	if (fight) Molpy.LocalsAttack();
-}
-
-Molpy.LocalsAttack = function() {
-	// Select locals
-	// Work out their attack and defense values
-	// fight a round
-	// if clear result (Dragon || Opponents) Killed
-	// There may be injuries to the dragon needing time to heal
-	// give rewards and experience
-	// Notify
-	
-
-}

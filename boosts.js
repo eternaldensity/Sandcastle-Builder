@@ -7647,7 +7647,7 @@ Molpy.DefineBoosts = function() {
 			var str = 'This is a dragon nest.';
 			if (!Molpy.Got('DQ')) {
 				str += '<br>To obtain a queen, you need Automata Control of at least ' + Molpify(1e6) + ' and '+Molpify(1e10) + ' Bonemeal.';
-			} else if (!Molpy.Got('Eggs')) { // TODO Invert logic when the next bits are ready to be released
+			} else if (!Molpy.Got('Eggs')) { 
 				str = '<br>Please line the nest:<div id=NestLiners align=center>';
 				for (var thing in Molpy.NestLinings) {
 					stuff = Molpy.NestLinings[thing];
@@ -7723,8 +7723,10 @@ Molpy.DefineBoosts = function() {
 			*/
 				var eggcost = Molpy.EggCost();
 				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal:'+ eggcost + '}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
-				str += '<br>Hatchlings will mature into ' + Molpy.DragonTypes[me.Level];
-			}
+				str += '<br>Hatchlings will mature into ' + Molpy.DragonsById[me.Level].name + 's. ';
+				str += Molpy.DragonsById[me.Level].desc + '<p>';
+				str += '<br>The Dragons have '+Molpify(me.experience,1)+' experience';
+				if (Molpy.DragonUpgrade(0)) str += '<p><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> '+Molpy.DragonUpgrade(2);			}
 			return str;
 		},
 		
@@ -7732,7 +7734,7 @@ Molpy.DefineBoosts = function() {
 			Bonemeal: 1e11,
 			Sand: Infinity,
 			Castles: Infinity,
-			GlassBlocks: Infinity
+			GlassBlocks: Infinity,
 		},
 		experience: 0,
 		defSave: 1,
@@ -7783,7 +7785,7 @@ Molpy.DefineBoosts = function() {
 			if (!me.Level) return 'You don\'t have any hatchlings at the moment';
 			var str = 'You have ' + Molpify(me.Level, 3) + ' hatchling' + plural(me.Level);
 			if (me.clutches.length > 1) str += ' in ' + me.clutches.length + ' clutches.';
-			str += '<p>Hatchlings will mature into ' + Molpy.DragonTypes[Molpy.Level('DQ')] + '<p>';
+			str += '<p>Hatchlings will mature into ' + Molpy.DragonsById[Molpy.Level('DQ')].name + 's<p>';
 			for (var cl in me.clutches) {
 				if (me.clutches.length > 1) {
 					str += '<p>Clutch ' + (1+cl) + ': ';
@@ -9499,6 +9501,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({ // Placeholder for future
 		name: 'Diamonds',
+		single: 'Diamond',
 		icon: 'diamond',
 		group: 'stuff',
 		stats: 'From defeating knights', 
@@ -9578,7 +9581,7 @@ Molpy.DefineBoosts = function() {
 		stats: 'Get more Goats from the Ninja Ritual',
 		price: {
 			Goats:'1S',
-			Vacuum:'3.333E',
+			Vacuum:'6.666E',
 		},
 	});
 	new Molpy.Boost({
@@ -9624,7 +9627,7 @@ Molpy.DefineBoosts = function() {
 				str += '<li>Linings of Blackprints and Flux Crystals give digging';
 				if (Molpy.Has('Goats',Infinity) && Molpy.Has('Mustard',Infinity)) {
 					str += '<li>Linings of Goats and Mustard give breath effects.';
-					if (Moply.Dragons.Level <= Molpy.Dragon['Wyrm'].Level) str += '  When you have the rght types of dragons.';
+					if (Moply.Dragonsx.Level <= Molpy.Dragon['Wyrm'].Level) str += '  When you have the rght types of dragons.';
 					}
 				if (Molpy.Has('Bonemeal',Infinity) && Molpy.Has('Vacuums',Infinity)) str += '<li>Linings of Bonemeal and Vacuums give magic';
 				if (Molpy.Has('Logicats',Infinity) && Molpy.Has('QQ',Infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';

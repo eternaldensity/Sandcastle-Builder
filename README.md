@@ -8,17 +8,23 @@ The game is currently hosted at http://castle.chirpingmustard.com
 
 ## Credits
 
-Code mostly by Eternal Density.
+Original Code mostly by Eternal Density.
+
+Quite a lot of code by Waveney.
+
+Quite a bit of code by LucidCrux.
 
 Parts of code and the clockface image by ChronosDragon.
 
-Quite a bit of code by waveney.
+Icons by LucidCrux, ChronosDragon, BlitzGirl, and StormAngel/cmyk.
 
-Icons by ChronosDragon, BlitzGirl, and StormAngel/cmyk.
+Patches and fixes from many others.
 
 'NewPix' by Randall Munroe, under a Creative Commons Attribution-NonCommercial 2.5 License. http://creativecommons.org/licenses/by-nc/2.5/ (these are actually hotlinked from http://imgs.xkcd.com/ via http://xkcd.mscha.org/ ) This means that this game cannot be used for any commercial purpose (including YouTube monetisation)
 
 'Colpix' by various. (These are coloured modifications of Randall Munroe's work)
+
+'TaTpix' by Latent22, waveney and SilentTimer.  (Not yet used)
 
 Inspired by Orteil's C**kie Clicker.
 
@@ -31,13 +37,13 @@ For personal amusement only.
 #### Waveney
 - Caged logicat single puzzle buy will reapear if no multi buy button shown
 - New option to give the minimum number of decimal digits displayed
-- Many bug fixes
-- Lots of behind the sceens dragon stuff
+- Long overdue changes to the top of the ReadMe
+- Many bug fixes, tweaks, nerfs and buffs
+- Lots of behind the sceens dragon stuff, leading to:
 
 - !!! HERE BE DRAGONS !!!
 
 - The Dragon Queen can lay eggs in lined nests, eggs can hatch, need feeding then they fledge
-	Y						Y		y		y
 - Fledglings need to survive the locals when they are released
 	n
 - Dragons can then dig for stuff (you might be able to help by clicking on the beach)
@@ -45,14 +51,12 @@ For personal amusement only.
 - They might find Diamonds...  (And other stuff)
 	n			n
 - You can upgrade dragons a few levels, but not yet all the way
-	n
 - Redundakitties can be nasty dragon hating oponents - you can choose to hide (no digging) or fight
 	n
 - Win or lose a fight you gain experience.  Lose and you may lose dragons.  Win and there will be rewards.
 	n						n				n
 - Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Glass Chips and Blocks
-	y
-- Many new Dragon related Boosts
+- Lots of new Dragon related Boosts
 	p
 - New Pane for the state of the Dragons in the current NP
 	n
