@@ -5873,6 +5873,7 @@ Molpy.DefineBoosts = function() {
 			cost.GlassChips = 0;
 			cost.Blackprints *= 5 * n / 20;
 			cost.Logicat = Math.ceil(me.Level * n / (20 * 20));
+			if (Molpy.Got('Fading')) cost.Logicat *= (1+Math.sin((Math.floor((Date.now()/1000)-900)%3600)*Math.PI/1800))/2;
 		} else if(n < 0) {
 			cost.GlassChips = -1e5 * me.Level;
 			cost.Blackprints = 0;
@@ -6395,6 +6396,7 @@ Molpy.DefineBoosts = function() {
 			if(!Molpy.Earned('Planck Limit')) {
 				var pageCost = n * 10
 				var logicatCost = Math.ceil(n / 20);
+				if (Molpy.Got('Fading')) logicatCost *= (1+Math.sin((Math.floor((Date.now()/1000)-900)%3600)*Math.PI/1800))/2;
 				if(n < Molpy.Boosts['PC'].power) {
 					var mult = 1;
 					var strs = [];
@@ -6492,6 +6494,7 @@ Molpy.DefineBoosts = function() {
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
 				if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
 				if (me.power>468) Molpy.EarnBadge('Sleeping Dragon, Crouching Panther');
+				if (me.power>=1024) Molpy.UnlockBoost('Fading');
 			}
 		} else if (Molpy.Spend('Goats', me.power-1)) {	
 			me.power += n;
@@ -9753,6 +9756,14 @@ Molpy.DefineBoosts = function() {
 		desc: 'Increases Draconic Strength',
 		draglvl: 'Wyrm',
 		limit: 20,
+	});
+
+	new Molpy.Boost({
+		name: 'Fading',
+		icon: 'Fading',
+		desc: 'The Dragon Forge Logicat costs depend on when you look',
+		group: 'chron',
+		price: {QQ:'1024L'},
 	});
 
 	// END OF BOOSTS, add new ones immediately before this comment

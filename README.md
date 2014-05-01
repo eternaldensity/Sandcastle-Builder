@@ -39,6 +39,7 @@ For personal amusement only.
 - New option to give the minimum number of decimal digits displayed
 - Long overdue changes to the top of the ReadMe
 - Many bug fixes, tweaks, nerfs and buffs
+- Fading - New boost from high CDSP
 - Lots of behind the sceens dragon stuff, leading to:
 
 - !!! HERE BE DRAGONS !!!
@@ -56,14 +57,14 @@ For personal amusement only.
 - Win or lose a fight you gain experience.  Lose and you may lose dragons.  Win and there will be rewards.
 	n						n				n
 - Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Glass Chips and Blocks
-- Lots of new Dragon related Boosts
-	p
+- Lots of new Dragon related Boosts (not all of which curently operate)
+	p				True very true
 - New Pane for the state of the Dragons in the current NP
-	n
+	p (not yet classic|| default layouts)
 - Dragon Stats
-	n
+	p (not yet classic|| default layouts)
 - Dragon Overview Pane
-	n
+	n (may not include in launch)
 
 ### 3.4211
 

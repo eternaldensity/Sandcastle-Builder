@@ -195,9 +195,9 @@ Molpy.Opponent = function(args) {
 		return str;
 	}
 
-	this.attackval = function() { // [physical,magical]
-		if (this.id < 10) return [Math.floor(Math.pow(42,Math.exp(this.id/2))),0];
-		return [Infinity,Math.floor(Math.pow(42,Math.exp(this.id-10)))];
+	this.attackval = function(n) { // [physical,magical]
+		if (this.id < 10) return [Math.floor(Math.pow(42,Math.exp(this.id/2)))*n,0];
+		return [Infinity,Math.floor(Math.pow(42,Math.exp(this.id-10)))*n];
 	};
 
 	this.takeReward = function(n) {
@@ -446,16 +446,45 @@ Molpy.DragonFledge = function(clutch) {
 	if (fight) Molpy.LocalsAttack();
 }
 
+Molpy.FindLocals = function(where) {
+	var type = 0;
+	var numb = 1;
+	type = Math.min(Math.floor(where/150),Molpy.Opponents.length-1);
+	numb = Math.floor(((where-type*150)/30)*(Math.random()+1));
+	return [type,numb];
+}
+
+
 Molpy.LocalsAttack = function() {
 	// Select locals
 	// Work out their attack and defense values
 	// fight a round
-	// if clear result (Dragon || Opponents) Killed
+	// if clear result (Dragon &| Opponents) Killed
 	// There may be injuries to the dragon needing time to heal
 	// give rewards and experience
 	// Notify
 	
+	var npd = NPdata[Molpy.newpixNumber];
+	var lcls = Molpy.FindLocals(Molpy.newpixNumber);
+	var type = lcls[0];
+	var numb = lcls[1];
+	var local = Molpy.OpponentsById[type];
+	var atktxt = local.attackstxt(numb);
+	var atkval = local.attackval(numb);
+	// Magical attacks
+	
+	// TODO
 
+	// Physical attacks
+	
+	// Resolve
+	if (npd.ammount) {
+		if (type/2 <= npd.DragonType) Molpy.Experience(DeMolpify(local.exp)*numb)
+		else Molpy.Experience(npd.DragonType*100);
+	} else {
+		local.takereward();	
+		Molpy.Experience(DeMolpify(local.exp)*numb); 
+	}
 }
 
 // Type 0: to display, 1: action, 2: cost text
@@ -518,6 +547,7 @@ Dragons
 -9	RDKM						Y	y
 -8	NPdata persistence				y	
 -7	Nestlining					y	y
+-6	Opponents					y	
 1	Lay eggs					Y	Y
 2	Feed hatchlings <- Goats, Princesses		Y	y
 3	Fledge						y	y
@@ -530,24 +560,24 @@ Dragons
 	9.1	Abilities
 	9.2	Attack
 	9.3	Rewards
-10	Multiple Maps -> Multiple Nests, Multiple Queens, 
+10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch
 11	NPdata
-12	Dragon Pane (Whats here)
+12	Dragon Pane (Whats here)			y	y
 12.1	For classic
-13	Dragon Stats
+13	Dragon Stats					y	y
 13.1	For Classic
 14	Dragon Overview Pane
 14.1	For classic
 15	Dragon Upgrades					y	y
-
-
-UNlocks DragonNewts 1 Diamond, + exp
-	Wyrm 1K Diamonds, + exp
-	Wyvern 1M Diamonds, +exp, + event
-	Dragon 1T Diamonds, +exp, + event
-	Noble D 1Y Diamonds, X Princesses, +exp, + event
-	Imperial Infinite Diamonds, Y Princesses, +exp, + event
-	NogarDragon Infinite Diamonds, Infinite Princesses, +exp, + event
+16	Draglings					Y
+17	DragonNewts					y
+18	Wyrm						Not Launch
+19	Wyvern						Not Launch
+20	Diamond Tools and Moulds			Not Launch
+21	Diamond Monuments				Not Launch
+22	Breath effects					Not Launch
+23	Magic						Not Launch
+24	Mirror Dragons					Not Launch
 
 Dig Finds (Other than Diamonds & Gold)
 * Big Teeth
@@ -556,8 +586,8 @@ Dig Finds (Other than Diamonds & Gold)
 * Adamintine armour in bits
 * Mouthwash (to reduce bad breath backfires)
 * Coal (for fires)
-* Magic Rings
-* Magic Books
+* Magic Rings (future)
+* Magic Books (future)
 * Magic Teeth
 * Backet and spade (better digging)
 * Bad dreams!
@@ -566,9 +596,8 @@ Dig Finds (Other than Diamonds & Gold)
 * Healing Potion
 * Strength Potion
 
-
 Other
-1	Fading (~1k CDSP) cyclic AC boost
+1	Fading (~1k CDSP) cyclic AC boost		y	y
 2	Panthers Ignore Einstein
 
 

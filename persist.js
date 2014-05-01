@@ -402,7 +402,7 @@
 		var highest = 0;
 		// See what range to save if any
 		for (var np = -Math.abs(Molpy.highestNPvisited); np <=Math.abs(Molpy.highestNPvisited); np++) {
-			if (Molpy.NPdata && Molpy.NPdata[np].DragonType) {
+			if (Molpy.NPdata && Molpy.NPdata[np] && Molpy.NPdata[np].DragonType) {
 				if (!lowest) lowest = np;
 				highest = np;
 			}
@@ -412,7 +412,7 @@
 		for (var np=lowest; np<=highest; np++) {
 			var dd = Molpy.NPdata[np];
 			str += s;
-		        if (dd.DragonType || dd.ammount) {
+		        if (dd && (dd.DragonType || dd.ammount)) {
 				str += dd.DragonType + c + dd.ammount + c + dd.defence + c + dd.attack + c + dd.dig + c + dd.state + c + dd.countdown;
 				if (dd.breath || dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.breath || 0);
 				if (dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.magic1 || 0);
