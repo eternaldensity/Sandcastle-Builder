@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.4211;
-Molpy.versionName='Wrong order for a lift off'; // Appended to the numerical version on screen
+Molpy.version=3.5;
+Molpy.versionName='Here be Dragons'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings

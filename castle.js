@@ -2641,7 +2641,8 @@ Molpy.Up = function() {
 		Molpy.DefinePuzzles();
 		Molpy.DefineBoosts();
 		Molpy.DefineBadges();
-		Molpy.DefineCharacters();
+		Molpy.DefineDragons();
+		Molpy.DefineOpponents();
 		Molpy.InitGUI();
 	        Molpy.DefaultOptions();
 		Molpy.UpdateColourScheme();

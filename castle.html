@@ -17,10 +17,10 @@
 <script src="tools.js?v=1"></script>
 <script src="boosts.js?v=1"></script>
 <script src="badges.js?v=1"></script>
-<script src="characters.js?v=1"></script>
 <script src="puzzles.js?v=1"></script>
 <script src="gui.js?v=1"></script>
 <script src="options.js?v=1"></script>
+<script src="dragons.js?v=1"></script>
 
 </head>
 <body class="lightscheme">
@@ -144,6 +144,12 @@
 					<div id="toggleTimer" class="minifloatbox">
 						<a onclick="Molpy.ToggleView('Timer')"><h4>Timer</h4></a>
 					</div>
+					<div id="toggleDragonsNP" class="minifloatbox">
+						<a onclick="Molpy.ToggleView('DragonsNP')"><h4>NP Dragons Info</h4></a>
+					</div>
+					<div id="toggleDragonOverview" class="minifloatbox">
+						<a onclick="Molpy.ToggleView('DragonOverview')"><h4>Dragon Overview</h4></a>
+					</div>
 				</div>	
 			</div>	
 		</div>	
@@ -217,6 +223,9 @@
 					<div id="toggleNinjaStats" class="minifloatbox" >
 						<a onclick="Molpy.ToggleView('NinjaStats')">Ninja Stats</a>
 					</div>
+					<div id="toggleDragonStats" class="minifloatbox" >
+						<a onclick="Molpy.ToggleView('DragonStats')">Dragon Stats</a>
+					</div>
 					<div id="toggleOtherStats" class="minifloatbox" >
 						<a onclick="Molpy.ToggleView('OtherStats')">Other Stats</a>
 					</div>
@@ -265,6 +274,17 @@
 					<div>NewPixBot delay: <span id="ninjatimestat"></span></div>
 					<div>Ninja Stealth Streak: <span id="ninjastealthstat"></span></div>
 					<div>Ninja Forgiveness Available: <span id="ninjaforgivestat"></span></div><br>
+				</div>
+			</div>
+		</div>
+		<div id="sectionDragonStats" class="hidden draggable-element table-wrapper">
+			<div class="table-header">Dragon Stats:</div>
+			<div id="sectionDragonStatsBody" class="table-content resizable-element">
+				<div class="table-content-wrapper">
+					<div>Dragon Type: <span id="dragontypestat"></span></div>
+					<div>Dragon Numbers: <span id="dragonnumbersstat"></span></div><br>
+					<div>NPs with Dragons: <span id="npswithdragonsstat"></span></div>
+					<div>Dragon Digging Rate: <span id="dragondiggingstat"></span></div><br>
 				</div>
 			</div>
 		</div>
@@ -460,6 +480,14 @@
 		</div>
 		<div id="sectionClock" class="hidden draggable-element">
 			<div id="clockface">					
+			</div>
+		</div>	
+		<div id="sectionDragonsNP" class="hidden floatbox infobox draggable-element">
+			<div id="DragonsNP">					
+			</div>
+		</div>	
+		<div id="sectionDragonOverview" class="hidden floatbox infobox draggable-element">
+			<div id="dragonoverview">					
 			</div>
 		</div>	
 	</div>
