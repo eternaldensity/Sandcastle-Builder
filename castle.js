@@ -710,7 +710,7 @@ Molpy.Up = function() {
 			this.getProduction = function() {
 				var production = '';
 				if(isNaN(this.amount))
-					production = 'Mustard/click: 1';
+					production = 'Mustard/click: ' + Molpify((Molpy.Got('Cress')&&Molpy.IsEnabled('Cress')) ? Math.floor(Molpy.Boosts['Goats'].power/1000) : 1)
 				else if(this.storedTotalGpmNP)
 					production = 'Glass/mNP: ' + Molpify(this.storedTotalGpmNP, (this.storedTotalGpmNP < 10 ? 3 : 1));
 				else
