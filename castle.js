@@ -710,7 +710,7 @@ Molpy.Up = function() {
 			this.getProduction = function() {
 				var production = '';
 				if(isNaN(this.amount))
-					production = 'Mustard/click: 1';
+					production = 'Mustard/click: ' + Molpify((Molpy.Got('Cress')&&Molpy.IsEnabled('Cress')) ? (Molpy.Boosts['Goats'].power/1000) : 1 , 3);
 				else if(this.storedTotalGpmNP)
 					production = 'Glass/mNP: ' + Molpify(this.storedTotalGpmNP, (this.storedTotalGpmNP < 10 ? 3 : 1));
 				else
@@ -1107,7 +1107,7 @@ Molpy.Up = function() {
 			this.getProduction = function() {
 				var production = '';
 				if(isNaN(this.amount))
-					production += 'Mustard/click: 1<br>';
+					production += 'Mustard/click: ' + Molpify((Molpy.Got('Cress')&&Molpy.IsEnabled('Cress')) ? (Molpy.Boosts['Goats'].power/1000) : 1 , 3);
 				if(this.currentActive && Molpy.CastleTools['NewPixBot'].ninjaTime > Molpy.ONGelapsed) {
 					if(Molpy.ninjad) {
 						production += "Ninja'd!";
