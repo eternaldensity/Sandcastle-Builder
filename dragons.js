@@ -155,7 +155,6 @@ Molpy.DefineDragons = function() {
 };
 
 
-Molpy.Opponents = [];
 Molpy.OpponentsById = [];
 Molpy.OpponentN = 0;
 	
@@ -164,7 +163,6 @@ Molpy.Opponent = function(args) {
 	for(var prop in args) {
 		if(typeof args[prop] !== 'undefined' ) this[prop] = args[prop];
 	}
-	Molpy.Opponents[this.name] = this;
 	Molpy.OpponentsById[this.id] = this;
 
 	// Methods
@@ -188,7 +186,7 @@ Molpy.Opponent = function(args) {
 			str += 'an ';
 			break;
 		default:
-			str += 'a ';
+			str += 'a '+first;
 			break;
 		}
 		str += rest;
@@ -196,8 +194,8 @@ Molpy.Opponent = function(args) {
 	}
 
 	this.attackval = function(n) { // [physical,magical]
-		if (this.id < 10) return [Math.floor(Math.pow(42,Math.exp(this.id/2)))*n,0];
-		return [Infinity,Math.floor(Math.pow(42,Math.exp(this.id-10)))*n];
+//		if (this.id < 10) return [(Math.pow(42,Math.exp(this.id/2))*n)/1234,0];
+		return [(Math.pow(42,Math.exp(this.id/2))*n/1234,(Math.pow(672,Math.exp(this.id-10))*n/1764)];
 	};
 
 	this.takeReward = function(n) {
@@ -242,7 +240,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Peasant',
-		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock'],
+		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock','pun'],
 		reward: {Copper:'10-1000'},
 		exp: '1K',
 	});
@@ -421,8 +419,6 @@ Molpy.DragonFledge = function(clutch) {
 	}
 	npd.defence, npd.attack, npd.dig, npd.breath, npd.magic1, npd.magic2, npd.magic3 = 
 		hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
-	npd.countdown = 0;
-	npd.state = 0;
 	switch (hatch.diet[clutch]) {
 	case 1: // Goats
 		npd.breath/=2;
@@ -449,11 +445,22 @@ Molpy.DragonFledge = function(clutch) {
 Molpy.FindLocals = function(where) {
 	var type = 0;
 	var numb = 1;
-	type = Math.min(Math.floor(where/150),Molpy.Opponents.length-1);
+	type = Math.min(Math.floor(where/150),Molpy.OpponentsById.length-1);
 	numb = Math.floor(((where-type*150)/30)*(Math.random()+1));
 	return [type,numb];
 }
 
+Molpy.DragonStatsNow = function(where) {
+	var Stats = {};
+	var npd = Molpy.NPdata[where];
+	if (!npd) return Stats;
+	for(var prop in npd) {
+		if(typeof npd[prop] !== 'undefined' ) Stats[prop] = npd[prop];
+	}
+
+	// There will be handling for many boosts here this is why its not just npd.
+	return Stats;
+}
 
 Molpy.LocalsAttack = function() {
 	// Select locals
@@ -464,27 +471,64 @@ Molpy.LocalsAttack = function() {
 	// give rewards and experience
 	// Notify
 	
-	var npd = NPdata[Molpy.newpixNumber];
+	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var lcls = Molpy.FindLocals(Molpy.newpixNumber);
 	var type = lcls[0];
 	var numb = lcls[1];
 	var local = Molpy.OpponentsById[type];
-	var atktxt = local.attackstxt(numb);
+	var atktxt = local.attackstxt(numb) + 'attacks as you fledge.  ';
 	var atkval = local.attackval(numb);
-	// Magical attacks
-	
-	// TODO
 
-	// Physical attacks
+	var dragstats = Molpy.DragonStatsNow(Molpy.newpixNumber);
+	var result = 0;
+	var localhlth = atkval;
+	var dragnhlth = dragstats.defense;
 	
-	// Resolve
-	if (npd.ammount) {
-		if (type/2 <= npd.DragonType) Molpy.Experience(DeMolpify(local.exp)*numb)
-		else Molpy.Experience(npd.DragonType*100);
-	} else {
-		local.takereward();	
-		Molpy.Experience(DeMolpify(local.exp)*numb); 
+	while (result == 0) {
+		// Magical attacks
+	
+		// TODO
+
+		// Physical attacks
+
+		localhlth -= dragstats.offence*Math.random();
+		dragnhlth -= atkval*Math.random();
+
+		if (dragmhlth < 0) result = -1 -(dragnhlth < -dragstats.defense)
+		else if (localhlth < 0) {
+			var factor = dragnhlth/dragstats.defense;
+			if (factor > 0.9) Result = 3
+			else if (factor > 0.5 || npd.ammount == 1) result = 2
+			else result = 1;
+		}
 	}
+
+	switch (result) {
+		case -2 : // wipeout
+			npd.ammount = 0;	
+			Molpy.Experience(npd.DragonType*100);
+			Molpy.Notify(atktxt + ' You are totally destroyed in a one sided fight.',1);
+			break;
+		case -1 : // lost a hard fight
+			npd.ammount = 0;	
+			Molpy.Experience(Math.max(DeMolpify(local.exp)*numb, npd.DragonType*100)
+			Molpy.Notify(atktxt + ' You lost, but lost with dignity',1);
+			break;
+		case 1 : // Pyric victory
+
+		case 2 : // won a hard fight - need to recover
+			Molpy.Notify(atktxt + ' You one a hard fight, but will need to recover for ' + );
+			local.takereward();	
+			Molpy.Experience(DeMolpify(local.exp)*numb); 
+			break;
+
+		case 3 : // Wipeout for no loss
+			Molpy.Notify(atktxt + ' You wiped' + (numb==1?'it':'them') + 'out with ease',1);
+			local.takereward();	
+			Molpy.Experience(DeMolpify(local.exp)*numb); 
+			break;
+	}
+	Molpy.DragonDigRecalcNeeded = 1;
 }
 
 // Type 0: to display, 1: action, 2: cost text

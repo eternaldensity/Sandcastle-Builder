@@ -850,7 +850,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Glass Ceiling 10'].logic = 80*Molpy.Earned('Ceiling Broken');
 	Molpy.Boosts['Glass Ceiling 11'].logic = 90*Molpy.Earned('Ceiling Broken');
 
-	Molpy.Boosts['PR'].logic = Molpy.Has('Logicat',Molpy.CalcRushCost(0, 1).Logicat) && !Molpy.Earned('Einstein Says No');
+	Molpy.Boosts['PR'].logic = Molpy.Has('Logicat',Molpy.CalcRushCost(0, 1).Logicat);
 
 	Molpy.Boosts['AC'].logic = 440 * (Molpy.Got('AA') && (isFinite(Molpy.CastleTools['NewPixBot'].amount)? 
 					(Molpy.CastleTools['NewPixBot'].amount >= 7500 ? 50000 / Molpy.CastleTools['NewPixBot'].amount : 0):1));
@@ -867,9 +867,10 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['MHP'].department = finiteC || ((Molpy.Got('Goats') || Molpy.Boosts['MHP'].department) && !automationLevel);
 	Molpy.Boosts['Maps'].logic = 3000 * (Molpy.EnoughMonumgForMaps());
 	Molpy.Boosts['Mario'].logic = 200 * (Molpy.Boosts['QQ'].power >= 250000);
-	Molpy.Boosts['TS'].logic = Molpy.Level('Vacuum') * (Molpy.Level('Vacuum') >= 8000);
+	Molpy.Boosts['TS'].logic = Math.min(Molpy.Level('Vacuum'),1e6) * (Molpy.Level('Vacuum') >= 8000);
 	Molpy.Boosts['Aleph One'].logic = 111111111;
 	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
+	Molpy.Boosts['Aleph e'].logic = DeMolpify('1L') * Molpy.priceFactor;
 }
 Molpy.mapMonumg = 300;
 

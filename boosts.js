@@ -2109,8 +2109,16 @@ Molpy.DefineBoosts = function() {
 		group: 'stuff',
 		className: 'alert',
 		Level: Molpy.BoostFuncs.RoundPosPowerLevel,
-		Has: Molpy.BoostFuncs.Has,
-		Spend: Molpy.BoostFuncs.Spend,
+		HasSuper: Molpy.BoostFuncs.Has,
+		SpendSuper: Molpy.BoostFuncs.Spend,
+		Has: function(n) {
+			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
+			this.HasSuper(n);
+		},
+		Spend: function(n) {
+			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
+			this.SpendSuper(n);
+		},
 		
 		Destroy: function(amount) {
 			this.Level -= amount;
@@ -2443,8 +2451,16 @@ Molpy.DefineBoosts = function() {
 		group: 'stuff',
 		className: 'alert',
 		Level: Molpy.BoostFuncs.RoundPosPowerLevel,
-		Has: Molpy.BoostFuncs.Has,
-		Spend: Molpy.BoostFuncs.Spend,
+		HasSuper: Molpy.BoostFuncs.Has,
+		SpendSuper: Molpy.BoostFuncs.Spend,
+		Has: function(n) {
+			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
+			this.HasSuper(n);
+		},
+		Spend: function(n) {
+			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
+			this.SpendSuper(n);
+		},
 		refreshFunction: Molpy.RefreshGlass,
 		
 		Add: function(amount, expand) {
@@ -5477,7 +5493,7 @@ Molpy.DefineBoosts = function() {
 		},
 		defStuff: 1,
 
-		BuyFunction: function() { 
+		buyFunction: function() { 
 			if (!this.Level) this.Level = 1;
 			if (Molpy.Earned('Einstein Says No')) this.Level = 1079252850 *2; 
 		},
@@ -5873,7 +5889,7 @@ Molpy.DefineBoosts = function() {
 			cost.GlassChips = 0;
 			cost.Blackprints *= 5 * n / 20;
 			cost.Logicat = Math.ceil(me.Level * n / (20 * 20));
-			if (Molpy.Got('Fading')) cost.Logicat *= (1+Math.sin((Math.floor((Date.now()/1000)-900)%3600)*Math.PI/1800))/2;
+			if (Molpy.Got('The Fading')) cost.Logicat *= (1+Math.sin((Math.floor((Date.now()/1000)-900)%3600)*Math.PI/1800))/2;
 		} else if(n < 0) {
 			cost.GlassChips = -1e5 * me.Level;
 			cost.Blackprints = 0;
@@ -6396,7 +6412,7 @@ Molpy.DefineBoosts = function() {
 			if(!Molpy.Earned('Planck Limit')) {
 				var pageCost = n * 10
 				var logicatCost = Math.ceil(n / 20);
-				if (Molpy.Got('Fading')) logicatCost *= (1+Math.sin((Math.floor((Date.now()/1000)-900)%3600)*Math.PI/1800))/2;
+				if (Molpy.Got('The Fading')) logicatCost *= (1+Math.sin((Math.floor((Date.now()/1000)-900)%3600)*Math.PI/1800))/2;
 				if(n < Molpy.Boosts['PC'].power) {
 					var mult = 1;
 					var strs = [];
@@ -6494,7 +6510,7 @@ Molpy.DefineBoosts = function() {
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
 				if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
 				if (me.power>468) Molpy.EarnBadge('Sleeping Dragon, Crouching Panther');
-				if (me.power>=1024) Molpy.UnlockBoost('Fading');
+				if (me.power>=1024) Molpy.UnlockBoost('The Fading');
 			}
 		} else if (Molpy.Spend('Goats', me.power-1)) {	
 			me.power += n;
@@ -7742,7 +7758,22 @@ Molpy.DefineBoosts = function() {
 		experience: 0,
 		defSave: 1,
 		defStuff: 1,
-		saveData: {4:['experience',0,'float']},
+		overallState: 0, // 0 all heathy, 1 injuries, 2 hiding, 3 both
+
+		saveData: {4:['experience',0,'float'],
+			   5:['overallState',0,'int'],
+		},
+		countdownFunction: function() { // Used for overallState
+			if (this.countdown-- <= 0) {
+				this.countdown = 0;;
+				this.overallState = 0;
+			}
+		},
+		ChangeState: function(newstate, duration) {
+			this.overallState = newstate;
+			this.countdown += duration;		
+		},
+			
 	});
 
 	Molpy.DragonExperience = function(amt) {
@@ -9759,11 +9790,35 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({
-		name: 'Fading',
+		name: 'The Fading',
 		icon: 'Fading',
 		desc: 'The Dragon Forge Logicat costs depend on when you look',
 		group: 'chron',
 		price: {QQ:'1024L'},
+	});
+
+	new Molpy.Boost({
+		name: 'Aleph e',
+		icon: 'alephe',
+		group: 'bean',
+		className: 'toggle',
+		
+		desc: function(me) {
+			var str = 'When active, as long as the Chip/Block numbers are not mustard, allows an infinite amount of Glass Chips and Glass Blocks to be spent without affecting the chip or block supply.';
+			if(me.bought)
+				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str
+		},
+		
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		
+		price: {
+			Goats: Infinity,
+			Mustard: Infinity,
+			QQ: '10L',
+			Blackprints: Infinity,
+			FluxCrystals: Infinity,
+		}
 	});
 
 	// END OF BOOSTS, add new ones immediately before this comment

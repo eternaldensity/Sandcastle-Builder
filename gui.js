@@ -1321,9 +1321,10 @@ Molpy.DefineGUI = function() {
 		g('version').innerHTML = '<br>Version: ' + Molpy.version  + (Molpy.versionName?'<br>'+Molpy.versionName:'');
 		var npd = Molpy.NPdata[Molpy.newpixNumber];
 		if (npd && npd.ammount) {
+			var dq = Molpy.Boosts['DQ'];
 			var str = Molpify(npd.ammount) + ' ' + Molpy.DragonsById[Molpy.Level('DQ')].name + (npd.ammount > 1?'s':'') + '<br>';
-			str += ['Digging','Recovering','Hiding'][npd.state];
-			if (npd.state > 0) str += ' for ' + MolpifyCountdown(npd.countdown, 1);
+			str += ['Digging','Recovering','Hiding'][dq.overallState];
+			if (npd.state > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
 			g('DragonsNP').innerHTML = str;
 		} else {
 			g('DragonsNP').innerHTML = 'No Dragons here';

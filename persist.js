@@ -413,7 +413,7 @@
 			var dd = Molpy.NPdata[np];
 			str += s;
 		        if (dd && (dd.DragonType || dd.ammount)) {
-				str += dd.DragonType + c + dd.ammount + c + dd.defence + c + dd.attack + c + dd.dig + c + dd.state + c + dd.countdown;
+				str += dd.DragonType + c + dd.ammount + c + dd.defence + c + dd.attack + c + dd.dig ;
 				if (dd.breath || dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.breath || 0);
 				if (dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.magic1 || 0);
 				if (dd.magic2 || dd.magic3) str += c + (dd.magic2 || 0);
@@ -758,8 +758,6 @@
 				dd.Defence = parseFloat(pretzels.shift());
 				dd.Attack = parseFloat(pretzels.shift());
 				dd.Dig = parseFloat(pretzels.shift());
-				dd.State = parseInt(pretzels.shift());
-				dd.countdown = parseFloat(pretzels.shift());
 				dd.breath = parseFloat(pretzels.shift() || 0);
 				dd.magic1 = parseFloat(pretzels.shift() || 0);
 				dd.magic2 = parseFloat(pretzels.shift() || 0);

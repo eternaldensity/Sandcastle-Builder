@@ -40,6 +40,7 @@ For personal amusement only.
 - Long overdue changes to the top of the ReadMe
 - Many bug fixes, tweaks, nerfs and buffs
 - Fading - New boost from high CDSP
+- Aleph e - Does for Chips/Blocks what Aleph One did for sand and castles
 - Lots of behind the sceens dragon stuff, leading to:
 
 - !!! HERE BE DRAGONS !!!
