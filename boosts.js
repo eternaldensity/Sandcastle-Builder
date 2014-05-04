@@ -6487,7 +6487,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
 				Molpy.Spend('Goats', goatCost);
 				Molpy.Boosts['AD'].power -= powerReq;
-				Molpy.Notify('Dragon Widsom gained!'); // it was so tempting to write gainned :P
+				Molpy.Notify('Dragon Wisdom gained!'); // it was so tempting to write gainned :P
 				me.power+=n;
 				me.bought = Math.max(me.bought,me.power+1);
 				me.Refresh();
@@ -6499,7 +6499,7 @@ Molpy.DefineBoosts = function() {
 		} else if (Molpy.Spend('Goats', me.power-1)) {	
 			me.power += n;
 			me.Refresh();
-			Molpy.Notify('Dragon Widsom lost!'); 
+			Molpy.Notify('Dragon Wisdom lost!'); 
 		}
 	}
 
@@ -8545,6 +8545,9 @@ Molpy.DefineBoosts = function() {
 				var p = 20 * me.bought * (1 + Math.floor(Math.log(me.bought) * Math.LOG10E));
 				while(Molpy.Has('FluxCrystals', p * add * 10) && isFinite(add) && (add <= me.bought))
 					add *= 10;
+				if((add >= 1e150)&&(Molpy.Has('FluxCrystals', Infinity))){
+					add = Infinity
+				}
 				if(add > me.bought / 1000000) {
 					str += '<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:' + p * add
 						+ '}))Molpy.Add(\'Time Lord\',0,' + add + ');" value="Pay"></input> ' + Molpify(p * add, 1)
