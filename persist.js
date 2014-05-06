@@ -1007,7 +1007,7 @@
 			Molpy.Boosts['Time Lord'].power = Molpy.Boosts['Time Lord'].bought +1 - Molpy.Level('Time Lord'); // Count down rather than up
 		}
 		if(version < 3.34) {
-			if (Molpy.Boosts['WiseDragon'].power > 444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
+			if (Molpy.Boosts['CDSP'].power > 444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
 			if (Molpy.Has('Maps', 80)) Molpy.UnlockBoost('DNS'); 
 			if (Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
 		}
@@ -1019,7 +1019,11 @@
 			}
 		}
 		if(version < 3.421) {
-			if (Molpy.Boosts['WiseDragon'].bought) Molpy.Boosts['WiseDragon'].bought = (Molpy.Boosts['WiseDragon'].power || 0)+1;
+			if (Molpy.Boosts['CDSP'].bought) Molpy.Boosts['CDSP'].bought = (Molpy.Boosts['CDSP'].power || 0)+1;
+		}
+		if(version < 3.5) {
+			if (Molpy.Boosts['CDSP'].power >=1024) Molpy.UnlockBoost('The Fading');
+			if (Molpy.Got('DQ')) Molpy.UnlockBoost('RDKM');
 		}
 
 	}
@@ -1235,6 +1239,7 @@
 			Molpy.BuildLootLists();
 			Molpy.allNeedRepaint = 1;
 			Molpy.mustardTools = 0;
+			typocount = 0;
 		}
 	}
 }

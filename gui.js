@@ -1340,7 +1340,14 @@ Molpy.DefineGUI = function() {
 				if($('#stuff' + bst.alias + 'Count').length == 0) {
 					$("#sectionStuffCountsBody").append("<div id=\"stuff" + bst.alias + "Count\"></div>");
 				}
-				g('stuff' + bst.alias + 'Count').innerHTML = bst.plural + ': ' + Molpify(bst.Level, 3);
+				if (bst.alias == 'Gold' && bst.Level < 1) {
+					var name = 'Silver';
+					var amt = bst.Level*1000;
+					if (amt < 0.0001) { name = 'Copper'; amt *=1000;};
+					g('stuff' + bst.alias + 'Count').innerHTML = name + ': ' + Molpify(amt, 3);
+				} else {
+					g('stuff' + bst.alias + 'Count').innerHTML = bst.plural + ': ' + Molpify(bst.Level, 3);
+				}
 				$('#stuff' + bst.alias + 'Count').toggleClass('hidden', !Molpy.Got(bst.alias));
 			}
 

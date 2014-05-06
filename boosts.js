@@ -2113,11 +2113,11 @@ Molpy.DefineBoosts = function() {
 		SpendSuper: Molpy.BoostFuncs.Spend,
 		Has: function(n) {
 			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
-			this.HasSuper(n);
+			return this.HasSuper(n);
 		},
 		Spend: function(n) {
 			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
-			this.SpendSuper(n);
+			return this.SpendSuper(n);
 		},
 		
 		Destroy: function(amount) {
@@ -2455,11 +2455,11 @@ Molpy.DefineBoosts = function() {
 		SpendSuper: Molpy.BoostFuncs.Spend,
 		Has: function(n) {
 			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
-			this.HasSuper(n);
+			return this.HasSuper(n);
 		},
 		Spend: function(n) {
 			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
-			this.SpendSuper(n);
+			return this.SpendSuper(n);
 		},
 		refreshFunction: Molpy.RefreshGlass,
 		
@@ -5696,8 +5696,8 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.PokeBar = function() {
-		return Math.floor(4 + Molpy.Level('PR') * (1 + Molpy.Boosts['WiseDragon'].power) *
-			(Molpy.Boosts['WiseDragon'].power ? Math.max(1,Math.log(Molpy.Level('AC'))-10,1) : 1 ));
+		return Math.floor(4 + Molpy.Level('PR') * (1 + Molpy.Boosts['CDSP'].power) *
+			(Molpy.Boosts['CDSP'].power ? Math.max(1,Math.log(Molpy.Level('AC'))-10,1) : 1 ));
 	}
 	
 	new Molpy.Boost({
@@ -6272,8 +6272,8 @@ Molpy.DefineBoosts = function() {
 			return [2e12, 'Draft Dragon'];
 		if(Molpy.Has('AC', 300) && !Molpy.Boosts['Dragon Forge'].unlocked)
 			return [7e16, 'Dragon Forge'];
-		if(Molpy.Has('AC', 404) && !Molpy.Boosts['WiseDragon'].unlocked)
-			return [4.5e20, 'WiseDragon'];
+		if(Molpy.Has('AC', 404) && !Molpy.Boosts['CDSP'].unlocked)
+			return [4.5e20, 'CDSP'];
 		if(Molpy.Has('AC', 555) && !Molpy.Boosts['Thunderbird'].unlocked && Molpy.Got('PSOC'))
 			return [6e36, 'Thunderbird'];
 		if(Molpy.Has('AC', 777) && !Molpy.Boosts['Dragon Foundry'].unlocked && Molpy.Earned('Nope!'))
@@ -6448,7 +6448,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({
 		name: 'Crouching Dragon, Sleeping Panther',
-		alias: 'WiseDragon',
+		alias: 'CDSP',
 		icon: 'wisedragon',
 		group: 'drac',
 		className: 'action',
@@ -6475,7 +6475,7 @@ Molpy.DefineBoosts = function() {
 			};
 			if (Molpy.Earned('Sleeping Dragon, Crouching Panther')) {
 				str += '<br>Now at ' + ((me.bought == me.power+1)?'high':'low') + ' power';
-				str += '<input type=button value="Switch" onclick="Molpy.Boosts[\'WiseDragon\'].control()"></input>';
+				str += '<input type=button value="Switch" onclick="Molpy.Boosts[\'CDSP\'].control()"></input>';
 				str += ' this will cost ' + Molpify(me.bought*(me.bought+1)/2) + ' Goats.';
 			}
 			return str;
@@ -6495,7 +6495,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.GainDragonWisdom = function(n) {
-		var me = Molpy.Boosts['WiseDragon'];
+		var me = Molpy.Boosts['CDSP'];
 		if (n > 0) {
 			var goatCost = me.power * n;
 			var powerReq = Math.pow(5, me.power + 12);
@@ -7773,6 +7773,11 @@ Molpy.DefineBoosts = function() {
 			this.overallState = newstate;
 			this.countdown += duration;		
 		},
+		clickBeach: function() {
+			if (this.bought && Molpy.DragonDigRate && Molpy.Got('Beach Dragon')) {
+				Molpy.DragonDiging(1);
+			}
+		},
 			
 	});
 
@@ -7858,7 +7863,7 @@ Molpy.DefineBoosts = function() {
 			this.clutches.push(amount);
 			this.diet.push(0);
 			this.age.push(3000);
-			this.properties.push(Molpy.Boosts['Nest'].nestprops());
+			this.properties = this.properties.concat(Molpy.Boosts['Nest'].nestprops());
 			this.Level += amount;
 			this.countdown = 3000;
 		},
@@ -9628,6 +9633,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({
 		name: 'Gold',
+		single: 'Gold',
 		desc: function(me) {
 			if (!me.bought) return 'Gold, Gold, Gold, Gold!';
 			if (!me.power) return 'Gold whats that?';
@@ -9674,6 +9680,7 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.Level('Eggs')) {
 				str += '<li>You need to wait for the eggs to hatch';
 			}
+			str += '<li>Dragons have a hive mind, if one hides they all hide, if one is injured they all help heal the injuries'; 
 			if (Molpy.Level('Hatchlings')) {
 				str += '<li>When the eggs hatch, the Hatchlings will mature for many mnp.';
 				str += '<li>Hatchlings need feeding, the better the food, the better the Dragon.';
@@ -9683,14 +9690,15 @@ Molpy.DefineBoosts = function() {
 				str += '<li>If there are too many hatchlings for the NP the strongest will eat the rest';
 				str += '<li>Once released they have to survive the locals and they can then can start digging for treasure';
 			};
-			if (Molpy.Level('Dragonlings')) {
-				str += '<li>Dragonlings are feeble creatures, they need looking after';
+			var draglevel = Molpy.Level('DQ');
+			if (draglevel || Molpy.TotalDragons) {
+				str += '<li>Draglings are feeble creatures, they need looking after';
 			};
-			if (Molpy.Level('DragonNewts')) {
+			if (draglevel >= Molpy.Dragons['DragonNewt'].id) {
 				str += '<li>DragonNewts are Dragon whanabees, high on spirits, low on abilities but not entirely useless.';
 			};
-			if (Molpy.Level('Wyrm')) {
-				str += '<li>Wyrms are the first real dragons, lacking arms or magic they can\'t dig';
+			if (draglevel >= Molpy.Dragons['Wyrm'].id) {
+				str += '<li>Wyrms are the first real dragons, lacking arms or magic they can\'t dig very well';
 			};
 
 			return str + '</ul>';
@@ -9781,7 +9789,6 @@ Molpy.DefineBoosts = function() {
 		icon: 'healingpotion',
 		desc: 'Increases Draconic Health',
 		draglvl: 'DragonNewt',
-		limit: 20,
 	});
 
 	new Molpy.Boost({
@@ -9823,6 +9830,24 @@ Molpy.DefineBoosts = function() {
 			FluxCrystals: Infinity,
 		}
 	});
+
+	new Molpy.Boost({ // Hook
+		name: 'Beach Dragon',
+		icon: 'beachdragon',
+		desc: 'Enables Beach dgging to enhance the dragon digging',
+		group: 'drag',
+		price: {},
+	});
+
+	new Molpy.Boost({ // Hook
+		name: 'A Cup Of Tea',
+		icon: 'cuptea',
+		desc: 'Reduces the time dragons need to recover after injury',
+		group: 'bean',
+		draglvl: 'Dragling',
+	});
+
+
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }
