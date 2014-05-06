@@ -25,6 +25,7 @@ Molpy.Constants = { // Rank 0:simple, 1:harder, 2:10+, 3:complex
 */
 
 Molpy.DragonsById = [];
+Molpy.Dragons = {};
 Molpy.DragonN = 0;
 	
 Molpy.Dragon = function(args) {
@@ -32,8 +33,8 @@ Molpy.Dragon = function(args) {
 	for(var prop in args) {
 		if(typeof args[prop] !== 'undefined' ) this[prop] = args[prop];
 	};
-	var name = this.name;
 	Molpy.DragonsById[this.id] = this;
+	Molpy.Dragons[this.name] = this;
 
 	// Methods here if any
 }
@@ -51,7 +52,7 @@ Molpy.DefineDragons = function() {
 		exp: 100,
 		condition: function() { return true },
 		desc: 'These small timid creatures hide in the shadows and under leaves keeping out of the way of fierce cats',
-		digbase: 0.01,
+		digbase: 0.1,
 	});
 	new Molpy.Dragon({
 		name: 'DragonNewt',
@@ -155,7 +156,6 @@ Molpy.DefineDragons = function() {
 };
 
 
-Molpy.Opponents = [];
 Molpy.OpponentsById = [];
 Molpy.OpponentN = 0;
 	
@@ -164,7 +164,6 @@ Molpy.Opponent = function(args) {
 	for(var prop in args) {
 		if(typeof args[prop] !== 'undefined' ) this[prop] = args[prop];
 	}
-	Molpy.Opponents[this.name] = this;
 	Molpy.OpponentsById[this.id] = this;
 
 	// Methods
@@ -188,7 +187,7 @@ Molpy.Opponent = function(args) {
 			str += 'an ';
 			break;
 		default:
-			str += 'a ';
+			str += 'a '+first;
 			break;
 		}
 		str += rest;
@@ -196,15 +195,15 @@ Molpy.Opponent = function(args) {
 	}
 
 	this.attackval = function(n) { // [physical,magical]
-		if (this.id < 10) return [Math.floor(Math.pow(42,Math.exp(this.id/2)))*n,0];
-		return [Infinity,Math.floor(Math.pow(42,Math.exp(this.id-10)))*n];
+//		if (this.id < 10) return [(Math.pow(42,Math.exp(this.id/2))*n)/1234,0];
+		return [Math.pow(42,Math.exp(this.id/2))*n/1234,Math.pow(672,Math.exp(this.id-10))*n/1764];
 	};
 
 	this.takeReward = function(n) {
 		var rwds= [];
 		for (var stuff in this.reward) {
 			var num = 0;
-			var range = this.reward.stuff;
+			var range = this.reward[stuff];
 			var bits = range.split('-');
 			if (bits[1]) {
 				var minval = DeMolpify(bits[0]);
@@ -215,9 +214,9 @@ Molpy.Opponent = function(args) {
 			}
 			if (num) {
 				num *= (n||1);
-				Molpy.rwds.push(stuff + ': ' + Molpify(num,2));
-				if (stuff == 'copper') { stuff = 'Gold'; num/=1000000; }
-				else if (stuff == 'silver') { stuff = 'Gold'; num/=1000; }
+				rwds.push(Molpify(num,2) + ' ' + stuff);
+				if (stuff == 'Copper') { stuff = 'Gold'; num/=1000000; }
+				else if (stuff == 'Silver') { stuff = 'Gold'; num/=1000; }
 				Molpy.Add(stuff,num);
 			}
 		}
@@ -242,7 +241,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Peasant',
-		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock'],
+		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock','pun'],
 		reward: {Copper:'10-1000'},
 		exp: '1K',
 	});
@@ -354,40 +353,84 @@ Molpy.DragonDigRate = 0;
 Molpy.DigValue = 0;
 Molpy.TotalDragons = 0;
 Molpy.TotalNPsWithDragons = 0;
+Molpy.HighestNPwithDragons = 0;
+Molpy.DigTime=0;
+Molpy.DiggingFinds={};
 
 Molpy.DragonDigRecalc = function() {
 	Molpy.DragonDigRecalcNeeded = 0;
 	var td = 0;
-	var nps = 0;
-	var drags = 0;
+	Molpy.TotalNPsWithDragons = 0;
+	Molpy.TotalDragons = 0;
+	Molpy.HighestNPwithDragons = 0;
 	for (var dpx in Molpy.NPdata) {
 		dnp = Molpy.NPdata[dpx];
-		if (dnp.ammount) {
-			if (dnp.state == 0) td += dnp.ammount*dnp.dig*Molpy.DragonsById[Molpy.Level('DQ')].digbase;
-			nps++;
-			drags += dnp.amount;
+		if (dnp && dnp.ammount) {
+			td += dnp.ammount*dnp.dig*Molpy.DragonsById[Molpy.Level('DQ')].digbase;
+			Molpy.TotalNPsWithDragons++;
+			Molpy.TotalDragons += dnp.ammount;
+			Molpy.HighestNPwithDragons = dpx*1;
 		}
 	}
 	if (Molpy.Got('Bucket and Spade')) td *=2;
 	if (Molpy.Got('Strength Potion')) td *=5;
 	if (Molpy.Got('Lucky Ring')) td *=5;
 	Molpy.DragonDigRate = td;
-	Molpy.TotalDragons = drags;
-	Molpy.TotalNPsWithDragons = nps;
 }
 
-Molpy.DragonDigging = function() {
+Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
+	if( Molpy.DigTime++ >100) {
+		if (Molpy.DiggingFinds.length) {
+			var str = 'During the last 100 digs, the dragons have found: ';
+			var strs = [];
+			for (var find in Molpy.DiggingFinds) {
+				var stuff = find;
+				var n = Molpy.DiggingFinds[find];
+				if (find == 'Gold' && n < 1) {
+					if (n < 0.001) {
+						stuff = 'Copper';
+						n *= 1000000;
+					} else {
+						stuff = 'Siler';
+						n *= 1000;
+					}
+				}
+
+				strs.push(Molpify(n) + ' ' +stuff);
+			};
+			if (strs.length == 1) str += strs[0]
+			else {
+				str += strs.slice(0,-2).join(', ') + ' and ' + strs[-1];
+			}
+			Molpy.Notify(str,1);
+		}
+		Molpy.DigTime = 0;
+		Molpy.DiggingFinds = {};
+	}
+	
 	if (Molpy.DragonDigRecalcNeeded) Molpy.DragonDigRecalc();
 	Molpy.DigValue += Molpy.DragonDigRate*Math.random();
 	if (Molpy.DigValue < 1) return;
 	var finds = Math.floor(Molpy.DigValue);
 	Molpy.DigValue -= finds;
-	// Find coins
-	
-	// Find Diamonds
-	
-	// Find Things
-	
+	var found = '';
+	var n = 0;
+	if (Math.random()<0.99/Math.log(finds+2.14)) { // Find coins
+		found = 'Gold';
+		n = finds;
+		Molpy.Add(found,n/1e6);
+	} else if (Math.random() <0.95) { // Find Diamonds
+		found = 'Diamonds';
+		n = Math.log(finds);
+		Molpy.Add(found,n);
+	} else { // Find Things
+		// TODO
+	}
+	if (Molpy.DiggingFinds[found]) {
+		Molpy.DiggingFinds[found] += n;
+	} else {
+		Molpy.DiggingFinds[found] = n;
+	}
 }
 
 // Fledging ********************************************************
@@ -408,7 +451,7 @@ Molpy.DragonFledge = function(clutch) {
 	var fight = 1;
 	if (!npd) npd = Molpy.NPdata[Molpy.newpixNumber] = {};
 
-	if (npd && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.ammount)))	{ // Replace
+	if (npd && npd.ammount > 0 && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.ammount)))	{ // Replace
 		oldDT = npd.DragonType;
 		oldDN = npd.ammount;
 		fight = 0;
@@ -416,44 +459,75 @@ Molpy.DragonFledge = function(clutch) {
 	npd.DragonType = dq.Level;
 	npd.ammount = hatch.clutches[clutch];
 	if (npd.ammount > lim) {
-		waste = Math.max(npd.ammount - lim,0);
-		npd.ammount = lim;
-	}
-	npd.defence, npd.attack, npd.dig, npd.breath, npd.magic1, npd.magic2, npd.magic3 = 
-		hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
-	npd.countdown = 0;
-	npd.state = 0;
-	switch (hatch.diet[clutch]) {
-	case 1: // Goats
-		npd.breath/=2;
-		npd.magic1 = npd.magic2 = npd.magic3 = 0;
-		break;
-	case 2: // Hatchlings!
-		npd.magic1 /=2; 
-		npd.magic2 = npd.magic3 = 0;
-		break;
-	case 3: // Princesses
-		break;
+		if (lim < 0) {
+			waste = npd.ammount;
+			npd.ammount = 0;
+		} else {
+			waste = Math.max(npd.ammount - lim,0);
+			npd.ammount = Math.max(0,lim);
+		}
 	}
 
-	Molpy.Notify(Molpify(npd.ammount) + ' ' + Molpy.DragonsById[npd.DragonType].name + ' have fledged at NP'+Molpy.newpixNumber,1);
-	if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name);
-	if (waste) Molpy.Notify('There was not enough space for '+Molpfy(waste)+' of them');
+	if (npd.ammount) {
+		var props = hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
+		npd.defence= props[0];
+		npd.attack = props[1];
+		npd.dig    = props[2];
+		npd.breath = props[3];
+		npd.magic1 = props[4];
+		npd.magic2 = props[5];
+		npd.magic3 = props[6];
+	
+		switch (hatch.diet[clutch]) {
+		case 1: // Goats
+			npd.breath/=2;
+			npd.magic1 = npd.magic2 = npd.magic3 = 0;
+			break;
+		case 2: // Hatchlings!
+			npd.magic1 /=2; 
+			npd.magic2 = npd.magic3 = 0;
+			break;
+		case 3: // Princesses
+			break;
+		}
+
+		Molpy.Notify(Molpify(npd.ammount) + ' ' + Molpy.DragonsById[npd.DragonType].name +
+				(npd.ammount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
+		if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name);
+	}
+	if (waste) Molpy.Notify('There was not enough space for '+(npd.ammount?Molpify(waste):'any')+' of them');
 	hatch.clutches[clutch] = 0;
 	hatch.clean(1);
 	Molpy.DragonDigRecalcNeeded = 1;
 
-	if (fight) Molpy.LocalsAttack();
+	if (fight && npd.ammount) Molpy.LocalsAttack();
 }
 
 Molpy.FindLocals = function(where) {
 	var type = 0;
 	var numb = 1;
-	type = Math.min(Math.floor(where/150),Molpy.Opponents.length-1);
-	numb = Math.floor(((where-type*150)/30)*(Math.random()+1));
+	type = Math.min(Math.floor(where/150),Molpy.OpponentsById.length-1);
+	numb = Math.floor(((where-type*150)/30)*(Math.random())+1);
 	return [type,numb];
 }
 
+Molpy.DragonStatsNow = function(where) {
+	var Stats = {};
+	var npd = Molpy.NPdata[where];
+	if (!npd) return Stats;
+	for(var prop in npd) {
+		if(typeof npd[prop] !== 'undefined' ) Stats[prop] = npd[prop];
+	}
+
+	if (Molpy.Got('Lucky Ring')) Stats.defence *= 2;
+	if (Molpy.Got('Ooo Shinny!')) Stats.defence *= 2;
+	if (Molpy.Got('Spines')) Stats.defence *= Math.pow(1.2,Molpy.Level('Spines'));;
+	if (Molpy.Got('Big Teeth')) Stats.attack *= Math.pow(1.2,Molpy.Level('Big Teeth'));
+	if (Molpy.Got('Magic Teeth')) Stats.attack *= Math.pow(10,Molpy.Level('Magic'));
+	if (Molpy.Got('Tusks')) Stats.attack *= Math.pow(2,Molpy.Level('Tusks'));
+	// There will be handling for many boosts here this is why its not just npd.
+	return Stats;
+}
 
 Molpy.LocalsAttack = function() {
 	// Select locals
@@ -464,27 +538,104 @@ Molpy.LocalsAttack = function() {
 	// give rewards and experience
 	// Notify
 	
-	var npd = NPdata[Molpy.newpixNumber];
+	var dq = Molpy.Boosts['DQ'];
+	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var lcls = Molpy.FindLocals(Molpy.newpixNumber);
 	var type = lcls[0];
 	var numb = lcls[1];
 	var local = Molpy.OpponentsById[type];
-	var atktxt = local.attackstxt(numb);
+	var atktxt = local.attackstxt(numb) + ' attacks as you fledge.  ';
 	var atkval = local.attackval(numb);
-	// Magical attacks
-	
-	// TODO
 
-	// Physical attacks
+	var dragstats = Molpy.DragonStatsNow(Molpy.newpixNumber);
+	var result = 0;
+	var localhealth = atkval[0]+atkval[1];
+	var dragnhealth = dragstats.defence || 0;
+	var factor = 1;
+	var loops = 0;
+
+	// Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
 	
-	// Resolve
-	if (npd.ammount) {
-		if (type/2 <= npd.DragonType) Molpy.Experience(DeMolpify(local.exp)*numb)
-		else Molpy.Experience(npd.DragonType*100);
-	} else {
-		local.takereward();	
-		Molpy.Experience(DeMolpify(local.exp)*numb); 
+	while (result == 0 && loops<=100) {
+		if ((loops&1)==0) { // Magical attacks && Breath attacks
+	
+			// TODO
+
+		} else { // Physical attacks
+			localhealth -= (dragstats.attack || 0)*Math.random();
+			if (loops >1 || dragstats.attack > 10*atkval[0]) dragnhealth -= atkval[0]*Math.random();
+
+		};
+//		Molpy.Notify('loop = ' + loops + ' local = '+localhealth+' dragon = '+dragnhealth,1);
+		if (dragnhealth < 0) {
+			result = -1 -(dragnhealth < -dragstats.defence);
+		} else if (localhealth < 0) {
+//			Molpy.Notify('result ='+ result+' localneg = '+localhealth,1);
+			factor = dragnhealth/dragstats.defence;
+//			Molpy.Notify('factor ='+ factor,1);
+			if (factor > 0.9) result = 3
+			else if (factor > 0.5 || npd.ammount == 1) result = 2
+			else result = 1;
+		}
+		loops++;
 	}
+
+	switch (result) {
+		case -2 : // wipeout
+			npd.ammount = 0;	
+			Molpy.DragonExperience(Math.pow(10,npd.DragonType)/5);
+			Molpy.Notify(atktxt + ' You are totally destroyed in a one sided fight.',1);
+			break;
+
+		case -1 : // lost a hard fight
+			npd.ammount = 0;	
+			Molpy.DragonExperience(Math.max(DeMolpify(local.exp)*numb, Math.pow(10,npd.DragonType)/5));
+			Molpy.Notify(atktxt + ' You lost, but lost with dignity',1);
+			break;
+
+		case 0 : // Tie
+			Molpy.Notify(atktxt + ' It\'s a tie - no idea what to do...',1);
+			break;
+
+		case 1 : // Pyric victory - lose a dragon...
+			var dloss = 0;
+			if (npd.ammount > 1) {
+				npd.ammount--;
+				dloss = 1;
+				factor *=2;
+			}
+			var rectime = (dragstats.DragonType+1)*500/factor;
+			if (Molpy.Got('Healing Potion')) rectime/=5;
+			if (Molpy.Got('A Cup of Tea')) rectime/=2;
+			rectime = Math.floor(rectime);
+			dq.ChangeState(1,rectime);
+			Molpy.Notify(atktxt + ' You won a very hard fight, ' + 
+					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType]+' and you':'but') +
+					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
+			local.takeReward();	
+			Molpy.DragonExperience(DeMolpify(local.exp)*numb); 
+			break;
+
+		case 2 : // won a hard fight - need to recover
+			var rectime = (dragstats.DragonType+1)*500/factor;
+			if (Molpy.Got('Healing Potion')) rectime/=5;
+			if (Molpy.Got('A Cup of Tea')) rectime/=2;
+			rectime = Math.floor(rectime);
+			dq.ChangeState(1,rectime);
+			Molpy.Notify(atktxt + ' You won a hard fight, but will need to recover for ' + 
+					MolpifyCountdown(dq.countdown, 1),1);
+			local.takeReward();	
+			Molpy.DragonExperience(DeMolpify(local.exp)*numb); 
+			break;
+
+		case 3 : // Wipeout for no loss
+			Molpy.Notify(atktxt + ' You wiped ' + (numb==1?(Math.random()<0.5?'him':'her'):'them') + 
+					' out with ease',1);
+			local.takeReward();	
+			Molpy.DragonExperience(DeMolpify(local.exp)*numb); 
+			break;
+	}
+	Molpy.DragonDigRecalcNeeded = 1;
 }
 
 // Type 0: to display, 1: action, 2: cost text
@@ -551,15 +702,15 @@ Dragons
 1	Lay eggs					Y	Y
 2	Feed hatchlings <- Goats, Princesses		Y	y
 3	Fledge						y	y
-4	Locals attack
+4	Locals attack					y	y
 5	Automatc Digging (intially slow)		1
 6	Health effects
 7	Beach Digging
 8	Redundattacks
 9	Opponents 
-	9.1	Abilities
-	9.2	Attack
-	9.3	Rewards
+	9.1	Abilities				y	y
+	9.2	Attack					y	y
+	9.3	Rewards					y	y
 10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch
 11	NPdata
 12	Dragon Pane (Whats here)			y	y

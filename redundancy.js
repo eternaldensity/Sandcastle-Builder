@@ -75,6 +75,7 @@ var DecimalFormats = [['',''], ['<small>','</small>'], ['<span class=decimaltext
     			['<font color=red>','</font>'], ['<font color=#0c0>','</font>'], ['<font color=#cc0>','</font>'],
 			['<font color=#c0c>','</font>'], ['<font color=#0cc>','</font>'], ['<font color=#00c>','</font>']];
 function Molpify(number, raftcastle, shrinkify) {
+	raftcastle = Math.max(raftcastle || 0,Molpy.options.mindecimal);
 	var molp = InnerMolpify(number,raftcastle, shrinkify);
 	if (Molpy.options.smalldecimal) {
 		if (molp.indexOf('.')) molp = molp.replace(/\.([0-9]*)/,'.' + DecimalFormats[Molpy.options.smalldecimal][0] + '$1' + DecimalFormats[Molpy.options.smalldecimal][1]);

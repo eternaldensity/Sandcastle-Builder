@@ -413,7 +413,7 @@
 			var dd = Molpy.NPdata[np];
 			str += s;
 		        if (dd && (dd.DragonType || dd.ammount)) {
-				str += dd.DragonType + c + dd.ammount + c + dd.defence + c + dd.attack + c + dd.dig + c + dd.state + c + dd.countdown;
+				str += dd.DragonType + c + dd.ammount + c + dd.defence + c + dd.attack + c + dd.dig ;
 				if (dd.breath || dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.breath || 0);
 				if (dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.magic1 || 0);
 				if (dd.magic2 || dd.magic3) str += c + (dd.magic2 || 0);
@@ -758,8 +758,6 @@
 				dd.Defence = parseFloat(pretzels.shift());
 				dd.Attack = parseFloat(pretzels.shift());
 				dd.Dig = parseFloat(pretzels.shift());
-				dd.State = parseInt(pretzels.shift());
-				dd.countdown = parseFloat(pretzels.shift());
 				dd.breath = parseFloat(pretzels.shift() || 0);
 				dd.magic1 = parseFloat(pretzels.shift() || 0);
 				dd.magic2 = parseFloat(pretzels.shift() || 0);
@@ -1009,7 +1007,7 @@
 			Molpy.Boosts['Time Lord'].power = Molpy.Boosts['Time Lord'].bought +1 - Molpy.Level('Time Lord'); // Count down rather than up
 		}
 		if(version < 3.34) {
-			if (Molpy.Boosts['WiseDragon'].power > 444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
+			if (Molpy.Boosts['CDSP'].power > 444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
 			if (Molpy.Has('Maps', 80)) Molpy.UnlockBoost('DNS'); 
 			if (Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
 		}
@@ -1021,7 +1019,11 @@
 			}
 		}
 		if(version < 3.421) {
-			if (Molpy.Boosts['WiseDragon'].bought) Molpy.Boosts['WiseDragon'].bought = (Molpy.Boosts['WiseDragon'].power || 0)+1;
+			if (Molpy.Boosts['CDSP'].bought) Molpy.Boosts['CDSP'].bought = (Molpy.Boosts['CDSP'].power || 0)+1;
+		}
+		if(version < 3.5) {
+			if (Molpy.Boosts['CDSP'].power >=1024) Molpy.UnlockBoost('The Fading');
+			if (Molpy.Got('DQ')) Molpy.UnlockBoost('RDKM');
 		}
 
 	}
@@ -1237,6 +1239,7 @@
 			Molpy.BuildLootLists();
 			Molpy.allNeedRepaint = 1;
 			Molpy.mustardTools = 0;
+			typocount = 0;
 		}
 	}
 }
