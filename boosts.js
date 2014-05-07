@@ -7744,8 +7744,12 @@ Molpy.DefineBoosts = function() {
 				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal:'+ eggcost + '}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
 				str += '<br>Hatchlings will mature into ' + Molpy.DragonsById[me.Level].name + 's. ';
 				str += Molpy.DragonsById[me.Level].desc + '<p>';
-				str += '<br>The Dragons have '+Molpify(me.experience,1)+' experience';
 				if (Molpy.DragonUpgrade(0)) str += '<p><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> '+Molpy.DragonUpgrade(2);			}
+				if (Molpy.TotalDragons) {
+					str += 'The Dragons are ' + ['Digging','Recovering','Hiding'][me.overallState];
+					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
+				}
+				if (me.experience) str += '<br>They have '+Molpify(me.experience,1)+' experience';
 			return str;
 		},
 		
@@ -7758,20 +7762,17 @@ Molpy.DefineBoosts = function() {
 		experience: 0,
 		defSave: 1,
 		defStuff: 1,
-		overallState: 0, // 0 all heathy, 1 injuries, 2 hiding, 3 both
+		overallState: 0, // 0 all heathy, 1 hiding, 2 injuries
 
 		saveData: {4:['experience',0,'float'],
 			   5:['overallState',0,'int'],
 		},
-		countdownFunction: function() { // Used for overallState
-			if (this.countdown-- <= 0) {
-				this.countdown = 0;;
-				this.overallState = 0;
-			}
+		countdownLockFunction: function() { // Used for overallState
+			this.overallState = 0;
 		},
 		ChangeState: function(newstate, duration) {
 			this.overallState = newstate;
-			this.countdown += duration;		
+			this.countdown += (duration || 1);		
 		},
 		clickBeach: function() {
 			if (this.bought && Molpy.DragonDigRate && Molpy.Got('Beach Dragon')) {
@@ -7898,6 +7899,8 @@ Molpy.DefineBoosts = function() {
 			}
 			if (cleanup) this.clean(cleanup);
 		},
+
+		countdownLockFunction: function() { return this.countdownFunction() },
 
 		clean: function(cleanup) {
 			while (cleanup--) {

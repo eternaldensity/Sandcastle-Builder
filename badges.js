@@ -1031,6 +1031,26 @@ Molpy.DefineBadges = function() {
 		stats: 'You may find this useful...',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'First Colonist',
+		desc: 'Dragons have colonised a NP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'There are two of them!',
+		desc: 'Survive colonising when there are two opponents',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Found Something!',
+		desc: 'Diggining Dragons have found their first treasure',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Wheee Diamonds',
+		desc: 'Found a diamond',
+		vis: 1
+	});
 	
 /**************************************************************
  * Discoveries

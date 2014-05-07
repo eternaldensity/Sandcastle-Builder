@@ -41,7 +41,7 @@ For personal amusement only.
 - Many bug fixes, tweaks, nerfs and buffs
 - Fading - New boost from high CDSP
 - Aleph e - Does for Chips/Blocks what Aleph One did for sand and castles
-- The Alias for Crouching Dragon, Sleeping Panther is now CDSP - not WiseDragon
+- The Alias for Crouching Dragon, Sleeping Panther is now CDSP not WiseDragon
 - Lots of behind the sceens dragon stuff, leading to:
 
 - !!! HERE BE DRAGONS !!!
@@ -66,6 +66,7 @@ For personal amusement only.
 	p (not yet classic|| default layouts)
 - Dragon Overview Pane
 	n (may not include in launch)
+- New Dragon related Badges
 
 #### Epsilon
 - Several small fixes

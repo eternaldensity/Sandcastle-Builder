@@ -2809,14 +2809,18 @@ Molpy.Up = function() {
 			if(me.bought) {
 				if(me.countdown) {
 					me.countdown--;
-					me.Refresh();
 					if(me.countdown <= 0) {
-						Molpy.LockBoost(i);
-						me.power = 0;
+						if(me.countdownLockFunction) {
+							me.countdownLockFunction()
+						} else {
+							Molpy.LockBoost(i);
+							me.power = 0;
+						}
 						me.countdown = 0;
 					} else {
 						if(me.countdownFunction) me.countdownFunction();
 					}
+					me.Refresh();
 				}
 			}
 			if(me.bought) {
@@ -2883,6 +2887,7 @@ Molpy.Up = function() {
 		if(Molpy.Got('Sand to Glass')) Molpy.Boosts['TF'].digGlass(Math.floor(Molpy.Boosts['TF'].loadedPermNP*Molpy.Papal('GlassSand')));
 		Molpy.GlassNotifyFlush();
 		Molpy.RunToolFactory();
+		Molpy.DragonDigging(0);
 		if(Molpy.recalculateRates) Molpy.calculateRates();
 		if(Molpy.BadgesOwned == 0) Molpy.EarnBadge('Redundant Redundancy');
 

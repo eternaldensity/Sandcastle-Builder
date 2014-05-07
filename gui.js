@@ -1324,7 +1324,7 @@ Molpy.DefineGUI = function() {
 			var dq = Molpy.Boosts['DQ'];
 			var str = Molpify(npd.ammount) + ' ' + Molpy.DragonsById[Molpy.Level('DQ')].name + (npd.ammount > 1?'s':'') + '<br>';
 			str += ['Digging','Recovering','Hiding'][dq.overallState];
-			if (npd.state > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
+			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
 			g('DragonsNP').innerHTML = str;
 		} else {
 			g('DragonsNP').innerHTML = 'No Dragons here';
@@ -1343,7 +1343,7 @@ Molpy.DefineGUI = function() {
 				if (bst.alias == 'Gold' && bst.Level < 1) {
 					var name = 'Silver';
 					var amt = bst.Level*1000;
-					if (amt < 0.0001) { name = 'Copper'; amt *=1000;};
+					if (amt < 1) { name = 'Copper'; amt = Math.round(amt*1000)};
 					g('stuff' + bst.alias + 'Count').innerHTML = name + ': ' + Molpify(amt, 3);
 				} else {
 					g('stuff' + bst.alias + 'Count').innerHTML = bst.plural + ': ' + Molpify(bst.Level, 3);

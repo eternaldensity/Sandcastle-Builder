@@ -1,5 +1,5 @@
 /*
-
+// NOt used now
 Molpy.Constants = { // Rank 0:simple, 1:harder, 2:10+, 3:complex
 	Pi:	{name:'&pi;',				rank:0,	value:3.141592653589793},
 	Phi:	{name:'&phi;',				rank:0, value:1.618033988749894},
@@ -372,6 +372,7 @@ Molpy.DragonDigRecalc = function() {
 			Molpy.HighestNPwithDragons = dpx*1;
 		}
 	}
+	if (Molpy.TotalDragons) td += 0.01;
 	if (Molpy.Got('Bucket and Spade')) td *=2;
 	if (Molpy.Got('Strength Potion')) td *=5;
 	if (Molpy.Got('Lucky Ring')) td *=5;
@@ -379,8 +380,9 @@ Molpy.DragonDigRecalc = function() {
 }
 
 Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
+	if (Molpy.DragonDigRate == 0 && Molpy.DragonDigRecalcNeeded == 0) return;
 	if( Molpy.DigTime++ >100) {
-		if (Molpy.DiggingFinds.length) {
+		if (Object.keys(Molpy.DiggingFinds).length) {
 			var str = 'During the last 100 digs, the dragons have found: ';
 			var strs = [];
 			for (var find in Molpy.DiggingFinds) {
@@ -391,7 +393,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 						stuff = 'Copper';
 						n *= 1000000;
 					} else {
-						stuff = 'Siler';
+						stuff = 'Silver';
 						n *= 1000;
 					}
 				}
@@ -405,31 +407,37 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 			Molpy.Notify(str,1);
 		}
 		Molpy.DigTime = 0;
-		Molpy.DiggingFinds = {};
+//		Molpy.DiggingFinds = {};
 	}
+	if (Molpy.Boosts['DQ'].overallState) return;
 	
 	if (Molpy.DragonDigRecalcNeeded) Molpy.DragonDigRecalc();
 	Molpy.DigValue += Molpy.DragonDigRate*Math.random();
 	if (Molpy.DigValue < 1) return;
-	var finds = Math.floor(Molpy.DigValue);
+	Molpy.EarnBadge('Found Something!');
+	var finds = Math.min(Math.floor(Molpy.DigValue),1);
 	Molpy.DigValue -= finds;
+//	Molpy.Notify('Found '+ finds + ' things',1);
 	var found = '';
 	var n = 0;
 	if (Math.random()<0.99/Math.log(finds+2.14)) { // Find coins
 		found = 'Gold';
-		n = finds;
-		Molpy.Add(found,n/1e6);
+		n = finds/1000000;
+		Molpy.Add(found,n);
 	} else if (Math.random() <0.95) { // Find Diamonds
 		found = 'Diamonds';
-		n = Math.log(finds);
+		n = Math.max(Math.floor(Math.log(finds)),1);
 		Molpy.Add(found,n);
+		Molpy.EarnBadge('Wheee Diamonds');
 	} else { // Find Things
 		// TODO
 	}
-	if (Molpy.DiggingFinds[found]) {
-		Molpy.DiggingFinds[found] += n;
-	} else {
-		Molpy.DiggingFinds[found] = n;
+	if (found) {
+		if (Molpy.DiggingFinds[found]) {
+			Molpy.DiggingFinds[found] += n;
+		} else {
+			Molpy.DiggingFinds[found] = n;
+		}
 	}
 }
 
@@ -498,9 +506,10 @@ Molpy.DragonFledge = function(clutch) {
 	if (waste) Molpy.Notify('There was not enough space for '+(npd.ammount?Molpify(waste):'any')+' of them');
 	hatch.clutches[clutch] = 0;
 	hatch.clean(1);
-	Molpy.DragonDigRecalcNeeded = 1;
 
 	if (fight && npd.ammount) Molpy.LocalsAttack();
+	if (npd.ammount) Molpy.EarnBadge('First Colonist');
+	Molpy.DragonDigRecalc(); // Always needed
 }
 
 Molpy.FindLocals = function(where) {
@@ -553,8 +562,9 @@ Molpy.LocalsAttack = function() {
 	var dragnhealth = dragstats.defence || 0;
 	var factor = 1;
 	var loops = 0;
+	if (numb > 1) Molpy.EarnBadge('There are two of them');
 
-	// Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
+//	 Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
 	
 	while (result == 0 && loops<=100) {
 		if ((loops&1)==0) { // Magical attacks && Breath attacks
@@ -617,7 +627,7 @@ Molpy.LocalsAttack = function() {
 			break;
 
 		case 2 : // won a hard fight - need to recover
-			var rectime = (dragstats.DragonType+1)*500/factor;
+			var rectime = (dragstats.DragonType+1)*250/factor;
 			if (Molpy.Got('Healing Potion')) rectime/=5;
 			if (Molpy.Got('A Cup of Tea')) rectime/=2;
 			rectime = Math.floor(rectime);
@@ -675,7 +685,6 @@ Molpy.DragonUpgrade = function(type) {
  * Cardinals - improve The Pope
  * Dragon features -
  * - Legs (0,2,4,?)
- *   Big Teeth
  *   Multiple heads (1,3,9,27...) Russian mythology
  *   Fire breath
  *   Ice breath
@@ -684,8 +693,6 @@ Molpy.DragonUpgrade = function(type) {
  *   Water breath
  *   Poison
  *   Gas breath
- *   Spines
- *   Tusks
  *   Hoard Treasure, Princesses, 
  *
  * Princesses are stuff, the more you have the more knights you attract
@@ -696,14 +703,14 @@ TODO
 Dragons
 	What						Written	Tested					
 -9	RDKM						Y	y
--8	NPdata persistence				y	
+-8	NPdata persistence				y	y
 -7	Nestlining					y	y
 -6	Opponents					y	
 1	Lay eggs					Y	Y
 2	Feed hatchlings <- Goats, Princesses		Y	y
 3	Fledge						y	y
 4	Locals attack					y	y
-5	Automatc Digging (intially slow)		1
+5	Automatc Digging (intially slow)		p
 6	Health effects
 7	Beach Digging
 8	Redundattacks
@@ -712,7 +719,7 @@ Dragons
 	9.2	Attack					y	y
 	9.3	Rewards					y	y
 10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch
-11	NPdata
+11	NPdata						y	y
 12	Dragon Pane (Whats here)			y	y
 12.1	For classic
 13	Dragon Stats					y	y
