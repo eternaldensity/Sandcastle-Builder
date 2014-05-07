@@ -2112,11 +2112,11 @@ Molpy.DefineBoosts = function() {
 		HasSuper: Molpy.BoostFuncs.Has,
 		SpendSuper: Molpy.BoostFuncs.Spend,
 		Has: function(n) {
-			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
+			if (Molpy.Got('Aleph e') && this.power == Infinity) return true;
 			return this.HasSuper(n);
 		},
 		Spend: function(n) {
-			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
+			if (Molpy.Got('Aleph e') && this.power == Infinity) return true;
 			return this.SpendSuper(n);
 		},
 		
@@ -2454,11 +2454,11 @@ Molpy.DefineBoosts = function() {
 		HasSuper: Molpy.BoostFuncs.Has,
 		SpendSuper: Molpy.BoostFuncs.Spend,
 		Has: function(n) {
-			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
+			if (Molpy.Got('Aleph e') && this.power == Infinity) return true;
 			return this.HasSuper(n);
 		},
 		Spend: function(n) {
-			if (Molpy.Got('Aleph e') && this.power == infinity) return true;
+			if (Molpy.Got('Aleph e') && this.power == Infinity) return true;
 			return this.SpendSuper(n);
 		},
 		refreshFunction: Molpy.RefreshGlass,
@@ -4147,8 +4147,8 @@ Molpy.DefineBoosts = function() {
 		BoH: 90000,
 		VV: 750000,
 		Nest: 5e12,
-		DMM: infinity,
-		DMF: infinity
+		DMM: Infinity,
+		DMF: Infinity
 	};
 	
 	Molpy.blackprintOrder = ['SMM', 'SMF', 'GMM', 'GMF', 'TFLL', 'AO', 'AA', 'AE', 'BG', 'Bacon', 'SG', 'Milo', 'ZK', 'VS', 'CFT', 'BoH', 'VV', 'Nest','DMM','DMF'];
@@ -7728,7 +7728,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.EggCost = function() {
 		var eggs = Molpy.Boosts['Eggs'].Level;
 		if (eggs < 6 && Molpy.Level('DQ') < 6) return DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs]);
-		return infinity;
+		return Infinity;
 	}
 
 	new Molpy.Boost({ 
@@ -7755,7 +7755,7 @@ Molpy.DefineBoosts = function() {
 					str += 'The Dragons are ' + ['Digging','Recovering','Hiding'][me.overallState];
 					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
 				}
-				if (me.experience) str += '<br>They have '+Molpify(me.experience,1)+' experience';
+				if (me.experience) str += '<br>Experience: '+Molpify(me.experience,1);
 			return str;
 		},
 		
@@ -9720,33 +9720,53 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Big Teeth',
 		icon: 'bigteeth',
-		desc: 'Increases the offensive value of Dragons',
+		desc: function(me) {
+			str = 'Increases the offensive value of Dragons';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' Big Teeth';
+			return str;
+		},
 		draglvl: 'Dragling',
 		limit: 20,
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
 		name: 'Spines',
 		icon: 'spines',
-		desc: 'Increases the defense value of Dragons',
+		desc: function(me) {
+			str = 'Increases the defense value of Dragons';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' spine' + plural(me.bought);
+			return str;
+		},
 		draglvl: 'Dragling',
 		limit: 20,
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
 		name: 'Tusks',
 		icon: 'tusks',
-		desc: 'Increases the offensive value of Dragons',
+		desc: function(me) {
+			str = 'Increases the offensive value of Dragons';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' tusk' + plural(me.bought);
+			return str;
+		},
 		draglvl: 'DragonNewt',
 		limit: 4,
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
 		name: 'Adamintine Armour',
 		icon: 'armour',
-		desc: 'Increases the defense value of Dragons',
+		desc: function(me) {
+			str = 'Increases the defense value of Dragons';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' piece' + plural(me.bought) + ' of '+me.name;
+			return str;
+		},
 		draglvl: 'DragonNewt',
 		limit: 30,
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
@@ -9771,6 +9791,7 @@ Molpy.DefineBoosts = function() {
 		desc: 'Increases the offence value of Dragons',
 		draglvl: 'Dragon',
 		limit: 50,
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
@@ -9799,6 +9820,13 @@ Molpy.DefineBoosts = function() {
 		icon: 'healingpotion',
 		desc: 'Increases Draconic Health and speeds up healing',
 		draglvl: 'DragonNewt',
+		limit: 20,
+		Spend: function() {
+			if (!this.bought) return false;
+			this.bought--;
+			return true;
+		},
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
@@ -9807,6 +9835,12 @@ Molpy.DefineBoosts = function() {
 		desc: 'Increases Draconic Strength',
 		draglvl: 'Wyrm',
 		limit: 20,
+		Spend: function() {
+			if (!this.bought) return false;
+			this.bought--;
+			return true;
+		},
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
@@ -9855,9 +9889,20 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ // Hook
 		name: 'A Cup Of Tea',
 		icon: 'cuptea',
-		desc: 'Reduces the time dragons need to recover after injury',
+		desc: function(me) {
+			str = 'Reduces the time dragons need to recover after injury';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' cup' + plural(me.bought) + ' of Tea';
+			return str;
+		},
 		group: 'bean',
 		draglvl: 'Dragling',
+		limit: 4,
+		Spend: function() {
+			if (!this.bought) return false;
+			this.bought--;
+			return true;
+		},
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({ // Hook

@@ -1455,7 +1455,7 @@ Molpy.Up = function() {
 				if(Molpy.ProtectingPrice() && !free) return;
 				if(!free && !Molpy.Spend(realPrice)) return;
 
-				this.bought = 1;
+				this.bought = (this.bought || 0) +1;
 				if(this.buyFunction) this.buyFunction();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Buy', this.name, !free]);
 				Molpy.boostNeedRepaint = 1;
