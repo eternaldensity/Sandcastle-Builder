@@ -1468,7 +1468,7 @@ Molpy.DefineGUI = function() {
 		g('dragontypestat').innerHTML = Molpy.DragonsById[Molpy.Level('DQ')].name;
 		g('dragonnumbersstat').innerHTML = Molpify(Molpy.TotalDragons, 1);
 		g('npswithdragonsstat').innerHTML = Molpify(Molpy.TotalNPsWithDragons, 1);
-		g('dragondiggingstat').innerHTML = Molpify(Molpy.DragonDigRate, 1);
+		g('dragondiggingstat').innerHTML = Molpify(Molpy.DragonDigRate, 2);
 
 		g('loadcountstat').innerHTML = Molpify(Molpy.loadCount, 1);
 		g('savecountstat').innerHTML = Molpify(Molpy.saveCount, 1);

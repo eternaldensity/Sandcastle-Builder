@@ -366,7 +366,7 @@ Molpy.DragonDigRecalc = function() {
 	for (var dpx in Molpy.NPdata) {
 		dnp = Molpy.NPdata[dpx];
 		if (dnp && dnp.ammount) {
-			td += dnp.ammount*dnp.dig*Molpy.DragonsById[Molpy.Level('DQ')].digbase;
+			td += (dnp.ammount*dnp.dig*Molpy.DragonsById[Molpy.Level('DQ')].digbase || 0);
 			Molpy.TotalNPsWithDragons++;
 			Molpy.TotalDragons += dnp.ammount;
 			Molpy.HighestNPwithDragons = dpx*1;
@@ -402,12 +402,12 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 			};
 			if (strs.length == 1) str += strs[0]
 			else {
-				str += strs.slice(0,-2).join(', ') + ' and ' + strs[-1];
+				str += strs.slice(0,-1).join(', ') + ' and ' + strs.pop();
 			}
 			Molpy.Notify(str,1);
 		}
 		Molpy.DigTime = 0;
-//		Molpy.DiggingFinds = {};
+		Molpy.DiggingFinds = {};
 	}
 	if (Molpy.Boosts['DQ'].overallState) return;
 	
@@ -415,12 +415,12 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 	Molpy.DigValue += Molpy.DragonDigRate*Math.random();
 	if (Molpy.DigValue < 1) return;
 	Molpy.EarnBadge('Found Something!');
-	var finds = Math.min(Math.floor(Molpy.DigValue),1);
+	var finds = Math.max(Math.floor(Molpy.DigValue),1);
 	Molpy.DigValue -= finds;
 //	Molpy.Notify('Found '+ finds + ' things',1);
 	var found = '';
 	var n = 0;
-	if (Math.random()<0.99/Math.log(finds+2.14)) { // Find coins
+	if (Math.random()<0.99/Math.log(finds+1.7)) { // Find coins
 		found = 'Gold';
 		n = finds/1000000;
 		Molpy.Add(found,n);
@@ -433,6 +433,9 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		// TODO
 	}
 	if (found) {
+//		Molpy.Notify('Found ' + n + ' ' + found,1);
+		var f = Molpy.Boosts['DQ'].finds++;
+		if (f > 100) Molpy.UnlockBoost('Beach Dragon');
 		if (Molpy.DiggingFinds[found]) {
 			Molpy.DiggingFinds[found] += n;
 		} else {
@@ -623,7 +626,7 @@ Molpy.LocalsAttack = function() {
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType]+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
 			local.takeReward();	
-			Molpy.DragonExperience(DeMolpify(local.exp)*numb); 
+			Molpy.DragonExperience(DeMolpify(local.exp)*numb/2); 
 			break;
 
 		case 2 : // won a hard fight - need to recover
@@ -642,7 +645,7 @@ Molpy.LocalsAttack = function() {
 			Molpy.Notify(atktxt + ' You wiped ' + (numb==1?(Math.random()<0.5?'him':'her'):'them') + 
 					' out with ease',1);
 			local.takeReward();	
-			Molpy.DragonExperience(DeMolpify(local.exp)*numb); 
+			Molpy.DragonExperience(DeMolpify(local.exp)*numb*2); 
 			break;
 	}
 	Molpy.DragonDigRecalcNeeded = 1;
@@ -710,9 +713,14 @@ Dragons
 2	Feed hatchlings <- Goats, Princesses		Y	y
 3	Fledge						y	y
 4	Locals attack					y	y
-5	Automatc Digging (intially slow)		p
-6	Health effects
+5	Automatc Digging (intially slow)		y	y
+5.1	Gold						y	y
+5.2	Dimond						y	y
+5.3	Other						
+6	Health effects					y	y
 7	Beach Digging
+7.1	dig						y	y
+7.2	enable
 8	Redundattacks
 9	Opponents 
 	9.1	Abilities				y	y

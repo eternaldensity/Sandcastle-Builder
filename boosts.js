@@ -4032,6 +4032,8 @@ Molpy.DefineBoosts = function() {
 				if(print == 'VV' && !Molpy.Got('VS')) continue;
 				if(print == 'BoH' && !Molpy.Has('Goats', 400)) continue;
 				if(print == 'Nest' && !Molpy.Got('DNS')) continue;
+				if(print == 'DMM' && !Molpy.Got('Nest')) continue;
+				if(print == 'DMF' && !Molpy.Got('DMM')) continue;
 				return Molpy.blackprintCosts[print]; // number of pages needed for next blackprint boost
 			}
 		}
@@ -4049,6 +4051,8 @@ Molpy.DefineBoosts = function() {
 				if(print == 'VV' && !Molpy.Got('VS')) continue;
 				if(print == 'BoH' && !Molpy.Has('Goats', 400)) continue;
 				if(print == 'Nest' && !Molpy.Got('DNS')) continue;
+				if(print == 'DMM' && !Molpy.Got('Nest')) continue;
+				if(print == 'DMF' && !Molpy.Got('DMM')) continue;
 				if(Molpy.Level('Blackprints') >= Molpy.blackprintCosts[print]) return print;
 				return;
 			}
@@ -4142,10 +4146,12 @@ Molpy.DefineBoosts = function() {
 		CFT: 40000,
 		BoH: 90000,
 		VV: 750000,
-		Nest: 5e12
+		Nest: 5e12,
+		DMM: infinity,
+		DMF: infinity
 	};
 	
-	Molpy.blackprintOrder = ['SMM', 'SMF', 'GMM', 'GMF', 'TFLL', 'AO', 'AA', 'AE', 'BG', 'Bacon', 'SG', 'Milo', 'ZK', 'VS', 'CFT', 'BoH', 'VV', 'Nest'];
+	Molpy.blackprintOrder = ['SMM', 'SMF', 'GMM', 'GMF', 'TFLL', 'AO', 'AA', 'AE', 'BG', 'Bacon', 'SG', 'Milo', 'ZK', 'VS', 'CFT', 'BoH', 'VV', 'Nest','DMM','DMF'];
 
 	new Molpy.Boost({
 		name: 'Sand Mould Maker',
@@ -7762,10 +7768,12 @@ Molpy.DefineBoosts = function() {
 		experience: 0,
 		defSave: 1,
 		defStuff: 1,
+		finds:0,
 		overallState: 0, // 0 all heathy, 1 hiding, 2 injuries
 
 		saveData: {4:['experience',0,'float'],
 			   5:['overallState',0,'int'],
+			   6:['finds',0,'float'],
 		},
 		countdownLockFunction: function() { // Used for overallState
 			this.overallState = 0;
@@ -9752,8 +9760,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Coal',
 		icon: 'coal',
 		desc: 'Will boost fire breath',
-		draglvl: 'Wyrm',
-		draglimit: 'Noble Dragon',
+		draglvl: 'Dragon',
 		limit: Infinity,
 		group: 'stuff',
 	});
@@ -9790,7 +9797,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Healing Potion',
 		icon: 'healingpotion',
-		desc: 'Increases Draconic Health',
+		desc: 'Increases Draconic Health and speeds up healing',
 		draglvl: 'DragonNewt',
 	});
 
@@ -9834,12 +9841,15 @@ Molpy.DefineBoosts = function() {
 		}
 	});
 
-	new Molpy.Boost({ // Hook
+	new Molpy.Boost({ 
 		name: 'Beach Dragon',
 		icon: 'beachdragon',
 		desc: 'Enables Beach dgging to enhance the dragon digging',
 		group: 'drag',
-		price: {},
+		price: {Goats:'1T',
+			Bonemeal:'1P',
+			QQ:'1E',
+			},
 	});
 
 	new Molpy.Boost({ // Hook
@@ -9848,6 +9858,24 @@ Molpy.DefineBoosts = function() {
 		desc: 'Reduces the time dragons need to recover after injury',
 		group: 'bean',
 		draglvl: 'Dragling',
+	});
+
+	new Molpy.Boost({ // Hook
+		name: 'Diamond Mould Making',
+		icon: 'diamould',
+		alias: 'DMM',
+		desc: 'Makes a mold to fill with diamonds',
+		group: 'drag',
+		price: {Diamonds: 123456 },
+	});
+
+	new Molpy.Boost({ // Hook
+		name: 'Diamond Mould Filling',
+		icon: 'diamfill',
+		alias: 'DMF',
+		desc: 'Allows a Mould to be filled',
+		group: 'drag',
+		price: {Diamonds: 123456 },
 	});
 
 
