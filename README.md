@@ -41,7 +41,7 @@ For personal amusement only.
 - Many bug fixes, tweaks, nerfs and buffs
 - Fading - New boost from high CDSP
 - Aleph e - Does for Chips/Blocks what Aleph One did for sand and castles
-- The Alias for Crouching Dragon, Sleeping Panther is now CDSP - not WiseDragon
+- The Alias for Crouching Dragon, Sleeping Panther is now CDSP not WiseDragon
 - Lots of behind the sceens dragon stuff, leading to:
 
 - !!! HERE BE DRAGONS !!!
@@ -50,9 +50,7 @@ For personal amusement only.
 - The Raptorish Dragon Keeping Manual contains a lot of help
 - Fledglings need to survive the locals when they are released
 - Dragons can then dig for stuff (you might be able to help by clicking on the beach)
-	n				n
 - They might find Diamonds...  (And other stuff)
-	n			n
 - You can upgrade dragons a few levels, but not yet all the way
 - Redundakitties can be nasty dragon hating oponents - you can choose to hide (no digging) or fight
 	n
@@ -66,6 +64,7 @@ For personal amusement only.
 	p (not yet classic|| default layouts)
 - Dragon Overview Pane
 	n (may not include in launch)
+- New Dragon related Badges
 
 #### Epsilon
 - Several small fixes

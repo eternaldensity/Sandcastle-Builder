@@ -1324,7 +1324,13 @@ Molpy.DefineGUI = function() {
 			var dq = Molpy.Boosts['DQ'];
 			var str = Molpify(npd.ammount) + ' ' + Molpy.DragonsById[Molpy.Level('DQ')].name + (npd.ammount > 1?'s':'') + '<br>';
 			str += ['Digging','Recovering','Hiding'][dq.overallState];
-			if (npd.state > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
+			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
+			str += '<br>Def: ' + npd.defence*Molpy.DragonDefenceMultiplier + ' Atk: ' + npd.attack*Molpy.DragonAttackMultiplier + 
+				' Dig: ' + npd.dig*Molpy.DragonDigMultiplier ;
+			if (npd.breath) str += ' Breath: ' + bpd.breath*Molpy.DragonBreathMultiplier;
+			if (npd.magic1) str += ' Magic1: ' + bpd.magic1;
+			if (npd.magic2) str += ' Magic2: ' + bpd.magic2;
+			if (npd.magic3) str += ' Magic3: ' + bpd.magic3;
 			g('DragonsNP').innerHTML = str;
 		} else {
 			g('DragonsNP').innerHTML = 'No Dragons here';
@@ -1343,7 +1349,7 @@ Molpy.DefineGUI = function() {
 				if (bst.alias == 'Gold' && bst.Level < 1) {
 					var name = 'Silver';
 					var amt = bst.Level*1000;
-					if (amt < 0.0001) { name = 'Copper'; amt *=1000;};
+					if (amt < 1) { name = 'Copper'; amt = Math.round(amt*1000)};
 					g('stuff' + bst.alias + 'Count').innerHTML = name + ': ' + Molpify(amt, 3);
 				} else {
 					g('stuff' + bst.alias + 'Count').innerHTML = bst.plural + ': ' + Molpify(bst.Level, 3);
@@ -1468,7 +1474,7 @@ Molpy.DefineGUI = function() {
 		g('dragontypestat').innerHTML = Molpy.DragonsById[Molpy.Level('DQ')].name;
 		g('dragonnumbersstat').innerHTML = Molpify(Molpy.TotalDragons, 1);
 		g('npswithdragonsstat').innerHTML = Molpify(Molpy.TotalNPsWithDragons, 1);
-		g('dragondiggingstat').innerHTML = Molpify(Molpy.DragonDigRate, 1);
+		g('dragondiggingstat').innerHTML = Molpify(Molpy.DragonDigRate, 2);
 
 		g('loadcountstat').innerHTML = Molpify(Molpy.loadCount, 1);
 		g('savecountstat').innerHTML = Molpify(Molpy.saveCount, 1);
