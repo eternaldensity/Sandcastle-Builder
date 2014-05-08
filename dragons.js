@@ -356,10 +356,32 @@ Molpy.TotalNPsWithDragons = 0;
 Molpy.HighestNPwithDragons = 0;
 Molpy.DigTime=0;
 Molpy.DiggingFinds={};
-
+Molpy.DragonDigMultiplier = 1;
+Molpy.DragonAttackMultiplier = 1;
+Molpy.DragonDefenceMultiplier = 1;
+Molpy.DragonBreathMultiplier = 1;
 
 Molpy.DragonDigRecalc = function() {
 	Molpy.DragonDigRecalcNeeded = 0;
+
+	Molpy.DragonDigMultiplier = 1;
+	if (Molpy.Got('Bucket and Spade')) Molpy.DragonDigMultiplier *=2;
+	if (Molpy.Got('Strength Potion')) Molpy.DragonDigMultiplier *=5;
+	if (Molpy.Got('Lucky Ring')) Molpy.DragonDigMultiplier *=5;
+
+	Molpy.DragonDefenceMultiplier = 1;
+	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
+	if (Molpy.Got('Ooo Shinny!')) Molpy.DragonDefenceMultiplier *= 2;
+	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
+
+	Molpy.DragonAttackMultiplier = 1;
+	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
+	if (Molpy.Got('Magic Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(10,Molpy.Level('Magic'));
+	if (Molpy.Got('Tusks')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Tusks'));
+	
+	Molpy.DragonBreathMultiplier = 1;
+
+
 	var td = 0;
 	Molpy.TotalNPsWithDragons = 0;
 	Molpy.TotalDragons = 0;
@@ -373,11 +395,8 @@ Molpy.DragonDigRecalc = function() {
 			Molpy.HighestNPwithDragons = dpx*1;
 		}
 	}
-	if (Molpy.TotalDragons) td += 0.01;
-	if (Molpy.Got('Bucket and Spade')) td *=2;
-	if (Molpy.Got('Strength Potion')) td *=5;
-	if (Molpy.Got('Lucky Ring')) td *=5;
-	Molpy.DragonDigRate = td;
+	if (Molpy.TotalDragons) td += 0.001;
+	Molpy.DragonDigRate = td*Molpy.DragonDigMultiplier;
 }
 
 Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
@@ -457,7 +476,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		}
 	}
 	if (found) {
-		Molpy.Notify('Found ' + n + ' ' + found,1);
+//		Molpy.Notify('Found ' + n + ' ' + found,1);
 		var f = dq.finds++;
 		if (f > 100) Molpy.UnlockBoost('Beach Dragon');
 		if (Molpy.DiggingFinds[found]) {
@@ -555,13 +574,8 @@ Molpy.DragonStatsNow = function(where) {
 		if(typeof npd[prop] !== 'undefined' ) Stats[prop] = npd[prop];
 	}
 
-	if (Molpy.Got('Lucky Ring')) Stats.defence *= 2;
-	if (Molpy.Got('Ooo Shinny!')) Stats.defence *= 2;
-	if (Molpy.Got('Spines')) Stats.defence *= Math.pow(1.2,Molpy.Level('Spines'));
-	if (Molpy.Got('Big Teeth')) Stats.attack *= Math.pow(1.2,Molpy.Level('Big Teeth'));
-	if (Molpy.Got('Magic Teeth')) Stats.attack *= Math.pow(10,Molpy.Level('Magic'));
-	if (Molpy.Got('Tusks')) Stats.attack *= Math.pow(2,Molpy.Level('Tusks'));
-	// There will be handling for many boosts here this is why its not just npd.
+	Stats.defence *= Molpy.DragonDefenceMultiplier;
+	Stats.attack *= Molpy.DragonAttackMultiplier;
 	return Stats;
 }
 
@@ -703,13 +717,9 @@ Molpy.DragonUpgrade = function(type) {
 
 
 /* Ideas
- *
  * Lets try science
  * OldPixBot
- * PopeBot
  * Binary
- * Survey Gear - makes it easier to find maps
- * Cardinals - improve The Pope
  * Dragon features -
  * - Legs (0,2,4,?)
  *   Multiple heads (1,3,9,27...) Russian mythology

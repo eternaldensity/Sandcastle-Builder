@@ -1325,8 +1325,9 @@ Molpy.DefineGUI = function() {
 			var str = Molpify(npd.ammount) + ' ' + Molpy.DragonsById[Molpy.Level('DQ')].name + (npd.ammount > 1?'s':'') + '<br>';
 			str += ['Digging','Recovering','Hiding'][dq.overallState];
 			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
-			str += '<br>Def: ' + npd.defence + ' Atk: ' + npd.attack + ' Dig: ' + npd.dig ;
-			if (npd.breath) str += ' Breath: ' + bpd.breath;
+			str += '<br>Def: ' + npd.defence*Molpy.DragonDefenceMultiplier + ' Atk: ' + npd.attack*Molpy.DragonAttackMultiplier + 
+				' Dig: ' + npd.dig*Molpy.DragonDigMultiplier ;
+			if (npd.breath) str += ' Breath: ' + bpd.breath*Molpy.DragonBreathMultiplier;
 			if (npd.magic1) str += ' Magic1: ' + bpd.magic1;
 			if (npd.magic2) str += ' Magic2: ' + bpd.magic2;
 			if (npd.magic3) str += ' Magic3: ' + bpd.magic3;
