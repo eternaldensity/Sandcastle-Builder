@@ -1522,6 +1522,10 @@ Molpy.Up = function() {
 			}
 			
 			this.getHeading = function() {
+				if (!this.group || !Molpy.groupNames[this.group]) {
+					Molpy.Notify('Group Wrong for '+this.name);
+					return 'Unknown'
+				};
 				return "" + Molpy.groupNames[this.group][0]
 			     + ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '');
 			}

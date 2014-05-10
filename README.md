@@ -56,14 +56,13 @@ For personal amusement only.
 - Win or lose a fight you gain experience.  Lose and you may lose dragons.  Win and there will be rewards.
 - Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Sand, Castles, Glass Chips and Blocks
 - Lots of new Dragon related Boosts (not all of which curently operate)
-	p				True very true
 - New Pane for the state of the Dragons in the current NP
 	p (not yet classic|| default layouts)
 - Dragon Stats
 	p (not yet classic|| default layouts)
 - Dragon Overview Pane
 	n (may not include in launch)
-- New Dragon related Badges
+- New Dragon related Badges (not all of which are currently possible to get)
 
 #### Epsilon
 - Several small fixes

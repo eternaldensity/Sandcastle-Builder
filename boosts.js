@@ -7749,7 +7749,7 @@ Molpy.DefineBoosts = function() {
 				var eggcost = Molpy.EggCost();
 				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal:'+ eggcost + '}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
 				str += '<br>Hatchlings will mature into ' + Molpy.DragonsById[me.Level].name + 's. ';
-				str += Molpy.DragonsById[me.Level].desc + '<p>';
+				str += Molpy.DragonsById[me.Level].description() + '<p>';
 				if (Molpy.DragonUpgrade(0)) str += '<p><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> '+Molpy.DragonUpgrade(2);			}
 				if (Molpy.TotalDragons) {
 					str += 'The Dragons are ' + ['Digging','Recovering','Hiding'][me.overallState];
@@ -9562,7 +9562,7 @@ Molpy.DefineBoosts = function() {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' Diamond' + plural(me.Level) + '.';
 			return str;
 		},
-		defStuff: 1
+		defStuff: 1,
 		AddSuper : Molpy.BoostFuncs.Add,
 		Add: function(ammount) {
 			this.AddSuper();
@@ -9722,12 +9722,15 @@ Molpy.DefineBoosts = function() {
 			var draglevel = Molpy.Level('DQ');
 			if (draglevel || Molpy.TotalDragons) {
 				str += '<li>Draglings are feeble creatures, they need looking after';
+				str += '<li>' + Molpy.Dragons['Dragling'].description();
 			};
 			if (draglevel >= Molpy.Dragons['DragonNewt'].id) {
 				str += '<li>DragonNewts are Dragon whanabees, high on spirits, low on abilities but not entirely useless.';
+				str += '<li>' + Molpy.Dragons['DragonNewt'].description();
 			};
 			if (draglevel >= Molpy.Dragons['Wyrm'].id) {
 				str += '<li>Wyrms are the first real dragons, lacking arms or magic they can\'t dig very well';
+				str += '<li>' + Molpy.Dragons['Wyrm'].description();
 			};
 
 			return str + '</ul>';
@@ -9951,7 +9954,7 @@ Molpy.DefineBoosts = function() {
 		desc: 'Reduces the time dragons need to hide',
 		group: 'drag',
 		draglvl: 'Dragling',
-		limit:4;
+		limit: 10,
 	});
 
 	new Molpy.Boost({ // Hook
@@ -9966,16 +9969,16 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ // Hook
 		name: 'Diamond Masterpiece Burnisher',
 		icon: 'diamburn',
-		alias: 'DMC',
+		alias: 'DMB',
 		desc: 'Makes a masterpiece shine',
 		group: 'drag',
 		price: {Diamonds: 123456 },
 	});
 
 	new Molpy.Boost({ // Hook
-		name: 'Masterpiece Pedistal Maker',
+		name: 'Diamond Masterpiece Pedistal',
 		icon: 'pedistal',
-		alias: 'DMC',
+		alias: 'MPP',
 		desc: 'To put the masterpice on',
 		group: 'drag',
 		price: {Diamonds: 123456 },

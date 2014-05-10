@@ -36,7 +36,15 @@ Molpy.Dragon = function(args) {
 	Molpy.DragonsById[this.id] = this;
 	Molpy.Dragons[this.name] = this;
 
-	// Methods here if any
+	// Methods 
+	
+	this.description = function() {
+		var str = this.desc + '. They have: ' (this.heads > 1?this.heads + ' heads, ':'') + (this.legs?this.legs:'No') + ' legs, ';
+		str += (this.arms?this.arms:'No') + ' arms, ' + (this.wings?this.wings:'No') + ' wings, ';
+		str += ' and ' + (this.tails==0?'no tail.':(this.tails == 1?'a tail':this.tails + ' tails'));
+		str += '.';
+		return str ;
+	};
 }
 
 Molpy.DefineDragons = function() {
@@ -48,6 +56,7 @@ Molpy.DefineDragons = function() {
 		fly: 0,
 		heads: 1,
 		arms: 0,
+		tails: 1,
 		upgrade: {Diamonds:1},
 		exp: 100,
 		condition: function() { return true },
@@ -62,6 +71,7 @@ Molpy.DefineDragons = function() {
 		fly: 0,
 		heads: 1,
 		arms: 2,
+		tails: 0,
 		upgrade: {Diamonds:100},
 		exp: '1M',
 		condition: function() { return false },
@@ -76,6 +86,7 @@ Molpy.DefineDragons = function() {
 		fly: 1,
 		heads: 1,
 		arms: 0,
+		tails: 1,
 		upgrade: {Diamonds:'10K'},
 		exp: '1T',
 		condition: function() { return false },
@@ -90,6 +101,7 @@ Molpy.DefineDragons = function() {
 		fly: 1,
 		heads: 1,
 		arms: 0,
+		tails: 1,
 		upgrade: {Diamonds:'1G'},
 		exp: '1T',
 		condition: function() { return false },
@@ -104,6 +116,7 @@ Molpy.DefineDragons = function() {
 		fly: 1,
 		heads: 1,
 		arms: 2,
+		tails: 1,
 		breath: ['fire'],
 		upgrade: {Diamonds:'1T',Princesses:1},
 		exp: '1T',
@@ -119,6 +132,7 @@ Molpy.DefineDragons = function() {
 		fly: 1,
 		heads: 1,
 		arms: 2,
+		tails: 1,
 		breath: ['fire'],
 		magic: 1,
 		upgrade: {Diamonds:'1T',Princesses:1},
@@ -135,6 +149,7 @@ Molpy.DefineDragons = function() {
 		fly: 1,
 		heads: 3,
 		arms: 6,
+		tails: 3,
 		breath: ['fire','ice','poison'],
 		magic: 2,
 		upgrade: {Diamonds:'1T',Princesses:1},
@@ -151,6 +166,7 @@ Molpy.DefineDragons = function() {
 		fly: 1,
 		heads: 9,
 		arms: 66,
+		tails: 9,
 		breath: ['fire','ice','poison'],
 		magic: 3,
 		upgrade: {Diamonds:'1T',Princesses:1},
@@ -669,7 +685,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 				dloss = 1;
 				factor *=2;
 			}
-			var rectime = (dragstats.DragonType+1)*500/factor;
+			var rectime = (dragstats.DragonType+1)*200/factor;
 			if (Molpy.Spend('Healing Potion')) rectime/=5;
 			if (Molpy.Spend('A Cup of Tea')) rectime/=2;
 			rectime = Math.floor(rectime);
@@ -681,7 +697,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 			break;
 
 		case 2 : // won a hard fight - need to recover
-			var rectime = (dragstats.DragonType+1)*250/factor;
+			var rectime = (dragstats.DragonType+1)*100/factor;
 			if (Molpy.Spend('Healing Potion')) rectime/=5;
 			if (Molpy.Spend('A Cup of Tea')) rectime/=2;
 			rectime = Math.floor(rectime);
@@ -710,7 +726,7 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 Molpy.DragonsHide = function(type) {
 	Molpy.Redacted.onClick();
 	dq = Molpy.Boosts['DQ'];
-	var hidetime = 42 * (type+1);
+	var hidetime = Math.ceil(42 * (type+1)/Math.pow(1.5,Molpy.Level('Camelflarge')));
 	dq.ChangeState(2,hidetime);
 	Molpy.Notify('The Dragons are hiding for ' + hidetime + 'mnp');
 }
@@ -806,18 +822,12 @@ Dragons
 22	Breath effects					Not Launch
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
+25	Use # appendeges in desciptions	
 
-Dig Finds (Other than Diamonds & Gold)
-* Big Teeth
-* Spines
-* Tusks
-* Adamintine armour in bits
 * Mouthwash (to reduce bad breath backfires)
 * Coal (for fires)
 * Magic Rings (future)
 * Magic Books (future)
-* Magic Teeth
-* Backet and spade (better digging)
 * Bad dreams!
 * Luck Rings
 * Healing Potion
