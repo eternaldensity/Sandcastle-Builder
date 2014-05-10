@@ -39,10 +39,10 @@ Molpy.Dragon = function(args) {
 	// Methods 
 	
 	this.description = function() {
-		var str = this.desc + '. They have: ' (this.heads > 1?this.heads + ' heads, ':'') + (this.legs?this.legs:'No') + ' legs, ';
-		str += (this.arms?this.arms:'No') + ' arms, ' + (this.wings?this.wings:'No') + ' wings, ';
-		str += ' and ' + (this.tails==0?'no tail.':(this.tails == 1?'a tail':this.tails + ' tails'));
-		str += '.';
+		var str = this.desc + '. They have: ' + (this.heads > 1?this.heads + ' heads, ':'');
+		str +=(this.legs?this.legs:'No') + ' legs, ';
+		str += (this.arms?this.arms:'No') + ' arms, ' + (this.wings?this.wings:'No') + ' wings ';
+		str += ' and ' + (this.tails==0?'no tail.':(this.tails == 1?'a tail.':this.tails + ' tails.'));
 		return str ;
 	};
 }
@@ -204,14 +204,11 @@ Molpy.Opponent = function(args) {
 			break;
 		case '-': 
 			break;
-		case '@':
-			str += 'his ';
-			break;
 		case '!':
 			str += 'an ';
 			break;
 		case '|':
-			str += (Math.random() < 0.5?'his ':'her ');
+			str += ['his ','her '][this.gender];
 			break;
 		default:
 			str += 'a '+first;
@@ -283,7 +280,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Squire',
-		armed: ['short sword', 'side sword','bow and arrows','mace','mandolin','polearm','!axe','hammer','@keyboard'],
+		armed: ['short sword', 'side sword','bow and arrows','mace','mandolin','polearm','!axe','hammer','|keyboard'],
 		reward: {Silver:'100-10000'},
 		exp: '1G',
 	});
@@ -332,7 +329,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Hero',
-		armed: ['+sword of sharpness','-Eds Axe','+Punsaw','Donut','-both feet','pea shooter','@fist of steel'],
+		armed: ['+sword of sharpness','-Eds Axe','+Punsaw','Donut','-both feet','pea shooter','|fist of steel'],
 		reward: {Gold:'1G-1Y',Princesses:'100-10M',Diamonds:'70G-100T'},
 		exp: '1F',
 	});
@@ -625,6 +622,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 	var local = Molpy.OpponentsById[type];
 	var atktxt = local.attackstxt(numb) + text + '. ';
 	var atkval = local.attackval(numb);
+	local.gender = 1*(Math.random() < 0.5);
 
 	Molpy.DragonDigRecalc(); 
 	var dragstats = Molpy.DragonStatsNow(where);
@@ -708,7 +706,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 			break;
 
 		case 3 : // Wipeout for no loss
-			Molpy.Notify(atktxt + ' You wiped ' + (numb==1?(Math.random()<0.5?'him':'her'):'them') + 
+			Molpy.Notify(atktxt + ' You wiped ' + (numb==1?['him','her'][local.gender]:'them') + 
 					' out with ease',1);
 			local.takeReward(numb,DeMolpify(local.exp)*numb*2); 
 			break;
@@ -817,12 +815,13 @@ Dragons
 17	DragonNewts					y
 18	Wyrm						Not Launch
 19	Wyvern						Not Launch
-20	Diamond Tools and Moulds			Not Launch
+20	Diamond Tools and Moulds			Plans only, making impossible
 21	Diamond Monuments				Not Launch
 22	Breath effects					Not Launch
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
-25	Use # appendeges in desciptions	
+25	Use # appendeges in desciptions			y	y	
+26	Infinite AC runs -how?				Not Launch
 
 * Mouthwash (to reduce bad breath backfires)
 * Coal (for fires)

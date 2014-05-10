@@ -2051,16 +2051,25 @@ Molpy.Up = function() {
 				level = level || 0;
 				this.removeDiv();
 				Molpy.lootSelectionNeedRepaint = 1;
-				if(this.drawType[level] != 'show') {
+				if (Molpy.TotalDragons && this.drawType[0] == 'knight') {
+					var item = g('redacteditem');
+					if(item) item.className = 'hidden';
+					this.location = 0;
+					this.dispIndex = -1;
+					this.drawType = [];
+					this.countup = 0;
+					this.randomiseTime();
+					_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
+					this.chainCurrent = 0;
+					return;
+				} else if(this.drawType[level] != 'show') {
 					Molpy.UnlockBoost('Technicolour Dream Cat');
 					this.drawType[level] = 'show';
 					while(this.drawType.length > level + 1)
 						this.drawType.pop(); //we don't need to remember those now
 					this.jump();
 					return;
-				}
-
-				if(Molpy.Got('RRSR') && flandom(20) == 1) {
+				} else if(Molpy.Got('RRSR') && flandom(20) == 1) {
 					this.drawType[level] = 'hide1';
 					this.toggle = 65;
 					this.chainCurrent++;

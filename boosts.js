@@ -3977,6 +3977,7 @@ Molpy.DefineBoosts = function() {
 		Add: function(n) {
 			var target = Molpy.GetBlackprintPages();
 			this.Level += n;
+			if (!isFinite(this.Level)) return;
 			if(this.Has(9001, 1)) Molpy.EarnBadge('Scouter');
 			if(!Molpy.boostSilence) {
 				if(n == 1)
@@ -4034,6 +4035,9 @@ Molpy.DefineBoosts = function() {
 				if(print == 'Nest' && !Molpy.Got('DNS')) continue;
 				if(print == 'DMM' && !Molpy.Got('Nest')) continue;
 				if(print == 'DMF' && !Molpy.Got('DMM')) continue;
+				if(print == 'DMC' && !Molpy.Got('DMF')) continue;
+				if(print == 'DMB' && !Molpy.Got('DMC')) continue;
+				if(print == 'DPP' && !Molpy.Got('DMB')) continue;
 				return Molpy.blackprintCosts[print]; // number of pages needed for next blackprint boost
 			}
 		}
@@ -4053,6 +4057,9 @@ Molpy.DefineBoosts = function() {
 				if(print == 'Nest' && !Molpy.Got('DNS')) continue;
 				if(print == 'DMM' && !Molpy.Got('Nest')) continue;
 				if(print == 'DMF' && !Molpy.Got('DMM')) continue;
+				if(print == 'DMC' && !Molpy.Got('DMF')) continue;
+				if(print == 'DMB' && !Molpy.Got('DMC')) continue;
+				if(print == 'DPP' && !Molpy.Got('DMB')) continue;
 				if(Molpy.Level('Blackprints') >= Molpy.blackprintCosts[print]) return print;
 				return;
 			}
@@ -4086,6 +4093,7 @@ Molpy.DefineBoosts = function() {
 			return times; // do nothing
 		}
 		Molpy.Add('CfB', times);
+		if (Molpy.Got('Lucky Ring') && Molpy.Earned('Planck Limit') && Math.random()<0.01) Molpy.Boosts['CFB'].power*=2;
 
 		var c = Molpy.LimitConstructionRuns(s);
 		if(Molpy.Has('CfB', c * 10)) {
@@ -4110,7 +4118,11 @@ Molpy.DefineBoosts = function() {
 				return 'Constructing nothing. How?';
 			}
 			var c = Molpy.LimitConstructionRuns(subj.alias);
-			str = 'Constructing ' + subj.name + ' from Blackprint Plans.<br>' + Molpify(c * 10 - me.Level,3) + ' runs of Factory Automation required to complete.';
+			if (c != Infinity) {
+				str = 'Constructing ' + subj.name + ' from Blackprint Plans.<br>' + Molpify(c * 10 - me.Level,3) + ' runs of Factory Automation required to complete.';
+			} else {
+				str = 'Constructing ' + subj.name + ' from Blackprint Plans.<br>' + Molpify(me.Level,3) + ' runs of Factory Automation completed so far, Infinity needed to complete.';
+			}
 			if(subj.alias == 'BoH')
 				str += '<br>To construct Bag of Holding you must retain at least 400 goats, otherwise construction will stall.';
 			return str;
@@ -4148,10 +4160,13 @@ Molpy.DefineBoosts = function() {
 		VV: 750000,
 		Nest: 5e12,
 		DMM: Infinity,
-		DMF: Infinity
+		DMF: Infinity,
+		DMC: Infinity,
+		DMB: Infinity,
+		DPP: Infinity,
 	};
 	
-	Molpy.blackprintOrder = ['SMM', 'SMF', 'GMM', 'GMF', 'TFLL', 'AO', 'AA', 'AE', 'BG', 'Bacon', 'SG', 'Milo', 'ZK', 'VS', 'CFT', 'BoH', 'VV', 'Nest','DMM','DMF'];
+	Molpy.blackprintOrder = ['SMM', 'SMF', 'GMM', 'GMF', 'TFLL', 'AO', 'AA', 'AE', 'BG', 'Bacon', 'SG', 'Milo', 'ZK', 'VS', 'CFT', 'BoH', 'VV', 'Nest','DMM','DMF','DMC','DMB','DPP'];
 
 	new Molpy.Boost({
 		name: 'Sand Mould Maker',
@@ -7748,14 +7763,14 @@ Molpy.DefineBoosts = function() {
 			*/
 				var eggcost = Molpy.EggCost();
 				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal:'+ eggcost + '}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
-				str += '<br>Hatchlings will mature into ' + Molpy.DragonsById[me.Level].name + 's. ';
-				str += Molpy.DragonsById[me.Level].description() + '<p>';
-				if (Molpy.DragonUpgrade(0)) str += '<p><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> '+Molpy.DragonUpgrade(2);			}
 				if (Molpy.TotalDragons) {
-					str += 'The Dragons are ' + ['Digging','Recovering','Hiding'][me.overallState];
+					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding'][me.overallState];
 					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
 				}
 				if (me.experience) str += '<br>Experience: '+Molpify(me.experience,1);
+				if (Molpy.DragonUpgrade(0)) str += '<br><br><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> '+Molpy.DragonUpgrade(2);			}
+				str += '<br><br>Hatchlings will mature into ' + Molpy.DragonsById[me.Level].name + 's. ';
+				str += Molpy.DragonsById[me.Level].description();
 			return str;
 		},
 		
@@ -7813,7 +7828,7 @@ Molpy.DefineBoosts = function() {
 		
 		Add: function(amount) {
 			this.AddSuper(amount);
-			this.countdown += 2000 / Math.ceil(this.Level / 5);
+			this.countdown += Math.ceil((2000-80*Molpy.Level('Incubator')) / Math.ceil(this.Level / 5));
 		},
 		
 		lockFunction: function() {
@@ -9661,7 +9676,7 @@ Molpy.DefineBoosts = function() {
 		defStuff : 1,
 		AddSuper : Molpy.BoostFuncs.Add,
 		Add: function(ammount) {
-			this.AddSuper();
+			this.AddSuper(ammount);
 			if (this.power > 1) Molpy.UnlockBoost('Ooo Shinny!');
 			if (this.power > 1e6) Molpy.EarnBadge('Millionair');
 			if (this.power > 77.3e9) Molpy.EarnBadge('Bill Gates');
@@ -9679,8 +9694,8 @@ Molpy.DefineBoosts = function() {
 		defStuff : 1,
 		AddSuper : Molpy.BoostFuncs.Add,
 		Add: function(ammount) {
-			this.AddSuper();
-			if (this.power > 1e9) Molpy.UnlockBoost('Billionair');
+			this.AddSuper(ammount);
+			if (this.power > 1e9) Molpy.UnlockBoost('Billionair'); // this is rubbish at the moment
 		}
 	});
 	new Molpy.Boost({
@@ -9955,6 +9970,7 @@ Molpy.DefineBoosts = function() {
 		group: 'drag',
 		draglvl: 'Dragling',
 		limit: 10,
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({ // Hook
@@ -9982,6 +9998,16 @@ Molpy.DefineBoosts = function() {
 		desc: 'To put the masterpice on',
 		group: 'drag',
 		price: {Diamonds: 123456 },
+	});
+
+	new Molpy.Boost({ 
+		name: 'Incubator',
+		icon: 'incubator',
+		desc: 'Reduces the time dragon eggs need before they hatch',
+		group: 'drag',
+		draglvl: 'DragonNewt',
+		limit: 20,
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 

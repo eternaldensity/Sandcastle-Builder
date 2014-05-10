@@ -56,6 +56,7 @@ For personal amusement only.
 - Win or lose a fight you gain experience.  Lose and you may lose dragons.  Win and there will be rewards.
 - Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Sand, Castles, Glass Chips and Blocks
 - Lots of new Dragon related Boosts (not all of which curently operate)
+- Note while you could start making a Diamond Mould Maker, completing is currently impossble...
 - New Pane for the state of the Dragons in the current NP
 	p (not yet classic|| default layouts)
 - Dragon Stats
