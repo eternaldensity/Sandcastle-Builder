@@ -51,11 +51,10 @@ For personal amusement only.
 - Fledglings need to survive the locals when they are released
 - Dragons can then dig for stuff (you might be able to help by clicking on the beach)
 - They might find Diamonds...  (And other stuff)
-- You can upgrade dragons a few levels, but not yet all the way
+- You can upgrade dragons one level, but not yet all the way
 - Redundakitties can be nasty dragon hating oponents - you can choose to hide (no digging) or fight
-	n
 - Win or lose a fight you gain experience.  Lose and you may lose dragons.  Win and there will be rewards.
-- Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Glass Chips and Blocks
+- Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Sand, Castles, Glass Chips and Blocks
 - Lots of new Dragon related Boosts (not all of which curently operate)
 	p				True very true
 - New Pane for the state of the Dragons in the current NP

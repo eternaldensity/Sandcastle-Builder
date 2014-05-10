@@ -53,6 +53,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return true },
 		desc: 'These small timid creatures hide in the shadows and under leaves keeping out of the way of fierce cats',
 		digbase: 0.1,
+		colour: '00ff00',
 	});
 	new Molpy.Dragon({
 		name: 'DragonNewt',
@@ -66,6 +67,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
 		digbase: 1,
+		colour: '0080ff',
 	});
 	new Molpy.Dragon({
 		name: 'Wyrm',
@@ -79,6 +81,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These are monstorous, limbless creatures, with a big bite.',
 		digbase: 100,
+		colour: '0000ff',
 	});
 	new Molpy.Dragon({
 		name: 'Wyvern',
@@ -92,6 +95,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These can fly.  They fight and dig with their legs, some have a bad breath.',
 		digbase: 10000,
+		colour: '8000ff',
 	});
 	new Molpy.Dragon({
 		name: 'Dragon',
@@ -106,6 +110,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'Tradional Welsh Dragon',
 		digbase: 1000000,
+		colour: 'ff00ff',
 	});
 	new Molpy.Dragon({
 		name: 'Noble Dragon',
@@ -121,6 +126,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'Very large magical dragon',
 		digbase: 100000000,
+		colour: 'ff0000',
 	});
 	new Molpy.Dragon({
 		name: 'Imperial Dragon',
@@ -136,6 +142,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These are the makers of ledgends, attacking with many heads in many ways, mortals don\'t want to be in the ssame universe as this.',
 		digbase: 10000000000,
+		colour: '800000',
 	});
 	new Molpy.Dragon({
 		name: 'NogarDragoN',
@@ -151,6 +158,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: '!', // later
 		digbase: 1000000000000,
+		colour: '000000',
 	});
 
 };
@@ -186,6 +194,9 @@ Molpy.Opponent = function(args) {
 		case '!':
 			str += 'an ';
 			break;
+		case '|':
+			str += (Math.random() < 0.5?'his ':'her ');
+			break;
 		default:
 			str += 'a '+first;
 			break;
@@ -199,7 +210,7 @@ Molpy.Opponent = function(args) {
 		return [Math.pow(42,Math.exp(this.id/2))*n/1234,Math.pow(672,Math.exp(this.id-10))*n/1764];
 	};
 
-	this.takeReward = function(n) {
+	this.takeReward = function(n,exp) {
 		var rwds= [];
 		for (var stuff in this.reward) {
 			var num = 0;
@@ -212,6 +223,7 @@ Molpy.Opponent = function(args) {
 			} else {
 				if (Math.random() < range) num = 1;
 			}
+			if (exp) Molpy.DragonExperience(exp); 
 			if (num) {
 				num *= (n||1);
 				rwds.push(Molpify(num,2) + ' ' + stuff);
@@ -221,7 +233,7 @@ Molpy.Opponent = function(args) {
 			}
 		}
 		if (rwds.length && !Molpy.boostSilence) {
-			Molpy.Notify('After the fight you get ' + rwds.join('+ '),1);
+			Molpy.Notify('After the fight you get ' + rwds.join('+ ') + (exp?' and '+Molpify(exp) +' experience':''),1);
 		}
 	}
 
@@ -230,18 +242,18 @@ Molpy.Opponent = function(args) {
 	}
 };
 
-// First char of armed: -(no a), !an, + the, @his, else a...
+// First char of armed: -(no a), !an, + the, @his, |his|her, else a...
 Molpy.DefineOpponents = function() {
 	new Molpy.Opponent ({
 		name: 'Serf',
-		armed: ['stick', '-bare hands', 'turnip', '-bad words', 'bowl of dish water'],
+		armed: ['stick', '-bare hands', 'turnip', '-bad words', 'bowl of dish water','|hamply','fish head'],
 		reward: {Copper:'1-10'},
 		exp: 1,
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Peasant',
-		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock','pun'],
+		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock','pun','|wolfy'],
 		reward: {Copper:'10-1000'},
 		exp: '1K',
 	});
@@ -255,7 +267,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Squire',
-		armed: ['short sword', 'side sword','bow and arrows','mace','mandolin','polearm','!axe','hammer'],
+		armed: ['short sword', 'side sword','bow and arrows','mace','mandolin','polearm','!axe','hammer','@keyboard'],
 		reward: {Silver:'100-10000'},
 		exp: '1G',
 	});
@@ -276,21 +288,21 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Lord',
-		armed: ['great sword','great axe','Kazoo','court jester'],
+		armed: ['great sword','great axe','Kazoo','court jester','fire hose'],
 		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'1-50'},
 		exp: '1Z',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Duke',
-		armed: ['+Duchess','horde of servants','-both gardeners','whip'],
+		armed: ['+Duchess','horde of servants','+gardeners','whip'],
 		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50-50K'},
 		exp: '1Y',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Emperor',
-		armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers'],
+		armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers','Death Star'],
 		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'50K-60M'},
 		exp: '1U',
 	});
@@ -325,13 +337,13 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'God',
-		armed: ['+staff of might','+staff of comand','-dice','@holy symbol','@lightning strikes'],
+		armed: ['+staff of might','+staff of comand','-dice','|holy symbol','|lightning strikes'],
 		reward: {Gold:'10P-1F',Princesses:'1G-10Y',Diamonds:'100E-200Z'},
 		exp: '1UW',
 	});
 
 	new Molpy.Opponent ({
-	 	name: 'Panetheon',
+	 	name: 'Panetheon of Gods',
 		armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic'],
 		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'120Z-500Y'},
 		exp: '1WW',
@@ -371,8 +383,9 @@ Molpy.DragonDigRecalc = function() {
 
 	Molpy.DragonDefenceMultiplier = 1;
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
-	if (Molpy.Got('Ooo Shinny!')) Molpy.DragonDefenceMultiplier *= 2;
+	if (Molpy.Got('Ooo Shinny!')) Molpy.DragonDefenceMultiplier *= 2*(1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
+	if (Molpy.Got('Adamintine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamintine Armour'));
 
 	Molpy.DragonAttackMultiplier = 1;
 	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
@@ -553,7 +566,7 @@ Molpy.DragonFledge = function(clutch) {
 	hatch.clutches[clutch] = 0;
 	hatch.clean(1);
 
-	if (fight && npd.ammount) Molpy.LocalsAttack();
+	if (fight && npd.ammount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge');
 	if (npd.ammount) Molpy.EarnBadge('First Colonist');
 	Molpy.DragonDigRecalc(); // Always needed
 }
@@ -579,7 +592,7 @@ Molpy.DragonStatsNow = function(where) {
 	return Stats;
 }
 
-Molpy.LocalsAttack = function() {
+Molpy.OpponentsAttack = function(where,from,text) {
 	// Select locals
 	// Work out their attack and defense values
 	// fight a round
@@ -589,15 +602,16 @@ Molpy.LocalsAttack = function() {
 	// Notify
 	
 	var dq = Molpy.Boosts['DQ'];
-	var npd = Molpy.NPdata[Molpy.newpixNumber];
-	var lcls = Molpy.FindLocals(Molpy.newpixNumber);
+	var npd = Molpy.NPdata[where];
+	var lcls = Molpy.FindLocals(from);
 	var type = lcls[0];
 	var numb = lcls[1];
 	var local = Molpy.OpponentsById[type];
-	var atktxt = local.attackstxt(numb) + ' attacks as you fledge.  ';
+	var atktxt = local.attackstxt(numb) + text + '. ';
 	var atkval = local.attackval(numb);
 
-	var dragstats = Molpy.DragonStatsNow(Molpy.newpixNumber);
+	Molpy.DragonDigRecalc(); 
+	var dragstats = Molpy.DragonStatsNow(where);
 	var result = 0;
 	var localhealth = atkval[0]+atkval[1];
 	var dragnhealth = dragstats.defence || 0;
@@ -663,8 +677,7 @@ Molpy.LocalsAttack = function() {
 			Molpy.Notify(atktxt + ' You won a very hard fight, ' + 
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType]+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward();	
-			Molpy.DragonExperience(DeMolpify(local.exp)*numb/2); 
+			local.takeReward(numb,DeMolpify(local.exp)*numb/2); 
 			break;
 
 		case 2 : // won a hard fight - need to recover
@@ -675,19 +688,34 @@ Molpy.LocalsAttack = function() {
 			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a hard fight, but will need to recover for ' + 
 					MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward();	
-			Molpy.DragonExperience(DeMolpify(local.exp)*numb); 
+			local.takeReward(numb,DeMolpify(local.exp)*numb); 
 			break;
 
 		case 3 : // Wipeout for no loss
 			Molpy.Notify(atktxt + ' You wiped ' + (numb==1?(Math.random()<0.5?'him':'her'):'them') + 
 					' out with ease',1);
-			local.takeReward();	
-			Molpy.DragonExperience(DeMolpify(local.exp)*numb*2); 
+			local.takeReward(numb,DeMolpify(local.exp)*numb*2); 
 			break;
 	}
 	Molpy.DragonDigRecalcNeeded = 1;
 }
+
+Molpy.DragonKnightAttack = function() { // Attack Opponents
+	Molpy.Redacted.onClick();
+	npd = Molpy.NPdata[Molpy.HighestNPwithDragons];
+	Molpy.OpponentsAttack(Molpy.HighestNPwithDragons,Molpy.HighestNPwithDragons+150*(1*Math.log(Molpy.Level('Princesses')+1)),
+			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.ammount) + ' at NP'+Molpy.HighestNPwithDragons);
+}
+
+Molpy.DragonsHide = function(type) {
+	Molpy.Redacted.onClick();
+	dq = Molpy.Boosts['DQ'];
+	var hidetime = 42 * (type+1);
+	dq.ChangeState(2,hidetime);
+	Molpy.Notify('The Dragons are hiding for ' + hidetime + 'mnp');
+}
+
+// Upgrades ******************************************************************************************
 
 // Type 0: to display, 1: action, 2: cost text
 Molpy.DragonUpgrade = function(type) {
@@ -755,7 +783,7 @@ Dragons
 7	Beach Digging
 7.1	dig						y	y
 7.2	enable						y
-8	Redundattacks
+8	Redundattacks					y	y
 9	Opponents 
 	9.1	Abilities				y	y
 	9.2	Attack					y	y
@@ -792,7 +820,6 @@ Dig Finds (Other than Diamonds & Gold)
 * Backet and spade (better digging)
 * Bad dreams!
 * Luck Rings
-* Ooo Shinny!
 * Healing Potion
 * Strength Potion
 

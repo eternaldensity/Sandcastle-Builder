@@ -2014,6 +2014,7 @@ Molpy.Up = function() {
 						if(this.location) {
 							this.removeDiv();
 							this.location = 0; //hide because the redacted was missed
+							if (Molpy.TotalDragons && this.drawType[0] == 'knight') Molpy.DragonsHide(1);
 							this.drawType = [];
 							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
 							this.chainCurrent = 0;
@@ -2149,9 +2150,15 @@ Molpy.Up = function() {
 				
 				heading = heading ? '<h1>' + Molpy.Redacted.brackets + '</h1>' : '';
 				var countdown = (level == 0) ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '';
-				var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
-					+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
-				
+				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0) { // Redunaknights
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redunaknights ' + 
+						countdown + '</h2><div><input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>' +
+						'<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
+					this.drawType[level] = 'knight';
+				} else {
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
+						+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
+				}
 				if(drawType == 'recur') {
 					str += this.getHTML(heading, level + 1);
 				} else if(drawType == 'hide1') {

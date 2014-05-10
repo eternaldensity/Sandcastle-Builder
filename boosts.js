@@ -9263,14 +9263,14 @@ Molpy.DefineBoosts = function() {
 		GlassCastle: {desc:'10% more Glass Chips from Glass Castle Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.Boosts['TF'].loadedPermNP)}},
 		GlassSaw: {desc:'10% more Glass Blocks from using the Glass Saw', value:1.1, avail: function() { return Molpy.Got('Glass Saw') && !Molpy.Earned('Infinite Saw')}},
 		QQs: {desc:'10% more Question Qubes from the Logicat', value:1.1, avail: function() { return Molpy.Got('QQ') }},
-		Goats: {desc:'10% more Goats from Ninja Ritual', value:1.1, avail: function() { return Molpy.Got('Ninja Ritual')}},
+		Goats: {desc:'10% more Goats from Ninja Ritual', value:1.1, avail: function() { return Molpy.Got('Ninja Ritual') && isFinite(Molpy.Level('Goats'))}},
 		Bonemeal: {desc:'10% more Bonemeal from the Shadow Dragon', value:1.1, avail: function() { return Molpy.Got('ShadwDrgn')}},
 		Logicats: {desc:'10% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
 		Fractal: {desc: 'Fractal Sandcastles are 10% better', value:1.1, avail: function() {return Molpy.Got('Fractal Sandcastles') && isFinite(Molpy.Boosts['Castles'].power) }},
 		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League')}},
 		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function() {return Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
-		Dyson: {desc: '10% more Vacuums from the Vacuum Cleaner', value:1.1, avail: function() { return Molpy.Level('TS') > 10 }},
-		Mustard: {desc:'10% more Mustard', value:1.1, avail: function() { return Molpy.Has('Mustard',100) } },
+		Dyson: {desc: '10% more Vacuums from the Vacuum Cleaner', value:1.1, avail: function() { return Molpy.Level('TS') > 10 && isFinite(Molpy.Level('Vacuum'))}},
+		Mustard: {desc:'10% more Mustard', value:1.1, avail: function() { return Molpy.Has('Mustard',100) && isFinite(Molpy.Level('Mustard'))} },
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -9563,6 +9563,11 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		defStuff: 1
+		AddSuper : Molpy.BoostFuncs.Add,
+		Add: function(ammount) {
+			this.AddSuper();
+			if (this.power > 9.9455e33) Molpy.EarnBadge('Enough to make a star');
+		}
 	});
 	new Molpy.Boost({
 		name: 'What if we tried more power?',
@@ -9642,7 +9647,7 @@ Molpy.DefineBoosts = function() {
 		desc: 'Numbers don\'t have to add up',
 		group: 'hpt',
 	});
-	new Molpy.Boost({
+	new Molpy.Boost({ // Note nothing is going to spend gold - dragons hoard it
 		name: 'Gold',
 		single: 'Gold',
 		desc: function(me) {
@@ -9654,6 +9659,14 @@ Molpy.DefineBoosts = function() {
 		},
 		group: 'stuff',
 		defStuff : 1,
+		AddSuper : Molpy.BoostFuncs.Add,
+		Add: function(ammount) {
+			this.AddSuper();
+			if (this.power > 1) Molpy.UnlockBoost('Ooo Shinny!');
+			if (this.power > 1e6) Molpy.EarnBadge('Millionair');
+			if (this.power > 77.3e9) Molpy.EarnBadge('Bill Gates');
+			if (this.power > 91e12) Molpy.EarnBadge('GDP of the World');
+		}
 	});
 	new Molpy.Boost({
 		name: 'Princesses',
@@ -9664,6 +9677,11 @@ Molpy.DefineBoosts = function() {
 		},
 		group: 'stuff',
 		defStuff : 1,
+		AddSuper : Molpy.BoostFuncs.Add,
+		Add: function(ammount) {
+			this.AddSuper();
+			if (this.power > 1e9) Molpy.UnlockBoost('Billionair');
+		}
 	});
 	new Molpy.Boost({
 		name: 'Raptorish Dragon Keeping Manual',
@@ -9812,7 +9830,11 @@ Molpy.DefineBoosts = function() {
 		name: 'Ooo Shinny!',
 		icon: 'shinny',
 		desc: 'Improves Dragons in Mysterious ways',
-		draglvl: 'Dragon',
+		group: 'drag',
+		price: {
+			Bonemeal:'1T',
+			QQ:'1H',
+			},
 	});
 
 	new Molpy.Boost({
@@ -9919,6 +9941,42 @@ Molpy.DefineBoosts = function() {
 		icon: 'diamfill',
 		alias: 'DMF',
 		desc: 'Allows a Mould to be filled',
+		group: 'drag',
+		price: {Diamonds: 123456 },
+	});
+
+	new Molpy.Boost({ 
+		name: 'Camelflarge',
+		icon: 'camel',
+		desc: 'Reduces the time dragons need to hide',
+		group: 'drag',
+		draglvl: 'Dragling',
+		limit:4;
+	});
+
+	new Molpy.Boost({ // Hook
+		name: 'Diamond Mould Cooker',
+		icon: 'diamcook',
+		alias: 'DMC',
+		desc: 'Allows a Mould filling to be fused',
+		group: 'drag',
+		price: {Diamonds: 123456 },
+	});
+
+	new Molpy.Boost({ // Hook
+		name: 'Diamond Masterpiece Burnisher',
+		icon: 'diamburn',
+		alias: 'DMC',
+		desc: 'Makes a masterpiece shine',
+		group: 'drag',
+		price: {Diamonds: 123456 },
+	});
+
+	new Molpy.Boost({ // Hook
+		name: 'Masterpiece Pedistal Maker',
+		icon: 'pedistal',
+		alias: 'DMC',
+		desc: 'To put the masterpice on',
 		group: 'drag',
 		price: {Diamonds: 123456 },
 	});
