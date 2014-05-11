@@ -39,7 +39,8 @@ For personal amusement only.
 - New option to give the minimum number of decimal digits displayed
 - Long overdue changes to the top of the ReadMe
 - Many bug fixes, tweaks, nerfs and buffs
-- Fading - New boost from high CDSP
+- Fixed long standing bug that stopped Sand Tools in new games working
+- The Fading - New boost from high CDSP (more will follow with higher CDSP)
 - Aleph e - Does for Chips/Blocks what Aleph One did for sand and castles
 - The Alias for Crouching Dragon, Sleeping Panther is now CDSP not WiseDragon
 - Lots of behind the sceens dragon stuff, leading to:
@@ -49,22 +50,28 @@ For personal amusement only.
 - The Dragon Queen can lay eggs in lined nests, eggs can hatch, need feeding then they fledge
 - The Raptorish Dragon Keeping Manual contains a lot of help
 - Fledglings need to survive the locals when they are released
-- Dragons can then dig for stuff (you might be able to help by clicking on the beach)
-- They might find Diamonds...  (And other stuff)
-- You can upgrade dragons a few levels, but not yet all the way
-- Redundakitties can be nasty dragon hating oponents - you can choose to hide (no digging) or fight
-	n
+- Dragons can then dig for stuff (you might gain the ability to help them, by digging yourself)
+- They might find Diamonds...  (And many other types of stuff)
+- You can upgrade dragons one level, but not yet all the way
+- Redundaknights are nasty dragon hating opponents - you can choose to hide (default, no digging) or fight
 - Win or lose a fight you gain experience.  Lose and you may lose dragons.  Win and there will be rewards.
-- Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Glass Chips and Blocks
+- Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Sand, Castles, Glass Chips and Blocks
 - Lots of new Dragon related Boosts (not all of which curently operate)
-	p				True very true
+- Note while you could start making a Diamond Mould Maker, completing is (I think) currently impossble...
 - New Pane for the state of the Dragons in the current NP
 	p (not yet classic|| default layouts)
 - Dragon Stats
 	p (not yet classic|| default layouts)
 - Dragon Overview Pane
 	n (may not include in launch)
-- New Dragon related Badges
+- New Dragon related Badges (not all of which are currently possible to get)
+
+You cannot currently:
+
+- Progress beyond the second type of Dragon (DragonNewts)
+- Make the Diamond Mould Maker (and the other boosts and monuments that follow)
+- Have multiple nests (more maps will enable this in the near future)
+- Fledge hatchlings in the minus world (this will be quite a long way ahead)
 
 #### Epsilon
 - Several small fixes

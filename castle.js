@@ -436,6 +436,7 @@ Molpy.Up = function() {
 
 		/* In which we calculate how much sand per milliNewPix we dig
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+		Molpy.recalculateRates = 1;
 		Molpy.RatesRecalculate = function(times) {
 			Molpy.recalculateRates = Math.max(Molpy.recalculateRates,(times||1))
 		}
@@ -1269,6 +1270,7 @@ Molpy.Up = function() {
 			} else {
 				amount = EvalMaybeFunction(amount, 0, 1);
 				var b = Molpy.Boosts[stuff];
+				if (b && !b.Has) { Molpy.Notify('Errr - ' + b.name,1); return false; };
 				return b && b.Has(amount) && b.Spend(amount, s);
 			}
 		};
@@ -1357,7 +1359,7 @@ Molpy.Up = function() {
 					Molpy.UnlockBoost(this.alias);
 					this.buy();
 				}
-			}
+			},
 		};
 
 		Molpy.boostNeedRepaint = 1;
@@ -1522,6 +1524,10 @@ Molpy.Up = function() {
 			}
 			
 			this.getHeading = function() {
+				if (!this.group || !Molpy.groupNames[this.group]) {
+					Molpy.Notify('Group Wrong for '+this.name);
+					return 'Unknown'
+				};
 				return "" + Molpy.groupNames[this.group][0]
 			     + ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '');
 			}
@@ -2014,6 +2020,7 @@ Molpy.Up = function() {
 						if(this.location) {
 							this.removeDiv();
 							this.location = 0; //hide because the redacted was missed
+							if (Molpy.TotalDragons && this.drawType[0] == 'knight') Molpy.DragonsHide(1);
 							this.drawType = [];
 							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
 							this.chainCurrent = 0;
@@ -2046,16 +2053,25 @@ Molpy.Up = function() {
 				level = level || 0;
 				this.removeDiv();
 				Molpy.lootSelectionNeedRepaint = 1;
-				if(this.drawType[level] != 'show') {
+				if (Molpy.TotalDragons && this.drawType[0] == 'knight') {
+					var item = g('redacteditem');
+					if(item) item.className = 'hidden';
+					this.location = 0;
+					this.dispIndex = -1;
+					this.drawType = [];
+					this.countup = 0;
+					this.randomiseTime();
+					_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
+					this.chainCurrent = 0;
+					return;
+				} else if(this.drawType[level] != 'show') {
 					Molpy.UnlockBoost('Technicolour Dream Cat');
 					this.drawType[level] = 'show';
 					while(this.drawType.length > level + 1)
 						this.drawType.pop(); //we don't need to remember those now
 					this.jump();
 					return;
-				}
-
-				if(Molpy.Got('RRSR') && flandom(20) == 1) {
+				} else if(Molpy.Got('RRSR') && flandom(20) == 1) {
 					this.drawType[level] = 'hide1';
 					this.toggle = 65;
 					this.chainCurrent++;
@@ -2121,19 +2137,25 @@ Molpy.Up = function() {
 					}
 				if(!possible) this.location = 0;
 				
-				// There is at least one valid spawn location, grab a random one
-				//TODO this can be made better by making a list of valid first and selecting from that instead
+				// For Knights selectthe shop if possible
 				var valid = false;
-				var loopNum = 0;
-				var randNum = 0;
-				while(loopNum < 50 && valid == false) {
-					randNum = Math.ceil((this.possibleLocations + 2) * Math.random());
-					if(randNum > this.possibleLocations) randNum = 4;
-					if(this.divList[randNum].is(':visible')) {
-						this.location = randNum;
-						valid = true;
+				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0 && this.divList[3].is(':visible')) { // Redunaknights
+					this.location = 3; // Shop
+					valid = true;
+				} else {
+					// There is at least one valid spawn location, grab a random one
+					//TODO this can be made better by making a list of valid first and selecting from that instead
+					var loopNum = 0;
+					var randNum = 0;
+					while(loopNum < 50 && valid == false) {
+						randNum = Math.ceil((this.possibleLocations + 2) * Math.random());
+						if(randNum > this.possibleLocations) randNum = 4;
+						if(this.divList[randNum].is(':visible')) {
+							this.location = randNum;
+							valid = true;
+						}
+						loopNum ++;
 					}
-					loopNum ++;
 				}
 				
 				// Unlucky RNG, didn't find a valid spawn location 
@@ -2149,9 +2171,15 @@ Molpy.Up = function() {
 				
 				heading = heading ? '<h1>' + Molpy.Redacted.brackets + '</h1>' : '';
 				var countdown = (level == 0) ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '';
-				var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
-					+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
-				
+				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0) { // Redunaknights
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redunaknights ' + 
+						countdown + '</h2><div><input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>' +
+						'<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
+					this.drawType[level] = 'knight';
+				} else {
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
+						+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
+				}
 				if(drawType == 'recur') {
 					str += this.getHTML(heading, level + 1);
 				} else if(drawType == 'hide1') {

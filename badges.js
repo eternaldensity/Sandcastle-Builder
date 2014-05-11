@@ -750,7 +750,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Meaning',
-		desc: 'Reach a ' + Molpy.redactedWord + ' streak of 42'
+		desc: 'Reach a ' + Molpy.Redacted.Word + ' streak of 42'
 	});
 	new Molpy.Badge({
 		name: 'How do I Shot Mustard?',
@@ -1049,6 +1049,37 @@ Molpy.DefineBadges = function() {
 	new Molpy.Badge({
 		name: 'Wheee Diamonds',
 		desc: 'Found a diamond',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Millionair',
+		desc: 'Have a Million Gold',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Bill Gates',
+		desc: 'Have more Gold than Bill has dollars', 
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'GDP of the World',
+		desc: 'Have more Gold than the World\'s GDP in dollars', 
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Enough to make a Star',
+		desc: 'Have more Diamonds than the mass of the Sun in Carats',
+		stats: 'Did you know there is probably more Diamond in the universe than sand!',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'What\'s the score?',
+		desc: 'Lost more than 20 dragons in fights',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'That\'s gross',
+		desc: 'Lost more than 144 dragons in fights',
 		vis: 1
 	});
 	

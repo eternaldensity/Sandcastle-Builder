@@ -851,6 +851,7 @@
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
 		Molpy.RatesRecalculate();
+		Molpy.DragonDigRecalc();
 		Molpy.allNeedRepaint = 1;
 		Molpy.judgeLevel = -1;
 		Molpy.calculateRates();
