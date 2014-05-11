@@ -750,7 +750,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Meaning',
-		desc: 'Reach a ' + Molpy.redactedWord + ' streak of 42'
+		desc: 'Reach a ' + Molpy.Redacted.Word + ' streak of 42'
 	});
 	new Molpy.Badge({
 		name: 'How do I Shot Mustard?',

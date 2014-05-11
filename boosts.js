@@ -7704,6 +7704,8 @@ Molpy.DefineBoosts = function() {
 					}
 				}
 				str += '</div>';
+			} else {
+				str += ' It can not have its lining changed while in use.';
 			}
 			return str;
 		},
@@ -7725,8 +7727,8 @@ Molpy.DefineBoosts = function() {
 				var stat1 = 0;
 				var stat2 = 0;
 				for (var line in this.Liners) {
-					if (pair[0] == Molpy.NestLinings[line]) stat1 = this.Liners[line];
-					if (pair[1] == Molpy.NestLinings[line]) stat2 = this.Liners[line];
+					if (pair[0] == Molpy.NestLinings[line] && Molpy.Has(pair[0],Infinity)) stat1 = this.Liners[line];
+					if (pair[1] == Molpy.NestLinings[line] && Molpy.Has(pair[1],Infinity)) stat2 = this.Liners[line];
 				}
 				props[prop] = stat1*stat2/10000;
 			}
@@ -7804,7 +7806,8 @@ Molpy.DefineBoosts = function() {
 		},
 		ChangeState: function(newstate, duration) {
 			this.overallState = newstate;
-			this.countdown += (duration || 1);		
+			if (newstate) this.countdown += (duration || 1)
+			else this.countdown = 0;	
 		},
 		clickBeach: function() {
 			if (this.bought && Molpy.DragonDigRate && Molpy.Got('Beach Dragon')) {
@@ -7813,7 +7816,7 @@ Molpy.DefineBoosts = function() {
 		},
 
 		Loose: function(type,num) {
-			loses[type] = (loses[type]||0)+num;
+			this.loses[type] = (this.loses[type]||0)+num;
 			this.totalloses += num;
 			if (this.totalloses >= 20) Molpy.EarnBadge('What\'s the score?');
 			if (this.totalloses >= 144) Molpy.EarnBadge('That\'s gross');
@@ -9721,6 +9724,7 @@ Molpy.DefineBoosts = function() {
 		icon: 'rdkm',
 		desc: function (me) {
 			var str = 'This has lots of useful information that will change as you do things...';
+			var draglevel = Molpy.Level('DQ');
 			if (!me.bought) return str;
 			str += '<br><ul class=rdkm>';
 			if (!Molpy.Level('Eggs')) {
@@ -9730,7 +9734,7 @@ Molpy.DefineBoosts = function() {
 				str += '<li>Linings of Blackprints and Flux Crystals give digging';
 				if (Molpy.Has('Goats',Infinity) && Molpy.Has('Mustard',Infinity)) {
 					str += '<li>Linings of Goats and Mustard give breath effects.';
-					if (Moply.Dragonsx.Level <= Molpy.Dragon['Wyrm'].Level) str += '  When you have the rght types of dragons.';
+					if (draglevel < Molpy.Dragons['Wyrm'].id) str += '  When you have the rght types of dragons.';
 					}
 				if (Molpy.Has('Bonemeal',Infinity) && Molpy.Has('Vacuums',Infinity)) str += '<li>Linings of Bonemeal and Vacuums give magic';
 				if (Molpy.Has('Logicats',Infinity) && Molpy.Has('QQ',Infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
@@ -9750,7 +9754,6 @@ Molpy.DefineBoosts = function() {
 				str += '<li>If there are too many hatchlings for the NP the strongest will eat the rest';
 				str += '<li>Once released they have to survive the locals and they can then can start digging for treasure';
 			};
-			var draglevel = Molpy.Level('DQ');
 			if (draglevel || Molpy.TotalDragons) {
 				str += '<li>Draglings are feeble creatures, they need looking after';
 				str += '<li>' + Molpy.Dragons['Dragling'].description();
@@ -9772,35 +9775,44 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Big Teeth',
 		icon: 'bigteeth',
+		single: 'Big Tooth',
 		desc: function(me) {
 			str = 'Increases the offensive value of Dragons';
-			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' Big Teeth';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
 		},
 		draglvl: 'Dragling',
-		limit: 20,
+		limit: function() {
+			if (Molpy.Level('DQ') == 0) return 4;
+			return 20;
+		},
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
 		name: 'Spines',
 		icon: 'spines',
+		single: 'Spine',
 		desc: function(me) {
 			str = 'Increases the defense value of Dragons';
-			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' spine' + plural(me.bought);
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
 		},
 		draglvl: 'Dragling',
-		limit: 20,
+		limit: function() {
+			if (Molpy.Level('DQ') == 0) return 4;
+			return 20;
+		},
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
 		name: 'Tusks',
 		icon: 'tusks',
+		single: 'Tusk',
 		desc: function(me) {
 			str = 'Increases the offensive value of Dragons';
-			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' tusk' + plural(me.bought);
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
 		},
 		draglvl: 'DragonNewt',
@@ -9817,7 +9829,10 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'DragonNewt',
-		limit: 30,
+		limit: function() {
+			if (Molpy.Level('DQ') == Molpy.Dragons['DragonNewt'].id) return 4;
+			return 30;
+		},
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9840,7 +9855,12 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Magic Teeth',
 		icon: 'magicteeth',
-		desc: 'Increases the offence value of Dragons',
+		single: 'Magic Tooth',
+		desc: function(me) {
+			str = 'Increases the offence value of Dragons';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			return str;
+		},
 		draglvl: 'Dragon',
 		limit: 50,
 		Level: Molpy.BoostFuncs.Bought0Level,
@@ -9874,9 +9894,14 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Healing Potion',
 		icon: 'healingpotion',
-		desc: 'Increases Draconic Health and speeds up healing',
+		desc: function(me) {
+			str = 'Increases Draconic Health and speeds up healing';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			return str;
+		},
 		draglvl: 'DragonNewt',
 		limit: 20,
+		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
@@ -9888,9 +9913,14 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Strength Potion',
 		icon: 'strengthpotion',
-		desc: 'Increases Draconic Strength',
+		desc: function(me) {
+			str = 'Increases Draconic Strength';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			return str;
+		},
 		draglvl: 'Wyrm',
 		limit: 20,
+		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
@@ -9943,16 +9973,18 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({ // Hook
-		name: 'A Cup Of Tea',
+		name: 'Cup Of Tea',
 		icon: 'cuptea',
+		plural: 'Cups of Tea',
 		desc: function(me) {
 			str = 'Reduces the time dragons need to recover after injury';
-			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' cup' + plural(me.bought) + ' of Tea';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
 		},
 		group: 'bean',
 		draglvl: 'Dragling',
 		limit: 4,
+		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
@@ -9982,10 +10014,17 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ 
 		name: 'Camelflarge',
 		icon: 'camel',
-		desc: 'Reduces the time dragons need to hide',
+		desc: function(me) {
+			str = 'Reduces the time dragons need to hide';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			return str;
+		},
 		group: 'drac',
 		draglvl: 'Dragling',
-		limit: 10,
+		limit: function() {
+			if (Molpy.Level('DQ') == 0) return 4;
+			return 10;
+		},
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -10019,7 +10058,11 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ 
 		name: 'Incubator',
 		icon: 'incubator',
-		desc: 'Reduces the time dragon eggs need before they hatch',
+		desc: function(me) {
+			str = 'Reduces the time dragon eggs need before they hatch';
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			return str;
+		},
 		group: 'drac',
 		draglvl: 'DragonNewt',
 		limit: 4,

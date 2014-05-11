@@ -1270,6 +1270,7 @@ Molpy.Up = function() {
 			} else {
 				amount = EvalMaybeFunction(amount, 0, 1);
 				var b = Molpy.Boosts[stuff];
+				if (b && !b.Has) { Molpy.Notify('Errr - ' + b.name,1); return false; };
 				return b && b.Has(amount) && b.Spend(amount, s);
 			}
 		};
@@ -1358,7 +1359,7 @@ Molpy.Up = function() {
 					Molpy.UnlockBoost(this.alias);
 					this.buy();
 				}
-			}
+			},
 		};
 
 		Molpy.boostNeedRepaint = 1;
@@ -2136,19 +2137,25 @@ Molpy.Up = function() {
 					}
 				if(!possible) this.location = 0;
 				
-				// There is at least one valid spawn location, grab a random one
-				//TODO this can be made better by making a list of valid first and selecting from that instead
+				// For Knights selectthe shop if possible
 				var valid = false;
-				var loopNum = 0;
-				var randNum = 0;
-				while(loopNum < 50 && valid == false) {
-					randNum = Math.ceil((this.possibleLocations + 2) * Math.random());
-					if(randNum > this.possibleLocations) randNum = 4;
-					if(this.divList[randNum].is(':visible')) {
-						this.location = randNum;
-						valid = true;
+				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0 && this.divList[3].is(':visible')) { // Redunaknights
+					this.location = 3; // Shop
+					valid = true;
+				} else {
+					// There is at least one valid spawn location, grab a random one
+					//TODO this can be made better by making a list of valid first and selecting from that instead
+					var loopNum = 0;
+					var randNum = 0;
+					while(loopNum < 50 && valid == false) {
+						randNum = Math.ceil((this.possibleLocations + 2) * Math.random());
+						if(randNum > this.possibleLocations) randNum = 4;
+						if(this.divList[randNum].is(':visible')) {
+							this.location = randNum;
+							valid = true;
+						}
+						loopNum ++;
 					}
-					loopNum ++;
 				}
 				
 				// Unlucky RNG, didn't find a valid spawn location 
