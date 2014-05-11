@@ -1475,6 +1475,8 @@ Molpy.DefineGUI = function() {
 		g('dragonnumbersstat').innerHTML = Molpify(Molpy.TotalDragons, 1);
 		g('npswithdragonsstat').innerHTML = Molpify(Molpy.TotalNPsWithDragons, 1);
 		g('dragondiggingstat').innerHTML = Molpify(Molpy.DragonDigRate, 2);
+		g('dragonsloststat').innerHTML = Molpify(Molpy.Boosts['DQ'].totalloses, 2);
+		g('dragonfightstat').innerHTML = Molpify(Molpy.Boosts['DQ'].totalfights, 2);
 
 		g('loadcountstat').innerHTML = Molpify(Molpy.loadCount, 1);
 		g('savecountstat').innerHTML = Molpify(Molpy.saveCount, 1);

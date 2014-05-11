@@ -3966,6 +3966,7 @@ Molpy.DefineBoosts = function() {
 		Has: function(n, all) {
 			if(all) return n <= 0 || this.Level >= n;
 			var pages = this.Level;
+			if (pages == Infinity) return 1;
 			if(pages < 1) return 0;
 			if(Molpy.Boosts['Blackprint Plans'].bought) {
 				var s = Molpy.GetBlackprintSubject();
@@ -4093,7 +4094,7 @@ Molpy.DefineBoosts = function() {
 			return times; // do nothing
 		}
 		Molpy.Add('CfB', times);
-		if (Molpy.Got('Lucky Ring') && Molpy.Earned('Planck Limit') && Math.random()<0.01) Molpy.Boosts['CFB'].power*=2;
+		if (Molpy.Got('Lucky Ring') && Molpy.Earned('Planck Limit') && Math.random()<0.01) Molpy.Boosts['CfB'].power*=2;
 
 		var c = Molpy.LimitConstructionRuns(s);
 		if(Molpy.Has('CfB', c * 10)) {
@@ -7698,7 +7699,9 @@ Molpy.DefineBoosts = function() {
 							+ Molpify((me.Liners[thing])|| 0,1) + '% ' +
 							'<button class=NestLine onclick="Molpy.Liner('+thing+',1)" >&#9654;</button>'+
 							'<button class=NestLine onclick="Molpy.Liner('+thing+',10)" >&#9654;&#9654;</button><p>';
-					};
+					} else {
+						me.Liners[thing] = 0;
+					}
 				}
 				str += '</div>';
 			}
@@ -7781,6 +7784,9 @@ Molpy.DefineBoosts = function() {
 			GlassBlocks: Infinity,
 		},
 		experience: 0,
+		totalfights: 0,
+		totalloses: 0,
+		loses: [],
 		defSave: 1,
 		defStuff: 1,
 		finds:0,
@@ -7789,6 +7795,9 @@ Molpy.DefineBoosts = function() {
 		saveData: {4:['experience',0,'float'],
 			   5:['overallState',0,'int'],
 			   6:['finds',0,'float'],
+			   7:['loses',0,'array'],
+			   8:['totalloses',0,'float'],
+			   9:['totalfights',0,'float'],
 		},
 		countdownLockFunction: function() { // Used for overallState
 			this.overallState = 0;
@@ -7799,9 +7808,16 @@ Molpy.DefineBoosts = function() {
 		},
 		clickBeach: function() {
 			if (this.bought && Molpy.DragonDigRate && Molpy.Got('Beach Dragon')) {
-				Molpy.DragonDiging(1);
+				Molpy.DragonDigging(1);
 			}
 		},
+
+		Loose: function(type,num) {
+			loses[type] = (loses[type]||0)+num;
+			this.totalloses += num;
+			if (this.totalloses >= 20) Molpy.EarnBadge('What\'s the score?');
+			if (this.totalloses >= 144) Molpy.EarnBadge('That\'s gross');
+		}
 			
 	});
 
@@ -9580,7 +9596,7 @@ Molpy.DefineBoosts = function() {
 		defStuff: 1,
 		AddSuper : Molpy.BoostFuncs.Add,
 		Add: function(ammount) {
-			this.AddSuper();
+			this.AddSuper(ammount);
 			if (this.power > 9.9455e33) Molpy.EarnBadge('Enough to make a star');
 		}
 	});
@@ -9848,7 +9864,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Ooo Shinny!',
 		icon: 'shinny',
 		desc: 'Improves Dragons in Mysterious ways',
-		group: 'drag',
+		group: 'drac',
 		price: {
 			Bonemeal:'1T',
 			QQ:'1H',
@@ -9919,7 +9935,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Beach Dragon',
 		icon: 'beachdragon',
 		desc: 'Enables Beach dgging to enhance the dragon digging',
-		group: 'drag',
+		group: 'drac',
 		price: {Goats:'1T',
 			Bonemeal:'1P',
 			QQ:'1E',
@@ -9950,8 +9966,8 @@ Molpy.DefineBoosts = function() {
 		icon: 'diamould',
 		alias: 'DMM',
 		desc: 'Makes a mold to fill with diamonds',
-		group: 'drag',
-		price: {Diamonds: 123456 },
+		group: 'drac',
+		price: {Diamonds: 123456789 },
 	});
 
 	new Molpy.Boost({ // Hook
@@ -9959,15 +9975,15 @@ Molpy.DefineBoosts = function() {
 		icon: 'diamfill',
 		alias: 'DMF',
 		desc: 'Allows a Mould to be filled',
-		group: 'drag',
-		price: {Diamonds: 123456 },
+		group: 'drac',
+		price: {Diamonds: 123456789 },
 	});
 
 	new Molpy.Boost({ 
 		name: 'Camelflarge',
 		icon: 'camel',
 		desc: 'Reduces the time dragons need to hide',
-		group: 'drag',
+		group: 'drac',
 		draglvl: 'Dragling',
 		limit: 10,
 		Level: Molpy.BoostFuncs.Bought0Level,
@@ -9978,8 +9994,8 @@ Molpy.DefineBoosts = function() {
 		icon: 'diamcook',
 		alias: 'DMC',
 		desc: 'Allows a Mould filling to be fused',
-		group: 'drag',
-		price: {Diamonds: 123456 },
+		group: 'drac',
+		price: {Diamonds: 123456789 },
 	});
 
 	new Molpy.Boost({ // Hook
@@ -9987,8 +10003,8 @@ Molpy.DefineBoosts = function() {
 		icon: 'diamburn',
 		alias: 'DMB',
 		desc: 'Makes a masterpiece shine',
-		group: 'drag',
-		price: {Diamonds: 123456 },
+		group: 'drac',
+		price: {Diamonds: 123456789 },
 	});
 
 	new Molpy.Boost({ // Hook
@@ -9996,17 +10012,17 @@ Molpy.DefineBoosts = function() {
 		icon: 'pedistal',
 		alias: 'MPP',
 		desc: 'To put the masterpice on',
-		group: 'drag',
-		price: {Diamonds: 123456 },
+		group: 'drac',
+		price: {Diamonds: 123456789 },
 	});
 
 	new Molpy.Boost({ 
 		name: 'Incubator',
 		icon: 'incubator',
 		desc: 'Reduces the time dragon eggs need before they hatch',
-		group: 'drag',
+		group: 'drac',
 		draglvl: 'DragonNewt',
-		limit: 20,
+		limit: 4,
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 

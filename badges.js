@@ -1072,6 +1072,16 @@ Molpy.DefineBadges = function() {
 		stats: 'Did you know there is probably more Diamond in the universe than sand!',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'What\'s the score?',
+		desc: 'Lost more than 20 dragons in fights',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'That\'s gross',
+		desc: 'Lost more than 144 dragons in fights',
+		vis: 1
+	});
 	
 /**************************************************************
  * Discoveries

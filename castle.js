@@ -436,6 +436,7 @@ Molpy.Up = function() {
 
 		/* In which we calculate how much sand per milliNewPix we dig
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+		Molpy.recalculateRates = 1;
 		Molpy.RatesRecalculate = function(times) {
 			Molpy.recalculateRates = Math.max(Molpy.recalculateRates,(times||1))
 		}
