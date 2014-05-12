@@ -1301,7 +1301,15 @@ Molpy.DefineGUI = function() {
 		if(noLayout) {
 			var finite = isFinite(Molpy.Boosts['Sand'].power) || isFinite(castleAmt) || isFinite(Molpy.spmNP);
 			var tf = Molpy.Got('TF');
-			$('#sectionTFCounts').toggleClass('hidden', !tf);
+			if (Molpy.TotalDragons) {
+				$('#sectionDragonsNP').removeClass('hidden');
+				$('#sectionTFCounts').addClass('hidden');
+			} else if (tf) {
+				$('#sectionTFCounts').removeClass('hidden');
+			} else {
+				$('#sectionTFCounts').addClass('hidden');
+			}
+
 			if(tf) {
 				$('#sectionSandCounts').toggleClass('hidden', !finite);
 				$('#sectionAbout').toggleClass('hidden', finite);
@@ -1320,9 +1328,9 @@ Molpy.DefineGUI = function() {
 		$('.timeflip').toggleClass('flip-horizontal', (Molpy.previewNP ? Molpy.previewNP < 0 : Molpy.newpixNumber < 0));
 		g('version').innerHTML = '<br>Version: ' + Molpy.version  + (Molpy.versionName?'<br>'+Molpy.versionName:'');
 		var npd = Molpy.NPdata[Molpy.newpixNumber];
-		if (npd && npd.ammount) {
+		if (npd && npd.amount) {
 			var dq = Molpy.Boosts['DQ'];
-			var str = Molpify(npd.ammount) + ' ' + Molpy.DragonsById[Molpy.Level('DQ')].name + (npd.ammount > 1?'s':'') + '<br>';
+			var str = Molpify(npd.amount) + ' ' + Molpy.DragonsById[Molpy.Level('DQ')].name + (npd.amount > 1?'s':'') + '<br>';
 			str += ['Digging','Recovering','Hiding'][dq.overallState];
 			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
 			str += '<br>Def: ' + Molpify(npd.defence*Molpy.DragonDefenceMultiplier,3) + ' Atk: ' + Molpify(npd.attack*Molpy.DragonAttackMultiplier,3) + 

@@ -59,12 +59,9 @@ For personal amusement only.
 - Lots of new Dragon related Boosts (not all of which curently operate)
 - Note while you could start making a Diamond Mould Maker, completing is (I think) currently impossble...
 - New Pane for the state of the Dragons in the current NP
-	p (not yet classic|| default layouts)
 - Dragon Stats
-	p (not yet classic|| default layouts)
-- Dragon Overview Pane
-	n (may not include in launch)
 - New Dragon related Badges (not all of which are currently possible to get)
+- Note Export files may be a lot larger when many NPs have dragons
 
 You cannot currently:
 
@@ -72,6 +69,7 @@ You cannot currently:
 - Make the Diamond Mould Maker (and the other boosts and monuments that follow)
 - Have multiple nests (more maps will enable this in the near future)
 - Fledge hatchlings in the minus world (this will be quite a long way ahead)
+- Use the Dragon Overview Pane - it will provide a simple visual of where your dragos are.  (Soon)
 
 #### Epsilon
 - Several small fixes

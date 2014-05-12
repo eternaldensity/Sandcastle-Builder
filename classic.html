@@ -74,16 +74,19 @@
 				<div id="sectionStats" class="hidden">Stats:
 					<div id="statsTabButtons">
 						<div id="statsButtonSand" class="minifloatbox statsButton" >
-							<a onclick="Molpy.ToggleViews(['SandStats','','GlassStats','NinjaStats','OtherStats']);">Sand Stats</a>
+							<a onclick="Molpy.ToggleViews(['SandStats','','GlassStats','NinjaStats','DragonStats','OtherStats']);">Sand Stats</a>
 						</div>
 						<div id="statsButtonGlass" class="minifloatbox statsButton" >
-							<a onclick="Molpy.ToggleViews(['GlassStats','','SandStats','NinjaStats','OtherStats']);">Glass Stats</a>
+							<a onclick="Molpy.ToggleViews(['GlassStats','','SandStats','NinjaStats','DragonStats','OtherStats']);">Glass Stats</a>
 						</div>
 						<div id="statsButtonNinja" class="minifloatbox statsButton" >
-							<a onclick="Molpy.ToggleViews(['NinjaStats','','GlassStats','SandStats','OtherStats']);">Ninja Stats</a>
+							<a onclick="Molpy.ToggleViews(['NinjaStats','','GlassStats','SandStats','DragonStats','OtherStats']);">Ninja Stats</a>
+						</div>
+						<div id="statsButtonDragon" class="minifloatbox statsButton" >
+							<a onclick="Molpy.ToggleViews(['DragonStats','','GlassStats','NinjaStats','SandStats','OtherStats']);">Dragon Stats</a>
 						</div>
 						<div id="statsButtonOther" class="minifloatbox statsButton" >
-							<a onclick="Molpy.ToggleViews(['OtherStats','','GlassStats','NinjaStats','SandStats']);">Other Stats</a>
+							<a onclick="Molpy.ToggleViews(['OtherStats','','GlassStats','NinjaStats','SandStats','DragonStats']);">Other Stats</a>
 						</div>
 					</div>
 					<div id="sectionSandStats" class="hidden statsTab">
@@ -115,6 +118,14 @@
 						<div>NewPixBot delay: <span id="ninjatimestat"></span></div>
 						<div>Ninja Stealth Streak: <span id="ninjastealthstat"></span></div>
 						<div>Ninja Forgiveness Available: <span id="ninjaforgivestat"></span></div><br>
+					</div>
+					<div id="sectionDragonStats" class="hidden statsTab">
+						<div>Dragon Type: <span id="dragontypestat"></span></div>
+						<div>Dragon Numbers: <span id="dragonnumbersstat"></span></div>
+						<div>NPs with Dragons: <span id="npswithdragonsstat"></span></div>
+						<div>Dragon Digging Rate: <span id="dragondiggingstat"></span></div>
+						<div>Dragons lost fighting: <span id="dragonsloststat"></span></div>
+						<div>Dragon fights: <span id="dragonfightstat"></span></div>
 					</div>
 					<div id="sectionOtherStats" class="hidden statsTab">
 						<div>Times Loaded: <span id="loadcountstat"></span></div>
@@ -158,6 +169,9 @@
 					<div id="chipcount"></div>
 					<div id="chiprate"></div>
 					<div id="newtools"></div>
+				</div>
+				<div id="sectionDragonsNP" class="hidden floatbox infobox">
+					<div id="DragonsNP"></div>
 				</div>
 				<div id="sectionTime" class="floatbox infobox">
 					<div id="newpixnum" class="timeflip"></div>
