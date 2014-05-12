@@ -113,7 +113,7 @@
 			success = Molpy.LoadC_STARSTAR_kie();
 		}
 		
-		Molpy.BuildLootLists();
+		Molpy.needRebuildLootList = 1;
 		Molpy.needlePulling = 0;
 		if(!success) return;
 		Molpy.loadCount++;
