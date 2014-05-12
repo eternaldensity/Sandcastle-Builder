@@ -59,10 +59,9 @@ For personal amusement only.
 - Lots of new Dragon related Boosts (not all of which curently operate)
 - Note while you could start making a Diamond Mould Maker, completing is (I think) currently impossble...
 - New Pane for the state of the Dragons in the current NP
-	p (not yet classic|| default layouts)
 - Dragon Stats
-	p (not yet classic|| default layouts)
 - New Dragon related Badges (not all of which are currently possible to get)
+- Note Export files may be a lot larger when many NPs have dragons
 
 You cannot currently:
 

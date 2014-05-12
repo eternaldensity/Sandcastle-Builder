@@ -1301,7 +1301,15 @@ Molpy.DefineGUI = function() {
 		if(noLayout) {
 			var finite = isFinite(Molpy.Boosts['Sand'].power) || isFinite(castleAmt) || isFinite(Molpy.spmNP);
 			var tf = Molpy.Got('TF');
-			$('#sectionTFCounts').toggleClass('hidden', !tf);
+			if (Molpy.TotalDragons) {
+				$('#sectionDragonsNP').removeClass('hidden');
+				$('#sectionTFCounts').addClass('hidden');
+			} else if (tf) {
+				$('#sectionTFCounts').removeClass('hidden');
+			} else {
+				$('#sectionTFCounts').addClass('hidden');
+			}
+
 			if(tf) {
 				$('#sectionSandCounts').toggleClass('hidden', !finite);
 				$('#sectionAbout').toggleClass('hidden', finite);

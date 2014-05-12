@@ -831,9 +831,9 @@ Dragons
 10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch
 11	NPdata						y	y
 12	Dragon Pane (Whats here)			y	y
-12.1	For classic
+12.1	For classic					y	y
 13	Dragon Stats					y	y
-13.1	For Classic
+13.1	For Classic					y	y
 14	Dragon Overview Pane				Not Lanuch
 14.1	For classic					Not Launch
 15	Dragon Upgrades					y	y
