@@ -7580,7 +7580,7 @@ Molpy.DefineBoosts = function() {
 		
 		Add: function(amount) {
 			if (Molpy.Got('Cress') && Molpy.IsEnabled('Cress')) amount = amount * (Molpy.Boosts['Goats'].power/1000);
-			amount = Math.floor(ammount*Molpy.Papal('Mustard'));
+			amount = Math.floor(amount*Molpy.Papal('Mustard'));
 			this.AddSuper(amount);
 			if(!Molpy.Boosts['Mustard Sale'].unlocked && Molpy.Got(this.alias, 2000)) {
 				Molpy.UnlockBoost('Mustard Sale');
@@ -9598,8 +9598,8 @@ Molpy.DefineBoosts = function() {
 		},
 		defStuff: 1,
 		AddSuper : Molpy.BoostFuncs.Add,
-		Add: function(ammount) {
-			this.AddSuper(ammount);
+		Add: function(amount) {
+			this.AddSuper(amount);
 			if (this.power > 9.9455e33) Molpy.EarnBadge('Enough to make a star');
 		}
 	});
@@ -9694,9 +9694,9 @@ Molpy.DefineBoosts = function() {
 		group: 'stuff',
 		defStuff : 1,
 		AddSuper : Molpy.BoostFuncs.Add,
-		Add: function(ammount) {
-			this.AddSuper(ammount);
-			if (this.power > 1) Molpy.UnlockBoost('Ooo Shinny!');
+		Add: function(amount) {
+			this.AddSuper(amount);
+			if (this.power > 1) Molpy.UnlockBoost('Ooo Shiny!');
 			if (this.power > 1e6) Molpy.EarnBadge('Millionair');
 			if (this.power > 77.3e9) Molpy.EarnBadge('Bill Gates');
 			if (this.power > 91e12) Molpy.EarnBadge('GDP of the World');
@@ -9712,8 +9712,8 @@ Molpy.DefineBoosts = function() {
 		group: 'stuff',
 		defStuff : 1,
 		AddSuper : Molpy.BoostFuncs.Add,
-		Add: function(ammount) {
-			this.AddSuper(ammount);
+		Add: function(amount) {
+			this.AddSuper(amount);
 			if (this.power > 1e9) Molpy.UnlockBoost('Billionair'); // this is rubbish at the moment
 		}
 	});
@@ -9821,7 +9821,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({
-		name: 'Adamintine Armour',
+		name: 'Adamantine Armour',
 		icon: 'armour',
 		desc: function(me) {
 			str = 'Increases the defense value of Dragons';
@@ -9881,8 +9881,8 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({
-		name: 'Ooo Shinny!',
-		icon: 'shinny',
+		name: 'Ooo Shiny!',
+		icon: 'shiny',
 		desc: 'Improves Dragons in Mysterious ways',
 		group: 'drac',
 		price: {

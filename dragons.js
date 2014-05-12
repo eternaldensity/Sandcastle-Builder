@@ -396,7 +396,7 @@ Molpy.DragonDigRecalc = function() {
 
 	Molpy.DragonDefenceMultiplier = 1;
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
-	if (Molpy.Got('Ooo Shinny!')) Molpy.DragonDefenceMultiplier *= 2*(1+Math.log(Molpy.Level('Gold')));
+	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= 2*(1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
 	if (Molpy.Got('Adamintine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamintine Armour'));
 
@@ -414,10 +414,10 @@ Molpy.DragonDigRecalc = function() {
 	Molpy.HighestNPwithDragons = 0;
 	for (var dpx in Molpy.NPdata) {
 		dnp = Molpy.NPdata[dpx];
-		if (dnp && dnp.ammount) {
-			td += (dnp.ammount*dnp.dig*Molpy.DragonsById[Molpy.Level('DQ')].digbase || 0);
+		if (dnp && dnp.amount) {
+			td += (dnp.amount*dnp.dig*Molpy.DragonsById[Molpy.Level('DQ')].digbase || 0);
 			Molpy.TotalNPsWithDragons++;
-			Molpy.TotalDragons += dnp.ammount;
+			Molpy.TotalDragons += dnp.amount;
 			Molpy.HighestNPwithDragons = dpx*1;
 		}
 	}
@@ -536,24 +536,24 @@ Molpy.DragonFledge = function(clutch) {
 	var fight = 1;
 	if (!npd) npd = Molpy.NPdata[Molpy.newpixNumber] = {};
 
-	if (npd && npd.ammount > 0 && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.ammount)))	{ // Replace
+	if (npd && npd.amount > 0 && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.amount)))	{ // Replace
 		oldDT = npd.DragonType;
-		oldDN = npd.ammount;
+		oldDN = npd.amount;
 		fight = 0;
 	}
 	npd.DragonType = dq.Level;
-	npd.ammount = hatch.clutches[clutch];
-	if (npd.ammount > lim) {
+	npd.amount = hatch.clutches[clutch];
+	if (npd.amount > lim) {
 		if (lim < 0) {
-			waste = npd.ammount;
-			npd.ammount = 0;
+			waste = npd.amount;
+			npd.amount = 0;
 		} else {
-			waste = Math.max(npd.ammount - lim,0);
-			npd.ammount = Math.max(0,lim);
+			waste = Math.max(npd.amount - lim,0);
+			npd.amount = Math.max(0,lim);
 		}
 	}
 
-	if (npd.ammount) {
+	if (npd.amount) {
 		var props = hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
 		npd.defence= props[0];
 		npd.attack = props[1];
@@ -576,16 +576,16 @@ Molpy.DragonFledge = function(clutch) {
 			break;
 		}
 
-		Molpy.Notify(Molpify(npd.ammount) + ' ' + Molpy.DragonsById[npd.DragonType].name +
-				(npd.ammount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
+		Molpy.Notify(Molpify(npd.amount) + ' ' + Molpy.DragonsById[npd.DragonType].name +
+				(npd.amount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
 		if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name);
 	}
-	if (waste) Molpy.Notify('There was not enough space for '+(npd.ammount?Molpify(waste):'any')+' of them');
+	if (waste) Molpy.Notify('There was not enough space for '+(npd.amount?Molpify(waste):'any')+' of them');
 	hatch.clutches[clutch] = 0;
 	hatch.clean(1);
 
-	if (fight && npd.ammount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge');
-	if (npd.ammount) Molpy.EarnBadge('First Colonist');
+	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge');
+	if (npd.amount) Molpy.EarnBadge('First Colonist');
 	Molpy.DragonDigRecalc(); // Always needed
 }
 
@@ -659,7 +659,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 			factor = dragnhealth/dragstats.defence;
 //			Molpy.Notify('factor ='+ factor,1);
 			if (factor > 0.9) result = 3
-			else if (factor > 0.5 || npd.ammount == 1) result = 2
+			else if (factor > 0.5 || npd.amount == 1) result = 2
 			else result = 1;
 		}
 		loops++;
@@ -667,15 +667,15 @@ Molpy.OpponentsAttack = function(where,from,text) {
 
 	switch (result) {
 		case -2 : // wipeout
-			dq.Loose(npd.DragonType,npd.ammount);
-			npd.ammount = 0;
+			dq.Loose(npd.DragonType,npd.amount);
+			npd.amount = 0;
 			Molpy.DragonExperience(Math.pow(10,npd.DragonType)/5);
 			Molpy.Notify(atktxt + ' You are totally destroyed in a one sided fight.',1);
 			break;
 
 		case -1 : // lost a hard fight
-			dq.Loose(npd.DragonType,npd.ammount);
-			npd.ammount = 0;	
+			dq.Loose(npd.DragonType,npd.amount);
+			npd.amount = 0;	
 			Molpy.DragonExperience(Math.max(DeMolpify(local.exp)*numb, Math.pow(10,npd.DragonType)/5));
 			Molpy.Notify(atktxt + ' You lost, but lost with dignity',1);
 			break;
@@ -686,8 +686,8 @@ Molpy.OpponentsAttack = function(where,from,text) {
 
 		case 1 : // Pyric victory - lose a dragon...
 			var dloss = 0;
-			if (npd.ammount > 1) {
-				npd.ammount--;
+			if (npd.amount > 1) {
+				npd.amount--;
 				dloss = 1;
 				factor *=2;
 			}
@@ -738,7 +738,7 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 		var di = Math.random()*Molpy.TotalNPsWithDragons;
 		var found = 0;
 		for (var np=1; np<=atk; np++) {
-			if (Molpy.NPdata[np] && Molpy.NPdata[np].ammount) {
+			if (Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
 				found++;
 				if (found >= di) {
 					atk = np;
@@ -750,7 +750,7 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 
 	npd = Molpy.NPdata[atk];
 	Molpy.OpponentsAttack(atk,atk+150*(1*Math.log(Molpy.Level('Princesses')+1)),
-			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.ammount) + ' at NP'+atk);
+			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+atk);
 }
 
 Molpy.DragonsHide = function(type) {
