@@ -5932,7 +5932,7 @@ Molpy.DefineBoosts = function() {
 			if(n > 0)
 				_gaq && _gaq.push(['_trackEvent', 'Boost', (dragon ? 'Dragon Upgrade' : 'Upgrade'), me.name]);
 			else
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dowgrade', me.name]);
+				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', me.name]);
 			if(me.Level >= 1e9) Molpy.EarnBadge('Microwave');
 			if(me.Level >= 1e12) Molpy.EarnBadge('Ultraviolet');
 			if(me.Level >= 3e16) Molpy.EarnBadge('X Rays');
@@ -7693,11 +7693,18 @@ Molpy.DefineBoosts = function() {
 				for (var thing in Molpy.NestLinings) {
 					stuff = Molpy.NestLinings[thing];
 					if (Molpy.Has(stuff,Infinity)) {
+						var line = me.Liners[thing] || 0;
 						str += '<br>'+Molpy.Boosts[stuff].plural+':<br>' +
 							'<button class=NestLine onclick="Molpy.Liner('+thing+',-10)" >&#9664;&#9664;</button>' +
-							'<button class=NestLine onclick="Molpy.Liner('+thing+',-1)" >&#9664;</button> ' +
-							+ Molpify((me.Liners[thing])|| 0,1) + '% ' +
-							'<button class=NestLine onclick="Molpy.Liner('+thing+',1)" >&#9654;</button>'+
+							'<button class=NestLine onclick="Molpy.Liner('+thing+',-1)" >&#9664;</button> ';
+						if (Molpy.options.science && line == 3) {
+							str += '&lfloor;&pi;&rfloor;';
+						} else if (Molpy.options.science && line == 4) {
+							str += '&lceil;&pi;&rceil;';
+						} else {
+							str += Molpify(line,1);
+						};
+						str+=	'% <button class=NestLine onclick="Molpy.Liner('+thing+',1)" >&#9654;</button>'+
 							'<button class=NestLine onclick="Molpy.Liner('+thing+',10)" >&#9654;&#9654;</button><p>';
 					} else {
 						me.Liners[thing] = 0;
@@ -7848,6 +7855,7 @@ Molpy.DefineBoosts = function() {
 		Add: function(amount) {
 			this.AddSuper(amount);
 			this.countdown += Math.ceil((2000-80*Molpy.Level('Incubator')) / Math.ceil(this.Level / 5));
+			Molpy.Boosts['DQ'].Refresh();
 		},
 		
 		lockFunction: function() {
@@ -7870,7 +7878,8 @@ Molpy.DefineBoosts = function() {
 			str += '<p>Hatchlings will mature into ' + Molpy.DragonsById[Molpy.Level('DQ')].name + 's<p>';
 			for (var cl in me.clutches) {
 				if (me.clutches.length > 1) {
-					str += '<p>Clutch ' + (1+cl) + ': ';
+					var cn = 1+cl;
+					str += '<p>Clutch ' + cn + ': ';
 				} else {
 					str += '<p>The Clutch ';
 				}
@@ -9159,7 +9168,7 @@ Molpy.DefineBoosts = function() {
 			if(num > 0)
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', me.name]);
 			else
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dowgrade', me.name]);
+				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', me.name]);
 		} else {
 			me.Refresh();
 			Molpy.Notify('Could not afford to adjust This Sucks');
