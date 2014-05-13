@@ -57,7 +57,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 		tails: 1,
-		upgrade: {Diamonds:1},
+		upgrade: {Diamonds:100},
 		exp: '10K',
 		condition: function() { return true },
 		desc: 'These small timid creatures hide in the shadows and under leaves keeping out of the way of fierce cats',
@@ -72,7 +72,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 2,
 		tails: 0,
-		upgrade: {Diamonds:100},
+		upgrade: {Diamonds:'10K'},
 		exp: '10M',
 		condition: function() { return false },
 		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
@@ -87,7 +87,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 		tails: 1,
-		upgrade: {Diamonds:'10K'},
+		upgrade: {Diamonds:'1G'},
 		exp: '10T',
 		condition: function() { return false },
 		desc: 'These are monstorous, limbless creatures, with a big bite.',
@@ -102,7 +102,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 		tails: 1,
-		upgrade: {Diamonds:'1G'},
+		upgrade: {Diamonds:'1T'},
 		exp: '1T',
 		condition: function() { return false },
 		desc: 'These can fly.  They fight and dig with their legs, some have a bad breath.',
@@ -357,7 +357,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Panetheon of Gods',
-		armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic'],
+		armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic', '-typos'],
 		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'120Z-500Y'},
 		exp: '1WW',
 	});
@@ -605,6 +605,8 @@ Molpy.DragonStatsNow = function(where) {
 		if(typeof npd[prop] !== 'undefined' ) Stats[prop] = npd[prop];
 	}
 
+	Stats.defence += 0.001;
+	Stats.attack += 0.001;
 	Stats.defence *= Molpy.DragonDefenceMultiplier;
 	Stats.attack *= Molpy.DragonAttackMultiplier;
 	return Stats;
