@@ -385,6 +385,7 @@ Molpy.DragonDigMultiplier = 10;
 Molpy.DragonAttackMultiplier = 1;
 Molpy.DragonDefenceMultiplier = 1;
 Molpy.DragonBreathMultiplier = 1;
+Molpy.ConsecutiveNPsWithDragons = 0;
 
 Molpy.DragonDigRecalc = function() {
 	Molpy.DragonDigRecalcNeeded = 0;
@@ -412,6 +413,7 @@ Molpy.DragonDigRecalc = function() {
 	Molpy.TotalNPsWithDragons = 0;
 	Molpy.TotalDragons = 0;
 	Molpy.HighestNPwithDragons = 0;
+	var runlength = 0;
 	for (var dpx in Molpy.NPdata) {
 		dnp = Molpy.NPdata[dpx];
 		if (dnp && dnp.amount) {
@@ -419,10 +421,18 @@ Molpy.DragonDigRecalc = function() {
 			Molpy.TotalNPsWithDragons++;
 			Molpy.TotalDragons += dnp.amount;
 			Molpy.HighestNPwithDragons = dpx*1;
+			runlength++;
+			if (runlength > Molpy.ConsecutiveNPsWithDragons) Molpy.ConsecutiveNPsWithDragons = runlength;
+		} else {
+			runlength = 0;
 		}
 	}
 	if (Molpy.TotalDragons) td += 0.001;
 	Molpy.DragonDigRate = td*Molpy.DragonDigMultiplier;
+
+	if (Molpy.ConsecutiveNPsWithDragons >= 10) Molpy.UnlockBoost('Incubator');
+	if (Molpy.ConsecutiveNPsWithDragons >= 22) Molpy.UnlockBoost('Wait for it');
+	if (Molpy.ConsecutiveNPsWithDragons >= 48) Molpy.UnlockBoost('Q04B');
 }
 
 Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
@@ -555,8 +565,8 @@ Molpy.DragonFledge = function(clutch) {
 
 	if (npd.amount) {
 		var props = hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
-		npd.defence= props[0];
-		npd.attack = props[1];
+		npd.attack = props[0];
+		npd.defence= props[1];
 		npd.dig    = props[2];
 		npd.breath = props[3];
 		npd.magic1 = props[4];

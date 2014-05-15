@@ -641,7 +641,7 @@ Molpy.Up = function() {
 					this.amount = Math.max(0, this.amount - this.temp);
 					this.temp = 0;
 					this.Refresh();
-					Molpy.Boosts('CDSP').Refresh();
+					Molpy.Boosts['CDSP'].Refresh();
 					Molpy.Add('AD', cost);
 					_gaq && _gaq.push(['_trackEvent', 'Destroy Tool', this.name, '' + destroy]);
 					Molpy.CheckDragon();
