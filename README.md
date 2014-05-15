@@ -62,6 +62,7 @@ For personal amusement only.
 - Dragon Stats
 - New Dragon related Badges (not all of which are currently possible to get)
 - Note Export files may be a lot larger when many NPs have dragons
+- New Papal Decree for Draconic Experience
 
 You cannot currently:
 
@@ -69,7 +70,7 @@ You cannot currently:
 - Make the Diamond Mould Maker (and the other boosts and monuments that follow)
 - Have multiple nests (more maps will enable this in the near future)
 - Fledge hatchlings in the minus world (this will be quite a long way ahead)
-- Use the Dragon Overview Pane - it will provide a simple visual of where your dragos are.  (Soon)
+- Use the Dragon Overview Pane - it will provide a simple visual of where your dragons are.  (Soon)
 
 #### Epsilon
 - Several small fixes

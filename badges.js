@@ -1726,7 +1726,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:2912,name:'Get Home',desc:'Megan: We need to get back home.  We need to get started on plans to move.  Can we have one of your maps?  That would help - ... are you ok?'});
 	Molpy.MakeQuadBadge({np:2913,name:'Sorry',desc:'Rosetta: <span class=rosetta>I\'m Sorry</span> Cueball: What?'});
 	Molpy.MakeQuadBadge({np:2914,name:'We Failed',desc:'Rosetta: <span class=rosetta>When we discovered the sea was coming under the bank we tried to shore it up.  We <b>Failed</b> we tried to remove everybody from the basin! But we did not know of your group</span>'});
-	Molpy.MakeQuadBadge({np:2915,name:'nO it\'s Ok!',desc:'Megan: No, it\'s Ok! I\'ve been thinking.  At the rate we saw the sea rising, it will take years to -, Rosetta: <span class=rosetta><b>NO!</b></span>'});
+	Molpy.MakeQuadBadge({np:2915,name:'No it\'s Ok!',desc:'Megan: No, it\'s Ok! I\'ve been thinking.  At the rate we saw the sea rising, it will take years to -, Rosetta: <span class=rosetta><b>NO!</b></span>'});
 	Molpy.MakeQuadBadge({np:2916,name:'Days!',desc:'Rosetta: <span class=rosetta>As the waterflows, it widens the breach.  The Berm is giving way.  The sea will rush through in a *******T The planets mightiest river will once again come thundering down the mountainside.  The sea will fill not in years but in DAYS!</span>'});
 	Molpy.MakeQuadBadge({np:2917,name:'Too Long',desc:'Rosetta: <span class=rosetta>The jo*ney to your land is much too long.  *** Not Send *** only sea **** encircled and drowned by the ***ide</span>'});
 	Molpy.MakeQuadBadge({np:2918,name:'Too late',desc:'Rosetta: <span class=rosetta>The world you know is ending...</span>'});
