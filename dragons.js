@@ -414,6 +414,7 @@ Molpy.DragonDigRecalc = function() {
 	Molpy.TotalDragons = 0;
 	Molpy.HighestNPwithDragons = 0;
 	var runlength = 0;
+	var lastNP = 0;
 	for (var dpx in Molpy.NPdata) {
 		dnp = Molpy.NPdata[dpx];
 		if (dnp && dnp.amount) {
@@ -422,9 +423,15 @@ Molpy.DragonDigRecalc = function() {
 			Molpy.TotalDragons += dnp.amount;
 			Molpy.HighestNPwithDragons = dpx*1;
 			runlength++;
-			if (runlength > Molpy.ConsecutiveNPsWithDragons) Molpy.ConsecutiveNPsWithDragons = runlength;
+			var dpi = dpx*1;
+			if (lastNP+1 == dpi ) {
+				if (runlength > Molpy.ConsecutiveNPsWithDragons) Molpy.ConsecutiveNPsWithDragons = runlength;
+			} else {
+				runlength = 1;
+			};
+			lastNP = dpi;
 		} else {
-			runlength = 0;
+			lastNP = runlength = 0;
 		}
 	}
 	if (Molpy.TotalDragons) td += 0.001;
@@ -861,6 +868,8 @@ Dragons
 25	Use # appendeges in desciptions			y	y	
 26	Infinite AC runs -how?				y	y
 27	Fix Molpifycountdown				y	y
+28	Change Incubator et al				y	y
+
 
 
 * Mouthwash (to reduce bad breath backfires)

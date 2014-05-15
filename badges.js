@@ -1819,16 +1819,11 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:3079,name:'Everyone asleep',desc:'Just Megan and Cueball on the raft'});
 	Molpy.MakeQuadBadge({np:3081,name:'New Castle!',desc:'They are making a new sand castle'});
 	Molpy.MakeQuadBadge({np:3082,name:'Land!',desc:'Cueball: Land!'});
-	Molpy.MakeQuadBadge({np:3083,name:'Sine Sunrise',desc:'Megan: We\'ve been heading right toward it since sunrise'});
+	Molpy.MakeQuadBadge({np:3083,name:'Since Sunrise',desc:'Megan: We\'ve been heading right toward it since sunrise'});
 	Molpy.MakeQuadBadge({np:3084,name:'Wake up!',desc:'Cueball: Land! Wake up, everybody'});
 	Molpy.MakeQuadBadge({np:3085,name:'Wow!',desc:'They land and explore'});
 	Molpy.MakeQuadBadge({np:3086,name:'Where are we',desc:'Cueball: Where do you think we are?  Megan: I don\'t know'});
 	Molpy.MakeQuadBadge({np:3087,name:'Find out',desc:'Megan: But I bet we can  figure it out!  C\'mon let\'s see what\'s through here!'});
 	Molpy.MakeQuadBadge({np:3089,name:'The End',desc:'Sob sob cry, bring on the ice cream'});
-	/*
-	Molpy.MakeQuadBadge({np:,name:'',desc:''});
-	Molpy.MakeQuadBadge({np:,name:'',desc:''});
-	Molpy.MakeQuadBadge({np:,name:'',desc:''});
-	*/
 	//Molpy.MakeQuadBadge({np:,name:'',desc:''});
 }

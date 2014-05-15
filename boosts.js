@@ -7973,17 +7973,10 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 		},
-		classChange: function() { 
-			var nclass = '';
-			for (var cl in this.clutches) {
-				if (this.diet[cl] == 0 || this.age <=1000) nclass = 'action'
-				else if (!nclass) nclass = 'alert';
-			}
-			return nclass;
-		}	
+		classChange: function() { return this.Level?'action':'' },
 	});
 
-	Molpy.DragonFeed = function(clutch,food){
+	Molpy.DragonFeed = function(clutch,food) {
 		var hatch = Molpy.Boosts['Hatchlings'];
 		var cls = hatch.clutches[clutch];
 		switch (food) {
@@ -9969,6 +9962,8 @@ Molpy.DefineBoosts = function() {
 		desc: 'The Dragon Forge Logicat costs depend on when you look',
 		group: 'chron',
 		price: {QQ:'1.024F'},
+		buyFunction: function() { Molpy.Boosts['Dragon Forge'].Refresh(); },
+			
 	});
 
 	new Molpy.Boost({
@@ -10111,7 +10106,7 @@ Molpy.DefineBoosts = function() {
 		desc: str = 'Doubles the time mature hatchlings will wait around before fledging themselves',
 		group: 'hpt',
 		price: {Diamonds:555555},
-		title: '<a href="http://mrob.com/time/Q04B" target="_blank">Q04B</a>'
+		title: '<a href="http://mrob.com/time/Q04B" target="_blank">Q04B</a>',
 	});
 
 	new Molpy.Boost({ 
