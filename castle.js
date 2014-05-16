@@ -2831,48 +2831,50 @@ Molpy.Up = function() {
 		if(!(Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].IsEnabled)) Molpy.CheckONG();
 		Molpy.Redacted.checkToggle();
 
-		for( var i in Molpy.Boosts)//count down any boosts with a countdown
-		{
-			var me = Molpy.Boosts[i];
-			if(me.bought) {
-				if(me.countdown) {
-					me.countdown--;
-					if(me.countdown <= 0) {
-						if(me.countdownLockFunction) {
-							me.countdownLockFunction()
+		if (!Molpy.Boosts['Coma Molpy Style'].IsEnabled) {
+			for( var i in Molpy.Boosts)//count down any boosts with a countdown
+			{
+				var me = Molpy.Boosts[i];
+				if(me.bought) {
+					if(me.countdown) {
+						me.countdown--;
+						if(me.countdown <= 0) {
+							if(me.countdownLockFunction) {
+								me.countdownLockFunction()
+							} else {
+								Molpy.LockBoost(i);
+								me.power = 0;
+							}
+							me.countdown = 0;
 						} else {
-							Molpy.LockBoost(i);
-							me.power = 0;
+							if(me.countdownFunction) me.countdownFunction();
 						}
-						me.countdown = 0;
-					} else {
-						if(me.countdownFunction) me.countdownFunction();
-					}
-					me.Refresh();
-				}
-			}
-			if(me.bought) {
-				if(me.classChange) {
-					var newclass = me.classChange();
-					if (newclass != me.className) {
-						me.className = newclass;
-						Molpy.lootCheckTagged(me);
 						me.Refresh();
-						Molpy.boostNeedRepaint = 1;
+					}
+				}
+				if(me.bought) {
+					if(me.classChange) {
+						var newclass = me.classChange();
+						if (newclass != me.className) {
+							me.className = newclass;
+							Molpy.lootCheckTagged(me);
+							me.Refresh();
+							Molpy.boostNeedRepaint = 1;
+						}
 					}
 				}
 			}
-		}
-		for( var i in Molpy.Badges) {
-			var me = Molpy.Badges[i];
-			if(me.earned) {
-				if(me.classChange) {
-					var newclass = me.classChange();
-					if (newclass != me.className) {
-						me.className = newclass;
-						Molpy.lootCheckTagged(me);
-						me.Refresh();
-						Molpy.badgeNeedRepaint = 1;
+			for( var i in Molpy.Badges) {
+				var me = Molpy.Badges[i];
+				if(me.earned) {
+					if(me.classChange) {
+						var newclass = me.classChange();
+						if (newclass != me.className) {
+							me.className = newclass;
+							Molpy.lootCheckTagged(me);
+							me.Refresh();
+							Molpy.badgeNeedRepaint = 1;
+						}
 					}
 				}
 			}

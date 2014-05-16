@@ -414,6 +414,7 @@ Molpy.DragonDigRecalc = function() {
 	Molpy.TotalDragons = 0;
 	Molpy.HighestNPwithDragons = 0;
 	var runlength = 0;
+	var lastNP = 0;
 	for (var dpx in Molpy.NPdata) {
 		dnp = Molpy.NPdata[dpx];
 		if (dnp && dnp.amount) {
@@ -422,9 +423,15 @@ Molpy.DragonDigRecalc = function() {
 			Molpy.TotalDragons += dnp.amount;
 			Molpy.HighestNPwithDragons = dpx*1;
 			runlength++;
-			if (runlength > Molpy.ConsecutiveNPsWithDragons) Molpy.ConsecutiveNPsWithDragons = runlength;
+			var dpi = dpx*1;
+			if (lastNP+1 == dpi ) {
+				if (runlength > Molpy.ConsecutiveNPsWithDragons) Molpy.ConsecutiveNPsWithDragons = runlength;
+			} else {
+				runlength = 1;
+			};
+			lastNP = dpi;
 		} else {
-			runlength = 0;
+			lastNP = runlength = 0;
 		}
 	}
 	if (Molpy.TotalDragons) td += 0.001;
@@ -707,7 +714,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 			if (Molpy.Spend('Healing Potion')) rectime/=5;
 			if (Molpy.Spend('Cup of Tea')) rectime/=2;
 			rectime = Math.floor(rectime);
-			dq.ChangeState(1,rectime);
+			dq.ChangeState(2,rectime);
 			Molpy.Notify(atktxt + ' You won a very hard fight, ' + 
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType]+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
@@ -719,7 +726,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 			if (Molpy.Spend('Healing Potion')) rectime/=5;
 			if (Molpy.Spend('Cup of Tea')) rectime/=2;
 			rectime = Math.floor(rectime);
-			dq.ChangeState(1,rectime);
+			dq.ChangeState(2,rectime);
 			Molpy.Notify(atktxt + ' You won a hard fight, but will need to recover for ' + 
 					MolpifyCountdown(dq.countdown, 1),1);
 			local.takeReward(numb,DeMolpify(local.exp)*numb); 
@@ -769,7 +776,7 @@ Molpy.DragonsHide = function(type) {
 	Molpy.Redacted.onClick();
 	dq = Molpy.Boosts['DQ'];
 	var hidetime = Math.ceil(42 * (type+1)/Math.pow(1.5,Molpy.Level('Camelflarge')));
-	dq.ChangeState(2,hidetime);
+	dq.ChangeState(1,hidetime);
 	Molpy.Notify('The Dragons are hiding for ' + hidetime + 'mnp');
 }
 
@@ -861,6 +868,8 @@ Dragons
 25	Use # appendeges in desciptions			y	y	
 26	Infinite AC runs -how?				y	y
 27	Fix Molpifycountdown				y	y
+28	Change Incubator et al				y	y
+
 
 
 * Mouthwash (to reduce bad breath backfires)

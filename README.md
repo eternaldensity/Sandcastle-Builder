@@ -43,6 +43,7 @@ For personal amusement only.
 - The Fading - New boost from high CDSP (more will follow with higher CDSP)
 - Aleph e - Does for Chips/Blocks what Aleph One did for sand and castles
 - The Alias for Crouching Dragon, Sleeping Panther is now CDSP not WiseDragon
+- Coma Molpy Style now pauses all countdowns
 - Lots of behind the sceens dragon stuff, leading to:
 
 - !!! HERE BE DRAGONS !!!

@@ -6434,7 +6434,7 @@ Molpy.DefineBoosts = function() {
 			if(!Molpy.Earned('Planck Limit')) {
 				var pageCost = n * 10
 				var logicatCost = Math.ceil(n / 20);
-				if (Molpy.Got('The Fading')) logicatCost *= (1+Math.sin((Math.floor((Date.now()/1000)-900)%3600)*Math.PI/1800))/2;
+				if (Molpy.Got('The Fading')) logicatCost *= (1+Math.cos((Math.floor((Date.now()/1000)-900)%3600)*Math.PI/1800))/2;
 				if(n < Molpy.Boosts['PC'].power) {
 					var mult = 1;
 					var strs = [];
@@ -7973,17 +7973,10 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 		},
-		classChange: function() { 
-			var nclass = '';
-			for (var cl in this.clutches) {
-				if (this.diet[cl] == 0 || this.age <=1000) nclass = 'action'
-				else if (!nclass) nclass = 'alert';
-			}
-			return nclass;
-		}	
+		classChange: function() { return this.Level?'action':'' },
 	});
 
-	Molpy.DragonFeed = function(clutch,food){
+	Molpy.DragonFeed = function(clutch,food) {
 		var hatch = Molpy.Boosts['Hatchlings'];
 		var cls = hatch.clutches[clutch];
 		switch (food) {
@@ -9969,6 +9962,8 @@ Molpy.DefineBoosts = function() {
 		desc: 'The Dragon Forge Logicat costs depend on when you look',
 		group: 'chron',
 		price: {QQ:'1.024F'},
+		buyFunction: function() { Molpy.Boosts['Dragon Forge'].Refresh(); },
+			
 	});
 
 	new Molpy.Boost({
@@ -10111,7 +10106,7 @@ Molpy.DefineBoosts = function() {
 		desc: str = 'Doubles the time mature hatchlings will wait around before fledging themselves',
 		group: 'hpt',
 		price: {Diamonds:555555},
-		title: '<a href="http://mrob.com/time/Q04B" target="_blank">Q04B</a>'
+		title: '<a href="http://mrob.com/time/Q04B" target="_blank">Q04B</a>',
 	});
 
 	new Molpy.Boost({ 
