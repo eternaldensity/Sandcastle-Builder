@@ -1301,7 +1301,15 @@ Molpy.DefineGUI = function() {
 		if(noLayout) {
 			var finite = isFinite(Molpy.Boosts['Sand'].power) || isFinite(castleAmt) || isFinite(Molpy.spmNP);
 			var tf = Molpy.Got('TF');
-			$('#sectionTFCounts').toggleClass('hidden', !tf);
+			if (Molpy.TotalDragons) {
+				$('#sectionDragonsNP').removeClass('hidden');
+				$('#sectionTFCounts').addClass('hidden');
+			} else if (tf) {
+				$('#sectionTFCounts').removeClass('hidden');
+			} else {
+				$('#sectionTFCounts').addClass('hidden');
+			}
+
 			if(tf) {
 				$('#sectionSandCounts').toggleClass('hidden', !finite);
 				$('#sectionAbout').toggleClass('hidden', finite);
@@ -1319,6 +1327,22 @@ Molpy.DefineGUI = function() {
 		g('period').innerHTML = Molpy.TimePeriod;
 		$('.timeflip').toggleClass('flip-horizontal', (Molpy.previewNP ? Molpy.previewNP < 0 : Molpy.newpixNumber < 0));
 		g('version').innerHTML = '<br>Version: ' + Molpy.version  + (Molpy.versionName?'<br>'+Molpy.versionName:'');
+		var npd = Molpy.NPdata[Molpy.newpixNumber];
+		if (npd && npd.amount) {
+			var dq = Molpy.Boosts['DQ'];
+			var str = Molpify(npd.amount) + ' ' + Molpy.DragonsById[Molpy.Level('DQ')].name + (npd.amount > 1?'s':'') + '<br>';
+			str += ['Digging','Recovering','Hiding'][dq.overallState];
+			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
+			str += '<br>Def: ' + Molpify(npd.defence*Molpy.DragonDefenceMultiplier,3) + ' Atk: ' + Molpify(npd.attack*Molpy.DragonAttackMultiplier,3) + 
+				' Dig:&nbsp;' + Molpify(npd.dig*Molpy.DragonDigMultiplier,3) ;
+			if (npd.breath) str += ' Breath:&nbsp;' + Molpify(bpd.breath*Molpy.DragonBreathMultiplier,3);
+			if (npd.magic1) str += ' Magic1:&nbsp;' + bpd.magic1;
+			if (npd.magic2) str += ' Magic2:&nbsp;' + bpd.magic2;
+			if (npd.magic3) str += ' Magic3:&nbsp;' + bpd.magic3;
+			g('DragonsNP').innerHTML = str;
+		} else {
+			g('DragonsNP').innerHTML = 'No Dragons here';
+		}
 
 		if(!noLayout) {
 			g('stuffSandCount').innerHTML = 'Sand: ' + Molpify(Molpy.Boosts['Sand'].power, 3);
@@ -1330,7 +1354,14 @@ Molpy.DefineGUI = function() {
 				if($('#stuff' + bst.alias + 'Count').length == 0) {
 					$("#sectionStuffCountsBody").append("<div id=\"stuff" + bst.alias + "Count\"></div>");
 				}
-				g('stuff' + bst.alias + 'Count').innerHTML = bst.plural + ': ' + Molpify(bst.Level, 3);
+				if (bst.alias == 'Gold' && bst.Level < 1) {
+					var name = 'Silver';
+					var amt = bst.Level*1000;
+					if (amt < 1) { name = 'Copper'; amt = Math.round(amt*1000)};
+					g('stuff' + bst.alias + 'Count').innerHTML = name + ': ' + Molpify(amt, 3);
+				} else {
+					g('stuff' + bst.alias + 'Count').innerHTML = bst.plural + ': ' + Molpify(bst.Level, 3);
+				}
 				$('#stuff' + bst.alias + 'Count').toggleClass('hidden', !Molpy.Got(bst.alias));
 			}
 
@@ -1447,6 +1478,13 @@ Molpy.DefineGUI = function() {
 		g('ninjaforgivestat').innerHTML = Molpify(Molpy.Boosts['Ninja Hope'].power * Molpy.Got('Ninja Hope')
 			+ Molpy.Boosts['Ninja Penance'].power * Molpy.Got('Ninja Penance') + Molpy.Boosts['Impervious Ninja'].power
 			* Molpy.Got('Impervious Ninja'));
+
+		g('dragontypestat').innerHTML = Molpy.DragonsById[Molpy.Level('DQ')].name;
+		g('dragonnumbersstat').innerHTML = Molpify(Molpy.TotalDragons, 1);
+		g('npswithdragonsstat').innerHTML = Molpify(Molpy.TotalNPsWithDragons, 1);
+		g('dragondiggingstat').innerHTML = Molpify(Molpy.DragonDigRate, 3);
+		g('dragonsloststat').innerHTML = Molpify(Molpy.Boosts['DQ'].totalloses, 2);
+		g('dragonfightstat').innerHTML = Molpify(Molpy.Boosts['DQ'].totalfights, 2);
 
 		g('loadcountstat').innerHTML = Molpify(Molpy.loadCount, 1);
 		g('savecountstat').innerHTML = Molpify(Molpy.saveCount, 1);
@@ -1974,18 +2012,22 @@ Molpy.DefineGUI = function() {
 		Molpy.boxVisOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Shop', 'Inventory', 'SandTools',
 				'CastleTools', 'Options', 'Stats', 'Log', 'Export', 'About', 'SandCounts', 'NPInfo', 'Layouts',
 				'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout', 'TFCounts',
-				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
+				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation',
+				'DragonStats','DragonsNP','DragonOverview'];
 		Molpy.draggableOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Options', 'Stats', 'Log',
 				'Export', 'SandCounts', 'TFCounts', 'NPInfo', 'About', 'SandTools', 'CastleTools', 'Shop', 'Inventory',
 				'Layouts', 'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout',
-				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
+				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation',
+				'DragonStats','DragonsNP','DragonOverview'];
 		Molpy.sizableOrder = ['View', 'File', 'Links', 'Options', 'Stats', 'Log', 'Export', 'SandTools', 'CastleTools',
 				'Shop', 'Inventory', 'Layouts', 'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats',
-				'OtherStats', 'QuickLayout', 'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
+				'OtherStats', 'QuickLayout', 'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation',
+				'DragonStats','DragonsNP','DragonOverview'];
 		Molpy.borderColorOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Shop', 'Inventory', 'SandTools',
 				'CastleTools', 'Options', 'Stats', 'Log', 'Export', 'About', 'SandCounts', 'NPInfo', 'Layouts',
 				'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout', 'TFCounts',
-				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation'];
+				'Faves', 'StuffCounts', 'IncomeCounts','LootSearch','LootNavigation',
+				'DragonStats','DragonsNP','DragonOverview'];
 		$('#sectionInventoryBody').resize(Molpy.FixPaneWidths);
 		$('#sectionLayoutsBody').resize(Molpy.FixPaneWidths);
 		Molpy.activeLayout = new Molpy.Layout({
@@ -2049,7 +2091,7 @@ Molpy.DefineGUI = function() {
 		var divHTML = '<div class="objDiv ' + object.getFullClass() + '">'
 			        + '	<div class="icon ' + type + '_' + (object.icon ? object.icon : 'generic') + '" />'
 			        + headingHTML
-			        + '	<H2 class="objName">' + object.getFormattedName() + '</H2>'
+			        + '	<H2 class="objName">' + (object.title || object.getFormattedName()) + '</H2>'
 			        + purchaseHTML
 			        + ownedHTML
 			        + priceHTML

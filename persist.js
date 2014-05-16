@@ -91,6 +91,7 @@
 		localStorage['Boosts'] = Molpy.BoostsToString();
 		localStorage['Badges'] = Molpy.BadgesToString();
 		localStorage['OtherBadges'] = Molpy.OtherBadgesToString();
+		localStorage['NPdata'] = Molpy.NPdataToString();
 		return 1;
 	}
 
@@ -165,6 +166,7 @@
 		Molpy.BoostsFromString(localStorage['Boosts'], version);
 		Molpy.BadgesFromString(localStorage['Badges'], version);
 		Molpy.OtherBadgesFromString(localStorage['OtherBadges'], version);
+		Molpy.NPdataFromString(localStorage['NPdata'], version);
 		return Molpy.PostLoadTasks(version);
 	}
 
@@ -392,6 +394,37 @@
 		return str;
 	}
 
+	Molpy.NPdataToString = function() {
+		var s = 'S'; //Semicolon
+		var c = 'C'; //Comma
+		var str = '';
+		var lowest = 0;
+		var highest = 0;
+		if (!Molpy.TotalDragons) return str;
+		// See what range to save if any
+		for (var np = -Math.abs(Molpy.highestNPvisited); np <=Math.abs(Molpy.highestNPvisited); np++) {
+			if (Molpy.NPdata && Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
+				if (!lowest) lowest = np;
+				highest = np;
+			}
+		}
+		if (!lowest) return str;
+		str += lowest + s + highest
+		for (var np=lowest; np<=highest; np++) {
+			var dd = Molpy.NPdata[np];
+			str += s;
+		        if (dd && dd.amount) {
+				str += dd.DragonType + c + dd.amount + c + dd.defence + c + dd.attack + c + dd.dig ;
+				if (dd.breath || dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.breath || 0);
+				if (dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.magic1 || 0);
+				if (dd.magic2 || dd.magic3) str += c + (dd.magic2 || 0);
+				if (dd.magic3) str += c + (dd.magic3 || 0);
+			}
+		}
+		npdsthread = str;
+		return str;
+	}
+
 	/* In which I do save and load!
 	+++++++++++++++++++++++++++++++*/
 	Molpy.ToNeedlePulledThing = function(exporting) {
@@ -420,6 +453,9 @@
 
 		thread = '';
 		thread += Molpy.OtherBadgesToString() + p;
+
+		thread = '';
+		thread += Molpy.NPdataToString() + p;
 
 		threads.push(thread);
 		return threads;
@@ -583,6 +619,7 @@
 						me[saveData[num][0]] = parseFloat(savedValueList[savednum++]) || saveData[num][1];
 					else if(saveData[num][2] == 'array') { // Arrays store length + data(always float)
 						var ting = saveData[num][0];
+						me[ting] = [];
 						var siz = parseInt(savedValueList[savednum++]) || saveData[num][1] || 0; // 1st value is length
 						for (idx = 0; idx < siz; idx++) {
 							me[ting][idx] = parseFloat(savedValueList[savednum++]) || 0;
@@ -705,6 +742,33 @@
 		}
 	}
 
+	Molpy.NPdataFromString = function(thread,version) {
+		var s = 'S'; //Semicolon
+		var c = 'C'; //Comma
+		npdthread = thread;
+		Molpy.ClearNPdata();
+		if (!thread) return;
+		var pixels = thread.split(s);
+		if (!pixels[0]) return;
+		var lowest = parseFloat(pixels.shift());
+		var highest = parseFloat(pixels.shift());
+		for (var np = lowest; np<=highest; np++) {
+			var pretzels = pixels.shift().split(c);
+			if (pretzels[0]) {
+				dd = Molpy.NPdata[np] = {};
+				dd.DragonType = parseInt(pretzels.shift()) || 0;
+				dd.amount = parseFloat(pretzels.shift()) || 0;
+				dd.defence = parseFloat(pretzels.shift()) || 0;
+				dd.attack = parseFloat(pretzels.shift()) || 0;
+				dd.dig = parseFloat(pretzels.shift()) || 0;
+				dd.breath = parseFloat(pretzels.shift() || 0);
+				dd.magic1 = parseFloat(pretzels.shift() || 0);
+				dd.magic2 = parseFloat(pretzels.shift() || 0);
+				dd.magic3 = parseFloat(pretzels.shift() || 0);
+			}
+		}
+	}
+
 	Molpy.ValidateVersion = function(version) {
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Version', '' + version, true]);
 		if(version > Molpy.version) {
@@ -747,6 +811,7 @@
 		Molpy.BadgesFromString(thread[8] || '', version);
 		//thread[9] is unused
 		Molpy.OtherBadgesFromString(thread[10] || '', version);
+		Molpy.NPdataFromString(thread[11] || '', version);
 		return Molpy.PostLoadTasks(version);
 	}
 	Molpy.PreLoadTasks = function(version) {
@@ -787,6 +852,7 @@
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
 		Molpy.RatesRecalculate();
+		Molpy.DragonDigRecalc();
 		Molpy.allNeedRepaint = 1;
 		Molpy.judgeLevel = -1;
 		Molpy.calculateRates();
@@ -945,7 +1011,7 @@
 			Molpy.Boosts['Time Lord'].power = Molpy.Boosts['Time Lord'].bought +1 - Molpy.Level('Time Lord'); // Count down rather than up
 		}
 		if(version < 3.34) {
-			if (Molpy.Boosts['WiseDragon'].power > 444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
+			if (Molpy.Boosts['CDSP'].power > 444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
 			if (Molpy.Has('Maps', 80)) Molpy.UnlockBoost('DNS'); 
 			if (Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
 		}
@@ -957,7 +1023,11 @@
 			}
 		}
 		if(version < 3.421) {
-			if (Molpy.Boosts['WiseDragon'].bought) Molpy.Boosts['WiseDragon'].bought = (Molpy.Boosts['WiseDragon'].power || 0)+1;
+			if (Molpy.Boosts['CDSP'].bought) Molpy.Boosts['CDSP'].bought = (Molpy.Boosts['CDSP'].power || 0)+1;
+		}
+		if(version < 3.5) {
+			if (Molpy.Boosts['CDSP'].power >=1024) Molpy.UnlockBoost('The Fading');
+			if (Molpy.Got('DQ')) Molpy.UnlockBoost('RDKM');
 		}
 
 	}
@@ -1173,6 +1243,7 @@
 			Molpy.BuildLootLists();
 			Molpy.allNeedRepaint = 1;
 			Molpy.mustardTools = 0;
+			typocount = 0;
 		}
 	}
 }

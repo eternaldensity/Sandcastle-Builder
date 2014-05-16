@@ -8,17 +8,23 @@ The game is currently hosted at http://castle.chirpingmustard.com
 
 ## Credits
 
-Code mostly by Eternal Density.
+Original Code mostly by Eternal Density.
+
+Quite a lot of code by Waveney.
+
+Quite a bit of code by LucidCrux.
 
 Parts of code and the clockface image by ChronosDragon.
 
-Quite a bit of code by waveney.
+Icons by LucidCrux, ChronosDragon, BlitzGirl, and StormAngel/cmyk.
 
-Icons by ChronosDragon, BlitzGirl, and StormAngel/cmyk.
+Patches and fixes from many others.
 
 'NewPix' by Randall Munroe, under a Creative Commons Attribution-NonCommercial 2.5 License. http://creativecommons.org/licenses/by-nc/2.5/ (these are actually hotlinked from http://imgs.xkcd.com/ via http://xkcd.mscha.org/ ) This means that this game cannot be used for any commercial purpose (including YouTube monetisation)
 
 'Colpix' by various. (These are coloured modifications of Randall Munroe's work)
+
+'TaTpix' by Latent22, waveney and SilentTimer.  (Not yet used)
 
 Inspired by Orteil's C**kie Clicker.
 
@@ -26,12 +32,56 @@ For personal amusement only.
 
 ## Changelog
 
-### 3.421
+### 3.5 - Here Be Dragons
+
+#### Waveney
+- Caged logicat single puzzle buy will reapear if no multi buy button shown
+- New option to give the minimum number of decimal digits displayed
+- Long overdue changes to the top of the ReadMe
+- Many bug fixes, tweaks, nerfs and buffs
+- Fixed long standing bug that stopped Sand Tools in new games working
+- The Fading - New boost from high CDSP (more will follow with higher CDSP)
+- Aleph e - Does for Chips/Blocks what Aleph One did for sand and castles
+- The Alias for Crouching Dragon, Sleeping Panther is now CDSP not WiseDragon
+- Coma Molpy Style now pauses all countdowns
+- Lots of behind the sceens dragon stuff, leading to:
+
+- !!! HERE BE DRAGONS !!!
+
+- The Dragon Queen can lay eggs in lined nests, eggs can hatch, need feeding then they fledge
+- The Raptorish Dragon Keeping Manual contains a lot of help
+- Fledglings need to survive the locals when they are released
+- Dragons can then dig for stuff (you might gain the ability to help them, by digging yourself)
+- They might find Diamonds...  (And many other types of stuff)
+- You can upgrade dragons one level, but not yet all the way
+- Redundaknights are nasty dragon hating opponents - you can choose to hide (default, no digging) or fight
+- Win or lose a fight you gain experience.  Lose and you may lose dragons.  Win and there will be rewards.
+- Note Although the Dragons work with many Infinities, they would work (at lower levels) with only Sand, Castles, Glass Chips and Blocks
+- Lots of new Dragon related Boosts (not all of which curently operate)
+- Note while you could start making a Diamond Mould Maker, completing is (I think) currently impossble...
+- New Pane for the state of the Dragons in the current NP
+- Dragon Stats
+- New Dragon related Badges (not all of which are currently possible to get)
+- Note Export files may be a lot larger when many NPs have dragons
+- New Papal Decree for Draconic Experience
+
+You cannot currently:
+
+- Progress beyond the second type of Dragon (DragonNewts)
+- Make the Diamond Mould Maker (and the other boosts and monuments that follow)
+- Have multiple nests (more maps will enable this in the near future)
+- Fledge hatchlings in the minus world (this will be quite a long way ahead)
+- Use the Dragon Overview Pane - it will provide a simple visual of where your dragons are.  (Soon)
+
+#### Epsilon
+- Several small fixes
+
+### 3.4211
 
 #### Waveney
 - A couple of CDSP bugs caused by a global edit that was shouldn't have been
 
-### 3.421
+### 3.421 - Wrong order for a Lift off
 
 #### Waveney
 - CMNT price reduction (should only take a couple of days to afford now)

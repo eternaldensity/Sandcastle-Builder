@@ -78,7 +78,7 @@ Molpy.OptionsFromString = function(thread) {
 // ALWAYS add to the end of this list. NEVER EVER remove an option
 Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpix', 'longpostfix', 'colourscheme',
 			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll',
-			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow' ];
+			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow', 'mindecimal' ];
 	
 // These options are defined in the display order
 
@@ -207,6 +207,18 @@ new Molpy.Option({
 		Molpy.allNeedRepaint = 1;
 		Molpy.UpdateFaves();
 	},
+});
+
+new Molpy.Option({
+	name: 'mindecimal',
+	title: 'Minimum Decimal Digits',		
+	range: 5,
+	onchange: function() {
+		Molpy.allNeedRepaint = 1;
+		Molpy.UpdateFaves();
+	},
+	text: function() { return Molpy.options.mindecimal },
+
 });
 
 new Molpy.Option({

@@ -750,7 +750,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Meaning',
-		desc: 'Reach a ' + Molpy.redactedWord + ' streak of 42'
+		desc: 'Reach a ' + Molpy.Redacted.Word + ' streak of 42'
 	});
 	new Molpy.Badge({
 		name: 'How do I Shot Mustard?',
@@ -1029,6 +1029,57 @@ Molpy.DefineBadges = function() {
 		name: 'Sleeping Dragon, Crouching Panther',
 		desc: 'Crouching Dragon, Sleeping Panther > 468',
 		stats: 'You may find this useful...',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'First Colonist',
+		desc: 'Dragons have colonised a NP',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'There are two of them!',
+		desc: 'Survive colonising when there are two opponents',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Found Something!',
+		desc: 'Diggining Dragons have found their first treasure',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Wheee Diamonds',
+		desc: 'Found a diamond',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Millionair',
+		desc: 'Have a Million Gold',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Bill Gates',
+		desc: 'Have more Gold than Bill has dollars', 
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'GDP of the World',
+		desc: 'Have more Gold than the World\'s GDP in dollars', 
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Enough to make a Star',
+		desc: 'Have more Diamonds than the mass of the Sun in Carats',
+		stats: 'Did you know there is probably more Diamond in the universe than sand!',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'What\'s the score?',
+		desc: 'Lost more than 20 dragons in fights',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'That\'s gross',
+		desc: 'Lost more than 144 dragons in fights',
 		vis: 1
 	});
 	
@@ -1675,7 +1726,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:2912,name:'Get Home',desc:'Megan: We need to get back home.  We need to get started on plans to move.  Can we have one of your maps?  That would help - ... are you ok?'});
 	Molpy.MakeQuadBadge({np:2913,name:'Sorry',desc:'Rosetta: <span class=rosetta>I\'m Sorry</span> Cueball: What?'});
 	Molpy.MakeQuadBadge({np:2914,name:'We Failed',desc:'Rosetta: <span class=rosetta>When we discovered the sea was coming under the bank we tried to shore it up.  We <b>Failed</b> we tried to remove everybody from the basin! But we did not know of your group</span>'});
-	Molpy.MakeQuadBadge({np:2915,name:'nO it\'s Ok!',desc:'Megan: No, it\'s Ok! I\'ve been thinking.  At the rate we saw the sea rising, it will take years to -, Rosetta: <span class=rosetta><b>NO!</b></span>'});
+	Molpy.MakeQuadBadge({np:2915,name:'No it\'s Ok!',desc:'Megan: No, it\'s Ok! I\'ve been thinking.  At the rate we saw the sea rising, it will take years to -, Rosetta: <span class=rosetta><b>NO!</b></span>'});
 	Molpy.MakeQuadBadge({np:2916,name:'Days!',desc:'Rosetta: <span class=rosetta>As the waterflows, it widens the breach.  The Berm is giving way.  The sea will rush through in a *******T The planets mightiest river will once again come thundering down the mountainside.  The sea will fill not in years but in DAYS!</span>'});
 	Molpy.MakeQuadBadge({np:2917,name:'Too Long',desc:'Rosetta: <span class=rosetta>The jo*ney to your land is much too long.  *** Not Send *** only sea **** encircled and drowned by the ***ide</span>'});
 	Molpy.MakeQuadBadge({np:2918,name:'Too late',desc:'Rosetta: <span class=rosetta>The world you know is ending...</span>'});
@@ -1768,16 +1819,11 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:3079,name:'Everyone asleep',desc:'Just Megan and Cueball on the raft'});
 	Molpy.MakeQuadBadge({np:3081,name:'New Castle!',desc:'They are making a new sand castle'});
 	Molpy.MakeQuadBadge({np:3082,name:'Land!',desc:'Cueball: Land!'});
-	Molpy.MakeQuadBadge({np:3083,name:'Sine Sunrise',desc:'Megan: We\'ve been heading right toward it since sunrise'});
+	Molpy.MakeQuadBadge({np:3083,name:'Since Sunrise',desc:'Megan: We\'ve been heading right toward it since sunrise'});
 	Molpy.MakeQuadBadge({np:3084,name:'Wake up!',desc:'Cueball: Land! Wake up, everybody'});
 	Molpy.MakeQuadBadge({np:3085,name:'Wow!',desc:'They land and explore'});
 	Molpy.MakeQuadBadge({np:3086,name:'Where are we',desc:'Cueball: Where do you think we are?  Megan: I don\'t know'});
 	Molpy.MakeQuadBadge({np:3087,name:'Find out',desc:'Megan: But I bet we can  figure it out!  C\'mon let\'s see what\'s through here!'});
 	Molpy.MakeQuadBadge({np:3089,name:'The End',desc:'Sob sob cry, bring on the ice cream'});
-	/*
-	Molpy.MakeQuadBadge({np:,name:'',desc:''});
-	Molpy.MakeQuadBadge({np:,name:'',desc:''});
-	Molpy.MakeQuadBadge({np:,name:'',desc:''});
-	*/
 	//Molpy.MakeQuadBadge({np:,name:'',desc:''});
 }

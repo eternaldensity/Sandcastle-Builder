@@ -75,6 +75,7 @@ var DecimalFormats = [['',''], ['<small>','</small>'], ['<span class=decimaltext
     			['<font color=red>','</font>'], ['<font color=#0c0>','</font>'], ['<font color=#cc0>','</font>'],
 			['<font color=#c0c>','</font>'], ['<font color=#0cc>','</font>'], ['<font color=#00c>','</font>']];
 function Molpify(number, raftcastle, shrinkify) {
+	raftcastle = Math.max(raftcastle || 0,Molpy.options.mindecimal);
 	var molp = InnerMolpify(number,raftcastle, shrinkify);
 	if (Molpy.options.smalldecimal) {
 		if (molp.indexOf('.')) molp = molp.replace(/\.([0-9]*)/,'.' + DecimalFormats[Molpy.options.smalldecimal][0] + '$1' + DecimalFormats[Molpy.options.smalldecimal][1]);
@@ -88,7 +89,8 @@ function Molpify(number, raftcastle, shrinkify) {
 }
 
 function MolpifyCountdown(mNP, p) {
-	return mNP == 0 ? 'ever' : mNP >= 1000 ? Molpify(mNP / 1000, p) + 'NP' : Molpify(mNP) + 'mNP'
+	var rat = Molpy.NPlength/Molpy.mNPlength;
+	return mNP == 0 ? 'ever' : mNP >= 1000*rat ? Molpify(mNP*rat / 1000, p) + 'NP' : Molpify(mNP) + 'mNP'
 }
 function flandom(n) {
 	return(Math.floor(Math.random() * n));

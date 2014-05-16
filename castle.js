@@ -140,6 +140,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['Sand'].clickBeach();
 			Molpy.Boosts['TF'].clickBeach();
 			Molpy.Boosts['Mustard'].clickBeach();
+			Molpy.Boosts['DQ'].clickBeach();
 			
 			Molpy.CheckClickAchievements();
 			
@@ -435,6 +436,7 @@ Molpy.Up = function() {
 
 		/* In which we calculate how much sand per milliNewPix we dig
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+		Molpy.recalculateRates = 1;
 		Molpy.RatesRecalculate = function(times) {
 			Molpy.recalculateRates = Math.max(Molpy.recalculateRates,(times||1))
 		}
@@ -639,6 +641,7 @@ Molpy.Up = function() {
 					this.amount = Math.max(0, this.amount - this.temp);
 					this.temp = 0;
 					this.Refresh();
+					Molpy.Boosts['CDSP'].Refresh();
 					Molpy.Add('AD', cost);
 					_gaq && _gaq.push(['_trackEvent', 'Destroy Tool', this.name, '' + destroy]);
 					Molpy.CheckDragon();
@@ -710,7 +713,7 @@ Molpy.Up = function() {
 			this.getProduction = function() {
 				var production = '';
 				if(isNaN(this.amount))
-					production = 'Mustard/click: 1';
+					production = 'Mustard/click: ' + Molpify((Molpy.Got('Cress')&&Molpy.IsEnabled('Cress')) ? (Molpy.Boosts['Goats'].power/1000) : 1 , 3);
 				else if(this.storedTotalGpmNP)
 					production = 'Glass/mNP: ' + Molpify(this.storedTotalGpmNP, (this.storedTotalGpmNP < 10 ? 3 : 1));
 				else
@@ -1107,7 +1110,7 @@ Molpy.Up = function() {
 			this.getProduction = function() {
 				var production = '';
 				if(isNaN(this.amount))
-					production += 'Mustard/click: 1<br>';
+					production += 'Mustard/click: ' + Molpify((Molpy.Got('Cress')&&Molpy.IsEnabled('Cress')) ? (Molpy.Boosts['Goats'].power/1000) : 1 , 3);
 				if(this.currentActive && Molpy.CastleTools['NewPixBot'].ninjaTime > Molpy.ONGelapsed) {
 					if(Molpy.ninjad) {
 						production += "Ninja'd!";
@@ -1267,6 +1270,7 @@ Molpy.Up = function() {
 			} else {
 				amount = EvalMaybeFunction(amount, 0, 1);
 				var b = Molpy.Boosts[stuff];
+				if (b && !b.Has) { Molpy.Notify('Errr - ' + b.name,1); return false; };
 				return b && b.Has(amount) && b.Spend(amount, s);
 			}
 		};
@@ -1355,7 +1359,7 @@ Molpy.Up = function() {
 					Molpy.UnlockBoost(this.alias);
 					this.buy();
 				}
-			}
+			},
 		};
 
 		Molpy.boostNeedRepaint = 1;
@@ -1453,7 +1457,7 @@ Molpy.Up = function() {
 				if(Molpy.ProtectingPrice() && !free) return;
 				if(!free && !Molpy.Spend(realPrice)) return;
 
-				this.bought = 1;
+				this.bought = (this.bought || 0) +1;
 				if(this.buyFunction) this.buyFunction();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Buy', this.name, !free]);
 				Molpy.boostNeedRepaint = 1;
@@ -1520,6 +1524,10 @@ Molpy.Up = function() {
 			}
 			
 			this.getHeading = function() {
+				if (!this.group || !Molpy.groupNames[this.group]) {
+					Molpy.Notify('Group Wrong for '+this.name);
+					return 'Unknown'
+				};
 				return "" + Molpy.groupNames[this.group][0]
 			     + ((this.tier != undefined && ' L' + Molpify(EvalMaybeFunction(this.tier))) || '');
 			}
@@ -2012,6 +2020,7 @@ Molpy.Up = function() {
 						if(this.location) {
 							this.removeDiv();
 							this.location = 0; //hide because the redacted was missed
+							if (Molpy.TotalDragons && this.drawType[0] == 'knight') Molpy.DragonsHide(1);
 							this.drawType = [];
 							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
 							this.chainCurrent = 0;
@@ -2044,16 +2053,25 @@ Molpy.Up = function() {
 				level = level || 0;
 				this.removeDiv();
 				Molpy.lootSelectionNeedRepaint = 1;
-				if(this.drawType[level] != 'show') {
+				if (Molpy.TotalDragons && this.drawType[0] == 'knight') {
+					var item = g('redacteditem');
+					if(item) item.className = 'hidden';
+					this.location = 0;
+					this.dispIndex = -1;
+					this.drawType = [];
+					this.countup = 0;
+					this.randomiseTime();
+					_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
+					this.chainCurrent = 0;
+					return;
+				} else if(this.drawType[level] != 'show') {
 					Molpy.UnlockBoost('Technicolour Dream Cat');
 					this.drawType[level] = 'show';
 					while(this.drawType.length > level + 1)
 						this.drawType.pop(); //we don't need to remember those now
 					this.jump();
 					return;
-				}
-
-				if(Molpy.Got('RRSR') && flandom(20) == 1) {
+				} else if(Molpy.Got('RRSR') && flandom(20) == 1) {
 					this.drawType[level] = 'hide1';
 					this.toggle = 65;
 					this.chainCurrent++;
@@ -2119,19 +2137,25 @@ Molpy.Up = function() {
 					}
 				if(!possible) this.location = 0;
 				
-				// There is at least one valid spawn location, grab a random one
-				//TODO this can be made better by making a list of valid first and selecting from that instead
+				// For Knights selectthe shop if possible
 				var valid = false;
-				var loopNum = 0;
-				var randNum = 0;
-				while(loopNum < 50 && valid == false) {
-					randNum = Math.ceil((this.possibleLocations + 2) * Math.random());
-					if(randNum > this.possibleLocations) randNum = 4;
-					if(this.divList[randNum].is(':visible')) {
-						this.location = randNum;
-						valid = true;
+				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0 && this.divList[3].is(':visible')) { // Redunaknights
+					this.location = 3; // Shop
+					valid = true;
+				} else {
+					// There is at least one valid spawn location, grab a random one
+					//TODO this can be made better by making a list of valid first and selecting from that instead
+					var loopNum = 0;
+					var randNum = 0;
+					while(loopNum < 50 && valid == false) {
+						randNum = Math.ceil((this.possibleLocations + 2) * Math.random());
+						if(randNum > this.possibleLocations) randNum = 4;
+						if(this.divList[randNum].is(':visible')) {
+							this.location = randNum;
+							valid = true;
+						}
+						loopNum ++;
 					}
-					loopNum ++;
 				}
 				
 				// Unlucky RNG, didn't find a valid spawn location 
@@ -2147,9 +2171,15 @@ Molpy.Up = function() {
 				
 				heading = heading ? '<h1>' + Molpy.Redacted.brackets + '</h1>' : '';
 				var countdown = (level == 0) ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '';
-				var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
-					+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
-				
+				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0) { // Redunaknights
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redunaknights ' + 
+						countdown + '</h2><div><input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>' +
+						'<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
+					this.drawType[level] = 'knight';
+				} else {
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
+						+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
+				}
 				if(drawType == 'recur') {
 					str += this.getHTML(heading, level + 1);
 				} else if(drawType == 'hide1') {
@@ -2641,7 +2671,8 @@ Molpy.Up = function() {
 		Molpy.DefinePuzzles();
 		Molpy.DefineBoosts();
 		Molpy.DefineBadges();
-		Molpy.DefineCharacters();
+		Molpy.DefineDragons();
+		Molpy.DefineOpponents();
 		Molpy.InitGUI();
 	        Molpy.DefaultOptions();
 		Molpy.UpdateColourScheme();
@@ -2743,10 +2774,10 @@ Molpy.Up = function() {
 	Molpy.Shutter = function() {
 		if(Molpy.Spend('GlassChips', 10)) {
 			if(Molpy.Got('Maps')) {
+				if(Molpy.Has('Maps', 80))  Molpy.UnlockBoost('DNS'); 
+				if(Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
 				if(Molpy.newpixNumber == Molpy.Boosts['Maps'].bought) {
 					Molpy.Add('Maps', 1);
-					if(Molpy.Has('Maps', 80))  Molpy.UnlockBoost('DNS'); 
-					if(Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
 					Molpy.Notify('You found a new map!', 1);
 					Molpy.ClearMap();
 					return;
@@ -2800,44 +2831,50 @@ Molpy.Up = function() {
 		if(!(Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].IsEnabled)) Molpy.CheckONG();
 		Molpy.Redacted.checkToggle();
 
-		for( var i in Molpy.Boosts)//count down any boosts with a countdown
-		{
-			var me = Molpy.Boosts[i];
-			if(me.bought) {
-				if(me.countdown) {
-					me.countdown--;
-					me.Refresh();
-					if(me.countdown <= 0) {
-						Molpy.LockBoost(i);
-						me.power = 0;
-						me.countdown = 0;
-					} else {
-						if(me.countdownFunction) me.countdownFunction();
+		if (!Molpy.Boosts['Coma Molpy Style'].IsEnabled) {
+			for( var i in Molpy.Boosts)//count down any boosts with a countdown
+			{
+				var me = Molpy.Boosts[i];
+				if(me.bought) {
+					if(me.countdown) {
+						me.countdown--;
+						if(me.countdown <= 0) {
+							if(me.countdownLockFunction) {
+								me.countdownLockFunction()
+							} else {
+								Molpy.LockBoost(i);
+								me.power = 0;
+							}
+							me.countdown = 0;
+						} else {
+							if(me.countdownFunction) me.countdownFunction();
+						}
+						me.Refresh();
+					}
+				}
+				if(me.bought) {
+					if(me.classChange) {
+						var newclass = me.classChange();
+						if (newclass != me.className) {
+							me.className = newclass;
+							Molpy.lootCheckTagged(me);
+							me.Refresh();
+							Molpy.boostNeedRepaint = 1;
+						}
 					}
 				}
 			}
-			if(me.bought) {
-				if(me.classChange) {
-					var newclass = me.classChange();
-					if (newclass != me.className) {
-						me.className = newclass;
-						Molpy.lootCheckTagged(me);
-						me.Refresh();
-						Molpy.boostNeedRepaint = 1;
-					}
-				}
-			}
-		}
-		for( var i in Molpy.Badges) {
-			var me = Molpy.Badges[i];
-			if(me.earned) {
-				if(me.classChange) {
-					var newclass = me.classChange();
-					if (newclass != me.className) {
-						me.className = newclass;
-						Molpy.lootCheckTagged(me);
-						me.Refresh();
-						Molpy.badgeNeedRepaint = 1;
+			for( var i in Molpy.Badges) {
+				var me = Molpy.Badges[i];
+				if(me.earned) {
+					if(me.classChange) {
+						var newclass = me.classChange();
+						if (newclass != me.className) {
+							me.className = newclass;
+							Molpy.lootCheckTagged(me);
+							me.Refresh();
+							Molpy.badgeNeedRepaint = 1;
+						}
 					}
 				}
 			}
@@ -2880,6 +2917,7 @@ Molpy.Up = function() {
 		if(Molpy.Got('Sand to Glass')) Molpy.Boosts['TF'].digGlass(Math.floor(Molpy.Boosts['TF'].loadedPermNP*Molpy.Papal('GlassSand')));
 		Molpy.GlassNotifyFlush();
 		Molpy.RunToolFactory();
+		Molpy.DragonDigging(0);
 		if(Molpy.recalculateRates) Molpy.calculateRates();
 		if(Molpy.BadgesOwned == 0) Molpy.EarnBadge('Redundant Redundancy');
 
