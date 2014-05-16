@@ -4164,10 +4164,10 @@ Molpy.DefineBoosts = function() {
 		DMF: Infinity,
 		DMC: Infinity,
 		DMB: Infinity,
-		DPP: Infinity,
+		DMP: Infinity,
 	};
 	
-	Molpy.blackprintOrder = ['SMM', 'SMF', 'GMM', 'GMF', 'TFLL', 'AO', 'AA', 'AE', 'BG', 'Bacon', 'SG', 'Milo', 'ZK', 'VS', 'CFT', 'BoH', 'VV', 'Nest','DMM','DMF','DMC','DMB','DPP'];
+	Molpy.blackprintOrder = ['SMM', 'SMF', 'GMM', 'GMF', 'TFLL', 'AO', 'AA', 'AE', 'BG', 'Bacon', 'SG', 'Milo', 'ZK', 'VS', 'CFT', 'BoH', 'VV', 'Nest','DMM','DMF','DMC','DMB','DMP'];
 
 	new Molpy.Boost({
 		name: 'Sand Mould Maker',
@@ -10078,7 +10078,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ // Hook
 		name: 'Diamond Masterpiece Pedistal',
 		icon: 'pedistal',
-		alias: 'MPP',
+		alias: 'DMP',
 		desc: 'To put the masterpice on',
 		group: 'drac',
 		price: {Diamonds: 123456789 },
