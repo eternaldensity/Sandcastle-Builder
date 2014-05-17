@@ -453,10 +453,10 @@
 
 		thread = '';
 		thread += Molpy.OtherBadgesToString() + p;
+		threads.push(thread);
 
 		thread = '';
 		thread += Molpy.NPdataToString() + p;
-
 		threads.push(thread);
 		return threads;
 	}
