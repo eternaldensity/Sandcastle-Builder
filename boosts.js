@@ -9797,7 +9797,7 @@ Molpy.DefineBoosts = function() {
 		single: 'Big Tooth',
 		desc: function(me) {
 			str = 'Increases the offensive value of Dragons';
-			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.name:me.single);
 			return str;
 		},
 		draglvl: 'Dragling',
@@ -9882,7 +9882,7 @@ Molpy.DefineBoosts = function() {
 		single: 'Magic Tooth',
 		desc: function(me) {
 			str = 'Increases the offence value of Dragons';
-			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.name:me.single);
 			return str;
 		},
 		draglvl: 'Dragon',
@@ -9994,7 +9994,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ 
 		name: 'Beach Dragon',
 		icon: 'beachdragon',
-		desc: 'Enables Beach dgging to enhance the dragon digging',
+		desc: 'Enables Beach digging to enhance the dragon digging',
 		group: 'drac',
 		price: {Goats:'1T',
 			Bonemeal:'1P',
@@ -10002,7 +10002,7 @@ Molpy.DefineBoosts = function() {
 			},
 	});
 
-	new Molpy.Boost({ // Hook
+	new Molpy.Boost({
 		name: 'Cup Of Tea',
 		icon: 'cuptea',
 		plural: 'Cups of Tea',

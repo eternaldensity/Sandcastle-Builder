@@ -517,6 +517,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 				thing.unlocked = 1;
 				thing.buy(1,1);
 			}
+			Molpy.DragonDigRecalcNeeded = 1;
 		} else {
 			found = 'Diamonds';
 			n = Math.max(Math.floor(Math.log(finds)),1);
@@ -714,7 +715,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 			if (Molpy.Spend('Healing Potion')) rectime/=5;
 			if (Molpy.Spend('Cup of Tea')) rectime/=2;
 			rectime = Math.floor(rectime);
-			dq.ChangeState(2,rectime);
+			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a very hard fight, ' + 
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType]+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
@@ -726,7 +727,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 			if (Molpy.Spend('Healing Potion')) rectime/=5;
 			if (Molpy.Spend('Cup of Tea')) rectime/=2;
 			rectime = Math.floor(rectime);
-			dq.ChangeState(2,rectime);
+			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a hard fight, but will need to recover for ' + 
 					MolpifyCountdown(dq.countdown, 1),1);
 			local.takeReward(numb,DeMolpify(local.exp)*numb); 
@@ -776,7 +777,7 @@ Molpy.DragonsHide = function(type) {
 	Molpy.Redacted.onClick();
 	dq = Molpy.Boosts['DQ'];
 	var hidetime = Math.ceil(42 * (type+1)/Math.pow(1.5,Molpy.Level('Camelflarge')));
-	dq.ChangeState(1,hidetime);
+	dq.ChangeState(2,hidetime);
 	Molpy.Notify('The Dragons are hiding for ' + hidetime + 'mnp');
 }
 
