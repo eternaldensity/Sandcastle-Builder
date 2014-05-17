@@ -1776,7 +1776,7 @@ Molpy.DefineBoosts = function() {
 		
 		changeState: function(state) {
 			if(state == 'closed') this.clearRift();
-			else if(state == 'expired') {	
+			else if(state == 'expired' && this.riftIMG ) {	
 				this.fadeCountdown = 2700;
 				this.riftIMG.attr('src', ('img/rifts/rift_' + (this.variation + 1) + '_1.png'));
 			}
@@ -7921,6 +7921,7 @@ Molpy.DefineBoosts = function() {
 			this.properties = this.properties.concat(Molpy.Boosts['Nest'].nestprops());
 			this.Level += amount;
 			this.countdown = 3000;
+			Molpy.Boosts['DQ'].Refresh();
 		},
 
 		countdownFunction: function() {
@@ -8580,7 +8581,7 @@ Molpy.DefineBoosts = function() {
 		
 		price: {Goats: 300},
 		defStuff: 1,
-		loadFunction: function() { if (Molpy.Earned('The Ritual is worn out')) this.Level = 1e298 },
+		buyFunction: function() { if (Molpy.Earned('The Ritual is worn out')) this.Level = 1e298 },
 	});
 	Molpy.NinjaRitual = function() {
 		var oldlvl = Molpy.Level('Ninja Ritual');
