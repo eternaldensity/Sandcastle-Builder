@@ -1776,7 +1776,7 @@ Molpy.DefineBoosts = function() {
 		
 		changeState: function(state) {
 			if(state == 'closed') this.clearRift();
-			else if(state == 'expired') {	
+			else if(state == 'expired' && this.riftIMG ) {	
 				this.fadeCountdown = 2700;
 				this.riftIMG.attr('src', ('img/rifts/rift_' + (this.variation + 1) + '_1.png'));
 			}
@@ -7921,6 +7921,7 @@ Molpy.DefineBoosts = function() {
 			this.properties = this.properties.concat(Molpy.Boosts['Nest'].nestprops());
 			this.Level += amount;
 			this.countdown = 3000;
+			Molpy.Boosts['DQ'].Refresh();
 		},
 
 		countdownFunction: function() {
@@ -8580,7 +8581,7 @@ Molpy.DefineBoosts = function() {
 		
 		price: {Goats: 300},
 		defStuff: 1,
-		loadFunction: function() { if (Molpy.Earned('The Ritual is worn out')) this.Level = 1e298 },
+		buyFunction: function() { if (Molpy.Earned('The Ritual is worn out')) this.Level = 1e298 },
 	});
 	Molpy.NinjaRitual = function() {
 		var oldlvl = Molpy.Level('Ninja Ritual');
@@ -9797,7 +9798,7 @@ Molpy.DefineBoosts = function() {
 		single: 'Big Tooth',
 		desc: function(me) {
 			str = 'Increases the offensive value of Dragons';
-			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.name:me.single);
 			return str;
 		},
 		draglvl: 'Dragling',
@@ -9882,7 +9883,7 @@ Molpy.DefineBoosts = function() {
 		single: 'Magic Tooth',
 		desc: function(me) {
 			str = 'Increases the offence value of Dragons';
-			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.name:me.single);
 			return str;
 		},
 		draglvl: 'Dragon',
@@ -9994,7 +9995,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ 
 		name: 'Beach Dragon',
 		icon: 'beachdragon',
-		desc: 'Enables Beach dgging to enhance the dragon digging',
+		desc: 'Enables Beach digging to enhance the dragon digging',
 		group: 'drac',
 		price: {Goats:'1T',
 			Bonemeal:'1P',
@@ -10002,7 +10003,7 @@ Molpy.DefineBoosts = function() {
 			},
 	});
 
-	new Molpy.Boost({ // Hook
+	new Molpy.Boost({
 		name: 'Cup Of Tea',
 		icon: 'cuptea',
 		plural: 'Cups of Tea',
