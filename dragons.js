@@ -399,11 +399,11 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
 	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= 2*(1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
-	if (Molpy.Got('Adamintine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamintine Armour'));
+	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamintine Armour'));
 
 	Molpy.DragonAttackMultiplier = 1;
 	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
-	if (Molpy.Got('Magic Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(10,Molpy.Level('Magic'));
+	if (Molpy.Got('Magic Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(10,Molpy.Level('Magic Teeth'));
 	if (Molpy.Got('Tusks')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Tusks'));
 	
 	Molpy.DragonBreathMultiplier = 1;
@@ -517,6 +517,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 				thing.unlocked = 1;
 				thing.buy(1,1);
 			}
+			Molpy.DragonDigRecalcNeeded = 1;
 		} else {
 			found = 'Diamonds';
 			n = Math.max(Math.floor(Math.log(finds)),1);
@@ -714,7 +715,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 			if (Molpy.Spend('Healing Potion')) rectime/=5;
 			if (Molpy.Spend('Cup of Tea')) rectime/=2;
 			rectime = Math.floor(rectime);
-			dq.ChangeState(2,rectime);
+			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a very hard fight, ' + 
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType]+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
@@ -726,7 +727,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 			if (Molpy.Spend('Healing Potion')) rectime/=5;
 			if (Molpy.Spend('Cup of Tea')) rectime/=2;
 			rectime = Math.floor(rectime);
-			dq.ChangeState(2,rectime);
+			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a hard fight, but will need to recover for ' + 
 					MolpifyCountdown(dq.countdown, 1),1);
 			local.takeReward(numb,DeMolpify(local.exp)*numb); 
@@ -768,7 +769,7 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 	}
 
 	npd = Molpy.NPdata[atk];
-	Molpy.OpponentsAttack(atk,atk+150*(1*Math.log(Molpy.Level('Princesses')+1)),
+	Molpy.OpponentsAttack(atk,atk+30+150*(1*Math.log(Molpy.Level('Princesses')+1)),
 			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+atk);
 }
 
@@ -776,7 +777,7 @@ Molpy.DragonsHide = function(type) {
 	Molpy.Redacted.onClick();
 	dq = Molpy.Boosts['DQ'];
 	var hidetime = Math.ceil(42 * (type+1)/Math.pow(1.5,Molpy.Level('Camelflarge')));
-	dq.ChangeState(1,hidetime);
+	dq.ChangeState(2,hidetime);
 	Molpy.Notify('The Dragons are hiding for ' + hidetime + 'mnp');
 }
 
@@ -787,9 +788,9 @@ Molpy.DragonUpgrade = function(type) {
 	var dq=Molpy.Boosts['DQ'];
 	switch (type) {
 	case 0:
-		return (dq.experience >= Molpy.DragonsById[dq.Level].exp && Molpy.DragonsById[dq.Level].condition());
+		return (dq.experience >= DeMopify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition());
 	case 1:
-		if (dq.experience >= Molpy.DragonsById[dq.Level].exp && Molpy.DragonsById[dq.Level].condition()) {
+		if (dq.experience >= DeMolpify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition()) {
 			if (Molpy.Spend(Molpy.DragonsById[dq.Level].upgrade)) {
 				dq.Level++;
 				Molpy.Boosts['DQ'].Refresh();

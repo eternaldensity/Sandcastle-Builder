@@ -32,6 +32,17 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5003 Fix Math.floor(Math.PI)
+
+#### Waveney
+- Fixs for Dragon Upgrade, Armour and Teeth - thanks TFMurphy
+- Fix for Temporal rift bug (nothing to do with 3.5) - thanks mart2058
+- Fixs to get the right hiding/recovering when appropriate
+- Make sure dragon stats are recaculated when needed
+- The plural of Tooth is not Tooths
+- Missing Refreshes added
+- Fixed a bug with Molpying Down and 'The Ritual is Worn out'
+
 ### 3.5002 Fix two
 
 #### Waveney
