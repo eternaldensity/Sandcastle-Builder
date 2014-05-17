@@ -788,7 +788,7 @@ Molpy.DragonUpgrade = function(type) {
 	var dq=Molpy.Boosts['DQ'];
 	switch (type) {
 	case 0:
-		return (dq.experience >= DeMopify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition());
+		return (dq.experience >= DeMolpify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition());
 	case 1:
 		if (dq.experience >= DeMolpify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition()) {
 			if (Molpy.Spend(Molpy.DragonsById[dq.Level].upgrade)) {
