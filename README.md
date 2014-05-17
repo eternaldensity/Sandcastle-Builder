@@ -32,11 +32,17 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5002 Fix two
+
+#### Waveney
+- Fix for the missing discoveries
+- Fix for some of the missing refreshes
+- Fix for a NaN
+
 ### 3.5001 Fix one
 
 #### Waveney
 - Fix for the crash because GetBlackPrint returned an invalid boost
-
 
 ### 3.5 - Here Be Dragons
 

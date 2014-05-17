@@ -4038,7 +4038,7 @@ Molpy.DefineBoosts = function() {
 				if(print == 'DMF' && !Molpy.Got('DMM')) continue;
 				if(print == 'DMC' && !Molpy.Got('DMF')) continue;
 				if(print == 'DMB' && !Molpy.Got('DMC')) continue;
-				if(print == 'DPP' && !Molpy.Got('DMB')) continue;
+				if(print == 'DMP' && !Molpy.Got('DMB')) continue;
 				return Molpy.blackprintCosts[print]; // number of pages needed for next blackprint boost
 			}
 		}
@@ -4060,7 +4060,7 @@ Molpy.DefineBoosts = function() {
 				if(print == 'DMF' && !Molpy.Got('DMM')) continue;
 				if(print == 'DMC' && !Molpy.Got('DMF')) continue;
 				if(print == 'DMB' && !Molpy.Got('DMC')) continue;
-				if(print == 'DPP' && !Molpy.Got('DMB')) continue;
+				if(print == 'DMP' && !Molpy.Got('DMB')) continue;
 				if(Molpy.Level('Blackprints') >= Molpy.blackprintCosts[print]) return print;
 				return;
 			}
@@ -6466,7 +6466,10 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate when reached max
-		classChange: function() { return (!Molpy.Earned('Planck Limit')) ? 'action' : '';}
+		classChange: function() { 
+			this.Refresh();
+			return (!Molpy.Earned('Planck Limit')) ? 'action' : '';
+		}
 	});
 	new Molpy.Boost({
 		name: 'Crouching Dragon, Sleeping Panther',
@@ -7770,17 +7773,13 @@ Molpy.DefineBoosts = function() {
 			var str = 'The queen of the dragons.';
 			if(me.bought) {
 				Molpy.UnlockBoost('RDKM');
-			/*
-				str += '<br>Not yet coded you will have to: Wait for it...';
-				return str; // not going to be ready for a while
-			*/
 				var eggcost = Molpy.EggCost();
 				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal:'+ eggcost + '}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
 				if (Molpy.TotalDragons) {
 					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding'][me.overallState];
 					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
 				}
-				if (me.experience) str += '<br>Experience: '+Molpify(me.experience,1);
+				if (me.experience) str += '<br>Experience: '+Molpify((me.experience || 0),1);
 				if (Molpy.DragonUpgrade(0)) str += '<br><br><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> '+Molpy.DragonUpgrade(2);			}
 				str += '<br><br>Hatchlings will mature into ' + Molpy.DragonsById[me.Level].name + 's. ';
 				str += Molpy.DragonsById[me.Level].description();
@@ -7816,6 +7815,7 @@ Molpy.DefineBoosts = function() {
 			this.overallState = newstate;
 			if (newstate) this.countdown += (duration || 1)
 			else this.countdown = 0;	
+			this.Refresh();
 		},
 		clickBeach: function() {
 			if (this.bought && Molpy.DragonDigRate && Molpy.Got('Beach Dragon')) {
@@ -7835,6 +7835,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.DragonExperience = function(amt) {
 		var dq = Molpy.Boosts['DQ'];
 		dq.experience = Math.max(dq.experience+amt*Molpy.Papal('Experience'),0);
+		dq.Refresh();
 		// There will be Unlocks here
 	}
 
