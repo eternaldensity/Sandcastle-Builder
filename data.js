@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.5;
+Molpy.version=3.5003;
 Molpy.versionName='Here be Dragons'; // Appended to the numerical version on screen
 
 /**************************************************************
@@ -870,7 +870,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['TS'].logic = Math.min(Molpy.Level('Vacuum'),1e6) * (Molpy.Level('Vacuum') >= 8000);
 	Molpy.Boosts['Aleph One'].logic = 111111111;
 	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
-	Molpy.Boosts['Aleph e'].logic = DeMolpify('1L') * Molpy.priceFactor;
+	Molpy.Boosts['Aleph e'].logic = DeMolpify('99H') * Molpy.priceFactor;
 }
 Molpy.mapMonumg = 300;
 

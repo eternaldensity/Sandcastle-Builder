@@ -57,7 +57,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 		tails: 1,
-		upgrade: {Diamonds:1},
+		upgrade: {Diamonds:100},
 		exp: '10K',
 		condition: function() { return true },
 		desc: 'These small timid creatures hide in the shadows and under leaves keeping out of the way of fierce cats',
@@ -72,7 +72,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 2,
 		tails: 0,
-		upgrade: {Diamonds:100},
+		upgrade: {Diamonds:'10K'},
 		exp: '10M',
 		condition: function() { return false },
 		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
@@ -87,7 +87,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 		tails: 1,
-		upgrade: {Diamonds:'10K'},
+		upgrade: {Diamonds:'1G'},
 		exp: '10T',
 		condition: function() { return false },
 		desc: 'These are monstorous, limbless creatures, with a big bite.',
@@ -102,7 +102,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 		tails: 1,
-		upgrade: {Diamonds:'1G'},
+		upgrade: {Diamonds:'1T'},
 		exp: '1T',
 		condition: function() { return false },
 		desc: 'These can fly.  They fight and dig with their legs, some have a bad breath.',
@@ -357,7 +357,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Panetheon of Gods',
-		armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic'],
+		armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic', '-typos'],
 		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'120Z-500Y'},
 		exp: '1WW',
 	});
@@ -385,6 +385,7 @@ Molpy.DragonDigMultiplier = 10;
 Molpy.DragonAttackMultiplier = 1;
 Molpy.DragonDefenceMultiplier = 1;
 Molpy.DragonBreathMultiplier = 1;
+Molpy.ConsecutiveNPsWithDragons = 0;
 
 Molpy.DragonDigRecalc = function() {
 	Molpy.DragonDigRecalcNeeded = 0;
@@ -398,11 +399,11 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
 	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= 2*(1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
-	if (Molpy.Got('Adamintine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamintine Armour'));
+	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamintine Armour'));
 
 	Molpy.DragonAttackMultiplier = 1;
 	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
-	if (Molpy.Got('Magic Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(10,Molpy.Level('Magic'));
+	if (Molpy.Got('Magic Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(10,Molpy.Level('Magic Teeth'));
 	if (Molpy.Got('Tusks')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Tusks'));
 	
 	Molpy.DragonBreathMultiplier = 1;
@@ -412,6 +413,8 @@ Molpy.DragonDigRecalc = function() {
 	Molpy.TotalNPsWithDragons = 0;
 	Molpy.TotalDragons = 0;
 	Molpy.HighestNPwithDragons = 0;
+	var runlength = 0;
+	var lastNP = 0;
 	for (var dpx in Molpy.NPdata) {
 		dnp = Molpy.NPdata[dpx];
 		if (dnp && dnp.amount) {
@@ -419,10 +422,24 @@ Molpy.DragonDigRecalc = function() {
 			Molpy.TotalNPsWithDragons++;
 			Molpy.TotalDragons += dnp.amount;
 			Molpy.HighestNPwithDragons = dpx*1;
+			runlength++;
+			var dpi = dpx*1;
+			if (lastNP+1 == dpi ) {
+				if (runlength > Molpy.ConsecutiveNPsWithDragons) Molpy.ConsecutiveNPsWithDragons = runlength;
+			} else {
+				runlength = 1;
+			};
+			lastNP = dpi;
+		} else {
+			lastNP = runlength = 0;
 		}
 	}
 	if (Molpy.TotalDragons) td += 0.001;
 	Molpy.DragonDigRate = td*Molpy.DragonDigMultiplier;
+
+	if (Molpy.ConsecutiveNPsWithDragons >= 10) Molpy.UnlockBoost('Incubator');
+	if (Molpy.ConsecutiveNPsWithDragons >= 22) Molpy.UnlockBoost('Wait for it');
+	if (Molpy.ConsecutiveNPsWithDragons >= 48) Molpy.UnlockBoost('Q04B');
 }
 
 Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
@@ -500,6 +517,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 				thing.unlocked = 1;
 				thing.buy(1,1);
 			}
+			Molpy.DragonDigRecalcNeeded = 1;
 		} else {
 			found = 'Diamonds';
 			n = Math.max(Math.floor(Math.log(finds)),1);
@@ -555,8 +573,8 @@ Molpy.DragonFledge = function(clutch) {
 
 	if (npd.amount) {
 		var props = hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
-		npd.defence= props[0];
-		npd.attack = props[1];
+		npd.attack = props[0];
+		npd.defence= props[1];
 		npd.dig    = props[2];
 		npd.breath = props[3];
 		npd.magic1 = props[4];
@@ -605,6 +623,8 @@ Molpy.DragonStatsNow = function(where) {
 		if(typeof npd[prop] !== 'undefined' ) Stats[prop] = npd[prop];
 	}
 
+	Stats.defence += 0.001;
+	Stats.attack += 0.001;
 	Stats.defence *= Molpy.DragonDefenceMultiplier;
 	Stats.attack *= Molpy.DragonAttackMultiplier;
 	return Stats;
@@ -749,7 +769,7 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 	}
 
 	npd = Molpy.NPdata[atk];
-	Molpy.OpponentsAttack(atk,atk+150*(1*Math.log(Molpy.Level('Princesses')+1)),
+	Molpy.OpponentsAttack(atk,atk+30+150*(1*Math.log(Molpy.Level('Princesses')+1)),
 			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+atk);
 }
 
@@ -768,9 +788,9 @@ Molpy.DragonUpgrade = function(type) {
 	var dq=Molpy.Boosts['DQ'];
 	switch (type) {
 	case 0:
-		return (dq.experience >= Molpy.DragonsById[dq.Level].exp && Molpy.DragonsById[dq.Level].condition());
+		return (dq.experience >= DeMolpify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition());
 	case 1:
-		if (dq.experience >= Molpy.DragonsById[dq.Level].exp && Molpy.DragonsById[dq.Level].condition()) {
+		if (dq.experience >= DeMolpify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition()) {
 			if (Molpy.Spend(Molpy.DragonsById[dq.Level].upgrade)) {
 				dq.Level++;
 				Molpy.Boosts['DQ'].Refresh();
@@ -849,6 +869,8 @@ Dragons
 25	Use # appendeges in desciptions			y	y	
 26	Infinite AC runs -how?				y	y
 27	Fix Molpifycountdown				y	y
+28	Change Incubator et al				y	y
+
 
 
 * Mouthwash (to reduce bad breath backfires)

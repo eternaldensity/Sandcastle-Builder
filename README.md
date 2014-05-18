@@ -32,6 +32,29 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5003 Fix Math.floor(Math.PI)
+
+#### Waveney
+- Fixs for Dragon Upgrade, Armour and Teeth - thanks TFMurphy
+- Fix for Temporal rift bug (nothing to do with 3.5) - thanks mart2058
+- Fixs to get the right hiding/recovering when appropriate
+- Make sure dragon stats are recaculated when needed
+- The plural of Tooth is not Tooths
+- Missing Refreshes added
+- Fixed a bug with Molpying Down and 'The Ritual is Worn out'
+
+### 3.5002 Fix two
+
+#### Waveney
+- Fix for the missing discoveries
+- Fix for some of the missing refreshes
+- Fix for a NaN
+
+### 3.5001 Fix one
+
+#### Waveney
+- Fix for the crash because GetBlackPrint returned an invalid boost
+
 ### 3.5 - Here Be Dragons
 
 #### Waveney
@@ -43,6 +66,7 @@ For personal amusement only.
 - The Fading - New boost from high CDSP (more will follow with higher CDSP)
 - Aleph e - Does for Chips/Blocks what Aleph One did for sand and castles
 - The Alias for Crouching Dragon, Sleeping Panther is now CDSP not WiseDragon
+- Coma Molpy Style now pauses all countdowns
 - Lots of behind the sceens dragon stuff, leading to:
 
 - !!! HERE BE DRAGONS !!!
@@ -62,6 +86,7 @@ For personal amusement only.
 - Dragon Stats
 - New Dragon related Badges (not all of which are currently possible to get)
 - Note Export files may be a lot larger when many NPs have dragons
+- New Papal Decree for Draconic Experience
 
 You cannot currently:
 
@@ -69,7 +94,7 @@ You cannot currently:
 - Make the Diamond Mould Maker (and the other boosts and monuments that follow)
 - Have multiple nests (more maps will enable this in the near future)
 - Fledge hatchlings in the minus world (this will be quite a long way ahead)
-- Use the Dragon Overview Pane - it will provide a simple visual of where your dragos are.  (Soon)
+- Use the Dragon Overview Pane - it will provide a simple visual of where your dragons are.  (Soon)
 
 #### Epsilon
 - Several small fixes

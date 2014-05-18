@@ -400,6 +400,7 @@
 		var str = '';
 		var lowest = 0;
 		var highest = 0;
+		if (!Molpy.TotalDragons) return str;
 		// See what range to save if any
 		for (var np = -Math.abs(Molpy.highestNPvisited); np <=Math.abs(Molpy.highestNPvisited); np++) {
 			if (Molpy.NPdata && Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
@@ -452,10 +453,10 @@
 
 		thread = '';
 		thread += Molpy.OtherBadgesToString() + p;
+		threads.push(thread);
 
 		thread = '';
 		thread += Molpy.NPdataToString() + p;
-
 		threads.push(thread);
 		return threads;
 	}
