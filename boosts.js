@@ -7834,7 +7834,7 @@ Molpy.DefineBoosts = function() {
 
 	Molpy.DragonExperience = function(amt) {
 		var dq = Molpy.Boosts['DQ'];
-		dq.experience = Math.max(dq.experience+amt*Molpy.Papal('Experience'),0);
+		dq.experience = Math.max((dq.experience || 0)+amt*Molpy.Papal('Experience'),0);
 		dq.Refresh();
 		// There will be Unlocks here
 	}
@@ -7945,6 +7945,10 @@ Molpy.DefineBoosts = function() {
 						cleanup++;
 						cl++;
 						Molpy.Notify('A hungry Clutch of Hatchlings have eaten another clutch',1);
+					} else if (this.clutches[cl]>1) {
+						this.clutches[cl] = 1;
+						Molpy.DragonFeed(cl,2);
+						Molpy.Notify('A hungry Hatchling has eaten the rest of it\'s clutch',1);
 					} else {
 						this.clutches[cl] = 0;
 						cleanup++;
