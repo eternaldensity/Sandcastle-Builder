@@ -397,9 +397,10 @@ Molpy.DragonDigRecalc = function() {
 
 	Molpy.DragonDefenceMultiplier = 1;
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
+	if (Molpy.Got('Healing Potion')) Molpy.DragonDefenceMultiplier *= 1.5;
 	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= 2*(1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
-	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamintine Armour'));
+	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamantine Armour'));
 
 	Molpy.DragonAttackMultiplier = 1;
 	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
@@ -487,7 +488,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 //	Molpy.Notify('Found '+ finds + ' things',1);
 	var found = '';
 	var n = 0;
-	if (Math.random()<0.99/Math.log(finds+1.7)) { // Find coins
+	if (Math.random()<0.99/Math.log(finds+0.7)) { // Find coins
 		found = 'Gold';
 		n = finds/1000000;
 		Molpy.Add(found,n);
@@ -501,7 +502,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		for( var i in Molpy.Boosts) {
 			var me = Molpy.Boosts[i];
 			if("draglvl" in me && Molpy.Dragons[me.draglvl].id <= dq.Level) {
-				var lim = EvalMaybeFunction(me.limit,me,1);      
+				var lim = EvalMaybeFunction((me.limit || 1),me);      
 				if (me.bought < lim) availRewards.push(me);
 			}
 		}
@@ -712,8 +713,8 @@ Molpy.OpponentsAttack = function(where,from,text) {
 				factor *=2;
 			}
 			var rectime = (dragstats.DragonType+1)*200/factor;
-			if (Molpy.Spend('Healing Potion')) rectime/=5;
-			if (Molpy.Spend('Cup of Tea')) rectime/=2;
+			if (Molpy.Spend('Healing Potion',1)) rectime/=5;
+			if (Molpy.Spend('Cup of Tea',1)) rectime/=2;
 			rectime = Math.floor(rectime);
 			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a very hard fight, ' + 
@@ -724,8 +725,8 @@ Molpy.OpponentsAttack = function(where,from,text) {
 
 		case 2 : // won a hard fight - need to recover
 			var rectime = (dragstats.DragonType+1)*100/factor;
-			if (Molpy.Spend('Healing Potion')) rectime/=5;
-			if (Molpy.Spend('Cup of Tea')) rectime/=2;
+			if (Molpy.Spend('Healing Potion',1)) rectime/=5;
+			if (Molpy.Spend('Cup of Tea',1)) rectime/=2;
 			rectime = Math.floor(rectime);
 			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a hard fight, but will need to recover for ' + 
