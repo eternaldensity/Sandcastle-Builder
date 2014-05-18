@@ -10078,8 +10078,8 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({ // Hook
-		name: 'Diamond Masterpiece Pedistal',
-		icon: 'pedistal',
+		name: 'Diamond Masterpiece Pedestal',
+		icon: 'pedestal',
 		alias: 'DMP',
 		desc: 'To put the masterpice on',
 		group: 'drac',

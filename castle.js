@@ -75,6 +75,7 @@ Molpy.Up = function() {
 		Molpy.ninjaStealth = 0; //streak of uninterrupted ninja-free newpix
 		Molpy.saveCount = 0; //number of times game has been saved
 		Molpy.loadCount = 0; //number of times gave has been loaded
+		Molpy.needRebuildLootList = 0; // When loading data, loot lists need rebuilt
 		Molpy.autosaveCountup = 0;
 		Molpy.highestNPvisited = 1; //keep track of where the player has been
 		Molpy.toolsBuilt = 0;
@@ -2686,6 +2687,7 @@ Molpy.Up = function() {
 
 		Molpy.molpish = 1;
 		Molpy.Load(); //autoload saved game
+		Molpy.BuildLootLists();
 		Molpy.RefreshLayouts();
 		Molpy.Loopist();
 	};
@@ -3277,6 +3279,10 @@ Molpy.Up = function() {
 	 *************************************************************/
 	Molpy.Stop = 0;
 	Molpy.Loopist = function() {
+		if(Molpy.needRebuildLootList) {
+			Molpy.needRebuildLootList = 0;
+			Molpy.BuildLootLists();
+		}
 		var t = Molpy.time;
 		Molpy.time = new Date().getTime();
 		Molpy.ketchupTime = 0;
