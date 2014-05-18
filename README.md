@@ -32,6 +32,18 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5004 Fix Math.ceil(Math.PI)
+
+#### Waveney
+- Cup of Tea typo, breath typo, Armour typo, limit defaults to 1
+- Correct type of dragon displayed in the NP dragons Info
+- Cups of Tea and Healing potions should work
+- A nerf
+
+#### LucidCrux
+- Fix index not showng version and related error
+- Fixed a typo
+
 ### 3.5003 Fix Math.floor(Math.PI)
 
 #### Waveney

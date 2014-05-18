@@ -10004,7 +10004,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({
-		name: 'Cup Of Tea',
+		name: 'Cup of Tea',
 		icon: 'cuptea',
 		plural: 'Cups of Tea',
 		desc: function(me) {
