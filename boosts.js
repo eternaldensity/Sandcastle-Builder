@@ -7949,7 +7949,7 @@ Molpy.DefineBoosts = function() {
 						this.clutches[cl] = 0;
 						cleanup++;
 						Molpy.Notify('A hungry Clutch of Hatchlings have starved to death',1);
-						Molpy.DragonExperience(-Math.pow(1000,Molpy.DragonLevel));
+						Molpy.DragonExperience(-Math.pow(1000,Molpy.Level('DQ')));
 					}
 
 				} else if (this.age[cl] == 2900 && this.diet[cl] == 0) { //  Not Fed

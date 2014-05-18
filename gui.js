@@ -1330,7 +1330,7 @@ Molpy.DefineGUI = function() {
 		var npd = Molpy.NPdata[Molpy.newpixNumber];
 		if (npd && npd.amount) {
 			var dq = Molpy.Boosts['DQ'];
-			var str = Molpify(npd.amount) + ' ' + Molpy.DragonsById[Molpy.Level('DQ')].name + (npd.amount > 1?'s':'') + '<br>';
+			var str = Molpify(npd.amount) + ' ' + Molpy.DragonsById[npd.DragonType] + (npd.amount > 1?'s':'') + '<br>';
 			str += ['Digging','Recovering','Hiding'][dq.overallState];
 			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
 			str += '<br>Def: ' + Molpify(npd.defence*Molpy.DragonDefenceMultiplier,3) + ' Atk: ' + Molpify(npd.attack*Molpy.DragonAttackMultiplier,3) + 

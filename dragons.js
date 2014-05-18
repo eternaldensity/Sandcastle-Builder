@@ -399,7 +399,7 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
 	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= 2*(1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
-	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamintine Armour'));
+	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamantine Armour'));
 
 	Molpy.DragonAttackMultiplier = 1;
 	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
@@ -501,7 +501,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		for( var i in Molpy.Boosts) {
 			var me = Molpy.Boosts[i];
 			if("draglvl" in me && Molpy.Dragons[me.draglvl].id <= dq.Level) {
-				var lim = EvalMaybeFunction(me.limit,me,1);      
+				var lim = EvalMaybeFunction((me.limit || 1),me);      
 				if (me.bought < lim) availRewards.push(me);
 			}
 		}
