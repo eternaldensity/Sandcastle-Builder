@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.5004;
+Molpy.version=3.5005;
 Molpy.versionName='Here be Dragons'; // Appended to the numerical version on screen
 
 /**************************************************************
