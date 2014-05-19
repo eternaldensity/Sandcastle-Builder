@@ -657,7 +657,7 @@ Molpy.OpponentsAttack = function(where,from,text) {
 	var dragnhealth = dragstats.defence || 0;
 	var factor = 1;
 	var loops = 0;
-	if (numb > 1) Molpy.EarnBadge('There are two of them');
+	if (numb > 1) Molpy.EarnBadge('There are two of them!');
 	dq.totalfights++;
 
 //	 Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);

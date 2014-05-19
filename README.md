@@ -32,6 +32,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5005 Fix Five
+
+#### Waveney
+- No more object Object dragons
+
 ### 3.5004 Fix Math.ceil(Math.PI)
 
 #### Waveney
