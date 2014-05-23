@@ -32,6 +32,20 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.51 
+
+#### Waveney
+- Typos-=some, fixes, tweaks
+- Aleph e needs to be enabled to be used
+- Prevent buying multiple cheap Dragon Eggs 
+- Some nerfing of draconic boosts
+- The limits of some things are now lower
+- Changed the way Camelflarge works
+- Several new Draconic and other boosts one of which is really for the future
+- Recalibrated opponents
+- CDSP limits and a multibuy
+- Note: Still no Progress beyond the second type of Dragon (DragonNewts)
+
 ### 3.5005 Fix Five
 
 #### Waveney
