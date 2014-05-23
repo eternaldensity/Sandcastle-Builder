@@ -2112,11 +2112,11 @@ Molpy.DefineBoosts = function() {
 		HasSuper: Molpy.BoostFuncs.Has,
 		SpendSuper: Molpy.BoostFuncs.Spend,
 		Has: function(n) {
-			if (Molpy.Got('Aleph e') && this.power == Infinity) return true;
+			if (Molpy.Got('Aleph e') && Molpy.IsEnabled('Aleph e') && this.power == Infinity) return true;
 			return this.HasSuper(n);
 		},
 		Spend: function(n) {
-			if (Molpy.Got('Aleph e') && this.power == Infinity) return true;
+			if (Molpy.Got('Aleph e') && Molpy.IsEnabled('Aleph e') && this.power == Infinity) return true;
 			return this.SpendSuper(n);
 		},
 		
@@ -2454,11 +2454,11 @@ Molpy.DefineBoosts = function() {
 		HasSuper: Molpy.BoostFuncs.Has,
 		SpendSuper: Molpy.BoostFuncs.Spend,
 		Has: function(n) {
-			if (Molpy.Got('Aleph e') && this.power == Infinity) return true;
+			if (Molpy.Got('Aleph e') && Molpy.IsEnabled('Aleph e') && this.power == Infinity) return true;
 			return this.HasSuper(n);
 		},
 		Spend: function(n) {
-			if (Molpy.Got('Aleph e') && this.power == Infinity) return true;
+			if (Molpy.Got('Aleph e') && Molpy.IsEnabled('Aleph e') && this.power == Infinity) return true;
 			return this.SpendSuper(n);
 		},
 		refreshFunction: Molpy.RefreshGlass,
@@ -2894,7 +2894,7 @@ Molpy.DefineBoosts = function() {
 	
 	Molpy.LimitConstructionRuns = function(s) {
 		var c = Molpy.blackprintCosts[s];
-		if(!(Molpy.Got('AE') && Molpy.Got('AA'))) c = Math.min(c, 40);
+		if(!(Molpy.Got('AE') && Molpy.Got('AA')) && c < 1000) c = Math.min(c, 40);
 		return c;
 	}
 	
@@ -6486,12 +6486,21 @@ Molpy.DefineBoosts = function() {
 			var goatCost = me.power;
 			var powerReq = Math.pow(5, me.bought + 12);
 			if (me.bought > me.power+1) powerReq = 0;
-			if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
-				str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 (times the Panther Rush level) at a cost of '
-					+ Molpify(powerReq, 3) + ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
-			} else {
-				str += '<br>Upgrading Logicat Level by 1 will cost ' + Molpify(powerReq, 3)
-					+ ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
+			if (me.bought < Molpy.Level('PR')/2) {
+				if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
+					str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 (times the Panther Rush level) at a cost of '
+						+ Molpify(powerReq, 3) + ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
+				} else {
+					str += '<br>Upgrading Logicat Level by 1 will cost ' + Molpify(powerReq, 3)
+						+ ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
+				}
+
+				if (Molpy.Got('The Fadding') && Molpy.Has('Goats',Infinity) && Molpy.Got('Aleph e') && Molpy.Boosts['AD'].power >= powerReq) {
+					val = Math.pow(10,Math.floor(Math.log(me.bought)*Math.LOG10E));
+					val = Math.min(val,Molpy.Level('PR')/2-me.bought)
+					str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom('+val+')"></input> this by '+Molpify(val)+' (times the Panther Rush level) at a cost of '
+						+ 'Infinte Achronal Dragon power and Infinite goats.';
+				}
 			}
 			goatCost--;
 			if(!Molpy.Boosts['No Sell'].power && me.power > 1 && Molpy.Has('Goats',goatCost)) {
@@ -6522,7 +6531,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.GainDragonWisdom = function(n) {
 		var me = Molpy.Boosts['CDSP'];
 		if (n > 0) {
-			var goatCost = me.power * n;
+			var goatCost = (n == 1?me.power:Infinity);
 			var powerReq = Math.pow(5, me.power + 12);
 			if (me.bought > me.power +1+n) powerReq = 0;
 			if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
@@ -6536,6 +6545,8 @@ Molpy.DefineBoosts = function() {
 				if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
 				if (me.power>468) Molpy.EarnBadge('Sleeping Dragon, Crouching Panther');
 				if (me.power>=1024) Molpy.UnlockBoost('The Fading');
+				if (me.power>=1e6) Molpy.UnlockBoost('Loopin Looie');
+				if (me.power>=1e9) Molpy.UnlockBoost('Panthers Dream');
 			}
 		} else if (Molpy.Spend('Goats', me.power-1)) {	
 			me.power += n;
@@ -6880,6 +6891,7 @@ Molpy.DefineBoosts = function() {
 		} else {
 			if (Math.random() < 0.25) n = 1;
 		}
+		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
@@ -7774,7 +7786,7 @@ Molpy.DefineBoosts = function() {
 			if(me.bought) {
 				Molpy.UnlockBoost('RDKM');
 				var eggcost = Molpy.EggCost();
-				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal:'+ eggcost + '}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
+				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal: Molpy.EggCost()}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
 				if (Molpy.TotalDragons) {
 					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding'][me.overallState];
 					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
@@ -7795,6 +7807,7 @@ Molpy.DefineBoosts = function() {
 		experience: 0,
 		totalfights: 0,
 		totalloses: 0,
+		totalstarves: 0,
 		loses: [],
 		defSave: 1,
 		defStuff: 1,
@@ -7807,6 +7820,7 @@ Molpy.DefineBoosts = function() {
 			   7:['loses',0,'array'],
 			   8:['totalloses',0,'float'],
 			   9:['totalfights',0,'float'],
+			   10:['totalstarves',0,'float'],
 		},
 		countdownLockFunction: function() { // Used for overallState
 			this.overallState = 0;
@@ -7845,6 +7859,7 @@ Molpy.DefineBoosts = function() {
 		single: 'Dragon&nbsp;Egg',
 		icon: 'egg',
 		group: 'drac',
+		className: 'alert',
 		
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' egg' + plural(me.Level) + '. Hatching in ' + MolpifyCountdown(me.countdown, 1) + '.';
@@ -7889,6 +7904,9 @@ Molpy.DefineBoosts = function() {
 				if (me.age[cl] < 1000) {
 					str += 'is restless and wants it\'s own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
 						cl+')"></input><br>';
+					if (Molpy.Got('Cryogenics')) {
+						str += '<input type=button value="Freeze for later" onclick="Molpy.DragonsToCryo('+cl+')"></input><br>'
+					};
 				} else if (me.diet[cl]) {
 					str += 'is maturing and will be ready to Fledge in ' + (me.age[cl]-1000) + 'mNP.<br>';
 				} else {
@@ -7950,10 +7968,12 @@ Molpy.DefineBoosts = function() {
 						Molpy.DragonFeed(cl,2);
 						Molpy.Notify('A hungry Hatchling has eaten the rest of it\'s clutch',1);
 					} else {
+						Molpy.DragonExperience(-Math.pow(1000,Molpy.Level('DQ'))*this.clutches[cl]);
 						this.clutches[cl] = 0;
 						cleanup++;
 						Molpy.Notify('A hungry Clutch of Hatchlings have starved to death',1);
-						Molpy.DragonExperience(-Math.pow(1000,Molpy.Level('DQ')));
+						dq.totalstarves = ( dq.totalstarves || 0) + 1;
+						if (dq.totalstarves > 44) Molpy.UnlockBoost('Robotic Feeder');
 					}
 
 				} else if (this.age[cl] == 2900 && this.diet[cl] == 0) { //  Not Fed
@@ -7973,11 +7993,12 @@ Molpy.DefineBoosts = function() {
 						this.age.splice(cl,1);
 						this.diet.splice(cl,1);
 						this.properties.splice(cl*Molpy.DragonStats.length,Molpy.DragonStats.length);
-						this.Level--;
 						break;
 					}
 				}
 			}
+			this.Level = 0;
+			for (var cl in this.clutches) this.Level += this.clutches[cl];
 		},
 		classChange: function() { return this.Level?'action':'' },
 	});
@@ -9609,7 +9630,7 @@ Molpy.DefineBoosts = function() {
 		desc: 'When the Shadow Feeder runs, and the number of Puzzles available is more those being solved, it replaces that number, otherwise the shadow feeder converts them to bonemeal',
 		price: {Bonemeal: 123454321},
 	});
-	new Molpy.Boost({ // Placeholder for future
+	new Molpy.Boost({ 
 		name: 'Diamonds',
 		single: 'Diamond',
 		icon: 'diamond',
@@ -9806,10 +9827,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'Dragling',
-		limit: function() {
-			if (Molpy.Level('DQ') == 0) return 4;
-			return 20;
-		},
+		limit: function() { return 4*(Molpy.Level('DQ')+1) },
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9824,10 +9842,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'Dragling',
-		limit: function() {
-			if (Molpy.Level('DQ') == 0) return 4;
-			return 20;
-		},
+		limit: function() { return 4*(Molpy.Level('DQ')+1) },
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9856,10 +9871,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'DragonNewt',
-		limit: function() {
-			if (Molpy.Level('DQ') == Molpy.Dragons['DragonNewt'].id) return 4;
-			return 30;
-		},
+		limit: function() { return 4*(Molpy.Level('DQ')) },
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9932,7 +9944,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'DragonNewt',
-		limit: 20,
+		limit: 4,
 		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
@@ -9952,7 +9964,7 @@ Molpy.DefineBoosts = function() {
 		},
 		draglvl: 'Wyrm',
 		group: 'bean',
-		limit: 20,
+		limit: 4,
 		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
@@ -9979,7 +9991,7 @@ Molpy.DefineBoosts = function() {
 		className: 'toggle',
 		
 		desc: function(me) {
-			var str = 'When active, as long as the Chip/Block numbers are not mustard, allows an infinite amount of Glass Chips and Glass Blocks to be spent without affecting the chip or block supply.';
+			var str = 'When active, as long as the Chip/Block numbers are infinite, allows an infinite amount of Glass Chips and Glass Blocks to be spent without affecting the chip or block supply.';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
@@ -10058,6 +10070,7 @@ Molpy.DefineBoosts = function() {
 		draglvl: 'Dragling',
 		limit: function() {
 			if (Molpy.Level('DQ') == 0) return 4;
+			if (Molpy.Level('DQ') == 1) return 7;
 			return 10;
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
@@ -10134,6 +10147,71 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
 
+	new Molpy.Boost({ 
+		name: 'Loopin Looie',
+		icon: 'looplooie',
+		desc: function(me) {
+			var str = 'When active, ONGs don\'t change the current NP';
+			if(me.bought)
+				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+		group: 'chron',
+		className: 'toggle',
+		price: {Diamonds:'1M', 
+			Goats:Infinity,
+		},
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+	});
+
+	new Molpy.Boost({ 
+		name: 'Cryogenics',
+		icon: 'cryogenics',
+		desc: function(me) {
+			var str = 'Allows you to put a clutch of hatchlings in suspended animation instead of fledging. ' +
+				  'It costs 1 Diamond per mNP per Hatchling to run.';
+			if(me.bought && me.Level) {
+				str += '<br>You have ' + Molpify(me.Level) + ' Hatchling' + plural(me.Level) + ' in suspended animation.<br>';
+				str += '<input type=button onclick="Molpy.DragonsFromCryo()" value="Fledge Here"></input>';
+			};
+			return str;
+		},
+		group: 'chron',
+		className: 'action',
+		price: {Diamonds:'10M', 
+			Goats:Infinity,
+		},
+		countdownFunction: function() {
+			if (this.Level) {
+				if (!Molpy.Spend('Diamonds',this.Level)) {
+					Molpy.Notify('Cryogenics ran out of power',1);
+					Molpy.DragonExperience(-this.Level*Math.pow(1000,Molpy.Level('DQ')));
+					this.Level = 0;
+					this.countdown = 0;
+				}
+			} else {
+				this.countdown = 0;
+			}
+		},
+		defStuff: 1,
+		AddSuper: Molpy.BoostFuncs.Add,
+		Add: function(amount) {
+			this.AddSuper(amount);
+			this.countdown = Infinity;
+		},
+		classChange: function() { return this.Level?'action':'' },
+		NotTemp: 1,
+		
+	});
+
+	new Molpy.Boost({ 
+		name: 'Panthers Dream',
+		icon: 'pantherdream',
+		desc: str = 'Crouching Dragon, Sleeping Panther increases the Bonemeal from Shadow Dragon',
+		price: {Diamonds:500000,
+			Bonemeal:'100H',
+		},
+	});
 
 
 	// END OF BOOSTS, add new ones immediately before this comment

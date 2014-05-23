@@ -637,7 +637,7 @@
 				}
 				
 				// If it has a countdown, then it was only a temporary boost
-				if(me.countdown) {
+				if(me.countdown && !me.NotTemp) {
 					Molpy.GiveTempBoost(me.name, me.power, me.countdown);
 				}
 				
@@ -1028,6 +1028,14 @@
 		if(version < 3.5) {
 			if (Molpy.Boosts['CDSP'].power >=1024) Molpy.UnlockBoost('The Fading');
 			if (Molpy.Got('DQ')) Molpy.UnlockBoost('RDKM');
+		}
+		if(version < 3.51) {
+			if (Molpy.Got('DQ')) {
+				Molpy.Boosts['Camelflarge'].bought = Math.min(Molpy.Boosts['Camelflarge'].bought, Molpy.Boosts['Camelflarge'].limit());
+				Molpy.Boosts['Big Teeth'].bought = Math.min(Molpy.Boosts['Big Teeth'].bought, Molpy.Boosts['Big Teeth'].limit());
+				Molpy.Boosts['Spines'].bought = Math.min(Molpy.Boosts['Spines'].bought, Molpy.Boosts['Spines'].limit());
+				Molpy.Boosts['Healing Potion'].bought = Math.min(Molpy.Boosts['Healing Potion'].bought, Molpy.Boosts['Healing Potion'].limit);
+			};
 		}
 
 	}

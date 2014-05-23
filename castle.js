@@ -3028,18 +3028,20 @@ Molpy.Up = function() {
 		}
 	};
 	Molpy.ONG = function() {
-		Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
-		_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
+		if (!Molpy.IsEnabled('Loopin Looie')) {
+			Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
+			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
 
-		Molpy.currentSubFrame = 0;
-		var np = Math.abs(Molpy.newpixNumber);
-		if(np > Math.abs(Molpy.highestNPvisited)) {
-			Molpy.highestNPvisited = Molpy.newpixNumber;
+			Molpy.currentSubFrame = 0;
+			var np = Math.abs(Molpy.newpixNumber);
+			if(np > Math.abs(Molpy.highestNPvisited)) {
+				Molpy.highestNPvisited = Molpy.newpixNumber;
 			if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
-		} else //in the past
-		{
-			if(np > 2) {
-				Molpy.UnlockBoost('Time Travel');
+			} else //in the past
+			{
+				if(np > 2) {
+					Molpy.UnlockBoost('Time Travel');
+				}
 			}
 		}
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
