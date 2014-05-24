@@ -650,9 +650,9 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 	var type = lcls[0];
 	var numb = lcls[1];
 	var local = Molpy.OpponentsById[type];
+	local.gender = 1*(Math.random() < 0.5);
 	var atktxt = local.attackstxt(numb) + ((numb> 1 && text2)?text2:text1) + '. ';
 	var atkval = local.attackval(numb);
-	local.gender = 1*(Math.random() < 0.5);
 
 	Molpy.DragonDigRecalc(); 
 	var dragstats = Molpy.DragonStatsNow(where);
@@ -664,7 +664,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 	if (numb > 1) Molpy.EarnBadge('There are two of them!');
 	dq.totalfights++;
 
-//	Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
+	Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
 	
 	while (result == 0 && loops<=100) {
 		if ((loops&1)==0) { // Magical attacks && Breath attacks
@@ -673,10 +673,10 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 
 		} else { // Physical attacks
 			localhealth -= (dragstats.attack || 0)*Math.random();
-			if (loops >1 || dragstats.attack > 10*atkval[0]) dragnhealth -= atkval[0]*Math.random();
+			if (loops >1 || dragstats.attack < 10*atkval[0]) dragnhealth -= atkval[0]*Math.random();
 
 		};
-//		Molpy.Notify('loop = ' + loops + ' local = '+localhealth+' dragon = '+dragnhealth,1);
+		Molpy.Notify('loop = ' + loops + ' local = '+localhealth+' dragon = '+dragnhealth,1);
 		if (dragnhealth < 0) {
 			if (localhealth < 0) result = -1
 			else result = -1 -(dragnhealth < -dragstats.defence);
