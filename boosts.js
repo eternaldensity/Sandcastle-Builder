@@ -6540,7 +6540,6 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Dragon Wisdom gained!'); // it was so tempting to write gainned :P
 				me.power+=n;
 				me.bought = Math.max(me.bought,me.power+1);
-				me.Refresh();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
 				if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
 				if (me.power>468) Molpy.EarnBadge('Sleeping Dragon, Crouching Panther');
@@ -6550,9 +6549,9 @@ Molpy.DefineBoosts = function() {
 			}
 		} else if (Molpy.Spend('Goats', me.power-1)) {	
 			me.power += n;
-			me.Refresh();
 			Molpy.Notify('Dragon Wisdom lost!'); 
-		}
+		};
+		me.Refresh();
 	}
 
 	new Molpy.Boost({
@@ -6604,7 +6603,10 @@ Molpy.DefineBoosts = function() {
 		AddSuper: Molpy.BoostFuncs.Add,
 		Add: function(amount) {
 			this.AddSuper(amount);
-			if (!isFinite(this.Level)) Molpy.UnlockBoost('RDKM');
+			if (!isFinite(this.Level)) {
+				Molpy.UnlockBoost('RDKM');
+				Molpy.Boosts['CDSP'].Refresh();
+			};
 		},
 		
 		
@@ -7968,6 +7970,7 @@ Molpy.DefineBoosts = function() {
 						Molpy.DragonFeed(cl,2);
 						Molpy.Notify('A hungry Hatchling has eaten the rest of it\'s clutch',1);
 					} else {
+						var dq = Molpy.Boosts['DQ'];
 						Molpy.DragonExperience(-Math.pow(1000,Molpy.Level('DQ'))*this.clutches[cl]);
 						this.clutches[cl] = 0;
 						cleanup++;
@@ -9727,7 +9730,7 @@ Molpy.DefineBoosts = function() {
 	});
 	new Molpy.Boost({ // Note nothing is going to spend gold - dragons hoard it
 		name: 'Gold',
-		single: 'Gold',
+		plural: 'Gold',
 		desc: function(me) {
 			if (!me.bought) return 'Gold, Gold, Gold, Gold!';
 			if (!me.power) return 'Gold whats that?';
@@ -9813,7 +9816,7 @@ Molpy.DefineBoosts = function() {
 
 			return str + '</ul>';
 		},
-		price: { Goats:Infinity },
+		price: { Goats:'1G' },
 	});
 
 	new Molpy.Boost({
