@@ -32,6 +32,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5101 Fewer Bugs
+
+#### Waveney
+- CDSP Multi- buy should work
+- Fights now possible to win
+
 ### 3.51 
 
 #### Waveney

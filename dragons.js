@@ -622,7 +622,7 @@ Molpy.FindLocals = function(where) {
 Molpy.DragonStatsNow = function(where) {
 	var Stats = {};
 	var npd = Molpy.NPdata[where];
-	var num = npd.ammount;
+	var num = npd.amount;
 	if (!npd) return Stats;
 	for(var prop in npd) {
 		if(typeof npd[prop] !== 'undefined' ) Stats[prop] = npd[prop]*num;
