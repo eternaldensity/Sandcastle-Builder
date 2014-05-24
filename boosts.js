@@ -6495,7 +6495,7 @@ Molpy.DefineBoosts = function() {
 						+ ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 				}
 
-				if (Molpy.Got('The Fadding') && Molpy.Has('Goats',Infinity) && Molpy.Got('Aleph e') && Molpy.Boosts['AD'].power >= powerReq) {
+				if (Molpy.Got('The Fading') && Molpy.Has('Goats',Infinity) && Molpy.Got('Aleph e') && Molpy.Boosts['AD'].power >= powerReq) {
 					val = Math.pow(10,Math.floor(Math.log(me.bought)*Math.LOG10E));
 					val = Math.min(val,Molpy.Level('PR')/2-me.bought)
 					str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom('+val+')"></input> this by '+Molpify(val)+' (times the Panther Rush level) at a cost of '
