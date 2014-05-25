@@ -1038,7 +1038,7 @@
 			};
 		}
 		if(version < 3.5103) {
-			Moply.Boosts['DQ'].experience = Math.max( (Moply.Boosts['DQ'].experience || 0), 1e9);
+			Molpy.Boosts['DQ'].experience = Math.max( (Molpy.Boosts['DQ'].experience || 0), 1e9);
 		}
 
 	}
