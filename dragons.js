@@ -219,9 +219,9 @@ Molpy.Opponent = function(args) {
 		return str;
 	}
 
-	this.attackval = function(n) { // [physical,magical]
-//		if (this.id < 10) return [(Math.pow(42,Math.exp(this.id/2))*n)/1234,0];
-		return [Math.pow(42,Math.exp(this.id/2))*n/1234,Math.pow(672,Math.exp(this.id-10))*n/1764];
+	this.attackval = function(n,where) { // [physical,magical]
+		return [Math.pow(42,Math.exp(this.id/2))*n/1234,
+		        Math.pow(777,Math.exp(this.id-10))*n/1764*(this.name == 'Pantheon of Gods'?Math.pow(1.5,where-2100):1)];
 	};
 
 	this.takeReward = function(n,exp) {
@@ -652,7 +652,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 	var local = Molpy.OpponentsById[type];
 	local.gender = 1*(Math.random() < 0.5);
 	var atktxt = local.attackstxt(numb) + ((numb> 1 && text2)?text2:text1) + '. ';
-	var atkval = local.attackval(numb);
+	var atkval = local.attackval(numb,where);
 
 	Molpy.DragonDigRecalc(); 
 	var dragstats = Molpy.DragonStatsNow(where);
