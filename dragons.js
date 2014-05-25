@@ -491,7 +491,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 //	Molpy.Notify('Found '+ finds + ' things',1);
 	var found = '';
 	var n = 0;
-	if (Math.random()<0.99/Math.log(finds+0.7)) { // Find coins
+	if (Math.random() < 0.5 || Math.random()<0.99/Math.log(finds+0.7)) { // Find coins
 		found = 'Gold';
 		n = finds/1000000;
 		Molpy.Add(found,n);
