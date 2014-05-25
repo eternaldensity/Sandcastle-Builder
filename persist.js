@@ -1037,6 +1037,9 @@
 				Molpy.Boosts['Healing Potion'].bought = Math.min(Molpy.Boosts['Healing Potion'].bought, Molpy.Boosts['Healing Potion'].limit);
 			};
 		}
+		if(version < 3.5103) {
+			Moply.Boosts['DQ'].experience = Math.max( (Moply.Boosts['DQ'].experience || 0), 1e9);
+		}
 
 	}
 

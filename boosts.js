@@ -6486,7 +6486,7 @@ Molpy.DefineBoosts = function() {
 			var goatCost = me.power;
 			var powerReq = Math.pow(5, me.bought + 12);
 			if (me.bought > me.power+1) powerReq = 0;
-			if (me.bought < Molpy.Level('PR')/2) {
+			if (me.bought < 100 || me.bought < Molpy.Level('PR')/2) {
 				if(Molpy.Has('Goats', goatCost) && Molpy.Boosts['AD'].power >= powerReq) {
 					str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom(1)"></input> this by 1 (times the Panther Rush level) at a cost of '
 						+ Molpify(powerReq, 3) + ' Achronal Dragon power and ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
@@ -7903,6 +7903,7 @@ Molpy.DefineBoosts = function() {
 				} else {
 					str += '<p>The Clutch ';
 				}
+				if (me.clutches[cl] > 1) str += 'of ' + Molpify(me.clutches[cl]) + ' ';
 				if (me.age[cl] < 1000) {
 					str += 'is restless and wants it\'s own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
 						cl+')"></input><br>';
@@ -8617,7 +8618,7 @@ Molpy.DefineBoosts = function() {
 		if (Molpy.Got('Zooman')) mult = 20;
 		if (Molpy.Earned('The Ritual is worn out')) {
 			Molpy.Add('Goats', Math.floor((1e298 * (Molpy.Got('CMNT')?Molpy.Level('PR'):1) / 5)*Molpy.Papal('Goats')));
-			
+			Molpy.Boosts['Ninja Ritual'].Level = 1e298;
 		} else {
 			Molpy.Add('Goats', Math.floor((1 + oldlvl * (Molpy.Got('CMNT')?Molpy.Level('PR'):1) / 5)*Molpy.Papal('Goats')));
 			while (Molpy.Level('Ninja Ritual') <= oldlvl) {
