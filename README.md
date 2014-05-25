@@ -32,6 +32,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5103
+
+#### Waveney
+- Fixed problem with Ninja Ritual not restarting
+- 
+
 ### 3.5102 Less Bugs
 
 #### Waveney

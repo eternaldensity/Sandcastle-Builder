@@ -8617,7 +8617,7 @@ Molpy.DefineBoosts = function() {
 		if (Molpy.Got('Zooman')) mult = 20;
 		if (Molpy.Earned('The Ritual is worn out')) {
 			Molpy.Add('Goats', Math.floor((1e298 * (Molpy.Got('CMNT')?Molpy.Level('PR'):1) / 5)*Molpy.Papal('Goats')));
-			
+			Molpy.Boosts['Ninja Ritual'].Level = 1e298;
 		} else {
 			Molpy.Add('Goats', Math.floor((1 + oldlvl * (Molpy.Got('CMNT')?Molpy.Level('PR'):1) / 5)*Molpy.Papal('Goats')));
 			while (Molpy.Level('Ninja Ritual') <= oldlvl) {
