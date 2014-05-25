@@ -32,6 +32,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5103
+
+#### Waveney
+- Fixed problem with Ninja Ritual not restarting
+- Cap draconic experience (if you expolited the bug in 3.51)
+- How big is a clutch
+- Allow CDSP upgrades under 100 whatever the PR level
+
 ### 3.5102 Less Bugs
 
 #### Waveney
