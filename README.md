@@ -32,6 +32,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5102 Less Bugs
+
+#### Waveney
+- Fixed mustard if you failed to feed hatchlings
+- Fixed a refresh
+- Reduced cost of the Dragon Keeping Manual
+- Fixed one bug on dragon fights
+
 ### 3.5101 Fewer Bugs
 
 #### Waveney
