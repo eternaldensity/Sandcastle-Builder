@@ -32,6 +32,14 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5104
+
+#### Waveney
+- Totally screwed up the cap on draconic experience - should have been min not max
+- If you have 1G or more experience (due to either the original bug, or my recent error
+- It will reset it to 1M*Dragon Queen Level 
+- Sorry.
+
 ### 3.5103
 
 #### Waveney
