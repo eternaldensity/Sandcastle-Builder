@@ -7903,6 +7903,7 @@ Molpy.DefineBoosts = function() {
 				} else {
 					str += '<p>The Clutch ';
 				}
+				if (me.clutches[cl] > 1) str += 'of ' + Molpify(me.clutches[cl]) + ' ';
 				if (me.age[cl] < 1000) {
 					str += 'is restless and wants it\'s own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
 						cl+')"></input><br>';
