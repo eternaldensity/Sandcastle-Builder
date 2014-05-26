@@ -7893,9 +7893,9 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			if (!me.Level) return 'You don\'t have any hatchlings at the moment';
-			var str = 'You have ' + Molpify(me.Level, 3) + ' hatchling' + plural(me.Level) + ' clutch.';
-			if (me.clutches.length > 1) str += ' in ' + me.clutches.length + ' clutches.';
-			str += '<p>Hatchlings will mature into ' + Molpy.DragonsById[Molpy.Level('DQ')].name + 's<p>';
+			var str = 'You have ' + Molpify(me.Level, 3) + ' hatchling' + plural(me.Level);
+			if (me.clutches.length > 1) str += ' in ' + me.clutches.length + ' clutches';
+			str += '.<p>Hatchlings will mature into ' + Molpy.DragonsById[Molpy.Level('DQ')].name + 's<p>';
 			for (var cl in me.clutches) {
 				if (me.clutches.length > 1) {
 					var cn = 1*cl+1;
