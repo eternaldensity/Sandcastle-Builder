@@ -625,7 +625,7 @@ Molpy.DragonStatsNow = function(where) {
 	var num = npd.amount;
 	if (!npd) return Stats;
 	for(var prop in npd) {
-		if(typeof npd[prop] !== 'undefined' ) Stats[prop] = npd[prop]*num;
+		if(typeof npd[prop] !== 'undefined' && prop != 'amount' && prop != 'DragonType') Stats[prop] = npd[prop]*num;
 	}
 
 	Stats.defence += 0.001;
