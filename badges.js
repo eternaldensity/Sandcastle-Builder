@@ -37,7 +37,7 @@ Molpy.DefineBadges = function() {
 	new Molpy.Badge({
 		name: 'Click Master',
 		desc: 'Dig 100M sand by clicking',
-		visiblity: 2
+		vis: 2
 	});
 	new Molpy.Badge({
 		name: 'Rook',
@@ -1120,8 +1120,6 @@ Molpy.DefineBadges = function() {
 						str += '<br><br>Sudo <input type="Button" onclick="Molpy.MakeGlassMould(' + me.np
 							+ ')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 					}
-					//str += '<div class="npthumb" style="background-image: '
-					//	+ Molpy.Url(Molpy.ThumbNewPixFor(Math.abs(me.np))) + '"></div>';
 					str += '<div id="img-monums' + me.np + '" class="npthumb" style="background-image:"></div>';
 				}
 				return str;
