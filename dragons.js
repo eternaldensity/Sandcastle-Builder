@@ -448,7 +448,7 @@ Molpy.DragonDigRecalc = function() {
 
 Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 	var dq = Molpy.Boosts['DQ'];
-	if (Molpy.DragonDigRate == 0 && Molpy.DragonDigRecalcNeeded == 0) return;
+	if (Molpy.DragonDigRate == 0 && Molpy.DragonDigRecalcNeeded == 0 || dq.overallState) return;
 	if( Molpy.DigTime++ >100) {
 		if (Object.keys(Molpy.DiggingFinds).length) {
 			var str = 'During the last 100 digs, the dragons have found: ';
@@ -480,7 +480,6 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		Molpy.DigTime = 0;
 		Molpy.DiggingFinds = {};
 	}
-	if (dq.overallState) return;
 	
 	if (Molpy.DragonDigRecalcNeeded) Molpy.DragonDigRecalc();
 	Molpy.DigValue += (type?Molpy.TotalNPsWithDragons*(1+dq.Level):Molpy.DragonDigRate)*Math.random();
@@ -576,7 +575,7 @@ Molpy.DragonFledge = function(clutch) {
 	}
 
 	if (npd.amount) {
-		var props = hatch.properties.slice(clutch*Molpy.DragonStats.length,Molpy.DragonStats.length);
+		var props = hatch.properties.slice(clutch*Molpy.DragonStats.length,(clutch+1)*Molpy.DragonStats.length);
 		npd.attack = props[0];
 		npd.defence= props[1];
 		npd.dig    = props[2];

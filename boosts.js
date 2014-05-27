@@ -10142,6 +10142,7 @@ Molpy.DefineBoosts = function() {
 			if (me.bought) {
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			}
+			return str;
 		},
 
 		group: 'cyb',
