@@ -32,6 +32,15 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5105
+
+#### Waveney
+- Return of the description of the robotic feeder missing
+- Fix to fledging 
+- Fix to a badge
+- Fix to Hatchling wordage
+- Fix for dragon type names for clutches > 1
+
 ### 3.5104
 
 #### Waveney
