@@ -7947,7 +7947,7 @@ Molpy.DefineBoosts = function() {
 
 		countdownFunction: function() {
 			var cleanup = 0;
-			var starveat= Molpy.Got('Wait For It')?2000:2500;
+			var starveat= Molpy.Got('Wait for it')?2000:2500;
 			var escapeat= Molpy.Got('Q04B')?-1000:0;
 			for (var cl in this.clutches) {
 				this.age[cl]--;
