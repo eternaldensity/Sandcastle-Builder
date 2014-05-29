@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.5105;
+Molpy.version=3.52;
 Molpy.versionName=''; // Appended to the numerical version on screen
 
 /**************************************************************
@@ -872,7 +872,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
 	Molpy.Boosts['Aleph e'].logic = DeMolpify('99H') * Molpy.priceFactor;
 }
-Molpy.mapMonumg = 300;
+Molpy.mapMonumg = 200;
 
 Molpy.CheckASHF = function() {
 	Molpy.Boosts['ASHF'].department = 0;

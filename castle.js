@@ -2776,8 +2776,8 @@ Molpy.Up = function() {
 	Molpy.Shutter = function() {
 		if(Molpy.Spend('GlassChips', 10)) {
 			if(Molpy.Got('Maps')) {
-				if(Molpy.Has('Maps', 80))  Molpy.UnlockBoost('DNS'); 
-				if(Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
+				if(Molpy.Has('Maps', 50))  Molpy.UnlockBoost('DNS'); 
+				if(Molpy.Has('Maps', 25)) Molpy.UnlockBoost('Lodestone');
 				if(Molpy.newpixNumber == Molpy.Boosts['Maps'].bought) {
 					Molpy.Add('Maps', 1);
 					Molpy.Notify('You found a new map!', 1);

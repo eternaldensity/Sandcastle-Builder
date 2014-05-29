@@ -237,7 +237,7 @@ Molpy.Opponent = function(args) {
 			} else {
 				if (Math.random() < range) num = 1;
 			}
-			if (exp) Molpy.DragonExperience(exp); 
+			if (exp) Molpy.Add('exp',exp); 
 			if (num) {
 				num *= (n||1);
 				rwds.push(Molpify(num,2) + ' ' + stuff);
@@ -694,14 +694,14 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 		case -2 : // wipeout
 			dq.Loose(npd.DragonType,npd.amount);
 			npd.amount = 0;
-			Molpy.DragonExperience(Math.pow(10,npd.DragonType)/5);
+			Molpy.Add('exp',Math.pow(10,npd.DragonType)/5);
 			Molpy.Notify(atktxt + ' You are totally destroyed in a one sided fight.',1);
 			break;
 
 		case -1 : // lost a hard fight
 			dq.Loose(npd.DragonType,npd.amount);
 			npd.amount = 0;	
-			Molpy.DragonExperience(Math.max(DeMolpify(local.exp)*numb, Math.pow(10,npd.DragonType)/5));
+			Molpy.Add('exp',Math.max(DeMolpify(local.exp)*numb, Math.pow(10,npd.DragonType)/5));
 			Molpy.Notify(atktxt + ' You lost, but lost with dignity',1);
 			break;
 
@@ -888,38 +888,9 @@ TODO
 
 Dragons
 	What						Written	Tested					
--9	RDKM						Y	y
--8	NPdata persistence				y	y
--7	Nestlining					y	y
--6	Opponents					y	y
-1	Lay eggs					Y	Y
-2	Feed hatchlings <- Goats, Princesses		Y	y
-3	Fledge						y	y
-4	Locals attack					y	y
-5	Automatc Digging (intially slow)		y	y
-5.1	Gold						y	y
-5.2	Dimond						y	y
-5.3	Other						y	y
-6	Health effects					y	y
-7	Beach Digging					y	y
-7.1	dig						y	y
-7.2	enable						y	y
-8	Redundattacks					y	y
-9	Opponents 					y	y
-	9.1	Abilities				y	y
-	9.2	Attack					y	y
-	9.3	Rewards					y	y
 10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch
-11	NPdata						y	y
-12	Dragon Pane (Whats here)			y	y
-12.1	For classic					y	y
-13	Dragon Stats					y	y
-13.1	For Classic					y	y
-14	Dragon Overview Pane				Not Lanuch
+14	Dragon Overview Pane				Started
 14.1	For classic					Not Launch
-15	Dragon Upgrades					y	y
-16	Draglings					Y	y
-17	DragonNewts					y	y
 18	Wyrm						Not Launch
 19	Wyvern						Not Launch
 20	Diamond Tools and Moulds			Plans only, making/using impossible
@@ -927,17 +898,17 @@ Dragons
 22	Breath effects					Not Launch
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
-25	Use # appendeges in desciptions			y	y	
-26	Infinite AC runs -how?				y	y
-27	Fix Molpifycountdown				y	y
-28	Change Incubator et al				y	y
 29	Mould making					some progress
-30	Recalibrated fights				y	y
-31	Cryogenics					y	y
-32	Panthers Dream					y	y
-33	Loopin Looie					y	y
-34	Robotic feeder					y	y
-35	
+30	Recalibrated fights				
+35	Move Experience to own boost			y
+36	No kit from digging
+37	Kit from fights
+38	Varriable opponents
+39	Linear kit
+40	Hubble Double instead of automatic		y
+41	Cost of some kit boosts will be experience
+
+
 
 
 
