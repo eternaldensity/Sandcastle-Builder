@@ -42,6 +42,7 @@ For personal amusement only.
 - New 'Hubble Double' boost
 - Hatchlings due to fledge withn 500mNP will escape on loading (to reduce save scumming)
 - Hatchlings will be ready to fledge 2000mNP after they are fed rather than 2000mNP after hatching.
+- 
 
 ### 3.5105
 

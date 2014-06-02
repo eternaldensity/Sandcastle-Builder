@@ -229,7 +229,7 @@ Molpy.Opponent = function(args) {
 		for (var stuff in this.reward) {
 			var num = 0;
 			var range = this.reward[stuff];
-			var bits = range.split('-');
+			var bits = range.toString().split('-');
 			if (bits[1]) {
 				var minval = DeMolpify(bits[0]);
 				var maxval = DeMolpify(bits[1]);
@@ -239,11 +239,16 @@ Molpy.Opponent = function(args) {
 			}
 			if (exp) Molpy.Add('exp',exp); 
 			if (num) {
-				num *= (n||1);
-				rwds.push(Molpify(num,2) + ' ' + stuff);
-				if (stuff == 'Copper') { stuff = 'Gold'; num/=1000000; }
-				else if (stuff == 'Silver') { stuff = 'Gold'; num/=1000; }
-				Molpy.Add(stuff,num);
+				if (stuff == 'Thing') {
+					var thing = Molpy.FindThings();
+					rwds.push('A '+thing.single );
+				} else {
+					num *= (n||1);
+					rwds.push(Molpify(num,2) + ' ' + stuff);
+					if (stuff == 'Copper') { stuff = 'Gold'; num/=1000000; }
+					else if (stuff == 'Silver') { stuff = 'Gold'; num/=1000; }
+					Molpy.Add(stuff,num);
+				}
 			}
 		}
 		if (rwds.length && !Molpy.boostSilence) {
@@ -261,105 +266,105 @@ Molpy.DefineOpponents = function() {
 	new Molpy.Opponent ({
 		name: 'Serf',
 		armed: ['stick', '-bare hands', 'turnip', '-bad words', 'bowl of dish water','|hamply','fish head'],
-		reward: {Copper:'1-10'},
+		reward: {Copper:'1-10',Thing:0.1},
 		exp: 1,
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Peasant',
 		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock','pun','|wolfy'],
-		reward: {Copper:'10-1000'},
+		reward: {Copper:'10-1000',Thing:0.15},
 		exp: '1K',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Page',
 		armed: ['dagger', 'staff', 'nice cup of tea', 'stileto', 'buckler', 'spear', 'crossbow', '-puns'],
-		reward: {Silver:'1-100'},
+		reward: {Silver:'1-100',Thing:0.2},
 		exp: '1M',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Squire',
 		armed: ['short sword', 'side sword','bow and arrows','mace','mandolin','polearm','!axe','hammer','|keyboard'],
-		reward: {Silver:'100-10000'},
+		reward: {Silver:'100-10000',Thing:0.25},
 		exp: '1G',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Knight',
 		armed: ['long sword', '+arming sword', 'battle axe', 'morning star', 'lance'],
-		reward: {Gold:'10-1000',Diamonds:0.5},
+		reward: {Gold:'10-1000',Diamonds:0.5,Thing:0.3},
 		exp: '1P',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Baron',
 		armed: ['bastard sword','flaming sword','hailstorm','tax demand'],
-		reward: {Gold:'1K-1M',Diamonds:'1-5'},
+		reward: {Gold:'1K-1M',Diamonds:'1-5',Thing:0.35},
 		exp: '1E',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Lord',
 		armed: ['great sword','great axe','Kazoo','court jester','fire hose'],
-		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'1-50'},
+		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'1-50',Thing:0.4},
 		exp: '1Z',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Duke',
 		armed: ['+Duchess','horde of servants','+gardeners','whip'],
-		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50-50K'},
+		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50-50K',Thing:0.45},
 		exp: '1Y',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Emperor',
 		armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers','Death Star'],
-		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'50K-60M'},
+		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'50K-60M',Thing:0.5},
 		exp: '1U',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Paladin',
 		armed: ['+Dragon slaying sword','Holy hand grenade','lot of bad puns','+Sword of the isles'],
-		reward: {Gold:'100M-1Z',Princesses:'10-10K',Diamonds:'60M-80G'},
+		reward: {Gold:'100M-1Z',Princesses:'10-10K',Diamonds:'60M-80G',Thing:0.55},
 		exp: '1S',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Hero',
 		armed: ['+sword of sharpness','-Eds Axe','+Punsaw','Donut','-both feet','pea shooter','|fist of steel'],
-		reward: {Gold:'1G-1Y',Princesses:'100-10M',Diamonds:'70G-100T'},
+		reward: {Gold:'1G-1Y',Princesses:'100-10M',Diamonds:'70G-100T',Thing:0.6},
 		exp: '1F',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Demi-god',
 		armed: ['pen (mightier than the sword)', 'cleaving axe','pitch fork', 'ballon'],
-		reward: {Gold:'10G-1U',Princesses:'1K-10G',Diamonds:'80T-120P'},
+		reward: {Gold:'10G-1U',Princesses:'1K-10G',Diamonds:'80T-120P',Thing:0.65},
 		exp: '1W',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Superhero',
 		armed: ['-bare hands','turnip','bazooka','+Imperial Dragon Banishing Sword','+Great Cleaver' ],
-		reward: {Gold:'1T-1S',Princesses:'1M-10P',Diamonds:'90P-150E'},
+		reward: {Gold:'1T-1S',Princesses:'1M-10P',Diamonds:'90P-150E',Thing:0.7},
 		exp: '1GW',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'God',
 		armed: ['+staff of might','+staff of comand','-dice','|holy symbol','|lightning strikes'],
-		reward: {Gold:'10P-1F',Princesses:'1G-10Y',Diamonds:'100E-200Z'},
+		reward: {Gold:'10P-1F',Princesses:'1G-10Y',Diamonds:'100E-200Z',Thing:0.75},
 		exp: '1UW',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Panetheon of Gods',
 		armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic', '-typos'],
-		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'120Z-500Y'},
+		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'120Z-500Y',Thing:0.99},
 		exp: '1WW',
 	});
 };
@@ -494,39 +499,12 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		found = 'Gold';
 		n = finds/1000000;
 		Molpy.Add(found,n);
-	} else if (Math.random() <0.95) { // Find Diamonds
+	} else { // Find Diamonds 
 		found = 'Diamonds';
 		n = Math.max(Math.floor(Math.log(finds)),1);
 		Molpy.Add(found,n);
 		Molpy.EarnBadge('Wheee Diamonds');
-	} else { // Find Things
-		var availRewards = [];
-		for( var i in Molpy.Boosts) {
-			var me = Molpy.Boosts[i];
-			if("draglvl" in me && Molpy.Dragons[me.draglvl].id <= dq.Level) {
-				var lim = EvalMaybeFunction((me.limit || 1),me);      
-				if (me.bought < lim) availRewards.push(me);
-			}
-		}
-//		Molpy.Notify('List length '+ availRewards.length);
-		var thing = GLRschoice(availRewards);
-		if (thing) {
-			found = thing.name;
-			n = 1;
-			if (thing.bought) {
-				thing.bought++;
-				if (thing.buyFunction) thing.buyFunction();
-			} else {
-				thing.unlocked = 1;
-				thing.buy(1,1);
-			}
-			Molpy.DragonDigRecalcNeeded = 1;
-		} else {
-			found = 'Diamonds';
-			n = Math.max(Math.floor(Math.log(finds)),1);
-			Molpy.Add(found,n);
-		}
-	}
+	} // May find other things later - kit is not here
 	if (found) {
 //		Molpy.Notify('Found ' + n + ' ' + found,1);
 		var f = dq.finds++;
@@ -537,6 +515,24 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 			Molpy.DiggingFinds[found] = n;
 		}
 	}
+}
+
+Molpy.FindThings = function() {
+	var dqlevel = Molpy.Level('DQ');
+	var availRewards = [];
+	for( var i in Molpy.Boosts) {
+		var me = Molpy.Boosts[i];
+		if("draglvl" in me && Molpy.Dragons[me.draglvl].id <= dqlevel) {
+			var lim = EvalMaybeFunction((me.limit || 1),me);      
+			if (me.bought == me.unlocked && me.bought < lim) availRewards.push(me);
+		}
+	}
+//		Molpy.Notify('List length '+ availRewards.length);
+	var thing = GLRschoice(availRewards);
+	if (thing) {
+		Molpy.UnlockBoost(thing);
+	}
+	return thing;
 }
 
 // Fledging ********************************************************
@@ -907,7 +903,7 @@ Dragons
 39	Linear kit
 40	Hubble Double instead of automatic		y
 41	Cost of some kit boosts will be experience
-
+42	Reduce Save Scumming				y	y
 
 
 
@@ -920,10 +916,8 @@ Dragons
 * Luck Rings
 
 Other
-1	Fading (~1k CDSP) cyclic AC boost		y	y
 2	Panthers Ignore Einstein 
-3	Multi buy on CDSP				y	y
-4	Panthers Dream					y	y
+5
 
 
 */

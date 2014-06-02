@@ -108,7 +108,7 @@ Molpy.HardcodedData = function() {
 			[1423, "The Hills and Forest Era"],
 			[1661, "The Discovery Era"],
 			[2356, "The Mountain Era"],
-			[1661, "The Night Era"],
+			[2530, "The Night Era"],
 			[2615, "The Summit Era"],
 			[2813, "The Contact Era"],
 			[2920, "The Civilization Era"],

@@ -691,7 +691,7 @@ Molpy.DefineGUI = function() {
 		var shopList = [];
 		for( var i in Molpy.Boosts) {
 			var boost = Molpy.Boosts[i];
-			if(!boost.bought && boost.unlocked) shopList.push(boost);
+			if(boost.bought < boost.unlocked) shopList.push(boost);
 		}
 	
 		if(Molpy.options.boostsort > 0)

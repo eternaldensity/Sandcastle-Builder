@@ -7620,21 +7620,22 @@ Molpy.DefineBoosts = function() {
 		alias: 'Maps',
 		icon: 'mysteriousmap',
 		group: 'stuff',
+		iregularBought: 1,
 		
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' map' + plural(me.Level);
 			if(!me.bought)  return str + '.';
-			if (!Molpy.Got('DNS')) str += ' out of 80.';
-			if(me.bought != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
-				str += '<br>The next map can be found at NP ' + me.bought;
+			if (!Molpy.Got('DNS')) str += ' out of 50.';
+			if(me.NextMap != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
+				str += '<br>The next map can be found at NP ' + me.NextMap;
 				if (Molpy.Got('Lodestone')) {
 					var search=0;
 					while (1) {
-						if (Molpy.Earned('discov'+(me.bought+search))) break;
-						if (Molpy.Earned('discov'+(me.bought-search))) { search = -search; break;}
+						if (Molpy.Earned('discov'+(me.NextMap+search))) break;
+						if (Molpy.Earned('discov'+(me.NextMap-search))) { search = -search; break;}
 						search++
 					}
-					str += '<br><input type="Button" onclick="Molpy.TTT(' + (me.bought+search) + 
+					str += '<br><input type="Button" onclick="Molpy.TTT(' + (me.NextMap+search) + 
 						',1)" value="Nearest Jump!"></input>';
 				}
 			} else {
@@ -7647,8 +7648,13 @@ Molpy.DefineBoosts = function() {
 			return me.desc(me) + '<br>Use your Camera at the specified NewPix to collect more Maps.';
 		},
 		
-		buyFunction: Molpy.RandomiseMap,
+		buyFunction: function() { this.NextMap = 1 },
+		NextMap: 0,
 		defStuff: 1,
+		saveData: {
+			4:['NextMap', 0, 'float'],
+		},
+		defSave: 1,
 		
 		price: {
 			Blackprints: function(me) {
@@ -7665,7 +7671,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.EnoughMonumgForMaps()) {
 			Molpy.RandomiseMap();
 		} else {
-			Molpy.Boosts['Maps'].bought = Math.PI;
+			Molpy.Boosts['Maps'].NextMap = Math.PI;
 		}
 		Molpy.Boosts['Maps'].Refresh();
 	}
@@ -7674,7 +7680,7 @@ Molpy.DefineBoosts = function() {
 		var np;
 		while((np = Math.ceil(Math.random() * Molpy.highestNPvisited) * (Math.random() > .5 ? 1 : -1)) == Molpy.newpixNumber)
 			;
-		Molpy.Boosts['Maps'].bought = np;
+		Molpy.Boosts['Maps'].NextMap = np;
 		return 1;
 	}
 
@@ -7920,14 +7926,14 @@ Molpy.DefineBoosts = function() {
 
 		loadFunction: function() {
 			var cleans = 0;
-			for (var cl in me.clutches) {
+			for (var cl in this.clutches) {
 				if (this.age[cl] < 1500) {
 					this.clutches[cl] = 0;
 					cleans ++;
 				}
 			};
 			this.clean(cleans);
-	      	}
+	      	},
 		
 		defStuff: 1,
 		defSave: 1,
@@ -9836,6 +9842,10 @@ Molpy.DefineBoosts = function() {
 			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.name:me.single);
 			return str;
 		},
+		price: {
+			Diamonds:10,
+			exp: function () { return Math.pow(10,this.Level+1) }
+		},
 		draglvl: 'Dragling',
 		limit: function() { return 4*(Molpy.Level('DQ')+1) },
 		Level: Molpy.BoostFuncs.Bought0Level,
@@ -9850,6 +9860,10 @@ Molpy.DefineBoosts = function() {
 			str = 'Increases the defense value of Dragons';
 			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
+		},
+		price: {
+			Diamonds:20,
+			exp: function () { return Math.pow(10,this.Level+1) }
 		},
 		draglvl: 'Dragling',
 		limit: function() { return 4*(Molpy.Level('DQ')+1) },
@@ -9867,6 +9881,10 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'DragonNewt',
+		price: {
+			Diamonds:100,
+			exp: function () { return Math.pow(100,this.Level+1) }
+		},
 		limit: 4,
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
@@ -9883,6 +9901,10 @@ Molpy.DefineBoosts = function() {
 		draglvl: 'DragonNewt',
 		limit: function() { return 4*(Molpy.Level('DQ')) },
 		Level: Molpy.BoostFuncs.Bought0Level,
+		price: {
+			Diamonds:1000,
+			exp: function () { return Math.pow(100,this.Level+1) }
+		},
 	});
 
 	new Molpy.Boost({
@@ -9913,6 +9935,10 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'Dragon',
+		price: {
+			Diamonds:'1G',
+			exp: function () { return 1e11*Math.pow(10,this.Level+1) }
+		},
 		limit: 50,
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
@@ -9961,6 +9987,10 @@ Molpy.DefineBoosts = function() {
 			this.bought--;
 			return true;
 		},
+		price: {
+			Diamonds:'1K',
+			exp: function () { return Math.pow(1000,Molpy.Level('DQ')+1) }
+		},
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9980,6 +10010,10 @@ Molpy.DefineBoosts = function() {
 			if (!this.bought) return false;
 			this.bought--;
 			return true;
+		},
+		price: {
+			Diamonds:'1M',
+			exp: function () { return Math.pow(1000,Molpy.Level('DQ')*2) }
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
@@ -10048,6 +10082,10 @@ Molpy.DefineBoosts = function() {
 			return true;
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
+		price: {
+			Diamonds:1,
+			exp: 100,
+		},
 	});
 
 	new Molpy.Boost({ // Hook
@@ -10084,6 +10122,10 @@ Molpy.DefineBoosts = function() {
 			return 10;
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
+		price: {
+			Diamonds:10,
+			exp: function () { return Math.pow(100,Molpy.Level('DQ')) }
+		},
 	});
 
 	new Molpy.Boost({ // Hook
@@ -10249,7 +10291,7 @@ Molpy.DefineBoosts = function() {
 		icon: 'hubble2',
 		desc: str = 'Occasionally the number of runs Constructing from Blackprints has made will double',
 		price: {Diamonds:555555,
-			Bonemeal:'10GW',
+			Bonemeal:'88GW',
 			Blackprints:Infinity,
 			Goats:Infinity
 		},

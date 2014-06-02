@@ -1039,7 +1039,10 @@
 		}
 		if(version < 3.52) {
 			if (Molpy.Boosts['DQ'].experience >= 0.5e9) Molpy.Boosts['DQ'].experience = 1000000*Molpy.Level('DQ');
-			Molpy.Boosts['exp'].Level = Molpy.Boosts['DQ'].experience;		}
+			Molpy.Boosts['exp'].Level = Molpy.Boosts['DQ'].experience;
+			Molpy.Boosts['Maps'].NextMap = Molpy.Boosts['Maps'].bought;
+			if ( Molpy.Boosts['Maps'].bought ) Molpy.Boosts['Maps'].bought = 1; 
+		}
 
 	}
 
