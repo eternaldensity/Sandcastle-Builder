@@ -1451,8 +1451,7 @@ Molpy.Up = function() {
 
 			// Methods
 			this.buy = function(auto,freebe) {
-				if(!this.unlocked || this.bought) return; //shopping assistant tried to buy it when it was locked
-
+				if(this.unlocked <= this.bought) return; //shopping assistant tried to buy it when it was locked
 				var realPrice = this.CalcPrice(this.price);
 				var free = freebe || Molpy.IsFree(realPrice);
 				if(Molpy.ProtectingPrice() && !free) return;
@@ -1548,7 +1547,7 @@ Molpy.Up = function() {
 			
 			this.getBuySell = function() {
 				var buy = '';
-				if(!this.bought && this.unlocked) {
+				if(this.unlocked > this.bought) {
 					var noBuy = this.isAffordable() ? '' : ' unbuyable';
 					buy = '<a class="buySpan' + noBuy + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
 				}

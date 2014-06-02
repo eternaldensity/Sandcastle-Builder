@@ -241,7 +241,8 @@ Molpy.Opponent = function(args) {
 			if (num) {
 				if (stuff == 'Thing') {
 					var thing = Molpy.FindThings();
-					rwds.push('A '+thing.single );
+					if (thing) rwds.push('A '+thing.single )
+					else Molpy.Notify('No Thing!',1);
 				} else {
 					num *= (n||1);
 					rwds.push(Molpify(num,2) + ' ' + stuff);

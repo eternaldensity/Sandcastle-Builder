@@ -9844,7 +9844,7 @@ Molpy.DefineBoosts = function() {
 		},
 		price: {
 			Diamonds:10,
-			exp: function () { return Math.pow(10,this.Level+1) }
+			exp: function () { return Math.pow(10,Molpy.Level('Big Teeth')+1) }
 		},
 		draglvl: 'Dragling',
 		limit: function() { return 4*(Molpy.Level('DQ')+1) },
