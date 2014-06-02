@@ -771,7 +771,10 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 	}
 
 	npd = Molpy.NPdata[atk];
-	Molpy.OpponentsAttack(atk,atk+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1)),
+	var atklvl = Math.max(atk,150*npd.DragonType)+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
+	atklvl = (Math.random() < 0.5)?Math.max(0,atklvl-Math.floor(30*Math.random())):atklvl+Math.floor(30*Math.random()))
+
+	Molpy.OpponentsAttack(atk,atklvl,
 			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+atk);
 }
 
