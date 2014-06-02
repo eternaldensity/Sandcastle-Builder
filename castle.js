@@ -1451,8 +1451,7 @@ Molpy.Up = function() {
 
 			// Methods
 			this.buy = function(auto,freebe) {
-				if(!this.unlocked || this.bought) return; //shopping assistant tried to buy it when it was locked
-
+				if(this.unlocked <= this.bought) return; //shopping assistant tried to buy it when it was locked
 				var realPrice = this.CalcPrice(this.price);
 				var free = freebe || Molpy.IsFree(realPrice);
 				if(Molpy.ProtectingPrice() && !free) return;
@@ -1548,7 +1547,7 @@ Molpy.Up = function() {
 			
 			this.getBuySell = function() {
 				var buy = '';
-				if(!this.bought && this.unlocked) {
+				if(this.unlocked > this.bought) {
 					var noBuy = this.isAffordable() ? '' : ' unbuyable';
 					buy = '<a class="buySpan' + noBuy + '" onclick="Molpy.BoostsById[' + this.id + '].buy();">Buy</a>';
 				}
@@ -1659,8 +1658,8 @@ Molpy.Up = function() {
 			if(typeof bacon === 'string') {
 				var me = Molpy.Boosts[bacon];
 				if(me) {
-					if(me.unlocked == 0) {
-						me.unlocked = 1;
+					if(me.unlocked == 0 || me.limit) {
+						me.unlocked++;
 						Molpy.shopNeedRepaint = 1;
 						Molpy.RatesRecalculate();
 						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem)) {
@@ -2776,9 +2775,9 @@ Molpy.Up = function() {
 	Molpy.Shutter = function() {
 		if(Molpy.Spend('GlassChips', 10)) {
 			if(Molpy.Got('Maps')) {
-				if(Molpy.Has('Maps', 80))  Molpy.UnlockBoost('DNS'); 
-				if(Molpy.Has('Maps', 40)) Molpy.UnlockBoost('Lodestone');
-				if(Molpy.newpixNumber == Molpy.Boosts['Maps'].bought) {
+				if(Molpy.Has('Maps', 50))  Molpy.UnlockBoost('DNS'); 
+				if(Molpy.Has('Maps', 25)) Molpy.UnlockBoost('Lodestone');
+				if(Molpy.newpixNumber == Molpy.Boosts['Maps'].NextMap) {
 					Molpy.Add('Maps', 1);
 					Molpy.Notify('You found a new map!', 1);
 					Molpy.ClearMap();

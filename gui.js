@@ -691,7 +691,7 @@ Molpy.DefineGUI = function() {
 		var shopList = [];
 		for( var i in Molpy.Boosts) {
 			var boost = Molpy.Boosts[i];
-			if(!boost.bought && boost.unlocked) shopList.push(boost);
+			if(boost.bought < boost.unlocked) shopList.push(boost);
 		}
 	
 		if(Molpy.options.boostsort > 0)
@@ -2120,7 +2120,7 @@ Molpy.DefineGUI = function() {
 			var pNum = price[p];
 			//change all number representations into a number (40,000 40k 4e4)
 			pNum = isNaN(pNum) ? DeMolpify(pNum) : pNum;
-			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum, 2) + ' ' + p;
+			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum, 2) + ' ' + Molpy.Boosts[p].name;
 		}
 		return innerHTML;
 	}
