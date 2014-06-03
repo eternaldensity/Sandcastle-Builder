@@ -288,84 +288,84 @@ Molpy.DefineOpponents = function() {
 	new Molpy.Opponent ({
 	 	name: 'Squire',
 		armed: ['short sword', 'side sword','bow and arrows','mace','mandolin','polearm','!axe','hammer','|keyboard'],
-		reward: {Silver:'100-10000',Thing:0.25},
+		reward: {Silver:'100-10000',Diamonds:0.5,Thing:0.25},
 		exp: '1G',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Knight',
 		armed: ['long sword', '+arming sword', 'battle axe', 'morning star', 'lance'],
-		reward: {Gold:'10-1000',Diamonds:0.5,Thing:0.3},
+		reward: {Gold:'10-1000',Diamonds:'1-5',Thing:0.3},
 		exp: '1P',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Baron',
 		armed: ['bastard sword','flaming sword','hailstorm','tax demand'],
-		reward: {Gold:'1K-1M',Diamonds:'1-5',Thing:0.35},
+		reward: {Gold:'1K-1M',Diamonds:'1-50',Thing:0.35},
 		exp: '1E',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Lord',
 		armed: ['great sword','great axe','Kazoo','court jester','fire hose'],
-		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'1-50',Thing:0.4},
+		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'50-50K',Thing:0.4},
 		exp: '1Z',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Duke',
 		armed: ['+Duchess','horde of servants','+gardeners','whip'],
-		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50-50K',Thing:0.45},
+		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50K-60H',Thing:0.45},
 		exp: '1Y',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Emperor',
 		armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers','Death Star'],
-		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'50K-60M',Thing:0.5},
+		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'60H-80G',Thing:0.5},
 		exp: '1U',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Paladin',
 		armed: ['+Dragon slaying sword','Holy hand grenade','lot of bad puns','+Sword of the isles'],
-		reward: {Gold:'100M-1Z',Princesses:'10-10K',Diamonds:'60M-80G',Thing:0.55},
+		reward: {Gold:'100M-1Z',Princesses:'10-10K',Diamonds:'70G-100T',Thing:0.55},
 		exp: '1S',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Hero',
 		armed: ['+sword of sharpness','-Eds Axe','+Punsaw','Donut','-both feet','pea shooter','|fist of steel'],
-		reward: {Gold:'1G-1Y',Princesses:'100-10M',Diamonds:'70G-100T',Thing:0.6},
+		reward: {Gold:'1G-1Y',Princesses:'100-10M',Diamonds:'80T-120P',Thing:0.6},
 		exp: '1F',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Demi-god',
 		armed: ['pen (mightier than the sword)', 'cleaving axe','pitch fork', 'ballon'],
-		reward: {Gold:'10G-1U',Princesses:'1K-10G',Diamonds:'80T-120P',Thing:0.65},
+		reward: {Gold:'10G-1U',Princesses:'1K-10G',Diamonds:'90P-150E',Thing:0.65},
 		exp: '1W',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Superhero',
 		armed: ['-bare hands','turnip','bazooka','+Imperial Dragon Banishing Sword','+Great Cleaver' ],
-		reward: {Gold:'1T-1S',Princesses:'1M-10P',Diamonds:'90P-150E',Thing:0.7},
+		reward: {Gold:'1T-1S',Princesses:'1M-10P',Diamonds:'100E-200Z',Thing:0.7},
 		exp: '1GW',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'God',
 		armed: ['+staff of might','+staff of comand','-dice','|holy symbol','|lightning strikes'],
-		reward: {Gold:'10P-1F',Princesses:'1G-10Y',Diamonds:'100E-200Z',Thing:0.75},
+		reward: {Gold:'10P-1F',Princesses:'1G-10Y',Diamonds:'120Z-500Y',Thing:0.75},
 		exp: '1UW',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Panetheon of Gods',
 		armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic', '-typos'],
-		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'120Z-500Y',Thing:0.99},
+		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'200Y-1S',Thing:0.99},
 		exp: '1WW',
 	});
 };
@@ -771,7 +771,7 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 	}
 
 	npd = Molpy.NPdata[atk];
-	var atklvl = Math.max(atk,150*npd.DragonType)+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
+	var atklvl = Math.max(atk,300*npd.DragonType)+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
 	atklvl = (Math.random() < 0.5)?Math.max(0,atklvl-Math.floor(30*Math.random())):atklvl+Math.floor(30*Math.random()))
 
 	Molpy.OpponentsAttack(atk,atklvl,

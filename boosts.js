@@ -10266,7 +10266,7 @@ Molpy.DefineBoosts = function() {
 		},
 	});
 
-	new Molpy.Boost({ 
+	new Molpy.Boost({ // Not Yet in use
 		name: 'Dragon Overview',
 		icon: 'dragonoverview',
 		group: 'drac',
@@ -10276,7 +10276,7 @@ Molpy.DefineBoosts = function() {
 		},
 	});
 
-	new Molpy.Boost({ 
+	new Molpy.Boost({ // Not Yet in use
 		name: 'Wooly Jumper',
 		icon: 'wooly',
 		group: 'chron',
@@ -10290,7 +10290,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Hubble Double',
 		icon: 'hubble2',
 		desc: str = 'Occasionally the number of runs Constructing from Blackprints has made will double',
-		price: {Diamonds:555555,
+		price: {Diamonds:'88M',
 			Bonemeal:'88GW',
 			Blackprints:Infinity,
 			Goats:Infinity
