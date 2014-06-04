@@ -1042,6 +1042,10 @@
 			Molpy.Boosts['exp'].Level = Molpy.Boosts['DQ'].experience;
 			Molpy.Boosts['Maps'].NextMap = Molpy.Boosts['Maps'].bought;
 			if ( Molpy.Boosts['Maps'].bought ) Molpy.Boosts['Maps'].bought = 1; 
+			for (var i in Molpy.Boosts) {
+				var me = Molpy.Boosts[i];
+				if (me.unlocked < me.bought) me.unlocked = me.bought;
+			}
 		}
 
 	}

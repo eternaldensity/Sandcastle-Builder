@@ -9844,10 +9844,10 @@ Molpy.DefineBoosts = function() {
 		},
 		price: {
 			Diamonds:10,
-			exp: function () { return Math.pow(10,Molpy.Level('Big Teeth')+1) }
+			exp: function (me) { return Math.pow(10,me.Level+1) }
 		},
 		draglvl: 'Dragling',
-		limit: function() { return 4*(Molpy.Level('DQ')+1) },
+		limit: function() { return 8*(Molpy.Level('DQ')+1) },
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9863,10 +9863,10 @@ Molpy.DefineBoosts = function() {
 		},
 		price: {
 			Diamonds:20,
-			exp: function () { return Math.pow(10,this.Level+1) }
+			exp: function (me) { return Math.pow(10,me.Level+1) }
 		},
 		draglvl: 'Dragling',
-		limit: function() { return 4*(Molpy.Level('DQ')+1) },
+		limit: function() { return 8*(Molpy.Level('DQ')+1) },
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9883,9 +9883,9 @@ Molpy.DefineBoosts = function() {
 		draglvl: 'DragonNewt',
 		price: {
 			Diamonds:100,
-			exp: function () { return Math.pow(100,this.Level+1) }
+			exp: function (me) { return Math.pow(100,me.Level+1) }
 		},
-		limit: 4,
+		limit: 8,
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9899,11 +9899,11 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'DragonNewt',
-		limit: function() { return 4*(Molpy.Level('DQ')) },
+		limit: function() { return 8*(Molpy.Level('DQ')) },
 		Level: Molpy.BoostFuncs.Bought0Level,
 		price: {
 			Diamonds:1000,
-			exp: function () { return Math.pow(100,this.Level+1) }
+			exp: function (me) { return Math.pow(100,me.Level+1) }
 		},
 	});
 
@@ -9937,7 +9937,7 @@ Molpy.DefineBoosts = function() {
 		draglvl: 'Dragon',
 		price: {
 			Diamonds:'1G',
-			exp: function () { return 1e11*Math.pow(10,this.Level+1) }
+			exp: function (me) { return 1e11*Math.pow(10,me.Level+1) }
 		},
 		limit: 50,
 		Level: Molpy.BoostFuncs.Bought0Level,
@@ -10301,6 +10301,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ 
 		name: 'Experience',
 		icon: 'experience',
+		plural: 'Experience',
 		alias: 'exp',
 		desc: str = 'Draconic Experience',
 		desc: function(me) {
