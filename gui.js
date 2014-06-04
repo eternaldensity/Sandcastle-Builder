@@ -581,7 +581,7 @@ Molpy.DefineGUI = function() {
 		if(Molpy.activeLayout.lootVis.search) {
 			Molpy.searchList = [];
 			var searchText = $('#lootSearchBox').val().toLowerCase();
-			if($('#searchBoosts').prop('checked')){
+			if($('#searchBoosts').prop('checked') || !$('#searchBadges').prop('checked')){
 				for(var i in Molpy.BoostsBought) {
 					var me = Molpy.BoostsBought[i];
 					if(me.name && me.name.toLowerCase().indexOf(searchText) >= 0) Molpy.searchList.push(me);
@@ -610,7 +610,7 @@ Molpy.DefineGUI = function() {
 			// Setup Boost list for use
 			for(var i in Molpy.BoostsBought) {
 				var me = Molpy.BoostsBought[i];
-				if(Molpy.activeLayout.lootVis[me.group]) boostList.push(me);
+				if(Molpy.activeLayout.lootVis[me.group] && me.bought >= me.unlocked) boostList.push(me);
 			}
 			
 			// Setup Badge list for use
@@ -1352,7 +1352,7 @@ Molpy.DefineGUI = function() {
 				var bst = Molpy.BoostsByGroup['stuff'][i];
 				if(bst.alias == "Sand" || bst.alias == "Castles") continue;
 				if($('#stuff' + bst.alias + 'Count').length == 0) {
-					$("#sectionStuffCountsBody").append("<div id=\"stuff" + bst.alias + "Count\"></div>");
+					$("#stuffItems").append("<div id=\"stuff" + bst.alias + "Count\"></div>");
 				}
 				if (bst.alias == 'Gold' && bst.Level < 1) {
 					var name = 'Silver';

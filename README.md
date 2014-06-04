@@ -38,11 +38,13 @@ For personal amusement only.
 - Draconic Experience is now stuff, some boosts will need this to be spent
 - You will not get things like Teeth from digging, these will now be fight rewards
 - Things like teeth will appear in the shop and have to be bought
+- If you have a tooth, when the next one is available the boost will be displayed n the shop
 - Reduced the threshold for getting Maps and the number of monuments for getting Maps and the number needed for Lodestone and the Queen
 - New 'Hubble Double' boost
 - Hatchlings due to fledge withn 500mNP will escape on loading (to reduce save scumming)
 - Hatchlings will be ready to fledge 2000mNP after they are fed rather than 2000mNP after hatching.
-- 
+- The loot search will default to boosts if you don't specify
+- The stuff numbers pane can be scrolled
 
 ### 3.5105
 
