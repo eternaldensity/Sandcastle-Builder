@@ -610,7 +610,7 @@ Molpy.DefineGUI = function() {
 			// Setup Boost list for use
 			for(var i in Molpy.BoostsBought) {
 				var me = Molpy.BoostsBought[i];
-				if(Molpy.activeLayout.lootVis[me.group]) boostList.push(me);
+				if(Molpy.activeLayout.lootVis[me.group] && me.bought >= me.unlocked) boostList.push(me);
 			}
 			
 			// Setup Badge list for use

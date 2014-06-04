@@ -1046,6 +1046,12 @@
 				var me = Molpy.Boosts[i];
 				if (me.unlocked < me.bought) me.unlocked = me.bought;
 			}
+			var fix = ['SMM','SMF','GMM','GMF'];
+			for (var i in fix) {
+				var b = Molpy.Boosts[fix[i]];
+				b.Making = b.bought;
+				if (b.bought != 0) b.bought = 1;
+			}
 		}
 
 	}

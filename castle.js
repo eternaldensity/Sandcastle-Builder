@@ -1662,7 +1662,7 @@ Molpy.Up = function() {
 						me.unlocked++;
 						Molpy.shopNeedRepaint = 1;
 						Molpy.RatesRecalculate();
-						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem)) {
+						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem) && me.unlocked == 1) {
 							Molpy.Notify('Boost Unlocked: ' + me.name, 1);
 							_gaq && _gaq.push(['_trackEvent', 'Boost', 'Unlock', me.name, true]);
 						}
@@ -1697,7 +1697,7 @@ Molpy.Up = function() {
 			if(typeof bacon === 'string') {
 				var me = Molpy.Boosts[bacon];
 				if(me) {
-					if(me.unlocked > 1) {
+					if(me.unlocked > 0) {
 						me.unlocked = 0;
 						Molpy.lootRemoveBoost(me);
 						Molpy.removeDiv(me);

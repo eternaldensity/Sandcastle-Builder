@@ -270,98 +270,98 @@ Molpy.DefineOpponents = function() {
 	new Molpy.Opponent ({
 		name: 'Serf',
 		armed: ['stick', '-bare hands', 'turnip', '-bad words', 'bowl of dish water','|hamply','fish head'],
-		reward: {Copper:'1-10',Thing:0.91},
+		reward: {Copper:'1-10',Thing:0.2},
 		exp: 1,
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Peasant',
 		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock','pun','|wolfy'],
-		reward: {Copper:'10-1000',Thing:0.915},
+		reward: {Copper:'10-1000',Thing:0.25},
 		exp: '1K',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Page',
 		armed: ['dagger', 'staff', 'nice cup of tea', 'stileto', 'buckler', 'spear', 'crossbow', '-puns'],
-		reward: {Silver:'1-100',Thing:0.92},
+		reward: {Silver:'1-100',Thing:0.3},
 		exp: '1M',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Squire',
 		armed: ['short sword', 'side sword','bow and arrows','mace','mandolin','polearm','!axe','hammer','|keyboard'],
-		reward: {Silver:'100-10000',Diamonds:0.5,Thing:0.925},
+		reward: {Silver:'100-10000',Diamonds:0.5,Thing:0.35},
 		exp: '1G',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Knight',
 		armed: ['long sword', '+arming sword', 'battle axe', 'morning star', 'lance'],
-		reward: {Gold:'10-1000',Diamonds:'1-5',Thing:0.3},
+		reward: {Gold:'10-1000',Diamonds:'1-5',Thing:0.4},
 		exp: '1P',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Baron',
 		armed: ['bastard sword','flaming sword','hailstorm','tax demand'],
-		reward: {Gold:'1K-1M',Diamonds:'1-50',Thing:0.35},
+		reward: {Gold:'1K-1M',Diamonds:'1-50',Thing:0.45},
 		exp: '1E',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Lord',
 		armed: ['great sword','great axe','Kazoo','court jester','fire hose'],
-		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'50-50K',Thing:0.4},
+		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'50-50K',Thing:0.5},
 		exp: '1Z',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Duke',
 		armed: ['+Duchess','horde of servants','+gardeners','whip'],
-		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50K-60H',Thing:0.45},
+		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50K-60H',Thing:0.55},
 		exp: '1Y',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Emperor',
 		armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers','Death Star'],
-		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'60H-80G',Thing:0.5},
+		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'60H-80G',Thing:0.6},
 		exp: '1U',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Paladin',
 		armed: ['+Dragon slaying sword','Holy hand grenade','lot of bad puns','+Sword of the isles'],
-		reward: {Gold:'100M-1Z',Princesses:'10-10K',Diamonds:'70G-100T',Thing:0.55},
+		reward: {Gold:'100M-1Z',Princesses:'10-10K',Diamonds:'70G-100T',Thing:0.65},
 		exp: '1S',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Hero',
 		armed: ['+sword of sharpness','-Eds Axe','+Punsaw','Donut','-both feet','pea shooter','|fist of steel'],
-		reward: {Gold:'1G-1Y',Princesses:'100-10M',Diamonds:'80T-120P',Thing:0.6},
+		reward: {Gold:'1G-1Y',Princesses:'100-10M',Diamonds:'80T-120P',Thing:0.7},
 		exp: '1F',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Demi-god',
 		armed: ['pen (mightier than the sword)', 'cleaving axe','pitch fork', 'ballon'],
-		reward: {Gold:'10G-1U',Princesses:'1K-10G',Diamonds:'90P-150E',Thing:0.65},
+		reward: {Gold:'10G-1U',Princesses:'1K-10G',Diamonds:'90P-150E',Thing:0.75},
 		exp: '1W',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Superhero',
 		armed: ['-bare hands','turnip','bazooka','+Imperial Dragon Banishing Sword','+Great Cleaver' ],
-		reward: {Gold:'1T-1S',Princesses:'1M-10P',Diamonds:'100E-200Z',Thing:0.7},
+		reward: {Gold:'1T-1S',Princesses:'1M-10P',Diamonds:'100E-200Z',Thing:0.8},
 		exp: '1GW',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'God',
 		armed: ['+staff of might','+staff of comand','-dice','|holy symbol','|lightning strikes'],
-		reward: {Gold:'10P-1F',Princesses:'1G-10Y',Diamonds:'120Z-500Y',Thing:0.75},
+		reward: {Gold:'10P-1F',Princesses:'1G-10Y',Diamonds:'120Z-500Y',Thing:0.85},
 		exp: '1UW',
 	});
 
@@ -626,7 +626,7 @@ Molpy.DragonStatsNow = function(where) {
 	var drag = Molpy.DragonsById[npd.DragonType];
 	if (!npd) return Stats;
 	for(var prop in npd) {
-		if(typeof npd[prop] !== 'undefined' && prop != 'amount' && prop != 'DragonType') Stats[prop] = npd[prop]*num;
+		if(typeof npd[prop] !== 'undefined') Stats[prop] = npd[prop] * ((prop == 'amount' || prop == 'DragonType')?1:num);
 	}
 
 	Stats.defence += 0.001;
@@ -693,12 +693,18 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 		loops++;
 	}
 
+//	Molpy.Notify('Result = ' + result + ' factor ' + factor,1);
+
+	var timetxt = '';
+	if (loops <5 ) timetxt = 'riverish '
+	else if (loops>17) timetxt = 'seaish ';
+
 	switch (result) {
 		case -2 : // wipeout
 			dq.Loose(npd.DragonType,npd.amount);
 			npd.amount = 0;
 			Molpy.Add('exp',Math.pow(10,npd.DragonType)/5);
-			Molpy.Notify(atktxt + ' You are totally destroyed in a one sided fight.',1);
+			Molpy.Notify(atktxt + ' You are totally destroyed in a one sided ' + timetxt + 'fight.',1);
 			break;
 
 		case -1 : // lost a hard fight
@@ -724,7 +730,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			if (Molpy.Spend('Cup of Tea',1)) rectime/=2;
 			rectime = Math.floor(rectime);
 			dq.ChangeState(1,rectime);
-			Molpy.Notify(atktxt + ' You won a very hard fight, ' + 
+			Molpy.Notify(atktxt + ' You won a very hard ' + timetxt + 'fight, ' + 
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType].name+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
 			local.takeReward(numb,DeMolpify(local.exp)*numb); 
@@ -736,7 +742,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			if (Molpy.Spend('Cup of Tea',1)) rectime/=2;
 			rectime = Math.floor(rectime);
 			dq.ChangeState(1,rectime);
-			Molpy.Notify(atktxt + ' You won a hard fight, but will need to recover for ' + 
+			Molpy.Notify(atktxt + ' You won a hard '+timetxt+'fight, but will need to recover for ' + 
 					MolpifyCountdown(dq.countdown, 1),1);
 			local.takeReward(numb,DeMolpify(local.exp)*numb*2); 
 			break;
@@ -744,10 +750,10 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 		case 3 : // Wipeout for no loss
 			if (npd.DragonType) {
 				Molpy.Notify(atktxt + ' You wiped ' + (numb==1?['him','her'][local.gender]:'them') + 
-					' out with ease',1);
+					' out ' + (timetxt?'in a '+timetxt+'fight, ':'') + 'with ease',1);
 			} else {
 				Molpy.Notify(atktxt + ' You scared ' + (numb==1?['him','her'][local.gender]:'them') + 
-					' away with ease',1);
+					' away ' + (timetxt?'in a '+timetxt+'fight, ':'') + 'with ease',1);
 			}
 			local.takeReward(numb,DeMolpify(local.exp)*numb); 
 			if (dq.overallState) {
@@ -905,14 +911,14 @@ Dragons
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
 29	Mould making					some progress
-30	Recalibrated fights				
-35	Move Experience to own boost			y
-36	No kit from digging
-37	Kit from fights
-38	Varriable opponents
-39	Linear kit
-40	Hubble Double instead of automatic		y
-41	Cost of some kit boosts will be experience
+30	Recalibrated fights				y	y
+35	Move Experience to own boost			y	y
+36	No kit from digging				y	y
+37	Kit from fights					y	y
+38	Varriable opponents				y	y
+39	Linear kit					dropped
+40	Hubble Double instead of automatic		y	y
+41	Cost of some kit boosts will be experience	y	y
 42	Reduce Save Scumming				y	y
 
 
