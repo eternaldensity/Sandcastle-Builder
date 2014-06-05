@@ -4018,8 +4018,9 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.BlackprintReport = function() {
-		return 'collected ' + Molpify(+Molpy.Level('Blackprints') + Molpy.Boosts['Milo'].power / 100, 3) + ' of '
-			+ Molpify(Molpy.GetBlackprintPages() || Molpy.Boosts['AC'].power * (Molpy.Boosts['Dragon Forge'].bought ? 10 : 2), 1);
+		return 'collected ' + Molpify(+Molpy.Level('Blackprints') + Molpy.Boosts['Milo'].power / 100, 3) + 
+			(Molpy.Has('Blackprints',Infinity)?'':(' of ' + 
+			(Molpify(Molpy.GetBlackprintPages() || Molpy.Boosts['AC'].power * (Molpy.Boosts['Dragon Forge'].bought ? 10 : 2), 1))));
 	}
 
 	Molpy.LogiMult = function(s) {
@@ -4443,7 +4444,7 @@ Molpy.DefineBoosts = function() {
 			}
 			return;
 		}
-		if(!smf.Making) {
+		if(!smf.bought) {
 			Molpy.Notify('You don\'t have the Sand Mould Filler!');
 			return;
 		}
@@ -4457,6 +4458,7 @@ Molpy.DefineBoosts = function() {
 		}
 		smf.Making = smm.Making;
 		smf.power = 1;
+		smm.Making = 0;
 		smm.power = 0;
 		smm.Refresh();
 		smf.Refresh();
@@ -4602,7 +4604,7 @@ Molpy.DefineBoosts = function() {
 		}
 		gmf.Making = gmm.Making;
 		gmf.power = 1;
-		gmm.Making = 1; // *shrug again*
+		gmm.Making = 0; // *shrug again*
 		gmm.power = 0;
 		gmm.Refresh();
 		gmf.Refresh();
@@ -7761,7 +7763,7 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: Infinity
 		},
-		classChange: function() { return Molpy.Got('Eggs')?'action':'' },
+		classChange: function() { return Molpy.Got('Eggs')?'':'action' },
 		Liners: [],
 		saveData: {
 			4:['Liners', 0, 'array'],
@@ -9831,6 +9833,10 @@ Molpy.DefineBoosts = function() {
 			};
 			if (draglevel || Molpy.TotalDragons) {
 				str += '<li>Draglings are feeble creatures, they need looking after';
+				str += '<li>Once they are established, they need to start digging';
+				str += '<li>Digging finds Gold and Diamonds';
+				str += '<li>Fighting opponents will get experience, diamonds and stuff';
+				str += '<li>Many things will need diamonds and experence to buy';
 				str += '<li>' + Molpy.Dragons['Dragling'].description();
 			};
 			if (draglevel >= Molpy.Dragons['DragonNewt'].id) {
@@ -9964,6 +9970,10 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		desc: 'Improves Dragon digging',
 		draglvl: 'DragonNewt',
+		price: {
+			Diamonds:'100K',
+			QQ:'1H',
+			},
 	});
 
 	new Molpy.Boost({

@@ -90,7 +90,7 @@ function Molpify(number, raftcastle, shrinkify) {
 
 function MolpifyCountdown(mNP, p) {
 	var rat = Molpy.NPlength/Molpy.mNPlength;
-	return mNP == 0 ? 'ever' : mNP >= 1000*rat ? Molpify(mNP*rat / 1000, p) + 'NP' : Molpify(mNP) + 'mNP'
+	return mNP == 0 ? 'ever' : mNP >= 1000*rat ? Molpify(mNP/rat / 1000, p) + 'NP' : Molpify(mNP) + 'mNP'
 }
 function flandom(n) {
 	return(Math.floor(Math.random() * n));
