@@ -319,14 +319,14 @@ Molpy.DefineOpponents = function() {
 	new Molpy.Opponent ({
 	 	name: 'Duke',
 		armed: ['+Duchess','horde of servants','+gardeners','whip'],
-		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50K-60H',Thing:0.55},
+		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50K-60M',Thing:0.55},
 		exp: '1Y',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Emperor',
 		armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers','Death Star'],
-		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'60H-80G',Thing:0.6},
+		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'60M-80G',Thing:0.6},
 		exp: '1U',
 	});
 

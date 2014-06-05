@@ -45,6 +45,14 @@ For personal amusement only.
 - Hatchlings will be ready to fledge 2000mNP after they are fed rather than 2000mNP after hatching.
 - The loot search will default to boosts if you don't specify
 - The stuff numbers pane can be scrolled
+- Draconic fighting has lots of changes, do not assume what used to work for you as the nest lnings will work now.
+
+You cannot currently:
+
+- Progress beyond the second type of Dragon (DragonNewts)
+- Have multiple nests (more maps will enable this in the near future)
+- Fledge hatchlings in the minus world (this will be quite a long way ahead)
+- Use the Dragon Overview Pane - it will provide a simple visual of where your dragons are.  (Started, but not ready)
 
 ### 3.5105
 
