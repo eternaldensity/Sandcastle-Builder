@@ -83,7 +83,7 @@ defStuff	int	O
 
 clickBeach	Func	O	For beach actions
 
-unlocked	int	O	if 1, the boost is unlocked when the game starts
+unlocked	int	O	if 1, the boost is unlocked when the game starts, boost will be in shop if unlocked > bought
 
 prizes		int	O	number of prizes the boost is
 
@@ -93,7 +93,7 @@ draglvl		text	O	gives dragon level the boost becomes available
 
 limit		MayBeF	O	Number of the boost that can be held at once
 
-NotTemp		int	0	Prevents boosts with complex countdowns being treated as temporary on load
+NotTemp		int	O	Prevents boosts with complex countdowns being treated as temporary on load
 
 ***************************************************************************************
 # Badges

@@ -3473,6 +3473,7 @@ Molpy.DefineBoosts = function() {
 						while(rewards--) {
 							Molpy.RewardLogicat(this.Level);
 						}
+						if (this.bought > DeMolpify('10GW') && Molpy.Has('QQ','10GW')) Molpy.UnlockBoost('Hubble Double');
 					}
 				}
 				this.Refresh();
@@ -4017,8 +4018,9 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.BlackprintReport = function() {
-		return 'collected ' + Molpify(+Molpy.Level('Blackprints') + Molpy.Boosts['Milo'].power / 100, 3) + ' of '
-			+ Molpify(Molpy.GetBlackprintPages() || Molpy.Boosts['AC'].power * (Molpy.Boosts['Dragon Forge'].bought ? 10 : 2), 1);
+		return 'collected ' + Molpify(+Molpy.Level('Blackprints') + Molpy.Boosts['Milo'].power / 100, 3) + 
+			(Molpy.Has('Blackprints',Infinity)?'':(' of ' + 
+			(Molpify(Molpy.GetBlackprintPages() || Molpy.Boosts['AC'].power * (Molpy.Boosts['Dragon Forge'].bought ? 10 : 2), 1))));
 	}
 
 	Molpy.LogiMult = function(s) {
@@ -4094,7 +4096,7 @@ Molpy.DefineBoosts = function() {
 			return times; // do nothing
 		}
 		Molpy.Add('CfB', times);
-		if (Molpy.Got('Lucky Ring') && Molpy.Earned('Planck Limit') && Math.random()<0.01) Molpy.Boosts['CfB'].power*=2;
+		if (Molpy.Got('Hubble Double') && Math.random()<0.01) Molpy.Boosts['CfB'].power*=2;
 
 		var c = Molpy.LimitConstructionRuns(s);
 		if(Molpy.Has('CfB', c * 10)) {
@@ -4179,8 +4181,8 @@ Molpy.DefineBoosts = function() {
 			var str = 'Allows you to make a Sand Mould of a Discovery.';
 			str += '<br>This requires 100 Factory Automation runs and consumes the NewPix number of the Discovery times 100 Glass Chips per run.<br>';
 			if(Molpy.Earned('Minus Worlds')) str += '(Squared if negative)<br>';
-			if(me.bought && me.power > 0) {
-				var dname = '<small>' + Molpy.Badges['discov' + me.bought].name + '</small>';
+			if(me.Making && me.power > 0) {
+				var dname = '<small>' + Molpy.Badges['discov' + me.Making].name + '</small>';
 				if(me.power > 100) {
 					str += '<br>Making a mould from ' + dname + ' is complete. The Sand Mould Filler is required next.';
 				} else {
@@ -4192,16 +4194,20 @@ Molpy.DefineBoosts = function() {
 			}
 			return str;
 		},
+		Making: 0,
+		defSave: 1,
+		saveData: { 4:['Making', 0, 'int'], },
+		buyFunction: function() { this.Making = 0 },
 		
 		classChange: function() { return (this.power > 0 && this.power <= 100) ? 'alert' : '' },
 		
 		reset: function() {
-			var chips = this.bought * 100;
+			var chips = this.Making * 100;
 			if(chips < 0) chips *= chips;
 			chips *= (this.power - 1);
 			Molpy.Add('GlassChips', chips);
 			this.power = 0;
-			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monums' + this.bought].name + '</small>', 1);
+			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monums' + this.Making].name + '</small>', 1);
 		}
 	});
 	new Molpy.Boost({
@@ -4214,8 +4220,8 @@ Molpy.DefineBoosts = function() {
 			var str = 'Allows you to make a Glass Mould of a Sand Monument.';
 			str += '<br>This requires 400 Factory Automation runs and consumes 1000 Glass Chips plus 1% per NewPix number of the Monument per run.<br>';
 			if(Molpy.Earned('Minus Worlds')) str += '(Squared if negative)<br>';
-			if(me.bought && me.power > 0) {
-				var mname = '<small>' + Molpy.Badges['monums' + me.bought].name + '</small>';
+			if(me.Making && me.power > 0) {
+				var mname = '<small>' + Molpy.Badges['monums' + me.Making].name + '</small>';
 				if(me.power > 400) {
 					str += '<br>Making a mould from ' + mname + ' is complete. The Glass Mould Filler is required next.';
 				} else {
@@ -4227,16 +4233,20 @@ Molpy.DefineBoosts = function() {
 			}
 			return str;
 		},
+		Making: 0,
+		defSave: 1,
+		saveData: { 4:['Making', 0, 'int'], },
+		buyFunction: function() { this.Making = 0 },
 		
 		classChange: function() { return (this.power > 0 && this.power <= 400) ? 'alert' : '' },
 		
 		reset: function() {
-			var chips = Math.pow(1.01, Math.abs(this.bought)) * 1000;
-			if(this.bought < 0) chips *= chips;
+			var chips = Math.pow(1.01, Math.abs(this.Making)) * 1000;
+			if(this.Making < 0) chips *= chips;
 			chips *= (this.power - 1);
 			Molpy.Add('GlassChips', chips);
 			this.power = 0;
-			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monumg' + this.bought].name + '</small>', 1);
+			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monumg' + this.Making].name + '</small>', 1);
 		}
 	});
 	new Molpy.Boost({
@@ -4248,13 +4258,13 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = 'Fills a Sand Mould with Sand to make a Sand Monument.<br>This requires 200 Factory Automation runs and consumes 100 Sand plus 20% cumulatively per NewPix number of the Discovery, per run.<br>';
 			if(Molpy.Earned('Minus Worlds')) str += '(Squared if negative)<br>';
-			if(me.bought) {
+			if(me.Making) {
 				if(!me.power && (Molpy.Boosts['SMM'].power > 100)) {
-					str += '<br><input type="Button" onclick="Molpy.FillSandMould(' + Molpy.Boosts['SMM'].bought
+					str += '<br><input type="Button" onclick="Molpy.FillSandMould(' + Molpy.Boosts['SMM'].Making
 						+ ')" value="Start Filling"></input> the mould in the Sand Mould Maker with Sand.';
 				}
 				if(me.power > 0) {
-					var dname = '<small>' + Molpy.Badges['discov' + me.bought].name + '</small>';
+					var dname = '<small>' + Molpy.Badges['discov' + me.Making].name + '</small>';
 					str += '<br>' + Molpify((me.power - 1) / 2, 1) + '% complete filling the mould from ' + dname + ' with Sand';
 					if(Molpy.Got('Break the Mould')) {
 						str += '<br><input type="Button" onclick="Molpy.BreakMould(\'' + me.alias + '\')" value="Break the Mould"></input> to cancel';
@@ -4263,21 +4273,25 @@ Molpy.DefineBoosts = function() {
 			}
 			return str;
 		},
+		Making: 0,
+		defSave: 1,
+		saveData: { 4:['Making', 0, 'int'], },
+		buyFunction: function() { this.Making = 0 },
 		
 		classChange: function() { return (Molpy.Boosts['SMM'].power > 100 || this.power > 0 && this.power <= 200) ? 'alert' : '' },
 		
 		reset: function() {
 			if(!confirm('You will also lose the unfilled sand mould which will waste 100 runs of Factory Automation.\nAre you certain you want to do this?'))
 				return;
-			var chips = this.bought * 100 * 100;
+			var chips = this.Making * 100 * 100;
 			if(chips < 0) chips *= chips;
 			Molpy.Add('GlassChips', chips);
-			var sand = Math.pow(1.2, Math.abs(this.bought)) * 100;
-			if(this.bought < 0) sand *= sand;
+			var sand = Math.pow(1.2, Math.abs(this.Making)) * 100;
+			if(this.Making < 0) sand *= sand;
 			sand *= (this.power - 1);
 			Molpy.Boosts['Sand'].dig(sand);
 			this.power = 0;
-			Molpy.Notify(this.name + ' has cancelled filling <small>' + Molpy.Badges['monums' + this.bought].name + '</small>', 1);
+			Molpy.Notify(this.name + ' has cancelled filling <small>' + Molpy.Badges['monums' + this.Making].name + '</small>', 1);
 		}
 	});
 	new Molpy.Boost({
@@ -4289,13 +4303,13 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = 'Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.<br>This requires 800 Factory Automation runs and consumes 1M Glass Blocks plus 2% cumulatively per NewPix number of the Discovery, per run.<br>';
 			if(Molpy.Earned('Minus Worlds')) str += '(Squared if negative)<br>';
-			if(me.bought) {
+			if(me.Making) {
 				if(!me.power && (Molpy.Boosts['GMM'].power > 400)) {
-					str += '<br><input type="Button" onclick="Molpy.FillGlassMould(' + Molpy.Boosts['GMM'].bought
+					str += '<br><input type="Button" onclick="Molpy.FillGlassMould(' + Molpy.Boosts['GMM'].Making
 						+ ')" value="Start Filling"></input> the mould in the Glass Mould Maker with Glass.';
 				}
 				if(me.power > 0) {
-					var mname = '<small>' + Molpy.Badges['monums' + me.bought].name + '</small>';
+					var mname = '<small>' + Molpy.Badges['monums' + me.Making].name + '</small>';
 					str += '<br>' + Molpify((me.power - 1) / 8, 3) + '% complete filling the mould from ' + mname + ' with Glass';
 					if(Molpy.Got('Break the Mould')) {
 						str += '<br><input type="Button" onclick="Molpy.BreakMould(\'' + me.alias + '\')" value="Break the Mould"></input> to cancel';
@@ -4304,21 +4318,25 @@ Molpy.DefineBoosts = function() {
 			}
 			return str;
 		},
+		Making: 0,
+		defSave: 1,
+		saveData: { 4:['Making', 0, 'int'], },
+		buyFunction: function() { this.Making = 0 },
 		
 		classChange: function() { return (Molpy.Boosts['GMM'].power > 400 || this.power > 0 && this.power <= 800) ? 'alert' : '' },
 		
 		reset: function() {
 			if(!confirm('You will also lose the unfilled glass mould which will waste 400 runs of Factory Automation.\nAre you certain you want to do this?'))
 				return;
-			var blocks = Math.pow(1.02, Math.abs(this.bought)) * 1000000;
-			if(this.bought < 0) blocks *= blocks;
+			var blocks = Math.pow(1.02, Math.abs(this.Making)) * 1000000;
+			if(this.Making < 0) blocks *= blocks;
 			blocks *= (this.power - 1);
 			Molpy.Add('GlassBlocks', blocks);
-			var chips = Math.pow(1.01, Math.abs(this.bought)) * 1000 * 400;
-			if(this.bought < 0) chips *= chips;
+			var chips = Math.pow(1.01, Math.abs(this.Making)) * 1000 * 400;
+			if(this.Making < 0) chips *= chips;
 			Molpy.Add('GlassChips', chips);
 			this.power = 0;
-			Molpy.Notify(this.name + ' has cancelled filling <small>' + Molpy.Badges['monums' + this.bought].name + '</small>', 1);
+			Molpy.Notify(this.name + ' has cancelled filling <small>' + Molpy.Badges['monums' + this.Making].name + '</small>', 1);
 		}
 	});
 
@@ -4336,7 +4354,7 @@ Molpy.DefineBoosts = function() {
 		var first = Molpy.newpixNumber > 0 ? 'discov1' : 'discov-1'
 		for( var i = Molpy.Badges[first].id; i < Molpy.BadgesById.length - 1; i += 8) {
 			if(Molpy.BadgesById[i].earned && !Molpy.BadgesById[i + 1].earned && 
-				smf.bought!=Molpy.BadgesById[i+1].np) {
+				smf.Making!=Molpy.BadgesById[i+1].np) {
 				Molpy.Spend('Bonemeal', 10);
 				Molpy.MakeSandMould(Molpy.BadgesById[i + 1].np);
 				return 1;
@@ -4358,7 +4376,7 @@ Molpy.DefineBoosts = function() {
 		Molpy.Badges['discov' + np].Refresh();
 		var smm = Molpy.Boosts['SMM'];
 		var smf = Molpy.Boosts['SMF'];
-		if(smf.power && smf.bought == np) {
+		if(smf.power && smf.Making == np) {
 			Molpy.Notify('You already made this mould and are presently filling it with sand');
 			return;
 		}
@@ -4370,7 +4388,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('The Sand Mould Maker is already in use!');
 			return;
 		}
-		smm.bought = np;
+		smm.Making = np;
 		smm.power = 1;
 		smm.Refresh();
 		smf.Refresh();
@@ -4384,7 +4402,7 @@ Molpy.DefineBoosts = function() {
 			} else
 				return times;
 		}
-		var chips = smm.bought * 100;
+		var chips = smm.Making * 100;
 		if(chips < 0) chips *= chips;
 		while(times) {
 			if(!Molpy.Has('GlassChips', chips)) {
@@ -4397,7 +4415,7 @@ Molpy.DefineBoosts = function() {
 			smm.Refresh();
 			if(smm.power > 100) {
 				Molpy.Notify('Sand Mould Creation is complete', 1);
-				if(Molpy.Boosts['Draft Dragon'].IsEnabled) Molpy.FillSandMould(smm.bought);
+				if(Molpy.Boosts['Draft Dragon'].IsEnabled) Molpy.FillSandMould(smm.Making);
 				return times;
 			}
 		}
@@ -4410,7 +4428,7 @@ Molpy.DefineBoosts = function() {
 		var smf = Molpy.Boosts['SMF'];
 		if(!Molpy.Badges[mname]) {
 			Molpy.Notify('No such mould exists');
-			if (smm.bought == np) 
+			if (smm.Making == np) 
 			{
 				// If you managed to make a mould for something you already made
 				smm.reset(); 
@@ -4419,7 +4437,7 @@ Molpy.DefineBoosts = function() {
 		}
 		if(Molpy.Earned(mname)) {
 			Molpy.Notify('You don\'t need to make this mould');
-			if (smm.bought == np) 
+			if (smm.Making == np) 
 			{
 				// If you managed to make a mould for something you already made
 				smm.reset(); 
@@ -4438,9 +4456,9 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('No mould is ready to be filled!');
 			return;
 		}
-		smf.bought = smm.bought;
+		smf.Making = smm.Making;
 		smf.power = 1;
-		smm.bought = 1; // not that it really matters. *shrug*
+		smm.Making = 0;
 		smm.power = 0;
 		smm.Refresh();
 		smf.Refresh();
@@ -4451,7 +4469,7 @@ Molpy.DefineBoosts = function() {
 		if(smf.power == 0) {
 			return times;
 		}
-		var b = smf.bought;
+		var b = smf.Making;
 		var sandToSpend = Math.pow(1.2, Math.abs(b)) * 100;
 		if(b < 0) sandToSpend *= sandToSpend;
 		while(times) {
@@ -4465,10 +4483,10 @@ Molpy.DefineBoosts = function() {
 			smf.Refresh();
 			if(smf.power > 200) {
 				Molpy.Notify('Sand Mould Filling is complete', 1);
-				Molpy.EarnBadge('monums' + smf.bought);
-				if(Molpy.Boosts['Draft Dragon'].IsEnabled && Molpy.Earned('discov' + smf.bought)
-					&& !Molpy.Earned('monumg' + smf.bought)) Molpy.MakeGlassMould(smf.bought);
-				smf.bought = 1;
+				Molpy.EarnBadge('monums' + smf.Making);
+				if(Molpy.Boosts['Draft Dragon'].IsEnabled && Molpy.Earned('discov' + smf.Making)
+					&& !Molpy.Earned('monumg' + smf.Making)) Molpy.MakeGlassMould(smf.Making);
+				smf.Making = 0;
 				smf.power = 0;
 				return times;
 			}
@@ -4489,7 +4507,7 @@ Molpy.DefineBoosts = function() {
 			return;
 		}
 		Molpy.Badges['monums' + np].Refresh();
-		if(gmf.power && gmf.bought == np) {
+		if(gmf.power && gmf.Making == np) {
 			Molpy.Notify('You already made this mould and are presently filling it with glass');
 			return;
 		}
@@ -4501,7 +4519,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('The Glass Mould Maker is already in use!');
 			return;
 		}
-		gmm.bought = np;
+		gmm.Making = np;
 		gmm.power = 1;
 		gmm.Refresh();
 		gmf.Refresh();
@@ -4513,7 +4531,7 @@ Molpy.DefineBoosts = function() {
 		var first = Molpy.newpixNumber > 0 ? 'monums1' : 'monums-1'
 		for( var i = Molpy.Badges[first].id; i < Molpy.BadgesById.length - 1; i += 8) {
 			if(Molpy.BadgesById[i].earned && !Molpy.BadgesById[i + 1].earned &&
-				gmf.bought!=Molpy.BadgesById[i+1].np) {
+				gmf.Making!=Molpy.BadgesById[i+1].np) {
 				Molpy.Spend('Bonemeal', 10)
 				Molpy.MakeGlassMould(Molpy.BadgesById[i + 1].np);
 				return 1;
@@ -4530,7 +4548,7 @@ Molpy.DefineBoosts = function() {
 			} else
 				return times;
 		}
-		var b = gmm.bought;
+		var b = gmm.Making;
 		var chips = Math.pow(1.01, Math.abs(b)) * 1000;
 		if(b < 0) chips *= chips;
 		while(times) {
@@ -4544,7 +4562,7 @@ Molpy.DefineBoosts = function() {
 			gmm.Refresh();
 			if(gmm.power > 400) {
 				Molpy.Notify('Glass Mould Creation is complete', 1);
-				if(Molpy.Boosts['Draft Dragon'].IsEnabled) Molpy.FillGlassMould(gmm.bought);
+				if(Molpy.Boosts['Draft Dragon'].IsEnabled) Molpy.FillGlassMould(gmm.Making);
 				return times;
 			}
 		}
@@ -4557,7 +4575,7 @@ Molpy.DefineBoosts = function() {
 		var mname = 'monumg' + np;
 		if(!Molpy.Badges[mname]) {
 			Molpy.Notify('No such mould exists');
-			if (gmm.bought == np) 
+			if (gmm.Making == np) 
 			{
 				gmm.reset(); 
 			}
@@ -4565,7 +4583,7 @@ Molpy.DefineBoosts = function() {
 		}
 		if(Molpy.Earned(mname)) {
 			Molpy.Notify('You don\'t need to make this mould');
-			if (gmm.bought == np) 
+			if (gmm.Making == np) 
 			{
 				// If you managed to make a mould for something you already made
 				gmm.reset(); 
@@ -4584,9 +4602,9 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('No mould is ready to be filled!');
 			return;
 		}
-		gmf.bought = gmm.bought;
+		gmf.Making = gmm.Making;
 		gmf.power = 1;
-		gmm.bought = 1; // *shrug again*
+		gmm.Making = 0; // *shrug again*
 		gmm.power = 0;
 		gmm.Refresh();
 		gmf.Refresh();
@@ -4597,7 +4615,7 @@ Molpy.DefineBoosts = function() {
 		if(gmf.power == 0) {
 			return times;
 		}
-		var b = gmf.bought;
+		var b = gmf.Making;
 		var glass = Math.pow(1.02, Math.abs(b)) * 1000000;
 		if(b < 0) glass *= glass;
 		while(times) {
@@ -4611,16 +4629,16 @@ Molpy.DefineBoosts = function() {
 			gmf.Refresh();
 			if(gmf.power > 800) {
 				Molpy.Notify('Glass Mould Filling is complete', 1);
-				Molpy.EarnBadge('monumg' + gmf.bought);
+				Molpy.EarnBadge('monumg' + gmf.Making);
 				if(Molpy.Got('Magic Mirror') && Molpy.Boosts['Draft Dragon'].IsEnabled) {
-					if(Molpy.Earned('discov' + -gmf.bought)) {
-						if(!Molpy.Earned('monums' + -gmf.bought))
-							Molpy.MakeSandMould(-gmf.bought);
-						else if(!Molpy.Earned('monumg' + -gmf.bought)) Molpy.MakeGlassMould(-gmf.bought);
+					if(Molpy.Earned('discov' + -gmf.Making)) {
+						if(!Molpy.Earned('monums' + -gmf.Making))
+							Molpy.MakeSandMould(-gmf.Making);
+						else if(!Molpy.Earned('monumg' + -gmf.Making)) Molpy.MakeGlassMould(-gmf.Making);
 					}
 				}
 				gmf.power = 0;
-				gmf.bought = 1;
+				gmf.Making = 1;
 				return times;
 			}
 		}
@@ -7619,21 +7637,22 @@ Molpy.DefineBoosts = function() {
 		alias: 'Maps',
 		icon: 'mysteriousmap',
 		group: 'stuff',
+		iregularBought: 1,
 		
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' map' + plural(me.Level);
 			if(!me.bought)  return str + '.';
-			if (!Molpy.Got('DNS')) str += ' out of 80.';
-			if(me.bought != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
-				str += '<br>The next map can be found at NP ' + me.bought;
+			if (!Molpy.Got('DNS')) str += ' out of 50.';
+			if(me.NextMap != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
+				str += '<br>The next map can be found at NP ' + me.NextMap;
 				if (Molpy.Got('Lodestone')) {
 					var search=0;
 					while (1) {
-						if (Molpy.Earned('discov'+(me.bought+search))) break;
-						if (Molpy.Earned('discov'+(me.bought-search))) { search = -search; break;}
+						if (Molpy.Earned('discov'+(me.NextMap+search))) break;
+						if (Molpy.Earned('discov'+(me.NextMap-search))) { search = -search; break;}
 						search++
 					}
-					str += '<br><input type="Button" onclick="Molpy.TTT(' + (me.bought+search) + 
+					str += '<br><input type="Button" onclick="Molpy.TTT(' + (me.NextMap+search) + 
 						',1)" value="Nearest Jump!"></input>';
 				}
 			} else {
@@ -7646,8 +7665,13 @@ Molpy.DefineBoosts = function() {
 			return me.desc(me) + '<br>Use your Camera at the specified NewPix to collect more Maps.';
 		},
 		
-		buyFunction: Molpy.RandomiseMap,
+		buyFunction: function() { this.NextMap = 1 },
+		NextMap: 0,
 		defStuff: 1,
+		saveData: {
+			4:['NextMap', 0, 'float'],
+		},
+		defSave: 1,
 		
 		price: {
 			Blackprints: function(me) {
@@ -7657,14 +7681,14 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.EnoughMonumgForMaps = function() {
-		return Molpy.groupBadgeCounts.monumg > Molpy.Level('Maps') * 5 + Molpy.mapMonumg;
+		return Molpy.groupBadgeCounts.monumg > Molpy.Level('Maps') * 3 + Molpy.mapMonumg;
 	}
 	
 	Molpy.ClearMap = function() {
 		if(Molpy.EnoughMonumgForMaps()) {
 			Molpy.RandomiseMap();
 		} else {
-			Molpy.Boosts['Maps'].bought = Math.PI;
+			Molpy.Boosts['Maps'].NextMap = Math.PI;
 		}
 		Molpy.Boosts['Maps'].Refresh();
 	}
@@ -7673,7 +7697,7 @@ Molpy.DefineBoosts = function() {
 		var np;
 		while((np = Math.ceil(Math.random() * Molpy.highestNPvisited) * (Math.random() > .5 ? 1 : -1)) == Molpy.newpixNumber)
 			;
-		Molpy.Boosts['Maps'].bought = np;
+		Molpy.Boosts['Maps'].NextMap = np;
 		return 1;
 	}
 
@@ -7739,7 +7763,7 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: Infinity
 		},
-		classChange: function() { return Molpy.Got('Eggs')?'action':'' },
+		classChange: function() { return Molpy.Got('Eggs')?'':'action' },
 		Liners: [],
 		saveData: {
 			4:['Liners', 0, 'array'],
@@ -7848,13 +7872,6 @@ Molpy.DefineBoosts = function() {
 			
 	});
 
-	Molpy.DragonExperience = function(amt) {
-		var dq = Molpy.Boosts['DQ'];
-		dq.experience = Math.max((dq.experience || 0)+amt*Molpy.Papal('Experience'),0);
-		dq.Refresh();
-		// There will be Unlocks here
-	}
-
 	new Molpy.Boost({
 		name: 'Dragon Eggs',
 		alias: 'Eggs',
@@ -7923,6 +7940,17 @@ Molpy.DefineBoosts = function() {
 			}
 			return str;
 		},
+
+		loadFunction: function() {
+			var cleans = 0;
+			for (var cl in this.clutches) {
+				if (this.age[cl] < 1500) {
+					this.clutches[cl] = 0;
+					cleans ++;
+				}
+			};
+			this.clean(cleans);
+	      	},
 		
 		defStuff: 1,
 		defSave: 1,
@@ -7947,7 +7975,7 @@ Molpy.DefineBoosts = function() {
 
 		countdownFunction: function() {
 			var cleanup = 0;
-			var starveat= Molpy.Got('Wait For It')?2000:2500;
+			var starveat= Molpy.Got('Wait for it')?2000:2500;
 			var escapeat= Molpy.Got('Q04B')?-1000:0;
 			for (var cl in this.clutches) {
 				this.age[cl]--;
@@ -7972,7 +8000,7 @@ Molpy.DefineBoosts = function() {
 						Molpy.Notify('A hungry Hatchling has eaten the rest of it\'s clutch',1);
 					} else {
 						var dq = Molpy.Boosts['DQ'];
-						Molpy.DragonExperience(-Math.pow(1000,Molpy.Level('DQ'))*this.clutches[cl]);
+						Molpy.Add('exp',-Math.pow(1000,Molpy.Level('DQ'))*this.clutches[cl]);
 						this.clutches[cl] = 0;
 						cleanup++;
 						Molpy.Notify('A hungry Clutch of Hatchlings have starved to death',1);
@@ -8021,6 +8049,7 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.Spend('Princesses',cls*10)) hatch.diet[clutch]=3;
 			break;
 		};
+		if (hatch.diet[clutch]) hatch.age[clutch] = 3000;
 		hatch.Refresh();
 	}
 
@@ -9804,6 +9833,10 @@ Molpy.DefineBoosts = function() {
 			};
 			if (draglevel || Molpy.TotalDragons) {
 				str += '<li>Draglings are feeble creatures, they need looking after';
+				str += '<li>Once they are established, they need to start digging';
+				str += '<li>Digging finds Gold and Diamonds';
+				str += '<li>Fighting opponents will get experience, diamonds and stuff';
+				str += '<li>Many things will need diamonds and experence to buy';
 				str += '<li>' + Molpy.Dragons['Dragling'].description();
 			};
 			if (draglevel >= Molpy.Dragons['DragonNewt'].id) {
@@ -9830,8 +9863,12 @@ Molpy.DefineBoosts = function() {
 			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.name:me.single);
 			return str;
 		},
+		price: {
+			Diamonds:10,
+			exp: function (me) { return Math.pow(5,me.Level+1) }
+		},
 		draglvl: 'Dragling',
-		limit: function() { return 4*(Molpy.Level('DQ')+1) },
+		limit: function() { return 8*(Molpy.Level('DQ')+1) },
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9845,8 +9882,12 @@ Molpy.DefineBoosts = function() {
 			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
 		},
+		price: {
+			Diamonds:20,
+			exp: function (me) { return Math.pow(5,me.Level+1) }
+		},
 		draglvl: 'Dragling',
-		limit: function() { return 4*(Molpy.Level('DQ')+1) },
+		limit: function() { return 8*(Molpy.Level('DQ')+1) },
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9861,7 +9902,11 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'DragonNewt',
-		limit: 4,
+		price: {
+			Diamonds:100,
+			exp: function (me) { return Math.pow(20,me.Level+1) }
+		},
+		limit: 8,
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9875,8 +9920,12 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'DragonNewt',
-		limit: function() { return 4*(Molpy.Level('DQ')) },
+		limit: function() { return 8*(Molpy.Level('DQ')) },
 		Level: Molpy.BoostFuncs.Bought0Level,
+		price: {
+			Diamonds:1000,
+			exp: function (me) { return Math.pow(20,me.Level+1) }
+		},
 	});
 
 	new Molpy.Boost({
@@ -9907,6 +9956,10 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		draglvl: 'Dragon',
+		price: {
+			Diamonds:'1G',
+			exp: function (me) { return 1e11*Math.pow(10,me.Level+1) }
+		},
 		limit: 50,
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
@@ -9917,6 +9970,10 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		desc: 'Improves Dragon digging',
 		draglvl: 'DragonNewt',
+		price: {
+			Diamonds:'100K',
+			QQ:'1H',
+			},
 	});
 
 	new Molpy.Boost({
@@ -9955,6 +10012,10 @@ Molpy.DefineBoosts = function() {
 			this.bought--;
 			return true;
 		},
+		price: {
+			Diamonds:'1K',
+			exp: function () { return Math.pow(1000,Molpy.Level('DQ')+1) }
+		},
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
@@ -9974,6 +10035,10 @@ Molpy.DefineBoosts = function() {
 			if (!this.bought) return false;
 			this.bought--;
 			return true;
+		},
+		price: {
+			Diamonds:'1M',
+			exp: function () { return Math.pow(1000,Molpy.Level('DQ')*2) }
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
@@ -10042,6 +10107,10 @@ Molpy.DefineBoosts = function() {
 			return true;
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
+		price: {
+			Diamonds:1,
+			exp: 100,
+		},
 	});
 
 	new Molpy.Boost({ // Hook
@@ -10050,7 +10119,7 @@ Molpy.DefineBoosts = function() {
 		alias: 'DMM',
 		desc: 'Makes a mold to fill with diamonds',
 		group: 'drac',
-		price: {Diamonds: 123456789 },
+		price: {Diamonds: 123456789 }, // This has not yet been calibrated
 	});
 
 	new Molpy.Boost({ // Hook
@@ -10078,6 +10147,10 @@ Molpy.DefineBoosts = function() {
 			return 10;
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
+		price: {
+			Diamonds:10,
+			exp: function () { return Math.pow(100,Molpy.Level('DQ')) }
+		},
 	});
 
 	new Molpy.Boost({ // Hook
@@ -10190,7 +10263,7 @@ Molpy.DefineBoosts = function() {
 			if (this.Level) {
 				if (!Molpy.Spend('Diamonds',this.Level)) {
 					Molpy.Notify('Cryogenics ran out of power',1);
-					Molpy.DragonExperience(-this.Level*Math.pow(1000,Molpy.Level('DQ')));
+					Molpy.Add('exp',-this.Level*Math.pow(1000,Molpy.Level('DQ')));
 					this.Level = 0;
 					this.countdown = 0;
 				}
@@ -10215,6 +10288,58 @@ Molpy.DefineBoosts = function() {
 		desc: str = 'Crouching Dragon, Sleeping Panther increases the Bonemeal from Shadow Dragon',
 		price: {Diamonds:500000,
 			Bonemeal:'100H',
+		},
+	});
+
+	new Molpy.Boost({ // Not Yet in use
+		name: 'Dragon Overview',
+		icon: 'dragonoverview',
+		group: 'drac',
+		desc: str = 'Provides the dragon overview pane',
+		price: {Diamonds:50000,
+			Bonemeal:'10H',
+		},
+	});
+
+	new Molpy.Boost({ // Not Yet in use
+		name: 'Wooly Jumper',
+		icon: 'wooly',
+		group: 'chron',
+		desc: str = 'Allows direct jumps to selected NPs on the Dragon Overview pane', 
+		price: {Diamonds:500000,
+			Bonemeal:'100H',
+		},
+	});
+
+	new Molpy.Boost({ 
+		name: 'Hubble Double',
+		icon: 'hubble2',
+		desc: str = 'Occasionally the number of runs Constructing from Blackprints has made will double',
+		price: {Diamonds:'88M',
+			Bonemeal:'88GW',
+			Blackprints:Infinity,
+			Goats:Infinity
+		},
+		group: 'cyb',
+	});
+
+	new Molpy.Boost({ 
+		name: 'Experience',
+		icon: 'experience',
+		plural: 'Experience',
+		alias: 'exp',
+		desc: str = 'Draconic Experience',
+		desc: function(me) {
+			var str = 'You have ' + Molpify(me.Level, 3) + ' experience';
+			return str;
+		},
+		group: 'stuff',
+		defStuff: 1,
+		AddSuper: Molpy.BoostFuncs.Add,
+		Add: function(amt) {
+			this.AddSuper(amt*Molpy.Papal('Experience'));
+			Molpy.Boosts['DQ'].Refresh();
+			// There will be Unlocks here
 		},
 	});
 
