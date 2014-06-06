@@ -4214,6 +4214,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Glass Mould Maker',
 		alias: 'GMM',
 		icon: 'glassmouldmaker',
+		sortAfter: 'SMF',
 		group: 'bean',
 		
 		desc: function(me) {
@@ -4253,6 +4254,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Sand Mould Filler',
 		alias: 'SMF',
 		icon: 'sandmouldfiller',
+		sortAfter: 'SMM',
 		group: 'bean',
 		
 		desc: function(me) {
@@ -4298,6 +4300,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Glass Mould Filler',
 		alias: 'GMF',
 		icon: 'glassmouldfiller',
+		sortAfter: 'GMM',
 		group: 'bean',
 		
 		desc: function(me) {
@@ -7644,6 +7647,7 @@ Molpy.DefineBoosts = function() {
 			if(!me.bought)  return str + '.';
 			if (!Molpy.Got('DNS')) str += ' out of 50.';
 			if(me.NextMap != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
+				if (!me.NextMap) Molpy.RandomiseMap();
 				str += '<br>The next map can be found at NP ' + me.NextMap;
 				if (Molpy.Got('Lodestone')) {
 					var search=0;
@@ -7695,7 +7699,7 @@ Molpy.DefineBoosts = function() {
 
 	Molpy.RandomiseMap = function() {
 		var np;
-		while((np = Math.ceil(Math.random() * Molpy.highestNPvisited) * (Math.random() > .5 ? 1 : -1)) == Molpy.newpixNumber)
+		while((np = Math.ceil(Math.random() * Math.min(Molpy.highestNPvisited,3100)) * (Math.random() > .5 ? 1 : -1)) == Molpy.newpixNumber || np == 0)
 			;
 		Molpy.Boosts['Maps'].NextMap = np;
 		return 1;

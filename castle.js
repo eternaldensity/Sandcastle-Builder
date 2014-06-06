@@ -1730,6 +1730,23 @@ Molpy.Up = function() {
 			//also, watch www.youtube.com/watch?v=tTYr3JuueF4
 		};
 
+		Molpy.PostBoostActions = function() {
+			for (var b in Molpy.Boosts) {
+				var me = Molpy.Boosts[b];
+				if (me.sortAfter) {
+					var suffix = '';
+					var orig = me;
+					while (orig.sortAfter) {
+						suffix += 'A';
+						orig = Molpy.Boosts[orig.sortAfter];
+					};
+					me.sortName = orig.name + suffix;
+				} else {
+					me.sortName = me.name;
+				}
+			}
+		}
+
 		Molpy.previewNP = 0;
 
 		Molpy.badgeNeedRepaint = 1;
@@ -2670,6 +2687,7 @@ Molpy.Up = function() {
 		Molpy.DefineCastleTools();
 		Molpy.DefinePuzzles();
 		Molpy.DefineBoosts();
+		Molpy.PostBoostActions();
 		Molpy.DefineBadges();
 		Molpy.DefineDragons();
 		Molpy.DefineOpponents();

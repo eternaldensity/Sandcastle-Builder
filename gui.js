@@ -152,7 +152,9 @@ Molpy.DefineGUI = function() {
 		return a.id > b.id;
 	}
 	Molpy.NameSort = function(a, b) {
-		return a.name > b.name;
+		var an = a.sortName;
+		var bn = b.sortName;
+		return an > bn;
 	}
 	Molpy.PriceSort = function(a, b) {
 		var p1 = a.CalcPrice(a.price);
@@ -172,8 +174,6 @@ Molpy.DefineGUI = function() {
 		var bt = b.className || 'z';
 		var ag = a.group;
 		var bg = b.group;
-		var an = a.name;
-		var bn = b.name
 		if(at > bt)
 			return 1;
 		else if(at < bt)
@@ -182,12 +182,7 @@ Molpy.DefineGUI = function() {
 			return 1;
 		else if(ag < bg)
 			return -1;
-		else if(an > bn)
-			return 1;
-		else if(an < bn)
-			return -1;
-		else
-			return 0;
+		else return Molpy.NameSort(a,b);
 	}
 	Molpy.FormatPrice = function(monies, item) {
 		return Molpify(Math.floor(EvalMaybeFunction(monies, item, 1) * Molpy.priceFactor), 1);

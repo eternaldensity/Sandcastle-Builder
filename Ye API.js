@@ -95,6 +95,8 @@ limit		MayBeF	O	Number of the boost that can be held at once
 
 NotTemp		int	O	Prevents boosts with complex countdowns being treated as temporary on load
 
+sortAfter	text	O	Gives the alias of the boost it is to apear after instead of alphabetical
+
 ***************************************************************************************
 # Badges
 
