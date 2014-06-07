@@ -32,6 +32,17 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.521
+#### Waveney
+- The Sand and Glass Mould makers and fillers are now shown in a more logical order
+- Experience is only added once per fight.
+- Faves should work with Cups of Tea
+- It should be better at keeping count of hatchlings
+- The Diamond Mould maker is technically buildable now, but can't yet be used
+- It should be better at keeping track of the number of boosts
+- It will now give a notification if you try and replace a large clutch with a smaller clutch (of the same type)
+- Hopefully fewer typos
+
 ### 3.52
 
 #### Waveney

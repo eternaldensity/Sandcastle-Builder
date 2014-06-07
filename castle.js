@@ -1462,6 +1462,7 @@ Molpy.Up = function() {
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Buy', this.name, !free]);
 				Molpy.boostNeedRepaint = 1;
 				Molpy.RatesRecalculate(4);
+				Molpy.DragonDigRecalc(); 
 				Molpy.BoostsOwned++;
 				Molpy.CheckBuyUnlocks();
 				Molpy.unlockedGroups[this.group] = 1;
@@ -2156,7 +2157,7 @@ Molpy.Up = function() {
 				
 				// For Knights selectthe shop if possible
 				var valid = false;
-				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0 && this.divList[3].is(':visible')) { // Redunaknights
+				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0 && this.divList[3].is(':visible')) { // Redundaknights
 					this.location = 3; // Shop
 					valid = true;
 				} else {
@@ -2188,8 +2189,8 @@ Molpy.Up = function() {
 				
 				heading = heading ? '<h1>' + Molpy.Redacted.brackets + '</h1>' : '';
 				var countdown = (level == 0) ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '';
-				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0) { // Redunaknights
-					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redunaknights ' + 
+				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0) { // Redundaknights
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redundaknights ' + 
 						countdown + '</h2><div><input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>' +
 						'<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
 					this.drawType[level] = 'knight';

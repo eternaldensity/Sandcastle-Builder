@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.52;
-Molpy.versionName='Dragons Mark 2'; // Appended to the numerical version on screen
+Molpy.version=3.521;
+Molpy.versionName=''; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings

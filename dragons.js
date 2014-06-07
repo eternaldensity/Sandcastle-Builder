@@ -536,10 +536,11 @@ Molpy.FindThings = function() {
 	var thing = GLRschoice(availRewards);
 	if (thing) {
 		Molpy.UnlockBoost(thing.alias);
+		Molpy.lootRemoveBoost(thing);
 		Molpy.shopNeedRepaint = 1;
 	}
 	return thing;
-}
+}	
 
 // Fledging ********************************************************
 
@@ -559,10 +560,17 @@ Molpy.DragonFledge = function(clutch) {
 	var fight = 1;
 	if (!npd) npd = Molpy.NPdata[Molpy.newpixNumber] = {};
 
-	if (npd && npd.amount > 0 && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.amount)))	{ // Replace
-		oldDT = npd.DragonType;
-		oldDN = npd.amount;
-		fight = 0;
+	if (npd && npd.amount > 0 ) {
+		if (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.amount))	{ // Replace
+			oldDT = npd.DragonType;
+			oldDN = npd.amount;
+			fight = 0;
+		} else {
+			Molpy.Notify('This NP already has better dragons, who have eaten the interlopers',1);
+			hatch.clutches[clutch] = 0;
+			hatch.clean(1);
+			return;
+		}
 	}
 	npd.DragonType = dq.Level;
 	npd.amount = hatch.clutches[clutch];
