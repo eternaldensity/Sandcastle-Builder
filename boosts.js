@@ -1543,7 +1543,7 @@ Molpy.DefineBoosts = function() {
 					item = Molpy.Boosts[Molpy.BoostAKA[name]];
 				}
 				if(item) {
-					if(item.bought) {
+					if(item.bought && !item.limit) {
 						Molpy.Notify('You have already bought ' + item.name);
 						notify = 0;
 					} else {
@@ -4214,6 +4214,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Glass Mould Maker',
 		alias: 'GMM',
 		icon: 'glassmouldmaker',
+		sortAfter: 'SMF',
 		group: 'bean',
 		
 		desc: function(me) {
@@ -4253,6 +4254,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Sand Mould Filler',
 		alias: 'SMF',
 		icon: 'sandmouldfiller',
+		sortAfter: 'SMM',
 		group: 'bean',
 		
 		desc: function(me) {
@@ -4298,6 +4300,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Glass Mould Filler',
 		alias: 'GMF',
 		icon: 'glassmouldfiller',
+		sortAfter: 'GMM',
 		group: 'bean',
 		
 		desc: function(me) {
@@ -7644,6 +7647,7 @@ Molpy.DefineBoosts = function() {
 			if(!me.bought)  return str + '.';
 			if (!Molpy.Got('DNS')) str += ' out of 50.';
 			if(me.NextMap != Math.PI || Molpy.EnoughMonumgForMaps() && Molpy.RandomiseMap()) {
+				if (!me.NextMap) Molpy.RandomiseMap();
 				str += '<br>The next map can be found at NP ' + me.NextMap;
 				if (Molpy.Got('Lodestone')) {
 					var search=0;
@@ -7695,7 +7699,7 @@ Molpy.DefineBoosts = function() {
 
 	Molpy.RandomiseMap = function() {
 		var np;
-		while((np = Math.ceil(Math.random() * Molpy.highestNPvisited) * (Math.random() > .5 ? 1 : -1)) == Molpy.newpixNumber)
+		while((np = Math.ceil(Math.random() * Math.min(Molpy.highestNPvisited,3100)) * (Math.random() > .5 ? 1 : -1)) == Molpy.newpixNumber || np == 0)
 			;
 		Molpy.Boosts['Maps'].NextMap = np;
 		return 1;
@@ -7817,7 +7821,6 @@ Molpy.DefineBoosts = function() {
 					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding'][me.overallState];
 					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
 				}
-				if (me.experience) str += '<br>Experience: '+Molpify((me.experience || 0),1);
 				if (Molpy.DragonUpgrade(0)) str += '<br><br><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> '+Molpy.DragonUpgrade(2);			}
 				str += '<br><br>Hatchlings will mature into ' + Molpy.DragonsById[me.Level].name + 's. ';
 				str += Molpy.DragonsById[me.Level].description();
@@ -7998,6 +8001,7 @@ Molpy.DefineBoosts = function() {
 						this.clutches[cl] = 1;
 						Molpy.DragonFeed(cl,2);
 						Molpy.Notify('A hungry Hatchling has eaten the rest of it\'s clutch',1);
+						cleanup++;
 					} else {
 						var dq = Molpy.Boosts['DQ'];
 						Molpy.Add('exp',-Math.pow(1000,Molpy.Level('DQ'))*this.clutches[cl]);
@@ -10117,18 +10121,18 @@ Molpy.DefineBoosts = function() {
 		name: 'Diamond Mould Making',
 		icon: 'diamould',
 		alias: 'DMM',
-		desc: 'Makes a mold to fill with diamonds',
+		desc: 'Makes a mold to fill with diamonds - not yet in operation',
 		group: 'drac',
-		price: {Diamonds: 123456789 }, // This has not yet been calibrated
+		price: {Diamonds: '10M', Goats: Infinity }, 
 	});
 
 	new Molpy.Boost({ // Hook
 		name: 'Diamond Mould Filling',
 		icon: 'diamfill',
 		alias: 'DMF',
-		desc: 'Allows a Mould to be filled',
+		desc: 'Allows a Mould to be filled - not yet in operation',
 		group: 'drac',
-		price: {Diamonds: 123456789 },
+		price: {Diamonds: '20M', Goats: Infinity },
 	});
 
 	new Molpy.Boost({ 
@@ -10157,27 +10161,27 @@ Molpy.DefineBoosts = function() {
 		name: 'Diamond Mould Cooker',
 		icon: 'diamcook',
 		alias: 'DMC',
-		desc: 'Allows a Mould filling to be fused',
+		desc: 'Allows a Mould filling to be fused - not yet in operation',
 		group: 'drac',
-		price: {Diamonds: 123456789 },
+		price: {Diamonds: '40M', Goats: Infinity },
 	});
 
 	new Molpy.Boost({ // Hook
 		name: 'Diamond Masterpiece Burnisher',
 		icon: 'diamburn',
 		alias: 'DMB',
-		desc: 'Makes a masterpiece shine',
+		desc: 'Makes a masterpiece shine - not yet in operation',
 		group: 'drac',
-		price: {Diamonds: 123456789 },
+		price: {Diamonds: '80M', Goats: Infinity },
 	});
 
 	new Molpy.Boost({ // Hook
 		name: 'Diamond Masterpiece Pedestal',
 		icon: 'pedestal',
 		alias: 'DMP',
-		desc: 'To put the masterpice on',
+		desc: 'To put the masterpice on - not yet in operation',
 		group: 'drac',
-		price: {Diamonds: 123456789 },
+		price: {Diamonds: '150M', Goats: Infinity, Bonemeal: '111GW' },
 	});
 
 	new Molpy.Boost({ 
