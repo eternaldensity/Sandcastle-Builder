@@ -194,9 +194,10 @@ Molpy.Opponent = function(args) {
 	Molpy.OpponentsById[this.id] = this;
 
 	// Methods
-	this.attackstxt = function(n) {
+	this.attackstxt = function(n,from) {
 		var str = '' + ((n && n > 1)?Molpify(n):'A') + ' ' + this.name;
-		if (n > 1) str += 's each';
+		if (n > 1) str += 's' + (from?' from NP'+from:'') + ' each'
+		else if (from) str += ' from NP'+from;
 		str += (this.modifier > 1)?' defensively':' offensively'
 		str += ' armed ';
 		var weapon = GLRschoice(this.armed);
@@ -241,7 +242,6 @@ Molpy.Opponent = function(args) {
 			} else {
 				if (Math.random() < range) num = 1;
 			}
-			if (exp) Molpy.Add('exp',exp); 
 			if (num) {
 				if (stuff == 'Thing') {
 					var thing = Molpy.FindThings();
@@ -255,6 +255,7 @@ Molpy.Opponent = function(args) {
 				}
 			}
 		}
+		if (exp) Molpy.Add('exp',exp); 
 		if (rwds.length && !Molpy.boostSilence) {
 			Molpy.Notify('After the fight you get ' + rwds.join(', ') + (exp?' and '+Molpify(exp) +' experience':''),1);
 		}
@@ -535,10 +536,11 @@ Molpy.FindThings = function() {
 	var thing = GLRschoice(availRewards);
 	if (thing) {
 		Molpy.UnlockBoost(thing.alias);
+		Molpy.lootRemoveBoost(thing);
 		Molpy.shopNeedRepaint = 1;
 	}
 	return thing;
-}
+}	
 
 // Fledging ********************************************************
 
@@ -558,10 +560,17 @@ Molpy.DragonFledge = function(clutch) {
 	var fight = 1;
 	if (!npd) npd = Molpy.NPdata[Molpy.newpixNumber] = {};
 
-	if (npd && npd.amount > 0 && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.amount)))	{ // Replace
-		oldDT = npd.DragonType;
-		oldDN = npd.amount;
-		fight = 0;
+	if (npd && npd.amount > 0 ) {
+		if (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.amount))	{ // Replace
+			oldDT = npd.DragonType;
+			oldDN = npd.amount;
+			fight = 0;
+		} else {
+			Molpy.Notify('This NP already has better dragons, who have eaten the interlopers',1);
+			hatch.clutches[clutch] = 0;
+			hatch.clean(1);
+			return;
+		}
 	}
 	npd.DragonType = dq.Level;
 	npd.amount = hatch.clutches[clutch];
@@ -653,7 +662,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 	var local = Molpy.OpponentsById[type];
 	local.gender = 1*(Math.random() < 0.5);
 	local.modifier = Math.random()+.5;
-	var atktxt = local.attackstxt(numb) + ((numb> 1 && text2)?text2:text1) + '. ';
+	var atktxt = local.attackstxt(numb,(from!=where?from:'')) + ((numb> 1 && text2)?text2:text1) + '. ';
 	var atkval = local.attackval(numb,where);
 
 	Molpy.DragonDigRecalc(); 
@@ -710,7 +719,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 		case -1 : // lost a hard fight
 			dq.Loose(npd.DragonType,npd.amount);
 			npd.amount = 0;	
-			Molpy.Add('exp',Math.max(DeMolpify(local.exp)*numb, Math.pow(10,npd.DragonType)/5));
+			Molpy.Add('exp',Math.max(local.experience*numb, Math.pow(10,npd.DragonType)/5));
 			Molpy.Notify(atktxt + ' You lost, but lost with dignity',1);
 			break;
 
@@ -733,7 +742,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			Molpy.Notify(atktxt + ' You won a very hard ' + timetxt + 'fight, ' + 
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType].name+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward(numb,DeMolpify(local.exp)*numb); 
+			local.takeReward(numb,local.experience*numb); 
 			break;
 
 		case 2 : // won a hard fight - need to recover
@@ -744,7 +753,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a hard '+timetxt+'fight, but will need to recover for ' + 
 					MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward(numb,DeMolpify(local.exp)*numb*2); 
+			local.takeReward(numb,local.experience*numb*2); 
 			break;
 
 		case 3 : // Wipeout for no loss
@@ -755,7 +764,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 				Molpy.Notify(atktxt + ' You scared ' + (numb==1?['him','her'][local.gender]:'them') + 
 					' away ' + (timetxt?'in a '+timetxt+'fight, ':'') + 'with ease',1);
 			}
-			local.takeReward(numb,DeMolpify(local.exp)*numb); 
+			local.takeReward(numb,local.experience*numb); 
 			if (dq.overallState) {
 				Molpy.Notify('Your heroic victory inspires the others to go back to work',1);
 				dq.ChangeState(0);

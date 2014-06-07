@@ -152,7 +152,9 @@ Molpy.DefineGUI = function() {
 		return a.id > b.id;
 	}
 	Molpy.NameSort = function(a, b) {
-		return a.name > b.name;
+		var an = a.sortName;
+		var bn = b.sortName;
+		return an > bn;
 	}
 	Molpy.PriceSort = function(a, b) {
 		var p1 = a.CalcPrice(a.price);
@@ -172,8 +174,6 @@ Molpy.DefineGUI = function() {
 		var bt = b.className || 'z';
 		var ag = a.group;
 		var bg = b.group;
-		var an = a.name;
-		var bn = b.name
 		if(at > bt)
 			return 1;
 		else if(at < bt)
@@ -182,12 +182,7 @@ Molpy.DefineGUI = function() {
 			return 1;
 		else if(ag < bg)
 			return -1;
-		else if(an > bn)
-			return 1;
-		else if(an < bn)
-			return -1;
-		else
-			return 0;
+		else return Molpy.NameSort(a,b);
 	}
 	Molpy.FormatPrice = function(monies, item) {
 		return Molpify(Math.floor(EvalMaybeFunction(monies, item, 1) * Molpy.priceFactor), 1);
@@ -1333,7 +1328,7 @@ Molpy.DefineGUI = function() {
 			var str = Molpify(npd.amount) + ' ' + Molpy.DragonsById[npd.DragonType].name + (npd.amount > 1?'s':'') + '<br>';
 			str += ['Digging','Recovering','Hiding'][dq.overallState];
 			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
-			str += '<br>Def: ' + Molpify(npd.defence*Molpy.DragonDefenceMultiplier,3) + ' Atk: ' + Molpify(npd.attack*Molpy.DragonAttackMultiplier,3) + 
+			str += '<br>Def: ' + Molpify((npd.defence+0.001)*Molpy.DragonDefenceMultiplier,3) + ' Atk: ' + Molpify((npd.attack+0.001)*Molpy.DragonAttackMultiplier,3) + 
 				' Dig:&nbsp;' + Molpify(npd.dig*Molpy.DragonDigMultiplier,3) ;
 			if (npd.breath) str += ' Breath:&nbsp;' + Molpify(npd.breath*Molpy.DragonBreathMultiplier,3);
 			if (npd.magic1) str += ' Magic1:&nbsp;' + npd.magic1;
