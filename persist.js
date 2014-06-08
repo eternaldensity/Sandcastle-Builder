@@ -1053,7 +1053,9 @@
 				if (b.bought != 0) b.bought = 1;
 			}
 		}
-
+		if(version < 3.521) {
+			if (!Molpy.Level('exp')) Molpy.Boosts['exp'].Level = 1000000*Molpy.Level('DQ');
+		}
 	}
 
 	Molpy.MakePrizeList = function() {

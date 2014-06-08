@@ -254,7 +254,7 @@ Molpy.Opponent = function(args) {
 					Molpy.Add(stuff,num);
 				}
 			}
-		}
+		};
 		if (exp) Molpy.Add('exp',exp); 
 		if (rwds.length && !Molpy.boostSilence) {
 			Molpy.Notify('After the fight you get ' + rwds.join(', ') + (exp?' and '+Molpify(exp) +' experience':''),1);
@@ -719,7 +719,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 		case -1 : // lost a hard fight
 			dq.Loose(npd.DragonType,npd.amount);
 			npd.amount = 0;	
-			Molpy.Add('exp',Math.max(local.experience*numb, Math.pow(10,npd.DragonType)/5));
+			Molpy.Add('exp',Math.max(local.experience()*numb, Math.pow(10,npd.DragonType)/5));
 			Molpy.Notify(atktxt + ' You lost, but lost with dignity',1);
 			break;
 
@@ -742,7 +742,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			Molpy.Notify(atktxt + ' You won a very hard ' + timetxt + 'fight, ' + 
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType].name+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward(numb,local.experience*numb); 
+			local.takeReward(numb,local.experience()*numb); 
 			break;
 
 		case 2 : // won a hard fight - need to recover
@@ -753,7 +753,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a hard '+timetxt+'fight, but will need to recover for ' + 
 					MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward(numb,local.experience*numb*2); 
+			local.takeReward(numb,local.experience()*numb*2); 
 			break;
 
 		case 3 : // Wipeout for no loss
@@ -764,7 +764,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 				Molpy.Notify(atktxt + ' You scared ' + (numb==1?['him','her'][local.gender]:'them') + 
 					' away ' + (timetxt?'in a '+timetxt+'fight, ':'') + 'with ease',1);
 			}
-			local.takeReward(numb,local.experience*numb); 
+			local.takeReward(numb,local.experience()*numb); 
 			if (dq.overallState) {
 				Molpy.Notify('Your heroic victory inspires the others to go back to work',1);
 				dq.ChangeState(0);
