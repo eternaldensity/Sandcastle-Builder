@@ -32,7 +32,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.522
+
+#### Waveney
+- Stop experience being mustard
+
 ### 3.521
+
 #### Waveney
 - The Sand and Glass Mould makers and fillers are now shown in a more logical order
 - Experience is only added once per fight.
