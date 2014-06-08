@@ -63,7 +63,7 @@ Molpy.DefineDragons = function() {
 		desc: 'These small timid creatures hide in the shadows and under leaves keeping out of the way of fierce cats',
 		digbase: 1,
 		defbase: 1,
-		colour: '00ff00',
+		colour: '0f0',
 	});
 	new Molpy.Dragon({
 		name: 'DragonNewt',
@@ -79,7 +79,7 @@ Molpy.DefineDragons = function() {
 		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
 		digbase: 100,
 		defbase: 100,
-		colour: '0080ff',
+		colour: '08f',
 	});
 	new Molpy.Dragon({
 		name: 'Wyrm',
@@ -95,7 +95,7 @@ Molpy.DefineDragons = function() {
 		desc: 'These are monstorous, limbless creatures, with a big bite.',
 		digbase: 1e4,
 		defbase: 100000,
-		colour: '0000ff',
+		colour: '00f',
 	});
 	new Molpy.Dragon({
 		name: 'Wyvern',
@@ -110,7 +110,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These can fly.  They fight and dig with their legs, some have a bad breath.',
 		digbase: 1e6,
-		colour: '8000ff',
+		colour: '80f',
 	});
 	new Molpy.Dragon({
 		name: 'Dragon',
@@ -126,7 +126,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'Tradional Welsh Dragon',
 		digbase: 1e8,
-		colour: 'ff00ff',
+		colour: 'f0f',
 	});
 	new Molpy.Dragon({
 		name: 'Noble Dragon',
@@ -143,7 +143,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'Very large magical dragon',
 		digbase: 1e11,
-		colour: 'ff0000',
+		colour: 'f00',
 	});
 	new Molpy.Dragon({
 		name: 'Imperial Dragon',
@@ -160,7 +160,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These are the makers of ledgends, attacking with many heads in many ways, mortals don\'t want to be in the ssame universe as this.',
 		digbase: 1e15,
-		colour: '800000',
+		colour: '800',
 	});
 	new Molpy.Dragon({
 		name: 'NogarDragoN',
@@ -177,7 +177,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: '!', // later
 		digbase: 1e20,
-		colour: '000000',
+		colour: '8F8',
 	});
 
 };
@@ -814,7 +814,7 @@ Molpy.DragonUpgrade = function(type) {
 	var dq=Molpy.Boosts['DQ'];
 	switch (type) {
 	case 0:
-		return (dq.experience >= DeMolpify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition());
+		return (Molpy.Level('exp') >= DeMolpify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition());
 	case 1:
 		if (Molpy.DragonUpgrade(0)) {
 			if (Molpy.Spend(Molpy.DragonsById[dq.Level].upgrade)) {

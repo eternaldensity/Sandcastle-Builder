@@ -7833,7 +7833,7 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: Infinity,
 		},
-		experience: 0,
+		experience: 0, //Unused
 		totalfights: 0,
 		totalloses: 0,
 		totalstarves: 0,
@@ -7843,7 +7843,7 @@ Molpy.DefineBoosts = function() {
 		finds:0,
 		overallState: 0, // 0 all heathy, 1 hiding, 2 injuries
 
-		saveData: {4:['experience',0,'float'],
+		saveData: {4:['experience',0,'float'], // Unused 
 			   5:['overallState',0,'int'],
 			   6:['finds',0,'float'],
 			   7:['loses',0,'array'],
