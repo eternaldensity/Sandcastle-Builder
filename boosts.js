@@ -425,6 +425,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.MontyDoors = ['A', 'B', 'C'];
 	
 	Molpy.Monty = function(door) {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['MHP'];
 		me.door = door;
 		if(!me.bought) {
@@ -594,6 +595,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.cmsline = 0;
 	
 	Molpy.ComaMolpyStyleToggle = function() {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['Coma Molpy Style'];
 		Molpy.Notify(Molpy.cms[Molpy.cmsline]);
 		Molpy.cmsline++;
@@ -665,6 +667,7 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.TimeTravel = function(NP) {
+		Molpy.Anything = 1;
 		var oldNP=Molpy.newpixNumber;
 		if(Molpy.TTT(Molpy.newpixNumber + NP, 0)) {
 			if(oldNP>0)
@@ -686,6 +689,7 @@ Molpy.DefineBoosts = function() {
 	}
 	// targeted time travel!
 	Molpy.TTT = function(np, chips) {
+		Molpy.Anything = 1;
 		np = Math.floor(np);
 		chips = chips ? Molpy.CalcJumpEnergy(np) : 0;
 		var price = Molpy.TimeTravelPrice();
@@ -1043,6 +1047,7 @@ Molpy.DefineBoosts = function() {
 	
 	Molpy.ChromaticHeresyToggle = function() {
 
+		Molpy.Anything = 1;
 		var ch = Molpy.Boosts['Chromatic Heresy'];
 		if(!ch.bought) {
 			Molpy.Notify('Somewhere, over the rainbow...');
@@ -1150,6 +1155,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.NavigationCodeToggle = function() {
+		Molpy.Anything = 1;
 		if(Molpy.Got('Jamming')) {
 			Molpy.Notify('Experiencing Jamming, cannot access Navigation Code');
 			return;
@@ -1235,6 +1241,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.Novikov = function() {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['Summon Knights Temporal'];
 		if(!me.bought) me.buy();
 		if(!me.bought) {
@@ -1371,6 +1378,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.NoSellToggle = function() {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['No Sell'];
 		if(!me.bought) me.buy();
 		if(!me.bought) {
@@ -1445,6 +1453,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.PunsawToggle = function() {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['VJ'];
 		me.bought = (me.bought == 1 ? 2 : 1);
 		me.Refresh();
@@ -1518,6 +1527,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.ChooseShoppingItem = function(mule) {
+		Molpy.Anything = 1;
 		var donkey = (mule ? Molpy.BoostsById[mule] : Molpy.Boosts['Shopping Assistant']);
 		var shoppingItem = (mule ? (Molpy.BoostsById[Math.abs(donkey.power)].alias || '') : (Molpy.shoppingItem || 'Bag'));
 		donkey.power = 0;
@@ -1785,6 +1795,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.RiftJump = function() {
+		Molpy.Anything = 1;
 		if(Molpy.IsEnabled('Time Lord')) {
 			Molpy.Notify('You are not a Time Lord');
 			Molpy.UnlockBoost('Time Lord');
@@ -1877,6 +1888,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.SwitchGlassFurnace = function(off) {
+		Molpy.Anything = 1;
 		if(Molpy.Got('Glass Furnace Switching')) {
 			Molpy.Notify('Glass Furnace is already switching, please wait for it');
 			return;
@@ -2059,6 +2071,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.UpgradeSandRefinery = function(n) {
+		Molpy.Anything = 1;
 		if(Molpy.CheckSandRateAvailable(Molpy.SandRefineryIncrement() * n)) {
 			var chipCost = (n < 20 ? n * 3 : n * 2.5);
 			var blockCost = (n < 20 ? n : n * .9);
@@ -2077,6 +2090,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.DowngradeSandRefinery = function(choose) {
+		Molpy.Anything = 1;
 		var sr = Molpy.Boosts['Sand Refinery'];
 		var n = 1;
 		if(choose) {
@@ -2229,6 +2243,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.UpgradeChipStorage = function(n) {
+		Molpy.Anything = 1;
 		var cost = n * 5
 		if(n >= 10) cost *= .9;
 		if(Molpy.Has('GlassChips', cost)) {
@@ -2241,6 +2256,7 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.BuyGlassBoost = function(name, chips, blocks) {
+		Molpy.Anything = 1;
 		if(Molpy.Has('GlassChips', chips) && Molpy.Has('GlassBlocks', blocks)) {
 			Molpy.Spend('GlassChips', chips);
 			Molpy.Spend('GlassBlocks', blocks);
@@ -2305,6 +2321,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.SwitchGlassBlower = function(off) {
+		Molpy.Anything = 1;
 		if(Molpy.Got('Glass Blower Switching')) {
 			Molpy.Notify('Glass Blower is already switching, please wait for it');
 			return;
@@ -2407,6 +2424,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.UpgradeGlassChiller = function(n) {
+		Molpy.Anything = 1;
 		var unitCost = 5;
 		if(n > 10) unitCost *= .9;
 		if(Molpy.Has('GlassBlocks', unitCost * n) && Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement() * n)) {
@@ -2419,6 +2437,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.DowngradeGlassChiller = function(choose) {
+		Molpy.Anything = 1;
 		var gc = Molpy.Boosts['Glass Chiller'];
 		var n = 1;
 		if(choose) {
@@ -2563,6 +2582,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.UpgradeBlockStorage = function(n) {
+		Molpy.Anything = 1;
 		var cost = n * 15;
 		if(n >= 10) cost *= .9;
 		if(Molpy.Has('GlassBlocks', cost)) {
@@ -2579,6 +2599,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.UpgradeSandPurifier = function() {
+		Molpy.Anything = 1;
 		if(Molpy.Has('GlassBlocks', Molpy.SandPurifierUpgradeCost())) {
 			Molpy.Spend('GlassBlocks', Molpy.SandPurifierUpgradeCost());
 			Molpy.Boosts['Sand Purifier'].power++;
@@ -2617,6 +2638,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.SeaishSandPurifier = function() {
+		Molpy.Anything = 1;
 		var bl = Molpy.Boosts['GlassBlocks'];
 		var a = 5; // the step size in prices
 		var b = 2 * Molpy.SandPurifierUpgradeCost() - a;
@@ -2643,6 +2665,7 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.SeaishGlassExtruder = function() {
+		Molpy.Anything = 1;
 		var ch = Molpy.Boosts['GlassChips'];
 		var a = 500; // the step size in prices
 		var b = 2 * Molpy.GlassExtruderUpgradeCost() - a;
@@ -2668,6 +2691,7 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.SeaishSandRefinery = function() {
+		Molpy.Anything = 1;
 		var ch = Molpy.Boosts['GlassChips'];
 		var extra = Math.min(Math.floor(ch.power / 2.51), Math.floor((100 - Molpy.CalcGlassUse()) / Molpy.SandRefineryIncrement() - 1));
 		if(extra > 20) {
@@ -2695,6 +2719,7 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.SeaishGlassChiller = function() {
+		Molpy.Anything = 1;
 		var bl = Molpy.Boosts['GlassBlocks'];
 		var extra = Math.min(Math.floor(bl.power / 4.51), Math.floor((100 - Molpy.CalcGlassUse()) / Molpy.GlassChillerIncrement() - 1));
 		extra = Math.min(extra, Math.floor(Molpy.Level('GlassChips') / 1e12 + Molpy.Boosts['Sand Refinery'].power / Molpy.ChipsPerBlock() - Molpy.Boosts['Glass Chiller'].power - 2));
@@ -2807,6 +2832,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.GetRosetta = function() {
+		Molpy.Anything = 1;
 		if(Molpy.SandTools['Bag'].amount >= 50) {
 			Molpy.SandTools['Bag'].amount -= 50;
 			Molpy.SandToolsOwned -= 50;
@@ -2899,6 +2925,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.UpgradeFactoryAutomation = function() {
+		Molpy.Anything = 1;
 		var fa = Molpy.Boosts['Factory Automation'];
 		var bots = Molpy.CastleTools['NewPixBot'].amount;
 		if(fa.bought && Molpy.Got('Doublepost')) {
@@ -2916,6 +2943,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.UnlockNinjaClimber = function() {
+		Molpy.Anything = 1;
 		var lads = Molpy.SandTools['Ladder'];
 		if(!Molpy.Boosts['Ninja Climber'].unlocked && Molpy.Got('Skull and Crossbones') && lads.amount >= 500) {
 			lads.amount -= 500;
@@ -2983,6 +3011,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.CastleCrush = function() {
+		Molpy.Anything = 1;
 		Molpy.Boosts['Castle Crusher'].buy();
 		if(!Molpy.Boosts['Castle Crusher'].bought) {
 			Molpy.Notify('What a pity!');
@@ -3204,6 +3233,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.ToggleBBC = function() {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['BBC'];
 		if(me.power < 0)
 			me.power = 0;
@@ -3295,6 +3325,7 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.CeilingLock = function(key) {
+		Molpy.Anything = 1;
 		if(!Molpy.Earned('Ceiling Broken')) {
 			if(!Molpy.Got('Glass Ceiling ' + key)) {
 				Molpy.Notify('Nope.avi');
@@ -3338,6 +3369,7 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.CeilingTogglable = function(key) {
+		Molpy.Anything = 1;
 		var acPower = key - 1;
 		if(acPower < 0 || Molpy.Got('Glass Ceiling ' + acPower)) {
 			while(acPower--) {
@@ -3693,6 +3725,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.UpgradeGlassExtruder = function() {
+		Molpy.Anything = 1;
 		if(Molpy.Has('GlassChips', Molpy.GlassExtruderUpgradeCost())) {
 			Molpy.Spend('GlassChips', Molpy.GlassExtruderUpgradeCost());
 			Molpy.Boosts['Glass Extruder'].power++;
@@ -3800,6 +3833,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.MakeCagedPuzzle = function(cost, puzzles) {
+		Molpy.Anything = 1;
 		if (puzzles && puzzles > 1) Molpy.Boosts['LogiPuzzle'].multiBuy++
 		else Molpy.Boosts['LogiPuzzle'].multiBuy = 0;
 		if(!Molpy.Spend('GlassBlocks', cost)) {
@@ -4344,6 +4378,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.BreakMould = function(alias) {
+		Molpy.Anything = 1;
 		var m = Molpy.Boosts[alias];
 		if(confirm('Do you want to cancel ' + m.name + '?\nYou will have wasted ' + Molpify(m.power - 1) + ' run' + plural(m.power - 1) + ' of Factory Automation.')) {
 			m.reset();
@@ -4367,6 +4402,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.MakeSandMould = function(np) {
+		Molpy.Anything = 1;
 		var mname = 'monums' + np;
 		if(!Molpy.Badges[mname]) {
 			Molpy.Notify('No such mould exists');
@@ -4498,6 +4534,7 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.MakeGlassMould = function(np) {
+		Molpy.Anything = 1;
 		var mname = 'monumg' + np;
 		var gmm = Molpy.Boosts['GMM'];
 		var gmf = Molpy.Boosts['GMF'];
@@ -4752,6 +4789,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.GetWWB = function(seaish) {
+		Molpy.Anything = 1;
 		var wwb = Molpy.Boosts['WWB'];
 		var price = 444 + 77 * wwb.bought;
 		var scaf = Molpy.CastleTools['Scaffold'];
@@ -4810,6 +4848,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.HireRecycling = function() {
+		Molpy.Anything = 1;
 		var rb = Molpy.Boosts['RB'];
 		var price = 200 * rb.bought;
 		var bb = Molpy.CastleTools['Beanie Builder'];
@@ -4977,6 +5016,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.LoadToolFactory = function(amount) {
+		Molpy.Anything = 1;
 		if(Molpy.Has('GlassChips', amount)) {
 			Molpy.Spend('GlassChips', amount);
 			Molpy.Add('TF', amount);
@@ -5308,6 +5348,7 @@ Molpy.DefineBoosts = function() {
 
 	var loveline = 0;
 	Molpy.ToggleExpando = function() {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['Expando'];
 		Molpy.Notify(Molpy.love[loveline]);
 		loveline++;
@@ -5559,6 +5600,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.PantherRush = function(stuff,n) {
+		Molpy.Anything = 1;
 		var pr = Molpy.Boosts['PR'];
 		var cost = Molpy.CalcRushCost();
 		if (stuff) {
@@ -5710,6 +5752,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.ControlToolFactory = function(n) {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['PC'];
 		var cost = 1e6 * n;
 		if(n < 0) cost = -1e5 * n;
@@ -6198,6 +6241,7 @@ Molpy.DefineBoosts = function() {
 	}); // by waveney
 
 	Molpy.RunDiscoveryDetector = function() {
+		Molpy.Anything = 1;
 		var cost = Molpy.highestNPvisited * Molpy.highestNPvisited * 10;
 		if(Molpy.Earned('Minus Worlds')) cost *= 40;
 		if(!Molpy.Has('GlassChips', cost)) {
@@ -6384,6 +6428,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.PriceProtectionChange = function(n) {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['Price Protection'];
 		if(me.bought + n == 0) return;
 		me.bought += n;
@@ -6550,6 +6595,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.GainDragonWisdom = function(n) {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['CDSP'];
 		if (n > 0) {
 			var goatCost = (n == 1?me.power:Infinity);
@@ -6697,6 +6743,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.GenericToggle = function(myid, negate) {
+		Molpy.Anything = 1;
 		var me = Molpy.BoostsById[myid];
 		if(negate)
 			me.power = -me.power || 1;
@@ -6906,6 +6953,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.ShadowStrike = function() {
+		Molpy.Anything = 1;
 		var l = Molpy.Level('LogiPuzzle') / 100;
 		var n = Math.ceil(l);
 		var p = n - l;
@@ -7499,6 +7547,7 @@ Molpy.DefineBoosts = function() {
 	}
 
 	Molpy.AwardPrize = function(l) {
+		Molpy.Anything = 1;
 		l = l || 0;
 		if(l >= Molpy.prizes.length) return;
 		var availRewards = [];
@@ -8040,6 +8089,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.DragonFeed = function(clutch,food) {
+		Molpy.Anything = 1;
 		var hatch = Molpy.Boosts['Hatchlings'];
 		var cls = hatch.clutches[clutch];
 		switch (food) {
@@ -8311,6 +8361,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.FastForward = function() {
+		Molpy.Anything = 1;
 		Molpy.newpixNumber = Molpy.highestNPvisited;
 		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.UpdateBeach();
@@ -8375,6 +8426,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.MustardSale = function(mode) {
+		Molpy.Anything = 1;
 		if (mode == 0) {
 			if(Molpy.Spend('Mustard', 500)) {
 				var tool = GLRschoice(Molpy.tfOrder);
@@ -8441,6 +8493,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.Robot_Upgrade = function() {
+		Molpy.Anything = 1;
 		me = Molpy.Boosts['Rob'];
 		if(Molpy.Spend('GlassBlocks', Infinity)) {
 			me.bought++;
@@ -8451,6 +8504,7 @@ Molpy.DefineBoosts = function() {
 	}
 	
 	Molpy.ToggleBit = function(myid, bit) {
+		Molpy.Anything = 1;
 		Molpy.BoostsById[myid].power ^= (1 << bit);
 		Molpy.BoostsById[myid].Refresh();
 	}
@@ -8476,25 +8530,25 @@ Molpy.DefineBoosts = function() {
 		tier: 3
 	});
 	new Molpy.Boost({
-				name: 'GoatONG',
-				icon: 'goatong',
-				group: 'prize',
-				className: 'action',
+		name: 'GoatONG',
+		icon: 'goatong',
+		group: 'prize',
+		className: 'action',
 					
-				desc: function(me) {
-					return 'Spend 10 Goats and cause an ONG<br>(Single use only)'
-						+ (me.bought ? '<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',10))Molpy.ONG();Molpy.LockBoost(\'GoatONG\')" value="Use"></input>' : '');
-				},
+		desc: function(me) {
+			return 'Spend 10 Goats and cause an ONG<br>(Single use only)'
+				+ (me.bought ? '<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',10))Molpy.ONG();Molpy.LockBoost(\'GoatONG\')" value="Use"></input>' : '');
+		},
 				
-				price: {
-					GlassBlocks: '789G',
-					Sand: '2W',
-					Vacuum: 10
-				},
-				
-				prizes: 0,
-				tier: 3
-			});
+		price: {
+			GlassBlocks: '789G',
+			Sand: '2W',
+			Vacuum: 10
+		},
+		
+		prizes: 0,
+		tier: 3
+	});
 
 	new Molpy.Boost({
 		name: 'Mustard Injector',
@@ -8523,6 +8577,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.MustardInjector = function(mode) {
+		Molpy.Anything = 1;
 		if (mode == 0) {
 			if(Molpy.Spend('Mustard', 200)) {
 				var tool = GLRschoice(Molpy.tfOrder);
@@ -8828,6 +8883,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.TwiceTools = function() {
+		Molpy.Anything = 1;
 		if(Molpy.Spend('FluxCrystals', 5)) {
 			var tool = GLRschoice(Molpy.tfOrder);
 			tool.amount *= 2;
@@ -8915,6 +8971,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.NowWhereWasI = function() {
+		Molpy.Anything = 1;
 		if(Molpy.newpixNumber == Molpy.highestNPvisited) return;
 		var jumpcost = Molpy.CalcJumpEnergy(Molpy.highestNPvisited);
 		if(Molpy.Spend({GlassChips: jumpcost, Goats: 1})) {
@@ -8998,6 +9055,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.VoidStare = function(pages, staretype) {
+		Molpy.Anything = 1;
 		if(Molpy.IsEnabled(staretype) && isFinite(Molpy.Boosts['Blackprints'].power)) {
 			var oldPages = pages;
 			pages *= Math.pow(1.01, Molpy.Level('Vacuum') / 100);
@@ -9066,6 +9124,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.SuperMario = function() {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['Mario'];
 		var lvls = me.bought;
 		var UpgradePrice = {
@@ -9080,6 +9139,7 @@ Molpy.DefineBoosts = function() {
 	};
 
 	Molpy.DowngradeMario = function() {
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['Mario'];
 		if(Molpy.Spend('Vacuum',1000)) {
 			me.bought--;
@@ -9131,6 +9191,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.FluxHarvest = function() {
+		Molpy.Anything = 1;
 		if(Molpy.IsEnabled('Time Lord')) {
 			Molpy.Notify("No Rifts left to harvest");
 			return;
@@ -9222,6 +9283,7 @@ Molpy.DefineBoosts = function() {
 	
 	Molpy.SuckMore = function(num)// or less
 	{
+		Molpy.Anything = 1;
 		var me = Molpy.Boosts['TS'];
 		var n = me.Level;
 		var cost = {
@@ -9447,6 +9509,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.SelectPapalDecree = function(name) {
+		Molpy.Anything = 1;
 		Molpy.Decree = Molpy.PapalDecrees[name];
 		Molpy.Boosts['The Pope'].power = Molpy.Hash(name);
 		Molpy.Decreename = name;
@@ -9724,6 +9787,7 @@ Molpy.DefineBoosts = function() {
 		Level: Molpy.BoostFuncs.PosPowerLevel,
 	});
 	Molpy.MorePower = function(thing) {
+		Molpy.Anything = 1;
 		var stuff = Molpy.Boosts[Molpy.NestLinings[thing]];
 		var me = Molpy.Boosts['blackhat'];
 		if ((me.bought & (1<<thing)) == 0) {
