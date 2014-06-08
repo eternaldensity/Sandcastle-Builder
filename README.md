@@ -32,6 +32,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5221
+
+#### Waveney
+- Fixed Dragon Upgrading
+
 ### 3.522
 
 #### Waveney
