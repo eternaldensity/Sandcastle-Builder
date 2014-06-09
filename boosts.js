@@ -4215,7 +4215,7 @@ Molpy.DefineBoosts = function() {
 			var str = 'Allows you to make a Sand Mould of a Discovery.';
 			str += '<br>This requires 100 Factory Automation runs and consumes the NewPix number of the Discovery times 100 Glass Chips per run.<br>';
 			if(Molpy.Earned('Minus Worlds')) str += '(Squared if negative)<br>';
-			if(me.Making && me.power > 0) {
+			if(me.bought && me.power > 0) {
 				var dname = '<small>' + Molpy.Badges['discov' + me.Making].name + '</small>';
 				if(me.power > 100) {
 					str += '<br>Making a mould from ' + dname + ' is complete. The Sand Mould Filler is required next.';
@@ -4255,7 +4255,7 @@ Molpy.DefineBoosts = function() {
 			var str = 'Allows you to make a Glass Mould of a Sand Monument.';
 			str += '<br>This requires 400 Factory Automation runs and consumes 1000 Glass Chips plus 1% per NewPix number of the Monument per run.<br>';
 			if(Molpy.Earned('Minus Worlds')) str += '(Squared if negative)<br>';
-			if(me.Making && me.power > 0) {
+			if(me.bought && me.power > 0) {
 				var mname = '<small>' + Molpy.Badges['monums' + me.Making].name + '</small>';
 				if(me.power > 400) {
 					str += '<br>Making a mould from ' + mname + ' is complete. The Glass Mould Filler is required next.';
@@ -4294,7 +4294,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = 'Fills a Sand Mould with Sand to make a Sand Monument.<br>This requires 200 Factory Automation runs and consumes 100 Sand plus 20% cumulatively per NewPix number of the Discovery, per run.<br>';
 			if(Molpy.Earned('Minus Worlds')) str += '(Squared if negative)<br>';
-			if(me.Making) {
+			if(me.bought) {
 				if(!me.power && (Molpy.Boosts['SMM'].power > 100)) {
 					str += '<br><input type="Button" onclick="Molpy.FillSandMould(' + Molpy.Boosts['SMM'].Making
 						+ ')" value="Start Filling"></input> the mould in the Sand Mould Maker with Sand.';
@@ -4340,7 +4340,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = 'Fills a Glass Mould with Glass to make a Glass Monument.<br><br>Yes, really.<br>This requires 800 Factory Automation runs and consumes 1M Glass Blocks plus 2% cumulatively per NewPix number of the Discovery, per run.<br>';
 			if(Molpy.Earned('Minus Worlds')) str += '(Squared if negative)<br>';
-			if(me.Making) {
+			if(me.bought) {
 				if(!me.power && (Molpy.Boosts['GMM'].power > 400)) {
 					str += '<br><input type="Button" onclick="Molpy.FillGlassMould(' + Molpy.Boosts['GMM'].Making
 						+ ')" value="Start Filling"></input> the mould in the Glass Mould Maker with Glass.';
@@ -4670,6 +4670,7 @@ Molpy.DefineBoosts = function() {
 			if(gmf.power > 800) {
 				Molpy.Notify('Glass Mould Filling is complete', 1);
 				Molpy.EarnBadge('monumg' + gmf.Making);
+				Molpy.Overview.Update(gmf.Making);
 				if(Molpy.Got('Magic Mirror') && Molpy.Boosts['Draft Dragon'].IsEnabled) {
 					if(Molpy.Earned('discov' + -gmf.Making)) {
 						if(!Molpy.Earned('monums' + -gmf.Making))
@@ -10366,6 +10367,13 @@ Molpy.DefineBoosts = function() {
 		desc: str = 'Provides the dragon overview pane',
 		price: {Diamonds:50000,
 			Bonemeal:'10H',
+		},
+		buyFunction: function() {
+			Molpy.Overview.Create(Math.min(Math.abs(Molpy.highestNPvisited),3090));
+		},
+		loadFunction: function() {
+			loadFunctionCalled = 1;
+			this.buyFunction();
 		},
 	});
 

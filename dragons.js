@@ -420,7 +420,6 @@ Molpy.DragonDigRecalc = function() {
 	
 	Molpy.DragonBreathMultiplier = 1;
 
-
 	var td = 0;
 	Molpy.TotalNPsWithDragons = 0;
 	Molpy.TotalDragons = 0;
@@ -616,8 +615,13 @@ Molpy.DragonFledge = function(clutch) {
 	hatch.clean(1);
 
 	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge',' attack as you fledge');
-	if (npd.amount) Molpy.EarnBadge('First Colonist');
+	if (npd.amount) {
+		Molpy.EarnBadge('First Colonist');
+		Molpy.Overview.Update(Molpy.newpixNumber);
+	};
 	Molpy.DragonDigRecalc(); // Always needed
+	if (Molpy.TotalNPsWithDragons > 11) Molpy.UnlockBoost('Dragon Overview');
+	if (Molpy.TotalNPsWithDragons > 111 && Molpy.Got('Dragon Overview')) Molpy.UnlockBoost('Wooly Jumper');
 }
 
 Molpy.FindLocals = function(where) {
@@ -714,6 +718,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			npd.amount = 0;
 			Molpy.Add('exp',Math.pow(10,npd.DragonType)/5);
 			Molpy.Notify(atktxt + ' You are totally destroyed in a one sided ' + timetxt + 'fight.',1);
+			Molpy.Overview.Update(where);
 			break;
 
 		case -1 : // lost a hard fight
@@ -721,6 +726,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			npd.amount = 0;	
 			Molpy.Add('exp',Math.max(local.experience()*numb, Math.pow(10,npd.DragonType)/5));
 			Molpy.Notify(atktxt + ' You lost, but lost with dignity',1);
+			Molpy.Overview.Update(where);
 			break;
 
 		case 0 : // Tie
