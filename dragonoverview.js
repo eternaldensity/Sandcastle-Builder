@@ -5,9 +5,13 @@
 
 Molpy.Overview = {
 	Create: function(size) {
-		this.dopane = g('dragonoverview');
-		this.dopctx = this.dopane.getContext('2d');
 		this.size = size || 3090;
+		this.dopanei = g('dragonoverviewindex');
+		this.dopctxi = this.dopanei.getContext('2d');
+		this.dopanem = g('dragonoverviewmain');
+		this.dopanem.height = Math.floor(this.size/50)*8+20;
+		this.dopctxm = this.dopanem.getContext('2d');
+
 
 
 
@@ -23,7 +27,7 @@ Molpy.Overview = {
 	image: [],
 	
 	MakeIndex: function(maxdrag) {
-		var ctx = this.dopctx;
+		var ctx = this.dopctxi;
 		ctx.fillStyle="black"
 		ctx.fillRect(0,0,this.offsetX+50*10,this.offsetY);
 		
@@ -49,10 +53,11 @@ Molpy.Overview = {
 		ctx.fillText("Not special",5,16);
 		ctx.fillText("Glass Monument",5,32);
 		ctx.fillText("Diamond Masterpiece",5,48);
+		ctx.stroke();
 	},
 
 	BasicGrid: function() {
-		var ctx = this.dopctx;
+		var ctx = this.dopctxi;
 
 		ctx.lineWidth=1;
 		ctx.strokeStyle="white";
@@ -62,11 +67,16 @@ Molpy.Overview = {
 			ctx.fillText(x, this.Xoffset+x*8+2,this.Yoffset-22);
 			ctx.fillText(x+50, this.Xoffset+x*8+2,this.Yoffset-12);
 		};
+		ctx.stroke();
 
+		ctx = this.dopctxm;
+		ctx.lineWidth=1;
+		ctx.strokeStyle="white";
+		ctx.fillStyle="white";
 		for (var y = 0; y < this.size; y+=100) {
-			ctx.moveTo(this.Xoffset-7,this.Yoffset+y*16/100);
-			ctx.lineTo(this.Xoffset-2,this.Yoffset+y*16/100);
-			ctx.fillText(y, 2,this.Yoffset+y*16/100+8);
+			ctx.moveTo(this.Xoffset-7,y*16/100);
+			ctx.lineTo(this.Xoffset-2,y*16/100);
+			ctx.fillText(y, 2,y*16/100+8);
 		};
 		ctx.stroke();
 	},
@@ -75,7 +85,7 @@ Molpy.Overview = {
 		if (!Molpy.Got('Dragon Overview') || np < 0) return;
 		var mt = (Molpy.Earned('monumg'+np)?(Molpy.Earned('diamm'+np)?2:1):0);
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
-		this.dopctx.putImageData(this.image[dt+1][mt], 8*(np%50)+this.Xoffset, 8*Math.floor(np/50)+this.Yoffset);
+		this.dopctxm.putImageData(this.image[dt+1][mt], 8*(np%50)+this.Xoffset, 8*Math.floor(np/50));
 	},
 
 	Xoffset: 40,

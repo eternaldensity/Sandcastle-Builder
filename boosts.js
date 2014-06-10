@@ -10372,7 +10372,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Overview.Create(Math.min(Math.abs(Molpy.highestNPvisited),3090));
 		},
 		loadFunction: function() {
-			loadFunctionCalled = 1;
 			this.buyFunction();
 		},
 	});

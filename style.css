@@ -251,7 +251,6 @@ html,body
 .resizable-element
 {
 	min-width:40px;
-	min-width:40px;
 	min-height:10px;
 }
 .draggable-element
@@ -365,3 +364,11 @@ body.darkscheme .depressed
 {
 	display:block;
 }
+.overview-element
+{
+	min-width:520px;
+	min-height:150px;
+	max-height:2000px;
+	overflow:auto;
+}
+
