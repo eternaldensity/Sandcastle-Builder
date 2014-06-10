@@ -21,6 +21,7 @@
 <script src="gui.js?v=1"></script>
 <script src="options.js?v=1"></script>
 <script src="dragons.js?v=1"></script>
+<script src="dragonoverview.js?v=1"></script>
 
 </head>
 <body class="lightscheme">
@@ -158,6 +159,16 @@
 					<textarea onkeydown=Molpy.KeyDown id="exporttext">
 					</textarea>
 				</div>
+				<div id="sectionDragonOverview" class="hidden">
+					<div id="dragonoverviewindexdiv" class="table-content" style="width:520px; height:100px" >
+						<canvas id="dragonoverviewindex" width=500 height=100>			
+						</canvas>
+					</div>
+					<div id="dragonoverviewmaindiv" class="table-content" style="width:520px; height:295px; overflow:auto" >					
+						<canvas id="dragonoverviewmain" width=500 height=800>			
+						</canvas>
+					</div>
+				</div>	
 			</div>	
 			<div id="sectionMainStats">
 				<div id="sectionSandCounts" class="floatbox infobox">

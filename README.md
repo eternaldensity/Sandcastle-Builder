@@ -32,6 +32,15 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5222
+
+#### Waveney
+- Fixed Sand Mould bug
+- Speeded the program up by only updating the page when something happens
+- The first part of the dragon Overview is opperational, If (and only if) you get the relevant Boost and are in normal mode and operate with the dark scheme.
+- It looks awful in the light scheme, and is not yet accessable in classic.
+- This was work in progress when I needed to fix the sand mould bug
+
 ### 3.5221
 
 #### Waveney
