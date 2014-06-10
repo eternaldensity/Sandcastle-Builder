@@ -34,6 +34,7 @@
 	}
 
 	Molpy.Save = function(auto) {
+		Molpy.Anything = 1;
 		if(!auto) {
 			Molpy.saveCount++;
 			_gaq && _gaq.push(['_trackEvent', 'Save', 'Begin']);
@@ -104,6 +105,7 @@
 	}
 
 	Molpy.Load = function() {
+		Molpy.Anything = 1;
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Begin']);
 
 		var success;
@@ -172,6 +174,7 @@
 
 	Molpy.layoutsLoaded = 0;
 	Molpy.SaveLayouts = function() {
+		Molpy.Anything = 1;
 		Molpy.MakeTempLayout();
 		for( var i in Molpy.layouts) {
 			var thread = Molpy.layouts[i].toString();
@@ -215,6 +218,7 @@
 		Molpy.layoutNeedRepaint = 1;
 	}
 	Molpy.LoadLayouts = function() {
+		Molpy.Anything = 1;
 		var layouts = [];
 		for( var i = 0; i < 100; i++) {
 			var dough = thread = '';
@@ -261,6 +265,7 @@
 	}
 
 	Molpy.Import = function() {
+		Molpy.Anything = 1;
 		var thread = prompt(
 				'Please paste in the text that was given to you on save export.\nWarning: this will automatically save so you may want to back up your current save first.',
 				'');
@@ -1110,6 +1115,7 @@
 	/* In which a routine for resetting the game is presented
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	Molpy.Down = function(coma) {
+		Molpy.Anything = 1;
 		if(coma || confirm('Really Molpy Down?\n(Progress will be reset but achievements will not.)')) {
 
 			coma || _gaq && _gaq.push(['_trackEvent', 'Molpy Down', 'Begin', '' + Molpy.newpixNumber]);
@@ -1236,6 +1242,7 @@
 		}
 	}
 	Molpy.Coma = function() {
+		Molpy.Anything = 1;
 		if(confirm('Really coma?\n(This will wipe all progress and badges!)')
 			&& confirm('Seriously, this will reset ALL the things.\nAre you ABSOLUTELY sure?')) {
 			//reset the badges

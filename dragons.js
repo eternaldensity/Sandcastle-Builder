@@ -63,7 +63,7 @@ Molpy.DefineDragons = function() {
 		desc: 'These small timid creatures hide in the shadows and under leaves keeping out of the way of fierce cats',
 		digbase: 1,
 		defbase: 1,
-		colour: '0f0',
+		colour: '#0f0',
 	});
 	new Molpy.Dragon({
 		name: 'DragonNewt',
@@ -79,7 +79,7 @@ Molpy.DefineDragons = function() {
 		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
 		digbase: 100,
 		defbase: 100,
-		colour: '08f',
+		colour: '#08f',
 	});
 	new Molpy.Dragon({
 		name: 'Wyrm',
@@ -95,7 +95,7 @@ Molpy.DefineDragons = function() {
 		desc: 'These are monstorous, limbless creatures, with a big bite.',
 		digbase: 1e4,
 		defbase: 100000,
-		colour: '00f',
+		colour: '#00f',
 	});
 	new Molpy.Dragon({
 		name: 'Wyvern',
@@ -110,7 +110,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These can fly.  They fight and dig with their legs, some have a bad breath.',
 		digbase: 1e6,
-		colour: '80f',
+		colour: '#80f',
 	});
 	new Molpy.Dragon({
 		name: 'Dragon',
@@ -126,7 +126,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'Tradional Welsh Dragon',
 		digbase: 1e8,
-		colour: 'f0f',
+		colour: '#f0f',
 	});
 	new Molpy.Dragon({
 		name: 'Noble Dragon',
@@ -143,7 +143,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'Very large magical dragon',
 		digbase: 1e11,
-		colour: 'f00',
+		colour: '#f00',
 	});
 	new Molpy.Dragon({
 		name: 'Imperial Dragon',
@@ -160,7 +160,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These are the makers of ledgends, attacking with many heads in many ways, mortals don\'t want to be in the ssame universe as this.',
 		digbase: 1e15,
-		colour: '800',
+		colour: '#800',
 	});
 	new Molpy.Dragon({
 		name: 'NogarDragoN',
@@ -177,7 +177,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: '!', // later
 		digbase: 1e20,
-		colour: '8F8',
+		colour: '#8F8',
 	});
 
 };
@@ -420,7 +420,6 @@ Molpy.DragonDigRecalc = function() {
 	
 	Molpy.DragonBreathMultiplier = 1;
 
-
 	var td = 0;
 	Molpy.TotalNPsWithDragons = 0;
 	Molpy.TotalDragons = 0;
@@ -616,8 +615,13 @@ Molpy.DragonFledge = function(clutch) {
 	hatch.clean(1);
 
 	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge',' attack as you fledge');
-	if (npd.amount) Molpy.EarnBadge('First Colonist');
+	if (npd.amount) {
+		Molpy.EarnBadge('First Colonist');
+		Molpy.Overview.Update(Molpy.newpixNumber);
+	};
 	Molpy.DragonDigRecalc(); // Always needed
+	if (Molpy.TotalNPsWithDragons > 11) Molpy.UnlockBoost('Dragon Overview');
+	if (Molpy.TotalNPsWithDragons > 111 && Molpy.Got('Dragon Overview')) Molpy.UnlockBoost('Wooly Jumper');
 }
 
 Molpy.FindLocals = function(where) {
@@ -714,6 +718,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			npd.amount = 0;
 			Molpy.Add('exp',Math.pow(10,npd.DragonType)/5);
 			Molpy.Notify(atktxt + ' You are totally destroyed in a one sided ' + timetxt + 'fight.',1);
+			Molpy.Overview.Update(where);
 			break;
 
 		case -1 : // lost a hard fight
@@ -721,6 +726,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			npd.amount = 0;	
 			Molpy.Add('exp',Math.max(local.experience()*numb, Math.pow(10,npd.DragonType)/5));
 			Molpy.Notify(atktxt + ' You lost, but lost with dignity',1);
+			Molpy.Overview.Update(where);
 			break;
 
 		case 0 : // Tie

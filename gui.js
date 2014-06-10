@@ -114,6 +114,7 @@ Molpy.DefineGUI = function() {
 		return '<input type="Button" value="' + (Molpy.activeLayout.lootVis[key] ? 'Hide' : 'Show') + '" onclick="Molpy.ShowhideToggle(\'' + key + '\')"></input>'
 	}
 	Molpy.ShowhideToggle = function(key, val) {
+		Molpy.Anything = 1;
 		if(val == undefined) {
 			Molpy.activeLayout.lootVis[key] = !Molpy.activeLayout.lootVis[key];
 		} else {
@@ -217,6 +218,7 @@ Molpy.DefineGUI = function() {
 	}
 
 	Molpy.ConfigureFave = function(n) {
+		Molpy.Anything = 1;
 		if(n == undefined) n = Molpy.selectedFave;
 		var f = Molpy.activeLayout.faves[n];
 		var def = 'Chromatic Heresy';
@@ -252,6 +254,7 @@ Molpy.DefineGUI = function() {
 	}
 
 	Molpy.ToggleFave = function(n, val) {
+		Molpy.Anything = 1;
 		if(n == undefined) n = Molpy.selectedFave;
 
 		var name = 'sectionFave' + n;
@@ -498,6 +501,7 @@ Molpy.DefineGUI = function() {
 	Molpy.lootPageNumMax = $('#navMaxPages');
 	
 	Molpy.changeLootPage = function(change) {
+		Molpy.Anything = 1;
 		if(change != 'max' && change != 'first')
 			Molpy.lootPageNum += change;
 		else if(change == 'first')
@@ -540,6 +544,7 @@ Molpy.DefineGUI = function() {
 	    }
 	}
 	Molpy.searchLoot = function() {
+		Molpy.Anything = 1;
 		Molpy.ShowhideToggle('search', true);
 		Molpy.restoreLootScroll = false;
 		Molpy.lootNeedRepaint = 1;
@@ -1077,6 +1082,7 @@ Molpy.DefineGUI = function() {
 	};
 	
 	Molpy.ClearLog = function() {
+		Molpy.Anything = 1;
 		Molpy.logArchive = [];
 		Molpy.logArchive[0] = [];
 		Molpy.logArchive[0].np = Molpy.newpixNumber;
@@ -1116,6 +1122,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.LogBack = function(){
+		Molpy.Anything = 1;
 		if (Molpy.selectedLog > 0){
 			Molpy.selectedLog--;
 			Molpy.notifLogPaint = 1;
@@ -1123,6 +1130,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.LogForward = function(){
+		Molpy.Anything = 1;
 		if (Molpy.selectedLog < Molpy.currentLog){
 			Molpy.selectedLog++;
 			Molpy.notifLogPaint = 1;
@@ -1131,6 +1139,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.LogCurrent = function(){
+		Molpy.Anything = 1;
 		if (Molpy.selectedLog != Molpy.currentLog){
 			Molpy.selectedLog = Molpy.currentLog;
 			Molpy.notifLogPaint = 1;
@@ -1412,24 +1421,7 @@ Molpy.DefineGUI = function() {
 			Molpy.updateLoot();
 		}
 		
-		if(Molpy.Redacted.location) {
-			var ra = $('.redacted-area');
-			if(ra) {
-				Molpy.drawFrame++;
-				if(Molpy.drawFrame >= Molpy.fps / 3) Molpy.drawFrame = 0;
-				if(repainted || Molpy.drawFrame == 0) {
-					var className = Molpy.Redacted.classNames[Molpy.Redacted.location];
-					if(Molpy.Boosts['Chromatic Heresy'].power > 0 && Molpy.Got('Technicolour Dream Cat') && Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide2') {
-						ra.removeClass(Molpy.Redacted.tempAreaClass);
-						Molpy.Redacted.tempAreaClass = ['alert', 'action', 'toggle', '', ''][flandom(4)];
-						className += ' ' + Molpy.Redacted.tempAreaClass;
-						ra.addClass(Molpy.Redacted.tempAreaClass);
-					}
-					var redacteditem = g('redacteditem');
-					if(redacteditem) redacteditem.className = className;
-				}
-			}
-		}
+		if(Molpy.Redacted.location) Molpy.redactedHighlight(repainted);
 		
 		if(repainted && Molpy.options.fade) Molpy.AdjustFade();
 		
@@ -1455,6 +1447,27 @@ Molpy.DefineGUI = function() {
 		Molpy.CheckBeachClass();
 		
 		Molpy.Boosts['Temporal Rift'].updateRiftIMG();
+	}
+
+	Molpy.redactedHighlight = function(repainted) {
+		if(Molpy.Redacted.location) {
+			var ra = $('.redacted-area');
+			if(ra) {
+				Molpy.drawFrame++;
+				if(Molpy.drawFrame >= Molpy.fps / 3) Molpy.drawFrame = 0;
+				if(repainted || Molpy.drawFrame == 0) {
+					var className = Molpy.Redacted.classNames[Molpy.Redacted.location];
+					if(Molpy.Boosts['Chromatic Heresy'].power > 0 && Molpy.Got('Technicolour Dream Cat') && Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide2') {
+						ra.removeClass(Molpy.Redacted.tempAreaClass);
+						Molpy.Redacted.tempAreaClass = ['alert', 'action', 'toggle', '', ''][flandom(4)];
+						className += ' ' + Molpy.Redacted.tempAreaClass;
+						ra.addClass(Molpy.Redacted.tempAreaClass);
+					}
+					var redacteditem = g('redacteditem');
+					if(redacteditem) redacteditem.className = className;
+				}
+			}
+		}
 	}
 
 	Molpy.PaintStats = function() {
@@ -1582,6 +1595,7 @@ Molpy.DefineGUI = function() {
 	}
 
 	Molpy.LockLayoutToggle = function() {
+		Molpy.Anything = 1;
 		Molpy.layoutLocked = !Molpy.layoutLocked;
 
 		$('.draggable-element,.resizable-element').toggleClass('editlock', Molpy.layoutLocked);
@@ -1597,12 +1611,14 @@ Molpy.DefineGUI = function() {
 		}
 	}
 	Molpy.SnapLayoutToggle = function() {
+		Molpy.Anything = 1;
 		Molpy.layoutSnap = !Molpy.layoutSnap;
 
 		$('#toggleSnap').toggleClass('depressed', Molpy.layoutSnap);
 		$('.draggable-element').draggable('option', 'snap', Molpy.layoutSnap)
 	}
 	Molpy.GridLayoutToggle = function() {
+		Molpy.Anything = 1;
 		Molpy.layoutGrid = !Molpy.layoutGrid;
 
 		$('#toggleGrid').toggleClass('depressed', Molpy.layoutGrid);
@@ -1824,26 +1840,31 @@ Molpy.DefineGUI = function() {
 		}
 
 		this.Export = function() {
+			Molpy.Anything = 1;
 			Molpy.ToggleView('Export');
 			g('exporttext').value = this.toString();
 		}
 		this.Overwrite = function() {
+			Molpy.Anything = 1;
 			if(confirm('Really overwrite the layout "' + this.name + '"with the current settings?')) {
 				this.FromScreen();
 			}
 		}
 		this.Activate = function() {
+			Molpy.Anything = 1;
 			Molpy.activeLayout = this;
 			this.ToScreen();
 			Molpy.layoutNeedRepaint = 1;
 		}
 		this.Clone = function() {
+			Molpy.Anything = 1;
 			var clone = new Molpy.Layout(this);
 			clone.name += ' clone';
 			Molpy.layouts.push(clone);
 			Molpy.layoutNeedRepaint = 1;
 		}
 		this.Delete = function() {
+			Molpy.Anything = 1;
 			if(Molpy.layouts.length < 2) {
 				Molpy.Notify('You need at least 1 layout!');
 				return;
@@ -1857,6 +1878,7 @@ Molpy.DefineGUI = function() {
 			}
 		}
 		this.Rename = function() {
+			Molpy.Anything = 1;
 			var str = prompt('Enter a layout name here:', 'lowercase123');
 			str = str.replace(/\W/g, '').toLowerCase();
 			if(!str) return;
@@ -1866,6 +1888,7 @@ Molpy.DefineGUI = function() {
 
 	}
 	Molpy.NewLayout = function() {
+		Molpy.Anything = 1;
 		var newLayout = new Molpy.Layout({});
 		newLayout.FromScreen();
 		newLayout.name = "new";
@@ -1873,6 +1896,7 @@ Molpy.DefineGUI = function() {
 		Molpy.layoutNeedRepaint = 1;
 	}
 	Molpy.ImportLayout = function() {
+		Molpy.Anything = 1;
 		var thread = prompt('Paste a valid layout code here:\n(write "default" or "default2" for the defaults)', '');
 		if(!thread) return;
 		if(thread == 'default') thread = Molpy.defaultLayoutData;

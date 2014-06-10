@@ -108,6 +108,7 @@ Molpy.DefinePuzzles = function() {
 			this.Clear();
 		}
 		this.Clear = function() {
+			Molpy.Anything = 1;
 			this.guess = [];
 			var i = this.n;
 			while(i--) {
@@ -227,7 +228,7 @@ Molpy.DefinePuzzles = function() {
 		}
 		this.guessOptions = ['No Guess', 'True', 'False'];
 		this.SelectGuess = function(id,sel) {
-//			Molpy.Notify('Here ' + id + ',' + sel);
+			Molpy.Anything = 1;
 			this.guess[id] = this.guessOptions[sel];
 		}
 		this.StringifyStatement = function(statement, id) {
@@ -257,6 +258,7 @@ Molpy.DefinePuzzles = function() {
 			return claim.name + ' is ' + (claim.invert ? 'not ' + !claim.value : claim.value == true);
 		}
 		this.Submit = function() {
+			Molpy.Anything = 1;
 			var neatGuess = [];
 			for( var i in this.guess) {
 				if(this.guess[i] == 'True') neatGuess[i] = true;
