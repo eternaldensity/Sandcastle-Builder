@@ -131,7 +131,7 @@ Molpy.Up = function() {
 		Molpy.globalGpmNPMult = 1;
 		Molpy.lastClick = 0;
 		Molpy.ClickBeach = function(event, leopard, recursion) {
-			Molpy.anything = 1;
+			Molpy.Anything = 1;
 			Molpy.previewNP = 0;
 			if(!Molpy.layoutLocked && !leopard) {
 				Molpy.Notify('You cannnot click here while the layout is unlocked but you can use your leopard');
@@ -290,7 +290,7 @@ Molpy.Up = function() {
 		g('beach').onclick = Molpy.ClickBeach;
 
 		Molpy.StealthClick = function() {
-			Molpy.anything = 1;
+			Molpy.Anything = 1;
 			//clicking first time, after newpixbot		
 			Molpy.EarnBadge('No Ninja');
 			Molpy.ninjaFreeCount++;
@@ -558,7 +558,7 @@ Molpy.Up = function() {
 			this.temp = 0;
 
 			this.buy = function() {
-				Molpy.anything = 1;
+				Molpy.Anything = 1;
 				if(Molpy.ProtectingPrice()) return;
 				var times = Math.pow(4, Molpy.options.sandmultibuy);
 				var bought = 0;
@@ -614,7 +614,7 @@ Molpy.Up = function() {
 			};
 			
 			this.sell = function() {
-				Molpy.anything = 1;
+				Molpy.Anything = 1;
 				if(this.amount > 0) {
 					this.amount--;
 					this.findPrice();
@@ -874,7 +874,7 @@ Molpy.Up = function() {
 			this.temp = 0;
 
 			this.buy = function() {
-				Molpy.anything = 1;
+				Molpy.Anything = 1;
 				if(Molpy.ProtectingPrice()) return;
 				var times = Math.pow(4, Molpy.options.castlemultibuy);
 				var bought = 0;
@@ -930,7 +930,7 @@ Molpy.Up = function() {
 			};
 			
 			this.sell = function() {
-				Molpy.anything = 1;
+				Molpy.Anything = 1;
 				this.findPrice();
 				if(this.amount > 0) {
 					if(this.temp > 0) {
@@ -1265,12 +1265,12 @@ Molpy.Up = function() {
 			}
 		};
 		Molpy.Add = function(stuff, amount, s) {
-			Molpy.anything = 1;
+			Molpy.Anything = 1;
 			var b = Molpy.Boosts[stuff];
 			return b && b.Add(EvalMaybeFunction(amount, 0, 1), s);
 		};
 		Molpy.Spend = function(stuff, amount, s) {
-			Molpy.anything = 1;
+			Molpy.Anything = 1;
 			if(typeof (stuff) === 'object') {
 				if(!Molpy.Has(stuff)) return 0;
 				for( var i in stuff) {
@@ -1460,7 +1460,7 @@ Molpy.Up = function() {
 
 			// Methods
 			this.buy = function(auto,freebe) {
-				Molpy.anything = 1;
+				Molpy.Anything = 1;
 				if(this.unlocked <= this.bought) return; //shopping assistant tried to buy it when it was locked
 				var realPrice = this.CalcPrice(this.price);
 				var free = freebe || Molpy.IsFree(realPrice);
@@ -1666,7 +1666,7 @@ Molpy.Up = function() {
 		};
 
 		Molpy.UnlockBoost = function(bacon, auto) {
-			Molpy.anything = 1;
+			Molpy.Anything = 1;
 			if(typeof bacon === 'string') {
 				var me = Molpy.Boosts[bacon];
 				if(me) {
@@ -1706,7 +1706,7 @@ Molpy.Up = function() {
 			}
 		};
 		Molpy.LockBoost = function(bacon) {
-			Molpy.anything = 1;
+			Molpy.Anything = 1;
 			if(typeof bacon === 'string') {
 				var me = Molpy.Boosts[bacon];
 				if(me) {
@@ -2080,7 +2080,7 @@ Molpy.Up = function() {
 			};
 			
 			this.onClick = function(level) {
-				Molpy.anything = 1;
+				Molpy.Anything = 1;
 				level = level || 0;
 				this.removeDiv();
 				Molpy.lootSelectionNeedRepaint = 1;
@@ -2160,7 +2160,7 @@ Molpy.Up = function() {
 			
 			this.jump = function() {
 				// If no possible spots are open, then no redacteds can spawn
-				Molpy.anything = 1;
+				Molpy.Anything = 1;
 				var possible = false;
 				for(var i in this.divList)
 					if(this.divList[i].is(':visible')) {
@@ -2806,7 +2806,7 @@ Molpy.Up = function() {
 	};
 
 	Molpy.Shutter = function() {
-		Molpy.anything = 1;
+		Molpy.Anything = 1;
 		if(Molpy.Spend('GlassChips', 10)) {
 			if(Molpy.Got('Maps')) {
 				if(Molpy.Has('Maps', 50))  Molpy.UnlockBoost('DNS'); 
@@ -3338,10 +3338,7 @@ Molpy.Up = function() {
 		Molpy.ketchupTime = 0;
 		try {
 			if (Molpy.Anything) Molpy.Draw()
-			else {
-				Molpy.notifsUpdate();
-				Molpy.redactedHighlight(0);
-			}
+			else Molpy.MiniDraw();
 		} catch(e) {
 			alert('Something went wrong in Molpy.Draw(): ' + e + '\n\n' + e.stack);
 			throw e;

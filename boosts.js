@@ -7840,6 +7840,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.Liner = function(thing,change) {
+		Molpy.Anything = 1;
 		var nest = Molpy.Boosts['Nest'];
 		var rest = 0;
 		for (var inf in Molpy.NestLinings) if (inf != thing) rest += (nest.Liners[inf] || 0);
@@ -10369,7 +10370,7 @@ Molpy.DefineBoosts = function() {
 			Bonemeal:'10H',
 		},
 		buyFunction: function() {
-			Molpy.Overview.Create(Math.min(Math.abs(Molpy.highestNPvisited),3090));
+			Molpy.Overview.Create(3090);
 		},
 		loadFunction: function() {
 			this.buyFunction();
