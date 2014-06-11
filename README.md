@@ -32,6 +32,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.5223
+
+#### Waveney
+- Sand Numbers every time
+- Fix a few missing setting of the Anythng flag (not the anything flag which had no effect)
+- Fix for Dragon Overview in your curent NP when it is obtained
+
 ### 3.5222
 
 #### Waveney

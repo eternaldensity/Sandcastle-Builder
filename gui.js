@@ -1449,6 +1449,12 @@ Molpy.DefineGUI = function() {
 		Molpy.Boosts['Temporal Rift'].updateRiftIMG();
 	}
 
+	Molpy.MiniDraw = function() {
+		Molpy.notifsUpdate();
+		Molpy.redactedHighlight(0);
+		if(Molpy.options.numbers) Molpy.sparticlesUpdate();
+	}
+
 	Molpy.redactedHighlight = function(repainted) {
 		if(Molpy.Redacted.location) {
 			var ra = $('.redacted-area');
