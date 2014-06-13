@@ -2149,4 +2149,21 @@ Molpy.DefineGUI = function() {
 		}
 		return innerHTML;
 	}
+	
+	Molpy.defineWindowSizes = function() {
+		if(noLayout) return;
+		$("#sectionStuffCountsBody").resizable({
+			 minHeight: 42,
+			 minWidth: 150
+			 });
+		$("#sectionIncomeCountsBody").resizable({
+			 minHeight: 42,
+			 minWidth: 150
+			 });
+		 $("#sectionDragonOverviewBody").resizable({
+			 minHeight: 120,
+			 minWidth: 520,
+			 maxWidth: 520
+			 });
+	}
 }
