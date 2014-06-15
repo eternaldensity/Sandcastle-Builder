@@ -52,7 +52,7 @@ Molpy.Overview = {
 			Molpy.Overview.mhover.style.display = 'none';
 		});
 
-		if (Molpy.Got('Wooly Jumper')) this.addJumper();
+		if (Molpy.Got('Woolly Jumper')) this.addJumper();
 
 
 				

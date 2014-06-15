@@ -625,7 +625,7 @@ Molpy.DragonFledge = function(clutch) {
 	};
 	Molpy.DragonDigRecalc(); // Always needed
 	if (Molpy.TotalNPsWithDragons > 11) Molpy.UnlockBoost('Dragon Overview');
-	if (Molpy.TotalNPsWithDragons > 111 && Molpy.Got('Dragon Overview')) Molpy.UnlockBoost('Wooly Jumper');
+	if (Molpy.TotalNPsWithDragons > 111 && Molpy.Got('Dragon Overview')) Molpy.UnlockBoost('Woolly Jumper');
 }
 
 Molpy.FindLocals = function(where) {

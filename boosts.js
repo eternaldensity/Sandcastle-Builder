@@ -10380,8 +10380,8 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({
-		name: 'Wooly Jumper',
-		icon: 'wooly',
+		name: 'Woolly Jumper',
+		icon: 'woolly',
 		group: 'chron',
 		desc: str = 'Allows direct jumps to selected NPs on the Dragon Overview pane', 
 		price: {Diamonds:500000,
