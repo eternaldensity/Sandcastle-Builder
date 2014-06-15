@@ -453,8 +453,8 @@
 			<div id="chipcount"></div>
 			<div id="chiprate"></div>
 			<div id="newtools"></div>
-		</div>
-		<div id="sectionStuffCounts" class="hidden floatbox draggable-element table-wrapper" style="text-align:left;">
+		</div>		
+		<div id="sectionStuffCounts" class="hidden draggable-element table-wrapper">
 			<div id="sectionStuffCountsBody" class="table-content resizable-element">
 				<div id="stuffItems" class="table-content-wrapper">
 					<div id="stuffSandCount"></div>
@@ -462,14 +462,16 @@
 					<div id="stuffTFChipCount"></div>
 				</div>
 			</div>
-		</div>
-		<div id="sectionIncomeCounts" class="hidden floatbox draggable-element table-wrapper" style="text-align:left;">
-			<div id="sectionIncomeCountsBody" class="table-content resizable-element">		
-				<div id="incomeSandRate"></div>
-				<div id="incomeSandClickRate"></div>
-				<div id="incomeChipRate"></div>
-				<div id="incomeChipClickRate"></div>
-				<div id="incomeNewTools"></div>
+		</div>		
+		<div id="sectionIncomeCounts" class="hidden draggable-element table-wrapper">
+			<div id="sectionIncomeCountsBody" class="table-content resizable-element">
+				<div id="incomeItems" class="table-content-wrapper">
+					<div id="incomeSandRate"></div>
+					<div id="incomeSandClickRate"></div>
+					<div id="incomeChipRate"></div>
+					<div id="incomeChipClickRate"></div>
+					<div id="incomeNewTools"></div>
+				</div>
 			</div>
 		</div>
 		<div id="sectionNPInfo" class="hidden floatbox infobox draggable-element">
@@ -490,18 +492,18 @@
 		<div id="sectionDragonsNP" class="hidden floatbox infobox draggable-element">
 			<div id="DragonsNP">					
 			</div>
-		</div>	
-		<div id="sectionDragonOverview" class="hidden draggable-element">
-			<div id="sectionDragonOverviewBody" class="resizeable-element">
-				<div id=overviewtip class=doverhover>
-				</div>
-				<div id=overviewbackground>
-					<div id="dragonoverviewindexdiv" class="table-content resizable-element" style="width:520px; height:100px" >
-						<canvas id="dragonoverviewindex" width=500 height=100>			
+		</div>
+		<div id="sectionDragonOverview" class="hidden draggable-element table-wrapper">
+			<div id="sectionDragonOverviewBody" class="table-content resizable-element">
+				<div id="sectionDragonOverviewWrapper"class="table-content-wrapper">
+					<div id=overviewtip class=doverhover>
+					</div>
+					<div id="dragonoverviewindexdiv" class="table-content resizable-element">
+						<canvas id="dragonoverviewindex" width=500 height=100>
 						</canvas>
 					</div>
-					<div id="dragonoverviewmaindiv" class="table-content resizable-element" style="width:520px; height:295px; overflow:auto" >					
-						<canvas id="dragonoverviewmain" width=500 height=800>			
+					<div id="dragonoverviewmaindiv" class="table-content resizable-element">
+						<canvas id="dragonoverviewmain" width=500 height=800>
 						</canvas>
 					</div>
 				</div>

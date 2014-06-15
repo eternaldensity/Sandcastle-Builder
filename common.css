@@ -283,6 +283,14 @@ a:active
 	border-radius:50px;
 	z-index:30;
 }
+#dragonoverviewindexdiv {
+	height:100px;
+	width:520px;
+}
+#dragonoverviewmaindiv {
+	height:295px;
+	width:520px;
+}
 .floatbox{
 	display: inline-block;
 	vertical-align: top;
