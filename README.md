@@ -32,6 +32,15 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.53
+
+#### Waveney
+- Smaller save files when you have lots of dragons
+- Wooly Jumper works
+- Dragon Overview works better, works in classic, works with the light colours
+- Wyrms now possible as third dragon level
+- Lots of progress on making Diamond Masterpieces
+
 ### 3.5223
 
 #### Waveney

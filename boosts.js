@@ -691,7 +691,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.TTT = function(np, chips) {
 		Molpy.Anything = 1;
 		np = Math.floor(np);
-		chips = chips ? Molpy.CalcJumpEnergy(np) : 0;
+		chips = chips ? (chips == 1?Molpy.CalcJumpEnergy(np):Infinity) : 0;
 		var price = Molpy.TimeTravelPrice();
 		if(chips) price = 0;
 		if(np < 1 && !Molpy.Earned('Minus Worlds')) {
@@ -10009,9 +10009,8 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Coal',
 		icon: 'coal',
-		desc: 'Will boost fire breath',
-		draglvl: 'Dragon',
-		limit: Infinity,
+		desc: 'Needed to bake masterpieces and may improve dragon breath',
+		defStuff: 1,
 		group: 'stuff',
 	});
 
@@ -10080,6 +10079,7 @@ Molpy.DefineBoosts = function() {
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
+			this.unlocked--;
 			return true;
 		},
 		price: {
@@ -10104,6 +10104,7 @@ Molpy.DefineBoosts = function() {
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
+			this.unlocked--;
 			return true;
 		},
 		price: {
@@ -10174,6 +10175,7 @@ Molpy.DefineBoosts = function() {
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
+			this.unlocked--;
 			return true;
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
@@ -10361,7 +10363,7 @@ Molpy.DefineBoosts = function() {
 		},
 	});
 
-	new Molpy.Boost({ // Not Yet in use
+	new Molpy.Boost({
 		name: 'Dragon Overview',
 		icon: 'dragonoverview',
 		group: 'drac',
@@ -10377,7 +10379,7 @@ Molpy.DefineBoosts = function() {
 		},
 	});
 
-	new Molpy.Boost({ // Not Yet in use
+	new Molpy.Boost({
 		name: 'Wooly Jumper',
 		icon: 'wooly',
 		group: 'chron',
@@ -10385,13 +10387,16 @@ Molpy.DefineBoosts = function() {
 		price: {Diamonds:500000,
 			Bonemeal:'100H',
 		},
+		buyFunction: function() {
+			Molpy.Overview.addJumper();
+		},
 	});
 
 	new Molpy.Boost({ 
 		name: 'Hubble Double',
 		icon: 'hubble2',
 		desc: str = 'Occasionally the number of runs Constructing from Blackprints has made will double',
-		price: {Diamonds:'88M',
+		price: {Diamonds:'8888888',
 			Bonemeal:'88GW',
 			Blackprints:Infinity,
 			Goats:Infinity
