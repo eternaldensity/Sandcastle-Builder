@@ -2,6 +2,9 @@
 // Enable at 10 NPs with dragons
 // Jumps at 111 NPs with dragons
 
+function getMousePos(canvas, evt) {
+	return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
+}
 
 Molpy.Overview = {
 	Create: function(size) {
@@ -10,11 +13,49 @@ Molpy.Overview = {
 		this.dopctxi = this.dopanei.getContext('2d');
 		this.dopanem = g('dragonoverviewmain');
 		this.dopanem.height = Math.floor(this.size/50)*8+20;
+
 		this.dopctxm = this.dopanem.getContext('2d');
 
+		this.mtip = g('overviewtip');
+		this.mtip.innerHTML = '<div id=dovermhover class=doverhover></div>';
+		this.mhover = g('dovermhover');
+		this.mhover.style.display = 'none';
+/*		this.mhover.style.position = 'absolute';
+		this.mhover.style.zindex = 100;
+		this.mhover.style.width = 100;
+		this.mhover.style.hieght = 25;
+*/
+		this.dopanem.addEventListener('mousemove',function(evt) {
+			var over = Molpy.Overview;
+			var rect = over.dopanem.getBoundingClientRect();
+			var mousex =  evt.clientX - rect.left;
+			var mousey =  evt.clientY - rect.top;
+			var np = 0;
+			
+			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
+				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
+				if (np && np <= Molpy.highestNPvisited) {
+					over.mtip.style.left = (mousex + 10) + "px"; 
+					over.mtip.style.top = (mousey + over.Yoffset -10 ) + "px";
+				        over.mhover.innerHTML = '<span class=doverhover>NP ' + np+'</span>';
+					over.mhover.style.display = 'block';
+
+				} else {
+					over.mhover.style.display = 'none';
+				}
+			} else {
+				over.mhover.style.display = 'none';
+			}
+		});
+
+		this.dopanem.addEventListener('mouseout',function(evt) {
+			Molpy.Overview.mhover.style.display = 'none';
+		});
+
+		if (Molpy.Got('Wooly Jumper')) this.addJumper();
 
 
-
+				
 		// Create index
 		this.MakeIndex(Molpy.Level('DQ'));
 
@@ -88,8 +129,28 @@ Molpy.Overview = {
 		this.dopctxm.putImageData(this.image[dt+1][mt], 8*(np%50)+this.Xoffset, 8*Math.floor(np/50));
 	},
 
+	addJumper: function() {
+		this.dopanem.addEventListener('click',function(evt) {
+			var over = Molpy.Overview;
+			var rect = over.dopanem.getBoundingClientRect();
+			var mousex =  evt.clientX - rect.left;
+			var mousey =  evt.clientY - rect.top;
+			var np = 0;
+
+			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
+				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
+				if (np && np <= Molpy.highestNPvisited) {
+					Molpy.TTT(np,Molpy.Earned('monumg'+np)?2:1);
+				}
+			}
+		});
+	},
+
 	Xoffset: 40,
 
 	Yoffset: 100,
 
+	Hover:	function() {
+
+	}
 }
