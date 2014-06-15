@@ -2719,6 +2719,7 @@ Molpy.Up = function() {
 
 		Molpy.molpish = 1;
 		Molpy.Load(); //autoload saved game
+		Molpy.defineWindowSizes();
 		Molpy.BuildLootLists();
 		Molpy.RefreshLayouts();
 		Molpy.Loopist();
