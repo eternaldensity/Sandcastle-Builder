@@ -73,9 +73,9 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 2,
 		tails: 0,
-		upgrade: {Diamonds:'10K'},
-		exp: '20G',
-		condition: function() { return false },
+		upgrade: {Diamonds:'1M'},
+		exp: '1T',
+		condition: function() { return true },
 		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
 		digbase: 100,
 		defbase: 100,
@@ -93,7 +93,7 @@ Molpy.DefineDragons = function() {
 		exp: '40P',
 		condition: function() { return false },
 		desc: 'These are monstorous, limbless creatures, with a big bite.',
-		digbase: 1e4,
+		digbase: 10000,
 		defbase: 100000,
 		colour: '#00f',
 	});
@@ -502,6 +502,10 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 	if (Math.random() < 0.5 || Math.random()<0.99/Math.log(finds+0.7)) { // Find coins
 		found = 'Gold';
 		n = finds/1000000;
+		Molpy.Add(found,n);
+	} else if (dq.Level > 1 && Math.random() < dq.Level/20) { // Find Coal
+		found = 'Coal';
+		n = Math.max(Math.floor(Math.log(finds)),1);
 		Molpy.Add(found,n);
 	} else { // Find Diamonds 
 		found = 'Diamonds';
