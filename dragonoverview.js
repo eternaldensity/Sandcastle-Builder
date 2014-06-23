@@ -17,31 +17,29 @@ Molpy.Overview = {
 		this.dopctxm = this.dopanem.getContext('2d');
 
 		this.mtip = g('overviewtip');
-		this.mtip.innerHTML = '<div id=dovermhover class=doverhover></div>';
-		this.mhover = g('dovermhover');
+		if (!this.dopanei || !this.dopanem || !this.mtip) return;
+		this.mtip.innerHTML = '<div id=doverhover></div>';
+		this.mhover = g('doverhover');
 		this.mhover.style.display = 'none';
-/*		this.mhover.style.position = 'absolute';
-		this.mhover.style.zindex = 100;
-		this.mhover.style.width = 100;
-		this.mhover.style.hieght = 25;
-*/
 		this.dopanem.addEventListener('mousemove',function(evt) {
 			var over = Molpy.Overview;
 			var rect = over.dopanem.getBoundingClientRect();
-			var mousex =  evt.clientX - rect.left;
-			var mousey =  evt.clientY - rect.top;
+			var mousex =  evt.layerX;//evt.clientX - rect.left;
+			var mousey =  evt.layerY;//evt.clientY - rect.top;
 			var np = 0;
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
 				if (np && np <= Molpy.highestNPvisited) {
+					var npd = Molpy.NPdata[np];
 					over.mtip.style.left = (mousex + 10) + "px"; 
-					over.mtip.style.top = (mousey + over.Yoffset -10 ) + "px";
-				        over.mhover.innerHTML = '<span class=doverhover>NP ' + np+'</span>';
+					over.mtip.style.top = (evt.clientY -20 ) + "px";
+				        over.mhover.innerHTML = 'NP ' + np + ((npd && npd.amount)?'<br>'+npd.amount+' '+Molpy.DragonsById[npd.DragonType].name+(npd.amount>1?'s':''):'');
 					over.mhover.style.display = 'block';
+					over.mtip.style.display = 'block';
 
 				} else {
-					over.mhover.style.display = 'none';
+					over.hover.style.display = 'none';
 				}
 			} else {
 				over.mhover.style.display = 'none';
@@ -49,7 +47,7 @@ Molpy.Overview = {
 		});
 
 		this.dopanem.addEventListener('mouseout',function(evt) {
-			Molpy.Overview.mhover.style.display = 'none';
+			Molpy.Overview.mtip.style.display = 'none';
 		});
 
 		if (Molpy.Got('Woolly Jumper')) this.addJumper();
@@ -123,7 +121,7 @@ Molpy.Overview = {
 	},
 
 	Update: function(np) {
-		if (!Molpy.Got('Dragon Overview') || np < 0) return;
+		if (!Molpy.Got('Dragon Overview') || np < 0 || !this.mtip ) return;
 		var mt = (Molpy.Earned('monumg'+np)?(Molpy.Earned('diamm'+np)?2:1):0);
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
 		this.dopctxm.putImageData(this.image[dt+1][mt], 8*(np%50)+this.Xoffset, 8*Math.floor(np/50));

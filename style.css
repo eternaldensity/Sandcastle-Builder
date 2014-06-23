@@ -364,11 +364,3 @@ body.darkscheme .depressed
 {
 	display:block;
 }
-.overview-element
-{
-	min-width:520px;
-	min-height:150px;
-	max-height:2000px;
-	overflow:auto;
-}
-
