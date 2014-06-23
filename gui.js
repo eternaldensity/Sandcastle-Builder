@@ -1335,7 +1335,7 @@ Molpy.DefineGUI = function() {
 		if (npd && npd.amount) {
 			var dq = Molpy.Boosts['DQ'];
 			var str = Molpify(npd.amount) + ' ' + Molpy.DragonsById[npd.DragonType].name + (npd.amount > 1?'s':'') + '<br>';
-			str += ['Digging','Recovering','Hiding'][dq.overallState];
+			str += ['Digging','Recovering','Hiding','Celebrating'][dq.overallState];
 			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
 			str += '<br>Def: ' + Molpify((npd.defence+0.001)*Molpy.DragonDefenceMultiplier,3) + ' Atk: ' + Molpify((npd.attack+0.001)*Molpy.DragonAttackMultiplier,3) + 
 				' Dig:&nbsp;' + Molpify(npd.dig*Molpy.DragonDigMultiplier,3) ;
@@ -2162,8 +2162,7 @@ Molpy.DefineGUI = function() {
 			 });
 		 $("#sectionDragonOverviewBody").resizable({
 			 minHeight: 120,
-			 minWidth: 520,
-			 maxWidth: 520
+			 minWidth: 520
 			 });
 	}
 }

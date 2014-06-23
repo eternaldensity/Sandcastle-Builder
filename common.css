@@ -302,12 +302,12 @@ a:active
 
 body.darkscheme .floatbox:hover{
 	border-color:#ddd;
-	background-color:#000
+	background-color:#000;
 }
 
 body.lightscheme .floatbox:hover{
 	border-color:#222;
-	background-color:#fff
+	background-color:#fff;
 }
 .lootbox{
 	display: inline-block;
@@ -652,12 +652,20 @@ body.lightscheme .decimaltext {
 	margin-left:-25px;
 }
 
-.doverhover {
-	background-color:'yellow';
-	color:'black';
-	border=1;
+#overviewtip {
+	border-width: 2px;
+	border-style: solid;
+	width=150;
+	height=35;
 	position:absolute;
 	z-index:100;
-	width=100;
-	height=25;
+	border=1;
+	margin:8px;
+	padding: 5px;
+	border-color:yellow;
+	background-color:yellow;
+}
+
+body.darkscheme #doverhover {
+	color:black;
 }

@@ -447,6 +447,7 @@ Molpy.DragonDigRecalc = function() {
 		}
 	}
 	if (Molpy.TotalDragons) td += 0.001;
+	Molpy.DragonDigMultiplier *= Math.exp(1+Molpy.HighestNPwithDragons/365)/Math.E;
 	Molpy.DragonDigRate = td*Molpy.DragonDigMultiplier;
 
 	if (Molpy.ConsecutiveNPsWithDragons >= 10) Molpy.UnlockBoost('Incubator');
@@ -505,7 +506,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		Molpy.Add(found,n);
 	} else if (dq.Level > 1 && Math.random() < dq.Level/20) { // Find Coal
 		found = 'Coal';
-		n = Math.max(Math.floor(Math.log(finds)),1);
+		n = Math.max(Math.floor(Math.log(finds)-10),1);
 		Molpy.Add(found,n);
 	} else { // Find Diamonds 
 		found = 'Diamonds';
@@ -859,7 +860,7 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var dq = Molpy.Boosts['DQ'];
 	var lim = Molpy.MaxDragons();
-	var waste = 0;
+	var spare = 0;
 	var oldDT = 0;
 	var oldDN = 0;
 	var fight = 1;
@@ -874,10 +875,10 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	npd.amount = Molpy.Level('Cryogenics');
 	if (npd.amount > lim) {
 		if (lim < 0) {
-			waste = npd.amount;
+			spare = npd.amount;
 			npd.amount = 0;
 		} else {
-			waste = Math.max(npd.amount - lim,0);
+			spare = Math.max(npd.amount - lim,0);
 			npd.amount = Math.max(0,lim);
 		}
 	}
@@ -890,12 +891,11 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	npd.magic1 = 0;
 	npd.magic2 = 0;
 	npd.magic3 = 0;
-	Molpy.Boosts['Cryogenics'].power = 0;
+	Molpy.Boosts['Cryogenics'].power = spare;
 	
 	Molpy.Notify(Molpify(npd.amount) + ' ' + Molpy.DragonsById[npd.DragonType].name +
 				(npd.amount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
 	if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name,1);
-	if (waste) Molpy.Notify('There was not enough space for '+(npd.amount?Molpify(waste):'any')+' of them',1);
 
 	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge',' attack as you fledge');
 	Molpy.DragonDigRecalc(); // Always needed
@@ -924,27 +924,25 @@ Dragons
 14.1	For classic					Not Launch
 18	Wyrm						Not Launch
 19	Wyvern						Not Launch
-20	Diamond Tools and Moulds			Plans only, making/using impossible
 21	Diamond Monuments				Not Launch
 22	Breath effects					Not Launch
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
-29	Mould making					some progress
-30	Recalibrated fights				y	y
-35	Move Experience to own boost			y	y
-36	No kit from digging				y	y
-37	Kit from fights					y	y
-38	Varriable opponents				y	y
-39	Linear kit					dropped
-40	Hubble Double instead of automatic		y	y
-41	Cost of some kit boosts will be experience	y	y
-42	Reduce Save Scumming				y	y
-
+43	Mould Making					y
+44	Mould Filling					y
+45	Mould Cooking					p
+46	Mould Burnishing				
+47	Wyrm Calibrating
+48	Wyrm Boosts
+49	Muse						y	p
+50	Coal						y	p
+51	Black Powder					y	y
+52	Time Reaper					y
+`
 
 
 
 * Mouthwash (to reduce bad breath backfires)
-* Coal (for fires)
 * Magic Rings (future)
 * Magic Books (future)
 * Bad dreams!
@@ -952,7 +950,6 @@ Dragons
 
 Other
 2	Panthers Ignore Einstein 
-5
 
 
 */

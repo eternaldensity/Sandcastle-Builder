@@ -1624,6 +1624,8 @@ Molpy.Up = function() {
 					this.divElement.find('.buySpan').toggleClass('unbuyable', !this.isAffordable());
 				}
 			};
+
+			this.Lock = function() { Molpy.LockBoost(this.alias) };
 			
 			this.updatePrice = function() {
 				if(!this.divElement) return;
@@ -1812,6 +1814,16 @@ Molpy.Up = function() {
 					}
 				}
 			};
+
+			this.Lock = function() {
+				if (this.earned) {
+					Molpy.groupBadgeCounts[this.group]--;
+					Molpy.badgeNeedRepaint = 1;
+					Molpy.RatesRecalculate();
+					Molpy.BadgesOwned--;
+					this.earned = 0;
+				}
+			}
 			
 			// Methods for Div Creation
 			this.getFullClass = function() {
@@ -3276,7 +3288,7 @@ Molpy.Up = function() {
 			if(Molpy.Got('Glass Furnace')) Molpy.Boosts['Furnace Crossfeed'].department = 1;
 			if(Molpy.Got('Furnace Crossfeed')) Molpy.Boosts['Furnace Multitasking'].department = 1;
 		}
-		Molpy.mNPlength = (Molpy.Got('Time Dilation')?1800:Molpy.NPlength);
+		Molpy.mNPlength = (Molpy.Got('Time Dilation') && Molpy.IsEnabled('Time Dilation')?1800:Molpy.NPlength);
 
 		if(np > 241) {
 			Molpy.EarnBadge("Have you noticed it's slower?");
