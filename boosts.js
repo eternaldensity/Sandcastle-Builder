@@ -7768,7 +7768,7 @@ Molpy.DefineBoosts = function() {
 		}
 	});
 	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal',
-				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses']; // Always add to the END of this list
+				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses','exp','Coal']; // Always add to the END of this list
 	Molpy.DragonStats = ['offence','defence','digging','breath','magic1','magic2','magic3'];
 	Molpy.DragonProperties = {offence:['Sand','Castles'],defence:['GlassChips','GlassBlocks'],digging:['Blackprints','FluxCrystals'],
 				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicats','QQ'],magic3:['Diamonds','Princesses']};
@@ -8799,7 +8799,7 @@ Molpy.DefineBoosts = function() {
 		SpendSuper: Molpy.BoostFuncs.Spend,
 		Spend: function(n) {
 			this.SpendSuper(n);
-			if (Molpy.Got('Flux Repear') && this.Level == 0 && Molpy.Level('Time Lord') == Infinity) {
+			if (Molpy.Got('Time Repear') && this.Level == 0 && Molpy.Level('Time Lord') == Infinity) {
 				this.power = Infinity;
 				Molpy.Spend('Time Lord', Infinity);
 			} else if (Molpy.Level('DQ') && this.Level == 0 && Molpy.Boosts['Time Lord'].bought == Infinity) Molpy.UnlockBoost('Time Reaper');
@@ -10597,7 +10597,7 @@ Molpy.DefineBoosts = function() {
 					str += 'No Masterpiece currently needs mounting on a pedestal';
 					break;
 				case 1:
-					str += 'Making the Pedistal for the Masterpiece at NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
+					str += 'Making the Pedestal for the Masterpiece at NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
 					break;
 				case 2:
 					this.State = 0; // Should never happen...
@@ -10846,7 +10846,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Boosts['DMC'].CookTime(np)+' mNP), You can burn 1T Diamonds instead for each Coal.<br>';
 			str += 'Burnishing the Masterpiece will take infinite Goats and '+Molpy.Boosts['DMB'].BurnCost(np)+' Vacuums, It will take ' +
 				Molpy.Boosts['DMB'].BurnTime(np)+' mNP.<br>';
-			str += 'Then it will be mounted on a pedistal with much celebration.';
+			str += 'Then it will be mounted on a pedestal with much celebration.';
 			return str;
 		},
 		startCountdown: 12,

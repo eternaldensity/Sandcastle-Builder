@@ -1789,6 +1789,7 @@ Molpy.DefineGUI = function() {
 		}
 
 		this.ToScreen = function() {
+			Molpy.Overview.SetSizes();
 			for( var i in Molpy.lootVisOrder) {
 				var el = Molpy.lootVisOrder[i];
 				Molpy.ShowhideToggle(el, this.lootVis[el] == true); //==true incase there are missing values (otherwise they would toggle instead of set to false)

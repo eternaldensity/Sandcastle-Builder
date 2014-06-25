@@ -653,19 +653,19 @@ body.lightscheme .decimaltext {
 }
 
 #overviewtip {
-	border-width: 2px;
+	border-width: 1px;
 	border-style: solid;
-	width=150;
+	width=250;
 	height=35;
 	position:absolute;
 	z-index:100;
-	border=1;
 	margin:8px;
 	padding: 5px;
-	border-color:yellow;
 	background-color:yellow;
+	overflow:visible;
 }
 
 body.darkscheme #doverhover {
 	color:black;
+	overflow:visible;
 }

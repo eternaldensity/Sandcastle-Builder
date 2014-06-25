@@ -13,6 +13,7 @@ Molpy.Overview = {
 		this.dopctxi = this.dopanei.getContext('2d');
 		this.dopanem = g('dragonoverviewmain');
 		this.dopanem.height = Math.floor(this.size/50)*8+20;
+		this.SetSizes();
 
 		this.dopctxm = this.dopanem.getContext('2d');
 
@@ -21,28 +22,33 @@ Molpy.Overview = {
 		this.mtip.innerHTML = '<div id=doverhover></div>';
 		this.mhover = g('doverhover');
 		this.mhover.style.display = 'none';
+		if (noLayout) {
+			$('#toggleDragonOverview').toggleClass('hidden');
+		}
+		
 		this.dopanem.addEventListener('mousemove',function(evt) {
 			var over = Molpy.Overview;
-			var rect = over.dopanem.getBoundingClientRect();
-			var mousex =  evt.layerX;//evt.clientX - rect.left;
-			var mousey =  evt.layerY;//evt.clientY - rect.top;
+			var mousex =  evt.layerX;
+			var mousey =  evt.layerY;
 			var np = 0;
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
 				if (np && np <= Molpy.highestNPvisited) {
 					var npd = Molpy.NPdata[np];
-					over.mtip.style.left = (mousex + 10) + "px"; 
-					over.mtip.style.top = (evt.clientY -20 ) + "px";
-				        over.mhover.innerHTML = 'NP ' + np + ((npd && npd.amount)?'<br>'+npd.amount+' '+Molpy.DragonsById[npd.DragonType].name+(npd.amount>1?'s':''):'');
+					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
+					over.mtip.style.top = (evt.clientY -20 + window.pageYOffset) + "px";
+				        over.mhover.innerHTML = 'NP&nbsp;' + np + ((npd && npd.amount)?'<br>'+npd.amount+'&nbsp;'+Molpy.DragonsById[npd.DragonType].name+(npd.amount>1?'s':''):'');
 					over.mhover.style.display = 'block';
 					over.mtip.style.display = 'block';
 
 				} else {
-					over.hover.style.display = 'none';
+					over.mhover.style.display = 'none';
+					over.mtip.style.display = 'none';
 				}
 			} else {
 				over.mhover.style.display = 'none';
+				over.mtip.style.display = 'none';
 			}
 		});
 
@@ -64,6 +70,12 @@ Molpy.Overview = {
 		for (var np = 1; np < this.size && np <= Molpy.highestNPvisited; np++) this.Update(np);
 	},
 	image: [],
+
+	SetSizes: function() {
+		if (g('sectionDragonOverviewBody') && g('dragonoverviewmaindiv')) {
+			g('dragonoverviewmaindiv').style.height = parseInt(g('sectionDragonOverviewBody').style.height)-100 + 'px';
+		}
+	},
 	
 	MakeIndex: function(maxdrag) {
 		var ctx = this.dopctxi;
