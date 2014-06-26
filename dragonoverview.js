@@ -58,8 +58,10 @@ Molpy.Overview = {
 
 		if (Molpy.Got('Woolly Jumper')) this.addJumper();
 
-
-				
+		this.DoAll();
+	},
+	DoAll: function() {
+		if (!this.dopctxi) return;
 		// Create index
 		this.MakeIndex(Molpy.Level('DQ'));
 
@@ -79,8 +81,10 @@ Molpy.Overview = {
 	
 	MakeIndex: function(maxdrag) {
 		var ctx = this.dopctxi;
-		ctx.fillStyle="black"
-		ctx.fillRect(0,0,this.offsetX+50*10,this.offsetY);
+		ctx.strokeStyle= Molpy.options.colourscheme?"black":"white";
+		ctx.fillStyle=Molpy.options.colourscheme?"white":"black";
+		var deflinecol = Molpy.options.colourscheme?"grey":"white"; 
+		ctx.fillRect(0,0,600,100);
 		
 		for (var dt = -1; dt <=maxdrag; dt++) {
 			this.image[dt+1] = [];
@@ -89,7 +93,7 @@ Molpy.Overview = {
 				var ypos = 10+16*mt;
 				ctx.beginPath();
 				ctx.lineWidth=2;
-				ctx.strokeStyle=(dt<0?"white":Molpy.DragonsById[dt].colour);
+				ctx.strokeStyle=(dt<0?deflinecol:Molpy.DragonsById[dt].colour);
 				ctx.rect(xpos+1,ypos+1,5,5);
 				ctx.fillStyle=['#000','#0F0','#00F'][mt];
 				ctx.fill();
@@ -100,18 +104,24 @@ Molpy.Overview = {
 			}
 		}
 		ctx.font="15px";
-		ctx.fillStyle="white";
+		ctx.fillStyle=Molpy.options.colourscheme?"black":"white";
 		ctx.fillText("Not special",5,16);
 		ctx.fillText("Glass Monument",5,32);
 		ctx.fillText("Diamond Masterpiece",5,48);
+		ctx.stroke();
+
+		ctx =  this.dopctxm;
+		ctx.fillRect(0,0,600,10000);
 		ctx.stroke();
 	},
 
 	BasicGrid: function() {
 		var ctx = this.dopctxi;
+		var deflinecol = Molpy.options.colourscheme?"black":"white"; 
 
 		ctx.lineWidth=1;
-		ctx.strokeStyle="white";
+		ctx.strokeStyle=deflinecol;
+		ctx.fillStyle=deflinecol;
 		for (var x = 0; x < 50; x+=10) {
 			ctx.moveTo(this.Xoffset+x*8,this.Yoffset-12);
 			ctx.lineTo(this.Xoffset+x*8,this.Yoffset-2);
@@ -122,8 +132,8 @@ Molpy.Overview = {
 
 		ctx = this.dopctxm;
 		ctx.lineWidth=1;
-		ctx.strokeStyle="white";
-		ctx.fillStyle="white";
+		ctx.strokeStyle=deflinecol;
+		ctx.fillStyle=deflinecol;
 		for (var y = 0; y < this.size; y+=100) {
 			ctx.moveTo(this.Xoffset-7,y*16/100);
 			ctx.lineTo(this.Xoffset-2,y*16/100);
