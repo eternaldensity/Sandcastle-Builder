@@ -1121,6 +1121,12 @@ Molpy.DefineBadges = function() {
 							+ ')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 					}
 					str += '<div id="img-monums' + me.np + '" class="npthumb" style="background-image:"></div>';
+				} else if(me.group == 'monumg' && Molpy.Got('Muse')) {
+					var np = Molpy.newpixNumber;
+					str += '<br>You are inspired to do this properly ' +
+						'<input type=button value="Start" onclick="Molpy.Boosts.DMM.StartMould()"></input>' +
+						'to make a Diamond Mould.  Making the mould will take '+Molpy.Boosts.DMM.MouldCost(np)+
+						' Diamonds (and ' + Molpy.Boosts.DMM.MouldTime(np)+' mNP).<br>';
 				}
 				return str;
 			},
