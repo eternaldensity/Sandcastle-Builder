@@ -151,6 +151,7 @@ new Molpy.Option({
 		Molpy.UpdateColourScheme();
 		Molpy.flashes++;
 		if(Molpy.flashes == 30) Molpy.EarnBadge('I love my flashy gif');
+		Molpy.Overview.DoAll();
 	},
 	text: [ "Dark Theme", "Light Theme"],
 	defaultval: 1,

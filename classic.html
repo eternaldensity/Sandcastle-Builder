@@ -33,25 +33,28 @@
 				</div>
 			</div>
 			<div id="sectionControls">		
-				<div class="minifloatbox" id="sectionTimer">Timer
+				<div class="minifloatbox controlbox" id="sectionTimer">Timer
 				</div>		
-				<div class="minifloatbox">
+				<div class="minifloatbox controlbox">
 					<a onclick="Molpy.Save();"><h4>Save</h4></a>
 				</div>
-				<div class="minifloatbox" >
+				<div class="minifloatbox controlbox" >
 					<a onclick="Molpy.Load();")><h4>Load</h4></a>
 				</div>
-				<div class="minifloatbox">
-					<a onclick="Molpy.ToggleViews(['Export','Beach','Options','Stats']);"><h4>Export</h4></a>
+				<div class="minifloatbox controlbox">
+					<a onclick="Molpy.ToggleViews(['Export','Beach','Options','Stats','DragonOverview']);"><h4>Export</h4></a>
 				</div>
-				<div class="minifloatbox">
+				<div class="minifloatbox controlbox">
 					<a onclick="Molpy.Import();"><h4>Import</h4></a>
 				</div>
-				<div class="minifloatbox">
-					<a onclick="Molpy.ToggleViews(['Options','Beach','Export','Stats']);"><h4>Options</h4></a>
+				<div class="minifloatbox controlbox">
+					<a onclick="Molpy.ToggleViews(['Options','Beach','Export','Stats','DragonOverview']);"><h4>Options</h4></a>
 				</div>
-				<div class="minifloatbox">
-					<a onclick="Molpy.ToggleViews(['Stats','Beach','Options','Export']);"><h4>Stats</h4></a>
+				<div class="minifloatbox controlbox">
+					<a onclick="Molpy.ToggleViews(['Stats','Beach','Options','Export','DragonOverview']);"><h4>Stats</h4></a>
+				</div>
+				<div class="minifloatbox controlbox hidden" id=toggleDragonOverview>
+					<a onclick="Molpy.ToggleViews(['DragonOverview','Beach','Options','Export','Stats']);"><h4>Dragons</h4></a>
 				</div>
 			</div>
 			<div id="sectionLeft">	
@@ -159,14 +162,18 @@
 					<textarea onkeydown=Molpy.KeyDown id="exporttext">
 					</textarea>
 				</div>
-				<div id="sectionDragonOverview" class="hidden">
-					<div id="dragonoverviewindexdiv" class="table-content" style="width:520px;"">
-						<canvas id="dragonoverviewindex" width=500 height=100>			
+				<div id="sectionDragonOverview" class="sectoverview hidden">
+					<div id=overviewtip class="doverhover hidden">
+					</div>
+					<div id="dragonoverviewindexdiv" class="table-content">
+						<canvas id="dragonoverviewindex" width=500 height=100>
 						</canvas>
 					</div>
-					<div id="dragonoverviewmaindiv" class="table-content" style="width:520px; overflow:auto" >					
-						<canvas id="dragonoverviewmain" width=500 height=800>			
-						</canvas>
+					<div id="DragonOverviewMainBody">
+						<div id="dragonoverviewmaindiv" class="table-content-wrapper">
+							<canvas id="dragonoverviewmain" width=500 height=800 style={overflow=auto;}>
+							</canvas>
+						</div>
 					</div>
 				</div>	
 			</div>	
