@@ -180,6 +180,9 @@ new Molpy.Option({
 	title: 'Draw +Sand Numbers',		
 	defaultval: 1,
 	breakafter: 1,
+	onchange: function() { 
+		g('sparticles').style.display = Molpy.options.numbers?"block":"none";
+	},
 });
 
 new Molpy.Option({

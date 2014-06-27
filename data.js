@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.5223;
-Molpy.versionName=''; // Appended to the numerical version on screen
+Molpy.version=3.6;
+Molpy.versionName='Lots more Dragon Stuff'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings

@@ -300,42 +300,42 @@ Molpy.DefineOpponents = function() {
 	 	name: 'Knight',
 		armed: ['long sword', '+arming sword', 'battle axe', 'morning star', 'lance'],
 		reward: {Gold:'10-1000',Diamonds:'1-5',Thing:0.4},
-		exp: '1P',
+		exp: '1T',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Baron',
 		armed: ['bastard sword','flaming sword','hailstorm','tax demand'],
 		reward: {Gold:'1K-1M',Diamonds:'1-50',Thing:0.45},
-		exp: '1E',
+		exp: '1P',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Lord',
 		armed: ['great sword','great axe','Kazoo','court jester','fire hose'],
 		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'50-50K',Thing:0.5},
-		exp: '1Z',
+		exp: '1E',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Duke',
 		armed: ['+Duchess','horde of servants','+gardeners','whip'],
 		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50K-60M',Thing:0.55},
-		exp: '1Y',
+		exp: '1Z',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Emperor',
 		armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers','Death Star'],
 		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'60M-80G',Thing:0.6},
-		exp: '1U',
+		exp: '1Y',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Paladin',
 		armed: ['+Dragon slaying sword','Holy hand grenade','lot of bad puns','+Sword of the isles'],
 		reward: {Gold:'100M-1Z',Princesses:'10-10K',Diamonds:'70G-100T',Thing:0.65},
-		exp: '1S',
+		exp: '1U',
 	});
 
 	new Molpy.Opponent ({
@@ -403,7 +403,7 @@ Molpy.DragonDigRecalc = function() {
 
 	Molpy.DragonDigMultiplier = 10;
 	if (Molpy.Got('Bucket and Spade')) Molpy.DragonDigMultiplier *=2;
-	if (Molpy.Got('Strength Potion')) Molpy.DragonDigMultiplier *=5;
+	if (Molpy.Got('Strength Potion')) Molpy.DragonDigMultiplier *=2;
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonDigMultiplier *=5;
 
 	Molpy.DragonDefenceMultiplier = 1;
@@ -924,24 +924,15 @@ TODO
 Dragons
 	What						Written	Tested					
 10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch
-14	Dragon Overview Pane				Started
-14.1	For classic					Not Launch
-18	Wyrm						Not Launch
 19	Wyvern						Not Launch
 21	Diamond Monuments				Not Launch
 22	Breath effects					Not Launch
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
-43	Mould Making					y
-44	Mould Filling					y
-45	Mould Cooking					p
-46	Mould Burnishing				
-47	Wyrm Calibrating
-48	Wyrm Boosts
-49	Muse						y	p
-50	Coal						y	p
-51	Black Powder					y	y
 52	Time Reaper					y
+53	Burnish restart
+54	Fireworks
+55	
 `
 
 

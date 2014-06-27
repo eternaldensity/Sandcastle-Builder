@@ -10132,7 +10132,7 @@ Molpy.DefineBoosts = function() {
 		},
 		draglvl: 'Wyrm',
 		group: 'bean',
-		limit: 4,
+		limit: 1, // Only affect digging at the moment
 		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
