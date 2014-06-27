@@ -48,6 +48,7 @@ For personal amusement only.
 - Muse, Black Powder and Time Reaper boosts
 - There is an advantage to digging higher NPs
 - Mirror Scales, Big Bite, Bigger Byte and Trilobite boosts
+- Coal now possible from digging
 
 ### 3.5223
 
