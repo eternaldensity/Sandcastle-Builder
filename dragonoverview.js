@@ -84,7 +84,7 @@ Molpy.Overview = {
 		ctx.strokeStyle= Molpy.options.colourscheme?"black":"white";
 		ctx.fillStyle=Molpy.options.colourscheme?"white":"black";
 		var deflinecol = Molpy.options.colourscheme?"grey":"white"; 
-		ctx.fillRect(0,0,600,100);
+		ctx.fillRect(0,0,800,100);
 		
 		for (var dt = -1; dt <=maxdrag; dt++) {
 			this.image[dt+1] = [];
@@ -111,7 +111,7 @@ Molpy.Overview = {
 		ctx.stroke();
 
 		ctx =  this.dopctxm;
-		ctx.fillRect(0,0,600,10000);
+		ctx.fillRect(0,0,800,10000);
 		ctx.stroke();
 	},
 

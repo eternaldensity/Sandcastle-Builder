@@ -1626,6 +1626,7 @@ Molpy.Up = function() {
 			};
 
 			this.Lock = function() { Molpy.LockBoost(this.alias) };
+			this.Unlock = function() { Molpy.UnlockBoost(this.alias) };
 			
 			this.updatePrice = function() {
 				if(!this.divElement) return;
@@ -1807,6 +1808,8 @@ Molpy.Up = function() {
 			
 			this.HasUpgrade = function() {
 				if(this.np) {
+					if (Molpy.Earned('diamm' + this.np)) return false;
+					
 					var nGroup = Molpy.nextBageGroup[this.group];
 					var nBadge = Molpy.Badges[nGroup + this.np];
 					if(nBadge && !nBadge.earned) {

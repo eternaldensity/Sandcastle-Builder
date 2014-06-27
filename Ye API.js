@@ -97,6 +97,8 @@ NotTemp		int	O	Prevents boosts with complex countdowns being treated as temporar
 
 sortAfter	text	O	Gives the alias of the boost it is to apear after instead of alphabetical
 
+AfterToggle	Func	O	Called after use of Generic Toggle
+
 ***************************************************************************************
 # Badges
 
