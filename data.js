@@ -789,7 +789,8 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	Molpy.Boosts['GoldCard'].department = Molpy.Earned('Valued Customer');
 	Molpy.Boosts['No Need to be Neat'].department = Molpy.Earned('Neat!');
 	if (Molpy.IsEnabled('Time Lord')) Molpy.Boosts['Temporal Rift'].department = 0;
-	Molpy.Boosts['Muse'].department = 1 * Molpy.Got('DMP') * (Molpy.Boosts['DMM'].State == 0) * Molpy.Earned('monumg'+Molpy.newpixNumber);
+	var npd = Molpy.NPdata[Molpy.newpixNumber];
+	Molpy.Boosts['Muse'].department = 1 * Molpy.Got('DMP') * (Molpy.Boosts['DMM'].State == 0) * Molpy.Earned('monumg'+Molpy.newpixNumber) * (npd && npd.amount == Molpy.MaxDragons());
 	Molpy.Boosts['Black Powder'].department = 1 * Molpy.Got('DMM');
 }
 

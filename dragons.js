@@ -412,11 +412,15 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
 	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamantine Armour'));
+	if (Molpy.Got('Mirror Scales')) Molpy.DragonDefenceMultiplier *= Math.pow(4,Molpy.Level('Mirror Scales'));
 
 	Molpy.DragonAttackMultiplier = 1;
 	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
 	if (Molpy.Got('Magic Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(10,Molpy.Level('Magic Teeth'));
 	if (Molpy.Got('Tusks')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Tusks'));
+	if (Molpy.Got('Big Bite')) Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Big Bite'));
+	if (Molpy.Got('Double Byte')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Double Byte'));
+	if (Molpy.Got('Trilobite')) Molpy.DragonAttackMultiplier *= Math.pow(4,Molpy.Level('Trilobite'));
 	
 	Molpy.DragonBreathMultiplier = 1;
 
@@ -504,9 +508,9 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		found = 'Gold';
 		n = finds/1000000;
 		Molpy.Add(found,n);
-	} else if (dq.Level > 1 && Math.random() < dq.Level/20) { // Find Coal
+	} else if (dq.Level > 1 && Math.random() < dq.Level/55) { // Find Coal
 		found = 'Coal';
-		n = Math.max(Math.floor(Math.log(finds)-10),1);
+		n = Math.max(Math.floor(Math.log(finds)-100),1);
 		Molpy.Add(found,n);
 	} else { // Find Diamonds 
 		found = 'Diamonds';
