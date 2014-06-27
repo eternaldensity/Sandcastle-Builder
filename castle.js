@@ -1626,6 +1626,7 @@ Molpy.Up = function() {
 			};
 
 			this.Lock = function() { Molpy.LockBoost(this.alias) };
+			this.Unlock = function() { Molpy.UnlockBoost(this.alias) };
 			
 			this.updatePrice = function() {
 				if(!this.divElement) return;

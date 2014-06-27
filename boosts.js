@@ -8786,7 +8786,7 @@ Molpy.DefineBoosts = function() {
 
 		reset: function() { 
 			this.Level = this.bought +1;
-			if (Molpy.Got('Time Reaper')) Molpy.Spend('FluxCrystals',0)
+			if (Molpy.Boosts['Time Reaper'].bought == 3) Molpy.Spend('FluxCrystals',0)
 		},
 	});
 	new Molpy.Boost({
@@ -8807,7 +8807,8 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.Got('Time Repear') && this.Level == 0 && Molpy.Level('Time Lord') == Infinity) {
 				this.power = Infinity;
 				Molpy.Spend('Time Lord', Infinity);
-			} else if (Molpy.Level('DQ') && this.Level == 0 && Molpy.Boosts['Time Lord'].bought == Infinity) Molpy.UnlockBoost('Time Reaper');
+			} else if (Molpy.Level('DQ') && this.Level == 0 && Molpy.Boosts['Time Lord'].bought == Infinity && 
+				Molpy.Boosts['Time Reaper'].unloced == 0) Molpy.UnlockBoost('Time Reaper');
 			return res;
 		},
 		
@@ -10424,7 +10425,7 @@ Molpy.DefineBoosts = function() {
 		alias: 'DMC',
 		sortAfter: 'DMF',
 		group: 'drac',
-		price: {Diamonds: '40M', Goats: Infinity, Coal: 20 },
+		price: {Diamonds: '40M', Goats: Infinity, Coal: 200 },
 		desc: function(me) {
 			var str = 'Allows a Mould filling to be fused into one';
 			if (me.bought && Molpy.Boosts.DMP.bought) {
@@ -10883,7 +10884,7 @@ Molpy.DefineBoosts = function() {
 		},
 		price: {Blackprints:Infinity,
 			FluxCrystals:Infinity,
-			Coal:1,
+			Coal:20,
 		},
 		group: 'hpt',
 		className: 'action',
@@ -10905,20 +10906,19 @@ Molpy.DefineBoosts = function() {
 			str = 'Automatically harvests the Time Lord for Flux Crystals whenever needed. ';
 			if (!me.bought) {
 				str += 'Needs to be bought 3 times within 100mNP. ';
-				if (me.power) str += 'Has been bought ' + (me.power ==1?'once':'twice');
-				if (me.countdown) str += '.  You have '+ me.countdown+' left.';
+			} else {
+				str += 'Has been bought ' + (me.bought ==1?'once':'twice');
+				if (me.countdown) str += '.  You have '+ me.countdown+' mNP left.';
 			};
 			return str;
 		},
 		price: { FluxCrystals:Infinity },
 		group: 'chron',
 		buyFunction: function() {
-			this.power++;
-			switch (this.power) {
+			switch (this.bought) {
 			case 1:	
 				this.countdown=100;
 			case 2: // deliberate fall through
-				this.Lock();
 				this.Unlock();
 				return;
 			case 3:
@@ -10926,9 +10926,12 @@ Molpy.DefineBoosts = function() {
 			};
 		},
 		countdownLockFunction: function() {
-			this.power = 0;
+			this.bought = 0;
+			this.unlocked = 0;
 			this.Unlock();
-	       },
+		},
+		limit: 3,
+		NotTemp: 1,
 	});
 
 	new Molpy.Boost({
