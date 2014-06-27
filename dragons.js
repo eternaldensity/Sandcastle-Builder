@@ -434,7 +434,7 @@ Molpy.DragonDigRecalc = function() {
 	for (var dpx in Molpy.NPdata) {
 		dnp = Molpy.NPdata[dpx];
 		if (dnp && dnp.amount) {
-			td += (dnp.amount*dnp.dig*Molpy.DragonsById[Molpy.Level('DQ')].digbase || 0);
+			td += (dnp.amount*dnp.dig*Molpy.DragonsById[dnp.DragonType].digbase || 0);
 			Molpy.TotalNPsWithDragons++;
 			Molpy.TotalDragons += dnp.amount;
 			Molpy.HighestNPwithDragons = dpx*1;
@@ -508,7 +508,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		found = 'Gold';
 		n = finds/1000000;
 		Molpy.Add(found,n);
-	} else if (dq.Level > 1 && Math.random() < dq.Level/55) { // Find Coal
+	} else if (dq.Level > 1 && Math.random() < dq.Level/99) { // Find Coal
 		found = 'Coal';
 		n = Math.max(Math.floor(Math.log(finds)-100),1);
 		Molpy.Add(found,n);
