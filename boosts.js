@@ -21,7 +21,7 @@ Molpy.DefineBoosts = function() {
 		discov: ['discovery', 'Discoveries', 'discov', 'Discovery', 'A memorable discovery'],
 		monums: ['sand monument', 'Sand Monuments', 'sandmonument', 'Sand Monument', 'A sand structure commemorating'],
 		monumg: ['glass monument', 'Glass Monuments', 'glassmonument', 'Glass Monument', 'A glass sculpture commemorating'],
-		diamm: ['masterpiece', 'Masterpieces', 'masterpiece' ,'Masterpiece',	'This is a diamond masterpice.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of', 'in diamond. <br>It molpifies with spikes of treeishness.'],
+		diamm: ['masterpiece', 'Masterpieces', 'masterpiece' ,'Masterpiece',	'This is a diamond masterpiece.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of', 'in diamond. <br>It molpifies with spikes of treeishness.'],
 	};
 	
 	Molpy.unlockedGroups['stuff'] = 1; // Stuff is always unlocked because Sand and Castles are always unlocked
@@ -8804,11 +8804,11 @@ Molpy.DefineBoosts = function() {
 		SpendSuper: Molpy.BoostFuncs.Spend,
 		Spend: function(n) {
 			var res = this.SpendSuper(n);
-			if (Molpy.Got('Time Repear') && this.Level == 0 && Molpy.Level('Time Lord') == Infinity) {
+			if (Molpy.Got('Time Reaper') && this.Level == 0 && Molpy.Level('Time Lord') == Infinity) {
 				this.power = Infinity;
 				Molpy.Spend('Time Lord', Infinity);
 			} else if (Molpy.Level('DQ') && this.Level == 0 && Molpy.Boosts['Time Lord'].bought == Infinity && 
-				Molpy.Boosts['Time Reaper'].unloced == 0) Molpy.UnlockBoost('Time Reaper');
+				Molpy.Boosts['Time Reaper'].unlocked == 0) Molpy.UnlockBoost('Time Reaper');
 			return res;
 		},
 		
@@ -9578,7 +9578,7 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		desc: function(me) {
-			var str = 'When you interupt a Ninja Ritual streak longer than 25 and less than 101, sacrifice 5 goats keep it going.';
+			var str = 'When you interrupt a Ninja Ritual streak longer than 25 and less than 101, sacrifice 5 goats keep it going.';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
@@ -9596,7 +9596,7 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		desc: function(me) {
-			var str = 'If Ninja Ritual is interupted, use streak/10 flux crystals to warp time to before it happened, keeping the streak alive.<br>'
+			var str = 'If Ninja Ritual is interrupted, use streak/10 flux crystals to warp time to before it happened, keeping the streak alive.<br>'
 				+ 'Current cost: ' + Molpify(Math.floor(Molpy.Boosts['Ninja Ritual'].power / 10)) + ' Flux Crystals';
 			if(me.bought)
 				str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
@@ -10342,7 +10342,7 @@ Molpy.DefineBoosts = function() {
 			this.State = 0;
 		},
 		countdownFunction: function() {
-			if (this.State == 1 && !Molpy.Spend('Damonds'),this.FillCost(this.Making)) {
+			if (this.State == 1 && !Molpy.Spend('Diamonds'),this.FillCost(this.Making)) {
 				this.State = 0;
 				Molpy.Notify('Not enough diamonds to fill the mould this mNP - the mould is ruined',1);
 				this.countdown = 0;
@@ -10382,7 +10382,7 @@ Molpy.DefineBoosts = function() {
 			}
 			this.State = 1;
 			this.countdown = this.FillTime(this.Making);
-			Molpy.Notify('Filing started for NP'+this.Making+' - do not interupt this',1);
+			Molpy.Notify('Filling started for NP'+this.Making+' - do not interrupt this',1);
 		},
 		BreakMould: function() {
 			this.Making = 0;
@@ -10496,7 +10496,7 @@ Molpy.DefineBoosts = function() {
 
 			this.State = 1;
 			this.countdown = this.CookTime(this.Making);
-			Molpy.Notify('Cooking started for NP'+this.Making+' - do not interupt this',1);
+			Molpy.Notify('Cooking started for NP'+this.Making+' - do not interrupt this',1);
 		},
 		BreakMould: function() {
 			this.Making = 0;
@@ -10586,7 +10586,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['DMC'].State = 0;
 			this.State = 1;
 			this.countdown = this.BurnTime(this.Making);
-			Molpy.Notify('Burnishing started for NP'+this.Making+' - do not interupt this',1);
+			Molpy.Notify('Burnishing started for NP'+this.Making+' - do not interrupt this',1);
 		},
 		BreakMould: function() {
 			this.Making = 0;
@@ -10608,7 +10608,7 @@ Molpy.DefineBoosts = function() {
 		price: {Diamonds: '150M', Goats: Infinity, Bonemeal: '111GW' },
 		sortAfter: 'DMB',
 		desc: function(me) {
-			var str = 'To put the masterpice on and hold the dedication';
+			var str = 'To put the masterpiece on and hold the dedication';
 			if (me.bought && Molpy.Boosts.DMP.bought) {
 				switch (me.State) {
 				case 0: 
