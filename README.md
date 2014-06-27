@@ -48,7 +48,6 @@ For personal amusement only.
 - Muse, Black Powder and Time Reaper boosts
 - There is an advantage to digging higher NPs
 - Mirror Scales, Big Bite, Bigger Byte and Trilobite boosts
-- Strength Potions have one of the effects in their descriptions
 
 ### 3.5223
 
