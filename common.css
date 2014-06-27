@@ -283,6 +283,14 @@ a:active
 	border-radius:50px;
 	z-index:30;
 }
+#dragonoverviewindexdiv {
+	height:100px;
+	width:520px;
+}
+#dragonoverviewmaindiv {
+	height:295px;
+	width:520px;
+}
 .floatbox{
 	display: inline-block;
 	vertical-align: top;
@@ -294,12 +302,12 @@ a:active
 
 body.darkscheme .floatbox:hover{
 	border-color:#ddd;
-	background-color:#000
+	background-color:#000;
 }
 
 body.lightscheme .floatbox:hover{
 	border-color:#222;
-	background-color:#fff
+	background-color:#fff;
 }
 .lootbox{
 	display: inline-block;
@@ -642,4 +650,22 @@ body.lightscheme .decimaltext {
 	list-style:disc;
 	list-style-position:outside;
 	margin-left:-25px;
+}
+
+#overviewtip {
+	border-width: 1px;
+	border-style: solid;
+	width=250;
+	height=35;
+	position:absolute;
+	z-index:100;
+	margin:8px;
+	padding: 5px;
+	background-color:yellow;
+	overflow:visible;
+}
+
+body.darkscheme #doverhover {
+	color:black;
+	overflow:visible;
 }

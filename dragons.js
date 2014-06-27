@@ -73,9 +73,9 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 2,
 		tails: 0,
-		upgrade: {Diamonds:'10K'},
-		exp: '20G',
-		condition: function() { return false },
+		upgrade: {Diamonds:'1M'},
+		exp: '1T',
+		condition: function() { return true },
 		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
 		digbase: 100,
 		defbase: 100,
@@ -93,7 +93,7 @@ Molpy.DefineDragons = function() {
 		exp: '40P',
 		condition: function() { return false },
 		desc: 'These are monstorous, limbless creatures, with a big bite.',
-		digbase: 1e4,
+		digbase: 10000,
 		defbase: 100000,
 		colour: '#00f',
 	});
@@ -300,42 +300,42 @@ Molpy.DefineOpponents = function() {
 	 	name: 'Knight',
 		armed: ['long sword', '+arming sword', 'battle axe', 'morning star', 'lance'],
 		reward: {Gold:'10-1000',Diamonds:'1-5',Thing:0.4},
-		exp: '1P',
+		exp: '1T',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Baron',
 		armed: ['bastard sword','flaming sword','hailstorm','tax demand'],
 		reward: {Gold:'1K-1M',Diamonds:'1-50',Thing:0.45},
-		exp: '1E',
+		exp: '1P',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Lord',
 		armed: ['great sword','great axe','Kazoo','court jester','fire hose'],
 		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'50-50K',Thing:0.5},
-		exp: '1Z',
+		exp: '1E',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Duke',
 		armed: ['+Duchess','horde of servants','+gardeners','whip'],
 		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50K-60M',Thing:0.55},
-		exp: '1Y',
+		exp: '1Z',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Emperor',
 		armed: ['+staff of office','holy orb','+Imperial Guard','-Kamakazi Teddy Bears','!ICBM','+Storm Troopers','Death Star'],
 		reward: {Gold:'10M-1E',Princesses:'1-10',Diamonds:'60M-80G',Thing:0.6},
-		exp: '1U',
+		exp: '1Y',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Paladin',
 		armed: ['+Dragon slaying sword','Holy hand grenade','lot of bad puns','+Sword of the isles'],
 		reward: {Gold:'100M-1Z',Princesses:'10-10K',Diamonds:'70G-100T',Thing:0.65},
-		exp: '1S',
+		exp: '1U',
 	});
 
 	new Molpy.Opponent ({
@@ -403,7 +403,7 @@ Molpy.DragonDigRecalc = function() {
 
 	Molpy.DragonDigMultiplier = 10;
 	if (Molpy.Got('Bucket and Spade')) Molpy.DragonDigMultiplier *=2;
-	if (Molpy.Got('Strength Potion')) Molpy.DragonDigMultiplier *=5;
+	if (Molpy.Got('Strength Potion')) Molpy.DragonDigMultiplier *=2;
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonDigMultiplier *=5;
 
 	Molpy.DragonDefenceMultiplier = 1;
@@ -412,11 +412,15 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
 	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamantine Armour'));
+	if (Molpy.Got('Mirror Scales')) Molpy.DragonDefenceMultiplier *= Math.pow(4,Molpy.Level('Mirror Scales'));
 
 	Molpy.DragonAttackMultiplier = 1;
 	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
 	if (Molpy.Got('Magic Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(10,Molpy.Level('Magic Teeth'));
 	if (Molpy.Got('Tusks')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Tusks'));
+	if (Molpy.Got('Big Bite')) Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Big Bite'));
+	if (Molpy.Got('Double Byte')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Double Byte'));
+	if (Molpy.Got('Trilobite')) Molpy.DragonAttackMultiplier *= Math.pow(4,Molpy.Level('Trilobite'));
 	
 	Molpy.DragonBreathMultiplier = 1;
 
@@ -447,6 +451,7 @@ Molpy.DragonDigRecalc = function() {
 		}
 	}
 	if (Molpy.TotalDragons) td += 0.001;
+	Molpy.DragonDigMultiplier *= Math.exp(1+Molpy.HighestNPwithDragons/365)/Math.E;
 	Molpy.DragonDigRate = td*Molpy.DragonDigMultiplier;
 
 	if (Molpy.ConsecutiveNPsWithDragons >= 10) Molpy.UnlockBoost('Incubator');
@@ -502,6 +507,10 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 	if (Math.random() < 0.5 || Math.random()<0.99/Math.log(finds+0.7)) { // Find coins
 		found = 'Gold';
 		n = finds/1000000;
+		Molpy.Add(found,n);
+	} else if (dq.Level > 1 && Math.random() < dq.Level/55) { // Find Coal
+		found = 'Coal';
+		n = Math.max(Math.floor(Math.log(finds)-100),1);
 		Molpy.Add(found,n);
 	} else { // Find Diamonds 
 		found = 'Diamonds';
@@ -621,7 +630,7 @@ Molpy.DragonFledge = function(clutch) {
 	};
 	Molpy.DragonDigRecalc(); // Always needed
 	if (Molpy.TotalNPsWithDragons > 11) Molpy.UnlockBoost('Dragon Overview');
-	if (Molpy.TotalNPsWithDragons > 111 && Molpy.Got('Dragon Overview')) Molpy.UnlockBoost('Wooly Jumper');
+	if (Molpy.TotalNPsWithDragons > 111 && Molpy.Got('Dragon Overview')) Molpy.UnlockBoost('Woolly Jumper');
 }
 
 Molpy.FindLocals = function(where) {
@@ -855,7 +864,7 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var dq = Molpy.Boosts['DQ'];
 	var lim = Molpy.MaxDragons();
-	var waste = 0;
+	var spare = 0;
 	var oldDT = 0;
 	var oldDN = 0;
 	var fight = 1;
@@ -870,10 +879,10 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	npd.amount = Molpy.Level('Cryogenics');
 	if (npd.amount > lim) {
 		if (lim < 0) {
-			waste = npd.amount;
+			spare = npd.amount;
 			npd.amount = 0;
 		} else {
-			waste = Math.max(npd.amount - lim,0);
+			spare = Math.max(npd.amount - lim,0);
 			npd.amount = Math.max(0,lim);
 		}
 	}
@@ -886,12 +895,11 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	npd.magic1 = 0;
 	npd.magic2 = 0;
 	npd.magic3 = 0;
-	Molpy.Boosts['Cryogenics'].power = 0;
+	Molpy.Boosts['Cryogenics'].power = spare;
 	
 	Molpy.Notify(Molpify(npd.amount) + ' ' + Molpy.DragonsById[npd.DragonType].name +
 				(npd.amount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
 	if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name,1);
-	if (waste) Molpy.Notify('There was not enough space for '+(npd.amount?Molpify(waste):'any')+' of them',1);
 
 	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge',' attack as you fledge');
 	Molpy.DragonDigRecalc(); // Always needed
@@ -916,31 +924,20 @@ TODO
 Dragons
 	What						Written	Tested					
 10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch
-14	Dragon Overview Pane				Started
-14.1	For classic					Not Launch
-18	Wyrm						Not Launch
 19	Wyvern						Not Launch
-20	Diamond Tools and Moulds			Plans only, making/using impossible
 21	Diamond Monuments				Not Launch
 22	Breath effects					Not Launch
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
-29	Mould making					some progress
-30	Recalibrated fights				y	y
-35	Move Experience to own boost			y	y
-36	No kit from digging				y	y
-37	Kit from fights					y	y
-38	Varriable opponents				y	y
-39	Linear kit					dropped
-40	Hubble Double instead of automatic		y	y
-41	Cost of some kit boosts will be experience	y	y
-42	Reduce Save Scumming				y	y
-
+52	Time Reaper					y
+53	Burnish restart
+54	Fireworks
+55	
+`
 
 
 
 * Mouthwash (to reduce bad breath backfires)
-* Coal (for fires)
 * Magic Rings (future)
 * Magic Books (future)
 * Bad dreams!
@@ -948,7 +945,6 @@ Dragons
 
 Other
 2	Panthers Ignore Einstein 
-5
 
 
 */

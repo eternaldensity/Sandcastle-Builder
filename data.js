@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.5223;
-Molpy.versionName=''; // Appended to the numerical version on screen
+Molpy.version=3.6;
+Molpy.versionName='Lots more Dragon Stuff'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
@@ -789,6 +789,9 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	Molpy.Boosts['GoldCard'].department = Molpy.Earned('Valued Customer');
 	Molpy.Boosts['No Need to be Neat'].department = Molpy.Earned('Neat!');
 	if (Molpy.IsEnabled('Time Lord')) Molpy.Boosts['Temporal Rift'].department = 0;
+	var npd = Molpy.NPdata[Molpy.newpixNumber];
+	Molpy.Boosts['Muse'].department = 1 * Molpy.Got('DMP') * (Molpy.Boosts['DMM'].State == 0) * Molpy.Earned('monumg'+Molpy.newpixNumber) * (npd && npd.amount == Molpy.MaxDragons());
+	Molpy.Boosts['Black Powder'].department = 1 * Molpy.Got('DMM');
 }
 
 Molpy.CheckLogicatRewards = function(automationLevel) {

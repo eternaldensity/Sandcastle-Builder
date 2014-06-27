@@ -414,16 +414,23 @@
 			}
 		}
 		if (!lowest) return str;
-		str += lowest + s + highest
+		str += lowest + s + highest;
+		var lastNP = "";
 		for (var np=lowest; np<=highest; np++) {
 			var dd = Molpy.NPdata[np];
 			str += s;
 		        if (dd && dd.amount) {
-				str += dd.DragonType + c + dd.amount + c + dd.defence + c + dd.attack + c + dd.dig ;
-				if (dd.breath || dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.breath || 0);
-				if (dd.magic1 || dd.magic2 || dd.magic3) str += c + (dd.magic1 || 0);
-				if (dd.magic2 || dd.magic3) str += c + (dd.magic2 || 0);
-				if (dd.magic3) str += c + (dd.magic3 || 0);
+				var thisNP = dd.DragonType + c + dd.amount + c + dd.defence + c + dd.attack + c + dd.dig ;
+				if (dd.breath || dd.magic1 || dd.magic2 || dd.magic3) thisNP += c + (dd.breath || 0);
+				if (dd.magic1 || dd.magic2 || dd.magic3) thisNP += c + (dd.magic1 || 0);
+				if (dd.magic2 || dd.magic3) thisNP += c + (dd.magic2 || 0);
+				if (dd.magic3) thisNP += c + (dd.magic3 || 0);
+				if (thisNP == lastNP) {
+					str += 'd';
+				} else {
+					str += thisNP;
+					lastNP = thisNP;
+				}
 			}
 		}
 		npdsthread = str;
@@ -757,20 +764,21 @@
 		if (!pixels[0]) return;
 		var lowest = parseFloat(pixels.shift());
 		var highest = parseFloat(pixels.shift());
+		var lastNP = "";
 		for (var np = lowest; np<=highest; np++) {
-			var pretzels = pixels.shift().split(c);
-			if (pretzels[0]) {
-				dd = Molpy.NPdata[np] = {};
-				dd.DragonType = parseInt(pretzels.shift()) || 0;
-				dd.amount = parseFloat(pretzels.shift()) || 0;
-				dd.defence = parseFloat(pretzels.shift()) || 0;
-				dd.attack = parseFloat(pretzels.shift()) || 0;
-				dd.dig = parseFloat(pretzels.shift()) || 0;
-				dd.breath = parseFloat(pretzels.shift() || 0);
-				dd.magic1 = parseFloat(pretzels.shift() || 0);
-				dd.magic2 = parseFloat(pretzels.shift() || 0);
-				dd.magic3 = parseFloat(pretzels.shift() || 0);
-			}
+			if (pixels[0] != 'd') lastNP = pixels.shift()
+			else pixels.shift();
+			var pretzels = lastNP.split(c);
+			dd = Molpy.NPdata[np] = {};
+			dd.DragonType = parseInt(pretzels.shift()) || 0;
+			dd.amount = parseFloat(pretzels.shift()) || 0;
+			dd.defence = parseFloat(pretzels.shift()) || 0;
+			dd.attack = parseFloat(pretzels.shift()) || 0;
+			dd.dig = parseFloat(pretzels.shift()) || 0;
+			dd.breath = parseFloat(pretzels.shift() || 0);
+			dd.magic1 = parseFloat(pretzels.shift() || 0);
+			dd.magic2 = parseFloat(pretzels.shift() || 0);
+			dd.magic3 = parseFloat(pretzels.shift() || 0);
 		}
 	}
 
@@ -1060,6 +1068,9 @@
 		}
 		if(version < 3.521) {
 			if (!Molpy.Level('exp')) Molpy.Boosts['exp'].Level = 1000000*Molpy.Level('DQ');
+		}
+		if(version < 3.6) {
+			if (Molpy.Got('Time Dialation')) Molpy.Boosts['Time Dialation'].power = 1;
 		}
 	}
 

@@ -32,6 +32,23 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.6 Lots More Dragon Stuff
+
+#### Waveney
+- Smaller save files when you have lots of dragons
+- Woolly Jumper works
+- Dragon Overview works better, works in classic, works with the light colours
+- Dragon Overview has a tooltip showing what the NP is
+- Wyrms now possible as third dragon level
+- Diamond Masterpieces are now theoretically possible (do tell when you make one) 
+- Note there is nothing special when they are made as this is not yet coded
+- Removed long standing bugs affecting some early badges
+- Time Dialation is toggleable
+- Badges can be lost!
+- Muse, Black Powder and Time Reaper boosts
+- There is an advantage to digging higher NPs
+- Mirror Scales, Big Bite, Bigger Byte and Trilobite boosts
+
 ### 3.5223
 
 #### Waveney

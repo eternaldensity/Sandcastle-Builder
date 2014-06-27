@@ -128,16 +128,24 @@
 	width:150px;
 	margin:10px;
 }
-#temporalRift
-{
+#temporalRift {
     z-index: 99999999;
     vertical-align: bottom;
 }
-.hidden
-{
+.hidden {
 	display:none;
 }
-.unhidden
-{
+.unhidden {
 	display:block;
+}
+.sectoverview {
+	height:395px;
+}
+.controlbox {
+	min-width:40px;
+}
+#DragonOverviewMainBody {
+	height:295px;
+	overflow-y:scroll;
+	width:560px;
 }

@@ -1334,10 +1334,11 @@ Molpy.DefineGUI = function() {
 		var npd = Molpy.NPdata[Molpy.newpixNumber];
 		if (npd && npd.amount) {
 			var dq = Molpy.Boosts['DQ'];
-			var str = Molpify(npd.amount) + ' ' + Molpy.DragonsById[npd.DragonType].name + (npd.amount > 1?'s':'') + '<br>';
-			str += ['Digging','Recovering','Hiding'][dq.overallState];
+			var dt = Molpy.DragonsById[npd.DragonType];
+			var str = Molpify(npd.amount) + ' ' + dt.name + (npd.amount > 1?'s':'') + '<br>';
+			str += ['Digging','Recovering','Hiding','Celebrating'][dq.overallState];
 			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
-			str += '<br>Def: ' + Molpify((npd.defence+0.001)*Molpy.DragonDefenceMultiplier,3) + ' Atk: ' + Molpify((npd.attack+0.001)*Molpy.DragonAttackMultiplier,3) + 
+			str += '<br>Def: ' + Molpify((npd.defence+0.001)*Molpy.DragonDefenceMultiplier*dt.defbase,3) + ' Atk: ' + Molpify((npd.attack+0.001)*Molpy.DragonAttackMultiplier*dt.defbase,3) + 
 				' Dig:&nbsp;' + Molpify(npd.dig*Molpy.DragonDigMultiplier,3) ;
 			if (npd.breath) str += ' Breath:&nbsp;' + Molpify(npd.breath*Molpy.DragonBreathMultiplier,3);
 			if (npd.magic1) str += ' Magic1:&nbsp;' + npd.magic1;
@@ -1789,6 +1790,7 @@ Molpy.DefineGUI = function() {
 		}
 
 		this.ToScreen = function() {
+			Molpy.Overview.SetSizes();
 			for( var i in Molpy.lootVisOrder) {
 				var el = Molpy.lootVisOrder[i];
 				Molpy.ShowhideToggle(el, this.lootVis[el] == true); //==true incase there are missing values (otherwise they would toggle instead of set to false)
@@ -2145,8 +2147,28 @@ Molpy.DefineGUI = function() {
 			var pNum = price[p];
 			//change all number representations into a number (40,000 40k 4e4)
 			pNum = isNaN(pNum) ? DeMolpify(pNum) : pNum;
-			innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum, 2) + ' ' + Molpy.Boosts[p].plural;
+//			if (!Molpy.Boosts[p]) {
+//				Molpy.Notify('EEEP '+p,1)
+//			} else {
+				innerHTML += '<br>&nbsp;&nbsp;- ' + Molpify(pNum, 2) + ' ' + Molpy.Boosts[p].plural;
+//			}
 		}
 		return innerHTML;
+	}
+	
+	Molpy.defineWindowSizes = function() {
+		if(noLayout) return;
+		$("#sectionStuffCountsBody").resizable({
+			 minHeight: 42,
+			 minWidth: 150
+			 });
+		$("#sectionIncomeCountsBody").resizable({
+			 minHeight: 42,
+			 minWidth: 150
+			 });
+		 $("#sectionDragonOverviewBody").resizable({
+			 minHeight: 120,
+			 minWidth: 520
+			 });
 	}
 }

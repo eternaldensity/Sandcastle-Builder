@@ -298,18 +298,18 @@ Molpy.DefineBadges = function() {
 		vis: 1
 	});
 	new Molpy.Badge({
-		name: 'Not So ' + Molpy.redactedW,
-		desc: 'Click 2 ' + Molpy.redactedWords,
+		name: 'Not So ' + Molpy.Redacted.word2,
+		desc: 'Click 2 ' + Molpy.Redacted.words,
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: "Don't Litter!",
-		desc: 'Click 14 ' + Molpy.redactedWords,
+		desc: 'Click 14 ' + Molpy.Redacted.words,
 		vis: 1
 	});
 	new Molpy.Badge({
 		name: 'Y U NO BELIEVE ME?',
-		desc: 'Click 101 ' + Molpy.redactedWords,
+		desc: 'Click 101 ' + Molpy.Redacted.words,
 		vis: 1
 	});
 	new Molpy.Badge({
@@ -1121,6 +1121,12 @@ Molpy.DefineBadges = function() {
 							+ ')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 					}
 					str += '<div id="img-monums' + me.np + '" class="npthumb" style="background-image:"></div>';
+				} else if(me.group == 'monumg' && Molpy.Got('Muse')) {
+					var np = Molpy.newpixNumber;
+					str += '<br>You are inspired to do this properly ' +
+						'<input type=button value="Start" onclick="Molpy.Boosts.DMM.StartMould()"></input>' +
+						'to make a Diamond Mould.  Making the mould will take '+Molpy.Boosts.DMM.MouldCost(np)+
+						' Diamonds (and ' + Molpy.Boosts.DMM.MouldTime(np)+' mNP).<br>';
 				}
 				return str;
 			},
