@@ -34,7 +34,7 @@ Molpy.Overview = {
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Molpy.highestNPvisited) {
+				if (np && np <= Math.abs(Molpy.highestNPvisited)) {
 					var npd = Molpy.NPdata[np];
 					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
 					over.mtip.style.top = (evt.clientY -20 + window.pageYOffset) + "px";
@@ -69,7 +69,7 @@ Molpy.Overview = {
 		this.BasicGrid();
 		
 		// Update all nps
-		for (var np = 1; np < this.size && np <= Molpy.highestNPvisited; np++) this.Update(np);
+		for (var np = 1; np < this.size && np <= Math.abs(Molpy.highestNPvisited); np++) this.Update(np);
 	},
 	image: [],
 

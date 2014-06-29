@@ -32,6 +32,29 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.6002
+
+#### Waveney (lots of thanks to tyriac)
+- Fix misnumbered discovery
+- Fix dragon info box for multiple dragons
+- Reduce Woolly Jumper notifications
+- Fix Broken Rung issue
+- Fix classic view overview button toggle
+- Fix colourscheme bug
+- Several fixes to Muse
+- Fix Filling time bug
+- Partial fix to Archimedes Lever
+- Fixed Error message on burnishing completion
+- Fixed bug causing some dragons to go missing on saves
+- Fixed bugs with dragon overview when highest NP negative
+- Wooly Jumper inactive when layouts not locked
+
+### 3.6001
+
+#### Waveney
+- Fix long standing bug causing extra large rewards from digging
+- Fix many typos (thanks tyriac)
+
 ### 3.6 Lots More Dragon Stuff
 
 #### Waveney
