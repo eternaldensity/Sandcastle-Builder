@@ -835,6 +835,7 @@ Molpy.DragonUpgrade = function(type) {
 			if (Molpy.Spend(Molpy.DragonsById[dq.Level].upgrade)) {
 				dq.Level++;
 				Molpy.Boosts['DQ'].Refresh();
+				if (Molpy.Got('Dragon Overview')) Molpy.Overview.Create(3090);
 				Molpy.Notify('Hatchlings now mature into '+ Molpy.DragonsById[dq.Level].name,1) + 's';
 			} else {
 				Molpy.Notify('You can\'t afford the upgrade yet');

@@ -1070,7 +1070,7 @@
 			if (!Molpy.Level('exp')) Molpy.Boosts['exp'].Level = 1000000*Molpy.Level('DQ');
 		}
 		if(version < 3.6) {
-			if (Molpy.Got('Time Dialation')) Molpy.Boosts['Time Dialation'].power = 1;
+			if (Molpy.Got('Time Dilation')) Molpy.Boosts['Time Dilation'].power = 1;
 		}
 	}
 

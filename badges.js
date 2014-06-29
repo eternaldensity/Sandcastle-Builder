@@ -1121,7 +1121,7 @@ Molpy.DefineBadges = function() {
 							+ ')" value="Make"></input> a mould from this Sand Monument, which can be filled with glass to create a Glass Monument'
 					}
 					str += '<div id="img-monums' + me.np + '" class="npthumb" style="background-image:"></div>';
-				} else if(me.group == 'monumg' && Molpy.Got('Muse')) {
+				} else if(me.group == 'monumg' && Molpy.Got('Muse') && Molpy.Boosts.Muse.power == me.np) {
 					var np = Molpy.newpixNumber;
 					str += '<br>You are inspired to do this properly ' +
 						'<input type=button value="Start" onclick="Molpy.Boosts.DMM.StartMould()"></input>' +
@@ -1526,7 +1526,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:2296,name:'Something on the mountain',desc:'Cueball: I think you\'re right.  There\'s some kind of structure on the mountain'});
 	Molpy.MakeQuadBadge({np:2300,name:'Megan can walk',desc:'Megan: I think I can walk OK'});
 	Molpy.MakeQuadBadge({np:2301,name:'Hurt more',desc:'It hurts but it doesn\'t really hurt more when I lean on it'});
-	Molpy.MakeQuadBadge({np:2303,name:'Bad cut',desc:'Cueball says it could get worse'});
+	Molpy.MakeQuadBadge({np:2302,name:'Bad cut',desc:'Cueball says it could get worse'});
 	Molpy.MakeQuadBadge({np:2303,name:'Need help',desc:'Cueball: We need help'});
 	Molpy.MakeQuadBadge({np:2304,name:'Keep going up',desc:'Megan: Do you think we should keep going up?'});
 	Molpy.MakeQuadBadge({np:2305,name:'People on top',desc:'Cueball: We can\'t be more than a day or so from the top.  There may be people there'});
