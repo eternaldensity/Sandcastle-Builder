@@ -688,7 +688,7 @@ Molpy.DefineBoosts = function() {
 		}
 	}
 	// targeted time travel!
-	Molpy.TTT = function(np, chips) {
+	Molpy.TTT = function(np, chips, silence) {
 		Molpy.Anything = 1;
 		np = Math.floor(np);
 		chips = chips ? (chips == 1?Molpy.CalcJumpEnergy(np):Infinity) : 0;
@@ -724,9 +724,9 @@ Molpy.DefineBoosts = function() {
 			Molpy.ONGstart = ONGsnip(new Date());
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
-			Molpy.Notify('Time Travel successful! Welcome to NewPix ' + Molpify(Molpy.newpixNumber));
+			if(!silence) Molpy.Notify('Time Travel successful! Welcome to NewPix ' + Molpify(Molpy.newpixNumber));
 			Molpy.Boosts['Time Travel'].travelCount++;
-			if(Molpy.Boosts['Time Travel'].travelCount >= 10) Molpy.HandleInvaders(chips);
+			if(Molpy.Boosts['Time Travel'].travelCount >= 10 && !silence) Molpy.HandleInvaders(chips);
 			Molpy.Boosts['Time Travel'].Refresh();
 			if(chips && Molpy.Got('Crystal Memories') && Molpy.Got('Flux Surge')) {
 				var c = Molpy.Got('TDE') + 1;
@@ -735,6 +735,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+plural(c)+' materialized.');
 			}
 			Molpy.Boosts['Now Where Was I?'].Refresh();
+			Molpy.LockBoost('Muse');
 			Molpy.UpdateFaves();
 			return 1;
 		} else {
@@ -4392,7 +4393,7 @@ Molpy.DefineBoosts = function() {
 		var first = Molpy.newpixNumber > 0 ? 'discov1' : 'discov-1'
 		for( var i = Molpy.Badges[first].id; i < Molpy.BadgesById.length - 1; i += 8) {
 			if(Molpy.BadgesById[i].earned && !Molpy.BadgesById[i + 1].earned && 
-				smf.Making!=Molpy.BadgesById[i+1].np) {
+				smf.Making!=Molpy.BadgesById[i+1].np && !Molpy.BadgesById[i+3].earned) {
 				Molpy.Spend('Bonemeal', 10);
 				Molpy.MakeSandMould(Molpy.BadgesById[i + 1].np);
 				return 1;
@@ -6390,7 +6391,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 
-			return (me.IsEnabled ? '' : 'When active, ') + 'Prevents all Mould Making and Filling activities.'
+			return (me.IsEnabled ? '' : 'When active, ') + 'Prevents all Mould Making and Filling activities for monuments.'
 				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
 		},
 		
@@ -8003,7 +8004,7 @@ Molpy.DefineBoosts = function() {
 		loadFunction: function() {
 			var cleans = 0;
 			for (var cl in this.clutches) {
-				if (this.age[cl] < 1500) {
+				if (this.age[cl] < 1050) {
 					this.clutches[cl] = 0;
 					cleans ++;
 				}
@@ -10278,6 +10279,8 @@ Molpy.DefineBoosts = function() {
 				}
 				return;
 			}
+			var npd = Molpy.NPdata[Molpy.newpixNumber];
+			if (Molpy.newpixNumber != Molpy.Boosts.Muse.power || !npd || npd.amount != Molpy.MaxDragons()) return;
 
 			var cost = this.MouldCost(Molpy.newpixNumber);
 			if (!Molpy.Spend('Diamonds',cost)) {
@@ -10285,6 +10288,7 @@ Molpy.DefineBoosts = function() {
 				return;
 			}
 			this.Making = Molpy.newpixNumber;
+			Molpy.LockBoost('Muse');
 			this.State = 1;
 			this.countdown = this.MouldTime(this.Making);
 			Molpy.Notify('Mould started for NP'+this.Making+' - KEEP STILL',1);
@@ -10342,7 +10346,7 @@ Molpy.DefineBoosts = function() {
 			this.State = 0;
 		},
 		countdownFunction: function() {
-			if (this.State == 1 && !Molpy.Spend('Diamonds'),this.FillCost(this.Making)) {
+			if (this.State == 1 && !Molpy.Spend('Diamonds',this.FillCost(this.Making))) {
 				this.State = 0;
 				Molpy.Notify('Not enough diamonds to fill the mould this mNP - the mould is ruined',1);
 				this.countdown = 0;
@@ -10533,7 +10537,7 @@ Molpy.DefineBoosts = function() {
 						me.Making == Molpy.newpixNumber &&
 						Molpy.Got('Black Powder')) {
 						str += '<input type=button value="Start Mounting the Masterpiece" onclick="Molpy.Boosts.DMP.StartPed()"></input> '+
-							'It needs Infinite Goats and many other things'+Molpy.Boosts.DMP.PedCost(me.Making)+' for '+Molpy.Boosts.DMP.PedTime(me.Making)+' mNP';
+							'It needs '+Molpy.createPriceHTML(Molpy.Boosts.DMP.PedCost(me.Making))+' and a few other things for '+Molpy.Boosts.DMP.PedTime(me.Making)+' mNP';
 					} else {
 						str += 'The site is not yet ready';
 					}
@@ -10870,6 +10874,12 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		startCountdown: 12,
+		buyFunction: function() {
+			this.power = Molpy.newpixNumber;
+		},
+		countdownFunction: function() {
+			if (Molpy.newpixNumber != this.power ) this.Lock();
+		},
 		group: 'drac',
 		
 	});

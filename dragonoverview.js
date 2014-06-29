@@ -23,7 +23,7 @@ Molpy.Overview = {
 		this.mhover = g('doverhover');
 		this.mhover.style.display = 'none';
 		if (noLayout) {
-			$('#toggleDragonOverview').toggleClass('hidden');
+			$('#toggleDragonOverview').removeClass('hidden');
 		}
 		
 		this.dopanem.addEventListener('mousemove',function(evt) {
@@ -34,7 +34,7 @@ Molpy.Overview = {
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Molpy.highestNPvisited) {
+				if (np && np <= Math.abs(Molpy.highestNPvisited)) {
 					var npd = Molpy.NPdata[np];
 					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
 					over.mtip.style.top = (evt.clientY -20 + window.pageYOffset) + "px";
@@ -69,7 +69,7 @@ Molpy.Overview = {
 		this.BasicGrid();
 		
 		// Update all nps
-		for (var np = 1; np < this.size && np <= Molpy.highestNPvisited; np++) this.Update(np);
+		for (var np = 1; np < this.size && np <= Math.abs(Molpy.highestNPvisited); np++) this.Update(np);
 	},
 	image: [],
 
@@ -111,6 +111,7 @@ Molpy.Overview = {
 		ctx.stroke();
 
 		ctx =  this.dopctxm;
+		ctx.fillStyle=Molpy.options.colourscheme?"white":"black";
 		ctx.fillRect(0,0,800,10000);
 		ctx.stroke();
 	},
@@ -151,6 +152,7 @@ Molpy.Overview = {
 
 	addJumper: function() {
 		this.dopanem.addEventListener('click',function(evt) {
+			if (!Molpy.layoutLocked) return;
 			var over = Molpy.Overview;
 			var rect = over.dopanem.getBoundingClientRect();
 			var mousex =  evt.clientX - rect.left;
@@ -160,7 +162,7 @@ Molpy.Overview = {
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
 				if (np && np <= Molpy.highestNPvisited) {
-					Molpy.TTT(np,Molpy.Earned('monumg'+np)?2:1);
+					Molpy.TTT(np,Molpy.Earned('monumg'+np)?2:1,1);
 				}
 			}
 		});

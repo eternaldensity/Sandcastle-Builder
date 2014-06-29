@@ -766,9 +766,15 @@
 		var highest = parseFloat(pixels.shift());
 		var lastNP = "";
 		for (var np = lowest; np<=highest; np++) {
-			if (pixels[0] != 'd') lastNP = pixels.shift()
-			else pixels.shift();
-			var pretzels = lastNP.split(c);
+			var pretzels = [];
+			if (pixels[0] != '') {
+				if (pixels[0] != 'd') lastNP = pixels.shift()
+				else pixels.shift();
+				pretzels = lastNP.split(c);
+			} else {
+				pixels.shift();
+			}
+
 			dd = Molpy.NPdata[np] = {};
 			dd.DragonType = parseInt(pretzels.shift()) || 0;
 			dd.amount = parseFloat(pretzels.shift()) || 0;
@@ -1070,7 +1076,7 @@
 			if (!Molpy.Level('exp')) Molpy.Boosts['exp'].Level = 1000000*Molpy.Level('DQ');
 		}
 		if(version < 3.6) {
-			if (Molpy.Got('Time Dialation')) Molpy.Boosts['Time Dialation'].power = 1;
+			if (Molpy.Got('Time Dilation')) Molpy.Boosts['Time Dilation'].power = 1;
 		}
 	}
 

@@ -1940,17 +1940,18 @@ Molpy.Up = function() {
 						} else {
 							Molpy.Notify((baby.np < 0 ? '<div class="flip-horizontal">' + baby.name + '</div>' : baby.name), 1);
 						}
-
 						Molpy.EarnBadge('Redundant');
 						Molpy.CheckBuyUnlocks();
 						if(Molpy.Earned('Badgers')) {
 							Molpy.RatesRecalculate();
 						}
-						if(baby.group == 'monumg' && Molpy.Got('Maps')) Molpy.Boosts['Maps'].Refresh();
+						if((baby.group == 'monumg' || baby.group == 'diamm' ) && Molpy.Got('Maps')) Molpy.Boosts['Maps'].Refresh();
+
 						if(!Molpy.groupBadgeCounts[baby.group]) {
 							Molpy.groupBadgeCounts[baby.group] = 1;
 						} else {
-							Molpy.groupBadgeCounts[baby.group]++;
+							var incr = baby.group == 'diamm'? Molpy.groupBadgeCounts[baby.group]*Molpy.newpixNumber: 1;
+							Molpy.groupBadgeCounts[baby.group]+= incr;
 						}
 						if (Molpy.options.autoshow!=0)
 						{

@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.6001;
+Molpy.version=3.6002;
 Molpy.versionName='Lots more Dragon Stuff'; // Appended to the numerical version on screen
 
 /**************************************************************
@@ -551,7 +551,7 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	me = Molpy.SandTools['Ladder'];
 	if(me.amount >= 1) Molpy.UnlockBoost('Extension Ladder');
 	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Climbbot');
-	if(me.amount >= 25) Molpy.UnlockBoost('Broken Rung');
+	if(me.bought >= 25) Molpy.UnlockBoost('Broken Rung');
 	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Up Up and Away');
 
 	me = Molpy.CastleTools['NewPixBot'];
