@@ -551,7 +551,7 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	me = Molpy.SandTools['Ladder'];
 	if(me.amount >= 1) Molpy.UnlockBoost('Extension Ladder');
 	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Climbbot');
-	if(me.bought >= 25) Molpy.UnlockBoost('Broken Rung');
+	if(me.amount >= 25) Molpy.UnlockBoost('Broken Rung');
 	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Up Up and Away');
 
 	me = Molpy.CastleTools['NewPixBot'];
