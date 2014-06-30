@@ -9857,6 +9857,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Marketing',
 		desc: 'Numbers don\'t have to add up',
 		group: 'hpt',
+		icon: 'marketing',
 	});
 	new Molpy.Boost({ // Note nothing is going to spend gold - dragons hoard it
 		name: 'Gold',
@@ -9869,6 +9870,7 @@ Molpy.DefineBoosts = function() {
 			return 'You have ' + Molpify(me.power*1000000,3) + ' Copper';
 		},
 		group: 'stuff',
+		icon: 'money',
 		defStuff : 1,
 		AddSuper : Molpy.BoostFuncs.Add,
 		Add: function(amount) {
@@ -9887,6 +9889,7 @@ Molpy.DefineBoosts = function() {
 			return 'You have ' + Molpify(me.power) + ' Tasty Princesses';
 		},
 		group: 'stuff',
+		icon: 'princess',
 		defStuff : 1,
 		AddSuper : Molpy.BoostFuncs.Add,
 		Add: function(amount) {
@@ -10151,7 +10154,7 @@ Molpy.DefineBoosts = function() {
 
 	new Molpy.Boost({
 		name: 'The Fading',
-		icon: 'Fading',
+		icon: 'fading',
 		desc: 'The Dragon Forge Logicat costs depend on when you look',
 		group: 'chron',
 		price: {QQ:'1.024F'},
