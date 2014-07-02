@@ -515,7 +515,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		Molpy.Add(found,n);
 	} else if (dq.Level > 1 && Math.random() < dq.Level/999) { // Find Coal
 		found = 'Coal';
-		n = Math.max(Math.floor(Math.log(finds)-100),1);
+		n = Math.max(Math.floor(Math.log(finds)-1000),1);
 		Molpy.Add(found,n);
 	} else { // Find Diamonds 
 		found = 'Diamonds';
@@ -624,9 +624,19 @@ Molpy.DragonFledge = function(clutch) {
 				(npd.amount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
 		if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name,1);
 	}
-	if (waste) Molpy.Notify('There was not enough space for '+(npd.amount?Molpify(waste):'any')+' of them',1);
-	hatch.clutches[clutch] = 0;
-	hatch.clean(1);
+	if (waste) {
+		if (!Molpy.Got('Topiary')) {
+			Molpy.Notify('There was not enough space for '+(npd.amount?Molpify(waste):'any')+' of them',1);
+			hatch.clutches[clutch] = 0;
+			hatch.clean(1);
+			if (dq.Level > 1) Molpy.UnlockBoost('Topiary');
+		} else {
+			hatch.clutches[clutch] = waste;
+		}
+	} else {
+		hatch.clutches[clutch] = 0;
+		hatch.clean(1);
+	}
 
 	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge',' attack as you fledge');
 	if (npd.amount) {
@@ -943,7 +953,8 @@ Dragons
 24	Mirror Dragons					Not Launch
 53	Burnish restart
 54	Fireworks
-55	
+56	Bone Feast
+58
 `
 
 
@@ -953,13 +964,11 @@ Dragons
 * Magic Books (future)
 * Bad dreams!
 * Luck Rings
-* fledge max
 * hard dragons - control redundaknight defaults
 * Automatic Mapping (not when Loopin Looie active)
 * 80 maps = hatch factor 1
 * 160 = 2
 * 320 = 4 ...  Divisor to incubation time
-* Shades
 *
 
 
