@@ -7737,7 +7737,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.EnoughMonumgForMaps = function() {
-		return Molpy.groupBadgeCounts.monumg > Molpy.Level('Maps') * 3 + Molpy.mapMonumg;
+		return (Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) -1)> Molpy.Level('Maps') * 3 + Molpy.mapMonumg;
 	}
 	
 	Molpy.ClearMap = function() {
@@ -8998,7 +8998,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.newpixNumber == Molpy.highestNPvisited) return;
 		var jumpcost = Molpy.CalcJumpEnergy(Molpy.highestNPvisited);
 		if(Molpy.Spend({GlassChips: jumpcost, Goats: 1})) {
-			Molpy.TTT(Molpy.highestNPvisited, jumpcost)
+			Molpy.TTT(Molpy.highestNPvisited, 1)
 		} else if(Molpy.Has('GlassChips', jumpcost)) {
 			Molpy.Notify('You need to sacrifice a goat for this')
 		} else {

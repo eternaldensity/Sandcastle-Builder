@@ -943,6 +943,12 @@ Dragons
 * Magic Books (future)
 * Bad dreams!
 * Luck Rings
+* fledge max
+* hard dragons - control redundaknight defaults
+* Automatic Mapping (not when Loopin Looie active)
+* 80 maps = hatch factor 1
+* 160 = 2
+* 320 = 4 ...  Divisor to incubation time
 
 Other
 2	Panthers Ignore Einstein 
