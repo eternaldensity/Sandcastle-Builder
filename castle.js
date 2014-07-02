@@ -1950,8 +1950,7 @@ Molpy.Up = function() {
 						if(!Molpy.groupBadgeCounts[baby.group]) {
 							Molpy.groupBadgeCounts[baby.group] = 1;
 						} else {
-							var incr = baby.group == 'diamm'? Molpy.groupBadgeCounts[baby.group]*Molpy.newpixNumber: 1;
-							Molpy.groupBadgeCounts[baby.group]+= incr;
+							Molpy.groupBadgeCounts[baby.group]++;
 						}
 						if (Molpy.options.autoshow!=0)
 						{

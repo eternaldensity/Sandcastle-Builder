@@ -496,7 +496,12 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 	}
 	
 	if (Molpy.DragonDigRecalcNeeded) Molpy.DragonDigRecalc();
-	Molpy.DigValue += (type?Molpy.TotalNPsWithDragons*(1+dq.Level):Molpy.DragonDigRate)*Math.random();
+	var add = Molpy.DragonDigRate;
+	if (type) {
+		add = Molpy.TotalNPsWithDragons*(1+dq.Level);
+		if (Molpy.Got('Shades')) add = add*add;
+	}
+	Molpy.DigValue += add*Math.random();
 	if (Molpy.DigValue < 1) return;
 	Molpy.EarnBadge('Found Something!');
 	var finds = Math.max(Math.floor(Molpy.DigValue),1);
@@ -508,7 +513,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		found = 'Gold';
 		n = finds/1000000;
 		Molpy.Add(found,n);
-	} else if (dq.Level > 1 && Math.random() < dq.Level/99) { // Find Coal
+	} else if (dq.Level > 1 && Math.random() < dq.Level/999) { // Find Coal
 		found = 'Coal';
 		n = Math.max(Math.floor(Math.log(finds)-100),1);
 		Molpy.Add(found,n);
@@ -824,29 +829,35 @@ Molpy.DragonsHide = function(type) {
 
 // Upgrades ******************************************************************************************
 
-// Type 0: to display, 1: action, 2: cost text
+// type 0: text, 1: action
 Molpy.DragonUpgrade = function(type) {
 	var dq=Molpy.Boosts['DQ'];
-	switch (type) {
-	case 0:
-		return (Molpy.Level('exp') >= DeMolpify(Molpy.DragonsById[dq.Level].exp) && Molpy.DragonsById[dq.Level].condition());
-	case 1:
-		if (Molpy.DragonUpgrade(0)) {
-			if (Molpy.Spend(Molpy.DragonsById[dq.Level].upgrade)) {
-				dq.Level++;
-				Molpy.Boosts['DQ'].Refresh();
-				if (Molpy.Got('Dragon Overview')) Molpy.Overview.Create(3090);
-				Molpy.Notify('Hatchlings now mature into '+ Molpy.DragonsById[dq.Level].name,1) + 's';
+	var str = '';
+	var dragn = Molpy.DragonsById[dq.Level];
+	if (type == 0) {
+		if (!dragn.condition()) return str;
+
+		if (Molpy.Level('exp') >= DeMolpify(dragn.exp)) {
+			if (Molpy.Has(dragn.upgrade)) {
+				str += '<br><br><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> ';
 			} else {
-				Molpy.Notify('You can\'t afford the upgrade yet');
+				str += '<br><br>The Queen upgrade will cost ';
 			}
 		} else {
-			Molpy.Notify('You can\'t upgrade yet');
+			str += '<br><br>The Queen can be upgraded when you have ' + Molpify( DeMolpify(dragn.exp)) + ' experiece.  It will cost ';
 		}
+		str += Molpy.createPriceHTML(dragn.upgrade);
+		return str;
+	};
+	if ((Molpy.Level('exp') < DeMolpify(dragn.exp)) || !dragn.condition()) return Molpy.Notify('You can\'t upgrade yet');
 
-
-	case 2:
-		return Molpy.createPriceHTML(Molpy.DragonsById[dq.Level].upgrade);
+	if (Molpy.Spend(Molpy.DragonsById[dq.Level].upgrade)) {
+		dq.Level++;
+		Molpy.Boosts['DQ'].Refresh();
+		if (Molpy.Got('Dragon Overview')) Molpy.Overview.Create();
+		Molpy.Notify('Hatchlings now mature into '+ Molpy.DragonsById[dq.Level].name,1) + 's';
+	} else {
+		Molpy.Notify('You can\'t afford the upgrade yet');
 	}
 }
 
@@ -930,7 +941,6 @@ Dragons
 22	Breath effects					Not Launch
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
-52	Time Reaper					y
 53	Burnish restart
 54	Fireworks
 55	
@@ -949,6 +959,9 @@ Dragons
 * 80 maps = hatch factor 1
 * 160 = 2
 * 320 = 4 ...  Divisor to incubation time
+* Shades
+*
+
 
 Other
 2	Panthers Ignore Einstein 

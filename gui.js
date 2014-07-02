@@ -1254,7 +1254,7 @@ Molpy.DefineGUI = function() {
 
 		var x = 200 + flandom(200);
 		var y = 200 + flandom(400);
-		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix) {
+		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix && np == Math.floor(np)) {
 			if(floor > 3094)
 				return 'http://placekitten.com/' + x + '/' + y;
 			else

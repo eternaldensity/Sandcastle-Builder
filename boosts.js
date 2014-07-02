@@ -7874,9 +7874,10 @@ Molpy.DefineBoosts = function() {
 					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding','Celebrating'][me.overallState];
 					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
 				}
-				if (Molpy.DragonUpgrade(0)) str += '<br><br><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> '+Molpy.DragonUpgrade(2);			}
+				str += Molpy.DragonUpgrade(0);
 				str += '<br><br>Hatchlings will mature into ' + Molpy.DragonsById[me.Level].name + 's. ';
 				str += Molpy.DragonsById[me.Level].description();
+			}
 			return str;
 		},
 		
@@ -11018,6 +11019,15 @@ Molpy.DefineBoosts = function() {
 		draglvl: 'Wyrm',
 		limit: function() { return (Molpy.Boosts['Big Bite'].bought == Molpy.Boosts['Big Bite'].limit()) && (Molpy.Boosts['Double Byte'].bought == Molpy.Boosts['Double Byte'].limit())?8*(Molpy.Level('DQ')-1):0 },
 		Level: Molpy.BoostFuncs.Bought0Level,
+	});
+
+	new Molpy.Boost({
+		name: 'Shades',
+		icon: 'shades',
+		group: 'drac',
+		desc: 'Makes Beach Dragons really cool (and work better)',
+		price: { Diamonds:234567 },
+		draglvl: 'Wyrm',
 	});
 
 
