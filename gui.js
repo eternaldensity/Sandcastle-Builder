@@ -1254,7 +1254,7 @@ Molpy.DefineGUI = function() {
 
 		var x = 200 + flandom(200);
 		var y = 200 + flandom(400);
-		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix) {
+		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix && np == Math.floor(np)) {
 			if(floor > 3094)
 				return 'http://placekitten.com/' + x + '/' + y;
 			else
@@ -1339,13 +1339,13 @@ Molpy.DefineGUI = function() {
 			str += ['Digging','Recovering','Hiding','Celebrating'][dq.overallState];
 			if (dq.overallState > 0) str += ' for ' + MolpifyCountdown(dq.countdown, 1);
 			str += '<br>';
-			if (npd.ammount > 1) str += 'Each: '
-			str += 'Def: ' + Molpify((npd.defence+0.001)*Molpy.DragonDefenceMultiplier*dt.defbase,3) + ' Atk: ' + Molpify((npd.attack+0.001)*Molpy.DragonAttackMultiplier*dt.defbase,3) + 
-				' Dig:&nbsp;' + Molpify(npd.dig*Molpy.DragonDigMultiplier*dt.digbase,3) ;
-			if (npd.breath) str += ' Breath:&nbsp;' + Molpify(npd.breath*Molpy.DragonBreathMultiplier,3);
-			if (npd.magic1) str += ' Magic1:&nbsp;' + npd.magic1;
-			if (npd.magic2) str += ' Magic2:&nbsp;' + npd.magic2;
-			if (npd.magic3) str += ' Magic3:&nbsp;' + npd.magic3;
+			var Stats = Molpy.DragonStatsNow(Molpy.newpixNumber);
+			str += 'Def: ' + Molpify(Stats.defence,2) + ' Atk: ' + Molpify(Stats.attack+0.001,2) + 
+				' Dig:&nbsp;' + Molpify(Stats.dig,2) ;
+			if (Stats.breath) str += ' Breath:&nbsp;' + Molpify(Stats.breath,2);
+			if (Stats.magic1) str += ' Magic1:&nbsp;' + Molpify(Stats.magic1,2);
+			if (Stats.magic2) str += ' Magic2:&nbsp;' + Molpify(Stats.magic2,2);
+			if (Stats.magic3) str += ' Magic3:&nbsp;' + Molpify(Stats.magic3,2);
 			g('DragonsNP').innerHTML = str;
 		} else {
 			g('DragonsNP').innerHTML = 'No Dragons here';

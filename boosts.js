@@ -7737,7 +7737,7 @@ Molpy.DefineBoosts = function() {
 	});
 	
 	Molpy.EnoughMonumgForMaps = function() {
-		return Molpy.groupBadgeCounts.monumg > Molpy.Level('Maps') * 3 + Molpy.mapMonumg;
+		return (Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) -1)> Molpy.Level('Maps') * 3 + Molpy.mapMonumg;
 	}
 	
 	Molpy.ClearMap = function() {
@@ -7874,9 +7874,10 @@ Molpy.DefineBoosts = function() {
 					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding','Celebrating'][me.overallState];
 					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
 				}
-				if (Molpy.DragonUpgrade(0)) str += '<br><br><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> '+Molpy.DragonUpgrade(2);			}
+				str += Molpy.DragonUpgrade(0);
 				str += '<br><br>Hatchlings will mature into ' + Molpy.DragonsById[me.Level].name + 's. ';
 				str += Molpy.DragonsById[me.Level].description();
+			}
 			return str;
 		},
 		
@@ -8029,7 +8030,7 @@ Molpy.DefineBoosts = function() {
 			this.age.push(3000);
 			this.properties = this.properties.concat(Molpy.Boosts['Nest'].nestprops());
 			this.Level += amount;
-			this.countdown = 3000;
+			this.countdown = 5000;
 			Molpy.Boosts['DQ'].Refresh();
 		},
 
@@ -8094,6 +8095,7 @@ Molpy.DefineBoosts = function() {
 			}
 			this.Level = 0;
 			for (var cl in this.clutches) this.Level += this.clutches[cl];
+			if (!this.Level) this.countdown = 0;
 		},
 		classChange: function() { return this.Level?'action':'' },
 	});
@@ -8998,7 +9000,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.newpixNumber == Molpy.highestNPvisited) return;
 		var jumpcost = Molpy.CalcJumpEnergy(Molpy.highestNPvisited);
 		if(Molpy.Spend({GlassChips: jumpcost, Goats: 1})) {
-			Molpy.TTT(Molpy.highestNPvisited, jumpcost)
+			Molpy.TTT(Molpy.highestNPvisited, 1)
 		} else if(Molpy.Has('GlassChips', jumpcost)) {
 			Molpy.Notify('You need to sacrifice a goat for this')
 		} else {
@@ -10920,7 +10922,7 @@ Molpy.DefineBoosts = function() {
 			if (!me.bought) {
 				str += 'Needs to be bought 3 times within 100mNP. ';
 			} else {
-				str += 'Has been bought ' + (me.bought ==1?'once':'twice');
+				if (me.bought < 3) str += 'Has been bought ' + (me.bought ==1?'once':'twice');
 				if (me.countdown) str += '.  You have '+ me.countdown+' mNP left.';
 			};
 			return str;
@@ -11018,6 +11020,23 @@ Molpy.DefineBoosts = function() {
 		draglvl: 'Wyrm',
 		limit: function() { return (Molpy.Boosts['Big Bite'].bought == Molpy.Boosts['Big Bite'].limit()) && (Molpy.Boosts['Double Byte'].bought == Molpy.Boosts['Double Byte'].limit())?8*(Molpy.Level('DQ')-1):0 },
 		Level: Molpy.BoostFuncs.Bought0Level,
+	});
+
+	new Molpy.Boost({
+		name: 'Shades',
+		icon: 'shades',
+		group: 'drac',
+		desc: 'Makes Beach Dragons really cool (and work better)',
+		price: { Diamonds:234567 },
+		draglvl: 'Wyrm',
+	});
+
+	new Molpy.Boost({
+		name: 'Topiary',
+		icon: 'topiary',
+		group: 'drac',
+		desc: 'When fleding, if the clutch is too large for the NP, the rest are left as hatchlings and not wasted',
+		price: { Diamonds:345678, Goats:Infinity },
 	});
 
 
