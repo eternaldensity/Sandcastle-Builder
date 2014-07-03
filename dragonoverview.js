@@ -2,10 +2,6 @@
 // Enable at 10 NPs with dragons
 // Jumps at 111 NPs with dragons
 
-function getMousePos(canvas, evt) {
-	return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
-}
-
 Molpy.Overview = {
 	Create: function(size) {
 		this.size = size || 3090;
@@ -29,7 +25,7 @@ Molpy.Overview = {
 		this.dopanem.addEventListener('mousemove',function(evt) {
 			var over = Molpy.Overview;
 			var mousex =  evt.layerX;
-			var mousey =  evt.layerY + g('dragonoverviewmaindiv').scrollTop;
+			var mousey =  evt.pageY  - $('#dragonoverviewmaindiv').offset().top + g('dragonoverviewmaindiv').scrollTop;
 			var np = 0;
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {

@@ -8030,7 +8030,7 @@ Molpy.DefineBoosts = function() {
 			this.age.push(3000);
 			this.properties = this.properties.concat(Molpy.Boosts['Nest'].nestprops());
 			this.Level += amount;
-			this.countdown = 3000;
+			this.countdown = 5000;
 			Molpy.Boosts['DQ'].Refresh();
 		},
 
@@ -8095,6 +8095,7 @@ Molpy.DefineBoosts = function() {
 			}
 			this.Level = 0;
 			for (var cl in this.clutches) this.Level += this.clutches[cl];
+			if (!this.Level) this.countdown = 0;
 		},
 		classChange: function() { return this.Level?'action':'' },
 	});
@@ -10921,7 +10922,7 @@ Molpy.DefineBoosts = function() {
 			if (!me.bought) {
 				str += 'Needs to be bought 3 times within 100mNP. ';
 			} else {
-				str += 'Has been bought ' + (me.bought ==1?'once':'twice');
+				if (me.bought < 3) str += 'Has been bought ' + (me.bought ==1?'once':'twice');
 				if (me.countdown) str += '.  You have '+ me.countdown+' mNP left.';
 			};
 			return str;

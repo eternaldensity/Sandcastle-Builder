@@ -663,13 +663,18 @@ Molpy.DragonStatsNow = function(where) {
 	var drag = Molpy.DragonsById[npd.DragonType];
 	if (!npd) return Stats;
 	for(var prop in npd) {
-		if(typeof npd[prop] !== 'undefined') Stats[prop] = npd[prop] * ((prop == 'amount' || prop == 'DragonType')?1:num);
+		if(typeof npd[prop] !== 'undefined') Stats[prop] = npd[prop];
 	}
 
 	Stats.defence += 0.001;
 	Stats.attack += 0.001;
 	Stats.defence *= Molpy.DragonDefenceMultiplier*drag.defbase;
 	Stats.attack *= Molpy.DragonAttackMultiplier*drag.defbase;
+	if (num) {
+		for(var prop in Stats) {
+			if (prop != 'amount' && prop != 'DragonType') Stats[prop]*=num;
+		}
+	}
 	return Stats;
 }
 
