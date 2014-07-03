@@ -32,6 +32,23 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.61
+
+#### Waveney (lots of thanks to tyriac)
+- Fixed scrolling of the Dragon Overview
+- Nerfed Coal Digging
+- Shades and Topiary Boosts
+- Fixed MeteorONGS when colpix is on
+- Fixed Now Where was I and most uses of Time travel
+- Removed Mould making buttons when Masterpieces made
+- Guidance for Dragon Queen Upgrade
+- Fixed Hatchlings stuck at 0mNP
+- Fixed many typos
+- Improved dragon info accuracy
+
+#### LucidCrux
+- More Icons
+
 ### 3.6002
 
 #### Waveney (lots of thanks to tyriac)

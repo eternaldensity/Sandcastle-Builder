@@ -2,10 +2,6 @@
 // Enable at 10 NPs with dragons
 // Jumps at 111 NPs with dragons
 
-function getMousePos(canvas, evt) {
-	return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
-}
-
 Molpy.Overview = {
 	Create: function(size) {
 		this.size = size || 3090;
@@ -29,7 +25,7 @@ Molpy.Overview = {
 		this.dopanem.addEventListener('mousemove',function(evt) {
 			var over = Molpy.Overview;
 			var mousex =  evt.layerX;
-			var mousey =  evt.layerY;
+			var mousey =  evt.pageY  - $('#dragonoverviewmaindiv').offset().top + g('dragonoverviewmaindiv').scrollTop;
 			var np = 0;
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
@@ -144,7 +140,7 @@ Molpy.Overview = {
 	},
 
 	Update: function(np) {
-		if (!Molpy.Got('Dragon Overview') || np < 0 || !this.mtip ) return;
+		if (!Molpy.Got('Dragon Overview') || np < 0 || !this.mtip || np >= this.size ) return;
 		var mt = (Molpy.Earned('monumg'+np)?(Molpy.Earned('diamm'+np)?2:1):0);
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
 		this.dopctxm.putImageData(this.image[dt+1][mt], 8*(np%50)+this.Xoffset, 8*Math.floor(np/50));
@@ -162,7 +158,7 @@ Molpy.Overview = {
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
 				if (np && np <= Molpy.highestNPvisited) {
-					Molpy.TTT(np,Molpy.Earned('monumg'+np)?2:1,1);
+					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1);
 				}
 			}
 		});
