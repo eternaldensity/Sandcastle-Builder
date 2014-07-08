@@ -90,7 +90,7 @@ Molpy.DefineDragons = function() {
 		arms: 0,
 		tails: 1,
 		upgrade: {Diamonds:'1G'},
-		exp: '40P',
+		exp: '1E',
 		condition: function() { return false },
 		desc: 'These are monstorous, limbless creatures, with a big bite.',
 		digbase: 10000,
@@ -110,6 +110,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These can fly.  They fight and dig with their legs, some have a bad breath.',
 		digbase: 1e6,
+		defbase: 1e8,
 		colour: '#80f',
 	});
 	new Molpy.Dragon({
@@ -126,6 +127,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'Tradional Welsh Dragon',
 		digbase: 1e8,
+		defbase: 1e11,
 		colour: '#f0f',
 	});
 	new Molpy.Dragon({
@@ -143,6 +145,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'Very large magical dragon',
 		digbase: 1e11,
+		defbase: 1e14,
 		colour: '#f00',
 	});
 	new Molpy.Dragon({
@@ -160,6 +163,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: 'These are the makers of ledgends, attacking with many heads in many ways, mortals don\'t want to be in the ssame universe as this.',
 		digbase: 1e15,
+		defbase: 1e17,
 		colour: '#800',
 	});
 	new Molpy.Dragon({
@@ -177,6 +181,7 @@ Molpy.DefineDragons = function() {
 		condition: function() { return false },
 		desc: '!', // later
 		digbase: 1e20,
+		defbase: 1e20,
 		colour: '#8F8',
 	});
 
@@ -519,7 +524,9 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		Molpy.Add(found,n);
 	} else { // Find Diamonds 
 		found = 'Diamonds';
-		n = Math.max(Math.floor(Math.log(finds)),1);
+		n = Molpy.Got('Cut Diamonds')?finds/222222 :Math.log(finds);
+		if (Molpy.Got('Sparkle')) n *= Math.pow(1.01,Molpy.ConsecutiveNPsWithDragons);
+		n =  Math.max(Math.floor(n),1);
 		Molpy.Add(found,n);
 		Molpy.EarnBadge('Wheee Diamonds');
 	} // May find other things later - kit is not here
@@ -567,6 +574,7 @@ Molpy.DragonFledge = function(clutch) {
 	var dq = Molpy.Boosts['DQ'];
 	var hatch = Molpy.Boosts['Hatchlings'];
 	var lim = Molpy.MaxDragons();
+	var dt = Molpy.DragonsById[npd.DragonType].name;
 	var waste = 0;
 	var oldDT = 0;
 	var oldDN = 0;
@@ -574,6 +582,8 @@ Molpy.DragonFledge = function(clutch) {
 	if (!npd) npd = Molpy.NPdata[Molpy.newpixNumber] = {};
 
 	if (npd && npd.amount > 0 ) {
+		if (hatch.hatches[clutch] > 1 && npd.DragonType == dq.Level && !confirm('Do you wish to fledge '+  hatch.clutches[clutch] +' ' +
+					dt +'s'+ ' where you already have '+ npd.amount +' of ' + dt + 's?')) return;
 		if (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.amount))	{ // Replace
 			oldDT = npd.DragonType;
 			oldDN = npd.amount;
@@ -620,7 +630,7 @@ Molpy.DragonFledge = function(clutch) {
 			break;
 		}
 
-		Molpy.Notify(Molpify(npd.amount) + ' ' + Molpy.DragonsById[npd.DragonType].name +
+		Molpy.Notify(Molpify(npd.amount) + ' ' + dt +
 				(npd.amount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
 		if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name,1);
 	}
@@ -670,6 +680,7 @@ Molpy.DragonStatsNow = function(where) {
 	Stats.attack += 0.001;
 	Stats.defence *= Molpy.DragonDefenceMultiplier*drag.defbase;
 	Stats.attack *= Molpy.DragonAttackMultiplier*drag.defbase;
+	Stats.dig *= Molpy.DragonDigMultiplier*drag.digbase;
 	if (num) {
 		for(var prop in Stats) {
 			if (prop != 'amount' && prop != 'DragonType') Stats[prop]*=num;
@@ -891,6 +902,7 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var dq = Molpy.Boosts['DQ'];
 	var lim = Molpy.MaxDragons();
+	var dt = Molpy.DragonsById[npd.DragonType].name;
 	var spare = 0;
 	var oldDT = 0;
 	var oldDN = 0;
@@ -913,6 +925,8 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 			npd.amount = Math.max(0,lim);
 		}
 	}
+	if (oldDN && npd.amount > 1 && npd.DragonType == oldDT && !confirm('Do you wish to fledge '+  npd.amount +' ' +
+					dt +'s'+ ' where you already have '+ oldDN +' of ' + dt + 's?')) return;
 
 	var props = Molpy.Boosts['Nest'].nestprops();
 	npd.attack = props[0];
@@ -922,11 +936,23 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	npd.magic1 = 0;
 	npd.magic2 = 0;
 	npd.magic3 = 0;
-	Molpy.Boosts['Cryogenics'].power = spare;
 	
-	Molpy.Notify(Molpify(npd.amount) + ' ' + Molpy.DragonsById[npd.DragonType].name +
+	Molpy.Notify(Molpify(npd.amount) + ' ' + dt +
 				(npd.amount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
 	if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name,1);
+	if (Molpy.Got('Topiary')) {
+		Molpy.Boosts['Cryogenics'].power = spare;
+	} else if (spare) {
+		Molpy.Notify('There was not enough space for '+Molpify(spare)+' of them',1);
+		if (dq.Level > 1) Molpy.UnlockBoost('Topiary');
+		Molpy.Boosts['Cryogenics'].power = 0;
+	} else {
+		Molpy.Boosts['Cryogenics'].power = 0;
+	}
+	if (npd.amount) {
+		Molpy.EarnBadge('First Colonist');
+		Molpy.Overview.Update(Molpy.newpixNumber);
+	};
 
 	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge',' attack as you fledge');
 	Molpy.DragonDigRecalc(); // Always needed

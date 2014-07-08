@@ -32,6 +32,15 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.62
+
+#### Waveney
+- Confirmation check when you fledge more than one Dragon into an already ocupied NP
+- Two new boosts to improve diamond supply
+- Topiary now affects both normal and Cryogenic Fledging
+- Overview updates after Fledging from Cryo
+- Different bugs and typos
+
 ### 3.61
 
 #### Waveney (lots of thanks to tyriac)
