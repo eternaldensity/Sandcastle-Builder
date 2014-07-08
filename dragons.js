@@ -895,7 +895,7 @@ Molpy.DragonsToCryo = function(cl) {
 	hatch.clutches[cl] = 0;
 	hatch.clean(1);
 	hatch.Refresh();
-	Molpy.Notify('Now in suspended animation');
+	Molpy.Notify('You now have ' + Molpy.Level('Cryogenics') + ' in suspended animation',1);
 }
 
 Molpy.DragonsFromCryo = function() { // Cut down version of fledge
