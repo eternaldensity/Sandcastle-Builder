@@ -8809,7 +8809,7 @@ Molpy.DefineBoosts = function() {
 			var res = this.SpendSuper(n);
 			if (Molpy.Got('Time Reaper') && this.Level == 0 && Molpy.Level('Time Lord') == Infinity) {
 				this.power = Infinity;
-				Molpy.Spend('Time Lord', Infinity);
+				Molpy.Add('Time Lord', -Infinity);
 			} else if (Molpy.Level('DQ') && this.Level == 0 && Molpy.Boosts['Time Lord'].bought == Infinity && 
 				Molpy.Boosts['Time Reaper'].unlocked == 0) Molpy.UnlockBoost('Time Reaper');
 			return res;
@@ -11039,8 +11039,25 @@ Molpy.DefineBoosts = function() {
 		price: { Diamonds:345678, Goats:Infinity },
 	});
 
+	new Molpy.Boost({
+		name: 'Cut Diamonds',
+		icon: 'cutdiamonds',
+		group: 'hpt',
+		desc: 'Diamond digging is linear with digging rate',
+		draglvl: 'Wyrm',
+		limit: function() { return (Molpy.Level('Adamantine Armour') >= 14?1:0) },
+		price: { Diamonds:'1M', Goats:Infinity, Vacuum:'10LW' },
+	});
 
-
+	new Molpy.Boost({
+		name: 'Sparkle',
+		icon: 'sparkle',
+		group: 'hpt',
+		desc: 'The diamond supply get an extra 1% per consecutive NP with dragons',
+		draglvl: 'Wyrm',
+		limit: function() { return (Molpy.Got('Cut Diamonds') && Molpy.Level('Diamonds')>=2222222?1:0) },
+		price: { Diamonds:222222222, Goats:Infinity, exp:'12.5E' },
+	});
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }
