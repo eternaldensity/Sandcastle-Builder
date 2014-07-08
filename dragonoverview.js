@@ -152,7 +152,7 @@ Molpy.Overview = {
 			var over = Molpy.Overview;
 			var rect = over.dopanem.getBoundingClientRect();
 			var mousex =  evt.clientX - rect.left;
-			var mousey =  evt.clientY - rect.top;
+			var mousey =  evt.pageY  - $('#dragonoverviewmaindiv').offset().top + g('dragonoverviewmaindiv').scrollTop;
 			var np = 0;
 
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
