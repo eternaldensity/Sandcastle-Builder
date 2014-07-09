@@ -582,7 +582,7 @@ Molpy.DragonFledge = function(clutch) {
 	if (!npd) npd = Molpy.NPdata[Molpy.newpixNumber] = {};
 
 	if (npd && npd.amount > 0 ) {
-		if (hatch.hatches[clutch] > 1 && npd.DragonType == dq.Level && !confirm('Do you wish to fledge '+  hatch.clutches[clutch] +' ' +
+		if (hatch.clutches[clutch] > 1 && npd.DragonType == dq.Level && !confirm('Do you wish to fledge '+  hatch.clutches[clutch] +' ' +
 					dt +'s'+ ' where you already have '+ npd.amount +' of ' + dt + 's?')) return;
 		if (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.amount))	{ // Replace
 			oldDT = npd.DragonType;
@@ -895,7 +895,7 @@ Molpy.DragonsToCryo = function(cl) {
 	hatch.clutches[cl] = 0;
 	hatch.clean(1);
 	hatch.Refresh();
-	Molpy.Notify('Now in suspended animation');
+	Molpy.Notify('You now have ' + Molpy.Level('Cryogenics') + ' in suspended animation',1);
 }
 
 Molpy.DragonsFromCryo = function() { // Cut down version of fledge
@@ -1000,7 +1000,9 @@ Dragons
 * 80 maps = hatch factor 1
 * 160 = 2
 * 320 = 4 ...  Divisor to incubation time
-*
+* Breath - needs coal, does damage (may reduce number if multiple opponents)
+* Magic use Mana - Mana from?
+* Breath types - fire [Coal], poison [?], frost [Vacuum]
 
 
 Other

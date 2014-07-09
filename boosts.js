@@ -8622,8 +8622,9 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			return 'Pay 5K Mustard to reset your ' + Molpy.Redacted.word + ' click count to 0 and gain 1 Bonemeal per 20'
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.Boosts[\'Crunch\'].crunch()" value="Use"></input>' : '');
+			return 'Now does nothing';
+			//return 'Pay 5K Mustard to reset your ' + Molpy.Redacted.word + ' click count to 0 and gain 1 Bonemeal per 20'
+			//	+ (me.bought ? '<br><input type="Button" onclick="Molpy.Boosts[\'Crunch\'].crunch()" value="Use"></input>' : '');
 		},
 		
 		price: {
