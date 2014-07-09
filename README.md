@@ -35,6 +35,13 @@ For personal amusement only.
 ### 3.6201
 
 #### Waveney
+- With more fledging again...
+- Crunchy with Mustard now does nothing
+- The new icons (3.61) might now appear
+
+### 3.6201
+
+#### Waveney
 - With fledging again...
 
 ### 3.62

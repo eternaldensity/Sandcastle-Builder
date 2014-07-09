@@ -824,6 +824,10 @@ Molpy.DefineGUI = function() {
 		}
 		
 		if(Molpy.Redacted.location >= 4 && Molpy.Redacted.location <= 6) {
+			if (!lootArray || !lootArray.length) {
+				Molpy.Redacted.location = 0;
+				return;
+			};
 			if(Molpy.Redacted.dispIndex > lootArray.length -1)
 				Molpy.Redacted.group = lootArray[lootArray.length - 1].group;
 			else
