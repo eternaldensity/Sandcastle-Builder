@@ -676,16 +676,15 @@ body.darkscheme #doverhover {
 	background-repeat:no-repeat;
 	background-position:center;
 	position:absolute;
-	top:0;
-	left:0;
 	width:100%;
 	height:100%;
 }
 #MasterBlack {
-	z-index:2000
+	z-index:2000; 
 	background-color:black;
 	position:absolute;
-	top:0;
-	left:0;
-	opacity:1;
+}
+#fireworkdiv {
+	z-index:2010;
+	position:absolute;
 }
