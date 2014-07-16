@@ -7703,10 +7703,12 @@ Molpy.DefineBoosts = function() {
 				str += '<br>The next map can be found at NP ' + me.NextMap;
 				if (Molpy.Got('Lodestone')) {
 					var search=0;
-					while (1) {
-						if (Molpy.Earned('discov'+(me.NextMap+search))) break;
-						if (Molpy.Earned('discov'+(me.NextMap-search))) { search = -search; break;}
-						search++
+					if (!Molpy.Got('Woolly Jumper') || me.NextMap < 0) { 
+						while (1) {
+							if (Molpy.Earned('discov'+(me.NextMap+search))) break;
+							if (Molpy.Earned('discov'+(me.NextMap-search))) { search = -search; break;}
+							search++
+						}
 					}
 					str += '<br><input type="Button" onclick="Molpy.TTT(' + (me.NextMap+search) + 
 						',1)" value="Nearest Jump!"></input>';

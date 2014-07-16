@@ -7,23 +7,25 @@
 
 
 Molpy.Master = {
-	Create: function(np,time) {
+	Create: function(np) {
 		this.np = np;
 		$('#game').addClass('hidden');
 		g('masters').innerHTML = '<div id=MasterBlack>&nbsp;</div><div id=MasterPix></div><div id=darkenMaster></div>' +
 					'<div id=fireworkdiv><canvas id=firework width=' + window.innerWidth +
-					' hieght=' + window.innerHieght+ '></div><div id=fanfare></div>';
+					' hieght=' + window.innerHieght+ '></div>';
 		this.active = 1;
 		Molpy.Master.NewPix(np);
-		Molpy.Master.StartFireWorks(np);
 		Molpy.Master.FanFare();
-		setTimeout(Molpy.Master.Destroy,time);
+		setTimeout(Molpy.Master.Destroy,150000);
 	},
 	
 	Destroy: function() {
 		$('#game').removeClass('hidden');
 		g('masters').innerHTML = '';
 		Molpy.Master.active = 0;
+		this.fireworks = [];
+		this.particles = [];
+		this.sounds = [];
 	},
 
 	NewPix: function(np) {
@@ -34,37 +36,38 @@ Molpy.Master = {
 	active: 0,
 
 	FanFare: function() {
+		this.audio = new Audio('audio/Fanfare.mp3');
+		this.audio.play();
+		this.audio.addEventListener("ended",Molpy.Master.StartFireWorks);
 	},
 
-	StartFireWorks: function(np) {
+	StartFireWorks: function() {
+		mm = Molpy.Master;
+		mm.canvas = g('firework');
+		mm.ctx = mm.canvas.getContext('2d');
+		mm.cw = window.innerWidth-20;
+		mm.ch = window.innerHeight-20;
+		mm.fireworks = [];
+		mm.particles = [];
+		mm.sounds = [];
+		mm.hue = 120;
+		mm.limiterTotal = 5;
 
-	this.canvas = g('firework');
-	this.ctx = this.canvas.getContext('2d');
-	this.cw = window.innerWidth;
-	this.ch = window.innerHeight;
-	this.fireworks = [];
-	this.particles = [];
-	this.hue = 120;
-	this.limiterTotal = 5;
+		mm.limiterTick = 0;
+		mm.timerTotal = 60;
+		mm.timerTick = 0;
+		mm.mx = 0;
+		mm.my = 0;
+		mm.salvos = 10 + Math.floor(mm.np/333);
+		mm.salvosize = Math.floor(mm.np/444)+3;
 
-	this.limiterTick = 0;
-	this.timerTotal = 60;
-	this.timerTick = 0;
-	this.mx = 0;
-	this.my = 0;
-	this.salvos = 5 + Math.floor(np/500);
+		mm.canvas.width = mm.cw;
+		mm.canvas.height = mm.ch;
 
-	this.canvas.width = this.cw;
-	this.canvas.height = this.ch;
-
-	Fireworks_loop();
+		Fireworks_loop();
 	},
+
 };
-
-Molpy.Sounds = {
-	'fire0' : new Audio('audio/fire0.mp3'),
-}
-
 /* Code below is adapted from several sources 
  */
 
@@ -95,7 +98,7 @@ function Firework(sx, sy, tx, ty) {
     this.distanceTraveled = 0;
     // track the past coordinates of each firework to create a trail effect, increase the coordinate count to create more prominent trails
     this.coordinates = [];
-    this.coordinateCount = 5;
+    this.coordinateCount = 15;
     // populate initial coordinate collection with the current coordinates
     while (this.coordinateCount--) {
         this.coordinates.push([this.x, this.y]);
@@ -117,14 +120,6 @@ Firework.prototype.update = function (index) {
     // add current coordinates to the start of the array
     this.coordinates.unshift([this.x, this.y]);
 
-    // cycle the circle target indicator radius
-    /*
-    if (this.targetRadius < 8) {
-        this.targetRadius += 0.3;
-    } else {
-        this.targetRadius = 1;
-    }*/
-
     // speed up the firework
     this.speed *= this.acceleration;
 
@@ -139,8 +134,8 @@ Firework.prototype.update = function (index) {
         createParticles(this.tx, this.ty);
         // remove the firework, use the index passed into the update function to determine which to remove
         Molpy.Master.fireworks.splice(index, 1);
-        this.audio = new Audio('audio/fire'+flandom(2)+'.mp3');
-	this.audio.play();
+        mm.sounds.push(new Audio('audio/fire'+flandom(2)+'.mp3'))
+	mm.sounds[mm.sounds.length-1].play();
     } else {
         // target not reached, keep traveling
         this.x += vx;
@@ -156,14 +151,9 @@ Firework.prototype.draw = function () {
     // move to the last tracked coordinate in the set, then draw a line to the current x and y
     ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
     ctx.lineTo(this.x, this.y);
-    ctx.lineWidth=2;
+    ctx.lineWidth=3;
     ctx.strokeStyle = 'hsl(' + mm.hue + ', 100%, ' + this.brightness + '%)';
     ctx.stroke();
-
-//    ctx.beginPath();
-    // draw the target for this firework with a pulsing circle
-//    ctx.arc(this.tx, this.ty, this.targetRadius, 0, Math.PI * 2);
-//    ctx.stroke();
 }
 
 // create particle
@@ -239,65 +229,55 @@ function Fireworks_loop() {
 	var ctx = mm.ctx;
 	var cw = mm.cw;
 	var ch = mm.ch;
-    // this function will run endlessly with requestAnimationFrame
-    if (Molpy.Master.active) setTimeout(Fireworks_loop,1000/60);
+	// this function will run endlessly with requestAnimationFrame
+	if (Molpy.Master.active) setTimeout(Fireworks_loop,1000/60);
 
-    // increase the hue to get different colored fireworks over time
-    mm.hue += 0.5;
+	// increase the hue to get different colored fireworks over time
+	mm.hue += 0.5;
 
-    // normally, clearRect() would be used to clear the canvas
-    // we want to create a trailing effect though
-    // setting the composite operation to destination-out will allow us to clear the canvas at a specific opacity, rather than wiping it entirely
-    ctx.globalCompositeOperation = 'destination-out';
-    // decrease the alpha property to create more prominent trails
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-    ctx.fillRect(0, 0, cw, ch);
-    // change the composite operation back to our main mode
-    // lighter creates bright highlight points as the fireworks and particles overlap each other
-    ctx.globalCompositeOperation = 'lighter';
+	// normally, clearRect() would be used to clear the canvas
+	// we want to create a trailing effect though
+	// setting the composite operation to destination-out will allow us to clear the canvas at a specific opacity, rather than wiping it entirely
+	ctx.globalCompositeOperation = 'destination-out';
+	// decrease the alpha property to create more prominent trails
+	ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+	ctx.fillRect(0, 0, cw, ch);
+	// change the composite operation back to our main mode
+	// lighter creates bright highlight points as the fireworks and particles overlap each other
+	ctx.globalCompositeOperation = 'lighter';
 
-    // loop over each firework, draw it, update it
-    var i = mm.fireworks.length;
-    while (i--) {
-        mm.fireworks[i].draw();
-        mm.fireworks[i].update(i);
-    }
+	// loop over each firework, draw it, update it
+	var i = mm.fireworks.length;
+	while (i--) {
+        	mm.fireworks[i].draw();
+        	mm.fireworks[i].update(i);
+	}
 
-    // loop over each particle, draw it, update it
-    var i = mm.particles.length;
-    while (i--) {
-        mm.particles[i].draw();
-        mm.particles[i].update(i);
-    }
+	// loop over each particle, draw it, update it
+	var i = mm.particles.length;
+	while (i--) {
+       		mm.particles[i].draw();
+       		mm.particles[i].update(i);
+	}
 
-    // launch fireworks automatically to random coordinates
-    if (mm.timerTick >= mm.timerTotal && mm.salvos) {
-            // start the firework at the bottom middle of the screen, then set the random target coordinates, the random y coordinates will be set within the range of the top half of the screen
-            for (var i = 0; i < 3; i++) {
-                setTimeout(function () {
-                    mm.fireworks.push(new Firework(cw / 2 + randomRange(-cw / 6, cw / 6), ch, randomRange(0, cw), randomRange(0, ch / 2)));
-                }, 250 * i);
-            }
-            mm.timerTick = 0;
-	    mm.salvos--;
-    } else {
-        mm.timerTick++;
-    }
+	// launch fireworks automatically to random coordinates
+	if (mm.timerTick >= mm.timerTotal) {
+		if (mm.salvos) {
+			// start the firework at the bottom middle of the screen, then set the random target coordinates, 
+			// the random y coordinates will be set within the range of the top half of the screen
+			for (var i = 0; i < mm.salvosize; i++) {
+				setTimeout(function () {mm.fireworks.push(new Firework(cw / 2 + randomRange(-cw / 6, cw / 6), ch, randomRange(0, cw), 
+					randomRange(0, ch / 2)));}, 250 * i);
+			}
+			mm.timerTick = 0;
+			mm.salvos--;
+		} else {
+			setTimeout(Molpy.Master.Destroy,5000);
+		}
+	} else {
+		mm.timerTick++;
+	};
 
-    if (mm.limiterTick < mm.limiterTotal) mm.limiterTick++; 
+	if (mm.limiterTick < mm.limiterTotal) mm.limiterTick++; 
 }
 
-/*
-window.onresize = function () {
-    cw = canvas.width = window.innerWidth;
-    ch = canvas.height = window.innerHeight;
-};
-
-}
-window.requestAnimFrame = (function () {
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
-        window.setTimeout(callback, 1000 / 60);
-    };
-})();
-
-*/
