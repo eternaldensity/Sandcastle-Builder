@@ -7,8 +7,9 @@
 
 
 Molpy.Master = {
-	Create: function(np) {
+	Create: function(np,type) {
 		this.np = np;
+		this.type = type || 'long';
 		$('#game').addClass('hidden');
 		g('masters').innerHTML = '<div id=MasterBlack>&nbsp;</div><div id=MasterPix></div><div id=darkenMaster></div>' +
 					'<div id=fireworkdiv><canvas id=firework width=' + window.innerWidth +
@@ -36,7 +37,7 @@ Molpy.Master = {
 	active: 0,
 
 	FanFare: function() {
-		this.audio = new Audio('audio/Fanfare.mp3');
+		this.audio = new Audio('audio/Fanfare'+flandom(1)+'.mp3');
 		this.audio.play();
 		this.audio.addEventListener("ended",Molpy.Master.StartFireWorks);
 	},
@@ -58,7 +59,7 @@ Molpy.Master = {
 		mm.timerTick = 0;
 		mm.mx = 0;
 		mm.my = 0;
-		mm.salvos = 10 + Math.floor(mm.np/333);
+		mm.salvos = (mm.type == 'short')?3:10 + Math.floor(mm.np/333);
 		mm.salvosize = Math.floor(mm.np/444)+3;
 
 		mm.canvas.width = mm.cw;

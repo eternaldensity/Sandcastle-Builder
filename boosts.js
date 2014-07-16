@@ -10653,8 +10653,11 @@ Molpy.DefineBoosts = function() {
 				Molpy.EarnBadge('diamm'+this.Making);
 				Molpy.Overview.Update(Molpy.newpixNumber);
 				Molpy.Boosts.DQ.ChangeState(3,Math.floor(Math.log(this.Making+10)*33)+10);
+				Molpy.Overview.Update(this.Making);
+				Molpy.Master.Create(this.Making,'long');
 				// Launch fireworks
 				// Unlocks
+				this.Making = 0;
 			}
 		},
 		StartPed: function() {
