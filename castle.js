@@ -1954,7 +1954,7 @@ Molpy.Up = function() {
 						}
 						if (Molpy.options.autoshow!=0)
 						{
-							if (Molpy.options.autoshow==1 || (baby.group != 'monumg' && baby.group != 'monums'))
+							if (Molpy.options.autoshow==1 || (baby.group != 'monumg' && baby.group != 'monums' && baby.group != 'diamm'))
 								Molpy.ShowGroup(baby.group, baby.className);
 						}
 

@@ -30,9 +30,17 @@ Inspired by Orteil's C**kie Clicker.
 
 For personal amusement only.
 
-## Changelog
+## Changelo
 
-### 3.6201
+### 3.63
+
+#### Waveney
+- Now with something when you get/view masterpieces (more to come)
+- Better/more consistent wording on Muse and the masterpiece maing boosts (thanks ZeroNilist)
+- Woolly Jumper reduces the hassle of getting Maps from positive NPs
+- Changed bugs and typos
+
+### 3.6202
 
 #### Waveney
 - With more fledging again...

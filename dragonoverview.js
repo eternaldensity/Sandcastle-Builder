@@ -157,7 +157,7 @@ Molpy.Overview = {
 
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Molpy.highestNPvisited) {
+				if (np && np <= Math.abs(Molpy.highestNPvisited)) {
 					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1);
 				}
 			}
