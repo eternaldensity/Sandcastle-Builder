@@ -10678,13 +10678,6 @@ Molpy.DefineBoosts = function() {
 				return;
 			};
 			
-			this.Making = Molpy.Boosts['DMB'].Making;
-			if (Molpy.Got('Black Powder')) Molpy.Boosts['Black Powder'].Lock();
-			if (!Molpy.Spend(this.PedCost(this.Making))) {
-				Molpy.Notify('You can not afford this at the moment',1);
-				return;
-			};
-
 			Molpy.Boosts['DMB'].State = 0;
 			this.State = 1;
 			this.countdown = this.PedTime(this.Making);
@@ -10916,9 +10909,12 @@ Molpy.DefineBoosts = function() {
 		name: 'Black Powder',
 		icon: 'blackpowder',
 		desc: function(me) {
-			str = 'Removes unsightly sand and glass monuments (One use)';
+			str = 'Removes unsightly sand and glass monuments (One use).';
 			if (me.bought) {
-				str += '. <input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
+				if (Molpy.Got('Archimedes') && (!Molpy.Got('Cold Mould') || !Molpy.InEnabled('Cold Mould'))) {
+					str += '<br><b>Warning</b> Unless you enable Cold Mould, Archimedes Lever will make them again<br>';
+				};
+				str += '<input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
 			}
 			return str;
 		},

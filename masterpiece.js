@@ -16,7 +16,7 @@ Molpy.Master = {
 		$('#game').addClass('hidden');
 		g('masters').innerHTML = '<div id=MasterBlack><div id=MasterPix></div></div>' +
 					'<div id=fireworkdiv><canvas id=firework width=' + window.innerWidth +
-					' hieght=' + window.innerHieght+ '></div>';
+					' height=' + window.innerHeight+ '></div>';
 		Molpy.Master.NewPix(np);
 		Molpy.Master.FanFare();
 		setTimeout(Molpy.Master.Destroy,150000); // This is a backstop
