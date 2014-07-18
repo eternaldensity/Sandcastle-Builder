@@ -32,6 +32,12 @@ For personal amusement only.
 
 ## Changelo
 
+### 3.6301
+
+#### Waveney
+- Do ZeroNilist's edit correctly
+- Added warning to Black power if you have Archimedies Lever and don't have Cold Mould active
+
 ### 3.63
 
 #### Waveney
