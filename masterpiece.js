@@ -8,25 +8,33 @@
 
 Molpy.Master = {
 	Create: function(np,type) {
+		if (this.active) return;
+//		console.log('MM create called');
+		this.active = 1;
 		this.np = np;
 		this.type = type || 'long';
 		$('#game').addClass('hidden');
-		g('masters').innerHTML = '<div id=MasterBlack>&nbsp;</div><div id=MasterPix></div><div id=darkenMaster></div>' +
+		g('masters').innerHTML = '<div id=MasterBlack><div id=MasterPix></div></div>' +
 					'<div id=fireworkdiv><canvas id=firework width=' + window.innerWidth +
 					' hieght=' + window.innerHieght+ '></div>';
-		this.active = 1;
 		Molpy.Master.NewPix(np);
 		Molpy.Master.FanFare();
-		setTimeout(Molpy.Master.Destroy,150000);
+		setTimeout(Molpy.Master.Destroy,150000); // This is a backstop
 	},
 	
 	Destroy: function() {
+//		console.log('MM destroy called');
 		$('#game').removeClass('hidden');
 		g('masters').innerHTML = '';
-		Molpy.Master.active = 0;
 		this.fireworks = [];
 		this.particles = [];
 		this.sounds = [];
+		setTimeout(Molpy.Master.ReEnable,2000);
+	},
+
+	ReEnable: function() {
+		Molpy.Master.active = 0;
+//		console.log('MM ReEnable called');
 	},
 
 	NewPix: function(np) {
@@ -37,17 +45,23 @@ Molpy.Master = {
 	active: 0,
 
 	FanFare: function() {
-		this.audio = new Audio('audio/Fanfare'+flandom(1)+'.mp3');
+//		console.log('MM Fanfare called');
+		if (!this.active) return;
+		if (!g('firework')) return;
+		if (!this.audio) this.audio = new Audio('audio/Fanfare'+flandom(1)+'.mp3');
 		this.audio.play();
 		this.audio.addEventListener("ended",Molpy.Master.StartFireWorks);
 	},
 
 	StartFireWorks: function() {
+		console.log('MM StartFireworks called');
 		mm = Molpy.Master;
+		if (!mm.active) return;
 		mm.canvas = g('firework');
+		if (!mm.canvas) return;
 		mm.ctx = mm.canvas.getContext('2d');
 		mm.cw = window.innerWidth-20;
-		mm.ch = window.innerHeight-20;
+		mm.ch = window.innerHeight-1;
 		mm.fireworks = [];
 		mm.particles = [];
 		mm.sounds = [];
@@ -263,7 +277,7 @@ function Fireworks_loop() {
 
 	// launch fireworks automatically to random coordinates
 	if (mm.timerTick >= mm.timerTotal) {
-		if (mm.salvos) {
+		if (mm.salvos > 0) {
 			// start the firework at the bottom middle of the screen, then set the random target coordinates, 
 			// the random y coordinates will be set within the range of the top half of the screen
 			for (var i = 0; i < mm.salvosize; i++) {
@@ -273,7 +287,8 @@ function Fireworks_loop() {
 			mm.timerTick = 0;
 			mm.salvos--;
 		} else {
-			setTimeout(Molpy.Master.Destroy,5000);
+			if (mm.salvos == 0) setTimeout(Molpy.Master.Destroy,5000);
+			mm.salvos--;
 		}
 	} else {
 		mm.timerTick++;

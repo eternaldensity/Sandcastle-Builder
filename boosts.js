@@ -10246,7 +10246,7 @@ Molpy.DefineBoosts = function() {
 					str += 'You have a complete Mould made for NP'+me.Making;
 					if (Molpy.Boosts['DMF'].State == 0) {
 						str += '<input type=button value="Start Filling" onclick="Molpy.Boosts[\'DMF\'].StartFill()"></input> '+
-							'It needs '+Molpy.Boosts['DMF'].FillCost(me.Making)+' Diamonds every mNP for '+me.Making+' mNP';
+							'It needs '+Molpify(Molpy.Boosts['DMF'].FillCost(me.Making),2)+' Diamonds every mNP for '+me.Making+' mNP';
 					};
 					break;
 				}
@@ -10334,9 +10334,9 @@ Molpy.DefineBoosts = function() {
 					str += 'You have a completly filled mould for NP'+me.Making;
 					if (Molpy.Boosts['DMC'].State == 0) {
 						str += '<input type=button value="Start Cooking" onclick="Molpy.Boosts[\'DMC\'].StartCook()"></input> '+
-							'It needs '+Molpy.Boosts['DMC'].CookCost(me.Making)+' Coal every mNP for ' +
+							'It needs '+Molpify(Molpy.Boosts['DMC'].CookCost(me.Making),2)+' Coal and ' +
 							Molpy.Boosts['DMC'].CookTime(me.Making)+
-							' mNP.<br>1T Diamonds can be used instead of a Coal';
+							' mNP.<br>'+Molpify(1e12)+' Diamonds can be used instead of a Coal';
 					};
 					break;
 				}
@@ -10452,7 +10452,7 @@ Molpy.DefineBoosts = function() {
 					str += 'You have a cooked Mould made for NP'+me.Making;
 					if (Molpy.Boosts['DMB'].State == 0) {
 						str += '<input type=button value="Start Burnishing" onclick="Molpy.Boosts.DMB.StartBurn()"></input> '+
-							'It needs Infinite Goats and '+Molpy.Boosts['DMB'].BurnCost(me.Making)+' Vacuum every mNP for '+
+							'It needs Infinite Goats and '+Molpify(Molpy.Boosts['DMB'].BurnCost(me.Making),2)+' Vacuum every mNP for '+
 							Molpy.Boosts['DMB'].BurnTime(me.Making)+' mNP';
 					};
 					break;
@@ -10516,7 +10516,7 @@ Molpy.DefineBoosts = function() {
 			this.countdown = 0;
 		},
 		CookCost: function(np) { return Math.floor(Math.exp((np*np/3098))) },
-		CookTime: function(np) { return Math.sqrt(Math.abs(np)) },
+		CookTime: function(np) { return Math.ceil(Math.sqrt(Math.abs(np))) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -10545,7 +10545,7 @@ Molpy.DefineBoosts = function() {
 						me.Making == Molpy.newpixNumber &&
 						Molpy.Got('Black Powder')) {
 						str += '<input type=button value="Start Mounting the Masterpiece" onclick="Molpy.Boosts.DMP.StartPed()"></input> '+
-							'It needs '+Molpy.createPriceHTML(Molpy.Boosts.DMP.PedCost(me.Making))+' and a few other things for '+Molpy.Boosts.DMP.PedTime(me.Making)+' mNP';
+							'It needs '+Molpy.createPriceHTML(Molpy.Boosts.DMP.PedCost(me.Making))+' and a few other things and will take '+Molpy.Boosts.DMP.PedTime(me.Making)+' mNP';
 					} else {
 						str += 'The site is not yet ready';
 					}
@@ -10666,6 +10666,18 @@ Molpy.DefineBoosts = function() {
 				return;
 			};
 
+			this.Making = Molpy.Boosts['DMB'].Making;
+			if (Molpy.Got('Black Powder') && Molpy.Spend(this.PedCost(this.Making))) {
+				Molpy.Boosts['Black Powder'].Lock();
+			} else {
+				if(!Molpy.Got('Black Powder')) {
+					Molpy.Notify('You do not have Black Powder at the moment',1);
+				} else {
+					Molpy.Notify('You can not afford this at the moment',1);
+				}
+				return;
+			};
+			
 			this.Making = Molpy.Boosts['DMB'].Making;
 			if (Molpy.Got('Black Powder')) Molpy.Boosts['Black Powder'].Lock();
 			if (!Molpy.Spend(this.PedCost(this.Making))) {
@@ -10872,15 +10884,19 @@ Molpy.DefineBoosts = function() {
 		icon: 'muse',
 		desc: function() {
 			var np = Molpy.newpixNumber;
+			if (!Molpy.Badges['monumg'+np]) {
+				Molpy.LockBoost('Muse');
+				return '';
+			};
 			var str = 'You are inspired to make a Diamond Masterpiece of '+Molpy.Badges['monumg'+np].name +' at NP'+np+'.<br>';
-			str += 'Making the mould will take '+Molpy.Boosts['DMM'].MouldCost(np)+' Diamonds (and ' +
-				Molpy.Boosts['DMM'].MouldTime(np)+' mNP).<br>';
-			str += 'Filling the mould will take '+Molpy.Boosts['DMF'].FillCost(np)+' Diamonds (every mNP for ' +
-				Molpy.Boosts['DMF'].FillTime(np)+' mNP) and finishing off with infinite Flux Crystals.<br>';
-			str += 'Cooking the mould will take '+Molpy.Boosts['DMC'].CookCost(np)+' Coal (every mNP for ' +
-				Molpy.Boosts['DMC'].CookTime(np)+' mNP), You can burn 1T Diamonds instead for each Coal.<br>';
-			str += 'Burnishing the Masterpiece will take infinite Goats and '+Molpy.Boosts['DMB'].BurnCost(np)+' Vacuums, It will take ' +
-				Molpy.Boosts['DMB'].BurnTime(np)+' mNP.<br>';
+			str += 'Making the mould will take '+Molpify(Molpy.Boosts['DMM'].MouldCost(np),2)+' Diamonds (and ' +
+				Molpify(Molpy.Boosts['DMM'].MouldTime(np))+' mNP).<br>';
+			str += 'Filling the mould will take '+Molpify(Molpy.Boosts['DMF'].FillCost(np),2)+' Diamonds (every mNP for ' +
+				Molpify(Molpy.Boosts['DMF'].FillTime(np))+' mNP) and finishing off with infinite Flux Crystals.<br>';
+			str += 'Cooking the mould will take '+Molpify(Molpy.Boosts['DMC'].CookCost(np),2)+' Coal and will take ' +
+				Molpify(Molpy.Boosts['DMC'].CookTime(np))+' mNP), You can burn '+Molpify(1e12)+' Diamonds instead for each Coal.<br>';
+			str += 'Burnishing the Masterpiece will take infinite Goats and '+Molpify(Molpy.Boosts['DMB'].BurnCost(np),2)+
+				' Vacuums every mNP for ' +Molpify(Molpy.Boosts['DMB'].BurnTime(np))+' mNP.<br>';
 			str += 'Then it will be mounted on a pedestal with much celebration.';
 			return str;
 		},
@@ -10892,6 +10908,7 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.newpixNumber != this.power ) this.Lock();
 		},
 		group: 'drac',
+		NotTemp: 1,
 		
 	});
 
@@ -10900,7 +10917,9 @@ Molpy.DefineBoosts = function() {
 		icon: 'blackpowder',
 		desc: function(me) {
 			str = 'Removes unsightly sand and glass monuments (One use)';
-			if (me.bought) str += '.<input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
+			if (me.bought) {
+				str += '. <input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
+			}
 			return str;
 		},
 		price: {Blackprints:Infinity,

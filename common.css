@@ -670,7 +670,7 @@ body.darkscheme #doverhover {
 	overflow:visible;
 }
 #MasterPix {
-	z-index:2001
+	z-index:2010
 	background-color:black;
 	background-size:contain;
 	background-repeat:no-repeat;
@@ -678,13 +678,18 @@ body.darkscheme #doverhover {
 	position:absolute;
 	width:100%;
 	height:100%;
+	cursor:none;
 }
 #MasterBlack {
 	z-index:2000; 
 	background-color:black;
 	position:absolute;
+	width:100%;
+	height:100%;
+	cursor:none;
 }
 #fireworkdiv {
-	z-index:2010;
+	z-index:2020;
 	position:absolute;
+	cursor:none;
 }
