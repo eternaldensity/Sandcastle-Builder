@@ -10911,7 +10911,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			str = 'Removes unsightly sand and glass monuments (One use).';
 			if (me.bought) {
-				if (Molpy.Got('Archimedes') && (!Molpy.Got('Cold Mould') || !Molpy.InEnabled('Cold Mould'))) {
+				if (Molpy.Got('Archimedes') && (!Molpy.Got('Cold Mould') || !Molpy.IsEnabled('Cold Mould'))) {
 					str += '<br><b>Warning</b> Unless you enable Cold Mould, Archimedes Lever will make them again<br>';
 				};
 				str += '<input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
