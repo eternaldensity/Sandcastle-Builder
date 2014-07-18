@@ -93,7 +93,11 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.monumentOver = function(e) {
 		Molpy.onMouseOver.call(this, e);
-		if(e.data.alias.indexOf('monumg') == 0 && Molpy.previewNP != e.data.np) {
+		if(e.data.alias.indexOf('diamm') == 0) {
+			setTimeout(function(){
+				if(Molpy.mouseIsOver == e.data.overID) Molpy.Master.Create(e.data.np,'short');
+				}, 500);
+		} else if(e.data.alias.indexOf('monumg') == 0 && Molpy.previewNP != e.data.np) {
 			Molpy.previewNP = e.data.np;
 			Molpy.UpdateBeach(e.data.np);
 		} else if(e.data.alias.indexOf('monums') == 0) {

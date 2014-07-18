@@ -976,16 +976,17 @@ TODO
 
 Dragons
 	What						Written	Tested					
-10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch
+10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch (maybe never - might use Maps to boost BM)
 19	Wyvern						Not Launch
 21	Diamond Monuments				Not Launch
 22	Breath effects					Not Launch
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
 53	Burnish restart
-54	Fireworks
 56	Bone Feast
-58
+58	Anti-dragons
+59	Use for Maps
+
 `
 
 
@@ -1007,6 +1008,7 @@ Dragons
 
 Other
 2	Panthers Ignore Einstein 
+3	GPS
 
 
 */

@@ -1078,6 +1078,14 @@
 		if(version < 3.6) {
 			if (Molpy.Got('Time Dilation')) Molpy.Boosts['Time Dilation'].power = 1;
 		}
+		if(version < 3.63) {
+			if (!Molpy.Earned('diamm1') && Molpy.unlockedGroups['diamm']) {
+				for (var np = -3098; np<3099; np++) {
+					if (Molpy.Earned('diamm'+np)) Molpy.Badges['diamm'+np].Lock();
+				}
+				if (!Molpy.Earned('diamm1')) { Molpy.unlockedGroups['diamm'] = 0 };
+			}
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
