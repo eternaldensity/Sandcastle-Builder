@@ -30,7 +30,13 @@ Inspired by Orteil's C**kie Clicker.
 
 For personal amusement only.
 
-## Changelo
+## Changelog
+
+### 3.64
+
+#### Waveney
+- Two new boosts Saturnav and Cake
+- Dragon Nest shows curent linings when it has eggs within
 
 ### 3.6301
 
