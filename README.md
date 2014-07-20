@@ -30,7 +30,7 @@ Inspired by Orteil's C**kie Clicker.
 
 For personal amusement only.
 
-## Changelo
+## Changelog
 
 ### 3.6301
 
