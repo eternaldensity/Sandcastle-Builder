@@ -10,6 +10,14 @@ What		type		use and comments
 
 id		int	A	Set internally by the program on setup
 
+unlocked	float	M	if 1, the boost is unlocked when the game starts, boost will be in shop if unlocked > bought
+
+bought		float	M	Number of times the boost has been bought (will be in shop if bought < unlocked)
+
+power		float	?	Used for many things to record additional property of boost.  Uses vary.
+
+Level		float	O	Derived from power for a lot of boosts, (usually when defStuff = 1)
+
 name		text	M	Used for the boost in the display and to identify
 				boost in the absence of an alias
 
@@ -59,7 +67,7 @@ saveData	hash	O
 
 classChange	Func	O	returns current className - allows for dynamic class changes
 
-gifIcon		Bool	O
+gifIcon		Bool	O	if 1, icon is a gif, oherwise it is a png
 
 logic		int?	O	Gives static logicat level for boost - maybe changed by CheckLogicatRewards in data.js
 
@@ -79,11 +87,9 @@ refreshFunction	Func	O
 
 heresy		Bool	O	Coloured icons/effects
 
-defStuff	int	O
+defStuff	int	O	if 1, use default 
 
 clickBeach	Func	O	For beach actions
-
-unlocked	int	O	if 1, the boost is unlocked when the game starts, boost will be in shop if unlocked > bought
 
 prizes		int	O	number of prizes the boost is
 

@@ -1945,7 +1945,13 @@ Molpy.Up = function() {
 						if(Molpy.Earned('Badgers')) {
 							Molpy.RatesRecalculate();
 						}
-						if((baby.group == 'monumg' || baby.group == 'diamm' ) && Molpy.Got('Maps')) Molpy.Boosts['Maps'].Refresh();
+						if((baby.group == 'monumg' || baby.group == 'diamm' ) && Molpy.Got('Maps')) {
+							if (Molpy.Got('Saturnav') && !Molpy.IsEnabled('Loopin Looie')) {
+								Molpy.Boosts.Maps.Saturnav();
+							} else {
+								Molpy.Boosts['Maps'].Refresh();
+							}
+						}
 
 						if(!Molpy.groupBadgeCounts[baby.group]) {
 							Molpy.groupBadgeCounts[baby.group] = 1;
@@ -2825,8 +2831,11 @@ Molpy.Up = function() {
 		Molpy.Anything = 1;
 		if(Molpy.Spend('GlassChips', 10)) {
 			if(Molpy.Got('Maps')) {
-				if(Molpy.Has('Maps', 50))  Molpy.UnlockBoost('DNS'); 
-				if(Molpy.Has('Maps', 25)) Molpy.UnlockBoost('Lodestone');
+				var maps = Molpy.Level('Maps');
+				if(maps >= 200 && Molpy.groupBadgeCounts.diamm) Molpy.UnlockBoost('Cake'); 
+				if(maps >= 100)  Molpy.UnlockBoost('Saturnav'); 
+				if(maps >= 50)  Molpy.UnlockBoost('DNS'); 
+				if(maps >= 25) Molpy.UnlockBoost('Lodestone');
 				if(Molpy.newpixNumber == Molpy.Boosts['Maps'].NextMap) {
 					Molpy.Add('Maps', 1);
 					Molpy.Notify('You found a new map!', 1);
