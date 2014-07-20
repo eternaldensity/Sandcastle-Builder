@@ -16,7 +16,7 @@ var postfixes=[
 	{limit:1e12,divisor:1e12,postfix:['T',' Tera']},
 	{limit:1e9,divisor:1e9,postfix:['G',' Giga']},
 	{limit:1e6,divisor:1e6,postfix:['M',' Mega']},
-	{limit:9e3,divisor:1e3,postfix:['K',' Kilo']}, //WHAT
+	{limit:9e3,divisor:1e3,postfix:['K',' Kilo']} //WHAT
 ];
 
 function InnerMolpify(number, raftcastle, shrinkify) {
@@ -56,7 +56,14 @@ function InnerMolpify(number, raftcastle, shrinkify) {
 	} else {
 		number = Math.floor(number);
 		//drop the decimal bit
-		var sep = (number + '').indexOf('e') == -1; //true if not in exponential notation
+
+        var sep = (number + '').indexOf('e') == -1; //true if not in exponential notation
+
+        if ((number.toString().length > 9) && sep) { // if number has more than 9 digits and is not yet exponential turn it to one
+            number = number.toExponential();
+            sep = false;
+        }
+
 		number = (number + '').split('').reverse(); //convert to string, then array of chars, then backwards
 		for( var i in number) {
 			if(sep && i % 3 == 0 && i > 0) molp = ',' + molp;//stick commas in every 3rd spot but not 0th
@@ -65,7 +72,7 @@ function InnerMolpify(number, raftcastle, shrinkify) {
 		if(!sep) {
 			var dot = molp.indexOf('.') + 1;
 			var exp = molp.indexOf('e');
-			molp = molp.slice(0, dot) + molp.slice(dot, exp).slice(0, 6) + molp.slice(exp);//truncate after 6 decimal places
+			molp = molp.slice(0, dot) + molp.slice(dot, exp).slice(0, 6) + molp.slice(exp); //truncate after 4 decimal places
 		}
 	}
 	return molp;
@@ -218,7 +225,7 @@ function MakeRedundancy()
 		function(noart){return (noart?'':'the ')+'Department of Redundancy Department';},
 		function(noart){return (noart?'':'the ')+'Department';},
 		function(noart){return (noart?'':'the ')+make(redundancy.adjective)+' Department of Redundancy Department';},
-		function(noart){return (noart?'':'the ')+make(redundancy.adjective)+' Department';},
+		function(noart){return (noart?'':'the ')+make(redundancy.adjective)+' Department';}
 	];
 	redundancy.makeAdjective=function(){return make(redundancy.adjectives);};
 	redundancy.makeModifiedAdjective=function(){return make(redundancy.adjmodifier)+ ' ' + make(redundancy.adjectives);};
@@ -307,7 +314,7 @@ function MakeRedundancy()
 	redundancy.adjphrase=[
 		function(){return make(redundancy.adjphrasestart)+' '+make(redundancy.transverbs)+' '+make(redundancy.objects);},
 		function(){return make(redundancy.adjphrasestart)+' '+make(redundancy.intransverbs);},
-		function(){return make(redundancy.adjphrasestart)+' '+make(redundancy.linkingverbs)+' '+make(redundancy.adjective);},
+		function(){return make(redundancy.adjphrasestart)+' '+make(redundancy.linkingverbs)+' '+make(redundancy.adjective);}
 	];
 	redundancy.adjphrasestart=['which','who'];
 	redundancy.makeAdverb=function(){return make(redundancy.adverbs);};
@@ -317,12 +324,12 @@ function MakeRedundancy()
 		redundancy.makeAdverb,
 		redundancy.makeAdverb,
 		function(){return make(redundancy.adjectives)+'ly';},
-		function(){return make(redundancy.adjectives)+'ishly';},
+		function(){return make(redundancy.adjectives)+'ishly';}
 	];
 	redundancy.comparison=[
 		function(){return 'like a '+make(redundancy.creature,1);},
 		function(){return 'like a '+make(redundancy.thing,1);},
-		function(){return 'like a '+make(redundancy.department,1);},
+		function(){return 'like a '+make(redundancy.department,1);}
 	];
 	redundancy.adverbs=['kinda','almost','often','always','nearly','partly','never'];
 	redundancy.linkingverbs=['is','might be','will be', 'will have been', 'is going to be', 'is going to have been', 'could be', 'could have been','might be', 'might have been', 'should be', 'should have been', 'must be', 'must have been'];
