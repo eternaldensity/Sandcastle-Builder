@@ -72,7 +72,7 @@ function InnerMolpify(number, raftcastle, shrinkify) {
 		if(!sep) {
 			var dot = molp.indexOf('.') + 1;
 			var exp = molp.indexOf('e');
-			molp = molp.slice(0, dot) + molp.slice(dot, exp).slice(0, 6) + molp.slice(exp); //truncate after 4 decimal places
+			molp = molp.slice(0, dot) + molp.slice(dot, exp).slice(0, 6) + molp.slice(exp); //truncate after 6 decimal places
 		}
 	}
 	return molp;
