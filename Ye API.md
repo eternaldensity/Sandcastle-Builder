@@ -3,7 +3,7 @@
 ## Boosts
 
 **ALWAYS** add new boosts to the end. Existing boosts can however be replaced by new ones.
-Boosts can be accssed either by Molpy.Boosts[ALIAS] or Molpy.BoostsById[ID]
+Boosts can be accessed either by Molpy.Boosts[ALIAS] or Molpy.BoostsById[ID]
 
 What                  | Type    |   | Use and comments 
 ----------------------|---------|---|-----------------
