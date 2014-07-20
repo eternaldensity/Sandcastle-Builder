@@ -7876,13 +7876,18 @@ Molpy.DefineBoosts = function() {
 		nest.Liners[thing] = (nest.Liners[thing] || 0) + change;
 		nest.Refresh();
 	}
-	Molpy.EggCost = function(modifier) {
+	Molpy.EggCost = function() {
 		var eggs = Molpy.Boosts['Eggs'].Level;
-		if (modifier) eggs = Math.max(1,Math.floor(Molpy.Boosts['Eggs'].Level - modifier ));
-		if (eggs < 6 && Molpy.Level('DQ') < 6) return DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs]);
+		var modpow = 1;
+		if (Molpy.Got('Cake') && eggs>1) {
+			var more = Math.ceil(Math.log(Molpy.Level('Maps')/200));
+			eggs = Math.max(1,eggs-more);
+			if (eggs == 1) modpow = Math.pow(10,Molpy.Boosts['Eggs'].Level - eggs);
+		};
+		
+		if (eggs < 6 && Molpy.Level('DQ') < 6) return DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs])*modpow;
 		return Infinity;
 	}
-
 	new Molpy.Boost({ 
 		name: 'Dragon Queen',
 		alias: 'DQ',
@@ -7894,7 +7899,7 @@ Molpy.DefineBoosts = function() {
 			var str = 'The queen of the dragons.';
 			if(me.bought) {
 				Molpy.UnlockBoost('RDKM');
-				var eggcost = Molpy.EggCost(Molpy.Got('Cake')? Math.floor((Molpy.Level('Maps')-75)/150): 0);
+				var eggcost = Molpy.EggCost();
 				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal: Molpy.EggCost()}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
 				if (Molpy.TotalDragons) {
 					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding','Celebrating'][me.overallState];
