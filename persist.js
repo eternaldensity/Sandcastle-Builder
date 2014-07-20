@@ -1086,6 +1086,11 @@
 				if (!Molpy.Earned('diamm1')) { Molpy.unlockedGroups['diamm'] = 0 };
 			}
 		}
+		if(version < 3.64) {
+			var maps = Molpy.Level('Maps');
+			if(maps >= 200 && Molpy.groupBadgeCounts.diamm) Molpy.UnlockBoost('Cake'); 
+			if(maps >= 100) Molpy.UnlockBoost('Saturnav'); 
+		}
 	}
 
 	Molpy.MakePrizeList = function() {

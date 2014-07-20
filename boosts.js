@@ -4680,7 +4680,7 @@ Molpy.DefineBoosts = function() {
 					}
 				}
 				gmf.power = 0;
-				gmf.Making = 1;
+				gmf.Making = 0;
 				return times;
 			}
 		}
@@ -7692,7 +7692,6 @@ Molpy.DefineBoosts = function() {
 		alias: 'Maps',
 		icon: 'mysteriousmap',
 		group: 'stuff',
-		iregularBought: 1,
 		
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' map' + plural(me.Level);
@@ -7730,12 +7729,21 @@ Molpy.DefineBoosts = function() {
 			4:['NextMap', 0, 'float'],
 		},
 		defSave: 1,
+		AddSuper: Molpy.BoostFuncs.Add,
+		
+		Add: function(amount) {
+			this.AddSuper(amount);
+			if (this.Level > 200 && Molpy.groupBadgeCounts.diamm) Molpy.UnlockBoost('Cake');	
+		},
 		
 		price: {
 			Blackprints: function(me) {
 				return 200 * (me.Level + 1)
 			}
-		}
+		},
+		Saturnav: function() {
+			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) -1 - Molpy.mapMonumg)/3);
+		},
 	});
 	
 	Molpy.EnoughMonumgForMaps = function() {
@@ -7812,7 +7820,22 @@ Molpy.DefineBoosts = function() {
 				}
 				str += '</div>';
 			} else {
-				str += ' It can not have its lining changed while in use.';
+				str += ' It can not have its lining changed while in use.  The current linings are:';
+				for (var thing in Molpy.NestLinings) {
+					stuff = Molpy.NestLinings[thing];
+					if (Molpy.Has(stuff,Infinity)) {
+						var line = me.Liners[thing] || 0;
+						str += '<br>'+Molpy.Boosts[stuff].plural+': ';
+						if (Molpy.options.science && line == 3) {
+							str += '&lfloor;&pi;&rfloor;';
+						} else if (Molpy.options.science && line == 4) {
+							str += '&lceil;&pi;&rceil;';
+						} else {
+							str += Molpify(line,1);
+						};
+						str+=	'%';
+					}
+				}
 			}
 			return str;
 		},
@@ -7855,10 +7878,16 @@ Molpy.DefineBoosts = function() {
 	}
 	Molpy.EggCost = function() {
 		var eggs = Molpy.Boosts['Eggs'].Level;
-		if (eggs < 6 && Molpy.Level('DQ') < 6) return DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs]);
+		var modpow = 1;
+		if (Molpy.Got('Cake') && eggs>1) {
+			var more = Math.ceil(Math.log(Molpy.Level('Maps')/200));
+			eggs = Math.max(1,eggs-more);
+			if (eggs == 1) modpow = Math.pow(10,Molpy.Boosts['Eggs'].Level - eggs);
+		};
+		
+		if (eggs < 6 && Molpy.Level('DQ') < 6) return DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs])*modpow;
 		return Infinity;
 	}
-
 	new Molpy.Boost({ 
 		name: 'Dragon Queen',
 		alias: 'DQ',
@@ -10761,6 +10790,9 @@ Molpy.DefineBoosts = function() {
 			Goats:Infinity,
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		AfterToggle: function() {
+			if (Molpy.Got('Saturnav') && !this.IsEnabled) Molpy.Boosts.Maps.Saturnav();
+		},
 	});
 
 	new Molpy.Boost({ 
@@ -11080,5 +11112,23 @@ Molpy.DefineBoosts = function() {
 		price: { Diamonds:222222222, Goats:Infinity, exp:'12.5E' },
 	});
 
+	new Molpy.Boost({
+		name: 'Saturnav',
+		icon: 'saturn',
+		group: 'hpt',
+		desc: 'As long as you do not have Loopin Looie active, it will automatically collect your Maps',
+		price: { Diamonds:222, Goats:Infinity, exp:'123456' },
+		buyFunction: function() {
+			if (!Molpy.Boosts['Loopin Looie'].IsEnabled) Molpy.Boosts.Maps.Saturnav();
+		},
+	});
+
+	new Molpy.Boost({
+		name: 'Cake',
+		icon: 'cake',
+		group: 'hpt',
+		desc: 'Reduces the costs of some Dragon Eggs',
+		price: { Diamonds:'5.55M', Goats:Infinity, Bonemeal:'555GW' },
+	});
 	// END OF BOOSTS, add new ones immediately before this comment
 }
