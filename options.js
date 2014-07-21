@@ -78,7 +78,7 @@ Molpy.OptionsFromString = function(thread) {
 // ALWAYS add to the end of this list. NEVER EVER remove an option
 Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpix', 'longpostfix', 'colourscheme',
 			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll',
-			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow', 'mindecimal' ];
+			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow', 'mindecimal', 'edigits' ];
 	
 // These options are defined in the display order
 
@@ -193,6 +193,24 @@ new Molpy.Option({
 		Molpy.UpdateFaves();
 	},
 
+});
+
+new Molpy.Option({
+    name: 'edigits',
+    title: 'Number of digits before collapsing to epsilon notation',
+    range: 4,
+    text: ['Standart', '9', '10', '11', '12'],
+    visability: function() {
+        if (Molpy.options.science) {
+            return 1;
+        } else {
+            return 0;
+        }
+    },
+    onchange: function() {
+        Molpy.allNeedRepaint = 1;
+        Molpy.UpdateFaves();
+    }
 });
 
 new Molpy.Option({

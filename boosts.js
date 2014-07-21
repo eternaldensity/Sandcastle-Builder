@@ -7798,7 +7798,7 @@ Molpy.DefineBoosts = function() {
 			if (!Molpy.Got('DQ')) {
 				str += '<br>To obtain a queen, you need Automata Control of at least ' + Molpify(1e6) + ' and '+Molpify(1e10) + ' Bonemeal.';
 			} else if (!Molpy.Got('Eggs')) { 
-				str = '<br>Please line the nest:<div id=NestLiners align=center>';
+				str += '<br>Please line the nest:<div id=NestLiners align=center>';
 				for (var thing in Molpy.NestLinings) {
 					stuff = Molpy.NestLinings[thing];
 					if (Molpy.Has(stuff,Infinity)) {
@@ -8651,7 +8651,7 @@ Molpy.DefineBoosts = function() {
 		alias: 'Crunch',
 		icon: 'crunch',
 		group: 'prize',
-		className: 'action',
+		//className: 'action',
 		
 		desc: function(me) {
 			return 'Now does nothing';
@@ -10259,7 +10259,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({
-		name: 'Diamond Mould Making. ',
+		name: 'Diamond Mould Making',
 		icon: 'diamould',
 		alias: 'DMM',
 		desc: function(me) {
@@ -10267,13 +10267,13 @@ Molpy.DefineBoosts = function() {
 			if (me.bought && Molpy.Boosts.DMP.bought) {
 				switch (me.State) {
 				case 0: 
-					str += 'Gaze at a Glass Monument to contemplate making a Diamond Masterpiece';
+					str += '<br>Gaze at a Glass Monument to contemplate making a Diamond Masterpiece';
 					break;
 				case 1:
-					str += 'Making the mould for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
+					str += '<br>Making the mould for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
 					break;
 				case 2:
-					str += 'You have a complete Mould made for NP'+me.Making;
+					str += '<br>You have a complete Mould made for NP'+me.Making;
 					if (Molpy.Boosts['DMF'].State == 0) {
 						str += '<input type=button value="Start Filling" onclick="Molpy.Boosts[\'DMF\'].StartFill()"></input> '+
 							'It needs '+Molpify(Molpy.Boosts['DMF'].FillCost(me.Making),2)+' Diamonds every mNP for '+me.Making+' mNP';
@@ -10344,7 +10344,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({ 
-		name: 'Diamond Mould Filling. ',
+		name: 'Diamond Mould Filling',
 		icon: 'diamfill',
 		alias: 'DMF',
 		sortAfter: 'DMM',
@@ -10355,13 +10355,13 @@ Molpy.DefineBoosts = function() {
 			if (me.bought && Molpy.Boosts.DMP.bought) {
 				switch (me.State) {
 				case 0: 
-					str += 'You do not currently have a mould to be filled';
+					str += '<br>You do not currently have a mould to be filled';
 					break;
 				case 1:
-					str += 'Filling the mould for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
+					str += '<br>Filling the mould for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
 					break;
 				case 2:
-					str += 'You have a completly filled mould for NP'+me.Making;
+					str += '<br>You have a completly filled mould for NP'+me.Making;
 					if (Molpy.Boosts['DMC'].State == 0) {
 						str += '<input type=button value="Start Cooking" onclick="Molpy.Boosts[\'DMC\'].StartCook()"></input> '+
 							'It needs '+Molpify(Molpy.Boosts['DMC'].CookCost(me.Making),2)+' Coal and ' +
@@ -10462,7 +10462,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({ 
-		name: 'Diamond Masterpiece Cooker. ',
+		name: 'Diamond Masterpiece Cooker',
 		icon: 'diamcook',
 		alias: 'DMC',
 		sortAfter: 'DMF',
@@ -10473,13 +10473,13 @@ Molpy.DefineBoosts = function() {
 			if (me.bought && Molpy.Boosts.DMP.bought) {
 				switch (me.State) {
 				case 0: 
-					str += 'You have nothing to cook';
+					str += '<br>You have nothing to cook';
 					break;
 				case 1:
-					str += 'Cooking the mould for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
+					str += '<br>Cooking the mould for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
 					break;
 				case 2:
-					str += 'You have a cooked Mould made for NP'+me.Making;
+					str += '<br>You have a cooked Mould made for NP'+me.Making;
 					if (Molpy.Boosts['DMB'].State == 0) {
 						str += '<input type=button value="Start Burnishing" onclick="Molpy.Boosts.DMB.StartBurn()"></input> '+
 							'It needs Infinite Goats and '+Molpify(Molpy.Boosts['DMB'].BurnCost(me.Making),2)+' Vacuum every mNP for '+
@@ -10562,19 +10562,19 @@ Molpy.DefineBoosts = function() {
 			if (me.bought && Molpy.Boosts.DMP.bought) {
 				switch (me.State) {
 				case 0: 
-					str += 'Nothing to Shine';
+					str += '<br>Nothing to Shine';
 					break;
 				case 1:
-					str += 'Burnishing the Masterpiece for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
+					str += '<br>Burnishing the Masterpiece for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
 					break;
 				case 2:
-					str += 'You have a complete Masterpiece made for NP'+me.Making;
+					str += '<br>You have a complete Masterpiece made for NP'+me.Making;
 					if (Molpy.Boosts['DMP'].State == 0 && 
 						!Molpy.Earned('monums'+me.Making) && 
 						!Molpy.Earned('monumg'+me.Making) && 
 						me.Making == Molpy.newpixNumber &&
 						Molpy.Got('Black Powder')) {
-						str += '<input type=button value="Start Mounting the Masterpiece" onclick="Molpy.Boosts.DMP.StartPed()"></input> '+
+						str += '<input type=button value="Start Mounting" onclick="Molpy.Boosts.DMP.StartPed()"></input> '+
 							'It needs '+Molpy.createPriceHTML(Molpy.Boosts.DMP.PedCost(me.Making))+' and a few other things and will take '+Molpy.Boosts.DMP.PedTime(me.Making)+' mNP';
 					} else {
 						str += 'The site is not yet ready';
@@ -10643,7 +10643,7 @@ Molpy.DefineBoosts = function() {
 	});
 
 	new Molpy.Boost({
-		name: 'Diamond Masterpiece Pedestal. ',
+		name: 'Diamond Masterpiece Pedestal',
 		icon: 'pedestal',
 		alias: 'DMP',
 		group: 'drac',
@@ -10654,10 +10654,10 @@ Molpy.DefineBoosts = function() {
 			if (me.bought && Molpy.Boosts.DMP.bought) {
 				switch (me.State) {
 				case 0: 
-					str += 'No Masterpiece currently needs mounting on a pedestal';
+					str += '<br>No Masterpiece currently needs mounting on a pedestal';
 					break;
 				case 1:
-					str += 'Making the Pedestal for the Masterpiece at NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
+					str += '<br>Making the Pedestal for the Masterpiece at NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
 					break;
 				case 2:
 					this.State = 0; // Should never happen...
@@ -10684,8 +10684,8 @@ Molpy.DefineBoosts = function() {
 				Molpy.Overview.Update(Molpy.newpixNumber);
 				Molpy.Boosts.DQ.ChangeState(3,Math.floor(Math.log(this.Making+10)*33)+10);
 				Molpy.Overview.Update(this.Making);
-				Molpy.Master.Create(this.Making,'long');
 				// Launch fireworks
+				Molpy.Master.Create(this.Making,'long');
 				// Unlocks
 				this.Making = 0;
 			}

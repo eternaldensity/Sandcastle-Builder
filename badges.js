@@ -1127,6 +1127,8 @@ Molpy.DefineBadges = function() {
 						'<input type=button value="Start" onclick="Molpy.Boosts.DMM.StartMould()"></input>' +
 						'to make a Diamond Mould.  Making the mould will take '+Molpy.Boosts.DMM.MouldCost(np)+
 						' Diamonds (and ' + Molpy.Boosts.DMM.MouldTime(np)+' mNP).<br>';
+				} else if(me.group == 'diamm'){
+					str += ' ' + Molpy.groupNames['diamm'][5];
 				}
 				return str;
 			},
