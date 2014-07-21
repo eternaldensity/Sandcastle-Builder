@@ -59,9 +59,12 @@ function InnerMolpify(number, raftcastle, shrinkify) {
 
         var sep = (number + '').indexOf('e') == -1; //true if not in exponential notation
 
-        if ((number.toString().length > 9) && sep) { // if number has more than 9 digits and is not yet exponential turn it to one
-            number = number.toExponential();
-            sep = false;
+        if (Molpy.options.edigits && sep) {
+            var edigits = Molpy.options.edigits + 8; // adding 8 to value, because values goes from 1 to 4 but should be 9-12
+            if (number.toString().length > edigits) { // if number has more than predefined number of digits and is not yet exponential turn it to one
+                number = number.toExponential();
+                sep = false;
+            }
         }
 
 		number = (number + '').split('').reverse(); //convert to string, then array of chars, then backwards
