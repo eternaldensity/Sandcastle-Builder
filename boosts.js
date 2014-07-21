@@ -7742,7 +7742,8 @@ Molpy.DefineBoosts = function() {
 			}
 		},
 		Saturnav: function() {
-			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) -1 - Molpy.mapMonumg)/3);
+			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) -2 - Molpy.mapMonumg)/3);
+			this.Refresh();
 		},
 	});
 	
@@ -10171,7 +10172,7 @@ Molpy.DefineBoosts = function() {
 		},
 		draglvl: 'Wyrm',
 		group: 'bean',
-		limit: 1, // Only affect digging at the moment
+		limit: function() { Molpy.Got('Dragonfly')?4:1 },
 		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
@@ -11130,5 +11131,27 @@ Molpy.DefineBoosts = function() {
 		desc: 'Reduces the costs of some Dragon Eggs',
 		price: { Diamonds:'5.55M', Goats:Infinity, Bonemeal:'555GW' },
 	});
+
+	new Molpy.Boost({
+		name: 'Anisoptera',
+		alias: 'Dragonfly',
+		icon: 'dragonfly',
+		group: 'drac',
+		desc: function(me) {
+			str = 'Increases the both the offensive and defensive values of Dragons and may give you advanced informaton about Redundaknights.';
+			if (me.bought) str += '<p>You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			return str;
+		},
+		price: {
+			Diamonds:'12.5G',
+			coal: function (me) { return Math.pow(5,me.Level+1)*20 },
+			exp: function (me) { return Math.pow(5,me.Level+1)*1000 }
+		},
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Boosts['Big Bite'].bought == Molpy.Boosts['Big Bite'].limit())?8*(Molpy.Level('DQ')-1):0 },
+	});
+
+
+
 	// END OF BOOSTS, add new ones immediately before this comment
 }
