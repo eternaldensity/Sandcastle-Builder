@@ -4128,7 +4128,7 @@ Molpy.DefineBoosts = function() {
 			return times; // condition for subject no longer met!
 		}
 		if(Molpy.blackprintCosts[s] > Molpy.Level('Blackprints')) {// we used up some blackprints somehow!
-			return times; // do nothing
+			if (isFinite(Molpy.VoidStare(1, 'VS'))) return times; // do nothing if we'll get them back in 1mNP
 		}
 		Molpy.Add('CfB', times);
 		if (Molpy.Got('Hubble Double') && Math.random()<0.01) Molpy.Boosts['CfB'].power*=2;
@@ -5215,7 +5215,7 @@ Molpy.DefineBoosts = function() {
 			var pages = Math.floor(mr.power / 100);
 			mr.power -= 100 * pages;
 			if(pages) {
-				Molpy.Add('Blackprints', Molpy.VoidStare(pages, 'VS'));
+				Molpy.Add('Blackprints', Molpy.VoidStare(pages, 'VS')) );
 			}
 		}
 		if(left > 10 && Molpy.Redacted.totalClicks > 2500 && Molpy.Got('ZK') && Molpy.Boosts['Logicat'].bought >= 4
