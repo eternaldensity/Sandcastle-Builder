@@ -3,9 +3,11 @@
 ## Boosts
 
 **ALWAYS** add new boosts to the end. Existing boosts can however be replaced by new ones.
-Boosts can be accessed either by Molpy.Boosts[ALIAS] or Molpy.BoostsById[ID]
+Boosts can be accessed either by Molpy.Boosts[ALIAS] or Molpy.BoostsById[ID].
 
-What                  | Type    |   | Use and comments 
+Third column explains is parameter (A)utomatic, (M)ust be present or (O)ptional. 
+
+What                  | Type    |AMO| Use and comments 
 ----------------------|---------|---|-----------------
 id                    | int     | A | Set internally by the program on setup
 unlocked              |	float   | M | If 1, the boost is unlocked when the game starts, boost will be in shop if unlocked > bought
@@ -55,7 +57,7 @@ AfterToggle           |	Func    | O | Called after use of Generic Toggle
 
 ## Badges
 
-What                  | Type    |    | Use and comments 
+What                  | Type    |AMO | Use and comments 
 ----------------------|---------|----|-----------------
 id                    |	int     | A  | Set internally to the Idenity of the Badge on setup.
 name                  | text    | M  | Name of badge
@@ -72,14 +74,16 @@ The discoveries are **CURRENTLY** in the same file as the badges.  This will cha
 
 ## Tools
 
-**TBA**
+### Sand Tools
+
+### Castle Tools
 
 ## Options
 
 Add new options in the order they should appear
 Add the new option to the **END** of the Save Order, **NEVER EVER DELETE** from this list
 
-What                  | Type    |    | Use and comments 
+What                  | Type    | AMO| Use and comments 
 ----------------------|---------|----|-----------------
 id                    |	int     | A  | Set internally to the Idenity of the Option on setup.
 name                  | text    | M	 | Used to reference the option in the code
