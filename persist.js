@@ -1091,6 +1091,9 @@
 			if(maps >= 200 && Molpy.groupBadgeCounts.diamm) Molpy.UnlockBoost('Cake'); 
 			if(maps >= 100) Molpy.UnlockBoost('Saturnav'); 
 		}
+		if(version < 3.65) {
+			if (Molpy.Got('Archimedes')) Molpy.Boosts['Archimedes'].power = 1;
+		}
 	}
 
 	Molpy.MakePrizeList = function() {

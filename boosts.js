@@ -4437,7 +4437,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.MakeSandMouldWork = function(times) {
 		var smm = Molpy.Boosts['SMM'];
 		if(smm.power == 0 || smm.power > 100) {
-			if(smm.power == 0 && Molpy.Got('Archimedes') && Molpy.Has('Bonemeal', 10)) {
+			if(smm.power == 0 && Molpy.IsEnabled('Archimedes') && Molpy.Has('Bonemeal', 10)) {
 				if(!Molpy.StartCheapestSandMould()) return times;
 			} else
 				return times;
@@ -4584,7 +4584,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.MakeGlassMouldWork = function(times) {
 		var gmm = Molpy.Boosts['GMM'];
 		if(gmm.power == 0 || gmm.power > 400) {
-			if(gmm.power == 0 && Molpy.Got('Archimedes') && Molpy.Has('Bonemeal', 10)) {
+			if(gmm.power == 0 && Molpy.IsEnabled('Archimedes') && Molpy.Has('Bonemeal', 10)) {
 				if(!Molpy.StartCheapestGlassMould()) return times;
 			} else
 				return times;
@@ -5215,7 +5215,7 @@ Molpy.DefineBoosts = function() {
 			var pages = Math.floor(mr.power / 100);
 			mr.power -= 100 * pages;
 			if(pages) {
-				Molpy.Add('Blackprints', Molpy.VoidStare(pages, 'VS')) );
+				Molpy.Add('Blackprints', Molpy.VoidStare(pages, 'VS'));
 			}
 		}
 		if(left > 10 && Molpy.Redacted.totalClicks > 2500 && Molpy.Got('ZK') && Molpy.Boosts['Logicat'].bought >= 4
@@ -8419,11 +8419,18 @@ Molpy.DefineBoosts = function() {
 		alias: 'Archimedes',
 		icon: 'archimedesslever',
 		group: 'prize',
-		desc: 'If a Monument Maker is idle, it will start making the cheapest monument available at a cost of 10 Bonemeal.',
+		className: 'toggle',
+		desc: function(me) {
+			return 'If active and a Monument Maker is idle, it will start making the cheapest monument available ' +
+				'at a cost of 10 Bonemeal.' +
+				(me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
+					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
+		},
 		stats: 'Only makes Minus Monuments if you are in Minus NewPix.<br>',
 		price:{ GlassBlocks: '360W' },
 		prizes: 1,
-		tier: 3
+		tier: 3,
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
 	new Molpy.Boost({
 		name: 'Would have been useful a month ago',
@@ -10944,8 +10951,8 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			str = 'Removes unsightly sand and glass monuments (One use).';
 			if (me.bought) {
-				if (Molpy.Got('Archimedes') && (!Molpy.Got('Cold Mould') || !Molpy.IsEnabled('Cold Mould'))) {
-					str += '<br><b>Warning</b> Unless you enable Cold Mould, Archimedes Lever will make them again<br>';
+				if (Molpy.IsEnabled('Archimedes') && (!Molpy.Got('Cold Mould') || !Molpy.IsEnabled('Cold Mould'))) {
+					str += '<br><b>Warning</b> Unless you enable Cold Mould or Disable Archimedes Lever, Archimedes Lever will make them again<br>';
 				};
 				str += '<input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
 			}
