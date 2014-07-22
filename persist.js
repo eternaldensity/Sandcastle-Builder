@@ -93,7 +93,6 @@
 		localStorage['Badges'] = Molpy.BadgesToString();
 		localStorage['OtherBadges'] = Molpy.OtherBadgesToString();
 		localStorage['NPdata'] = Molpy.NPdataToString();
-        localStorage['FavesList'] = Molpy.FavesListToString();
 		return 1;
 	}
 
@@ -157,7 +156,6 @@
 		Molpy.startDate = localStorage['startDate'];
 
 		Molpy.OptionsFromString(localStorage['Options']);
-        Molpy.FavesListFromString(localStorage['FavesList']);
         if(!g('game')) {
 			Molpy.AdjustFade();
 			Molpy.UpdateColourScheme();
@@ -439,16 +437,6 @@
 		return str;
 	}
 
-    Molpy.FavesListToString = function() {
-        var s = 'S'; //Semicolon
-        var str = '';
-        for(var sweeties in Molpy.FavesList) {
-            var fe = Molpy.FavesList[sweeties].id;
-            str += fe + s;
-        }
-        return str;
-    }
-
 	/* In which I do save and load!
 	+++++++++++++++++++++++++++++++*/
 	Molpy.ToNeedlePulledThing = function(exporting) {
@@ -482,10 +470,6 @@
 		thread = '';
 		thread += Molpy.NPdataToString() + p;
 		threads.push(thread);
-
-        thread = '';
-        thread += Molpy.FavesListToString() + p;
-        threads.push(thread);
 		return threads;
 	}
 
@@ -804,18 +788,6 @@
 		}
 	}
 
-    Molpy.FavesListFromString = function(thread) {
-        var s = 'S'; //Semicolon
-        if (!thread) return;
-        var fl = thread.split(s);
-        if (!fl[0]) return;
-        for (var el in fl) {
-            if (fl[el]) {
-                Molpy.lootAddToFav(Molpy.BoostsById[fl[el]]);
-            }
-        }
-    };
-
 	Molpy.ValidateVersion = function(version) {
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Version', '' + version, true]);
 		if(version > Molpy.version) {
@@ -859,7 +831,6 @@
 		//thread[9] is unused
 		Molpy.OtherBadgesFromString(thread[10] || '', version);
 		Molpy.NPdataFromString(thread[11] || '', version);
-        Molpy.FavesListFromString(thread[12]);
 		return Molpy.PostLoadTasks(version);
 	}
 	Molpy.PreLoadTasks = function(version) {
