@@ -2047,7 +2047,8 @@ Molpy.Up = function() {
 					4: $('#loot'), // in a boost group
 					5: $('#loot'), // in a badge  group
 					6: $('#loot'), // in badges available
-					7: $('#loot')}; // in tagged list
+                    7: $('#loot'), // in tagged list
+					8: $('#loot')}; // in faves list
 			this.titleList = {
 					1: $('#toolSTitle'),
 					2: $('#toolCTitle'),
@@ -2055,7 +2056,8 @@ Molpy.Up = function() {
 					4: $('#lootTitle'),
 					5: $('#lootTitle'),
 					6: $('#lootTitle'),
-					7: $('#lootTitle')};
+					7: $('#lootTitle'),
+                    8: $('#lootTitle')};
 			
 			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop', 'floatbox boost shop',
 			                   'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop', 'lootbox boost loot'];
@@ -2267,9 +2269,15 @@ Molpy.Up = function() {
 		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?
 		
 		Molpy.TaggedLoot = [];
-		
+        if (!Molpy.FavesList) {
+            Molpy.FavesList = [];
+        }
+
 		Molpy.BuildLootLists = function () {
 			Molpy.TaggedLoot = [];
+            if (!Molpy.FavesList) {
+                Molpy.FavesList = [];
+            }
 			Molpy.BoostsBought = [];
 			Molpy.BadgesEarned = [];
 			Molpy.BadgesAvailable = [];
@@ -2422,6 +2430,25 @@ Molpy.Up = function() {
 				return Molpy.lootFindInsert(object, array, start, pivot, sort);
 			}
 		}
+
+        Molpy.lootAddToFav = function(object) {
+            var index = $.inArray(object, Molpy.FavesList);
+            if (index <= -1) {
+                Molpy.FavesList.push(object);
+                var daddy = Molpy.FavesList.shift();
+                Molpy.FavesList.sort(Molpy.ClassNameSort);
+                Molpy.FavesList.unshift(daddy);
+            }
+        };
+
+        Molpy.lootRemoveFromFav = function(object) {
+            if (object != Molpy.Boosts['favs']) { // never remove control boost from the list
+                var index = $.inArray(object, Molpy.FavesList);
+                if (index > -1) {
+                    Molpy.FavesList.splice(index, 1);
+                }
+            }
+        };
 
 		Molpy.RewardRedacted = function(forceDepartment, automationLevel) {
 			var event = forceDepartment ? 'DoRD' : Molpy.Redacted.word;

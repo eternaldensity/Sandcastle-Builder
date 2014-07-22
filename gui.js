@@ -125,13 +125,14 @@ Molpy.DefineGUI = function() {
 			Molpy.activeLayout.lootVis[key] = val == true;
 		}
 		if(Molpy.activeLayout.lootVis[key]) {
-			if(key == 'tagged' || key == 'search') {
+			if(key == 'tagged' || key == 'search' || key == 'faves') {
 				for( var k in Molpy.activeLayout.lootVis) {
-					Molpy.activeLayout.lootVis[k] = k == key; //when showing tagged, hide all others
+					Molpy.activeLayout.lootVis[k] = k == key; //when showing tagged or favourites, hide all others
 				}
 			} else {
 				Molpy.activeLayout.lootVis.search = 0;
 				Molpy.activeLayout.lootVis.tagged = 0; //hide tagged when showing anything else
+                Molpy.activeLayout.lootVis.faves = 0; //hide favourites when showing anything else
 			}
 		}
 		Molpy.restoreLootScroll = false;
@@ -142,9 +143,9 @@ Molpy.DefineGUI = function() {
 		if(Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide1') {
 			if(!Molpy.activeLayout.lootVis[group]) {
 				if(tagged) {
-					if(!Molpy.activeLayout.lootVis.tagged) {
-						Molpy.ShowhideToggle('tagged');
-					}
+                    if (!Molpy.activeLayout.lootVis.tagged) {
+                        Molpy.ShowhideToggle('tagged');
+                    }
 				} else {
 					Molpy.ShowhideToggle(group);
 				}
@@ -407,7 +408,7 @@ Molpy.DefineGUI = function() {
 	Molpy.RepaintLootSelection = function() {
 		Molpy.lootSelectionNeedRepaint = 0;
 		var str = '';
-		var groups = ['boosts', 'stuff', 'land', 'ninj', 'cyb', 'hpt', 'bean', 'chron', 'ceil', 'drac', 'prize'];
+		var groups = ['boosts', 'stuff', 'land', 'ninj', 'cyb', 'hpt', 'bean', 'chron', 'ceil', 'drac', 'prize', 'faves'];
 		for( var i in groups) {
 			str += Molpy.PaintLootToggle(groups[i], 4);
 		}
@@ -568,13 +569,16 @@ Molpy.DefineGUI = function() {
 		Molpy.removeGroupDivs(Molpy.dispObjects.boosts);
 		Molpy.removeGroupDivs(Molpy.dispObjects.badges);
 		Molpy.removeGroupDivs(Molpy.dispObjects.tagged);
+        Molpy.removeGroupDivs(Molpy.dispObjects.faves);
 		Molpy.removeGroupDivs(Molpy.dispObjects.search);
 		Molpy.dispObjects.boosts = [];
 		Molpy.dispObjects.badges = [];
 		Molpy.dispObjects.tagged = [];
+        Molpy.dispObjects.faves = [];
 		Molpy.dispObjects.search = [];
 		
 		var taggedList = Molpy.TaggedLoot;
+        var favesList = Molpy.FavesList;
 		var boostList = [];
 		var badgeList = [];
 		
@@ -610,6 +614,9 @@ Molpy.DefineGUI = function() {
 		else if(Molpy.activeLayout.lootVis.tagged) {
 			maxPageNum = Math.ceil(taggedList.length / Molpy.lootPerPage);
 		}
+        else if(Molpy.activeLayout.lootVis.faves) {
+            maxPageNum = Math.ceil(favesList.length / Molpy.lootPerPage);
+        }
 		else {
 			// Setup Boost list for use
 			for(var i in Molpy.BoostsBought) {
@@ -643,7 +650,9 @@ Molpy.DefineGUI = function() {
 		if(Molpy.activeLayout.lootVis.search && Molpy.searchList.length> 0){
 			Molpy.addGroupToDiv($('#loot'), Molpy.searchList, startIndex, endIndex, 'search', {autoAdd: true, recalc: false});
 		} else if(Molpy.activeLayout.lootVis.tagged && taggedList.length > 0) {
-			Molpy.addGroupToDiv($('#loot'), taggedList, startIndex, endIndex, 'tagged', {autoAdd: true, recalc: false});
+            Molpy.addGroupToDiv($('#loot'), taggedList, startIndex, endIndex, 'tagged', {autoAdd: true, recalc: false});
+        } else if(Molpy.activeLayout.lootVis.faves && favesList.length > 0) {
+            Molpy.addGroupToDiv($('#loot'), favesList, startIndex, endIndex, 'faves', {autoAdd: true, recalc: false});
 		} else if(!(boostList.length == 0 && badgeList.length == 0)) {
 			var boostStartIndex = 0;
 			var boostEndIndex = -1;			
@@ -818,7 +827,8 @@ Molpy.DefineGUI = function() {
 			else if(Molpy.Redacted.location == 5) lootArray = Molpy.BadgesEarned;
 			else if(Molpy.Redacted.location == 6) lootArray = Molpy.BadgesAvailable;
 			else if(Molpy.Redacted.location == 7) lootArray = Molpy.TaggedLoot;
-			maxIndex = lootArray.length;
+            else if(Molpy.Redacted.location == 8) lootArray = Molpy.FavesList;
+            maxIndex = lootArray.length;
 			Molpy.lootSelectionNeedRepaint = 1;
 		}
 		
@@ -901,7 +911,7 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.updateLoot = function() {
 		for(var grp in Molpy.dispObjects)
-			if(grp != 'boosts' || grp != 'tagged') continue;
+			if(grp != 'boosts' || grp != 'tagged' || grp != 'faves') continue;
 			for(var i in Molpy.dispObject[grp])
 				Molpy.dispObjects[grp][i].updateAll();
 	}
@@ -2045,7 +2055,7 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.InitGUI = function() {
 		Molpy.lootVisOrder = ['boosts', 'ninj', 'cyb', 'hpt', 'chron', 'bean', 'badges', 'badgesav', 'discov',
-				'monums', 'monumg', 'tagged', 'ceil', 'drac', 'stuff', 'land', 'prize', 'search'];
+				'monums', 'monumg', 'tagged', 'ceil', 'drac', 'stuff', 'land', 'prize', 'search', 'faves'];
 		Molpy.boxVisOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Shop', 'Inventory', 'SandTools',
 				'CastleTools', 'Options', 'Stats', 'Log', 'Export', 'About', 'SandCounts', 'NPInfo', 'Layouts',
 				'Codex', 'Alerts', 'SandStats', 'GlassStats', 'NinjaStats', 'OtherStats', 'QuickLayout', 'TFCounts',
