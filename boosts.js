@@ -22,6 +22,7 @@ Molpy.DefineBoosts = function() {
 		monums: ['sand monument', 'Sand Monuments', 'sandmonument', 'Sand Monument', 'A sand structure commemorating'],
 		monumg: ['glass monument', 'Glass Monuments', 'glassmonument', 'Glass Monument', 'A glass sculpture commemorating'],
 		diamm: ['masterpiece', 'Masterpieces', 'masterpiece' ,'Masterpiece',	'This is a diamond masterpiece.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of', 'in diamond. <br>It molpifies with spikes of treeishness.'],
+        faves: ['favourites', 'Favourites']
 	};
 	
 	Molpy.unlockedGroups['stuff'] = 1; // Stuff is always unlocked because Sand and Castles are always unlocked
@@ -11181,10 +11182,78 @@ Molpy.DefineBoosts = function() {
 		icon: 'glaciation',
 		group: 'cyb',
 		desc: 'Will automatically Freeze restless hatchlings just before they escape',
-		price: { Diamonds:'22G', Goats:Infinity },
+		price: { Diamonds:'55G', Goats:Infinity, exp:'12.5E' },
 	});
 
+	new Molpy.Boost({
+		name: 'Favourites Manager',
+		alias: 'favs',
+		icon: 'favouritesmanager',
+		className: 'action',
+		desc: function(me) {
+		var str = 'Adds useful tab in loot panel...';
+			if (me.bought) {
+				str = '<input type=button onclick="Molpy.InputFaves()" value="Choose"></input>';
+				str += ' up to 20 boosts to be shown here.\n';
+				str += '<input type=button onclick="Molpy.RemoveSomeFaves()" value="Remove"></input>';
+				str += ' some boosts, or ';
+				str += '<input type=button onclick="Molpy.ClearFaves()" value="clear"></input>';
+				str += ' them all.'
+			}
+			return str
+		},
+		price: {
+			Sand: '20G',
+			Castles: '20G'
+		},
+		defSave: 1,
+		FavesList: [],
+		saveData: {
+			4: ['FavesList', 0, 'array']
+		},
 
+		buyFunction: function() {
+			this.FavesList = [];
+			Molpy.lootAddToFav(this);
+		}
+	});
+
+	Molpy.InputFaves = function() {
+		var input = prompt('Enter the names or aliases of the boosts separated by comma.'
+				+ '\nNames are case sensitive.'
+				+ '\nAll values after 20\'th are ignored'
+				+ '\nYour choice is preserved if you reload.',
+				'');
+		if (input) {
+			var list = input.split(',');
+			for(var i in list) {
+				obj = Molpy.Boosts[list[i]];
+				if(obj && obj.unlocked && obj.bought) {
+					Molpy.lootAddToFav(obj);
+				}
+			}
+		}
+	};
+
+	Molpy.RemoveSomeFaves = function() {
+		var input = prompt('Enter the names or aliases of the boosts to be removed separated by comma.'
+				+ '\nNames are case sensitive.'
+				+ '\nFavourites Manager itself cannot be removed',
+				'');
+		if (input) {
+			var list = input.split(',');
+			for(var i in list) {
+				obj = Molpy.Boosts[list[i]];
+				if(obj) {
+					Molpy.lootRemoveFromFav(obj);
+				}
+			}
+		}
+	};
+
+	Molpy.ClearFaves = function() {
+		Molpy.Boosts.favs.FavesList.splice(1, Molpy.Boosts.favs.FavesList.length);
+	};
 
 	// END OF BOOSTS, add new ones immediately before this comment
 }
