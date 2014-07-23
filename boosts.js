@@ -11152,8 +11152,8 @@ Molpy.DefineBoosts = function() {
         unlocked: 0,
         bought: 0,
         price: {
-            Sand: '10K',
-            Castles: '10K'
+            Sand: '20G',
+            Castles: '20G'
         },
         defSave: 1,
         FavesList: [],
