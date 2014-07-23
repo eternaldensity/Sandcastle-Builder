@@ -43,6 +43,7 @@ Molpy.Dragon = function(args) {
 		str +=(this.legs?this.legs:'No') + ' legs, ';
 		str += (this.arms?this.arms:'No') + ' arms, ' + (this.wings?this.wings:'No') + ' wings ';
 		str += ' and ' + (this.tails==0?'no tail.':(this.tails == 1?'a tail.':this.tails + ' tails.'));
+		if (this.wings && !Molpy.Got('Dragonfly')) str += ' However, they have not yet learnt how to fly.';
 		return str ;
 	};
 }
@@ -977,20 +978,15 @@ TODO
 
 Dragons
 	What						Written	Tested					
-10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch (maybe never - might use Maps to boost BM)
 19	Wyvern						Not Launch
-21	Diamond Monuments				Not Launch
 22	Breath effects					Not Launch
 23	Magic						Not Launch
 24	Mirror Dragons					Not Launch
 53	Burnish restart
 56	Bone Feast
 58	Anti-dragons
-59	Use for Maps
-
-`
-
-
+59	Dragon Fly
+60	Dragon
 
 * Mouthwash (to reduce bad breath backfires)
 * Magic Rings (future)
@@ -998,19 +994,14 @@ Dragons
 * Bad dreams!
 * Luck Rings
 * hard dragons - control redundaknight defaults
-* Automatic Mapping (not when Loopin Looie active)
-* 80 maps = hatch factor 1
-* 160 = 2
-* 320 = 4 ...  Divisor to incubation time
 * Breath - needs coal, does damage (may reduce number if multiple opponents)
 * Magic use Mana - Mana from?
-* Breath types - fire [Coal], poison [?], frost [Vacuum]
+* Breath types - fire [Coal], poison [Bonemeal], frost [Vacuum]
 
 
 Other
 2	Panthers Ignore Einstein 
-3	GPS
-
+5
 
 */
 

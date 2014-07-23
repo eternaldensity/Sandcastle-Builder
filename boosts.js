@@ -4129,7 +4129,7 @@ Molpy.DefineBoosts = function() {
 			return times; // condition for subject no longer met!
 		}
 		if(Molpy.blackprintCosts[s] > Molpy.Level('Blackprints')) {// we used up some blackprints somehow!
-			return times; // do nothing
+			if (isFinite(Molpy.VoidStare(1, 'VS'))) return times; // do nothing if we'll get them back in 1mNP
 		}
 		Molpy.Add('CfB', times);
 		if (Molpy.Got('Hubble Double') && Math.random()<0.01) Molpy.Boosts['CfB'].power*=2;
@@ -4438,7 +4438,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.MakeSandMouldWork = function(times) {
 		var smm = Molpy.Boosts['SMM'];
 		if(smm.power == 0 || smm.power > 100) {
-			if(smm.power == 0 && Molpy.Got('Archimedes') && Molpy.Has('Bonemeal', 10)) {
+			if(smm.power == 0 && Molpy.IsEnabled('Archimedes') && Molpy.Has('Bonemeal', 10)) {
 				if(!Molpy.StartCheapestSandMould()) return times;
 			} else
 				return times;
@@ -4585,7 +4585,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.MakeGlassMouldWork = function(times) {
 		var gmm = Molpy.Boosts['GMM'];
 		if(gmm.power == 0 || gmm.power > 400) {
-			if(gmm.power == 0 && Molpy.Got('Archimedes') && Molpy.Has('Bonemeal', 10)) {
+			if(gmm.power == 0 && Molpy.IsEnabled('Archimedes') && Molpy.Has('Bonemeal', 10)) {
 				if(!Molpy.StartCheapestGlassMould()) return times;
 			} else
 				return times;
@@ -7743,7 +7743,8 @@ Molpy.DefineBoosts = function() {
 			}
 		},
 		Saturnav: function() {
-			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) -1 - Molpy.mapMonumg)/3);
+			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) -2 - Molpy.mapMonumg)/3);
+			this.Refresh();
 		},
 	});
 	
@@ -8074,9 +8075,13 @@ Molpy.DefineBoosts = function() {
 				this.age[cl]--;
 				if (!this.clutches[cl]) continue;
 				if (this.age[cl] <= escapeat) {
-					Molpy.Notify('A Clutch of Hatchlings have fledged on their own',1);
-					this.clutches[cl] = 0;
-					cleanup++;
+					if (Molpy.Got('Glaciation')) {
+						Molpy.DragonsToCryo(cl);
+					} else {
+						Molpy.Notify('A Clutch of Hatchlings have fledged on their own',1);
+						this.clutches[cl] = 0;
+						cleanup++;
+					}
 				} else if (this.age[cl] == 1000) {
 					Molpy.Notify('A Clutch of Hatchlings is ready to Fledge',1);
 				} else if (this.age[cl] <= starveat && this.diet[cl]==0) { //  Ravinous
@@ -8419,11 +8424,18 @@ Molpy.DefineBoosts = function() {
 		alias: 'Archimedes',
 		icon: 'archimedesslever',
 		group: 'prize',
-		desc: 'If a Monument Maker is idle, it will start making the cheapest monument available at a cost of 10 Bonemeal.',
+		className: 'toggle',
+		desc: function(me) {
+			return 'If active and a Monument Maker is idle, it will start making the cheapest monument available ' +
+				'at a cost of 10 Bonemeal.' +
+				(me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
+					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
+		},
 		stats: 'Only makes Minus Monuments if you are in Minus NewPix.<br>',
 		price:{ GlassBlocks: '360W' },
 		prizes: 1,
-		tier: 3
+		tier: 3,
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
 	new Molpy.Boost({
 		name: 'Would have been useful a month ago',
@@ -10172,7 +10184,7 @@ Molpy.DefineBoosts = function() {
 		},
 		draglvl: 'Wyrm',
 		group: 'bean',
-		limit: 1, // Only affect digging at the moment
+		limit: function() { Molpy.Got('Dragonfly')?4:1 },
 		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
@@ -10678,16 +10690,24 @@ Molpy.DefineBoosts = function() {
 		},
 		countdownLockFunction: function() {
 			if (this.State == 1 && this.countdown == 0) {
-				this.State = 0;
-				Molpy.Notify('The Diamond Masterpiece for NP'+this.Making+' is now complete!',1);
-				Molpy.EarnBadge('diamm'+this.Making);
-				Molpy.Overview.Update(Molpy.newpixNumber);
-				Molpy.Boosts.DQ.ChangeState(3,Math.floor(Math.log(this.Making+10)*33)+10);
-				Molpy.Overview.Update(this.Making);
-				// Launch fireworks
-				Molpy.Master.Create(this.Making,'long');
-				// Unlocks
-				this.Making = 0;
+				if ( Molpy.Earned('monums'+me.Making) || Molpy.Earned('monumg'+me.Making)) {
+					Molpy.Notify('What are those third rate monuments doing here! - the Masterpiece is ruined',1);
+					this.State = 0;
+					this.Making = 0;
+				} else {
+					this.State = 0;
+					Molpy.Notify('The Diamond Masterpiece for NP'+this.Making+' is now complete!',1);
+					Molpy.EarnBadge('diamm'+this.Making);
+					Molpy.Overview.Update(Molpy.newpixNumber);
+					Molpy.Boosts.DQ.ChangeState(3,Math.floor(Math.log(this.Making+10)*33)+10);
+					Molpy.Overview.Update(this.Making);
+					// Launch fireworks
+					Molpy.Master.Create(this.Making,'long');
+					// Unlocks
+
+					if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
+					this.Making = 0;
+				}
 			}
 		},
 		StartPed: function() {
@@ -10944,8 +10964,8 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			str = 'Removes unsightly sand and glass monuments (One use).';
 			if (me.bought) {
-				if (Molpy.Got('Archimedes') && (!Molpy.Got('Cold Mould') || !Molpy.IsEnabled('Cold Mould'))) {
-					str += '<br><b>Warning</b> Unless you enable Cold Mould, Archimedes Lever will make them again<br>';
+				if (Molpy.IsEnabled('Archimedes') && (!Molpy.Got('Cold Mould') || !Molpy.IsEnabled('Cold Mould'))) {
+					str += '<br><b>Warning</b> Unless you enable Cold Mould or Disable Archimedes Lever, Archimedes Lever will make them again<br>';
 				};
 				str += '<input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
 			}
@@ -11132,76 +11152,108 @@ Molpy.DefineBoosts = function() {
 		price: { Diamonds:'5.55M', Goats:Infinity, Bonemeal:'555GW' },
 	});
 
-    new Molpy.Boost({
-        name: 'Favourites Manager',
-        alias: 'favs',
-        icon: 'favouritesmanager',
-        group: 'faves',
-        desc: function(me) {
-            var str = 'Adds useful tab in loot panel...';
-            if (me.bought) {
-                str = '<input type=button onclick="Molpy.InputFaves()" value="Choose"></input>';
-                str += ' up to 20 boosts to be shown here.\n';
-                str += '<input type=button onclick="Molpy.RemoveSomeFaves()" value="Remove"></input>';
-                str += ' some boosts, or ';
-                str += '<input type=button onclick="Molpy.ClearFaves()" value="clear"></input>';
-                str += ' them all.'
-            }
-            return str
-        },
-        unlocked: 0,
-        bought: 0,
-        price: {
-            Sand: '20G',
-            Castles: '20G'
-        },
-        defSave: 1,
-        FavesList: [],
-        saveData: {
-            4: ['FavesList', 0, 'array']
-        },
+	new Molpy.Boost({
+		name: 'Anisoptera',
+		alias: 'Dragonfly',
+		icon: 'dragonfly',
+		group: 'drac',
+		desc: function(me) {
+			str = 'Increases the both the offensive and defensive values of Dragons and may give you advanced informaton about Redundaknights.';
+			if (me.bought) str += '<p>You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			return str;
+		},
+		price: {
+			Diamonds:'12.5G',
+			coal: function (me) { return Math.pow(2,me.Level+1)*20 },
+			exp: function (me) { return Math.pow(5,me.Level+1)*1000 }
+		},
+		Spieces: ['Gomphus vulgatissimus', 'Cordulia aenea', 'Somatochlora metallica', 'Libellula depressa',
+			  'Libellula quadrimaculata', 'Orthetrum cancellatum', 'Sympetrum danae', 'Sympetrum sanguineum',
+			  'Sympetrum striolatum', 'Leucorrhinia dubia', 'Cordulegaster boltonii', 'Aeshna cyanea',
+			  'Aeshna grandis', 'Aeshna juncea', 'Aeshna mixta', 'Anax junius',
+			  'Brachytron pratense', 'Anax imperator' ],
+		draglvl: 'Wyvern',
+		limit: function() { return Math.max(18,6*(Molpy.Boosts.DQ.Level-2))},
+		title: 'To Be written',
+	});
 
-        buyFunction: function() {
-            Molpy.lootAddToFav(this);
-        }
-    });
+	new Molpy.Boost({
+		name: 'Glaciation',
+		icon: 'glaciation',
+		group: 'cyb',
+		desc: 'Will automatically Freeze restless hatchlings just before they escape',
+		price: { Diamonds:'55G', Goats:Infinity, exp:'12.5E' },
+	});
 
-    Molpy.InputFaves = function() {
-        var input = prompt('Enter the names or aliases of the boosts separated by comma.'
-                        + '\nNames are case sensitive.'
-                        + '\nAll values after 20\'th are ignored'
-                        + '\nYour choice is preserved if you reload.',
-            '');
-        if (input) {
-            var list = input.split(',');
-            for(var i in list) {
-                obj = Molpy.Boosts[list[i]];
-                if(obj && obj.unlocked && obj.bought) {
-                    Molpy.lootAddToFav(obj);
-                }
-            }
-        }
-    };
+	new Molpy.Boost({
+		name: 'Favourites Manager',
+		alias: 'favs',
+		icon: 'favouritesmanager',
+		className: 'action',
+		desc: function(me) {
+		var str = 'Adds useful tab in loot panel...';
+			if (me.bought) {
+				str = '<input type=button onclick="Molpy.InputFaves()" value="Choose"></input>';
+				str += ' up to 20 boosts to be shown here.\n';
+				str += '<input type=button onclick="Molpy.RemoveSomeFaves()" value="Remove"></input>';
+				str += ' some boosts, or ';
+				str += '<input type=button onclick="Molpy.ClearFaves()" value="clear"></input>';
+				str += ' them all.'
+			}
+			return str
+		},
+		price: {
+			Sand: '20G',
+			Castles: '20G'
+		},
+		defSave: 1,
+		FavesList: [],
+		saveData: {
+			4: ['FavesList', 0, 'array']
+		},
 
-    Molpy.RemoveSomeFaves = function() {
-        var input = prompt('Enter the names or aliases of the boosts to be removed separated by comma.'
-                + '\nNames are case sensitive.'
-                + '\nFavourites Manager itself cannot be removed',
-            '');
-        if (input) {
-            var list = input.split(',');
-            for(var i in list) {
-                obj = Molpy.Boosts[list[i]];
-                if(obj) {
-                    Molpy.lootRemoveFromFav(obj);
-                }
-            }
-        }
-    };
+		buyFunction: function() {
+			this.FavesList = [];
+			Molpy.lootAddToFav(this);
+		}
+	});
 
-    Molpy.ClearFaves = function() {
-      Molpy.Boosts.favs.FavesList.splice(1, Molpy.Boosts.favs.FavesList.length);
-    };
+	Molpy.InputFaves = function() {
+		var input = prompt('Enter the names or aliases of the boosts separated by comma.'
+				+ '\nNames are case sensitive.'
+				+ '\nAll values after 20\'th are ignored'
+				+ '\nYour choice is preserved if you reload.',
+				'');
+		if (input) {
+			var list = input.split(',');
+			for(var i in list) {
+				obj = Molpy.Boosts[list[i]];
+				if(obj && obj.unlocked && obj.bought) {
+					Molpy.lootAddToFav(obj);
+				}
+			}
+		}
+	};
 
-    // END OF BOOSTS, add new ones immediately before this comment
+	Molpy.RemoveSomeFaves = function() {
+		var input = prompt('Enter the names or aliases of the boosts to be removed separated by comma.'
+				+ '\nNames are case sensitive.'
+				+ '\nFavourites Manager itself cannot be removed',
+				'');
+		if (input) {
+			var list = input.split(',');
+			for(var i in list) {
+				obj = Molpy.Boosts[list[i]];
+				if(obj) {
+					Molpy.lootRemoveFromFav(obj);
+				}
+			}
+		}
+	};
+
+	Molpy.ClearFaves = function() {
+		Molpy.Boosts.favs.FavesList.splice(1, Molpy.Boosts.favs.FavesList.length);
+	};
+
+	// END OF BOOSTS, add new ones immediately before this comment
 }
