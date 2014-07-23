@@ -578,7 +578,10 @@ Molpy.DefineGUI = function() {
 		Molpy.dispObjects.search = [];
 		
 		var taggedList = Molpy.TaggedLoot;
-        var favesList = Molpy.FavesList;
+        var favesList = [];
+        for(var i in Molpy.Boosts.favs.FavesList) {
+            favesList.push(Molpy.BoostsById[Molpy.Boosts.favs.FavesList[i]]);
+        }
 		var boostList = [];
 		var badgeList = [];
 		
@@ -827,7 +830,7 @@ Molpy.DefineGUI = function() {
 			else if(Molpy.Redacted.location == 5) lootArray = Molpy.BadgesEarned;
 			else if(Molpy.Redacted.location == 6) lootArray = Molpy.BadgesAvailable;
 			else if(Molpy.Redacted.location == 7) lootArray = Molpy.TaggedLoot;
-            else if(Molpy.Redacted.location == 8) lootArray = Molpy.FavesList;
+            else if(Molpy.Redacted.location == 8) lootArray = Molpy.Boosts.favs.FavesList;
             maxIndex = lootArray.length;
 			Molpy.lootSelectionNeedRepaint = 1;
 		}

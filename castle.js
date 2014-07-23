@@ -2269,15 +2269,15 @@ Molpy.Up = function() {
 		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?
 		
 		Molpy.TaggedLoot = [];
-        if (!Molpy.FavesList) {
-            Molpy.FavesList = [];
-        }
+       // if (!Molpy.Boosts.favs.FavesList) {
+       //     Molpy.Boosts.favs.FavesList = [];
+       // }
 
 		Molpy.BuildLootLists = function () {
 			Molpy.TaggedLoot = [];
-            if (!Molpy.FavesList) {
-                Molpy.FavesList = [];
-            }
+   //         if (!Molpy.Boosts.favs.FavesList) {
+     //           Molpy.Boosts.favs.FavesList = [];
+//            }
 			Molpy.BoostsBought = [];
 			Molpy.BadgesEarned = [];
 			Molpy.BadgesAvailable = [];
@@ -2432,20 +2432,20 @@ Molpy.Up = function() {
 		}
 
         Molpy.lootAddToFav = function(object) {
-            var index = $.inArray(object, Molpy.FavesList);
+            var index = $.inArray(object.id, Molpy.Boosts.favs.FavesList);
             if (index <= -1) {
-                Molpy.FavesList.push(object);
-                var daddy = Molpy.FavesList.shift();
-                Molpy.FavesList.sort(Molpy.ClassNameSort);
-                Molpy.FavesList.unshift(daddy);
+                Molpy.Boosts.favs.FavesList.push(object.id);
+                var daddy = Molpy.Boosts.favs.FavesList.shift(); // left control boost at the first place
+                Molpy.Boosts.favs.FavesList.sort(Molpy.ClassNameSort);
+                Molpy.Boosts.favs.FavesList.unshift(daddy);
             }
         };
 
         Molpy.lootRemoveFromFav = function(object) {
             if (object != Molpy.Boosts['favs']) { // never remove control boost from the list
-                var index = $.inArray(object, Molpy.FavesList);
+                var index = $.inArray(object.id, Molpy.Boosts.favs.FavesList);
                 if (index > -1) {
-                    Molpy.FavesList.splice(index, 1);
+                    Molpy.Boosts.favs.FavesList.splice(index, 1);
                 }
             }
         };

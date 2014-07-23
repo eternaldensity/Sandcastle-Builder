@@ -11135,7 +11135,7 @@ Molpy.DefineBoosts = function() {
     new Molpy.Boost({
         name: 'Favourites Manager',
         alias: 'favs',
-        // icon: 'cake',
+        icon: 'favouritesmanager',
         group: 'faves',
         desc: function(me) {
             var str = 'Adds useful tab in loot panel...';
@@ -11149,9 +11149,17 @@ Molpy.DefineBoosts = function() {
             }
             return str
         },
-        unlocked: 1,
+        unlocked: 0,
         bought: 0,
-        //price: { Sand: 1 }
+        price: {
+            Sand: '10K',
+            Castles: '10K'
+        },
+        defSave: 1,
+        FavesList: [],
+        saveData: {
+            4: ['FavesList', 0, 'array']
+        },
 
         buyFunction: function() {
             Molpy.lootAddToFav(this);
@@ -11192,7 +11200,7 @@ Molpy.DefineBoosts = function() {
     };
 
     Molpy.ClearFaves = function() {
-      Molpy.FavesList.splice(1, Molpy.FavesList.length);
+      Molpy.Boosts.favs.FavesList.splice(1, Molpy.Boosts.favs.FavesList.length);
     };
 
     // END OF BOOSTS, add new ones immediately before this comment
