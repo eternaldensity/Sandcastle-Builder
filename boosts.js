@@ -8074,9 +8074,13 @@ Molpy.DefineBoosts = function() {
 				this.age[cl]--;
 				if (!this.clutches[cl]) continue;
 				if (this.age[cl] <= escapeat) {
-					Molpy.Notify('A Clutch of Hatchlings have fledged on their own',1);
-					this.clutches[cl] = 0;
-					cleanup++;
+					if (Molpy.Got('Glaciation')) {
+						Molpy.DragonsToCryo(cl);
+					} else {
+						Molpy.Notify('A Clutch of Hatchlings have fledged on their own',1);
+						this.clutches[cl] = 0;
+						cleanup++;
+					}
 				} else if (this.age[cl] == 1000) {
 					Molpy.Notify('A Clutch of Hatchlings is ready to Fledge',1);
 				} else if (this.age[cl] <= starveat && this.diet[cl]==0) { //  Ravinous
@@ -10685,16 +10689,24 @@ Molpy.DefineBoosts = function() {
 		},
 		countdownLockFunction: function() {
 			if (this.State == 1 && this.countdown == 0) {
-				this.State = 0;
-				Molpy.Notify('The Diamond Masterpiece for NP'+this.Making+' is now complete!',1);
-				Molpy.EarnBadge('diamm'+this.Making);
-				Molpy.Overview.Update(Molpy.newpixNumber);
-				Molpy.Boosts.DQ.ChangeState(3,Math.floor(Math.log(this.Making+10)*33)+10);
-				Molpy.Overview.Update(this.Making);
-				// Launch fireworks
-				Molpy.Master.Create(this.Making,'long');
-				// Unlocks
-				this.Making = 0;
+				if ( Molpy.Earned('monums'+me.Making) || Molpy.Earned('monumg'+me.Making)) {
+					Molpy.Notify('What are those third rate monuments doing here! - the Masterpiece is ruined',1);
+					this.State = 0;
+					this.Making = 0;
+				} else {
+					this.State = 0;
+					Molpy.Notify('The Diamond Masterpiece for NP'+this.Making+' is now complete!',1);
+					Molpy.EarnBadge('diamm'+this.Making);
+					Molpy.Overview.Update(Molpy.newpixNumber);
+					Molpy.Boosts.DQ.ChangeState(3,Math.floor(Math.log(this.Making+10)*33)+10);
+					Molpy.Overview.Update(this.Making);
+					// Launch fireworks
+					Molpy.Master.Create(this.Making,'long');
+					// Unlocks
+
+					if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
+					this.Making = 0;
+				}
 			}
 		},
 		StartPed: function() {
@@ -11151,11 +11163,25 @@ Molpy.DefineBoosts = function() {
 		},
 		price: {
 			Diamonds:'12.5G',
-			coal: function (me) { return Math.pow(5,me.Level+1)*20 },
+			coal: function (me) { return Math.pow(2,me.Level+1)*20 },
 			exp: function (me) { return Math.pow(5,me.Level+1)*1000 }
 		},
+		Spieces: ['Gomphus vulgatissimus', 'Cordulia aenea', 'Somatochlora metallica', 'Libellula depressa',
+			  'Libellula quadrimaculata', 'Orthetrum cancellatum', 'Sympetrum danae', 'Sympetrum sanguineum',
+			  'Sympetrum striolatum', 'Leucorrhinia dubia', 'Cordulegaster boltonii', 'Aeshna cyanea',
+			  'Aeshna grandis', 'Aeshna juncea', 'Aeshna mixta', 'Anax junius',
+			  'Brachytron pratense', 'Anax imperator' ],
 		draglvl: 'Wyvern',
-		limit: function() { return (Molpy.Boosts['Big Bite'].bought == Molpy.Boosts['Big Bite'].limit())?8*(Molpy.Level('DQ')-1):0 },
+		limit: function() { return Math.max(18,6*(Molpy.Boosts.DQ.Level-2))},
+		title: 'To Be written',
+	});
+
+	new Molpy.Boost({
+		name: 'Glaciation',
+		icon: 'glaciation',
+		group: 'cyb',
+		desc: 'Will automatically Freeze restless hatchlings just before they escape',
+		price: { Diamonds:'22G', Goats:Infinity },
 	});
 
 
