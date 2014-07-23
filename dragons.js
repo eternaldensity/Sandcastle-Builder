@@ -776,6 +776,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 		case 1 : // Pyric victory - lose a dragon...
 			var dloss = 0;
 			if (npd.amount > 1) {
+				dq.Loose(npd.DragonType,1);
 				npd.amount--;
 				dloss = 1;
 				factor *=2;
