@@ -621,6 +621,8 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	if(Molpy.CastleToolsOwned >= 500) Molpy.EarnBadge('Beachineer');
 	if(Molpy.BoostsOwned >= 50) Molpy.EarnBadge('Better This Way');
 
+    if (Molpy.BoostsOwned >= 100) Molpy.UnlockBoost('favs');
+
 	if(Molpy.SandToolsOwned >= 2101) Molpy.EarnBadge('All Your Base');
 	if(Molpy.SandToolsOwned >= 3000) Molpy.EarnBadge('Look Before You Leap');
 	if(Molpy.CastleToolsOwned >= 4000) Molpy.EarnBadge('Fully Armed and Operational Battlestation');
