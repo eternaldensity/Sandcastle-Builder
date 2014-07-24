@@ -156,7 +156,7 @@
 		Molpy.startDate = localStorage['startDate'];
 
 		Molpy.OptionsFromString(localStorage['Options']);
-        if(!g('game')) {
+		if(!g('game')) {
 			Molpy.AdjustFade();
 			Molpy.UpdateColourScheme();
 			return;

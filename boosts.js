@@ -11163,7 +11163,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		price: {
-			Diamonds:'12.5G',
+			Diamonds: function (me) { return Math.pow(2,me.Level+1)*1.25e9 },
 			coal: function (me) { return Math.pow(2,me.Level+1)*20 },
 			exp: function (me) { return Math.pow(5,me.Level+1)*1000 }
 		},
