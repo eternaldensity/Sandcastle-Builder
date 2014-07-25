@@ -792,7 +792,15 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	Molpy.Boosts['No Need to be Neat'].department = Molpy.Earned('Neat!');
 	if (Molpy.IsEnabled('Time Lord')) Molpy.Boosts['Temporal Rift'].department = 0;
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
-	Molpy.Boosts['Muse'].department = 1 * Molpy.Got('DMP') * (Molpy.Boosts['DMM'].State == 0) * Molpy.Earned('monumg'+Molpy.newpixNumber) * (npd && npd.amount == Molpy.MaxDragons());
+	if (Molpy.Got('DMP') && (Molpy.Boosts['DMM'].State == 0) && Molpy.Earned('monumg'+Molpy.newpixNumber) && 
+		(npd && npd.amount == Molpy.MaxDragons()) && !(Molpy.Boosts.DMF.State > 0 && Molpy.Boosts.DMF.Making == Molpy.newpixNumber) &&
+		!(Molpy.Boosts.DMC.State > 0 && Molpy.Boosts.DMC.Making == Molpy.newpixNumber) &&
+		!(Molpy.Boosts.DMB.State > 0 && Molpy.Boosts.DMB.Making == Molpy.newpixNumber) &&
+		!(Molpy.Boosts.DNP.State > 0 && Molpy.Boosts.DMP.Making == Molpy.newpixNumber)) {
+		Molpy.Boosts['Muse'].department = 1;
+	} else {
+		Molpy.Boosts['Muse'].department = 0;
+	}
 	Molpy.Boosts['Black Powder'].department = 1 * Molpy.Got('DMM');
 }
 
