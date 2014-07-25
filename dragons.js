@@ -427,6 +427,11 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Big Bite')) Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Big Bite'));
 	if (Molpy.Got('Double Byte')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Double Byte'));
 	if (Molpy.Got('Trilobite')) Molpy.DragonAttackMultiplier *= Math.pow(4,Molpy.Level('Trilobite'));
+
+	if (Molpy.Got('Anisoptera')) {
+		Molpy.DragonDefenceMultiplier *= Math.pow(1.5,Molpy.Level('Anisoptera'));
+		Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Anisoptera'));
+	}
 	
 	Molpy.DragonBreathMultiplier = 1;
 

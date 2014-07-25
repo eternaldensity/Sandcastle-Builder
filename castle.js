@@ -2047,7 +2047,7 @@ Molpy.Up = function() {
 					4: $('#loot'), // in a boost group
 					5: $('#loot'), // in a badge  group
 					6: $('#loot'), // in badges available
-                    7: $('#loot'), // in tagged list
+					7: $('#loot'), // in tagged list
 					8: $('#loot')}; // in faves list
 			this.titleList = {
 					1: $('#toolSTitle'),
@@ -2057,7 +2057,7 @@ Molpy.Up = function() {
 					5: $('#lootTitle'),
 					6: $('#lootTitle'),
 					7: $('#lootTitle'),
-                    8: $('#lootTitle')};
+					8: $('#lootTitle')};
 			
 			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop', 'floatbox boost shop',
 			                   'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop', 'lootbox boost loot'];
@@ -2192,7 +2192,7 @@ Molpy.Up = function() {
 					}
 				if(!possible) this.location = 0;
 				
-				// For Knights selectthe shop if possible
+				// For Knights select the shop if possible
 				var valid = false;
 				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0 && this.divList[3].is(':visible')) { // Redundaknights
 					this.location = 3; // Shop
@@ -2269,14 +2269,9 @@ Molpy.Up = function() {
 		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?
 		
 		Molpy.TaggedLoot = [];
-       // if (!Molpy.Boosts.favs.FavesList) {
-       //     Molpy.Boosts.favs.FavesList = [];
-       // }
 
 		Molpy.BuildLootLists = function () {
 			Molpy.TaggedLoot = [];
-   //         if (!Molpy.Boosts.favs.FavesList) {
-     //           Molpy.Boosts.favs.FavesList = [];
 //            }
 			Molpy.BoostsBought = [];
 			Molpy.BadgesEarned = [];

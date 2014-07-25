@@ -11156,16 +11156,17 @@ Molpy.DefineBoosts = function() {
 		name: 'Anisoptera',
 		alias: 'Dragonfly',
 		icon: 'dragonfly',
+		plural: 'Anisoptera',
 		group: 'drac',
 		desc: function(me) {
-			str = 'Increases the both the offensive and defensive values of Dragons and may give you advanced informaton about Redundaknights.';
-			if (me.bought) str += '<p>You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
+			str = 'Increases the both the offensive and defensive values of Dragons and may give you advanced informaton about Redundaknights';
+			if (me.bought) str += '.<p>You have ' + Molpify(me.bought) + ' ' + (me.name);
 			return str;
 		},
 		price: {
-			Diamonds: function (me) { return Math.pow(2,me.Level+1)*1.25e9 },
-			coal: function (me) { return Math.pow(2,me.Level+1)*20 },
-			exp: function (me) { return Math.pow(5,me.Level+1)*1000 }
+			Diamonds: function (me) { return Math.pow(5,me.Level+1)*1.25e9 },
+			coal: function (me) { return Math.pow(2,me.Level+1)*50 },
+			exp: function (me) { return Math.pow(5,me.Level+1)*1e9 }
 		},
 		Spieces: ['Gomphus vulgatissimus', 'Cordulia aenea', 'Somatochlora metallica', 'Libellula depressa',
 			  'Libellula quadrimaculata', 'Orthetrum cancellatum', 'Sympetrum danae', 'Sympetrum sanguineum',
@@ -11174,7 +11175,7 @@ Molpy.DefineBoosts = function() {
 			  'Brachytron pratense', 'Anax imperator' ],
 		draglvl: 'Wyvern',
 		limit: function() { return Math.max(18,6*(Molpy.Boosts.DQ.Level-2))},
-		title: 'To Be written',
+		title: function() { return this.name + (this.bought? ' ' + this.Spieces[this.Level]:'') },
 	});
 
 	new Molpy.Boost({
