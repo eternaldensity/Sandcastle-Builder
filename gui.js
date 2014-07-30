@@ -232,7 +232,7 @@ Molpy.DefineGUI = function() {
 
 		if(name == undefined) return;
 		if(name) {
-			item = Molpy.Boosts[name];
+			var item = Molpy.Boosts[name];
 			if(!item) {
 				item = Molpy.Boosts[Molpy.BoostAKA[name]];
 			}
