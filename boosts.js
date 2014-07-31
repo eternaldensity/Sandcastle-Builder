@@ -1038,7 +1038,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			return 'Saturation is '
-				+ (me.IsEnabled ? '' : 'not ')
+				+ (me.power > 0 ? '' : 'not ')
 				+ 'allowed.<br><input type="Button" value="Click" onclick="Molpy.ChromaticHeresyToggle()"></input> to toggle.';
 		},
 		
@@ -11176,14 +11176,15 @@ Molpy.DefineBoosts = function() {
 			coal: function (me) { return Math.pow(2,me.Level+1)*50 },
 			exp: function (me) { return Math.pow(5,me.Level+1)*1e9 }
 		},
-		Spieces: ['Gomphus vulgatissimus', 'Cordulia aenea', 'Somatochlora metallica', 'Libellula depressa',
+		Species: ['Gomphus vulgatissimus', 'Cordulia aenea', 'Somatochlora metallica', 'Libellula depressa',
 			  'Libellula quadrimaculata', 'Orthetrum cancellatum', 'Sympetrum danae', 'Sympetrum sanguineum',
 			  'Sympetrum striolatum', 'Leucorrhinia dubia', 'Cordulegaster boltonii', 'Aeshna cyanea',
 			  'Aeshna grandis', 'Aeshna juncea', 'Aeshna mixta', 'Anax junius',
 			  'Brachytron pratense', 'Anax imperator' ],
 		draglvl: 'Wyvern',
 		limit: function() { return Math.min(18,6*(Molpy.Boosts.DQ.Level-2))},
-		title: function() { return this.name + (this.bought? ' ' + this.Spieces[this.Level]:'') },
+		title: function() { return this.name + (this.bought? ' ' + this.Species[this.Level-1]:'') },
+		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 
 	new Molpy.Boost({
