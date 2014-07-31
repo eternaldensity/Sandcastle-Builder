@@ -10,8 +10,8 @@ Third column explains is parameter (A)utomatic, (M)ust be present or (O)ptional.
 What                  | Type    |AMO| Use and comments 
 ----------------------|---------|---|-----------------
 id                    | int     | A | Set internally by the program on setup
-unlocked              |	float   | M | If 1, the boost is unlocked when the game starts, boost will be in shop if unlocked > bought
-bought                | float   | M | Number of times the boost has been bought (will be in shop if bought < unlocked)
+unlocked              |	float   | AO| If 1, the boost is unlocked when the game starts, boost will be in shop if unlocked > bought
+bought                | float   | A | Number of times the boost has been bought (will be in shop if bought < unlocked)
 power                 | float   | ? | Used for many things to record additional property of boost.  Uses vary.
 Level                 | float   | O | Derived from power for a lot of boosts, (usually when defStuff = 1)
 name                  | text    | M | Used for the boost in the display and to identify boost in the absence of an alias
@@ -23,6 +23,7 @@ price                 | hash    | O | Hash of stuff and number needed, the numbe
 stats                 | MayBeF  | O | Alternative description when in stats mode
 startPower            | MayBeF  | O | Initial power level when bought
 startCountdown        |	MayBeF  | O | Initial countdown value - for temporary boosts
+countdownCMS          | int     | O | IF 1, runs countdown through Coma Mopy Style
 className             | text    | O | Initial className for tagged items - '', 'alert', 'toggle', 'action' 
 department            |	int     | O | If 1, it is awarded through the DORD maybe changed by CheckDoRDRewards in data.js
 buyFunction           |	Func    | O | Called as part of the boost buying
