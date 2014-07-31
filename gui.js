@@ -792,7 +792,7 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.repaintRedacted = function() {
 		Molpy.redactedNeedRepaint = 0;
-		if(Molpy.Redacted.location == 0) return; // Don't repaint because redacted is not active
+		if(Molpy.Redacted.location == 0 || Molpy.Redacted.keepPosition) return; // Don't repaint because redacted is not active or we have puzzles waiting
 		
 		// Take it out of where it is in case it exists already
 		Molpy.Redacted.getDiv().detach();
