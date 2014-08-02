@@ -1536,6 +1536,7 @@ Molpy.DefineGUI = function() {
 		g('discoveriesstat').innerHTML = Molpify((Molpy.groupBadgeCounts.discov || 0), 4);
 		g('sandmonstat').innerHTML = Molpify((Molpy.groupBadgeCounts.monums || 0), 4);
 		g('glassmonstat').innerHTML = Molpify((Molpy.groupBadgeCounts.monumg || 0), 4);
+		g('diammaststat').innerHTML = Molpify((Molpy.groupBadgeCounts.diamm || 0), 4);
 
 		g('sandmultiplierstat').innerHTML = Molpify(Molpy.globalSpmNPMult * 100, 4) + '%';
 		g('redactedstat').innerHTML = Molpy.Redacted.words + ": " + Molpify(Molpy.Redacted.totalClicks, 1);
