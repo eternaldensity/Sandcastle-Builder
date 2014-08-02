@@ -3532,9 +3532,9 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		desc: function(me) {
-			var ans = me.bought * 5 - me.power;
+			var ans = Math.max(0,me.bought * 5 - me.power);
 			return 'Statement A: Statement A is true.<br><br>Logicat Level is: ' + Molpify(me.bought, 1)
-				+ '.<br>Needs ' + ans + ' point' + plural(ans) + ' to level up.';
+				+ '.<br>Needs ' + Molpify(ans) + ' point' + plural(ans) + ' to level up.';
 		},
 		
 		price:{
@@ -11173,7 +11173,7 @@ Molpy.DefineBoosts = function() {
 		},
 		price: {
 			Diamonds: function (me) { return Math.pow(5,me.Level+1)*1.25e9 },
-			coal: function (me) { return Math.pow(2,me.Level+1)*50 },
+			Coal: function (me) { return Math.pow(2,me.Level+1)*50 },
 			exp: function (me) { return Math.pow(5,me.Level+1)*1e9 }
 		},
 		Species: ['Gomphus vulgatissimus', 'Cordulia aenea', 'Somatochlora metallica', 'Libellula depressa',
@@ -11200,6 +11200,7 @@ Molpy.DefineBoosts = function() {
 		alias: 'favs',
 		icon: 'favouritesmanager',
 		className: 'action',
+		group: 'faves',
 		desc: function(me) {
 		var str = 'Adds useful tab in loot panel...';
 			if (me.bought) {

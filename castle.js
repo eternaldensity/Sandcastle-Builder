@@ -163,7 +163,7 @@ Molpy.Up = function() {
 						var ritualRiftCost = Math.floor(Molpy.Boosts['Ninja Ritual'].power / 10);
 						if(Molpy.Spend({FluxCrystals: ritualRiftCost})) {
 							saveRitual = true;
-							Molpy.Notify('Warped back in time with ' + ritualRiftCost + ' Flux Crystals to continue Ninja Ritual.');
+							Molpy.Notify('Warped back in time with ' + Molpify(ritualRiftCost) + ' Flux Crystals to continue Ninja Ritual.');
 						} else {
 							Molpy.Notify('Not enough Flux Crystals for Ritual Rift.');
 						}
@@ -1544,7 +1544,7 @@ Molpy.Up = function() {
 			}
 			
 			this.getFormattedName = function() {
-				return '' + format(this.name);
+				return this.title ? EvalMaybeFunction(this.title): '' + format(this.name);
 			};
 			
 			this.getOwned = function() {return '';}
@@ -2238,8 +2238,8 @@ Molpy.Up = function() {
 							' attacking you at NP'+ this.opponents.target+'<br><br>';
 					};
 					str += '<input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
-					if (Molpy.Got('Strength Potion')) str += '<input type="button" value="Use Strength Potion" onclick="Molpy.DragonKnightAttack(1)"</input>';
-					if (0) str += '<input type="button" value="Use Breath" onclick="Molpy.DragonKnightAttack(2)"</input>';
+					if (Molpy.Got('Strength Potion')) str += '<br><input type="button" value="Use Strength Potion" onclick="Molpy.DragonKnightAttack(1)"</input><br>';
+					if (0) str += '<br><input type="button" value="Use Breath" onclick="Molpy.DragonKnightAttack(2)"</input><br>';
 					str += '<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
 				} else {
 					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
@@ -2282,7 +2282,6 @@ Molpy.Up = function() {
 
 		Molpy.BuildLootLists = function () {
 			Molpy.TaggedLoot = [];
-//            }
 			Molpy.BoostsBought = [];
 			Molpy.BadgesEarned = [];
 			Molpy.BadgesAvailable = [];

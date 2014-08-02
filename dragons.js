@@ -855,7 +855,7 @@ Molpy.RedundaKnight = function() {
 	var atklvl = Math.max(atk,300*npd.DragonType)+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
 	atklvl = ((Math.random() < 0.5)?Math.max(0,atklvl-Math.floor(30*Math.random())):atklvl)+Math.floor(30*Math.random());
 	var opp = Molpy.FindOpponents(atklvl);
-	opp.knowledge = 5*Molpy.Boosts.Dragonfly.bought >= Math.random()*100;
+	opp.knowledge = npd.DragonType >= 3 && 5*Molpy.Boosts.Dragonfly.bought >= Math.random()*100
 	opp.target = atk;
 	return opp;
 }
@@ -1006,10 +1006,10 @@ Dragons
 53	Burnish restart
 56	Bone Feast
 58	Anti-dragons
-59	Dragon Fly
 60	Dragon
 61	Related Quantum Panthers
 62	Sparkle Stick (magic)
+63	Ms Frizzle's Uncertainty Principle
 
 * Mouthwash (to reduce bad breath backfires)
 * Magic Rings (future)
