@@ -32,6 +32,19 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.651
+
+#### Waveney
+- Fixed DMP typo
+- Lock Cups of Tea and Healing potions on last use
+- Many old issues fixed including:
+-- Improved Free Advice
+-- Layouts Pane on top of other ordinary panes
+-- Achronal Dragon now is an action if the next target is ready
+-- Display of numbers of Crates/Vaults opened (if known)
+-- Better treatment of Infinities on some Glass boosts
+-- Time Lord only an Action if it has an action
+
 ### 3.65 - YIP
 
 #### Waveney
