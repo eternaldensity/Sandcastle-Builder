@@ -364,4 +364,13 @@ body.darkscheme .depressed
 {
 	display:block;
 }
-
+body.lightscheme .sectionLayout {
+	z-index:10;
+	background-color:white;
+	padding:10px;
+}
+body.darkscheme .sectionLayout  {
+	z-index:10;
+	background-color:black;
+	padding:10px;
+}

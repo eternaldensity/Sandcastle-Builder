@@ -1094,6 +1094,9 @@
 		if(version < 3.65) {
 			if (Molpy.Got('Archimedes')) Molpy.Boosts['Archimedes'].power = 1;
 		}
+		if(version < 3.66) {
+			if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
