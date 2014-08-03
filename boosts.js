@@ -1,4 +1,4 @@
-﻿﻿/**************************************************************
+﻿¿/**************************************************************
  * Boosts
  * 
  * New boosts should only be added to the END of the list!
@@ -10351,6 +10351,7 @@ Molpy.DefineBoosts = function() {
 				this.countdown = 0;
 			}
 		},
+		callcountdownifCMS: 1,
 		countdownLockFunction: function() {
 			if (this.State == 1) {
 				this.State = 2;
