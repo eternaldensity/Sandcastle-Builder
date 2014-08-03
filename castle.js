@@ -1147,15 +1147,15 @@ Molpy.Up = function() {
 				}
 				if(Molpy.IsStatsVisible()) {
 					if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + (this.id * 2 + 1))) {
-						if(this.totalCastlesDestroyed)
+						if(this.totalCastlesDestroyed > 0)
 							desc += 'Total Castles ' + this.actionDName + ': ' + Molpify(this.totalCastlesDestroyed)
 								+ '<br>Total Castles wasted: ' + Molpify(this.totalCastlesWasted);
-						if(this.totalCastlesBuilt)
+						if(this.totalCastlesBuilt > 0)
 							desc += '<br>Total Castles ' + this.actionBName + ': +' + Molpify(this.totalCastlesBuilt);
 					} else {
-						if(this.totalGlassDestroyed)
+						if(this.totalGlassDestroyed > 0)
 							desc += 'Total Chips ' + this.actionDName + ': ' + Molpify(this.totalGlassDestroyed);
-						if(this.totalGlassBuilt)
+						if(this.totalGlassBuilt > 0)
 							desc += '<br>Total Chips ' + this.actionBName + ': +' + Molpify(this.totalGlassBuilt);
 					}
 					desc += '<br>Total ' + this.plural + ' bought: ' + Molpify(this.bought);
