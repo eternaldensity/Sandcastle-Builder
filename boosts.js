@@ -11183,7 +11183,7 @@ Molpy.DefineBoosts = function() {
 			  'Brachytron pratense', 'Anax imperator' ],
 		draglvl: 'Wyvern',
 		limit: function() { return Math.min(18,6*(Molpy.Boosts.DQ.Level-2))},
-		title: function() { return this.name + (this.bought? ' ' + this.Species[this.Level-1]:'') },
+		title: function(me) { return me.name + ' ' + me.Species[me.unlocked] },
 		Level: Molpy.BoostFuncs.Bought0Level,
 	});
 

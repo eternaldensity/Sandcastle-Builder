@@ -1544,7 +1544,7 @@ Molpy.Up = function() {
 			}
 			
 			this.getFormattedName = function() {
-				return this.title ? EvalMaybeFunction(this.title): '' + format(this.name);
+				return this.title ? EvalMaybeFunction(this.title,this): '' + format(this.name);
 			};
 			
 			this.getOwned = function() {return '';}
@@ -1618,6 +1618,11 @@ Molpy.Up = function() {
 				this.updateProduction();
 			}
 			
+			this.updateName = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.objName').innerHTML = this.getFormattedName();
+			}
+			
 			this.updateBuy = function(fave) {
 				if(!this.divElement) return;
 				if(this.unlocked && (fave || this.bought<this.unlocked)) {
@@ -1675,6 +1680,7 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 0 || me.limit) {
 						me.unlocked++;
+						if (me.title) me.updateName();
 						Molpy.shopNeedRepaint = 1;
 						Molpy.RatesRecalculate();
 						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem) && me.unlocked == 1) {
@@ -2238,7 +2244,7 @@ Molpy.Up = function() {
 							' attacking you at NP'+ this.opponents.target+'<br><br>';
 					};
 					str += '<input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
-					if (Molpy.Got('Strength Potion')) str += '<br><input type="button" value="Use Strength Potion" onclick="Molpy.DragonKnightAttack(1)"</input><br>';
+					if (Molpy.Level('Strength Potion') > 1) str += '<br><input type="button" value="Use Strength Potion" onclick="Molpy.DragonKnightAttack(1)"</input><br>';
 					if (0) str += '<br><input type="button" value="Use Breath" onclick="Molpy.DragonKnightAttack(2)"</input><br>';
 					str += '<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
 				} else {

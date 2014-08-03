@@ -2142,7 +2142,7 @@ Molpy.DefineGUI = function() {
 		var divHTML = '<div class="objDiv ' + object.getFullClass() + '">'
 			        + '	<div class="icon ' + type + '_' + (object.icon ? object.icon : 'generic') + '" />'
 			        + headingHTML
-			        + '	<H2 class="objName">' + (object.title? EvalMaybeFunction(object.title) :object.getFormattedName()) + '</H2>'
+			        + '	<H2 class="objName">' + object.getFormattedName() + '</H2>'
 			        + purchaseHTML
 			        + ownedHTML
 			        + priceHTML
