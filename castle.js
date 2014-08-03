@@ -698,7 +698,7 @@ Molpy.Up = function() {
 			
 			this.getPrice = function() {
 				var price = '';
-				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + this.id * 2))
+				if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF'))
 					price = {Castles: (Math.floor(EvalMaybeFunction(this.price, this, 1) * Molpy.priceFactor))};
 				else if(!isNaN(this.price))
 					price = {GlassChips: 1000 * (this.id * 2 + 1)};
