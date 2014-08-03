@@ -1,4 +1,4 @@
-﻿/**************************************************************
+﻿﻿/**************************************************************
  * Boosts
  * 
  * New boosts should only be added to the END of the list!
@@ -11268,7 +11268,12 @@ Molpy.DefineBoosts = function() {
 		if (input) {
 			var list = input.split(',');
 			for(var i in list) {
-				obj = Molpy.Boosts[list[i]];
+				obj = Molpy.Boosts[list[i]]; // first checking if it's a alias
+
+                if(!obj) {
+                    obj = Molpy.Boosts[Molpy.BoostAKA[list[i]]] // otherwise searching by name (which is anyways converted to alias)
+                }
+
 				if(obj && obj.unlocked && obj.bought) {
 					Molpy.lootAddToFav(obj);
 				}
@@ -11285,6 +11290,11 @@ Molpy.DefineBoosts = function() {
 			var list = input.split(',');
 			for(var i in list) {
 				obj = Molpy.Boosts[list[i]];
+
+                if(!obj) {
+                    obj = Molpy.Boosts[Molpy.BoostAKA[list[i]]]  // otherwise searching by name (which is anyways converted to alias)
+                }
+
 				if(obj) {
 					Molpy.lootRemoveFromFav(obj);
 				}
