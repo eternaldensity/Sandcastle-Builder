@@ -2726,7 +2726,9 @@ Molpy.DefineBoosts = function() {
 	Molpy.SeaishGlassChiller = function() {
 		Molpy.Anything = 1;
 		var bl = Molpy.Boosts['GlassBlocks'];
-		var extra = Math.min(Math.floor(bl.power / 4.51), Math.floor((100 - Molpy.CalcGlassUse()) / Molpy.GlassChillerIncrement() - 1));
+		var usage = Math.floor((100 - Molpy.CalcGlassUse()) / Molpy.GlassChillerIncrement() - 1);
+		var extra = Math.min(Math.floor(bl.power / 4.51), usage);
+		if (usage == 0 && Molpy.Boosts['Sand Purifier'].power == Infinity) extra = Math.floor(bl.power / 4.51)
 		extra = Math.min(extra, Math.floor(Molpy.Level('GlassChips') / 1e12 + Molpy.Boosts['Sand Refinery'].power / Molpy.ChipsPerBlock() - Molpy.Boosts['Glass Chiller'].power - 2));
 		if(extra > 20) {
 			var origpower = Molpy.Boosts['Glass Chiller'].power;
@@ -3180,16 +3182,26 @@ Molpy.DefineBoosts = function() {
 		icon: 'freeadvice',
 		
 		desc: function(me) {
+			var str = '';
+			if (Molpy.IsEnabled('NavCode')) {
+				for (var jdipb in Molpy.jDipBoosts) {
+					if (!Molpy.Got(Molpy.jDipBoosts[jdipb])) return 'You have enabled NewPixBot Navigation Code before getting all the rewards';
+				}
+			}
+			if (Molpy.Got('Swedish Chef') && Molpy.Boosts['Swedish Chef'].power == 0) return 'The Swedish Chef needs attention';
+			if (Molpy.Got('Bag Burning') && !Molpy.Got('Fireproof') && Molpy.Got('Bottle Battle') && 
+				!isFinite(Math.pow(2, Molpy.Boosts['Bag Burning'].power) + 6)) return 'The Bag Burning needs attention';
+
 			if(Molpy.Got('TF')) {
-				var str = '';
 				if(!Molpy.Got('Sand to Glass'))
 					str += 'To unlock Sand to Glass you need 7470 Buckets and an infinite Sand dig rate.<br>';
 				if(!Molpy.Got('Castles to Glass'))
 					str += 'To unlock Castles to Glass you need 1515 NewPixBots and infinite Castles.<br>';
 				if(!Molpy.Got('Lucky Twin'))
 					str += 'Lucky Twin unlock is at ' + Molpify(Molpy.Boosts['Lucky Twin'].power) + ' out of ' + Molpify(13 * 13) + '.<br>';
-				if(str)
-					return str + '(The "to Glass" boosts unlock when you load the Tool Factory with chips, if you meet the requirements.)';
+				if(!Molpy.Got('Sand to Glass') || !Molpy.Got('Castles to Glass'))
+					str += ' (The "to Glass" boosts unlock when you load the Tool Factory with chips, if you meet the requirements.)';
+				if (str) return str;
 			}
 			if(Molpy.Got('AA') && !Molpy.Got('AC') && Molpy.CastleTools['NewPixBot'].amount >= 7500) {
 				return 'Logicat Level required for Automata Control: '
@@ -3642,11 +3654,13 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			if(!me.bought) return 'Contains Loot';
-			return (5 - me.bought)
-				+ ' lock'
-				+ plural(5 - me.bought)
+			var str = '';
+			if (me.bought) {
+				str += (5 - me.bought) + ' lock' + plural(5 - me.bought)
 				+ ' left<br><input type="Button" value="Smash" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> it open to grab the loot!'
+			} else str += 'Contains Loot';
+			if (me.CrateCount > 1) str += '<p>You have opened ' + Molpify(me.CrateCount) + ' Crates';
+			return str;
 		},
 		
 		price:{
@@ -3664,10 +3678,14 @@ Molpy.DefineBoosts = function() {
 		unlockFunction: function() {
 			this.power = Molpy.Boosts['Castles'].power * 6 + Molpy.Boosts['Sand'].power;
 		},
-		
+
+		defSave: 1,
+		saveData: {4:['CrateCount',0,'float']},
+		CrateCount: 0,
 		lockFunction: function() {
 			var bl = Molpy.Boosts['GlassBlocks'];
 			var win = Math.ceil(Molpy.LogiMult('2K'));
+			this.CrateCount++;
 			win = Math.floor(win / (6 - this.bought));
 
 			if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
@@ -6355,7 +6373,9 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate if power is Infinite, all tools are Mustard and nothing can be made
-		classChange: function() { return (isFinite(Molpy.Boosts['AD'].power) || Molpy.mustardTools < Molpy.SandToolsById.length + Molpy.CastleToolsById.length || Molpy.DragonTarget()[0]) ? 'alert' : ''},
+		classChange: function() { 
+			if (Molpy.DragonTarget()[0] >0) return 'action';
+			return (isFinite(Molpy.Boosts['AD'].power) || Molpy.mustardTools < Molpy.SandToolsById.length + Molpy.CastleToolsById.length || Molpy.DragonTarget()[0]) ? 'alert' : ''},
 		
 		defStuff: 1,
 		
@@ -6825,8 +6845,11 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			if(!me.bought) return 'Contains Loot';
-			return (5 - me.bought) + ' lock' + plural(5 - me.bought) + ' left to grab the loot!'
+			var str = '';
+			if (me.bought) str += (5 - me.bought) + ' lock' + plural(5 - me.bought) + ' left to grab the loot!'
+			else str += 'Contains Loot';
+			if (me.power > 11) str += '<p>You have opened ' + Molpify(me.power-10) + ' Vaults';
+			return str;
 		},
 		
 		price: {
@@ -7749,7 +7772,7 @@ Molpy.DefineBoosts = function() {
 			}
 		},
 		Saturnav: function() {
-			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) -2 - Molpy.mapMonumg)/3);
+			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) +1 - Molpy.mapMonumg)/3);
 			this.Refresh();
 		},
 	});
@@ -8837,7 +8860,11 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 
-		classChange: function() { return isFinite(this.bought) ? 'action': ''},
+		classChange: function() { 
+			if (!isFinite(this.bought)) return '';
+			var p = 20 * this.bought * (1 + Math.floor(Math.log(this.bought) * Math.LOG10E));
+			return Molpy.Has('FluxCrystals', p) ? 'action': '';
+		},
 
 		reset: function() { 
 			this.Level = this.bought +1;
@@ -10002,6 +10029,7 @@ Molpy.DefineBoosts = function() {
 			};
 			if (draglevel >= Molpy.Dragons['Wyrm'].id) {
 				str += '<li>Wyrms are the first real dragons, lacking arms or magic they can\'t dig very well';
+				str += '<li>Work towards Diamond Masterpieces and make as many as you can';
 				str += '<li>' + Molpy.Dragons['Wyrm'].description();
 			};
 
@@ -10171,7 +10199,8 @@ Molpy.DefineBoosts = function() {
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
-			this.unlocked--;
+			if (this.unlocked > 1) this.unlocked--
+			else this.Lock();
 			return true;
 		},
 		price: {
@@ -10267,7 +10296,8 @@ Molpy.DefineBoosts = function() {
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
-			this.unlocked--;
+			if (this.unlocked > 1) this.unlocked--
+			else this.Lock();
 			return true;
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
@@ -10697,7 +10727,7 @@ Molpy.DefineBoosts = function() {
 		},
 		countdownLockFunction: function() {
 			if (this.State == 1 && this.countdown == 0) {
-				if ( Molpy.Earned('monums'+me.Making) || Molpy.Earned('monumg'+me.Making)) {
+				if ( Molpy.Earned('monums'+this.Making) || Molpy.Earned('monumg'+this.Making)) {
 					Molpy.Notify('What are those third rate monuments doing here! - the Masterpiece is ruined',1);
 					this.State = 0;
 					this.Making = 0;

@@ -32,7 +32,20 @@ For personal amusement only.
 
 ## Changelog
 
-### 3.65 
+### 3.651
+
+#### Waveney
+- Fixed DMP typo
+- Lock Cups of Tea and Healing potions on last use
+- Many old issues fixed including:
+-- Improved Free Advice
+-- Layouts Pane on top of other ordinary panes
+-- Achronal Dragon now is an action if the next target is ready
+-- Display of numbers of Crates/Vaults opened (if known)
+-- Better treatment of Infinities on some Glass boosts
+-- Time Lord only an Action if it has an action
+
+### 3.65 - YIP
 
 #### Waveney
 - New boost Glaciation
@@ -46,13 +59,16 @@ For personal amusement only.
 
 
 #### erp-lsf
-- New Favourites Manager Boost (a gentle fave style tool hat works in classic as well as normal)
+- New Favourites Manager Boost (a gentle fave style tool that works in classic as well as normal)
 - Fixed some typos
 - Improved the API
 
 #### Cloudy the Conqueror
 - Fixes to Chromatic Heresy, Anisoptera and Configuring Faves
 - Added treeishness to Masterpieces and fixed some descriptions
+
+#### EPSILON
+- Reflect pyric deaths in total dragons lost
 
 ### 3.64
 
