@@ -2726,7 +2726,9 @@ Molpy.DefineBoosts = function() {
 	Molpy.SeaishGlassChiller = function() {
 		Molpy.Anything = 1;
 		var bl = Molpy.Boosts['GlassBlocks'];
-		var extra = Math.min(Math.floor(bl.power / 4.51), Math.floor((100 - Molpy.CalcGlassUse()) / Molpy.GlassChillerIncrement() - 1));
+		var usage = Math.floor((100 - Molpy.CalcGlassUse()) / Molpy.GlassChillerIncrement() - 1);
+		var extra = Math.min(Math.floor(bl.power / 4.51), usage);
+		if (usage == 0 && Molpy.Boosts['Sand Purifier'].power == Infinity) extra = Math.floor(bl.power / 4.51)
 		extra = Math.min(extra, Math.floor(Molpy.Level('GlassChips') / 1e12 + Molpy.Boosts['Sand Refinery'].power / Molpy.ChipsPerBlock() - Molpy.Boosts['Glass Chiller'].power - 2));
 		if(extra > 20) {
 			var origpower = Molpy.Boosts['Glass Chiller'].power;
