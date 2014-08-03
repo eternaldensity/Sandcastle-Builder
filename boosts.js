@@ -10171,7 +10171,8 @@ Molpy.DefineBoosts = function() {
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
-			this.unlocked--;
+			if (this.unlocked > 1) this.unlocked--
+			else this.Lock();
 			return true;
 		},
 		price: {
@@ -10267,7 +10268,8 @@ Molpy.DefineBoosts = function() {
 		Spend: function() {
 			if (!this.bought) return false;
 			this.bought--;
-			this.unlocked--;
+			if (this.unlocked > 1) this.unlocked--
+			else this.Lock();
 			return true;
 		},
 		Level: Molpy.BoostFuncs.Bought0Level,
