@@ -6363,7 +6363,9 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		// deactivate if power is Infinite, all tools are Mustard and nothing can be made
-		classChange: function() { return (isFinite(Molpy.Boosts['AD'].power) || Molpy.mustardTools < Molpy.SandToolsById.length + Molpy.CastleToolsById.length || Molpy.DragonTarget()[0]) ? 'alert' : ''},
+		classChange: function() { 
+			if (Molpy.DragonTarget()[0] >0) return 'action';
+			return (isFinite(Molpy.Boosts['AD'].power) || Molpy.mustardTools < Molpy.SandToolsById.length + Molpy.CastleToolsById.length || Molpy.DragonTarget()[0]) ? 'alert' : ''},
 		
 		defStuff: 1,
 		
