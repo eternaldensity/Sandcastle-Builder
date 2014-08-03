@@ -3182,16 +3182,26 @@ Molpy.DefineBoosts = function() {
 		icon: 'freeadvice',
 		
 		desc: function(me) {
+			var str = '';
+			if (Molpy.IsEnabled('NavCode')) {
+				for (var jdipb in Molpy.jDipBoosts) {
+					if (!Molpy.Got(Molpy.jDipBoosts[jdipb])) return 'You have enabled NewPixBot Navigation Code before getting all the rewards';
+				}
+			}
+			if (Molpy.Got('Swedish Chef') && Molpy.Boosts['Swedish Chef'].power == 0) return 'The Swedish Chef needs attention';
+			if (Molpy.Got('Bag Burning') && !Molpy.Got('Fireproof') && Molpy.Got('Bottle Battle') && 
+				!isFinite(Math.pow(2, Molpy.Boosts['Bag Burning'].power) + 6)) return 'The Bag Burning needs attention';
+
 			if(Molpy.Got('TF')) {
-				var str = '';
 				if(!Molpy.Got('Sand to Glass'))
 					str += 'To unlock Sand to Glass you need 7470 Buckets and an infinite Sand dig rate.<br>';
 				if(!Molpy.Got('Castles to Glass'))
 					str += 'To unlock Castles to Glass you need 1515 NewPixBots and infinite Castles.<br>';
 				if(!Molpy.Got('Lucky Twin'))
 					str += 'Lucky Twin unlock is at ' + Molpify(Molpy.Boosts['Lucky Twin'].power) + ' out of ' + Molpify(13 * 13) + '.<br>';
-				if(str)
-					return str + '(The "to Glass" boosts unlock when you load the Tool Factory with chips, if you meet the requirements.)';
+				if(!Molpy.Got('Sand to Glass') || !Molpy.Got('Castles to Glass'))
+					str += ' (The "to Glass" boosts unlock when you load the Tool Factory with chips, if you meet the requirements.)';
+				if (str) return str;
 			}
 			if(Molpy.Got('AA') && !Molpy.Got('AC') && Molpy.CastleTools['NewPixBot'].amount >= 7500) {
 				return 'Logicat Level required for Automata Control: '
@@ -10019,6 +10029,7 @@ Molpy.DefineBoosts = function() {
 			};
 			if (draglevel >= Molpy.Dragons['Wyrm'].id) {
 				str += '<li>Wyrms are the first real dragons, lacking arms or magic they can\'t dig very well';
+				str += '<li>Work towards Diamond Masterpieces and make as many as you can';
 				str += '<li>' + Molpy.Dragons['Wyrm'].description();
 			};
 
