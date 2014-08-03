@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.64;
-Molpy.versionName=''; // Appended to the numerical version on screen
+Molpy.version=3.65;
+Molpy.versionName='Yip'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
@@ -621,6 +621,8 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	if(Molpy.CastleToolsOwned >= 500) Molpy.EarnBadge('Beachineer');
 	if(Molpy.BoostsOwned >= 50) Molpy.EarnBadge('Better This Way');
 
+    if (Molpy.BoostsOwned >= 100) Molpy.UnlockBoost('favs');
+
 	if(Molpy.SandToolsOwned >= 2101) Molpy.EarnBadge('All Your Base');
 	if(Molpy.SandToolsOwned >= 3000) Molpy.EarnBadge('Look Before You Leap');
 	if(Molpy.CastleToolsOwned >= 4000) Molpy.EarnBadge('Fully Armed and Operational Battlestation');
@@ -790,7 +792,16 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	Molpy.Boosts['No Need to be Neat'].department = Molpy.Earned('Neat!');
 	if (Molpy.IsEnabled('Time Lord')) Molpy.Boosts['Temporal Rift'].department = 0;
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
-	Molpy.Boosts['Muse'].department = 1 * Molpy.Got('DMP') * (Molpy.Boosts['DMM'].State == 0) * Molpy.Earned('monumg'+Molpy.newpixNumber) * (npd && npd.amount == Molpy.MaxDragons());
+	if (Molpy.Got('DMP') && (Molpy.Boosts['DMM'].State == 0) && Molpy.Earned('monumg'+Molpy.newpixNumber) && 
+		(npd && npd.amount == Molpy.MaxDragons()) && 
+		!(Molpy.Boosts.DMF.State > 0 && Molpy.Boosts.DMF.Making == Molpy.newpixNumber) &&
+		!(Molpy.Boosts.DMC.State > 0 && Molpy.Boosts.DMC.Making == Molpy.newpixNumber) &&
+		!(Molpy.Boosts.DMB.State > 0 && Molpy.Boosts.DMB.Making == Molpy.newpixNumber) &&
+		!(Molpy.Boosts.DMP.State > 0 && Molpy.Boosts.DMP.Making == Molpy.newpixNumber)) {
+		Molpy.Boosts['Muse'].department = 1;
+	} else {
+		Molpy.Boosts['Muse'].department = 0;
+	}
 	Molpy.Boosts['Black Powder'].department = 1 * Molpy.Got('DMM');
 }
 

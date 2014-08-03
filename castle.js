@@ -163,7 +163,7 @@ Molpy.Up = function() {
 						var ritualRiftCost = Math.floor(Molpy.Boosts['Ninja Ritual'].power / 10);
 						if(Molpy.Spend({FluxCrystals: ritualRiftCost})) {
 							saveRitual = true;
-							Molpy.Notify('Warped back in time with ' + ritualRiftCost + ' Flux Crystals to continue Ninja Ritual.');
+							Molpy.Notify('Warped back in time with ' + Molpify(ritualRiftCost) + ' Flux Crystals to continue Ninja Ritual.');
 						} else {
 							Molpy.Notify('Not enough Flux Crystals for Ritual Rift.');
 						}
@@ -1544,7 +1544,7 @@ Molpy.Up = function() {
 			}
 			
 			this.getFormattedName = function() {
-				return '' + format(this.name);
+				return this.title ? EvalMaybeFunction(this.title,this): '' + format(this.name);
 			};
 			
 			this.getOwned = function() {return '';}
@@ -1618,6 +1618,11 @@ Molpy.Up = function() {
 				this.updateProduction();
 			}
 			
+			this.updateName = function() {
+				if(!this.divElement) return;
+				this.divElement.find('.objName').innerHTML = this.getFormattedName();
+			}
+			
 			this.updateBuy = function(fave) {
 				if(!this.divElement) return;
 				if(this.unlocked && (fave || this.bought<this.unlocked)) {
@@ -1675,6 +1680,7 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 0 || me.limit) {
 						me.unlocked++;
+						if (me.title) me.updateName();
 						Molpy.shopNeedRepaint = 1;
 						Molpy.RatesRecalculate();
 						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem) && me.unlocked == 1) {
@@ -2047,7 +2053,8 @@ Molpy.Up = function() {
 					4: $('#loot'), // in a boost group
 					5: $('#loot'), // in a badge  group
 					6: $('#loot'), // in badges available
-					7: $('#loot')}; // in tagged list
+					7: $('#loot'), // in tagged list
+					8: $('#loot')}; // in faves list
 			this.titleList = {
 					1: $('#toolSTitle'),
 					2: $('#toolCTitle'),
@@ -2055,7 +2062,8 @@ Molpy.Up = function() {
 					4: $('#lootTitle'),
 					5: $('#lootTitle'),
 					6: $('#lootTitle'),
-					7: $('#lootTitle')};
+					7: $('#lootTitle'),
+					8: $('#lootTitle')};
 			
 			this.classNames = ['hidden', 'floatbox sand tool shop', 'floatbox castle tool shop', 'floatbox boost shop',
 			                   'lootbox boost loot', 'lootbox badge loot', 'lootbox badge shop', 'lootbox boost loot'];
@@ -2190,7 +2198,7 @@ Molpy.Up = function() {
 					}
 				if(!possible) this.location = 0;
 				
-				// For Knights selectthe shop if possible
+				// For Knights select the shop if possible
 				var valid = false;
 				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0 && this.divList[3].is(':visible')) { // Redundaknights
 					this.location = 3; // Shop
@@ -2225,10 +2233,20 @@ Molpy.Up = function() {
 				heading = heading ? '<h1>' + Molpy.Redacted.brackets + '</h1>' : '';
 				var countdown = (level == 0) ? '&nbsp;<span id="redactedcountdown" class="faded">' + Molpify(this.toggle - this.countup) + '</span>' : '';
 				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0) { // Redundaknights
-					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redundaknights ' + 
-						countdown + '</h2><div><input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>' +
-						'<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
 					this.drawType[level] = 'knight';
+					this.opponents = Molpy.RedundaKnight();
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redundaknights ' + 
+						countdown + '</h2><div>';
+					if (this.opponents.knowledge) {
+						str += (this.opponents.numb == 1?'A':Molpify(this.opponents.numb)) + ' ' + 
+							Molpy.OpponentsById[this.opponents.type].name + (this.opponents.numb > 1?'s':'') + 
+							' from NP' + this.opponents.from + (this.opponents.numb == 1?' is':' are') + 
+							' attacking you at NP'+ this.opponents.target+'<br><br>';
+					};
+					str += '<input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
+					if (Molpy.Level('Strength Potion') > 1) str += '<br><input type="button" value="Use Strength Potion" onclick="Molpy.DragonKnightAttack(1)"</input><br>';
+					if (0) str += '<br><input type="button" value="Use Breath" onclick="Molpy.DragonKnightAttack(2)"</input><br>';
+					str += '<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
 				} else {
 					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
 						+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
@@ -2267,7 +2285,7 @@ Molpy.Up = function() {
 		Molpy.Redacted = new Molpy.Redacted(); // Why do I have to do this?
 		
 		Molpy.TaggedLoot = [];
-		
+
 		Molpy.BuildLootLists = function () {
 			Molpy.TaggedLoot = [];
 			Molpy.BoostsBought = [];
@@ -2422,6 +2440,25 @@ Molpy.Up = function() {
 				return Molpy.lootFindInsert(object, array, start, pivot, sort);
 			}
 		}
+
+        Molpy.lootAddToFav = function(object) {
+            var index = $.inArray(object.id, Molpy.Boosts.favs.FavesList);
+            if (index <= -1) {
+                Molpy.Boosts.favs.FavesList.push(object.id);
+                var daddy = Molpy.Boosts.favs.FavesList.shift(); // left control boost at the first place
+                Molpy.Boosts.favs.FavesList.sort(Molpy.ClassNameSort);
+                Molpy.Boosts.favs.FavesList.unshift(daddy);
+            }
+        };
+
+        Molpy.lootRemoveFromFav = function(object) {
+            if (object != Molpy.Boosts['favs']) { // never remove control boost from the list
+                var index = $.inArray(object.id, Molpy.Boosts.favs.FavesList);
+                if (index > -1) {
+                    Molpy.Boosts.favs.FavesList.splice(index, 1);
+                }
+            }
+        };
 
 		Molpy.RewardRedacted = function(forceDepartment, automationLevel) {
 			var event = forceDepartment ? 'DoRD' : Molpy.Redacted.word;
@@ -2891,39 +2928,34 @@ Molpy.Up = function() {
 		if(!(Molpy.ketchupTime || Molpy.Boosts['Coma Molpy Style'].IsEnabled)) Molpy.CheckONG();
 		Molpy.Redacted.checkToggle();
 
-		if (!Molpy.Boosts['Coma Molpy Style'].IsEnabled) {
-			for( var i in Molpy.Boosts)//count down any boosts with a countdown
-			{
-				var me = Molpy.Boosts[i];
-				if(me.bought) {
-					if(me.countdown) {
-						me.countdown--;
-						if(me.countdown <= 0) {
-							if(me.countdownLockFunction) {
-								me.countdownLockFunction()
-							} else {
-								Molpy.LockBoost(i);
-								me.power = 0;
-							}
-							me.countdown = 0;
-						} else {
-							if(me.countdownFunction) me.countdownFunction();
-						}
-						me.Refresh();
+		for( var i in Molpy.Boosts) { //count down any boosts with a countdown
+			var me = Molpy.Boosts[i];
+			if(me.bought && me.countdown && (me.countdownCMS || !Molpy.Boosts['Coma Molpy Style'].IsEnabled)) {
+				me.countdown--;
+				if(me.countdown <= 0) {
+					if(me.countdownLockFunction) {
+						me.countdownLockFunction()
+					} else {
+						Molpy.LockBoost(i);
+						me.power = 0;
 					}
+					me.countdown = 0;
+				} else {
+					if(me.countdownFunction) me.countdownFunction();
 				}
-				if(me.bought) {
-					if(me.classChange) {
-						var newclass = me.classChange();
-						if (newclass != me.className) {
-							me.className = newclass;
-							Molpy.lootCheckTagged(me);
-							me.Refresh();
-							Molpy.boostNeedRepaint = 1;
-						}
-					}
+				me.Refresh();
+			}
+			if(me.bought && me.classChange) { // Note the bought status can have changed since the check above
+				var newclass = me.classChange();
+				if (newclass != me.className) {
+					me.className = newclass;
+					Molpy.lootCheckTagged(me);
+					me.Refresh();
+					Molpy.boostNeedRepaint = 1;
 				}
 			}
+		}
+		if (!Molpy.Boosts['Coma Molpy Style'].IsEnabled) {
 			for( var i in Molpy.Badges) {
 				var me = Molpy.Badges[i];
 				if(me.earned) {

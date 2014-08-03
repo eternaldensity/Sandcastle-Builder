@@ -32,6 +32,28 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.65 
+
+#### Waveney
+- New boost Glaciation
+- New boost Anisoptera (for Wyverns so you can't get it yet)
+- Fix to prevent Infnite Blitzing during Coma Molpy Style
+- Added Molify in a few places
+- Added Masterpieces to stats
+- Stopped Use of blackprints breaking Constructing from Blackprints unnecessarily
+- Archimedes Lever is now toggleable
+- Stopped mutiple instances of same masterpiece at different stages of construction
+
+
+#### erp-lsf
+- New Favourites Manager Boost (a gentle fave style tool hat works in classic as well as normal)
+- Fixed some typos
+- Improved the API
+
+#### Cloudy the Conqueror
+- Fixes to Chromatic Heresy, Anisoptera and Configuring Faves
+- Added treeishness to Masterpieces and fixed some descriptions
+
 ### 3.64
 
 #### Waveney

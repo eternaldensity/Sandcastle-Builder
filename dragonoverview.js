@@ -141,7 +141,7 @@ Molpy.Overview = {
 
 	Update: function(np) {
 		if (!Molpy.Got('Dragon Overview') || np < 0 || !this.mtip || np >= this.size ) return;
-		var mt = (Molpy.Earned('monumg'+np)?(Molpy.Earned('diamm'+np)?2:1):0);
+		var mt = (Molpy.Earned('diamm'+np)?2:(Molpy.Earned('monumg'+np)?1:0));
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
 		this.dopctxm.putImageData(this.image[dt+1][mt], 8*(np%50)+this.Xoffset, 8*Math.floor(np/50));
 	},

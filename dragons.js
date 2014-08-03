@@ -43,6 +43,7 @@ Molpy.Dragon = function(args) {
 		str +=(this.legs?this.legs:'No') + ' legs, ';
 		str += (this.arms?this.arms:'No') + ' arms, ' + (this.wings?this.wings:'No') + ' wings ';
 		str += ' and ' + (this.tails==0?'no tail.':(this.tails == 1?'a tail.':this.tails + ' tails.'));
+		if (this.wings && !Molpy.Got('Dragonfly')) str += ' However, they have not yet learnt how to fly.';
 		return str ;
 	};
 }
@@ -318,14 +319,14 @@ Molpy.DefineOpponents = function() {
 	new Molpy.Opponent ({
 	 	name: 'Lord',
 		armed: ['great sword','great axe','Kazoo','court jester','fire hose'],
-		reward: {Gold:'100K-1G',Princesses:0.25,Diamonds:'50-50K',Thing:0.5},
+		reward: {Gold:'100K-1G',Princesses:0.05,Diamonds:'50-50K',Thing:0.5},
 		exp: '1E',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Duke',
 		armed: ['+Duchess','horde of servants','+gardeners','whip'],
-		reward: {Gold:'1M-1T',Princesses:0.75,Diamonds:'50K-60M',Thing:0.55},
+		reward: {Gold:'1M-1T',Princesses:0.50,Diamonds:'50K-60M',Thing:0.55},
 		exp: '1Z',
 	});
 
@@ -426,6 +427,11 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Big Bite')) Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Big Bite'));
 	if (Molpy.Got('Double Byte')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Double Byte'));
 	if (Molpy.Got('Trilobite')) Molpy.DragonAttackMultiplier *= Math.pow(4,Molpy.Level('Trilobite'));
+
+	if (Molpy.Got('Anisoptera')) {
+		Molpy.DragonDefenceMultiplier *= Math.pow(1.5,Molpy.Level('Anisoptera'));
+		Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Anisoptera'));
+	}
 	
 	Molpy.DragonBreathMultiplier = 1;
 
@@ -648,7 +654,9 @@ Molpy.DragonFledge = function(clutch) {
 		hatch.clean(1);
 	}
 
-	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge',' attack as you fledge');
+	if (fight && npd.amount) {
+		Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.FindOpponents(Molpy.newpixNumber),' attacks as you fledge',' attack as you fledge');
+	}
 	if (npd.amount) {
 		Molpy.EarnBadge('First Colonist');
 		Molpy.Overview.Update(Molpy.newpixNumber);
@@ -689,7 +697,18 @@ Molpy.DragonStatsNow = function(where) {
 	return Stats;
 }
 
-Molpy.OpponentsAttack = function(where,from,text1,text2) {
+
+Molpy.FindOpponents = function(from) {
+	var df = {};
+	df.from = from;
+	df.type = Math.min(Math.floor(from/150),Molpy.OpponentsById.length-1);
+	df.numb = Math.floor(((from-df.type*150)/30)*(Math.random())+1);
+	df.gender = 1*(Math.random() < 0.5);
+	df.modifier = Math.random()+.5;
+	return df;
+}
+
+Molpy.OpponentsAttack = function(where,df,text1,text2) {
 	// Select locals
 	// Work out their attack and defense values
 	// fight a round
@@ -700,23 +719,18 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 	
 	var dq = Molpy.Boosts['DQ'];
 	var npd = Molpy.NPdata[where];
-	var lcls = Molpy.FindLocals(from);
-	var type = lcls[0];
-	var numb = lcls[1];
-	var local = Molpy.OpponentsById[type];
-	local.gender = 1*(Math.random() < 0.5);
-	local.modifier = Math.random()+.5;
-	var atktxt = local.attackstxt(numb,(from!=where?from:'')) + ((numb> 1 && text2)?text2:text1) + '. ';
-	var atkval = local.attackval(numb,where);
+	var local = Molpy.OpponentsById[df.type];
+	var atktxt = local.attackstxt(df.numb,(df.from!=where?df.from:'')) + ((df.numb> 1 && text2)?text2:text1) + '. ';
+	var atkval = local.attackval(df.numb,where);
 
 	Molpy.DragonDigRecalc(); 
 	var dragstats = Molpy.DragonStatsNow(where);
 	var result = 0;
-	var localhealth = (atkval[0]+atkval[1])*local.modifier;
+	var localhealth = (atkval[0]+atkval[1])*df.modifier;
 	var dragnhealth = dragstats.defence || 0;
 	var factor = 1;
 	var loops = 0;
-	if (numb > 1) Molpy.EarnBadge('There are two of them!');
+	if (df.numb > 1) Molpy.EarnBadge('There are two of them!');
 	dq.totalfights++;
 
 //	Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
@@ -764,7 +778,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 		case -1 : // lost a hard fight
 			dq.Loose(npd.DragonType,npd.amount);
 			npd.amount = 0;	
-			Molpy.Add('exp',Math.max(local.experience()*numb, Math.pow(10,npd.DragonType)/5));
+			Molpy.Add('exp',Math.max(local.experience()*df.numb, Math.pow(10,npd.DragonType)/5));
 			Molpy.Notify(atktxt + ' You lost, but lost with dignity',1);
 			Molpy.Overview.Update(where);
 			break;
@@ -776,6 +790,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 		case 1 : // Pyric victory - lose a dragon...
 			var dloss = 0;
 			if (npd.amount > 1) {
+				dq.Loose(npd.DragonType,1);
 				npd.amount--;
 				dloss = 1;
 				factor *=2;
@@ -788,7 +803,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			Molpy.Notify(atktxt + ' You won a very hard ' + timetxt + 'fight, ' + 
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType].name+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward(numb,local.experience()*numb); 
+			local.takeReward(df.numb,local.experience()*df.numb); 
 			break;
 
 		case 2 : // won a hard fight - need to recover
@@ -799,18 +814,18 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a hard '+timetxt+'fight, but will need to recover for ' + 
 					MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward(numb,local.experience()*numb*2); 
+			local.takeReward(df.numb,local.experience()*df.numb*2); 
 			break;
 
 		case 3 : // Wipeout for no loss
 			if (npd.DragonType) {
-				Molpy.Notify(atktxt + ' You wiped ' + (numb==1?['him','her'][local.gender]:'them') + 
+				Molpy.Notify(atktxt + ' You wiped ' + (df.numb==1?['him','her'][df.gender]:'them') + 
 					' out ' + (timetxt?'in a '+timetxt+'fight, ':'') + 'with ease',1);
 			} else {
-				Molpy.Notify(atktxt + ' You scared ' + (numb==1?['him','her'][local.gender]:'them') + 
+				Molpy.Notify(atktxt + ' You scared ' + (df.numb==1?['him','her'][df.gender]:'them') + 
 					' away ' + (timetxt?'in a '+timetxt+'fight, ':'') + 'with ease',1);
 			}
-			local.takeReward(numb,local.experience()*numb); 
+			local.takeReward(df.numb,local.experience()*df.numb); 
 			if (dq.overallState) {
 				Molpy.Notify('Your heroic victory inspires the others to go back to work',1);
 				dq.ChangeState(0);
@@ -820,8 +835,7 @@ Molpy.OpponentsAttack = function(where,from,text1,text2) {
 	Molpy.DragonDigRecalcNeeded = 1;
 }
 
-Molpy.DragonKnightAttack = function() { // Attack Opponents
-	Molpy.Redacted.onClick();
+Molpy.RedundaKnight = function() { 
 	var atk = Molpy.HighestNPwithDragons;
 	if (Math.random()<.25) {
 		var di = Math.random()*Molpy.TotalNPsWithDragons;
@@ -840,9 +854,18 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 	npd = Molpy.NPdata[atk];
 	var atklvl = Math.max(atk,300*npd.DragonType)+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
 	atklvl = ((Math.random() < 0.5)?Math.max(0,atklvl-Math.floor(30*Math.random())):atklvl)+Math.floor(30*Math.random());
+	var opp = Molpy.FindOpponents(atklvl);
+	opp.knowledge = npd.DragonType >= 3 && 4*Molpy.Boosts.Dragonfly.bought >= Math.random()*100; // Another boost will take this higher with magic
+	opp.target = atk;
+	return opp;
+}
 
-	Molpy.OpponentsAttack(atk,atklvl,
-			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+atk);
+Molpy.DragonKnightAttack = function() { // Attack Opponents
+	var opp = Molpy.Redacted.opponents;
+	var npd = Molpy.NPdata[opp.target];
+	Molpy.Redacted.onClick();
+	Molpy.OpponentsAttack(opp.target,opp,
+			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+opp.target);
 }
 
 Molpy.DragonsHide = function(type) {
@@ -954,7 +977,7 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 		Molpy.Overview.Update(Molpy.newpixNumber);
 	};
 
-	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.newpixNumber,' attacks as you fledge',' attack as you fledge');
+	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.FindOpponents(Molpy.newpixNumber),' attacks as you fledge',' attack as you fledge');
 	Molpy.DragonDigRecalc(); // Always needed
 }
 
@@ -976,20 +999,17 @@ TODO
 
 Dragons
 	What						Written	Tested					
-10	Multiple Maps -> Multiple Nests, Multiple Queens,  Not launch (maybe never - might use Maps to boost BM)
-19	Wyvern						Not Launch
-21	Diamond Monuments				Not Launch
-22	Breath effects					Not Launch
-23	Magic						Not Launch
-24	Mirror Dragons					Not Launch
+19	Wyvern						
+22	Breath effects				
+23	Magic				
+24	Mirror Dragons		
 53	Burnish restart
 56	Bone Feast
 58	Anti-dragons
-59	Use for Maps
-
-`
-
-
+60	Dragon
+61	Related Quantum Panthers
+62	Sparkle Stick (magic)
+63	Ms Frizzle's Uncertainty Principle
 
 * Mouthwash (to reduce bad breath backfires)
 * Magic Rings (future)
@@ -997,19 +1017,14 @@ Dragons
 * Bad dreams!
 * Luck Rings
 * hard dragons - control redundaknight defaults
-* Automatic Mapping (not when Loopin Looie active)
-* 80 maps = hatch factor 1
-* 160 = 2
-* 320 = 4 ...  Divisor to incubation time
 * Breath - needs coal, does damage (may reduce number if multiple opponents)
 * Magic use Mana - Mana from?
-* Breath types - fire [Coal], poison [?], frost [Vacuum]
+* Breath types - fire [Coal], poison [Bonemeal], frost [Vacuum]
 
 
 Other
 2	Panthers Ignore Einstein 
-3	GPS
-
+5
 
 */
 
