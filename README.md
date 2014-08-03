@@ -32,7 +32,7 @@ For personal amusement only.
 
 ## Changelog
 
-### 3.65 
+### 3.65 - YIP
 
 #### Waveney
 - New boost Glaciation
@@ -46,13 +46,16 @@ For personal amusement only.
 
 
 #### erp-lsf
-- New Favourites Manager Boost (a gentle fave style tool hat works in classic as well as normal)
+- New Favourites Manager Boost (a gentle fave style tool that works in classic as well as normal)
 - Fixed some typos
 - Improved the API
 
 #### Cloudy the Conqueror
 - Fixes to Chromatic Heresy, Anisoptera and Configuring Faves
 - Added treeishness to Masterpieces and fixed some descriptions
+
+#### EPSILON
+- Reflect pyric deaths in total dragons lost
 
 ### 3.64
 

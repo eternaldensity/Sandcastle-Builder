@@ -8837,7 +8837,11 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 
-		classChange: function() { return isFinite(this.bought) ? 'action': ''},
+		classChange: function() { 
+			if (!isFinite(this.bought)) return '';
+			var p = 20 * this.bought * (1 + Math.floor(Math.log(this.bought) * Math.LOG10E));
+			return  Molpy.Has('FluxCrystals', p) ? 'action': ''};
+		},
 
 		reset: function() { 
 			this.Level = this.bought +1;
