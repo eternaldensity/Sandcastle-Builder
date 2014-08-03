@@ -3272,6 +3272,7 @@ Molpy.Up = function() {
 		Molpy.UpdateFaves();
 		
 		Molpy.Boosts['Temporal Rift'].changeState('closed');
+		Molpy.IsThereAnUpdate();
 	};
 
 	Molpy.BurnBags = function(n, e) {

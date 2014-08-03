@@ -1315,4 +1315,17 @@
 			typocount = 0;
 		}
 	}
+
+	Molpy.IsThereAnUpdate = function() {
+		jQuery.get('data.js',Molpy.CheckForUpdate,'text');
+	}
+
+	Molpy.CheckForUpdate = function(remotedata) {
+		var match = remotedata.match(/Molpy.version=([0-9.]*);/);
+		if (match && match[1] != Molpy.version) {
+			var namematch = remotedata.match(/Molpy.versionName=\'(.*)\'/);
+			var name = namematch? ' '+namematch[1] : '';
+			Molpy.Notify('There is a new Sandcastle Builder version ' + match[1] + name + ' available',1);
+		}
+	}
 }
