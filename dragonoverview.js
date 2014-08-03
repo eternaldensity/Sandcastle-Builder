@@ -24,8 +24,9 @@ Molpy.Overview = {
 		
 		this.dopanem.addEventListener('mousemove',function(evt) {
 			var over = Molpy.Overview;
-			var mousex =  evt.layerX;
-			var mousey =  evt.pageY  - $('#dragonoverviewmaindiv').offset().top + g('dragonoverviewmaindiv').scrollTop;
+			var rect = over.dopanem.getBoundingClientRect();
+			var mousex =  evt.clientX - rect.left;
+			var mousey = evt.pageY  - $('#dragonoverviewmaindiv').offset().top + g('dragonoverviewmaindiv').scrollTop;
 			var np = 0;
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
