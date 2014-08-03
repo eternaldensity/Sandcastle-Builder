@@ -3644,11 +3644,13 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			if(!me.bought) return 'Contains Loot';
-			return (5 - me.bought)
-				+ ' lock'
-				+ plural(5 - me.bought)
+			var str = '';
+			if (me.bought) {
+				str += (5 - me.bought) + ' lock' + plural(5 - me.bought)
 				+ ' left<br><input type="Button" value="Smash" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> it open to grab the loot!'
+			} else str += 'Contains Loot';
+			if (me.CrateCount > 1) str += '<p>You have opened ' + Molpify(me.CrateCount) + ' Crates';
+			return str;
 		},
 		
 		price:{
@@ -3666,10 +3668,14 @@ Molpy.DefineBoosts = function() {
 		unlockFunction: function() {
 			this.power = Molpy.Boosts['Castles'].power * 6 + Molpy.Boosts['Sand'].power;
 		},
-		
+
+		defSave: 1,
+		saveData: {4:['CrateCount',0,'float']},
+		CrateCount: 0,
 		lockFunction: function() {
 			var bl = Molpy.Boosts['GlassBlocks'];
 			var win = Math.ceil(Molpy.LogiMult('2K'));
+			this.CrateCount++;
 			win = Math.floor(win / (6 - this.bought));
 
 			if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
@@ -6827,8 +6833,11 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			if(!me.bought) return 'Contains Loot';
-			return (5 - me.bought) + ' lock' + plural(5 - me.bought) + ' left to grab the loot!'
+			var str = '';
+			if (me.bought) str += (5 - me.bought) + ' lock' + plural(5 - me.bought) + ' left to grab the loot!'
+			else str += 'Contains Loot';
+			if (me.power > 11) str += '<p>You have opened ' + Molpify(me.power-10) + ' Vaults';
+			return str;
 		},
 		
 		price: {
@@ -8842,7 +8851,7 @@ Molpy.DefineBoosts = function() {
 		classChange: function() { 
 			if (!isFinite(this.bought)) return '';
 			var p = 20 * this.bought * (1 + Math.floor(Math.log(this.bought) * Math.LOG10E));
-			return  Molpy.Has('FluxCrystals', p) ? 'action': ''};
+			return Molpy.Has('FluxCrystals', p) ? 'action': '';
 		},
 
 		reset: function() { 
