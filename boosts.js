@@ -7772,7 +7772,7 @@ Molpy.DefineBoosts = function() {
 			}
 		},
 		Saturnav: function() {
-			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) -2 - Molpy.mapMonumg)/3);
+			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) +1 - Molpy.mapMonumg)/3);
 			this.Refresh();
 		},
 	});
@@ -10727,7 +10727,7 @@ Molpy.DefineBoosts = function() {
 		},
 		countdownLockFunction: function() {
 			if (this.State == 1 && this.countdown == 0) {
-				if ( Molpy.Earned('monums'+me.Making) || Molpy.Earned('monumg'+me.Making)) {
+				if ( Molpy.Earned('monums'+this.Making) || Molpy.Earned('monumg'+this.Making)) {
 					Molpy.Notify('What are those third rate monuments doing here! - the Masterpiece is ruined',1);
 					this.State = 0;
 					this.Making = 0;
