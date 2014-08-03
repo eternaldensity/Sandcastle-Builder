@@ -855,7 +855,7 @@ Molpy.RedundaKnight = function() {
 	var atklvl = Math.max(atk,300*npd.DragonType)+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
 	atklvl = ((Math.random() < 0.5)?Math.max(0,atklvl-Math.floor(30*Math.random())):atklvl)+Math.floor(30*Math.random());
 	var opp = Molpy.FindOpponents(atklvl);
-	opp.knowledge = npd.DragonType >= 3 && 5*Molpy.Boosts.Dragonfly.bought >= Math.random()*100
+	opp.knowledge = npd.DragonType >= 3 && 4*Molpy.Boosts.Dragonfly.bought >= Math.random()*100; // Another boost will take this higher with magic
 	opp.target = atk;
 	return opp;
 }
