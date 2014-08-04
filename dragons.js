@@ -742,14 +742,14 @@ Molpy.OpponentsAttack = function(where,df,text1,text2) {
 
 		} else { // Physical attacks
 			localhealth -= (dragstats.attack || 0)*Math.random();
-			if (loops >1 || dragstats.attack < 10*atkval[0]) dragnhealth -= atkval[0]*Math.random()/local.modifier;
+			if (loops >1 || dragstats.attack < 10*atkval[0]) dragnhealth -= atkval[0]*Math.random()/df.modifier;
 
 		};
 //		Molpy.Notify('loop = ' + loops + ' local = '+localhealth+' dragon = '+dragnhealth,1);
-		if (dragnhealth < 0) {
-			if (localhealth < 0) result = -1
+		if (dragnhealth < 0 || isNaN(dragnhealth)) {
+			if (localhealth < 0 || isNaN(localhealth)) result = -1
 			else result = -1 -(dragnhealth < -dragstats.defence);
-		} else if (localhealth < 0) {
+		} else if (localhealth < 0 || isNaN(localhealth)) {
 //			Molpy.Notify('result ='+ result+' localneg = '+localhealth,1);
 			factor = dragnhealth/dragstats.defence;
 //			Molpy.Notify('factor ='+ factor,1);
@@ -796,8 +796,8 @@ Molpy.OpponentsAttack = function(where,df,text1,text2) {
 				factor *=2;
 			}
 			var rectime = Math.min((dragstats.DragonType+1)*200/factor,(dq.Level+1)*2000);
-			if (Molpy.Spend('Healing Potion',1)) rectime/=5;
-			if (Molpy.Spend('Cup of Tea',1)) rectime/=2;
+			if (rectime > 5 && Molpy.Spend('Healing Potion',1)) rectime/=5;
+			if (rectime > 2 && Molpy.Spend('Cup of Tea',1)) rectime/=2;
 			rectime = Math.floor(rectime);
 			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a very hard ' + timetxt + 'fight, ' + 
@@ -808,8 +808,8 @@ Molpy.OpponentsAttack = function(where,df,text1,text2) {
 
 		case 2 : // won a hard fight - need to recover
 			var rectime = Math.min((dragstats.DragonType+1)*100/factor,(dq.Level+1)*1500);
-			if (Molpy.Spend('Healing Potion',1)) rectime/=5;
-			if (Molpy.Spend('Cup of Tea',1)) rectime/=2;
+			if (rectime > 5 && Molpy.Spend('Healing Potion',1)) rectime/=5;
+			if (rectime > 2 && Molpy.Spend('Cup of Tea',1)) rectime/=2;
 			rectime = Math.floor(rectime);
 			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a hard '+timetxt+'fight, but will need to recover for ' + 

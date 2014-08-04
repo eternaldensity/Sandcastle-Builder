@@ -32,18 +32,30 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.652
+
+#### Waveney
+- From now on, you will get a notification on the ONG, when a new version is available
+- Fix to hover text in overview when zoomed in or out
+- Fix to Diamond Mould maker to ensue you stay still even though CMS
+- Fix dragon fights
+
+#### erp-lsf
+- Hopeful fix for the logicat scrolling issue (should have been in the previous version)
+- Fix for Favourites Manager Boost
+
 ### 3.651
 
 #### Waveney
 - Fixed DMP typo
 - Lock Cups of Tea and Healing potions on last use
 - Many old issues fixed including:
--- Improved Free Advice
--- Layouts Pane on top of other ordinary panes
--- Achronal Dragon now is an action if the next target is ready
--- Display of numbers of Crates/Vaults opened (if known)
--- Better treatment of Infinities on some Glass boosts
--- Time Lord only an Action if it has an action
+- Improved Free Advice
+- Layouts Pane on top of other ordinary panes
+- Achronal Dragon now is an action if the next target is ready
+- Display of numbers of Crates/Vaults opened (if known)
+- Better treatment of Infinities on some Glass boosts
+- Time Lord only an Action if it has an action
 
 ### 3.65 - YIP
 
@@ -62,6 +74,7 @@ For personal amusement only.
 - New Favourites Manager Boost (a gentle fave style tool that works in classic as well as normal)
 - Fixed some typos
 - Improved the API
+- new option when you have scientific notation on, and determines when number will collapse into e-format.
 
 #### Cloudy the Conqueror
 - Fixes to Chromatic Heresy, Anisoptera and Configuring Faves

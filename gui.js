@@ -804,7 +804,7 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.repaintRedacted = function() {
 		Molpy.redactedNeedRepaint = 0;
-		if(Molpy.Redacted.location == 0) return; // Don't repaint because redacted is not active
+		if(Molpy.Redacted.location == 0 || Molpy.Redacted.keepPosition) return; // Don't repaint because redacted is not active or we have puzzles waiting
 		
 		// Take it out of where it is in case it exists already
 		Molpy.Redacted.getDiv().detach();
@@ -830,8 +830,8 @@ Molpy.DefineGUI = function() {
 			else if(Molpy.Redacted.location == 5) lootArray = Molpy.BadgesEarned;
 			else if(Molpy.Redacted.location == 6) lootArray = Molpy.BadgesAvailable;
 			else if(Molpy.Redacted.location == 7) lootArray = Molpy.TaggedLoot;
-            else if(Molpy.Redacted.location == 8) lootArray = Molpy.Boosts.favs.FavesList;
-            maxIndex = lootArray.length;
+			else if(Molpy.Redacted.location == 8) lootArray = Molpy.Boosts.favs.FavesList;
+			maxIndex = lootArray.length;
 			Molpy.lootSelectionNeedRepaint = 1;
 		}
 		
