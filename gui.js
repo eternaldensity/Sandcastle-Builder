@@ -830,8 +830,8 @@ Molpy.DefineGUI = function() {
 			else if(Molpy.Redacted.location == 5) lootArray = Molpy.BadgesEarned;
 			else if(Molpy.Redacted.location == 6) lootArray = Molpy.BadgesAvailable;
 			else if(Molpy.Redacted.location == 7) lootArray = Molpy.TaggedLoot;
-            else if(Molpy.Redacted.location == 8) lootArray = Molpy.Boosts.favs.FavesList;
-            maxIndex = lootArray.length;
+			else if(Molpy.Redacted.location == 8) lootArray = Molpy.Boosts.favs.FavesList;
+			maxIndex = lootArray.length;
 			Molpy.lootSelectionNeedRepaint = 1;
 		}
 		

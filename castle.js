@@ -2046,7 +2046,7 @@ Molpy.Up = function() {
 			this.drawType = [];
 			this.divElement = null;
 
-            this.keepPosition = false; // True if puzzles are waiting to be solved, so we don't detach div
+			this.keepPosition = false; // True if puzzles are waiting to be solved, so we don't detach div
 
 			this.divList = {
 					1: $('#sandtools'),
@@ -2081,7 +2081,7 @@ Molpy.Up = function() {
 						if(this.location) {
 							this.removeDiv();
 							this.location = 0; //hide because the redacted was missed
-                            this.keepPosition = false; // repaint and do whatever we need
+							this.keepPosition = false; // repaint and do whatever we need
 							if (Molpy.TotalDragons && this.drawType[0] == 'knight') Molpy.DragonsHide(1);
 							this.drawType = [];
 							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
@@ -2159,8 +2159,7 @@ Molpy.Up = function() {
 					}
 					this.countup = 0;
 					this.chainCurrent++;
-
-                    this.keepPosition = true; // we generated puzzles so let's stay at the same pos.
+					this.keepPosition = true; // we generated puzzles so let's stay at the same pos.
 				} else { // it goes away.					
 					var item = g('redacteditem');
 					if(item) item.className = 'hidden';
@@ -2935,19 +2934,21 @@ Molpy.Up = function() {
 
 		for( var i in Molpy.Boosts) { //count down any boosts with a countdown
 			var me = Molpy.Boosts[i];
-			if(me.bought && me.countdown && (me.countdownCMS || !Molpy.Boosts['Coma Molpy Style'].IsEnabled)) {
-				me.countdown--;
-				if(me.countdown <= 0) {
-					if(me.countdownLockFunction) {
-						me.countdownLockFunction()
+			if(me.bought && me.countdown) {
+			        if ((me.countdownCMS || !Molpy.Boosts['Coma Molpy Style'].IsEnabled)) {
+					me.countdown--;
+					if(me.countdown <= 0) {
+						if(me.countdownLockFunction) {
+							me.countdownLockFunction()
+						} else {
+							Molpy.LockBoost(i);
+							me.power = 0;
+						}
+						me.countdown = 0;
 					} else {
-						Molpy.LockBoost(i);
-						me.power = 0;
+						if(me.countdownFunction) me.countdownFunction();
 					}
-					me.countdown = 0;
-				} else {
-					if(me.countdownFunction) me.countdownFunction();
-				}
+				} else if (me.callcoundownifCMS) me.countdownFunction();
 				me.Refresh();
 			}
 			if(me.bought && me.classChange) { // Note the bought status can have changed since the check above
@@ -3271,6 +3272,7 @@ Molpy.Up = function() {
 		Molpy.UpdateFaves();
 		
 		Molpy.Boosts['Temporal Rift'].changeState('closed');
+		Molpy.IsThereAnUpdate();
 	};
 
 	Molpy.BurnBags = function(n, e) {
