@@ -32,6 +32,18 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.652
+
+#### Waveney
+- From now on, you will get a notification on the ONG, when a new version is available
+- Fix to hover text in overview when zoomed in or out
+- Fix to Diamond Mould maker to ensue you stay still even though CMS
+- Fix dragon fights
+
+#### erp-lsf
+- Hopeful fix for the logicat scrolling issue (should have been in the previous version)
+- Fix for Favourites Manager Boost
+
 ### 3.651
 
 #### Waveney
@@ -62,6 +74,7 @@ For personal amusement only.
 - New Favourites Manager Boost (a gentle fave style tool that works in classic as well as normal)
 - Fixed some typos
 - Improved the API
+- new option when you have scientific notation on, and determines when number will collapse into e-format.
 
 #### Cloudy the Conqueror
 - Fixes to Chromatic Heresy, Anisoptera and Configuring Faves

@@ -4,7 +4,7 @@
 
 Molpy.Overview = {
 	Create: function(size) {
-		this.size = size || 3090;
+		this.size = size || 3095;
 		this.dopanei = g('dragonoverviewindex');
 		this.dopctxi = this.dopanei.getContext('2d');
 		this.dopanem = g('dragonoverviewmain');
@@ -31,7 +31,7 @@ Molpy.Overview = {
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Math.abs(Molpy.highestNPvisited)) {
+				if (np && np <= Math.abs(Molpy.highestNPvisited) && np < over.size) {
 					var npd = Molpy.NPdata[np];
 					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
 					over.mtip.style.top = (evt.clientY -20 + window.pageYOffset) + "px";
@@ -158,7 +158,7 @@ Molpy.Overview = {
 
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Math.abs(Molpy.highestNPvisited)) {
+				if (np && np <= Math.abs(Molpy.highestNPvisited) && np < over.size) {
 					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1);
 				}
 			}
