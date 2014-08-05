@@ -2046,8 +2046,6 @@ Molpy.Up = function() {
 			this.drawType = [];
 			this.divElement = null;
 
-			this.keepPosition = false; // True if puzzles are waiting to be solved, so we don't detach div
-
 			this.divList = {
 					1: $('#sandtools'),
 					2: $('#castletools'),
@@ -2081,7 +2079,6 @@ Molpy.Up = function() {
 						if(this.location) {
 							this.removeDiv();
 							this.location = 0; //hide because the redacted was missed
-							this.keepPosition = false; // repaint and do whatever we need
 							if (Molpy.TotalDragons && this.drawType[0] == 'knight') Molpy.DragonsHide(1);
 							this.drawType = [];
 							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
@@ -2159,8 +2156,7 @@ Molpy.Up = function() {
 					}
 					this.countup = 0;
 					this.chainCurrent++;
-					this.keepPosition = true; // we generated puzzles so let's stay at the same pos.
-				} else { // it goes away.					
+				} else { // it goes away.
 					var item = g('redacteditem');
 					if(item) item.className = 'hidden';
 					this.location = 0;
