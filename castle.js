@@ -1827,6 +1827,7 @@ Molpy.Up = function() {
 			this.Lock = function() {
 				if (this.earned) {
 					Molpy.groupBadgeCounts[this.group]--;
+					Molpy.lootRemoveBadge(this);
 					Molpy.badgeNeedRepaint = 1;
 					Molpy.RatesRecalculate();
 					Molpy.BadgesOwned--;
@@ -2046,7 +2047,7 @@ Molpy.Up = function() {
 			this.drawType = [];
 			this.divElement = null;
 
-			this.keepPosition = false; // True if puzzles are waiting to be solved, so we don't detach div
+			this.keepPosition = 0; // 0 : no effect, 1: lock after next move, 2: locked
 
 			this.divList = {
 					1: $('#sandtools'),
@@ -2081,7 +2082,7 @@ Molpy.Up = function() {
 						if(this.location) {
 							this.removeDiv();
 							this.location = 0; //hide because the redacted was missed
-							this.keepPosition = false; // repaint and do whatever we need
+							this.keepPosition = 0; // repaint and do whatever we need
 							if (Molpy.TotalDragons && this.drawType[0] == 'knight') Molpy.DragonsHide(1);
 							this.drawType = [];
 							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
@@ -2111,7 +2112,7 @@ Molpy.Up = function() {
 				}
 			};
 			
-			this.onClick = function(level) {
+			this.onClick = function(level, limit) {
 				Molpy.Anything = 1;
 				level = level || 0;
 				this.removeDiv();
@@ -2149,8 +2150,8 @@ Molpy.Up = function() {
 						this.toggle = 5;
 						this.countup = this.chainCurrent;
 					}
-				} else if(Molpy.Got('Logicat') && this.drawType.length < 21
-					&& flandom(6 / this.drawType.length) == 0) {
+				} else if(!limit && ((Molpy.Got('Logicat') && this.drawType.length < 21
+					&& flandom(6 / this.drawType.length) == 0))) {
 					Molpy.PuzzleGens.redacted.Generate();
 					this.drawType[level] = 'hide2';
 					this.jump();
@@ -2159,7 +2160,7 @@ Molpy.Up = function() {
 					}
 					this.countup = 0;
 					this.chainCurrent++;
-					this.keepPosition = true; // we generated puzzles so let's stay at the same pos.
+					this.keepPosition = 1; // we generated puzzles so let's stay at the same pos.
 				} else { // it goes away.					
 					var item = g('redacteditem');
 					if(item) item.className = 'hidden';
@@ -2171,15 +2172,14 @@ Molpy.Up = function() {
 					_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
 					this.chainCurrent = 0;
 				}
+				if (limit) return;
 				this.chainMax = Math.max(this.chainMax, this.chainCurrent);
 				if(this.chainMax >= 42) Molpy.EarnBadge('Meaning');
 
 				this.totalClicks++;
-				if(this.drawType.length < 16) {
+				if(this.drawType.length < 16 && !this.keepPosition) {
 					Molpy.RewardRedacted();
-					if(Molpy.Got('Double Department')) {
-						Molpy.RewardRedacted();
-					}
+					if(Molpy.Got('Double Department')) Molpy.RewardRedacted();
 					Molpy.GlassNotifyFlush();
 				}
 				if(this.totalClicks >= 2) Molpy.EarnBadge('Not So ' + Molpy.Redacted.word2);
@@ -2254,13 +2254,17 @@ Molpy.Up = function() {
 				} else {
 					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
 						+ countdown + '</h2><div><b>Spoiler:</b><input type="button" value="' + label + '" onclick="Molpy.Redacted.onClick(' + level + ')"</input>';
-				}
-				if(drawType == 'recur') {
-					str += this.getHTML(heading, level + 1);
-				} else if(drawType == 'hide1') {
-					str += Molpy.Redacted.spoiler;
-				} else if(drawType == 'hide2') {
-					str += Molpy.PuzzleGens.redacted.StringifyStatements();
+					if(drawType == 'recur') {
+						str += this.getHTML(heading, level + 1);
+					} else if(drawType == 'hide1') {
+						str += Molpy.Redacted.spoiler;
+					} else if(drawType == 'hide2') {
+						if (Molpy.PuzzleGens.redacted.active) str += Molpy.PuzzleGens.redacted.StringifyStatements();
+						else {
+							str +=  this.getHTML(heading, level + 1);
+							this.drawType[level] = 'recur';
+						}
+					}
 				}
 
 				return str + '</div></div>';
@@ -2406,7 +2410,16 @@ Molpy.Up = function() {
 				Molpy.lootNeedRepaint = 1;
 			}
 		}
+
+		Molpy.lootRemoveBadge = function(badge) {
+//			var index = $.inArray(badge, Molpy.BoostsBought);
+//			if(index > -1) {
+//				Molpy.BoostsBought.splice(index, 1);
+//				Molpy.lootNeedRepaint = 1;
+//			}
+		}
 		
+	
 		Molpy.lootCheckTagged = function(object) {
 			if(!object.className || object.className == '') {
 				var index = $.inArray(object, Molpy.TaggedLoot);
