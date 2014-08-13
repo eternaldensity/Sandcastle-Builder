@@ -804,19 +804,24 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.repaintRedacted = function() {
 		Molpy.redactedNeedRepaint = 0;
-		if(Molpy.Redacted.location == 0 || Molpy.Redacted.keepPosition) return; // Don't repaint because redacted is not active or we have puzzles waiting
 		
-		// Take it out of where it is in case it exists already
-		Molpy.Redacted.getDiv().detach();
-		
+		if(Molpy.Redacted.location == 0 /*|| !Molpy.PuzzleGens.redacted.active*/) return;
 		var redDiv = Molpy.Redacted.divList[Molpy.Redacted.location];
 		
+		if (0 && !Molpy.PuzzleGens.redacted.active ) {
+			Molpy.Redacted.getDiv().detach(); // Take it out of where it is in case it exists already
+			Molpy.Redacted.location = 0;
+			return;
+		}
+
 		// Make sure the div is an open one, if not, re jump and set it again
-		if(!redDiv.is(':visible')) {
+		if(!redDiv || !redDiv.is(':visible')) {
+			Molpy.Redacted.getDiv().detach(); // Take it out of where it is in case it exists already
 			Molpy.Redacted.jump();
 			if(Molpy.Redacted.location == 0) return; // No available spots to spawn
 			redDiv = Molpy.Redacted.divList[Molpy.Redacted.location];
-		}
+		} else if (Molpy.Redacted.keepPosition == 2) return
+		else Molpy.Redacted.getDiv().detach(); // Take it out of where it is in case it exists already
 		
 		Molpy.Redacted.titleList[Molpy.Redacted.location].toggleClass('redacted-area', true);
 		
@@ -869,6 +874,10 @@ Molpy.DefineGUI = function() {
 			redDiv.append(Molpy.Redacted.getDiv());
 		} else if(specialIndex > 0){
 			redDiv.children().eq(specialIndex).before(Molpy.Redacted.getDiv());
+		}
+		if (Molpy.Redacted.keepPosition == 1) {
+//			Molpy.Notify('Setting keepPosition to 2',1);
+			Molpy.Redacted.keepPosition=2;
 		}
 	}
 	
@@ -1457,8 +1466,7 @@ Molpy.DefineGUI = function() {
 			}
 		}
 		
-		if(Molpy.redactedNeedRepaint)
-			Molpy.repaintRedacted();
+		if(Molpy.redactedNeedRepaint) Molpy.repaintRedacted();
 
 		drawClockHand();
 		Molpy.PaintStats();
@@ -2107,6 +2115,7 @@ Molpy.DefineGUI = function() {
 
 		new Molpy.Puzzle('redacted', function() {
 			Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] = 'show';
+			Molpy.Redacted.onClick(Molpy.Redacted.drawType.length - 1,1);
 		});
 		
 		Molpy.allNeedRepaint = 1;
