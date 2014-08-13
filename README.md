@@ -32,6 +32,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.6524219
+
+#### Waveney
+- Further fix to the logicat scrolling
+- 1 other very very very complex bug on logicats that sometimes threw an error
+- Fix to CDSP to enable updates after a downgrade
+
 ### 3.6521
 
 #### Waveney
