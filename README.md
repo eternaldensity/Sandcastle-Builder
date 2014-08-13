@@ -32,6 +32,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.6521
+
+#### Waveney
+- Quick fix to the fix for the logicat scrolling issue
+
 ### 3.652
 
 #### Waveney

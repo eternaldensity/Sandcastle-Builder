@@ -10743,6 +10743,7 @@ Molpy.DefineBoosts = function() {
 					Molpy.Master.Create(this.Making,'long');
 					// Unlocks
 
+					if (Molpy.Level('Maps') > 200 ) Molpy.UnlockBoost('Cake');	
 					if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
 					this.Making = 0;
 				}

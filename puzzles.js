@@ -92,7 +92,9 @@ Molpy.DefinePuzzles = function() {
 				}
 				completedStatements = [];
 				this.active = false;
+				Molpy.Redacted.keepPosition = 0;
 				this.cleanupFunction();
+				
 			}
 			this.StringifyStatements = function(noWrap) {
 				var str = '';

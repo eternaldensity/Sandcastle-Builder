@@ -353,6 +353,7 @@ Molpy.DefineBadges = function() {
 		if(Molpy.Got('Bag Burning')) {
 			div /= Molpy.BagBurnDiv();
 		}
+		if(!Molpy.Got('DORD')) { div /= 2 };
 		return baseVal / div;
 	}
 	

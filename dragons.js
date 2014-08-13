@@ -666,14 +666,6 @@ Molpy.DragonFledge = function(clutch) {
 	if (Molpy.TotalNPsWithDragons > 111 && Molpy.Got('Dragon Overview')) Molpy.UnlockBoost('Woolly Jumper');
 }
 
-Molpy.FindLocals = function(where) {
-	var type = 0;
-	var numb = 1;
-	type = Math.min(Math.floor(where/150),Molpy.OpponentsById.length-1);
-	numb = Math.floor(((where-type*150)/30)*(Math.random())+1);
-	return [type,numb];
-}
-
 Molpy.DragonStatsNow = function(where) {
 	var Stats = {};
 	var npd = Molpy.NPdata[where];
@@ -702,7 +694,7 @@ Molpy.FindOpponents = function(from) {
 	var df = {};
 	df.from = from;
 	df.type = Math.min(Math.floor(from/150),Molpy.OpponentsById.length-1);
-	df.numb = Math.floor(((from-df.type*150)/30)*(Math.random())+1);
+	df.numb = (Molpy.TotalDragons < 10 && Molpy.HighestNPwithDragons < 20)?1:Math.floor(((from-df.type*150)/30)*(Math.random())+1);
 	df.gender = 1*(Math.random() < 0.5);
 	df.modifier = Math.random()+.5;
 	return df;
