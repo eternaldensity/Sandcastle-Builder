@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.652419;
-Molpy.versionName='Tropical YIP'; // Appended to the numerical version on screen
+Molpy.version=3.6525;
+Molpy.versionName='Julian YIP'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings

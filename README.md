@@ -32,7 +32,15 @@ For personal amusement only.
 
 ## Changelog
 
-### 3.6524219
+### 3.6525 Julian YIP
+
+#### Waveney
+- Fix to yesterdays fix on CDSP
+- New Boost 'Grouchy Dragon, Leaping Panther' will allow CDSP to be raised beyond the Panther Rush limit, but it is tedious... 
+- (Although theoretically you could get it to Infinity - I am not expecting anyone to achieve it through this boost)
+
+
+### 3.6524219 Tropical YIP
 
 #### Waveney
 - Further fix to the logicat scrolling
