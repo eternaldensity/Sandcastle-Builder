@@ -6566,7 +6566,7 @@ Molpy.DefineBoosts = function() {
 			return (!Molpy.Earned('Planck Limit')) ? 'action' : '';
 		}
 	});
-	new Molpy.Boost({
+	new Molpy.Boost({	// bought = highest level bought, power = current level
 		name: 'Crouching Dragon, Sleeping Panther',
 		alias: 'CDSP',
 		icon: 'wisedragon',
@@ -6592,10 +6592,10 @@ Molpy.DefineBoosts = function() {
 
 				if (Molpy.Got('The Fading') && Molpy.Has('Goats',Infinity) && Molpy.Got('Aleph e') && Molpy.Boosts['AD'].power >= powerReq) {
 					val = Math.pow(10,Math.floor(Math.log(me.bought)*Math.LOG10E));
-					val = Math.min(val,Molpy.Level('PR')/2-me.bought)
-					str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom('+val+')"></input> this by '+Molpify(val)+' (times the Panther Rush level) at a cost of '
-						+ 'Infinte Achronal Dragon power and Infinite goats.';
-				}
+					if (!Molpy.Got('Grouchy Dragon, Leaping Panther')) val = Math.min(val,Molpy.Level('PR')/2-me.bought)
+					if (val) str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom('+val+')"></input> this by '+Molpify(val)+' (times the Panther Rush level) at a cost of '
+							+ 'Infinte Achronal Dragon power and Infinite goats.';
+				} 
 			}
 			goatCost--;
 			if(!Molpy.Boosts['No Sell'].power && me.power > 1 && Molpy.Has('Goats',goatCost)) {
@@ -6634,8 +6634,13 @@ Molpy.DefineBoosts = function() {
 				Molpy.Spend('Goats', goatCost);
 				Molpy.Boosts['AD'].power -= powerReq;
 				Molpy.Notify('Dragon Wisdom gained!'); // it was so tempting to write gainned :P
-				me.power+=n;
-				me.bought = Math.max(me.bought,me.power+1);
+				if (n==1) {
+					me.power+=n;
+					me.bought = Math.max(me.bought,me.power+1);
+				} else {
+					me.power = me.bought = me.bought+n;
+					Molpy.LockBoost('Grouchy Dragon, Leaping Panther');
+				};
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
 				if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
 				if (me.power>468) Molpy.EarnBadge('Sleeping Dragon, Crouching Panther');
@@ -6644,7 +6649,7 @@ Molpy.DefineBoosts = function() {
 				if (me.power>=1e9) Molpy.UnlockBoost('Panthers Dream');
 			}
 		} else if (Molpy.Spend('Goats', me.power-1)) {	
-			me.power += n;
+			me.bought += n;
 			Molpy.Notify('Dragon Wisdom lost!'); 
 		};
 		me.Refresh();
@@ -11308,5 +11313,17 @@ Molpy.DefineBoosts = function() {
 		Molpy.Boosts.favs.FavesList.splice(1, Molpy.Boosts.favs.FavesList.length);
 	};
 
-	// END OF BOOSTS, add new ones immediately before this comment
+	new Molpy.Boost({
+		name: 'Grouchy Dragon, Leaping Panther',
+		icon: 'leaping',
+		group: 'drac',
+		desc: 'Allows you to get more Crouching Dragon, Sleeping Panther, provided it is at low power (One use)',
+		price: { Diamonds:'12.5G', Goats:Infinity },
+		limit: function() { return ( Molpy.Got('Glaciation') || Molpy.groupBadgeCounts.diamm > 3) ?1:0 },
+		draglvl: 'Wyrm',
+	});
+
+
+
+// END OF BOOSTS, add new ones immediately before this comment
 }
