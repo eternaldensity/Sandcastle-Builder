@@ -6603,7 +6603,7 @@ Molpy.DefineBoosts = function() {
 				str += ' at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			};
 			if (Molpy.Earned('Sleeping Dragon, Crouching Panther')) {
-				str += '<br>Now at ' + ((me.bought == me.power+1)?'high':'low') + ' power';
+				str += '<br>Now at ' + ((me.bought == me.power+1)?'high':'low') + ' power ('+ Molpify(me.power+1) + ')';
 				str += '<input type=button value="Switch" onclick="Molpy.Boosts[\'CDSP\'].control()"></input>';
 				str += ' this will cost ' + Molpify(me.bought*(me.bought+1)/2) + ' Goats.';
 			}
@@ -6638,7 +6638,8 @@ Molpy.DefineBoosts = function() {
 					me.power+=n;
 					me.bought = Math.max(me.bought,me.power+1);
 				} else {
-					me.power = me.bought = me.bought+n;
+					me.power = me.bought+n;
+					me.bought = me.power+1;
 					Molpy.LockBoost('Grouchy Dragon, Leaping Panther');
 				};
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
