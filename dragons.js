@@ -211,7 +211,7 @@ Molpy.Opponent = function(args) {
 		var rest = weapon.substr(1);
 		switch (first) {
 		case '+':
-			str += (n && n > 1)?'by the':'with the ';
+			str += (n && n > 1)?'by the ':'with the ';
 			break;
 		case '-': 
 			str += 'with ';
@@ -227,7 +227,7 @@ Molpy.Opponent = function(args) {
 			break;
 		}
 		str += rest;
-		return str;
+		return str; 
 	}
 
 	this.attackval = function(n,where) { // [physical,magical]
@@ -304,7 +304,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Knight',
-		armed: ['long sword', '+arming sword', 'battle axe', 'morning star', 'lance'],
+		armed: ['long sword', '|arming sword', 'battle axe', 'morning star', 'lance'],
 		reward: {Gold:'10-1000',Diamonds:'1-5',Thing:0.4},
 		exp: '1T',
 	});
@@ -700,6 +700,7 @@ Molpy.FindOpponents = function(from) {
 	return df;
 }
 
+Molpy.CombatDebug = 0;
 Molpy.OpponentsAttack = function(where,df,text1,text2) {
 	// Select locals
 	// Work out their attack and defense values
@@ -725,7 +726,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2) {
 	if (df.numb > 1) Molpy.EarnBadge('There are two of them!');
 	dq.totalfights++;
 
-//	Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
+	if (Molpy.CombatDebug) Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
 	
 	while (result == 0 && loops<=100) {
 		if ((loops&1)==0) { // Magical attacks && Breath attacks
@@ -734,10 +735,10 @@ Molpy.OpponentsAttack = function(where,df,text1,text2) {
 
 		} else { // Physical attacks
 			localhealth -= (dragstats.attack || 0)*Math.random();
-			if (loops >1 || dragstats.attack < 10*atkval[0]) dragnhealth -= atkval[0]*Math.random()/df.modifier;
+			if (loops >1 || dragstats.attack < 10*atkval[0]) dragnhealth -= atkval[0]*Math.random()/(df.modifier);
 
 		};
-//		Molpy.Notify('loop = ' + loops + ' local = '+localhealth+' dragon = '+dragnhealth,1);
+		if (Molpy.CombatDebug) Molpy.Notify('loop = ' + loops + ' local = '+localhealth+' dragon = '+dragnhealth,1);
 		if (dragnhealth < 0 || isNaN(dragnhealth)) {
 			if (localhealth < 0 || isNaN(localhealth)) result = -1
 			else result = -1 -(dragnhealth < -dragstats.defence);
@@ -752,7 +753,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2) {
 		loops++;
 	}
 
-//	Molpy.Notify('Result = ' + result + ' factor ' + factor,1);
+	if (Molpy.CombatDebug) Molpy.Notify('Result = ' + result + ' factor ' + factor,1);
 
 	var timetxt = '';
 	if (loops <5 ) timetxt = 'riverish '

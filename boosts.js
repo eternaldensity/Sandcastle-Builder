@@ -6592,7 +6592,7 @@ Molpy.DefineBoosts = function() {
 
 				if (Molpy.Got('The Fading') && Molpy.Has('Goats',Infinity) && Molpy.Got('Aleph e') && Molpy.Boosts['AD'].power >= powerReq) {
 					val = Math.pow(10,Math.floor(Math.log(me.bought)*Math.LOG10E));
-					if (!Molpy.Got('Grouchy Dragon, Leaping Panther')) val = Math.min(val,Molpy.Level('PR')/2-me.bought)
+					if (!Molpy.Got('GDLP')) val = Math.max(0,Math.min(val,Molpy.Level('PR')/2-me.bought));
 					if (val) str += '<br><input type="Button" value="Increase" onclick="Molpy.GainDragonWisdom('+val+')"></input> this by '+Molpify(val)+' (times the Panther Rush level) at a cost of '
 							+ 'Infinte Achronal Dragon power and Infinite goats.';
 				} 
@@ -6603,7 +6603,7 @@ Molpy.DefineBoosts = function() {
 				str += ' at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			};
 			if (Molpy.Earned('Sleeping Dragon, Crouching Panther')) {
-				str += '<br>Now at ' + ((me.bought == me.power+1)?'high':'low') + ' power';
+				str += '<br><br>Now at ' + ((me.bought == me.power+1 || me.power >= Molpy.Level('PR')/2)?'high':'low') + ' power ('+ Molpify(me.power+1) + ')';
 				str += '<input type=button value="Switch" onclick="Molpy.Boosts[\'CDSP\'].control()"></input>';
 				str += ' this will cost ' + Molpify(me.bought*(me.bought+1)/2) + ' Goats.';
 			}
@@ -6638,8 +6638,9 @@ Molpy.DefineBoosts = function() {
 					me.power+=n;
 					me.bought = Math.max(me.bought,me.power+1);
 				} else {
-					me.power = me.bought = me.bought+n;
-					Molpy.LockBoost('Grouchy Dragon, Leaping Panther');
+					me.power = me.bought+n;
+					me.bought = me.power+1;
+					Molpy.LockBoost('GDLP');
 				};
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
 				if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
@@ -10749,6 +10750,7 @@ Molpy.DefineBoosts = function() {
 					// Unlocks
 
 					if (Molpy.Level('Maps') > 200 ) Molpy.UnlockBoost('Cake');	
+					if (Molpy.Got('Saturnav') && !Molpy.IsEnabled('Loopin Looie')) Molpy.Boosts.Maps.Saturnav();
 					if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
 					this.Making = 0;
 				}
@@ -11316,6 +11318,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Grouchy Dragon, Leaping Panther',
 		icon: 'leaping',
+		alias: 'GDLP',
 		group: 'drac',
 		desc: 'Allows you to get more Crouching Dragon, Sleeping Panther, provided it is at low power (One use)',
 		price: { Diamonds:'12.5G', Goats:Infinity },
