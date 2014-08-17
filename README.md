@@ -32,6 +32,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.65256363004 Siderial YIP
+
+#### Waveney
+- 2 small fixes for GDLP
+- Added power level to CDSP description
+- Typos changed
+
 ### 3.6525 Julian YIP
 
 #### Waveney
