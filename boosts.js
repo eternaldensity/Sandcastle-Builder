@@ -7129,6 +7129,7 @@ Molpy.DefineBoosts = function() {
 			multiplier *= Molpy.BBC();
 			var glassUse = Molpy.CalcGlassUse();
 			multiplier *= Math.max(0, ((100 - glassUse) / 100));
+			if (Molpy.Got('Hugo') && !Molpy.Got('The Pope')) multiplier *= 1.1;
 			Molpy.globalSpmNPMult = multiplier;
 			this.sandPermNP *= Molpy.globalSpmNPMult;
 			if(isNaN(this.sandPermNP)) {
@@ -7215,6 +7216,9 @@ Molpy.DefineBoosts = function() {
 			
 			this.toCastles();
 
+			if(newSand >= 10) {
+				Molpy.UnlockBoost('Hugo');
+			}
 			if(newSand >= 50) {
 				Molpy.EarnBadge('Barn');
 			}
@@ -9539,25 +9543,26 @@ Molpy.DefineBoosts = function() {
 	});
 
 	Molpy.PapalDecrees = {
-		Sand: {desc:'20% more Sand from Sand Tools', value:1.2, avail: function() { return isFinite(Molpy.Boosts['Sand'].sandPermNP)}},
-		Castles: {desc:'10% more Castles from Castle Tools', value:1.1, avail: function() { return isFinite(Molpy.Boosts['Castles'].power)}},
-		Chips: {desc:'10% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.Boosts['GlassChips'].chipsPermNP)&&Molpy.Boosts['GlassChips'].chipsPermNP>0}},
-		Blocks: {desc:'10% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.Boosts['GlassBlocks'].blocksPermNP)&&Molpy.Boosts['GlassBlocks'].blocksPermNP>0}},
-		Flux: {desc:'10% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest') && isFinite(Molpy.Level('FluxCrystals'))}},
-		BlackP: {desc:'10% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180 && isFinite(Molpy.Level('Blackprints'))}},
-		GlassSand: {desc:'10% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.Boosts['TF'].loadedPermNP)}},
-		GlassCastle: {desc:'10% more Glass Chips from Glass Castle Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.Boosts['TF'].loadedPermNP)}},
-		GlassSaw: {desc:'10% more Glass Blocks from using the Glass Saw', value:1.1, avail: function() { return Molpy.Got('Glass Saw') && !Molpy.Earned('Infinite Saw')}},
-		QQs: {desc:'10% more Question Qubes from the Logicat', value:1.1, avail: function() { return Molpy.Got('QQ') }},
-		Goats: {desc:'10% more Goats from Ninja Ritual', value:1.1, avail: function() { return Molpy.Got('Ninja Ritual') && isFinite(Molpy.Level('Goats'))}},
-		Bonemeal: {desc:'10% more Bonemeal from the Shadow Dragon', value:1.1, avail: function() { return Molpy.Got('ShadwDrgn')}},
-		Logicats: {desc:'10% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
-		Fractal: {desc: 'Fractal Sandcastles are 10% better', value:1.1, avail: function() {return Molpy.Got('Fractal Sandcastles') && isFinite(Molpy.Boosts['Castles'].power) }},
-		Ninja: {desc: '10% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League') && Molpy.ninjaStealth > 10}},
-		ToolF: {desc: '10% less chips used in the tool factory', value:0.9, avail: function() {return Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
-		Dyson: {desc: '10% more Vacuums from the Vacuum Cleaner', value:1.1, avail: function() { return Molpy.Level('TS') > 10 && isFinite(Molpy.Level('Vacuum'))}},
-		Mustard: {desc:'10% more Mustard', value:1.1, avail: function() { return Molpy.Has('Mustard',100) && isFinite(Molpy.Level('Mustard'))} },
-		Experience: {desc:'10% more Experience', value:1.1, avail: function() { return Molpy.Level('DQ') } },
+		Sand: {desc:'XX% more Sand from Sand Tools', value:1.2, avail: function() { return isFinite(Molpy.Boosts['Sand'].sandPermNP)}},
+		Castles: {desc:'XX% more Castles from Castle Tools', value:1.1, avail: function() { return isFinite(Molpy.Boosts['Castles'].power)}},
+		Chips: {desc:'XX% more Chips from Glass Furnace', value:1.1, avail: function() { return Molpy.Got('GlassChips')&&isFinite(Molpy.Boosts['GlassChips'].chipsPermNP)&&Molpy.Boosts['GlassChips'].chipsPermNP>0}},
+		Blocks: {desc:'XX% more Blocks from Glass Blower', value:1.1, avail: function() { return Molpy.Got('GlassBlocks')&&isFinite(Molpy.Boosts['GlassBlocks'].blocksPermNP)&&Molpy.Boosts['GlassBlocks'].blocksPermNP>0}},
+		Flux: {desc:'XX% more Flux Crystals from a Flux Harvest', value:1.1, avail: function() { return Molpy.Got('Flux Harvest') && isFinite(Molpy.Level('FluxCrystals'))}},
+		BlackP: {desc:'XX% more Blackprints from Vaults', value:1.1, avail: function() { return Molpy.Level('AC') > 180 && isFinite(Molpy.Level('Blackprints'))}},
+		GlassSand: {desc:'XX% more Glass Chips from Glass Sand Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.Boosts['TF'].loadedPermNP)}},
+		GlassCastle: {desc:'XX% more Glass Chips from Glass Castle Tools', value:1.1, avail: function() { return Molpy.Got('Tool Factory') && isFinite(Molpy.Boosts['TF'].loadedPermNP)}},
+		GlassSaw: {desc:'XX% more Glass Blocks from using the Glass Saw', value:1.1, avail: function() { return Molpy.Got('Glass Saw') && !Molpy.Earned('Infinite Saw')}},
+		QQs: {desc:'XX% more Question Qubes from the Logicat', value:1.1, avail: function() { return Molpy.Got('QQ') }},
+		Goats: {desc:'XX% more Goats from Ninja Ritual', value:1.1, avail: function() { return Molpy.Got('Ninja Ritual') && isFinite(Molpy.Level('Goats'))}},
+		Bonemeal: {desc:'XX% more Bonemeal from the Shadow Dragon', value:1.1, avail: function() { return Molpy.Got('ShadwDrgn')}},
+		Logicats: {desc:'XX% more Logicats Levels from the Caged Logicat', value:1.1, avail: function() { return Molpy.Boosts['Logicat'].bought > 100}},
+		Fractal: {desc: 'Fractal Sandcastles are XX% better', value:1.1, avail: function() {return Molpy.Got('Fractal Sandcastles') && isFinite(Molpy.Boosts['Castles'].power) }},
+		Ninja: {desc: 'XX% increase in Ninja Stealth', value:1.1, avail: function() {return Molpy.Got('Ninja League') && Molpy.ninjaStealth > 10}},
+		ToolF: {desc: 'XX% less chips used in the tool factory', value:0.9, avail: function() {return Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
+		Dyson: {desc: 'XX% more Vacuums from the Vacuum Cleaner', value:1.1, avail: function() { return Molpy.Level('TS') > 10 && isFinite(Molpy.Level('Vacuum'))}},
+		Mustard: {desc:'XX% more Mustard', value:1.1, avail: function() { return Molpy.Has('Mustard',100) && isFinite(Molpy.Level('Mustard'))} },
+		Experience: {desc:'XX% more Experience', value:1.1, avail: function() { return Molpy.Level('DQ') } },
+		Gold: {desc:'XX% more Gold', value:1.1, avail: function() { return Molpy.Earned('Millionair') } },
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -9567,6 +9572,9 @@ Molpy.DefineBoosts = function() {
 		return res;
 	}
 	Molpy.Decreename = '';
+	Molpy.PapalBoostFactor = 1;
+	Molpy.SetPapalBoostFactor = function() { if (Molpy.Got('Hugo')) Molpy.PapalBoostFactor = 1 + (Molpy.BadgesOwned + Molpy.groupBadgeCounts.diamm*6)/100000 };
+
 	new Molpy.Boost({
 		name: 'The Pope',
 		icon: 'the_pope',
@@ -9582,13 +9590,19 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = 'Gives one selectable small boost until after the next ONG.';
 			if (!me.bought) return str;
+			Molpy.SetPapalBoostFactor();
 			if (me.power) {
 				str += '<br>The current decree is: ' + Molpy.Decree.desc;
 			} else {
 				str += '<br>Select a boost:';
 				for (var dec in Molpy.PapalDecrees) {
 					var decree = Molpy.PapalDecrees[dec];
-					if (decree.avail()) str += '<br><input type="radio" onclick="Molpy.SelectPapalDecree(\''+dec+'\')"></input> '+ decree.desc;
+					if (decree.avail()) {
+						var mod = decree.value > 1 ? (( decree.value*Molpy.PapalBoostFactor -1)*100) : 
+									     ((1-decree.value/Molp.PapalBoostFactor)*100);
+						var desc = decree.desc.replace(/XX/,mod.toFixed(2));
+						str += '<br><input type="radio" onclick="Molpy.SelectPapalDecree(\''+dec+'\')"></input> '+ desc;
+					}
 				}
 			}
 			return str
@@ -9624,10 +9638,11 @@ Molpy.DefineBoosts = function() {
 		Molpy.Boosts['The Pope'].power = Molpy.Hash(name);
 		Molpy.Decreename = name;
 		Molpy.Boosts['The Pope'].Refresh();
+		Molpy.SetPapalBoostFactor();
 	}
 
 	Molpy.Papal = function(raptor) {
-		return (Molpy.Decreename == raptor)? Molpy.Decree.value : 1
+		return (Molpy.Decreename != raptor)? 1: (Molpy.Decree.value > 1)? Molpy.Decree.value*Molpy.PapalBoostFactor : Molpy.Decree.value/Molpy.PapalBoostFactor 
 	}
 	new Molpy.Boost({
 		name: 'Fertiliser',
@@ -9961,7 +9976,7 @@ Molpy.DefineBoosts = function() {
 		defStuff : 1,
 		AddSuper : Molpy.BoostFuncs.Add,
 		Add: function(amount) {
-			this.AddSuper(amount);
+			this.AddSuper(amount*Molpy.Papal('Gold'));
 			if (this.power > 1) Molpy.UnlockBoost('Ooo Shiny!');
 			if (this.power > 1e6) Molpy.EarnBadge('Millionair');
 			if (this.power > 77.3e9) Molpy.EarnBadge('Bill Gates');
@@ -11329,7 +11344,8 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Hugo',
 		icon: 'hugo',
-		desc: function() { return (Molpy.Got('The Pope')?'Adds Y% per badge to Papal effects':'Gain X% Sand per badge' }
+		desc: function() { return (Molpy.Got('The Pope')?'Adds 0.001% per badge to Papal effects':'Gain 10% Sand/mNP') },
+		stats: 'Time won the Hugo award for the best graphic novel of 2013',
 		Sand: 1,
 	});
 
