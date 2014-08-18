@@ -32,11 +32,17 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.652596361
+
+#### Waveney
+- Fix...
+
 ### 3.65259636 Anomalitic YIP
 
 #### Waveney
 - As Time was awarded the Hugo for best graphic novel in 2013
 - A new boost "Hugo" is now available which will improve everymolpies game no matter what stage they are at
+- Papal Boost for Gold
 - And a fix
 
 ### 3.65256363004 Siderial YIP
