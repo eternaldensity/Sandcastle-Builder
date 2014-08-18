@@ -32,6 +32,13 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.65259636 Anomalitic YIP
+
+#### Waveney
+- As Time was awarded the Hugo for best graphic novel in 2013
+- A new boost "Hugo" is now available which will improve everymolpies game no matter what stage they are at
+- And a fix
+
 ### 3.65256363004 Siderial YIP
 
 #### Waveney
@@ -90,7 +97,7 @@ For personal amusement only.
 - New boost Glaciation
 - New boost Anisoptera (for Wyverns so you can't get it yet)
 - Fix to prevent Infnite Blitzing during Coma Molpy Style
-- Added Molify in a few places
+- Added Molpify in a few places
 - Added Masterpieces to stats
 - Stopped Use of blackprints breaking Constructing from Blackprints unnecessarily
 - Archimedes Lever is now toggleable

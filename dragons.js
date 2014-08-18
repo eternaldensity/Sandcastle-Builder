@@ -200,7 +200,8 @@ Molpy.Opponent = function(args) {
 	Molpy.OpponentsById[this.id] = this;
 
 	// Methods
-	this.attackstxt = function(n,from) {
+	this.attackstxt = function(df,from) {
+		var n = df.numb;
 		var str = '' + ((n && n > 1)?Molpify(n):'A') + ' ' + this.name;
 		if (n > 1) str += 's' + (from?' from NP'+from:'') + ' each'
 		else if (from) str += ' from NP'+from;
@@ -220,7 +221,7 @@ Molpy.Opponent = function(args) {
 			str += 'with an ';
 			break;
 		case '|':
-			str += 'with ' + (n && n> 1?'their ':['his ','her '][this.gender]);
+			str += 'with ' + (n && n> 1?'their ':['his ','her '][df.gender]);
 			break;
 		default:
 			str += 'with a '+first;
@@ -713,7 +714,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2) {
 	var dq = Molpy.Boosts['DQ'];
 	var npd = Molpy.NPdata[where];
 	var local = Molpy.OpponentsById[df.type];
-	var atktxt = local.attackstxt(df.numb,(df.from!=where?df.from:'')) + ((df.numb> 1 && text2)?text2:text1) + '. ';
+	var atktxt = local.attackstxt(df,(df.from!=where?df.from:'')) + ((df.numb> 1 && text2)?text2:text1) + '. ';
 	var atkval = local.attackval(df.numb,where);
 
 	Molpy.DragonDigRecalc(); 
@@ -1003,6 +1004,7 @@ Dragons
 61	Related Quantum Panthers
 62	Sparkle Stick (magic)
 63	Ms Frizzle's Uncertainty Principle
+64	Dragon Drum - Attack boost
 
 * Mouthwash (to reduce bad breath backfires)
 * Magic Rings (future)
@@ -1012,12 +1014,17 @@ Dragons
 * hard dragons - control redundaknight defaults
 * Breath - needs coal, does damage (may reduce number if multiple opponents)
 * Magic use Mana - Mana from?
-* Breath types - fire [Coal], poison [Bonemeal], frost [Vacuum]
+* Breath types - fire [Coal], poison [Bonemeal], frost [Vacuum] - Only Coal as BM and Vac much more common
+* Set system so fully equipped it cannot lose against highest opponent from own level
+* lining imbalance - lower overall, MUCH less variability
+* 
 
 
 Other
 2	Panthers Ignore Einstein 
 5
+
+
 
 */
 
