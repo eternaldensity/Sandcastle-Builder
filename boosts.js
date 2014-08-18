@@ -9573,7 +9573,7 @@ Molpy.DefineBoosts = function() {
 	}
 	Molpy.Decreename = '';
 	Molpy.PapalBoostFactor = 1;
-	Molpy.SetPapalBoostFactor = function() { if (Molpy.Got('Hugo')) Molpy.PapalBoostFactor = 1 + (Molpy.BadgesOwned + Molpy.groupBadgeCounts.diamm*6)/100000 };
+	Molpy.SetPapalBoostFactor = function() { if (Molpy.Got('Hugo')) Molpy.PapalBoostFactor = 1 + (Molpy.BadgesOwned + (Molpy.groupBadgeCounts.diamm || 0)*6)/100000 };
 
 	new Molpy.Boost({
 		name: 'The Pope',
