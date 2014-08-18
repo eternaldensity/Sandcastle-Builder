@@ -1831,6 +1831,7 @@ Molpy.Up = function() {
 					Molpy.badgeNeedRepaint = 1;
 					Molpy.RatesRecalculate();
 					Molpy.BadgesOwned--;
+					Molpy.SetPapalBoostFactor();
 					this.earned = 0;
 				}
 			}
@@ -1941,6 +1942,7 @@ Molpy.Up = function() {
 						Molpy.badgeNeedRepaint = 1;
 						Molpy.RatesRecalculate();
 						Molpy.BadgesOwned++;
+						Molpy.SetPapalBoostFactor();
 						Molpy.unlockedGroups[baby.group] = 1;
 						if(baby.group == 'badges') {
 							Molpy.Notify('Badge Earned: ' + baby.name, 1, 0, 0, EvalMaybeFunction(baby.desc));

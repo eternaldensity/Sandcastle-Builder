@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.65256363004;
-Molpy.versionName='Sidereal YIP'; // Appended to the numerical version on screen
+Molpy.version=3.65259636;
+Molpy.versionName='Anomalistic YIP'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
