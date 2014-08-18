@@ -9592,14 +9592,17 @@ Molpy.DefineBoosts = function() {
 			if (!me.bought) return str;
 			Molpy.SetPapalBoostFactor();
 			if (me.power) {
-				str += '<br>The current decree is: ' + Molpy.Decree.desc;
+				var mod = Molpy.Decree.value > 1 ? (( Molpy.Decree.value*Molpy.PapalBoostFactor -1)*100) : 
+							     ((1-Molpy.Decree.value/Molpy.PapalBoostFactor)*100);
+				var desc = Molpy.Decree.desc.replace(/XX/,mod.toFixed(2));
+				str += '<br>The current decree is: ' + desc;
 			} else {
 				str += '<br>Select a boost:';
 				for (var dec in Molpy.PapalDecrees) {
 					var decree = Molpy.PapalDecrees[dec];
 					if (decree.avail()) {
 						var mod = decree.value > 1 ? (( decree.value*Molpy.PapalBoostFactor -1)*100) : 
-									     ((1-decree.value/Molp.PapalBoostFactor)*100);
+									     ((1-decree.value/Molpy.PapalBoostFactor)*100);
 						var desc = decree.desc.replace(/XX/,mod.toFixed(2));
 						str += '<br><input type="radio" onclick="Molpy.SelectPapalDecree(\''+dec+'\')"></input> '+ desc;
 					}
