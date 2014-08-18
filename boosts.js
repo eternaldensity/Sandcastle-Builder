@@ -11326,6 +11326,13 @@ Molpy.DefineBoosts = function() {
 		draglvl: 'Wyrm',
 	});
 
+	new Molpy.Boost({
+		name: 'Hugo',
+		icon: 'hugo',
+		desc: function() { return (Molpy.Got('The Pope')?'Adds Y% per badge to Papal effects':'Gain X% Sand per badge' }
+		Sand: 1,
+	});
+
 
 
 // END OF BOOSTS, add new ones immediately before this comment
