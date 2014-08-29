@@ -32,12 +32,18 @@ For personal amusement only.
 
 ## Changelog
 
-### 3.652596361
+### 3.66 - Leap YIP
 
 #### Waveney
-- Fix...
+- Once you have a large enough Diamond supply there is a Papal Boost for Diamonds
+- The Diamond Masterpiece Cooker burns coal every mNP (originally intended behavior)
+- Tweaked a lot of combat numbers - you are more likely to get injured, less likely to lose out right
+- If your dragons are offensive, you are more likely to get stuff (but risk injury)
+- If your dragons are defensive, you are less likely to get stuff (but less likely to get injured)
+- Small Nerf on Camelflarge
+- New Boost "Magic Letters" will eventually lead to draconic magic
 
-### 3.65259636 Anomalitic YIP
+### 3.65259636 Anomalistic YIP
 
 #### Waveney
 - As Time was awarded the Hugo for best graphic novel in 2013

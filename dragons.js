@@ -865,7 +865,7 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 Molpy.DragonsHide = function(type) {
 	Molpy.Redacted.onClick();
 	var dq = Molpy.Boosts['DQ'];
-	var hidetime = Math.max(2,Math.ceil(42 * (type+1)-7*Molpy.Level('Camelflarge')));
+	var hidetime = Math.max(10,Math.ceil(42 * (type+1)-5*Molpy.Level('Camelflarge')));
 	dq.ChangeState(2,hidetime);
 	Molpy.Notify('The Dragons are hiding for ' + hidetime + 'mnp');
 }

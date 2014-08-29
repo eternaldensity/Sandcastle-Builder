@@ -300,12 +300,12 @@ a:active
 	padding: 4px;
 }
 
-body.darkscheme .floatbox:hover{
+body.darkscheme .floatbox:hover {
 	border-color:#ddd;
 	background-color:#000;
 }
 
-body.lightscheme .floatbox:hover{
+body.lightscheme .floatbox:hover {
 	border-color:#222;
 	background-color:#fff;
 }
@@ -692,4 +692,78 @@ body.darkscheme #doverhover {
 	z-index:2020;
 	position:absolute;
 	cursor:none;
+}
+.magiclet {
+	background-color:#bbb;
+	min-height:14px;
+	width:100%;
+	padding:4px;
+	display: inline-block;
+}
+.magiclet div {
+	background-color:#ee8;
+	color:black;
+	width:10px;
+	height:10px;
+	display: inline-block;
+	padding:2px;
+	margin:2px;
+	text-align:center;
+}
+.magictile0 {
+}
+.magictile1 {
+	transform:rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+}
+.magictile2 {
+	transform:rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+}
+.magictile3 {
+	transform:rotate(270deg);
+	-webkit-transform: rotate(270deg);
+	-moz-transform: rotate(270deg);
+	-ms-transform: rotate(270deg);
+	-o-transform: rotate(270deg);
+}
+.magictile4 {
+	transform:scaleX(-1);
+	-webkit-transform:scaleX(-1);
+	-moz-transform:scaleX(-1);
+	-ms-transform:scaleX(-1);
+	-o-transform:scaleX(-1);
+}
+.magictile5 {
+	transform: scaleX(-1) rotate(90deg);
+	-webkit-transform: scaleX(-1) rotate(90deg);
+	-moz-transform: scaleX(-1) rotate(90deg);
+	-ms-transform: scaleX(-1) rotate(90deg);
+	-o-transform: scaleX(-1) rotate(90deg);
+}
+.magictile6 {
+	transform: scaleX(-1) rotate(180deg);
+	-webkit-transform: scaleX(-1) rotate(180deg);
+	-moz-transform: scaleX(-1) rotate(180deg);
+	-ms-transform: scaleX(-1) rotate(180deg);
+	-o-transform: scaleX(-1) rotate(180deg);
+}
+.magictile7 {
+	transform: scaleX(-1) rotate(270deg);
+	-webkit-transform: scaleX(-1) rotate(270deg);
+	-moz-transform: scaleX(-1) rotate(270deg);
+	-ms-transform: scaleX(-1) rotate(270deg);
+	-o-transform: scaleX(-1) rotate(270deg);
+}
+#magicbuts button {
+	width:24px;
+	height:24px;
+	padding:2px;
+	margin;2px;
 }

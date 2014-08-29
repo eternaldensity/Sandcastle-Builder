@@ -22,7 +22,8 @@ Molpy.DefineBoosts = function() {
 		monums: ['sand monument', 'Sand Monuments', 'sandmonument', 'Sand Monument', 'A sand structure commemorating'],
 		monumg: ['glass monument', 'Glass Monuments', 'glassmonument', 'Glass Monument', 'A glass sculpture commemorating'],
 		diamm: ['masterpiece', 'Masterpieces', 'masterpiece' ,'Masterpiece',	'This is a diamond masterpiece.<br>All craftottership is of the highest quality.<br>On the masterpiece is an image of', 'in diamond. <br>It molpifies with spikes of treeishness.'],
-        faves: ['favourites', 'Favourites']
+	        faves: ['favourites', 'Favourites'],
+		magic: ['magic', 'Magic'],
 	};
 	
 	Molpy.unlockedGroups['stuff'] = 1; // Stuff is always unlocked because Sand and Castles are always unlocked
@@ -6603,7 +6604,7 @@ Molpy.DefineBoosts = function() {
 				str += ' at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
 			};
 			if (Molpy.Earned('Sleeping Dragon, Crouching Panther')) {
-				str += '<br><br>Now at ' + ((me.bought == me.power+1 || me.power >= Molpy.Level('PR')/2)?'high':'low') + ' power ('+ Molpify(me.power+1) + ')';
+				str += '<br><br>Now at ' + ((me.bought == me.power+1 || me.power >= Molpy.Level('PR')/2)?'high':'low') + ' power ('+ Molpify(me.power+1,1) + ')';
 				str += '<input type=button value="Switch" onclick="Molpy.Boosts[\'CDSP\'].control()"></input>';
 				str += ' this will cost ' + Molpify(me.bought*(me.bought+1)/2) + ' Goats.';
 			}
@@ -7129,7 +7130,7 @@ Molpy.DefineBoosts = function() {
 			multiplier *= Molpy.BBC();
 			var glassUse = Molpy.CalcGlassUse();
 			multiplier *= Math.max(0, ((100 - glassUse) / 100));
-			if (Molpy.Got('Hugo') && !Molpy.Got('The Pope')) multiplier *= 1.1;
+			if (Molpy.Got('Hugo')) multiplier *= 1.1;
 			Molpy.globalSpmNPMult = multiplier;
 			this.sandPermNP *= Molpy.globalSpmNPMult;
 			if(isNaN(this.sandPermNP)) {
@@ -7784,6 +7785,7 @@ Molpy.DefineBoosts = function() {
 		Saturnav: function() {
 			this.power = Math.floor((Molpy.groupBadgeCounts.monumg + Math.pow(8,(Molpy.groupBadgeCounts.diamm ||0)) +1 - Molpy.mapMonumg)/3);
 			this.Refresh();
+			Molpy.Boosts.DQ.Refresh();
 		},
 	});
 	
@@ -9561,8 +9563,9 @@ Molpy.DefineBoosts = function() {
 		ToolF: {desc: 'XX% less chips used in the tool factory', value:0.9, avail: function() {return Molpy.Got('Tool Factory') && isFinite(Molpy.toolsBuiltTotal)}},
 		Dyson: {desc: 'XX% more Vacuums from the Vacuum Cleaner', value:1.1, avail: function() { return Molpy.Level('TS') > 10 && isFinite(Molpy.Level('Vacuum'))}},
 		Mustard: {desc:'XX% more Mustard', value:1.1, avail: function() { return Molpy.Has('Mustard',100) && isFinite(Molpy.Level('Mustard'))} },
-		Experience: {desc:'XX% more Experience', value:1.1, avail: function() { return Molpy.Level('DQ') } },
-		Gold: {desc:'XX% more Gold', value:1.1, avail: function() { return Molpy.Earned('Millionair') } },
+		Experience: {desc:'XX% more Experience', value:1.1, avail: function() { return Molpy.Level('DQ') }},
+		Gold: {desc:'XX% more Gold', value:1.1, avail: function() { return Molpy.Earned('Millionair') && isFinite(Molpy.Level('Gold')) }},
+		Diamonds: {desc:'XX% more Diamonds', value:1.1, avail: function() { return Molpy.DragonDigRate > 1e8 && isFinite(Molpy.Level('Diamonds')) }},
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -9880,7 +9883,7 @@ Molpy.DefineBoosts = function() {
 		defStuff: 1,
 		AddSuper : Molpy.BoostFuncs.Add,
 		Add: function(amount) {
-			this.AddSuper(amount);
+			this.AddSuper(Math.floor(amount*Molpy.Papal('Diamonds')));
 			if (this.power > 9.9455e33) Molpy.EarnBadge('Enough to make a star');
 		}
 	});
@@ -10438,7 +10441,7 @@ Molpy.DefineBoosts = function() {
 					str += '<br>You have a completly filled mould for NP'+me.Making;
 					if (Molpy.Boosts['DMC'].State == 0) {
 						str += '<input type=button value="Start Cooking" onclick="Molpy.Boosts[\'DMC\'].StartCook()"></input> '+
-							'It needs '+Molpify(Molpy.Boosts['DMC'].CookCost(me.Making),2)+' Coal and ' +
+							'It needs '+Molpify(Molpy.Boosts['DMC'].CookCost(me.Making),2)+' Coal every mNP for ' +
 							Molpy.Boosts['DMC'].CookTime(me.Making)+
 							' mNP.<br>'+Molpify(1e12)+' Diamonds can be used instead of a Coal';
 					};
@@ -10580,6 +10583,22 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('The Diamond Masterpiece for NP'+this.Making+' is now completely Cooked, do not drop it',1);
 			}
 		},
+		countdownFunction: function() {
+			var cost = this.CookCost(this.Making);
+			if (Molpy.Level('Coal') >= cost) {
+				Molpy.Spend('Coal',cost)
+			} else {
+				var needed = (cost - Molpy.Level('Coal'))*1e12;
+				if (Molpy.Has('Diamonds',needed)) {
+					Molpy.Spend('Coal',Molpy.Level('Coal'));
+					Molpy.Spend('Diamonds',needed);
+				} else {
+					Molpy.Notify('Unable to heat the Mould - it is ruined',1);
+					this.BreakMould();
+					return;
+				}
+			}
+		},
 		StartCook: function() {
 			if (this.State != 0) {
 				if (this.State == 1) {
@@ -10596,24 +10615,11 @@ Molpy.DefineBoosts = function() {
 			this.Making = Molpy.Boosts['DMF'].Making;
 			Molpy.Boosts['DMF'].State = 0;
 
-			var cost = this.CookCost(this.Making);
-			if (Molpy.Level('Coal') >= cost) {
-				Molpy.Spend('Coal',cost)
-			} else {
-				var needed = (cost - Molpy.Level('Coal'))*1e12;
-				if (Molpy.Has('Diamonds',needed)) {
-					Molpy.Spend('Coal',Molpy.Level('Coal'));
-					Molpy.Spend('Diamonds',needed);
-				} else {
-					Molpy.Notify('Unable to heat the Mould - nothing done',1);
-					return;
-				}
-			};
-
 			this.State = 1;
 			this.countdown = this.CookTime(this.Making);
 			Molpy.Notify('Cooking started for NP'+this.Making+' - do not interrupt this',1);
 		},
+
 		BreakMould: function() {
 			this.Making = 0;
 			this.State = 0;
@@ -10642,7 +10648,7 @@ Molpy.DefineBoosts = function() {
 					str += '<br>Burnishing the Masterpiece for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
 					break;
 				case 2:
-					str += '<br>You have a complete Masterpiece made for NP'+me.Making;
+					str += '<br>You have a complete Masterpiece made for NP'+me.Making+'<br>';
 					if (Molpy.Boosts['DMP'].State == 0 && 
 						!Molpy.Earned('monums'+me.Making) && 
 						!Molpy.Earned('monumg'+me.Making) && 
@@ -11003,7 +11009,7 @@ Molpy.DefineBoosts = function() {
 				Molpify(Molpy.Boosts['DMM'].MouldTime(np))+' mNP).<br>';
 			str += 'Filling the mould will take '+Molpify(Molpy.Boosts['DMF'].FillCost(np),2)+' Diamonds (every mNP for ' +
 				Molpify(Molpy.Boosts['DMF'].FillTime(np))+' mNP) and finishing off with infinite Flux Crystals.<br>';
-			str += 'Cooking the mould will take '+Molpify(Molpy.Boosts['DMC'].CookCost(np),2)+' Coal and will take ' +
+			str += 'Cooking the mould will take '+Molpify(Molpy.Boosts['DMC'].CookCost(np),2)+' Coal every mNP for ' +
 				Molpify(Molpy.Boosts['DMC'].CookTime(np))+' mNP), You can burn '+Molpify(1e12)+' Diamonds instead for each Coal.<br>';
 			str += 'Burnishing the Masterpiece will take infinite Goats and '+Molpify(Molpy.Boosts['DMB'].BurnCost(np),2)+
 				' Vacuums every mNP for ' +Molpify(Molpy.Boosts['DMB'].BurnTime(np))+' mNP.<br>';
@@ -11352,6 +11358,147 @@ Molpy.DefineBoosts = function() {
 		Sand: 1,
 	});
 
+
+	new Molpy.Boost({
+		name: 'Magic Letters',
+		icon: 'magicletters',
+		alias: 'ml',
+		group: 'drac',
+		desc: function(me) {
+			var str ='With magic letters, you can make magic words which do things...'; 
+			if (!me.bought) return str;
+			str += '<br><br>Current Word:<p><div class=magiclet id=magictop>';
+			for (var l in me.toplets) str += me.orient(me.toplets[l]);
+			str += '</div><br><br>Available Letters:<p><div class=magiclet id=magicbot>';
+			for (var l in me.botlets) str += me.orient(me.botlets[l]);
+			str += '</div><p><div id=magicbuts>';
+			str += '<button class=magicbut onclick="Molpy.Boosts.ml.select()">&#8593;</button> ';
+			str += '<button class=magicbut onclick="Molpy.Boosts.ml.rotate()">&#8631;</button> ';
+			str += '<button class=magicbut onclick="Molpy.Boosts.ml.mirror()">&#8596;</button> ';
+			str += '<button class=magicbut onclick="Molpy.Boosts.ml.shuffle()">&#8595;</button> ';
+			str += '<button class=magicbut onclick="Molpy.Boosts.ml.Shift()">&#8634;</button> ';
+			str += '</div>';
+			return str;
+		},
+
+		orient: function(thing) {
+//			return '<div class="' + ((thing[1]&4)?'flip-horizontal ':'') + ('','rotate90','rotate180','rotate270')[thing[1]&3]+'">'+thing[0]+'</div>';
+			return '<div class=magictile'+thing[1]+'>'+thing[0]+'</div>';
+		},
+
+		price: { Diamonds:'125G', Goats:Infinity, Bonemeal: '125PW' },
+		limit: function() { return (Molpy.Has('Maps','10M')?(4,11,21,38)[Math.max(3,Molpy.Level('DQ')-2)]:0) },
+		draglvl: 'Wyrm',
+		beanwords: ['R0FaRUJP','T0lOVE1FTlQ=','SEFSUFNJQ0hPUkQ=','Q1JFREVOWkE=','QlVOR0FMT1c='],
+		beanlets: Molpy.BeanishToCuegish('RVRJT0dSSEVaRUxOT0RSTU5PSUNQVVJCQVRaTkdESEVXQlNBQUNBTk8='),
+		validorients: { // Need to work out correct values
+			A:1, B:1, C:1, D:1, E:1, F:1, G:1, H:1, I:1, J:1, K:1, L:1, M:1,
+			N:1, O:1, P:1, Q:1, R:1, S:1, T:1, U:1, V:1, W:1, X:1, Y:1, Z:1,
+		},
+		cuewords: [],
+		toplets: [],
+		botlets: [],
+		loadFunction: function() {
+			for (var i=0;i<5;i++) this.cuewords[i] = Molpy.BeanishToCuegish(this.beanwords[i]);
+			if (this.bought && this.power != 31) this.shuffle();
+		},
+		buyFunction: function() {
+			this.shuffle();
+		},
+
+		shuffle: function() {
+			Molpy.Anything = 1;
+			var mlets = this.beanlets.substr(0,this.bought);
+			for (word in this.cuewords) {
+				if (this.power & (1<<word)) {
+					var lets = this.cuewords[word].split('');
+					for (var l in lets) mlets = mlets.replace(lets[l],'');
+				}
+			};
+			this.botlets = [];
+			this.toplets = [];
+			var lets = mlets.split('');
+			while (lets.length) {
+				var rl = flandom(lets.length);
+				this.botlets.push([lets[rl],flandom(8)]);
+				lets.splice(rl,1);
+			}
+			this.Refresh();
+		},
+		
+		select: function() {
+			Molpy.Anything = 1;
+			if (this.botlets.length) this.toplets.unshift(this.botlets.shift());
+			// Check if word
+			var orient = true;
+			var word = '';
+			for (var tl in this.toplets) { 
+				var l = this.toplets[tl][0];
+				word += l;
+				if (!(this.validorients[l] >> this.toplets[tl][1])&1) orient = false;
+			}
+			if (orient) {
+				for ( var w in this.cuewords) {
+					if (word == this.cuewords[w] && ((this.power >> w)&1)==0) {
+						Molpy,UnlockBoost(word);
+						this.power += 1<<w;
+						this.toplets = [];
+						break;
+					}
+				}
+			}
+			this.Refresh();
+		},
+		rotate: function() {
+			Molpy.Anything = 1;
+			if (this.botlets.length) { 
+				var bottom = this.botlets[this.botlets.length-1];
+				var neworient = (((bottom[1] & 3)+1)&3)+(bottom[1]&4);
+				bottom[1] = neworient;
+			};
+			this.Refresh();
+		},
+		mirror: function() {
+			Molpy.Anything = 1;
+			if (this.botlets.length) this.botlets[this.botlets.length-1][1] ^= 4;
+			this.Refresh();
+		},
+		Shift: function() {
+			Molpy.Anything = 1;
+			if (this.botlets.length) this.botlets.push(this.botlets.shift());
+			this.Refresh();
+		},
+	});
+	new Molpy.Boost({
+		name: 'Gazebo',
+		icon: 'gazebo',
+		desc: '',
+		group: 'magic',
+	});
+	new Molpy.Boost({
+		name: 'Ointment',
+		icon: 'ointment',
+		desc: '',
+		group: 'magic',
+	});
+	new Molpy.Boost({
+		name: 'Harpsicord',
+		icon: 'harpsicord',
+		desc: '',
+		group: 'magic',
+	});
+	new Molpy.Boost({
+		name: 'Credenza',
+		icon: 'credenza',
+		desc: '',
+		group: 'magic',
+	});
+	new Molpy.Boost({
+		name: 'Bungalow',
+		icon: 'bungalow',
+		desc: '',
+		group: 'magic',
+	});
 
 
 // END OF BOOSTS, add new ones immediately before this comment
