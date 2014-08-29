@@ -11382,11 +11382,14 @@ Molpy.DefineBoosts = function() {
 		},
 
 		orient: function(thing) {
-//			return '<div class="' + ((thing[1]&4)?'flip-horizontal ':'') + ('','rotate90','rotate180','rotate270')[thing[1]&3]+'">'+thing[0]+'</div>';
 			return '<div class=magictile'+thing[1]+'>'+thing[0]+'</div>';
 		},
 
-		price: { Diamonds:'125G', Goats:Infinity, Bonemeal: '125PW' },
+		price: { 
+			Diamonds: function() { DeMolpify('125G')*Math.pow(2,this.unlocked-1) }, 
+			Goats:Infinity, 
+			Bonemeal: function() { DeMolpify('125PW')*Math.pow(2,this.unlocked-1) }, 
+		},
 		limit: function() { return (Molpy.Has('Maps','10M')?(4,11,21,38)[Math.max(3,Molpy.Level('DQ')-2)]:0) },
 		draglvl: 'Wyrm',
 		beanwords: ['R0FaRUJP','T0lOVE1FTlQ=','SEFSUFNJQ0hPUkQ=','Q1JFREVOWkE=','QlVOR0FMT1c='],
