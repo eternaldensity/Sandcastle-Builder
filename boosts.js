@@ -315,7 +315,7 @@ Molpy.DefineBoosts = function() {
 			return Molpify(me.power, 1) + '% Sand for ' + MolpifyCountdown(me.countdown);
 		},
 		startCountdown: 23, // only used when loading to ensure it doesn't get stuck. any true value would do here
-		CountdownCMS: 1,
+		countdownCMS: 1,
 	});
 	new Molpy.Boost({
 		name: 'Kitnip',
@@ -543,7 +543,7 @@ Molpy.DefineBoosts = function() {
 			return 0.4;
 		},
 		
-		CountdownCMS: 1,
+		countdownCMS: 1,
 		startCountdown: function() {
 			if(Molpy.Got('Late Closing Hours')) {
 				return 10;
@@ -1701,7 +1701,7 @@ Molpy.DefineBoosts = function() {
 		
 		stats: 'Why are you reading this? Jump in! <span class="faded">(<b>WARNING</b>: may destroy your castles... which will charge up Flux Turbine.)</span>',
 		startCountdown: 7,
-		CountdownCMS: 1,
+		countdownCMS: 1,
 		
 		//stuff for temporal rift animation
 		showRift: false,
@@ -3570,7 +3570,7 @@ Molpy.DefineBoosts = function() {
 		
 		logic: 50,
 		
-		CountdownCMS: 1,
+		countdownCMS: 1,
 		startCountdown: function() {
 			return 5 * (1 + Molpy.Got('Crystal Dragon')) * !Molpy.Earned('Never Alone');
 		},
@@ -3642,7 +3642,7 @@ Molpy.DefineBoosts = function() {
 			return 'Increases the effect of Flux Turbine for ' + MolpifyCountdown(me.countdown);
 		},
 		
-		CountdownCMS: 1,
+		countdownCMS: 1,
 		startCountdown: function() {
 			return Math.min(12500, Molpy.LogiMult(80));
 		}
@@ -5877,7 +5877,7 @@ Molpy.DefineBoosts = function() {
 		
 		stats: 'Loses 5% power per ONG if above 500%',
 		startCountdown: 25,
-		CountdownCMS: 1,
+		countdownCMS: 1,
 		
 		startPower: function() {
 			return Molpy.Got('LR') ? (Molpy.Boosts['LR'].power || 400) : 400;
@@ -11011,7 +11011,7 @@ Molpy.DefineBoosts = function() {
 			return str;
 		},
 		startCountdown: 12,
-		CountdownCMS: 1,
+		countdownCMS: 1,
 		buyFunction: function() {
 			this.power = Molpy.newpixNumber;
 		},
