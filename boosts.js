@@ -9566,6 +9566,7 @@ Molpy.DefineBoosts = function() {
 		Experience: {desc:'XX% more Experience', value:1.1, avail: function() { return Molpy.Level('DQ') }},
 		Gold: {desc:'XX% more Gold', value:1.1, avail: function() { return Molpy.Earned('Millionair') && isFinite(Molpy.Level('Gold')) }},
 		Diamonds: {desc:'XX% more Diamonds', value:1.1, avail: function() { return Molpy.DragonDigRate > 1e8 && isFinite(Molpy.Level('Diamonds')) }},
+		Master: {desc:'XX% less time for each masterpiece stage', value:0.9, avail: function() { Molpy.groupBadgeCounts.diamm >= 10 }},
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -10416,7 +10417,7 @@ Molpy.DefineBoosts = function() {
 		MouldCost: function(np) {
 			return Math.floor(Math.pow(Math.sin(np*Math.PI/180),2)*Math.pow(2.714,np/42)*Math.log(np+10)*Math.LOG10E*1e9)
 		},
-		MouldTime: function(np) { return 2714+np*np },
+		MouldTime: function(np) { return Math.floor(2714+np*np*Molpy.Papal('Master')/Molpy.Boosts.ClawsDeck.factor(np)) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -10512,7 +10513,7 @@ Molpy.DefineBoosts = function() {
 			var mcost = Molpy.Boosts['DMM'].MouldCost(np);
 			return Math.floor(( mcost*2.22+Math.pow(mcost,np/333))/np);
 		},
-		FillTime: function(np) { return np },
+		FillTime: function(np) { return Math.floor(np*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -10625,8 +10626,8 @@ Molpy.DefineBoosts = function() {
 			this.State = 0;
 			this.countdown = 0;
 		},
-		CookCost: function(np) { return Math.floor(Math.exp((np*np/3098))) },
-		CookTime: function(np) { return Math.ceil(Math.sqrt(Math.abs(np))) },
+		CookCost: function(np) { return Math.ceil((Math.exp((np*np/3098))/10)) },
+		CookTime: function(np) { return Math.ceil(Math.sqrt(Math.abs(np))*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -10718,7 +10719,7 @@ Molpy.DefineBoosts = function() {
 		BurnCost: function(np) {
 			return Molpy.Boosts['DMF'].FillCost(np);
 		},
-		BurnTime: function(np) { return Math.floor(Math.log(np+1)*Math.LOG10E*100) },
+		BurnTime: function(np) { return Math.floor(Math.log(np+1)*Math.LOG10E*100*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -10769,16 +10770,25 @@ Molpy.DefineBoosts = function() {
 					Molpy.Overview.Update(Molpy.newpixNumber);
 					Molpy.Boosts.DQ.ChangeState(3,Math.floor(Math.log(this.Making+10)*33)+10);
 					Molpy.Overview.Update(this.Making);
+					if (Molpy.Got('Diamond Recycling')) Molpy.Add('Diamonds',Molpy.Boosts.DMM.MouldCost(np)/2);
 					// Launch fireworks
 					Molpy.Master.Create(this.Making,'long');
 					// Unlocks
 
 					if (Molpy.Level('Maps') > 200 ) Molpy.UnlockBoost('Cake');	
 					if (Molpy.Got('Saturnav') && !Molpy.IsEnabled('Loopin Looie')) Molpy.Boosts.Maps.Saturnav();
-					if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
+					this.DiammUnlocks,
 					this.Making = 0;
 				}
 			}
+		},
+		loadFunction: function(){ this.DiammUnlocks() },
+		DiammUnlocks: function(){
+			if (Molpy.groupBadgeCounts.diamm >= 3) Molpy.UnlockBoost('Seacoal');
+			if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
+			if (Molpy.groupBadgeCounts.diamm >= 10) Molpy.UnlockBoost('Dragong');
+			if (Molpy.groupBadgeCounts.diamm >= 13) Molpy.UnlockBoost('Diamond Recycling');
+			if (Molpy.groupBadgeCounts.diamm >= 16) Molpy.UnlockBoost('ClawsDeck');
 		},
 		StartPed: function() {
 			if (this.State == 1) {
@@ -10817,7 +10827,7 @@ Molpy.DefineBoosts = function() {
 				'Bonemeal' : '1GW',  // Princesses later
 			};
 		},
-		PedTime: function(np) { return Math.floor(100+np/100) },
+		PedTime: function(np) { return Math.floor((100+np/100)*Molpy.Papal('Master')) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -11501,6 +11511,46 @@ Molpy.DefineBoosts = function() {
 		icon: 'bungalow',
 		desc: '',
 		group: 'magic',
+	});
+	new Molpy.Boost({
+		name: 'Dragong',
+		icon: 'dragong',
+		desc: 'Every Masterpiece gives a 3% reduction in the time to fill, cook and burnish a masterpiece',
+		group: 'chron',
+		factor: function(np) { return this.bought?Math.pow(0.97,Molpy.groupBadgeCounts.diamm):1; },
+		price: {Diamonds:'1250G', Bonemeal:'1250PW', Goats:Infinity},
+	});
+	new Molpy.Boost({
+		name: 'All Claws on Deck',
+		icon: 'clawdeck',
+		alias: 'ClawsDeck',
+		desc: 'All Dragons in the area help to make the mould, reducing the time (but not the diamonds)',
+		group: 'drac',
+		factor: function(np) { 
+			if(!this.bought) return 1;
+			var help = Molpy.NPdata[np].amount;
+			for (var delta=1; delta <= 16; delta++) {
+				if (Molpy.NPdata[np+delta]) help += Molpy.NPdata[np+delta].amount/Math.pow(2,delta);
+				if (Molpy.NPdata[np-delta]) help += Molpy.NPdata[np-delta].amount/Math.pow(2,delta);
+			};
+			return Math.sqrt(help);
+		},
+		price: {Diamonds:'12.50T', Bonemeal:'12.50EW', Goats:Infinity},
+
+	});
+	new Molpy.Boost({
+		name: 'Diamond Recycling',
+		icon: 'recycling',
+		desc: 'After a Masterpiece has been finished, 50% of the diamonds used to make the mould are recovered',
+		group: 'drac',
+		price: {Maps:'35G'},
+	});
+	new Molpy.Boost({
+		name: 'Seacoal',
+		icon: 'seacoal',
+		desc: 'Beach digging gets an additional coal',
+		group: 'drac',
+		price: {Coal:1250},
 	});
 
 

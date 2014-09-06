@@ -36,12 +36,19 @@ For personal amusement only.
 
 #### Waveney
 - Once you have a large enough Diamond supply there is a Papal Boost for Diamonds
-- The Diamond Masterpiece Cooker burns coal every mNP (originally intended behavior)
+- Papal boost to reduce time to make masterpieces
+- The Diamond Masterpiece Cooker burns coal every mNP (originally intended behavior) 
+- Small Nerf on Camelflarge (other things will later make up for this)
+- New Boost "Magic Letters" will eventually lead to draconic magic
+- New Boosts "Dragong", "All Claws on Deck" and "Diamond Recycling" to reduce the pain of masterpiece construction (a bit)
+- New Boost Seacoal - improves coal supply
+- Fix to prevent Mustard prices causing Greater Mustard
+
+These Changes have been postponed, they are not yet ready, I was going to wait but I needed to get a fix out
 - Tweaked a lot of combat numbers - you are more likely to get injured, less likely to lose out right
 - If your dragons are offensive, you are more likely to get stuff (but risk injury)
 - If your dragons are defensive, you are less likely to get stuff (but less likely to get injured)
-- Small Nerf on Camelflarge
-- New Boost "Magic Letters" will eventually lead to draconic magic
+- Small Nerf to healing (other things will later make up for this)
 
 ### 3.65259636 Anomalistic YIP
 

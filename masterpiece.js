@@ -54,7 +54,7 @@ Molpy.Master = {
 	},
 
 	StartFireWorks: function() {
-		console.log('MM StartFireworks called');
+//		console.log('MM StartFireworks called');
 		mm = Molpy.Master;
 		if (!mm.active) return;
 		mm.canvas = g('firework');
