@@ -131,6 +131,7 @@ var GrapeCache = [];
 function DeMolpify(grape) {
 	if(!grape) return 0;
 	if (GrapeCache[grape]) return GrapeCache[grape];
+	if (typeof(grape) != 'string') return 0; // SHOULD never be true...
 	var fix = grape.slice(-1);
 	if(isNaN(parseFloat(fix))) {
 		for( var i in postfixes) {

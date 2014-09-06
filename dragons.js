@@ -547,6 +547,15 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 			Molpy.DiggingFinds[found] = n;
 		}
 	}
+	if (Molpy.Got('Seacoal') && type == 1) {
+		var seacoal = 1;
+		Molpy.Add('Coal',seacoal);
+		if (Molpy.DiggingFinds['Coal']) {
+			Molpy.DiggingFinds['Coal'] += seacoal;
+		} else {
+			Molpy.DiggingFinds['Coal'] = seacoal;
+		}
+	};
 }
 
 Molpy.FindThings = function() {
@@ -865,7 +874,7 @@ Molpy.DragonKnightAttack = function() { // Attack Opponents
 Molpy.DragonsHide = function(type) {
 	Molpy.Redacted.onClick();
 	var dq = Molpy.Boosts['DQ'];
-	var hidetime = Math.max(2,Math.ceil(42 * (type+1)-7*Molpy.Level('Camelflarge')));
+	var hidetime = Math.max(10,Math.ceil(42 * (type+1)-5*Molpy.Level('Camelflarge')));
 	dq.ChangeState(2,hidetime);
 	Molpy.Notify('The Dragons are hiding for ' + hidetime + 'mnp');
 }
@@ -1017,6 +1026,7 @@ Dragons
 * Breath types - fire [Coal], poison [Bonemeal], frost [Vacuum] - Only Coal as BM and Vac much more common
 * Set system so fully equipped it cannot lose against highest opponent from own level
 * lining imbalance - lower overall, MUCH less variability
+* Coal Scuttle, Coal Tip, Coalong, semi coalong, beach coal (seacoal)
 * 
 
 
