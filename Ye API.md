@@ -16,6 +16,7 @@ power                 | float   | ? | Used for many things to record additional 
 Level                 | float   | O | Derived from power for a lot of boosts, (usually when defStuff = 1)
 name                  | text    | M | Used for the boost in the display and to identify boost in the absence of an alias
 alias                 | text    | O | Used to identify the boost internally and may be used in Robotic Shopper etc. If not set, the name is used.
+title                 | MayBeF  | O | Used for dynamic names of boosts - gives current name (can include html)
 icon                  | text    | O | Used to give the root icon name when displaying the boost in the loot
 group                 |	text    | O | Used to give the group name for the boost, if absent "boost" is used. Must be one of the group names defined at the top of the boosts file, you get weird errors otherwise.
 desc                  | MayBeF  | ? | Used to provide a description of the boost - can be fairly dynamic
@@ -87,11 +88,11 @@ Add the new option to the **END** of the Save Order, **NEVER EVER DELETE** from 
 What                  | Type    | AMO| Use and comments 
 ----------------------|---------|----|-----------------
 id                    |	int     | A  | Set internally to the Idenity of the Option on setup.
-name                  | text    | M	 | Used to reference the option in the code
+name                  | text    | M  | Used to reference the option in the code
 title                 | text    | O  | Title of option (if different from name)
 defaultval            | int     | O  | Default vallue (if not 0)
-visability	          | MayBeF  | O  | Show the option, default 1, -1 never shown
+visability	      | MayBeF  | O  | Show the option, default 1, -1 never shown
 onchange              |	Func    | O  | Actions to take if/when it changes, also called on load
 range                 |	int     | O  | Highest value (currently the maximum is 9) default 1
-text                  | MaybeF  | O  |	Text for the option, if an array it is indexed by the value to get the text
-breakafter            |	int     | O  |	If 1, the next option starts on a new line in the display (just for neatness and grouping)
+text                  | MaybeF  | O  | Text for the option, if an array it is indexed by the value to get the text
+breakafter            |	int     | O  | If 1, the next option starts on a new line in the display (just for neatness and grouping)
