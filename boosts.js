@@ -9566,7 +9566,7 @@ Molpy.DefineBoosts = function() {
 		Experience: {desc:'XX% more Experience', value:1.1, avail: function() { return Molpy.Level('DQ') }},
 		Gold: {desc:'XX% more Gold', value:1.1, avail: function() { return Molpy.Earned('Millionair') && isFinite(Molpy.Level('Gold')) }},
 		Diamonds: {desc:'XX% more Diamonds', value:1.1, avail: function() { return Molpy.DragonDigRate > 1e8 && isFinite(Molpy.Level('Diamonds')) }},
-		Master: {desc:'XX% less time for each masterpiece stage', value:0.9, avail: function() { Molpy.groupBadgeCounts.diamm >= 10 }},
+		Master: {desc:'XX% less time for each masterpiece stage', value:0.9, avail: function() { return Molpy.groupBadgeCounts.diamm >= 10 }},
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -10770,7 +10770,7 @@ Molpy.DefineBoosts = function() {
 					Molpy.Overview.Update(Molpy.newpixNumber);
 					Molpy.Boosts.DQ.ChangeState(3,Math.floor(Math.log(this.Making+10)*33)+10);
 					Molpy.Overview.Update(this.Making);
-					if (Molpy.Got('Diamond Recycling')) Molpy.Add('Diamonds',Molpy.Boosts.DMM.MouldCost(np)/2);
+					if (Molpy.Got('Diamond Recycling')) Molpy.Add('Diamonds',Molpy.Boosts.DMM.MouldCost(this.Making)/2);
 					// Launch fireworks
 					Molpy.Master.Create(this.Making,'long');
 					// Unlocks
@@ -11396,11 +11396,11 @@ Molpy.DefineBoosts = function() {
 		},
 
 		price: { 
-			Diamonds: function() { DeMolpify('125G')*Math.pow(2,this.unlocked-1) }, 
+			Diamonds: function() { return DeMolpify('125G')*Math.pow(2,Molpy.Boosts.ml.unlocked-1) }, 
 			Goats:Infinity, 
-			Bonemeal: function() { DeMolpify('125PW')*Math.pow(2,this.unlocked-1) }, 
+			Bonemeal: function() { return DeMolpify('125PW')*Math.pow(2,Molpy.Boosts.ml.unlocked-1) }, 
 		},
-		limit: function() { return (Molpy.Has('Maps','10M')?(4,11,21,38)[Math.max(3,Molpy.Level('DQ')-2)]:0) },
+		limit: function() { return (Molpy.Has('Maps','10M')?[4,11,21,38][Math.min(3,Molpy.Level('DQ')-2)]:0) },
 		draglvl: 'Wyrm',
 		beanwords: ['R0FaRUJP','T0lOVE1FTlQ=','SEFSUFNJQ0hPUkQ=','Q1JFREVOWkE=','QlVOR0FMT1c='],
 		beanlets: Molpy.BeanishToCuegish('RVRJT0dSSEVaRUxOT0RSTU5PSUNQVVJCQVRaTkdESEVXQlNBQUNBTk8='),
@@ -11495,7 +11495,7 @@ Molpy.DefineBoosts = function() {
 		group: 'magic',
 	});
 	new Molpy.Boost({
-		name: 'Harpsicord',
+		name: 'Harpsichord',
 		icon: 'harpsicord',
 		desc: '',
 		group: 'magic',
