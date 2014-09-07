@@ -32,6 +32,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.6601
+
+#### Waveney
+- Bug fixes to Magic Letters, Diamond Recycling and one papal boost
+
 ### 3.66 - Leap YIP
 
 #### Waveney
@@ -49,6 +54,9 @@ These Changes have been postponed, they are not yet ready, I was going to wait b
 - If your dragons are offensive, you are more likely to get stuff (but risk injury)
 - If your dragons are defensive, you are less likely to get stuff (but less likely to get injured)
 - Small Nerf to healing (other things will later make up for this)
+
+#### Epsilon
+- Fixs to countdownCMS
 
 ### 3.65259636 Anomalistic YIP
 
