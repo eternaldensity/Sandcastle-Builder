@@ -32,6 +32,11 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.6602
+
+#### Waveney
+- Bug fixes to the Masterpieces unlocks and Running Factory Automation 0 times
+
 ### 3.6601
 
 #### Waveney
