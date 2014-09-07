@@ -5227,9 +5227,11 @@ Molpy.DefineBoosts = function() {
 		}
 
 		Molpy.boostSilence++;
-		var furn = Math.floor((times + Math.random() * 3) / 2);
-		Molpy.RewardBlastFurnace(furn);
-		left = times - furn;
+		if (times) {
+			var furn = Math.floor((times + Math.random() * 3) / 2);
+			Molpy.RewardBlastFurnace(furn);
+			left = times - furn;
+		};
 
 		if(left > 7 && Molpy.Got('Milo')) {
 			var mr = Molpy.Boosts['Milo'];
@@ -10777,7 +10779,7 @@ Molpy.DefineBoosts = function() {
 
 					if (Molpy.Level('Maps') > 200 ) Molpy.UnlockBoost('Cake');	
 					if (Molpy.Got('Saturnav') && !Molpy.IsEnabled('Loopin Looie')) Molpy.Boosts.Maps.Saturnav();
-					this.DiammUnlocks,
+					this.DiammUnlocks(),
 					this.Making = 0;
 				}
 			}
