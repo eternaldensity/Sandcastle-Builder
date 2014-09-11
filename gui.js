@@ -569,19 +569,19 @@ Molpy.DefineGUI = function() {
 		Molpy.removeGroupDivs(Molpy.dispObjects.boosts);
 		Molpy.removeGroupDivs(Molpy.dispObjects.badges);
 		Molpy.removeGroupDivs(Molpy.dispObjects.tagged);
-        Molpy.removeGroupDivs(Molpy.dispObjects.faves);
+        	Molpy.removeGroupDivs(Molpy.dispObjects.faves);
 		Molpy.removeGroupDivs(Molpy.dispObjects.search);
 		Molpy.dispObjects.boosts = [];
 		Molpy.dispObjects.badges = [];
 		Molpy.dispObjects.tagged = [];
-        Molpy.dispObjects.faves = [];
+        	Molpy.dispObjects.faves = [];
 		Molpy.dispObjects.search = [];
 		
 		var taggedList = Molpy.TaggedLoot;
-        var favesList = [];
-        for(var i in Molpy.Boosts.favs.FavesList) {
-            favesList.push(Molpy.BoostsById[Molpy.Boosts.favs.FavesList[i]]);
-        }
+        	var favesList = [];
+        	for(var i in Molpy.Boosts.favs.FavesList) {
+            		favesList.push(Molpy.BoostsById[Molpy.Boosts.favs.FavesList[i]]);
+        	}
 		var boostList = [];
 		var badgeList = [];
 		
@@ -617,9 +617,9 @@ Molpy.DefineGUI = function() {
 		else if(Molpy.activeLayout.lootVis.tagged) {
 			maxPageNum = Math.ceil(taggedList.length / Molpy.lootPerPage);
 		}
-        else if(Molpy.activeLayout.lootVis.faves) {
-            maxPageNum = Math.ceil(favesList.length / Molpy.lootPerPage);
-        }
+        	else if(Molpy.activeLayout.lootVis.faves) {
+            		maxPageNum = Math.ceil(favesList.length / Molpy.lootPerPage);
+        	}
 		else {
 			// Setup Boost list for use
 			for(var i in Molpy.BoostsBought) {
@@ -644,6 +644,9 @@ Molpy.DefineGUI = function() {
 			maxPageNum = Math.ceil((boostList.length + badgeList.length) / Molpy.lootPerPage);
 		}
 		
+		BoostNum = boostList.length;
+		BoostList = boostList.slice(0);
+
 		if(Molpy.lootPageNum == 'max') Molpy.lootPageNum = maxPageNum;
 		
 		if(Molpy.lootPageNum > maxPageNum) Molpy.lootPageNum = maxPageNum;
@@ -653,9 +656,9 @@ Molpy.DefineGUI = function() {
 		if(Molpy.activeLayout.lootVis.search && Molpy.searchList.length> 0){
 			Molpy.addGroupToDiv($('#loot'), Molpy.searchList, startIndex, endIndex, 'search', {autoAdd: true, recalc: false});
 		} else if(Molpy.activeLayout.lootVis.tagged && taggedList.length > 0) {
-            Molpy.addGroupToDiv($('#loot'), taggedList, startIndex, endIndex, 'tagged', {autoAdd: true, recalc: false});
-        } else if(Molpy.activeLayout.lootVis.faves && favesList.length > 0) {
-            Molpy.addGroupToDiv($('#loot'), favesList, startIndex, endIndex, 'faves', {autoAdd: true, recalc: false});
+            		Molpy.addGroupToDiv($('#loot'), taggedList, startIndex, endIndex, 'tagged', {autoAdd: true, recalc: false});
+        	} else if(Molpy.activeLayout.lootVis.faves && favesList.length > 0) {
+            		Molpy.addGroupToDiv($('#loot'), favesList, startIndex, endIndex, 'faves', {autoAdd: true, recalc: false});
 		} else if(!(boostList.length == 0 && badgeList.length == 0)) {
 			var boostStartIndex = 0;
 			var boostEndIndex = -1;			
