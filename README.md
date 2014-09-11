@@ -32,6 +32,12 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.6603
+
+#### Waveney
+- Magic Letters should be action
+- Missing brackets for MouldCost
+
 ### 3.6602
 
 #### Waveney
