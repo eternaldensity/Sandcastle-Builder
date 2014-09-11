@@ -10419,7 +10419,7 @@ Molpy.DefineBoosts = function() {
 		MouldCost: function(np) {
 			return Math.floor(Math.pow(Math.sin(np*Math.PI/180),2)*Math.pow(2.714,np/42)*Math.log(np+10)*Math.LOG10E*1e9)
 		},
-		MouldTime: function(np) { return Math.floor(2714+np*np*Molpy.Papal('Master')/Molpy.Boosts.ClawsDeck.factor(np)) },
+		MouldTime: function(np) { return Math.floor((2714+np*np)*Molpy.Papal('Master')/Molpy.Boosts.ClawsDeck.factor(np)) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -11376,6 +11376,9 @@ Molpy.DefineBoosts = function() {
 		icon: 'magicletters',
 		alias: 'ml',
 		group: 'drac',
+		single: 'Magic Letter',
+		className: 'action',
+		classChange: function() { return (this.power == 31 || this.bought < this.unlocked)?'':'action' },
 		desc: function(me) {
 			var str ='With magic letters, you can make magic words which do things...'; 
 			if (!me.bought) return str;
