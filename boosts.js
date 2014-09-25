@@ -10355,7 +10355,7 @@ Molpy.DefineBoosts = function() {
 					str += '<br>You have a complete Mould made for NP'+me.Making;
 					if (Molpy.Boosts['DMF'].State == 0) {
 						str += '<input type=button value="Start Filling" onclick="Molpy.Boosts[\'DMF\'].StartFill()"></input> '+
-							'It needs '+Molpify(Molpy.Boosts['DMF'].FillCost(me.Making),2)+' Diamonds every mNP for '+me.Making+' mNP';
+							'It needs '+Molpify(Molpy.Boosts['DMF'].FillCost(me.Making),2)+' Diamonds every mNP for '+Molpy.Boosts['DMF'].FillTime(me.Making)+' mNP';
 					};
 					break;
 				}
