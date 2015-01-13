@@ -385,7 +385,7 @@ Molpy.DefineCastleTools = function() {
 		buildC: function(next) {
 			next = next || 0;
 			var baseval = 111;
-			baseval += Molpy.Got('Swell') * 19;
+			baseval += Molpy.Got('Swell') * 29;
 			if(Molpy.Got('Surfbot')) baseval *= 4;
 			if(Molpy.Got('Big Splash')) baseval *= Molpy.CastleTools['NewPixBot'].amount;
 			baseval *= Molpy.LogicastleMult();
