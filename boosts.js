@@ -985,7 +985,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Swell',
 		icon: 'swell',
-		desc: 'Waves produce 29 more Castles',
+		desc: 'Waves produce 19 more Castles',
 		price:{
 			Sand: '20K',
 			Castles: 200
