@@ -5561,7 +5561,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var rushcost = Molpy.CalcRushCost();
 			var str = "";
-			if (me.bought && !Molpy.Earned('Einstein Says No') ) {
+			if (!Molpy.Earned('Einstein Says No') ) {
 				str += 'Uses ' + Molpy.PriceString(rushcost) + ' to increase the value of Logicat answers by 0.5.<br>';
 				if(rushcost.Vacuum) {
 					if(Molpy.Has('Mustard', rushcost.Vacuum)) str += 'You can use Mustard intead of Vacuums.<br>';
@@ -5571,47 +5571,49 @@ Molpy.DefineBoosts = function() {
 
 				str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
 					+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
-				var mult = 1;
-				var strs = [];
-				var mstr = '';
-				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
-					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252850*2)) {
-				
-					if (!rushcost.Vacuum) {
-						mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
-					} else {
-						if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
-							'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
-						if (Molpy.Has('Mustard',rushcost.Vacuum*mult)) mstr +=
-							'<input type="Button" onclick="Molpy.PantherRush(1,'+mult+')" value="Use Mustard"></input>';
-						if (Molpy.Has('Bonemeal',rushcost.Vacuum*10*mult)) mstr +=
-							'<input type="Button" onclick="Molpy.PantherRush(2,'+mult+')" value="Use Bonemeal"></input>';
-					}
-					if (mstr) {
-						strs.push('<br>' + (mult>1?'Raise by ' + Molpify(mult/2) + '<br>':'') + mstr);
-						mult *= 10;
-					} else {
-						break;
-					}
-				}
-				
-				if(me.Level+mult > 1079252850*2) {
-					mult = 1079252850*2 - me.Level;
-					if(Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
-					Molpy.Has('Logicat',rushcost.Logicat*mult) && mult<me.Level) {
-						if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
-							'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
-						if (Molpy.Has('Mustard',rushcost.Vacuum*mult)) mstr +=
-							'<input type="Button" onclick="Molpy.PantherRush(1,'+mult+')" value="Use Mustard"></input>';
-						if (Molpy.Has('Bonemeal',rushcost.Vacuum*10*mult)) mstr +=
-							'<input type="Button" onclick="Molpy.PantherRush(2,'+mult+')" value="Use Bonemeal"></input>';
+				if (me.bought) {
+					var mult = 1;
+					var strs = [];
+					var mstr = '';
+					while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
+						Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252850*2)) {
+					
+						if (!rushcost.Vacuum) {
+							mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
+						} else {
+							if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
+							if (Molpy.Has('Mustard',rushcost.Vacuum*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(1,'+mult+')" value="Use Mustard"></input>';
+							if (Molpy.Has('Bonemeal',rushcost.Vacuum*10*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(2,'+mult+')" value="Use Bonemeal"></input>';
+						}
 						if (mstr) {
-							strs.push('<br>Light speed<br>':'') + mstr);
+							strs.push('<br>' + (mult>1?'Raise by ' + Molpify(mult/2) + '<br>':'') + mstr);
 							mult *= 10;
+						} else {
+							break;
 						}
 					}
+					
+					if(me.Level+mult > 1079252850*2) {
+						mult = 1079252850*2 - me.Level;
+						if(Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
+						Molpy.Has('Logicat',rushcost.Logicat*mult) && mult<me.Level) {
+							if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
+							if (Molpy.Has('Mustard',rushcost.Vacuum*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(1,'+mult+')" value="Use Mustard"></input>';
+							if (Molpy.Has('Bonemeal',rushcost.Vacuum*10*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(2,'+mult+')" value="Use Bonemeal"></input>';
+							if (mstr) {
+								strs.push('<br>Light speed<br>') + mstr);
+								mult *= 10;
+							}
+						}
+					}
+					if (strs.length) str += strs.slice(-3).join('');
 				}
-				if (strs.length) str += strs.slice(-3).join('');
 			} else {
 				str += "Rushing at the speed of light";
 			}
