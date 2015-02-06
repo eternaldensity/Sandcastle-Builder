@@ -531,7 +531,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		Molpy.Add(found,n);
 	} else { // Find Diamonds 
 		found = 'Diamonds';
-		n = Molpy.Got('Cut Diamonds')?finds/222222 :Math.log(finds);
+		n = Molpy.Got('Cut Diamonds')?Math.max(finds/222222,Math.log(finds)) :Math.log(finds);
 		if (Molpy.Got('Sparkle')) n *= Math.pow(1.01,Molpy.ConsecutiveNPsWithDragons);
 		n =  Math.max(Math.floor(n),1);
 		Molpy.Add(found,n);
