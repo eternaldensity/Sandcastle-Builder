@@ -985,7 +985,7 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Swell',
 		icon: 'swell',
-		desc: 'Waves produce 29 more Castles',
+		desc: 'Waves produce 19 more Castles',
 		price:{
 			Sand: '20K',
 			Castles: 200
@@ -5560,39 +5560,63 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			var rushcost = Molpy.CalcRushCost();
-			var str = 'Uses ' + Molpy.PriceString(rushcost) + ' to increase the value of Logicat answers by 0.5.<br>';
-			if(rushcost.Vacuum) {
-				if(Molpy.Has('Mustard', rushcost.Vacuum)) str += 'You can use Mustard intead of Vacuums.<br>';
-				if(Molpy.Has('Bonemeal', rushcost.Vacuum * 10))
-					str += 'You can use 10xBonemeal intead of Vacuums.<br>';
-			}
-
-			str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
-				+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
-			if (me.bought && !Molpy.Earned('Einstein Says No') ) {
-				var mult = 1;
-				var strs = [];
-				while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
-					Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252850*2)) {
-					var mstr = '';
-					if (!rushcost.Vacuum) {
-						mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
-					} else {
-						if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
-							'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
-						if (Molpy.Has('Mustard',rushcost.Vacuum*mult)) mstr +=
-							'<input type="Button" onclick="Molpy.PantherRush(1,'+mult+')" value="Use Mustard"></input>';
-						if (Molpy.Has('Bonemeal',rushcost.Vacuum*10*mult)) mstr +=
-							'<input type="Button" onclick="Molpy.PantherRush(2,'+mult+')" value="Use Bonemeal"></input>';
-					}
-					if (mstr) {
-						strs.push('<br>' + (mult>1?'Raise by ' + Molpify(mult/2) + '<br>':'') + mstr);
-						mult *= 10;
-					} else {
-						break;
-					}
+			var str = "";
+			if (!Molpy.Earned('Einstein Says No') ) {
+				str += 'Uses ' + Molpy.PriceString(rushcost) + ' to increase the value of Logicat answers by 0.5.<br>';
+				if(rushcost.Vacuum) {
+					if(Molpy.Has('Mustard', rushcost.Vacuum)) str += 'You can use Mustard intead of Vacuums.<br>';
+					if(Molpy.Has('Bonemeal', rushcost.Vacuum * 10))
+						str += 'You can use 10xBonemeal intead of Vacuums.<br>';
 				}
-				if (strs.length) str += strs.slice(-3).join('');
+
+				str += 'Single use: available again when you have ' + Molpify(Molpy.CalcRushCost(1, 1).Logicat) + ' Logicats.'
+					+ (me.Level ? '<br>Currently at ' + Molpify(me.Level / 2, 1) + ' points' : '');
+				if (me.bought) {
+					var mult = 1;
+					var strs = [];
+					var mstr = '';
+					while (Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
+						Molpy.Has('Logicat',rushcost.Logicat*mult) && (mult<me.Level || mult == 1 ) && (me.Level+mult <= 1079252850*2)) {
+						mstr = '';
+						if (!rushcost.Vacuum) {
+							mstr += '<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use"></input>';
+						} else {
+							if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
+							if (Molpy.Has('Mustard',rushcost.Vacuum*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(1,'+mult+')" value="Use Mustard"></input>';
+							if (Molpy.Has('Bonemeal',rushcost.Vacuum*10*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(2,'+mult+')" value="Use Bonemeal"></input>';
+						}
+						if (mstr) {
+							strs.push('<br>' + (mult>1?'Raise by ' + Molpify(mult/2) + '<br>':'') + mstr);
+							mult *= 10;
+						} else {
+							break;
+						}
+					}
+					
+					if(me.Level+mult > 1079252850*2) {
+						mult = 1079252850*2 - me.Level;
+						mstr = '';
+						if(Molpy.Has('Blackprints',rushcost.Blackprints*mult) && 
+						Molpy.Has('Logicat',rushcost.Logicat*mult) && mult<me.Level) {
+							if (Molpy.Has('Vacuum',rushcost.Vacuum*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(0,'+mult+')" value="Use Vacuums"></input>';
+							if (Molpy.Has('Mustard',rushcost.Vacuum*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(1,'+mult+')" value="Use Mustard"></input>';
+							if (Molpy.Has('Bonemeal',rushcost.Vacuum*10*mult)) mstr +=
+								'<input type="Button" onclick="Molpy.PantherRush(2,'+mult+')" value="Use Bonemeal"></input>';
+							if (mstr) {
+								strs.push('<br>Light speed<br>' + mstr);
+								mult *= 10;
+							}
+						}
+					}
+					if (strs.length) str += strs.slice(-3).join('');
+				}
+			} else {
+				str += "Rushing at the speed of light";
 			}
 			return str;
 		},
@@ -7824,11 +7848,11 @@ Molpy.DefineBoosts = function() {
 				+ (Molpy.Got('Nest') ? '' : '<br>Now to figure out how to build the nest...');
 		}
 	});
-	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal',
-				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses','exp','Coal']; // Always add to the END of this list
+	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Blackprints','FluxCrystals','Goats','Mustard','Bonemeal',
+				'Vacuum','Logicat','QQ','Diamonds','Princesses','exp','Coal','Gold']; // Always add to the END of this list
 	Molpy.DragonStats = ['offence','defence','digging','breath','magic1','magic2','magic3'];
 	Molpy.DragonProperties = {offence:['Sand','Castles'],defence:['GlassChips','GlassBlocks'],digging:['Blackprints','FluxCrystals'],
-				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicats','QQ'],magic3:['Diamonds','Princesses']};
+				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicat','QQ'],magic3:['Diamonds','Princesses']};
 				// Gold is intentionally not in this list, if anything is ever added to this list think about the Hatchling data
 
 	new Molpy.Boost({
@@ -10028,7 +10052,7 @@ Molpy.DefineBoosts = function() {
 					if (draglevel < Molpy.Dragons['Wyrm'].id) str += '  When you have the rght types of dragons.';
 					}
 				if (Molpy.Has('Bonemeal',Infinity) && Molpy.Has('Vacuum',Infinity)) str += '<li>Linings of Bonemeal and Vacuums give magic';
-				if (Molpy.Has('Logicats',Infinity) && Molpy.Has('QQ',Infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
+				if (Molpy.Has('Logicat',Infinity) && Molpy.Has('QQ',Infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
 				if (Molpy.Has('Diamonds',Infinity) && Molpy.Has('Princesses',Infinity)) str += '<li>Linings of Diamonds and Princesses give better magic';
 				if (Molpy.Has('Gold',Infinity)) str += '<li>Linings of Gold have no effect';
 			};
@@ -10250,7 +10274,7 @@ Molpy.DefineBoosts = function() {
 		},
 		draglvl: 'Wyrm',
 		group: 'bean',
-		limit: function() { Molpy.Got('Dragonfly')?4:1 },
+		limit: function() { return Molpy.Got('Dragonfly')?4:1 },
 		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
@@ -10355,7 +10379,7 @@ Molpy.DefineBoosts = function() {
 					str += '<br>You have a complete Mould made for NP'+me.Making;
 					if (Molpy.Boosts['DMF'].State == 0) {
 						str += '<input type=button value="Start Filling" onclick="Molpy.Boosts[\'DMF\'].StartFill()"></input> '+
-							'It needs '+Molpify(Molpy.Boosts['DMF'].FillCost(me.Making),2)+' Diamonds every mNP for '+me.Making+' mNP';
+							'It needs '+Molpify(Molpy.Boosts['DMF'].FillCost(me.Making),2)+' Diamonds every mNP for '+Molpy.Boosts['DMF'].FillTime(me.Making)+' mNP';
 					};
 					break;
 				}

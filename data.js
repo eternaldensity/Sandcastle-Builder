@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.6603;
-Molpy.versionName='Leap YIP'; // Appended to the numerical version on screen
+Molpy.version=3.6666;
+Molpy.versionName='Repeating, of course'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
@@ -135,7 +135,8 @@ Molpy.HardcodedData = function() {
 		'Serious Business',
 		'Hodor Hodor Hoder',
 		'I Love BANANAS',
-		'PROTIP: TO DEFEAT THE HOTDOG, OTTIFY IT UNTIL IT UNBASEMENTS'];
+		'PROTIP: TO DEFEAT THE HOTDOG, OTTIFY IT UNTIL IT UNBASEMENTS',
+		'"I wouldn’t recommend it to anyone else." - IGN'];
 	
 	Molpy.defaultLayoutData="3.2PPdefaultP00010010000000P11110111110000111000000000P517C0S449C-1S557C463S0C-2S0C48S-2C134S944C463S0C701S236C135S0C134S718C675S1060C675S547C675S889C675S557C0S557C228S0C535S0C761S1115C0S1115C237S1241C685S1096C155S1094C664S1096C365S1096C440S1499C0SP385C220S515C40S556C84S554C207S368C51S320C385S228C386S556C214S556C220S545C201S1499C576S382C100S383C211S258C61S382C195S383C60S382C59S381C209S74C237SP";
 	
