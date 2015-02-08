@@ -7852,7 +7852,7 @@ Molpy.DefineBoosts = function() {
 				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses','exp','Coal']; // Always add to the END of this list
 	Molpy.DragonStats = ['offence','defence','digging','breath','magic1','magic2','magic3'];
 	Molpy.DragonProperties = {offence:['Sand','Castles'],defence:['GlassChips','GlassBlocks'],digging:['Blackprints','FluxCrystals'],
-				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicats','QQ'],magic3:['Diamonds','Princesses']};
+				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicat','QQ'],magic3:['Diamonds','Princesses']};
 				// Gold is intentionally not in this list, if anything is ever added to this list think about the Hatchling data
 
 	new Molpy.Boost({
@@ -10052,7 +10052,7 @@ Molpy.DefineBoosts = function() {
 					if (draglevel < Molpy.Dragons['Wyrm'].id) str += '  When you have the rght types of dragons.';
 					}
 				if (Molpy.Has('Bonemeal',Infinity) && Molpy.Has('Vacuum',Infinity)) str += '<li>Linings of Bonemeal and Vacuums give magic';
-				if (Molpy.Has('Logicats',Infinity) && Molpy.Has('QQ',Infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
+				if (Molpy.Has('Logicat',Infinity) && Molpy.Has('QQ',Infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
 				if (Molpy.Has('Diamonds',Infinity) && Molpy.Has('Princesses',Infinity)) str += '<li>Linings of Diamonds and Princesses give better magic';
 				if (Molpy.Has('Gold',Infinity)) str += '<li>Linings of Gold have no effect';
 			};
