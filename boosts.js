@@ -7848,11 +7848,11 @@ Molpy.DefineBoosts = function() {
 				+ (Molpy.Got('Nest') ? '' : '<br>Now to figure out how to build the nest...');
 		}
 	});
-	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal',
-				'Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses','exp','Coal']; // Always add to the END of this list
+	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Blackprints','FluxCrystals','Goats','Mustard','Bonemeal',
+				'Vacuum','Logicat','QQ','Diamonds','Princesses','exp','Coal','Gold']; // Always add to the END of this list
 	Molpy.DragonStats = ['offence','defence','digging','breath','magic1','magic2','magic3'];
 	Molpy.DragonProperties = {offence:['Sand','Castles'],defence:['GlassChips','GlassBlocks'],digging:['Blackprints','FluxCrystals'],
-				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicats','QQ'],magic3:['Diamonds','Princesses']};
+				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicat','QQ'],magic3:['Diamonds','Princesses']};
 				// Gold is intentionally not in this list, if anything is ever added to this list think about the Hatchling data
 
 	new Molpy.Boost({
