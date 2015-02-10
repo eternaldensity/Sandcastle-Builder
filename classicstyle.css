@@ -149,3 +149,6 @@
 	overflow-y:scroll;
 	width:560px;
 }
+#lootSearchBox {
+	box-sizing: border-box;
+}
