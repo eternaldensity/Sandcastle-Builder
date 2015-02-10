@@ -1097,6 +1097,14 @@
 		if(version < 3.66) {
 			if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
 		}
+		if(version <= 3.6666) {
+			var bh = Molpy.Boosts['blackhat'];
+			if(bh.bought) {
+				bh.bought = 1;
+				bh.power = 1;
+				Molpy.Notify("What if we tried more power? reset. (Sorry)")
+			}
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
