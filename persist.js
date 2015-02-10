@@ -1097,6 +1097,24 @@
 		if(version < 3.66) {
 			if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
 		}
+		if(version < 3.6666) {
+			var bh = Molpy.Boosts['blackhat'];
+			var bhTemp = 1;
+			var oldNest = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal','Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses','exp','Coal'];
+			var newNest = Molpy.NestLinings;
+			for (var thing in oldNest) {
+				if ((bh.bought & (1<<thing)) == 0) {
+				} else {
+					for (var thing2 in newNest) {
+						if (oldNest[thing] == newNest[thing2]) {
+							Molpy.Notify("thing: " + oldNest[thing]);
+							bhTemp |= (1<<thing2);
+						}
+					}
+				}
+			}
+			bh.bought = bhTemp;
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
