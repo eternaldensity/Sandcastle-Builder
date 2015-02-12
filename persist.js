@@ -1097,7 +1097,7 @@
 		if(version < 3.66) {
 			if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
 		}
-		if(version < 3.6666) {
+		if(version < 3.66666) {
 			var bh = Molpy.Boosts['blackhat'];
 			var bhTemp = 1;
 			var oldNest = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal','Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses','exp','Coal'];
