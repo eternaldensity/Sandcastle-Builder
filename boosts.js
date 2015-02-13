@@ -4123,6 +4123,7 @@ Molpy.DefineBoosts = function() {
 				if(print == 'DMC' && !Molpy.Got('DMF')) continue;
 				if(print == 'DMB' && !Molpy.Got('DMC')) continue;
 				if(print == 'DMP' && !Molpy.Got('DMB')) continue;
+				if(print == 'ZK' && Molpy.Redacted.totalClicks <= 2500) continue;
 				if(Molpy.Level('Blackprints') >= Molpy.blackprintCosts[print]) return print;
 				return;
 			}
