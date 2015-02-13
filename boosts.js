@@ -4101,6 +4101,7 @@ Molpy.DefineBoosts = function() {
 				if(print == 'DMC' && !Molpy.Got('DMF')) continue;
 				if(print == 'DMB' && !Molpy.Got('DMC')) continue;
 				if(print == 'DMP' && !Molpy.Got('DMB')) continue;
+				if(print == 'ZK' && Molpy.Redacted.totalClicks <= 2500) continue;
 				return Molpy.blackprintCosts[print]; // number of pages needed for next blackprint boost
 			}
 		}
