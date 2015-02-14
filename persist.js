@@ -1107,7 +1107,6 @@
 				} else {
 					for (var thing2 in newNest) {
 						if (oldNest[thing] == newNest[thing2]) {
-							Molpy.Notify("thing: " + oldNest[thing]);
 							bhTemp |= (1<<thing2);
 						}
 					}
