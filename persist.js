@@ -1309,6 +1309,9 @@
 			Molpy.UpdateFaves(1);
 			_gaq.push(['_trackEvent', 'Coma', 'Complete', '' + Molpy.highestNPvisited]);
 			
+			Molpy.ClearNPdata();
+			Molpy.Boosts['DQ'].finds = 0;
+			
 			Molpy.BuildLootLists();
 			Molpy.allNeedRepaint = 1;
 			Molpy.mustardTools = 0;
