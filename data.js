@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.6666;
-Molpy.versionName='Repeating, of course'; // Appended to the numerical version on screen
+Molpy.version=3.66666;
+Molpy.versionName='Still Repeating, of course'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
@@ -549,12 +549,6 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	if(me.amount >= 40) Molpy.UnlockBoost('Skull and Crossbones');
 	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Fly the Flag');
 
-	me = Molpy.SandTools['Ladder'];
-	if(me.amount >= 1) Molpy.UnlockBoost('Extension Ladder');
-	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Climbbot');
-	if(me.amount >= 25) Molpy.UnlockBoost('Broken Rung');
-	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Up Up and Away');
-
 	me = Molpy.CastleTools['NewPixBot'];
 	if(me.amount >= 3) Molpy.UnlockBoost('Busy Bot');
 	if(me.amount >= 8) Molpy.UnlockBoost('Robot Efficiency');
@@ -570,9 +564,16 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	if(me.amount >= 20) Molpy.UnlockBoost('Throw Your Toys');
 	if(me.amount >= 50) Molpy.EarnBadge('Flung');
 
+	me = Molpy.SandTools['Ladder'];
+	if(me.amount >= 1) Molpy.UnlockBoost('Extension Ladder');
+	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Climbbot');
+	if(me.amount >= 25) Molpy.UnlockBoost('Broken Rung');
+	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Up Up and Away');
+
+	var you = me;
 	me = Molpy.CastleTools['Scaffold'];
-	if(me.amount >= 2) Molpy.UnlockBoost('Precise Placement');
-	if(me.amount >= 4) Molpy.UnlockBoost('Level Up!');
+	if(me.amount >= 2 && you.amount >=1) Molpy.UnlockBoost('Precise Placement');
+	if(me.amount >= 4 && you.amount >=1) Molpy.UnlockBoost('Level Up!');
 	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Propbot');
 	if(me.amount >= 20) Molpy.UnlockBoost('Balancing Act');
 
@@ -586,7 +587,7 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Luggagebot');
 	if(me.amount >= 30) Molpy.UnlockBoost('Bag Puns');
 	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Air Drop');
-	var you = me;
+	you = me;
 	me = Molpy.CastleTools['River'];
 	if(me.amount && you.amount) Molpy.UnlockBoost('Sandbag');
 	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Smallbot');
@@ -921,14 +922,17 @@ Molpy.CheckClickAchievements = function() {
 	}
 	if(c >= 100) {
 		Molpy.EarnBadge('Busy Clicking');
-		Molpy.UnlockBoost('Helpful Hands');
+		if(Molpy.SandTools['Bucket'].amount >=1 && Molpy.SandTools['Cuegan'].amount >=1)
+			Molpy.UnlockBoost('Helpful Hands');
 	}
 	if(c >= 1000) {
 		Molpy.EarnBadge('Click Storm');
-		Molpy.UnlockBoost('Raise the Flag');
+		if(Molpy.SandTools['Cuegan'].amount >=1 && Molpy.SandTools['Flag'].amount >=1)
+			Molpy.UnlockBoost('True Colours');
 	}
 	if(c >= 3333) {
-		Molpy.UnlockBoost('True Colours');
+		if(Molpy.SandTools['Flag'].amount >=1 && Molpy.SandTools['Ladder'].amount >=1)
+			Molpy.UnlockBoost('Raise the Flag');
 	}
 	c = Molpy.Boosts['Sand'].manualDug;
 	if(c >= 100000) {
