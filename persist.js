@@ -1317,6 +1317,13 @@
 			Molpy.Boosts['TF'].totalLoaded = 0;
 			Molpy.Boosts['TF'].totalDestroyed = 0;
 			
+			Molpy.ClearNPdata();
+			Molpy.Boosts['DQ'].finds = 0;
+			Molpy.Boosts['DQ'].totalloses = 0;
+			Molpy.Boosts['DQ'].totalfights = 0;
+			Molpy.Boosts['DQ'].totalstarves = 0;
+			Molpy.Boosts['DQ'].Level = 0;
+								 
 			Molpy.CastleTools['NewPixBot'].totalCastlesBuilt = 0; //because we normally don't reset this.
 			for( var i in Molpy.BadgesById) {
 				Molpy.BadgesById[i].earned = 0;
