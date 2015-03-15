@@ -162,7 +162,7 @@ Molpy.DefineDragons = function() {
 		upgrade: {Diamonds:'1T',Princesses:1},
 		exp: '1T',
 		condition: function() { return false },
-		desc: 'These are the makers of ledgends, attacking with many heads in many ways, mortals don\'t want to be in the ssame universe as this.',
+		desc: 'These are the makers of legends, attacking with many heads in many ways. Mortals don\'t want to be in the same universe.',
 		digbase: 1e15,
 		defbase: 1e17,
 		colour: '#800',
@@ -284,14 +284,14 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Peasant',
-		armed: ['sythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock','pun','|wolfy'],
+		armed: ['scythe','pitchfork','hammer','knife','club','spade','dung fork','chair leg','bone','rock','pun','|wolfy'],
 		reward: {Copper:'10-1000',Thing:0.25},
 		exp: '1K',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Page',
-		armed: ['dagger', 'staff', 'nice cup of tea', 'stileto', 'buckler', 'spear', 'crossbow', '-puns'],
+		armed: ['dagger', 'staff', 'nice cup of tea', 'stiletto', 'buckler', 'spear', 'crossbow', '-puns'],
 		reward: {Silver:'1-100',Thing:0.3},
 		exp: '1M',
 	});
@@ -319,7 +319,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Lord',
-		armed: ['great sword','great axe','Kazoo','court jester','fire hose'],
+		armed: ['great sword','great axe','kazoo','court jester','fire hose'],
 		reward: {Gold:'100K-1G',Princesses:0.05,Diamonds:'50-50K',Thing:0.5},
 		exp: '1E',
 	});
@@ -354,7 +354,7 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'Demi-god',
-		armed: ['pen (mightier than the sword)', 'cleaving axe','pitch fork', 'ballon'],
+		armed: ['pen (mightier than the sword)', 'cleaving axe','pitch fork', 'balloon'],
 		reward: {Gold:'10G-1U',Princesses:'1K-10G',Diamonds:'90P-150E',Thing:0.75},
 		exp: '1W',
 	});
@@ -368,14 +368,14 @@ Molpy.DefineOpponents = function() {
 
 	new Molpy.Opponent ({
 	 	name: 'God',
-		armed: ['+staff of might','+staff of comand','-dice','|holy symbol','|lightning strikes'],
+		armed: ['+staff of might','+staff of command','-dice','|holy symbol','|lightning strikes'],
 		reward: {Gold:'10P-1F',Princesses:'1G-10Y',Diamonds:'120Z-500Y',Thing:0.85},
 		exp: '1UW',
 	});
 
 	new Molpy.Opponent ({
 	 	name: 'Panetheon of Gods',
-		armed: ['-myths and ledgends','!army','flock of unicorns', '-heresey', '503', '-logic', '-typos'],
+		armed: ['-myths and legends','!army','flock of unicorns', '-heresey', '503', '-logic', '-typos'],
 		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'200Y-1S',Thing:0.99},
 		exp: '1WW',
 	});
