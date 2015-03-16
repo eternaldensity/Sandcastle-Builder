@@ -8104,17 +8104,6 @@ Molpy.DefineBoosts = function() {
 			}
 			return str;
 		},
-
-		loadFunction: function() {
-			var cleans = 0;
-			for (var cl in this.clutches) {
-				if (this.age[cl] < 1050) {
-					this.clutches[cl] = 0;
-					cleans ++;
-				}
-			};
-			this.clean(cleans);
-	      	},
 		
 		defStuff: 1,
 		defSave: 1,
