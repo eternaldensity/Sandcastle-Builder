@@ -4101,6 +4101,7 @@ Molpy.DefineBoosts = function() {
 				if(print == 'DMC' && !Molpy.Got('DMF')) continue;
 				if(print == 'DMB' && !Molpy.Got('DMC')) continue;
 				if(print == 'DMP' && !Molpy.Got('DMB')) continue;
+				if(print == 'ZK' && Molpy.Redacted.totalClicks <= 2500) continue;
 				return Molpy.blackprintCosts[print]; // number of pages needed for next blackprint boost
 			}
 		}
@@ -4123,6 +4124,7 @@ Molpy.DefineBoosts = function() {
 				if(print == 'DMC' && !Molpy.Got('DMF')) continue;
 				if(print == 'DMB' && !Molpy.Got('DMC')) continue;
 				if(print == 'DMP' && !Molpy.Got('DMB')) continue;
+				if(print == 'ZK' && Molpy.Redacted.totalClicks <= 2500) continue;
 				if(Molpy.Level('Blackprints') >= Molpy.blackprintCosts[print]) return print;
 				return;
 			}
@@ -8102,17 +8104,6 @@ Molpy.DefineBoosts = function() {
 			}
 			return str;
 		},
-
-		loadFunction: function() {
-			var cleans = 0;
-			for (var cl in this.clutches) {
-				if (this.age[cl] < 1050) {
-					this.clutches[cl] = 0;
-					cleans ++;
-				}
-			};
-			this.clean(cleans);
-	      	},
 		
 		defStuff: 1,
 		defSave: 1,

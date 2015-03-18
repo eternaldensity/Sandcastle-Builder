@@ -1097,6 +1097,23 @@
 		if(version < 3.66) {
 			if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
 		}
+		if(version < 3.66666) {
+			var bh = Molpy.Boosts['blackhat'];
+			var bhTemp = 1;
+			var oldNest = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal','Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses','exp','Coal'];
+			var newNest = Molpy.NestLinings;
+			for (var thing in oldNest) {
+				if ((bh.bought & (1<<thing)) == 0) {
+				} else {
+					for (var thing2 in newNest) {
+						if (oldNest[thing] == newNest[thing2]) {
+							bhTemp |= (1<<thing2);
+						}
+					}
+				}
+			}
+			bh.bought = bhTemp;
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
@@ -1300,6 +1317,13 @@
 			Molpy.Boosts['TF'].totalLoaded = 0;
 			Molpy.Boosts['TF'].totalDestroyed = 0;
 			
+			Molpy.ClearNPdata();
+			Molpy.Boosts['DQ'].finds = 0;
+			Molpy.Boosts['DQ'].totalloses = 0;
+			Molpy.Boosts['DQ'].totalfights = 0;
+			Molpy.Boosts['DQ'].totalstarves = 0;
+			Molpy.Boosts['DQ'].Level = 0;
+								 
 			Molpy.CastleTools['NewPixBot'].totalCastlesBuilt = 0; //because we normally don't reset this.
 			for( var i in Molpy.BadgesById) {
 				Molpy.BadgesById[i].earned = 0;
