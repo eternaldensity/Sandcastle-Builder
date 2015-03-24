@@ -3008,9 +3008,14 @@ Molpy.Up = function() {
 			while (sucks--) {
 				var vacs = Math.floor((Molpy.Level('TS') || 1)*Molpy.Papal('Dyson'));
 				if(vacs > 1) {
-					vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
-					vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ));
-					vacs = Math.floor(vacs);
+					if (Molpy.Boosts['blackhat'].power > 8 && !Molpy.Has('QQ', Infinity) && !Molpy.Got((Molpy.VacCost.QQ)*1000000)){// prevent zeroing out QQs by raising This Sucks too much
+						vacs = Math.min(vacs, Molpy.Level('FluxCrystals'));
+						vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ*1000000));
+						vacs = Math.floor(vacs);
+					}
+					else vacs = Math.min(vacs, Molpy.Level('FluxCrystals'));
+						vacs = Math.min(vacs, Molpy.Level('QQ'));
+						vacs = Math.floor(vacs);
 				}
 				Molpy.Spend({
 					FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
