@@ -1143,7 +1143,7 @@ Molpy.Up = function() {
 					bN = this.buildC(1);
 					dN = this.destroyC(1);
 					actuals += '<br>Next ONG, each will build ' + Molpify(bN, 1) + ' ' + w + plural(bN)
-						+ (dN ? (' if it destroys' + Molpify(dN, 1) + ' ' + w + plural(dN)) : '');
+						+ (dN ? (' if it destroys ' + Molpify(dN, 1) + ' ' + w + plural(dN)) : '');
 				}
 				if(Molpy.IsStatsVisible()) {
 					if(isFinite(Molpy.priceFactor * this.price) || !Molpy.Got('TF') || !Molpy.Got('Glass Ceiling ' + (this.id * 2 + 1))) {
