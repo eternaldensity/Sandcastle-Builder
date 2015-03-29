@@ -1578,11 +1578,6 @@ Molpy.DefineGUI = function() {
 			var f = fav[i];
 			if(f.boost && (f.boost.faveRefresh || force)) {
 				f.BoostToScreen();
-			}
-		}
-		for( var i in fav) {
-			var f = fav[i];
-			if(f.boost && f.boost.faveRefresh) {
 				f.boost.faveRefresh = 0;
 			}
 		}
