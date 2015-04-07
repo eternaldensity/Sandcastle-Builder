@@ -6627,6 +6627,9 @@ Molpy.DefineBoosts = function() {
 				} 
 			}
 			goatCost--;
+			if(me.power >= 100 && me.power >= Molpy.Level('PR')/2 && !Molpy.Earned('Einstein Says No')) {
+				str += '<br><br>Insufficient Panther Rush power to upgrade.'
+			}
 			if(!Molpy.Boosts['No Sell'].power && me.power > 1 && Molpy.Has('Goats',goatCost)) {
 				str += '<br><input type=button value=Downgrade onclick="Molpy.GainDragonWisdom(-1)"></input> this by one level'
 				str += ' at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
