@@ -983,6 +983,7 @@ Molpy.Up = function() {
 			
 			this.DestroyPhase = function() {
 				var i = this.amount;
+				if(i == 0) return;
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var destroyN = EvalMaybeFunction(inf ? this.destroyG : this.destroyC);
 				var destroyT = destroyN * i || 0;
@@ -1026,6 +1027,7 @@ Molpy.Up = function() {
 			};
 			
 			this.BuildPhase = function() {
+				if(this.amount == 0) return;
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var buildN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
 				buildN *= this.currentActive;
