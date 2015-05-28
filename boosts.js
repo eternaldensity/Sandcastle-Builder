@@ -572,7 +572,14 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Doublepost',
 		icon: 'doublepost',
-		desc: 'During LongPix, Castle Tools activate a second time',
+		desc: function(me) {
+			return 'During LongPix, Castle Tools activate a second time.'
+				+ '<br>Returning to shortpix will '
+				+ (Molpy.Got('Safety Blanket') ? 'disable' : 'lock')
+				+ ' this boost.'
+				+ '<br>You have done this ' + Molpy.Boosts['Safety Net'].power
+				+ ' time' + plural(Molpy.Boosts['Safety Net'].power) + '.';
+		},
 		price:{
 			Sand: '650K',
 			Castles: 4000
