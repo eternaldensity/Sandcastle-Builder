@@ -572,19 +572,35 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Doublepost',
 		icon: 'doublepost',
-		desc: function(me) {
+		desc: 'During LongPix, Castle Tools activate a second time.',
+		price:{
+			Sand: '650K',
+			Castles: 4000
+		},
+		stats: function(me) {
+			var target = Molpy.SafetyTarget();
 			return 'During LongPix, Castle Tools activate a second time.'
 				+ '<br>Returning to shortpix will '
 				+ (Molpy.Got('Safety Blanket') ? 'disable' : 'lock')
 				+ ' this boost.'
 				+ '<br>You have done this ' + Molpy.Boosts['Safety Net'].power
-				+ ' time' + plural(Molpy.Boosts['Safety Net'].power) + '.';
-		},
-		price:{
-			Sand: '650K',
-			Castles: 4000
+				+ ' time' + plural(Molpy.Boosts['Safety Net'].power) + '.'
+				+ (target[0] ? ('<br>Next boost at: ' + Molpify(target[0], 3)) : '');
 		},
 	});
+	
+	Molpy.SafetyTarget = function() {
+		if(!Molpy.Boosts['Safety Net'].unlocked)
+			return [10, 'Safety Net'];
+		if(!Molpy.Boosts['Safety Blanket'].unlocked)
+			return [50, 'Safety Blanket'];
+		if(Molpy.Got('Vacuum Cleaner') && !Molpy.Boosts['Overtime'].unlocked)
+			return [222, 'Overtime'];
+		if(Molpy.Got('Overtime') && !Molpy.Boosts['Time Dilation'].unlocked)
+			return [555, 'Time Dilation'];
+		return [0, ''];
+	};
+	
 	new Molpy.Boost({
 		name: 'Coma Molpy Style',
 		icon: 'comamolpystyle',
