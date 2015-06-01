@@ -3331,12 +3331,10 @@ Molpy.Up = function() {
 		if(np <= 240) {
 			Molpy.NPlength = 1800;
 			if(Molpy.Got('Doublepost')) {
-				Molpy.Boosts['Safety Net'].power++;
-				if(Molpy.Boosts['Safety Net'].power >= 10) Molpy.UnlockBoost('Safety Net');
-				if(Molpy.Got('Safety Net') && Molpy.Boosts['Safety Net'].power >= 50)
-					Molpy.UnlockBoost('Safety Blanket');
-				if (Molpy.Boosts['Safety Net'].power >= 222 && Molpy.Got('Vacuum Cleaner')) Molpy.UnlockBoost('Overtime') 
-				if (Molpy.Boosts['Safety Net'].power >= 555 && Molpy.Got('Overtime')) Molpy.UnlockBoost('Time Dilation') 
+				var incidents = ++Molpy.Boosts['Safety Net'].power;
+				var target = Molpy.SafetyTarget();
+				if(target[0] && incidents >= target[0])
+					Molpy.UnlockBoost(target[1]);
 			}
 			if(!Molpy.Got('Safety Blanket')) {
 				Molpy.LockBoost('Overcompensating');
