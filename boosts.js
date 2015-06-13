@@ -8352,7 +8352,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			return (me.IsEnabled ? 'I' : 'When active, i')
-				+ 'if you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'
+				+ 'f you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'
 				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
 		},
