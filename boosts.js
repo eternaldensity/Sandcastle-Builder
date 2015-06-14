@@ -5563,7 +5563,7 @@ Molpy.DefineBoosts = function() {
 				+ 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and multiplying by 10 or 2 with use if enough Chips remain in the buffer.'
 				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 				+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '')
-				+ '<br>Current maximum is ' + Molpify(Math.abs(me.power), 1) + ' Blocks per Glass Ceiling';
+				+ '<br>Current maximum is ' + Molpify(Math.abs(me.power)*1e7, 1) + ' Blocks per Glass Ceiling';
 		},
 		
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
@@ -8375,7 +8375,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			return (me.IsEnabled ? 'I' : 'When active, i')
-				+ 'if you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'
+				+ 'f you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'
 				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
 		},
