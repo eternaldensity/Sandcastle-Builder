@@ -2535,7 +2535,7 @@ Molpy.Up = function() {
 			} else if(isFinite(Molpy.Boosts['Sand'].power)) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blitzing', true]);
 				Molpy.RewardBlitzing(automationLevel);
-			} else if(Molpy.TotalDragons && Molpy.Boosts['Dragonfly'].bought < 18){
+			} else if(Molpy.TotalDragons && dq.Level > 2 && Molpy.Boosts['Dragonfly'].bought < 18){
 				Molpy.UnlockBoost('Dragonfly');
 			} else {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
