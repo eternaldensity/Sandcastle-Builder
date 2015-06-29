@@ -983,6 +983,7 @@ Molpy.Up = function() {
 			
 			this.DestroyPhase = function() {
 				var i = this.amount;
+				if(i == 0) return;
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var destroyN = EvalMaybeFunction(inf ? this.destroyG : this.destroyC);
 				var destroyT = destroyN * i || 0;
@@ -1026,6 +1027,7 @@ Molpy.Up = function() {
 			};
 			
 			this.BuildPhase = function() {
+				if(this.amount == 0) return;
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var buildN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
 				buildN *= this.currentActive;
@@ -3329,12 +3331,10 @@ Molpy.Up = function() {
 		if(np <= 240) {
 			Molpy.NPlength = 1800;
 			if(Molpy.Got('Doublepost')) {
-				Molpy.Boosts['Safety Net'].power++;
-				if(Molpy.Boosts['Safety Net'].power >= 10) Molpy.UnlockBoost('Safety Net');
-				if(Molpy.Got('Safety Net') && Molpy.Boosts['Safety Net'].power >= 50)
-					Molpy.UnlockBoost('Safety Blanket');
-				if (Molpy.Boosts['Safety Net'].power >= 222 && Molpy.Got('Vacuum Cleaner')) Molpy.UnlockBoost('Overtime') 
-				if (Molpy.Boosts['Safety Net'].power >= 555 && Molpy.Got('Overtime')) Molpy.UnlockBoost('Time Dilation') 
+				var incidents = ++Molpy.Boosts['Safety Net'].power;
+				var target = Molpy.SafetyTarget();
+				if(target[0] && incidents >= target[0])
+					Molpy.UnlockBoost(target[1]);
 			}
 			if(!Molpy.Got('Safety Blanket')) {
 				Molpy.LockBoost('Overcompensating');

@@ -572,12 +572,35 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Doublepost',
 		icon: 'doublepost',
-		desc: 'During LongPix, Castle Tools activate a second time',
+		desc: 'During LongPix, Castle Tools activate a second time.',
 		price:{
 			Sand: '650K',
 			Castles: 4000
 		},
+		stats: function(me) {
+			var target = Molpy.SafetyTarget();
+			return 'During LongPix, Castle Tools activate a second time.'
+				+ '<br>Returning to shortpix will '
+				+ (Molpy.Got('Safety Blanket') ? 'disable' : 'lock')
+				+ ' this boost.'
+				+ '<br>You have done this ' + Molpy.Boosts['Safety Net'].power
+				+ ' time' + plural(Molpy.Boosts['Safety Net'].power) + '.'
+				+ (target[0] ? ('<br>Next boost at: ' + Molpify(target[0], 3)) : '');
+		},
 	});
+	
+	Molpy.SafetyTarget = function() {
+		if(!Molpy.Boosts['Safety Net'].unlocked)
+			return [10, 'Safety Net'];
+		if(!Molpy.Boosts['Safety Blanket'].unlocked)
+			return [50, 'Safety Blanket'];
+		if(Molpy.Got('Vacuum Cleaner') && !Molpy.Boosts['Overtime'].unlocked)
+			return [222, 'Overtime'];
+		if(Molpy.Got('Overtime') && !Molpy.Boosts['Time Dilation'].unlocked)
+			return [555, 'Time Dilation'];
+		return [0, ''];
+	};
+	
 	new Molpy.Boost({
 		name: 'Coma Molpy Style',
 		icon: 'comamolpystyle',
@@ -5540,7 +5563,7 @@ Molpy.DefineBoosts = function() {
 				+ 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and multiplying by 10 or 2 with use if enough Chips remain in the buffer.'
 				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 				+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '')
-				+ '<br>Current maximum is ' + Molpify(Math.abs(me.power), 1) + ' Blocks per Glass Ceiling';
+				+ '<br>Current maximum is ' + Molpify(Math.abs(me.power)*1e7, 1) + ' Blocks per Glass Ceiling';
 		},
 		
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
@@ -8352,7 +8375,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			return (me.IsEnabled ? 'I' : 'When active, i')
-				+ 'if you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'
+				+ 'f you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'
 				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
 		},
