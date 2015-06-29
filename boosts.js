@@ -11618,10 +11618,11 @@ Molpy.DefineBoosts = function() {
 		group: 'drac',
 		className: 'toggle',
 		desc: function(me) {
+			var calculateRatio = Molpy.Annililate(Molpy.Level('Coal'),Molpy.Level('Diamonds'));
 			var str = (me.IsEnabled ? 'C' : 'When active, c') + 'onverts diamonds back into coal if dragons are digging.';
 			if(!me.bought) return str;
-			str += ' This mNP it ' + ((me.IsEnabled && Molpy.Boosts['DQ'].overallState == 0)?'will convert ':'would convert about ') 
-			+ Molpy.AnnilDiam + ' Diamond' + ((Molpy.AnnilDiam > 1)?'s':'') + ' into ' + Molpy.AnnilCoal + ' Coal.'
+			str += ' This mNP it ' + ((me.IsEnabled && Molpy.Boosts['DQ'].overallState == 0)?'will convert ':'would convert ') 
+			+ calculateRatio[1] + ' Diamond' + ((calculateRatio[1] > 1)?'s':'') + ' into ' + calculateRatio[0] + ' Coal.'
 			+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
 			+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
 			return str;
@@ -11632,28 +11633,18 @@ Molpy.DefineBoosts = function() {
             Vacuum: '533.333G'
         }
     });
-Molpy.AnnilDiam = 0;
-Molpy.AnnilCoal = 0;
-Molpy.Annililate = function(){
-    Molpy.Anything = 1;
-	var chk = Molpy.IsEnabled('Annilment');
-    var diam = Molpy.Level('Diamonds');
-    var coal = Molpy.Level('Coal');
-    var unrar = coal/diam;
+Molpy.Annililate = function(coal,diamonds){
+    var unrar = coal/diamonds;
     var min = 1e-12;
-    var max = 0.524371863;
-    unrar = (unrar<min) ? Math.max(min, unrar) : (unrar>max) ? Math.min(max, unrar): unrar; 
-    var i = Math.abs(Math.pow(Math.log10(unrar)/7,7)*7777);
-    co = Math.max(Math.floor(i),1);
-    di = Math.max(Math.floor(1/i), 1);
-    if(Molpy.Boosts['Annilment'].IsEnabled) {
-    	Molpy.Add('Coal',co);
-    	Molpy.AnnilCoal = co;
-    	Molpy.Spend('Diamonds',di);
-    	Molpy.AnnilDiam = di;
-    }
+	var max = 0.524371863;
+	unrar = (unrar<min) ? Math.max(min, unrar) : (unrar>max) ? Math.min(max, unrar): unrar; 
+	var i = Math.abs(Math.pow(Math.log10(unrar)/7,7)*7777);
+	coaltohoard = Math.max(Math.floor(i),1);
+	console.log
+	diamondstocrush = Math.max(Math.floor(1/i), 1);
+	return [coaltohoard,diamondstocrush];
 };
-    new Molpy.Boost({
+new Molpy.Boost({
     	name: 'Robotic Hatcher',
     	icon: 'hatcher',
     	group: 'drac',
