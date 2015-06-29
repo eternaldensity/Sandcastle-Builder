@@ -32,6 +32,41 @@ For personal amusement only.
 
 ## Changelog
 
+### 3.67 Enough Mustard for a Sandwich
+
+#### stormrunnerz
+
+ - Decrease processing time for each mNP when using favorites
+
+#### dfriedenbach
+
+ - Doublepost stats show progress towards next boost.
+ - Add Safety Net counter to Doublepost description.
+ - Safety Net power persists through Molpy Down.
+
+#### Pikrass
+
+ - Fix a typo on Between the Cracks' description
+ - Fix glass saw's description about the number of blocks created
+
+#### LuminousLeopards
+
+- Changes to Dragon hide times
+- Added a variance to Find probability/surviving fights based on attack/defense
+- Changed Zookeeper's operation to a function
+- CDSP / Panther Rush level clarification
+- Check for 0 tools when destroying/building Castles
+- Added a limit to This Sucks if WIWTMP > 8 that prevents QQs from being zeroed out.
+- Fix borked QQ and FC divisors on previous fix
+- New boost Annilment
+- New boost Robotic Hatcher
+- New boost Shadow Coda
+- New boost Ventus Vehemens
+
+### 3.66666 Still Repeating, of course
+
+### 3.6666 Repeating, of course
+
 ### 3.6603
 
 #### Waveney
