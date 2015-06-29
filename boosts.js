@@ -11690,7 +11690,7 @@ Molpy.Annililate = function(){
 		name: 'Ventus Vehemens',
 		icon: 'vehemens',
 		desc: function(me){
-				return 'The dragons use their wings to stir up a great wind, scaring away most Redundaknights.' 
+				return 'The dragons use their wings to stir up a great wind, scaring away most Redundaknights. Consumes Vacuum.' 
 				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
 			},
