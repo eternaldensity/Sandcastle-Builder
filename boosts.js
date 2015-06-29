@@ -7072,7 +7072,7 @@ Molpy.DefineBoosts = function() {
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
 		if (n >= 10) Molpy.UnlockBoost('Shadow Feeder');
-		if (n == 1 && Molpy.Has('Bonemeal', DeMolpify('1MWW'))) Molpy.UnlockBoost('coda');
+		if (n == 1 && Molpy.Has('Bonemeal', DeMolpify('1MW'))) Molpy.UnlockBoost('coda');
 	}
 
 	Molpy.spendSandNotifyFlag = 1;
