@@ -346,7 +346,7 @@ Molpy.Up = function() {
 			if(Molpy.ninjaStealth > 4000000) {
 				Molpy.EarnBadge('Ninja Unity');
 			}
-			if(dq.Level > 1 && Molpy.ninjaStealth == 36000036) {
+			if(Molpy.Level('DQ').Level > 1 && Molpy.ninjaStealth == 13000013) {
 				Molpy.UnlockBoost('Ventus Vehemens');
 			}
 			if(Molpy.Got('Stealth Cam')) Molpy.Shutter();
@@ -2535,7 +2535,7 @@ Molpy.Up = function() {
 			} else if(isFinite(Molpy.Boosts['Sand'].power)) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blitzing', true]);
 				Molpy.RewardBlitzing(automationLevel);
-			} else if(Molpy.TotalDragons && dq.Level > 2 && Molpy.Boosts['Dragonfly'].bought < 18){
+			} else if(Molpy.TotalDragons && Molpy.Level('DQ') > 2 && Molpy.Boosts['Dragonfly'].bought < 18){
 				Molpy.UnlockBoost('Dragonfly');
 			} else {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
