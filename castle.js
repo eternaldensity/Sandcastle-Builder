@@ -346,7 +346,7 @@ Molpy.Up = function() {
 			if(Molpy.ninjaStealth > 4000000) {
 				Molpy.EarnBadge('Ninja Unity');
 			}
-			if(Molpy.Level('DQ').Level > 1 && Molpy.ninjaStealth == 13000013) {
+			if(Molpy.Level('DQ') > 1 && Molpy.ninjaStealth == 13000013) {
 				Molpy.UnlockBoost('Ventus Vehemens');
 			}
 			if(Molpy.Got('Stealth Cam')) Molpy.Shutter();
