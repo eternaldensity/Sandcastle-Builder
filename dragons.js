@@ -570,9 +570,9 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		Molpy.Add('Coal', amounts[0]);
 		Molpy.Spend('Diamonds', amounts[1]);
 	}
-	if (Molpy.Got('Ventus Vehemens') && IsEnabled('Ventus Vehemens') && Molpy.Has('Vacuum','400HW')) {
+	if (Molpy.Got('Ventus Vehemens') && Molpy.IsEnabled('Ventus Vehemens') && Molpy.Has('Vacuum','400HW')) {
 		Molpy.Spend('Vacuum','400HW');
-	} else if(Molpy.Got('Ventus Vehemens') && IsEnabled('Ventus Vehemens')) {
+	} else if(Molpy.Got('Ventus Vehemens') && Molpy.IsEnabled('Ventus Vehemens')) {
 		Molpy.Notify("Ran out of Vacuum, deactivating Ventus Vehemens!",1);
 		Molpy.LockBoost('Ventus Vehemens');
 	}
