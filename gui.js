@@ -878,7 +878,7 @@ Molpy.DefineGUI = function() {
 		} else if(specialIndex > 0){
 			redDiv.children().eq(specialIndex).before(Molpy.Redacted.getDiv());
 		}
-		if (Molpy.Redacted.keepPosition == 1) {
+		if (Molpy.Redacted.keepPosition == 1 && specialIndex != -1) {
 //			Molpy.Notify('Setting keepPosition to 2',1);
 			Molpy.Redacted.keepPosition=2;
 		}
