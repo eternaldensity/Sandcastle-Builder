@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.66666;
-Molpy.versionName='Still Repeating, of course'; // Appended to the numerical version on screen
+Molpy.version=3.667;
+Molpy.versionName='Enough Mustard for a Sandwich'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
