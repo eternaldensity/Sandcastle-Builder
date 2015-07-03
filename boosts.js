@@ -572,12 +572,35 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Doublepost',
 		icon: 'doublepost',
-		desc: 'During LongPix, Castle Tools activate a second time',
+		desc: 'During LongPix, Castle Tools activate a second time.',
 		price:{
 			Sand: '650K',
 			Castles: 4000
 		},
+		stats: function(me) {
+			var target = Molpy.SafetyTarget();
+			return 'During LongPix, Castle Tools activate a second time.'
+				+ '<br>Returning to shortpix will '
+				+ (Molpy.Got('Safety Blanket') ? 'disable' : 'lock')
+				+ ' this boost.'
+				+ '<br>You have done this ' + Molpy.Boosts['Safety Net'].power
+				+ ' time' + plural(Molpy.Boosts['Safety Net'].power) + '.'
+				+ (target[0] ? ('<br>Next boost at: ' + Molpify(target[0], 3)) : '');
+		},
 	});
+	
+	Molpy.SafetyTarget = function() {
+		if(!Molpy.Boosts['Safety Net'].unlocked)
+			return [10, 'Safety Net'];
+		if(!Molpy.Boosts['Safety Blanket'].unlocked)
+			return [50, 'Safety Blanket'];
+		if(Molpy.Got('Vacuum Cleaner') && !Molpy.Boosts['Overtime'].unlocked)
+			return [222, 'Overtime'];
+		if(Molpy.Got('Overtime') && !Molpy.Boosts['Time Dilation'].unlocked)
+			return [555, 'Time Dilation'];
+		return [0, ''];
+	};
+	
 	new Molpy.Boost({
 		name: 'Coma Molpy Style',
 		icon: 'comamolpystyle',
@@ -5274,21 +5297,32 @@ Molpy.DefineBoosts = function() {
 					}
 				}
 			}
-			else {
-				var zk = Molpy.Boosts['ZK'];
-				var poke = Math.random() * (left - 10);
-				zk.power += poke;
-				left -= poke;
-				if(zk.power < 0) zk.power = 0; // how?
-				var zooVisits = Math.floor(zk.power / 1000);
-				zk.power -= zooVisits * 1000;
-				if(zooVisits) Molpy.Boosts['Panther Poke'].buyFunction(zooVisits);
-
-				if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
+		else if(Molpy.Got('coda') && Molpy.IsEnabled('coda') && !Molpy.IsEnabled('Shadow Feeder') && Molpy.Got('Castles', Infinity) && Molpy.Got('Bonemeal', '1WW')){
+			Molpy.ShadowStrike(1);
+			Molpy.zooKeep(left);
+			if (Molpy.Earned('The Ritual is worn out') && !Molpy.IsEnabled('Mario')){
+				Molpy.NinjaRitual();
+			}
+			Molpy.Spend('Bonemeal', '1WW')
+		}
+		else {
+			Molpy.zooKeep(left);
 			}
 		}
 		Molpy.boostSilence--;
 	}
+
+	Molpy.zooKeep = function(left) {
+		var zk = Molpy.Boosts['ZK'];
+		var poke = Math.random() * (left - 10);
+		zk.power += poke;
+		left -= poke;
+		if(zk.power < 0) zk.power = 0; // how?
+		var zooVisits = Math.floor(zk.power / 1000);
+		zk.power -= zooVisits * 1000;
+		if(zooVisits) Molpy.Boosts['Panther Poke'].buyFunction(zooVisits);
+			if(!Molpy.PuzzleGens.caged.active) Molpy.Boosts['LogiPuzzle'].Refresh();
+		}
 
 	new Molpy.Boost({
 		name: 'Panther Glaze',
@@ -5540,7 +5574,7 @@ Molpy.DefineBoosts = function() {
 				+ 'VITSSÅGEN, JA! makes Glass Blocks from Glass Chips (at the Glass Blower rate) in the Tool Factory buffer: initially up to 10M per Glass Ceiling and multiplying by 10 or 2 with use if enough Chips remain in the buffer.'
 				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ',1)" value="'
 				+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '')
-				+ '<br>Current maximum is ' + Molpify(Math.abs(me.power), 1) + ' Blocks per Glass Ceiling';
+				+ '<br>Current maximum is ' + Molpify(Math.abs(me.power)*1e7, 1) + ' Blocks per Glass Ceiling';
 		},
 		
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
@@ -6627,6 +6661,9 @@ Molpy.DefineBoosts = function() {
 				} 
 			}
 			goatCost--;
+			if(me.power >= 100 && me.power >= Molpy.Level('PR')/2 && !Molpy.Earned('Einstein Says No')) {
+				str += '<br><br>Insufficient Panther Rush power to upgrade.'
+			}
 			if(!Molpy.Boosts['No Sell'].power && me.power > 1 && Molpy.Has('Goats',goatCost)) {
 				str += '<br><input type=button value=Downgrade onclick="Molpy.GainDragonWisdom(-1)"></input> this by one level'
 				str += ' at a cost of ' + Molpify(goatCost, 3) + ' goat' + plural(goatCost) + '.';
@@ -7035,6 +7072,7 @@ Molpy.DefineBoosts = function() {
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
 		if (n >= 10) Molpy.UnlockBoost('Shadow Feeder');
+		if (n == 1 && Molpy.Has('Bonemeal', DeMolpify('1MW'))) Molpy.UnlockBoost('coda');
 	}
 
 	Molpy.spendSandNotifyFlag = 1;
@@ -8027,6 +8065,7 @@ Molpy.DefineBoosts = function() {
 			this.totalloses += num;
 			if (this.totalloses >= 20) Molpy.EarnBadge('What\'s the score?');
 			if (this.totalloses >= 144) Molpy.EarnBadge('That\'s gross');
+			if (this.totalloses >= 445 && Molpy.Got('Topiary') && Molpy.Got('Robotic Feeder') && Molpy.Level('Cryogenics') > 1110) Molpy.UnlockBoost('Robotic Hatcher');
 		},
 		countdownCMS: 1,
 			
@@ -8349,7 +8388,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			return (me.IsEnabled ? 'I' : 'When active, i')
-				+ 'if you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'
+				+ 'f you have infinite Sand production, Boost purchases do not cost any Sand or Castles.'
 				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
 					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
 		},
@@ -10806,6 +10845,7 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.groupBadgeCounts.diamm >= 10) Molpy.UnlockBoost('Dragong');
 			if (Molpy.groupBadgeCounts.diamm >= 13) Molpy.UnlockBoost('Diamond Recycling');
 			if (Molpy.groupBadgeCounts.diamm >= 16) Molpy.UnlockBoost('ClawsDeck');
+			if (Molpy.groupBadgeCounts.diamm >= 19) Molpy.UnlockBoost('Annilment');
 		},
 		StartPed: function() {
 			if (this.State == 1) {
@@ -11572,6 +11612,87 @@ Molpy.DefineBoosts = function() {
 		group: 'drac',
 		price: {Coal:1250},
 	});
+	new Molpy.Boost({
+		name: 'Annilment',
+		icon: 'annilment',
+		group: 'drac',
+		className: 'toggle',
+		desc: function(me) {
+			var calculateRatio = Molpy.Annililate(Molpy.Level('Coal'),Molpy.Level('Diamonds'));
+			var str = (me.IsEnabled ? 'C' : 'When active, c') + 'onverts diamonds back into coal if dragons are digging.';
+			if(!me.bought) return str;
+			str += ' This mNP it ' + ((me.IsEnabled && Molpy.Boosts['DQ'].overallState == 0)?'will convert ':'would convert ') 
+			+ calculateRatio[1] + ' Diamond' + ((calculateRatio[1] > 1)?'s':'') + ' into ' + calculateRatio[0] + ' Coal.'
+			+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
+			+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
+			return str;
+		},
+        IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+        price: {
+            Diamonds: '77G', 
+            Vacuum: '533.333G'
+        }
+    });
+Molpy.Annililate = function(coal,diamonds){
+    var unrar = coal/diamonds;
+    var min = 1e-12;
+	var max = 0.524371863;
+	unrar = (unrar<min) ? Math.max(min, unrar) : (unrar>max) ? Math.min(max, unrar): unrar; 
+	var i = Math.abs(Math.pow(Math.log10(unrar)/7,7)*7777);
+	coaltohoard = Math.max(Math.floor(i),1);
+	console.log
+	diamondstocrush = Math.max(Math.floor(1/i), 1);
+	return [coaltohoard,diamondstocrush];
+};
+new Molpy.Boost({
+    	name: 'Robotic Hatcher',
+    	icon: 'hatcher',
+    	group: 'drac',
+    	className: 'toggle',
+    	desc: function(me){return 'Upon losing a fight to Redundaknights, will automatically fledge a clutch of dragons from Cryogenics to replace them.'
+    		+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
+			+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
+    	},
+    	IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+    	price: {
+    		Goats: Infinity,
+    		FluxCrystals: Infinity,
+    		exp: '3E',
+    	},
+	});
+    new Molpy.Boost({
+		name: 'Shadow Coda',
+		icon: 'coda',
+		alias: 'coda',
+		group: 'drac',
+		className: 'toggle',
+		desc: function(me){
+			if(!me.bought) return 'Ends the tyranny of the Grouchy Dragon';
+			return 'As long as castles are infinite and Shadow Feeder is inactive, activates Shadow Dragon at a cost of 1WW Bonemeal.'
+			+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
+			+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
+		},
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		price: {
+			Bonemeal: '12.5WW',
+		}
+	});
+	new Molpy.Boost({
+		name: 'Ventus Vehemens',
+		icon: 'vehemens',
+		desc: function(me){
+				return 'The dragons use their wings to stir up a great wind, scaring away most Redundaknights. Consumes Vacuum.' 
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
+					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
+			},
+		group: 'drac',
+		className: 'toggle',
+	    IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		price: {
+			Vacuum: '1LW'
+		},
+	});
+
 
 
 // END OF BOOSTS, add new ones immediately before this comment

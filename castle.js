@@ -346,6 +346,9 @@ Molpy.Up = function() {
 			if(Molpy.ninjaStealth > 4000000) {
 				Molpy.EarnBadge('Ninja Unity');
 			}
+			if(Molpy.Level('DQ') > 1 && Molpy.ninjaStealth == 13000013) {
+				Molpy.UnlockBoost('Ventus Vehemens');
+			}
 			if(Molpy.Got('Stealth Cam')) Molpy.Shutter();
 
 		};
@@ -983,6 +986,7 @@ Molpy.Up = function() {
 			
 			this.DestroyPhase = function() {
 				var i = this.amount;
+				if(i == 0) return;
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var destroyN = EvalMaybeFunction(inf ? this.destroyG : this.destroyC);
 				var destroyT = destroyN * i || 0;
@@ -1026,6 +1030,7 @@ Molpy.Up = function() {
 			};
 			
 			this.BuildPhase = function() {
+				if(this.amount == 0) return;
 				var inf = Molpy.Got('Castles to Glass') && !isFinite(Molpy.Boosts['Castles'].power) && !isFinite(Molpy.priceFactor * this.price);
 				var buildN = EvalMaybeFunction(inf ? this.buildG : this.buildC);
 				buildN *= this.currentActive;
@@ -2112,6 +2117,7 @@ Molpy.Up = function() {
 				if(Molpy.Boosts['RRSR'].unlocked && !Molpy.Boosts['RRSR'].bought) {
 					this.toggle *= 12;
 				}
+				if(Molpy.Boosts['Ventus Vehemens'].bought && Molpy.IsEnabled('Ventus Vehemens')) this.toggle *= 4;
 			};
 			
 			this.onClick = function(level, limit) {
@@ -2243,12 +2249,21 @@ Molpy.Up = function() {
 					this.opponents = Molpy.RedundaKnight();
 					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redundaknights ' + 
 						countdown + '</h2><div>';
-					if (this.opponents.knowledge) {
-						str += (this.opponents.numb == 1?'A':Molpify(this.opponents.numb)) + ' ' + 
+						if(this.opponents.knowledge[1]) {
+							str += '<br> - ' + (this.opponents.numb == 1?'A':Molpify(this.opponents.numb)) + ' ' + 
 							Molpy.OpponentsById[this.opponents.type].name + (this.opponents.numb > 1?'s':'') + 
-							' from NP' + this.opponents.from + (this.opponents.numb == 1?' is':' are') + 
-							' attacking you at NP'+ this.opponents.target+'<br><br>';
-					};
+							' from NP' + this.opponents.from;
+						};
+						if(this.opponents.knowledge[0]) {
+							str += '<br> - Attacking NP'+ this.opponents.target;
+						};
+						if(this.opponents.knowledge[2]) {
+							str += '<br> - Armed ' + (this.opponents.modifier > 1?'defensively' : 'offensively');
+						};
+						if(this.opponents.knowledge[3]) {
+							str += '<br> - Def: ' + Molpify((this.opponents.oppstat[0] + this.opponents.oppstat[1])*this.opponents.modifier, 2) + '<br> - Atk: ' + Molpify(this.opponents.oppstat[0], 2) 
+							+ (this.opponents.oppstat[1]>0?'':' Magic: ' + Molpify(this.opponents.oppstat[1] ,2));
+						};
 					str += '<input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
 					if (Molpy.Level('Strength Potion') > 1) str += '<br><input type="button" value="Use Strength Potion" onclick="Molpy.DragonKnightAttack(1)"</input><br>';
 					if (0) str += '<br><input type="button" value="Use Breath" onclick="Molpy.DragonKnightAttack(2)"</input><br>';
@@ -2520,6 +2535,8 @@ Molpy.Up = function() {
 			} else if(isFinite(Molpy.Boosts['Sand'].power)) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blitzing', true]);
 				Molpy.RewardBlitzing(automationLevel);
+			} else if(Molpy.TotalDragons && Molpy.Level('DQ') > 2 && Molpy.Boosts['Dragonfly'].bought < 18){
+				Molpy.UnlockBoost('Dragonfly');
 			} else {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
 				Molpy.RewardBlastFurnace(1, 'Furnace Fallback');
@@ -3008,9 +3025,14 @@ Molpy.Up = function() {
 			while (sucks--) {
 				var vacs = Math.floor((Molpy.Level('TS') || 1)*Molpy.Papal('Dyson'));
 				if(vacs > 1) {
-					vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
-					vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ));
-					vacs = Math.floor(vacs);
+					if (Molpy.Boosts['blackhat'].power > 8 && !Molpy.Has('QQ', Infinity) && !Molpy.Got((Molpy.VacCost.QQ)*1000000)){// prevent zeroing out QQs by raising This Sucks too much
+						vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
+						vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ*1000000));
+						vacs = Math.floor(vacs);
+					}
+					else vacs = Math.min(vacs, Molpy.Level('FluxCrystals') / (Molpy.VacCost.FluxCrystals));
+						vacs = Math.min(vacs, Molpy.Level('QQ') / (Molpy.VacCost.QQ));
+						vacs = Math.floor(vacs);
 				}
 				Molpy.Spend({
 					FluxCrystals: Molpy.VacCost.FluxCrystals * vacs,
@@ -3324,12 +3346,10 @@ Molpy.Up = function() {
 		if(np <= 240) {
 			Molpy.NPlength = 1800;
 			if(Molpy.Got('Doublepost')) {
-				Molpy.Boosts['Safety Net'].power++;
-				if(Molpy.Boosts['Safety Net'].power >= 10) Molpy.UnlockBoost('Safety Net');
-				if(Molpy.Got('Safety Net') && Molpy.Boosts['Safety Net'].power >= 50)
-					Molpy.UnlockBoost('Safety Blanket');
-				if (Molpy.Boosts['Safety Net'].power >= 222 && Molpy.Got('Vacuum Cleaner')) Molpy.UnlockBoost('Overtime') 
-				if (Molpy.Boosts['Safety Net'].power >= 555 && Molpy.Got('Overtime')) Molpy.UnlockBoost('Time Dilation') 
+				var incidents = ++Molpy.Boosts['Safety Net'].power;
+				var target = Molpy.SafetyTarget();
+				if(target[0] && incidents >= target[0])
+					Molpy.UnlockBoost(target[1]);
 			}
 			if(!Molpy.Got('Safety Blanket')) {
 				Molpy.LockBoost('Overcompensating');
