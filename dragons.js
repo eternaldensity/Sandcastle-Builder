@@ -573,8 +573,8 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 	if (Molpy.Got('Ventus Vehemens') && Molpy.IsEnabled('Ventus Vehemens') && Molpy.Has('Vacuum','400HW')) {
 		Molpy.Spend('Vacuum','400HW');
 	} else if(Molpy.Got('Ventus Vehemens') && Molpy.IsEnabled('Ventus Vehemens')) {
-		Molpy.Notify("Ran out of Vacuum, deactivating Ventus Vehemens!",1);
-		Molpy.LockBoost('Ventus Vehemens');
+		Molpy.Notify("Ran out of Vacuum!",1);
+		Molpy.GenericToggle(Molpy.Boosts['Ventus Vehemens'].id,1);
 	}
 }
 
