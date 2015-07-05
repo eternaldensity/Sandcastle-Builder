@@ -1199,40 +1199,42 @@ Molpy.DefineGUI = function() {
 				highestI = i;
 			}
 		}
-		var i = highestI;
+		if(!Molpy.options.nothid){
+			var i = highestI;
 
-		var x = Math.floor($(window).width() / 2);
-		var y = Math.floor($(window).height() * 0.95);
-		x += (Math.random() - 0.5) * 40;
+			var x = Math.floor($(window).width() / 2);
+			var y = Math.floor($(window).height() * 0.95);
+			x += (Math.random() - 0.5) * 40;
+		
+			var me = Molpy.notifs[i];
+			if(!me.l) me.l = g('notif' + i);
+			me.life = 0;
+			me.x = x;
+			me.y = y + Molpy.notifsY;
+			me.text = text;
+			me.l.innerHTML = text;
+			me.l.style.left = Math.floor(Molpy.notifs[i].x - 200) + 'px';
+			me.l.style.bottom = Math.floor(-Molpy.notifs[i].y) + 'px';
+			me.l.style.display = 'block';
+			Molpy.notifsY += me.l.clientHeight;
+			me.y += me.l.clientHeight;
 
-		var me = Molpy.notifs[i];
-		if(!me.l) me.l = g('notif' + i);
-		me.life = 0;
-		me.x = x;
-		me.y = y + Molpy.notifsY;
-		me.text = text;
-		me.l.innerHTML = text;
-		me.l.style.left = Math.floor(Molpy.notifs[i].x - 200) + 'px';
-		me.l.style.bottom = Math.floor(-Molpy.notifs[i].y) + 'px';
-		me.l.style.display = 'block';
-		Molpy.notifsY += me.l.clientHeight;
-		me.y += me.l.clientHeight;
-
-		Molpy.notifsReceived++;
-		Molpy.EarnBadge('Notified');
-		if(Molpy.notifsReceived >= 2000) {
-			Molpy.EarnBadge('Thousands of Them!');
-		}
-		if(log) {
-			if (Molpy.notifLog.text == text){
-				Molpy.notifLog.qty++;
-			} else {
-				Molpy.logBuffer += Molpy.notifLog.getLine();
-				Molpy.notifLog.text = text;
-				Molpy.notifLog.qty=1;
-				Molpy.notifLog.details = details || "";
-				Molpy.notifLog.clas = clas || "";
-				Molpy.logUpdatePaint = 1;
+			Molpy.notifsReceived++;
+			Molpy.EarnBadge('Notified');
+			if(Molpy.notifsReceived >= 2000) {
+				Molpy.EarnBadge('Thousands of Them!');
+			}
+			if(log) {
+				if (Molpy.notifLog.text == text){
+					Molpy.notifLog.qty++;
+				} else {
+					Molpy.logBuffer += Molpy.notifLog.getLine();
+					Molpy.notifLog.text = text;
+					Molpy.notifLog.qty=1;
+					Molpy.notifLog.details = details || "";
+					Molpy.notifLog.clas = clas || "";
+					Molpy.logUpdatePaint = 1;
+				}
 			}
 		}
 	}
