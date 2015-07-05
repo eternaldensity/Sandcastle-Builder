@@ -1224,6 +1224,7 @@ Molpy.DefineGUI = function() {
 			if(Molpy.notifsReceived >= 2000) {
 				Molpy.EarnBadge('Thousands of Them!');
 			}
+		}
 			if(log) {
 				if (Molpy.notifLog.text == text){
 					Molpy.notifLog.qty++;
@@ -1236,7 +1237,6 @@ Molpy.DefineGUI = function() {
 					Molpy.logUpdatePaint = 1;
 				}
 			}
-		}
 	}
 	Molpy.PaintLogUpdate = function() {
 		Molpy.logUpdatePaint = 0;
