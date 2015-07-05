@@ -1184,57 +1184,110 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.Notify = function(text, log, clas, title, details) {
-		if(Molpy.InMyPants) text += ' in my pants';
-		text = format(text);
+
 		//pick the first free (or the oldest) notification to replace it
-		var highest = 0;
-		var highestI = 0;
+		var tempText= text.split(' ')
+		var newText=[tempText[0]]
+		for(var j=1;j+1<tempText.length;j++){
+			if((parseFloat(tempText[j])===NaN)&&(parseFloat(tempText[j-1])===NaN)){
+				newText[newText.length-1]=newText[newText.length-1]+' '+tempText[j]
+			} else{
+				newText[newText.length]=tempText[j]
+			}
+		}
+		var found=false
+		var equal=false
 		for( var i in Molpy.notifs) {
-			if(Molpy.notifs[i].life == -1) {
-				highestI = i;
+			equal=true
+			var tempText= Molpy.notifs[i].text.split(' ')
+			var compText=[tempText[0]]
+			for(var j=1;j+1<tempText.length;j++){
+				if((parseFloat(tempText[j])===NaN)&&(parseFloat(tempText[j-1])===NaN)){
+					compText[compText.length-1]=compText[compText.length-1]+' '+tempText[j]
+				} else{
+					compText[compText.length]=tempText[j]
+				}
+			}
+			for(var j=-1;j<(newText.length*equal);j++){
+				if((j===-1)&&(compText.length!==newText.length)){
+					equal = false;
+				} else {
+					if((parseFloat(compText[j])===NaN)&&(parseFloat(newText[j])===NaN)){
+						equal=(compText[j]===newText[j])
+					} else if((parseFloat(compText[j])===NaN)||(parseFloat(newText[j])===NaN)){equal=false}
+				}
+			}
+			if(equal){
+				found=true;
+				var newI=""
+				for(var j=0;j<(newText.length*equal);j++){
+					if(!(parseFloat(compText[j])===NaN){
+						compText[j]=Molpify(deMolpify(compText[j])+deMolpify(newText[j]))
+					}
+					newI=newI+' '+compText[j]
+				}
+				Molpy.notifs[i].text=newI
 				break;
 			}
-			if(Molpy.notifs[i].life > highest) {
-				highest = Molpy.notifs[i].life;
-				highestI = i;
+		}
+		if(!found){
+			var highest = 0;
+			var highestI = 0;
+			for( var i in Molpy.notifs) {
+				if(Molpy.notifs[i].life == -1) {
+					highestI = i;
+					break;
+				}
+				if(Molpy.notifs[i].life > highest) {
+					highest = Molpy.notifs[i].life;
+					highestI = i;
+				}
 			}
 		}
-		var i = highestI;
-
-		var x = Math.floor($(window).width() / 2);
-		var y = Math.floor($(window).height() * 0.95);
-		x += (Math.random() - 0.5) * 40;
-
-		var me = Molpy.notifs[i];
-		if(!me.l) me.l = g('notif' + i);
-		me.life = 0;
-		me.x = x;
-		me.y = y + Molpy.notifsY;
-		me.text = text;
-		me.l.innerHTML = text;
-		me.l.style.left = Math.floor(Molpy.notifs[i].x - 200) + 'px';
-		me.l.style.bottom = Math.floor(-Molpy.notifs[i].y) + 'px';
-		me.l.style.display = 'block';
-		Molpy.notifsY += me.l.clientHeight;
-		me.y += me.l.clientHeight;
-
-		Molpy.notifsReceived++;
-		Molpy.EarnBadge('Notified');
-		if(Molpy.notifsReceived >= 2000) {
-			Molpy.EarnBadge('Thousands of Them!');
+		if(Molpy.InMyPants) text += ' in my pants';
+		text = format(text);
+		var do=true
+		if(Molpy.options.silent in window){
+			do=!Molpy.options.silent;
 		}
-		if(log) {
-			if (Molpy.notifLog.text == text){
-				Molpy.notifLog.qty++;
-			} else {
-				Molpy.logBuffer += Molpy.notifLog.getLine();
-				Molpy.notifLog.text = text;
-				Molpy.notifLog.qty=1;
-				Molpy.notifLog.details = details || "";
-				Molpy.notifLog.clas = clas || "";
-				Molpy.logUpdatePaint = 1;
+		if(do){
+			var i = highestI;
+
+			var x = Math.floor($(window).width() / 2);
+			var y = Math.floor($(window).height() * 0.95);
+			x += (Math.random() - 0.5) * 40;
+		
+			var me = Molpy.notifs[i];
+			if(!me.l) me.l = g('notif' + i);
+			me.life = 0;
+			me.x = x;
+			me.y = y + Molpy.notifsY;
+			me.text = text;
+			me.l.innerHTML = text;
+			me.l.style.left = Math.floor(Molpy.notifs[i].x - 200) + 'px';
+			me.l.style.bottom = Math.floor(-Molpy.notifs[i].y) + 'px';
+			me.l.style.display = 'block';
+			Molpy.notifsY += me.l.clientHeight;
+			me.y += me.l.clientHeight;
+			
+			Molpy.notifsReceived++;
+			Molpy.EarnBadge('Notified');
+			if(Molpy.notifsReceived >= 2000) {
+				Molpy.EarnBadge('Thousands of Them!');
 			}
 		}
+			if(log) {
+				if (Molpy.notifLog.text == text){
+					Molpy.notifLog.qty++;
+				} else {
+					Molpy.logBuffer += Molpy.notifLog.getLine();
+					Molpy.notifLog.text = text;
+					Molpy.notifLog.qty=1;
+					Molpy.notifLog.details = details || "";
+					Molpy.notifLog.clas = clas || "";
+					Molpy.logUpdatePaint = 1;
+				}
+			}
 	}
 	Molpy.PaintLogUpdate = function() {
 		Molpy.logUpdatePaint = 0;
