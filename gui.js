@@ -1246,7 +1246,7 @@ Molpy.DefineGUI = function() {
 		}
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
-		if(!Molpy.options.silent){
+		if(Molpy.options.silent!==1){
 			var i = highestI;
 
 			var x = Math.floor($(window).width() / 2);
