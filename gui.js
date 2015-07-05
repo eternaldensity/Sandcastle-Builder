@@ -1218,7 +1218,7 @@ Molpy.DefineGUI = function() {
 			me.l.style.display = 'block';
 			Molpy.notifsY += me.l.clientHeight;
 			me.y += me.l.clientHeight;
-
+			
 			Molpy.notifsReceived++;
 			Molpy.EarnBadge('Notified');
 			if(Molpy.notifsReceived >= 2000) {
