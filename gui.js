@@ -1199,7 +1199,7 @@ Molpy.DefineGUI = function() {
 				highestI = i;
 			}
 		}
-		if(!Molpy.options.nothid){
+		if(!Molpy.options.silent){
 			var i = highestI;
 
 			var x = Math.floor($(window).width() / 2);
