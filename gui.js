@@ -1203,7 +1203,7 @@ Molpy.DefineGUI = function() {
 			var compText=[tempText[0]]
 			for(var j=1;j+1<tempText.length;j++){
 				if((parseFloat(tempText[j])===NaN)&&(parseFloat(tempText[j-1])===NaN)){
-					compText[compText.length-1]=compText[compText.length-1]+'' '+tempText[j]
+					compText[compText.length-1]=compText[compText.length-1]+' '+tempText[j]
 				} else{
 					compText[compText.length]=tempText[j]
 				}
@@ -1224,7 +1224,7 @@ Molpy.DefineGUI = function() {
 					if(!(parseFloat(compText[j])===NaN){
 						compText[j]=Molpify(deMolpify(compText[j])+deMolpify(newText[j]))
 					}
-					newI=newI+" "+compText[j]
+					newI=newI+' '+compText[j]
 				}
 				Molpy.notifs[i].text=newI
 				break;
