@@ -1184,21 +1184,68 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.Notify = function(text, log, clas, title, details) {
-		if(Molpy.InMyPants) text += ' in my pants';
-		text = format(text);
+
 		//pick the first free (or the oldest) notification to replace it
-		var highest = 0;
-		var highestI = 0;
-		for( var i in Molpy.notifs) {
-			if(Molpy.notifs[i].life == -1) {
-				highestI = i;
-				break;
-			}
-			if(Molpy.notifs[i].life > highest) {
-				highest = Molpy.notifs[i].life;
-				highestI = i;
+		var tempText= text.split(" ")
+		var newText=[tempText[0]]
+		for(var j=1;j+1<tempText.length;j++){
+			if((parseFloat(tempText[j])===NaN)&&(parseFloat(tempText[j-1])===NaN)){
+				newText[newText.length-1]=newText[newText.length-1]+tempText[j]
+			} else{
+				newText[newText.length]=tempText[j]
 			}
 		}
+		var found=false
+		var equal=false
+		for( var i in Molpy.notifs) {
+			equal=true
+			var tempText= Molpy.notifs[i].text.split(" ")
+			var compText=[tempText[0]]
+			for(var j=1;j+1<tempText.length;j++){
+				if((parseFloat(tempText[j])===NaN)&&(parseFloat(tempText[j-1])===NaN)){
+					compText[compText.length-1]=compText[compText.length-1]+tempText[j]
+				} else{
+					compText[compText.length]=tempText[j]
+				}
+			}
+			for(var j=-1;j<(newText.length*equal);j++){
+				if((j===-1)&&(compText.length!==newText.length)){
+					equal = false;
+				} else {
+					if((parseFloat(compText[j])===NaN)&&(parseFloat(newText[j])===NaN)){
+						equal=(compText[j]===newText[j])
+					} else if((parseFloat(compText[j])===NaN)||(parseFloat(newText[j])===NaN)){equal=false}
+				}
+			}
+			if(equal){
+				found=true;
+				var newI=""
+				for(var j=0;j<(newText.length*equal);j++){
+					if(!(parseFloat(compText[j])===NaN){
+						compText[j]=Molpify(deMolpify(compText[j])+deMolpify(newText[j]))
+					}
+					newI=newI+compText[j]
+				}
+				Molpy.notifs[i].text=newI
+				break;
+			}
+		}
+		if(!found){
+			var highest = 0;
+			var highestI = 0;
+			for( var i in Molpy.notifs) {
+				if(Molpy.notifs[i].life == -1) {
+					highestI = i;
+					break;
+				}
+				if(Molpy.notifs[i].life > highest) {
+					highest = Molpy.notifs[i].life;
+					highestI = i;
+				}
+			}
+		}
+		if(Molpy.InMyPants) text += ' in my pants';
+		text = format(text);
 		if(!Molpy.options.silent){
 			var i = highestI;
 
