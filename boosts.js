@@ -5297,7 +5297,7 @@ Molpy.DefineBoosts = function() {
 					}
 				}
 			}
-		else if(Molpy.Got('coda') && Molpy.IsEnabled('coda') && !Molpy.IsEnabled('Shadow Feeder') && Molpy.Got('Castles', Infinity) && Molpy.Has('Bonemeal', '1WW')){
+		else if(Molpy.Got('coda') && Molpy.IsEnabled('coda') && !Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('Castles', Infinity) && Molpy.Has('Bonemeal', '1WW')){
 			Molpy.ShadowStrike(1);
 			Molpy.zooKeep(left);
 			if (Molpy.Earned('The Ritual is worn out') && !Molpy.IsEnabled('Mario')){
