@@ -1707,6 +1707,13 @@ Molpy.Up = function() {
 				}
 			}
 		};
+		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
+			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
+				if(bacon=='vault'||bacon=='Vault'||bacon=='lockedvault'||bacon=='LockedVault'||bacon=='Locked Vault'){
+					
+				}
+			}
+		}
 		Molpy.GiveTempBoost = function(bacon, power, countdown, desc) {
 			var bb = Molpy.Boosts[bacon];
 			if(bb) {
@@ -1789,6 +1796,10 @@ Molpy.Up = function() {
 		Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
 			return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
 		})
+		Molpy.RepeatableBoost=['Locked Vault','LockedVault','vault','Vault'
+		'VaultKey','Vault Key', 'vaultkey'
+		'CrateKey', 'Crate Key','cratekey'
+		'LockedCrate','Locked Crate','Crate','crate'] //Each boost on its own line, please!
 
 		Molpy.previewNP = 0;
 
@@ -2772,7 +2783,7 @@ Molpy.Up = function() {
 			Molpy.GiveTempBoost('Blitzing', blitzSpeed, blitzTime);
 		};
 
-		Molpy.RewardLogicat = function(level) {
+		Molpy.RewardLogicat = function(level,times) {
 			Molpy.CheckLogicatRewards(0);
 			var availRewards = [];
 			for( var i in Molpy.LogicatRewardOptions) {
@@ -2785,8 +2796,12 @@ Molpy.Up = function() {
 			if(availRewards.length) {
 				var red = GLRschoice(availRewards);
 				if(!Molpy.IsFree(red.CalcPrice(red.price))) {
-					if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
-					Molpy.UnlockBoost(red.alias, 1);
+					if(!Molpy.RepeatableBoost.indexof(red.alias)){
+						if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
+						Molpy.UnlockBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1,times)
+					}
 				} else {
 					if(!Molpy.boostSilence) Molpy.Notify('Your reward from Logicat:', 1);
 					Molpy.GiveTempBoost(red.alias);
