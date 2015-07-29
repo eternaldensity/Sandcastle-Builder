@@ -1783,8 +1783,11 @@ Molpy.Up = function() {
 		Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
 			return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
 		})
-		Molpy.LogicRewardOptions=Molpy.BoostsByFunction(function(i){
+		Molpy.LogicatRewardOptions=Molpy.BoostsByFunction(function(i){
 			return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
+		})
+		Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
+			return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
 		})
 
 		Molpy.previewNP = 0;
@@ -2519,7 +2522,7 @@ Molpy.Up = function() {
 				Molpy.CheckDoRDRewards(automationLevel);
 
 				var availRewards = [];
-				for( var i in Molpy.Boosts) {
+				for( var i in Molpy.DepartmentRewardOptions) {
 					var me = Molpy.Boosts[i];
 					if(!me.unlocked && me.department) {
 						availRewards.push(me);
@@ -2772,7 +2775,7 @@ Molpy.Up = function() {
 		Molpy.RewardLogicat = function(level) {
 			Molpy.CheckLogicatRewards(0);
 			var availRewards = [];
-			for( var i in Molpy.Boosts) {
+			for( var i in Molpy.LogicatRewardOptions) {
 				var me = Molpy.Boosts[i];
 				if(!me.unlocked && me.logic && level >= me.logic) {
 					availRewards.push(me);
