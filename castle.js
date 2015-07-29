@@ -1773,6 +1773,19 @@ Molpy.Up = function() {
 				}
 			}
 		}
+		Molpy.BoostsByFunction(bacon){
+			var grapevine=[]
+			for(var i in Molpy.Boosts){
+				if(bacon(Molpy.Boosts[i].alias)){grapevine.push(Molpy.Boosts[i].alias)}
+			}
+			return grapevine
+		}
+		Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
+			return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
+		})
+		Molpy.LogicRewardOptions=Molpy.BoostsByFunction(function(i){
+			return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
+		})
 
 		Molpy.previewNP = 0;
 
