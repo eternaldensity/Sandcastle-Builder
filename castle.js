@@ -1709,14 +1709,50 @@ Molpy.Up = function() {
 		};
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
 			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
-				if(bacon=='lockedvault'||bacon=='Locked Vault'){
-					
-				} else if(bacon=='Vault Key'){
-					
-				} else if(bacon=='Locked Crate'){
-					
+				var RobbySee=Molpy.Boosts['Rob'];
+				var RobbyDo=[]
+				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
+					var item = Molpy.BoostsById[thingy + 1];
+					if(item.power) {
+						RobbyDo.push(item.alias)
+					}
+				}
+				if(RobbyDo.indexOf(bacon)){
+					var lettuce=Molpy.Boosts[bacon];
+					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
+						lettuce.power+=times
+						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
+							var pages=(lettuce.power+lettuce.power-times)*times/2
+							if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
+							Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
+							if(Molpy.Got('Camera') && (Math.random() > Math.pow(0.9,times)) ) {
+								Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+							} //less efficient than normal vault opening, but that's too hard.
+							if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
+								var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
+								c=c*times
+								if (c && !Molpy.boostSilence) 
+									Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
+									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
+							}
+						}
+						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5))}
+						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5))}
+						if(lettuce.name==='Locked Crate'){
+							var bl = Molpy.Boosts['GlassBlocks'];
+							var win = Math.ceil(Molpy.LogiMult('2K'));
+							lettuce.CrateCount+=times;
+							win = Math.floor(win / (6 - lettuce.bought));
+
+							if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
+							Molpy.Add('GlassBlocks', win*times);
+							Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
+							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+							Molpy.Add('Blackprints', lettuce.bought*times);
+						}
+					}
 				} else{
-					
+					//if(!Molpy.boostSilence) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
 				}
 			}
 		}
