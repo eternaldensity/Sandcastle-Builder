@@ -1752,7 +1752,9 @@ Molpy.Up = function() {
 						}
 					}
 				} else{
-					//if(!Molpy.boostSilence) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
+					//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
+					//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
+					Molpy.UnlockRepeatableBoost(bacon,auto,1)
 				}
 			}
 		}
