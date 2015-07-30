@@ -1709,7 +1709,13 @@ Molpy.Up = function() {
 		};
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
 			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
-				if(bacon=='vault'||bacon=='Vault'||bacon=='lockedvault'||bacon=='LockedVault'||bacon=='Locked Vault'){
+				if(bacon=='lockedvault'||bacon=='Locked Vault'){
+					
+				} else if(bacon=='Vault Key'){
+					
+				} else if(bacon=='Locked Crate'){
+					
+				} else{
 					
 				}
 			}
@@ -1796,10 +1802,10 @@ Molpy.Up = function() {
 		Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
 			return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
 		})
-		Molpy.RepeatableBoost=['Locked Vault','LockedVault','vault','Vault'
-		'VaultKey','Vault Key', 'vaultkey'
-		'CrateKey', 'Crate Key','cratekey'
-		'LockedCrate','Locked Crate','Crate','crate'] //Each boost on its own line, please!
+		Molpy.RepeatableBoost=['Locked Vault',
+		'Vault Key', 'vaultkey',
+		'Crate Key','cratekey',
+		'Locked Crate'] //Each boost on its own line, please!
 
 		Molpy.previewNP = 0;
 
