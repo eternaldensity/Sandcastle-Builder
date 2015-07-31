@@ -1824,7 +1824,7 @@ Molpy.Up = function() {
 				}
 			}
 		}
-		Molpy.BoostsByFunction(bacon){
+		Molpy.BoostsByFunction=function(bacon){
 			var grapevine=[]
 			for(var i in Molpy.Boosts){
 				if(bacon(Molpy.Boosts[i].alias)){grapevine.push(Molpy.Boosts[i].alias)}
