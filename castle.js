@@ -2822,8 +2822,8 @@ Molpy.Up = function() {
 		Molpy.RewardLogicat = function(level,times) {
 			Molpy.CheckLogicatRewards(0);
 			var availRewards = [];
-			for( var i in Molpy.LogicatRewardOptions) {
-				var me = Molpy.Boosts[i];
+			for( var i=0;i<Molpy.LogicatRewardOptions.length;i++) {
+				var me = Molpy.Boosts[Molpy.LogicatRewardOptions[i]];
 				if(!me.unlocked && me.logic && level >= me.logic) {
 					availRewards.push(me);
 				}
