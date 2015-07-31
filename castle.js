@@ -2569,8 +2569,8 @@ Molpy.Up = function() {
 				Molpy.CheckDoRDRewards(automationLevel);
 
 				var availRewards = [];
-				for( var i in Molpy.DepartmentRewardOptions) {
-					var me = Molpy.Boosts[i];
+				for( var i=0;i<Molpy.DepartmentRewardOptions.length;i++) {
+					var me = Molpy.Boosts[Molpy.DepartmentRewardOptions[i]];
 					if(!me.unlocked && me.department) {
 						availRewards.push(me);
 					}
