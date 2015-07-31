@@ -1831,15 +1831,7 @@ Molpy.Up = function() {
 			}
 			return grapevine
 		}
-		Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
-			return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
-		})
-		Molpy.LogicatRewardOptions=Molpy.BoostsByFunction(function(i){
-			return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
-		})
-		Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
-			return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
-		})
+		
 		Molpy.RepeatableBoost=['Locked Vault',
 		'Vault Key', 'vaultkey',
 		'Crate Key','cratekey',
