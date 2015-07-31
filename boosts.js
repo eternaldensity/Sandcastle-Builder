@@ -5234,11 +5234,13 @@ Molpy.DefineBoosts = function() {
 	{
 		if(times && Molpy.IsEnabled('Mario')) {
 			var l = Molpy.Boosts['Mario'].bought;
+			var runs=101
 			var cost = l * (l + 1) / 2;
 			Molpy.boostSilence++;
 			if(Molpy.Spend('QQ', cost)) {
-				while(l--) {
-					Molpy.RewardLogicat(Molpy.Level('QQ'));
+				while((l>0)&&(runs>1)) {
+					runs-=1
+					Molpy.RewardLogicat(Molpy.Level('QQ'),Math.ceil(l/runs));
 				}
 			}
 			Molpy.boostSilence--;
