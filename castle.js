@@ -1717,6 +1717,7 @@ Molpy.Up = function() {
 						RobbyDo.push(item.alias)
 					}
 				}
+				RobbyDo.push(Molpy.shoppingItem)
 				if(RobbyDo.indexOf(bacon)){
 					var lettuce=Molpy.Boosts[bacon];
 					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
