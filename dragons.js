@@ -581,8 +581,8 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 Molpy.FindThings = function() {
 	var dqlevel = Molpy.Level('DQ');
 	var availRewards = [];
-	for( var i in Molpy.DragonRewardOptions) {
-		var me = Molpy.Boosts[i];
+	for( var i=0;i<Molpy.DragonRewardOptions.length;i++) {
+		var me = Molpy.Boosts[Molpy.DragonRewardOptions[i]];
 		if("draglvl" in me && Molpy.Dragons[me.draglvl].id <= dqlevel) {
 			var lim = EvalMaybeFunction((me.limit || 1),me);      
 			if (me.unlocked < lim && me.unlocked == me.bought) availRewards.push(me);
