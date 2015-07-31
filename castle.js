@@ -1707,6 +1707,57 @@ Molpy.Up = function() {
 				}
 			}
 		};
+		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
+			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
+				var RobbySee=Molpy.Boosts['Rob'];
+				var RobbyDo=[]
+				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
+					var item = Molpy.BoostsById[thingy + 1];
+					if(item.power) {
+						RobbyDo.push(item.alias)
+					}
+				}
+				if(RobbyDo.indexOf(bacon)){
+					var lettuce=Molpy.Boosts[bacon];
+					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
+						lettuce.power+=times
+						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
+							var pages=(lettuce.power+lettuce.power-times)*times/2
+							if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
+							Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
+							if(Molpy.Got('Camera') && (Math.random() > Math.pow(0.9,times)) ) {
+								Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+							} //less efficient than normal vault opening, but that's too hard.
+							if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
+								var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
+								c=c*times
+								if (c && !Molpy.boostSilence) 
+									Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
+									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
+							}
+						}
+						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5))}
+						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5))}
+						if(lettuce.name==='Locked Crate'){
+							var bl = Molpy.Boosts['GlassBlocks'];
+							var win = Math.ceil(Molpy.LogiMult('2K'));
+							lettuce.CrateCount+=times;
+							win = Math.floor(win / (6 - lettuce.bought));
+
+							if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
+							Molpy.Add('GlassBlocks', win*times);
+							Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
+							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+							Molpy.Add('Blackprints', lettuce.bought*times);
+						}
+					}
+				} else{
+					//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
+					//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
+					Molpy.UnlockRepeatableBoost(bacon,auto,1)
+				}
+			}
+		}
 		Molpy.GiveTempBoost = function(bacon, power, countdown, desc) {
 			var bb = Molpy.Boosts[bacon];
 			if(bb) {
@@ -1773,6 +1824,26 @@ Molpy.Up = function() {
 				}
 			}
 		}
+		Molpy.BoostsByFunction(bacon){
+			var grapevine=[]
+			for(var i in Molpy.Boosts){
+				if(bacon(Molpy.Boosts[i].alias)){grapevine.push(Molpy.Boosts[i].alias)}
+			}
+			return grapevine
+		}
+		Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
+			return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
+		})
+		Molpy.LogicatRewardOptions=Molpy.BoostsByFunction(function(i){
+			return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
+		})
+		Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
+			return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
+		})
+		Molpy.RepeatableBoost=['Locked Vault',
+		'Vault Key', 'vaultkey',
+		'Crate Key','cratekey',
+		'Locked Crate'] //Each boost on its own line, please!
 
 		Molpy.previewNP = 0;
 
@@ -2506,7 +2577,7 @@ Molpy.Up = function() {
 				Molpy.CheckDoRDRewards(automationLevel);
 
 				var availRewards = [];
-				for( var i in Molpy.Boosts) {
+				for( var i in Molpy.DepartmentRewardOptions) {
 					var me = Molpy.Boosts[i];
 					if(!me.unlocked && me.department) {
 						availRewards.push(me);
@@ -2756,10 +2827,10 @@ Molpy.Up = function() {
 			Molpy.GiveTempBoost('Blitzing', blitzSpeed, blitzTime);
 		};
 
-		Molpy.RewardLogicat = function(level) {
+		Molpy.RewardLogicat = function(level,times) {
 			Molpy.CheckLogicatRewards(0);
 			var availRewards = [];
-			for( var i in Molpy.Boosts) {
+			for( var i in Molpy.LogicatRewardOptions) {
 				var me = Molpy.Boosts[i];
 				if(!me.unlocked && me.logic && level >= me.logic) {
 					availRewards.push(me);
@@ -2769,8 +2840,12 @@ Molpy.Up = function() {
 			if(availRewards.length) {
 				var red = GLRschoice(availRewards);
 				if(!Molpy.IsFree(red.CalcPrice(red.price))) {
-					if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
-					Molpy.UnlockBoost(red.alias, 1);
+					if(!Molpy.RepeatableBoost.indexof(red.alias)){
+						if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
+						Molpy.UnlockBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1,times)
+					}
 				} else {
 					if(!Molpy.boostSilence) Molpy.Notify('Your reward from Logicat:', 1);
 					Molpy.GiveTempBoost(red.alias);
