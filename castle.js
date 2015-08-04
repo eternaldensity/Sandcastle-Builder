@@ -1344,6 +1344,12 @@ Molpy.Up = function() {
 				this.bought = amount + 1;
 				this.Refresh();
 			}],
+			Bought3Level: [function() {
+				return this.bought + 3;
+			}, function(amount) {
+				this.bought = amount + 1;
+				this.Refresh();
+			}],
 			Add: function(amount) {
 				this.Level += amount;
 				return 1;
@@ -1707,57 +1713,6 @@ Molpy.Up = function() {
 				}
 			}
 		};
-		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
-			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
-				var RobbySee=Molpy.Boosts['Rob'];
-				var RobbyDo=[]
-				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
-					var item = Molpy.BoostsById[thingy + 1];
-					if(item.power) {
-						RobbyDo.push(item.alias)
-					}
-				}
-				if(RobbyDo.indexOf(bacon)){
-					var lettuce=Molpy.Boosts[bacon];
-					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
-						lettuce.power+=times
-						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
-							var pages=(lettuce.power+lettuce.power-times)*times/2
-							if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
-							Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
-							if(Molpy.Got('Camera') && (Math.random() > Math.pow(0.9,times)) ) {
-								Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-							} //less efficient than normal vault opening, but that's too hard.
-							if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
-								var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
-								c=c*times
-								if (c && !Molpy.boostSilence) 
-									Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
-									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
-							}
-						}
-						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5))}
-						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5))}
-						if(lettuce.name==='Locked Crate'){
-							var bl = Molpy.Boosts['GlassBlocks'];
-							var win = Math.ceil(Molpy.LogiMult('2K'));
-							lettuce.CrateCount+=times;
-							win = Math.floor(win / (6 - lettuce.bought));
-
-							if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
-							Molpy.Add('GlassBlocks', win*times);
-							Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
-							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-							Molpy.Add('Blackprints', lettuce.bought*times);
-						}
-					}
-				} else{
-					//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
-					//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
-					Molpy.UnlockRepeatableBoost(bacon,auto,1)
-				}
-			}
-		}
 		Molpy.GiveTempBoost = function(bacon, power, countdown, desc) {
 			var bb = Molpy.Boosts[bacon];
 			if(bb) {
@@ -1824,18 +1779,6 @@ Molpy.Up = function() {
 				}
 			}
 		}
-		Molpy.BoostsByFunction=function(bacon){
-			var grapevine=[]
-			for(var i in Molpy.Boosts){
-				if(bacon(Molpy.Boosts[i].alias)){grapevine.push(Molpy.Boosts[i].alias)}
-			}
-			return grapevine
-		}
-		
-		Molpy.RepeatableBoost=['Locked Vault',
-		'Vault Key', 'vaultkey',
-		'Crate Key','cratekey',
-		'Locked Crate'] //Each boost on its own line, please!
 
 		Molpy.previewNP = 0;
 
@@ -2023,7 +1966,7 @@ Molpy.Up = function() {
 							Molpy.RatesRecalculate();
 						}
 						if((baby.group == 'monumg' || baby.group == 'diamm' ) && Molpy.Got('Maps')) {
-							if (Molpy.Got('Saturnav') && !Molpy.IsEnabled('Loopin Looie')) {
+							if (Molpy.Got('Saturnav') && !Molpy.IsEnabled('Temporal Anchor')) {
 								Molpy.Boosts.Maps.Saturnav();
 							} else {
 								Molpy.Boosts['Maps'].Refresh();
@@ -2569,8 +2512,8 @@ Molpy.Up = function() {
 				Molpy.CheckDoRDRewards(automationLevel);
 
 				var availRewards = [];
-				for( var i=0;i<Molpy.DepartmentRewardOptions.length;i++) {
-					var me = Molpy.Boosts[Molpy.DepartmentRewardOptions[i]];
+				for( var i in Molpy.Boosts) {
+					var me = Molpy.Boosts[i];
 					if(!me.unlocked && me.department) {
 						availRewards.push(me);
 					}
@@ -2819,11 +2762,11 @@ Molpy.Up = function() {
 			Molpy.GiveTempBoost('Blitzing', blitzSpeed, blitzTime);
 		};
 
-		Molpy.RewardLogicat = function(level,times) {
+		Molpy.RewardLogicat = function(level) {
 			Molpy.CheckLogicatRewards(0);
 			var availRewards = [];
-			for( var i=0;i<Molpy.LogicatRewardOptions.length;i++) {
-				var me = Molpy.Boosts[Molpy.LogicatRewardOptions[i]];
+			for( var i in Molpy.Boosts) {
+				var me = Molpy.Boosts[i];
 				if(!me.unlocked && me.logic && level >= me.logic) {
 					availRewards.push(me);
 				}
@@ -2832,12 +2775,8 @@ Molpy.Up = function() {
 			if(availRewards.length) {
 				var red = GLRschoice(availRewards);
 				if(!Molpy.IsFree(red.CalcPrice(red.price))) {
-					if(!Molpy.RepeatableBoost.indexof(red.alias)){
-						if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
-						Molpy.UnlockBoost(red.alias, 1);
-					} else{
-						Molpy.UnlockRepeatableBoost(red.alias,1,times)
-					}
+					if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
+					Molpy.UnlockBoost(red.alias, 1);
 				} else {
 					if(!Molpy.boostSilence) Molpy.Notify('Your reward from Logicat:', 1);
 					Molpy.GiveTempBoost(red.alias);
@@ -2983,7 +2922,73 @@ Molpy.Up = function() {
 					return;
 				}
 			}
-
+			if (Molpy.Got('3D Lens') && Math.abs(Molpy.newpixNumber) > 3094) {
+				if (Molpy.Spend('Goats', Infinity)) {
+					var np = Molpy.newpixNumber;
+					var prey = Molpy.Boosts['kitkat'].prey;
+					if (prey.indexOf(np) > -1) {
+						Molpy.Notify('You have already drained this CatPix of its dimensional energy.');
+						return;
+					} else {
+						var factor = (Molpy.Got('GCC') ? 12 : 1);
+						factor *= (Molpy.Got('Sigma Stacking') ? Math.abs(np) - 3094 : 1)
+						if (Molpy.Got('GCA')) {
+							for (i = 2; i < 12; i++) {
+								if (Molpy.Got('Glass Ceiling ' + i) && np % i == 0) {
+									Molpy.boostSilence++;
+									Molpy.LockBoost('Glass Ceiling ' + i);
+									Molpy.boostSilence--;
+								} 
+								if (!Molpy.Got('Glass Ceiling ' + i) && np % i && Molpy.Boosts['Glass Ceiling ' + i].unlocked) {
+									Molpy.boostSilence++;
+									Molpy.Boosts['Glass Ceiling ' + i].buy(1);
+									Molpy.boostSilence--;
+								}
+							}
+						}
+						if (Molpy.Got('GCC')) {
+							var strikes = 0;
+							for (var i = 2; i < 12; i++) {
+								if (!Molpy.Got('Glass Ceiling ' + i)) {
+									factor *= (np % i ? 1/i : i);
+								}
+								if (Molpy.Got('Glass Ceiling ' + i) == Math.sign(np % i)) {
+									strikes++;
+								}
+								/////
+								var brp = '';
+								// for (var j = 0; j < strikes; j++) {
+								// 	brp += strikes[j] + ', ';
+								// 	Molpy.Notify(brp,1);
+								// }
+								/////
+								if (strikes == 10) {
+									Molpy.Boosts['GCC'].power++;
+									if (Molpy.Boosts['GCC'].power >= 72) {
+										Molpy.UnlockBoost('GCA');
+									}
+								}
+							}
+						}
+						var amount = Math.max(1, Math.floor(factor));
+						Molpy.Add('Shards', amount);
+						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
+						prey.push(np);
+						if (prey.length >= 12) {
+							Molpy.UnlockBoost('AntiAuto');
+						}
+						if (prey.length >= 48 && np >= 3105 && prey.indexOf(np - 10) == -1) {
+							Molpy.UnlockBoost('kitkat');
+						}
+						if (prey.length > 776) {
+							Molpy.EarnBadge('YouTube Star');
+						}
+						return;
+					}
+				}
+				Molpy.Notify(Molpify(Molpy.Boosts['Goats'].Level) + ' is not quite infinity', 1);
+				return;
+			}
 			var alias = 'discov' + Molpy.newpixNumber;
 			if(!Molpy.Badges[alias]) {
 				Molpy.Notify('You don\'t notice anything especially notable.');
@@ -3228,8 +3233,18 @@ Molpy.Up = function() {
 		}
 	};
 	Molpy.ONG = function() {
-		if (!Molpy.IsEnabled('Loopin Looie')) {
-			Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
+		if (Molpy.newpixNumber == 0) {
+			Molpy.UnlockBoost('3D Lens');
+		}
+		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
+			if (Molpy.Boosts['Signpost'].Level == 1) {
+				Molpy.newpixNumber = 0;
+			} else {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
+			}
+			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
+				Molpy.UnlockBoost('Signpost');
+			}
 			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
 
 			Molpy.currentSubFrame = 0;
@@ -3243,6 +3258,9 @@ Molpy.Up = function() {
 					Molpy.UnlockBoost('Time Travel');
 				}
 			}
+		}
+		if (Molpy.Boosts['Signpost'].bought) {
+			Molpy.Boosts['Signpost'].Level = 0;
 		}
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.ONGstart = ONGsnip(new Date());
@@ -3409,6 +3427,8 @@ Molpy.Up = function() {
 	Molpy.HandlePeriods = function() {
 		//check length of current newpic
 		if(Molpy.newpixNumber < 0) Molpy.EarnBadge('Minus Worlds');
+		if(Molpy.newpixNumber == 0) Molpy.EarnBadge('Absolute Zero');
+
 		var np = Math.abs(Molpy.newpixNumber);
 		if(np <= 240) {
 			Molpy.NPlength = 1800;
@@ -3418,6 +3438,7 @@ Molpy.Up = function() {
 				if(target[0] && incidents >= target[0])
 					Molpy.UnlockBoost(target[1]);
 			}
+
 			if(!Molpy.Got('Safety Blanket')) {
 				Molpy.LockBoost('Overcompensating');
 				Molpy.LockBoost('Doublepost');
@@ -3538,13 +3559,4 @@ window.onload = function() {
 		Molpy.Wake();
 		_gaq && _gaq.push(['_trackEvent', 'Setup', 'Complete', '' + Molpy.version, true]);
 	}
-	Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
-		return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
-	})
-	Molpy.LogicatRewardOptions=Molpy.BoostsByFunction(function(i){
-		return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
-	})
-	Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
-		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
-	}) // These three should be elsewhere. Please let me know where elsewhere is.
 };
