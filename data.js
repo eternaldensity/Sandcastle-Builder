@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.667;
-Molpy.versionName='Enough Mustard for a Sandwich'; // Appended to the numerical version on screen
+Molpy.version=3.7;
+Molpy.versionName='Kitty Genocide Simulator 2015'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
