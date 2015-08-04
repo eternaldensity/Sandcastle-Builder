@@ -132,7 +132,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Stealthy Bot',
 		icon: 'stealthybot',
 		group: 'ninj',
-		desc: 'NewPixBots activate 10% sooner,',
+		desc: 'NewPixBots activate 10% sooner',
 		price: {
 			Sand: 1200,
 			Castles: 5
@@ -6784,7 +6784,17 @@ Molpy.DefineBoosts = function() {
 		plural: 'Goats',
 		icon: 'goat',
 		group: 'stuff',
-		
+		HasSuper: Molpy.BoostFuncs.Has,
+		SpendSuper: Molpy.BoostFuncs.Spend,
+		Has: function(n) {
+			if (Molpy.Got('terrytao') && Molpy.IsEnabled('terrytao') && this.power == Infinity) return true;
+			return this.HasSuper(n);
+		},
+		Spend: function(n) {
+			if (n == Infinity && Molpy.Got('Abattoir')) Molpy.Boosts['Abattoir'].power++;
+			if (Molpy.Got('terrytao') && Molpy.IsEnabled('terrytao') && this.power == Infinity) return true;
+			return this.SpendSuper(n);
+		},
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' goat' + plural(me.Level) + '. Yay!';
 			if (Molpy.Boosts['Goats'].Level == Infinity) {
@@ -6965,6 +6975,13 @@ Molpy.DefineBoosts = function() {
 			}
 			if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
 			Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
+			// if (Molpy.Got('Panopticon') && Molpy.Got('Vacuum')) {
+			// 	var shards = 1;
+			// 	shards *= Math.pow(1.1, 1 + Math.log(Molpy.Boosts['Vacuum'].power));
+			// 	Molpy.Add('Shards', Math.floor(shards));					
+			// }
+			// this code is all pointless because, apparently, the lock function is not called at all when a
+			// vault is opened by Mario. I don't know where to put this code because of the Mario refactor.
 			if(Molpy.Got('Camera') && (Math.random() < 0.1) ) {
 				Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 			}
@@ -7096,6 +7113,7 @@ Molpy.DefineBoosts = function() {
 			if (Math.random() < 0.25) n = 1;
 		}
 		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
+		if (Molpy.Got('Abattoir')) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
@@ -7919,7 +7937,7 @@ Molpy.DefineBoosts = function() {
 		}
 	});
 	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Blackprints','FluxCrystals','Goats','Mustard','Bonemeal',
-				'Vacuum','Logicat','QQ','Diamonds','Princesses','exp','Coal','Gold']; // Always add to the END of this list
+				'Vacuum','Logicat','QQ','Diamonds','Princesses','exp','Coal','Gold','Shards','Panes']; // Always add to the END of this list
 	Molpy.DragonStats = ['offence','defence','digging','breath','magic1','magic2','magic3'];
 	Molpy.DragonProperties = {offence:['Sand','Castles'],defence:['GlassChips','GlassBlocks'],digging:['Blackprints','FluxCrystals'],
 				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicat','QQ'],magic3:['Diamonds','Princesses']};
@@ -8901,6 +8919,10 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult + Math.floor(Molpy.Boosts['Ninja Ritual'].Level/10000); 
 			if (Molpy.Got('Mutant Tortoise')) Molpy.Boosts['Ninja Ritual'].Level = Math.floor(Molpy.Boosts['Ninja Ritual'].Level *1.005); 
 		};
+		if (Molpy.Got('LA') && Molpy.Boosts['LA'].Level) {
+			Molpy.Shutter();
+			Molpy.Boosts['LA'].Level = 0;
+		}
 		var lvl = Molpy.Level('Ninja Ritual');
 		if (lvl > 777 && !isFinite(Molpy.Level('Time Lord')) && 
 			Molpy.Got('Shadow Feeder') && (!Molpy.IsEnabled('Mario'))) Molpy.UnlockBoost('Shadow Ninja');
@@ -12093,8 +12115,8 @@ new Molpy.Boost({
 	});
 	new Molpy.Boost({
 		name: 'Exit through the Abattoir', // not coded yet
-		alias: 'abattoir',
-		icon: 'abattoir',
+		alias: 'Abattoir',
+		icon: 'Abattoir',
 		group: 'bean',
 		desc: function(me) {
 			var str = 'Spending infinite goats boosts bonemeal'; // Don't know how yet, maybe multiplies bonemeal by 1.1 or something
@@ -12109,10 +12131,10 @@ new Molpy.Boost({
 		},
 	});
 	new Molpy.Boost({
-		name: 'Fields\' Mettle', // not coded yet, will make shard harvesting significantly quicker
-		alias: 'terrytao', // Unlocks by spending infinite goats a certain high number of times in one NP,
-		icon: 'fieldsmettle', // and some amount of times total
-		group: 'bean', // Warning: will probably send bonemeal to infinite, in conjunction with abattoir
+		name: 'Fields\' Mettle', 
+		alias: 'terrytao', 
+		icon: 'fieldsmettle', 
+		group: 'bean', 
 		className: 'toggle',
 		
 		desc: function(me) {
@@ -12129,8 +12151,8 @@ new Molpy.Boost({
 		}
 	});
 	new Molpy.Boost({
-		name: 'Lifedrain Autowinder', // not coded yet, comes after GCA
-		alias: 'LA', // makes shard income automatic
+		name: 'Lifedrain Autowinder', 
+		alias: 'LA', 
 		icon: 'autowinder',
 		group: 'dimen',
 		desc: function(me) {
@@ -12138,6 +12160,7 @@ new Molpy.Boost({
 			return str;
 		},
 		stats: '',
+		Level: Molpy.BoostFuncs.Bought1Level,
 		price: {
 			Sand: 1,
 		},
@@ -12216,4 +12239,8 @@ new Molpy.Boost({
 	// 		Sand: 1,
 	// 	},
 	// });
+
+
+
+// END OF BOOSTS, add new ones immediately before this comment
 }
