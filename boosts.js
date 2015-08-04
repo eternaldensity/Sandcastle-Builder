@@ -6981,7 +6981,8 @@ Molpy.DefineBoosts = function() {
 			// 	Molpy.Add('Shards', Math.floor(shards));					
 			// }
 			// this code is all pointless because, apparently, the lock function is not called at all when a
-			// vault is opened by Mario. I don't know where to put this code because of the Mario refactor.
+			// vault is opened by Mario. I don't feel compelled to figure out where to put this code right now
+			// because of the Mario refactor.
 			if(Molpy.Got('Camera') && (Math.random() < 0.1) ) {
 				Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 			}
@@ -12114,7 +12115,7 @@ new Molpy.Boost({
 		},
 	});
 	new Molpy.Boost({
-		name: 'Exit through the Abattoir', // not coded yet
+		name: 'Exit through the Abattoir', // coded, not unlockable
 		alias: 'Abattoir',
 		icon: 'Abattoir',
 		group: 'bean',
@@ -12131,7 +12132,7 @@ new Molpy.Boost({
 		},
 	});
 	new Molpy.Boost({
-		name: 'Fields\' Mettle', 
+		name: 'Fields\' Mettle', // coded, not unlocked
 		alias: 'terrytao', 
 		icon: 'fieldsmettle', 
 		group: 'bean', 
@@ -12151,7 +12152,7 @@ new Molpy.Boost({
 		}
 	});
 	new Molpy.Boost({
-		name: 'Lifedrain Autowinder', 
+		name: 'Lifedrain Autowinder', // coded, not unlockable
 		alias: 'LA', 
 		icon: 'autowinder',
 		group: 'dimen',
