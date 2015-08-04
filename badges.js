@@ -1113,7 +1113,11 @@ Molpy.DefineBadges = function() {
 		desc: 'Futilely attempt to change the future, over and over',
 		vis: 1
 	});
-	
+	new Molpy.Badge({
+		name: 'And It Don\'t Stop',
+		desc: 'Played the game as long after T** **d as before',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 

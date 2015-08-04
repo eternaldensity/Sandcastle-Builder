@@ -3473,6 +3473,9 @@ Molpy.Up = function() {
 		if(np >= 250) {
 			Molpy.UnlockBoost('Overcompensating');
 		}
+		if(np > 5948) {
+			Molpy.EarnBadge('And It Don\'t Stop');
+		}
 		Molpy.TimePeriod = ["Here be Kitties"];
 		Molpy.TimeEra = ["Here be Kitties"];
 		Molpy.TimeEon = ["Here be Kitties"];
