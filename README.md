@@ -30,9 +30,42 @@ Inspired by Orteil's C**kie Clicker.
 
 For personal amusement only.
 
+
 ## Changelog
 
+### 3.7 Kitty Genocide Simulator 2015
+
+#### Calamitizer
+
+- New Boosts:
+ * Signpost
+ * 3D Lens
+ * Dimension Shards
+ * Anticausal Autoclave
+ * Dimension Panes
+ * Kitty Catalogue
+ * Portable Goalpost
+ * Subspatial Plane-Packing
+ * Σ-Stacking
+ * Glass Ceiling Cat
+ * Glass Ceiling Autovator
+ * Exit through the Abattoir
+ * Fields' Mettle
+ * Lifedrain Autowinder
+ * Panopticon
+ * Green Sun
+ * Dragon Seeks Path
+- 7 new badges
+- Some boost typo fixes
+- Some discovery typo fixes
+- Changed prize category markup
+- "Tangled Tessaract" renamed to "Tangled Tesseract"
+- "Loopin Looie" renamed to "Temporal Anchor"
+- "Ooo Shiny!" renamed to "Ooh, Shiny!"
+
 ### 3.67 Enough Mustard for a Sandwich
+
+
 
 #### stormrunnerz
 
