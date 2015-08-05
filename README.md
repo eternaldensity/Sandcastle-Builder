@@ -64,6 +64,11 @@ For personal amusement only.
 - "Ooo Shiny!" renamed to "Ooh, Shiny!"
 - Expando now correctly pins down Badgers and Redunception descriptions, so you can actually read them
 
+#### pickten
+
+- Improved IP processing time so that IP could be much larger.
+- Minor improvements to FindThings, logicats, and DORD as well.
+
 ### 3.67 Enough Mustard for a Sandwich
 
 
