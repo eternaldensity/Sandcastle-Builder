@@ -3240,7 +3240,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['LA'].Level = 1;
 		}
 		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
-			if (Molpy.Boosts['Signpost'].Level == 1) {
+			if (Molpy.Boosts['Signpost'].power == 1) {
 				Molpy.newpixNumber = 0;
 			} else {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
@@ -3262,9 +3262,7 @@ Molpy.Up = function() {
 				}
 			}
 		}
-		if (Molpy.Boosts['Signpost'].bought) {
-			Molpy.Boosts['Signpost'].Level = 0;
-		}
+		Molpy.Boosts['Signpost'].power = 0;
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.LogONG();

@@ -758,7 +758,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Earned('discov' + Molpy.newpixNumber)) Molpy.Badges['discov' + Molpy.newpixNumber].Refresh();
 			if(oldnp != np && np == Molpy.highestNPvisited && Molpy.Boosts['kitkat'].prey.length >= 24) Molpy.UnlockBoost('PG');
 			Molpy.newpixNumber = np;
-			Molpy.Boosts['Signpost'].Level = 0;
+			Molpy.Boosts['Signpost'].power = 0;
 			if(Molpy.Earned('discov' + Molpy.newpixNumber)) Molpy.Badges['discov' + Molpy.newpixNumber].Refresh();
 			_gaq && _gaq.push(['_trackEvent', 'NewPix', (chips ? 'Memory Warp' : 'Time Travel'), '' + Molpy.newpixNumber]);
 			Molpy.ONGstart = ONGsnip(new Date());
@@ -10002,7 +10002,7 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 		className: 'toggle',
 		price: {QQ: '1P', Mustard: 1e8},
-		group: 'bean',
+		group: 'dimen',
 		className: 'toggle',
 		startPower: 3,
 		buyFunction: function() { this.power = 4 },
@@ -11785,13 +11785,12 @@ new Molpy.Boost({
 		icon: 'signpost',
 		group: 'dimen',
 		className: 'action',
-		Level: Molpy.BoostFuncs.Bought1Level,
 		desc: function(me) {
 			var str = 'Leads you outside of Time';
 			if (me.bought) {
-				if (me.Level == 0) {
+				if (me.power == 0) {
 					str += '.<br><input type=button onclick="Molpy.TimeOut()" value="Charge"></input> the signpost to travel to NewPix 0 on the next ONG (at the cost of Infinite Flux Crystals and a sacrifice of Infinite Goats).';
-				} else if (me.Level == 1) {
+				} else if (me.power == 1) {
 					str += '. You will arrive at NP0 upon the next ONG.';
 					if (Molpy.IsEnabled('Temporal Anchor')) {
 						str += '<br><b>WARNING:</b> Leaving the Temporal Anchor dropped will cancel the effect.';
@@ -11810,8 +11809,9 @@ new Molpy.Boost({
 		var me = Molpy.Boosts['Signpost'];
 		if(!Molpy.Has('FluxCrystals', Infinity) || !Molpy.Has('Goats', Infinity)) {
 			Molpy.Notify('But... the future refused to change.');
-			me.power++;
-			if (me.power >= 16) {
+			if (!me.Level) me.Level = 0;
+			me.Level++;
+			if (me.Level >= 16) {
 				Molpy.EarnBadge('Time-traveling Alien Parasite');
 			}
 			me.Refresh();
@@ -11819,7 +11819,7 @@ new Molpy.Boost({
 		};
 		Molpy.Spend('FluxCrystals', Infinity);
 		Molpy.Spend('Goats', Infinity);
-		me.Level = 1;
+		me.power = 1;
 		Molpy.Notify('Your destination is set to NP0.<br>Drive responsibly.');
 	};
 	new Molpy.Boost({
@@ -12207,7 +12207,7 @@ new Molpy.Boost({
 			return str;
 		},
 		stats: '',
-		Level: Molpy.BoostFuncs.Bought1Level,
+		Level: Molpy.BoostFuncs.Bought0Level,
 		price: {
 			Sand: 1,
 		},
