@@ -3634,4 +3634,13 @@ window.onload = function() {
 		Molpy.Wake();
 		_gaq && _gaq.push(['_trackEvent', 'Setup', 'Complete', '' + Molpy.version, true]);
 	}
+	Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
+	})
+	Molpy.LogicatRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
+	})
+	Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
+	}) // These three should be elsewhere. Please let me know where elsewhere is.
 };
