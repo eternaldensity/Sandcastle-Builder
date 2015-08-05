@@ -3476,9 +3476,9 @@ Molpy.Up = function() {
 		if(np > 5948) {
 			Molpy.EarnBadge('And It Don\'t Stop');
 		}
-		Molpy.TimePeriod = ["Here be Kitties"];
+		Molpy.TimePeriod = [""];
 		Molpy.TimeEra = ["Here be Kitties"];
-		Molpy.TimeEon = ["Here be Kitties"];
+		Molpy.TimeEon = [""];
 		for( var i in Molpy.Periods) {
 			var per = Molpy.Periods[i];
 			if(np <= per[0]) {

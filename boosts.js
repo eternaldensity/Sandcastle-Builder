@@ -11815,8 +11815,10 @@ new Molpy.Boost({
 		defStuff: 1,
 		group: 'stuff',
 	});
-	Molpy.MakeSomethingUp = function() { // not used yet because of issue 1310
+	Molpy.MakeSomethingUp = function(caps) { // not used yet because of issue 1310
 		prefixes = ['super','hyper','meta','inter','extra','ex','trans','non','ultra','über','counter','post'];
+		Prefixes = ['Super','Hyper','Meta','Inter','Extra','Ex','Trans','Non','Ultra','Über','Counter','Post'];
+		if (caps) return Prefixes[Math.floor(Math.random()*prefixes.length)];
 		return prefixes[Math.floor(Math.random()*prefixes.length)];
 	};
 	new Molpy.Boost({
