@@ -62,6 +62,7 @@ For personal amusement only.
 - "Tangled Tessaract" renamed to "Tangled Tesseract"
 - "Loopin Looie" renamed to "Temporal Anchor"
 - "Ooo Shiny!" renamed to "Ooh, Shiny!"
+- Expando now correctly pins down Badgers and Redunception descriptions, so you can actually read them
 
 ### 3.67 Enough Mustard for a Sandwich
 
