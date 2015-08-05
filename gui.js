@@ -408,7 +408,7 @@ Molpy.DefineGUI = function() {
 	Molpy.RepaintLootSelection = function() {
 		Molpy.lootSelectionNeedRepaint = 0;
 		var str = '';
-		var groups = ['boosts', 'stuff', 'land', 'ninj', 'cyb', 'hpt', 'bean', 'chron', 'ceil', 'drac', 'prize', 'faves'];
+		var groups = ['boosts', 'stuff', 'land', 'ninj', 'cyb', 'hpt', 'bean', 'chron', 'dimen', 'ceil', 'drac', 'prize', 'faves'];
 		for( var i in groups) {
 			str += Molpy.PaintLootToggle(groups[i], 4);
 		}
@@ -2069,7 +2069,7 @@ Molpy.DefineGUI = function() {
 		if(str) g('selectFave').innerHTML = '<option>None</option>' + str;
 	}
 	Molpy.InitGUI = function() {
-		Molpy.lootVisOrder = ['boosts', 'ninj', 'cyb', 'hpt', 'chron', 'bean', 'badges', 'badgesav', 'discov',
+		Molpy.lootVisOrder = ['boosts', 'ninj', 'cyb', 'hpt', 'chron', 'bean', 'dimen', 'badges', 'badgesav', 'discov',
 				'monums', 'monumg', 'tagged', 'ceil', 'drac', 'stuff', 'land', 'prize', 'search', 'faves'];
 		Molpy.boxVisOrder = ['Clock', 'Timer', 'View', 'File', 'Links', 'Beach', 'Shop', 'Inventory', 'SandTools',
 				'CastleTools', 'Options', 'Stats', 'Log', 'Export', 'About', 'SandCounts', 'NPInfo', 'Layouts',
@@ -2096,7 +2096,7 @@ Molpy.DefineGUI = function() {
 			name: 'default',
 			lootVis: {
 				boosts: 1,
-				badges: 1
+				badges: 1,
 			}
 		});
 		Molpy.activeLayout.FromString(Molpy.defaultLayoutData);
@@ -2132,6 +2132,12 @@ Molpy.DefineGUI = function() {
 		var productionHTML = '';
 		
 		var heading = object.getHeading();
+		if (heading == 'prize LMath.floor(Math.PI)') {
+			heading = 'prize L&lfloor;&pi;&rfloor;';
+		}
+		if (heading =='prize LMath.ceil(Math.PI)') {
+			heading = 'prize L&lceil;&pi;&rceil;';
+		}
 		if(heading != '') headingHTML = '	<H1 class="groupTitle">[' + heading + ']</H1>';
 		
 		var buysell = object.getBuySell();
