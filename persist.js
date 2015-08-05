@@ -1114,6 +1114,9 @@
 			}
 			bh.bought = bhTemp;
 		}
+		if (version < 3.7) {
+			Molpy.Boosts['Tangled Tesseract'].power = (Molpy.Got('Tangled Tesseract') ? 4 : 3);
+		}
 	}
 
 	Molpy.MakePrizeList = function() {

@@ -3236,6 +3236,9 @@ Molpy.Up = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
 		}
+		if (Molpy.Got('LA')) {
+			Molpy.Boosts['LA'].Level = 1;
+		}
 		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
 			if (Molpy.Boosts['Signpost'].Level == 1) {
 				Molpy.newpixNumber = 0;
@@ -3469,6 +3472,9 @@ Molpy.Up = function() {
 		}
 		if(np >= 250) {
 			Molpy.UnlockBoost('Overcompensating');
+		}
+		if(np > 5948) {
+			Molpy.EarnBadge('And It Don\'t Stop');
 		}
 		Molpy.TimePeriod = ["Here be Kitties"];
 		Molpy.TimeEra = ["Here be Kitties"];
