@@ -3394,6 +3394,7 @@ Molpy.Up = function() {
 		Molpy.Boosts['Glass Trolling'].IsEnabled = 0;
 		Molpy.Boosts['Now Where Was I?'].Refresh();
 		Molpy.Boosts['The Pope'].reset();
+		Molpy.MakeSomethingUp();
 		Molpy.UpdateFaves();
 		
 		Molpy.Boosts['Temporal Rift'].changeState('closed');
