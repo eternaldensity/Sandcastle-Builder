@@ -11153,8 +11153,9 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ 
 		name: 'Muse',
 		icon: 'muse',
-		desc: function() {
+		desc: function(me) {
 			var np = Molpy.newpixNumber;
+			if (!me.bought) return 'Inspires the creation of a Diamond Masterpiece. A fickle thing.';
 			if (!Molpy.Badges['monumg'+np]) {
 				Molpy.LockBoost('Muse');
 				return '';
@@ -11193,7 +11194,7 @@ Molpy.DefineBoosts = function() {
 				if (Molpy.IsEnabled('Archimedes') && (!Molpy.Got('Cold Mould') || !Molpy.IsEnabled('Cold Mould'))) {
 					str += '<br><b>Warning</b> Unless you enable Cold Mould or Disable Archimedes Lever, Archimedes Lever will make them again<br>';
 				};
-				str += '<input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
+				str += '<br><input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
 			}
 			return str;
 		},
