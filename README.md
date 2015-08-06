@@ -63,6 +63,7 @@ For personal amusement only.
 - "Loopin Looie" renamed to "Temporal Anchor"
 - "Ooo Shiny!" renamed to "Ooh, Shiny!"
 - Expando now correctly pins down Badgers and Redunception descriptions, so you can actually read them
+- Muse now has a correct description when it's locked (as a favorite, say)
 
 ### 3.67 Enough Mustard for a Sandwich
 
