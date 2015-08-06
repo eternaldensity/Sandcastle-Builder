@@ -3172,13 +3172,19 @@ Molpy.DefineBoosts = function() {
 		name: 'Redunception',
 		icon: 'redunception',
 		group: 'hpt',
-		
+		choice: '',
+
 		desc: function(me) {
-			if(!me.bought || flandom(10) == 0) return Molpy.redundancy.longsentence;
-			var sent = Molpy.redundancy.sentence();
-			//if(!Molpy.Boosts['Expando'].IsEnabled) Molpy.Notify(sent, 1);
-			return sent;
+			if (!me.choice || !Molpy.IsEnabled('Expando')) Molpy.GoDeeper();
+			return me.choice;
 		},
+
+		// desc: function(me) {
+		// 	if(!me.bought || flandom(10) == 0) return Molpy.redundancy.longsentence;
+		// 	var sent = Molpy.redundancy.sentence();
+		// 	//if(!Molpy.Boosts['Expando'].IsEnabled) Molpy.Notify(sent, 1);
+		// 	return sent;
+		// },
 		
 		price:{
 			Sand: '.97G',
@@ -3186,6 +3192,17 @@ Molpy.DefineBoosts = function() {
 		},
 		stats: 'Causes the effect which results from Redunception'
 	});
+
+	Molpy.GoDeeper = function() {
+		var leo = Molpy.Boosts['Redunception'];
+		if(!leo.bought || flandom(10) == 0) {
+			leo.choice = Molpy.redundancy.longsentence;
+			return;
+		}
+		leo.choice = Molpy.redundancy.sentence();
+		return;
+		}
+
 	new Molpy.Boost({
 		name: 'Furnace Multitasking',
 		icon: 'furnacemultitask',
@@ -4049,7 +4066,7 @@ Molpy.DefineBoosts = function() {
 				str += (Molpy.Got('3D Lens') && Math.abs(Molpy.newpixNumber) > 3094 ? '(Uses infinite goats)' : '(Uses 10 Glass Chips)');
 			}
 			return str;
-		}		
+		},
 	});
 	new Molpy.Boost({
 		name: 'Memories Revisited',
@@ -5256,11 +5273,13 @@ Molpy.DefineBoosts = function() {
 	{
 		if(times && Molpy.IsEnabled('Mario')) {
 			var l = Molpy.Boosts['Mario'].bought;
+			var runs=[10,20,100,500,1000][Molpy.options.approx]
 			var cost = l * (l + 1) / 2;
 			Molpy.boostSilence++;
 			if(Molpy.Spend('QQ', cost)) {
-				while(l--) {
-					Molpy.RewardLogicat(Molpy.Level('QQ'));
+				while((l>0)&&(runs>0)) {
+					Molpy.RewardLogicat(Molpy.Level('QQ'),Math.ceil(l/runs));
+					runs-=1
 				}
 			}
 			Molpy.boostSilence--;
@@ -5363,13 +5382,24 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({
 		name: 'Badgers',
 		icon: 'badgers',
-		
+		dynamicdesc: 1,
+		choices: [
+			'Badgers? Badgers? We don\'t need no ch*rpin\' Badgers! This is Sacred Ground and I\'ll have no more heresy. Surely you mean Molpies.',
+			'Exactly! No, wait - No! There are no badgers involved at all!',
+			'For every 10 badges, Glass Chip production uses 1% less sand'],
+		choice: '',
+
 		desc: function(me) {
-			return GLRschoice([
-					'Badgers? Badgers? We don\'t need no ch*rpin\' Badgers! This is Sacred Ground and I\'ll have no more heresy. Surely you mean Molpies.',
-					'Exactly! No, wait - No! There are no badgers involved at all!',
-					'For every 10 badges, Glass Chip production uses 1% less sand']);
+			if (!me.choice || !Molpy.IsEnabled('Expando')) Molpy.DuckDuckBadger();
+			return me.choice;
 		},
+
+		// desc: function(me) {
+		// 	return GLRschoice([
+		// 			'Badgers? Badgers? We don\'t need no ch*rpin\' Badgers! This is Sacred Ground and I\'ll have no more heresy. Surely you mean Molpies.',
+		// 			'Exactly! No, wait - No! There are no badgers involved at all!',
+		// 			'For every 10 badges, Glass Chip production uses 1% less sand']);
+		// },
 		
 		price:{
 			Sand: Infinity,
@@ -5377,6 +5407,11 @@ Molpy.DefineBoosts = function() {
 			GlassBlocks: '60K'
 		},
 	});
+
+	Molpy.DuckDuckBadger = function() {
+			var badgers = Molpy.Boosts['Badgers'];
+			badgers.choice = GLRschoice(badgers.choices);
+	};
 
 	Molpy.glassCeilingDescText.push('Sand rate of LaPetite');
 	Molpy.glassCeilingDescText.push('Castles produced by Beanie Builders');
@@ -11793,11 +11828,16 @@ new Molpy.Boost({
 		name: '3D Lens',
 		icon: '3dlens',
 		group: 'dimen',
-		desc: 'Allows the camera to capture the likeness of hyperdimensional beings',
+		desc: function(me) {
+			return 'Allows the camera to capture the likeness of ' + Molpy.Boosts['Shards'].fix + 'dimensional beings';
+		},
 		price: {
 			GlassChips: Infinity,
 			FluxCrystals: Infinity,
 			Goats: Infinity,
+		},
+		unlockFunction: function() {
+			Molpy.MakeSomethingUp();
 		},
 	});
 	new Molpy.Boost({
@@ -11805,19 +11845,26 @@ new Molpy.Boost({
 		plural: 'Dimension Shards',
 		alias: 'Shards',
 		icon: 'shard',
+		fixes: ['super','hyper','meta','inter','extra','ex-','trans','non','ultra','über','counter','post','N-'],
+		capFixes: ['Super','Hyper','Meta','Inter','Extra','Ex-','Trans','Non','Ultra','Über','Counter','Post','N-'],
+		startVowel: [0,0,0,1,1,1,0,0,1,1,0,0,1],
+		fix: '',
+		capFix: '',
 		desc: function(me) {
+			if (!me.fix || !Molpy.IsEnabled('Expando')) Molpy.MakeSomethingUp();
 			var str = '';
 			str += (me.Level == 1 ? 'A piece' : 'Pieces');
-			str += ' of extradimensional crystal from the edges of Time.';
+			str += ' of crystalline ' + me.fix + 'dimensional matter from the edges of Time.';
 			str += '<br>You have ' + Molpify(me.Level,3) + ' shard' + plural(me.Level) + '.';
 			return str;
 		},
 		defStuff: 1,
 		group: 'stuff',
 	});
-	Molpy.MakeSomethingUp = function() { // not used yet because of issue 1310
-		prefixes = ['super','hyper','meta','inter','extra','ex','trans','non','ultra','über','counter','post'];
-		return prefixes[Math.floor(Math.random()*prefixes.length)];
+	Molpy.MakeSomethingUp = function(caps) { // not used yet because of issue 1310
+		var shards = Molpy.Boosts['Shards'];
+		shards.fix = GLRschoice(shards.fixes);
+		shards.capFix = shards.capFixes[shards.fixes.indexOf(shards.fix)];
 	};
 	new Molpy.Boost({
 		name: 'Anticausal Autoclave',
@@ -11869,9 +11916,10 @@ new Molpy.Boost({
 		alias: 'Panes',
 		icon: 'pane',
 		desc: function(me) {
+			var shards = Molpy.Boosts['Shards'];
 			var str = '';
-			str += (me.Level == 1 ? 'An e' : 'E');
-			str += 'xtradimensional window' + plural(me.Level) + ' into other temporal planes';
+			str += (me.Level == 1 ? 'A' + (shards.startVowel[shards.fixes.indexOf(shards.fix)] ? 'n ' : ' ') + shards.fix : shards.capFix ); //barlw English
+			str += 'dimensional window' + plural(me.Level) + ' into other temporal planes';
 			str += '<br>You have ' + Molpify(me.Level,3) + ' pane' + plural(me.Level) + '.';
 			return str;
 		},
@@ -11926,7 +11974,7 @@ new Molpy.Boost({
 					return;
 				}
 			}
-			Molpy.Notify('You have siphoned dimensional energy from all cats this side of Time.', 1);
+			Molpy.Notify('You have siphoned ' + Molpy.Boosts['Shards'].fix + 'dimensional energy from all cats this side of Time.', 1);
 			return;
 		} else {
 			Molpy.Notify('Without shards, the catalogue is just a book of cat pictures.');
@@ -11988,7 +12036,7 @@ new Molpy.Boost({
 			Molpy.Notify('Come back soon!');
 			return;
 		}
-		Molpy.Notify('It\'s too heavy to lift without hyperdimensional assistance!')
+		Molpy.Notify('It\'s too heavy to lift without ' + Molpy.Boosts['Shards'].fix + 'dimensional assistance!')
 		return;
 	};
 	Molpy.ScoreGoal = function() {
