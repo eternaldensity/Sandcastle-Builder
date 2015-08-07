@@ -314,6 +314,7 @@ Molpy.DefineBoosts = function() {
 		className: 'alert',
 		
 		desc: function(me) {
+			if (!me.bought) return 'Boosts sand rate. Currently locked.';
 			return Molpify(me.power, 1) + '% Sand for ' + MolpifyCountdown(me.countdown);
 		},
 		startCountdown: 23, // only used when loading to ensure it doesn't get stuck. any true value would do here
@@ -516,6 +517,7 @@ Molpy.DefineBoosts = function() {
 		className: 'alert',
 		
 		desc: function(me) {
+			if (!me.bought) return 'Gives a discount on all boosts purchased. Currently locked.';
 			return Molpify(me.power * 100, 1) + '% off all items for ' + MolpifyCountdown(me.countdown)
 		},
 		
@@ -1703,11 +1705,12 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			if(me.bought)
+			if(me.bought) {
 				return 'A hole in Time has opened. You can not determine where it leads, but it will close in '
 					+ MolpifyCountdown(me.countdown)
 					+ '.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
-			return 'A hole in time has opened.';
+			}
+			return 'Currently, the rift is closed.';
 		},
 		
 		stats: 'Has an unfortunate negative effect on Logicat Wakefulness',
@@ -1916,6 +1919,7 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		
 		desc: function(me) {
+			if (!me.bought) return 'The glass furnace is currently switching... except not.';
 			return (me.IsEnabled ? 'off' : 'on') + ' in ' + MolpifyCountdown(me.countdown);
 		},
 		
@@ -2350,6 +2354,7 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		
 		desc: function(me) {
+			if (!me.bought) return 'The glass blower is currently switching... except not.';
 			return (me.IsEnabled ? 'off' : 'on') + ' in ' + MolpifyCountdown(me.countdown);
 		},
 		
@@ -3701,7 +3706,9 @@ Molpy.DefineBoosts = function() {
 		group: 'chron',
 		
 		desc: function(me) {
-			return 'Increases the effect of Flux Turbine for ' + MolpifyCountdown(me.countdown);
+			var str = 'Increases the effect of the Flux Turbine'
+			if (me.bought) str += ' for ' + MolpifyCountdown(me.countdown);
+			return str;
 		},
 		
 		countdownCMS: 1,
@@ -3720,7 +3727,7 @@ Molpy.DefineBoosts = function() {
 			if (me.bought) {
 				str += (5 - me.bought) + ' lock' + plural(5 - me.bought)
 				+ ' left<br><input type="Button" value="Smash" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> it open to grab the loot!'
-			} else str += 'Contains Loot';
+			} else str += 'Contains loot. You currently do not have a crate.';
 			if (me.CrateCount > 1) str += '<p>You have opened ' + Molpify(me.CrateCount) + ' Crates';
 			return str;
 		},
@@ -5992,6 +5999,7 @@ Molpy.DefineBoosts = function() {
 		className: 'alert',
 		
 		desc: function(me) {
+			if (!me.bought) return 'Boosts glass rate. Currently locked.';
 			return Molpify(me.power, 1) + '% Glass for ' + MolpifyCountdown(me.countdown);
 		},
 		
@@ -6989,7 +6997,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = '';
 			if (me.bought) str += (5 - me.bought) + ' lock' + plural(5 - me.bought) + ' left to grab the loot!'
-			else str += 'Contains Loot';
+			else str += 'Contains loot. You currently do not have a vault.';
 			if (me.power > 11) str += '<p>You have opened ' + Molpify(me.power-10) + ' Vaults';
 			return str;
 		},
@@ -11465,7 +11473,7 @@ Molpy.DefineBoosts = function() {
                     obj = Molpy.Boosts[Molpy.BoostAKA[list[i]]] // otherwise searching by name (which is anyways converted to alias)
                 }
 
-				if(obj && obj.unlocked && obj.bought) {
+				if(obj) {
 					Molpy.lootAddToFav(obj);
 				}
 			}
@@ -11846,9 +11854,9 @@ new Molpy.Boost({
 		plural: 'Dimension Shards',
 		alias: 'Shards',
 		icon: 'shard',
-		fixes: ['super','hyper','meta','inter','extra','ex-','trans','non','ultra','über','counter','post','N-'],
-		capFixes: ['Super','Hyper','Meta','Inter','Extra','Ex-','Trans','Non','Ultra','Über','Counter','Post','N-'],
-		startVowel: [0,0,0,1,1,1,0,0,1,1,0,0,1],
+		fixes:    ['super','hyper','meta','inter','extra','ex-','trans','non','ultra','über','counter','post','N-','omni','pan','demi'],
+		capFixes: ['Super','Hyper','Meta','Inter','Extra','Ex-','Trans','Non','Ultra','Über','Counter','Post','N-','Omni','Pan','Demi'],
+		startVowel: [0,0,0,1,1,1,0,0,1,1,0,0,1,1,0,0],
 		fix: '',
 		capFix: '',
 		desc: function(me) {
@@ -12275,22 +12283,5 @@ new Molpy.Boost({
 		// Big accomplishment, like first masterpiece.
 		// Also NP0 shouldn't have a fledging limit, so it acts as a dragon sink that you can use to improve others 
 	});
-	// new Molpy.Boost({
-	// 	name: '',
-	// 	alias: '',
-	// 	icon: '',
-	// 	group: '',
-	// 	desc: function(me) {
-	// 		var str = '';
-	// 		return str;
-	// 	},
-	// 	stats: '',
-	// 	price: {
-	// 		Sand: 1,
-	// 	},
-	// });
-
-
-
 // END OF BOOSTS, add new ones immediately before this comment
 }
