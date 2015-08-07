@@ -2575,10 +2575,9 @@ Molpy.Up = function() {
 
 				Molpy.CheckDoRDRewards(automationLevel);
 
-				var allRewards = Molpy.BuildDepartmentRewards();
 				var availRewards = [];
-				for( var i=0;i<allRewards.length;i++) {
-					var me = Molpy.Boosts[allRewards[i]];
+				for( var i=0;i<Molpy.DepartmentRewardOptions.length;i++) {
+					var me = Molpy.Boosts[Molpy.DepartmentRewardOptions[i]];
 					if(!me.unlocked && me.department) {
 						availRewards.push(me);
 					}
@@ -2829,10 +2828,9 @@ Molpy.Up = function() {
 
 		Molpy.RewardLogicat = function(level,times) {
 			Molpy.CheckLogicatRewards(0);
-			var allRewards = Molpy.BuildLogicatRewards()
 			var availRewards = [];
-			for( var i=0;i<allRewards.length;i++) {
-				var me = Molpy.Boosts[allRewards[i]];
+			for( var i=0;i<Molpy.LogicatRewardOptions.length;i++) {
+				var me = Molpy.Boosts[Molpy.LogicatRewardOptions[i]];
 				if(!me.unlocked && me.logic && level >= me.logic) {
 					availRewards.push(me);
 				}
@@ -3634,5 +3632,13 @@ window.onload = function() {
 		Molpy.Wake();
 		_gaq && _gaq.push(['_trackEvent', 'Setup', 'Complete', '' + Molpy.version, true]);
 	}
-
+	Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
+	})
+	Molpy.LogicatRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
+	})
+	Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
+	}) // These three should be elsewhere. Please let me know where elsewhere is.
 };

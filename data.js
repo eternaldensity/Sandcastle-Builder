@@ -890,23 +890,6 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 }
 Molpy.mapMonumg = 200;
 
-Molpy.BuildDragonRewards = function() {
-	return Molpy.BoostsByFunction(function(i){
-		return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
-	})
-}
-Molpy.BuildLogicatRewards = function() {
-	return Molpy.BoostsByFunction(function(i){
-		return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
-	})
-}
-Molpy.BuildDepartmentRewards = function() {
-	return Molpy.BoostsByFunction(function(i){
-		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
-	})
-} // These three should be elsewhere. Please let me know where elsewhere is.
-// Maybe here?
-
 Molpy.CheckASHF = function() {
 	Molpy.Boosts['ASHF'].department = 0;
 	if(Molpy.dispObjects.shop.length) {
