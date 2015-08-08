@@ -1232,6 +1232,10 @@ Molpy.DefineBoosts = function() {
 		group: 'cyb',
 		
 		desc: function(me) {
+			if (!me.bought) {
+				Molpy.EarnBadge('Picky Taste');
+				return 'Why, exactly, are you reading this?';
+			}
 			return 'You cannot access NewPixBot Navigation Code for ' + MolpifyCountdown(me.countdown);
 		},
 		
@@ -11473,7 +11477,7 @@ Molpy.DefineBoosts = function() {
                     obj = Molpy.Boosts[Molpy.BoostAKA[list[i]]] // otherwise searching by name (which is anyways converted to alias)
                 }
 
-				if(obj) {
+				if(obj && obj.unlocked && obj.bought) {
 					Molpy.lootAddToFav(obj);
 				}
 			}

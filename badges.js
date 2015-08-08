@@ -1118,6 +1118,11 @@ Molpy.DefineBadges = function() {
 		desc: 'Played the game as long after T** **d as before',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'Picky Taste',
+		desc: 'You know exactly what kind of boosts you like',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 
