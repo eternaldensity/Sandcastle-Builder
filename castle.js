@@ -2607,7 +2607,9 @@ Molpy.Up = function() {
 			if(BKJ.bought) {
 				BKJ.power = (BKJ.power) + 1;
 			}
-			if(Math.floor(2 * Math.random())) {
+			if (Molpy.Got('DomCobb') && !flandom(100)) {
+				Molpy.RewardInception();
+			} else if(Math.floor(2 * Math.random())) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Not Lucky', true]);
 				Molpy.RewardNotLucky(automationLevel);
 			} else if(isFinite(Molpy.Boosts['Sand'].power)) {
@@ -2833,7 +2835,10 @@ Molpy.Up = function() {
 			if(blitzSpeed >= 1000000) Molpy.EarnBadge('Blitz and Pieces');
 			Molpy.GiveTempBoost('Blitzing', blitzSpeed, blitzTime);
 		};
-
+		Molpy.RewardInception = function() {
+			Molpy.Notify('Leo has gone deeper, finding one dimension pane.');
+			Molpy.Add('Panes', 1);
+		};
 		Molpy.RewardLogicat = function(level,times) {
 			Molpy.CheckLogicatRewards(0);
 			var availRewards = [];

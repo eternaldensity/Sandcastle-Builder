@@ -59,6 +59,8 @@ For personal amusement only.
  * Dimension Keyhole
  * Eigenharmonics
  * Plumber's Vise
+ * Tractor Beam
+ * Leo DiCatrio
 - 8 new badges
 - Some boost typo fixes
 - Some discovery typo fixes

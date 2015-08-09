@@ -12414,6 +12414,23 @@ new Molpy.Boost({
 			Sand: 1,
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+		// To reduce the wait time to recharge the goat battery
 	});
+	new Molpy.Boost({
+		name: 'Leo DiCatrio',
+		alias: 'DomCobb',
+		group: 'dimen',
+		desc: function(me){
+			var str = '';
+			str += 'Rarely, a ' + Molpy.Redacted.word + ' will give you a dimension pane';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+		// So the player can never get too screwed by the increasing shard->pane cost
+		// Also makes redundakitties relevant again!
+	});
+
 // END OF BOOSTS, add new ones immediately before this comment
 }
