@@ -12398,5 +12398,22 @@ new Molpy.Boost({
 			Sand: 1,
 		},
 	});
+	new Molpy.Boost({
+		name: 'Tractor Beam',
+		icon: 'tractorbeam',
+		className: 'toggle',
+		group: 'dimen',
+		desc: function(me) {
+			var str = '';
+			str += (!me.IsEnabled ? 'When active, t' : 'T');
+			str += 'he vacuum cleaner regularly doubles your goat supply instead of creating vacuum.';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+	});
 // END OF BOOSTS, add new ones immediately before this comment
 }

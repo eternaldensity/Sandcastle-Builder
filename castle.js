@@ -2843,7 +2843,6 @@ Molpy.Up = function() {
 					availRewards.push(me);
 				}
 			}
-
 			if(availRewards.length) {
 				var red = GLRschoice(availRewards);
 				var price = red.price;
@@ -3179,10 +3178,11 @@ Molpy.Up = function() {
 		}
 
 		Molpy.Boosts['Sand'].dig(Molpy.Boosts['Sand'].sandPermNP*Molpy.Papal('Sand'));
+
 		if(Molpy.IsEnabled('Vacuum Cleaner') && Molpy.Has('Sand', Infinity) && Molpy.Has(Molpy.VacCost)) {
 			Molpy.Boosts['Sand'].Level = 0;
 			var sucks = 1;
-			if (Molpy.Got('Overtime') && Molpy.NPlength > 1800) sucks++;
+			if (Molpy.Got('Overtime') && Molpy.NPlength > 1800 && !Molpy.IsEnabled('Tractor Beam')) sucks++;
 			while (sucks--) {
 				var vacs = Math.floor((Molpy.Level('TS') || 1)*Molpy.Papal('Dyson'));
 				if(vacs > 1) {
@@ -3203,10 +3203,15 @@ Molpy.Up = function() {
 					if (Molpy.Got('blackhat')) vacs *= Math.floor(2+Math.pow(1.03,Math.pow(2.8,Molpy.Level('blackhat'))));
 					else vacs*=2;
 				}
-				Molpy.Add('Vacuum', vacs);
+				if (Molpy.IsEnabled('Tractor Beam')) {
+					Molpy.Add('Goats', Molpy.Boosts['Goats'].Level);
+				} else {
+					Molpy.Add('Vacuum', vacs);
+				}
 				if (!isFinite(Molpy.Level('FluxCrystals'))) Molpy.UnlockBoost('Black Hole');
 			}
 		}
+
 		Molpy.Boosts['GlassBlocks'].calculateBlocksPermNP();
 		Molpy.Boosts['GlassChips'].calculateChipsPermNP();
 
