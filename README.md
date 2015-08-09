@@ -55,7 +55,11 @@ For personal amusement only.
  * Panopticon
  * Green Sun
  * Dragon Seeks Path
-- 7 new badges
+ * Aperture Science
+ * Dimension Keyhole
+ * Eigenharmonics
+ * Plumber's Vise
+- 8 new badges
 - Some boost typo fixes
 - Some discovery typo fixes
 - Changed prize category markup

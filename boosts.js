@@ -11864,7 +11864,7 @@ new Molpy.Boost({
 		fix: '',
 		capFix: '',
 		desc: function(me) {
-			if (!me.fix || !Molpy.IsEnabled('Expando')) Molpy.MakeSomethingUp();
+			if (!me.fix) Molpy.MakeSomethingUp();
 			var str = '';
 			str += (me.Level == 1 ? 'A piece' : 'Pieces');
 			str += ' of crystalline ' + me.fix + 'dimensional matter from the edges of Time.';
@@ -11891,6 +11891,11 @@ new Molpy.Boost({
 				var l = me.Level;
 				var cost = 1;
 				cost = ((Math.pow(l,3))-(3*Math.pow(l,2))+(4*l))/2;
+				if (Molpy.Got('Vise') && Molpy.Got('Mario') && Molpy.IsEnabled('Mario')) {
+					var m = Molpy.Boosts['Mario'].bought;
+					m = Math.max(Math.E, m);
+					cost *= Math.pow(Math.floor(Math.log(m)) , -1/8);
+				}
 				tatpix = 0 // highest tatpix visited
 				yield = Math.floor(Math.pow(4,tatpix/4));
 				str += ', using infinite flux crystals';
@@ -12286,6 +12291,112 @@ new Molpy.Boost({
 		// But it should be a key part of dragon progression, granting a big dig rate and unlocking a boost to all dragons' stats.
 		// Big accomplishment, like first masterpiece.
 		// Also NP0 shouldn't have a fledging limit, so it acts as a dragon sink that you can use to improve others 
+	});
+	new Molpy.Boost({
+		name: 'Never Jam Today',
+		icon: 'nojam',
+		group: 'dimen',
+		desc: function(me) {
+			var str = 'Enormously boosts the shard yield of every other CatPix';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+		// does nothing (intentionally)
+	});
+	new Molpy.Boost({
+		name: 'Aperture Science',
+		icon: 'aperture',
+		group: 'dimen',
+		className: 'action',
+		
+		desc: function(me) {
+			var str = '';
+			if (!me.bought) str += 'Y\'know, the study of holes. ';
+			str += 'Researches technologies to push back the extemporal barrier surrounding the fringes of Time. ';
+			if (me.bought) {
+				str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keys ';
+				str += 'to advance farther.';
+			}
+			return str;
+		},
+		
+		buyFunction: function() {
+			this.power++;
+		},
+
+		price: {
+			Sand: Infinity,
+			Castles: Infinity,
+			GlassBlocks: '150M'
+		},
+	});
+	new Molpy.Boost({
+		name: 'Dimensional Keyhole',
+		alias: 'DimenKey',
+		title: function() {
+			return Molpy.Boosts['Shards'].capFix + 'dimensional Keyhole';
+		},
+		icon: 'dimenkey',
+		group: 'dimen',
+		desc: function() {
+			var shards = Molpy.Boosts['Shards']
+			if (!shards.fix) Molpy.MakeSomethingUp();
+			var str = '';
+			str += 'Opens a';
+			str += (shards.startVowel[shards.fixes.indexOf(shards.fix)] ? 'n ' : ' ');
+			str += shards.fix + 'dimensional doorhole, enabling further exploration past Time.';
+			return str;
+		},
+
+		priceFunction: function() {
+			return {Panes: 1/Molpy.priceFactor,};
+		},
+		
+		buyFunction: function() {
+			Molpy.LockBoost(this.alias);
+			Molpy.Boosts['Aperture Science'].power++;
+			//boost for buying with ASHF
+		},
+		logic: 100000
+	});
+	new Molpy.Boost({
+		name: 'Eigenharmonics',
+		icon: 'harmonics',
+		group: 'dimen',
+		desc: function(me) {
+			var str = 'Runs of twelve consecutive drained CatPix boost further culling';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+	});
+	Molpy.Pinch = function() {
+		var prey = Molpy.Boosts['kitkat'].prey;
+		var overtones = 0;
+		prey = prey.sort(function (a, b) { 
+			return a - b;
+		}); //sort prey
+		for (var i = 0; i < prey.length; i++) {
+			overtones += (prey[i + 11] == prey[i] + 11);
+		}
+		return overtones;
+
+	};
+	new Molpy.Boost({
+		name: 'Plumber\'s Vise',
+		alias: 'Vise',
+		icon: 'vise',
+		group: 'dimen',
+		desc: function(me) {
+			var str = 'When Italian Plumber is active, decreases the shards needed to forge a dimension pane based on IP\'s level';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
 	});
 // END OF BOOSTS, add new ones immediately before this comment
 }

@@ -1473,7 +1473,9 @@ Molpy.Up = function() {
 			this.buy = function(auto,freebe) {
 				Molpy.Anything = 1;
 				if(this.unlocked <= this.bought) return; //shopping assistant tried to buy it when it was locked
-				var realPrice = this.CalcPrice(this.price);
+				var price = this.price;
+				if (this.priceFunction) price = this.priceFunction();
+				var realPrice = this.CalcPrice(price);
 				var free = freebe || Molpy.IsFree(realPrice);
 				if(Molpy.ProtectingPrice() && !free) return;
 				if(!free && !Molpy.Spend(realPrice)) return;
@@ -1495,7 +1497,9 @@ Molpy.Up = function() {
 			};
 			
 			this.isAffordable = function() {
-				var realPrice = this.CalcPrice(this.price);
+				var price = this.price;
+				if (this.priceFunction) price = this.priceFunction();
+				var realPrice = this.CalcPrice(price);
 				if(Molpy.IsFree(realPrice)) return 1;
 				if(Molpy.ProtectingPrice()) return 0;
 				return Molpy.Has(realPrice);
@@ -1562,7 +1566,9 @@ Molpy.Up = function() {
 			
 			this.getPrice = function() {
 				var p = '';
-				var realPrice = this.CalcPrice(this.price);
+				var price = this.price;
+				if (this.priceFunction) price = this.priceFunction();
+				var realPrice = this.CalcPrice(price);
 				if(!Molpy.IsFree(realPrice)) p = realPrice;
 				return p;
 			}
@@ -2585,7 +2591,9 @@ Molpy.Up = function() {
 
 				if(availRewards.length) {
 					var red = GLRschoice(availRewards);
-					if(!Molpy.IsFree(red.CalcPrice(red.price))) {
+					var price = red.price;
+					if (red.priceFunction) price = red.priceFunction();
+					if(!Molpy.IsFree(red.CalcPrice(price))) {
 						if(!Molpy.boostSilence) Molpy.Notify('The DoRD has produced:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else {
@@ -2838,8 +2846,10 @@ Molpy.Up = function() {
 
 			if(availRewards.length) {
 				var red = GLRschoice(availRewards);
-				if(!Molpy.IsFree(red.CalcPrice(red.price))) {
-					if(!Molpy.RepeatableBoost.indexof(red.alias)){
+				var price = red.price;
+				if (red.priceFunction) price = red.priceFunction();
+				if(!Molpy.IsFree(red.CalcPrice(price))) {
+					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
 						if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else{
@@ -2998,7 +3008,9 @@ Molpy.Up = function() {
 						Molpy.Notify('You have already drained this CatPix of its dimensional energy.');
 						return;
 					} else {
-						var factor = (Molpy.Got('GCC') ? 12 : 1);
+						var factor = 1;
+						if (Molpy.Got('GCC')) factor *= 12;
+						if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.01, Molpy.Pinch());
 						factor *= (Molpy.Got('Sigma Stacking') ? Math.abs(np) - 3094 : 1)
 						if (Molpy.Got('GCA')) {
 							for (i = 2; i < 12; i++) {
@@ -3039,6 +3051,8 @@ Molpy.Up = function() {
 							}
 						}
 						var amount = Math.max(1, Math.floor(factor));
+						if (Molpy.Got('Never Jam Today') && (Molpy.newpixNumber != Molpy.newpixNumber)) amount = Math.pow(amount, amount);
+						// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
 						Molpy.Add('Shards', amount);
 						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
 						prey.push(np);
@@ -3050,6 +3064,9 @@ Molpy.Up = function() {
 						}
 						if (prey.length > 776) {
 							Molpy.EarnBadge('YouTube Star');
+						}
+						if (!Molpy.Got('Eigenharmonics') && Molpy.Pinch() > 120) {
+							Molpy.UnlockBoost('Eigenharmonics');
 						}
 						return;
 					}
