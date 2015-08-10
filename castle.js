@@ -1763,6 +1763,7 @@ Molpy.Up = function() {
 							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 							Molpy.Add('Blackprints', lettuce.bought*times);
 						}
+						Molpy.Notify("Got "+Molpify(times)+bacon+Molpy.plural(times))
 					}
 				} else{
 					//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
