@@ -1114,6 +1114,9 @@
 			}
 			bh.bought = bhTemp;
 		}
+		if (version < 3.7) {
+			Molpy.Boosts['Tangled Tesseract'].power = (Molpy.Got('Tangled Tesseract') ? 4 : 3);
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
@@ -1240,7 +1243,7 @@
 			var boj = !coma && Molpy.Got('BoJ') && Molpy.Spend('Bonemeal', 10000);
 			var KaKPower = !coma && Molpy.Got('Kite and Key') ? Molpy.Boosts['Kite and Key'].power : 0;
 			var LiBPower = !coma && Molpy.Got('Lightning in a Bottle') ? Molpy.Boosts['Lightning in a Bottle'].power : 0;
-			var SNPower = !coma && Molpy.Got('Safety Net') ? Molpy.Boosts['Safety Net'].power : 0;
+			var SNPower = !coma && Molpy.Boosts['Safety Net'].power > 0 ? Molpy.Boosts['Safety Net'].power : 0;
 			var bagCount = boh + bom + bof + boj;
 			var maxKeep = Math.pow(1e42, bagCount);
 			var prizeCounts = [];
