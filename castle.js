@@ -1726,7 +1726,7 @@ Molpy.Up = function() {
 				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
 					var item = Molpy.BoostsById[thingy + 1];
 					if(item.power) {
-						RobbyDo.push(item.alias)
+						RobbyDo.push(item.name)
 					}
 				}
 				RobbyDo.push(Molpy.shoppingItem)
@@ -2840,6 +2840,7 @@ Molpy.Up = function() {
 			Molpy.Add('Panes', 1);
 		};
 		Molpy.RewardLogicat = function(level,times) {
+			if(times==undefined){times=1}
 			Molpy.CheckLogicatRewards(0);
 			var availRewards = [];
 			for( var i=0;i<Molpy.LogicatRewardOptions.length;i++) {
