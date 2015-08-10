@@ -3591,7 +3591,7 @@ Molpy.DefineBoosts = function() {
 							rewards = 5;
 						}
 						while(rewards--) {
-							Molpy.RewardLogicat(this.Level);
+							Molpy.RewardLogicat(this.Level, 1);
 						}
 						if (this.bought > DeMolpify('10GW') && Molpy.Has('QQ','10GW')) Molpy.UnlockBoost('Hubble Double');
 					}
@@ -9347,7 +9347,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' Question Qube' + plural(me.Level) + '.';
 			if(me.Has(1)) {
-				str += '<br><input type="Button" onclick="Molpy.Spend({QQ:1});Molpy.RewardLogicat(Molpy.Level(\'QQ\'))" value="?"></input>';
+				str += '<br><input type="Button" onclick="Molpy.Spend({QQ:1});Molpy.RewardLogicat(Molpy.Level(\'QQ\'),1)" value="?"></input>';
 			}
 			return str;
 		},
