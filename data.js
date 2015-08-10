@@ -911,6 +911,19 @@ Molpy.CheckASHF = function() {
 	}
 }
 
+Molpy.BuildRewardsLists = function() {
+	Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
+	});
+	Molpy.LogicatRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
+	});
+	Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
+	});
+	Molpy.RewardsListsBuilt = 1;
+}
+
 Molpy.CheckClickAchievements = function() {
 	var c = Molpy.beachClicks;
 	Molpy.EarnBadge('Amazon Patent');

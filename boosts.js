@@ -314,6 +314,7 @@ Molpy.DefineBoosts = function() {
 		className: 'alert',
 		
 		desc: function(me) {
+			if (!me.bought) return 'Boosts sand rate. Currently locked.';
 			return Molpify(me.power, 1) + '% Sand for ' + MolpifyCountdown(me.countdown);
 		},
 		startCountdown: 23, // only used when loading to ensure it doesn't get stuck. any true value would do here
@@ -516,6 +517,7 @@ Molpy.DefineBoosts = function() {
 		className: 'alert',
 		
 		desc: function(me) {
+			if (!me.bought) return 'Gives a discount on all boosts purchased. Currently locked.';
 			return Molpify(me.power * 100, 1) + '% off all items for ' + MolpifyCountdown(me.countdown)
 		},
 		
@@ -758,7 +760,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Earned('discov' + Molpy.newpixNumber)) Molpy.Badges['discov' + Molpy.newpixNumber].Refresh();
 			if(oldnp != np && np == Molpy.highestNPvisited && Molpy.Boosts['kitkat'].prey.length >= 24) Molpy.UnlockBoost('PG');
 			Molpy.newpixNumber = np;
-			Molpy.Boosts['Signpost'].Level = 0;
+			Molpy.Boosts['Signpost'].power = 0;
 			if(Molpy.Earned('discov' + Molpy.newpixNumber)) Molpy.Badges['discov' + Molpy.newpixNumber].Refresh();
 			_gaq && _gaq.push(['_trackEvent', 'NewPix', (chips ? 'Memory Warp' : 'Time Travel'), '' + Molpy.newpixNumber]);
 			Molpy.ONGstart = ONGsnip(new Date());
@@ -1230,6 +1232,10 @@ Molpy.DefineBoosts = function() {
 		group: 'cyb',
 		
 		desc: function(me) {
+			if (!me.bought) {
+				Molpy.EarnBadge('Picky Taste');
+				return 'Why, exactly, are you reading this?';
+			}
 			return 'You cannot access NewPixBot Navigation Code for ' + MolpifyCountdown(me.countdown);
 		},
 		
@@ -1703,11 +1709,12 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 		
 		desc: function(me) {
-			if(me.bought)
+			if(me.bought) {
 				return 'A hole in Time has opened. You can not determine where it leads, but it will close in '
 					+ MolpifyCountdown(me.countdown)
 					+ '.<br><input type="Button" value="JUMP!" onclick="Molpy.RiftJump()"></input>';
-			return 'A hole in time has opened.';
+			}
+			return 'Currently, the rift is closed.';
 		},
 		
 		stats: 'Has an unfortunate negative effect on Logicat Wakefulness',
@@ -1916,6 +1923,7 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		
 		desc: function(me) {
+			if (!me.bought) return 'The glass furnace is currently switching... except not.';
 			return (me.IsEnabled ? 'off' : 'on') + ' in ' + MolpifyCountdown(me.countdown);
 		},
 		
@@ -2350,6 +2358,7 @@ Molpy.DefineBoosts = function() {
 		group: 'hpt',
 		
 		desc: function(me) {
+			if (!me.bought) return 'The glass blower is currently switching... except not.';
 			return (me.IsEnabled ? 'off' : 'on') + ' in ' + MolpifyCountdown(me.countdown);
 		},
 		
@@ -3701,7 +3710,9 @@ Molpy.DefineBoosts = function() {
 		group: 'chron',
 		
 		desc: function(me) {
-			return 'Increases the effect of Flux Turbine for ' + MolpifyCountdown(me.countdown);
+			var str = 'Increases the effect of the Flux Turbine'
+			if (me.bought) str += ' for ' + MolpifyCountdown(me.countdown);
+			return str;
 		},
 		
 		countdownCMS: 1,
@@ -3720,7 +3731,7 @@ Molpy.DefineBoosts = function() {
 			if (me.bought) {
 				str += (5 - me.bought) + ' lock' + plural(5 - me.bought)
 				+ ' left<br><input type="Button" value="Smash" onclick="Molpy.LockBoost(\'Locked Crate\')"></input> it open to grab the loot!'
-			} else str += 'Contains Loot';
+			} else str += 'Contains loot. You currently do not have a crate.';
 			if (me.CrateCount > 1) str += '<p>You have opened ' + Molpify(me.CrateCount) + ' Crates';
 			return str;
 		},
@@ -5992,6 +6003,7 @@ Molpy.DefineBoosts = function() {
 		className: 'alert',
 		
 		desc: function(me) {
+			if (!me.bought) return 'Boosts glass rate. Currently locked.';
 			return Molpify(me.power, 1) + '% Glass for ' + MolpifyCountdown(me.countdown);
 		},
 		
@@ -6989,7 +7001,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = '';
 			if (me.bought) str += (5 - me.bought) + ' lock' + plural(5 - me.bought) + ' left to grab the loot!'
-			else str += 'Contains Loot';
+			else str += 'Contains loot. You currently do not have a vault.';
 			if (me.power > 11) str += '<p>You have opened ' + Molpify(me.power-10) + ' Vaults';
 			return str;
 		},
@@ -10004,7 +10016,7 @@ Molpy.DefineBoosts = function() {
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 		className: 'toggle',
 		price: {QQ: '1P', Mustard: 1e8},
-		group: 'bean',
+		group: 'dimen',
 		className: 'toggle',
 		startPower: 3,
 		buyFunction: function() { this.power = 4 },
@@ -11155,8 +11167,9 @@ Molpy.DefineBoosts = function() {
 	new Molpy.Boost({ 
 		name: 'Muse',
 		icon: 'muse',
-		desc: function() {
+		desc: function(me) {
 			var np = Molpy.newpixNumber;
+			if (!me.bought) return 'Inspires the creation of a Diamond Masterpiece. A fickle thing.';
 			if (!Molpy.Badges['monumg'+np]) {
 				Molpy.LockBoost('Muse');
 				return '';
@@ -11195,7 +11208,7 @@ Molpy.DefineBoosts = function() {
 				if (Molpy.IsEnabled('Archimedes') && (!Molpy.Got('Cold Mould') || !Molpy.IsEnabled('Cold Mould'))) {
 					str += '<br><b>Warning</b> Unless you enable Cold Mould or Disable Archimedes Lever, Archimedes Lever will make them again<br>';
 				};
-				str += '<input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
+				str += '<br><input type=button value="Destroy!" onclick="Molpy.Boosts[\'Black Powder\'].bang()"></input>';
 			}
 			return str;
 		},
@@ -11787,13 +11800,12 @@ new Molpy.Boost({
 		icon: 'signpost',
 		group: 'dimen',
 		className: 'action',
-		Level: Molpy.BoostFuncs.Bought1Level,
 		desc: function(me) {
 			var str = 'Leads you outside of Time';
 			if (me.bought) {
-				if (me.Level == 0) {
+				if (me.power == 0) {
 					str += '.<br><input type=button onclick="Molpy.TimeOut()" value="Charge"></input> the signpost to travel to NewPix 0 on the next ONG (at the cost of Infinite Flux Crystals and a sacrifice of Infinite Goats).';
-				} else if (me.Level == 1) {
+				} else if (me.power == 1) {
 					str += '. You will arrive at NP0 upon the next ONG.';
 					if (Molpy.IsEnabled('Temporal Anchor')) {
 						str += '<br><b>WARNING:</b> Leaving the Temporal Anchor dropped will cancel the effect.';
@@ -11812,8 +11824,9 @@ new Molpy.Boost({
 		var me = Molpy.Boosts['Signpost'];
 		if(!Molpy.Has('FluxCrystals', Infinity) || !Molpy.Has('Goats', Infinity)) {
 			Molpy.Notify('But... the future refused to change.');
-			me.power++;
-			if (me.power >= 16) {
+			if (!me.Level) me.Level = 0;
+			me.Level++;
+			if (me.Level >= 16) {
 				Molpy.EarnBadge('Time-traveling Alien Parasite');
 			}
 			me.Refresh();
@@ -11821,7 +11834,7 @@ new Molpy.Boost({
 		};
 		Molpy.Spend('FluxCrystals', Infinity);
 		Molpy.Spend('Goats', Infinity);
-		me.Level = 1;
+		me.power = 1;
 		Molpy.Notify('Your destination is set to NP0.<br>Drive responsibly.');
 	};
 	new Molpy.Boost({
@@ -11845,13 +11858,13 @@ new Molpy.Boost({
 		plural: 'Dimension Shards',
 		alias: 'Shards',
 		icon: 'shard',
-		fixes: ['super','hyper','meta','inter','extra','ex-','trans','non','ultra','über','counter','post','N-'],
-		capFixes: ['Super','Hyper','Meta','Inter','Extra','Ex-','Trans','Non','Ultra','Über','Counter','Post','N-'],
-		startVowel: [0,0,0,1,1,1,0,0,1,1,0,0,1],
+		fixes:    ['super','hyper','meta','inter','extra','ex-','trans','non','ultra','über','counter','post','N-','omni','pan','demi'],
+		capFixes: ['Super','Hyper','Meta','Inter','Extra','Ex-','Trans','Non','Ultra','Über','Counter','Post','N-','Omni','Pan','Demi'],
+		startVowel: [0,0,0,1,1,1,0,0,1,1,0,0,1,1,0,0],
 		fix: '',
 		capFix: '',
 		desc: function(me) {
-			if (!me.fix || !Molpy.IsEnabled('Expando')) Molpy.MakeSomethingUp();
+			if (!me.fix) Molpy.MakeSomethingUp();
 			var str = '';
 			str += (me.Level == 1 ? 'A piece' : 'Pieces');
 			str += ' of crystalline ' + me.fix + 'dimensional matter from the edges of Time.';
@@ -11878,6 +11891,11 @@ new Molpy.Boost({
 				var l = me.Level;
 				var cost = 1;
 				cost = ((Math.pow(l,3))-(3*Math.pow(l,2))+(4*l))/2;
+				if (Molpy.Got('Vise') && Molpy.Got('Mario') && Molpy.IsEnabled('Mario')) {
+					var m = Molpy.Boosts['Mario'].bought;
+					m = Math.max(Math.E, m);
+					cost *= Math.pow(Math.floor(Math.log(m)) , -1/8);
+				}
 				tatpix = 0 // highest tatpix visited
 				yield = Math.floor(Math.pow(4,tatpix/4));
 				str += ', using infinite flux crystals';
@@ -12209,7 +12227,7 @@ new Molpy.Boost({
 			return str;
 		},
 		stats: '',
-		Level: Molpy.BoostFuncs.Bought1Level,
+		Level: Molpy.BoostFuncs.Bought0Level,
 		price: {
 			Sand: 1,
 		},
@@ -12274,22 +12292,145 @@ new Molpy.Boost({
 		// Big accomplishment, like first masterpiece.
 		// Also NP0 shouldn't have a fledging limit, so it acts as a dragon sink that you can use to improve others 
 	});
-	// new Molpy.Boost({
-	// 	name: '',
-	// 	alias: '',
-	// 	icon: '',
-	// 	group: '',
-	// 	desc: function(me) {
-	// 		var str = '';
-	// 		return str;
-	// 	},
-	// 	stats: '',
-	// 	price: {
-	// 		Sand: 1,
-	// 	},
-	// });
+	new Molpy.Boost({
+		name: 'Never Jam Today',
+		icon: 'nojam',
+		group: 'dimen',
+		desc: function(me) {
+			var str = 'Enormously boosts the shard yield of every other CatPix';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+		// does nothing (intentionally)
+	});
+	new Molpy.Boost({
+		name: 'Aperture Science',
+		icon: 'aperture',
+		group: 'dimen',
+		className: 'action',
+		
+		desc: function(me) {
+			var str = '';
+			if (!me.bought) str += 'Y\'know, the study of holes. ';
+			str += 'Researches technologies to push back the extemporal barrier surrounding the fringes of Time. ';
+			if (me.bought) {
+				str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keys ';
+				str += 'to advance farther.';
+			}
+			return str;
+		},
+		
+		buyFunction: function() {
+			this.power++;
+		},
 
+		price: {
+			Sand: Infinity,
+			Castles: Infinity,
+			GlassBlocks: '150M'
+		},
+	});
+	new Molpy.Boost({
+		name: 'Dimensional Keyhole',
+		alias: 'DimenKey',
+		title: function() {
+			return Molpy.Boosts['Shards'].capFix + 'dimensional Keyhole';
+		},
+		icon: 'dimenkey',
+		group: 'dimen',
+		desc: function() {
+			var shards = Molpy.Boosts['Shards']
+			if (!shards.fix) Molpy.MakeSomethingUp();
+			var str = '';
+			str += 'Opens a';
+			str += (shards.startVowel[shards.fixes.indexOf(shards.fix)] ? 'n ' : ' ');
+			str += shards.fix + 'dimensional doorhole, enabling further exploration past Time.';
+			return str;
+		},
 
+		priceFunction: function() {
+			return {Panes: 1/Molpy.priceFactor,};
+		},
+		
+		buyFunction: function() {
+			Molpy.LockBoost(this.alias);
+			Molpy.Boosts['Aperture Science'].power++;
+			//boost for buying with ASHF
+		},
+		logic: 100000
+	});
+	new Molpy.Boost({
+		name: 'Eigenharmonics',
+		icon: 'harmonics',
+		group: 'dimen',
+		desc: function(me) {
+			var str = 'Runs of twelve consecutive drained CatPix boost further culling';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+	});
+	Molpy.Pinch = function() {
+		var prey = Molpy.Boosts['kitkat'].prey;
+		var overtones = 0;
+		prey = prey.sort(function (a, b) { 
+			return a - b;
+		}); //sort prey
+		for (var i = 0; i < prey.length; i++) {
+			overtones += (prey[i + 11] == prey[i] + 11);
+		}
+		return overtones;
+
+	};
+	new Molpy.Boost({
+		name: 'Plumber\'s Vise',
+		alias: 'Vise',
+		icon: 'vise',
+		group: 'dimen',
+		desc: function(me) {
+			var str = 'When Italian Plumber is active, decreases the shards needed to forge a dimension pane based on IP\'s level';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+	});
+	new Molpy.Boost({
+		name: 'Tractor Beam',
+		icon: 'tractorbeam',
+		className: 'toggle',
+		group: 'dimen',
+		desc: function(me) {
+			var str = '';
+			str += (!me.IsEnabled ? 'When active, t' : 'T');
+			str += 'he vacuum cleaner regularly doubles your goat supply instead of creating vacuum.';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+		// To reduce the wait time to recharge the goat battery
+	});
+	new Molpy.Boost({
+		name: 'Leo DiCatrio',
+		alias: 'DomCobb',
+		group: 'dimen',
+		desc: function(me){
+			var str = '';
+			str += 'Rarely, a ' + Molpy.Redacted.word + ' will give you a dimension pane';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+		// So the player can never get too screwed by the increasing shard->pane cost
+		// Also makes redundakitties relevant again!
+	});
 
 // END OF BOOSTS, add new ones immediately before this comment
 }

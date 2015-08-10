@@ -55,7 +55,13 @@ For personal amusement only.
  * Panopticon
  * Green Sun
  * Dragon Seeks Path
-- 7 new badges
+ * Aperture Science
+ * Dimension Keyhole
+ * Eigenharmonics
+ * Plumber's Vise
+ * Tractor Beam
+ * Leo DiCatrio
+- 8 new badges
 - Some boost typo fixes
 - Some discovery typo fixes
 - Changed prize category markup
@@ -63,6 +69,7 @@ For personal amusement only.
 - "Loopin Looie" renamed to "Temporal Anchor"
 - "Ooo Shiny!" renamed to "Ooh, Shiny!"
 - Expando now correctly pins down Badgers and Redunception descriptions, so you can actually read them
+- Muse and other boosts now have correct descriptions when they're locked (Muse will no longer crash the game when favorited)
 
 #### pickten
 
