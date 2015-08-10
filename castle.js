@@ -1749,6 +1749,9 @@ Molpy.Up = function() {
 									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
 							}
 						}
+						if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
+							Molpy.UnlockBoost('Locked Vault')
+						}
 						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5))}
 						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5))}
 						if(lettuce.name==='Locked Crate'){
@@ -1763,7 +1766,7 @@ Molpy.Up = function() {
 							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 							Molpy.Add('Blackprints', lettuce.bought*times);
 						}
-						Molpy.Notify("Got "+Molpify(times)+bacon+Molpy.plural(times))
+						Molpy.Notify("Got "+Molpify(times)+bacon+plural(times))
 					}
 				} else{
 					//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
