@@ -1722,17 +1722,23 @@ Molpy.Up = function() {
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
 			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
 				var RobbySee=Molpy.Boosts['Rob'];
-				var RobbyDo=[]
+				var RobbyDo=[];
 				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
 					var item = Molpy.BoostsById[thingy + 1];
 					if(item.power) {
 						RobbyDo.push(item.name)
 					}
 				}
+				// var RobbyNames = [];
+				// for(var i = 0; i < RobbyDo.length; i++) {
+				// 	RobbyNames.push(Molpy.BoostsById[Molpy.Boosts[RobbyDo[i]].power].alias);
+				// }
 				RobbyDo.push(Molpy.shoppingItem)
-				if(RobbyDo.indexOf(bacon)){
+				// RobbyNames.push(Molpy.shoppingItem)
+				if(RobbyDo.indexOf(bacon) != -1){
+				// if(RobbyNames.indexOf(bacon) != -1){
 					var lettuce=Molpy.Boosts[bacon];
-					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
+					if ( [undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction) == -1) {
 						lettuce.power+=times
 						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
 							var pages=(lettuce.power+lettuce.power-times)*times/2
@@ -2853,6 +2859,10 @@ Molpy.Up = function() {
 					availRewards.push(me);
 				}
 			}
+			// Molpy.Notify('availRewards:',1)
+			// for (var i=0;i<availRewards.length;i++) {
+			// 	Molpy.Notify('' + i + ': ' + availRewards[i].alias, 1);
+			// }
 			if(availRewards.length) {
 				var red = GLRschoice(availRewards);
 				var price = red.price;

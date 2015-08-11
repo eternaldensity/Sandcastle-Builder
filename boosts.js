@@ -3591,7 +3591,7 @@ Molpy.DefineBoosts = function() {
 							rewards = 5;
 						}
 						while(rewards--) {
-							Molpy.RewardLogicat(this.Level);
+							Molpy.RewardLogicat(this.Level, 1);
 						}
 						if (this.bought > DeMolpify('10GW') && Molpy.Has('QQ','10GW')) Molpy.UnlockBoost('Hubble Double');
 					}
@@ -9347,7 +9347,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' Question Qube' + plural(me.Level) + '.';
 			if(me.Has(1)) {
-				str += '<br><input type="Button" onclick="Molpy.Spend({QQ:1});Molpy.RewardLogicat(Molpy.Level(\'QQ\'))" value="?"></input>';
+				str += '<br><input type="Button" onclick="Molpy.Spend({QQ:1});Molpy.RewardLogicat(Molpy.Level(\'QQ\'),1)" value="?"></input>';
 			}
 			return str;
 		},
@@ -9377,14 +9377,21 @@ Molpy.DefineBoosts = function() {
 					QQ: (50000 * lvls)
 				};
 				if(Molpy.Has(UpgradePrice)) {
-					str += '<br><input type="button" onclick="Molpy.SuperMario()" value="Upgrade"></input>'
-						+ '<br>To open ' + (Molpify(lvls + 1, 4)) + ' Qubes, using ' + ((lvls + 1) * (lvls + 2) / 2)
-						+ ' Qubes.  Costs: ' + Molpy.PriceString(UpgradePrice);
+					var mult = 1;
+					while ((mult == 1 || me.bought >= 10 * mult) &&
+						Molpy.Has('Vacuum', UpgradePrice.Vacuum * mult * 10) &&
+						Molpy.Has('QQ', UpgradePrice.QQ * mult * 10)) mult *= 10;
+					UpgradePrice.Vacuum *= mult;
+					UpgradePrice.QQ *= mult;
+					str += '<br><input type="button" onclick="Molpy.SuperMario(' + mult + ')" value="Upgrade"></input>';
+					str += ' Mario by ' + Molpify(mult, 2) + ' at a cost of ' + Molpy.PriceString(UpgradePrice) + ',';
+					str += '<br>to open ' + (Molpify(lvls + mult, 4)) + ' Qubes, using ' + Molpify(((lvls + mult) * (lvls + mult + 1) / 2), 4);
+					str += ' Qubes.';
 				}
 				if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Vacuum',1000))	
 					str += '<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeMario()">\</input>';
-			}
-			return str
+				}
+				return str;
 		},
 		
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
@@ -9395,16 +9402,16 @@ Molpy.DefineBoosts = function() {
 		}
 	});
 
-	Molpy.SuperMario = function() {
+	Molpy.SuperMario = function(mult) {
 		Molpy.Anything = 1;
 		var me = Molpy.Boosts['Mario'];
 		var lvls = me.bought;
 		var UpgradePrice = {
-			Vacuum: 1000,
-			QQ: (50000 * lvls)
+			Vacuum: 1000 * mult,
+			QQ: (50000 * lvls * mult)
 		};
 		if(Molpy.Spend(UpgradePrice)) {
-			me.bought++;
+			me.bought += mult;
 			Molpy.Notify("Italian Plumber Upgraded");
 			me.Refresh();
 		}
