@@ -10026,8 +10026,6 @@ Molpy.DefineBoosts = function() {
 		name: 'Bananananas',
 		icon: 'banana',
 		group: 'drac',
-		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
-		className: 'toggle',
 		desc: function(me) {
 			var str = 'When the Shadow Feeder runs, and the number of Puzzles available is'
 			str+=' more those being solved, it replaces that number, otherwise the shadow feeder converts'
@@ -10035,6 +10033,8 @@ Molpy.DefineBoosts = function() {
 			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
 		},
+		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+		className: 'toggle',
 		price: {Bonemeal: 123454321},
 	});
 	new Molpy.Boost({ 
