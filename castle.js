@@ -1722,23 +1722,17 @@ Molpy.Up = function() {
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
 			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
 				var RobbySee=Molpy.Boosts['Rob'];
-				var RobbyDo=[];
+				var RobbyDo=[]
 				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
 					var item = Molpy.BoostsById[thingy + 1];
 					if(item.power) {
-						RobbyDo.push(item.alias)
+						RobbyDo.push(item.name)
 					}
 				}
-				// var RobbyNames = [];
-				// for(var i = 0; i < RobbyDo.length; i++) {
-				// 	RobbyNames.push(Molpy.BoostsById[Molpy.Boosts[RobbyDo[i]].power].alias);
-				// }
 				RobbyDo.push(Molpy.shoppingItem)
-				// RobbyNames.push(Molpy.shoppingItem)
-				if(RobbyDo.indexOf(bacon) != -1){
-				// if(RobbyNames.indexOf(bacon) != -1){
+				if(RobbyDo.indexOf(bacon)){
 					var lettuce=Molpy.Boosts[bacon];
-					if ( [undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction) == -1) {
+					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
 						lettuce.power+=times
 						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
 							var pages=(lettuce.power+lettuce.power-times)*times/2
@@ -1755,6 +1749,9 @@ Molpy.Up = function() {
 									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
 							}
 						}
+						if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
+							Molpy.UnlockBoost('Locked Vault')
+						}
 						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5))}
 						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5))}
 						if(lettuce.name==='Locked Crate'){
@@ -1769,6 +1766,7 @@ Molpy.Up = function() {
 							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 							Molpy.Add('Blackprints', lettuce.bought*times);
 						}
+						Molpy.Notify("Got "+Molpify(times)+' '+bacon+plural(times))
 					}
 				} else{
 					//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
@@ -2846,6 +2844,7 @@ Molpy.Up = function() {
 			Molpy.Add('Panes', 1);
 		};
 		Molpy.RewardLogicat = function(level,times) {
+			if(times==undefined){times=1}
 			Molpy.CheckLogicatRewards(0);
 			var availRewards = [];
 			for( var i=0;i<Molpy.LogicatRewardOptions.length;i++) {
@@ -2854,10 +2853,6 @@ Molpy.Up = function() {
 					availRewards.push(me);
 				}
 			}
-			// Molpy.Notify('availRewards:',1)
-			// for (var i=0;i<availRewards.length;i++) {
-			// 	Molpy.Notify('' + i + ': ' + availRewards[i].alias, 1);
-			// }
 			if(availRewards.length) {
 				var red = GLRschoice(availRewards);
 				var price = red.price;
