@@ -5328,11 +5328,11 @@ Molpy.DefineBoosts = function() {
 			{
 				if (Molpy.Got('Shadow Feeder') && Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) &&
 					Molpy.Got('ShadwDrgn') && !Molpy.Has('Shadow Feeder',Molpy.PokeBar()) && Molpy.Spend('Bonemeal', 5)) {
-					if (Molpy.Got('Bananananas') && Molpy.PuzzleGens.caged.active && (Molpy.PuzzleGens.caged.puzzles < Molpy.Level('LogiPuzzle'))) {
+					if (Molpy.IsEnabled('Bananananas') && Molpy.PuzzleGens.caged.active && (Molpy.PuzzleGens.caged.puzzles < Molpy.Level('LogiPuzzle'))) {
 						Molpy.PuzzleGens.caged.puzzles = Math.ceil(Molpy.Level('LogiPuzzle'));
 						Molpy.Boosts['LogiPuzzle'].power = 0;
 						Molpy.Boosts['LogiPuzzle'].Refresh();
-					} else if (Molpy.Got('Bananananas') && !Molpy.PuzzleGens.caged.active ) {
+					} else if (Molpy.IsEnabled('Bananananas') && !Molpy.PuzzleGens.caged.active ) {
 						var puz = Math.floor((Molpy.Level('LogiPuzzle') - 1) / 10) * 10;
 						var cost = (100 + Molpy.LogiMult(25)) * puz;
 						if(Molpy.Spend('GlassBlocks', cost)) {
@@ -10026,7 +10026,13 @@ Molpy.DefineBoosts = function() {
 		name: 'Bananananas',
 		icon: 'banana',
 		group: 'drac',
-		desc: 'When the Shadow Feeder runs, and the number of Puzzles available is more those being solved, it replaces that number, otherwise the shadow feeder converts them to bonemeal',
+		desc: function(me) {
+			var str = 'When the Shadow Feeder runs, and the number of Puzzles available is'
+			str+=' more those being solved, it replaces that number, otherwise the shadow feeder converts'
+			str+=' them to bonemeal';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
 		price: {Bonemeal: 123454321},
 	});
 	new Molpy.Boost({ 
