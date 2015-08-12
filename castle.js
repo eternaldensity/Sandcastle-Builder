@@ -1734,7 +1734,7 @@ Molpy.Up = function() {
 				RobbyDo.push(Molpy.shoppingItem)
 				if(RobbyDo.indexOf(bacon)){
 					var lettuce=Molpy.Boosts[bacon];
-					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
+					if(!([undefined, 'undefined', function(){}, {}].indexOf(lettuce))){
 						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
 							Molpy.Unbox(times)
 						}
