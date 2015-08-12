@@ -9389,7 +9389,11 @@ Molpy.DefineBoosts = function() {
 					str += ' Qubes.';
 				}
 				if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Vacuum',1000))	
-					str += '<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeMario()">\</input>';
+					str += '<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeMario()"></input>';
+					if (me.bought > 1000) {
+						str += ', or<br><input type="button" value="Reset" onclick="Molpy.Goomba()"></input> at the cost of ';
+						str += Molpy.PriceString(me.price) + '.';
+					}
 				}
 				return str;
 		},
@@ -9423,6 +9427,15 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Spend('Vacuum',1000)) {
 			me.bought--;
 			Molpy.Notify("Italian Plumber Downgraded");
+			me.Refresh();
+		}
+	};
+	Molpy.Goomba = function() {
+		Molpy.Anything = 1;
+		var me = Molpy.Boosts['Mario'];
+		if(Molpy.Spend(me.price)) {
+			me.bought = 1;
+			Molpy.Notify('Italian Plumber reset');
 			me.Refresh();
 		}
 	};
