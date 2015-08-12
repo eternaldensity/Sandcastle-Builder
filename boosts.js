@@ -5290,6 +5290,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Spend('QQ', cost)) {
 				while((l>0)&&(runs>0)) {
 					Molpy.RewardLogicat(Molpy.Level('QQ'),Math.ceil(l/runs));
+					l=l-runs
 					runs-=1
 				}
 			}
