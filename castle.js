@@ -1736,21 +1736,7 @@ Molpy.Up = function() {
 					var lettuce=Molpy.Boosts[bacon];
 					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
 						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
-							if(!lettuce.power){lettuce.power=10}
-							lettuce.power=lettuce.power+times
-							var pages=(2*lettuce.power-times)*times/2
-							if(Molpy.Got('VV')) {pages = Molpy.VoidStare(pages, 'VV')};
-							Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
-							if(Molpy.Got('Camera') && (Math.random() > Math.pow(0.9,times)) ) {
-								Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-							} //less efficient than normal vault opening, but that's too hard.
-							if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
-								var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
-								c=c*times
-								if (c && !Molpy.boostSilence) {
-									Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');}
-									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
-							}
+							Molpy.Unbox(times)
 						}
 						if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
 							Molpy.UnlockBoost('Locked Vault')
