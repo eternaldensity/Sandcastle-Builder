@@ -1734,35 +1734,34 @@ Molpy.Up = function() {
 				RobbyDo.push(Molpy.shoppingItem)
 				if(RobbyDo.indexOf(bacon)){
 					var lettuce=Molpy.Boosts[bacon];
-					if(!([undefined, 'undefined', function(){}, {}].indexOf(lettuce))){
-						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
-							Molpy.Unbox(times)
-						}
-						if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
-							Molpy.UnlockBoost('Locked Vault')
-						}
-						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5));return;}
-						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));return;}
-						if(lettuce.name==='Locked Crate'){
-							var bl = Molpy.Boosts['GlassBlocks'];
-							var win = Math.ceil(Molpy.LogiMult('2K'));
-							lettuce.CrateCount+=times;
-							win = Math.floor(win / (6 - lettuce.bought));
-							win=win*times
-
-							if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
-							Molpy.Add('GlassBlocks', win);
-							Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
-							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-							Molpy.Add('Blackprints', lettuce.bought*times);
-						}
-						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
+						Molpy.Unbox(times)
 					}
-				} else{
-					//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
-					//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
-					Molpy.UnlockRepeatableBoost(bacon,auto,1)
+					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
+						Molpy.UnlockBoost('Locked Vault')
+					}
+					if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5));return;}
+					if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));return;}
+					if(lettuce.name==='Locked Crate'){
+						var bl = Molpy.Boosts['GlassBlocks'];
+						var win = Math.ceil(Molpy.LogiMult('2K'));
+						lettuce.CrateCount+=times;
+						win = Math.floor(win / (6 - lettuce.bought));
+						win=win*times
+
+						if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
+						Molpy.Add('GlassBlocks', win);
+						Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
+						if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+						Molpy.Add('Blackprints', lettuce.bought*times);
+					}
+					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
 				}
+				//} else{
+				//	//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
+				//	//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
+				//	Molpy.UnlockRepeatableBoost(bacon,auto,1)
+				//}
 			}
 		}
 		Molpy.GiveTempBoost = function(bacon, power, countdown, desc) {
