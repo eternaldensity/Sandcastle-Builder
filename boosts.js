@@ -7015,32 +7015,90 @@ Molpy.DefineBoosts = function() {
 		logic: 5,
 
 		lockFunction: function() {
-			if(!this.power) this.power = 10;
-			var pages = this.power++;
-			if (this.power >= 1000000 && Molpy.Got('Shards')) {
-				Molpy.UnlockBoost('SPP');
+			Molpy.Unbox(1);
+		},
+
+		// left for reference
+		//
+		// lockFunction: function() {
+		// 	if(!this.power) this.power = 10;
+		// 	var pages = this.power++;
+		// 	if (this.power >= 1000000 && Molpy.Got('Shards')) {
+		// 		Molpy.UnlockBoost('SPP');
+		// 	}
+		// 	if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
+		// 	Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
+		// 	// if (Molpy.Got('Panopticon') && Molpy.Got('Vacuum')) {
+		// 	// 	var shards = 1;
+		// 	// 	shards *= Math.pow(1.1, 1 + Math.log(Molpy.Boosts['Vacuum'].power));
+		// 	// 	Molpy.Add('Shards', Math.floor(shards));					
+		// 	// }
+		// 	// this code is all pointless because, apparently, the lock function is not called at all when a
+		// 	// vault is opened by Mario. I don't feel compelled to figure out where to put this code right now
+		// 	// because of the Mario refactor.
+		// 	if(Molpy.Got('Camera') && (Math.random() < 0.1) ) {
+		// 		Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+		// 	}
+		// 	if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
+		// 		var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
+		// 		if (c && !Molpy.boostSilence) 
+		// 			Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
+		// 		Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
+		// 	}
+		// }
+	});
+
+	Molpy.Unbox = function(times) {
+		lv = Molpy.Boosts['Locked Vault'];
+		if (!lv.power) lv.power = 10;
+		lv.power += times;
+		var pages = lv.power * times;
+		pages += times * (times + 1) / 2; // some sigma-stacking =P because successive vaults give more pages
+		if (lv.power >= 1000000 && Molpy.Got('Shards')) {
+			Molpy.UnlockBoost('SPP');
+		}
+		if (Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
+		Molpy.Add('Blackprints', Math.floor(pages * Molpy.Papal('BlackP')));
+		if (Molpy.Got('Camera')) {
+			var isles = 0;
+			if (times < 100) {
+				for (var i = 0; i < times; i++) {
+					if (Math.random() < .1) isles++;
+				}
+			} else {
+				var stdDev = Math.sqrt(.1 * .9 * times);
+				isles = Math.floor(.1 * times + (stdDev * (2 * Math.random() - 1)));
 			}
-			if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
-			Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
-			// if (Molpy.Got('Panopticon') && Molpy.Got('Vacuum')) {
-			// 	var shards = 1;
-			// 	shards *= Math.pow(1.1, 1 + Math.log(Molpy.Boosts['Vacuum'].power));
-			// 	Molpy.Add('Shards', Math.floor(shards));					
-			// }
-			// this code is all pointless because, apparently, the lock function is not called at all when a
-			// vault is opened by Mario. I don't feel compelled to figure out where to put this code right now
-			// because of the Mario refactor.
-			if(Molpy.Got('Camera') && (Math.random() < 0.1) ) {
-				Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+			Molpy.Marco(isles);
+		}
+		if (Molpy.Got('FluxCrystals') && (Molpy.Got('Temporal Rift') || Molpy.Got('Flux Surge'))) {
+			var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE')) * times;
+			if (c && !Molpy.boostSilence) {
+				Molpy.Notify('You found ' + Molpify(c) + ' flux crystal' + plural(c) + '.');
 			}
-			if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
-				var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
-				if (c && !Molpy.boostSilence) 
-					Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
-				Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
+			Molpy.Add('Flux Crystals', c);
+		}
+	};
+	Molpy.Marco = function(times) {
+		var polo = Molpy.groupBadgeCounts.discov;
+		if (polo == Molpy.totalDiscov) return;
+		var np = Molpy.newpixNumber
+		var unearned = [];
+		if (np > 0) {
+			for (var i = 1; i <= Math.min(3089, np); i++) {
+				if (Molpy.Badges['discov' + i] && !Molpy.Earned('discov' + i)) unearned.push(i);
 			}
 		}
-	});
+		if (np < 0) {
+			for (var i = -1; i >= Math.max(-3089, np); i--) {
+				if (Molpy.Badges['discov' + i] && !Molpy.Earned('discov' + i)) unearned.push(i);
+			}
+		}
+		for (var i = 0; i < unearned.length; i++) {
+			if (Math.random() < 1 - Math.pow(1 - (1/Math.abs(np)), times)) Molpy.EarnBadge('discov' + unearned[i]);
+		}
+	};
+
 	new Molpy.Boost({
 		name: 'Vault Key',
 		icon: 'vaultkey',
@@ -9389,7 +9447,11 @@ Molpy.DefineBoosts = function() {
 					str += ' Qubes.';
 				}
 				if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Vacuum',1000))	
-					str += '<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeMario()">\</input>';
+					str += '<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeMario()"></input>';
+					if (me.bought > 1000) {
+						str += ', or<br><input type="button" value="Reset" onclick="Molpy.Goomba()"></input> at the cost of ';
+						str += Molpy.PriceString(me.price) + '.';
+					}
 				}
 				return str;
 		},
@@ -9423,6 +9485,15 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Spend('Vacuum',1000)) {
 			me.bought--;
 			Molpy.Notify("Italian Plumber Downgraded");
+			me.Refresh();
+		}
+	};
+	Molpy.Goomba = function() {
+		Molpy.Anything = 1;
+		var me = Molpy.Boosts['Mario'];
+		if(Molpy.Spend(me.price)) {
+			me.bought = 1;
+			Molpy.Notify('Italian Plumber reset');
 			me.Refresh();
 		}
 	};

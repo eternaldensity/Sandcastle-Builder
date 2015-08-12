@@ -1188,6 +1188,15 @@ Molpy.DefineBadges = function() {
 			Molpy.MakeQuadBadge(args);
 		}
 	}
+
+	Molpy.CountDiscov = function() {
+		var badges = Molpy.BadgesById
+		var count = 0;
+		for (var i = 0; i < badges.length; i++) {
+			if (badges[i].group == 'discov') count++;
+		}
+		Molpy.totalDiscov = count;
+	}
 		
 	Molpy.MakeQuadBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});
 	Molpy.MakeQuadBadge({np:16,name:'Dip',desc:'when Cueball dipped his toe in the fluid'});
