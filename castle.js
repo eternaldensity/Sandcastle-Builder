@@ -1720,7 +1720,7 @@ Molpy.Up = function() {
 			}
 		};
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
-			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
+			if((times===1)||(!times)){Molpy.UnlockBoost(bacon,auto)} else {
 				var RobbySee=Molpy.Boosts['Rob'];
 				var RobbyDo=[]
 				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
@@ -1733,10 +1733,11 @@ Molpy.Up = function() {
 				if(RobbyDo.indexOf(bacon)){
 					var lettuce=Molpy.Boosts[bacon];
 					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
-						lettuce.power+=times
 						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
-							var pages=(lettuce.power+lettuce.power-times)*times/2
-							if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
+							if(!lettuce.power){lettuce.power=10}
+							lettuce.power=lettuce.power+times
+							var pages=(2*lettuce.power-times)*times/2
+							if(Molpy.Got('VV')) {pages = Molpy.VoidStare(pages, 'VV')};
 							Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
 							if(Molpy.Got('Camera') && (Math.random() > Math.pow(0.9,times)) ) {
 								Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
@@ -1744,16 +1745,16 @@ Molpy.Up = function() {
 							if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
 								var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
 								c=c*times
-								if (c && !Molpy.boostSilence) 
+								if (c && !Molpy.boostSilence) {
 									Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
-									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
+									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));}
 							}
 						}
 						if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
 							Molpy.UnlockBoost('Locked Vault')
 						}
-						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5))}
-						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5))}
+						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5));return;}
+						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));return;}
 						if(lettuce.name==='Locked Crate'){
 							var bl = Molpy.Boosts['GlassBlocks'];
 							var win = Math.ceil(Molpy.LogiMult('2K'));
