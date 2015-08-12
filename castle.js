@@ -1732,7 +1732,7 @@ Molpy.Up = function() {
 					}
 				}
 				RobbyDo.push(Molpy.shoppingItem)
-				if(RobbyDo.indexOf(bacon)){
+				if(RobbyDo.indexOf(bacon)>=0){
 					var lettuce=Molpy.Boosts[bacon];
 					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
 						Molpy.Unbox(times)
