@@ -1746,8 +1746,8 @@ Molpy.Up = function() {
 								var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
 								c=c*times
 								if (c && !Molpy.boostSilence) {
-									Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
-									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));}
+									Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');}
+									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
 							}
 						}
 						if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
@@ -1760,9 +1760,10 @@ Molpy.Up = function() {
 							var win = Math.ceil(Molpy.LogiMult('2K'));
 							lettuce.CrateCount+=times;
 							win = Math.floor(win / (6 - lettuce.bought));
+							win=win*times
 
 							if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
-							Molpy.Add('GlassBlocks', win*times);
+							Molpy.Add('GlassBlocks', win);
 							Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
 							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 							Molpy.Add('Blackprints', lettuce.bought*times);
