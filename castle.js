@@ -1720,7 +1720,8 @@ Molpy.Up = function() {
 			}
 		};
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
-			if((times===1)||(!times)){Molpy.UnlockBoost(bacon,auto)} else {
+			if(times==undefined){times=1}
+			if((times===1)){Molpy.UnlockBoost(bacon,auto)} else {
 				var RobbySee=Molpy.Boosts['Rob'];
 				var RobbyDo=[]
 				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
