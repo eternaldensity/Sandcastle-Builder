@@ -407,7 +407,7 @@
 		var highest = 0;
 		if (!Molpy.TotalDragons) return str;
 		// See what range to save if any
-		for (var np = -Math.abs(Molpy.highestNPvisited); np <=Math.abs(Molpy.highestNPvisited); np++) {
+		for (var np = -Math.abs(Molpy.highestNPvisited); np <=Math.abs(Molpy.highestNPvisited); np=Molpy.NextLegalNP(np)) {
 			if (Molpy.NPdata && Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
 				if (!lowest) lowest = np;
 				highest = np;
@@ -416,7 +416,7 @@
 		if (!lowest) return str;
 		str += lowest + s + highest;
 		var lastNP = "";
-		for (var np=lowest; np<=highest; np++) {
+		for (var np=lowest; np<=highest; np=Molpy.NextLegalNP(np)) {
 			var dd = Molpy.NPdata[np];
 			str += s;
 		        if (dd && dd.amount) {
@@ -797,7 +797,7 @@
 		var lowest = parseFloat(pixels.shift());
 		var highest = parseFloat(pixels.shift());
 		var lastNP = "";
-		for (var np = lowest; np<=highest; np++) {
+		for (var np = lowest; np<=highest; np=Molpy.NextLegalNP(np)) {
 			var pretzels = [];
 			if (pixels[0] != '') {
 				if (pixels[0] != 'd') lastNP = pixels.shift()
