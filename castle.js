@@ -1721,59 +1721,47 @@ Molpy.Up = function() {
 			}
 		};
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
-			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
+			if(times==undefined){times=1}
+			if((times===1)){Molpy.UnlockBoost(bacon,auto)} else {
 				var RobbySee=Molpy.Boosts['Rob'];
 				var RobbyDo=[]
 				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
-					var item = Molpy.BoostsById[thingy + 1];
+					var item = Molpy.BoostsById(thingy + 1);
 					if(item.power) {
-						RobbyDo.push(item.name)
+						RobbyDo.push(Molpy.BoostsById(Math.abs(item.power)).name)
 					}
 				}
 				RobbyDo.push(Molpy.shoppingItem)
-				if(RobbyDo.indexOf(bacon)){
+				if(RobbyDo.indexOf(bacon)>=0){
 					var lettuce=Molpy.Boosts[bacon];
-					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
-						lettuce.power+=times
-						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
-							var pages=(lettuce.power+lettuce.power-times)*times/2
-							if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
-							Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
-							if(Molpy.Got('Camera') && (Math.random() > Math.pow(0.9,times)) ) {
-								Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-							} //less efficient than normal vault opening, but that's too hard.
-							if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
-								var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
-								c=c*times
-								if (c && !Molpy.boostSilence) 
-									Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
-									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
-							}
-						}
-						if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
-							Molpy.UnlockBoost('Locked Vault')
-						}
-						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5))}
-						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5))}
-						if(lettuce.name==='Locked Crate'){
-							var bl = Molpy.Boosts['GlassBlocks'];
-							var win = Math.ceil(Molpy.LogiMult('2K'));
-							lettuce.CrateCount+=times;
-							win = Math.floor(win / (6 - lettuce.bought));
-
-							if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
-							Molpy.Add('GlassBlocks', win*times);
-							Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
-							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-							Molpy.Add('Blackprints', lettuce.bought*times);
-						}
-						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
+						Molpy.Unbox(times)
 					}
-				} else{
-					//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
-					//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
-					Molpy.UnlockRepeatableBoost(bacon,auto,1)
+					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
+						Molpy.UnlockBoost('Locked Vault')
+					}
+					if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5));return;}
+					if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));return;}
+					if(lettuce.name==='Locked Crate'){
+						var bl = Molpy.Boosts['GlassBlocks'];
+						var win = Math.ceil(Molpy.LogiMult('2K'));
+						lettuce.CrateCount+=times;
+						win = Math.floor(win / (6 - lettuce.bought));
+						win=win*times
+
+						if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
+						Molpy.Add('GlassBlocks', win);
+						Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
+						if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+						Molpy.Add('Blackprints', lettuce.bought*times);
+					}
+					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
 				}
+				//} else{
+				//	//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
+				//	//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
+				//	Molpy.UnlockRepeatableBoost(bacon,auto,1)
+				//}
 			}
 		}
 		Molpy.GiveTempBoost = function(bacon, power, countdown, desc) {
