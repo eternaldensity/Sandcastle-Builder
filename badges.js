@@ -1883,11 +1883,11 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:3089,name:'The End',desc:'Sob sob cry, bring on the ice cream'});
 	Molpy.MakeQuadBadge({np:0,name:'Chronocenter',desc:'The extradimensional core of Time'});
 	//t1i discoveries
-	Molpy.MakeQuadBadge({np:11.1, name:"A wild Beanie appears!", desc: "11 pix before humanoid life. A new record?"});
-	Molpy.MakeQuadBadge({np:13.1, name: "Another one?", desc: "The beanies might have an adventure."})
-	Molpy.MakeQuadBadge({np:90.1, name:"Herd you wanted people", desc: "77 consecutive pix with no people."});
-	Molpy.MakeQuadBadge({np:197.1, name:"The Sea", desc: "The first sign of OTTishness in over 180 pix."})
-	Molpy.MakeQuadBadge({np:202.1, name:"Wave", desc: "The sea is uneven."})
+	Molpy.MakeQuadBadge({np:11.1, name:'A wild Beanie appears!', desc: '11 pix before humanoid life. A new record?'});
+	Molpy.MakeQuadBadge({np:13.1, name: 'Another one?', desc: 'The beanies might have an adventure.'})
+	Molpy.MakeQuadBadge({np:90.1, name: 'Herd you wanted people', desc: '77 consecutive pix with no people.'});
+	Molpy.MakeQuadBadge({np:197.1, name: 'The Sea', desc: 'The first sign of OTTishness in over 180 pix.'})
+	Molpy.MakeQuadBadge({np:202.1, name: 'Wave', desc: "The sea is uneven."})
 	Molpy.MakeQuadBadge({np:203.1, name: "Hour-long Night", desc: "The first night lasts an hour. It is uneventful."})
 	Molpy.MakeQuadBadge({np:209.1, name: "The Forty arrive", desc: "We hear a familiar voice from a familiar scene."})
 	Molpy.MakeQuadBadge({np:212.1, name: "T** **d again?", desc: "In which we see the familiar scene."})
@@ -1900,13 +1900,13 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:294.1, name: "Breathe", desc: "Megan wonders if people can breathe on mountains."})
 	Molpy.MakeQuadBadge({np:304.1, name: "Another snake", desc: "Cueball sees a different snake."})
 	Molpy.MakeQuadBadge({np:317.1, name: "Just thinking", desc: "Cueball explains his slowness."})
-	Molpy.MakeQuadBadge({np:318.1,name:'It winked',desc:'The snake somehow winked'});
-	Molpy.MakeQuadBadge({np:321.1,name:'Very cautious',desc:'Increased efforts to be careful.'});
+	Molpy.MakeQuadBadge({np:318.1, name:'It winked',desc:'The snake somehow winked'});
+	Molpy.MakeQuadBadge({np:321.1, name:'Very cautious',desc:'Increased efforts to be careful.'});
 	Molpy.MakeQuadBadge({np:345.1, name: "It moved", desc: "A plant somehow moves."})
-	Molpy.MakeQuadBadge({np:346.1,name:'Finally',desc:'Cueball finally considers himself mad.'});
-	Molpy.MakeQuadBadge({np:353.1,name:'The world is weirder',desc:'Truth is stranger than fiction.'});
-	Molpy.MakeQuadBadge({np:356.1,name:'Crazier',desc:'The higher they get, the crazier they get.'});
-	Molpy.MakeQuadBadge({np:360.1,name:'Crazy enough',desc:'Megan calls Cueball too sane for her tastes.'});
+	Molpy.MakeQuadBadge({np:346.1, name:'Finally',desc:'Cueball finally considers himself mad.'});
+	Molpy.MakeQuadBadge({np:353.1, name:'The world is weirder',desc:'Truth is stranger than fiction.'});
+	Molpy.MakeQuadBadge({np:356.1, name:'Crazier',desc:'The higher they get, the crazier they get.'});
+	Molpy.MakeQuadBadge({np:360.1, name:'Crazy enough',desc:'Megan calls Cueball too sane for her tastes.'});
 	Molpy.MakeQuadBadge({np:400.1, name:"The Top", desc:"Megan announces their arrival to the top of the island."})
 	Molpy.MakeQuadBadge({np:418.1, name:"Another Castle", desc:"The pair tries to make a dirt castle."})
 	Molpy.MakeQuadBadge({np:426.1, name:"I miss our beach", desc:"Dirt doesn't shape well."})
@@ -1915,13 +1915,13 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:441.1, name:"Mountain identified", desc:"Megan figures out where they are."})
 	Molpy.MakeQuadBadge({np:448.1, name:"Two flags", desc:"The pair leave a corresponding pair of flags in the castle."})
 	Molpy.MakeQuadBadge({np:455.1, name:"Beanie cam", desc:"The Beanies spot the castle."})
-	Molpy.MakeQuadBadge({np:480.1,name:'Higher mountains',desc:'The pair wonder if there are higher mountains on other islands.'});
-	Molpy.MakeQuadBadge({np:486.1,name:'Breathe again',desc:'The pair wonder how high up people can breathe.'});
-	Molpy.MakeQuadBadge({np:514.1,name:'A third snake',desc:'The pair spot yet another snake.'});
+	Molpy.MakeQuadBadge({np:480.1, name:'Higher mountains',desc:'The pair wonder if there are higher mountains on other islands.'});
+	Molpy.MakeQuadBadge({np:486.1, name:'Breathe again',desc:'The pair wonder how high up people can breathe.'});
+	Molpy.MakeQuadBadge({np:514.1, name:'A third snake',desc:'The pair spot yet another snake.'});
 	Molpy.MakeQuadBadge({np:556.1, name:"The other half", desc:"We learn just how small the island is."})
-	Molpy.MakeQuadBadge({np:560.1,name:'Broken castle',desc:'The pair spots something interesting.'});
-	Molpy.MakeQuadBadge({np:599.1,name:'Aunt',desc:'Some characterization of Cueball's aunt.'});
-	Molpy.MakeQuadBadge({np:618.1,name:'Tsee-chirp',desc:'A sound that will return many more times.'});
+	Molpy.MakeQuadBadge({np:560.1, name:'Broken castle',desc:'The pair spots something interesting.'});
+	Molpy.MakeQuadBadge({np:599.1, name:'Aunt', desc:'Some characterization of Cueball\'s aunt.'});
+	Molpy.MakeQuadBadge({np:618.1, name:'Tsee-chirp',desc:'A sound that will return many more times.'});
 	Molpy.MakeQuadBadge({np:633.1, name:"Warning signs", desc:"We see a sinister-looking series of Xs."})
 	Molpy.MakeQuadBadge({np:649.1, name:"Not a castle", desc:"The castle is arrived at."})
 	Molpy.MakeQuadBadge({np:658.1, name:"Recent", desc:"Someone was there recently."})
@@ -1939,18 +1939,18 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:924.1, name:"Assorted Art", desc:"The Beanie shows her sketchbook's content."})
 	Molpy.MakeQuadBadge({np:926.1, name:"Some sort of molpy", desc:"Another drawing of something weird."})
 	Molpy.MakeQuadBadge({np:956.1, name:"She knows everything", desc:"The pair discuss their views on Beanish knowledge."})
-	Molpy.MakeQuadBadge({np:977.1,name:'Green water',desc:'The pond is full of fresh, green, water.'});
+	Molpy.MakeQuadBadge({np:977.1, name:'Green water',desc:'The pond is full of fresh, green, water.'});
 	Molpy.MakeQuadBadge({np:997.1, name:"Bad water", desc:"The pair realize that the water is dangerous."})
-	Molpy.MakeQuadBadge({np:1011.1,name:'Mouring',desc:'The trio briefly pause to pay their respects to the dead.'});
+	Molpy.MakeQuadBadge({np:1011.1, name:'Mouring',desc:'The trio briefly pause to pay their respects to the dead.'});
 	Molpy.MakeQuadBadge({np:1023.1, name:"The plan", desc:"The Beanie reveals the chosen method of retrieval."})
 	Molpy.MakeQuadBadge({np:1094.1, name:"Crunch", desc:"The body makes a crunching sound."})
 	Molpy.MakeQuadBadge({np:1097.1, name:"Stuck", desc:"The retrieval device gets stuck."})
 	Molpy.MakeQuadBadge({np:1105.1, name:"Lasso", desc:"Megan begins to try to lasso the body."})
-	Molpy.MakeQuadBadge({np:1106.1,name:'Yeah!',desc:'Megan successfully gets the body.'});
+	Molpy.MakeQuadBadge({np:1106.1, name:'Yeah!',desc:'Megan successfully gets the body.'});
 	Molpy.MakeQuadBadge({np:1115.1, name:"Looking weird", desc:"The pair comment on their cave protection devices."})
 	Molpy.MakeQuadBadge({np:1173.1, name:"Burial site", desc:"The trio finish burying the body."})
 	Molpy.MakeQuadBadge({np:1202.1, name:"Fossils", desc:"The Beanie shows the pair something from the dead bodies."})
-	Molpy.MakeQuadBadge({np:1222.1,name:'How they came',desc:'The Beanish boat is revealed.'});
+	Molpy.MakeQuadBadge({np:1222.1, name:'How they came',desc:'The Beanish boat is revealed.'});
 	Molpy.MakeQuadBadge({np:1229.1, name:"Map", desc:"A crude map is finished."})
 	Molpy.MakeQuadBadge({np:1291.1, name:"Back already", desc:"The trio return by boat."})
 	Molpy.MakeQuadBadge({np:1321.1, name:"Oil barrels", desc:"The second image from the book."})
