@@ -7064,6 +7064,20 @@ Molpy.DefineBoosts = function() {
 		}
 		if (Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
 		Molpy.Add('Blackprints', Math.floor(pages * Molpy.Papal('BlackP')));
+		if (Molpy.Got('Panopticon')) { // will test once IP finally gets sorted out
+			var shards = 0;
+			var rarity = 1e-18;
+			if (times < 100) {
+				for (var i = 0; i < times; i++) {
+					if (Math.random() < rarity) shards ++;
+				}
+			} else {
+				var stdDev = Math.sqrt(rarity * (1 - rarity) * times);
+				shards = Math.max(0, Math.floor((rarity) * times + (stdDev * (2 * Math.random() - 1))));
+			}
+			Molpy.Add('Shards', shards);
+			Molpy.Notify('found ' + shards + ' shards',1)
+		}
 		if (Molpy.Got('Camera')) {
 			var isles = 0;
 			if (times < 100) {
@@ -7072,7 +7086,7 @@ Molpy.DefineBoosts = function() {
 				}
 			} else {
 				var stdDev = Math.sqrt(.1 * .9 * times);
-				isles = Math.floor(.1 * times + (stdDev * (2 * Math.random() - 1)));
+				isles = Math.max(0, Math.floor(.1 * times + (stdDev * (2 * Math.random() - 1))));
 			}
 			Molpy.Marco(isles);
 		}
@@ -12077,7 +12091,7 @@ new Molpy.Boost({
 			for (i = sign*3095; Math.abs(i) <= Math.abs(Molpy.highestNPvisited); i += sign) {
 				if (Molpy.Boosts['kitkat'].prey.indexOf(i) == -1) {
 					Molpy.Notify('You have sniffed out a ripe kitten at NP ' + Molpify(i) + '.', 1);
-					if (Math.abs(i) >= 3195) {
+					if (Math.abs(i) >= 3173) {
 						Molpy.UnlockBoost('Sigma Stacking');
 					}
 					if (Math.abs(i) >= 3295) {
@@ -12295,7 +12309,7 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Goats: 1,
+			Goats: Infinity,
 		},
 		buyFunction: function() {
 			if (this.bought == 1) {

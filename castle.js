@@ -3025,7 +3025,7 @@ Molpy.Up = function() {
 					} else {
 						var factor = 1;
 						if (Molpy.Got('GCC')) factor *= 12;
-						if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.01, Molpy.Pinch());
+						if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.03, Molpy.Pinch());
 						factor *= (Molpy.Got('Sigma Stacking') ? prey.length + 1 : 1)
 						if (Molpy.Got('GCA')) {
 							for (i = 2; i < 12; i++) {
