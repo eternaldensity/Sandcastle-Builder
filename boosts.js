@@ -6843,6 +6843,7 @@ Molpy.DefineBoosts = function() {
 			if (n == Infinity) {
 				Molpy.Boosts['Abattoir'].power++;
 				if (Molpy.Boosts['Abattoir'].power >= 144) Molpy.UnlockBoost('Abattoir');
+				if (Molpy.Boosts['Abattoir'] power >= 432 && Molpy.Boosts['blackhat'].power >= 8) Molpy.UnlockBoost('Tractor Beam');
 				if (Molpy.Boosts['Abattoir'].power >= 1008) Molpy.UnlockBoost('terrytao');
 				if (Molpy.Boosts['Abattoir'].power >= 1e4 && Molpy.Got('GCA')) Molpy.UnlockBoost('LA');
 			}
@@ -12544,7 +12545,7 @@ new Molpy.Boost({
 		name: 'Tractor Beam',
 		icon: 'tractorbeam',
 		className: 'toggle',
-		group: 'dimen',
+		group: 'hpt',
 		desc: function(me) {
 			var str = '';
 			str += (!me.IsEnabled ? 'When active, t' : 'T');
