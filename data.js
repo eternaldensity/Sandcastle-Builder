@@ -165,7 +165,7 @@ Molpy.HardcodedData = function() {
 		[1417.1, "The End Era"]
 	]
 
-	Molpy.AllPeriods={}
+	Molpy.AllEons={}
 	Object.defineProperty(Molpy,'Eons', {
 		get:function(){
 			var s=Molpy.currentStory
