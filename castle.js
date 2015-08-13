@@ -3535,7 +3535,7 @@ Molpy.Up = function() {
 			} else {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
 			}
-			if(Molpy.newpixNumber > Molpy.Boosts['Dimensional Keyhole'].bought) {
+			if(Molpy.newpixNumber > Molpy.Boosts['Aperture Science'].power) {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? -1 : 1);
 				Molpy.Notify("You must unlock the last door to do continue!")
 			}
