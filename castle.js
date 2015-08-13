@@ -95,7 +95,7 @@ Molpy.Up = function() {
 					Molpy.largestNPvisited[0]=val
 				}
 			}
-		}; //keep track of where the player has been
+		}); //keep track of where the player has been
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
 		Molpy.totalDiscov = 0;
