@@ -1294,7 +1294,7 @@ Molpy.DefineGUI = function() {
 				return 'http://placekitten.com/g/' + x + '/' + y;
 			else if(frac==0){
 				return 'http://xkcd.mscha.org/frame/' + np;
-			} else if(Molpy.fracParts.indexOf(frac)>0){
+			} else if(Molpy.fracParts.indexOf(frac)>-1){
 				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor+'.png'
 			} else {return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 		}
