@@ -80,7 +80,7 @@ Molpy.Up = function() {
 		Molpy.largestNPvisited={0:1}
 		for(i=0;i<Molpy.fracParts.length;i++){Molpy.largestNPvisited[Molpy.fracParts[i]]=0}
 		Molpy.currentStory=-1
-		Object.setAttribute('Molpy','highestNPvisited', {
+		Object.defineProperty('Molpy','highestNPvisited', {
 			get: function(){
 				if(Molpy.currentStory>=0){
 					return Molpy.largestNPvisited[Molpy.fracParts[Molpy.currentStory]]
