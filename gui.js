@@ -1273,7 +1273,7 @@ Molpy.DefineGUI = function() {
 		np = Math.abs(np);
 
 		var floor = Math.floor(np);
-		if(floor != np) {
+		if((floor != np)&&(Molpy.fracParts.indexOf(np-floor)==-1)) {
 			var subPix = Math.round(6 * (np - floor));
 			if(format) floor = Molpify(floor, 3);
 			np = floor + Molpy.subPixLetters[subPix];
