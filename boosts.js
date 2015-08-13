@@ -12560,6 +12560,7 @@ new Molpy.Boost({
 	new Molpy.Boost({
 		name: 'Leo DiCatrio',
 		alias: 'DomCobb',
+		icon: 'leo',
 		group: 'dimen',
 		desc: function(me){
 			var str = '';

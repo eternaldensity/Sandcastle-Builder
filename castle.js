@@ -2600,7 +2600,7 @@ Molpy.Up = function() {
 			if(BKJ.bought) {
 				BKJ.power = (BKJ.power) + 1;
 			}
-			if (Molpy.Got('DomCobb') && !flandom(100)) {
+			if (Molpy.Got('DomCobb') && Math.random() < 1/150) {
 				Molpy.RewardInception();
 			} else if(Math.floor(2 * Math.random())) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Not Lucky', true]);
