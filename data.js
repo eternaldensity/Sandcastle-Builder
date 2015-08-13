@@ -729,6 +729,9 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	if(Molpy.Redacted.totalClicks >= 431) {
 		Molpy.Boosts['Technicolour Dream Cat'].department = 1;
 	}
+	if(Molpy.Redacted.totalClicks >= 1000 && Molpy.Got('GCC')) {
+		Molpy.Boosts['DomCobb'].department = 1;
+	}
 
 	Molpy.Boosts['RRR'].department = 1 * (Molpy.Boosts['Panther Salve'].power > 200);
 	Molpy.Boosts['Phonesaw'].department = 1 * (Molpy.Boosts['VJ'].power >= 88);
