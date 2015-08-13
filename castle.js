@@ -3360,6 +3360,7 @@ Molpy.Up = function() {
 	Molpy.ONGBase = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
+			if(Molpy.Got('Aperture Science')){Molpy.UnlockBoost('Controlled Hysteresis')}
 		}
 		if (Molpy.Got('LA')) {
 			Molpy.Boosts['LA'].Level = 1;
@@ -3500,6 +3501,7 @@ Molpy.Up = function() {
 		
 		Molpy.Boosts['Temporal Rift'].changeState('closed');
 		Molpy.IsThereAnUpdate();
+		if(Molpy.Boosts['Controlled Hysteresis'].power>-1){Molpy.newpixNumber=Molpy.Boosts['Controlled Hysteresis'].power}
 	};
 	Molpy.ONGs[0] = function(){
 		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
@@ -3524,17 +3526,18 @@ Molpy.Up = function() {
 					Molpy.UnlockBoost('Time Travel');
 				}
 			}
-		}
+		} else if(!Molpy.IsEnabled('Temporal Anchor') && Molpy.Boosts['Controlled Hysteresis'].power==0){Molpy.newpixNumber=1}
 	}
 	Molpy.ONGs[0.1]=function(){
-		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
+		if (!Molpy.IsEnabled('Temporal Anchor')) {
 			if (Molpy.Boosts['Signpost'].power == 1) {
 				Molpy.newpixNumber = 0;
 			} else {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
 			}
-			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
-				Molpy.UnlockBoost('Signpost');
+			if(Molpy.newpixNumber > Molpy.Boosts['Dimensional Keyhole'].bought) {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? -1 : 1);
+				Molpy.Notify("You must unlock the last door to do continue!")
 			}
 			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
 
@@ -3545,7 +3548,7 @@ Molpy.Up = function() {
 				Molpy.Overview.Update(Molpy.newpixNumber);
 				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
 			} else  { //in the past
-				if(np > 2) {
+				if(np > 2.1) {
 					Molpy.UnlockBoost('Time Travel');
 				}
 			}
