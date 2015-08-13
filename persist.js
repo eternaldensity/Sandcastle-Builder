@@ -754,7 +754,7 @@
 		}
 	}
 
-	Molpy.NPdataFromString = function(thread,version) {
+	Molpy.NPdataFromString = function(thread,version) {if(version<3.7){
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		npdthread = thread;
@@ -786,6 +786,39 @@
 			dd.magic2 = parseFloat(pretzels.shift() || 0);
 			dd.magic3 = parseFloat(pretzels.shift() || 0);
 		}
+	} else{
+		var s = 'S'; //Semicolon
+		var c = 'C'; //Comma
+		npdthread = thread;
+		Molpy.ClearNPdata();
+		if (!thread) return;
+		var pixels = thread.split(s);
+		if (!pixels[0]) return;
+		var lowest = parseFloat(pixels.shift());
+		var highest = parseFloat(pixels.shift());
+		var lastNP = "";
+		for (var np = lowest; np<=highest; np++) {
+			var pretzels = [];
+			if (pixels[0] != '') {
+				if (pixels[0] != 'd') lastNP = pixels.shift()
+				else pixels.shift();
+				pretzels = lastNP.split(c);
+			} else {
+				pixels.shift();
+			}
+
+			dd = Molpy.NPdata[np] = {};
+			dd.DragonType = parseInt(pretzels.shift()) || 0;
+			dd.amount = parseFloat(pretzels.shift()) || 0;
+			dd.defence = parseFloat(pretzels.shift()) || 0;
+			dd.attack = parseFloat(pretzels.shift()) || 0;
+			dd.dig = parseFloat(pretzels.shift()) || 0;
+			dd.breath = parseFloat(pretzels.shift() || 0);
+			dd.magic1 = parseFloat(pretzels.shift() || 0);
+			dd.magic2 = parseFloat(pretzels.shift() || 0);
+			dd.magic3 = parseFloat(pretzels.shift() || 0);
+		}
+	}
 	}
 
 	Molpy.ValidateVersion = function(version) {
