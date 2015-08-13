@@ -314,10 +314,12 @@
 		          + (Molpy.Redacted.toggle) + s
 		          + (Molpy.Redacted.location) + s
 		          + (Molpy.Redacted.totalClicks) + s
-		          + (Molpy.highestNPvisited) + s
+		          
 		          + (Molpy.Redacted.chainCurrent) + s
 		          + (Molpy.Redacted.chainMax) + s
 		          + (Molpy.lootPerPage) + s;
+		          + (Molpy.largestNPvisited[0]) + s
+		          for(var i=0;i<Molpy.fracParts.length;i++){str=str+ (Molpy.largestNPvisited[Molpy.fracParts[i]]) + s}
 		return str;
 	}
 
@@ -407,7 +409,7 @@
 		var highest = 0;
 		if (!Molpy.TotalDragons) return str;
 		// See what range to save if any
-		for (var np = -Math.abs(Molpy.highestNPvisited); np <=Math.abs(Molpy.highestNPvisited); np=Molpy.NextLegalNP(np)) {
+		for (var np = -Math.abs(Molpy.largestNPvisited[0]); np <=Math.abs(Molpy.largestNPvisited[0]); np=Molpy.NextLegalNP(np)) {
 			if (Molpy.NPdata && Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
 				if (!lowest) lowest = np;
 				highest = np;
@@ -514,7 +516,7 @@
 			Molpy.Boosts['TF'].manualLoaded = parseFloat(pixels[29]) || 0;
 			Molpy.Redacted.chainCurrent = parseFloat(pixels[30]) || 0;
 			Molpy.Redacted.chainMax = parseFloat(pixels[31]) || 0;
-		} else {
+		} else if(version<3.7){
 			Molpy.newpixNumber = parseInt(pixels[0]) || 0;
 			Molpy.beachClicks = parseInt(pixels[1]) || 0;
 			Molpy.ninjaFreeCount = parseInt(pixels[2]) || 0;
@@ -532,6 +534,26 @@
 			Molpy.Redacted.chainCurrent = parseFloat(pixels[14]) || 0;
 			Molpy.Redacted.chainMax = parseFloat(pixels[15]) || 0;
 			Molpy.lootPerPage = parseInt(pixels[16]) || 20;
+		} else{
+			Molpy.newpixNumber = parseInt(pixels[0]) || 0;
+			Molpy.beachClicks = parseInt(pixels[1]) || 0;
+			Molpy.ninjaFreeCount = parseInt(pixels[2]) || 0;
+			Molpy.ninjaStealth = parseInt(pixels[3]) || 0;
+			Molpy.ninjad = parseInt(pixels[4]) ? 1 : 0;
+			Molpy.saveCount = parseInt(pixels[5]) || 0;
+			Molpy.loadCount = parseInt(pixels[6]) || 0;
+			Molpy.notifsReceived = parseInt(pixels[7]) || 0;
+			Molpy.npbONG = parseInt(pixels[8]) || 0;
+			Molpy.Redacted.countup = parseInt(pixels[9]) || 0;
+			Molpy.Redacted.toggle = parseInt(pixels[10]) || 0;
+			Molpy.Redacted.location = parseInt(pixels[11]) || 0;
+			Molpy.Redacted.totalClicks = parseInt(pixels[12]) || 0;
+			Molpy.Redacted.chainCurrent = parseFloat(pixels[13]) || 0;
+			Molpy.Redacted.chainMax = parseFloat(pixels[14]) || 0;
+			Molpy.lootPerPage = parseInt(pixels[15]) || 20;
+			Molpy.largestNPvisited[0] = parseInt(pixels[16]) || Math.abs(Molpy.newpixNumber);
+			for(var i=0;i<Molpy.fracParts.length;i++){
+				Molpy.largestNPvisited[Molpy.fracParts[i]]=parseInt(pixels[17+i])}
 		}
 	};
 
@@ -1342,8 +1364,9 @@
 			Molpy.saveCount = 0;
 			Molpy.loadCount = 0;
 			Molpy.DefaultOptions();
-			var highest = Molpy.highestNPvisited;
-			Molpy.highestNPvisited = 0;
+			var highest = Molpy.largestNPvisited;
+			Molpy.largestNPvisited = {0:0};
+			for(var i=0;i<Molpy.fracParts.length;i++){Molpy.largestNPvisited[Molpy.fracParts[i]]=0}
 			Molpy.BadgesOwned = 0;
 			Molpy.groupBadgeCounts = {};
 			Molpy.Redacted.totalClicks = 0;
