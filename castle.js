@@ -3584,7 +3584,7 @@ Molpy.Up = function() {
 		if(Molpy.newpixNumber == 0) Molpy.EarnBadge('Absolute Zero');
 
 		var np = Math.abs(Molpy.newpixNumber);
-		if(np <= 240) {
+		if((np <= 240)&&(np==Math.floor(np))) {
 			Molpy.NPlength = 1800;
 			if(Molpy.Got('Doublepost')) {
 				var incidents = ++Molpy.Boosts['Safety Net'].power;
@@ -3618,13 +3618,13 @@ Molpy.Up = function() {
 		}
 		Molpy.mNPlength = (Molpy.Got('Time Dilation') && Molpy.IsEnabled('Time Dilation')?1800:Molpy.NPlength);
 
-		if(np > 241) {
+		if((np > 241)&&(np==Math.floor(np))) {
 			Molpy.EarnBadge("Have you noticed it's slower?");
 		}
-		if(np >= 250) {
+		if((np >= 250)&&(np==Math.floor(np))) {
 			Molpy.UnlockBoost('Overcompensating');
 		}
-		if(np > 5948) {
+		if((np > 5948)&&(np==Math.floor(np))) {
 			Molpy.EarnBadge('And It Don\'t Stop');
 		}
 		Molpy.TimePeriod = [""];
