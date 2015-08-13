@@ -1365,7 +1365,7 @@
 			Molpy.loadCount = 0;
 			Molpy.DefaultOptions();
 			var highest = Molpy.largestNPvisited;
-			Molpy.largestNPvisited = {0:0};
+			Molpy.largestNPvisited = {0:1};
 			for(var i=0;i<Molpy.fracParts.length;i++){Molpy.largestNPvisited[Molpy.fracParts[i]]=0}
 			Molpy.BadgesOwned = 0;
 			Molpy.groupBadgeCounts = {};
