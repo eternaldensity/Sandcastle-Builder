@@ -12518,6 +12518,21 @@ new Molpy.Boost({
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
 	});
+	new Molpy.Boost({
+		name: 'Controlled Hysteresis',
+		alias: 'Controlled Hysteresis',
+		group: 'dimen',
+
+		desc: function(me) {
+			if (!me.bought) return 'Lets you switch between timelines. Currently locked.';
+			var str=Molpify(me.power * 100, 1) + '% off all items for ' + MolpifyCountdown(me.countdown)
+		},
+		unlockFunction:function(){this.buy()},
+		lockFunction: function(){this.power=-1},
+		power:-1
+		
+	});
+	
 
 // END OF BOOSTS, add new ones immediately before this comment
 }
