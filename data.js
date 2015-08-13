@@ -129,7 +129,7 @@ Molpy.HardcodedData = function() {
 	]
 
 	Molpy.AllEras={}
-	Object.setAttribute('Molpy','Eras', {
+	Object.defineProperty(Molpy,'Eras', {
 		get:function(){
 			var s=Molpy.currentStory
 			if(s==-1){return Molpy.AllEras[0]} else{return Molpy.AllEras[Molpy.fracParts[s]]}
@@ -166,7 +166,7 @@ Molpy.HardcodedData = function() {
 	]
 
 	Molpy.AllPeriods={}
-	Object.setAttribute('Molpy','Eons', {
+	Object.defineProperty(Molpy,'Eons', {
 		get:function(){
 			var s=Molpy.currentStory
 			if(s==-1){return Molpy.AllEons[0]} else{return Molpy.AllEons[Molpy.fracParts[s]]}
