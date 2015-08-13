@@ -13,7 +13,7 @@ Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numeric
 Molpy.HardcodedData = function() {
 	Molpy.fracParts=[0.1]
 	Molpy.AllPeriods={}
-	Object.defineProperty('Molpy','Periods', {
+	Object.defineProperty(Molpy,'Periods', {
 		get:function(){
 			var s=Molpy.currentStory
 			if(s==-1){return Molpy.AllPeriods[0]} else{return Molpy.AllPeriods[Molpy.fracParts[s]]}
