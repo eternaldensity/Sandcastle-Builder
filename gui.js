@@ -1298,13 +1298,13 @@ Molpy.DefineGUI = function() {
 			else
 				return 'http://178.79.159.24/Time/otcolorization/' + np;
 		} else {
-			if(floor > 3094)
+			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1)))
 				return 'http://placekitten.com/g/' + x + '/' + y;
 			else if(frac==0){
 				return 'http://xkcd.mscha.org/frame/' + np;
-			} else {
+			} else if(Molpy.fracParts.indexOf(frac)>0){
 				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor+'.png'
-			}
+			} else {return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 		}
 	}
 	Molpy.ThumbNewPixFor = function(np) {
