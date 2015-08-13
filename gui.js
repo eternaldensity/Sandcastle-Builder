@@ -1303,7 +1303,7 @@ Molpy.DefineGUI = function() {
 			else if(frac==0){
 				return 'http://xkcd.mscha.org/frame/' + np;
 			} else {
-				return 'http://xkcd.mscha.org/vieweraftertime/'+Molpy.NewPixFloor(frac)+floor
+				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor+'.png'
 			}
 		}
 	}
@@ -1314,7 +1314,7 @@ Molpy.DefineGUI = function() {
 		var frac=np-floor
 		if(floor > 3094) return 'http://placekitten.com/g/' + x + '/' + y;
 		else if(frac==0) return 'http://xkcd.mscha.org/frame/' + np;
-		else return 'http://xkcd.mscha.org/vieweraftertime/'+Molpy.NewPixFloor(frac)+floor
+		else return 'http://xkcd.mscha.org/vieweraftertime/'+Molpy.NewPixFloor(frac)+floor+'.png'
 	}
 
 	Molpy.Url = function(address) {
