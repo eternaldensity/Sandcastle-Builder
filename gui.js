@@ -1118,7 +1118,7 @@ Molpy.DefineGUI = function() {
 		Molpy.Anything = 1;
 		Molpy.logArchive = [];
 		Molpy.logArchive[0] = [];
-		Molpy.logArchive[0].np = Molpy.newpixNumber;
+		Molpy.logArchive[0].np = Math.floor(Molpy.newpixNumber);
 		Molpy.logArchive[0].time = new Date();
 		Molpy.logArchive[0].string = "Loading..."
 		Molpy.currentLog = 0;
@@ -1146,7 +1146,7 @@ Molpy.DefineGUI = function() {
 	Molpy.LogONG = function(){
 		Molpy.currentLog++;
 		Molpy.logArchive[Molpy.currentLog] = [];
-		Molpy.logArchive[Molpy.currentLog].np = Molpy.newpixNumber;
+		Molpy.logArchive[Molpy.currentLog].np = Math.floor(Molpy.newpixNumber);
 		Molpy.logArchive[Molpy.currentLog].time = new Date();
 		Molpy.selectedLog = Molpy.currentLog;
 		Molpy.logArchive[Molpy.currentLog].string = ""
