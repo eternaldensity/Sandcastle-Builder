@@ -77,7 +77,25 @@ Molpy.Up = function() {
 		Molpy.loadCount = 0; //number of times gave has been loaded
 		Molpy.needRebuildLootList = 0; // When loading data, loot lists need rebuilt
 		Molpy.autosaveCountup = 0;
-		Molpy.highestNPvisited = 1; //keep track of where the player has been
+		Molpy.largestNPvisited={0:1}
+		for(i=0;i<Molpy.fracParts.length;i++){Molpy.largestNPvisited[Molpy.fracParts[i]]=0}
+		Molpy.currentStory=-1
+		Object.setAttribute('Molpy','highestNPvisited', {
+			get: function(){
+				if(Molpy.currentStory>=0){
+					return Molpy.largestNPvisited[Molpy.fracParts[Molpy.currentStory]]
+				} else {
+					return Molpy.largestNPvisited[0]
+				}
+			},
+			set: function(val){
+				if(Molpy.currentStory>=0){
+					Molpy.largestNPvisited[Molpy.fracParts[Molpy.currentStory]]=val
+				} else {
+					Molpy.largestNPvisited[0]=val
+				}
+			}
+		}; //keep track of where the player has been
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
 		Molpy.totalDiscov = 0;
