@@ -401,7 +401,7 @@ Molpy.NextLegalNP=function(at){
 	if(Molpy.fracParts.indexOf(at)==Molpy.fracParts.length-1){
 		at=Math.floor(at)+1
 	} else{
-		at=Math.floor(at)+Molpy.fracParts[Molpy.fracParts.indexOf(at)+1]
+		at=Math.floor(at)+Molpy.fracParts[Molpy.fracParts.indexOf(at-Math.floor(at))+1]
 	}
 	return at
 }
