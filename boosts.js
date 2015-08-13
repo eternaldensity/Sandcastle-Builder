@@ -11983,8 +11983,8 @@ new Molpy.Boost({
 					m = Math.max(Math.E, m);
 					cost *= Math.pow(Math.floor(Math.log(m)) , -1/8);
 				}
-				tatpix = 0 // highest tatpix visited
-				yield = Math.floor(Math.pow(4,tatpix/4));
+				var tatpix = Molpy.LargestNPvisited[0.1] // highest tatpix visited
+				var yield = Math.floor(Math.pow(4,tatpix/4));
 				str += ', using infinite flux crystals';
 				str += '.<br><input type=button onclick="Molpy.Uncrush(' + cost + ',' + yield + ')" value="Uncrush"></input> ';
 				str += Molpify(cost) + ' shard' + plural(cost) + ' into ' + Molpify(yield) + ' pane' + plural(yield) + '.';
