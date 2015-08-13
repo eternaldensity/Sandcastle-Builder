@@ -1123,6 +1123,11 @@ Molpy.DefineBadges = function() {
 		desc: 'You know exactly what kind of boosts you like',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'One More Time',
+		desc: 'ONG into TaTPix',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 

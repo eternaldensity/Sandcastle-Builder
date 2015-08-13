@@ -777,6 +777,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+plural(c)+' materialized.');
 			}
 			Molpy.Boosts['Now Where Was I?'].Refresh();
+			Molpy.Boosts['PG'].Refresh();
 			Molpy.LockBoost('Muse');
 			Molpy.UpdateFaves();
 			return 1;
@@ -6839,7 +6840,11 @@ Molpy.DefineBoosts = function() {
 			return this.HasSuper(n);
 		},
 		Spend: function(n) {
-			if (n == Infinity && Molpy.Got('Abattoir')) Molpy.Boosts['Abattoir'].power++;
+			if (n == Infinity) {
+				Molpy.Boosts['Abattoir'].power++;
+				if (Molpy.Boosts['Abattoir'].power >= 144) Molpy.UnlockBoost('Abattoir');
+				if (Molpy.Boosts['Abattoir'].power >= 1008) Molpy.UnlockBoost('terrytao');
+			}
 			if (Molpy.Got('terrytao') && Molpy.IsEnabled('terrytao') && this.power == Infinity) return true;
 			return this.SpendSuper(n);
 		},
@@ -7058,8 +7063,25 @@ Molpy.DefineBoosts = function() {
 		if (lv.power >= 1000000 && Molpy.Got('Shards')) {
 			Molpy.UnlockBoost('SPP');
 		}
+		if (lv.power >= 1e12 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
+			Molpy.UnlockBoost('Panopticon');
+		}
 		if (Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
 		Molpy.Add('Blackprints', Math.floor(pages * Molpy.Papal('BlackP')));
+		if (Molpy.Got('Panopticon')) { // will test once IP finally gets sorted out
+			var shards = 0;
+			var rarity = 1e-18;
+			if (times < 100) {
+				for (var i = 0; i < times; i++) {
+					if (Math.random() < rarity) shards ++;
+				}
+			} else {
+				var stdDev = Math.sqrt(rarity * (1 - rarity) * times);
+				shards = Math.max(0, Math.floor((rarity) * times + (stdDev * (2 * Math.random() - 1))));
+			}
+			Molpy.Add('Shards', shards);
+			Molpy.Notify('found ' + shards + ' shards',1)
+		}
 		if (Molpy.Got('Camera')) {
 			var isles = 0;
 			if (times < 100) {
@@ -7068,7 +7090,7 @@ Molpy.DefineBoosts = function() {
 				}
 			} else {
 				var stdDev = Math.sqrt(.1 * .9 * times);
-				isles = Math.floor(.1 * times + (stdDev * (2 * Math.random() - 1)));
+				isles = Math.max(0, Math.floor(.1 * times + (stdDev * (2 * Math.random() - 1))));
 			}
 			Molpy.Marco(isles);
 		}
@@ -7082,7 +7104,7 @@ Molpy.DefineBoosts = function() {
 	};
 	Molpy.Marco = function(times) {
 		var polo = Molpy.groupBadgeCounts.discov;
-		if (polo == Molpy.totalDiscov) return;
+		if (Molpy.Earned('Absolute Zero')) return;
 		var np = Molpy.newpixNumber
 		var unearned = [];
 		if (np > 0) {
@@ -12004,6 +12026,12 @@ new Molpy.Boost({
 			Molpy.Add('Panes', yield);
 			Molpy.Boosts['AntiAuto'].Level++;
 			Molpy.Notify('' + Molpify(cost) + ' dimension shard' + plural(cost) + ' uncrushed into ' + Molpify(yield) + ' pane' + plural(yield) + '.', 1);
+			if (Molpy.Boosts['Locked Vault'].power > 1e12 && Molpy.IsEnabled('Mario')) {
+				Molpy.UnlockBoost('Vise');
+			}
+			if (Molpy.Boosts['AntiAuto'].Level >= 60) {
+				Molpy.UnlockBoost('Never Jam Today');
+			}
 			return;
 		}
 		if (Molpy.Boosts['Shards'].Level < cost) {
@@ -12070,7 +12098,7 @@ new Molpy.Boost({
 			for (i = sign*3095; Math.abs(i) <= Math.abs(Molpy.highestNPvisited); i += sign) {
 				if (Molpy.Boosts['kitkat'].prey.indexOf(i) == -1) {
 					Molpy.Notify('You have sniffed out a ripe kitten at NP ' + Molpify(i) + '.', 1);
-					if (Math.abs(i) >= 3195) {
+					if (Math.abs(i) >= 3173) {
 						Molpy.UnlockBoost('Sigma Stacking');
 					}
 					if (Math.abs(i) >= 3295) {
@@ -12096,9 +12124,9 @@ new Molpy.Boost({
 			var str = 'Allows you to mark a NP for later return';
 			if (me.bought) {
 				'. Costs 1 dimension shard and infinite flux crystals to move or return.'
-				str += '<br><input type=button onclick="Molpy.MoveGoal()" value="Move"></input> the goalpost to NP ' + Molpify(Molpy.newpixNumber);
+				str += '<br><input type=button onclick="Molpy.MoveGoal()" value="Move"></input> the goalpost to NP ' + Molpy.newpixNumber + '.';
 				if (me.goal != undefined) {
-					str += '<br><input type=button onclick="Molpy.ScoreGoal()" value="Return"></input> to the goalpost at NP ' + Molpify(me.goal);
+					str += '<br><input type=button onclick="Molpy.ScoreGoal()" value="Return"></input> to the goalpost at NP ' + me.goal + '.';
 				}
 			}
 
@@ -12268,21 +12296,47 @@ new Molpy.Boost({
 		},
 	});
 	new Molpy.Boost({
-		name: 'Exit through the Abattoir', // coded, not unlockable
+		name: 'Exit through the Abattoir',
 		alias: 'Abattoir',
 		icon: 'Abattoir',
 		group: 'bean',
 		desc: function(me) {
-			var str = 'Spending infinite goats boosts bonemeal'; // Don't know how yet, maybe multiplies bonemeal by 1.1 or something
+			var str = 'Spending infinite goats boosts bonemeal from Shadow Strikes. ';
+			if (!me.bought) {
+				str += 'Needs to be bought 10 times within 1 NP. ';
+			} else {
+				if (me.bought < 10) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
+				if (me.countdown) str += ' You have ' + me.countdown + 'mNP left.';
+			};
 			return str;
 		},
 		stats: function(me) {
-			var str = 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
+			var str = '';
+			if (me.bought == 10) str += 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Goats: Infinity,
 		},
+		buyFunction: function() {
+			if (this.bought == 1) {
+				this.countdown = 1000;
+				this.Unlock();
+			} else if (this.bought == 10) {
+				this.countdown = 0;
+				this.power = 0;
+			} else {
+				this.Unlock();
+				return;
+			}
+		},
+		countdownLockFunction: function() {
+			this.bought = 0;
+			this.unlocked = 0;
+			this.Unlock();
+		},
+		limit: 3,
+		NotTemp: 1,
 	});
 	new Molpy.Boost({
 		name: 'Fields\' Mettle', // coded, not unlocked
