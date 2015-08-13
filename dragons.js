@@ -921,7 +921,7 @@ Molpy.RedundaKnight = function() {
 	if (Math.random()<.25) {
 		var di = Math.random()*Molpy.TotalNPsWithDragons;
 		var found = 0;
-		for (var np=1; np<=atk; np++) {
+		for (var np=1; np<=atk; np=Molpy.NextLegalNP(np)) {
 			if (Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
 				found++;
 				if (found >= di) {
