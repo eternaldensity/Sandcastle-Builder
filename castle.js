@@ -3366,7 +3366,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['LA'].Level = 1;
 		}
 		
-		Molpy.Boosts['Signpost'].power = 0;
+		
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.LogONG();
@@ -3527,7 +3527,7 @@ Molpy.Up = function() {
 				}
 			}
 		} else if(!Molpy.IsEnabled('Temporal Anchor') && Molpy.Boosts['Controlled Hysteresis'].power==0){Molpy.newpixNumber=1}
-		Molpy.Boosts['Controlled Hysteresis'].power=-1
+		Molpy.Boosts['Controlled Hysteresis'].power=-1; Molpy.Boosts['Signpost'].power = 0;
 	}
 	Molpy.ONGs[0.1]=function(){
 		if (!Molpy.IsEnabled('Temporal Anchor')) {
@@ -3554,7 +3554,7 @@ Molpy.Up = function() {
 				}
 			}
 		}
-		Molpy.Boosts['Controlled Hysteresis'].power=-1
+		Molpy.Boosts['Controlled Hysteresis'].power=-1; Molpy.Boosts['Signpost'].power = 0;
 	}
 
 	Molpy.BurnBags = function(n, e) {
