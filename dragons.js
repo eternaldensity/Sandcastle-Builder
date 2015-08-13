@@ -392,10 +392,10 @@ Molpy.DefineOpponents = function() {
 
 // NPdata **********************************************************
 
-Molpy.NPdata = [];
+Molpy.NPdata = {};
 
 Molpy.ClearNPdata = function() {
-	Molpy.NPdata = [];
+	Molpy.NPdata = {};
 };
 
 // Digging *********************************************************
