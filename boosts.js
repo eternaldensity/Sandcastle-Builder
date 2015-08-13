@@ -777,6 +777,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+plural(c)+' materialized.');
 			}
 			Molpy.Boosts['Now Where Was I?'].Refresh();
+			Molpy.Boosts['PG'].Refresh();
 			Molpy.LockBoost('Muse');
 			Molpy.UpdateFaves();
 			return 1;
@@ -6838,7 +6839,11 @@ Molpy.DefineBoosts = function() {
 			return this.HasSuper(n);
 		},
 		Spend: function(n) {
-			if (n == Infinity && Molpy.Got('Abattoir')) Molpy.Boosts['Abattoir'].power++;
+			if (n == Infinity) {
+				Molpy.Boosts['Abattoir'].power++;
+				if (Molpy.Boosts['Abattoir'].power >= 144) Molpy.UnlockBoost('Abattoir');
+				if (Molpy.Boosts['Abattoir'].power >= 1008) Molpy.UnlockBoost('terrytao');
+			}
 			if (Molpy.Got('terrytao') && Molpy.IsEnabled('terrytao') && this.power == Infinity) return true;
 			return this.SpendSuper(n);
 		},
@@ -12003,6 +12008,9 @@ new Molpy.Boost({
 			Molpy.Add('Panes', yield);
 			Molpy.Boosts['AntiAuto'].Level++;
 			Molpy.Notify('' + Molpify(cost) + ' dimension shard' + plural(cost) + ' uncrushed into ' + Molpify(yield) + ' pane' + plural(yield) + '.', 1);
+			if (Molpy.Boosts['Locked Vault'].power > 1e12 && Molpy.IsEnabled('Mario')) {
+				Molpy.UnlockBoost('Vise');
+			}
 			return;
 		}
 		if (Molpy.Boosts['Shards'].Level < cost) {
@@ -12095,9 +12103,9 @@ new Molpy.Boost({
 			var str = 'Allows you to mark a NP for later return';
 			if (me.bought) {
 				'. Costs 1 dimension shard and infinite flux crystals to move or return.'
-				str += '<br><input type=button onclick="Molpy.MoveGoal()" value="Move"></input> the goalpost to NP ' + Molpify(Molpy.newpixNumber);
+				str += '<br><input type=button onclick="Molpy.MoveGoal()" value="Move"></input> the goalpost to NP ' + Molpy.newpixNumber + '.';
 				if (me.goal != undefined) {
-					str += '<br><input type=button onclick="Molpy.ScoreGoal()" value="Return"></input> to the goalpost at NP ' + Molpify(me.goal);
+					str += '<br><input type=button onclick="Molpy.ScoreGoal()" value="Return"></input> to the goalpost at NP ' + me.goal + '.';
 				}
 			}
 
@@ -12267,21 +12275,47 @@ new Molpy.Boost({
 		},
 	});
 	new Molpy.Boost({
-		name: 'Exit through the Abattoir', // coded, not unlockable
+		name: 'Exit through the Abattoir',
 		alias: 'Abattoir',
 		icon: 'Abattoir',
 		group: 'bean',
 		desc: function(me) {
-			var str = 'Spending infinite goats boosts bonemeal'; // Don't know how yet, maybe multiplies bonemeal by 1.1 or something
+			var str = 'Spending infinite goats boosts bonemeal from Shadow Strikes. ';
+			if (!me.bought) {
+				str += 'Needs to be bought 10 times within 1 NP. ';
+			} else {
+				if (me.bought < 10) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
+				if (me.countdown) str += ' You have ' + me.countdown + 'mNP left.';
+			};
 			return str;
 		},
 		stats: function(me) {
-			var str = 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
+			var str = '';
+			if (me.bought == 10) str += 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Goats: 1,
 		},
+		buyFunction: function() {
+			if (this.bought == 1) {
+				this.countdown = 1000;
+				this.Unlock();
+			} else if (this.bought == 10) {
+				this.countdown = 0;
+				this.power = 0;
+			} else {
+				this.Unlock();
+				return;
+			}
+		},
+		countdownLockFunction: function() {
+			this.bought = 0;
+			this.unlocked = 0;
+			this.Unlock();
+		},
+		limit: 3,
+		NotTemp: 1,
 	});
 	new Molpy.Boost({
 		name: 'Fields\' Mettle', // coded, not unlocked
