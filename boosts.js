@@ -7062,6 +7062,9 @@ Molpy.DefineBoosts = function() {
 		if (lv.power >= 1000000 && Molpy.Got('Shards')) {
 			Molpy.UnlockBoost('SPP');
 		}
+		if (lv.power >= 1e12 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
+			Molpy.UnlockBoost('Panopticon');
+		}
 		if (Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
 		Molpy.Add('Blackprints', Math.floor(pages * Molpy.Papal('BlackP')));
 		if (Molpy.Got('Panopticon')) { // will test once IP finally gets sorted out
@@ -7100,7 +7103,7 @@ Molpy.DefineBoosts = function() {
 	};
 	Molpy.Marco = function(times) {
 		var polo = Molpy.groupBadgeCounts.discov;
-		if (polo == Molpy.totalDiscov) return;
+		if (Molpy.Earned('Absolute Zero')) return;
 		var np = Molpy.newpixNumber
 		var unearned = [];
 		if (np > 0) {
@@ -12024,6 +12027,9 @@ new Molpy.Boost({
 			Molpy.Notify('' + Molpify(cost) + ' dimension shard' + plural(cost) + ' uncrushed into ' + Molpify(yield) + ' pane' + plural(yield) + '.', 1);
 			if (Molpy.Boosts['Locked Vault'].power > 1e12 && Molpy.IsEnabled('Mario')) {
 				Molpy.UnlockBoost('Vise');
+			}
+			if (Molpy.Boosts['AntiAuto'].Level >= 60) {
+				Molpy.UnlockBoost('Never Jam Today');
 			}
 			return;
 		}
