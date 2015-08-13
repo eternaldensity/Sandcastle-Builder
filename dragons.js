@@ -744,13 +744,13 @@ Molpy.DragonStatsNow = function(where) {
 
 Molpy.FindOpponents = function(from) {
 	var df = {};
-	df.from = from;
-	df.type = Math.min(Math.floor(from/150),Molpy.OpponentsById.length-1);
+	df.from = Math.floor(from);
+	df.type = Math.min(Math.floor(from/150)+1+Molpy.fracParts.indexOf(from-Math.floor(from)),Molpy.OpponentsById.length-1);
 	df.numb = (Molpy.TotalDragons < 10 && Molpy.HighestNPwithDragons < 20)?1:Math.floor(((from-df.type*150)/30)*(Math.random())+1);
 	df.gender = 1*(Math.random() < 0.5);
 	df.modifier = Math.random()+.5;
 	return df;
-}
+} //Not great, whatever.
 
 Molpy.CombatDebug = 0;
 Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
