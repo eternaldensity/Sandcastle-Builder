@@ -6844,6 +6844,7 @@ Molpy.DefineBoosts = function() {
 				Molpy.Boosts['Abattoir'].power++;
 				if (Molpy.Boosts['Abattoir'].power >= 144) Molpy.UnlockBoost('Abattoir');
 				if (Molpy.Boosts['Abattoir'].power >= 1008) Molpy.UnlockBoost('terrytao');
+				if (Molpy.Boosts['Abattoir'].power >= 1e4 && Molpy.Got('GCA')) Molpy.UnlockBoost('LA');
 			}
 			if (Molpy.Got('terrytao') && Molpy.IsEnabled('terrytao') && this.power == Infinity) return true;
 			return this.SpendSuper(n);
