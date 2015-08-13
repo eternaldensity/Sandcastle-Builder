@@ -75,6 +75,7 @@ For personal amusement only.
 
 - Improved IP processing time so that IP could be much larger.
 - Minor improvements to FindThings, logicats, and DORD as well.
+- Got TaTpix mostly working.
 
 ### 3.67 Enough Mustard for a Sandwich
 

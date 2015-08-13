@@ -3360,7 +3360,7 @@ Molpy.Up = function() {
 	Molpy.ONGBase = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
-			if(Molpy.Got('Aperture Science')){Molpy.UnlockBoost('Controlled Hysteresis')}
+			if(Molpy.Got('Aperture Science')&&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
 		}
 		if (Molpy.Got('LA')) {
 			Molpy.Boosts['LA'].Level = 1;
@@ -3501,7 +3501,7 @@ Molpy.Up = function() {
 		
 		Molpy.Boosts['Temporal Rift'].changeState('closed');
 		Molpy.IsThereAnUpdate();
-		if(Molpy.Boosts['Controlled Hysteresis'].power>-1){Molpy.newpixNumber=Molpy.Boosts['Controlled Hysteresis'].power}
+		if(Molpy.Boosts['Controlled Hysteresis'].power>-1){Molpy.newpixNumber=Molpy.Boosts['Controlled Hysteresis'].power;Molpy.currentStory=Molpy.fracParts.indexOf(Molpy.Boosts['Controlled Hysteresis'].power)}
 	};
 	Molpy.ONGs[0] = function(){
 		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
@@ -3527,6 +3527,7 @@ Molpy.Up = function() {
 				}
 			}
 		} else if(!Molpy.IsEnabled('Temporal Anchor') && Molpy.Boosts['Controlled Hysteresis'].power==0){Molpy.newpixNumber=1}
+		Molpy.Boosts['Controlled Hysteresis'].power=-1
 	}
 	Molpy.ONGs[0.1]=function(){
 		if (!Molpy.IsEnabled('Temporal Anchor')) {
@@ -3553,6 +3554,7 @@ Molpy.Up = function() {
 				}
 			}
 		}
+		Molpy.Boosts['Controlled Hysteresis'].power=-1
 	}
 
 	Molpy.BurnBags = function(n, e) {
