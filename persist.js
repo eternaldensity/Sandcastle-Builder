@@ -531,6 +531,7 @@
 			Molpy.Redacted.location = parseInt(pixels[11]) || 0;
 			Molpy.Redacted.totalClicks = parseInt(pixels[12]) || 0;
 			Molpy.highestNPvisited = parseInt(pixels[13]) || Math.abs(Molpy.newpixNumber);
+			for(var i=0;i<Molpy.fracParts.length;i++){Molpy.largestNPvisited[Molpy.fracParts[i]]=0}
 			Molpy.Redacted.chainCurrent = parseFloat(pixels[14]) || 0;
 			Molpy.Redacted.chainMax = parseFloat(pixels[15]) || 0;
 			Molpy.lootPerPage = parseInt(pixels[16]) || 20;
@@ -553,7 +554,7 @@
 			Molpy.lootPerPage = parseInt(pixels[15]) || 20;
 			Molpy.largestNPvisited[0] = parseInt(pixels[16]) || Math.abs(Molpy.newpixNumber);
 			for(var i=0;i<Molpy.fracParts.length;i++){
-				Molpy.largestNPvisited[Molpy.fracParts[i]]=parseInt(pixels[17+i])}
+				Molpy.largestNPvisited[Molpy.fracParts[i]]=parseInt(pixels[17+i])||0}
 		}
 	};
 
