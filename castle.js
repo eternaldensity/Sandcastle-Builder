@@ -77,7 +77,25 @@ Molpy.Up = function() {
 		Molpy.loadCount = 0; //number of times gave has been loaded
 		Molpy.needRebuildLootList = 0; // When loading data, loot lists need rebuilt
 		Molpy.autosaveCountup = 0;
-		Molpy.highestNPvisited = 1; //keep track of where the player has been
+		Molpy.largestNPvisited={0:1}
+		for(i=0;i<Molpy.fracParts.length;i++){Molpy.largestNPvisited[Molpy.fracParts[i]]=0}
+		Molpy.currentStory=-1
+		Object.setAttribute('Molpy','highestNPvisited', {
+			get: function(){
+				if(Molpy.currentStory>=0){
+					return Molpy.largestNPvisited[Molpy.fracParts[Molpy.currentStory]]
+				} else {
+					return Molpy.largestNPvisited[0]
+				}
+			},
+			set: function(val){
+				if(Molpy.currentStory>=0){
+					Molpy.largestNPvisited[Molpy.fracParts[Molpy.currentStory]]=val
+				} else {
+					Molpy.largestNPvisited[0]=val
+				}
+			}
+		}; //keep track of where the player has been
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
 		Molpy.totalDiscov = 0;
@@ -3326,36 +3344,28 @@ Molpy.Up = function() {
 			Molpy.currentSubFrame = realSubFrame;
 		}
 	};
-	Molpy.ONG = function() {
+	Molpy.ONGs={}
+	Molpy.ONG=function(type){
+		Molpy.currentStory=Molpy.fracParts.indexOf(Molpy.newpixNumber-Math.floor(Molpy.newpixNumber))
+		if(type==undefined){
+			var story=Molpy.currentStory
+			if(story==-1){type=0} else{type=Molpy.fracParts[story]}
+		}
+		Molpy.ONGBase();
+		var todo=Molpy.ONGs[type];
+		if(todo==undefined){todo=Molpy.ONGs[0]}
+		todo();
+	}
+	
+	Molpy.ONGBase = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
+			if(Molpy.Got('Aperture Science')){Molpy.UnlockBoost('Controlled Hysteresis')}
 		}
 		if (Molpy.Got('LA')) {
 			Molpy.Boosts['LA'].Level = 1;
 		}
-		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
-			if (Molpy.Boosts['Signpost'].power == 1) {
-				Molpy.newpixNumber = 0;
-			} else {
-				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
-			}
-			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
-				Molpy.UnlockBoost('Signpost');
-			}
-			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
-
-			Molpy.currentSubFrame = 0;
-			var np = Math.abs(Molpy.newpixNumber);
-			if(np > Math.abs(Molpy.highestNPvisited)) {
-				Molpy.highestNPvisited = Molpy.newpixNumber;
-				Molpy.Overview.Update(Molpy.newpixNumber);
-				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
-			} else  { //in the past
-				if(np > 2) {
-					Molpy.UnlockBoost('Time Travel');
-				}
-			}
-		}
+		
 		Molpy.Boosts['Signpost'].power = 0;
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.ONGstart = ONGsnip(new Date());
@@ -3425,7 +3435,7 @@ Molpy.Up = function() {
 		Molpy.npbONG = 0;//reset newpixbot flag
 
 		Molpy.Boosts['Temporal Rift'].department = 0;
-		if(Molpy.newpixNumber % (50 - (Molpy.Got('Time Travel') + Molpy.Got('Flux Capacitor') + Molpy.Got('Flux Turbine') + Molpy.Earned('Minus Worlds')) * 10) == 0) {
+		if(Math.floor(Molpy.newpixNumber) % (50 - (Molpy.Got('Time Travel') + Molpy.Got('Flux Capacitor') + Molpy.Got('Flux Turbine') + Molpy.Earned('Minus Worlds')) * 10) == 0) {
 			Molpy.Boosts['Temporal Rift'].department = (Math.random() * 6 >= 5) * 1;
 		}
 		if(Molpy.Got('SBTF')) {}
@@ -3491,7 +3501,59 @@ Molpy.Up = function() {
 		
 		Molpy.Boosts['Temporal Rift'].changeState('closed');
 		Molpy.IsThereAnUpdate();
+		if(Molpy.Boosts['Controlled Hysteresis'].power>-1){Molpy.newpixNumber=Molpy.Boosts['Controlled Hysteresis'].power}
 	};
+	Molpy.ONGs[0] = function(){
+		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
+			if (Molpy.Boosts['Signpost'].power == 1) {
+				Molpy.newpixNumber = 0; Molpy.currentStory=-1;
+			} else {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
+			}
+			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
+				Molpy.UnlockBoost('Signpost');
+			}
+			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
+
+			Molpy.currentSubFrame = 0;
+			var np = Math.abs(Molpy.newpixNumber);
+			if(np > Math.abs(Molpy.highestNPvisited)) {
+				Molpy.highestNPvisited = Molpy.newpixNumber;
+				Molpy.Overview.Update(Molpy.newpixNumber);
+				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
+			} else  { //in the past
+				if(np > 2) {
+					Molpy.UnlockBoost('Time Travel');
+				}
+			}
+		} else if(!Molpy.IsEnabled('Temporal Anchor') && Molpy.Boosts['Controlled Hysteresis'].power==0){Molpy.newpixNumber=1}
+	}
+	Molpy.ONGs[0.1]=function(){
+		if (!Molpy.IsEnabled('Temporal Anchor')) {
+			if (Molpy.Boosts['Signpost'].power == 1) {
+				Molpy.newpixNumber = 0;
+			} else {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
+			}
+			if(Molpy.newpixNumber > Molpy.Boosts['Aperture Science'].power) {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? -1 : 1);
+				Molpy.Notify("You must unlock the last door to do continue!")
+			}
+			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
+
+			Molpy.currentSubFrame = 0;
+			var np = Math.abs(Molpy.newpixNumber);
+			if(np > Math.abs(Molpy.highestNPvisited)) {
+				Molpy.highestNPvisited = Molpy.newpixNumber;
+				Molpy.Overview.Update(Molpy.newpixNumber);
+				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
+			} else  { //in the past
+				if(np > 2.1) {
+					Molpy.UnlockBoost('Time Travel');
+				}
+			}
+		}
+	}
 
 	Molpy.BurnBags = function(n, e) {
 		if(e) {
@@ -3526,7 +3588,7 @@ Molpy.Up = function() {
 		if(Molpy.newpixNumber == 0) Molpy.EarnBadge('Absolute Zero');
 
 		var np = Math.abs(Molpy.newpixNumber);
-		if(np <= 240) {
+		if((np <= 240)&&(np==Math.floor(np))) {
 			Molpy.NPlength = 1800;
 			if(Molpy.Got('Doublepost')) {
 				var incidents = ++Molpy.Boosts['Safety Net'].power;
@@ -3560,13 +3622,13 @@ Molpy.Up = function() {
 		}
 		Molpy.mNPlength = (Molpy.Got('Time Dilation') && Molpy.IsEnabled('Time Dilation')?1800:Molpy.NPlength);
 
-		if(np > 241) {
+		if((np > 241)&&(np==Math.floor(np))) {
 			Molpy.EarnBadge("Have you noticed it's slower?");
 		}
-		if(np >= 250) {
+		if((np >= 250)&&(np==Math.floor(np))) {
 			Molpy.UnlockBoost('Overcompensating');
 		}
-		if(np > 5948) {
+		if((np > 5948)&&(np==Math.floor(np))) {
 			Molpy.EarnBadge('And It Don\'t Stop');
 		}
 		Molpy.TimePeriod = [""];

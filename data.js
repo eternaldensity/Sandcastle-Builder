@@ -11,7 +11,19 @@ Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numeric
  *************************************************************/
 
 Molpy.HardcodedData = function() {
-	Molpy.Periods = [
+	Molpy.fracParts=[0.1]
+	Molpy.AllPeriods={}
+	Object.setAttribute('Molpy','Periods', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllPeriods[0]} else{return Molpy.AllPeriods[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllPeriods[0]=v} else{Molpy.AllPeriods[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllPeriods[0] = [
 			[9, "The Debut/What? Period"],
 			[23, "The Dark Period"],
 			[44, "The Sandcastle Period"],
@@ -96,8 +108,38 @@ Molpy.HardcodedData = function() {
 			[3088, "The Raftcastle"],
 			[3094, "The End"],
 	]
+	Molpy.AllPeriods[0.1]= [
+		[11.1, 'Human-free'],
+		[210.1, 'Forty-free'],
+		[262.1, 'Settling in'],
+		[400.1, 'To the top'],
+		[448.1, 'The new sandcastle'],
+		[455.1, 'The Beanie cam'],
+		[649.1, 'The other castle'],
+		[685.1, 'The cave'],
+		[760.1, 'Returning home'],
+		[844.1, 'Meeting the Beanies'],
+		[976.1, 'Return to the cave'],
+		[1092.1, 'Preparation'],
+		[1106.1, 'The attempt'],
+		[1291.1, 'The boat'],
+		[1323.1, 'The book'],
+		[1416.1, 'Conclusion'],
+		[1417.1, 'The real end']
+	]
 
-	Molpy.Eras = [
+	Molpy.AllEras={}
+	Object.setAttribute('Molpy','Eras', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllEras[0]} else{return Molpy.AllEras[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllEras[0]=v} else{Molpy.AllEras[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllEras[0] = [
 			[124, "The Pre-expansion Era"],
 			[420, "The Castleiferous Era"],
 			[582, "The Industrial Era"],
@@ -113,11 +155,37 @@ Molpy.HardcodedData = function() {
 			[2813, "The Contact Era"],
 			[2920, "The Civilization Era"],
 			[3094, "The Rescue Era"]]
+	Molpy.AllEras[0.1] = [
+		[209.1, "The Forty-less Era"],
+		[440.1, "Identification Era"],
+		[685.1, "The Castle Era"],
+		[808.1, "The Explanatory Era"],
+		[1106.1, "The Retrieval Era"],
+		[1291.1, "The Return Era"],
+		[1417.1, "The End Era"]
+	]
 
-	Molpy.Eons = [
+	Molpy.AllPeriods={}
+	Object.setAttribute('Molpy','Eons', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllEons[0]} else{return Molpy.AllEons[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllEons[0]=v} else{Molpy.AllEons[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllEons[0] = [
 		[971, "The Sandcastle Eon"],
 		[2615, "The Journey Eon"],
 		[3094, "The Encounter Eon"]]
+	Molpy.AllEons[0.1] = [
+		[216.1, "The Overlap Eon"],
+		[685.1, "The Journey Eon"],
+		[1319.1, "The Cave Eon"],
+		[1417.1, "The Exit Eon"]
+	]
 	
 
 	Molpy.titles = [

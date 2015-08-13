@@ -12518,6 +12518,25 @@ new Molpy.Boost({
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
 	});
+	Molpy.setPower=function(a,v){Molpy.Boosts[a].power=v}
+	new Molpy.Boost({
+		name: 'Controlled Hysteresis',
+		alias: 'Controlled Hysteresis',
+		group: 'dimen',
+
+		desc: function(me) {
+			if (!me.bought) return 'Lets you switch between timelines. Currently locked.';
+			var str="You can switch to:<br>"
+			str=str+'<input type="Button" onclick="Molpy.setPower(' + me.alias + ',0)" value="OTC"></input>'
+			str=str+'<input type="Button" onclick="Molpy.setPower(' + me.alias + ',0.1)" value="t1i"></input>'
+			return str
+		},
+		unlockFunction:function(){this.buy()},
+		lockFunction: function(){this.power=-1},
+		power:-1
+		
+	});
+	
 
 // END OF BOOSTS, add new ones immediately before this comment
 }

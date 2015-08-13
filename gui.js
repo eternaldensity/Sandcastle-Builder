@@ -1118,7 +1118,7 @@ Molpy.DefineGUI = function() {
 		Molpy.Anything = 1;
 		Molpy.logArchive = [];
 		Molpy.logArchive[0] = [];
-		Molpy.logArchive[0].np = Molpy.newpixNumber;
+		Molpy.logArchive[0].np = Math.floor(Molpy.newpixNumber);
 		Molpy.logArchive[0].time = new Date();
 		Molpy.logArchive[0].string = "Loading..."
 		Molpy.currentLog = 0;
@@ -1146,7 +1146,7 @@ Molpy.DefineGUI = function() {
 	Molpy.LogONG = function(){
 		Molpy.currentLog++;
 		Molpy.logArchive[Molpy.currentLog] = [];
-		Molpy.logArchive[Molpy.currentLog].np = Molpy.newpixNumber;
+		Molpy.logArchive[Molpy.currentLog].np = Math.floor(Molpy.newpixNumber);
 		Molpy.logArchive[Molpy.currentLog].time = new Date();
 		Molpy.selectedLog = Molpy.currentLog;
 		Molpy.logArchive[Molpy.currentLog].string = ""
@@ -1280,10 +1280,15 @@ Molpy.DefineGUI = function() {
 		}
 		return (minus ? '-' : '') + np;
 	}
+	Molpy.NewPixFloor=function(num){
+		if((num>=1)||(num<0)){num=num-Math.floor(num)}
+		return ['t1i-'][Molpy.fracParts.indexOf(num)]
+	}
 	Molpy.NewPixFor = function(np) {
 		np = Math.abs(np);
 		np = Molpy.FormatNP(np);
 		var floor = Math.floor(np);
+		var frac=np-floor
 
 		var x = 200 + flandom(200);
 		var y = 200 + flandom(400);
@@ -1293,18 +1298,23 @@ Molpy.DefineGUI = function() {
 			else
 				return 'http://178.79.159.24/Time/otcolorization/' + np;
 		} else {
-			if(floor > 3094)
+			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1)))
 				return 'http://placekitten.com/g/' + x + '/' + y;
-			else
+			else if(frac==0){
 				return 'http://xkcd.mscha.org/frame/' + np;
+			} else if(Molpy.fracParts.indexOf(frac)>0){
+				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor+'.png'
+			} else {return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 		}
 	}
 	Molpy.ThumbNewPixFor = function(np) {
 		np = Math.abs(np);
 		np = Molpy.FormatNP(np);
 		var floor = Math.floor(np);
+		var frac=np-floor
 		if(floor > 3094) return 'http://placekitten.com/g/' + x + '/' + y;
-		else return 'http://xkcd.mscha.org/frame/' + np;
+		else if(frac==0) return 'http://xkcd.mscha.org/frame/' + np;
+		else return 'http://xkcd.mscha.org/vieweraftertime/'+Molpy.NewPixFloor(frac)+floor+'.png'
 	}
 
 	Molpy.Url = function(address) {
