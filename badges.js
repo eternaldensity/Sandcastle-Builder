@@ -1938,22 +1938,26 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:864.1, name:"Not Superman", desc:"The Beanie displays her non-superman, non-plane art."})
 	Molpy.MakeQuadBadge({np:924.1, name:"Assorted Art", desc:"The Beanie shows her sketchbook's content."})
 	Molpy.MakeQuadBadge({np:926.1, name:"Some sort of molpy", desc:"Another drawing of something weird."})
-	Molpy.MakeQuadBadge({np:956.1, name:"She knows everything", desc:"The pair discuss their views on the Beanie."})
-	Molpy.MakeQuadBadge({np:997.1, name:"Bad water", desc:""})
-	Molpy.MakeQuadBadge({np:1023.1, name:"The plan", desc:""})
-	Molpy.MakeQuadBadge({np:1094.1, name:"Crunch", desc:""})
-	Molpy.MakeQuadBadge({np:1097.1, name:"Stuck", desc:""})
-	Molpy.MakeQuadBadge({np:1105.1, name:"Lasso", desc:""})
-	Molpy.MakeQuadBadge({np:1115.1, name:"Looking weird", desc:""})
-	Molpy.MakeQuadBadge({np:1173.1, name:"Burial site", desc:""})
-	Molpy.MakeQuadBadge({np:1202.1, name:"Fossils", desc:""})
-	Molpy.MakeQuadBadge({np:1229.1, name:"Map", desc:""})
-	Molpy.MakeQuadBadge({np:1291.1, name:"Back already", desc:""})
-	Molpy.MakeQuadBadge({np:1321.1, name:"Oil barrels", desc:""})
-	Molpy.MakeQuadBadge({np:1323.1, name:"Radioactive", desc:""})
-	Molpy.MakeQuadBadge({np:1373.1, name:"Who taught them", desc:""})
-	Molpy.MakeQuadBadge({np:1395.1, name:"Summon bigger boat", desc:""})
-	Molpy.MakeQuadBadge({np:1408.1, name:"T** **d for real.", desc:""})
-	Molpy.MakeQuadBadge({np:1414.1, name:"Rosetta returns", desc:""})
+	Molpy.MakeQuadBadge({np:956.1, name:"She knows everything", desc:"The pair discuss their views on Beanish knowledge."})
+	Molpy.MakeQuadBadge({np:977.1,name:'Green water',desc:'The pond is full of fresh, green, water.'});
+	Molpy.MakeQuadBadge({np:997.1, name:"Bad water", desc:"The pair realize that the water is dangerous."})
+	Molpy.MakeQuadBadge({np:1011.1,name:'Mouring',desc:'The trio briefly pause to pay their respects to the dead.'});
+	Molpy.MakeQuadBadge({np:1023.1, name:"The plan", desc:"The Beanie reveals the chosen method of retrieval."})
+	Molpy.MakeQuadBadge({np:1094.1, name:"Crunch", desc:"The body makes a crunching sound."})
+	Molpy.MakeQuadBadge({np:1097.1, name:"Stuck", desc:"The retrieval device gets stuck."})
+	Molpy.MakeQuadBadge({np:1105.1, name:"Lasso", desc:"Megan begins to try to lasso the body."})
+	Molpy.MakeQuadBadge({np:1106.1,name:'Yeah!',desc:'Megan successfully gets the body.'});
+	Molpy.MakeQuadBadge({np:1115.1, name:"Looking weird", desc:"The pair comment on their cave protection devices."})
+	Molpy.MakeQuadBadge({np:1173.1, name:"Burial site", desc:"The trio finish burying the body."})
+	Molpy.MakeQuadBadge({np:1202.1, name:"Fossils", desc:"The Beanie shows the pair something from the dead bodies."})
+	Molpy.MakeQuadBadge({np:1222.1,name:'How they came',desc:'The Beanish boat is revealed.'});
+	Molpy.MakeQuadBadge({np:1229.1, name:"Map", desc:"A crude map is finished."})
+	Molpy.MakeQuadBadge({np:1291.1, name:"Back already", desc:"The trio return by boat."})
+	Molpy.MakeQuadBadge({np:1321.1, name:"Oil barrels", desc:"The second image from the book."})
+	Molpy.MakeQuadBadge({np:1323.1, name:"Radioactive", desc:"The fourth image from the book."})
+	Molpy.MakeQuadBadge({np:1373.1, name:"Who taught them", desc:"Lapetite explains what is happening, suggesting an answer to an old question."})
+	Molpy.MakeQuadBadge({np:1395.1, name:"Summon bigger boat", desc:"A bigger Beanish boat is revealed."}) //Boat, not fish.
+	Molpy.MakeQuadBadge({np:1408.1, name:"T** **d for real.", desc:"T** **d is displayed a second time."})
+	Molpy.MakeQuadBadge({np:1414.1, name:"Rosetta returns", desc:"Rosetta is seen receiving the maps from the pair."})
 	//Molpy.MakeQuadBadge({np:,name:'',desc:''});
 }
