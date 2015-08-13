@@ -78,7 +78,7 @@ Molpy.Up = function() {
 		Molpy.needRebuildLootList = 0; // When loading data, loot lists need rebuilt
 		Molpy.autosaveCountup = 0;
 		Molpy.largestNPvisited={0:1}
-		for(i=0;i<Molpy.fracParts.length;i++){Molpy.largestNPvisited[Molpy.fracParts[i]]=0}
+		for(var i=0;i<Molpy.fracParts.length;i++){Molpy.largestNPvisited[Molpy.fracParts[i]]=0}
 		Molpy.currentStory=-1
 		Object.defineProperty(Molpy,'highestNPvisited', {
 			get: function(){
