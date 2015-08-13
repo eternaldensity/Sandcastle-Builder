@@ -12533,7 +12533,7 @@ new Molpy.Boost({
 		},
 		unlockFunction:function(){this.buy()},
 		lockFunction: function(){this.power=-1},
-		power:-1
+		startPower:-1
 		
 	});
 	
