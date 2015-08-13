@@ -12,7 +12,18 @@ Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numeric
 
 Molpy.HardcodedData = function() {
 	Molpy.fracParts=[0.1]
-	Molpy.Periods = [
+	Molpy.AllPeriods={}
+	Object.setAttribute('Molpy','Periods', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllPeriods[0]} else{return Molpy.AllPeriods[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllPeriods[0]=v} else{Molpy.AllPeriods[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllPeriods[0] = [
 			[9, "The Debut/What? Period"],
 			[23, "The Dark Period"],
 			[44, "The Sandcastle Period"],
@@ -98,7 +109,18 @@ Molpy.HardcodedData = function() {
 			[3094, "The End"],
 	]
 
-	Molpy.Eras = [
+	Molpy.AllEras={}
+	Object.setAttribute('Molpy','Eras', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllEras[0]} else{return Molpy.AllEras[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllEras[0]=v} else{Molpy.AllEras[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllEras[0] = [
 			[124, "The Pre-expansion Era"],
 			[420, "The Castleiferous Era"],
 			[582, "The Industrial Era"],
@@ -115,7 +137,18 @@ Molpy.HardcodedData = function() {
 			[2920, "The Civilization Era"],
 			[3094, "The Rescue Era"]]
 
-	Molpy.Eons = [
+	Molpy.AllPeriods={}
+	Object.setAttribute('Molpy','Eons', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllEons[0]} else{return Molpy.AllEons[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllEons[0]=v} else{Molpy.AllEons[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllEons[0] = [
 		[971, "The Sandcastle Eon"],
 		[2615, "The Journey Eon"],
 		[3094, "The Encounter Eon"]]
