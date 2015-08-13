@@ -108,6 +108,25 @@ Molpy.HardcodedData = function() {
 			[3088, "The Raftcastle"],
 			[3094, "The End"],
 	]
+	Molpy.AllPeriods[0.1]= [
+		[11.1, 'Human-free'],
+		[210.1, 'Forty-free'],
+		[262.1, 'Settling in'],
+		[400.1, 'To the top'],
+		[448.1, 'The new sandcastle'],
+		[455.1, 'The Beanie cam'],
+		[649.1, 'The other castle'],
+		[685.1, 'The cave'],
+		[760.1, 'Returning home'],
+		[844.1, 'Meeting the Beanies'],
+		[976.1, 'Return to the cave'],
+		[1092.1, 'Preparation'],
+		[1106.1, 'The attempt'],
+		[1291.1, 'The boat'],
+		[1323.1, 'The book'],
+		[1416.1, 'Conclusion'],
+		[1417.1, 'The real end']
+	]
 
 	Molpy.AllEras={}
 	Object.setAttribute('Molpy','Eras', {
@@ -136,6 +155,15 @@ Molpy.HardcodedData = function() {
 			[2813, "The Contact Era"],
 			[2920, "The Civilization Era"],
 			[3094, "The Rescue Era"]]
+	Molpy.AllEras[0.1] = [
+		[209.1, "The Forty-less Era"],
+		[440.1, "Identification Era"],
+		[685.1, "The Castle Era"],
+		[808.1, "The Explanatory Era"],
+		[1106.1, "The Retrieval Era"],
+		[1291.1, "The Return Era"],
+		[1417.1, "The End Era"]
+	]
 
 	Molpy.AllPeriods={}
 	Object.setAttribute('Molpy','Eons', {
@@ -152,6 +180,12 @@ Molpy.HardcodedData = function() {
 		[971, "The Sandcastle Eon"],
 		[2615, "The Journey Eon"],
 		[3094, "The Encounter Eon"]]
+	Molpy.AllEons[0.1] = [
+		[216.1, "The Overlap Eon"],
+		[685.1, "The Journey Eon"],
+		[1319.1, "The Cave Eon"],
+		[1417.1, "The Exit Eon"]
+	]
 	
 
 	Molpy.titles = [
