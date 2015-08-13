@@ -3344,36 +3344,26 @@ Molpy.Up = function() {
 			Molpy.currentSubFrame = realSubFrame;
 		}
 	};
-	Molpy.ONG = function() {
+	Molpy.ONGs={}
+	Molpy.ONG=function(type){
+		if(type==undefined){
+			var story=Molpy.currentStory
+			if(story==-1){type=0} else{type=Molpy.fracParts[story]}
+		}
+		Molpy.ONGBase();
+		var todo=Molpy.ONGs[type];
+		if(todo==undefined){todo=Molpy.ONGs[0]}
+		todo();
+	}
+	
+	Molpy.ONGBase = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
 		}
 		if (Molpy.Got('LA')) {
 			Molpy.Boosts['LA'].Level = 1;
 		}
-		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
-			if (Molpy.Boosts['Signpost'].power == 1) {
-				Molpy.newpixNumber = 0;
-			} else {
-				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
-			}
-			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
-				Molpy.UnlockBoost('Signpost');
-			}
-			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
-
-			Molpy.currentSubFrame = 0;
-			var np = Math.abs(Molpy.newpixNumber);
-			if(np > Math.abs(Molpy.highestNPvisited)) {
-				Molpy.highestNPvisited = Molpy.newpixNumber;
-				Molpy.Overview.Update(Molpy.newpixNumber);
-				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
-			} else  { //in the past
-				if(np > 2) {
-					Molpy.UnlockBoost('Time Travel');
-				}
-			}
-		}
+		
 		Molpy.Boosts['Signpost'].power = 0;
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.ONGstart = ONGsnip(new Date());
@@ -3443,7 +3433,7 @@ Molpy.Up = function() {
 		Molpy.npbONG = 0;//reset newpixbot flag
 
 		Molpy.Boosts['Temporal Rift'].department = 0;
-		if(Molpy.newpixNumber % (50 - (Molpy.Got('Time Travel') + Molpy.Got('Flux Capacitor') + Molpy.Got('Flux Turbine') + Molpy.Earned('Minus Worlds')) * 10) == 0) {
+		if(Math.floor(Molpy.newpixNumber) % (50 - (Molpy.Got('Time Travel') + Molpy.Got('Flux Capacitor') + Molpy.Got('Flux Turbine') + Molpy.Earned('Minus Worlds')) * 10) == 0) {
 			Molpy.Boosts['Temporal Rift'].department = (Math.random() * 6 >= 5) * 1;
 		}
 		if(Molpy.Got('SBTF')) {}
@@ -3510,6 +3500,56 @@ Molpy.Up = function() {
 		Molpy.Boosts['Temporal Rift'].changeState('closed');
 		Molpy.IsThereAnUpdate();
 	};
+	Molpy.ONGs[0] = function(){
+		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
+			if (Molpy.Boosts['Signpost'].power == 1) {
+				Molpy.newpixNumber = 0;
+			} else {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
+			}
+			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
+				Molpy.UnlockBoost('Signpost');
+			}
+			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
+
+			Molpy.currentSubFrame = 0;
+			var np = Math.abs(Molpy.newpixNumber);
+			if(np > Math.abs(Molpy.highestNPvisited)) {
+				Molpy.highestNPvisited = Molpy.newpixNumber;
+				Molpy.Overview.Update(Molpy.newpixNumber);
+				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
+			} else  { //in the past
+				if(np > 2) {
+					Molpy.UnlockBoost('Time Travel');
+				}
+			}
+		}
+	}
+	Molpy.ONGs[0.1]=function(){
+		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
+			if (Molpy.Boosts['Signpost'].power == 1) {
+				Molpy.newpixNumber = 0;
+			} else {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
+			}
+			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
+				Molpy.UnlockBoost('Signpost');
+			}
+			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
+
+			Molpy.currentSubFrame = 0;
+			var np = Math.abs(Molpy.newpixNumber);
+			if(np > Math.abs(Molpy.highestNPvisited)) {
+				Molpy.highestNPvisited = Molpy.newpixNumber;
+				Molpy.Overview.Update(Molpy.newpixNumber);
+				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
+			} else  { //in the past
+				if(np > 2) {
+					Molpy.UnlockBoost('Time Travel');
+				}
+			}
+		}
+	}
 
 	Molpy.BurnBags = function(n, e) {
 		if(e) {
