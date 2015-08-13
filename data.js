@@ -729,7 +729,7 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	if(Molpy.Redacted.totalClicks >= 431) {
 		Molpy.Boosts['Technicolour Dream Cat'].department = 1;
 	}
-	if(Molpy.Redacted.totalClicks >= 1000 && Molpy.Got('GCC')) {
+	if(Molpy.Redacted.totalClicks >= 1000 && Molpy.Got('GCC') && Math.random() < 1/20) {
 		Molpy.Boosts['DomCobb'].department = 1;
 	}
 
