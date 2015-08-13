@@ -12502,7 +12502,6 @@ new Molpy.Boost({
 			Molpy.Boosts['Aperture Science'].power++;
 			//boost for buying with ASHF
 		},
-		logic: 100000
 	});
 	new Molpy.Boost({
 		name: 'Eigenharmonics',
