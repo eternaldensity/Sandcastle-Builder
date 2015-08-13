@@ -397,6 +397,24 @@ Molpy.NPdata = {};
 Molpy.ClearNPdata = function() {
 	Molpy.NPdata = {};
 };
+Molpy.NextLegalNP=function(at){
+	if(Molpy.fracParts.indexOf(at)==Molpy.fracParts.length-1){
+		at=Math.floor(at)+1
+	} else{
+		at=Math.floor(at)+Molpy.fracParts[Molpy.fracParts.indexOf(at)+1]
+	}
+	return at
+}
+Molpy.NPRange = function(start,end){ // weird placement, but needed for the next one
+	var at=start;
+	var ans=[];
+	while(at<=end){
+		ans.push(at)
+		at=Molpy.NextLegalNP(at)
+	}
+	return ans
+}
+
 
 // Digging *********************************************************
 
