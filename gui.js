@@ -1280,10 +1280,15 @@ Molpy.DefineGUI = function() {
 		}
 		return (minus ? '-' : '') + np;
 	}
+	Molpy.NewPixFloor=function(num){
+		if((num>=1)||(num<0)){num=num-Math.floor(num)}
+		return ['t1i-'][[0.1].indexOf(num)]
+	}
 	Molpy.NewPixFor = function(np) {
 		np = Math.abs(np);
 		np = Molpy.FormatNP(np);
 		var floor = Math.floor(np);
+		var frac=np-floor
 
 		var x = 200 + flandom(200);
 		var y = 200 + flandom(400);
@@ -1295,16 +1300,21 @@ Molpy.DefineGUI = function() {
 		} else {
 			if(floor > 3094)
 				return 'http://placekitten.com/g/' + x + '/' + y;
-			else
+			else if(frac==0){
 				return 'http://xkcd.mscha.org/frame/' + np;
+			} else {
+				return 'http://xkcd.mscha.org/vieweraftertime/'+Molpy.NewPixFloor(frac)+floor
+			}
 		}
 	}
 	Molpy.ThumbNewPixFor = function(np) {
 		np = Math.abs(np);
 		np = Molpy.FormatNP(np);
 		var floor = Math.floor(np);
+		var frac=np-floor
 		if(floor > 3094) return 'http://placekitten.com/g/' + x + '/' + y;
-		else return 'http://xkcd.mscha.org/frame/' + np;
+		else if(frac==0) return 'http://xkcd.mscha.org/frame/' + np;
+		else return 'http://xkcd.mscha.org/vieweraftertime/'+Molpy.NewPixFloor(frac)+floor
 	}
 
 	Molpy.Url = function(address) {
