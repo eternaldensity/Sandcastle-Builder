@@ -1920,7 +1920,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:514.1,name:'A third snake',desc:'The pair spot yet another snake.'});
 	Molpy.MakeQuadBadge({np:556.1, name:"The other half", desc:"We learn just how small the island is."})
 	Molpy.MakeQuadBadge({np:560.1,name:'Broken castle',desc:'The pair spots something interesting.'});
-	Molpy.MakeQuadBadge({np:599.1,name:'Aunt',desc:'Some characterization of Cueball's aunt.});
+	Molpy.MakeQuadBadge({np:599.1,name:'Aunt',desc:'Some characterization of Cueball's aunt.'});
 	Molpy.MakeQuadBadge({np:618.1,name:'Tsee-chirp',desc:'A sound that will return many more times.'});
 	Molpy.MakeQuadBadge({np:633.1, name:"Warning signs", desc:"We see a sinister-looking series of Xs."})
 	Molpy.MakeQuadBadge({np:649.1, name:"Not a castle", desc:"The castle is arrived at."})
