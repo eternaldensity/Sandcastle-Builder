@@ -11,6 +11,7 @@ Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numeric
  *************************************************************/
 
 Molpy.HardcodedData = function() {
+	Molpy.fracParts=[0.1]
 	Molpy.Periods = [
 			[9, "The Debut/What? Period"],
 			[23, "The Dark Period"],
