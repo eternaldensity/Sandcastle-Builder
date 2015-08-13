@@ -1746,7 +1746,7 @@ Molpy.Up = function() {
 				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
 					var item = Molpy.BoostsById[thingy + 1];
 					if(item.power) {
-						RobbyDo.push(Molpy.BoostsById(Math.abs(item.power)).name)
+						RobbyDo.push(Molpy.BoostsById[Math.abs(item.power)].name)
 					}
 				}
 				RobbyDo.push(Molpy.shoppingItem)
