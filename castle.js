@@ -3346,6 +3346,7 @@ Molpy.Up = function() {
 	};
 	Molpy.ONGs={}
 	Molpy.ONG=function(type){
+		Molpy.currentStory=Molpy.fracParts.indexOf(Molpy.newpixNumber-Math.floor(Molpy.newpixNumber))
 		if(type==undefined){
 			var story=Molpy.currentStory
 			if(story==-1){type=0} else{type=Molpy.fracParts[story]}
@@ -3503,7 +3504,7 @@ Molpy.Up = function() {
 	Molpy.ONGs[0] = function(){
 		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
 			if (Molpy.Boosts['Signpost'].power == 1) {
-				Molpy.newpixNumber = 0;
+				Molpy.newpixNumber = 0; Molpy.currentStory=-1;
 			} else {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
 			}
