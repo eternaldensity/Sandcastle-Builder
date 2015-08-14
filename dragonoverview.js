@@ -202,8 +202,8 @@ Molpy.Overview = {
 		else {
 			var sign=(Molpy.Overview.fracUsed/Math.abs(Molpy.Overview.fracUsed))
 			var i=Molpy.fracParts.indexOf(Number(Math.abs(Molpy.Overview.fracUsed).toFixed(3)))
-			if(dir=='up'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i-1])}
-			if(dir=='down'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i+1])}
+			if(dir=='up'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i-1]}
+			if(dir=='down'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i+1]}
 			if(Molpy.Overview.fracUsed==undefined){Molpy.Overview.fracUsed=sign}
 		}
 	}
