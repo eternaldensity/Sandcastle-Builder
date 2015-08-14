@@ -210,7 +210,6 @@ Molpy.Overview = {
 		}
 		if(Molpy.Badges['Below the Horizon'].earned||Molpy.Got('Signpost')){
 			var sign=(Molpy.Overview.fracUsed>0)
-			str=str+"<div style='float:center'>"
 			if(!Molpy.Got('Signpost')){
 				if(!sign){
 					str=str+"Negpix"
@@ -222,7 +221,6 @@ Molpy.Overview = {
 					str=str+["t1i"][Molpy.fracParts.indexOf(Number(f.toFixed(3)))]
 				}
 			}
-			str=str+"</div>"
 		}
 		if(Molpy.Badges['Below the Horizon'].earned){
 			str=str+"<div id='downDragSwitch' class='minifloatbox controlbox' style='float:center'>";
