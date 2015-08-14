@@ -128,6 +128,7 @@ Molpy.Overview = {
 		ctx.fillText("Not special",5,16);
 		ctx.fillText("Glass Monument",5,32);
 		ctx.fillText("Diamond Masterpiece",5,48);
+		if(Molpy.Got('Signpost')){ctx.fillText(("Storyline tracked: "+Molpy.Overview.getStoryText()),5,64)}
 		ctx.stroke();
 
 		ctx =  this.dopctxm;
@@ -204,7 +205,13 @@ Molpy.Overview = {
 			var i=Molpy.fracParts.indexOf(Number(Math.abs(Molpy.Overview.fracUsed).toFixed(3)))
 			if(dir=='up'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i-1]}
 			if(dir=='down'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i+1]}
-			if(Molpy.Overview.fracUsed==undefined){Molpy.Overview.fracUsed=sign}
+			if(Molpy.Overview.fracUsed==undefined||isNaN(Molpy.Overview.fracUsed)){Molpy.Overview.fracUsed=sign}
+		}
+	},
+	getStoryText: function(){
+		var t=Number((Math.abs(Molpy.Overview.fracUsed)-1).toFixed(3))
+		if(t==0){return "OTC"} else{
+			return ["t1i"][Molpy.fracParts.indexOf(t)]
 		}
 	}
 }
