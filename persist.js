@@ -733,7 +733,7 @@
 				var enhance = Molpy.FromOct(parseInt(pixels[i] || 0, 16));
 				for( var j in enhance) {
 					var me = Molpy.BadgesById[id + +j];
-					me.earned = enhance[j] || 0;
+					if (me) me.earned = enhance[j] || 0;
 					if(me.earned) {
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[me.group] = 1;
@@ -1097,6 +1097,26 @@
 		if(version < 3.66) {
 			if (Molpy.groupBadgeCounts.diamm >= 5 && Molpy.Got('Robotic Feeder')) Molpy.UnlockBoost('Glaciation');
 		}
+		if(version < 3.66666 && Molpy.Boosts['blackhat'].bought) {
+			var bh = Molpy.Boosts['blackhat'];
+			var bhTemp = 1;
+			var oldNest = ['Sand','Castles','GlassChips','GlassBlocks','Logicat','Blackprints','Goats','Bonemeal','Mustard','FluxCrystals','Vacuum','QQ','Diamonds','Gold','Princesses','exp','Coal'];
+			var newNest = Molpy.NestLinings;
+			for (var thing in oldNest) {
+				if ((bh.bought & (1<<thing)) == 0) {
+				} else {
+					for (var thing2 in newNest) {
+						if (oldNest[thing] == newNest[thing2]) {
+							bhTemp |= (1<<thing2);
+						}
+					}
+				}
+			}
+			bh.bought = bhTemp;
+		}
+		if (version < 3.7) {
+			Molpy.Boosts['Tangled Tesseract'].power = (Molpy.Got('Tangled Tesseract') ? 4 : 3);
+		}
 	}
 
 	Molpy.MakePrizeList = function() {
@@ -1223,6 +1243,7 @@
 			var boj = !coma && Molpy.Got('BoJ') && Molpy.Spend('Bonemeal', 10000);
 			var KaKPower = !coma && Molpy.Got('Kite and Key') ? Molpy.Boosts['Kite and Key'].power : 0;
 			var LiBPower = !coma && Molpy.Got('Lightning in a Bottle') ? Molpy.Boosts['Lightning in a Bottle'].power : 0;
+			var SNPower = !coma && Molpy.Boosts['Safety Net'].power > 0 ? Molpy.Boosts['Safety Net'].power : 0;
 			var bagCount = boh + bom + bof + boj;
 			var maxKeep = Math.pow(1e42, bagCount);
 			var prizeCounts = [];
@@ -1260,6 +1281,7 @@
 			
 			Molpy.Boosts['Kite and Key'].power = KaKPower;
 			Molpy.Boosts['Lightning in a Bottle'].power = LiBPower;
+			Molpy.Boosts['Safety Net'].power = SNPower;
 			
 			Molpy.RatesRecalculate();
 			Molpy.allNeedRepaint = 1;
@@ -1300,6 +1322,13 @@
 			Molpy.Boosts['TF'].totalLoaded = 0;
 			Molpy.Boosts['TF'].totalDestroyed = 0;
 			
+			Molpy.ClearNPdata();
+			Molpy.Boosts['DQ'].finds = 0;
+			Molpy.Boosts['DQ'].totalloses = 0;
+			Molpy.Boosts['DQ'].totalfights = 0;
+			Molpy.Boosts['DQ'].totalstarves = 0;
+			Molpy.Boosts['DQ'].Level = 0;
+								 
 			Molpy.CastleTools['NewPixBot'].totalCastlesBuilt = 0; //because we normally don't reset this.
 			for( var i in Molpy.BadgesById) {
 				Molpy.BadgesById[i].earned = 0;

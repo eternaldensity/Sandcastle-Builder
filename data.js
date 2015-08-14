@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.6666;
-Molpy.versionName='Repeating, of course'; // Appended to the numerical version on screen
+Molpy.version=3.7;
+Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
@@ -136,7 +136,7 @@ Molpy.HardcodedData = function() {
 		'Hodor Hodor Hoder',
 		'I Love BANANAS',
 		'PROTIP: TO DEFEAT THE HOTDOG, OTTIFY IT UNTIL IT UNBASEMENTS',
-		'"I wouldn’t recommend it to anyone else." - IGN'];
+		'"I wouldn’t recommend it to anyone else. 5/5" - IGN'];
 	
 	Molpy.defaultLayoutData="3.2PPdefaultP00010010000000P11110111110000111000000000P517C0S449C-1S557C463S0C-2S0C48S-2C134S944C463S0C701S236C135S0C134S718C675S1060C675S547C675S889C675S557C0S557C228S0C535S0C761S1115C0S1115C237S1241C685S1096C155S1094C664S1096C365S1096C440S1499C0SP385C220S515C40S556C84S554C207S368C51S320C385S228C386S556C214S556C220S545C201S1499C576S382C100S383C211S258C61S382C195S383C60S382C59S381C209S74C237SP";
 	
@@ -549,12 +549,6 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	if(me.amount >= 40) Molpy.UnlockBoost('Skull and Crossbones');
 	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Fly the Flag');
 
-	me = Molpy.SandTools['Ladder'];
-	if(me.amount >= 1) Molpy.UnlockBoost('Extension Ladder');
-	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Climbbot');
-	if(me.amount >= 25) Molpy.UnlockBoost('Broken Rung');
-	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Up Up and Away');
-
 	me = Molpy.CastleTools['NewPixBot'];
 	if(me.amount >= 3) Molpy.UnlockBoost('Busy Bot');
 	if(me.amount >= 8) Molpy.UnlockBoost('Robot Efficiency');
@@ -570,9 +564,16 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	if(me.amount >= 20) Molpy.UnlockBoost('Throw Your Toys');
 	if(me.amount >= 50) Molpy.EarnBadge('Flung');
 
+	me = Molpy.SandTools['Ladder'];
+	if(me.amount >= 1) Molpy.UnlockBoost('Extension Ladder');
+	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Climbbot');
+	if(me.amount >= 25) Molpy.UnlockBoost('Broken Rung');
+	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Up Up and Away');
+
+	var you = me;
 	me = Molpy.CastleTools['Scaffold'];
-	if(me.amount >= 2) Molpy.UnlockBoost('Precise Placement');
-	if(me.amount >= 4) Molpy.UnlockBoost('Level Up!');
+	if(me.amount >= 2 && you.amount >=1) Molpy.UnlockBoost('Precise Placement');
+	if(me.amount >= 4 && you.amount >=1) Molpy.UnlockBoost('Level Up!');
 	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Propbot');
 	if(me.amount >= 20) Molpy.UnlockBoost('Balancing Act');
 
@@ -586,7 +587,7 @@ Molpy.CheckBuyUnlocks = function(tool) {
 	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Luggagebot');
 	if(me.amount >= 30) Molpy.UnlockBoost('Bag Puns');
 	if((me.amount >= 100) && Molpy.Earned('Flung')) Molpy.UnlockBoost('Air Drop');
-	var you = me;
+	you = me;
 	me = Molpy.CastleTools['River'];
 	if(me.amount && you.amount) Molpy.UnlockBoost('Sandbag');
 	if(me.amount >= Molpy.npbDoubleThreshold) Molpy.UnlockBoost('Smallbot');
@@ -728,6 +729,9 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	if(Molpy.Redacted.totalClicks >= 431) {
 		Molpy.Boosts['Technicolour Dream Cat'].department = 1;
 	}
+	// if(Molpy.Redacted.totalClicks >= 1000 && Molpy.Got('SPP') && Math.random() < 1/20) {
+	// 	Molpy.Boosts['DomCobb'].department = 1;
+	// }
 
 	Molpy.Boosts['RRR'].department = 1 * (Molpy.Boosts['Panther Salve'].power > 200);
 	Molpy.Boosts['Phonesaw'].department = 1 * (Molpy.Boosts['VJ'].power >= 88);
@@ -910,6 +914,19 @@ Molpy.CheckASHF = function() {
 	}
 }
 
+Molpy.BuildRewardsLists = function() {
+	Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
+	});
+	Molpy.LogicatRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
+	});
+	Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
+	});
+	Molpy.RewardsListsBuilt = 1;
+}
+
 Molpy.CheckClickAchievements = function() {
 	var c = Molpy.beachClicks;
 	Molpy.EarnBadge('Amazon Patent');
@@ -921,14 +938,17 @@ Molpy.CheckClickAchievements = function() {
 	}
 	if(c >= 100) {
 		Molpy.EarnBadge('Busy Clicking');
-		Molpy.UnlockBoost('Helpful Hands');
+		if(Molpy.SandTools['Bucket'].amount >=1 && Molpy.SandTools['Cuegan'].amount >=1)
+			Molpy.UnlockBoost('Helpful Hands');
 	}
 	if(c >= 1000) {
 		Molpy.EarnBadge('Click Storm');
-		Molpy.UnlockBoost('Raise the Flag');
+		if(Molpy.SandTools['Cuegan'].amount >=1 && Molpy.SandTools['Flag'].amount >=1)
+			Molpy.UnlockBoost('True Colours');
 	}
 	if(c >= 3333) {
-		Molpy.UnlockBoost('True Colours');
+		if(Molpy.SandTools['Flag'].amount >=1 && Molpy.SandTools['Ladder'].amount >=1)
+			Molpy.UnlockBoost('Raise the Flag');
 	}
 	c = Molpy.Boosts['Sand'].manualDug;
 	if(c >= 100000) {
