@@ -3058,6 +3058,7 @@ Molpy.Up = function() {
 						// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
 						Molpy.Add('Shards', amount);
 						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
+						Molpy.Boosts['kitkat'].Refresh();
 						prey.push(np);
 						if (prey.length >= 12) {
 							Molpy.UnlockBoost('AntiAuto');

@@ -778,6 +778,7 @@ Molpy.DefineBoosts = function() {
 			}
 			Molpy.Boosts['Now Where Was I?'].Refresh();
 			Molpy.Boosts['PG'].Refresh();
+			Molpy.Boosts['kitkat'].Refresh();
 			Molpy.LockBoost('Muse');
 			Molpy.UpdateFaves();
 			return 1;
@@ -10112,8 +10113,11 @@ Molpy.DefineBoosts = function() {
 		name: 'Tangled Tesseract',
 		icon: 'tesseract',
 		desc: function(me) {
-			var str = 'When active you get 3 times as many Logicat Levels, but no rewards from puzzles.';
-			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			var p = Math.abs(me.power);
+			if (!me.bought) p = 4;
+			yield = ((Math.pow(2,(p-4)))*(p)*(p-1)*(p-2))/3;
+			var str = 'When active, you get ' + Molpify(yield) + ' times as many Logicat Levels, but no rewards from puzzles.';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ', 1)" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
@@ -12070,7 +12074,7 @@ new Molpy.Boost({
 		desc: function(me) {
 			var str = 'Tracks which CatPix you have drained for dimension shards'
 			if (me.bought) {
-				str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
+				if (Molpy.newpixNumber >= 3095) str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
 				cost = Math.ceil(1 + .05*(me.prey.length + Molpy.Boosts['Shards'].Level));
 				str += '<br><input type=button onclick="Molpy.Prowl(cost)" value="Prowl"></input> for innocent, healthy kitties at the cost of '
 				str += Molpify(cost) + ' dimension shard' + plural(cost) + '.'
@@ -12250,8 +12254,9 @@ new Molpy.Boost({
 		},
 		stats: '',
 		price: {
-			Shards: 5 * 500,
+			Shards: 5 * 2000,
 			Panes: 5 * 10,
+			QQ: 5 * 1.23e45,
  		},
 	});
 	new Molpy.Boost({
@@ -12512,7 +12517,8 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Shards: 5 * 120,
+			Panes: 5 * 5,
 		},
 	});
 	Molpy.Pinch = function() {
