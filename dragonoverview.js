@@ -79,7 +79,10 @@ Molpy.Overview = {
 	},
 	image: [],
 
-	SetSizes: function() {
+	SetSizes: function(size) {
+		if(size!=undefined){
+			g('sectionDragonOverviewBody').style.height=String(100+100*size)+'px'
+		}
 		if (g('sectionDragonOverviewBody') && g('dragonoverviewmaindiv')) {
 			g('dragonoverviewmaindiv').style.height = parseInt(g('sectionDragonOverviewBody').style.height)-100 + 'px';
 		}
@@ -234,10 +237,10 @@ Molpy.Overview = {
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"right\")'><h4>>></h4></a></div>";
 		}
 		$('#storylineButtons').html(str)
-		this.size={
+		Molpy.Overview.SetSize({
 			1: 3095,
 			1.1:1417
-		}[Math.abs(this.fracUsed)]
-		this.doAll(1);
+		}[Math.abs(this.fracUsed)])
+		Molpy.Overview.doAll(1);
 	}
 }
