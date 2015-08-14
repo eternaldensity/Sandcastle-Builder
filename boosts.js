@@ -7063,7 +7063,7 @@ Molpy.DefineBoosts = function() {
 		lv.power += times;
 		var pages = lv.power * times;
 		pages += times * (times + 1) / 2; // some sigma-stacking =P because successive vaults give more pages
-		if (lv.power >= 1000000 && Molpy.Got('Shards')) {
+		if (lv.power >= 1e12 && Molpy.Got('Shards')) {
 			Molpy.UnlockBoost('SPP');
 		}
 		if (lv.power >= 1e21 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
@@ -12455,7 +12455,7 @@ new Molpy.Boost({
 		price: {
 			Sand: 1,
 		},
-		// does nothing (intentionally)
+		// does nothing and is free (intentionally)
 	});
 	new Molpy.Boost({
 		name: 'Aperture Science',
