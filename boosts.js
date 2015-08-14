@@ -12107,7 +12107,7 @@ new Molpy.Boost({
 					if (Math.abs(i) >= 3173) {
 						Molpy.UnlockBoost('Sigma Stacking');
 					}
-					if (Math.abs(i) >= 3295) {
+					if (Math.abs(i) >= 3275 && Molpy.Got('DomCobb')) {
 						Molpy.UnlockBoost('GCC');
 					}
 					return;
@@ -12544,7 +12544,9 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Goats: Infinity,
+			FluxCrystals: Infinity,
+			QQ: 1e42,
 		},
 	});
 	new Molpy.Boost({
@@ -12560,7 +12562,9 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Goats: Infinity,
+			FluxCrystals: Infinity,
+			Vacuum: 1e54,
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 		// To reduce the wait time to recharge the goat battery
@@ -12576,7 +12580,8 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Shards: 5 * 5000,
+			Panes: 5 * 15,
 		},
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
