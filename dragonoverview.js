@@ -74,8 +74,8 @@ Molpy.Overview = {
 		
 		if(!time){
 			$('#dragonoverviewindex').before("<div id='storylineButtons'></div>");
-			Molpy.Overview.UpdateButtons();
 		}
+		Molpy.Overview.UpdateButtons();
 	},
 	image: [],
 
@@ -196,7 +196,11 @@ Molpy.Overview = {
 			if(dir=='down'){Molpy.Overview.fracUsed=sign*(1+Molpy.fracParts[i+1])}
 			if(Molpy.Overview.fracUsed==undefined||isNaN(Molpy.Overview.fracUsed)){Molpy.Overview.fracUsed=sign}
 		}
-		Molpy.Overview.UpdateButtons();
+		Molpy.Overview.SetSizes({
+			1: 3095,
+			1.1:1417
+		}[Math.abs(this.fracUsed)])
+		Molpy.Overview.DoAll(1);
 	},
 	getStoryText: function(){
 		var t=Number((Math.abs(Molpy.Overview.fracUsed)-1).toFixed(3))
@@ -237,10 +241,5 @@ Molpy.Overview = {
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"right\")'><h4>>></h4></a></div>";
 		}
 		$('#storylineButtons').html(str)
-		Molpy.Overview.SetSizes({
-			1: 3095,
-			1.1:1417
-		}[Math.abs(this.fracUsed)])
-		Molpy.Overview.DoAll(1);
 	}
 }
