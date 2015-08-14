@@ -80,6 +80,20 @@ Molpy.Overview = {
 			str=str+"<div id='upDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"up\")'><h4><</h4></a></div>";
 		}
+		if(Molpy.Badges['Below the Horizon'].earned||Molpy.Got('Signpost')){
+			var sign=(Molpy.Overview.fracUsed>0)
+			if(!Molpy.Got('Signpost')){
+				if(!sign){
+					str=str+"Negpix"
+				} else {str=str+"Pospix"}
+			} else {
+				if(!sign){str=str+"Negative "} else{str=str+"Positive "}
+				var f=Math.abs(Molpy.Overview.fracUsed)-1
+				if(f==0){str=str+"OTC"} else {
+					str=str+["t1i"][Molpy.fracParts.indexOf(Number(f.toFixed(3)))]
+				}
+			}
+		}
 		if(Molpy.Badges['Below the Horizon'].earned){
 			str=str+"<div id='downDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"down\")'><h4>></h4></a></div>";
@@ -128,7 +142,6 @@ Molpy.Overview = {
 		ctx.fillText("Not special",5,16);
 		ctx.fillText("Glass Monument",5,32);
 		ctx.fillText("Diamond Masterpiece",5,48);
-		if(Molpy.Got('Signpost')){ctx.fillText(("Storyline tracked: "+Molpy.Overview.getStoryText()),5,64)}
 		ctx.stroke();
 
 		ctx =  this.dopctxm;
