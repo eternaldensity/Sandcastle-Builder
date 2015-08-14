@@ -1726,9 +1726,9 @@ Molpy.Up = function() {
 				var RobbySee=Molpy.Boosts['Rob'];
 				var RobbyDo=[]
 				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
-					var item = Molpy.BoostsById(thingy + 1);
+					var item = Molpy.BoostsById[thingy + 1];
 					if(item.power) {
-						RobbyDo.push(Molpy.BoostsById(Math.abs(item.power)).name)
+						RobbyDo.push(Molpy.BoostsById[Math.abs(item.power)].name)
 					}
 				}
 				RobbyDo.push(Molpy.shoppingItem)
@@ -2600,7 +2600,7 @@ Molpy.Up = function() {
 			if(BKJ.bought) {
 				BKJ.power = (BKJ.power) + 1;
 			}
-			if (Molpy.Got('DomCobb') && !flandom(100)) {
+			if (Molpy.Got('DomCobb') && Math.random() < 1/150) {
 				Molpy.RewardInception();
 			} else if(Math.floor(2 * Math.random())) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Not Lucky', true]);
