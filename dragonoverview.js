@@ -71,38 +71,8 @@ Molpy.Overview = {
 		for (var np = 1; np < this.size && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]); np=Molpy.NextLegalNP(np)) this.Update(np);
 		
 		//Add storyline buttons
-		var str=""
-		if(Molpy.Got('Signpost')){
-			str=str+"<div id='leftDragSwitch' class='minifloatbox controlbox' style='float:center'>";
-			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"left\")'><h4><<</h4></a></div>";
-		}
-		if(Molpy.Badges['Below the Horizon'].earned){
-			str=str+"<div id='upDragSwitch' class='minifloatbox controlbox' style='float:center'>";
-			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"up\")'><h4><</h4></a></div>";
-		}
-		if(Molpy.Badges['Below the Horizon'].earned||Molpy.Got('Signpost')){
-			var sign=(Molpy.Overview.fracUsed>0)
-			if(!Molpy.Got('Signpost')){
-				if(!sign){
-					str=str+"Negpix"
-				} else {str=str+"Pospix"}
-			} else {
-				if(!sign){str=str+"Negative "} else{str=str+"Positive "}
-				var f=Math.abs(Molpy.Overview.fracUsed)-1
-				if(f==0){str=str+"OTC"} else {
-					str=str+["t1i"][Molpy.fracParts.indexOf(Number(f.toFixed(3)))]
-				}
-			}
-		}
-		if(Molpy.Badges['Below the Horizon'].earned){
-			str=str+"<div id='downDragSwitch' class='minifloatbox controlbox' style='float:center'>";
-			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"down\")'><h4>></h4></a></div>";
-		}
-		if(Molpy.Got('Signpost')){
-			str=str+"<div id='rightDragSwitch' class='minifloatbox controlbox' style='float:center'>";
-			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"right\")'><h4>>></h4></a></div>";
-		}
-		$('#dragonoverviewindex').before(str);
+		
+		$('#dragonoverviewindex').before("<div id='storylineButtons'></div>");
 			
 	},
 	image: [],
@@ -215,16 +185,53 @@ Molpy.Overview = {
 		if(dir=='right'){Molpy.Overview.fracUsed=Math.abs(Molpy.Overview.fracUsed)}
 		else {
 			var sign=(Molpy.Overview.fracUsed/Math.abs(Molpy.Overview.fracUsed))
-			var i=Molpy.fracParts.indexOf(Number(Math.abs(Molpy.Overview.fracUsed).toFixed(3)))
+			var i=Molpy.fracParts.indexOf(Number((Math.abs(Molpy.Overview.fracUsed)-1).toFixed(3)))
 			if(dir=='up'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i-1]}
 			if(dir=='down'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i+1]}
 			if(Molpy.Overview.fracUsed==undefined||isNaN(Molpy.Overview.fracUsed)){Molpy.Overview.fracUsed=sign}
 		}
+		Molpy.Overview.UpdateButtons();
 	},
 	getStoryText: function(){
 		var t=Number((Math.abs(Molpy.Overview.fracUsed)-1).toFixed(3))
 		if(t==0){return "OTC"} else{
 			return ["t1i"][Molpy.fracParts.indexOf(t)]
 		}
+	},
+	UpdateButtons: function(){
+		var str=""
+		if(Molpy.Got('Signpost')){
+			str=str+"<div id='leftDragSwitch' class='minifloatbox controlbox' style='float:center'>";
+			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"left\")'><h4><<</h4></a></div>";
+		}
+		if(Molpy.Badges['Below the Horizon'].earned){
+			str=str+"<div id='upDragSwitch' class='minifloatbox controlbox' style='float:center'>";
+			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"up\")'><h4><</h4></a></div>";
+		}
+		if(Molpy.Badges['Below the Horizon'].earned||Molpy.Got('Signpost')){
+			var sign=(Molpy.Overview.fracUsed>0)
+			str=str+"<div style='float:center'>"
+			if(!Molpy.Got('Signpost')){
+				if(!sign){
+					str=str+"Negpix"
+				} else {str=str+"Pospix"}
+			} else {
+				if(!sign){str=str+"Negative "} else{str=str+"Positive "}
+				var f=Math.abs(Molpy.Overview.fracUsed)-1
+				if(f==0){str=str+"OTC"} else {
+					str=str+["t1i"][Molpy.fracParts.indexOf(Number(f.toFixed(3)))]
+				}
+			}
+			str=str+"</div>"
+		}
+		if(Molpy.Badges['Below the Horizon'].earned){
+			str=str+"<div id='downDragSwitch' class='minifloatbox controlbox' style='float:center'>";
+			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"down\")'><h4>></h4></a></div>";
+		}
+		if(Molpy.Got('Signpost')){
+			str=str+"<div id='rightDragSwitch' class='minifloatbox controlbox' style='float:center'>";
+			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"right\")'><h4>>></h4></a></div>";
+		}
+		$('#storylineButtons').html(str)
 	}
 }
