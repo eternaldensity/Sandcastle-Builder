@@ -109,7 +109,7 @@ Molpy.HardcodedData = function() {
 			[3088, "The Raftcastle"],
 			[3094, "The End"],
 	]
-	Molpy.AllPeriods[0.1]= [
+	Molpy.AllPeriods[(0.1).toFixed(3)]= [
 		[11.1, 'Human-free'],
 		[210.1, 'Forty-free'],
 		[262.1, 'Settling in'],
@@ -181,7 +181,7 @@ Molpy.HardcodedData = function() {
 		[971, "The Sandcastle Eon"],
 		[2615, "The Journey Eon"],
 		[3094, "The Encounter Eon"]]
-	Molpy.AllEons[0.1] = [
+	Molpy.AllEons[(0.1).toFixed(3)] = [
 		[216.1, "The Overlap Eon"],
 		[685.1, "The Journey Eon"],
 		[1319.1, "The Cave Eon"],
