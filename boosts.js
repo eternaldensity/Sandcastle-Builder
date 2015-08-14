@@ -12527,8 +12527,11 @@ new Molpy.Boost({
 		desc: function(me) {
 			if (!me.bought) return 'Lets you switch between timelines. Currently locked.';
 			var str="You can switch to:<br>"
-			str=str+'<input type="Button" onclick="Molpy.setPower(' + me.alias + ',0)" value="OTC"></input>'
-			str=str+'<input type="Button" onclick="Molpy.setPower(' + me.alias + ',0.1)" value="t1i"></input>'
+			str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0)" value="OTC"></input>'
+			str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0.1)" value="t1i"></input>'
+			if(me.power>-1){str=str+'<br> Currently set to ';
+				if(me.power==0){str=str+"OTC"} else{str=str+["t1i"][Molpy.fracParts.indexOf(Molpy.Boost['Controlled Hysteresis'].power)]}
+			}
 			return str
 		},
 		unlockFunction:function(){this.buy()},
