@@ -7066,14 +7066,14 @@ Molpy.DefineBoosts = function() {
 		if (lv.power >= 1000000 && Molpy.Got('Shards')) {
 			Molpy.UnlockBoost('SPP');
 		}
-		if (lv.power >= 1e12 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
+		if (lv.power >= 1e21 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
 			Molpy.UnlockBoost('Panopticon');
 		}
 		if (Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
 		Molpy.Add('Blackprints', Math.floor(pages * Molpy.Papal('BlackP')));
 		if (Molpy.Got('Panopticon')) { // will test once IP finally gets sorted out
 			var shards = 0;
-			var rarity = 1e-18;
+			var rarity = 1e-12;
 			if (times < 100) {
 				for (var i = 0; i < times; i++) {
 					if (Math.random() < rarity) shards ++;
@@ -12393,10 +12393,10 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Blackprints: 1,
-			Vacuum: 1,
-			QQ: 1,
-			Panes: '1e3',
+			Blackprints: Infinity,
+			Vacuum: 1e126,
+			QQ: 1e48,
+			Panes: 12e3,
 		},
 	});
 	new Molpy.Boost({
