@@ -196,7 +196,7 @@ Molpy.Overview = {
 
 	},
 	ChangeFrac: function(dir){
-		if(isNaN(Molpy.Overview.fracUsed){Molpy.Overview.fracUsed=1}
+		if(isNaN(Molpy.Overview.fracUsed)){Molpy.Overview.fracUsed=1}
 		if(dir=='left'){Molpy.Overview.fracUsed=-Math.abs(Molpy.Overview.fracUsed)}
 		if(dir=='right'){Molpy.Overview.fracUsed=Math.abs(Molpy.Overview.fracUsed)}
 		else {
