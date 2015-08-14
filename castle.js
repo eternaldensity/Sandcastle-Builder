@@ -3346,7 +3346,7 @@ Molpy.Up = function() {
 	};
 	Molpy.ONGs={}
 	Molpy.ONG=function(type){
-		Molpy.currentStory=Molpy.fracParts.indexOf(Molpy.newpixNumber-Math.floor(Molpy.newpixNumber))
+		Molpy.currentStory=Molpy.fracParts.indexOf((Molpy.newpixNumber-Math.floor(Molpy.newpixNumber)).toFixed(3))
 		if(type==undefined){
 			var story=Molpy.currentStory
 			if(story==-1){type=0} else{type=Molpy.fracParts[story]}
@@ -3501,7 +3501,7 @@ Molpy.Up = function() {
 		
 		Molpy.Boosts['Temporal Rift'].changeState('closed');
 		Molpy.IsThereAnUpdate();
-		if(Molpy.Boosts['Controlled Hysteresis'].power>-1){Molpy.newpixNumber=Molpy.Boosts['Controlled Hysteresis'].power;Molpy.currentStory=Molpy.fracParts.indexOf(Molpy.Boosts['Controlled Hysteresis'].power)}
+		if(Molpy.Boosts['Controlled Hysteresis'].power>-1){Molpy.newpixNumber=Molpy.Boosts['Controlled Hysteresis'].power;Molpy.currentStory=Molpy.fracParts.indexOf(Molpy.Boosts['Controlled Hysteresis'].power.toFixed(3))}
 	};
 	Molpy.ONGs[0] = function(){
 		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {

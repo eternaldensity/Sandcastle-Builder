@@ -398,10 +398,10 @@ Molpy.ClearNPdata = function() {
 	Molpy.NPdata = {};
 };
 Molpy.NextLegalNP=function(at){
-	if(Molpy.fracParts.indexOf(at-Math.floor(at))==-1){
+	if(Molpy.fracParts.indexOf((at-Math.floor(at)).toFixed(3))==-1){
 		at=Math.floor(at)+1
 	} else{
-		at=Math.floor(at)+Molpy.fracParts[Molpy.fracParts.indexOf(at-Math.floor(at))+1]
+		at=Math.floor(at)+Molpy.fracParts[Molpy.fracParts.indexOf((at-Math.floor(at)).toFixed(3))+1]
 	}
 	return at
 }
@@ -745,7 +745,7 @@ Molpy.DragonStatsNow = function(where) {
 Molpy.FindOpponents = function(from) {
 	var df = {};
 	df.from = Math.floor(from);
-	df.type = Math.min(Math.floor(from/150)+1+Molpy.fracParts.indexOf(from-Math.floor(from)),Molpy.OpponentsById.length-1);
+	df.type = Math.min(Math.floor(from/150)+1+Molpy.fracParts.indexOf((from-Math.floor(from)).toFixed(3)),Molpy.OpponentsById.length-1);
 	df.numb = (Molpy.TotalDragons < 10 && Molpy.HighestNPwithDragons < 20)?1:Math.floor(((from-df.type*150)/30)*(Math.random())+1);
 	df.gender = 1*(Math.random() < 0.5);
 	df.modifier = Math.random()+.5;
