@@ -232,7 +232,7 @@ Molpy.Overview = {
 		}
 		$('#storylineButtons').html(str)
 		this.size={
-			1: 3095
+			1: 3095,
 			1.1:1417
 		}[Math.abs(this.fracUsed)]
 	}
