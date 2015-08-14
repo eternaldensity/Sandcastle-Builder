@@ -62,7 +62,7 @@ Molpy.Overview = {
 	DoAll: function(time) {
 		if (!this.dopctxi) return;
 		// Create index
-		if(!time){this.MakeIndex(Molpy.Level('DQ'));}
+		this.MakeIndex(Molpy.Level('DQ'));
 
 		// Fill basic grid
 		this.BasicGrid();
@@ -90,6 +90,7 @@ Molpy.Overview = {
 	
 	MakeIndex: function(maxdrag) {
 		var ctx = this.dopctxi;
+		ctx.clearRect(0,0,800,100)
 		ctx.strokeStyle= Molpy.options.colourscheme?"black":"white";
 		ctx.fillStyle=Molpy.options.colourscheme?"white":"black";
 		var deflinecol = Molpy.options.colourscheme?"grey":"white"; 
@@ -127,7 +128,6 @@ Molpy.Overview = {
 
 	BasicGrid: function() {
 		var ctx = this.dopctxi;
-		ctx.clearRect(0, 0, 500, 500);
 		var deflinecol = Molpy.options.colourscheme?"black":"white"; 
 
 		ctx.lineWidth=1;
