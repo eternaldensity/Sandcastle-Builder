@@ -1274,13 +1274,14 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.NewPixFloor=function(num){
 		if((num>=1)||(num<0)){num=num-Math.floor(num)}
-		return ['t1i-'][Molpy.fracParts.indexOf(num)]
+		return ['t1i-'][Molpy.fracParts.indexOf(num).toFixed(3)]
 	}
 	Molpy.NewPixFor = function(np) {
 		np=Math.abs(np)
 		var newp = Molpy.FormatNP(np);
 		var floor = Math.floor(np);
 		var frac=np-floor
+		frac=frac.toFixed(3)
 
 		var x = 200 + flandom(200);
 		var y = 200 + flandom(400);
@@ -1307,6 +1308,7 @@ Molpy.DefineGUI = function() {
 		var newp = Molpy.FormatNP(np);
 		var floor = Math.floor(np);
 		var frac=np-floor
+		frac=frac.toFixed(3)
 		if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1)))
 			return 'http://placekitten.com/g/' + x + '/' + y;
 		else if(frac==0){
