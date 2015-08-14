@@ -425,7 +425,7 @@ Molpy.DragonDigRecalc = function() {
 	Molpy.DragonDefenceMultiplier = 1;
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
 	if (Molpy.Got('Healing Potion')) Molpy.DragonDefenceMultiplier *= 1.5;
-	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
+	if (Molpy.Got('Ooh, Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
 	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamantine Armour'));
 	if (Molpy.Got('Mirror Scales')) Molpy.DragonDefenceMultiplier *= Math.pow(4,Molpy.Level('Mirror Scales'));
@@ -581,8 +581,8 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 Molpy.FindThings = function() {
 	var dqlevel = Molpy.Level('DQ');
 	var availRewards = [];
-	for( var i in Molpy.Boosts) {
-		var me = Molpy.Boosts[i];
+	for( var i=0;i<Molpy.DragonRewardOptions.length;i++) {
+		var me = Molpy.Boosts[Molpy.DragonRewardOptions[i]];
 		if("draglvl" in me && Molpy.Dragons[me.draglvl].id <= dqlevel) {
 			var lim = EvalMaybeFunction((me.limit || 1),me);      
 			if (me.unlocked < lim && me.unlocked == me.bought) availRewards.push(me);
@@ -606,6 +606,10 @@ Molpy.MaxDragons = function() {
 } 
 
 Molpy.DragonFledge = function(clutch) {
+	if (Molpy.newpixNumber == 0) {
+		Molpy.Notify('Time balks.');
+		return;
+	}
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var dq = Molpy.Boosts['DQ'];
 	var hatch = Molpy.Boosts['Hatchlings'];
@@ -984,6 +988,10 @@ Molpy.DragonsToCryo = function(cl) {
 }
 
 Molpy.DragonsFromCryo = function() { // Cut down version of fledge
+	if (Molpy.newpixNumber == 0) {
+		Molpy.Notify('Time balks.');
+		return;
+	}
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var dq = Molpy.Boosts['DQ'];
 	var lim = Molpy.MaxDragons();

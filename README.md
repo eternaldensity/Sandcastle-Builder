@@ -30,9 +30,53 @@ Inspired by Orteil's C**kie Clicker.
 
 For personal amusement only.
 
+
 ## Changelog
 
+### 3.7 Kitty Genocide Simulator 2015
+
+#### Calamitizer
+
+- New Boosts:
+ * Signpost
+ * 3D Lens
+ * Dimension Shards
+ * Anticausal Autoclave
+ * Dimension Panes
+ * Kitty Catalogue
+ * Portable Goalpost
+ * Subspatial Plane-Packing
+ * Σ-Stacking
+ * Glass Ceiling Cat
+ * Glass Ceiling Autovator
+ * Exit through the Abattoir
+ * Fields' Mettle
+ * Lifedrain Autowinder
+ * Panopticon
+ * Never Jam Today
+ * Eigenharmonics
+ * Plumber's Vise
+ * Tractor Beam
+ * Leo DiCatrio
+- 8 new badges
+- Some boost typo fixes
+- Some discovery typo fixes
+- Changed prize category markup
+- "Tangled Tessaract" renamed to "Tangled Tesseract"
+- "Loopin Looie" renamed to "Temporal Anchor"
+- "Ooo Shiny!" renamed to "Ooh, Shiny!"
+- Expando now correctly pins down Badgers and Redunception descriptions, so you can actually read them
+- Muse and other boosts now have correct descriptions when they're locked (Muse will no longer crash the game when favorited)
+- BOXES BOXES
+
+#### pickten
+
+- Improved IP processing time so that IP could be much larger.
+- Minor improvements to FindThings, logicats, and DORD as well.
+
 ### 3.67 Enough Mustard for a Sandwich
+
+
 
 #### stormrunnerz
 
