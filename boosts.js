@@ -765,7 +765,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.ONGstart = ONGsnip(new Date());
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
-			if(!silence) Molpy.Notify('Time Travel successful! Welcome to NewPix ' + Molpify(Molpy.newpixNumber));
+			if(!silence) Molpy.Notify('Time Travel successful! Welcome to NewPix ' + Molpify(Math.floor(Molpy.newpixNumber)));
 			Molpy.Boosts['Time Travel'].travelCount++;
 			if(Molpy.Boosts['Time Travel'].travelCount >= 10 && !silence) Molpy.HandleInvaders(chips);
 			Molpy.Boosts['Time Travel'].Refresh();
