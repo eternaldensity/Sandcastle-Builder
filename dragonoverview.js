@@ -61,9 +61,8 @@ Molpy.Overview = {
 	},
 	DoAll: function(time) {
 		if (!this.dopctxi) return;
-		this.dopctxi.clearRect(0, 0, canvas.width, canvas.height);
 		// Create index
-		this.MakeIndex(Molpy.Level('DQ'));
+		if(!time){this.MakeIndex(Molpy.Level('DQ'));}
 
 		// Fill basic grid
 		this.BasicGrid();
@@ -125,6 +124,7 @@ Molpy.Overview = {
 
 	BasicGrid: function() {
 		var ctx = this.dopctxi;
+		ctx.clearRect(0, 0, 500, 500);
 		var deflinecol = Molpy.options.colourscheme?"black":"white"; 
 
 		ctx.lineWidth=1;
