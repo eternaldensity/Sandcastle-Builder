@@ -73,7 +73,7 @@ Molpy.Overview = {
 		//Add storyline buttons
 		
 		$('#dragonoverviewindex').before("<div id='storylineButtons'></div>");
-			
+		Molpy.Overview.UpdateButtons();
 	},
 	image: [],
 
