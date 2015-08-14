@@ -73,26 +73,24 @@ Molpy.Overview = {
 		//Add storyline buttons
 		var str=""
 		if(Molpy.Got('Signpost')){
-			str=str+"<div id='upDragSwitch' class='minifloatbox controlbox' style='float:center'>"
-			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\'up\')'><h4>Previous Timeline</h4></a></div>"
-		}
-		str=str+"<br>"
-		if(Molpy.Badges['Below the Horizon'].earned && Molpy.Overview.fracUsed>0){
 			str=str+"<div id='leftDragSwitch' class='minifloatbox controlbox' style='float:center'>"
-			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\'left\')'><h4>Negatives</h4></a></div>"
+			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\'left\')'><h4>Previous Timeline</h4></a></div>"
 		}
-		$('#dragonoverviewindex').before(str)
-		str=""
+		str=str
+		if(Molpy.Badges['Below the Horizon'].earned && Molpy.Overview.fracUsed>0){
+			str=str+"<div id='upDragSwitch' class='minifloatbox controlbox' style='float:center'>"
+			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\'up\')'><h4>Negatives</h4></a></div>"
+		}
 		if(Molpy.Badges['Below the Horizon'].earned && Molpy.Overview.fracUsed<0){
-			str=str+"<div id='rightDragSwitch' class='minifloatbox controlbox' style='float:center'>"
-			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\'right\')'><h4>Positives</h4></a></div>"
-		}
-		str=str+"<br>"
-		if(Molpy.Got('Signpost')){
 			str=str+"<div id='downDragSwitch' class='minifloatbox controlbox' style='float:center'>"
-			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\'down\')'><h4>Next Timeline</h4></a></div>"
+			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\'down\')'><h4>Positives</h4></a></div>"
 		}
-		$('#dragonoverviewmain').after(str)
+		str=str
+		if(Molpy.Got('Signpost')){
+			str=str+"<div id='rightDragSwitch' class='minifloatbox controlbox' style='float:center'>"
+			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\'right\')'><h4>Next Timeline</h4></a></div>"
+		}
+		$('#dragonoverviewmain').before(str)
 			
 	},
 	image: [],
