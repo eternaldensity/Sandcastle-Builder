@@ -536,7 +536,7 @@
 			Molpy.Redacted.chainMax = parseFloat(pixels[15]) || 0;
 			Molpy.lootPerPage = parseInt(pixels[16]) || 20;
 		} else{
-			Molpy.newpixNumber = parseInt(pixels[0]) || 0;
+			Molpy.newpixNumber = parseFloat(pixels[0]) || 0;
 			Molpy.beachClicks = parseInt(pixels[1]) || 0;
 			Molpy.ninjaFreeCount = parseInt(pixels[2]) || 0;
 			Molpy.ninjaStealth = parseInt(pixels[3]) || 0;
