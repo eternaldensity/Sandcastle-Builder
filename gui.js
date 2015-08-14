@@ -1304,12 +1304,16 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.ThumbNewPixFor = function(np) {
 		np = Math.abs(np);
-		np = Molpy.FormatNP(np);
+		var newp = Molpy.FormatNP(np);
 		var floor = Math.floor(np);
 		var frac=np-floor
-		if(floor > 3094) return 'http://placekitten.com/g/' + x + '/' + y;
-		else if(frac==0) return 'http://xkcd.mscha.org/frame/' + np;
-		else return 'http://xkcd.mscha.org/vieweraftertime/'+Molpy.NewPixFloor(frac)+floor+'.png'
+		if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1)))
+			return 'http://placekitten.com/g/' + x + '/' + y;
+		else if(frac==0){
+			return 'http://xkcd.mscha.org/frame/' + newp;
+		} else if(Molpy.fracParts.indexOf(frac)>-1){
+			return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor+'.png'
+		} else {return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 	}
 
 	Molpy.Url = function(address) {
@@ -1365,7 +1369,7 @@ Molpy.DefineGUI = function() {
 		
 		var str='Newpix ' + Math.floor(Molpy.newpixNumber);
 		if(Molpy.currentStory>=0){str=str+['of t1i'][Molpy.currentStory]}
-		g('newpixnum').innerHTML = 
+		g('newpixnum').innerHTML = str
 		g('eon').innerHTML = Molpy.TimeEon;
 		g('era').innerHTML = Molpy.TimeEra;
 		g('period').innerHTML = Molpy.TimePeriod;
