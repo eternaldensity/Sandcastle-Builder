@@ -80,7 +80,7 @@ Molpy.Overview = {
 	image: [],
 
 	SetSizes: function(size) {
-		if(size!=undefined){
+		if(size!=undefined && g('sectionDragonOverviewBody') && g('dragonoverviewmaindiv')){
 			g('sectionDragonOverviewBody').style.height=String(100+100*size)+'px'
 		}
 		if (g('sectionDragonOverviewBody') && g('dragonoverviewmaindiv')) {
