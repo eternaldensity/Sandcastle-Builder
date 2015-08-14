@@ -1375,7 +1375,7 @@ Molpy.DefineGUI = function() {
 		}
 		
 		var str='Newpix ' + Math.floor(Molpy.newpixNumber);
-		if(Molpy.currentStory>=0){str=str+['of t1i'][Molpy.currentStory]}
+		if(Molpy.currentStory>=0){str=str+[' of t1i'][Molpy.currentStory]}
 		g('newpixnum').innerHTML = str
 		g('eon').innerHTML = Molpy.TimeEon;
 		g('era').innerHTML = Molpy.TimeEra;
