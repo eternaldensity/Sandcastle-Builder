@@ -1290,7 +1290,7 @@ Molpy.DefineGUI = function() {
 			else if(frac==0){
 				return 'http://178.79.159.24/Time/otcolorization/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
-				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor+'.png'
+				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor
 			} else {return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 		} else {
 			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1)))
@@ -1298,7 +1298,7 @@ Molpy.DefineGUI = function() {
 			else if(frac==0){
 				return 'http://xkcd.mscha.org/frame/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
-				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor+'.png'
+				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor
 			} else {return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 		}
 	}
@@ -1312,7 +1312,7 @@ Molpy.DefineGUI = function() {
 		else if(frac==0){
 			return 'http://xkcd.mscha.org/frame/' + newp;
 		} else if(Molpy.fracParts.indexOf(frac)>-1){
-			return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor+'.png'
+			return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+floor
 		} else {return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 	}
 
