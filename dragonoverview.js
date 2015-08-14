@@ -1,7 +1,8 @@
 // Dragon Overview Pane
 // Enable at 10 NPs with dragons
 // Jumps at 111 NPs with dragons
-Molpy.adjustFrac=function(n){if(n>0){return n-1} else{return n+1}}
+Molpy.adjustFracs=function(n){if(n>0){return n-1} else{return n+1}}
+Molpy.adjustFrac=function(n){return Number(Molpy.adjustFracs(n).toFixed(3))}
 Molpy.Overview = {
 	fracUsed: 1, // one more than the actual frac so I can use negatives
 	Create: function(size) {
