@@ -152,7 +152,7 @@ Molpy.Overview = {
 		};
 		ctx.stroke();
 	},
-	checkFrac:function(n){return ((Math.abs(n)-Math.floor(Math.abs(n)))==Molpy.Overview.fracUsed)&&((n>0)*(Molpy.Overview.fracUsed>0))}
+	checkFrac:function(n){return ((Math.abs(n)-Math.floor(Math.abs(n)))==Molpy.Overview.fracUsed)&&((n>0)*(Molpy.Overview.fracUsed>0))},
 
 	Update: function(np) {
 		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || np >= this.size ) return;
