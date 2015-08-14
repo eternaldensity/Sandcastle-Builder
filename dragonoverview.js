@@ -81,7 +81,7 @@ Molpy.Overview = {
 
 	SetSizes: function(size) {
 		if(size!=undefined && g('sectionDragonOverviewBody') && g('dragonoverviewmaindiv')){
-			g('sectionDragonOverviewBody').style.height=String(100+100*size)+'px'
+			g('sectionDragonOverviewBody').style.height=String(100+100*size)+'px'; Molpy.Overview.size=size
 		}
 		if (g('sectionDragonOverviewBody') && g('dragonoverviewmaindiv')) {
 			g('dragonoverviewmaindiv').style.height = parseInt(g('sectionDragonOverviewBody').style.height)-100 + 'px';
