@@ -200,11 +200,11 @@ Molpy.Overview = {
 	},
 	UpdateButtons: function(){
 		var str=""
-		if(Molpy.Got('Signpost')){
+		if(Molpy.Badges['Below the Horizon'].earned){
 			str=str+"<div id='leftDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"left\")'><h4><<</h4></a></div>";
 		}
-		if(Molpy.Badges['Below the Horizon'].earned){
+		if(Molpy.Got('Signpost')){
 			str=str+"<div id='upDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"up\")'><h4><</h4></a></div>";
 		}
@@ -222,14 +222,15 @@ Molpy.Overview = {
 				}
 			}
 		}
-		if(Molpy.Badges['Below the Horizon'].earned){
+		if(Molpy.Got('Signpost')){
 			str=str+"<div id='downDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"down\")'><h4>></h4></a></div>";
 		}
-		if(Molpy.Got('Signpost')){
+		if(Molpy.Badges['Below the Horizon'].earned){
 			str=str+"<div id='rightDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"right\")'><h4>>></h4></a></div>";
 		}
 		$('#storylineButtons').html(str)
+		
 	}
 }
