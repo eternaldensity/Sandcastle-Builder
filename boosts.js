@@ -12334,7 +12334,6 @@ new Molpy.Boost({
 				this.power = 0;
 			} else {
 				this.Unlock();
-				return;
 			}
 		},
 		countdownLockFunction: function() {
@@ -12346,7 +12345,7 @@ new Molpy.Boost({
 		NotTemp: 1,
 	});
 	new Molpy.Boost({
-		name: 'Fields\' Mettle', // coded, not unlocked
+		name: 'Fields\' Mettle',
 		alias: 'terrytao', 
 		icon: 'fieldsmettle', 
 		group: 'bean', 
@@ -12362,11 +12361,13 @@ new Molpy.Boost({
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		price: {
-			Sand: 1,
+			Goats: Infinity,
+			Bonemeal: Infinity,
+			Shards: 5 * 1e9,
 		}
 	});
 	new Molpy.Boost({
-		name: 'Lifedrain Autowinder', // coded, not unlockable
+		name: 'Lifedrain Autowinder',
 		alias: 'LA', 
 		icon: 'autowinder',
 		group: 'dimen',
