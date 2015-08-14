@@ -12032,7 +12032,7 @@ new Molpy.Boost({
 			Molpy.Add('Panes', yield);
 			Molpy.Boosts['AntiAuto'].Level++;
 			Molpy.Notify('' + Molpify(cost) + ' dimension shard' + plural(cost) + ' uncrushed into ' + Molpify(yield) + ' pane' + plural(yield) + '.', 1);
-			if (Molpy.Boosts['Locked Vault'].power > 1e12 && Molpy.IsEnabled('Mario')) {
+			if (Molpy.Boosts['Locked Vault'].power > 1e21 && Molpy.IsEnabled('Mario')) {
 				Molpy.UnlockBoost('Vise');
 			}
 			if (Molpy.Boosts['AntiAuto'].Level >= 60) {
@@ -12107,7 +12107,8 @@ new Molpy.Boost({
 					if (Math.abs(i) >= 3173) {
 						Molpy.UnlockBoost('Sigma Stacking');
 					}
-					if (Math.abs(i) >= 3275 && Molpy.Got('DomCobb')) {
+					// if (Math.abs(i) >= 3275 && Molpy.Got('DomCobb')) {
+					if (Math.abs(i) >= 3275) {
 						Molpy.UnlockBoost('GCC');
 					}
 					return;
@@ -12276,12 +12277,12 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			GlassChips: 5 * 11111, // these are all trivial except Shards/Panes, just for looks
-			GlassBlocks: 5 * 22222,
-			LogiPuzzle: 5 * 33333,
-			Blackprints: 5 * 44444,
-			Mustard: 5 * 55555,
-			Shards: 5 * 66666, 
+			GlassChips: 5 * 111111, // these are all trivial except Shards/Panes, just for looks
+			GlassBlocks: 5 * 222222,
+			LogiPuzzle: 5 * 333333,
+			Blackprints: 5 * 444444,
+			Mustard: 5 * 555555,
+			Shards: 5 * 666666, 
 			Panes: 5 * 120,
 		},
 	});
@@ -12570,7 +12571,7 @@ new Molpy.Boost({
 		// To reduce the wait time to recharge the goat battery
 	});
 	new Molpy.Boost({
-		name: 'Leo DiCatrio',
+		name: 'Leo DiCatrio', // I can't figure out how to make this only have effect on an actual redundakitty click, not logicats/qq, so I'm leaving it locked
 		alias: 'DomCobb',
 		icon: 'leo',
 		group: 'dimen',
