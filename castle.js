@@ -3038,13 +3038,6 @@ Molpy.Up = function() {
 								if (Molpy.Got('Glass Ceiling ' + i) == Math.sign(np % i)) {
 									strikes++;
 								}
-								/////
-								var brp = '';
-								// for (var j = 0; j < strikes; j++) {
-								// 	brp += strikes[j] + ', ';
-								// 	Molpy.Notify(brp,1);
-								// }
-								/////
 								if (strikes == 10) {
 									Molpy.Boosts['GCC'].power++;
 									if (Molpy.Boosts['GCC'].power >= 72) {

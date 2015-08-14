@@ -12011,6 +12011,7 @@ new Molpy.Boost({
 					m = Math.max(Math.E, m);
 					cost *= Math.pow(Math.floor(Math.log(m)) , -1/8);
 				}
+				cost = Math.floor(cost);
 				tatpix = 0 // highest tatpix visited
 				yield = Math.floor(Math.pow(4,tatpix/4));
 				str += ', using infinite flux crystals';
@@ -12299,8 +12300,8 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Shards: 5 * 77777777,
-			Panes: 300,
+			Shards: 5 * 777777777777,
+			Panes: 12000,
 		},
 	});
 	new Molpy.Boost({
@@ -12363,7 +12364,7 @@ new Molpy.Boost({
 		
 		price: {
 			Goats: Infinity,
-			Bonemeal: Infinity,
+			Bonemeal: 1e95,
 			Shards: 5 * 1e9,
 		}
 	});
@@ -12373,13 +12374,14 @@ new Molpy.Boost({
 		icon: 'autowinder',
 		group: 'dimen',
 		desc: function(me) {
-			var str = 'The camera activates whenever Ninja Ritual does';
+			var str = 'The camera activates when Ninja Ritual does, once per ONG';
 			return str;
 		},
 		stats: '',
 		Level: Molpy.BoostFuncs.Bought0Level,
 		price: {
-			Sand: 1,
+			Shards: 5 * 666666666666,
+			Panes: 5 * 6666,
 		},
 	});
 	new Molpy.Boost({
@@ -12547,7 +12549,7 @@ new Molpy.Boost({
 		price: {
 			Goats: Infinity,
 			FluxCrystals: Infinity,
-			QQ: 1e42,
+			QQ: 5 * 1e42,
 		},
 	});
 	new Molpy.Boost({
