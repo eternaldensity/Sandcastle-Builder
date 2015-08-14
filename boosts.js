@@ -778,6 +778,7 @@ Molpy.DefineBoosts = function() {
 			}
 			Molpy.Boosts['Now Where Was I?'].Refresh();
 			Molpy.Boosts['PG'].Refresh();
+			Molpy.Boosts['kitkat'].Refresh();
 			Molpy.LockBoost('Muse');
 			Molpy.UpdateFaves();
 			return 1;
@@ -7062,17 +7063,17 @@ Molpy.DefineBoosts = function() {
 		lv.power += times;
 		var pages = lv.power * times;
 		pages += times * (times + 1) / 2; // some sigma-stacking =P because successive vaults give more pages
-		if (lv.power >= 1000000 && Molpy.Got('Shards')) {
+		if (lv.power >= 1e12 && Molpy.Got('Shards')) {
 			Molpy.UnlockBoost('SPP');
 		}
-		if (lv.power >= 1e12 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
+		if (lv.power >= 1e21 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
 			Molpy.UnlockBoost('Panopticon');
 		}
 		if (Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
 		Molpy.Add('Blackprints', Math.floor(pages * Molpy.Papal('BlackP')));
 		if (Molpy.Got('Panopticon')) { // will test once IP finally gets sorted out
 			var shards = 0;
-			var rarity = 1e-18;
+			var rarity = 1e-12;
 			if (times < 100) {
 				for (var i = 0; i < times; i++) {
 					if (Math.random() < rarity) shards ++;
@@ -10112,8 +10113,11 @@ Molpy.DefineBoosts = function() {
 		name: 'Tangled Tesseract',
 		icon: 'tesseract',
 		desc: function(me) {
-			var str = 'When active you get 3 times as many Logicat Levels, but no rewards from puzzles.';
-			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			var p = Math.abs(me.power);
+			if (!me.bought) p = 4;
+			yield = ((Math.pow(2,(p-4)))*(p)*(p-1)*(p-2))/3;
+			var str = 'When active, you get ' + Molpify(yield) + ' times as many Logicat Levels, but no rewards from puzzles.';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ', 1)" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
@@ -12007,6 +12011,7 @@ new Molpy.Boost({
 					m = Math.max(Math.E, m);
 					cost *= Math.pow(Math.floor(Math.log(m)) , -1/8);
 				}
+				cost = Math.floor(cost);
 				tatpix = 0 // highest tatpix visited
 				yield = Math.floor(Math.pow(4,tatpix/4));
 				str += ', using infinite flux crystals';
@@ -12028,7 +12033,7 @@ new Molpy.Boost({
 			Molpy.Add('Panes', yield);
 			Molpy.Boosts['AntiAuto'].Level++;
 			Molpy.Notify('' + Molpify(cost) + ' dimension shard' + plural(cost) + ' uncrushed into ' + Molpify(yield) + ' pane' + plural(yield) + '.', 1);
-			if (Molpy.Boosts['Locked Vault'].power > 1e12 && Molpy.IsEnabled('Mario')) {
+			if (Molpy.Boosts['Locked Vault'].power > 1e21 && Molpy.IsEnabled('Mario')) {
 				Molpy.UnlockBoost('Vise');
 			}
 			if (Molpy.Boosts['AntiAuto'].Level >= 60) {
@@ -12070,7 +12075,7 @@ new Molpy.Boost({
 		desc: function(me) {
 			var str = 'Tracks which CatPix you have drained for dimension shards'
 			if (me.bought) {
-				str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
+				if (Molpy.newpixNumber >= 3095) str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
 				cost = Math.ceil(1 + .05*(me.prey.length + Molpy.Boosts['Shards'].Level));
 				str += '<br><input type=button onclick="Molpy.Prowl(cost)" value="Prowl"></input> for innocent, healthy kitties at the cost of '
 				str += Molpify(cost) + ' dimension shard' + plural(cost) + '.'
@@ -12103,7 +12108,8 @@ new Molpy.Boost({
 					if (Math.abs(i) >= 3173) {
 						Molpy.UnlockBoost('Sigma Stacking');
 					}
-					if (Math.abs(i) >= 3295) {
+					// if (Math.abs(i) >= 3275 && Molpy.Got('DomCobb')) {
+					if (Math.abs(i) >= 3275) {
 						Molpy.UnlockBoost('GCC');
 					}
 					return;
@@ -12250,8 +12256,9 @@ new Molpy.Boost({
 		},
 		stats: '',
 		price: {
-			Shards: 5 * 500,
+			Shards: 5 * 2000,
 			Panes: 5 * 10,
+			QQ: 5 * 1.23e45,
  		},
 	});
 	new Molpy.Boost({
@@ -12271,12 +12278,12 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			GlassChips: 5 * 11111, // these are all trivial except Shards/Panes, just for looks
-			GlassBlocks: 5 * 22222,
-			LogiPuzzle: 5 * 33333,
-			Blackprints: 5 * 44444,
-			Mustard: 5 * 55555,
-			Shards: 5 * 66666, 
+			GlassChips: 5 * 111111, // these are all trivial except Shards/Panes, just for looks
+			GlassBlocks: 5 * 222222,
+			LogiPuzzle: 5 * 333333,
+			Blackprints: 5 * 444444,
+			Mustard: 5 * 555555,
+			Shards: 5 * 666666, 
 			Panes: 5 * 120,
 		},
 	});
@@ -12293,8 +12300,8 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Shards: 5 * 77777777,
-			Panes: 300,
+			Shards: 5 * 777777777777,
+			Panes: 12000,
 		},
 	});
 	new Molpy.Boost({
@@ -12329,7 +12336,6 @@ new Molpy.Boost({
 				this.power = 0;
 			} else {
 				this.Unlock();
-				return;
 			}
 		},
 		countdownLockFunction: function() {
@@ -12341,7 +12347,7 @@ new Molpy.Boost({
 		NotTemp: 1,
 	});
 	new Molpy.Boost({
-		name: 'Fields\' Mettle', // coded, not unlocked
+		name: 'Fields\' Mettle',
 		alias: 'terrytao', 
 		icon: 'fieldsmettle', 
 		group: 'bean', 
@@ -12357,22 +12363,25 @@ new Molpy.Boost({
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		price: {
-			Sand: 1,
+			Goats: Infinity,
+			Bonemeal: 1e95,
+			Shards: 5 * 1e9,
 		}
 	});
 	new Molpy.Boost({
-		name: 'Lifedrain Autowinder', // coded, not unlockable
+		name: 'Lifedrain Autowinder',
 		alias: 'LA', 
 		icon: 'autowinder',
 		group: 'dimen',
 		desc: function(me) {
-			var str = 'The camera activates whenever Ninja Ritual does';
+			var str = 'The camera activates when Ninja Ritual does, once per ONG';
 			return str;
 		},
 		stats: '',
 		Level: Molpy.BoostFuncs.Bought0Level,
 		price: {
-			Sand: 1,
+			Shards: 5 * 666666666666,
+			Panes: 5 * 6666,
 		},
 	});
 	new Molpy.Boost({
@@ -12384,10 +12393,10 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Blackprints: 1,
-			Vacuum: 1,
-			QQ: 1,
-			Panes: '1e3',
+			Blackprints: Infinity,
+			Vacuum: 1e126,
+			QQ: 1e48,
+			Panes: 12e3,
 		},
 	});
 	new Molpy.Boost({
@@ -12446,7 +12455,7 @@ new Molpy.Boost({
 		price: {
 			Sand: 1,
 		},
-		// does nothing (intentionally)
+		// does nothing and is free (intentionally)
 	});
 	new Molpy.Boost({
 		name: 'Aperture Science',
@@ -12512,7 +12521,8 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Shards: 5 * 120,
+			Panes: 5 * 5,
 		},
 	});
 	Molpy.Pinch = function() {
@@ -12537,7 +12547,9 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Goats: Infinity,
+			FluxCrystals: Infinity,
+			QQ: 5 * 1e42,
 		},
 	});
 	new Molpy.Boost({
@@ -12553,13 +12565,15 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Goats: Infinity,
+			FluxCrystals: Infinity,
+			Vacuum: 1e54,
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 		// To reduce the wait time to recharge the goat battery
 	});
 	new Molpy.Boost({
-		name: 'Leo DiCatrio',
+		name: 'Leo DiCatrio', // I can't figure out how to make this only have effect on an actual redundakitty click, not logicats/qq, so I'm leaving it locked
 		alias: 'DomCobb',
 		icon: 'leo',
 		group: 'dimen',
@@ -12569,7 +12583,8 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Shards: 5 * 5000,
+			Panes: 5 * 15,
 		},
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!

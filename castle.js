@@ -3038,13 +3038,6 @@ Molpy.Up = function() {
 								if (Molpy.Got('Glass Ceiling ' + i) == Math.sign(np % i)) {
 									strikes++;
 								}
-								/////
-								var brp = '';
-								// for (var j = 0; j < strikes; j++) {
-								// 	brp += strikes[j] + ', ';
-								// 	Molpy.Notify(brp,1);
-								// }
-								/////
 								if (strikes == 10) {
 									Molpy.Boosts['GCC'].power++;
 									if (Molpy.Boosts['GCC'].power >= 72) {
@@ -3058,6 +3051,7 @@ Molpy.Up = function() {
 						// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
 						Molpy.Add('Shards', amount);
 						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
+						Molpy.Boosts['kitkat'].Refresh();
 						prey.push(np);
 						if (prey.length >= 12) {
 							Molpy.UnlockBoost('AntiAuto');
