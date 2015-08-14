@@ -12,7 +12,6 @@ Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numeric
 
 Molpy.HardcodedData = function() {
 	Molpy.fracParts=[0.1]
-	for(var i=0;i<Molpy.fracParts.length;i++){Molpy.fracParts[i]=Molpy.fracParts[i].toFixed(3)}
 	Molpy.AllPeriods={}
 	Object.defineProperty(Molpy,'Periods', {
 		get:function(){
@@ -109,7 +108,7 @@ Molpy.HardcodedData = function() {
 			[3088, "The Raftcastle"],
 			[3094, "The End"],
 	]
-	Molpy.AllPeriods[(0.1).toFixed(3)]= [
+	Molpy.AllPeriods[0.1]= [
 		[11.1, 'Human-free'],
 		[210.1, 'Forty-free'],
 		[262.1, 'Settling in'],
@@ -181,7 +180,7 @@ Molpy.HardcodedData = function() {
 		[971, "The Sandcastle Eon"],
 		[2615, "The Journey Eon"],
 		[3094, "The Encounter Eon"]]
-	Molpy.AllEons[(0.1).toFixed(3)] = [
+	Molpy.AllEons[0.1] = [
 		[216.1, "The Overlap Eon"],
 		[685.1, "The Journey Eon"],
 		[1319.1, "The Cave Eon"],
