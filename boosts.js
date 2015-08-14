@@ -720,8 +720,7 @@ Molpy.DefineBoosts = function() {
 	// targeted time travel!
 	Molpy.TTT = function(np, chips, silence) {
 		var oldnp = Molpy.newpixNumber;
-		Molpy.Anything = 1;
-		np = Math.floor(np);
+		Molpy.Anything = 1
 		chips = chips ? (chips == 1?Molpy.CalcJumpEnergy(np):Infinity) : 0;
 		var price = Molpy.TimeTravelPrice();
 		if(chips) price = 0;
