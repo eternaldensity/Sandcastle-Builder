@@ -241,6 +241,6 @@ Molpy.Overview = {
 			1: 3095,
 			1.1:1417
 		}[Math.abs(this.fracUsed)])
-		Molpy.Overview.doAll(1);
+		Molpy.Overview.DoAll(1);
 	}
 }
