@@ -201,7 +201,7 @@ Molpy.Overview = {
 
 	Hover:	function() {
 
-	}
+	},
 	ChangeFrac: function(dir){
 		if(dir=='left'){Molpy.Overview.fracUsed=-Math.abs(Molpy.Overview.fracUsed)}
 		if(dir=='right'){Molpy.Overview.fracUsed=Math.abs(Molpy.Overview.fracUsed)}
