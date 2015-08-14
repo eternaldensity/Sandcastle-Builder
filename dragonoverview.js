@@ -1,8 +1,9 @@
 // Dragon Overview Pane
 // Enable at 10 NPs with dragons
 // Jumps at 111 NPs with dragons
-
+Molpy.adjustFrac=function(n){if(n>0){return n-1} else{return n+1}}
 Molpy.Overview = {
+	fracUsed: 1, // one more than the actual frac so I can use negatives
 	Create: function(size) {
 		this.size = size || 3095;
 		this.dopanei = g('dragonoverviewindex');
@@ -31,7 +32,7 @@ Molpy.Overview = {
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Math.abs(Molpy.largestNPvisited[0]) && np < over.size) {
+				if (np && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && np < over.size) {
 					var npd = Molpy.NPdata[np];
 					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
 					over.mtip.style.top = (evt.clientY -20 + window.pageYOffset) + "px";
@@ -66,7 +67,7 @@ Molpy.Overview = {
 		this.BasicGrid();
 		
 		// Update all nps
-		for (var np = 1; np < this.size && np <= Math.abs(Molpy.largestNPvisited[0]); np=Molpy.NextLegalNP(np)) this.Update(np);
+		for (var np = 1; np < this.size && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]); np=Molpy.NextLegalNP(np)) this.Update(np);
 	},
 	image: [],
 
@@ -158,7 +159,7 @@ Molpy.Overview = {
 
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Math.abs(Molpy.largestNPvisited[0]) && np < over.size) { 
+				if (np && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && np < over.size) { 
 					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1); 
 				} //Dragon overview will be difficult to do. Remind pickten to try. Or try yourself. It needs TaTpix compatibility.
 			}
