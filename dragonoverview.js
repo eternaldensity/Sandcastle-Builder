@@ -231,6 +231,9 @@ Molpy.Overview = {
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"right\")'><h4>>></h4></a></div>";
 		}
 		$('#storylineButtons').html(str)
-		
+		this.size={
+			1: 3095
+			1.1:1417
+		}[Math.abs(this.fracUsed)]
 	}
 }
