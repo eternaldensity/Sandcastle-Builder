@@ -59,8 +59,9 @@ Molpy.Overview = {
 
 		this.DoAll();
 	},
-	DoAll: function() {
+	DoAll: function(time) {
 		if (!this.dopctxi) return;
+		this.dopctxi.clearRect(0, 0, canvas.width, canvas.height);
 		// Create index
 		this.MakeIndex(Molpy.Level('DQ'));
 
@@ -72,8 +73,10 @@ Molpy.Overview = {
 		
 		//Add storyline buttons
 		
-		$('#dragonoverviewindex').before("<div id='storylineButtons'></div>");
-		Molpy.Overview.UpdateButtons();
+		if(time){
+			$('#dragonoverviewindex').before("<div id='storylineButtons'></div>");
+			Molpy.Overview.UpdateButtons();
+		}
 	},
 	image: [],
 
@@ -235,5 +238,6 @@ Molpy.Overview = {
 			1: 3095,
 			1.1:1417
 		}[Math.abs(this.fracUsed)]
+		this.doAll(1);
 	}
 }
