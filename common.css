@@ -767,3 +767,7 @@ body.darkscheme #doverhover {
 	padding:2px;
 	margin;2px;
 }
+#sectionOptions {
+	height: 236px; 
+	overflow-y: scroll;
+}

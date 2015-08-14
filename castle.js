@@ -3355,6 +3355,7 @@ Molpy.Up = function() {
 		var todo=Molpy.ONGs[type];
 		if(todo==undefined){todo=Molpy.ONGs[0]}
 		todo();
+		Molpy.UpdateBeach();
 	}
 	
 	Molpy.ONGBase = function() {
