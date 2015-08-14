@@ -552,9 +552,9 @@
 			Molpy.Redacted.chainCurrent = parseFloat(pixels[13]) || 0;
 			Molpy.Redacted.chainMax = parseFloat(pixels[14]) || 0;
 			Molpy.lootPerPage = parseInt(pixels[15]) || 20;
-			Molpy.largestNPvisited[0] = parseInt(pixels[16]) || Math.abs(Molpy.newpixNumber);
+			Molpy.largestNPvisited[0] = (parseInt(pixels[16]) || parseFloat(pixels[16]))||Math.abs(Molpy.newpixNumber);
 			for(var i=0;i<Molpy.fracParts.length;i++){
-				Molpy.largestNPvisited[Molpy.fracParts[i]]=parseInt(pixels[17+i])||0}
+				Molpy.largestNPvisited[Molpy.fracParts[i]]=parseFloat(pixels[17+i])||0}
 		}
 	};
 
