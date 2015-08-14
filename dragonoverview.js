@@ -186,8 +186,8 @@ Molpy.Overview = {
 		else {
 			var sign=(Molpy.Overview.fracUsed/Math.abs(Molpy.Overview.fracUsed))
 			var i=Molpy.fracParts.indexOf(Number((Math.abs(Molpy.Overview.fracUsed)-1).toFixed(3)))
-			if(dir=='up'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i-1]}
-			if(dir=='down'){Molpy.Overview.fracUsed=sign+Molpy.fracParts[i+1]}
+			if(dir=='up'){Molpy.Overview.fracUsed=sign*(1+Molpy.fracParts[i-1])}
+			if(dir=='down'){Molpy.Overview.fracUsed=sign*(1+Molpy.fracParts[i+1])}
 			if(Molpy.Overview.fracUsed==undefined||isNaN(Molpy.Overview.fracUsed)){Molpy.Overview.fracUsed=sign}
 		}
 		Molpy.Overview.UpdateButtons();
