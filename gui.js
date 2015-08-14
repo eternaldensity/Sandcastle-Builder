@@ -1274,6 +1274,7 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.NewPixFloor=function(num){
 		if((num>=1)||(num<0)){num=num-Math.floor(num)}
+		num=num.toFixed(3)
 		return ['t1i-'][Molpy.fracParts.indexOf(num).toFixed(3)]
 	}
 	Molpy.NewPixFor = function(np) {
