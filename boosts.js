@@ -9462,9 +9462,11 @@ Molpy.DefineBoosts = function() {
 				};
 				if(Molpy.Has(UpgradePrice)) {
 					var mult = 1;
-					while ((mult == 1 || me.bought >= 10 * mult) &&
-						Molpy.Has('Vacuum', UpgradePrice.Vacuum * mult * 10) &&
-						Molpy.Has('QQ', UpgradePrice.QQ * mult * 10)) mult *= 10;
+					if (lvls >= 100) {
+						while ((mult == 1 || me.bought >= 10 * mult) &&
+							Molpy.Has('Vacuum', UpgradePrice.Vacuum * mult * 10) &&
+							Molpy.Has('QQ', UpgradePrice.QQ * mult * 10)) mult *= 10;
+					}
 					UpgradePrice.Vacuum *= mult;
 					UpgradePrice.QQ *= mult;
 					str += '<br><input type="button" onclick="Molpy.SuperMario(' + mult + ')" value="Upgrade"></input>';
