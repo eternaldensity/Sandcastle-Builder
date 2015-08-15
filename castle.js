@@ -1742,6 +1742,7 @@ Molpy.Up = function() {
 					var lettuce=Molpy.Boosts[bacon];
 					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
 						Molpy.Unbox(times)
+						Molpy.Boosts['Locked Vault'].bought = flandom(5);
 					}
 					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
 						Molpy.UnlockBoost('Locked Vault')
