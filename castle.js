@@ -3056,6 +3056,7 @@ Molpy.Up = function() {
 						var amount = Math.max(1, Math.floor(factor));
 						if (Molpy.Got('Never Jam Today') && (Molpy.newpixNumber != Molpy.newpixNumber)) amount = Math.pow(amount, amount);
 						// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
+						amount = Math.floor(amount * Molpy.Papal('Shards'));
 						Molpy.Add('Shards', amount);
 						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
 						Molpy.Boosts['kitkat'].Refresh();

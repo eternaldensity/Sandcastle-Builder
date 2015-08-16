@@ -9829,6 +9829,7 @@ Molpy.DefineBoosts = function() {
 		Gold: {desc:'XX% more Gold', value:1.1, avail: function() { return Molpy.Earned('Millionair') && isFinite(Molpy.Level('Gold')) }},
 		Diamonds: {desc:'XX% more Diamonds', value:1.1, avail: function() { return Molpy.DragonDigRate > 1e8 && isFinite(Molpy.Level('Diamonds')) }},
 		Master: {desc:'XX% less time for each masterpiece stage', value:0.9, avail: function() { return Molpy.groupBadgeCounts.diamm >= 10 }},
+		Shards: {desc: 'XX% more Dimension Shards from the camera', value: 1.1, avail: function() { return Molpy.Boosts['kitkat'].prey.length >= 180 }},
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
