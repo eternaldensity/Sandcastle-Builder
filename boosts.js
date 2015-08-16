@@ -3679,7 +3679,7 @@ Molpy.DefineBoosts = function() {
 		className: 'alert',
 		
 		desc: function(me) {
-			return 'The next ' + me.power + ' Ninja Builder' + plural(me.power) + ' will activate Factory Automation';
+			return 'The next ' + Molpify(me.power) + ' Ninja Builder' + plural(me.power) + ' will activate Factory Automation';
 		},
 		
 		logic: 3,
@@ -5286,15 +5286,14 @@ Molpy.DefineBoosts = function() {
 	{
 		if(times && Molpy.IsEnabled('Mario')) {
 			var l = Molpy.Boosts['Mario'].bought;
-			var runs=[10,20,100,500,1000][Molpy.options.approx]
+			var runs = [10,20,100,500,1000][Molpy.options.approx];
 			var cost = l * (l + 1) / 2;
 			Molpy.boostSilence++;
-			if(Molpy.Spend('QQ', cost)) {
-				while((l>0)&&(runs>0)) {
-					Molpy.RewardLogicat(Molpy.Level('QQ'),Math.ceil(l/runs));
-					l=l-runs
-					runs-=1
+			if (Molpy.Spend('QQ', cost)) {
+				for (var i = 0; i < runs; i++) {
+					Molpy.RewardLogicat(Molpy.Level('QQ'), Math.floor(l/runs));
 				}
+				Molpy.RewardLogicat(Molpy.Level('QQ'), l%runs);
 			}
 			Molpy.boostSilence--;
 		}
@@ -7104,6 +7103,7 @@ Molpy.DefineBoosts = function() {
 			}
 			Molpy.Add('Flux Crystals', c);
 		}
+		lv.Refresh();
 	};
 	Molpy.Marco = function(times) {
 		var polo = Molpy.groupBadgeCounts.discov;
@@ -12629,7 +12629,7 @@ new Molpy.Boost({
 		price: {
 			Sand: 50000000,
 			Castles: 20000000,
-			Glass: 50,
+			GlassBlocks: 50,
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
