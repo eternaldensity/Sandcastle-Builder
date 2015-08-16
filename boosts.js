@@ -9908,7 +9908,7 @@ Molpy.DefineBoosts = function() {
 		var staff = Molpy.Boosts['Permanent Staff'];
 		if (!staff.Level) staff.Level = 0;
 		staff.Level++;
-		if (staff.Level >= 72) Molpy.UnlockBoost('Permanent Staff');
+		if (staff.Level >= 144) Molpy.UnlockBoost('Permanent Staff');
 		Molpy.Decree = Molpy.PapalDecrees[name];
 		pope.power = Molpy.Hash(name);
 		Molpy.Decreename = name;
@@ -12627,7 +12627,9 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Sand: 50000000,
+			Castles: 20000000,
+			Glass: 50,
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
