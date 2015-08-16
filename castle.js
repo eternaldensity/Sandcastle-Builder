@@ -3487,7 +3487,7 @@ Molpy.Up = function() {
 
 		Molpy.Boosts['Glass Trolling'].IsEnabled = 0;
 		Molpy.Boosts['Now Where Was I?'].Refresh();
-		Molpy.Boosts['The Pope'].reset();
+		if (!Molpy.Got('Permanent Staff') || !Molpy.IsEnabled('Permanent Staff')) Molpy.Boosts['The Pope'].reset();
 		Molpy.MakeSomethingUp();
 		Molpy.UpdateFaves();
 		

@@ -9904,10 +9904,15 @@ Molpy.DefineBoosts = function() {
 
 	Molpy.SelectPapalDecree = function(name) {
 		Molpy.Anything = 1;
+		var pope = Molpy.Boosts['The Pope'];
+		var staff = Molpy.Boosts['Permanent Staff'];
+		if (!staff.Level) staff.Level = 0;
+		staff.Level++;
+		if (staff.Level >= 72) Molpy.UnlockBoost('Permanent Staff');
 		Molpy.Decree = Molpy.PapalDecrees[name];
-		Molpy.Boosts['The Pope'].power = Molpy.Hash(name);
+		pope.power = Molpy.Hash(name);
 		Molpy.Decreename = name;
-		Molpy.Boosts['The Pope'].Refresh();
+		pope.Refresh();
 		Molpy.SetPapalBoostFactor();
 	}
 
@@ -12609,6 +12614,22 @@ new Molpy.Boost({
 		},
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
+	});
+	new Molpy.Boost({
+		name: 'Permanent Staff',
+		icon: 'staff',
+		group: 'bean',
+		className: 'toggle',
+		desc: function(me) {
+			var str = '';
+			str += '' + (me.IsEnabled ? 'T' : 'When active, t') + 'he papal decree does not reset on the ONG.';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+		price: {
+			Sand: 1,
+		},
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
 // END OF BOOSTS, add new ones immediately before this comment
 }
