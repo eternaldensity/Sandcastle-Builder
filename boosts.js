@@ -12114,6 +12114,9 @@ new Molpy.Boost({
 					if (Math.abs(i) >= 3275) {
 						Molpy.UnlockBoost('GCC');
 					}
+					if (Math.abs(i) >= 4000) {
+						Molpy.UnlockBoost('Aperture Science');
+					}
 					return;
 				}
 			}
@@ -12465,26 +12468,41 @@ new Molpy.Boost({
 		group: 'dimen',
 		className: 'action',
 		
+		times: 1000,
+
 		desc: function(me) {
 			var str = '';
 			if (!me.bought) str += 'Y\'know, the study of holes. ';
-			str += 'Researches technologies to push back the extemporal barrier surrounding the fringes of Time. ';
-			if (me.bought) {
-				str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keys ';
-				str += 'to advance farther.';
-			}
+			str += 'Researches perforations of the extemporal barrier surrounding Time. ';
+			if (!me.bought) str += 'Needs to be bought ' + Molpify(me.times) + ' times within 1 NP. ';
+			if (me.bought && me.bought < me.times) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
+			if (me.bought == me.times) str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keyholes to advance farther.';
+			if (me.countdown) str += ' You have ' + Molpify(me.countdown) + 'mNP left.';
 			return str;
-		},
-		
-		buyFunction: function() {
-			this.power++;
 		},
 
 		price: {
-			Sand: Infinity,
-			Castles: Infinity,
-			GlassBlocks: '150M'
+			Goats: Infinity,
+			Shards: 111111111,
 		},
+		buyFunction: function() {
+			if (this.bought == 1) {
+				this.countdown = 1000;
+				this.Unlock();
+			} else if (this.bought == Molpy.Boosts['Aperture Science'].times) {
+				this.countdown = 0;
+				this.power = 0;
+			} else {
+				this.Unlock();
+			}
+		},
+		countdownLockFunction: function() {
+			this.bought = 0;
+			this.unlocked = 0;
+			this.Unlock();
+		},
+		limit: 3,
+		NotTemp: 1,
 	});
 	new Molpy.Boost({
 		name: 'Dimensional Keyhole',
@@ -12591,6 +12609,5 @@ new Molpy.Boost({
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
 	});
-
 // END OF BOOSTS, add new ones immediately before this comment
 }
