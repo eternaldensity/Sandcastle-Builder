@@ -12839,7 +12839,8 @@ new Molpy.Boost({
 						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}
 						str=str+')" value="'
 						for(var i in b[1]){str=str+'Dualize '+i}
-						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}' time'
+						if(typeof b[0].times=='function'){str=str+Molpify(b[0].times())} else{str=str+Molpify(b[0].times)}
+						str=str+' time'
 						if(typeof b[0].times=='function'){str=str+'s'}
 						str=str+'"></input>'; }
 						//really, there's only 1 item in the loop, but still.
