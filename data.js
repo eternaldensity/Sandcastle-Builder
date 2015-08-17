@@ -1009,7 +1009,7 @@ Molpy.defineCrafts=function(){
 		for(var i in s){if(typeof s[i]==typeof 5){s[i]=s[i]*times} else{s[i]=s[i](t)}}
 		var f=r.finish
 		for(var i in f){if(typeof f[i]==typeof 5){f[i]=f[i]*times} else{f[i]=f[i](t)}}
-		var c=r.catylizers||{}
+		var c=r.catalysts||{}
 		for(var i in s){if(typeof s[i]=='function'){c[i]=c[i](t)}}
 		if(!t){t=1}
 		for(var i in s){
@@ -1019,7 +1019,7 @@ Molpy.defineCrafts=function(){
 		for(var i in c){
 			if(s[i]){c[i]+=s[i]}
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
-			if(!(Molpy.Boosts[i].power>=c[i])){Molpy.Notify("Couldn't craft due to a lack of catylists.");return;}
+			if(!(Molpy.Boosts[i].power>=c[i])){Molpy.Notify("Couldn't craft due to a lack of catalysts.");return;}
 		}
 		for(var i in s){
 			Molpy.Boosts[i].power=Molpy.Boosts[i].power-(s[i]);
@@ -1036,7 +1036,7 @@ Molpy.defineCrafts=function(){
 		for(var i in s){if(typeof s[i]==typeof 5){s[i]=s[i]*times} else{s[i]=s[i](t)}}
 		var f=r.finish
 		for(var i in f){if(typeof f[i]==typeof 5){f[i]=f[i]*times} else{f[i]=f[i](t)}}
-		var c=r.catylizers||{}
+		var c=r.catalysts||{}
 		for(var i in s){if(typeof s[i]=='function'){c[i]=c[i](t)}}
 		if(!t){t=1}
 		for(var i in s){
