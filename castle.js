@@ -3320,6 +3320,7 @@ Molpy.Up = function() {
 		var brate=Molpy.Boosts['Grayness'].power //A little
 		var dif=frate-(brate)*Molpy.Got('Equilibrium Constant')*Molpy.IsEnabled('Equilibrium Constant') //how much to react.
 		if(dif<=0 && max==1){return}
+		if(dif==0) return 0;
 		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
 		if(dif>Molpy.Boosts['Blackness'].power){dif=Molpy.Boosts['Blackness'].power}
 		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
