@@ -12739,8 +12739,8 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: "Improved Scaling",
-			desc: 'Reduces waste from radioactive decay.'
-			stats: "Did you know that neutrons are smaller than atoms?", //This is meant to cause facepalms
+			desc: 'Reduces waste from radioactive decay.',
+			stats: "Did you know that neutrons are smaller than atoms? We sure didn't.", //This is meant to cause facepalms
 			group: 'varie',
 			price: {
 				Blueness: 12.5*150
@@ -12796,7 +12796,7 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Meteor',
-			desc: 'Produces 10 <it>other</it>ness per mNP.'
+			desc: 'Produces 10 <it>other</it>ness per mNP.',
 			stats: function(){var str="Fell from the sky because someone";
 				str=str+" accidentally dropped the "+["orb.", "heart."][Math.floor(2*Math.random())]; return str;
 			}, //Both corruption and crimson worlds work.
@@ -12808,7 +12808,7 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Ocean Blue',
-			desc: function(me){return 'Produces '+me.power+' Blueness per mNP.'}
+			desc: function(me){return 'Produces '+me.power+' Blueness per mNP.'},
 			group: 'varie',
 			price: {
 				Blueness: 12.5*500
@@ -12911,7 +12911,7 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 		name: 'Atomic Pump',
-		desc: "Just hope it doesn't a splode."
+		desc: "Just hope it doesn't a splode.",
 			group: 'varie',
 			photo: 1,
 			unlockFunction: function(me){Molpy.Boosts[me.alias].lock();Molpy.Boosts['Ocean Blue'].power++}
@@ -12919,7 +12919,7 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Blue Fragment',
-			desc: "Enough of these, and you'll get a... nevermind."
+			desc: "Enough of these, and you'll get a... nevermind.",
 			group: 'varie',
 			photo: 1,
 			unlockFunction: function(me){Molpy.Boosts[me.alias].lock();Molpy.Boosts['bluhint'].power++}
@@ -12962,10 +12962,10 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: 'A Splosion',
 			alias:'splosion'
-			desc: function(me){return "Your pump is overheating, and will a splode in "+MolpifyCountdown(me.countdown)+" mNP."}
+			desc: function(me){return "Your pump is overheating, and will a splode in "+MolpifyCountdown(me.countdown)+" mNP."},
 			group: 'varie',
 			photo: 1,
-			unlockFunction: function(me){Molpy.GiveTempBoost(me.alias);Molpy.splosions(1,1);}
+			unlockFunction: function(me){Molpy.GiveTempBoost(me.alias);Molpy.splosions(1,1);},
 			className: 'alert',
 			countdownFunction: function() {
 				if(this.startCountdown()>5 && this.countdown==2){
@@ -13016,8 +13016,8 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Diluted Boom',
-			desc: "Lets the meltdown countdown lengthdown godown updown.",//after the first two... it had to happen.
-			stats: "Lets the down down deeper down.", //Actually, only did that because of the first joke.
+			desc: "Makes the meltdown countdown lengthdown godown updown.",//after the first two... it had to happen.
+			stats: "Makes the down down deeper down.", //Actually, only did that because of the first joke.
 			group: 'varie',
 			photo: 5,
 			startPower:0,
@@ -13029,7 +13029,7 @@ new Molpy.Boost({
 	);	
 	new Molpy.Boost({
 			name: 'Concentrated Boom',
-			desc: "Everyone loves explosins. Doubles splosion rewards.",
+			desc: "Everyone loves splosions. Doubles splosion rewards.",
 			group: 'varie',
 			photo: 5,
 			startPower:0,
