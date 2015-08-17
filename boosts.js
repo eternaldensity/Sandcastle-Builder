@@ -12819,7 +12819,7 @@ new Molpy.Boost({
 		var ans=[]
 		while(list.length){
 			t=list.pop()
-			ans.push([t, Molpy.subtractObjects(t.start,{Blackness:10})])
+			ans.push([t, Molpy.subtractObjects(t.recipe.start,{Blackness:10})])
 		}
 		return ans;
 	}
