@@ -12019,7 +12019,7 @@ new Molpy.Boost({
 					cost *= Math.pow(Math.floor(Math.log(m)) , -1/8);
 				}
 				cost = Math.floor(cost);
-				var tatpix = Molpy.LargestNPvisited[0.1] // highest tatpix visited
+				var tatpix = Molpy.largestNPvisited[0.1] // highest tatpix visited
 				var yield = Math.floor(Math.pow(4,tatpix/4));
 				str += ', using infinite flux crystals';
 				str += '.<br><input type=button onclick="Molpy.Uncrush(' + cost + ',' + yield + ')" value="Uncrush"></input> ';
@@ -12618,18 +12618,29 @@ new Molpy.Boost({
 	Molpy.setPower=function(a,v){Molpy.Boosts[a].power=v}
 	new Molpy.Boost({
 		name: 'Controlled Hysteresis',
-		alias: 'Controlled Hysteresis',
 		group: 'dimen',
+		icon: 'hysteresis',
+		className: 'action',
 
 		desc: function(me) {
 			if (!me.bought) return 'Lets you switch between timelines. Currently locked.';
-			var str="You can switch to:<br>"
-			str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0)" value="OTC"></input>'
-			str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0.1)" value="t1i"></input>'
-			if(me.power>-1){str=str+'<br> Currently set to ';
-				if(me.power==0){str=str+"OTC"} else{str=str+["t1i"][Molpy.fracParts.indexOf(Molpy.Boosts['Controlled Hysteresis'].power)]}
+			var str = ''
+			if (Molpy.newpixNumber != 0) {
+				str += 'You can only exert hysteretic control at NP0.';
+				} else {
+				var str="You can switch to:<br>"
+				str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0);Molpy.Boosts[\'Controlled Hysteresis\'].Refresh();" value="OTC"></input>'
+				str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0.1);Molpy.Boosts[\'Controlled Hysteresis\'].Refresh();" value="t1i"></input>'
+				if(me.power>-1) {
+					str=str+'<br> Currently set to ';
+					if(me.power==0){str=str+"OTC"} else {
+						str=str+["t1i"][Molpy.fracParts.indexOf(Molpy.Boosts['Controlled Hysteresis'].power)]
+					}
+				}
 			}
 			return str
+
+
 		},
 		unlockFunction:function(){this.buy()},
 		lockFunction: function(){this.power=-1},
