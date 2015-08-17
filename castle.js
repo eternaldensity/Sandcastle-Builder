@@ -3237,6 +3237,7 @@ Molpy.Up = function() {
 		if(Molpy.Got('Sand to Glass')) Molpy.Boosts['TF'].digGlass(Math.floor(Molpy.Boosts['TF'].loadedPermNP*Molpy.Papal('GlassSand')));
 		Molpy.GlassNotifyFlush();
 		Molpy.RunToolFactory();
+		Molpy.RunPhoto();
 		Molpy.DragonDigging(0);
 		if(Molpy.recalculateRates) Molpy.calculateRates();
 		if(Molpy.BadgesOwned == 0) Molpy.EarnBadge('Redundant Redundancy');
@@ -3255,6 +3256,139 @@ Molpy.Up = function() {
 		
 		Molpy.toolsNeedRepaint = 1;
 	};
+	Molpy.RunPhoto=function(){
+		Molpy.getPhoto();
+		Molpy.craftPhoto(); //Inker takes precedence
+		Molpy.decayPhoto();
+		var lost=Molpy.reactPhoto();
+		if(Molpy.Got('Photoelectricity')){
+			if(lost>Molpy.Boosts['Photoelectricity'].power){Molpy.Boosts['Photoelectricity'].power=lost} // Allows better stuff
+			Molpy.RunFastPhoto(lost)
+		}
+		Molpy.unlockPhoto();
+	};
+	Molpy.getPhoto=function(n, type, isClick){
+		if(!n){
+			if(Molpy.Got('Meteor')){
+				Molpy.Boosts['Otherness'].power+=10
+			}
+			if(Molpy.Got('Hallowed Ground')){Molpy.Boosts['Whiteness'].power+=10}
+			if(Molpy.Got('Ocean Blue')){
+				var blugain=Molpy.Boosts['Ocean Blue'].power
+				if(Molpy.Got('bluhint')blugain=blugain*(Molpy.Boosts['bluhint'].power)
+				Molpy.Boosts['Blueness'].power+=blugain
+			}
+		} else {
+			var gain=n
+			if(isClick && Molpy.Got('Doubletap')){n=2*n}
+			if(isClick && (Molpy.newpixNumber-0.1!==Math.floor(Molpy.newpixNumber))){return;}
+			if(Molpy.Got('bluhint')gain=gain*(Molpy.Boosts['bluhint'].power)
+			if(!type||type='Blueness'){Molpy.Boosts['Blueness'].power+=gain} else{
+				Molpy.Boosts[type].power+=n
+			}
+		}
+	}
+	Molpy.decayPhoto=function(){
+		var oblu = Molpy.Boosts['Blueness'].power
+		Molpy.Boosts['Blueness'].power=Molpy.Boosts['Blueness'].power*0.999 // Couldn't figure out how to make 10mNP timing work.
+		var nblu=Molpy.Boosts['Blueness'].power
+		var coth=(nblu-oblu)*(2/3+(0.9-2/3)*Molpy.Got('Improved Scaling'))
+		var oblu = Molpy.Boosts['Otherness'].power
+		Molpy.Boosts['Otherness'].power=Molpy.Boosts['Otherness'].power*0.999 // Couldn't figure out how to make 10mNP timing work.
+		var nblu=Molpy.Boosts['Otherness'].power
+		Molpy.Boosts['Blueness'].power+=(nblu-oblu)*(2/3+(0.9-2/3)*Molpy.Got('Improved Scaling'))
+		Molpy.Boosts['Otherness'].power+=coth
+	}
+	Molpy.reactPhoto=function(max){
+		if(!max){max=Infinity}
+		var frate=Math.pow(Molpy.Boosts['Blackness'].power*Molpy.Boosts['Whiteness'].power,2) //A lot.
+		var brate=Molpy.Boosts['Grayness'].power //A little
+		var dif=frate-(brate)*Molpy.Got('Equilibrium Constant')*Molpy.IsEnabled('Equilibrium Constant') //how much to react.
+		if(dif<=0 && max==1){return}
+		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
+		if(dif>Molpy.Boosts['Blackness'].power){dif=Molpy.Boosts['Blackness'].power}
+		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
+		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
+		Molpy.Boosts['Blackness'].power=Molpy.Boosts['Blackness'].power-dif
+		Molpy.Boosts['Whiteness'].power=Molpy.Boosts['Whiteness'].power-dif
+		if(Molpy.Got('NaP')&&(Molpy.IsEnabled('NaP')||!Molpy.Got('Photoelectricity'))){
+			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power+dif/2
+		} //NaP defaults to on.
+		return dif
+	}
+	Molpy.craftPhoto=function(){
+		if(!Molpy.Got('Robotic Inker')){return;}
+		var inker=Molpy.Boosts['Robotic Inker']
+		var pow=inker.power
+		var allButtons=Molpy.polarizerButtons(Infinity)
+		allButtons.push([{recipe:{start:{Blueness:50,Otherness:50},finish:{Blackness:1}},
+		times:Molpy.Crafts['Polarizer'][0].times},'Argy'])
+		var done=false
+		while(!done){
+			var tdone=true
+			var l=0
+			while(pow>Math.pow(2,l)){
+				var doing=pow&Math.pow(2,l)
+				var recipe=allButtons[l]
+				if(Molpy.canCraft(recipe.recipe,recipe.times()){tdone=false;Molpy.craft(recipe,recipe.times())}
+				//Recipe no longer feels like a word after the last line.
+				l++
+			}
+			done=tdone
+		} //Really powerful -- keeps going until there isn't anything it can do. Use with caution.
+	}
+	Molpy.RunFastPhoto=function(times){
+		Molpy.Boosts['NaP'].power+=Math.pow(times, 0.5)
+		if(Molpy.Boosts['NaP'].power>=5){
+			var todo=Math.floor(Molpy.Boosts['NaP'].power/5)
+			Molpy.Boosts['NaP'].power=Molpy.Boosts['NaP'].power-5*todo
+			var runsLeft=25;
+			var avoptions=[]
+			for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
+				if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<Molpy.Boosts['Photoelectricity'].power){
+					avoptions.push(Molpy.PhotoRewardOptions[i])
+				}
+			}
+			while(runsLeft&&todo){
+				var red=GLRschoice(avoptions)
+				if(!Molpy.IsFree(red.CalcPrice(price))) {
+					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
+						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
+						Molpy.UnlockBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1,times)
+					}
+				} else {
+					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
+						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
+						Molpy.GiveTempBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1,times) //Even temps sometimes go here.
+					}
+				}
+				todo=todo-Math.ceil(todo/runsLeft)
+				runsLeft--
+			}
+		}
+	}
+	Molpy.unlockPhoto=function(){
+		var oth=Molpy.Boosts['Otherness'].power
+		var blu=Molpy.Boosts['Blueness'].power
+		var bla=Molpy.Boosts['Blackness'].power
+		var whi=Molpy.Boosts['Whiteness'].power
+		var gray=Molpy.Boosts['Grayness'].power
+		var unlock=Molpy.UnlockBoost
+		if(oth>=15) unlock('Argy')
+		if(oth>=25) unlock('bluhint')
+		if(oth>=50) unlock('Improved Scaling')
+		if(bla>=5) unlock('Polarizer')
+		if(oth>=300) unlock('Meteor')
+		if(blu>=300) unlock('Ocean Blue')
+		if(bla>=10 && Molpy.Got('Polarizer')) unlock('Robotic Inker')
+		if(whi>=1) unlock('NaP')
+		if(whi>=3) unlock('Hallowed Ground')
+		if(whi>=10) unlock('Photoelectricity') //A big one! This is the last I originally had come up with.
+	}
 
 	Molpy.PerformJudgement = function() {
 
