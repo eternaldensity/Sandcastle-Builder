@@ -12688,6 +12688,7 @@ new Molpy.Boost({
 				return 'The tool of GLR. You have '+Molpify(me.power)+' Blackness.'
 			},
 			group: 'stuff',
+			startPower:0,
 			defStuff: 1
 		}
 	);
