@@ -12758,6 +12758,7 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: 'Argy',
 			alias: 'Argy',
+			group: 'varie',
 			desc: function(me){
 				var str='Lets you use the blue of the ocean and some <it>other</it>ness to make squids so'
 				str=str+' that you can extract their ink.'
@@ -12767,7 +12768,7 @@ new Molpy.Boost({
 				}
 				return str
 			},
-			group: 'varie',
+			
 			price: {
 				Blueness: 12.5*45
 			}
@@ -12777,11 +12778,12 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: "Blue's Hints",
 			alias:'bluhint',
+			group: 'varie',
 			desc: function(me){
 				var str='Improves all Blueness gains by a factor of '+Molpify(me.power)
 				return str
 			},
-			group: 'varie',
+			
 			price: {
 				Blueness: 12.5*75
 			},
@@ -12791,9 +12793,11 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: "Improved Scaling",
-			desc: 'Reduces waste from radioactive decay.',
-			stats: "Did you know that neutrons are smaller than atoms? We sure didn't.", //This is meant to cause facepalms
 			group: 'varie',
+			desc: 'Reduces waste from radioactive decay.',
+			
+			stats: "Did you know that neutrons are smaller than atoms? We sure didn't.", //This is meant to cause facepalms
+			
 			price: {
 				Blueness: 12.5*150
 			}
@@ -12819,6 +12823,7 @@ new Molpy.Boost({
 	}
 	new Molpy.Boost({
 			name: 'Polarizer',
+			group: 'varie',
 			desc: function(me){
 				var str='Lets you turn the essence of a color into its dual.'
 				if(Molpy.Got(me.alias)){
@@ -12865,7 +12870,8 @@ new Molpy.Boost({
 			price: {
 				Blueness: 12.5*500
 			},
-			startPower: 1
+			startPower: 1,
+			buyFunction: function(){this.power=1}
 		}
 	);
 	new Molpy.Boost({
