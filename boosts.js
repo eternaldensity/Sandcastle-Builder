@@ -12745,7 +12745,7 @@ new Molpy.Boost({
 		if(Molpy.Boosts['Otherness'].power>=50*n){
 			if(Molpy.Spend('Blueness',50*n)){
 				Molpy.Spend('Otherness',50*n)
-				Molpy.Boosts['Blackness'].power+=n
+				Molpy.Boosts['Blackness'].power=n+Molpy.Boosts['Blackness'].power
 				if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
 					if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
 						Molpy.reactPhoto(1);
