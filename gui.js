@@ -1118,7 +1118,7 @@ Molpy.DefineGUI = function() {
 		Molpy.Anything = 1;
 		Molpy.logArchive = [];
 		Molpy.logArchive[0] = [];
-		Molpy.logArchive[0].np = Molpy.newpixNumber;
+		Molpy.logArchive[0].np = Math.floor(Molpy.newpixNumber);
 		Molpy.logArchive[0].time = new Date();
 		Molpy.logArchive[0].string = "Loading..."
 		Molpy.currentLog = 0;
@@ -1146,7 +1146,7 @@ Molpy.DefineGUI = function() {
 	Molpy.LogONG = function(){
 		Molpy.currentLog++;
 		Molpy.logArchive[Molpy.currentLog] = [];
-		Molpy.logArchive[Molpy.currentLog].np = Molpy.newpixNumber;
+		Molpy.logArchive[Molpy.currentLog].np = Math.floor(Molpy.newpixNumber);
 		Molpy.logArchive[Molpy.currentLog].time = new Date();
 		Molpy.selectedLog = Molpy.currentLog;
 		Molpy.logArchive[Molpy.currentLog].string = ""
@@ -1268,43 +1268,60 @@ Molpy.DefineGUI = function() {
 	}
 
 	Molpy.subPixLetters = ['', 'a', 'b', 'c', 'd', 'e'];
+	Molpy.fixLength=function(a,l){
+		a=String(a)
+		if(a.length<l){return Molpy.fixLength('0'+a,l)} else{return a}
+	}
 	Molpy.FormatNP = function(np, format) {
 		var minus = (np < 0);
-		np = Math.abs(np);
-
-		var floor = Math.floor(np);
-		if(floor != np) {
-			var subPix = Math.round(6 * (np - floor));
-			if(format) floor = Molpify(floor, 3);
-			np = floor + Molpy.subPixLetters[subPix];
-		}
 		return (minus ? '-' : '') + np;
 	}
+	Molpy.NewPixFloor=function(num){
+		if((num>=1)||(num<0)){num=num-Math.floor(num)}
+		num=Number(num.toFixed(3))
+		return ['t1i-'][Number(Molpy.fracParts.indexOf(num))]
+	}
 	Molpy.NewPixFor = function(np) {
-		np = Math.abs(np);
-		np = Molpy.FormatNP(np);
+		np=Math.abs(np)
+		var newp = Molpy.FormatNP(np);
 		var floor = Math.floor(np);
+		var frac=np-floor
+		frac=Number(Number(frac.toFixed(3)))
 
 		var x = 200 + flandom(200);
 		var y = 200 + flandom(400);
-		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix && np == Math.floor(np)) {
-			if(floor > 3094)
-				return 'http://placekitten.com/' + x + '/' + y;
-			else
-				return 'http://178.79.159.24/Time/otcolorization/' + np;
-		} else {
-			if(floor > 3094)
+		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix) {
+			if(np===0) return 'http://xkcd.mscha.org/tmp/np0.png'
+			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1))){
 				return 'http://placekitten.com/g/' + x + '/' + y;
-			else
-				return 'http://xkcd.mscha.org/frame/' + np;
+			}else if(frac==0){
+				return 'http://178.79.159.24/Time/otcolorization/' + newp;
+			} else if(Molpy.fracParts.indexOf(frac)>-1){
+				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
+			} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
+		} else {
+			if(((floor > 3094)&&(frac===0))||((floor > 1417)&&(frac===0.1))){
+				return 'http://placekitten.com/g/' + x + '/' + y;
+			} else if(frac==0){
+				return 'http://xkcd.mscha.org/frame/' + newp;
+			} else if(Molpy.fracParts.indexOf(frac)>-1){
+				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
+			} else if(Molpy.fracParts.indexOf(frac)==-1) {return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 		}
 	}
 	Molpy.ThumbNewPixFor = function(np) {
 		np = Math.abs(np);
-		np = Molpy.FormatNP(np);
+		var newp = Molpy.FormatNP(np);
 		var floor = Math.floor(np);
-		if(floor > 3094) return 'http://placekitten.com/g/' + x + '/' + y;
-		else return 'http://xkcd.mscha.org/frame/' + np;
+		var frac=np-floor
+		frac=Number(frac.toFixed(3))
+		if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1)))
+			return 'http://placekitten.com/g/' + x + '/' + y;
+		else if(frac==0){
+			return 'http://xkcd.mscha.org/frame/' + newp;
+		} else if(Molpy.fracParts.indexOf(frac)>-1){
+			return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
+		} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 	}
 
 	Molpy.Url = function(address) {
@@ -1357,8 +1374,10 @@ Molpy.DefineGUI = function() {
 		} else {
 			$('#toggleTFCounts').removeClass('hidden');
 		}
-
-		g('newpixnum').innerHTML = 'Newpix ' + Molpy.FormatNP(Molpy.newpixNumber, 1);
+		
+		var str='Newpix ' + Math.floor(Molpy.newpixNumber);
+		if(Molpy.currentStory>=0){str=str+[' of t1i'][Molpy.currentStory]}
+		g('newpixnum').innerHTML = str
 		g('eon').innerHTML = Molpy.TimeEon;
 		g('era').innerHTML = Molpy.TimeEra;
 		g('period').innerHTML = Molpy.TimePeriod;
