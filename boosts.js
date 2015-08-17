@@ -12821,6 +12821,7 @@ new Molpy.Boost({
 			t=list.pop()
 			ans.push([t, Molpy.subtractObjects(t.start,{Blackness:10})])
 		}
+		return ans;
 	}
 	new Molpy.Boost({
 			name: 'Polarizer',
