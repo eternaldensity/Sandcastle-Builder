@@ -1055,7 +1055,7 @@ Molpy.defineCrafts=function(){
 		if(!level){level=Molpy.Boosts[table].power}
 		var ans=[]
 		for(var i=0;i<t.length;i++){
-			if(t[i].level<level){ans.push(t[i])}
+			if(t[i].level<=level){ans.push(t[i])}
 		}
 		return ans;
 	}
