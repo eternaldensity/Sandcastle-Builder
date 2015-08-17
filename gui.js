@@ -408,7 +408,7 @@ Molpy.DefineGUI = function() {
 	Molpy.RepaintLootSelection = function() {
 		Molpy.lootSelectionNeedRepaint = 0;
 		var str = '';
-		var groups = ['boosts', 'stuff', 'land', 'ninj', 'cyb', 'hpt', 'bean', 'chron', 'dimen', 'ceil', 'drac', 'prize', 'faves'];
+		var groups = ['boosts', 'stuff', 'land', 'ninj', 'cyb', 'hpt', 'bean', 'chron', 'dimen', 'ceil', 'drac', 'prize', 'varie','faves'];
 		for( var i in groups) {
 			str += Molpy.PaintLootToggle(groups[i], 4);
 		}
