@@ -12838,7 +12838,7 @@ new Molpy.Boost({
 						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}
 						str=str+')" value="'
 						for(var i in b[1]){str=str+'Dualize '+i}
-						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}' time'
+						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times()}' time'
 						if(typeof b[0].times=='function'){str=str+'s'}
 						str=str+'"></input>'; 
 						//really, there's only 1 item in the loop, but still.
@@ -12850,7 +12850,7 @@ new Molpy.Boost({
 			price: {
 				Blackness: 12.5*3
 			},
-			startPower:0, //power determines what can be crafted: 0 = basic, 1 allows black->white multibuy, etc.
+			startPower:-1, //power determines what can be crafted: 0 = basic, 1 allows black->white multibuy, etc.
 			buyFunction: function(){this.power=0}
 		}
 	);
@@ -12895,8 +12895,9 @@ new Molpy.Boost({
 						l++
 						//really, there's only 1 item in the loop, but still.
 					}
+					l=allButtons.length
 				}
-				l=allButtons.length
+				
 				if(Molpy.Got(me.alias)&&Molpy.Got('Argy')){
 					str=str+'<br> It can also make squids.'
 					str=str+'<br> <input type="Button" value="It is ' + (me.power & Math.pow(2,l)) ?'not ':'currently '
