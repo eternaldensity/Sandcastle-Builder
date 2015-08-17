@@ -1057,6 +1057,7 @@ Molpy.defineCrafts=function(){
 		for(var i=0;i<t.length;i++){
 			if(t[i].level<level){ans.push(t[i])}
 		}
+		return ans;
 	}
 	Molpy.Crafts={
 		Polarizer: [
