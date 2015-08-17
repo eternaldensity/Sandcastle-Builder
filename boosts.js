@@ -12961,7 +12961,7 @@ new Molpy.Boost({
 	}
 	new Molpy.Boost({
 			name: 'A Splosion',
-			alias:'splosion'
+			alias:'splosion',
 			desc: function(me){return "Your pump is overheating, and will a splode in "+MolpifyCountdown(me.countdown)+" mNP."},
 			group: 'varie',
 			photo: 1,
