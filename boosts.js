@@ -12724,6 +12724,7 @@ new Molpy.Boost({
 	
 	new Molpy.Boost({
 			name: "Blue's Hints",
+			alias:'bluhint',
 			desc: function(me){
 				var str='Improves all Blueness gains by a factor of '+Molpify(me.power)
 				return str
