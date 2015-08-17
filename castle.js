@@ -3393,6 +3393,11 @@ Molpy.Up = function() {
 		var whi=Molpy.Boosts['Whiteness'].power
 		var gray=Molpy.Boosts['Grayness'].power
 		var unlock=Molpy.UnlockBoost
+		if(oth) unlock('Otherness')
+		if(blu) unlock('Blueness')
+		if(bla) unlock('Blackness')
+		if(whi) unlock('Whiteness')
+		if(gray) unlock('Grayness')
 		if(oth>=15) unlock('Argy')
 		if(oth>=25) unlock('bluhint')
 		if(oth>=50) unlock('Improved Scaling')
