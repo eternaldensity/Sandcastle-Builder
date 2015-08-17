@@ -1104,11 +1104,6 @@ Molpy.DefineBadges = function() {
 		vis: 1
 	});
 	new Molpy.Badge({
-		name: 'Started from the bottom, now we\'re here',
-		desc: 'Enter TaTPix',
-		vis: 1
-	});
-	new Molpy.Badge({
 		name: 'Time-traveling Alien Parasite',
 		desc: 'Futilely attempt to change the future, over and over',
 		vis: 1
@@ -1126,6 +1121,11 @@ Molpy.DefineBadges = function() {
 	new Molpy.Badge({
 		name: 'One More Time',
 		desc: 'ONG into TaTPix',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Flip It Real Good',
+		desc: 'Flip between positive and negative NP \'87 times',
 		vis: 1
 	});
 /**************************************************************
