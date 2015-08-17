@@ -25,6 +25,7 @@ Molpy.DefineBoosts = function() {
 	        faves: ['favourites', 'Favourites'],
 		magic: ['magic', 'Magic'],
 		dimen: ['dimension tech', 'Dimension Tech'],
+		varie: ['varie', 'Varie', 'Variegation'],
 	};
 	
 	Molpy.unlockedGroups['stuff'] = 1; // Stuff is always unlocked because Sand and Castles are always unlocked
@@ -12629,7 +12630,415 @@ new Molpy.Boost({
 		startPower:-1
 		
 	});
+	new Molpy.Boost({
+		name: 'Blueness',
+		desc: function(me){
+			return 'Is blue, and mysterious. You have '+Molpify(me.power)+' blueness.'
+		},
+		group: 'stuff',
+		clickBeach: function(){Molpy.getPhoto(1, 'Blueness', 1)},
+		defStuff: 1
+	});
+	new Molpy.Boost({
+			name: '<it>Other</it>ness',
+			alias: 'Otherness',
+			desc: function(me){
+				return 'Is mysterious and slightly terrifying. You have '+Molpify(me.power)+' <it>other</it>ness.'
+			},
+			group: 'stuff',
+			defStuff: 1
+		}
+	);
+	new Molpy.Boost({
+			name: 'Blackness',
+			alias: 'Blackness',
+			desc: function(me){
+				return 'The tool of GLR. You have '+Molpify(me.power)+' Blackness.'
+			},
+			group: 'stuff',
+			defStuff: 1
+		}
+	);
+	new Molpy.Boost({
+			name: 'Whiteness',
+			alias: 'Whiteness',
+			desc: function(me){
+				return 'The anti-tool of GLR. You have '+Molpify(me.power)+' Whiteness.'
+			},
+			group: 'stuff',
+			defStuff: 1
+		}
+	);
+	new Molpy.Boost({
+			name: 'Grayness',
+			alias: 'Grayness',
+			desc: function(me){
+				var str= 'Something found less in mountains, because mountains are easy to draw.' //i.e. oxygen.
+				str=str+' You have '+Molpify(me.power)+' Grayness.'; return str //This gets more directly referred to as such
+			}, //later, especially with Not a Priest.
+			stats: 'Remove the Tool from the Tool and you get nothing. Remove the nothing and you get this.',
+			//For those that don't know what this means: think about night and silence. If you still don't know, I'm sorry.
+			group: 'stuff',
+			defStuff: 1
+		}
+	);
+	Molpy.getSquids=function(){
+		if(!Molpy.Got('Argy')){return 0;}
+		if(!Molpy.Boosts['Argy'].power){Molpy.Boosts['Argy'].power=Molpy.Boosts['Blackness'].power||1}
+		return Math.pow(Math.ceil(Math.log(Molpy.Boosts['Argy'].power)/Math.log(10)),10)
+	}
+	Molpy.makeSquids=function(n){
+		if(!n){n=Molpy.getSquids()};
+		if(Molpy.Boosts['Otherness'].power>=50*n){
+			if(Molpy.Spend('Blueness',50*n)){
+				Molpy.Spend('Otherness',50*n)
+				Molpy.Boosts['Blackness'].power+=n
+				if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
+					if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
+						Molpy.reactPhoto(1);
+					}
+				}
+			} else{Molpy.Notify("You made squids, but they drowned.")}
+		} else {
+			Molpy.Notify("You're not weird enough for Megan.")
+		}
+	}
+	new Molpy.Boost({
+			name: 'Argy',
+			alias: 'Argy',
+			desc: function(me){
+				var str='Lets you use the blue of the ocean and some <it>other</it>ness to make squids so'
+				str=str+' that you can extract their ink.'
+				if(Molpy.Got(this.alias)){
+					str=str+'<br> <input type="Button" value="Make ' + Molpify(Molpy.getSquids())
+					str=str+ ' squids" onclick="Molpy.makeSquids()">'
+				}
+				return str
+			},
+			group: 'varie',
+			price: {
+				Blueness: 12.5*45
+			}
+		}
+	);
 	
+	new Molpy.Boost({
+			name: "Blue's Hints",
+			alias:'bluhint',
+			desc: function(me){
+				var str='Improves all Blueness gains by a factor of '+Molpify(me.power)
+				return str
+			},
+			group: 'varie',
+			price: {
+				Blueness: 12.5*75
+			},
+			startPower: 1,
+			buyFunction: function(){this.power=2}
+		}
+	);
+	new Molpy.Boost({
+			name: "Improved Scaling",
+			desc: 'Reduces waste from radioactive decay.'
+			stats: "Did you know that neutrons are smaller than atoms? We sure didn't", //This is meant to cause facepalms
+			group: 'varie',
+			price: {
+				Blueness: 12.5*150
+			}
+		}
+	);
+	Molpy.subtractObjects=function(a,b,t){
+		var c={}
+		if(!t) t=1
+		for(var i in a){if(typeof a[i]=='function'){a[i]=a[i](t)}}
+		for(var i in b){if(typeof b[i]=='function'){b[i]=b[i](t)}}
+		for(var i in a){
+			if(a[i]>b[i]){c[i]=a[i]-b[i]}
+		}
+		return c //useful because it drops all negs/zeros automatically. Be careful when using this, though, because of functions.
+	}
+	Molpy.polarizerButtons=function(level){
+		var list = Molpy.getCrafts('Polarizer',level)
+		var ans=[]
+		while(list.length){
+			t=list.pop()
+			ans.push([t, Molpy.subtractObjects(t.start,{Blackness:10})])
+		}
+	}
+	new Molpy.Boost({
+			name: 'Polarizer',
+			desc: function(me){
+				var str='Lets you turn the essence of a color into its dual.'
+				if(Molpy.Got(me.alias)){
+					str=str+' You may dualize:'
+					var buttons=Molpy.polarizerButtons(me.power)
+					while(buttons.length){
+						var b=buttons.pop()
+						str=str+'<br><input type="Button" onclick='
+						str=str+'Molpy.craft(' + b[0].recipe + ','
+						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}
+						str=str+')" value="'
+						for(var i in b[1]){str=str+'Dualize '+i}
+						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}' time'
+						if(typeof b[0].times=='function'){str=str+'s'}
+						str=str+'"></input>'; 
+						//really, there's only 1 item in the loop, but still.
+					}
+				}
+				return str
+			},
+			group: 'varie',
+			price: {
+				Blackness: 12.5*3
+			},
+			startPower:0 //power determines what can be crafted: 0 = basic, 1 allows black->white multibuy, etc.
+		}
+	);
+	new Molpy.Boost({
+			name: 'Meteor',
+			desc: 'Produces 10 <it>other</it>ness per mNP.'
+			stats: function(){var str="Fell from the sky because someone";
+				str=str+" accidentally dropped the "+["orb.", "heart."][Math.floor(2*Math.random())]; return str;
+			}, //Both corruption and crimson worlds work.
+			group: 'varie',
+			price: {
+				Otherness: 12.5*500
+			}
+		}
+	);
+	new Molpy.Boost({
+			name: 'Ocean Blue',
+			desc: function(me){return 'Produces '+me.power+' Blueness per mNP.'}
+			group: 'varie',
+			price: {
+				Blueness: 12.5*500
+			},
+			startPower: 1
+		}
+	);
+	new Molpy.Boost({
+			name: 'Robotic Inker',
+			desc: function(me){
+				var str='Automatically crafts ink stuff.'
+				if(Molpy.Got(me.alias)&&Molpy.Got('Polarizer')){
+					str=str+'<br> It can dualize:'
+					var buttons=Molpy.polarizerButtons(Molpy.Boosts['Polarizer'].power)
+					var allButtons=Molpy.polarizerButtons(Infinity) //Yeah. So... Yeah.
+					var l=0
+					while(buttons.length){
+						var b=buttons.pop()
+						str=str+'<br><input type="Button" onclick='
+						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')" value="'
+						for(var i in b[1]){str=str+'Is '+(me.power&Math.pow(2,l)) ? 'not ':'currently '+'dualizing'+i}
+						str=str+'"></input>';
+						l++
+						//really, there's only 1 item in the loop, but still.
+					}
+				}
+				l=allButtons.length
+				if(Molpy.Got(me.alias)&&Molpy.Got('Argy')){
+					str=str+'<br> It can also make squids.'
+					str=str+'<br> <input type="Button" value="It is ' + (me.power & Math.pow(2,l)) ?'not ':'currently '
+					str=str+ 'making squids" onclick="Molpy.ToggleBit('+me.id+','+l+')">'
+				}
+				return str
+			},
+			group: 'varie',
+			price: {
+				Blackness: 12.5*7
+			},
+		}
+	);
+	new Molpy.Boost({
+			name: 'Not a Priest',
+			alias: 'NaP',
+			desc: function(me){
+				var str='When whiteness and Blackness react, they produce '
+				str=str+Molpy.Got('Grayness')?'Grayness.':' something else.'
+				if(Molpy.Got('Photoelectricity')){
+					str += '<br><input type="Button" onclick="Molpy.GenericToggle(' 
+					str=str+ me.id + ', 1)" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+				}
+			},
+			group: 'varie',
+			IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+			className: 'toggle',
+			price: {
+				Whiteness: 12.5*1 //Not cheap.
+			},
+			startPower:0
+		}
+	);
+	new Molpy.Boost({
+			name: 'Equilibrium Constant',
+			desc: function(me){
+				var str='When active, Grayness also reacts to form Whiteness and Blackness.'
+				if(Molpy.Got('Equilibrium Constant')){
+					str += '<br><input type="Button" onclick="Molpy.GenericToggle(' 
+					str=str+ me.id + ', 1)" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+				}
+			},
+			group: 'varie',
+			IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+			className: 'toggle',
+			price: {
+				Grayness: 12.5*1 //Not cheap.
+			}
+		}
+	);
+	new Molpy.Boost({
+			name: 'Hallowed Ground',
+			desc: 'Produces 10 Whiteness per mNP.',
+			group: 'varie',
+			price: {
+				Blueness: 12.5*15,
+				Otherness: 12.5*10,
+				Whiteness: 12.5*6,
+				Blackness: 12.5*3,
+				Grayness: 12.5*1 //Only the last three really matter, and they're reasonably small.
+			}
+		}
+	);
+	new Molpy.Boost({
+			name: 'Photoelectricity',
+			desc: 'Lets Not a Priest be disabled and does stuff when it is disabled.',
+			group: 'varie',
+			price: {
+				Whiteness: 12.5*10
+			},
+			startPower: 0
+		}
+	);
+	new Molpy.Boost({
+		name: 'Atomic Pump',
+		desc: "Just hope it doesn't a splode."
+			group: 'varie',
+			photo: 1,
+			unlockFunction: function(me){Molpy.Boosts[me.alias].lock();Molpy.Boosts['Ocean Blue'].power++}
+		}
+	);
+	new Molpy.Boost({
+			name: 'Blue Fragment',
+			desc: "Enough of these, and you'll get a... nevermind."
+			group: 'varie',
+			photo: 1,
+			unlockFunction: function(me){Molpy.Boosts[me.alias].lock();Molpy.Boosts['bluhint'].power++}
+		}
+	);
+	Molpy.splosions=function(n,a){
+		if(Molpy.Got('Concentrated Boom')){n=n*2}
+		var pow=5*n
+		var r=n
+		var l=25
+		while(r>0 && n>0){
+			pow=pow+Math.round(10*Math.ceil(r/l)*Math.random())
+			r=r-Math.ceil(r/l)
+			l--
+		}
+		pow=Math.round(pow) //to fix rounding errors
+		l=25
+		r=pow
+		var did=[0,0,0,0,0]; //lower chance of grayness
+		while(r>0 && n>0){
+			did[Math.floor(Math.random()*5)]+=Math.round(Math.ceil(r/l))
+			r=r-Math.ceil(r/l)
+			l--
+		}
+		var blu=25*did[0]
+		var oth=25*did[1]
+		var whi=did[2]
+		var bla=did[3]
+		var gray=0.5*did[4]
+		Molpy.Boosts['Blueness'].power+=blu
+		Molpy.Boosts['Otherness'].power+=oth
+		Molpy.Boosts['Whiteness'].power+=whi
+		Molpy.Boosts['Blackness'].power+=bla
+		Molpy.Boosts['Grayness'].power+=gray
+		if(!a) Molpy.UnlockBoost('splosion')
+		if(a) Molpy.Notify('Your pump is overheating, giving about '+Molpify(pow)+' stuff.') 
+		//It would have been tempting to do this over time
+		//But that's too much work and not really good for (spoilers) when the countdown goes inf.
+	}
+	new Molpy.Boost({
+			name: 'A Splosion',
+			alias:'splosion'
+			desc: function(me){return "Your pump is overheating, and will a splode in "+MolpifyCountdown(me.countdown)+" mNP."}
+			group: 'varie',
+			photo: 1,
+			unlockFunction: function(me){Molpy.GiveTempBoost(me.alias);Molpy.splosions(1,1);}
+			className: 'alert',
+			countdownFunction: function() {
+				if(this.startCountdown()>5 && this.countdown==2){
+					Molpy.Notify("Ceci n'est pas un film d'espionage.") //This is not a spy movie. 
+				//Ref is to the old painting with "Ceci n'est pas une pipe." and to the classic bomb scenario
+				}
+			},
+			
+			lockFunction: function() {
+				Molpy.Boosts['Ocean Blue'].power=Math.min(Molpy.Boosts['Ocean Blue'].power-2,1);
+				Molpy.Notify('It is an eloquent boom, but it is still a boom.')
+			},
+				
+			countdownCMS: 1,
+			startCountdown: function() {
+				if(Molpy.Boosts['splosion'].countdown!==0 && Molpy.Boosts['splosion'].countdown>0){
+					return Molpy.Boosts['splosion'].countdown}
+				return Molpy.Boosts['Diluted Boom'].power||3; //Things will change this soon. I hope.
+			}
+		}
+	);
+	new Molpy.Boost({
+			name: 'Retroactivity',
+			desc: function(me){
+				var str="Lets you spend 10 grayness to unlock target repeatable photo boosts."
+				if(Molpy.Got(me.alias)){
+					var avoptions=[]
+						for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
+						if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<Molpy.Boosts['Photoelectricity'].power){
+							avoptions.push(Molpy.PhotoRewardOptions[i])
+						}
+					}
+					for(var i=0;i<avoptions.length;i++){
+						var look=Molpy.Boosts[avoptions[i]]
+						str=str+"<br><input type='Button' onclick='Molpy.UnlockBoost(" 
+						str=str+ look.alias + ")' value='Assume you have " + look.name+"'></input>" //Yup. Assume.
+					}
+				}
+				return str
+			},
+			group: 'varie',
+			photo: 2, //not the easiest to get. I don't mind, though.
+			price: {
+				Grayness:12.5*10
+			},
+			buyFunction: function(me){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(me.alias),1)}//a must :(
+		}
+	);
+	new Molpy.Boost({
+			name: 'Diluted Boom',
+			desc: "Lets the meltdown countdown lengthdown godown updown.",//after the first two... it had to happen.
+			stats: "Lets the down down deeper down.", //Actually, only did that because of the first joke.
+			group: 'varie',
+			photo: 5,
+			startPower:0,
+			price:{Grayness:12.5*40},
+			buyFunction: function(me){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(me.alias),1)
+				me.power=4
+			}//a must :(
+		}
+	);	
+	new Molpy.Boost({
+			name: 'Concentrated Boom',
+			desc: "Everyone loves explosins. Doubles splosion rewards.",
+			group: 'varie',
+			photo: 5,
+			startPower:0,
+			price:{Grayness:12.5*40},
+			buyFunction: function(me){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(me.alias),1)
+				me.power=3;
+			}//a must :(
+		}
+	);
 
 // END OF BOOSTS, add new ones immediately before this comment
 }

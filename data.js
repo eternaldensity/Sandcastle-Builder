@@ -993,7 +993,140 @@ Molpy.BuildRewardsLists = function() {
 	Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
 		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
 	});
+	Molpy.PhotoRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].photo!== undefined)&&(Molpy.Boosts[i].photo!=='undefined')
+	})
 	Molpy.RewardsListsBuilt = 1;
+	Molpy.defineCrafts(); //They don't really go together, but I'm not interested in figuring out the proper version.
+}
+/********************
+* CRAFTING FUNCTIONS/
+* *****************/
+Molpy.defineCrafts=function(){
+	 Molpy.craft=function(r,t){
+		var s=r.start
+		var o=r.onFinish||function(){}
+		for(var i in s){if(typeof s[i]==typeof 5){s[i]=s[i]*times} else{s[i]=s[i](t)}}
+		var f=r.finish
+		for(var i in f){if(typeof f[i]==typeof 5){f[i]=f[i]*times} else{f[i]=f[i](t)}}
+		var c=r.catalysts||{}
+		for(var i in s){if(typeof s[i]=='function'){c[i]=c[i](t)}}
+		if(!t){t=1}
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(!(Molpy.Boosts[i].power>=s[i])){Molpy.Notify("Couldn't craft due to a lack of materials.");return;}
+		}
+		for(var i in c){
+			if(s[i]){c[i]+=s[i]}
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(!(Molpy.Boosts[i].power>=c[i])){Molpy.Notify("Couldn't craft due to a lack of catalysts.");return;}
+		}
+		for(var i in s){
+			Molpy.Boosts[i].power=Molpy.Boosts[i].power-(s[i]);
+		}
+		for(var i in f){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){} else{
+				Molpy.Boosts[i].power=Molpy.Boosts[i].power+(f[i]);
+			}
+		}
+		o();
+	}
+	Molpy.canCraft=function(r,t){
+		var s=r.start
+		for(var i in s){if(typeof s[i]==typeof 5){s[i]=s[i]*times} else{s[i]=s[i](t)}}
+		var f=r.finish
+		for(var i in f){if(typeof f[i]==typeof 5){f[i]=f[i]*times} else{f[i]=f[i](t)}}
+		var c=r.catalysts||{}
+		for(var i in s){if(typeof s[i]=='function'){c[i]=c[i](t)}}
+		if(!t){t=1}
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return false;}
+			if(!(Molpy.Boosts[i].power>=s[i])){return false;}
+		}
+		for(var i in c){
+			if(s[i]){c[i]+=s[i]}
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(!(Molpy.Boosts[i].power>=c[i])){return false;}
+		}
+		return true
+	}
+	Molpy.getCrafts=function(table,level){
+		var t=Molpy.Crafts[table]
+		if(!level){level=Molpy.Boosts[table].power}
+		var ans=[]
+		for(var i=0;i<t.length;i++){
+			if(t[i].level<level){ans.push(t[i])}
+		}
+	}
+	Molpy.Crafts={
+		Polarizer: [
+			{
+				recipe: {
+					start: {Blackness: function(){return 5}, Blueness: 1},
+					finish: {Otherness: 1}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Blackness: function(){return 5}, Otherness: 1},
+					finish: {Blueness: 1}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Blackness: 15},
+					finish: {Whiteness: 1},
+					onFinish: function(){
+						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
+							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
+								Molpy.reactPhoto(1);
+							}
+						}
+					}
+				},
+				level: 0,
+				maxTimes: function(){
+					if(!Molpy.Boosts['Polarizer'].power){return 1} else{
+						return Infinity //Well, that was quite a jump...
+					}
+				}
+			},
+			{
+				recipe: {
+					start: {Blackness: function(){return 10}},
+					finish: {Whiteness: 1},
+					onFinish: function(){
+						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
+							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
+								Molpy.reactPhoto(1);
+							}
+						}
+					}
+				},
+				level: 0
+			},
+		],
+		Retroactivity: [
+			{}
+			]//Handled as a crafting station! Despite not really being a crafting recipe!
+	}
+	for(var i in Molpy.Crafts){
+		for(var j=0;j<Molpy.Crafts[i];j++){
+			if(Molpy.Crafts[i][j].times==undefined){
+				Molpy.Crafts[i][j].times=function(){
+					if(!Molpy.Got(Molpy.Boosts[i].alias)){return 0};
+					var r=Molpy.Crafts[i][j].recipe
+					var try=10
+					while(Molpy.canCraft(r,try)){try=try*10}
+					var max=Molpy.Crafts[i][j].maxTimes||Infinity //Defaulting for the very lazy
+					if(typeof max=='function'){max=max()}
+					return Math.min(try/10,max)
+				}
+			}
+		}
+	}
 }
 
 Molpy.CheckClickAchievements = function() {
