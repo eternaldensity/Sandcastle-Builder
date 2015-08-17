@@ -1739,34 +1739,45 @@ Molpy.Up = function() {
 			}
 		};
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
-			if(times==undefined){times=1}
-			if((times===1)){Molpy.UnlockBoost(bacon,auto)} else {
-				var RobbySee=Molpy.Boosts['Rob'];
-				var RobbyDo=[]
-				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
-					var item = Molpy.BoostsById[thingy + 1];
-					if(item.power) {
-						RobbyDo.push(Molpy.BoostsById[Math.abs(item.power)].name)
-					}
+			var RobbySee=Molpy.Boosts['Rob'];
+			var RobbyDo=[]
+			for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
+				var item = Molpy.BoostsById[thingy + 1];
+				if(item.power) {
+					RobbyDo.push(Molpy.BoostsById[Math.abs(item.power)].name)
 				}
-				if(RobbyDo.indexOf(bacon)>=0 &&
+			}
+			var shouldbuy = RobbyDo.indexOf(bacon)>=0 &&
 					Molpy.BoostsById[RobbyDo.indexOf(bacon) + 1].power > 0 &&
-					(Molpy.Got('ASHF') || !(RobbySee.power & 1))
-
-
-
-
-					) {
-					var lettuce=Molpy.Boosts[bacon];
+					(Molpy.Got('ASHF') || !(RobbySee.power & 1));
+			var lettuce = Molpy.Boosts[bacon];
+			if(times==undefined) {times=1}
+			if((times===1)) {
+				if (lettuce.name === 'Locked Vault' && Molpy.IsEnabled('Aleph One') && shouldbuy) {
+					Molpy.Unbox(1);
+				} else {
+					Molpy.UnlockBoost(bacon,auto)
+				}
+			} else {
+				if (shouldbuy) {
 					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
 						Molpy.Unbox(times)
-						Molpy.Boosts['Locked Vault'].bought = flandom(4);
+						// Molpy.Boosts['Locked Vault'].bought = flandom(4);
 					}
 					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
 						Molpy.UnlockBoost('Locked Vault')
 					}
-					if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5));return;}
-					if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));return;}
+					if(lettuce.name==='Vault Key') {
+						Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/4)); // not sure why but this needs to be 4, even through normal buying it takes 4 keys. key grinder/key thing?
+						for (var i = 0; i < (times % 4); i++) {
+							lettuce.buyFunction(); // no problem calling this up to 4 times
+						} 
+						return;
+					}
+					if(lettuce.name==='Crate Key') {
+						Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));
+						return;
+					}
 					if(lettuce.name==='Locked Crate'){
 						var bl = Molpy.Boosts['GlassBlocks'];
 						var win = Math.ceil(Molpy.LogiMult('2K'));
@@ -1780,7 +1791,7 @@ Molpy.Up = function() {
 						if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 						Molpy.Add('Blackprints', lettuce.bought*times);
 					}
-					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+					// Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
 				}
 				//} else{
 				//	//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
@@ -3074,6 +3085,7 @@ Molpy.Up = function() {
 						var amount = Math.max(1, Math.floor(factor));
 						if (Molpy.Got('Never Jam Today') && (Molpy.newpixNumber != Molpy.newpixNumber)) amount = Math.pow(amount, amount);
 						// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
+						amount = Math.floor(amount * Molpy.Papal('Shards'));
 						Molpy.Add('Shards', amount);
 						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
 						Molpy.Boosts['kitkat'].Refresh();
@@ -3497,7 +3509,7 @@ Molpy.Up = function() {
 
 		Molpy.Boosts['Glass Trolling'].IsEnabled = 0;
 		Molpy.Boosts['Now Where Was I?'].Refresh();
-		Molpy.Boosts['The Pope'].reset();
+		if (!Molpy.Got('Permanent Staff') || !Molpy.IsEnabled('Permanent Staff')) Molpy.Boosts['The Pope'].reset();
 		Molpy.MakeSomethingUp();
 		Molpy.UpdateFaves();
 		
@@ -3538,9 +3550,9 @@ Molpy.Up = function() {
 			} else {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
 			}
-			if(Molpy.newpixNumber > Molpy.Boosts['Aperture Science'].power) {
+			if(Molpy.newpixNumber > Molpy.Boosts['Aperture Science'].power + 2) {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? -1 : 1);
-				Molpy.Notify("You must unlock the last door to do continue!")
+				Molpy.Notify("You must unlock the next doorhole to continue!")
 			}
 			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
 
