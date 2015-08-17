@@ -3298,7 +3298,7 @@ Molpy.Up = function() {
 			if(isClick && Molpy.Got('Doubletap')){n=2*n}
 			if(isClick && (Molpy.newpixNumber-0.1!==Math.floor(Molpy.newpixNumber))){return;}
 			if(Molpy.Got('bluhint'))gain=gain*(Molpy.Boosts['bluhint'].power)
-			if(!type||type='Blueness'){Molpy.Boosts['Blueness'].power+=gain} else{
+			if((!type)||(type=='Blueness')){Molpy.Boosts['Blueness'].power+=gain} else{
 				Molpy.Boosts[type].power+=n
 			}
 		}
