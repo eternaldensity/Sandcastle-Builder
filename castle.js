@@ -3345,7 +3345,7 @@ Molpy.Up = function() {
 			while(pow>Math.pow(2,l)){
 				var doing=pow&Math.pow(2,l)
 				var recipe=allButtons[l]
-				if(Molpy.canCraft(recipe.recipe,recipe.times()){tdone=false;Molpy.craft(recipe,recipe.times())}
+				if(Molpy.canCraft(recipe.recipe,recipe.times())){tdone=false;Molpy.craft(recipe,recipe.times())}
 				//Recipe no longer feels like a word after the last line.
 				l++
 			}
