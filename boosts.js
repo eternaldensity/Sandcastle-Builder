@@ -720,8 +720,7 @@ Molpy.DefineBoosts = function() {
 	// targeted time travel!
 	Molpy.TTT = function(np, chips, silence) {
 		var oldnp = Molpy.newpixNumber;
-		Molpy.Anything = 1;
-		np = Math.floor(np);
+		Molpy.Anything = 1
 		chips = chips ? (chips == 1?Molpy.CalcJumpEnergy(np):Infinity) : 0;
 		var price = Molpy.TimeTravelPrice();
 		if(chips) price = 0;
@@ -766,7 +765,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.ONGstart = ONGsnip(new Date());
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
-			if(!silence) Molpy.Notify('Time Travel successful! Welcome to NewPix ' + Molpify(Molpy.newpixNumber));
+			if(!silence) Molpy.Notify('Time Travel successful! Welcome to NewPix ' + Molpify(Math.floor(Molpy.newpixNumber)));
 			Molpy.Boosts['Time Travel'].travelCount++;
 			if(Molpy.Boosts['Time Travel'].travelCount >= 10 && !silence) Molpy.HandleInvaders(chips);
 			Molpy.Boosts['Time Travel'].Refresh();
@@ -12020,8 +12019,8 @@ new Molpy.Boost({
 					cost *= Math.pow(Math.floor(Math.log(m)) , -1/8);
 				}
 				cost = Math.floor(cost);
-				tatpix = 0 // highest tatpix visited
-				yield = Math.floor(Math.pow(4,tatpix/4));
+				var tatpix = Molpy.LargestNPvisited[0.1] // highest tatpix visited
+				var yield = Math.floor(Math.pow(4,tatpix/4));
 				str += ', using infinite flux crystals';
 				str += '.<br><input type=button onclick="Molpy.Uncrush(' + cost + ',' + yield + ')" value="Uncrush"></input> ';
 				str += Molpify(cost) + ' shard' + plural(cost) + ' into ' + Molpify(yield) + ' pane' + plural(yield) + '.';
@@ -12615,6 +12614,29 @@ new Molpy.Boost({
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
 	});
+
+	Molpy.setPower=function(a,v){Molpy.Boosts[a].power=v}
+	new Molpy.Boost({
+		name: 'Controlled Hysteresis',
+		alias: 'Controlled Hysteresis',
+		group: 'dimen',
+
+		desc: function(me) {
+			if (!me.bought) return 'Lets you switch between timelines. Currently locked.';
+			var str="You can switch to:<br>"
+			str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0)" value="OTC"></input>'
+			str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0.1)" value="t1i"></input>'
+			if(me.power>-1){str=str+'<br> Currently set to ';
+				if(me.power==0){str=str+"OTC"} else{str=str+["t1i"][Molpy.fracParts.indexOf(Molpy.Boosts['Controlled Hysteresis'].power)]}
+			}
+			return str
+		},
+		unlockFunction:function(){this.buy()},
+		lockFunction: function(){this.power=-1},
+		startPower:-1
+		
+	});
+	
 	new Molpy.Boost({
 		name: 'Permanent Staff',
 		icon: 'staff',
@@ -12633,5 +12655,6 @@ new Molpy.Boost({
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
+
 // END OF BOOSTS, add new ones immediately before this comment
 }
