@@ -12632,6 +12632,17 @@ new Molpy.Boost({
 	});
 	new Molpy.Boost({
 		name: 'Blueness',
+		group: 'stuff',
+		HasSuper: Molpy.BoostFuncs.Has,
+		SpendSuper: Molpy.BoostFuncs.Spend,
+		Has: function(n) {
+			
+			return this.HasSuper(n);
+		},
+		Spend: function(n) {
+			
+			return this.SpendSuper(n);
+		},
 		desc: function(me){
 			return 'Is blue and mysterious. You have '+Molpify(me.power)+' blueness.'
 		},
@@ -12642,6 +12653,17 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: '<it>Other</it>ness',
 			alias: 'Otherness',
+			group: 'stuff',
+		HasSuper: Molpy.BoostFuncs.Has,
+		SpendSuper: Molpy.BoostFuncs.Spend,
+		Has: function(n) {
+			
+			return this.HasSuper(n);
+		},
+		Spend: function(n) {
+			
+			return this.SpendSuper(n);
+		},
 			desc: function(me){
 				return 'Is mysterious and slightly terrifying. You have '+Molpify(me.power)+' <it>other</it>ness.'
 			},
@@ -12651,7 +12673,17 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Blackness',
-			alias: 'Blackness',
+			group: 'stuff',
+		HasSuper: Molpy.BoostFuncs.Has,
+		SpendSuper: Molpy.BoostFuncs.Spend,
+		Has: function(n) {
+			
+			return this.HasSuper(n);
+		},
+		Spend: function(n) {
+			
+			return this.SpendSuper(n);
+		},
 			desc: function(me){
 				return 'The tool of GLR. You have '+Molpify(me.power)+' Blackness.'
 			},
@@ -12661,7 +12693,17 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Whiteness',
-			alias: 'Whiteness',
+			group: 'stuff',
+		HasSuper: Molpy.BoostFuncs.Has,
+		SpendSuper: Molpy.BoostFuncs.Spend,
+		Has: function(n) {
+			
+			return this.HasSuper(n);
+		},
+		Spend: function(n) {
+			
+			return this.SpendSuper(n);
+		},
 			desc: function(me){
 				return 'The anti-tool of GLR. You have '+Molpify(me.power)+' Whiteness.'
 			},
@@ -12671,7 +12713,17 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Grayness',
-			alias: 'Grayness',
+			group: 'stuff',
+		HasSuper: Molpy.BoostFuncs.Has,
+		SpendSuper: Molpy.BoostFuncs.Spend,
+		Has: function(n) {
+			
+			return this.HasSuper(n);
+		},
+		Spend: function(n) {
+			
+			return this.SpendSuper(n);
+		},
 			desc: function(me){
 				var str= 'Something found less in mountains, because mountains are easy to draw.' //i.e. oxygen.
 				str=str+' You have '+Molpify(me.power)+' Grayness.'; return str //This gets more directly referred to as such
