@@ -1749,11 +1749,18 @@ Molpy.Up = function() {
 						RobbyDo.push(Molpy.BoostsById[Math.abs(item.power)].name)
 					}
 				}
-				RobbyDo.push(Molpy.shoppingItem)
-				if(RobbyDo.indexOf(bacon)>=0){
+				if(RobbyDo.indexOf(bacon)>=0 &&
+					Molpy.BoostsById[RobbyDo.indexOf(bacon) + 1].power > 0 &&
+					(Molpy.Got('ASHF') || !(RobbySee.power & 1))
+
+
+
+
+					) {
 					var lettuce=Molpy.Boosts[bacon];
 					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
 						Molpy.Unbox(times)
+						Molpy.Boosts['Locked Vault'].bought = flandom(4);
 					}
 					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
 						Molpy.UnlockBoost('Locked Vault')
@@ -2618,7 +2625,7 @@ Molpy.Up = function() {
 			if(BKJ.bought) {
 				BKJ.power = (BKJ.power) + 1;
 			}
-			if (Molpy.Got('DomCobb') && !flandom(100)) {
+			if (Molpy.Got('DomCobb') && Math.random() < 1/150) {
 				Molpy.RewardInception();
 			} else if(Math.floor(2 * Math.random())) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Not Lucky', true]);
@@ -3031,8 +3038,8 @@ Molpy.Up = function() {
 					} else {
 						var factor = 1;
 						if (Molpy.Got('GCC')) factor *= 12;
-						if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.01, Molpy.Pinch());
-						factor *= (Molpy.Got('Sigma Stacking') ? Math.abs(np) - 3094 : 1)
+						if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.03, Molpy.Pinch());
+						factor *= (Molpy.Got('Sigma Stacking') ? prey.length + 1 : 1)
 						if (Molpy.Got('GCA')) {
 							for (i = 2; i < 12; i++) {
 								if (Molpy.Got('Glass Ceiling ' + i) && np % i == 0) {
@@ -3056,13 +3063,6 @@ Molpy.Up = function() {
 								if (Molpy.Got('Glass Ceiling ' + i) == Math.sign(np % i)) {
 									strikes++;
 								}
-								/////
-								var brp = '';
-								// for (var j = 0; j < strikes; j++) {
-								// 	brp += strikes[j] + ', ';
-								// 	Molpy.Notify(brp,1);
-								// }
-								/////
 								if (strikes == 10) {
 									Molpy.Boosts['GCC'].power++;
 									if (Molpy.Boosts['GCC'].power >= 72) {
@@ -3076,6 +3076,7 @@ Molpy.Up = function() {
 						// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
 						Molpy.Add('Shards', amount);
 						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
+						Molpy.Boosts['kitkat'].Refresh();
 						prey.push(np);
 						if (prey.length >= 12) {
 							Molpy.UnlockBoost('AntiAuto');

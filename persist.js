@@ -756,7 +756,7 @@
 				var enhance = Molpy.FromOct(parseInt(pixels[i] || 0, 16));
 				for( var j in enhance) {
 					var me = Molpy.BadgesById[id + +j];
-					me.earned = enhance[j] || 0;
+					if (me) me.earned = enhance[j] || 0;
 					if(me.earned) {
 						Molpy.BadgesOwned++;
 						Molpy.unlockedGroups[me.group] = 1;

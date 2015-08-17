@@ -797,6 +797,9 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	if(Molpy.Redacted.totalClicks >= 431) {
 		Molpy.Boosts['Technicolour Dream Cat'].department = 1;
 	}
+	// if(Molpy.Redacted.totalClicks >= 1000 && Molpy.Got('SPP') && Math.random() < 1/20) {
+	// 	Molpy.Boosts['DomCobb'].department = 1;
+	// }
 
 	Molpy.Boosts['RRR'].department = 1 * (Molpy.Boosts['Panther Salve'].power > 200);
 	Molpy.Boosts['Phonesaw'].department = 1 * (Molpy.Boosts['VJ'].power >= 88);
@@ -955,6 +958,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Aleph One'].logic = 111111111;
 	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
 	Molpy.Boosts['Aleph e'].logic = DeMolpify('99H') * Molpy.priceFactor;
+	Molpy.Boosts['DimenKey'].logic = Molpy.Got('Aperture Science') * Math.pow(10, Molpy.Boosts['Aperture Science'].power);
 }
 Molpy.mapMonumg = 200;
 
