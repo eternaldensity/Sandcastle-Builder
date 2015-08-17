@@ -12834,14 +12834,14 @@ new Molpy.Boost({
 					var buttons=Molpy.polarizerButtons(me.power)
 					while(buttons.length){
 						var b=buttons.pop()
-						str=str+'<br><input type="Button" onclick='
+						if(b[1]!={}){str=str+'<br><input type="Button" onclick='
 						str=str+'Molpy.craft(' + b[0].recipe + ','
 						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}
 						str=str+')" value="'
 						for(var i in b[1]){str=str+'Dualize '+i}
 						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}' time'
 						if(typeof b[0].times=='function'){str=str+'s'}
-						str=str+'"></input>'; 
+						str=str+'"></input>'; }
 						//really, there's only 1 item in the loop, but still.
 					}
 				}
