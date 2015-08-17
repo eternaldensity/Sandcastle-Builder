@@ -25,7 +25,7 @@ Molpy.DefineBoosts = function() {
 	        faves: ['favourites', 'Favourites'],
 		magic: ['magic', 'Magic'],
 		dimen: ['dimension tech', 'Dimension Tech'],
-		varie: ['varie', 'Varie', 'Variegation'],
+		varie: ['varie', 'Variegation', 'varie'],
 	};
 	
 	Molpy.unlockedGroups['stuff'] = 1; // Stuff is always unlocked because Sand and Castles are always unlocked
@@ -12762,7 +12762,7 @@ new Molpy.Boost({
 			desc: function(me){
 				var str='Lets you use the blue of the ocean and some <it>other</it>ness to make squids so'
 				str=str+' that you can extract their ink.'
-				if(Molpy.Got(this.alias)){
+				if(Molpy.Got('Argy')){
 					str=str+'<br> <input type="Button" value="Make ' + Molpify(Molpy.getSquids())
 					str=str+ ' squids" onclick="Molpy.makeSquids()">'
 				}
@@ -12826,7 +12826,7 @@ new Molpy.Boost({
 			group: 'varie',
 			desc: function(me){
 				var str='Lets you turn the essence of a color into its dual.'
-				if(Molpy.Got(me.alias)){
+				if(Molpy.Got('Polarizer')){
 					str=str+' You may dualize:'
 					var buttons=Molpy.polarizerButtons(me.power)
 					while(buttons.length){
