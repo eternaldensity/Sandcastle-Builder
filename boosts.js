@@ -12850,7 +12850,8 @@ new Molpy.Boost({
 			price: {
 				Blackness: 12.5*3
 			},
-			startPower:0 //power determines what can be crafted: 0 = basic, 1 allows black->white multibuy, etc.
+			startPower:0, //power determines what can be crafted: 0 = basic, 1 allows black->white multibuy, etc.
+			buyFunction: function(){this.power=0}
 		}
 	);
 	new Molpy.Boost({
