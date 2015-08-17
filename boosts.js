@@ -3678,7 +3678,7 @@ Molpy.DefineBoosts = function() {
 		className: 'alert',
 		
 		desc: function(me) {
-			return 'The next ' + me.power + ' Ninja Builder' + plural(me.power) + ' will activate Factory Automation';
+			return 'The next ' + Molpify(me.power) + ' Ninja Builder' + plural(me.power) + ' will activate Factory Automation';
 		},
 		
 		logic: 3,
@@ -5285,15 +5285,14 @@ Molpy.DefineBoosts = function() {
 	{
 		if(times && Molpy.IsEnabled('Mario')) {
 			var l = Molpy.Boosts['Mario'].bought;
-			var runs=[10,20,100,500,1000][Molpy.options.approx]
+			var runs = [10,20,100,500,1000][Molpy.options.approx];
 			var cost = l * (l + 1) / 2;
 			Molpy.boostSilence++;
-			if(Molpy.Spend('QQ', cost)) {
-				while((l>0)&&(runs>0)) {
-					Molpy.RewardLogicat(Molpy.Level('QQ'),Math.ceil(l/runs));
-					l=l-runs
-					runs-=1
+			if (Molpy.Spend('QQ', cost)) {
+				for (var i = 0; i < runs; i++) {
+					Molpy.RewardLogicat(Molpy.Level('QQ'), Math.floor(l/runs));
 				}
+				Molpy.RewardLogicat(Molpy.Level('QQ'), l%runs);
 			}
 			Molpy.boostSilence--;
 		}
@@ -7103,6 +7102,7 @@ Molpy.DefineBoosts = function() {
 			}
 			Molpy.Add('Flux Crystals', c);
 		}
+		lv.Refresh();
 	};
 	Molpy.Marco = function(times) {
 		var polo = Molpy.groupBadgeCounts.discov;
@@ -9828,6 +9828,7 @@ Molpy.DefineBoosts = function() {
 		Gold: {desc:'XX% more Gold', value:1.1, avail: function() { return Molpy.Earned('Millionair') && isFinite(Molpy.Level('Gold')) }},
 		Diamonds: {desc:'XX% more Diamonds', value:1.1, avail: function() { return Molpy.DragonDigRate > 1e8 && isFinite(Molpy.Level('Diamonds')) }},
 		Master: {desc:'XX% less time for each masterpiece stage', value:0.9, avail: function() { return Molpy.groupBadgeCounts.diamm >= 10 }},
+		Shards: {desc: 'XX% more Dimension Shards from the camera', value: 1.1, avail: function() { return Molpy.Boosts['kitkat'].prey.length >= 180 }},
 		//: {desc:'', value:1.1, avail: function() {}},
 	}
 	Molpy.Hash = function(brown) {
@@ -9902,10 +9903,15 @@ Molpy.DefineBoosts = function() {
 
 	Molpy.SelectPapalDecree = function(name) {
 		Molpy.Anything = 1;
+		var pope = Molpy.Boosts['The Pope'];
+		var staff = Molpy.Boosts['Permanent Staff'];
+		if (!staff.Level) staff.Level = 0;
+		staff.Level++;
+		if (staff.Level >= 144) Molpy.UnlockBoost('Permanent Staff');
 		Molpy.Decree = Molpy.PapalDecrees[name];
-		Molpy.Boosts['The Pope'].power = Molpy.Hash(name);
+		pope.power = Molpy.Hash(name);
 		Molpy.Decreename = name;
-		Molpy.Boosts['The Pope'].Refresh();
+		pope.Refresh();
 		Molpy.SetPapalBoostFactor();
 	}
 
@@ -12608,6 +12614,7 @@ new Molpy.Boost({
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
 	});
+
 	Molpy.setPower=function(a,v){Molpy.Boosts[a].power=v}
 	new Molpy.Boost({
 		name: 'Controlled Hysteresis',
@@ -12630,6 +12637,24 @@ new Molpy.Boost({
 		
 	});
 	
+	new Molpy.Boost({
+		name: 'Permanent Staff',
+		icon: 'staff',
+		group: 'bean',
+		className: 'toggle',
+		desc: function(me) {
+			var str = '';
+			str += '' + (me.IsEnabled ? 'T' : 'When active, t') + 'he papal decree does not reset on the ONG.';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+		price: {
+			Sand: 50000000,
+			Castles: 20000000,
+			GlassBlocks: 50,
+		},
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+	});
 
 // END OF BOOSTS, add new ones immediately before this comment
 }
