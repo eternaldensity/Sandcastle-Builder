@@ -1123,6 +1123,11 @@ Molpy.DefineBadges = function() {
 		desc: 'You know exactly what kind of boosts you like',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'One More Time',
+		desc: 'ONG into TaTPix',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 
@@ -1187,6 +1192,15 @@ Molpy.DefineBadges = function() {
 			args.np *= -1;
 			Molpy.MakeQuadBadge(args);
 		}
+	}
+
+	Molpy.CountDiscov = function() {
+		var badges = Molpy.BadgesById
+		var count = 0;
+		for (var i = 0; i < badges.length; i++) {
+			if (badges[i].group == 'discov') count++;
+		}
+		Molpy.totalDiscov = count;
 	}
 		
 	Molpy.MakeQuadBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});

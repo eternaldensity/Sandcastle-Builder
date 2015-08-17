@@ -80,6 +80,7 @@ Molpy.Up = function() {
 		Molpy.highestNPvisited = 1; //keep track of where the player has been
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
+		Molpy.totalDiscov = 0;
 		
 		Molpy.dispObjects = {shop: [], tools: [], boosts: [], badges: [], tagged: [], search: [], faves: []} // Lists of objects currently being displayed
 		Molpy.mouseIsOver = null;
@@ -1720,59 +1721,54 @@ Molpy.Up = function() {
 			}
 		};
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
-			if(times===1){Molpy.UnlockBoost(bacon,auto)} else {
+			if(times==undefined){times=1}
+			if((times===1)){Molpy.UnlockBoost(bacon,auto)} else {
 				var RobbySee=Molpy.Boosts['Rob'];
 				var RobbyDo=[]
 				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
 					var item = Molpy.BoostsById[thingy + 1];
 					if(item.power) {
-						RobbyDo.push(item.name)
+						RobbyDo.push(Molpy.BoostsById[Math.abs(item.power)].name)
 					}
 				}
-				RobbyDo.push(Molpy.shoppingItem)
-				if(RobbyDo.indexOf(bacon)){
-					var lettuce=Molpy.Boosts[bacon];
-					if(!([undefined, 'undefined', function(){}].indexOf(lettuce.lockFunction))){
-						lettuce.power+=times
-						if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
-							var pages=(lettuce.power+lettuce.power-times)*times/2
-							if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
-							Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
-							if(Molpy.Got('Camera') && (Math.random() > Math.pow(0.9,times)) ) {
-								Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-							} //less efficient than normal vault opening, but that's too hard.
-							if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
-								var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
-								c=c*times
-								if (c && !Molpy.boostSilence) 
-									Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
-									Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
-							}
-						}
-						if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
-							Molpy.UnlockBoost('Locked Vault')
-						}
-						if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5))}
-						if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5))}
-						if(lettuce.name==='Locked Crate'){
-							var bl = Molpy.Boosts['GlassBlocks'];
-							var win = Math.ceil(Molpy.LogiMult('2K'));
-							lettuce.CrateCount+=times;
-							win = Math.floor(win / (6 - lettuce.bought));
+				if(RobbyDo.indexOf(bacon)>=0 &&
+					Molpy.BoostsById[RobbyDo.indexOf(bacon) + 1].power > 0 &&
+					(Molpy.Got('ASHF') || !(RobbySee.power & 1))
 
-							if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
-							Molpy.Add('GlassBlocks', win*times);
-							Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
-							if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-							Molpy.Add('Blackprints', lettuce.bought*times);
-						}
-						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+
+
+
+					) {
+					var lettuce=Molpy.Boosts[bacon];
+					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
+						Molpy.Unbox(times)
+						Molpy.Boosts['Locked Vault'].bought = flandom(4);
 					}
-				} else{
-					//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
-					//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
-					Molpy.UnlockRepeatableBoost(bacon,auto,1)
+					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
+						Molpy.UnlockBoost('Locked Vault')
+					}
+					if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5));return;}
+					if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));return;}
+					if(lettuce.name==='Locked Crate'){
+						var bl = Molpy.Boosts['GlassBlocks'];
+						var win = Math.ceil(Molpy.LogiMult('2K'));
+						lettuce.CrateCount+=times;
+						win = Math.floor(win / (6 - lettuce.bought));
+						win=win*times
+
+						if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
+						Molpy.Add('GlassBlocks', win);
+						Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
+						if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+						Molpy.Add('Blackprints', lettuce.bought*times);
+					}
+					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
 				}
+				//} else{
+				//	//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
+				//	//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
+				//	Molpy.UnlockRepeatableBoost(bacon,auto,1)
+				//}
 			}
 		}
 		Molpy.GiveTempBoost = function(bacon, power, countdown, desc) {
@@ -2611,7 +2607,7 @@ Molpy.Up = function() {
 			if(BKJ.bought) {
 				BKJ.power = (BKJ.power) + 1;
 			}
-			if (Molpy.Got('DomCobb') && !flandom(100)) {
+			if (Molpy.Got('DomCobb') && Math.random() < 1/150) {
 				Molpy.RewardInception();
 			} else if(Math.floor(2 * Math.random())) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Not Lucky', true]);
@@ -2900,6 +2896,7 @@ Molpy.Up = function() {
 		Molpy.CheckLogicatRewards();
 		Molpy.CheckDoRDRewards();
 		Molpy.BuildRewardsLists();
+		Molpy.CountDiscov();
 
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
@@ -3023,8 +3020,8 @@ Molpy.Up = function() {
 					} else {
 						var factor = 1;
 						if (Molpy.Got('GCC')) factor *= 12;
-						if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.01, Molpy.Pinch());
-						factor *= (Molpy.Got('Sigma Stacking') ? Math.abs(np) - 3094 : 1)
+						if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.03, Molpy.Pinch());
+						factor *= (Molpy.Got('Sigma Stacking') ? prey.length + 1 : 1)
 						if (Molpy.Got('GCA')) {
 							for (i = 2; i < 12; i++) {
 								if (Molpy.Got('Glass Ceiling ' + i) && np % i == 0) {
@@ -3048,13 +3045,6 @@ Molpy.Up = function() {
 								if (Molpy.Got('Glass Ceiling ' + i) == Math.sign(np % i)) {
 									strikes++;
 								}
-								/////
-								var brp = '';
-								// for (var j = 0; j < strikes; j++) {
-								// 	brp += strikes[j] + ', ';
-								// 	Molpy.Notify(brp,1);
-								// }
-								/////
 								if (strikes == 10) {
 									Molpy.Boosts['GCC'].power++;
 									if (Molpy.Boosts['GCC'].power >= 72) {
@@ -3068,6 +3058,7 @@ Molpy.Up = function() {
 						// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
 						Molpy.Add('Shards', amount);
 						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
+						Molpy.Boosts['kitkat'].Refresh();
 						prey.push(np);
 						if (prey.length >= 12) {
 							Molpy.UnlockBoost('AntiAuto');

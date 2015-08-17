@@ -1,4 +1,4 @@
-﻿/**************************************************************
+/**************************************************************
  * Boosts
  * 
  * New boosts should only be added to the END of the list!
@@ -777,6 +777,8 @@ Molpy.DefineBoosts = function() {
 				Molpy.Notify('Great Scott! '+Molpify(c)+' flux crystal'+plural(c)+' materialized.');
 			}
 			Molpy.Boosts['Now Where Was I?'].Refresh();
+			Molpy.Boosts['PG'].Refresh();
+			Molpy.Boosts['kitkat'].Refresh();
 			Molpy.LockBoost('Muse');
 			Molpy.UpdateFaves();
 			return 1;
@@ -5290,6 +5292,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Spend('QQ', cost)) {
 				while((l>0)&&(runs>0)) {
 					Molpy.RewardLogicat(Molpy.Level('QQ'),Math.ceil(l/runs));
+					l=l-runs
 					runs-=1
 				}
 			}
@@ -5328,11 +5331,11 @@ Molpy.DefineBoosts = function() {
 			{
 				if (Molpy.Got('Shadow Feeder') && Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('LogiPuzzle', 100) &&
 					Molpy.Got('ShadwDrgn') && !Molpy.Has('Shadow Feeder',Molpy.PokeBar()) && Molpy.Spend('Bonemeal', 5)) {
-					if (Molpy.Got('Bananananas') && Molpy.PuzzleGens.caged.active && (Molpy.PuzzleGens.caged.puzzles < Molpy.Level('LogiPuzzle'))) {
+					if (Molpy.IsEnabled('Bananananas') && Molpy.PuzzleGens.caged.active && (Molpy.PuzzleGens.caged.puzzles < Molpy.Level('LogiPuzzle'))) {
 						Molpy.PuzzleGens.caged.puzzles = Math.ceil(Molpy.Level('LogiPuzzle'));
 						Molpy.Boosts['LogiPuzzle'].power = 0;
 						Molpy.Boosts['LogiPuzzle'].Refresh();
-					} else if (Molpy.Got('Bananananas') && !Molpy.PuzzleGens.caged.active ) {
+					} else if (Molpy.IsEnabled('Bananananas') && !Molpy.PuzzleGens.caged.active ) {
 						var puz = Math.floor((Molpy.Level('LogiPuzzle') - 1) / 10) * 10;
 						var cost = (100 + Molpy.LogiMult(25)) * puz;
 						if(Molpy.Spend('GlassBlocks', cost)) {
@@ -6838,7 +6841,13 @@ Molpy.DefineBoosts = function() {
 			return this.HasSuper(n);
 		},
 		Spend: function(n) {
-			if (n == Infinity && Molpy.Got('Abattoir')) Molpy.Boosts['Abattoir'].power++;
+			if (n == Infinity) {
+				Molpy.Boosts['Abattoir'].power++;
+				if (Molpy.Boosts['Abattoir'].power >= 144) Molpy.UnlockBoost('Abattoir');
+				if (Molpy.Boosts['Abattoir'].power >= 432 && Molpy.Boosts['blackhat'].power >= 8) Molpy.UnlockBoost('Tractor Beam');
+				if (Molpy.Boosts['Abattoir'].power >= 1008) Molpy.UnlockBoost('terrytao');
+				if (Molpy.Boosts['Abattoir'].power >= 1e4 && Molpy.Got('GCA')) Molpy.UnlockBoost('LA');
+			}
 			if (Molpy.Got('terrytao') && Molpy.IsEnabled('terrytao') && this.power == Infinity) return true;
 			return this.SpendSuper(n);
 		},
@@ -7015,32 +7024,107 @@ Molpy.DefineBoosts = function() {
 		logic: 5,
 
 		lockFunction: function() {
-			if(!this.power) this.power = 10;
-			var pages = this.power++;
-			if (this.power >= 1000000 && Molpy.Got('Shards')) {
-				Molpy.UnlockBoost('SPP');
+			Molpy.Unbox(1);
+		},
+
+		// left for reference
+		//
+		// lockFunction: function() {
+		// 	if(!this.power) this.power = 10;
+		// 	var pages = this.power++;
+		// 	if (this.power >= 1000000 && Molpy.Got('Shards')) {
+		// 		Molpy.UnlockBoost('SPP');
+		// 	}
+		// 	if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
+		// 	Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
+		// 	// if (Molpy.Got('Panopticon') && Molpy.Got('Vacuum')) {
+		// 	// 	var shards = 1;
+		// 	// 	shards *= Math.pow(1.1, 1 + Math.log(Molpy.Boosts['Vacuum'].power));
+		// 	// 	Molpy.Add('Shards', Math.floor(shards));					
+		// 	// }
+		// 	// this code is all pointless because, apparently, the lock function is not called at all when a
+		// 	// vault is opened by Mario. I don't feel compelled to figure out where to put this code right now
+		// 	// because of the Mario refactor.
+		// 	if(Molpy.Got('Camera') && (Math.random() < 0.1) ) {
+		// 		Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+		// 	}
+		// 	if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
+		// 		var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
+		// 		if (c && !Molpy.boostSilence) 
+		// 			Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
+		// 		Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
+		// 	}
+		// }
+	});
+
+	Molpy.Unbox = function(times) {
+		lv = Molpy.Boosts['Locked Vault'];
+		if (!lv.power) lv.power = 10;
+		lv.power += times;
+		var pages = lv.power * times;
+		pages += times * (times + 1) / 2; // some sigma-stacking =P because successive vaults give more pages
+		if (lv.power >= 1e12 && Molpy.Got('Shards')) {
+			Molpy.UnlockBoost('SPP');
+		}
+		if (lv.power >= 1e21 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
+			Molpy.UnlockBoost('Panopticon');
+		}
+		if (Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
+		Molpy.Add('Blackprints', Math.floor(pages * Molpy.Papal('BlackP')));
+		if (Molpy.Got('Panopticon')) { // will test once IP finally gets sorted out
+			var shards = 0;
+			var rarity = 1e-12;
+			if (times < 100) {
+				for (var i = 0; i < times; i++) {
+					if (Math.random() < rarity) shards ++;
+				}
+			} else {
+				var stdDev = Math.sqrt(rarity * (1 - rarity) * times);
+				shards = Math.max(0, Math.floor((rarity) * times + (stdDev * (2 * Math.random() - 1))));
 			}
-			if(Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
-			Molpy.Add('Blackprints', Math.floor(pages*Molpy.Papal('BlackP')));
-			// if (Molpy.Got('Panopticon') && Molpy.Got('Vacuum')) {
-			// 	var shards = 1;
-			// 	shards *= Math.pow(1.1, 1 + Math.log(Molpy.Boosts['Vacuum'].power));
-			// 	Molpy.Add('Shards', Math.floor(shards));					
-			// }
-			// this code is all pointless because, apparently, the lock function is not called at all when a
-			// vault is opened by Mario. I don't feel compelled to figure out where to put this code right now
-			// because of the Mario refactor.
-			if(Molpy.Got('Camera') && (Math.random() < 0.1) ) {
-				Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+			Molpy.Add('Shards', shards);
+			Molpy.Notify('found ' + shards + ' shards',1)
+		}
+		if (Molpy.Got('Camera')) {
+			var isles = 0;
+			if (times < 100) {
+				for (var i = 0; i < times; i++) {
+					if (Math.random() < .1) isles++;
+				}
+			} else {
+				var stdDev = Math.sqrt(.1 * .9 * times);
+				isles = Math.max(0, Math.floor(.1 * times + (stdDev * (2 * Math.random() - 1))));
 			}
-			if(Molpy.Got('FluxCrystals')&&(Molpy.Got('Temporal Rift')||Molpy.Got('Flux Surge'))){
-				var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE'));
-				if (c && !Molpy.boostSilence) 
-					Molpy.Notify('You found '+Molpify(c)+' flux crystal'+plural(c)+'.');
-				Molpy.Add('FluxCrystals',Math.floor(Molpy.Level('AC')/1000)*(1+Molpy.Got('TDE')));
+			Molpy.Marco(isles);
+		}
+		if (Molpy.Got('FluxCrystals') && (Molpy.Got('Temporal Rift') || Molpy.Got('Flux Surge'))) {
+			var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE')) * times;
+			if (c && !Molpy.boostSilence) {
+				Molpy.Notify('You found ' + Molpify(c) + ' flux crystal' + plural(c) + '.');
+			}
+			Molpy.Add('Flux Crystals', c);
+		}
+	};
+	Molpy.Marco = function(times) {
+		var polo = Molpy.groupBadgeCounts.discov;
+		if (Molpy.Earned('Absolute Zero')) return;
+		var np = Molpy.newpixNumber
+		var unearned = [];
+		if (np > 0) {
+			for (var i = 1; i <= Math.min(3089, np); i++) {
+				if (Molpy.Badges['discov' + i] && !Molpy.Earned('discov' + i)) unearned.push(i);
 			}
 		}
-	});
+		if (np < 0) {
+			for (var i = -1; i >= Math.max(-3089, np); i--) {
+				if (Molpy.Badges['discov' + i] && !Molpy.Earned('discov' + i)) unearned.push(i);
+			}
+		}
+		for (var i = 0; i < unearned.length; i++) {
+			if (Math.random() < 1 - Math.pow(1 - (1/Math.abs(np)), times)) Molpy.EarnBadge('discov' + unearned[i]);
+		}
+	};
+
 	new Molpy.Boost({
 		name: 'Vault Key',
 		icon: 'vaultkey',
@@ -9377,14 +9461,27 @@ Molpy.DefineBoosts = function() {
 					QQ: (50000 * lvls)
 				};
 				if(Molpy.Has(UpgradePrice)) {
-					str += '<br><input type="button" onclick="Molpy.SuperMario()" value="Upgrade"></input>'
-						+ '<br>To open ' + (Molpify(lvls + 1, 4)) + ' Qubes, using ' + ((lvls + 1) * (lvls + 2) / 2)
-						+ ' Qubes.  Costs: ' + Molpy.PriceString(UpgradePrice);
+					var mult = 1;
+					if (lvls >= 100) {
+						while ((mult == 1 || me.bought >= 10 * mult) &&
+							Molpy.Has('Vacuum', UpgradePrice.Vacuum * mult * 10) &&
+							Molpy.Has('QQ', UpgradePrice.QQ * mult * 10)) mult *= 10;
+					}
+					UpgradePrice.Vacuum *= mult;
+					UpgradePrice.QQ *= mult;
+					str += '<br><input type="button" onclick="Molpy.SuperMario(' + mult + ')" value="Upgrade"></input>';
+					str += ' Mario by ' + Molpify(mult, 2) + ' at a cost of ' + Molpy.PriceString(UpgradePrice) + ',';
+					str += '<br>to open ' + (Molpify(lvls + mult, 4)) + ' Qubes, using ' + Molpify(((lvls + mult) * (lvls + mult + 1) / 2), 4);
+					str += ' Qubes.';
 				}
 				if(!Molpy.Boosts['No Sell'].power && me.bought > 1 && Molpy.Has('Vacuum',1000))	
-					str += '<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeMario()">\</input>';
-			}
-			return str
+					str += '<br><input type="Button" value="Downgrade" onclick="Molpy.DowngradeMario()"></input>';
+					if (me.bought > 1000) {
+						str += ', or<br><input type="button" value="Reset" onclick="Molpy.Goomba()"></input> at the cost of ';
+						str += Molpy.PriceString(me.price) + '.';
+					}
+				}
+				return str;
 		},
 		
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
@@ -9395,16 +9492,16 @@ Molpy.DefineBoosts = function() {
 		}
 	});
 
-	Molpy.SuperMario = function() {
+	Molpy.SuperMario = function(mult) {
 		Molpy.Anything = 1;
 		var me = Molpy.Boosts['Mario'];
 		var lvls = me.bought;
 		var UpgradePrice = {
-			Vacuum: 1000,
-			QQ: (50000 * lvls)
+			Vacuum: 1000 * mult,
+			QQ: (50000 * lvls * mult)
 		};
 		if(Molpy.Spend(UpgradePrice)) {
-			me.bought++;
+			me.bought += mult;
 			Molpy.Notify("Italian Plumber Upgraded");
 			me.Refresh();
 		}
@@ -9418,7 +9515,16 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify("Italian Plumber Downgraded");
 			me.Refresh();
 		}
-	}
+	};
+	Molpy.Goomba = function() {
+		Molpy.Anything = 1;
+		var me = Molpy.Boosts['Mario'];
+		if(Molpy.Spend(me.price)) {
+			me.bought = 1;
+			Molpy.Notify('Italian Plumber reset');
+			me.Refresh();
+		}
+	};
 
 	new Molpy.Boost({
 		name: 'Void Vault',
@@ -10009,8 +10115,11 @@ Molpy.DefineBoosts = function() {
 		name: 'Tangled Tesseract',
 		icon: 'tesseract',
 		desc: function(me) {
-			var str = 'When active you get 3 times as many Logicat Levels, but no rewards from puzzles.';
-			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			var p = Math.abs(me.power);
+			if (!me.bought) p = 4;
+			yield = ((Math.pow(2,(p-4)))*(p)*(p-1)*(p-2))/3;
+			var str = 'When active, you get ' + Molpify(yield) + ' times as many Logicat Levels, but no rewards from puzzles.';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ', 1)" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 			return str;
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
@@ -10026,7 +10135,15 @@ Molpy.DefineBoosts = function() {
 		name: 'Bananananas',
 		icon: 'banana',
 		group: 'drac',
-		desc: 'When the Shadow Feeder runs, and the number of Puzzles available is more those being solved, it replaces that number, otherwise the shadow feeder converts them to bonemeal',
+		desc: function(me) {
+			var str = 'When the Shadow Feeder runs, and the number of Puzzles available is'
+			str+=' more those being solved, it replaces that number, otherwise the shadow feeder converts'
+			str+=' them to bonemeal';
+			if (me.bought) str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			return str;
+		},
+		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+		className: 'toggle',
 		price: {Bonemeal: 123454321},
 	});
 	new Molpy.Boost({ 
@@ -11896,6 +12013,7 @@ new Molpy.Boost({
 					m = Math.max(Math.E, m);
 					cost *= Math.pow(Math.floor(Math.log(m)) , -1/8);
 				}
+				cost = Math.floor(cost);
 				tatpix = 0 // highest tatpix visited
 				yield = Math.floor(Math.pow(4,tatpix/4));
 				str += ', using infinite flux crystals';
@@ -11917,6 +12035,12 @@ new Molpy.Boost({
 			Molpy.Add('Panes', yield);
 			Molpy.Boosts['AntiAuto'].Level++;
 			Molpy.Notify('' + Molpify(cost) + ' dimension shard' + plural(cost) + ' uncrushed into ' + Molpify(yield) + ' pane' + plural(yield) + '.', 1);
+			if (Molpy.Boosts['Locked Vault'].power > 1e21 && Molpy.IsEnabled('Mario')) {
+				Molpy.UnlockBoost('Vise');
+			}
+			if (Molpy.Boosts['AntiAuto'].Level >= 60) {
+				Molpy.UnlockBoost('Never Jam Today');
+			}
 			return;
 		}
 		if (Molpy.Boosts['Shards'].Level < cost) {
@@ -11953,7 +12077,7 @@ new Molpy.Boost({
 		desc: function(me) {
 			var str = 'Tracks which CatPix you have drained for dimension shards'
 			if (me.bought) {
-				str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
+				if (Molpy.newpixNumber >= 3095) str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
 				cost = Math.ceil(1 + .05*(me.prey.length + Molpy.Boosts['Shards'].Level));
 				str += '<br><input type=button onclick="Molpy.Prowl(cost)" value="Prowl"></input> for innocent, healthy kitties at the cost of '
 				str += Molpify(cost) + ' dimension shard' + plural(cost) + '.'
@@ -11983,11 +12107,15 @@ new Molpy.Boost({
 			for (i = sign*3095; Math.abs(i) <= Math.abs(Molpy.highestNPvisited); i += sign) {
 				if (Molpy.Boosts['kitkat'].prey.indexOf(i) == -1) {
 					Molpy.Notify('You have sniffed out a ripe kitten at NP ' + Molpify(i) + '.', 1);
-					if (Math.abs(i) >= 3195) {
+					if (Math.abs(i) >= 3173) {
 						Molpy.UnlockBoost('Sigma Stacking');
 					}
-					if (Math.abs(i) >= 3295) {
+					// if (Math.abs(i) >= 3275 && Molpy.Got('DomCobb')) {
+					if (Math.abs(i) >= 3275) {
 						Molpy.UnlockBoost('GCC');
+					}
+					if (Math.abs(i) >= 4000) {
+						Molpy.UnlockBoost('Aperture Science');
 					}
 					return;
 				}
@@ -12009,9 +12137,9 @@ new Molpy.Boost({
 			var str = 'Allows you to mark a NP for later return';
 			if (me.bought) {
 				'. Costs 1 dimension shard and infinite flux crystals to move or return.'
-				str += '<br><input type=button onclick="Molpy.MoveGoal()" value="Move"></input> the goalpost to NP ' + Molpify(Molpy.newpixNumber);
+				str += '<br><input type=button onclick="Molpy.MoveGoal()" value="Move"></input> the goalpost to NP ' + Molpy.newpixNumber + '.';
 				if (me.goal != undefined) {
-					str += '<br><input type=button onclick="Molpy.ScoreGoal()" value="Return"></input> to the goalpost at NP ' + Molpify(me.goal);
+					str += '<br><input type=button onclick="Molpy.ScoreGoal()" value="Return"></input> to the goalpost at NP ' + me.goal + '.';
 				}
 			}
 
@@ -12133,8 +12261,9 @@ new Molpy.Boost({
 		},
 		stats: '',
 		price: {
-			Shards: 5 * 500,
+			Shards: 5 * 2000,
 			Panes: 5 * 10,
+			QQ: 5 * 1.23e45,
  		},
 	});
 	new Molpy.Boost({
@@ -12154,12 +12283,12 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			GlassChips: 5 * 11111, // these are all trivial except Shards/Panes, just for looks
-			GlassBlocks: 5 * 22222,
-			LogiPuzzle: 5 * 33333,
-			Blackprints: 5 * 44444,
-			Mustard: 5 * 55555,
-			Shards: 5 * 66666, 
+			GlassChips: 5 * 111111, // these are all trivial except Shards/Panes, just for looks
+			GlassBlocks: 5 * 222222,
+			LogiPuzzle: 5 * 333333,
+			Blackprints: 5 * 444444,
+			Mustard: 5 * 555555,
+			Shards: 5 * 666666, 
 			Panes: 5 * 120,
 		},
 	});
@@ -12176,29 +12305,54 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Shards: 5 * 77777777,
-			Panes: 300,
+			Shards: 5 * 777777777777,
+			Panes: 12000,
 		},
 	});
 	new Molpy.Boost({
-		name: 'Exit through the Abattoir', // coded, not unlockable
+		name: 'Exit through the Abattoir',
 		alias: 'Abattoir',
 		icon: 'Abattoir',
 		group: 'bean',
 		desc: function(me) {
-			var str = 'Spending infinite goats boosts bonemeal'; // Don't know how yet, maybe multiplies bonemeal by 1.1 or something
+			var str = 'Spending infinite goats boosts bonemeal from Shadow Strikes. ';
+			if (!me.bought) {
+				str += 'Needs to be bought 10 times within 1 NP. ';
+			} else {
+				if (me.bought < 10) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
+				if (me.countdown) str += ' You have ' + me.countdown + 'mNP left.';
+			};
 			return str;
 		},
 		stats: function(me) {
-			var str = 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
+			var str = '';
+			if (me.bought == 10) str += 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Goats: Infinity,
 		},
+		buyFunction: function() {
+			if (this.bought == 1) {
+				this.countdown = 1000;
+				this.Unlock();
+			} else if (this.bought == 10) {
+				this.countdown = 0;
+				this.power = 0;
+			} else {
+				this.Unlock();
+			}
+		},
+		countdownLockFunction: function() {
+			this.bought = 0;
+			this.unlocked = 0;
+			this.Unlock();
+		},
+		limit: 3,
+		NotTemp: 1,
 	});
 	new Molpy.Boost({
-		name: 'Fields\' Mettle', // coded, not unlocked
+		name: 'Fields\' Mettle',
 		alias: 'terrytao', 
 		icon: 'fieldsmettle', 
 		group: 'bean', 
@@ -12214,22 +12368,25 @@ new Molpy.Boost({
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		price: {
-			Sand: 1,
+			Goats: Infinity,
+			Bonemeal: 1e95,
+			Shards: 5 * 1e9,
 		}
 	});
 	new Molpy.Boost({
-		name: 'Lifedrain Autowinder', // coded, not unlockable
+		name: 'Lifedrain Autowinder',
 		alias: 'LA', 
 		icon: 'autowinder',
 		group: 'dimen',
 		desc: function(me) {
-			var str = 'The camera activates whenever Ninja Ritual does';
+			var str = 'The camera activates when Ninja Ritual does, once per ONG';
 			return str;
 		},
 		stats: '',
 		Level: Molpy.BoostFuncs.Bought0Level,
 		price: {
-			Sand: 1,
+			Shards: 5 * 666666666666,
+			Panes: 5 * 6666,
 		},
 	});
 	new Molpy.Boost({
@@ -12241,10 +12398,10 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Blackprints: 1,
-			Vacuum: 1,
-			QQ: 1,
-			Panes: '1e3',
+			Blackprints: Infinity,
+			Vacuum: 1e126,
+			QQ: 1e48,
+			Panes: 12e3,
 		},
 	});
 	new Molpy.Boost({
@@ -12303,7 +12460,7 @@ new Molpy.Boost({
 		price: {
 			Sand: 1,
 		},
-		// does nothing (intentionally)
+		// does nothing and is free (intentionally)
 	});
 	new Molpy.Boost({
 		name: 'Aperture Science',
@@ -12311,26 +12468,41 @@ new Molpy.Boost({
 		group: 'dimen',
 		className: 'action',
 		
+		times: 1000,
+
 		desc: function(me) {
 			var str = '';
 			if (!me.bought) str += 'Y\'know, the study of holes. ';
-			str += 'Researches technologies to push back the extemporal barrier surrounding the fringes of Time. ';
-			if (me.bought) {
-				str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keys ';
-				str += 'to advance farther.';
-			}
+			str += 'Researches perforations of the extemporal barrier surrounding Time. ';
+			if (!me.bought) str += 'Needs to be bought ' + Molpify(me.times) + ' times within 1 NP. ';
+			if (me.bought && me.bought < me.times) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
+			if (me.bought == me.times) str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keyholes to advance farther.';
+			if (me.countdown) str += ' You have ' + Molpify(me.countdown) + 'mNP left.';
 			return str;
-		},
-		
-		buyFunction: function() {
-			this.power++;
 		},
 
 		price: {
-			Sand: Infinity,
-			Castles: Infinity,
-			GlassBlocks: '150M'
+			Goats: Infinity,
+			Shards: 111111111,
 		},
+		buyFunction: function() {
+			if (this.bought == 1) {
+				this.countdown = 1000;
+				this.Unlock();
+			} else if (this.bought == Molpy.Boosts['Aperture Science'].times) {
+				this.countdown = 0;
+				this.power = 0;
+			} else {
+				this.Unlock();
+			}
+		},
+		countdownLockFunction: function() {
+			this.bought = 0;
+			this.unlocked = 0;
+			this.Unlock();
+		},
+		limit: 3,
+		NotTemp: 1,
 	});
 	new Molpy.Boost({
 		name: 'Dimensional Keyhole',
@@ -12359,7 +12531,6 @@ new Molpy.Boost({
 			Molpy.Boosts['Aperture Science'].power++;
 			//boost for buying with ASHF
 		},
-		logic: 100000
 	});
 	new Molpy.Boost({
 		name: 'Eigenharmonics',
@@ -12370,7 +12541,8 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Shards: 5 * 120,
+			Panes: 5 * 5,
 		},
 	});
 	Molpy.Pinch = function() {
@@ -12395,14 +12567,16 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Goats: Infinity,
+			FluxCrystals: Infinity,
+			QQ: 5 * 1e42,
 		},
 	});
 	new Molpy.Boost({
 		name: 'Tractor Beam',
 		icon: 'tractorbeam',
 		className: 'toggle',
-		group: 'dimen',
+		group: 'hpt',
 		desc: function(me) {
 			var str = '';
 			str += (!me.IsEnabled ? 'When active, t' : 'T');
@@ -12411,14 +12585,17 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Goats: Infinity,
+			FluxCrystals: Infinity,
+			Vacuum: 1e54,
 		},
 		IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 		// To reduce the wait time to recharge the goat battery
 	});
 	new Molpy.Boost({
-		name: 'Leo DiCatrio',
+		name: 'Leo DiCatrio', // I can't figure out how to make this only have effect on an actual redundakitty click, not logicats/qq, so I'm leaving it locked
 		alias: 'DomCobb',
+		icon: 'leo',
 		group: 'dimen',
 		desc: function(me){
 			var str = '';
@@ -12426,11 +12603,11 @@ new Molpy.Boost({
 			return str;
 		},
 		price: {
-			Sand: 1,
+			Shards: 5 * 5000,
+			Panes: 5 * 15,
 		},
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
 	});
-
 // END OF BOOSTS, add new ones immediately before this comment
 }

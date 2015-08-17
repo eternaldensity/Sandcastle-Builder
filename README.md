@@ -53,10 +53,7 @@ For personal amusement only.
  * Fields' Mettle
  * Lifedrain Autowinder
  * Panopticon
- * Green Sun
- * Dragon Seeks Path
- * Aperture Science
- * Dimension Keyhole
+ * Never Jam Today
  * Eigenharmonics
  * Plumber's Vise
  * Tractor Beam
@@ -70,6 +67,7 @@ For personal amusement only.
 - "Ooo Shiny!" renamed to "Ooh, Shiny!"
 - Expando now correctly pins down Badgers and Redunception descriptions, so you can actually read them
 - Muse and other boosts now have correct descriptions when they're locked (Muse will no longer crash the game when favorited)
+- BOXES BOXES
 
 #### pickten
 
