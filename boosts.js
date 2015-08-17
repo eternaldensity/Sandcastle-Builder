@@ -12810,7 +12810,8 @@ new Molpy.Boost({
 		for(var i in a){if(typeof a[i]=='function'){a[i]=a[i](t)}}
 		for(var i in b){if(typeof b[i]=='function'){b[i]=b[i](t)}}
 		for(var i in a){
-			if(a[i]>b[i]){c[i]=a[i]-b[i]}
+			if((b[i])&&(a[i]>b[i])){c[i]=a[i]-b[i]}
+			if(!b[i]) c[i]=a[i]
 		}
 		return c //useful because it drops all negs/zeros automatically. Be careful when using this, though, because of functions.
 	}
