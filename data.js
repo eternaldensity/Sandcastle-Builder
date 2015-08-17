@@ -1115,7 +1115,7 @@ Molpy.defineCrafts=function(){
 			]//Handled as a crafting station! Despite not really being a crafting recipe!
 	}
 	Molpy.defaultCrafts=function(){for(var i in Molpy.Crafts){
-		for(var j=0;j<Molpy.Crafts[i];j++){
+		for(var j=0;j<Molpy.Crafts[i].length;j++){
 			if(Molpy.Crafts[i][j].times==undefined){
 				Molpy.Crafts[i][j].times=function(){
 					if(!Molpy.Got(Molpy.Boosts[i].alias)){return 0};
