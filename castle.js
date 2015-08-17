@@ -163,6 +163,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['TF'].clickBeach();
 			Molpy.Boosts['Mustard'].clickBeach();
 			Molpy.Boosts['DQ'].clickBeach();
+			Molpy.Boosts['Blueness'].clickBeach();
 			
 			Molpy.CheckClickAchievements();
 			
