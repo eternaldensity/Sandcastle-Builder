@@ -998,6 +998,7 @@ Molpy.BuildRewardsLists = function() {
 	})
 	Molpy.RewardsListsBuilt = 1;
 	Molpy.defineCrafts(); //They don't really go together, but I'm not interested in figuring out the proper version.
+	Molpy.defaultCrafts();
 }
 /********************
 * CRAFTING FUNCTIONS/
@@ -1113,7 +1114,7 @@ Molpy.defineCrafts=function(){
 			{}
 			]//Handled as a crafting station! Despite not really being a crafting recipe!
 	}
-	for(var i in Molpy.Crafts){
+	Molpy.defaultCrafts=function(){for(var i in Molpy.Crafts){
 		for(var j=0;j<Molpy.Crafts[i];j++){
 			if(Molpy.Crafts[i][j].times==undefined){
 				Molpy.Crafts[i][j].times=function(){
@@ -1127,7 +1128,7 @@ Molpy.defineCrafts=function(){
 				}
 			}
 		}
-	}
+	}}
 }
 
 Molpy.CheckClickAchievements = function() {
