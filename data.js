@@ -1118,11 +1118,11 @@ Molpy.defineCrafts=function(){
 				Molpy.Crafts[i][j].times=function(){
 					if(!Molpy.Got(Molpy.Boosts[i].alias)){return 0};
 					var r=Molpy.Crafts[i][j].recipe
-					var try=10
-					while(Molpy.canCraft(r,try)){try=try*10}
+					var checker=10
+					while(Molpy.canCraft(r,checker)){checker=checker*10}
 					var max=Molpy.Crafts[i][j].maxTimes||Infinity //Defaulting for the very lazy
 					if(typeof max=='function'){max=max()}
-					return Math.min(try/10,max)
+					return Math.min(checker/10,max)
 				}
 			}
 		}
