@@ -1760,8 +1760,9 @@ Molpy.Up = function() {
 					) {
 					var lettuce=Molpy.Boosts[bacon];
 					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
-						Molpy.Unbox(times)
+						Molpy.Unbox(times);
 						Molpy.Boosts['Locked Vault'].bought = flandom(4);
+						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
 					}
 					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
 						Molpy.UnlockBoost('Locked Vault')
@@ -1780,8 +1781,18 @@ Molpy.Up = function() {
 						Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
 						if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 						Molpy.Add('Blackprints', lettuce.bought*times);
+						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
 					}
-					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+					if(lettuce.name==='Atomic Pump'){
+						Molpy.Boosts['Ocean Blue'].power+=times;
+						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+					}
+					if(lettuce.name==='Blue Fragment'){
+						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
+						Molpy.Boosts['bluhint'].power+=times;
+					}
+					if(lettuce.alias==='splosion'){Molpy.splosions(times-1)} //Correction factor is actually correct.
+					
 				}
 				//} else{
 				//	//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
@@ -1867,7 +1878,10 @@ Molpy.Up = function() {
 		Molpy.RepeatableBoost=['Locked Vault',
 		'Vault Key', 'vaultkey',
 		'Crate Key','cratekey',
-		'Locked Crate'] //Each boost on its own line, please!
+		'Locked Crate',
+		'Atomic Pump',
+		'Blue Fragment',
+		'A Splosion','splosion'] //Each boost on its own line, please!
 
 		Molpy.previewNP = 0;
 
