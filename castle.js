@@ -3307,11 +3307,11 @@ Molpy.Up = function() {
 		var oblu = Molpy.Boosts['Blueness'].power
 		Molpy.Boosts['Blueness'].power=Molpy.Boosts['Blueness'].power*0.999 // Couldn't figure out how to make 10mNP timing work.
 		var nblu=Molpy.Boosts['Blueness'].power
-		var coth=(nblu-oblu)*(2/3+(0.9-2/3)*Molpy.Got('Improved Scaling'))
+		var coth=(oblu-nblu)*(2/3+(0.9-2/3)*Molpy.Got('Improved Scaling'))
 		var oblu = Molpy.Boosts['Otherness'].power
 		Molpy.Boosts['Otherness'].power=Molpy.Boosts['Otherness'].power*0.999 // Couldn't figure out how to make 10mNP timing work.
 		var nblu=Molpy.Boosts['Otherness'].power
-		Molpy.Boosts['Blueness'].power+=(nblu-oblu)*(2/3+(0.9-2/3)*Molpy.Got('Improved Scaling'))
+		Molpy.Boosts['Blueness'].power+=(oblu-nblu)*(2/3+(0.9-2/3)*Molpy.Got('Improved Scaling'))
 		Molpy.Boosts['Otherness'].power+=coth
 	}
 	Molpy.reactPhoto=function(max){
