@@ -12838,10 +12838,9 @@ new Molpy.Boost({
 						str=str+'Molpy.craft(' + b[0].recipe + ','
 						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}
 						str=str+')" value="'
-						for(var i in b[1]){str=str+'Dualize '+i}
+						str=str+'Dualize '
 						if(typeof b[0].times=='function'){str=str+Molpify(b[0].times())} else{str=str+Molpify(b[0].times)}
-						str=str+' time'
-						if(typeof b[0].times=='function'){str=str+'s'}
+						for(var i in b[1]){str=str+' '+i}
 						str=str+'"></input>'; }
 						//really, there's only 1 item in the loop, but still.
 					}
@@ -12890,7 +12889,7 @@ new Molpy.Boost({
 					var l=0
 					while(buttons.length){
 						var b=buttons.pop()
-						str=str+'<br><input type="Button" onclick='
+						str=str+'<br><input type="Button" onclick="'
 						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')" value="'
 						for(var i in b[1]){str=str+'Is '+(me.power&Math.pow(2,l)) ? 'not ':'currently '+'dualizing'+i}
 						str=str+'"></input>';
@@ -12903,7 +12902,7 @@ new Molpy.Boost({
 				if(Molpy.Got(me.alias)&&Molpy.Got('Argy')){
 					str=str+'<br> It can also make squids.'
 					str=str+'<br> <input type="Button" value="It is ' + (me.power & Math.pow(2,l)) ?'not ':'currently '
-					str=str+ 'making squids" onclick="Molpy.ToggleBit('+me.id+','+l+')">'
+					str=str+ 'making squids" onclick="Molpy.ToggleBit('+me.id+','+l+')"></input>'
 				}
 				return str
 			},
