@@ -12633,7 +12633,7 @@ new Molpy.Boost({
 	new Molpy.Boost({
 		name: 'Blueness',
 		desc: function(me){
-			return 'Is blue, and mysterious. You have '+Molpify(me.power)+' blueness.'
+			return 'Is blue and mysterious. You have '+Molpify(me.power)+' blueness.'
 		},
 		group: 'stuff',
 		clickBeach: function(){Molpy.getPhoto(1, 'Blueness', 1)},
@@ -12740,7 +12740,7 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: "Improved Scaling",
 			desc: 'Reduces waste from radioactive decay.'
-			stats: "Did you know that neutrons are smaller than atoms? We sure didn't", //This is meant to cause facepalms
+			stats: "Did you know that neutrons are smaller than atoms?", //This is meant to cause facepalms
 			group: 'varie',
 			price: {
 				Blueness: 12.5*150
