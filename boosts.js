@@ -9163,7 +9163,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			return 'Flip in and out of Minus worlds at a cost of 1 Flux Crystal'
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.FlipIt()" value="Flip"></input>' : '');
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.FlipIt(1)" value="Flip"></input>' : '');
 		},
 		
 		price: {
@@ -9175,7 +9175,7 @@ Molpy.DefineBoosts = function() {
 		prizes: 1,
 		tier: 3
 	});
-	Molpy.FlipIt = function() {
+	Molpy.FlipIt = function(update) {
 		var np = Molpy.newpixNumber;
 		if (np == 0) return;
 		if (Molpy.Spend('FluxCrystals', 1)) {
@@ -9193,7 +9193,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.newpixNumber = np;
 			Molpy.Boosts['Negator'].power++;
 			if (Molpy.Boosts['Negator'].power >= 87) Molpy.EarnBadge('Flip It Real Good');
-			Molpy.UpdateBeach();
+			if (update) Molpy.UpdateBeach();
 			// There are so many simpler ways to do this, but I was really deliberate about floating point shenanigans.
 		}
 	}
@@ -12688,6 +12688,19 @@ new Molpy.Boost({
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
-
+	new Molpy.Boost({
+		name: 'Retroreflector',
+		icon: 'retroreflector',
+		group: 'dimen',
+		desc: function(me) {
+			var str = '';
+			str += 'When draining a kitty, the camera drains the inverse NP as well';
+			return str;
+		},
+		price: {
+			Shards: 5 * 240,
+			Panes: 5 * 5,
+		},
+	});
 // END OF BOOSTS, add new ones immediately before this comment
 }
