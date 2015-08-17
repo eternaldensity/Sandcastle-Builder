@@ -1034,9 +1034,9 @@ Molpy.defineCrafts=function(){
 	}
 	Molpy.canCraft=function(r,t){
 		var s=r.start
-		for(var i in s){if(typeof s[i]==typeof 5){s[i]=s[i]*times} else{s[i]=s[i](t)}}
+		for(var i in s){if(typeof s[i]==typeof 5){s[i]=s[i]*t} else{s[i]=s[i](t)}}
 		var f=r.finish
-		for(var i in f){if(typeof f[i]==typeof 5){f[i]=f[i]*times} else{f[i]=f[i](t)}}
+		for(var i in f){if(typeof f[i]==typeof 5){f[i]=f[i]*t} else{f[i]=f[i](t)}}
 		var c=r.catalysts||{}
 		for(var i in s){if(typeof s[i]=='function'){c[i]=c[i](t)}}
 		if(!t){t=1}
@@ -1118,7 +1118,7 @@ Molpy.defineCrafts=function(){
 		for(var j=0;j<Molpy.Crafts[i].length;j++){
 			if(Molpy.Crafts[i][j].times==undefined){
 				Molpy.Crafts[i][j].times=function(){
-					if(!Molpy.Got(Molpy.Boosts[i].alias)){return 0};
+					if(!Molpy.Got(i)){return 0};
 					var r=Molpy.Crafts[i][j].recipe
 					var checker=10
 					while(Molpy.canCraft(r,checker)){checker=checker*10}
