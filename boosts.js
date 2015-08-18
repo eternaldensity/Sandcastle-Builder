@@ -12888,7 +12888,7 @@ new Molpy.Boost({
 					while(buttons.length){
 						var b=buttons.pop()
 						str=str+'<br>Is '
-						if(!me.power&Math.pow(2,l)){str=str+'not '}else{str=str+'currently '}
+						if(!me.power&Math.pow(2,l)){str=str+'currently '}else{str=str+'not '}
 						str=str+'dualizing '
 						str=str+'<input type="Button" onclick="'
 						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')" value="'
@@ -12903,8 +12903,8 @@ new Molpy.Boost({
 				if(Molpy.Got(me.alias)&&Molpy.Got('Argy')){
 					var l=Molpy.polarizerButtons(Infinity).length
 					str=str+'<br> It can also make squids.'
-					str=str+'It is '
-					if(!me.power&Math.pow(2,l)){str=str+'not '}else{str=str+'currently '}
+					str=str+'<br>It is '
+					if(me.power&Math.pow(2,l)){str=str+'currently '}else{str=str+'not '}
 					str=str+ 'making'
 					str=str+' <input type="Button" onclick="Molpy.ToggleBit('+me.id+','+l+')" value="squids"></input>'
 				}
@@ -13066,7 +13066,7 @@ new Molpy.Boost({
 					var avoptions=[]
 						for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
 						if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<Molpy.Boosts['Photoelectricity'].power){
-							if(!Molpy.Got(Molpy.PhotoRewardOptions[i])) avoptions.push(Molpy.PhotoRewardOptions[i])
+							if(!Molpy.Got(Molpy.PhotoRewardOptions[i])||Molpy.RepeatableBoost.indexOf(Molpy.PhotoRewardOptions[i])) avoptions.push(Molpy.PhotoRewardOptions[i])
 						}
 					}
 					for(var i=0;i<avoptions.length;i++){
