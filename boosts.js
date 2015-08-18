@@ -12834,11 +12834,10 @@ new Molpy.Boost({
 					var buttons=Molpy.polarizerButtons(me.power).reverse()
 					while(buttons.length){
 						var b=buttons.pop()
-						if(b[1]!={}){str=str+'<br><input type="Button" onclick='
+						if(b[1]!={}){str=str+'<br>Dualize <input type="Button" onclick='
 						str=str+'"Molpy.craftID(\'Polarizer\',' + buttons.length+','
 						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}
 						str=str+')" value="'
-						str=str+'Dualize '
 						if(typeof b[0].times=='function'){str=str+Molpify(b[0].times())} else{str=str+Molpify(b[0].times)}
 						for(var i in b[1]){str=str+' '+i}
 						str=str+'"></input>'; }
@@ -12888,11 +12887,12 @@ new Molpy.Boost({
 					var l=0
 					while(buttons.length){
 						var b=buttons.pop()
-						str=str+'<br><input type="Button" onclick="'
+						str=str+'<br>Is '
+						if(!me.power&Math.pow(2,l)){str=str+'not '}else{str=str+'currently '}
+						str=str+'dualizing '
+						str=str+'<input type="Button" onclick="'
 						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')" value="'
-						for(var i in b[1]){str=str+'Is '
-						if(me.power&Math.pow(2,l)){str=str+'not '}else{str=str+'currently '}
-						str=str+'dualizing'+i}
+						for(var i in b[1]){str=str+i}
 						str=str+'"></input>';
 						l++
 						//really, there's only 1 item in the loop, but still.
@@ -12903,9 +12903,10 @@ new Molpy.Boost({
 				if(Molpy.Got(me.alias)&&Molpy.Got('Argy')){
 					var l=Molpy.polarizerButtons(Infinity).length
 					str=str+'<br> It can also make squids.'
-					str=str+'<br> <input type="Button" onclick="Molpy.ToggleBit('+me.id+','+l+')" value="It is '
-					if(me.power&Math.pow(2,l)){str=str+'not '}else{str=str+'currently '}
-					str=str+ 'making squids"></input>'
+					str=str+'It is '
+					if(!me.power&Math.pow(2,l)){str=str+'not '}else{str=str+'currently '}
+					str=str+ 'making'
+					str=str+' <input type="Button" onclick="Molpy.ToggleBit('+me.id+','+l+')" value="squids"></input>'
 				}
 				return str
 			},
@@ -13070,8 +13071,9 @@ new Molpy.Boost({
 					}
 					for(var i=0;i<avoptions.length;i++){
 						var look=Molpy.Boosts[avoptions[i]]
-						str=str+"<br><input type='Button' onclick='Molpy.RetroAct(" 
-						str=str+ look.alias + ")' value='Assume you have<br>" + look.name+"'></input>" //Yup. Assume.
+						str=str+"<br>Assume you have "
+						str=str+"<input type='Button' onclick='Molpy.RetroAct(" 
+						str=str+ look.alias + ")' value='" + look.name+"'></input>" //Yup. Assume.
 					}
 				}
 				return str
