@@ -12930,7 +12930,8 @@ new Molpy.Boost({
 			price: {
 				Whiteness: 12.5*1 //Not cheap.
 			},
-			startPower:0
+			startPower:0,
+			buyFunction:function(){this.power=1}
 		}
 	);
 	new Molpy.Boost({
@@ -12971,7 +12972,8 @@ new Molpy.Boost({
 			price: {
 				Whiteness: 12.5*10
 			},
-			startPower: 0
+			startPower: 0,
+			startLevel: 0
 		}
 	);
 	new Molpy.Boost({
