@@ -12869,7 +12869,7 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Ocean Blue',
-			desc: function(me){return 'Produces '+me.power+' Blueness per mNP.'},
+			desc: function(me){return 'Produces '+Molpify(me.power)+' Blueness per mNP.'},
 			group: 'varie',
 			price: {
 				Blueness: 12.5*500
@@ -12890,7 +12890,9 @@ new Molpy.Boost({
 						var b=buttons.pop()
 						str=str+'<br><input type="Button" onclick="'
 						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')" value="'
-						for(var i in b[1]){str=str+'Is '+(me.power&Math.pow(2,l)) ? 'not ':'currently '+'dualizing'+i}
+						for(var i in b[1]){str=str+'Is '
+						if(me.power&Math.pow(2,l)){str=str+'not '}else{str=str+'currently '}
+						str=str+'dualizing'+i}
 						str=str+'"></input>';
 						l++
 						//really, there's only 1 item in the loop, but still.
@@ -12901,7 +12903,8 @@ new Molpy.Boost({
 				if(Molpy.Got(me.alias)&&Molpy.Got('Argy')){
 					var l=Molpy.polarizerButtons(Infinity).length
 					str=str+'<br> It can also make squids.'
-					str=str+'<br> <input type="Button" onclick="Molpy.ToggleBit('+me.id+','+l+')" value="It is ' + (me.power & Math.pow(2,l)) ?'not ':'currently '
+					str=str+'<br> <input type="Button" onclick="Molpy.ToggleBit('+me.id+','+l+')" value="It is '
+					if(me.power&Math.pow(2,l)){str=str+'not '}else{str=str+'currently '}
 					str=str+ 'making squids"></input>'
 				}
 				return str
@@ -12981,7 +12984,7 @@ new Molpy.Boost({
 		desc: "Just hope it doesn't a splode.",
 			group: 'varie',
 			photo: 1,
-			unlockFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['Ocean Blue'].power++}
+			buyFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['Ocean Blue'].power++}
 		}
 	);
 	new Molpy.Boost({
@@ -12989,7 +12992,7 @@ new Molpy.Boost({
 			desc: "Enough of these, and you'll get a... nevermind.",
 			group: 'varie',
 			photo: 1,
-			unlockFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['bluhint'].power++}
+			buyFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['bluhint'].power++}
 		}
 	);
 	Molpy.splosions=function(n,a){
@@ -13036,7 +13039,7 @@ new Molpy.Boost({
 			countdownFunction: function() {
 				if(this.startCountdown()>5 && this.countdown==2){
 					Molpy.Notify("Ceci n'est pas un film d'espionage.") //This is not a spy movie. 
-				//Ref is to the old painting with "Ceci n'est pas une pipe." and to the classic bomb scenario
+				//Ref is to the classic painting with "Ceci n'est pas une pipe." and to the standard bomb scenario
 				}
 			},
 			
