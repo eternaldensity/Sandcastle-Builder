@@ -13029,10 +13029,9 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: 'A Splosion',
 			alias:'splosion',
-			desc: function(me){return "Your pump is overheating, and will a splode in "+MolpifyCountdown(me.countdown)+" mNP."},
+			desc: function(me){return "Your pump is overheating, and will a splode in "+MolpifyCountdown(me.countdown)+"."},
 			group: 'varie',
 			photo: 1,
-			unlockFunction: function(){Molpy.GiveTempBoost(this.alias);Molpy.splosions(1,1);},
 			className: 'alert',
 			countdownFunction: function() {
 				if(this.startCountdown()>5 && this.countdown==2){
