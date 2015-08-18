@@ -1104,8 +1104,8 @@ Molpy.DefineBadges = function() {
 		vis: 1
 	});
 	new Molpy.Badge({
-		name: 'Started from the bottom, now we\'re here',
-		desc: 'Enter TaTPix',
+		name: 'Flip It Real Good',
+		desc: 'Flip between positive and negative NP \'87 times',
 		vis: 1
 	});
 	new Molpy.Badge({

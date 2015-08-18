@@ -3039,74 +3039,13 @@ Molpy.Up = function() {
 					return;
 				}
 			}
-			if (Molpy.Got('3D Lens') && Math.abs(Molpy.newpixNumber) > 3094) {
-				if (Molpy.Spend('Goats', Infinity)) {
-					var np = Molpy.newpixNumber;
-					var prey = Molpy.Boosts['kitkat'].prey;
-					if (prey.indexOf(np) > -1) {
-						Molpy.Notify('You have already drained this CatPix of its dimensional energy.');
-						return;
-					} else {
-						var factor = 1;
-						if (Molpy.Got('GCC')) factor *= 12;
-						if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.03, Molpy.Pinch());
-						factor *= (Molpy.Got('Sigma Stacking') ? prey.length + 1 : 1)
-						if (Molpy.Got('GCA')) {
-							for (i = 2; i < 12; i++) {
-								if (Molpy.Got('Glass Ceiling ' + i) && np % i == 0) {
-									Molpy.boostSilence++;
-									Molpy.LockBoost('Glass Ceiling ' + i);
-									Molpy.boostSilence--;
-								} 
-								if (!Molpy.Got('Glass Ceiling ' + i) && np % i && Molpy.Boosts['Glass Ceiling ' + i].unlocked) {
-									Molpy.boostSilence++;
-									Molpy.Boosts['Glass Ceiling ' + i].buy(1);
-									Molpy.boostSilence--;
-								}
-							}
-						}
-						if (Molpy.Got('GCC')) {
-							var strikes = 0;
-							for (var i = 2; i < 12; i++) {
-								if (!Molpy.Got('Glass Ceiling ' + i)) {
-									factor *= (np % i ? 1/i : i);
-								}
-								if (Molpy.Got('Glass Ceiling ' + i) == Math.sign(np % i)) {
-									strikes++;
-								}
-								if (strikes == 10) {
-									Molpy.Boosts['GCC'].power++;
-									if (Molpy.Boosts['GCC'].power >= 72) {
-										Molpy.UnlockBoost('GCA');
-									}
-								}
-							}
-						}
-						var amount = Math.max(1, Math.floor(factor));
-						if (Molpy.Got('Never Jam Today') && (Molpy.newpixNumber != Molpy.newpixNumber)) amount = Math.pow(amount, amount);
-						// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
-						amount = Math.floor(amount * Molpy.Papal('Shards'));
-						Molpy.Add('Shards', amount);
-						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
-						Molpy.Boosts['kitkat'].Refresh();
-						prey.push(np);
-						if (prey.length >= 12) {
-							Molpy.UnlockBoost('AntiAuto');
-						}
-						if (prey.length >= 48 && np >= 3105 && prey.indexOf(np - 10) == -1) {
-							Molpy.UnlockBoost('kitkat');
-						}
-						if (prey.length > 776) {
-							Molpy.EarnBadge('YouTube Star');
-						}
-						if (!Molpy.Got('Eigenharmonics') && Molpy.Pinch() > 120) {
-							Molpy.UnlockBoost('Eigenharmonics');
-						}
-						return;
-					}
+			if (Molpy.Got('3D Lens') && Math.abs(Molpy.newpixNumber) >= 3095) { // & in OTC?
+				Molpy.Vamp();
+				if (Molpy.Got('Retroreflector')) {
+					Molpy.FlipIt(0);
+					Molpy.Vamp();
+					Molpy.FlipIt(0);
 				}
-				Molpy.Notify(Molpify(Molpy.Boosts['Goats'].Level) + ' is not quite infinity', 1);
-				return;
 			}
 			var alias = 'discov' + Molpy.newpixNumber;
 			if(!Molpy.Badges[alias]) {
@@ -3138,6 +3077,77 @@ Molpy.Up = function() {
 			Molpy.Notify('Out of Glass Chips');
 		}
 	};
+	Molpy.Vamp = function() {
+		if (Molpy.Spend('Goats', Infinity)) {
+			var np = Molpy.newpixNumber;
+			var prey = Molpy.Boosts['kitkat'].prey;
+			if (prey.indexOf(np) > -1) {
+				Molpy.Notify('You have already drained this CatPix of its dimensional energy.');
+				return;
+			} else {
+				var factor = 1;
+				if (Molpy.Got('GCC')) factor *= 12;
+				if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.03, Molpy.Pinch());
+				factor *= (Molpy.Got('Sigma Stacking') ? prey.length + 1 : 1)
+				if (Molpy.Got('GCA')) {
+					for (i = 2; i < 12; i++) {
+						if (Molpy.Got('Glass Ceiling ' + i) && np % i == 0) {
+							Molpy.boostSilence++;
+							Molpy.LockBoost('Glass Ceiling ' + i);
+							Molpy.boostSilence--;
+						} 
+						if (!Molpy.Got('Glass Ceiling ' + i) && np % i && Molpy.Boosts['Glass Ceiling ' + i].unlocked) {
+							Molpy.boostSilence++;
+							Molpy.Boosts['Glass Ceiling ' + i].buy(1);
+							Molpy.boostSilence--;
+						}
+					}
+				}
+				if (Molpy.Got('GCC')) {
+					var strikes = 0;
+					for (var i = 2; i < 12; i++) {
+						if (!Molpy.Got('Glass Ceiling ' + i)) {
+							factor *= (np % i ? 1/i : i);
+						}
+						if (Molpy.Got('Glass Ceiling ' + i) == Math.sign(np % i)) {
+							strikes++;
+						}
+						if (strikes == 10) {
+							Molpy.Boosts['GCC'].power++;
+							if (Molpy.Boosts['GCC'].power >= 72) {
+								Molpy.UnlockBoost('GCA');
+							}
+						}
+					}
+				}
+				var amount = Math.max(1, Math.floor(factor));
+				if (Molpy.Got('Never Jam Today') && (Molpy.newpixNumber != Molpy.newpixNumber)) amount = Math.pow(amount, amount);
+				// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
+				amount = Math.floor(amount * Molpy.Papal('Shards'));
+				Molpy.Add('Shards', amount);
+				Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
+				Molpy.Boosts['kitkat'].Refresh();
+				prey.push(np);
+				if (prey.length >= 12) {
+					Molpy.UnlockBoost('AntiAuto');
+				}
+				if (prey.length >= 48 && np >= 3105 && prey.indexOf(np - 10) == -1) {
+					Molpy.UnlockBoost('kitkat');
+				}
+				if (prey.length > 776) {
+					Molpy.EarnBadge('YouTube Star');
+				}
+				if (!Molpy.Got('Eigenharmonics') && Molpy.Pinch() > 120) {
+					Molpy.UnlockBoost('Eigenharmonics');
+				}
+				if (prey.indexOf(-1 * np) >= 0) Molpy.Boosts['Retroreflector'].power++;
+				if (Molpy.Boosts['Retroreflector'].power >= 144) Molpy.UnlockBoost('Retroreflector');
+				return;
+			}
+		}
+		Molpy.Notify(Molpify(Molpy.Boosts['Goats'].Level) + ' is not quite infinity', 1);
+		return;
+	}
 
 	/**************************************************************
 	 * Logic?

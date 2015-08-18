@@ -9163,7 +9163,7 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			return 'Flip in and out of Minus worlds at a cost of 1 Flux Crystal'
-				+ (me.bought ? '<br><input type="Button" onclick="if(Molpy.Spend({FluxCrystals:1})){Molpy.newpixNumber*=-1;Molpy.UpdateBeach()}" value="Flip"></input>' : '');
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.FlipIt(1)" value="Flip"></input>' : '');
 		},
 		
 		price: {
@@ -9175,6 +9175,28 @@ Molpy.DefineBoosts = function() {
 		prizes: 1,
 		tier: 3
 	});
+	Molpy.FlipIt = function(update) {
+		var np = Molpy.newpixNumber;
+		if (np == 0) return;
+		if (Molpy.Spend('FluxCrystals', 1)) {
+			var frac = (np*10)%10/10; // not just np%1 because of floating point errors =[
+			np *= 10; // I 
+			np -= 10 * Math.sign(np) * frac; // hate
+			np /= 10; // floats
+			np *= -1;
+			if (frac) {
+				np *= 10; // aaa
+				np += 10 * Math.sign(np) * (frac); // aaa
+				np += 10; // the reason this function was written
+				np /= 10; // aaa
+			}
+			Molpy.newpixNumber = np;
+			Molpy.Boosts['Negator'].power++;
+			if (Molpy.Boosts['Negator'].power >= 87) Molpy.EarnBadge('Flip It Real Good');
+			if (update) Molpy.UpdateBeach();
+			// There are so many simpler ways to do this, but I was really deliberate about floating point shenanigans.
+		}
+	}
 	new Molpy.Boost({
 		name: 'Bag of Jolting',
 		alias: 'BoJ',
@@ -12666,6 +12688,19 @@ new Molpy.Boost({
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 	});
-
+	new Molpy.Boost({
+		name: 'Retroreflector',
+		icon: 'retroreflector',
+		group: 'dimen',
+		desc: function(me) {
+			var str = '';
+			str += 'When draining a kitty, the camera drains the inverse NP as well';
+			return str;
+		},
+		price: {
+			Shards: 5 * 240,
+			Panes: 5 * 5,
+		},
+	});
 // END OF BOOSTS, add new ones immediately before this comment
 }
