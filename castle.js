@@ -3372,6 +3372,7 @@ Molpy.Up = function() {
 				}
 			}
 			while(runsLeft&&todo){
+				var dtimes=Math.ceil(todo/runsLeft)
 				var red=Molpy.Boosts[GLRschoice(avoptions)]
 				var price = red.price;
 				if (red.priceFunction) price = red.priceFunction();
@@ -3381,14 +3382,14 @@ Molpy.Up = function() {
 						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else{
-						Molpy.UnlockRepeatableBoost(red.alias,1,times)
+						Molpy.UnlockRepeatableBoost(red.alias,1,dtimes)
 					}
 				} else {
 					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
 						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
 						Molpy.GiveTempBoost(red.alias, 1);
 					} else{
-						Molpy.UnlockRepeatableBoost(red.alias,1,times) //Even temps sometimes go here.
+						Molpy.UnlockRepeatableBoost(red.alias,1,dtimes) //Even temps sometimes go here.
 					}
 				}
 				todo=todo-Math.ceil(todo/runsLeft)
