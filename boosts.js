@@ -13066,7 +13066,7 @@ new Molpy.Boost({
 					var avoptions=[]
 						for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
 						if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<Molpy.Boosts['Photoelectricity'].power){
-							if(!Molpy.Got(Molpy.PhotoRewardOptions[i])||Molpy.RepeatableBoost.indexOf(Molpy.PhotoRewardOptions[i])) avoptions.push(Molpy.PhotoRewardOptions[i])
+							if(!Molpy.Got(Molpy.PhotoRewardOptions[i])||Molpy.RepeatableBoost.indexOf(Molpy.PhotoRewardOptions[i])>=0) avoptions.push(Molpy.PhotoRewardOptions[i])
 						}
 					}
 					for(var i=0;i<avoptions.length;i++){
