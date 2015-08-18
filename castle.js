@@ -3322,17 +3322,17 @@ Molpy.Up = function() {
 		var dif=frate-brate
 		if(dif<=0 && max==1){return 0;}
 		if(dif==0) return 0;
-		dif=dif/2
 		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
 		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Molpy.Boosts['Blackness'].power/2}
 		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
 		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
+		dif=dif/2
 		Molpy.Boosts['Blackness'].power=Math.max(0,Molpy.Boosts['Blackness'].power-2*dif)
 		Molpy.Boosts['Whiteness'].power=Molpy.Boosts['Whiteness'].power-dif
 		if(Molpy.Got('NaP')&&(Molpy.IsEnabled('NaP')||!Molpy.Got('Photoelectricity'))){
 			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power+dif
 		} //NaP defaults to on.
-		if((!Molpy.Got('NaP'))||(!Molpy.IsEnabled('NaP'))){
+		if((Molpy.Got('NaP'))&&(!Molpy.IsEnabled('NaP'))){
 			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/4
 		} //NaP defaults to on.
 		return dif
