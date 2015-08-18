@@ -1132,7 +1132,7 @@ Molpy.defineCrafts=function(){
 			while(Molpy.canCraft(r,checker)){checker=checker*10}
 			var max=Molpy.Crafts[i][j].maxTimes||Infinity //Defaulting for the very lazy
 			if(typeof max=='function'){max=max()}
-			return Math.max(Math.min(checker/100,max),1)
+			return Math.max(Math.min(checker/10,max),1)
 		} //closures ftw
 	}
 	Molpy.defaultCrafts=function(){for(var i in Molpy.Crafts){
