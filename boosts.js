@@ -13056,6 +13056,7 @@ new Molpy.Boost({
 			}
 		}
 	);
+	Molpy.RetroAct=function(alias){if(Molpy.Spend('Grayness',10)) Molpy.UnlockBoost(alias)}
 	new Molpy.Boost({
 			name: 'Retroactivity',
 			desc: function(me){
@@ -13069,8 +13070,8 @@ new Molpy.Boost({
 					}
 					for(var i=0;i<avoptions.length;i++){
 						var look=Molpy.Boosts[avoptions[i]]
-						str=str+"<br><input type='Button' onclick='Molpy.UnlockBoost(" 
-						str=str+ look.alias + ")' value='Assume you have " + look.name+"'></input>" //Yup. Assume.
+						str=str+"<br><input type='Button' onclick='Molpy.RetroAct(" 
+						str=str+ look.alias + ")' value='Assume you have<br>" + look.name+"'></input>" //Yup. Assume.
 					}
 				}
 				return str
