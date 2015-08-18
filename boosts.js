@@ -13021,7 +13021,7 @@ new Molpy.Boost({
 		Molpy.Boosts['Whiteness'].power+=whi
 		Molpy.Boosts['Blackness'].power+=bla
 		Molpy.Boosts['Grayness'].power+=gray
-		if(!a) Molpy.UnlockBoost('splosion')
+		if(!a) Molpy.GiveTempBoost('splosion')
 		if(a) Molpy.Notify('Your pump is overheating, giving about '+Molpify(pow)+' stuff.') 
 		//It would have been tempting to do this over time
 		//But that's too much work and not really good for (spoilers) when the countdown goes inf.
