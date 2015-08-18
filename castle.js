@@ -3370,7 +3370,7 @@ Molpy.Up = function() {
 				}
 			}
 			while(runsLeft&&todo){
-				var red=GLRschoice(avoptions)
+				var red=Molpy.Boosts[GLRschoice(avoptions)]
 				var price = red.price;
 				if (red.priceFunction) price = red.priceFunction();
 				if(!price){price={}}
