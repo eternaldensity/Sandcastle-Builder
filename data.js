@@ -1090,6 +1090,7 @@ Molpy.defineCrafts=function(){
 					start: {Blackness: 15},
 					finish: {Whiteness: 1},
 					onFinish: function(){
+						if(Molpy.Boosts['Whiteness'].power){Molpy.UnlockBoost('Whiteness')}
 						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
 							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
 								Molpy.reactPhoto(1);
@@ -1131,7 +1132,7 @@ Molpy.defineCrafts=function(){
 			while(Molpy.canCraft(r,checker)){checker=checker*10}
 			var max=Molpy.Crafts[i][j].maxTimes||Infinity //Defaulting for the very lazy
 			if(typeof max=='function'){max=max()}
-			return Math.min(checker/10,max)
+			return Math.max(Math.min(checker/10,max),1)
 		} //closures ftw
 	}
 	Molpy.defaultCrafts=function(){for(var i in Molpy.Crafts){
