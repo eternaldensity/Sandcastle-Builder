@@ -12981,7 +12981,7 @@ new Molpy.Boost({
 		desc: "Just hope it doesn't a splode.",
 			group: 'varie',
 			photo: 1,
-			unlockFunction: function(){Molpy.Boosts[this.alias].lock();Molpy.Boosts['Ocean Blue'].power++}
+			unlockFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['Ocean Blue'].power++}
 		}
 	);
 	new Molpy.Boost({
@@ -12989,7 +12989,7 @@ new Molpy.Boost({
 			desc: "Enough of these, and you'll get a... nevermind.",
 			group: 'varie',
 			photo: 1,
-			unlockFunction: function(){Molpy.Boosts[this.alias].lock();Molpy.Boosts['bluhint'].power++}
+			unlockFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['bluhint'].power++}
 		}
 	);
 	Molpy.splosions=function(n,a){
