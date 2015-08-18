@@ -1005,13 +1005,14 @@ Molpy.BuildRewardsLists = function() {
 * *****************/
 Molpy.defineCrafts=function(){
 	 Molpy.craft=function(r,t){
-		var s=r.start
-		var o=r.onFinish||function(){}
-		for(var i in s){if(typeof s[i]==typeof 5){s[i]=s[i]*times} else{s[i]=s[i](t)}}
-		var f=r.finish
-		for(var i in f){if(typeof f[i]==typeof 5){f[i]=f[i]*times} else{f[i]=f[i](t)}}
-		var c=r.catalysts||{}
-		for(var i in s){if(typeof s[i]=='function'){c[i]=c[i](t)}}
+		var os=r.start
+		var s={}
+		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
+		var of=r.finish;var f={}
+		for(var i in of){if(typeof of[i]==typeof 5){f[i]=of[i]*t} else{f[i]=of[i](t)}}
+		var oc=r.catalysts||{}
+		var c={}
+		for(var i in oc){if(typeof cf[i]==typeof 5){c[i]=oc[i]} else{c[i]=oc[i](t)}}
 		if(!t){t=1}
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
@@ -1033,12 +1034,14 @@ Molpy.defineCrafts=function(){
 		o();
 	}
 	Molpy.canCraft=function(r,t){
-		var s=r.start
-		for(var i in s){if(typeof s[i]==typeof 5){s[i]=s[i]*t} else{s[i]=s[i](t)}}
-		var f=r.finish
-		for(var i in f){if(typeof f[i]==typeof 5){f[i]=f[i]*t} else{f[i]=f[i](t)}}
-		var c=r.catalysts||{}
-		for(var i in s){if(typeof s[i]=='function'){c[i]=c[i](t)}}
+		var os=r.start
+		var s={}
+		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
+		var of=r.finish;var f={}
+		for(var i in of){if(typeof of[i]==typeof 5){f[i]=of[i]*t} else{f[i]=of[i](t)}}
+		var oc=r.catalysts||{}
+		var c={}
+		for(var i in oc){if(typeof cf[i]==typeof 5){c[i]=oc[i]} else{c[i]=oc[i](t)}}
 		if(!t){t=1}
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return false;}
