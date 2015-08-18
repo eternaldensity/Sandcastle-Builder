@@ -1032,6 +1032,7 @@ Molpy.defineCrafts=function(){
 				Molpy.Boosts[i].power=Molpy.Boosts[i].power+(f[i]);
 			}
 		}
+		var o=r.onFinish||function(){};
 		o();
 	}
 	Molpy.canCraft=function(r,t){
