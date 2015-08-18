@@ -1163,6 +1163,11 @@ Molpy.DefineBadges = function() {
 		desc: 'Got pH to activate.',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'pOHless',
+		desc: 'Got pH to activate without using pOH.',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 
