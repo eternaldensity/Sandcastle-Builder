@@ -12831,7 +12831,7 @@ new Molpy.Boost({
 				var str='Lets you turn the essence of a color into its dual.'
 				if(Molpy.Got('Polarizer')){
 					str=str+' You may dualize:'
-					var buttons=Molpy.polarizerButtons(me.power)
+					var buttons=Molpy.polarizerButtons(me.power).reverse()
 					while(buttons.length){
 						var b=buttons.pop()
 						if(b[1]!={}){str=str+'<br><input type="Button" onclick='
