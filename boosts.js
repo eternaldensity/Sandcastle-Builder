@@ -12885,7 +12885,6 @@ new Molpy.Boost({
 				if(Molpy.Got(me.alias)&&Molpy.Got('Polarizer')){
 					str=str+'<br> It can dualize:'
 					var buttons=Molpy.polarizerButtons(Molpy.Boosts['Polarizer'].power).reverse()
-					var allButtons=Molpy.polarizerButtons(Infinity) //Yeah. So... Yeah.
 					var l=0
 					while(buttons.length){
 						var b=buttons.pop()
@@ -12896,10 +12895,11 @@ new Molpy.Boost({
 						l++
 						//really, there's only 1 item in the loop, but still.
 					}
-					l=allButtons.length
+					
 				}
 				
 				if(Molpy.Got(me.alias)&&Molpy.Got('Argy')){
+					var l=Molpy.polarizerButtons(Infinity).length
 					str=str+'<br> It can also make squids.'
 					str=str+'<br> <input type="Button" onclick="Molpy.ToggleBit('+me.id+','+l+')" value="It is ' + (me.power & Math.pow(2,l)) ?'not ':'currently '
 					str=str+ 'making squids"></input>'
