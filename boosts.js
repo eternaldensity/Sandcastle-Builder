@@ -12884,15 +12884,15 @@ new Molpy.Boost({
 				var str='Automatically crafts ink stuff.'
 				if(Molpy.Got(me.alias)&&Molpy.Got('Polarizer')){
 					str=str+'<br> It can dualize:'
-					var buttons=Molpy.polarizerButtons(Molpy.Boosts['Polarizer'].power)
+					var buttons=Molpy.polarizerButtons(Molpy.Boosts['Polarizer'].power).reverse()
 					var allButtons=Molpy.polarizerButtons(Infinity) //Yeah. So... Yeah.
 					var l=0
 					while(buttons.length){
 						var b=buttons.pop()
-						str=str+'<br><input type="Button" onclick="'
-						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')" value="'
+						str=str+'<br><input type="Button" value="'
 						for(var i in b[1]){str=str+'Is '+(me.power&Math.pow(2,l)) ? 'not ':'currently '+'dualizing'+i}
-						str=str+'"></input>';
+						str=str+'" onclick="'
+						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')"></input>';
 						l++
 						//really, there's only 1 item in the loop, but still.
 					}
@@ -12922,6 +12922,7 @@ new Molpy.Boost({
 					str += '<br><input type="Button" onclick="Molpy.GenericToggle(' 
 					str=str+ me.id + ', 1)" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 				}
+				return str;
 			},
 			group: 'varie',
 			IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
