@@ -3277,7 +3277,7 @@ Molpy.Up = function() {
 		Molpy.decayPhoto();
 		var lost=Molpy.reactPhoto();
 		if(Molpy.Got('Photoelectricity')){
-			if(lost>Molpy.Boosts['Photoelectricity'].power){Molpy.Boosts['Photoelectricity'].power=lost} // Allows better stuff
+			if(lost>Molpy.Boosts['Photoelectricity'].Level){Molpy.Boosts['Photoelectricity'].Level=Math.floor(lost/5)} // Allows better stuff
 			Molpy.RunFastPhoto(lost)
 		}
 		Molpy.unlockPhoto();
@@ -3355,14 +3355,14 @@ Molpy.Up = function() {
 		} //Really powerful -- keeps going until there isn't anything it can do. Use with caution.
 	}
 	Molpy.RunFastPhoto=function(times){
-		Molpy.Boosts['NaP'].power+=Math.pow(times, 0.5)
-		if(Molpy.Boosts['NaP'].power>=5){
-			var todo=Math.floor(Molpy.Boosts['NaP'].power/5)
-			Molpy.Boosts['NaP'].power=Molpy.Boosts['NaP'].power-5*todo
+		Molpy.Boosts['Photoelectricity'].power+=Math.pow(times, 0.5)
+		if(Molpy.Boosts['Photoelectricity'].power>=5){
+			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
+			Molpy.Boosts['Photoelectricity'].power=Molpy.Boosts['Photoelectricity'].power-5*todo
 			var runsLeft=25;
 			var avoptions=[]
 			for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
-				if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<Molpy.Boosts['Photoelectricity'].power){
+				if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<Molpy.Boosts['Photoelectricity'].Level){
 					avoptions.push(Molpy.PhotoRewardOptions[i])
 				}
 			}
