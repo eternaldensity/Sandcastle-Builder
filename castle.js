@@ -3371,6 +3371,9 @@ Molpy.Up = function() {
 			}
 			while(runsLeft&&todo){
 				var red=GLRschoice(avoptions)
+				var price = red.price;
+				if (red.priceFunction) price = red.priceFunction();
+				if(!price){price={}}
 				if(!Molpy.IsFree(red.CalcPrice(price))) {
 					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
 						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
