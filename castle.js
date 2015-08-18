@@ -3293,6 +3293,12 @@ Molpy.Up = function() {
 				if(Molpy.Got('bluhint'))blugain=blugain*(Molpy.Boosts['bluhint'].power)
 				Molpy.Boosts['Blueness'].power+=blugain
 			}
+			if(Molpy.Got('pH')){
+				Molpy.Boosts['pH'].power++
+				var t=10000000
+				if(Molpy.Got('pOH')){t=10}
+				if(Molpy.Boosts['pH'].power>=t){Molpy.RunFastPhoto(25);Molpy.Boosts['pH'].power=0}
+			}
 		} else {
 			var gain=n
 			if(isClick && Molpy.Got('Doubletap')){n=2*n}
@@ -3363,6 +3369,7 @@ Molpy.Up = function() {
 		Molpy.Boosts['Photoelectricity'].power+=Math.pow(times, 0.5)
 		if(Molpy.Boosts['Photoelectricity'].power>=5){
 			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
+			if(todo>=100){Molpy.EarnBadge('Chemistry')}
 			Molpy.Boosts['Photoelectricity'].power=Molpy.Boosts['Photoelectricity'].power-5*todo
 			Molpy.Boosts['Photoelectricity'].maxTries=Math.max(Molpy.Boosts['Photoelectricity'].maxTries,todo)
 			if(isNaN(Molpy.Boosts['Photoelectricity'].maxTries)){Molpy.Boosts['Photoelectricity'].maxTries=1}
