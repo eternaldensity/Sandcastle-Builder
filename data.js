@@ -1114,18 +1114,21 @@ Molpy.defineCrafts=function(){
 			{}
 			]//Handled as a crafting station! Despite not really being a crafting recipe!
 	}
+	Molpy.defaultTimes=function(i,j){
+		return function(){
+			if(!Molpy.Got(i)){return 0};
+			var r=Molpy.Crafts[i][j].recipe
+			var checker=10
+			while(Molpy.canCraft(r,checker)){checker=checker*10}
+			var max=Molpy.Crafts[i][j].maxTimes||Infinity //Defaulting for the very lazy
+			if(typeof max=='function'){max=max()}
+			return Math.min(checker/10,max)
+		}
+	}
 	Molpy.defaultCrafts=function(){for(var i in Molpy.Crafts){
 		for(var j=0;j<Molpy.Crafts[i].length;j++){
 			if(Molpy.Crafts[i][j].times==undefined){
-				Molpy.Crafts[i][j].times=function(){
-					if(!Molpy.Got(i)){return 0};
-					var r=Molpy.Crafts[i][j].recipe
-					var checker=10
-					while(Molpy.canCraft(r,checker)){checker=checker*10}
-					var max=Molpy.Crafts[i][j].maxTimes||Infinity //Defaulting for the very lazy
-					if(typeof max=='function'){max=max()}
-					return Math.min(checker/10,max)
-				}
+				Molpy.Crafts[i][j].times=Molpy.defaultTimes(i,j)
 			}
 		}
 	}}
