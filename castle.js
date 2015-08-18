@@ -3320,7 +3320,7 @@ Molpy.Up = function() {
 		var brate=Molpy.Boosts['Grayness'].power //A little
 		brate=(brate)*Molpy.Got('Equilibrium Constant')*Molpy.IsEnabled('Equilibrium Constant') //how much to react.
 		var dif=frate-brate
-		if(dif<=0 && max==1){return}
+		if(dif<=0 && max==1){return 0;}
 		if(dif==0) return 0;
 		
 		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
@@ -3357,6 +3357,7 @@ Molpy.Up = function() {
 		} //Really powerful -- keeps going until there isn't anything it can do. Use with caution.
 	}
 	Molpy.RunFastPhoto=function(times){
+		if(!times) times=0
 		Molpy.Boosts['Photoelectricity'].power+=Math.pow(times, 0.5)
 		if(Molpy.Boosts['Photoelectricity'].power>=5){
 			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
