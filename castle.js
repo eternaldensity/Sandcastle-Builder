@@ -1751,9 +1751,9 @@ Molpy.Up = function() {
 						RobbyDo.push(Molpy.BoostsById[Math.abs(item.power)].name)
 					}
 				}
-				if(RobbyDo.indexOf(bacon)>=0 &&
+				if((RobbyDo.indexOf(bacon)>=0 &&
 					Molpy.BoostsById[RobbyDo.indexOf(bacon) + 1].power > 0 &&
-					(Molpy.Got('ASHF') || !(RobbySee.power & 1))
+					(Molpy.Got('ASHF') || !(RobbySee.power & 1))||(Molpy.Boosts[bacon].photo!=undefined))
 
 
 
