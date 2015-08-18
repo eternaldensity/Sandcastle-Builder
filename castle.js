@@ -3329,9 +3329,11 @@ Molpy.Up = function() {
 		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
 		Molpy.Boosts['Blackness'].power=Math.max(0,Molpy.Boosts['Blackness'].power-2*dif)
 		Molpy.Boosts['Whiteness'].power=Molpy.Boosts['Whiteness'].power-dif
-		Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/2
 		if(Molpy.Got('NaP')&&(Molpy.IsEnabled('NaP')||!Molpy.Got('Photoelectricity'))){
-			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power+frate/2
+			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power+dif
+		} //NaP defaults to on.
+		if((!Molpy.Got('NaP'))||(!Molpy.IsEnabled('NaP'))){
+			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/2
 		} //NaP defaults to on.
 		return dif
 	}
