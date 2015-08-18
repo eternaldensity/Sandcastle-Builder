@@ -3287,7 +3287,7 @@ Molpy.Up = function() {
 			if(Molpy.Got('Meteor')){
 				Molpy.Boosts['Otherness'].power+=10
 			}
-			if(Molpy.Got('Hallowed Ground')){Molpy.Boosts['Whiteness'].power+=10}
+			if(Molpy.Got('Hallowed Ground')){Molpy.Boosts['Grayness'].power+=1}
 			if(Molpy.Got('Ocean Blue')){
 				var blugain=Molpy.Boosts['Ocean Blue'].power
 				if(Molpy.Got('bluhint'))blugain=blugain*(Molpy.Boosts['bluhint'].power)
