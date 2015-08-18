@@ -3322,7 +3322,7 @@ Molpy.Up = function() {
 		var dif=frate-brate
 		if(dif<=0 && max==1){return 0;}
 		if(dif==0) return 0;
-		
+		dif=dif/2
 		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
 		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Molpy.Boosts['Blackness'].power/2}
 		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
@@ -3333,7 +3333,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power+dif
 		} //NaP defaults to on.
 		if((!Molpy.Got('NaP'))||(!Molpy.IsEnabled('NaP'))){
-			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/2
+			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/4
 		} //NaP defaults to on.
 		return dif
 	}
@@ -3343,7 +3343,7 @@ Molpy.Up = function() {
 		var pow=inker.power
 		var allButtons=Molpy.polarizerButtons(Infinity)
 		allButtons.push([{recipe:{start:{Blueness:50,Otherness:50},finish:{Blackness:1}},
-		times:Molpy.Crafts['Polarizer'][0].times},'Argy'])
+		times:Molpy.getSquids},'Argy'])
 		var done=false
 		while(!done){
 			var tdone=true
