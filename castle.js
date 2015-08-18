@@ -3357,7 +3357,7 @@ Molpy.Up = function() {
 		} //Really powerful -- keeps going until there isn't anything it can do. Use with caution.
 	}
 	Molpy.RunFastPhoto=function(times){
-		if(!times) times=0
+		if((times==undefined)||(times<0)){times=0}
 		Molpy.Boosts['Photoelectricity'].power+=Math.pow(times, 0.5)
 		if(Molpy.Boosts['Photoelectricity'].power>=5){
 			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
