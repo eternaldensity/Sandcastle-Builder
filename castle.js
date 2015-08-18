@@ -1713,6 +1713,7 @@ Molpy.Up = function() {
 		Molpy.UnlockBoost = function(bacon, auto) {
 			Molpy.Anything = 1;
 			if(typeof bacon === 'string') {
+				if(bacon=='splosion'){Molpy.splosions(1)}
 				var me = Molpy.Boosts[bacon];
 				if(me) {
 					if(me.unlocked == 0 || me.limit) {
@@ -1791,7 +1792,7 @@ Molpy.Up = function() {
 						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
 						Molpy.Boosts['bluhint'].power+=times;
 					}
-					if(lettuce.alias==='splosion'){Molpy.splosions(times-1)} //Correction factor is actually correct.
+					if(lettuce.alias==='splosion'){Molpy.splosions(times)}
 					
 				}
 				//} else{
