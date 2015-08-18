@@ -3399,7 +3399,7 @@ Molpy.Up = function() {
 		if(blu) unlock('Blueness')
 		if(bla) unlock('Blackness')
 		if(whi) unlock('Whiteness')
-		if(gray) unlock('Grayness')
+		if(gray) unlock('Grayness');unlock('Equilibrium Constant')
 		if(oth>=15) unlock('Argy')
 		if(oth>=25) unlock('bluhint')
 		if(oth>=50) unlock('Improved Scaling')
