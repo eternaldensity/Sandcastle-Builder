@@ -1005,6 +1005,7 @@ Molpy.BuildRewardsLists = function() {
 * *****************/
 Molpy.defineCrafts=function(){
 	 Molpy.craft=function(r,t){
+	 	if(!t){var t=1}
 		var os=r.start
 		var s={}
 		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
@@ -1013,7 +1014,7 @@ Molpy.defineCrafts=function(){
 		var oc=r.catalysts||{}
 		var c={}
 		for(var i in oc){if(typeof cf[i]==typeof 5){c[i]=oc[i]} else{c[i]=oc[i](t)}}
-		if(!t){t=1}
+		
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
 			if(!(Molpy.Boosts[i].power>=s[i])){Molpy.Notify("Couldn't craft due to a lack of materials.");return;}
@@ -1034,6 +1035,7 @@ Molpy.defineCrafts=function(){
 		o();
 	}
 	Molpy.canCraft=function(r,t){
+		if(!t){var t=1}
 		var os=r.start
 		var s={}
 		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
@@ -1042,7 +1044,7 @@ Molpy.defineCrafts=function(){
 		var oc=r.catalysts||{}
 		var c={}
 		for(var i in oc){if(typeof cf[i]==typeof 5){c[i]=oc[i]} else{c[i]=oc[i](t)}}
-		if(!t){t=1}
+		
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return false;}
 			if(!(Molpy.Boosts[i].power>=s[i])){return false;}
@@ -1062,6 +1064,9 @@ Molpy.defineCrafts=function(){
 			if(t[i].level<=level){ans.push(t[i])}
 		}
 		return ans;
+	}
+	Molpy.craftID=function(ta,n,ti){
+		Molpy.craft(Molpy.Crafts[t][n].recipe,ti)
 	}
 	Molpy.Crafts={
 		Polarizer: [
