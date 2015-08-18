@@ -3277,7 +3277,7 @@ Molpy.Up = function() {
 		Molpy.craftPhoto(); //Inker takes precedence
 		Molpy.decayPhoto();
 		var lost=Molpy.reactPhoto();
-		if(Molpy.Got('Photoelectricity')){
+		if(Molpy.Got('Photoelectricity')&&(!Molpy.IsEnabled('NaP'))){
 			Molpy.RunFastPhoto(lost)
 		}
 		Molpy.unlockPhoto();
