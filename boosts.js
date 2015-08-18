@@ -12835,7 +12835,7 @@ new Molpy.Boost({
 					while(buttons.length){
 						var b=buttons.pop()
 						if(b[1]!={}){str=str+'<br><input type="Button" onclick='
-						str=str+'Molpy.craft(' + b[0].recipe + ','
+						str=str+'Molpy.craftString(' + Molpy.stringifyRecipe(b[0].recipe) + ','
 						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}
 						str=str+')" value="'
 						str=str+'Dualize '
