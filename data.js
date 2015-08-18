@@ -1107,8 +1107,8 @@ Molpy.defineCrafts=function(){
 			},
 			{
 				recipe: {
-					start: {Blackness: function(){return 10}},
-					finish: {Whiteness: 1},
+					start: {Blackness: function(){return 10}, Whiteness:1},
+					finish: {Blackness: 1},
 					onFinish: function(){
 						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
 							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
@@ -1117,7 +1117,7 @@ Molpy.defineCrafts=function(){
 						}
 					}
 				},
-				level: 0
+				level: 1
 			},
 		],
 		Retroactivity: [
