@@ -3361,12 +3361,12 @@ Molpy.Up = function() {
 		if(Molpy.Boosts['Photoelectricity'].power>=5){
 			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
 			Molpy.Boosts['Photoelectricity'].power=Molpy.Boosts['Photoelectricity'].power-5*todo
-			Molpy.Boosts['Photoelectricity'].Level=Math.max(Molpy.Boosts['Photoelectricity'].Level,todo)
-			if(isNaN(Molpy.Boosts['Photoelectricity'].Level)){Molpy.Boosts['Photoelectricity'].Level=1}
+			Molpy.Boosts['Photoelectricity'].maxTries=Math.max(Molpy.Boosts['Photoelectricity'].maxTries,todo)
+			if(isNaN(Molpy.Boosts['Photoelectricity'].maxTries)){Molpy.Boosts['Photoelectricity'].maxTries=1}
 			var runsLeft=25;
 			var avoptions=[]
 			for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
-				if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<Molpy.Boosts['Photoelectricity'].Level){
+				if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<=Molpy.Boosts['Photoelectricity'].maxTries){
 					avoptions.push(Molpy.PhotoRewardOptions[i])
 				}
 			}
