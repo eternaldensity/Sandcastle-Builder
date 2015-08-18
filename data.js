@@ -1033,7 +1033,7 @@ Molpy.defineCrafts=function(){
 			}
 		}
 		var o=r.onFinish||function(){};
-		o();
+		o(t);
 	}
 	Molpy.canCraft=function(r,t){
 		if(!t){var t=1}
@@ -1118,11 +1118,37 @@ Molpy.defineCrafts=function(){
 					}
 				},
 				level: 1
-			},
+			}
 		],
 		Retroactivity: [
-			{}
-			]//Handled as a crafting station! Despite not really being a crafting recipe!
+			{
+				recipe: {
+					start: {Grayness:10},
+					finish:{},
+					name: 'Blue Fragment', //Not used except to get the buttons
+					onFinish: function(t){Molpy.Boosts['bluhint'].power+=t}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Grayness:10},
+					finish:{},
+					name: 'Atomic Pump', //Not used except to get the buttons
+					onFinish: function(t){Molpy.Boosts['Ocean Blue'].power+=t}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Grayness:10},
+					finish:{},
+					name: 'A Splosion', //Not used except to get the buttons
+					onFinish: function(t){Molpy.splosions(t)}
+				},
+				level: 0
+			},
+			]//Will be handled as a crafting station! Despite not really being a crafting recipe!
 	}
 	Molpy.defaultTimes=function(i,j){
 		return function(){

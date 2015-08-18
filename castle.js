@@ -3318,7 +3318,8 @@ Molpy.Up = function() {
 		if(!max){max=Infinity}
 		var frate=Math.pow(Molpy.Boosts['Blackness'].power*Molpy.Boosts['Whiteness'].power,2) //A lot.
 		var brate=Molpy.Boosts['Grayness'].power //A little
-		var dif=frate-(brate)*Molpy.Got('Equilibrium Constant')*Molpy.IsEnabled('Equilibrium Constant') //how much to react.
+		brate=(brate)*Molpy.Got('Equilibrium Constant')*Molpy.IsEnabled('Equilibrium Constant') //how much to react.
+		var dif=frate-brate
 		if(dif<=0 && max==1){return}
 		if(dif==0) return 0;
 		
@@ -3328,8 +3329,9 @@ Molpy.Up = function() {
 		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
 		Molpy.Boosts['Blackness'].power=Math.max(0,Molpy.Boosts['Blackness'].power-2*dif)
 		Molpy.Boosts['Whiteness'].power=Molpy.Boosts['Whiteness'].power-dif
+		Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/2
 		if(Molpy.Got('NaP')&&(Molpy.IsEnabled('NaP')||!Molpy.Got('Photoelectricity'))){
-			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power+dif/2
+			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power+frate/2
 		} //NaP defaults to on.
 		return dif
 	}
