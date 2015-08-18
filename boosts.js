@@ -12917,7 +12917,7 @@ new Molpy.Boost({
 			alias: 'NaP',
 			desc: function(me){
 				var str='When whiteness and Blackness react, they produce '
-				str=str+Molpy.Got('Grayness')?'Grayness.':' something else.'
+				if(Molpy.Got('Grayness')){str=str+'Grayness.'} else{str=str+' something else.'}
 				if(Molpy.Got('Photoelectricity')){
 					str += '<br><input type="Button" onclick="Molpy.GenericToggle(' 
 					str=str+ me.id + ', 1)" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
