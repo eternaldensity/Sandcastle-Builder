@@ -12954,7 +12954,7 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Hallowed Ground',
-			desc: 'Produces 10 Whiteness per mNP.',
+			desc: 'Produces 1 Grayness per mNP.',
 			group: 'varie',
 			price: {
 				Blueness: 12.5*15,
