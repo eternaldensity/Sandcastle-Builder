@@ -3410,6 +3410,7 @@ Molpy.Up = function() {
 		if(whi>=1) unlock('NaP')
 		if(whi>=3) unlock('Hallowed Ground')
 		if(whi>=10) unlock('Photoelectricity') //A big one! This is the last I originally had come up with.
+		if(whi && !Molpy.Boosts['Polarizer'].power) Molpy.Boosts['Polarizer'].power++
 	}
 
 	Molpy.PerformJudgement = function() {
