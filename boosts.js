@@ -13041,7 +13041,7 @@ new Molpy.Boost({
 			},
 			
 			lockFunction: function() {
-				Molpy.Boosts['Ocean Blue'].power=Math.min(Molpy.Boosts['Ocean Blue'].power-2,1);
+				Molpy.Boosts['Ocean Blue'].power=Math.max(Molpy.Boosts['Ocean Blue'].power-2,1);
 				Molpy.Notify('It is an eloquent boom, but it is still a boom.')
 			},
 				
