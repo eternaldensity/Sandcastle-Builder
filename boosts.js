@@ -12981,7 +12981,7 @@ new Molpy.Boost({
 		desc: "Just hope it doesn't a splode.",
 			group: 'varie',
 			photo: 1,
-			unlockFunction: function(me){Molpy.Boosts[me.alias].lock();Molpy.Boosts['Ocean Blue'].power++}
+			unlockFunction: function(){Molpy.Boosts[this.alias].lock();Molpy.Boosts['Ocean Blue'].power++}
 		}
 	);
 	new Molpy.Boost({
@@ -12989,7 +12989,7 @@ new Molpy.Boost({
 			desc: "Enough of these, and you'll get a... nevermind.",
 			group: 'varie',
 			photo: 1,
-			unlockFunction: function(me){Molpy.Boosts[me.alias].lock();Molpy.Boosts['bluhint'].power++}
+			unlockFunction: function(){Molpy.Boosts[this.alias].lock();Molpy.Boosts['bluhint'].power++}
 		}
 	);
 	Molpy.splosions=function(n,a){
@@ -13032,7 +13032,7 @@ new Molpy.Boost({
 			desc: function(me){return "Your pump is overheating, and will a splode in "+MolpifyCountdown(me.countdown)+" mNP."},
 			group: 'varie',
 			photo: 1,
-			unlockFunction: function(me){Molpy.GiveTempBoost(me.alias);Molpy.splosions(1,1);},
+			unlockFunction: function(){Molpy.GiveTempBoost(this.alias);Molpy.splosions(1,1);},
 			className: 'alert',
 			countdownFunction: function() {
 				if(this.startCountdown()>5 && this.countdown==2){
@@ -13078,7 +13078,7 @@ new Molpy.Boost({
 			price: {
 				Grayness:12.5*10
 			},
-			buyFunction: function(me){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(me.alias),1)}//a must :(
+			buyFunction: function(){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(this.alias),1)}//a must :(
 		}
 	);
 	new Molpy.Boost({
@@ -13089,8 +13089,8 @@ new Molpy.Boost({
 			photo: 5,
 			startPower:0,
 			price:{Grayness:12.5*40},
-			buyFunction: function(me){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(me.alias),1)
-				me.power=4
+			buyFunction: function(){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(this.alias),1)
+				this.power=4
 			}//a must :(
 		}
 	);	
@@ -13101,8 +13101,8 @@ new Molpy.Boost({
 			photo: 5,
 			startPower:0,
 			price:{Grayness:12.5*40},
-			buyFunction: function(me){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(me.alias),1)
-				me.power=3;
+			buyFunction: function(){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(this.alias),1)
+				this.power=3;
 			}//a must :(
 		}
 	);
