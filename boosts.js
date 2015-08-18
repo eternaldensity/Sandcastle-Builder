@@ -12889,10 +12889,10 @@ new Molpy.Boost({
 					var l=0
 					while(buttons.length){
 						var b=buttons.pop()
-						str=str+'<br><input type="Button" value="'
+						str=str+'<br><input type="Button" onclick="'
+						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')" value="'
 						for(var i in b[1]){str=str+'Is '+(me.power&Math.pow(2,l)) ? 'not ':'currently '+'dualizing'+i}
-						str=str+'" onclick="'
-						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')"></input>';
+						str=str+'"></input>';
 						l++
 						//really, there's only 1 item in the loop, but still.
 					}
@@ -12901,8 +12901,8 @@ new Molpy.Boost({
 				
 				if(Molpy.Got(me.alias)&&Molpy.Got('Argy')){
 					str=str+'<br> It can also make squids.'
-					str=str+'<br> <input type="Button" value="It is ' + (me.power & Math.pow(2,l)) ?'not ':'currently '
-					str=str+ 'making squids" onclick="Molpy.ToggleBit('+me.id+','+l+')"></input>'
+					str=str+'<br> <input type="Button" onclick="Molpy.ToggleBit('+me.id+','+l+')" value="It is ' + (me.power & Math.pow(2,l)) ?'not ':'currently '
+					str=str+ 'making squids"></input>'
 				}
 				return str
 			},
