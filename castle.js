@@ -3277,7 +3277,6 @@ Molpy.Up = function() {
 		Molpy.decayPhoto();
 		var lost=Molpy.reactPhoto();
 		if(Molpy.Got('Photoelectricity')){
-			if(lost>Molpy.Boosts['Photoelectricity'].Level){Molpy.Boosts['Photoelectricity'].Level=Math.floor(lost/5)} // Allows better stuff
 			Molpy.RunFastPhoto(lost)
 		}
 		Molpy.unlockPhoto();
@@ -3363,6 +3362,7 @@ Molpy.Up = function() {
 			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
 			Molpy.Boosts['Photoelectricity'].power=Molpy.Boosts['Photoelectricity'].power-5*todo
 			Molpy.Boosts['Photoelectricity'].Level=Math.max(Molpy.Boosts['Photoelectricity'].Level,todo)
+			if(isNaN(Molpy.Boosts['Photoelectricity'].Level)){Molpy.Boosts['Photoelectricity'].Level=1}
 			var runsLeft=25;
 			var avoptions=[]
 			for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
