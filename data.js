@@ -994,7 +994,7 @@ Molpy.BuildRewardsLists = function() {
 		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
 	});
 	Molpy.PhotoRewardOptions=Molpy.BoostsByFunction(function(i){
-		return (Molpy.Boosts[i].photo!== undefined)&&(Molpy.Boosts[i].photo!=='undefined')
+		return (Molpy.Boosts[i].photo!== undefined)&&(Molpy.Boosts[i].photo!=='undefined')&&(!Molpy.Got(i))
 	})
 	Molpy.RewardsListsBuilt = 1;
 	Molpy.defineCrafts(); //They don't really go together, but I'm not interested in figuring out the proper version.
