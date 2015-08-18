@@ -12941,6 +12941,7 @@ new Molpy.Boost({
 					str += '<br><input type="Button" onclick="Molpy.GenericToggle(' 
 					str=str+ me.id + ', 1)" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
 				}
+				return str;
 			},
 			group: 'varie',
 			IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
