@@ -3332,7 +3332,7 @@ Molpy.Up = function() {
 		if(Molpy.Got('NaP')&&(Molpy.IsEnabled('NaP')||!Molpy.Got('Photoelectricity'))){
 			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power+dif
 		} //NaP defaults to on.
-		if((!Molpy.Got('NaP'))||(!Molpy.IsEnabled('NaP'))){
+		if((Molpy.Got('NaP'))&&(!Molpy.IsEnabled('NaP'))){
 			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/4
 		} //NaP defaults to on.
 		return dif
