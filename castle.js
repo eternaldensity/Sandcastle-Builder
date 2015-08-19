@@ -3364,7 +3364,7 @@ Molpy.Up = function() {
 			while(pow>Math.pow(2,l)){
 				var doing=pow&Math.pow(2,l)
 				var recipe=allButtons[l]
-				if(Molpy.canCraft(recipe.recipe,recipe.times())){tdone=false;Molpy.craft(recipe,recipe.times())}
+				if(Molpy.canCraft(recipe.recipe,recipe.times())){tdone=false;Molpy.craft(recipe,recipe.times}
 				//Recipe no longer feels like a word after the last line.
 				l++
 			}
@@ -3378,8 +3378,8 @@ Molpy.Up = function() {
 			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
 			if(todo>=100){Molpy.EarnBadge('Chemistry')}
 			Molpy.Boosts['Photoelectricity'].power=Molpy.Boosts['Photoelectricity'].power-5*todo
-			Molpy.Boosts['Photoelectricity'].maxTries=Math.max(Molpy.Boosts['Photoelectricity'].maxTries,todo)
-			if(isNaN(Molpy.Boosts['Photoelectricity'].maxTries)){Molpy.Boosts['Photoelectricity'].maxTries=1}
+			Molpy.Boosts['Photoelectricity'].Level=Math.max(Molpy.Boosts['Photoelectricity'].Level,todo)
+			if(isNaN(Molpy.Boosts['Photoelectricity'].Level)){Molpy.Boosts['Photoelectricity'].Level=1}
 			var runsLeft=25;
 			var avoptions=[]
 			for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){

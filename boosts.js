@@ -12977,7 +12977,7 @@ new Molpy.Boost({
 				Whiteness: 12.5*10
 			},
 			startPower: 0,
-			maxTries: 0
+			Level: 0
 		}
 	);
 	new Molpy.Boost({
