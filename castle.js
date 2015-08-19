@@ -3293,6 +3293,19 @@ Molpy.Up = function() {
 				if(Molpy.Got('bluhint'))blugain=blugain*(Molpy.Boosts['bluhint'].power)
 				Molpy.Boosts['Blueness'].power+=blugain
 			}
+			if(Molpy.Got('pH')){
+				Molpy.Boosts['pH'].power++
+				var t=10000000/(25*12.5)
+				if(Molpy.Got('pOH')){t=10}
+				if(Molpy.Boosts['pH'].power>=t){Molpy.RunFastPhoto(25);Molpy.Boosts['pH'].power=0;
+					Molpy.EarnBadge('pH');if(!Molpy.Got('pOH')){Molpy.EarnBadge('pOHless')
+						Molpy.UnlockBoost('pInsanity')
+					}
+				}
+			}
+			if(Molpy.Got('pInsanity')){
+				Molpy.RunFastPhoto(625)
+			}
 		} else {
 			var gain=n
 			if(isClick && Molpy.Got('Doubletap')){n=2*n}
@@ -3363,6 +3376,7 @@ Molpy.Up = function() {
 		Molpy.Boosts['Photoelectricity'].power+=Math.pow(times, 0.5)
 		if(Molpy.Boosts['Photoelectricity'].power>=5){
 			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
+			if(todo>=100){Molpy.EarnBadge('Chemistry')}
 			Molpy.Boosts['Photoelectricity'].power=Molpy.Boosts['Photoelectricity'].power-5*todo
 			Molpy.Boosts['Photoelectricity'].maxTries=Math.max(Molpy.Boosts['Photoelectricity'].maxTries,todo)
 			if(isNaN(Molpy.Boosts['Photoelectricity'].maxTries)){Molpy.Boosts['Photoelectricity'].maxTries=1}
@@ -3406,11 +3420,13 @@ Molpy.Up = function() {
 		var whi=Molpy.Boosts['Whiteness'].power
 		var gray=Molpy.Boosts['Grayness'].power
 		var unlock=Molpy.UnlockBoost
+		var earn=Molpy.EarnBadge
 		if(oth) unlock('Otherness')
 		if(blu) unlock('Blueness')
-		if(bla) unlock('Blackness')
+		if(bla) unlock('Blackness');earn('Argy Bee')
 		if(whi) unlock('Whiteness')
 		if(gray) unlock('Grayness');unlock('Equilibrium Constant')
+		if(oth&&blu&&bla&&whi&&gray) earn('Colorrific')
 		if(oth>=15) unlock('Argy')
 		if(oth>=25) unlock('bluhint')
 		if(oth>=50) unlock('Improved Scaling')
@@ -3422,6 +3438,9 @@ Molpy.Up = function() {
 		if(whi>=3) unlock('Hallowed Ground')
 		if(whi>=10) unlock('Photoelectricity') //A big one! This is the last I originally had come up with.
 		if(whi && !Molpy.Boosts['Polarizer'].power) Molpy.Boosts['Polarizer'].power++
+		if(Molpy.Got('Photoelectricity')) earn('1921')
+		if(Molpy.Got('Diluted Bomb') && Molpy.Got('Concentrated Bomb')) earn('Ghost Bomb')
+		if(gray>=1000) earn('Wish I could breathe')
 	}
 
 	Molpy.PerformJudgement = function() {

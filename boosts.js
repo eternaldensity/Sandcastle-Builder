@@ -13111,6 +13111,42 @@ new Molpy.Boost({
 			}//a must :(
 		}
 	);
+	new Molpy.Boost({
+			name: 'pH',
+			desc: 'Automatically activates Photoelectricity',
+			group: 'varie',
+			price: {
+				Blueness: 12.5*50000
+			},
+			startPower: 1,
+			photo:10,
+			buyFunction: function(){this.power=1}
+		}
+	);
+	new Molpy.Boost({
+			name: 'pOH',
+			desc: 'Makes pH reasonable, but makes a badge impossible to earn',
+			group: 'varie',
+			price: {
+				Blueness: 12.5*50000
+			},
+			startPower: 1,
+			photo:100,
+			buyFunction: function(){this.power=1}
+		}
+	);
+	new Molpy.Boost({
+			name: 'pInsanity',
+			desc: 'Like pH, but way better.',
+			group: 'varie',
+			price: {
+				Blueness: 12.5*50000
+			},
+			startPower: 1,
+			photo:1000,
+			buyFunction: function(){this.power=1}
+		}
+	);
 
 // END OF BOOSTS, add new ones immediately before this comment
 }
