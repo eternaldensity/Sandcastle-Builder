@@ -3378,7 +3378,7 @@ Molpy.Up = function() {
 			var runsLeft=25;
 			var avoptions=[]
 			for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
-				if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<=Molpy.Boosts['Photoelectricity'].maxTries){
+				if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<=Molpy.Boosts['Photoelectricity'].Level){
 					avoptions.push(Molpy.PhotoRewardOptions[i])
 				}
 			}
