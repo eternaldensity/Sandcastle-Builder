@@ -12975,7 +12975,9 @@ new Molpy.Boost({
 				Whiteness: 12.5*10
 			},
 			startPower: 0,
-			Level: 0
+			Level: 0,
+			defSave: 1,
+			saveData: {4: ['Level', 0,'int']}
 		}
 	);
 	new Molpy.Boost({
