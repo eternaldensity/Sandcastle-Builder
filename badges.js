@@ -1129,7 +1129,7 @@ Molpy.DefineBadges = function() {
 		vis: 1
 	});
 	new Molpy.Badge({
-		name: 'Argy Bee',
+		name: 'RGB',
 		desc: 'Used Argy',
 		vis: 1
 	});
