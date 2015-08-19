@@ -3359,7 +3359,7 @@ Molpy.Up = function() {
 		allButtons.push([{recipe:{start:{Blueness:50,Otherness:50},finish:{Blackness:1}},
 		times:Molpy.getSquids},'Argy'])
 		var l=0
-		while(dramaticpowahs>Math.pow(2,l)){
+		while(dramaticpowahs>=Math.pow(2,l)){
 			var ia=dramaticpowahs&Math.pow(2,l)
 			var r=allButtons[l][0]
 			if(ia){Molpy.craft(r)}
