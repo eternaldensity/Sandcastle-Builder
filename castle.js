@@ -3352,19 +3352,21 @@ Molpy.Up = function() {
 	}
 	Molpy.craftPhoto=function(){
 		if(!Molpy.Got('Robotic Inker')){return;}
+		Molpy.boostSilence=true;
 		var inker=Molpy.Boosts['Robotic Inker']
-		var pow=inker.power
+		var dramaticpowahs=inker.power
 		var allButtons=Molpy.polarizerButtons(Infinity)
 		allButtons.push([{recipe:{start:{Blueness:50,Otherness:50},finish:{Blackness:1}},
 		times:Molpy.getSquids},'Argy'])
 		var l=0
-		while(pow>Math.pow(2,l)){
-			var doing=pow&Math.pow(2,l)
-			var recipe=allButtons[l][0]
-			if(doing){if(Molpy.canCraft(recipe.recipe,recipe.times)){Molpy.craft(recipe,recipe.times)}}
+		while(dramaticpowahs>Math.pow(2,l)){
+			var ia=dramaticpowahs&Math.pow(2,l)
+			var r=allButtons[l][0]
+			if(ia){Molpy.craft(r)}
 			//Recipe no longer feels like a word after the last line.
 			l++
 		} //Really powerful
+		Molpy.boostSilence=false;
 	}
 	Molpy.RunFastPhoto=function(times){
 		if((times==undefined)||(times<0)){times=0}
@@ -3434,7 +3436,7 @@ Molpy.Up = function() {
 		if(whi>=10) unlock('Photoelectricity') //A big one! This is the last I originally had come up with.
 		if(whi && !Molpy.Boosts['Polarizer'].power) Molpy.Boosts['Polarizer'].power++
 		if(Molpy.Got('Photoelectricity')) earn('UnDuoNonUnium')
-		if(Molpy.Got('Diluted Bomb') && Molpy.Got('Concentrated Bomb')) earn('Ghost Bomb')
+		if(Molpy.Got('Diluted Boom') && Molpy.Got('Concentrated Boom')) earn('Ghost Bomb')
 		if(gray>=1000) earn('Wish I could breathe')
 	}
 
