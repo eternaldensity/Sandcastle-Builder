@@ -3434,7 +3434,7 @@ Molpy.Up = function() {
 		if(whi>=10) unlock('Photoelectricity') //A big one! This is the last I originally had come up with.
 		if(whi && !Molpy.Boosts['Polarizer'].power) Molpy.Boosts['Polarizer'].power++
 		if(Molpy.Got('Photoelectricity')) earn('UnDuoNonUnium')
-		if(Molpy.Got('Diluted Bomb') && Molpy.Got('Concentrated Bomb')) earn('Ghost Bomb')
+		if(Molpy.Got('Diluted Boom') && Molpy.Got('Concentrated Boom')) earn('Ghost Bomb')
 		if(gray>=1000) earn('Wish I could breathe')
 	}
 
