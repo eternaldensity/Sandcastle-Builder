@@ -3364,8 +3364,7 @@ Molpy.Up = function() {
 			if(Molpy.canCraft(recipe.recipe,recipe.times)){Molpy.craft(recipe,recipe.times)}
 			//Recipe no longer feels like a word after the last line.
 			l++
-		}
-		} //Really powerful -- keeps going until there isn't anything it can do. Use with caution.
+		} //Really powerful
 	}
 	Molpy.RunFastPhoto=function(times){
 		if((times==undefined)||(times<0)){times=0}
