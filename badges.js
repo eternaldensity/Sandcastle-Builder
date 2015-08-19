@@ -1141,7 +1141,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Ghost Bomb',
-		desc: 'Got both Diluted and Concentrated Bomb',
+		desc: 'Got both Diluted and Concentrated Boom',
 		vis: 1
 	});
 	new Molpy.Badge({
