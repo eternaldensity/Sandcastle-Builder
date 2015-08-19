@@ -3303,6 +3303,9 @@ Molpy.Up = function() {
 					}
 				}
 			}
+			if(Molpy.Got('pInsanity')){
+				Molpy.RunFastPhoto(625)
+			}
 		} else {
 			var gain=n
 			if(isClick && Molpy.Got('Doubletap')){n=2*n}
