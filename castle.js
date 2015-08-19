@@ -3353,15 +3353,15 @@ Molpy.Up = function() {
 	Molpy.craftPhoto=function(){
 		if(!Molpy.Got('Robotic Inker')){return;}
 		var inker=Molpy.Boosts['Robotic Inker']
-		var pow=inker.power
+		var dramaticpowahs=inker.power
 		var allButtons=Molpy.polarizerButtons(Infinity)
 		allButtons.push([{recipe:{start:{Blueness:50,Otherness:50},finish:{Blackness:1}},
 		times:Molpy.getSquids},'Argy'])
 		var l=0
-		while(pow>Math.pow(2,l)){
-			var doing=pow&Math.pow(2,l)
-			var recipe=allButtons[l][0]
-			if(doing){if(Molpy.canCraft(recipe.recipe,recipe.times)){Molpy.craft(recipe,recipe.times)}}
+		while(dramaticpowahs>Math.pow(2,l)){
+			var ia=dramaticpowahs&Math.pow(2,l)
+			var r=allButtons[l][0]
+			if(ia){Molpy.boostSilence=true;Molpy.craft(r)}
 			//Recipe no longer feels like a word after the last line.
 			l++
 		} //Really powerful
