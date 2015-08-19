@@ -12835,9 +12835,7 @@ new Molpy.Boost({
 					while(buttons.length){
 						var b=buttons.pop()
 						if(b[1]!={}){str=str+'<br>Dualize <input type="Button" onclick='
-						str=str+'"Molpy.craftID(\'Polarizer\',' + buttons.length+','
-						if(typeof b[0].times=='function'){str=str+b[0].times()} else{str=str+b[0].times}
-						str=str+')" value="'
+						str=str+'"Molpy.craftID(\'Polarizer\',' + buttons.length+')" value="'
 						if(typeof b[0].times=='function'){str=str+Molpify(b[0].times())} else{str=str+Molpify(b[0].times)}
 						for(var i in b[1]){str=str+' '+i}
 						str=str+'"></input>'; }
