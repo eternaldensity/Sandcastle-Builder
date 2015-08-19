@@ -3352,6 +3352,7 @@ Molpy.Up = function() {
 	}
 	Molpy.craftPhoto=function(){
 		if(!Molpy.Got('Robotic Inker')){return;}
+		Molpy.boostSilence=true;
 		var inker=Molpy.Boosts['Robotic Inker']
 		var dramaticpowahs=inker.power
 		var allButtons=Molpy.polarizerButtons(Infinity)
@@ -3361,10 +3362,11 @@ Molpy.Up = function() {
 		while(dramaticpowahs>Math.pow(2,l)){
 			var ia=dramaticpowahs&Math.pow(2,l)
 			var r=allButtons[l][0]
-			if(ia){Molpy.boostSilence=true;Molpy.craft(r)}
+			if(ia){Molpy.craft(r)}
 			//Recipe no longer feels like a word after the last line.
 			l++
 		} //Really powerful
+		Molpy.boostSilence=false;
 	}
 	Molpy.RunFastPhoto=function(times){
 		if((times==undefined)||(times<0)){times=0}
