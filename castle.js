@@ -3418,7 +3418,7 @@ Molpy.Up = function() {
 		var earn=Molpy.EarnBadge
 		if(oth) unlock('Otherness')
 		if(blu) unlock('Blueness')
-		if(bla) unlock('Blackness');earn('Argy Bee')
+		if(bla) unlock('Blackness');earn('RGB')
 		if(whi) unlock('Whiteness')
 		if(gray) unlock('Grayness');unlock('Equilibrium Constant')
 		if(oth&&blu&&bla&&whi&&gray) earn('Colorrific')
