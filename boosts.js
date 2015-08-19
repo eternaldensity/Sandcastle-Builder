@@ -12888,7 +12888,7 @@ new Molpy.Boost({
 					while(buttons.length){
 						var b=buttons.pop()
 						str=str+'<br>Is '
-						if(!me.power&Math.pow(2,l)){str=str+'currently '}else{str=str+'not '}
+						if(me.power&Math.pow(2,l)>0){str=str+'currently '}else{str=str+'not '}
 						str=str+'dualizing '
 						str=str+'<input type="Button" onclick="'
 						str=str+'Molpy.ToggleBit(' + me.id + ','+l+')" value="'
@@ -12904,7 +12904,7 @@ new Molpy.Boost({
 					var l=Molpy.polarizerButtons(Infinity).length
 					str=str+'<br> It can also make squids.'
 					str=str+'<br>It is '
-					if(me.power&Math.pow(2,l)){str=str+'currently '}else{str=str+'not '}
+					if(me.power&Math.pow(2,l)>0){str=str+'currently '}else{str=str+'not '}
 					str=str+ 'making'
 					str=str+' <input type="Button" onclick="Molpy.ToggleBit('+me.id+','+l+')" value="squids"></input>'
 				}
