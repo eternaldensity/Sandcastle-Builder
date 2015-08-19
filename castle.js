@@ -3357,18 +3357,14 @@ Molpy.Up = function() {
 		var allButtons=Molpy.polarizerButtons(Infinity)
 		allButtons.push([{recipe:{start:{Blueness:50,Otherness:50},finish:{Blackness:1}},
 		times:Molpy.getSquids},'Argy'])
-		var done=false
-		while(!done){
-			var tdone=true
-			var l=0
-			while(pow>Math.pow(2,l)){
-				var doing=pow&Math.pow(2,l)
-				var recipe=allButtons[l][0]
-				if(Molpy.canCraft(recipe.recipe,recipe.times)){tdone=false;Molpy.craft(recipe,recipe.times)}
-				//Recipe no longer feels like a word after the last line.
-				l++
-			}
-			done=tdone
+		var l=0
+		while(pow>Math.pow(2,l)){
+			var doing=pow&Math.pow(2,l)
+			var recipe=allButtons[l][0]
+			if(Molpy.canCraft(recipe.recipe,recipe.times)){Molpy.craft(recipe,recipe.times)}
+			//Recipe no longer feels like a word after the last line.
+			l++
+		}
 		} //Really powerful -- keeps going until there isn't anything it can do. Use with caution.
 	}
 	Molpy.RunFastPhoto=function(times){
