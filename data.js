@@ -1006,10 +1006,11 @@ Molpy.BuildRewardsLists = function() {
 Molpy.defineCrafts=function(){
 	 Molpy.craft=function(r,t){
 	 	if(r.recipe){
-	 		if(t==undefined){var t=EvalMaybeFunction(r.times)};
+	 		if(t==undefined){t=r.times};
 	 		r=r.recipe;
 	 	}
 	 	if(t==undefined){t=1}
+	 	t=EvalMaybeFunction(t)
 		var os=r.start
 		var s={}
 		for(var i in os){if((typeof os[i])==(typeof 5)){s[i]=os[i]*t} else{s[i]=os[i](t)}}
@@ -1029,11 +1030,11 @@ Molpy.defineCrafts=function(){
 		}
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){}
-			Molpy.Boosts[i].power=Molpy.Boosts[i].power-EvalMaybeFunction(s[i]);
+			Molpy.Boosts[i].power=Molpy.Boosts[i].power-EvalMaybeFunction(s[i],t);
 		}
 		for(var i in f){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){} else{
-				Molpy.Boosts[i].power=Molpy.Boosts[i].power+EvalMaybeFunction(f[i]);
+				Molpy.Boosts[i].power=Molpy.Boosts[i].power+EvalMaybeFunction(f[i],t);
 			}
 		}
 		var o=r.onFinish||function(){};
