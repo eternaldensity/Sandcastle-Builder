@@ -13063,7 +13063,7 @@ new Molpy.Boost({
 				if(Molpy.Got(me.alias)){
 					var avoptions=[]
 						for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
-						if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<Molpy.Boosts['Photoelectricity'].power){
+						if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<Molpy.Boosts['Photoelectricity'].Level){
 							if(!Molpy.Got(Molpy.PhotoRewardOptions[i])||Molpy.RepeatableBoost.indexOf(Molpy.PhotoRewardOptions[i])>=0) avoptions.push(Molpy.PhotoRewardOptions[i])
 						}
 					}
