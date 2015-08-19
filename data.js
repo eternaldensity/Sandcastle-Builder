@@ -1005,7 +1005,11 @@ Molpy.BuildRewardsLists = function() {
 * *****************/
 Molpy.defineCrafts=function(){
 	 Molpy.craft=function(r,t){
-	 	if(!t){var t=1}
+	 	if(r.recipe){
+	 		if(!t){var t=EvalMaybeFunction(r.times)};
+	 		r=r.recipe;
+	 	}
+	 	if(!t){t=1}
 		var os=r.start
 		var s={}
 		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
@@ -1036,9 +1040,9 @@ Molpy.defineCrafts=function(){
 		o(t);
 	}
 	Molpy.canCraft=function(r,t){
-		if(!t){var t=1}
-		if(typeof t=='function') t=t()
-		if(r.recipe) r=r.recipe
+		if(r.recipe){if(!t){t=EvalMaybeFunction(r.times)};r=r.recipe}
+		if(!t){t=1}
+		t=EvalMaybeFunction(t)
 		var os=r.start
 		var s={}
 		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
