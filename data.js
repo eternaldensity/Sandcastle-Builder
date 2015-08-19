@@ -1037,6 +1037,8 @@ Molpy.defineCrafts=function(){
 	}
 	Molpy.canCraft=function(r,t){
 		if(!t){var t=1}
+		if(typeof t=='function') t=t()
+		if(r.recipe) r=r.recipe
 		var os=r.start
 		var s={}
 		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
