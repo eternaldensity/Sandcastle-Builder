@@ -1069,7 +1069,7 @@ Molpy.defineCrafts=function(){
 		return ans;
 	}
 	Molpy.craftID=function(ta,n,ti){
-		if(ti==undefined){ti=ta.times}
+		if(ti==undefined){ti=Molpy.Crafts[ta][n].times}
 		Molpy.craft(Molpy.Crafts[ta][n].recipe,ti)
 	}
 	Molpy.Crafts={
