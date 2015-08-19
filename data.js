@@ -1006,10 +1006,10 @@ Molpy.BuildRewardsLists = function() {
 Molpy.defineCrafts=function(){
 	 Molpy.craft=function(r,t){
 	 	if(r.recipe){
-	 		if(!t){var t=EvalMaybeFunction(r.times)};
+	 		if(t==undefined){var t=EvalMaybeFunction(r.times)};
 	 		r=r.recipe;
 	 	}
-	 	if(!t){t=1}
+	 	if(t==undefined){t=1}
 		var os=r.start
 		var s={}
 		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
@@ -1021,14 +1021,14 @@ Molpy.defineCrafts=function(){
 		
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
-			if(!(Molpy.Boosts[i].power>=s[i])){Molpy.Notify("Couldn't craft due to a lack of materials.");return;}
+			if(Molpy.Boosts[i].power<s[i]){Molpy.Notify("Couldn't craft due to a lack of materials.");return;}
 		}
 		for(var i in c){
-			if(s[i]){c[i]+=s[i]}
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
-			if(!(Molpy.Boosts[i].power>=c[i])){Molpy.Notify("Couldn't craft due to a lack of catalysts.");return;}
+			if(Molpy.Boosts[i].power<c[i]){Molpy.Notify("Couldn't craft due to a lack of catalysts.");return;}
 		}
 		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){}
 			Molpy.Boosts[i].power=Molpy.Boosts[i].power-(s[i]);
 		}
 		for(var i in f){
@@ -1040,8 +1040,8 @@ Molpy.defineCrafts=function(){
 		o(t);
 	}
 	Molpy.canCraft=function(r,t){
-		if(r.recipe){if(!t){t=EvalMaybeFunction(r.times)};r=r.recipe}
-		if(!t){t=1}
+		if(r.recipe!= undefined){if(t==undefined){t=EvalMaybeFunction(r.times)};r=r.recipe}
+		if(t==undefined){t=1}
 		t=EvalMaybeFunction(t)
 		var os=r.start
 		var s={}
