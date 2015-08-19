@@ -1012,12 +1012,12 @@ Molpy.defineCrafts=function(){
 	 	if(t==undefined){t=1}
 		var os=r.start
 		var s={}
-		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
+		for(var i in os){if((typeof os[i])==(typeof 5)){s[i]=os[i]*t} else{s[i]=os[i](t)}}
 		var of=r.finish;var f={}
-		for(var i in of){if(typeof of[i]==typeof 5){f[i]=of[i]*t} else{f[i]=of[i](t)}}
+		for(var i in of){if((typeof of[i])==(typeof 5)){f[i]=of[i]*t} else{f[i]=of[i](t)}}
 		var oc=r.catalysts||{}
 		var c={}
-		for(var i in oc){if(typeof cf[i]==typeof 5){c[i]=oc[i]} else{c[i]=oc[i](t)}}
+		for(var i in oc){if((typeof oc[i])==(typeof 5)){c[i]=oc[i]} else{c[i]=oc[i](t)}}
 		
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
@@ -1029,11 +1029,11 @@ Molpy.defineCrafts=function(){
 		}
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){}
-			Molpy.Boosts[i].power=Molpy.Boosts[i].power-(s[i]);
+			Molpy.Boosts[i].power=Molpy.Boosts[i].power-EvalMaybeFunction(s[i]);
 		}
 		for(var i in f){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){} else{
-				Molpy.Boosts[i].power=Molpy.Boosts[i].power+(f[i]);
+				Molpy.Boosts[i].power=Molpy.Boosts[i].power+EvalMaybeFunction(f[i]);
 			}
 		}
 		var o=r.onFinish||function(){};
