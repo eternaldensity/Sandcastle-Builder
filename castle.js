@@ -3418,9 +3418,9 @@ Molpy.Up = function() {
 		var earn=Molpy.EarnBadge
 		if(oth) unlock('Otherness')
 		if(blu) unlock('Blueness')
-		if(bla) unlock('Blackness');earn('RGB')
+		if(bla){unlock('Blackness');earn('Argy Bee')}
 		if(whi) unlock('Whiteness')
-		if(gray) unlock('Grayness');unlock('Equilibrium Constant')
+		if(gray){unlock('Grayness');unlock('Equilibrium Constant')}
 		if(oth&&blu&&bla&&whi&&gray) earn('Colorrific')
 		if(oth>=15) unlock('Argy')
 		if(oth>=25) unlock('bluhint')
@@ -3433,7 +3433,7 @@ Molpy.Up = function() {
 		if(whi>=3) unlock('Hallowed Ground')
 		if(whi>=10) unlock('Photoelectricity') //A big one! This is the last I originally had come up with.
 		if(whi && !Molpy.Boosts['Polarizer'].power) Molpy.Boosts['Polarizer'].power++
-		if(Molpy.Got('Photoelectricity')) earn('1921')
+		if(Molpy.Got('Photoelectricity')) earn('UnDuoNonUnium')
 		if(Molpy.Got('Diluted Bomb') && Molpy.Got('Concentrated Bomb')) earn('Ghost Bomb')
 		if(gray>=1000) earn('Wish I could breathe')
 	}
