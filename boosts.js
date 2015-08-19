@@ -12651,7 +12651,7 @@ new Molpy.Boost({
 		defStuff: 1
 	});
 	new Molpy.Boost({
-			name: '<it>Other</it>ness',
+			name: '<i>Other</i>ness',
 			alias: 'Otherness',
 			group: 'stuff',
 		HasSuper: Molpy.BoostFuncs.Has,
@@ -12665,7 +12665,7 @@ new Molpy.Boost({
 			return this.SpendSuper(n);
 		},
 			desc: function(me){
-				return 'Is mysterious and slightly terrifying. You have '+Molpify(me.power)+' <it>other</it>ness.'
+				return 'Is mysterious and slightly terrifying. You have '+Molpify(me.power)+' <i>other</i>ness.'
 			},
 			group: 'stuff',
 			defStuff: 1
@@ -12761,7 +12761,7 @@ new Molpy.Boost({
 			alias: 'Argy',
 			group: 'varie',
 			desc: function(me){
-				var str='Lets you use the blue of the ocean and some <it>other</it>ness to make squids so'
+				var str='Lets you use the blue of the ocean and some <i>other</i>ness to make squids so'
 				str=str+' that you can extract their ink.'
 				if(Molpy.Got('Argy')){
 					str=str+'<br> <input type="Button" value="Make ' + Molpify(Molpy.getSquids())
@@ -12856,7 +12856,7 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Meteor',
-			desc: 'Produces 10 <it>other</it>ness per mNP.',
+			desc: 'Produces 10 <i>other</i>ness per mNP.',
 			stats: function(){var str="Fell from the sky because someone";
 				str=str+" accidentally dropped the "+["orb.", "heart."][Math.floor(2*Math.random())]; return str;
 			}, //Both corruption and crimson worlds work.
