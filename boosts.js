@@ -13072,8 +13072,8 @@ new Molpy.Boost({
 					for(var i=0;i<avoptions.length;i++){
 						var look=Molpy.Boosts[avoptions[i]]
 						str=str+"<br>Assume you have "
-						str=str+"<input type='Button' onclick='Molpy.RetroAct(" 
-						str=str+ look.alias + ")' value='" + look.name+"'></input>" //Yup. Assume.
+						str=str+"<input type='Button' onclick='Molpy.RetroAct(\'" 
+						str=str+ look.alias + "\')' value='" + look.name+"'></input>" //Yup. Assume.
 					}
 				}
 				return str
