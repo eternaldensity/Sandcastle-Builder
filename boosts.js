@@ -12800,6 +12800,7 @@ new Molpy.Boost({
 			name: 'Argy',
 			alias: 'Argy',
 			group: 'varie',
+			className: 'action',
 			desc: function(me){
 				var str='Lets you use the blue of the ocean and some <i>other</i>ness to make squids so'
 				str=str+' that you can extract their ink.'
@@ -12899,6 +12900,7 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: 'Polarizer',
 			group: 'varie',
+			className: 'action',
 			desc: function(me){
 				var str='Lets you turn the essence of a color into its dual.'
 				if(Molpy.Got('Polarizer')){
@@ -12981,6 +12983,7 @@ new Molpy.Boost({
 				return str
 			},
 			group: 'varie',
+			className: 'action',
 			price: {
 				Blackness: 12.5*7
 			},
