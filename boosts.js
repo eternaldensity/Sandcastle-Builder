@@ -12270,6 +12270,7 @@ new Molpy.Boost({
 		},
 	});
 	Molpy.Fold = function() {
+		Molpy.Anything = 1;
 		if (!Molpy.Spend('Panes', 1)) {
 			Molpy.Notify('The boxes don\'t fit inside!');
 			return;
@@ -12574,6 +12575,7 @@ new Molpy.Boost({
 		},
 	});
 	Molpy.Pinch = function() {
+		Molpy.Anything = 1;
 		var prey = Molpy.Boosts['kitkat'].prey;
 		var overtones = 0;
 		prey = prey.sort(function (a, b) { 
