@@ -1128,6 +1128,47 @@ Molpy.DefineBadges = function() {
 		desc: 'ONG into TaTPix',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'Argy Bee',
+		desc: 'Used Argy',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'UnDuoNonUnium',
+		desc: 'Got Photoelecticity',
+		stats: "This element probably will not be made in any labs for a while.",
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Ghost Bomb',
+		desc: 'Got both Diluted and Concentrated Boom',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Colorrific',
+		desc: 'Got all five colors',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Wish I could breathe',
+		desc: 'Over 1k Grayness',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Diminishing Returns',
+		desc: 'Got Photoelecticity to run 100 times at once.',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'pH',
+		desc: 'Got pH to activate.',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'pOHless',
+		desc: 'Got pH to activate without using pOH.',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 

@@ -993,7 +993,160 @@ Molpy.BuildRewardsLists = function() {
 	Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
 		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
 	});
+	Molpy.PhotoRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].photo!== undefined)&&(Molpy.Boosts[i].photo!=='undefined')&&(!Molpy.Got(i))
+	})
 	Molpy.RewardsListsBuilt = 1;
+	Molpy.defineCrafts(); //They don't really go together, but I'm not interested in figuring out the proper version.
+	Molpy.defaultCrafts();
+}
+/********************
+* CRAFTING FUNCTIONS/
+* *****************/
+Molpy.defineCrafts=function(){
+	 Molpy.craft=function(r,t){
+	 	if(r.recipe){
+	 		if(t==undefined){t=r.times};
+	 		r=r.recipe;
+	 	}
+	 	if(t==undefined){t=1}
+	 	t=EvalMaybeFunction(t)
+		var os=r.start
+		var s={}
+		for(var i in os){if((typeof os[i])==(typeof 5)){s[i]=os[i]*t} else{s[i]=os[i](t)}}
+		var of=r.finish;var f={}
+		for(var i in of){if((typeof of[i])==(typeof 5)){f[i]=of[i]*t} else{f[i]=of[i](t)}}
+		var oc=r.catalysts||{}
+		var c={}
+		for(var i in oc){if((typeof oc[i])==(typeof 5)){c[i]=oc[i]} else{c[i]=oc[i](t)}}
+		
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(Molpy.Boosts[i].power<s[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of materials.");}return;}
+		}
+		for(var i in c){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(Molpy.Boosts[i].power<c[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of catalysts.");}return;}
+		}
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){}
+			Molpy.Boosts[i].power=Molpy.Boosts[i].power-EvalMaybeFunction(s[i],t);
+		}
+		for(var i in f){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){} else{
+				Molpy.Boosts[i].power=Molpy.Boosts[i].power+EvalMaybeFunction(f[i],t);
+			}
+		}
+		var o=r.onFinish||function(){};
+		o(t);
+	}
+	Molpy.canCraft=function(r,t){
+		if(r.recipe!= undefined){if(t==undefined){t=EvalMaybeFunction(r.times)};r=r.recipe}
+		if(t==undefined){t=1}
+		t=EvalMaybeFunction(t)
+		var os=r.start
+		var s={}
+		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
+		var of=r.finish;var f={}
+		for(var i in of){if(typeof of[i]==typeof 5){f[i]=of[i]*t} else{f[i]=of[i](t)}}
+		var oc=r.catalysts||{}
+		var c={}
+		for(var i in oc){if(typeof cf[i]==typeof 5){c[i]=oc[i]} else{c[i]=oc[i](t)}}
+		
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return false;}
+			if(!(Molpy.Boosts[i].power>=s[i])){return false;}
+		}
+		for(var i in c){
+			if(s[i]){c[i]+=s[i]}
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(!(Molpy.Boosts[i].power>=c[i])){return false;}
+		}
+		return true
+	}
+	Molpy.getCrafts=function(table,level){
+		var t=Molpy.Crafts[table]
+		if(!level){level=Molpy.Boosts[table].power}
+		var ans=[]
+		for(var i=0;i<t.length;i++){
+			if(t[i].level<=level){ans.push(t[i])}
+		}
+		return ans;
+	}
+	Molpy.craftID=function(ta,n,ti){
+		if(ti==undefined){ti=Molpy.Crafts[ta][n].times}
+		Molpy.craft(Molpy.Crafts[ta][n].recipe,ti)
+	}
+	Molpy.Crafts={
+		Polarizer: [
+			{
+				recipe: {
+					start: {Blackness: function(){return 5}, Blueness: 1},
+					finish: {Otherness: 1}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Blackness: function(){return 5}, Otherness: 1},
+					finish: {Blueness: 1}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Blackness: 15},
+					finish: {Whiteness: 1},
+					onFinish: function(){
+						if(Molpy.Boosts['Whiteness'].power){Molpy.UnlockBoost('Whiteness')}
+						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
+							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
+								Molpy.reactPhoto(1);
+							}
+						}
+					}
+				},
+				level: 0,
+				maxTimes: function(){
+					if(!Molpy.Boosts['Polarizer'].power){return 1} else{
+						return Infinity //Well, that was quite a jump...
+					}
+				}
+			},
+			{
+				recipe: {
+					start: {Blackness: function(){return 10}, Whiteness:1},
+					finish: {Blackness: 1},
+					onFinish: function(){
+						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
+							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
+								Molpy.reactPhoto(1);
+							}
+						}
+					}
+				},
+				level: 1
+			}
+		]
+	}
+	Molpy.defaultTimes=function(i,j){
+		return function(){
+			if(!Molpy.Got(i)){return 0};
+			var r=Molpy.Crafts[i][j].recipe
+			var checker=10
+			while(Molpy.canCraft(r,checker)){checker=checker*10}
+			var max=Molpy.Crafts[i][j].maxTimes||Infinity //Defaulting for the very lazy
+			if(typeof max=='function'){max=max()}
+			return Math.max(Math.min(checker/10,max),1)
+		} //closures ftw
+	}
+	Molpy.defaultCrafts=function(){for(var i in Molpy.Crafts){
+		for(var j=0;j<Molpy.Crafts[i].length;j++){
+			if(Molpy.Crafts[i][j].times==undefined){
+				Molpy.Crafts[i][j].times=Molpy.defaultTimes(i,j)
+			}
+		}
+	}}
 }
 
 Molpy.CheckClickAchievements = function() {
