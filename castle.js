@@ -3372,7 +3372,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/4
 		} //NaP defaults to on.
 		if(max==1 && !Molpy.Got('Whiteness')){
-			Molpy.Notify("You made something, but it reacted with your blackness before you could see what it was")
+			Molpy.Notify("You made something, but it reacted with 2 of your blackness before you could see what it was")
 		}
 		return dif
 	}
@@ -3456,7 +3456,7 @@ Molpy.Up = function() {
 		if(bla>=5) unlock('Polarizer')
 		if(oth>=300) unlock('Meteor')
 		if(blu>=300) unlock('Ocean Blue')
-		if(bla>=10 && Molpy.Got('Polarizer')) unlock('Robotic Inker')
+		if(bla>=50 && Molpy.Got('Polarizer')) unlock('Robotic Inker')
 		if(whi>=1) unlock('NaP')
 		if(whi>=3) unlock('Hallowed Ground')
 		if(whi>=10) unlock('Photoelectricity') //A big one! This is the last I originally had come up with.
