@@ -77,7 +77,7 @@ Molpy.DefineDragons = function() {
 		upgrade: {Diamonds:'1M'},
 		exp: '1T',
 		condition: function() { return true },
-		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
+		desc: 'These high spirited diminutive dragons stand nearly a Q tall and can wield weapons and spades.  They mean well...',
 		digbase: 100,
 		defbase: 100,
 		colour: '#08f',
@@ -92,8 +92,8 @@ Molpy.DefineDragons = function() {
 		tails: 1,
 		upgrade: {Diamonds:'1G'},
 		exp: '1E',
-		condition: function() { return false },
-		desc: 'These are monstorous, limbless creatures, with a big bite.',
+		condition: function() { return true },
+		desc: 'These are monstrous, limbless creatures, with a big bite.',
 		digbase: 10000,
 		defbase: 100000,
 		colour: '#00f',
@@ -383,7 +383,7 @@ Molpy.DefineOpponents = function() {
 	});
 
 	new Molpy.Opponent ({
-	 	name: 'Panetheon of Gods',
+	 	name: 'Pantheon of Gods',
 		armed: ['-myths and legends','!army','flock of unicorns', '-heresey', '503', '-logic', '-typos'],
 		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'200Y-1S',Thing:0.99},
 		exp: '1WW',
@@ -1054,7 +1054,7 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 		}
 	}
 	if (oldDN && npd.amount > 1 && npd.DragonType == oldDT && !confirm('Do you wish to fledge '+  npd.amount +' ' +
-					dt +'s'+ ' where you already have '+ oldDN +' of ' + dt + 's?')) return;
+					dt +'s'+ ' where you already have '+ oldDN + ' ' + dt + 's?')) return;
 
 	var props = Molpy.Boosts['Nest'].nestprops();
 	npd.attack = props[0];

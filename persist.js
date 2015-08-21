@@ -314,7 +314,6 @@
 		          + (Molpy.Redacted.toggle) + s
 		          + (Molpy.Redacted.location) + s
 		          + (Molpy.Redacted.totalClicks) + s
-		          
 		          + (Molpy.Redacted.chainCurrent) + s
 		          + (Molpy.Redacted.chainMax) + s
 		          + (Molpy.lootPerPage) + s;

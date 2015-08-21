@@ -140,21 +140,21 @@ Molpy.HardcodedData = function() {
 		}
 	})
 	Molpy.AllEras[0] = [
-			[124, "The Pre-expansion Era"],
-			[420, "The Castleiferous Era"],
-			[582, "The Industrial Era"],
-			[798, "The Developing Era"],
-			[971, "The Enlightenment Era"],
-			[1021, "The Shoreline Era"],
-			[1228, "The River Era"],
-			[1423, "The Hills and Forest Era"],
-			[1661, "The Discovery Era"],
-			[2356, "The Mountain Era"],
-			[2530, "The Night Era"],
-			[2615, "The Summit Era"],
-			[2813, "The Contact Era"],
-			[2920, "The Civilization Era"],
-			[3094, "The Rescue Era"]]
+		[124, "The Pre-expansion Era"],
+		[420, "The Castleiferous Era"],
+		[582, "The Industrial Era"],
+		[798, "The Developing Era"],
+		[971, "The Enlightenment Era"],
+		[1021, "The Shoreline Era"],
+		[1228, "The River Era"],
+		[1423, "The Hills and Forest Era"],
+		[1661, "The Discovery Era"],
+		[2356, "The Mountain Era"],
+		[2530, "The Night Era"],
+		[2615, "The Summit Era"],
+		[2813, "The Contact Era"],
+		[2920, "The Civilization Era"],
+		[3094, "The Rescue Era"]]
 	Molpy.AllEras[0.1] = [
 		[209.1, "The Forty-less Era"],
 		[440.1, "Identification Era"],
@@ -959,6 +959,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
 	Molpy.Boosts['Aleph e'].logic = DeMolpify('99H') * Molpy.priceFactor;
 	Molpy.Boosts['DimenKey'].logic = Molpy.Got('Aperture Science') * Math.pow(10, Molpy.Boosts['Aperture Science'].power);
+	//Dragon Drum and Sea Mining are purposely not on this list; right now they're only intended as Redundakitty rewards
 }
 Molpy.mapMonumg = 200;
 

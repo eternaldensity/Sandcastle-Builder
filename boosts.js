@@ -5351,7 +5351,7 @@ Molpy.DefineBoosts = function() {
 					}
 				}
 			}
-		else if(Molpy.Got('coda') && Molpy.IsEnabled('coda') && !Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('Castles', Infinity) && Molpy.Has('Bonemeal', '1WW')){
+		else if(Molpy.Got('coda') && Molpy.IsEnabled('coda') && !Molpy.IsEnabled('Shadow Feeder') && Molpy.Got('Castles', Infinity) && Molpy.Got('Bonemeal', '1WW')){
 			Molpy.ShadowStrike(1);
 			Molpy.zooKeep(left);
 			if (Molpy.Earned('The Ritual is worn out') && !Molpy.IsEnabled('Mario')){
@@ -5405,15 +5405,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			if (!me.choice || !Molpy.IsEnabled('Expando')) Molpy.DuckDuckBadger();
 			return me.choice;
-		},
-
-		// desc: function(me) {
-		// 	return GLRschoice([
-		// 			'Badgers? Badgers? We don\'t need no ch*rpin\' Badgers! This is Sacred Ground and I\'ll have no more heresy. Surely you mean Molpies.',
-		// 			'Exactly! No, wait - No! There are no badgers involved at all!',
-		// 			'For every 10 badges, Glass Chip production uses 1% less sand']);
-		// },
-		
+		},		
 		price:{
 			Sand: Infinity,
 			Castles: Infinity,
@@ -8069,7 +8061,7 @@ Molpy.DefineBoosts = function() {
 		}
 	});
 	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Blackprints','FluxCrystals','Goats','Mustard','Bonemeal',
-				'Vacuum','Logicat','QQ','Diamonds','Princesses','exp','Coal','Gold','Shards','Panes']; // Always add to the END of this list
+		'Vacuum','Logicat','QQ','Diamonds','Princesses','exp','Coal','Gold']; // Always add to the END of this list
 	Molpy.DragonStats = ['offence','defence','digging','breath','magic1','magic2','magic3'];
 	Molpy.DragonProperties = {offence:['Sand','Castles'],defence:['GlassChips','GlassBlocks'],digging:['Blackprints','FluxCrystals'],
 				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicat','QQ'],magic3:['Diamonds','Princesses']};
@@ -8797,7 +8789,8 @@ Molpy.DefineBoosts = function() {
 			var large = (me.power & 2);
 			var str = '';
 			if(!large) str += '<small>';
-			str += 'Shop for me <input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',0)" value="' + ((me.power & 1) ? 'in ASHF only' : 'Always') + '"></input>';
+			str += 'Shop for me <input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',0)" value="' + 
+			((me.power & 1) ? 'in ASHF only' : 'Always') + '"></input>';
 			str += '<br><input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',1)" value="' + ((me.power & 2) ? 'Small Size text' : 'Normal Size text') + '"></input>';
 			str += '<input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',2)" value="' + ((me.power & 4) ? 'Notifies off' : 'Notifies on') + '"></input>';
 
@@ -10545,7 +10538,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Strength Potion',
 		icon: 'strengthpotion',
 		desc: function(me) {
-			str = 'Increases Draconic Strength';
+			str = 'Provides energy for attacking enemies and digging';
 			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
 		},
@@ -10616,7 +10609,7 @@ Molpy.DefineBoosts = function() {
 		icon: 'cuptea',
 		plural: 'Cups of Tea',
 		desc: function(me) {
-			str = 'Reduces the time dragons need to recover after injury';
+			str = 'Reduces the time dragons need to recover after injury. May boost draconic Luck.';
 			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
 		},
@@ -10650,7 +10643,7 @@ Molpy.DefineBoosts = function() {
 					str += '<br>Gaze at a Glass Monument to contemplate making a Diamond Masterpiece';
 					break;
 				case 1:
-					str += '<br>Making the mould for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
+					str += '<br>Making the mould for NP'+me.Making+ '. It will be finished in '+MolpifyCountdown(me.countdown);
 					break;
 				case 2:
 					str += '<br>You have a complete Mould made for NP'+me.Making;
@@ -11545,7 +11538,7 @@ Molpy.DefineBoosts = function() {
 		plural: 'Anisoptera',
 		group: 'drac',
 		desc: function(me) {
-			str = 'Increases the both the offensive and defensive values of Dragons and may give you advanced informaton about Redundaknights';
+			str = 'Increases the probability of Breath special attacks and may give you advanced informaton about Redundaknights';
 			if (me.bought) str += '.<p>You have ' + Molpify(me.bought) + ' ' + (me.name);
 			return str;
 		},
@@ -11790,36 +11783,42 @@ Molpy.DefineBoosts = function() {
 			this.Refresh();
 		},
 	});
+
 	new Molpy.Boost({
 		name: 'Gazebo',
 		icon: 'gazebo',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Ointment',
 		icon: 'ointment',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Harpsichord',
 		icon: 'harpsicord',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Credenza',
 		icon: 'credenza',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Bungalow',
 		icon: 'bungalow',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Dragong',
 		icon: 'dragong',
@@ -11828,6 +11827,7 @@ Molpy.DefineBoosts = function() {
 		factor: function(np) { return this.bought?Math.pow(0.97,Molpy.groupBadgeCounts.diamm):1; },
 		price: {Diamonds:'1250G', Bonemeal:'1250PW', Goats:Infinity},
 	});
+
 	new Molpy.Boost({
 		name: 'All Claws on Deck',
 		icon: 'clawdeck',
@@ -11908,6 +11908,7 @@ new Molpy.Boost({
     		exp: '3E',
     	},
 	});
+    
     new Molpy.Boost({
 		name: 'Shadow Coda',
 		icon: 'coda',
@@ -11925,6 +11926,7 @@ new Molpy.Boost({
 			Bonemeal: '12.5WW',
 		}
 	});
+	
 	new Molpy.Boost({
 		name: 'Ventus Vehemens',
 		icon: 'vehemens',
