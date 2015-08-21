@@ -77,7 +77,25 @@ Molpy.Up = function() {
 		Molpy.loadCount = 0; //number of times gave has been loaded
 		Molpy.needRebuildLootList = 0; // When loading data, loot lists need rebuilt
 		Molpy.autosaveCountup = 0;
-		Molpy.highestNPvisited = 1; //keep track of where the player has been
+		Molpy.largestNPvisited={0:1}
+		for(var i=0;i<Molpy.fracParts.length;i++){Molpy.largestNPvisited[Molpy.fracParts[i]]=0}
+		Molpy.currentStory=-1
+		Object.defineProperty(Molpy,'highestNPvisited', {
+			get: function(){
+				if(Molpy.currentStory>=0){
+					return Molpy.largestNPvisited[Molpy.fracParts[Molpy.currentStory]]
+				} else {
+					return Molpy.largestNPvisited[0]
+				}
+			},
+			set: function(val){
+				if(Molpy.currentStory>=0){
+					Molpy.largestNPvisited[Molpy.fracParts[Molpy.currentStory]]=val
+				} else {
+					Molpy.largestNPvisited[0]=val
+				}
+			}
+		}); //keep track of where the player has been
 		Molpy.toolsBuilt = 0;
 		Molpy.toolsBuiltTotal = 0;
 		Molpy.totalDiscov = 0;
@@ -145,6 +163,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['TF'].clickBeach();
 			Molpy.Boosts['Mustard'].clickBeach();
 			Molpy.Boosts['DQ'].clickBeach();
+			Molpy.Boosts['Blueness'].clickBeach();
 			
 			Molpy.CheckClickAchievements();
 			
@@ -1694,6 +1713,7 @@ Molpy.Up = function() {
 		Molpy.UnlockBoost = function(bacon, auto) {
 			Molpy.Anything = 1;
 			if(typeof bacon === 'string') {
+				if(bacon=='splosion'){Molpy.splosions(1)}
 				var me = Molpy.Boosts[bacon];
 				if(me) {
 					if(me.unlocked == 0 || me.limit) {
@@ -1721,27 +1741,46 @@ Molpy.Up = function() {
 			}
 		};
 		Molpy.UnlockRepeatableBoost = function(bacon, auto, times){
-			if(times==undefined){times=1}
-			if((times===1)){Molpy.UnlockBoost(bacon,auto)} else {
-				var RobbySee=Molpy.Boosts['Rob'];
-				var RobbyDo=[]
-				for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
-					var item = Molpy.BoostsById[thingy + 1];
-					if(item.power) {
-						RobbyDo.push(Molpy.BoostsById[Math.abs(item.power)].name)
-					}
+			var RobbySee=Molpy.Boosts['Rob'];
+			var RobbyDo=[]
+			for(var thingy = 0; thingy <= RobbySee.bought; thingy++) {
+				var item = Molpy.BoostsById[thingy + 1];
+				if(item.power) {
+					RobbyDo.push(Molpy.BoostsById[Math.abs(item.power)].name)
 				}
-				RobbyDo.push(Molpy.shoppingItem)
-				if(RobbyDo.indexOf(bacon)>=0){
-					var lettuce=Molpy.Boosts[bacon];
+			}
+			var shouldbuy = RobbyDo.indexOf(bacon)>=0 &&
+					Molpy.BoostsById[RobbyDo.indexOf(bacon) + 1].power > 0 &&
+					(Molpy.Got('ASHF') || !(RobbySee.power & 1)||(Molpy.Boosts[bacon].photo!=undefined));
+			var lettuce = Molpy.Boosts[bacon];
+			if(times==undefined) {times=1}
+			if((times===1)) {
+				if (lettuce.name === 'Locked Vault' && Molpy.IsEnabled('Aleph One') && shouldbuy) {
+					Molpy.Unbox(1);
+				} else {
+					Molpy.UnlockBoost(bacon,auto)
+				}
+			} else {
+				if (shouldbuy) {
 					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
 						Molpy.Unbox(times)
+						// Molpy.Boosts['Locked Vault'].bought = flandom(4);
+						// Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times)) //not sure if this was added or removed so I've put it commented
 					}
 					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
 						Molpy.UnlockBoost('Locked Vault')
 					}
-					if(lettuce.name==='Vault Key'){Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/5));return;}
-					if(lettuce.name==='Crate Key'){Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));return;}
+					if(lettuce.name==='Vault Key') {
+						Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/4)); // not sure why but this needs to be 4, even through normal buying it takes 4 keys. key grinder/key thing?
+						for (var i = 0; i < (times % 4); i++) {
+							lettuce.buyFunction(); // no problem calling this up to 4 times
+						} 
+						return;
+					}
+					if(lettuce.name==='Crate Key') {
+						Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));
+						return;
+					}
 					if(lettuce.name==='Locked Crate'){
 						var bl = Molpy.Boosts['GlassBlocks'];
 						var win = Math.ceil(Molpy.LogiMult('2K'));
@@ -1754,8 +1793,19 @@ Molpy.Up = function() {
 						Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
 						if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 						Molpy.Add('Blackprints', lettuce.bought*times);
+						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
 					}
-					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+
+					if(lettuce.name==='Atomic Pump'){
+						Molpy.Boosts['Ocean Blue'].power+=times;
+						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+					}
+					if(lettuce.name==='Blue Fragment'){
+						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
+						Molpy.Boosts['bluhint'].power+=times;
+					}
+					if(lettuce.alias==='splosion'){Molpy.splosions(times)}
+					
 				}
 				//} else{
 				//	//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
@@ -1841,7 +1891,10 @@ Molpy.Up = function() {
 		Molpy.RepeatableBoost=['Locked Vault',
 		'Vault Key', 'vaultkey',
 		'Crate Key','cratekey',
-		'Locked Crate'] //Each boost on its own line, please!
+		'Locked Crate',
+		'Atomic Pump',
+		'Blue Fragment',
+		'A Splosion','splosion'] //Each boost on its own line, please!
 
 		Molpy.previewNP = 0;
 
@@ -3003,73 +3056,13 @@ Molpy.Up = function() {
 					return;
 				}
 			}
-			if (Molpy.Got('3D Lens') && Math.abs(Molpy.newpixNumber) > 3094) {
-				if (Molpy.Spend('Goats', Infinity)) {
-					var np = Molpy.newpixNumber;
-					var prey = Molpy.Boosts['kitkat'].prey;
-					if (prey.indexOf(np) > -1) {
-						Molpy.Notify('You have already drained this CatPix of its dimensional energy.');
-						return;
-					} else {
-						var factor = 1;
-						if (Molpy.Got('GCC')) factor *= 12;
-						if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.03, Molpy.Pinch());
-						factor *= (Molpy.Got('Sigma Stacking') ? prey.length + 1 : 1)
-						if (Molpy.Got('GCA')) {
-							for (i = 2; i < 12; i++) {
-								if (Molpy.Got('Glass Ceiling ' + i) && np % i == 0) {
-									Molpy.boostSilence++;
-									Molpy.LockBoost('Glass Ceiling ' + i);
-									Molpy.boostSilence--;
-								} 
-								if (!Molpy.Got('Glass Ceiling ' + i) && np % i && Molpy.Boosts['Glass Ceiling ' + i].unlocked) {
-									Molpy.boostSilence++;
-									Molpy.Boosts['Glass Ceiling ' + i].buy(1);
-									Molpy.boostSilence--;
-								}
-							}
-						}
-						if (Molpy.Got('GCC')) {
-							var strikes = 0;
-							for (var i = 2; i < 12; i++) {
-								if (!Molpy.Got('Glass Ceiling ' + i)) {
-									factor *= (np % i ? 1/i : i);
-								}
-								if (Molpy.Got('Glass Ceiling ' + i) == Math.sign(np % i)) {
-									strikes++;
-								}
-								if (strikes == 10) {
-									Molpy.Boosts['GCC'].power++;
-									if (Molpy.Boosts['GCC'].power >= 72) {
-										Molpy.UnlockBoost('GCA');
-									}
-								}
-							}
-						}
-						var amount = Math.max(1, Math.floor(factor));
-						if (Molpy.Got('Never Jam Today') && (Molpy.newpixNumber != Molpy.newpixNumber)) amount = Math.pow(amount, amount);
-						// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
-						Molpy.Add('Shards', amount);
-						Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
-						Molpy.Boosts['kitkat'].Refresh();
-						prey.push(np);
-						if (prey.length >= 12) {
-							Molpy.UnlockBoost('AntiAuto');
-						}
-						if (prey.length >= 48 && np >= 3105 && prey.indexOf(np - 10) == -1) {
-							Molpy.UnlockBoost('kitkat');
-						}
-						if (prey.length > 776) {
-							Molpy.EarnBadge('YouTube Star');
-						}
-						if (!Molpy.Got('Eigenharmonics') && Molpy.Pinch() > 120) {
-							Molpy.UnlockBoost('Eigenharmonics');
-						}
-						return;
-					}
+			if (Molpy.Got('3D Lens') && Math.abs(Molpy.newpixNumber) >= 3095) { // & in OTC?
+				Molpy.Vamp();
+				if (Molpy.Got('Retroreflector')) {
+					Molpy.FlipIt(0);
+					Molpy.Vamp();
+					Molpy.FlipIt(0);
 				}
-				Molpy.Notify(Molpify(Molpy.Boosts['Goats'].Level) + ' is not quite infinity', 1);
-				return;
 			}
 			var alias = 'discov' + Molpy.newpixNumber;
 			if(!Molpy.Badges[alias]) {
@@ -3101,6 +3094,77 @@ Molpy.Up = function() {
 			Molpy.Notify('Out of Glass Chips');
 		}
 	};
+	Molpy.Vamp = function() {
+		if (Molpy.Spend('Goats', Infinity)) {
+			var np = Molpy.newpixNumber;
+			var prey = Molpy.Boosts['kitkat'].prey;
+			if (prey.indexOf(np) > -1) {
+				Molpy.Notify('You have already drained this CatPix of its dimensional energy.');
+				return;
+			} else {
+				var factor = 1;
+				if (Molpy.Got('GCC')) factor *= 12;
+				if (Molpy.Got('Eigenharmonics')) factor *= Math.pow(1.03, Molpy.Pinch());
+				factor *= (Molpy.Got('Sigma Stacking') ? prey.length + 1 : 1)
+				if (Molpy.Got('GCA')) {
+					for (i = 2; i < 12; i++) {
+						if (Molpy.Got('Glass Ceiling ' + i) && np % i == 0) {
+							Molpy.boostSilence++;
+							Molpy.LockBoost('Glass Ceiling ' + i);
+							Molpy.boostSilence--;
+						} 
+						if (!Molpy.Got('Glass Ceiling ' + i) && np % i && Molpy.Boosts['Glass Ceiling ' + i].unlocked) {
+							Molpy.boostSilence++;
+							Molpy.Boosts['Glass Ceiling ' + i].buy(1);
+							Molpy.boostSilence--;
+						}
+					}
+				}
+				if (Molpy.Got('GCC')) {
+					var strikes = 0;
+					for (var i = 2; i < 12; i++) {
+						if (!Molpy.Got('Glass Ceiling ' + i)) {
+							factor *= (np % i ? 1/i : i);
+						}
+						if (Molpy.Got('Glass Ceiling ' + i) == Math.sign(np % i)) {
+							strikes++;
+						}
+						if (strikes == 10) {
+							Molpy.Boosts['GCC'].power++;
+							if (Molpy.Boosts['GCC'].power >= 72) {
+								Molpy.UnlockBoost('GCA');
+							}
+						}
+					}
+				}
+				var amount = Math.max(1, Math.floor(factor));
+				if (Molpy.Got('Never Jam Today') && (Molpy.newpixNumber != Molpy.newpixNumber)) amount = Math.pow(amount, amount);
+				// note this WILL activate if Molpy.newpixNumber becomes NaN, and will easily yield mustard shards
+				amount = Math.floor(amount * Molpy.Papal('Shards'));
+				Molpy.Add('Shards', amount);
+				Molpy.Notify('You have siphoned ' + Molpify(amount) + ' dimension shard' + plural(amount) +  ' from this poor, sweet creature.');
+				Molpy.Boosts['kitkat'].Refresh();
+				prey.push(np);
+				if (prey.length >= 12) {
+					Molpy.UnlockBoost('AntiAuto');
+				}
+				if (prey.length >= 48 && np >= 3105 && prey.indexOf(np - 10) == -1) {
+					Molpy.UnlockBoost('kitkat');
+				}
+				if (prey.length > 776) {
+					Molpy.EarnBadge('YouTube Star');
+				}
+				if (!Molpy.Got('Eigenharmonics') && Molpy.Pinch() > 120) {
+					Molpy.UnlockBoost('Eigenharmonics');
+				}
+				if (prey.indexOf(-1 * np) >= 0) Molpy.Boosts['Retroreflector'].power++;
+				if (Molpy.Boosts['Retroreflector'].power >= 144) Molpy.UnlockBoost('Retroreflector');
+				return;
+			}
+		}
+		Molpy.Notify(Molpify(Molpy.Boosts['Goats'].Level) + ' is not quite infinity', 1);
+		return;
+	}
 
 	/**************************************************************
 	 * Logic?
@@ -3212,6 +3276,7 @@ Molpy.Up = function() {
 		if(Molpy.Got('Sand to Glass')) Molpy.Boosts['TF'].digGlass(Math.floor(Molpy.Boosts['TF'].loadedPermNP*Molpy.Papal('GlassSand')));
 		Molpy.GlassNotifyFlush();
 		Molpy.RunToolFactory();
+		Molpy.RunPhoto();
 		Molpy.DragonDigging(0);
 		if(Molpy.recalculateRates) Molpy.calculateRates();
 		if(Molpy.BadgesOwned == 0) Molpy.EarnBadge('Redundant Redundancy');
@@ -3230,6 +3295,176 @@ Molpy.Up = function() {
 		
 		Molpy.toolsNeedRepaint = 1;
 	};
+	Molpy.RunPhoto=function(){
+		Molpy.getPhoto();
+		Molpy.craftPhoto(); //Inker takes precedence
+		Molpy.decayPhoto();
+		var lost=Molpy.reactPhoto();
+		if(Molpy.Got('Photoelectricity')&&(!Molpy.IsEnabled('NaP'))){
+			Molpy.RunFastPhoto(lost)
+		}
+		Molpy.unlockPhoto();
+	};
+	Molpy.getPhoto=function(n, type, isClick){
+		if(!n){
+			if(Molpy.Got('Meteor')){
+				Molpy.Boosts['Otherness'].power+=10
+			}
+			if(Molpy.Got('Hallowed Ground')){Molpy.Boosts['Grayness'].power+=1}
+			if(Molpy.Got('Ocean Blue')){
+				var blugain=Molpy.Boosts['Ocean Blue'].power
+				if(Molpy.Got('bluhint'))blugain=blugain*(Molpy.Boosts['bluhint'].power)
+				Molpy.Boosts['Blueness'].power+=blugain
+			}
+			if(Molpy.Got('pH')){
+				Molpy.Boosts['pH'].power++
+				var t=10000000/(25*12.5)
+				if(Molpy.Got('pOH')){t=10}
+				if(Molpy.Boosts['pH'].power>=t){Molpy.RunFastPhoto(25);Molpy.Boosts['pH'].power=0;
+					Molpy.EarnBadge('pH');if(!Molpy.Got('pOH')){Molpy.EarnBadge('pOHless')
+						Molpy.UnlockBoost('pInsanity')
+					}
+				}
+			}
+			if(Molpy.Got('pInsanity')){
+				Molpy.RunFastPhoto(625)
+			}
+		} else {
+			var gain=n
+			if(isClick && Molpy.Got('Doubletap')){n=2*n}
+			if(isClick && (Molpy.newpixNumber-0.1!==Math.floor(Molpy.newpixNumber))){return;}
+			if(Molpy.Got('bluhint'))gain=gain*(Molpy.Boosts['bluhint'].power)
+			if((!type)||(type=='Blueness')){Molpy.Boosts['Blueness'].power+=gain} else{
+				Molpy.Boosts[type].power+=n
+			}
+		}
+	}
+	Molpy.decayPhoto=function(){
+		var oblu = Molpy.Boosts['Blueness'].power
+		Molpy.Boosts['Blueness'].power=Molpy.Boosts['Blueness'].power*0.999 // Couldn't figure out how to make 10mNP timing work.
+		var nblu=Molpy.Boosts['Blueness'].power
+		var coth=(oblu-nblu)*(2/3+(0.9-2/3)*Molpy.Got('Improved Scaling'))
+		var oblu = Molpy.Boosts['Otherness'].power
+		Molpy.Boosts['Otherness'].power=Molpy.Boosts['Otherness'].power*0.999 // Couldn't figure out how to make 10mNP timing work.
+		var nblu=Molpy.Boosts['Otherness'].power
+		Molpy.Boosts['Blueness'].power+=(oblu-nblu)*(2/3+(0.9-2/3)*Molpy.Got('Improved Scaling'))
+		Molpy.Boosts['Otherness'].power+=coth
+	}
+	Molpy.reactPhoto=function(max){
+		if(!max){max=Infinity}
+		var frate=Math.pow(Molpy.Boosts['Blackness'].power*Molpy.Boosts['Whiteness'].power,2) //A lot.
+		var brate=Molpy.Boosts['Grayness'].power //A little
+		brate=(brate)*Molpy.Got('Equilibrium Constant')*Molpy.IsEnabled('Equilibrium Constant') //how much to react.
+		var dif=frate-brate
+		if(dif<=0 && max==1){return 0;}
+		if(dif==0) return 0;
+		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
+		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Math.ceil(Molpy.Boosts['Blackness'].power/2)}
+		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
+		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
+		dif=dif/2
+		Molpy.Boosts['Blackness'].power=Math.max(0,Molpy.Boosts['Blackness'].power-2*dif)
+		Molpy.Boosts['Whiteness'].power=Molpy.Boosts['Whiteness'].power-dif
+		if(Molpy.Got('NaP')&&(Molpy.IsEnabled('NaP')||!Molpy.Got('Photoelectricity'))){
+			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power+dif
+		} //NaP defaults to on.
+		if((Molpy.Got('NaP'))&&(!Molpy.IsEnabled('NaP'))){
+			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/4
+		} //NaP defaults to on.
+		if(max==1 && !Molpy.Got('Whiteness')){
+			Molpy.Notify("You made something, but it reacted with 2 of your blackness before you could see what it was")
+		}
+		return dif
+	}
+	Molpy.craftPhoto=function(){
+		if(!Molpy.Got('Robotic Inker')){return;}
+		Molpy.boostSilence=true;
+		var inker=Molpy.Boosts['Robotic Inker']
+		var dramaticpowahs=inker.power
+		var allButtons=Molpy.polarizerButtons(Infinity)
+		allButtons.push([{recipe:{start:{Blueness:50,Otherness:50},finish:{Blackness:1}},
+		times:Molpy.getSquids},'Argy'])
+		var l=0
+		while(dramaticpowahs>=Math.pow(2,l)){
+			var ia=dramaticpowahs&Math.pow(2,l)
+			var r=allButtons[l][0]
+			if(ia){Molpy.craft(r)}
+			//Recipe no longer feels like a word after the last line.
+			l++
+		} //Really powerful
+		Molpy.boostSilence=false;
+	}
+	Molpy.RunFastPhoto=function(times){
+		if((times==undefined)||(times<0)){times=0}
+		Molpy.Boosts['Photoelectricity'].power+=Math.pow(times, 0.5)
+		if(Molpy.Boosts['Photoelectricity'].power>=5){
+			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
+			if(todo>=100){Molpy.EarnBadge('Diminishing Returns')}
+			Molpy.Boosts['Photoelectricity'].power=Molpy.Boosts['Photoelectricity'].power-5*todo
+			Molpy.Boosts['Photoelectricity'].Level=Math.max(Molpy.Boosts['Photoelectricity'].Level,todo)
+			if(isNaN(Molpy.Boosts['Photoelectricity'].Level)){Molpy.Boosts['Photoelectricity'].Level=1}
+			var runsLeft=25;
+			var avoptions=[]
+			for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
+				if(Molpy.Boosts[Molpy.PhotoRewardOptions[i]].photo<=Molpy.Boosts['Photoelectricity'].Level){
+					avoptions.push(Molpy.PhotoRewardOptions[i])
+				}
+			}
+			while(runsLeft&&todo){
+				var dtimes=Math.ceil(todo/runsLeft)
+				var red=Molpy.Boosts[GLRschoice(avoptions)]
+				var price = red.price;
+				if (red.priceFunction) price = red.priceFunction();
+				if(!price){price={}}
+				if(!Molpy.IsFree(red.CalcPrice(price))) {
+					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
+						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
+						Molpy.UnlockBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1,dtimes)
+					}
+				} else {
+					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
+						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
+						Molpy.GiveTempBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1,dtimes) //Even temps sometimes go here.
+					}
+				}
+				todo=todo-Math.ceil(todo/runsLeft)
+				runsLeft--
+			}
+		}
+	}
+	Molpy.unlockPhoto=function(){
+		var oth=Molpy.Boosts['Otherness'].power
+		var blu=Molpy.Boosts['Blueness'].power
+		var bla=Molpy.Boosts['Blackness'].power
+		var whi=Molpy.Boosts['Whiteness'].power
+		var gray=Molpy.Boosts['Grayness'].power
+		var unlock=Molpy.UnlockBoost
+		var earn=Molpy.EarnBadge
+		if(oth) unlock('Otherness')
+		if(blu) unlock('Blueness')
+		if(bla){unlock('Blackness');earn('Argy Bee')}
+		if(whi) unlock('Whiteness')
+		if(gray){unlock('Grayness');unlock('Equilibrium Constant')}
+		if(oth&&blu&&bla&&whi&&gray) earn('Colorrific')
+		if(oth>=15) unlock('Argy')
+		if(oth>=25) unlock('bluhint')
+		if(oth>=50) unlock('Improved Scaling')
+		if(bla>=5) unlock('Polarizer')
+		if(oth>=300) unlock('Meteor')
+		if(blu>=300) unlock('Ocean Blue')
+		if(bla>=50 && Molpy.Got('Polarizer')) unlock('Robotic Inker')
+		if(whi>=1) unlock('NaP')
+		if(whi>=3) unlock('Hallowed Ground')
+		if(whi>=10) unlock('Photoelectricity') //A big one! This is the last I originally had come up with.
+		if(whi && !Molpy.Boosts['Polarizer'].power) Molpy.Boosts['Polarizer'].power++
+		if(Molpy.Got('Photoelectricity')) earn('UnDuoNonUnium')
+		if(Molpy.Got('Diluted Boom') && Molpy.Got('Concentrated Boom')) earn('Ghost Bomb')
+		if(gray>=1000) earn('Wish I could breathe')
+	}
 
 	Molpy.PerformJudgement = function() {
 
@@ -3310,9 +3545,9 @@ Molpy.Up = function() {
 		}
 		if(realSubFrame >= 6) realSubFrame = 0;
 		if(Molpy.newpixNumber > 0) {
-			Molpy.newpixNumber = Math.floor(Molpy.newpixNumber) + realSubFrame / 6;
+			Molpy.newpixNumber = Molpy.newpixNumber + realSubFrame / 6;
 		} else {
-			Molpy.newpixNumber = Math.ceil(Molpy.newpixNumber) - realSubFrame / 6;
+			Molpy.newpixNumber = Molpy.newpixNumber - realSubFrame / 6;
 		}
 		if(realSubFrame > Molpy.currentSubFrame) {
 			Molpy.Notify('MeteorONG!');
@@ -3320,37 +3555,30 @@ Molpy.Up = function() {
 			Molpy.currentSubFrame = realSubFrame;
 		}
 	};
-	Molpy.ONG = function() {
+	Molpy.ONGs={}
+	Molpy.ONG=function(type){
+		Molpy.currentStory=Molpy.fracParts.indexOf(Number((Molpy.newpixNumber-Math.floor(Molpy.newpixNumber)).toFixed(3)))
+		if(type==undefined){
+			var story=Molpy.currentStory
+			if(story==-1){type=0} else{type=Molpy.fracParts[story]}
+		}
+		Molpy.ONGBase();
+		var todo=Molpy.ONGs[type];
+		if(todo==undefined){todo=Molpy.ONGs[0]}
+		todo();
+		Molpy.UpdateBeach();
+	}
+	
+	Molpy.ONGBase = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
+			if(Molpy.Got('Aperture Science')&&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
 		}
 		if (Molpy.Got('LA')) {
 			Molpy.Boosts['LA'].Level = 1;
 		}
-		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
-			if (Molpy.Boosts['Signpost'].power == 1) {
-				Molpy.newpixNumber = 0;
-			} else {
-				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
-			}
-			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
-				Molpy.UnlockBoost('Signpost');
-			}
-			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
-
-			Molpy.currentSubFrame = 0;
-			var np = Math.abs(Molpy.newpixNumber);
-			if(np > Math.abs(Molpy.highestNPvisited)) {
-				Molpy.highestNPvisited = Molpy.newpixNumber;
-				Molpy.Overview.Update(Molpy.newpixNumber);
-				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
-			} else  { //in the past
-				if(np > 2) {
-					Molpy.UnlockBoost('Time Travel');
-				}
-			}
-		}
-		Molpy.Boosts['Signpost'].power = 0;
+		
+		
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
 		Molpy.ONGstart = ONGsnip(new Date());
 		Molpy.LogONG();
@@ -3419,7 +3647,7 @@ Molpy.Up = function() {
 		Molpy.npbONG = 0;//reset newpixbot flag
 
 		Molpy.Boosts['Temporal Rift'].department = 0;
-		if(Molpy.newpixNumber % (50 - (Molpy.Got('Time Travel') + Molpy.Got('Flux Capacitor') + Molpy.Got('Flux Turbine') + Molpy.Earned('Minus Worlds')) * 10) == 0) {
+		if(Math.floor(Molpy.newpixNumber) % (50 - (Molpy.Got('Time Travel') + Molpy.Got('Flux Capacitor') + Molpy.Got('Flux Turbine') + Molpy.Earned('Minus Worlds')) * 10) == 0) {
 			Molpy.Boosts['Temporal Rift'].department = (Math.random() * 6 >= 5) * 1;
 		}
 		if(Molpy.Got('SBTF')) {}
@@ -3479,13 +3707,67 @@ Molpy.Up = function() {
 
 		Molpy.Boosts['Glass Trolling'].IsEnabled = 0;
 		Molpy.Boosts['Now Where Was I?'].Refresh();
-		Molpy.Boosts['The Pope'].reset();
+		if (!Molpy.Got('Permanent Staff') || !Molpy.IsEnabled('Permanent Staff')) Molpy.Boosts['The Pope'].reset();
 		Molpy.MakeSomethingUp();
 		Molpy.UpdateFaves();
 		
 		Molpy.Boosts['Temporal Rift'].changeState('closed');
 		Molpy.IsThereAnUpdate();
+		if(Molpy.Boosts['Controlled Hysteresis'].power>-1){Molpy.newpixNumber=Molpy.Boosts['Controlled Hysteresis'].power;Molpy.currentStory=Molpy.fracParts.indexOf(Number(Molpy.Boosts['Controlled Hysteresis'].power.toFixed(3)))}
 	};
+	Molpy.ONGs[0] = function(){
+		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
+			if (Molpy.Boosts['Signpost'].power == 1) {
+				Molpy.newpixNumber = 0; Molpy.currentStory=-1;
+			} else {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
+			}
+			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
+				Molpy.UnlockBoost('Signpost');
+			}
+			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
+
+			Molpy.currentSubFrame = 0;
+			var np = Math.abs(Molpy.newpixNumber);
+			if(np > Math.abs(Molpy.highestNPvisited)) {
+				Molpy.highestNPvisited = Molpy.newpixNumber;
+				Molpy.Overview.Update(Molpy.newpixNumber);
+				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
+			} else  { //in the past
+				if(np > 2) {
+					Molpy.UnlockBoost('Time Travel');
+				}
+			}
+		} else if(!Molpy.IsEnabled('Temporal Anchor') && Molpy.Boosts['Controlled Hysteresis'].power==0){Molpy.newpixNumber=1}
+		Molpy.Boosts['Controlled Hysteresis'].power=-1; Molpy.Boosts['Signpost'].power = 0;
+	}
+	Molpy.ONGs[0.1]=function(){
+		if (!Molpy.IsEnabled('Temporal Anchor')) {
+			if (Molpy.Boosts['Signpost'].power == 1) {
+				Molpy.newpixNumber = 0;
+			} else {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
+			}
+			if(Molpy.newpixNumber > Molpy.Boosts['Aperture Science'].power + 2) {
+				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? -1 : 1);
+				Molpy.Notify("You must unlock the next doorhole to continue!")
+			}
+			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
+
+			Molpy.currentSubFrame = 0;
+			var np = Math.abs(Molpy.newpixNumber);
+			if(np > Math.abs(Molpy.highestNPvisited)) {
+				Molpy.highestNPvisited = Molpy.newpixNumber;
+				Molpy.Overview.Update(Molpy.newpixNumber);
+				if (Molpy.newpixNumber < 0) Molpy.EarnBadge('Below the Horizon');
+			} else  { //in the past
+				if(np > 2.1) {
+					Molpy.UnlockBoost('Time Travel');
+				}
+			}
+		}
+		Molpy.Boosts['Controlled Hysteresis'].power=-1; Molpy.Boosts['Signpost'].power = 0;
+	}
 
 	Molpy.BurnBags = function(n, e) {
 		if(e) {
@@ -3520,7 +3802,7 @@ Molpy.Up = function() {
 		if(Molpy.newpixNumber == 0) Molpy.EarnBadge('Absolute Zero');
 
 		var np = Math.abs(Molpy.newpixNumber);
-		if(np <= 240) {
+		if((np <= 240)&&(np==Math.floor(np))) {
 			Molpy.NPlength = 1800;
 			if(Molpy.Got('Doublepost')) {
 				var incidents = ++Molpy.Boosts['Safety Net'].power;
@@ -3554,13 +3836,13 @@ Molpy.Up = function() {
 		}
 		Molpy.mNPlength = (Molpy.Got('Time Dilation') && Molpy.IsEnabled('Time Dilation')?1800:Molpy.NPlength);
 
-		if(np > 241) {
+		if((np > 241)&&(np==Math.floor(np))) {
 			Molpy.EarnBadge("Have you noticed it's slower?");
 		}
-		if(np >= 250) {
+		if((np >= 250)&&(np==Math.floor(np))) {
 			Molpy.UnlockBoost('Overcompensating');
 		}
-		if(np > 5948) {
+		if((np > 5948)&&(np==Math.floor(np))) {
 			Molpy.EarnBadge('And It Don\'t Stop');
 		}
 		Molpy.TimePeriod = [""];

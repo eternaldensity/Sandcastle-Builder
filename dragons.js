@@ -392,11 +392,29 @@ Molpy.DefineOpponents = function() {
 
 // NPdata **********************************************************
 
-Molpy.NPdata = [];
+Molpy.NPdata = {};
 
 Molpy.ClearNPdata = function() {
-	Molpy.NPdata = [];
+	Molpy.NPdata = {};
 };
+Molpy.NextLegalNP=function(at){
+	if(Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))==-1){
+		at=Math.floor(at)+1
+	} else{
+		at=Math.floor(at)+Molpy.fracParts[Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))+1]
+	}
+	return at
+}
+Molpy.NPRange = function(start,end){ // weird placement, but needed for the next one
+	var at=start;
+	var ans=[];
+	while(at<=end){
+		ans.push(at)
+		at=Molpy.NextLegalNP(at)
+	}
+	return ans
+}
+
 
 // Digging *********************************************************
 
@@ -726,13 +744,13 @@ Molpy.DragonStatsNow = function(where) {
 
 Molpy.FindOpponents = function(from) {
 	var df = {};
-	df.from = from;
-	df.type = Math.min(Math.floor(from/150),Molpy.OpponentsById.length-1);
+	df.from = Math.floor(from);
+	df.type = Math.min(Math.floor(from/150)+1+Molpy.fracParts.indexOf(Number((from-Math.floor(from)).toFixed(3))),Molpy.OpponentsById.length-1);
 	df.numb = (Molpy.TotalDragons < 10 && Molpy.HighestNPwithDragons < 20)?1:Math.floor(((from-df.type*150)/30)*(Math.random())+1);
 	df.gender = 1*(Math.random() < 0.5);
 	df.modifier = Math.random()+.5;
 	return df;
-}
+} //Not great, whatever.
 
 Molpy.CombatDebug = 0;
 Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
@@ -903,7 +921,7 @@ Molpy.RedundaKnight = function() {
 	if (Math.random()<.25) {
 		var di = Math.random()*Molpy.TotalNPsWithDragons;
 		var found = 0;
-		for (var np=1; np<=atk; np++) {
+		for (var np=1; np<=atk; np=Molpy.NextLegalNP(np)) {
 			if (Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
 				found++;
 				if (found >= di) {

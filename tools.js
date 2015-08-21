@@ -85,7 +85,7 @@
 				mult *= Math.pow(1.05, Math.min(Molpy.CastleTools['Scaffold'].amount, 2000));
 			if(Molpy.Got('SBTF')) {
 				var waves = Molpy.CastleTools['Wave'].amount;
-				if(Math.abs(Molpy.newpixNumber) % 2 == 0)//even
+				if(Math.abs(Math.floor(Molpy.newpixNumber)) % 2 == 0)//even
 				{
 					if(!isFinite(waves)) return 0;
 					mult /= Math.max(1, waves);
@@ -369,7 +369,7 @@ Molpy.DefineCastleTools = function() {
 			next = next || 0;
 			var baseval = 24;
 			if(Molpy.Got('SBTF')) {
-				if(Math.abs(Molpy.newpixNumber) % 2 == 1 - next) { //odd
+				if(Math.abs(Math.floor(Molpy.newpixNumber)) % 2 == 1 - next) { //odd
 					baseval = Math.floor(baseval * Math.pow(1.06, Math.min(Molpy.SandTools['Flag'].amount, 8000)));
 				}
 			}
@@ -390,7 +390,7 @@ Molpy.DefineCastleTools = function() {
 			if(Molpy.Got('Big Splash')) baseval *= Molpy.CastleTools['NewPixBot'].amount;
 			baseval *= Molpy.LogicastleMult();
 			if(Molpy.Got('SBTF')) {
-				if(Math.abs(Molpy.newpixNumber) % 2 == next) { //even
+				if(Math.abs(Math.floor(Molpy.newpixNumber)) % 2 == next) { //even
 					baseval = baseval * Math.pow(1.06, Math.min(Molpy.SandTools['Flag'].amount, 8000));
 				}
 			}
