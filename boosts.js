@@ -12994,7 +12994,7 @@ new Molpy.Boost({
 			desc: "Enough of these, and you'll get a... nevermind.",
 			group: 'varie',
 			photo: 1,
-			buyFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['bluhint'].power++}
+			buyFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['bluhint'].power+=0.05}
 		}
 	);
 	Molpy.splosions=function(n,a){
