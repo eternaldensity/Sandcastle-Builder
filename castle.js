@@ -3295,7 +3295,7 @@ Molpy.Up = function() {
 			}
 			if(Molpy.Got('pH')){
 				Molpy.Boosts['pH'].power++
-				var t=10000000/(25*12.5)
+				var t=10000000/(25*2.5)
 				if(Molpy.Got('pOH')){t=10}
 				if(Molpy.Boosts['pH'].power>=t){Molpy.RunFastPhoto(25);Molpy.Boosts['pH'].power=0;
 					Molpy.EarnBadge('pH');if(!Molpy.Got('pOH')){Molpy.EarnBadge('pOHless')
