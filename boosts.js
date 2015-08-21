@@ -13086,6 +13086,7 @@ new Molpy.Boost({
 			price: {
 				Grayness:12.5*10
 			},
+			startPower:0.6,
 			buyFunction: function(){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(this.alias),1)}//a must :(
 		}
 	);
