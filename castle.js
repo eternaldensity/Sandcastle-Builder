@@ -3349,7 +3349,7 @@ Molpy.Up = function() {
 			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/4
 		} //NaP defaults to on.
 		if(max==1 && !Molpy.Got('Whiteness')){
-			Molpy.Notify("You made something, but it reacted with your blackness before you could see what it was")
+			Molpy.Notify("You made something, but it reacted with 2 of your blackness before you could see what it was")
 		}
 		return dif
 	}
