@@ -7238,6 +7238,7 @@ Molpy.DefineBoosts = function() {
 		}
 		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
 		if (Molpy.Got('Abattoir')) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
+		n = Math.min(n,1e306);
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
@@ -8201,13 +8202,15 @@ Molpy.DefineBoosts = function() {
 		},
 		experience: 0, //Unused
 		totalfights: 0,
+		breathfights: 0,
+		drumbeats: 0,
 		totalloses: 0,
 		totalstarves: 0,
 		loses: [],
 		defSave: 1,
 		defStuff: 1,
 		finds:0,
-		overallState: 0, // 0 all heathy, 1 hiding, 2 injuries, 3 Celebrating
+		overallState: 0, // 0 all heathy, 1 injuries, 2 hiding, 3 Celebrating
 
 		saveData: {4:['experience',0,'float'], // Unused 
 			   5:['overallState',0,'int'],
@@ -8216,6 +8219,8 @@ Molpy.DefineBoosts = function() {
 			   8:['totalloses',0,'float'],
 			   9:['totalfights',0,'float'],
 			   10:['totalstarves',0,'float'],
+			   11:['breathfights',0,'int'],
+			   12:['drumbeats',0,'int'],
 		},
 		countdownLockFunction: function() { // Used for overallState
 			this.overallState = 0;
