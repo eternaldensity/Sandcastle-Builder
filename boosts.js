@@ -12999,11 +12999,11 @@ new Molpy.Boost({
 	);
 	Molpy.splosions=function(n,a){
 		if(Molpy.Got('Concentrated Boom')){n=n*2}
-		var pow=5*n
+		var pow=10*n
 		var r=n
 		var l=25
 		while(r>0 && n>0){
-			pow=pow+Math.round(5*Math.ceil(r/l)*Math.random())
+			pow=pow+Math.round(15*Math.ceil(r/l)*Math.random())
 			r=r-Math.ceil(r/l)
 			l--
 		}
@@ -13016,11 +13016,11 @@ new Molpy.Boost({
 			r=r-Math.ceil(r/l)
 			l--
 		}
-		var blu=10*did[0]
-		var oth=10*did[1]
-		var whi=did[2]*0.5
-		var bla=did[3]*0.5
-		var gray=0.25*did[4]
+		var blu=25*did[0]
+		var oth=25*did[1]
+		var whi=did[2]*1
+		var bla=did[3]*1
+		var gray=0.5*did[4]
 		Molpy.Boosts['Blueness'].power+=blu
 		Molpy.Boosts['Otherness'].power+=oth
 		Molpy.Boosts['Whiteness'].power+=whi
