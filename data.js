@@ -11,7 +11,19 @@ Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numeric
  *************************************************************/
 
 Molpy.HardcodedData = function() {
-	Molpy.Periods = [
+	Molpy.fracParts=[0.1]
+	Molpy.AllPeriods={}
+	Object.defineProperty(Molpy,'Periods', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllPeriods[0]} else{return Molpy.AllPeriods[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllPeriods[0]=v} else{Molpy.AllPeriods[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllPeriods[0] = [
 			[9, "The Debut/What? Period"],
 			[23, "The Dark Period"],
 			[44, "The Sandcastle Period"],
@@ -96,8 +108,38 @@ Molpy.HardcodedData = function() {
 			[3088, "The Raftcastle"],
 			[3094, "The End"],
 	]
+	Molpy.AllPeriods[0.1]= [
+		[11.1, 'Human-free'],
+		[210.1, 'Forty-free'],
+		[262.1, 'Settling in'],
+		[400.1, 'To the top'],
+		[448.1, 'The new sandcastle'],
+		[455.1, 'The Beanie cam'],
+		[649.1, 'The other castle'],
+		[685.1, 'The cave'],
+		[760.1, 'Returning home'],
+		[844.1, 'Meeting the Beanies'],
+		[976.1, 'Return to the cave'],
+		[1092.1, 'Preparation'],
+		[1106.1, 'The attempt'],
+		[1291.1, 'The boat'],
+		[1323.1, 'The book'],
+		[1416.1, 'Conclusion'],
+		[1417.1, 'The real end']
+	]
 
-	Molpy.Eras = [
+	Molpy.AllEras={}
+	Object.defineProperty(Molpy,'Eras', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllEras[0]} else{return Molpy.AllEras[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllEras[0]=v} else{Molpy.AllEras[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllEras[0] = [
 			[124, "The Pre-expansion Era"],
 			[420, "The Castleiferous Era"],
 			[582, "The Industrial Era"],
@@ -113,11 +155,37 @@ Molpy.HardcodedData = function() {
 			[2813, "The Contact Era"],
 			[2920, "The Civilization Era"],
 			[3094, "The Rescue Era"]]
+	Molpy.AllEras[0.1] = [
+		[209.1, "The Forty-less Era"],
+		[440.1, "Identification Era"],
+		[685.1, "The Castle Era"],
+		[808.1, "The Explanatory Era"],
+		[1106.1, "The Retrieval Era"],
+		[1291.1, "The Return Era"],
+		[1417.1, "The End Era"]
+	]
 
-	Molpy.Eons = [
+	Molpy.AllEons={}
+	Object.defineProperty(Molpy,'Eons', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllEons[0]} else{return Molpy.AllEons[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllEons[0]=v} else{Molpy.AllEons[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllEons[0] = [
 		[971, "The Sandcastle Eon"],
 		[2615, "The Journey Eon"],
 		[3094, "The Encounter Eon"]]
+	Molpy.AllEons[0.1] = [
+		[216.1, "The Overlap Eon"],
+		[685.1, "The Journey Eon"],
+		[1319.1, "The Cave Eon"],
+		[1417.1, "The Exit Eon"]
+	]
 	
 
 	Molpy.titles = [
@@ -890,6 +958,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Aleph One'].logic = 111111111;
 	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
 	Molpy.Boosts['Aleph e'].logic = DeMolpify('99H') * Molpy.priceFactor;
+	Molpy.Boosts['DimenKey'].logic = Molpy.Got('Aperture Science') * Math.pow(10, Molpy.Boosts['Aperture Science'].power);
 }
 Molpy.mapMonumg = 200;
 
@@ -924,7 +993,160 @@ Molpy.BuildRewardsLists = function() {
 	Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
 		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
 	});
+	Molpy.PhotoRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].photo!== undefined)&&(Molpy.Boosts[i].photo!=='undefined')&&(!Molpy.Got(i))
+	})
 	Molpy.RewardsListsBuilt = 1;
+	Molpy.defineCrafts(); //They don't really go together, but I'm not interested in figuring out the proper version.
+	Molpy.defaultCrafts();
+}
+/********************
+* CRAFTING FUNCTIONS/
+* *****************/
+Molpy.defineCrafts=function(){
+	 Molpy.craft=function(r,t){
+	 	if(r.recipe){
+	 		if(t==undefined){t=r.times};
+	 		r=r.recipe;
+	 	}
+	 	if(t==undefined){t=1}
+	 	t=EvalMaybeFunction(t)
+		var os=r.start
+		var s={}
+		for(var i in os){if((typeof os[i])==(typeof 5)){s[i]=os[i]*t} else{s[i]=os[i](t)}}
+		var of=r.finish;var f={}
+		for(var i in of){if((typeof of[i])==(typeof 5)){f[i]=of[i]*t} else{f[i]=of[i](t)}}
+		var oc=r.catalysts||{}
+		var c={}
+		for(var i in oc){if((typeof oc[i])==(typeof 5)){c[i]=oc[i]} else{c[i]=oc[i](t)}}
+		
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(Molpy.Boosts[i].power<s[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of materials.");}return;}
+		}
+		for(var i in c){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(Molpy.Boosts[i].power<c[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of catalysts.");}return;}
+		}
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){}
+			Molpy.Boosts[i].power=Molpy.Boosts[i].power-EvalMaybeFunction(s[i],t);
+		}
+		for(var i in f){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){} else{
+				Molpy.Boosts[i].power=Molpy.Boosts[i].power+EvalMaybeFunction(f[i],t);
+			}
+		}
+		var o=r.onFinish||function(){};
+		o(t);
+	}
+	Molpy.canCraft=function(r,t){
+		if(r.recipe!= undefined){if(t==undefined){t=EvalMaybeFunction(r.times)};r=r.recipe}
+		if(t==undefined){t=1}
+		t=EvalMaybeFunction(t)
+		var os=r.start
+		var s={}
+		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
+		var of=r.finish;var f={}
+		for(var i in of){if(typeof of[i]==typeof 5){f[i]=of[i]*t} else{f[i]=of[i](t)}}
+		var oc=r.catalysts||{}
+		var c={}
+		for(var i in oc){if(typeof cf[i]==typeof 5){c[i]=oc[i]} else{c[i]=oc[i](t)}}
+		
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return false;}
+			if(!(Molpy.Boosts[i].power>=s[i])){return false;}
+		}
+		for(var i in c){
+			if(s[i]){c[i]+=s[i]}
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(!(Molpy.Boosts[i].power>=c[i])){return false;}
+		}
+		return true
+	}
+	Molpy.getCrafts=function(table,level){
+		var t=Molpy.Crafts[table]
+		if(!level){level=Molpy.Boosts[table].power}
+		var ans=[]
+		for(var i=0;i<t.length;i++){
+			if(t[i].level<=level){ans.push(t[i])}
+		}
+		return ans;
+	}
+	Molpy.craftID=function(ta,n,ti){
+		if(ti==undefined){ti=Molpy.Crafts[ta][n].times}
+		Molpy.craft(Molpy.Crafts[ta][n].recipe,ti)
+	}
+	Molpy.Crafts={
+		Polarizer: [
+			{
+				recipe: {
+					start: {Blackness: function(){return 5}, Blueness: 1},
+					finish: {Otherness: 1}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Blackness: function(){return 5}, Otherness: 1},
+					finish: {Blueness: 1}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Blackness: 15},
+					finish: {Whiteness: 1},
+					onFinish: function(){
+						if(Molpy.Boosts['Whiteness'].power){Molpy.UnlockBoost('Whiteness')}
+						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
+							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
+								Molpy.reactPhoto(1);
+							}
+						}
+					}
+				},
+				level: 0,
+				maxTimes: function(){
+					if(!Molpy.Boosts['Polarizer'].power){return 1} else{
+						return Infinity //Well, that was quite a jump...
+					}
+				}
+			},
+			{
+				recipe: {
+					start: {Blackness: function(){return 10}, Whiteness:1},
+					finish: {Blackness: 1},
+					onFinish: function(){
+						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
+							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
+								Molpy.reactPhoto(1);
+							}
+						}
+					}
+				},
+				level: 1
+			}
+		]
+	}
+	Molpy.defaultTimes=function(i,j){
+		return function(){
+			if(!Molpy.Got(i)){return 0};
+			var r=Molpy.Crafts[i][j].recipe
+			var checker=10
+			while(Molpy.canCraft(r,checker)){checker=checker*10}
+			var max=Molpy.Crafts[i][j].maxTimes||Infinity //Defaulting for the very lazy
+			if(typeof max=='function'){max=max()}
+			return Math.max(Math.min(checker/10,max),1)
+		} //closures ftw
+	}
+	Molpy.defaultCrafts=function(){for(var i in Molpy.Crafts){
+		for(var j=0;j<Molpy.Crafts[i].length;j++){
+			if(Molpy.Crafts[i][j].times==undefined){
+				Molpy.Crafts[i][j].times=Molpy.defaultTimes(i,j)
+			}
+		}
+	}}
 }
 
 Molpy.CheckClickAchievements = function() {
