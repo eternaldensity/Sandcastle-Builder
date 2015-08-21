@@ -13079,6 +13079,7 @@ new Molpy.Boost({
 				}
 				return str
 			},
+			stats: "Assumed itself into existence.",
 			group: 'varie',
 			photo: 2, //not the easiest to get. I don't mind, though.
 			price: {
