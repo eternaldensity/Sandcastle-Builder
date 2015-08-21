@@ -313,10 +313,10 @@ Molpy.DefineBoosts = function() {
 		name: 'Blitzing',
 		icon: 'blitzing',
 		className: 'alert',
-		
 		desc: function(me) {
 			if (!me.bought) return 'Boosts sand rate. Currently locked.';
-			return Molpify(me.power, 1) + '% Sand for ' + MolpifyCountdown(me.countdown);
+			if(!Molpy.Got('Sea Mining'))return Molpify(me.power, 1) + '% Sand for ' + MolpifyCountdown(me.countdown);
+			else if(Molpy.Redacted.totalClicks < 1e6) return 'Beach digs will give Coal for ' + MolpifyCountdown(me.countdown);
 		},
 		startCountdown: 23, // only used when loading to ensure it doesn't get stuck. any true value would do here
 		countdownCMS: 1,
@@ -11940,6 +11940,274 @@ new Molpy.Boost({
 			Vacuum: '1LW'
 		},
 	});
+	
+	new Molpy.Boost({
+		name: 'Safety Canary',
+		icon: 'canary',
+		desc: function(me){
+				if(!me.bought) return 'Prevents black lung. Oh, and also protects the Diamond supply.';
+				return 'Deactivates Annilment when the Diamond cost gets too high.'
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
+					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
+			},
+		className: 'toggle',
+	    IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		price: {
+			Diamonds: '192T',
+			exp: '2.4E'
+		},
+		stats: 'CHIRP!'
+	});
+	
+	new Molpy.Boost({
+		name: 'Autumn of the Matriarch',
+		icon: 'autumn',
+		desc: function(me){
+				return 'For every dragon lost fighting, the remaining dragons\' breath gets stronger.'
+			},
+		className: 'drac',
+		draglvl: 'Wyvern',
+		price: {
+			exp: '3.333Z',
+			Bonemeal: '100EWW'
+		},
+	});
+	
+	new Molpy.Boost({
+		name: 'Chthonism',
+		icon: 'chthonism',
+		desc: function(me){
+			var str = 'Creates a separate underground storage space for Coal.';
+			if(me.bought) str += ' Current threshold is ' + (Molpify(1e9/Molpy.Boosts['Coal'].bought)) + ' Coal.';
+			if(me.bought/* && Molpy.Has('Maps',)*/) str += '<br><br><input type="Button" onclick="Molpy.Coallate()" value="Dig"></input>' + 'out more space. This will make'
+				+ ' Chthonism more efficient but costs <b>ALL</b> your maps!'
+			return str;
+		},
+		group: 'hpt',
+		className: 'drac',
+		Limit: 4,
+		Level: Molpy.BoostFuncs.Bought0Level,
+		price: {Princesses: 1250},
+		buyFunction: function(){
+			Molpy.Coallate();
+		}
+	});
+Molpy.Coallate = function(){
+	Molpy.Anything = 1;
+	Molpy.Boosts['Coal'].bought++;
+	Molpy.Boosts['Maps'].power = 0;
+}
+	new Molpy.Boost({
+		name: 'Dragon Breath',
+		icon: 'breath',
+		desc: function(me){
+			var str = 'When the dragons are defending their territory they may use Breath to help in defeating the enemy. Stronger dragons have more Breath effects at their disposal.';
+			if(me.breathRecovery >= 1) str += '<br>The dragons are catching their breath for ' + me.breathRecovery + ' mNP.'
+			return str;
+		},
+		stats: function(me){
+			if(me.bought) var str = 'Fire breath does a large initial burst of damage and has a chance to continue burning enemies.<br>';
+			if(me.bought && Molpy.Boosts['DQ'].Level > 3) str += 'Ice breath reduces the enemy\'s attack strength and has a chance to freeze them for a turn.<br>';
+			if(me.bought && Molpy.Boosts['DQ'].Level > 4) str += 'Poison breath deals damage during the mNPs leading up to a fight and may wipe out an opponent in a close fight.<br>';
+			if(me.bought && Molpy.Boosts['DQ'].Level > 5) str += 'Special attacks vary based on mysterious factors.<br>';
+			return str;
+		},
+		group: 'drac',
+		defSave: 1,
+		price: {
+			Coal: '1250M',
+			exp: '2.5Z'
+	},
+		breathRecovery: 0,
+		saveData: {4:['breathRecovery', 0, 'int']}
+	});
+	
+	new Molpy.Boost({
+		name: 'Honor Among Serpents',
+		icon: 'honor',
+		desc: 'If a stronger clutch is fledged over a weaker one and the dragons are currently hiding, they will start digging again.',
+		group: 'drac',
+		price: {Diamonds: '25T'}
+	});
+
+	new Molpy.Boost({
+		name: 'Golden Bull',
+		plural: 'Golden Bulls',
+		icon: 'bull',
+		desc: 'For official use only. May the realm prosper.',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 14995},
+		loadFunction: function() {if(Math.random() < .2 )  Molpy.LockBoost('Golden Bull') }
+	});
+
+	new Molpy.Boost({
+		name: 'Chintzy Tiara',
+		plural: 'Chintzy Tiaras',
+		icon: 'tiara',
+		desc: 'The quintessence of style! Gives your dragons the confidence to face their fears.',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 9995},
+		loadFunction: function() {if(Math.random() < .2 )  Molpy.LockBoost('Chintzy Tiara') }
+	});
+
+	new Molpy.Boost({
+		name: 'Diamond Dentures',
+		plural: 'Diamond Dentureses',
+		icon: 'dentures',
+		desc: 'They slice! They dice! They reduce enemies to ribbons!',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 49995},
+		loadFunction: function() {if(Math.random() < .2 )  Molpy.LockBoost('Diamond Dentures') }
+	})
+
+	new Molpy.Boost({
+		name: 'Megan\'s Quick-Acting, Long-Lasting Odorific Breath Spray©',
+		plural: 'MQALLOBSes',
+		alias: 'MQALLOBS',
+		icon: 'spray',
+		desc: 'Turns your breath foul!',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 1995},
+		loadFunction: function() {if(Math.random() < .2 ) Molpy.LockBoost('MQALLOBS') }
+	})
+
+	new Molpy.Boost({
+		name: 'Baobab Tree Fort',
+		plural: 'Baobab Tree Forts',
+		icon: 'fort',
+		desc: 'DRAGONS ONLY NO NITES ALOWED',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 99995},
+		loadFunction: function() {if(Math.random() < .2 )  Molpy.LockBoost('Baobab Tree Fort') }
+	})
+
+	new Molpy.Boost({
+		name: 'Catalyzer',
+		icon: 'catalyzer',
+		desc: function(me){
+			var str = 'Allows you to power up Breath by spending Coal.';
+			if(!me.bought) return str;
+			str += 'tbd';
+			return str;
+		},
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Boosts['DQ'].breathfights>=50?20*Molpy.Level('DQ'):0) },
+		price: {
+
+		}
+	})
+
+	new Molpy.Boost({
+		name: 'Way of the Tortoise',
+		alias: 'WotT',
+		icon: 'wott',
+		desc: 'Significantly increases your defense, but locks Way of the Panther',
+		buyFunction: function(me){
+			me.permalock = 1;
+			Molpy.LockBoost('WotP');
+			Molpy.Boosts['WotP'].permalock = 1; //prevent WotP from being unlocked again
+		},
+		permalock: 0,
+		defSave: 1,
+		saveData: {4:['permalock',0,'int']},
+		price: {
+			exp: '1250E',
+			GlassChips: Infinity,
+			GlassBlocks: Infinity,
+		},
+	})
+
+	new Molpy.Boost({
+		name: 'Way of the Panther',
+		alias: 'WotP',
+		icon: 'wotp',
+		desc: 'Significantly increases your offense, but locks Way of the Tortoise',
+		buyFunction: function(me){
+			me.permalock = 1;
+			Molpy.LockBoost('WotT');
+			Molpy.Boosts['WotT'].permalock = 1; //prevent WotT from being unlocked again
+		},
+		permalock: 0,
+		defSave: 1,
+		saveData: {4:['permalock',0,'int']},
+		price: {
+			exp: '1250E',
+			Sand: Infinity,
+			Castles: Infinity,
+		},
+	})
+
+	new Molpy.Boost({
+		name: 'Tuple or Nothing',
+		icon: 'tuple',
+		desc: 'The longer a fight lasts, the more Gold you get for winning.',
+		stats: '<i>#winning</i>',
+		group: 'drac',
+		price: {
+			exp: '480Z',
+			Coal: '800G',
+		},
+	});
+
+	new Molpy.Boost({
+		name: 'Ethyl Alcohol',
+		icon: 'ethyl',
+		desc: 'Fuel for Breath attacks. May cause drowsiness and slurred roars.',
+		group: 'bean',
+		draglvl: 'Wyvern',
+		limit: function() { return 4*Molpy.Got('Dragon Breath') },
+		defStuff: 1,
+		Spend: function() {
+			if (!this.bought) return false;
+			this.bought--;
+			if (this.unlocked > 1) this.unlocked--
+			else this.Lock();
+			return true;
+		},
+		price: {
+			Diamonds:'1G',
+			exp: function () { return Math.pow(1000,Molpy.Level('DQ')+3) }
+		},
+		Level: Molpy.BoostFuncs.Bought0Level,
+	})
+
+	new Molpy.Boost({
+		name: 'Dragon Drum',
+		icon: 'drum',
+		className: 'alert',
+		desc: 'Dun Dun <i>Dunnn</i>...Dragon Drum',
+		countdownCMS: 1,
+		logic: 1e96,
+	})
+
+	new Molpy.Boost({
+		name: 'Clannesque',
+		icon: 'clannesque',
+		group: 'drac',
+		desc: 'The effect of Ooh Shiny! is compounded by the number of eggs you have in storage.',
+		price: {
+			Bonemeal: '9ZWW',
+			Diamonds: '88P',
+			Coal: '40G',
+		}
+	})
+
+	new Molpy.Boost({
+		name: 'Sea Mining',
+		icon: 'smine',
+		desc: 'For the duration of Blitzing, each click gives one more Coal than the last.',
+		logic: 1e96,
+		stats: 'AKA Bananananasblitz!',
+		lockFunction: function() {
+			this.power = 0;
+		},
+	})
+
 	new Molpy.Boost({
 		name: 'Signpost',
 		icon: 'signpost',

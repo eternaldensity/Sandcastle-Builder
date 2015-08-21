@@ -2661,8 +2661,8 @@ Molpy.Up = function() {
 			} else if(isFinite(Molpy.Boosts['Sand'].power)) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blitzing', true]);
 				Molpy.RewardBlitzing(automationLevel);
-			} else if(Molpy.TotalDragons && Molpy.Level('DQ') > 2 && Molpy.Boosts['Dragonfly'].bought < 18){
-				Molpy.UnlockBoost('Dragonfly');
+			} else if(Math.random() > .75 - Molpy.DragonLuck && dq.Level >= 2 && dq.overallState == 2 && !forceDepartment){
+				Molpy.RewardDragonDrum();
 			} else {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
 				Molpy.RewardBlastFurnace(1, 'Furnace Fallback');
@@ -2880,7 +2880,14 @@ Molpy.Up = function() {
 			}
 			if(blitzSpeed >= 1000000) Molpy.EarnBadge('Blitz and Pieces');
 			Molpy.GiveTempBoost('Blitzing', blitzSpeed, blitzTime);
+			if(Molpy.Got('Sea Mining') && Molpy.Redacted.totalClicks < 1e6) Molpy.Boosts['Sea Mining'].power = 1;
+			if(Molpy.Got('Sea Mining') && Molpy.Redacted.totalClicks > 1e6){
+				Molpy.Add('Coal',1);
+				Molpy.Notify('Thank you for subscribing to Coal Facts!<br><br>');
+				Molpy.Notify(Molpy.GLRschoice(Molpy.coalFacts));
+			}
 		};
+
 		Molpy.RewardInception = function() {
 			Molpy.Notify('Leo has gone deeper, finding one dimension pane.');
 			Molpy.Add('Panes', 1);
@@ -2914,6 +2921,12 @@ Molpy.Up = function() {
 			}
 			Molpy.RewardRedacted(1);
 			Molpy.GlassNotifyFlush();
+		};
+		Molpy.RewardDragonDrum = function(){
+			var dq = Molpy.Boosts['DQ'];
+			dq.countdown = Math.max(1,dq.countdown - (Molpy.Redacted.toggle - Molpy.Redacted.countup));
+			Molpy.Notify('Dun Dun <i>Dunnn</i>...Dragon Drum',1);
+			dq.drumbeats++;
 		};
 
 		Molpy.CalcPriceFactor = function() {

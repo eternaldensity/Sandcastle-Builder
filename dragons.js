@@ -430,6 +430,8 @@ Molpy.DragonDigMultiplier = 10;
 Molpy.DragonAttackMultiplier = 1;
 Molpy.DragonDefenceMultiplier = 1;
 Molpy.DragonBreathMultiplier = 1;
+Molpy.DragonLuck = 0;
+Molpy.HideMod = 0;
 Molpy.ConsecutiveNPsWithDragons = 0;
 
 Molpy.DragonDigRecalc = function() {
@@ -437,16 +439,18 @@ Molpy.DragonDigRecalc = function() {
 
 	Molpy.DragonDigMultiplier = 10;
 	if (Molpy.Got('Bucket and Spade')) Molpy.DragonDigMultiplier *=2;
-	if (Molpy.Got('Strength Potion')) Molpy.DragonDigMultiplier *=2;
-	if (Molpy.Got('Lucky Ring')) Molpy.DragonDigMultiplier *=5;
-
+	if (Molpy.Has('Strength Potion',2 + Molpy.Boosts['Strength Potion'].power)) Molpy.DragonDigMultiplier *= (2+Molpy.Boosts['Strength Potion'].power);
+	if (Molpy.Got('Golden Bull')) Molpy.DragonDigMultiplier *=5;
+	
 	Molpy.DragonDefenceMultiplier = 1;
-	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
-	if (Molpy.Got('Healing Potion')) Molpy.DragonDefenceMultiplier *= 1.5;
-	if (Molpy.Got('Ooh, Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
+	if (Molpy.Has('Healing Potion',2 + Molpy.Boosts['Healing Potion'].power)) Molpy.DragonDefenceMultiplier *= 1.5*(1+Molpy.Boosts['Healing Potion'].power);
+	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
+	if (Molpy.Got('Clannesque')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Cryogenics')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
 	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamantine Armour'));
 	if (Molpy.Got('Mirror Scales')) Molpy.DragonDefenceMultiplier *= Math.pow(4,Molpy.Level('Mirror Scales'));
+	if (Molpy.Got('Baobab Tree Fort')) Molpy.DragonDefenceMultiplier *= 4;
+	if (Molpy.Got('WotT')) Molpy.DragonDefenceMultiplier *= 100;
 
 	Molpy.DragonAttackMultiplier = 1;
 	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
@@ -455,13 +459,22 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Big Bite')) Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Big Bite'));
 	if (Molpy.Got('Double Byte')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Double Byte'));
 	if (Molpy.Got('Trilobite')) Molpy.DragonAttackMultiplier *= Math.pow(4,Molpy.Level('Trilobite'));
+	if (Molpy.Got('Diamond Dentures')) Molpy.DragonAttackMultiplier *= 2;
+	if (Molpy.Got('WotP')) Molpy.DragonAttackMultiplier *= 100;
 
-	if (Molpy.Got('Anisoptera')) {
-		Molpy.DragonDefenceMultiplier *= Math.pow(1.5,Molpy.Level('Anisoptera'));
-		Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Anisoptera'));
-	}
-	
 	Molpy.DragonBreathMultiplier = 1;
+	if(Molpy.Got('Autumn of the Matriarch')) Molpy.DragonBreathMultiplier *= Molpy.Boosts['DQ'].totalloses;
+	if(Molpy.Got('MQALLOBS')) Molpy.DragonBreathMultiplier *= 10;
+	if(Molpy.Has('Ethyl Alcohol',2 + Molpy.Boosts['Ethyl Alcohol'].power)) Molpy.Boosts['Dragon Breath'].breathRecovery /= 1.5*(1+Molpy.Boosts['Ethyl Alcohol'].power);
+
+	Molpy.DragonLuck = 0;
+	if (Molpy.Got('Lucky Ring')) Molpy.DragonLuck += .0277;
+	if (Molpy.Has('Cup of Tea',2 + Molpy.Boosts['Cup of Tea'].power)) Molpy.DragonLuck += .0005*(1+Molpy.Boosts['Cup of Tea'].power);
+
+	if (Molpy.Got('Chintzy Tiara')) Molpy.HideMod += 22;
+
+	console.log('Def: ' + Molpy.DragonDefenceMultiplier);
+	console.log('Atk: ' + Molpy.DragonAttackMultiplier);
 
 	var td = 0;
 	Molpy.TotalNPsWithDragons = 0;
@@ -583,8 +596,11 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 			Molpy.DiggingFinds['Coal'] = seacoal;
 		}
 	};
+	if (Molpy.Got('Sea Mining') && Molpy.Boosts['Sea Mining'].power && type == 1){
+		Molpy.Add('Coal',Molpy.Boosts['Sea Mining'].power);
+	}
 	if(Molpy.Got('Annilment') && Molpy.IsEnabled('Annilment')) {
-		var amounts = Molpy.Annililate(Molpy.Level('Coal'),Molpy.Level('Diamonds'));
+		var amounts = Molpy.Annililate();
 		Molpy.Add('Coal', amounts[0]);
 		Molpy.Spend('Diamonds', amounts[1]);
 	}
@@ -594,6 +610,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		Molpy.Notify("Ran out of Vacuum!",1);
 		Molpy.Boosts['Ventus Vehemens'].power = 0;
 	}
+	Molpy.Boosts['Dragon Breath'].breathRecovery--;
 }
 
 Molpy.FindThings = function() {
@@ -1073,6 +1090,17 @@ Molpy.calcBlitzVal = function(atk,def){
 	var ratio = Math.log10(atk/def)*.11;
 	ratio = (Math.max(Math.min(ratio, .66), -.66) || 0);
 	return ratio;
+}
+
+Molpy.Breath = function(index,np){
+	var effects = Molpy.DragonsById[Molpy.Boosts['DQ'].Level].breath;
+	index = 0; //will eventually determine which element in the breath array to return
+	var txt = '<br><br>Current breath effect: ' + effects[index] + '. <input type="button" value="Use" onclick="Molpy.DragonKnightAttack(' + index + ')"</input><br>';
+	if(effects.length > 1){
+		txt += '<input type=button value=">" onclick="Molpy.changeBreath(' + effects + ')"</input>'
+	};
+	Molpy.redactedNeedRepaint = 1;
+	return txt;
 }
 
 /* Ideas
