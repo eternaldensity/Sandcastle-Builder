@@ -12828,8 +12828,8 @@ new Molpy.Boost({
 			name: 'Polarizer',
 			group: 'varie',
 			desc: function(me){
-				var str='Lets you turn the essence of a color into its dual. Uses 5 Blackness to begin the operation, then '
-				str=str+'between 1-10 of the original color per new color you wish to craft.'
+				var str='Lets you turn the essence of a color into its dual (blueness to otherness, otherness to blueness, blackness to ??? and vice versa). Uses 5 Blackness to begin the operation, then '
+				str=str+'between 1-10 of the original color per amount of new color you wish to craft.'
 				if(Molpy.Got('Polarizer')){
 					str=str+' You may dualize:'
 					var buttons=Molpy.polarizerButtons(me.power).reverse()
