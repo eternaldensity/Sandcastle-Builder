@@ -13003,7 +13003,7 @@ new Molpy.Boost({
 		var r=n
 		var l=25
 		while(r>0 && n>0){
-			pow=pow+Math.round(10*Math.ceil(r/l)*Math.random())
+			pow=pow+Math.round(5*Math.ceil(r/l)*Math.random())
 			r=r-Math.ceil(r/l)
 			l--
 		}
@@ -13016,11 +13016,11 @@ new Molpy.Boost({
 			r=r-Math.ceil(r/l)
 			l--
 		}
-		var blu=25*did[0]
-		var oth=25*did[1]
-		var whi=did[2]
-		var bla=did[3]
-		var gray=0.5*did[4]
+		var blu=10*did[0]
+		var oth=10*did[1]
+		var whi=did[2]*0.5
+		var bla=did[3]*0.5
+		var gray=0.25*did[4]
 		Molpy.Boosts['Blueness'].power+=blu
 		Molpy.Boosts['Otherness'].power+=oth
 		Molpy.Boosts['Whiteness'].power+=whi
@@ -13046,7 +13046,7 @@ new Molpy.Boost({
 			},
 			
 			lockFunction: function() {
-				Molpy.Boosts['Ocean Blue'].power=Math.max(Molpy.Boosts['Ocean Blue'].power-2,1);
+				Molpy.Boosts['Ocean Blue'].power=Math.max(Molpy.Boosts['Ocean Blue'].power/2-1,1);
 				Molpy.Notify('It is an eloquent boom, but it is still a boom.')
 			},
 				
@@ -13058,7 +13058,7 @@ new Molpy.Boost({
 			}
 		}
 	);
-	Molpy.RetroAct=function(alias){if(Molpy.Spend({Grayness:10})) Molpy.UnlockBoost(alias)}
+	Molpy.RetroAct=function(alias){if(Molpy.Spend({Grayness:10*Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10)))})) Molpy.UnlockRepeatableBoost(alias,1,Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10))))}
 	new Molpy.Boost({
 			name: 'Retroactivity',
 			desc: function(me){
@@ -13072,7 +13072,7 @@ new Molpy.Boost({
 					}
 					for(var i=0;i<avoptions.length;i++){
 						var look=Molpy.Boosts[avoptions[i]]
-						str=str+"<br>Assume you have "
+						str=str+"<br>Assume you have "+Molpify(Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10))))
 						str=str+"<input type='Button' onclick='Molpy.RetroAct(\"" 
 						str=str+ look.alias + "\")' value='" + look.name+"'></input>" //Yup. Assume.
 					}
