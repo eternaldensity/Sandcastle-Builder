@@ -290,6 +290,9 @@
 			Molpy.Boosts['Glass Trolling'].IsEnabled = 1;
 			return;
 		}
+		if(Molpy.Got('Sea Mining' && Molpy.Redacted.totalClicks > 1e6 && thread == 'Unsubscribe')){
+			Molpy.Notify('/"subscribe/"<br><br><br><br>Thank you for re-subscribing to Coal Facts!')
+		}
 
 		if(thread && thread != '') {
 			_gaq && _gaq.push(['_trackEvent', 'Import', 'Begin']);

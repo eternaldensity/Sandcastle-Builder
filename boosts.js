@@ -10307,8 +10307,21 @@ Molpy.DefineBoosts = function() {
 		alias: 'RDKM',
 		group: 'drac',
 		icon: 'rdkm',
-		desc: function (me) {
-			var str = 'This has lots of useful information that will change as you do things...';
+		desc: function(){
+			var str = '';
+			if(Molpy.Boosts['DQ'].level < 3) str += 'This has lots of useful information that will change as you do things...if you know where to look.<br>';
+			if(Molpy.DragonLuck) str += 'Draconic Luck: ' + 100*Molpify(Molpy.DragonLuck,3) + '%';
+			if(Molpy.Got('Dragon Breath') && Molpy.Boosts['Dragon Breath'].breathRecovery > 0) str += '<br>mNP until Breath is available: ' + Molpify(Molpy.Boosts['Dragon Breath'].breathRecovery,0);
+			if(!Molpy.Boosts['Dragon Breath'].breathRecovery) str += '<br>Breath is available.';
+			if(Molpy.Got('Cup of Tea') || Molpy.Got('Healing Potion') || Molpy.Got('Strength Potion') || Molpy.Got('Ethyl Alcohol') || 0) str+= '<br><u>Potions</u></div>';
+			if(Molpy.Got('Cup of Tea')) str += 'Cups of tea: ' + Molpy.Level('Cup of Tea');// + Molpy.Has('Cup of Tea', 2+Molpy.Boosts['Cup of Tea'].power)?str += 'AP':str += 'A';
+			if(Molpy.Got('Healing Potion')) str += '<br>Healing Potions: ' + Molpy.Level('Healing Potion');// + Molpy.Has('Healing Potion', 2+Molpy.Boosts['Healing Potion'].power)?str += '<div class="rightjust">A+P</div>':str += '<div class="rightjust">A</div>';
+			if(Molpy.Got('Strength Potion')) str += '<br>Strength Potions: ' + Molpy.Level('Strength Potion');// + Molpy.Has('Strength Potion', 2+Molpy.Boosts['Strength Potion'].power)?str += '<div class="rightjust">A+P</div>':str += '<div class="rightjust">A</div>';
+			if(Molpy.Got('Ethyl Alcohol')) str += '<br>Ethyl Alcohols: ' + Molpy.Level('Ethyl Alcohol');// + Molpy.Has('Ethyl Alcohol', 2+Molpy.Boosts['Ethyl Alcohol'].power)?str += '<div class="rightjust">A+P</div>':str += '<div class="rightjust">A</div>';
+			return str;
+		},
+		stats: function(me){
+			var str = '';
 			var draglevel = Molpy.Level('DQ');
 			if (!me.bought) return str;
 			str += '<br><ul class=rdkm>';
@@ -10319,7 +10332,7 @@ Molpy.DefineBoosts = function() {
 				str += '<li>Linings of Blackprints and Flux Crystals give digging';
 				if (Molpy.Has('Goats',Infinity) && Molpy.Has('Mustard',Infinity)) {
 					str += '<li>Linings of Goats and Mustard give breath effects.';
-					if (draglevel < Molpy.Dragons['Wyrm'].id) str += '  When you have the rght types of dragons.';
+					if (draglevel < Molpy.Dragons['Wyvern'].id) str += '  When you have the rght types of dragons.';
 					}
 				if (Molpy.Has('Bonemeal',Infinity) && Molpy.Has('Vacuum',Infinity)) str += '<li>Linings of Bonemeal and Vacuums give magic';
 				if (Molpy.Has('Logicat',Infinity) && Molpy.Has('QQ',Infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
@@ -10329,13 +10342,13 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.Level('Eggs')) {
 				str += '<li>You need to wait for the eggs to hatch';
 			}
-			str += '<li>Dragons have a hive mind, if one hides they all hide, if one is injured they all help heal the injuries'; 
+			str += '<li>Dragons have a hive mind--if one hides they all hide; if one is injured they all help heal the injuries'; 
 			if (Molpy.Level('Hatchlings')) {
 				str += '<li>When the eggs hatch, the Hatchlings will mature for many mnp.';
-				str += '<li>Hatchlings need feeding, the better the food, the better the Dragon.';
+				str += '<li>Hatchlings need feeding. The better the food, the better the Dragon.';
 				str += '<li>You will be notified when the Hatchlings are getting restless and want to fledge to their own teritories';
-				str += '<li>To give a clutch of Hatchlings their own teritory. Go to a NP without any Dragons, a low positive number is recommended for early clutches';
-				str += '<li>If you fail to give them their own territory after a while they will escape to another plane';
+				str += '<li>To give a clutch of Hatchlings their own teritory, go to an NP without any Dragons. A low positive number is recommended for early clutches';
+				str += '<li>If you fail to give them their own territory, after a while they will escape to another plane';
 				str += '<li>If there are too many hatchlings for the NP the strongest will eat the rest';
 				str += '<li>Once released they have to survive the locals and they can then can start digging for treasure';
 			};
@@ -11556,6 +11569,13 @@ Molpy.DefineBoosts = function() {
 		limit: function() { return Math.min(18,6*(Molpy.Boosts.DQ.Level-2))},
 		title: function(me) { return me.name + ' ' + me.Species[me.unlocked] },
 		Level: Molpy.BoostFuncs.Bought0Level,
+		buyFunction: function() {
+			if(this.Level == 1) Molpy.Notify('A short hop and leap<br>Unerringly seeking prey<br><br><br>Descending anon')
+			if(this.Level == 5) Molpy.Notify('The dragons can glide<br><br>Striking terror with sharp claws<br><br>Visions of ripped flesh');
+			if(this.Level == 9) Molpy.Notify('True flight is in reach<br><br>Coursing with joy as they climb<br><br>Sailing the heavens');
+			if(this.Level == 13) Molpy.Notify('Thin air and thin cries<br><br>Diving from on high to strike<br><br>Nothing left secret');
+			if(this.Level == 17) Molpy.Notify('Faint specks in the clouds<br><br>All that can be seen is seen<br><br>Black wings on the wind')
+		}
 	});
 
 	new Molpy.Boost({
@@ -11846,6 +11866,7 @@ Molpy.DefineBoosts = function() {
 		price: {Diamonds:'12.50T', Bonemeal:'12.50EW', Goats:Infinity},
 
 	});
+
 	new Molpy.Boost({
 		name: 'Diamond Recycling',
 		icon: 'recycling',
@@ -11853,6 +11874,7 @@ Molpy.DefineBoosts = function() {
 		group: 'drac',
 		price: {Maps:'35G'},
 	});
+
 	new Molpy.Boost({
 		name: 'Seacoal',
 		icon: 'seacoal',
@@ -11860,17 +11882,17 @@ Molpy.DefineBoosts = function() {
 		group: 'drac',
 		price: {Coal:1250},
 	});
+
 	new Molpy.Boost({
 		name: 'Annilment',
 		icon: 'annilment',
 		group: 'drac',
 		className: 'toggle',
 		desc: function(me) {
-			var calculateRatio = Molpy.Annililate(Molpy.Level('Coal'),Molpy.Level('Diamonds'));
 			var str = (me.IsEnabled ? 'C' : 'When active, c') + 'onverts diamonds back into coal if dragons are digging.';
 			if(!me.bought) return str;
 			str += ' This mNP it ' + ((me.IsEnabled && Molpy.Boosts['DQ'].overallState == 0)?'will convert ':'would convert ') 
-			+ calculateRatio[1] + ' Diamond' + ((calculateRatio[1] > 1)?'s':'') + ' into ' + calculateRatio[0] + ' Coal.'
+			+ Molpy.DiamToSpend + ' Diamond' + ((Molpy.DiamToSpend > 1)?'s':'') + ' into ' + Molpy.CoalToAdd + ' Coal.'
 			+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
 			+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
 			return str;
@@ -11879,20 +11901,31 @@ Molpy.DefineBoosts = function() {
         price: {
             Diamonds: '77G', 
             Vacuum: '533.333G'
-        }
+        },
     });
-Molpy.Annililate = function(coal,diamonds){
+
+Molpy.Annililate = function(){
+	Molpy.Anything = 1;
+	var coal = Molpy.Boosts['Coal'].Level;
+	var coal = Molpy.Boosts['Chthonism'].bought? coal%(1e10*(Math.pow(10,-Molpy.Boosts['Coal'].bought))): coal;
+	var diamonds = Molpy.Boosts['Diamonds'].Level;
     var unrar = coal/diamonds;
     var min = 1e-12;
 	var max = 0.524371863;
-	unrar = (unrar<min) ? Math.max(min, unrar) : (unrar>max) ? Math.min(max, unrar): unrar; 
+	unrar = (unrar<min)? Math.max(min, unrar): (unrar>max)? Math.min(max, unrar): unrar; 
 	var i = Math.abs(Math.pow(Math.log10(unrar)/7,7)*7777);
-	coaltohoard = Math.max(Math.floor(i),1);
-	console.log
-	diamondstocrush = Math.max(Math.floor(1/i), 1);
-	return [coaltohoard,diamondstocrush];
+	Molpy.CoalToAdd = Math.max(Math.floor(i),1);
+	Molpy.DiamToSpend = Math.max(Math.floor(1/i), 1);
+	if(!Molpy.Got('Chthonism') && Molpy.Boosts['DQ'].Level > 2 && Molpy.groupBadgeCounts.diamm >= 30 && Molpy.CoalToAdd > 338371000) Molpy.UnlockBoost('Chthonism');
+	if(!Molpy.Got('Safety Canary') && Molpy.Boosts['DQ'].Level > 2 && Molpy.DiamToSpend >= 777776) Molpy.UnlockBoost('Safety Canary');
+	if(Molpy.Got('Safety Canary') && Molpy.IsEnabled('Safety Canary') && Molpy.DiamToSpend > 777){
+		Molpy.Boosts[Annilment].power = 0;
+		Molpy.Notify('Deactivated Annilment',1);
+	};
+	return [Molpy.CoalToAdd,Molpy.DiamToSpend];
 };
-new Molpy.Boost({
+
+	new Molpy.Boost({
     	name: 'Robotic Hatcher',
     	icon: 'hatcher',
     	group: 'drac',

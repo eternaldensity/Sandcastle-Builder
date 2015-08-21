@@ -1,7 +1,7 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.7;
+Molpy.version=4.0;
 Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numerical version on screen
 
 /**************************************************************
@@ -584,8 +584,39 @@ Molpy.HardcodedData = function() {
 			'I love the whole thread',
 			'The future\'s pretty cool!',
 			bdy,bdy,'<div class="flip">'+bdy+'</div>','<div class="flip">'+bdy+'</div>'
-		];
-	}
+		]
+	};
+
+	Molpy.coalFacts = [
+		'Coal comes in three main types: lignite, bituminous, and anthracite. But there are many sub-types!',
+		'Different types of coal have different properties and originate from different time periods and types of vegetation.',
+		'Coal comes from the Carboniferous period, when the earth was verdant and very swampy.',
+		'When plants decayed and fell to the bottom of swamps and bogs, enormous pressure was applied to them over thousands of years to create what we know as coal.',
+		'If you compress coal even more, you end up with diamonds!',
+		'There are around 1 trillion tons of Coal left in the world. That\'s enough for more than 100 years at projected energy usage levels.',
+		'Coal is responsible for most of the air pollution in the world, and the WHO attributes about 1 in 8 human deaths to air pollution.',
+		'Burning coal releases about 2 pounds of carbon into the atmosphere for every kilowatt-hour.',
+		'There are a few ways of extracting coal from the ground, the most invasive being strip mining.',
+		'Bagger 293 is the tallest and heaviest land vehicle in the world, and is used to excavate coal.',
+		'Coal has been used as fuel for more than 3000 years.',
+		'The factoid that coal and oil come from dinosaurs is false. Most fossil fuels actually predate the dinosaurs we know and love!',
+		'While coal originates mostly from tree and fern matter deposited in peat bogs and swamps, oil and natural gas originate from marine organisms.',
+		'Over 40% of the world\'s electricity is derived from coal, but this number is decreasing as renewable energy takes over.',
+		'Coal is the second-highest source of energy in the world, being superseded only by oil.',
+		'Bituminous coal contains bitumen, which is used in asphalt and roofing materials.',
+		'Even though coal is biological in origin, it is classified as a sedimentary rock.',
+		'The older and more compressed the coal, the purer it is, and therefore the more heat it generates when burned.',
+		'Anthracite coal literally means "coal-like coal." The word for coal in Greek is anthrax!',
+		'The purest grades of coal are quite valuable and are used in smelting and metallurgy.',
+		'Coal was a vital component in the Industrial Revolution since it fueled steam technology.',
+		'Before the popularization of natural gas in the mid-20th century, coal gas was the main source of gas lighting in towns and cities.',
+		'Charcoal is a coal-like substance created by heating wood in the abscence of oxygen.',
+		'If you like coal as much as I do, consider becoming a coal miner. But be careful of pneumonoultramicroscopicsilicovolcanoconiosis!',
+		'To unsubscribe from Coal Facts, enter "Unsubscribe" in the Import dialog.',
+		'To unsubscribe from Coal Facts, enter "Unsubscribe" in the Import dialog.',
+		'To unsubscribe from Coal Facts, enter "Unsubscribe" in the Import dialog.',
+		'To unsubscribe from Coal Facts, enter "Unsubscribe" in the Import dialog.'
+	]
 }
 
 	

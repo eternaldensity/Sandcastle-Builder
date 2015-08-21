@@ -2650,6 +2650,7 @@ Molpy.Up = function() {
 				}
 			}
 			var BKJ = Molpy.Boosts['BKJ'];
+			var dq = Molpy.Boosts['DQ'];
 			if(BKJ.bought) {
 				BKJ.power = (BKJ.power) + 1;
 			}
