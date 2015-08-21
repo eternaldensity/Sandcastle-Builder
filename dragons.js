@@ -473,8 +473,8 @@ Molpy.DragonDigRecalc = function() {
 
 	if (Molpy.Got('Chintzy Tiara')) Molpy.HideMod += 22;
 
-	console.log('Def: ' + Molpy.DragonDefenceMultiplier);
-	console.log('Atk: ' + Molpy.DragonAttackMultiplier);
+	if(Molpy.CombatDebug) Molpy.Notify('Def: ' + Molpy.DragonDefenceMultiplier);
+	if(Molpy.CombatDebug) Molpy.Notify('Atk: ' + Molpy.DragonAttackMultiplier);
 
 	var td = 0;
 	Molpy.TotalNPsWithDragons = 0;

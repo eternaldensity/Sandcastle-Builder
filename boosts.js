@@ -10562,7 +10562,7 @@ Molpy.DefineBoosts = function() {
 		},
 		draglvl: 'Wyrm',
 		group: 'bean',
-		limit: function() { return Molpy.Got('Dragonfly')?4:1 },
+		limit: 4,
 		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
