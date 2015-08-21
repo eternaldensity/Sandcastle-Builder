@@ -30,10 +30,9 @@ Inspired by Orteil's C**kie Clicker.
 
 For personal amusement only.
 
-
 ## Changelog
 
-### 3.7 Kitty Genocide Simulator 2015
+### 4.0 Kitty Genocide Simulator 2015
 
 #### Calamitizer
 
@@ -99,9 +98,28 @@ For personal amusement only.
 - 8 new badges
 - 76 new discoveries (for t1i)
 
+#### LuminousLeopards
+
+ * More changes to Dragon hide times
+ * Breath combat
+ * Added a ceiling to the amount of Bonemeal it's possible to get with Shadow Strike
+ * Changes to Annilment so the function doesn't run twice an mNP
+ * Draconic Luck is now a thing, it provides a small bonus to lots of stuff
+ * Removed def/atk multipliers for Lucky Ring and Anisoptera (these are Wyvern-level boosts so nobody had them yet anyway); added a Breath bonus per level of Anisoptera and a Luck bonus for Lucky Ring
+ * Strength Potion no longer a fight option (this was in the code but not actually implemented anyway)
+ * Depending on your level of Anisoptera you might find out some interesting things about RedundaKnights
+ * Added a fudge factor to sap health from both dragons and RKs if a fight lasts too long (prevents ties)
+ * Added a couple tiebreaker fight results just in case
+ * Robotic Hatcher still requires Infinite Goats, but no longer starves your dragons.
+ * Moved most RDKM information to Stats view. Added some useful information once you get far enough (luck, number/amount of potions)
+ * Draconic potions/consumables now each have an active and a passive effect. The passive effect only works if you have at least two of the boost owned.
+ * Lowered the ceiling on the number of Trilobites you can get at Wyverns and beyond, for balance purposes
+ * You can now get two rewards from a fight if your attack is significantly higher than your defense.
+ * New Wyrm boosts: Dragon Drum, Sea Mining
+ * New Wyvern boosts: Safety Canary, Autumn of the Matriarch, Dragon Breath, Honor Among Serpents, Golden Bull, Chintzy Tiara, Diamond Dentures, Megan's Quick-Acting, Long Lasting Odorific Breath Spray, Baobab Tree Fort,
+ Catalyzer, Way of the Tortoise, Way of the Panther, Tuple or Nothing, Ethyl Alcohol, Clannesque
+
 ### 3.67 Enough Mustard for a Sandwich
-
-
 
 #### stormrunnerz
 

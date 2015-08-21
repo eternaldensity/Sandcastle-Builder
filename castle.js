@@ -2369,26 +2369,30 @@ Molpy.Up = function() {
 				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0) { // Redundaknights
 					this.drawType[level] = 'knight';
 					this.opponents = Molpy.RedundaKnight();
-					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redundaknights ' + 
-						countdown + '</h2><div>';
-						if(this.opponents.knowledge[1]) {
-							str += '<br> - ' + (this.opponents.numb == 1?'A':Molpify(this.opponents.numb)) + ' ' + 
-							Molpy.OpponentsById[this.opponents.type].name + (this.opponents.numb > 1?'s':'') + 
-							' from NP' + this.opponents.from;
-						};
-						if(this.opponents.knowledge[0]) {
-							str += '<br> - Attacking NP'+ this.opponents.target;
-						};
-						if(this.opponents.knowledge[2]) {
-							str += '<br> - Armed ' + (this.opponents.modifier > 1?'defensively' : 'offensively');
-						};
-						if(this.opponents.knowledge[3]) {
-							str += '<br> - Def: ' + Molpify((this.opponents.oppstat[0] + this.opponents.oppstat[1])*this.opponents.modifier, 2) + '<br> - Atk: ' + Molpify(this.opponents.oppstat[0], 2) 
-							+ (this.opponents.oppstat[1]>0?'':' Magic: ' + Molpify(this.opponents.oppstat[1] ,2));
-						};
-					str += '<input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
-					if (Molpy.Level('Strength Potion') > 1) str += '<br><input type="button" value="Use Strength Potion" onclick="Molpy.DragonKnightAttack(1)"</input><br>';
-					if (0) str += '<br><input type="button" value="Use Breath" onclick="Molpy.DragonKnightAttack(2)"</input><br>';
+					var np = this.opponents.target;
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redundaknights ' + countdown + '</h2><div>';
+					if(this.opponents.knowledge[1]) {
+						str += '<br> - ' + (this.opponents.numb == 1?'A':Molpify(this.opponents.numb)) + ' ' + 
+						Molpy.OpponentsById[this.opponents.type].name + (this.opponents.numb > 1?'s':'') + 
+						' from NP' + this.opponents.from;
+					};
+					if(this.opponents.knowledge[0]) {
+						str += '<br> - Attacking NP'+ this.opponents.target + '<br>';
+					};
+					if(this.opponents.knowledge[2]) {
+						str += ' - Armed ' + (this.opponents.modifier > 1?'defensively' : 'offensively') + '<br>';
+					};
+					if(this.opponents.knowledge[3]) {
+						str += ' - Def: ' + Molpify((this.opponents.oppstat[0] + this.opponents.oppstat[1])*this.opponents.modifier, 2) + '<br> - Atk: ' + Molpify(this.opponents.oppstat[0], 2) 
+						+ (this.opponents.oppstat[1]>0?'':' Magic: ' + Molpify(this.opponents.oppstat[1] ,2));
+					};
+					str += '<br><input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
+					if(Molpy.NPdata[np].breath > 0 && Molpy.Boosts['DQ'].Level >=3 && !Molpy.Boosts['Dragon Breath'].breathRecovery){
+						var breathindex = Molpy.Boosts['Dragon Breath'].power;
+						var breathtext = Molpy.Breath(breathindex,np);
+						str += breathtext;
+						Molpy.redactedNeedRepaint = 1;
+					};
 					str += '<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
 				} else {
 					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
@@ -2650,6 +2654,7 @@ Molpy.Up = function() {
 				}
 			}
 			var BKJ = Molpy.Boosts['BKJ'];
+			var dq = Molpy.Boosts['DQ'];
 			if(BKJ.bought) {
 				BKJ.power = (BKJ.power) + 1;
 			}
@@ -2661,8 +2666,8 @@ Molpy.Up = function() {
 			} else if(isFinite(Molpy.Boosts['Sand'].power)) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blitzing', true]);
 				Molpy.RewardBlitzing(automationLevel);
-			} else if(Molpy.TotalDragons && Molpy.Level('DQ') > 2 && Molpy.Boosts['Dragonfly'].bought < 18){
-				Molpy.UnlockBoost('Dragonfly');
+			} else if(Math.random() > .75 - Molpy.DragonLuck && dq.Level >= 2 && dq.overallState == 2 && !forceDepartment){
+				Molpy.RewardDragonDrum();
 			} else {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
 				Molpy.RewardBlastFurnace(1, 'Furnace Fallback');
@@ -2880,7 +2885,14 @@ Molpy.Up = function() {
 			}
 			if(blitzSpeed >= 1000000) Molpy.EarnBadge('Blitz and Pieces');
 			Molpy.GiveTempBoost('Blitzing', blitzSpeed, blitzTime);
+			if(Molpy.Got('Sea Mining') && Molpy.Redacted.totalClicks < 1e6) Molpy.Boosts['Sea Mining'].power = 1;
+			if(Molpy.Got('Sea Mining') && Molpy.Redacted.totalClicks > 1e6){
+				Molpy.Add('Coal',1);
+				Molpy.Notify('Thank you for subscribing to Coal Facts!<br><br>');
+				Molpy.Notify(Molpy.GLRschoice(Molpy.coalFacts));
+			}
 		};
+
 		Molpy.RewardInception = function() {
 			Molpy.Notify('Leo has gone deeper, finding one dimension pane.');
 			Molpy.Add('Panes', 1);
@@ -2914,6 +2926,12 @@ Molpy.Up = function() {
 			}
 			Molpy.RewardRedacted(1);
 			Molpy.GlassNotifyFlush();
+		};
+		Molpy.RewardDragonDrum = function(){
+			var dq = Molpy.Boosts['DQ'];
+			dq.countdown = Math.max(1,dq.countdown - (Molpy.Redacted.toggle - Molpy.Redacted.countup));
+			Molpy.Notify('Dun Dun <i>Dunnn</i>...Dragon Drum',1);
+			dq.drumbeats++;
 		};
 
 		Molpy.CalcPriceFactor = function() {
@@ -3934,7 +3952,4 @@ window.onload = function() {
 		Molpy.Wake();
 		_gaq && _gaq.push(['_trackEvent', 'Setup', 'Complete', '' + Molpy.version, true]);
 	}
-
-
-
 };
