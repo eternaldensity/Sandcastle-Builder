@@ -12911,7 +12911,7 @@ new Molpy.Boost({
 			},
 			group: 'varie',
 			price: {
-				Blackness: 12.5*7
+				Blackness: 12.5*70
 			},
 		}
 	);
