@@ -12802,7 +12802,7 @@ new Molpy.Boost({
 			group: 'varie',
 			desc: function(me){
 				var str='Lets you use the blue of the ocean and some <i>other</i>ness to make squids so'
-				str=str+' that you can extract their ink.'
+				str=str+' that you can extract their ink. Each squid requires fifty of each.'
 				if(Molpy.Got('Argy')){
 					str=str+'<br> <input type="Button" value="Make ' + Molpify(Molpy.getSquids())
 					str=str+ ' squids" onclick="Molpy.makeSquids()">'
@@ -12900,7 +12900,8 @@ new Molpy.Boost({
 			name: 'Polarizer',
 			group: 'varie',
 			desc: function(me){
-				var str='Lets you turn the essence of a color into its dual.'
+				var str='Lets you turn the essence of a color into its dual. Uses 5 Blackness to begin the operation, then '
+				str=str+'between 1-10 of the original color per new color you wish to craft.'
 				if(Molpy.Got('Polarizer')){
 					str=str+' You may dualize:'
 					var buttons=Molpy.polarizerButtons(me.power).reverse()

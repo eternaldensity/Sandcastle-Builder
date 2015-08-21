@@ -3359,7 +3359,7 @@ Molpy.Up = function() {
 		if(dif<=0 && max==1){return 0;}
 		if(dif==0) return 0;
 		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
-		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Molpy.Boosts['Blackness'].power/2}
+		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Math.ceil(Molpy.Boosts['Blackness'].power/2)}
 		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
 		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
 		dif=dif/2
@@ -3371,6 +3371,9 @@ Molpy.Up = function() {
 		if((Molpy.Got('NaP'))&&(!Molpy.IsEnabled('NaP'))){
 			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/4
 		} //NaP defaults to on.
+		if(max==1 && !Molpy.Got('Whiteness')){
+			Molpy.Notify("You made something, but it reacted with your blackness before you could see what it was")
+		}
 		return dif
 	}
 	Molpy.craftPhoto=function(){
@@ -3396,7 +3399,7 @@ Molpy.Up = function() {
 		Molpy.Boosts['Photoelectricity'].power+=Math.pow(times, 0.5)
 		if(Molpy.Boosts['Photoelectricity'].power>=5){
 			var todo=Math.floor(Molpy.Boosts['Photoelectricity'].power/5)
-			if(todo>=100){Molpy.EarnBadge('Chemistry')}
+			if(todo>=100){Molpy.EarnBadge('Diminishing Returns')}
 			Molpy.Boosts['Photoelectricity'].power=Molpy.Boosts['Photoelectricity'].power-5*todo
 			Molpy.Boosts['Photoelectricity'].Level=Math.max(Molpy.Boosts['Photoelectricity'].Level,todo)
 			if(isNaN(Molpy.Boosts['Photoelectricity'].Level)){Molpy.Boosts['Photoelectricity'].Level=1}
