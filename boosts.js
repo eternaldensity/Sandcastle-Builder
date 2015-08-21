@@ -25,7 +25,7 @@ Molpy.DefineBoosts = function() {
 	        faves: ['favourites', 'Favourites'],
 		magic: ['magic', 'Magic'],
 		dimen: ['dimension tech', 'Dimension Tech'],
-		varie: ['varie', 'Variegation', 'varie'],
+		varie: ['variegation', 'Variegation', 'varie'],
 	};
 	
 	Molpy.unlockedGroups['stuff'] = 1; // Stuff is always unlocked because Sand and Castles are always unlocked
@@ -12270,6 +12270,7 @@ new Molpy.Boost({
 		},
 	});
 	Molpy.Fold = function() {
+		Molpy.Anything = 1;
 		if (!Molpy.Spend('Panes', 1)) {
 			Molpy.Notify('The boxes don\'t fit inside!');
 			return;
@@ -12574,6 +12575,7 @@ new Molpy.Boost({
 		},
 	});
 	Molpy.Pinch = function() {
+		Molpy.Anything = 1;
 		var prey = Molpy.Boosts['kitkat'].prey;
 		var overtones = 0;
 		prey = prey.sort(function (a, b) { 
@@ -12800,6 +12802,7 @@ new Molpy.Boost({
 			name: 'Argy',
 			alias: 'Argy',
 			group: 'varie',
+			className: 'action',
 			desc: function(me){
 				var str='Lets you use the blue of the ocean and some <i>other</i>ness to make squids so'
 				str=str+' that you can extract their ink. Each squid requires fifty of each.'
@@ -12899,6 +12902,7 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: 'Polarizer',
 			group: 'varie',
+			className: 'action',
 			desc: function(me){
 				var str='Lets you turn the essence of a color into its dual. Uses 5 Blackness to begin the operation, then '
 				str=str+'between 1-10 of the original color per new color you wish to craft.'
@@ -12982,6 +12986,7 @@ new Molpy.Boost({
 				return str
 			},
 			group: 'varie',
+			className: 'action',
 			price: {
 				Blackness: 12.5*7
 			},
