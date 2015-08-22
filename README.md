@@ -74,6 +74,30 @@ For personal amusement only.
 - Improved IP processing time so that IP could be much larger.
 - Minor improvements to FindThings, logicats, and DORD as well.
 - Got TaTpix mostly working.
+- New Boosts:
+ * Five new Stuffs (Blueness, Otherness, Blackness, Whiteness, and Grayness)
+ * Argy
+ * Blue's Hints
+ * Ocean Blue
+ * Meteor
+ * Improved Scaling
+ * Polarizer
+ * Robotic Inker
+ * Not a Priest
+ * Equilibrium Constant
+ * Hallowed Ground
+ * Photoelectricity
+ * Blue Fragment
+ * Atomic Pump
+ * A Splosion
+ * Retroactivity
+ * Concentrated Boom
+ * Diluted Boom
+ * pH
+ * pOH
+ * pInsanity
+- 8 new badges
+- 76 new discoveries (for t1i)
 
 ### 3.67 Enough Mustard for a Sandwich
 
