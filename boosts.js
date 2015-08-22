@@ -743,7 +743,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.EarnBadge('The Big Freeze');
 			return;
 		}
-		if(Math.abs(np) > Math.abs(Molpy.highestNPvisited)) {
+		if(Math.abs(np) > Math.abs(Molpy.largestNPvisited[Number((np-Math.floor(np)).toFixed(3))])) {
 			Molpy.Notify('Wait For It');
 			return;
 		}
