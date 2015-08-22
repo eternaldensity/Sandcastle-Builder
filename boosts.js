@@ -743,7 +743,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.EarnBadge('The Big Freeze');
 			return;
 		}
-		if(Math.abs(np) > Math.abs(Molpy.highestNPvisited)) {
+		if(Math.abs(np) > Math.abs(Molpy.largestNPvisited[Number((np-Math.floor(np)).toFixed(3))])) {
 			Molpy.Notify('Wait For It');
 			return;
 		}
@@ -12779,7 +12779,7 @@ new Molpy.Boost({
 	);
 	Molpy.getSquids=function(){
 		if(!Molpy.Got('Argy')){return 0;}
-		Molpy.Boosts['Argy'].power=Math.max(Molpy.Boosts['Blackness'].power,1)
+		Molpy.Boosts['Argy'].power=Math.max(DeMolpify(Molpy.Boosts['Blackness'].power),1)
 		return Math.pow(10,Math.floor(Math.log(Molpy.Boosts['Argy'].power)/Math.log(10)))
 	}
 	Molpy.makeSquids=function(n){
@@ -13004,6 +13004,7 @@ new Molpy.Boost({
 				}
 				return str;
 			},
+			stats: "Renamed Phlogiston to anti-grayness. But, since that doesn't make any sense, it was declared Phlogiston could not be a correct theory.",
 			group: 'varie',
 			IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 			className: 'toggle',
@@ -13048,6 +13049,7 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: 'Photoelectricity',
 			desc: 'Lets Not a Priest be disabled and does stuff when it is disabled.',
+			stats: "In the element 1921, Eisenstein was awarded the Metal of Nobility for his work in emcee. Wait. That last part wasn't right.",
 			group: 'varie',
 			price: {
 				Whiteness: 12.5*10
@@ -13071,16 +13073,16 @@ new Molpy.Boost({
 			desc: "Enough of these, and you'll get a... nevermind.",
 			group: 'varie',
 			photo: 1,
-			buyFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['bluhint'].power++}
+			buyFunction: function(){Molpy.LockBoost(this.alias);Molpy.Boosts['bluhint'].power+=0.05}
 		}
 	);
 	Molpy.splosions=function(n,a){
 		if(Molpy.Got('Concentrated Boom')){n=n*2}
-		var pow=5*n
+		var pow=10*n
 		var r=n
 		var l=25
 		while(r>0 && n>0){
-			pow=pow+Math.round(10*Math.ceil(r/l)*Math.random())
+			pow=pow+Math.round(15*Math.ceil(r/l)*Math.random())
 			r=r-Math.ceil(r/l)
 			l--
 		}
@@ -13095,8 +13097,8 @@ new Molpy.Boost({
 		}
 		var blu=25*did[0]
 		var oth=25*did[1]
-		var whi=did[2]
-		var bla=did[3]
+		var whi=did[2]*1
+		var bla=did[3]*1
 		var gray=0.5*did[4]
 		Molpy.Boosts['Blueness'].power+=blu
 		Molpy.Boosts['Otherness'].power+=oth
@@ -13123,7 +13125,7 @@ new Molpy.Boost({
 			},
 			
 			lockFunction: function() {
-				Molpy.Boosts['Ocean Blue'].power=Math.max(Molpy.Boosts['Ocean Blue'].power-2,1);
+				Molpy.Boosts['Ocean Blue'].power=Math.max(Molpy.Boosts['Ocean Blue'].power/2-1,1);
 				Molpy.Notify('It is an eloquent boom, but it is still a boom.')
 			},
 				
@@ -13135,7 +13137,10 @@ new Molpy.Boost({
 			}
 		}
 	);
-	Molpy.RetroAct=function(alias){if(Molpy.Spend({Grayness:10})) Molpy.UnlockBoost(alias)}
+	Molpy.RetroAct=function(alias){if(Molpy.Spend({Grayness:10*Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10)))})){
+		if(Math.random()>(Math.max(0,-0.001+Molpy.Boosts['Retroactivity'].power^(Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10))))))){Molpy.Notify('A Contradiction ocurred!');
+		Molpy.UnlockRepeatableBoost('splosion',1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))
+		} else{Molpy.UnlockRepeatableBoost(alias,1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))}
 	new Molpy.Boost({
 			name: 'Retroactivity',
 			desc: function(me){
@@ -13149,18 +13154,20 @@ new Molpy.Boost({
 					}
 					for(var i=0;i<avoptions.length;i++){
 						var look=Molpy.Boosts[avoptions[i]]
-						str=str+"<br>Assume you have "
+						str=str+"<br>Assume you have "+Molpify(Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))
 						str=str+"<input type='Button' onclick='Molpy.RetroAct(\"" 
 						str=str+ look.alias + "\")' value='" + look.name+"'></input>" //Yup. Assume.
 					}
 				}
 				return str
 			},
+			stats: "Assumed itself into existence.",
 			group: 'varie',
 			photo: 2, //not the easiest to get. I don't mind, though.
 			price: {
 				Grayness:12.5*10
 			},
+			startPower:0.4,
 			buyFunction: function(){Molpy.PhotoRewardOptions.splice(Molpy.PhotoRewardOptions.indexOf(this.alias),1)}//a must :(
 		}
 	);

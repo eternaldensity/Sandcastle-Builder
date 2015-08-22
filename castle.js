@@ -3318,7 +3318,7 @@ Molpy.Up = function() {
 			}
 			if(Molpy.Got('pH')){
 				Molpy.Boosts['pH'].power++
-				var t=10000000/(25*12.5)
+				var t=10000000/(25*2.5)
 				if(Molpy.Got('pOH')){t=10}
 				if(Molpy.Boosts['pH'].power>=t){Molpy.RunFastPhoto(25);Molpy.Boosts['pH'].power=0;
 					Molpy.EarnBadge('pH');if(!Molpy.Got('pOH')){Molpy.EarnBadge('pOHless')
@@ -3362,7 +3362,9 @@ Molpy.Up = function() {
 		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Math.ceil(Molpy.Boosts['Blackness'].power/2)}
 		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
 		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
-		dif=dif/2
+		if(max==1 && !Molpy.Got('Whiteness')){
+			Molpy.Notify("You made something, but it reacted with 2 of your blackness before you could see what it was")
+		}else{dif=dif/2}
 		Molpy.Boosts['Blackness'].power=Math.max(0,Molpy.Boosts['Blackness'].power-2*dif)
 		Molpy.Boosts['Whiteness'].power=Molpy.Boosts['Whiteness'].power-dif
 		if(Molpy.Got('NaP')&&(Molpy.IsEnabled('NaP')||!Molpy.Got('Photoelectricity'))){
@@ -3371,9 +3373,7 @@ Molpy.Up = function() {
 		if((Molpy.Got('NaP'))&&(!Molpy.IsEnabled('NaP'))){
 			Molpy.Boosts['Grayness'].power=Molpy.Boosts['Grayness'].power-brate/4
 		} //NaP defaults to on.
-		if(max==1 && !Molpy.Got('Whiteness')){
-			Molpy.Notify("You made something, but it reacted with 2 of your blackness before you could see what it was")
-		}
+		
 		return dif
 	}
 	Molpy.craftPhoto=function(){
