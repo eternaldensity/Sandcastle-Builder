@@ -12927,6 +12927,7 @@ new Molpy.Boost({
 				}
 				return str;
 			},
+			stats: "Renamed Phlogiston to anti-grayness. But, since that doesn't make any sense, it was declared Phlogiston could not be a correct theory.",
 			group: 'varie',
 			IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 			className: 'toggle',
@@ -12971,6 +12972,7 @@ new Molpy.Boost({
 	new Molpy.Boost({
 			name: 'Photoelectricity',
 			desc: 'Lets Not a Priest be disabled and does stuff when it is disabled.',
+			stats: "In the element 1921, Eisenstein was awarded the Metal of Nobility for his work in emcee. Wait. That last part wasn't right.",
 			group: 'varie',
 			price: {
 				Whiteness: 12.5*10
