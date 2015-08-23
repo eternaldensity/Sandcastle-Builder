@@ -13060,10 +13060,11 @@ new Molpy.Boost({
 			}
 		}
 	);
-	Molpy.RetroAct=function(alias){if(Molpy.Spend({Grayness:10*Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10)))})){
+	Molpy.RetroAct=function(alias){
+		if(Molpy.Spend({Grayness:10*Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10)))})){
 		if(Math.random()>(Math.max(0,-0.001+Molpy.Boosts['Retroactivity'].power^(Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10))))))){Molpy.Notify('A Contradiction ocurred!');
 		Molpy.UnlockRepeatableBoost('splosion',1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))
-		} else{Molpy.UnlockRepeatableBoost(alias,1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))}
+		} else{Molpy.UnlockRepeatableBoost(alias,1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))}}}
 	new Molpy.Boost({
 			name: 'Retroactivity',
 			desc: function(me){
