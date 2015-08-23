@@ -9051,7 +9051,7 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult + Math.floor(Molpy.Boosts['Ninja Ritual'].Level/10000); 
 			if (Molpy.Got('Mutant Tortoise')) Molpy.Boosts['Ninja Ritual'].Level = Math.floor(Molpy.Boosts['Ninja Ritual'].Level *1.005); 
 		};
-		if (Molpy.Got('LA') && Molpy.Boosts['LA'].Level) {
+		if (Molpy.Got('LA') && Molpy.Boosts['LA'].Level && Molpy.currentStory == -1) {
 			Molpy.Shutter();
 			Molpy.Boosts['LA'].Level = 0;
 		}
@@ -9325,7 +9325,9 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			if(!me.bought || Molpy.newpixNumber == Molpy.highestNPvisited)
-				return 'Allows direct Jump to your highest NewPix';
+				return 'Allows a direct jump to your highest NewPix';
+			if (Molpy.currentStory != -1)
+				return 'You\'re gonna have to do this the hard way.';
 			var jumpcost = Molpy.CalcJumpEnergy(Molpy.highestNPvisited);
 			var str = '<input type="Button" ';
 			if(Molpy.Earned('discov' + Molpy.highestNPvisited)) {
@@ -11981,6 +11983,7 @@ new Molpy.Boost({
 		Molpy.Spend('Goats', Infinity);
 		me.power = 1;
 		Molpy.Notify('Your destination is set to NP0.<br>Drive responsibly.');
+		me.Refresh();
 	};
 	new Molpy.Boost({
 		name: '3D Lens',
@@ -12105,7 +12108,7 @@ new Molpy.Boost({
 		desc: function(me) {
 			var str = 'Tracks which CatPix you have drained for dimension shards'
 			if (me.bought) {
-				if (Molpy.newpixNumber >= 3095) str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
+				if (Molpy.currentStory == -1 && Molpy.newpixNumber >= 3095) str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
 				cost = Math.ceil(1 + .05*(me.prey.length + Molpy.Boosts['Shards'].Level));
 				str += '<br><input type=button onclick="Molpy.Prowl(cost)" value="Prowl"></input> for innocent, healthy kitties at the cost of '
 				str += Molpify(cost) + ' dimension shard' + plural(cost) + '.'
@@ -12127,6 +12130,10 @@ new Molpy.Boost({
 	Molpy.Prowl = function(cost) {
 		Molpy.Anything = 1;
 		if (Molpy.Spend('Shards', cost)) {
+			if (Molpy.currentStory != -1) {
+				Molpy.Notify('Walk on home, boy.');
+				return;
+			}
 			var sign = Math.sign(Molpy.newpixNumber);
 			if (sign == 0) {
 				Molpy.Notify('This temporal substratum is no place for a cat!',1);
@@ -12164,6 +12171,10 @@ new Molpy.Boost({
 		desc: function(me) {
 			var str = 'Allows you to mark a NP for later return';
 			if (me.bought) {
+				if (Molpy.currentStory != -1) {
+					str += '. Only works in OTC, for reasons.';
+					return str;
+				}
 				'. Costs 1 dimension shard and infinite flux crystals to move or return.'
 				str += '<br><input type=button onclick="Molpy.MoveGoal()" value="Move"></input> the goalpost to NP ' + Molpy.newpixNumber + '.';
 				if (me.goal != undefined) {
@@ -12188,6 +12199,7 @@ new Molpy.Boost({
 	Molpy.MoveGoal = function() {
 		Molpy.Anything = 1;
 		var np = Molpy.newpixNumber;
+		if (Molpy.currentStory != -1) return;
 		if (Molpy.Boosts['PG'].goal == np) {
 			Molpy.Notify('You\'re already right next to the goalpost.');
 			return;
@@ -12216,6 +12228,7 @@ new Molpy.Boost({
 	Molpy.ScoreGoal = function() {
 		Molpy.Anything = 1;
 		var goal = Molpy.Boosts['PG'].goal;
+		if (Molpy.currentStory != -1) return;
 		if (Molpy.newpixNumber == 0 && Math.abs(goal) < 3089) {
 			Molpy.Notify('Only absconding to the edge of Time can avail you now.');
 			return;
@@ -12412,7 +12425,9 @@ new Molpy.Boost({
 			return str;
 		},
 		stats: '',
-		Level: Molpy.BoostFuncs.Bought0Level,
+		buyFunction: function() {
+			this.Level = 1;
+		},
 		price: {
 			Shards: 5 * 666666666666,
 			Panes: 5 * 6666,
@@ -12657,10 +12672,11 @@ new Molpy.Boost({
 				str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0);Molpy.Boosts[\'Controlled Hysteresis\'].Refresh();" value="OTC"></input>'
 				str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0.1);Molpy.Boosts[\'Controlled Hysteresis\'].Refresh();" value="t1i"></input>'
 				if(me.power>-1) {
-					str=str+'<br> Currently set to ';
+					str=str+'<br> Currently set to <b>';
 					if(me.power==0){str=str+"OTC"} else {
 						str=str+["t1i"][Molpy.fracParts.indexOf(Molpy.Boosts['Controlled Hysteresis'].power)]
 					}
+					str += '</b>.';
 				}
 			}
 			return str
