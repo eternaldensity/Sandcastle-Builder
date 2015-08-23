@@ -9051,7 +9051,7 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.Got('Zooman')) Molpy.Boosts['Ninja Ritual'].Level +=mult + Math.floor(Molpy.Boosts['Ninja Ritual'].Level/10000); 
 			if (Molpy.Got('Mutant Tortoise')) Molpy.Boosts['Ninja Ritual'].Level = Math.floor(Molpy.Boosts['Ninja Ritual'].Level *1.005); 
 		};
-		if (Molpy.Got('LA') && Molpy.Boosts['LA'].Level) {
+		if (Molpy.Got('LA') && Molpy.Boosts['LA'].Level && Molpy.currentStory == -1) {
 			Molpy.Shutter();
 			Molpy.Boosts['LA'].Level = 0;
 		}
@@ -12425,7 +12425,9 @@ new Molpy.Boost({
 			return str;
 		},
 		stats: '',
-		Level: Molpy.BoostFuncs.Bought0Level,
+		buyFunction: function() {
+			this.Level = 1;
+		},
 		price: {
 			Shards: 5 * 666666666666,
 			Panes: 5 * 6666,
