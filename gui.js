@@ -1270,7 +1270,7 @@ Molpy.DefineGUI = function() {
 	Molpy.subPixLetters = ['', 'a', 'b', 'c', 'd', 'e'];
 	Molpy.fixLength=function(a,l){
 		a=String(a)
-		if(a.length<l){return Molpy.fixLength('0'+a,l)} else{return a}
+		if(a.length<l){return Molpy.fixLength('0'+String(a),l)} else{return a}
 	}
 	Molpy.FormatNP = function(np, format) {
 		var minus = (np < 0);
