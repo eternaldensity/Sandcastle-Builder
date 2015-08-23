@@ -3063,6 +3063,7 @@ Molpy.Up = function() {
 					Molpy.Vamp();
 					Molpy.FlipIt(0);
 				}
+				return;
 			}
 			var alias = 'discov' + Molpy.newpixNumber;
 			if(!Molpy.Badges[alias]) {
@@ -3572,7 +3573,7 @@ Molpy.Up = function() {
 	Molpy.ONGBase = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
-			if(Molpy.Got('Aperture Science')&&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
+			if((Molpy.Got('Aperture Science') >= Molpy.Boosts['Aperture Science'].times) &&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
 		}
 		if (Molpy.Got('LA')) {
 			Molpy.Boosts['LA'].Level = 1;
@@ -3717,7 +3718,7 @@ Molpy.Up = function() {
 	};
 	Molpy.ONGs[0] = function(){
 		if (!Molpy.IsEnabled('Temporal Anchor') && Molpy.newpixNumber != 0) {
-			if (Molpy.Boosts['Signpost'].power == 1) {
+			if (Molpy.Got('Signpost') && Molpy.Boosts['Signpost'].power == 1) {
 				Molpy.newpixNumber = 0; Molpy.currentStory=-1;
 			} else {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
@@ -3739,7 +3740,9 @@ Molpy.Up = function() {
 				}
 			}
 		} else if(!Molpy.IsEnabled('Temporal Anchor') && Molpy.Boosts['Controlled Hysteresis'].power==0){Molpy.newpixNumber=1}
-		Molpy.Boosts['Controlled Hysteresis'].power=-1; Molpy.Boosts['Signpost'].power = 0;
+		Molpy.Boosts['Controlled Hysteresis'].power=-1;
+		Molpy.Boosts['Signpost'].power = 0;
+		Molpy.Boosts['Signpost'].Refresh();
 	}
 	Molpy.ONGs[0.1]=function(){
 		if (!Molpy.IsEnabled('Temporal Anchor')) {
@@ -3748,7 +3751,7 @@ Molpy.Up = function() {
 			} else {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? 1 : -1);
 			}
-			if(Molpy.newpixNumber > Molpy.Boosts['Aperture Science'].power + 2) {
+			if(Math.abs(Molpy.newpixNumber) > Molpy.Boosts['Aperture Science'].power + 2) {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? -1 : 1);
 				Molpy.Notify("You must unlock the next doorhole to continue!")
 			}
@@ -3766,7 +3769,9 @@ Molpy.Up = function() {
 				}
 			}
 		}
-		Molpy.Boosts['Controlled Hysteresis'].power=-1; Molpy.Boosts['Signpost'].power = 0;
+		Molpy.Boosts['Controlled Hysteresis'].power=-1;
+		Molpy.Boosts['Signpost'].power = 0;
+		Molpy.Boosts['Signpost'].Refresh();
 	}
 
 	Molpy.BurnBags = function(n, e) {

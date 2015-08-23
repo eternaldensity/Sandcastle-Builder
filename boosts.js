@@ -11981,6 +11981,7 @@ new Molpy.Boost({
 		Molpy.Spend('Goats', Infinity);
 		me.power = 1;
 		Molpy.Notify('Your destination is set to NP0.<br>Drive responsibly.');
+		me.Refresh();
 	};
 	new Molpy.Boost({
 		name: '3D Lens',
@@ -12657,10 +12658,11 @@ new Molpy.Boost({
 				str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0);Molpy.Boosts[\'Controlled Hysteresis\'].Refresh();" value="OTC"></input>'
 				str=str+'<input type="Button" onclick="Molpy.setPower(\'Controlled Hysteresis\',0.1);Molpy.Boosts[\'Controlled Hysteresis\'].Refresh();" value="t1i"></input>'
 				if(me.power>-1) {
-					str=str+'<br> Currently set to ';
+					str=str+'<br> Currently set to <b>';
 					if(me.power==0){str=str+"OTC"} else {
 						str=str+["t1i"][Molpy.fracParts.indexOf(Molpy.Boosts['Controlled Hysteresis'].power)]
 					}
+					str += '</b>.';
 				}
 			}
 			return str
