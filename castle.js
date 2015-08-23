@@ -3566,7 +3566,8 @@ Molpy.Up = function() {
 	};
 	Molpy.ONGs={}
 	Molpy.ONG=function(type){
-		Molpy.currentStory=Molpy.fracParts.indexOf(Number((Molpy.newpixNumber-Math.floor(Molpy.newpixNumber)).toFixed(3)))
+		var n=Math.abs(Molpy.newpixNumber)
+		Molpy.currentStory=Molpy.fracParts.indexOf(Number((n-Math.floor(n)).toFixed(3)))
 		if(type==undefined){
 			var story=Molpy.currentStory
 			if(story==-1){type=0} else{type=Molpy.fracParts[story]}
