@@ -469,6 +469,7 @@ Molpy.DragonDigRecalc = function() {
 	Molpy.DragonBreathMultiplier = 1;
 	if(Molpy.Got('Autumn of the Matriarch')) Molpy.DragonBreathMultiplier *= Molpy.Boosts['DQ'].totalloses;
 	if(Molpy.Got('MQALLOBS')) Molpy.DragonBreathMultiplier *= 10;
+	Molpy.DragonBreathMultiplier *= (Molpy.Boosts['Catalyzer'].power || 1);
 
 	Molpy.DragonLuck = 0;
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonLuck += .0277;
