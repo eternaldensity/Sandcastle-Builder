@@ -130,6 +130,7 @@ Molpy.DefineDragons = function() {
 		desc: 'Tradional Welsh Dragon',
 		digbase: 1e8,
 		defbase: 1e11,
+		breathbase: 1e4,
 		colour: '#f0f',
 	});
 	new Molpy.Dragon({
@@ -148,6 +149,7 @@ Molpy.DefineDragons = function() {
 		desc: 'Very large magical dragon',
 		digbase: 1e11,
 		defbase: 1e14,
+		breathbase: 1e9,
 		colour: '#f00',
 	});
 	new Molpy.Dragon({
@@ -166,6 +168,7 @@ Molpy.DefineDragons = function() {
 		desc: 'These are the makers of legends, attacking with many heads in many ways. Mortals don\'t want to be in the same universe.',
 		digbase: 1e15,
 		defbase: 1e17,
+		breathbase: 1e16,		
 		colour: '#800',
 	});
 	new Molpy.Dragon({
@@ -184,6 +187,7 @@ Molpy.DefineDragons = function() {
 		desc: '!', // later
 		digbase: 1e20,
 		defbase: 1e20,
+		breathbase: 1e25,
 		colour: '#8F8',
 	});
 
@@ -465,7 +469,6 @@ Molpy.DragonDigRecalc = function() {
 	Molpy.DragonBreathMultiplier = 1;
 	if(Molpy.Got('Autumn of the Matriarch')) Molpy.DragonBreathMultiplier *= Molpy.Boosts['DQ'].totalloses;
 	if(Molpy.Got('MQALLOBS')) Molpy.DragonBreathMultiplier *= 10;
-	if(Molpy.Has('Ethyl Alcohol',2 + Molpy.Boosts['Ethyl Alcohol'].power)) Molpy.Boosts['Dragon Breath'].breathRecovery /= 1.5*(1+Molpy.Boosts['Ethyl Alcohol'].power);
 
 	Molpy.DragonLuck = 0;
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonLuck += .0277;
@@ -614,7 +617,6 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 		Molpy.Notify("Ran out of Vacuum!",1);
 		Molpy.Boosts['Ventus Vehemens'].power = 0;
 	}
-	Molpy.Boosts['Dragon Breath'].breathRecovery--;
 }
 
 Molpy.FindThings = function() {
@@ -819,7 +821,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype,breathtype) {
 			if(Molpy.Spend('Ethyl Alcohol',1)) mult*= 2;
 			if(backfire){
 				dragnhealth -= mult;
-				Molpy.Notify('The dragons\' breath backfired! Lost ' + mult + 'health!',1);
+				Molpy.Notify('The dragons\' breath backfired! Lost ' + Molpify(mult) + 'health!',1);
 				breathtype = 0;
 			}
 			backfire = 0;
@@ -830,7 +832,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype,breathtype) {
 					if(special){
 						Molpy.EarnBadge('Flame and Gory');
 						localhealth -= 4*firedamg;
-						Molpy.Notify('Burned the enemy for an additional' + firedamg + ' damage!',1);
+						Molpy.Notify('Burned the enemy for an additional' + Molpify(firedamg) + ' damage!',1);
 					};
 					break;
 				case 2 : //ice
@@ -851,7 +853,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype,breathtype) {
 				case 4 : //special
 					break;
 			}
-			Molpy.Boosts['Dragon Breath'].breathRecovery = 1000*(1/(1+Math.pow(2.71828,.1337*(100*npd.breath))));
+			Molpy.Boosts['Dragon Breath'].recoveryCountdown(npd.breath);
 		};
 		if(0){}; //magic TBD
 		// Physical attacks
@@ -873,9 +875,9 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype,breathtype) {
 			} else if (loops > 1 && Math.random() -1 > blitzval) result = -1
 				else result = -1 -(dragnhealth < -dragstats.defence);
 		} else if (localhealth < 0 || isNaN(localhealth)) {
-//			Molpy.Notify('result ='+ result+' localneg = '+localhealth,1);
+			if(Molpy.CombatDebug) Molpy.Notify('result ='+ result+' localneg = '+localhealth,1);
 			factor = dragnhealth/dragstats.defence;
-//			Molpy.Notify('factor ='+ factor,1);
+			if(Molpy.CombatDebug) Molpy.Notify('factor ='+ factor,1);
 			if (factor > 0.9) result = 3
 			else if (factor > 0.5 || npd.amount == 1) result = 2
 			else result = 1;
@@ -893,7 +895,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype,breathtype) {
 		if(blitzval < 0) Molpy.UnlockBoost('Clannesque');
 		if(blitzval > 0) Molpy.UnlockBoost('Autumn of the Matriarch');
 	};
-//	if (Molpy.CombatDebug) Molpy.Notify('Result = ' + result + ' factor ' + factor,1);
+	if (Molpy.CombatDebug) Molpy.Notify('Result = ' + result + ' factor ' + factor,1);
 
 	var timetxt = '';
 	if (loops <5 ) timetxt = 'riverish '

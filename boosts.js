@@ -10316,8 +10316,8 @@ Molpy.DefineBoosts = function() {
 			var str = '';
 			if(Molpy.Boosts['DQ'].level < 3) str += 'This has lots of useful information that will change as you do things...if you know where to look.<br>';
 			if(Molpy.DragonLuck) str += 'Draconic Luck: ' + 100*Molpify(Molpy.DragonLuck,3) + '%';
-			if(Molpy.Got('Dragon Breath') && Molpy.Boosts['Dragon Breath'].breathRecovery > 0) str += '<br>mNP until Breath is available: ' + Molpify(Molpy.Boosts['Dragon Breath'].breathRecovery,0);
-			if(!Molpy.Boosts['Dragon Breath'].breathRecovery) str += '<br>Breath is available.';
+			if(Molpy.Got('Dragon Breath') && Molpy.Boosts['Dragon Breath'].countdown > 0) str += '<br>mNP until Breath is available: ' + Molpify(Molpy.Boosts['Dragon Breath'].countdown,0);
+			if(!Molpy.Boosts['Dragon Breath'].countdown) str += '<br>Breath is available.';
 			if(Molpy.Got('Cup of Tea') || Molpy.Got('Healing Potion') || Molpy.Got('Strength Potion') || Molpy.Got('Ethyl Alcohol') || 0) str+= '<br><u>Potions</u></div>';
 			if(Molpy.Got('Cup of Tea')) str += 'Cups of tea: ' + Molpy.Level('Cup of Tea');// + Molpy.Has('Cup of Tea', 2+Molpy.Boosts['Cup of Tea'].power)?str += 'AP':str += 'A';
 			if(Molpy.Got('Healing Potion')) str += '<br>Healing Potions: ' + Molpy.Level('Healing Potion');// + Molpy.Has('Healing Potion', 2+Molpy.Boosts['Healing Potion'].power)?str += '<div class="rightjust">A+P</div>':str += '<div class="rightjust">A</div>';
@@ -12042,7 +12042,7 @@ Molpy.Coallate = function(){
 		icon: 'breath',
 		desc: function(me){
 			var str = 'When the dragons are defending their territory they may use Breath to help in defeating the enemy. Stronger dragons have more Breath effects at their disposal.';
-			if(me.breathRecovery >= 1) str += '<br>The dragons are catching their breath for ' + me.breathRecovery + ' mNP.'
+			if(me.countdown >= 1) str += '<br>The dragons are catching their Breath for ' + Molpify(me.countdown) + ' mNP.'
 			return str;
 		},
 		stats: function(me){
@@ -12053,13 +12053,22 @@ Molpy.Coallate = function(){
 			return str;
 		},
 		group: 'drac',
+		countdownCMS: 1,
+		recoveryCountdown: function(breathpow){
+			this.countdown = (1000*(1/(1+Math.pow(2.71828,.1337*(100*breathpow))))/(Molpy.Has('Ethyl Alcohol',2 + Molpy.Boosts['Ethyl Alcohol'].power)?
+			1.5*(1+Molpy.Boosts['Ethyl Alcohol'].power):1))
+		},
+		ChangeState: function(newstate, duration) {
+			this.overallState = newstate;
+			if (newstate) this.countdown += (duration || 1)
+			else this.countdown = 0;	
+			this.Refresh();
+		},
 		defSave: 1,
 		price: {
 			Coal: '1250M',
 			exp: '2.5Z'
 	},
-		breathRecovery: 0,
-		saveData: {4:['breathRecovery', 0, 'int']}
 	});
 	
 	new Molpy.Boost({
@@ -12129,17 +12138,31 @@ Molpy.Coallate = function(){
 	new Molpy.Boost({
 		name: 'Catalyzer',
 		icon: 'catalyzer',
+		group: 'drac',
 		desc: function(me){
-			var str = 'Allows you to power up Breath by spending Coal.';
+			var str = 'Allows you to power up Breath by spending Coal. ';
 			if(!me.bought) return str;
-			str += 'tbd';
+			str += 'Breath is currently boosted by' + Molpify(me.power) + '. The next upgrade will cost ' + Molpify(me.price)
+			+ ' Coal, and Breath will be boosted by ' + Molpify(me.buyFunction(1)) + '.';
 			return str;
 		},
 		draglvl: 'Wyvern',
-		limit: function() { return (Molpy.Boosts['DQ'].breathfights>=50?20*Molpy.Level('DQ'):0) },
+		Level: Molpy.BoostFuncs.Bought0Level,
+		limit: function() { return (Molpy.Boosts['DQ'].breathfights>=50?30*(Molpy.Level('DQ') - 1):0) },
+		buyFunction: function(desc){
+			var me = Molpy.Boosts['Catalyzer'];
+			var powmod = (me.Level + 1)/10;
+			var newpower = ((2/3*powmod + Math.exp(1/6,1/6*powmod) * sin(15*powmod)) ^4);
+			if(!desc){
+				me.power = newpower;
+				me.Level++;
+				Molpy.LockBoost('Catalyzer');
+			};
+			if(desc) return newpower;
+		},
 		price: {
-
-		}
+			Coal: function(me) { return Math.pow(Math.pow(me.Level/10,2),2) }
+		},
 	})
 
 	new Molpy.Boost({
