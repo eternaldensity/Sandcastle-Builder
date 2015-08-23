@@ -9325,7 +9325,9 @@ Molpy.DefineBoosts = function() {
 		
 		desc: function(me) {
 			if(!me.bought || Molpy.newpixNumber == Molpy.highestNPvisited)
-				return 'Allows direct Jump to your highest NewPix';
+				return 'Allows a direct jump to your highest NewPix';
+			if (Molpy.currentStory != -1)
+				return 'You\'re gonna have to do this the hard way.';
 			var jumpcost = Molpy.CalcJumpEnergy(Molpy.highestNPvisited);
 			var str = '<input type="Button" ';
 			if(Molpy.Earned('discov' + Molpy.highestNPvisited)) {
