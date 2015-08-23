@@ -12106,7 +12106,7 @@ new Molpy.Boost({
 		desc: function(me) {
 			var str = 'Tracks which CatPix you have drained for dimension shards'
 			if (me.bought) {
-				if (Molpy.newpixNumber >= 3095) str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
+				if (Molpy.currentStory == -1 && Molpy.newpixNumber >= 3095) str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
 				cost = Math.ceil(1 + .05*(me.prey.length + Molpy.Boosts['Shards'].Level));
 				str += '<br><input type=button onclick="Molpy.Prowl(cost)" value="Prowl"></input> for innocent, healthy kitties at the cost of '
 				str += Molpify(cost) + ' dimension shard' + plural(cost) + '.'
@@ -12128,6 +12128,10 @@ new Molpy.Boost({
 	Molpy.Prowl = function(cost) {
 		Molpy.Anything = 1;
 		if (Molpy.Spend('Shards', cost)) {
+			if (Molpy.currentStory != -1) {
+				Molpy.Notify('Walk on home, boy.');
+				return;
+			}
 			var sign = Math.sign(Molpy.newpixNumber);
 			if (sign == 0) {
 				Molpy.Notify('This temporal substratum is no place for a cat!',1);
@@ -12165,6 +12169,10 @@ new Molpy.Boost({
 		desc: function(me) {
 			var str = 'Allows you to mark a NP for later return';
 			if (me.bought) {
+				if (Molpy.currentStory != -1) {
+					str += '. Only works in OTC, for reasons.';
+					return str;
+				}
 				'. Costs 1 dimension shard and infinite flux crystals to move or return.'
 				str += '<br><input type=button onclick="Molpy.MoveGoal()" value="Move"></input> the goalpost to NP ' + Molpy.newpixNumber + '.';
 				if (me.goal != undefined) {
@@ -12189,6 +12197,7 @@ new Molpy.Boost({
 	Molpy.MoveGoal = function() {
 		Molpy.Anything = 1;
 		var np = Molpy.newpixNumber;
+		if (Molpy.currentStory != -1) return;
 		if (Molpy.Boosts['PG'].goal == np) {
 			Molpy.Notify('You\'re already right next to the goalpost.');
 			return;
@@ -12217,6 +12226,7 @@ new Molpy.Boost({
 	Molpy.ScoreGoal = function() {
 		Molpy.Anything = 1;
 		var goal = Molpy.Boosts['PG'].goal;
+		if (Molpy.currentStory != -1) return;
 		if (Molpy.newpixNumber == 0 && Math.abs(goal) < 3089) {
 			Molpy.Notify('Only absconding to the edge of Time can avail you now.');
 			return;

@@ -3057,10 +3057,10 @@ Molpy.Up = function() {
 				}
 			}
 			if (Molpy.Got('3D Lens') && Math.abs(Molpy.newpixNumber) >= 3095) { // & in OTC?
-				Molpy.Vamp();
+				Molpy.Vamp(0);
 				if (Molpy.Got('Retroreflector')) {
 					Molpy.FlipIt(0);
-					Molpy.Vamp();
+					Molpy.Vamp(1);
 					Molpy.FlipIt(0);
 				}
 				return;
@@ -3095,8 +3095,8 @@ Molpy.Up = function() {
 			Molpy.Notify('Out of Glass Chips');
 		}
 	};
-	Molpy.Vamp = function() {
-		if (Molpy.Spend('Goats', Infinity)) {
+	Molpy.Vamp = function(free) {
+		if (free || Molpy.Spend('Goats', Infinity)) {
 			var np = Molpy.newpixNumber;
 			var prey = Molpy.Boosts['kitkat'].prey;
 			if (prey.indexOf(np) > -1) {
@@ -3743,6 +3743,7 @@ Molpy.Up = function() {
 		Molpy.Boosts['Controlled Hysteresis'].power=-1;
 		Molpy.Boosts['Signpost'].power = 0;
 		Molpy.Boosts['Signpost'].Refresh();
+		Molpy.Boosts['PG'].Refresh();
 	}
 	Molpy.ONGs[0.1]=function(){
 		if (!Molpy.IsEnabled('Temporal Anchor')) {
@@ -3772,6 +3773,7 @@ Molpy.Up = function() {
 		Molpy.Boosts['Controlled Hysteresis'].power=-1;
 		Molpy.Boosts['Signpost'].power = 0;
 		Molpy.Boosts['Signpost'].Refresh();
+		Molpy.Boosts['PG'].Refresh();
 	}
 
 	Molpy.BurnBags = function(n, e) {
