@@ -12095,7 +12095,7 @@ new Molpy.Boost({
 			var shards = Molpy.Boosts['Shards'];
 			var str = '';
 			str += (me.Level == 1 ? 'A' + (shards.startVowel[shards.fixes.indexOf(shards.fix)] ? 'n ' : ' ') + shards.fix : shards.capFix ); //barlw English
-			str += 'dimensional window' + plural(me.Level) + ' into other temporal planes';
+			str += 'dimensional window' + plural(me.Level) + ' into other temporal planes.';
 			str += '<br>You have ' + Molpify(me.Level,3) + ' pane' + plural(me.Level) + '.';
 			return str;
 		},
@@ -12875,7 +12875,7 @@ new Molpy.Boost({
 			alias:'bluhint',
 			group: 'varie',
 			desc: function(me){
-				var str='Improves all Blueness gains by a factor of '+Molpify(me.power)
+				var str='Improves all Blueness gains by a factor of '+Molpify(Math.max(me.power, 2))
 				return str
 			},
 			
@@ -12962,7 +12962,9 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Ocean Blue',
-			desc: function(me){return 'Produces '+Molpify(me.power)+' Blueness per mNP.'},
+			desc: function(me) {
+				return 'Produces ' + Molpify(Math.max(me.power, 1)) + ' Blueness per mNP.'
+			},
 			group: 'varie',
 			price: {
 				Blueness: 12.5*500
