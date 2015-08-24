@@ -730,11 +730,11 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('There is nothing before time.');
 			return;
 		}
-		if(Math.abs(np)<1 && !Molpy.Earned('Absolute Zero')) {
+		if(Math.sign(np)!==Math.sign(oldnp) && !Molpy.Earned('Absolute Zero')) {
 			Molpy.Notify('Divide by zero error!');
 			return;
 		}
-		if(Math.abs(np)<1 && Molpy.Earned('Absolute Zero')) {
+		if(Math.sign(np)!==Math.sign(oldnp) && Molpy.Earned('Absolute Zero')) {
 			Molpy.Notify('You cannot pass into NP0 directly;<br>charge your signpost.');
 			return;
 		}
