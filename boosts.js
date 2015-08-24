@@ -7072,17 +7072,20 @@ Molpy.DefineBoosts = function() {
 		Molpy.Add('Blackprints', Math.floor(pages * Molpy.Papal('BlackP')));
 		if (Molpy.Got('Panopticon')) { // will test once IP finally gets sorted out
 			var shards = 0;
-			var rarity = 1e-12;
-			if (times < 100) {
+			var rarity = 1e-9;
+			if (times <= 100) {
 				for (var i = 0; i < times; i++) {
-					if (Math.random() < rarity) shards ++;
+					if (Math.random() < rarity) {
+						shards ++;
+						Molpy.EarnBadge('One in a Million');
+					}
 				}
 			} else {
 				var stdDev = Math.sqrt(rarity * (1 - rarity) * times);
-				shards = Math.max(0, Math.floor((rarity) * times + (stdDev * (2 * Math.random() - 1))));
+				shards = Math.max(0, Math.floor((rarity) * times + (stdDev * (2 * Math.random() - 1)))); // uniform density distribution is pretty much a normal. right? right.
 			}
 			Molpy.Add('Shards', shards);
-			Molpy.Notify('found ' + shards + ' shards',1)
+			// Molpy.Notify('found ' + shards + ' shards',1)
 		}
 		if (Molpy.Got('Camera')) {
 			var isles = 0;
