@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=3.667;
-Molpy.versionName='Enough Mustard for a Sandwich'; // Appended to the numerical version on screen
+Molpy.version=4.0;
+Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
@@ -11,7 +11,19 @@ Molpy.versionName='Enough Mustard for a Sandwich'; // Appended to the numerical 
  *************************************************************/
 
 Molpy.HardcodedData = function() {
-	Molpy.Periods = [
+	Molpy.fracParts=[0.1]
+	Molpy.AllPeriods={}
+	Object.defineProperty(Molpy,'Periods', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllPeriods[0]} else{return Molpy.AllPeriods[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllPeriods[0]=v} else{Molpy.AllPeriods[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllPeriods[0] = [
 			[9, "The Debut/What? Period"],
 			[23, "The Dark Period"],
 			[44, "The Sandcastle Period"],
@@ -96,28 +108,84 @@ Molpy.HardcodedData = function() {
 			[3088, "The Raftcastle"],
 			[3094, "The End"],
 	]
+	Molpy.AllPeriods[0.1]= [
+		[11.1, 'Human-free'],
+		[210.1, 'Forty-free'],
+		[262.1, 'Settling in'],
+		[400.1, 'To the top'],
+		[448.1, 'The new sandcastle'],
+		[455.1, 'The Beanie cam'],
+		[649.1, 'The other castle'],
+		[685.1, 'The cave'],
+		[760.1, 'Returning home'],
+		[844.1, 'Meeting the Beanies'],
+		[976.1, 'Return to the cave'],
+		[1092.1, 'Preparation'],
+		[1106.1, 'The attempt'],
+		[1291.1, 'The boat'],
+		[1323.1, 'The book'],
+		[1416.1, 'Conclusion'],
+		[1417.1, 'The real end']
+	]
 
-	Molpy.Eras = [
-			[124, "The Pre-expansion Era"],
-			[420, "The Castleiferous Era"],
-			[582, "The Industrial Era"],
-			[798, "The Developing Era"],
-			[971, "The Enlightenment Era"],
-			[1021, "The Shoreline Era"],
-			[1228, "The River Era"],
-			[1423, "The Hills and Forest Era"],
-			[1661, "The Discovery Era"],
-			[2356, "The Mountain Era"],
-			[2530, "The Night Era"],
-			[2615, "The Summit Era"],
-			[2813, "The Contact Era"],
-			[2920, "The Civilization Era"],
-			[3094, "The Rescue Era"]]
+	Molpy.AllEras={}
+	Object.defineProperty(Molpy,'Eras', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllEras[0]} else{return Molpy.AllEras[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllEras[0]=v} else{Molpy.AllEras[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllEras[0] = [
+		[124, "The Pre-expansion Era"],
+		[420, "The Castleiferous Era"],
+		[582, "The Industrial Era"],
+		[798, "The Developing Era"],
+		[971, "The Enlightenment Era"],
+		[1021, "The Shoreline Era"],
+		[1228, "The River Era"],
+		[1423, "The Hills and Forest Era"],
+		[1661, "The Discovery Era"],
+		[2356, "The Mountain Era"],
+		[2530, "The Night Era"],
+		[2615, "The Summit Era"],
+		[2813, "The Contact Era"],
+		[2920, "The Civilization Era"],
+		[3094, "The Rescue Era"]]
+	Molpy.AllEras[0.1] = [
+		[209.1, "The Forty-less Era"],
+		[440.1, "Identification Era"],
+		[685.1, "The Castle Era"],
+		[808.1, "The Explanatory Era"],
+		[1106.1, "The Retrieval Era"],
+		[1291.1, "The Return Era"],
+		[1417.1, "The End Era"]
+	]
 
-	Molpy.Eons = [
+	Molpy.AllEons={}
+	Object.defineProperty(Molpy,'Eons', {
+		get:function(){
+			var s=Molpy.currentStory
+			if(s==-1){return Molpy.AllEons[0]} else{return Molpy.AllEons[Molpy.fracParts[s]]}
+		},
+		set:function(v){
+			var s=Molpy.currentStory
+			if(s==-1){Molpy.AllEons[0]=v} else{Molpy.AllEons[Molpy.fracParts[s]]=v}
+		}
+	})
+	Molpy.AllEons[0] = [
 		[971, "The Sandcastle Eon"],
 		[2615, "The Journey Eon"],
 		[3094, "The Encounter Eon"]]
+	Molpy.AllEons[0.1] = [
+		[216.1, "The Overlap Eon"],
+		[685.1, "The Journey Eon"],
+		[1319.1, "The Cave Eon"],
+		[1417.1, "The Exit Eon"]
+	]
 	
 
 	Molpy.titles = [
@@ -136,7 +204,7 @@ Molpy.HardcodedData = function() {
 		'Hodor Hodor Hoder',
 		'I Love BANANAS',
 		'PROTIP: TO DEFEAT THE HOTDOG, OTTIFY IT UNTIL IT UNBASEMENTS',
-		'"I wouldn’t recommend it to anyone else." - IGN'];
+		'"I wouldn’t recommend it to anyone else. 5/5" - IGN'];
 	
 	Molpy.defaultLayoutData="3.2PPdefaultP00010010000000P11110111110000111000000000P517C0S449C-1S557C463S0C-2S0C48S-2C134S944C463S0C701S236C135S0C134S718C675S1060C675S547C675S889C675S557C0S557C228S0C535S0C761S1115C0S1115C237S1241C685S1096C155S1094C664S1096C365S1096C440S1499C0SP385C220S515C40S556C84S554C207S368C51S320C385S228C386S556C214S556C220S545C201S1499C576S382C100S383C211S258C61S382C195S383C60S382C59S381C209S74C237SP";
 	
@@ -516,8 +584,39 @@ Molpy.HardcodedData = function() {
 			'I love the whole thread',
 			'The future\'s pretty cool!',
 			bdy,bdy,'<div class="flip">'+bdy+'</div>','<div class="flip">'+bdy+'</div>'
-		];
-	}
+		]
+	};
+
+	Molpy.coalFacts = [
+		'Coal comes in three main types: lignite, bituminous, and anthracite. But there are many sub-types!',
+		'Different types of coal have different properties and originate from different time periods and types of vegetation.',
+		'Coal comes from the Carboniferous period, when the earth was verdant and very swampy.',
+		'When plants decayed and fell to the bottom of swamps and bogs, enormous pressure was applied to them over thousands of years to create what we know as coal.',
+		'If you compress coal even more, you end up with diamonds!',
+		'There are around 1 trillion tons of Coal left in the world. That\'s enough for more than 100 years at projected energy usage levels.',
+		'Coal is responsible for most of the air pollution in the world, and the WHO attributes about 1 in 8 human deaths to air pollution.',
+		'Burning coal releases about 2 pounds of carbon into the atmosphere for every kilowatt-hour.',
+		'There are a few ways of extracting coal from the ground, the most invasive being strip mining.',
+		'Bagger 293 is the tallest and heaviest land vehicle in the world, and is used to excavate coal.',
+		'Coal has been used as fuel for more than 3000 years.',
+		'The factoid that coal and oil come from dinosaurs is false. Most fossil fuels actually predate the dinosaurs we know and love!',
+		'While coal originates mostly from tree and fern matter deposited in peat bogs and swamps, oil and natural gas originate from marine organisms.',
+		'Over 40% of the world\'s electricity is derived from coal, but this number is decreasing as renewable energy takes over.',
+		'Coal is the second-highest source of energy in the world, being superseded only by oil.',
+		'Bituminous coal contains bitumen, which is used in asphalt and roofing materials.',
+		'Even though coal is biological in origin, it is classified as a sedimentary rock.',
+		'The older and more compressed the coal, the purer it is, and therefore the more heat it generates when burned.',
+		'Anthracite coal literally means "coal-like coal." The word for coal in Greek is anthrax!',
+		'The purest grades of coal are quite valuable and are used in smelting and metallurgy.',
+		'Coal was a vital component in the Industrial Revolution since it fueled steam technology.',
+		'Before the popularization of natural gas in the mid-20th century, coal gas was the main source of gas lighting in towns and cities.',
+		'Charcoal is a coal-like substance created by heating wood in the abscence of oxygen.',
+		'If you like coal as much as I do, consider becoming a coal miner. But be careful of pneumonoultramicroscopicsilicovolcanoconiosis!',
+		'To unsubscribe from Coal Facts, enter "Unsubscribe" in the Import dialog.',
+		'To unsubscribe from Coal Facts, enter "Unsubscribe" in the Import dialog.',
+		'To unsubscribe from Coal Facts, enter "Unsubscribe" in the Import dialog.',
+		'To unsubscribe from Coal Facts, enter "Unsubscribe" in the Import dialog.'
+	]
 }
 
 	
@@ -729,6 +828,9 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	if(Molpy.Redacted.totalClicks >= 431) {
 		Molpy.Boosts['Technicolour Dream Cat'].department = 1;
 	}
+	// if(Molpy.Redacted.totalClicks >= 1000 && Molpy.Got('SPP') && Math.random() < 1/20) {
+	// 	Molpy.Boosts['DomCobb'].department = 1;
+	// }
 
 	Molpy.Boosts['RRR'].department = 1 * (Molpy.Boosts['Panther Salve'].power > 200);
 	Molpy.Boosts['Phonesaw'].department = 1 * (Molpy.Boosts['VJ'].power >= 88);
@@ -805,6 +907,7 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 		Molpy.Boosts['Muse'].department = 0;
 	}
 	Molpy.Boosts['Black Powder'].department = 1 * Molpy.Got('DMM');
+	Molpy.Boosts['Marketing'].department = (Molpy.Boosts['DQ'].Level >= 3 && Molpy.Has('Gold',2e8));
 }
 
 Molpy.CheckLogicatRewards = function(automationLevel) {
@@ -887,6 +990,8 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Aleph One'].logic = 111111111;
 	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
 	Molpy.Boosts['Aleph e'].logic = DeMolpify('99H') * Molpy.priceFactor;
+	Molpy.Boosts['DimenKey'].logic = Molpy.Got('Aperture Science') * Math.pow(10, Molpy.Boosts['Aperture Science'].power);
+	//Dragon Drum and Sea Mining are purposely not on this list; right now they're only intended as Redundakitty rewards
 }
 Molpy.mapMonumg = 200;
 
@@ -909,6 +1014,172 @@ Molpy.CheckASHF = function() {
 			return;
 		}
 	}
+}
+
+Molpy.BuildRewardsLists = function() {
+	Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
+	});
+	Molpy.LogicatRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].logic!==undefined)&&(Molpy.Boosts[i].logic!=='undefined')
+	});
+	Molpy.DepartmentRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].department!==undefined)&&(Molpy.Boosts[i].department!=='undefined')
+	});
+	Molpy.PhotoRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].photo!== undefined)&&(Molpy.Boosts[i].photo!=='undefined')&&(!Molpy.Got(i))
+	})
+	Molpy.RewardsListsBuilt = 1;
+	Molpy.defineCrafts(); //They don't really go together, but I'm not interested in figuring out the proper version.
+	Molpy.defaultCrafts();
+}
+/********************
+* CRAFTING FUNCTIONS/
+* *****************/
+Molpy.defineCrafts=function(){
+	 Molpy.craft=function(r,t){
+	 	if(r.recipe){
+	 		if(t==undefined){t=r.times};
+	 		r=r.recipe;
+	 	}
+	 	if(t==undefined){t=1}
+	 	t=EvalMaybeFunction(t)
+		var os=r.start
+		var s={}
+		for(var i in os){if((typeof os[i])==(typeof 5)){s[i]=os[i]*t} else{s[i]=os[i](t)}}
+		var of=r.finish;var f={}
+		for(var i in of){if((typeof of[i])==(typeof 5)){f[i]=of[i]*t} else{f[i]=of[i](t)}}
+		var oc=r.catalysts||{}
+		var c={}
+		for(var i in oc){if((typeof oc[i])==(typeof 5)){c[i]=oc[i]} else{c[i]=oc[i](t)}}
+		
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(Molpy.Boosts[i].power<s[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of materials.");}return;}
+		}
+		for(var i in c){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(Molpy.Boosts[i].power<c[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of catalysts.");}return;}
+		}
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){}
+			Molpy.Boosts[i].power=Molpy.Boosts[i].power-EvalMaybeFunction(s[i],t);
+		}
+		for(var i in f){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){} else{
+				Molpy.Boosts[i].power=Molpy.Boosts[i].power+EvalMaybeFunction(f[i],t);
+			}
+		}
+		var o=r.onFinish||function(){};
+		o(t);
+	}
+	Molpy.canCraft=function(r,t){
+		if(r.recipe!= undefined){if(t==undefined){t=EvalMaybeFunction(r.times)};r=r.recipe}
+		if(t==undefined){t=1}
+		t=EvalMaybeFunction(t)
+		var os=r.start
+		var s={}
+		for(var i in os){if(typeof os[i]==typeof 5){s[i]=os[i]*t} else{s[i]=os[i](t)}}
+		var of=r.finish;var f={}
+		for(var i in of){if(typeof of[i]==typeof 5){f[i]=of[i]*t} else{f[i]=of[i](t)}}
+		var oc=r.catalysts||{}
+		var c={}
+		for(var i in oc){if(typeof cf[i]==typeof 5){c[i]=oc[i]} else{c[i]=oc[i](t)}}
+		
+		for(var i in s){
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return false;}
+			if(!(Molpy.Boosts[i].power>=s[i])){return false;}
+		}
+		for(var i in c){
+			if(s[i]){c[i]+=s[i]}
+			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
+			if(!(Molpy.Boosts[i].power>=c[i])){return false;}
+		}
+		return true
+	}
+	Molpy.getCrafts=function(table,level){
+		var t=Molpy.Crafts[table]
+		if(!level){level=Molpy.Boosts[table].power}
+		var ans=[]
+		for(var i=0;i<t.length;i++){
+			if(t[i].level<=level){ans.push(t[i])}
+		}
+		return ans;
+	}
+	Molpy.craftID=function(ta,n,ti){
+		if(ti==undefined){ti=Molpy.Crafts[ta][n].times}
+		Molpy.craft(Molpy.Crafts[ta][n].recipe,ti)
+	}
+	Molpy.Crafts={
+		Polarizer: [
+			{
+				recipe: {
+					start: {Blackness: function(){return 5}, Blueness: 1},
+					finish: {Otherness: 1}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Blackness: function(){return 5}, Otherness: 1},
+					finish: {Blueness: 1}
+				},
+				level: 0
+			},
+			{
+				recipe: {
+					start: {Blackness: 15},
+					finish: {Whiteness: 1},
+					onFinish: function(){
+						if(Molpy.Boosts['Whiteness'].power){Molpy.UnlockBoost('Whiteness')}
+						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
+							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
+								Molpy.reactPhoto(1);
+							}
+						}
+					}
+				},
+				level: 0,
+				maxTimes: function(){
+					if(!Molpy.Boosts['Polarizer'].power){return 1} else{
+						return Infinity //Well, that was quite a jump...
+					}
+				}
+			},
+			{
+				recipe: {
+					start: {Blackness: function(){return 10}, Whiteness:1},
+					finish: {Blackness: 1},
+					onFinish: function(){
+						if(!(Molpy.Got('Equilibrium Constant') && Molpy.IsEnabled('Equilibrium Constant'))){
+							if(Molpy.Boosts['Blackness'].power && Molpy.Boosts['Whiteness'].power){
+								Molpy.reactPhoto(1);
+							}
+						}
+					}
+				},
+				level: 1
+			}
+		]
+	}
+	Molpy.defaultTimes=function(i,j){
+		return function(){
+			if(!Molpy.Got(i)){return 0};
+			var r=Molpy.Crafts[i][j].recipe
+			var checker=10
+			while(Molpy.canCraft(r,checker)){checker=checker*10}
+			var max=Molpy.Crafts[i][j].maxTimes||Infinity //Defaulting for the very lazy
+			if(typeof max=='function'){max=max()}
+			return Math.max(Math.min(checker/10,max),1)
+		} //closures ftw
+	}
+	Molpy.defaultCrafts=function(){for(var i in Molpy.Crafts){
+		for(var j=0;j<Molpy.Crafts[i].length;j++){
+			if(Molpy.Crafts[i][j].times==undefined){
+				Molpy.Crafts[i][j].times=Molpy.defaultTimes(i,j)
+			}
+		}
+	}}
 }
 
 Molpy.CheckClickAchievements = function() {

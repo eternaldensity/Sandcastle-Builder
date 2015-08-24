@@ -32,6 +32,93 @@ For personal amusement only.
 
 ## Changelog
 
+### 4.0 Kitty Genocide Simulator 2015
+
+#### Calamitizer
+
+- New Boosts:
+ * Signpost
+ * 3D Lens
+ * Dimension Shards
+ * Anticausal Autoclave
+ * Dimension Panes
+ * Kitty Catalogue
+ * Portable Goalpost
+ * Subspatial Plane-Packing
+ * Σ-Stacking
+ * Glass Ceiling Cat
+ * Glass Ceiling Autovator
+ * Exit through the Abattoir
+ * Fields' Mettle
+ * Lifedrain Autowinder
+ * Panopticon
+ * Never Jam Today
+ * Eigenharmonics
+ * Plumber's Vise
+ * Tractor Beam
+ * Leo DiCatrio
+- 8 new badges
+- Some boost typo fixes
+- Some discovery typo fixes
+- Changed prize category markup
+- "Tangled Tessaract" renamed to "Tangled Tesseract"
+- "Loopin Looie" renamed to "Temporal Anchor"
+- "Ooo Shiny!" renamed to "Ooh, Shiny!"
+- Expando now correctly pins down Badgers and Redunception descriptions, so you can actually read them
+- Muse and other boosts now have correct descriptions when they're locked (Muse will no longer crash the game when favorited)
+- BOXES BOXES
+
+#### pickten
+
+- Improved IP processing time so that IP could be much larger.
+- Minor improvements to FindThings, logicats, and DORD as well.
+- Got TaTpix mostly working.
+- New Boosts:
+ * Five new Stuffs (Blueness, Otherness, Blackness, Whiteness, and Grayness)
+ * Argy
+ * Blue's Hints
+ * Ocean Blue
+ * Meteor
+ * Improved Scaling
+ * Polarizer
+ * Robotic Inker
+ * Not a Priest
+ * Equilibrium Constant
+ * Hallowed Ground
+ * Photoelectricity
+ * Blue Fragment
+ * Atomic Pump
+ * A Splosion
+ * Retroactivity
+ * Concentrated Boom
+ * Diluted Boom
+ * pH
+ * pOH
+ * pInsanity
+- 8 new badges
+- 76 new discoveries (for t1i)
+
+#### LuminousLeopards
+
+ * More changes to Dragon hide times
+ * Breath combat
+ * Added a ceiling to the amount of Bonemeal it's possible to get with Shadow Strike
+ * Changes to Annilment so the function doesn't run twice an mNP
+ * Draconic Luck is now a thing, it provides a small bonus to lots of stuff
+ * Removed def/atk multipliers for Lucky Ring and Anisoptera (these are Wyvern-level boosts so nobody had them yet anyway); added a Breath bonus per level of Anisoptera and a Luck bonus for Lucky Ring
+ * Strength Potion no longer a fight option (this was in the code but not actually implemented anyway)
+ * Depending on your level of Anisoptera you might find out some interesting things about RedundaKnights
+ * Added a fudge factor to sap health from both dragons and RKs if a fight lasts too long (prevents ties)
+ * Added a couple tiebreaker fight results just in case
+ * Robotic Hatcher still requires Infinite Goats, but no longer starves your dragons.
+ * Moved most RDKM information to Stats view. Added some useful information once you get far enough (luck, number/amount of potions)
+ * Draconic potions/consumables now each have an active and a passive effect. The passive effect only works if you have at least two of the boost owned.
+ * Lowered the ceiling on the number of Trilobites you can get at Wyverns and beyond, for balance purposes
+ * You can now get two rewards from a fight if your attack is significantly higher than your defense.
+ * New Wyrm boosts: Dragon Drum, Sea Mining
+ * New Wyvern boosts: Safety Canary, Autumn of the Matriarch, Dragon Breath, Honor Among Serpents, Golden Bull, Chintzy Tiara, Diamond Dentures, Megan's Quick-Acting, Long Lasting Odorific Breath Spray, Baobab Tree Fort,
+ Catalyzer, Way of the Tortoise, Way of the Panther, Tuple or Nothing, Ethyl Alcohol, Clannesque
+
 ### 3.67 Enough Mustard for a Sandwich
 
 #### stormrunnerz

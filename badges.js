@@ -333,7 +333,7 @@ Molpy.DefineBadges = function() {
 				return 'The countdown is at ' + Molpify(countdown) + 'NP';
 			return 'Judgement dip is upon us! But it can get worse. The countdown is at ' + Molpify(countdown) + 'NP';
 		},
-		
+
 		classChange: function() { return Molpy.judgeLevel > 0 ? 'action': ''},
 	});
 	
@@ -1083,7 +1083,119 @@ Molpy.DefineBadges = function() {
 		desc: 'Lost more than 144 dragons in fights',
 		vis: 1
 	});
-	
+	new Molpy.Badge({
+		name: 'Absolute Zero',
+		desc: 'Traveled outside of Time',
+		vis: 2
+	});
+	new Molpy.Badge({
+		name: 'YouTube Star',
+		desc: 'Taken an entirely unhealthy number of pictures of cats',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Master Debater',
+		desc: 'Moved the goalpost at least 66 times',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'The Big Freeze',
+		desc: '<i>If the density of the universe is less than the critical density, there isn’t enough gravitational pull to stop or reverse the outward expansion...</i>',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Flip It Real Good',
+		desc: 'Flip between positive and negative NP \'87 times',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Time-traveling Alien Parasite',
+		desc: 'Futilely attempt to change the future, over and over',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'And It Don\'t Stop',
+		desc: 'Played the game as long after T** **d as before',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Picky Taste',
+		desc: 'You know exactly what kind of boosts you like',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'One More Time',
+		desc: 'ONG into TaTPix',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Argy Bee',
+		desc: 'Used Argy',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'UnDuoNonUnium',
+		desc: 'Got Photoelecticity',
+		stats: "This element probably will not be made in any labs for a while.",
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Ghost Bomb',
+		desc: 'Got both Diluted and Concentrated Boom',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Colorrific',
+		desc: 'Got all five colors',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Wish I could breathe',
+		desc: 'Over 1k Grayness',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Diminishing Returns',
+		desc: 'Got Photoelecticity to run 100 times at once.',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'pH',
+		desc: 'Got pH to activate.',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'pOHless',
+		desc: 'Got pH to activate without using pOH.',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Two Pots O\' Gold',
+		desc: 'The Dragons found two things at once',
+		stats: '♪Double Math.random()bow all across the skyyy♪',
+		vis: 0
+	});
+	new Molpy.Badge({
+		name: 'First Blood',
+		desc: 'Your dragons struck down an opponent before they could even draw their weapon.',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Flame and gory',
+		desc: 'An enemy attacked and was engulfed by fire.',
+		vis: 1
+	});	
+	new Molpy.Badge({
+		name: 'Rolled a 20!',
+		desc: 'An enemy was overcome by poison.',
+		vis: 1
+	});	
+	new Molpy.Badge({
+		name: 'Icecapades',
+		desc: 'An enemy was frozen and did not attack for a round.',
+		vis: 1
+	});
+
 /**************************************************************
  * Discoveries
  * 
@@ -1123,7 +1235,7 @@ Molpy.DefineBadges = function() {
 					}
 					str += '<div id="img-monums' + me.np + '" class="npthumb" style="background-image:"></div>';
 				} else if(me.group == 'monumg' && Molpy.Got('Muse') && Molpy.Boosts.Muse.power == me.np) {
-					var np = Molpy.newpixNumber;
+					var np = math.floor(Molpy.newpixNumber);
 					str += '<br>You are inspired to do this properly ' +
 						'<input type=button value="Start" onclick="Molpy.Boosts.DMM.StartMould()"></input>' +
 						'to make a Diamond Mould.  Making the mould will take '+Molpify(Molpy.Boosts.DMM.MouldCost(np))+
@@ -1148,6 +1260,15 @@ Molpy.DefineBadges = function() {
 			args.np *= -1;
 			Molpy.MakeQuadBadge(args);
 		}
+	}
+
+	Molpy.CountDiscov = function() {
+		var badges = Molpy.BadgesById
+		var count = 0;
+		for (var i = 0; i < badges.length; i++) {
+			if (badges[i].group == 'discov') count++;
+		}
+		Molpy.totalDiscov = count;
 	}
 		
 	Molpy.MakeQuadBadge({np:1,name:'In the Beginning',desc:'the first time we saw Megan and Cueball sitting by the sea'});
@@ -1249,117 +1370,117 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:972,name:'New Ground',desc:'when we saw a completely new scene'});
 	Molpy.MakeQuadBadge({np:973,name:'Walkers',desc:'the first time we saw Cuegan walking on their journey'});	
 	//the next bunch were written by waveney (thanks!)
-	Molpy.MakeQuadBadge({np:985,name:'This Far',desc:'When Cueball asks Have you ever been this far?'});
+	Molpy.MakeQuadBadge({np:985,name:'This Far',desc:'when Cueball asks whether Megan has ever been this far'});
 	Molpy.MakeQuadBadge({np:989,name:'Drinking',desc:'Cueball and Megan stop to drink'});
-	Molpy.MakeQuadBadge({np:999,name:'Change Direction',desc:'The picture changes orientation by 90 degrees'});
-	Molpy.MakeQuadBadge({np:1004,name:'Doesn\'t end',desc:'Megan says: Maybe the sea doesn\'t end'});
-	Molpy.MakeQuadBadge({np:1005,name:'Very Far',desc:'Cueball says: We haven\'t walked very far'});
-	Molpy.MakeQuadBadge({np:1006,name:'Not Ending',desc:'Megan doth say: Yeah.  But thats what the first part of not ending looks like.'});
-	Molpy.MakeQuadBadge({np:1018,name:'Steam bottle',desc:'Megan says: If we don\'t find something today, we\'ll have to start using the steam bottle'});
-	Molpy.MakeQuadBadge({np:1024,name:'Yes',desc:'Yes. Yes what?'});
-	Molpy.MakeQuadBadge({np:1025,name:'Other Rivers',desc:'Megan says: There are other rivers'});
+	Molpy.MakeQuadBadge({np:999,name:'Change Direction',desc:'when the picture changes orientation by 90 degrees'});
+	Molpy.MakeQuadBadge({np:1004,name:'Doesn\'t end',desc:'Megan says: Maybe the sea doesn\'t end.'});
+	Molpy.MakeQuadBadge({np:1005,name:'Very Far',desc:'Cueball says: We haven\'t walked very far.'});
+	Molpy.MakeQuadBadge({np:1006,name:'Not Ending',desc:'Megan doth say: Yeah.  But that\'s what the first part of not ending looks like.'});
+	Molpy.MakeQuadBadge({np:1018,name:'Steam bottle',desc:'Megan says: If we don\'t find something today, we\'ll have to start using the steam bottle.'});
+	Molpy.MakeQuadBadge({np:1024,name:'Yes',desc:'"Yes." "Yes what?"'});
+	Molpy.MakeQuadBadge({np:1025,name:'Other Rivers',desc:'Megan says: "There are other rivers."'});
 	Molpy.MakeQuadBadge({np:1029,name:'Dropped',desc:'Cueball drops his bottle in the river'});
 	Molpy.MakeQuadBadge({np:1036,name:'Lasso',desc:'Cueball attempts to lasso the bottle'});
 	Molpy.MakeQuadBadge({np:1038,name:'Lasso 2',desc:'Megan attempts to lasso the bottle'});
-	Molpy.MakeQuadBadge({np:1041,name:'Too Dangerous',desc:'Maybe I could -.  Too Dangerous'});
-	Molpy.MakeQuadBadge({np:1042,name:'Accident',desc:'Megan: It\'s OK, it was an accident'});
+	Molpy.MakeQuadBadge({np:1041,name:'Too Dangerous',desc:'"Maybe I could -"  "Too dangerous."'});
+	Molpy.MakeQuadBadge({np:1042,name:'Accident',desc:'Megan: It\'s OK, it was an accident.'});
 	Molpy.MakeQuadBadge({np:1044,name:'Right',desc:'Megan say Cueball is right!'});
-	Molpy.MakeQuadBadge({np:1045,name:'Not Fast',desc:'This River\s <i>not</i> moving very fast'});
-	Molpy.MakeQuadBadge({np:1049,name:'Not Enough',desc:'Megan: I don\'t thnk it\'s enough water.'});
-	Molpy.MakeQuadBadge({np:1052,name:'Not Broken',desc:'Cueball: And this river doesn\'t <i>look</i> broken'});
-	Molpy.MakeQuadBadge({np:1053,name:'Pretty Neat',desc:'Cueball: It\'s pretty neat though'});
+	Molpy.MakeQuadBadge({np:1045,name:'Not Fast',desc:'This river\'s <i>not</i> moving very fast.'});
+	Molpy.MakeQuadBadge({np:1049,name:'Not Enough',desc:'Megan: I don\'t think it\'s enough water.'});
+	Molpy.MakeQuadBadge({np:1052,name:'Not Broken',desc:'Cueball: And this river doesn\'t <i>look</i> broken.'});
+	Molpy.MakeQuadBadge({np:1053,name:'Pretty Neat',desc:'Cueball: It\'s pretty neat though.'});
 	Molpy.MakeQuadBadge({np:1058,name:'Sorry',desc:'Cueball says sorry'});
-	Molpy.MakeQuadBadge({np:1066,name:'Still Rising',desc:'Megan: It\'s still rising'});
-	Molpy.MakeQuadBadge({np:1067,name:'Strange',desc:'The Sea couldn\'t wait.'});
-	Molpy.MakeQuadBadge({np:1069,name:'Find a ford',desc:'Megan: Walk up river to find a ford or turn back?'});
-	Molpy.MakeQuadBadge({np:1071,name:'Understand Everything',desc:'We don\'t understand everything yet.'});
-	Molpy.MakeQuadBadge({np:1072,name:'Understand Anything',desc:'Everything is a little ambitious.  We barely understand <i>Anything</i>.'});
-	Molpy.MakeQuadBadge({np:1073,name:'First Part',desc:'But that\'s what the first part of understanding everything looks like.'});
-	Molpy.MakeQuadBadge({np:1093,name:'Ours at its driest',desc:'I\'m glad we found this river'});
-	Molpy.MakeQuadBadge({np:1096,name:'Bigger',desc:'This river is even bigger than it looked.'});
-	Molpy.MakeQuadBadge({np:1123,name:'Fill the Sea',desc:'Maybe it <i>is</i> big enough to fill the Sea.'});
-	Molpy.MakeQuadBadge({np:1130,name:'Rope',desc:'Our rope isn\'t strong enough'});
-	Molpy.MakeQuadBadge({np:1131,name:'Hold this',desc:'Hold this or you\'ll fall'});
-	Molpy.MakeQuadBadge({np:1142,name:'Stuff',desc:'Our river fills with stuff'});
-	Molpy.MakeQuadBadge({np:1143,name:'This river',desc:'Cueball: This river doesn\'t look like that'});
-	Molpy.MakeQuadBadge({np:1144,name:'Empty places',desc:'Megan: Maybe it only flows through empty places'});
-	Molpy.MakeQuadBadge({np:1146,name:'Continue',desc:'We continue upriver'});
-	Molpy.MakeQuadBadge({np:1159,name:'How High',desc:'Megan: I wonder how high the water is now'});
-	Molpy.MakeQuadBadge({np:1160,name:'Been days',desc:'Not a lot of us by the shore this ime of year'});
-	Molpy.MakeQuadBadge({np:1161,name:'Tents get wet',desc:'A lot higher before any tents got wet'});
-	Molpy.MakeQuadBadge({np:1178,name:'Bigger Hills',desc:'This river flows from bigger hills than ours'});
-	Molpy.MakeQuadBadge({np:1179,name:'Crossing soon',desc:'If we don\'t reach a crossing soon we\'ll be in them'});
+	Molpy.MakeQuadBadge({np:1066,name:'Still Rising',desc:'Megan: It\'s still rising.'});
+	Molpy.MakeQuadBadge({np:1067,name:'Strange',desc:'The sea couldn\'t wait.'});
+	Molpy.MakeQuadBadge({np:1069,name:'Find a ford',desc:'Megan: Walk upriver to find a ford or turn back?'});
+	Molpy.MakeQuadBadge({np:1071,name:'Understand Everything',desc:'Cueball: We don\'t understand everything yet.'});
+	Molpy.MakeQuadBadge({np:1072,name:'Understand Anything',desc:'Megan: Everything is a little ambitious.  We barely understand <i>anything</i>.'});
+	Molpy.MakeQuadBadge({np:1073,name:'First Part',desc:'Cueball: But that\'s what the first part of understanding everything looks like.'});
+	Molpy.MakeQuadBadge({np:1093,name:'Ours at its driest',desc:'Cueball: I\'m glad we found this river.'});
+	Molpy.MakeQuadBadge({np:1096,name:'Bigger',desc:'Megan: This river is even bigger than it looked.'});
+	Molpy.MakeQuadBadge({np:1123,name:'Fill the Sea',desc:'Megan: Maybe it <i>is</i> big enough to fill the sea.'});
+	Molpy.MakeQuadBadge({np:1130,name:'Rope',desc:'Cueball: Our rope isn\'t strong enough.'});
+	Molpy.MakeQuadBadge({np:1131,name:'Hold this',desc:'Cueball: Hold this or you\'ll fall.'});
+	Molpy.MakeQuadBadge({np:1142,name:'Stuff',desc:'Cueball: Our river fills with stuff.'});
+	Molpy.MakeQuadBadge({np:1143,name:'This river',desc:'Cueball: This river doesn\'t look like that.'});
+	Molpy.MakeQuadBadge({np:1144,name:'Empty places',desc:'Megan: Maybe it only flows through empty places.'});
+	Molpy.MakeQuadBadge({np:1146,name:'Continue',desc:'They continue upriver'});
+	Molpy.MakeQuadBadge({np:1159,name:'How High',desc:'Megan: I wonder how high the water is now.'});
+	Molpy.MakeQuadBadge({np:1160,name:'Been days',desc:'Megan: Not a lot of us by the shore this time of year.'});
+	Molpy.MakeQuadBadge({np:1161,name:'Tents get wet',desc:'Megan: It\'d have to rise a lot higher before any tents got wet.'});
+	Molpy.MakeQuadBadge({np:1178,name:'Bigger Hills',desc:'Cueball: This river flows from bigger hills than ours.'});
+	Molpy.MakeQuadBadge({np:1179,name:'Crossing soon',desc:'Cueball: If we don\'t reach a crossing soon, we\'ll be in them.'});
 	Molpy.MakeQuadBadge({np:1181,name:'Cliff',desc:'Looking over a cliff to the river'});
-	Molpy.MakeQuadBadge({np:1184,name:'Swim in',desc:'Megan: I wonder if it\'s possible to swim in'});
-	Molpy.MakeQuadBadge({np:1212,name:'You OK',desc:'Megan asks You OK?'});
+	Molpy.MakeQuadBadge({np:1184,name:'Swim in',desc:'Megan: I wonder if it\'s <i>possible</i> to swim in.'});
+	Molpy.MakeQuadBadge({np:1212,name:'You OK',desc:'Megan asks, "You OK?"'});
 	Molpy.MakeQuadBadge({np:1213,name:'Just Thinking',desc:'Cueball is just thinking'});
-	Molpy.MakeQuadBadge({np:1218,name:'Follow river',desc:'Megan: Should we follow the river through there'});
-	Molpy.MakeQuadBadge({np:1219,name:'Over those',desc:'Cueball: Lets see if we can go over those and rejoin it further up'});
-	Molpy.MakeQuadBadge({np:1233,name:'Windier',desc:'It must get windier up here'});
-	Molpy.MakeQuadBadge({np:1261,name:'Bigger Dunes',desc:'These are bigger than they looked'});
+	Molpy.MakeQuadBadge({np:1218,name:'Follow river',desc:'Megan: Should we follow the river through there?'});
+	Molpy.MakeQuadBadge({np:1219,name:'Over those',desc:'Cueball: Lets see if we can go over those and rejoin it further up.'});
+	Molpy.MakeQuadBadge({np:1233,name:'Windier',desc:'Megan: It must get windier up here.'});
+	Molpy.MakeQuadBadge({np:1261,name:'Bigger Dunes',desc:'Cueball: These are bigger than they looked'});
 	Molpy.MakeQuadBadge({np:1265,name:'Megan Falls',desc:'Megan falls when dune surfing'});
 	Molpy.MakeQuadBadge({np:1276,name:'Raptor',desc:'First raptor spotted (a swift)'});
-	Molpy.MakeQuadBadge({np:1338,name:'Treeish',desc:'The First tree - Neat'});
-	Molpy.MakeQuadBadge({np:1343,name:'River Further',desc:'The river isn\'t much further'});
+	Molpy.MakeQuadBadge({np:1338,name:'Treeish',desc:'The First tree - Neat!'});
+	Molpy.MakeQuadBadge({np:1343,name:'River Further',desc:'Megan: The river isn\'t much further...'});
 	Molpy.MakeQuadBadge({np:1353,name:'Second Raptor',desc:'Second Raptor (unidentified)'});
 	Molpy.MakeQuadBadge({np:1363,name:'Berries Picked',desc:'Cueball picks some berries'});
 	Molpy.MakeQuadBadge({np:1368,name:'Sticks',desc:'Cueball finds the first traces of people'});
 	Molpy.MakeQuadBadge({np:1378,name:'Berries Eaten',desc:'Cueball gives berries to Megan'});
-	Molpy.MakeQuadBadge({np:1380,name:'Campsite',desc:'Cueball: There are people here.  Or were.  I found some sort of campsite'});
-	Molpy.MakeQuadBadge({np:1381,name:'Recent?',desc:'Megan asks if is recent, Cueball says it has been empty for a while'});
+	Molpy.MakeQuadBadge({np:1380,name:'Campsite',desc:'Cueball: There are people here.  Or were.  I found some sort of campsite.'});
+	Molpy.MakeQuadBadge({np:1381,name:'Recent?',desc:'Megan asks if is recent; Cueball says it has been empty for a while'});
 	Molpy.MakeQuadBadge({np:1383,name:'Thirsty',desc:'They go to the river'});
 	Molpy.MakeQuadBadge({np:1386,name:'Left Behind?',desc:'They discuss what is in the camp'});
 	Molpy.MakeQuadBadge({np:1396,name:'Ibises',desc:'Ibises are seen eating in the damp ground'}); // '"Ibises is the current plural according to Wikipedia" - According to waveney' - According to ED
 	Molpy.MakeQuadBadge({np:1398,name:'Ibises Fly',desc:'The Ibises fly away as they approach'});
 	Molpy.MakeQuadBadge({np:1407,name:'Beautiful',desc:'They agree the place is beautiful'});
-	Molpy.MakeQuadBadge({np:1408,name:'No People',desc:'Megan: I\'m surprised we haven\'t been seen by any people yet'});
-	Molpy.MakeQuadBadge({np:1409,name:'Live Here',desc:'Megan: If it\'s this empty we should live here'});
-	Molpy.MakeQuadBadge({np:1412,name:'Tasting Better',desc:'Cueball: Did you notice the sea tasting Better?'});
-	Molpy.MakeQuadBadge({np:1413,name:'Taste Seawater',desc:'Megan: I don\'t know I try <i>not</i> to taste seawater.  Why?'});
+	Molpy.MakeQuadBadge({np:1408,name:'No People',desc:'Megan: I\'m surprised we haven\'t been seen by any people yet.'});
+	Molpy.MakeQuadBadge({np:1409,name:'Live Here',desc:'Megan: If it\'s this empty, <i>we</i> should live here.'});
+	Molpy.MakeQuadBadge({np:1412,name:'Tasting Better',desc:'Cueball: Did you notice the sea tasting <i>better</i>?'});
+	Molpy.MakeQuadBadge({np:1413,name:'Taste Seawater',desc:'Megan: I don\'t know. I try <i>not</i> to taste seawater.  Why?'});
 	Molpy.MakeQuadBadge({np:1414,name:'Get Fresher',desc:'Cueball says the sea should get fresher'});
 	Molpy.MakeQuadBadge({np:1415,name:'Tasted Fresher',desc:'Cueball says it was a litle fresher before they left'});
-	Molpy.MakeQuadBadge({np:1416,name:'Extra water',desc:'Megan: Probably. I mean how high was the sea then?  The extra water couldn\'t have been more than a tiny part of it'});
-	Molpy.MakeQuadBadge({np:1419,name:'We may as well continue',desc:'Cueball: continue - to figure the sea or keep fnding beautiful places'});
-	Molpy.MakeQuadBadge({np:1420,name:'Sounds fun',desc:'Megan: That sounds fun'});
+	Molpy.MakeQuadBadge({np:1416,name:'Extra water',desc:'Megan: Probably. I mean, how high was the sea then?  The extra water couldn\'t have been more than a tiny part of it.'});
+	Molpy.MakeQuadBadge({np:1419,name:'We may as well continue',desc:'Cueball says they should continue - either to figure the sea or to keep finding beautiful places'});
+	Molpy.MakeQuadBadge({np:1420,name:'Sounds fun',desc:'Megan: That sounds fun.'});
 	Molpy.MakeQuadBadge({np:1434,name:'Ribbit hole',desc:'Megan falls due to a ribbit hole'});
 	Molpy.MakeQuadBadge({np:1437,name:'I Found A-',desc:'Megan sitting up and explaining'});
 	Molpy.MakeQuadBadge({np:1438,name:'Cueball Helps',desc:'Cueball helps Megan up'});
 	Molpy.MakeQuadBadge({np:1458,name:'Beesnake',desc:'Megan looks at the Beesnake'});
 	Molpy.MakeQuadBadge({np:1476,name:'Campsite 2',desc:'They find a second campsite'});
-	Molpy.MakeQuadBadge({np:1495,name:'Oof',desc:'Megan: Oof'});
-	Molpy.MakeQuadBadge({np:1497,name:'Megans OK',desc:'Megan says she is ok'});
-	Molpy.MakeQuadBadge({np:1502,name:'WOW',desc:'Megan looks out and says Wow'});
+	Molpy.MakeQuadBadge({np:1495,name:'<small>Oof</small>',desc:'Megan: Oof.'});
+	Molpy.MakeQuadBadge({np:1497,name:'Megan\'s OK',desc:'Megan says she is ok'});
+	Molpy.MakeQuadBadge({np:1502,name:'Wow',desc:'Megan looks out and says "Wow."'});
 	Molpy.MakeQuadBadge({np:1503,name:'Baobabs',desc:'Baobab trees'});
 	Molpy.MakeQuadBadge({np:1510,name:'Baobabs close',desc:'They look up close to the first Baobab'});
 	Molpy.MakeQuadBadge({np:1513,name:'Markings on trunk',desc:'They find markings on the Baobab'});
 	Molpy.MakeQuadBadge({np:1514,name:'Wonder what they mean',desc:'They can\'t understand the markings'});
-	Molpy.MakeQuadBadge({np:1525,name:'The bent Baobab',desc:'Megan: I wonder if it\'s supposed to be like that'});
-	Molpy.MakeQuadBadge({np:1526,name:'Knows what it\'s doing',desc:'Cueball: It\'s a pretty big tree.  It probably knows what it\'s doing'});
+	Molpy.MakeQuadBadge({np:1525,name:'The bent Baobab',desc:'Megan: I wonder if it\'s supposed to be like that.'});
+	Molpy.MakeQuadBadge({np:1526,name:'Knows what it\'s doing',desc:'Cueball: It\'s a pretty big tree.  It probably knows what it\'s doing.'});
 	Molpy.MakeQuadBadge({np:1552,name:'First Grapevine',desc:'They look at the first grapevine'});
 	Molpy.MakeQuadBadge({np:1557,name:'Take some grapes?',desc:'Cueball: Do you think it\'s OK to take some?'});
-	Molpy.MakeQuadBadge({np:1558,name:'Yes take grapes',desc:'Megan: Yeah.  It doesn\'t look like anyone\'s been here for a while'});
+	Molpy.MakeQuadBadge({np:1558,name:'Yes take grapes',desc:'Megan: Yeah.  It doesn\'t look like anyone\'s been here for a while.'});
 	Molpy.MakeQuadBadge({np:1587,name:'Examine campsite',desc:'They examine another abandoned campsite'});
-	Molpy.MakeQuadBadge({np:1589,name:'Stuff floats down our river',desc:'Cueball: This looks like the stuff that floats down our river'});
+	Molpy.MakeQuadBadge({np:1589,name:'Stuff floats down our river',desc:'Cueball: This looks like the stuff that floats down our river.'});
 	Molpy.MakeQuadBadge({np:1590,name:'Hill People?',desc:'They wonder if they are related to the Hill people'});
 	Molpy.MakeQuadBadge({np:1592,name:'Megans doubt',desc:'Megan: But the markings on that tree didn\'t look familiar'});
-	Molpy.MakeQuadBadge({np:1594,name:'Cross with a raft',desc:'Megan: We could cross the river now.  We\'ve found more than enough wood for a raft'});
+	Molpy.MakeQuadBadge({np:1594,name:'Cross with a raft',desc:'Megan: We could cross the river now.  We\'ve found more than enough wood for a raft.'});
 	Molpy.MakeQuadBadge({np:1595,name:'Yeah',desc:'Cueball agrees with Megan'});
-	Molpy.MakeQuadBadge({np:1598,name:'Almost Mountains',desc:'Cueball: We\'re almost in the mountains'});
-	Molpy.MakeQuadBadge({np:1600,name:'Learning Lots',desc:'Cueball: We walked along the Sea for days and we didn\'t learn anything.  Up here we\'re learning lots'});
-	Molpy.MakeQuadBadge({np:1601,name:'Not why the Sea rose',desc:'They still have not found out why the Sea has risen'});
-	Molpy.MakeQuadBadge({np:1602,name:'Food and water',desc:'Cueball: There\'s food and water here.  I don\'t want to go all the way back down, walk along the sea for a few more days, then have to turn around'});
-	Molpy.MakeQuadBadge({np:1603,name:'Sea is too big',desc:'Cueball: Maybe the Sea is too big to understand.  We can\'t answer every question'});
-	Molpy.MakeQuadBadge({np:1604,name:'Answer <i>Any</i> question',desc:'Megan: No.  But I think we can answer <i>any</i> question'});
-	Molpy.MakeQuadBadge({np:1605,name:'No need to turn around',desc:'Megan: Still, I agree.  No need to turn around yet'});
-	Molpy.MakeQuadBadge({np:1606,name:'Neat mountains',desc:'Megan: And those mountains <i>do</i> look neat'});
+	Molpy.MakeQuadBadge({np:1598,name:'Almost Mountains',desc:'Cueball: We\'re almost in the mountains.'});
+	Molpy.MakeQuadBadge({np:1600,name:'Learning Lots',desc:'Cueball: We walked along the sea for days and we didn\'t learn anything.  Up here we\'re learning lots.'});
+	Molpy.MakeQuadBadge({np:1601,name:'Not why the sea rose',desc:'They still have not found out why the sea has risen'});
+	Molpy.MakeQuadBadge({np:1602,name:'Food and water',desc:'Cueball: There\'s food and water here.  I don\'t want to go all the way back down, walk along the sea for a few more days, then have to turn around.'});
+	Molpy.MakeQuadBadge({np:1603,name:'Answer every question',desc:'Cueball: Maybe the sea is too big to understand.  We can\'t answer every question'});
+	Molpy.MakeQuadBadge({np:1604,name:'Answer <i>any</i> question',desc:'Megan: No.  But I think we can answer <i>any</i> question'});
+	Molpy.MakeQuadBadge({np:1605,name:'No need to turn around',desc:'Megan: Still, I agree.  No need to turn around yet.'});
+	Molpy.MakeQuadBadge({np:1606,name:'Neat mountains',desc:'Megan: And those mountains <i>do</i> look neat.'});
 	Molpy.MakeQuadBadge({np:1608,name:'Stock up',desc:'Megan goes back for food, Cueball will get the water'});
 	Molpy.MakeQuadBadge({np:1616,name:'Squirpy',desc:'Megan sees the squirpy'});
-	Molpy.MakeQuadBadge({np:1617,name:'Hi Squirpy',desc:'Megan says Hi to the squirpy'});
+	Molpy.MakeQuadBadge({np:1617,name:'Hi, Squirpy',desc:'Megan says Hi to the squirpy'});
 	Molpy.MakeQuadBadge({np:1622,name:'Won\'t eat you',desc:'Megan talks to the squirpy'});
 	Molpy.MakeQuadBadge({np:1625,name:'Want some food?',desc:'Food is offered to the squirpy'});
 	Molpy.MakeQuadBadge({np:1669,name:'Where are the people?',desc:'Cueball wonders where the people who used to tend the plants are'});
 	Molpy.MakeQuadBadge({np:1686,name:'Playing with shadows',desc:'Cueball is playing with shadows'});
-	Molpy.MakeQuadBadge({np:1687,name:'What are you doing?',desc:'Megan asks what Cueball is doing?'});
+	Molpy.MakeQuadBadge({np:1687,name:'What are you doing?',desc:'Megan asks what Cueball is doing'});// rev. through here -Calamitizer
 	Molpy.MakeQuadBadge({np:1688,name:'Cueball has been making shapes',desc:'He explains what he is doing'});
 	Molpy.MakeQuadBadge({np:1689,name:'Weird shadows',desc:'Megan: When I stare down at mine for long enough while I walk, it starts to look really weird'});
 	Molpy.MakeQuadBadge({np:1692,name:'Better than following the Sea',desc:'Megan drops a big clue as to what direction they were travelling when they started'});	
@@ -1822,7 +1943,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:3066,name:'Forty!',desc:'All forty cuganites are here'});
 	Molpy.MakeQuadBadge({np:3067,name:'Ride it out',desc:'They will have to ride it out'});
 	Molpy.MakeQuadBadge({np:3076,name:'Night time',desc:'Its dark again, with stars, the milky way and galaxies'});
-	Molpy.MakeQuadBadge({np:3078,name:'hey',desc:'Megan: <small>hey</small>'});
+	Molpy.MakeQuadBadge({np:3078,name:'<small>hey</small>',desc:'Megan: <small>hey</small>'});
 	Molpy.MakeQuadBadge({np:3079,name:'Everyone asleep',desc:'Just Megan and Cueball on the raft'});
 	Molpy.MakeQuadBadge({np:3081,name:'New Castle!',desc:'They are making a new sand castle'});
 	Molpy.MakeQuadBadge({np:3082,name:'Land!',desc:'Cueball: Land!'});
@@ -1832,5 +1953,84 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:3086,name:'Where are we',desc:'Cueball: Where do you think we are?  Megan: I don\'t know'});
 	Molpy.MakeQuadBadge({np:3087,name:'Find out',desc:'Megan: But I bet we can  figure it out!  C\'mon let\'s see what\'s through here!'});
 	Molpy.MakeQuadBadge({np:3089,name:'The End',desc:'Sob sob cry, bring on the ice cream'});
+
+	Molpy.MakeQuadBadge({np:0,name:'Chronocenter',desc:'The extradimensional core of Time'});
+	//t1i discoveries
+	Molpy.MakeQuadBadge({np:11.1, name:'A wild Beanie appears!', desc: '11 pix before humanoid life. A new record?'});
+	Molpy.MakeQuadBadge({np:13.1, name: 'Another one?', desc: 'The beanies might have an adventure.'})
+	Molpy.MakeQuadBadge({np:90.1, name: 'Herd you wanted people', desc: '77 consecutive pix with no people.'});
+	Molpy.MakeQuadBadge({np:197.1, name: 'The Sea', desc: 'The first sign of OTTishness in over 180 pix.'})
+	Molpy.MakeQuadBadge({np:202.1, name: 'Wave', desc: "The sea is uneven."})
+	Molpy.MakeQuadBadge({np:203.1, name: "Hour-long Night", desc: "The first night lasts an hour. It is uneventful."})
+	Molpy.MakeQuadBadge({np:209.1, name: "The Forty arrive", desc: "We hear a familiar voice from a familiar scene."})
+	Molpy.MakeQuadBadge({np:212.1, name: "T** **d again?", desc: "In which we see the familiar scene."})
+	Molpy.MakeQuadBadge({np:216.1, name: "Well that was quick", desc: "In which t1i suddenly seemed to have ended."})
+	Molpy.MakeQuadBadge({np:228.1, name: "Not over yet", desc: "The scene changes to reveal something new."})
+	Molpy.MakeQuadBadge({np:237.1, name: "Settling in", desc: "In which we see the collected Forty once more."})
+	Molpy.MakeQuadBadge({np:262.1, name: "Let's find out", desc: "Cueball and Megan go to meet their islandmates."}) //That should totally be a word.
+	Molpy.MakeQuadBadge({np:291.1, name: "Different air", desc: "The air is different."})
+	Molpy.MakeQuadBadge({np:292.1, name: "Seen the top already", desc: "In which we learn that Cueball and Megan have seen the top of the mountain"})
+	Molpy.MakeQuadBadge({np:294.1, name: "Breathe", desc: "Megan wonders if people can breathe on mountains."})
+	Molpy.MakeQuadBadge({np:304.1, name: "Another snake", desc: "Cueball sees a different snake."})
+	Molpy.MakeQuadBadge({np:317.1, name: "Just thinking", desc: "Cueball explains his slowness."})
+	Molpy.MakeQuadBadge({np:318.1, name:'It winked',desc:'The snake somehow winked'});
+	Molpy.MakeQuadBadge({np:321.1, name:'Very cautious',desc:'Increased efforts to be careful.'});
+	Molpy.MakeQuadBadge({np:345.1, name: "It moved", desc: "A plant somehow moves."})
+	Molpy.MakeQuadBadge({np:346.1, name:'Finally',desc:'Cueball finally considers himself mad.'});
+	Molpy.MakeQuadBadge({np:353.1, name:'The world is weirder',desc:'Truth is stranger than fiction.'});
+	Molpy.MakeQuadBadge({np:356.1, name:'Crazier',desc:'The higher they get, the crazier they get.'});
+	Molpy.MakeQuadBadge({np:360.1, name:'Crazy enough',desc:'Megan calls Cueball too sane for her tastes.'});
+	Molpy.MakeQuadBadge({np:400.1, name:"The Top", desc:"Megan announces their arrival to the top of the island."})
+	Molpy.MakeQuadBadge({np:418.1, name:"Another Castle", desc:"The pair tries to make a dirt castle."})
+	Molpy.MakeQuadBadge({np:426.1, name:"I miss our beach", desc:"Dirt doesn't shape well."})
+	Molpy.MakeQuadBadge({np:432.1, name:"They've been here", desc:"The Beanies have been there."})
+	Molpy.MakeQuadBadge({np:440.1, name:"The Beanie fortress", desc:"Cueball finishes a replica of the Beanie Fortress."})
+	Molpy.MakeQuadBadge({np:441.1, name:"Mountain identified", desc:"Megan figures out where they are."})
+	Molpy.MakeQuadBadge({np:448.1, name:"Two flags", desc:"The pair leave a corresponding pair of flags in the castle."})
+	Molpy.MakeQuadBadge({np:455.1, name:"Beanie cam", desc:"The Beanies spot the castle."})
+	Molpy.MakeQuadBadge({np:480.1, name:'Higher mountains',desc:'The pair wonder if there are higher mountains on other islands.'});
+	Molpy.MakeQuadBadge({np:486.1, name:'Breathe again',desc:'The pair wonder how high up people can breathe.'});
+	Molpy.MakeQuadBadge({np:514.1, name:'A third snake',desc:'The pair spot yet another snake.'});
+	Molpy.MakeQuadBadge({np:556.1, name:"The other half", desc:"We learn just how small the island is."})
+	Molpy.MakeQuadBadge({np:560.1, name:'Broken castle',desc:'The pair spots something interesting.'});
+	Molpy.MakeQuadBadge({np:599.1, name:'Aunt', desc:'Some characterization of Cueball\'s aunt.'});
+	Molpy.MakeQuadBadge({np:618.1, name:'Tsee-chirp',desc:'A sound that will return many more times.'});
+	Molpy.MakeQuadBadge({np:633.1, name:"Warning signs", desc:"We see a sinister-looking series of Xs."})
+	Molpy.MakeQuadBadge({np:649.1, name:"Not a castle", desc:"The castle is arrived at."})
+	Molpy.MakeQuadBadge({np:658.1, name:"Recent", desc:"Someone was there recently."})
+	Molpy.MakeQuadBadge({np:679.1, name:"There's a cave", desc:"Cueball notices a cave."})
+	Molpy.MakeQuadBadge({np:680.1, name:"Someone inside", desc:"Someone is inside."})
+	Molpy.MakeQuadBadge({np:681.1, name:"Beanies!", desc:"The beanies yell for the first time."})
+	Molpy.MakeQuadBadge({np:685.1, name:"Oh no!", desc:"Cueball yells for the first time."})
+	Molpy.MakeQuadBadge({np:760.1, name:"Back home", desc:"The foursome arrives back to the Forty's camp."})
+	Molpy.MakeQuadBadge({np:772.1, name:"Beanies learn quickly", desc:"The beanie figures out a word."})
+	Molpy.MakeQuadBadge({np:788.1, name:"and draw well", desc:"The beanie uses her sketchbook."})
+	Molpy.MakeQuadBadge({np:804.1, name:"Close call", desc:"Cueball realizes how lucky he is."})
+	Molpy.MakeQuadBadge({np:808.1, name:"Cueball gets excited", desc:"Cueball accidentally creates an awkward situation."})
+	Molpy.MakeQuadBadge({np:844.1, name:"Beanies learn extremely quickly", desc:"The Beanie learns to speak a language somewhat overnight."})
+	Molpy.MakeQuadBadge({np:864.1, name:"Not Superman", desc:"The Beanie displays her non-superman, non-plane art."})
+	Molpy.MakeQuadBadge({np:924.1, name:"Assorted Art", desc:"The Beanie shows her sketchbook's content."})
+	Molpy.MakeQuadBadge({np:926.1, name:"Some sort of molpy", desc:"Another drawing of something weird."})
+	Molpy.MakeQuadBadge({np:956.1, name:"She knows everything", desc:"The pair discuss their views on Beanish knowledge."})
+	Molpy.MakeQuadBadge({np:977.1, name:'Green water',desc:'The pond is full of fresh, green, water.'});
+	Molpy.MakeQuadBadge({np:997.1, name:"Bad water", desc:"The pair realize that the water is dangerous."})
+	Molpy.MakeQuadBadge({np:1011.1, name:'Mouring',desc:'The trio briefly pause to pay their respects to the dead.'});
+	Molpy.MakeQuadBadge({np:1023.1, name:"The plan", desc:"The Beanie reveals the chosen method of retrieval."})
+	Molpy.MakeQuadBadge({np:1094.1, name:"Crunch", desc:"The body makes a crunching sound."})
+	Molpy.MakeQuadBadge({np:1097.1, name:"Stuck", desc:"The retrieval device gets stuck."})
+	Molpy.MakeQuadBadge({np:1105.1, name:"Lasso", desc:"Megan begins to try to lasso the body."})
+	Molpy.MakeQuadBadge({np:1106.1, name:'Yeah!',desc:'Megan successfully gets the body.'});
+	Molpy.MakeQuadBadge({np:1115.1, name:"Looking weird", desc:"The pair comment on their cave protection devices."})
+	Molpy.MakeQuadBadge({np:1173.1, name:"Burial site", desc:"The trio finish burying the body."})
+	Molpy.MakeQuadBadge({np:1202.1, name:"Fossils", desc:"The Beanie shows the pair something from the dead bodies."})
+	Molpy.MakeQuadBadge({np:1222.1, name:'How they came',desc:'The Beanish boat is revealed.'});
+	Molpy.MakeQuadBadge({np:1229.1, name:"Map", desc:"A crude map is finished."})
+	Molpy.MakeQuadBadge({np:1291.1, name:"Back already", desc:"The trio return by boat."})
+	Molpy.MakeQuadBadge({np:1321.1, name:"Oil barrels", desc:"The second image from the book."})
+	Molpy.MakeQuadBadge({np:1323.1, name:"Radioactive", desc:"The fourth image from the book."})
+	Molpy.MakeQuadBadge({np:1373.1, name:"Who taught them", desc:"Lapetite explains what is happening, suggesting an answer to an old question."})
+	Molpy.MakeQuadBadge({np:1395.1, name:"Summon bigger boat", desc:"A bigger Beanish boat is revealed."}) //Boat, not fish.
+	Molpy.MakeQuadBadge({np:1408.1, name:"T** **d for real.", desc:"T** **d is displayed a second time."})
+	Molpy.MakeQuadBadge({np:1414.1, name:"Rosetta returns", desc:"Rosetta is seen receiving the maps from the pair."})
 	//Molpy.MakeQuadBadge({np:,name:'',desc:''});
 }
