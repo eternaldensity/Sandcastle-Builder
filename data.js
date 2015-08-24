@@ -907,6 +907,7 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 		Molpy.Boosts['Muse'].department = 0;
 	}
 	Molpy.Boosts['Black Powder'].department = 1 * Molpy.Got('DMM');
+	Molpy.Boosts['Marketing'].department = (Molpy.Boosts['DQ'].Level >= 3 && Molpy.Has('Gold',2e8));
 }
 
 Molpy.CheckLogicatRewards = function(automationLevel) {

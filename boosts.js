@@ -8143,6 +8143,13 @@ Molpy.DefineBoosts = function() {
 					if (pair[1] == Molpy.NestLinings[line] && Molpy.Has(pair[1],Infinity)) stat2 = this.Liners[line];
 				}
 				props[prop] = stat1*stat2/10000;
+				if(props[prop] > .25) {
+					var roulette = props[prop] - .25;
+					if(Math.random() - Molpy.DragonLuck > .5){
+						props[prop] = Math.max(.25-roulette, 0);
+						Molpy.Notify('Ouch! Too much ' + Molpy.DragonStats[prop] + ', lost some mojo.',1)
+					}
+				}
 			}
 			return props;
 		}
@@ -8154,10 +8161,11 @@ Molpy.DefineBoosts = function() {
 		var rest = 0;
 		for (var inf in Molpy.NestLinings) if (inf != thing) rest += (nest.Liners[inf] || 0);
 		var cur = (nest.Liners[thing] || 0);
-		if (cur+change < 0 || (!Molpy.Got('Marketing') && ((rest+cur+change) > 100))) return;
+		if (cur+change < 0 || (!Molpy.Got('Marketing') && ((rest+cur+change) > 100)) || cur + change > 100 || rest + cur + change > 200) return;
 		nest.Liners[thing] = (nest.Liners[thing] || 0) + change;
 		nest.Refresh();
 	}
+
 	Molpy.EggCost = function() {
 		var eggs = Molpy.Boosts['Eggs'].Level;
 		var modpow = 1;
@@ -10268,6 +10276,16 @@ Molpy.DefineBoosts = function() {
 		desc: 'Numbers don\'t have to add up',
 		group: 'hpt',
 		icon: 'marketing',
+		price: {
+			Sand: Infinity,
+			Castles: Infinity,
+			GlassChips: Infinity,
+			GlassBlocks: Infinity,
+			Blackprints: Infinity,
+			FluxCrystals: Infinity,
+			Mustard: Infinity,
+			Goats: Infinity,
+		}
 	});
 	new Molpy.Boost({ // Note nothing is going to spend gold - dragons hoard it
 		name: 'Gold',
@@ -10315,7 +10333,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(){
 			var str = '';
 			if(Molpy.Boosts['DQ'].level < 3) str += 'This has lots of useful information that will change as you do things...if you know where to look.<br>';
-			if(Molpy.DragonLuck) str += 'Draconic Luck: ' + 100*Molpify(Molpy.DragonLuck,3) + '%';
+			if(Molpy.DragonLuck) str += 'Draconic Luck: ' + Molpify((Molpy.DragonLuck*100),0) + '%';
 			if(Molpy.Got('Dragon Breath') && Molpy.Boosts['Dragon Breath'].countdown > 0) str += '<br>mNP until Breath is available: ' + Molpify(Molpy.Boosts['Dragon Breath'].countdown,0);
 			if(!Molpy.Boosts['Dragon Breath'].countdown) str += '<br>Breath is available.';
 			if(Molpy.Got('Cup of Tea') || Molpy.Got('Healing Potion') || Molpy.Got('Strength Potion') || Molpy.Got('Ethyl Alcohol') || 0) str+= '<br><u>Potions</u></div>';
@@ -12141,27 +12159,35 @@ Molpy.Coallate = function(){
 		group: 'drac',
 		desc: function(me){
 			var str = 'Allows you to power up Breath by spending Coal. ';
-			if(!me.bought) return str;
-			str += 'Breath is currently boosted by' + Molpify(me.power) + '. The next upgrade will cost ' + Molpify(me.price)
-			+ ' Coal, and Breath will be boosted by ' + Molpify(me.buyFunction(1)) + '.';
+			str += 'Breath is currently ' + Molpify(me.power) + ' times more powerful. The next upgrade will cost ' + Molpify(Molpy.priceFactor*Molpy.Boosts['Catalyzer'].costFunction(1),0)
+			+ ' Coal, and the Breath multiplier will be ' + Molpify(me.buyFunction(1)) + '.<br>You have ' + (me.Level - 1) + ' Catalyzers.';
 			return str;
 		},
 		draglvl: 'Wyvern',
-		Level: Molpy.BoostFuncs.Bought0Level,
 		limit: function() { return (Molpy.Boosts['DQ'].breathfights>=50?30*(Molpy.Level('DQ') - 1):0) },
+		Level: Molpy.BoostFuncs.Bought0Level,
+		costFunction: function(desc){
+			var levmod = this.Level/10;
+			if(desc) levmod += .1;
+			return Math.pow(2,Math.pow(2,(Math.max(levmod,.1))))
+		},
 		buyFunction: function(desc){
 			var me = Molpy.Boosts['Catalyzer'];
+			if(!me.Level) me.Level = 1;
 			var powmod = (me.Level + 1)/10;
-			var newpower = ((2/3*powmod + Math.exp(1/6,1/6*powmod) * sin(15*powmod)) ^4);
+			var newpower = (Math.pow(2/3*powmod + Math.exp(1/6,1/6*powmod) * Math.sin(15*powmod),4));
 			if(!desc){
 				me.power = newpower;
 				me.Level++;
-				Molpy.LockBoost('Catalyzer');
+				me.Lock();
 			};
 			if(desc) return newpower;
 		},
+		Level: 0,
+		defSave: 1,
+		saveData: {4: ['Level', 0,'int']}, //to override Level being calculated from power
 		price: {
-			Coal: function(me) { return Math.pow(Math.pow(me.Level/10,2),2) }
+			Coal: function() { return Molpy.Boosts['Catalyzer'].costFunction() }
 		},
 	})
 
