@@ -3568,6 +3568,7 @@ Molpy.Up = function() {
 		if(todo==undefined){todo=Molpy.ONGs[0]}
 		todo();
 		Molpy.UpdateBeach();
+		Molpy.HandlePeriods();
 	}
 	
 	Molpy.ONGBase = function() {
