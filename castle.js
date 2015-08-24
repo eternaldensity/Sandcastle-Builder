@@ -3576,7 +3576,9 @@ Molpy.Up = function() {
 		var todo=Molpy.ONGs[type];
 		if(todo==undefined){todo=Molpy.ONGs[0]}
 		todo();
+		Molpy.newpixNumber=Number((Molpy.newpixNumber).toFixed(3))
 		Molpy.UpdateBeach();
+		Molpy.HandlePeriods();
 	}
 	
 	Molpy.ONGBase = function() {
