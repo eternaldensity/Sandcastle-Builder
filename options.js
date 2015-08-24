@@ -78,7 +78,7 @@ Molpy.OptionsFromString = function(thread) {
 // ALWAYS add to the end of this list. NEVER EVER remove an option
 Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpix', 'longpostfix', 'colourscheme',
 			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll',
-			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow', 'mindecimal', 'edigits', 'approx' ];
+			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow', 'mindecimal', 'edigits', 'approx', 'NotifSilence' ];
 	
 // These options are defined in the display order
 
@@ -323,6 +323,11 @@ new Molpy.Option({
     title: 'Use rougher approximations',
     range: 4,
     text: ['Very Rough', 'Rough', 'Chunky', 'Smooth', 'Silky Smooth'],
+    visability: -1
+});
+new Molpy.Option({
+    name: 'NotifSilence',
+    title: 'No notifications',
     visability: 1
 });
 
