@@ -1184,6 +1184,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.Notify = function(text, log, clas, title, details) {
+		if(Molpy.options['NotifSilence']){return;}
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
 		//pick the first free (or the oldest) notification to replace it
