@@ -630,7 +630,7 @@ Molpy.FindThings = function() {
 			if (me.unlocked < lim && me.unlocked == me.bought) availRewards.push(me);
 		}
 	}
-//		Molpy.Notify('List length '+ availRewards.length);
+	if(Molpy.FindDebug) Molpy.Notify('List length '+ availRewards.length);
 	var thing = GLRschoice(availRewards);
 	if (thing) {
 		Molpy.UnlockBoost(thing.alias);

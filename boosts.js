@@ -8143,13 +8143,7 @@ Molpy.DefineBoosts = function() {
 					if (pair[1] == Molpy.NestLinings[line] && Molpy.Has(pair[1],Infinity)) stat2 = this.Liners[line];
 				}
 				props[prop] = stat1*stat2/10000;
-				if(props[prop] > .25) {
-					var roulette = props[prop] - .25;
-					if(Math.random() - Molpy.DragonLuck > .5){
-						props[prop] = Math.max(.25-roulette, 0);
-						Molpy.Notify('Ouch! Too much ' + Molpy.DragonStats[prop] + ', lost some mojo.',1)
-					}
-				}
+				if(props[prop] > .25)props[prop] *= Math.random();
 			}
 			return props;
 		}
@@ -10335,7 +10329,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(){
 			var str = '';
 			if(Molpy.Boosts['DQ'].level < 3) str += 'This has lots of useful information that will change as you do things...if you know where to look.<br>';
-			if(Molpy.DragonLuck) str += 'Draconic Luck: ' + Molpify((Molpy.DragonLuck*100),0) + '%';
+			if(Molpy.DragonLuck) str += 'Draconic Luck: ' + Molpify((Molpy.DragonLuck*100),2) + '%';
 			if(Molpy.Got('Dragon Breath') && Molpy.Boosts['Dragon Breath'].countdown > 0) str += '<br>mNP until Breath is available: ' + Molpify(Molpy.Boosts['Dragon Breath'].countdown,0);
 			if(!Molpy.Boosts['Dragon Breath'].countdown) str += '<br>Breath is available.';
 			if(Molpy.Got('Cup of Tea') || Molpy.Got('Healing Potion') || Molpy.Got('Strength Potion') || Molpy.Got('Ethyl Alcohol') || 0) str+= '<br><u>Potions</u></div>';
