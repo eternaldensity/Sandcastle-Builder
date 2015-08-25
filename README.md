@@ -35,6 +35,10 @@ For personal amusement only.
 
 ### 3.7 Kitty Genocide Simulator 2015
 
+#### erp-lsf
+- New Option:
+ * Cloud Sync
+
 #### Calamitizer
 
 - New Boosts:

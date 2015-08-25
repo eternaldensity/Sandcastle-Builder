@@ -78,7 +78,7 @@ Molpy.OptionsFromString = function(thread) {
 // ALWAYS add to the end of this list. NEVER EVER remove an option
 Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpix', 'longpostfix', 'colourscheme',
 			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll',
-			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow', 'mindecimal', 'edigits', 'approx' ];
+			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow', 'mindecimal', 'edigits', 'approx'];
 	
 // These options are defined in the display order
 
@@ -106,6 +106,59 @@ new Molpy.Option({
 	defaultval: 1,
 	text: [ 'Off (remember to save layouts manually!)', 'When you save the game manually', 'Whenever the game is saved'],
 	breakafter: 1,
+});
+
+new Molpy.Option({
+	name: 'cloudsync',
+	title: 'Cloud Sync (Click this to progress)',
+	text: ['Off', 'Enter github credentials', 'Setup sync time', 'Stop everything'],
+	range: 3,
+	breakafter: 1,
+	onchange: function() {
+		if (Molpy.options.cloudsync == 2) {
+			var username = prompt('Enter your username');
+			var password = prompt('Enter your password');
+
+			GH.setup(username, password);
+
+			this.breakafter = 0;
+		} else if (Molpy.options.cloudsync == 3) {
+			var time = prompt('Enter amount of seconds...');
+			//TODO: setup export via timer
+
+			GH.tTime = parseInt(time);
+			GH.tId = setInterval(GH.exportToCloud, time * 1000);
+
+			this.title = 'Sync every' + ' ' + time + ' ' + 'seconds (Click this to progress)'
+		} else if (Molpy.options.cloudsync == 0) {
+			GH.teardown();
+
+			this.title = 'Cloud Sync (Click this to progress)';
+			this.breakafter = 1;
+		}
+	},
+	visability: function() {return Molpy.Got('Autosave Option')},
+});
+
+new Molpy.Option({
+	name: 'cloudimp',
+	title: 'Import data from cloud',
+	text: ['WARNING: NO CONFIRMATION!', 'Unpress the button'],
+	onchange: function() {
+		if (Molpy.options.cloudimp) {
+			if (GH.fGist) {
+				GH.importFromCloud()
+			}
+		}
+	},
+	visability: function() {
+		if ((Molpy.options.cloudsync == 2) || (Molpy.options.cloudsync == 3)) {
+			return 1
+		} else {
+			return 0
+		}
+	},
+	breakafter: 1
 });
 
 new Molpy.Option({
