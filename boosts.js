@@ -12384,7 +12384,7 @@ new Molpy.Boost({
 			} else if (this.bought == this.limit) {
 				this.countdown = 0;
 				this.power = 0;
-			} else if (1 < this.bought < this.limit) {
+			} else if (1 < this.bought && this.bought < this.limit) {
 				this.Unlock();
 			}
 		},
@@ -12515,16 +12515,13 @@ new Molpy.Boost({
 		icon: 'aperture',
 		group: 'dimen',
 		className: 'action',
-		
-		times: 1000,
-
 		desc: function(me) {
 			var str = '';
 			if (!me.bought) str += 'Y\'know, the study of holes. ';
 			str += 'Researches perforations of the extemporal barrier surrounding Time. ';
-			if (!me.bought) str += 'Needs to be bought ' + Molpify(me.times) + ' times within 1 NP. ';
-			if (me.bought && me.bought < me.times) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
-			if (me.bought == me.times) str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keyholes to advance farther.';
+			if (!me.bought) str += 'Needs to be bought ' + Molpify(me.limit) + ' times within 1 NP. ';
+			if (me.bought && me.bought < me.limit) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
+			if (me.bought == me.limit) str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keyholes to advance farther.';
 			if (me.countdown) str += ' You have ' + Molpify(me.countdown) + 'mNP left.';
 			return str;
 		},
@@ -12537,10 +12534,10 @@ new Molpy.Boost({
 			if (this.bought == 1) {
 				this.countdown = 1000;
 				this.Unlock();
-			} else if (this.bought == Molpy.Boosts['Aperture Science'].times) {
+			} else if (this.bought == this.limit) {
 				this.countdown = 0;
 				this.power = 0;
-			} else {
+			} else if (1 < this.bought && this.bought < this.limit) {
 				this.Unlock();
 			}
 		},
@@ -12549,7 +12546,7 @@ new Molpy.Boost({
 			this.unlocked = 0;
 			this.Unlock();
 		},
-		limit: 3,
+		limit: 1000,
 		NotTemp: 1,
 	});
 	new Molpy.Boost({
