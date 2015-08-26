@@ -12362,16 +12362,16 @@ new Molpy.Boost({
 		desc: function(me) {
 			var str = 'Spending infinite goats boosts bonemeal from Shadow Strikes. ';
 			if (!me.bought) {
-				str += 'Needs to be bought 10 times within 1 NP. ';
+				str += 'Needs to be bought ' + me.limit + ' times within 1 NP. ';
 			} else {
-				if (me.bought < 10) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
-				if (me.countdown) str += ' You have ' + me.countdown + 'mNP left.';
+				if (me.bought < me.limit) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
+				if (me.countdown) str += ' You have ' + Molpify(me.countdown) + 'mNP left.';
 			};
 			return str;
 		},
 		stats: function(me) {
 			var str = '';
-			if (me.bought == 10) str += 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
+			if (me.bought == me.limit) str += 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
 			return str;
 		},
 		price: {
@@ -12381,10 +12381,10 @@ new Molpy.Boost({
 			if (this.bought == 1) {
 				this.countdown = 1000;
 				this.Unlock();
-			} else if (this.bought == 10) {
+			} else if (this.bought == this.limit) {
 				this.countdown = 0;
 				this.power = 0;
-			} else {
+			} else if (1 < this.bought < this.limit) {
 				this.Unlock();
 			}
 		},
@@ -12393,9 +12393,10 @@ new Molpy.Boost({
 			this.unlocked = 0;
 			this.Unlock();
 		},
-		limit: 3,
+		limit: 10,
 		NotTemp: 1,
 	});
+
 	new Molpy.Boost({
 		name: 'Fields\' Mettle',
 		alias: 'terrytao', 
