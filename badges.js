@@ -1195,7 +1195,11 @@ Molpy.DefineBadges = function() {
 		desc: 'An enemy was frozen and did not attack for a round.',
 		vis: 1
 	});
-
+new Molpy.Badge({
+		name: 'One in a Million',
+		desc: 'Found a shard in a vault with low IP power.',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 
