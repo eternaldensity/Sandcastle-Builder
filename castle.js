@@ -1754,20 +1754,20 @@ Molpy.Up = function() {
 					(Molpy.Got('ASHF') || !(RobbySee.power & 1)||(Molpy.Boosts[bacon].photo!=undefined));
 			var lettuce = Molpy.Boosts[bacon];
 			if(times==undefined) {times=1}
-			if((times===1)) {
-				if (lettuce.name === 'Locked Vault' && Molpy.IsEnabled('Aleph One') && shouldbuy) {
-					Molpy.Unbox(1);
+			if(shouldbuy){
+				if((times===1)) {
+					if (lettuce.name === 'Locked Vault' && (Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks'))) {
+						Molpy.Unbox(1);
+					} else {
+						Molpy.UnlockBoost(bacon,auto)
+					}
 				} else {
-					Molpy.UnlockBoost(bacon,auto)
-				}
-			} else {
-				if (shouldbuy) {
-					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
+					if(lettuce.name==='Locked Vault' && (Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks'))){
 						Molpy.Unbox(times)
 						// Molpy.Boosts['Locked Vault'].bought = flandom(4);
 						// Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times)) //not sure if this was added or removed so I've put it commented
 					}
-					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
+					if(lettuce.name==='Locked Vault' && (!(Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks')))){
 						Molpy.UnlockBoost('Locked Vault')
 					}
 					if(lettuce.name==='Vault Key') {
@@ -1812,6 +1812,8 @@ Molpy.Up = function() {
 				//	//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
 				//	Molpy.UnlockRepeatableBoost(bacon,auto,1)
 				//}
+			}else{
+				Molpy.RewardRedacted(1);
 			}
 		}
 		Molpy.GiveTempBoost = function(bacon, power, countdown, desc) {
