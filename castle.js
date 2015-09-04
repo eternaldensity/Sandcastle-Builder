@@ -3603,7 +3603,7 @@ Molpy.Up = function() {
 	Molpy.ONGBase = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
-			if((Molpy.Got('Aperture Science') >= Molpy.Boosts['Aperture Science'].times) &&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
+			if((Molpy.Got('Aperture Science') >= Molpy.Boosts['Aperture Science'].limit) &&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
 		}
 		if (Molpy.Got('LA')) {
 			Molpy.Boosts['LA'].Level = 1;
