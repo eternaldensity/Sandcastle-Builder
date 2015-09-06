@@ -3713,11 +3713,13 @@ Molpy.Up = function() {
 			Molpy.Boosts['Flux Harvest'].Refresh();
 			if(Molpy.Got('LogiPuzzle')) {
 				var cl = Molpy.Boosts['LogiPuzzle'];
+				var hold = Math.min(DeMolpify('1WWQ'), Math.ceil(10 + (Molpy.Got('WotA') ? Molpy.Boosts['WotA'].power : 0)));
 				if(!cl.Has(10)) {
 					cl.Level = 10;
 				} else {
 					if(cl.Has(50)) Molpy.UnlockBoost('WotA');
-					cl.Level = Math.min(cl.Level, 10 + Molpy.Level('WotA'));
+					Molpy.Boosts['WotA'].power += Math.max(0, ((cl.Level-hold)/100));
+					cl.Level = Math.min(cl.Level, hold);
 				}
 			}
 			if(Molpy.IsEnabled('Shadow Feeder')) Molpy.Boosts['Shadow Feeder'].Level=1;
