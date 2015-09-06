@@ -65,7 +65,7 @@ Molpy.Overview = {
 		this.MakeIndex(Molpy.Level('DQ'));
 
 		// Fill basic grid
-		this.BasicGrid();
+		if(!time) this.BasicGrid();
 		
 		// Update all nps
 		for (var np = 1; np < this.size && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]); np=Molpy.NextLegalNP(np)){this.Update(np);}

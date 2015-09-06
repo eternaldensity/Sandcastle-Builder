@@ -1186,6 +1186,19 @@ Molpy.DefineGUI = function() {
 	Molpy.Notify = function(text, log, clas, title, details) {
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
+		if(log) {
+			if (Molpy.notifLog.text == text){
+				Molpy.notifLog.qty++;
+			} else {
+				Molpy.logBuffer += Molpy.notifLog.getLine();
+				Molpy.notifLog.text = text;
+				Molpy.notifLog.qty=1;
+				Molpy.notifLog.details = details || "";
+				Molpy.notifLog.clas = clas || "";
+				Molpy.logUpdatePaint = 1;
+			}
+		}
+		if(Molpy.options['notifsilence']){return;}
 		//pick the first free (or the oldest) notification to replace it
 		var highest = 0;
 		var highestI = 0;
@@ -1223,18 +1236,7 @@ Molpy.DefineGUI = function() {
 		if(Molpy.notifsReceived >= 2000) {
 			Molpy.EarnBadge('Thousands of Them!');
 		}
-		if(log) {
-			if (Molpy.notifLog.text == text){
-				Molpy.notifLog.qty++;
-			} else {
-				Molpy.logBuffer += Molpy.notifLog.getLine();
-				Molpy.notifLog.text = text;
-				Molpy.notifLog.qty=1;
-				Molpy.notifLog.details = details || "";
-				Molpy.notifLog.clas = clas || "";
-				Molpy.logUpdatePaint = 1;
-			}
-		}
+		
 	}
 	Molpy.PaintLogUpdate = function() {
 		Molpy.logUpdatePaint = 0;
