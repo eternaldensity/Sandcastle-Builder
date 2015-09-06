@@ -730,11 +730,11 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('There is nothing before time.');
 			return;
 		}
-		if(Math.abs(np)<1 && !Molpy.Earned('Absolute Zero')) {
+		if(Math.sign(np)!==Math.sign(oldnp) && !Molpy.Earned('Absolute Zero')) {
 			Molpy.Notify('Divide by zero error!');
 			return;
 		}
-		if(Math.abs(np)<1 && Molpy.Earned('Absolute Zero')) {
+		if(Math.sign(np)!==Math.sign(oldnp) && Molpy.Earned('Absolute Zero')) {
 			Molpy.Notify('You cannot pass into NP0 directly;<br>charge your signpost.');
 			return;
 		}
@@ -5286,7 +5286,7 @@ Molpy.DefineBoosts = function() {
 	{
 		if(times && Molpy.IsEnabled('Mario')) {
 			var l = Molpy.Boosts['Mario'].bought;
-			var runs = [10,20,100,500,1000][Molpy.options.approx];
+			var runs = 25;
 			var cost = l * (l + 1) / 2;
 			Molpy.boostSilence++;
 			if (Molpy.Spend('QQ', cost)) {
@@ -7057,24 +7057,27 @@ Molpy.DefineBoosts = function() {
 		if (lv.power >= 1e12 && Molpy.Got('Shards')) {
 			Molpy.UnlockBoost('SPP');
 		}
-		if (lv.power >= 1e21 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
+		if (lv.power >= 1e21 && Molpy.Got('Panes') && (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
 			Molpy.UnlockBoost('Panopticon');
 		}
 		if (Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
 		Molpy.Add('Blackprints', Math.floor(pages * Molpy.Papal('BlackP')));
 		if (Molpy.Got('Panopticon')) { // will test once IP finally gets sorted out
 			var shards = 0;
-			var rarity = 1e-12;
-			if (times < 100) {
+			var rarity = 1e-9;
+			if (times <= 100) {
 				for (var i = 0; i < times; i++) {
-					if (Math.random() < rarity) shards ++;
+					if (Math.random() < rarity) {
+						shards ++;
+						Molpy.EarnBadge('One in a Million');
+					}
 				}
 			} else {
 				var stdDev = Math.sqrt(rarity * (1 - rarity) * times);
-				shards = Math.max(0, Math.floor((rarity) * times + (stdDev * (2 * Math.random() - 1))));
+				shards = Math.max(0, Math.floor((rarity) * times + (stdDev * (2 * Math.random() - 1)))); // uniform density distribution is pretty much a normal. right? right.
 			}
 			Molpy.Add('Shards', shards);
-			Molpy.Notify('found ' + shards + ' shards',1)
+			// Molpy.Notify('found ' + shards + ' shards',1)
 		}
 		if (Molpy.Got('Camera')) {
 			var isles = 0;
@@ -7237,7 +7240,7 @@ Molpy.DefineBoosts = function() {
 			if (Math.random() < 0.25) n = 1;
 		}
 		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
-		if (Molpy.Got('Abattoir')) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
+		if (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
 		n = Math.min(n,1e306);
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
@@ -7894,23 +7897,12 @@ Molpy.DefineBoosts = function() {
 		icon: 'wota',
 		price: {LogiPuzzle: 625},
 		
-		Level: [
-				function() {
-					return this.bought * Math.max(-9, Math.ceil(0.2 * (Math.abs(Molpy.newpixNumber) - this.power)));
-				},
-				function() {}
-		],
-		
 		desc: function(me) {
-			return 'Lets you keep more leftover Caged Logicat puzzles as Time progresses.<br>Currently you can start an ONG with a maximum of ' + Molpify(10 + me.Level) + ' Caged Logicat puzzles.';
+			return 'Lets you keep more leftover Caged Logicat puzzles as Time progresses.<br>Currently you can start an ONG with a maximum of ' + Molpify(10 + me.power) + ' Caged Logicat puzzles.';
 		},
 		
 		stats: 'More Caged Logicats are retained through an ONG as you progress further from the Beginning of Time, compared to the NewPix in which this was unlocked.<br>Protip: Temporal Rifts don\'t affect Caged Logicat puzzles',
-		
-		unlockFunction: function() {
-			this.power = Math.abs(Molpy.newpixNumber);
-		}
-	});
+		});
 	new Molpy.Boost({
 		name: 'Draft Dragon',
 		icon: 'draftdragon',
@@ -12443,7 +12435,7 @@ Molpy.Coallate = function(){
 			var shards = Molpy.Boosts['Shards'];
 			var str = '';
 			str += (me.Level == 1 ? 'A' + (shards.startVowel[shards.fixes.indexOf(shards.fix)] ? 'n ' : ' ') + shards.fix : shards.capFix ); //barlw English
-			str += 'dimensional window' + plural(me.Level) + ' into other temporal planes';
+			str += 'dimensional window' + plural(me.Level) + ' into other temporal planes.';
 			str += '<br>You have ' + Molpify(me.Level,3) + ' pane' + plural(me.Level) + '.';
 			return str;
 		},
@@ -12710,16 +12702,16 @@ Molpy.Coallate = function(){
 		desc: function(me) {
 			var str = 'Spending infinite goats boosts bonemeal from Shadow Strikes. ';
 			if (!me.bought) {
-				str += 'Needs to be bought 10 times within 1 NP. ';
+				str += 'Needs to be bought ' + me.limit + ' times within 1 NP. ';
 			} else {
-				if (me.bought < 10) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
-				if (me.countdown) str += ' You have ' + me.countdown + 'mNP left.';
+				if (me.bought < me.limit) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
+				if (me.countdown) str += ' You have ' + Molpify(me.countdown) + 'mNP left.';
 			};
 			return str;
 		},
 		stats: function(me) {
 			var str = '';
-			if (me.bought == 10) str += 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
+			if (me.bought == me.limit) str += 'You have sent ' + Molpify(me.power) + ' infinit' + (me.power == 1 ? 'y' : 'ies') + ' of goats through the thresher.';
 			return str;
 		},
 		price: {
@@ -12729,10 +12721,10 @@ Molpy.Coallate = function(){
 			if (this.bought == 1) {
 				this.countdown = 1000;
 				this.Unlock();
-			} else if (this.bought == 10) {
+			} else if (this.bought == this.limit) {
 				this.countdown = 0;
 				this.power = 0;
-			} else {
+			} else if (1 < this.bought && this.bought < this.limit) {
 				this.Unlock();
 			}
 		},
@@ -12741,9 +12733,10 @@ Molpy.Coallate = function(){
 			this.unlocked = 0;
 			this.Unlock();
 		},
-		limit: 3,
+		limit: 10,
 		NotTemp: 1,
 	});
+
 	new Molpy.Boost({
 		name: 'Fields\' Mettle',
 		alias: 'terrytao', 
@@ -12862,16 +12855,13 @@ Molpy.Coallate = function(){
 		icon: 'aperture',
 		group: 'dimen',
 		className: 'action',
-		
-		times: 1000,
-
 		desc: function(me) {
 			var str = '';
 			if (!me.bought) str += 'Y\'know, the study of holes. ';
 			str += 'Researches perforations of the extemporal barrier surrounding Time. ';
-			if (!me.bought) str += 'Needs to be bought ' + Molpify(me.times) + ' times within 1 NP. ';
-			if (me.bought && me.bought < me.times) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
-			if (me.bought == me.times) str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keyholes to advance farther.';
+			if (!me.bought) str += 'Needs to be bought ' + Molpify(me.limit) + ' times within 1 NP. ';
+			if (me.bought && me.bought < me.limit) str += 'Has been bought ' + Molpify(me.bought) + ' time' + plural(me.bought) + '.';
+			if (me.bought == me.limit) str += 'You can progress as far as TaTPix ' + me.power + '. Buy more ' + Molpy.Boosts['Shards'].fix + 'dimensional keyholes to advance farther.';
 			if (me.countdown) str += ' You have ' + Molpify(me.countdown) + 'mNP left.';
 			return str;
 		},
@@ -12884,10 +12874,10 @@ Molpy.Coallate = function(){
 			if (this.bought == 1) {
 				this.countdown = 1000;
 				this.Unlock();
-			} else if (this.bought == Molpy.Boosts['Aperture Science'].times) {
+			} else if (this.bought == this.limit) {
 				this.countdown = 0;
 				this.power = 0;
-			} else {
+			} else if (1 < this.bought && this.bought < this.limit) {
 				this.Unlock();
 			}
 		},
@@ -12896,7 +12886,7 @@ Molpy.Coallate = function(){
 			this.unlocked = 0;
 			this.Unlock();
 		},
-		limit: 3,
+		limit: 1000,
 		NotTemp: 1,
 	});
 	new Molpy.Boost({
@@ -13223,7 +13213,7 @@ Molpy.Coallate = function(){
 			alias:'bluhint',
 			group: 'varie',
 			desc: function(me){
-				var str='Improves all Blueness gains by a factor of '+Molpify(me.power)
+				var str='Improves all Blueness gains by a factor of '+Molpify(Math.max(me.power, 2))
 				return str
 			},
 			
@@ -13310,7 +13300,9 @@ Molpy.Coallate = function(){
 	);
 	new Molpy.Boost({
 			name: 'Ocean Blue',
-			desc: function(me){return 'Produces '+Molpify(me.power)+' Blueness per mNP.'},
+			desc: function(me) {
+				return 'Produces ' + Molpify(Math.max(me.power, 1)) + ' Blueness per mNP.'
+			},
 			group: 'varie',
 			price: {
 				Blueness: 12.5*500

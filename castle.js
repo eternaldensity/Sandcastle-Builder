@@ -1754,20 +1754,20 @@ Molpy.Up = function() {
 					(Molpy.Got('ASHF') || !(RobbySee.power & 1)||(Molpy.Boosts[bacon].photo!=undefined));
 			var lettuce = Molpy.Boosts[bacon];
 			if(times==undefined) {times=1}
-			if((times===1)) {
-				if (lettuce.name === 'Locked Vault' && Molpy.IsEnabled('Aleph One') && shouldbuy) {
-					Molpy.Unbox(1);
+			if(shouldbuy){
+				if((times===1)) {
+					if (lettuce.name === 'Locked Vault' && (Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks'))) {
+						Molpy.Unbox(1);
+					} else {
+						Molpy.UnlockBoost(bacon,auto)
+					}
 				} else {
-					Molpy.UnlockBoost(bacon,auto)
-				}
-			} else {
-				if (shouldbuy) {
-					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
+					if(lettuce.name==='Locked Vault' && (Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks'))){
 						Molpy.Unbox(times)
 						// Molpy.Boosts['Locked Vault'].bought = flandom(4);
 						// Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times)) //not sure if this was added or removed so I've put it commented
 					}
-					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
+					if(lettuce.name==='Locked Vault' && (!(Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks')))){
 						Molpy.UnlockBoost('Locked Vault')
 					}
 					if(lettuce.name==='Vault Key') {
@@ -1812,6 +1812,8 @@ Molpy.Up = function() {
 				//	//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
 				//	Molpy.UnlockRepeatableBoost(bacon,auto,1)
 				//}
+			}else{
+				Molpy.RewardRedacted(1);
 			}
 		}
 		Molpy.GiveTempBoost = function(bacon, power, countdown, desc) {
@@ -3593,13 +3595,15 @@ Molpy.Up = function() {
 		var todo=Molpy.ONGs[type];
 		if(todo==undefined){todo=Molpy.ONGs[0]}
 		todo();
+		Molpy.newpixNumber=Number((Molpy.newpixNumber).toFixed(3))
 		Molpy.UpdateBeach();
+		Molpy.HandlePeriods();
 	}
 	
 	Molpy.ONGBase = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
-			if((Molpy.Got('Aperture Science') >= Molpy.Boosts['Aperture Science'].times) &&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
+			if((Molpy.Got('Aperture Science') >= Molpy.Boosts['Aperture Science'].limit) &&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
 		}
 		if (Molpy.Got('LA')) {
 			Molpy.Boosts['LA'].Level = 1;
@@ -3709,11 +3713,13 @@ Molpy.Up = function() {
 			Molpy.Boosts['Flux Harvest'].Refresh();
 			if(Molpy.Got('LogiPuzzle')) {
 				var cl = Molpy.Boosts['LogiPuzzle'];
+				var hold = Math.min(DeMolpify('1WWQ'), Math.ceil(10 + (Molpy.Got('WotA') ? Molpy.Boosts['WotA'].power : 0)));
 				if(!cl.Has(10)) {
 					cl.Level = 10;
 				} else {
 					if(cl.Has(50)) Molpy.UnlockBoost('WotA');
-					cl.Level = Math.min(cl.Level, 10 + Molpy.Level('WotA'));
+					Molpy.Boosts['WotA'].power += Math.max(0, ((cl.Level-hold)/100));
+					cl.Level = Math.min(cl.Level, hold);
 				}
 			}
 			if(Molpy.IsEnabled('Shadow Feeder')) Molpy.Boosts['Shadow Feeder'].Level=1;
