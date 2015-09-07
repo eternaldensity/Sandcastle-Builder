@@ -7096,7 +7096,7 @@ Molpy.DefineBoosts = function() {
 			if (c && !Molpy.boostSilence) {
 				Molpy.Notify('You found ' + Molpify(c) + ' flux crystal' + plural(c) + '.');
 			}
-			Molpy.Add('Flux Crystals', c);
+			Molpy.Add('FluxCrystals', c);
 		}
 		lv.Refresh();
 	};
