@@ -319,8 +319,8 @@
 		          + (Molpy.Redacted.totalClicks) + s
 		          + (Molpy.Redacted.chainCurrent) + s
 		          + (Molpy.Redacted.chainMax) + s
-		          + (Molpy.lootPerPage) + s;
-		          + (Molpy.largestNPvisited[0]) + s
+		          + (Molpy.lootPerPage) + s
+		          + (Molpy.largestNPvisited[0]) + s;
 		          for(var i=0;i<Molpy.fracParts.length;i++){str=str+ (Molpy.largestNPvisited[Molpy.fracParts[i]]) + s}
 		return str;
 	}

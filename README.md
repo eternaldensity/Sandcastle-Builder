@@ -122,6 +122,9 @@ For personal amusement only.
  * New Wyrm boosts: Dragon Drum, Sea Mining
  * New Wyvern boosts: Safety Canary, Autumn of the Matriarch, Dragon Breath, Honor Among Serpents, Golden Bull, Chintzy Tiara, Diamond Dentures, Megan's Quick-Acting, Long Lasting Odorific Breath Spray, Baobab Tree Fort,
  Catalyzer, Way of the Tortoise, Way of the Panther, Tuple or Nothing, Ethyl Alcohol, Clannesque
+ 
+#### EPSIL0N, Syntech, Xilwarg
+ * Bug hunting and fixes
 
 ### 3.67 Enough Mustard for a Sandwich
 

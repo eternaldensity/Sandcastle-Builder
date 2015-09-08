@@ -12727,6 +12727,10 @@ Molpy.Coallate = function(){
 			} else if (1 < this.bought && this.bought < this.limit) {
 				this.Unlock();
 			}
+			if (this.bought > this.limit || this.unlocked > this.limit) {
+				this.bought = Math.min( this.limit, this.bought, this.unlocked);
+				this.unlocked = Math.min( this.limit, this.bought, this.unlocked);
+			}
 		},
 		countdownLockFunction: function() {
 			this.bought = 0;
