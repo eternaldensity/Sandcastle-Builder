@@ -730,11 +730,11 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('There is nothing before time.');
 			return;
 		}
-		if(Math.sign(np)!==Math.sign(oldnp) && !Molpy.Earned('Absolute Zero')) {
+		if(Math.sign(np)== 0 && Math.sign(oldnp)!== 0 && !Molpy.Earned('Absolute Zero')) {
 			Molpy.Notify('Divide by zero error!');
 			return;
 		}
-		if(Math.sign(np)!==Math.sign(oldnp) && Molpy.Earned('Absolute Zero')) {
+		if(Math.sign(np)== 0 && Math.sign(oldnp)!== 0 && Molpy.Earned('Absolute Zero')) {
 			Molpy.Notify('You cannot pass into NP0 directly;<br>charge your signpost.');
 			return;
 		}
@@ -7096,7 +7096,7 @@ Molpy.DefineBoosts = function() {
 			if (c && !Molpy.boostSilence) {
 				Molpy.Notify('You found ' + Molpify(c) + ' flux crystal' + plural(c) + '.');
 			}
-			Molpy.Add('Flux Crystals', c);
+			Molpy.Add('FluxCrystals', c);
 		}
 		lv.Refresh();
 	};
