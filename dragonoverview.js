@@ -156,6 +156,7 @@ Molpy.Overview = {
 	checkFrac:function(n){return ((Math.abs(n)-Math.floor(Math.abs(n)))==Molpy.Overview.fracUsed)&&((n>0)*(Molpy.Overview.fracUsed>0))},
 
 	Update: function(np) {
+		np=Number(np.toFixed(3))
 		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || np >= Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)] ) return;
 		var mt = (Molpy.Earned('diamm'+np)?2:(Molpy.Earned('monumg'+Math.abs(np))?1:0));
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
