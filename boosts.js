@@ -12058,8 +12058,8 @@ Molpy.Coallate = function(){
 				if(Molpy.Boosts['DQ'].Level > 3) str += 'Ice breath reduces the enemy\'s attack strength and has a chance to freeze them for a turn.<br>';
 				if(Molpy.Boosts['DQ'].Level > 4) str += 'Poison breath deals damage during the mNPs leading up to a fight and may wipe out an opponent in a close fight.<br>';
 				if(Molpy.Boosts['DQ'].Level > 5) str += 'Special attacks vary based on mysterious factors.<br>';
-				return str;
 			}
+			return str;
 		},
 		group: 'drac',
 		countdownCMS: 1,
