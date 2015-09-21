@@ -2913,7 +2913,7 @@ Molpy.Up = function() {
 				var price = red.price;
 				if (red.priceFunction) price = red.priceFunction();
 				if(!Molpy.IsFree(red.CalcPrice(price))) {
-					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
+					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
 						if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else{
@@ -3445,14 +3445,14 @@ Molpy.Up = function() {
 				if (red.priceFunction) price = red.priceFunction();
 				if(!price){price={}}
 				if(!Molpy.IsFree(red.CalcPrice(price))) {
-					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
+					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
 						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else{
 						Molpy.UnlockRepeatableBoost(red.alias,1,dtimes)
 					}
 				} else {
-					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
+					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
 						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
 						Molpy.GiveTempBoost(red.alias, 1);
 					} else{
