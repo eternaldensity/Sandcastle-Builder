@@ -12063,6 +12063,7 @@ Molpy.Coallate = function(){
 		},
 		group: 'drac',
 		countdownCMS: 1,
+		countdownLockFunction: function() {},
 		recoveryCountdown: function(breathpow){
 			this.countdown = (1000*(1/(1+Math.pow(2.71828,.1337*(100*breathpow))))/(Molpy.Has('Ethyl Alcohol',2 + Molpy.Boosts['Ethyl Alcohol'].power)?
 			1.5*(1+Molpy.Boosts['Ethyl Alcohol'].power):1))
