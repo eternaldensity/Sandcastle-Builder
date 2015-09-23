@@ -1169,6 +1169,11 @@ Molpy.DefineBadges = function() {
 		desc: 'Got pH to activate without using pOH.',
 		vis: 1
 	});
+	new Molpy.Badge({
+		name: 'One in a Million',
+		desc: 'Found a shard in a vault with low IP power.',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 
