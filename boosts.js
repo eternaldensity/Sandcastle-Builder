@@ -12634,7 +12634,7 @@ Molpy.Coallate = function(){
 			Molpy.Notify('The boxes don\'t fit inside!');
 			return;
 		}
-		Molpy.Boosts['Tangled Tesseract'].power++;
+		Molpy.Boosts['Tangled Tesseract'].power = Math.sign(Molpy.Boosts['Tangled Tesseract'].power) * (Math.abs(Molpy.Boosts['Tangled Tesseract'].power)+1);
 		Molpy.Notify('You have folded the cage upon itself along yet another dimension.', 1);
 		return;
 	};
