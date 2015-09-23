@@ -3559,9 +3559,9 @@ Molpy.Up = function() {
 		}
 		if(realSubFrame >= 6) realSubFrame = 0;
 		if(Molpy.newpixNumber > 0) {
-			Molpy.newpixNumber = Molpy.newpixNumber + realSubFrame / 6;
+			Molpy.newpixNumber = Math.floor(Molpy.newpixNumber) + realSubFrame / 6;
 		} else {
-			Molpy.newpixNumber = Molpy.newpixNumber - realSubFrame / 6;
+			Molpy.newpixNumber = Math.ceil(Molpy.newpixNumber) - realSubFrame / 6;
 		}
 		if(realSubFrame > Molpy.currentSubFrame) {
 			Molpy.Notify('MeteorONG!');
