@@ -1276,7 +1276,8 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.FormatNP = function(np, format) {
 		var minus = (np < 0);
-		return (minus ? '-' : '') + np;
+		var subp = Molpy.subPixLetters[Molpy.currentSubFrame];
+		return (minus ? '-' : '') + np + subp;
 	}
 	Molpy.NewPixFloor=function(num){
 		if((num>=1)||(num<0)){num=num-Math.floor(num)}

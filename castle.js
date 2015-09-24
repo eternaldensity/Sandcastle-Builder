@@ -3082,6 +3082,14 @@ Molpy.Up = function() {
 			if(Molpy.Earned(alias)) {
 				Molpy.Notify('You already have this ' + Molpy.Badges[alias].name);
 			} else {
+				if ((Math.abs(Molpy.newpixNumber)) == 2440 && (Molpy.currentSubFrame < 3)) {
+					Molpy.Notify('You feel like the show has only just begun.');
+					return;
+				}
+				if ((Math.abs(Molpy.newpixNumber)) == 2440 && (Molpy.currentSubFrame > 3)) {
+					Molpy.Notify('You missed the moment.');
+					return;
+				}
 				Molpy.EarnBadge(alias, 1);
 			}
 			if(Molpy.newpixNumber < 0
@@ -3558,15 +3566,10 @@ Molpy.Up = function() {
 			realSubFrame = Math.floor(npPercent * 6);
 		}
 		if(realSubFrame >= 6) realSubFrame = 0;
-		if(Molpy.newpixNumber > 0) {
-			Molpy.newpixNumber = Math.floor(Molpy.newpixNumber) + realSubFrame / 6;
-		} else {
-			Molpy.newpixNumber = Math.ceil(Molpy.newpixNumber) - realSubFrame / 6;
-		}
 		if(realSubFrame > Molpy.currentSubFrame) {
 			Molpy.Notify('MeteorONG!');
-			Molpy.UpdateBeach();
 			Molpy.currentSubFrame = realSubFrame;
+			Molpy.UpdateBeach();
 		}
 	};
 	Molpy.ONGs={}
