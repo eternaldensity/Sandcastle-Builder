@@ -12392,7 +12392,7 @@ Molpy.Coallate = function(){
 				}
 				cost = Math.floor(cost);
 				var tatpix = Molpy.largestNPvisited[0.1] // highest tatpix visited
-				var yield = Math.floor(Math.pow(4,tatpix/4));
+				var yield = 1 //Math.floor(Math.pow(4,tatpix/4));
 				str += ', using infinite flux crystals';
 				str += '.<br><input type=button onclick="Molpy.Uncrush(' + cost + ',' + yield + ')" value="Uncrush"></input> ';
 				str += Molpify(cost) + ' shard' + plural(cost) + ' into ' + Molpify(yield) + ' pane' + plural(yield) + '.';
