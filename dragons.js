@@ -774,8 +774,8 @@ Molpy.DragonStatsNow = function(where) {
 Molpy.FindOpponents = function(from) {
 	var df = {};
 	df.from = Math.floor(from);
-	df.type = Math.min(Math.floor(from/150)+1+Molpy.fracParts.indexOf(Number((from-Math.floor(from)).toFixed(3))),Molpy.OpponentsById.length-1);
-	df.numb = (Molpy.TotalDragons < 10 && Molpy.HighestNPwithDragons < 20)?1:Math.floor(((from-df.type*150)/30)*(Math.random())+1);
+	df.type = Math.min(Math.floor(from/150),Molpy.OpponentsById.length-1); //+1+Molpy.fracParts.indexOf(Number((from-Math.floor(from)).toFixed(3))) this doesn't play nice with df.numb as having the type one higher produces negative squad size.
+	df.numb = (Molpy.TotalDragons < 10 && Molpy.HighestNPwithDragons < 20)?1:Math.floor((((from-df.type*150)/30)+((Math.floor(from/150) < Math.floor((Molpy.HighestNPwithDragons+1)/150))?Math.pow(Molpy.Boosts.Princesses.Level / Math.pow(10 , (df.type-6)), 1/3):0))*(Math.random())+1);
 	df.gender = 1*(Math.random() < 0.5);
 	df.modifier = Math.random()+.5;
 	return df;
@@ -1042,7 +1042,7 @@ Molpy.RedundaKnight = function() {
 	}
 
 	npd = Molpy.NPdata[atk];
-	var atklvl = Math.max(atk,300*npd.DragonType)+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
+	var atklvl = Math.max(atk,300*npd.DragonType) //+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
 	atklvl = ((Math.random() < 0.5)?Math.max(0,atklvl-Math.floor(30*Math.random())):atklvl)+Math.floor(30*Math.random());
 	var opp = Molpy.FindOpponents(atklvl);
 	opp.knowledge = [];
