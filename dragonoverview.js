@@ -68,24 +68,22 @@ Molpy.Overview = {
 		this.BasicGrid();
 		
 		// Update all nps
-		for (var np = 1; np < this.size && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]); np=Molpy.NextLegalNP(np)) this.Update(np);
+		for (var np = 1; np < this.size && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]); np=Molpy.NextLegalNP(np)){this.Update(np);}
 		
 		//Add storyline buttons
-		
-		if(!time){
-			$('#dragonoverviewindex').before("<div id='storylineButtons'></div>");
-		}
+
 		Molpy.Overview.UpdateButtons();
 	},
 	image: [],
 
 	SetSizes: function(size) {
 		if(size!=undefined && g('sectionDragonOverviewBody') && g('dragonoverviewmaindiv')){
-			g('sectionDragonOverviewBody').style.height=String(100+100*size)+'px'; Molpy.Overview.size=size
+			Molpy.Overview.size=size;
 		}
 		if (g('sectionDragonOverviewBody') && g('dragonoverviewmaindiv')) {
 			g('dragonoverviewmaindiv').style.height = parseInt(g('sectionDragonOverviewBody').style.height)-100 + 'px';
 		}
+		if(size){this.size=size;this.DoAll(1)}
 	},
 	
 	MakeIndex: function(maxdrag) {
@@ -152,11 +150,12 @@ Molpy.Overview = {
 		};
 		ctx.stroke();
 	},
-	checkFrac:function(n){return ((Math.abs(n)-Math.floor(Math.abs(n)))==Molpy.Overview.fracUsed)&&((n>0)*(Molpy.Overview.fracUsed>0))},
+	checkFrac:function(n){return (Number(Math.abs(n)-Math.floor(Math.abs(n))).toFixed(3)==Molpy.adjustFrac(Molpy.Overview.fracUsed))&&((n>0)*(Molpy.Overview.fracUsed>0))},
 
 	Update: function(np) {
-		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || np >= this.size ) return;
-		var mt = (Molpy.Earned('diamm'+np)?2:(Molpy.Earned('monumg'+np)?1:0));
+		np=Number(np.toFixed(3))
+		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || np >= Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)] ) return;
+		var mt = (Molpy.Earned('diamm'+np)?2:(Molpy.Earned('monumg'+Math.abs(np))?1:0));
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
 		np=Math.abs(np)
 		this.dopctxm.putImageData(this.image[dt+1][mt], 8*(Math.floor(np)%50)+this.Xoffset, 8*Math.floor(np/50));

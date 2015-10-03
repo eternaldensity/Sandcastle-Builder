@@ -1104,8 +1104,8 @@ Molpy.DefineBadges = function() {
 		vis: 1
 	});
 	new Molpy.Badge({
-		name: 'Started from the bottom, now we\'re here',
-		desc: 'Enter TaTPix',
+		name: 'Flip It Real Good',
+		desc: 'Flip between positive and negative NP \'87 times',
 		vis: 1
 	});
 	new Molpy.Badge({
@@ -1167,6 +1167,11 @@ Molpy.DefineBadges = function() {
 	new Molpy.Badge({
 		name: 'pOHless',
 		desc: 'Got pH to activate without using pOH.',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'One in a Million',
+		desc: 'Found a shard in a vault with low IP power.',
 		vis: 1
 	});
 /**************************************************************
