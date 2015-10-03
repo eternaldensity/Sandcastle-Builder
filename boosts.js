@@ -6062,7 +6062,7 @@ Molpy.DefineBoosts = function() {
 		
 		onBlitz: function(){
 			this.checkUnlocks(true);
-			Molpy.Notify('Lightning struck the same place twice: 10% power bonus!');
+			if (this.countdown < 400){ Molpy.Notify('Lightning struck the same place twice: 10% power bonus!')};
 			Molpy.EarnBadge('Strikes Twice');
 			Molpy.UnlockBoost('LR');
 			
