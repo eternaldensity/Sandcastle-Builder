@@ -22,7 +22,7 @@ jQuery.fn.canColorBorder = function() {
 };
 
 function ONGsnip(time) {
-	if(time.getMinutes() >= 30 && Math.abs(Molpy.newpixNumber) <= 240) {
+	if(time.getMinutes() >= 30 && Math.abs(Molpy.newpixNumber) <= 240 && Molpy.currentStory == -1) {
 		time.setMinutes(30);
 	} else {
 		time.setMinutes(0);
