@@ -398,13 +398,15 @@ Molpy.ClearNPdata = function() {
 	Molpy.NPdata = {};
 };
 Molpy.NextLegalNP=function(at){
+	if(!at) return Molpy.fracParts[0]
+	a=Math.sign(at)
 	at=Math.abs(at)
 	if(Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))==Molpy.fracParts.length-1){
 		at=Math.floor(at)+1
 	} else{
 		at=Math.floor(at)+Molpy.fracParts[Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))+1]
 	}
-	return at
+	return at*a
 }
 Molpy.NPRange = function(start,end){ // weird placement, but needed for the next one
 	var at=start;
