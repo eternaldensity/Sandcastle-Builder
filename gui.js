@@ -1377,7 +1377,7 @@ Molpy.DefineGUI = function() {
 			$('#toggleTFCounts').removeClass('hidden');
 		}
 		
-		var str='Newpix ' + Math.floor(Molpy.newpixNumber);
+		var str='Newpix ' + (Math.floor(Molpy.newpixNumber)+(Molpy.currentstory!=-1 && Molpy.newpixNumber<0));
 		if(Molpy.currentStory>=0){str=str+[' of t1i'][Molpy.currentStory]}
 		g('newpixnum').innerHTML = str
 		g('eon').innerHTML = Molpy.TimeEon;
