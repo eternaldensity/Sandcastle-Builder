@@ -9181,9 +9181,9 @@ Molpy.DefineBoosts = function() {
 	});
 	Molpy.FlipIt = function(update) {
 		var np = Molpy.newpixNumber;
-		if (np == 0) return;
+		if (Math.abs(np) < 1) return;
 		if (Molpy.Spend('FluxCrystals', 1)) {
-			np=Math.floor(np)*(-1)+(np-Math.floor(np))*(Math.sign(np))
+			np=Math.floor(np)*(-1)+(Math.abs(np)-Math.floor(Math.abs(np)))*(-Math.sign(np))
 			Molpy.newpixNumber = Number(np.toFixed(3));
 			Molpy.Boosts['Negator'].power++;
 			if (Molpy.Boosts['Negator'].power >= 87) Molpy.EarnBadge('Flip It Real Good');
