@@ -9183,7 +9183,7 @@ Molpy.DefineBoosts = function() {
 		var np = Molpy.newpixNumber;
 		if (Math.abs(np) < 1) return;
 		if (Molpy.Spend('FluxCrystals', 1)) {
-			np=Math.floor(np)*(-1)+(Math.abs(np)-Math.floor(Math.abs(np)))*(-Math.sign(np))
+			np=-np
 			Molpy.newpixNumber = Number(np.toFixed(3));
 			Molpy.Boosts['Negator'].power++;
 			if (Molpy.Boosts['Negator'].power >= 87) Molpy.EarnBadge('Flip It Real Good');
