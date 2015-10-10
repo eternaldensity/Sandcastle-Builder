@@ -739,7 +739,7 @@ Molpy.DragonFledge = function(clutch) {
 	}
 
 	if (fight && npd.amount) {
-		Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.FindOpponents(Molpy.newpixNumber),' attacks as you fledge',' attack as you fledge');
+		Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.FindOpponents(Molpy.newpixNumber),' attacks as you fledge',' attack as you fledge',0);
 	}
 	if (npd.amount) {
 		Molpy.EarnBadge('First Colonist');
@@ -1068,7 +1068,7 @@ Molpy.DragonKnightAttack = function(breathtype) { // Attack Opponents
 	var npd = Molpy.NPdata[opp.target];
 	Molpy.Redacted.onClick();
 	Molpy.OpponentsAttack(opp.target,opp,
-			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+opp.target,0,0,breathtype);
+			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+opp.target,0,1,breathtype);
 }
 
 Molpy.DragonsHide = function(type) {
