@@ -1138,15 +1138,22 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	var fight = 1;
 	if (!npd) npd = Molpy.NPdata[Molpy.newpixNumber] = {};
 
-	if (npd && npd.amount > 0 && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && Molpy.Level('Cryogenics') > npd.amount))) { // Replace
-		oldDT = npd.DragonType;
-		oldDN = npd.amount;
-		fight = 0;
-		if(Molpy.Got('Honor Among Serpents') && dq.overallState == 2){
-			dq.overallState = 0;
-			Molpy.Notify('Back to work! The dragons have resumed digging',1);
-		};
+	if (npd && npd.amount > 0){ 
+		if (npd.amount > 1 && npd.DragonType == dq.Level && !confirm('Do you wish to fledge '+  npd.amount +' '+dt +'s'+ ' where you already have '+ oldDN + ' ' + dt + 's?')) return;
+		if (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && Molpy.Level('Cryogenics') > npd.amount))) { // Replace
+			oldDT = npd.DragonType;
+			oldDN = npd.amount;
+			fight = 0;
+			if(Molpy.Got('Honor Among Serpents') && dq.overallState == 2){
+				dq.overallState = 0;
+				Molpy.Notify('Back to work! The dragons have resumed digging',1);
+			};
+		} else {
+			Molpy.Notify('You need more dragons in Cryo to fledge here');
+			return;
+		}
 	}
+	
 	npd.DragonType = dq.Level;
 	npd.amount = Molpy.Level('Cryogenics');
 	if (npd.amount > lim) {
@@ -1158,8 +1165,7 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 			npd.amount = Math.max(0,lim);
 		}
 	}
-	if (oldDN && npd.amount > 1 && npd.DragonType == oldDT && !confirm('Do you wish to fledge '+  npd.amount +' ' +
-					dt +'s'+ ' where you already have '+ oldDN + ' ' + dt + 's?')) return;
+	
 
 	var props = Molpy.Boosts['Nest'].nestprops();
 	npd.attack = props[0];
