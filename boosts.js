@@ -8155,14 +8155,16 @@ Molpy.DefineBoosts = function() {
 	Molpy.EggCost = function() {
 		var eggs = Molpy.Boosts['Eggs'].Level;
 		var modpow = 1;
-		if (Molpy.Got('Cake') && eggs>1) {
+		var cost = {}
+		cost.princess = Math.floor(Math.pow(10, ((eggs - 50)/10)));
+		if (Molpy.Got('Cake') && eggs>1){
 			var more = Math.ceil(Math.log(Molpy.Level('Maps')/200));
 			eggs = Math.max(1,eggs-more);
 			if (eggs == 1) modpow = Math.pow(10,Molpy.Boosts['Eggs'].Level - eggs);
-		};
-		
-		if (eggs < 6 && Molpy.Level('DQ') < 6) return DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs])*modpow;
-		return Infinity;
+		}
+		if (eggs < 6 && Molpy.Level('DQ') < 6){cost.bonemeal = DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs])*modpow;
+		}else{cost.bonemeal = Infinity;}
+		return cost;
 	}
 	new Molpy.Boost({ 
 		name: 'Dragon Queen',
@@ -8175,8 +8177,15 @@ Molpy.DefineBoosts = function() {
 			var str = 'The queen of the dragons.';
 			if(me.bought) {
 				Molpy.UnlockBoost('RDKM');
-				var eggcost = Molpy.EggCost();
-				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal: Molpy.EggCost()}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
+				var bonecost = Molpy.EggCost().bonemeal;
+				var princost = Molpy.EggCost().princess;
+				if (Molpy.Has('Bonemeal', bonecost) && Molpy.Has('Princesses', princost)){str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal: Molpy.EggCost().bonemeal, Princesses: Molpy.EggCost().princess}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(bonecost) + ' Bonemeal';
+				princost?str+= ' and '+Molpify(princost)+' Princess':str += '';
+				princost > 1?str += 'es.)':str +='.)';
+				}else{str += '<br> The next egg requires '+ Molpify(bonecost) +' Bonemeal';
+				princost?str+= ' and '+Molpify(princost)+' Princess':str += '';
+				princost > 1?str += 'es.)':str +='.)';
+				}
 				if (Molpy.TotalDragons) {
 					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding','Celebrating'][me.overallState];
 					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
