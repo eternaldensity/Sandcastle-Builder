@@ -12496,7 +12496,7 @@ Molpy.Coallate = function(){
 					if (Math.abs(i) >= 3275) {
 						Molpy.UnlockBoost('GCC');
 					}
-					if (Math.abs(i) >= 4000) {
+					if ((Math.abs(i) >= 4000)&&(Molpy.Boosts['Aperture Science'].unlocked !== 1000)){
 						Molpy.UnlockBoost('Aperture Science');
 					}
 					return;
@@ -12887,6 +12887,10 @@ Molpy.Coallate = function(){
 				this.power = 0;
 			} else if (1 < this.bought && this.bought < this.limit) {
 				this.Unlock();
+			}
+			if (this.bought > this.limit || this.unlocked > this.limit) {
+				this.bought = Math.min( this.limit, this.bought, this.unlocked);
+				this.unlocked = Math.min( this.limit, this.bought, this.unlocked);
 			}
 		},
 		countdownLockFunction: function() {

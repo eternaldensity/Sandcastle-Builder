@@ -1718,6 +1718,13 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 0 || me.limit) {
 						me.unlocked++;
+						if (me.limit){ //hopefully this corrects future errors, not causes them
+							if (me.bought > me.limit || me.unlocked > me.limit) {
+									me.bought = Math.min( me.limit, me.bought, me.unlocked);
+									me.unlocked = Math.min( me.limit, me.bought, me.unlocked);
+									return;
+							}
+						}
 						if (me.title) me.updateName();
 						Molpy.shopNeedRepaint = 1;
 						Molpy.RatesRecalculate();
