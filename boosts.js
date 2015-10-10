@@ -6062,7 +6062,7 @@ Molpy.DefineBoosts = function() {
 		
 		onBlitz: function(){
 			this.checkUnlocks(true);
-			if (this.countdown < 400){ Molpy.Notify('Lightning struck the same place twice: 10% power bonus!')};
+			if (this.countdown < 200){ Molpy.Notify('Lightning struck the same place twice: 10% power bonus!')};
 			Molpy.EarnBadge('Strikes Twice');
 			Molpy.UnlockBoost('LR');
 			
@@ -9180,7 +9180,7 @@ Molpy.DefineBoosts = function() {
 			if (frac) {
 				np *= 10; // aaa
 				np += 10 * Math.sign(np) * (frac); // aaa
-				np += 10; // the reason this function was written
+				//np += 10; // the reason this function was written
 				np /= 10; // aaa
 			}
 			Molpy.newpixNumber = np;
