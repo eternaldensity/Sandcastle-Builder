@@ -9179,20 +9179,10 @@ Molpy.DefineBoosts = function() {
 	});
 	Molpy.FlipIt = function(update) {
 		var np = Molpy.newpixNumber;
-		if (np == 0) return;
+		if (Math.abs(np) < 1) return;
 		if (Molpy.Spend('FluxCrystals', 1)) {
-			var frac = (np*10)%10/10; // not just np%1 because of floating point errors =[
-			np *= 10; // I 
-			np -= 10 * Math.sign(np) * frac; // hate
-			np /= 10; // floats
-			np *= -1;
-			if (frac) {
-				np *= 10; // aaa
-				np += 10 * Math.sign(np) * (frac); // aaa
-				//np += 10; // the reason this function was written
-				np /= 10; // aaa
-			}
-			Molpy.newpixNumber = np;
+			np=-np
+			Molpy.newpixNumber = Number(np.toFixed(3));
 			Molpy.Boosts['Negator'].power++;
 			if (Molpy.Boosts['Negator'].power >= 87) Molpy.EarnBadge('Flip It Real Good');
 			if (update) Molpy.UpdateBeach();

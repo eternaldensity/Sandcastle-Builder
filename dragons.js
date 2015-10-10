@@ -403,7 +403,8 @@ Molpy.ClearNPdata = function() {
 	Molpy.NPdata = {};
 };
 Molpy.NextLegalNP=function(at){
-	var a=Math.sign(at)
+	if(!at) return Molpy.fracParts[0]
+	a=Math.sign(at)
 	at=Math.abs(at)
 	if(Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))==Molpy.fracParts.length-1){
 		at=Math.floor(at)+1
@@ -1140,7 +1141,7 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 
 	if (npd && npd.amount > 0){ 
 		if (npd.amount > 1 && npd.DragonType == dq.Level && !confirm('Do you wish to fledge '+  npd.amount +' '+dt +'s'+ ' where you already have '+ oldDN + ' ' + dt + 's?')) return;
-		if (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && Molpy.Level('Cryogenics') > npd.amount))) { // Replace
+		if (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && Molpy.Level('Cryogenics') > npd.amount)) { // Replace
 			oldDT = npd.DragonType;
 			oldDN = npd.amount;
 			fight = 0;
