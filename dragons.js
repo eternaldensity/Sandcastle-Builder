@@ -495,7 +495,9 @@ Molpy.DragonDigRecalc = function() {
 			td += (dnp.amount*dnp.dig*Molpy.DragonsById[dnp.DragonType].digbase || 0);
 			Molpy.TotalNPsWithDragons++;
 			Molpy.TotalDragons += dnp.amount;
-			Molpy.HighestNPwithDragons = dpx*1;
+			if ((dpx*1) > Molpy.HighestNPwithDragons){
+				Molpy.HighestNPwithDragons = dpx*1;
+			}
 			runlength++;
 			var dpi = dpx*1;
 			if (lastNP+1 == dpi ) {
