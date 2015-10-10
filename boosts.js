@@ -12188,8 +12188,8 @@ Molpy.Coallate = function(){
 		alias: 'WotT',
 		icon: 'wott',
 		desc: 'Significantly increases your defense, but locks Way of the Panther',
-		buyFunction: function(me){
-			me.permalock = 1;
+		buyFunction: function(){
+			this.permalock = 1;
 			Molpy.LockBoost('WotP');
 			Molpy.Boosts['WotP'].permalock = 1; //prevent WotP from being unlocked again
 		},
@@ -12208,8 +12208,8 @@ Molpy.Coallate = function(){
 		alias: 'WotP',
 		icon: 'wotp',
 		desc: 'Significantly increases your offense, but locks Way of the Tortoise',
-		buyFunction: function(me){
-			me.permalock = 1;
+		buyFunction: function(){
+			this.permalock = 1;
 			Molpy.LockBoost('WotT');
 			Molpy.Boosts['WotT'].permalock = 1; //prevent WotT from being unlocked again
 		},
