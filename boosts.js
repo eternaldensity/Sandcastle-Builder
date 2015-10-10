@@ -13205,6 +13205,10 @@ Molpy.Coallate = function(){
 			GlassBlocks: 50,
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		
+		Level: 0,
+		defSave: 1,
+		saveData: {4: ['Level', 0,'int']}
 	});
 	new Molpy.Boost({
 		name: 'Retroreflector',
