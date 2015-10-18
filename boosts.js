@@ -13423,7 +13423,11 @@ Molpy.Coallate = function(){
 	);
 	new Molpy.Boost({
 			name: 'Photoelectricity',
-			desc: 'Lets Not a Priest be disabled and does stuff when it is disabled.',
+			desc: function(me){
+				var a='Lets Not a Priest be disabled and does stuff when it is disabled. Level '
+				a+=Molpify(me.Level)+'. Needs '+Molpify(5-me.power)+' more power to run.'
+				return a
+			},
 			stats: "In the element 1921, Eisenstein was awarded the Metal of Nobility for his work in emcee. Wait. That last part wasn't right.",
 			group: 'varie',
 			price: {
@@ -13514,7 +13518,7 @@ Molpy.Coallate = function(){
 	);
 	Molpy.RetroAct=function(alias){
 		if(Molpy.Spend({Grayness:10*Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10)))})){
-		if(Math.random()>(Math.max(0,-0.001+Molpy.Boosts['Retroactivity'].power^(Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10))))))){Molpy.Notify('A Contradiction ocurred!');
+		if(Math.random()>(Math.max(0,-0.001+Math.pow(Molpy.Boosts['Retroactivity'].power,(Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10)))))))){Molpy.Notify('A Contradiction ocurred!');
 		Molpy.UnlockRepeatableBoost('splosion',1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))
 		} else{Molpy.UnlockRepeatableBoost(alias,1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))}}}
 	new Molpy.Boost({
