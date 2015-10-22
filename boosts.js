@@ -13131,19 +13131,19 @@ new Molpy.Boost({
 			photo: 1,
 			className: 'alert',
 			countdownFunction: function() {
-				if(this.startCountdown()>5 && this.countdown==2){
+				if(this.startCountdown(true)>5 && this.countdown==2){
 					Molpy.Notify("Ceci n'est pas un film d'espionage.") //This is not a spy movie. 
 				//Ref is to the classic painting with "Ceci n'est pas une pipe." and to the standard bomb scenario
 				}
 			},
 			
 			lockFunction: function() {
-				Molpy.Boosts['Ocean Blue'].power=Math.max(Molpy.Boosts['Ocean Blue'].power/2-1,1);
+				Molpy.Boosts['Ocean Blue'].power=Math.max(Molpy.Boosts['Ocean Blue'].power/1.5-1,1);
 				Molpy.Notify('It is an eloquent boom, but it is still a boom.')
 			},
 				
 			countdownCMS: 1,
-			startCountdown: function() {
+			startCountdown: function(test) {
 				if(Molpy.Boosts['splosion'].countdown!==0 && Molpy.Boosts['splosion'].countdown>0){
 					return Molpy.Boosts['splosion'].countdown}
 				return Molpy.Boosts['Diluted Boom'].power||3; //Things will change this soon. I hope.
