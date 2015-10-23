@@ -3345,7 +3345,9 @@ Molpy.Up = function() {
 				if(Molpy.Got('bluhint'))blugain=blugain*(Molpy.Boosts['bluhint'].power)
 				Molpy.Boosts['Blueness'].power+=blugain
 			}
+			Molpy.boostSilence++
 			if(Molpy.Got('pH')){
+				
 				Molpy.Boosts['pH'].power++
 				var t=10000000/(25*2.5)
 				if(Molpy.Got('pOH')){t=10}
@@ -3358,6 +3360,7 @@ Molpy.Up = function() {
 			if(Molpy.Got('pInsanity')){
 				Molpy.RunFastPhoto(625)
 			}
+			Molpy.boostSilence--
 		} else {
 			var gain=n
 			if(isClick && Molpy.Got('Doubletap')){n=2*n}
