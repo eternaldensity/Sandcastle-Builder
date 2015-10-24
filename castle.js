@@ -2933,7 +2933,7 @@ Molpy.Up = function() {
 
 		};
 		Molpy.RewardBlitzing = function() {			
-			if(Molpy.Got('GL')) {
+			if((Molpy.Got('GL'))&&(!Molpy.Got('Sea Mining'))) {
 				Molpy.Boosts['GL'].onBlitz();
 				return;
 			}

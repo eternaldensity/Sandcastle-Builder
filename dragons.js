@@ -611,6 +611,7 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 	};
 	if (Molpy.Got('Sea Mining') && Molpy.Boosts['Sea Mining'].power && type == 1){
 		Molpy.Add('Coal',Molpy.Boosts['Sea Mining'].power);
+		Molpy.Boosts['Sea Mining'].power++;
 	}
 	if(Molpy.Got('Annilment') && Molpy.IsEnabled('Annilment')) {
 		var amounts = Molpy.Annililate();
