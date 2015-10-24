@@ -320,6 +320,13 @@ Molpy.DefineBoosts = function() {
 		},
 		startCountdown: 23, // only used when loading to ensure it doesn't get stuck. any true value would do here
 		countdownCMS: 1,
+		countdownLockFunction: function() {
+			this.unlocked = 0;
+			this.bought = 0;
+			if(Molpy.Got('Sea Mining')){
+				Molpy.LockBoost('Sea Mining');
+			}
+		},
 	});
 	new Molpy.Boost({
 		name: 'Kitnip',
@@ -12263,7 +12270,11 @@ Molpy.Coallate = function(){
 		className: 'alert',
 		desc: 'Dun Dun <i>Dunnn</i>...Dragon Drum',
 		countdownCMS: 1,
-		logic: 1e96,
+		kitten: 0,
+		unlockFunction: function() {
+			Molpy.RewardDragonDrum();
+			this.Lock();
+		}
 	})
 
 	new Molpy.Boost({
@@ -12282,10 +12293,12 @@ Molpy.Coallate = function(){
 		name: 'Sea Mining',
 		icon: 'smine',
 		desc: 'For the duration of Blitzing, each click gives one more Coal than the last.',
-		logic: 1e96,
+		kitten: 0,
 		stats: 'AKA Bananananasblitz!',
 		lockFunction: function() {
 			this.power = 0;
+			this.bought = 0;
+			this.unlocked = 0;
 		},
 	})
 
@@ -12492,7 +12505,6 @@ Molpy.Coallate = function(){
 					if (Math.abs(i) >= 3173) {
 						Molpy.UnlockBoost('Sigma Stacking');
 					}
-					// if (Math.abs(i) >= 3275 && Molpy.Got('DomCobb')) {
 					if (Math.abs(i) >= 3275) {
 						Molpy.UnlockBoost('GCC');
 					}
@@ -13004,6 +13016,14 @@ Molpy.Coallate = function(){
 			Shards: 5 * 5000,
 			Panes: 5 * 15,
 		},
+		kitten: 0,
+		limit: 3,
+		unlockFunction: function() {
+			if (this.bought == 1){
+				Molpy.RewardInception();
+			}
+			this.unlocked = 1;
+		}
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
 	});

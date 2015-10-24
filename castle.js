@@ -1800,8 +1800,20 @@ Molpy.Up = function() {
 					Molpy.Boosts['bluhint'].power+=times;
 				}
 				if(lettuce.alias==='splosion'){Molpy.splosions(times)}
+				if((lettuce.alias==='DomCobb')&&(lettuce.bought == 1)){
+					Molpy.RewardInception();
+				}
+				if((lettuce.alias==='DomCobb')&&(lettuce.unlocked == 0)){
+					Molpy.UnlockBoost('DomCobb')
+				}
 				//Add additional free repeatable boosts here	
 			}else{
+				if((Molpy.Boosts[bacon].alias==='DomCobb')&&(Molpy.Boosts[bacon].bought == 1)){
+					Molpy.RewardInception();
+				}
+				if((Molpy.Boosts[bacon].alias==='DomCobb')&&(Molpy.Boosts[bacon].unlocked == 0)){
+					Molpy.UnlockBoost('DomCobb')
+				}
 				if(Molpy.Boosts[bacon].unlocked === 0){
 					Molpy.UnlockBoost(bacon)
 				}else{
@@ -1889,7 +1901,9 @@ Molpy.Up = function() {
 		'Locked Crate',
 		'Atomic Pump',
 		'Blue Fragment',
-		'A Splosion','splosion'] //Each boost on its own line, please!
+		'A Splosion','splosion',
+		'DomCobb'] //Each boost on its own line, please!
+		// Do we need name and alias pairs?
 
 		Molpy.previewNP = 0;
 
@@ -2613,7 +2627,69 @@ Molpy.Up = function() {
                 }
             }
         };
+		
+		Molpy.RewardLogicat = function(level,times) {
+			if(times==undefined){times=1}
+			Molpy.CheckLogicatRewards(0);
+			var availRewards = [];
+			for( var i=0;i<Molpy.LogicatRewardOptions.length;i++) {
+				var me = Molpy.Boosts[Molpy.LogicatRewardOptions[i]];
+				if(!me.unlocked && me.logic && level >= me.logic) {
+					availRewards.push(me);
+				}
+			}
+			if(availRewards.length) {
+				var red = GLRschoice(availRewards);
+				var price = red.price;
+				if (red.priceFunction) price = red.priceFunction();
+				if(!Molpy.IsFree(red.CalcPrice(price))) {
+					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
+						if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
+						Molpy.UnlockBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1,times)
+					}
+				} else {
+					if(!Molpy.boostSilence) Molpy.Notify('Your reward from Logicat:', 1);
+					Molpy.GiveTempBoost(red.alias);
+				}
+				return;
+			}
+			Molpy.RewardRedacted(1);
+			Molpy.GlassNotifyFlush();
+		};
 
+		Molpy.RewardKitten = function(){
+			Molpy.CheckKittenRewards()
+			var availRewards = [];
+			for( var i=0;i<Molpy.KittenRewardOptions.length;i++) {
+				var me = Molpy.Boosts[Molpy.KittenRewardOptions[i]];
+				if(!me.unlocked && me.kitten) {
+					availRewards.push(me);
+				}
+			}
+			if(availRewards.length) {
+				var red = GLRschoice(availRewards);
+				var price = red.price;
+				if (red.priceFunction) price = red.priceFunction();
+				if(!Molpy.IsFree(red.CalcPrice(price))) {
+					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
+						Molpy.Notify('The Redundakitten rewards you with:', 1);
+						Molpy.UnlockBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1,times);
+					}
+				} else {
+					Molpy.Notify('The Redundakitten rewards you with:', 1);
+					Molpy.GiveTempBoost(red.alias);
+				}
+				return;
+			}
+			Molpy.RewardRedacted();
+			if(Molpy.Got('Double Department')) Molpy.RewardRedacted();
+			Molpy.GlassNotifyFlush();
+		};
+		
 		Molpy.RewardRedacted = function(forceDepartment, automationLevel) {
 			var event = forceDepartment ? 'DoRD' : Molpy.Redacted.word;
 			if(Molpy.Got('DoRD') && (!Math.floor(8 * Math.random()) || forceDepartment)) {
@@ -2652,16 +2728,12 @@ Molpy.Up = function() {
 			if(BKJ.bought) {
 				BKJ.power = (BKJ.power) + 1;
 			}
-			if (Molpy.Got('DomCobb') && Math.random() < 1/150) {
-				Molpy.RewardInception();
-			} else if(Math.floor(2 * Math.random())) {
+			if(Math.floor(2 * Math.random())) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Not Lucky', true]);
 				Molpy.RewardNotLucky(automationLevel);
 			} else if(isFinite(Molpy.Boosts['Sand'].power)) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blitzing', true]);
 				Molpy.RewardBlitzing(automationLevel);
-			} else if(Math.random() > .75 - Molpy.DragonLuck && dq.Level >= 2 && dq.overallState == 2 && !forceDepartment){
-				Molpy.RewardDragonDrum();
 			} else {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
 				Molpy.RewardBlastFurnace(1, 'Furnace Fallback');
@@ -2883,7 +2955,7 @@ Molpy.Up = function() {
 			if(Molpy.Got('Sea Mining') && Molpy.Redacted.totalClicks > 1e6){
 				Molpy.Add('Coal',1);
 				Molpy.Notify('Thank you for subscribing to Coal Facts!<br><br>');
-				Molpy.Notify(Molpy.GLRschoice(Molpy.coalFacts));
+				Molpy.Notify(Molpy.GLRschoice(Molpy.coalFacts)); //So Sea mining stops being useful at this point?
 			}
 		};
 
@@ -2891,36 +2963,7 @@ Molpy.Up = function() {
 			Molpy.Notify('Leo has gone deeper, finding one dimension pane.');
 			Molpy.Add('Panes', 1);
 		};
-		Molpy.RewardLogicat = function(level,times) {
-			if(times==undefined){times=1}
-			Molpy.CheckLogicatRewards(0);
-			var availRewards = [];
-			for( var i=0;i<Molpy.LogicatRewardOptions.length;i++) {
-				var me = Molpy.Boosts[Molpy.LogicatRewardOptions[i]];
-				if(!me.unlocked && me.logic && level >= me.logic) {
-					availRewards.push(me);
-				}
-			}
-			if(availRewards.length) {
-				var red = GLRschoice(availRewards);
-				var price = red.price;
-				if (red.priceFunction) price = red.priceFunction();
-				if(!Molpy.IsFree(red.CalcPrice(price))) {
-					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
-						if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
-						Molpy.UnlockBoost(red.alias, 1);
-					} else{
-						Molpy.UnlockRepeatableBoost(red.alias,1,times)
-					}
-				} else {
-					if(!Molpy.boostSilence) Molpy.Notify('Your reward from Logicat:', 1);
-					Molpy.GiveTempBoost(red.alias);
-				}
-				return;
-			}
-			Molpy.RewardRedacted(1);
-			Molpy.GlassNotifyFlush();
-		};
+		
 		Molpy.RewardDragonDrum = function(){
 			var dq = Molpy.Boosts['DQ'];
 			dq.countdown = Math.max(1,dq.countdown - (Molpy.Redacted.toggle - Molpy.Redacted.countup));
@@ -3468,6 +3511,7 @@ Molpy.Up = function() {
 			}
 		}
 	}
+	
 	Molpy.unlockPhoto=function(){
 		var oth=Molpy.Boosts['Otherness'].power
 		var blu=Molpy.Boosts['Blueness'].power

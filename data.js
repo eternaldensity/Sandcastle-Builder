@@ -828,9 +828,6 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	if(Molpy.Redacted.totalClicks >= 431) {
 		Molpy.Boosts['Technicolour Dream Cat'].department = 1;
 	}
-	// if(Molpy.Redacted.totalClicks >= 1000 && Molpy.Got('SPP') && Math.random() < 1/20) {
-	// 	Molpy.Boosts['DomCobb'].department = 1;
-	// }
 
 	Molpy.Boosts['RRR'].department = 1 * (Molpy.Boosts['Panther Salve'].power > 200);
 	Molpy.Boosts['Phonesaw'].department = 1 * (Molpy.Boosts['VJ'].power >= 88);
@@ -991,7 +988,7 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
 	Molpy.Boosts['Aleph e'].logic = DeMolpify('99H') * Molpy.priceFactor;
 	Molpy.Boosts['DimenKey'].logic = Molpy.Got('Aperture Science') * Math.pow(10, Molpy.Boosts['Aperture Science'].power);
-	//Dragon Drum and Sea Mining are purposely not on this list; right now they're only intended as Redundakitty rewards
+	//Dragon Drum and Sea Mining are purposely not on this list; they're only intended as Redundakitty rewards
 }
 Molpy.mapMonumg = 200;
 
@@ -1016,6 +1013,29 @@ Molpy.CheckASHF = function() {
 	}
 }
 
+Molpy.CheckKittenRewards = function() {
+	if((Molpy.Boosts['DQ'].Level >= 2)&&(Molpy.Boosts['DQ'].overallState == 2)&&(Math.random() > (.75 - Molpy.DragonLuck))){
+		Molpy.Boosts['Dragon Drum'].kitten = 1;
+	}else{
+		Molpy.Boosts['Dragon Drum'].kitten = 0;
+	}
+	if((Molpy.Boosts['AntiAuto'].bought > 0)&&((Molpy.Boosts['DomCobb'].unlocked == 0)||((Molpy.Boosts['DomCobb'].bought == 1)&&(Math.random() < 1/150)))){
+		Molpy.Boosts['DomCobb'].kitten = 1;
+	}else{
+		Molpy.Boosts['DomCobb'].kitten = 0;
+	}
+	if(Molpy.Has('Diamonds',DeMolpify('1P'))&&(Molpy.Boosts['Sea Mining'].unlocked == 0)){
+		Molpy.Boosts['Sea Mining'].kitten = 1;
+	}else{
+		Molpy.Boosts['Sea Mining'].kitten = 0;
+	}
+	if((Math.abs(Molpy.largestNPvisited['0.1']) > 11)&&(Molpy.Boosts['Green Sun'].unlocked == 0)){
+		Molpy.Boosts['Green Sun'].kitten = 1;
+	}else{
+		Molpy.Boosts['Green Sun'].kitten = 0;
+	}
+}
+
 Molpy.BuildRewardsLists = function() {
 	Molpy.DragonRewardOptions=Molpy.BoostsByFunction(function(i){
 		return (Molpy.Boosts[i].draglvl!==undefined)&&(Molpy.Boosts[i].draglvl!=='undefined')
@@ -1028,6 +1048,9 @@ Molpy.BuildRewardsLists = function() {
 	});
 	Molpy.PhotoRewardOptions=Molpy.BoostsByFunction(function(i){
 		return (Molpy.Boosts[i].photo!== undefined)&&(Molpy.Boosts[i].photo!=='undefined')&&(!Molpy.Got(i))
+	})
+	Molpy.KittenRewardOptions=Molpy.BoostsByFunction(function(i){
+		return (Molpy.Boosts[i].kitten!== undefined)&&(Molpy.Boosts[i].kitten!=='undefined')&&(!Molpy.Got(i))
 	})
 	Molpy.RewardsListsBuilt = 1;
 	Molpy.defineCrafts(); //They don't really go together, but I'm not interested in figuring out the proper version.
