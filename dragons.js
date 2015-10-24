@@ -675,10 +675,13 @@ Molpy.DragonFledge = function(clutch) {
 			oldDT = npd.DragonType;
 			oldDN = npd.amount;
 			fight = 0;
-			if(Molpy.Got('Honor Among Serpents' && dq.overallState == 2)){
+			if(Molpy.Got('Honor Among Serpents') && dq.overallState == 2){
 				dq.overallState = 0;
 				Molpy.Notify('Back to work! The dragons have resumed digging',1);
 			};
+			if((Molpy.Boosts['Honor Among Serpents'].unlocked == 0) && (dq.overallState == 2)&&(Molpy.Boosts.DQ.Level >= 3)){
+				Molpy.UnlockBoost('Honor Among Serpents');
+			}
 		} else {
 			Molpy.Notify('This NP already has better dragons, who have eaten the interlopers',1);
 			hatch.clutches[clutch] = 0;
@@ -1149,6 +1152,9 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 				dq.overallState = 0;
 				Molpy.Notify('Back to work! The dragons have resumed digging',1);
 			};
+			if((Molpy.Boosts['Honor Among Serpents'].unlocked == 0) && (dq.overallState == 2)&&(Molpy.Boosts.DQ.Level >= 3)){
+				Molpy.UnlockBoost('Honor Among Serpents');
+			}
 		} else {
 			Molpy.Notify('You need more dragons in Cryo to fledge here');
 			return;
