@@ -117,7 +117,10 @@
 		
 		Molpy.needRebuildLootList = 1;
 		Molpy.needlePulling = 0;
-		if(!success) return;
+		if(!success){
+			Molpy.Down(1);
+			return;
+		}
 		Molpy.loadCount++;
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
 		Molpy.autosaveCountup = 0;
@@ -687,6 +690,7 @@
 			// If no data was saved for the boost, set them to defaults
 			} else {
 				me.resetSaveData();
+				if(me.startPower){me.power = me.startPower;}
 			}			
 		}
 	}
@@ -781,7 +785,7 @@
 		}
 	}
 
-	Molpy.NPdataFromString = function(thread,version) {if(version<3.7){
+	Molpy.NPdataFromString = function(thread,version) {if(version<4.001){
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		npdthread = thread;
