@@ -1019,12 +1019,12 @@ Molpy.CheckKittenRewards = function() {
 	}else{
 		Molpy.Boosts['Dragon Drum'].kitten = 0;
 	}
-	if((Molpy.Boosts['AntiAuto'].bought > 0)&&((Molpy.Boosts['DomCobb'].unlocked == 0)||((Molpy.Boosts['DomCobb'].bought == 1)&&(Math.random() < 1/150)))){
+	if((Molpy.Boosts['AntiAuto'].bought > 0)&&((Molpy.Boosts['DomCobb'].unlocked == 0)||((Molpy.Boosts['DomCobb'].bought == 1)&&(Math.random() < 1/150)))){ //The second condition is very very rare.
 		Molpy.Boosts['DomCobb'].kitten = 1;
 	}else{
 		Molpy.Boosts['DomCobb'].kitten = 0;
 	}
-	if(Molpy.Has('Diamonds',DeMolpify('1P'))&&(Molpy.Boosts['Sea Mining'].unlocked == 0)){
+	if(Molpy.Got('Coal')&&(Molpy.Boosts['Sea Mining'].unlocked == 0)){
 		Molpy.Boosts['Sea Mining'].kitten = 1;
 	}else{
 		Molpy.Boosts['Sea Mining'].kitten = 0;

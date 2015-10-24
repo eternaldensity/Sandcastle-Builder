@@ -1418,7 +1418,8 @@ Molpy.Up = function() {
 			// Notes
 			// .department allows unlock by the department (this is not a saved value)
 			// .logic allows unlock by logicat (this is not a saved value)
-			
+			// .photo for photovolt sysem
+			// .kitten for boosts that are from kittens and not logicats
 			this.id = Molpy.BoostN;
 			this.order = this.id;
 			if(order) this.order = order + this.id / 1000; //(because the order we create them can't be changed after we save)
@@ -2317,8 +2318,7 @@ Molpy.Up = function() {
 
 				this.totalClicks++;
 				if(this.drawType.length < 16 && !this.keepPosition) {
-					Molpy.RewardRedacted();
-					if(Molpy.Got('Double Department')) Molpy.RewardRedacted();
+					Molpy.RewardKitten()
 					Molpy.GlassNotifyFlush();
 				}
 				if(this.totalClicks >= 2) Molpy.EarnBadge('Not So ' + Molpy.Redacted.word2);
@@ -2677,7 +2677,7 @@ Molpy.Up = function() {
 						Molpy.Notify('The Redundakitten rewards you with:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else{
-						Molpy.UnlockRepeatableBoost(red.alias,1,times);
+						Molpy.UnlockRepeatableBoost(red.alias,1);
 					}
 				} else {
 					Molpy.Notify('The Redundakitten rewards you with:', 1);
