@@ -12813,7 +12813,7 @@ Molpy.Coallate = function(){
 		},
 	});
 	new Molpy.Boost({
-		name: 'Green Sun', // Will be unlocked by progression in TaTPix
+		name: 'Green Sun',
 		title: function(me) {
 			var str = ''
 			if (Molpy.Boosts['Chromatic Heresy'].power > 0) {
@@ -12837,6 +12837,7 @@ Molpy.Coallate = function(){
 			Shards: '1e6', // who
 			Panes: 5 * 100, // knows
 		},
+		kitten: 0,
 	});
 	new Molpy.Boost({
 		name: 'Dragon Seeks Path',
