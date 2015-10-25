@@ -9181,20 +9181,10 @@ Molpy.DefineBoosts = function() {
 	});
 	Molpy.FlipIt = function(update) {
 		var np = Molpy.newpixNumber;
-		if (np == 0) return;
+		if (Math.abs(np) < 1) return;
 		if (Molpy.Spend('FluxCrystals', 1)) {
-			var frac = (np*10)%10/10; // not just np%1 because of floating point errors =[
-			np *= 10; // I 
-			np -= 10 * Math.sign(np) * frac; // hate
-			np /= 10; // floats
-			np *= -1;
-			if (frac) {
-				np *= 10; // aaa
-				np += 10 * Math.sign(np) * (frac); // aaa
-				np += 10; // the reason this function was written
-				np /= 10; // aaa
-			}
-			Molpy.newpixNumber = np;
+			np=-np
+			Molpy.newpixNumber = Number(np.toFixed(3));
 			Molpy.Boosts['Negator'].power++;
 			if (Molpy.Boosts['Negator'].power >= 87) Molpy.EarnBadge('Flip It Real Good');
 			if (update) Molpy.UpdateBeach();
@@ -13067,7 +13057,11 @@ new Molpy.Boost({
 	);
 	new Molpy.Boost({
 			name: 'Photoelectricity',
-			desc: 'Lets Not a Priest be disabled and does stuff when it is disabled.',
+			desc: function(me){
+				var a='Lets Not a Priest be disabled and does stuff when it is disabled. Level '
+				a+=Molpify(me.Level)+'. Needs '+Molpify(5-me.power)+' more power to run.'
+				return a
+			},
 			stats: "In the element 1921, Eisenstein was awarded the Metal of Nobility for his work in emcee. Wait. That last part wasn't right.",
 			group: 'varie',
 			price: {
@@ -13137,19 +13131,19 @@ new Molpy.Boost({
 			photo: 1,
 			className: 'alert',
 			countdownFunction: function() {
-				if(this.startCountdown()>5 && this.countdown==2){
+				if(this.startCountdown(true)>5 && this.countdown==2){
 					Molpy.Notify("Ceci n'est pas un film d'espionage.") //This is not a spy movie. 
 				//Ref is to the classic painting with "Ceci n'est pas une pipe." and to the standard bomb scenario
 				}
 			},
 			
 			lockFunction: function() {
-				Molpy.Boosts['Ocean Blue'].power=Math.max(Molpy.Boosts['Ocean Blue'].power/2-1,1);
+				Molpy.Boosts['Ocean Blue'].power=Math.max(Molpy.Boosts['Ocean Blue'].power/1.5-1,1);
 				Molpy.Notify('It is an eloquent boom, but it is still a boom.')
 			},
 				
 			countdownCMS: 1,
-			startCountdown: function() {
+			startCountdown: function(test) {
 				if(Molpy.Boosts['splosion'].countdown!==0 && Molpy.Boosts['splosion'].countdown>0){
 					return Molpy.Boosts['splosion'].countdown}
 				return Molpy.Boosts['Diluted Boom'].power||3; //Things will change this soon. I hope.
@@ -13158,7 +13152,7 @@ new Molpy.Boost({
 	);
 	Molpy.RetroAct=function(alias){
 		if(Molpy.Spend({Grayness:10*Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10)))})){
-		if(Math.random()>(Math.max(0,-0.001+Molpy.Boosts['Retroactivity'].power^(Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10))))))){Molpy.Notify('A Contradiction ocurred!');
+		if(Math.random()>(Math.max(0,-0.001+Mathh.pow(Molpy.Boosts['Retroactivity'].power,(Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10)))))))){Molpy.Notify('A Contradiction ocurred!');
 		Molpy.UnlockRepeatableBoost('splosion',1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))
 		} else{Molpy.UnlockRepeatableBoost(alias,1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/10,1))/Math.log(10))))}}}
 	new Molpy.Boost({

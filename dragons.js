@@ -398,7 +398,8 @@ Molpy.ClearNPdata = function() {
 	Molpy.NPdata = {};
 };
 Molpy.NextLegalNP=function(at){
-	var a=Math.sign(at)
+	if(!at) return Molpy.fracParts[0]
+	a=Math.sign(at)
 	at=Math.abs(at)
 	if(Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))==Molpy.fracParts.length-1){
 		at=Math.floor(at)+1
