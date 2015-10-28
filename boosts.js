@@ -707,7 +707,9 @@ Molpy.DefineBoosts = function() {
 	Molpy.TimeTravel = function(NP) {
 		Molpy.Anything = 1;
 		var oldNP=Molpy.newpixNumber;
-		if(Molpy.TTT(Molpy.newpixNumber + NP, 0)) {
+		var frac = Number(((Math.abs(Molpy.newpixNumber*10)-Math.abs(Math.floor(Molpy.newpixNumber)*10))/10).toFixed(3));
+		var sign = Math.sign(Molpy.newpixNumber);
+		if(Molpy.TTT((sign*(Math.floor(Math.abs(Molpy.newpixNumber))*10+frac*10)+ NP*10)/10, 0)) {
 			if(oldNP>0)
 			{
 				if(NP > 0) Molpy.EarnBadge('Fast Forward');
@@ -743,6 +745,11 @@ Molpy.DefineBoosts = function() {
 		}
 		if(Math.sign(Math.floor(Math.abs(np)))== 0 && Math.sign(oldnp)!== 0 && Molpy.Earned('Absolute Zero')) {
 			Molpy.Notify('You cannot pass into NP0 directly;<br>charge your signpost.');
+			return;
+		}
+		if(Number(((Math.abs(np*10)-Math.floor(Math.abs(np))*10)/10).toFixed(3)) !== Number(((Math.abs(oldnp*10)-Math.floor(Math.abs(oldnp))*10)/10).toFixed(3))){
+			Molpy.Notify('You can not travel across timelines.');
+			Molpy.Notify('Travel to NP 0 first.');
 			return;
 		}
 		if(oldnp == 0 && Math.abs(np) < 3095) {
