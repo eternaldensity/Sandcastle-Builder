@@ -3761,7 +3761,7 @@ Molpy.Up = function() {
 					cl.Level = 10;
 				} else {
 					if(cl.Has(50)) Molpy.UnlockBoost('WotA');
-					Molpy.Boosts['WotA'].power += Math.max(0, ((cl.Level-hold)/100));
+					Molpy.Boosts['WotA'].power += Math.max(0, ((cl.Level-hold)/24));
 					cl.Level = Math.min(cl.Level, hold);
 				}
 			}
