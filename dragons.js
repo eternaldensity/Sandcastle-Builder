@@ -403,15 +403,30 @@ Molpy.ClearNPdata = function() {
 	Molpy.NPdata = {};
 };
 Molpy.NextLegalNP=function(at){
-	if(!at) return Molpy.fracParts[0]
-	a=Math.sign(at)
-	at=Math.abs(at)
-	if(Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))==Molpy.fracParts.length-1){
-		at=Math.floor(at)+1
-	} else{
-		at=Math.floor(at)+Molpy.fracParts[Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))+1]
+	var frac = Number(((Math.abs(at*10)-Math.floor(Math.abs(at))*10)/10).toFixed(3))
+	if(at < -1){
+		if(Molpy.fracParts.indexOf(frac)>-1){
+			if(Molpy.fracParts.indexOf(frac)>0){
+				return ((-1)*(Math.floor(Math.abs(at))+Molpy.fracParts[Molpy.fracParts.indexOf(frac)-1]));
+			}else{
+				return ((-1)*(Math.floor(Math.abs(at))))
+			}
+		}else{
+			return ((-1)*((Math.floor(Math.abs(at)))-1+Molpy.fracParts[Molpy.fracParts.length-1]));
+		}
+	}else if(at >= 1){
+		if(Molpy.fracParts.indexOf(frac)>-1){
+			if(Molpy.fracParts.indexOf(frac)<(Molpy.fracParts.length-1)){
+				return (Math.floor(Math.abs(at))+Molpy.fracParts[Molpy.fracParts.indexOf(frac)+1]);
+			}else{
+				return (Math.floor(Math.abs(at))+1);
+			}
+		}else{
+			return (at+Molpy.fracParts[0]);
+		}
+	}else{
+		return 1;
 	}
-	return at*a
 }
 Molpy.NPRange = function(start,end){ // weird placement, but needed for the next one
 	var at=start;

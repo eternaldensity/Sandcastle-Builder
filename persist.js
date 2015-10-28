@@ -414,7 +414,7 @@
 		var highest = 0;
 		if (!Molpy.TotalDragons) return str;
 		// See what range to save if any
-		for (var np = 1; np <=Math.abs(Molpy.largestNPvisited[0]); np=Molpy.NextLegalNP(np)) { //is a quick fix of for (var np = -Math.abs(Molpy.largestNPvisited[0]); np <=Math.abs(Molpy.largestNPvisited[0]); np=Molpy.NextLegalNP(np)) {
+		for (var np = -Math.abs(Molpy.largestNPvisited[0]); np <=Math.abs(Molpy.largestNPvisited[0]); np=Molpy.NextLegalNP(np)) { //putting 1 in the first space is a quick fix of for (var np = -Math.abs(Molpy.largestNPvisited[0]);
 			if (Molpy.NPdata && Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
 				if (!lowest) lowest = np;
 				highest = np;
