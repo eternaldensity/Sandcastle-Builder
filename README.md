@@ -32,7 +32,7 @@ For personal amusement only.
 
 ## Changelog
 
-### 4.0 Kitty Genocide Simulator 2015
+### 4.001 Kitty Genocide Simulator 2015
 
 #### erp-lsf
 - New Option:
@@ -123,9 +123,13 @@ For personal amusement only.
  * New Wyvern boosts: Safety Canary, Autumn of the Matriarch, Dragon Breath, Honor Among Serpents, Golden Bull, Chintzy Tiara, Diamond Dentures, Megan's Quick-Acting, Long Lasting Odorific Breath Spray, Baobab Tree Fort,
  Catalyzer, Way of the Tortoise, Way of the Panther, Tuple or Nothing, Ethyl Alcohol, Clannesque
  
-#### EPSIL0N, Syntech, Xilwarg
+#### EPSIL0N
  * Bug hunting and fixes
-
+ * Rewrote Wisdom of the Ancients. Should be actually carry a worthwhile number between NPs.
+ 
+#### Syntech, Xilwarg
+ * Bug hunting and fixes
+ 
 ### 3.67 Enough Mustard for a Sandwich
 
 #### stormrunnerz
