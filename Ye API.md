@@ -56,6 +56,7 @@ limit                 | MayBeF  | O | Number of the boost that can be held at on
 NotTemp               |	int     | O | Prevents boosts with complex countdowns being treated as temporary on load
 sortAfter             |	text    | O | Gives the alias of the boost it is to apear after instead of alphabetical
 AfterToggle           |	Func    | O | Called after use of Generic Toggle
+photo                 | int     | O | Photo level required to obtain this via photo.
 
 ## Badges
 
@@ -72,7 +73,7 @@ classChange           |	Func    | O  | Returns current className - allows for dy
 
 ## Discoveries
 
-The discoveries are **CURRENTLY** in the same file as the badges.  This will change when the TaTimages are used.
+The discoveries are **CURRENTLY** in the same file as the badges.  This may change in the future.
 
 ## Tools
 
@@ -96,3 +97,32 @@ onchange              |	Func    | O  | Actions to take if/when it changes, also 
 range                 |	int     | O  | Highest value (currently the maximum is 9) default 1
 text                  | MaybeF  | O  | Text for the option, if an array it is indexed by the value to get the text
 breakafter            |	int     | O  | If 1, the next option starts on a new line in the display (just for neatness and grouping)
+
+## Crafts
+
+Unlike just about everything else, the order has extraordinarily little effect, 
+and can be changed without breaking saves (though it may break the rest).
+Info is stored in Molpy.Crafts, which has the following structure:
+
+Molpy -> Crafts -> Craft table name -> Recipe number (recipes are stored in an array)  -> recipe, "can craft" flags
+
+Recipes consist of a start, finish, and catalysts objects, with "mid craft" flags.
+Catylysts are assumed {} if not specified, all three main objects are in the same format as price. However,
+they *can* be a function. If a number, the effect of scaling will be assumed to be just multiplying the costs.
+If a function, the function will receive the number of times which will be used, and output the cost, e.g.
+Molpy.Crafts.Polarizer[0].recipe.start.Blackness is a function which always returns 5, meaning that, regardless
+of how much blueness you want to polarize, there will always be a cost of exactly 5 blackness.
+
+### Can Craft Flags
+
+Name | Type | AMO | Use and Comments
+------------------------------------
+level | int | M | Craft table level is compared to this in determining if you can craft something. Ought to be O.
+maxTimes | MaybeF | AO | When using the default times, this is used as a cap on times. Defaults to Infinity.
+times | MaybeF | AM | Should output how many times a recipe should attempt to be crafted. Defaults to a 10^n checker.
+
+### Mid Craft Flags
+
+Name | Type | AMO | Use and Comments
+------------------------------------
+onFinish | Func | O | Stuff to do whenever the craft is completed.
