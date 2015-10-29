@@ -707,7 +707,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.TimeTravel = function(NP) {
 		Molpy.Anything = 1;
 		var oldNP=Molpy.newpixNumber;
-		var frac = Number(((Math.abs(Molpy.newpixNumber*10)-Math.abs(Math.floor(Molpy.newpixNumber)*10))/10).toFixed(3));
+		var frac = Number(((Math.abs(Molpy.newpixNumber*10)-Math.floor(Math.abs(Molpy.newpixNumber))*10)/10).toFixed(3));
 		var sign = Math.sign(Molpy.newpixNumber);
 		if(Molpy.TTT((sign*(Math.floor(Math.abs(Molpy.newpixNumber))*10+frac*10)+ NP*10)/10, 0)) {
 			if(oldNP>0)
