@@ -493,6 +493,7 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Lucky Ring')) Molpy.DragonLuck += .0277;
 	if (Molpy.Has('Cup of Tea',2 + Molpy.Boosts['Cup of Tea'].power)) Molpy.DragonLuck += .0005*(1+Molpy.Boosts['Cup of Tea'].power);
 
+	Molpy.HideMod = 0;
 	if (Molpy.Got('Chintzy Tiara')) Molpy.HideMod += 22;
 
 	if(Molpy.CombatDebug) Molpy.Notify('Def: ' + Molpy.DragonDefenceMultiplier);
