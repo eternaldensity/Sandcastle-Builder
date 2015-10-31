@@ -12629,7 +12629,7 @@ Molpy.Coallate = function(){
 			}
 			var vaults = Molpy.Boosts['Locked Vault'].power - 10;
 			var firstvaults = 1; // placeholder, some power of ten
-			var dim = Molpy.Boosts['Tangled Tesseract'].power
+			var dim = Math.abs(Molpy.Boosts['Tangled Tesseract'].power)
 			var threshold = firstvaults * Math.pow(10, dim);
 			str += 'Increases the power of Tangled Tesseract and expands the volume inside the Logicat cage.';
 			if (vaults >= threshold) {
