@@ -1802,7 +1802,7 @@ Molpy.Up = function() {
 					}
 					if(lettuce.name==='Blue Fragment'){
 						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
-						Molpy.Boosts['bluhint'].power+=times;
+						Molpy.Boosts['bluhint'].power+=times/20;
 					}
 					if(lettuce.alias==='splosion'){Molpy.splosions(times)}
 					
