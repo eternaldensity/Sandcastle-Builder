@@ -3371,7 +3371,7 @@ Molpy.Up = function() {
 		if(dif<=0 && max==1){return 0;}
 		if(dif==0) return 0;
 		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
-		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Math.ceil(Molpy.Boosts['Blackness'].power/2)}
+		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Molpy.Boosts['Blackness'].power/2}
 		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
 		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
 		if(max==1 && !Molpy.Got('Whiteness')){
