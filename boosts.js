@@ -12786,7 +12786,7 @@ new Molpy.Boost({
 	);
 	Molpy.getSquids=function(){
 		if(!Molpy.Got('Argy')){return 0;}
-		Molpy.Boosts['Argy'].power=Math.max(DeMolpify(Molpy.Boosts['Blackness'].power),1)
+		Molpy.Boosts['Argy'].power=Math.max(Molpy.Boosts['Blackness'].power,1)
 		return Math.pow(10,Math.floor(Math.log(Molpy.Boosts['Argy'].power)/Math.log(10)))
 	}
 	Molpy.makeSquids=function(n){
