@@ -884,7 +884,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Pure Genius',
-		desc: 'Inspite of an Infinite Sand rate, you manage to have no sand to run the Factory Ninja',
+		desc: 'In spite of an Infinite Sand rate, you manage to have no sand to run the Factory Ninja',
 		vis: 1
 	});
 	new Molpy.Badge({
