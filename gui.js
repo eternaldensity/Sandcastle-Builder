@@ -1296,7 +1296,7 @@ Molpy.DefineGUI = function() {
 		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix) {
 			if(np===0) return 'http://xkcd.mscha.org/tmp/np0.png'
 			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1))){
-				return 'http://placekitten.com/'+ (Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') + x + '/' + y;
+				return 'http://placekitten.com/'+ (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') + x + '/' + y;
 			}else if(frac==0){
 				return 'http://178.79.159.24/Time/otcolorization/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
@@ -1304,7 +1304,7 @@ Molpy.DefineGUI = function() {
 			} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 		} else {
 			if(((floor > 3094)&&(frac===0))||((floor > 1417)&&(frac===0.1))){
-				return 'http://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') +x + '/' + y;
+				return 'http://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') +x + '/' + y;
 			} else if(frac==0){
 				return 'http://xkcd.mscha.org/frame/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
@@ -1377,7 +1377,7 @@ Molpy.DefineGUI = function() {
 		} else {
 			$('#toggleTFCounts').removeClass('hidden');
 		}
-		var str='Newpix ' + (Math.floor(Molpy.newpixNumber)+(Molpy.currentstory!=-1 && Molpy.newpixNumber<0));
+		var str='Newpix'+(Molpy.newpixNumber<0?' -':' ') + (Math.floor(Math.abs(Molpy.newpixNumber)));
 		if(Molpy.currentStory>=0){str=str+[' of t1i'][Molpy.currentStory]}
 		g('newpixnum').innerHTML = str
 		g('eon').innerHTML = Molpy.TimeEon;
