@@ -1783,7 +1783,6 @@ Molpy.Up = function() {
 					lettuce.CrateCount+=times;
 					win = Math.floor(win / (6 - lettuce.bought));
 					win=win*times
-
 					if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
 					Molpy.Add('GlassBlocks', win);
 					Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
@@ -1791,14 +1790,13 @@ Molpy.Up = function() {
 					Molpy.Add('Blackprints', lettuce.bought*times);
 					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
 				}
-
 				if(lettuce.name==='Atomic Pump'){
 					Molpy.Boosts['Ocean Blue'].power+=times;
 					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
 				}
 				if(lettuce.name==='Blue Fragment'){
 					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
-					Molpy.Boosts['bluhint'].power+=times;
+					Molpy.Boosts['bluhint'].power+=times/20;
 				}
 				if(lettuce.alias==='splosion'){Molpy.splosions(times)}
 				if((lettuce.alias==='DomCobb')&&(lettuce.bought == 1)){
@@ -3434,7 +3432,7 @@ Molpy.Up = function() {
 		if(dif<=0 && max==1){return 0;}
 		if(dif==0) return 0;
 		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
-		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Math.ceil(Molpy.Boosts['Blackness'].power/2)}
+		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Molpy.Boosts['Blackness'].power/2}
 		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
 		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
 		if(max==1 && !Molpy.Got('Whiteness')){
