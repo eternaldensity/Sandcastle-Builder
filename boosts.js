@@ -10756,7 +10756,7 @@ Molpy.DefineBoosts = function() {
 			this.countdown = 0;
 		},
 		MouldCost: function(np) {
-			return Math.floor(Math.pow(Math.sin(np*Math.PI/180),2)*Math.pow(2.714,np/42)*Math.log(np+10)*Math.LOG10E*1e9)
+			return (Math.floor(Math.pow(Math.sin(np*Math.PI/180),2)*Math.pow(2.714,np/42)*Math.log(np+10)*Math.LOG10E*1e9) + 1)
 		},
 		MouldTime: function(np) { return Math.floor((2714+np*np)*Molpy.Papal('Master')/Molpy.Boosts.ClawsDeck.factor(np)) },
 		classChange: function() { return ['','alert','action'][this.State] },
@@ -10852,6 +10852,7 @@ Molpy.DefineBoosts = function() {
 		},
 		FillCost: function(np) {
 			var mcost = Molpy.Boosts['DMM'].MouldCost(np);
+			if (np == 0){ np = 0.1;}
 			return Math.floor(( mcost*2.22+Math.pow(mcost,np/333))/np);
 		},
 		FillTime: function(np) { return Math.floor(np*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
