@@ -3826,7 +3826,14 @@ Molpy.DefineBoosts = function() {
 		name: 'Technicolour Dream Cat',
 		icon: 'dreamcat',
 		heresy: true,
-		desc: Molpy.Redacted.words + ' are multicoloured (if Chromatic Heresy is enabled)',
+		desc: function(me) {
+			var str = Molpy.Redacted.words + ' are multicoloured (if Chromatic Heresy is enabled)';
+			str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			str += ' the flashing colours on the redundakitties.';
+			return str;
+		},
+		
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		price:{
 			Sand: '320K',
 			Castles: '90K',

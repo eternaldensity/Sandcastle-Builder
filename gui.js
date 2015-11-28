@@ -1519,7 +1519,7 @@ Molpy.DefineGUI = function() {
 				if(Molpy.drawFrame >= Molpy.fps / 3) Molpy.drawFrame = 0;
 				if(repainted || Molpy.drawFrame == 0) {
 					var className = Molpy.Redacted.classNames[Molpy.Redacted.location];
-					if(Molpy.Boosts['Chromatic Heresy'].power > 0 && Molpy.Got('Technicolour Dream Cat') && Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide2') {
+					if(Molpy.Boosts['Chromatic Heresy'].power > 0 && Molpy.Got('Technicolour Dream Cat') && Molpy.IsEnabled('Technicolour Dream Cat') && Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide2') {
 						ra.removeClass(Molpy.Redacted.tempAreaClass);
 						Molpy.Redacted.tempAreaClass = ['alert', 'action', 'toggle', '', ''][flandom(4)];
 						className += ' ' + Molpy.Redacted.tempAreaClass;

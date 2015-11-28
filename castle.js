@@ -2267,7 +2267,7 @@ Molpy.Up = function() {
 					this.chainCurrent = 0;
 					return;
 				} else if(this.drawType[level] != 'show') {
-					Molpy.UnlockBoost('Technicolour Dream Cat');
+					//Molpy.UnlockBoost('Technicolour Dream Cat'); No clue why this was here
 					this.drawType[level] = 'show';
 					while(this.drawType.length > level + 1)
 						this.drawType.pop(); //we don't need to remember those now
