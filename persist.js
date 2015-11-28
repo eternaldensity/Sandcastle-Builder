@@ -410,17 +410,21 @@
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var str = '';
+		var lowestset = 0;
 		var lowest = 0;
 		var highest = 0;
 		if (!Molpy.TotalDragons) return str;
 		// See what range to save if any
 		for (var np = -Math.abs(Molpy.largestNPvisited[0]); np <=Math.abs(Molpy.largestNPvisited[0]); np=Molpy.NextLegalNP(np)) { //putting 1 in the first space is a quick fix of for (var np = -Math.abs(Molpy.largestNPvisited[0]);
 			if (Molpy.NPdata && Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
-				if (!lowest) lowest = np;
+				if (!lowestset){
+					lowest = np;
+					lowestset = 1;
+				}
 				highest = np;
 			}
 		}
-		if (!lowest) return str;
+		if (!lowestset) return str;
 		str += lowest + s + highest;
 		var lastNP = "";
 		for (var np=lowest; np<=highest; np=Molpy.NextLegalNP(np)) {

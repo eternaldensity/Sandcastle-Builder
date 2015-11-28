@@ -424,6 +424,8 @@ Molpy.NextLegalNP=function(at){
 		}else{
 			return (at+Molpy.fracParts[0]);
 		}
+	}else if (at == -1){
+		return 0;
 	}else{
 		return 1;
 	}
@@ -670,10 +672,10 @@ Molpy.MaxDragons = function() {
 } 
 
 Molpy.DragonFledge = function(clutch) {
-	if (Molpy.newpixNumber == 0) {
-		Molpy.Notify('Time balks.');
-		return;
-	}
+	//if (Molpy.newpixNumber == 0) {
+		//Molpy.Notify('Time balks.');
+		//return;
+	//}
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var dq = Molpy.Boosts['DQ'];
 	var hatch = Molpy.Boosts['Hatchlings'];
@@ -1145,10 +1147,10 @@ Molpy.DragonsToCryo = function(cl) {
 }
 
 Molpy.DragonsFromCryo = function() { // Cut down version of fledge
-	if (Molpy.newpixNumber == 0) {
-		Molpy.Notify('Time balks.');
-		return;
-	}
+	//if (Molpy.newpixNumber == 0) {
+		//Molpy.Notify('Time balks.');
+		//return;
+	//}
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var dq = Molpy.Boosts['DQ'];
 	var lim = Molpy.MaxDragons();
