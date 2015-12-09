@@ -34,8 +34,7 @@ Molpy.Overview = {
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
 				if (np && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && np < over.size) {
-					var npd = Molpy.NPdata[np];
-					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
+					var npd = Molpy.NPdata[Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed))];					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
 					over.mtip.style.top = (evt.clientY -20 + window.pageYOffset) + "px";
 				        over.mhover.innerHTML = 'NP&nbsp;' + np + ((npd && npd.amount)?'<br>'+npd.amount+'&nbsp;'+Molpy.DragonsById[npd.DragonType].name+(npd.amount>1?'s':''):'');
 					over.mhover.style.display = 'block';
@@ -94,11 +93,12 @@ Molpy.Overview = {
 		var deflinecol = Molpy.options.colourscheme?"grey":"white"; 
 		ctx.fillRect(0,0,800,100);
 		
-		for (var dt = -1; dt <=maxdrag; dt++) {
-			this.image[dt+1] = [];
+		for (var dtt = -1; dtt <=maxdrag; dtt++) {
+			this.image[dtt+1] = [];
 			for (var mt = 0; mt< 3; mt++) {
-				var xpos = 180+16*dt;
-				var ypos = 10+16*mt;
+				var dt = Math.sign(over.fracUsed)*(dtt-1+Math.abs(over.fracUsed));
+				var xpos = 180+16*dtt;
+				var ypos = 10+16*mtt;
 				ctx.beginPath();
 				ctx.lineWidth=2;
 				ctx.strokeStyle=(dt<0?deflinecol:Molpy.DragonsById[dt].colour);
@@ -107,7 +107,7 @@ Molpy.Overview = {
 				ctx.fill();
 				ctx.stroke();
 
-				this.image[dt+1][mt] = ctx.getImageData(xpos,ypos,8,8);
+				this.image[dtt+1][mt] = ctx.getImageData(xpos,ypos,8,8);
 
 			}
 		}
