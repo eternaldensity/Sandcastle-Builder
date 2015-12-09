@@ -96,7 +96,7 @@ Molpy.Overview = {
 		for (var dtt = -1; dtt <=maxdrag; dtt++) {
 			this.image[dtt+1] = [];
 			for (var mt = 0; mt< 3; mt++) {
-				var dt = Math.sign(over.fracUsed)*(dtt-1+Math.abs(over.fracUsed));
+				var dt = Math.sign(Molpy.Overview.fracUsed)*(dtt-1+Math.abs(Molpy.Overview.fracUsed));
 				var xpos = 180+16*dtt;
 				var ypos = 10+16*mtt;
 				ctx.beginPath();
