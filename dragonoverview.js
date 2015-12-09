@@ -98,7 +98,7 @@ Molpy.Overview = {
 			for (var mt = 0; mt< 3; mt++) {
 				var dt = Math.sign(Molpy.Overview.fracUsed)*(dtt-1+Math.abs(Molpy.Overview.fracUsed));
 				var xpos = 180+16*dtt;
-				var ypos = 10+16*mtt;
+				var ypos = 10+16*mt;
 				ctx.beginPath();
 				ctx.lineWidth=2;
 				ctx.strokeStyle=(dt<0?deflinecol:Molpy.DragonsById[dt].colour);
