@@ -33,7 +33,7 @@ Molpy.Overview = {
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && np < over.size) {
+				if (np && np <= Math.abs(Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))]) && np < over.size) {
 					var npd = Molpy.NPdata[Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed))];					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
 					over.mtip.style.top = (evt.clientY -20 + window.pageYOffset) + "px";
 				        over.mhover.innerHTML = 'NP&nbsp;' + np + ((npd && npd.amount)?'<br>'+npd.amount+'&nbsp;'+Molpy.DragonsById[npd.DragonType].name+(npd.amount>1?'s':''):'');
@@ -67,7 +67,7 @@ Molpy.Overview = {
 		this.BasicGrid();
 		
 		// Update all nps
-		var type=Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]
+		var type=Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))]
 		for (var np = -Math.abs(type); np < this.size && np <= Math.abs(type); np=Molpy.NextLegalNP(np)){this.Update(np);}
 		
 		//Add storyline buttons
@@ -155,7 +155,7 @@ Molpy.Overview = {
 	Update: function(np) {
 		np=Number(np.toFixed(3))
 		//var npd = Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed))
-		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || Math.abs(np) >= Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)] ) return;
+		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || Math.abs(np) >= Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))] ) return;
 		var mt = (Molpy.Earned('diamm'+np)?2:(Molpy.Earned('monumg'+Math.abs(np))?1:0));
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
 		np=Math.abs(np)
@@ -174,7 +174,7 @@ Molpy.Overview = {
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
 				np = Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed));
-				if (np && Math.abs(np) <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && Math.abs(np) < over.size) { 
+				if (np && Math.abs(np) <= Math.abs(Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))]) && Math.abs(np) < over.size) { 
 					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1);  //
 				}
 			}
