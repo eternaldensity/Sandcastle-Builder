@@ -172,7 +172,7 @@ Molpy.Overview = {
 
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				np = Molpy.NPdata[Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed))];
+				np = Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed));
 				if (np && Math.abs(np) <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && Math.abs(np) < over.size) { 
 					console.log(np)
 					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1);  //
