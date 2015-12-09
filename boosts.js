@@ -313,13 +313,20 @@ Molpy.DefineBoosts = function() {
 		name: 'Blitzing',
 		icon: 'blitzing',
 		className: 'alert',
-		
 		desc: function(me) {
 			if (!me.bought) return 'Boosts sand rate. Currently locked.';
-			return Molpify(me.power, 1) + '% Sand for ' + MolpifyCountdown(me.countdown);
+			if(!Molpy.Got('Sea Mining'))return Molpify(me.power, 1) + '% Sand for ' + MolpifyCountdown(me.countdown);
+			else if(Molpy.Redacted.totalClicks < 1e6) return 'Beach digs will give Coal for ' + MolpifyCountdown(me.countdown);
 		},
 		startCountdown: 23, // only used when loading to ensure it doesn't get stuck. any true value would do here
 		countdownCMS: 1,
+		countdownLockFunction: function() {
+			this.unlocked = 0;
+			this.bought = 0;
+			if(Molpy.Got('Sea Mining')){
+				Molpy.LockBoost('Sea Mining');
+			}
+		},
 	});
 	new Molpy.Boost({
 		name: 'Kitnip',
@@ -700,7 +707,9 @@ Molpy.DefineBoosts = function() {
 	Molpy.TimeTravel = function(NP) {
 		Molpy.Anything = 1;
 		var oldNP=Molpy.newpixNumber;
-		if(Molpy.TTT(Molpy.newpixNumber + NP, 0)) {
+		var frac = Number(((Math.abs(Molpy.newpixNumber*10)-Math.floor(Math.abs(Molpy.newpixNumber))*10)/10).toFixed(3));
+		var sign = Math.sign(Molpy.newpixNumber);
+		if(Molpy.TTT((sign*(Math.floor(Math.abs(Molpy.newpixNumber))*10+frac*10)+ NP*10)/10, 0)) {
 			if(oldNP>0)
 			{
 				if(NP > 0) Molpy.EarnBadge('Fast Forward');
@@ -730,12 +739,17 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('There is nothing before time.');
 			return;
 		}
-		if(Math.sign(np)!==Math.sign(oldnp) && !Molpy.Earned('Absolute Zero')) {
+		if(Math.sign(Math.floor(Math.abs(np)))== 0 && Math.sign(oldnp)!== 0 && !Molpy.Earned('Absolute Zero')) {
 			Molpy.Notify('Divide by zero error!');
 			return;
 		}
-		if(Math.sign(np)!==Math.sign(oldnp) && Molpy.Earned('Absolute Zero')) {
+		if(Math.sign(Math.floor(Math.abs(np)))== 0 && Math.sign(oldnp)!== 0 && Molpy.Earned('Absolute Zero')) {
 			Molpy.Notify('You cannot pass into NP0 directly;<br>charge your signpost.');
+			return;
+		}
+		if(Number(((Math.abs(np*10)-Math.floor(Math.abs(np))*10)/10).toFixed(3)) !== Number(((Math.abs(oldnp*10)-Math.floor(Math.abs(oldnp))*10)/10).toFixed(3))){
+			Molpy.Notify('You can not travel across timelines.');
+			Molpy.Notify('Travel to NP 0 first.');
 			return;
 		}
 		if(oldnp == 0 && Math.abs(np) < 3095) {
@@ -3812,7 +3826,14 @@ Molpy.DefineBoosts = function() {
 		name: 'Technicolour Dream Cat',
 		icon: 'dreamcat',
 		heresy: true,
-		desc: Molpy.Redacted.words + ' are multicoloured (if Chromatic Heresy is enabled)',
+		desc: function(me) {
+			var str = Molpy.Redacted.words + ' are multicoloured (if Chromatic Heresy is enabled)';
+			str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
+			str += ' the flashing colours on the redundakitties.';
+			return str;
+		},
+		
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		price:{
 			Sand: '320K',
 			Castles: '90K',
@@ -5351,7 +5372,7 @@ Molpy.DefineBoosts = function() {
 					}
 				}
 			}
-		else if(Molpy.Got('coda') && Molpy.IsEnabled('coda') && !Molpy.IsEnabled('Shadow Feeder') && Molpy.Got('Castles', Infinity) && Molpy.Got('Bonemeal', '1WW')){
+		else if(Molpy.Got('coda') && Molpy.IsEnabled('coda') && !Molpy.IsEnabled('Shadow Feeder') && Molpy.Has('Castles', Infinity) && Molpy.Has('Bonemeal', '1WW')){
 			Molpy.ShadowStrike(1);
 			Molpy.zooKeep(left);
 			if (Molpy.Earned('The Ritual is worn out') && !Molpy.IsEnabled('Mario')){
@@ -5405,15 +5426,7 @@ Molpy.DefineBoosts = function() {
 		desc: function(me) {
 			if (!me.choice || !Molpy.IsEnabled('Expando')) Molpy.DuckDuckBadger();
 			return me.choice;
-		},
-
-		// desc: function(me) {
-		// 	return GLRschoice([
-		// 			'Badgers? Badgers? We don\'t need no ch*rpin\' Badgers! This is Sacred Ground and I\'ll have no more heresy. Surely you mean Molpies.',
-		// 			'Exactly! No, wait - No! There are no badgers involved at all!',
-		// 			'For every 10 badges, Glass Chip production uses 1% less sand']);
-		// },
-		
+		},		
 		price:{
 			Sand: Infinity,
 			Castles: Infinity,
@@ -6070,7 +6083,7 @@ Molpy.DefineBoosts = function() {
 		
 		onBlitz: function(){
 			this.checkUnlocks(true);
-			Molpy.Notify('Lightning struck the same place twice: 10% power bonus!');
+			if (this.countdown < 200){ Molpy.Notify('Lightning struck the same place twice: 10% power bonus!')};
 			Molpy.EarnBadge('Strikes Twice');
 			Molpy.UnlockBoost('LR');
 			
@@ -6842,7 +6855,7 @@ Molpy.DefineBoosts = function() {
 		Spend: function(n) {
 			if (n == Infinity) {
 				Molpy.Boosts['Abattoir'].power++;
-				if (Molpy.Boosts['Abattoir'].power >= 144) Molpy.UnlockBoost('Abattoir');
+				if ((Molpy.Boosts['Abattoir'].power >= 144)&&( Molpy.Boosts.Abattoir.unlocked == 0)) Molpy.UnlockBoost('Abattoir');
 				if (Molpy.Boosts['Abattoir'].power >= 432 && Molpy.Boosts['blackhat'].power >= 8) Molpy.UnlockBoost('Tractor Beam');
 				if (Molpy.Boosts['Abattoir'].power >= 1008) Molpy.UnlockBoost('terrytao');
 				if (Molpy.Boosts['Abattoir'].power >= 1e4 && Molpy.Got('GCA')) Molpy.UnlockBoost('LA');
@@ -7065,7 +7078,7 @@ Molpy.DefineBoosts = function() {
 		if (lv.power >= 1e12 && Molpy.Got('Shards')) {
 			Molpy.UnlockBoost('SPP');
 		}
-		if (lv.power >= 1e21 && Molpy.Got('Panes') && Molpy.Got('Abattoir') && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
+		if (lv.power >= 1e21 && Molpy.Got('Panes') && (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) && Molpy.Got('GCA') && Molpy.Boosts['GCC'].power >= 144) {
 			Molpy.UnlockBoost('Panopticon');
 		}
 		if (Molpy.Got('VV')) pages = Molpy.VoidStare(pages, 'VV');
@@ -7104,7 +7117,7 @@ Molpy.DefineBoosts = function() {
 			if (c && !Molpy.boostSilence) {
 				Molpy.Notify('You found ' + Molpify(c) + ' flux crystal' + plural(c) + '.');
 			}
-			Molpy.Add('Flux Crystals', c);
+			Molpy.Add('FluxCrystals', c);
 		}
 		lv.Refresh();
 	};
@@ -7248,9 +7261,11 @@ Molpy.DefineBoosts = function() {
 			if (Math.random() < 0.25) n = 1;
 		}
 		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
-		if (Molpy.Got('Abattoir')) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
+		if (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
+		n = Math.min(n,1e306);
+		n = Math.floor(n*Molpy.Papal('Bonemeal'));
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
-		Molpy.Add('Bonemeal', Math.floor(n*Molpy.Papal('Bonemeal')));
+		Molpy.Add('Bonemeal', n);
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
 		if (n >= 10) Molpy.UnlockBoost('Shadow Feeder');
 		if (n == 1 && Molpy.Has('Bonemeal', DeMolpify('1MW'))) Molpy.UnlockBoost('coda');
@@ -7904,23 +7919,12 @@ Molpy.DefineBoosts = function() {
 		icon: 'wota',
 		price: {LogiPuzzle: 625},
 		
-		Level: [
-				function() {
-					return this.bought * Math.max(-9, Math.ceil(0.2 * (Math.abs(Molpy.newpixNumber) - this.power)));
-				},
-				function() {}
-		],
-		
 		desc: function(me) {
-			return 'Lets you keep more leftover Caged Logicat puzzles as Time progresses.<br>Currently you can start an ONG with a maximum of ' + Molpify(10 + me.Level) + ' Caged Logicat puzzles.';
+			return 'Lets you keep more leftover Caged Logicat puzzles as Time progresses.<br>Currently you can start an ONG with a maximum of ' + Molpify(10 + me.power) + ' Caged Logicat puzzles.';
 		},
 		
 		stats: 'More Caged Logicats are retained through an ONG as you progress further from the Beginning of Time, compared to the NewPix in which this was unlocked.<br>Protip: Temporal Rifts don\'t affect Caged Logicat puzzles',
-		
-		unlockFunction: function() {
-			this.power = Math.abs(Molpy.newpixNumber);
-		}
-	});
+		});
 	new Molpy.Boost({
 		name: 'Draft Dragon',
 		icon: 'draftdragon',
@@ -8072,7 +8076,7 @@ Molpy.DefineBoosts = function() {
 		}
 	});
 	Molpy.NestLinings = ['Sand','Castles','GlassChips','GlassBlocks','Blackprints','FluxCrystals','Goats','Mustard','Bonemeal',
-				'Vacuum','Logicat','QQ','Diamonds','Princesses','exp','Coal','Gold','Shards','Panes']; // Always add to the END of this list
+		'Vacuum','Logicat','QQ','Diamonds','Princesses','exp','Coal','Gold']; // Always add to the END of this list
 	Molpy.DragonStats = ['offence','defence','digging','breath','magic1','magic2','magic3'];
 	Molpy.DragonProperties = {offence:['Sand','Castles'],defence:['GlassChips','GlassBlocks'],digging:['Blackprints','FluxCrystals'],
 				  breath:['Goats','Mustard'],magic1:['Bonemeal','Vacuum'],magic2:['Logicat','QQ'],magic3:['Diamonds','Princesses']};
@@ -8153,6 +8157,7 @@ Molpy.DefineBoosts = function() {
 					if (pair[1] == Molpy.NestLinings[line] && Molpy.Has(pair[1],Infinity)) stat2 = this.Liners[line];
 				}
 				props[prop] = stat1*stat2/10000;
+				if(props[prop] > .25)props[prop] *= Math.random();
 			}
 			return props;
 		}
@@ -8164,21 +8169,24 @@ Molpy.DefineBoosts = function() {
 		var rest = 0;
 		for (var inf in Molpy.NestLinings) if (inf != thing) rest += (nest.Liners[inf] || 0);
 		var cur = (nest.Liners[thing] || 0);
-		if (cur+change < 0 || (!Molpy.Got('Marketing') && ((rest+cur+change) > 100))) return;
+		if (cur+change < 0 || (!Molpy.Got('Marketing') && ((rest+cur+change) > 100)) || cur + change > 100 || rest + cur + change > 200) return;
 		nest.Liners[thing] = (nest.Liners[thing] || 0) + change;
 		nest.Refresh();
 	}
+
 	Molpy.EggCost = function() {
 		var eggs = Molpy.Boosts['Eggs'].Level;
 		var modpow = 1;
-		if (Molpy.Got('Cake') && eggs>1) {
+		var cost = {}
+		cost.princess = Math.floor(Math.pow(10, ((eggs - 50)/10)));
+		if (Molpy.Got('Cake') && eggs>1){
 			var more = Math.ceil(Math.log(Molpy.Level('Maps')/200));
 			eggs = Math.max(1,eggs-more);
 			if (eggs == 1) modpow = Math.pow(10,Molpy.Boosts['Eggs'].Level - eggs);
-		};
-		
-		if (eggs < 6 && Molpy.Level('DQ') < 6) return DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs])*modpow;
-		return Infinity;
+		}
+		if (eggs < 6 && Molpy.Level('DQ') < 6){cost.bonemeal = DeMolpify(['1M','1W','1WW','1WWW','1Q','1WQ'][eggs])*modpow;
+		}else{cost.bonemeal = Infinity;}
+		return cost;
 	}
 	new Molpy.Boost({ 
 		name: 'Dragon Queen',
@@ -8191,8 +8199,15 @@ Molpy.DefineBoosts = function() {
 			var str = 'The queen of the dragons.';
 			if(me.bought) {
 				Molpy.UnlockBoost('RDKM');
-				var eggcost = Molpy.EggCost();
-				str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal: Molpy.EggCost()}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(eggcost) + ' Bonemeal.';
+				var bonecost = Molpy.EggCost().bonemeal;
+				var princost = Molpy.EggCost().princess;
+				if (Molpy.Has('Bonemeal', bonecost) && Molpy.Has('Princesses', princost)){str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal: Molpy.EggCost().bonemeal, Princesses: Molpy.EggCost().princess}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(bonecost) + ' Bonemeal';
+				princost?str+= ' and '+Molpify(princost)+' Princess':str += '';
+				princost > 1?str += 'es.)':str +='.)';
+				}else{str += '<br> The next egg requires '+ Molpify(bonecost) +' Bonemeal';
+				princost?str+= ' and '+Molpify(princost)+' Princess':str += '';
+				princost > 1?str += 'es.)':str +='.)';
+				}
 				if (Molpy.TotalDragons) {
 					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding','Celebrating'][me.overallState];
 					if (me.overallState > 0) str += ' for ' + MolpifyCountdown(me.countdown, 1);
@@ -8212,13 +8227,15 @@ Molpy.DefineBoosts = function() {
 		},
 		experience: 0, //Unused
 		totalfights: 0,
+		breathfights: 0,
+		drumbeats: 0,
 		totalloses: 0,
 		totalstarves: 0,
 		loses: [],
 		defSave: 1,
 		defStuff: 1,
 		finds:0,
-		overallState: 0, // 0 all heathy, 1 hiding, 2 injuries, 3 Celebrating
+		overallState: 0, // 0 all heathy, 1 injuries, 2 hiding, 3 Celebrating
 
 		saveData: {4:['experience',0,'float'], // Unused 
 			   5:['overallState',0,'int'],
@@ -8227,6 +8244,8 @@ Molpy.DefineBoosts = function() {
 			   8:['totalloses',0,'float'],
 			   9:['totalfights',0,'float'],
 			   10:['totalstarves',0,'float'],
+			   11:['breathfights',0,'int'],
+			   12:['drumbeats',0,'int'],
 		},
 		countdownLockFunction: function() { // Used for overallState
 			this.overallState = 0;
@@ -8800,7 +8819,8 @@ Molpy.DefineBoosts = function() {
 			var large = (me.power & 2);
 			var str = '';
 			if(!large) str += '<small>';
-			str += 'Shop for me <input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',0)" value="' + ((me.power & 1) ? 'in ASHF only' : 'Always') + '"></input>';
+			str += 'Shop for me <input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',0)" value="' + 
+			((me.power & 1) ? 'in ASHF only' : 'Always') + '"></input>';
 			str += '<br><input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',1)" value="' + ((me.power & 2) ? 'Small Size text' : 'Normal Size text') + '"></input>';
 			str += '<input ' + (large ? '' : 'class=smallbutton ') + 'type=button onclick="Molpy.ToggleBit(' + (me.id) + ',2)" value="' + ((me.power & 4) ? 'Notifies off' : 'Notifies on') + '"></input>';
 
@@ -10265,6 +10285,16 @@ Molpy.DefineBoosts = function() {
 		desc: 'Numbers don\'t have to add up',
 		group: 'hpt',
 		icon: 'marketing',
+		price: {
+			Sand: Infinity,
+			Castles: Infinity,
+			GlassChips: Infinity,
+			GlassBlocks: Infinity,
+			Blackprints: Infinity,
+			FluxCrystals: Infinity,
+			Mustard: Infinity,
+			Goats: Infinity,
+		}
 	});
 	new Molpy.Boost({ // Note nothing is going to spend gold - dragons hoard it
 		name: 'Gold',
@@ -10309,8 +10339,21 @@ Molpy.DefineBoosts = function() {
 		alias: 'RDKM',
 		group: 'drac',
 		icon: 'rdkm',
-		desc: function (me) {
-			var str = 'This has lots of useful information that will change as you do things...';
+		desc: function(){
+			var str = '';
+			if(Molpy.Boosts['DQ'].level < 3) str += 'This has lots of useful information that will change as you do things...if you know where to look.<br>';
+			if(Molpy.DragonLuck) str += 'Draconic Luck: ' + Molpify((Molpy.DragonLuck*100),2) + '%';
+			if(Molpy.Got('Dragon Breath') && Molpy.Boosts['Dragon Breath'].countdown > 0) str += '<br>mNP until Breath is available: ' + Molpify(Molpy.Boosts['Dragon Breath'].countdown,0);
+			if(!Molpy.Boosts['Dragon Breath'].countdown) str += '<br>Breath is available.';
+			if(Molpy.Got('Cup of Tea') || Molpy.Got('Healing Potion') || Molpy.Got('Strength Potion') || Molpy.Got('Ethyl Alcohol') || 0) str+= '<br><u>Potions</u></div>';
+			if(Molpy.Got('Cup of Tea')) str += 'Cups of tea: ' + Molpy.Level('Cup of Tea');// + Molpy.Has('Cup of Tea', 2+Molpy.Boosts['Cup of Tea'].power)?str += 'AP':str += 'A';
+			if(Molpy.Got('Healing Potion')) str += '<br>Healing Potions: ' + Molpy.Level('Healing Potion');// + Molpy.Has('Healing Potion', 2+Molpy.Boosts['Healing Potion'].power)?str += '<div class="rightjust">A+P</div>':str += '<div class="rightjust">A</div>';
+			if(Molpy.Got('Strength Potion')) str += '<br>Strength Potions: ' + Molpy.Level('Strength Potion');// + Molpy.Has('Strength Potion', 2+Molpy.Boosts['Strength Potion'].power)?str += '<div class="rightjust">A+P</div>':str += '<div class="rightjust">A</div>';
+			if(Molpy.Got('Ethyl Alcohol')) str += '<br>Ethyl Alcohols: ' + Molpy.Level('Ethyl Alcohol');// + Molpy.Has('Ethyl Alcohol', 2+Molpy.Boosts['Ethyl Alcohol'].power)?str += '<div class="rightjust">A+P</div>':str += '<div class="rightjust">A</div>';
+			return str;
+		},
+		stats: function(me){
+			var str = '';
 			var draglevel = Molpy.Level('DQ');
 			if (!me.bought) return str;
 			str += '<br><ul class=rdkm>';
@@ -10321,7 +10364,7 @@ Molpy.DefineBoosts = function() {
 				str += '<li>Linings of Blackprints and Flux Crystals give digging';
 				if (Molpy.Has('Goats',Infinity) && Molpy.Has('Mustard',Infinity)) {
 					str += '<li>Linings of Goats and Mustard give breath effects.';
-					if (draglevel < Molpy.Dragons['Wyrm'].id) str += '  When you have the rght types of dragons.';
+					if (draglevel < Molpy.Dragons['Wyvern'].id) str += '  When you have the rght types of dragons.';
 					}
 				if (Molpy.Has('Bonemeal',Infinity) && Molpy.Has('Vacuum',Infinity)) str += '<li>Linings of Bonemeal and Vacuums give magic';
 				if (Molpy.Has('Logicat',Infinity) && Molpy.Has('QQ',Infinity)) str += '<li>Linings of Logicat Levels and QQs give magic';
@@ -10331,13 +10374,13 @@ Molpy.DefineBoosts = function() {
 			if (Molpy.Level('Eggs')) {
 				str += '<li>You need to wait for the eggs to hatch';
 			}
-			str += '<li>Dragons have a hive mind, if one hides they all hide, if one is injured they all help heal the injuries'; 
+			str += '<li>Dragons have a hive mind--if one hides they all hide; if one is injured they all help heal the injuries'; 
 			if (Molpy.Level('Hatchlings')) {
 				str += '<li>When the eggs hatch, the Hatchlings will mature for many mnp.';
-				str += '<li>Hatchlings need feeding, the better the food, the better the Dragon.';
+				str += '<li>Hatchlings need feeding. The better the food, the better the Dragon.';
 				str += '<li>You will be notified when the Hatchlings are getting restless and want to fledge to their own teritories';
-				str += '<li>To give a clutch of Hatchlings their own teritory. Go to a NP without any Dragons, a low positive number is recommended for early clutches';
-				str += '<li>If you fail to give them their own territory after a while they will escape to another plane';
+				str += '<li>To give a clutch of Hatchlings their own teritory, go to an NP without any Dragons. A low positive number is recommended for early clutches';
+				str += '<li>If you fail to give them their own territory, after a while they will escape to another plane';
 				str += '<li>If there are too many hatchlings for the NP the strongest will eat the rest';
 				str += '<li>Once released they have to survive the locals and they can then can start digging for treasure';
 			};
@@ -10540,13 +10583,13 @@ Molpy.DefineBoosts = function() {
 		name: 'Strength Potion',
 		icon: 'strengthpotion',
 		desc: function(me) {
-			str = 'Increases Draconic Strength';
+			str = 'Provides energy for attacking enemies and digging';
 			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
 		},
 		draglvl: 'Wyrm',
 		group: 'bean',
-		limit: function() { return Molpy.Got('Dragonfly')?4:1 },
+		limit: 4,
 		defStuff: 1,
 		Spend: function() {
 			if (!this.bought) return false;
@@ -10611,7 +10654,7 @@ Molpy.DefineBoosts = function() {
 		icon: 'cuptea',
 		plural: 'Cups of Tea',
 		desc: function(me) {
-			str = 'Reduces the time dragons need to recover after injury';
+			str = 'Reduces the time dragons need to recover after injury. May boost draconic Luck.';
 			if (me.bought) str += '.  You have ' + Molpify(me.bought) + ' ' + (me.bought>1?me.plural:me.single);
 			return str;
 		},
@@ -10645,7 +10688,7 @@ Molpy.DefineBoosts = function() {
 					str += '<br>Gaze at a Glass Monument to contemplate making a Diamond Masterpiece';
 					break;
 				case 1:
-					str += '<br>Making the mould for NP'+me.Making+ ' it will be finished in '+MolpifyCountdown(me.countdown);
+					str += '<br>Making the mould for NP'+me.Making+ '. It will be finished in '+MolpifyCountdown(me.countdown);
 					break;
 				case 2:
 					str += '<br>You have a complete Mould made for NP'+me.Making;
@@ -10713,7 +10756,7 @@ Molpy.DefineBoosts = function() {
 			this.countdown = 0;
 		},
 		MouldCost: function(np) {
-			return Math.floor(Math.pow(Math.sin(np*Math.PI/180),2)*Math.pow(2.714,np/42)*Math.log(np+10)*Math.LOG10E*1e9)
+			return (Math.floor(Math.pow(Math.sin(np*Math.PI/180),2)*Math.pow(2.714,np/42)*Math.log(np+10)*Math.LOG10E*1e9) + 1)
 		},
 		MouldTime: function(np) { return Math.floor((2714+np*np)*Molpy.Papal('Master')/Molpy.Boosts.ClawsDeck.factor(np)) },
 		classChange: function() { return ['','alert','action'][this.State] },
@@ -10809,6 +10852,7 @@ Molpy.DefineBoosts = function() {
 		},
 		FillCost: function(np) {
 			var mcost = Molpy.Boosts['DMM'].MouldCost(np);
+			if (np == 0){ np = 0.1;}
 			return Math.floor(( mcost*2.22+Math.pow(mcost,np/333))/np);
 		},
 		FillTime: function(np) { return Math.floor(np*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
@@ -11540,7 +11584,7 @@ Molpy.DefineBoosts = function() {
 		plural: 'Anisoptera',
 		group: 'drac',
 		desc: function(me) {
-			str = 'Increases the both the offensive and defensive values of Dragons and may give you advanced informaton about Redundaknights';
+			str = 'Increases the probability of Breath special attacks and may give you advanced informaton about Redundaknights';
 			if (me.bought) str += '.<p>You have ' + Molpify(me.bought) + ' ' + (me.name);
 			return str;
 		},
@@ -11558,6 +11602,13 @@ Molpy.DefineBoosts = function() {
 		limit: function() { return Math.min(18,6*(Molpy.Boosts.DQ.Level-2))},
 		title: function(me) { return me.name + ' ' + me.Species[me.unlocked] },
 		Level: Molpy.BoostFuncs.Bought0Level,
+		buyFunction: function() {
+			if(this.Level == 1) Molpy.Notify('A short hop and leap<br>Unerringly seeking prey<br><br><br>Descending anon')
+			if(this.Level == 5) Molpy.Notify('The dragons can glide<br><br>Striking terror with sharp claws<br><br>Visions of ripped flesh');
+			if(this.Level == 9) Molpy.Notify('True flight is in reach<br><br>Coursing with joy as they climb<br><br>Sailing the heavens');
+			if(this.Level == 13) Molpy.Notify('Thin air and thin cries<br><br>Diving from on high to strike<br><br>Nothing left secret');
+			if(this.Level == 17) Molpy.Notify('Faint specks in the clouds<br><br>All that can be seen is seen<br><br>Black wings on the wind')
+		}
 	});
 
 	new Molpy.Boost({
@@ -11785,36 +11836,42 @@ Molpy.DefineBoosts = function() {
 			this.Refresh();
 		},
 	});
+
 	new Molpy.Boost({
 		name: 'Gazebo',
 		icon: 'gazebo',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Ointment',
 		icon: 'ointment',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Harpsichord',
 		icon: 'harpsicord',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Credenza',
 		icon: 'credenza',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Bungalow',
 		icon: 'bungalow',
 		desc: '',
 		group: 'magic',
 	});
+
 	new Molpy.Boost({
 		name: 'Dragong',
 		icon: 'dragong',
@@ -11823,6 +11880,7 @@ Molpy.DefineBoosts = function() {
 		factor: function(np) { return this.bought?Math.pow(0.97,Molpy.groupBadgeCounts.diamm):1; },
 		price: {Diamonds:'1250G', Bonemeal:'1250PW', Goats:Infinity},
 	});
+
 	new Molpy.Boost({
 		name: 'All Claws on Deck',
 		icon: 'clawdeck',
@@ -11841,6 +11899,7 @@ Molpy.DefineBoosts = function() {
 		price: {Diamonds:'12.50T', Bonemeal:'12.50EW', Goats:Infinity},
 
 	});
+
 	new Molpy.Boost({
 		name: 'Diamond Recycling',
 		icon: 'recycling',
@@ -11848,6 +11907,7 @@ Molpy.DefineBoosts = function() {
 		group: 'drac',
 		price: {Maps:'35G'},
 	});
+
 	new Molpy.Boost({
 		name: 'Seacoal',
 		icon: 'seacoal',
@@ -11855,17 +11915,17 @@ Molpy.DefineBoosts = function() {
 		group: 'drac',
 		price: {Coal:1250},
 	});
+
 	new Molpy.Boost({
 		name: 'Annilment',
 		icon: 'annilment',
 		group: 'drac',
 		className: 'toggle',
 		desc: function(me) {
-			var calculateRatio = Molpy.Annililate(Molpy.Level('Coal'),Molpy.Level('Diamonds'));
 			var str = (me.IsEnabled ? 'C' : 'When active, c') + 'onverts diamonds back into coal if dragons are digging.';
 			if(!me.bought) return str;
 			str += ' This mNP it ' + ((me.IsEnabled && Molpy.Boosts['DQ'].overallState == 0)?'will convert ':'would convert ') 
-			+ calculateRatio[1] + ' Diamond' + ((calculateRatio[1] > 1)?'s':'') + ' into ' + calculateRatio[0] + ' Coal.'
+			+ Molpy.DiamToSpend + ' Diamond' + ((Molpy.DiamToSpend > 1)?'s':'') + ' into ' + Molpy.CoalToAdd + ' Coal.'
 			+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
 			+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
 			return str;
@@ -11874,20 +11934,31 @@ Molpy.DefineBoosts = function() {
         price: {
             Diamonds: '77G', 
             Vacuum: '533.333G'
-        }
+        },
     });
-Molpy.Annililate = function(coal,diamonds){
+
+Molpy.Annililate = function(){
+	Molpy.Anything = 1;
+	var coal = Molpy.Boosts['Coal'].Level;
+	var coal = Molpy.Boosts['Chthonism'].bought? coal%(1e10*(Math.pow(10,-Molpy.Boosts['Coal'].bought))): coal;
+	var diamonds = Molpy.Boosts['Diamonds'].Level;
     var unrar = coal/diamonds;
     var min = 1e-12;
 	var max = 0.524371863;
-	unrar = (unrar<min) ? Math.max(min, unrar) : (unrar>max) ? Math.min(max, unrar): unrar; 
+	unrar = (unrar<min)? Math.max(min, unrar): (unrar>max)? Math.min(max, unrar): unrar; // Do we need the checks? They seem to be checking for the same condition that the math contains automatically. Math.max(min, Math.min(max, unrar)).
 	var i = Math.abs(Math.pow(Math.log10(unrar)/7,7)*7777);
-	coaltohoard = Math.max(Math.floor(i),1);
-	console.log
-	diamondstocrush = Math.max(Math.floor(1/i), 1);
-	return [coaltohoard,diamondstocrush];
+	Molpy.CoalToAdd = Math.max(Math.floor(i),1);
+	Molpy.DiamToSpend = Math.max(Math.floor(1/i), 1);
+	if(!Molpy.Got('Chthonism') && Molpy.Boosts['DQ'].Level > 2 && Molpy.groupBadgeCounts.diamm >= 30 && Molpy.CoalToAdd > 338371000) Molpy.UnlockBoost('Chthonism');
+	if(!Molpy.Got('Safety Canary') && Molpy.Boosts['DQ'].Level > 2 && Molpy.DiamToSpend >= 777776) Molpy.UnlockBoost('Safety Canary');
+	if(Molpy.Got('Safety Canary') && Molpy.IsEnabled('Safety Canary') && Molpy.DiamToSpend > 777){
+		Molpy.Boosts[Annilment].power = 0;
+		Molpy.Notify('Deactivated Annilment',1);
+	};
+	return [Molpy.CoalToAdd,Molpy.DiamToSpend];
 };
-new Molpy.Boost({
+
+	new Molpy.Boost({
     	name: 'Robotic Hatcher',
     	icon: 'hatcher',
     	group: 'drac',
@@ -11903,6 +11974,7 @@ new Molpy.Boost({
     		exp: '3E',
     	},
 	});
+    
     new Molpy.Boost({
 		name: 'Shadow Coda',
 		icon: 'coda',
@@ -11920,6 +11992,7 @@ new Molpy.Boost({
 			Bonemeal: '12.5WW',
 		}
 	});
+	
 	new Molpy.Boost({
 		name: 'Ventus Vehemens',
 		icon: 'vehemens',
@@ -11935,6 +12008,315 @@ new Molpy.Boost({
 			Vacuum: '1LW'
 		},
 	});
+	
+	new Molpy.Boost({
+		name: 'Safety Canary',
+		icon: 'canary',
+		desc: function(me){
+				if(!me.bought) return 'Prevents black lung. Oh, and also protects the Diamond supply.';
+				return 'Deactivates Annilment when the Diamond cost gets too high.'
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
+					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
+			},
+		className: 'toggle',
+	    IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		price: {
+			Diamonds: '192T',
+			exp: '2.4E'
+		},
+		stats: 'CHIRP!'
+	});
+	
+	new Molpy.Boost({
+		name: 'Autumn of the Matriarch',
+		icon: 'autumn',
+		desc: function(me){
+				return 'For every dragon lost fighting, the remaining dragons\' breath gets stronger.'
+			},
+		className: 'drac',
+		draglvl: 'Wyvern',
+		price: {
+			exp: '3.333Z',
+			Bonemeal: '100EWW'
+		},
+	});
+	
+	new Molpy.Boost({
+		name: 'Chthonism',
+		icon: 'chthonism',
+		desc: function(me){
+			var str = 'Creates a separate underground storage space for Coal.';
+			if(me.bought) str += ' Current threshold is ' + (Molpify(1e9/Molpy.Boosts['Coal'].bought)) + ' Coal.';
+			if(me.bought/* && Molpy.Has('Maps',)*/) str += '<br><br><input type="Button" onclick="Molpy.Coallate()" value="Dig"></input>' + 'out more space. This will make'
+				+ ' Chthonism more efficient but costs <b>ALL</b> your maps!'
+			return str;
+		},
+		group: 'hpt',
+		className: 'drac',
+		Limit: 4,
+		Level: Molpy.BoostFuncs.Bought0Level,
+		price: {Princesses: 1250},
+		buyFunction: function(){
+			Molpy.Coallate();
+		}
+	});
+Molpy.Coallate = function(){
+	Molpy.Anything = 1;
+	Molpy.Boosts['Coal'].bought++;
+	Molpy.Boosts['Maps'].power = 0;
+}
+	new Molpy.Boost({
+		name: 'Dragon Breath',
+		icon: 'breath',
+		desc: function(me){
+			var str = 'When the dragons are defending their territory they may use Breath to help in defeating the enemy. Stronger dragons have more Breath effects at their disposal.';
+			if(me.countdown >= 1) str += '<br>The dragons are catching their Breath for ' + Molpify(me.countdown) + ' mNP.'
+			return str;
+		},
+		stats: function(me){
+			var str = me.desc(me)
+			if(me.bought){
+				var str = 'Fire breath does a large initial burst of damage and has a chance to continue burning enemies.<br>';
+				if(Molpy.Boosts['DQ'].Level > 3) str += 'Ice breath reduces the enemy\'s attack strength and has a chance to freeze them for a turn.<br>';
+				if(Molpy.Boosts['DQ'].Level > 4) str += 'Poison breath deals damage during the mNPs leading up to a fight and may wipe out an opponent in a close fight.<br>';
+				if(Molpy.Boosts['DQ'].Level > 5) str += 'Special attacks vary based on mysterious factors.<br>';
+			}
+			return str;
+		},
+		group: 'drac',
+		countdownCMS: 1,
+		countdownLockFunction: function() {},
+		recoveryCountdown: function(breathpow){
+			this.countdown = (1000*(1/(1+Math.pow(2.71828,.1337*(100*breathpow))))/(Molpy.Has('Ethyl Alcohol',2 + Molpy.Boosts['Ethyl Alcohol'].power)?
+			1.5*(1+Molpy.Boosts['Ethyl Alcohol'].power):1))
+		},
+		ChangeState: function(newstate, duration) {
+			this.overallState = newstate;
+			if (newstate) this.countdown += (duration || 1)
+			else this.countdown = 0;	
+			this.Refresh();
+		},
+		defSave: 1,
+		price: {
+			Coal: '1250M',
+			exp: '2.5Z'
+	},
+	});
+	
+	new Molpy.Boost({
+		name: 'Honor Among Serpents',
+		icon: 'honor',
+		desc: 'If a stronger clutch is fledged over a weaker one and the dragons are currently hiding, they will start digging again.',
+		group: 'drac',
+		price: {Diamonds: '25T'}
+	});
+
+	new Molpy.Boost({
+		name: 'Golden Bull',
+		plural: 'Golden Bulls',
+		icon: 'bull',
+		desc: 'For official use only. May the realm prosper.',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 14995},
+		loadFunction: function() {if(Math.random() < .2 )  Molpy.LockBoost('Golden Bull') }
+	});
+
+	new Molpy.Boost({
+		name: 'Chintzy Tiara',
+		plural: 'Chintzy Tiaras',
+		icon: 'tiara',
+		desc: 'The quintessence of style! Gives your dragons the confidence to face their fears.',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 9995},
+		loadFunction: function() {if(Math.random() < .2 )  Molpy.LockBoost('Chintzy Tiara') }
+	});
+
+	new Molpy.Boost({
+		name: 'Diamond Dentures',
+		plural: 'Diamond Dentureses',
+		icon: 'dentures',
+		desc: 'They slice! They dice! They reduce enemies to ribbons!',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 49995},
+		loadFunction: function() {if(Math.random() < .2 )  Molpy.LockBoost('Diamond Dentures') }
+	})
+
+	new Molpy.Boost({
+		name: 'Megan\'s Quick-Acting, Long-Lasting Odorific Breath Spray©',
+		plural: 'MQALLOBSes',
+		alias: 'MQALLOBS',
+		icon: 'spray',
+		desc: 'Turns your breath foul!',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 1995},
+		loadFunction: function() {if(Math.random() < .2 ) Molpy.LockBoost('MQALLOBS') }
+	})
+
+	new Molpy.Boost({
+		name: 'Baobab Tree Fort',
+		plural: 'Baobab Tree Forts',
+		icon: 'fort',
+		desc: 'DRAGONS ONLY NO NITES ALOWED',
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Got('Marketing')?1:0) },
+		price: {Sand: 99995},
+		loadFunction: function() {if(Math.random() < .2 )  Molpy.LockBoost('Baobab Tree Fort') }
+	})
+
+	new Molpy.Boost({
+		name: 'Catalyzer',
+		icon: 'catalyzer',
+		group: 'drac',
+		desc: function(me){
+			var str = 'Allows you to power up Breath by spending Coal. ';
+			str += 'Breath is currently ' + Molpify(me.power) + ' times more powerful. The next upgrade will cost ' + Molpify(Molpy.priceFactor*Molpy.Boosts['Catalyzer'].costFunction(1),0)
+			+ ' Coal, and the Breath multiplier will be ' + Molpify(me.buyFunction(1)) + '.<br>You have ' + (me.Level - 1) + ' Catalyzers.';
+			return str;
+		},
+		draglvl: 'Wyvern',
+		limit: function() { return (Molpy.Boosts['DQ'].breathfights>=50?30*(Molpy.Level('DQ') - 1):0) },
+		Level: Molpy.BoostFuncs.Bought0Level,
+		costFunction: function(desc){
+			var levmod = this.Level/10;
+			if(desc) levmod += .1;
+			return Math.pow(2,Math.pow(2,(Math.max(levmod,.1))))
+		},
+		buyFunction: function(desc){
+			var me = Molpy.Boosts['Catalyzer'];
+			if(!me.Level) me.Level = 1;
+			var powmod = (me.Level + 1)/10;
+			var newpower = (Math.pow(2/3*powmod + Math.exp(1/6,1/6*powmod) * Math.sin(15*powmod),4));
+			if(!desc){
+				me.power = newpower;
+				me.Level++;
+				me.Lock();
+			};
+			if(desc) return newpower;
+		},
+		Level: 0,
+		defSave: 1,
+		saveData: {4: ['Level', 0,'int']}, //to override Level being calculated from power
+		price: {
+			Coal: function() { return Molpy.Boosts['Catalyzer'].costFunction() }
+		},
+	})
+
+	new Molpy.Boost({
+		name: 'Way of the Tortoise',
+		alias: 'WotT',
+		icon: 'wott',
+		desc: 'Significantly increases your defense, but locks Way of the Panther',
+		buyFunction: function(){
+			this.permalock = 1;
+			Molpy.LockBoost('WotP');
+			Molpy.Boosts['WotP'].permalock = 1; //prevent WotP from being unlocked again
+		},
+		permalock: 0,
+		defSave: 1,
+		saveData: {4:['permalock',0,'int']},
+		price: {
+			exp: '1250E',
+			GlassChips: Infinity,
+			GlassBlocks: Infinity,
+		},
+	})
+
+	new Molpy.Boost({
+		name: 'Way of the Panther',
+		alias: 'WotP',
+		icon: 'wotp',
+		desc: 'Significantly increases your offense, but locks Way of the Tortoise',
+		buyFunction: function(){
+			this.permalock = 1;
+			Molpy.LockBoost('WotT');
+			Molpy.Boosts['WotT'].permalock = 1; //prevent WotT from being unlocked again
+		},
+		permalock: 0,
+		defSave: 1,
+		saveData: {4:['permalock',0,'int']},
+		price: {
+			exp: '1250E',
+			Sand: Infinity,
+			Castles: Infinity,
+		},
+	})
+
+	new Molpy.Boost({
+		name: 'Tuple or Nothing',
+		icon: 'tuple',
+		desc: 'The longer a fight lasts, the more Gold you get for winning.',
+		stats: '<i>#winning</i>',
+		group: 'drac',
+		price: {
+			exp: '480Z',
+			Coal: '800G',
+		},
+	});
+
+	new Molpy.Boost({
+		name: 'Ethyl Alcohol',
+		icon: 'ethyl',
+		desc: 'Fuel for Breath attacks. May cause drowsiness and slurred roars.',
+		group: 'bean',
+		draglvl: 'Wyvern',
+		limit: function() { return 4*Molpy.Got('Dragon Breath') },
+		defStuff: 1,
+		Spend: function() {
+			if (!this.bought) return false;
+			this.bought--;
+			if (this.unlocked > 1) this.unlocked--
+			else this.Lock();
+			return true;
+		},
+		price: {
+			Diamonds:'1G',
+			exp: function () { return Math.pow(1000,Molpy.Level('DQ')+3) }
+		},
+		Level: Molpy.BoostFuncs.Bought0Level,
+	})
+
+	new Molpy.Boost({
+		name: 'Dragon Drum',
+		icon: 'drum',
+		className: 'alert',
+		desc: 'Dun Dun <i>Dunnn</i>...Dragon Drum',
+		countdownCMS: 1,
+		kitten: 0,
+		unlockFunction: function() {
+			Molpy.RewardDragonDrum();
+			this.Lock();
+		}
+	})
+
+	new Molpy.Boost({
+		name: 'Clannesque',
+		icon: 'clannesque',
+		group: 'drac',
+		desc: 'The effect of Ooh Shiny! is compounded by the number of eggs you have in storage.',
+		price: {
+			Bonemeal: '9ZWW',
+			Diamonds: '88P',
+			Coal: '40G',
+		}
+	})
+
+	new Molpy.Boost({
+		name: 'Sea Mining',
+		icon: 'smine',
+		desc: 'For the duration of Blitzing, each click gives one more Coal than the last.',
+		kitten: 0,
+		stats: 'AKA Bananananasblitz!',
+		lockFunction: function() {
+			this.power = 0;
+			this.bought = 0;
+			this.unlocked = 0;
+		},
+	})
+
 	new Molpy.Boost({
 		name: 'Signpost',
 		icon: 'signpost',
@@ -12039,7 +12421,7 @@ new Molpy.Boost({
 				}
 				cost = Math.floor(cost);
 				var tatpix = Molpy.largestNPvisited[0.1] // highest tatpix visited
-				var yield = Math.floor(Math.pow(4,tatpix/4));
+				var yield = Molpy.Got('Green Sun')? Math.floor(Math.pow(4,tatpix/4)) : 1
 				str += ', using infinite flux crystals';
 				str += '.<br><input type=button onclick="Molpy.Uncrush(' + cost + ',' + yield + ')" value="Uncrush"></input> ';
 				str += Molpify(cost) + ' shard' + plural(cost) + ' into ' + Molpify(yield) + ' pane' + plural(yield) + '.';
@@ -12138,11 +12520,10 @@ new Molpy.Boost({
 					if (Math.abs(i) >= 3173) {
 						Molpy.UnlockBoost('Sigma Stacking');
 					}
-					// if (Math.abs(i) >= 3275 && Molpy.Got('DomCobb')) {
 					if (Math.abs(i) >= 3275) {
 						Molpy.UnlockBoost('GCC');
 					}
-					if (Math.abs(i) >= 4000) {
+					if ((Math.abs(i) >= 4000)&&(Molpy.Boosts['Aperture Science'].unlocked !== 1000)){
 						Molpy.UnlockBoost('Aperture Science');
 					}
 					return;
@@ -12256,7 +12637,7 @@ new Molpy.Boost({
 			}
 			var vaults = Molpy.Boosts['Locked Vault'].power - 10;
 			var firstvaults = 1; // placeholder, some power of ten
-			var dim = Molpy.Boosts['Tangled Tesseract'].power
+			var dim = Math.abs(Molpy.Boosts['Tangled Tesseract'].power)
 			var threshold = firstvaults * Math.pow(10, dim);
 			str += 'Increases the power of Tangled Tesseract and expands the volume inside the Logicat cage.';
 			if (vaults >= threshold) {
@@ -12281,7 +12662,7 @@ new Molpy.Boost({
 			Molpy.Notify('The boxes don\'t fit inside!');
 			return;
 		}
-		Molpy.Boosts['Tangled Tesseract'].power++;
+		Molpy.Boosts['Tangled Tesseract'].power = Math.sign(Molpy.Boosts['Tangled Tesseract'].power) * (Math.abs(Molpy.Boosts['Tangled Tesseract'].power)+1);
 		Molpy.Notify('You have folded the cage upon itself along yet another dimension.', 1);
 		return;
 	};
@@ -12377,6 +12758,10 @@ new Molpy.Boost({
 			} else if (1 < this.bought && this.bought < this.limit) {
 				this.Unlock();
 			}
+			if (this.bought > this.limit || this.unlocked > this.limit) {
+				this.bought = Math.min( this.limit, this.bought, this.unlocked);
+				this.unlocked = Math.min( this.limit, this.bought, this.unlocked);
+			}
 		},
 		countdownLockFunction: function() {
 			this.bought = 0;
@@ -12443,7 +12828,7 @@ new Molpy.Boost({
 		},
 	});
 	new Molpy.Boost({
-		name: 'Green Sun', // Will be unlocked by progression in TaTPix
+		name: 'Green Sun',
 		title: function(me) {
 			var str = ''
 			if (Molpy.Boosts['Chromatic Heresy'].power > 0) {
@@ -12467,6 +12852,7 @@ new Molpy.Boost({
 			Shards: '1e6', // who
 			Panes: 5 * 100, // knows
 		},
+		kitten: 0,
 	});
 	new Molpy.Boost({
 		name: 'Dragon Seeks Path',
@@ -12529,6 +12915,10 @@ new Molpy.Boost({
 				this.power = 0;
 			} else if (1 < this.bought && this.bought < this.limit) {
 				this.Unlock();
+			}
+			if (this.bought > this.limit || this.unlocked > this.limit) {
+				this.bought = Math.min( this.limit, this.bought, this.unlocked);
+				this.unlocked = Math.min( this.limit, this.bought, this.unlocked);
 			}
 		},
 		countdownLockFunction: function() {
@@ -12642,6 +13032,14 @@ new Molpy.Boost({
 			Shards: 5 * 5000,
 			Panes: 5 * 15,
 		},
+		kitten: 0,
+		limit: 3,
+		unlockFunction: function() {
+			if (this.bought == 1){
+				Molpy.RewardInception();
+			}
+			this.unlocked = 1;
+		}
 		// So the player can never get too screwed by the increasing shard->pane cost
 		// Also makes redundakitties relevant again!
 	});
@@ -12843,6 +13241,10 @@ new Molpy.Boost({
 			GlassBlocks: 50,
 		},
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		
+		Level: 0,
+		defSave: 1,
+		saveData: {4: ['Level', 0,'int']}
 	});
 	new Molpy.Boost({
 		name: 'Retroreflector',

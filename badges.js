@@ -333,7 +333,7 @@ Molpy.DefineBadges = function() {
 				return 'The countdown is at ' + Molpify(countdown) + 'NP';
 			return 'Judgement dip is upon us! But it can get worse. The countdown is at ' + Molpify(countdown) + 'NP';
 		},
-		
+
 		classChange: function() { return Molpy.judgeLevel > 0 ? 'action': ''},
 	});
 	
@@ -751,7 +751,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Meaning',
-		desc: 'Reach a ' + Molpy.Redacted.Word + ' streak of 42'
+		desc: 'Reach a ' + Molpy.Redacted.word + ' streak of 42'
 	});
 	new Molpy.Badge({
 		name: 'How do I Shot Mustard?',
@@ -884,7 +884,7 @@ Molpy.DefineBadges = function() {
 	});
 	new Molpy.Badge({
 		name: 'Pure Genius',
-		desc: 'Inspite of an Infinite Sand rate, you manage to have no sand to run the Factory Ninja',
+		desc: 'In spite of an Infinite Sand rate, you manage to have no sand to run the Factory Ninja',
 		vis: 1
 	});
 	new Molpy.Badge({
@@ -1170,6 +1170,32 @@ Molpy.DefineBadges = function() {
 		vis: 1
 	});
 	new Molpy.Badge({
+		name: 'Two Pots O\' Gold',
+		desc: 'The Dragons found two things at once',
+		stats: '♪Double Math.random()bow all across the skyyy♪',
+		vis: 0
+	});
+	new Molpy.Badge({
+		name: 'First Blood',
+		desc: 'Your dragons struck down an opponent before they could even draw their weapon.',
+		vis: 1
+	});
+	new Molpy.Badge({
+		name: 'Flame and gory',
+		desc: 'An enemy attacked and was engulfed by fire.',
+		vis: 1
+	});	
+	new Molpy.Badge({
+		name: 'Rolled a 20!',
+		desc: 'An enemy was overcome by poison.',
+		vis: 1
+	});	
+	new Molpy.Badge({
+		name: 'Icecapades',
+		desc: 'An enemy was frozen and did not attack for a round.',
+		vis: 1
+	});
+new Molpy.Badge({
 		name: 'One in a Million',
 		desc: 'Found a shard in a vault with low IP power.',
 		vis: 1
@@ -1213,7 +1239,7 @@ Molpy.DefineBadges = function() {
 					}
 					str += '<div id="img-monums' + me.np + '" class="npthumb" style="background-image:"></div>';
 				} else if(me.group == 'monumg' && Molpy.Got('Muse') && Molpy.Boosts.Muse.power == me.np) {
-					var np = math.floor(Molpy.newpixNumber);
+					var np = Math.floor(Molpy.newpixNumber);
 					str += '<br>You are inspired to do this properly ' +
 						'<input type=button value="Start" onclick="Molpy.Boosts.DMM.StartMould()"></input>' +
 						'to make a Diamond Mould.  Making the mould will take '+Molpify(Molpy.Boosts.DMM.MouldCost(np))+
@@ -1458,8 +1484,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:1625,name:'Want some food?',desc:'Food is offered to the squirpy'});
 	Molpy.MakeQuadBadge({np:1669,name:'Where are the people?',desc:'Cueball wonders where the people who used to tend the plants are'});
 	Molpy.MakeQuadBadge({np:1686,name:'Playing with shadows',desc:'Cueball is playing with shadows'});
-	Molpy.MakeQuadBadge({np:1687,name:'What are you doing?',desc:'Megan asks what Cueball is doing'});
-	// rev. through here -Calamitizer
+	Molpy.MakeQuadBadge({np:1687,name:'What are you doing?',desc:'Megan asks what Cueball is doing'});// rev. through here -Calamitizer
 	Molpy.MakeQuadBadge({np:1688,name:'Cueball has been making shapes',desc:'He explains what he is doing'});
 	Molpy.MakeQuadBadge({np:1689,name:'Weird shadows',desc:'Megan: When I stare down at mine for long enough while I walk, it starts to look really weird'});
 	Molpy.MakeQuadBadge({np:1692,name:'Better than following the Sea',desc:'Megan drops a big clue as to what direction they were travelling when they started'});	
@@ -1651,7 +1676,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:2377,name:'Take a rest',desc:'Cueball: No, you need to rest.  I\'ll wake you if I get tired'});
 	Molpy.MakeQuadBadge({np:2379,name:'Hit it',desc:'Megan: Or if something is trying to eat you, and you need me to hit it'});
 	Molpy.MakeQuadBadge({np:2393,name:'Nighttime',desc:'This is the clue for 11,000 years in the future'}); 
-	Molpy.MakeQuadBadge({np:2440.5,name:'METEOR!',desc:'Wow, it\'s a meteor!'});
+	Molpy.MakeQuadBadge({np:2440,name:'METEOR!',desc:'Wow, it\'s a meteor!'});
 	Molpy.MakeQuadBadge({np:2454,name:'Hey',desc:'Cueball wakes Megan'});
 	Molpy.MakeQuadBadge({np:2455,name:'Wake Up',desc:'Megan is unenthusiastic'});
 	Molpy.MakeQuadBadge({np:2456,name:'Your Turn',desc:'Next shift'});
@@ -1932,6 +1957,7 @@ Molpy.DefineBadges = function() {
 	Molpy.MakeQuadBadge({np:3086,name:'Where are we',desc:'Cueball: Where do you think we are?  Megan: I don\'t know'});
 	Molpy.MakeQuadBadge({np:3087,name:'Find out',desc:'Megan: But I bet we can  figure it out!  C\'mon let\'s see what\'s through here!'});
 	Molpy.MakeQuadBadge({np:3089,name:'The End',desc:'Sob sob cry, bring on the ice cream'});
+
 	Molpy.MakeQuadBadge({np:0,name:'Chronocenter',desc:'The extradimensional core of Time'});
 	//t1i discoveries
 	Molpy.MakeQuadBadge({np:11.1, name:'A wild Beanie appears!', desc: '11 pix before humanoid life. A new record?'});
