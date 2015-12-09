@@ -172,6 +172,7 @@ Molpy.Overview = {
 
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
+				np = Molpy.NPdata[Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed))];
 				if (np && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && np < over.size) { 
 					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1); 
 				} //Dragon overview will be difficult to do. Remind pickten to try. Or try yourself. It needs TaTpix compatibility.
