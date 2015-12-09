@@ -117,7 +117,10 @@
 		
 		Molpy.needRebuildLootList = 1;
 		Molpy.needlePulling = 0;
-		if(!success) return;
+		if(!success){
+			Molpy.Down(1);
+			return;
+		}
 		Molpy.loadCount++;
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
 		Molpy.autosaveCountup = 0;
@@ -290,6 +293,9 @@
 			Molpy.Boosts['Glass Trolling'].IsEnabled = 1;
 			return;
 		}
+		if(Molpy.Got('Sea Mining') && Molpy.Redacted.totalClicks > 1e6 && thread == 'Unsubscribe'){
+			Molpy.Notify('/"subscribe/"<br><br><br><br>Thank you for re-subscribing to Coal Facts!')
+		}
 
 		if(thread && thread != '') {
 			_gaq && _gaq.push(['_trackEvent', 'Import', 'Begin']);
@@ -314,11 +320,10 @@
 		          + (Molpy.Redacted.toggle) + s
 		          + (Molpy.Redacted.location) + s
 		          + (Molpy.Redacted.totalClicks) + s
-		          
 		          + (Molpy.Redacted.chainCurrent) + s
 		          + (Molpy.Redacted.chainMax) + s
-		          + (Molpy.lootPerPage) + s;
-		          + (Molpy.largestNPvisited[0]) + s
+		          + (Molpy.lootPerPage) + s
+		          + (Molpy.largestNPvisited[0]) + s;
 		          for(var i=0;i<Molpy.fracParts.length;i++){str=str+ (Molpy.largestNPvisited[Molpy.fracParts[i]]) + s}
 		return str;
 	}
@@ -405,17 +410,21 @@
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		var str = '';
+		var lowestset = 0;
 		var lowest = 0;
 		var highest = 0;
 		if (!Molpy.TotalDragons) return str;
 		// See what range to save if any
-		for (var np = -Math.abs(Molpy.largestNPvisited[0]); np <=Math.abs(Molpy.largestNPvisited[0]); np=Molpy.NextLegalNP(np)) {
+		for (var np = -Math.abs(Molpy.largestNPvisited[0]); np <=Math.abs(Molpy.largestNPvisited[0]); np=Molpy.NextLegalNP(np)) { //putting 1 in the first space is a quick fix of for (var np = -Math.abs(Molpy.largestNPvisited[0]);
 			if (Molpy.NPdata && Molpy.NPdata[np] && Molpy.NPdata[np].amount) {
-				if (!lowest) lowest = np;
+				if (!lowestset){
+					lowest = np;
+					lowestset = 1;
+				}
 				highest = np;
 			}
 		}
-		if (!lowest) return str;
+		if (!lowestset) return str;
 		str += lowest + s + highest;
 		var lastNP = "";
 		for (var np=lowest; np<=highest; np=Molpy.NextLegalNP(np)) {
@@ -685,6 +694,7 @@
 			// If no data was saved for the boost, set them to defaults
 			} else {
 				me.resetSaveData();
+				if(me.startPower){me.power = me.startPower;}
 			}			
 		}
 	}
@@ -779,7 +789,7 @@
 		}
 	}
 
-	Molpy.NPdataFromString = function(thread,version) {if(version<3.7){
+	Molpy.NPdataFromString = function(thread,version) {if(version<4.001){
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		npdthread = thread;

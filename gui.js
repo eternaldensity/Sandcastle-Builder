@@ -489,14 +489,14 @@ Molpy.DefineGUI = function() {
 	Molpy.restoreLootScroll = true;
 	
 	Molpy.getScrollLoc = function(divString) {
-		var div = $(divString);
-		var pos = [div.scrollTop(), div.scrollLeft()];
-		return pos;
+//		var div = $(divString);
+//		var pos = [div.scrollTop(), div.scrollLeft()];
+//		return pos;
 	}
 	
 	Molpy.setScrollLoc = function(divString, pos) {
-		var div = $(divString);
-		div.scrollTop(pos[0]).scrollLeft(pos[1]);
+//		var div = $(divString);
+//		div.scrollTop(pos[0]).scrollLeft(pos[1]);
 	}
 	
 	Molpy.lootPerPage = 20;
@@ -1276,7 +1276,8 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.FormatNP = function(np, format) {
 		var minus = (np < 0);
-		return (minus ? '-' : '') + np;
+		var subp = Molpy.subPixLetters[Molpy.currentSubFrame];
+		return (minus ? '-' : '') + np + subp;
 	}
 	Molpy.NewPixFloor=function(num){
 		if((num>=1)||(num<0)){num=num-Math.floor(num)}
@@ -1295,7 +1296,7 @@ Molpy.DefineGUI = function() {
 		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix) {
 			if(np===0) return 'http://xkcd.mscha.org/tmp/np0.png'
 			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1))){
-				return 'http://placekitten.com/g/' + x + '/' + y;
+				return 'http://placekitten.com/'+ (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') + x + '/' + y;
 			}else if(frac==0){
 				return 'http://178.79.159.24/Time/otcolorization/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
@@ -1303,12 +1304,12 @@ Molpy.DefineGUI = function() {
 			} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 		} else {
 			if(((floor > 3094)&&(frac===0))||((floor > 1417)&&(frac===0.1))){
-				return 'http://placekitten.com/g/' + x + '/' + y;
+				return 'http://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') +x + '/' + y;
 			} else if(frac==0){
 				return 'http://xkcd.mscha.org/frame/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
 				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
-			} else if(Molpy.fracParts.indexOf(frac)==-1) {return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
+			} else if(Molpy.fracParts.indexOf(frac)==-1) {return 'http://placekitten.com/' +(Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') + x + '/' + y;} //ErrorCat is error
 		}
 	}
 	Molpy.ThumbNewPixFor = function(np) {
@@ -1318,12 +1319,12 @@ Molpy.DefineGUI = function() {
 		var frac=np-floor
 		frac=Number(frac.toFixed(3))
 		if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1)))
-			return 'http://placekitten.com/g/' + x + '/' + y;
+			return 'http://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') +x + '/' + y;
 		else if(frac==0){
 			return 'http://xkcd.mscha.org/frame/' + newp;
 		} else if(Molpy.fracParts.indexOf(frac)>-1){
 			return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
-		} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
+		} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') +x + '/' + y;} //ErrorCat is error
 	}
 
 	Molpy.Url = function(address) {
@@ -1376,8 +1377,7 @@ Molpy.DefineGUI = function() {
 		} else {
 			$('#toggleTFCounts').removeClass('hidden');
 		}
-		
-		var str='Newpix ' + Math.floor(Molpy.newpixNumber);
+		var str='Newpix'+(Molpy.newpixNumber<0?' -':' ') + (Math.floor(Math.abs(Molpy.newpixNumber)));
 		if(Molpy.currentStory>=0){str=str+[' of t1i'][Molpy.currentStory]}
 		g('newpixnum').innerHTML = str
 		g('eon').innerHTML = Molpy.TimeEon;
@@ -1519,7 +1519,7 @@ Molpy.DefineGUI = function() {
 				if(Molpy.drawFrame >= Molpy.fps / 3) Molpy.drawFrame = 0;
 				if(repainted || Molpy.drawFrame == 0) {
 					var className = Molpy.Redacted.classNames[Molpy.Redacted.location];
-					if(Molpy.Boosts['Chromatic Heresy'].power > 0 && Molpy.Got('Technicolour Dream Cat') && Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide2') {
+					if(Molpy.Boosts['Chromatic Heresy'].power > 0 && Molpy.Got('Technicolour Dream Cat') && Molpy.IsEnabled('Technicolour Dream Cat') && Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide2') {
 						ra.removeClass(Molpy.Redacted.tempAreaClass);
 						Molpy.Redacted.tempAreaClass = ['alert', 'action', 'toggle', '', ''][flandom(4)];
 						className += ' ' + Molpy.Redacted.tempAreaClass;

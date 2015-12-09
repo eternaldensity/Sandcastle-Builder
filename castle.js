@@ -22,7 +22,7 @@ jQuery.fn.canColorBorder = function() {
 };
 
 function ONGsnip(time) {
-	if(time.getMinutes() >= 30 && Math.abs(Molpy.newpixNumber) <= 240) {
+	if(time.getMinutes() >= 30 && Math.abs(Molpy.newpixNumber) <= 240 && Molpy.currentStory == -1) {
 		time.setMinutes(30);
 	} else {
 		time.setMinutes(0);
@@ -1418,7 +1418,8 @@ Molpy.Up = function() {
 			// Notes
 			// .department allows unlock by the department (this is not a saved value)
 			// .logic allows unlock by logicat (this is not a saved value)
-			
+			// .photo for photovolt sysem
+			// .kitten for boosts that are from kittens and not logicats
 			this.id = Molpy.BoostN;
 			this.order = this.id;
 			if(order) this.order = order + this.id / 1000; //(because the order we create them can't be changed after we save)
@@ -1718,6 +1719,13 @@ Molpy.Up = function() {
 				if(me) {
 					if(me.unlocked == 0 || me.limit) {
 						me.unlocked++;
+						if (me.limit){ //hopefully this corrects future errors, not causes them
+							if (me.bought > me.limit || me.unlocked > me.limit) {
+									me.bought = Math.min( me.limit, me.bought, me.unlocked);
+									me.unlocked = Math.min( me.limit, me.bought, me.unlocked);
+									return;
+							}
+						}
 						if (me.title) me.updateName();
 						Molpy.shopNeedRepaint = 1;
 						Molpy.RatesRecalculate();
@@ -1751,67 +1759,65 @@ Molpy.Up = function() {
 			}
 			var shouldbuy = RobbyDo.indexOf(bacon)>=0 &&
 					Molpy.BoostsById[RobbyDo.indexOf(bacon) + 1].power > 0 &&
-					(Molpy.Got('ASHF') || !(RobbySee.power & 1)||(Molpy.Boosts[bacon].photo!=undefined));
+					(Molpy.Got('ASHF') || !(RobbySee.power & 1)||(Molpy.Boosts[bacon].photo!=undefined)||(Molpy.IsFree(Molpy.Boosts[bacon].CalcPrice(Molpy.Boosts[bacon].price))));
 			var lettuce = Molpy.Boosts[bacon];
 			if(times==undefined) {times=1}
-			if((times===1)) {
-				if (lettuce.name === 'Locked Vault' && Molpy.IsEnabled('Aleph One') && shouldbuy) {
-					Molpy.Unbox(1);
-				} else {
-					Molpy.UnlockBoost(bacon,auto)
+			if(shouldbuy){
+				if(lettuce.name==='Locked Vault' && (!(Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks')))){
+					Molpy.UnlockBoost('Locked Vault')
 				}
-			} else {
-				if (shouldbuy) {
-					if(lettuce.name==='Locked Vault' && Molpy.IsEnabled('Aleph One')){
-						Molpy.Unbox(times)
-						// Molpy.Boosts['Locked Vault'].bought = flandom(4);
-						// Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times)) //not sure if this was added or removed so I've put it commented
-					}
-					if(lettuce.name==='Locked Vault' && (!Molpy.IsEnabled('Aleph One'))){
-						Molpy.UnlockBoost('Locked Vault')
-					}
-					if(lettuce.name==='Vault Key') {
-						Molpy.UnlockRepeatableBoost('Locked Vault',1,Math.floor(times/4)); // not sure why but this needs to be 4, even through normal buying it takes 4 keys. key grinder/key thing?
-						for (var i = 0; i < (times % 4); i++) {
-							lettuce.buyFunction(); // no problem calling this up to 4 times
-						} 
-						return;
-					}
-					if(lettuce.name==='Crate Key') {
-						Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));
-						return;
-					}
-					if(lettuce.name==='Locked Crate'){
-						var bl = Molpy.Boosts['GlassBlocks'];
-						var win = Math.ceil(Molpy.LogiMult('2K'));
-						lettuce.CrateCount+=times;
-						win = Math.floor(win / (6 - lettuce.bought));
-						win=win*times
-
-						if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
-						Molpy.Add('GlassBlocks', win);
-						Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
-						if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
-						Molpy.Add('Blackprints', lettuce.bought*times);
-						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
-					}
-
-					if(lettuce.name==='Atomic Pump'){
-						Molpy.Boosts['Ocean Blue'].power+=times;
-						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
-					}
-					if(lettuce.name==='Blue Fragment'){
-						Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
-						Molpy.Boosts['bluhint'].power+=times;
-					}
-					if(lettuce.alias==='splosion'){Molpy.splosions(times)}
-					
+				if(((lettuce.name==='Vault Key')||(lettuce.name==='Locked Vault')) && (Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks'))) {
+					Molpy.Unbox(Math.floor(times/4));
+					for (var i = 0; i < (times % 4); i++) {
+						Molpy.Boosts['Vault Key'].buyFunction(); // no problem calling this up to 4 times
+					} 
+					return;
 				}
-				//} else{
-				//	//if(!Molpy.boostSilence&&times!==13) Molpy.Notify("Robotic Shopper saw no evil, so it did no evil.")
-				//	//if(!Molpy.boostSilence&&times===13) Molpy.Notify("Robotic Shopper saw no evil, so it did all the evil.")
-				//	Molpy.UnlockRepeatableBoost(bacon,auto,1)
-				//}
+				if(lettuce.name==='Crate Key') {
+					Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));
+					return;
+				}
+				if(lettuce.name==='Locked Crate'){
+					var bl = Molpy.Boosts['GlassBlocks'];
+					var win = Math.ceil(Molpy.LogiMult('2K'));
+					lettuce.CrateCount+=times;
+					win = Math.floor(win / (6 - lettuce.bought));
+					win=win*times
+					if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
+					Molpy.Add('GlassBlocks', win);
+					Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
+					if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
+					Molpy.Add('Blackprints', lettuce.bought*times);
+					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+				}
+				if(lettuce.name==='Atomic Pump'){
+					Molpy.Boosts['Ocean Blue'].power+=times;
+					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+				}
+				if(lettuce.name==='Blue Fragment'){
+					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
+					Molpy.Boosts['bluhint'].power+=times/20;
+				}
+				if(lettuce.alias==='splosion'){Molpy.splosions(times)}
+				if((lettuce.alias==='DomCobb')&&(lettuce.bought == 1)){
+					Molpy.RewardInception();
+				}
+				if((lettuce.alias==='DomCobb')&&(lettuce.unlocked == 0)){
+					Molpy.UnlockBoost('DomCobb')
+				}
+				//Add additional free repeatable boosts here	
+			}else{
+				if((Molpy.Boosts[bacon].alias==='DomCobb')&&(Molpy.Boosts[bacon].bought == 1)){
+					Molpy.RewardInception();
+				}
+				if((Molpy.Boosts[bacon].alias==='DomCobb')&&(Molpy.Boosts[bacon].unlocked == 0)){
+					Molpy.UnlockBoost('DomCobb')
+				}
+				if(Molpy.Boosts[bacon].unlocked === 0){
+					Molpy.UnlockBoost(bacon)
+				}else{
+					Molpy.RewardRedacted(1);
+				}
 			}
 		}
 		Molpy.GiveTempBoost = function(bacon, power, countdown, desc) {
@@ -1894,7 +1900,9 @@ Molpy.Up = function() {
 		'Locked Crate',
 		'Atomic Pump',
 		'Blue Fragment',
-		'A Splosion','splosion'] //Each boost on its own line, please!
+		'A Splosion','splosion',
+		'DomCobb'] //Each boost on its own line, please!
+		// Do we need name and alias pairs?
 
 		Molpy.previewNP = 0;
 
@@ -2259,7 +2267,7 @@ Molpy.Up = function() {
 					this.chainCurrent = 0;
 					return;
 				} else if(this.drawType[level] != 'show') {
-					Molpy.UnlockBoost('Technicolour Dream Cat');
+					//Molpy.UnlockBoost('Technicolour Dream Cat'); No clue why this was here
 					this.drawType[level] = 'show';
 					while(this.drawType.length > level + 1)
 						this.drawType.pop(); //we don't need to remember those now
@@ -2308,8 +2316,7 @@ Molpy.Up = function() {
 
 				this.totalClicks++;
 				if(this.drawType.length < 16 && !this.keepPosition) {
-					Molpy.RewardRedacted();
-					if(Molpy.Got('Double Department')) Molpy.RewardRedacted();
+					Molpy.RewardKitten()
 					Molpy.GlassNotifyFlush();
 				}
 				if(this.totalClicks >= 2) Molpy.EarnBadge('Not So ' + Molpy.Redacted.word2);
@@ -2369,26 +2376,29 @@ Molpy.Up = function() {
 				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0) { // Redundaknights
 					this.drawType[level] = 'knight';
 					this.opponents = Molpy.RedundaKnight();
-					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redundaknights ' + 
-						countdown + '</h2><div>';
-						if(this.opponents.knowledge[1]) {
-							str += '<br> - ' + (this.opponents.numb == 1?'A':Molpify(this.opponents.numb)) + ' ' + 
-							Molpy.OpponentsById[this.opponents.type].name + (this.opponents.numb > 1?'s':'') + 
-							' from NP' + this.opponents.from;
-						};
-						if(this.opponents.knowledge[0]) {
-							str += '<br> - Attacking NP'+ this.opponents.target;
-						};
-						if(this.opponents.knowledge[2]) {
-							str += '<br> - Armed ' + (this.opponents.modifier > 1?'defensively' : 'offensively');
-						};
-						if(this.opponents.knowledge[3]) {
-							str += '<br> - Def: ' + Molpify((this.opponents.oppstat[0] + this.opponents.oppstat[1])*this.opponents.modifier, 2) + '<br> - Atk: ' + Molpify(this.opponents.oppstat[0], 2) 
-							+ (this.opponents.oppstat[1]>0?'':' Magic: ' + Molpify(this.opponents.oppstat[1] ,2));
-						};
-					str += '<input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
-					if (Molpy.Level('Strength Potion') > 1) str += '<br><input type="button" value="Use Strength Potion" onclick="Molpy.DragonKnightAttack(1)"</input><br>';
-					if (0) str += '<br><input type="button" value="Use Breath" onclick="Molpy.DragonKnightAttack(2)"</input><br>';
+					var np = this.opponents.target;
+					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">Redundaknights ' + countdown + '</h2><div>';
+					if(this.opponents.knowledge[1]) {
+						str += '<br> - ' + (this.opponents.numb == 1?'A':Molpify(this.opponents.numb)) + ' ' + 
+						Molpy.OpponentsById[this.opponents.type].name + (this.opponents.numb > 1?'s':'') + 
+						' from NP' + this.opponents.from;
+					};
+					if(this.opponents.knowledge[0]) {
+						str += '<br> - Attacking NP'+ this.opponents.target + '<br>';
+					};
+					if(this.opponents.knowledge[2]) {
+						str += ' - Armed ' + (this.opponents.modifier > 1?'defensively' : 'offensively') + '<br>';
+					};
+					if(this.opponents.knowledge[3]) {
+						str += ' - Def: ' + Molpify((this.opponents.oppstat[0] + this.opponents.oppstat[1])*this.opponents.modifier, 2) + '<br> - Atk: ' + Molpify(this.opponents.oppstat[0], 2) 
+						+ (this.opponents.oppstat[1]>0?'':' Magic: ' + Molpify(this.opponents.oppstat[1] ,2));
+					};
+					str += '<br><input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
+					if(Molpy.NPdata[np].breath > 0 && Molpy.Boosts['DQ'].Level >=3 && !Molpy.Boosts['Dragon Breath'].countdown){
+						var breathtext = Molpy.Breath(Molpy.Boosts['Dragon Breath'].power,np);
+						str += breathtext;
+						Molpy.redactedNeedRepaint = 1;
+					};
 					str += '<input type=button value=Hide onclick="Molpy.DragonsHide(0)">';
 				} else {
 					var str = '<div id="redacteditem">' + heading + '<div class="icon redacted"></div><h2">' + Molpy.Redacted.word
@@ -2615,7 +2625,69 @@ Molpy.Up = function() {
                 }
             }
         };
+		
+		Molpy.RewardLogicat = function(level,times) {
+			if(times==undefined){times=1}
+			Molpy.CheckLogicatRewards(0);
+			var availRewards = [];
+			for( var i=0;i<Molpy.LogicatRewardOptions.length;i++) {
+				var me = Molpy.Boosts[Molpy.LogicatRewardOptions[i]];
+				if(!me.unlocked && me.logic && level >= me.logic) {
+					availRewards.push(me);
+				}
+			}
+			if(availRewards.length) {
+				var red = GLRschoice(availRewards);
+				var price = red.price;
+				if (red.priceFunction) price = red.priceFunction();
+				if(!Molpy.IsFree(red.CalcPrice(price))) {
+					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
+						if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
+						Molpy.UnlockBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1,times)
+					}
+				} else {
+					if(!Molpy.boostSilence) Molpy.Notify('Your reward from Logicat:', 1);
+					Molpy.GiveTempBoost(red.alias);
+				}
+				return;
+			}
+			Molpy.RewardRedacted(1);
+			Molpy.GlassNotifyFlush();
+		};
 
+		Molpy.RewardKitten = function(){
+			Molpy.CheckKittenRewards()
+			var availRewards = [];
+			for( var i=0;i<Molpy.KittenRewardOptions.length;i++) {
+				var me = Molpy.Boosts[Molpy.KittenRewardOptions[i]];
+				if(!me.unlocked && me.kitten) {
+					availRewards.push(me);
+				}
+			}
+			if(availRewards.length) {
+				var red = GLRschoice(availRewards);
+				var price = red.price;
+				if (red.priceFunction) price = red.priceFunction();
+				if(!Molpy.IsFree(red.CalcPrice(price))) {
+					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
+						Molpy.Notify('The Redundakitten rewards you with:', 1);
+						Molpy.UnlockBoost(red.alias, 1);
+					} else{
+						Molpy.UnlockRepeatableBoost(red.alias,1);
+					}
+				} else {
+					Molpy.Notify('The Redundakitten rewards you with:', 1);
+					Molpy.GiveTempBoost(red.alias);
+				}
+				return;
+			}
+			Molpy.RewardRedacted();
+			if(Molpy.Got('Double Department')) Molpy.RewardRedacted();
+			Molpy.GlassNotifyFlush();
+		};
+		
 		Molpy.RewardRedacted = function(forceDepartment, automationLevel) {
 			var event = forceDepartment ? 'DoRD' : Molpy.Redacted.word;
 			if(Molpy.Got('DoRD') && (!Math.floor(8 * Math.random()) || forceDepartment)) {
@@ -2650,19 +2722,16 @@ Molpy.Up = function() {
 				}
 			}
 			var BKJ = Molpy.Boosts['BKJ'];
+			var dq = Molpy.Boosts['DQ'];
 			if(BKJ.bought) {
 				BKJ.power = (BKJ.power) + 1;
 			}
-			if (Molpy.Got('DomCobb') && Math.random() < 1/150) {
-				Molpy.RewardInception();
-			} else if(Math.floor(2 * Math.random())) {
+			if(Math.floor(2 * Math.random())) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Not Lucky', true]);
 				Molpy.RewardNotLucky(automationLevel);
 			} else if(isFinite(Molpy.Boosts['Sand'].power)) {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blitzing', true]);
 				Molpy.RewardBlitzing(automationLevel);
-			} else if(Molpy.TotalDragons && Molpy.Level('DQ') > 2 && Molpy.Boosts['Dragonfly'].bought < 18){
-				Molpy.UnlockBoost('Dragonfly');
 			} else {
 				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
 				Molpy.RewardBlastFurnace(1, 'Furnace Fallback');
@@ -2862,7 +2931,7 @@ Molpy.Up = function() {
 
 		};
 		Molpy.RewardBlitzing = function() {			
-			if(Molpy.Got('GL')) {
+			if((Molpy.Got('GL'))&&(!Molpy.Got('Sea Mining'))) {
 				Molpy.Boosts['GL'].onBlitz();
 				return;
 			}
@@ -2880,40 +2949,24 @@ Molpy.Up = function() {
 			}
 			if(blitzSpeed >= 1000000) Molpy.EarnBadge('Blitz and Pieces');
 			Molpy.GiveTempBoost('Blitzing', blitzSpeed, blitzTime);
+			if(Molpy.Got('Sea Mining') && Molpy.Redacted.totalClicks < 1e6) Molpy.Boosts['Sea Mining'].power = 1;
+			if(Molpy.Got('Sea Mining') && Molpy.Redacted.totalClicks > 1e6){
+				Molpy.Add('Coal',1);
+				Molpy.Notify('Thank you for subscribing to Coal Facts!<br><br>');
+				Molpy.Notify(Molpy.GLRschoice(Molpy.coalFacts)); //So Sea mining stops being useful at this point?
+			}
 		};
+
 		Molpy.RewardInception = function() {
 			Molpy.Notify('Leo has gone deeper, finding one dimension pane.');
 			Molpy.Add('Panes', 1);
 		};
-		Molpy.RewardLogicat = function(level,times) {
-			if(times==undefined){times=1}
-			Molpy.CheckLogicatRewards(0);
-			var availRewards = [];
-			for( var i=0;i<Molpy.LogicatRewardOptions.length;i++) {
-				var me = Molpy.Boosts[Molpy.LogicatRewardOptions[i]];
-				if(!me.unlocked && me.logic && level >= me.logic) {
-					availRewards.push(me);
-				}
-			}
-			if(availRewards.length) {
-				var red = GLRschoice(availRewards);
-				var price = red.price;
-				if (red.priceFunction) price = red.priceFunction();
-				if(!Molpy.IsFree(red.CalcPrice(price))) {
-					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
-						if(!Molpy.boostSilence) Molpy.Notify('Logicat rewards you with:', 1);
-						Molpy.UnlockBoost(red.alias, 1);
-					} else{
-						Molpy.UnlockRepeatableBoost(red.alias,1,times)
-					}
-				} else {
-					if(!Molpy.boostSilence) Molpy.Notify('Your reward from Logicat:', 1);
-					Molpy.GiveTempBoost(red.alias);
-				}
-				return;
-			}
-			Molpy.RewardRedacted(1);
-			Molpy.GlassNotifyFlush();
+		
+		Molpy.RewardDragonDrum = function(){
+			var dq = Molpy.Boosts['DQ'];
+			dq.countdown = Math.max(1,dq.countdown - (Molpy.Redacted.toggle - Molpy.Redacted.countup));
+			Molpy.Notify('Dun Dun <i>Dunnn</i>...Dragon Drum',1);
+			dq.drumbeats++;
 		};
 
 		Molpy.CalcPriceFactor = function() {
@@ -3077,6 +3130,14 @@ Molpy.Up = function() {
 			if(Molpy.Earned(alias)) {
 				Molpy.Notify('You already have this ' + Molpy.Badges[alias].name);
 			} else {
+				if ((Math.abs(Molpy.newpixNumber)) == 2440 && (Molpy.currentSubFrame < 3)) {
+					Molpy.Notify('You feel like the show has only just begun.');
+					return;
+				}
+				if ((Math.abs(Molpy.newpixNumber)) == 2440 && (Molpy.currentSubFrame > 3)) {
+					Molpy.Notify('You missed the moment.');
+					return;
+				}
 				Molpy.EarnBadge(alias, 1);
 			}
 			if(Molpy.newpixNumber < 0
@@ -3325,7 +3386,9 @@ Molpy.Up = function() {
 				if(Molpy.Got('bluhint'))blugain=blugain*(Molpy.Boosts['bluhint'].power)
 				Molpy.Boosts['Blueness'].power+=blugain
 			}
+			Molpy.boostSilence++
 			if(Molpy.Got('pH')){
+				
 				Molpy.Boosts['pH'].power++
 				var t=10000000/(25*2.5)
 				if(Molpy.Got('pOH')){t=10}
@@ -3338,10 +3401,11 @@ Molpy.Up = function() {
 			if(Molpy.Got('pInsanity')){
 				Molpy.RunFastPhoto(625)
 			}
+			Molpy.boostSilence--
 		} else {
 			var gain=n
 			if(isClick && Molpy.Got('Doubletap')){n=2*n}
-			if(isClick && (Molpy.newpixNumber-0.1!==Math.floor(Molpy.newpixNumber))){return;}
+			if(isClick && (Math.abs(Molpy.newpixNumber)-0.1!==Math.floor(Math.abs(Molpy.newpixNumber)))){return;}
 			if(Molpy.Got('bluhint'))gain=gain*(Molpy.Boosts['bluhint'].power)
 			if((!type)||(type=='Blueness')){Molpy.Boosts['Blueness'].power+=gain} else{
 				Molpy.Boosts[type].power+=n
@@ -3368,7 +3432,7 @@ Molpy.Up = function() {
 		if(dif<=0 && max==1){return 0;}
 		if(dif==0) return 0;
 		dif=(dif/Math.abs(dif))*Math.min(Math.abs(dif),Math.abs(max)) //maxing out
-		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Math.ceil(Molpy.Boosts['Blackness'].power/2)}
+		if(dif>2*Molpy.Boosts['Blackness'].power){dif=Molpy.Boosts['Blackness'].power/2}
 		if(dif>Molpy.Boosts['Whiteness'].power){dif=Molpy.Boosts['Whiteness'].power}
 		if(-dif>Molpy.Boosts['Grayness'].power){dif=-Molpy.Boosts['Grayness'].power}
 		if(max==1 && !Molpy.Got('Whiteness')){
@@ -3426,14 +3490,14 @@ Molpy.Up = function() {
 				if (red.priceFunction) price = red.priceFunction();
 				if(!price){price={}}
 				if(!Molpy.IsFree(red.CalcPrice(price))) {
-					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
+					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
 						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else{
 						Molpy.UnlockRepeatableBoost(red.alias,1,dtimes)
 					}
 				} else {
-					if(!Molpy.RepeatableBoost.indexOf(red.alias)){
+					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
 						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 1);
 						Molpy.GiveTempBoost(red.alias, 1);
 					} else{
@@ -3445,6 +3509,7 @@ Molpy.Up = function() {
 			}
 		}
 	}
+	
 	Molpy.unlockPhoto=function(){
 		var oth=Molpy.Boosts['Otherness'].power
 		var blu=Molpy.Boosts['Blueness'].power
@@ -3553,15 +3618,10 @@ Molpy.Up = function() {
 			realSubFrame = Math.floor(npPercent * 6);
 		}
 		if(realSubFrame >= 6) realSubFrame = 0;
-		if(Molpy.newpixNumber > 0) {
-			Molpy.newpixNumber = Molpy.newpixNumber + realSubFrame / 6;
-		} else {
-			Molpy.newpixNumber = Molpy.newpixNumber - realSubFrame / 6;
-		}
 		if(realSubFrame > Molpy.currentSubFrame) {
 			Molpy.Notify('MeteorONG!');
-			Molpy.UpdateBeach();
 			Molpy.currentSubFrame = realSubFrame;
+			Molpy.UpdateBeach();
 		}
 	};
 	Molpy.ONGs={}
@@ -3584,7 +3644,7 @@ Molpy.Up = function() {
 	Molpy.ONGBase = function() {
 		if (Molpy.newpixNumber == 0) {
 			Molpy.UnlockBoost('3D Lens');
-			if((Molpy.Got('Aperture Science') >= Molpy.Boosts['Aperture Science'].times) &&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
+			if((Molpy.Got('Aperture Science') >= Molpy.Boosts['Aperture Science'].limit) &&!Molpy.Got('Controlled Hysteresis')){Molpy.UnlockBoost('Controlled Hysteresis')}
 		}
 		if (Molpy.Got('LA')) {
 			Molpy.Boosts['LA'].Level = 1;
@@ -3694,11 +3754,13 @@ Molpy.Up = function() {
 			Molpy.Boosts['Flux Harvest'].Refresh();
 			if(Molpy.Got('LogiPuzzle')) {
 				var cl = Molpy.Boosts['LogiPuzzle'];
+				var hold = Math.min(DeMolpify('1WWQ'), Math.ceil(10 + (Molpy.Got('WotA') ? Molpy.Boosts['WotA'].power : 0)));
 				if(!cl.Has(10)) {
 					cl.Level = 10;
 				} else {
 					if(cl.Has(50)) Molpy.UnlockBoost('WotA');
-					cl.Level = Math.min(cl.Level, 10 + Molpy.Level('WotA'));
+					Molpy.Boosts['WotA'].power += Math.max(0, ((cl.Level-hold)/24));
+					cl.Level = Math.min(cl.Level, hold);
 				}
 			}
 			if(Molpy.IsEnabled('Shadow Feeder')) Molpy.Boosts['Shadow Feeder'].Level=1;
@@ -3952,7 +4014,4 @@ window.onload = function() {
 		Molpy.Wake();
 		_gaq && _gaq.push(['_trackEvent', 'Setup', 'Complete', '' + Molpy.version, true]);
 	}
-
-
-
 };

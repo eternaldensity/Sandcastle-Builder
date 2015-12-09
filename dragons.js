@@ -23,7 +23,6 @@ Molpy.Constants = { // Rank 0:simple, 1:harder, 2:10+, 3:complex
 
 }
 */
-
 Molpy.DragonsById = [];
 Molpy.Dragons = {};
 Molpy.DragonN = 0;
@@ -77,7 +76,7 @@ Molpy.DefineDragons = function() {
 		upgrade: {Diamonds:'1M'},
 		exp: '1T',
 		condition: function() { return true },
-		desc: 'These high spirited diminutive dragons, stand nearly a Q tall and can wield weapons and spades.  They mean well...',
+		desc: 'These high spirited diminutive dragons stand nearly a Q tall and can wield weapons and spades.  They mean well...',
 		digbase: 100,
 		defbase: 100,
 		colour: '#08f',
@@ -92,8 +91,8 @@ Molpy.DefineDragons = function() {
 		tails: 1,
 		upgrade: {Diamonds:'1G'},
 		exp: '1E',
-		condition: function() { return false },
-		desc: 'These are monstorous, limbless creatures, with a big bite.',
+		condition: function() { return true },
+		desc: 'These are monstrous, limbless creatures, with a big bite.',
 		digbase: 10000,
 		defbase: 100000,
 		colour: '#00f',
@@ -106,12 +105,14 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 0,
 		tails: 1,
+		breath: ['fire'],
 		upgrade: {Diamonds:'1T'},
 		exp: '80Z',
 		condition: function() { return false },
 		desc: 'These can fly.  They fight and dig with their legs, some have a bad breath.',
 		digbase: 1e6,
 		defbase: 1e8,
+		breathbase: 1,
 		colour: '#80f',
 	});
 	new Molpy.Dragon({
@@ -122,13 +123,14 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 2,
 		tails: 1,
-		breath: ['fire'],
+		breath: ['fire','ice'],
 		upgrade: {Diamonds:'1T',Princesses:1},
 		exp: '160U',
 		condition: function() { return false },
 		desc: 'Tradional Welsh Dragon',
 		digbase: 1e8,
 		defbase: 1e11,
+		breathbase: 1e4,
 		colour: '#f0f',
 	});
 	new Molpy.Dragon({
@@ -139,7 +141,7 @@ Molpy.DefineDragons = function() {
 		heads: 1,
 		arms: 2,
 		tails: 1,
-		breath: ['fire'],
+		breath: ['fire','ice','poison'],
 		magic: 1,
 		upgrade: {Diamonds:'1T',Princesses:1},
 		exp: '320H',
@@ -147,6 +149,7 @@ Molpy.DefineDragons = function() {
 		desc: 'Very large magical dragon',
 		digbase: 1e11,
 		defbase: 1e14,
+		breathbase: 1e9,
 		colour: '#f00',
 	});
 	new Molpy.Dragon({
@@ -157,7 +160,7 @@ Molpy.DefineDragons = function() {
 		heads: 3,
 		arms: 6,
 		tails: 3,
-		breath: ['fire','ice','poison'],
+		breath: ['fire','ice','poison','special1',],
 		magic: 2,
 		upgrade: {Diamonds:'1T',Princesses:1},
 		exp: '1T',
@@ -165,6 +168,7 @@ Molpy.DefineDragons = function() {
 		desc: 'These are the makers of legends, attacking with many heads in many ways. Mortals don\'t want to be in the same universe.',
 		digbase: 1e15,
 		defbase: 1e17,
+		breathbase: 1e16,		
 		colour: '#800',
 	});
 	new Molpy.Dragon({
@@ -175,7 +179,7 @@ Molpy.DefineDragons = function() {
 		heads: 9,
 		arms: 66,
 		tails: 9,
-		breath: ['fire','ice','poison'],
+		breath: ['fire','ice','poison','special1','special2'],
 		magic: 3,
 		upgrade: {Diamonds:'1T',Princesses:1},
 		exp: '1T',
@@ -183,6 +187,7 @@ Molpy.DefineDragons = function() {
 		desc: '!', // later
 		digbase: 1e20,
 		defbase: 1e20,
+		breathbase: 1e25,
 		colour: '#8F8',
 	});
 
@@ -236,11 +241,11 @@ Molpy.Opponent = function(args) {
 		        Math.pow(777,Math.exp(this.id-10))*n/1764*(this.name == 'Pantheon of Gods'?Math.pow(1.5,where-2100):1)];
 	};
 
-	this.takeReward = function(n,exp,blitz) {
+	this.takeReward = function(n,exp,blitz,loops) {
 		var rwds= [];
+		var second = 0;
 		for (var stuff in this.reward) {
 			var num = 0;
-			var secondfind = 0;
 			var range = this.reward[stuff];
 			var bits = range.toString().split('-');
 			if (bits[1]) {
@@ -250,8 +255,8 @@ Molpy.Opponent = function(args) {
 			} else {
 				if (Math.random() < range + blitz){
 					if(range + blitz - Math.random > 1){
-						//Molpy.EarnBadge('Two Pots O' Gold);
-						secondfind++;
+						Molpy.EarnBadge('Two Pots O\' Gold');
+						second++;
 					}
 				num++;
 				}
@@ -260,10 +265,10 @@ Molpy.Opponent = function(args) {
 				if (stuff == 'Thing') {
 					var thing = Molpy.FindThings();
 					if(thing) rwds.push('A' + (thing.single.match(/^[aeiou]/i)?'n ':' ') + thing.single );
-					if(secondfind) secondfind = Molpy.FindThings();
-					if(secondfind) rwds.push('A' + (thing.single.match(/^[aeiou]/i)?'n ':' ') + thing.single );
+//					if(second) rwds.push('A' + (thing.single.match(/^[aeiou]/i)?'n ':' ') + thing.single);
 				} else {
 					num *= (n||1);
+					if (Molpy.Got('Tuple or Nothing') && stuff == 'Gold') num*= Math.pow(1.618,loops);
 					rwds.push(Molpify(num,2) + ' ' + stuff);
 					if (stuff == 'Copper') { stuff = 'Gold'; num/=1000000; }
 					else if (stuff == 'Silver') { stuff = 'Gold'; num/=1000; }
@@ -273,7 +278,7 @@ Molpy.Opponent = function(args) {
 		};
 		if (exp) Molpy.Add('exp',exp); 
 		if (rwds.length && !Molpy.boostSilence) {
-			Molpy.Notify('After the fight you get ' + rwds.join(', ') + (exp?' and '+Molpify(exp) +' experience':''),1);
+			Molpy.Notify('After the fight you get ' + rwds.join(', ')/* + (rwds[1])? rwds.join(', '):''*/ + (exp?' and '+Molpify(exp) +' experience':''),1);
 		}
 	}
 
@@ -383,7 +388,7 @@ Molpy.DefineOpponents = function() {
 	});
 
 	new Molpy.Opponent ({
-	 	name: 'Panetheon of Gods',
+	 	name: 'Pantheon of Gods',
 		armed: ['-myths and legends','!army','flock of unicorns', '-heresey', '503', '-logic', '-typos'],
 		reward: {Gold:'10E-1W',Princesses:'1T-10L',Diamonds:'200Y-1S',Thing:0.99},
 		exp: '1WW',
@@ -398,12 +403,32 @@ Molpy.ClearNPdata = function() {
 	Molpy.NPdata = {};
 };
 Molpy.NextLegalNP=function(at){
-	if(Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))==Molpy.fracParts.length-1){
-		at=Math.floor(at)+1
-	} else{
-		at=Math.floor(at)+Molpy.fracParts[Molpy.fracParts.indexOf(Number((at-Math.floor(at)).toFixed(3)))+1]
+	var frac = Number(((Math.abs(at*10)-Math.floor(Math.abs(at))*10)/10).toFixed(3))
+	if(at < -1){
+		if(Molpy.fracParts.indexOf(frac)>-1){
+			if(Molpy.fracParts.indexOf(frac)>0){
+				return ((-1)*(Math.floor(Math.abs(at))+Molpy.fracParts[Molpy.fracParts.indexOf(frac)-1]));
+			}else{
+				return ((-1)*(Math.floor(Math.abs(at))))
+			}
+		}else{
+			return ((-1)*((Math.floor(Math.abs(at)))-1+Molpy.fracParts[Molpy.fracParts.length-1]));
+		}
+	}else if(at >= 1){
+		if(Molpy.fracParts.indexOf(frac)>-1){
+			if(Molpy.fracParts.indexOf(frac)<(Molpy.fracParts.length-1)){
+				return (Math.floor(Math.abs(at))+Molpy.fracParts[Molpy.fracParts.indexOf(frac)+1]);
+			}else{
+				return (Math.floor(Math.abs(at))+1);
+			}
+		}else{
+			return (at+Molpy.fracParts[0]);
+		}
+	}else if (at == -1){
+		return 0;
+	}else{
+		return 1;
 	}
-	return at
 }
 Molpy.NPRange = function(start,end){ // weird placement, but needed for the next one
 	var at=start;
@@ -414,7 +439,6 @@ Molpy.NPRange = function(start,end){ // weird placement, but needed for the next
 	}
 	return ans
 }
-
 
 // Digging *********************************************************
 
@@ -430,6 +454,8 @@ Molpy.DragonDigMultiplier = 10;
 Molpy.DragonAttackMultiplier = 1;
 Molpy.DragonDefenceMultiplier = 1;
 Molpy.DragonBreathMultiplier = 1;
+Molpy.DragonLuck = 0;
+Molpy.HideMod = 0;
 Molpy.ConsecutiveNPsWithDragons = 0;
 
 Molpy.DragonDigRecalc = function() {
@@ -437,16 +463,18 @@ Molpy.DragonDigRecalc = function() {
 
 	Molpy.DragonDigMultiplier = 10;
 	if (Molpy.Got('Bucket and Spade')) Molpy.DragonDigMultiplier *=2;
-	if (Molpy.Got('Strength Potion')) Molpy.DragonDigMultiplier *=2;
-	if (Molpy.Got('Lucky Ring')) Molpy.DragonDigMultiplier *=5;
-
+	if (Molpy.Has('Strength Potion',2 + Molpy.Boosts['Strength Potion'].power)) Molpy.DragonDigMultiplier *= (2+Molpy.Boosts['Strength Potion'].power);
+	if (Molpy.Got('Golden Bull')) Molpy.DragonDigMultiplier *=5;
+	
 	Molpy.DragonDefenceMultiplier = 1;
-	if (Molpy.Got('Lucky Ring')) Molpy.DragonDefenceMultiplier *= 2;
-	if (Molpy.Got('Healing Potion')) Molpy.DragonDefenceMultiplier *= 1.5;
-	if (Molpy.Got('Ooh, Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
+	if (Molpy.Has('Healing Potion',2 + Molpy.Boosts['Healing Potion'].power)) Molpy.DragonDefenceMultiplier *= 1.5*(1+Molpy.Boosts['Healing Potion'].power);
+	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
+	if (Molpy.Got('Clannesque')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Cryogenics')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
 	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamantine Armour'));
 	if (Molpy.Got('Mirror Scales')) Molpy.DragonDefenceMultiplier *= Math.pow(4,Molpy.Level('Mirror Scales'));
+	if (Molpy.Got('Baobab Tree Fort')) Molpy.DragonDefenceMultiplier *= 4;
+	if (Molpy.Got('WotT')) Molpy.DragonDefenceMultiplier *= 100;
 
 	Molpy.DragonAttackMultiplier = 1;
 	if (Molpy.Got('Big Teeth')) Molpy.DragonAttackMultiplier *= Math.pow(1.2,Molpy.Level('Big Teeth'));
@@ -455,13 +483,23 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.Got('Big Bite')) Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Big Bite'));
 	if (Molpy.Got('Double Byte')) Molpy.DragonAttackMultiplier *= Math.pow(2,Molpy.Level('Double Byte'));
 	if (Molpy.Got('Trilobite')) Molpy.DragonAttackMultiplier *= Math.pow(4,Molpy.Level('Trilobite'));
+	if (Molpy.Got('Diamond Dentures')) Molpy.DragonAttackMultiplier *= 2;
+	if (Molpy.Got('WotP')) Molpy.DragonAttackMultiplier *= 100;
 
-	if (Molpy.Got('Anisoptera')) {
-		Molpy.DragonDefenceMultiplier *= Math.pow(1.5,Molpy.Level('Anisoptera'));
-		Molpy.DragonAttackMultiplier *= Math.pow(1.5,Molpy.Level('Anisoptera'));
-	}
-	
 	Molpy.DragonBreathMultiplier = 1;
+	if(Molpy.Got('Autumn of the Matriarch')) Molpy.DragonBreathMultiplier *= Molpy.Boosts['DQ'].totalloses;
+	if(Molpy.Got('MQALLOBS')) Molpy.DragonBreathMultiplier *= 10;
+	Molpy.DragonBreathMultiplier *= (Molpy.Boosts['Catalyzer'].power || 1);
+
+	Molpy.DragonLuck = 0;
+	if (Molpy.Got('Lucky Ring')) Molpy.DragonLuck += .0277;
+	if (Molpy.Has('Cup of Tea',2 + Molpy.Boosts['Cup of Tea'].power)) Molpy.DragonLuck += .0005*(1+Molpy.Boosts['Cup of Tea'].power);
+
+	Molpy.HideMod = 0;
+	if (Molpy.Got('Chintzy Tiara')) Molpy.HideMod += 22;
+
+	if(Molpy.CombatDebug) Molpy.Notify('Def: ' + Molpy.DragonDefenceMultiplier);
+	if(Molpy.CombatDebug) Molpy.Notify('Atk: ' + Molpy.DragonAttackMultiplier);
 
 	var td = 0;
 	Molpy.TotalNPsWithDragons = 0;
@@ -476,7 +514,9 @@ Molpy.DragonDigRecalc = function() {
 			td += (dnp.amount*dnp.dig*Molpy.DragonsById[dnp.DragonType].digbase || 0);
 			Molpy.TotalNPsWithDragons++;
 			Molpy.TotalDragons += dnp.amount;
-			Molpy.HighestNPwithDragons = dpx*1;
+			if ((dpx*1) > Molpy.HighestNPwithDragons){
+				Molpy.HighestNPwithDragons = dpx*1;
+			}
 			runlength++;
 			var dpi = dpx*1;
 			if (lastNP+1 == dpi ) {
@@ -497,6 +537,10 @@ Molpy.DragonDigRecalc = function() {
 	if (Molpy.ConsecutiveNPsWithDragons >= 22) Molpy.UnlockBoost('Wait for it');
 	if (Molpy.ConsecutiveNPsWithDragons >= 48) Molpy.UnlockBoost('Q04B');
 	if (Molpy.ConsecutiveNPsWithDragons >= 99) Molpy.UnlockBoost('Cryogenics');
+	if (Molpy.ConsecutiveNPsWithDragons >= 901) Molpy.UnlockBoost('Dragon Breath');
+
+	if (Molpy.CoalToAdd==null || Molpy.DiamToSpend==null) Molpy.Annililate(); //so we don't start out with ugly undefineds if dragons are hiding
+
 }
 
 Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
@@ -583,8 +627,12 @@ Molpy.DragonDigging = function(type) { // type:0 = mnp, 1= beach click
 			Molpy.DiggingFinds['Coal'] = seacoal;
 		}
 	};
+	if (Molpy.Got('Sea Mining') && Molpy.Boosts['Sea Mining'].power && type == 1){
+		Molpy.Add('Coal',Molpy.Boosts['Sea Mining'].power);
+		Molpy.Boosts['Sea Mining'].power++;
+	}
 	if(Molpy.Got('Annilment') && Molpy.IsEnabled('Annilment')) {
-		var amounts = Molpy.Annililate(Molpy.Level('Coal'),Molpy.Level('Diamonds'));
+		var amounts = Molpy.Annililate();
 		Molpy.Add('Coal', amounts[0]);
 		Molpy.Spend('Diamonds', amounts[1]);
 	}
@@ -606,7 +654,7 @@ Molpy.FindThings = function() {
 			if (me.unlocked < lim && me.unlocked == me.bought) availRewards.push(me);
 		}
 	}
-//		Molpy.Notify('List length '+ availRewards.length);
+	if(Molpy.FindDebug) Molpy.Notify('List length '+ availRewards.length);
 	var thing = GLRschoice(availRewards);
 	if (thing) {
 		Molpy.UnlockBoost(thing.alias);
@@ -624,10 +672,10 @@ Molpy.MaxDragons = function() {
 } 
 
 Molpy.DragonFledge = function(clutch) {
-	if (Molpy.newpixNumber == 0) {
-		Molpy.Notify('Time balks.');
-		return;
-	}
+	//if (Molpy.newpixNumber == 0) {
+		//Molpy.Notify('Time balks.');
+		//return;
+	//}
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var dq = Molpy.Boosts['DQ'];
 	var hatch = Molpy.Boosts['Hatchlings'];
@@ -641,11 +689,18 @@ Molpy.DragonFledge = function(clutch) {
 
 	if (npd && npd.amount > 0 ) {
 		if (hatch.clutches[clutch] > 1 && npd.DragonType == dq.Level && !confirm('Do you wish to fledge '+  hatch.clutches[clutch] +' ' +
-					dt +'s'+ ' where you already have '+ npd.amount +' of ' + dt + 's?')) return;
+					dt +'s'+ ' where you already have '+ npd.amount + dt + 's?')) return;
 		if (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && hatch.clutches[clutch] > npd.amount))	{ // Replace
 			oldDT = npd.DragonType;
 			oldDN = npd.amount;
 			fight = 0;
+			if(Molpy.Got('Honor Among Serpents') && dq.overallState == 2){
+				dq.overallState = 0;
+				Molpy.Notify('Back to work! The dragons have resumed digging',1);
+			};
+			if((Molpy.Boosts['Honor Among Serpents'].unlocked == 0) && (dq.overallState == 2)&&(Molpy.Boosts.DQ.Level >= 3)){
+				Molpy.UnlockBoost('Honor Among Serpents');
+			}
 		} else {
 			Molpy.Notify('This NP already has better dragons, who have eaten the interlopers',1);
 			hatch.clutches[clutch] = 0;
@@ -707,7 +762,7 @@ Molpy.DragonFledge = function(clutch) {
 	}
 
 	if (fight && npd.amount) {
-		Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.FindOpponents(Molpy.newpixNumber),' attacks as you fledge',' attack as you fledge');
+		Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.FindOpponents(Molpy.newpixNumber),' attacks as you fledge',' attack as you fledge',0);
 	}
 	if (npd.amount) {
 		Molpy.EarnBadge('First Colonist');
@@ -733,6 +788,7 @@ Molpy.DragonStatsNow = function(where) {
 	Stats.defence *= Molpy.DragonDefenceMultiplier*drag.defbase;
 	Stats.attack *= Molpy.DragonAttackMultiplier*drag.defbase;
 	Stats.dig *= Molpy.DragonDigMultiplier*drag.digbase;
+	Stats.breath *= Molpy.DragonBreathMultiplier*drag.breathbase;
 	if (num) {
 		for(var prop in Stats) {
 			if (prop != 'amount' && prop != 'DragonType') Stats[prop]*=num;
@@ -745,15 +801,15 @@ Molpy.DragonStatsNow = function(where) {
 Molpy.FindOpponents = function(from) {
 	var df = {};
 	df.from = Math.floor(from);
-	df.type = Math.min(Math.floor(from/150)+1+Molpy.fracParts.indexOf(Number((from-Math.floor(from)).toFixed(3))),Molpy.OpponentsById.length-1);
-	df.numb = (Molpy.TotalDragons < 10 && Molpy.HighestNPwithDragons < 20)?1:Math.floor(((from-df.type*150)/30)*(Math.random())+1);
+	df.type = Math.min(Math.floor(from/150),Molpy.OpponentsById.length-1); //+1+Molpy.fracParts.indexOf(Number((from-Math.floor(from)).toFixed(3))) this doesn't play nice with df.numb as having the type one higher produces negative squad size.
+	df.numb = (Molpy.TotalDragons < 10 && Molpy.HighestNPwithDragons < 20)?1:Math.floor((((from-df.type*150)/30)+((Math.floor(from/150) < Math.floor((Molpy.HighestNPwithDragons+1)/150))?Math.pow(Molpy.Boosts.Princesses.Level / Math.pow(100 , (df.type-6)), 1/3):0))*(Math.random())+1);
 	df.gender = 1*(Math.random() < 0.5);
 	df.modifier = Math.random()+.5;
 	return df;
 } //Not great, whatever.
 
 Molpy.CombatDebug = 0;
-Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
+Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype,breathtype) {
 	// Select locals
 	// Work out their attack and defense values
 	// fight a round
@@ -773,25 +829,73 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
 	var result = 0;
 	var localhealth = (atkval[0]+atkval[1])*df.modifier;
 	var dragnhealth = dragstats.defence || 0;
+	var dragnbreath = dragstats.breath || 0;
 	var factor = 1;
 	var loops = 0;
-	if (df.numb > 1) Molpy.EarnBadge('There are two of them!');
-	dq.totalfights++;
+	var backfire = Math.random() < .25 - Molpy.DragonLuck - .05*Molpy.Got('Mouthwash') + .02*Molpy.Got('Ethyl Alcohol');
+	var specialatkmod = Molpy.Boosts['Dragonfly'].Level*.01 + Molpy.DragonLuck;
 	var blitzval = Molpy.calcBlitzVal(dragstats.attack,dragstats.defence);
+	if (df.numb > 1) Molpy.EarnBadge('There are two of them!');
+	breathtype++;
+	dq.totalfights++;
 
-	if (Molpy.CombatDebug) Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
+	//Molpy.Notify('atkval = '+atkval[0]+' drag hlth = '+dragnhealth+' attack= '+dragstats.attack,1);
 	
 	while (result == 0 && loops<=100) {
-		if ((loops&1)==0) { // Magical attacks && Breath attacks
-	
-			// TODO
-
-		} else { // Physical attacks
-			localhealth -= (dragstats.attack || 0)*Math.random();
-			if (loops >1 || dragstats.attack < 10*atkval[0]) dragnhealth -= atkval[0]*Math.random()/(df.modifier);
-
+		if(breathtype) { //dragons have breath; 
+			dq.breathfights++;
+			var special = Math.random() + specialatkmod > .0001;
+			var mult = dragnbreath*Math.random();
+			if(Molpy.Spend('Ethyl Alcohol',1)) mult*= 2;
+			if(backfire){
+				dragnhealth -= mult;
+				Molpy.Notify('The dragons\' breath backfired! Lost ' + Molpify(mult) + 'health!',1);
+				breathtype = 0;
+			}
+			backfire = 0;
+			switch(breathtype) {
+				case 1 : //fire
+					var firedamg = 18*mult;
+					localhealth -= firedamg;
+					if(special){
+						Molpy.EarnBadge('Flame and Gory');
+						localhealth -= 4*firedamg;
+						Molpy.Notify('Burned the enemy for an additional' + Molpify(firedamg) + ' damage!',1);
+					};
+					break;
+				case 2 : //ice
+					var icedamg = 4*mult;
+					atkval[0] -= icedamg;
+					if(special){
+						var frozen = 1;
+						Molpy.EarnBadge('Icecapades');
+						Molpy.Notify('Froze the enemy for a round!',1);
+					} else var frozen = 0;
+					break;
+				case 3 : //poison
+					if(special && loops > 5 && Math.floor(2*Math.random())){
+						localhealth == 0;
+						Molpy.EarnBadge('Rolled a 20!');
+					}
+					break;
+				case 4 : //special
+					break;
+			}
+			Molpy.Boosts['Dragon Breath'].recoveryCountdown(npd.breath);
 		};
-		if (Molpy.CombatDebug) Molpy.Notify('loop = ' + loops + ' local = '+localhealth+' dragon = '+dragnhealth,1 +'blitz = '+blitzval);
+		if(0){}; //magic TBD
+		// Physical attacks
+		localhealth -= (dragstats.attack || 0)*Math.random();
+		if (!frozen && loops >1 || dragstats.attack < 10*atkval[0]) dragnhealth -= atkval[0]*Math.random()/(df.modifier);
+		dragnhealth -= Math.floor(atkval[1]*1000)*Math.random();
+		if (dragstats.attack > 10*atkval[0] && localhealth <=0 && loops==1) Molpy.EarnBadge('First Blood');
+		if (Molpy.CombatDebug) Molpy.Notify('loop = ' + loops + ' local = '+localhealth+' dragon = '+dragnhealth +'blitz = '+blitzval,1);
+		if(loops > 50){
+			if(dq.Level >= 3) Molpy.UnlockBoost('Tuple or Nothing');
+			var fudge = Math.pow(2,loops - 50);
+			localhealth -= fudge;
+			dragnhealth -= fudge;
+		};
 		if (dragnhealth < 0 || isNaN(dragnhealth)) {
 			if (localhealth < 0 || isNaN(localhealth)) {
 				if(Math.random() - 1 > blitzval) result = 1
@@ -799,9 +903,9 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
 			} else if (loops > 1 && Math.random() -1 > blitzval) result = -1
 				else result = -1 -(dragnhealth < -dragstats.defence);
 		} else if (localhealth < 0 || isNaN(localhealth)) {
-//			Molpy.Notify('result ='+ result+' localneg = '+localhealth,1);
+			if(Molpy.CombatDebug) Molpy.Notify('result ='+ result+' localneg = '+localhealth,1);
 			factor = dragnhealth/dragstats.defence;
-//			Molpy.Notify('factor ='+ factor,1);
+			if(Molpy.CombatDebug) Molpy.Notify('factor ='+ factor,1);
 			if (factor > 0.9) result = 3
 			else if (factor > 0.5 || npd.amount == 1) result = 2
 			else result = 1;
@@ -809,6 +913,16 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
 		loops++;
 	}
 
+	if (Molpy.CombatDebug) Molpy.Notify('Result = ' + result + ' factor ' + factor,1);
+	if(loops >= 100){ //hacked in temporarily because Wyverns were *still* getting ties under certain circumstances
+		if(dragnhealth < localhealth) result = -.5; 
+		if(dragnhealth > localhealth) result = .5;
+		else result = 0; //no idea how this would be possible but if you did it, good job
+	}
+	if(Math.abs(blitzval) > .5){
+		if(blitzval < 0) Molpy.UnlockBoost('Clannesque');
+		if(blitzval > 0) Molpy.UnlockBoost('Autumn of the Matriarch');
+	};
 	if (Molpy.CombatDebug) Molpy.Notify('Result = ' + result + ' factor ' + factor,1);
 
 	var timetxt = '';
@@ -823,9 +937,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
 			Molpy.Boosts['DQ'].Loose(type,amount);
 		}
 		else if(Molpy.Level('Cryogenics') >= amount){
-			Molpy.Notify(amount + ' dragons fledging at NP ' + where + ' have starved...',1);
-			Molpy.Boosts['Cryogenics'].power -= amount;
-			Molpy.Boosts['Goats'].power = 0;
+			Molpy.Notify('Not enough Goats to feed the clutch...',1);
 			Molpy.Boosts['DQ'].Loose(type,amount);
 			npd.amount = 0;
 		}
@@ -863,8 +975,30 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
 			Molpy.Overview.Update(where);
 			break;
 
+		case -.5: //loop count exceeded and dragon health < localhealth
+			var rectime = Math.min((dragstats.DragonType+1)*400/factor,(dq.Level+1)*2750);
+			if(Molpy.Spend('Healing Potion',1)) rectime/=5;
+			if(Molpy.Spend('Cup of Tea',1)) rectime/=2;
+			rectime = Math.floor(rectime);
+			dq.ChangeState(1,rectime);
+			Molpy.Notify(atktxt + '<br>Exhausted from the battle, your dragons cede their territory to the Redundaknights. They will need to recover for ' + rectime + '.',1);
+			dq.Loose(npd.DragonType,npd.amount);
+			npd.amount = 0;
+			if(Molpy.Got('Cryogenics')) Molpy.Boosts('Cryogenics').power += npd.amount;
+			Molpy.Add('exp',Math.max(local.experience()*df.numb, Math.pow(10,npd.DragonType)/5));
+			Molpy.Overview.Update(where);
+			break;
+
 		case 0 : // Tie
 			Molpy.Notify(atktxt + ' It\'s a tie - no idea what to do...',1);
+			break;
+
+		case .5: //loop count exceeded and dragon health > localhealth
+			Molpy.Notify(atktxt + '<br>Exhausted from the battle, the knights retreat to fight another day.<br><br>One of your dragons has died!',1);
+			Molpy.Add('exp',Math.max(local.experience()*df.numb, Math.pow(10,npd.DragonType)/5));
+			Molpy.Redacted.toggle = 2 + Molpy.Redacted.countup;
+			dq.Loose(npd.DragonType,1);
+			npd.amount--;
 			break;
 
 		case 1 : // Pyric victory - lose a dragon...
@@ -883,7 +1017,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
 			Molpy.Notify(atktxt + ' You won a very hard ' + timetxt + 'fight, ' + 
 					(dloss?'losing 1 '+Molpy.DragonsById[dragstats.DragonType].name+' and you':'but') +
 					' will need to recover for ' + MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward(df.numb,local.experience()*df.numb,blitzval); 
+			local.takeReward(df.numb,local.experience()*df.numb,blitzval,loops); 
 			break;
 
 		case 2 : // won a hard fight - need to recover
@@ -894,7 +1028,7 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
 			dq.ChangeState(1,rectime);
 			Molpy.Notify(atktxt + ' You won a hard '+timetxt+'fight, but will need to recover for ' + 
 					MolpifyCountdown(dq.countdown, 1),1);
-			local.takeReward(df.numb,local.experience()*df.numb*2,blitzval); 
+			local.takeReward(df.numb,local.experience()*df.numb*2,blitzval,loops); 
 			break;
 
 		case 3 : // Wipeout for no loss
@@ -905,13 +1039,15 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype) {
 				Molpy.Notify(atktxt + ' You scared ' + (df.numb==1?['him','her'][df.gender]:'them') + 
 					' away ' + (timetxt?'in a '+timetxt+'fight, ':'') + 'with ease',1);
 			}
-			local.takeReward(df.numb,local.experience()*df.numb,blitzval); 
+			local.takeReward(df.numb,local.experience()*df.numb,blitzval,loops); 
 			if (dq.overallState) {
 				Molpy.Notify('Your heroic victory inspires the others to go back to work',1);
 				dq.ChangeState(0);
 			}
 			break;
 	}
+	if(result > 0 && local.id >= 6 && !Molpy.Boosts['WotT'].permalock) Molpy.UnlockBoost('WotT');
+	if(result > 0 && local.id >= 6 && !Molpy.Boosts['WotP'].permalock) Molpy.UnlockBoost('WotP');
 	Molpy.DragonDigRecalcNeeded = 1;
 }
 
@@ -933,29 +1069,35 @@ Molpy.RedundaKnight = function() {
 	}
 
 	npd = Molpy.NPdata[atk];
-	var atklvl = Math.max(atk,300*npd.DragonType)+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
+	var atklvl = Math.max(atk,300*npd.DragonType) //+30*(Molpy.Level('DQ')+1)+150*(1*Math.log(Molpy.Level('Princesses')+1));
 	atklvl = ((Math.random() < 0.5)?Math.max(0,atklvl-Math.floor(30*Math.random())):atklvl)+Math.floor(30*Math.random());
 	var opp = Molpy.FindOpponents(atklvl);
 	opp.knowledge = [];
 	var know = [0, 1, 2, 3];
 	for(var i in know){
-		opp.knowledge[i] = fly > 4*i && 11*(fly/(i + 1 || 1)) >=Math.random()*100;
+		if(fly > 16){
+			opp.knowledge[0] = opp.knowledge[1] = opp.knowledge[2] = opp.knowledge[3] = 1;
+			var roll = Math.random();
+			if(roll + Molpy.DragonLuck > .9) opp.knowledge[4] = 1; //magical knowledge; not yet coded
+			if(roll + Molpy.DragonLuck > .95) opp.knowledge[5] = 1;
+		} else opp.knowledge[i] = fly > 4*i && 11*(fly/(i + 1 || 1)) >=Math.random()*100 - 77*Molpy.DragonLuck;
 	};
 	opp.target = atk;
 	return opp;
 }
-Molpy.DragonKnightAttack = function() { // Attack Opponents
+
+Molpy.DragonKnightAttack = function(breathtype) { // Attack Opponents
 	var opp = Molpy.Redacted.opponents;
 	var npd = Molpy.NPdata[opp.target];
 	Molpy.Redacted.onClick();
 	Molpy.OpponentsAttack(opp.target,opp,
-			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+opp.target);
+			' attacked your ' + Molpy.DragonsById[npd.DragonType].name + plural(npd.amount) + ' at NP'+opp.target,0,1,breathtype);
 }
 
 Molpy.DragonsHide = function(type) {
 	Molpy.Redacted.onClick();
 	var dq = Molpy.Boosts['DQ'];
-	var hidetime = Math.max(10,Math.ceil(42 * (type + 1) * (dq.Level || 1) - 5 * Molpy.Level('Camelflarge')));
+	var hidetime = Math.max(10,Math.ceil(42 * (type + 1) * (dq.Level || 1) - 5 * Molpy.Level('Camelflarge') - Molpy.HideMod));
 	dq.ChangeState(2,hidetime);
 	Molpy.Notify('The Dragons are hiding for ' + hidetime + 'mnp');
 }
@@ -969,7 +1111,6 @@ Molpy.DragonUpgrade = function(type) {
 	var dragn = Molpy.DragonsById[dq.Level];
 	if (type == 0) {
 		if (!dragn.condition()) return str;
-
 		if (Molpy.Level('exp') >= DeMolpify(dragn.exp)) {
 			if (Molpy.Has(dragn.upgrade)) {
 				str += '<br><br><input type=button value=Upgrade onclick="Molpy.DragonUpgrade(1)"></input> ';
@@ -1006,10 +1147,10 @@ Molpy.DragonsToCryo = function(cl) {
 }
 
 Molpy.DragonsFromCryo = function() { // Cut down version of fledge
-	if (Molpy.newpixNumber == 0) {
-		Molpy.Notify('Time balks.');
-		return;
-	}
+	//if (Molpy.newpixNumber == 0) {
+		//Molpy.Notify('Time balks.');
+		//return;
+	//}
 	var npd = Molpy.NPdata[Molpy.newpixNumber];
 	var dq = Molpy.Boosts['DQ'];
 	var lim = Molpy.MaxDragons();
@@ -1020,11 +1161,25 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	var fight = 1;
 	if (!npd) npd = Molpy.NPdata[Molpy.newpixNumber] = {};
 
-	if (npd && npd.amount > 0 && (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && Molpy.Level('Cryogenics') > npd.amount))) { // Replace
-		oldDT = npd.DragonType;
-		oldDN = npd.amount;
-		fight = 0;
+	if (npd && npd.amount > 0){ 
+		if (npd.amount > 1 && npd.DragonType == dq.Level && !confirm('Do you wish to fledge '+  npd.amount +' '+dt +'s'+ ' where you already have '+ oldDN + ' ' + dt + 's?')) return;
+		if (npd.DragonType < dq.Level || (npd.DragonType == dq.Level && Molpy.Level('Cryogenics') > npd.amount)) { // Replace
+			oldDT = npd.DragonType;
+			oldDN = npd.amount;
+			fight = 0;
+			if(Molpy.Got('Honor Among Serpents') && dq.overallState == 2){
+				dq.overallState = 0;
+				Molpy.Notify('Back to work! The dragons have resumed digging',1);
+			};
+			if((Molpy.Boosts['Honor Among Serpents'].unlocked == 0) && (dq.overallState == 2)&&(Molpy.Boosts.DQ.Level >= 3)){
+				Molpy.UnlockBoost('Honor Among Serpents');
+			}
+		} else {
+			Molpy.Notify('You need more dragons in Cryo to fledge here');
+			return;
+		}
 	}
+	
 	npd.DragonType = dq.Level;
 	npd.amount = Molpy.Level('Cryogenics');
 	if (npd.amount > lim) {
@@ -1036,8 +1191,7 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 			npd.amount = Math.max(0,lim);
 		}
 	}
-	if (oldDN && npd.amount > 1 && npd.DragonType == oldDT && !confirm('Do you wish to fledge '+  npd.amount +' ' +
-					dt +'s'+ ' where you already have '+ oldDN +' of ' + dt + 's?')) return;
+	
 
 	var props = Molpy.Boosts['Nest'].nestprops();
 	npd.attack = props[0];
@@ -1073,6 +1227,17 @@ Molpy.calcBlitzVal = function(atk,def){
 	var ratio = Math.log10(atk/def)*.11;
 	ratio = (Math.max(Math.min(ratio, .66), -.66) || 0);
 	return ratio;
+}
+
+Molpy.Breath = function(index,np){
+	var effects = Molpy.DragonsById[Molpy.Boosts['DQ'].Level].breath;
+	index = 0; //will eventually determine which element in the breath array to return
+	var txt = '<br><br>Current breath effect: ' + effects[index] + '. <input type="button" value="Use" onclick="Molpy.DragonKnightAttack(' + index + ')"</input><br>';
+	if(effects.length > 1){
+		txt += '<input type=button value=">" onclick="Molpy.changeBreath(' + effects + ')"</input>'
+	};
+	Molpy.redactedNeedRepaint = 1;
+	return txt;
 }
 
 /* Ideas
