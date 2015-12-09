@@ -67,7 +67,8 @@ Molpy.Overview = {
 		this.BasicGrid();
 		
 		// Update all nps
-		for (var np = 1; np < this.size && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]); np=Molpy.NextLegalNP(np)){this.Update(np);}
+		var type=Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]
+		for (var np = -Math.abs(type); np < this.size && np <= Math.abs(type); np=Molpy.NextLegalNP(np)){this.Update(np);}
 		
 		//Add storyline buttons
 
@@ -93,11 +94,10 @@ Molpy.Overview = {
 		var deflinecol = Molpy.options.colourscheme?"grey":"white"; 
 		ctx.fillRect(0,0,800,100);
 		
-		for (var dtt = -1; dtt <=maxdrag; dtt++) {
-			this.image[dtt+1] = [];
+		for (var dt = -1; dt <=maxdrag; dt++) {
+			this.image[dt+1] = [];
 			for (var mt = 0; mt< 3; mt++) {
-				var dt = Math.sign(Molpy.Overview.fracUsed)*(dtt-1+Math.abs(Molpy.Overview.fracUsed));
-				var xpos = 180+16*dtt;
+				var xpos = 180+16*dt;
 				var ypos = 10+16*mt;
 				ctx.beginPath();
 				ctx.lineWidth=2;
@@ -107,7 +107,7 @@ Molpy.Overview = {
 				ctx.fill();
 				ctx.stroke();
 
-				this.image[dtt+1][mt] = ctx.getImageData(xpos,ypos,8,8);
+				this.image[dt+1][mt] = ctx.getImageData(xpos,ypos,8,8);
 
 			}
 		}
@@ -154,6 +154,7 @@ Molpy.Overview = {
 
 	Update: function(np) {
 		np=Number(np.toFixed(3))
+		var npd = Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed))
 		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || np >= Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)] ) return;
 		var mt = (Molpy.Earned('diamm'+np)?2:(Molpy.Earned('monumg'+Math.abs(np))?1:0));
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
@@ -174,7 +175,6 @@ Molpy.Overview = {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
 				np = Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed));
 				if (np && Math.abs(np) <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && Math.abs(np) < over.size) { 
-					console.log(np)
 					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1);  //
 				}
 			}
