@@ -150,7 +150,7 @@ Molpy.Overview = {
 		};
 		ctx.stroke();
 	},
-	checkFrac:function(n){return (Number(Math.abs(n)-Math.floor(Math.abs(n))).toFixed(3)==Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed)))&&((n>0)*(Molpy.Overview.fracUsed>0))},
+	checkFrac:function(n){return (Number(Math.abs(n)-Math.floor(Math.abs(n))).toFixed(3)==Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed)))&&((n>0)==(Molpy.Overview.fracUsed>0))},
 
 	Update: function(np) {
 		np=Number(np.toFixed(3))
