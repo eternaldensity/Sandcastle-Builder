@@ -288,8 +288,16 @@ a:active
 	width:520px;
 }
 #dragonoverviewmaindiv {
-	height:295px;
+	height:255px;
 	width:520px;
+}
+#storylineButtons {
+	width:520px;
+	height:40px;
+	text-align:center;
+}
+#storylineText {
+	vertical-align:middle;
 }
 .floatbox{
 	display: inline-block;
