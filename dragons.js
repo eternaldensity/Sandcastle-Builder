@@ -742,10 +742,12 @@ Molpy.DragonFledge = function(clutch) {
 		case 3: // Princesses
 			break;
 		}
-
+		if(npd.amount>0){
 		Molpy.Notify(Molpify(npd.amount) + ' ' + dt +
 				(npd.amount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
+		
 		if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name,1);
+		} else {Molpy.Notify("I'm sorry Cueball, I'm afraid you can't fledge there.")}
 	}
 	if (waste) {
 		if (!Molpy.Got('Topiary')) {
@@ -1202,9 +1204,14 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 	npd.magic2 = 0;
 	npd.magic3 = 0;
 	
-	Molpy.Notify(Molpify(npd.amount) + ' ' + dt +
+	if(npd.amount>0) {
+		Molpy.Notify(Molpify(npd.amount) + ' ' + dt +
 				(npd.amount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
+		
+			
+		
 	if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name,1);
+	} else {Molpy.Notify("I'm sorry Cueball, I'm afraid you can't fledge there.")}
 	if (Molpy.Got('Topiary')) {
 		Molpy.Boosts['Cryogenics'].power = spare;
 	} else if (spare) {

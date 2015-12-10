@@ -1293,8 +1293,9 @@ Molpy.DefineGUI = function() {
 
 		var x = 200 + flandom(200);
 		var y = 200 + flandom(400);
+		if(np===0) return 'http://xkcd.mscha.org/tmp/np0.png'
 		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix) {
-			if(np===0) return 'http://xkcd.mscha.org/tmp/np0.png'
+			
 			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1))){
 				return 'http://placekitten.com/'+ (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') + x + '/' + y;
 			}else if(frac==0){

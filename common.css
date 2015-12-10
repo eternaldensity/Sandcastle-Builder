@@ -288,9 +288,20 @@ a:active
 	width:520px;
 }
 #dragonoverviewmaindiv {
-	height:295px;
+	height:255px;
 	width:520px;
 }
+
+#storylineButtons {
+	width:520px;
+	height:40px;
+	text-align:center;
+}
+
+#storylineText {
+	vertical-align:-13px;
+}
+
 .floatbox{
 	display: inline-block;
 	vertical-align: top;
@@ -760,6 +771,9 @@ body.darkscheme #doverhover {
 	-moz-transform: scaleX(-1) rotate(270deg);
 	-ms-transform: scaleX(-1) rotate(270deg);
 	-o-transform: scaleX(-1) rotate(270deg);
+}
+#sectionDragonOverview {
+	overflow:auto;
 }
 #magicbuts button {
 	width:24px;

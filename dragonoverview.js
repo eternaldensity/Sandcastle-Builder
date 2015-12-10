@@ -33,9 +33,8 @@ Molpy.Overview = {
 			
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && np < over.size) {
-					var npd = Molpy.NPdata[np];
-					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
+				if (np && np <= Math.abs(Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))]) && np < over.size) {
+					var npd = Molpy.NPdata[Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed))];					over.mtip.style.left = (evt.clientX + 10 + window.pageXOffset) + "px"; 
 					over.mtip.style.top = (evt.clientY -20 + window.pageYOffset) + "px";
 				        over.mhover.innerHTML = 'NP&nbsp;' + np + ((npd && npd.amount)?'<br>'+npd.amount+'&nbsp;'+Molpy.DragonsById[npd.DragonType].name+(npd.amount>1?'s':''):'');
 					over.mhover.style.display = 'block';
@@ -68,7 +67,8 @@ Molpy.Overview = {
 		this.BasicGrid();
 		
 		// Update all nps
-		for (var np = 1; np < this.size && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]); np=Molpy.NextLegalNP(np)){this.Update(np);}
+		var type=Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))]
+		for (var np = -Math.abs(type); np < this.size && np <= Math.abs(type); np=Molpy.NextLegalNP(np)){this.Update(np);}
 		
 		//Add storyline buttons
 
@@ -150,11 +150,11 @@ Molpy.Overview = {
 		};
 		ctx.stroke();
 	},
-	checkFrac:function(n){return (Number(Math.abs(n)-Math.floor(Math.abs(n))).toFixed(3)==Molpy.adjustFrac(Molpy.Overview.fracUsed))&&((n>0)*(Molpy.Overview.fracUsed>0))},
+	checkFrac:function(n){return (Number(Math.abs(n)-Math.floor(Math.abs(n))).toFixed(3)==Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed)))&&((n>0)==(Molpy.Overview.fracUsed>0))},
 
 	Update: function(np) {
 		np=Number(np.toFixed(3))
-		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || np >= Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)] ) return;
+		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || Math.abs(np) >= Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))] ) return;
 		var mt = (Molpy.Earned('diamm'+np)?2:(Molpy.Earned('monumg'+Math.abs(np))?1:0));
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
 		np=Math.abs(np)
@@ -172,9 +172,10 @@ Molpy.Overview = {
 
 			if (mousex > over.Xoffset && mousex < over.Xoffset+8*50) {
 				np = Math.floor((mousex-over.Xoffset)/8) + Math.floor(mousey/8)*50;
-				if (np && np <= Math.abs(Molpy.largestNPvisited[Molpy.adjustFrac(Molpy.Overview.fracUsed)]) && np < over.size) { 
-					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1); 
-				} //Dragon overview will be difficult to do. Remind pickten to try. Or try yourself. It needs TaTpix compatibility.
+				np = Math.sign(over.fracUsed)*(np-1+Math.abs(over.fracUsed));
+				if (np && Math.abs(np) <= Math.abs(Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))]) && Math.abs(np) < over.size) { 
+					Molpy.TTT(np,Molpy.Earned('monumg'+np)?1:2,1);  //
+				}
 			}
 		});
 	},
@@ -219,6 +220,7 @@ Molpy.Overview = {
 			str=str+"<div id='upDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"up\")'><h4><</h4></a></div>";
 		}
+		str+="<text id='storylineText'>"
 		if(Molpy.Badges['Below the Horizon'].earned||Molpy.Got('Signpost')){
 			var sign=(Molpy.Overview.fracUsed>0)
 			if(!Molpy.Got('Signpost')){
@@ -233,6 +235,7 @@ Molpy.Overview = {
 				}
 			}
 		}
+		str+="</text>"
 		if(Molpy.Got('Signpost')){
 			str=str+"<div id='downDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"down\")'><h4>></h4></a></div>";

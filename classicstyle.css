@@ -146,7 +146,6 @@
 }
 #DragonOverviewMainBody {
 	height:295px;
-	overflow-y:scroll;
 	width:560px;
 }
 #lootSearchBox {
