@@ -290,6 +290,7 @@ a:active
 #dragonoverviewmaindiv {
 	height:255px;
 	width:520px;
+	overflow:auto;
 }
 #storylineButtons {
 	width:520px;
