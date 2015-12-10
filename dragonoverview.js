@@ -220,7 +220,7 @@ Molpy.Overview = {
 			str=str+"<div id='upDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"up\")'><h4><</h4></a></div>";
 		}
-		str+="<div id='storylineText'>"
+		str+="<text id='storylineText'>"
 		if(Molpy.Badges['Below the Horizon'].earned||Molpy.Got('Signpost')){
 			var sign=(Molpy.Overview.fracUsed>0)
 			if(!Molpy.Got('Signpost')){
@@ -235,7 +235,7 @@ Molpy.Overview = {
 				}
 			}
 		}
-		str+="</div>"
+		str+="</text>"
 		if(Molpy.Got('Signpost')){
 			str=str+"<div id='downDragSwitch' class='minifloatbox controlbox' style='float:center'>";
 			str=str+"<a onclick='Molpy.Overview.ChangeFrac(\"down\")'><h4>></h4></a></div>";
