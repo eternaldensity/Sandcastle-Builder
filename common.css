@@ -290,8 +290,8 @@ a:active
 #dragonoverviewmaindiv {
 	height:255px;
 	width:520px;
-	overflow:auto;
 }
+
 #storylineButtons {
 	width:520px;
 	height:40px;
@@ -771,6 +771,9 @@ body.darkscheme #doverhover {
 	-moz-transform: scaleX(-1) rotate(270deg);
 	-ms-transform: scaleX(-1) rotate(270deg);
 	-o-transform: scaleX(-1) rotate(270deg);
+}
+#sectionDragonOverview {
+	overflow:auto;
 }
 #magicbuts button {
 	width:24px;
