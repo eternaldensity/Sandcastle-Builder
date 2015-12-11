@@ -747,7 +747,7 @@ Molpy.DragonFledge = function(clutch) {
 				(npd.amount ==1?' has':'s have') +' fledged at NP'+Molpy.newpixNumber,1);
 		
 		if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name,1);
-		} else {Molpy.Notify("I'm sorry Cueball, I'm afraid you can't fledge there.")}
+		} else {Molpy.Notify("The underworld is no place for living dragons.")}
 	}
 	if (waste) {
 		if (!Molpy.Got('Topiary')) {
@@ -1211,7 +1211,7 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 			
 		
 	if (oldDN) Molpy.Notify('Replacing '+Molpify(oldDN)+' '+Molpy.DragonsById[oldDT].name,1);
-	} else {Molpy.Notify("I'm sorry Cueball, I'm afraid you can't fledge there.")}
+	} else {Molpy.Notify("The underworld is no place for living dragons.")}
 	if (Molpy.Got('Topiary')) {
 		Molpy.Boosts['Cryogenics'].power = spare;
 	} else if (spare) {
