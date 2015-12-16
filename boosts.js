@@ -2168,7 +2168,7 @@ Molpy.DefineBoosts = function() {
 			} else {
 				n = DeMolpify(n);
 			}
-			if(!n) return;
+			if(!n||n<0) return;
 		}
 		if(sr.power < n) return;
 		Molpy.Add('GlassChips', n);
@@ -2516,7 +2516,7 @@ Molpy.DefineBoosts = function() {
 			} else {
 				n = DeMolpify(n);
 			}
-			if(!n) return;
+			if(!n||n<0) return;
 		}
 		if(gc.power < n) return;
 		Molpy.Add('GlassBlocks', n);
