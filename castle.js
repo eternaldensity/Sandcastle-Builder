@@ -22,14 +22,11 @@ jQuery.fn.canColorBorder = function() {
 };
 
 function ONGsnip(time) {
-	console.debug('before '+time.format())
 	var new_time=moment(time.valueOf()-time.minutes()*60000-time.seconds()*1000-time.milliseconds())
 	//had to do it that way to avoid DST weirdness
 
-	console.debug('start '+new_time.format())
 	if(time.minutes() >= 30 && Math.abs(Molpy.newpixNumber) <= 240 && Molpy.currentStory == -1) {
 		new_time=moment(new_time.valueOf()+30*60000);
-		console.debug('advanced '+new_time.format())
 	} 
 	return new_time;
 }
