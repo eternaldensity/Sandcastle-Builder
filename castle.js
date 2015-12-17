@@ -3566,7 +3566,7 @@ Molpy.Up = function() {
 
 	Molpy.CheckONG = function() {
 		//if there's an ONG
-		Molpy.ONGelapsed = new Date().getTime() - Molpy.ONGstart.getTime();
+		Molpy.ONGelapsed = (new Date().getTime() - Molpy.ONGstart.getTime())%(Molpy.NPlength*1.8);
 		if(Molpy.npbONG == 'mustard') {
 			Molpy.npbONG = (Molpy.ONGelapsed >= Molpy.CastleTools['NewPixBot'].ninjaTime);//whoops
 		}
