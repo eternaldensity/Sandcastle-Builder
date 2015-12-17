@@ -22,14 +22,16 @@ jQuery.fn.canColorBorder = function() {
 };
 
 function ONGsnip(time) {
-	if(time.getMinutes() >= 30 && Math.abs(Molpy.newpixNumber) <= 240 && Molpy.currentStory == -1) {
-		time.setMinutes(30);
-	} else {
-		time.setMinutes(0);
-	}
-	time.setSeconds(0);
-	time.setMilliseconds(0);
-	return time;
+	console.debug('before '+time.format())
+	var new_time=moment(time.valueOf()-time.minutes()*60000-time.seconds()*1000-time.milliseconds())
+	//had to do it that way to avoid DST weirdness
+
+	console.debug('start '+new_time.format())
+	if(time.minutes() >= 30 && Math.abs(Molpy.newpixNumber) <= 240 && Molpy.currentStory == -1) {
+		new_time=moment(new_time.valueOf()+30*60000);
+		console.debug('advanced '+new_time.format())
+	} 
+	return new_time;
 }
 
 Molpy.extend = function(obj, args, overwrite){
@@ -56,9 +58,9 @@ Molpy.Up = function() {
 		Molpy.Life = 0; //number of gameticks that have passed
 		Molpy.fps = 30; //this is just for paint, not updates
 
-		Molpy.time = new Date().getTime();
+		Molpy.time = moment();
 		Molpy.newpixNumber = 1; //to track which background to load, and other effects...
-		Molpy.ONGstart = ONGsnip(new Date()); //contains the time of the previous ONG
+		Molpy.ONGstart = ONGsnip(moment()); //contains the time of the previous ONG
 		Molpy.NPlength = 1800; //seconds in current NewPix 
 		Molpy.mNPlength = 1800; //milliseconds in milliNewPix
 		Molpy.updateFactor = 1; //increase to update more often
@@ -2999,7 +3001,7 @@ Molpy.Up = function() {
 
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
-		Molpy.startDate = parseInt(new Date().getTime()); //used for save
+		Molpy.startDate = parseInt(moment().valueOf()); //used for save
 
 		/*In which we announce that initialisation is complete
 		++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -3566,7 +3568,7 @@ Molpy.Up = function() {
 
 	Molpy.CheckONG = function() {
 		//if there's an ONG
-		Molpy.ONGelapsed = new Date().getTime() - Molpy.ONGstart.getTime();
+		Molpy.ONGelapsed = moment() - Molpy.ONGstart;
 		if(Molpy.npbONG == 'mustard') {
 			Molpy.npbONG = (Molpy.ONGelapsed >= Molpy.CastleTools['NewPixBot'].ninjaTime);//whoops
 		}
@@ -3593,7 +3595,7 @@ Molpy.Up = function() {
 	Molpy.preloadedBeach = 0;
 	Molpy.CheckBeachClass = function() {
 		var stateClass = 'beachsafe';
-		Molpy.ONGelapsed = new Date().getTime() - Molpy.ONGstart.getTime();
+		Molpy.ONGelapsed = moment() - Molpy.ONGstart;
 		if(!Molpy.ninjad) {
 			if(Molpy.npbONG)
 				stateClass = 'beachstreakextend';
@@ -3652,7 +3654,7 @@ Molpy.Up = function() {
 		
 		
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
-		Molpy.ONGstart = ONGsnip(new Date());
+		Molpy.ONGstart = ONGsnip(moment());
 		Molpy.LogONG();
 		Molpy.Notify('ONG!', 1);
 
@@ -3961,7 +3963,7 @@ Molpy.Up = function() {
 			Molpy.BuildLootLists();
 		}
 		var t = Molpy.time;
-		Molpy.time = new Date().getTime();
+		Molpy.time = moment();
 		Molpy.ketchupTime = 0;
 		Molpy.lateness += (Molpy.time - t);
 		Molpy.lateness = Math.min(Molpy.lateness, 7200);//don't ketchup up too much

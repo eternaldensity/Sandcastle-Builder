@@ -97,11 +97,7 @@
 	}
 
 	Molpy.Flood = function() {
-		var flood = new Date();
-		flood.setFullYear(13291);
-		flood.setMonth(4);
-		flood.setDate(10);
-		return flood.toUTCString();
+		return moment.utc([13291, 4, 10, 0, 0, 0, 0]).format();
 	}
 
 	Molpy.Load = function() {
@@ -934,7 +930,7 @@
 		Molpy.MustardCheck();
 		Molpy.RefreshOptions();
 
-		Molpy.ONGstart = ONGsnip(new Date()); //if you missed the ONG before loading, too bad!
+		Molpy.ONGstart = ONGsnip(moment()); //if you missed the ONG before loading, too bad!
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
@@ -1265,9 +1261,9 @@
 			Molpy.BoostsOwned = 0;
 			Molpy.notifsReceived = 0;
 
-			Molpy.startDate = parseInt(new Date().getTime());
+			Molpy.startDate = parseInt(moment().valueOf());
 			Molpy.newpixNumber = 1;
-			Molpy.ONGstart = ONGsnip(new Date());
+			Molpy.ONGstart = ONGsnip(moment());
 			Molpy.DefaultOptions();
 
 			var keep = '';

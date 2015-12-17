@@ -1119,7 +1119,7 @@ Molpy.DefineGUI = function() {
 		Molpy.logArchive = [];
 		Molpy.logArchive[0] = [];
 		Molpy.logArchive[0].np = Math.floor(Molpy.newpixNumber);
-		Molpy.logArchive[0].time = new Date();
+		Molpy.logArchive[0].time = moment();
 		Molpy.logArchive[0].string = "Loading..."
 		Molpy.currentLog = 0;
 		Molpy.selectedLog = 0;
@@ -1147,7 +1147,7 @@ Molpy.DefineGUI = function() {
 		Molpy.currentLog++;
 		Molpy.logArchive[Molpy.currentLog] = [];
 		Molpy.logArchive[Molpy.currentLog].np = Math.floor(Molpy.newpixNumber);
-		Molpy.logArchive[Molpy.currentLog].time = new Date();
+		Molpy.logArchive[Molpy.currentLog].time = moment();
 		Molpy.selectedLog = Molpy.currentLog;
 		Molpy.logArchive[Molpy.currentLog].string = ""
 		Molpy.notifLogPaint = 1;
@@ -1259,8 +1259,8 @@ Molpy.DefineGUI = function() {
 		Molpy.notifLogPaint = 0;
 		var title = g('logTitle');
 		var today = Molpy.logArchive[Molpy.selectedLog].time;
-		var h = today.getHours();
-		var m = today.getMinutes();
+		var h = today.hours();
+		var m = today.minutes();
 		if(m < 10) m = "0" + m;
 		title.title = h + ":" + m;
 		title.innerHTML = "Notification log for Newpix " + Molpy.logArchive[Molpy.selectedLog].np;
@@ -1643,7 +1643,7 @@ Molpy.DefineGUI = function() {
 			return;
 		}
 		if(!Molpy.ONGelapsed) {
-			Molpy.ONGelapsed = new Date().getTime() - Molpy.ONGstart.getTime();
+			Molpy.ONGelapsed = moment().valueOf() - Molpy.ONGstart.valueOf();
 		}
 		var npPercent = Molpy.ONGelapsed / (Molpy.NPlength * 1000);
 		Molpy.clockDegrees = (npPercent * 360) + 180; //rotation from top		
