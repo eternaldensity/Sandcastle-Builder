@@ -652,7 +652,7 @@ Molpy.DefineBoosts = function() {
 		var acPower = Molpy.Boosts['Coma Molpy Style'].power;
 		if(acPower) {
 			acPower = 0; // off
-			Molpy.ONGstart = ONGsnip(new Date()); // don't immediately ONG!
+			Molpy.ONGstart = ONGsnip(moment()); // don't immediately ONG!
 		} else {
 			acPower = 1; // on
 		}
@@ -777,7 +777,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['Signpost'].power = 0;
 			if(Molpy.Earned('discov' + Molpy.newpixNumber)) Molpy.Badges['discov' + Molpy.newpixNumber].Refresh();
 			_gaq && _gaq.push(['_trackEvent', 'NewPix', (chips ? 'Memory Warp' : 'Time Travel'), '' + Molpy.newpixNumber]);
-			Molpy.ONGstart = ONGsnip(new Date());
+			Molpy.ONGstart = ONGsnip(moment());
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			if(!silence) Molpy.Notify('Time Travel successful! Welcome to NewPix ' + Molpify(Math.floor(Molpy.newpixNumber)));
@@ -8712,7 +8712,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.FastForward = function() {
 		Molpy.Anything = 1;
 		Molpy.newpixNumber = Molpy.highestNPvisited;
-		Molpy.ONGstart = ONGsnip(new Date());
+		Molpy.ONGstart = ONGsnip(moment());
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
 		Molpy.LockBoost('Fast Forward');
