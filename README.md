@@ -36,7 +36,7 @@ No warranty is provided.  Use at your own risk.
 
 ## Changelog
 
-### 4.001 Kitty Genocide Simulator 2015
+### 4.0 Kitty Genocide Simulator 2015
 
 #### erp-lsf
 - New Option:
@@ -133,6 +133,13 @@ No warranty is provided.  Use at your own risk.
  
 #### Syntech, Xilwarg
  * Bug hunting and fixes
+
+#### ED
+ * Convert time manipulation to use the moment.js library
+ * Change start-of-ONG finding code to manipulate time such that DST error don't occur
+ * Add tooltips to index
+ * Add shameless self-promotion to index
+ * Add more names and disclaimers to this README
  
 ### 3.67 Enough Mustard for a Sandwich
 
