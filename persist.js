@@ -785,7 +785,7 @@
 		}
 	}
 
-	Molpy.NPdataFromString = function(thread,version) {if(version<4.001){
+	Molpy.NPdataFromString = function(thread,version) {if(version<4){
 		var s = 'S'; //Semicolon
 		var c = 'C'; //Comma
 		npdthread = thread;
