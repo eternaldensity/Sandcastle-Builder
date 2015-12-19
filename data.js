@@ -1050,7 +1050,7 @@ Molpy.BuildRewardsLists = function() {
 		return (Molpy.Boosts[i].photo!== undefined)&&(Molpy.Boosts[i].photo!=='undefined')&&(!Molpy.Got(i))
 	})
 	Molpy.KittenRewardOptions=Molpy.BoostsByFunction(function(i){
-		return (Molpy.Boosts[i].kitten!== undefined)&&(Molpy.Boosts[i].kitten!=='undefined')&&(!Molpy.Got(i))
+		return (Molpy.Boosts[i].kitten!== undefined)&&(Molpy.Boosts[i].kitten!=='undefined')
 	})
 	Molpy.RewardsListsBuilt = 1;
 	Molpy.defineCrafts(); //They don't really go together, but I'm not interested in figuring out the proper version.

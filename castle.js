@@ -2991,10 +2991,12 @@ Molpy.Up = function() {
 	        Molpy.DefaultOptions();
 		Molpy.UpdateColourScheme();
 
+		Molpy.BuildRewardsLists();
 		Molpy.CheckLogicatRewards();
 		Molpy.CheckDoRDRewards();
-		Molpy.BuildRewardsLists();
+		Molpy.CheckKittenRewards()
 		Molpy.CountDiscov();
+		Molpy.BuildRewardsLists();
 
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();

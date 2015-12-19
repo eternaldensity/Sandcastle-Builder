@@ -598,6 +598,7 @@ Molpy.DefineBoosts = function() {
 				+ ' time' + plural(Molpy.Boosts['Safety Net'].power) + '.'
 				+ (target[0] ? ('<br>Next boost at: ' + Molpify(target[0], 3)) : '');
 		},
+		department: 0,
 	});
 	
 	Molpy.SafetyTarget = function() {
@@ -843,6 +844,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '1.5M',
 			Castles: 240
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Kitties Galore',
@@ -905,7 +907,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '8.8M',
 			Castles: 28600,
 		},
-		
+		department : 0,
 		stats: function() {
 			var blastFactor = 1000;
 			if(Molpy.Got('Fractal Sandcastles')) {
@@ -1065,6 +1067,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '50M',
 			Castles: 86,
 		},
+		department: 0,
 		
 		stats: function() {
 			var str = 'Half of Bags beyond the 14th owned give a cumulative 40% boost to Judgement Dip threshold.';
@@ -1134,7 +1137,7 @@ Molpy.DefineBoosts = function() {
 			Sand: 1985,
 			Castles: 121,
 		},
-		
+		department: 0,
 		stats: function() {
 			if(!Molpy.Got('Flux Turbine'))
 				return 'All castle gains are boosted by 2% per natural logarithm of castles wiped by Molpy Down, except refunds which are not affected.';
@@ -1151,6 +1154,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '250M',
 			Castles: 777
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Minigun',
@@ -1161,6 +1165,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '480M',
 			Castles: 888
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Stacked',
@@ -1171,6 +1176,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '970M',
 			Castles: 999
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Big Splash',
@@ -1181,6 +1187,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '2650M',
 			Castles: 1111
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Irregular Rivers',
@@ -1191,6 +1198,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '8290M',
 			Castles: 2222
 		},
+		department: 0,
 	});
 	
 	new Molpy.Boost({
@@ -1211,6 +1219,7 @@ Molpy.DefineBoosts = function() {
 		},
 		stats: 'When installed, this averts Judgement Dip at the cost of 99.9% of NewPixBot Castle Production.',
 		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		department: 0,
 	});
 
 	Molpy.NavigationCodeToggle = function() {
@@ -2844,6 +2853,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '5T',
 			Castles: '0.6T'
 		},
+		department : 0,
 	});
 	new Molpy.Boost({
 		name: 'Ninja Legion',
@@ -2854,6 +2864,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '3P',
 			Castles: '0.9P'
 		},
+		department : 0,
 	});
 	new Molpy.Boost({
 		name: 'Swim Between the Flags',
@@ -3074,7 +3085,7 @@ Molpy.DefineBoosts = function() {
 				return (Molpy.Boosts['Castle Crusher'].power + 1) * 380 + 'M';
 			},
 		},
-		
+		department : 0,
 		// deactivate if sand is infinite
 		classChange: function() { return isFinite(Molpy.Boosts['Sand'].power) ? 'action' : '' }
 	});
@@ -3113,7 +3124,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '6.5G',
 			Castles: '.8G',
 		},
-		
+		department: 0,
 		buyFunction: function() {
 			this.IsEnabled = 1;
 		}
@@ -3215,6 +3226,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '.97G',
 			Castles: '340M',
 		},
+		department : 0,
 		stats: 'Causes the effect which results from Redunception'
 	});
 
@@ -3248,7 +3260,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '48G',
 			Castles: '1.2G',
 		},
-		
+		department: 0,
 		buyFunction: function() {
 			this.IsEnabled = 1;
 		}
@@ -3545,6 +3557,7 @@ Molpy.DefineBoosts = function() {
 			Castles: '380E',
 			GlassBlocks: 2500
 		},
+		department : 0,
 	});
 	new Molpy.Boost({
 		name: 'Ninja Climber',
@@ -3568,6 +3581,7 @@ Molpy.DefineBoosts = function() {
 			Castles: '38E',
 			GlassBlocks: 100
 		},
+		department : 0,
 	});
 	new Molpy.Boost({
 		name: 'Logicat',
@@ -3641,6 +3655,7 @@ Molpy.DefineBoosts = function() {
 			Castles: '238E',
 			GlassBlocks: 100
 		},
+		department : 0,
 	});
 	new Molpy.Boost({
 		name: 'Temporal Duplication',
@@ -3839,6 +3854,7 @@ Molpy.DefineBoosts = function() {
 			Castles: '90K',
 			GlassBlocks: 10
 		},
+		department : 0,
 	});
 
 	Molpy.GlassExtruderUpgradeCost = function() {
@@ -4845,6 +4861,7 @@ Molpy.DefineBoosts = function() {
 			Castles: '.3ZW',
 			GlassBlocks: '3K'
 		},
+		department : 0,
 	});
 	new Molpy.Boost({
 		name: 'Facebugs',
@@ -4855,7 +4872,7 @@ Molpy.DefineBoosts = function() {
 			Castles: '7.5UW',
 			GlassBlocks: '8K',
 		},
-		
+		department : 0,
 		stats: function() {
 			if(Molpy.Got('Facebugs')) {
 				var mult = 0.1 * Molpy.BadgesOwned;
@@ -5432,6 +5449,7 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: '60K'
 		},
+		department : 0,
 	});
 
 	Molpy.DuckDuckBadger = function() {
@@ -6370,6 +6388,7 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: '60K'
 		},
+		department : 0,
 	});
 	new Molpy.Boost({
 		name: 'Knitted Beanies',
@@ -10855,7 +10874,7 @@ Molpy.DefineBoosts = function() {
 			if (np == 0){ np = 0.1;}
 			return Math.floor(( mcost*2.22+Math.pow(mcost,np/333))/np);
 		},
-		FillTime: function(np) { return Math.floor(np*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
+		FillTime: function(np) { return Math.max(1, Math.floor(np*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np))) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -10969,7 +10988,7 @@ Molpy.DefineBoosts = function() {
 			this.countdown = 0;
 		},
 		CookCost: function(np) { return Math.ceil((Math.exp((np*np/3098))/10)) },
-		CookTime: function(np) { return Math.ceil(Math.sqrt(Math.abs(np))*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
+		CookTime: function(np) { return Math.max(1, Math.ceil(Math.sqrt(Math.abs(np))*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np))) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -11061,7 +11080,7 @@ Molpy.DefineBoosts = function() {
 		BurnCost: function(np) {
 			return Molpy.Boosts['DMF'].FillCost(np);
 		},
-		BurnTime: function(np) { return Math.floor(Math.log(np+1)*Math.LOG10E*100*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
+		BurnTime: function(np) { return Math.max(1, Math.floor(Math.log(np+1)*Math.LOG10E*100*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np))) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
