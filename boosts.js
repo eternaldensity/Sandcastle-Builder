@@ -10874,7 +10874,7 @@ Molpy.DefineBoosts = function() {
 			if (np == 0){ np = 0.1;}
 			return Math.floor(( mcost*2.22+Math.pow(mcost,np/333))/np);
 		},
-		FillTime: function(np) { return Math.floor(np*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
+		FillTime: function(np) { return Math.max(1, Math.floor(np*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np))) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -10988,7 +10988,7 @@ Molpy.DefineBoosts = function() {
 			this.countdown = 0;
 		},
 		CookCost: function(np) { return Math.ceil((Math.exp((np*np/3098))/10)) },
-		CookTime: function(np) { return Math.ceil(Math.sqrt(Math.abs(np))*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
+		CookTime: function(np) { return Math.max(1, Math.ceil(Math.sqrt(Math.abs(np))*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np))) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
@@ -11080,7 +11080,7 @@ Molpy.DefineBoosts = function() {
 		BurnCost: function(np) {
 			return Molpy.Boosts['DMF'].FillCost(np);
 		},
-		BurnTime: function(np) { return Math.floor(Math.log(np+1)*Math.LOG10E*100*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np)) },
+		BurnTime: function(np) { return Math.max(1, Math.floor(Math.log(np+1)*Math.LOG10E*100*Molpy.Papal('Master')*Molpy.Boosts.Dragong.factor(np))) },
 		classChange: function() { return ['','alert','action'][this.State] },
 	});
 
