@@ -598,6 +598,7 @@ Molpy.DefineBoosts = function() {
 				+ ' time' + plural(Molpy.Boosts['Safety Net'].power) + '.'
 				+ (target[0] ? ('<br>Next boost at: ' + Molpify(target[0], 3)) : '');
 		},
+		department: 0,
 	});
 	
 	Molpy.SafetyTarget = function() {
@@ -843,6 +844,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '1.5M',
 			Castles: 240
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Kitties Galore',
@@ -3122,7 +3124,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '6.5G',
 			Castles: '.8G',
 		},
-		
+		department: 0,
 		buyFunction: function() {
 			this.IsEnabled = 1;
 		}
@@ -3258,7 +3260,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '48G',
 			Castles: '1.2G',
 		},
-		
+		department: 0,
 		buyFunction: function() {
 			this.IsEnabled = 1;
 		}

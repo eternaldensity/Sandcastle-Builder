@@ -2994,7 +2994,9 @@ Molpy.Up = function() {
 		Molpy.BuildRewardsLists();
 		Molpy.CheckLogicatRewards();
 		Molpy.CheckDoRDRewards();
+		Molpy.CheckKittenRewards()
 		Molpy.CountDiscov();
+		Molpy.BuildRewardsLists();
 
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
