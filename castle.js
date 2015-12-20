@@ -1762,15 +1762,16 @@ Molpy.Up = function() {
 			var lettuce = Molpy.Boosts[bacon];
 			if(times==undefined) {times=1}
 			if(shouldbuy){
-				if(lettuce.name==='Locked Vault' && (!(Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks')))){
-					Molpy.UnlockBoost('Locked Vault')
-				}
-				if(((lettuce.name==='Vault Key')||(lettuce.name==='Locked Vault')) && (Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks'))) {
-					Molpy.Unbox(Math.floor(times/4));
-					for (var i = 0; i < (times % 4); i++) {
-						Molpy.Boosts['Vault Key'].buyFunction(); // no problem calling this up to 4 times
-					} 
-					return;
+				if((lettuce.name==='Vault Key')||(lettuce.name==='Locked Vault')){
+					if(Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks')||(times <= 7)){
+						if(times > 4){Molpy.Unbox(Math.floor(times/4));}
+						for (var i = 0; i < (times % 4); i++) {
+							Molpy.Boosts['Vault Key'].buyFunction(); // no problem calling this up to 4 times
+						} 
+						return;
+					}else{
+						Molpy.UnlockRepeatableBoost(lettuce.name,1,7);
+					}
 				}
 				if(lettuce.name==='Crate Key') {
 					Molpy.UnlockRepeatableBoost('Locked Crate',1,Math.floor(times/5));
@@ -1781,40 +1782,50 @@ Molpy.Up = function() {
 					var win = Math.ceil(Molpy.LogiMult('2K'));
 					lettuce.CrateCount+=times;
 					win = Math.floor(win / (6 - lettuce.bought));
-					win=win*times
+					win=win*times;
 					if(bl.bought * 50 < bl.power + win) bl.bought = Math.ceil((bl.power + win) / 50); // make space!
 					Molpy.Add('GlassBlocks', win);
 					Molpy.Notify('+' + Molpify(win, 3) + ' Glass Blocks!');
 					if(Molpy.Got('Camera')) Molpy.EarnBadge('discov' + Math.ceil(Molpy.newpixNumber * Math.random()));
 					Molpy.Add('Blackprints', lettuce.bought*times);
-					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
+					return;
 				}
 				if(lettuce.name==='Atomic Pump'){
 					Molpy.Boosts['Ocean Blue'].power+=times;
-					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times))
+					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
+					return;
 				}
 				if(lettuce.name==='Blue Fragment'){
 					Molpy.Notify("Got "+Molpify(times)+" "+bacon+plural(times));
 					Molpy.Boosts['bluhint'].power+=times/20;
+					return;
 				}
-				if(lettuce.alias==='splosion'){Molpy.splosions(times)}
+				if(lettuce.alias==='splosion'){
+					Molpy.splosions(times);}
 				if((lettuce.alias==='DomCobb')&&(lettuce.bought == 1)){
 					Molpy.RewardInception();
+					return;
 				}
 				if((lettuce.alias==='DomCobb')&&(lettuce.unlocked == 0)){
-					Molpy.UnlockBoost('DomCobb')
+					Molpy.UnlockBoost('DomCobb');
+					return;
 				}
+				Molpy.UnlockBoost(bacon);
 				//Add additional free repeatable boosts here	
 			}else{
 				if((Molpy.Boosts[bacon].alias==='DomCobb')&&(Molpy.Boosts[bacon].bought == 1)){
 					Molpy.RewardInception();
+					return;
 				}
 				if((Molpy.Boosts[bacon].alias==='DomCobb')&&(Molpy.Boosts[bacon].unlocked == 0)){
-					Molpy.UnlockBoost('DomCobb')
+					Molpy.UnlockBoost('DomCobb');
+					return;
 				}
 				if(Molpy.Boosts[bacon].unlocked === 0){
 					Molpy.UnlockBoost(bacon)
 				}else{
+					//Molpy.Notify("Error U.R.B. Failed");
 					Molpy.RewardRedacted(1);
 				}
 			}
