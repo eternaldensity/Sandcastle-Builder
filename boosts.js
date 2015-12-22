@@ -7281,8 +7281,8 @@ Molpy.DefineBoosts = function() {
 		}
 		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
 		if (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
-		n = Math.min(n,1e306);
 		n = Math.floor(n*Molpy.Papal('Bonemeal'));
+		n = Math.min(n,1e290);
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', n);
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
