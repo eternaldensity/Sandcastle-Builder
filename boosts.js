@@ -7131,7 +7131,7 @@ Molpy.DefineBoosts = function() {
 			}
 			Molpy.Marco(isles);
 		}
-		if (Molpy.Got('FluxCrystals') && (Molpy.Got('Temporal Rift') || Molpy.Got('Flux Surge'))) {
+		if ((Molpy.Boosts['FluxCrystals'].unlocked > 0)&& (Molpy.Got('Temporal Rift') || Molpy.Got('Flux Surge'))) {
 			var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE')) * times;
 			if (c && !Molpy.boostSilence) {
 				Molpy.Notify('You found ' + Molpify(c) + ' flux crystal' + plural(c) + '.');
