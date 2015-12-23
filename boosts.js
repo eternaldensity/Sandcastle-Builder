@@ -4370,7 +4370,7 @@ Molpy.DefineBoosts = function() {
 		},
 		Making: 0,
 		defSave: 1,
-		saveData: { 4:['Making', 0, 'int'], },
+		saveData: { 4:['Making', 0, 'float'], },
 		buyFunction: function() { this.Making = 0 },
 		
 		classChange: function() { return (this.power > 0 && this.power <= 100) ? 'alert' : '' },
@@ -4410,7 +4410,7 @@ Molpy.DefineBoosts = function() {
 		},
 		Making: 0,
 		defSave: 1,
-		saveData: { 4:['Making', 0, 'int'], },
+		saveData: { 4:['Making', 0, 'float'], },
 		buyFunction: function() { this.Making = 0 },
 		
 		classChange: function() { return (this.power > 0 && this.power <= 400) ? 'alert' : '' },
@@ -4451,7 +4451,7 @@ Molpy.DefineBoosts = function() {
 		},
 		Making: 0,
 		defSave: 1,
-		saveData: { 4:['Making', 0, 'int'], },
+		saveData: { 4:['Making', 0, 'float'], },
 		buyFunction: function() { this.Making = 0 },
 		
 		classChange: function() { return (Molpy.Boosts['SMM'].power > 100 || this.power > 0 && this.power <= 200) ? 'alert' : '' },
@@ -4497,7 +4497,7 @@ Molpy.DefineBoosts = function() {
 		},
 		Making: 0,
 		defSave: 1,
-		saveData: { 4:['Making', 0, 'int'], },
+		saveData: { 4:['Making', 0, 'float'], },
 		buyFunction: function() { this.Making = 0 },
 		
 		classChange: function() { return (Molpy.Boosts['GMM'].power > 400 || this.power > 0 && this.power <= 800) ? 'alert' : '' },
@@ -10725,7 +10725,7 @@ Molpy.DefineBoosts = function() {
 		Making: 0,
 		State: 0, //0 free, 1 Making, 2 Made
 		defSave: 1,
-		saveData: { 4:['Making', 0, 'int'],
+		saveData: { 4:['Making', 0, 'float'],
 	       		    5:['State',0,'int'],
 		},
 		buyFunction: function() {
@@ -10814,7 +10814,7 @@ Molpy.DefineBoosts = function() {
 		Making: 0,
 		State: 0, //0 free, 1 Making, 2 Made
 		defSave: 1,
-		saveData: { 4:['Making', 0, 'int'],
+		saveData: { 4:['Making', 0, 'float'],
 	       		    5:['State',0,'int'],
 		},
 		buyFunction: function() {
@@ -10932,7 +10932,7 @@ Molpy.DefineBoosts = function() {
 		Making: 0,
 		State: 0, //0 free, 1 Making, 2 Made
 		defSave: 1,
-		saveData: { 4:['Making', 0, 'int'],
+		saveData: { 4:['Making', 0, 'float'],
 	       		    5:['State',0,'int'],
 		},
 		buyFunction: function() {
@@ -11029,7 +11029,7 @@ Molpy.DefineBoosts = function() {
 		Making: 0,
 		State: 0, //0 free, 1 Making, 2 Made
 		defSave: 1,
-		saveData: { 4:['Making', 0, 'int'],
+		saveData: { 4:['Making', 0, 'float'],
 	       		    5:['State',0,'int'],
 		},
 		buyFunction: function() {
@@ -11111,7 +11111,7 @@ Molpy.DefineBoosts = function() {
 		Making: 0,
 		State: 0, //0 free, 1 Making, 2 Made
 		defSave: 1,
-		saveData: { 4:['Making', 0, 'int'],
+		saveData: { 4:['Making', 0, 'float'],
 	       		    5:['State',0,'int'],
 		},
 		buyFunction: function() {
