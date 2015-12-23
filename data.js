@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=4.0;
-Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numerical version on screen
+Molpy.version=4.001;
+Molpy.versionName='Kitty Genocide<br>Simulator 2015<br>Goating Intensifies'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
