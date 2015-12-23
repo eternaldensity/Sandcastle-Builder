@@ -7131,7 +7131,7 @@ Molpy.DefineBoosts = function() {
 			}
 			Molpy.Marco(isles);
 		}
-		if (Molpy.Got('FluxCrystals') && (Molpy.Got('Temporal Rift') || Molpy.Got('Flux Surge'))) {
+		if ((Molpy.Boosts['FluxCrystals'].unlocked > 0)&& (Molpy.Got('Temporal Rift') || Molpy.Got('Flux Surge'))) {
 			var c = Math.floor(Molpy.Level('AC') / 1000) * (1 + Molpy.Got('TDE')) * times;
 			if (c && !Molpy.boostSilence) {
 				Molpy.Notify('You found ' + Molpify(c) + ' flux crystal' + plural(c) + '.');
@@ -7281,8 +7281,8 @@ Molpy.DefineBoosts = function() {
 		}
 		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
 		if (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
-		n = Math.min(n,1e306);
 		n = Math.floor(n*Molpy.Papal('Bonemeal'));
+		n = Math.min(n,1e290);
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
 		Molpy.Add('Bonemeal', n);
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
@@ -12502,7 +12502,7 @@ Molpy.Coallate = function(){
 		desc: function(me) {
 			var str = 'Tracks which CatPix you have drained for dimension shards'
 			if (me.bought) {
-				if (Molpy.currentStory == -1 && Molpy.newpixNumber >= 3095) str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
+				if (Molpy.currentStory == -1 && (Math.abs(Molpy.newpixNumber) >= 3095)) str += '.<br>This kitty is ' + (me.prey.indexOf(Molpy.newpixNumber) == -1 ? '<b>not</b>' : '') + ' in your catalogue.';
 				cost = Math.ceil(1 + .05*(me.prey.length + Molpy.Boosts['Shards'].Level));
 				str += '<br><input type=button onclick="Molpy.Prowl(cost)" value="Prowl"></input> for innocent, healthy kitties at the cost of '
 				str += Molpify(cost) + ' dimension shard' + plural(cost) + '.'

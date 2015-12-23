@@ -3127,8 +3127,10 @@ Molpy.Up = function() {
 				if (Molpy.Spend('Goats', Infinity)) {
 					Molpy.Vamp();
 					if (Molpy.Got('Retroreflector')) {
+						Molpy.Add('FluxCrystals', 1);
 						Molpy.FlipIt(0);
 						Molpy.Vamp();
+						Molpy.Add('FluxCrystals', 1);
 						Molpy.FlipIt(0);
 					}
 				} else {
