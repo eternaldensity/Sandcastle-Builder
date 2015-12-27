@@ -254,7 +254,7 @@ Molpy.Opponent = function(args) {
 				num = Math.floor(maxval * Math.random()+minval);
 			} else {
 				if (Math.random() < range + blitz){
-					if(range + blitz - Math.random > 1){
+					if(range + blitz - Math.random() > 1){
 						Molpy.EarnBadge('Two Pots O\' Gold');
 						second++;
 					}
