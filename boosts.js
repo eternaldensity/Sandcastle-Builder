@@ -320,9 +320,7 @@ Molpy.DefineBoosts = function() {
 		},
 		startCountdown: 23, // only used when loading to ensure it doesn't get stuck. any true value would do here
 		countdownCMS: 1,
-		countdownLockFunction: function() {
-			this.unlocked = 0;
-			this.bought = 0;
+		lockFunction: function() {
 			if(Molpy.Got('Sea Mining')){
 				Molpy.LockBoost('Sea Mining');
 			}
