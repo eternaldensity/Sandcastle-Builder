@@ -505,7 +505,7 @@ body.lightscheme .badge.loot h1
 	font-size:20px;
 	margin:20px;
 }
-#notifs {position:fixed;left:0px;top:0px;}
+#notifs {position:fixed;left:0px;top:0px;z-index:20;}
 .notif
 {
 	font-family:'Conv_xkcd-Regular',Sans-Serif;
