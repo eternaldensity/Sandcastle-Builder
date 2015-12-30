@@ -36,6 +36,24 @@ No warranty is provided.  Use at your own risk.
 
 ## Changelog
 
+### 4.002
+
+#### pickten
+- Fix a Math.random that should have been Math.random()
+ * Relating to Two Pots O' Gold badge
+
+#### snnw
+- Blitzing lockFunction fix
+
+#### EPSIL0N
+- Department reward fixes
+
+#### ED
+- Change cdn for jquery-ui for consistency and https
+- This file
+- Version number
+
+
 ### 4.001 Kitty Genocide Simulator 2015: Goating Intensifies
 
 #### Syntech
