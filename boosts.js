@@ -430,7 +430,8 @@ Molpy.DefineBoosts = function() {
 			this.prize = Molpy.GetDoor();
 		},
 
-		loadFunction: function() { Molpy.LockBoost('MHP') }
+		loadFunction: function() { Molpy.LockBoost('MHP') },
+		department: 0,
 	});
 	
 	Molpy.MontyDoors = ['A', 'B', 'C'];
@@ -852,6 +853,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '2.5M',
 			Castles: 4400
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'HAL-0-Kitty',
@@ -1054,6 +1056,7 @@ Molpy.DefineBoosts = function() {
 			Sand: 88,
 			Castles: 88
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Bag Burning',
@@ -1476,7 +1479,8 @@ Molpy.DefineBoosts = function() {
 		stats: function() {
 			return 'Adds ' + Molpify(20 * Molpy.Boosts['BKJ'].power, 1) + '% to Not Lucky reward.<br>'
 				+ 'It also gets a boost from Blitzing if you get them simultaneously and allows Blitzing to improve Blast Furnace (though only up to 20% of Castles Built, before accounting for Flux Turbine).';
-		}
+		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'VITSSÅGEN, JA!',
@@ -1863,7 +1867,8 @@ Molpy.DefineBoosts = function() {
 				this.riftIMG.attr('src', ('img/rifts/rift_' + (this.variation + 1) + '_1.png'));
 			}
 			this.riftState = state;
-		}
+		},
+		department: 0,
 	});
 	
 	Molpy.RiftJump = function() {
@@ -3201,6 +3206,7 @@ Molpy.DefineBoosts = function() {
 			Sand: '200T',
 			Castles: '368G'
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Redunception',
@@ -3342,6 +3348,7 @@ Molpy.DefineBoosts = function() {
 			GlassBlocks: '500'
 
 		},
+		department: 0,
 	});
 
 	Molpy.ToggleBBC = function() {
@@ -5830,7 +5837,8 @@ Molpy.DefineBoosts = function() {
 			Sand: '10WW',
 			Castles: '10WW',
 			GlassBlocks: '12M',
-		}
+		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Break the Mould',
@@ -5841,7 +5849,8 @@ Molpy.DefineBoosts = function() {
 			Sand: '10WWW',
 			Castles: '10WWW',
 			GlassBlocks: '2M',
-		}
+		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'TF Load Letter',
@@ -5936,7 +5945,8 @@ Molpy.DefineBoosts = function() {
 		buyFunction: function() {
 			this.power |= 1;
 			if(Molpy.Earned('Nope!')) this.power = 6e51;
-		}
+		},
+		department: 0,
 	});
 	
 	Molpy.ControlToolFactory = function(n) {
@@ -5966,7 +5976,8 @@ Molpy.DefineBoosts = function() {
 			if(!n) n = 1;
 			if(Molpy.Got('LogiPuzzle')) Molpy.Add('LogiPuzzle', n * (1 + Molpy.Level('PR')));
 			Molpy.LockBoost(this.alias);
-		}
+		},
+		department: 0,
 	});
 	
 	Molpy.PokeBar = function() {
@@ -6025,7 +6036,8 @@ Molpy.DefineBoosts = function() {
 			Sand: Infinity,
 			Castles: Infinity,
 			GlassBlocks: '10M',
-		}
+		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Glassed Lightning',
@@ -6106,7 +6118,8 @@ Molpy.DefineBoosts = function() {
 			this.countdown = Math.min(500, this.countdown *= 1.21);
 			this.Refresh();
 			Molpy.Boosts['TDE'].Refresh();
-		}
+		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Automata Control',
@@ -6592,6 +6605,7 @@ Molpy.DefineBoosts = function() {
 			Castles: '15E',
 			GlassBlocks: '10K',
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Price Protection',
@@ -6678,6 +6692,7 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: '8Z',
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Dragon Forge',
@@ -6856,6 +6871,7 @@ Molpy.DefineBoosts = function() {
 			Castles: Infinity,
 			GlassBlocks: '230Z'
 		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Goats',
@@ -6906,7 +6922,8 @@ Molpy.DefineBoosts = function() {
 		icon: 'silvercard',
 		group: 'hpt',
 		desc: 'Affordable Swedish Home Furniture discount increased to 50% off',
-		price:{ Sand: '1G' }
+		price:{ Sand: '1G' },
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Gold Loyalty Card',
@@ -6914,7 +6931,8 @@ Molpy.DefineBoosts = function() {
 		icon: 'goldcard',
 		group: 'hpt',
 		desc: 'Affordable Swedish Home Furniture discount increased to 60% off',
-		price:{ Sand: '10T' }
+		price:{ Sand: '10T' },
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Stretchable Chip Storage',
@@ -7197,7 +7215,8 @@ Molpy.DefineBoosts = function() {
 		name: 'No Need to be Neat',
 		icon: 'noneedtobeneat',
 		desc: 'When you Molpy Down, the amount of one random type of tool is not reset to 0',
-		price:{ GlassBlocks: '50M' }
+		price:{ GlassBlocks: '50M' },
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Thunderbird',
@@ -10083,7 +10102,8 @@ Molpy.DefineBoosts = function() {
 			} else {
 				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed and is available for purchase', 1);
 			}
-		}
+		},
+		department: 0,
 	});
 	new Molpy.Boost({
 		name: 'Shadow Feeder',
@@ -11397,6 +11417,7 @@ Molpy.DefineBoosts = function() {
 		},
 		group: 'drac',
 		NotTemp: 1,
+		department: 0,
 		
 	});
 
@@ -11428,6 +11449,7 @@ Molpy.DefineBoosts = function() {
 			this.Lock();
 			Molpy.Overview.Update(Molpy.newpixNumber);
 		},
+		department: 0,
 	});
 
 	new Molpy.Boost({ 
