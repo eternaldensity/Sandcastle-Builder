@@ -44,6 +44,7 @@ No warranty is provided.  Use at your own risk.
 
 #### snnw
 - Blitzing lockFunction fix
+- z-index for notifications
 
 #### EPSIL0N
 - Department reward fixes
