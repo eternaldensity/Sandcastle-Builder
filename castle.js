@@ -1764,9 +1764,9 @@ Molpy.Up = function() {
 			if(shouldbuy){
 				if((lettuce.name==='Vault Key')||(lettuce.name==='Locked Vault')){
 					if(Molpy.IsEnabled('Aleph One')||Molpy.IsEnabled('Cracks')||(times <= 7)){
-						if(times > 4){Molpy.Unbox(Math.floor(times/4));}
+						if(times >= 4){Molpy.Unbox(Math.floor(times/4));}
 						for (var i = 0; i < (times % 4); i++) {
-							Molpy.Boosts['Vault Key'].buyFunction(); // no problem calling this up to 4 times
+							Molpy.Boosts['Vault Key'].buyFunction(); // no problem calling this up to 3 times
 						} 
 						return;
 					}else{
