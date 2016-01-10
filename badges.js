@@ -379,10 +379,10 @@ Molpy.DefineBadges = function() {
 		if(Molpy.Got('Bag Burning')) {
 			var nobagLevel = Math.max(0, Math.floor((Molpy.BagBurnDiv() / thresh) * botCastles));
 			if(nobagLevel > Math.pow(2, Molpy.Boosts['Bag Burning'].power) + 6) {
-				var rate = Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power + 1, 1);
+				var rate = Molpy.BurnBags(Molpy.Boosts['Bag Burning'].power + 1, 0);
 				Molpy.Boosts['Bag Burning'].power += rate;
 				if(Molpy.SandTools['Bag'].amount < Molpy.npbDoubleThreshold) {
-					Molpy.Notify('The NewPixBots extinguished the burning Bags!', 1);
+					Molpy.Notify('The NewPixBots extinguished the burning Bags!', 0);
 					Molpy.LockBoost('Bag Burning');
 				}
 			}
