@@ -36,6 +36,51 @@ No warranty is provided.  Use at your own risk.
 
 ## Changelog
 
+### 4.002
+
+#### pickten
+- Fix a Math.random that should have been Math.random()
+ * Relating to Two Pots O' Gold badge
+
+#### snnw
+- Blitzing lockFunction fix
+- z-index for notifications
+
+#### EPSIL0N
+- Department reward fixes
+
+#### ED
+- Change cdn for jquery-ui for consistency and https
+- This file
+- Version number
+
+
+### 4.001 Kitty Genocide Simulator 2015: Goating Intensifies
+
+#### Syntech
+- Dragons shouldn't be removed from NPs anymore
+ * Technically this went in a hotfix but might as well list it here
+
+#### pickten
+- Fixed type mismatch
+ * I.e. ED forgot to changed how dates are created in boosts.js to match everywhere else
+ * Also was in a hotfix
+
+#### EPSIL0N
+- Fix to JD and longpix boosts not being rewarded
+ * List of Depardment rewards wasn't being filled out properly
+- Monument 0 change from 0 mnp times to 1 mnp
+- Unlock repeatable boosts fix (Rob and Vault Keys issue)
+- Vaults now award FC to people who have them unlocked even if they spent them all.
+- Abbatoir shutter exploit fix.
+- Kitkat will now report if a cat is drained in -NP Catpix
+- FlipIt was being piggybacked on but doesn't work without atleast one FC.
+- Change .making from int to float to capture non-int NP#s
+
+#### ED
+- This file
+- Version number
+
 ### 4.0 Kitty Genocide Simulator 2015
 
 #### erp-lsf

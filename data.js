@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=4.0;
-Molpy.versionName='Kitty Genocide<br>Simulator 2015'; // Appended to the numerical version on screen
+Molpy.version=4.002;
+Molpy.versionName='Kitty Genocide<br>Simulator 2015<br>Goating Intensifies'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
@@ -808,7 +808,7 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	}
 	if(Molpy.Got('SBTF')) {
 		Molpy.Boosts['Castle Crusher'].department = 1;
-	}
+	} //these need an else or the result would be undefined and it wouldn't be on the list if we didn't force it.
 	if(Molpy.Earned('Ninja Omnipresence') && Molpy.Got('Active Ninja')) {
 		Molpy.Boosts['Ninja League'].department = 1;
 	}
@@ -821,21 +821,21 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 	} else {
 		Molpy.LockBoost('Redunception'); //prevent use in shortpix!
 		Molpy.Boosts['Redunception'].department = 0;
-	}
+	} //this one works
 	if(Molpy.Redacted.totalClicks >= 776) {
 		Molpy.Boosts['Logicat'].department = 1;
-	}
+	} //this one is falling back on the boost definition
 	if(Molpy.Redacted.totalClicks >= 431) {
 		Molpy.Boosts['Technicolour Dream Cat'].department = 1;
 	}
 
-	Molpy.Boosts['RRR'].department = 1 * (Molpy.Boosts['Panther Salve'].power > 200);
+	Molpy.Boosts['RRR'].department = 1 * (Molpy.Boosts['Panther Salve'].power > 200); //this works because you get 1 or 0 not 1 and undefined
 	Molpy.Boosts['Phonesaw'].department = 1 * (Molpy.Boosts['VJ'].power >= 88);
 
 	var found = 0;
 	for( var i in Molpy.jDipBoosts) {
 		var me = Molpy.Boosts[Molpy.jDipBoosts[i]];
-		if(found && !me.unlocked) me.department = 1;
+		if(found && !me.unlocked) me.department = 1; //1 and undefined
 		if(me.unlocked) found++;
 	}
 	if(found == Molpy.jDipBoosts.length) {
@@ -849,6 +849,10 @@ Molpy.CheckDoRDRewards = function(automationLevel) {
 
 	Molpy.Boosts['Fractal Fractals'].department = 1 * (Molpy.Boosts['Fractal Sandcastles'].power >= 120);
 
+	Molpy.Boosts['Locked Vault'].department = 0;
+	Molpy.Boosts['Vault Key'].department = 0;
+	Molpy.Boosts['Locked Crate'].department = 0;
+	Molpy.Boosts['Crate Key'].department = 0;
 	if(Molpy.Boosts['AC'].power && Molpy.Boosts['AC'].power > 180) {
 		Molpy.Boosts['Vault Key'].department = (Molpy.Boosts['Locked Vault'].unlocked || flandom(3) == 0
 			&& Molpy.Got('Keygrinder'))
@@ -1050,7 +1054,7 @@ Molpy.BuildRewardsLists = function() {
 		return (Molpy.Boosts[i].photo!== undefined)&&(Molpy.Boosts[i].photo!=='undefined')&&(!Molpy.Got(i))
 	})
 	Molpy.KittenRewardOptions=Molpy.BoostsByFunction(function(i){
-		return (Molpy.Boosts[i].kitten!== undefined)&&(Molpy.Boosts[i].kitten!=='undefined')&&(!Molpy.Got(i))
+		return (Molpy.Boosts[i].kitten!== undefined)&&(Molpy.Boosts[i].kitten!=='undefined')
 	})
 	Molpy.RewardsListsBuilt = 1;
 	Molpy.defineCrafts(); //They don't really go together, but I'm not interested in figuring out the proper version.
