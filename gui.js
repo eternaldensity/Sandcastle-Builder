@@ -1187,7 +1187,7 @@ Molpy.DefineGUI = function() {
 		if(importance==undefined) importance=0;
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
-		if(log) {
+		
 			if (Molpy.notifLog.text == text){
 				Molpy.notifLog.qty++;
 			} else {
@@ -1198,7 +1198,7 @@ Molpy.DefineGUI = function() {
 				Molpy.notifLog.clas = "";
 				Molpy.logUpdatePaint = 1;
 			}
-		}
+		
 		if(Molpy.options['notifsilence']>importance){return;}
 		//pick the first free (or the oldest) notification to replace it
 		var highest = 0;
