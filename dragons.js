@@ -468,7 +468,7 @@ Molpy.DragonDigRecalc = function() {
 	
 	Molpy.DragonDefenceMultiplier = 1;
 	if (Molpy.Has('Healing Potion',2 + Molpy.Boosts['Healing Potion'].power)) Molpy.DragonDefenceMultiplier *= 1.5*(1+Molpy.Boosts['Healing Potion'].power);
-	if (Molpy.Got('Ooo Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
+	if (Molpy.Got('Ooh, Shiny!')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Gold')));
 	if (Molpy.Got('Clannesque')) Molpy.DragonDefenceMultiplier *= (1+Math.log(Molpy.Level('Cryogenics')));
 	if (Molpy.Got('Spines')) Molpy.DragonDefenceMultiplier *= Math.pow(1.2,Molpy.Level('Spines'));
 	if (Molpy.Got('Adamantine Armour')) Molpy.DragonDefenceMultiplier *= Math.pow(2,Molpy.Level('Adamantine Armour'));
