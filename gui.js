@@ -244,10 +244,10 @@ Molpy.DefineGUI = function() {
 			}
 			if(item) {
 				if(!(item.bought || item.earned)) {
-					Molpy.Notify('You do not own ' + item.name);
+					Molpy.Notify('You do not own ' + item.name, 1);
 				} else {
 					f.boost = item;
-					Molpy.Notify('You have chosen ' + item.name + ' as Favourite ' + n, 1);
+					Molpy.Notify('You have chosen ' + item.name + ' as Favourite ' + n, 0);
 					Molpy.UnlockBoost('Sand');
 					Molpy.UnlockBoost('Castles');
 				}
@@ -1184,6 +1184,7 @@ Molpy.DefineGUI = function() {
 	}
 	
 	Molpy.Notify = function(text, importance) {
+		if(importance==undefined) importance=0;
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
 		if(log) {
@@ -1931,7 +1932,7 @@ Molpy.DefineGUI = function() {
 		this.Delete = function() {
 			Molpy.Anything = 1;
 			if(Molpy.layouts.length < 2) {
-				Molpy.Notify('You need at least 1 layout!');
+				Molpy.Notify('You need at least 1 layout!',1);
 				return;
 			}
 			if(confirm('Really delete the layout "' + this.name + '"?')) {
