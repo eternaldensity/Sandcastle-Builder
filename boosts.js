@@ -473,7 +473,7 @@ Molpy.DefineBoosts = function() {
 		var me = Molpy.Boosts['MHP'];
 		if(me.door == me.prize) {
 			var amount = Molpy.Boosts['Castles'].power;
-			Molpy.Notify('Hooray, you found the prize behind door ' + me.door + '!',true);
+			Molpy.Notify('Hooray, you found the prize behind door ' + me.door + '!',0);
 			Molpy.Boosts['Castles'].build(Math.floor(Molpy.Boosts['Castles'].power / 2), 1);
 			if(Molpy.IsEnabled('HoM')) Molpy.Add('GlassChips', Math.floor(Molpy.Boosts['GlassChips'].power / 5), 1);
 			if(Molpy.Got('Gruff')) Molpy.GetYourGoat(2);
@@ -492,9 +492,9 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Has('Goats', 20)) Molpy.UnlockBoost('HoM');
 		if(Molpy.Has('Goats', 200)) Molpy.UnlockBoost('Beret Guy');
 		if (n== 1) 
-			Molpy.Notify('You got a goat!',true);
+			Molpy.Notify('You got a goat!',0);
 		else
-			Molpy.Notify('You got '+n+' goats!',true);
+			Molpy.Notify('You got '+n+' goats!',0);
 		
 	}
 
@@ -1650,7 +1650,7 @@ Molpy.DefineBoosts = function() {
 			if(item) {
 				Molpy.shoppingItem = item.alias || item.name;
 				Molpy.shoppingItemName = item.plural;
-				if(notify) Molpy.Notify(item.plural + ' will be purchased whenever ASHF is active if possible', 1);
+				if(notify) Molpy.Notify(item.plural + ' will be purchased whenever ASHF is active if possible', 0);
 				return;
 			}
 		} else if(donkey.power > 0) {
@@ -1658,14 +1658,14 @@ Molpy.DefineBoosts = function() {
 			if(item && !item.bought) {
 				Molpy.shoppingItem = item.alias;
 				Molpy.shoppingItemName = item.name;
-				if(notify) Molpy.Notify(item.name + ' will be purchased when ASHF is active if possible', 1);
+				if(notify) Molpy.Notify(item.name + ' will be purchased when ASHF is active if possible', 0);
 
 				return;
 			}
 		}
 		Molpy.shoppingItem = '';
 		Molpy.shoppingItemName = '';
-		if(notify) Molpy.Notify('No item selected for shopping assistant', 1);
+		if(notify) Molpy.Notify('No item selected for shopping assistant', 0);
 
 	}
 	
@@ -2161,7 +2161,7 @@ Molpy.DefineBoosts = function() {
 				return;
 			}
 			Molpy.Boosts['Sand Refinery'].power += n;
-			Molpy.Notify('Sand Refinery upgraded', 1);
+			Molpy.Notify('Sand Refinery upgraded', 0);
 			Molpy.RatesRecalculate();
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Sand Refinery']);
 		}
@@ -2185,7 +2185,7 @@ Molpy.DefineBoosts = function() {
 		if(sr.power < n) return;
 		Molpy.Add('GlassChips', n);
 		sr.power = Math.floor(sr.power - n) || 0;
-		Molpy.Notify('Sand Refinery downgraded', 1);
+		Molpy.Notify('Sand Refinery downgraded', 0);
 		Molpy.RatesRecalculate();
 		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', 'Sand Refinery']);
 	}
@@ -2328,7 +2328,7 @@ Molpy.DefineBoosts = function() {
 			var ch = Molpy.Boosts['GlassChips'];
 			Molpy.Spend('GlassChips', cost);
 			ch.bought += n;
-			Molpy.Notify('Glass Chip Storage upgraded', 1);
+			Molpy.Notify('Glass Chip Storage upgraded', 0);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', ch.name]);
 		}
 	}
@@ -2509,7 +2509,7 @@ Molpy.DefineBoosts = function() {
 		if(Molpy.Has('GlassBlocks', unitCost * n) && Molpy.CheckSandRateAvailable(Molpy.GlassChillerIncrement() * n)) {
 			Molpy.Spend('GlassBlocks', unitCost * n);
 			Molpy.Boosts['Glass Chiller'].power += n;
-			Molpy.Notify('Glass Chiller upgraded', 1);
+			Molpy.Notify('Glass Chiller upgraded', 0);
 			Molpy.RatesRecalculate();
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Glass Chiller']);
 		}
@@ -2533,7 +2533,7 @@ Molpy.DefineBoosts = function() {
 		if(gc.power < n) return;
 		Molpy.Add('GlassBlocks', n);
 		gc.power = Math.floor(gc.power - n) || 0;
-		Molpy.Notify('Glass Chiller downgraded', 1);
+		Molpy.Notify('Glass Chiller downgraded', 0);
 		Molpy.RatesRecalculate();
 		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', 'Glass Chiller']);
 	}
@@ -2668,7 +2668,7 @@ Molpy.DefineBoosts = function() {
 			var bl = Molpy.Boosts['GlassBlocks'];
 			Molpy.Spend('GlassBlocks', cost);
 			bl.bought += n;
-			Molpy.Notify('Glass Block Storage upgraded', 1);
+			Molpy.Notify('Glass Block Storage upgraded', 0);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', bl.name]);
 		}
 	}
@@ -2683,7 +2683,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Spend('GlassBlocks', Molpy.SandPurifierUpgradeCost());
 			Molpy.Boosts['Sand Purifier'].power++;
 			Molpy.RatesRecalculate();
-			Molpy.Notify('Sand Purifier upgraded', 1);
+			Molpy.Notify('Sand Purifier upgraded', 0);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Sand Purifier']);
 		}
 	}
@@ -2738,7 +2738,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['Sand Purifier'].power += upgrades;
 
 			Molpy.RatesRecalculate();
-			Molpy.Notify('Sand Purifier upgraded ' + Molpify(upgrades, 2) + ' times', 1);
+			Molpy.Notify('Sand Purifier upgraded ' + Molpify(upgrades, 2) + ' times', 0);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Sand Purifier']);
 		}
 	}
@@ -2764,7 +2764,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['Glass Extruder'].power += upgrades;
 
 			Molpy.RatesRecalculate();
-			Molpy.Notify('Glass Extruder upgraded ' + Molpify(upgrades, 2) + ' times', 1);
+			Molpy.Notify('Glass Extruder upgraded ' + Molpify(upgrades, 2) + ' times', 0);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Glass Extruder']);
 		}
 	}
@@ -2789,7 +2789,7 @@ Molpy.DefineBoosts = function() {
 			if(extra > 0) {
 				Molpy.Spend('GlassChips', extra * 2.5);
 				Molpy.Boosts['Sand Refinery'].Refresh();
-				Molpy.Notify('Sand Refinery upgraded ' + Molpify(extra, 2) + ' times', 1);
+				Molpy.Notify('Sand Refinery upgraded ' + Molpify(extra, 2) + ' times', 0);
 				Molpy.RatesRecalculate();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Sand Refinery']);
 			}
@@ -2820,7 +2820,7 @@ Molpy.DefineBoosts = function() {
 			if(extra > 0) {
 				Molpy.Spend('GlassBlocks', extra * 4.5);
 				Molpy.Boosts['Glass Chiller'].Refresh();
-				Molpy.Notify('Glass Chiller upgraded ' + Molpify(extra, 2) + ' times', 1);
+				Molpy.Notify('Glass Chiller upgraded ' + Molpify(extra, 2) + ' times', 0);
 				Molpy.RatesRecalculate();
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Glass Chiller']);
 			}
@@ -3019,7 +3019,7 @@ Molpy.DefineBoosts = function() {
 				fa.power++;
 				fa.Refresh();
 				Molpy.Boosts['Rosetta'].Refresh();
-				Molpy.Notify('Factory Automation Upgraded', 1);
+				Molpy.Notify('Factory Automation Upgraded', 0);
 				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', fa.name]);
 			}
 		}
@@ -3149,7 +3149,7 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		lockFunction: function() {
-			Molpy.Notify('Primary Redundancy Supply Reengaged', 1);
+			Molpy.Notify('Primary Redundancy Supply Reengaged', 0);
 		}
 	});
 
@@ -3872,7 +3872,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Spend('GlassChips', Molpy.GlassExtruderUpgradeCost());
 			Molpy.Boosts['Glass Extruder'].power++;
 			Molpy.RatesRecalculate();
-			Molpy.Notify('Glass Extruder upgraded', 1);
+			Molpy.Notify('Glass Extruder upgraded', 0);
 			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Glass Extruder']);
 		}
 	}
@@ -4160,12 +4160,12 @@ Molpy.DefineBoosts = function() {
 			if(this.Has(9001, 1)) Molpy.EarnBadge('Scouter');
 			if(!Molpy.boostSilence) {
 				if(n == 1)
-					Molpy.Notify('You found a Blackprint page', 1);
+					Molpy.Notify('You found a Blackprint page', 0);
 				else
-					Molpy.Notify('You found ' + Molpify(n) + ' Blackprint pages', 1);
+					Molpy.Notify('You found ' + Molpify(n) + ' Blackprint pages', 0);
 			} else {
 				if(this.Has(target, 1) && !this.Has(target + n, 1)) {
-					Molpy.Notify('You now have the ' + Molpify(target) + ' Blackprint pages you require.', 1);
+					Molpy.Notify('You now have the ' + Molpify(target) + ' Blackprint pages you require.', 0);
 				}
 				return;
 			}
@@ -4175,9 +4175,9 @@ Molpy.DefineBoosts = function() {
 			if(!this.Has(target, 1))
 				Molpy.Notify('You need ' + Molpify(target - this.Level) + ' more pages', 1);
 			else if(this.Has(target + 1, 1))
-				Molpy.Notify('You have more pages than you need right now', 1);
+				Molpy.Notify('You have more pages than you need right now', 0);
 			else
-				Molpy.Notify('You now have the ' + Molpify(target) + ' Blackprint pages you require.', 1);
+				Molpy.Notify('You now have the ' + Molpify(target) + ' Blackprint pages you require.', 0);
 		},
 		
 		Spend: Molpy.BoostFuncs.Spend,
@@ -4386,7 +4386,7 @@ Molpy.DefineBoosts = function() {
 			chips *= (this.power - 1);
 			Molpy.Add('GlassChips', chips);
 			this.power = 0;
-			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monums' + this.Making].name + '</small>', 1);
+			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monums' + this.Making].name + '</small>', 0);
 		}
 	});
 	new Molpy.Boost({
@@ -4426,7 +4426,7 @@ Molpy.DefineBoosts = function() {
 			chips *= (this.power - 1);
 			Molpy.Add('GlassChips', chips);
 			this.power = 0;
-			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monumg' + this.Making].name + '</small>', 1);
+			Molpy.Notify(this.name + ' has cancelled making <small>' + Molpy.Badges['monumg' + this.Making].name + '</small>', 0);
 		}
 	});
 	new Molpy.Boost({
@@ -4472,7 +4472,7 @@ Molpy.DefineBoosts = function() {
 			sand *= (this.power - 1);
 			Molpy.Boosts['Sand'].dig(sand);
 			this.power = 0;
-			Molpy.Notify(this.name + ' has cancelled filling <small>' + Molpy.Badges['monums' + this.Making].name + '</small>', 1);
+			Molpy.Notify(this.name + ' has cancelled filling <small>' + Molpy.Badges['monums' + this.Making].name + '</small>', 0);
 		}
 	});
 	new Molpy.Boost({
@@ -4518,7 +4518,7 @@ Molpy.DefineBoosts = function() {
 			if(this.Making < 0) chips *= chips;
 			Molpy.Add('GlassChips', chips);
 			this.power = 0;
-			Molpy.Notify(this.name + ' has cancelled filling <small>' + Molpy.Badges['monums' + this.Making].name + '</small>', 1);
+			Molpy.Notify(this.name + ' has cancelled filling <small>' + Molpy.Badges['monums' + this.Making].name + '</small>', 0);
 		}
 	});
 
@@ -4598,7 +4598,7 @@ Molpy.DefineBoosts = function() {
 			smm.power++;
 			smm.Refresh();
 			if(smm.power > 100) {
-				Molpy.Notify('Sand Mould Creation is complete', 1);
+				Molpy.Notify('Sand Mould Creation is complete', 0);
 				if(Molpy.Boosts['Draft Dragon'].IsEnabled) Molpy.FillSandMould(smm.Making);
 				return times;
 			}
@@ -4666,7 +4666,7 @@ Molpy.DefineBoosts = function() {
 			smf.power++;
 			smf.Refresh();
 			if(smf.power > 200) {
-				Molpy.Notify('Sand Mould Filling is complete', 1);
+				Molpy.Notify('Sand Mould Filling is complete', 0);
 				Molpy.EarnBadge('monums' + smf.Making);
 				if(Molpy.Boosts['Draft Dragon'].IsEnabled && Molpy.Earned('discov' + smf.Making)
 					&& !Molpy.Earned('monumg' + smf.Making)) Molpy.MakeGlassMould(smf.Making);
@@ -4746,7 +4746,7 @@ Molpy.DefineBoosts = function() {
 			gmm.power++;
 			gmm.Refresh();
 			if(gmm.power > 400) {
-				Molpy.Notify('Glass Mould Creation is complete', 1);
+				Molpy.Notify('Glass Mould Creation is complete', 0);
 				if(Molpy.Boosts['Draft Dragon'].IsEnabled) Molpy.FillGlassMould(gmm.Making);
 				return times;
 			}
@@ -4813,7 +4813,7 @@ Molpy.DefineBoosts = function() {
 			gmf.power++;
 			gmf.Refresh();
 			if(gmf.power > 800) {
-				Molpy.Notify('Glass Mould Filling is complete', 1);
+				Molpy.Notify('Glass Mould Filling is complete', 0);
 				Molpy.EarnBadge('monumg' + gmf.Making);
 				Molpy.Overview.Update(gmf.Making);
 				if(Molpy.Got('Magic Mirror') && Molpy.Boosts['Draft Dragon'].IsEnabled) {
@@ -6462,7 +6462,7 @@ Molpy.DefineBoosts = function() {
 			if(Molpy.Badges[alias]) {
 				if(Molpy.Earned(alias)) {
 					if(miscount) {
-						Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' between NP' + npstart + ' and NP' + np, 1);
+						Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' between NP' + npstart + ' and NP' + np, 2);
 						miscount = 0;
 					}
 					npstart = np;
@@ -6473,7 +6473,7 @@ Molpy.DefineBoosts = function() {
 			}
 		}
 		if(miscount)
-			Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' since NP' + npstart, 1);
+			Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' since NP' + npstart, 2);
 		if(Molpy.Earned('Minus Worlds')) {
 			var miscount = 0;
 			var npstart = -Math.abs(Molpy.highestNPvisited);
@@ -6482,7 +6482,7 @@ Molpy.DefineBoosts = function() {
 				if(Molpy.Badges[alias]) {
 					if(Molpy.Earned(alias)) {
 						if(miscount) {
-							Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' between NP' + npstart + ' and NP' + np, 1);
+							Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' between NP' + npstart + ' and NP' + np, 2);
 							miscount = 0;
 						}
 						npstart = np;
@@ -6493,9 +6493,9 @@ Molpy.DefineBoosts = function() {
 				}
 			}
 			if(miscount)
-				Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' since NP' + npstart, 1);
+				Molpy.Notify('You have missed ' + miscount + ' discover' + (miscount > 1 ? 'ies' : 'y') + ' since NP' + npstart, 2);
 		}
-		if(!missing) Molpy.Notify('You have not missed any discoveries');
+		if(!missing) Molpy.Notify('You have not missed any discoveries',2);
 	}
 
 	new Molpy.Boost({
@@ -7300,7 +7300,7 @@ Molpy.DefineBoosts = function() {
 		if (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
 		n = Math.floor(n*Molpy.Papal('Bonemeal'));
 		n = Math.min(n,1e290);
-		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 1);
+		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 0);
 		Molpy.Add('Bonemeal', n);
 		Molpy.Spend('LogiPuzzle', Molpy.Level('LogiPuzzle'));
 		if (n >= 10) Molpy.UnlockBoost('Shadow Feeder');
@@ -7351,7 +7351,7 @@ Molpy.DefineBoosts = function() {
 					}
 					if(amount) {
 						if(amount >= this.power / 10000000)
-							Molpy.Notify('Spent Sand: ' + Molpify(amount, 3), 1);
+							Molpy.Notify('Spent Sand: ' + Molpify(amount, 3), 0);
 						else {
 							Molpy.spendSandNotifyCount += amount;
 							return 1;
@@ -7435,7 +7435,7 @@ Molpy.DefineBoosts = function() {
 				this.sandPermNP = 0;
 			}
 			if(Molpy.globalSpmNPMult == 0 && oldrate != 0) {
-				Molpy.Notify('Looks like all the sand you dig is being used to make glass', 1);
+				Molpy.Notify('Looks like all the sand you dig is being used to make glass', 2);
 			}
 
 			if(this.sandPermNP > oldrate) this.checkSandRateBadges();
@@ -7660,7 +7660,7 @@ Molpy.DefineBoosts = function() {
 			this['spent'] += amount;
 			Molpy.mustardCleanup();
 			if(!Molpy.boostSilence && !silent && (isFinite(this.power) || !isFinite(amount)))
-				Molpy.Notify('Spent Castles: ' + Molpify(amount, 3), 1);
+				Molpy.Notify('Spent Castles: ' + Molpify(amount, 3), 0);
 			return ret;
 		},
 		
@@ -7724,7 +7724,7 @@ Molpy.DefineBoosts = function() {
 				}
 				if(amount) {
 					if(amount >= this.power / 10000000)
-						Molpy.Notify(amount == 1 ? '+1 Castle' : Molpify(amount, 3) + ' Castles Built', 1);
+						Molpy.Notify(amount == 1 ? '+1 Castle' : Molpify(amount, 3) + ' Castles Built', 0);
 					else
 					{
 						this.buildNotifyCount += amount;
@@ -9660,7 +9660,7 @@ Molpy.DefineBoosts = function() {
 			};
 			var d = Math.floor(totalc*Molpy.Papal("Flux"));
 			if (d) Molpy.Add('FluxCrystals', d);
-			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(totalc+d)+' flux crystal'+plural(totalc+d)+'.', true);
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(totalc+d)+' flux crystal'+plural(totalc+d)+'.', 0);
 		} else { // Use maths to approximate then modify by a small random element
 			var c = (Molpy.Boosts['Time Lord'].bought + 1) * (Molpy.Boosts['Time Lord'].bought + 2) / 2 - 
 				 (Molpy.Boosts['Time Lord'].bought + 2 - Molpy.Level('Time Lord')) * 
@@ -9672,7 +9672,7 @@ Molpy.DefineBoosts = function() {
 				c*=Math.pow(1.001,Molpy.Boosts['Bonemeal'].power/1000);
 			c = Math.floor(c * .9 + c * .2 * Math.random());
 			Molpy.Add('FluxCrystals', c);
-			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+'.', true);
+			Molpy.Notify('Chronoreaper activated. Harvested '+Molpify(c)+' flux crystal'+plural(c)+'.', 0);
 			Molpy.Add('Time Lord', -levels);
 		}
 		Molpy.Boosts['Flux Harvest'].Refresh();
@@ -10098,9 +10098,9 @@ Molpy.DefineBoosts = function() {
 			Molpy.UnlockBoost(s);
 			Molpy.Boosts[s].buy();
 			if(Molpy.Boosts[s].bought) {
-				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed', 1);
+				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed', 0);
 			} else {
-				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed and is available for purchase', 1);
+				Molpy.Notify(Molpy.Boosts[s].name + ' has been constructed and is available for purchase', 0);
 			}
 		},
 		department: 0,
@@ -12479,7 +12479,7 @@ Molpy.Coallate = function(){
 			Molpy.Spend('FluxCrystals', Infinity);
 			Molpy.Add('Panes', yield);
 			Molpy.Boosts['AntiAuto'].Level++;
-			Molpy.Notify('' + Molpify(cost) + ' dimension shard' + plural(cost) + ' uncrushed into ' + Molpify(yield) + ' pane' + plural(yield) + '.', 1);
+			Molpy.Notify('' + Molpify(cost) + ' dimension shard' + plural(cost) + ' uncrushed into ' + Molpify(yield) + ' pane' + plural(yield) + '.', 0);
 			if (Molpy.Boosts['Locked Vault'].power > 1e21 && Molpy.IsEnabled('Mario')) {
 				Molpy.UnlockBoost('Vise');
 			}
@@ -12545,7 +12545,7 @@ Molpy.Coallate = function(){
 		Molpy.Anything = 1;
 		if (Molpy.Spend('Shards', cost)) {
 			if (Molpy.currentStory != -1) {
-				Molpy.Notify('Walk on home, boy.');
+				Molpy.Notify('Walk on home, boy.',1);
 				return;
 			}
 			var sign = Math.sign(Molpy.newpixNumber);
@@ -12555,7 +12555,7 @@ Molpy.Coallate = function(){
 			}
 			for (i = sign*3095; Math.abs(i) <= Math.abs(Molpy.highestNPvisited); i += sign) {
 				if (Molpy.Boosts['kitkat'].prey.indexOf(i) == -1) {
-					Molpy.Notify('You have sniffed out a ripe kitten at NP ' + Molpify(i) + '.', 1);
+					Molpy.Notify('You have sniffed out a ripe kitten at NP ' + Molpify(i) + '.', 2);
 					if (Math.abs(i) >= 3173) {
 						Molpy.UnlockBoost('Sigma Stacking');
 					}
@@ -12614,11 +12614,11 @@ Molpy.Coallate = function(){
 		var np = Molpy.newpixNumber;
 		if (Molpy.currentStory != -1) return;
 		if (Molpy.Boosts['PG'].goal == np) {
-			Molpy.Notify('You\'re already right next to the goalpost.');
+			Molpy.Notify('You\'re already right next to the goalpost.',1);
 			return;
 		}
 		if (!Molpy.Spend('FluxCrystals', Infinity)) {
-			Molpy.Notify('You need way, way more flux crystals than that.');
+			Molpy.Notify('You need way, way more flux crystals than that.',1);
 			return;
 		}
 		if (Molpy.Spend('Shards', 1)) {
@@ -12631,7 +12631,7 @@ Molpy.Coallate = function(){
 			if (Molpy.Boosts['PG'].power >= 66) {
 				Molpy.EarnBadge('Master Debater');
 			}
-			Molpy.Notify('You have moved the goalpost to NP ' + Molpify(np), 1);
+			Molpy.Notify('You have moved the goalpost to NP ' + Molpify(np), 0);
 			Molpy.Notify('Come back soon!');
 			return;
 		}
@@ -12656,7 +12656,7 @@ Molpy.Coallate = function(){
 		}
 		if (Molpy.Spend('Shards', 1)) {
 			Molpy.TTT(goal);
-			Molpy.Notify('You have returned to the goalpost at NP ' + Molpify(goal) + '.', 1);
+			Molpy.Notify('You have returned to the goalpost at NP ' + Molpify(goal) + '.', 0);
 			return;
 		}
 		Molpy.Notify('Without a dimension shard, you can\'t trigger your tether to the goalpost.');
@@ -12698,11 +12698,11 @@ Molpy.Coallate = function(){
 	Molpy.Fold = function() {
 		Molpy.Anything = 1;
 		if (!Molpy.Spend('Panes', 1)) {
-			Molpy.Notify('The boxes don\'t fit inside!');
+			Molpy.Notify('The boxes don\'t fit inside!',1);
 			return;
 		}
 		Molpy.Boosts['Tangled Tesseract'].power = Math.sign(Molpy.Boosts['Tangled Tesseract'].power) * (Math.abs(Molpy.Boosts['Tangled Tesseract'].power)+1);
-		Molpy.Notify('You have folded the cage upon itself along yet another dimension.', 1);
+		Molpy.Notify('You have folded the cage upon itself along yet another dimension.', 0);
 		return;
 	};
 	new Molpy.Boost({
