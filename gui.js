@@ -1183,7 +1183,7 @@ Molpy.DefineGUI = function() {
 		g('logCurrent').value="Current";
 	}
 	
-	Molpy.Notify = function(text, log, clas, title, details) {
+	Molpy.Notify = function(text, importance) {
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
 		if(log) {
@@ -1193,12 +1193,12 @@ Molpy.DefineGUI = function() {
 				Molpy.logBuffer += Molpy.notifLog.getLine();
 				Molpy.notifLog.text = text;
 				Molpy.notifLog.qty=1;
-				Molpy.notifLog.details = details || "";
-				Molpy.notifLog.clas = clas || "";
+				Molpy.notifLog.details = "";
+				Molpy.notifLog.clas = "";
 				Molpy.logUpdatePaint = 1;
 			}
 		}
-		if(Molpy.options['notifsilence']){return;}
+		if(Molpy.options['notifsilence']>importance){return;}
 		//pick the first free (or the oldest) notification to replace it
 		var highest = 0;
 		var highestI = 0;
