@@ -244,10 +244,10 @@ Molpy.DefineGUI = function() {
 			}
 			if(item) {
 				if(!(item.bought || item.earned)) {
-					Molpy.Notify('You do not own ' + item.name);
+					Molpy.Notify('You do not own ' + item.name, 1);
 				} else {
 					f.boost = item;
-					Molpy.Notify('You have chosen ' + item.name + ' as Favourite ' + n, 1);
+					Molpy.Notify('You have chosen ' + item.name + ' as Favourite ' + n, 0);
 					Molpy.UnlockBoost('Sand');
 					Molpy.UnlockBoost('Castles');
 				}
@@ -1183,22 +1183,23 @@ Molpy.DefineGUI = function() {
 		g('logCurrent').value="Current";
 	}
 	
-	Molpy.Notify = function(text, log, clas, title, details) {
+	Molpy.Notify = function(text, importance) {
+		if(importance==undefined) importance=0;
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
-		if(log) {
+		
 			if (Molpy.notifLog.text == text){
 				Molpy.notifLog.qty++;
 			} else {
 				Molpy.logBuffer += Molpy.notifLog.getLine();
 				Molpy.notifLog.text = text;
 				Molpy.notifLog.qty=1;
-				Molpy.notifLog.details = details || "";
-				Molpy.notifLog.clas = clas || "";
+				Molpy.notifLog.details = "";
+				Molpy.notifLog.clas = "";
 				Molpy.logUpdatePaint = 1;
 			}
-		}
-		if(Molpy.options['notifsilence']){return;}
+		
+		if(Molpy.options['notifsilence']>importance){return;}
 		//pick the first free (or the oldest) notification to replace it
 		var highest = 0;
 		var highestI = 0;
@@ -1931,7 +1932,7 @@ Molpy.DefineGUI = function() {
 		this.Delete = function() {
 			Molpy.Anything = 1;
 			if(Molpy.layouts.length < 2) {
-				Molpy.Notify('You need at least 1 layout!');
+				Molpy.Notify('You need at least 1 layout!',1);
 				return;
 			}
 			if(confirm('Really delete the layout "' + this.name + '"?')) {
