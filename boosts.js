@@ -6832,7 +6832,7 @@ Molpy.DefineBoosts = function() {
 				if (me.power>=1e9) Molpy.UnlockBoost('Panthers Dream');
 			}
 		} else if (Molpy.Spend('Goats', me.power-1)) {	
-			me.bought += n;
+			me.power += n;
 			Molpy.Notify('Dragon Wisdom lost!'); 
 		};
 		me.Refresh();
