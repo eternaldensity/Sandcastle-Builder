@@ -12588,7 +12588,7 @@ Molpy.Coallate = function(){
 					str += '. Only works in OTC, for reasons.';
 					return str;
 				}
-				'. Costs 1 dimension shard and infinite flux crystals to move or return.'
+				str+='. Costs 1 dimension shard and infinite flux crystals to move or return.'
 				str += '<br><input type=button onclick="Molpy.MoveGoal()" value="Move"></input> the goalpost to NP ' + Molpy.newpixNumber + '.';
 				if (me.goal != undefined) {
 					str += '<br><input type=button onclick="Molpy.ScoreGoal()" value="Return"></input> to the goalpost at NP ' + me.goal + '.';
