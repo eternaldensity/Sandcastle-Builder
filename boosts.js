@@ -757,7 +757,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.EarnBadge('The Big Freeze');
 			return;
 		}
-		if(Math.abs(np) > Math.abs(Molpy.largestNPvisited[Number((np-Math.floor(np)).toFixed(3))])) {
+		if(Math.floor(Math.abs(np)) > Math.floor(Math.abs(Molpy.largestNPvisited[Number((np-Math.floor(np)).toFixed(3))]))) {
 			Molpy.Notify('Wait For It',1);
 			return;
 		}
@@ -13248,7 +13248,7 @@ Molpy.Coallate = function(){
 			group: 'varie',
 			className: 'action',
 			desc: function(me){
-				var str='Lets you use the blue of the ocean and some <i>other</i>ness to make squids so'
+				var str='Lets you use the blue of the ocean and some <i>Other</i>ness to make squids so'
 				str=str+' that you can extract their ink. Each squid requires fifty of each.'
 				if(Molpy.Got('Argy')){
 					str=str+'<br> <input type="Button" value="Make ' + Molpify(Molpy.getSquids())
@@ -13353,7 +13353,7 @@ Molpy.Coallate = function(){
 			className: 'action',
 			desc: function(me){
 				var str='Lets you turn the essence of a color into its dual (Blueness to <i>Other</i>ness, <i>Other</i>ness to Blueness, Blackness to'
-				str+=(Molpy.Got('Whiteness')?'Whiteness':'???')+''and vice versa). Uses 5 Blackness to begin the operation, then '
+				str+=(Molpy.Got('Whiteness')?'Whiteness':'???')+'and vice versa). Uses 5 Blackness to begin the operation, then '
 				str=str+'between 1-10 of the original color per amount of new color you wish to craft.'
 				if(Molpy.Got('Polarizer')){
 					str=str+' You may dualize:'
@@ -13447,7 +13447,7 @@ Molpy.Coallate = function(){
 			name: 'Not a Priest',
 			alias: 'NaP',
 			desc: function(me){
-				var str='When whiteness and Blackness react, they produce '
+				var str='When Whiteness and Blackness react, they produce '
 				if(Molpy.Got('Grayness')){str=str+'Grayness.'} else{str=str+' something else.'}
 				if(Molpy.Got('Photoelectricity')){
 					str += '<br><input type="Button" onclick="Molpy.GenericToggle(' 
