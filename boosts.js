@@ -13352,7 +13352,8 @@ Molpy.Coallate = function(){
 			group: 'varie',
 			className: 'action',
 			desc: function(me){
-				var str='Lets you turn the essence of a color into its dual (blueness to otherness, otherness to blueness, blackness to ??? and vice versa). Uses 5 Blackness to begin the operation, then '
+				var str='Lets you turn the essence of a color into its dual (Blueness to <i>Other</i>ness, <i>Other</i>ness to Blueness, Blackness to'
+				str+=(Molpy.Got('Whiteness')?'Whiteness':'???')+''and vice versa). Uses 5 Blackness to begin the operation, then '
 				str=str+'between 1-10 of the original color per amount of new color you wish to craft.'
 				if(Molpy.Got('Polarizer')){
 					str=str+' You may dualize:'
@@ -13594,13 +13595,15 @@ Molpy.Coallate = function(){
 	Molpy.RetroAct=function(alias){
 		var spent=Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/20,1))/Math.log(10)))
 		if(Molpy.Spend({Grayness:20*spent})){
-		if(Math.random()>(Math.max(0,-0.001+Math.pow(Molpy.Boosts['Retroactivity'].power,spent)){Molpy.Notify('A Contradiction ocurred!',1);
-		Molpy.UnlockRepeatableBoost('splosion',1,spent)
-		} else{Molpy.UnlockRepeatableBoost(alias,1,spent)}}else{Molpy.Notify('Insufficient Grayness for a meaningful answer.',1)}}
+			if(Math.random()>(Math.max(0,-0.001+Math.pow(Molpy.Boosts['Retroactivity'].power,spent)))){
+			Molpy.Notify('A Contradiction ocurred!',1);
+			Molpy.UnlockRepeatableBoost('splosion',1,spent)
+			} else{Molpy.UnlockRepeatableBoost(alias,1,spent)}
+		} else{Molpy.Notify('Insufficient Grayness for a meaningful answer.',1)}}
 	new Molpy.Boost({
 			name: 'Retroactivity',
 			desc: function(me){
-				var str="Lets you spend 20 grayness to unlock target repeatable photo boosts."
+				var str="Lets you spend 20 Grayness to unlock target photo boosts."
 				if(Molpy.Got(me.alias)){
 					var avoptions=[]
 						for(var i=0;i<Molpy.PhotoRewardOptions.length;i++){
