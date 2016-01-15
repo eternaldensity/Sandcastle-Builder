@@ -13592,10 +13592,11 @@ Molpy.Coallate = function(){
 		}
 	);
 	Molpy.RetroAct=function(alias){
-		if(Molpy.Spend({Grayness:20*Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/20,1))/Math.log(10)))})){
-		if(Math.random()>(Math.max(0,-0.001+Math.pow(Molpy.Boosts['Retroactivity'].power,(Math.pow(10,Math.floor(Math.log(Math.max(Molpy.Boosts['Grayness'].power,1))/Math.log(10)))))))){Molpy.Notify('A Contradiction ocurred!',1);
-		Molpy.UnlockRepeatableBoost('splosion',1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/20,1))/Math.log(10))))
-		} else{Molpy.UnlockRepeatableBoost(alias,1,Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/20,1))/Math.log(10))))}}}
+		var spent=Math.pow(10,Math.floor(0.5*Math.log(Math.max(Molpy.Boosts['Grayness'].power/20,1))/Math.log(10)))
+		if(Molpy.Spend({Grayness:20*spent})){
+		if(Math.random()>(Math.max(0,-0.001+Math.pow(Molpy.Boosts['Retroactivity'].power,spent)){Molpy.Notify('A Contradiction ocurred!',1);
+		Molpy.UnlockRepeatableBoost('splosion',1,spent)
+		} else{Molpy.UnlockRepeatableBoost(alias,1,spent)}}else{Molpy.Notify('Insufficient Grayness for a meaningful answer.',1)}}
 	new Molpy.Boost({
 			name: 'Retroactivity',
 			desc: function(me){
