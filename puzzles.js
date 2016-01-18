@@ -49,7 +49,7 @@ Molpy.DefinePuzzles = function() {
 				var skip = 0;
 				if(!this.firstTry) {
 					if(!Molpy.Spend(this.tryCost)) {
-						Molpy.Notify('You can\'t afford a second try.');
+						Molpy.Notify('You can\'t afford a second try.',1);
 						return;
 					}
 				}
@@ -82,7 +82,7 @@ Molpy.DefinePuzzles = function() {
 					score = diff * (!this.firstTry + points) * this.puzzles;
 				}
 
-				Molpy.Notify(Molpify(correct) + ' answer' + plural(correct) + ' correct, ' + Molpify(incorrect) + ' answer' + plural(incorrect) + ' incorrect. You earned ' + Molpify(score) + ' point' + plural(score), 1);
+				Molpy.Notify(Molpify(correct) + ' answer' + plural(correct) + ' correct, ' + Molpify(incorrect) + ' answer' + plural(incorrect) + ' incorrect. You earned ' + Molpify(score) + ' point' + plural(score), 0);
 				if(diff > 0) {
 					Molpy.Add('Logicat', 0, score);
 					Molpy.UpdateFaves(1);

@@ -1082,11 +1082,11 @@ Molpy.defineCrafts=function(){
 		
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
-			if(Molpy.Boosts[i].power<s[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of materials.");}return;}
+			if(Molpy.Boosts[i].power<s[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of materials.",1);}return;}
 		}
 		for(var i in c){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){return;}
-			if(Molpy.Boosts[i].power<c[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of catalysts.");}return;}
+			if(Molpy.Boosts[i].power<c[i]){if(!Molpy.boostSilence){Molpy.Notify("Couldn't craft due to a lack of catalysts.",1);}return;}
 		}
 		for(var i in s){
 			if(Molpy.Boosts[i]==undefined || Molpy.Boosts[i].power==undefined){}

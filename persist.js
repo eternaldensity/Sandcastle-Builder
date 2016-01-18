@@ -49,7 +49,7 @@
 		if(Molpy.supportsLocalStorage) {
 			success = Molpy.SaveLocalStorage();
 			if(!Molpy.LocalSaveExists()) {
-				Molpy.Notify('localstorage save failed, trying cookies instead');
+				Molpy.Notify('localstorage save failed, trying cookies instead',1);
 				success = Molpy.SaveC_STARSTAR_kie();
 			}
 		} else {
@@ -74,7 +74,7 @@
 			document.cookie = dough;//aaand save
 
 			if(document.cookie.indexOf('CastleBuilderGame') < 0) {
-				Molpy.Notify('Error while saving.<br>Export your save instead!', 1);
+				Molpy.Notify('Error while saving.<br>Export your save instead!', 2);
 				return;
 			}
 		}
@@ -121,7 +121,7 @@
 		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
 		Molpy.autosaveCountup = 0;
 		if(g('game')) {
-			Molpy.Notify('Game loaded', 1);
+			Molpy.Notify('Game loaded', 0);
 			if(Molpy.loadCount >= 40) {
 				Molpy.UnlockBoost('Coma Molpy Style');
 			}
@@ -140,7 +140,7 @@
 			}
 			Molpy.FromNeedlePulledThing(thread);
 		} else {
-			Molpy.Notify && Molpy.Notify('No saved cookies were found');
+			Molpy.Notify && Molpy.Notify('No saved cookies were found',1);
 			return 0;
 		}
 		return 1;
@@ -191,7 +191,7 @@
 		}
 		i++;
 		if(!noLayout) {
-			Molpy.Notify('Saved ' + i + ' layout' + plural(i));
+			Molpy.Notify('Saved ' + i + ' layout' + plural(i),0);
 			if(i < Molpy.layouts.length) {
 				Molpy.Notify(' Did not save ' + (Molpy.layouts.length - i) + ' layout' + plural(Molpy.layouts.length - i)
 					+ ' to save on cookie space until that\'s fixed. You can export them manually.', 1);
@@ -282,7 +282,7 @@
 			return;
 		}
 		if(thread == 'Molpy') {
-			Molpy.Notify(Molpy.BeanishToCuegish(Molpy.MolpyText), 1);
+			Molpy.Notify(Molpy.BeanishToCuegish(Molpy.MolpyText), 0);
 			return;
 		}
 		if(thread == 'OK, GLASS' && Molpy.Got('Glass Trolling')) {
@@ -908,7 +908,7 @@
 		Molpy.UpgradeOldVersions(version);
 		if(version < Molpy.version) //hey let's do this every upgrade!
 		{
-			Molpy.Notify('Upgraded to new version! '+Molpy.version + '<br>'+ Molpy.versionName, 1);
+			Molpy.Notify('Upgraded to new version! '+Molpy.version + '<br>'+ Molpy.versionName, 2);
 			if(Molpy.Boosts['Safety Hat'].unlocked && Molpy.Got('Safety Pumpkin') && !Molpy.Boosts['SG'].unlocked)
 				Molpy.UnlockBoost('SG');
 			else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
@@ -956,7 +956,7 @@
 			var tt = Molpy.Boosts['Time Travel'];
 			if(tt.bought && tt.power != 1) {
 				tt.power = 1;
-				Molpy.Notify(Molpy.BeanishToCuegish(Molpy.BlitzGirl.Apology), 1);
+				Molpy.Notify(Molpy.BeanishToCuegish(Molpy.BlitzGirl.Apology), 0);
 			}
 		}
 		if(version < 2.8) {
@@ -977,7 +977,7 @@
 				} else {
 					Molpy.Boosts['Logicat'].power += 100;
 					Molpy.LockBoost('Bacon');
-					Molpy.Notify('That should not have unlocked quite yet. A higher Logicat Level is needed.');
+					Molpy.Notify('That should not have unlocked quite yet. A higher Logicat Level is needed.',1);
 				}
 			}
 		}
@@ -1045,7 +1045,7 @@
 		}
 		if(version < 3.13) {
 			if(!Molpy.Earned('Getting Expensive') && !isFinite(Molpy.Boosts['Castles'].power)) {
-				Molpy.Notify('Added a new Badge to help very early beginners, and you seem to be beyond the point where you could easily get it normally, so here it is.', 1);
+				Molpy.Notify('Added a new Badge to help very early beginners, and you seem to be beyond the point where you could easily get it normally, so here it is.', 0);
 				Molpy.EarnBadge('Getting Expensive');
 			}
 		}
@@ -1061,7 +1061,7 @@
 				imp.power = Math.ceil(imp.countdown / 1000);
 				imp.countdown = 0;
 				Molpy.Notify('Impervious Ninja change: it now gives ' + Molpify(imp.power)
-						+ ' Ninja Forgiveness, rather than a countdown. Also it uses 1% of your Glass Chips (in storage) per use.', 1);
+						+ ' Ninja Forgiveness, rather than a countdown. Also it uses 1% of your Glass Chips (in storage) per use.', 0);
 			}
 		}
 		if(version < 3.261) {
@@ -1419,7 +1419,7 @@
 		if (match && match[1] != Molpy.version) {
 			var namematch = remotedata.match(/Molpy.versionName=\'(.*)\'/);
 			var name = namematch? ' '+namematch[1] : '';
-			Molpy.Notify('There is a new Sandcastle Builder version ' + match[1] + name + ' available',1);
+			Molpy.Notify('There is a new Sandcastle Builder version ' + match[1] + name + ' available',2);
 		}
 	}
 }

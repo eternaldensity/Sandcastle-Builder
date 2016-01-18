@@ -380,7 +380,9 @@ new Molpy.Option({
 });
 new Molpy.Option({
     name: 'notifsilence',
-    title: 'No notifications',
+    title: 'Notifications',
+    range: 2,
+    text: ['All notifs', 'Less notifs', 'Critical only'],
     visability: 1
 });
 
