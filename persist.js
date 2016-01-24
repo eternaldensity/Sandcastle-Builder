@@ -358,7 +358,9 @@
 			var fencePost = '';
 			for(var num in saveData){
 				if (saveData[num][2] != 'array') {
-					str += fencePost + boost[saveData[num][0]];
+					var goatmonger = boost[saveData[num][0]]
+					goatmonger=saveData[num][2]=='object' ? JSON.stringify(goatmonger):goatmonger
+					str += fencePost + goatmonger;
 					fencePost = c;
 				} else {
 					var ting = saveData[num][0];
@@ -660,7 +662,9 @@
 					else if(saveData[num][2] == 'float')
 						me[saveData[num][0]] = parseFloat(savedValueList[savednum++]) || saveData[num][1];
 					else if(saveData[num][2] == 'string')
-						me[saveData[num][0]] = savedValueList[savednum++]||saveData[num][1]
+						me[saveData[num][0]] = savedValueList[savednum++] || saveData[num][1];
+					else if(saveData[num][2]=='object')
+						me[saveData[num][0]] = JSON.parse(savedValueList[savednum++]) || saveData[num][1];
 					else if(saveData[num][2] == 'array') { // Arrays store length + data(always float)
 						var ting = saveData[num][0];
 						me[ting] = [];
