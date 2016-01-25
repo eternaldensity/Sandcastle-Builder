@@ -13681,9 +13681,9 @@ Molpy.Coallate = function(){
 	);
 	new Molpy.Boost({
 			name: 'pInsanity',
-			desc: function(me){return ('Like pH, but way better.'+(Molpy.Boosts.pInsanity.bought)?
-			'<br><input type="Button" onclick="Molpy.GenericToggle(' + Molpy.Boosts.pInsanity.id + ')" value="' + (Molpy.Boosts.pInsanity.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>'
-			:'');},
+			desc: function(me){var s='Like pH, but way better.';if(Molpy.Boosts.pInsanity.bought){s+=
+			'<br><input type="Button" onclick="Molpy.GenericToggle(' + Molpy.Boosts.pInsanity.id + ')" value="' + (Molpy.Boosts.pInsanity.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';}
+			return s;},
 			group: 'varie',
 			IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
 			className: 'toggle',
