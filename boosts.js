@@ -13681,14 +13681,16 @@ Molpy.Coallate = function(){
 	);
 	new Molpy.Boost({
 			name: 'pInsanity',
-			desc: 'Like pH, but way better.',
+			desc: function(me){return ('Like pH, but way better.'+(me.bought)?
+			'<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>'
+			:'');},
 			group: 'varie',
+			IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
+			className: 'toggle',
 			price: {
 				Blueness: 12.5*50000
 			},
-			startPower: 1,
 			photo:1000,
-			buyFunction: function(){this.power=1}
 		}
 	);
 
