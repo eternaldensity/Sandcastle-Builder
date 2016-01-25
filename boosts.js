@@ -13682,7 +13682,7 @@ Molpy.Coallate = function(){
 	new Molpy.Boost({
 			name: 'pInsanity',
 			desc: function(me){return ('Like pH, but way better.'+(Molpy.Boosts.pInsanity.bought)?
-			'<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>'
+			'<br><input type="Button" onclick="Molpy.GenericToggle(' + Molpy.Boosts.pInsanity.id + ')" value="' + (Molpy.Boosts.pInsanity.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>'
 			:'');},
 			group: 'varie',
 			IsEnabled: Molpy.BoostFuncs.PosPowEnabled,
