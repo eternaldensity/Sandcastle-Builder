@@ -49,14 +49,14 @@
 		if(Molpy.supportsLocalStorage) {
 			success = Molpy.SaveLocalStorage();
 			if(!Molpy.LocalSaveExists()) {
-				Molpy.Notify('localstorage save failed, trying cookies instead',1);
+				Molpy.Notify('localstorage save failed, trying cookies instead',2);
 				success = Molpy.SaveC_STARSTAR_kie();
 			}
 		} else {
 			success = Molpy.SaveC_STARSTAR_kie();
 		}
 		if(!success) return;
-		Molpy.Notify('Game saved');
+		Molpy.Notify('Game saved',2);
 		auto || _gaq && _gaq.push(['_trackEvent', 'Save', 'Complete', '' + Molpy.saveCount]);
 
 		Molpy.autosaveCountup = 0;
@@ -140,7 +140,7 @@
 			}
 			Molpy.FromNeedlePulledThing(thread);
 		} else {
-			Molpy.Notify && Molpy.Notify('No saved cookies were found',1);
+			Molpy.Notify && Molpy.Notify('No saved cookies were found',2);
 			return 0;
 		}
 		return 1;
@@ -194,7 +194,7 @@
 			Molpy.Notify('Saved ' + i + ' layout' + plural(i),0);
 			if(i < Molpy.layouts.length) {
 				Molpy.Notify(' Did not save ' + (Molpy.layouts.length - i) + ' layout' + plural(Molpy.layouts.length - i)
-					+ ' to save on cookie space until that\'s fixed. You can export them manually.', 1);
+					+ ' to save on cookie space until that\'s fixed. You can export them manually.', 2);
 			}
 		}
 		while(Molpy.layoutsLoaded > i)//delete any extra if there are less than previously saved
