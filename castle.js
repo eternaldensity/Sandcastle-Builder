@@ -3432,7 +3432,7 @@ Molpy.Up = function() {
 					}
 				}
 			}
-			if(Molpy.Got('pInsanity')){
+			if(Molpy.Got('pInsanity') && Molpy.IsEnabled('pInsanity')){
 				Molpy.RunFastPhoto(625)
 			}
 			Molpy.boostSilence--
