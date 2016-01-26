@@ -13691,6 +13691,23 @@ Molpy.Coallate = function(){
 			buyFunction: function(){this.power=1}
 		}
 	);
+	new Molpy.Boost({
+			name: 'Ranger',
+			group: 'hpt',
+			className: 'toggle',
+			desc: function(me) {
+				return (me.IsEnabled ? 'T' : 'When active, t') + 'ames wild logicats to provide Panther Poke.'
+					+ (me.bought ? '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="'
+					+ (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>' : '');
+			},
+		
+			IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+			
+			price: {
+				LogiPuzzle: 50,
+			},
+		}
+	)
 
 // END OF BOOSTS, add new ones immediately before this comment
 }
