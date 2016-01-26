@@ -2325,7 +2325,6 @@ Molpy.Up = function() {
 							Molpy.Notify('Caged logicat limit reached', 0);
 						} else {
 							pp = Molpy.Boosts['Panther Poke'];
-							Molpy.Notify('The ranger gives you:', 0);
 							Molpy.Notify('Panther Poke: ' + pp.desc, 0);
 							pp.buyFunction(1);
 						}
