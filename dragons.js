@@ -267,7 +267,6 @@ Molpy.Opponent = function(args) {
 					if(thing) rwds.push('A' + (thing.single.match(/^[aeiou]/i)?'n ':' ') + thing.single );
 //					if(second) rwds.push('A' + (thing.single.match(/^[aeiou]/i)?'n ':' ') + thing.single);
 				} else {
-					Molpy.Notify(stuff);
 					num *= (n||1);
 					if (Molpy.Got('Tuple or Nothing') && stuff == 'Gold') num*= Math.pow(1.618,loops);
 					if (stuff == 'Copper' || stuff == 'Silver') {
