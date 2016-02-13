@@ -1181,7 +1181,7 @@ Molpy.DefineGUI = function() {
 		if(importance==undefined) importance=0;
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
-		var log = Molpy.logArchive[0];
+		var log = Molpy.logArchive[Molpy.currentLog];
 			if (log.text[log.text.length - 1] == text){
 				log.qty[log.text.length - 1] ++;
 			} else {

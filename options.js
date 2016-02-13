@@ -77,8 +77,9 @@ Molpy.OptionsFromString = function(thread) {
 
 // ALWAYS add to the end of this list. NEVER EVER remove an option
 Molpy.OptionSaveOrder = [ 'particles', 'numbers', 'autosave', 'autoupdate', 'sea', 'colpix', 'longpostfix', 'colourscheme',
-			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll',
-			  'boostsort', 'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow', 'mindecimal', 'edigits', 'approx', 'notifsilence' ];
+			  'sandmultibuy', 'castlemultibuy', 'fade', 'typo', 'science', 'autosavelayouts', 'autoscroll','boostsort',
+			  'european', 'smalldecimal', 'logicatcol', 'loglimit', 'autoshow', 'mindecimal', 'edigits','approx',
+			  'notifsilence', 'loglength'];
 	
 // These options are defined in the display order
 
