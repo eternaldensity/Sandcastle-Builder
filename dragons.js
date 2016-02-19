@@ -269,7 +269,13 @@ Molpy.Opponent = function(args) {
 				} else {
 					num *= (n||1);
 					if (Molpy.Got('Tuple or Nothing') && stuff == 'Gold') num*= Math.pow(1.618,loops);
-					rwds.push(Molpify(num,2) + ' ' + stuff);
+					if (stuff == 'Copper' || stuff == 'Silver') {
+						pstuff = stuff;
+					} else {
+						bstuff = Molpy.Boosts[stuff];
+						pstuff = num == 1 ? bstuff.single : bstuff.plural;
+					}
+					rwds.push(Molpify(num,2) + ' ' + pstuff);
 					if (stuff == 'Copper') { stuff = 'Gold'; num/=1000000; }
 					else if (stuff == 'Silver') { stuff = 'Gold'; num/=1000; }
 					Molpy.Add(stuff,num);
@@ -1120,7 +1126,7 @@ Molpy.DragonUpgrade = function(type) {
 				str += '<br><br>The Queen upgrade will cost ';
 			}
 		} else {
-			str += '<br><br>The Queen can be upgraded when you have ' + Molpify( DeMolpify(dragn.exp)) + ' experiece.  It will cost ';
+			str += '<br><br>The Queen can be upgraded when you have ' + Molpify( DeMolpify(dragn.exp)) + ' experience.  It will cost ';
 		}
 		str += Molpy.createPriceHTML(dragn.upgrade);
 		return str;

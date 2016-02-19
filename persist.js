@@ -49,14 +49,14 @@
 		if(Molpy.supportsLocalStorage) {
 			success = Molpy.SaveLocalStorage();
 			if(!Molpy.LocalSaveExists()) {
-				Molpy.Notify('localstorage save failed, trying cookies instead',1);
+				Molpy.Notify('localstorage save failed, trying cookies instead',2);
 				success = Molpy.SaveC_STARSTAR_kie();
 			}
 		} else {
 			success = Molpy.SaveC_STARSTAR_kie();
 		}
 		if(!success) return;
-		Molpy.Notify('Game saved');
+		Molpy.Notify('Game saved',2);
 		auto || _gaq && _gaq.push(['_trackEvent', 'Save', 'Complete', '' + Molpy.saveCount]);
 
 		Molpy.autosaveCountup = 0;
@@ -140,7 +140,7 @@
 			}
 			Molpy.FromNeedlePulledThing(thread);
 		} else {
-			Molpy.Notify && Molpy.Notify('No saved cookies were found',1);
+			Molpy.Notify && Molpy.Notify('No saved cookies were found',2);
 			return 0;
 		}
 		return 1;
@@ -194,7 +194,7 @@
 			Molpy.Notify('Saved ' + i + ' layout' + plural(i),0);
 			if(i < Molpy.layouts.length) {
 				Molpy.Notify(' Did not save ' + (Molpy.layouts.length - i) + ' layout' + plural(Molpy.layouts.length - i)
-					+ ' to save on cookie space until that\'s fixed. You can export them manually.', 1);
+					+ ' to save on cookie space until that\'s fixed. You can export them manually.', 2);
 			}
 		}
 		while(Molpy.layoutsLoaded > i)//delete any extra if there are less than previously saved
@@ -358,7 +358,9 @@
 			var fencePost = '';
 			for(var num in saveData){
 				if (saveData[num][2] != 'array') {
-					str += fencePost + boost[saveData[num][0]];
+					var goatmonger = boost[saveData[num][0]]
+					goatmonger=saveData[num][2]=='object' ? JSON.stringify(goatmonger):goatmonger
+					str += fencePost + goatmonger;
 					fencePost = c;
 				} else {
 					var ting = saveData[num][0];
@@ -659,6 +661,10 @@
 						me[saveData[num][0]] = parseInt(savedValueList[savednum++]) || saveData[num][1];
 					else if(saveData[num][2] == 'float')
 						me[saveData[num][0]] = parseFloat(savedValueList[savednum++]) || saveData[num][1];
+					else if(saveData[num][2] == 'string')
+						me[saveData[num][0]] = savedValueList[savednum++] || saveData[num][1];
+					else if(saveData[num][2]=='object')
+						me[saveData[num][0]] = JSON.parse(savedValueList[savednum++]) || saveData[num][1];
 					else if(saveData[num][2] == 'array') { // Arrays store length + data(always float)
 						var ting = saveData[num][0];
 						me[ting] = [];
