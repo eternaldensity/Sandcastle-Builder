@@ -402,42 +402,42 @@ Molpy.DefinePuzzles = function() {
   		return puz
 	}
 
-function intersects(puzzle, overlay) {
-  'use strict';
-  var a = findchar(puzzle);
-  var b = findchar(overlay);
-  var t = [b[0]-a[0],b[1]-a[1]];
-  var puz = intersectInner(puzzle,overlay);
-  var psp = span(puzzle).map(function(x){return [x[0]+t[0],x[1]+t[1]];});
-  var osp = span(overlay).map(function(x){return [x[0]-t[0],x[1]-t[1]];});
-  var zsp = span(puz);
-  for(var i in psp){
-  	if(0>zsp.ind(psp[i])) return puzzle;
-  }
-  for(var j in osp){
-  	if(0>zsp.ind(osp[i])) return puzzle;
-  }
-  return puz; 
-}
+	Molpy.Sokoban.intersects = function(puzzle, overlay) {
+  		'use strict';
+  		var a = Molpy.Sokoban.findchar(puzzle);
+  		var b = Molpy.Sokoban.findchar(overlay);
+  		var t = [b[0]-a[0],b[1]-a[1]];
+  		var puz = Molpy.Sokoban.intersectInner(puzzle,overlay);
+  		var psp = Molpy.Sokoban.span(puzzle).map(function(x){return [x[0]+t[0],x[1]+t[1]];});
+  		var osp = Molpy.Sokoban.span(overlay).map(function(x){return [x[0]-t[0],x[1]-t[1]];});
+  		var zsp = Molpy.Sokoban.span(puz);
+  		for(var i in psp){
+  			if(0>zsp.ind(psp[i])) return puzzle;
+  		}
+  		for(var j in osp){
+  			if(0>zsp.ind(osp[i])) return puzzle;
+  		}
+		return puz; 
+	}
 
-function padPuzz(ls) {
-  'use strict';
-  var a = [ls[0][0].length, ls[0].length];
-  var b = [ls[1][0].length, ls[1].length];
-  var over = ls[1];
-  var puz = ls[0];
-  if (a[0] > b[0]) {
-    over = addCol(over, " ", a[0] - b[0], true);
-  } else if (a[0] < b[0]) {
-    puz = addCol(puz, " ", b[0] - a[0], true);
-  }
-  if (a[1] > b[1]) {
-    over = addRow(over, " ", a[1] - b[1], false);
-  } else if (a[1] < b[1]) {
-    puz = addRow(puz, " ", b[1] - a[1], false);
-  }
-  return [puz, over];
-}
+	Molpy.Sokoban.padPuzz = function(ls) {
+  		'use strict';
+  		var a = [ls[0][0].length, ls[0].length];
+  		var b = [ls[1][0].length, ls[1].length];
+  		var over = ls[1];
+  		var puz = ls[0];
+  		if (a[0] > b[0]) {
+    		over = Molpy.Sokoban.addCol(over, " ", a[0] - b[0], true);
+  		} else if (a[0] < b[0]) {
+    		puz = Molpy.Sokoban.addCol(puz, " ", b[0] - a[0], true);
+  		}
+  		if (a[1] > b[1]) {
+    		over = Molpy.Sokoban.addRow(over, " ", a[1] - b[1], false);
+  		} else if (a[1] < b[1]) {
+    		puz = Molpy.Sokoban.addRow(puz, " ", b[1] - a[1], false);
+  		}
+  		return [puz, over];
+	}
 
 function translate(puzzle, overlay, a, b) {
   'use strict';
