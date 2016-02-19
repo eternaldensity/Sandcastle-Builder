@@ -436,14 +436,14 @@ Molpy.DefinePuzzles = function() {
   		var over = ls[1];
   		var puz = ls[0];
   		if (a[0] > b[0]) {
-    		over = Molpy.Sokoban.addCol(over, " ", a[0] - b[0], true);
+    			over = Molpy.Sokoban.addCol(over, " ", a[0] - b[0], true);
   		} else if (a[0] < b[0]) {
-    		puz = Molpy.Sokoban.addCol(puz, " ", b[0] - a[0], true);
+    			puz = Molpy.Sokoban.addCol(puz, " ", b[0] - a[0], true);
   		}
   		if (a[1] > b[1]) {
-    		over = Molpy.Sokoban.addRow(over, " ", a[1] - b[1], false);
+    			over = Molpy.Sokoban.addRow(over, " ", a[1] - b[1], false);
   		} else if (a[1] < b[1]) {
-    		puz = Molpy.Sokoban.addRow(puz, " ", b[1] - a[1], false);
+    			puz = Molpy.Sokoban.addRow(puz, " ", b[1] - a[1], false);
   		}
   		return [puz, over];
 	}
@@ -492,7 +492,7 @@ Molpy.DefinePuzzles = function() {
   		var t = Molpy.Sokoban.padPuzz(Molpy.Sokoban.translate(puzzle, extension, disp[0],disp[1]));
   		var over = t[1];
   		var puz = t[0];
-  		var psp = Molpy.Sokoban.span(puz.map(function(s){return s.replace(/\+%o@/g,"_")}));
+  		var psp = Molpy.Sokoban.span(puz.map(function(s){return s.replace(/\+%o/g,"_")}));
   		var ts = Molpy.Sokoban.findchar(over);
   		if(0>psp.ind(ts)) return;
   		Molpy.Sokoban.rep(over, ts[0], ts[1], "_");
@@ -530,13 +530,13 @@ Molpy.DefinePuzzles = function() {
     			for (var i = 0; i < can.length; i++) {
       				var x = can[i][0];
       				var y = can[i][1];
-      				if (0 > can.ind([x + 1, y]) && 0<=["o","_"].indexOf(at(p, x + 1, y)))
+      				if (0 > can.ind([x + 1, y]) && 0<=["o","_"].indexOf(Molpy.Sokoban.at(p, x + 1, y)))
       					can.push([x + 1, y]);
-      				if (0 > can.ind([x - 1, y]) && 0<=["o","_"].indexOf(at(p, x - 1, y)))
+      				if (0 > can.ind([x - 1, y]) && 0<=["o","_"].indexOf(Molpy.Sokoban.at(p, x - 1, y)))
       					can.push([x - 1, y]);
-      				if (0 > can.ind([x, y + 1]) && 0<=["o","_"].indexOf(at(p, x, y + 1)))
+      				if (0 > can.ind([x, y + 1]) && 0<=["o","_"].indexOf(Molpy.Sokoban.at(p, x, y + 1)))
       					can.push([x, y + 1]);
-      				if (0 > can.ind([x, y - 1]) && 0<=["o","_"].indexOf(at(p, x, y - 1)))
+      				if (0 > can.ind([x, y - 1]) && 0<=["o","_"].indexOf(Molpy.Sokoban.at(p, x, y - 1)))
       					can.push([x, y - 1]);
     			}
   		}
