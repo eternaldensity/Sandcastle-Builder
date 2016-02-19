@@ -439,158 +439,135 @@ Molpy.DefinePuzzles = function() {
   		return [puz, over];
 	}
 
-function translate(puzzle, overlay, a, b) {
-  'use strict';
-  var over = [].concat(overlay);
-  var puz = [].concat(puzzle);
-  if (a[0] > b[0]) {
-    over = addCol(over, " ", a[0] - b[0], false);
-  } else if (a[0] < b[0]) {
-    puz = addCol(puz, " ", b[0] - a[0], false);
-  }
-  if (a[1] > b[1]) {
-    over = addRow(over, " ", a[1] - b[1], true);
-  } else if (a[0] < b[0]) {
-    puz = addRow(puz, " ", b[1] - a[1], true);
-  }
-  return [puz, over];
-}
+	Molpy.Sokoban.translate = function(puzzle, overlay, a, b) {
+  		'use strict';
+  		var over = [].concat(overlay);
+  		var puz = [].concat(puzzle);
+  		if (a[0] > b[0]) {
+    			over = Molpy.Sokoban.addCol(over, " ", a[0] - b[0], false);
+  		} else if (a[0] < b[0]) {
+    			puz = Molpy.Sokoban.addCol(puz, " ", b[0] - a[0], false);
+  		}
+  		if (a[1] > b[1]) {
+    			over = Molpy.Sokoban.addRow(over, " ", a[1] - b[1], true);
+  		} else if (a[0] < b[0]) {
+    			puz = Molpy.Sokoban.addRow(puz, " ", b[1] - a[1], true);
+  		}
+  		return [puz, over];
+	}
 
-function extend(puzzle, extension) {
-  'use strict';
-  var locs = [];
-  for (var j = 0; j < extension.length; j++) {
-    for (var i = 0; i < extension[0].length; i++) {
-      if (at(extension, i, j) == "+" || at(extension, i, j) == "%") {
-        locs.push([i, j]);
-      }
-    }
-  }
-  var pos = [];
-  for (var y1 = 0; y1 < puzzle.length; y1++) {
-    for (var x1 = 0; x1 < puzzle[0].length; x1++) {
-      if (at(puzzle, x1, y1) == "o" || at(puzzle, x1, y1) == "%") {
-        pos.push([x1, y1]);
-      }
-    }
-  }
-  // We've now extracted the linking info. Next step is to put it together
-  // and use a modified intersects.
+	Molpy.Sokoban.extend = function(puzzle, extension) {
+  		'use strict';
+  		var locs = [];
+  		for (var j = 0; j < extension.length; j++) {
+    			for (var i = 0; i < extension[0].length; i++) {
+      				if (at(extension, i, j) == "+" || at(extension, i, j) == "%") {
+        				locs.push([i, j]);
+      				}
+    			}
+  		}
+  		var pos = [];
+  		for (var y1 = 0; y1 < puzzle.length; y1++) {
+    			for (var x1 = 0; x1 < puzzle[0].length; x1++) {
+      				if (Molpy.Sokoban.at(puzzle, x1, y1) == "o" || Molpy.Sokoban.at(puzzle, x1, y1) == "%") {
+        				pos.push([x1, y1]);
+      				}
+    			}
+  		}
+  		// We've now extracted the linking info. Next step is to put it together
+  		// and use a modified intersects.
 
-  if (!(locs.length*pos.length)) return;
-  var disp = calcDisp(locs, pos);
-  if (!disp) return;
-  var t = padPuzz(translate(puzzle, extension, disp[0],disp[1]));
-  var over = t[1];
-  var puz = t[0];
-  var psp = span(puz.map(function(s){return s.replace(/\+%o@/g,"_")}));
-  var ts = findchar(over);
-  if(0>psp.ind(ts)) return;
-  rep(over, ts[0], ts[1], "_");
-  for (var y in puz) {
-    for (var x = 0; x < puz[0].length; x++) {
-    	if (["#", " ","_"].indexOf(at(puz, x, y)) >= 0&&"_"==at(over,x,y)) {
-        rep(puz, x, y, "_");
-      } else if (["#", " "].indexOf(at(puz, x, y)) >= 0) {
-        rep(puz, x, y, at(over, x, y).replace(" ", "#"));
-      } else if ("o" == at(over, x, y) && "+" == at(puz, x, y)) {
-        rep(puz, x, y, "_");
-      } else if ("%" == at(over, x, y) && "+" == at(puz, x, y)) {
-        rep(puz, x, y, "+");
-      } else if ("o" == at(over, x, y) && "_" == at(puz, x, y)) {
-        rep(puz, x, y, "o");
-      } else if ("o" == at(over, x, y) && "%" == at(puz, x, y)) {
-        rep(puz, x, y, "o");
-      } else if ("%" == at(over, x, y) && "%" == at(puz, x, y)) {
-      	//pass
-      } else if (["%", "@", "+", "o"].indexOf(at(over, x, y)) >= 0) {
-        return puzzle;
-      }
-    }
-  }
-  return puz;
-}
+  		if (!(locs.length*pos.length)) return;
+  		var disp = Molpy.Sokoban.calcDisp(locs, pos);
+  		if (!disp) return;
+  		var t = Molpy.Sokoban.padPuzz(Molpy.Sokoban.translate(puzzle, extension, disp[0],disp[1]));
+  		var over = t[1];
+  		var puz = t[0];
+  		var psp = Molpy.Sokoban.span(puz.map(function(s){return s.replace(/\+%o@/g,"_")}));
+  		var ts = Molpy.Sokoban.findchar(over);
+  		if(0>psp.ind(ts)) return;
+  		Molpy.Sokoban.rep(over, ts[0], ts[1], "_");
+  		for (var y in puz) {
+    			for (var x = 0; x < puz[0].length; x++) {
+    				if (["#", " ","_"].indexOf(Molpy.Sokoban.at(puz, x, y)) >= 0&&"_"==Molpy.Sokoban.at(over,x,y)) {
+        				Molpy.Sokoban.rep(puz, x, y, "_");
+      				} else if (["#", " "].indexOf(Molpy.Sokoban.at(puz, x, y)) >= 0) {
+        				Molpy.Sokoban.rep(puz, x, y, Molpy.Sokoban.at(over, x, y).replace(" ", "#"));
+      				} else if ("o" == Molpy.Sokoban.at(over, x, y) && "+" == Molpy.Sokoban.at(puz, x, y)) {
+        				Molpy.Sokoban.rep(puz, x, y, "_");
+      				} else if ("%" == Molpy.Sokoban.at(over, x, y) && "+" == Molpy.Sokoban.at(puz, x, y)) {
+        				Molpy.Sokoban.rep(puz, x, y, "+");
+      				} else if ("o" == Molpy.Sokoban.at(over, x, y) && "_" == Molpy.Sokoban.at(puz, x, y)) {
+        				Molpy.Sokoban.rep(puz, x, y, "o");
+      				} else if ("o" == Molpy.Sokoban.at(over, x, y) && "%" == Molpy.Sokoban.at(puz, x, y)) {
+        				Molpy.Sokoban.rep(puz, x, y, "o");
+      				} else if ("%" == Molpy.Sokoban.at(over, x, y) && "%" == Molpy.Sokoban.at(puz, x, y)) {
+      					//pass
+      				} else if (["%", "@", "+", "o"].indexOf(Molpy.Sokoban.at(over, x, y)) >= 0) {
+        				return puzzle;
+      				}
+    			}
+  		}
+  		return puz;
+	}
 
-function span(puz){
-	'use strict';
-  var p = [].concat(puz)
-  var can = [findchar(p)];
-  var old = [];
-  while (neq(old, can)) {
-    old = [].concat(can);
-    for (var i = 0; i < can.length; i++) {
-      var x = can[i][0];
-      var y = can[i][1];
-      if (0 > can.ind([x + 1, y]) && 0<=["o","_"].indexOf(at(p, x + 1, y)))
-      	can.push([x + 1, y]);
-      if (0 > can.ind([x - 1, y]) && 0<=["o","_"].indexOf(at(p, x - 1, y)))
-      	can.push([x - 1, y]);
-      if (0 > can.ind([x, y + 1]) && 0<=["o","_"].indexOf(at(p, x, y + 1)))
-      	can.push([x, y + 1]);
-      if (0 > can.ind([x, y - 1]) && 0<=["o","_"].indexOf(at(p, x, y - 1)))
-      	can.push([x, y - 1]);
-    }
-  }
-  return can;
-}
+	Molpy.Sokoban.span = function(puz){
+		'use strict';
+  		var p = [].concat(puz)
+  		var can = [Molpy.Sokoban.findchar(p)];
+  		var old = [];
+  		while (neq(old, can)) {
+    			old = [].concat(can);
+    			for (var i = 0; i < can.length; i++) {
+      				var x = can[i][0];
+      				var y = can[i][1];
+      				if (0 > can.ind([x + 1, y]) && 0<=["o","_"].indexOf(at(p, x + 1, y)))
+      					can.push([x + 1, y]);
+      				if (0 > can.ind([x - 1, y]) && 0<=["o","_"].indexOf(at(p, x - 1, y)))
+      					can.push([x - 1, y]);
+      				if (0 > can.ind([x, y + 1]) && 0<=["o","_"].indexOf(at(p, x, y + 1)))
+      					can.push([x, y + 1]);
+      				if (0 > can.ind([x, y - 1]) && 0<=["o","_"].indexOf(at(p, x, y - 1)))
+      					can.push([x, y - 1]);
+    			}
+  		}
+  		return can;
+	}
 
-function connected(puz) {
-	'use strict';
-  var can = span(puz)
-  for (var k=0;k<p.length;k++) {
-    for (var j = 0; j < p[0].length; j++) {
-      if ("o"==at(p, j, k) && can.ind([j, k]) < 0) {
-        if(["+","%"].indexOf(at(p, j+1, k))&&can.ind([j+2,k])>=0) continue;
-        if(["+","%"].indexOf(at(p, j-1, k))&&can.ind([j-2,k])>=0) continue;
-        if(["+","%"].indexOf(at(p, j, k+1))&&can.ind([j,k+2])>=0) continue;
-        if(["+","%"].indexOf(at(p, j, k-1))&&can.ind([j,k-2])>=0) continue;
-        return false;
-      }
-    }
-  }
-  return true;
-}
+	Molpy.Sokoban.connected = function(puz) {
+		'use strict';
+  		var can = Molpy.Sokoban.span(puz)
+  		for (var k=0;k<p.length;k++) {
+    			for (var j = 0; j < p[0].length; j++) {
+      				if ("o"==at(p, j, k) && can.ind([j, k]) < 0) {
+        				if(["+","%"].indexOf(Molpy.Sokoban.at(p, j+1, k))&&can.ind([j+2,k])>=0) continue;
+        				if(["+","%"].indexOf(Molpy.Sokoban.at(p, j-1, k))&&can.ind([j-2,k])>=0) continue;
+        				if(["+","%"].indexOf(Molpy.Sokoban.at(p, j, k+1))&&can.ind([j,k+2])>=0) continue;
+        				if(["+","%"].indexOf(Molpy.Sokoban.at(p, j, k-1))&&can.ind([j,k-2])>=0) continue;
+        				return false;
+      				}
+			}
+  		}
+  		return true;
+	}
 
+	Molpy.Sokoban.at = function(p, y, x) {
+		'use strict';
+  		if (x < 0) {
+    			return " ";
+  		}
+  		if (x >= p.length) {
+    			return " ";
+  		}
+  		if (y >= p[0].length) {
+    			return " ";
+  		}
+  		if (y < 0) {
+    			return " ";
+  		}
 
-
-
-//////////STUFF BELOW HERE IS CHECKED
-
-(function() {
-  'use strict';
-  var str = '<br /><br />KEY:<br />"#": WALL<br />"_": ';
-  str += 'EMPTY<br />"@": CHAR<br />"+": BLOCK<br />"o": TARGET<br />"%": FILLED';
-  $('#result').html(str);
-  $('#gen').on('click', inputFunc);
-})();
-
-function inputFunc() {
-  'use strict';
-  var t = $('#choice').val();
-  var sec = getPuzzle(parseInt(t));
-  //sec=trimPuzzle(sec); /*doesn't work atm*/
-  var str = '<br /><br />KEY:<br />"#": WALL<br />"_": ';
-  str += 'EMPTY<br />"@": CHAR<br />"+": BLOCK<br />"o": TARGET<br />"%": FILLED';
-  $('#result').html(sec.join('<br />') + str);
-}
-
-function at(p, y, x) {
-  'use strict';
-  if (x < 0) {
-    return " ";
-  }
-  if (x >= p.length) {
-    return " ";
-  }
-  if (y >= p[0].length) {
-    return " ";
-  }
-  if (y < 0) {
-    return " ";
-  }
-
-  return p[x].charAt(y);
-}
+  		return p[x].charAt(y);
+	}
 
 function rep(p, y, x, n) {
   'use strict';
@@ -611,12 +588,6 @@ function rep(p, y, x, n) {
   pu[y] = n;
   p[x] = pu.join('');
 }
-
-function flandom(n) {
-  'use strict';
-  return Math.floor(Math.random() * n);
-}
-
 
 function findchar(puzzle) {
   'use strict';
