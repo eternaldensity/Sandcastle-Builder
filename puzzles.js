@@ -345,7 +345,7 @@ Molpy.DefinePuzzles = function() {
 		//Uses deep equality for an indexOf like function.
   		var t = [].concat(this);
   		while (t.length) {
-    		if (!neq(t.shift(), find)) return (this.length - t.length - 1)
+    		if (!Molpy.Sokoban.neq(t.shift(), find)) return (this.length - t.length - 1)
   		}
   		return -1
 	}, enumerable:false});
@@ -470,7 +470,7 @@ Molpy.DefinePuzzles = function() {
   		var locs = [];
   		for (var j = 0; j < extension.length; j++) {
     			for (var i = 0; i < extension[0].length; i++) {
-      				if (at(extension, i, j) == "+" || at(extension, i, j) == "%") {
+      				if (Molpy.Sokoban.at(extension, i, j) == "+" || Molpy.Sokoban.at(extension, i, j) == "%") {
         				locs.push([i, j]);
       				}
     			}
@@ -525,7 +525,7 @@ Molpy.DefinePuzzles = function() {
   		var p = [].concat(puz)
   		var can = [Molpy.Sokoban.findchar(p)];
   		var old = [];
-  		while (neq(old, can)) {
+  		while (Molpy.Sokoban.neq(old, can)) {
     			old = [].concat(can);
     			for (var i = 0; i < can.length; i++) {
       				var x = can[i][0];
@@ -611,15 +611,15 @@ Molpy.DefinePuzzles = function() {
 	}
 
 
-	function neq(a, b) {
+	Molpy.Sokoban.neq = function(a, b) {
   		if (typeof a != typeof [] || typeof b != typeof []) {
     			return !(a === b);
   		}
   		for (var i in a) {
-    			if (neq(a[i], b[i])) return true;
+    			if (Molpy.Sokoban.neq(a[i], b[i])) return true;
   		}
   		for (var j in b) {
-    			if (neq(a[j], b[j])) return true;
+    			if (Molpy.Sokoban.neq(a[j], b[j])) return true;
   		}
   		return false;
 	}
