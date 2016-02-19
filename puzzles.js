@@ -272,37 +272,46 @@ Molpy.DefinePuzzles = function() {
 			this.Check(neatGuess);
 		}
 	}
+	/*****************************
+	 * Molpy.Sokoban
+	 * ***************************
+	 * For all your Sokoban needs!
+	 * At least, those involving
+	 * puzzle generation
+	 * (play will come later on)
+	 * ***************************/
 	Molpy.Sokoban = {}
 	Molpy.Sokoban.Primitives = [
-      ["@+o"],
-      ["@", "+", "o"],
-      ["o+@"],
-      ["o", "+", "@"],
-      ["@+_o"],
-      ["@", "+", "_", "o"],
-      ["o_+@"],
-      ["o", "_","+", "@"],
-      ["_@#","_+o"],
-      ["__", "@+", "#o"],
-      ["o+_", "#@_"],
-      ["o#", "+@", "__"],
-      ["@__"
-      ,"_+%"
-      ,"##o"],
+      		["@+o"],
+	      	["@", "+", "o"],
+      		["o+@"],
+      		["o", "+", "@"],
+      		["@+_o"],
+      		["@", "+", "_", "o"],
+      		["o_+@"],
+      		["o", "_","+", "@"],
+      		["_@#","_+o"],
+      		["__", "@+", "#o"],
+      		["o+_", "#@_"],
+      		["o#", "+@", "__"],
+      		["@__"
+      		,"_+%"
+      		,"##o"],
       
-      ["#_@"
-      ,"#+_"
-      ,"o%_"],
+      		["#_@"
+      		,"#+_"
+      		,"o%_"],
       
-      ["o##"
-      ,"%+_"
-      ,"__@"],
+      		["o##"
+      		,"%+_"
+      		,"__@"],
       
-      ["_%o"
-      ,"_+#"
-      ,"@_#"],
-      ["@"],
-    ];
+      		["_%o"
+      		,"_+#"
+      		,"@_#"],
+      		
+      		["@"],
+    	];
 	Molpy.Sokoban.trimPuzzle = function(po) {
   		'use strict';
   		//This function is currently unused, as it's possibly buggy and unnecessary. 
@@ -569,220 +578,224 @@ Molpy.DefinePuzzles = function() {
   		return p[x].charAt(y);
 	}
 
-function rep(p, y, x, n) {
-  'use strict';
-  if (x < 0) {
-    return;
-  }
-  if (x >= p.length) {
-    return;
-  }
-  if (y >= p[0].length) {
-    return;
-  }
-  if (y < 0) {
-    return;
-  }
+	Molpy.Sokoban.rep = function(p, y, x, n) {
+  		'use strict';
+  		if (x < 0) {
+    			return;
+  		}
+  		if (x >= p.length) {
+    			return;
+  		}
+  		if (y >= p[0].length) {
+		 	return;
+  		}
+  		if (y < 0) {
+    			return;
+  		}
 
-  var pu = p[x].split('');
-  pu[y] = n;
-  p[x] = pu.join('');
-}
+  		var pu = p[x].split('');
+  		pu[y] = n;
+  		p[x] = pu.join('');
+	}
 
-function findchar(puzzle) {
-  'use strict';
-  var p = [].concat(puzzle);
-  var t;
-  while (p.length) {
-    t = p.shift().indexOf("@");
-    if (t != -1) {
-      var x = [t, puzzle.length - p.length - 1];
-      return x;
-    }
-  }
-}
-
-
-function neq(a, b) {
-  if (typeof a != typeof [] || typeof b != typeof []) {
-    return !(a === b);
-  }
-  for (var i in a) {
-    if (neq(a[i], b[i])) return true;
-  }
-  for (var j in b) {
-    if (neq(a[j], b[j])) return true;
-  }
-  return false;
-}
-
-function allCol(p, i, c) {
-  'use strict';
-  for (var k in p) {
-    if (at(p, i, k) != c) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function allRow(p, i, c) {
-  'use strict';
-  for (var k = 0; k < p[i].length; k++) {
-    if (at(p, k, i) != c) {
-      return false;
-    }
-  }
-  return true;
-}
+	Molpy.Sokoban.findchar = function(puzzle) {
+  		'use strict';
+  		var p = [].concat(puzzle);
+  		var t;
+  		while (p.length) {
+    			t = p.shift().indexOf("@");
+    			if (t != -1) {
+      				return [t, puzzle.length - p.length - 1];
+    			}
+  		}
+	}
 
 
+	function neq(a, b) {
+  		if (typeof a != typeof [] || typeof b != typeof []) {
+    			return !(a === b);
+  		}
+  		for (var i in a) {
+    			if (neq(a[i], b[i])) return true;
+  		}
+  		for (var j in b) {
+    			if (neq(a[j], b[j])) return true;
+  		}
+  		return false;
+	}
 
-function calcDisp(mov, target) {
-  'use strict';
-  if (mov.length === 0 || target.length === 0) return;
-  var t = flandom(mov.length * target.length);
-  var x = t % mov.length;
-  var y = t % target.length;
-  return [mov[x],target[y]];
-}
+	Molpy.Sokoban.allCol = function(p, i, c) {
+  		'use strict';
+  		for (var k in p) {
+    			if (Molpy.Sokoban.at(p, i, k) != c) {
+      				return false;
+    			}
+  		}
+  		return true;
+	}
 
-function wrapPuzzle(p, c, n) {
-  'use strict';
-  if (n === undefined) {
-    n = 1;
-  }
-  var t = addRow(addRow(addCol(addCol(p, c, n, true), c, n, false), c, n, true), c, n, false);
-  return t;
-}
-
-
-function addCol(puzzle, char, n, r) {
-  'use strict';
-  return puzzle.map(function(s) {
-    if (r) {
-      return (s + (new Array(n + 1)).join(char));
-    }
-    return ((new Array(n + 1)).join(char) + s);
-  });
-}
-
-
-function removeCol(puzzle, r,n) {
-  'use strict';
-  if(n===undefined) n=1;
-  return puzzle.map(function(s) {
-    if (r) return s.substr(0, s.length - n);
-    return s.substr(n);
-  });
-}
-
-
-function addRow(p, char, n, u) {
-  'use strict';
-  var ps = [];
-  for (var i = 0; i < n; i++) {
-    ps[i] = (new Array(p[0].length + 1)).join(char);
-  }
-  if (u)
-    return ps.concat(p);
-  return [].concat(p).concat(ps);
-}
-
-function removeRow(p, u,n) {
-  'use strict';
-  if(n===undefined) n=1;
-  if (u) {
-    return p.slice(n)
-  }
-  return p.slice(0,p.length-n)
-}
-
-
-function clearrand(puzzle) {
-  'use strict';
-  var p = [].concat(puzzle);
-  var locs = [];
-  for (var i in p) {
-    for (var j = 0; j < p[0].length; j++) {
-      if (at(p, j, i) == "#") locs.push([j, i]);
-    }
-  }
-  if (locs.length === 0) return p;
-  var t = locs[flandom(locs.length)];
-  var a = t[0];
-  var b = t[1];
-  rep(p, a, b, "_");
-  return p;
-}
-
-
-function editrand(puzzle) {
-  'use strict';
-  var p = [].concat(puzzle);
-  var locs = [];
-  for (var i in p) {
-    for (var j = 0; j < p[0].length; j++) {
-      if (at(p, j, i) == "#") locs.push([j, i]);
-    }
-  }
-  if (locs.length === 0) return p;
-  var t = locs[flandom(locs.length)];
-  var a = t[0];
-  var b = t[1];
-  rep(p, a, b, "%");
-  return p;
-}
-
-
-function lockedchar(puzzle) {
-  'use strict';
-  var a = findchar(puzzle);
-  return (-1 == [at(puzzle, a[0] + 1, a[1]),
-    at(puzzle, a[0] - 1, a[1]),
-    at(puzzle, a[0], a[1] + 1),
-    at(puzzle, a[0], a[1] - 1)
-  ].indexOf("_"));
-}
-
-
-function walk(puzzle) {
-  'use strict';
-  var a = findchar(puzzle);
-  var ls = idbe([at(puzzle, a[0] + 1, a[1]),
-    at(puzzle, a[0] - 1, a[1]),
-    at(puzzle, a[0], a[1] + 1),
-    at(puzzle, a[0], a[1] - 1)
-  ].map(function(s) {
-    return s === "_";
-  }));
-  if (ls === false) return puzzle;
-  var pl = [
-    [a[0] + 1, a[1]],
-    [a[0] - 1, a[1]],
-    [a[0], a[1] + 1],
-    [a[0], a[1] - 1]
-  ][ls];
-  var puz = [].concat(puzzle);
-  rep(puz, pl[0], pl[1], "@");
-  rep(puz, a[0], a[1], "_");
-  return puz;
-}
-
-function idbe(ls) {
-  'use strict';
-  ls = ls
-    .map(function(a, b) {
-      if (a) return b;
-      return -1;
-    })
-    .filter(function(a) {
-      return a >= 0;
-    });
-  if (ls.length == 0) return false;
-  return ls[flandom(ls.length)];
-}
+	Molpy.Sokoban.allRow = function(p, i, c) {
+  		'use strict';
+  		for (var k = 0; k < p[i].length; k++) {
+    			if (Molpy.Sokoban.at(p, k, i) != c) {
+      				return false;
+    			}
+  		}
+  		return true;
+	}
 
 
 
+	Molpy.Sokoban.calcDisp = function(mov, target) {
+  		'use strict';
+  		if (mov.length === 0 || target.length === 0) return;
+  		var t = flandom(mov.length * target.length);
+  		var x = t % mov.length;
+  		var y = t % target.length;
+  		return [mov[x],target[y]];
+	}
+
+	Molpy.Sokoban.wrapPuzzle = function(p, c, n) {
+  		'use strict';
+  		if (n === undefined) {
+    			n = 1;
+  		}
+  		return Molpy.Sokoban.addRow(
+  			Molpy.Sokoban.addRow(
+  				Molpy.Sokoban.addCol(
+  					Molpy.Sokoban.addCol(p, c, n, true)
+  					, c, n, false)
+  				, c, n, true)
+  			, c, n, false);
+	}
+
+
+	Molpy.Sokoban.addCol = function(puzzle, char, n, r) {
+  		'use strict';
+  		return puzzle.map(function(s) {
+    			if (r) {
+      				return (s + (new Array(n + 1)).join(char));
+    			}
+    			return ((new Array(n + 1)).join(char) + s);
+  		});
+	}
+
+
+	Molpy.Sokoban.removeCol = function(puzzle, r,n) {
+  		'use strict';
+  		if(n===undefined) n=1;
+  		return puzzle.map(function(s) {
+    			if (r) return s.substr(0, s.length - n);
+    				return s.substr(n);
+  		});
+	}
+
+
+	Molpy.Sokoban.addRow = function(p, char, n, u) {
+  		'use strict';
+  		var ps = [];
+  		for (var i = 0; i < n; i++) {
+    			ps[i] = (new Array(p[0].length + 1)).join(char);
+  		}
+  		if (u)
+    			return ps.concat(p);
+  		return [].concat(p).concat(ps);
+	}
+
+	Molpy.Sokoban.removeRow = function(p, u,n) {
+  		'use strict';
+  		if(n===undefined) n=1;
+  		if (u) {
+    			return p.slice(n)
+  		}
+  		return p.slice(0,p.length-n)
+	}
+
+
+	Molpy.Sokoban.clearrand = function(puzzle) {
+  		'use strict';
+  		var p = [].concat(puzzle);
+  		var locs = [];
+  		for (var i in p) {
+    			for (var j = 0; j < p[0].length; j++) {
+      				if (Molpy.Sokoban.at(p, j, i) == "#") locs.push([j, i]);
+    			}
+  		}
+  		if (locs.length === 0) return p;
+  		var t = locs[flandom(locs.length)];
+  		var a = t[0];
+  		var b = t[1];
+  		Molpy.Sokoban.rep(p, a, b, "_");
+  		return p;
+	}
+
+
+	Molpy.Sokoban.editrand = function(puzzle) {
+  		'use strict';
+  		var p = [].concat(puzzle);
+  		var locs = [];
+  		for (var i in p) {
+    			for (var j = 0; j < p[0].length; j++) {
+      				if (Molpy.Sokoban.at(p, j, i) == "#") locs.push([j, i]);
+    			}
+  		}
+  		if (locs.length === 0) return p;
+  		var t = locs[flandom(locs.length)];
+  		var a = t[0];
+  		var b = t[1];
+  		Molpy.Sokoban.rep(p, a, b, "%");
+  		return p;
+	}
+
+
+	Molpy.Sokoban.lockedchar = function(puzzle) {
+  		'use strict';
+  		var a = Molpy.Sokoban.findchar(puzzle);
+  		return (-1 == [
+  				Molpy.Sokoban.at(puzzle, a[0] + 1, a[1]),
+    				Molpy.Sokoban.at(puzzle, a[0] - 1, a[1]),
+    				Molpy.Sokoban.at(puzzle, a[0], a[1] + 1),
+ 				Molpy.Sokoban.at(puzzle, a[0], a[1] - 1)
+  			].indexOf("_"));
+	}
+
+
+	Molpy.Sokoban.walk = function(puzzle) {
+  		'use strict';
+  		var a = Molpy.Sokoban.findchar(puzzle);
+  		var ls = Molpy.Sokoban.idbe(
+  			[
+  				Molpy.Sokoban.at(puzzle, a[0] + 1, a[1]),
+    				Molpy.Sokoban.at(puzzle, a[0] - 1, a[1]),
+    				Molpy.Sokoban.at(puzzle, a[0], a[1] + 1),
+    				Molpy.Sokoban.at(puzzle, a[0], a[1] - 1)
+  			].map(function(s) {
+    				return s === "_";
+	 		}));
+  		if (ls === false) return puzzle;
+  		var pl = [
+    			[a[0] + 1, a[1]],
+    			[a[0] - 1, a[1]],
+    			[a[0], a[1] + 1],
+    			[a[0], a[1] - 1]
+  		][ls];
+  		var puz = [].concat(puzzle);
+  		Molpy.Sokoban.rep(puz, pl[0], pl[1], "@");
+  		Molpy.Sokoban.rep(puz, a[0], a[1], "_");
+  		return puz;
+	}
+
+	Molpy.Sokoban.idbe = function(ls) {
+  		'use strict';
+  		ls = ls
+    			.map(function(a, b) {
+      				if (a) return b;
+      				return -1;
+    			})
+    			.filter(function(a) {
+      				return a >= 0;
+    			});
+  		if (ls.length == 0) return false;
+  		return ls[flandom(ls.length)];
+	}
 }
