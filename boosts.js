@@ -8237,12 +8237,14 @@ Molpy.DefineBoosts = function() {
 				Molpy.UnlockBoost('RDKM');
 				var bonecost = Molpy.EggCost().bonemeal;
 				var princost = Molpy.EggCost().princess;
-				if (Molpy.Has('Bonemeal', bonecost) && Molpy.Has('Princesses', princost)){str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal: Molpy.EggCost().bonemeal, Princesses: Molpy.EggCost().princess}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(bonecost) + ' Bonemeal';
-				princost?str+= ' and '+Molpify(princost)+' Princess':str += '';
-				princost > 1?str += 'es.)':str +='.)';
-				}else{str += '<br> The next egg requires '+ Molpify(bonecost) +' Bonemeal';
-				princost?str+= ' and '+Molpify(princost)+' Princess':str += '';
-				princost > 1?str += 'es.)':str +='.)';
+				if (Molpy.Has('Bonemeal', bonecost) && Molpy.Has('Princesses', princost)){
+					str += '<br><input type="Button" onclick="if(Molpy.Spend({Bonemeal: Molpy.EggCost().bonemeal, Princesses: Molpy.EggCost().princess}))Molpy.Add(\'Eggs\',1);" value="Lay"></input> an egg (uses ' + Molpify(bonecost) + ' Bonemeal';
+					princost ? str+= ' and '+Molpify(princost)+' Princess' : str += '';
+					princost > 1 ? str += 'es.)':str +='.)';
+				} else {
+					str += '<br> The next egg requires '+ Molpify(bonecost) +' Bonemeal';
+					princost ? str+= ' and '+Molpify(princost)+' Princess' : str += '';
+					princost > 1 ? str += 'es.':str +='.';
 				}
 				if (Molpy.TotalDragons) {
 					str += '<br><br>The Dragons are ' + ['Digging','Recovering','Hiding','Celebrating'][me.overallState];
