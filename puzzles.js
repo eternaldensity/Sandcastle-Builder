@@ -607,6 +607,10 @@ Molpy.DefinePuzzles = function() {
     			if (t != -1) {
       				return [t, puzzle.length - p.length - 1];
     			}
+    			t = p[0].indexOf("*");
+    			if (t != -1) {
+      				return [t, puzzle.length - p.length - 1];
+    			}
   		}
 	}
 
@@ -796,6 +800,35 @@ Molpy.DefinePuzzles = function() {
       				return a >= 0;
     			});
   		if (ls.length == 0) return false;
-  		return ls[flandom(ls.length)];
+  		return ls[flandom(ls.length)]; // Sidenote: The name of this function has no meaning. I'm sorry.
+	}
+	Molpy.Sokoban.moveTo = function(p,diff){
+		'use strict';
+		puz = [].concat(p)
+		var sloc = Molpy.Sokoban.findchar(puz);
+		var xa = sloc[0] + diff[0]; var ya = sloc[1]+diff[1]; 
+		var xb = sloc[0] + 2*diff[0]; var yb = sloc[1]+2*diff[1]
+		var displacing = Molpy.Sokoban.at(puz,xa, ya);
+		if (0<=["#"," "].indexOf(displacing)) {Molpy.Notify("Yer no wizard, Harry.",1)return;}
+		if (displacing == "_") {Molpy.Sokoban.rep(puz,xa,ya,"@");Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");return puz;}
+		if (displacing == "o") {Molpy.Sokoban.rep(puz,xa,ya,"*");Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");return puz;}
+		// Now for moving stuff
+		var doubledouble = Molpy.Sokoban.at(puz,xb, yb);
+		if ("_" == doubledouble) {
+			if(displacing == "+") Molpy.Sokoban.rep(puz,xa,ya,"@");
+			else Molpy.Sokoban.rep(puz,xa,ya,"*");
+			Molpy.Sokoban.rep(puz,xb,yb,"+");
+			return puz;
+		}
+		if ("o" == doubledouble) {
+			if(displacing == "+") Molpy.Sokoban.rep(puz,xa,ya,"@");
+			else Molpy.Sokoban.rep(puz,xa,ya,"*");
+			Molpy.Sokoban.rep(puz,xb,yb,"%");
+			return puz;
+		}
+		if ("#" == doubledouble || " "==doubledouble) 
+			Molpy.Notify("If it feels like you're going against a brick wall, it's because you are.",1);
+		else 
+			Molpy.Notify("Unless you can blow these suckers up, they ain't moving.",1);
 	}
 }
