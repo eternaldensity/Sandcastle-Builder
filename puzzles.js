@@ -845,7 +845,7 @@ Molpy.DefinePuzzles = function() {
 		var xa = sloc[0] + diff[0]; var ya = sloc[1]+diff[1]; 
 		var xb = sloc[0] + 2*diff[0]; var yb = sloc[1]+2*diff[1]
 		var displacing = Molpy.Sokoban.at(puz,xa, ya);
-		if (0<=["#"," "].indexOf(displacing)) {Molpy.Notify("Yer no wizard, Harry.",1)return;}
+		if (0<=["#"," "].indexOf(displacing)) {Molpy.Notify("Yer no wizard, Harry.",1);return;}
 		if (displacing == "_") {Molpy.Sokoban.rep(puz,xa,ya,"@");Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");return puz;}
 		if (displacing == "o") {Molpy.Sokoban.rep(puz,xa,ya,"*");Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");return puz;}
 		// Now for moving stuff
