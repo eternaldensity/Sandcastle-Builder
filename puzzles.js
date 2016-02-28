@@ -802,6 +802,13 @@ Molpy.DefinePuzzles = function() {
   		if (ls.length == 0) return false;
   		return ls[flandom(ls.length)]; // Sidenote: The name of this function has no meaning. I'm sorry.
 	}
+	Molpy.Sokoban.doInput = function(p,diff){
+		pn = Molpy.Sokoban.moveTo(p,diff);
+		for (var i in pn){
+			if (pn[i].split('').indexOf("+")>0) return pn
+		}
+		Molpy.Sokoban.complete();
+	}
 	Molpy.Sokoban.moveTo = function(p,diff){
 		'use strict';
 		puz = [].concat(p)
