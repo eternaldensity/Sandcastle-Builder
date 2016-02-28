@@ -833,6 +833,7 @@ Molpy.DefinePuzzles = function() {
 	}
 	Molpy.Sokoban.doInput = function(p,diff){
 		pn = Molpy.Sokoban.moveTo(p,diff);
+		if(!pn) return p;
 		for (var i in pn){
 			if (pn[i].split('').indexOf("+")>0) return pn;
 		}
