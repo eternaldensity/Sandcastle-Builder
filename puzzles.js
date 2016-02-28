@@ -627,13 +627,14 @@ Molpy.DefinePuzzles = function() {
 	Molpy.Sokoban.findchar = function(puzzle) {
   		'use strict';
   		var p = [].concat(puzzle);
-  		var t;
+  		var t; var s;
   		while (p.length) {
-    			t = p.shift().indexOf("@");
+  			s = p.shift();
+    			t = s.indexOf("@");
     			if (t != -1) {
       				return [t, puzzle.length - p.length - 1];
     			}
-    			t = p[0].indexOf("*");
+    			t = s.indexOf("*");
     			if (t != -1) {
       				return [t, puzzle.length - p.length - 1];
     			}
@@ -829,11 +830,12 @@ Molpy.DefinePuzzles = function() {
   		return ls[flandom(ls.length)]; // Sidenote: The name of this function has no meaning. I'm sorry.
 	}
 	Molpy.Sokoban.complete = function(){
+		Molpy.Notify("...did you just break in to solve a puzzle?")
 		return; // To be filled in by @Calamitizer.
 	}
 	Molpy.Sokoban.doInput = function(p,diff){
 		'use strict';
-		var pn = Molpy.Sokoban.moveTo(p,diff);
+		var pn = Molpy.Sokoban.moveTo(p,[diff[0],-diff[1]]); // Because otherwise [0,1] is down.
 		if(!pn) return p;
 		for (var i in pn){
 			if (pn[i].split('').indexOf("+")>0) return pn;
@@ -849,19 +851,27 @@ Molpy.DefinePuzzles = function() {
 		var xb = sloc[0] + 2*diff[0]; var yb = sloc[1]+2*diff[1]
 		var displacing = Molpy.Sokoban.at(puz,xa, ya);
 		if (0<=["#"," "].indexOf(displacing)) {Molpy.Notify("Yer no wizard, Harry.",1);return;}
-		if (displacing == "_") {Molpy.Sokoban.rep(puz,xa,ya,"@");Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");return puz;}
-		if (displacing == "o") {Molpy.Sokoban.rep(puz,xa,ya,"*");Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");return puz;}
+		if (displacing == "_") {
+			Molpy.Sokoban.rep(puz,xa,ya,"@");
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],(Molpy.Sokoban.at(puz,sloc[0],sloc[1])=="@")?"_":"o");
+			return puz;
+		}
+		if (displacing == "o") {
+			Molpy.Sokoban.rep(puz,xa,ya,"*");
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],(Molpy.Sokoban.at(puz,sloc[0],sloc[1])=="@")?"_":"o");
+			return puz;
+		}
 		// Now for moving stuff
 		var doubledouble = Molpy.Sokoban.at(puz,xb, yb);
 		if ("_" == doubledouble) {
-			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],(Molpy.Sokoban.at(puz,sloc[0],sloc[1])=="@")?"_":"o");
 			if(displacing == "+") Molpy.Sokoban.rep(puz,xa,ya,"@");
 			else Molpy.Sokoban.rep(puz,xa,ya,"*");
 			Molpy.Sokoban.rep(puz,xb,yb,"+");
 			return puz;
 		}
 		if ("o" == doubledouble) {
-			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],(Molpy.Sokoban.at(puz,sloc[0],sloc[1])=="@")?"_":"o");
 			if(displacing == "+") Molpy.Sokoban.rep(puz,xa,ya,"@");
 			else Molpy.Sokoban.rep(puz,xa,ya,"*");
 			Molpy.Sokoban.rep(puz,xb,yb,"%");
