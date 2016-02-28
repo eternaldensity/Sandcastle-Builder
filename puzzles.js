@@ -350,6 +350,7 @@ Molpy.DefinePuzzles = function() {
   		return -1
 	}, enumerable:false});
 	
+
 	Molpy.Sokoban.getPuzzle = function(n) {
   		'use strict';
   		var puzzle = ["@"];
@@ -387,6 +388,31 @@ Molpy.DefinePuzzles = function() {
   		}
   		return puzzle;
 	}
+	/*
+	//HEREIN LIE FOUL OPTIMIZATIONS.
+	//ACTIVATE AT YOUR OWN RISK
+	Molpy.Sokoban.buffer = Molpy.Sokoban.Primitives.map(function(s){return [s,1]});
+	Molpy.Sokoban.getPuzzle = function(){
+		var p = GLRschoice(Molpy.Sokoban.buffer.filter(function(s){return s[1]>75;}))
+		if(p) return p
+		Molpy.Notify("Your builders are still recovering from their recent ceasing to exist",1);
+	}
+	Molpy.Sokoban.addBuffer = function(){
+		var p = GLRschoice(Molpy.Sokoban.buffer);
+		if(flandom(4)){
+			var ps = GLRschoice(Molpy.Sokoban.buffer);
+			var cs = flandom(2) ? Molpy.Sokoban.intersects : Molpy.Sokoban.extend
+			var newer = [cs(p,ps),Math.max(p[1],ps[1])+1];
+			Molpy.Sokoban.buffer.push(newer);
+		} else {
+			Molpy.Sokoban.buffer.push([Molpy.Sokoban.wrapPuzzle(p[0],"#",1),p[1]]);
+			Molpy.Sokoban.buffer.push([Molpy.Sokoban.clearrand(p[0]),p[1]]);
+			Molpy.Sokoban.buffer.push([Molpy.Sokoban.editrand(p[0]),p[1]]);
+		}
+	}
+	//In Molpy.Think, add...
+	for(var i=1;i<20;i++) Molpy.Sokoban.addBuffer()
+	*/
 
 	Molpy.Sokoban.intersectInner = function(puzzle,overlay){
 		'use strict';
@@ -802,10 +828,13 @@ Molpy.DefinePuzzles = function() {
   		if (ls.length == 0) return false;
   		return ls[flandom(ls.length)]; // Sidenote: The name of this function has no meaning. I'm sorry.
 	}
+	Molpy.Sokoban.complete = function(){
+		return; // To be filled in by @Calamitizer.
+	}
 	Molpy.Sokoban.doInput = function(p,diff){
 		pn = Molpy.Sokoban.moveTo(p,diff);
 		for (var i in pn){
-			if (pn[i].split('').indexOf("+")>0) return pn
+			if (pn[i].split('').indexOf("+")>0) return pn;
 		}
 		Molpy.Sokoban.complete();
 	}
