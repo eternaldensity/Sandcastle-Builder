@@ -832,7 +832,8 @@ Molpy.DefinePuzzles = function() {
 		return; // To be filled in by @Calamitizer.
 	}
 	Molpy.Sokoban.doInput = function(p,diff){
-		pn = Molpy.Sokoban.moveTo(p,diff);
+		'use strict';
+		var pn = Molpy.Sokoban.moveTo(p,diff);
 		if(!pn) return p;
 		for (var i in pn){
 			if (pn[i].split('').indexOf("+")>0) return pn;
@@ -841,7 +842,7 @@ Molpy.DefinePuzzles = function() {
 	}
 	Molpy.Sokoban.moveTo = function(p,diff){
 		'use strict';
-		puz = [].concat(p)
+		var puz = [].concat(p)
 		var sloc = Molpy.Sokoban.findchar(puz);
 		var xa = sloc[0] + diff[0]; var ya = sloc[1]+diff[1]; 
 		var xb = sloc[0] + 2*diff[0]; var yb = sloc[1]+2*diff[1]
