@@ -276,9 +276,7 @@ Molpy.DefinePuzzles = function() {
 	 * Molpy.Sokoban
 	 * ***************************
 	 * For all your Sokoban needs!
-	 * At least, those involving
-	 * puzzle generation
-	 * (play will come later on)
+	 * (or almost)
 	 * ***************************/
 	Molpy.Sokoban = {}
 	Molpy.Sokoban.Primitives = [
@@ -309,6 +307,30 @@ Molpy.DefinePuzzles = function() {
       		["_%o"
       		,"_+#"
       		,"@_#"],
+      		
+      		["##@##"
+      		,"##%##"
+      		,"_____"
+      		,"+__#+"
+      		,"o__#o"]
+      		
+      		["##_+o"
+      		,"##_##"
+      		,"@%___"
+      		,"##___"
+      		,"##_+o"]
+      		
+      		["o#__o"
+      		,"+#__+"
+      		,"_____"
+      		,"##%##"
+      		,"##@##"]
+      		
+      		["o+_##"
+      		,"___##"
+      		,"___%@"
+      		,"##_##"
+      		,"o+_##"]
       		
       		["@"],
     	];
