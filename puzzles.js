@@ -842,6 +842,7 @@ Molpy.DefinePuzzles = function() {
 	}
 	Molpy.Sokoban.moveTo = function(p,diff){
 		'use strict';
+		if(diff[0]===0 && diff[1]===0) return p;
 		var puz = [].concat(p)
 		var sloc = Molpy.Sokoban.findchar(puz);
 		var xa = sloc[0] + diff[0]; var ya = sloc[1]+diff[1]; 
@@ -853,12 +854,14 @@ Molpy.DefinePuzzles = function() {
 		// Now for moving stuff
 		var doubledouble = Molpy.Sokoban.at(puz,xb, yb);
 		if ("_" == doubledouble) {
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");
 			if(displacing == "+") Molpy.Sokoban.rep(puz,xa,ya,"@");
 			else Molpy.Sokoban.rep(puz,xa,ya,"*");
 			Molpy.Sokoban.rep(puz,xb,yb,"+");
 			return puz;
 		}
 		if ("o" == doubledouble) {
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],"_");
 			if(displacing == "+") Molpy.Sokoban.rep(puz,xa,ya,"@");
 			else Molpy.Sokoban.rep(puz,xa,ya,"*");
 			Molpy.Sokoban.rep(puz,xb,yb,"%");
