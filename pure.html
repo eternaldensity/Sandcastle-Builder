@@ -20,13 +20,13 @@ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www')
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
-if(typeof _gaq != 'object' || !_gaq.push){_gaq = {push: function(){}}};
 _gaq.push(['_setAccount', 'UA-45954809-1']);
 _gaq.push(['_trackPageview']);
 
 </script>
 <script type="text/javascript">window.onload=function()
 {
+	if(typeof _gaq != 'object' || !_gaq.push){_gaq = undefined};
 	Molpy.HardcodedData();
 	Molpy.DefinePersist();
 	Molpy.DefineGUI();
