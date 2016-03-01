@@ -276,9 +276,7 @@ Molpy.DefinePuzzles = function() {
 	 * Molpy.Sokoban
 	 * ***************************
 	 * For all your Sokoban needs!
-	 * At least, those involving
-	 * puzzle generation
-	 * (play will come later on)
+	 * (or almost)
 	 * ***************************/
 	Molpy.Sokoban = {}
 	Molpy.Sokoban.Primitives = [
@@ -309,6 +307,30 @@ Molpy.DefinePuzzles = function() {
       		["_%o"
       		,"_+#"
       		,"@_#"],
+      		
+      		["##@##"
+      		,"##%##"
+      		,"_____"
+      		,"+__#+"
+      		,"o__#o"]
+      		
+      		["##_+o"
+      		,"##_##"
+      		,"@%___"
+      		,"##___"
+      		,"##_+o"]
+      		
+      		["o#__o"
+      		,"+#__+"
+      		,"_____"
+      		,"##%##"
+      		,"##@##"]
+      		
+      		["o+_##"
+      		,"___##"
+      		,"___%@"
+      		,"##_##"
+      		,"o+_##"]
       		
       		["@"],
     	];
@@ -350,6 +372,7 @@ Molpy.DefinePuzzles = function() {
   		return -1
 	}, enumerable:false});
 	
+
 	Molpy.Sokoban.getPuzzle = function(n) {
   		'use strict';
   		var puzzle = ["@"];
@@ -387,6 +410,31 @@ Molpy.DefinePuzzles = function() {
   		}
   		return puzzle;
 	}
+	/*
+	//HEREIN LIE FOUL OPTIMIZATIONS.
+	//ACTIVATE AT YOUR OWN RISK
+	Molpy.Sokoban.buffer = Molpy.Sokoban.Primitives.map(function(s){return [s,1]});
+	Molpy.Sokoban.getPuzzle = function(){
+		var p = GLRschoice(Molpy.Sokoban.buffer.filter(function(s){return s[1]>75;}))
+		if(p) return p
+		Molpy.Notify("Your builders are still recovering from their recent ceasing to exist",1);
+	}
+	Molpy.Sokoban.addBuffer = function(){
+		var p = GLRschoice(Molpy.Sokoban.buffer);
+		if(flandom(4)){
+			var ps = GLRschoice(Molpy.Sokoban.buffer);
+			var cs = flandom(2) ? Molpy.Sokoban.intersects : Molpy.Sokoban.extend
+			var newer = [cs(p,ps),Math.max(p[1],ps[1])+1];
+			Molpy.Sokoban.buffer.push(newer);
+		} else {
+			Molpy.Sokoban.buffer.push([Molpy.Sokoban.wrapPuzzle(p[0],"#",1),p[1]]);
+			Molpy.Sokoban.buffer.push([Molpy.Sokoban.clearrand(p[0]),p[1]]);
+			Molpy.Sokoban.buffer.push([Molpy.Sokoban.editrand(p[0]),p[1]]);
+		}
+	}
+	//In Molpy.Think, add...
+	for(var i=1;i<20;i++) Molpy.Sokoban.addBuffer()
+	*/
 
 	Molpy.Sokoban.intersectInner = function(puzzle,overlay){
 		'use strict';
@@ -601,9 +649,14 @@ Molpy.DefinePuzzles = function() {
 	Molpy.Sokoban.findchar = function(puzzle) {
   		'use strict';
   		var p = [].concat(puzzle);
-  		var t;
+  		var t; var s;
   		while (p.length) {
-    			t = p.shift().indexOf("@");
+  			s = p.shift();
+    			t = s.indexOf("@");
+    			if (t != -1) {
+      				return [t, puzzle.length - p.length - 1];
+    			}
+    			t = s.indexOf("*");
     			if (t != -1) {
       				return [t, puzzle.length - p.length - 1];
     			}
@@ -796,6 +849,59 @@ Molpy.DefinePuzzles = function() {
       				return a >= 0;
     			});
   		if (ls.length == 0) return false;
-  		return ls[flandom(ls.length)];
+  		return ls[flandom(ls.length)]; // Sidenote: The name of this function has no meaning. I'm sorry.
+	}
+	Molpy.Sokoban.complete = function(){
+		Molpy.Notify("...did you just break in to solve a puzzle?")
+		return; // To be filled in by @Calamitizer.
+	}
+	Molpy.Sokoban.doInput = function(p,diff){
+		'use strict';
+		var pn = Molpy.Sokoban.moveTo(p,[diff[0],-diff[1]]); // Because otherwise [0,1] is down.
+		if(!pn) return p;
+		for (var i in pn){
+			if (pn[i].split('').indexOf("+")>0) return pn;
+		}
+		Molpy.Sokoban.complete();
+	}
+	Molpy.Sokoban.moveTo = function(p,diff){
+		'use strict';
+		if(diff[0]===0 && diff[1]===0) return p;
+		var puz = [].concat(p)
+		var sloc = Molpy.Sokoban.findchar(puz);
+		var xa = sloc[0] + diff[0]; var ya = sloc[1]+diff[1]; 
+		var xb = sloc[0] + 2*diff[0]; var yb = sloc[1]+2*diff[1]
+		var displacing = Molpy.Sokoban.at(puz,xa, ya);
+		if (0<=["#"," "].indexOf(displacing)) {Molpy.Notify("Yer no wizard, Harry.",1);return;}
+		if (displacing == "_") {
+			Molpy.Sokoban.rep(puz,xa,ya,"@");
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],(Molpy.Sokoban.at(puz,sloc[0],sloc[1])=="@")?"_":"o");
+			return puz;
+		}
+		if (displacing == "o") {
+			Molpy.Sokoban.rep(puz,xa,ya,"*");
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],(Molpy.Sokoban.at(puz,sloc[0],sloc[1])=="@")?"_":"o");
+			return puz;
+		}
+		// Now for moving stuff
+		var doubledouble = Molpy.Sokoban.at(puz,xb, yb);
+		if ("_" == doubledouble) {
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],(Molpy.Sokoban.at(puz,sloc[0],sloc[1])=="@")?"_":"o");
+			if(displacing == "+") Molpy.Sokoban.rep(puz,xa,ya,"@");
+			else Molpy.Sokoban.rep(puz,xa,ya,"*");
+			Molpy.Sokoban.rep(puz,xb,yb,"+");
+			return puz;
+		}
+		if ("o" == doubledouble) {
+			Molpy.Sokoban.rep(puz,sloc[0],sloc[1],(Molpy.Sokoban.at(puz,sloc[0],sloc[1])=="@")?"_":"o");
+			if(displacing == "+") Molpy.Sokoban.rep(puz,xa,ya,"@");
+			else Molpy.Sokoban.rep(puz,xa,ya,"*");
+			Molpy.Sokoban.rep(puz,xb,yb,"%");
+			return puz;
+		}
+		if ("#" == doubledouble || " "==doubledouble) 
+			Molpy.Notify("If it feels like you're going against a brick wall, it's because you are.",1);
+		else 
+			Molpy.Notify("Unless you can blow these suckers up, they ain't moving.",1);
 	}
 }
