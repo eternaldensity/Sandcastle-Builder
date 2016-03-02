@@ -4024,9 +4024,11 @@ _gaq.push(['_trackPageview']);
  * 
  * In which we make it go!
  *************************************************************/
+if(typeof _gaq!='object' || !_gaq.push) _gaq=undefined
 Molpy.Up();
 window.onload = function() {
 	if(!Molpy.molpish) {
+		if(typeof _gaq!='object' || !_gaq.push) _gaq=undefined
 		Molpy.Wake();
 		_gaq && _gaq.push(['_trackEvent', 'Setup', 'Complete', '' + Molpy.version, true]);
 	}
