@@ -276,7 +276,7 @@ Molpy.Up = function() {
 						Molpy.Boosts['Glass Saw'].Refresh();
 					}
 
-					_gaq.push(['_trackEvent', Molpy.Boosts['VJ'].name, sawType, '' + Molpy.Boosts['VJ'].power]);
+					_gaq && _gaq.push(['_trackEvent', Molpy.Boosts['VJ'].name, sawType, '' + Molpy.Boosts['VJ'].power]);
 				}
 			}
 			if(Molpy.Got('Bag Puns') && Molpy.Boosts['VJ'].bought != 1) {
