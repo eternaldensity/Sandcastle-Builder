@@ -1374,7 +1374,7 @@
 		if(confirm('Really coma?\n(This will wipe all progress and badges!)')
 			&& confirm('Seriously, this will reset ALL the things.\nAre you ABSOLUTELY sure?')) {
 			//reset the badges
-			_gaq.push(['_trackEvent', 'Coma', 'Begin', '' + Molpy.newpixNumber]);
+			_gaq && _gaq.push(['_trackEvent', 'Coma', 'Begin', '' + Molpy.newpixNumber]);
 			Molpy.Down(1);
 			Molpy.saveCount = 0;
 			Molpy.loadCount = 0;
@@ -1407,7 +1407,7 @@
 
 			Molpy.unlockedGroups = {};
 			Molpy.UpdateFaves(1);
-			_gaq.push(['_trackEvent', 'Coma', 'Complete', '' + Molpy.highestNPvisited]);
+			_gaq && _gaq.push(['_trackEvent', 'Coma', 'Complete', '' + Molpy.highestNPvisited]);
 			
 			Molpy.BuildLootLists();
 			Molpy.allNeedRepaint = 1;
