@@ -770,7 +770,10 @@ Molpy.DragonFledge = function(clutch) {
 	}
 
 	if (fight && npd.amount) {
-		Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.FindOpponents(Molpy.newpixNumber),' attacks as you fledge',' attack as you fledge',0);
+		var opponents = Molpy.FindOpponents(Molpy.newpixNumber);
+		Molpy.OpponentsAttack(Molpy.newpixNumber, opponents,' attacks as you fledge',' attack as you fledge',0);
+		if(opponents.numb > 1 && npd.amount > 0)
+			Molpy.EarnBadge('There are two of them!');
 	}
 	if (npd.amount) {
 		Molpy.EarnBadge('First Colonist');
@@ -843,7 +846,6 @@ Molpy.OpponentsAttack = function(where,df,text1,text2,fighttype,breathtype) {
 	var backfire = Math.random() < .25 - Molpy.DragonLuck - .05*Molpy.Got('Mouthwash') + .02*Molpy.Got('Ethyl Alcohol');
 	var specialatkmod = Molpy.Boosts['Dragonfly'].Level*.01 + Molpy.DragonLuck;
 	var blitzval = Molpy.calcBlitzVal(dragstats.attack,dragstats.defence);
-	if (df.numb > 1) Molpy.EarnBadge('There are two of them!');
 	breathtype++;
 	dq.totalfights++;
 
@@ -1232,7 +1234,12 @@ Molpy.DragonsFromCryo = function() { // Cut down version of fledge
 		Molpy.Overview.Update(Molpy.newpixNumber);
 	};
 
-	if (fight && npd.amount) Molpy.OpponentsAttack(Molpy.newpixNumber,Molpy.FindOpponents(Molpy.newpixNumber),' attacks as you fledge',' attack as you fledge', 0);
+	if (fight && npd.amount) {
+		var opponents = Molpy.FindOpponents(Molpy.newpixNumber);
+		Molpy.OpponentsAttack(Molpy.newpixNumber, opponents,' attacks as you fledge',' attack as you fledge', 0);
+		if(opponents.numb > 1 && npd.amount > 0)
+			Molpy.EarnBadge('There are two of them!');
+	}
 	Molpy.DragonDigRecalc(); // Always needed
 }
 
