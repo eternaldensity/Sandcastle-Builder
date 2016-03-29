@@ -8205,8 +8205,14 @@ Molpy.DefineBoosts = function() {
 		var rest = 0;
 		for (var inf in Molpy.NestLinings) if (inf != thing) rest += (nest.Liners[inf] || 0);
 		var cur = (nest.Liners[thing] || 0);
-		if (cur+change < 0 || (!Molpy.Got('Marketing') && ((rest+cur+change) > 100)) || cur + change > 100 || rest + cur + change > 200) return;
-		nest.Liners[thing] = (nest.Liners[thing] || 0) + change;
+
+		var newVal = Math.min(Math.max(cur + change, 0), 100);
+
+		var limit = Molpy.Got('Marketing') ? 200 : 100;
+		if (rest + newVal > limit)
+			newVal = limit - rest;
+
+		nest.Liners[thing] = newVal;
 		nest.Refresh();
 	}
 
