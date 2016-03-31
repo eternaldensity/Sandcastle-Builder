@@ -36,6 +36,44 @@ No warranty is provided.  Use at your own risk.
 
 ## Changelog
 
+### 4.01 April Fools!
+
+#### snnw
+- Put notifications in front of the beach
+
+#### pickten
+- Fix the vault buying issue
+- Fix Ooh, Shiny
+- Notifsilence rework
+- Typos fixed
+- Fix some confused code in retroact
+- Quick Cleanup (Retro less self-restrictive, polarizer description etc)
+- Fix a missing "Wait for it"
+- Promote save functions to critical status
+- More save types
+- Add a toggle to pInsan
+- Sokoban -- generation
+- "Finish" Sokoban
+
+#### IHaveNoFunnyName
+
+- CDSP downgrade fix
+- Typo fix (at least I assume it was a fix)
+- Notif log rewrite
+
+#### Pikrass
+
+- Fix parenthesis in Dragon Queen's description
+- Fix #1454 (awarding "There are two of them!")
+- Fix detecting the '5' key with numpads and azerty leopards
+- Allow +10/-10 nest buttons to set the value to maximum / minimum
+
+#### ED
+
+- changelog
+- merging
+- redundant ball removal from redandancy.js (radical inguinal orchiectomy)
+
 ### 4.002
 
 #### pickten
