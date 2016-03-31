@@ -112,19 +112,19 @@ function GLRschoice(things) {
 	return things[flandom(things.length)];
 }
 function EvalMaybeFunction(bacon, babies, ice) {
-	var B = typeof (bacon);
+	var b = typeof (bacon);
 	var D = 'function';
-	var O = (B === D ? bacon(babies) : bacon);
+	var O = (b === D ? bacon(babies) : bacon);
 	if(!ice) return O;
 
-	B = typeof (O);
+	b = typeof (O);
 	D = 'string';
-	return(B === D ? DeMolpify(O) : O);
+	return(b === D ? DeMolpify(O) : O);
 }
 function ZeroIfFunction(bacon) {
-	var B = typeof (bacon);
+	var b = typeof (bacon);
 	var D = 'function';
-	var O = (B === D ? 0 : bacon);
+	var O = (b === D ? 0 : bacon);
 	return 0;
 }
 var GrapeCache = [];
