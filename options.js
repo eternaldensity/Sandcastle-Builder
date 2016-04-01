@@ -390,7 +390,7 @@ new Molpy.Option({
 	name: 'loglength',
 	title: 'Log N notifications',
 	range: 6,
-	text: ['1','5','10','20','50','100','∞'],
+	text: ['∞', '1','5','10','20','50','100'],
 	visibility: 1
 });
 
