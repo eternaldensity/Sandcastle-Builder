@@ -400,7 +400,16 @@ Molpy.Up = function() {
 
 		var prevKey = '';
 		Molpy.KeyDown = function(e) {
-			var key = String.fromCharCode(e.keyCode || e.charCode);
+			// Ignore Shift, Control, Alt
+			if(e.keyCode >= 0x10 && e.keyCode <= 0x14)
+				return;
+
+			var key;
+			if(e.keyCode >= 0x60 && e.keyCode <= 0x69) // Numpad
+				key = String.fromCharCode(e.keyCode - 0x30);
+			else
+				key = String.fromCharCode(e.keyCode || e.charCode);
+
 			if(key == '5' && prevKey.toLowerCase() == 'f') {
 				Molpy.ClickBeach(e, 1);
 				Molpy.EarnBadge('Use Your Leopard');
