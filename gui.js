@@ -1175,7 +1175,7 @@ Molpy.DefineGUI = function() {
 		g('logCurrent').value="Current";
 	}
 	
-	Molpy.logLengths = [1,5,10,20,50,100,Infinity];
+	Molpy.logLengths = [Infinity,1,5,10,20,50,100];
 	
 	Molpy.Notify = function(text, importance) {
 		if(importance==undefined) importance=0;
