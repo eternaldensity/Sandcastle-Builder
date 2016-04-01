@@ -1095,36 +1095,31 @@ Molpy.DefineGUI = function() {
 		}
 	}
 	
-	LogEntry = function() {
-		this.text="";
-		this.qty=0;
-		this.getLine = function()  {
-			str = "<div ";
-			if (this.details!="")
-				str += "title=\"&#13;"+this.details.replace(/"/g, "&quot;") + "\"";
-			if (this.clas != "")
-				str += "class=\"" + this.clas
-			str +=  "\">" + this.text;
-			if (this.qty>1)
-				str += ' (x'+this.qty+')';
-			str += '</div>';
-			return str; 
+	Molpy.Log = function() {
+		this.np = Math.floor(Molpy.newpixNumber);
+		this.time = moment();
+		this.text = [];
+		this.qty = [];
+		this.joinedString = function() {
+			str = "";
+			for (i = 0; i < this.text.length; i++){
+				str += "<div \">" + this.text[i];
+				if (this.qty[i] > 1) str += "(x" + this.qty[i] + ")";
+				str +="</div>";
+			}
+			return str;
 		}
-		this.details="";
-		this.clas="";
-	};
+		return this;
+	}
 	
 	Molpy.ClearLog = function() {
 		Molpy.Anything = 1;
-		Molpy.logArchive = [];
-		Molpy.logArchive[0] = [];
-		Molpy.logArchive[0].np = Math.floor(Molpy.newpixNumber);
-		Molpy.logArchive[0].time = moment();
-		Molpy.logArchive[0].string = "Loading..."
+		Molpy.logArchive = []
+		Molpy.logArchive[0] = new Molpy.Log();
+		Molpy.logArchive[0].text.push("Loading...");
+		Molpy.logArchive[0].qty.push(1);
 		Molpy.currentLog = 0;
 		Molpy.selectedLog = 0;
-		Molpy.notifLog = new LogEntry();
-		Molpy.logBuffer = ""
 		Molpy.notifLogPaint = 1;
 		Molpy.logUpdatePaint = 0;
 	}
@@ -1145,11 +1140,8 @@ Molpy.DefineGUI = function() {
 
 	Molpy.LogONG = function(){
 		Molpy.currentLog++;
-		Molpy.logArchive[Molpy.currentLog] = [];
-		Molpy.logArchive[Molpy.currentLog].np = Math.floor(Molpy.newpixNumber);
-		Molpy.logArchive[Molpy.currentLog].time = moment();
 		Molpy.selectedLog = Molpy.currentLog;
-		Molpy.logArchive[Molpy.currentLog].string = ""
+		Molpy.logArchive[Molpy.selectedLog] = new Molpy.Log();
 		Molpy.notifLogPaint = 1;
 		Molpy.CleanLogs();
 	}
@@ -1183,22 +1175,24 @@ Molpy.DefineGUI = function() {
 		g('logCurrent').value="Current";
 	}
 	
+	Molpy.logLengths = [1,5,10,20,50,100,Infinity];
+	
 	Molpy.Notify = function(text, importance) {
 		if(importance==undefined) importance=0;
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
-		
-			if (Molpy.notifLog.text == text){
-				Molpy.notifLog.qty++;
+		var log = Molpy.logArchive[Molpy.currentLog];
+			if (log.text[log.text.length - 1] == text){
+				log.qty[log.text.length - 1] ++;
 			} else {
-				Molpy.logBuffer += Molpy.notifLog.getLine();
-				Molpy.notifLog.text = text;
-				Molpy.notifLog.qty=1;
-				Molpy.notifLog.details = "";
-				Molpy.notifLog.clas = "";
-				Molpy.logUpdatePaint = 1;
+				log.text.push(text);
+				log.qty.push(1);
+				if(log.text.length > Molpy.logLengths[Molpy.options['loglength']]){
+					log.text.shift();
+					log.qty.shift();
+				}
 			}
-		
+		Molpy.logUpdatePaint = 1;
 		if(Molpy.options['notifsilence']>importance){return;}
 		//pick the first free (or the oldest) notification to replace it
 		var highest = 0;
@@ -1241,13 +1235,11 @@ Molpy.DefineGUI = function() {
 	}
 	Molpy.PaintLogUpdate = function() {
 		Molpy.logUpdatePaint = 0;
-		Molpy.logBuffer += Molpy.notifLog.getLine();
-		Molpy.notifLog = new LogEntry();
 		g('logCurrent').value="*NEW*"
 		if(Molpy.currentLog == Molpy.selectedLog){
 			var log = g('logItems');
 			var scroll = (log.scrollTop == (log.scrollHeight - log.clientHeight));
-			log.innerHTML += Molpy.logBuffer;
+			log.innerHTML = Molpy.logArchive[Molpy.selectedLog].joinedString();
 			if(scroll) {
 				log.scrollTop = log.scrollHeight;
 				g('logCurrent').value="Current";
@@ -1266,7 +1258,7 @@ Molpy.DefineGUI = function() {
 		title.title = h + ":" + m;
 		title.innerHTML = "Notification log for Newpix " + Molpy.logArchive[Molpy.selectedLog].np;
 		var log = g('logItems');
-		log.innerHTML = Molpy.logArchive[Molpy.selectedLog].string;
+		log.innerHTML = Molpy.logArchive[Molpy.selectedLog].joinedString();
 		log.scrollTop = log.scrollHeight;
 	}
 
@@ -1624,7 +1616,7 @@ Molpy.DefineGUI = function() {
 			Molpy.oldBeachClass = '';
 		}
 	}
-
+	
 	Molpy.clockDegrees = 0;
 	function createClockHand() {
 		var clockSizeX = 40, clockSizeY = 40, handOriginX = clockSizeX / 2, handOriginY = clockSizeY / 2, handSize = 12;
