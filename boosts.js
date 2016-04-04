@@ -11581,7 +11581,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Topiary',
 		icon: 'topiary',
 		group: 'drac',
-		desc: 'When fleding, if the clutch is too large for the NP, the rest are left as hatchlings and not wasted',
+		desc: 'When fledging, if the clutch is too large for the NP, the rest are left as hatchlings and not wasted',
 		price: { Diamonds:345678, Goats:Infinity },
 	});
 
