@@ -13360,8 +13360,8 @@ Molpy.Coallate = function(){
 			group: 'varie',
 			className: 'action',
 			desc: function(me){
-				var str='Lets you turn the essence of a color into its dual (Blueness to <i>Other</i>ness, <i>Other</i>ness to Blueness, Blackness to'
-				str+=(Molpy.Got('Whiteness')?'Whiteness':'???')+'and vice versa). Uses 5 Blackness to begin the operation, then '
+				var str='Lets you turn the essence of a color into its dual (Blueness to <i>Other</i>ness, <i>Other</i>ness to Blueness, Blackness to '
+				str+=(Molpy.Got('Whiteness')?'Whiteness':'???')+' and vice versa). Uses 5 Blackness to begin the operation, then '
 				str=str+'between 1-10 of the original color per amount of new color you wish to craft.'
 				if(Molpy.Got('Polarizer')){
 					str=str+' You may dualize:'
