@@ -13582,7 +13582,7 @@ Molpy.Coallate = function(){
 			className: 'alert',
 			countdownFunction: function() {
 				if(this.startCountdown(true)>5 && this.countdown==2){
-					Molpy.Notify("Ceci n'est pas un film d'espionage.") //This is not a spy movie. 
+					Molpy.Notify("Ceci n'est pas un film d'espionnage.") //This is not a spy movie. 
 				//Ref is to the classic painting with "Ceci n'est pas une pipe." and to the standard bomb scenario
 				}
 			},
