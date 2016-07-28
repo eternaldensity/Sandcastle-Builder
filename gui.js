@@ -1292,7 +1292,7 @@ Molpy.DefineGUI = function() {
 			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1))){
 				return 'http://placekitten.com/'+ (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') + x + '/' + y;
 			}else if(frac==0){
-				return 'http://178.79.159.24/Time/otcolorization/' + newp;
+				return 'http://139.162.169.39/Time/otcolorization/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
 				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
 			} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
