@@ -707,9 +707,9 @@ Molpy.DefineBoosts = function() {
 	Molpy.TimeTravel = function(NP) {
 		Molpy.Anything = 1;
 		var oldNP=Molpy.newpixNumber;
-		var frac = Number(((Math.abs(Molpy.newpixNumber*10)-Math.floor(Math.abs(Molpy.newpixNumber))*10)/10).toFixed(3));
+		var frac = Number((Math.abs(Molpy.newpixNumber)-Math.floor(Math.abs(Molpy.newpixNumber))).toFixed(3));
 		var sign = Math.sign(Molpy.newpixNumber);
-		if(Molpy.TTT((sign*(Math.floor(Math.abs(Molpy.newpixNumber))*10+frac*10)+ NP*10)/10, 0)) {
+		if(Molpy.TTT(Number((sign*(Math.floor(Math.abs(Molpy.newpixNumber))+frac)+ NP).toFixed(3)), 0)) {
 			if(oldNP>0)
 			{
 				if(NP > 0) Molpy.EarnBadge('Fast Forward');
@@ -747,7 +747,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('You cannot pass into NP0 directly;<br>charge your signpost.',1);
 			return;
 		}
-		if(Number(((Math.abs(np*10)-Math.floor(Math.abs(np))*10)/10).toFixed(3)) !== Number(((Math.abs(oldnp*10)-Math.floor(Math.abs(oldnp))*10)/10).toFixed(3))){
+		if(Number((Math.abs(np)-Math.floor(Math.abs(np))).toFixed(3)) !== Number((Math.abs(oldnp)-Math.floor(Math.abs(oldnp))).toFixed(3))){
 			Molpy.Notify('You can not travel across timelines.',1);
 			Molpy.Notify('Travel to NP 0 first.',1);
 			return;
@@ -757,7 +757,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.EarnBadge('The Big Freeze');
 			return;
 		}
-		if(Math.floor(Math.abs(np)) > Math.floor(Math.abs(Molpy.largestNPvisited[Number((np-Math.floor(np)).toFixed(3))]))) {
+		if(Math.floor(Math.abs(np)) > Math.floor(Math.abs(Molpy.largestNPvisited[Number((Math.abs(np)-Math.floor(Math.abs(np))).toFixed(3))]))) {
 			Molpy.Notify('Wait For It',1);
 			return;
 		}
