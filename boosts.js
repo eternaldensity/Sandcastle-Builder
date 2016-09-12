@@ -1891,9 +1891,10 @@ Molpy.DefineBoosts = function() {
 		}
 		if(Molpy.Got('Temporal Rift')) {
 			if(Molpy.Got('Safety Net'))
-				Molpy.newpixNumber = Math.round(Math.random() * (Math.abs(Molpy.highestNPvisited) - 241) + 241)
+				Molpy.newpixNumber = Math.ceil(Math.random() * (Math.abs(Molpy.largestNPvisited[0]) - 241) + 241)
 			else
-				Molpy.newpixNumber = Math.round(Math.random() * Math.abs(Molpy.highestNPvisited));
+				Molpy.newpixNumber = Math.ceil(Math.random() * Math.abs(Molpy.largestNPvisited[0]));
+
 			if(Molpy.Earned('Minus Worlds') && Molpy.Has('GlassChips',1000) && Math.floor(Math.random() * 2)) Molpy.newpixNumber *= -1;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
