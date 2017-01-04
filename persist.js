@@ -56,7 +56,7 @@
 			success = Molpy.SaveC_STARSTAR_kie();
 		}
 		if(!success) return;
-		Molpy.Notify('Game saved',2);
+		Molpy.Notify('Game saved',auto?0:2, 1);
 		auto || _gaq && _gaq.push(['_trackEvent', 'Save', 'Complete', '' + Molpy.saveCount]);
 
 		Molpy.autosaveCountup = 0;
