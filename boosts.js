@@ -13337,13 +13337,15 @@ Molpy.Coallate = function(){
 		}
 	);
 	Molpy.subtractObjects=function(a,b,t){
-		var c={}
-		if(!t) t=1
-		for(var i in a){if(typeof a[i]=='function'){a[i]=a[i](t)}}
-		for(var i in b){if(typeof b[i]=='function'){b[i]=b[i](t)}}
-		for(var i in a){
-			if((b[i])&&(a[i]>b[i])){c[i]=a[i]-b[i]}
-			if(!b[i]) c[i]=a[i]
+		var c={};
+		var d={};
+		var e={}
+		if(!t) t=1;
+		for(var i in a){if(typeof a[i]=='function'){d[i]=a[i](t)} else {d[i] = a[i]}}
+		for(var i in b){if(typeof b[i]=='function'){e[i]=b[i](t)} else {d[i] = b[i]}}
+		for(var i in d){
+			if((e[i])&&(d[i]>e[i])){c[i]=d[i]-e[i]}
+			if(!e[i]) c[i]=d[i]
 		}
 		return c //useful because it drops all negs/zeros automatically. Be careful when using this, though, because of functions.
 	}
