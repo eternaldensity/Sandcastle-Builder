@@ -2448,7 +2448,7 @@ Molpy.DefineBoosts = function() {
 						str += '<br>Currently, you have no more sand available for further upgrades.';
 					}
 				} else {
-					str += 'It costs 5 Blocks to upgrade the Glass Blower\'s speed.';
+					str += '<br>It costs 5 Blocks to upgrade the Glass Blower\'s speed.';
 				}
 			} else {
 				str += '<br>You have no need for further upgrades.';
