@@ -1122,6 +1122,7 @@ Molpy.DefineGUI = function() {
 		Molpy.selectedLog = 0;
 		Molpy.notifLogPaint = 1;
 		Molpy.logUpdatePaint = 0;
+		g('logCurrent').value="Current";
 	}
 	Molpy.ClearLog();
 	Molpy.InMyPants = 0;
