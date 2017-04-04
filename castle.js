@@ -1069,11 +1069,11 @@ Molpy.Up = function() {
 				} else {
 					buildN = Math.floor(buildN*Molpy.Papal('Castles'));
 					Molpy.Boosts['Castles'].build(buildN);
+					this.totalCastlesBuilt += buildN;
 					if(isNaN(this.totalCastlesBuilt)) {
 						this.totalCastlesBuilt = 0;
 						Molpy.EarnBadge('Mustard Cleanup');
 					}
-					this.totalCastlesBuilt += buildN;
 				}
 				this.currentActive = 0;
 			};

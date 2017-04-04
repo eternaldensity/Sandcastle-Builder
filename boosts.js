@@ -3669,9 +3669,13 @@ Molpy.DefineBoosts = function() {
 		icon: 'temporalduplication',
 		group: 'chron',
 		className: 'alert',
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		desc: function(me) {
 			var tdf = Molpy.TDFactor(true) - 1;
+            if(! me.IsEnabled) {
+                return 'When this is active and you buy tools, you get bonus free tools!';
+            }
 			return 'For ' + MolpifyCountdown(me.countdown) + ', when you buy tools, get '
 				+ (tdf <= 1 ? 'the same' : Molpify(tdf, 3) + 'x that') + ' amount again for free!';
 		},

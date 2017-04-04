@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=4.01;
-Molpy.versionName='April Fools!'; // Appended to the numerical version on screen
+Molpy.version=4.04;
+Molpy.versionName='Fool Not Found'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings

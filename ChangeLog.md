@@ -1,5 +1,29 @@
 ## Changelog
 
+### 4.04 Fool Not Found
+
+#### pokeball99
+- Move changelog to its own file
+
+#### Pikrass
+- Typos
+
+#### pickten
+- Fix infinite backwards movement in TaT pix (bug #1471)
+- Molpy.subtractObjects was not pure (bug #1481)
+
+#### EPSIL0N 
+- dragon equipment reward quick fix
+
+####coderpatsy
+- Reset currentLog button when clearing logs
+- Glass Blower description spacing
+
+####ED
+- Fix NPBs mustard total castles built (bug #1477) - Mustard cleanup now happens after adding mustard
+- Fix Temporal Duplication description wrong when locked (bug #1473)
+- Updated changelog
+
 ### 4.01 April Fools!
 
 #### snnw
