@@ -1069,11 +1069,11 @@ Molpy.Up = function() {
 				} else {
 					buildN = Math.floor(buildN*Molpy.Papal('Castles'));
 					Molpy.Boosts['Castles'].build(buildN);
+					this.totalCastlesBuilt += buildN;
 					if(isNaN(this.totalCastlesBuilt)) {
 						this.totalCastlesBuilt = 0;
 						Molpy.EarnBadge('Mustard Cleanup');
 					}
-					this.totalCastlesBuilt += buildN;
 				}
 				this.currentActive = 0;
 			};
@@ -1923,7 +1923,7 @@ Molpy.Up = function() {
 		'Blue Fragment',
 		'A Splosion','splosion',
 		'DomCobb'] //Each boost on its own line, please!
-		// Do we need name and alias pairs?
+		// Do we need name and alias pairs? // No, but if different it means bonus clarity
 
 		Molpy.previewNP = 0;
 
@@ -3516,7 +3516,8 @@ Molpy.Up = function() {
 				if(!price){price={}}
 				if(!Molpy.IsFree(red.CalcPrice(price))) {
 					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
-						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 0);
+						if(!Molpy.boostSilence && !Molpy.got(red.alias)) 
+							Molpy.Notify('Photoelectricity revealed:', 0);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else{
 						Molpy.UnlockRepeatableBoost(red.alias,1,dtimes)

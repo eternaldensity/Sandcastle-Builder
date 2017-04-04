@@ -1122,6 +1122,7 @@ Molpy.DefineGUI = function() {
 		Molpy.selectedLog = 0;
 		Molpy.notifLogPaint = 1;
 		Molpy.logUpdatePaint = 0;
+		g('logCurrent').value="Current";
 	}
 	Molpy.ClearLog();
 	Molpy.InMyPants = 0;
@@ -1175,24 +1176,26 @@ Molpy.DefineGUI = function() {
 		g('logCurrent').value="Current";
 	}
 	
-	Molpy.logLengths = [1,5,10,20,50,100,Infinity];
+	Molpy.logLengths = [Infinity,1,5,10,20,50,100];
 	
-	Molpy.Notify = function(text, importance) {
+	Molpy.Notify = function(text, importance,nolog) {
 		if(importance==undefined) importance=0;
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
-		var log = Molpy.logArchive[Molpy.currentLog];
-			if (log.text[log.text.length - 1] == text){
-				log.qty[log.text.length - 1] ++;
-			} else {
-				log.text.push(text);
-				log.qty.push(1);
-				if(log.text.length > Molpy.logLengths[Molpy.options['loglength']]){
-					log.text.shift();
-					log.qty.shift();
-				}
+		if(importance + 1 >= Molpy.options['notifsilence'] && !nolog){
+			var log = Molpy.logArchive[Molpy.currentLog];
+				if (log.text[log.text.length - 1] == text){
+					log.qty[log.text.length - 1] ++;
+				} else {
+					log.text.push(text);
+					log.qty.push(1);
+					if(log.text.length > Molpy.logLengths[Molpy.options['loglength']]){
+						log.text.shift();
+						log.qty.shift();
+					}
 			}
-		Molpy.logUpdatePaint = 1;
+			Molpy.logUpdatePaint = 1;
+		}
 		if(Molpy.options['notifsilence']>importance){return;}
 		//pick the first free (or the oldest) notification to replace it
 		var highest = 0;
