@@ -1184,15 +1184,15 @@ Molpy.DefineGUI = function() {
 		text = format(text);
 		if(importance + 1 >= Molpy.options['notifsilence'] && !nolog){
 			var log = Molpy.logArchive[Molpy.currentLog];
-				if (log.text[log.text.length - 1] == text){
-					log.qty[log.text.length - 1] ++;
-				} else {
-					log.text.push(text);
-					log.qty.push(1);
-					if(log.text.length > Molpy.logLengths[Molpy.options['loglength']]){
-						log.text.shift();
-						log.qty.shift();
-					}
+			if (log.text[log.text.length - 1] == text){
+				log.qty[log.text.length - 1] ++;
+			} else {
+				log.text.push(text);
+				log.qty.push(1);
+				if(log.text.length > Molpy.logLengths[Molpy.options['loglength']]){
+					log.text.splice(0, Molpy.logLengths[Molpy.options['loglength']] - log.text.length);
+					log.qty.splice(0, Molpy.logLengths[Molpy.options['loglength']] - log.text.length);
+				}
 			}
 			Molpy.logUpdatePaint = 1;
 		}
