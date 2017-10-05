@@ -8373,7 +8373,7 @@ Molpy.DefineBoosts = function() {
 				if (me.clutches[cl] > 1) str += 'of ' + Molpify(me.clutches[cl]) + ' ';
 				if (me.age[cl] < 1000) {
 					if (Molpy.Boosts.DQ.overallState != 3) {
-						str += 'is restless and wants it\'s own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
+						str += 'is restless and wants its own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
 							cl+')"></input><br>';
 						if (Molpy.Got('Cryogenics')) {
 							str += '<input type=button value="Freeze for later" onclick="Molpy.DragonsToCryo('+cl+')"></input><br>'
