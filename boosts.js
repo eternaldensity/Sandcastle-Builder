@@ -3851,6 +3851,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Technicolour Dream Cat',
 		icon: 'dreamcat',
 		heresy: true,
+		className: 'toggle',
 		desc: function(me) {
 			var str = Molpy.Redacted.words + ' are multicoloured (if Chromatic Heresy is enabled)';
 			str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
