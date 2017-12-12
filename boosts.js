@@ -7295,6 +7295,10 @@ Molpy.DefineBoosts = function() {
 	Molpy.ShadowStrike = function() {
 		Molpy.Anything = 1;
 		var l = Molpy.Level('LogiPuzzle') / 100;
+		if (l === 0) {
+			// this was combining with an infinite multiplier from Abattoir to make mustard
+			return;
+		}
 		var n = Math.ceil(l);
 		var p = n - l;
 		if (n < 1000000) {
@@ -7303,7 +7307,7 @@ Molpy.DefineBoosts = function() {
 			if (Math.random() < 0.25) n = 1;
 		}
 		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
-		if (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
+		if (n>1 && Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
 		n = Math.floor(n*Molpy.Papal('Bonemeal'));
 		n = Math.min(n,1e290);
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 0);
