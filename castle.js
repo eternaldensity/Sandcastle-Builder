@@ -3516,7 +3516,7 @@ Molpy.Up = function() {
 				if(!price){price={}}
 				if(!Molpy.IsFree(red.CalcPrice(price))) {
 					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
-						if(!Molpy.boostSilence && !Molpy.got(red.alias)) 
+						if(!Molpy.boostSilence && !Molpy.Got(red.alias)) 
 							Molpy.Notify('Photoelectricity revealed:', 0);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else{

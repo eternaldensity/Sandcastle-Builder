@@ -3851,6 +3851,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Technicolour Dream Cat',
 		icon: 'dreamcat',
 		heresy: true,
+		className: 'toggle',
 		desc: function(me) {
 			var str = Molpy.Redacted.words + ' are multicoloured (if Chromatic Heresy is enabled)';
 			str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
@@ -7294,6 +7295,10 @@ Molpy.DefineBoosts = function() {
 	Molpy.ShadowStrike = function() {
 		Molpy.Anything = 1;
 		var l = Molpy.Level('LogiPuzzle') / 100;
+		if (l === 0) {
+			// this was combining with an infinite multiplier from Abattoir to make mustard
+			return;
+		}
 		var n = Math.ceil(l);
 		var p = n - l;
 		if (n < 1000000) {
@@ -7302,7 +7307,7 @@ Molpy.DefineBoosts = function() {
 			if (Math.random() < 0.25) n = 1;
 		}
 		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
-		if (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
+		if (n>1 && Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
 		n = Math.floor(n*Molpy.Papal('Bonemeal'));
 		n = Math.min(n,1e290);
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 0);
@@ -8373,7 +8378,7 @@ Molpy.DefineBoosts = function() {
 				if (me.clutches[cl] > 1) str += 'of ' + Molpify(me.clutches[cl]) + ' ';
 				if (me.age[cl] < 1000) {
 					if (Molpy.Boosts.DQ.overallState != 3) {
-						str += 'is restless and wants it\'s own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
+						str += 'is restless and wants its own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
 							cl+')"></input><br>';
 						if (Molpy.Got('Cryogenics')) {
 							str += '<input type=button value="Freeze for later" onclick="Molpy.DragonsToCryo('+cl+')"></input><br>'

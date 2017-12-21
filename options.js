@@ -195,7 +195,7 @@ new Molpy.Option({
 	name: 'loglength',
 	title: 'Log N notifications',
 	range: 6,
-	text: ['1','5','10','20','50','100','∞'],
+	text: ['∞', '1','5','10','20','50','100'],
 	visibility: 1
 });
 
@@ -402,11 +402,11 @@ new Molpy.Option({
     visability: 1
 });
 new Molpy.Option({
-	name: 'loglength',
-	title: 'Log N notifications',
+	name: 'loglengthdup',
+	title: 'Log N notifications; somehow a duplicate was added in the work for 4.0 when this was supposed to be removed',
 	range: 6,
 	text: ['∞', '1','5','10','20','50','100'],
-	visibility: 1
+	visibility: -1
 });
 
 
