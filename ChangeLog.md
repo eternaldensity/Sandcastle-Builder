@@ -4,6 +4,7 @@
 
 #### pickten
 - duplicate notification option bug
+- fix typo that was breaking Not a Priest
 
 #### xeymericx 
 - Mark technicolour as tagged item
@@ -19,6 +20,8 @@
 - updated changelog redundantly
 - Merry Christmas!
 - Removed Elfish Destiny
+- updated changelog because I missed mentioning the most important thing because I was distracted markig and closing the duplicate issue on GitHub
+- reminded people they can still comment on a closed issue asking for it to be pushed to li
 
 ### 4.04 Fool Not Found
 
