@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=4.04;
-Molpy.versionName='Fool Not Found'; // Appended to the numerical version on screen
+Molpy.version=4.05;
+Molpy.versionName='Method Not Allowed'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
