@@ -796,6 +796,10 @@ Molpy.DragonStatsNow = function(where) {
 
 	Stats.defence += 0.001;
 	Stats.attack += 0.001;
+	if (Molpy.Got['Dragon Breath']) {
+		Stats.breath += 0.001;
+	}
+
 	Stats.defence *= Molpy.DragonDefenceMultiplier*drag.defbase;
 	Stats.attack *= Molpy.DragonAttackMultiplier*drag.defbase;
 	Stats.dig *= Molpy.DragonDigMultiplier*drag.digbase;
