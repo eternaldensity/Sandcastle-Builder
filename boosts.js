@@ -12006,7 +12006,7 @@ Molpy.Annililate = function(){
 	var i = Math.abs(Math.pow(Math.log10(unrar)/7,7)*7777);
 	Molpy.CoalToAdd = Math.max(Math.floor(i),1);
 	Molpy.DiamToSpend = Math.max(Math.floor(1/i), 1);
-	if(!Molpy.Got('Chthonism') && Molpy.Boosts['DQ'].Level > 2 && Molpy.groupBadgeCounts.diamm >= 30 && Molpy.CoalToAdd > 338371000) Molpy.UnlockBoost('Chthonism');
+	if(!Molpy.Got('Chthonism') && Molpy.Boosts['DQ'].Level > 2 && Molpy.groupBadgeCounts.diamm >= 30 && Molpy.CoalToAdd > 338371) Molpy.UnlockBoost('Chthonism');
 	if(!Molpy.Got('Safety Canary') && Molpy.Boosts['DQ'].Level > 2 && Molpy.DiamToSpend >= 777776) Molpy.UnlockBoost('Safety Canary');
 	if(Molpy.Got('Safety Canary') && Molpy.IsEnabled('Safety Canary') && Molpy.DiamToSpend > 777){
 		Molpy.Boosts[Annilment].power = 0;

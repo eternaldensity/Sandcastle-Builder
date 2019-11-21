@@ -2415,7 +2415,7 @@ Molpy.Up = function() {
 						+ (this.opponents.oppstat[1]>0?'':' Magic: ' + Molpify(this.opponents.oppstat[1] ,2));
 					};
 					str += '<br><input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
-					if(Molpy.NPdata[np].breath > 0 && Molpy.Boosts['DQ'].Level >=3 && !Molpy.Boosts['Dragon Breath'].countdown){
+					if(Molpy.Got['Dragon Breath'] && Molpy.Boosts['DQ'].Level >=3 && !Molpy.Boosts['Dragon Breath'].countdown){
 						var breathtext = Molpy.Breath(Molpy.Boosts['Dragon Breath'].power,np);
 						str += breathtext;
 						Molpy.redactedNeedRepaint = 1;
