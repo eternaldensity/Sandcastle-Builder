@@ -2,16 +2,6 @@
 
 ### 4.06 Not Acceptable
 
-#### eymericguyot
-
-- Mark technicolour as tagged item
-- Uhhh that was committed 2 years ago
-
-#### dfriedenbach 
-
-- fix abattoir applying to greedy dragon and mustarding bonemeal
-- so was that
-
 #### yuje
 
 - make Chthonism unlockable
