@@ -1,5 +1,33 @@
 ## Changelog
 
+### 4.06 Not Acceptable
+
+#### eymericguyot
+
+- Mark technicolour as tagged item
+- Uhhh that was committed 2 years ago
+
+#### dfriedenbach 
+
+- fix abattoir applying to greedy dragon and mustarding bonemeal
+- so was that
+
+#### yuje
+
+- make Chthonism unlockable
+- Fix a bug where Clannesque gives -infinity defense
+- Fixes involving Dragon Breath
+
+#### ED
+
+- nothing
+- two years pass
+- half-heartedly test things that I don't understand
+- feel bad at not even using a real framework for this project all those years ago
+- advance version number and name
+- add a new game title
+- discover that testing has broken though it was working earlier
+
 ### 4.05 Method Not Allowed
 
 #### pickten
