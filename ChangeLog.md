@@ -1,5 +1,12 @@
 ## Changelog
 
+### 4.07 Proxy Authentication Required
+
+#### super-aardvark
+
+- Properly render Dragon Overview when largeste NP is negative. Fixes #1512
+- Render the highest NP reached in Dragon Overview (previously, it was clickable but invisible).
+
 ### 4.06 Not Acceptable
 
 #### yuje
