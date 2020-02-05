@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=4.06;
-Molpy.versionName='Not Acceptable'; // Appended to the numerical version on screen
+Molpy.version=4.07;
+Molpy.versionName='Proxy Authentication Required'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
