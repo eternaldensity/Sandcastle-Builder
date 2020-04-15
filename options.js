@@ -406,11 +406,7 @@ new Molpy.Option({
 	title: 'Log N notifications; somehow a duplicate was added in the work for 4.0 when this was supposed to be removed',
 	range: 6,
 	text: ['∞', '1','5','10','20','50','100'],
-<<<<<<< HEAD
-	visibility: 1
-=======
 	visibility: -1
->>>>>>> f7a325c9b313ea4f04c9ca1cc901ed2a0128fb2b
 });
 
 
