@@ -993,7 +993,6 @@ Molpy.CheckLogicatRewards = function(automationLevel) {
 	Molpy.Boosts['Bananananas'].logic = 1234321 * (Molpy.Got('Shadow Feeder') && Molpy.Earned('Panther Pelts'));
 	Molpy.Boosts['Aleph e'].logic = DeMolpify('99H') * Molpy.priceFactor;
 	Molpy.Boosts['DimenKey'].logic = Molpy.Got('Aperture Science') * Math.pow(10, Molpy.Boosts['Aperture Science'].power);
-	Molpy.Boosts['Ranger'].logic = Molpy.Got('LogiPuzzle') * 100;
 	//Dragon Drum and Sea Mining are purposely not on this list; they're only intended as Redundakitty rewards
 }
 Molpy.mapMonumg = 200;

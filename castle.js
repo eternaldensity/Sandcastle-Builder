@@ -2353,6 +2353,9 @@ Molpy.Up = function() {
 									       //misnamed variable, as far as I can see only checked when giving reward.
 						}
 					}
+					this.countup = 0;
+					this.chainCurrent++;
+					this.keepPosition = 1; // we generated puzzles so let's stay at the same pos.
 				} else { // it goes away.					
 					var item = g('redacteditem');
 					if(item) item.className = 'hidden';

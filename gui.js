@@ -2008,7 +2008,7 @@ Molpy.DefineGUI = function() {
 			if (n == 'n') { this.boost = 0 }
 			else if (n >= 0) { this.boost = Molpy.BoostsById[parseInt(n) || 0] }
 			else if (n > -1000000) { this.boost = Molpy.BadgesById[1 - parseInt(n) || 0] }
-			else { this.boost = Molpy.BadgesById[Molpy.DiscoveriesStartAt + 1000000 + parseInt(n) || 0] };
+			else { this.boost = Molpy.BadgesById[Molpy.DiscoveriesStartAt - (1000000 + parseInt(n)) || 0] };
 			if (this.boost) this.boost.faveRefresh = 1;
 			this.vis = pixels[1] == true;
 			this.position = {
