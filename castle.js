@@ -2311,11 +2311,47 @@ Molpy.Up = function() {
 					}
 				} else if(!limit && ((Molpy.Got('Logicat') && this.drawType.length < 21
 					&& flandom(6 / this.drawType.length) == 0))) {
-					Molpy.PuzzleGens.redacted.Generate();
-					this.drawType[level] = 'hide2';
-					this.jump();
-					if(this.toggle < 20) {
-						this.toggle = 20;
+					if (!Molpy.IsEnabled('Ranger')){
+						Molpy.PuzzleGens.redacted.Generate();
+						this.drawType[level] = 'hide2';
+						this.jump();
+						if(this.toggle < 20) {
+							this.toggle = 20;
+						}
+						this.countup = 0;
+						this.chainCurrent++;
+						this.keepPosition = 1; // we generated puzzles so let's stay at the same pos.
+					} else {
+						if(Molpy.Got('Redunception')) {
+							this.drawType[level] = 'recur';
+							this.drawType.push('show');
+							this.jump();
+							this.chainCurrent++;
+							if(this.drawType.length < 5 && this.toggle < 5) {
+								this.toggle = 5;
+								this.countup = this.chainCurrent;
+							}
+						} else {
+							var item = g('redacteditem');
+							if(item) item.className = 'hidden';
+							this.location = 0;
+							this.dispIndex = -1;
+							this.drawType = [];
+							this.countup = 0;
+							this.randomiseTime();
+							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
+							this.chainCurrent = 0;
+						}
+						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
+							Molpy.Notify('Your Ranger caught a wild logicat, but your cage is full', 0);
+						} else {
+							var pp = Molpy.Boosts['Panther Poke'];
+							Molpy.Notify('Your Ranger caught a wild logicat!');
+							Molpy.Notify('Panther Poke: ' + pp.desc, 0);
+							pp.buyFunction(1);
+							this.keepPosition = 1; //Don't give a reward, the panther poke is the reward.
+									       //misnamed variable, as far as I can see only checked when giving reward.
+						}
 					}
 					this.countup = 0;
 					this.chainCurrent++;
