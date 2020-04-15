@@ -154,7 +154,7 @@ Molpy.Overview = {
 
 	Update: function(np) {
 		np=Number(np.toFixed(3))
-		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || Math.abs(np) >= Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))] ) return;
+		if (!Molpy.Got('Dragon Overview') || !Molpy.Overview.checkFrac(np) ||!this.mtip || Math.abs(np) > Math.abs(Molpy.largestNPvisited[Math.abs(Molpy.adjustFrac(Molpy.Overview.fracUsed))]) ) return;
 		var mt = (Molpy.Earned('diamm'+np)?2:(Molpy.Earned('monumg'+Math.abs(np))?1:0));
 		var dt = (Molpy.NPdata[np] && Molpy.NPdata[np].amount)?Molpy.NPdata[np].DragonType : -1;
 		np=Math.abs(np)

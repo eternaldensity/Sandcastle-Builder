@@ -400,7 +400,16 @@ Molpy.Up = function() {
 
 		var prevKey = '';
 		Molpy.KeyDown = function(e) {
-			var key = String.fromCharCode(e.keyCode || e.charCode);
+			// Ignore Shift, Control, Alt
+			if(e.keyCode >= 0x10 && e.keyCode <= 0x14)
+				return;
+
+			var key;
+			if(e.keyCode >= 0x60 && e.keyCode <= 0x69) // Numpad
+				key = String.fromCharCode(e.keyCode - 0x30);
+			else
+				key = String.fromCharCode(e.keyCode || e.charCode);
+
 			if(key == '5' && prevKey.toLowerCase() == 'f') {
 				Molpy.ClickBeach(e, 1);
 				Molpy.EarnBadge('Use Your Leopard');
@@ -1060,11 +1069,11 @@ Molpy.Up = function() {
 				} else {
 					buildN = Math.floor(buildN*Molpy.Papal('Castles'));
 					Molpy.Boosts['Castles'].build(buildN);
+					this.totalCastlesBuilt += buildN;
 					if(isNaN(this.totalCastlesBuilt)) {
 						this.totalCastlesBuilt = 0;
 						Molpy.EarnBadge('Mustard Cleanup');
 					}
-					this.totalCastlesBuilt += buildN;
 				}
 				this.currentActive = 0;
 			};
@@ -1914,7 +1923,7 @@ Molpy.Up = function() {
 		'Blue Fragment',
 		'A Splosion','splosion',
 		'DomCobb'] //Each boost on its own line, please!
-		// Do we need name and alias pairs?
+		// Do we need name and alias pairs? // No, but if different it means bonus clarity
 
 		Molpy.previewNP = 0;
 
@@ -2424,7 +2433,7 @@ Molpy.Up = function() {
 						+ (this.opponents.oppstat[1]>0?'':' Magic: ' + Molpify(this.opponents.oppstat[1] ,2));
 					};
 					str += '<br><input type="button" value=Attack onclick="Molpy.DragonKnightAttack()"</input>';
-					if(Molpy.NPdata[np].breath > 0 && Molpy.Boosts['DQ'].Level >=3 && !Molpy.Boosts['Dragon Breath'].countdown){
+					if(Molpy.Got['Dragon Breath'] && Molpy.Boosts['DQ'].Level >=3 && !Molpy.Boosts['Dragon Breath'].countdown){
 						var breathtext = Molpy.Breath(Molpy.Boosts['Dragon Breath'].power,np);
 						str += breathtext;
 						Molpy.redactedNeedRepaint = 1;
@@ -3525,7 +3534,8 @@ Molpy.Up = function() {
 				if(!price){price={}}
 				if(!Molpy.IsFree(red.CalcPrice(price))) {
 					if(Molpy.RepeatableBoost.indexOf(red.alias) < 0){
-						if(!Molpy.boostSilence) Molpy.Notify('Photoelectricity revealed:', 0);
+						if(!Molpy.boostSilence && !Molpy.Got(red.alias)) 
+							Molpy.Notify('Photoelectricity revealed:', 0);
 						Molpy.UnlockBoost(red.alias, 1);
 					} else{
 						Molpy.UnlockRepeatableBoost(red.alias,1,dtimes)

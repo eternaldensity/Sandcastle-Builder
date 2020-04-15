@@ -1122,6 +1122,7 @@ Molpy.DefineGUI = function() {
 		Molpy.selectedLog = 0;
 		Molpy.notifLogPaint = 1;
 		Molpy.logUpdatePaint = 0;
+		g('logCurrent').value="Current";
 	}
 	Molpy.ClearLog();
 	Molpy.InMyPants = 0;
@@ -1177,22 +1178,24 @@ Molpy.DefineGUI = function() {
 	
 	Molpy.logLengths = [Infinity,1,5,10,20,50,100];
 	
-	Molpy.Notify = function(text, importance) {
+	Molpy.Notify = function(text, importance,nolog) {
 		if(importance==undefined) importance=0;
 		if(Molpy.InMyPants) text += ' in my pants';
 		text = format(text);
-		var log = Molpy.logArchive[Molpy.currentLog];
+		if(importance + 1 >= Molpy.options['notifsilence'] && !nolog){
+			var log = Molpy.logArchive[Molpy.currentLog];
 			if (log.text[log.text.length - 1] == text){
 				log.qty[log.text.length - 1] ++;
 			} else {
 				log.text.push(text);
 				log.qty.push(1);
 				if(log.text.length > Molpy.logLengths[Molpy.options['loglength']]){
-					log.text.shift();
-					log.qty.shift();
+					log.text.splice(0, Molpy.logLengths[Molpy.options['loglength']] - log.text.length);
+					log.qty.splice(0, Molpy.logLengths[Molpy.options['loglength']] - log.text.length);
 				}
 			}
-		Molpy.logUpdatePaint = 1;
+			Molpy.logUpdatePaint = 1;
+		}
 		if(Molpy.options['notifsilence']>importance){return;}
 		//pick the first free (or the oldest) notification to replace it
 		var highest = 0;
@@ -1292,7 +1295,7 @@ Molpy.DefineGUI = function() {
 			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1))){
 				return 'http://placekitten.com/'+ (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') + x + '/' + y;
 			}else if(frac==0){
-				return 'http://178.79.159.24/Time/otcolorization/' + newp;
+				return 'http://139.162.169.39/Time/otcolorization/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
 				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
 			} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error

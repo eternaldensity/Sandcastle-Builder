@@ -13,7 +13,6 @@ Molpy.Option = function(args) {
 	this.range = args.range || 1;		// Highest value (currently 1-9)
 	this.text = args.text || ["No","Yes"];	// Text for option, if an array it is indexed by the value (maybe function)
 	this.breakafter = args.breakafter || 0;	// Put a line break after the option to format the options pane
-
 	Molpy.Options[this.name] = this;
 	Molpy.OptionsById[this.id] = this;
 	Molpy.OptionsN++;
@@ -183,6 +182,21 @@ new Molpy.Option({
 	onchange: function() {
 		Molpy.CleanLogs();
 	},
+});
+
+new Molpy.Option({
+    name: 'notifsilence',
+    title: 'Notifications',
+    range: 2,
+    text: ['All notifs', 'Less notifs', 'Critical only'],
+    visability: 1
+});
+new Molpy.Option({
+	name: 'loglength',
+	title: 'Log N notifications',
+	range: 6,
+	text: ['∞', '1','5','10','20','50','100'],
+	visibility: 1
 });
 
 new Molpy.Option({
@@ -379,6 +393,7 @@ new Molpy.Option({
     text: ['Very Rough', 'Rough', 'Chunky', 'Smooth', 'Silky Smooth'],
     visability: -1
 });
+
 new Molpy.Option({
     name: 'notifsilence',
     title: 'Notifications',
@@ -387,12 +402,17 @@ new Molpy.Option({
     visability: 1
 });
 new Molpy.Option({
-	name: 'loglength',
-	title: 'Log N notifications',
+	name: 'loglengthdup',
+	title: 'Log N notifications; somehow a duplicate was added in the work for 4.0 when this was supposed to be removed',
 	range: 6,
 	text: ['∞', '1','5','10','20','50','100'],
+<<<<<<< HEAD
 	visibility: 1
+=======
+	visibility: -1
+>>>>>>> f7a325c9b313ea4f04c9ca1cc901ed2a0128fb2b
 });
+
 
 /*
 new Molpy.Option({

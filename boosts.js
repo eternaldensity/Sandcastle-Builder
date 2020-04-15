@@ -707,9 +707,9 @@ Molpy.DefineBoosts = function() {
 	Molpy.TimeTravel = function(NP) {
 		Molpy.Anything = 1;
 		var oldNP=Molpy.newpixNumber;
-		var frac = Number(((Math.abs(Molpy.newpixNumber*10)-Math.floor(Math.abs(Molpy.newpixNumber))*10)/10).toFixed(3));
+		var frac = Number((Math.abs(Molpy.newpixNumber)-Math.floor(Math.abs(Molpy.newpixNumber))).toFixed(3));
 		var sign = Math.sign(Molpy.newpixNumber);
-		if(Molpy.TTT((sign*(Math.floor(Math.abs(Molpy.newpixNumber))*10+frac*10)+ NP*10)/10, 0)) {
+		if(Molpy.TTT(Number((sign*(Math.floor(Math.abs(Molpy.newpixNumber))+frac)+ NP).toFixed(3)), 0)) {
 			if(oldNP>0)
 			{
 				if(NP > 0) Molpy.EarnBadge('Fast Forward');
@@ -747,7 +747,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('You cannot pass into NP0 directly;<br>charge your signpost.',1);
 			return;
 		}
-		if(Number(((Math.abs(np*10)-Math.floor(Math.abs(np))*10)/10).toFixed(3)) !== Number(((Math.abs(oldnp*10)-Math.floor(Math.abs(oldnp))*10)/10).toFixed(3))){
+		if(Number((Math.abs(np)-Math.floor(Math.abs(np))).toFixed(3)) !== Number((Math.abs(oldnp)-Math.floor(Math.abs(oldnp))).toFixed(3))){
 			Molpy.Notify('You can not travel across timelines.',1);
 			Molpy.Notify('Travel to NP 0 first.',1);
 			return;
@@ -757,7 +757,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.EarnBadge('The Big Freeze');
 			return;
 		}
-		if(Math.floor(Math.abs(np)) > Math.floor(Math.abs(Molpy.largestNPvisited[Number((np-Math.floor(np)).toFixed(3))]))) {
+		if(Math.floor(Math.abs(np)) > Math.floor(Math.abs(Molpy.largestNPvisited[Number((Math.abs(np)-Math.floor(Math.abs(np))).toFixed(3))]))) {
 			Molpy.Notify('Wait For It',1);
 			return;
 		}
@@ -1891,9 +1891,10 @@ Molpy.DefineBoosts = function() {
 		}
 		if(Molpy.Got('Temporal Rift')) {
 			if(Molpy.Got('Safety Net'))
-				Molpy.newpixNumber = Math.round(Math.random() * (Math.abs(Molpy.highestNPvisited) - 241) + 241)
+				Molpy.newpixNumber = Math.ceil(Math.random() * (Math.abs(Molpy.largestNPvisited[0]) - 241) + 241)
 			else
-				Molpy.newpixNumber = Math.round(Math.random() * Math.abs(Molpy.highestNPvisited));
+				Molpy.newpixNumber = Math.ceil(Math.random() * Math.abs(Molpy.largestNPvisited[0]));
+
 			if(Molpy.Earned('Minus Worlds') && Molpy.Has('GlassChips',1000) && Math.floor(Math.random() * 2)) Molpy.newpixNumber *= -1;
 			Molpy.ONG();
 			Molpy.LockBoost('Temporal Rift');
@@ -2447,7 +2448,7 @@ Molpy.DefineBoosts = function() {
 						str += '<br>Currently, you have no more sand available for further upgrades.';
 					}
 				} else {
-					str += 'It costs 5 Blocks to upgrade the Glass Blower\'s speed.';
+					str += '<br>It costs 5 Blocks to upgrade the Glass Blower\'s speed.';
 				}
 			} else {
 				str += '<br>You have no need for further upgrades.';
@@ -3668,9 +3669,13 @@ Molpy.DefineBoosts = function() {
 		icon: 'temporalduplication',
 		group: 'chron',
 		className: 'alert',
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		desc: function(me) {
 			var tdf = Molpy.TDFactor(true) - 1;
+            if(! me.IsEnabled) {
+                return 'When this is active and you buy tools, you get bonus free tools!';
+            }
 			return 'For ' + MolpifyCountdown(me.countdown) + ', when you buy tools, get '
 				+ (tdf <= 1 ? 'the same' : Molpify(tdf, 3) + 'x that') + ' amount again for free!';
 		},
@@ -3846,6 +3851,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Technicolour Dream Cat',
 		icon: 'dreamcat',
 		heresy: true,
+		className: 'toggle',
 		desc: function(me) {
 			var str = Molpy.Redacted.words + ' are multicoloured (if Chromatic Heresy is enabled)';
 			str += '<br><input type="Button" onclick="Molpy.GenericToggle(' + me.id + ')" value="' + (me.IsEnabled ? 'Dea' : 'A') + 'ctivate"></input>';
@@ -7289,6 +7295,10 @@ Molpy.DefineBoosts = function() {
 	Molpy.ShadowStrike = function() {
 		Molpy.Anything = 1;
 		var l = Molpy.Level('LogiPuzzle') / 100;
+		if (l === 0) {
+			// this was combining with an infinite multiplier from Abattoir to make mustard
+			return;
+		}
 		var n = Math.ceil(l);
 		var p = n - l;
 		if (n < 1000000) {
@@ -7297,7 +7307,7 @@ Molpy.DefineBoosts = function() {
 			if (Math.random() < 0.25) n = 1;
 		}
 		if (n>1 && Molpy.Got('Panthers Dream')) n*=Molpy.Boosts['CDSP'].power;
-		if (Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
+		if (n>1 && Molpy.Got('Abattoir') == Molpy.Boosts['Abattoir'].limit) n *= Math.pow(1.1, Molpy.Boosts['Abattoir'].power);
 		n = Math.floor(n*Molpy.Papal('Bonemeal'));
 		n = Math.min(n,1e290);
 		if (!Molpy.boostSilence) Molpy.Notify('The Shadow Dragon was ' + (n == 1 ? 'greedy' : 'generous') + ' and turned ' + Molpify(Molpy.Level('LogiPuzzle')) + ' Caged Logicat puzzles into ' + Molpify(n) + ' Bonemeal.', 0);
@@ -8205,8 +8215,14 @@ Molpy.DefineBoosts = function() {
 		var rest = 0;
 		for (var inf in Molpy.NestLinings) if (inf != thing) rest += (nest.Liners[inf] || 0);
 		var cur = (nest.Liners[thing] || 0);
-		if (cur+change < 0 || (!Molpy.Got('Marketing') && ((rest+cur+change) > 100)) || cur + change > 100 || rest + cur + change > 200) return;
-		nest.Liners[thing] = (nest.Liners[thing] || 0) + change;
+
+		var newVal = Math.min(Math.max(cur + change, 0), 100);
+
+		var limit = Molpy.Got('Marketing') ? 200 : 100;
+		if (rest + newVal > limit)
+			newVal = limit - rest;
+
+		nest.Liners[thing] = newVal;
 		nest.Refresh();
 	}
 
@@ -8362,7 +8378,7 @@ Molpy.DefineBoosts = function() {
 				if (me.clutches[cl] > 1) str += 'of ' + Molpify(me.clutches[cl]) + ' ';
 				if (me.age[cl] < 1000) {
 					if (Molpy.Boosts.DQ.overallState != 3) {
-						str += 'is restless and wants it\'s own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
+						str += 'is restless and wants its own home <input type=button value="Fledge Here" onclick="Molpy.DragonFledge('+
 							cl+')"></input><br>';
 						if (Molpy.Got('Cryogenics')) {
 							str += '<input type=button value="Freeze for later" onclick="Molpy.DragonsToCryo('+cl+')"></input><br>'
@@ -11575,7 +11591,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Topiary',
 		icon: 'topiary',
 		group: 'drac',
-		desc: 'When fleding, if the clutch is too large for the NP, the rest are left as hatchlings and not wasted',
+		desc: 'When fledging, if the clutch is too large for the NP, the rest are left as hatchlings and not wasted',
 		price: { Diamonds:345678, Goats:Infinity },
 	});
 
@@ -11990,7 +12006,7 @@ Molpy.Annililate = function(){
 	var i = Math.abs(Math.pow(Math.log10(unrar)/7,7)*7777);
 	Molpy.CoalToAdd = Math.max(Math.floor(i),1);
 	Molpy.DiamToSpend = Math.max(Math.floor(1/i), 1);
-	if(!Molpy.Got('Chthonism') && Molpy.Boosts['DQ'].Level > 2 && Molpy.groupBadgeCounts.diamm >= 30 && Molpy.CoalToAdd > 338371000) Molpy.UnlockBoost('Chthonism');
+	if(!Molpy.Got('Chthonism') && Molpy.Boosts['DQ'].Level > 2 && Molpy.groupBadgeCounts.diamm >= 30 && Molpy.CoalToAdd > 338371) Molpy.UnlockBoost('Chthonism');
 	if(!Molpy.Got('Safety Canary') && Molpy.Boosts['DQ'].Level > 2 && Molpy.DiamToSpend >= 777776) Molpy.UnlockBoost('Safety Canary');
 	if(Molpy.Got('Safety Canary') && Molpy.IsEnabled('Safety Canary') && Molpy.DiamToSpend > 777){
 		Molpy.Boosts[Annilment].power = 0;
@@ -13330,13 +13346,15 @@ Molpy.Coallate = function(){
 		}
 	);
 	Molpy.subtractObjects=function(a,b,t){
-		var c={}
-		if(!t) t=1
-		for(var i in a){if(typeof a[i]=='function'){a[i]=a[i](t)}}
-		for(var i in b){if(typeof b[i]=='function'){b[i]=b[i](t)}}
-		for(var i in a){
-			if((b[i])&&(a[i]>b[i])){c[i]=a[i]-b[i]}
-			if(!b[i]) c[i]=a[i]
+		var c={};
+		var d={};
+		var e={}
+		if(!t) t=1;
+		for(var i in a){if(typeof a[i]=='function'){d[i]=a[i](t)} else {d[i] = a[i]}}
+		for(var i in b){if(typeof b[i]=='function'){e[i]=b[i](t)} else {d[i] = b[i]}}
+		for(var i in d){
+			if((e[i])&&(d[i]>e[i])){c[i]=d[i]-e[i]}
+			if(!e[i]) c[i]=d[i]
 		}
 		return c //useful because it drops all negs/zeros automatically. Be careful when using this, though, because of functions.
 	}
@@ -13354,8 +13372,8 @@ Molpy.Coallate = function(){
 			group: 'varie',
 			className: 'action',
 			desc: function(me){
-				var str='Lets you turn the essence of a color into its dual (Blueness to <i>Other</i>ness, <i>Other</i>ness to Blueness, Blackness to'
-				str+=(Molpy.Got('Whiteness')?'Whiteness':'???')+'and vice versa). Uses 5 Blackness to begin the operation, then '
+				var str='Lets you turn the essence of a color into its dual (Blueness to <i>Other</i>ness, <i>Other</i>ness to Blueness, Blackness to '
+				str+=(Molpy.Got('Whiteness')?'Whiteness':'???')+' and vice versa). Uses 5 Blackness to begin the operation, then '
 				str=str+'between 1-10 of the original color per amount of new color you wish to craft.'
 				if(Molpy.Got('Polarizer')){
 					str=str+' You may dualize:'
@@ -13576,7 +13594,7 @@ Molpy.Coallate = function(){
 			className: 'alert',
 			countdownFunction: function() {
 				if(this.startCountdown(true)>5 && this.countdown==2){
-					Molpy.Notify("Ceci n'est pas un film d'espionage.") //This is not a spy movie. 
+					Molpy.Notify("Ceci n'est pas un film d'espionnage.") //This is not a spy movie. 
 				//Ref is to the classic painting with "Ceci n'est pas une pipe." and to the standard bomb scenario
 				}
 			},
