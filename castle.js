@@ -2322,13 +2322,25 @@ Molpy.Up = function() {
 						this.chainCurrent++;
 						this.keepPosition = 1; // we generated puzzles so let's stay at the same pos.
 					} else {
-						this.drawType[level] = 'recur';
-						this.drawType.push('show');
-						this.jump();
-						this.chainCurrent++;
-						if(this.drawType.length < 5 && this.toggle < 5) {
-							this.toggle = 5;
-							this.countup = this.chainCurrent;
+						if(Molpy.Got('Redunception') {
+							this.drawType[level] = 'recur';
+							this.drawType.push('show');
+							this.jump();
+							this.chainCurrent++;
+							if(this.drawType.length < 5 && this.toggle < 5) {
+								this.toggle = 5;
+								this.countup = this.chainCurrent;
+							}
+						} else {
+							var item = g('redacteditem');
+							if(item) item.className = 'hidden';
+							this.location = 0;
+							this.dispIndex = -1;
+							this.drawType = [];
+							this.countup = 0;
+							this.randomiseTime();
+							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
+							this.chainCurrent = 0;
 						}
 						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
 							Molpy.Notify('Caged logicat limit reached', 0);
