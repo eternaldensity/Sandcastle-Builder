@@ -2343,9 +2343,10 @@ Molpy.Up = function() {
 							this.chainCurrent = 0;
 						}
 						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
-							Molpy.Notify('Caged logicat limit reached', 0);
+							Molpy.Notify('Your Ranger caught a wild logicat, but your cage is full', 0);
 						} else {
 							var pp = Molpy.Boosts['Panther Poke'];
+							Molpy.Notify('Your Ranger caught a wild logicat!');
 							Molpy.Notify('Panther Poke: ' + pp.desc, 0);
 							pp.buyFunction(1);
 							this.keepPosition = 1; //Don't give a reward, the panther poke is the reward.
