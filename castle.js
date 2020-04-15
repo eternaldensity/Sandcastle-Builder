@@ -2345,9 +2345,11 @@ Molpy.Up = function() {
 						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
 							Molpy.Notify('Caged logicat limit reached', 0);
 						} else {
-							pp = Molpy.Boosts['Panther Poke'];
+							var pp = Molpy.Boosts['Panther Poke'];
 							Molpy.Notify('Panther Poke: ' + pp.desc, 0);
 							pp.buyFunction(1);
+							this.keepPosition = 1; //Don't give a reward, the panther poke is the reward.
+									       //misnamed variable, as far as I can see only checked when giving reward.
 						}
 					}
 				} else { // it goes away.					
