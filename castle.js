@@ -2322,7 +2322,7 @@ Molpy.Up = function() {
 						this.chainCurrent++;
 						this.keepPosition = 1; // we generated puzzles so let's stay at the same pos.
 					} else {
-						if(Molpy.Got('Redunception') {
+						if(Molpy.Got('Redunception')) {
 							this.drawType[level] = 'recur';
 							this.drawType.push('show');
 							this.jump();
