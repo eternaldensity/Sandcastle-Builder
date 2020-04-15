@@ -2311,33 +2311,15 @@ Molpy.Up = function() {
 					}
 				} else if(!limit && ((Molpy.Got('Logicat') && this.drawType.length < 21
 					&& flandom(6 / this.drawType.length) == 0))) {
-					if (!Molpy.IsEnabled('Ranger')){
-						Molpy.PuzzleGens.redacted.Generate();
-						this.drawType[level] = 'hide2';
-						this.jump();
-						if(this.toggle < 20) {
-							this.toggle = 20;
-						}
-						this.countup = 0;
-						this.chainCurrent++;
-						this.keepPosition = 1; // we generated puzzles so let's stay at the same pos.
-					} else {
-						this.drawType[level] = 'recur';
-						this.drawType.push('show');
-						this.jump();
-						this.chainCurrent++;
-						if(this.drawType.length < 5 && this.toggle < 5) {
-							this.toggle = 5;
-							this.countup = this.chainCurrent;
-						}
-						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
-							Molpy.Notify('Caged logicat limit reached', 0);
-						} else {
-							pp = Molpy.Boosts['Panther Poke'];
-							Molpy.Notify('Panther Poke: ' + pp.desc, 0);
-							pp.buyFunction(1);
-						}
+					Molpy.PuzzleGens.redacted.Generate();
+					this.drawType[level] = 'hide2';
+					this.jump();
+					if(this.toggle < 20) {
+						this.toggle = 20;
 					}
+					this.countup = 0;
+					this.chainCurrent++;
+					this.keepPosition = 1; // we generated puzzles so let's stay at the same pos.
 				} else { // it goes away.					
 					var item = g('redacteditem');
 					if(item) item.className = 'hidden';
