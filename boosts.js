@@ -11864,7 +11864,7 @@ Molpy.DefineBoosts = function() {
 			if (orient) {
 				for ( var w in this.cuewords) {
 					if (word == this.cuewords[w] && ((this.power >> w)&1)==0) {
-						Molpy,UnlockBoost(word);
+						Molpy.UnlockBoost(word);
 						this.power += 1<<w;
 						this.toplets = [];
 						break;
@@ -12009,7 +12009,7 @@ Molpy.Annililate = function(){
 	if(!Molpy.Got('Chthonism') && Molpy.Boosts['DQ'].Level > 2 && Molpy.groupBadgeCounts.diamm >= 30 && Molpy.CoalToAdd > 338371) Molpy.UnlockBoost('Chthonism');
 	if(!Molpy.Got('Safety Canary') && Molpy.Boosts['DQ'].Level > 2 && Molpy.DiamToSpend >= 777776) Molpy.UnlockBoost('Safety Canary');
 	if(Molpy.Got('Safety Canary') && Molpy.IsEnabled('Safety Canary') && Molpy.DiamToSpend > 777){
-		Molpy.Boosts[Annilment].power = 0;
+		Molpy.Boosts['Annilment'].power = 0;
 		Molpy.Notify('Deactivated Annilment',0);
 	};
 	return [Molpy.CoalToAdd,Molpy.DiamToSpend];
