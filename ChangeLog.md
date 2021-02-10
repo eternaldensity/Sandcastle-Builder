@@ -30,6 +30,8 @@
 - probably the wrong ones
 - isn't even pushing this update to the main live site in case it doesn't work
 - Removed Google Analytics.  Should have done that years ago cos I don't think it works anymore.  I think I disabled my GA account cos of GDPR stuff years ago?
+- Updated OTT link cos the xkcd fora died ong ago
+- changed some http to https
 
 ### 4.07 Proxy Authentication Required
 
