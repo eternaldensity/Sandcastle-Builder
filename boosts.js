@@ -487,7 +487,6 @@ Molpy.DefineBoosts = function() {
 
 	Molpy.GetYourGoat = function(n) {
 		Molpy.Add('Goats', n);
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Goats']);
 		if(Molpy.Has('Goats', 2)) Molpy.EarnBadge('Second Edition');
 		if(Molpy.Has('Goats', 20)) Molpy.UnlockBoost('HoM');
 		if(Molpy.Has('Goats', 200)) Molpy.UnlockBoost('Beret Guy');
@@ -645,7 +644,6 @@ Molpy.DefineBoosts = function() {
 			}
 		}
 		if(!me.bought) {
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle Fail', me.name]);
 			return;
 		}
 
@@ -776,7 +774,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.newpixNumber = np;
 			Molpy.Boosts['Signpost'].power = 0;
 			if(Molpy.Earned('discov' + Molpy.newpixNumber)) Molpy.Badges['discov' + Molpy.newpixNumber].Refresh();
-			_gaq && _gaq.push(['_trackEvent', 'NewPix', (chips ? 'Memory Warp' : 'Time Travel'), '' + Molpy.newpixNumber]);
 			Molpy.ONGstart = ONGsnip(moment());
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
@@ -1116,7 +1113,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('Somewhere, over the rainbow...');
 			return;
 		}
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', ch.name]);
 		if(ch.power > 0)
 			ch.power = -ch.power;
 		else if(ch.power < 0)
@@ -1234,7 +1230,6 @@ Molpy.DefineBoosts = function() {
 		if(!nc.bought) {
 			return;
 		}
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', nc.name]);
 		nc.power = !nc.power * 1;
 		
 		var npb = Molpy.CastleTools['NewPixBot'];
@@ -1458,7 +1453,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('Looks like you need to sell something',1);
 			return;
 		}
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', me.name]);
 		me.power = (!me.power) * 1;
 		me.Refresh();
 		Molpy.UpdateFaves(1);
@@ -1531,7 +1525,6 @@ Molpy.DefineBoosts = function() {
 		var me = Molpy.Boosts['VJ'];
 		me.bought = (me.bought == 1 ? 2 : 1);
 		me.Refresh();
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', me.name]);
 	}
 	
 	new Molpy.Boost({
@@ -1976,7 +1969,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('Not enough Sand available for further machinery',1);
 			return;
 		}
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', this.name]);
 		Molpy.Boosts['Glass Furnace Switching'].IsEnabled = off;
 		Molpy.GiveTempBoost('Glass Furnace Switching', off, (Molpy.Got('Lubrication') && Molpy.Spend({Mustard: 100}) ? 15 : 1500));
 	}
@@ -2164,7 +2156,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['Sand Refinery'].power += n;
 			Molpy.Notify('Sand Refinery upgraded', 0);
 			Molpy.RatesRecalculate();
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Sand Refinery']);
 		}
 	}
 	
@@ -2188,7 +2179,6 @@ Molpy.DefineBoosts = function() {
 		sr.power = Math.floor(sr.power - n) || 0;
 		Molpy.Notify('Sand Refinery downgraded', 0);
 		Molpy.RatesRecalculate();
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', 'Sand Refinery']);
 	}
 
 	Molpy.chipAddAmount = 0;
@@ -2330,7 +2320,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Spend('GlassChips', cost);
 			ch.bought += n;
 			Molpy.Notify('Glass Chip Storage upgraded', 0);
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', ch.name]);
 		}
 	}
 
@@ -2410,7 +2399,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('Not enough Sand available for further machinery',1);
 			return;
 		}
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', this.name]);
 		Molpy.Boosts['Glass Blower Switching'].IsEnabled = off;
 		Molpy.GiveTempBoost('Glass Blower Switching', off, (Molpy.Got('Lubrication') && Molpy.Spend({Mustard: 100}) ? 25 : 2500));
 	}
@@ -2512,7 +2500,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['Glass Chiller'].power += n;
 			Molpy.Notify('Glass Chiller upgraded', 0);
 			Molpy.RatesRecalculate();
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Glass Chiller']);
 		}
 	}
 	
@@ -2536,7 +2523,6 @@ Molpy.DefineBoosts = function() {
 		gc.power = Math.floor(gc.power - n) || 0;
 		Molpy.Notify('Glass Chiller downgraded', 0);
 		Molpy.RatesRecalculate();
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', 'Glass Chiller']);
 	}
 
 	Molpy.blockAddAmount = 0;
@@ -2670,7 +2656,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Spend('GlassBlocks', cost);
 			bl.bought += n;
 			Molpy.Notify('Glass Block Storage upgraded', 0);
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', bl.name]);
 		}
 	}
 	
@@ -2685,7 +2670,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['Sand Purifier'].power++;
 			Molpy.RatesRecalculate();
 			Molpy.Notify('Sand Purifier upgraded', 0);
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Sand Purifier']);
 		}
 	}
 	
@@ -2740,7 +2724,6 @@ Molpy.DefineBoosts = function() {
 
 			Molpy.RatesRecalculate();
 			Molpy.Notify('Sand Purifier upgraded ' + Molpify(upgrades, 2) + ' times', 0);
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Sand Purifier']);
 		}
 	}
 
@@ -2766,7 +2749,6 @@ Molpy.DefineBoosts = function() {
 
 			Molpy.RatesRecalculate();
 			Molpy.Notify('Glass Extruder upgraded ' + Molpify(upgrades, 2) + ' times', 0);
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Glass Extruder']);
 		}
 	}
 
@@ -2792,7 +2774,6 @@ Molpy.DefineBoosts = function() {
 				Molpy.Boosts['Sand Refinery'].Refresh();
 				Molpy.Notify('Sand Refinery upgraded ' + Molpify(extra, 2) + ' times', 0);
 				Molpy.RatesRecalculate();
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Sand Refinery']);
 			}
 		}
 
@@ -2823,7 +2804,6 @@ Molpy.DefineBoosts = function() {
 				Molpy.Boosts['Glass Chiller'].Refresh();
 				Molpy.Notify('Glass Chiller upgraded ' + Molpify(extra, 2) + ' times', 0);
 				Molpy.RatesRecalculate();
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Seaish Upgrade', 'Glass Chiller']);
 			}
 		}
 	}
@@ -3021,7 +3001,6 @@ Molpy.DefineBoosts = function() {
 				fa.Refresh();
 				Molpy.Boosts['Rosetta'].Refresh();
 				Molpy.Notify('Factory Automation Upgraded', 0);
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', fa.name]);
 			}
 		}
 	}
@@ -3361,7 +3340,6 @@ Molpy.DefineBoosts = function() {
 			me.power = -1;
 		me.Refresh();
 		Molpy.RatesRecalculate();
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', me.name]);
 	}
 	
 	Molpy.BBC = function() {
@@ -3879,7 +3857,6 @@ Molpy.DefineBoosts = function() {
 			Molpy.Boosts['Glass Extruder'].power++;
 			Molpy.RatesRecalculate();
 			Molpy.Notify('Glass Extruder upgraded', 0);
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', 'Glass Extruder']);
 		}
 	}
 	
@@ -5014,7 +4991,6 @@ Molpy.DefineBoosts = function() {
 		bb.Refresh();
 		rb.bought++;
 		rb.Refresh();
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', rb.name]);
 
 		if(!isFinite(Math.pow(200, rb.bought))) Molpy.UnlockBoost('Knitted Beanies');
 	}
@@ -5177,7 +5153,6 @@ Molpy.DefineBoosts = function() {
 				Molpy.UnlockBoost('Sand to Glass');
 			if(Molpy.CastleTools['NewPixBot'].amount >= 1515 && Molpy.Got('TF') && !isFinite(Molpy.Boosts['Castles'].power))
 				Molpy.UnlockBoost('Castles to Glass');
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Load Tool Factory', '' + amount]);
 		}
 	}
 	
@@ -5538,10 +5513,8 @@ Molpy.DefineBoosts = function() {
 		}
 
 		if(!me.bought) {
-			_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle Fail', me.name]);
 			return;
 		}
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', me.name]);
 		me.IsEnabled = 1 * !me.IsEnabled;
 		me.Refresh();
 		Molpy.allNeedRepaint = 1;
@@ -5966,10 +5939,6 @@ Molpy.DefineBoosts = function() {
 			me.power += n;
 			Molpy.Notify('Adjusted production rate of Tool Factory');
 			me.Refresh();
-			if(n > 0)
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', me.name]);
-			else
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', me.name]);
 		}
 	}
 	
@@ -6202,10 +6171,6 @@ Molpy.DefineBoosts = function() {
 			me.Add(n);
 			if(dragon) Molpy.Boosts['Dragon Forge'].Refresh();
 			Molpy.Notify('Adjusted Automata Assemble');
-			if(n > 0)
-				_gaq && _gaq.push(['_trackEvent', 'Boost', (dragon ? 'Dragon Upgrade' : 'Upgrade'), me.name]);
-			else
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', me.name]);
 			if(me.Level >= 1e9) Molpy.EarnBadge('Microwave');
 			if(me.Level >= 1e12) Molpy.EarnBadge('Ultraviolet');
 			if(me.Level >= 3e16) Molpy.EarnBadge('X Rays');
@@ -6646,7 +6611,6 @@ Molpy.DefineBoosts = function() {
 		if(me.bought + n == 0) return;
 		me.bought += n;
 		me.Refresh();
-		_gaq && _gaq.push(['_trackEvent', 'Boost', (n > 0 ? 'Upgrade' : 'Downgrade'), me.name]);
 	}
 	
 	Molpy.ProtectingPrice = function() {
@@ -6830,7 +6794,6 @@ Molpy.DefineBoosts = function() {
 					me.bought = me.power+1;
 					Molpy.LockBoost('GDLP');
 				};
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Dragon Upgrade', 'Logicat']);
 				if (me.power>444 && Molpy.Got('Mustard Sale')) Molpy.UnlockBoost('Cress');
 				if (me.power>468) Molpy.EarnBadge('Sleeping Dragon, Crouching Panther');
 				if (me.power>=1024) Molpy.UnlockBoost('The Fading');
@@ -6997,7 +6960,6 @@ Molpy.DefineBoosts = function() {
 		me.Refresh();
 		if(myid <= 6) Molpy.Boosts['Rob'].Refresh();
 		if(me.AfterToggle) me.AfterToggle();
-		_gaq && _gaq.push(['_trackEvent', 'Boost', 'Toggle', me.name]);
 	}
 
 	new Molpy.Boost({
@@ -9767,10 +9729,6 @@ Molpy.DefineBoosts = function() {
 			me.Add(num);
 			Molpy.Notify('Adjusted This Sucks');
 			if (me.Level > 4444) Molpy.UnlockBoost('blackhat');
-			if(num > 0)
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Upgrade', me.name]);
-			else
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Downgrade', me.name]);
 		} else {
 			me.Refresh();
 			Molpy.Notify('Could not afford to adjust This Sucks',1);

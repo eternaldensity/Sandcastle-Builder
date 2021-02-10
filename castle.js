@@ -275,8 +275,6 @@ Molpy.Up = function() {
 						}
 						Molpy.Boosts['Glass Saw'].Refresh();
 					}
-
-					_gaq.push(['_trackEvent', Molpy.Boosts['VJ'].name, sawType, '' + Molpy.Boosts['VJ'].power]);
 				}
 			}
 			if(Molpy.Got('Bag Puns') && Molpy.Boosts['VJ'].bought != 1) {
@@ -626,7 +624,6 @@ Molpy.Up = function() {
 				if(bought) {
 					Molpy.Notify('Spent ' + Molpify(spent, 3) + ' Castle' + plural(spent) + ', Bought '
 						+ Molpify(bought, 3) + ' ' + (bought > 1 ? this.plural : this.single), 0);
-					_gaq && _gaq.push(['_trackEvent', 'Buy Tool', this.name, '' + bought]);
 				}
 			};
 			
@@ -664,7 +661,6 @@ Molpy.Up = function() {
 					Molpy.toolsNeedRepaint = 1;
 					Molpy.RatesRecalculate();
 					Molpy.SandToolsOwned--;
-					_gaq && _gaq.push(['_trackEvent', 'Sell Tool', this.name, '1']);
 					Molpy.UnlockBoost('No Sell');
 					Molpy.CheckBuyUnlocks(1);
 				}
@@ -680,7 +676,6 @@ Molpy.Up = function() {
 					this.Refresh();
 					Molpy.Boosts['CDSP'].Refresh();
 					Molpy.Add('AD', cost);
-					_gaq && _gaq.push(['_trackEvent', 'Destroy Tool', this.name, '' + destroy]);
 					Molpy.CheckDragon();
 					Molpy.MustardCheck();
 				}
@@ -942,7 +937,6 @@ Molpy.Up = function() {
 				if(bought) {
 					Molpy.Notify('Spent ' + Molpify(spent, 3) + ' Castle' + plural(spent) + ', Bought '
 						+ Molpify(bought, 3) + ' ' + (bought > 1 ? this.plural : this.single), 0);
-					_gaq && _gaq.push(['_trackEvent', 'Buy Tool', this.name, '' + bought]);
 				}
 			};
 			
@@ -981,7 +975,6 @@ Molpy.Up = function() {
 					Molpy.toolsNeedRepaint = 1;
 					Molpy.RatesRecalculate();
 					Molpy.CastleToolsOwned--;
-					_gaq && _gaq.push(['_trackEvent', 'Sell Tool', this.name, '1']);
 					Molpy.UnlockBoost('No Sell');
 					Molpy.CheckBuyUnlocks(1);
 				}
@@ -996,7 +989,6 @@ Molpy.Up = function() {
 					this.temp = 0;
 					this.Refresh();
 					Molpy.Add('AD', cost);
-					_gaq && _gaq.push(['_trackEvent', 'Destroy Tool', this.name, '' + destroy]);
 					Molpy.CheckDragon();
 					Molpy.MustardCheck();
 				}
@@ -1511,7 +1503,6 @@ Molpy.Up = function() {
 
 				this.bought = (this.bought || 0) +1;
 				if(this.buyFunction) this.buyFunction();
-				_gaq && _gaq.push(['_trackEvent', 'Boost', 'Buy', this.name, !free]);
 				Molpy.boostNeedRepaint = 1;
 				Molpy.RatesRecalculate(4);
 				Molpy.DragonDigRecalc(); 
@@ -1739,7 +1730,6 @@ Molpy.Up = function() {
 						Molpy.RatesRecalculate();
 						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem) && me.unlocked == 1) {
 							Molpy.Notify('Boost Unlocked: ' + me.name, 0);
-							_gaq && _gaq.push(['_trackEvent', 'Boost', 'Unlock', me.name, true]);
 						}
 						if(me.unlockFunction) me.unlockFunction();
 						me.Refresh();
@@ -1875,7 +1865,6 @@ Molpy.Up = function() {
 						if(me.prizes) Molpy.LockPrize(me.id);
 						if(!Molpy.boostSilence && !(Molpy.Got('ASHF') && me.alias == Molpy.shoppingItem)) {
 							Molpy.Notify('Boost Locked: ' + me.name, 0);
-							_gaq && _gaq.push(['_trackEvent', 'Boost', 'Lock', me.name, true]);
 						}
 						Molpy.CheckBuyUnlocks();
 					}
@@ -2093,7 +2082,6 @@ Molpy.Up = function() {
 					if(baby.earned == 0 && !Molpy.needlePulling) {
 						baby.earned = 1;
 						Molpy.lootAddBadge(baby);
-						_gaq && _gaq.push(['_trackEvent', 'Badge', 'Earn', baby.name, Molpy.BadgesOwned < 6 || baby.group != 'badges' && !camera]);
 						if(Molpy.BadgesOwned == 0) Molpy.EarnBadge('Redundant Redundancy');
 						Molpy.badgeNeedRepaint = 1;
 						Molpy.RatesRecalculate();
@@ -2243,7 +2231,6 @@ Molpy.Up = function() {
 							this.keepPosition = 0; // repaint and do whatever we need
 							if (Molpy.TotalDragons && this.drawType[0] == 'knight') Molpy.DragonsHide(1);
 							this.drawType = [];
-							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain Timeout', '' + this.chainCurrent, true]);
 							this.chainCurrent = 0;
 							this.randomiseTime();
 							Molpy.lootSelectionNeedRepaint = 1;
@@ -2284,7 +2271,6 @@ Molpy.Up = function() {
 					this.drawType = [];
 					this.countup = 0;
 					this.randomiseTime();
-					_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
 					this.chainCurrent = 0;
 					return;
 				} else if(this.drawType[level] != 'show') {
@@ -2339,7 +2325,6 @@ Molpy.Up = function() {
 							this.drawType = [];
 							this.countup = 0;
 							this.randomiseTime();
-							_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
 							this.chainCurrent = 0;
 						}
 						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
@@ -2361,7 +2346,6 @@ Molpy.Up = function() {
 					this.drawType = [];
 					this.countup = 0;
 					this.randomiseTime();
-					_gaq && _gaq.push(['_trackEvent', 'Redundakitty', 'Chain End', '' + this.chainCurrent]);
 					this.chainCurrent = 0;
 				}
 				if (limit) return;
@@ -2746,7 +2730,6 @@ Molpy.Up = function() {
 			var event = forceDepartment ? 'DoRD' : Molpy.Redacted.word;
 			if(Molpy.Got('DoRD') && (!Math.floor(8 * Math.random()) || forceDepartment)) {
 				if(Molpy.Got('Blast Furnace') && !Math.floor(4 * Math.random())) {
-					_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace', true]);
 					Molpy.RewardBlastFurnace();
 					return;
 				}
@@ -2781,13 +2764,10 @@ Molpy.Up = function() {
 				BKJ.power = (BKJ.power) + 1;
 			}
 			if(Math.floor(2 * Math.random())) {
-				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Not Lucky', true]);
 				Molpy.RewardNotLucky(automationLevel);
 			} else if(isFinite(Molpy.Boosts['Sand'].power)) {
-				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blitzing', true]);
 				Molpy.RewardBlitzing(automationLevel);
 			} else {
-				_gaq && _gaq.push(['_trackEvent', event, 'Reward', 'Blast Furnace Fallback', true]);
 				Molpy.RewardBlastFurnace(1, 'Furnace Fallback');
 			}
 		};
@@ -3080,7 +3060,6 @@ Molpy.Up = function() {
 	Molpy.ActivateFactoryAutomation = function() {
 		if(Molpy.Got('Factory Automation')) {
 			var i = Molpy.Boosts['Factory Automation'].power + 1;
-			_gaq && _gaq.push(['_trackEvent', 'Factory Automation', 'Attempt', '' + i, true]);
 			var npb = Molpy.CastleTools['NewPixBot'];
 			if(flandom(((Molpy.Got('Safety Pumpkin') + Molpy.Got('SG')) * 10 + 20 - i)) == 0) {
 				if(npb.amount) {
@@ -3105,7 +3084,6 @@ Molpy.Up = function() {
 			Molpy.Notify('Activating Factory Automation ' + t + ' time' + plural(t) + ' at a cost of ' + Molpify(spent, 4) + ' Sand', 0);
 
 			Molpy.FactoryAutomationRun(t);
-			_gaq && _gaq.push(['_trackEvent', 'Factory Automation', 'Succeed', '' + t, true]);
 
 			Molpy.GlassNotifyFlush();
 			return t;
@@ -3858,7 +3836,6 @@ Molpy.Up = function() {
 			if(Molpy.newpixNumber >= 3095 && (Molpy.groupBadgeCounts.discov >= 1362)) {
 				Molpy.UnlockBoost('Signpost');
 			}
-			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
 
 			Molpy.currentSubFrame = 0;
 			var np = Math.abs(Molpy.newpixNumber);
@@ -3888,7 +3865,6 @@ Molpy.Up = function() {
 				Molpy.newpixNumber += (Molpy.newpixNumber > 0 ? -1 : 1);
 				Molpy.Notify("You must unlock the next doorhole to continue!",1)
 			}
-			_gaq && _gaq.push(['_trackEvent', 'NewPix', 'ONG', '' + Molpy.newpixNumber, true]);
 
 			Molpy.currentSubFrame = 0;
 			var np = Math.abs(Molpy.newpixNumber);
@@ -4049,18 +4025,7 @@ Molpy.Up = function() {
 		setTimeout(Molpy.Loopist, 1000 / Molpy.fps);
 	};
 };
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-45954809-1']);
-_gaq.push(['_trackPageview']);
 
-(function() {
-	var ga = document.createElement('script');
-	ga.type = 'text/javascript';
-	ga.async = true;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(ga, s);
-})();
 
 /**************************************************************
  * Game Start
@@ -4071,6 +4036,5 @@ Molpy.Up();
 window.onload = function() {
 	if(!Molpy.molpish) {
 		Molpy.Wake();
-		_gaq && _gaq.push(['_trackEvent', 'Setup', 'Complete', '' + Molpy.version, true]);
 	}
 };

@@ -46,9 +46,7 @@ GH.getExportData = function() {
 };
 
 GH.importDataFromString = function(data) {
-    _gaq && _gaq.push(['_trackEvent', 'Import', 'Begin']);
     Molpy.FromNeedlePulledThing(Molpy.BeanishToCuegish(data));
-    _gaq && _gaq.push(['_trackEvent', 'Import', 'Complete']);
     Molpy.Save();
 };
 

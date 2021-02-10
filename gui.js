@@ -297,9 +297,7 @@ Molpy.DefineGUI = function() {
 
 	Molpy.RefreshExport = function() {
 		if(!Molpy.molpish) return;
-		_gaq && _gaq.push(['_trackEvent', 'Export', 'Begin']);
 		var threads = Molpy.ToNeedlePulledThing();
-		_gaq && _gaq.push(['_trackEvent', 'Export', 'Complete']);
 		var thread = '';
 		for( var i in threads) {
 			thread += threads[i]
@@ -377,7 +375,6 @@ Molpy.DefineGUI = function() {
 				score += inc;
 				g('idlescore').innerHTML = 'Score: ' + Molpify(score, 3);
 				localStorage['idlescore'] = score;
-				if(score % 1000 == 0) _gaq && _gaq.push(['_trackEvent', 'PureIdle', 'Milestone', '' + score]);
 				setTimeout(Molpy.Idle, 1000);
 			}
 		}
