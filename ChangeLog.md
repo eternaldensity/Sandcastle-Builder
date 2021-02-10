@@ -1,5 +1,36 @@
 ## Changelog
 
+### 4.08 Request Timeout
+
+#### IHaveNoFunnyName 
+
+- Made some pull reqeusts long ago
+- Unmade some pull requests
+- Fixed some merges
+- Who knows what actually ended up in the final version?
+- This is all probably ED's fault
+- anyhow here's the stuff that might be in this update
+- Fix discovery faves turning into badges upon load. (Was counting backwards instead of forwards)
+- Fix options.js corruption
+- Made Ranger not give a redundakitty chain when one couldn't spawn normally.
+- Better flavour text (Ranger related)
+
+#### jaahay
+
+- boosts.js typos: Fixed a comma that should have been a period and added some missing quote marks
+
+#### ED
+
+- was generally late and slow and forgetful
+- hardly tested anything
+- failed to notice the castle.chirpingmustard redirect briefly dying
+- did notice that AutoModerator goofed hilariously and meant to comment but forgot to comment until now
+- isn't going to delete the 8 extra cakeday posts because redundancy is molpish
+- did finally get around to merging some pull requests
+- probably the wrong ones
+- isn't even pushing this update to the main live site in case it doesn't work
+- Removed Google Analytics.  Should have done that years ago cos I don't think it works anymore.  I think I disabled my GA account cos of GDPR stuff years ago?
+
 ### 4.07 Proxy Authentication Required
 
 #### super-aardvark
