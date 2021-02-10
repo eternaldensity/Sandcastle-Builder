@@ -32,6 +32,7 @@
 - Removed Google Analytics.  Should have done that years ago cos I don't think it works anymore.  I think I disabled my GA account cos of GDPR stuff years ago?
 - Updated OTT link cos the xkcd fora died ong ago
 - changed some http to https
+- unfortunately the site still shows some unsecure content because mscha's time image server redirects to http instead of https even though the images are available by https directly
 
 ### 4.07 Proxy Authentication Required
 
