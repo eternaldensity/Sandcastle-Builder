@@ -2222,10 +2222,13 @@ Molpy.Up = function() {
 				if(this.toggle) {
 					this.countup++;
 					var redC = g('redactedcountdown');
-					if(redC) redC.innerHTML = Molpify(this.toggle - this.countup);
+					var spoiler = $('#redactedSpoiler');
+					if(redC) {redC.innerHTML = Molpify(this.toggle - this.countup);
+					} else if (spoiler.length){
+						spoiler.css({display: 'none'});
+					}
 					if(this.drawType[this.drawType.length - 1] == 'hide1') {
 						var anchor = $('#redactedSpoilerAnchor');			//If people don't want to be rick rolled we let it not crash if they addblock or delete the div
-						var spoiler = $('#redactedSpoiler');
 						if (anchor.length && spoiler.length) {				//The iframe reloads every mNP if it's a child of a kitty
 							anchor.css({width: 100, height: 68});			//So it's now a separate div at the end of the DOM
 							spoiler.css({display: 'block'});				//and we put it to the same location as the kitty
@@ -2313,7 +2316,7 @@ Molpy.Up = function() {
 						this.drawType.pop(); //we don't need to remember those now
 					this.jump();
 					return;
-				} else if(Molpy.Got('RRSR') && flandom(20) == 1) {
+				} else if(1) {
 					this.drawType[level] = 'hide1';
 					this.toggle = 65;
 					this.chainCurrent++;
