@@ -2226,7 +2226,7 @@ Molpy.Up = function() {
 					if(this.drawType[this.drawType.length - 1] == 'hide1') {
 						var anchor = $('#redactedSpoilerAnchor');			//If people don't want to be rick rolled we let it not crash if they addblock or delete the div
 						var spoiler = $('#redactedSpoiler');
-						if (anchor.length && spoiler.length) {				//The iframe reloads every nMP if it's a child of a kitty
+						if (anchor.length && spoiler.length) {				//The iframe reloads every mNP if it's a child of a kitty
 							anchor.css({width: 100, height: 68});			//So it's now a separate div at the end of the DOM
 							spoiler.css({display: 'block'});				//and we put it to the same location as the kitty
 							spoiler.css(anchor.offset());
@@ -2235,7 +2235,7 @@ Molpy.Up = function() {
 								var parents = anchor.parents()				//I'm sure there's a better way to do this but I don't really use $
 								for (i = 0; i < parents.length; i++){		//And this isn't exactly a use case I can go to stackoverflow for
 									parent = parents[i];					//"Yes I need to position a div at another... No no I can't just make it the parent -
-									if ($(parent).css('overflow').indexOf('auto') != -1) { //the whole display gets repainted every nMP" "why"
+									if ($(parent).css('overflow').indexOf('auto') != -1) { //the whole display gets repainted every mNP" "why... And what's a mNP"
 										$(parent).scroll(function() {spoiler.css(anchor.offset());});
 									}
 								}
