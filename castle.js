@@ -2223,8 +2223,28 @@ Molpy.Up = function() {
 					this.countup++;
 					var redC = g('redactedcountdown');
 					if(redC) redC.innerHTML = Molpify(this.toggle - this.countup);
+					if(this.drawType[this.drawType.length - 1] == 'hide1') {
+						var anchor = $('#redactedSpoilerAnchor');			//If people don't want to be rick rolled we let it not crash if they addblock or delete the div
+						var spoiler = $('#redactedSpoiler');
+						if (anchor.length && spoiler.length) {				//The iframe reloads every nMP if it's a child of a kitty
+							anchor.css({width: 100, height: 68});			//So it's now a separate div at the end of the DOM
+							spoiler.css({display: 'block'});				//and we put it to the same location as the kitty
+							spoiler.css(anchor.offset());
+							if(!this.spoilerScroll){
+								this.spoilerScroll = 1;						//We also want to do that if they scroll the container div 
+								var parents = anchor.parents()				//I'm sure there's a better way to do this but I don't really use $
+								for (i = 0; i < parents.length; i++){		//And this isn't exactly a use case I can go to stackoverflow for
+									parent = parents[i];					//"Yes I need to position a div at another... No no I can't just make it the parent -
+									if ($(parent).css('overflow').indexOf('auto') != -1) { //the whole display gets repainted every nMP" "why"
+										$(parent).scroll(function() {spoiler.css(anchor.offset());});
+									}
+								}
+							}
+						}
+					}
 					if(this.countup >= this.toggle) {
 						this.countup = 0;
+						var spoiler = $('#redactedSpoiler');
 						if(this.location) {
 							this.removeDiv();
 							this.location = 0; //hide because the redacted was missed
@@ -2234,12 +2254,20 @@ Molpy.Up = function() {
 							this.chainCurrent = 0;
 							this.randomiseTime();
 							Molpy.lootSelectionNeedRepaint = 1;
+							if(spoiler.length) {
+							spoiler.css({display: 'none'});
+							g('redactedSpoiler').innerHTML = "";
+							}
 						} else {
 							this.drawType = ['show'];
 							this.jump();
 							var stay = 6 * (4 + Molpy.Got('Kitnip') + Molpy.Got('SGC') * 2);
 							this.toggle = stay;
 							Molpy.repaintRedacted();
+							if(spoiler.length) {
+								spoiler.css({display: 'none'});
+								g('redactedSpoiler').innerHTML = "";
+							}
 						}
 					}
 				} else {//initial setup
@@ -2262,6 +2290,11 @@ Molpy.Up = function() {
 				Molpy.Anything = 1;
 				level = level || 0;
 				this.removeDiv();
+				var spoiler = $('#redactedSpoiler');
+				if (spoiler.length){
+					spoiler.css({display: 'none'});
+					g('redactedSpoiler').innerHTML = "";
+				}
 				Molpy.lootSelectionNeedRepaint = 1;
 				if (Molpy.TotalDragons && this.drawType[0] == 'knight') {
 					var item = g('redacteditem');
@@ -2444,7 +2477,13 @@ Molpy.Up = function() {
 					if(drawType == 'recur') {
 						str += this.getHTML(heading, level + 1);
 					} else if(drawType == 'hide1') {
-						str += Molpy.Redacted.spoiler;
+						str += '<div id="redactedSpoilerAnchor"></div>';
+						var spoiler = g('redactedSpoiler');
+						if (spoiler) {
+							spoiler.innerHTML = Molpy.Redacted.spoiler;
+							$('#redactedSpoiler').css({position: "absolute", display: "none"})
+							this.spoilerScroll = 0;
+						}
 					} else if(drawType == 'hide2') {
 						if (Molpy.PuzzleGens.redacted.active) str += Molpy.PuzzleGens.redacted.StringifyStatements();
 						else {
