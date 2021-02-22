@@ -2316,7 +2316,7 @@ Molpy.Up = function() {
 						this.drawType.pop(); //we don't need to remember those now
 					this.jump();
 					return;
-				} else if(1) {
+				} else if(Molpy.Got('RRSR') && flandom(20) == 1) {
 					this.drawType[level] = 'hide1';
 					this.toggle = 65;
 					this.chainCurrent++;
