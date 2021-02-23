@@ -138,6 +138,19 @@ Molpy.DefineGUI = function() {
 		Molpy.restoreLootScroll = false;
 		Molpy.lootPageNum = 1;
 		Molpy.lootNeedRepaint = 1;
+		setTimeout(function() {						//Hide redundant spoiler (rick roll) when we click something that makes it disappear
+			var spoiler = $('#redactedSpoiler');
+			var anchor = $('#redactedSpoilerAnchor');
+			if (spoiler.length) {
+				if (anchor.length) {
+				spoiler.css({display: 'block'});
+				spoiler.css(anchor.offset());
+				} else {
+					spoiler.css({left: -300, display: 'none'});
+					Molpy.Redacted.spoilerScroll = 0;
+				}
+			}
+		}, 50)
 	}
 	Molpy.ShowGroup = function(group, tagged) {
 		if(Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide1') {
@@ -213,6 +226,21 @@ Molpy.DefineGUI = function() {
 			var cleanup = Molpy['Cleanup' + name];
 			if(cleanup) cleanup();
 		}
+		setTimeout(function() {						//Hide redundant spoiler (rick roll) when we click something that makes it disappear
+			var spoiler = $('#redactedSpoiler');
+			var anchor = $('#redactedSpoilerAnchor');
+			if (spoiler.length) {
+				if(anchor.length){
+					if(anchor.offset().left != 0) {
+						spoiler.css({display: 'block'});
+						spoiler.css(anchor.offset());
+					} else {
+						spoiler.css({left: -300, display: 'none'});
+						Molpy.Redacted.spoilerScroll = 0;
+					}
+				}
+			}
+		}, 50)
 	}
 
 	Molpy.selectedFave = 'None';
