@@ -2303,6 +2303,7 @@ Molpy.Up = function() {
 				level = level || 0;
 				this.removeDiv();
 				var spoiler = $('#redactedSpoiler');
+				this.reward = 1;
 				if (spoiler.length){
 					spoiler.css({display: 'none'});
 					g('redactedSpoiler').innerHTML = "";
@@ -2374,13 +2375,12 @@ Molpy.Up = function() {
 						}
 						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
 							Molpy.Notify('Your Ranger caught a wild logicat, but your cage is full', 0);
-							this.keepPosition = 1;
 						} else {
 							var pp = Molpy.Boosts['Panther Poke'];
 							Molpy.Notify('Your Ranger caught a wild logicat!');
 							Molpy.Notify('Panther Poke: ' + pp.desc, 0);
 							pp.buyFunction(1);
-							this.keepPosition = 1; //Don't give a reward, the panther poke is the reward.
+							this.reward = 0; //Don't give a reward, the panther poke is the reward.
 									       //misnamed variable, as far as I can see only checked when giving reward.
 						}
 					}
@@ -2399,7 +2399,7 @@ Molpy.Up = function() {
 				if(this.chainMax >= 42) Molpy.EarnBadge('Meaning');
 
 				this.totalClicks++;
-				if(this.drawType.length < 16 && !this.keepPosition) {
+				if(this.drawType.length < 16 && !this.keepPosition && this.reward) {
 					Molpy.RewardKitten()
 					Molpy.GlassNotifyFlush();
 				}
