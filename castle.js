@@ -2240,7 +2240,14 @@ Molpy.Up = function() {
 									for (i = 0; i < parents.length; i++){						//And this isn't exactly a use case I can go to stackoverflow for
 										parent = parents[i];									//"Yes I need to position a div at another... No no I can't just make it the parent -
 										if ($(parent).css('overflow').indexOf('auto') != -1) {	//the whole display gets repainted every mNP" "why... And what's a mNP"
-											$(parent).scroll(function() {spoiler.css(anchor.offset());});
+											$(parent).scroll(function() {
+												spoiler.css(anchor.offset());
+												if(anchor.position().top < 0) {
+													spoiler.css({display: 'none'});
+												} else {
+													spoiler.css({display: 'block'});
+												}
+											});
 										}
 									}
 								}
