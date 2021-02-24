@@ -2374,6 +2374,7 @@ Molpy.Up = function() {
 						}
 						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
 							Molpy.Notify('Your Ranger caught a wild logicat, but your cage is full', 0);
+							this.keepPosition = 1;
 						} else {
 							var pp = Molpy.Boosts['Panther Poke'];
 							Molpy.Notify('Your Ranger caught a wild logicat!');
@@ -2415,10 +2416,11 @@ Molpy.Up = function() {
 				// If no possible spots are open, then no redacteds can spawn
 				Molpy.Anything = 1;
 				var possible = false;
+				var visibleList = [];
 				for(var i in this.divList)
 					if(this.divList[i].is(':visible')) {
 						possible = true;
-						break;
+						visibleList.push(i);
 					}
 				if(!possible) this.location = 0;
 				
@@ -2427,9 +2429,12 @@ Molpy.Up = function() {
 				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0 && this.divList[3].is(':visible')) { // Redundaknights
 					this.location = 3; // Shop
 					valid = true;
-				} else {
+				} else if (visibleList.length) {
 					// There is at least one valid spawn location, grab a random one
 					//TODO this can be made better by making a list of valid first and selecting from that instead
+					//This has been made better
+					this.location = visibleList[Math.floor(Math.random() * visibleList.length)]
+					/*
 					var loopNum = 0;
 					var randNum = 0;
 					while(loopNum < 50 && valid == false) {
@@ -2441,10 +2446,8 @@ Molpy.Up = function() {
 						}
 						loopNum ++;
 					}
-				}
-				
-				// Unlucky RNG, didn't find a valid spawn location 
-				if(!valid) this.location = 0;
+					*/
+				} else this.location = 0;				//Didn't find a valid spawn location 
 				
 				this.dispIndex = -1;
 			};
