@@ -2230,19 +2230,21 @@ Molpy.Up = function() {
 					if(this.drawType[this.drawType.length - 1] == 'hide1') {
 						var anchor = $('#redactedSpoilerAnchor');			//If people don't want to be rick rolled we let it not crash if they addblock or delete the div
 						if (anchor.length && spoiler.length) {				//The iframe reloads every mNP if it's a child of a kitty
-							anchor.css({width: 100, height: 68});			//So it's now a separate div at the end of the DOM
-							spoiler.css({display: 'block'});				//and we put it to the same location as the kitty
-							spoiler.css(anchor.offset());
-							if(!this.spoilerScroll){
-								this.spoilerScroll = 1;						//We also want to do that if they scroll the container div 
-								var parents = anchor.parents()				//I'm sure there's a better way to do this but I don't really use $
-								for (i = 0; i < parents.length; i++){		//And this isn't exactly a use case I can go to stackoverflow for
-									parent = parents[i];					//"Yes I need to position a div at another... No no I can't just make it the parent -
-									if ($(parent).css('overflow').indexOf('auto') != -1) { //the whole display gets repainted every mNP" "why... And what's a mNP"
-										$(parent).scroll(function() {spoiler.css(anchor.offset());});
+							setTimeout(function() {							//So it's now a separate div at the end of the DOM
+								anchor.css({width: 100, height: 68});		//and we put it to the same location as the kitty
+								spoiler.css({display: 'block'});
+								spoiler.css(anchor.offset());
+								if(!Molpy.Redacted.spoilerScroll){
+									Molpy.Redacted.spoilerScroll = 1;							//We also want to do that if they scroll the container div 
+									var parents = anchor.parents()								//I'm sure there's a better way to do this but I don't really use $
+									for (i = 0; i < parents.length; i++){						//And this isn't exactly a use case I can go to stackoverflow for
+										parent = parents[i];									//"Yes I need to position a div at another... No no I can't just make it the parent -
+										if ($(parent).css('overflow').indexOf('auto') != -1) {	//the whole display gets repainted every mNP" "why... And what's a mNP"
+											$(parent).scroll(function() {spoiler.css(anchor.offset());});
+										}
 									}
 								}
-							}
+							}, 50);
 						}
 					}
 					if(this.countup >= this.toggle) {
@@ -2316,7 +2318,7 @@ Molpy.Up = function() {
 						this.drawType.pop(); //we don't need to remember those now
 					this.jump();
 					return;
-				} else if(Molpy.Got('RRSR') && flandom(20) == 1) {
+				} else if(1) {
 					this.drawType[level] = 'hide1';
 					this.toggle = 65;
 					this.chainCurrent++;
