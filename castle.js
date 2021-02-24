@@ -2374,7 +2374,7 @@ Molpy.Up = function() {
 							this.chainCurrent = 0;
 						}
 						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
-							Molpy.Notify(`Your Ranger caught a wild logicat, but your cage is full (Max of ${Molpy.PokeBar()}`, 0);
+							Molpy.Notify(`Your Ranger caught a wild logicat, but your cage is full (Max of ${Molpy.PokeBar()})`, 0);
 						} else {
 							var pp = Molpy.Boosts['Panther Poke'];
 							Molpy.Notify('Your Ranger caught a wild logicat!');
