@@ -1168,7 +1168,7 @@ Molpy.DefineGUI = function() {
 			Molpy.notifLogPaint = 1;
 		} else {
 			var log = g('logItems');
-			log.scrollTop = log.scrollHeight;
+			log.scrollTop = log.scrollTopMax;
 		}
 		g('logCurrent').value="Current";
 	}
@@ -1240,8 +1240,8 @@ Molpy.DefineGUI = function() {
 			var log = g('logItems');
 			var scroll = (log.scrollTop == (log.scrollHeight - log.clientHeight));
 			log.innerHTML = Molpy.logArchive[Molpy.selectedLog].joinedString();
-			if(scroll) {
-				log.scrollTop = log.scrollHeight;
+			if(scroll || Molpy.options.autoscroll) {
+				log.scrollTop = log.scrollTopMax;
 				g('logCurrent').value="Current";
 			}
 		}
@@ -1259,7 +1259,7 @@ Molpy.DefineGUI = function() {
 		title.innerHTML = "Notification log for Newpix " + Molpy.logArchive[Molpy.selectedLog].np;
 		var log = g('logItems');
 		log.innerHTML = Molpy.logArchive[Molpy.selectedLog].joinedString();
-		log.scrollTop = log.scrollHeight;
+		log.scrollTop = log.scrollTopMax;
 	}
 
 	Molpy.subPixLetters = ['', 'a', 'b', 'c', 'd', 'e'];

@@ -1,5 +1,15 @@
 ## Changelog
 
+### 4.09 Conflict
+
+#### ED
+
+- Locked crate count now resets on Coma
+- Removed duplicate long length option
+- Autoshow everything but discoveries didn't filter out discoveries, only monuments. (bug #1528)
+- Additional bag puns
+- Log autoscroll setting restored to actually do something (bug #1520)
+
 ### 4.08 Request Timeout
 
 #### IHaveNoFunnyName 
