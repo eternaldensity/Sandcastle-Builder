@@ -10,6 +10,14 @@
 - Additional bag puns
 - Log autoscroll setting restored to actually do something (bug #1520)
 
+#### IHaveNoFunnyName
+- Updated the Beanish to point to HTTPS, which let the spoiler work again
+- Put spoiler in its own element so it doesn't restart every mNP when the kitty is refreshed
+- Don't crash if the spoiler div is adblocked or deleted
+- Prevent spoiler from showing in wrong location
+- Fix a weird bug where the kitty wouldn't display a caged puzzle?
+- Explain pokebar
+
 ### 4.08 Request Timeout
 
 #### IHaveNoFunnyName 
