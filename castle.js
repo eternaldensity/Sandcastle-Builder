@@ -2178,7 +2178,7 @@ Molpy.Up = function() {
 			this.word = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHR5");
 			this.words = Molpy.BeanishToCuegish("UmVkdW5kYWtpdHRpZXM=");
 			this.brackets = Molpy.BeanishToCuegish("JTI1NUJyZWR1bmRhbnQlMjU1RA==");
-			this.spoiler = Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwJTI1M0ElMjUyRiUyNTJGd3d3LnlvdXR1YmUuY29tJTI1MkZlbWJlZCUyNTJGb0hnNVNKWVJIQTAlMjUzRmF1dG9wbGF5JTI1M0QxJTI1MjIlMjUyMHdpZHRoJTI1M0QlMjUyMjEwMCUyNTIyJTI1MjBoZWlnaHQlMjUzRCUyNTIyNjglMjUyMiUyNTIwZnJhbWVib3JkZXIlMjUzRCUyNTIyMCUyNTIyJTI1MjBhbGxvd2Z1bGxzY3JlZW4lMjUzRSUyNTNDJTI1MkZpZnJhbWUlMjUzRQ==");
+			this.spoiler = Molpy.BeanishToCuegish("JTI1M0NpZnJhbWUlMjUyMHNyYyUyNTNEJTI1MjJodHRwcyUyNTNBJTI1MkYlMjUyRnd3dy55b3V0dWJlLmNvbSUyNTJGZW1iZWQlMjUyRm9IZzVTSllSSEEwJTI1M0ZhdXRvcGxheSUyNTNEMSUyNTIyJTI1MjB3aWR0aCUyNTNEJTI1MjIxMDAlMjUyMiUyNTIwaGVpZ2h0JTI1M0QlMjUyMjY4JTI1MjIlMjUyMGZyYW1lYm9yZGVyJTI1M0QlMjUyMjAlMjUyMiUyNTIwYWxsb3dmdWxsc2NyZWVuJTI1M0UlMjUzQyUyNTJGaWZyYW1lJTI1M0U=");
 			
 			this.totalClicks = 0;
 			this.chainCurrent = 0;
@@ -2222,9 +2222,41 @@ Molpy.Up = function() {
 				if(this.toggle) {
 					this.countup++;
 					var redC = g('redactedcountdown');
-					if(redC) redC.innerHTML = Molpify(this.toggle - this.countup);
+					var spoiler = $('#redactedSpoiler');
+					if(redC) {redC.innerHTML = Molpify(this.toggle - this.countup);
+					} else if (spoiler.length){
+						spoiler.css({display: 'none'});
+					}
+					if(this.drawType[this.drawType.length - 1] == 'hide1') {
+						var anchor = $('#redactedSpoilerAnchor');			//If people don't want to be rick rolled we let it not crash if they addblock or delete the div
+						if (anchor.length && spoiler.length) {				//The iframe reloads every mNP if it's a child of a kitty
+							setTimeout(function() {							//So it's now a separate div at the end of the DOM
+								anchor.css({width: 100, height: 68});		//and we put it to the same location as the kitty
+								spoiler.css({display: 'block'});
+								spoiler.css(anchor.offset());
+								if(!Molpy.Redacted.spoilerScroll){
+									Molpy.Redacted.spoilerScroll = 1;							//We also want to do that if they scroll the container div 
+									var parents = anchor.parents()								//I'm sure there's a better way to do this but I don't really use $
+									for (i = 0; i < parents.length; i++){						//And this isn't exactly a use case I can go to stackoverflow for
+										parent = parents[i];									//"Yes I need to position a div at another... No no I can't just make it the parent -
+										if ($(parent).css('overflow').indexOf('auto') != -1) {	//the whole display gets repainted every mNP" "why... And what's a mNP"
+											$(parent).scroll(function() {
+												spoiler.css(anchor.offset());
+												if(anchor.position().top < 0) {
+													spoiler.css({display: 'none'});
+												} else {
+													spoiler.css({display: 'block'});
+												}
+											});
+										}
+									}
+								}
+							}, 50);
+						}
+					}
 					if(this.countup >= this.toggle) {
 						this.countup = 0;
+						var spoiler = $('#redactedSpoiler');
 						if(this.location) {
 							this.removeDiv();
 							this.location = 0; //hide because the redacted was missed
@@ -2234,12 +2266,20 @@ Molpy.Up = function() {
 							this.chainCurrent = 0;
 							this.randomiseTime();
 							Molpy.lootSelectionNeedRepaint = 1;
+							if(spoiler.length) {
+							spoiler.css({display: 'none'});
+							g('redactedSpoiler').innerHTML = "";
+							}
 						} else {
 							this.drawType = ['show'];
 							this.jump();
 							var stay = 6 * (4 + Molpy.Got('Kitnip') + Molpy.Got('SGC') * 2);
 							this.toggle = stay;
 							Molpy.repaintRedacted();
+							if(spoiler.length) {
+								spoiler.css({display: 'none'});
+								g('redactedSpoiler').innerHTML = "";
+							}
 						}
 					}
 				} else {//initial setup
@@ -2262,6 +2302,12 @@ Molpy.Up = function() {
 				Molpy.Anything = 1;
 				level = level || 0;
 				this.removeDiv();
+				var spoiler = $('#redactedSpoiler');
+				this.reward = 1;
+				if (spoiler.length){
+					spoiler.css({display: 'none'});
+					g('redactedSpoiler').innerHTML = "";
+				}
 				Molpy.lootSelectionNeedRepaint = 1;
 				if (Molpy.TotalDragons && this.drawType[0] == 'knight') {
 					var item = g('redacteditem');
@@ -2328,13 +2374,13 @@ Molpy.Up = function() {
 							this.chainCurrent = 0;
 						}
 						if (Molpy.Has('LogiPuzzle', Molpy.PokeBar())){
-							Molpy.Notify('Your Ranger caught a wild logicat, but your cage is full', 0);
+							Molpy.Notify(`Your Ranger caught a wild logicat, but your cage is full (Max of ${Molpy.PokeBar()})`, 0);
 						} else {
 							var pp = Molpy.Boosts['Panther Poke'];
 							Molpy.Notify('Your Ranger caught a wild logicat!');
 							Molpy.Notify('Panther Poke: ' + pp.desc, 0);
 							pp.buyFunction(1);
-							this.keepPosition = 1; //Don't give a reward, the panther poke is the reward.
+							this.reward = 0; //Don't give a reward, the panther poke is the reward.
 									       //misnamed variable, as far as I can see only checked when giving reward.
 						}
 					}
@@ -2353,7 +2399,7 @@ Molpy.Up = function() {
 				if(this.chainMax >= 42) Molpy.EarnBadge('Meaning');
 
 				this.totalClicks++;
-				if(this.drawType.length < 16 && !this.keepPosition) {
+				if(this.drawType.length < 16 && !this.keepPosition && this.reward) {
 					Molpy.RewardKitten()
 					Molpy.GlassNotifyFlush();
 				}
@@ -2370,10 +2416,11 @@ Molpy.Up = function() {
 				// If no possible spots are open, then no redacteds can spawn
 				Molpy.Anything = 1;
 				var possible = false;
+				var visibleList = [];
 				for(var i in this.divList)
 					if(this.divList[i].is(':visible')) {
 						possible = true;
-						break;
+						visibleList.push(i);
 					}
 				if(!possible) this.location = 0;
 				
@@ -2382,9 +2429,12 @@ Molpy.Up = function() {
 				if (Molpy.TotalDragons && Molpy.Boosts['DQ'].overallState == 0 && this.divList[3].is(':visible')) { // Redundaknights
 					this.location = 3; // Shop
 					valid = true;
-				} else {
+				} else if (visibleList.length) {
 					// There is at least one valid spawn location, grab a random one
 					//TODO this can be made better by making a list of valid first and selecting from that instead
+					//This has been made better
+					this.location = visibleList[Math.floor(Math.random() * visibleList.length)]
+					/*
 					var loopNum = 0;
 					var randNum = 0;
 					while(loopNum < 50 && valid == false) {
@@ -2396,10 +2446,8 @@ Molpy.Up = function() {
 						}
 						loopNum ++;
 					}
-				}
-				
-				// Unlucky RNG, didn't find a valid spawn location 
-				if(!valid) this.location = 0;
+					*/
+				} else this.location = 0;				//Didn't find a valid spawn location 
 				
 				this.dispIndex = -1;
 			};
@@ -2444,7 +2492,13 @@ Molpy.Up = function() {
 					if(drawType == 'recur') {
 						str += this.getHTML(heading, level + 1);
 					} else if(drawType == 'hide1') {
-						str += Molpy.Redacted.spoiler;
+						str += '<div id="redactedSpoilerAnchor"></div>';
+						var spoiler = g('redactedSpoiler');
+						if (spoiler) {
+							spoiler.innerHTML = Molpy.Redacted.spoiler;
+							$('#redactedSpoiler').css({position: "absolute", display: "none"})
+							this.spoilerScroll = 0;
+						}
 					} else if(drawType == 'hide2') {
 						if (Molpy.PuzzleGens.redacted.active) str += Molpy.PuzzleGens.redacted.StringifyStatements();
 						else {
