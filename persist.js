@@ -37,7 +37,6 @@
 		Molpy.Anything = 1;
 		if(!auto) {
 			Molpy.saveCount++;
-			_gaq && _gaq.push(['_trackEvent', 'Save', 'Begin']);
 			if(Molpy.saveCount >= 5) {
 				Molpy.UnlockBoost('Autosave Option');
 				Molpy.EarnBadge('This Should be Automatic');
@@ -57,7 +56,6 @@
 		}
 		if(!success) return;
 		Molpy.Notify('Game saved',auto?0:2, 1);
-		auto || _gaq && _gaq.push(['_trackEvent', 'Save', 'Complete', '' + Molpy.saveCount]);
 
 		Molpy.autosaveCountup = 0;
 
@@ -102,7 +100,6 @@
 
 	Molpy.Load = function() {
 		Molpy.Anything = 1;
-		_gaq && _gaq.push(['_trackEvent', 'Load', 'Begin']);
 
 		var success;
 		if(Molpy.supportsLocalStorage && Molpy.LocalSaveExists()) {
@@ -118,7 +115,6 @@
 			return;
 		}
 		Molpy.loadCount++;
-		_gaq && _gaq.push(['_trackEvent', 'Load', 'Complete', '' + Molpy.loadCount]);
 		Molpy.autosaveCountup = 0;
 		if(g('game')) {
 			Molpy.Notify('Game loaded', 0);
@@ -294,9 +290,7 @@
 		}
 
 		if(thread && thread != '') {
-			_gaq && _gaq.push(['_trackEvent', 'Import', 'Begin']);
 			Molpy.FromNeedlePulledThing(Molpy.BeanishToCuegish(thread));
-			_gaq && _gaq.push(['_trackEvent', 'Import', 'Complete']);
 			Molpy.Save();
 		}
 	}
@@ -859,7 +853,6 @@
 	}
 
 	Molpy.ValidateVersion = function(version) {
-		_gaq && _gaq.push(['_trackEvent', 'Load', 'Version', '' + version, true]);
 		if(version > Molpy.version) {
 			alert('Error : you are a time traveller attempting to load a save from v' + version + ' with v' + Molpy.version + '.');
 			return 0;
@@ -878,7 +871,6 @@
 		thread = thread.split(p);
 		var version = parseFloat(thread[0]);
 		Molpy.PreLoadTasks(version);
-		_gaq && _gaq.push(['_trackEvent', 'Load', 'Version', '' + version, true]);
 		if(!Molpy.ValidateVersion(version)) return;
 
 		Molpy.startDate = parseInt(thread[2]);
@@ -1244,7 +1236,6 @@
 		Molpy.Anything = 1;
 		if(coma || confirm('Really Molpy Down?\n(Progress will be reset but achievements will not.)')) {
 
-			coma || _gaq && _gaq.push(['_trackEvent', 'Molpy Down', 'Begin', '' + Molpy.newpixNumber]);
 			Molpy.Boosts['Sand'].totalDug = 0;
 			Molpy.Boosts['Sand'].manualDug = 0;
 			Molpy.Boosts['TF'].manualLoaded = 0;
@@ -1366,7 +1357,6 @@
 			Molpy.AdjustFade();
 			Molpy.UpdateColourScheme();
 			Molpy.BuildLootLists();
-			coma || _gaq && _gaq.push(['_trackEvent', 'Molpy Down', 'Complete', '' + Molpy.highestNPvisited]);
 		}
 	}
 	Molpy.Coma = function() {
@@ -1374,7 +1364,6 @@
 		if(confirm('Really coma?\n(This will wipe all progress and badges!)')
 			&& confirm('Seriously, this will reset ALL the things.\nAre you ABSOLUTELY sure?')) {
 			//reset the badges
-			_gaq.push(['_trackEvent', 'Coma', 'Begin', '' + Molpy.newpixNumber]);
 			Molpy.Down(1);
 			Molpy.saveCount = 0;
 			Molpy.loadCount = 0;
@@ -1407,7 +1396,6 @@
 
 			Molpy.unlockedGroups = {};
 			Molpy.UpdateFaves(1);
-			_gaq.push(['_trackEvent', 'Coma', 'Complete', '' + Molpy.highestNPvisited]);
 			
 			Molpy.BuildLootLists();
 			Molpy.allNeedRepaint = 1;

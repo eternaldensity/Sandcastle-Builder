@@ -297,9 +297,7 @@ Molpy.DefineGUI = function() {
 
 	Molpy.RefreshExport = function() {
 		if(!Molpy.molpish) return;
-		_gaq && _gaq.push(['_trackEvent', 'Export', 'Begin']);
 		var threads = Molpy.ToNeedlePulledThing();
-		_gaq && _gaq.push(['_trackEvent', 'Export', 'Complete']);
 		var thread = '';
 		for( var i in threads) {
 			thread += threads[i]
@@ -377,7 +375,6 @@ Molpy.DefineGUI = function() {
 				score += inc;
 				g('idlescore').innerHTML = 'Score: ' + Molpify(score, 3);
 				localStorage['idlescore'] = score;
-				if(score % 1000 == 0) _gaq && _gaq.push(['_trackEvent', 'PureIdle', 'Milestone', '' + score]);
 				setTimeout(Molpy.Idle, 1000);
 			}
 		}
@@ -2008,7 +2005,7 @@ Molpy.DefineGUI = function() {
 			if (n == 'n') { this.boost = 0 }
 			else if (n >= 0) { this.boost = Molpy.BoostsById[parseInt(n) || 0] }
 			else if (n > -1000000) { this.boost = Molpy.BadgesById[1 - parseInt(n) || 0] }
-			else { this.boost = Molpy.BadgesById[Molpy.DiscoveriesStartAt + 1000000 + parseInt(n) || 0] };
+			else { this.boost = Molpy.BadgesById[Molpy.DiscoveriesStartAt - (1000000 + parseInt(n)) || 0] };
 			if (this.boost) this.boost.faveRefresh = 1;
 			this.vis = pixels[1] == true;
 			this.position = {
