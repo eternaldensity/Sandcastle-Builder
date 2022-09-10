@@ -1,5 +1,13 @@
 ## Changelog
 
+### 4.10 Gone
+
+#### ED
+
+- Panther Rush starting value was initialised wrong
+- Made Milo cheaper
+- DF unlock sooner
+
 ### 4.09 Conflict
 
 #### ED

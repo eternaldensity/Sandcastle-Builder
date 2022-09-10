@@ -4317,7 +4317,7 @@ Molpy.DefineBoosts = function() {
 		AA: 200,
 		SG: 5,
 		AE: 60,
-		Milo: 150,
+		Milo: 120,
 		ZK: 220,
 		VS: 5000,
 		CFT: 40000,
@@ -5752,7 +5752,7 @@ Molpy.DefineBoosts = function() {
 		defStuff: 1,
 
 		buyFunction: function() { 
-			if (!this.Level) this.Level = 1;
+			if (!this.Level) this.Level = 0;
 			if (Molpy.Earned('Einstein Says No')) this.Level = 1079252850 *2; 
 		},
 
@@ -6534,7 +6534,7 @@ Molpy.DefineBoosts = function() {
 			return [1000, 'Crystal Dragon'];
 		if(Molpy.Has('AC', 101) && !Molpy.Boosts['Draft Dragon'].unlocked && Molpy.groupBadgeCounts.monumg > 40)
 			return [2e12, 'Draft Dragon'];
-		if(Molpy.Has('AC', 300) && !Molpy.Boosts['Dragon Forge'].unlocked)
+		if(Molpy.Has('AC', 230) && !Molpy.Boosts['Dragon Forge'].unlocked)
 			return [7e16, 'Dragon Forge'];
 		if(Molpy.Has('AC', 404) && !Molpy.Boosts['CDSP'].unlocked)
 			return [4.5e20, 'CDSP'];
