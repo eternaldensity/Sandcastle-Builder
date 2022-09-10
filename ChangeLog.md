@@ -9,6 +9,10 @@
 - DF unlock sooner
 - Castle Tools in infinite mode count building infinite castles so they don't get stuck on 0 eventually, which mustards JDip level (bug #1531)
 - Noticed some .js files were coming from CloudFlare.  Nope.
+- New Bag Prize
+- Added Blåhaj
+- There were three (3) billy goats gruff.
+- Changed time library from moment to dayjs.
 
 ### 4.09 Conflict
 

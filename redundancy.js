@@ -423,6 +423,6 @@ function Wordify(words) {
 	});
 }
 
-function plural(n) {
-	return n == 1 ? '' : 's';
+function plural(n,p) {
+	return n == 1 ? '' : p||'s';
 }

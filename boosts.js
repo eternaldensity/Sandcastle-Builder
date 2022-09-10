@@ -476,7 +476,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.Notify('Hooray, you found the prize behind door ' + me.door + '!',0);
 			Molpy.Boosts['Castles'].build(Math.floor(Molpy.Boosts['Castles'].power / 2), 1);
 			if(Molpy.IsEnabled('HoM')) Molpy.Add('GlassChips', Math.floor(Molpy.Boosts['GlassChips'].power / 5), 1);
-			if(Molpy.Got('Gruff')) Molpy.GetYourGoat(2);
+			if(Molpy.Got('Gruff')) Molpy.GetYourGoat(3);
 		} else {
 			Molpy.Destroy('Castles', Molpy.Boosts['Castles'].power);
 			Molpy.Boosts['MHP'].power = Math.ceil(Math.floor(Molpy.Boosts['MHP'].power / 1.8));
@@ -650,7 +650,7 @@ Molpy.DefineBoosts = function() {
 		var acPower = Molpy.Boosts['Coma Molpy Style'].power;
 		if(acPower) {
 			acPower = 0; // off
-			Molpy.ONGstart = ONGsnip(moment()); // don't immediately ONG!
+			Molpy.ONGstart = ONGsnip(dayjs()); // don't immediately ONG!
 		} else {
 			acPower = 1; // on
 		}
@@ -774,7 +774,7 @@ Molpy.DefineBoosts = function() {
 			Molpy.newpixNumber = np;
 			Molpy.Boosts['Signpost'].power = 0;
 			if(Molpy.Earned('discov' + Molpy.newpixNumber)) Molpy.Badges['discov' + Molpy.newpixNumber].Refresh();
-			Molpy.ONGstart = ONGsnip(moment());
+			Molpy.ONGstart = ONGsnip(dayjs());
 			Molpy.HandlePeriods();
 			Molpy.UpdateBeach();
 			if(!silence) Molpy.Notify('Time Travel successful! Welcome to NewPix ' + Molpify(Math.floor(Molpy.newpixNumber)));
@@ -1083,7 +1083,11 @@ Molpy.DefineBoosts = function() {
 		},
 		
 		lockFunction: function() {
-			this.power += 2;
+            if(!Molpy.Got('BoA')) {                
+                this.power += 2;
+            } else {             
+                this.power += 20;
+            }
 		}
 	});
 	new Molpy.Boost({
@@ -1120,7 +1124,7 @@ Molpy.DefineBoosts = function() {
 		else
 			(ch.power = 1);
 
-		if(ch.power > 10) Molpy.UnlockBoost('Beachball');
+		if(ch.power > 10 || Molpy.Has('Shork', 2)) Molpy.UnlockBoost('Beachball');
 		ch.Refresh();
 		Molpy.UpdateColourScheme();
 	}
@@ -1550,6 +1554,9 @@ Molpy.DefineBoosts = function() {
 				Molpy.Boosts['Castles'].build(8887766554433);
 			}
 			Molpy.UnlockBoost(['Family Discount', 'Shopping Assistant', 'Late Closing Hours']);
+            if(Molpy.Got('Family Discount') && Molpy.Got('Shopping Assistant') && Molpy.Got('Late Closing Hours')){
+                Molpy.UnlockBoost('PoG');
+            }
 			return 'Gives you Swedish stuff and boosts VITSSÅGEN, JA! bonus castles';
 		}
 	});
@@ -2135,7 +2142,7 @@ Molpy.DefineBoosts = function() {
 			var furnaceLevel = (this.power) + 1;
 			if(times) furnaceLevel *= times;
 			if(Molpy.Got('Glass Goat') && Molpy.Has('Goats', 1)) {
-				furnaceLevel *= Molpy.Level('Goats');
+				furnaceLevel *= Molpy.Level('Goats') * 5;
 			}
 			Molpy.Add('GlassChips', Math.floor(furnaceLevel*Molpy.Papal('Chips')), 1);
 		}
@@ -2485,7 +2492,7 @@ Molpy.DefineBoosts = function() {
 			
 			Molpy.Destroy('GlassChips', chipsFor * rate);
 			if(Molpy.Got('Glass Goat') && Molpy.Has('Goats', 1)) {
-				chillerLevel *= Molpy.Level('Goats');
+				chillerLevel *= Molpy.Level('Goats') * 5;
 			}
 			Molpy.Add('GlassBlocks', Math.floor(chillerLevel*Molpy.Papal('Blocks')), 1);
 		}
@@ -5058,7 +5065,7 @@ Molpy.DefineBoosts = function() {
 					this.loadedPerClick  += this.loadedPermNP / 20;
 				}
 				if(Molpy.Got('Bone Clicker') && Molpy.Has('Bonemeal', 1)) {
-					this.loadedPerClick  *= Molpy.Level('Bonemeal');
+					this.loadedPerClick  *= Molpy.Level('Bonemeal') * 5;
 				}
 			} else {
 				this.loadedPerClick = 0;
@@ -7379,7 +7386,7 @@ Molpy.DefineBoosts = function() {
 				baserate += baserate * (4 / 10) * Math.max(-2, Math.floor((Molpy.SandTools['Bag'].amount - 25) / 5)) || 0;
 			}
 			if(Molpy.Got('Bone Clicker') && Molpy.Has('Bonemeal', 1)) {
-				baserate *= Molpy.Level('Bonemeal');
+				baserate *= Molpy.Level('Bonemeal') * 5;
 			}
 			this.sandPerClick = baserate * multiplier;
 			if(!isFinite(this.sandPerClick) || !isFinite(this.power)) this.sandPerClick = 0; //you can't dig infinite sand
@@ -8476,7 +8483,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Glass Goat',
 		icon: 'glassgoat',
 		group: 'prize',
-		desc: 'Glass produced by Glass Furnace/Blower is multiplied by the number of Goats you have, if any.',
+		desc: 'Glass produced by Glass Furnace/Blower is multiplied by five times the number of Goats you have, if any.',
 		price:{
 			Sand: '5M',
 			Castles: '20K',
@@ -8488,7 +8495,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Bone Clicker',
 		icon: 'boneclicker',
 		group: 'prize',
-		desc: 'Sand and Glass Chips from clicking are multliplied by the amount of Bonemeal you have, if any.',
+		desc: 'Sand and Glass Chips from clicking are multliplied by five times the amount of Bonemeal you have, if any.',
 		price:{
 			Sand: '5K',
 			Castles: 12,
@@ -8561,8 +8568,8 @@ Molpy.DefineBoosts = function() {
 		group: 'prize',
 		
 		desc: function(me) {
-			return 'Recieve 1M sand per Badge you own.<br>(Single use only)'
-				+ (me.bought ? '<br><input type="Button" onclick="Molpy.Add(\'Sand\',Molpy.BadgesOwned*1000000);Molpy.LockBoost(\'Sandblast\');" value="Use"></input>' : '');
+			return 'Recieve 1G sand per Badge you own.<br>(Single use only)'
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.Add(\'Sand\',Molpy.BadgesOwned*1000000000);Molpy.LockBoost(\'Sandblast\');" value="Use"></input>' : '');
 		},
 		
 		price: {
@@ -8589,7 +8596,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Gruff',
 		icon: 'gruff',
 		group: 'prize',
-		desc: 'When you win the Monty Haul prize, you get 2 goats',
+		desc: 'When you win the Monty Haul prize, you get 3 goats',
 		price:{
 			Sand: '2P',
 			Castles: '75T',
@@ -8623,7 +8630,7 @@ Molpy.DefineBoosts = function() {
 		name: 'Soul Drain',
 		icon: 'souldrain',
 		group: 'prize',
-		desc: 'Shadow Dragon has a 10% chance of producing bonemeal when Not Lucky occurs',
+		desc: 'Shadow Dragon has a 20% chance of producing bonemeal when Not Lucky occurs',
 		price:{
 			Sand: '60G',
 			Castles: '290M',
@@ -8641,7 +8648,7 @@ Molpy.DefineBoosts = function() {
 			Castles: '600P',
 			GlassBlocks: '400K',
 		},
-		prizes: 1,
+		prizes: 2,
 		tier: 2
 	});
 	new Molpy.Boost({
@@ -8728,7 +8735,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.FastForward = function() {
 		Molpy.Anything = 1;
 		Molpy.newpixNumber = Molpy.highestNPvisited;
-		Molpy.ONGstart = ONGsnip(moment());
+		Molpy.ONGstart = ONGsnip(dayjs());
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
 		Molpy.LockBoost('Fast Forward');
@@ -13688,6 +13695,78 @@ Molpy.Coallate = function(){
 			},
 		}
 	)
+	new Molpy.Boost({
+		name: 'Bag of Accelerant',
+        alias: 'BoA',
+		icon: 'bagburning',
+		group: 'prize',
+		desc: 'Bag Burning power increases 10 times more on lock',
+		price:{
+			Sand: Infinity,
+			Castles: Infinity,
+            GlassBlocks: 100,
+		},
+		prizes: 2,
+		tier: 1
+	});
+	
+	new Molpy.Boost({
+		name: 'Potion of Gender',
+        alias: 'PoG',
+		icon: 'comamolpystyle',
+        group: 'hpt',
+		className: 'toggle',
+		
+		desc: function(me) {
+			return ('<input type="Button" onclick="Molpy.GenderToggle()" value="Drink"></input>');
+		},
+		
+		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
+		price:{
+			Logicat: 1500,
+		},
+	});
+	
+	Molpy.GenderToggle = function() {
+		Molpy.Anything = 1;
+		var me = Molpy.Boosts['PoG'];
+		if(!me.bought) {
+            me.buy();			
+		}
+		if(!me.bought) {
+			return;
+		}
+        if(me.power){
+            me.power=0;
+            Molpy.Notify('Untransing ur gender. OwO');
+        } else {
+            Molpy.Notify('Transing ur gender. UwU');
+            me.power=1;
+        }
+        Molpy.LockBoost('PoG');
+	}
+
+	new Molpy.Boost({
+		name: 'Blåhaj',
+        plural: 'Blåhajar',
+		alias: 'Shork',
+		icon: 'shork',
+		group: 'stuff',
+		className: 'action',
+		
+		desc: function(me) {
+			var str = 'You have ' + Molpify(me.Level, 3) + ' Blåhaj' + plural(me.Level,'ar') + '.';
+			if(me.Has(1)) {
+				str += '<br>Blåhaj is cute, comfy and really soft.<br>Blåhaj will wait for you even when you cannot wait for it.' + (Molpy.Got('ASHF') ? '<br>Cuddle 1 Blåhaj for 1 ONG <input type="Button" onclick="Molpy.Spend({Shork:1});Molpy.ONG();" value="!"></input>' :'');
+			}
+			return str;
+		},
+		
+		// deactivate if no Shorks
+		classChange: function() { return Molpy.Boosts['Shork'].Has(1) && Molpy.Got('ASHF') ? 'action' : '' },
+		
+		defStuff: 1
+	});
 
 // END OF BOOSTS, add new ones immediately before this comment
 }
