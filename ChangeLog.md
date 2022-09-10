@@ -7,6 +7,7 @@
 - Panther Rush starting value was initialised wrong
 - Made Milo cheaper
 - DF unlock sooner
+- Castle Tools in infinite mode count building infinite castles so they don't get stuck on 0 eventually, which mustards JDip level (bug #1531)
 
 ### 4.09 Conflict
 

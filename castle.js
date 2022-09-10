@@ -1058,6 +1058,7 @@ Molpy.Up = function() {
 					buildN = Math.floor(buildN*Molpy.Papal('GlassCastle'));
 					Molpy.Boosts['TF'].digGlass(buildN);
 					this.totalGlassBuilt += buildN;
+					this.totalCastlesBuilt = Infinity;
 				} else {
 					buildN = Math.floor(buildN*Molpy.Papal('Castles'));
 					Molpy.Boosts['Castles'].build(buildN);
