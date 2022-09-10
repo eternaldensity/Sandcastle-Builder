@@ -8,6 +8,7 @@
 - Made Milo cheaper
 - DF unlock sooner
 - Castle Tools in infinite mode count building infinite castles so they don't get stuck on 0 eventually, which mustards JDip level (bug #1531)
+- Noticed some .js files were coming from CloudFlare.  Nope.
 
 ### 4.09 Conflict
 
