@@ -1388,6 +1388,8 @@
 			Molpy.Boosts['DQ'].totalfights = 0;
 			Molpy.Boosts['DQ'].totalstarves = 0;
 			Molpy.Boosts['DQ'].Level = 0;
+            
+            Molpy.Boosts["Locked Crate"].CrateCount=0;
 								 
 			Molpy.CastleTools['NewPixBot'].totalCastlesBuilt = 0; //because we normally don't reset this.
 			for( var i in Molpy.BadgesById) {

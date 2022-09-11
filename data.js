@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=4.08;
-Molpy.versionName='Request Timeout'; // Appended to the numerical version on screen
+Molpy.version=4.09;
+Molpy.versionName='Conflict'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings
@@ -193,7 +193,7 @@ Molpy.HardcodedData = function() {
 		'Sandcastle Builder',
 		'Sandcastle Builder',
 		'Sandcastle Builder',
-		'Sandcastle Builder',
+		'Sandcastle Builder says Trans Rights',
 		'Sandy Clicker',
 		'Injokes: The Game',
 		'Hotdog of Things that are on my side for 600, Alex',
@@ -467,7 +467,31 @@ Molpy.HardcodedData = function() {
 			"Linear Bagular",
 			"Accounting: What the Bags Mean",
 			"BAGIX Network Programming",
-			"Object-Oriented Systems Analysis and Design with BAG"
+			"Object-Oriented Systems Analysis and Design with BAG",
+            "Bag Widow",
+            "Bag Knight",
+            "Bagcoming",
+            "Far From Bag",
+            "No Way Bag",
+            "Elden Bag",
+            "Baggosort",
+            "Bag Anniverary Edition",
+            "Bagstopper",
+            "Bag Nun",
+            "Homeland: Bag Salem",
+            "Teenage Bag Hunters",
+            "Morbagus",
+            "Bag-Man and the Purse",
+            "Gentleman Bag",
+            "The Bagspance",
+            "Bagging Eve",
+            "Bags from Elsewhere",
+            "What-Bag",
+            "Bagcane",
+            "Bag Education",
+            "Say Bag!",
+            "Bag Day of Visibility",
+            "Seeing Bag"
 		]
 	}
 	

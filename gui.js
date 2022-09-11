@@ -138,6 +138,19 @@ Molpy.DefineGUI = function() {
 		Molpy.restoreLootScroll = false;
 		Molpy.lootPageNum = 1;
 		Molpy.lootNeedRepaint = 1;
+		setTimeout(function() {						//Hide redundant spoiler (rick roll) when we click something that makes it disappear
+			var spoiler = $('#redactedSpoiler');
+			var anchor = $('#redactedSpoilerAnchor');
+			if (spoiler.length) {
+				if (anchor.length) {
+				spoiler.css({display: 'block'});
+				spoiler.css(anchor.offset());
+				} else {
+					spoiler.css({left: -300, display: 'none'});
+					Molpy.Redacted.spoilerScroll = 0;
+				}
+			}
+		}, 50)
 	}
 	Molpy.ShowGroup = function(group, tagged) {
 		if(Molpy.Redacted.drawType[Molpy.Redacted.drawType.length - 1] != 'hide1') {
@@ -213,6 +226,21 @@ Molpy.DefineGUI = function() {
 			var cleanup = Molpy['Cleanup' + name];
 			if(cleanup) cleanup();
 		}
+		setTimeout(function() {						//Hide redundant spoiler (rick roll) when we click something that makes it disappear
+			var spoiler = $('#redactedSpoiler');
+			var anchor = $('#redactedSpoilerAnchor');
+			if (spoiler.length) {
+				if(anchor.length){
+					if(anchor.offset().left != 0) {
+						spoiler.css({display: 'block'});
+						spoiler.css(anchor.offset());
+					} else {
+						spoiler.css({left: -300, display: 'none'});
+						Molpy.Redacted.spoilerScroll = 0;
+					}
+				}
+			}
+		}, 50)
 	}
 
 	Molpy.selectedFave = 'None';
@@ -1168,7 +1196,7 @@ Molpy.DefineGUI = function() {
 			Molpy.notifLogPaint = 1;
 		} else {
 			var log = g('logItems');
-			log.scrollTop = log.scrollHeight;
+			log.scrollTop = log.scrollTopMax;
 		}
 		g('logCurrent').value="Current";
 	}
@@ -1240,8 +1268,8 @@ Molpy.DefineGUI = function() {
 			var log = g('logItems');
 			var scroll = (log.scrollTop == (log.scrollHeight - log.clientHeight));
 			log.innerHTML = Molpy.logArchive[Molpy.selectedLog].joinedString();
-			if(scroll) {
-				log.scrollTop = log.scrollHeight;
+			if(scroll || Molpy.options.autoscroll) {
+				log.scrollTop = log.scrollTopMax;
 				g('logCurrent').value="Current";
 			}
 		}
@@ -1259,7 +1287,7 @@ Molpy.DefineGUI = function() {
 		title.innerHTML = "Notification log for Newpix " + Molpy.logArchive[Molpy.selectedLog].np;
 		var log = g('logItems');
 		log.innerHTML = Molpy.logArchive[Molpy.selectedLog].joinedString();
-		log.scrollTop = log.scrollHeight;
+		log.scrollTop = log.scrollTopMax;
 	}
 
 	Molpy.subPixLetters = ['', 'a', 'b', 'c', 'd', 'e'];
@@ -1286,24 +1314,24 @@ Molpy.DefineGUI = function() {
 
 		var x = 200 + flandom(200);
 		var y = 200 + flandom(400);
-		if(np===0) return 'http://xkcd.mscha.org/tmp/np0.png'
+		if(np===0) return 'https://xkcd.mscha.org/tmp/np0.png'
 		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix) {
 			
 			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1))){
-				return 'http://placekitten.com/'+ (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') + x + '/' + y;
+				return 'https://placekitten.com/'+ (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') + x + '/' + y;
 			}else if(frac==0){
-				return 'http://139.162.169.39/Time/otcolorization/' + newp;
+				return 'https://139.162.169.39/Time/otcolorization/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
-				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
-			} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
+				return 'https://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
+			} else if(Molpy.fracParts.indexOf(frac)==-1){return 'https://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
 		} else {
 			if(((floor > 3094)&&(frac===0))||((floor > 1417)&&(frac===0.1))){
-				return 'http://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') +x + '/' + y;
+				return 'https://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') +x + '/' + y;
 			} else if(frac==0){
-				return 'http://xkcd.mscha.org/frame/' + newp;
+				return 'https://xkcd.mscha.org/frame/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
-				return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
-			} else if(Molpy.fracParts.indexOf(frac)==-1) {return 'http://placekitten.com/' +(Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') + x + '/' + y;} //ErrorCat is error
+				return 'https://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
+			} else if(Molpy.fracParts.indexOf(frac)==-1) {return 'https://placekitten.com/' +(Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') + x + '/' + y;} //ErrorCat is error
 		}
 	}
 	Molpy.ThumbNewPixFor = function(np) {
@@ -1313,12 +1341,12 @@ Molpy.DefineGUI = function() {
 		var frac=np-floor
 		frac=Number(frac.toFixed(3))
 		if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1)))
-			return 'http://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') +x + '/' + y;
+			return 'https://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') +x + '/' + y;
 		else if(frac==0){
-			return 'http://xkcd.mscha.org/frame/' + newp;
+			return 'https://xkcd.mscha.org/frame/' + newp;
 		} else if(Molpy.fracParts.indexOf(frac)>-1){
-			return 'http://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
-		} else if(Molpy.fracParts.indexOf(frac)==-1){return 'http://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') +x + '/' + y;} //ErrorCat is error
+			return 'https://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
+		} else if(Molpy.fracParts.indexOf(frac)==-1){return 'https://placekitten.com/' + (Molpy.IsEnabled('Chromatic Heresy') ? '' : '/g') +x + '/' + y;} //ErrorCat is error
 	}
 
 	Molpy.Url = function(address) {

@@ -1,5 +1,23 @@
 ## Changelog
 
+### 4.09 Conflict
+
+#### ED
+
+- Locked crate count now resets on Coma
+- Removed duplicate long length option
+- Autoshow everything but discoveries didn't filter out discoveries, only monuments. (bug #1528)
+- Additional bag puns
+- Log autoscroll setting restored to actually do something (bug #1520)
+
+#### IHaveNoFunnyName
+- Updated the Beanish to point to HTTPS, which let the spoiler work again
+- Put spoiler in its own element so it doesn't restart every mNP when the kitty is refreshed
+- Don't crash if the spoiler div is adblocked or deleted
+- Prevent spoiler from showing in wrong location
+- Fix a weird bug where the kitty wouldn't display a caged puzzle?
+- Explain pokebar
+
 ### 4.08 Request Timeout
 
 #### IHaveNoFunnyName 
@@ -30,6 +48,9 @@
 - probably the wrong ones
 - isn't even pushing this update to the main live site in case it doesn't work
 - Removed Google Analytics.  Should have done that years ago cos I don't think it works anymore.  I think I disabled my GA account cos of GDPR stuff years ago?
+- Updated OTT link cos the xkcd fora died ong ago
+- changed some http to https
+- unfortunately the site still shows some unsecure content because mscha's time image server redirects to http instead of https even though the images are available by https directly
 
 ### 4.07 Proxy Authentication Required
 
