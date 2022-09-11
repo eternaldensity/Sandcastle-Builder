@@ -913,9 +913,7 @@
 		if(version < Molpy.version) //hey let's do this every upgrade!
 		{
 			Molpy.Notify('Upgraded to new version! '+Molpy.version + '<br>'+ Molpy.versionName, 2);
-			if(Molpy.Boosts['Safety Hat'].unlocked && Molpy.Got('Safety Pumpkin') && !Molpy.Boosts['SG'].unlocked)
-				Molpy.UnlockBoost('SG');
-			else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
+            Molpy.SafetyUnlock();
 		}
 		for( var i in Molpy.Boosts) {
 			var me = Molpy.Boosts[i];
@@ -935,11 +933,20 @@
 		Molpy.RefreshOptions();
 
 		Molpy.ONGstart = ONGsnip(dayjs()); //if you missed the ONG before loading, too bad!
-        if(version >= 4.1 && Molpy.IsEnabled('PoG')){
-            var oldStart = ONGsnip(Molpy.time);
+        if(version >= 4.1 && Molpy.IsEnabled('PoG') && Molpy.Got('ASHF')){
+            var oldStart = ONGsnip(Molpy.time); //actually, not too bad in this circumstance
             var diff = (Molpy.ONGstart - oldStart)/1000;
             var np = diff/Molpy.NPlength;
-            Molpy.Add('Shork',np);
+            if(np){
+                if(Molpy.Has('SoS')){
+                    np += 1;
+                }                
+                if(Molpy.Got('Blitzing') && Molpy.Got('LSoS')){
+                    np*=2;
+                }
+                Molpy.Add('Shork',np);
+                Molpy.Notify('You have been blessed with the presence of '+ np +' Blåhaj' + plural(s,'ar') + '.', 0);
+            }
         }
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
 		Molpy.HandlePeriods();
@@ -954,6 +961,12 @@
 		Molpy.UpdateFaves(1);
 		return 1;
 	}
+
+    Molpy.SafetyUnlock = function() {        
+        if(Molpy.Boosts['Safety Hat'].unlocked && Molpy.Got('Safety Pumpkin') && !Molpy.Boosts['SG'].unlocked)
+            Molpy.UnlockBoost('SG');
+        else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
+    }    
 
 	Molpy.UpgradeOldVersions = function(version) {
 		if(version < 2.1) {

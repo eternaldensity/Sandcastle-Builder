@@ -1200,6 +1200,11 @@ new Molpy.Badge({
 		desc: 'Found a shard in a vault with low IP power.',
 		vis: 1
 	});
+new Molpy.Badge({
+		name: 'Thirteenth',
+		desc: 'Oh, brilliant!',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 

@@ -13,6 +13,10 @@
 - Added Blåhaj
 - There were three (3) billy goats gruff.
 - Changed time library from moment to dayjs.
+- Made GoatONG better.
+- Added some other shorky prize stuff and a new badge.
+- Buffed winning the game.
+- You just lost the game.
 
 ### 4.09 Conflict
 

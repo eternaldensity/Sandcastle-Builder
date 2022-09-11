@@ -8778,6 +8778,8 @@ Molpy.DefineBoosts = function() {
 			Goats: 120,
 			Mustard: 240
 		},
+        
+        lockFunction: Molpy.GoatONG,
 		
 		prizes: 1,
 		tier: 3
@@ -8916,8 +8918,8 @@ Molpy.DefineBoosts = function() {
 		className: 'action',
 					
 		desc: function(me) {
-			return 'Spend 10 Goats and cause an ONG<br>(Single use only)'
-				+ (me.bought ? '<br><input type="Button" onclick="if(Molpy.Spend(\'Goats\',10))Molpy.ONG();Molpy.LockBoost(\'GoatONG\')" value="Use"></input>' : '');
+			return 'Spend 10 Goats and gain an ONG<br>(Single use only)'
+				+ (me.bought ? '<br><input type="Button" onclick="Molpy.GoatONG()" value="Use"></input>' : '');
 		},
 				
 		price: {
@@ -8929,6 +8931,36 @@ Molpy.DefineBoosts = function() {
 		prizes: 0,
 		tier: 3
 	});
+	
+	Molpy.GoatONG = function() {
+        if(Molpy.Spend('Goats',10)){
+            var s = 1;
+            if(Molpy.Has('SoS')){
+                s += 1;
+            }
+            if(Molpy.Papal('Goats') > 1){
+                if(Molpy.Spend('Goats',10)){
+                    s += 1;
+                }
+            }
+            if(Molpy.Got('ASHF')){
+                s += 1;
+                if(Molpy.Got('Blitzing') && Molpy.Got('LSoS')){
+                    s*=2;
+                }
+                if(Molpy.Got('Time Lord') && Molpy.Got('Flux Surge') && Molpy.IsEnabled('PoG')){
+                    if(Molpy.Spend('Flux Crystals',1)){
+                        s*=2;
+                        Molpy.EarnBadge('Thirteenth');
+                    }
+                }
+                        
+            }
+            Molpy.Add('Shork',s);
+            Molpy.LockBoost('GoatONG');
+            Molpy.Notify('You have been blessed with the presence of '+ s +' Blåhaj' + plural(s,'ar') + '.', 0);
+        }
+	}
 
 	new Molpy.Boost({
 		name: 'Mustard Injector',
@@ -13757,7 +13789,7 @@ Molpy.Coallate = function(){
 		desc: function(me) {
 			var str = 'You have ' + Molpify(me.Level, 3) + ' Blåhaj' + plural(me.Level,'ar') + '.';
 			if(me.Has(1)) {
-				str += '<br>Blåhaj is cute, comfy and really soft.<br>Blåhaj will wait for you even when you cannot wait for it.' + (Molpy.Got('ASHF') ? '<br>Cuddle 1 Blåhaj for 1 ONG <input type="Button" onclick="Molpy.Spend({Shork:1});Molpy.ONG();" value="!"></input>' :'');
+				str += '<br>Blåhaj is cute, comfy and really soft.<br>Blåhaj will wait for you even when you cannot wait for it.' + (Molpy.Got('ASHF') ? '<br>Cuddle 1 Blåhaj for 1 ONG <input type="Button" onclick="if(Molpy.Spend({Shork:1}))Molpy.ONG();" value="!"></input>' :'');
 			}
 			return str;
 		},
@@ -13766,6 +13798,69 @@ Molpy.Coallate = function(){
 		classChange: function() { return Molpy.Boosts['Shork'].Has(1) && Molpy.Got('ASHF') ? 'action' : '' },
 		
 		defStuff: 1
+	});
+	new Molpy.Boost({
+		name: 'Shark of Sparking',
+		alias: 'SoS',
+		icon: 'sharkspark',
+		group: 'prize',
+		desc: 'When you would gain a Blåhaj, gain one extra (before other bonuses).',
+		
+		price: {
+			Sand: Infinity,
+			Castles: Infinity,
+			GlassBlocks: Infinity,
+			Blackprints: '100M',
+			Shork: 800,
+			LogiPuzzle: '8K',
+			FluxCrystals: '800K',
+            Goats: '16K',
+		},
+		
+		prizes: 2,
+		
+		tier: Molpy.TierFunction(4, {
+			Bonemeal: '20K',
+			Logicat: '4K',
+			FluxCrystals: 250
+		})
+	});
+	new Molpy.Boost({
+		name: 'Lightning Spork of Shorking',
+		alias: 'LSoS',
+		icon: 'sporkshork',
+		group: 'prize',
+		desc: 'Gain double Blåhaj while Blitzing.',
+		
+		price: {
+			Sand: Infinity,
+			Castles: Infinity,
+			GlassBlocks: Infinity,
+			Blackprints: '2M',
+			Shork: '2K',
+			LogiPuzzle: '8K',
+			FluxCrystals: '20M',
+            Goats: '2M',
+		},
+		
+		prizes: 1,
+		
+		tier: 5,
+	});
+    	new Molpy.Boost({
+		name: 'Safety Shork',
+		icon: 'safeshork',
+		group: 'prize',
+		className: 'action',
+		
+		desc: function(me) {
+            return 'Spend 1 Blåhaj to check whether you have ' + (me.bought ? '<input type="Button" onclick="if(Molpy.Spend({Shork:1}))Molpy.SafetyUnlock();" value="Safety Goggles"></input>' : 'Safety Goggles');
+        } ,
+		tier: 5,
+        price: {
+            Shork: '1K',
+			FluxCrystals: '10M',
+        }
 	});
 
 // END OF BOOSTS, add new ones immediately before this comment
