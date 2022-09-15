@@ -4057,6 +4057,10 @@ Molpy.Up = function() {
 		Molpy.ketchupTime = 0;
 		Molpy.lateness += (Molpy.time - t);
         if(Molpy.lateness > 7200){
+            if(Molpy.skipNP){
+                Molpy.lateness -= (Molpy.skipNP * 1000 * Molpy.mNPlength); //avoid double shorking
+                Molpy.skipNP = 0;
+            }
             var lateMill = (Molpy.lateness - 7200) / Molpy.mNPlength;
             Molpy.Add('BB',Math.floor(lateMill));
             Molpy.lateness = 7200;//don't ketchup up too much

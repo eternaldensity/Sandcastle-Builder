@@ -938,6 +938,7 @@
             var diff = (Molpy.ONGstart - oldStart)/1000;
             var np = diff/Molpy.NPlength;
             if(np){
+                Molpy.skipNP = np;
                 if(Molpy.Got('SoS')){
                     np += 1;
                 }                
