@@ -1058,7 +1058,9 @@ Molpy.Up = function() {
 					buildN = Math.floor(buildN*Molpy.Papal('GlassCastle'));
 					Molpy.Boosts['TF'].digGlass(buildN);
 					this.totalGlassBuilt += buildN;
-					this.totalCastlesBuilt = Infinity;
+                    if(!isFinite(this.currentActive)){
+                        this.totalCastlesBuilt = Infinity;
+                    }
 				} else {
 					buildN = Math.floor(buildN*Molpy.Papal('Castles'));
 					Molpy.Boosts['Castles'].build(buildN);
@@ -4054,8 +4056,12 @@ Molpy.Up = function() {
 		Molpy.time = dayjs();
 		Molpy.ketchupTime = 0;
 		Molpy.lateness += (Molpy.time - t);
-		Molpy.lateness = Math.min(Molpy.lateness, 7200);//don't ketchup up too much
-		while(Molpy.lateness > Molpy.mNPlength) {
+        if(Molpy.lateness > 7200){
+            var lateMill = (Molpy.lateness - 7200) / Molpy.mNPlength;
+            Molpy.Add('BB',Math.floor(lateMill));
+            Molpy.lateness = 7200;//don't ketchup up too much
+        }
+		while(Molpy.lateness >= Molpy.mNPlength) {
 			try {
 				Molpy.Anything = 1;
 				if(!Molpy.Stop) Molpy.Think();

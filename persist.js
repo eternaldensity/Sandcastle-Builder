@@ -938,14 +938,14 @@
             var diff = (Molpy.ONGstart - oldStart)/1000;
             var np = diff/Molpy.NPlength;
             if(np){
-                if(Molpy.Has('SoS')){
+                if(Molpy.Got('SoS')){
                     np += 1;
                 }                
                 if(Molpy.Got('Blitzing') && Molpy.Got('LSoS')){
                     np*=2;
                 }
                 Molpy.Add('Shork',np);
-                Molpy.Notify('You have been blessed with the presence of '+ np +' Blåhaj' + plural(s,'ar') + '.', 0);
+                Molpy.Notify('You have been blessed with the presence of '+ np +' Blåhaj' + plural(np,'ar') + '.', 0);
             }
         }
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';

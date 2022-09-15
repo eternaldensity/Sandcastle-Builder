@@ -13863,5 +13863,27 @@ Molpy.Coallate = function(){
         }
 	});
 
+	new Molpy.Boost({
+		name: 'Baby Blåhaj',
+        plural: 'Baby Blåhajar',
+		alias: 'BB',
+		icon: 'shork',
+		group: 'stuff',
+		className: 'action',
+		
+		desc: function(me) {
+			var str = 'You have ' + Molpify(me.Level, 3) + ' Baby Blåhaj' + plural(me.Level,'ar') + '.';
+			if(me.Has(10000)) {
+				str += '<br>Baby Blåhaj is tiny, cosy and really soft.<br>Baby Blåhaj will wait for you even when you cannot wait for it.' + (Molpy.Got('ASHF') ? '<br>Cuddle 10,000 Baby Blåhaj for 1 ONG <input type="Button" onclick="if(Molpy.Spend({BB:10000}))Molpy.ONG();" value="!"></input>' :'');
+			}
+			return str;
+		},
+		
+		// deactivate if no Shorks
+		classChange: function() { return Molpy.Boosts['Shork'].Has(1) && Molpy.Got('ASHF') ? 'action' : '' },
+		
+		defStuff: 1
+	});
+
 // END OF BOOSTS, add new ones immediately before this comment
 }

@@ -1,5 +1,13 @@
 ## Changelog
 
+### 4.11 Length Required
+
+#### ED
+
+- Fixed Blåhaj crash on load
+- Amended Castle tool fix to only count infinite castles built if you have infinite NPB since the mustard doesn't happen otherwise
+- Added Baby Blåhaj which are extremely tiny.
+
 ### 4.10 Gone
 
 #### ED
