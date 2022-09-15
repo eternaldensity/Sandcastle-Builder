@@ -933,22 +933,7 @@
 		Molpy.RefreshOptions();
 
 		Molpy.ONGstart = ONGsnip(dayjs()); //if you missed the ONG before loading, too bad!
-        if(version >= 4.1 && Molpy.IsEnabled('PoG') && Molpy.Got('ASHF')){
-            var oldStart = ONGsnip(Molpy.time); //actually, not too bad in this circumstance
-            var diff = (Molpy.ONGstart - oldStart)/1000;
-            var np = diff/Molpy.NPlength;
-            if(np){
-                Molpy.skipNP = np;
-                if(Molpy.Got('SoS')){
-                    np += 1;
-                }                
-                if(Molpy.Got('Blitzing') && Molpy.Got('LSoS')){
-                    np*=2;
-                }
-                Molpy.Add('Shork',np);
-                Molpy.Notify('You have been blessed with the presence of '+ np +' Blåhaj' + plural(np,'ar') + '.', 0);
-            }
-        }
+
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();

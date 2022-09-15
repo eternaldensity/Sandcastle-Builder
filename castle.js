@@ -4057,10 +4057,21 @@ Molpy.Up = function() {
 		Molpy.ketchupTime = 0;
 		Molpy.lateness += (Molpy.time - t);
         if(Molpy.lateness > 7200){
-            if(Molpy.skipNP){
-                Molpy.lateness -= (Molpy.skipNP * 1000 * Molpy.mNPlength); //avoid double shorking
-                Molpy.skipNP = 0;
+            if(Molpy.IsEnabled('PoG') && Molpy.Got('ASHF')){
+                var np = Math.floor(Molpy.lateness/1000/Molpy.NPlength);
+                if(np){
+                    Molpy.lateness -= (np * 1000 * Molpy.mNPlength); //avoid double shorking
+                    if(Molpy.Got('SoS')){
+                        np += 1;
+                    }                
+                    if(Molpy.Got('Blitzing') && Molpy.Got('LSoS')){
+                        np*=2;
+                    }
+                    Molpy.Add('Shork',np);
+                    Molpy.Notify('You have been blessed with the presence of '+ np +' Blåhaj' + plural(np,'ar') + '.', 0);
+                }
             }
+            
             var lateMill = (Molpy.lateness - 7200) / Molpy.mNPlength;
             Molpy.Add('BB',Math.floor(lateMill));
             Molpy.lateness = 7200;//don't ketchup up too much
