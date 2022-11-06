@@ -950,8 +950,17 @@
 
     Molpy.SafetyUnlock = function() {        
         if(Molpy.Boosts['Safety Hat'].unlocked && Molpy.Got('Safety Pumpkin') && !Molpy.Boosts['SG'].unlocked)
-            Molpy.UnlockBoost('SG');
-        else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
+            Molpy.UnlockBoost('Safety Rail');
+        
+        if(!Molpy.Boosts['Safety Hat'].unlocked){ 
+            if(Molpy.Got('SG')){
+                if(Molpy.Got('Safety Rail')){
+                    Molpy.EarnBadge('Safety Sticker');
+                }
+            }else{
+                Molpy.UnlockBoost('Safety Hat');
+            }
+        }
     }    
 
 	Molpy.UpgradeOldVersions = function(version) {

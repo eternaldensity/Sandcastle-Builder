@@ -3654,11 +3654,10 @@ Molpy.DefineBoosts = function() {
 		icon: 'temporalduplication',
 		group: 'chron',
 		className: 'alert',
-		IsEnabled: Molpy.BoostFuncs.BoolPowEnabled,
 		
 		desc: function(me) {
 			var tdf = Molpy.TDFactor(true) - 1;
-            if(! me.IsEnabled) {
+            if(! me.bought) {
                 return 'When this is active and you buy tools, you get bonus free tools!';
             }
 			return 'For ' + MolpifyCountdown(me.countdown) + ', when you buy tools, get '
@@ -13883,6 +13882,12 @@ Molpy.Coallate = function(){
 		classChange: function() { return Molpy.Boosts['Shork'].Has(1) && Molpy.Got('ASHF') ? 'action' : '' },
 		
 		defStuff: 1
+	});
+	new Molpy.Boost({
+		name: 'Safety Rail',
+		icon: 'safetyrail',
+		desc: 'It\'s a safe cyan colour and made of the hardest metal!',
+		price:{ Diamonds: '200' },
 	});
 
 // END OF BOOSTS, add new ones immediately before this comment
