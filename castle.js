@@ -22,11 +22,11 @@ jQuery.fn.canColorBorder = function() {
 };
 
 function ONGsnip(time) {
-	var new_time=moment(time.valueOf()-time.minutes()*60000-time.seconds()*1000-time.milliseconds())
+	var new_time=dayjs(time.valueOf()-time.minute()*60000-time.second()*1000-time.millisecond())
 	//had to do it that way to avoid DST weirdness
 
-	if(time.minutes() >= 30 && Math.abs(Molpy.newpixNumber) <= 240 && Molpy.currentStory == -1) {
-		new_time=moment(new_time.valueOf()+30*60000);
+	if(time.minute() >= 30 && Math.abs(Molpy.newpixNumber) <= 240 && Molpy.currentStory == -1) {
+		new_time=dayjs(new_time.valueOf()+30*60000);
 	} 
 	return new_time;
 }
@@ -55,9 +55,9 @@ Molpy.Up = function() {
 		Molpy.Life = 0; //number of gameticks that have passed
 		Molpy.fps = 30; //this is just for paint, not updates
 
-		Molpy.time = moment();
+		Molpy.time = dayjs();
 		Molpy.newpixNumber = 1; //to track which background to load, and other effects...
-		Molpy.ONGstart = ONGsnip(moment()); //contains the time of the previous ONG
+		Molpy.ONGstart = ONGsnip(dayjs()); //contains the time of the previous ONG
 		Molpy.NPlength = 1800; //seconds in current NewPix 
 		Molpy.mNPlength = 1800; //milliseconds in milliNewPix
 		Molpy.updateFactor = 1; //increase to update more often
@@ -1058,6 +1058,9 @@ Molpy.Up = function() {
 					buildN = Math.floor(buildN*Molpy.Papal('GlassCastle'));
 					Molpy.Boosts['TF'].digGlass(buildN);
 					this.totalGlassBuilt += buildN;
+                    if(!isFinite(this.currentActive)){
+                        this.totalCastlesBuilt = Infinity;
+                    }
 				} else {
 					buildN = Math.floor(buildN*Molpy.Papal('Castles'));
 					Molpy.Boosts['Castles'].build(buildN);
@@ -2874,7 +2877,7 @@ Molpy.Up = function() {
 				else
 					Molpy.Notify('Not Lucky!');
 			}
-			if(Molpy.Got('Soul Drain') && Molpy.Got('ShadwDrgn') && Math.random() >= .9) Molpy.Add('Bonemeal', 1);
+			if(Molpy.Got('Soul Drain') && Molpy.Got('ShadwDrgn') && Math.random() >= .8) Molpy.Add('Bonemeal', 1);
 
 			var twin = 0;
 			if(Molpy.Got('TDE') && Molpy.Got('GlassBlocks')) {
@@ -3089,7 +3092,7 @@ Molpy.Up = function() {
 
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
-		Molpy.startDate = parseInt(moment().valueOf()); //used for save
+		Molpy.startDate = parseInt(dayjs().valueOf()); //used for save
 
 		/*In which we announce that initialisation is complete
 		++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -3657,7 +3660,7 @@ Molpy.Up = function() {
 
 	Molpy.CheckONG = function() {
 		//if there's an ONG
-		Molpy.ONGelapsed = moment() - Molpy.ONGstart;
+		Molpy.ONGelapsed = dayjs() - Molpy.ONGstart;
 		if(Molpy.npbONG == 'mustard') {
 			Molpy.npbONG = (Molpy.ONGelapsed >= Molpy.CastleTools['NewPixBot'].ninjaTime);//whoops
 		}
@@ -3684,7 +3687,7 @@ Molpy.Up = function() {
 	Molpy.preloadedBeach = 0;
 	Molpy.CheckBeachClass = function() {
 		var stateClass = 'beachsafe';
-		Molpy.ONGelapsed = moment() - Molpy.ONGstart;
+		Molpy.ONGelapsed = dayjs() - Molpy.ONGstart;
 		if(!Molpy.ninjad) {
 			if(Molpy.npbONG)
 				stateClass = 'beachstreakextend';
@@ -3743,7 +3746,7 @@ Molpy.Up = function() {
 		
 		
 		Molpy.Boosts['Fractal Sandcastles'].power = 0;
-		Molpy.ONGstart = ONGsnip(moment());
+		Molpy.ONGstart = ONGsnip(dayjs());
 		Molpy.LogONG();
 		Molpy.Notify('ONG!', 0);
 
@@ -4050,11 +4053,30 @@ Molpy.Up = function() {
 			Molpy.BuildLootLists();
 		}
 		var t = Molpy.time;
-		Molpy.time = moment();
+		Molpy.time = dayjs();
 		Molpy.ketchupTime = 0;
 		Molpy.lateness += (Molpy.time - t);
-		Molpy.lateness = Math.min(Molpy.lateness, 7200);//don't ketchup up too much
-		while(Molpy.lateness > Molpy.mNPlength) {
+        if(Molpy.lateness > 7200){
+            if(Molpy.IsEnabled('PoG') && Molpy.Got('ASHF')){
+                var np = Math.floor(Molpy.lateness/1000/Molpy.NPlength);
+                if(np){
+                    Molpy.lateness -= (np * 1000 * Molpy.mNPlength); //avoid double shorking
+                    if(Molpy.Got('SoS')){
+                        np += 1;
+                    }                
+                    if(Molpy.Got('Blitzing') && Molpy.Got('LSoS')){
+                        np*=2;
+                    }
+                    Molpy.Add('Shork',np);
+                    Molpy.Notify('You have been blessed with the presence of '+ np +' Blåhaj' + plural(np,'ar') + '.', 0);
+                }
+            }
+            
+            var lateMill = (Molpy.lateness - 7200) / Molpy.mNPlength;
+            Molpy.Add('BB',Math.floor(lateMill));
+            Molpy.lateness = 7200;//don't ketchup up too much
+        }
+		while(Molpy.lateness >= Molpy.mNPlength) {
 			try {
 				Molpy.Anything = 1;
 				if(!Molpy.Stop) Molpy.Think();

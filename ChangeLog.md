@@ -1,5 +1,31 @@
 ## Changelog
 
+### 4.11 Length Required
+
+#### ED
+
+- Fixed Blåhaj crash on load
+- Amended Castle tool fix to only count infinite castles built if you have infinite NPB since the mustard doesn't happen otherwise
+- Added Baby Blåhaj which are extremely tiny.
+
+### 4.10 Gone
+
+#### ED
+
+- Panther Rush starting value was initialised wrong
+- Made Milo cheaper
+- DF unlock sooner
+- Castle Tools in infinite mode count building infinite castles so they don't get stuck on 0 eventually, which mustards JDip level (bug #1531)
+- Noticed some .js files were coming from CloudFlare.  Nope.
+- New Bag Prize
+- Added Blåhaj
+- There were three (3) billy goats gruff.
+- Changed time library from moment to dayjs.
+- Made GoatONG better.
+- Added some other shorky prize stuff and a new badge.
+- Buffed winning the game.
+- You just lost the game.
+
 ### 4.09 Conflict
 
 #### ED

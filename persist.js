@@ -95,7 +95,7 @@
 	}
 
 	Molpy.Flood = function() {
-		return moment.utc([13291, 4, 10, 0, 0, 0, 0]).format();
+		return dayjs.utc([13291, 4, 10, 0, 0, 0, 0]).format();
 	}
 
 	Molpy.Load = function() {
@@ -313,8 +313,9 @@
 		          + (Molpy.Redacted.chainCurrent) + s
 		          + (Molpy.Redacted.chainMax) + s
 		          + (Molpy.lootPerPage) + s
+		          + (Molpy.time.toDate().getTime()) + s
 		          + (Molpy.largestNPvisited[0]) + s;
-		          for(var i=0;i<Molpy.fracParts.length;i++){str=str+ (Molpy.largestNPvisited[Molpy.fracParts[i]]) + s}
+        for(var i=0;i<Molpy.fracParts.length;i++){str=str+ (Molpy.largestNPvisited[Molpy.fracParts[i]]) + s}
 		return str;
 	}
 
@@ -555,9 +556,14 @@
 			Molpy.Redacted.chainCurrent = parseFloat(pixels[13]) || 0;
 			Molpy.Redacted.chainMax = parseFloat(pixels[14]) || 0;
 			Molpy.lootPerPage = parseInt(pixels[15]) || 20;
-			Molpy.largestNPvisited[0] = (parseInt(pixels[16]) || parseFloat(pixels[16]))||Math.abs(Molpy.newpixNumber);
+            var e = 0;
+            if(version>=4.1){
+                Molpy.time=dayjs(parseInt(pixels[16]))
+                e=1;
+            }
+			Molpy.largestNPvisited[0] = (parseInt(pixels[16+e]) || parseFloat(pixels[16+e]))||Math.abs(Molpy.newpixNumber);
 			for(var i=0;i<Molpy.fracParts.length;i++){
-				Molpy.largestNPvisited[Molpy.fracParts[i]]=parseFloat(pixels[17+i])||0}
+				Molpy.largestNPvisited[Molpy.fracParts[i]]=parseFloat(pixels[17+e+i])||0}
 		}
 	};
 
@@ -907,9 +913,7 @@
 		if(version < Molpy.version) //hey let's do this every upgrade!
 		{
 			Molpy.Notify('Upgraded to new version! '+Molpy.version + '<br>'+ Molpy.versionName, 2);
-			if(Molpy.Boosts['Safety Hat'].unlocked && Molpy.Got('Safety Pumpkin') && !Molpy.Boosts['SG'].unlocked)
-				Molpy.UnlockBoost('SG');
-			else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
+            Molpy.SafetyUnlock();
 		}
 		for( var i in Molpy.Boosts) {
 			var me = Molpy.Boosts[i];
@@ -928,7 +932,8 @@
 		Molpy.MustardCheck();
 		Molpy.RefreshOptions();
 
-		Molpy.ONGstart = ONGsnip(moment()); //if you missed the ONG before loading, too bad!
+		Molpy.ONGstart = ONGsnip(dayjs()); //if you missed the ONG before loading, too bad!
+
 		g('clockface').className = Molpy.Boosts['Coma Molpy Style'].power ? 'hidden' : 'unhidden';
 		Molpy.HandlePeriods();
 		Molpy.UpdateBeach();
@@ -942,6 +947,12 @@
 		Molpy.UpdateFaves(1);
 		return 1;
 	}
+
+    Molpy.SafetyUnlock = function() {        
+        if(Molpy.Boosts['Safety Hat'].unlocked && Molpy.Got('Safety Pumpkin') && !Molpy.Boosts['SG'].unlocked)
+            Molpy.UnlockBoost('SG');
+        else if(!Molpy.Got('SG')) Molpy.UnlockBoost('Safety Hat');
+    }    
 
 	Molpy.UpgradeOldVersions = function(version) {
 		if(version < 2.1) {
@@ -1258,9 +1269,9 @@
 			Molpy.BoostsOwned = 0;
 			Molpy.notifsReceived = 0;
 
-			Molpy.startDate = parseInt(moment().valueOf());
+			Molpy.startDate = parseInt(dayjs().valueOf());
 			Molpy.newpixNumber = 1;
-			Molpy.ONGstart = ONGsnip(moment());
+			Molpy.ONGstart = ONGsnip(dayjs());
 			Molpy.DefaultOptions();
 
 			var keep = '';

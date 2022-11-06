@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=4.09;
-Molpy.versionName='Conflict'; // Appended to the numerical version on screen
+Molpy.version=4.11;
+Molpy.versionName='Length Required'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings

@@ -249,7 +249,7 @@ function MakeRedundancy()
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ '-like';},
 		function(){return make(redundancy.adjmodifier)+ ' ' +make(redundancy.creature,1)+ 'ish';}
 	]
-	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','diamond','ironic','golden','iron','chilled','delicious','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor','great','radioactive','glowing','speakable','unspeakable','helpful','inevitable','sudden','problematic','active','retroactive','futuristic','retro','old-fashioned','polite','upper-class','rough','pythonic','industrial','achronal'];
+	redundancy.adjectives=['redundant','redundant','redundant','redundant','real','other','wrong','former','old','new','incredible','reliable','solid', 'cute','angry','squashed','wet','dry','spotted','striped','blue','green','brown','red','white','black','yellow','blood-soaked','clear','dirty','clean','shiny','late','blitzing','tired','formal','wonderful','overbearing','tacky','dead','deconstructed','cybernetic','boring','flammable','rotten','friendly','treeish','seaish','zanclean','riverish','steambottlish','weird','wingish','molpish','mustardy','chirping','bogus','ninjad','extreme','amazing','quick','diamond','ironic','golden','iron','chilled','delicious','stubborn','interesting','dedicated','tall','short','important','fast','prolific','loud','metal','awesomeful','<b>bold</b>','bald','hairy','modern','major','minor','great','radioactive','glowing','speakable','unspeakable','helpful','inevitable','sudden','problematic','active','retroactive','futuristic','retro','old-fashioned','polite','upper-class','rough','pythonic','industrial','achronal', 'plush'];
 	
 	redundancy.adjmodifier=['very', 'somewhat','kinda','partly','not','nearly','almost','quite','not quite','almost but not quite entirely','entirely','fully','totally','a little bit','far too','incredibly','barely','most','least','hardly',
 		function(){return make(redundancy.adjective)+'ly';},
@@ -261,7 +261,7 @@ function MakeRedundancy()
 		function(noart){return (noart?'':'the ')+make(redundancy.creatures);},
 		function(noart){return (noart?'':'the ')+make(redundancy.adjectives)+' '+make(redundancy.creatures);}
 	];
-	redundancy.creatures=['molpy','molpy','molpy','redundakitty','kitty','badger','zombie','antelopey','badgermolp','bearraptor','beesnake','camolpy','centimolpy','chipmonpy','chirpy','chupamolpy','deerpy','dolphy','dragonflopy','ecolipy','facebug','flutterbee','foxmolpy','gatorraptor','geckolpy','guineamolp','hamply','kangamolp','keyboard','lizmolp','manapy','meowlpy','millimolpy','molpanzee','molpanda','molpbear','molpicoot','molephant','molmmoth','molmot','molpguin','molphish','molpidillo','molpouse','molpossum','molpy','molpybara','molpydile','molpyguana','molpymundi','molpysnake','moltise','monkeymolp','moopy','moosepy','murtle','neckpy','orcaraptor','owlpy','pricklymolp','quackmolpy','rabtor','raptor','raptorcat','raptorshark','ratpy','rhrinocerolpy','ribbit','sealpy','seawolpy','skunkpy','slothpy','sparrow-raptor','squirpy','viperraptor','trilobolpy','wallapy','waterottermolpy','wolpy','woolpy','wormolpy','zemolp'];
+	redundancy.creatures=['molpy','molpy','molpy','redundakitty','kitty','badger','zombie','antelopey','badgermolp','bearraptor','beesnake','camolpy','centimolpy','chipmonpy','chirpy','chupamolpy','deerpy','dolphy','dragonflopy','ecolipy','facebug','flutterbee','foxmolpy','gatorraptor','geckolpy','guineamolp','hamply','kangamolp','keyboard','lizmolp','manapy','meowlpy','millimolpy','molpanzee','molpanda','molpbear','molpicoot','molephant','molmmoth','molmot','molpguin','molphish','molpidillo','molpouse','molpossum','molpy','molpybara','molpydile','molpyguana','molpymundi','molpysnake','moltise','monkeymolp','moopy','moosepy','murtle','neckpy','orcaraptor','owlpy','pricklymolp','quackmolpy','rabtor','raptor','raptorcat','raptorshark','ratpy','rhrinocerolpy','ribbit','sealpy','seawolpy','skunkpy','slothpy','sparrow-raptor','squirpy','viperraptor','trilobolpy','wallapy','waterottermolpy','wolpy','woolpy','wormolpy','zemolp', 'shork', 'blåhaj'];
 	redundancy.character=[
 		function(noart){return make(redundancy.characters);},
 		function(noart){return make(redundancy.adjectives)+' '+make(redundancy.characters);}
@@ -423,6 +423,6 @@ function Wordify(words) {
 	});
 }
 
-function plural(n) {
-	return n == 1 ? '' : 's';
+function plural(n,p) {
+	return n == 1 ? '' : p||'s';
 }
