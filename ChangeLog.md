@@ -1,5 +1,13 @@
 ## Changelog
 
+### 4.12 Precondition Failed
+
+#### ED
+
+- Reworked safety a bit to have Safety Sticker and Safety Rail
+- Safety Rail costs 200 diamonds but I haven't figured out what it should do yet.  Ideas welcome!
+- Fixed Temporal Duplication description logic to actually show the countdown (and figured out how to test this!)
+
 ### 4.11 Length Required
 
 #### ED
@@ -7,6 +15,8 @@
 - Fixed Blåhaj crash on load
 - Amended Castle tool fix to only count infinite castles built if you have infinite NPB since the mustard doesn't happen otherwise
 - Added Baby Blåhaj which are extremely tiny.
+- Moved Blåhaj logic to the same function as Baby Blåhaj because they don't actually need to be split between two files.
+- As a bonus that means that if you're eligible to recieve Blåhaj you get one each time you would get a thousand Baby Blåhaj
 
 ### 4.10 Gone
 

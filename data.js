@@ -1,8 +1,8 @@
 'use strict';
 
 var Molpy={};
-Molpy.version=4.11;
-Molpy.versionName='Length Required'; // Appended to the numerical version on screen
+Molpy.version=4.12;
+Molpy.versionName='Precondition Failed'; // Appended to the numerical version on screen
 
 /**************************************************************
  * Game Strings

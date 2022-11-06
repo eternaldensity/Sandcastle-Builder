@@ -1205,6 +1205,11 @@ new Molpy.Badge({
 		desc: 'Oh, brilliant!',
 		vis: 1
 	});
+new Molpy.Badge({
+		name: 'Safety Sticker',
+		desc: 'Be extra safe from the threat of Safety Hats.',
+		vis: 1
+	});
 /**************************************************************
  * Discoveries
  * 
