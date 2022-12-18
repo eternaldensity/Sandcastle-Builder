@@ -8934,7 +8934,7 @@ Molpy.DefineBoosts = function() {
 	Molpy.GoatONG = function() {
         if(Molpy.Spend('Goats',10)){
             var s = 1;
-            if(Molpy.Has('SoS')){
+            if(Molpy.Got('SoS')){
                 s += 1;
             }
             if(Molpy.Papal('Goats') > 1){
@@ -8948,7 +8948,7 @@ Molpy.DefineBoosts = function() {
                     s*=2;
                 }
                 if(Molpy.Got('Time Lord') && Molpy.Got('Flux Surge') && Molpy.IsEnabled('PoG')){
-                    if(Molpy.Spend('Flux Crystals',1)){
+                    if(Molpy.Spend('FluxCrystals',1)){
                         s*=2;
                         Molpy.EarnBadge('Thirteenth');
                     }
