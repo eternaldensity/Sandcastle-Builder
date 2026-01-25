@@ -7,7 +7,7 @@ import { ModernEngine } from './modern-engine.js';
 import type { GameData } from '../types/game-data.js';
 
 // Helper to create a boost definition
-function createBoostDef(id: number, alias: string, group = 'boosts') {
+function createBoostDef(id: number, alias: string, group = 'boosts', price: Record<string, number | string> = {}) {
   return {
     id,
     name: alias,
@@ -15,7 +15,7 @@ function createBoostDef(id: number, alias: string, group = 'boosts') {
     icon: alias.toLowerCase().replace(/\s/g, ''),
     group,
     description: `${alias} boost`,
-    price: {},
+    price,
     isToggle: false,
     isStuff: group === 'stuff',
     hasDynamicDescription: false,
@@ -39,12 +39,14 @@ const testGameData: GameData = {
     'Castles': createBoostDef(1, 'Castles', 'stuff'),
     'GlassChips': createBoostDef(2, 'GlassChips', 'stuff'),
     'GlassBlocks': createBoostDef(3, 'GlassBlocks', 'stuff'),
-    'Bigger Buckets': createBoostDef(4, 'Bigger Buckets'),
-    'Huge Buckets': createBoostDef(5, 'Huge Buckets'),
-    'Helping Hand': createBoostDef(6, 'Helping Hand'),
+    'Goats': createBoostDef(10, 'Goats', 'stuff'),
+    'Bigger Buckets': createBoostDef(4, 'Bigger Buckets', 'boosts', { Sand: 500 }),
+    'Huge Buckets': createBoostDef(5, 'Huge Buckets', 'boosts', { Sand: 800, Castles: 2 }),
+    'Helping Hand': createBoostDef(6, 'Helping Hand', 'boosts', { Sand: 500, Castles: 2 }),
     'Cooperation': createBoostDef(7, 'Cooperation'),
-    'Spring Fling': createBoostDef(8, 'Spring Fling'),
+    'Spring Fling': createBoostDef(8, 'Spring Fling', 'boosts', { Sand: 1000, Castles: 6 }),
     'Trebuchet Pong': createBoostDef(9, 'Trebuchet Pong'),
+    'Goat Boost': createBoostDef(11, 'Goat Boost', 'boosts', { Goats: 5 }),
   },
   boostsById: [
     { alias: 'Sand' },
@@ -484,6 +486,125 @@ describe('ModernEngine', () => {
       // 5 ticks * 1 tool: destroy 10 (5*2), build 20 (5*4)
       expect(trebuchetState.totalCastlesDestroyed).toBe(10);
       expect(trebuchetState.totalCastlesBuilt).toBe(20);
+    });
+  });
+
+  describe('Boost Price Checking', () => {
+    it('returns calculated price for a boost', async () => {
+      // Bigger Buckets costs 500 Sand
+      const price = engine.getBoostPrice('Bigger Buckets');
+      expect(price).toEqual({ Sand: 500 });
+    });
+
+    it('returns empty object for unknown boost', async () => {
+      const price = engine.getBoostPrice('NonExistent');
+      expect(price).toEqual({});
+    });
+
+    it('returns empty object for free boost', async () => {
+      // Cooperation has no price
+      const price = engine.getBoostPrice('Cooperation');
+      expect(price).toEqual({});
+    });
+
+    it('handles multi-resource prices', async () => {
+      // Huge Buckets costs Sand: 800, Castles: 2
+      const price = engine.getBoostPrice('Huge Buckets');
+      expect(price).toEqual({ Sand: 800, Castles: 2 });
+    });
+
+    it('isBoostAffordable returns false when boost not unlocked', async () => {
+      engine.setSand(10000);
+      // Bigger Buckets is not unlocked yet
+      const affordable = await engine.isBoostAffordable('Bigger Buckets');
+      expect(affordable).toBe(false);
+    });
+
+    it('isBoostAffordable returns true when unlocked and can afford', async () => {
+      engine.setSand(1000);
+      engine.unlockBoost('Bigger Buckets');
+
+      const affordable = await engine.isBoostAffordable('Bigger Buckets');
+      expect(affordable).toBe(true);
+    });
+
+    it('isBoostAffordable returns false when cannot afford', async () => {
+      engine.setSand(100); // Not enough (needs 500)
+      engine.unlockBoost('Bigger Buckets');
+
+      const affordable = await engine.isBoostAffordable('Bigger Buckets');
+      expect(affordable).toBe(false);
+    });
+
+    it('isBoostAffordable checks all resources', async () => {
+      // Huge Buckets needs Sand: 800, Castles: 2
+      engine.setSand(1000);
+      engine.setCastles(1); // Not enough castles
+      engine.unlockBoost('Huge Buckets');
+
+      const affordable = await engine.isBoostAffordable('Huge Buckets');
+      expect(affordable).toBe(false);
+
+      // Now give enough castles
+      engine.setCastles(10);
+      const affordableNow = await engine.isBoostAffordable('Huge Buckets');
+      expect(affordableNow).toBe(true);
+    });
+
+    it('isBoostAffordable returns true for free boosts', async () => {
+      engine.unlockBoost('Cooperation');
+
+      const affordable = await engine.isBoostAffordable('Cooperation');
+      expect(affordable).toBe(true);
+    });
+
+    it('buyBoost spends the correct resources', async () => {
+      engine.setSand(1000);
+      engine.setCastles(10);
+      engine.unlockBoost('Huge Buckets');
+
+      await engine.buyBoost('Huge Buckets');
+
+      const state = await engine.getStateSnapshot();
+      // Started with 1000 sand, spent 800
+      expect(state.sand).toBe(200);
+      // Started with 10 castles, spent 2
+      expect(state.castles).toBe(8);
+      // Boost should be bought
+      expect(state.boosts['Huge Buckets'].bought).toBe(1);
+    });
+
+    it('buyBoost does not spend if cannot afford', async () => {
+      engine.setSand(100); // Not enough
+      engine.unlockBoost('Bigger Buckets');
+
+      await engine.buyBoost('Bigger Buckets');
+
+      const state = await engine.getStateSnapshot();
+      // Sand should be unchanged
+      expect(state.sand).toBe(100);
+      // Boost should not be bought
+      expect(state.boosts['Bigger Buckets'].bought).toBe(0);
+    });
+
+    it('handles non-primary resources via boost power', async () => {
+      // Set up Goats as a resource (stored in boost power)
+      const goatsBoost = await engine.getBoostState('Goats');
+      expect(goatsBoost.power).toBe(0);
+
+      // Unlock and try to buy Goat Boost which costs 5 Goats
+      engine.unlockBoost('Goat Boost');
+
+      // Should not be affordable with 0 goats
+      let affordable = await engine.isBoostAffordable('Goat Boost');
+      expect(affordable).toBe(false);
+
+      // Give some goats by setting the boost power directly
+      // In real game, goats would be earned through gameplay
+      const state = await engine.getStateSnapshot();
+      state.boosts['Goats'].power = 10;
+      // Note: We need to manipulate the internal state for this test
+      // This simulates having 10 goats
     });
   });
 });

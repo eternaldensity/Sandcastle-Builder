@@ -800,8 +800,51 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Check if a boost is affordable at its current price.
+   * Reference: castle.js:1522-1528 (Boost.isAffordable)
+   *
+   * @param alias - Boost alias to check
+   * @returns True if the boost can be purchased
+   */
+  async isBoostAffordable(alias: string): Promise<boolean> {
+    this.ensureInitialized();
+
+    const state = this.boosts.get(alias);
+    const def = this.gameData.boosts[alias];
+
+    if (!state || !def) return false;
+
+    // Must be unlocked but not yet bought
+    if (state.unlocked <= state.bought) return false;
+
+    // Calculate price with priceFactor applied
+    const realPrice = calculateBoostPrice(def.price, this.priceFactor);
+
+    // Free boosts are always affordable
+    if (isPriceFree(realPrice)) return true;
+
+    // Check if we can afford the price
+    return this.canAffordPrice(realPrice);
+  }
+
+  /**
+   * Get the calculated price for a boost (after priceFactor).
+   * Reference: castle.js:1531-1542 (Boost.CalcPrice)
+   *
+   * @param alias - Boost alias
+   * @returns Calculated price object, or empty if boost not found
+   */
+  getBoostPrice(alias: string): Record<string, number> {
+    const def = this.gameData.boosts[alias];
+    if (!def) return {};
+
+    return calculateBoostPrice(def.price, this.priceFactor);
+  }
+
+  /**
    * Buy/unlock a boost.
    * Applies priceFactor to boost price and checks affordability.
+   * Reference: castle.js:1499-1520 (Boost.buy)
    */
   async buyBoost(alias: string): Promise<void> {
     this.ensureInitialized();
@@ -835,11 +878,11 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Check if player can afford a price.
+   * Reference: castle.js:1284-1293 (Molpy.Has with object)
    */
   private canAffordPrice(price: Record<string, number>): boolean {
     for (const [resource, amount] of Object.entries(price)) {
-      const current = this.getResourceAmount(resource);
-      if (current < amount) {
+      if (!this.hasResource(resource, amount)) {
         return false;
       }
     }
@@ -848,6 +891,7 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Spend resources for a price.
+   * Reference: castle.js:1300-1313 (Molpy.Spend with object)
    */
   private spendPrice(price: Record<string, number>): void {
     for (const [resource, amount] of Object.entries(price)) {
@@ -858,34 +902,84 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Get current amount of a resource.
+   * In legacy, all resources are boosts where power = amount.
+   * Reference: castle.js:1291-1292 (Molpy.Has delegates to boost.Has)
    */
   private getResourceAmount(resource: string): number {
+    // Primary resources have dedicated fields for performance
     switch (resource) {
       case 'Sand': return this.resources.sand;
       case 'Castles': return this.resources.castles;
       case 'GlassChips': return this.resources.glassChips;
       case 'GlassBlocks': return this.resources.glassBlocks;
-      default: return 0;
     }
+
+    // All other resources are stored as boost power
+    const boost = this.boosts.get(resource);
+    return boost?.power ?? 0;
+  }
+
+  /**
+   * Check if player has at least the specified amount of a resource.
+   * Reference: castle.js:1284-1293 (Molpy.Has)
+   */
+  private hasResource(resource: string, amount: number): boolean {
+    return this.getResourceAmount(resource) >= amount;
   }
 
   /**
    * Subtract from a resource.
+   * Reference: castle.js:1300-1313 (Molpy.Spend)
    */
   private subtractResource(resource: string, amount: number): void {
+    // Primary resources have dedicated fields
     switch (resource) {
       case 'Sand':
         this.resources.sand -= amount;
-        break;
+        return;
       case 'Castles':
         this.resources.castles -= amount;
-        break;
+        return;
       case 'GlassChips':
         this.resources.glassChips -= amount;
-        break;
+        return;
       case 'GlassBlocks':
         this.resources.glassBlocks -= amount;
-        break;
+        return;
+    }
+
+    // All other resources are stored as boost power
+    const boost = this.boosts.get(resource);
+    if (boost) {
+      boost.power = Math.max(0, boost.power - amount);
+    }
+  }
+
+  /**
+   * Add to a resource.
+   * Reference: castle.js:1295-1298 (Molpy.Add)
+   */
+  private addResource(resource: string, amount: number): void {
+    // Primary resources have dedicated fields
+    switch (resource) {
+      case 'Sand':
+        this.resources.sand += amount;
+        return;
+      case 'Castles':
+        this.resources.castles += amount;
+        return;
+      case 'GlassChips':
+        this.resources.glassChips += amount;
+        return;
+      case 'GlassBlocks':
+        this.resources.glassBlocks += amount;
+        return;
+    }
+
+    // All other resources are stored as boost power
+    const boost = this.boosts.get(resource);
+    if (boost) {
+      boost.power += amount;
     }
   }
 

@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Changed
+- Implement boost price checking (#22)
 - Implement castle rate calculation (#23)
 - Add parity tests for price calculations (#30)
 - Implement boost price calculation with priceFactor (#29)

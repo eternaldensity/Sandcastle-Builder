@@ -9,22 +9,43 @@
 // Resource Types
 // =============================================================================
 
-/** Currency/resource identifiers used in prices and costs */
+/**
+ * Currency/resource identifiers used in prices and costs.
+ * In the legacy game, all resources are stored as boosts where power = amount.
+ * Reference: castle.js:1284-1293 (Molpy.Has checks boost.Has)
+ */
 export type ResourceId =
+  // Primary resources
   | 'Sand'
   | 'Castles'
   | 'GlassChips'
   | 'GlassBlocks'
+  // Glass-related
+  | 'TF'           // Temporal Flux (glass)
+  | 'Shards'
+  | 'Panes'
+  // Secondary resources
   | 'Goats'
   | 'Bonemeal'
   | 'Mustard'
   | 'FluxCrystals'
   | 'Logicat'
+  | 'LogiPuzzle'
   | 'Blackprints'
   | 'Vacuum'
   | 'QQ'
   | 'Diamonds'
-  | 'Maps';
+  | 'Maps'
+  | 'Coal'
+  | 'Princesses'
+  | 'Shork'
+  | 'exp'
+  // Color resources (used by some boosts)
+  | 'Blackness'
+  | 'Whiteness'
+  | 'Grayness'
+  | 'Blueness'
+  | 'Otherness';
 
 /** Price specification - can be number or string like "1.5M" */
 export type PriceValue = number | string;
