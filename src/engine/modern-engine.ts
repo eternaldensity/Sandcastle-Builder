@@ -12,9 +12,10 @@
  * See docs/architecture/parity-testing.md for the approach.
  */
 
-import type { BoostState, ToolState, GameData } from '../types/game-data.js';
+import type { BoostState, ToolState, GameData, NPData } from '../types/game-data.js';
 import type { GameEngine, GameStateSnapshot, TestAction } from '../parity/game-engine.js';
 import { SaveParser, createSaveParser } from './save-parser.js';
+import { SaveSerializer, createSaveSerializer, type SaveState, type CoreGameState } from './save-serializer.js';
 import { UnlockChecker, type UnlockCheckState } from './unlock-checker.js';
 import {
   calculateSandToolPurchasePrice,
@@ -137,6 +138,7 @@ interface CastleToolPriceCache {
 export class ModernEngine implements GameEngine {
   private gameData: GameData;
   private saveParser: SaveParser;
+  private saveSerializer: SaveSerializer;
   private initialized = false;
 
   // Core state
@@ -202,6 +204,7 @@ export class ModernEngine implements GameEngine {
   constructor(gameData: GameData) {
     this.gameData = gameData;
     this.saveParser = createSaveParser(gameData);
+    this.saveSerializer = createSaveSerializer(gameData);
     this.unlockChecker = new UnlockChecker(allUnlockRules);
   }
 
@@ -363,47 +366,92 @@ export class ModernEngine implements GameEngine {
   /**
    * Export current game state to a serialized save string.
    * Note: This produces raw format, not base64 encoded.
+   * Reference: persist.js ToNeedlePulledThing
    */
   async exportState(): Promise<string> {
     this.ensureInitialized();
 
-    // Full serialization deferred (issue #18) - basic format for testing
-    const sections: string[] = [];
+    // Build core game state for serialization
+    const coreState: CoreGameState = {
+      version: this.core.version,
+      startDate: this.core.startDate,
+      newpixNumber: this.core.newpixNumber,
+      beachClicks: this.core.beachClicks,
+      ninjaFreeCount: this.core.ninjaFreeCount,
+      ninjaStealth: this.core.ninjaStealth,
+      ninjad: this.core.ninjad,
+      saveCount: this.core.saveCount,
+      loadCount: this.core.loadCount,
+      notifsReceived: 0,
+      npbONG: this.ong.npbONG,
+      lootPerPage: 20,
+      largestNPvisited: { 0: this.core.highestNPvisited },
+      redacted: {
+        countup: 0,
+        toggle: 0,
+        location: 0,
+        totalClicks: 0,
+        chainCurrent: 0,
+        chainMax: 0,
+      },
+    };
 
-    // Section 0: version
-    sections.push(String(this.core.version));
+    // Convert sand tools map to record
+    const sandToolsRecord: Record<string, ToolState> = {};
+    for (const [name, state] of this.sandTools) {
+      sandToolsRecord[name] = {
+        amount: state.amount,
+        bought: state.bought,
+        temp: state.temp,
+        totalSand: state.totalSand,
+        totalGlass: state.totalGlass,
+      };
+    }
 
-    // Section 1: empty
-    sections.push('');
+    // Convert castle tools map to record
+    const castleToolsRecord: Record<string, ToolState> = {};
+    for (const [name, state] of this.castleTools) {
+      castleToolsRecord[name] = {
+        amount: state.amount,
+        bought: state.bought,
+        temp: state.temp,
+        totalCastlesBuilt: state.totalCastlesBuilt,
+        totalCastlesDestroyed: state.totalCastlesDestroyed,
+        totalCastlesWasted: state.totalCastlesWasted,
+        currentActive: state.currentActive,
+        totalGlassBuilt: state.totalGlassBuilt,
+        totalGlassDestroyed: state.totalGlassDestroyed,
+      };
+    }
 
-    // Section 2: startDate
-    sections.push(String(this.core.startDate));
+    // Convert boosts map to record
+    const boostsRecord: Record<string, BoostState> = {};
+    for (const [alias, state] of this.boosts) {
+      boostsRecord[alias] = {
+        unlocked: state.unlocked,
+        bought: state.bought,
+        power: state.power,
+        countdown: state.countdown,
+      };
+    }
 
-    // Section 3: options (empty for now)
-    sections.push('');
+    // Convert badges map to record
+    const badgesRecord: Record<string, boolean> = {};
+    for (const [name, earned] of this.badges) {
+      badgesRecord[name] = earned;
+    }
 
-    // Section 4: gamenums
-    const gamenums = [
-      this.core.newpixNumber,
-      this.core.beachClicks,
-      this.core.ninjaFreeCount,
-      this.core.ninjaStealth,
-      this.core.ninjad ? 1 : 0,
-      this.core.saveCount,
-      this.core.loadCount,
-    ].join('S');
-    sections.push(gamenums);
+    // Build save state
+    const saveState: SaveState = {
+      core: coreState,
+      sandTools: sandToolsRecord,
+      castleTools: castleToolsRecord,
+      boosts: boostsRecord,
+      badges: badgesRecord,
+      npData: {},
+    };
 
-    // Sections 5-11: tools, boosts, badges, etc. (simplified)
-    sections.push(''); // sandTools
-    sections.push(''); // castleTools
-    sections.push(''); // boosts
-    sections.push(''); // badges
-    sections.push(''); // unused
-    sections.push(''); // otherBadges
-    sections.push(''); // npdata
-
-    return sections.join('P');
+    return this.saveSerializer.serialize(saveState);
   }
 
   /**

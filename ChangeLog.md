@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Changed
+- Implement full save serialization in ModernEngine (#18)
 - Implement castle tool processing in tick loop (#19)
 - Implement ONG logic (ninja checks, rewards) (#20)
 - Add ONG parity tests (#36)
