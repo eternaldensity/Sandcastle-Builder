@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Changed
+- Implement castle tool processing in tick loop (#19)
 - Implement ONG logic (ninja checks, rewards) (#20)
 - Add ONG parity tests (#36)
 - Implement ONGs[0] newpix number advancement (#35)

@@ -488,14 +488,18 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Process a single game tick.
-   * Reference: castle.js:3661-3686 (Molpy.CheckONG)
+   * Reference: castle.js:3338-3460 (Molpy.Think)
    *
-   * Each tick represents ~1 second of game time.
+   * Each tick represents ~1 mNP (milliNewPix) of game time.
    * Handles:
-   * - Sand production from tools
-   * - Castle tool cycles
+   * - Sand production from sand tools
+   * - Sand to castle conversion (Fibonacci sequence)
    * - ONG elapsed time tracking
    * - npbONG window detection
+   *
+   * IMPORTANT: Castle tools do NOT produce during regular ticks!
+   * Castle tools only run DestroyPhase/BuildPhase at ONG transitions.
+   * See castle.js:3768-3787 for the ONG-only castle tool processing.
    */
   private processTick(): void {
     // Update ONG elapsed time (1 tick = ~1000ms)
@@ -519,7 +523,8 @@ export class ModernEngine implements GameEngine {
       // For testing, we let advanceToONG() be called explicitly
     }
 
-    // Calculate sand production from tools
+    // Calculate sand production from sand tools
+    // Reference: castle.js:3395-3401
     let sandProduced = 0;
     for (const [name, state] of this.sandTools) {
       if (state.amount > 0) {
@@ -532,69 +537,16 @@ export class ModernEngine implements GameEngine {
     // Add sand to resources
     this.resources.sand += sandProduced;
 
-    // Process castle tools (destroy phase then build phase)
-    this.processCastleTools();
+    // Auto-convert sand to castles (matches legacy Molpy.Boosts['Sand'].toCastles())
+    // Reference: castle.js:3340
+    this.toCastles();
+
+    // NOTE: Castle tools do NOT produce during ticks - only at ONG!
+    // The legacy game calls DestroyPhase/BuildPhase only in ONGBase.
 
     this.syncResourceBoosts();
   }
 
-  /**
-   * Process castle tools: destroy phase followed by build phase.
-   * Reference: castle.js:3768-3787
-   *
-   * Castle tools work by:
-   * 1. DestroyPhase: Spend castles to activate tools
-   * 2. BuildPhase: Active tools produce castles
-   *
-   * Note: NewPixBot is special - it only builds at ONG, not during ticks.
-   */
-  private processCastleTools(): void {
-    // Skip if no castles to work with
-    if (this.resources.castles <= 0) {
-      return;
-    }
-
-    // Process each castle tool (except NewPixBot which only works at ONG)
-    for (const [name, state] of this.castleTools) {
-      if (name === 'NewPixBot' || state.amount <= 0) {
-        continue;
-      }
-
-      const rates = CASTLE_TOOL_RATES[name];
-      if (!rates) {
-        continue;
-      }
-
-      // Get effective destroy/build rates (base values for now, boost modifiers later)
-      const destroyCost = rates.baseDestroyC;
-      const buildRate = rates.baseBuildC;
-
-      // DestroyPhase: Calculate how many tools can be activated
-      const activatable = calculateActivatableTools(
-        state.amount,
-        destroyCost,
-        this.resources.castles
-      );
-
-      if (activatable <= 0) {
-        continue;
-      }
-
-      // Spend castles to activate tools
-      const destroyed = activatable * destroyCost;
-      this.resources.castles -= destroyed;
-      state.totalCastlesDestroyed += destroyed;
-      state.currentActive = activatable;
-
-      // BuildPhase: Active tools produce castles
-      const built = calculateCastleProduction(activatable, buildRate);
-      this.resources.castles += built;
-      state.totalCastlesBuilt += built;
-
-      // Reset currentActive after build phase
-      state.currentActive = 0;
-    }
-  }
 
   /**
    * Calculate sand production rate for a tool.
@@ -1733,8 +1685,12 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
-   * Get the current castle production rate per tick.
+   * Get the theoretical castle production rate per ONG.
    * This is the NET rate (built - destroyed) assuming all tools can be activated.
+   *
+   * IMPORTANT: Castle tools do NOT produce during regular ticks!
+   * They only run DestroyPhase/BuildPhase at ONG (newpix transitions).
+   * This method returns the theoretical per-ONG production rate.
    *
    * Note: Actual production depends on having enough castles to activate tools.
    */

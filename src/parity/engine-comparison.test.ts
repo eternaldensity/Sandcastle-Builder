@@ -418,17 +418,23 @@ describe('Engine Comparison', () => {
       await modernEngine.tick(1);
       const afterTick = await modernEngine.getStateSnapshot();
 
-      const sandProduced = afterTick.sand - beforeTick.sand;
+      // Sand is produced AND auto-converted to castles in same tick
+      // Reference: castle.js:3340 - Molpy.Boosts['Sand'].toCastles() is called in Think()
+      const sandProduced = (afterTick.sandTools['Bucket']?.totalSand ?? 0) - (beforeTick.sandTools['Bucket']?.totalSand ?? 0);
+      const castlesGained = afterTick.castles - beforeTick.castles;
 
       console.log('\n=== Tick With 10 Buckets ===');
-      console.log(`Sand before: ${beforeTick.sand}`);
-      console.log(`Sand after: ${afterTick.sand}`);
-      console.log(`Sand produced per tick: ${sandProduced}`);
+      console.log(`Sand produced (tracked by tool): ${sandProduced}`);
+      console.log(`Castles before: ${beforeTick.castles}`);
+      console.log(`Castles after: ${afterTick.castles}`);
+      console.log(`Net castle gain: ${castlesGained}`);
 
       await modernEngine.dispose();
 
       // 10 buckets * 0.1 base rate = 1 sand per tick
+      // Sand is immediately converted to castles (first castle costs 1 sand)
       expect(sandProduced).toBe(1);
+      expect(castlesGained).toBe(1);
     });
   });
 
