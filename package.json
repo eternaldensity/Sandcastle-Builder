@@ -7,7 +7,11 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:parity": "vitest run --reporter=verbose src/parity/",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -24,5 +28,11 @@
   "dependencies": {
     "cheerio": "^1.2.0",
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "playwright": "^1.58.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }

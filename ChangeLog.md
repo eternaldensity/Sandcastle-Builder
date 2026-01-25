@@ -1,5 +1,8 @@
 ## Changelog
 
+### Changed
+- Build automated parity testing framework (#11)
+
 ### Added
 - Analyze legacy codebase for modernization overhaul (#1)
 
