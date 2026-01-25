@@ -1,5 +1,8 @@
 ## Changelog
 
+### Added
+- Analyze legacy codebase for modernization overhaul (#1)
+
 ### 4.12 Precondition Failed
 
 #### ED
