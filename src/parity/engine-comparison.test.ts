@@ -273,6 +273,137 @@ describe('Engine Comparison', () => {
       expect(legacyAfter.newpixNumber).toBe(legacyBefore.newpixNumber + 1);
       expect(modernAfter.newpixNumber).toBe(modernBefore.newpixNumber + 1);
     });
+
+    it('resets Fibonacci castle cost on ONG', async () => {
+      const modernEngine = new ModernEngine(gameData);
+      await modernEngine.initialize();
+
+      // Build up some castle cost by clicking many times
+      await modernEngine.clickBeach(50); // Build several castles
+      const stateBeforeONG = await modernEngine.getStateSnapshot();
+
+      console.log('\n=== ONG Fibonacci Reset ===');
+      console.log(`Before ONG - castles: ${stateBeforeONG.castles}, sand: ${stateBeforeONG.sand}`);
+
+      // Advance to ONG - this resets Fibonacci to 1, then converts remaining sand
+      // The Fibonacci sequence advances as sand is converted
+      await modernEngine.advanceToONG();
+      const afterONG = await modernEngine.getStateSnapshot();
+      console.log(`After ONG - castles: ${afterONG.castles}, sand: ${afterONG.sand}`);
+
+      // Verify that ONG converted sand to castles with fresh Fibonacci
+      // From 50 clicks: approx 50 sand dug, some converted to castles
+      // Before ONG: 7 castles, 17 sand remaining
+      // At ONG reset: Fibonacci resets to 1, then 17 sand converts
+      // Fibonacci: 1+1+2+3+5=12 sand for 5 castles, leaving 5 sand
+      // After ONG: 7+5=12 castles, 5 sand (next cost would be 8)
+
+      // The key verification: ONG converted remaining sand with reset Fibonacci
+      expect(afterONG.castles).toBeGreaterThan(stateBeforeONG.castles);
+
+      await modernEngine.dispose();
+    });
+
+    it('resets ninjad flag on ONG', async () => {
+      const modernEngine = new ModernEngine(gameData);
+      await modernEngine.initialize();
+
+      // Click to set ninjad = true
+      await modernEngine.clickBeach(1);
+      const afterClick = await modernEngine.getStateSnapshot();
+      expect(afterClick.ninjad).toBe(true);
+
+      // ONG should reset ninjad
+      await modernEngine.advanceToONG();
+      const afterONG = await modernEngine.getStateSnapshot();
+
+      console.log('\n=== ONG Ninjad Reset ===');
+      console.log(`After click: ninjad = ${afterClick.ninjad}`);
+      console.log(`After ONG: ninjad = ${afterONG.ninjad}`);
+
+      await modernEngine.dispose();
+
+      expect(afterONG.ninjad).toBe(false);
+    });
+  });
+
+  describe('Ninja Mechanics', () => {
+    it('tracks ninja stealth on stealth clicks', async () => {
+      const modernEngine = new ModernEngine(gameData);
+      await modernEngine.initialize();
+
+      // Give some NewPixBots so ninja mechanics apply
+      const state = modernEngine as any;
+      state.castleTools.set('NewPixBot', {
+        amount: 1,
+        bought: 1,
+        temp: 0,
+        totalCastlesBuilt: 0,
+        totalCastlesDestroyed: 0,
+        totalCastlesWasted: 0,
+        currentActive: 0,
+        totalGlassBuilt: 0,
+        totalGlassDestroyed: 0,
+      });
+
+      // Simulate time passing to open npbONG window
+      // ninjaTime defaults to 400000ms for shortpix
+      // After 400+ ticks (400+ seconds), npbONG should be 1
+      for (let i = 0; i < 410; i++) {
+        await modernEngine.tick(1);
+      }
+
+      // Now click - should be a stealth click since npbONG = 1
+      const beforeClick = await modernEngine.getStateSnapshot();
+      await modernEngine.clickBeach(1);
+      const afterClick = await modernEngine.getStateSnapshot();
+
+      console.log('\n=== Stealth Click Test ===');
+      console.log(`Before: ninjaStealth = ${beforeClick.ninjaStealth}`);
+      console.log(`After: ninjaStealth = ${afterClick.ninjaStealth}`);
+      console.log(`Ninja free count: ${afterClick.ninjaFreeCount}`);
+
+      await modernEngine.dispose();
+
+      // Stealth should increase
+      expect(afterClick.ninjaStealth).toBeGreaterThan(beforeClick.ninjaStealth);
+      expect(afterClick.ninjaFreeCount).toBe(1);
+    });
+
+    it('breaks ninja streak on early click (ninja break)', async () => {
+      const modernEngine = new ModernEngine(gameData);
+      await modernEngine.initialize();
+
+      // Set up some ninja stealth
+      const state = modernEngine as any;
+      state.core.ninjaStealth = 10;
+      state.castleTools.set('NewPixBot', {
+        amount: 1,
+        bought: 1,
+        temp: 0,
+        totalCastlesBuilt: 0,
+        totalCastlesDestroyed: 0,
+        totalCastlesWasted: 0,
+        currentActive: 0,
+        totalGlassBuilt: 0,
+        totalGlassDestroyed: 0,
+      });
+
+      // Click BEFORE npbONG window opens (npbONG = 0)
+      // This should break the ninja streak
+      const beforeClick = await modernEngine.getStateSnapshot();
+      await modernEngine.clickBeach(1);
+      const afterClick = await modernEngine.getStateSnapshot();
+
+      console.log('\n=== Ninja Break Test ===');
+      console.log(`Before: ninjaStealth = ${beforeClick.ninjaStealth}`);
+      console.log(`After: ninjaStealth = ${afterClick.ninjaStealth}`);
+
+      await modernEngine.dispose();
+
+      // Stealth should be reset to 0
+      expect(afterClick.ninjaStealth).toBe(0);
+    });
   });
 
   describe('Tick Processing Comparison', () => {

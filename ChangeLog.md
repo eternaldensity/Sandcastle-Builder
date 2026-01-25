@@ -1,6 +1,13 @@
 ## Changelog
 
 ### Changed
+- Implement ONG logic (ninja checks, rewards) (#20)
+- Add ONG parity tests (#36)
+- Implement ONGs[0] newpix number advancement (#35)
+- Implement ONGBase (castle tool cycles, Fibonacci reset, boosts) (#34)
+- Implement StealthClick with ninja stealth accumulation (#33)
+- Implement NinjaUnstealth logic with forgiveness boosts (#32)
+- Implement ONG state machine (npbONG, ninjad, ninjaTime) (#31)
 - Implement boost price checking (#22)
 - Implement castle rate calculation (#23)
 - Add parity tests for price calculations (#30)

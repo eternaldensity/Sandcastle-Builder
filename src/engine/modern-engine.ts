@@ -72,12 +72,37 @@ interface CoreState {
   version: number;
   startDate: number;
   newpixNumber: number;
+  highestNPvisited: number;
   beachClicks: number;
   ninjaFreeCount: number;
   ninjaStealth: number;
   ninjad: boolean;
   saveCount: number;
   loadCount: number;
+}
+
+/**
+ * ONG (newpix transition) state machine
+ *
+ * State transitions:
+ * - At ONG start: npbONG = 0, ninjad reset to false
+ * - When ONGelapsed >= ninjaTime: npbONG = 1, NPBs activate
+ * - On first click: ninjad = true
+ *   - If npbONG = 1: StealthClick (good)
+ *   - If npbONG = 0: NinjaUnstealth (bad, breaks streak)
+ * - At next ONG: cycle repeats
+ */
+interface ONGState {
+  /** Time (ms) since current newpix started */
+  elapsed: number;
+  /** Start timestamp of current newpix */
+  startTime: number;
+  /** NewPixBot ONG state: 0 = pre-ninja window, 1 = ninja window open */
+  npbONG: 0 | 1;
+  /** NewPix length in seconds (1800 for shortpix, 3600 for longpix) */
+  npLength: number;
+  /** Calculated ninja time in milliseconds */
+  ninjaTime: number;
 }
 
 /**
@@ -119,12 +144,22 @@ export class ModernEngine implements GameEngine {
     version: 4.12,
     startDate: 0,
     newpixNumber: 1,
+    highestNPvisited: 1,
     beachClicks: 0,
     ninjaFreeCount: 0,
     ninjaStealth: 0,
     ninjad: false,
     saveCount: 0,
     loadCount: 0,
+  };
+
+  // ONG state machine
+  private ong: ONGState = {
+    elapsed: 0,
+    startTime: 0,
+    npbONG: 0,
+    npLength: 1800,
+    ninjaTime: 400000, // 400 mNP * 1000 for shortpix default
   };
 
   // Resources
@@ -453,8 +488,37 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Process a single game tick.
+   * Reference: castle.js:3661-3686 (Molpy.CheckONG)
+   *
+   * Each tick represents ~1 second of game time.
+   * Handles:
+   * - Sand production from tools
+   * - Castle tool cycles
+   * - ONG elapsed time tracking
+   * - npbONG window detection
    */
   private processTick(): void {
+    // Update ONG elapsed time (1 tick = ~1000ms)
+    this.ong.elapsed += 1000;
+
+    // Check if npbONG window should open
+    // Reference: castle.js:3675-3684
+    if (this.ong.npbONG === 0 && !this.core.ninjad) {
+      if (this.ong.elapsed >= this.ong.ninjaTime) {
+        this.ong.npbONG = 1;
+        // Activate NewPixBots if we're past NP 1
+        if (Math.abs(this.core.newpixNumber) > 1) {
+          this.activateNewPixBots();
+        }
+      }
+    }
+
+    // Check if ONG should trigger (end of newpix)
+    if (this.ong.elapsed >= this.ong.npLength * 1000) {
+      // Auto-ONG would happen here in real game
+      // For testing, we let advanceToONG() be called explicitly
+    }
+
     // Calculate sand production from tools
     let sandProduced = 0;
     for (const [name, state] of this.sandTools) {
@@ -623,11 +687,580 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Advance time to trigger an ONG (newpix transition).
+   * Reference: castle.js:3722-3736 (Molpy.ONG) and castle.js:3738-3885 (Molpy.ONGBase)
+   *
+   * ONG sequence:
+   * 1. ONGBase - core state reset and castle tool cycling
+   * 2. ONGs[0] - newpix number advancement (story-specific variants exist)
+   * 3. UpdateBeach, HandlePeriods
    */
   async advanceToONG(): Promise<void> {
     this.ensureInitialized();
-    this.core.newpixNumber++;
-    // Full ONG logic deferred (issue #20)
+    this.ongBase();
+    this.ongAdvanceNewpix();
+    this.handlePeriods();
+  }
+
+  /**
+   * ONGBase - Core ONG processing.
+   * Reference: castle.js:3738-3885
+   *
+   * Handles:
+   * - Boost resets (LA, Fractal Sandcastles)
+   * - Glass production (Sand Refinery, Glass Chiller)
+   * - Castle tool destroy/build cycles
+   * - Fibonacci cost reset
+   * - Ninja detection for no-click newpix
+   * - Various boost mechanics
+   */
+  private ongBase(): void {
+    // Reset LA level to 1 if owned
+    const laBoost = this.boosts.get('LA');
+    if (laBoost && laBoost.bought > 0) {
+      laBoost.power = 1;
+    }
+
+    // Reset Fractal Sandcastles power
+    const fractalBoost = this.boosts.get('FractalSandcastles');
+    if (fractalBoost) {
+      fractalBoost.power = 0;
+    }
+
+    // Glass production (simplified - full implementation needs Glass Furnace/Blower checks)
+    // Deferred: Sand Refinery makeChips, Glass Chiller makeBlocks
+
+    // Castle tool destroy/build cycles
+    // Reference: castle.js:3765-3789
+    const activateTimes = 1 + (this.hasBoost('Doublepost') ? 1 : 0);
+
+    for (let cycle = 0; cycle < activateTimes; cycle++) {
+      this.ongCastleToolCycle();
+    }
+
+    // Badge for castle price rollback
+    if (this.castleBuild.nextCastleSand > 1) {
+      this.earnBadge('Castle Price Rollback');
+    }
+
+    // Reset Fibonacci sequence for castle costs
+    this.castleBuild.prevCastleSand = 0;
+    this.castleBuild.nextCastleSand = 1;
+
+    // Convert remaining sand to castles
+    this.toCastles();
+
+    // Ninja detection for no-click newpix
+    // Reference: castle.js:3796-3811
+    if (!this.core.ninjad) {
+      const hadStealth = this.core.ninjaStealth > 0;
+      if (this.ninjaUnstealth() && hadStealth) {
+        this.earnBadge('Ninja Holidip');
+      }
+
+      // Ninja Ritual handling (simplified)
+      const ninjaRitual = this.boosts.get('NinjaRitual');
+      const ninjaHerder = this.boosts.get('NinjaHerder');
+      if (ninjaRitual && ninjaRitual.bought > 0) {
+        if (!ninjaHerder || ninjaHerder.bought === 0) {
+          // No Ninja Herder - check for Lost Goats badge
+          if (ninjaRitual.power >= 5) {
+            this.earnBadge('Lost Goats');
+            this.doUnlockBoost('NinjaHerder');
+          }
+          ninjaRitual.power = 0;
+        } else {
+          // Has Ninja Herder - grant goats via NinjaRitual
+          this.ninjaRitual();
+        }
+      }
+    }
+
+    // Reset ninja flags for new newpix
+    this.core.ninjad = false;
+    this.ong.npbONG = 0;
+
+    // Reset ONG timing
+    this.ong.elapsed = 0;
+    this.ong.startTime = Date.now();
+
+    this.syncResourceBoosts();
+  }
+
+  /**
+   * Castle tool destroy/build cycle during ONG.
+   * Reference: castle.js:3768-3787
+   *
+   * All castle tools do destroy phase, then build phase.
+   * NewPixBot is excluded from build phase (only builds when npbONG activates).
+   * Backing Out boost reverses the order.
+   */
+  private ongCastleToolCycle(): void {
+    const hasBackingOut = this.hasBoost('BackingOut');
+
+    if (hasBackingOut) {
+      // Forward order with Backing Out
+      for (const [name, state] of this.castleTools) {
+        this.castleToolDestroyPhase(name, state);
+        if (name !== 'NewPixBot') {
+          this.castleToolBuildPhase(name, state);
+        }
+      }
+    } else {
+      // Normal: reverse order for both phases
+      const toolEntries = Array.from(this.castleTools.entries()).reverse();
+
+      // Destroy phase (reverse order)
+      for (const [name, state] of toolEntries) {
+        this.castleToolDestroyPhase(name, state);
+      }
+
+      // Build phase (reverse order, skip NewPixBot)
+      for (const [name, state] of toolEntries) {
+        if (name !== 'NewPixBot') {
+          this.castleToolBuildPhase(name, state);
+        }
+      }
+    }
+  }
+
+  /**
+   * Castle tool destroy phase - spend castles to activate tools.
+   * Reference: tools.js DestroyPhase
+   */
+  private castleToolDestroyPhase(name: string, state: CastleToolState): void {
+    if (state.amount <= 0) return;
+
+    const rates = CASTLE_TOOL_RATES[name];
+    if (!rates) return;
+
+    const destroyCost = rates.baseDestroyC;
+    if (destroyCost <= 0) return;
+
+    // Calculate how many can be activated
+    const activatable = calculateActivatableTools(
+      state.amount,
+      destroyCost,
+      this.resources.castles
+    );
+
+    if (activatable <= 0) return;
+
+    // Spend castles
+    const destroyed = activatable * destroyCost;
+    this.resources.castles -= destroyed;
+    state.totalCastlesDestroyed += destroyed;
+    state.currentActive = activatable;
+  }
+
+  /**
+   * Castle tool build phase - active tools produce castles.
+   * Reference: tools.js BuildPhase
+   */
+  private castleToolBuildPhase(name: string, state: CastleToolState): void {
+    if (state.currentActive <= 0) return;
+
+    const rates = CASTLE_TOOL_RATES[name];
+    if (!rates) return;
+
+    const buildRate = rates.baseBuildC;
+    const built = calculateCastleProduction(state.currentActive, buildRate);
+
+    this.resources.castles += built;
+    state.totalCastlesBuilt += built;
+
+    // Reset currentActive after build
+    state.currentActive = 0;
+  }
+
+  /**
+   * ONGs[0] - Default newpix number advancement.
+   * Reference: castle.js:3886-3913
+   *
+   * Advances newpixNumber, respecting Temporal Anchor and Signpost.
+   */
+  private ongAdvanceNewpix(): void {
+    const temporalAnchor = this.boosts.get('TemporalAnchor');
+    const isAnchored = temporalAnchor && temporalAnchor.bought > 0 &&
+      this.isBoostEnabled('TemporalAnchor');
+
+    if (!isAnchored && this.core.newpixNumber !== 0) {
+      // Check Signpost for return to NP 0
+      const signpost = this.boosts.get('Signpost');
+      if (signpost && signpost.bought > 0 && signpost.power === 1) {
+        this.core.newpixNumber = 0;
+      } else {
+        // Normal advancement
+        this.core.newpixNumber += this.core.newpixNumber > 0 ? 1 : -1;
+      }
+
+      // Update highest visited
+      const np = Math.abs(this.core.newpixNumber);
+      if (np > Math.abs(this.core.highestNPvisited)) {
+        this.core.highestNPvisited = this.core.newpixNumber;
+        if (this.core.newpixNumber < 0) {
+          this.earnBadge('Below the Horizon');
+        }
+      } else if (np > 2) {
+        // In the past - unlock Time Travel
+        this.doUnlockBoost('TimeTravel');
+      }
+
+      // Signpost unlock condition
+      if (this.core.newpixNumber >= 3095) {
+        const discovCount = this.badgeGroupCounts['discov'] ?? 0;
+        if (discovCount >= 1362) {
+          this.doUnlockBoost('Signpost');
+        }
+      }
+    }
+
+    // Reset Signpost and Controlled Hysteresis
+    const signpost = this.boosts.get('Signpost');
+    if (signpost) {
+      signpost.power = 0;
+    }
+
+    const controlledHysteresis = this.boosts.get('ControlledHysteresis');
+    if (controlledHysteresis) {
+      controlledHysteresis.power = -1;
+    }
+  }
+
+  /**
+   * Handle period changes based on newpix number.
+   * Reference: castle.js:3971-4044
+   *
+   * Sets NP length (shortpix vs longpix) and unlocks period-based boosts/badges.
+   */
+  private handlePeriods(): void {
+    const np = Math.abs(this.core.newpixNumber);
+
+    // NP 0-240 are shortpix (1800s), others are longpix (3600s)
+    if (np <= 240 && np === Math.floor(np)) {
+      this.ong.npLength = 1800;
+    } else {
+      this.ong.npLength = 3600;
+    }
+
+    // Recalculate ninja time based on NP length
+    this.calculateNinjaTime();
+
+    // Period-based badges
+    if (this.core.newpixNumber < 0) {
+      this.earnBadge('Minus Worlds');
+    }
+    if (this.core.newpixNumber === 0) {
+      this.earnBadge('Absolute Zero');
+    }
+    if (np > 241 && np === Math.floor(np)) {
+      this.earnBadge("Have you noticed it's slower?");
+    }
+    if (np >= 250 && np === Math.floor(np)) {
+      this.doUnlockBoost('Overcompensating');
+    }
+    if (np > 5948 && np === Math.floor(np)) {
+      this.earnBadge("And It Don't Stop");
+    }
+  }
+
+  /**
+   * Calculate ninja time based on boosts.
+   * Reference: tools.js NewPixBot.calculateNinjaTime
+   *
+   * Base: 400 mNP (shortpix) or 200 mNP (longpix)
+   * Divisors: Busy Bot (1.1), Stealthy Bot (1.1), Chequered Flag (1.2)
+   * Western Paradox triples the time.
+   */
+  private calculateNinjaTime(): void {
+    // Base time in mNP
+    let baseTime = this.ong.npLength <= 1800 ? 400 : 200;
+
+    // Calculate divisor based on boosts
+    let divisor = 1;
+    const hasBusyBot = this.hasBoost('BusyBot');
+    const hasStealthyBot = this.hasBoost('StealthyBot');
+    const hasChequeredFlag = this.hasBoost('ChequeredFlag');
+
+    if (hasChequeredFlag) {
+      if (hasBusyBot && hasStealthyBot) {
+        divisor = 1.4;
+      } else if (hasBusyBot || hasStealthyBot) {
+        divisor = 1.3;
+      } else {
+        divisor = 1.2;
+      }
+    } else if (hasBusyBot && hasStealthyBot) {
+      divisor = 1.2;
+    } else if (hasBusyBot || hasStealthyBot) {
+      divisor = 1.1;
+    }
+
+    baseTime = baseTime / divisor;
+
+    // Western Paradox triples the time
+    if (this.hasBoost('WesternParadox')) {
+      baseTime *= 3;
+    }
+
+    // Convert mNP to milliseconds
+    this.ong.ninjaTime = baseTime * this.ong.npLength;
+  }
+
+  /**
+   * NinjaUnstealth - Called when ninja streak might break.
+   * Reference: castle.js:419-461
+   *
+   * Returns true if ninja was unstealthed (streak broken).
+   * Three protection tiers can prevent the break.
+   */
+  private ninjaUnstealth(): boolean {
+    if (this.core.ninjaStealth === 0) {
+      return false; // Nothing to lose
+    }
+
+    // Protection 1: Impervious Ninja (costs 1% of glass chips, min 100)
+    const imperviousNinja = this.boosts.get('ImperviousNinja');
+    if (imperviousNinja && imperviousNinja.bought > 0) {
+      const payment = Math.floor(this.resources.glassChips * 0.01);
+      if (payment >= 100) {
+        this.resources.glassChips -= payment;
+        imperviousNinja.power--;
+        if (imperviousNinja.power <= 0) {
+          imperviousNinja.bought = 0;
+          imperviousNinja.unlocked = 0;
+        }
+        return false; // Protected
+      }
+    }
+
+    // Protection 2: Ninja Hope (costs 10 castles)
+    const ninjaHope = this.boosts.get('NinjaHope');
+    if (ninjaHope && ninjaHope.bought > 0 && ninjaHope.power > 0) {
+      if (this.resources.castles >= 10) {
+        this.resources.castles -= 10;
+        ninjaHope.power--;
+        return false; // Protected
+      }
+    }
+
+    // Protection 3: Ninja Penance (costs 30 castles)
+    const ninjaPenance = this.boosts.get('NinjaPenance');
+    if (ninjaPenance && ninjaPenance.bought > 0 && ninjaPenance.power > 0) {
+      if (this.resources.castles >= 30) {
+        this.resources.castles -= 30;
+        ninjaPenance.power--;
+        return false; // Protected
+      }
+    }
+
+    // Ninja breaks - reset protections
+    if (ninjaHope) ninjaHope.power = 1;
+    if (ninjaPenance) ninjaPenance.power = 2;
+
+    // Badge checks before resetting stealth
+    if (this.core.ninjaStealth >= 7 && ninjaHope && ninjaHope.bought > 0) {
+      this.doUnlockBoost('NinjaPenance');
+    }
+    if (this.core.ninjaStealth >= 30 && this.core.ninjaStealth < 36) {
+      this.earnBadge('Ninja Shortcomings');
+    }
+
+    // Reset stealth
+    this.core.ninjaStealth = 0;
+    return true;
+  }
+
+  /**
+   * StealthClick - Called when first click happens after npbONG window opens.
+   * Reference: castle.js:309-371
+   *
+   * Grants ninja stealth, badges, and castle rewards.
+   */
+  private stealthClick(): void {
+    this.earnBadge('No Ninja');
+    this.core.ninjaFreeCount++;
+
+    // Calculate stealth increment with multipliers
+    let ninjaInc = 1;
+
+    // Active Ninja: 3x if in longpix
+    if (this.hasBoost('ActiveNinja') && this.ong.npLength > 1800) {
+      ninjaInc *= 3;
+    }
+
+    // Check Ninja Lockdown (disables multipliers)
+    const ninjaLockdown = this.boosts.get('NinjaLockdown');
+    const isLockdownEnabled = ninjaLockdown && ninjaLockdown.bought > 0 &&
+      this.isBoostEnabled('NinjaLockdown');
+
+    if (!isLockdownEnabled) {
+      if (this.hasBoost('NinjaLeague')) ninjaInc *= 100;
+      if (this.hasBoost('NinjaLegion')) ninjaInc *= 1000;
+      if (this.hasBoost('NinjaNinjaDuck')) ninjaInc *= 10;
+      // Papal multiplier deferred
+    }
+
+    this.core.ninjaStealth += ninjaInc;
+
+    // Castle reward
+    if (this.hasBoost('NinjaBuilder')) {
+      const stealthBuild = this.calcStealthBuild(true, true);
+      this.resources.castles += stealthBuild + 1;
+      // Factory Ninja interaction deferred
+    } else {
+      this.resources.castles += 1;
+    }
+
+    // Stealth milestone badges and unlocks
+    if (this.core.ninjaStealth >= 6) {
+      this.earnBadge('Ninja Stealth');
+      this.doUnlockBoost('StealthyBot');
+    }
+    if (this.core.ninjaStealth >= 16) {
+      this.earnBadge('Ninja Dedication');
+      this.doUnlockBoost('NinjaBuilder');
+    }
+    if (this.core.ninjaStealth >= 26) {
+      this.earnBadge('Ninja Madness');
+      this.doUnlockBoost('NinjaHope');
+    }
+    if (this.core.ninjaStealth >= 36) {
+      this.earnBadge('Ninja Omnipresence');
+    }
+    if (this.core.ninjaStealth > 4000) {
+      this.earnBadge('Ninja Pact');
+    }
+    if (this.core.ninjaStealth > 4000000) {
+      this.earnBadge('Ninja Unity');
+    }
+
+    this.syncResourceBoosts();
+  }
+
+  /**
+   * Calculate stealth build castle reward.
+   * Reference: castle.js:372-397
+   */
+  private calcStealthBuild(useVJ: boolean, spend: boolean): number {
+    let stealthBuild = this.core.ninjaStealth;
+
+    // Ninja Assistants: multiply by NewPixBot count
+    if (this.hasBoost('NinjaAssistants')) {
+      const npb = this.castleTools.get('NewPixBot');
+      if (npb) stealthBuild *= npb.amount;
+    }
+
+    // Skull and Crossbones: scale with Flag count
+    if (this.hasBoost('SkullAndCrossbones')) {
+      const flags = this.sandTools.get('Flag');
+      if (flags) {
+        stealthBuild = Math.floor(
+          stealthBuild * Math.pow(1.05, Math.max(-1, flags.amount - 40))
+        );
+      }
+    }
+
+    // Glass Jaw: 100x multiplier (costs 1 glass block)
+    const glassJaw = this.boosts.get('GlassJaw');
+    if (glassJaw && this.isBoostEnabled('GlassJaw')) {
+      if (this.resources.glassBlocks >= 1) {
+        if (spend) this.resources.glassBlocks -= 1;
+        stealthBuild *= 100;
+      }
+    }
+
+    // Ninja Climber: multiply by Ladder count
+    if (this.hasBoost('NinjaClimber')) {
+      const ladders = this.sandTools.get('Ladder');
+      if (ladders) stealthBuild *= ladders.amount;
+    }
+
+    // Ninjasaw + VJ interaction deferred
+
+    return stealthBuild;
+  }
+
+  /**
+   * Ninja Ritual - Grant goats based on ritual level.
+   * Reference: boosts.js:9115-9147 (simplified)
+   */
+  private ninjaRitual(): void {
+    const ninjaRitual = this.boosts.get('NinjaRitual');
+    if (!ninjaRitual) return;
+
+    const goats = this.boosts.get('Goats');
+    if (!goats) return;
+
+    const oldLevel = ninjaRitual.power;
+
+    // Grant goats (simplified - full formula has many multipliers)
+    goats.power += Math.floor(1 + oldLevel / 5);
+
+    // Level up with exponential jumps
+    let mult = 1;
+    while (ninjaRitual.power <= oldLevel) {
+      ninjaRitual.power += mult;
+      mult *= 10;
+    }
+
+    // Badge thresholds
+    if (ninjaRitual.power > 1000000) this.earnBadge('Mega Ritual');
+    if (ninjaRitual.power > 1e12) this.earnBadge('Tera Ritual');
+  }
+
+  /**
+   * Activate NewPixBots - called when npbONG window opens.
+   * Reference: castle.js:3108-3116
+   */
+  private activateNewPixBots(): void {
+    const npb = this.castleTools.get('NewPixBot');
+    if (!npb || npb.amount <= 0) return;
+
+    const rates = CASTLE_TOOL_RATES['NewPixBot'];
+    if (!rates) return;
+
+    // NewPixBot has destroyC = 0, so it only builds
+    const built = calculateCastleProduction(npb.amount, rates.baseBuildC);
+    this.resources.castles += built;
+    npb.totalCastlesBuilt += built;
+    npb.currentActive = npb.amount;
+
+    this.syncResourceBoosts();
+  }
+
+  /**
+   * Check if a boost is owned (bought > 0).
+   */
+  private hasBoost(alias: string): boolean {
+    const state = this.boosts.get(alias);
+    return !!state && state.bought > 0;
+  }
+
+  /**
+   * Check if a toggle boost is enabled.
+   */
+  private isBoostEnabled(alias: string): boolean {
+    const state = this.boosts.get(alias);
+    // IsEnabled is stored in extra or as a separate field
+    // For now, assume bought > 0 means enabled for toggles
+    return !!state && state.bought > 0;
+  }
+
+  /**
+   * Earn a badge if not already earned.
+   */
+  private earnBadge(name: string): void {
+    if (!this.badges.has(name)) {
+      this.badges.set(name, false);
+    }
+    if (!this.badges.get(name)) {
+      this.badges.set(name, true);
+      // Update badge group counts
+      const def = this.gameData.badges[name];
+      if (def) {
+        this.badgeGroupCounts[def.group] = (this.badgeGroupCounts[def.group] ?? 0) + 1;
+      }
+    }
   }
 
   /**
@@ -651,6 +1284,11 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Process a single beach click.
+   * Reference: castle.js:151-306 (Molpy.ClickBeach)
+   *
+   * Handles ninja detection:
+   * - If npbONG = 1 and ninjad = 0: StealthClick (good)
+   * - If npbONG = 0 and ninjad = 0: NinjaUnstealth (bad)
    */
   private processBeachClick(): void {
     this.core.beachClicks++;
@@ -662,6 +1300,56 @@ export class ModernEngine implements GameEngine {
 
     this.resources.sand += sandGained;
     this.syncResourceBoosts();
+
+    // Ninja detection logic
+    // Reference: castle.js:169-221
+    const npb = this.castleTools.get('NewPixBot');
+    const hasNPB = npb && (npb.amount > 0 || !isFinite(npb.amount));
+
+    if (!this.core.ninjad && hasNPB) {
+      if (this.ong.npbONG === 1) {
+        // First click after npbONG window opened - stealth click (good!)
+        this.stealthClick();
+        // Ritual Sacrifice/Rift handling deferred
+      } else if (this.ong.npbONG === 0) {
+        // First click BEFORE npbONG window - ninja break (bad!)
+        if (this.ninjaUnstealth()) {
+          // Award ninja badges based on NPB count
+          if (npb && npb.currentActive > 0) {
+            this.earnBadge('Ninja');
+          }
+          if (npb && npb.currentActive >= 10) {
+            this.earnBadge('Ninja Strike');
+          }
+          if (npb && npb.currentActive >= 1000) {
+            this.earnBadge('KiloNinja Strike');
+          }
+          if (npb && npb.currentActive >= 1e6) {
+            this.earnBadge('MegaNinja Strike');
+          }
+          if (npb && npb.currentActive >= 1e9) {
+            this.earnBadge('GigaNinja Strike');
+          }
+        }
+
+        // Ninja Ritual on ninja break
+        const ninjaRitual = this.boosts.get('NinjaRitual');
+        if (ninjaRitual && ninjaRitual.bought > 0) {
+          this.ninjaRitual();
+          if (ninjaRitual.power > 10) this.doUnlockBoost('WesternParadox');
+          if (ninjaRitual.power > 24) this.doUnlockBoost('RitualSacrifice');
+        } else {
+          // Check for Ninja Ritual unlock
+          const goats = this.boosts.get('Goats');
+          if (goats && goats.power >= 10) {
+            this.doUnlockBoost('NinjaRitual');
+          }
+        }
+      }
+    }
+
+    // Mark that we've clicked this newpix
+    this.core.ninjad = true;
 
     // Check for badge unlocks
     this.checkClickBadges();
