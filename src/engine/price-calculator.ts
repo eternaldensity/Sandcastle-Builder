@@ -543,6 +543,304 @@ export function calculateToolCycleResult(
 }
 
 // =============================================================================
+// Glass Production Calculation
+// =============================================================================
+
+/**
+ * State needed to calculate glass chip production.
+ * Reference: boosts.js:2140-2148 (Sand Refinery.makeChips)
+ */
+export interface GlassChipProductionState {
+  /** Sand Refinery power level */
+  sandRefineryPower: number;
+  /** Number of goats owned (for Glass Goat multiplier) */
+  goats: number;
+  /** Whether Glass Goat boost is owned */
+  hasGlassGoat: boolean;
+  /** Papal multiplier for Chips (from Pope boost decree) */
+  papalChipsMult: number;
+}
+
+/**
+ * Calculate glass chips produced per ONG.
+ *
+ * Formula: floor((refineryLevel + 1) * goatMult * papalMult)
+ * - refineryLevel = Sand Refinery power
+ * - goatMult = goats * 5 (if Glass Goat owned and goats >= 1), else 1
+ * - papalMult = Papal('Chips') - usually 1 unless pope decree is active
+ *
+ * Reference: boosts.js:2140-2148
+ *
+ * @param state - Current glass production state
+ * @param times - Multiplier for number of production cycles (default 1)
+ * @returns Glass chips produced
+ */
+export function calculateGlassChipProduction(
+  state: GlassChipProductionState,
+  times = 1
+): number {
+  let furnaceLevel = (state.sandRefineryPower + 1) * times;
+
+  // Glass Goat multiplier
+  if (state.hasGlassGoat && state.goats >= 1) {
+    furnaceLevel *= state.goats * 5;
+  }
+
+  // Apply papal multiplier and floor
+  return Math.floor(furnaceLevel * state.papalChipsMult);
+}
+
+/**
+ * State needed to calculate glass block production.
+ * Reference: boosts.js:2465-2498 (Glass Chiller.makeBlocks)
+ */
+export interface GlassBlockProductionState {
+  /** Glass Chiller power level */
+  glassChillerPower: number;
+  /** Current glass chips available */
+  glassChips: number;
+  /** Number of goats owned (for Glass Goat multiplier) */
+  goats: number;
+  /** Whether Glass Goat boost is owned */
+  hasGlassGoat: boolean;
+  /** Papal multiplier for Blocks (from Pope boost decree) */
+  papalBlocksMult: number;
+  /** Whether Ruthless Efficiency boost is owned */
+  hasRuthlessEfficiency: boolean;
+  /** Whether Glass Trolling is enabled */
+  glassTrollingEnabled: boolean;
+}
+
+/**
+ * Calculate chips per block based on boosts.
+ *
+ * Base: 20 chips per block
+ * Ruthless Efficiency: 5 chips per block
+ * Glass Trolling: divides by 5
+ *
+ * Reference: boosts.js:2346-2351 (Molpy.ChipsPerBlock)
+ *
+ * @param hasRuthlessEfficiency - Whether Ruthless Efficiency is owned
+ * @param glassTrollingEnabled - Whether Glass Trolling is active
+ * @returns Chips required per glass block
+ */
+export function calculateChipsPerBlock(
+  hasRuthlessEfficiency: boolean,
+  glassTrollingEnabled: boolean
+): number {
+  const trollDivisor = glassTrollingEnabled ? 5 : 1;
+  const baseChips = hasRuthlessEfficiency ? 5 : 20;
+  return baseChips / trollDivisor;
+}
+
+/**
+ * Calculate glass blocks produced per ONG.
+ *
+ * Formula:
+ * 1. blocksFromChiller = min(chillerLevel + 1, chips / chipsPerBlock)
+ * 2. Apply goat multiplier if Glass Goat owned
+ * 3. Apply papal multiplier
+ *
+ * Reference: boosts.js:2465-2498
+ *
+ * @param state - Current glass block production state
+ * @param times - Multiplier for number of production cycles (default 1)
+ * @returns Object with blocks produced and chips consumed
+ */
+export function calculateGlassBlockProduction(
+  state: GlassBlockProductionState,
+  times = 1
+): { blocksProduced: number; chipsConsumed: number } {
+  const chipsPerBlock = calculateChipsPerBlock(
+    state.hasRuthlessEfficiency,
+    state.glassTrollingEnabled
+  );
+
+  const chillerLevel = (state.glassChillerPower + 1) * times;
+
+  // Can only produce as many blocks as we have chips for
+  const maxFromChips = Math.floor(state.glassChips / chipsPerBlock);
+  const blocksFromChiller = Math.min(chillerLevel, maxFromChips);
+
+  if (blocksFromChiller <= 0) {
+    return { blocksProduced: 0, chipsConsumed: 0 };
+  }
+
+  // Calculate chip cost before goat multiplier
+  const chipsConsumed = blocksFromChiller * chipsPerBlock;
+
+  // Apply goat multiplier to blocks produced
+  let finalBlocks = blocksFromChiller;
+  if (state.hasGlassGoat && state.goats >= 1) {
+    finalBlocks *= state.goats * 5;
+  }
+
+  // Apply papal multiplier and floor
+  return {
+    blocksProduced: Math.floor(finalBlocks * state.papalBlocksMult),
+    chipsConsumed,
+  };
+}
+
+/**
+ * State needed to calculate sand usage for glass production.
+ * Reference: boosts.js:1987-2003 (GlassFurnaceSandUse), 2005-2021 (GlassBlowerSandUse)
+ */
+export interface GlassSandUsageState {
+  /** Sand Refinery power level */
+  sandRefineryPower: number;
+  /** Glass Chiller power level */
+  glassChillerPower: number;
+  /** Sand Purifier power level (0 if not owned) */
+  sandPurifierPower: number;
+  /** Glass Extruder power level (0 if not owned) */
+  glassExtruderPower: number;
+  /** Whether Glass Furnace is on */
+  glassFurnaceEnabled: boolean;
+  /** Whether Glass Blower is on */
+  glassBlowerEnabled: boolean;
+  /** Whether Badgers boost is owned */
+  hasBadgers: boolean;
+  /** Whether Mushrooms boost is owned */
+  hasMushrooms: boolean;
+  /** Total badges owned (for Badgers/Mushrooms efficiency) */
+  badgesOwned: number;
+}
+
+/**
+ * Calculate sand rate efficiency divisor for Sand Refinery.
+ *
+ * Formula:
+ * - Base increment = 1
+ * - Sand Purifier: divide by (power + 2)
+ * - Badgers: multiply by 0.99^(badgesOwned/10)
+ *
+ * Reference: boosts.js:1996-2003 (Molpy.SandRefineryIncrement)
+ *
+ * @param sandPurifierPower - Sand Purifier power level
+ * @param hasBadgers - Whether Badgers boost is owned
+ * @param badgesOwned - Total badges owned
+ * @returns Sand rate increment multiplier
+ */
+export function calculateSandRefineryIncrement(
+  sandPurifierPower: number,
+  hasBadgers: boolean,
+  badgesOwned: number
+): number {
+  let inc = 1;
+
+  // Sand Purifier reduces sand usage
+  if (sandPurifierPower > 0 || sandPurifierPower === 0) {
+    // Power of 0 still gives divisor of 2
+    inc /= (sandPurifierPower + 2);
+  }
+
+  // Badgers reduce sand usage based on badges owned
+  if (hasBadgers) {
+    inc *= Math.pow(0.99, Math.floor(badgesOwned / 10));
+  }
+
+  return inc || 0;
+}
+
+/**
+ * Calculate sand rate efficiency divisor for Glass Chiller.
+ *
+ * Formula:
+ * - Base increment = 1
+ * - Glass Extruder: divide by (power + 2)
+ * - Mushrooms: multiply by 0.99^(badgesOwned/10)
+ *
+ * Reference: boosts.js:2014-2021 (Molpy.GlassChillerIncrement)
+ *
+ * @param glassExtruderPower - Glass Extruder power level
+ * @param hasMushrooms - Whether Mushrooms boost is owned
+ * @param badgesOwned - Total badges owned
+ * @returns Sand rate increment multiplier
+ */
+export function calculateGlassChillerIncrement(
+  glassExtruderPower: number,
+  hasMushrooms: boolean,
+  badgesOwned: number
+): number {
+  let inc = 1;
+
+  // Glass Extruder reduces sand usage
+  if (glassExtruderPower > 0 || glassExtruderPower === 0) {
+    inc /= (glassExtruderPower + 2);
+  }
+
+  // Mushrooms reduce sand usage based on badges owned
+  if (hasMushrooms) {
+    inc *= Math.pow(0.99, Math.floor(badgesOwned / 10));
+  }
+
+  return inc || 0;
+}
+
+/**
+ * Calculate percentage of sand dig rate used by Glass Furnace.
+ *
+ * Formula: (refineryPower + 1) * refineryIncrement
+ *
+ * Reference: boosts.js:1987-1994 (Molpy.GlassFurnaceSandUse)
+ *
+ * @param state - Glass production state
+ * @returns Percentage of sand dig rate used (0-100+)
+ */
+export function calculateGlassFurnaceSandUse(state: GlassSandUsageState): number {
+  if (!state.glassFurnaceEnabled) {
+    return 0;
+  }
+
+  const amount = state.sandRefineryPower + 1;
+  const inc = calculateSandRefineryIncrement(
+    state.sandPurifierPower,
+    state.hasBadgers,
+    state.badgesOwned
+  );
+
+  return amount * inc || 0;
+}
+
+/**
+ * Calculate percentage of sand dig rate used by Glass Blower.
+ *
+ * Formula: (chillerPower + 1) * chillerIncrement
+ *
+ * Reference: boosts.js:2005-2012 (Molpy.GlassBlowerSandUse)
+ *
+ * @param state - Glass production state
+ * @returns Percentage of sand dig rate used (0-100+)
+ */
+export function calculateGlassBlowerSandUse(state: GlassSandUsageState): number {
+  if (!state.glassBlowerEnabled) {
+    return 0;
+  }
+
+  const amount = state.glassChillerPower + 1;
+  const inc = calculateGlassChillerIncrement(
+    state.glassExtruderPower,
+    state.hasMushrooms,
+    state.badgesOwned
+  );
+
+  return amount * inc || 0;
+}
+
+/**
+ * Calculate total percentage of sand dig rate used by glass production.
+ *
+ * Reference: boosts.js:2023-2028 (Molpy.CalcGlassUse)
+ *
+ * @param state - Glass production state
+ * @returns Total percentage of sand dig rate used
+ */
+export function calculateTotalGlassUse(state: GlassSandUsageState): number {
+  return calculateGlassFurnaceSandUse(state) + calculateGlassBlowerSandUse(state);
+}
+
+// =============================================================================
 // Click Multiplier Calculation
 // =============================================================================
 

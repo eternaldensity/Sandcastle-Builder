@@ -27,9 +27,14 @@ import {
   calculateActivatableTools,
   calculateCastleProduction,
   calculateSandPerClick,
+  calculateGlassChipProduction,
+  calculateGlassBlockProduction,
+  calculateChipsPerBlock,
   type PriceFactorState,
   type CastleToolPriceState,
   type ClickMultiplierState,
+  type GlassChipProductionState,
+  type GlassBlockProductionState,
   CASTLE_TOOL_SEEDS,
   CASTLE_TOOL_RATES,
 } from './price-calculator.js';
@@ -751,8 +756,9 @@ export class ModernEngine implements GameEngine {
       fractalBoost.power = 0;
     }
 
-    // Glass production (simplified - full implementation needs Glass Furnace/Blower checks)
-    // Deferred: Sand Refinery makeChips, Glass Chiller makeBlocks
+    // Glass production - runs before castle tools
+    // Reference: castle.js:3757-3762
+    this.processGlassProduction();
 
     // Castle tool destroy/build cycles
     // Reference: castle.js:3765-3789
@@ -895,6 +901,78 @@ export class ModernEngine implements GameEngine {
 
     // Reset currentActive after build
     state.currentActive = 0;
+  }
+
+  /**
+   * Process glass production at ONG.
+   * Reference: castle.js:3757-3762
+   *
+   * Glass Furnace produces Glass Chips from Sand (via Sand Refinery).
+   * Glass Blower produces Glass Blocks from Glass Chips (via Glass Chiller).
+   */
+  private processGlassProduction(): void {
+    // Glass Furnace -> Sand Refinery -> Glass Chips
+    // Reference: castle.js:3757-3759
+    if (this.isBoostEnabled('GlassFurnace')) {
+      const chipState = this.buildGlassChipProductionState();
+      const chipsProduced = calculateGlassChipProduction(chipState);
+
+      if (chipsProduced > 0 && isFinite(this.resources.glassChips)) {
+        this.resources.glassChips += chipsProduced;
+      }
+    }
+
+    // Glass Blower -> Glass Chiller -> Glass Blocks
+    // Reference: castle.js:3760-3762
+    if (this.isBoostEnabled('GlassBlower')) {
+      const blockState = this.buildGlassBlockProductionState();
+      const { blocksProduced, chipsConsumed } = calculateGlassBlockProduction(blockState);
+
+      if (blocksProduced > 0 && isFinite(this.resources.glassBlocks)) {
+        this.resources.glassChips -= chipsConsumed;
+        this.resources.glassBlocks += blocksProduced;
+
+        // Earn Glassblower badge on first block production
+        this.earnBadge('Glassblower');
+      }
+    }
+  }
+
+  /**
+   * Build the state object for glass chip production calculation.
+   */
+  private buildGlassChipProductionState(): GlassChipProductionState {
+    const sandRefinery = this.boosts.get('SandRefinery');
+    const glassGoat = this.boosts.get('GlassGoat');
+    const goats = this.boosts.get('Goats');
+
+    return {
+      sandRefineryPower: sandRefinery?.power ?? 0,
+      goats: goats?.power ?? 0,
+      hasGlassGoat: (glassGoat?.bought ?? 0) > 0,
+      papalChipsMult: 1, // Papal decree not yet implemented
+    };
+  }
+
+  /**
+   * Build the state object for glass block production calculation.
+   */
+  private buildGlassBlockProductionState(): GlassBlockProductionState {
+    const glassChiller = this.boosts.get('GlassChiller');
+    const glassGoat = this.boosts.get('GlassGoat');
+    const goats = this.boosts.get('Goats');
+    const ruthlessEfficiency = this.boosts.get('RuthlessEfficiency');
+    const glassTrolling = this.boosts.get('GlassTrolling');
+
+    return {
+      glassChillerPower: glassChiller?.power ?? 0,
+      glassChips: this.resources.glassChips,
+      goats: goats?.power ?? 0,
+      hasGlassGoat: (glassGoat?.bought ?? 0) > 0,
+      papalBlocksMult: 1, // Papal decree not yet implemented
+      hasRuthlessEfficiency: (ruthlessEfficiency?.bought ?? 0) > 0,
+      glassTrollingEnabled: this.isBoostEnabled('GlassTrolling'),
+    };
   }
 
   /**
@@ -1263,12 +1341,22 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Check if a toggle boost is enabled.
+   * For toggle boosts, isEnabled must be explicitly true.
+   * For non-toggle boosts, bought > 0 means it's active.
    */
   private isBoostEnabled(alias: string): boolean {
     const state = this.boosts.get(alias);
-    // IsEnabled is stored in extra or as a separate field
-    // For now, assume bought > 0 means enabled for toggles
-    return !!state && state.bought > 0;
+    if (!state || state.bought === 0) return false;
+
+    // Check if this is a toggle boost
+    const def = this.gameData.boosts[alias];
+    if (def?.isToggle) {
+      // For toggles, must be explicitly enabled
+      return state.isEnabled === true;
+    }
+
+    // For non-toggles, bought > 0 means active
+    return true;
   }
 
   /**

@@ -30,7 +30,18 @@ import {
   calculateCastleProduction,
   calculateToolCycleResult,
   calculateSandPerClick,
+  calculateGlassChipProduction,
+  calculateGlassBlockProduction,
+  calculateChipsPerBlock,
+  calculateSandRefineryIncrement,
+  calculateGlassChillerIncrement,
+  calculateGlassFurnaceSandUse,
+  calculateGlassBlowerSandUse,
+  calculateTotalGlassUse,
   type ClickMultiplierState,
+  type GlassChipProductionState,
+  type GlassBlockProductionState,
+  type GlassSandUsageState,
 } from './price-calculator.js';
 
 // =============================================================================
@@ -825,5 +836,344 @@ describe('calculateSandPerClick', () => {
 
       expect(result).toBe(12);
     });
+  });
+});
+
+// =============================================================================
+// Glass Production tests
+// =============================================================================
+
+describe('calculateChipsPerBlock', () => {
+  it('should return 20 chips per block by default', () => {
+    expect(calculateChipsPerBlock(false, false)).toBe(20);
+  });
+
+  it('should return 5 chips per block with Ruthless Efficiency', () => {
+    expect(calculateChipsPerBlock(true, false)).toBe(5);
+  });
+
+  it('should divide by 5 with Glass Trolling enabled', () => {
+    expect(calculateChipsPerBlock(false, true)).toBe(4); // 20 / 5
+    expect(calculateChipsPerBlock(true, true)).toBe(1);  // 5 / 5
+  });
+});
+
+describe('calculateGlassChipProduction', () => {
+  const baseState: GlassChipProductionState = {
+    sandRefineryPower: 0,
+    goats: 0,
+    hasGlassGoat: false,
+    papalChipsMult: 1,
+  };
+
+  it('should produce (refineryPower + 1) chips at base', () => {
+    expect(calculateGlassChipProduction({ ...baseState, sandRefineryPower: 0 })).toBe(1);
+    expect(calculateGlassChipProduction({ ...baseState, sandRefineryPower: 9 })).toBe(10);
+    expect(calculateGlassChipProduction({ ...baseState, sandRefineryPower: 99 })).toBe(100);
+  });
+
+  it('should multiply by times parameter', () => {
+    expect(calculateGlassChipProduction({ ...baseState, sandRefineryPower: 9 }, 2)).toBe(20);
+    expect(calculateGlassChipProduction({ ...baseState, sandRefineryPower: 4 }, 3)).toBe(15);
+  });
+
+  it('should apply Glass Goat multiplier (goats * 5)', () => {
+    expect(calculateGlassChipProduction({
+      ...baseState,
+      sandRefineryPower: 9,
+      hasGlassGoat: true,
+      goats: 2,
+    })).toBe(10 * 2 * 5); // 100
+  });
+
+  it('should not apply Glass Goat multiplier when goats < 1', () => {
+    expect(calculateGlassChipProduction({
+      ...baseState,
+      sandRefineryPower: 9,
+      hasGlassGoat: true,
+      goats: 0,
+    })).toBe(10);
+  });
+
+  it('should not apply Glass Goat multiplier when not owned', () => {
+    expect(calculateGlassChipProduction({
+      ...baseState,
+      sandRefineryPower: 9,
+      hasGlassGoat: false,
+      goats: 10,
+    })).toBe(10);
+  });
+
+  it('should apply papal multiplier', () => {
+    expect(calculateGlassChipProduction({
+      ...baseState,
+      sandRefineryPower: 9,
+      papalChipsMult: 2,
+    })).toBe(20);
+  });
+
+  it('should floor the result', () => {
+    expect(calculateGlassChipProduction({
+      ...baseState,
+      sandRefineryPower: 9,
+      papalChipsMult: 1.5,
+    })).toBe(15); // floor(10 * 1.5)
+  });
+
+  it('should combine all multipliers correctly', () => {
+    // (power + 1) * times * goatMult * papalMult
+    // (4 + 1) * 2 * (3 * 5) * 1.5 = 5 * 2 * 15 * 1.5 = 225
+    expect(calculateGlassChipProduction({
+      sandRefineryPower: 4,
+      hasGlassGoat: true,
+      goats: 3,
+      papalChipsMult: 1.5,
+    }, 2)).toBe(225);
+  });
+});
+
+describe('calculateGlassBlockProduction', () => {
+  const baseState: GlassBlockProductionState = {
+    glassChillerPower: 0,
+    glassChips: 100,
+    goats: 0,
+    hasGlassGoat: false,
+    papalBlocksMult: 1,
+    hasRuthlessEfficiency: false,
+    glassTrollingEnabled: false,
+  };
+
+  it('should produce min(chillerLevel + 1, chips / chipsPerBlock) blocks', () => {
+    // chipsPerBlock = 20 (default)
+    // chillerLevel = 1, chips = 100, max from chips = 5
+    // min(1, 5) = 1 block
+    expect(calculateGlassBlockProduction({ ...baseState, glassChillerPower: 0 }).blocksProduced).toBe(1);
+
+    // chillerLevel = 10, chips = 100, max from chips = 5
+    // min(10, 5) = 5 blocks
+    expect(calculateGlassBlockProduction({ ...baseState, glassChillerPower: 9 }).blocksProduced).toBe(5);
+  });
+
+  it('should consume chips correctly', () => {
+    const result = calculateGlassBlockProduction({ ...baseState, glassChillerPower: 0 });
+    expect(result.chipsConsumed).toBe(20); // 1 block * 20 chips
+  });
+
+  it('should be limited by available chips', () => {
+    const result = calculateGlassBlockProduction({
+      ...baseState,
+      glassChillerPower: 99, // would produce 100 blocks
+      glassChips: 40, // only enough for 2 blocks
+    });
+    expect(result.blocksProduced).toBe(2);
+    expect(result.chipsConsumed).toBe(40);
+  });
+
+  it('should return 0 when not enough chips for any blocks', () => {
+    const result = calculateGlassBlockProduction({
+      ...baseState,
+      glassChips: 10, // less than 20 chips per block
+    });
+    expect(result.blocksProduced).toBe(0);
+    expect(result.chipsConsumed).toBe(0);
+  });
+
+  it('should use fewer chips with Ruthless Efficiency', () => {
+    // chipsPerBlock = 5 with Ruthless Efficiency
+    const result = calculateGlassBlockProduction({
+      ...baseState,
+      glassChillerPower: 0,
+      hasRuthlessEfficiency: true,
+    });
+    expect(result.blocksProduced).toBe(1);
+    expect(result.chipsConsumed).toBe(5);
+  });
+
+  it('should use fewer chips with Glass Trolling', () => {
+    // chipsPerBlock = 20 / 5 = 4 with Glass Trolling
+    const result = calculateGlassBlockProduction({
+      ...baseState,
+      glassChillerPower: 0,
+      glassTrollingEnabled: true,
+    });
+    expect(result.blocksProduced).toBe(1);
+    expect(result.chipsConsumed).toBe(4);
+  });
+
+  it('should apply Glass Goat multiplier to blocks produced', () => {
+    const result = calculateGlassBlockProduction({
+      ...baseState,
+      glassChillerPower: 0,
+      hasGlassGoat: true,
+      goats: 2,
+    });
+    // 1 block base * (2 goats * 5) = 10 blocks
+    expect(result.blocksProduced).toBe(10);
+    // But only consumes chips for 1 base block
+    expect(result.chipsConsumed).toBe(20);
+  });
+
+  it('should apply papal multiplier', () => {
+    const result = calculateGlassBlockProduction({
+      ...baseState,
+      glassChillerPower: 0,
+      papalBlocksMult: 3,
+    });
+    expect(result.blocksProduced).toBe(3);
+  });
+
+  it('should floor the result', () => {
+    const result = calculateGlassBlockProduction({
+      ...baseState,
+      glassChillerPower: 0,
+      papalBlocksMult: 1.7,
+    });
+    expect(result.blocksProduced).toBe(1); // floor(1 * 1.7)
+  });
+
+  it('should multiply by times parameter', () => {
+    const result = calculateGlassBlockProduction({
+      ...baseState,
+      glassChillerPower: 0,
+      glassChips: 200,
+    }, 3);
+    // chillerLevel = (0 + 1) * 3 = 3
+    // max from chips = 200 / 20 = 10
+    // min(3, 10) = 3 blocks
+    expect(result.blocksProduced).toBe(3);
+    expect(result.chipsConsumed).toBe(60); // 3 * 20
+  });
+});
+
+describe('calculateSandRefineryIncrement', () => {
+  it('should return 1 / (purifierPower + 2) with Sand Purifier', () => {
+    // Power 0: 1 / 2 = 0.5
+    expect(calculateSandRefineryIncrement(0, false, 0)).toBe(0.5);
+    // Power 8: 1 / 10 = 0.1
+    expect(calculateSandRefineryIncrement(8, false, 0)).toBe(0.1);
+  });
+
+  it('should apply Badgers badge efficiency', () => {
+    // With 30 badges: 0.99^3 = ~0.970299
+    const inc = calculateSandRefineryIncrement(0, true, 30);
+    expect(inc).toBeCloseTo(0.5 * Math.pow(0.99, 3), 10);
+  });
+
+  it('should stack Sand Purifier and Badgers', () => {
+    // Power 8, 50 badges: (1/10) * 0.99^5
+    const inc = calculateSandRefineryIncrement(8, true, 50);
+    expect(inc).toBeCloseTo(0.1 * Math.pow(0.99, 5), 10);
+  });
+});
+
+describe('calculateGlassChillerIncrement', () => {
+  it('should return 1 / (extruderPower + 2) with Glass Extruder', () => {
+    expect(calculateGlassChillerIncrement(0, false, 0)).toBe(0.5);
+    expect(calculateGlassChillerIncrement(8, false, 0)).toBe(0.1);
+  });
+
+  it('should apply Mushrooms badge efficiency', () => {
+    const inc = calculateGlassChillerIncrement(0, true, 30);
+    expect(inc).toBeCloseTo(0.5 * Math.pow(0.99, 3), 10);
+  });
+});
+
+describe('calculateGlassFurnaceSandUse', () => {
+  const baseState: GlassSandUsageState = {
+    sandRefineryPower: 0,
+    glassChillerPower: 0,
+    sandPurifierPower: 0,
+    glassExtruderPower: 0,
+    glassFurnaceEnabled: true,
+    glassBlowerEnabled: false,
+    hasBadgers: false,
+    hasMushrooms: false,
+    badgesOwned: 0,
+  };
+
+  it('should return 0 when Glass Furnace is disabled', () => {
+    expect(calculateGlassFurnaceSandUse({ ...baseState, glassFurnaceEnabled: false })).toBe(0);
+  });
+
+  it('should return (refineryPower + 1) * increment', () => {
+    // Power 0, no purifier: (0 + 1) * 0.5 = 0.5
+    expect(calculateGlassFurnaceSandUse({ ...baseState })).toBe(0.5);
+    // Power 9, no purifier: (9 + 1) * 0.5 = 5
+    expect(calculateGlassFurnaceSandUse({ ...baseState, sandRefineryPower: 9 })).toBe(5);
+  });
+
+  it('should reduce with higher Sand Purifier power', () => {
+    // Power 9, purifier power 8: (9 + 1) * (1/10) = 1
+    expect(calculateGlassFurnaceSandUse({
+      ...baseState,
+      sandRefineryPower: 9,
+      sandPurifierPower: 8,
+    })).toBe(1);
+  });
+});
+
+describe('calculateGlassBlowerSandUse', () => {
+  const baseState: GlassSandUsageState = {
+    sandRefineryPower: 0,
+    glassChillerPower: 0,
+    sandPurifierPower: 0,
+    glassExtruderPower: 0,
+    glassFurnaceEnabled: false,
+    glassBlowerEnabled: true,
+    hasBadgers: false,
+    hasMushrooms: false,
+    badgesOwned: 0,
+  };
+
+  it('should return 0 when Glass Blower is disabled', () => {
+    expect(calculateGlassBlowerSandUse({ ...baseState, glassBlowerEnabled: false })).toBe(0);
+  });
+
+  it('should return (chillerPower + 1) * increment', () => {
+    expect(calculateGlassBlowerSandUse({ ...baseState })).toBe(0.5);
+    expect(calculateGlassBlowerSandUse({ ...baseState, glassChillerPower: 9 })).toBe(5);
+  });
+
+  it('should reduce with higher Glass Extruder power', () => {
+    expect(calculateGlassBlowerSandUse({
+      ...baseState,
+      glassChillerPower: 9,
+      glassExtruderPower: 8,
+    })).toBe(1);
+  });
+});
+
+describe('calculateTotalGlassUse', () => {
+  it('should sum furnace and blower sand usage', () => {
+    const state: GlassSandUsageState = {
+      sandRefineryPower: 9,
+      glassChillerPower: 9,
+      sandPurifierPower: 0,
+      glassExtruderPower: 0,
+      glassFurnaceEnabled: true,
+      glassBlowerEnabled: true,
+      hasBadgers: false,
+      hasMushrooms: false,
+      badgesOwned: 0,
+    };
+    // Furnace: 10 * 0.5 = 5
+    // Blower: 10 * 0.5 = 5
+    // Total: 10
+    expect(calculateTotalGlassUse(state)).toBe(10);
+  });
+
+  it('should return 0 when both are disabled', () => {
+    const state: GlassSandUsageState = {
+      sandRefineryPower: 9,
+      glassChillerPower: 9,
+      sandPurifierPower: 0,
+      glassExtruderPower: 0,
+      glassFurnaceEnabled: false,
+      glassBlowerEnabled: false,
+      hasBadgers: false,
+      hasMushrooms: false,
+      badgesOwned: 0,
+    };
+    expect(calculateTotalGlassUse(state)).toBe(0);
   });
 });
