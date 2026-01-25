@@ -6,107 +6,45 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ModernEngine } from './modern-engine.js';
 import type { GameData } from '../types/game-data.js';
 
+// Helper to create a boost definition
+function createBoostDef(id: number, alias: string, group = 'boosts') {
+  return {
+    id,
+    name: alias,
+    alias,
+    icon: alias.toLowerCase().replace(/\s/g, ''),
+    group,
+    description: `${alias} boost`,
+    price: {},
+    isToggle: false,
+    isStuff: group === 'stuff',
+    hasDynamicDescription: false,
+    hasDynamicStats: false,
+    hasDynamicPrice: false,
+    hasBuyFunction: false,
+    hasLockFunction: false,
+    hasUnlockFunction: false,
+    hasCountdownFunction: false,
+    hasLoadFunction: false,
+  };
+}
+
 // Minimal game data for testing
 const testGameData: GameData = {
   version: '1.0.0',
   sourceVersion: 4.12,
   extractedAt: '2026-01-25T00:00:00.000Z',
   boosts: {
-    'Sand': {
-      id: 0,
-      name: 'Sand',
-      alias: 'Sand',
-      icon: 'sand',
-      group: 'stuff',
-      description: 'Sand resource',
-      price: {},
-      isToggle: false,
-      isStuff: true,
-      hasDynamicDescription: false,
-      hasDynamicStats: false,
-      hasDynamicPrice: false,
-      hasBuyFunction: false,
-      hasLockFunction: false,
-      hasUnlockFunction: false,
-      hasCountdownFunction: false,
-      hasLoadFunction: false,
-    },
-    'Castles': {
-      id: 1,
-      name: 'Castles',
-      alias: 'Castles',
-      icon: 'castles',
-      group: 'stuff',
-      description: 'Castles resource',
-      price: {},
-      isToggle: false,
-      isStuff: true,
-      hasDynamicDescription: false,
-      hasDynamicStats: false,
-      hasDynamicPrice: false,
-      hasBuyFunction: false,
-      hasLockFunction: false,
-      hasUnlockFunction: false,
-      hasCountdownFunction: false,
-      hasLoadFunction: false,
-    },
-    'GlassChips': {
-      id: 2,
-      name: 'Glass Chips',
-      alias: 'GlassChips',
-      icon: 'glasschips',
-      group: 'stuff',
-      description: 'Glass chips resource',
-      price: {},
-      isToggle: false,
-      isStuff: true,
-      hasDynamicDescription: false,
-      hasDynamicStats: false,
-      hasDynamicPrice: false,
-      hasBuyFunction: false,
-      hasLockFunction: false,
-      hasUnlockFunction: false,
-      hasCountdownFunction: false,
-      hasLoadFunction: false,
-    },
-    'GlassBlocks': {
-      id: 3,
-      name: 'Glass Blocks',
-      alias: 'GlassBlocks',
-      icon: 'glassblocks',
-      group: 'stuff',
-      description: 'Glass blocks resource',
-      price: {},
-      isToggle: false,
-      isStuff: true,
-      hasDynamicDescription: false,
-      hasDynamicStats: false,
-      hasDynamicPrice: false,
-      hasBuyFunction: false,
-      hasLockFunction: false,
-      hasUnlockFunction: false,
-      hasCountdownFunction: false,
-      hasLoadFunction: false,
-    },
-    'Bigger Buckets': {
-      id: 4,
-      name: 'Bigger Buckets',
-      alias: 'Bigger Buckets',
-      icon: 'biggerbuckets',
-      group: 'boosts',
-      description: 'Raises sand rate of buckets',
-      price: { Sand: '500' },
-      isToggle: false,
-      isStuff: false,
-      hasDynamicDescription: false,
-      hasDynamicStats: false,
-      hasDynamicPrice: false,
-      hasBuyFunction: false,
-      hasLockFunction: false,
-      hasUnlockFunction: false,
-      hasCountdownFunction: false,
-      hasLoadFunction: false,
-    },
+    'Sand': createBoostDef(0, 'Sand', 'stuff'),
+    'Castles': createBoostDef(1, 'Castles', 'stuff'),
+    'GlassChips': createBoostDef(2, 'GlassChips', 'stuff'),
+    'GlassBlocks': createBoostDef(3, 'GlassBlocks', 'stuff'),
+    'Bigger Buckets': createBoostDef(4, 'Bigger Buckets'),
+    'Huge Buckets': createBoostDef(5, 'Huge Buckets'),
+    'Helping Hand': createBoostDef(6, 'Helping Hand'),
+    'Cooperation': createBoostDef(7, 'Cooperation'),
+    'Spring Fling': createBoostDef(8, 'Spring Fling'),
+    'Trebuchet Pong': createBoostDef(9, 'Trebuchet Pong'),
   },
   boostsById: [
     { alias: 'Sand' },
@@ -155,13 +93,24 @@ const testGameData: GameData = {
   castleTools: [
     {
       id: 0,
-      name: 'Flag',
-      commonName: 'flag',
-      icon: 'flag',
-      description: 'Builds castles',
+      name: 'NewPixBot',
+      commonName: 'newpixbot',
+      icon: 'newpixbot',
+      description: 'Builds castles at ONG',
       type: 'castle' as const,
-      basePrice: 10,
+      basePrice: 50,
       nextThreshold: 100,
+      hasDynamicRate: false,
+    },
+    {
+      id: 1,
+      name: 'Trebuchet',
+      commonName: 'trebuchet',
+      icon: 'trebuchet',
+      description: 'Flings things',
+      type: 'castle' as const,
+      basePrice: 100,
+      nextThreshold: 500,
       hasDynamicRate: false,
     },
   ],
@@ -197,8 +146,9 @@ describe('ModernEngine', () => {
     it('initializes castle tools', async () => {
       const snapshot = await engine.getStateSnapshot();
 
-      expect(snapshot.castleTools['Flag']).toBeDefined();
-      expect(snapshot.castleTools['Flag'].amount).toBe(0);
+      expect(snapshot.castleTools['NewPixBot']).toBeDefined();
+      expect(snapshot.castleTools['NewPixBot'].amount).toBe(0);
+      expect(snapshot.castleTools['Trebuchet']).toBeDefined();
     });
 
     it('initializes boosts', async () => {
@@ -344,6 +294,98 @@ describe('ModernEngine', () => {
       await engine.dispose();
 
       await expect(engine.getStateSnapshot()).rejects.toThrow('not initialized');
+    });
+  });
+
+  describe('auto-unlock', () => {
+    it('unlocks Bigger Buckets when buying first bucket', async () => {
+      // Give enough sand to buy a bucket
+      engine.setSand(100);
+
+      // Verify not unlocked initially
+      let boostState = await engine.getBoostState('Bigger Buckets');
+      expect(boostState.unlocked).toBe(0);
+
+      // Buy a bucket
+      await engine.buyTool('sand', 'Bucket');
+
+      // Verify now unlocked
+      boostState = await engine.getBoostState('Bigger Buckets');
+      expect(boostState.unlocked).toBe(1);
+    });
+
+    it('unlocks Huge Buckets when buying 4 buckets', async () => {
+      engine.setSand(1000);
+
+      // Buy 4 buckets
+      await engine.buyTool('sand', 'Bucket', 4);
+
+      const boostState = await engine.getBoostState('Huge Buckets');
+      expect(boostState.unlocked).toBe(1);
+    });
+
+    it('unlocks multiple boosts when threshold crossed', async () => {
+      engine.setSand(1000);
+
+      // Buy 4 buckets - should unlock both Bigger and Huge Buckets
+      await engine.buyTool('sand', 'Bucket', 4);
+
+      const biggerState = await engine.getBoostState('Bigger Buckets');
+      const hugeState = await engine.getBoostState('Huge Buckets');
+
+      expect(biggerState.unlocked).toBe(1);
+      expect(hugeState.unlocked).toBe(1);
+    });
+
+    it('unlocks Helping Hand when buying first Cuegan', async () => {
+      engine.setSand(500);
+
+      await engine.buyTool('sand', 'Cuegan');
+
+      const boostState = await engine.getBoostState('Helping Hand');
+      expect(boostState.unlocked).toBe(1);
+    });
+
+    it('unlocks Cooperation at 4 Cuegans', async () => {
+      engine.setSand(2000);
+
+      await engine.buyTool('sand', 'Cuegan', 4);
+
+      const boostState = await engine.getBoostState('Cooperation');
+      expect(boostState.unlocked).toBe(1);
+    });
+
+    it('unlocks Spring Fling when buying first Trebuchet', async () => {
+      engine.setCastles(500);
+
+      await engine.buyTool('castle', 'Trebuchet');
+
+      const boostState = await engine.getBoostState('Spring Fling');
+      expect(boostState.unlocked).toBe(1);
+    });
+
+    it('unlocks Trebuchet Pong at 2 Trebuchets', async () => {
+      engine.setCastles(1000);
+
+      await engine.buyTool('castle', 'Trebuchet', 2);
+
+      const boostState = await engine.getBoostState('Trebuchet Pong');
+      expect(boostState.unlocked).toBe(1);
+    });
+
+    it('does not unlock already unlocked boosts twice', async () => {
+      engine.setSand(100);
+
+      // Buy first bucket - unlocks Bigger Buckets
+      await engine.buyTool('sand', 'Bucket');
+      let boostState = await engine.getBoostState('Bigger Buckets');
+      expect(boostState.unlocked).toBe(1);
+
+      // Buy another bucket - should not re-unlock
+      engine.setSand(100);
+      await engine.buyTool('sand', 'Bucket');
+      boostState = await engine.getBoostState('Bigger Buckets');
+      expect(boostState.unlocked).toBe(1); // Still 1, not 2
     });
   });
 });

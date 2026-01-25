@@ -11,6 +11,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement boost auto-unlock logic (#25)
 - Identify pure functions suitable for extraction and unit testing (#5)
 - Implement hybrid modernization approach (#8)
 - Analyze legacy codebase for modernization overhaul (#1)

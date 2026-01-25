@@ -15,6 +15,8 @@
 import type { BoostState, ToolState, GameData } from '../types/game-data.js';
 import type { GameEngine, GameStateSnapshot, TestAction } from '../parity/game-engine.js';
 import { SaveParser, createSaveParser } from './save-parser.js';
+import { UnlockChecker, type UnlockCheckState } from './unlock-checker.js';
+import { allUnlockRules } from './unlock-conditions.js';
 
 /**
  * Internal state for a sand tool
@@ -129,9 +131,16 @@ export class ModernEngine implements GameEngine {
   // Badge states
   private badges: Map<string, boolean> = new Map();
 
+  // Badge group counts (for unlock conditions)
+  private badgeGroupCounts: Record<string, number> = {};
+
+  // Unlock checker for auto-unlock logic
+  private unlockChecker: UnlockChecker;
+
   constructor(gameData: GameData) {
     this.gameData = gameData;
     this.saveParser = createSaveParser(gameData);
+    this.unlockChecker = new UnlockChecker(allUnlockRules);
   }
 
   /**
@@ -481,6 +490,51 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Build the state object for unlock condition checking.
+   */
+  private buildUnlockCheckState(): UnlockCheckState {
+    return {
+      sandTools: this.sandTools,
+      castleTools: this.castleTools,
+      boosts: this.boosts,
+      badges: this.badges,
+      resources: this.resources,
+      badgeGroupCounts: this.badgeGroupCounts,
+    };
+  }
+
+  /**
+   * Check and process auto-unlocks based on current state.
+   * This is called after state changes that might trigger unlocks.
+   */
+  private checkAutoUnlocks(): void {
+    const state = this.buildUnlockCheckState();
+    const toUnlock = this.unlockChecker.check(state);
+
+    for (const alias of toUnlock) {
+      this.doUnlockBoost(alias);
+    }
+  }
+
+  /**
+   * Internal unlock boost implementation.
+   * Sets the unlocked flag and calls any unlock function.
+   */
+  private doUnlockBoost(alias: string): void {
+    const state = this.boosts.get(alias);
+    if (!state) return;
+
+    // Only unlock if not already unlocked (or if it's a limited boost that can unlock multiple times)
+    const def = this.gameData.boosts[alias];
+    if (state.unlocked > 0 && !def?.department) return;
+
+    state.unlocked++;
+
+    // Unlock functions would be called here if implemented
+    // For now, just the state change is sufficient
+  }
+
+  /**
    * Advance time to trigger an ONG (newpix transition).
    */
   async advanceToONG(): Promise<void> {
@@ -611,6 +665,7 @@ export class ModernEngine implements GameEngine {
       state.amount++;
       state.bought++;
       this.syncResourceBoosts();
+      this.checkAutoUnlocks();
     }
   }
 
@@ -632,6 +687,7 @@ export class ModernEngine implements GameEngine {
       state.amount++;
       state.bought++;
       this.syncResourceBoosts();
+      this.checkAutoUnlocks();
     }
   }
 
@@ -651,6 +707,7 @@ export class ModernEngine implements GameEngine {
     if (state.unlocked > state.bought) {
       // Boost price checking deferred (issue #22)
       state.bought++;
+      this.checkAutoUnlocks();
     }
   }
 
