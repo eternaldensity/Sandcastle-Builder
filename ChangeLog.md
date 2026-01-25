@@ -1,6 +1,10 @@
 ## Changelog
 
 ### Changed
+- Add parity tests for price calculations (#30)
+- Implement boost price calculation with priceFactor (#29)
+- Implement castle tool Fibonacci price formula (#28)
+- Implement sand tool price formula (basePrice * 1.1^amount) (#27)
 - Implement click multipliers from boosts (#21)
 - Add parity comparison test between ModernEngine and LegacyEngine (#24)
 - Create modern game engine core (#12)
@@ -11,6 +15,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Extract and test price calculation formulas (#26)
 - Implement boost auto-unlock logic (#25)
 - Identify pure functions suitable for extraction and unit testing (#5)
 - Implement hybrid modernization approach (#8)

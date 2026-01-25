@@ -299,8 +299,8 @@ describe('ModernEngine', () => {
 
   describe('auto-unlock', () => {
     it('unlocks Bigger Buckets when buying first bucket', async () => {
-      // Give enough sand to buy a bucket
-      engine.setSand(100);
+      // Give enough castles to buy a bucket (sand tools cost castles!)
+      engine.setCastles(100);
 
       // Verify not unlocked initially
       let boostState = await engine.getBoostState('Bigger Buckets');
@@ -315,7 +315,8 @@ describe('ModernEngine', () => {
     });
 
     it('unlocks Huge Buckets when buying 4 buckets', async () => {
-      engine.setSand(1000);
+      // Sand tools cost castles
+      engine.setCastles(1000);
 
       // Buy 4 buckets
       await engine.buyTool('sand', 'Bucket', 4);
@@ -325,7 +326,8 @@ describe('ModernEngine', () => {
     });
 
     it('unlocks multiple boosts when threshold crossed', async () => {
-      engine.setSand(1000);
+      // Sand tools cost castles
+      engine.setCastles(1000);
 
       // Buy 4 buckets - should unlock both Bigger and Huge Buckets
       await engine.buyTool('sand', 'Bucket', 4);
@@ -338,7 +340,8 @@ describe('ModernEngine', () => {
     });
 
     it('unlocks Helping Hand when buying first Cuegan', async () => {
-      engine.setSand(500);
+      // Sand tools cost castles
+      engine.setCastles(500);
 
       await engine.buyTool('sand', 'Cuegan');
 
@@ -347,7 +350,8 @@ describe('ModernEngine', () => {
     });
 
     it('unlocks Cooperation at 4 Cuegans', async () => {
-      engine.setSand(2000);
+      // Sand tools cost castles
+      engine.setCastles(2000);
 
       await engine.buyTool('sand', 'Cuegan', 4);
 
@@ -374,7 +378,8 @@ describe('ModernEngine', () => {
     });
 
     it('does not unlock already unlocked boosts twice', async () => {
-      engine.setSand(100);
+      // Sand tools cost castles
+      engine.setCastles(100);
 
       // Buy first bucket - unlocks Bigger Buckets
       await engine.buyTool('sand', 'Bucket');
@@ -382,7 +387,7 @@ describe('ModernEngine', () => {
       expect(boostState.unlocked).toBe(1);
 
       // Buy another bucket - should not re-unlock
-      engine.setSand(100);
+      engine.setCastles(100);
       await engine.buyTool('sand', 'Bucket');
       boostState = await engine.getBoostState('Bigger Buckets');
       expect(boostState.unlocked).toBe(1); // Still 1, not 2

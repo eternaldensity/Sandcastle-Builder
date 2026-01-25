@@ -16,6 +16,17 @@ import type { BoostState, ToolState, GameData } from '../types/game-data.js';
 import type { GameEngine, GameStateSnapshot, TestAction } from '../parity/game-engine.js';
 import { SaveParser, createSaveParser } from './save-parser.js';
 import { UnlockChecker, type UnlockCheckState } from './unlock-checker.js';
+import {
+  calculateSandToolPurchasePrice,
+  calculateCastleToolPrice,
+  calculateBoostPrice,
+  calculatePriceFactor,
+  parsePriceValue,
+  isPriceFree,
+  type PriceFactorState,
+  type CastleToolPriceState,
+  CASTLE_TOOL_SEEDS,
+} from './price-calculator.js';
 import { allUnlockRules } from './unlock-conditions.js';
 
 /**
@@ -86,6 +97,13 @@ interface CastleBuildState {
 }
 
 /**
+ * Castle tool price cache - stores Fibonacci state per tool
+ */
+interface CastleToolPriceCache {
+  [toolName: string]: CastleToolPriceState;
+}
+
+/**
  * ModernEngine implements the game logic in TypeScript.
  */
 export class ModernEngine implements GameEngine {
@@ -120,6 +138,12 @@ export class ModernEngine implements GameEngine {
     nextCastleSand: 1,
     totalBuilt: 0,
   };
+
+  // Current price factor (1 = normal, <1 = discounted)
+  private priceFactor = 1;
+
+  // Castle tool price cache
+  private castleToolPrices: CastleToolPriceCache = {};
 
   // Tool states
   private sandTools: Map<string, SandToolState> = new Map();
@@ -649,6 +673,8 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Buy a sand tool.
+   * Note: Sand tools cost CASTLES, not sand!
+   * Formula: floor(priceFactor * basePrice * (1.1 ^ amount))
    */
   private buySandTool(name: string): void {
     const state = this.sandTools.get(name);
@@ -657,32 +683,15 @@ export class ModernEngine implements GameEngine {
     const toolDef = this.gameData.sandTools.find(t => t.name === name);
     if (!toolDef) return;
 
-    // Calculate price (simplified - actual formula is more complex)
-    const price = toolDef.basePrice * Math.pow(1.1, state.bought);
+    // Calculate price using proper formula
+    const price = calculateSandToolPurchasePrice(
+      toolDef.basePrice,
+      state.amount,
+      this.priceFactor
+    );
 
-    if (this.resources.sand >= price) {
-      this.resources.sand -= price;
-      state.amount++;
-      state.bought++;
-      this.syncResourceBoosts();
-      this.checkAutoUnlocks();
-    }
-  }
-
-  /**
-   * Buy a castle tool.
-   */
-  private buyCastleTool(name: string): void {
-    const state = this.castleTools.get(name);
-    if (!state) return;
-
-    const toolDef = this.gameData.castleTools.find(t => t.name === name);
-    if (!toolDef) return;
-
-    // Castle tools cost castles (simplified)
-    const price = toolDef.basePrice * Math.pow(1.1, state.bought);
-
-    if (this.resources.castles >= price) {
+    // Sand tools cost castles
+    if (isFinite(price) && this.resources.castles >= price) {
       this.resources.castles -= price;
       state.amount++;
       state.bought++;
@@ -692,7 +701,44 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Buy a castle tool.
+   * Uses Fibonacci sequence pricing with price0/price1 seeds.
+   * Formula: floor(priceFactor * fibonacciPrice)
+   */
+  private buyCastleTool(name: string): void {
+    const state = this.castleTools.get(name);
+    if (!state) return;
+
+    // Get Fibonacci seeds for this tool
+    const seeds = CASTLE_TOOL_SEEDS[name];
+    if (!seeds) return;
+
+    // Calculate Fibonacci price
+    const priceState = calculateCastleToolPrice(
+      seeds.price0,
+      seeds.price1,
+      state.amount
+    );
+
+    // Apply priceFactor
+    const price = Math.floor(this.priceFactor * priceState.price);
+
+    if (isFinite(price) && this.resources.castles >= price) {
+      this.resources.castles -= price;
+      state.amount++;
+      state.bought++;
+
+      // Cache the updated price state for next purchase
+      this.castleToolPrices[name] = priceState;
+
+      this.syncResourceBoosts();
+      this.checkAutoUnlocks();
+    }
+  }
+
+  /**
    * Buy/unlock a boost.
+   * Applies priceFactor to boost price and checks affordability.
    */
   async buyBoost(alias: string): Promise<void> {
     this.ensureInitialized();
@@ -705,9 +751,78 @@ export class ModernEngine implements GameEngine {
 
     // Check if unlocked but not bought
     if (state.unlocked > state.bought) {
-      // Boost price checking deferred (issue #22)
+      // Calculate price with priceFactor applied
+      const realPrice = calculateBoostPrice(def.price, this.priceFactor);
+      const isFree = isPriceFree(realPrice);
+
+      // Check if we can afford it
+      if (!isFree && !this.canAffordPrice(realPrice)) {
+        return; // Can't afford
+      }
+
+      // Spend the resources
+      if (!isFree) {
+        this.spendPrice(realPrice);
+      }
+
       state.bought++;
       this.checkAutoUnlocks();
+    }
+  }
+
+  /**
+   * Check if player can afford a price.
+   */
+  private canAffordPrice(price: Record<string, number>): boolean {
+    for (const [resource, amount] of Object.entries(price)) {
+      const current = this.getResourceAmount(resource);
+      if (current < amount) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Spend resources for a price.
+   */
+  private spendPrice(price: Record<string, number>): void {
+    for (const [resource, amount] of Object.entries(price)) {
+      this.subtractResource(resource, amount);
+    }
+    this.syncResourceBoosts();
+  }
+
+  /**
+   * Get current amount of a resource.
+   */
+  private getResourceAmount(resource: string): number {
+    switch (resource) {
+      case 'Sand': return this.resources.sand;
+      case 'Castles': return this.resources.castles;
+      case 'GlassChips': return this.resources.glassChips;
+      case 'GlassBlocks': return this.resources.glassBlocks;
+      default: return 0;
+    }
+  }
+
+  /**
+   * Subtract from a resource.
+   */
+  private subtractResource(resource: string, amount: number): void {
+    switch (resource) {
+      case 'Sand':
+        this.resources.sand -= amount;
+        break;
+      case 'Castles':
+        this.resources.castles -= amount;
+        break;
+      case 'GlassChips':
+        this.resources.glassChips -= amount;
+        break;
+      case 'GlassBlocks':
+        this.resources.glassBlocks -= amount;
+        break;
     }
   }
 
@@ -724,6 +839,37 @@ export class ModernEngine implements GameEngine {
 
     // Toggle IsEnabled would be tracked in extra state
     // For now, this is a placeholder
+  }
+
+  /**
+   * Recalculate priceFactor based on active discount boosts.
+   * Called after boost purchases or countdown changes.
+   */
+  private recalculatePriceFactor(): void {
+    const ashfState = this.boosts.get('ASHF');
+    const familyDiscountState = this.boosts.get('FamilyDiscount');
+
+    // ASHF is active if bought and has remaining countdown
+    const hasASHF = !!ashfState && ashfState.bought > 0 && ashfState.countdown > 0;
+    const ashfPower = hasASHF ? (ashfState?.power ?? 0.4) : 0;
+
+    // Family Discount is a permanent boost
+    const hasFamilyDiscount = !!familyDiscountState && familyDiscountState.bought > 0;
+
+    const state: PriceFactorState = {
+      hasASHF,
+      ashfPower,
+      hasFamilyDiscount,
+    };
+
+    this.priceFactor = calculatePriceFactor(state);
+  }
+
+  /**
+   * Get current price factor (for testing/debugging).
+   */
+  getPriceFactor(): number {
+    return this.priceFactor;
   }
 
   /**
