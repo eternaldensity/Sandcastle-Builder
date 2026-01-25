@@ -75,6 +75,15 @@ interface Resources {
 }
 
 /**
+ * Castle building state - tracks Fibonacci cost sequence
+ */
+interface CastleBuildState {
+  prevCastleSand: number;
+  nextCastleSand: number;
+  totalBuilt: number;
+}
+
+/**
  * ModernEngine implements the game logic in TypeScript.
  */
 export class ModernEngine implements GameEngine {
@@ -101,6 +110,13 @@ export class ModernEngine implements GameEngine {
     castles: 0,
     glassChips: 0,
     glassBlocks: 0,
+  };
+
+  // Castle building state (Fibonacci sequence for sand cost)
+  private castleBuild: CastleBuildState = {
+    prevCastleSand: 0,
+    nextCastleSand: 1,
+    totalBuilt: 0,
   };
 
   // Tool states
@@ -499,7 +515,7 @@ export class ModernEngine implements GameEngine {
     this.core.beachClicks++;
 
     // Base sand per click (simplified)
-    let sandGained = 1;
+    const sandGained = 1;
 
     // Click multipliers from boosts deferred (issue #21)
 
@@ -508,6 +524,40 @@ export class ModernEngine implements GameEngine {
 
     // Check for badge unlocks
     this.checkClickBadges();
+
+    // Auto-convert sand to castles (like legacy toCastles)
+    this.toCastles();
+  }
+
+  /**
+   * Auto-convert sand to castles using Fibonacci cost sequence.
+   * Matches legacy Molpy.Boosts['Sand'].toCastles() behavior.
+   */
+  private toCastles(): void {
+    // Convert sand to castles while we have enough
+    while (this.resources.sand >= this.castleBuild.nextCastleSand &&
+           isFinite(this.resources.castles)) {
+      // Build one castle (Fractal Sandcastles boost not implemented yet)
+      this.resources.castles++;
+      this.castleBuild.totalBuilt++;
+
+      // Spend sand
+      this.resources.sand -= this.castleBuild.nextCastleSand;
+
+      // Advance Fibonacci sequence for castle cost
+      const currentCost = this.castleBuild.nextCastleSand;
+      this.castleBuild.nextCastleSand = this.castleBuild.prevCastleSand + currentCost;
+      this.castleBuild.prevCastleSand = currentCost;
+
+      // Safety check for infinite/invalid state
+      if (!isFinite(this.resources.sand) || this.castleBuild.nextCastleSand <= 0) {
+        this.castleBuild.nextCastleSand = 1;
+        this.resources.castles = Infinity;
+        break;
+      }
+    }
+
+    this.syncResourceBoosts();
   }
 
   /**

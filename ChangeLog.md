@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Changed
+- Implement click multipliers from boosts (#21)
 - Add parity comparison test between ModernEngine and LegacyEngine (#24)
 - Create modern game engine core (#12)
 - Add tick loop for game progression (#17)

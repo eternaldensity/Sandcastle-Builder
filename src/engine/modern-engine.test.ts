@@ -218,18 +218,23 @@ describe('ModernEngine', () => {
       expect(snapshot.beachClicks).toBe(5);
     });
 
-    it('adds sand on click', async () => {
+    it('digs sand and auto-converts to castles', async () => {
       await engine.clickBeach(10);
       const snapshot = await engine.getStateSnapshot();
 
-      expect(snapshot.sand).toBe(10);
+      // 10 clicks = 10 sand dug
+      // Fibonacci castle costs: 1, 1, 2, 3 = 7 sand for 4 castles
+      // Remaining: 10 - 7 = 3 sand
+      expect(snapshot.castles).toBe(4);
+      expect(snapshot.sand).toBe(3);
     });
 
-    it('syncs sand to boost power', async () => {
+    it('syncs sand to boost power after conversion', async () => {
       await engine.clickBeach(10);
       const sandBoost = await engine.getBoostState('Sand');
 
-      expect(sandBoost.power).toBe(10);
+      // After Fibonacci castle conversion, 3 sand remains
+      expect(sandBoost.power).toBe(3);
     });
   });
 

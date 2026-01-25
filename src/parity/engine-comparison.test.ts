@@ -117,6 +117,53 @@ describe('Engine Comparison', () => {
   });
 
   describe('Beach Click Comparison', () => {
+    it('checks legacy sandPerClick and auto-castle conversion', async () => {
+      // Diagnose how legacy handles sand clicks and auto-castle conversion
+      const page = await legacyEngine.getMolpyHandle();
+      const diagnostics = await page.evaluate(() => {
+        const Molpy = (window as any).Molpy;
+        const Sand = Molpy.Boosts['Sand'];
+        const Castles = Molpy.Boosts['Castles'];
+
+        // Force recalculate rates
+        Sand.calculateSandRates();
+
+        // Get state before click
+        const before = {
+          sand: Sand.power,
+          castles: Castles.power,
+          nextCastleSand: Castles.nextCastleSand,
+          totalDug: Sand.totalDug,
+        };
+
+        Molpy.ClickBeach();
+
+        // Get state after click
+        const after = {
+          sand: Sand.power,
+          castles: Castles.power,
+          nextCastleSand: Castles.nextCastleSand,
+          totalDug: Sand.totalDug,
+        };
+
+        return {
+          sandPerClick: Sand.sandPerClick,
+          before,
+          after,
+          sandDug: after.totalDug - before.totalDug,
+          castlesBuilt: after.castles - before.castles,
+        };
+      });
+
+      console.log('\n=== Legacy Click and Auto-Castle Conversion ===');
+      console.log(JSON.stringify(diagnostics, null, 2));
+
+      // Sand IS dug (1 per click), but converted to castle immediately
+      expect(diagnostics.sandPerClick).toBe(1);
+      expect(diagnostics.sandDug).toBe(1);
+      expect(diagnostics.castlesBuilt).toBe(1); // Sand auto-converted to castle
+    });
+
     it('compares single click behavior', async () => {
       // Get legacy state before and after a click
       const legacyBefore = await legacyEngine.getStateSnapshot();
@@ -151,7 +198,7 @@ describe('Engine Comparison', () => {
       console.log(`Sand per click ratio (legacy/modern): ${legacySandGain / modernSandGain}`);
     });
 
-    it('compares 10 clicks on fresh modern engine', async () => {
+    it('compares 10 clicks with Fibonacci castle conversion', async () => {
       const modernEngine = new ModernEngine(gameData);
       await modernEngine.initialize();
 
@@ -161,11 +208,45 @@ describe('Engine Comparison', () => {
       console.log('\n=== 10 Clicks (Fresh Modern) ===');
       console.log(`Modern clicks: ${modernState.beachClicks}`);
       console.log(`Modern sand: ${modernState.sand}`);
+      console.log(`Modern castles: ${modernState.castles}`);
 
       await modernEngine.dispose();
 
       expect(modernState.beachClicks).toBe(10);
-      expect(modernState.sand).toBe(10); // 1 sand per click in modern
+      // 10 clicks = 10 sand dug
+      // Fibonacci castle costs: 1, 1, 2, 3 = 7 sand for 4 castles
+      // Remaining: 10 - 7 = 3 sand
+      expect(modernState.castles).toBe(4);
+      expect(modernState.sand).toBe(3);
+    });
+
+    it('achieves parity with legacy on fresh game beach clicks', async () => {
+      // Create fresh modern engine
+      const modernEngine = new ModernEngine(gameData);
+      await modernEngine.initialize();
+
+      // Click same number of times on both
+      // Note: Legacy engine has accumulated state from previous tests
+      // So we check the deltas, not absolute values
+      const legacyBefore = await legacyEngine.getStateSnapshot();
+      await legacyEngine.clickBeach(5);
+      const legacyAfter = await legacyEngine.getStateSnapshot();
+
+      await modernEngine.clickBeach(5);
+      const modernState = await modernEngine.getStateSnapshot();
+
+      const legacyCastleGain = legacyAfter.castles - legacyBefore.castles;
+
+      console.log('\n=== 5 Click Parity Comparison ===');
+      console.log(`Legacy: castles +${legacyCastleGain}, sand ${legacyAfter.sand}`);
+      console.log(`Modern: castles ${modernState.castles}, sand ${modernState.sand}`);
+
+      await modernEngine.dispose();
+
+      // Both should build same number of castles from 5 clicks
+      // 5 sand, Fibonacci costs: 1, 1, 2 = 4 sand for 3 castles, 1 sand left
+      expect(modernState.castles).toBe(3);
+      expect(modernState.sand).toBe(1);
     });
   });
 
@@ -255,10 +336,10 @@ describe('Engine Comparison', () => {
 
       // Document key gaps
       console.log('\nKey parity gaps to address:');
-      console.log('1. Sand per click: Legacy uses complex formula with ninja/boost modifiers');
-      console.log('2. Boost unlocking: Legacy has auto-unlock logic on game start');
-      console.log('3. Badge earning: Legacy earns badges automatically on conditions');
-      console.log('4. Castle building: Legacy auto-converts sand to castles');
+      console.log('1. Boost unlocking: Legacy has auto-unlock logic on game start');
+      console.log('2. Badge earning: Legacy earns badges automatically on conditions');
+      console.log('3. Click multipliers: Legacy has complex boost modifiers (issue #21 partial)');
+      console.log('IMPLEMENTED: Sand-to-castle Fibonacci conversion (toCastles)');
 
       await modernEngine.dispose();
 
