@@ -15,13 +15,39 @@ const WIKI_BASE = 'https://xkcd-time.fandom.com/wiki';
 
 // Pages to scrape with their output paths
 const PAGES_TO_SCRAPE = [
+    // Core pages
     { url: 'Sandcastle_Builder', output: 'index.md', title: 'Sandcastle Builder' },
     { url: 'Sandcastle_Builder_Strategy_Guide', output: 'strategy-guide.md', title: 'Strategy Guide' },
+    { url: 'Glossary', output: 'glossary.md', title: 'Glossary' },
+
+    // Game elements
     { url: 'Boosts', output: 'boosts/_index.md', title: 'Boosts' },
     { url: 'Badges', output: 'badges/_index.md', title: 'Badges' },
-    { url: 'Glossary', output: 'glossary.md', title: 'Glossary' },
-    { url: 'Redundakitties', output: 'systems/redundakitties.md', title: 'Redundakitties' },
+    { url: 'Discoveries', output: 'badges/discoveries.md', title: 'Discoveries' },
+
+    // Tools
+    { url: 'Sand_Tools', output: 'tools/sand-tools.md', title: 'Sand Tools' },
+    { url: 'Castle_Tools', output: 'tools/castle-tools.md', title: 'Castle Tools' },
+
+    // Mechanics
     { url: 'Glass', output: 'mechanics/glass.md', title: 'Glass' },
+    { url: 'Ninja', output: 'mechanics/ninja.md', title: 'Ninja' },
+    { url: 'ONG', output: 'mechanics/ong.md', title: 'ONG' },
+    { url: 'Newpix', output: 'mechanics/newpix.md', title: 'Newpix' },
+    { url: 'Judgement_Dip', output: 'mechanics/judgement-dip.md', title: 'Judgement Dip' },
+
+    // Systems
+    { url: 'Redundakitties', output: 'systems/redundakitties.md', title: 'Redundakitties' },
+    { url: 'Dragons', output: 'systems/dragons.md', title: 'Dragons' },
+    // Note: Logicats and Time_Travel pages don't exist (404) - info is in boosts page
+
+    // Tools (individual)
+    { url: 'Newpixbot', output: 'tools/newpixbot.md', title: 'NewPixBot' },
+    { url: 'Trebuchet', output: 'tools/trebuchet.md', title: 'Trebuchet' },
+
+    // Community/Reference
+    { url: 'OTC', output: 'reference/otc.md', title: 'OTC' },
+    { url: 'Abbreviations', output: 'reference/abbreviations.md', title: 'Abbreviations' },
 ];
 
 // Output directory

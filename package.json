@@ -1,0 +1,28 @@
+{
+  "name": "sandcastle-builder",
+  "version": "1.0.0",
+  "description": "xkcd: 1190: Time: The Game",
+  "main": "badges.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eternaldensity/Sandcastle-Builder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/eternaldensity/Sandcastle-Builder/issues"
+  },
+  "homepage": "https://github.com/eternaldensity/Sandcastle-Builder#readme",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "node-fetch": "^3.3.2"
+  }
+}
