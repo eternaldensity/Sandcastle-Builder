@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Changed
+- Add parity comparison test between ModernEngine and LegacyEngine (#24)
 - Create modern game engine core (#12)
 - Add tick loop for game progression (#17)
 - Add basic resource tracking (sand, castles, glass) (#16)
@@ -9,6 +10,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement hybrid modernization approach (#8)
 - Analyze legacy codebase for modernization overhaul (#1)
 
 ### 4.12 Precondition Failed
