@@ -25,6 +25,10 @@ import {
   calculateSandToCastles,
   SAND_TOOL_BASE_PRICES,
   CASTLE_TOOL_SEEDS,
+  CASTLE_TOOL_RATES,
+  calculateActivatableTools,
+  calculateCastleProduction,
+  calculateToolCycleResult,
 } from './price-calculator.js';
 
 // =============================================================================
@@ -470,5 +474,102 @@ describe('CASTLE_TOOL_SEEDS', () => {
     expect(CASTLE_TOOL_SEEDS['Wave']).toEqual({ price0: 300, price1: 80 });
     expect(CASTLE_TOOL_SEEDS['River']).toEqual({ price0: 700, price1: 200 });
     expect(CASTLE_TOOL_SEEDS['Beanie Builder']).toEqual({ price0: 1e10, price1: 1e9 });
+  });
+});
+
+// =============================================================================
+// Castle Tool Production tests
+// =============================================================================
+
+describe('CASTLE_TOOL_RATES', () => {
+  it('should have correct base rates from tools.js', () => {
+    expect(CASTLE_TOOL_RATES['NewPixBot']).toEqual({ baseDestroyC: 0, baseBuildC: 1 });
+    expect(CASTLE_TOOL_RATES['Trebuchet']).toEqual({ baseDestroyC: 2, baseBuildC: 4 });
+    expect(CASTLE_TOOL_RATES['Scaffold']).toEqual({ baseDestroyC: 6, baseBuildC: 22 });
+    expect(CASTLE_TOOL_RATES['Wave']).toEqual({ baseDestroyC: 24, baseBuildC: 111 });
+    expect(CASTLE_TOOL_RATES['River']).toEqual({ baseDestroyC: 160, baseBuildC: 690 });
+    expect(CASTLE_TOOL_RATES['Beanie Builder']).toEqual({ baseDestroyC: 1e210, baseBuildC: 10e210 });
+  });
+});
+
+describe('calculateActivatableTools', () => {
+  it('should activate all tools when cost is zero', () => {
+    expect(calculateActivatableTools(10, 0, 100)).toBe(10);
+    expect(calculateActivatableTools(5, 0, 0)).toBe(5);
+  });
+
+  it('should activate tools up to affordable amount', () => {
+    // 10 castles, 2 cost per tool = 5 tools
+    expect(calculateActivatableTools(10, 2, 10)).toBe(5);
+    // 100 castles, 24 cost per tool = 4 tools
+    expect(calculateActivatableTools(10, 24, 100)).toBe(4);
+  });
+
+  it('should not exceed tool amount', () => {
+    // 5 tools, 2 cost, 100 castles = min(5, 50) = 5
+    expect(calculateActivatableTools(5, 2, 100)).toBe(5);
+  });
+
+  it('should return 0 when no castles available', () => {
+    expect(calculateActivatableTools(10, 2, 0)).toBe(0);
+    expect(calculateActivatableTools(10, 2, 1)).toBe(0);
+  });
+
+  it('should floor the affordable calculation', () => {
+    // 7 castles, 2 cost = floor(3.5) = 3 tools
+    expect(calculateActivatableTools(10, 2, 7)).toBe(3);
+  });
+});
+
+describe('calculateCastleProduction', () => {
+  it('should multiply active tools by build rate', () => {
+    expect(calculateCastleProduction(5, 4)).toBe(20);
+    expect(calculateCastleProduction(3, 22)).toBe(66);
+    expect(calculateCastleProduction(2, 111)).toBe(222);
+  });
+
+  it('should return 0 for no active tools', () => {
+    expect(calculateCastleProduction(0, 100)).toBe(0);
+  });
+
+  it('should floor the result', () => {
+    // This is already floored in the function
+    expect(calculateCastleProduction(3, 10)).toBe(30);
+  });
+});
+
+describe('calculateToolCycleResult', () => {
+  it('should calculate full cycle for Trebuchet', () => {
+    // 5 Trebuchets, destroyC=2, buildC=4, 100 castles
+    const result = calculateToolCycleResult(5, 2, 4, 100);
+    expect(result.activated).toBe(5);
+    expect(result.destroyed).toBe(10); // 5 * 2
+    expect(result.built).toBe(20); // 5 * 4
+    expect(result.netChange).toBe(10); // 20 - 10
+  });
+
+  it('should handle partial activation when low on castles', () => {
+    // 10 Trebuchets, destroyC=2, buildC=4, only 5 castles
+    const result = calculateToolCycleResult(10, 2, 4, 5);
+    expect(result.activated).toBe(2); // floor(5/2) = 2
+    expect(result.destroyed).toBe(4); // 2 * 2
+    expect(result.built).toBe(8); // 2 * 4
+    expect(result.netChange).toBe(4); // 8 - 4
+  });
+
+  it('should return zeros when no tools can be activated', () => {
+    const result = calculateToolCycleResult(10, 100, 200, 50);
+    expect(result.activated).toBe(0);
+    expect(result.destroyed).toBe(0);
+    expect(result.built).toBe(0);
+    expect(result.netChange).toBe(0);
+  });
+
+  it('should handle zero destroy cost (like NewPixBot)', () => {
+    const result = calculateToolCycleResult(10, 0, 1, 0);
+    expect(result.activated).toBe(10);
+    expect(result.destroyed).toBe(0);
+    expect(result.built).toBe(10);
+    expect(result.netChange).toBe(10);
   });
 });

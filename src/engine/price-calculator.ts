@@ -425,3 +425,119 @@ export const CASTLE_TOOL_SEEDS: Record<string, { price0: number; price1: number 
   'River': { price0: 700, price1: 200 },
   'Beanie Builder': { price0: 1e10, price1: 1e9 },
 };
+
+// =============================================================================
+// Castle Tool Production Rates
+// =============================================================================
+
+/**
+ * Castle tool production data.
+ * Each tool has destroyC (cost to activate) and buildC (output when active).
+ * Reference: tools.js DefineCastleTools()
+ *
+ * Note: In legacy code, these are functions with boost modifiers.
+ * These are the BASE values before any boosts are applied.
+ */
+export interface CastleToolRates {
+  /** Base castles destroyed to activate one tool */
+  baseDestroyC: number;
+  /** Base castles built per active tool */
+  baseBuildC: number;
+}
+
+/**
+ * Base castle tool rates (before boost modifiers).
+ * Reference: tools.js DefineCastleTools()
+ */
+export const CASTLE_TOOL_RATES: Record<string, CastleToolRates> = {
+  // NewPixBot: special - only builds at ONG, destroyC=0
+  'NewPixBot': { baseDestroyC: 0, baseBuildC: 1 },
+  // Trebuchet: destroyC=2 (1 with War Banner), buildC=4
+  'Trebuchet': { baseDestroyC: 2, baseBuildC: 4 },
+  // Scaffold: destroyC=6, buildC=22
+  'Scaffold': { baseDestroyC: 6, baseBuildC: 22 },
+  // Wave: destroyC=24, buildC=111
+  'Wave': { baseDestroyC: 24, baseBuildC: 111 },
+  // River: destroyC=160, buildC=690
+  'River': { baseDestroyC: 160, baseBuildC: 690 },
+  // Beanie Builder: destroyC=1Q, buildC=10Q
+  'Beanie Builder': { baseDestroyC: 1e210, baseBuildC: 10e210 },
+};
+
+/**
+ * Calculate how many castle tools can be activated given available castles.
+ *
+ * Formula: min(toolAmount, floor(castles / destroyCost))
+ * Reference: castle.js:1036-1037
+ *
+ * @param toolAmount - Number of tools owned
+ * @param destroyCost - Castles destroyed per tool activation
+ * @param availableCastles - Current castle count
+ * @returns Number of tools that can be activated
+ */
+export function calculateActivatableTools(
+  toolAmount: number,
+  destroyCost: number,
+  availableCastles: number
+): number {
+  if (destroyCost <= 0) {
+    // Zero cost means all tools can be activated
+    return toolAmount;
+  }
+
+  const affordable = Math.floor(availableCastles / destroyCost);
+  return Math.min(toolAmount, affordable);
+}
+
+/**
+ * Calculate castle production from active tools.
+ *
+ * Formula: activeTools * buildRate
+ * Reference: castle.js:1055-1056
+ *
+ * @param activeTools - Number of activated tools
+ * @param buildRate - Castles built per active tool
+ * @returns Total castles produced
+ */
+export function calculateCastleProduction(
+  activeTools: number,
+  buildRate: number
+): number {
+  return Math.floor(activeTools * buildRate);
+}
+
+/**
+ * Calculate net castle change from a tool's destroy and build phases.
+ *
+ * This is the net effect of:
+ * 1. Destroying castles to activate tools
+ * 2. Building castles from active tools
+ *
+ * @param toolAmount - Number of tools owned
+ * @param destroyCost - Castles destroyed per tool
+ * @param buildRate - Castles built per active tool
+ * @param availableCastles - Current castle count
+ * @returns Object with activated tools, destroyed, built, and net change
+ */
+export function calculateToolCycleResult(
+  toolAmount: number,
+  destroyCost: number,
+  buildRate: number,
+  availableCastles: number
+): {
+  activated: number;
+  destroyed: number;
+  built: number;
+  netChange: number;
+} {
+  const activated = calculateActivatableTools(toolAmount, destroyCost, availableCastles);
+  const destroyed = activated * destroyCost;
+  const built = calculateCastleProduction(activated, buildRate);
+
+  return {
+    activated,
+    destroyed,
+    built,
+    netChange: built - destroyed,
+  };
+}

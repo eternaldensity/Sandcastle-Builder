@@ -393,4 +393,97 @@ describe('ModernEngine', () => {
       expect(boostState.unlocked).toBe(1); // Still 1, not 2
     });
   });
+
+  describe('Castle Tool Production', () => {
+    it('processes castle tools in tick (Trebuchet)', async () => {
+      // Buy a Trebuchet and give it castles to work with
+      engine.setCastles(10000);
+      await engine.buyTool('castle', 'Trebuchet'); // costs ~14 castles
+
+      const state = await engine.getStateSnapshot();
+      const trebuchetState = state.castleTools['Trebuchet'];
+      expect(trebuchetState.amount).toBe(1);
+
+      // Record castles before tick
+      const castlesBefore = state.castles;
+
+      // Run a tick - Trebuchet should destroy 2 and build 4 (net +2)
+      await engine.tick(1);
+
+      const stateAfter = await engine.getStateSnapshot();
+      // Trebuchet: destroyC=2, buildC=4, net=+2 per tool
+      expect(stateAfter.castles).toBe(castlesBefore + 2);
+    });
+
+    it('handles multiple castle tools', async () => {
+      engine.setCastles(100000);
+
+      // Buy 3 Trebuchets
+      await engine.buyTool('castle', 'Trebuchet', 3);
+
+      const state = await engine.getStateSnapshot();
+      expect(state.castleTools['Trebuchet'].amount).toBe(3);
+
+      const castlesBefore = state.castles;
+
+      // Run a tick - 3 Trebuchets: destroy 6, build 12 (net +6)
+      await engine.tick(1);
+
+      const stateAfter = await engine.getStateSnapshot();
+      expect(stateAfter.castles).toBe(castlesBefore + 6);
+    });
+
+    it('only activates tools it can afford', async () => {
+      engine.setCastles(1000);
+      await engine.buyTool('castle', 'Trebuchet', 5);
+
+      // Set castles to only afford 2 Trebuchets (destroyC=2 each, so 4 castles)
+      engine.setCastles(5);
+
+      // Run a tick - only 2 tools can activate
+      await engine.tick(1);
+
+      const state = await engine.getStateSnapshot();
+      // Started with 5, destroyed 4 (2*2), built 8 (2*4), net = 5 - 4 + 8 = 9
+      expect(state.castles).toBe(9);
+    });
+
+    it('does not process NewPixBot during tick', async () => {
+      engine.setCastles(100);
+      await engine.buyTool('castle', 'NewPixBot');
+
+      const castlesBefore = (await engine.getStateSnapshot()).castles;
+
+      // NewPixBot only produces at ONG, not during ticks
+      await engine.tick(10);
+
+      const castlesAfter = (await engine.getStateSnapshot()).castles;
+      expect(castlesAfter).toBe(castlesBefore);
+    });
+
+    it('calculates castle rate correctly', async () => {
+      engine.setCastles(100000);
+
+      // Buy 2 Trebuchets (net +2 each = +4 total)
+      await engine.buyTool('castle', 'Trebuchet', 2);
+
+      const rate = await engine.getCastleRate();
+      expect(rate).toBe(4); // 2 * (4 - 2) = 4
+    });
+
+    it('tracks totalCastlesBuilt and totalCastlesDestroyed', async () => {
+      engine.setCastles(10000);
+      await engine.buyTool('castle', 'Trebuchet');
+
+      // Run 5 ticks
+      await engine.tick(5);
+
+      const state = await engine.getStateSnapshot();
+      const trebuchetState = state.castleTools['Trebuchet'];
+
+      // 5 ticks * 1 tool: destroy 10 (5*2), build 20 (5*4)
+      expect(trebuchetState.totalCastlesDestroyed).toBe(10);
+      expect(trebuchetState.totalCastlesBuilt).toBe(20);
+    });
+  });
 });
