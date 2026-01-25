@@ -34,6 +34,10 @@ import {
   CASTLE_TOOL_RATES,
 } from './price-calculator.js';
 import { allUnlockRules } from './unlock-conditions.js';
+import {
+  getBoostFunctions,
+  type BoostFunctionContext,
+} from './boost-functions.js';
 
 /**
  * Internal state for a sand tool
@@ -65,7 +69,10 @@ interface CastleToolState {
  * Internal boost state with all fields
  */
 interface InternalBoostState extends BoostState {
-  // Additional runtime fields can be added here
+  /** Whether this toggle boost is enabled */
+  isEnabled?: boolean;
+  /** Whether this boost is permanently locked (cannot be unlocked again) */
+  permalock?: boolean;
 }
 
 /**
@@ -687,14 +694,20 @@ export class ModernEngine implements GameEngine {
     const state = this.boosts.get(alias);
     if (!state) return;
 
+    // Check if permalocked - cannot unlock again
+    if (state.permalock) return;
+
     // Only unlock if not already unlocked (or if it's a limited boost that can unlock multiple times)
     const def = this.gameData.boosts[alias];
     if (state.unlocked > 0 && !def?.department) return;
 
     state.unlocked++;
 
-    // Unlock functions would be called here if implemented
-    // For now, just the state change is sufficient
+    // Call boost's unlockFunction if registered
+    const functions = getBoostFunctions(alias);
+    if (functions?.unlockFunction) {
+      functions.unlockFunction(this.createBoostFunctionContext(alias));
+    }
   }
 
   /**
@@ -1575,6 +1588,12 @@ export class ModernEngine implements GameEngine {
       state.bought++;
       this.checkAutoUnlocks();
 
+      // Call boost's buyFunction if registered
+      const functions = getBoostFunctions(alias);
+      if (functions?.buyFunction) {
+        functions.buyFunction(this.createBoostFunctionContext(alias));
+      }
+
       // Recalculate rates after boost purchase
       this.recalculatePriceFactor();
       this.recalculateSandPerClick();
@@ -1699,8 +1718,127 @@ export class ModernEngine implements GameEngine {
 
     if (!state || !def || !def.isToggle) return;
 
-    // Toggle IsEnabled would be tracked in extra state
-    // For now, this is a placeholder
+    // Toggle isEnabled state
+    state.isEnabled = !state.isEnabled;
+  }
+
+  /**
+   * Lock a boost (reset bought and unlocked to 0).
+   * Calls the boost's lockFunction if registered.
+   * Reference: castle.js Molpy.LockBoost
+   */
+  lockBoost(alias: string): void {
+    this.ensureInitialized();
+
+    const state = this.boosts.get(alias);
+    if (!state) return;
+
+    // Call boost's lockFunction before resetting state
+    const functions = getBoostFunctions(alias);
+    if (functions?.lockFunction) {
+      functions.lockFunction(this.createBoostFunctionContext(alias));
+    }
+
+    // Reset the boost state
+    state.bought = 0;
+    state.unlocked = 0;
+
+    // Recalculate rates after lock
+    this.recalculatePriceFactor();
+    this.recalculateSandPerClick();
+  }
+
+  /**
+   * Permalock a boost (prevents it from being unlocked again).
+   */
+  permalockBoost(alias: string): void {
+    this.ensureInitialized();
+
+    const state = this.boosts.get(alias);
+    if (state) {
+      state.permalock = true;
+    }
+  }
+
+  // ===========================================================================
+  // Boost Function Context
+  // ===========================================================================
+
+  /**
+   * Create a context object for boost function calls.
+   * This provides a controlled interface for boost functions to interact with engine state.
+   */
+  private createBoostFunctionContext(alias: string): BoostFunctionContext {
+    const state = this.boosts.get(alias);
+
+    return {
+      boostAlias: alias,
+      boostPower: state?.power ?? 0,
+      boostCountdown: state?.countdown ?? 0,
+      boostBought: state?.bought ?? 0,
+
+      // Engine queries
+      getBeachClicks: () => this.core.beachClicks,
+      getResource: (name) => {
+        switch (name) {
+          case 'sand': return this.resources.sand;
+          case 'castles': return this.resources.castles;
+          case 'glassChips': return this.resources.glassChips;
+          case 'glassBlocks': return this.resources.glassBlocks;
+        }
+      },
+      getBoostPower: (boostAlias) => this.boosts.get(boostAlias)?.power ?? 0,
+      getBoostBought: (boostAlias) => this.boosts.get(boostAlias)?.bought ?? 0,
+      isBoostEnabled: (boostAlias) => {
+        const boost = this.boosts.get(boostAlias);
+        return boost?.bought ? (boost.isEnabled ?? true) : false;
+      },
+
+      // Engine mutations
+      setBoostPower: (boostAlias, power) => {
+        const boost = this.boosts.get(boostAlias);
+        if (boost) {
+          boost.power = power;
+          this.syncResourceBoosts();
+        }
+      },
+      setBoostCountdown: (boostAlias, countdown) => {
+        const boost = this.boosts.get(boostAlias);
+        if (boost) {
+          boost.countdown = countdown;
+        }
+      },
+      addResource: (name, amount) => {
+        switch (name) {
+          case 'sand': this.resources.sand += amount; break;
+          case 'castles': this.resources.castles += amount; break;
+          case 'glassChips': this.resources.glassChips += amount; break;
+          case 'glassBlocks': this.resources.glassBlocks += amount; break;
+        }
+        this.syncResourceBoosts();
+      },
+      subtractResource: (name, amount) => {
+        switch (name) {
+          case 'sand': this.resources.sand -= amount; break;
+          case 'castles': this.resources.castles -= amount; break;
+          case 'glassChips': this.resources.glassChips -= amount; break;
+          case 'glassBlocks': this.resources.glassBlocks -= amount; break;
+        }
+        this.syncResourceBoosts();
+      },
+      lockBoost: (boostAlias) => this.lockBoost(boostAlias),
+      unlockBoost: (boostAlias) => this.doUnlockBoost(boostAlias),
+      permalockBoost: (boostAlias) => this.permalockBoost(boostAlias),
+      recalculatePriceFactor: () => this.recalculatePriceFactor(),
+      earnBadge: (name) => this.earnBadge(name),
+      notify: (message) => {
+        // In headless mode, notifications are logged or stored for testing
+        // Could emit events for UI layer in future
+        if (process.env.DEBUG) {
+          console.log(`[Notify] ${message}`);
+        }
+      },
+    };
   }
 
   /**
@@ -2006,12 +2144,11 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Unlock a boost (for testing).
+   * Calls the internal doUnlockBoost which handles permalock and unlock functions.
    */
   unlockBoost(alias: string): void {
-    const state = this.boosts.get(alias);
-    if (state) {
-      state.unlocked = 1;
-    }
+    this.ensureInitialized();
+    this.doUnlockBoost(alias);
   }
 }
 
