@@ -1,6 +1,11 @@
 ## Changelog
 
 ### Changed
+- Create modern game engine core (#12)
+- Add tick loop for game progression (#17)
+- Add basic resource tracking (sand, castles, glass) (#16)
+- Implement ModernEngine with GameEngine interface (#15)
+- Add SaveParser to decode legacy save format (#14)
 - Build automated parity testing framework (#11)
 
 ### Added
