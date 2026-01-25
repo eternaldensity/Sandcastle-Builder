@@ -26,8 +26,10 @@ import {
   isPriceFree,
   calculateActivatableTools,
   calculateCastleProduction,
+  calculateSandPerClick,
   type PriceFactorState,
   type CastleToolPriceState,
+  type ClickMultiplierState,
   CASTLE_TOOL_SEEDS,
   CASTLE_TOOL_RATES,
 } from './price-calculator.js';
@@ -182,6 +184,9 @@ export class ModernEngine implements GameEngine {
   // Current price factor (1 = normal, <1 = discounted)
   private priceFactor = 1;
 
+  // Cached sand per click value (recalculated when boosts/tools change)
+  private cachedSandPerClick = 1;
+
   // Castle tool price cache
   private castleToolPrices: CastleToolPriceCache = {};
 
@@ -261,6 +266,9 @@ export class ModernEngine implements GameEngine {
     this.core.startDate = Date.now();
 
     this.initialized = true;
+
+    // Initialize cached rates
+    this.recalculateSandPerClick();
   }
 
   /**
@@ -361,6 +369,10 @@ export class ModernEngine implements GameEngine {
     for (const [name, badgeState] of Object.entries(state.badges)) {
       this.badges.set(name, badgeState.earned);
     }
+
+    // Recalculate derived values after loading state
+    this.recalculatePriceFactor();
+    this.recalculateSandPerClick();
   }
 
   /**
@@ -1293,10 +1305,8 @@ export class ModernEngine implements GameEngine {
   private processBeachClick(): void {
     this.core.beachClicks++;
 
-    // Base sand per click (simplified)
-    const sandGained = 1;
-
-    // Click multipliers from boosts deferred (issue #21)
+    // Use cached sand per click (updated when boosts/tools change)
+    const sandGained = this.cachedSandPerClick;
 
     this.resources.sand += sandGained;
     this.syncResourceBoosts();
@@ -1420,6 +1430,9 @@ export class ModernEngine implements GameEngine {
         this.buyCastleTool(name);
       }
     }
+
+    // Recalculate click rate after tool purchase (affects pair bonuses)
+    this.recalculateSandPerClick();
   }
 
   /**
@@ -1561,6 +1574,10 @@ export class ModernEngine implements GameEngine {
 
       state.bought++;
       this.checkAutoUnlocks();
+
+      // Recalculate rates after boost purchase
+      this.recalculatePriceFactor();
+      this.recalculateSandPerClick();
     }
   }
 
@@ -1715,6 +1732,122 @@ export class ModernEngine implements GameEngine {
    */
   getPriceFactor(): number {
     return this.priceFactor;
+  }
+
+  /**
+   * Build the state object needed for click multiplier calculation.
+   * Reference: boosts.js:7357-7392
+   */
+  private buildClickMultiplierState(): ClickMultiplierState {
+    const getToolAmount = (name: string): number => {
+      const tool = this.sandTools.get(name);
+      return tool?.amount ?? 0;
+    };
+
+    const isBoostBought = (name: string): boolean => {
+      const boost = this.boosts.get(name);
+      return (boost?.bought ?? 0) > 0;
+    };
+
+    const getBoostPower = (name: string): number => {
+      const boost = this.boosts.get(name);
+      return boost?.power ?? 0;
+    };
+
+    // Calculate current sand production rate for Bucket Brigade
+    let sandPermNP = 0;
+    for (const [name, state] of this.sandTools) {
+      if (state.amount > 0) {
+        sandPermNP += this.calculateSandToolRate(name, state.amount);
+      }
+    }
+
+    return {
+      biggerBuckets: getBoostPower('BiggerBuckets'),
+      hugeBuckets: isBoostBought('HugeBuckets'),
+      buccaneer: isBoostBought('Buccaneer'),
+      helpfulHands: isBoostBought('HelpfulHands'),
+      trueColours: isBoostBought('TrueColours'),
+      raiseTheFlag: isBoostBought('RaiseTheFlag'),
+      handItUp: isBoostBought('HandItUp'),
+      bucketBrigade: isBoostBought('BucketBrigade'),
+      bagPuns: isBoostBought('BagPuns'),
+      boneClicker: isBoostBought('BoneClicker'),
+      bonemeal: getBoostPower('Bonemeal'),
+      buckets: getToolAmount('Bucket'),
+      cuegans: getToolAmount('Cuegan'),
+      flags: getToolAmount('Flag'),
+      ladders: getToolAmount('Ladder'),
+      bags: getToolAmount('Bag'),
+      sandPermNP,
+    };
+  }
+
+  /**
+   * Recalculate the cached sand per click value.
+   * Called after boost purchases, tool purchases, or state load.
+   */
+  private recalculateSandPerClick(): void {
+    const state = this.buildClickMultiplierState();
+    this.cachedSandPerClick = calculateSandPerClick(state);
+  }
+
+  /**
+   * Get current sand per click value (for testing/debugging).
+   */
+  getSandPerClick(): number {
+    return this.cachedSandPerClick;
+  }
+
+  // ===========================================================================
+  // Test Helper Methods
+  // ===========================================================================
+
+  /**
+   * Force a boost to a specific state (for testing).
+   * Automatically recalculates derived values.
+   */
+  forceBoostState(alias: string, state: Partial<BoostState>): void {
+    this.ensureInitialized();
+
+    const existing = this.boosts.get(alias);
+    if (existing) {
+      if (state.unlocked !== undefined) existing.unlocked = state.unlocked;
+      if (state.bought !== undefined) existing.bought = state.bought;
+      if (state.power !== undefined) existing.power = state.power;
+      if (state.countdown !== undefined) existing.countdown = state.countdown;
+
+      // Recalculate derived values
+      this.recalculatePriceFactor();
+      this.recalculateSandPerClick();
+    }
+  }
+
+  /**
+   * Force resources to specific values (for testing).
+   */
+  forceResources(resources: Partial<{ sand: number; castles: number; glassChips: number; glassBlocks: number }>): void {
+    this.ensureInitialized();
+
+    if (resources.sand !== undefined) this.resources.sand = resources.sand;
+    if (resources.castles !== undefined) this.resources.castles = resources.castles;
+    if (resources.glassChips !== undefined) this.resources.glassChips = resources.glassChips;
+    if (resources.glassBlocks !== undefined) this.resources.glassBlocks = resources.glassBlocks;
+
+    this.syncResourceBoosts();
+  }
+
+  /**
+   * Force a sand tool to a specific amount (for testing).
+   */
+  forceSandToolAmount(name: string, amount: number): void {
+    this.ensureInitialized();
+
+    const tool = this.sandTools.get(name);
+    if (tool) {
+      tool.amount = amount;
+      this.recalculateSandPerClick();
+    }
   }
 
   /**

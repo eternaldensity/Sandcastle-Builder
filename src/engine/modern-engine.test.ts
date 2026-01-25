@@ -40,8 +40,19 @@ const testGameData: GameData = {
     'GlassChips': createBoostDef(2, 'GlassChips', 'stuff'),
     'GlassBlocks': createBoostDef(3, 'GlassBlocks', 'stuff'),
     'Goats': createBoostDef(10, 'Goats', 'stuff'),
+    'Bonemeal': createBoostDef(20, 'Bonemeal', 'stuff'),
     'Bigger Buckets': createBoostDef(4, 'Bigger Buckets', 'boosts', { Sand: 500 }),
+    'BiggerBuckets': createBoostDef(4, 'BiggerBuckets', 'boosts', { Sand: 500 }),
     'Huge Buckets': createBoostDef(5, 'Huge Buckets', 'boosts', { Sand: 800, Castles: 2 }),
+    'HugeBuckets': createBoostDef(5, 'HugeBuckets', 'boosts', { Sand: 800, Castles: 2 }),
+    'Buccaneer': createBoostDef(12, 'Buccaneer', 'boosts', { Sand: 1000 }),
+    'HelpfulHands': createBoostDef(13, 'HelpfulHands', 'boosts', { Sand: 500 }),
+    'TrueColours': createBoostDef(14, 'TrueColours', 'boosts', { Sand: 500 }),
+    'RaiseTheFlag': createBoostDef(15, 'RaiseTheFlag', 'boosts', { Sand: 500 }),
+    'HandItUp': createBoostDef(16, 'HandItUp', 'boosts', { Sand: 500 }),
+    'BucketBrigade': createBoostDef(17, 'BucketBrigade', 'boosts', { Sand: 500 }),
+    'BagPuns': createBoostDef(18, 'BagPuns', 'boosts', { Sand: 500 }),
+    'BoneClicker': createBoostDef(19, 'BoneClicker', 'boosts', { Sand: 500 }),
     'Helping Hand': createBoostDef(6, 'Helping Hand', 'boosts', { Sand: 500, Castles: 2 }),
     'Cooperation': createBoostDef(7, 'Cooperation'),
     'Spring Fling': createBoostDef(8, 'Spring Fling', 'boosts', { Sand: 1000, Castles: 6 }),
@@ -89,6 +100,39 @@ const testGameData: GameData = {
       type: 'sand' as const,
       basePrice: 100,
       nextThreshold: 1000,
+      hasDynamicRate: false,
+    },
+    {
+      id: 2,
+      name: 'Flag',
+      commonName: 'flag',
+      icon: 'flag',
+      description: 'Produces sand',
+      type: 'sand' as const,
+      basePrice: 420,
+      nextThreshold: 100,
+      hasDynamicRate: false,
+    },
+    {
+      id: 3,
+      name: 'Ladder',
+      commonName: 'ladder',
+      icon: 'ladder',
+      description: 'Produces sand',
+      type: 'sand' as const,
+      basePrice: 1700,
+      nextThreshold: 100,
+      hasDynamicRate: false,
+    },
+    {
+      id: 4,
+      name: 'Bag',
+      commonName: 'bag',
+      icon: 'bag',
+      description: 'Produces sand',
+      type: 'sand' as const,
+      basePrice: 12000,
+      nextThreshold: 100,
       hasDynamicRate: false,
     },
   ],
@@ -628,6 +672,168 @@ describe('ModernEngine', () => {
       state.boosts['Goats'].power = 10;
       // Note: We need to manipulate the internal state for this test
       // This simulates having 10 goats
+    });
+  });
+
+  describe('Click Multipliers', () => {
+    it('returns 1 sand per click with no boosts', async () => {
+      expect(engine.getSandPerClick()).toBe(1);
+
+      await engine.clickBeach(1);
+      const state = await engine.getStateSnapshot();
+      // 1 sand spent on castle (Fibonacci cost 1), so sand = 0, castles = 1
+      expect(state.castles).toBe(1);
+    });
+
+    it('increases sand per click with BiggerBuckets power', async () => {
+      // BiggerBuckets adds 0.1 per power level
+      engine.forceBoostState('BiggerBuckets', { bought: 1, power: 5 });
+
+      // 1 + 5 * 0.1 = 1.5
+      expect(engine.getSandPerClick()).toBe(1.5);
+    });
+
+    it('doubles sand per click with HugeBuckets', async () => {
+      engine.forceBoostState('HugeBuckets', { bought: 1 });
+
+      // Base 1 * 2 = 2
+      expect(engine.getSandPerClick()).toBe(2);
+    });
+
+    it('doubles sand per click with Buccaneer', async () => {
+      engine.forceBoostState('Buccaneer', { bought: 1 });
+
+      // Base 1 * 2 = 2
+      expect(engine.getSandPerClick()).toBe(2);
+    });
+
+    it('stacks HugeBuckets and Buccaneer multiplicatively', async () => {
+      engine.forceBoostState('HugeBuckets', { bought: 1 });
+      engine.forceBoostState('Buccaneer', { bought: 1 });
+
+      // Base 1 * 2 * 2 = 4
+      expect(engine.getSandPerClick()).toBe(4);
+    });
+
+    it('combines BiggerBuckets with multiplicative boosts', async () => {
+      engine.forceBoostState('BiggerBuckets', { bought: 1, power: 10 });
+      engine.forceBoostState('HugeBuckets', { bought: 1 });
+
+      // (1 + 10 * 0.1) * 2 = 2 * 2 = 4
+      expect(engine.getSandPerClick()).toBe(4);
+    });
+
+    it('adds pair bonus with HelpfulHands', async () => {
+      engine.forceBoostState('HelpfulHands', { bought: 1 });
+      engine.forceSandToolAmount('Bucket', 10);
+      engine.forceSandToolAmount('Cuegan', 5);
+
+      // 1 + 0.5 * min(10, 5) = 1 + 2.5 = 3.5
+      expect(engine.getSandPerClick()).toBe(3.5);
+    });
+
+    it('adds pair bonus with TrueColours', async () => {
+      engine.forceBoostState('TrueColours', { bought: 1 });
+      engine.forceSandToolAmount('Flag', 3);
+      engine.forceSandToolAmount('Cuegan', 8);
+
+      // 1 + 5 * min(3, 8) = 1 + 15 = 16
+      expect(engine.getSandPerClick()).toBe(16);
+    });
+
+    it('adds pair bonus with RaiseTheFlag', async () => {
+      engine.forceBoostState('RaiseTheFlag', { bought: 1 });
+      engine.forceSandToolAmount('Flag', 2);
+      engine.forceSandToolAmount('Ladder', 4);
+
+      // 1 + 50 * min(2, 4) = 1 + 100 = 101
+      expect(engine.getSandPerClick()).toBe(101);
+    });
+
+    it('adds pair bonus with HandItUp', async () => {
+      engine.forceBoostState('HandItUp', { bought: 1 });
+      engine.forceSandToolAmount('Bag', 1);
+      engine.forceSandToolAmount('Ladder', 3);
+
+      // 1 + 500 * min(1, 3) = 1 + 500 = 501
+      expect(engine.getSandPerClick()).toBe(501);
+    });
+
+    it('applies BoneClicker final multiplier', async () => {
+      engine.forceBoostState('BoneClicker', { bought: 1 });
+      engine.forceBoostState('Bonemeal', { power: 2 });
+
+      // 1 * (2 * 5) = 10
+      expect(engine.getSandPerClick()).toBe(10);
+    });
+
+    it('does not apply BoneClicker when bonemeal < 1', async () => {
+      engine.forceBoostState('BoneClicker', { bought: 1 });
+      engine.forceBoostState('Bonemeal', { power: 0 });
+
+      // No multiplier applied
+      expect(engine.getSandPerClick()).toBe(1);
+    });
+
+    it('stacks all multiplier types correctly', async () => {
+      // Set up: BiggerBuckets(5), HugeBuckets, HelpfulHands, BoneClicker with 1 bonemeal
+      engine.forceBoostState('BiggerBuckets', { bought: 1, power: 5 });
+      engine.forceBoostState('HugeBuckets', { bought: 1 });
+      engine.forceBoostState('HelpfulHands', { bought: 1 });
+      engine.forceBoostState('BoneClicker', { bought: 1 });
+      engine.forceBoostState('Bonemeal', { power: 1 });
+      engine.forceSandToolAmount('Bucket', 4);
+      engine.forceSandToolAmount('Cuegan', 2);
+
+      // Step by step:
+      // 1. Base: 1 + 5*0.1 = 1.5
+      // 2. Mult: 1.5 * 2 = 3
+      // 3. Helpful Hands: 3 + 0.5*min(4,2) = 3 + 1 = 4
+      // 4. Bone Clicker: 4 * 1*5 = 20
+      expect(engine.getSandPerClick()).toBe(20);
+    });
+
+    it('recalculates sand per click when buying tools', async () => {
+      engine.forceBoostState('HelpfulHands', { bought: 1 });
+      engine.forceResources({ castles: 10000 });
+
+      // Initially no tools, so just base rate
+      expect(engine.getSandPerClick()).toBe(1);
+
+      // Buy some buckets and cuegans
+      await engine.buyTool('sand', 'Bucket', 5);
+      await engine.buyTool('sand', 'Cuegan', 3);
+
+      // 1 + 0.5 * min(5, 3) = 1 + 1.5 = 2.5
+      expect(engine.getSandPerClick()).toBe(2.5);
+    });
+
+    it('recalculates sand per click when buying boosts', async () => {
+      engine.forceResources({ sand: 10000, castles: 100 });
+      engine.unlockBoost('HugeBuckets');
+
+      // Before buying HugeBuckets
+      expect(engine.getSandPerClick()).toBe(1);
+
+      // Buy HugeBuckets
+      await engine.buyBoost('HugeBuckets');
+
+      // After buying HugeBuckets
+      expect(engine.getSandPerClick()).toBe(2);
+    });
+
+    it('applies calculated sand per click in beach clicks', async () => {
+      engine.forceBoostState('BiggerBuckets', { bought: 1, power: 10 });
+      // (1 + 10*0.1) = 2 sand per click
+
+      await engine.clickBeach(5);
+
+      const state = await engine.getStateSnapshot();
+      // 5 clicks * 2 sand = 10 sand total
+      // Fibonacci: costs 1, 1, 2, 3, 5 = 12 for 5 castles, but only 10 sand
+      // So we can build 4 castles (cost 1+1+2+3=7), leaving 3 sand
+      expect(state.sand).toBe(3);
+      expect(state.castles).toBe(4);
     });
   });
 });

@@ -26,6 +26,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Add click multiplier calculation to sand per beach click (#38)
 - Extract and test price calculation formulas (#26)
 - Implement boost auto-unlock logic (#25)
 - Identify pure functions suitable for extraction and unit testing (#5)

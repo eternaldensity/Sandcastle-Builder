@@ -541,3 +541,113 @@ export function calculateToolCycleResult(
     netChange: built - destroyed,
   };
 }
+
+// =============================================================================
+// Click Multiplier Calculation
+// =============================================================================
+
+/**
+ * State needed to calculate sand per click.
+ * Reference: boosts.js:7357-7392 (calculateSandPerClick)
+ */
+export interface ClickMultiplierState {
+  // Boost power levels (0 if not owned)
+  biggerBuckets: number;    // Power level, adds 0.1 per level to base
+
+  // Boost ownership flags (bought > 0)
+  hugeBuckets: boolean;     // x2 multiplier
+  buccaneer: boolean;       // x2 multiplier
+  helpfulHands: boolean;    // +0.5 per Bucket+Cuegan pair
+  trueColours: boolean;     // +5 per Flag+Cuegan pair
+  raiseTheFlag: boolean;    // +50 per Flag+Ladder pair
+  handItUp: boolean;        // +500 per Bag+Ladder pair
+  bucketBrigade: boolean;   // +1% of sandPermNP per 50 buckets
+  bagPuns: boolean;         // +40% of base per 5 bags above 25
+  boneClicker: boolean;     // x(bonemeal*5) final multiplier
+
+  // Resource for Bone Clicker
+  bonemeal: number;
+
+  // Tool counts for pair bonuses
+  buckets: number;
+  cuegans: number;
+  flags: number;
+  ladders: number;
+  bags: number;
+
+  // Rate for Bucket Brigade calculation
+  sandPermNP: number;       // Sand production rate per NP
+}
+
+/**
+ * Calculate sand gained per beach click.
+ *
+ * The formula applies bonuses in this order:
+ * 1. Base value: 1 + (biggerBuckets * 0.1)
+ * 2. Multiplicative tier 1: x2 for Huge Buckets, x2 for Buccaneer
+ * 3. Additive pair bonuses: Helpful Hands, True Colours, Raise the Flag, Hand it Up
+ * 4. Additive percentage bonuses: Bucket Brigade, Bag Puns
+ * 5. Final multiplicative: Bone Clicker (x bonemeal * 5)
+ * 6. Global multiplier (badges, etc.)
+ *
+ * Reference: boosts.js:7357-7392 (calculateSandPerClick in Sand boost)
+ *
+ * @param state - Current boost and tool state
+ * @param globalMultiplier - External multiplier (badges, etc.), default 1
+ * @returns Sand per click value
+ */
+export function calculateSandPerClick(
+  state: ClickMultiplierState,
+  globalMultiplier = 1
+): number {
+  // Step 1: Base with Bigger Buckets
+  // From boosts.js:7359 - baseRate = 1 + (Bigger Buckets power * 0.1)
+  let baseRate = 1 + (state.biggerBuckets * 0.1);
+
+  // Step 2: Multiplicative tier 1
+  // From boosts.js:7361-7362
+  let mult = 1;
+  if (state.hugeBuckets) mult *= 2;
+  if (state.buccaneer) mult *= 2;
+  baseRate *= mult;
+
+  // Step 3: Additive pair bonuses
+  // From boosts.js:7364-7378
+  if (state.helpfulHands) {
+    // +0.5 per matched Bucket+Cuegan pair
+    baseRate += 0.5 * Math.min(state.buckets, state.cuegans);
+  }
+  if (state.trueColours) {
+    // +5 per matched Flag+Cuegan pair
+    baseRate += 5 * Math.min(state.flags, state.cuegans);
+  }
+  if (state.raiseTheFlag) {
+    // +50 per matched Flag+Ladder pair
+    baseRate += 50 * Math.min(state.flags, state.ladders);
+  }
+  if (state.handItUp) {
+    // +500 per matched Bag+Ladder pair
+    baseRate += 500 * Math.min(state.bags, state.ladders);
+  }
+
+  // Step 4: Additive percentage bonuses
+  // From boosts.js:7380-7385
+  if (state.bucketBrigade) {
+    // +1% of sand dig rate per 50 buckets
+    baseRate += state.sandPermNP * 0.01 * Math.floor(state.buckets / 50);
+  }
+  if (state.bagPuns) {
+    // +40% of current baseRate per 5 bags above 25 (can be negative below 25)
+    const bagBonus = Math.max(-2, Math.floor((state.bags - 25) / 5));
+    baseRate += baseRate * 0.4 * bagBonus;
+  }
+
+  // Step 5: Final multiplicative (Bone Clicker)
+  // From boosts.js:7387-7388
+  if (state.boneClicker && state.bonemeal >= 1) {
+    baseRate *= state.bonemeal * 5;
+  }
+
+  // Step 6: Apply global multiplier
+  return baseRate * globalMultiplier;
+}

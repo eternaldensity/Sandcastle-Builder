@@ -29,6 +29,8 @@ import {
   calculateActivatableTools,
   calculateCastleProduction,
   calculateToolCycleResult,
+  calculateSandPerClick,
+  type ClickMultiplierState,
 } from './price-calculator.js';
 
 // =============================================================================
@@ -571,5 +573,257 @@ describe('calculateToolCycleResult', () => {
     expect(result.destroyed).toBe(0);
     expect(result.built).toBe(10);
     expect(result.netChange).toBe(10);
+  });
+});
+
+// =============================================================================
+// Click Multiplier tests
+// =============================================================================
+
+describe('calculateSandPerClick', () => {
+  /**
+   * Base state with no boosts or tools - should return 1 sand per click
+   */
+  const baseState: ClickMultiplierState = {
+    biggerBuckets: 0,
+    hugeBuckets: false,
+    buccaneer: false,
+    helpfulHands: false,
+    trueColours: false,
+    raiseTheFlag: false,
+    handItUp: false,
+    bucketBrigade: false,
+    bagPuns: false,
+    boneClicker: false,
+    bonemeal: 0,
+    buckets: 0,
+    cuegans: 0,
+    flags: 0,
+    ladders: 0,
+    bags: 0,
+    sandPermNP: 0,
+  };
+
+  describe('base calculation', () => {
+    it('should return 1 for base state with no boosts', () => {
+      expect(calculateSandPerClick(baseState)).toBe(1);
+    });
+
+    it('should apply global multiplier', () => {
+      expect(calculateSandPerClick(baseState, 2)).toBe(2);
+      expect(calculateSandPerClick(baseState, 0.5)).toBe(0.5);
+    });
+  });
+
+  describe('Bigger Buckets (additive to base)', () => {
+    it('should add 0.1 per power level', () => {
+      expect(calculateSandPerClick({ ...baseState, biggerBuckets: 1 })).toBe(1.1);
+      expect(calculateSandPerClick({ ...baseState, biggerBuckets: 5 })).toBe(1.5);
+      expect(calculateSandPerClick({ ...baseState, biggerBuckets: 10 })).toBe(2);
+    });
+  });
+
+  describe('multiplicative tier 1 (Huge Buckets, Buccaneer)', () => {
+    it('should double with Huge Buckets', () => {
+      expect(calculateSandPerClick({ ...baseState, hugeBuckets: true })).toBe(2);
+    });
+
+    it('should double with Buccaneer', () => {
+      expect(calculateSandPerClick({ ...baseState, buccaneer: true })).toBe(2);
+    });
+
+    it('should stack multiplicatively (x4 with both)', () => {
+      expect(calculateSandPerClick({
+        ...baseState,
+        hugeBuckets: true,
+        buccaneer: true,
+      })).toBe(4);
+    });
+
+    it('should apply after Bigger Buckets', () => {
+      // (1 + 0.1*5) * 2 = 1.5 * 2 = 3
+      expect(calculateSandPerClick({
+        ...baseState,
+        biggerBuckets: 5,
+        hugeBuckets: true,
+      })).toBe(3);
+    });
+  });
+
+  describe('pair bonuses (additive)', () => {
+    it('should add 0.5 per Bucket+Cuegan pair with Helpful Hands', () => {
+      expect(calculateSandPerClick({
+        ...baseState,
+        helpfulHands: true,
+        buckets: 10,
+        cuegans: 5,
+      })).toBe(1 + 0.5 * 5); // min(10, 5) = 5 pairs
+    });
+
+    it('should add 5 per Flag+Cuegan pair with True Colours', () => {
+      expect(calculateSandPerClick({
+        ...baseState,
+        trueColours: true,
+        flags: 8,
+        cuegans: 10,
+      })).toBe(1 + 5 * 8); // min(8, 10) = 8 pairs
+    });
+
+    it('should add 50 per Flag+Ladder pair with Raise the Flag', () => {
+      expect(calculateSandPerClick({
+        ...baseState,
+        raiseTheFlag: true,
+        flags: 3,
+        ladders: 5,
+      })).toBe(1 + 50 * 3); // min(3, 5) = 3 pairs
+    });
+
+    it('should add 500 per Bag+Ladder pair with Hand it Up', () => {
+      expect(calculateSandPerClick({
+        ...baseState,
+        handItUp: true,
+        bags: 2,
+        ladders: 4,
+      })).toBe(1 + 500 * 2); // min(2, 4) = 2 pairs
+    });
+
+    it('should stack multiple pair bonuses', () => {
+      // 1 + 0.5*2 + 5*3 = 1 + 1 + 15 = 17
+      expect(calculateSandPerClick({
+        ...baseState,
+        helpfulHands: true,
+        trueColours: true,
+        buckets: 5,
+        cuegans: 2,
+        flags: 3,
+      })).toBe(1 + 0.5 * 2 + 5 * 2); // cuegans=2 limits both
+    });
+  });
+
+  describe('percentage bonuses (additive)', () => {
+    it('should add 1% of sandPermNP per 50 buckets with Bucket Brigade', () => {
+      expect(calculateSandPerClick({
+        ...baseState,
+        bucketBrigade: true,
+        buckets: 100,
+        sandPermNP: 1000,
+      })).toBe(1 + 1000 * 0.01 * 2); // floor(100/50) = 2
+    });
+
+    it('should apply Bag Puns based on bags above 25', () => {
+      // At 30 bags: floor((30-25)/5) = 1, so +40% of baseRate
+      expect(calculateSandPerClick({
+        ...baseState,
+        bagPuns: true,
+        bags: 30,
+      })).toBe(1 + 1 * 0.4 * 1); // 1.4
+
+      // At 40 bags: floor((40-25)/5) = 3, so +120% of baseRate
+      expect(calculateSandPerClick({
+        ...baseState,
+        bagPuns: true,
+        bags: 40,
+      })).toBe(1 + 1 * 0.4 * 3); // 2.2
+    });
+
+    it('should apply negative Bag Puns below 25 bags (capped at -2)', () => {
+      // At 20 bags: floor((20-25)/5) = -1, so -40% of baseRate
+      expect(calculateSandPerClick({
+        ...baseState,
+        bagPuns: true,
+        bags: 20,
+      })).toBe(1 + 1 * 0.4 * -1); // 0.6
+
+      // At 0 bags: floor((0-25)/5) = -5, but capped at -2, so -80% of baseRate
+      expect(calculateSandPerClick({
+        ...baseState,
+        bagPuns: true,
+        bags: 0,
+      })).toBe(1 + 1 * 0.4 * -2); // 0.2
+    });
+  });
+
+  describe('Bone Clicker (final multiplicative)', () => {
+    it('should multiply by bonemeal*5 when Bone Clicker owned and bonemeal >= 1', () => {
+      expect(calculateSandPerClick({
+        ...baseState,
+        boneClicker: true,
+        bonemeal: 2,
+      })).toBe(1 * 2 * 5); // 10
+    });
+
+    it('should not apply when bonemeal < 1', () => {
+      expect(calculateSandPerClick({
+        ...baseState,
+        boneClicker: true,
+        bonemeal: 0,
+      })).toBe(1);
+    });
+
+    it('should not apply when Bone Clicker not owned', () => {
+      expect(calculateSandPerClick({
+        ...baseState,
+        boneClicker: false,
+        bonemeal: 10,
+      })).toBe(1);
+    });
+
+    it('should apply after all other bonuses', () => {
+      // (1 + 0.5) * 2 * (2*5) = 1.5 * 2 * 10 = 30
+      expect(calculateSandPerClick({
+        ...baseState,
+        biggerBuckets: 5, // +0.5
+        hugeBuckets: true, // x2
+        boneClicker: true,
+        bonemeal: 2, // x10
+      })).toBe((1 + 0.5) * 2 * 10);
+    });
+  });
+
+  describe('complex stacking scenarios', () => {
+    it('should correctly stack all multiplicative and additive bonuses', () => {
+      // Base: 1 + 0.1*10 = 2
+      // Mult tier 1: 2 * 2 * 2 = 8
+      // Pair: +0.5*5 = 10.5
+      // Bucket Brigade: +100*0.01*1 = 11.5
+      // Bone Clicker: 11.5 * 1*5 = 57.5
+      const result = calculateSandPerClick({
+        biggerBuckets: 10,
+        hugeBuckets: true,
+        buccaneer: true,
+        helpfulHands: true,
+        trueColours: false,
+        raiseTheFlag: false,
+        handItUp: false,
+        bucketBrigade: true,
+        bagPuns: false,
+        boneClicker: true,
+        bonemeal: 1,
+        buckets: 50,
+        cuegans: 5,
+        flags: 0,
+        ladders: 0,
+        bags: 0,
+        sandPermNP: 100,
+      });
+
+      // Step by step:
+      // 1. Base: 1 + 10*0.1 = 2
+      // 2. Mult: 2 * 2 * 2 = 8
+      // 3. Helpful Hands: 8 + 0.5*min(50,5) = 8 + 2.5 = 10.5
+      // 4. Bucket Brigade: 10.5 + 100*0.01*floor(50/50) = 10.5 + 1 = 11.5
+      // 5. Bone Clicker: 11.5 * 1*5 = 57.5
+      expect(result).toBe(57.5);
+    });
+
+    it('should apply global multiplier last', () => {
+      const result = calculateSandPerClick({
+        ...baseState,
+        biggerBuckets: 10, // 1 + 1 = 2
+        hugeBuckets: true, // 2 * 2 = 4
+      }, 3); // 4 * 3 = 12
+
+      expect(result).toBe(12);
+    });
   });
 });
