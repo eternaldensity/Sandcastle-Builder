@@ -5,6 +5,9 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Initialize unlocks on game start in initialize() method (#132)
+- Expand tool-based unlock rules in unlock-conditions.ts (#131)
+- Add checkAutoUnlocks() trigger system to modern-engine.ts (#130)
 - Update next implementation plans based on parity gap analysis (#128)
 - Run comprehensive test suite including parity checks (#127)
 - Add glass ceiling tests and badge integration (#124)
@@ -95,6 +98,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement boost auto-unlock system to reduce parity gaps (#129)
 - Implement save/load parity for legacy compatibility (#125)
 - Implement Glass Ceiling System (Plan 17) (#121)
 - Add infinite resource handling system (#117)

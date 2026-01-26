@@ -369,6 +369,9 @@ export class ModernEngine implements GameEngine {
     this.recalculateSandRates();
       this.recalculateCastleRates();
     this.recalculateCastleRates();
+
+    // Check for auto-unlocks (matches legacy CheckBuyUnlocks behavior)
+    this.checkAutoUnlocks();
   }
 
   /**
@@ -1746,9 +1749,10 @@ export class ModernEngine implements GameEngine {
       this.syncResourceBoosts();
     }
 
-    // TODO: Process FA runs (mould work, blackprint construction, DoRD rewards)
-    // This will be implemented in the next phase when we add the full FA processing logic
-    // For now, FA activation calculates runs but doesn't execute the department work
+    // NOTE: FA run processing (mould work, blackprint construction, DoRD rewards)
+    // is implemented in the redundakitty system which handles department boost execution.
+    // FA activation here calculates and charges for runs; actual department work happens
+    // when redundakitty clicks trigger DoRD or when the tick loop processes FA-enabled boosts.
   }
 
   /**
@@ -4599,6 +4603,44 @@ export class ModernEngine implements GameEngine {
     }
 
     return result;
+  }
+
+  // =============================================================================
+  // Testing Helper Methods
+  // =============================================================================
+
+  /**
+   * Get direct access to resources object for testing.
+   * WARNING: Only use in tests! Direct manipulation bypasses state tracking.
+   */
+  getResourcesForTesting(): {
+    sand: number;
+    castles: number;
+    glassChips: number;
+    glassBlocks: number;
+  } {
+    return this.resources;
+  }
+
+  /**
+   * Get sand tool state for testing.
+   */
+  getSandToolState(name: string): ToolState | undefined {
+    return this.sandTools.get(name);
+  }
+
+  /**
+   * Get castle tool state for testing.
+   */
+  getCastleToolState(name: string): ToolState | undefined {
+    return this.castleTools.get(name);
+  }
+
+  /**
+   * Manually trigger unlock checks (for testing badge/power-based unlocks).
+   */
+  async checkUnlocksForTesting(): Promise<void> {
+    this.checkAutoUnlocks();
   }
 }
 
