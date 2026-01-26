@@ -2358,7 +2358,7 @@ export class ModernEngine implements GameEngine {
     }
 
     // Check if Time Travel boost is owned (not needed for chip-based travel)
-    if (!boost?.bought && !useChips) {
+    if ((!boost || boost.bought === 0) && !useChips) {
       return false;
     }
 
@@ -3192,6 +3192,17 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Force boost extra data (for testing).
+   */
+  forceBoostExtra(alias: string, extra: Record<string, number | string | number[]>): void {
+    this.ensureInitialized();
+    const state = this.boosts.get(alias);
+    if (state) {
+      state.extra = extra;
+    }
+  }
+
+  /**
    * Force a sand tool to a specific amount (for testing).
    */
   forceSandToolAmount(name: string, amount: number): void {
@@ -3267,6 +3278,7 @@ export class ModernEngine implements GameEngine {
       bought: state.bought,
       power: state.power,
       countdown: state.countdown,
+      extra: state.extra,
     };
   }
 

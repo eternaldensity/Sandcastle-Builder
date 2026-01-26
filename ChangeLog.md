@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Changed
+- Fix time travel validation causing test failures (#95)
 - Fix time-travel test failures from Plan 11 (#94)
 - Verify parity with legacy FA implementation (#93)
 - Add factory-automation.test.ts with comprehensive tests (#92)

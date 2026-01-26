@@ -40,11 +40,7 @@ describe('Time Travel System', () => {
       const price1 = engine.calculateTimeTravelPrice();
 
       // Manually increment travel count
-      const boost = await engine.getBoostState('Time Travel');
-      if (boost) {
-        if (!boost.extra) boost.extra = {};
-        boost.extra.travelCount = 10;
-      }
+      engine.forceBoostExtra('Time Travel', { travelCount: 10 });
 
       const price2 = engine.calculateTimeTravelPrice();
       expect(price2).toBeGreaterThan(price1);
@@ -82,6 +78,7 @@ describe('Time Travel System', () => {
   describe('calculateJumpCost', () => {
     it('calculates quadratic distance cost', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 100 });
       await engine.buyBoost('Time Travel');
 
       // Jump from NP 1 to NP 10 (gap = 9)
@@ -94,13 +91,10 @@ describe('Time Travel System', () => {
 
     it('includes travel count in cost', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 100 });
       await engine.buyBoost('Time Travel');
 
-      const boost = await engine.getBoostState('Time Travel');
-      if (boost) {
-        if (!boost.extra) boost.extra = {};
-        boost.extra.travelCount = 50;
-      }
+      engine.forceBoostExtra('Time Travel', { travelCount: 50 });
 
       const cost = engine.calculateJumpCost(10);
 
@@ -110,6 +104,7 @@ describe('Time Travel System', () => {
 
     it('increases cost massively for crossing sides', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 100 });
       await engine.buyBoost('Time Travel');
       await engine.setNewpix(10);
 
@@ -123,11 +118,13 @@ describe('Time Travel System', () => {
 
     it('reduces by 80% with Flux Capacitor', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 100 });
       await engine.buyBoost('Time Travel');
 
       const costWithout = engine.calculateJumpCost(10);
 
       await engine.unlockBoost('Flux Capacitor');
+      await engine.forceResources({ sand: 100, castles: 100 });
       await engine.buyBoost('Flux Capacitor');
 
       const costWith = engine.calculateJumpCost(10);
@@ -163,8 +160,8 @@ describe('Time Travel System', () => {
 
     it('travels forward by offset', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 1000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 1000 });
 
       // Must visit NP 6 first so it's in highestNPvisited
       await engine.setNewpix(6);
@@ -179,8 +176,8 @@ describe('Time Travel System', () => {
 
     it('travels backward by offset', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 1000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 1000 });
 
       // Visit NP 10 to update highestNPvisited
       await engine.setNewpix(10);
@@ -194,8 +191,8 @@ describe('Time Travel System', () => {
 
     it('awards Fast Forward badge when traveling forward from positive NP', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 1000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 1000 });
 
       // Visit NP 6 first
       await engine.setNewpix(6);
@@ -209,8 +206,8 @@ describe('Time Travel System', () => {
 
     it('awards And Back badge when traveling backward from positive NP', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 1000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 1000 });
 
       // Visit NP 10
       await engine.setNewpix(10);
@@ -223,18 +220,14 @@ describe('Time Travel System', () => {
 
     it('unlocks Flux Capacitor after 20 travels', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 100000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 100000 });
 
       // Visit NP 2
       await engine.setNewpix(2);
       await engine.setNewpix(1);
 
-      const boost = await engine.getBoostState('Time Travel');
-      if (boost) {
-        if (!boost.extra) boost.extra = {};
-        boost.extra.travelCount = 19;
-      }
+      engine.forceBoostExtra('Time Travel', { travelCount: 19 });
 
       await engine.timeTravel(1);
 
@@ -244,18 +237,14 @@ describe('Time Travel System', () => {
 
     it('awards Primer badge after 10 travels', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 100000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 100000 });
 
       // Visit NP 2
       await engine.setNewpix(2);
       await engine.setNewpix(1);
 
-      const boost = await engine.getBoostState('Time Travel');
-      if (boost) {
-        if (!boost.extra) boost.extra = {};
-        boost.extra.travelCount = 9;
-      }
+      engine.forceBoostExtra('Time Travel', { travelCount: 9 });
 
       await engine.timeTravel(1);
 
@@ -265,18 +254,14 @@ describe('Time Travel System', () => {
 
     it('awards Wimey badge after 40 travels', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 100000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 100000 });
 
       // Visit NP 2
       await engine.setNewpix(2);
       await engine.setNewpix(1);
 
-      const boost = await engine.getBoostState('Time Travel');
-      if (boost) {
-        if (!boost.extra) boost.extra = {};
-        boost.extra.travelCount = 39;
-      }
+      engine.forceBoostExtra('Time Travel', { travelCount: 39 });
 
       await engine.timeTravel(1);
 
@@ -306,8 +291,8 @@ describe('Time Travel System', () => {
 
     it('travels to specific NP using castles', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 10000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 10000 });
 
       // Visit NP 10 first
       await engine.setNewpix(10);
@@ -338,8 +323,8 @@ describe('Time Travel System', () => {
 
     it('spends castles when using castle-based travel', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 10000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 10000 });
 
       // Visit NP 2 first
       await engine.setNewpix(2);
@@ -427,8 +412,8 @@ describe('Time Travel System', () => {
 
     it('increments travel count', async () => {
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 10000 });
       await engine.buyBoost('Time Travel');
-      await engine.forceResources({ castles: 10000 });
 
       // Visit NP 2 first
       await engine.setNewpix(2);
@@ -472,11 +457,7 @@ describe('Time Travel System', () => {
       await engine.setNewpix(2);
       await engine.setNewpix(1);
 
-      const boost = await engine.getBoostState('Time Travel');
-      if (boost) {
-        if (!boost.extra) boost.extra = {};
-        boost.extra.travelCount = 9;
-      }
+      engine.forceBoostExtra('Time Travel', { travelCount: 9 });
 
       const stateBefore = await engine.getStateSnapshot();
       const npbBefore = stateBefore.castleTools.NewPixBot?.amount ?? 0;
@@ -496,16 +477,12 @@ describe('Time Travel System', () => {
       // This is hard to test without running many iterations due to randomness
       // Just verify the method can be called
       await engine.unlockBoost('Time Travel');
+      await engine.forceResources({ sand: 1000, castles: 100000 });
       await engine.buyBoost('Time Travel');
       await engine.unlockBoost('Flux Capacitor');
       await engine.buyBoost('Flux Capacitor');
-      await engine.forceResources({ castles: 100000 });
 
-      const boost = await engine.getBoostState('Time Travel');
-      if (boost) {
-        if (!boost.extra) boost.extra = {};
-        boost.extra.travelCount = 10;
-      }
+      engine.forceBoostExtra('Time Travel', { travelCount: 10 });
 
       // Should not throw
       await engine.timeTravelTo(2, false);
