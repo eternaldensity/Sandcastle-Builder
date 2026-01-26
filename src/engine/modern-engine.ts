@@ -2876,6 +2876,164 @@ export class ModernEngine implements GameEngine {
     this.ensureInitialized();
     this.doUnlockBoost(alias);
   }
+
+  /**
+   * Down reset - Medium reset.
+   * Resets resources, tools, most boost powers, but preserves badges.
+   * Reference: persist.js:1255-1381
+   */
+  async down(): Promise<void> {
+    this.ensureInitialized();
+
+    // Reset resource totals
+    const castlesBuiltTotal = this.castleBuild.totalBuilt;
+    if (isFinite(castlesBuiltTotal)) {
+      // Track total castles built across all Downs (for badges/stats)
+      // This is not directly exposed but could be tracked in core state if needed
+    }
+
+    // Reset resources
+    this.resources.sand = 0;
+    this.resources.castles = 0;
+    this.resources.glassChips = 0;
+    this.resources.glassBlocks = 0;
+
+    // Reset castle build state
+    this.castleBuild.prevCastleSand = 0;
+    this.castleBuild.nextCastleSand = 1;
+    this.castleBuild.totalBuilt = 0;
+
+    // Reset ninja state
+    this.core.ninjaFreeCount = 0;
+    this.core.ninjaStealth = 0;
+    this.core.ninjad = false;
+
+    // Reset click counts
+    this.core.beachClicks = 0;
+
+    // Reset start date and newpix
+    this.core.startDate = Date.now();
+    this.core.newpixNumber = 1;
+    this.ong.npLength = 0;
+
+    // Reset all sand tools
+    for (const [name, state] of this.sandTools) {
+      state.amount = 0;
+      state.bought = 0;
+      state.temp = 0;
+      state.totalSand = 0;
+      state.totalGlass = 0;
+    }
+
+    // Reset all castle tools (except NewPixBot totalCastlesBuilt is preserved)
+    for (const [name, state] of this.castleTools) {
+      state.amount = 0;
+      state.bought = 0;
+      state.temp = 0;
+      // NewPixBot's totalCastlesBuilt is preserved across Down (but not Coma)
+      if (name !== 'NewPixBot') {
+        state.totalCastlesBuilt = 0;
+      }
+      state.totalCastlesDestroyed = 0;
+      state.totalCastlesWasted = 0;
+      state.currentActive = 0;
+      state.totalGlassBuilt = 0;
+      state.totalGlassDestroyed = 0;
+    }
+
+    // Reset all boosts
+    for (const [alias, state] of this.boosts) {
+      const def = this.gameData.boosts[alias];
+
+      // Reset unlocked/bought status
+      state.unlocked = 0;
+      state.bought = 0;
+
+      // Reset power to startPower if defined
+      if (def?.startPower !== undefined) {
+        state.power = def.startPower;
+      } else {
+        state.power = 0;
+      }
+
+      // Reset countdown
+      state.countdown = 0;
+
+      // Clear extra data (used by monuments, etc)
+      if (state.extra) {
+        state.extra = {};
+      }
+
+      // Reset toggle state
+      state.isEnabled = undefined;
+      state.permalock = undefined;
+    }
+
+    // Badges are preserved in Down reset
+    // (no change to this.badges)
+
+    // Recalculate all derived state
+    this.syncResourceBoosts();
+    this.recalculateSandRates();
+    this.recalculateSandPerClick();
+    this.recalculatePriceFactor();
+
+    // Earn "Not Ground Zero" badge for first Down
+    this.earnBadge('Not Ground Zero');
+
+    // Check for auto-unlocks that might trigger immediately
+    this.checkAutoUnlocks();
+  }
+
+  /**
+   * Coma reset - Hard reset (wipes everything including badges).
+   * Reference: persist.js:1382-1427
+   */
+  async coma(): Promise<void> {
+    this.ensureInitialized();
+
+    // Preserve NewPixBot's totalCastlesBuilt before Down reset
+    const npbState = this.castleTools.get('NewPixBot');
+    const npbTotalPreserved = npbState?.totalCastlesBuilt ?? 0;
+
+    // Perform Down reset first (handles most of the reset logic)
+    await this.down();
+
+    // Reset save/load counts
+    this.core.saveCount = 0;
+    this.core.loadCount = 0;
+
+    // Reset highest NP visited
+    this.core.highestNPvisited = 1;
+
+    // Wipe all badges
+    for (const [name] of this.badges) {
+      this.badges.set(name, false);
+    }
+    this.badgeGroupCounts = {};
+    this.badgeChecker.setEarnedBadges([]);
+
+    // Reset NewPixBot's totalCastlesBuilt (unlike Down, Coma resets this too)
+    if (npbState) {
+      npbState.totalCastlesBuilt = 0;
+    }
+
+    // Reset additional tracking that survives Down but not Coma
+    // (These would need to be added to core state if we want to track them)
+
+    // Dragon Queen state reset (if/when DQ is implemented)
+    const dqBoost = this.boosts.get('DragonQueen');
+    if (dqBoost) {
+      dqBoost.power = 0;
+    }
+
+    // Recalculate everything again
+    this.syncResourceBoosts();
+    this.recalculateSandRates();
+    this.recalculateSandPerClick();
+    this.recalculatePriceFactor();
+    this.checkAutoUnlocks();
+  }
 }
 
 /**

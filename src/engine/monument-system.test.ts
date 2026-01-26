@@ -22,7 +22,7 @@ describe('Monument System', () => {
     const dataModule = await import('../data/game-data.json', {
       assert: { type: 'json' },
     });
-    gameData = dataModule.default as GameData;
+    gameData = dataModule.default as unknown as GameData;
 
     engine = new ModernEngine(gameData);
     await engine.initialize();

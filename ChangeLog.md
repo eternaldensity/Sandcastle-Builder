@@ -1,6 +1,9 @@
 ## Changelog
 
 ### Changed
+- Add comprehensive tests for reset system (#72)
+- Implement coma() reset method with preserved state (#71)
+- Implement down() reset method in ModernEngine (#70)
 - Implement Discovery/Monument System (Plan 7) (#64)
 - Add tests for discovery and monument systems (#68)
 - Implement monument creation system with mould state (#67)
@@ -49,6 +52,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Add Coma/Reset system with Down and Coma resets (#69)
 - Implement Plan 6: Badge Auto-Earn System (#59)
 - Implement Sand Tool Production Rates (Plan 4) (#43)
 - Create implementation plans for next modernization priorities (#42)
