@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Changed
+- Update next-implementation-plans.md with Plans 9-13 (#73)
 - Add comprehensive tests for reset system (#72)
 - Implement coma() reset method with preserved state (#71)
 - Implement down() reset method in ModernEngine (#70)
