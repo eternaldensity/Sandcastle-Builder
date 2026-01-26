@@ -411,6 +411,17 @@ export class ModernEngine implements GameEngine {
     this.core.ninjad = state.ninjad;
     this.core.saveCount = state.saveCount;
     this.core.loadCount = state.loadCount;
+    this.core.highestNPvisited = state.largestNPvisited?.[0] ?? state.newpixNumber;
+
+    // Load ONG state
+    this.ong.npbONG = (state.npbONG ?? 0) as 0 | 1;
+
+    // Load redundakitty state
+    if (state.redacted) {
+      this.redundakitty.totalClicks = state.redacted.totalClicks ?? 0;
+      this.redundakitty.chainCurrent = state.redacted.chainCurrent ?? 0;
+      this.redundakitty.chainMax = state.redacted.chainMax ?? 0;
+    }
 
     // Load sand tools
     for (const [name, toolState] of Object.entries(state.sandTools)) {
@@ -507,6 +518,22 @@ export class ModernEngine implements GameEngine {
   async exportState(): Promise<string> {
     this.ensureInitialized();
 
+    // Sync resources to virtual boost powers before export
+    // Ensure virtual resource boosts exist
+    if (!this.boosts.has('Sand')) {
+      this.boosts.set('Sand', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('Castles')) {
+      this.boosts.set('Castles', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('GlassChips')) {
+      this.boosts.set('GlassChips', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('GlassBlocks')) {
+      this.boosts.set('GlassBlocks', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    this.syncResourceBoosts();
+
     // Build core game state for serialization
     const coreState: CoreGameState = {
       version: this.core.version,
@@ -526,9 +553,9 @@ export class ModernEngine implements GameEngine {
         countup: 0,
         toggle: 0,
         location: 0,
-        totalClicks: 0,
-        chainCurrent: 0,
-        chainMax: 0,
+        totalClicks: this.redundakitty.totalClicks,
+        chainCurrent: this.redundakitty.chainCurrent,
+        chainMax: this.redundakitty.chainMax,
       },
     };
 

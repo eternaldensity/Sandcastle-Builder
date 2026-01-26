@@ -508,6 +508,12 @@ export function createSaveParser(gameData: {
   badgesById: Array<{ name: string; group: string }>;
 }): SaveParser {
   const boostAliases = gameData.boostsById.map((b) => b.alias);
+
+  // Add virtual resource boosts that store Sand, Castles, GlassChips, GlassBlocks
+  // These are appended at the end to not break boost index compatibility
+  const virtualResourceBoosts = ['Sand', 'Castles', 'GlassChips', 'GlassBlocks'];
+  const allBoostAliases = [...boostAliases, ...virtualResourceBoosts];
+
   const regularBadgeNames = gameData.badgesById
     .filter((b) => b.group === 'badges')
     .map((b) => b.name);
@@ -515,5 +521,5 @@ export function createSaveParser(gameData: {
     .filter((b) => b.group !== 'badges')
     .map((b) => b.name);
 
-  return new SaveParser(boostAliases, regularBadgeNames, otherBadgeNames);
+  return new SaveParser(allBoostAliases, regularBadgeNames, otherBadgeNames);
 }
