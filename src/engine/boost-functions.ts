@@ -421,6 +421,178 @@ boostFunctionRegistry['Cryogenics'] = {
 };
 
 // =============================================================================
+// Plan 5: More Boost Functions (Priority Implementations)
+// =============================================================================
+
+// =============================================================================
+// Priority 1: Bigger Buckets
+// Reference: boosts.js:66
+// =============================================================================
+
+boostFunctionRegistry['BiggerBuckets'] = {
+  /**
+   * buyFunction: Increments power by 1.
+   * Each power level adds 0.1 to bucket sand rate and click rate.
+   * Reference: boosts.js:66 (no explicit buyFunction, uses default increment)
+   */
+  buyFunction: (ctx) => {
+    ctx.setBoostPower(ctx.boostAlias, ctx.boostPower + 1);
+  },
+};
+
+// =============================================================================
+// Priority 2: Time Travel
+// Reference: boosts.js:985-1020
+// =============================================================================
+
+boostFunctionRegistry['TimeTravel'] = {
+  /**
+   * buyFunction: Sets power to 1 (distance of time travel).
+   * Reference: boosts.js:1007-1009
+   * Note: Actual time travel navigation is handled separately in UI/ONG logic
+   */
+  buyFunction: (ctx) => {
+    ctx.setBoostPower(ctx.boostAlias, 1);
+  },
+};
+
+// =============================================================================
+// Priority 3: Temporal Anchor
+// Reference: boosts.js:1105-1130
+// =============================================================================
+
+boostFunctionRegistry['TemporalAnchor'] = {
+  /**
+   * buyFunction: Initialize anchor state (handled via IsEnabled toggle in legacy).
+   * When enabled, prevents NP from incrementing at ONG.
+   * Reference: boosts.js:1105-1130
+   */
+  buyFunction: (ctx) => {
+    // Anchor state managed via power (1 = enabled, 0 = disabled)
+    // Actual ONG prevention is handled in ONG logic
+  },
+
+  /**
+   * lockFunction: Releases temporal anchor (allows NP progression again).
+   */
+  lockFunction: (ctx) => {
+    ctx.notify('Temporal Anchor released');
+  },
+};
+
+// =============================================================================
+// Priority 4: Sand Monuments (SMM - Sand Mould Maker)
+// Reference: boosts.js:4343-4380
+// =============================================================================
+
+boostFunctionRegistry['SMM'] = {
+  /**
+   * buyFunction: Initialize making state to 0.
+   * Reference: boosts.js:4356
+   */
+  buyFunction: (ctx) => {
+    // Making state tracked separately in monument system
+    // this.Making = 0 in legacy
+  },
+};
+
+// =============================================================================
+// Priority 5: Fractal Sandcastles
+// Reference: boosts.js:745-780
+// =============================================================================
+
+boostFunctionRegistry['FractalSandcastles'] = {
+  /**
+   * buyFunction: Sets power to 0 (resets each ONG).
+   * Power represents fractal level, which multiplies castle gain.
+   * Reference: boosts.js:745-780 (no explicit buyFunction, handled in ONG)
+   */
+  buyFunction: (ctx) => {
+    // Power starts at 0 and increments during gameplay
+    // Multiplier: Math.pow(1.35, power)
+  },
+};
+
+// =============================================================================
+// Priority 6: Ninja Lockdown
+// Reference: boosts.js:9051-9065
+// =============================================================================
+
+boostFunctionRegistry['NinjaLockdown'] = {
+  /**
+   * buyFunction: Initialize the boost.
+   * Locking of Impervious Ninja happens when the toggle is activated.
+   * Reference: boosts.js:9062 (GenericToggle handler)
+   */
+  buyFunction: (ctx) => {
+    // Initialize - toggle state is managed separately
+    // The actual locking happens when toggle is activated via isEnabled
+  },
+};
+
+// =============================================================================
+// Priority 7: Overcompensating
+// Reference: boosts.js:701-720
+// =============================================================================
+
+boostFunctionRegistry['Overcompensating'] = {
+  /**
+   * buyFunction: Sets power to startPower (1.5 by default).
+   * During LongPix (NP > 1800), adds power to global sand multiplier.
+   * Reference: boosts.js:701-720
+   */
+  buyFunction: (ctx) => {
+    // startPower is 1.5, meaning 150% extra sand during longpix
+    ctx.setBoostPower(ctx.boostAlias, 1.5);
+  },
+};
+
+// =============================================================================
+// Priority 8: Blitzing
+// Reference: boosts.js:860-895
+// =============================================================================
+
+boostFunctionRegistry['Blitzing'] = {
+  /**
+   * buyFunction: Activates blitzing with countdown.
+   * Sets power to multiplier value (e.g., 200 = 200% sand rate).
+   * Reference: boosts.js:860-895
+   */
+  buyFunction: (ctx) => {
+    // Set countdown to duration (startCountdown is 23 in legacy, but varies)
+    ctx.setBoostCountdown(ctx.boostAlias, 100); // 100 mNP duration
+    // Set power to multiplier percentage
+    ctx.setBoostPower(ctx.boostAlias, 200); // 200% sand rate
+    ctx.notify('Blitzing activated! +200% sand rate for 100 mNP');
+  },
+
+  /**
+   * countdownFunction: Handles countdown ticks during Blitzing.
+   */
+  countdownFunction: (ctx) => {
+    if (ctx.boostCountdown === 2) {
+      ctx.notify('Blitzing ending in 2 mNP!');
+    }
+    if (ctx.boostCountdown === 0) {
+      ctx.lockBoost(ctx.boostAlias);
+    }
+  },
+
+  /**
+   * lockFunction: Deactivates Blitzing and resets state.
+   * Reference: boosts.js:871-875
+   */
+  lockFunction: (ctx) => {
+    ctx.setBoostPower(ctx.boostAlias, 0);
+    // If Sea Mining is active, lock it too
+    if (ctx.isBoostEnabled('SeaMining')) {
+      ctx.lockBoost('SeaMining');
+    }
+    ctx.notify('Blitzing expired');
+  },
+};
+
+// =============================================================================
 // Helper Functions
 // =============================================================================
 

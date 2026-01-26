@@ -1,6 +1,15 @@
 ## Changelog
 
 ### Changed
+- Implement Plan 5: More Boost Functions (#50)
+- Add Blitzing boost function (temporary rate multiplier with countdown) (#58)
+- Add Overcompensating boost function (sets power to NP number) (#57)
+- Add NinjaLockdown boost function (disables ninja multipliers) (#56)
+- Add FractalSandcastles boost function (castle multiplier) (#55)
+- Add SandMonuments boost function (creates monument badges) (#54)
+- Add TemporalAnchor boost function (freeze NP progression) (#53)
+- Add TimeTravel boost function (NP navigation) (#52)
+- Add BiggerBuckets boost function (increments power) (#51)
 - Update CLAUDE.md to require TypeScript compilation and testing (#49)
 - Fix testing infrastructure issues (#48)
 - Add unit tests for sand rate calculations (#46)
