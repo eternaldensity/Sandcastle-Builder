@@ -4,6 +4,9 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Update reward calculations to handle infinite resources (#119)
+- Add infinity formatting to number-format utility (#120)
+- Add infinity detection utility function (#118)
 - Implement reward integration with Panther Poke and badges (#116)
 - Add puzzle state tracking in redundakitty system (#115)
 - Create puzzle generator with premises and questions (#114)
@@ -86,6 +89,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Add infinite resource handling system (#117)
 - Implement Logicat puzzle system (#113)
 - Add Redundakitty system with spawn, click rewards, and DoRD integration (#96)
 - Add Factory Automation system for automatic boost processing (#89)

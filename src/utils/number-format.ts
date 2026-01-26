@@ -314,3 +314,53 @@ export function randbool(): boolean {
 export function randomChoice<T>(items: readonly T[]): T {
   return items[flandom(items.length)];
 }
+
+/**
+ * Check if a resource value should be considered infinite.
+ *
+ * A resource is infinite if:
+ * - It's not a finite number (!isFinite)
+ * - It's at or above Number.MAX_SAFE_INTEGER (effectively infinite)
+ *
+ * @param value - The resource value to check
+ * @returns true if the resource is infinite, false otherwise
+ */
+export function isResourceInfinite(value: number): boolean {
+  return !isFinite(value) || value >= Number.MAX_SAFE_INTEGER;
+}
+
+/**
+ * Format an infinite value for display.
+ *
+ * Returns appropriate strings for infinite values:
+ * - Positive infinity: "Infinite" (default) or "∞" (if useSymbol is true)
+ * - Negative infinity: "-Infinite" or "-∞"
+ * - NaN: "Mustard" (legacy behavior)
+ * - Finite values: returns null (caller should use regular formatting)
+ *
+ * @param value - The value to check and format
+ * @param useSymbol - If true, use "∞" symbol instead of "Infinite" text
+ * @returns Formatted string if infinite/NaN, null if finite
+ */
+export function formatInfinity(value: number, useSymbol = false): string | null {
+  if (isNaN(value)) {
+    return 'Mustard';
+  }
+
+  if (!isFinite(value)) {
+    const symbol = useSymbol ? '∞' : 'Infinite';
+    return value < 0 ? `-${symbol}` : symbol;
+  }
+
+  // Check for effectively infinite (MAX_SAFE_INTEGER)
+  if (value >= Number.MAX_SAFE_INTEGER) {
+    return useSymbol ? '∞' : 'Infinite';
+  }
+
+  if (value <= -Number.MAX_SAFE_INTEGER) {
+    return useSymbol ? '-∞' : '-Infinite';
+  }
+
+  // Value is finite and should use normal formatting
+  return null;
+}

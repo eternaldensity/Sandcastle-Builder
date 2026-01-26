@@ -88,6 +88,7 @@ import type {
   DragonOverallState,
   DragonSystemState,
 } from '../types/game-data.js';
+import { isResourceInfinite } from '../utils/number-format.js';
 
 /**
  * Internal state for a sand tool
@@ -3813,7 +3814,7 @@ export class ModernEngine implements GameEngine {
    */
   private giveKittyReward(): void {
     const boostState = this.buildRedundakittyBoostState();
-    const isSandInfinite = !isFinite(this.resources.sand);
+    const isSandInfinite = isResourceInfinite(this.resources.sand);
 
     // Determine which reward to give
     const rewardType = determineRewardType(boostState, isSandInfinite);
@@ -3863,7 +3864,7 @@ export class ModernEngine implements GameEngine {
     if (Math.random() < 0.5) {
       this.giveNotLuckyReward();
     } else {
-      const isSandInfinite = !isFinite(this.resources.sand);
+      const isSandInfinite = isResourceInfinite(this.resources.sand);
       if (isSandInfinite) {
         this.giveBlastFurnaceReward();
       } else {

@@ -18,6 +18,8 @@ import {
   flandom,
   randbool,
   randomChoice,
+  isResourceInfinite,
+  formatInfinity,
   POSTFIXES,
   type MolpifyOptions,
 } from './number-format.js';
@@ -371,5 +373,107 @@ describe('POSTFIXES', () => {
     const shorts = POSTFIXES.map((p) => p.postfix[0]);
     const unique = new Set(shorts);
     expect(unique.size).toBe(shorts.length);
+  });
+});
+
+describe('isResourceInfinite', () => {
+  it('returns true for positive infinity', () => {
+    expect(isResourceInfinite(Infinity)).toBe(true);
+  });
+
+  it('returns true for negative infinity', () => {
+    expect(isResourceInfinite(-Infinity)).toBe(true);
+  });
+
+  it('returns true for MAX_SAFE_INTEGER', () => {
+    expect(isResourceInfinite(Number.MAX_SAFE_INTEGER)).toBe(true);
+  });
+
+  it('returns true for values above MAX_SAFE_INTEGER', () => {
+    expect(isResourceInfinite(Number.MAX_SAFE_INTEGER + 1)).toBe(true);
+    expect(isResourceInfinite(Number.MAX_SAFE_INTEGER * 2)).toBe(true);
+  });
+
+  it('returns false for finite numbers below MAX_SAFE_INTEGER', () => {
+    expect(isResourceInfinite(0)).toBe(false);
+    expect(isResourceInfinite(1)).toBe(false);
+    expect(isResourceInfinite(1e12)).toBe(false);
+    expect(isResourceInfinite(1e15)).toBe(false);
+    expect(isResourceInfinite(Number.MAX_SAFE_INTEGER - 1)).toBe(false);
+  });
+
+  it('returns false for negative finite numbers', () => {
+    expect(isResourceInfinite(-1)).toBe(false);
+    expect(isResourceInfinite(-1e12)).toBe(false);
+  });
+
+  it('returns true for NaN (not finite)', () => {
+    expect(isResourceInfinite(NaN)).toBe(true);
+  });
+});
+
+describe('formatInfinity', () => {
+  describe('text mode (useSymbol=false)', () => {
+    it('returns "Infinite" for positive infinity', () => {
+      expect(formatInfinity(Infinity, false)).toBe('Infinite');
+    });
+
+    it('returns "-Infinite" for negative infinity', () => {
+      expect(formatInfinity(-Infinity, false)).toBe('-Infinite');
+    });
+
+    it('returns "Mustard" for NaN', () => {
+      expect(formatInfinity(NaN, false)).toBe('Mustard');
+    });
+
+    it('returns "Infinite" for MAX_SAFE_INTEGER', () => {
+      expect(formatInfinity(Number.MAX_SAFE_INTEGER, false)).toBe('Infinite');
+    });
+
+    it('returns "-Infinite" for negative MAX_SAFE_INTEGER', () => {
+      expect(formatInfinity(-Number.MAX_SAFE_INTEGER, false)).toBe('-Infinite');
+    });
+
+    it('returns null for finite numbers', () => {
+      expect(formatInfinity(0, false)).toBe(null);
+      expect(formatInfinity(1, false)).toBe(null);
+      expect(formatInfinity(1e12, false)).toBe(null);
+      expect(formatInfinity(-1e12, false)).toBe(null);
+    });
+  });
+
+  describe('symbol mode (useSymbol=true)', () => {
+    it('returns "∞" for positive infinity', () => {
+      expect(formatInfinity(Infinity, true)).toBe('∞');
+    });
+
+    it('returns "-∞" for negative infinity', () => {
+      expect(formatInfinity(-Infinity, true)).toBe('-∞');
+    });
+
+    it('returns "Mustard" for NaN', () => {
+      expect(formatInfinity(NaN, true)).toBe('Mustard');
+    });
+
+    it('returns "∞" for MAX_SAFE_INTEGER', () => {
+      expect(formatInfinity(Number.MAX_SAFE_INTEGER, true)).toBe('∞');
+    });
+
+    it('returns "-∞" for negative MAX_SAFE_INTEGER', () => {
+      expect(formatInfinity(-Number.MAX_SAFE_INTEGER, true)).toBe('-∞');
+    });
+
+    it('returns null for finite numbers', () => {
+      expect(formatInfinity(0, true)).toBe(null);
+      expect(formatInfinity(1, true)).toBe(null);
+      expect(formatInfinity(1e12, true)).toBe(null);
+    });
+  });
+
+  describe('default mode (useSymbol omitted)', () => {
+    it('defaults to text mode', () => {
+      expect(formatInfinity(Infinity)).toBe('Infinite');
+      expect(formatInfinity(-Infinity)).toBe('-Infinite');
+    });
   });
 });
