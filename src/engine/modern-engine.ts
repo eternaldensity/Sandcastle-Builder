@@ -1560,6 +1560,371 @@ export class ModernEngine implements GameEngine {
     return true;
   }
 
+  // =============================================================================
+  // Monument System
+  // =============================================================================
+  // Monuments are created from discoveries through a multi-step process:
+  // 1. Discovery -> Sand Monument (via Sand Mould Maker + Sand Mould Filler)
+  // 2. Sand Monument -> Glass Monument (via Glass Mould Maker + Glass Mould Filler)
+  // 3. Glass Monument -> Diamond Masterpiece (via Diamond Mould Maker + Filler)
+  //
+  // Each step requires:
+  // - A "maker" boost that creates a mould (progress tracked in boost.power)
+  // - A "filler" boost that fills the mould with resources
+  // - Multiple Factory Automation (FA) runs to complete
+  //
+  // State is stored in boost.extra: { Making: number (NP being made) }
+  // Progress is stored in boost.power: 0 = idle, 1-threshold = in progress, >threshold = complete
+  // =============================================================================
+
+  /**
+   * Start making a sand mould from a discovery.
+   * Reference: boosts.js:4538-4568
+   */
+  makeSandMould(np: number): void {
+    const mname = `monums${np}`;
+
+    // Check if badge exists
+    if (!this.badges.has(mname)) {
+      return; // No such mould exists
+    }
+
+    // Check if already earned
+    if (this.badges.get(mname)) {
+      return; // Don't need to make this mould
+    }
+
+    const smm = this.boosts.get('SMM');
+    const smf = this.boosts.get('SMF');
+
+    if (!smm || !smm.bought) {
+      return; // Don't have Sand Mould Maker
+    }
+
+    if (smm.power > 0) {
+      return; // Sand Mould Maker already in use
+    }
+
+    // Check if already filling this mould
+    if (smf && smf.power > 0 && smf.extra?.Making === np) {
+      return; // Already made this mould and filling it
+    }
+
+    // Start making the mould
+    if (!smm.extra) smm.extra = {};
+    smm.extra.Making = np;
+    smm.power = 1;
+  }
+
+  /**
+   * Process sand mould making work during Factory Automation.
+   * Reference: boosts.js:4570-4596
+   * @param runs Number of FA runs available
+   * @returns Remaining FA runs
+   */
+  makeSandMouldWork(runs: number): number {
+    const smm = this.boosts.get('SMM');
+    if (!smm || smm.power === 0 || smm.power > 100) {
+      return runs; // Not making, or already complete
+    }
+
+    const np = (smm.extra?.Making as number) ?? 0;
+    let chipsPerRun = np * 100;
+    if (chipsPerRun < 0) chipsPerRun *= chipsPerRun; // Square if negative
+
+    while (runs > 0) {
+      if (this.resources.glassChips < chipsPerRun) {
+        return runs; // Not enough glass chips
+      }
+
+      this.resources.glassChips -= chipsPerRun;
+      runs--;
+      smm.power++;
+
+      if (smm.power > 100) {
+        // Mould creation complete
+        return runs;
+      }
+    }
+
+    return runs;
+  }
+
+  /**
+   * Start filling a sand mould with sand to create a monument.
+   * Reference: boosts.js:4598-4638
+   */
+  fillSandMould(np: number): void {
+    const mname = `monums${np}`;
+    const smm = this.boosts.get('SMM');
+    const smf = this.boosts.get('SMF');
+
+    if (!this.badges.has(mname)) {
+      // Reset SMM if it was making this invalid mould
+      if (smm && smm.extra?.Making === np) {
+        smm.power = 0;
+        if (smm.extra) smm.extra.Making = 0;
+      }
+      return;
+    }
+
+    if (this.badges.get(mname)) {
+      // Already earned, reset SMM if needed
+      if (smm && smm.extra?.Making === np) {
+        smm.power = 0;
+        if (smm.extra) smm.extra.Making = 0;
+      }
+      return;
+    }
+
+    if (!smf || !smf.bought) {
+      return; // Don't have Sand Mould Filler
+    }
+
+    if (smf.power > 0) {
+      return; // Sand Mould Filler already in use
+    }
+
+    if (!smm || smm.power <= 100) {
+      return; // No mould ready to be filled
+    }
+
+    // Start filling the mould
+    if (!smf.extra) smf.extra = {};
+    smf.extra.Making = np;
+    smf.power = 1;
+
+    // Clear maker state
+    if (smm.extra) smm.extra.Making = 0;
+    smm.power = 0;
+  }
+
+  /**
+   * Process sand mould filling work during Factory Automation.
+   * Reference: boosts.js:4640-4668
+   * @param runs Number of FA runs available
+   * @returns Remaining FA runs
+   */
+  fillSandMouldWork(runs: number): number {
+    const smf = this.boosts.get('SMF');
+    if (!smf || smf.power === 0) {
+      return runs; // Not filling
+    }
+
+    const np = (smf.extra?.Making as number) ?? 0;
+    const sandPerRun = Math.pow(1.2, Math.abs(np)) * 100;
+    const sandToSpend = np < 0 ? sandPerRun * sandPerRun : sandPerRun;
+
+    while (runs > 0) {
+      if (this.resources.sand < sandToSpend) {
+        return runs; // Not enough sand
+      }
+
+      this.resources.sand -= sandToSpend;
+      runs--;
+      smf.power++;
+
+      if (smf.power > 200) {
+        // Sand mould filling complete - earn the badge
+        const alias = `monums${np}`;
+        this.earnBadge(alias);
+
+        // Clear filler state
+        if (smf.extra) smf.extra.Making = 0;
+        smf.power = 0;
+        return runs;
+      }
+    }
+
+    return runs;
+  }
+
+  /**
+   * Start making a glass mould from a sand monument.
+   * Reference: boosts.js:4670-4700
+   */
+  makeGlassMould(np: number): void {
+    const mname = `monumg${np}`;
+    const gmm = this.boosts.get('GMM');
+    const gmf = this.boosts.get('GMF');
+
+    if (!this.badges.has(mname)) {
+      return; // No such mould exists
+    }
+
+    if (this.badges.get(mname)) {
+      return; // Don't need to make this mould
+    }
+
+    if (!gmm || !gmm.bought) {
+      return; // Don't have Glass Mould Maker
+    }
+
+    if (gmm.power > 0) {
+      return; // Glass Mould Maker already in use
+    }
+
+    // Check if already filling this mould
+    if (gmf && gmf.power > 0 && gmf.extra?.Making === np) {
+      return; // Already made this mould and filling it
+    }
+
+    // Start making the mould
+    if (!gmm.extra) gmm.extra = {};
+    gmm.extra.Making = np;
+    gmm.power = 1;
+  }
+
+  /**
+   * Process glass mould making work during Factory Automation.
+   * Reference: boosts.js:4717-4744
+   * @param runs Number of FA runs available
+   * @returns Remaining FA runs
+   */
+  makeGlassMouldWork(runs: number): number {
+    const gmm = this.boosts.get('GMM');
+    if (!gmm || gmm.power === 0 || gmm.power > 400) {
+      return runs; // Not making, or already complete
+    }
+
+    const np = (gmm.extra?.Making as number) ?? 0;
+    const baseChips = Math.pow(1.01, Math.abs(np)) * 1000;
+    const chipsPerRun = np < 0 ? baseChips * baseChips : baseChips;
+
+    while (runs > 0) {
+      if (this.resources.glassChips < chipsPerRun) {
+        return runs; // Not enough glass chips
+      }
+
+      this.resources.glassChips -= chipsPerRun;
+      runs--;
+      gmm.power++;
+
+      if (gmm.power > 400) {
+        // Glass mould creation complete
+        return runs;
+      }
+    }
+
+    return runs;
+  }
+
+  /**
+   * Start filling a glass mould with glass to create a glass monument.
+   * Reference: boosts.js:4746-4785
+   */
+  fillGlassMould(np: number): void {
+    const mname = `monumg${np}`;
+    const gmm = this.boosts.get('GMM');
+    const gmf = this.boosts.get('GMF');
+
+    if (!this.badges.has(mname)) {
+      // Reset GMM if it was making this invalid mould
+      if (gmm && gmm.extra?.Making === np) {
+        gmm.power = 0;
+        if (gmm.extra) gmm.extra.Making = 0;
+      }
+      return;
+    }
+
+    if (this.badges.get(mname)) {
+      // Already earned, reset GMM if needed
+      if (gmm && gmm.extra?.Making === np) {
+        gmm.power = 0;
+        if (gmm.extra) gmm.extra.Making = 0;
+      }
+      return;
+    }
+
+    if (!gmf || !gmf.bought) {
+      return; // Don't have Glass Mould Filler
+    }
+
+    if (gmf.power > 0) {
+      return; // Glass Mould Filler already in use
+    }
+
+    if (!gmm || gmm.power <= 400) {
+      return; // No mould ready to be filled
+    }
+
+    // Start filling the mould
+    if (!gmf.extra) gmf.extra = {};
+    gmf.extra.Making = np;
+    gmf.power = 1;
+
+    // Clear maker state
+    if (gmm.extra) gmm.extra.Making = 0;
+    gmm.power = 0;
+  }
+
+  /**
+   * Process glass mould filling work during Factory Automation.
+   * Reference: boosts.js:4787-4820
+   * @param runs Number of FA runs available
+   * @returns Remaining FA runs
+   */
+  fillGlassMouldWork(runs: number): number {
+    const gmf = this.boosts.get('GMF');
+    if (!gmf || gmf.power === 0) {
+      return runs; // Not filling
+    }
+
+    const np = (gmf.extra?.Making as number) ?? 0;
+    const baseGlass = Math.pow(1.02, Math.abs(np)) * 1000000;
+    const glassToSpend = np < 0 ? baseGlass * baseGlass : baseGlass;
+
+    while (runs > 0) {
+      if (this.resources.glassBlocks < glassToSpend) {
+        return runs; // Not enough glass blocks
+      }
+
+      this.resources.glassBlocks -= glassToSpend;
+      runs--;
+      gmf.power++;
+
+      if (gmf.power > 800) {
+        // Glass mould filling complete - earn the badge
+        const alias = `monumg${np}`;
+        this.earnBadge(alias);
+
+        // Clear filler state
+        if (gmf.extra) gmf.extra.Making = 0;
+        gmf.power = 0;
+        return runs;
+      }
+    }
+
+    return runs;
+  }
+
+  /**
+   * Process all mould work during Factory Automation.
+   * Called during tick processing when Factory Automation is active.
+   * Reference: castle.js:3166-3185
+   * @param runs Number of FA runs available
+   * @returns Remaining FA runs after all mould work
+   */
+  doMouldWork(runs: number): number {
+    // Check if Cold Mould is enabled (disables mould work)
+    const coldMould = this.boosts.get('Cold Mould');
+    if (coldMould && coldMould.power > 0) {
+      return runs; // Cold Mould disables mould work
+    }
+
+    // Process in order: Fill Glass -> Make Glass -> Fill Sand -> Make Sand
+    // This order ensures moulds can be filled before new ones start
+    if (runs > 0) runs = this.fillGlassMouldWork(runs);
+    if (runs > 0) runs = this.makeGlassMouldWork(runs);
+    if (runs > 0) runs = this.fillSandMouldWork(runs);
+    if (runs > 0) runs = this.makeSandMouldWork(runs);
+
+    // TODO: Implement Mould Press boost (repeats mould work if AO + Mould Press)
+    // Reference: castle.js:3173-3182
+
+    return runs;
+  }
+
   /**
    * Build state for badge condition checking.
    */

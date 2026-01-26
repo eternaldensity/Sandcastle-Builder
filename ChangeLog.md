@@ -1,6 +1,9 @@
 ## Changelog
 
 ### Changed
+- Implement Discovery/Monument System (Plan 7) (#64)
+- Add tests for discovery and monument systems (#68)
+- Implement monument creation system with mould state (#67)
 - Add discovery earning logic to ModernEngine (#66)
 - Create discoveries.ts data file with all discovery definitions (#65)
 - Add tests for badge conditions and checker (#63)
