@@ -1,0 +1,3564 @@
+/**
+ * Discovery Definitions
+ *
+ * Contains all discoveries from the xkcd "Time" comic storyline.
+ * Each discovery corresponds to a specific NewPix (frame) number.
+ *
+ * Discovery badges create 4 related badges per NP:
+ * - discov{np}: The discovery itself (earned when visiting the NP)
+ * - monums{np}: Sand Monument (created via Sand Mould Maker + Filler)
+ * - monumg{np}: Glass Monument (created via Glass Mould Maker + Filler)
+ * - diamm{np}: Diamond Masterpiece (purchased with diamonds)
+ *
+ * @see badges.js:1288-2450 for original definitions
+ */
+
+export interface DiscoveryDef {
+  /** NewPix number (can be decimal for T1i storyline, e.g., 11.1) */
+  np: number;
+  /** Display name of the discovery */
+  name: string;
+  /** Description of what happened at this NewPix */
+  desc: string;
+}
+
+/**
+ * All discoveries from the Time comic.
+ * Total: 700 discoveries
+ * - Main storyline (integer NP values)
+ * - T1i alternate storyline (decimal NP values like 11.1)
+ * - Special (NP 0 "Chronocenter")
+ */
+export const discoveries: readonly DiscoveryDef[] = [
+  {
+    "np": 0,
+    "name": "Chronocenter",
+    "desc": "The extradimensional core of Time"
+  },
+  {
+    "np": 1,
+    "name": "In the Beginning",
+    "desc": "the first time we saw Megan and Cueball sitting by the sea"
+  },
+  {
+    "np": 11.1,
+    "name": "A wild Beanie appears!",
+    "desc": "11 pix before humanoid life. A new record?"
+  },
+  {
+    "np": 16,
+    "name": "Dip",
+    "desc": "when Cueball dipped his toe in the fluid"
+  },
+  {
+    "np": 25,
+    "name": "Start of Construction",
+    "desc": "when Megan began building the first castle"
+  },
+  {
+    "np": 34,
+    "name": "One Done",
+    "desc": "the first Sandcastle's completion"
+  },
+  {
+    "np": 50,
+    "name": "Barrier",
+    "desc": "completion of the first wall"
+  },
+  {
+    "np": 52,
+    "name": "First Parting Words",
+    "desc": "the first words were spoken, and Cueball left"
+  },
+  {
+    "np": 75,
+    "name": "He Returns",
+    "desc": "when Cueball came back"
+  },
+  {
+    "np": 88,
+    "name": "Silent Exit",
+    "desc": "when Megan left without a word"
+  },
+  {
+    "np": 90.1,
+    "name": "Herd you wanted people",
+    "desc": "77 consecutive pix with no people."
+  },
+  {
+    "np": 103,
+    "name": "The Fall of Man",
+    "desc": "when Cueball fell down and damaged the castle"
+  },
+  {
+    "np": 124,
+    "name": "Abandonment",
+    "desc": "when Cueball left us with no one to watch"
+  },
+  {
+    "np": 137,
+    "name": "So That's What They're up to",
+    "desc": "our first glimpse of the second castle"
+  },
+  {
+    "np": 143,
+    "name": "As According to the Prophesy",
+    "desc": "the prophesied newpix came to pass"
+  },
+  {
+    "np": 146,
+    "name": "Been Busy",
+    "desc": "when we first saw Megan working on the second castle"
+  },
+  {
+    "np": 158,
+    "name": "There he is!",
+    "desc": "when we finally saw Cueball working on the second castle too"
+  },
+  {
+    "np": 161,
+    "name": "Amusement Castle",
+    "desc": "when we wondered what this castle was made of"
+  },
+  {
+    "np": 170,
+    "name": "Wanna Swim?",
+    "desc": "the second text ever, and the first \"Yeah\""
+  },
+  {
+    "np": 175,
+    "name": "You OK?",
+    "desc": "the time that Megan got some in her mouth and the third text appeared"
+  },
+  {
+    "np": 177,
+    "name": "Gone to Clean Up",
+    "desc": "when Megan had left for the second time"
+  },
+  {
+    "np": 179,
+    "name": "Better Go Too",
+    "desc": "when Cueball also left"
+  },
+  {
+    "np": 210,
+    "name": "That Looks Grand",
+    "desc": "when Cueball completed the bridge connecting the two castles together"
+  },
+  {
+    "np": 211,
+    "name": "Shake It Off",
+    "desc": "when Cueball shook the sand off his hands"
+  },
+  {
+    "np": 212,
+    "name": "Didn't See that Coming",
+    "desc": "when something flew through the air towards Cueball from behind"
+  },
+  {
+    "np": 213,
+    "name": "Surprise Attack",
+    "desc": "the moment Cueball realised he was under fire"
+  },
+  {
+    "np": 214,
+    "name": "Cornered",
+    "desc": "when the corner was knocked off the bridge"
+  },
+  {
+    "np": 218,
+    "name": "Trebuchet",
+    "desc": "when the trebuchet was finaly completely visible"
+  },
+  {
+    "np": 219,
+    "name": "Liftoff",
+    "desc": "the moment we saw Megan fire the trebuchet"
+  },
+  {
+    "np": 221,
+    "name": "KO'd",
+    "desc": "when Megan knocked out part of the bridge"
+  },
+  {
+    "np": 224,
+    "name": "Joy!",
+    "desc": "Megan throwing her arms up as Cueball launched the trebuchet"
+  },
+  {
+    "np": 232,
+    "name": "Take Cover!",
+    "desc": "when Cuegan jumped for cover after firing the trebuchet almost vertically"
+  },
+  {
+    "np": 260,
+    "name": "Shake it Out",
+    "desc": "the time when Megan woke up and shook the sand out of her hair"
+  },
+  {
+    "np": 308,
+    "name": "Wave",
+    "desc": "when Cuegan wave to one another after Cueball came back from a long absence"
+  },
+  {
+    "np": 309,
+    "name": "Whoops!",
+    "desc": "the time that Megan slipped off the sand mound she had built"
+  },
+  {
+    "np": 318.1,
+    "name": "It winked",
+    "desc": "The snake somehow winked"
+  },
+  {
+    "np": 320,
+    "name": "Sentences",
+    "desc": "when the fourth text appeared, in which a question was asked about the whereabouts of the river"
+  },
+  {
+    "np": 321.1,
+    "name": "Very cautious",
+    "desc": "Increased efforts to be careful."
+  },
+  {
+    "np": 346.1,
+    "name": "Finally",
+    "desc": "Cueball finally considers himself mad."
+  },
+  {
+    "np": 353.1,
+    "name": "The world is weirder",
+    "desc": "Truth is stranger than fiction."
+  },
+  {
+    "np": 356.1,
+    "name": "Crazier",
+    "desc": "The higher they get, the crazier they get."
+  },
+  {
+    "np": 360.1,
+    "name": "Crazy enough",
+    "desc": "Megan calls Cueball too sane for her tastes."
+  },
+  {
+    "np": 376,
+    "name": "Clearly Recursion",
+    "desc": "when it became visible that Cueball was building a scale model of the castles"
+  },
+  {
+    "np": 390,
+    "name": "Investigation",
+    "desc": "the time that Cueball took a break to have a closer look at the fluid"
+  },
+  {
+    "np": 402,
+    "name": "Tiny",
+    "desc": "Megan holding up something very tiny"
+  },
+  {
+    "np": 403,
+    "name": "D'awwwwwwww!",
+    "desc": "when we got a very close up of Megan holding the world's cutest trebuchette"
+  },
+  {
+    "np": 408,
+    "name": "Lack of Understanding",
+    "desc": "the fifth text, in which Megan does not understand what the sea is doing"
+  },
+  {
+    "np": 414,
+    "name": "Been Fun",
+    "desc": "the sixth text, in which Cueball does not think they can build it much taller"
+  },
+  {
+    "np": 421,
+    "name": "The First Pole",
+    "desc": "when Megan brought the first pole"
+  },
+  {
+    "np": 451,
+    "name": "Breath Easy",
+    "desc": "when Megan finished lifting the first pole into position and had a chance to catch her breath"
+  },
+  {
+    "np": 460,
+    "name": "Legs in Place",
+    "desc": "when all four poles had been raised to their positions"
+  },
+  {
+    "np": 466,
+    "name": "Heave!",
+    "desc": "when Cuegan were pulling the first bit of scaffolding up by rope"
+  },
+  {
+    "np": 469,
+    "name": "Ladder",
+    "desc": "when we first saw a ladder"
+  },
+  {
+    "np": 472,
+    "name": "Climb",
+    "desc": "the time when Megan first climbed a ladder"
+  },
+  {
+    "np": 480.1,
+    "name": "Higher mountains",
+    "desc": "The pair wonder if there are higher mountains on other islands."
+  },
+  {
+    "np": 486,
+    "name": "The Tasting",
+    "desc": "the moment Cueball took a sip"
+  },
+  {
+    "np": 486.1,
+    "name": "Breathe again",
+    "desc": "The pair wonder how high up people can breathe."
+  },
+  {
+    "np": 487,
+    "name": "The Spit",
+    "desc": "the moment Cueball forcefully ejected the fluid from his mouth"
+  },
+  {
+    "np": 488,
+    "name": "More Spitting",
+    "desc": "when Cueball said Yuck"
+  },
+  {
+    "np": 490,
+    "name": "Worse",
+    "desc": "the moment we learned that Cueball has had worse"
+  },
+  {
+    "np": 514.1,
+    "name": "A third snake",
+    "desc": "The pair spot yet another snake."
+  },
+  {
+    "np": 524,
+    "name": "Connected",
+    "desc": "when the two sides of the scaffolding were joined"
+  },
+  {
+    "np": 560.1,
+    "name": "Broken castle",
+    "desc": "The pair spots something interesting."
+  },
+  {
+    "np": 562,
+    "name": "Not this Fast",
+    "desc": "when Cuegan discussed the sea level rising and falling, on the mostly built observation platform"
+  },
+  {
+    "np": 563,
+    "name": "Solemn Chant",
+    "desc": "in which we encounter the words which shaped OTTer speech forever: \"The River Is Small. The Sea is Big.\""
+  },
+  {
+    "np": 583,
+    "name": "Bucket",
+    "desc": "when Cueball brought a bucket"
+  },
+  {
+    "np": 599.1,
+    "name": "Aunt",
+    "desc": "Some characterization of Cueball's aunt."
+  },
+  {
+    "np": 618.1,
+    "name": "Tsee-chirp",
+    "desc": "A sound that will return many more times."
+  },
+  {
+    "np": 623,
+    "name": "Castling",
+    "desc": "the moment Cueball finished building the Rooks"
+  },
+  {
+    "np": 632,
+    "name": "Flagging",
+    "desc": "when Cueball put flags on the Rooks"
+  },
+  {
+    "np": 637,
+    "name": "Questioning",
+    "desc": "when Megan wondered if it rained on the sea, as they stood on the observation platform"
+  },
+  {
+    "np": 638,
+    "name": "Waste",
+    "desc": "when Cueball shared his feelings about hypothetical rain on the sea"
+  },
+  {
+    "np": 640,
+    "name": "Hills",
+    "desc": "the time that the hills were first mentioned, as the origin of the river"
+  },
+  {
+    "np": 641,
+    "name": "Other Rivers?",
+    "desc": "when Cueball wondered about other rivers, as Megan attached a rope to a pole"
+  },
+  {
+    "np": 653,
+    "name": "Next Level",
+    "desc": "when Cuegan finished lifting the next horizontal piece above the platform"
+  },
+  {
+    "np": 659,
+    "name": "Must",
+    "desc": "when Cueball declared the necessity of other rivers to prevent the sea from drying up"
+  },
+  {
+    "np": 661,
+    "name": "Anything",
+    "desc": "when Megan and Cueball discuss not knowing how things work"
+  },
+  {
+    "np": 673,
+    "name": "This should work",
+    "desc": "when Megan started a bucket ride"
+  },
+  {
+    "np": 674,
+    "name": "So Far So Good",
+    "desc": "Megan riding up in a bucket"
+  },
+  {
+    "np": 675,
+    "name": "Aaaaaaaaaaaaaa",
+    "desc": "the instant of Megan's fall off the bucket"
+  },
+  {
+    "np": 792,
+    "name": "Nap",
+    "desc": "when Megan took a nap on the platform after finishing the Top Castle"
+  },
+  {
+    "np": 799,
+    "name": "Third Character",
+    "desc": "the initial appearance of LaPetite"
+  },
+  {
+    "np": 802,
+    "name": "Short Stay",
+    "desc": "when LaPetite left, having made a big impression on our hearts"
+  },
+  {
+    "np": 806,
+    "name": "Megan Up!",
+    "desc": "when Megan Molpies Up, though we had no idea it was called that at the time"
+  },
+  {
+    "np": 812,
+    "name": "Retrieval",
+    "desc": "Megan picking up the fallen flag"
+  },
+  {
+    "np": 814,
+    "name": "Relecation",
+    "desc": "Megan putting the fallen flag in a new place"
+  },
+  {
+    "np": 825,
+    "name": "That Should Hold it",
+    "desc": "when Megan left the newly-built sand barrier which she made from a bridge"
+  },
+  {
+    "np": 828,
+    "name": "Pair",
+    "desc": "when Cuegan returned together"
+  },
+  {
+    "np": 832,
+    "name": "Worry",
+    "desc": "Megan suggesting that the sea won't stop"
+  },
+  {
+    "np": 833,
+    "name": "Whatever it Wants",
+    "desc": "when we learned that the sea can do whatever it wants, even make more of itself forever"
+  },
+  {
+    "np": 834,
+    "name": "Yeah",
+    "desc": "when Megan agreed that there's a reason for everything"
+  },
+  {
+    "np": 835,
+    "name": "Reason",
+    "desc": "Megan pointing out that the reason for something isn't always a good one"
+  },
+  {
+    "np": 838,
+    "name": "Maybe",
+    "desc": "when Cueball suggested that there may be something wrong with the other rivers"
+  },
+  {
+    "np": 845,
+    "name": "Extra flags",
+    "desc": "Megan bringing some more flags for the top castle"
+  },
+  {
+    "np": 855,
+    "name": "I Like Our Castle",
+    "desc": "Megan's declaration after placing more flags"
+  },
+  {
+    "np": 856,
+    "name": "Wet Blanket",
+    "desc": "when Cueball made a dire prediction about the fate of their castle"
+  },
+  {
+    "np": 857,
+    "name": "Just Yeah",
+    "desc": "when Megan had only one word of reply to Cueball's doomsaying"
+  },
+  {
+    "np": 859,
+    "name": "Logical",
+    "desc": "when Cueball explained his reasoning behind the conclusion of other rivers existing"
+  },
+  {
+    "np": 860,
+    "name": "Overflow",
+    "desc": "Megan's alternate theory for the rising sea"
+  },
+  {
+    "np": 861,
+    "name": "Speculation Abounds",
+    "desc": "Cueball suggests another theory and admits a lack of knowledge"
+  },
+  {
+    "np": 862,
+    "name": "Yeah Again",
+    "desc": "Megan continues the laconic trend"
+  },
+  {
+    "np": 864,
+    "name": "Best Idea Ever",
+    "desc": "the critical moment when Megan suggested finding out why the sea was rising and Cueball immediately agreed"
+  },
+  {
+    "np": 865,
+    "name": "Bags",
+    "desc": "when Megan went to get bags"
+  },
+  {
+    "np": 875,
+    "name": "Laden",
+    "desc": "Megan returning with a bag"
+  },
+  {
+    "np": 878,
+    "name": "Finishing Touch",
+    "desc": "the moment Megan added one last flag to the castle"
+  },
+  {
+    "np": 881,
+    "name": "Basement For You!",
+    "desc": "Megan saying bye"
+  },
+  {
+    "np": 925,
+    "name": "Crumbling",
+    "desc": "when part of the castle fell into the liquid"
+  },
+  {
+    "np": 951,
+    "name": "She Returns",
+    "desc": "the brief moment in The Fading when LaPetite returned, and there was much rejoicing"
+  },
+  {
+    "np": 969,
+    "name": "She Returns Again",
+    "desc": "LaPetite's second return, hardly visible due to The Fading"
+  },
+  {
+    "np": 970,
+    "name": "What a Drag",
+    "desc": "when we saw (with enhancement) that LaPetite was dragging something to the castle"
+  },
+  {
+    "np": 971,
+    "name": "All Gone",
+    "desc": "the completion of The Fading"
+  },
+  {
+    "np": 972,
+    "name": "New Ground",
+    "desc": "when we saw a completely new scene"
+  },
+  {
+    "np": 973,
+    "name": "Walkers",
+    "desc": "the first time we saw Cuegan walking on their journey"
+  },
+  {
+    "np": 977.1,
+    "name": "Green water",
+    "desc": "The pond is full of fresh, green, water."
+  },
+  {
+    "np": 985,
+    "name": "This Far",
+    "desc": "when Cueball asks whether Megan has ever been this far"
+  },
+  {
+    "np": 989,
+    "name": "Drinking",
+    "desc": "Cueball and Megan stop to drink"
+  },
+  {
+    "np": 999,
+    "name": "Change Direction",
+    "desc": "when the picture changes orientation by 90 degrees"
+  },
+  {
+    "np": 1004,
+    "name": "Doesn't end",
+    "desc": "Megan says: Maybe the sea doesn't end."
+  },
+  {
+    "np": 1005,
+    "name": "Very Far",
+    "desc": "Cueball says: We haven't walked very far."
+  },
+  {
+    "np": 1006,
+    "name": "Not Ending",
+    "desc": "Megan doth say: Yeah.  But that's what the first part of not ending looks like."
+  },
+  {
+    "np": 1011.1,
+    "name": "Mouring",
+    "desc": "The trio briefly pause to pay their respects to the dead."
+  },
+  {
+    "np": 1018,
+    "name": "Steam bottle",
+    "desc": "Megan says: If we don't find something today, we'll have to start using the steam bottle."
+  },
+  {
+    "np": 1024,
+    "name": "Yes",
+    "desc": "\"Yes.\" \"Yes what?\""
+  },
+  {
+    "np": 1025,
+    "name": "Other Rivers",
+    "desc": "Megan says: \"There are other rivers.\""
+  },
+  {
+    "np": 1029,
+    "name": "Dropped",
+    "desc": "Cueball drops his bottle in the river"
+  },
+  {
+    "np": 1036,
+    "name": "Lasso",
+    "desc": "Cueball attempts to lasso the bottle"
+  },
+  {
+    "np": 1038,
+    "name": "Lasso 2",
+    "desc": "Megan attempts to lasso the bottle"
+  },
+  {
+    "np": 1041,
+    "name": "Too Dangerous",
+    "desc": "\"Maybe I could -\"  \"Too dangerous.\""
+  },
+  {
+    "np": 1042,
+    "name": "Accident",
+    "desc": "Megan: It's OK, it was an accident."
+  },
+  {
+    "np": 1044,
+    "name": "Right",
+    "desc": "Megan say Cueball is right!"
+  },
+  {
+    "np": 1045,
+    "name": "Not Fast",
+    "desc": "This river's not moving very fast."
+  },
+  {
+    "np": 1049,
+    "name": "Not Enough",
+    "desc": "Megan: I don't think it's enough water."
+  },
+  {
+    "np": 1052,
+    "name": "Not Broken",
+    "desc": "Cueball: And this river doesn't look broken."
+  },
+  {
+    "np": 1053,
+    "name": "Pretty Neat",
+    "desc": "Cueball: It's pretty neat though."
+  },
+  {
+    "np": 1058,
+    "name": "Sorry",
+    "desc": "Cueball says sorry"
+  },
+  {
+    "np": 1066,
+    "name": "Still Rising",
+    "desc": "Megan: It's still rising."
+  },
+  {
+    "np": 1067,
+    "name": "Strange",
+    "desc": "The sea couldn't wait."
+  },
+  {
+    "np": 1069,
+    "name": "Find a ford",
+    "desc": "Megan: Walk upriver to find a ford or turn back?"
+  },
+  {
+    "np": 1071,
+    "name": "Understand Everything",
+    "desc": "Cueball: We don't understand everything yet."
+  },
+  {
+    "np": 1072,
+    "name": "Understand Anything",
+    "desc": "Megan: Everything is a little ambitious.  We barely understand anything."
+  },
+  {
+    "np": 1073,
+    "name": "First Part",
+    "desc": "Cueball: But that's what the first part of understanding everything looks like."
+  },
+  {
+    "np": 1093,
+    "name": "Ours at its driest",
+    "desc": "Cueball: I'm glad we found this river."
+  },
+  {
+    "np": 1096,
+    "name": "Bigger",
+    "desc": "Megan: This river is even bigger than it looked."
+  },
+  {
+    "np": 1106.1,
+    "name": "Yeah!",
+    "desc": "Megan successfully gets the body."
+  },
+  {
+    "np": 1123,
+    "name": "Fill the Sea",
+    "desc": "Megan: Maybe it is big enough to fill the sea."
+  },
+  {
+    "np": 1130,
+    "name": "Rope",
+    "desc": "Cueball: Our rope isn't strong enough."
+  },
+  {
+    "np": 1131,
+    "name": "Hold this",
+    "desc": "Cueball: Hold this or you'll fall."
+  },
+  {
+    "np": 1142,
+    "name": "Stuff",
+    "desc": "Cueball: Our river fills with stuff."
+  },
+  {
+    "np": 1143,
+    "name": "This river",
+    "desc": "Cueball: This river doesn't look like that."
+  },
+  {
+    "np": 1144,
+    "name": "Empty places",
+    "desc": "Megan: Maybe it only flows through empty places."
+  },
+  {
+    "np": 1146,
+    "name": "Continue",
+    "desc": "They continue upriver"
+  },
+  {
+    "np": 1159,
+    "name": "How High",
+    "desc": "Megan: I wonder how high the water is now."
+  },
+  {
+    "np": 1160,
+    "name": "Been days",
+    "desc": "Megan: Not a lot of us by the shore this time of year."
+  },
+  {
+    "np": 1161,
+    "name": "Tents get wet",
+    "desc": "Megan: It'd have to rise a lot higher before any tents got wet."
+  },
+  {
+    "np": 1178,
+    "name": "Bigger Hills",
+    "desc": "Cueball: This river flows from bigger hills than ours."
+  },
+  {
+    "np": 1179,
+    "name": "Crossing soon",
+    "desc": "Cueball: If we don't reach a crossing soon, we'll be in them."
+  },
+  {
+    "np": 1181,
+    "name": "Cliff",
+    "desc": "Looking over a cliff to the river"
+  },
+  {
+    "np": 1184,
+    "name": "Swim in",
+    "desc": "Megan: I wonder if it's possible to swim in."
+  },
+  {
+    "np": 1212,
+    "name": "You OK",
+    "desc": "Megan asks, \"You OK?\""
+  },
+  {
+    "np": 1213,
+    "name": "Just Thinking",
+    "desc": "Cueball is just thinking"
+  },
+  {
+    "np": 1218,
+    "name": "Follow river",
+    "desc": "Megan: Should we follow the river through there?"
+  },
+  {
+    "np": 1219,
+    "name": "Over those",
+    "desc": "Cueball: Lets see if we can go over those and rejoin it further up."
+  },
+  {
+    "np": 1222.1,
+    "name": "How they came",
+    "desc": "The Beanish boat is revealed."
+  },
+  {
+    "np": 1233,
+    "name": "Windier",
+    "desc": "Megan: It must get windier up here."
+  },
+  {
+    "np": 1261,
+    "name": "Bigger Dunes",
+    "desc": "Cueball: These are bigger than they looked"
+  },
+  {
+    "np": 1265,
+    "name": "Megan Falls",
+    "desc": "Megan falls when dune surfing"
+  },
+  {
+    "np": 1276,
+    "name": "Raptor",
+    "desc": "First raptor spotted (a swift)"
+  },
+  {
+    "np": 1338,
+    "name": "Treeish",
+    "desc": "The First tree - Neat!"
+  },
+  {
+    "np": 1343,
+    "name": "River Further",
+    "desc": "Megan: The river isn't much further..."
+  },
+  {
+    "np": 1353,
+    "name": "Second Raptor",
+    "desc": "Second Raptor (unidentified)"
+  },
+  {
+    "np": 1363,
+    "name": "Berries Picked",
+    "desc": "Cueball picks some berries"
+  },
+  {
+    "np": 1368,
+    "name": "Sticks",
+    "desc": "Cueball finds the first traces of people"
+  },
+  {
+    "np": 1378,
+    "name": "Berries Eaten",
+    "desc": "Cueball gives berries to Megan"
+  },
+  {
+    "np": 1380,
+    "name": "Campsite",
+    "desc": "Cueball: There are people here.  Or were.  I found some sort of campsite."
+  },
+  {
+    "np": 1381,
+    "name": "Recent?",
+    "desc": "Megan asks if is recent; Cueball says it has been empty for a while"
+  },
+  {
+    "np": 1383,
+    "name": "Thirsty",
+    "desc": "They go to the river"
+  },
+  {
+    "np": 1386,
+    "name": "Left Behind?",
+    "desc": "They discuss what is in the camp"
+  },
+  {
+    "np": 1396,
+    "name": "Ibises",
+    "desc": "Ibises are seen eating in the damp ground"
+  },
+  {
+    "np": 1398,
+    "name": "Ibises Fly",
+    "desc": "The Ibises fly away as they approach"
+  },
+  {
+    "np": 1407,
+    "name": "Beautiful",
+    "desc": "They agree the place is beautiful"
+  },
+  {
+    "np": 1408,
+    "name": "No People",
+    "desc": "Megan: I'm surprised we haven't been seen by any people yet."
+  },
+  {
+    "np": 1409,
+    "name": "Live Here",
+    "desc": "Megan: If it's this empty, we should live here."
+  },
+  {
+    "np": 1412,
+    "name": "Tasting Better",
+    "desc": "Cueball: Did you notice the sea tasting better?"
+  },
+  {
+    "np": 1413,
+    "name": "Taste Seawater",
+    "desc": "Megan: I don't know. I try not to taste seawater.  Why?"
+  },
+  {
+    "np": 1414,
+    "name": "Get Fresher",
+    "desc": "Cueball says the sea should get fresher"
+  },
+  {
+    "np": 1415,
+    "name": "Tasted Fresher",
+    "desc": "Cueball says it was a litle fresher before they left"
+  },
+  {
+    "np": 1416,
+    "name": "Extra water",
+    "desc": "Megan: Probably. I mean, how high was the sea then?  The extra water couldn't have been more than a tiny part of it."
+  },
+  {
+    "np": 1419,
+    "name": "We may as well continue",
+    "desc": "Cueball says they should continue - either to figure the sea or to keep finding beautiful places"
+  },
+  {
+    "np": 1420,
+    "name": "Sounds fun",
+    "desc": "Megan: That sounds fun."
+  },
+  {
+    "np": 1434,
+    "name": "Ribbit hole",
+    "desc": "Megan falls due to a ribbit hole"
+  },
+  {
+    "np": 1437,
+    "name": "I Found A-",
+    "desc": "Megan sitting up and explaining"
+  },
+  {
+    "np": 1438,
+    "name": "Cueball Helps",
+    "desc": "Cueball helps Megan up"
+  },
+  {
+    "np": 1458,
+    "name": "Beesnake",
+    "desc": "Megan looks at the Beesnake"
+  },
+  {
+    "np": 1476,
+    "name": "Campsite 2",
+    "desc": "They find a second campsite"
+  },
+  {
+    "np": 1495,
+    "name": "Oof",
+    "desc": "Megan: Oof."
+  },
+  {
+    "np": 1497,
+    "name": "Megan's OK",
+    "desc": "Megan says she is ok"
+  },
+  {
+    "np": 1502,
+    "name": "Wow",
+    "desc": "Megan looks out and says \"Wow.\""
+  },
+  {
+    "np": 1503,
+    "name": "Baobabs",
+    "desc": "Baobab trees"
+  },
+  {
+    "np": 1510,
+    "name": "Baobabs close",
+    "desc": "They look up close to the first Baobab"
+  },
+  {
+    "np": 1513,
+    "name": "Markings on trunk",
+    "desc": "They find markings on the Baobab"
+  },
+  {
+    "np": 1514,
+    "name": "Wonder what they mean",
+    "desc": "They can't understand the markings"
+  },
+  {
+    "np": 1525,
+    "name": "The bent Baobab",
+    "desc": "Megan: I wonder if it's supposed to be like that."
+  },
+  {
+    "np": 1526,
+    "name": "Knows what it's doing",
+    "desc": "Cueball: It's a pretty big tree.  It probably knows what it's doing."
+  },
+  {
+    "np": 1552,
+    "name": "First Grapevine",
+    "desc": "They look at the first grapevine"
+  },
+  {
+    "np": 1557,
+    "name": "Take some grapes?",
+    "desc": "Cueball: Do you think it's OK to take some?"
+  },
+  {
+    "np": 1558,
+    "name": "Yes take grapes",
+    "desc": "Megan: Yeah.  It doesn't look like anyone's been here for a while."
+  },
+  {
+    "np": 1587,
+    "name": "Examine campsite",
+    "desc": "They examine another abandoned campsite"
+  },
+  {
+    "np": 1589,
+    "name": "Stuff floats down our river",
+    "desc": "Cueball: This looks like the stuff that floats down our river."
+  },
+  {
+    "np": 1590,
+    "name": "Hill People?",
+    "desc": "They wonder if they are related to the Hill people"
+  },
+  {
+    "np": 1592,
+    "name": "Megans doubt",
+    "desc": "Megan: But the markings on that tree didn't look familiar"
+  },
+  {
+    "np": 1594,
+    "name": "Cross with a raft",
+    "desc": "Megan: We could cross the river now.  We've found more than enough wood for a raft."
+  },
+  {
+    "np": 1595,
+    "name": "Yeah",
+    "desc": "Cueball agrees with Megan"
+  },
+  {
+    "np": 1598,
+    "name": "Almost Mountains",
+    "desc": "Cueball: We're almost in the mountains."
+  },
+  {
+    "np": 1600,
+    "name": "Learning Lots",
+    "desc": "Cueball: We walked along the sea for days and we didn't learn anything.  Up here we're learning lots."
+  },
+  {
+    "np": 1601,
+    "name": "Not why the sea rose",
+    "desc": "They still have not found out why the sea has risen"
+  },
+  {
+    "np": 1602,
+    "name": "Food and water",
+    "desc": "Cueball: There's food and water here.  I don't want to go all the way back down, walk along the sea for a few more days, then have to turn around."
+  },
+  {
+    "np": 1603,
+    "name": "Answer every question",
+    "desc": "Cueball: Maybe the sea is too big to understand.  We can't answer every question"
+  },
+  {
+    "np": 1604,
+    "name": "Answer any question",
+    "desc": "Megan: No.  But I think we can answer any question"
+  },
+  {
+    "np": 1605,
+    "name": "No need to turn around",
+    "desc": "Megan: Still, I agree.  No need to turn around yet."
+  },
+  {
+    "np": 1606,
+    "name": "Neat mountains",
+    "desc": "Megan: And those mountains do look neat."
+  },
+  {
+    "np": 1608,
+    "name": "Stock up",
+    "desc": "Megan goes back for food, Cueball will get the water"
+  },
+  {
+    "np": 1616,
+    "name": "Squirpy",
+    "desc": "Megan sees the squirpy"
+  },
+  {
+    "np": 1617,
+    "name": "Hi, Squirpy",
+    "desc": "Megan says Hi to the squirpy"
+  },
+  {
+    "np": 1622,
+    "name": "Won't eat you",
+    "desc": "Megan talks to the squirpy"
+  },
+  {
+    "np": 1625,
+    "name": "Want some food?",
+    "desc": "Food is offered to the squirpy"
+  },
+  {
+    "np": 1669,
+    "name": "Where are the people?",
+    "desc": "Cueball wonders where the people who used to tend the plants are"
+  },
+  {
+    "np": 1686,
+    "name": "Playing with shadows",
+    "desc": "Cueball is playing with shadows"
+  },
+  {
+    "np": 1687,
+    "name": "What are you doing?",
+    "desc": "Megan asks what Cueball is doing"
+  },
+  {
+    "np": 1688,
+    "name": "Cueball has been making shapes",
+    "desc": "He explains what he is doing"
+  },
+  {
+    "np": 1689,
+    "name": "Weird shadows",
+    "desc": "Megan: When I stare down at mine for long enough while I walk, it starts to look really weird"
+  },
+  {
+    "np": 1692,
+    "name": "Better than following the Sea",
+    "desc": "Megan drops a big clue as to what direction they were travelling when they started"
+  },
+  {
+    "np": 1707,
+    "name": "Pass it up",
+    "desc": "Bags are handed up from Cueball to Megan"
+  },
+  {
+    "np": 1708,
+    "name": "Have a hand",
+    "desc": "Megan helps Cueball up the escarpment"
+  },
+  {
+    "np": 1713,
+    "name": "Easier up here",
+    "desc": "Cueball: It's prettier right by the river but it's easier to wlak up here"
+  },
+  {
+    "np": 1714,
+    "name": "Greener further up",
+    "desc": "Megan: Well, it all gets greener further up"
+  },
+  {
+    "np": 1718,
+    "name": "Mountains are farther",
+    "desc": "Cueball: The mountains are further away than they looked"
+  },
+  {
+    "np": 1739,
+    "name": "Snake!",
+    "desc": "Cueball sees a snake"
+  },
+  {
+    "np": 1740,
+    "name": "Fall",
+    "desc": "Cueball falls on top of Megan"
+  },
+  {
+    "np": 1742,
+    "name": "Are you OK?",
+    "desc": "Megan checks up on Cueball"
+  },
+  {
+    "np": 1743,
+    "name": "I think so",
+    "desc": "He is OK"
+  },
+  {
+    "np": 1744,
+    "name": "Bite you?",
+    "desc": "He hasn't been bitten"
+  },
+  {
+    "np": 1745,
+    "name": "What kind?",
+    "desc": "Megan asks about the type of snake"
+  },
+  {
+    "np": 1746,
+    "name": "Brownish and shiny, kind of blotchy",
+    "desc": "The snake is described"
+  },
+  {
+    "np": 1747,
+    "name": "Spikes over eyes?",
+    "desc": "Megan asks if it has spikes over its eyes"
+  },
+  {
+    "np": 1748,
+    "name": "Head and tail",
+    "desc": "Cueball: It was weird, stubby at both ends, like it forgot to have a head and tail"
+  },
+  {
+    "np": 1749,
+    "name": "Hmm...",
+    "desc": "Megan ponders"
+  },
+  {
+    "np": 1750,
+    "name": "Go around",
+    "desc": "Megan: No idea, but let's go around and watch your feet"
+  },
+  {
+    "np": 1758,
+    "name": "No snakes",
+    "desc": "Megan checks a new way up"
+  },
+  {
+    "np": 1793,
+    "name": "Looking Back",
+    "desc": "Megan keeps looking back"
+  },
+  {
+    "np": 1795,
+    "name": "Almost see the sea",
+    "desc": "Megan: I think I can almost see the sea from here"
+  },
+  {
+    "np": 1797,
+    "name": "Hard to tell",
+    "desc": "Cueball: I don't know.  It's hard to tell what's land and what's sky"
+  },
+  {
+    "np": 1802,
+    "name": "Another Beesnake",
+    "desc": "Megan observes another beesnake"
+  },
+  {
+    "np": 1821,
+    "name": "Cooler",
+    "desc": "Megan: It's cooler up here"
+  },
+  {
+    "np": 1826,
+    "name": "Quiet chirps",
+    "desc": "Cueball: Are you hearing quiet chirps?"
+  },
+  {
+    "np": 1828,
+    "name": "Not now",
+    "desc": "Cueball has stopped hearing them"
+  },
+  {
+    "np": 1830,
+    "name": "Sky chirps",
+    "desc": "Megan: I heard chirps from the sky once"
+  },
+  {
+    "np": 1831,
+    "name": "Stars and chirps",
+    "desc": "Megan says she heard chirping while looking at stars"
+  },
+  {
+    "np": 1832,
+    "name": "Stars flicker",
+    "desc": "Megan thought she saw a few stars flicker"
+  },
+  {
+    "np": 1837,
+    "name": "Chirp",
+    "desc": "A quiet chirp"
+  },
+  {
+    "np": 1838,
+    "name": "Another Chirp",
+    "desc": "Another chirp - Megan looks up"
+  },
+  {
+    "np": 1839,
+    "name": "Chirps ahead",
+    "desc": "Cueball: It's coming from up ahead"
+  },
+  {
+    "np": 1840,
+    "name": "Chirp three",
+    "desc": "They investigate the chirps"
+  },
+  {
+    "np": 1844,
+    "name": "Chirp in a tree",
+    "desc": "A Chirp is in a tree"
+  },
+  {
+    "np": 1845,
+    "name": "Chirp in a tree 2",
+    "desc": "The sequel to chirp in a tree"
+  },
+  {
+    "np": 1847,
+    "name": "Chirp in a tree 3",
+    "desc": "The Chirps in trees trilogy continues"
+  },
+  {
+    "np": 1848,
+    "name": "Megan Chirps",
+    "desc": "Megan tries saying Chirp back"
+  },
+  {
+    "np": 1849,
+    "name": "Chirp in a tree 4",
+    "desc": "The chirp trilogy part 4"
+  },
+  {
+    "np": 1850,
+    "name": "Megan chirps again",
+    "desc": "This is getting repetative"
+  },
+  {
+    "np": 1852,
+    "name": "Why is it chirping?",
+    "desc": "They wonder why it is chirping"
+  },
+  {
+    "np": 1853,
+    "name": "Chirp in a tree 5",
+    "desc": "The fifth part of the trilogy"
+  },
+  {
+    "np": 1854,
+    "name": "Angry",
+    "desc": "Megan: I guess it's angry that we're here"
+  },
+  {
+    "np": 1855,
+    "name": "Chirp in a tree 6",
+    "desc": "The chirp trilogy part IV"
+  },
+  {
+    "np": 1857,
+    "name": "Chirp in a tree 7",
+    "desc": "Another chirp, another raptor flying in"
+  },
+  {
+    "np": 1859,
+    "name": "Chirp in a tree 8",
+    "desc": "Another chirp, the other raptor is closing in"
+  },
+  {
+    "np": 1860,
+    "name": "Nearly There",
+    "desc": "Raptor close to Chirp"
+  },
+  {
+    "np": 1862,
+    "name": "What's it doing?",
+    "desc": "Megan: What's it doing? Cueball: I think it gave it something "
+  },
+  {
+    "np": 1863,
+    "name": "Oh Food",
+    "desc": "Megan: Oh! Food!  I bet the loud one is a baby"
+  },
+  {
+    "np": 1864,
+    "name": "Chirp Chirp",
+    "desc": "2 chirps in a tree"
+  },
+  {
+    "np": 1865,
+    "name": "Both Loud",
+    "desc": "Cueball: Now they're both loud"
+  },
+  {
+    "np": 1866,
+    "name": "CHIRP",
+    "desc": "A loud Chirp"
+  },
+  {
+    "np": 1867,
+    "name": "Not going to eat you",
+    "desc": "They say they are not eating them but are not believed"
+  },
+  {
+    "np": 1868,
+    "name": "Protecting Baby",
+    "desc": "Megan: That's OK.  It's just protecting its baby"
+  },
+  {
+    "np": 1869,
+    "name": "CHIRP again",
+    "desc": "The parent raptor give a loud chirp"
+  },
+  {
+    "np": 1870,
+    "name": "Water ahead",
+    "desc": "Megan thinks she can see water up ahead"
+  },
+  {
+    "np": 1874,
+    "name": "Doing a good job",
+    "desc": "Cueball: Don't worry!  You're doing a good job"
+  },
+  {
+    "np": 1885,
+    "name": "Hi!",
+    "desc": "Megan: leaps from a tree saying Hi!"
+  },
+  {
+    "np": 1886,
+    "name": "Splat!",
+    "desc": "Megan lands on Cueball!"
+  },
+  {
+    "np": 1888,
+    "name": "Tiny River",
+    "desc": "Megan has found a tiny river"
+  },
+  {
+    "np": 1890,
+    "name": "You OK?",
+    "desc": "Megan checks Cueball is OK"
+  },
+  {
+    "np": 1917,
+    "name": "Facebug!",
+    "desc": "A beesnake lands on Megan"
+  },
+  {
+    "np": 1918,
+    "name": "Mrrr Gbishx",
+    "desc": "Really"
+  },
+  {
+    "np": 1926,
+    "name": "HEY!",
+    "desc": "Wake up"
+  },
+  {
+    "np": 1927,
+    "name": "See what I found",
+    "desc": "Megan is excited"
+  },
+  {
+    "np": 1928,
+    "name": "River Connected",
+    "desc": "Megan: This river is flowing toward the big one, so I followed it to see if they connected"
+  },
+  {
+    "np": 1929,
+    "name": "Wait for it",
+    "desc": "They follow the stream"
+  },
+  {
+    "np": 1932,
+    "name": "Wow",
+    "desc": "What has Cueball seen?"
+  },
+  {
+    "np": 1933,
+    "name": "Definately WOW!",
+    "desc": "The excitement is justified"
+  },
+  {
+    "np": 1934,
+    "name": "Yes WOW!",
+    "desc": "Look around, it is worth it"
+  },
+  {
+    "np": 1935,
+    "name": "Keep looking",
+    "desc": "Its wowerful"
+  },
+  {
+    "np": 1936,
+    "name": "Still worth it",
+    "desc": "The view is stunning"
+  },
+  {
+    "np": 1938,
+    "name": "Land goes up",
+    "desc": "Megan:I guess the land goes up, but the river stays at the same level"
+  },
+  {
+    "np": 1939,
+    "name": "River going up too",
+    "desc": "Megan: The river has been going up, too.  But not as fast as the land"
+  },
+  {
+    "np": 1941,
+    "name": "Water wear away rock",
+    "desc": "Megan: can water really wear away rock like this?"
+  },
+  {
+    "np": 1942,
+    "name": "I guess it can",
+    "desc": "Cueball: I guess it can"
+  },
+  {
+    "np": 1944,
+    "name": "How long",
+    "desc": "Megan: I ca't imagine how long it must have taken"
+  },
+  {
+    "np": 1945,
+    "name": "Yeah...",
+    "desc": "Cueball: Yeah..."
+  },
+  {
+    "np": 1950,
+    "name": "Crumbly rocks",
+    "desc": "Cueball: A lot of these rocks are pretty crumbly"
+  },
+  {
+    "np": 1951,
+    "name": "Sandy Rocks",
+    "desc": "Cueball: Even down there, between all the big rocks, the cliff walls look sandy.  Water eats away sand pretty fast"
+  },
+  {
+    "np": 1953,
+    "name": "Yeah",
+    "desc": "Megan says Yeah."
+  },
+  {
+    "np": 1957,
+    "name": "How deep",
+    "desc": "Megan: I woder how deep it gets"
+  },
+  {
+    "np": 1958,
+    "name": "Right through the mountain",
+    "desc": "Cueball: Maybe it goes right through the mountain, and it's as deep as the mountain is tall"
+  },
+  {
+    "np": 1959,
+    "name": "Even deeper",
+    "desc": "Megan: It could be even deeper.  We don't know how far down the water goes"
+  },
+  {
+    "np": 1960,
+    "name": "Hmm",
+    "desc": "Cueball: Hmm"
+  },
+  {
+    "np": 1961,
+    "name": "Deeper than the sea",
+    "desc": "The discuss it can't be deeper than the sea"
+  },
+  {
+    "np": 1962,
+    "name": "How would it get started",
+    "desc": "Megan: But then, a river couldn't cat all the way through aa mountain, either.  Because how would it get started"
+  },
+  {
+    "np": 1964,
+    "name": "Top of a mountain",
+    "desc": "Megan: I wonder what the top of a mountain is like?"
+  },
+  {
+    "np": 1966,
+    "name": "Find out",
+    "desc": "Cueball: Let's find out"
+  },
+  {
+    "np": 2023,
+    "name": "Journey's End?",
+    "desc": "Cueball is pathetic"
+  },
+  {
+    "np": 2024,
+    "name": "Easier Spot?",
+    "desc": "Can they do it?"
+  },
+  {
+    "np": 2034,
+    "name": "OH!",
+    "desc": "Cueball spots Prickly"
+  },
+  {
+    "np": 2045,
+    "name": "Careful!",
+    "desc": "Megan: Careful!, Cueball: It's OK"
+  },
+  {
+    "np": 2048,
+    "name": "Pickly",
+    "desc": "Megan: Does it Hurt?  Cueball: It's a little prickly"
+  },
+  {
+    "np": 2049,
+    "name": "Never this close",
+    "desc": "They discuss Prickly"
+  },
+  {
+    "np": 2050,
+    "name": "Really Neat",
+    "desc": "Megan: It's really neat."
+  },
+  {
+    "np": 2051,
+    "name": "Stop Bothering",
+    "desc": "Cueball: OK, we'll stop bothering you"
+  },
+  {
+    "np": 2063,
+    "name": "Prickly carries on",
+    "desc": "Prckly is no longer disturbed by them"
+  },
+  {
+    "np": 2074,
+    "name": "Bop",
+    "desc": "Megan bops a seed head from a plant"
+  },
+  {
+    "np": 2097,
+    "name": "You OK?",
+    "desc": "Megan stops, Cueball: You OK?"
+  },
+  {
+    "np": 2098,
+    "name": "Yup!",
+    "desc": "Why did she stop?"
+  },
+  {
+    "np": 2100,
+    "name": "Wet blanket again",
+    "desc": "Cueball: Maybe it's time to turn around"
+  },
+  {
+    "np": 2101,
+    "name": "World is too big",
+    "desc": "Cueball: The world is too big.  It can go on longer than we can"
+  },
+  {
+    "np": 2102,
+    "name": "Still going",
+    "desc": "Megan is continuing"
+  },
+  {
+    "np": 2103,
+    "name": "Long way from home",
+    "desc": "Cueball: But one day we wo'nt be.  And we're a long way from home"
+  },
+  {
+    "np": 2105,
+    "name": "Cueball Questions",
+    "desc": "Cueball: Earlier I thought you wanted to turn around and go back to the sea"
+  },
+  {
+    "np": 2106,
+    "name": "I want to understand",
+    "desc": "Megan: I don't want to go back to it.  I want to Understand it."
+  },
+  {
+    "np": 2108,
+    "name": "By Climbing?",
+    "desc": "Cueball: By Climbing? The Sea is down, not up"
+  },
+  {
+    "np": 2114,
+    "name": "Beautiful Wings",
+    "desc": "Megan: These bugs have such beautifl wings"
+  },
+  {
+    "np": 2115,
+    "name": "Thousand lifetimes",
+    "desc": "Megan gets philosophical"
+  },
+  {
+    "np": 2118,
+    "name": "See the top",
+    "desc": "Megan: I wanna see the top"
+  },
+  {
+    "np": 2119,
+    "name": "More world",
+    "desc": "Cueball: What do you think we'll find? Megan: More world, maybe different"
+  },
+  {
+    "np": 2139,
+    "name": "Chomp",
+    "desc": "It may have had beautiful wings, now it's lunch"
+  },
+  {
+    "np": 2154,
+    "name": "Bag throwing",
+    "desc": "They throw the bags up"
+  },
+  {
+    "np": 2158,
+    "name": "Rope",
+    "desc": "Megan throws the rope down to help Cueball up"
+  },
+  {
+    "np": 2166,
+    "name": "Weird",
+    "desc": "They look a weird broken tree"
+  },
+  {
+    "np": 2171,
+    "name": "Pfffthh",
+    "desc": "It does not taste very good"
+  },
+  {
+    "np": 2182,
+    "name": "Oh!",
+    "desc": "Megan sees a rock cain"
+  },
+  {
+    "np": 2196,
+    "name": "Hut",
+    "desc": "They see the abandoned hut"
+  },
+  {
+    "np": 2202,
+    "name": "Hello?",
+    "desc": "Is there anybody in?"
+  },
+  {
+    "np": 2205,
+    "name": "See Anything?",
+    "desc": "Megan looks in the hut"
+  },
+  {
+    "np": 2206,
+    "name": "Stuff",
+    "desc": "Megan finds some funiture, shelves and a broken bowl"
+  },
+  {
+    "np": 2215,
+    "name": "Oh Hey-",
+    "desc": "Megan has seen something"
+  },
+  {
+    "np": 2216,
+    "name": "It's a stream",
+    "desc": "Megan: There's a stream back here"
+  },
+  {
+    "np": 2217,
+    "name": "Something on top",
+    "desc": "Megan: And it almost looks like there's something on top of the mountain"
+  },
+  {
+    "np": 2218,
+    "name": "Could be",
+    "desc": "Cueball: Hmm...  Could be"
+  },
+  {
+    "np": 2221,
+    "name": "Sandcastles here",
+    "desc": "Cueball: I think whoever lived here liked building castles, too"
+  },
+  {
+    "np": 2224,
+    "name": "Here",
+    "desc": "Cueball offers a flag for the sandcastle"
+  },
+  {
+    "np": 2225,
+    "name": "You bought a flag",
+    "desc": "Megan: Oh! You broght a flag?  Cueball: Yeah, I-"
+  },
+  {
+    "np": 2226,
+    "name": "- LOOK OUT!",
+    "desc": "What is that in the bushes?"
+  },
+  {
+    "np": 2227,
+    "name": "Lucky Leaps",
+    "desc": "Cueball pulls Megan down"
+  },
+  {
+    "np": 2228,
+    "name": "Attack!",
+    "desc": "Lucky attacks Cueball"
+  },
+  {
+    "np": 2229,
+    "name": "CHOMP",
+    "desc": "Lucky is going for Cueball"
+  },
+  {
+    "np": 2230,
+    "name": "Can Megan help",
+    "desc": "Is Cueball lunch?"
+  },
+  {
+    "np": 2231,
+    "name": "Megan shouts",
+    "desc": "Hey! Hey! Over here!"
+  },
+  {
+    "np": 2232,
+    "name": "Thwapstick",
+    "desc": "Lucky Snarl's"
+  },
+  {
+    "np": 2233,
+    "name": "Thwap again",
+    "desc": "Lucky: Hisss"
+  },
+  {
+    "np": 2234,
+    "name": "Head shot",
+    "desc": "Megan hits lucky on the nut"
+  },
+  {
+    "np": 2235,
+    "name": "Lucky Runs",
+    "desc": "Lucky makes break"
+  },
+  {
+    "np": 2237,
+    "name": "Checking up",
+    "desc": "Megan: Are you OK? Cueball:I, um... I think so?"
+  },
+  {
+    "np": 2238,
+    "name": "Claws",
+    "desc": "Megan: It didn't bite you?  Cueball: It had claws I saw them.  Megan: But you're not bleeding?"
+  },
+  {
+    "np": 2239,
+    "name": "No?",
+    "desc": "Cueball is uninjured!"
+  },
+  {
+    "np": 2240,
+    "name": "Bag saved Cueball",
+    "desc": "Cueball thinks the bag saved him"
+  },
+  {
+    "np": 2241,
+    "name": "Lucky",
+    "desc": "They discuss lucky"
+  },
+  {
+    "np": 2242,
+    "name": "Megan had hit Lucky",
+    "desc": "Megan: Yeah"
+  },
+  {
+    "np": 2243,
+    "name": "Brave",
+    "desc": "Cueball: That was brave"
+  },
+  {
+    "np": 2244,
+    "name": "Grabbed me",
+    "desc": "Megan: You grabbed me.  If you hadn't pulled me down and - Cueball: are you OK?"
+  },
+  {
+    "np": 2245,
+    "name": "Megan is fine",
+    "desc": "Megan says she is fine"
+  },
+  {
+    "np": 2246,
+    "name": "No, you're not",
+    "desc": "Cueball thinks otherwise"
+  },
+  {
+    "np": 2247,
+    "name": "Hurt your Leg",
+    "desc": "Megan: What? Cueball: You hurt your leg"
+  },
+  {
+    "np": 2248,
+    "name": "Banged it",
+    "desc": "Megan: No I just banged it on somethig when- Cueball: You're bleeding"
+  },
+  {
+    "np": 2249,
+    "name": "Oh",
+    "desc": "Megan: What?  No, I - OH"
+  },
+  {
+    "np": 2250,
+    "name": "Claw marks",
+    "desc": "There are claw marks on Megan"
+  },
+  {
+    "np": 2252,
+    "name": "Where is it",
+    "desc": "Cueball is looking for something"
+  },
+  {
+    "np": 2253,
+    "name": "Blood",
+    "desc": "Megan: This is a surprising amount of blood"
+  },
+  {
+    "np": 2254,
+    "name": "Bandage needed",
+    "desc": "Cueball gives basiic first aid advice"
+  },
+  {
+    "np": 2255,
+    "name": "Tear the Bag",
+    "desc": "Cueball thinks he could use the bag as bandage"
+  },
+  {
+    "np": 2266,
+    "name": "Ruined flag",
+    "desc": "Megan: Sorry for ruining your flag"
+  },
+  {
+    "np": 2267,
+    "name": "It's for you",
+    "desc": "Cueball: It's OK.  After all, I brought it for you"
+  },
+  {
+    "np": 2268,
+    "name": "Thank you",
+    "desc": "Megan is humbled"
+  },
+  {
+    "np": 2270,
+    "name": "Beautiful red",
+    "desc": "Megan like's it"
+  },
+  {
+    "np": 2283,
+    "name": "Long Walk home",
+    "desc": "Megan says it's a long way to go home"
+  },
+  {
+    "np": 2284,
+    "name": "Can you walk?",
+    "desc": "Cueball: Can you even walk?  How are you feeling?"
+  },
+  {
+    "np": 2285,
+    "name": "Thirsty",
+    "desc": "Megan is thirsty"
+  },
+  {
+    "np": 2290,
+    "name": "Does it hurt?",
+    "desc": "Cueball is checking up"
+  },
+  {
+    "np": 2291,
+    "name": "It hurts",
+    "desc": "Megan: It didn't at first.  Now it does"
+  },
+  {
+    "np": 2296,
+    "name": "Something on the mountain",
+    "desc": "Cueball: I think you're right.  There's some kind of structure on the mountain"
+  },
+  {
+    "np": 2300,
+    "name": "Megan can walk",
+    "desc": "Megan: I think I can walk OK"
+  },
+  {
+    "np": 2301,
+    "name": "Hurt more",
+    "desc": "It hurts but it doesn't really hurt more when I lean on it"
+  },
+  {
+    "np": 2302,
+    "name": "Bad cut",
+    "desc": "Cueball says it could get worse"
+  },
+  {
+    "np": 2303,
+    "name": "Need help",
+    "desc": "Cueball: We need help"
+  },
+  {
+    "np": 2304,
+    "name": "Keep going up",
+    "desc": "Megan: Do you think we should keep going up?"
+  },
+  {
+    "np": 2305,
+    "name": "People on top",
+    "desc": "Cueball: We can't be more than a day or so from the top.  There may be people there"
+  },
+  {
+    "np": 2306,
+    "name": "Hill People?",
+    "desc": "Are they hill people?"
+  },
+  {
+    "np": 2307,
+    "name": "Villages?",
+    "desc": "They discuss what is up the top"
+  },
+  {
+    "np": 2308,
+    "name": "Farther from home",
+    "desc": "Megan gets philosophical"
+  },
+  {
+    "np": 2309,
+    "name": "Decision time",
+    "desc": "Megan decides to go on - Yay!"
+  },
+  {
+    "np": 2310,
+    "name": "Gentleman",
+    "desc": "Cueball says he will carry everything"
+  },
+  {
+    "np": 2313,
+    "name": "Instructions",
+    "desc": "Cueball: You tell me if your leg starts hurting too much"
+  },
+  {
+    "np": 2325,
+    "name": "Help you over",
+    "desc": "Cueball: I'll step in and help you over"
+  },
+  {
+    "np": 2328,
+    "name": "ow",
+    "desc": "Having lept the stream Megan says a quiet ow"
+  },
+  {
+    "np": 2339,
+    "name": "Molpy Alert",
+    "desc": "Something in the grass ahead"
+  },
+  {
+    "np": 2344,
+    "name": "Colder Here",
+    "desc": "Megan: It's definitly colder up here"
+  },
+  {
+    "np": 2354,
+    "name": "Not great",
+    "desc": "Megan is not feeling too good"
+  },
+  {
+    "np": 2355,
+    "name": "Dangerous",
+    "desc": "They discuss dangerous creatures"
+  },
+  {
+    "np": 2373,
+    "name": "Need sleep",
+    "desc": "As the sun goes down they agree they need sleep"
+  },
+  {
+    "np": 2374,
+    "name": "Scary",
+    "desc": "Megan: It didn't seem scary before.  Pausing to sleep wherever we were"
+  },
+  {
+    "np": 2376,
+    "name": "First watch",
+    "desc": "Cueball will take the first watch"
+  },
+  {
+    "np": 2377,
+    "name": "Take a rest",
+    "desc": "Cueball: No, you need to rest.  I'll wake you if I get tired"
+  },
+  {
+    "np": 2379,
+    "name": "Hit it",
+    "desc": "Megan: Or if something is trying to eat you, and you need me to hit it"
+  },
+  {
+    "np": 2393,
+    "name": "Nighttime",
+    "desc": "This is the clue for 11,000 years in the future"
+  },
+  {
+    "np": 2440,
+    "name": "METEOR!",
+    "desc": "Wow, it's a meteor!"
+  },
+  {
+    "np": 2454,
+    "name": "Hey",
+    "desc": "Cueball wakes Megan"
+  },
+  {
+    "np": 2455,
+    "name": "Wake Up",
+    "desc": "Megan is unenthusiastic"
+  },
+  {
+    "np": 2456,
+    "name": "Your Turn",
+    "desc": "Next shift"
+  },
+  {
+    "np": 2459,
+    "name": "All quiet?",
+    "desc": "Megan: All quiet?"
+  },
+  {
+    "np": 2460,
+    "name": "Still Hurts",
+    "desc": "Cueball checks Megans health"
+  },
+  {
+    "np": 2461,
+    "name": "Next Shift",
+    "desc": "Megan: But I got some rest.  Your turn now"
+  },
+  {
+    "np": 2466,
+    "name": "Chirp at night",
+    "desc": "There is a chirp in the middle of the night"
+  },
+  {
+    "np": 2470,
+    "name": "Another Chirp at night",
+    "desc": "There is another chirp at night"
+  },
+  {
+    "np": 2471,
+    "name": "Do you hear that?",
+    "desc": "Megan should let sleeping Cueballs sleep"
+  },
+  {
+    "np": 2472,
+    "name": "He did",
+    "desc": "Cueball: Yeah"
+  },
+  {
+    "np": 2473,
+    "name": "What are they doing?",
+    "desc": "Cueball: I wonder what they're doing"
+  },
+  {
+    "np": 2531,
+    "name": "Cueball awakes",
+    "desc": "Megan: Finally!"
+  },
+  {
+    "np": 2532,
+    "name": "Long Sleep?",
+    "desc": "It's geting late and Megan is bored"
+  },
+  {
+    "np": 2533,
+    "name": "Leg Check",
+    "desc": "Cueball: How's your leg?"
+  },
+  {
+    "np": 2535,
+    "name": "Looks OK",
+    "desc": "Megan: Looks OK"
+  },
+  {
+    "np": 2536,
+    "name": "Cueball has doubt",
+    "desc": "Cueball: It does?  Megan: Sure"
+  },
+  {
+    "np": 2540,
+    "name": "Look for people",
+    "desc": "Megan: OK.  We get to the top.  We look for people"
+  },
+  {
+    "np": 2541,
+    "name": "Plan B",
+    "desc": "Megan: If we don't see any, we start back home"
+  },
+  {
+    "np": 2542,
+    "name": "Plans accepted",
+    "desc": "Cueball: Sounds Good"
+  },
+  {
+    "np": 2553,
+    "name": "Neat",
+    "desc": "Rocky outcrop"
+  },
+  {
+    "np": 2554,
+    "name": "Wonder what",
+    "desc": "Cueball: I wonder what it's for"
+  },
+  {
+    "np": 2558,
+    "name": "Careful",
+    "desc": "Cueball helps Megan up"
+  },
+  {
+    "np": 2561,
+    "name": "Huh",
+    "desc": "Cueball: Huh"
+  },
+  {
+    "np": 2572,
+    "name": "Whats that!",
+    "desc": "So that was what was Neat"
+  },
+  {
+    "np": 2579,
+    "name": "Other side",
+    "desc": "Cueball: I guess the mountains don't go back down on the other side"
+  },
+  {
+    "np": 2586,
+    "name": "I found People",
+    "desc": "Megan: I found people"
+  },
+  {
+    "np": 2587,
+    "name": "Where!?",
+    "desc": "Cueball: Where!?  Megan: Over there"
+  },
+  {
+    "np": 2588,
+    "name": "Far away",
+    "desc": "Megan: It's far away. But do you see the dust?"
+  },
+  {
+    "np": 2589,
+    "name": "Glinting",
+    "desc": "Megan has seen flashes of light and glinting"
+  },
+  {
+    "np": 2591,
+    "name": "Not Far",
+    "desc": "Megan: It's not far.  We can reach them tonight"
+  },
+  {
+    "np": 2592,
+    "name": "Walking painful?",
+    "desc": "Cueball: Good!  Is walking still not too painful?"
+  },
+  {
+    "np": 2593,
+    "name": "Climbing hurt",
+    "desc": "Megan: Walking is OK.  Climbing hurt"
+  },
+  {
+    "np": 2594,
+    "name": "Wanted to see",
+    "desc": "Cueball: You could have asked me to climb up here for you.  Megan: But I wanted to see"
+  },
+  {
+    "np": 2595,
+    "name": "What that thing is?",
+    "desc": "Megan: Have you figured out what that thing is?"
+  },
+  {
+    "np": 2596,
+    "name": "Hold something",
+    "desc": "Cueball: It looks like it's supposed to hold something"
+  },
+  {
+    "np": 2597,
+    "name": "Weapon",
+    "desc": "Cueball: You can point it at things.  Maybe it's a weapon"
+  },
+  {
+    "np": 2598,
+    "name": "Maybe",
+    "desc": "Megan is not convinced"
+  },
+  {
+    "np": 2599,
+    "name": "Aimed at what?",
+    "desc": "Meagn: But why woul there be a weapon way up here?  What's it aimed at?"
+  },
+  {
+    "np": 2600,
+    "name": "Lanched enough",
+    "desc": "Cueball: Right now you're pointing it at our home.  Haven't you launched enough things at our castle?  Megan: No"
+  },
+  {
+    "np": 2609,
+    "name": "Our poor castle",
+    "desc": "Megan: Our poor castle.  I wonder what's left of it"
+  },
+  {
+    "np": 2612,
+    "name": "Floating Bucket",
+    "desc": "A floating bucket"
+  },
+  {
+    "np": 2628,
+    "name": "Another tower",
+    "desc": "Cueball: I think that's another tower"
+  },
+  {
+    "np": 2629,
+    "name": "Megan agrees",
+    "desc": "Megan: I think so, too"
+  },
+  {
+    "np": 2632,
+    "name": "Are you ok?",
+    "desc": "Megan You OK?"
+  },
+  {
+    "np": 2633,
+    "name": "Rest a moment",
+    "desc": "Cueball: Yeah. I Just need to rest for a moment"
+  },
+  {
+    "np": 2634,
+    "name": "Out of breath",
+    "desc": "They are not used being this high "
+  },
+  {
+    "np": 2636,
+    "name": "Diferent air",
+    "desc": "Cueball: I wonder if the air up here is different"
+  },
+  {
+    "np": 2637,
+    "name": "Cooler",
+    "desc": "Megan: Could be.  It's definitely cooler"
+  },
+  {
+    "np": 2646,
+    "name": "On that hill!",
+    "desc": "Cueball: I can see someone on that hill!"
+  },
+  {
+    "np": 2647,
+    "name": "Hellooo!",
+    "desc": "Megan: Oh yeah! HEY! HELLOOO!!"
+  },
+  {
+    "np": 2648,
+    "name": "Still too far",
+    "desc": "Cueball: Still too far to hear"
+  },
+  {
+    "np": 2650,
+    "name": "HEY!",
+    "desc": "Megan: HEY!"
+  },
+  {
+    "np": 2652,
+    "name": "Seen us",
+    "desc": "Megan: Well, they've seen us"
+  },
+  {
+    "np": 2654,
+    "name": "Beanie!",
+    "desc": "The first beanie"
+  },
+  {
+    "np": 2655,
+    "name": "Three Beanies",
+    "desc": "There are three of them"
+  },
+  {
+    "np": 2657,
+    "name": "Megan asks for help",
+    "desc": "Megan: Hi.  We're from far away, and my leg is hurt.  Can you help us"
+  },
+  {
+    "np": 2658,
+    "name": "Beanish!",
+    "desc": "Beanies talk Beanish"
+  },
+  {
+    "np": 2660,
+    "name": "Huh.",
+    "desc": "Cueball: Huh.  Megan: Ok. Umm."
+  },
+  {
+    "np": 2661,
+    "name": "When words fail...",
+    "desc": "Megan shows the Beanies her injured leg."
+  },
+  {
+    "np": 2663,
+    "name": "Understanding",
+    "desc": "The Beanies seem to understand the problem and discuss it."
+  },
+  {
+    "np": 2666,
+    "name": "A Closer Look",
+    "desc": "Two of the Beanies take a closer look at Megan's leg."
+  },
+  {
+    "np": 2667,
+    "name": "Something",
+    "desc": "A Beanie returns carrying something."
+  },
+  {
+    "np": 2669,
+    "name": "I Wonder",
+    "desc": "Cueball: They seem to know what they're doing.  Megan: Yeah. I wonder what that is."
+  },
+  {
+    "np": 2670,
+    "name": "What is that?",
+    "desc": "Megan: That. What is that?"
+  },
+  {
+    "np": 2671,
+    "name": "A Beanish explanation",
+    "desc": "The something turns out to be...something."
+  },
+  {
+    "np": 2672,
+    "name": "-ow-",
+    "desc": "Cueball: It's some kind of paste. Does it hurt?  Megan: Not-ow-Not Really."
+  },
+  {
+    "np": 2675,
+    "name": "All patched up",
+    "desc": "Megan: Um, thank you."
+  },
+  {
+    "np": 2676,
+    "name": "This way",
+    "desc": "The Beanies seem to want Cueball and Megan to follow them."
+  },
+  {
+    "np": 2681,
+    "name": "Another Tower",
+    "desc": "The Beanies have another tower."
+  },
+  {
+    "np": 2685,
+    "name": "Just water",
+    "desc": "Megan: It's just water."
+  },
+  {
+    "np": 2686,
+    "name": "Little Yawn",
+    "desc": "Cueball yawns."
+  },
+  {
+    "np": 2687,
+    "name": "The language barrier",
+    "desc": "Megan: How do we talk to them? We can figure this out."
+  },
+  {
+    "np": 2688,
+    "name": "From the sea",
+    "desc": "Megan: We're from down there. The sea. We're from the..."
+  },
+  {
+    "np": 2689,
+    "name": "Big Yawn",
+    "desc": "Megan yawns even bigger than Cueball did."
+  },
+  {
+    "np": 2690,
+    "name": "Have to sleep",
+    "desc": "Megan: ...We're from the sea. We're from the sea and we have to sleep."
+  },
+  {
+    "np": 2692,
+    "name": "692 46",
+    "desc": "Pretty sure those aren't numbers."
+  },
+  {
+    "np": 2693,
+    "name": "Lights out",
+    "desc": "Darkness as Cueball and Megan sleep."
+  },
+  {
+    "np": 2697,
+    "name": "Two cups",
+    "desc": "Cueball and a Beanie grab a couple cups of water."
+  },
+  {
+    "np": 2703,
+    "name": "Cultural exchange",
+    "desc": "Cueball tries a little Beanish."
+  },
+  {
+    "np": 2704,
+    "name": "Biggest Yawn",
+    "desc": "Megan wakes up with a yawn."
+  },
+  {
+    "np": 2706,
+    "name": "A new word",
+    "desc": "Cueball: I learned a word. I think.  Megan: Oh?"
+  },
+  {
+    "np": 2707,
+    "name": "\"Water\"",
+    "desc": "Cueball: *Beanish* \"Water.\" Probably."
+  },
+  {
+    "np": 2709,
+    "name": "\"Drink\"",
+    "desc": "Cueball: Or \"drink!\"  Megan: Hmm."
+  },
+  {
+    "np": 2710,
+    "name": "A faster way",
+    "desc": "Megan: There must be a faster way to..."
+  },
+  {
+    "np": 2711,
+    "name": "Revelation",
+    "desc": "Cueball has a revelation."
+  },
+  {
+    "np": 2713,
+    "name": "It's OK!",
+    "desc": "Megan assures the Beanie they mean no harm."
+  },
+  {
+    "np": 2715,
+    "name": "A picture's worth",
+    "desc": "Cueball draws in the dirt to communicate."
+  },
+  {
+    "np": 2717,
+    "name": "My turn",
+    "desc": "The Beanie adds to the drawing."
+  },
+  {
+    "np": 2720,
+    "name": "Motion picture",
+    "desc": "Cueball describes their journey with pictures."
+  },
+  {
+    "np": 2722,
+    "name": "Coinkydink",
+    "desc": "The one Beanish word Cueball knows just so happens to be very useful."
+  },
+  {
+    "np": 2723,
+    "name": "Gibberish",
+    "desc": "The Beanie talks more Beanish."
+  },
+  {
+    "np": 2724,
+    "name": "Failure to communicate",
+    "desc": "Unfortunately, Cueball and Megan didn't magically learn Beanish."
+  },
+  {
+    "np": 2727,
+    "name": "Why is that happening?",
+    "desc": "Megan: Yes! The sea is rising.  Cueball: Why is that happening?"
+  },
+  {
+    "np": 2729,
+    "name": "More Beanish",
+    "desc": "Yup. There is a lot of it."
+  },
+  {
+    "np": 2731,
+    "name": "The sequel",
+    "desc": "Following Cueball's example, the Beanie uses the drawing to indicate further travel."
+  },
+  {
+    "np": 2732,
+    "name": "Going somewhere",
+    "desc": "Megan: They're going somewhere...  Cueball: and want us to come, too."
+  },
+  {
+    "np": 2733,
+    "name": "Languages",
+    "desc": "The Beanie indicates their two languages using circles and triangles."
+  },
+  {
+    "np": 2734,
+    "name": "Multilingual",
+    "desc": "A third figure seems to be able to speak many languages."
+  },
+  {
+    "np": 2735,
+    "name": "Speech!",
+    "desc": "Cueball: Oh, speech! There's someone we can talk to?"
+  },
+  {
+    "np": 2736,
+    "name": "Trilogy",
+    "desc": "The Beanie draws the sun's path in the sky."
+  },
+  {
+    "np": 2737,
+    "name": "I get it",
+    "desc": "Cueball: I get it- It's less than a day away. Then let's do it."
+  },
+  {
+    "np": 2739,
+    "name": "Packing up",
+    "desc": "The Beanies start packing up their equipment."
+  },
+  {
+    "np": 2762,
+    "name": "Rabbit",
+    "desc": "A rabbit pops its head up."
+  },
+  {
+    "np": 2763,
+    "name": "See it?",
+    "desc": "A Beanie points out the rabbit."
+  },
+  {
+    "np": 2777,
+    "name": "Wildlife",
+    "desc": "A rabbit and beasnake roam in the bushes."
+  },
+  {
+    "np": 2789,
+    "name": "Beneath the leaves",
+    "desc": "The group sits down beneath a tree to eat."
+  },
+  {
+    "np": 2791,
+    "name": "Yum",
+    "desc": "Cueball: It's good, whatever it is."
+  },
+  {
+    "np": 2792,
+    "name": "Another new word",
+    "desc": "A Beanie offers up a new word."
+  },
+  {
+    "np": 2793,
+    "name": "Megan's turn",
+    "desc": "Megan: Huh, ok. *Beanish*"
+  },
+  {
+    "np": 2797,
+    "name": "Recognition",
+    "desc": "More Beanish...but is one of those words familiar?"
+  },
+  {
+    "np": 2798,
+    "name": "Zig-zags",
+    "desc": "A Beanie shows off an image."
+  },
+  {
+    "np": 2799,
+    "name": "Some kind of map",
+    "desc": "Megan: I heard \"water.\"  Cueball: Is it some kind of a map?"
+  },
+  {
+    "np": 2800,
+    "name": "Triangle things",
+    "desc": "Megan: I guess. But it's just a jumble of lines.  Cueball: Maybe those triangle things are rivers?"
+  },
+  {
+    "np": 2801,
+    "name": "*Beanish*",
+    "desc": "Yet again."
+  },
+  {
+    "np": 2813,
+    "name": "City!",
+    "desc": "Cueball: Wow.  There's a whole City up there."
+  },
+  {
+    "np": 2814,
+    "name": "Gate",
+    "desc": "The city with children playing and Expando"
+  },
+  {
+    "np": 2816,
+    "name": "Welcome",
+    "desc": "A beanie points something out"
+  },
+  {
+    "np": 2818,
+    "name": "Greatings",
+    "desc": "Greatings are exchanged between a Beanie and Expando"
+  },
+  {
+    "np": 2822,
+    "name": "Little Houses",
+    "desc": "Cueball likes the houses while a Beanie points something out to Megan"
+  },
+  {
+    "np": 2823,
+    "name": "Oh Wow",
+    "desc": "Cueball: Oh.  Megan: Oh Wow."
+  },
+  {
+    "np": 2824,
+    "name": "Zoom out",
+    "desc": "Whats up the hill?"
+  },
+  {
+    "np": 2825,
+    "name": "Zoom out more",
+    "desc": "The castle!"
+  },
+  {
+    "np": 2826,
+    "name": "Real Castle",
+    "desc": "Megan: A real castle!  I never thought I'd see a real castle!"
+  },
+  {
+    "np": 2827,
+    "name": "Breathtaking",
+    "desc": "Cueball: I wasn't sure there were real castles.  Megan: Look at it.  It's breathtaking"
+  },
+  {
+    "np": 2830,
+    "name": "Too Small",
+    "desc": "Megan: Our castle was too small"
+  },
+  {
+    "np": 2831,
+    "name": "Come on",
+    "desc": "A Beanie urges them on"
+  },
+  {
+    "np": 2836,
+    "name": "Beanette Greetings",
+    "desc": "Beanette exchanges greatings with a Beanie"
+  },
+  {
+    "np": 2837,
+    "name": "Beanette greets Amtoo",
+    "desc": "Beanette is much more enthusiastic greeting Amtoo..."
+  },
+  {
+    "np": 2840,
+    "name": "Gatehouse",
+    "desc": "They apprach the gatehouse"
+  },
+  {
+    "np": 2842,
+    "name": "Down the steps",
+    "desc": "They go down the steps into the castle"
+  },
+  {
+    "np": 2844,
+    "name": "Neat!",
+    "desc": "Megan says Neat! again"
+  },
+  {
+    "np": 2846,
+    "name": "Great Hall",
+    "desc": "They enter the great hall"
+  },
+  {
+    "np": 2851,
+    "name": "Door and steps up",
+    "desc": "At the far end of the hall is a door and steps up"
+  },
+  {
+    "np": 2854,
+    "name": "Open the door",
+    "desc": "A Beanie opens the door"
+  },
+  {
+    "np": 2858,
+    "name": "Rosetta says hello",
+    "desc": "Rosetta looks up and says hello"
+  },
+  {
+    "np": 2859,
+    "name": "Greetings to Rosetta",
+    "desc": "Beanies greet Rosetta"
+  },
+  {
+    "np": 2860,
+    "name": "Questions",
+    "desc": "Rosetta questions the beanies"
+  },
+  {
+    "np": 2861,
+    "name": "Answers",
+    "desc": "Answers from Amtoo and another Beanie"
+  },
+  {
+    "np": 2862,
+    "name": "Presenting",
+    "desc": "Cuegan are present to Rosetta"
+  },
+  {
+    "np": 2863,
+    "name": "Understand Us?",
+    "desc": "Cueball: Hello!, Megan Do you understand us?"
+  },
+  {
+    "np": 2865,
+    "name": "Somewhat",
+    "desc": "Somewhat"
+  },
+  {
+    "np": 2867,
+    "name": "Understand you",
+    "desc": "Megan: I think we understand you, too!"
+  },
+  {
+    "np": 2868,
+    "name": "Whence",
+    "desc": "Whence have you t*aveled he*e"
+  },
+  {
+    "np": 2869,
+    "name": "From the Sea",
+    "desc": "Cueball: We came here up the mountain.  Megan: We're from the sea."
+  },
+  {
+    "np": 2870,
+    "name": "From the desert below?",
+    "desc": "Rosetta: You arose here from the desrt below?  Npobody lives there."
+  },
+  {
+    "np": 2872,
+    "name": "Didn't Understand",
+    "desc": "Megan: We, Um... We didn't quite understand that"
+  },
+  {
+    "np": 2873,
+    "name": "Take 2",
+    "desc": "Rosetta: <span class=rosetta>I am so**y. Your L**guage is *** those S**en by the ****fftoue  ***  But I learned it.</span>"
+  },
+  {
+    "np": 2874,
+    "name": "Patience",
+    "desc": "Rosetta: Please be patient Cueball: Of course"
+  },
+  {
+    "np": 2875,
+    "name": "Dismiss",
+    "desc": "Rosetta dismisses the beanies"
+  },
+  {
+    "np": 2877,
+    "name": "Bye-bye",
+    "desc": "Beanies say bye-bye and leave"
+  },
+  {
+    "np": 2878,
+    "name": "Understand Nothing",
+    "desc": "Rosetta: They understand Nothing so they will tend to matters. Megan: Of course"
+  },
+  {
+    "np": 2879,
+    "name": "Your Bags",
+    "desc": "Your Bags"
+  },
+  {
+    "np": 2880,
+    "name": "What for",
+    "desc": "Megan: What do you want our bags for?  Rosetta: They a*e heavy  Megan: ... Oh.  Thank you!"
+  },
+  {
+    "np": 2885,
+    "name": "Thank you!",
+    "desc": "Cueball: Thank you!  Rosetta:you a*e welcome"
+  },
+  {
+    "np": 2886,
+    "name": "Your Home",
+    "desc": "Rosetta: Tell me where your home is"
+  },
+  {
+    "np": 2887,
+    "name": "Near a river",
+    "desc": "Megan: We live by the shore, near a river that flows down to the Sea every year.  Rosetta: What River?"
+  },
+  {
+    "np": 2888,
+    "name": "Smaller River",
+    "desc": "Megan: It's a smaller river - not the one that flows your land.  We collect things that float down it"
+  },
+  {
+    "np": 2889,
+    "name": "People in Hills",
+    "desc": "Cueball: There are people in the hills where our river comes from.  Megan: They don't like us"
+  },
+  {
+    "np": 2890,
+    "name": "How many?",
+    "desc": "Rosetta: H** many people **** are you?"
+  },
+  {
+    "np": 2891,
+    "name": "About Forty",
+    "desc": "Cueball: There are about forty of us.  Rosetta:what is forty?  all my numbers are too small.  Megan: Um. Four ten times.  Five eight times.  Rosetta: Yes Good "
+  },
+  {
+    "np": 2892,
+    "name": "With you",
+    "desc": "You carry these people with you?"
+  },
+  {
+    "np": 2893,
+    "name": "Here Alone",
+    "desc": "Megan: We came here alone, to find out why the sea is changing"
+  },
+  {
+    "np": 2894,
+    "name": "You do not know!",
+    "desc": "Rosetta: you do not know! I*********"
+  },
+  {
+    "np": 2895,
+    "name": "Stand Alone",
+    "desc": "Rosetta: Your sea does not stand alone!  There is another sea ***** ****yond the **** it has be**** to *** *** evels differ  *** ows"
+  },
+  {
+    "np": 2896,
+    "name": "Megan Understands",
+    "desc": "Megan: No, I think I understand.  There's a second sea, a higher one, and its waters have started flowing into ours.  Cueball: Why? What connected them?  Megan: Yeah- what changed?"
+  },
+  {
+    "np": 2897,
+    "name": "Hills Change",
+    "desc": "Rosetta: In time even the hills change!  When people first **** and first bu***** ates the sea where joined but ***here was a great ******* and the passage was *** your sea ****** with to few rivers under the sun **shrank* **nd the water fe** the sea ha***nd a way back in."
+  },
+  {
+    "np": 2898,
+    "name": "How different?",
+    "desc": "Cueball: ...How different are the sea' heights?  How high will the water eventually rise?  Should we move our home?  Rosetta: Do you know whe*e you a*e?"
+  },
+  {
+    "np": 2899,
+    "name": "No",
+    "desc": "Cueball: No.  Rosetta: I'll *** build you a map to understanding"
+  },
+  {
+    "np": 2901,
+    "name": "Map!",
+    "desc": "You are here"
+  },
+  {
+    "np": 2902,
+    "name": "This will be sea",
+    "desc": "Rosetta: And this *our **lief  about the sea new shore"
+  },
+  {
+    "np": 2903,
+    "name": "Cover mountains?",
+    "desc": "Megan: The sea can cover mountains?"
+  },
+  {
+    "np": 2904,
+    "name": "We Learned",
+    "desc": "Rosetta: "
+  },
+  {
+    "np": 2905,
+    "name": "***",
+    "desc": "Rosetta: N***T *Sh****n?"
+  },
+  {
+    "np": 2907,
+    "name": "Shoreline",
+    "desc": "Megan: The shoreline goes right through where the castle is where we are right now"
+  },
+  {
+    "np": 2908,
+    "name": "Island",
+    "desc": "Rosetta: The castle once was an island!  We found it and have tried to rebuild it!"
+  },
+  {
+    "np": 2909,
+    "name": "****",
+    "desc": "Rosetta: I supose ** be an *********!"
+  },
+  {
+    "np": 2910,
+    "name": "Who are you?",
+    "desc": "Cueball: Who are you?  Rosetta: We are the learners.  This fortress is *** with **** and I am their leader"
+  },
+  {
+    "np": 2911,
+    "name": "Inside the sea",
+    "desc": "Megan: I still can't imagine it.  Every place we've walked will someday be inside the sea."
+  },
+  {
+    "np": 2912,
+    "name": "Get Home",
+    "desc": "Megan: We need to get back home.  We need to get started on plans to move.  Can we have one of your maps?  That would help - ... are you ok?"
+  },
+  {
+    "np": 2913,
+    "name": "Sorry",
+    "desc": "Rosetta: I'm Sorry Cueball: What?"
+  },
+  {
+    "np": 2914,
+    "name": "We Failed",
+    "desc": "Rosetta: <span class=rosetta>When we discovered the sea was coming under the bank we tried to shore it up.  We Failed we tried to remove everybody from the basin! But we did not know of your group</span>"
+  },
+  {
+    "np": 2915,
+    "name": "No it's Ok!",
+    "desc": "Megan: No, it's Ok! I've been thinking.  At the rate we saw the sea rising, it will take years to -, Rosetta: <span class=rosetta>NO!</span>"
+  },
+  {
+    "np": 2916,
+    "name": "Days!",
+    "desc": "Rosetta: As the waterflows, it widens the breach.  The Berm is giving way.  The sea will rush through in a *******T The planets mightiest river will once again come thundering down the mountainside.  The sea will fill not in years but in DAYS!"
+  },
+  {
+    "np": 2917,
+    "name": "Too Long",
+    "desc": "Rosetta: The jo*ney to your land is much too long.  *** Not Send *** only sea **** encircled and drowned by the ***ide"
+  },
+  {
+    "np": 2918,
+    "name": "Too late",
+    "desc": "Rosetta: The world you know is ending..."
+  },
+  {
+    "np": 2919,
+    "name": "Goodbyes from here",
+    "desc": "Rosetta: You must say your goodbyes from here.  You cannot go back down the abyss.  For you have walked too far and now there is no more time to walk.  The ocean is coming."
+  },
+  {
+    "np": 2922,
+    "name": "RUN",
+    "desc": "RUN"
+  },
+  {
+    "np": 2928,
+    "name": "Oh! Hi!",
+    "desc": "They meat Amtoo and Beanette"
+  },
+  {
+    "np": 2929,
+    "name": "Thankyou",
+    "desc": "Amtoo pulls his beanie on and they say thankyou"
+  },
+  {
+    "np": 2930,
+    "name": "Goodbye!",
+    "desc": "Megan and Amtoo say goodbye"
+  },
+  {
+    "np": 2931,
+    "name": "Getting Late",
+    "desc": "Cueball: It's getting late.  Megan: We can make it to the tower tonight"
+  },
+  {
+    "np": 2932,
+    "name": "All the way",
+    "desc": "Cueball: We can't run the whole way.  Meagan: Nope"
+  },
+  {
+    "np": 2936,
+    "name": "Expando again",
+    "desc": "Expando says greets them again"
+  },
+  {
+    "np": 2937,
+    "name": "Hi probably",
+    "desc": "Cueball: Hi! probably"
+  },
+  {
+    "np": 2945,
+    "name": "Not much further!",
+    "desc": "Cueball: Not much further!"
+  },
+  {
+    "np": 2951,
+    "name": "Night!",
+    "desc": "They are inside the tower"
+  },
+  {
+    "np": 2953,
+    "name": "Dreamed of water",
+    "desc": "Cueball: I dreamed I woke up in the water"
+  },
+  {
+    "np": 2957,
+    "name": "Don't Mind",
+    "desc": "Cueball: I hope they don't mind us taking some of the food and water here"
+  },
+  {
+    "np": 2958,
+    "name": "Creepy",
+    "desc": "Cueball: Maybe we should have stayed to ask.  But I was starting to get a little creeped out"
+  },
+  {
+    "np": 2962,
+    "name": "Faster way back",
+    "desc": "Cueball: Still, maybe they could have helped us find a faster way back"
+  },
+  {
+    "np": 2963,
+    "name": "Wrong",
+    "desc": "Cueball: ... Are you ok?  Megan: I did something that was wrong."
+  },
+  {
+    "np": 2965,
+    "name": "Stole Maps!",
+    "desc": "Cueball: You stole the maps!  Megan: I'll give them back someday! I hope.  Cueball: This is great!  There are so many!"
+  },
+  {
+    "np": 2970,
+    "name": "Climb down",
+    "desc": "They climb down by the first tower"
+  },
+  {
+    "np": 2972,
+    "name": "Stuff works",
+    "desc": "They discuss the Panther Salve"
+  },
+  {
+    "np": 2973,
+    "name": "Steal more",
+    "desc": "Megan ponders what more should have been stolen"
+  },
+  {
+    "np": 2976,
+    "name": "Lucky?",
+    "desc": "Is that lucky on a rock?"
+  },
+  {
+    "np": 2977,
+    "name": "Yes it is!",
+    "desc": "Lucky looks up"
+  },
+  {
+    "np": 2978,
+    "name": "Lucky runs",
+    "desc": "Lucky does not want to meet a thwapstick again"
+  },
+  {
+    "np": 2986,
+    "name": "Run Prickly",
+    "desc": "Cueball: Just go uphill don't stop, don't get stuck.  You can make it"
+  },
+  {
+    "np": 2989,
+    "name": "Chirp!",
+    "desc": "The chirps are flapping"
+  },
+  {
+    "np": 2992,
+    "name": "Breather",
+    "desc": "They take a brief rest"
+  },
+  {
+    "np": 2995,
+    "name": "Empty Hills?",
+    "desc": "Cueball: Well, no one's coming running down yelling or throwing stuff I guess the hills are empty.  Megan: I wish we had time to go up and explore them.  I'd love to learn how they get all that stuff."
+  },
+  {
+    "np": 2996,
+    "name": "Hill people tower",
+    "desc": "The hill people have a tower as well"
+  },
+  {
+    "np": 2998,
+    "name": "Is that the Sea?",
+    "desc": "Cueball: Is that the Sea?  Megan: Should it be in view already?"
+  },
+  {
+    "np": 3001,
+    "name": "Know this place",
+    "desc": "They know the place but it souldn't be wet"
+  },
+  {
+    "np": 3002,
+    "name": "This rock",
+    "desc": "Cueball: loves his rock"
+  },
+  {
+    "np": 3003,
+    "name": "Wait",
+    "desc": "Megan: Whoa, wait."
+  },
+  {
+    "np": 3004,
+    "name": "Crossed the riverbed",
+    "desc": "Megan: Look at the spot where we crossed the riverbed"
+  },
+  {
+    "np": 3006,
+    "name": "There they are!",
+    "desc": "They see some Cueganites"
+  },
+  {
+    "np": 3007,
+    "name": "How deep",
+    "desc": "They are getting wet feet"
+  },
+  {
+    "np": 3008,
+    "name": "Cross here",
+    "desc": "Should they cross here?"
+  },
+  {
+    "np": 3009,
+    "name": "Cross now",
+    "desc": "Cross while they can"
+  },
+  {
+    "np": 3010,
+    "name": "Something Wrong",
+    "desc": "Cueball: I can feel it flowing... But something seems wrong. Hang on."
+  },
+  {
+    "np": 3011,
+    "name": "Augh!",
+    "desc": "Cueball finds a deep spot"
+  },
+  {
+    "np": 3012,
+    "name": "Fresh",
+    "desc": "They call the water Fresh"
+  },
+  {
+    "np": 3013,
+    "name": "Keep the maps dry",
+    "desc": "Cueball leads the way"
+  },
+  {
+    "np": 3014,
+    "name": "Strong current",
+    "desc": "They struggle in the flowing water"
+  },
+  {
+    "np": 3015,
+    "name": "Water rising",
+    "desc": "The water is rising, but who is off the image?"
+  },
+  {
+    "np": 3016,
+    "name": "You're Back!",
+    "desc": "They meet some of the Cueganites"
+  },
+  {
+    "np": 3017,
+    "name": "Learned Everything",
+    "desc": "Mini-Bunny: Where did you go? Megan: To the mountains! We learned everything! Mini-Bunny: Everything? Megan: Most of it!  Where's everyone else?"
+  },
+  {
+    "np": 3018,
+    "name": "Empty Hills",
+    "desc": "Mini-Bunny says the hills are empty and the cuganites are seeing what is left"
+  },
+  {
+    "np": 3019,
+    "name": "Everyone is talking",
+    "desc": "But no one is listening."
+  },
+  {
+    "np": 3020,
+    "name": "Even more are talking",
+    "desc": "They talk on crossingg swiming, what is at sea and who is missing"
+  },
+  {
+    "np": 3021,
+    "name": "Megans planning",
+    "desc": "Everyone together, we need to run"
+  },
+  {
+    "np": 3023,
+    "name": "All is dark",
+    "desc": "Where are they?"
+  },
+  {
+    "np": 3024,
+    "name": "Megan talks",
+    "desc": "Megan explains what is happening and the urgentcy"
+  },
+  {
+    "np": 3025,
+    "name": "Trapped",
+    "desc": "Cuegan carry on telling the rest what the problems are"
+  },
+  {
+    "np": 3026,
+    "name": "Bags might work",
+    "desc": "Need bags and rope"
+  },
+  {
+    "np": 3027,
+    "name": "Hey!",
+    "desc": "Littlest Bangs Brother says Hey! interupting Megan"
+  },
+  {
+    "np": 3028,
+    "name": "Cousin!",
+    "desc": "LBB has found his cousin!"
+  },
+  {
+    "np": 3030,
+    "name": "What's that?",
+    "desc": "Something is floating past"
+  },
+  {
+    "np": 3031,
+    "name": "La Petite returns",
+    "desc": "La Petite is LBBs cousin and what is she on?"
+  },
+  {
+    "np": 3032,
+    "name": "Raftcastle",
+    "desc": "La Petite has made the castle into a boat!"
+  },
+  {
+    "np": 3033,
+    "name": "No Brakes",
+    "desc": "How do you stop a raftcastle?"
+  },
+  {
+    "np": 3035,
+    "name": "Plan B",
+    "desc": "Megan has a new plan"
+  },
+  {
+    "np": 3036,
+    "name": "Raft up a river!",
+    "desc": "Megan outlines what they are going to do"
+  },
+  {
+    "np": 3037,
+    "name": "Dark again",
+    "desc": "What is happening?"
+  },
+  {
+    "np": 3038,
+    "name": "Busy Busy Busy",
+    "desc": "Cueganites doing lots of jobs"
+  },
+  {
+    "np": 3039,
+    "name": "Load everything abord",
+    "desc": "Sticks, sheets, Yurts, bags..."
+  },
+  {
+    "np": 3040,
+    "name": "And More",
+    "desc": "More stuff is loaded"
+  },
+  {
+    "np": 3041,
+    "name": "This place is ending",
+    "desc": "Megan: The water is coming over the banks!  This place is ending and it's time to go"
+  },
+  {
+    "np": 3043,
+    "name": "Push off",
+    "desc": "Away they gowith the castle and another raft"
+  },
+  {
+    "np": 3049,
+    "name": "Zoom out",
+    "desc": "The rafts along with trees and other debries float away"
+  },
+  {
+    "np": 3050,
+    "name": "Really Hard",
+    "desc": "Mini-Bunny: This is really hard.  If we drift into the shallows we can sort of push back toward the main channel.  But only barely."
+  },
+  {
+    "np": 3051,
+    "name": "Done Great",
+    "desc": "Megan says they are doing great"
+  },
+  {
+    "np": 3052,
+    "name": "Speeding up",
+    "desc": "Megan thinks they are speeding up"
+  },
+  {
+    "np": 3053,
+    "name": "Bump!",
+    "desc": "What hit the rafts?"
+  },
+  {
+    "np": 3054,
+    "name": "Oof",
+    "desc": "It made Megan go Oof."
+  },
+  {
+    "np": 3055,
+    "name": "Calling this the front",
+    "desc": "Megan: Is thee any way to keep us pointing forward?  Megan: We could start calling this the front"
+  },
+  {
+    "np": 3056,
+    "name": "Look!",
+    "desc": "What is behind them?"
+  },
+  {
+    "np": 3057,
+    "name": "It's Them",
+    "desc": "There are more Cuganites floating on something else"
+  },
+  {
+    "np": 3058,
+    "name": "Lots are talking",
+    "desc": "How to get the raftcastle to the overload others"
+  },
+  {
+    "np": 3059,
+    "name": "Float past",
+    "desc": "Will they join up?"
+  },
+  {
+    "np": 3060,
+    "name": "Rope throw",
+    "desc": "Will it reach"
+  },
+  {
+    "np": 3062,
+    "name": "Closer",
+    "desc": "They are getting closer, but will the tress get in the way?"
+  },
+  {
+    "np": 3064,
+    "name": "Try again",
+    "desc": "The rope is thrown again."
+  },
+  {
+    "np": 3065,
+    "name": "This time it works",
+    "desc": "Pull"
+  },
+  {
+    "np": 3066,
+    "name": "Forty!",
+    "desc": "All forty cuganites are here"
+  },
+  {
+    "np": 3067,
+    "name": "Ride it out",
+    "desc": "They will have to ride it out"
+  },
+  {
+    "np": 3076,
+    "name": "Night time",
+    "desc": "Its dark again, with stars, the milky way and galaxies"
+  },
+  {
+    "np": 3078,
+    "name": "hey",
+    "desc": "Megan: hey"
+  },
+  {
+    "np": 3079,
+    "name": "Everyone asleep",
+    "desc": "Just Megan and Cueball on the raft"
+  },
+  {
+    "np": 3081,
+    "name": "New Castle!",
+    "desc": "They are making a new sand castle"
+  },
+  {
+    "np": 3082,
+    "name": "Land!",
+    "desc": "Cueball: Land!"
+  },
+  {
+    "np": 3083,
+    "name": "Since Sunrise",
+    "desc": "Megan: We've been heading right toward it since sunrise"
+  },
+  {
+    "np": 3084,
+    "name": "Wake up!",
+    "desc": "Cueball: Land! Wake up, everybody"
+  },
+  {
+    "np": 3085,
+    "name": "Wow!",
+    "desc": "They land and explore"
+  },
+  {
+    "np": 3086,
+    "name": "Where are we",
+    "desc": "Cueball: Where do you think we are?  Megan: I don't know"
+  },
+  {
+    "np": 3087,
+    "name": "Find out",
+    "desc": "Megan: But I bet we can  figure it out!  C'mon let's see what's through here!"
+  },
+  {
+    "np": 3089,
+    "name": "The End",
+    "desc": "Sob sob cry, bring on the ice cream"
+  }
+] as const;
+
+/**
+ * Get discovery for a specific NewPix number.
+ * Supports both integer and decimal NP values.
+ */
+export function getDiscovery(np: number): DiscoveryDef | undefined {
+  // Handle both positive and negative NP (for Time Travel)
+  const absNp = Math.abs(np);
+  return discoveries.find((d) => d.np === absNp);
+}
+
+/**
+ * Check if a discovery exists for the given NewPix.
+ */
+export function hasDiscovery(np: number): boolean {
+  return getDiscovery(np) !== undefined;
+}
+
+/**
+ * Get all discovery NP numbers (useful for generating badge aliases).
+ */
+export function getAllDiscoveryNPs(): readonly number[] {
+  return discoveries.map((d) => d.np);
+}
+
+/**
+ * Get count of all discoveries.
+ */
+export function getDiscoveryCount(): number {
+  return discoveries.length;
+}

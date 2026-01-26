@@ -48,6 +48,7 @@ import {
   calculateTotalSandRate,
   type SandToolRateState,
 } from './sand-rate-calculator.js';
+import { getDiscovery, hasDiscovery } from '../data/discoveries.js';
 import { BadgeChecker } from './badge-checker.js';
 import type { BadgeCheckState } from './badge-conditions.js';
 
@@ -1135,6 +1136,9 @@ export class ModernEngine implements GameEngine {
         this.core.newpixNumber += this.core.newpixNumber > 0 ? 1 : -1;
       }
 
+      // Try to earn discovery for this newpix
+      this.earnDiscovery();
+
       // Update highest visited
       const np = Math.abs(this.core.newpixNumber);
       if (np > Math.abs(this.core.highestNPvisited)) {
@@ -1516,6 +1520,44 @@ export class ModernEngine implements GameEngine {
         this.badgeGroupCounts[def.group] = (this.badgeGroupCounts[def.group] ?? 0) + 1;
       }
     }
+  }
+
+  /**
+   * Earn discovery badge for current NewPix.
+   *
+   * Discoveries are special badges earned when visiting specific NewPix for the first time.
+   * Each discovery creates 4 related badges (discov, monums, monumg, diamm).
+   *
+   * Reference: castle.js:3218-3235
+   *
+   * @returns true if discovery was earned, false otherwise
+   */
+  private earnDiscovery(): boolean {
+    const np = this.core.newpixNumber;
+
+    // Check if discovery exists for this NP
+    if (!hasDiscovery(np)) {
+      return false;
+    }
+
+    // Generate badge alias (handles both positive and negative NP)
+    const alias = `discov${np}`;
+
+    // Check if already earned
+    if (this.badges.get(alias)) {
+      return false;
+    }
+
+    // Special case: NP 2440 requires specific timing in legacy
+    // For now, we just earn it when visiting
+    if (Math.abs(np) === 2440) {
+      // In legacy, this requires being at exactly the right sub-frame
+      // We'll implement this timing check if needed for parity
+    }
+
+    // Earn the discovery badge
+    this.earnBadge(alias);
+    return true;
   }
 
   /**

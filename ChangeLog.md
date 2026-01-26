@@ -1,6 +1,8 @@
 ## Changelog
 
 ### Changed
+- Add discovery earning logic to ModernEngine (#66)
+- Create discoveries.ts data file with all discovery definitions (#65)
 - Add tests for badge conditions and checker (#63)
 - Integrate BadgeChecker into ModernEngine at trigger points (#62)
 - Create badge-checker.ts with BadgeChecker class (#61)
