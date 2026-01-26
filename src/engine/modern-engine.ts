@@ -1236,7 +1236,7 @@ export class ModernEngine implements GameEngine {
         }
       } else if (np > 2) {
         // In the past - unlock Time Travel
-        this.doUnlockBoost('TimeTravel');
+        this.doUnlockBoost('Time Travel');
       }
 
       // Signpost unlock condition
@@ -2201,7 +2201,7 @@ export class ModernEngine implements GameEngine {
    * price = Math.abs(price)
    */
   calculateTimeTravelPrice(): number {
-    const boost = this.boosts.get('TimeTravel');
+    const boost = this.boosts.get('Time Travel');
     const travelCount = (typeof boost?.extra?.travelCount === 'number') ? boost.extra.travelCount : 0;
     const np = this.core.newpixNumber;
 
@@ -2209,8 +2209,8 @@ export class ModernEngine implements GameEngine {
     price += this.resources.castles * np / 3094;
     price += travelCount;
 
-    if (this.hasBoost('FluxCapacitor')) {
-      price = Math.ceil(price * 0.2);
+    if (this.hasBoost('Flux Capacitor')) {
+      price *= 0.2;
     }
 
     price = Math.ceil(price / this.priceFactor);
@@ -2236,7 +2236,7 @@ export class ModernEngine implements GameEngine {
    * if Memory Singer + glass monument at dest: cost *= 0.5
    */
   calculateJumpCost(destNP: number): number {
-    const boost = this.boosts.get('TimeTravel');
+    const boost = this.boosts.get('Time Travel');
     const travelCount = (typeof boost?.extra?.travelCount === 'number') ? boost.extra.travelCount : 0;
     const currentNP = this.core.newpixNumber;
 
@@ -2257,15 +2257,15 @@ export class ModernEngine implements GameEngine {
       cost *= 1.1;
     }
 
-    if (this.hasBoost('FluxCapacitor')) {
+    if (this.hasBoost('Flux Capacitor')) {
       cost *= 0.2;
     }
 
-    if (this.hasBoost('MindGlow') && this.badges.get('monums' + destNP)) {
+    if (this.hasBoost('Mind Glow') && this.badges.get('monums' + destNP)) {
       cost *= 0.5;
     }
 
-    if (this.hasBoost('MemorySinger') && this.badges.get('monumg' + destNP)) {
+    if (this.hasBoost('Memory Singer') && this.badges.get('monumg' + destNP)) {
       cost *= 0.5;
     }
 
@@ -2279,7 +2279,7 @@ export class ModernEngine implements GameEngine {
    * Awards time travel badges based on direction and travel count.
    */
   async timeTravel(npOffset: number): Promise<boolean> {
-    const boost = this.boosts.get('TimeTravel');
+    const boost = this.boosts.get('Time Travel');
     if (!boost || boost.bought === 0) {
       return false;
     }
@@ -2302,8 +2302,8 @@ export class ModernEngine implements GameEngine {
       // Award travel count badges and unlock boosts
       const t = (typeof boost.extra?.travelCount === 'number') ? boost.extra.travelCount : 0;
       if (t >= 10) this.earnBadge('Primer');
-      if (t >= 20) this.doUnlockBoost('FluxCapacitor');
-      if (t >= 30 && this.hasBoost('FluxCapacitor')) this.doUnlockBoost('FluxTurbine');
+      if (t >= 20) this.doUnlockBoost('Flux Capacitor');
+      if (t >= 30 && this.hasBoost('Flux Capacitor')) this.doUnlockBoost('Flux Turbine');
       if (t >= 40) this.earnBadge('Wimey');
       if (t >= 160) this.earnBadge('Hot Tub');
       if (t >= 640) this.earnBadge("Dude, Where's my DeLorean?");
@@ -2323,7 +2323,7 @@ export class ModernEngine implements GameEngine {
    * @returns True if travel succeeded
    */
   async timeTravelTo(np: number, useChips: boolean): Promise<boolean> {
-    const boost = this.boosts.get('TimeTravel');
+    const boost = this.boosts.get('Time Travel');
     const oldNP = this.core.newpixNumber;
 
     // Validation checks
@@ -2446,9 +2446,9 @@ export class ModernEngine implements GameEngine {
 
     if (this.hasBoost('AD')) {
       incursionFactor = 1.5;
-    } else if (this.hasBoost('FluxCapacitor')) {
+    } else if (this.hasBoost('Flux Capacitor')) {
       incursionFactor = 4;
-    } else if (this.hasBoost('FluxTurbine')) {
+    } else if (this.hasBoost('Flux Turbine')) {
       incursionFactor = 8;
     }
 
