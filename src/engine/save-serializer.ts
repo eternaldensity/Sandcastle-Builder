@@ -461,5 +461,16 @@ export function createSaveSerializer(gameData: {
     .filter((b) => b.group !== 'badges')
     .map((b) => b.name);
 
-  return new SaveSerializer(allBoostAliases, regularBadgeNames, otherBadgeNames);
+  // Add runtime badges that are defined in badge-conditions but not in gameData
+  // These are appended to preserve badge index compatibility with legacy saves
+  const runtimeBadges = [
+    'Click Ninja',
+    'Click Ninja Ninja',
+    'Not So Redundant',
+    "Don't Litter!",
+    'Beachcomber',
+  ];
+  const allRegularBadgeNames = [...regularBadgeNames, ...runtimeBadges];
+
+  return new SaveSerializer(allBoostAliases, allRegularBadgeNames, otherBadgeNames);
 }

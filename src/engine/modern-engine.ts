@@ -453,6 +453,21 @@ export class ModernEngine implements GameEngine {
       }
     }
 
+    // Ensure virtual resource boosts exist before loading
+    // These are not in game data but are created during save/export
+    if (!this.boosts.has('Sand')) {
+      this.boosts.set('Sand', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('Castles')) {
+      this.boosts.set('Castles', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('GlassChips')) {
+      this.boosts.set('GlassChips', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('GlassBlocks')) {
+      this.boosts.set('GlassBlocks', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+
     // Load boosts
     for (const [alias, boostState] of Object.entries(state.boosts)) {
       if (this.boosts.has(alias)) {
@@ -476,7 +491,8 @@ export class ModernEngine implements GameEngine {
     this.resources.glassChips = glassChipsBoost?.power ?? 0;
     this.resources.glassBlocks = glassBlocksBoost?.power ?? 0;
 
-    // Load badges
+    // Load badges - clear and reload all to ensure clean state
+    this.badges.clear();
     for (const [name, badgeState] of Object.entries(state.badges)) {
       this.badges.set(name, badgeState.earned);
     }
@@ -2688,9 +2704,6 @@ export class ModernEngine implements GameEngine {
     // Mark that we've clicked this newpix
     this.core.ninjad = true;
 
-    // Check for badge unlocks
-    this.checkClickBadges();
-
     // Auto-convert sand to castles (like legacy toCastles)
     this.toCastles();
   }
@@ -2726,23 +2739,6 @@ export class ModernEngine implements GameEngine {
     this.syncResourceBoosts();
   }
 
-  /**
-   * Check for badges earned from clicking.
-   */
-  private checkClickBadges(): void {
-    // Badge thresholds (simplified)
-    const clickBadges: Record<string, number> = {
-      'Click Ninja': 1,
-      'Click Ninja Ninja': 10,
-      // More badges would be added here
-    };
-
-    for (const [badge, threshold] of Object.entries(clickBadges)) {
-      if (this.core.beachClicks >= threshold && !this.badges.get(badge)) {
-        this.badges.set(badge, true);
-      }
-    }
-  }
 
   /**
    * Buy a sand or castle tool.
@@ -4254,11 +4250,11 @@ export class ModernEngine implements GameEngine {
     const availableRewards: string[] = [];
 
     for (const [name, boost] of this.boosts) {
-      const boostDef = this.gameData.boosts.find((b) => b.name === name);
+      const boostDef = this.gameData.boosts[name];
       if (!boostDef) continue;
 
-      // Check if boost has logic requirement and is not yet unlocked
-      if (boostDef.logic && level >= boostDef.logic && !boost.unlocked) {
+      // Check if boost can be awarded by logicat and is not yet unlocked
+      if (boostDef.logic && !boost.unlocked) {
         availableRewards.push(name);
       }
     }

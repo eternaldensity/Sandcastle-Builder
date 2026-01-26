@@ -575,7 +575,8 @@ describe('Redundakitty System', () => {
         isActive: true,
         recursionDepth: 2,
         drawType: ['show', 'recur', 'show'],
-        keepPosition: 1
+        keepPosition: 1,
+        logicatState: { activePuzzle: null, timeRemaining: 0, totalCorrect: 0, totalIncorrect: 0, currentStreak: 0, bestStreak: 0 }
       };
 
       applyKittyClickResult({ action: 'hide', reason: 'missed' }, state, 0);
@@ -597,7 +598,8 @@ describe('Redundakitty System', () => {
         isActive: true,
         recursionDepth: 4,
         drawType: ['show', 'recur', 'hide1', 'show', 'show'],
-        keepPosition: 0
+        keepPosition: 0,
+        logicatState: { activePuzzle: null, timeRemaining: 0, totalCorrect: 0, totalIncorrect: 0, currentStreak: 0, bestStreak: 0 }
       };
 
       applyKittyClickResult({ action: 'show', level: 2 }, state, 2);
@@ -616,7 +618,8 @@ describe('Redundakitty System', () => {
         isActive: true,
         recursionDepth: 2,
         drawType: ['show', 'recur', 'show'],
-        keepPosition: 0
+        keepPosition: 0,
+        logicatState: { activePuzzle: null, timeRemaining: 0, totalCorrect: 0, totalIncorrect: 0, currentStreak: 0, bestStreak: 0 }
       };
 
       applyKittyClickResult({ action: 'recurse', newDepth: 4 }, state, 2);
@@ -635,7 +638,8 @@ describe('Redundakitty System', () => {
         isActive: true,
         recursionDepth: 3,
         drawType: ['show', 'recur', 'show'],
-        keepPosition: 0
+        keepPosition: 0,
+        logicatState: { activePuzzle: null, timeRemaining: 0, totalCorrect: 0, totalIncorrect: 0, currentStreak: 0, bestStreak: 0 }
       };
 
       applyKittyClickResult({ action: 'recurse', newDepth: 4 }, state, 2);
@@ -653,7 +657,8 @@ describe('Redundakitty System', () => {
         isActive: true,
         recursionDepth: 2,
         drawType: ['show', 'recur', 'show'],
-        keepPosition: 0
+        keepPosition: 0,
+        logicatState: { activePuzzle: null, timeRemaining: 0, totalCorrect: 0, totalIncorrect: 0, currentStreak: 0, bestStreak: 0 }
       };
 
       applyKittyClickResult({ action: 'logicat', extendTimer: true }, state, 2);
@@ -674,7 +679,8 @@ describe('Redundakitty System', () => {
         isActive: true,
         recursionDepth: 3,
         drawType: ['show', 'recur', 'show'],
-        keepPosition: 0
+        keepPosition: 0,
+        logicatState: { activePuzzle: null, timeRemaining: 0, totalCorrect: 0, totalIncorrect: 0, currentStreak: 0, bestStreak: 0 }
       };
 
       applyKittyClickResult({ action: 'logicat', extendTimer: false }, state, 2);
@@ -695,7 +701,8 @@ describe('Redundakitty System', () => {
         isActive: true,
         recursionDepth: 2,
         drawType: ['show', 'recur', 'show'],
-        keepPosition: 0
+        keepPosition: 0,
+        logicatState: { activePuzzle: null, timeRemaining: 0, totalCorrect: 0, totalIncorrect: 0, currentStreak: 0, bestStreak: 0 }
       };
 
       applyKittyClickResult({ action: 'rickroll', duration: 65 }, state, 2);

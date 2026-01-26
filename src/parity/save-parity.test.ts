@@ -10,7 +10,10 @@ import { describe, it, expect } from 'vitest';
 import { ModernEngine } from '../engine/modern-engine.js';
 import { SaveParser } from '../engine/save-parser.js';
 import { SaveSerializer } from '../engine/save-serializer.js';
-import gameData from '../data/game-data.json';
+import type { GameData } from '../types/game-data.js';
+import gameDataJson from '../data/game-data.json';
+
+const gameData = gameDataJson as unknown as GameData;
 
 describe('Save/Load Parity', () => {
   describe('Round-trip serialization', () => {
@@ -64,9 +67,10 @@ describe('Save/Load Parity', () => {
       const engine = new ModernEngine(gameData);
       await engine.initialize();
 
-      // Build up resources
-      await engine.clickBeach(100);
-      await engine.tick(10);
+      // Build up resources (need enough castles to buy 2 buckets)
+      // First bucket costs 8, second costs ~9 due to price scaling
+      await engine.clickBeach(10000);
+      await engine.tick(500);
 
       // Buy tools
       await engine.buyTool('sand', 'Bucket');
@@ -97,12 +101,13 @@ describe('Save/Load Parity', () => {
       const engine = new ModernEngine(gameData);
       await engine.initialize();
 
-      // Build up resources
-      await engine.clickBeach(1000);
-      await engine.tick(50);
+      // Build up resources (need 500 sand for Bigger Buckets)
+      await engine.clickBeach(5000);
+      await engine.tick(10); // Fewer ticks to keep more sand
 
-      // Buy boosts
-      await engine.buyBoost('Sandcastle Builder');
+      // Unlock and buy boost
+      await engine.unlockBoost('Bigger Buckets');
+      await engine.buyBoost('Bigger Buckets');
 
       // Export state
       const exported1 = await engine.exportState();
@@ -116,8 +121,8 @@ describe('Save/Load Parity', () => {
       const snapshot1 = await engine.getStateSnapshot();
       const snapshot2 = await engine2.getStateSnapshot();
 
-      expect(snapshot2.boosts['Sandcastle Builder']?.bought).toBe(1);
-      expect(snapshot2.boosts['Sandcastle Builder']?.bought).toBe(snapshot1.boosts['Sandcastle Builder']?.bought);
+      expect(snapshot2.boosts['Bigger Buckets']?.bought).toBe(1);
+      expect(snapshot2.boosts['Bigger Buckets']?.bought).toBe(snapshot1.boosts['Bigger Buckets']?.bought);
 
       // Round-trip
       const exported2 = await engine2.exportState();
@@ -194,8 +199,26 @@ describe('Save/Load Parity', () => {
       // Earn a badge
       await engine.clickBeach(500);
 
+      // Check what badges were earned before export
+      const preExportSnapshot = await engine.getStateSnapshot();
+      const preExportEarned = Object.entries(preExportSnapshot.badges)
+        .filter(([_, v]) => v)
+        .map(([k]) => k);
+
       // Export state (should have earned some badges like "No Ninja")
       const exported1 = await engine.exportState();
+
+      // Check if export changed badge state
+      const postExportSnapshot = await engine.getStateSnapshot();
+      const postExportEarned = Object.entries(postExportSnapshot.badges)
+        .filter(([_, v]) => v)
+        .map(([k]) => k);
+
+      if (preExportEarned.length !== postExportEarned.length) {
+        console.log('Export changed badges!');
+        console.log('  Before export:', preExportEarned.length);
+        console.log('  After export:', postExportEarned.length);
+      }
 
       // Load in new engine
       const engine2 = new ModernEngine(gameData);
@@ -205,6 +228,16 @@ describe('Save/Load Parity', () => {
       // Verify badges
       const snapshot1 = await engine.getStateSnapshot();
       const snapshot2 = await engine2.getStateSnapshot();
+
+      // Find differences
+      const earnedInSnapshot1 = Object.entries(snapshot1.badges).filter(([_, v]) => v).map(([k]) => k);
+      const earnedInSnapshot2 = Object.entries(snapshot2.badges).filter(([_, v]) => v).map(([k]) => k);
+
+      if (earnedInSnapshot1.length !== earnedInSnapshot2.length) {
+        console.log('Earned badges mismatch:');
+        console.log('  snapshot1:', earnedInSnapshot1);
+        console.log('  snapshot2:', earnedInSnapshot2);
+      }
 
       // Compare all badges
       for (const badgeName of Object.keys(snapshot1.badges)) {

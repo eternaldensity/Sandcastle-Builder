@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Fixed
+- Fix badge loss in save/load by migrating hardcoded badges to badge-conditions system (#126)
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
@@ -92,6 +93,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement save/load parity for legacy compatibility (#125)
 - Implement Glass Ceiling System (Plan 17) (#121)
 - Add infinite resource handling system (#117)
 - Implement Logicat puzzle system (#113)

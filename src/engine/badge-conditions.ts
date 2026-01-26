@@ -83,7 +83,9 @@ export const badgeConditions: BadgeCondition[] = [
   // Reference: data.js:1240+, badges.js click-based badges
   // =============================================================================
   { badge: 'Amazon Patent', trigger: 'click', check: s => s.beachClicks >= 1 },
+  { badge: 'Click Ninja', trigger: 'click', check: s => s.beachClicks >= 1 },
   { badge: 'Not So Redundant', trigger: 'click', check: s => s.beachClicks >= 2 },
+  { badge: 'Click Ninja Ninja', trigger: 'click', check: s => s.beachClicks >= 10 },
   { badge: "Don't Litter!", trigger: 'click', check: s => s.beachClicks >= 14 },
   { badge: 'Y U NO BELIEVE ME?', trigger: 'click', check: s => s.beachClicks >= 128 },
   { badge: 'Beachcomber', trigger: 'click', check: s => s.beachClicks >= 256 },
