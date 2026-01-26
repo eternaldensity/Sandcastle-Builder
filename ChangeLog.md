@@ -5,6 +5,8 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Integrate badge checks into modern engine at appropriate trigger points (#136)
+- Add missing badge conditions (AC power, tool count, spending, special badges) (#134)
 - Initialize unlocks on game start in initialize() method (#132)
 - Expand tool-based unlock rules in unlock-conditions.ts (#131)
 - Add checkAutoUnlocks() trigger system to modern-engine.ts (#130)
@@ -98,6 +100,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement Badge Auto-Earn Enhancement (Plan 15) (#133)
 - Implement boost auto-unlock system to reduce parity gaps (#129)
 - Implement save/load parity for legacy compatibility (#125)
 - Implement Glass Ceiling System (Plan 17) (#121)

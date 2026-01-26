@@ -172,10 +172,16 @@ export const badgeConditions: BadgeCondition[] = [
 
   // =============================================================================
   // AC power badges (trigger: 'resource-change')
-  // Reference: data.js:802-813
+  // Reference: data.js:802-813, badges.js:848-900
+  // AC = Automata Control boost (controls Factory Automation run count)
   // =============================================================================
-  { badge: 'Mains Power', trigger: 'resource-change', check: s => (s.boostPowers['AC'] ?? 0) >= 230 },
   { badge: 'It Hertz', trigger: 'resource-change', check: s => (s.boostPowers['AC'] ?? 0) >= 50 },
+  { badge: 'Mains Power', trigger: 'resource-change', check: s => (s.boostPowers['AC'] ?? 0) >= 230 },
+  { badge: 'Microwave', trigger: 'resource-change', check: s => (s.boostPowers['AC'] ?? 0) >= 1e9 },
+  { badge: 'Ultraviolet', trigger: 'resource-change', check: s => (s.boostPowers['AC'] ?? 0) >= 1e12 },
+  { badge: 'X Rays', trigger: 'resource-change', check: s => (s.boostPowers['AC'] ?? 0) >= 30e15 },
+  { badge: 'Gamma Rays', trigger: 'resource-change', check: s => (s.boostPowers['AC'] ?? 0) >= 10e18 },
+  { badge: 'Planck Limit', trigger: 'resource-change', check: s => checkPlanckLimit(s) },
 
   // =============================================================================
   // Trebuchet badge (trigger: 'tool-purchase')
@@ -188,6 +194,12 @@ export const badgeConditions: BadgeCondition[] = [
   // Reference: data.js:814-825
   // =============================================================================
   { badge: 'Neat!', trigger: 'tool-purchase', check: s => checkNeatBadge(s) },
+
+  // =============================================================================
+  // PC (Production Control) limit badge (trigger: 'resource-change')
+  // Reference: badges.js:863-866, boosts.js:6151
+  // =============================================================================
+  { badge: 'Nope!', trigger: 'resource-change', check: s => checkPCLimit(s) },
 ];
 
 /**
@@ -207,6 +219,29 @@ function checkNeatBadge(s: BadgeCheckState): boolean {
   }
 
   return true;
+}
+
+/**
+ * Check if Automata Control is at Planck Limit (reached PC power limit).
+ * AC can be increased up to PC (Production Control) power level.
+ * Reference: badges.js:900, boosts.js:6122
+ */
+function checkPlanckLimit(s: BadgeCheckState): boolean {
+  const acPower = s.boostPowers['AC'] ?? 0;
+  const pcPower = s.boostPowers['PC'] ?? 0;
+
+  // AC is at limit when it equals or exceeds PC power
+  return acPower >= pcPower && pcPower > 0;
+}
+
+/**
+ * Check if Production Control is at its limit.
+ * PC limit is 5e51.
+ * Reference: badges.js:863-866, boosts.js:6147-6151
+ */
+function checkPCLimit(s: BadgeCheckState): boolean {
+  const pcPower = s.boostPowers['PC'] ?? 0;
+  return pcPower > 5e51;
 }
 
 /**

@@ -787,6 +787,9 @@ export class ModernEngine implements GameEngine {
     this.tickBoostCountdowns();
 
     this.syncResourceBoosts();
+
+    // Check tick-based badges (e.g., Badge Collector for badge count milestones)
+    this.badgeChecker.check('tick', this.buildBadgeCheckState());
   }
 
 
@@ -1091,6 +1094,9 @@ export class ModernEngine implements GameEngine {
     this.ongBase();
     this.ongAdvanceNewpix();
     this.handlePeriods();
+
+    // Check ONG-based badges (currently no specific ONG badges, but system is ready)
+    this.badgeChecker.check('ong', this.buildBadgeCheckState());
   }
 
   /**
