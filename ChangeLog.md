@@ -1,6 +1,9 @@
 ## Changelog
 
 ### Changed
+- Add tests for castle rate calculations (#81)
+- Integrate castle rate calculator into ModernEngine (#80)
+- Create castle-rate-calculator.ts with rate calculation functions (#79)
 - Enhance down() method with bonemeal bag preservation and power restoration (#77)
 - Add missing badge conditions to badge-conditions.ts (15+ badges) (#76)
 - Add tool-amount unlock rules to unlock-conditions.ts (50+ rules) (#75)
@@ -56,6 +59,8 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement Castle Tool Production Rates (#82)
+- Implement Plan 10: Castle Tool Production Rates with boost multipliers (#78)
 - Implement Plan 9: Parity Gap Reduction - reduce critical differences from 6103 to <1000 (#74)
 - Add Coma/Reset system with Down and Coma resets (#69)
 - Implement Plan 6: Badge Auto-Earn System (#59)

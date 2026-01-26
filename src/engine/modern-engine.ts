@@ -48,6 +48,11 @@ import {
   calculateTotalSandRate,
   type SandToolRateState,
 } from './sand-rate-calculator.js';
+import {
+  calculateAllCastleToolRates,
+  type CastleToolRateState,
+  type CastleToolRates,
+} from './castle-rate-calculator.js';
 import { getDiscovery, hasDiscovery } from '../data/discoveries.js';
 import { BadgeChecker } from './badge-checker.js';
 import type { BadgeCheckState } from './badge-conditions.js';
@@ -211,6 +216,15 @@ export class ModernEngine implements GameEngine {
   private cachedSandToolRates: Record<string, number> = {};
   private cachedTotalSandRate = 0;
 
+  // Cached castle tool rates (per-tool)
+  private cachedCastleToolRates: CastleToolRates = {
+    NewPixBot: 3.5,
+    Trebuchet: 6.25,
+    Scaffold: 15.63,
+    Wave: 39.06,
+    River: 97.66,
+  };
+
   // Castle tool price cache
   private castleToolPrices: CastleToolPriceCache = {};
 
@@ -301,6 +315,8 @@ export class ModernEngine implements GameEngine {
     // Initialize cached rates
     this.recalculateSandPerClick();
     this.recalculateSandRates();
+      this.recalculateCastleRates();
+    this.recalculateCastleRates();
   }
 
   /**
@@ -415,6 +431,8 @@ export class ModernEngine implements GameEngine {
     this.recalculatePriceFactor();
     this.recalculateSandPerClick();
     this.recalculateSandRates();
+      this.recalculateCastleRates();
+    this.recalculateCastleRates();
   }
 
   /**
@@ -816,6 +834,75 @@ export class ModernEngine implements GameEngine {
 
     // Check badge conditions when sand rate changes
     this.badgeChecker.check('rate-update', this.buildBadgeCheckState());
+  }
+
+  /**
+   * Build state object for castle tool rate calculations.
+   * Similar pattern to buildSandRateState().
+   */
+  private buildCastleRateState(): CastleToolRateState {
+    const getToolAmount = (name: string): number => {
+      const tool = this.sandTools.get(name) ?? this.castleTools.get(name);
+      return tool?.amount ?? 0;
+    };
+
+    const isBoostBought = (name: string): boolean => {
+      const boost = this.boosts.get(name);
+      return (boost?.bought ?? 0) > 0;
+    };
+
+    const getBoostPower = (name: string): number => {
+      const boost = this.boosts.get(name);
+      return boost?.power ?? 0;
+    };
+
+    return {
+      // Tool amounts
+      newPixBots: getToolAmount('NewPixBot'),
+      trebuchets: getToolAmount('Trebuchet'),
+      scaffolds: getToolAmount('Scaffold'),
+      waves: getToolAmount('Wave'),
+      rivers: getToolAmount('River'),
+
+      // NewPixBot boost multipliers
+      busyBot: isBoostBought('Busy Bot'),
+      robotEfficiency: isBoostBought('Robot Efficiency'),
+      robotEfficiencyPower: getBoostPower('Robot Efficiency'),
+      recursivebot: isBoostBought('Recursivebot'),
+      halOKitty: isBoostBought('HAL-0-Kitty'),
+      halBoost: getBoostPower('HAL-0-Kitty'),
+
+      // Trebuchet boost multipliers
+      springFling: isBoostBought('Spring Fling'),
+      trebuchetPong: isBoostBought('Trebuchet Pong'),
+      trebuchetPongPower: getBoostPower('Trebuchet Pong'),
+      flingbot: isBoostBought('Flingbot'),
+      variedAmmo: isBoostBought('Varied Ammo'),
+      variedAmmoPower: getBoostPower('Varied Ammo'),
+
+      // Scaffold boost multipliers
+      precisePlacement: isBoostBought('Precise Placement'),
+      levelUp: isBoostBought('Level Up!'),
+      propbot: isBoostBought('Propbot'),
+
+      // Wave boost multipliers
+      swell: isBoostBought('Swell'),
+      surfbot: isBoostBought('Surfbot'),
+      sbtf: isBoostBought('SBTF'),
+      sbtfPower: getBoostPower('SBTF'),
+
+      // River boost multipliers
+      smallbot: isBoostBought('Smallbot'),
+    };
+  }
+
+  /**
+   * Recalculate cached castle tool rates.
+   * Call this whenever boosts or tools change that affect castle production.
+   */
+  private recalculateCastleRates(): void {
+    const state = this.buildCastleRateState();
+    this.cachedCastleToolRates = calculateAllCastleToolRates(state);
   }
 
   /**
@@ -2216,6 +2303,7 @@ export class ModernEngine implements GameEngine {
       state.bought++;
       this.syncResourceBoosts();
       this.recalculateSandRates();
+      this.recalculateCastleRates();
       this.checkAutoUnlocks();
     }
   }
@@ -2253,6 +2341,7 @@ export class ModernEngine implements GameEngine {
 
       this.syncResourceBoosts();
       this.recalculateSandRates();
+      this.recalculateCastleRates();
       this.checkAutoUnlocks();
     }
   }
@@ -2342,6 +2431,7 @@ export class ModernEngine implements GameEngine {
       this.recalculatePriceFactor();
       this.recalculateSandPerClick();
       this.recalculateSandRates();
+      this.recalculateCastleRates();
     }
   }
 
@@ -2895,6 +2985,7 @@ export class ModernEngine implements GameEngine {
       state.amount = amount;
       state.bought = Math.max(state.bought, amount);
       this.recalculateSandRates();
+      this.recalculateCastleRates();
     }
   }
 
@@ -3065,6 +3156,7 @@ export class ModernEngine implements GameEngine {
     // Recalculate all derived state
     this.syncResourceBoosts();
     this.recalculateSandRates();
+      this.recalculateCastleRates();
     this.recalculateSandPerClick();
     this.recalculatePriceFactor();
 
@@ -3120,6 +3212,7 @@ export class ModernEngine implements GameEngine {
     // Recalculate everything again
     this.syncResourceBoosts();
     this.recalculateSandRates();
+      this.recalculateCastleRates();
     this.recalculateSandPerClick();
     this.recalculatePriceFactor();
     this.checkAutoUnlocks();
