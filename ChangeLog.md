@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Changed
+- Update CLAUDE.md to require TypeScript compilation and testing (#49)
 - Fix testing infrastructure issues (#48)
 - Add unit tests for sand rate calculations (#46)
 - Integrate sand rate calculator into ModernEngine (#45)
