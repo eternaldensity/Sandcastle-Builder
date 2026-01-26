@@ -1977,6 +1977,18 @@ export class ModernEngine implements GameEngine {
       }
     }
 
+    // Build boost powers map
+    const boostPowers: Record<string, number> = {};
+    for (const [alias, state] of this.boosts) {
+      boostPowers[alias] = state.power;
+    }
+
+    // Build badges map
+    const badges: Record<string, boolean> = {};
+    for (const [name, earned] of this.badges) {
+      badges[name] = earned;
+    }
+
     return {
       sand: this.resources.sand,
       castles: this.resources.castles,
@@ -1991,6 +2003,8 @@ export class ModernEngine implements GameEngine {
       ninjaStealth: this.core.ninjaStealth,
       ninjaFreeCount: this.core.ninjaFreeCount,
       sandPermNP: this.cachedTotalSandRate,
+      boostPowers,
+      badges,
       badgesOwned,
       boostsOwned,
       discoveryCount: this.badgeGroupCounts['discov'] ?? 0,
@@ -2436,6 +2450,22 @@ export class ModernEngine implements GameEngine {
     if (boost) {
       boost.power += amount;
     }
+  }
+
+  /**
+   * Spend a resource if available.
+   * Returns true if the resource was spent, false if insufficient amount.
+   */
+  private spendResource(resource: string, amount: number): boolean {
+    // Check if we have enough
+    const current = this.getResourceAmount(resource);
+    if (current < amount) {
+      return false;
+    }
+
+    // Spend the resource
+    this.addResource(resource, -amount);
+    return true;
   }
 
   /**
@@ -2885,6 +2915,24 @@ export class ModernEngine implements GameEngine {
   async down(): Promise<void> {
     this.ensureInitialized();
 
+    // Preserve powers for specific boosts before reset
+    // Reference: persist.js:1321-1329
+    const kakBoost = this.boosts.get('Kite and Key');
+    const kakPower = kakBoost?.power ?? 0;
+
+    const libBoost = this.boosts.get('Lightning in a Bottle');
+    const libPower = libBoost?.power ?? 0;
+
+    const snBoost = this.boosts.get('Safety Net');
+    const snPower = snBoost?.power ?? 0;
+
+    // Check for bonemeal bag preservation (must spend bonemeal to preserve)
+    // Reference: persist.js:1321-1329
+    const preserveBoH = this.hasBoost('BoH') && this.spendResource('Bonemeal', 10);
+    const preserveBoM = this.hasBoost('BoM') && this.spendResource('Bonemeal', 100);
+    const preserveBoF = this.hasBoost('BoF') && this.spendResource('Bonemeal', 1000);
+    const preserveBoJ = this.hasBoost('BoJ') && this.spendResource('Bonemeal', 10000);
+
     // Reset resource totals
     const castlesBuiltTotal = this.castleBuild.totalBuilt;
     if (isFinite(castlesBuiltTotal)) {
@@ -2971,6 +3019,48 @@ export class ModernEngine implements GameEngine {
 
     // Badges are preserved in Down reset
     // (no change to this.badges)
+
+    // Restore preserved boost powers
+    // Reference: persist.js:1321-1329
+    if (kakPower > 0 && kakBoost) {
+      kakBoost.power = kakPower;
+    }
+    if (libPower > 0 && libBoost) {
+      libBoost.power = libPower;
+    }
+    if (snPower > 0 && snBoost) {
+      snBoost.power = snPower;
+    }
+
+    // Restore bonemeal bag boosts if preserved
+    if (preserveBoH) {
+      const boh = this.boosts.get('BoH');
+      if (boh) {
+        boh.unlocked = 1;
+        boh.bought = 1;
+      }
+    }
+    if (preserveBoM) {
+      const bom = this.boosts.get('BoM');
+      if (bom) {
+        bom.unlocked = 1;
+        bom.bought = 1;
+      }
+    }
+    if (preserveBoF) {
+      const bof = this.boosts.get('BoF');
+      if (bof) {
+        bof.unlocked = 1;
+        bof.bought = 1;
+      }
+    }
+    if (preserveBoJ) {
+      const boj = this.boosts.get('BoJ');
+      if (boj) {
+        boj.unlocked = 1;
+        boj.bought = 1;
+      }
+    }
 
     // Recalculate all derived state
     this.syncResourceBoosts();

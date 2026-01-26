@@ -164,6 +164,7 @@ export const toolUnlockRules: UnlockRule[] = [
   // Bucket unlocks
   { boostAlias: 'Bigger Buckets', condition: Conditions.toolAmount('sand', 'Bucket', 1) },
   { boostAlias: 'Huge Buckets', condition: Conditions.toolAmount('sand', 'Bucket', 4) },
+  { boostAlias: 'Carrybot', condition: Conditions.toolAmount('sand', 'Bucket', 14) },
   { boostAlias: 'Buccaneer', condition: Conditions.toolAmount('sand', 'Bucket', 30) },
   { boostAlias: 'Bucket Brigade', condition: Conditions.toolAmount('sand', 'Bucket', 50) },
   {
@@ -178,6 +179,7 @@ export const toolUnlockRules: UnlockRule[] = [
   { boostAlias: 'Helping Hand', condition: Conditions.toolAmount('sand', 'Cuegan', 1) },
   { boostAlias: 'Cooperation', condition: Conditions.toolAmount('sand', 'Cuegan', 4) },
   { boostAlias: 'Megball', condition: Conditions.toolAmount('sand', 'Cuegan', 8) },
+  { boostAlias: 'Stickbot', condition: Conditions.toolAmount('sand', 'Cuegan', 14) },
   { boostAlias: 'The Forty', condition: Conditions.toolAmount('sand', 'Cuegan', 40) },
   {
     boostAlias: 'Human Cannonball',
@@ -191,6 +193,7 @@ export const toolUnlockRules: UnlockRule[] = [
   { boostAlias: 'Flag Bearer', condition: Conditions.toolAmount('sand', 'Flag', 1) },
   { boostAlias: 'War Banner', condition: Conditions.toolAmount('sand', 'Flag', 2) },
   { boostAlias: 'Magic Mountain', condition: Conditions.toolAmount('sand', 'Flag', 6) },
+  { boostAlias: 'Standardbot', condition: Conditions.toolAmount('sand', 'Flag', 14) },
   { boostAlias: 'Chequered Flag', condition: Conditions.toolAmount('sand', 'Flag', 25) },
   { boostAlias: 'Skull and Crossbones', condition: Conditions.toolAmount('sand', 'Flag', 40) },
   {
@@ -203,6 +206,7 @@ export const toolUnlockRules: UnlockRule[] = [
 
   // Ladder unlocks
   { boostAlias: 'Extension Ladder', condition: Conditions.toolAmount('sand', 'Ladder', 1) },
+  { boostAlias: 'Climbbot', condition: Conditions.toolAmount('sand', 'Ladder', 14) },
   { boostAlias: 'Broken Rung', condition: Conditions.toolAmount('sand', 'Ladder', 25) },
   {
     boostAlias: 'Up Up and Away',
@@ -214,6 +218,7 @@ export const toolUnlockRules: UnlockRule[] = [
 
   // Bag unlocks
   { boostAlias: 'Embaggening', condition: Conditions.toolAmount('sand', 'Bag', 2) },
+  { boostAlias: 'Luggagebot', condition: Conditions.toolAmount('sand', 'Bag', 14) },
   { boostAlias: 'Bag Puns', condition: Conditions.toolAmount('sand', 'Bag', 30) },
   {
     boostAlias: 'Air Drop',
@@ -226,6 +231,13 @@ export const toolUnlockRules: UnlockRule[] = [
   // NewPixBot unlocks
   { boostAlias: 'Busy Bot', condition: Conditions.toolAmount('castle', 'NewPixBot', 3) },
   { boostAlias: 'Robot Efficiency', condition: Conditions.toolAmount('castle', 'NewPixBot', 8) },
+  {
+    boostAlias: 'Recursivebot',
+    condition: Conditions.and(
+      Conditions.toolAmount('castle', 'NewPixBot', 14),
+      Conditions.boostBought('Robot Efficiency', 1)
+    ),
+  },
   { boostAlias: 'HAL-0-Kitty', condition: Conditions.toolAmount('castle', 'NewPixBot', 17) },
   {
     boostAlias: 'Factory Automation',
@@ -239,6 +251,7 @@ export const toolUnlockRules: UnlockRule[] = [
   { boostAlias: 'Spring Fling', condition: Conditions.toolAmount('castle', 'Trebuchet', 1) },
   { boostAlias: 'Trebuchet Pong', condition: Conditions.toolAmount('castle', 'Trebuchet', 2) },
   { boostAlias: 'Varied Ammo', condition: Conditions.toolAmount('castle', 'Trebuchet', 5) },
+  { boostAlias: 'Flingbot', condition: Conditions.toolAmount('castle', 'Trebuchet', 14) },
   { boostAlias: 'Throw Your Toys', condition: Conditions.toolAmount('castle', 'Trebuchet', 20) },
 
   // Scaffold unlocks (requires ladder)
@@ -256,11 +269,16 @@ export const toolUnlockRules: UnlockRule[] = [
       Conditions.toolAmount('sand', 'Ladder', 1)
     ),
   },
+  { boostAlias: 'Propbot', condition: Conditions.toolAmount('castle', 'Scaffold', 14) },
   { boostAlias: 'Balancing Act', condition: Conditions.toolAmount('castle', 'Scaffold', 20) },
 
   // Wave unlocks
   { boostAlias: 'Swell', condition: Conditions.toolAmount('castle', 'Wave', 2) },
+  { boostAlias: 'Surfbot', condition: Conditions.toolAmount('castle', 'Wave', 14) },
   { boostAlias: 'SBTF', condition: Conditions.toolAmount('castle', 'Wave', 30) },
+
+  // River unlocks
+  { boostAlias: 'Smallbot', condition: Conditions.toolAmount('castle', 'River', 14) },
 
   // River + Bag combo unlock
   {

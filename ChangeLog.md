@@ -1,6 +1,9 @@
 ## Changelog
 
 ### Changed
+- Enhance down() method with bonemeal bag preservation and power restoration (#77)
+- Add missing badge conditions to badge-conditions.ts (15+ badges) (#76)
+- Add tool-amount unlock rules to unlock-conditions.ts (50+ rules) (#75)
 - Update next-implementation-plans.md with Plans 9-13 (#73)
 - Add comprehensive tests for reset system (#72)
 - Implement coma() reset method with preserved state (#71)
@@ -53,6 +56,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement Plan 9: Parity Gap Reduction - reduce critical differences from 6103 to <1000 (#74)
 - Add Coma/Reset system with Down and Coma resets (#69)
 - Implement Plan 6: Badge Auto-Earn System (#59)
 - Implement Sand Tool Production Rates (Plan 4) (#43)

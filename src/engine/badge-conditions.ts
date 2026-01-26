@@ -51,6 +51,12 @@ export interface BadgeCheckState {
   // Rates
   sandPermNP: number;
 
+  // Boost powers
+  boostPowers: Record<string, number>;
+
+  // Badges
+  badges: Record<string, boolean>;
+
   // Meta
   badgesOwned: number;
   boostsOwned: number;
@@ -147,7 +153,69 @@ export const badgeConditions: BadgeCondition[] = [
   { badge: 'Badge Collector', trigger: 'tick', check: s => s.badgesOwned >= 10 },
   { badge: 'Badge Hoarder', trigger: 'tick', check: s => s.badgesOwned >= 50 },
   { badge: 'Badge Connoisseur', trigger: 'tick', check: s => s.badgesOwned >= 100 },
+
+  // =============================================================================
+  // High tier tool count badges (trigger: 'tool-purchase')
+  // Reference: data.js:744-756
+  // =============================================================================
+  { badge: 'Warhammer', trigger: 'tool-purchase', check: s => s.sandToolsOwned + s.castleToolsOwned >= 40000 },
+
+  // =============================================================================
+  // AC power badges (trigger: 'resource-change')
+  // Reference: data.js:802-813
+  // =============================================================================
+  { badge: 'Mains Power', trigger: 'resource-change', check: s => (s.boostPowers['AC'] ?? 0) >= 230 },
+  { badge: 'It Hertz', trigger: 'resource-change', check: s => (s.boostPowers['AC'] ?? 0) >= 50 },
+
+  // =============================================================================
+  // Trebuchet badge (trigger: 'tool-purchase')
+  // Reference: data.js:757
+  // =============================================================================
+  { badge: 'Flung', trigger: 'tool-purchase', check: s => (s.toolAmounts['Trebuchet'] ?? 0) >= 50 },
+
+  // =============================================================================
+  // Neat! badge - all tools equal (trigger: 'tool-purchase')
+  // Reference: data.js:814-825
+  // =============================================================================
+  { badge: 'Neat!', trigger: 'tool-purchase', check: s => checkNeatBadge(s) },
 ];
+
+/**
+ * Check if all tools have equal amounts (for Neat! badge).
+ * Reference: data.js:814-825
+ */
+function checkNeatBadge(s: BadgeCheckState): boolean {
+  const buckets = s.toolAmounts['Bucket'] ?? 0;
+  if (buckets <= 1000000) return false;
+
+  // Format the bucket count as reference
+  const formatted = formatToolAmount(buckets);
+
+  // Check all tools have same formatted amount
+  for (const [name, amount] of Object.entries(s.toolAmounts)) {
+    if (formatToolAmount(amount) !== formatted) return false;
+  }
+
+  return true;
+}
+
+/**
+ * Format tool amount for Neat! badge comparison (3 significant figures).
+ * This mimics the legacy formatMolpy(amount, 3) function.
+ */
+function formatToolAmount(amount: number): string {
+  if (amount === 0) return '0';
+  if (amount < 1000) return amount.toString();
+
+  // Get order of magnitude
+  const exp = Math.floor(Math.log10(amount));
+  const mantissa = amount / Math.pow(10, exp);
+
+  // Round to 3 significant figures
+  const rounded = Math.round(mantissa * 100) / 100;
+
+  return `${rounded}e${exp}`;
+}
 
 /**
  * Get conditions for a specific trigger.
