@@ -57,6 +57,17 @@ import {
 import { getDiscovery, hasDiscovery } from '../data/discoveries.js';
 import { BadgeChecker } from './badge-checker.js';
 import type { BadgeCheckState } from './badge-conditions.js';
+import {
+  calculateKittySpawnTime,
+  calculateKittyDespawnTime,
+  determineRewardType,
+  calculateBlitzingReward,
+  calculateNotLuckyReward,
+  type RedundakittyState,
+  type RedundakittyBoostState,
+  type BlitzingReward,
+  type NotLuckyReward
+} from './redundakitty.js';
 
 /**
  * Internal state for a sand tool
@@ -92,6 +103,8 @@ interface InternalBoostState extends BoostState {
   isEnabled?: boolean;
   /** Whether this boost is permanently locked (cannot be unlocked again) */
   permalock?: boolean;
+  /** Whether this can be unlocked by Department of Redundancy (mutable at runtime) */
+  department?: number;
 }
 
 /**
@@ -241,6 +254,17 @@ export class ModernEngine implements GameEngine {
 
   // Badge group counts (for unlock conditions)
   private badgeGroupCounts: Record<string, number> = {};
+
+  // Redundakitty state
+  private redundakitty: RedundakittyState = {
+    totalClicks: 0,
+    chainCurrent: 0,
+    chainMax: 0,
+    spawnCountdown: 0,
+    despawnCountdown: 0,
+    isActive: false,
+    recursionDepth: 0,
+  };
 
   // Unlock checker for auto-unlock logic
   private unlockChecker: UnlockChecker;
@@ -3592,6 +3616,320 @@ export class ModernEngine implements GameEngine {
     this.recalculateSandPerClick();
     this.recalculatePriceFactor();
     this.checkAutoUnlocks();
+  }
+
+  /**
+   * Click the redundakitty and receive a reward.
+   *
+   * Reference: castle.js:2304-2416
+   */
+  clickRedundakitty(): void {
+    this.ensureInitialized();
+
+    if (!this.redundakitty.isActive) {
+      return; // No kitty to click
+    }
+
+    // Increment click counters
+    this.redundakitty.totalClicks++;
+    this.redundakitty.chainCurrent++;
+    this.redundakitty.chainMax = Math.max(
+      this.redundakitty.chainMax,
+      this.redundakitty.chainCurrent
+    );
+
+    // Hide the kitty (clear active state)
+    this.redundakitty.isActive = false;
+    this.redundakitty.despawnCountdown = 0;
+
+    // Process kitty click badges
+    this.processKittyClickBadges();
+
+    // Give reward
+    this.giveKittyReward();
+
+    // Schedule next spawn
+    const boostState = this.buildRedundakittyBoostState();
+    this.redundakitty.spawnCountdown = calculateKittySpawnTime(boostState);
+  }
+
+  /**
+   * Process badges that trigger on kitty clicks.
+   *
+   * Reference: castle.js:2409-2416
+   */
+  private processKittyClickBadges(): void {
+    const clicks = this.redundakitty.totalClicks;
+
+    if (clicks >= 2) {
+      this.earnBadge('Not So Redundant');
+    }
+    if (clicks >= 14) {
+      this.earnBadge("Don't Litter!");
+    }
+    if (clicks >= 128) {
+      this.earnBadge('Y U NO BELIEVE ME?');
+    }
+
+    // Unlock boosts at certain click thresholds
+    if (clicks >= 16) {
+      this.unlockBoost('Kitnip');
+    }
+    if (clicks >= 32) {
+      this.unlockBoost('DoRD');
+    }
+    if (clicks >= 256) {
+      this.unlockBoost('BKJ');
+    }
+
+    // Kitties Galore becomes department boost at 64 clicks
+    if (clicks >= 64) {
+      const kg = this.boosts.get('Kitties Galore');
+      if (kg) {
+        kg.department = 1;
+      }
+    }
+
+    // Chain achievement
+    if (this.redundakitty.chainMax >= 42) {
+      this.earnBadge('Meaning');
+    }
+  }
+
+  /**
+   * Give a reward when clicking the redundakitty.
+   *
+   * Reference: castle.js:2755-2830
+   */
+  private giveKittyReward(): void {
+    const boostState = this.buildRedundakittyBoostState();
+    const isSandInfinite = !isFinite(this.resources.sand);
+
+    // Determine which reward to give
+    const rewardType = determineRewardType(boostState, isSandInfinite);
+
+    switch (rewardType) {
+      case 'dord':
+        this.giveDoRDReward();
+        break;
+      case 'not-lucky':
+        this.giveNotLuckyReward();
+        break;
+      case 'blitzing':
+        this.giveBlitzingReward();
+        break;
+      case 'blast-furnace':
+        this.giveBlastFurnaceReward();
+        break;
+    }
+  }
+
+  /**
+   * Give DoRD (Department of Redundancy Department) reward.
+   *
+   * This activates department boosts (25% chance) or gives castles/blitzing.
+   *
+   * Reference: castle.js:2786-2830
+   */
+  private giveDoRDReward(): void {
+    // 25% chance for Blast Furnace if owned
+    const hasBlastFurnace = this.boosts.get('Blast Furnace')?.bought ?? 0;
+    if (hasBlastFurnace > 0 && Math.random() < 0.25) {
+      this.giveBlastFurnaceReward();
+      return;
+    }
+
+    // Try to unlock a department boost
+    // (This would require a list of department boosts and unlock logic)
+    // For now, fall through to Not Lucky or Blitzing
+
+    // Increment BKJ power if owned
+    const bkj = this.boosts.get('BKJ');
+    if (bkj && bkj.bought > 0) {
+      bkj.power = (bkj.power ?? 0) + 1;
+    }
+
+    // 50/50 between Not Lucky and Blitzing
+    if (Math.random() < 0.5) {
+      this.giveNotLuckyReward();
+    } else {
+      const isSandInfinite = !isFinite(this.resources.sand);
+      if (isSandInfinite) {
+        this.giveBlastFurnaceReward();
+      } else {
+        this.giveBlitzingReward();
+      }
+    }
+  }
+
+  /**
+   * Give Not Lucky reward (castle bonus).
+   *
+   * Reference: castle.js:2873-3023
+   */
+  private giveNotLuckyReward(): void {
+    // Gather tool amounts
+    const sandToolAmounts: Record<string, number> = {};
+    for (const [name, tool] of this.sandTools) {
+      sandToolAmounts[name] = tool.amount;
+    }
+
+    const castleToolAmounts: Record<string, number> = {};
+    for (const [name, tool] of this.castleTools) {
+      castleToolAmounts[name] = tool.amount;
+    }
+
+    // Count boosts and badges
+    let boostsOwned = 0;
+    for (const [, boost] of this.boosts) {
+      if (boost.bought > 0) boostsOwned++;
+    }
+
+    let badgesOwned = 0;
+    for (const [, earned] of this.badges) {
+      if (earned) badgesOwned++;
+    }
+
+    // Get boost states
+    const bkj = this.boosts.get('BKJ');
+    const hasBKJ = (bkj?.bought ?? 0) > 0;
+    const bkjPower = bkj?.power ?? 0;
+
+    const blitzing = this.boosts.get('Blitzing');
+    const hasBlitzing = (blitzing?.bought ?? 0) > 0;
+    const blitzingPower = blitzing?.power ?? 0;
+
+    const fractal = this.boosts.get('Fractal Sandcastles');
+    const hasFractal = (fractal?.bought ?? 0) > 0;
+    const fractalPower = fractal?.power ?? 0;
+
+    // Calculate reward
+    const reward = calculateNotLuckyReward(
+      sandToolAmounts,
+      castleToolAmounts,
+      boostsOwned,
+      badgesOwned,
+      this.redundakitty.totalClicks,
+      bkjPower,
+      hasBKJ,
+      hasBlitzing,
+      blitzingPower,
+      hasFractal,
+      fractalPower,
+      this.castleBuild.totalBuilt
+    );
+
+    // Grant castles
+    this.resources.castles += reward.castles;
+    this.castleBuild.totalBuilt += reward.castles;
+    this.syncResourceBoosts();
+  }
+
+  /**
+   * Give Blitzing reward (temporary sand rate boost).
+   *
+   * Reference: castle.js:3024-3049
+   */
+  private giveBlitzingReward(): void {
+    const boostState = this.buildRedundakittyBoostState();
+    const blitzing = this.boosts.get('Blitzing');
+    const currentSpeed = blitzing?.power ?? 0;
+    const currentCountdown = blitzing?.countdown ?? 0;
+
+    const reward = calculateBlitzingReward(
+      boostState,
+      currentSpeed,
+      currentCountdown
+    );
+
+    // Apply Blitzing boost
+    if (blitzing) {
+      blitzing.power = reward.speed;
+      blitzing.countdown = reward.duration;
+    } else {
+      // Unlock and activate Blitzing
+      this.unlockBoost('Blitzing');
+      const newBlitzing = this.boosts.get('Blitzing');
+      if (newBlitzing) {
+        newBlitzing.bought = 1;
+        newBlitzing.power = reward.speed;
+        newBlitzing.countdown = reward.duration;
+      }
+    }
+
+    // Recalculate sand rate with new Blitzing power
+    this.recalculateSandRates();
+  }
+
+  /**
+   * Give Blast Furnace reward (convert sand to castles).
+   *
+   * Reference: castle.js:2831-2872
+   */
+  private giveBlastFurnaceReward(): void {
+    const isCastlesInfinite = !isFinite(this.resources.castles);
+    if (isCastlesInfinite) {
+      return; // No need to blast if castles are infinite
+    }
+
+    let blastFactor = 1000;
+
+    // Check for Fractal Sandcastles reduction
+    const fractal = this.boosts.get('Fractal Sandcastles');
+    if (fractal && fractal.bought > 0) {
+      blastFactor = Math.max(5, 1000 * Math.pow(0.94, fractal.power ?? 0));
+    }
+
+    // Calculate how many castles we can make
+    let castles = Math.floor(this.resources.sand / blastFactor);
+
+    // Cap at totalBuilt / 3 (or /5 with certain boosts - simplified for now)
+    castles = Math.floor(Math.min(castles, this.castleBuild.totalBuilt / 3));
+
+    if (castles > 0) {
+      this.resources.sand -= castles * blastFactor;
+      this.resources.castles += castles;
+      this.castleBuild.totalBuilt += castles;
+      this.syncResourceBoosts();
+    }
+  }
+
+  /**
+   * Build redundakitty boost state for calculations.
+   */
+  private buildRedundakittyBoostState(): RedundakittyBoostState {
+    return {
+      kitnip: (this.boosts.get('Kitnip')?.bought ?? 0) > 0,
+      kittiesGalore: (this.boosts.get('Kitties Galore')?.bought ?? 0) > 0,
+      rrsrUnlocked: (this.boosts.get('RRSR')?.unlocked ?? 0) > 0,
+      rrsrBought: (this.boosts.get('RRSR')?.bought ?? 0) > 0,
+      doRD: (this.boosts.get('DoRD')?.bought ?? 0) > 0,
+      blastFurnace: (this.boosts.get('Blast Furnace')?.bought ?? 0) > 0,
+      bkj: (this.boosts.get('BKJ')?.bought ?? 0) > 0,
+      bkjPower: this.boosts.get('BKJ')?.power ?? 0,
+      redunception: (this.boosts.get('Redunception')?.bought ?? 0) > 0,
+      logicat: (this.boosts.get('Logicat')?.bought ?? 0) > 0,
+      sgc: (this.boosts.get('SGC')?.bought ?? 0) > 0,
+      doubleDepartment: (this.boosts.get('Double Department')?.bought ?? 0) > 0,
+      schizoblitz: (this.boosts.get('Schizoblitz')?.bought ?? 0) > 0,
+      seaMining: (this.boosts.get('Sea Mining')?.bought ?? 0) > 0,
+      ventusVehemensEnabled: (this.boosts.get('Ventus Vehemens')?.bought ?? 0) > 0 &&
+                             (this.boosts.get('Ventus Vehemens')?.isEnabled ?? false)
+    };
+  }
+
+  /**
+   * Get redundakitty state for testing.
+   */
+  getRedundakittyState(): RedundakittyState {
+    return { ...this.redundakitty };
+  }
+
+  /**
+   * Force redundakitty to be active (for testing).
+   */
+  forceRedundakittyActive(): void {
+    this.redundakitty.isActive = true;
   }
 }
 

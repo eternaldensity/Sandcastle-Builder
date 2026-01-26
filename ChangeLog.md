@@ -1,6 +1,8 @@
 ## Changelog
 
 ### Changed
+- Implement redundakitty click rewards (DoRD, Not Lucky, Blitzing) (#98)
+- Add RedundakittyState interface and spawn timer calculation (#97)
 - Fix time travel validation causing test failures (#95)
 - Fix time-travel test failures from Plan 11 (#94)
 - Verify parity with legacy FA implementation (#93)
