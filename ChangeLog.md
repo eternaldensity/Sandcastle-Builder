@@ -1,6 +1,10 @@
 ## Changelog
 
 ### Changed
+- Add tests for badge conditions and checker (#63)
+- Integrate BadgeChecker into ModernEngine at trigger points (#62)
+- Create badge-checker.ts with BadgeChecker class (#61)
+- Create badge-conditions.ts with trigger types and condition registry (#60)
 - Implement Plan 5: More Boost Functions (#50)
 - Add Blitzing boost function (temporary rate multiplier with countdown) (#58)
 - Add Overcompensating boost function (sets power to NP number) (#57)
@@ -40,6 +44,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement Plan 6: Badge Auto-Earn System (#59)
 - Implement Sand Tool Production Rates (Plan 4) (#43)
 - Create implementation plans for next modernization priorities (#42)
 - Add glass chip and glass block production at ONG (#40)

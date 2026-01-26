@@ -48,6 +48,8 @@ import {
   calculateTotalSandRate,
   type SandToolRateState,
 } from './sand-rate-calculator.js';
+import { BadgeChecker } from './badge-checker.js';
+import type { BadgeCheckState } from './badge-conditions.js';
 
 /**
  * Internal state for a sand tool
@@ -227,11 +229,15 @@ export class ModernEngine implements GameEngine {
   // Unlock checker for auto-unlock logic
   private unlockChecker: UnlockChecker;
 
+  // Badge checker for auto-earn logic
+  private badgeChecker: BadgeChecker;
+
   constructor(gameData: GameData) {
     this.gameData = gameData;
     this.saveParser = createSaveParser(gameData);
     this.saveSerializer = createSaveSerializer(gameData);
     this.unlockChecker = new UnlockChecker(allUnlockRules);
+    this.badgeChecker = new BadgeChecker((badge) => this.earnBadge(badge));
   }
 
   /**
@@ -285,6 +291,9 @@ export class ModernEngine implements GameEngine {
 
     // Set start date
     this.core.startDate = Date.now();
+
+    // Initialize badge checker with no earned badges
+    this.badgeChecker.setEarnedBadges([]);
 
     this.initialized = true;
 
@@ -391,6 +400,15 @@ export class ModernEngine implements GameEngine {
     for (const [name, badgeState] of Object.entries(state.badges)) {
       this.badges.set(name, badgeState.earned);
     }
+
+    // Sync badge checker with loaded badges
+    const earnedBadges: string[] = [];
+    for (const [name, earned] of this.badges) {
+      if (earned) {
+        earnedBadges.push(name);
+      }
+    }
+    this.badgeChecker.setEarnedBadges(earnedBadges);
 
     // Recalculate derived values after loading state
     this.recalculatePriceFactor();
@@ -794,6 +812,9 @@ export class ModernEngine implements GameEngine {
     const state = this.buildSandRateState();
     this.cachedSandToolRates = calculateAllSandToolRates(state);
     this.cachedTotalSandRate = calculateTotalSandRate(state);
+
+    // Check badge conditions when sand rate changes
+    this.badgeChecker.check('rate-update', this.buildBadgeCheckState());
   }
 
   /**
@@ -1355,6 +1376,9 @@ export class ModernEngine implements GameEngine {
       this.earnBadge('Ninja Unity');
     }
 
+    // Check badge conditions for stealth-click trigger
+    this.badgeChecker.check('stealth-click', this.buildBadgeCheckState());
+
     this.syncResourceBoosts();
   }
 
@@ -1495,6 +1519,79 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Build state for badge condition checking.
+   */
+  private buildBadgeCheckState(): BadgeCheckState {
+    // Count tools owned
+    let sandToolsOwned = 0;
+    for (const [, state] of this.sandTools) {
+      sandToolsOwned += state.amount;
+    }
+
+    let castleToolsOwned = 0;
+    for (const [, state] of this.castleTools) {
+      castleToolsOwned += state.amount;
+    }
+
+    // Build tool amounts map
+    const toolAmounts: Record<string, number> = {};
+    for (const [name, state] of this.sandTools) {
+      toolAmounts[name] = state.amount;
+    }
+    for (const [name, state] of this.castleTools) {
+      toolAmounts[name] = state.amount;
+    }
+
+    // Calculate castles spent (total bought - current owned)
+    let castlesSpent = 0;
+    for (const [, state] of this.sandTools) {
+      // Sand tools typically cost sand, not castles
+      // This is a simplified calculation
+    }
+    for (const [, state] of this.castleTools) {
+      // Castle tools cost castles
+      // Need to calculate based on purchase history
+      castlesSpent += state.bought; // Simplified
+    }
+
+    // Count boosts owned
+    let boostsOwned = 0;
+    for (const [, state] of this.boosts) {
+      if (state.bought > 0) {
+        boostsOwned++;
+      }
+    }
+
+    // Count badges owned
+    let badgesOwned = 0;
+    for (const [, earned] of this.badges) {
+      if (earned) {
+        badgesOwned++;
+      }
+    }
+
+    return {
+      sand: this.resources.sand,
+      castles: this.resources.castles,
+      glassChips: this.resources.glassChips,
+      glassBlocks: this.resources.glassBlocks,
+      sandToolsOwned,
+      castleToolsOwned,
+      totalToolsOwned: sandToolsOwned + castleToolsOwned,
+      toolAmounts,
+      beachClicks: this.core.beachClicks,
+      castlesSpent,
+      ninjaStealth: this.core.ninjaStealth,
+      ninjaFreeCount: this.core.ninjaFreeCount,
+      sandPermNP: this.cachedTotalSandRate,
+      badgesOwned,
+      boostsOwned,
+      discoveryCount: this.badgeGroupCounts['discov'] ?? 0,
+      monumentCount: (this.badgeGroupCounts['monums'] ?? 0) + (this.badgeGroupCounts['monumg'] ?? 0),
+    };
+  }
+
+  /**
    * Count total badges owned.
    */
   private countBadgesOwned(): number {
@@ -1540,6 +1637,9 @@ export class ModernEngine implements GameEngine {
 
     this.resources.sand += sandGained;
     this.syncResourceBoosts();
+
+    // Check badge conditions for click trigger
+    this.badgeChecker.check('click', this.buildBadgeCheckState());
 
     // Ninja detection logic
     // Reference: castle.js:169-221
@@ -1659,6 +1759,10 @@ export class ModernEngine implements GameEngine {
       } else {
         this.buyCastleTool(name);
       }
+
+      // Check badge conditions after each tool purchase
+      this.badgeChecker.check('tool-purchase', this.buildBadgeCheckState());
+      this.badgeChecker.check('resource-change', this.buildBadgeCheckState());
     }
 
     // Recalculate click rate after tool purchase (affects pair bonuses)
