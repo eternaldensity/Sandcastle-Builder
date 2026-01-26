@@ -1,6 +1,11 @@
 ## Changelog
 
 ### Changed
+- Create comprehensive time travel test suite (#88)
+- Add Temporal Anchor integration to prevent NP advancement (#87)
+- Add glass chip-based time travel method (#86)
+- Add castle-based time travel method (#85)
+- Add time travel price calculation method (#84)
 - Add tests for castle rate calculations (#81)
 - Integrate castle rate calculator into ModernEngine (#80)
 - Create castle-rate-calculator.ts with rate calculation functions (#79)
@@ -59,6 +64,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement Time Travel System (Plan 11) (#83)
 - Implement Castle Tool Production Rates (#82)
 - Implement Plan 10: Castle Tool Production Rates with boost multipliers (#78)
 - Implement Plan 9: Parity Gap Reduction - reduce critical differences from 6103 to <1000 (#74)

@@ -2006,8 +2006,18 @@ export class ModernEngine implements GameEngine {
     if (runs > 0) runs = this.fillSandMouldWork(runs);
     if (runs > 0) runs = this.makeSandMouldWork(runs);
 
-    // TODO: Implement Mould Press boost (repeats mould work if AO + Mould Press)
+    // Mould Press: If AO + Mould Press, repeat mould work until no progress
     // Reference: castle.js:3173-3182
+    if (this.hasBoost('AO') && this.hasBoost('MouldPress')) {
+      while (runs > 0) {
+        const start = runs;
+        if (runs > 0) runs = this.fillGlassMouldWork(runs);
+        if (runs > 0) runs = this.makeGlassMouldWork(runs);
+        if (runs > 0) runs = this.fillSandMouldWork(runs);
+        if (runs > 0) runs = this.makeSandMouldWork(runs);
+        if (start === runs) break; // No progress made, exit loop
+      }
+    }
 
     return runs;
   }
@@ -2112,10 +2122,308 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Set the current newpix number directly.
+   * Also updates highestNPvisited if this is a new high.
    */
   async setNewpix(np: number): Promise<void> {
     this.ensureInitialized();
     this.core.newpixNumber = np;
+
+    // Update highest NP visited
+    if (Math.abs(np) > Math.abs(this.core.highestNPvisited)) {
+      this.core.highestNPvisited = np;
+    }
+  }
+
+  /**
+   * Calculate time travel cost in castles.
+   * Reference: boosts.js:692-703 (Molpy.TimeTravelPrice)
+   *
+   * Formula:
+   * price = newpixNumber + (castles * newpixNumber / 3094) + travelCount
+   * if Flux Capacitor: price *= 0.2
+   * price = Math.ceil(price / priceFactor)
+   * price = Math.abs(price)
+   */
+  calculateTimeTravelPrice(): number {
+    const boost = this.boosts.get('TimeTravel');
+    const travelCount = (typeof boost?.extra?.travelCount === 'number') ? boost.extra.travelCount : 0;
+    const np = this.core.newpixNumber;
+
+    let price = np;
+    price += this.resources.castles * np / 3094;
+    price += travelCount;
+
+    if (this.hasBoost('FluxCapacitor')) {
+      price = Math.ceil(price * 0.2);
+    }
+
+    price = Math.ceil(price / this.priceFactor);
+
+    if (isNaN(price)) {
+      return Infinity;
+    }
+
+    return Math.abs(price);
+  }
+
+  /**
+   * Calculate glass chip cost for jumping to a specific newpix.
+   * Reference: boosts.js:817-832 (Molpy.CalcJumpEnergy)
+   *
+   * Formula:
+   * cost = (destNP - currentNP)^2 + travelCount
+   * cost *= 100
+   * if crossing sides: cost *= 1000000 (unless going to negative without AA)
+   * if jumping to negative unknown discovery: cost *= 1.1
+   * if Flux Capacitor: cost *= 0.2
+   * if Mind Glow + sand monument at dest: cost *= 0.5
+   * if Memory Singer + glass monument at dest: cost *= 0.5
+   */
+  calculateJumpCost(destNP: number): number {
+    const boost = this.boosts.get('TimeTravel');
+    const travelCount = (typeof boost?.extra?.travelCount === 'number') ? boost.extra.travelCount : 0;
+    const currentNP = this.core.newpixNumber;
+
+    const gap = destNP - currentNP;
+    let cost = gap * gap;
+    cost += travelCount;
+    cost *= 100;
+
+    // Crossing between positive and negative sides
+    if (destNP * currentNP < 0) {
+      if (destNP < 0 || this.hasBoost('AA')) {
+        cost *= 1000000;
+      }
+    }
+
+    // Premium for jumping to unknown negative discovery
+    if (destNP < 0 && !this.badges.get('discov' + destNP)) {
+      cost *= 1.1;
+    }
+
+    if (this.hasBoost('FluxCapacitor')) {
+      cost *= 0.2;
+    }
+
+    if (this.hasBoost('MindGlow') && this.badges.get('monums' + destNP)) {
+      cost *= 0.5;
+    }
+
+    if (this.hasBoost('MemorySinger') && this.badges.get('monumg' + destNP)) {
+      cost *= 0.5;
+    }
+
+    return Math.ceil(cost);
+  }
+
+  /**
+   * Time travel by a relative number of newpix (forwards or backwards).
+   * Reference: boosts.js:705-727 (Molpy.TimeTravel)
+   *
+   * Awards time travel badges based on direction and travel count.
+   */
+  async timeTravel(npOffset: number): Promise<boolean> {
+    const boost = this.boosts.get('TimeTravel');
+    if (!boost || boost.bought === 0) {
+      return false;
+    }
+
+    const oldNP = this.core.newpixNumber;
+    const frac = Number((Math.abs(oldNP) - Math.floor(Math.abs(oldNP))).toFixed(3));
+    const sign = Math.sign(oldNP);
+    const targetNP = Number((sign * (Math.floor(Math.abs(oldNP)) + frac) + npOffset).toFixed(3));
+
+    if (await this.timeTravelTo(targetNP, false)) {
+      // Award direction badges
+      if (oldNP > 0) {
+        if (npOffset > 0) this.earnBadge('Fast Forward');
+        if (npOffset < 0) this.earnBadge('And Back');
+      } else if (oldNP < 0) {
+        if (npOffset > 0) this.earnBadge('Forward to the Past');
+        if (npOffset < 0) this.earnBadge('Stuck in Reverse');
+      }
+
+      // Award travel count badges and unlock boosts
+      const t = (typeof boost.extra?.travelCount === 'number') ? boost.extra.travelCount : 0;
+      if (t >= 10) this.earnBadge('Primer');
+      if (t >= 20) this.doUnlockBoost('FluxCapacitor');
+      if (t >= 30 && this.hasBoost('FluxCapacitor')) this.doUnlockBoost('FluxTurbine');
+      if (t >= 40) this.earnBadge('Wimey');
+      if (t >= 160) this.earnBadge('Hot Tub');
+      if (t >= 640) this.earnBadge("Dude, Where's my DeLorean?");
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Time travel to a specific newpix using castles or glass chips.
+   * Reference: boosts.js:729-799 (Molpy.TTT - Targeted Time Travel)
+   *
+   * @param np Target newpix number
+   * @param useChips If true, use glass chips instead of castles
+   * @returns True if travel succeeded
+   */
+  async timeTravelTo(np: number, useChips: boolean): Promise<boolean> {
+    const boost = this.boosts.get('TimeTravel');
+    const oldNP = this.core.newpixNumber;
+
+    // Validation checks
+    if (np < 1 && !this.badges.get('Minus Worlds') && !this.badges.get('Absolute Zero')) {
+      return false; // Cannot travel to negative NPs without unlocking
+    }
+
+    if (Math.sign(Math.floor(Math.abs(np))) === 0 && Math.sign(oldNP) !== 0) {
+      if (!this.badges.get('Absolute Zero')) {
+        return false; // Cannot cross into NP 0
+      } else {
+        return false; // Cannot pass into NP 0 directly, must charge signpost
+      }
+    }
+
+    // Check timeline consistency (fractional part must match)
+    const oldFrac = Number((Math.abs(oldNP) - Math.floor(Math.abs(oldNP))).toFixed(3));
+    const newFrac = Number((Math.abs(np) - Math.floor(Math.abs(np))).toFixed(3));
+    if (newFrac !== oldFrac) {
+      return false; // Cannot travel across timelines
+    }
+
+    // Check if at NP 0 trying to go to non-edge
+    if (oldNP === 0 && Math.abs(np) < 3095) {
+      this.earnBadge('The Big Freeze');
+      return false; // Can only abscond to edge of time from NP 0
+    }
+
+    // Check if trying to go beyond visited NPs
+    if (Math.floor(Math.abs(np)) > Math.floor(Math.abs(this.core.highestNPvisited))) {
+      return false; // Cannot travel to unvisited future
+    }
+
+    // Check if Time Travel boost is owned (not needed for chip-based travel)
+    if (!boost?.bought && !useChips) {
+      return false;
+    }
+
+    // Calculate cost
+    const castleCost = useChips ? 0 : this.calculateTimeTravelPrice();
+    const chipCost = useChips ? this.calculateJumpCost(np) : 0;
+
+    // Check if can afford
+    if (!useChips && this.resources.castles < castleCost) {
+      return false;
+    }
+    if (useChips && this.resources.glassChips < chipCost) {
+      return false;
+    }
+
+    // Spend resources
+    if (useChips) {
+      this.resources.glassChips -= chipCost;
+    } else {
+      this.resources.castles -= castleCost;
+    }
+
+    // Unlock PG (Philosopher's Gloves) if returning to highest NP with 24+ prey
+    const kitkat = this.boosts.get('kitkat');
+    const preyArray = kitkat?.extra?.prey;
+    const preyLength = Array.isArray(preyArray) ? preyArray.length : 0;
+    if (oldNP !== np && np === this.core.highestNPvisited && preyLength >= 24) {
+      this.doUnlockBoost('PG');
+    }
+
+    // Execute time travel
+    this.core.newpixNumber = np;
+
+    // Reset signpost
+    const signpost = this.boosts.get('Signpost');
+    if (signpost) {
+      signpost.power = 0;
+    }
+
+    // Reset ONG timer
+    this.ong.startTime = Date.now();
+
+    // Handle periods
+    this.handlePeriods();
+
+    // Increment travel count (must check boost exists)
+    if (boost) {
+      if (!boost.extra) boost.extra = {};
+      const currentCount = (typeof boost.extra.travelCount === 'number') ? boost.extra.travelCount : 0;
+      boost.extra.travelCount = currentCount + 1;
+
+      // Handle invaders if 10+ travels
+      if (boost.extra.travelCount >= 10) {
+        this.handleInvaders(useChips);
+      }
+    }
+
+    // Crystal Memories + Flux Surge interaction
+    if (useChips && this.hasBoost('CrystalMemories') && this.hasBoost('FluxSurge')) {
+      const fluxSurge = this.boosts.get('FluxSurge');
+      const tde = this.hasBoost('TDE') ? 1 : 0;
+      const crystals = tde + 1;
+
+      if (fluxSurge && typeof fluxSurge.extra?.countdown === 'number') {
+        fluxSurge.extra.countdown *= 0.5;
+      }
+
+      this.addResource('FluxCrystals', crystals);
+    }
+
+    // Lock Muse boost
+    this.lockBoost('Muse');
+
+    return true;
+  }
+
+  /**
+   * Handle temporal invaders (NewPixBots appearing when time traveling).
+   * Reference: boosts.js:801-815 (Molpy.HandleInvaders)
+   *
+   * @param useMemory If true (chip-based travel), invaders are 10x less likely
+   */
+  private handleInvaders(useMemory: boolean): void {
+    let incursionFactor = 20;
+
+    if (this.hasBoost('AD')) {
+      incursionFactor = 1.5;
+    } else if (this.hasBoost('FluxCapacitor')) {
+      incursionFactor = 4;
+    } else if (this.hasBoost('FluxTurbine')) {
+      incursionFactor = 8;
+    }
+
+    if (useMemory) {
+      incursionFactor *= 10;
+    }
+
+    // Random chance of invader
+    if (Math.random() >= 1 / incursionFactor) {
+      return; // No invader
+    }
+
+    const npb = this.castleTools.get('NewPixBot');
+    const navCode = this.boosts.get('NavCode');
+
+    if (!npb) return;
+
+    // Check if invader is prevented
+    if (navCode && navCode.power > 0) {
+      // Prevented
+      return;
+    }
+
+    if (npb.temp >= 30) {
+      // Prevented (already have 30+ temp NPBs)
+      return;
+    }
+
+    // Add invader NewPixBot
+    npb.amount++;
+    npb.temp++;
   }
 
   /**
