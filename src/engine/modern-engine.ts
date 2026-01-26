@@ -43,6 +43,11 @@ import {
   getBoostFunctions,
   type BoostFunctionContext,
 } from './boost-functions.js';
+import {
+  calculateAllSandToolRates,
+  calculateTotalSandRate,
+  type SandToolRateState,
+} from './sand-rate-calculator.js';
 
 /**
  * Internal state for a sand tool
@@ -199,6 +204,10 @@ export class ModernEngine implements GameEngine {
   // Cached sand per click value (recalculated when boosts/tools change)
   private cachedSandPerClick = 1;
 
+  // Cached sand tool rates (per-tool and total)
+  private cachedSandToolRates: Record<string, number> = {};
+  private cachedTotalSandRate = 0;
+
   // Castle tool price cache
   private castleToolPrices: CastleToolPriceCache = {};
 
@@ -281,6 +290,7 @@ export class ModernEngine implements GameEngine {
 
     // Initialize cached rates
     this.recalculateSandPerClick();
+    this.recalculateSandRates();
   }
 
   /**
@@ -385,6 +395,7 @@ export class ModernEngine implements GameEngine {
     // Recalculate derived values after loading state
     this.recalculatePriceFactor();
     this.recalculateSandPerClick();
+    this.recalculateSandRates();
   }
 
   /**
@@ -600,9 +611,9 @@ export class ModernEngine implements GameEngine {
     let sandProduced = 0;
     for (const [name, state] of this.sandTools) {
       if (state.amount > 0) {
-        const rate = this.calculateSandToolRate(name, state.amount);
-        sandProduced += rate;
-        state.totalSand += rate;
+        const produced = this.calculateSandToolProduction(name, state.amount);
+        sandProduced += produced;
+        state.totalSand += produced;
       }
     }
 
@@ -621,22 +632,12 @@ export class ModernEngine implements GameEngine {
 
 
   /**
-   * Calculate sand production rate for a tool.
-   * This is a simplified version - full implementation needs boost effects.
+   * Calculate sand production for a tool using cached per-tool rate.
+   * The rate is recalculated when boosts/tools change.
    */
-  private calculateSandToolRate(toolName: string, amount: number): number {
-    // Base rates per tool (approximate, from game data)
-    const baseRates: Record<string, number> = {
-      'Bucket': 0.1,
-      'Cuegan': 0.5,
-      'Flag': 1,
-      'LaPetite': 2,
-      'Ladder': 5,
-      'Bag': 10,
-    };
-
-    const baseRate = baseRates[toolName] ?? 0;
-    return baseRate * amount;
+  private calculateSandToolProduction(toolName: string, amount: number): number {
+    const rate = this.cachedSandToolRates[toolName] ?? 0;
+    return rate * amount;
   }
 
   /**
@@ -676,6 +677,123 @@ export class ModernEngine implements GameEngine {
       resources: this.resources,
       badgeGroupCounts: this.badgeGroupCounts,
     };
+  }
+
+  /**
+   * Build state for sand rate calculation.
+   */
+  private buildSandRateState(): SandToolRateState {
+    const getToolAmount = (name: string): number => {
+      const tool = this.sandTools.get(name) ?? this.castleTools.get(name);
+      return tool?.amount ?? 0;
+    };
+
+    const isBoostBought = (name: string): boolean => {
+      const boost = this.boosts.get(name);
+      return (boost?.bought ?? 0) > 0;
+    };
+
+    const getBoostPower = (name: string): number => {
+      const boost = this.boosts.get(name);
+      return boost?.power ?? 0;
+    };
+
+    // Collect owned glass ceilings (0-11)
+    const glassCeilings: number[] = [];
+    for (let i = 0; i <= 11; i++) {
+      if (isBoostBought(`GlassCeiling${i}`)) {
+        glassCeilings.push(i);
+      }
+    }
+
+    return {
+      // Tool amounts
+      buckets: getToolAmount('Bucket'),
+      cuegans: getToolAmount('Cuegan'),
+      flags: getToolAmount('Flag'),
+      ladders: getToolAmount('Ladder'),
+      bags: getToolAmount('Bag'),
+      laPetite: getToolAmount('LaPetite'),
+      trebuchets: getToolAmount('Trebuchet'),
+      scaffolds: getToolAmount('Scaffold'),
+      waves: getToolAmount('Wave'),
+      rivers: getToolAmount('River'),
+      newPixBots: getToolAmount('NewPixBot'),
+
+      // Boost powers
+      biggerBucketsPower: getBoostPower('BiggerBuckets'),
+      helpingHandPower: getBoostPower('HelpingHand'),
+      flagBearerPower: getBoostPower('FlagBearer'),
+      extensionLadderPower: getBoostPower('ExtensionLadder'),
+
+      // Glass Ceiling
+      glassCeiling: glassCeilings,
+
+      // Per-tool boost flags
+      hugeBuckets: isBoostBought('HugeBuckets'),
+      trebuchetPong: isBoostBought('TrebuchetPong'),
+      carrybot: isBoostBought('Carrybot'),
+      buccaneer: isBoostBought('Buccaneer'),
+      flyingBuckets: isBoostBought('FlyingBuckets'),
+      megball: isBoostBought('Megball'),
+      cooperation: isBoostBought('Cooperation'),
+      stickbot: isBoostBought('Stickbot'),
+      theForty: isBoostBought('TheForty'),
+      humanCannonball: isBoostBought('HumanCannonball'),
+      magicMountain: isBoostBought('MagicMountain'),
+      standardbot: isBoostBought('Standardbot'),
+      balancingAct: isBoostBought('BalancingAct'),
+      sbtf: isBoostBought('SBTF'),
+      flyTheFlag: isBoostBought('FlyTheFlag'),
+      ninjaClimber: isBoostBought('NinjaClimber'),
+      levelUp: isBoostBought('LevelUp'),
+      climbbot: isBoostBought('Climbbot'),
+      brokenRung: isBoostBought('BrokenRung'),
+      upUpAndAway: isBoostBought('UpUpAndAway'),
+      embaggening: isBoostBought('Embaggening'),
+      sandbag: isBoostBought('Sandbag'),
+      luggagebot: isBoostBought('Luggagebot'),
+      bagPuns: isBoostBought('BagPuns'),
+      airDrop: isBoostBought('AirDrop'),
+      frenchbot: isBoostBought('Frenchbot'),
+      bacon: isBoostBought('Bacon'),
+
+      // For ninja multiplier
+      ninjaStealth: this.core.ninjaStealth,
+
+      // Badge count
+      badgesOwned: this.countBadgesOwned(),
+
+      // Glass usage (placeholder - will be calculated from glass chip/block production)
+      glassUse: 0,
+
+      // Global multiplier boosts
+      molpies: isBoostBought('Molpies'),
+      grapevine: isBoostBought('Grapevine'),
+      chirpies: isBoostBought('Chirpies'),
+      facebugs: isBoostBought('Facebugs'),
+      overcompensating: isBoostBought('Overcompensating'),
+      overcompensatingPower: getBoostPower('Overcompensating'),
+      blitzing: isBoostBought('Blitzing'),
+      blitzingPower: getBoostPower('Blitzing'),
+      bbc: isBoostBought('BBC'),
+      bbcPower: getBoostPower('BBC'),
+      rbBought: this.boosts.get('RB')?.bought ?? 0,
+      hugo: isBoostBought('Hugo'),
+      npLength: this.ong.npLength,
+      wwbBought: this.boosts.get('WWB')?.bought ?? 0,
+      scaffoldAmount: getToolAmount('Scaffold'),
+    };
+  }
+
+  /**
+   * Recalculate cached sand rates.
+   * Call this whenever boosts or tools change that affect sand production.
+   */
+  private recalculateSandRates(): void {
+    const state = this.buildSandRateState();
+    this.cachedSandToolRates = calculateAllSandToolRates(state);
+    this.cachedTotalSandRate = calculateTotalSandRate(state);
   }
 
   /**
@@ -1377,6 +1495,17 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Count total badges owned.
+   */
+  private countBadgesOwned(): number {
+    let count = 0;
+    for (const earned of this.badges.values()) {
+      if (earned) count++;
+    }
+    return count;
+  }
+
+  /**
    * Set the current newpix number directly.
    */
   async setNewpix(np: number): Promise<void> {
@@ -1561,6 +1690,7 @@ export class ModernEngine implements GameEngine {
       state.amount++;
       state.bought++;
       this.syncResourceBoosts();
+      this.recalculateSandRates();
       this.checkAutoUnlocks();
     }
   }
@@ -1597,6 +1727,7 @@ export class ModernEngine implements GameEngine {
       this.castleToolPrices[name] = priceState;
 
       this.syncResourceBoosts();
+      this.recalculateSandRates();
       this.checkAutoUnlocks();
     }
   }
@@ -1685,6 +1816,7 @@ export class ModernEngine implements GameEngine {
       // Recalculate rates after boost purchase
       this.recalculatePriceFactor();
       this.recalculateSandPerClick();
+      this.recalculateSandRates();
     }
   }
 
