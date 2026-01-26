@@ -28,7 +28,18 @@ export interface RedundakittyState {
 
   /** Number of recursive buttons visible (for Redunception) */
   recursionDepth: number;
+
+  /** Stack of draw types for nested kitties (e.g., ['show', 'recur', 'show']) */
+  drawType: KittyDrawType[];
+
+  /** Whether the kitty should keep its position after jumping */
+  keepPosition: number; // 0=no effect, 1=lock after next move, 2=locked
 }
+
+/**
+ * Draw type for a kitty at a specific recursion level.
+ */
+export type KittyDrawType = 'show' | 'recur' | 'hide1' | 'hide2';
 
 export interface RedundakittyBoostState {
   /** Whether Kitnip boost is owned */
@@ -302,4 +313,164 @@ export function calculateNotLuckyReward(
   return {
     castles: Math.floor(bonus)
   };
+}
+
+/**
+ * Result of clicking a kitty at a specific recursion level.
+ */
+export type KittyClickResult =
+  | { action: 'hide'; reason: 'missed' } // Kitty disappears, chain broken
+  | { action: 'show'; level: number } // Show kitty at this level
+  | { action: 'recurse'; newDepth: number } // Redunception triggered
+  | { action: 'logicat'; extendTimer: boolean } // Logicat puzzle triggered
+  | { action: 'rickroll'; duration: number } // RRSR rickroll triggered
+  | { action: 'reward' }; // Normal reward given
+
+/**
+ * Determine what happens when clicking a kitty at a specific recursion level.
+ *
+ * This handles the complex chaining mechanics:
+ * - RRSR: 1/20 chance to trigger rickroll (65 mNP timer)
+ * - Redunception: 1/(8/depth) chance to create recursive kitty
+ * - Logicat: 1/(6/depth) chance to create logic puzzle (unless Ranger enabled)
+ * - Otherwise: kitty disappears and chain resets
+ *
+ * Reference: castle.js:2304-2420
+ */
+export function determineKittyClickAction(
+  level: number,
+  drawType: KittyDrawType[],
+  boostState: RedundakittyBoostState,
+  hasRanger: boolean,
+  logicatCageFull: boolean
+): KittyClickResult {
+  const currentType = drawType[level];
+
+  // If clicking a hidden kitty (level beyond drawType), chain is broken
+  if (level >= drawType.length) {
+    return { action: 'hide', reason: 'missed' };
+  }
+
+  // If not showing at this level, update to show and rejump
+  if (currentType !== 'show') {
+    return { action: 'show', level };
+  }
+
+  // 1/20 chance for RRSR rickroll
+  if (boostState.rrsrBought && Math.random() < 0.05) {
+    return { action: 'rickroll', duration: 65 };
+  }
+
+  // Redunception: 1/(8/depth) chance to recurse
+  if (boostState.redunception && drawType.length < 21) {
+    const chance = drawType.length / 8;
+    if (Math.random() < chance) {
+      return { action: 'recurse', newDepth: drawType.length + 1 };
+    }
+  }
+
+  // Logicat: 1/(6/depth) chance to create puzzle
+  if (boostState.logicat && drawType.length < 21) {
+    const chance = drawType.length / 6;
+    if (Math.random() < chance) {
+      // If Ranger is enabled, catch the logicat instead
+      if (hasRanger) {
+        // If cage is full, fall through to Redunception or hide
+        if (logicatCageFull) {
+          // Try Redunception as fallback
+          if (boostState.redunception) {
+            const chance = drawType.length / 8;
+            if (Math.random() < chance) {
+              return { action: 'recurse', newDepth: drawType.length + 1 };
+            }
+          }
+          return { action: 'hide', reason: 'missed' };
+        }
+        // Catch the logicat (Panther Poke reward)
+        return { action: 'logicat', extendTimer: false };
+      }
+      // Normal logicat puzzle
+      return { action: 'logicat', extendTimer: true };
+    }
+  }
+
+  // No special action - kitty disappears and gives normal reward
+  return { action: 'reward' };
+}
+
+/**
+ * Apply the result of a kitty click to update the state.
+ *
+ * Reference: castle.js:2304-2420
+ */
+export function applyKittyClickResult(
+  result: KittyClickResult,
+  state: RedundakittyState,
+  level: number
+): void {
+  switch (result.action) {
+    case 'hide':
+      // Chain is broken - reset everything
+      state.isActive = false;
+      state.despawnCountdown = 0;
+      state.drawType = [];
+      state.chainCurrent = 0;
+      state.keepPosition = 0;
+      break;
+
+    case 'show':
+      // Update this level to show and trim deeper levels
+      state.drawType[result.level] = 'show';
+      while (state.drawType.length > result.level + 1) {
+        state.drawType.pop();
+      }
+      // Kitty will rejump (handled by caller)
+      break;
+
+    case 'recurse':
+      // Add recursive level
+      state.drawType[level] = 'recur';
+      state.drawType.push('show');
+      state.chainCurrent++;
+      // Ensure minimum timer for deep recursion
+      if (state.drawType.length < 5 && state.despawnCountdown < 5) {
+        state.despawnCountdown = 5;
+      }
+      // Kitty will rejump (handled by caller)
+      break;
+
+    case 'logicat':
+      if (result.extendTimer) {
+        // Normal logicat puzzle - hide and extend timer
+        state.drawType[level] = 'hide2';
+        if (state.despawnCountdown < 20) {
+          state.despawnCountdown = 20;
+        }
+        state.chainCurrent++;
+        state.keepPosition = 1; // Lock position for puzzle
+      } else {
+        // Ranger caught logicat - no reward given (Panther Poke is the reward)
+        state.isActive = false;
+        state.despawnCountdown = 0;
+        state.drawType = [];
+        state.chainCurrent = 0;
+      }
+      break;
+
+    case 'rickroll':
+      // RRSR rickroll
+      state.drawType[level] = 'hide1';
+      state.despawnCountdown = result.duration;
+      state.chainCurrent++;
+      break;
+
+    case 'reward':
+      // Normal reward - kitty disappears
+      state.isActive = false;
+      state.despawnCountdown = 0;
+      state.drawType = [];
+      state.chainCurrent = 0;
+      state.keepPosition = 0;
+      break;
+  }
 }

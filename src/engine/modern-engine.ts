@@ -63,6 +63,8 @@ import {
   determineRewardType,
   calculateBlitzingReward,
   calculateNotLuckyReward,
+  determineKittyClickAction,
+  applyKittyClickResult,
   type RedundakittyState,
   type RedundakittyBoostState,
   type BlitzingReward,
@@ -264,6 +266,8 @@ export class ModernEngine implements GameEngine {
     despawnCountdown: 0,
     isActive: false,
     recursionDepth: 0,
+    drawType: [],
+    keepPosition: 0,
   };
 
   // Unlock checker for auto-unlock logic
@@ -688,6 +692,12 @@ export class ModernEngine implements GameEngine {
 
     // NOTE: Castle tools do NOT produce during ticks - only at ONG!
     // The legacy game calls DestroyPhase/BuildPhase only in ONGBase.
+
+    // Process redundakitty spawn/despawn countdowns
+    this.tickRedundakitty();
+
+    // Process boost countdowns (Blitzing, etc.)
+    this.tickBoostCountdowns();
 
     this.syncResourceBoosts();
   }
@@ -3621,36 +3631,95 @@ export class ModernEngine implements GameEngine {
   /**
    * Click the redundakitty and receive a reward.
    *
+   * This handles complex chaining mechanics including Redunception and Logicat.
+   *
    * Reference: castle.js:2304-2416
    */
-  clickRedundakitty(): void {
+  clickRedundakitty(level: number = 0): void {
     this.ensureInitialized();
 
     if (!this.redundakitty.isActive) {
       return; // No kitty to click
     }
 
-    // Increment click counters
-    this.redundakitty.totalClicks++;
-    this.redundakitty.chainCurrent++;
+    // Initialize drawType if empty
+    if (this.redundakitty.drawType.length === 0) {
+      this.redundakitty.drawType = ['show'];
+    }
+
+    // Build boost state for chaining logic
+    const boostState = this.buildRedundakittyBoostState();
+
+    // Check if Ranger is enabled and if logicat cage is full
+    const hasRanger = this.boosts.get('Ranger')?.isEnabled ?? false;
+    const logicatCurrent = this.boosts.get('Panther Poke')?.power ?? 0;
+    const logicatMax = this.boosts.get('Panther Poke')?.countdown ?? 0; // PokeBar() max
+    const logicatCageFull = logicatCurrent >= logicatMax;
+
+    // Determine what happens when clicking this kitty
+    const result = determineKittyClickAction(
+      level,
+      this.redundakitty.drawType,
+      boostState,
+      hasRanger,
+      logicatCageFull
+    );
+
+    // Apply the result
+    applyKittyClickResult(result, this.redundakitty, level);
+
+    // Handle specific actions and determine if we should give reward/increment counters
+    let shouldGiveReward = true;
+
+    if (result.action === 'hide') {
+      // Chain broken - schedule next spawn, don't give reward
+      this.redundakitty.spawnCountdown = calculateKittySpawnTime(boostState);
+      shouldGiveReward = false;
+    } else if (result.action === 'reward') {
+      // Normal reward - kitty disappears and gives reward
+      this.redundakitty.spawnCountdown = calculateKittySpawnTime(boostState);
+      shouldGiveReward = true;
+    } else if (result.action === 'show' || result.action === 'recurse') {
+      // Kitty rejumps - give reward
+      shouldGiveReward = true;
+    } else if (result.action === 'logicat') {
+      if (!result.extendTimer) {
+        // Ranger caught logicat - give Panther Poke instead
+        const pp = this.boosts.get('Panther Poke');
+        if (pp) {
+          pp.power = (pp.power ?? 0) + 1;
+        }
+        shouldGiveReward = false;
+      } else {
+        // Normal logicat puzzle - no regular reward
+        shouldGiveReward = false;
+      }
+    } else if (result.action === 'rickroll') {
+      // Rickroll - still give reward
+      shouldGiveReward = true;
+    }
+
+    // Always update chain max
     this.redundakitty.chainMax = Math.max(
       this.redundakitty.chainMax,
       this.redundakitty.chainCurrent
     );
 
-    // Hide the kitty (clear active state)
-    this.redundakitty.isActive = false;
-    this.redundakitty.despawnCountdown = 0;
+    // Increment click counter and process badges/rewards if appropriate
+    if (shouldGiveReward) {
+      this.redundakitty.totalClicks++;
 
-    // Process kitty click badges
-    this.processKittyClickBadges();
+      // Process kitty click badges
+      this.processKittyClickBadges();
 
-    // Give reward
-    this.giveKittyReward();
+      // Give reward (unless deep recursion or position locked)
+      if (this.redundakitty.drawType.length < 16 && this.redundakitty.keepPosition === 0) {
+        this.giveKittyReward();
+      }
+    }
 
-    // Schedule next spawn
-    const boostState = this.buildRedundakittyBoostState();
-    this.redundakitty.spawnCountdown = calculateKittySpawnTime(boostState);
+    // Update recursion depth
+    this.redundakitty.recursionDepth = this.redundakitty.drawType.length;
   }
 
   /**
@@ -3919,6 +3988,66 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Process redundakitty spawn/despawn logic for one tick.
+   *
+   * Reference: castle.js:2179-2290
+   */
+  private tickRedundakitty(): void {
+    if (this.redundakitty.isActive) {
+      // Kitty is spawned - count down to despawn
+      if (this.redundakitty.despawnCountdown > 0) {
+        this.redundakitty.despawnCountdown--;
+
+        if (this.redundakitty.despawnCountdown === 0) {
+          // Kitty despawned without being clicked - chain broken
+          this.redundakitty.isActive = false;
+          this.redundakitty.drawType = [];
+          this.redundakitty.chainCurrent = 0;
+          this.redundakitty.keepPosition = 0;
+
+          // Schedule next spawn
+          const boostState = this.buildRedundakittyBoostState();
+          this.redundakitty.spawnCountdown = calculateKittySpawnTime(boostState);
+        }
+      }
+    } else {
+      // Kitty is not spawned - count down to spawn
+      if (this.redundakitty.spawnCountdown > 0) {
+        this.redundakitty.spawnCountdown--;
+
+        if (this.redundakitty.spawnCountdown === 0) {
+          // Spawn the kitty
+          this.redundakitty.isActive = true;
+          this.redundakitty.drawType = ['show'];
+
+          // Set despawn timer
+          const boostState = this.buildRedundakittyBoostState();
+          this.redundakitty.despawnCountdown = calculateKittyDespawnTime(boostState);
+        }
+      }
+    }
+  }
+
+  /**
+   * Process boost countdowns for one tick.
+   *
+   * Reference: castle.js:4050-4300 (Molpy.Loopist)
+   */
+  private tickBoostCountdowns(): void {
+    for (const [name, boost] of this.boosts) {
+      if (boost.countdown && boost.countdown > 0) {
+        boost.countdown--;
+
+        // Handle Blitzing expiration
+        if (name === 'Blitzing' && boost.countdown === 0) {
+          boost.power = 0;
+          this.recalculateSandRates();
+        }
+      }
+    }
+  }
+
+  /**
    * Get redundakitty state for testing.
    */
   getRedundakittyState(): RedundakittyState {
@@ -3926,10 +4055,18 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Set redundakitty state for testing.
+   */
+  setRedundakittyState(state: Partial<RedundakittyState>): void {
+    Object.assign(this.redundakitty, state);
+  }
+
+  /**
    * Force redundakitty to be active (for testing).
    */
   forceRedundakittyActive(): void {
     this.redundakitty.isActive = true;
+    this.redundakitty.drawType = ['show'];
   }
 }
 

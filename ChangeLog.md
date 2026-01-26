@@ -1,6 +1,9 @@
 ## Changelog
 
 ### Changed
+- Write comprehensive tests for redundakitty system (#101)
+- Integrate redundakitty into ModernEngine tick loop and state (#100)
+- Add kitty chaining mechanics and chain tracking (#99)
 - Implement redundakitty click rewards (DoRD, Not Lucky, Blitzing) (#98)
 - Add RedundakittyState interface and spawn timer calculation (#97)
 - Fix time travel validation causing test failures (#95)

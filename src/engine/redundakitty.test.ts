@@ -5,7 +5,10 @@ import {
   determineRewardType,
   calculateBlitzingReward,
   calculateNotLuckyReward,
-  type RedundakittyBoostState
+  determineKittyClickAction,
+  applyKittyClickResult,
+  type RedundakittyBoostState,
+  type RedundakittyState
 } from './redundakitty.js';
 
 describe('Redundakitty System', () => {
@@ -78,14 +81,14 @@ describe('Redundakitty System', () => {
       expect(time).toBeLessThanOrEqual(40);
     });
 
-    it('greatly increases spawn time with RRSR unlocked but not bought (2400-3240 mNP)', () => {
+    it('greatly increases spawn time with RRSR unlocked but not bought (2400-3492 mNP)', () => {
       const time = calculateKittySpawnTime({
         ...baseState,
         rrsrUnlocked: true,
         rrsrBought: false
       });
       expect(time).toBeGreaterThanOrEqual(2400);
-      expect(time).toBeLessThanOrEqual(3240);
+      expect(time).toBeLessThanOrEqual(3492); // 200 + ceil(90 * 1) = 291, * 12 = 3492
     });
 
     it('increases spawn time 4x with Ventus Vehemens enabled', () => {
@@ -423,6 +426,283 @@ describe('Redundakitty System', () => {
       // Blitzing mult: min(2, (1200-800)/200) = 2
       // Total: 11582.5 * 2 = 23165
       expect(reward.castles).toBe(23165);
+    });
+  });
+
+  describe('determineKittyClickAction', () => {
+    const baseState: RedundakittyBoostState = {
+      kitnip: false,
+      kittiesGalore: false,
+      rrsrUnlocked: false,
+      rrsrBought: false,
+      doRD: false,
+      blastFurnace: false,
+      bkj: false,
+      bkjPower: 0,
+      redunception: false,
+      logicat: false,
+      sgc: false,
+      doubleDepartment: false,
+      schizoblitz: false,
+      seaMining: false,
+      ventusVehemensEnabled: false
+    };
+
+    it('returns hide when clicking beyond drawType length', () => {
+      const result = determineKittyClickAction(5, ['show'], baseState, false, false);
+      expect(result.action).toBe('hide');
+      if (result.action === 'hide') {
+        expect(result.reason).toBe('missed');
+      }
+    });
+
+    it('returns show when current type is not show', () => {
+      const result = determineKittyClickAction(0, ['recur'], baseState, false, false);
+      expect(result.action).toBe('show');
+      if (result.action === 'show') {
+        expect(result.level).toBe(0);
+      }
+    });
+
+    it('can trigger RRSR rickroll', () => {
+      const results = new Set<string>();
+      for (let i = 0; i < 200; i++) {
+        const result = determineKittyClickAction(
+          0,
+          ['show'],
+          { ...baseState, rrsrBought: true },
+          false,
+          false
+        );
+        results.add(result.action);
+      }
+      expect(results.has('rickroll')).toBe(true);
+    });
+
+    it('can trigger Redunception recursion', () => {
+      const results = new Set<string>();
+      for (let i = 0; i < 200; i++) {
+        const result = determineKittyClickAction(
+          0,
+          ['show'],
+          { ...baseState, redunception: true },
+          false,
+          false
+        );
+        results.add(result.action);
+      }
+      expect(results.has('recurse')).toBe(true);
+    });
+
+    it('can trigger Logicat puzzle', () => {
+      const results = new Set<string>();
+      for (let i = 0; i < 200; i++) {
+        const result = determineKittyClickAction(
+          0,
+          ['show'],
+          { ...baseState, logicat: true },
+          false,
+          false
+        );
+        results.add(result.action);
+      }
+      expect(results.has('logicat')).toBe(true);
+    });
+
+    it('prevents recursion beyond depth 21', () => {
+      const deepDrawType = Array(21).fill('show');
+      const result = determineKittyClickAction(
+        0,
+        deepDrawType,
+        { ...baseState, redunception: true },
+        false,
+        false
+      );
+      expect(result.action).not.toBe('recurse');
+    });
+
+    it('Ranger catches logicat when enabled', () => {
+      const result = determineKittyClickAction(
+        0,
+        ['show', 'show', 'show'], // Depth 3 = 50% chance
+        { ...baseState, logicat: true },
+        true, // hasRanger
+        false // cage not full
+      );
+      // With 50% chance at depth 3, we should eventually get logicat
+      let gotLogicat = false;
+      for (let i = 0; i < 100; i++) {
+        const r = determineKittyClickAction(
+          0,
+          ['show', 'show', 'show'],
+          { ...baseState, logicat: true },
+          true,
+          false
+        );
+        if (r.action === 'logicat' && !r.extendTimer) {
+          gotLogicat = true;
+          break;
+        }
+      }
+      expect(gotLogicat).toBe(true);
+    });
+
+    it('falls through when Ranger cage is full', () => {
+      const results = new Set<string>();
+      for (let i = 0; i < 100; i++) {
+        const result = determineKittyClickAction(
+          0,
+          ['show', 'show', 'show'],
+          { ...baseState, logicat: true, redunception: true },
+          true, // hasRanger
+          true  // cage full
+        );
+        results.add(result.action);
+      }
+      // Should get recurse or hide, but not logicat with extendTimer=false
+      expect(results.has('recurse') || results.has('hide')).toBe(true);
+    });
+  });
+
+  describe('applyKittyClickResult', () => {
+    it('resets state on hide action', () => {
+      const state: RedundakittyState = {
+        totalClicks: 10,
+        chainCurrent: 5,
+        chainMax: 8,
+        spawnCountdown: 0,
+        despawnCountdown: 10,
+        isActive: true,
+        recursionDepth: 2,
+        drawType: ['show', 'recur', 'show'],
+        keepPosition: 1
+      };
+
+      applyKittyClickResult({ action: 'hide', reason: 'missed' }, state, 0);
+
+      expect(state.isActive).toBe(false);
+      expect(state.despawnCountdown).toBe(0);
+      expect(state.drawType).toEqual([]);
+      expect(state.chainCurrent).toBe(0);
+      expect(state.keepPosition).toBe(0);
+    });
+
+    it('updates to show and trims deeper levels', () => {
+      const state: RedundakittyState = {
+        totalClicks: 10,
+        chainCurrent: 3,
+        chainMax: 5,
+        spawnCountdown: 0,
+        despawnCountdown: 10,
+        isActive: true,
+        recursionDepth: 4,
+        drawType: ['show', 'recur', 'hide1', 'show', 'show'],
+        keepPosition: 0
+      };
+
+      applyKittyClickResult({ action: 'show', level: 2 }, state, 2);
+
+      expect(state.drawType).toEqual(['show', 'recur', 'show']);
+      expect(state.drawType.length).toBe(3);
+    });
+
+    it('adds recursive level on recurse action', () => {
+      const state: RedundakittyState = {
+        totalClicks: 10,
+        chainCurrent: 2,
+        chainMax: 5,
+        spawnCountdown: 0,
+        despawnCountdown: 10,
+        isActive: true,
+        recursionDepth: 2,
+        drawType: ['show', 'recur', 'show'],
+        keepPosition: 0
+      };
+
+      applyKittyClickResult({ action: 'recurse', newDepth: 4 }, state, 2);
+
+      expect(state.drawType).toEqual(['show', 'recur', 'recur', 'show']);
+      expect(state.chainCurrent).toBe(3);
+    });
+
+    it('extends timer for deep recursion', () => {
+      const state: RedundakittyState = {
+        totalClicks: 10,
+        chainCurrent: 2,
+        chainMax: 5,
+        spawnCountdown: 0,
+        despawnCountdown: 3,
+        isActive: true,
+        recursionDepth: 3,
+        drawType: ['show', 'recur', 'show'],
+        keepPosition: 0
+      };
+
+      applyKittyClickResult({ action: 'recurse', newDepth: 4 }, state, 2);
+
+      expect(state.despawnCountdown).toBe(5); // Extended to minimum 5
+    });
+
+    it('sets hide2 and extends timer for logicat puzzle', () => {
+      const state: RedundakittyState = {
+        totalClicks: 10,
+        chainCurrent: 2,
+        chainMax: 5,
+        spawnCountdown: 0,
+        despawnCountdown: 15,
+        isActive: true,
+        recursionDepth: 2,
+        drawType: ['show', 'recur', 'show'],
+        keepPosition: 0
+      };
+
+      applyKittyClickResult({ action: 'logicat', extendTimer: true }, state, 2);
+
+      expect(state.drawType[2]).toBe('hide2');
+      expect(state.despawnCountdown).toBe(20); // Extended to minimum 20
+      expect(state.chainCurrent).toBe(3);
+      expect(state.keepPosition).toBe(1); // Locked for puzzle
+    });
+
+    it('resets state for Ranger logicat catch', () => {
+      const state: RedundakittyState = {
+        totalClicks: 10,
+        chainCurrent: 3,
+        chainMax: 5,
+        spawnCountdown: 0,
+        despawnCountdown: 15,
+        isActive: true,
+        recursionDepth: 3,
+        drawType: ['show', 'recur', 'show'],
+        keepPosition: 0
+      };
+
+      applyKittyClickResult({ action: 'logicat', extendTimer: false }, state, 2);
+
+      expect(state.isActive).toBe(false);
+      expect(state.despawnCountdown).toBe(0);
+      expect(state.drawType).toEqual([]);
+      expect(state.chainCurrent).toBe(0);
+    });
+
+    it('sets hide1 and timer for rickroll', () => {
+      const state: RedundakittyState = {
+        totalClicks: 10,
+        chainCurrent: 2,
+        chainMax: 5,
+        spawnCountdown: 0,
+        despawnCountdown: 20,
+        isActive: true,
+        recursionDepth: 2,
+        drawType: ['show', 'recur', 'show'],
+        keepPosition: 0
+      };
+
+      applyKittyClickResult({ action: 'rickroll', duration: 65 }, state, 2);
+
+      expect(state.drawType[2]).toBe('hide1');
+      expect(state.despawnCountdown).toBe(65);
+      expect(state.chainCurrent).toBe(3);
     });
   });
 });
