@@ -7,6 +7,8 @@
  * Reference: castle.js:2179-2783
  */
 
+import { LogicatState, createLogicatState } from './logicat.js';
+
 export interface RedundakittyState {
   /** Total clicks across all game sessions */
   totalClicks: number;
@@ -34,6 +36,9 @@ export interface RedundakittyState {
 
   /** Whether the kitty should keep its position after jumping */
   keepPosition: number; // 0=no effect, 1=lock after next move, 2=locked
+
+  /** Logicat puzzle state (active puzzle, stats, etc.) */
+  logicatState: LogicatState;
 }
 
 /**

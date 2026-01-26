@@ -4,6 +4,9 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Implement reward integration with Panther Poke and badges (#116)
+- Add puzzle state tracking in redundakitty system (#115)
+- Create puzzle generator with premises and questions (#114)
 - Implement dragon digging mechanics (DragonDigging) (#109)
 - Implement dragon multiplier recalculation (DragonDigRecalc) (#108)
 - Implement dragon state management in ModernEngine (#107)
@@ -83,6 +86,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement Logicat puzzle system (#113)
 - Add Redundakitty system with spawn, click rewards, and DoRD integration (#96)
 - Add Factory Automation system for automatic boost processing (#89)
 - Implement Time Travel System (Plan 11) (#83)

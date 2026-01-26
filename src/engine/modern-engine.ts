@@ -70,6 +70,7 @@ import {
   type BlitzingReward,
   type NotLuckyReward
 } from './redundakitty.js';
+import { createLogicatState } from './logicat.js';
 import {
   createInitialDragonSystemState,
   recalculateDragonSystem,
@@ -285,6 +286,7 @@ export class ModernEngine implements GameEngine {
     recursionDepth: 0,
     drawType: [],
     keepPosition: 0,
+    logicatState: createLogicatState(),
   };
 
   // Dragon system state
@@ -3729,7 +3731,8 @@ export class ModernEngine implements GameEngine {
         }
         shouldGiveReward = false;
       } else {
-        // Normal logicat puzzle - no regular reward
+        // Normal logicat puzzle - start puzzle
+        this.startLogicatPuzzle();
         shouldGiveReward = false;
       }
     } else if (result.action === 'rickroll') {
@@ -4083,6 +4086,166 @@ export class ModernEngine implements GameEngine {
         }
       }
     }
+  }
+
+  /**
+   * Start a logicat puzzle.
+   *
+   * Called when a logicat is triggered from redundakitty click.
+   * The puzzle will be active until answered or timed out.
+   */
+  private startLogicatPuzzle(): void {
+    const logicatBoost = this.boosts.get('Logicat');
+    if (!logicatBoost) return;
+
+    const logicatLevel = logicatBoost.bought ?? 0;
+
+    // Generate and start the puzzle
+    const { startLogicatPuzzle } = require('./logicat.js');
+    this.redundakitty.logicatState = startLogicatPuzzle(
+      this.redundakitty.logicatState,
+      logicatLevel
+    );
+  }
+
+  /**
+   * Submit an answer to the current logicat puzzle.
+   *
+   * @param answer Player's answer (true or false)
+   * @returns Whether the answer was correct
+   */
+  submitLogicatAnswer(answer: boolean): boolean {
+    const { submitLogicatAnswer } = require('./logicat.js');
+    const result = submitLogicatAnswer(this.redundakitty.logicatState, answer);
+    this.redundakitty.logicatState = result.state;
+
+    if (result.correct && result.points > 0) {
+      // Award points to Logicat boost
+      const logicatBoost = this.boosts.get('Logicat');
+      if (logicatBoost) {
+        // Add points which may trigger level ups
+        this.addLogicatPoints(result.points);
+      }
+    }
+
+    return result.correct;
+  }
+
+  /**
+   * Add points to the Logicat boost and handle level ups.
+   *
+   * Reference: boosts.js:3595-3622 (Logicat.Add function)
+   */
+  private addLogicatPoints(points: number): void {
+    const logicat = this.boosts.get('Logicat');
+    if (!logicat) return;
+
+    logicat.power = (logicat.power ?? 0) + points;
+
+    // Calculate rewards: (power - bought*5) / 5 + 1
+    const rewards = Math.floor(((logicat.power ?? 0) - (logicat.bought ?? 0) * 5) / 5 + 1);
+
+    if (rewards > 0) {
+      // Check for Tangled Tesseract multiplier
+      const tt = this.boosts.get('Tangled Tesseract');
+      const hasTT = tt && tt.bought > 0 && (tt.isEnabled ?? false);
+
+      if (hasTT) {
+        // Complex multiplier: ((2^(p-4))*(p)*(p-1)*(p-2))/3
+        const p = tt.power ?? 0;
+        const factor = (Math.pow(2, p - 4) * p * (p - 1) * (p - 2)) / 3;
+        logicat.bought = (logicat.bought ?? 0) + Math.floor(rewards * factor);
+        logicat.power = (logicat.bought ?? 0) * 5;
+      } else {
+        // Normal level up
+        logicat.bought = (logicat.bought ?? 0) + rewards;
+        logicat.power = (logicat.bought ?? 0) * 5;
+
+        // Cap rewards at 5 and give excess to QQ
+        if (rewards > 5) {
+          const qqBoost = this.boosts.get('QQ');
+          if (qqBoost) {
+            qqBoost.power = (qqBoost.power ?? 0) + (rewards - 5);
+          }
+
+          // Check for Tangled Tesseract unlock
+          if (qqBoost && (qqBoost.power ?? 0) >= 1e15) {
+            // '1P' in molpy notation
+            this.unlockBoost('Tangled Tesseract');
+          }
+        }
+
+        // Give logicat rewards for each level gained
+        for (let i = 0; i < Math.min(rewards, 5); i++) {
+          this.giveLogicatReward(logicat.bought ?? 0);
+        }
+
+        // Check for Hubble Double unlock
+        if ((logicat.bought ?? 0) > 1e93) {
+          // '10GW' in molpy notation
+          const qq = this.boosts.get('QQ');
+          if (qq && (qq.power ?? 0) >= 1e93) {
+            this.unlockBoost('Hubble Double');
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Give a reward based on Logicat level.
+   *
+   * Reference: castle.js:2724-2753 (Molpy.RewardLogicat)
+   */
+  private giveLogicatReward(level: number): void {
+    // Find boosts that can be unlocked by logicat at this level
+    // These are boosts with a 'logic' property indicating minimum logicat level
+    const availableRewards: string[] = [];
+
+    for (const [name, boost] of this.boosts) {
+      const boostDef = this.gameData.boosts.find((b) => b.name === name);
+      if (!boostDef) continue;
+
+      // Check if boost has logic requirement and is not yet unlocked
+      if (boostDef.logic && level >= boostDef.logic && !boost.unlocked) {
+        availableRewards.push(name);
+      }
+    }
+
+    if (availableRewards.length > 0) {
+      // Pick a random reward
+      const reward = availableRewards[Math.floor(Math.random() * availableRewards.length)];
+      this.unlockBoost(reward);
+    } else {
+      // Fall back to DoRD reward if no logicat-specific rewards available
+      this.giveDoRDReward();
+    }
+  }
+
+  /**
+   * Cancel the current logicat puzzle (if any).
+   */
+  cancelLogicatPuzzle(): void {
+    const { cancelLogicatPuzzle } = require('./logicat.js');
+    this.redundakitty.logicatState = cancelLogicatPuzzle(this.redundakitty.logicatState);
+  }
+
+  /**
+   * Tick the logicat puzzle timer (called every real-time second).
+   *
+   * This is separate from the game tick because logicat puzzles
+   * run in real-time, not game time.
+   */
+  tickLogicatTimer(): void {
+    const { tickLogicatTimer } = require('./logicat.js');
+    this.redundakitty.logicatState = tickLogicatTimer(this.redundakitty.logicatState);
+  }
+
+  /**
+   * Get the current active logicat puzzle (if any).
+   */
+  getActiveLogicatPuzzle() {
+    return this.redundakitty.logicatState.activePuzzle;
   }
 
   /**
