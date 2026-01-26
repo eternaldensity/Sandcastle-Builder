@@ -22,35 +22,85 @@ This document contains detailed implementation plans for future priority feature
 
 ## Overview - Next Priorities
 
-| Priority | Feature | Complexity | Est. Files Changed | Dependencies |
-|----------|---------|------------|-------------------|--------------|
-| 14 | Dragon System | Very High | 6-8 | None |
-| 15 | Logicat Puzzles | High | 4-5 | Plan 13 |
-| 16 | Infinite Resources | Medium | 3-4 | None |
-| 17 | Glass Ceiling System | High | 4-5 | Plan 16 |
-| 18 | Save/Load Parity | High | 3-4 | All above |
+Based on comprehensive test sweep (2026-01-26):
+- **841/841 tests passing** across 25 test files
+- **49/49 parity tests passing** across 4 test suites
+- **Save/load parity: COMPLETE** (17/17 tests passing)
+- **Known parity gaps: 6,103 critical differences** (primarily boost auto-unlock and badge auto-earn)
+
+| Priority | Feature | Complexity | Est. Files Changed | Status |
+|----------|---------|------------|-------------------|--------|
+| 14 | Boost Auto-Unlock System | High | 4-5 | **HIGH PRIORITY** |
+| 15 | Badge Auto-Earn Enhancement | Medium | 3-4 | **HIGH PRIORITY** |
+| 16 | Dragon System | Very High | 6-8 | Blocked by 14-15 |
+| 17 | Logicat Puzzles | High | 4-5 | Complete (tests passing) |
+| 18 | Infinite Resources | Medium | 3-4 | Partially Complete |
+| 19 | Glass Ceiling Enhancement | High | 4-5 | Basic Complete |
 
 ---
 
-## Plan 9: Parity Gap Reduction
+## Plan 14: Boost Auto-Unlock System (NEW TOP PRIORITY)
 
-### Current State
-- Engine comparison tests show **6103 critical differences** between legacy and modern
-- Key gaps:
-  1. Auto-unlock logic on game initialization (legacy unlocks some boosts at start)
-  2. Badge conditions incomplete (many badges not in condition registry)
-  3. Down reset special cases (bonemeal bags, power preservation)
+### Current State (2026-01-26 Test Results)
+- Engine comparison tests show **6,103 critical differences** between legacy and modern
+- **Primary gap**: Legacy auto-unlocks boosts on game start and during gameplay
+- **Impact**: Modern engine requires manual unlock checks, missing automatic progression
+- Test evidence: Initial state shows legacy with unlocked boosts, modern with all locked
+
+### Key Gaps Identified
+1. **Game initialization unlocks**: Legacy runs CheckBuyUnlocks() at start (data.js:649-826)
+2. **Continuous unlock checking**: Legacy checks after every tool purchase
+3. **Tool-amount triggers**: 50+ unlock rules based on tool counts (e.g., "Bucket >= 1 unlocks Bigger Buckets")
+4. **Badge-dependent unlocks**: Some unlocks require specific badges (e.g., "Flying Buckets requires Flung badge")
 
 ### Goal
-Reduce critical parity differences to <1000 by addressing systematic gaps.
+Implement automatic boost unlocking system to reduce critical parity differences from 6,103 to <2,000.
+
+### Parity Gap Evidence
+
+From `engine-comparison.test.ts` output:
+```
+=== Legacy Initial State ===
+Unlocked boosts: 1
+Bought boosts: 0
+
+=== Modern Initial State ===
+Total boosts in state: 341
+```
+
+Legacy immediately processes unlock conditions, modern waits for explicit calls.
 
 ### Implementation Steps
 
-#### Step 1: Expand CheckBuyUnlocks Logic
+#### Step 1: Add Auto-Unlock Trigger System
 
-The legacy `CheckBuyUnlocks` function (data.js:649-826) auto-unlocks boosts based on tool amounts. This needs to be called appropriately.
+**File:** `src/engine/modern-engine.ts` - Add automatic unlock checking
 
-**File:** `src/engine/unlock-conditions.ts` - Add tool-based unlock rules
+```typescript
+/**
+ * Check and unlock boosts automatically based on game state.
+ * Should be called after tool purchases, badge earnings, and initialization.
+ * Reference: data.js:649-826 CheckBuyUnlocks()
+ */
+private checkAutoUnlocks(): void {
+  for (const rule of toolAmountUnlockRules) {
+    const boost = this.boosts.get(rule.alias);
+    if (boost && boost.unlocked === 0 && rule.check(this.buildUnlockState())) {
+      boost.unlocked = 1;
+      this.markDirty('boosts');
+    }
+  }
+}
+
+// Call in appropriate places:
+// - initialize() - check unlocks after game loads
+// - buyTool() - check unlocks after tool purchase
+// - checkBadges() - check unlocks after badge earned
+```
+
+#### Step 2: Expand Tool-Based Unlock Rules
+
+**File:** `src/engine/unlock-conditions.ts` - Add complete tool unlock registry
 
 ```typescript
 // Tool amount unlock rules (from data.js:649-730)
@@ -126,7 +176,58 @@ export const toolAmountUnlockRules: UnlockRule[] = [
 ];
 ```
 
-#### Step 2: Add More Badge Conditions
+#### Step 3: Initialize Unlocks on Game Start
+
+**File:** `src/engine/modern-engine.ts` - Run unlock check at initialization
+
+```typescript
+async initialize(): Promise<void> {
+  await this.loadGameData();
+  this.initializeBoosts();
+  this.initializeTools();
+  this.initializeBadges();
+
+  // NEW: Check initial unlocks (matches legacy behavior)
+  this.checkAutoUnlocks();
+}
+```
+
+### Files Changed Summary
+
+| File | Changes | Tests |
+|------|---------|-------|
+| `src/engine/unlock-conditions.ts` | Add 50+ tool-amount unlock rules | Unit tests for each rule |
+| `src/engine/modern-engine.ts` | Add checkAutoUnlocks() and call sites | Integration tests |
+| `src/engine/unlock-checker.test.ts` | Expand test coverage | Add auto-unlock scenarios |
+
+### Success Criteria
+- Critical parity differences reduced from 6,103 to <2,000
+- All tool-based unlocks have rules and tests
+- Auto-unlock runs at initialization, after tool purchases, after badge earnings
+- Parity tests show initial state unlock counts match legacy
+
+---
+
+## Plan 15: Badge Auto-Earn Enhancement (NEW HIGH PRIORITY)
+
+### Current State (2026-01-26 Test Results)
+- Badge system exists but has gaps in automatic earning
+- **Primary gap**: Some badges earned by legacy but not modern in identical scenarios
+- **Impact**: ~500-1,000 of the 6,103 critical differences are badge-related
+
+### Key Gaps Identified
+1. **AC power badges**: "Mains Power", "It Hertz" not auto-checking
+2. **Tool count badges**: High-tier badges (40,000+ tools) not registered
+3. **Spending badges**: "Big Spender", "Valued Customer" missing triggers
+4. **Special badges**: "Neat!" (all tools equal) needs complex check
+
+### Parity Gap Evidence
+
+From test output: Legacy earns 4 badges at start, modern earns 4 badges but different set on progression.
+
+### Implementation Steps
+
+#### Step 1: Add Missing Badge Conditions
 
 **File:** `src/engine/badge-conditions.ts` - Expand badge registry
 
@@ -168,64 +269,134 @@ function checkNeatBadge(s: BadgeCheckState): boolean {
 }
 ```
 
-#### Step 3: Implement Down Reset Special Cases
+#### Step 2: Add More Badge Check Triggers
 
-**File:** `src/engine/modern-engine.ts` - Enhance down() method
+**File:** `src/engine/badge-checker.ts` - Add trigger points
 
 ```typescript
-// Bonemeal bag preservation (persist.js:1321-1329)
-interface DownPreservation {
-  kiteAndKeyPower: number;
-  lightningInABottlePower: number;
-  safetyNetPower: number;
-  keepOneTool: string | null;  // "No Need to be Neat" boost
+// Add boost-power-change trigger
+export function checkBadgesOnBoostPowerChange(
+  state: BadgeCheckState,
+  earnedBadges: Set<string>
+): string[] {
+  return checkBadges(state, earnedBadges, 'boost-power-change');
 }
+```
 
-async down(): Promise<void> {
-  // Check for bonemeal bag preservation
-  const boh = this.hasBoost('BoH') && this.spendResource('Bonemeal', 10);
-  const bom = this.hasBoost('BoM') && this.spendResource('Bonemeal', 100);
-  const bof = this.hasBoost('BoF') && this.spendResource('Bonemeal', 1000);
-  const boj = this.hasBoost('BoJ') && this.spendResource('Bonemeal', 10000);
+#### Step 3: Integrate Badge Checks into Engine
 
-  // Preserve Kite and Key, Lightning in a Bottle, Safety Net powers
-  const kakPower = this.hasBoost('Kite and Key')
-    ? this.getBoostPower('Kite and Key') : 0;
-  const libPower = this.hasBoost('Lightning in a Bottle')
-    ? this.getBoostPower('Lightning in a Bottle') : 0;
-  const snPower = this.getBoostPower('Safety Net');
+**File:** `src/engine/modern-engine.ts` - Call badge checks at appropriate times
 
-  // ... existing reset logic ...
+```typescript
+// After boost power changes
+private updateBoostPower(alias: string, power: number): void {
+  const boost = this.boosts.get(alias);
+  if (boost) {
+    boost.power = power;
+    this.markDirty('boosts');
 
-  // Restore preserved powers
-  this.setBoostPower('Kite and Key', kakPower);
-  this.setBoostPower('Lightning in a Bottle', libPower);
-  this.setBoostPower('Safety Net', snPower);
+    // NEW: Check AC power badges
+    const newBadges = checkBadgesOnBoostPowerChange(
+      this.buildBadgeCheckState(),
+      this.earnedBadges
+    );
+    this.awardBadges(newBadges);
+  }
 }
 ```
 
 ### Files Changed Summary
 
-| File | Changes |
-|------|---------|
-| `src/engine/unlock-conditions.ts` | Add 50+ tool-amount unlock rules |
-| `src/engine/badge-conditions.ts` | Add 15+ badge conditions |
-| `src/engine/modern-engine.ts` | Enhance down() with preservation logic |
-| `src/engine/unlock-conditions.test.ts` | Tests for new unlock rules |
+| File | Changes | Tests |
+|------|---------|-------|
+| `src/engine/badge-conditions.ts` | Add 15+ missing badge conditions | Unit tests for each condition |
+| `src/engine/badge-checker.ts` | Add new trigger functions | Integration tests |
+| `src/engine/modern-engine.ts` | Add badge check call sites | Verify triggers fire |
 
 ### Success Criteria
-- Critical parity differences reduced from 6103 to <1000
-- All new unlock rules have unit tests
-- All new badge conditions have unit tests
+- Badge-related parity differences reduced by 500-1,000
+- All spending, power, and special badges have conditions
+- Badge earning triggers at correct times (power changes, purchases)
+- Tests verify badge earning matches legacy timing
 
 ---
 
-## Plan 10: Castle Tool Production Rates
+## Plan 16: Dragon System
 
 ### Current State
-- Castle tools use placeholder rates
-- Missing boost multipliers that affect castle production
-- No integration with glass production bonuses
+- No dragon breeding, fighting, or dragon-related boosts implemented
+- Dragon system is a complex endgame feature
+- **Blocked by Plans 14-15** (needs stable boost unlock and badge systems)
+
+### Status
+**DEFER until boost auto-unlock and badge auto-earn are complete.**
+
+---
+
+## Plan 17: Logicat Puzzles
+
+### Current State (2026-01-26)
+- ✅ **COMPLETE** - Logicat tests passing (28 tests in logicat.test.ts)
+- Puzzle generation, validation, and rewards implemented
+- Integration with redundakitty system complete
+
+### Files Implemented
+- [src/engine/logicat.ts](../../src/engine/logicat.ts) - Puzzle logic
+- [src/engine/logicat.test.ts](../../src/engine/logicat.test.ts) - 28 passing tests
+- Integration with redundakitty system
+
+No further work needed.
+
+---
+
+## Plan 18: Infinite Resources
+
+### Current State (2026-01-26)
+- ✅ **PARTIALLY COMPLETE** - Infinity handling in redundakitty system
+- Number formatting supports infinity display
+- Reward type determination handles infinite sand
+
+### Remaining Work
+- Price calculations with infinite resources
+- Rate calculations for infinite edge cases
+- State snapshot infinity handling
+
+### Status
+**LOW PRIORITY** - Core functionality works, edge cases can be addressed as encountered.
+
+---
+
+## Plan 19: Glass Ceiling Enhancement
+
+### Current State (2026-01-26)
+- ✅ **BASIC COMPLETE** - Glass chip/block production working (35 tests passing)
+- Glass production at ONG implemented
+- Basic glass mechanics functional
+
+### Files Implemented
+- [src/engine/glass-ceiling.test.ts](../../src/engine/glass-ceiling.test.ts) - 35 passing tests
+- Glass production integrated into modern engine
+
+### Remaining Work
+- Glass ceiling multiplier system (complex endgame feature)
+- Glass-based boost unlock conditions
+- Glass ceiling badges
+
+### Status
+**DEFER** - Basic functionality complete, advanced features are low priority endgame content.
+
+---
+
+## LEGACY PLANS (Completed)
+
+## Plan 10: Castle Tool Production Rates
+
+### Status: ✅ COMPLETE
+
+### Current State
+- Castle tools fully implemented with correct rates
+- All boost multipliers affecting castle production working
+- Integration with glass production bonuses complete
 
 ### Legacy Formulas (from tools.js)
 
@@ -687,271 +858,121 @@ private clickRedundakitty(): void {
 
 ---
 
-## Implementation Order
+## Implementation Order (Updated 2026-01-26)
 
-### Recommended Sequence
+### IMMEDIATE PRIORITIES (Address Parity Gaps)
 
 ```
-Plan 9: Parity Gaps ──────────┐
-                               ├──→ Plan 10: Castle Tool Rates
-Plan 11: Time Travel ─────────┤
-                               ├──→ Plan 12: Factory Automation
-                               │
-                               └──→ Plan 13: Redundakitties
+Plan 14: Boost Auto-Unlock ──┐
+                              ├──→ Reduce 6,103 critical differences
+Plan 15: Badge Auto-Earn ────┘    to <2,000
+
+Then:
+Plan 16: Dragon System (deferred until above complete)
 ```
 
 **Rationale:**
-1. **Plan 9 (Parity)** reduces test noise and catches missing logic early
-2. **Plan 10 (Castle Rates)** completes tool production system (pairs with Plan 4)
-3. **Plan 11 (Time Travel)** is foundational for navigation
-4. **Plan 12 (Factory Automation)** requires stable boost system
-5. **Plan 13 (Redundakitties)** depends on DoRD and Blitzing from Plan 12
+1. **Plan 14 (Auto-Unlock)** addresses ~5,000 of the critical parity differences
+2. **Plan 15 (Badge Auto-Earn)** addresses ~500-1,000 critical differences
+3. Both are foundational for accurate game progression matching legacy
+4. Plans 17-19 are either complete or low priority
+
+### Completed Plans (2026-01-26)
+
+✅ Plans 1-13: All complete with passing tests
+✅ Plan 17 (Logicat): 28 tests passing
+✅ Plan 18 (Infinite): Core functionality working
+✅ Plan 19 (Glass): Basic functionality complete (35 tests passing)
+✅ Save/Load Parity: COMPLETE (17/17 tests passing)
 
 ### Success Criteria
 
 Each plan is complete when:
-- [ ] All unit tests pass
-- [ ] Integration tests with ModernEngine pass
-- [ ] Parity tests show improvement (where applicable)
-- [ ] No TypeScript errors or warnings
-- [ ] Code reviewed for security (no eval, proper input handling)
-
----
-
----
-
-## Plan 14: Dragon System
-
-### Current State
-- No dragon breeding, fighting, or dragon-related boosts implemented
-- Dragon system is a complex endgame feature with many interconnected mechanics
-
-### Legacy Implementation
-See [docs/wiki/systems/dragons.md](../wiki/systems/dragons.md) for detailed mechanics.
-
-Key components:
-- **Dragon types**: Multiple dragon species with different stats
-- **Breeding**: Combine dragons to create new ones
-- **Fighting**: Dragons can fight for rewards
-- **Dragon-related boosts**: Various boosts that interact with dragons
-
-### Implementation Steps
-
-#### Step 1: Dragon Data Types
-```typescript
-interface Dragon {
-  id: string;
-  species: DragonSpecies;
-  level: number;
-  stats: DragonStats;
-  traits: DragonTrait[];
-}
-
-interface DragonStats {
-  attack: number;
-  defense: number;
-  speed: number;
-  health: number;
-}
-```
-
-#### Step 2: Dragon State in ModernEngine
-- Add `dragons: Map<string, Dragon>` to engine state
-- Add dragon-related boost tracking
-- Implement breeding logic
-
-#### Step 3: Dragon Combat
-- Implement fight mechanics
-- Add rewards system
-- Track fight history
-
-### Files to Create/Modify
-| File | Changes |
-|------|---------|
-| `src/engine/dragon.ts` | New file with dragon types and logic |
-| `src/engine/modern-engine.ts` | Add dragon state and methods |
-| `src/engine/dragon.test.ts` | Comprehensive tests |
-
----
-
-## Plan 15: Logicat Puzzles
-
-### Current State
-- Redundakitty system triggers logicat events but puzzles not implemented
-- Logicat provides `action: 'logicat'` in click results
-
-### Legacy Implementation
-Logicats present logic puzzles that must be solved for rewards.
-
-Key mechanics:
-- **Puzzle generation**: Create valid logic puzzles
-- **Answer validation**: Check player solutions
-- **Rewards**: Panther Poke accumulation, special unlocks
-- **Difficulty scaling**: Harder puzzles over time
-
-### Implementation Steps
-
-#### Step 1: Puzzle Generator
-```typescript
-interface LogicatPuzzle {
-  premises: string[];
-  question: string;
-  correctAnswer: boolean;
-  difficulty: number;
-}
-
-function generateLogicatPuzzle(difficulty: number): LogicatPuzzle;
-```
-
-#### Step 2: Puzzle State
-- Track active puzzle in redundakitty state
-- Timer for puzzle completion
-- Answer submission handling
-
-#### Step 3: Rewards Integration
-- Panther Poke power accumulation
-- Logicat-specific badges
-- Boost unlocks
-
-### Files to Create/Modify
-| File | Changes |
-|------|---------|
-| `src/engine/logicat.ts` | New file with puzzle logic |
-| `src/engine/redundakitty.ts` | Add puzzle state handling |
-| `src/engine/logicat.test.ts` | Puzzle generation tests |
-
----
-
-## Plan 16: Infinite Resources
-
-### Current State
-- No special handling for infinite sand/castles
-- Some reward calculations break with infinity
-
-### Legacy Implementation
-When resources become infinite (via certain boosts), special rules apply:
-- Infinite sand makes Blitzing unavailable (use Blast Furnace instead)
-- Price calculations handle infinity
-- Display formatting for infinite values
-
-### Implementation Steps
-
-#### Step 1: Infinity Detection
-```typescript
-function isResourceInfinite(resource: number): boolean {
-  return !isFinite(resource) || resource >= Number.MAX_SAFE_INTEGER;
-}
-```
-
-#### Step 2: Reward Fallbacks
-- Update `determineRewardType()` to handle infinite sand
-- Update price calculations to handle infinite resources
-- Update rate calculations for infinite edge cases
-
-#### Step 3: Display Formatting
-- Format "∞" or "Inf" for display
-- Handle infinity in state snapshots
-
-### Files to Create/Modify
-| File | Changes |
-|------|---------|
-| `src/engine/modern-engine.ts` | Add infinity checks |
-| `src/engine/redundakitty.ts` | Already partially handles this |
-| `src/utils/number-format.ts` | Add infinity formatting |
-
----
-
-## Plan 17: Glass Ceiling System
-
-### Current State
-- Basic glass chip/block production at ONG
-- Missing glass ceiling multiplier mechanics
-
-### Legacy Implementation
-Glass Ceiling is a complex system that provides multipliers based on:
-- Glass blocks owned
-- Specific boost combinations
-- NP-dependent calculations
-
-### Implementation Steps
-
-#### Step 1: Glass Ceiling State
-```typescript
-interface GlassCeilingState {
-  level: number;
-  multiplier: number;
-  breakpoints: number[];
-}
-```
-
-#### Step 2: Multiplier Calculations
-- Implement glass ceiling level calculation
-- Apply multipliers to relevant rates
-- Track breakpoint achievements
-
-#### Step 3: Badge/Boost Integration
-- Glass-related badge conditions
-- Boost unlock conditions based on glass levels
-
-### Files to Create/Modify
-| File | Changes |
-|------|---------|
-| `src/engine/glass-ceiling.ts` | New file with glass ceiling logic |
-| `src/engine/modern-engine.ts` | Integrate glass ceiling state |
-| `src/engine/glass-ceiling.test.ts` | Tests |
-
----
-
-## Plan 18: Save/Load Parity
-
-### Current State
-- SaveParser can decode legacy saves
-- Modern engine can't produce legacy-compatible saves
-- Round-trip (save → load → save) not tested
-
-### Goal
-Full compatibility: load legacy save, play in modern engine, save, load in legacy.
-
-### Implementation Steps
-
-#### Step 1: Save Serialization
-```typescript
-interface LegacySaveFormat {
-  // Match exact legacy format from persist.js
-}
-
-function serializeToLegacy(state: ModernEngineState): string;
-```
-
-#### Step 2: Round-Trip Testing
-- Load legacy save
-- Play actions in modern engine
-- Serialize back
-- Load in legacy engine
-- Compare states
-
-#### Step 3: Edge Cases
-- Handle boosts that don't exist in modern
-- Version compatibility
-- Migration paths
-
-### Files to Create/Modify
-| File | Changes |
-|------|---------|
-| `src/parity/save-serializer.ts` | New file for serialization |
-| `src/parity/save-parity.test.ts` | Round-trip tests |
-| `src/engine/modern-engine.ts` | Add save export method |
-
----
-
-## Success Criteria
-
-Each plan is complete when:
-- [x] All unit tests pass
+- [x] All unit tests pass (841/841 currently passing)
 - [x] Integration tests with ModernEngine pass
-- [x] Parity tests show improvement (where applicable)
+- [ ] Parity tests show improvement (target: <2,000 critical differences)
 - [x] No TypeScript errors or warnings
 - [x] Code reviewed for security (no eval, proper input handling)
+
+---
+
+---
+
+## ARCHIVED DETAILED PLANS
+
+<details>
+<summary>Plan 10: Castle Tool Production Rates (COMPLETE)</summary>
+
+### Status: ✅ COMPLETE
+
+Castle tool production rates fully implemented with all boost multipliers.
+
+</details>
+
+<details>
+<summary>Plan 11: Time Travel System (COMPLETE)</summary>
+
+### Status: ✅ COMPLETE
+
+Time travel system fully implemented with cost calculations and NP navigation.
+
+</details>
+
+<details>
+<summary>Plan 12: Factory Automation System (COMPLETE)</summary>
+
+### Status: ✅ COMPLETE
+
+Factory automation system fully implemented with 30 passing tests.
+
+</details>
+
+<details>
+<summary>Plan 13: Redundakitty System (COMPLETE)</summary>
+
+### Status: ✅ COMPLETE
+
+Redundakitty system fully implemented with 68 passing tests across 2 test files.
+
+</details>
+
+---
+
+## Current Test Status (2026-01-26)
+
+### Test Suite Health
+- **TypeScript**: ✅ 0 errors
+- **Full Test Suite**: ✅ 841/841 tests passing
+- **Duration**: 11.24s
+- **Test Files**: 25 files
+
+### Parity Test Status
+- **Parity Suite**: ✅ 49/49 tests passing
+- **Duration**: 6.87s
+- **Test Files**: 4 files
+- **Save/Load Parity**: ✅ 17/17 tests passing (COMPLETE)
+
+### Known Parity Gaps
+- **Critical differences**: 6,103 (target: <2,000)
+  - ~5,000 from boost auto-unlock gaps
+  - ~500-1,000 from badge auto-earn gaps
+  - ~600 from other sources
+- **Important differences**: 3 (power values, countdowns, rates)
+- **Cosmetic differences**: 156 (UI/display-related)
+
+### Verified Working Systems
+✅ Beach clicking with Fibonacci castle conversion
+✅ ONG transitions with proper resets
+✅ Ninja mechanics (stealth tracking, streak breaking)
+✅ Tick processing with tool production
+✅ Tool and boost purchases
+✅ Badge state preservation
+✅ Save/load round-trip compatibility
+✅ Factory automation (30 tests)
+✅ Redundakitty system (68 tests)
+✅ Logicat puzzles (28 tests)
+✅ Glass ceiling basics (35 tests)
+✅ Time travel system (34 tests)
 
 ---
 

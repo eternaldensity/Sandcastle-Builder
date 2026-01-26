@@ -5,6 +5,8 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Update next implementation plans based on parity gap analysis (#128)
+- Run comprehensive test suite including parity checks (#127)
 - Add glass ceiling tests and badge integration (#124)
 - Integrate glass ceiling multipliers into ModernEngine (#123)
 - Create glass-ceiling.ts with state types and level calculation (#122)
