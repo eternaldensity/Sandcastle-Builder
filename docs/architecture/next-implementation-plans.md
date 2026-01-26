@@ -1,6 +1,6 @@
-# Next Implementation Plans (Priority 9-13)
+# Next Implementation Plans (Priority 14+)
 
-This document contains detailed implementation plans for the next five priority features in the Sandcastle Builder modernization project. These build on the completed Plans 1-8.
+This document contains detailed implementation plans for future priority features in the Sandcastle Builder modernization project.
 
 ## Completed Plans
 
@@ -14,16 +14,21 @@ This document contains detailed implementation plans for the next five priority 
 | 6 | Badge Auto-Earn System | ✅ Complete |
 | 7 | Discovery/Monument System | ✅ Complete |
 | 8 | Coma/Reset System | ✅ Complete |
+| 9 | Parity Gap Reduction | ✅ Complete |
+| 10 | Castle Tool Production Rates | ✅ Complete |
+| 11 | Time Travel System | ✅ Complete |
+| 12 | Factory Automation System | ✅ Complete |
+| 13 | Redundakitty System | ✅ Complete |
 
-## Overview
+## Overview - Next Priorities
 
 | Priority | Feature | Complexity | Est. Files Changed | Dependencies |
 |----------|---------|------------|-------------------|--------------|
-| 9 | Parity Gap Reduction | High | 3-4 | None |
-| 10 | Castle Tool Production Rates | Medium | 2-3 | None |
-| 11 | Time Travel System | Medium-High | 3-4 | None |
-| 12 | Factory Automation System | High | 4-5 | Plan 11 |
-| 13 | Redundakitty System | High | 5-6 | Plan 12 |
+| 14 | Dragon System | Very High | 6-8 | None |
+| 15 | Logicat Puzzles | High | 4-5 | Plan 13 |
+| 16 | Infinite Resources | Medium | 3-4 | None |
+| 17 | Glass Ceiling System | High | 4-5 | Plan 16 |
+| 18 | Save/Load Parity | High | 3-4 | All above |
 
 ---
 
@@ -713,25 +718,267 @@ Each plan is complete when:
 
 ---
 
-## Future Priorities (Plans 14+)
+---
 
-After Plans 9-13, consider:
+## Plan 14: Dragon System
 
-1. **Dragon System** - Complex endgame breeding/fighting (docs/wiki/systems/dragons.md)
-2. **Logicat Puzzles** - Logic puzzle minigame within redundakitties
-3. **Infinite Resources** - Special handling when sand/castles become infinite
-4. **Glass Ceiling System** - Complex glass multiplier mechanics
-5. **Save/Load Parity** - Full roundtrip save compatibility with legacy
+### Current State
+- No dragon breeding, fighting, or dragon-related boosts implemented
+- Dragon system is a complex endgame feature with many interconnected mechanics
+
+### Legacy Implementation
+See [docs/wiki/systems/dragons.md](../wiki/systems/dragons.md) for detailed mechanics.
+
+Key components:
+- **Dragon types**: Multiple dragon species with different stats
+- **Breeding**: Combine dragons to create new ones
+- **Fighting**: Dragons can fight for rewards
+- **Dragon-related boosts**: Various boosts that interact with dragons
+
+### Implementation Steps
+
+#### Step 1: Dragon Data Types
+```typescript
+interface Dragon {
+  id: string;
+  species: DragonSpecies;
+  level: number;
+  stats: DragonStats;
+  traits: DragonTrait[];
+}
+
+interface DragonStats {
+  attack: number;
+  defense: number;
+  speed: number;
+  health: number;
+}
+```
+
+#### Step 2: Dragon State in ModernEngine
+- Add `dragons: Map<string, Dragon>` to engine state
+- Add dragon-related boost tracking
+- Implement breeding logic
+
+#### Step 3: Dragon Combat
+- Implement fight mechanics
+- Add rewards system
+- Track fight history
+
+### Files to Create/Modify
+| File | Changes |
+|------|---------|
+| `src/engine/dragon.ts` | New file with dragon types and logic |
+| `src/engine/modern-engine.ts` | Add dragon state and methods |
+| `src/engine/dragon.test.ts` | Comprehensive tests |
+
+---
+
+## Plan 15: Logicat Puzzles
+
+### Current State
+- Redundakitty system triggers logicat events but puzzles not implemented
+- Logicat provides `action: 'logicat'` in click results
+
+### Legacy Implementation
+Logicats present logic puzzles that must be solved for rewards.
+
+Key mechanics:
+- **Puzzle generation**: Create valid logic puzzles
+- **Answer validation**: Check player solutions
+- **Rewards**: Panther Poke accumulation, special unlocks
+- **Difficulty scaling**: Harder puzzles over time
+
+### Implementation Steps
+
+#### Step 1: Puzzle Generator
+```typescript
+interface LogicatPuzzle {
+  premises: string[];
+  question: string;
+  correctAnswer: boolean;
+  difficulty: number;
+}
+
+function generateLogicatPuzzle(difficulty: number): LogicatPuzzle;
+```
+
+#### Step 2: Puzzle State
+- Track active puzzle in redundakitty state
+- Timer for puzzle completion
+- Answer submission handling
+
+#### Step 3: Rewards Integration
+- Panther Poke power accumulation
+- Logicat-specific badges
+- Boost unlocks
+
+### Files to Create/Modify
+| File | Changes |
+|------|---------|
+| `src/engine/logicat.ts` | New file with puzzle logic |
+| `src/engine/redundakitty.ts` | Add puzzle state handling |
+| `src/engine/logicat.test.ts` | Puzzle generation tests |
+
+---
+
+## Plan 16: Infinite Resources
+
+### Current State
+- No special handling for infinite sand/castles
+- Some reward calculations break with infinity
+
+### Legacy Implementation
+When resources become infinite (via certain boosts), special rules apply:
+- Infinite sand makes Blitzing unavailable (use Blast Furnace instead)
+- Price calculations handle infinity
+- Display formatting for infinite values
+
+### Implementation Steps
+
+#### Step 1: Infinity Detection
+```typescript
+function isResourceInfinite(resource: number): boolean {
+  return !isFinite(resource) || resource >= Number.MAX_SAFE_INTEGER;
+}
+```
+
+#### Step 2: Reward Fallbacks
+- Update `determineRewardType()` to handle infinite sand
+- Update price calculations to handle infinite resources
+- Update rate calculations for infinite edge cases
+
+#### Step 3: Display Formatting
+- Format "∞" or "Inf" for display
+- Handle infinity in state snapshots
+
+### Files to Create/Modify
+| File | Changes |
+|------|---------|
+| `src/engine/modern-engine.ts` | Add infinity checks |
+| `src/engine/redundakitty.ts` | Already partially handles this |
+| `src/utils/number-format.ts` | Add infinity formatting |
+
+---
+
+## Plan 17: Glass Ceiling System
+
+### Current State
+- Basic glass chip/block production at ONG
+- Missing glass ceiling multiplier mechanics
+
+### Legacy Implementation
+Glass Ceiling is a complex system that provides multipliers based on:
+- Glass blocks owned
+- Specific boost combinations
+- NP-dependent calculations
+
+### Implementation Steps
+
+#### Step 1: Glass Ceiling State
+```typescript
+interface GlassCeilingState {
+  level: number;
+  multiplier: number;
+  breakpoints: number[];
+}
+```
+
+#### Step 2: Multiplier Calculations
+- Implement glass ceiling level calculation
+- Apply multipliers to relevant rates
+- Track breakpoint achievements
+
+#### Step 3: Badge/Boost Integration
+- Glass-related badge conditions
+- Boost unlock conditions based on glass levels
+
+### Files to Create/Modify
+| File | Changes |
+|------|---------|
+| `src/engine/glass-ceiling.ts` | New file with glass ceiling logic |
+| `src/engine/modern-engine.ts` | Integrate glass ceiling state |
+| `src/engine/glass-ceiling.test.ts` | Tests |
+
+---
+
+## Plan 18: Save/Load Parity
+
+### Current State
+- SaveParser can decode legacy saves
+- Modern engine can't produce legacy-compatible saves
+- Round-trip (save → load → save) not tested
+
+### Goal
+Full compatibility: load legacy save, play in modern engine, save, load in legacy.
+
+### Implementation Steps
+
+#### Step 1: Save Serialization
+```typescript
+interface LegacySaveFormat {
+  // Match exact legacy format from persist.js
+}
+
+function serializeToLegacy(state: ModernEngineState): string;
+```
+
+#### Step 2: Round-Trip Testing
+- Load legacy save
+- Play actions in modern engine
+- Serialize back
+- Load in legacy engine
+- Compare states
+
+#### Step 3: Edge Cases
+- Handle boosts that don't exist in modern
+- Version compatibility
+- Migration paths
+
+### Files to Create/Modify
+| File | Changes |
+|------|---------|
+| `src/parity/save-serializer.ts` | New file for serialization |
+| `src/parity/save-parity.test.ts` | Round-trip tests |
+| `src/engine/modern-engine.ts` | Add save export method |
+
+---
+
+## Success Criteria
+
+Each plan is complete when:
+- [x] All unit tests pass
+- [x] Integration tests with ModernEngine pass
+- [x] Parity tests show improvement (where applicable)
+- [x] No TypeScript errors or warnings
+- [x] Code reviewed for security (no eval, proper input handling)
 
 ---
 
 ## References
 
-- Legacy code: `castle.js`, `boosts.js`, `tools.js`, `badges.js`, `data.js`, `persist.js`
-- Existing modern engine: [src/engine/modern-engine.ts](../src/engine/modern-engine.ts)
-- Price calculator: [src/engine/price-calculator.ts](../src/engine/price-calculator.ts)
-- Boost functions: [src/engine/boost-functions.ts](../src/engine/boost-functions.ts)
-- Sand rate calculator: [src/engine/sand-rate-calculator.ts](../src/engine/sand-rate-calculator.ts)
-- Badge conditions: [src/engine/badge-conditions.ts](../src/engine/badge-conditions.ts)
-- Type definitions: [src/types/game-data.ts](../src/types/game-data.ts)
-- Wiki documentation: [docs/wiki/](../wiki/)
+### Legacy Code
+- `castle.js` - Main game loop, ONG, beach clicks
+- `boosts.js` - Boost definitions and functions
+- `tools.js` - Tool definitions and rates
+- `badges.js` - Badge definitions
+- `data.js` - Unlock conditions, CheckBuyUnlocks
+- `persist.js` - Save/load, reset functions
+
+### Modern Engine Files
+- [src/engine/modern-engine.ts](../../src/engine/modern-engine.ts) - Core engine
+- [src/engine/price-calculator.ts](../../src/engine/price-calculator.ts) - Price formulas
+- [src/engine/boost-functions.ts](../../src/engine/boost-functions.ts) - Boost buy/unlock/lock functions
+- [src/engine/sand-rate-calculator.ts](../../src/engine/sand-rate-calculator.ts) - Sand tool rates
+- [src/engine/castle-rate-calculator.ts](../../src/engine/castle-rate-calculator.ts) - Castle tool rates
+- [src/engine/badge-conditions.ts](../../src/engine/badge-conditions.ts) - Badge trigger conditions
+- [src/engine/badge-checker.ts](../../src/engine/badge-checker.ts) - Badge earning logic
+- [src/engine/unlock-conditions.ts](../../src/engine/unlock-conditions.ts) - Boost unlock rules
+- [src/engine/factory-automation.ts](../../src/engine/factory-automation.ts) - FA system
+- [src/engine/redundakitty.ts](../../src/engine/redundakitty.ts) - Redundakitty system
+- [src/engine/time-travel.ts](../../src/engine/time-travel.ts) - Time travel mechanics
+- [src/types/game-data.ts](../../src/types/game-data.ts) - Type definitions
+
+### Documentation
+- [docs/wiki/](../wiki/) - Scraped game wiki
+- [docs/wiki/systems/dragons.md](../wiki/systems/dragons.md) - Dragon system reference
