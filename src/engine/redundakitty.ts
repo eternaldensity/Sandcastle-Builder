@@ -411,6 +411,8 @@ export function applyKittyClickResult(
   switch (result.action) {
     case 'hide':
       // Chain is broken - reset everything
+      // Update chainMax before resetting chainCurrent
+      state.chainMax = Math.max(state.chainMax, state.chainCurrent);
       state.isActive = false;
       state.despawnCountdown = 0;
       state.drawType = [];
@@ -424,6 +426,8 @@ export function applyKittyClickResult(
       while (state.drawType.length > result.level + 1) {
         state.drawType.pop();
       }
+      // Increment chain for successful click
+      state.chainCurrent++;
       // Kitty will rejump (handled by caller)
       break;
 
@@ -450,6 +454,8 @@ export function applyKittyClickResult(
         state.keepPosition = 1; // Lock position for puzzle
       } else {
         // Ranger caught logicat - no reward given (Panther Poke is the reward)
+        // Update chainMax before resetting chainCurrent
+        state.chainMax = Math.max(state.chainMax, state.chainCurrent);
         state.isActive = false;
         state.despawnCountdown = 0;
         state.drawType = [];
@@ -466,11 +472,16 @@ export function applyKittyClickResult(
 
     case 'reward':
       // Normal reward - kitty disappears
+      // Increment chain for successful click (chain persists until despawn or hide)
+      state.chainCurrent++;
+      // Update chainMax
+      state.chainMax = Math.max(state.chainMax, state.chainCurrent);
+      // Reset active state but preserve chain
       state.isActive = false;
       state.despawnCountdown = 0;
       state.drawType = [];
-      state.chainCurrent = 0;
       state.keepPosition = 0;
+      // Note: chainCurrent is NOT reset here - it resets on despawn or hide
       break;
   }
 }

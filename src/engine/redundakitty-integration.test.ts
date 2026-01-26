@@ -297,10 +297,13 @@ describe('Redundakitty Integration', () => {
   });
 
   describe('Chaining Mechanics', () => {
-    it('supports Redunception recursion', () => {
-      // Unlock Redunception
+    it('supports Redunception recursion', async () => {
+      // Give resources to afford Redunception (price: 970M sand, 340M castles)
+      engine.forceResources({ sand: 1e12, castles: 1e12 });
+
+      // Unlock and buy Redunception
       engine.unlockBoost('Redunception');
-      engine.buyBoost('Redunception');
+      await engine.buyBoost('Redunception');
 
       // Force kitty active and click many times to trigger recursion
       let foundRecursion = false;

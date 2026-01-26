@@ -1,5 +1,8 @@
 ## Changelog
 
+### Fixed
+- Fix redundakitty chain tracking not incrementing on clicks (#102)
+
 ### Changed
 - Write comprehensive tests for redundakitty system (#101)
 - Integrate redundakitty into ModernEngine tick loop and state (#100)
@@ -75,6 +78,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Add Redundakitty system with spawn, click rewards, and DoRD integration (#96)
 - Add Factory Automation system for automatic boost processing (#89)
 - Implement Time Travel System (Plan 11) (#83)
 - Implement Castle Tool Production Rates (#82)
