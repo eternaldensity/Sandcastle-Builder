@@ -4,6 +4,9 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Add glass ceiling tests and badge integration (#124)
+- Integrate glass ceiling multipliers into ModernEngine (#123)
+- Create glass-ceiling.ts with state types and level calculation (#122)
 - Update reward calculations to handle infinite resources (#119)
 - Add infinity formatting to number-format utility (#120)
 - Add infinity detection utility function (#118)
@@ -89,6 +92,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement Glass Ceiling System (Plan 17) (#121)
 - Add infinite resource handling system (#117)
 - Implement Logicat puzzle system (#113)
 - Add Redundakitty system with spawn, click rewards, and DoRD integration (#96)

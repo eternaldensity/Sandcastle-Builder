@@ -15,6 +15,9 @@ const baseState: CastleToolRateState = {
   scaffolds: 0,
   waves: 0,
   rivers: 0,
+  glassCeilings: [],
+  wwbBought: 0,
+  scaffoldAmount: 0,
   busyBot: false,
   robotEfficiency: false,
   robotEfficiencyPower: 0,
@@ -304,5 +307,178 @@ describe('calculateAllCastleToolRates', () => {
     expect(rates.Scaffold).toBeCloseTo(15.63 * 1.5 * 2 * 4, 3);
     expect(rates.Wave).toBeCloseTo(39.06 * 2 * 4 * 10, 3);
     expect(rates.River).toBeCloseTo(97.66 * 4, 3);
+  });
+});
+
+describe('Glass Ceiling Integration', () => {
+  describe('NewPixBot with Glass Ceiling 1', () => {
+    it('applies glass ceiling multiplier with 1 ceiling', () => {
+      const rate = calculateNewPixBotRate({
+        ...baseState,
+        glassCeilings: [1],
+      });
+      // 3.5 × 33^1
+      expect(rate).toBe(3.5 * 33);
+    });
+
+    it('applies glass ceiling multiplier with multiple ceilings', () => {
+      const rate = calculateNewPixBotRate({
+        ...baseState,
+        glassCeilings: [1, 3, 5],
+      });
+      // 3.5 × 33^3
+      expect(rate).toBe(3.5 * Math.pow(33, 3));
+    });
+
+    it('does not apply glass ceiling without ceiling 1', () => {
+      const rate = calculateNewPixBotRate({
+        ...baseState,
+        glassCeilings: [0, 2, 4],
+      });
+      expect(rate).toBe(3.5);
+    });
+
+    it('stacks glass ceiling with other boosts', () => {
+      const rate = calculateNewPixBotRate({
+        ...baseState,
+        glassCeilings: [1],
+        busyBot: true,
+        recursivebot: true,
+      });
+      // 3.5 × 33 × 2 × 4
+      expect(rate).toBe(3.5 * 33 * 2 * 4);
+    });
+
+    it('applies WWB multiplier to glass ceiling', () => {
+      const rate = calculateNewPixBotRate({
+        ...baseState,
+        glassCeilings: [1],
+        wwbBought: 5,
+        scaffoldAmount: 10,
+      });
+      // Base = 33 × (2^0 × 10) = 330
+      // Rate = 3.5 × 330
+      expect(rate).toBe(3.5 * 330);
+    });
+  });
+
+  describe('Trebuchet with Glass Ceiling 3', () => {
+    it('applies glass ceiling multiplier with ceiling 3', () => {
+      const rate = calculateTrebuchetRate({
+        ...baseState,
+        glassCeilings: [3],
+      });
+      expect(rate).toBe(6.25 * 33);
+    });
+
+    it('does not apply without ceiling 3', () => {
+      const rate = calculateTrebuchetRate({
+        ...baseState,
+        glassCeilings: [0, 1, 2],
+      });
+      expect(rate).toBe(6.25);
+    });
+  });
+
+  describe('Scaffold with Glass Ceiling 5', () => {
+    it('applies glass ceiling multiplier with ceiling 5', () => {
+      const rate = calculateScaffoldRate({
+        ...baseState,
+        glassCeilings: [5],
+      });
+      expect(rate).toBe(15.63 * 33);
+    });
+
+    it('does not apply without ceiling 5', () => {
+      const rate = calculateScaffoldRate({
+        ...baseState,
+        glassCeilings: [0, 1, 2, 3, 4],
+      });
+      expect(rate).toBe(15.63);
+    });
+  });
+
+  describe('Wave with Glass Ceiling 7', () => {
+    it('applies glass ceiling multiplier with ceiling 7', () => {
+      const rate = calculateWaveRate({
+        ...baseState,
+        glassCeilings: [7],
+      });
+      expect(rate).toBe(39.06 * 33);
+    });
+
+    it('does not apply without ceiling 7', () => {
+      const rate = calculateWaveRate({
+        ...baseState,
+        glassCeilings: [0, 1, 2, 3, 4, 5, 6],
+      });
+      expect(rate).toBe(39.06);
+    });
+  });
+
+  describe('River with Glass Ceiling 9', () => {
+    it('applies glass ceiling multiplier with ceiling 9', () => {
+      const rate = calculateRiverRate({
+        ...baseState,
+        glassCeilings: [9],
+      });
+      expect(rate).toBe(97.66 * 33);
+    });
+
+    it('does not apply without ceiling 9', () => {
+      const rate = calculateRiverRate({
+        ...baseState,
+        glassCeilings: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      });
+      expect(rate).toBe(97.66);
+    });
+  });
+
+  describe('All castle tools with glass ceilings', () => {
+    it('applies different glass ceilings to each tool', () => {
+      const rates = calculateAllCastleToolRates({
+        ...baseState,
+        glassCeilings: [1, 3, 5, 7, 9], // All castle tool ceilings
+      });
+
+      const gcMult = Math.pow(33, 5); // 33^5
+      expect(rates.NewPixBot).toBe(3.5 * gcMult);
+      expect(rates.Trebuchet).toBe(6.25 * gcMult);
+      expect(rates.Scaffold).toBe(15.63 * gcMult);
+      expect(rates.Wave).toBe(39.06 * gcMult);
+      expect(rates.River).toBe(97.66 * gcMult);
+    });
+
+    it('handles selective glass ceilings', () => {
+      const rates = calculateAllCastleToolRates({
+        ...baseState,
+        glassCeilings: [1, 5], // Only NewPixBot and Scaffold
+      });
+
+      const gcMult = Math.pow(33, 2); // 33^2
+      expect(rates.NewPixBot).toBe(3.5 * gcMult);
+      expect(rates.Trebuchet).toBe(6.25); // No ceiling
+      expect(rates.Scaffold).toBe(15.63 * gcMult);
+      expect(rates.Wave).toBe(39.06); // No ceiling
+      expect(rates.River).toBe(97.66); // No ceiling
+    });
+
+    it('applies WWB boost to all tools with glass ceilings', () => {
+      const rates = calculateAllCastleToolRates({
+        ...baseState,
+        glassCeilings: [1, 3, 5, 7, 9],
+        wwbBought: 6, // 2^1 = 2
+        scaffoldAmount: 50,
+      });
+
+      // Base = 33 × (2 × 50) = 3300
+      // Mult = 3300^5
+      const gcMult = Math.pow(3300, 5);
+      expect(rates.NewPixBot).toBe(3.5 * gcMult);
+      expect(rates.Trebuchet).toBe(6.25 * gcMult);
+      expect(rates.Scaffold).toBe(15.63 * gcMult);
+      expect(rates.Wave).toBe(39.06 * gcMult);
+      expect(rates.River).toBe(97.66 * gcMult);
+    });
   });
 });

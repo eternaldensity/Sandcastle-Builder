@@ -19,6 +19,11 @@ export interface CastleToolRateState {
   waves: number;
   rivers: number;
 
+  // Glass Ceiling support
+  glassCeilings: number[];  // Array of owned glass ceiling indices (0-11)
+  wwbBought: number;        // WWB boost bought level
+  scaffoldAmount: number;   // Number of scaffolds for WWB calculation
+
   // NewPixBot boost multipliers
   busyBot: boolean;
   robotEfficiency: boolean;
@@ -62,11 +67,39 @@ export interface CastleToolRates {
 }
 
 /**
+ * Calculate Glass Ceiling multiplier for castle tools.
+ * Reference: boosts.js:3424-3430
+ *
+ * Glass Ceiling indices for castle tools:
+ * - 1: NewPixBot
+ * - 3: Trebuchet
+ * - 5: Scaffold
+ * - 7: Wave
+ * - 9: River
+ */
+function calculateGlassCeilingMult(
+  glassCeilings: number[],
+  wwbBought: number,
+  scaffoldAmount: number
+): number {
+  const ceilingCount = glassCeilings.length;
+  if (ceilingCount === 0) return 1;
+
+  let acPower = 33;
+  if (wwbBought > 0) {
+    acPower *= Math.pow(2, wwbBought - 5) * scaffoldAmount;
+  }
+
+  return Math.pow(acPower, ceilingCount);
+}
+
+/**
  * Calculate NewPixBot production rate.
  * Reference: tools.js:260-290
  *
  * Base rate: 3.5 castles per mNP
  * Multipliers:
+ * - Glass Ceiling 1: ×GlassCeilingMult()
  * - Busy Bot: ×2
  * - Robot Efficiency: ×power (capped at 1000)
  * - Recursivebot: ×4
@@ -75,6 +108,11 @@ export interface CastleToolRates {
 export function calculateNewPixBotRate(state: CastleToolRateState): number {
   const baseRate = 3.5;
   let mult = 1;
+
+  // Glass Ceiling 1 (NewPixBot castles)
+  if (state.glassCeilings.includes(1)) {
+    mult *= calculateGlassCeilingMult(state.glassCeilings, state.wwbBought, state.scaffoldAmount);
+  }
 
   if (state.busyBot) {
     mult *= 2;
@@ -103,6 +141,7 @@ export function calculateNewPixBotRate(state: CastleToolRateState): number {
  *
  * Base rate: 6.25 castles per mNP
  * Multipliers:
+ * - Glass Ceiling 3: ×GlassCeilingMult()
  * - Spring Fling: ×1.5
  * - Trebuchet Pong: ×1.2^power
  * - Flingbot: ×4
@@ -111,6 +150,11 @@ export function calculateNewPixBotRate(state: CastleToolRateState): number {
 export function calculateTrebuchetRate(state: CastleToolRateState): number {
   const baseRate = 6.25;
   let mult = 1;
+
+  // Glass Ceiling 3 (Trebuchet castles)
+  if (state.glassCeilings.includes(3)) {
+    mult *= calculateGlassCeilingMult(state.glassCeilings, state.wwbBought, state.scaffoldAmount);
+  }
 
   if (state.springFling) {
     mult *= 1.5;
@@ -138,6 +182,7 @@ export function calculateTrebuchetRate(state: CastleToolRateState): number {
  *
  * Base rate: 15.63 castles per mNP
  * Multipliers:
+ * - Glass Ceiling 5: ×GlassCeilingMult()
  * - Precise Placement: ×1.5
  * - Level Up!: ×2
  * - Propbot: ×4
@@ -145,6 +190,11 @@ export function calculateTrebuchetRate(state: CastleToolRateState): number {
 export function calculateScaffoldRate(state: CastleToolRateState): number {
   const baseRate = 15.63;
   let mult = 1;
+
+  // Glass Ceiling 5 (Scaffold castles)
+  if (state.glassCeilings.includes(5)) {
+    mult *= calculateGlassCeilingMult(state.glassCeilings, state.wwbBought, state.scaffoldAmount);
+  }
 
   if (state.precisePlacement) {
     mult *= 1.5;
@@ -167,6 +217,7 @@ export function calculateScaffoldRate(state: CastleToolRateState): number {
  *
  * Base rate: 39.06 castles per mNP
  * Multipliers:
+ * - Glass Ceiling 7: ×GlassCeilingMult()
  * - Swell: ×2
  * - Surfbot: ×4
  * - SBTF: ×power
@@ -174,6 +225,11 @@ export function calculateScaffoldRate(state: CastleToolRateState): number {
 export function calculateWaveRate(state: CastleToolRateState): number {
   const baseRate = 39.06;
   let mult = 1;
+
+  // Glass Ceiling 7 (Wave castles)
+  if (state.glassCeilings.includes(7)) {
+    mult *= calculateGlassCeilingMult(state.glassCeilings, state.wwbBought, state.scaffoldAmount);
+  }
 
   if (state.swell) {
     mult *= 2;
@@ -197,11 +253,17 @@ export function calculateWaveRate(state: CastleToolRateState): number {
  *
  * Base rate: 97.66 castles per mNP
  * Multipliers:
+ * - Glass Ceiling 9: ×GlassCeilingMult()
  * - Smallbot: ×4
  */
 export function calculateRiverRate(state: CastleToolRateState): number {
   const baseRate = 97.66;
   let mult = 1;
+
+  // Glass Ceiling 9 (River castles)
+  if (state.glassCeilings.includes(9)) {
+    mult *= calculateGlassCeilingMult(state.glassCeilings, state.wwbBought, state.scaffoldAmount);
+  }
 
   if (state.smallbot) {
     mult *= 4;

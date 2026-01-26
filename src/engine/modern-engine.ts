@@ -932,6 +932,14 @@ export class ModernEngine implements GameEngine {
       return boost?.power ?? 0;
     };
 
+    // Collect owned glass ceilings
+    const glassCeilings: number[] = [];
+    for (let i = 0; i < 12; i++) {
+      if (isBoostBought(`Glass Ceiling ${i}`)) {
+        glassCeilings.push(i);
+      }
+    }
+
     return {
       // Tool amounts
       newPixBots: getToolAmount('NewPixBot'),
@@ -939,6 +947,11 @@ export class ModernEngine implements GameEngine {
       scaffolds: getToolAmount('Scaffold'),
       waves: getToolAmount('Wave'),
       rivers: getToolAmount('River'),
+
+      // Glass Ceiling support
+      glassCeilings,
+      wwbBought: this.boosts.get('WWB')?.bought ?? 0,
+      scaffoldAmount: getToolAmount('Scaffold'),
 
       // NewPixBot boost multipliers
       busyBot: isBoostBought('Busy Bot'),
@@ -2217,6 +2230,15 @@ export class ModernEngine implements GameEngine {
       badges[name] = earned;
     }
 
+    // Count glass ceilings owned
+    let glassCeilingCount = 0;
+    for (let i = 0; i < 12; i++) {
+      const boost = this.boosts.get(`Glass Ceiling ${i}`);
+      if (boost && boost.bought > 0) {
+        glassCeilingCount++;
+      }
+    }
+
     return {
       sand: this.resources.sand,
       castles: this.resources.castles,
@@ -2237,6 +2259,7 @@ export class ModernEngine implements GameEngine {
       boostsOwned,
       discoveryCount: this.badgeGroupCounts['discov'] ?? 0,
       monumentCount: (this.badgeGroupCounts['monums'] ?? 0) + (this.badgeGroupCounts['monumg'] ?? 0),
+      glassCeilingCount,
     };
   }
 

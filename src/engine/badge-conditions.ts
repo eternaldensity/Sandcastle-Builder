@@ -62,6 +62,7 @@ export interface BadgeCheckState {
   boostsOwned: number;
   discoveryCount: number;
   monumentCount: number;
+  glassCeilingCount: number;
 }
 
 /**
@@ -146,6 +147,13 @@ export const badgeConditions: BadgeCondition[] = [
   { badge: 'Better This Way', trigger: 'tool-purchase', check: s => s.boostsOwned >= 50 },
   { badge: 'Boosted', trigger: 'tool-purchase', check: s => s.boostsOwned >= 100 },
   { badge: 'Hyperboost', trigger: 'tool-purchase', check: s => s.boostsOwned >= 200 },
+
+  // =============================================================================
+  // Glass Ceiling badges (trigger: 'tool-purchase')
+  // Reference: boosts.js:3413-3421
+  // =============================================================================
+  { badge: 'Ceiling Broken', trigger: 'tool-purchase', check: s => s.glassCeilingCount >= 10 },
+  { badge: 'Ceiling Disintegrated', trigger: 'tool-purchase', check: s => s.glassCeilingCount >= 12 },
 
   // =============================================================================
   // Meta badges (trigger: 'tick' or 'ong')
