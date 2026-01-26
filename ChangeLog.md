@@ -1,6 +1,8 @@
 ## Changelog
 
 ### Changed
+- Verify parity with legacy FA implementation (#93)
+- Add factory-automation.test.ts with comprehensive tests (#92)
 - Integrate FA into ModernEngine tick loop (#91)
 - Create factory-automation.ts with FA state and boost processing (#90)
 - Create comprehensive time travel test suite (#88)
@@ -66,6 +68,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Add Factory Automation system for automatic boost processing (#89)
 - Implement Time Travel System (Plan 11) (#83)
 - Implement Castle Tool Production Rates (#82)
 - Implement Plan 10: Castle Tool Production Rates with boost multipliers (#78)
