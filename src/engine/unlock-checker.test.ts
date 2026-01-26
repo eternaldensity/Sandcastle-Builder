@@ -76,21 +76,21 @@ describe('evaluateCondition', () => {
 
     it('returns true when tool amount equals threshold', () => {
       const state = createTestState();
-      state.sandTools.set('Bucket', { amount: 1 });
+      (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 1 });
       const condition = Conditions.toolAmount('sand', 'Bucket', 1);
       expect(evaluateCondition(condition, state)).toBe(true);
     });
 
     it('returns true when tool amount exceeds threshold', () => {
       const state = createTestState();
-      state.sandTools.set('Bucket', { amount: 10 });
+      (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 10 });
       const condition = Conditions.toolAmount('sand', 'Bucket', 4);
       expect(evaluateCondition(condition, state)).toBe(true);
     });
 
     it('works with castle tools', () => {
       const state = createTestState();
-      state.castleTools.set('Trebuchet', { amount: 5 });
+      (state.castleTools as Map<string, { amount: number }>).set('Trebuchet', { amount: 5 });
       const condition = Conditions.toolAmount('castle', 'Trebuchet', 5);
       expect(evaluateCondition(condition, state)).toBe(true);
     });
@@ -105,21 +105,21 @@ describe('evaluateCondition', () => {
   describe('boost-power conditions', () => {
     it('returns false when power is below threshold', () => {
       const state = createTestState();
-      state.boosts.set('Glass Ceiling', { unlocked: 1, bought: 1, power: 100, countdown: 0 });
+      (state.boosts as Map<string, import('../types/game-data.js').BoostState>).set('Glass Ceiling', { unlocked: 1, bought: 1, power: 100, countdown: 0 });
       const condition = Conditions.boostPower('Glass Ceiling', 1024);
       expect(evaluateCondition(condition, state)).toBe(false);
     });
 
     it('returns true when power meets threshold', () => {
       const state = createTestState();
-      state.boosts.set('Glass Ceiling', { unlocked: 1, bought: 1, power: 1024, countdown: 0 });
+      (state.boosts as Map<string, import('../types/game-data.js').BoostState>).set('Glass Ceiling', { unlocked: 1, bought: 1, power: 1024, countdown: 0 });
       const condition = Conditions.boostPower('Glass Ceiling', 1024);
       expect(evaluateCondition(condition, state)).toBe(true);
     });
 
     it('returns true when power exceeds threshold', () => {
       const state = createTestState();
-      state.boosts.set('Goats', { unlocked: 1, bought: 1, power: 50, countdown: 0 });
+      (state.boosts as Map<string, import('../types/game-data.js').BoostState>).set('Goats', { unlocked: 1, bought: 1, power: 50, countdown: 0 });
       const condition = Conditions.boostPower('Goats', 20);
       expect(evaluateCondition(condition, state)).toBe(true);
     });
@@ -134,7 +134,7 @@ describe('evaluateCondition', () => {
 
     it('returns true when boost is bought', () => {
       const state = createTestState();
-      state.boosts.set('DoRD', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+      (state.boosts as Map<string, import('../types/game-data.js').BoostState>).set('DoRD', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
       const condition = Conditions.boostBought('DoRD', 1);
       expect(evaluateCondition(condition, state)).toBe(true);
     });
@@ -149,7 +149,7 @@ describe('evaluateCondition', () => {
 
     it('returns true when badge is earned', () => {
       const state = createTestState();
-      state.badges.set('Flung', true);
+      (state.badges as Map<string, boolean>).set('Flung', true);
       const condition = Conditions.badgeEarned('Flung');
       expect(evaluateCondition(condition, state)).toBe(true);
     });
@@ -181,8 +181,8 @@ describe('evaluateCondition', () => {
   describe('AND conditions', () => {
     it('returns true when all conditions are met', () => {
       const state = createTestState();
-      state.sandTools.set('Bucket', { amount: 100 });
-      state.badges.set('Flung', true);
+      (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 100 });
+      (state.badges as Map<string, boolean>).set('Flung', true);
       const condition = Conditions.and(
         Conditions.toolAmount('sand', 'Bucket', 100),
         Conditions.badgeEarned('Flung')
@@ -192,7 +192,7 @@ describe('evaluateCondition', () => {
 
     it('returns false when one condition is not met', () => {
       const state = createTestState();
-      state.sandTools.set('Bucket', { amount: 100 });
+      (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 100 });
       // Flung badge not earned
       const condition = Conditions.and(
         Conditions.toolAmount('sand', 'Bucket', 100),
@@ -214,8 +214,8 @@ describe('evaluateCondition', () => {
   describe('OR conditions', () => {
     it('returns true when all conditions are met', () => {
       const state = createTestState();
-      state.sandTools.set('Bucket', { amount: 10 });
-      state.sandTools.set('Cuegan', { amount: 10 });
+      (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 10 });
+      (state.sandTools as Map<string, { amount: number }>).set('Cuegan', { amount: 10 });
       const condition = Conditions.or(
         Conditions.toolAmount('sand', 'Bucket', 5),
         Conditions.toolAmount('sand', 'Cuegan', 5)
@@ -225,7 +225,7 @@ describe('evaluateCondition', () => {
 
     it('returns true when only one condition is met', () => {
       const state = createTestState();
-      state.sandTools.set('Bucket', { amount: 10 });
+      (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 10 });
       // Cuegan is 0
       const condition = Conditions.or(
         Conditions.toolAmount('sand', 'Bucket', 5),
@@ -248,7 +248,7 @@ describe('evaluateCondition', () => {
 describe('checkUnlockRules', () => {
   it('identifies boosts to unlock', () => {
     const state = createTestState();
-    state.sandTools.set('Bucket', { amount: 1 });
+    (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 1 });
 
     const rules: UnlockRule[] = [
       { boostAlias: 'Bigger Buckets', condition: Conditions.toolAmount('sand', 'Bucket', 1) },
@@ -262,8 +262,8 @@ describe('checkUnlockRules', () => {
 
   it('identifies already unlocked boosts', () => {
     const state = createTestState();
-    state.sandTools.set('Bucket', { amount: 1 });
-    state.boosts.set('Bigger Buckets', { unlocked: 1, bought: 0, power: 0, countdown: 0 });
+    (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 1 });
+    (state.boosts as Map<string, import('../types/game-data.js').BoostState>).set('Bigger Buckets', { unlocked: 1, bought: 0, power: 0, countdown: 0 });
 
     const rules: UnlockRule[] = [
       { boostAlias: 'Bigger Buckets', condition: Conditions.toolAmount('sand', 'Bucket', 1) },
@@ -289,8 +289,8 @@ describe('checkUnlockRules', () => {
 
   it('handles multiple rules correctly', () => {
     const state = createTestState();
-    state.sandTools.set('Bucket', { amount: 4 });
-    state.boosts.set('Bigger Buckets', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 4 });
+    (state.boosts as Map<string, import('../types/game-data.js').BoostState>).set('Bigger Buckets', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
 
     const rules: UnlockRule[] = [
       { boostAlias: 'Bigger Buckets', condition: Conditions.toolAmount('sand', 'Bucket', 1) },
@@ -308,8 +308,8 @@ describe('checkUnlockRules', () => {
 describe('UnlockChecker', () => {
   it('returns boosts to unlock based on state', () => {
     const state = createTestState();
-    state.sandTools.set('Bucket', { amount: 5 });
-    state.sandTools.set('Cuegan', { amount: 1 });
+    (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 5 });
+    (state.sandTools as Map<string, { amount: number }>).set('Cuegan', { amount: 1 });
 
     const rules: UnlockRule[] = [
       { boostAlias: 'Bigger Buckets', condition: Conditions.toolAmount('sand', 'Bucket', 1) },
@@ -361,7 +361,7 @@ describe('toolUnlockRules', () => {
 
   it('correctly unlocks Bigger Buckets at 1 bucket', () => {
     const state = createTestState();
-    state.sandTools.set('Bucket', { amount: 1 });
+    (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 1 });
 
     const biggerBucketsRule = toolUnlockRules.find(r => r.boostAlias === 'Bigger Buckets');
     expect(biggerBucketsRule).toBeDefined();
@@ -370,7 +370,7 @@ describe('toolUnlockRules', () => {
 
   it('correctly requires badge for Flying Buckets', () => {
     const state = createTestState();
-    state.sandTools.set('Bucket', { amount: 100 });
+    (state.sandTools as Map<string, { amount: number }>).set('Bucket', { amount: 100 });
 
     const flyingBucketsRule = toolUnlockRules.find(r => r.boostAlias === 'Flying Buckets');
     expect(flyingBucketsRule).toBeDefined();
@@ -379,7 +379,7 @@ describe('toolUnlockRules', () => {
     expect(evaluateCondition(flyingBucketsRule!.condition, state)).toBe(false);
 
     // With Flung badge
-    state.badges.set('Flung', true);
+    (state.badges as Map<string, boolean>).set('Flung', true);
     expect(evaluateCondition(flyingBucketsRule!.condition, state)).toBe(true);
   });
 });

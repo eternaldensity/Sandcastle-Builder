@@ -4,10 +4,10 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ModernEngine } from './modern-engine.js';
-import type { GameData } from '../types/game-data.js';
+import type { GameData, BoostGroup, BoostDefinition } from '../types/game-data.js';
 
 // Helper to create a boost definition
-function createBoostDef(id: number, alias: string, group = 'boosts', price: Record<string, number | string> = {}) {
+function createBoostDef(id: number, alias: string, group: BoostGroup = 'boosts', price: Record<string, number | string> = {}): BoostDefinition {
   return {
     id,
     name: alias,
@@ -293,8 +293,8 @@ describe('ModernEngine', () => {
       engine.setSandToolAmount('Cuegan', 5);
       const rate = await engine.getSandRate();
 
-      // (10 * 0.1) + (5 * 0.5) = 1 + 2.5 = 3.5
-      expect(rate).toBe(3.5);
+      // (10 * 0.1) + (5 * 0.6) = 1 + 3 = 4
+      expect(rate).toBe(4);
     });
   });
 

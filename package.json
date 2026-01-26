@@ -20,7 +20,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/eternaldensity/Sandcastle-Builder/issues"
   },
@@ -33,6 +32,6 @@
     "@types/node": "^25.0.10",
     "playwright": "^1.58.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "vitest": "^3.0.0"
   }
 }

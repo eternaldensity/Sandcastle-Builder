@@ -2116,7 +2116,8 @@ export class ModernEngine implements GameEngine {
     let sandPermNP = 0;
     for (const [name, state] of this.sandTools) {
       if (state.amount > 0) {
-        sandPermNP += this.calculateSandToolRate(name, state.amount);
+        const rate = this.cachedSandToolRates[name] ?? 0;
+        sandPermNP += rate * state.amount;
       }
     }
 
@@ -2213,14 +2214,7 @@ export class ModernEngine implements GameEngine {
    */
   async getSandRate(): Promise<number> {
     this.ensureInitialized();
-
-    let rate = 0;
-    for (const [name, state] of this.sandTools) {
-      if (state.amount > 0) {
-        rate += this.calculateSandToolRate(name, state.amount);
-      }
-    }
-    return rate;
+    return this.cachedTotalSandRate;
   }
 
   /**
@@ -2359,6 +2353,7 @@ export class ModernEngine implements GameEngine {
     if (state) {
       state.amount = amount;
       state.bought = Math.max(state.bought, amount);
+      this.recalculateSandRates();
     }
   }
 

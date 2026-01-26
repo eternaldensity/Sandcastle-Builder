@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Changed
+- Fix testing infrastructure issues (#48)
 - Add unit tests for sand rate calculations (#46)
 - Integrate sand rate calculator into ModernEngine (#45)
 - Create sand-rate-calculator.ts module with per-tool rate functions (#44)
