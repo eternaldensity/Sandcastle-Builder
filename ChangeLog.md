@@ -26,6 +26,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Create implementation plans for next modernization priorities (#42)
 - Add glass chip and glass block production at ONG (#40)
 - Add dynamic boost function registry with buy/unlock/lock/countdown hooks (#39)
 - Add click multiplier calculation to sand per beach click (#38)
