@@ -4,6 +4,11 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Implement dragon digging mechanics (DragonDigging) (#109)
+- Implement dragon multiplier recalculation (DragonDigRecalc) (#108)
+- Implement dragon state management in ModernEngine (#107)
+- Create dragon.ts with dragon definitions and opponent definitions (#106)
+- Add Dragon and Opponent type definitions to game-data.ts (#105)
 - Write comprehensive tests for redundakitty system (#101)
 - Integrate redundakitty into ModernEngine tick loop and state (#100)
 - Add kitty chaining mechanics and chain tracking (#99)
