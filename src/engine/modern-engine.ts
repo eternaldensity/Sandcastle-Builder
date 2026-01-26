@@ -17,6 +17,7 @@ import type { GameEngine, GameStateSnapshot, TestAction } from '../parity/game-e
 import { SaveParser, createSaveParser } from './save-parser.js';
 import { SaveSerializer, createSaveSerializer, type SaveState, type CoreGameState } from './save-serializer.js';
 import { UnlockChecker, type UnlockCheckState } from './unlock-checker.js';
+import { calculateFactoryAutomationRuns } from './factory-automation.js';
 import {
   calculateSandToolPurchasePrice,
   calculateCastleToolPrice,
@@ -1562,6 +1563,61 @@ export class ModernEngine implements GameEngine {
     npb.currentActive = npb.amount;
 
     this.syncResourceBoosts();
+
+    // Activate Factory Automation if owned
+    // Reference: castle.js:3114
+    this.activateFactoryAutomation();
+  }
+
+  /**
+   * Activate Factory Automation.
+   *
+   * FA is a complex endgame system that runs automatically when NewPixBots activate.
+   * It processes department boosts, mould work, blackprint construction, and more.
+   *
+   * Reference: castle.js:3117-3148
+   */
+  private activateFactoryAutomation(): void {
+    const fa = this.boosts.get('Factory Automation');
+    if (!fa || fa.bought === 0) return;
+
+    const npb = this.castleTools.get('NewPixBot');
+    if (!npb) return;
+
+    const hasSafetyPumpkin = this.hasBoost('Safety Pumpkin');
+    const hasSafetyGoggles = this.hasBoost('SG');
+    const hasCracks = this.isBoostEnabled('Cracks');
+    const hasAlephOne = this.isBoostEnabled('Aleph One');
+
+    // Calculate how many FA runs we can activate
+    const result = calculateFactoryAutomationRuns(
+      fa.power,
+      npb.amount,
+      this.resources.sand,
+      hasSafetyPumpkin,
+      hasSafetyGoggles,
+      hasCracks,
+      hasAlephOne
+    );
+
+    // Handle industrial accident
+    if (result.hadAccident && npb.amount > 0) {
+      npb.amount--;
+      // Unlock Safety Pumpkin if FA level > 14
+      if (fa.power > 14) {
+        this.doUnlockBoost('Safety Pumpkin');
+      }
+    }
+
+    // Spend sand for FA runs
+    if (result.sandSpent > 0) {
+      this.resources.sand -= result.sandSpent;
+      this.syncResourceBoosts();
+    }
+
+    // TODO: Process FA runs (mould work, blackprint construction, DoRD rewards)
+    // This will be implemented in the next phase when we add the full FA processing logic
+    // For now, FA activation calculates runs but doesn't execute the department work
   }
 
   /**

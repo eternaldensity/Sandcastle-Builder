@@ -1,6 +1,8 @@
 ## Changelog
 
 ### Changed
+- Integrate FA into ModernEngine tick loop (#91)
+- Create factory-automation.ts with FA state and boost processing (#90)
 - Create comprehensive time travel test suite (#88)
 - Add Temporal Anchor integration to prevent NP advancement (#87)
 - Add glass chip-based time travel method (#86)
