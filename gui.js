@@ -1315,12 +1315,12 @@ Molpy.DefineGUI = function() {
 		var x = 200 + flandom(200);
 		var y = 200 + flandom(400);
 		if(np===0) return 'https://xkcd.mscha.org/tmp/np0.png'
-		if(Molpy.Got('Chromatic Heresy') && Molpy.options.colpix) {
+		if(Molpy.Got('Chromatic Heresy') && Molpy.Boosts['Chromatic Heresy'].power > 0 Molpy.options.colpix) {
 			
 			if(((floor > 3094)&&(frac==0))||((floor > 1417)&&(frac==0.1))){
 				return 'https://placekitten.com/'+ (Molpy.IsEnabled('Chromatic Heresy') ? '' : 'g/') + x + '/' + y;
 			}else if(frac==0){
-				return 'https://139.162.169.39/Time/otcolorization/' + newp;
+				return 'https://upperattic.at/Time/otcolorization/' + newp;
 			} else if(Molpy.fracParts.indexOf(frac)>-1){
 				return 'https://xkcd.mscha.org/otcstories/'+Molpy.NewPixFloor(frac)+Molpy.fixLength(floor,4)+'.png'
 			} else if(Molpy.fracParts.indexOf(frac)==-1){return 'https://placekitten.com/g/' + x + '/' + y;} //ErrorCat is error
