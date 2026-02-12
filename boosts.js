@@ -1282,7 +1282,7 @@ Molpy.DefineBoosts = function() {
 		
 		stats: function(me) {
 			return 'Additional ' + Molpy.Redacted.word
-				+ ' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blizting to boost Blast Furnace if they overlap.<br>'
+				+ ' clicks add 20% to the Blitzing multiplier. (Only when you get a Blitzing or Not Lucky reward.) Also causes Blitzing to boost Blast Furnace if they overlap.<br>'
 				+ 'Power level is ' + Molpify(me.power, 3);
 		}
 	});
@@ -5320,10 +5320,14 @@ Molpy.DefineBoosts = function() {
 			var cost = l * (l + 1) / 2;
 			Molpy.boostSilence++;
 			if (Molpy.Spend('QQ', cost)) {
-				for (var i = 0; i < runs; i++) {
-					Molpy.RewardLogicat(Molpy.Level('QQ'), Math.floor(l/runs));
+				if (l >= 25) {
+					for (var i = 0; i < runs; i++) {
+						Molpy.RewardLogicat(Molpy.Level('QQ'), Math.floor(l/runs));
+					}
 				}
-				Molpy.RewardLogicat(Molpy.Level('QQ'), l%runs);
+				if (l%runs != 0) {
+					Molpy.RewardLogicat(Molpy.Level('QQ'), l%runs);
+				}
 			}
 			Molpy.boostSilence--;
 		}
