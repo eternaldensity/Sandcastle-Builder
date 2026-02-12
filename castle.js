@@ -3726,10 +3726,10 @@ Molpy.Up = function() {
 			var story=Molpy.currentStory
 			if(story==-1){type=0} else{type=Molpy.fracParts[story]}
 		}
-		Molpy.ONGBase();
 		var todo=Molpy.ONGs[type];
 		if(todo==undefined){todo=Molpy.ONGs[0]}
 		todo();
+		Molpy.ONGBase();
 		Molpy.newpixNumber=Number((Molpy.newpixNumber).toFixed(3))
 		Molpy.UpdateBeach();
 		Molpy.HandlePeriods();
