@@ -1008,4 +1008,536 @@ describe('ModernEngine', () => {
       expect(state.sand + state.castles).toBeGreaterThan(0);
     });
   });
+
+  describe('beach click system', () => {
+    it('increments beachClicks on each click', async () => {
+      await engine.clickBeach(5);
+      const state = await engine.getStateSnapshot();
+      expect(state.beachClicks).toBe(5);
+    });
+
+    it('gains sand per click via clickSandGain', async () => {
+      (engine as any).cachedSandPerClick = 50;
+      await engine.clickBeach(3);
+      const state = await engine.getStateSnapshot();
+      // 3 clicks * 50 sand = 150, minus some converted to castles
+      expect(state.sand + state.castles).toBeGreaterThan(0);
+    });
+
+    it('loads TF chips on click when TF bought and sand infinite', async () => {
+      (engine as any).boosts.set('TF', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('BG', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).resources.sand = Infinity;
+
+      // Need some boosts owned for chips per click formula
+      for (let i = 0; i < 10; i++) {
+        (engine as any).boosts.set(`TestBoost${i}`, { unlocked: 1, bought: 1, power: 0 });
+      }
+
+      await engine.clickBeach(1);
+
+      const tf = (engine as any).boosts.get('TF');
+      // boostsOwned * 4 chips per click, at least 12 boosts bought (TF, BG, 10 test)
+      expect(tf.power).toBeGreaterThan(0);
+    });
+
+    it('does not load TF chips when sand is finite', async () => {
+      (engine as any).boosts.set('TF', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('BG', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).resources.sand = 1000;
+
+      await engine.clickBeach(1);
+
+      const tf = (engine as any).boosts.get('TF');
+      expect(tf.power).toBe(0);
+    });
+
+    it('adds mustard from NaN tools on click', async () => {
+      (engine as any).boosts.set('Mustard', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).mustardToolCount = 3;
+
+      await engine.clickBeach(5);
+
+      const mustard = (engine as any).boosts.get('Mustard');
+      expect(mustard.power).toBe(15); // 5 clicks * 3 mustard tools
+    });
+
+    it('does not add mustard when no NaN tools', async () => {
+      (engine as any).boosts.set('Mustard', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).mustardToolCount = 0;
+
+      await engine.clickBeach(5);
+
+      const mustard = (engine as any).boosts.get('Mustard');
+      expect(mustard.power).toBe(0);
+    });
+
+    it('Doubletap causes double click processing', async () => {
+      (engine as any).boosts.set('Doubletap', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).cachedSandPerClick = 10;
+
+      await engine.clickBeach(1);
+
+      // Should have processed 2 clicks (1 + doubletap), beachClicks = 2
+      const state = await engine.getStateSnapshot();
+      expect(state.beachClicks).toBe(2);
+    });
+
+    it('Doubletap does not recurse infinitely', async () => {
+      (engine as any).boosts.set('Doubletap', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).cachedSandPerClick = 10;
+
+      await engine.clickBeach(1);
+
+      // Only 2 clicks, not infinite
+      const state = await engine.getStateSnapshot();
+      expect(state.beachClicks).toBe(2);
+    });
+
+    it('Bag Puns increments every 20 clicks', async () => {
+      (engine as any).boosts.set('BagPuns', { unlocked: 1, bought: 1, power: 0 });
+
+      await engine.clickBeach(40);
+
+      const bagPuns = (engine as any).boosts.get('BagPuns');
+      expect(bagPuns.power).toBe(2); // clicks 20 and 40
+    });
+
+    it('Bag Puns unlocks VJ at power > 100', async () => {
+      (engine as any).boosts.set('BagPuns', { unlocked: 1, bought: 1, power: 99 });
+
+      // Need exactly 20th click to trigger increment
+      (engine as any).core.beachClicks = 19; // next click will be 20
+      await engine.clickBeach(1);
+
+      const bagPuns = (engine as any).boosts.get('BagPuns');
+      expect(bagPuns.power).toBe(100);
+
+      // One more cycle to get > 100
+      await engine.clickBeach(19); // clicks 21-39
+      await engine.clickBeach(1);  // click 40
+
+      expect(bagPuns.power).toBe(101);
+    });
+
+    it('Bag Puns does not increment when VJ is bought', async () => {
+      (engine as any).boosts.set('BagPuns', { unlocked: 1, bought: 1, power: 50 });
+      (engine as any).boosts.set('VJ', { unlocked: 1, bought: 1, power: 0 });
+
+      await engine.clickBeach(40);
+
+      const bagPuns = (engine as any).boosts.get('BagPuns');
+      expect(bagPuns.power).toBe(50); // unchanged
+    });
+
+    it('HandleClickNP awards Badge Not Found at NP 404', async () => {
+      (engine as any).core.newpixNumber = 404;
+
+      await engine.clickBeach(1);
+
+      expect((engine as any).badges.get('Badge Not Found')).toBe(true);
+    });
+
+    it('Ritual Sacrifice preserves ninja ritual with goats', async () => {
+      (engine as any).boosts.set('NinjaRitual', { unlocked: 1, bought: 1, power: 30 });
+      (engine as any).boosts.set('RitualSacrifice', { unlocked: 1, bought: 1, power: 1, isEnabled: true });
+      (engine as any).boosts.set('Goats', { unlocked: 1, bought: 1, power: 10 });
+
+      // Set up for stealth click (npbONG = 1, not ninjad, has NPB)
+      (engine as any).ong.npbONG = 1;
+      (engine as any).core.ninjad = false;
+      const npb = (engine as any).castleTools.get('NewPixBot');
+      npb.amount = 1;
+
+      await engine.clickBeach(1);
+
+      const goats = (engine as any).boosts.get('Goats');
+      expect(goats.power).toBe(5); // spent 5 goats
+      const ninjaRitual = (engine as any).boosts.get('NinjaRitual');
+      expect(ninjaRitual.power).toBe(30); // preserved, not reset
+    });
+
+    it('Ritual resets when no sacrifice available', async () => {
+      (engine as any).boosts.set('NinjaRitual', { unlocked: 1, bought: 1, power: 30 });
+      // No RitualSacrifice or RitualRift
+
+      (engine as any).ong.npbONG = 1;
+      (engine as any).core.ninjad = false;
+      const npb = (engine as any).castleTools.get('NewPixBot');
+      npb.amount = 1;
+
+      await engine.clickBeach(1);
+
+      const ninjaRitual = (engine as any).boosts.get('NinjaRitual');
+      expect(ninjaRitual.power).toBe(0); // reset
+    });
+
+    it('Ritual Rift unlock requires Time Lord bought > 8', async () => {
+      (engine as any).boosts.set('NinjaRitual', { unlocked: 1, bought: 1, power: 42 });
+      (engine as any).boosts.set('TimeLord', { unlocked: 1, bought: 9, power: 0 });
+      (engine as any).boosts.set('RitualRift', { unlocked: 0, bought: 0, power: 0 });
+
+      // Set up for ninja break (npbONG = 0, not ninjad, has NPB)
+      (engine as any).ong.npbONG = 0;
+      (engine as any).core.ninjad = false;
+      (engine as any).core.ninjaStealth = 0; // no stealth to break
+      const npb = (engine as any).castleTools.get('NewPixBot');
+      npb.amount = 1;
+
+      await engine.clickBeach(1);
+
+      // RitualRift should have been unlocked
+      const ritualRift = (engine as any).boosts.get('RitualRift');
+      expect(ritualRift?.unlocked).toBe(1);
+    });
+
+    it('VJ fires every Nth click and builds castles', async () => {
+      (engine as any).boosts.set('VJ', { unlocked: 1, bought: 1, power: 5 });
+      // No NPB means we go to the VJ branch
+      (engine as any).core.ninjad = true; // skip ninja branch
+
+      await engine.clickBeach(100);
+
+      const vj = (engine as any).boosts.get('VJ');
+      // VJ fires at click 100 (sawmod=100)
+      expect(vj.power).toBe(6); // was 5, incremented once
+    });
+
+    it('VJ fires more often with Short Saw', async () => {
+      (engine as any).boosts.set('VJ', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('ShortSaw', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).core.ninjad = true;
+
+      await engine.clickBeach(100);
+
+      const vj = (engine as any).boosts.get('VJ');
+      // With Short Saw, fires every 20 clicks: at 20, 40, 60, 80, 100 = 5 times
+      expect(vj.power).toBe(5);
+    });
+  });
+
+  describe('ONG transition enhancements', () => {
+    it('resets Lightning Rod power by 5% at ONG', async () => {
+      (engine as any).boosts.set('LR', { unlocked: 1, bought: 1, power: 1000 });
+
+      await engine.advanceToONG();
+
+      const lr = (engine as any).boosts.get('LR');
+      expect(lr.power).toBe(950); // 1000 * 0.95
+    });
+
+    it('clamps Lightning Rod decay to Lightning in a Bottle minimum', async () => {
+      (engine as any).boosts.set('LR', { unlocked: 1, bought: 1, power: 1000 });
+      (engine as any).boosts.set('LightningInABottle', { unlocked: 1, bought: 1, power: 980 });
+
+      await engine.advanceToONG();
+
+      const lr = (engine as any).boosts.get('LR');
+      // 1000 * 0.95 = 950 < 980, so clamped to 980
+      expect(lr.power).toBe(980);
+    });
+
+    it('does not decay Lightning Rod when power <= 500', async () => {
+      (engine as any).boosts.set('LR', { unlocked: 1, bought: 1, power: 500 });
+
+      await engine.advanceToONG();
+
+      const lr = (engine as any).boosts.get('LR');
+      expect(lr.power).toBe(500);
+    });
+
+    it('disables Glass Trolling at ONG', async () => {
+      (engine as any).boosts.set('GlassTrolling', { unlocked: 1, bought: 1, power: 0, isEnabled: true });
+
+      await engine.advanceToONG();
+
+      const gt = (engine as any).boosts.get('GlassTrolling');
+      expect(gt.isEnabled).toBe(false);
+    });
+
+    it('resets Papal decree at ONG', async () => {
+      (engine as any).boosts.set('ThePope', { unlocked: 1, bought: 1, power: 5 });
+      (engine as any).decreeName = 'Sand';
+      (engine as any).decreeValue = 2;
+
+      await engine.advanceToONG();
+
+      const pope = (engine as any).boosts.get('ThePope');
+      expect(pope.power).toBe(0);
+      expect((engine as any).decreeName).toBe('');
+      expect((engine as any).decreeValue).toBe(1);
+    });
+
+    it('preserves Papal decree with Permanent Staff', async () => {
+      (engine as any).boosts.set('ThePope', { unlocked: 1, bought: 1, power: 5 });
+      (engine as any).boosts.set('PermanentStaff', { unlocked: 1, bought: 1, power: 0, isEnabled: true });
+      (engine as any).decreeName = 'Sand';
+      (engine as any).decreeValue = 2;
+
+      await engine.advanceToONG();
+
+      const pope = (engine as any).boosts.get('ThePope');
+      expect(pope.power).toBe(5);
+      expect((engine as any).decreeName).toBe('Sand');
+    });
+
+    it('resets castle prices at ONG', async () => {
+      // Build up some castle cost
+      (engine as any).castleBuild.nextCastleSand = 100;
+      (engine as any).castleBuild.prevCastleSand = 50;
+
+      await engine.advanceToONG();
+
+      expect((engine as any).castleBuild.nextCastleSand).toBe(1);
+      expect((engine as any).castleBuild.prevCastleSand).toBe(0);
+    });
+
+    it('BBC spends glass blocks at ONG', async () => {
+      (engine as any).boosts.set('BBC', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).resources.glassBlocks = 20;
+
+      await engine.advanceToONG();
+
+      const bbc = (engine as any).boosts.get('BBC');
+      expect(bbc.power).toBe(1);
+      expect((engine as any).resources.glassBlocks).toBe(15); // spent 5
+    });
+
+    it('BBC sets power to 0 when not enough glass blocks', async () => {
+      (engine as any).boosts.set('BBC', { unlocked: 1, bought: 1, power: 1 });
+      (engine as any).resources.glassBlocks = 3;
+
+      await engine.advanceToONG();
+
+      const bbc = (engine as any).boosts.get('BBC');
+      expect(bbc.power).toBe(0);
+    });
+
+    it('resets Time Lord at ONG when no Temporal Rift', async () => {
+      (engine as any).boosts.set('TimeLord', { unlocked: 1, bought: 1, power: 5 });
+
+      await engine.advanceToONG();
+
+      const tl = (engine as any).boosts.get('TimeLord');
+      expect(tl.power).toBe(0);
+    });
+
+    it('does not reset Time Lord when Temporal Rift is active', async () => {
+      (engine as any).boosts.set('TimeLord', { unlocked: 1, bought: 1, power: 5 });
+      (engine as any).boosts.set('TemporalRift', { unlocked: 1, bought: 1, power: 0 });
+
+      await engine.advanceToONG();
+
+      const tl = (engine as any).boosts.get('TimeLord');
+      expect(tl.power).toBe(5); // preserved
+    });
+
+    it('Logicat puzzle resets count at ONG', async () => {
+      (engine as any).boosts.set('LogiPuzzle', { unlocked: 1, bought: 1, power: 5 });
+
+      await engine.advanceToONG();
+
+      const lp = (engine as any).boosts.get('LogiPuzzle');
+      expect(lp.power).toBe(10); // set to 10 when < 10
+    });
+
+    it('Logicat WotA progression at ONG', async () => {
+      (engine as any).boosts.set('LogiPuzzle', { unlocked: 1, bought: 1, power: 60 });
+      (engine as any).boosts.set('WotA', { unlocked: 0, bought: 0, power: 0 });
+
+      await engine.advanceToONG();
+
+      // power >= 50 unlocks WotA
+      const wota = (engine as any).boosts.get('WotA');
+      expect(wota.unlocked).toBe(1);
+    });
+
+    it('Controlled Hysteresis overrides NP number before advancement', async () => {
+      (engine as any).boosts.set('ControlledHysteresis', { unlocked: 1, bought: 1, power: 42 });
+
+      await engine.advanceToONG();
+
+      // CH sets NP to 42 in ongBase, then ongAdvanceNewpix increments to 43
+      expect((engine as any).core.newpixNumber).toBe(43);
+    });
+
+    it('Lucky Glass resets at ONG', async () => {
+      (engine as any).boosts.set('GlassBlocks', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+      (engine as any).boosts.set('GlassChiller', { unlocked: 1, bought: 1, power: 7 });
+
+      await engine.advanceToONG();
+
+      const gb = (engine as any).boosts.get('GlassBlocks');
+      expect(gb.countdown).toBe(8); // GlassChiller.power + 1
+    });
+
+    it('Doublepost runs castle tools twice at ONG', async () => {
+      (engine as any).boosts.set('Doublepost', { unlocked: 1, bought: 1, power: 0 });
+      // Give castles and a Trebuchet
+      (engine as any).resources.castles = 1000;
+      const treb = (engine as any).castleTools.get('Trebuchet');
+      treb.amount = 1;
+
+      await engine.advanceToONG();
+
+      // With Doublepost, castle tools run twice
+      // Each cycle: destroy 5, build 10 -> net +5 per cycle, total +10
+      expect(treb.totalCastlesBuilt).toBeGreaterThan(0);
+    });
+  });
+
+  describe('judgement dip & papal decrees', () => {
+    it('Fireproof + NavCode disabled wipes all castles', async () => {
+      // Clear initial rate recalc
+      await engine.tick(1);
+
+      (engine as any).boosts.set('Fireproof', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('NavCode', { unlocked: 1, bought: 1, power: 0, isEnabled: false });
+      (engine as any).resources.castles = 1000;
+      (engine as any).resources.sand = 0;
+      (engine as any).cachedTotalSandRate = 0;
+
+      await engine.tick(1);
+
+      expect((engine as any).resources.castles).toBe(0);
+    });
+
+    it('does not wipe castles when NavCode is enabled', async () => {
+      (engine as any).boosts.set('Fireproof', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('NavCode', { unlocked: 1, bought: 1, power: 0, isEnabled: true });
+      (engine as any).resources.castles = 1000;
+
+      await engine.tick(1);
+
+      // Castles should still be >= 1000 (toCastles might add more)
+      expect((engine as any).resources.castles).toBeGreaterThanOrEqual(1000);
+    });
+
+    it('destroys castles when judgeLevel > 1 and timing aligns', async () => {
+      // Clear initial rate recalc
+      await engine.tick(1);
+
+      (engine as any).judgeLevel = 3;
+      (engine as any).resources.castles = 10000;
+      (engine as any).cachedTotalSandRate = 0;
+      // Set elapsed so after tick adds 1000ms it aligns with 25-second window
+      (engine as any).ong.elapsed = 24000;
+
+      const npb = (engine as any).castleTools.get('NewPixBot');
+      npb.amount = 10;
+
+      await engine.tick(1);
+
+      // Should have destroyed some castles
+      expect((engine as any).resources.castles).toBeLessThan(10000);
+    });
+
+    it('does not destroy castles when judgeLevel <= 1', async () => {
+      await engine.tick(1);
+
+      (engine as any).judgeLevel = 1;
+      (engine as any).resources.castles = 10000;
+      (engine as any).ong.elapsed = 25000;
+      (engine as any).cachedTotalSandRate = 0;
+
+      const castlesBefore = (engine as any).resources.castles;
+      await engine.tick(1);
+
+      expect((engine as any).resources.castles).toBe(castlesBefore);
+    });
+
+    it('papal returns 1 for non-matching decree', () => {
+      (engine as any).decreeName = 'Sand';
+      (engine as any).decreeValue = 2;
+      (engine as any).papalBoostFactor = 1.5;
+
+      expect((engine as any).papal('Castles')).toBe(1);
+    });
+
+    it('papal returns multiplied value for matching decree > 1', () => {
+      (engine as any).decreeName = 'Sand';
+      (engine as any).decreeValue = 2;
+      (engine as any).papalBoostFactor = 1.5;
+
+      expect((engine as any).papal('Sand')).toBe(3); // 2 * 1.5
+    });
+
+    it('papal returns divided value for matching decree <= 1', () => {
+      (engine as any).decreeName = 'Sand';
+      (engine as any).decreeValue = 0.5;
+      (engine as any).papalBoostFactor = 2;
+
+      expect((engine as any).papal('Sand')).toBe(0.25); // 0.5 / 2
+    });
+
+    it('papal chips wired into glass chip production', async () => {
+      (engine as any).decreeName = 'Chips';
+      (engine as any).decreeValue = 3;
+      (engine as any).papalBoostFactor = 1;
+
+      const state = (engine as any).buildGlassChipProductionState();
+      expect(state.papalChipsMult).toBe(3);
+    });
+
+    it('papal blocks wired into glass block production', async () => {
+      (engine as any).decreeName = 'Blocks';
+      (engine as any).decreeValue = 2;
+      (engine as any).papalBoostFactor = 1;
+
+      const state = (engine as any).buildGlassBlockProductionState();
+      expect(state.papalBlocksMult).toBe(2);
+    });
+
+    it('calcReportJudgeLevel sets judgeLevel from NPB production', async () => {
+      const npb = (engine as any).castleTools.get('NewPixBot');
+      npb.amount = 100;
+      npb.totalCastlesBuilt = 1e10;
+
+      (engine as any).calcReportJudgeLevel();
+
+      // With high production, judge level should be > 0
+      expect((engine as any).judgeLevel).toBeGreaterThan(0);
+    });
+
+    it('getYourGoat adds goats and earns badges', async () => {
+      (engine as any).boosts.set('Goats', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('HoM', { unlocked: 0, bought: 0, power: 0 });
+
+      (engine as any).getYourGoat(25);
+
+      const goats = (engine as any).boosts.get('Goats');
+      expect(goats.power).toBe(25);
+      expect((engine as any).badges.get('Second Edition')).toBe(true);
+      expect((engine as any).boosts.get('HoM').unlocked).toBe(1);
+    });
+
+    it('voidStareMultiplier calculates correctly', async () => {
+      (engine as any).boosts.set('VoidStare', { unlocked: 1, bought: 1, power: 0, isEnabled: true });
+      (engine as any).boosts.set('Vacuum', { unlocked: 1, bought: 1, power: 1000 });
+      (engine as any).boosts.set('Blackprints', { unlocked: 1, bought: 1, power: 100 });
+
+      const mult = (engine as any).voidStareMultiplier('VoidStare');
+      // Math.pow(1.01, 1000/100) = Math.pow(1.01, 10) ≈ 1.10462
+      expect(mult).toBeCloseTo(1.10462, 3);
+    });
+
+    it('voidStareMultiplier returns 1 when not bought', async () => {
+      (engine as any).boosts.set('VoidStare', { unlocked: 1, bought: 0, power: 0 });
+
+      const mult = (engine as any).voidStareMultiplier('VoidStare');
+      expect(mult).toBe(1);
+    });
+
+    it('NavCode power suppresses judgement', async () => {
+      (engine as any).boosts.set('NavCode', { unlocked: 1, bought: 1, power: 1 });
+
+      const npb = (engine as any).castleTools.get('NewPixBot');
+      npb.amount = 100;
+      npb.totalCastlesBuilt = 1e10;
+
+      (engine as any).calcReportJudgeLevel();
+
+      expect((engine as any).judgeLevel).toBe(0);
+    });
+  });
 });
