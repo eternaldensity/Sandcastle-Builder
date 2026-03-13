@@ -36,6 +36,9 @@ Based on comprehensive test sweep (2026-01-26):
 | 17 | Logicat Puzzles | High | 4-5 | Complete (tests passing) |
 | 18 | Infinite Resources | Medium | 3-4 | Complete |
 | 19 | Glass Ceiling Enhancement | High | 4-5 | Complete (excl. Tool Factory) |
+| 20 | Tool Factory Core Production | High | 3 | **NEXT** |
+| 21 | Auto-Assembly & Blast Furnace | High | 3-4 | Blocked by 20 |
+| 22 | TF Chip Generation & PC Control | Medium | 2-3 | **NEXT** (parallel w/ 20) |
 
 ---
 
@@ -376,8 +379,728 @@ No further work needed.
 - `lockBoost()` recursion guard for cascade systems
 - 57 tests in glass-ceiling.test.ts (22 new)
 
-### Not Implemented (separate issue needed)
-- Tool Factory production logic (RunToolFactory) - complex system with chip loading, tool creation, auto-assembly
+### Not Implemented (separate plans below)
+- Tool Factory production logic (RunToolFactory) - see Plans 20-22
+
+---
+
+## Plan 20: Tool Factory Core Production (RunToolFactory)
+
+### Overview
+Implement the core `RunToolFactory` algorithm that converts Glass Chips (stored in TF.Level) into Glass Tools each mNP. This is the heart of the endgame production system.
+
+**Reference:** `boosts.js:5175-5313` (RunToolFactory), `boosts.js:5165-5173` (MakeTFOrder)
+
+### Prerequisites
+- ✅ Plan 18 (Infinite Resources) - TF boost, infinite pricing
+- ✅ Plan 19 (Glass Ceiling) - Glass Ceiling 0-11 boosts, ceiling count
+
+### Key Concepts
+
+#### Tool Factory Order (MakeTFOrder)
+The factory processes tools in a fixed interleaved order: Sand tool 0, Castle tool 0, Sand tool 1, Castle tool 1, ...
+```
+Index 0: Bucket       Index 1: NewPixBot
+Index 2: Cuegan       Index 3: Trebuchet
+Index 4: Flag         Index 5: Scaffold
+Index 6: Ladder       Index 7: Wave
+Index 8: Bag          Index 9: River
+Index 10: LaPetite    Index 11: Beanie Builder
+```
+
+#### Production Algorithm (two paths)
+
+**Inputs:**
+- `tfChipBuffer` = TF.Level (chips available)
+- `toolBuildNum` = PC.power (copies per tool type per mNP, default 1)
+- `acPower` = AA enabled ? (AC bought ? AC.power : 1) : 0
+- `fVal` = Flipside.power (0 = build infinite-price tools, 1 = build finite-price tools)
+- `gcCount` = number of Glass Ceilings owned (0-12)
+
+**Fast Path** (all 12 ceilings, Flipside off, enough chips, toolBuildNum > acPower):
+```
+if gcCount == 12 && fVal == 0 && tfChipBuffer >= 78000 * toolBuildNum && toolBuildNum > acPower:
+  for each tool in tfOrder:
+    tool.create(toolBuildNum - acPower)
+  tfChipBuffer -= ceil(Papal('ToolF') * 78000 * toolBuildNum)
+  built = toolBuildNum * 12
+```
+
+**Regular Path:**
+```
+toolBuildNum = floor(toolBuildNum / gcCount * 12)  // redistribute budget
+setPrice = 0
+for each tool in tfOrder (reverse):
+  if tool matches fVal filter AND Glass Ceiling owned:
+    setPrice += 1000 * (toolIndex + 1)
+setPrice = ceil(setPrice * Papal('ToolF'))
+iAfford = min(toolBuildNum, floor(tfChipBuffer / setPrice))
+
+// Build full sets
+for each matching tool (reverse):
+  tool.create(iAfford)
+  built += iAfford
+tfChipBuffer -= setPrice * iAfford
+
+// Build singles with remaining chips
+if iAfford < toolBuildNum:
+  for each matching tool (reverse):
+    cost = ceil(1000 * (toolIndex + 1) * Papal('ToolF'))
+    if tfChipBuffer >= cost:
+      tfChipBuffer -= cost; built++; tool.create(1)
+```
+
+**Post-production (if built > 0):**
+```
+Refresh all tools with finite prices
+built = floor(built * TDFactor())
+toolsBuilt += built; toolsBuiltTotal += built
+RatesRecalculate(); CheckBuyUnlocks()
+TF.Level = tfChipBuffer
+Check badge thresholds (KiloTool through WololoWololoTool)
+```
+
+#### Helper Functions
+
+**Papal('ToolF')** (`boosts.js:10006-10008`):
+- Returns 1 if current Decree target != 'ToolF'
+- Returns multiplied/divided Decree value otherwise
+- Part of the Papal decree system (cost modifier)
+
+**TDFactor()** (`boosts.js:6639-6647`):
+- Returns 1 normally
+- Returns 2 if TDE (Tool Duplication Engine) bought AND Crystal Dragon bought
+- Returns 2 + GL.power/10000 if also Dragon Foundry + GL bought
+
+#### Badge Thresholds (tools built per mNP)
+| Badge | Threshold |
+|-------|-----------|
+| KiloTool | ≥ 1,000 |
+| MegaTool | ≥ 1,000,000 |
+| GigaTool | ≥ 1,000,000,000 |
+| TeraTool | ≥ 1e12 |
+| PetaTool | ≥ 1e15 |
+| YottaTool | ≥ 1e24 |
+| WololoTool | ≥ 1e42 |
+| WololoWololoTool | ≥ 1e84 |
+
+### Implementation Steps
+
+#### Step 1: Create Tool Factory Calculator Module
+
+**File:** `src/engine/tool-factory.ts` (new file)
+
+```typescript
+/**
+ * Tool Factory production system.
+ * Converts Glass Chips (TF.Level) into Glass Tools each mNP.
+ * Reference: boosts.js:5175-5313
+ */
+
+/** Tool ordering: interleaved sand/castle tools */
+export const TF_ORDER: readonly { toolType: 'sand' | 'castle'; toolIndex: number; name: string }[] = [
+  { toolType: 'sand', toolIndex: 0, name: 'Bucket' },
+  { toolType: 'castle', toolIndex: 0, name: 'NewPixBot' },
+  { toolType: 'sand', toolIndex: 1, name: 'Cuegan' },
+  { toolType: 'castle', toolIndex: 1, name: 'Trebuchet' },
+  { toolType: 'sand', toolIndex: 2, name: 'Flag' },
+  { toolType: 'castle', toolIndex: 2, name: 'Scaffold' },
+  { toolType: 'sand', toolIndex: 3, name: 'Ladder' },
+  { toolType: 'castle', toolIndex: 3, name: 'Wave' },
+  { toolType: 'sand', toolIndex: 4, name: 'Bag' },
+  { toolType: 'castle', toolIndex: 4, name: 'River' },
+  { toolType: 'sand', toolIndex: 5, name: 'LaPetite' },
+  { toolType: 'castle', toolIndex: 5, name: 'Beanie Builder' },
+];
+
+export interface ToolFactoryState {
+  tfBought: boolean;
+  tfChipBuffer: number;         // TF.Level - chips available
+  pcPower: number;              // PC.power (toolBuildNum), default 1
+  aaEnabled: boolean;           // Automata Assemble toggle
+  acBought: boolean;            // Automata Control purchased
+  acPower: number;              // AC.power
+  flipsidePower: number;        // 0 = build infinite-price tools, 1 = finite
+  glassCeilingCount: number;    // 0-12
+  glassCeilings: boolean[];     // length 12, true if Glass Ceiling i is owned
+  toolPrices: number[];         // length 12, tool prices in tfOrder
+  priceFactor: number;          // Molpy.priceFactor
+  papalToolF: number;           // Papal('ToolF') multiplier
+  tdFactor: number;             // TDFactor() multiplier
+}
+
+export interface ToolFactoryResult {
+  toolsCreated: Map<string, number>;  // toolName -> amount created
+  chipsSpent: number;
+  totalBuilt: number;                 // after TDFactor
+  remainingChips: number;
+  acPower: number;                    // for post-production AA processing
+  usedFastPath: boolean;
+  badges: string[];                   // badges earned
+}
+
+/**
+ * Check if a tool should be produced based on Flipside filter and ceiling ownership.
+ */
+function shouldProduceTool(
+  toolOrderIndex: number,
+  toolPrice: number,
+  priceFactor: number,
+  flipsidePower: number,
+  glassCeilings: boolean[]
+): boolean {
+  const hasInfinitePrice = !isFinite(priceFactor * toolPrice);
+  // fVal == 0 means "build infinite-price tools" (Flipside disabled)
+  // isFinite(price) == fVal: when fVal=0, we want !isFinite (infinite price)
+  // when fVal=1, we want isFinite (finite price)
+  const matchesFilter = isFinite(priceFactor * toolPrice) === (flipsidePower === 1);
+  return matchesFilter && glassCeilings[toolOrderIndex];
+}
+
+export function runToolFactory(state: ToolFactoryState): ToolFactoryResult {
+  const result: ToolFactoryResult = {
+    toolsCreated: new Map(),
+    chipsSpent: 0,
+    totalBuilt: 0,
+    remainingChips: state.tfChipBuffer,
+    acPower: 0,
+    usedFastPath: false,
+    badges: [],
+  };
+
+  if (!state.tfBought) return result;
+
+  let toolBuildNum = state.pcPower > 0 ? state.pcPower : 1;
+  let tfChipBuffer = state.tfChipBuffer;
+
+  // Calculate acPower
+  let acPower = 0;
+  if (state.aaEnabled) {
+    acPower = state.acBought ? state.acPower : 1;
+  }
+  result.acPower = acPower;
+
+  let built = 0;
+  const fVal = state.flipsidePower;
+  const gcCount = state.glassCeilingCount;
+
+  if (gcCount === 0) return result;
+
+  // Fast path: all 12 ceilings, Flipside off, enough chips, toolBuildNum > acPower
+  if (gcCount === 12 && fVal === 0
+    && tfChipBuffer >= 78000 * toolBuildNum
+    && toolBuildNum > acPower) {
+
+    result.usedFastPath = true;
+    for (let t = TF_ORDER.length - 1; t >= 0; t--) {
+      const createAmount = toolBuildNum - acPower;
+      result.toolsCreated.set(TF_ORDER[t].name,
+        (result.toolsCreated.get(TF_ORDER[t].name) || 0) + createAmount);
+    }
+    tfChipBuffer -= Math.ceil(state.papalToolF * 78000 * toolBuildNum);
+    built = toolBuildNum * 12;
+
+  } else {
+    // Regular path
+    toolBuildNum = Math.floor(toolBuildNum / gcCount * 12);
+
+    // Calculate set price (cost for one of each selected tool)
+    let setPrice = 0;
+    for (let t = TF_ORDER.length - 1; t >= 0; t--) {
+      if (shouldProduceTool(t, state.toolPrices[t], state.priceFactor, fVal, state.glassCeilings)) {
+        setPrice += 1000 * (t + 1);
+      }
+    }
+    setPrice = Math.ceil(setPrice * state.papalToolF);
+
+    if (setPrice > 0) {
+      // Build full sets
+      const iAfford = Math.min(toolBuildNum, Math.floor(tfChipBuffer / setPrice));
+
+      if (iAfford > 0) {
+        for (let t = TF_ORDER.length - 1; t >= 0; t--) {
+          if (shouldProduceTool(t, state.toolPrices[t], state.priceFactor, fVal, state.glassCeilings)) {
+            result.toolsCreated.set(TF_ORDER[t].name,
+              (result.toolsCreated.get(TF_ORDER[t].name) || 0) + iAfford);
+            built += iAfford;
+          }
+        }
+        tfChipBuffer -= setPrice * iAfford;
+      }
+
+      // Build singles with remaining chips
+      if (iAfford < toolBuildNum) {
+        for (let t = TF_ORDER.length - 1; t >= 0; t--) {
+          if (shouldProduceTool(t, state.toolPrices[t], state.priceFactor, fVal, state.glassCeilings)) {
+            const cost = Math.ceil(1000 * (t + 1) * state.papalToolF);
+            if (tfChipBuffer >= cost) {
+              tfChipBuffer -= cost;
+              built++;
+              result.toolsCreated.set(TF_ORDER[t].name,
+                (result.toolsCreated.get(TF_ORDER[t].name) || 0) + 1);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (built > 0) {
+    // Apply TDFactor
+    built = Math.floor(built * state.tdFactor);
+    result.totalBuilt = built;
+    result.chipsSpent = state.tfChipBuffer - tfChipBuffer;
+    result.remainingChips = tfChipBuffer;
+
+    // Check badge thresholds
+    if (built >= 1000) result.badges.push('KiloTool');
+    if (built >= 1e6) result.badges.push('MegaTool');
+    if (built >= 1e9) result.badges.push('GigaTool');
+    if (built >= 1e12) result.badges.push('TeraTool');
+    if (built >= 1e15) result.badges.push('PetaTool');
+    if (built >= 1e24) result.badges.push('YottaTool');
+    if (built >= 1e42) result.badges.push('WololoTool');
+    if (built >= 1e84) result.badges.push('WololoWololoTool');
+  }
+
+  return result;
+}
+```
+
+#### Step 2: Create Tool Factory Tests
+
+**File:** `src/engine/tool-factory.test.ts`
+
+Test cases:
+1. **No production when TF not bought**
+2. **No production when gcCount = 0** (no ceilings owned)
+3. **Fast path activation** - all 12 ceilings, Flipside off, enough chips
+4. **Regular path - full sets** - partial ceilings, enough chips for full sets
+5. **Regular path - singles** - partial ceilings, chips only for partial production
+6. **Flipside filter** - fVal=0 builds infinite-price tools, fVal=1 builds finite-price
+7. **Glass Ceiling selection** - only produces tools with owned ceilings
+8. **Papal modifier** - production cost scaled by Papal('ToolF')
+9. **TDFactor multiplier** - built count multiplied by TDFactor
+10. **Badge thresholds** - correct badges earned at each level
+11. **Budget redistribution** - toolBuildNum redistributed when fewer ceilings selected
+12. **acPower subtraction** - fast path subtracts acPower from each tool's create amount
+13. **Edge cases** - zero chips, one ceiling, all expensive tools, chip buffer exactly matches cost
+
+#### Step 3: Integrate into ModernEngine
+
+**File:** `src/engine/modern-engine.ts`
+
+```typescript
+// In tick processing:
+private processToolFactory(): void {
+  const tfBoost = this.boosts.get('TF');
+  if (!tfBoost || tfBoost.bought === 0) return;
+
+  const state = this.buildToolFactoryState();
+  const result = runToolFactory(state);
+
+  if (result.totalBuilt > 0) {
+    // Apply tool creation
+    for (const [toolName, amount] of result.toolsCreated) {
+      this.createTool(toolName, amount);
+    }
+
+    // Update TF chip buffer
+    tfBoost.level = result.remainingChips;
+
+    // Update tracking
+    this.toolsBuilt += result.totalBuilt;
+    this.toolsBuiltTotal += result.totalBuilt;
+
+    // Recalculate rates and check unlocks
+    this.recalculateRates();
+    this.checkAutoUnlocks();
+
+    // Award badges
+    for (const badge of result.badges) {
+      this.earnBadge(badge);
+    }
+  }
+
+  // Store acPower for post-production AA processing (Plan 21)
+  this.lastACPower = result.acPower;
+}
+
+private buildToolFactoryState(): ToolFactoryState {
+  return {
+    tfBought: this.isBoostBought('TF'),
+    tfChipBuffer: this.getBoostLevel('TF'),
+    pcPower: this.isBoostBought('PC') ? this.getBoostPower('PC') : 1,
+    aaEnabled: this.isBoostEnabled('AA'),
+    acBought: this.isBoostBought('AC'),
+    acPower: this.getBoostPower('AC'),
+    flipsidePower: this.getBoostPower('Flipside'),
+    glassCeilingCount: this.getGlassCeilingCount(),
+    glassCeilings: Array.from({ length: 12 }, (_, i) =>
+      this.isBoostBought('Glass Ceiling ' + i)),
+    toolPrices: TF_ORDER.map(t => this.getToolPrice(t.name)),
+    priceFactor: this.priceFactor,
+    papalToolF: this.calculatePapal('ToolF'),
+    tdFactor: this.calculateTDFactor(),
+  };
+}
+```
+
+#### Step 4: Add TF Chip Loading (LoadToolFactory, auto-loading)
+
+**File:** `src/engine/tool-factory.ts` (additions)
+
+```typescript
+export interface ChipLoadingState {
+  tfBought: boolean;
+  sandToGlass: boolean;          // Sand to Glass boost owned
+  castlesToGlass: boolean;       // Castles to Glass boost owned
+  sandIsInfinite: boolean;       // Sand rate is infinite
+  castlesAreInfinite: boolean;   // Castles power is infinite
+  bgBought: boolean;             // Booster Glass owned
+  gmBought: boolean;             // Glass Multiplier owned
+  boneClickerBought: boolean;
+  bonemealAmount: number;
+  boostsOwned: number;
+  glassChipsAvailable: number;
+  loadedPermNP: number;          // cached chips/mNP from tools
+  // Tool production rates for chip generation
+  sandToolGpmNP: number[];       // glass chips per mNP per sand tool type
+  castleToolGpmNP: number[];
+}
+
+/** Calculate glass chips loaded per beach click */
+export function calculateChipsPerClick(state: ChipLoadingState): number {
+  if (!state.sandIsInfinite || !state.bgBought) return 0;
+  let perClick = state.boostsOwned * 4;
+  if (state.gmBought) {
+    perClick += state.loadedPermNP / 20;
+  }
+  if (state.boneClickerBought && state.bonemealAmount >= 1) {
+    perClick *= state.bonemealAmount * 5;
+  }
+  return perClick;
+}
+
+/** Manual chip loading from Glass Chips resource */
+export function calculateManualLoad(
+  amount: number,
+  glassChipsAvailable: number
+): { chipsLoaded: number; chipsSpent: number } {
+  const actual = Math.min(amount, glassChipsAvailable);
+  return { chipsLoaded: actual, chipsSpent: actual };
+}
+```
+
+### Files Changed Summary
+
+| File | Changes | Tests |
+|------|---------|-------|
+| `src/engine/tool-factory.ts` | New: core production algorithm + chip loading | ~30 tests |
+| `src/engine/tool-factory.test.ts` | New: comprehensive test suite | Unit + integration |
+| `src/engine/modern-engine.ts` | Integration: processToolFactory(), buildToolFactoryState() | Engine integration tests |
+
+### Success Criteria
+- `runToolFactory()` produces correct tool quantities for all input combinations
+- Fast path and regular path produce equivalent results when conditions match
+- Badge thresholds fire at correct built counts
+- Glass Ceiling filtering works correctly with Flipside
+- Papal and TDFactor modifiers applied correctly
+- Chip loading from beach clicks and manual loading work
+- All tests pass, zero TypeScript errors
+
+---
+
+## Plan 21: Auto-Assembly & Blast Furnace (RunFastFactory)
+
+### Overview
+After Tool Factory runs, if Automata Assemble (AA) is enabled, the system consumes tools to perform Blast Furnace runs and secondary automation tasks. This is the post-production pipeline.
+
+**Reference:** `boosts.js:5266-5313` (AA tool consumption), `boosts.js:5315-5397` (RunFastFactory)
+
+### Prerequisites
+- Plan 20 (Tool Factory Core) - provides acPower and built count
+- ✅ Plan 12 (Factory Automation) - base FA infrastructure
+- ✅ Plan 17 (Logicat Puzzles) - for Mario/caged logicat integration
+
+### Key Concepts
+
+#### Tool Consumption for AA (boosts.js:5266-5313)
+
+After production, if `acPower > 0`:
+
+**Mustard path** (if mustardTools active):
+```
+if Mustard Automation bought AND can spend 20 Mustard:
+  RunFastFactory(acPower)
+return
+```
+
+**Fast path** (if fast flag was set during production):
+```
+RunFastFactory(acPower)
+return
+```
+
+**Regular AA path:**
+1. Find minimum tool amount across all 12 tools
+2. If minimum is finite:
+   - Cap iterations at min(acPower, 1000)
+   - Each iteration: check all tools have amounts > 0 AND infinite prices (when Flipside off)
+   - If valid: subtract 1 from each tool's amount, increment times
+   - If any tool runs out or has finite price: break
+3. Call RunFastFactory(times)
+4. If minimum is infinite: RunFastFactory(acPower) directly
+
+#### RunFastFactory(times) (boosts.js:5315-5397)
+
+Distributes `times` across multiple systems:
+
+1. **Mario** (Logicat automation): If Mario enabled, spend QQ to reward Logicats
+2. **AE (Automation Engine)**:
+   - CfB (Construction from Blackprints): DoBlackprintConstruction(times)
+   - DoMouldWork(times)
+3. **Blast Furnace**: `furn = floor((times + random*3) / 2)`, reward glass
+4. **Milo** (Blackprint generation): If left > 7, generate Blackprint pages
+5. **Zoo Keep** (Panther Poke): If left > 10 and conditions met, poke panthers
+6. **Shadow Feeder / Coda**: Advanced dragon-related automation
+
+### Implementation Steps
+
+#### Step 1: Implement AA Tool Consumption
+
+**File:** `src/engine/tool-factory.ts` (additions)
+
+```typescript
+export interface AAConsumptionState {
+  acPower: number;
+  usedFastPath: boolean;
+  mustardTools: number;           // count of mustard tools
+  mustardAutomation: boolean;
+  mustardAmount: number;
+  toolAmounts: number[];          // 12 tools in tfOrder
+  toolPrices: number[];
+  priceFactor: number;
+  flipsidePower: number;
+}
+
+export interface AAConsumptionResult {
+  fastFactoryRuns: number;
+  toolsConsumed: number;          // per tool type
+  mustardSpent: number;
+}
+
+export function calculateAAConsumption(state: AAConsumptionState): AAConsumptionResult;
+```
+
+#### Step 2: Implement RunFastFactory Distribution
+
+**File:** `src/engine/fast-factory.ts` (new file)
+
+```typescript
+export interface FastFactoryState {
+  marioEnabled: boolean;
+  marioBought: number;
+  qqLevel: number;
+  aeBought: boolean;
+  cfbBought: boolean;
+  miloBought: boolean;
+  rushJobBought: boolean;
+  zkBought: boolean;
+  // ... other boost states
+}
+
+export interface FastFactoryResult {
+  blastFurnaceRuns: number;
+  blackprintPages: number;
+  pantherPokes: number;
+  logicatRewards: number;
+  // ... other outputs
+}
+
+export function runFastFactory(times: number, state: FastFactoryState): FastFactoryResult;
+```
+
+#### Step 3: Integrate into Engine Tick
+
+**File:** `src/engine/modern-engine.ts`
+
+After `processToolFactory()`, if acPower > 0, run AA consumption and fast factory.
+
+### Files Changed Summary
+
+| File | Changes | Tests |
+|------|---------|-------|
+| `src/engine/tool-factory.ts` | AA consumption logic | ~15 tests |
+| `src/engine/fast-factory.ts` | New: RunFastFactory distribution | ~20 tests |
+| `src/engine/fast-factory.test.ts` | New: test suite | Unit tests |
+| `src/engine/modern-engine.ts` | Integration: AA pipeline after TF | Integration tests |
+
+### Success Criteria
+- AA correctly consumes tools when all have infinite prices
+- Tool consumption capped at min(acPower, 1000)
+- RunFastFactory distributes runs across subsystems correctly
+- Blast Furnace rewards calculated with correct randomization formula
+- Milo/Zoo Keep/Mario automation triggered at correct thresholds
+- Tests cover all branches (mustard, fast, regular, infinite minimum)
+
+---
+
+## Plan 22: TF Chip Generation & Production Control
+
+### Overview
+Implement the chip generation pipeline (how Glass Chips flow into TF.Level) and the Production Control (PC) upgrade system.
+
+**Reference:** `boosts.js:5057-5131` (TF chip calculations), `boosts.js:5937-5949` (ControlToolFactory), `boosts.js:5153-5163` (LoadToolFactory)
+
+### Prerequisites
+- Plan 20 (Tool Factory Core) - uses chips that this plan generates
+- ✅ Plan 18 (Infinite Resources) - infinite sand/castle detection
+- ✅ Plan 3 (Glass Production) - glass chip/block infrastructure
+
+### Key Concepts
+
+#### Chip Generation Sources
+
+1. **Sand Tools → Chips** (requires "Sand to Glass" boost + infinite Sand):
+   - Each sand tool with infinite price produces `gpmNP` Glass Chips per mNP
+   - Total = Σ(tool.amount × tool.storedGpmNP) × globalGpmNPMult
+   - globalGpmNPMult = GL.power/100 (if GL bought) × Castles.globalMult (if CFT bought)
+
+2. **Castle Tools → Chips** (requires "Castles to Glass" boost + infinite Castles):
+   - Similar to sand tools but for castle tool types
+
+3. **Beach Clicks → Chips** (requires "BG" boost + infinite Sand):
+   - perClick = boostsOwned × 4
+   - If GM: += loadedPermNP / 20
+   - If Bone Clicker + Bonemeal: × bonemealAmount × 5
+
+4. **Manual Loading** (LoadToolFactory):
+   - Convert GlassChips resource → TF.Level
+   - Triggers unlock checks (Sand to Glass at Bucket≥7470, Castles to Glass at NPB≥1515)
+
+#### Production Control (PC) Upgrade
+
+- Increase: costs `1e6 × n × PC.power` Glass Blocks, adds `n` to PC.power
+- Decrease: costs `1e5 × n × PC.power` Glass Blocks, subtracts `n`
+- Max: 6e51 (earns "Nope!" badge)
+- Smart increment: UI offers power-of-10 increases based on affordability
+
+#### Chip Rate Badges (on rate increase)
+| Badge | Rate Threshold |
+|-------|----------------|
+| Plain Potato Chips | ≥ 5,000 |
+| Crinkle Cut Chips | ≥ 20,000 |
+| BBQ Chips | ≥ 800,000 |
+| Corn Chips | ≥ 4,000,000 |
+| Sour Cream and Onion Chips | ≥ 20,000,000 |
+| Cinnamon Apple Chips | ≥ 100,000,000 |
+| Sweet Chili Chips | ≥ 3,000,000,000 |
+| Banana Chips | ≥ 100,000,000,000 |
+| Nuclear Fission Chips | ≥ 5,000,000,000,000 |
+| Silicon Chips | ≥ 600,000,000,000,000 |
+| Blue Poker Chips | ≥ 1e19 |
+
+### Implementation Steps
+
+#### Step 1: Implement Chip Rate Calculator
+
+**File:** `src/engine/tool-factory.ts` (additions)
+
+```typescript
+export interface ChipRateState {
+  sandToGlass: boolean;
+  castlesToGlass: boolean;
+  sandIsInfinite: boolean;
+  castlesAreInfinite: boolean;
+  glBought: boolean;
+  glPower: number;
+  cftBought: boolean;
+  castlesGlobalMult: number;
+  sandToolRates: { amount: number; gpmNP: number; hasInfinitePrice: boolean }[];
+  castleToolRates: { amount: number; gpmNP: number; hasInfinitePrice: boolean }[];
+}
+
+export function calculateChipLoadedPermNP(state: ChipRateState): number;
+```
+
+#### Step 2: Implement PC Control
+
+**File:** `src/engine/tool-factory.ts` (additions)
+
+```typescript
+export function calculatePCUpgradeCost(
+  currentPower: number,
+  increment: number
+): number {
+  if (increment > 0) return 1e6 * increment * currentPower;
+  return 1e5 * Math.abs(increment) * currentPower;
+}
+
+export function calculateMaxPCIncrement(
+  currentPower: number,
+  glassBlocksAvailable: number
+): number;
+```
+
+#### Step 3: Add Chip Generation to Engine Tick
+
+**File:** `src/engine/modern-engine.ts`
+
+```typescript
+// In tick processing, before processToolFactory():
+private generateToolFactoryChips(): void {
+  const tf = this.boosts.get('TF');
+  if (!tf || tf.bought === 0) return;
+
+  const rate = this.calculateChipLoadedPermNP();
+  if (rate > 0) {
+    tf.level = (tf.level || 0) + rate;
+    // Check chip rate badges on increase
+  }
+}
+```
+
+### Files Changed Summary
+
+| File | Changes | Tests |
+|------|---------|-------|
+| `src/engine/tool-factory.ts` | Chip rate calculation, PC control | ~20 tests |
+| `src/engine/tool-factory.test.ts` | Chip rate + PC tests | Unit tests |
+| `src/engine/modern-engine.ts` | generateToolFactoryChips(), controlToolFactory() | Integration tests |
+
+### Success Criteria
+- Chip generation rate matches legacy for all Sand to Glass / Castles to Glass configurations
+- Beach click chip loading includes BG, GM, Bone Clicker multipliers
+- Manual loading deducts GlassChips and adds to TF.Level
+- PC upgrade/downgrade costs calculated correctly
+- PC max (6e51) triggers "Nope!" badge
+- Chip rate badges earned at correct thresholds
+- All tests pass, zero TypeScript errors
+
+---
+
+## Implementation Order (Updated 2026-03-13)
+
+### NEXT PRIORITIES (Tool Factory System)
+
+```
+Plan 20: TF Core Production ─┐
+                              ├──→ Complete Tool Factory system
+Plan 22: Chip Generation ─────┤    (can be done in parallel)
+                              │
+Plan 21: Auto-Assembly ───────┘    (depends on Plan 20)
+```
+
+**Recommended order:**
+1. **Plan 20 + 22 in parallel** - Core production and chip generation are independent
+2. **Plan 21 after Plan 20** - AA/Blast Furnace consumes what TF produces
+
+**Rationale:**
+- Plan 20 is the critical path - the core algorithm that everything else feeds into
+- Plan 22 feeds chips into Plan 20 but can be developed independently
+- Plan 21 is post-processing that requires Plan 20's output (acPower, built count)
+- Together these three plans complete the Tool Factory system noted as "Not Implemented" in Plan 19
 
 ---
 
