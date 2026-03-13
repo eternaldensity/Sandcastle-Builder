@@ -362,6 +362,13 @@ export class ModernEngine implements GameEngine {
       });
     }
 
+    // Initialize Tool Factory as virtual boost (acts as both boost and resource)
+    // TF is unlocked when a tool price reaches Infinity (Shop Failed badge)
+    // Its power represents Glass Chips loaded into it
+    if (!this.boosts.has('TF')) {
+      this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
+    }
+
     // Initialize badges
     for (const [name] of Object.entries(this.gameData.badges)) {
       this.badges.set(name, false);
@@ -481,6 +488,9 @@ export class ModernEngine implements GameEngine {
     if (!this.boosts.has('GlassBlocks')) {
       this.boosts.set('GlassBlocks', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
     }
+    if (!this.boosts.has('TF')) {
+      this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
+    }
 
     // Load boosts
     for (const [alias, boostState] of Object.entries(state.boosts)) {
@@ -561,6 +571,9 @@ export class ModernEngine implements GameEngine {
     }
     if (!this.boosts.has('GlassBlocks')) {
       this.boosts.set('GlassBlocks', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('TF')) {
+      this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
     }
     this.syncResourceBoosts();
 
@@ -2803,7 +2816,28 @@ export class ModernEngine implements GameEngine {
     );
 
     // Sand tools cost castles
-    if (isFinite(price) && this.resources.castles >= price) {
+    if (!isFinite(price)) {
+      // Infinite price: unlock Tool Factory and earn Shop Failed badge
+      // Reference: castle.js:598-600
+      this.doUnlockBoost('TF');
+      this.earnBadge(name + ' Shop Failed');
+
+      // Glass chip fallback: if TF is owned and badge earned, buy with glass chips
+      // Reference: castle.js:727-730 - GlassChips: 1000 * (id * 2 + 1)
+      const tfState = this.boosts.get('TF');
+      if (tfState && tfState.bought > 0) {
+        const glassPrice = 1000 * (toolDef.id * 2 + 1);
+        if (this.resources.glassChips >= glassPrice) {
+          this.resources.glassChips -= glassPrice;
+          state.amount++;
+          state.bought++;
+          this.syncResourceBoosts();
+          this.recalculateSandRates();
+          this.recalculateCastleRates();
+          this.checkAutoUnlocks();
+        }
+      }
+    } else if (this.resources.castles >= price) {
       this.resources.castles -= price;
       state.amount++;
       state.bought++;
@@ -2827,6 +2861,9 @@ export class ModernEngine implements GameEngine {
     const seeds = CASTLE_TOOL_SEEDS[name];
     if (!seeds) return;
 
+    const toolDef = this.gameData.castleTools.find(t => t.name === name);
+    if (!toolDef) return;
+
     // Calculate Fibonacci price
     const priceState = calculateCastleToolPrice(
       seeds.price0,
@@ -2837,7 +2874,29 @@ export class ModernEngine implements GameEngine {
     // Apply priceFactor
     const price = Math.floor(this.priceFactor * priceState.price);
 
-    if (isFinite(price) && this.resources.castles >= price) {
+    if (!isFinite(price)) {
+      // Infinite price: unlock Tool Factory and earn Shop Failed badge
+      // Reference: castle.js:910-912
+      this.doUnlockBoost('TF');
+      this.earnBadge(name + ' Shop Failed');
+
+      // Glass chip fallback: if TF is owned and badge earned, buy with glass chips
+      // Reference: castle.js:1128-1131 - GlassChips: 1000 * (id * 2 + 2)
+      const tfState = this.boosts.get('TF');
+      if (tfState && tfState.bought > 0) {
+        const glassPrice = 1000 * (toolDef.id * 2 + 2);
+        if (this.resources.glassChips >= glassPrice) {
+          this.resources.glassChips -= glassPrice;
+          state.amount++;
+          state.bought++;
+          this.castleToolPrices[name] = priceState;
+          this.syncResourceBoosts();
+          this.recalculateSandRates();
+          this.recalculateCastleRates();
+          this.checkAutoUnlocks();
+        }
+      }
+    } else if (this.resources.castles >= price) {
       this.resources.castles -= price;
       state.amount++;
       state.bought++;
@@ -3028,15 +3087,21 @@ export class ModernEngine implements GameEngine {
     // Primary resources have dedicated fields
     switch (resource) {
       case 'Sand':
+        // Guard: spending from infinite resource should keep it infinite
+        // Infinity + (-Infinity) = NaN, but spending from infinite means it stays infinite
+        if (!isFinite(this.resources.sand) && amount < 0) return;
         this.resources.sand += amount;
         return;
       case 'Castles':
+        if (!isFinite(this.resources.castles) && amount < 0) return;
         this.resources.castles += amount;
         return;
       case 'GlassChips':
+        if (!isFinite(this.resources.glassChips) && amount < 0) return;
         this.resources.glassChips += amount;
         return;
       case 'GlassBlocks':
+        if (!isFinite(this.resources.glassBlocks) && amount < 0) return;
         this.resources.glassBlocks += amount;
         return;
     }
@@ -3044,6 +3109,7 @@ export class ModernEngine implements GameEngine {
     // All other resources are stored as boost power
     const boost = this.boosts.get(resource);
     if (boost) {
+      if (!isFinite(boost.power) && amount < 0) return;
       boost.power += amount;
     }
   }

@@ -509,9 +509,9 @@ export function createSaveParser(gameData: {
 }): SaveParser {
   const boostAliases = gameData.boostsById.map((b) => b.alias);
 
-  // Add virtual resource boosts that store Sand, Castles, GlassChips, GlassBlocks
+  // Add virtual resource boosts that store Sand, Castles, GlassChips, GlassBlocks, TF
   // These are appended at the end to not break boost index compatibility
-  const virtualResourceBoosts = ['Sand', 'Castles', 'GlassChips', 'GlassBlocks'];
+  const virtualResourceBoosts = ['Sand', 'Castles', 'GlassChips', 'GlassBlocks', 'TF'];
   const allBoostAliases = [...boostAliases, ...virtualResourceBoosts];
 
   const regularBadgeNames = gameData.badgesById
