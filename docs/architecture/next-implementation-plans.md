@@ -36,9 +36,9 @@ Based on comprehensive test sweep (2026-01-26):
 | 17 | Logicat Puzzles | High | 4-5 | Complete (tests passing) |
 | 18 | Infinite Resources | Medium | 3-4 | Complete |
 | 19 | Glass Ceiling Enhancement | High | 4-5 | Complete (excl. Tool Factory) |
-| 20 | Tool Factory Core Production | High | 3 | **NEXT** |
-| 21 | Auto-Assembly & Blast Furnace | High | 3-4 | Blocked by 20 |
-| 22 | TF Chip Generation & PC Control | Medium | 2-3 | **NEXT** (parallel w/ 20) |
+| 20 | Tool Factory Core Production | High | 3 | Complete |
+| 21 | Auto-Assembly & Blast Furnace | High | 3-4 | Complete |
+| 22 | TF Chip Generation & PC Control | Medium | 2-3 | Complete |
 
 ---
 
