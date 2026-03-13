@@ -34,8 +34,8 @@ Based on comprehensive test sweep (2026-01-26):
 | 15 | Badge Auto-Earn Enhancement | Medium | 3-4 | **HIGH PRIORITY** |
 | 16 | Dragon System | Very High | 6-8 | Blocked by 14-15 |
 | 17 | Logicat Puzzles | High | 4-5 | Complete (tests passing) |
-| 18 | Infinite Resources | Medium | 3-4 | Partially Complete |
-| 19 | Glass Ceiling Enhancement | High | 4-5 | Basic Complete |
+| 18 | Infinite Resources | Medium | 3-4 | Complete |
+| 19 | Glass Ceiling Enhancement | High | 4-5 | Complete (excl. Tool Factory) |
 
 ---
 
@@ -351,39 +351,33 @@ No further work needed.
 
 ## Plan 18: Infinite Resources
 
-### Current State (2026-01-26)
-- ✅ **PARTIALLY COMPLETE** - Infinity handling in redundakitty system
-- Number formatting supports infinity display
-- Reward type determination handles infinite sand
+### Status: ✅ COMPLETE (2026-03-13)
 
-### Remaining Work
-- Price calculations with infinite resources
-- Rate calculations for infinite edge cases
-- State snapshot infinity handling
-
-### Status
-**LOW PRIORITY** - Core functionality works, edge cases can be addressed as encountered.
+### Implemented
+- TF (Tool Factory) unlock and Shop Failed badge on infinite tool price (castle.js:598-600, 910-912)
+- Glass chip pricing fallback when TF is bought: sand tools 1000*(id*2+1), castle tools 1000*(id*2+2)
+- Infinite resource spending guard (Infinity - Infinity = NaN prevention)
+- Infinity save/load round-trip (parseFloat("Infinity") works correctly)
+- TF added as virtual boost with full serialization support
+- 21 tests in infinite-resources.test.ts
 
 ---
 
 ## Plan 19: Glass Ceiling Enhancement
 
-### Current State (2026-01-26)
-- ✅ **BASIC COMPLETE** - Glass chip/block production working (35 tests passing)
-- Glass production at ONG implemented
-- Basic glass mechanics functional
+### Status: ✅ COMPLETE (2026-03-13, excluding Tool Factory production)
 
-### Files Implemented
-- [src/engine/glass-ceiling.test.ts](../../src/engine/glass-ceiling.test.ts) - 35 passing tests
-- Glass production integrated into modern engine
+### Implemented
+- Glass Ceiling 0-11 as virtual boosts (initialization, loadState, exportState, serialization)
+- Glass ceiling buy/lock functions with cascade unlock check (boosts.js:3391-3500)
+- `isCeilingTogglable()` and `glassCeilingUnlockCheck()` exported from boost-functions.ts
+- Dynamic pricing: `calculateGlassCeilingPrice(index, power)` with GLASS_CEILING_PRICE_INCS
+- `isBadgeEarned()` and `isBoostBought()` added to BoostFunctionContext
+- `lockBoost()` recursion guard for cascade systems
+- 57 tests in glass-ceiling.test.ts (22 new)
 
-### Remaining Work
-- Glass ceiling multiplier system (complex endgame feature)
-- Glass-based boost unlock conditions
-- Glass ceiling badges
-
-### Status
-**DEFER** - Basic functionality complete, advanced features are low priority endgame content.
+### Not Implemented (separate issue needed)
+- Tool Factory production logic (RunToolFactory) - complex system with chip loading, tool creation, auto-assembly
 
 ---
 

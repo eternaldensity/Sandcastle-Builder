@@ -178,3 +178,58 @@ export const GLASS_CEILING_BADGES = {
   CEILING_BROKEN: 10,      // Requires 10+ glass ceilings
   CEILING_DISINTEGRATED: 12, // Requires all 12 glass ceilings
 };
+
+/**
+ * Price increment multipliers per glass ceiling index.
+ * Each purchase increases the price by this factor raised to the power count.
+ * Reference: boosts.js:3361
+ */
+export const GLASS_CEILING_PRICE_INCS: readonly number[] = [
+  1.1, 1.25, 1.6, 2, 2, 2, 2, 2, 2, 2, 1, 1,
+];
+
+/**
+ * Calculate the price of a glass ceiling boost.
+ *
+ * Formula: 6 * 1000^(index+1) * priceInc[index]^power
+ * Sand and Castles use the same formula.
+ * GlassBlocks cost: 50 * (index + 1)
+ *
+ * Reference: boosts.js:3379-3389
+ *
+ * @param index - Glass ceiling index (0-11)
+ * @param power - Current power level (purchase count)
+ * @returns Price object with sand, castles, and glassBlocks costs
+ */
+export function calculateGlassCeilingPrice(
+  index: number,
+  power: number
+): { sand: number; castles: number; glassBlocks: number } {
+  const priceInc = GLASS_CEILING_PRICE_INCS[index] ?? 1;
+  const basePrice = 6 * Math.pow(1000, index + 1) * Math.pow(priceInc, power);
+
+  return {
+    sand: basePrice,
+    castles: basePrice,
+    glassBlocks: 50 * (index + 1),
+  };
+}
+
+/**
+ * Description text for each glass ceiling (what it multiplies).
+ * Reference: boosts.js:3362-3364
+ */
+export const GLASS_CEILING_DESCRIPTIONS: readonly string[] = [
+  'Sand rate of Buckets',
+  'Castles produced by NewPixBots',
+  'Sand rate of Cuegan',
+  'Castles produced by Trebuchets',
+  'Sand rate of Flags',
+  'Castles produced by Scaffolds',
+  'Sand rate of Ladders',
+  'Castles produced by Waves',
+  'Sand rate of Bags',
+  'Castles produced by Rivers',
+  'Sand rate of LaPetite',
+  'Castles produced by Beanie Builders',
+];

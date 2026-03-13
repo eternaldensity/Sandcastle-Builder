@@ -38,6 +38,8 @@ export interface BoostFunctionContext {
   getBoostPower(alias: string): number;
   getBoostBought(alias: string): number;
   isBoostEnabled(alias: string): boolean;
+  isBoostBought(alias: string): boolean;
+  isBadgeEarned(name: string): boolean;
 
   // Engine mutations
   setBoostPower(alias: string, power: number): void;
@@ -595,6 +597,85 @@ boostFunctionRegistry['Blitzing'] = {
 // =============================================================================
 // Helper Functions
 // =============================================================================
+
+// =============================================================================
+// Glass Ceiling System (0-11)
+// Reference: boosts.js:3366-3500
+// =============================================================================
+
+/**
+ * Check if a glass ceiling index is toggleable (can be locked/unlocked).
+ * Equivalent to legacy Molpy.CeilingTogglable(key).
+ *
+ * A ceiling is toggleable if:
+ * - key-1 < 0 (first ceiling) OR ceiling key-1 is bought
+ * - AND no ceilings before key-1 are bought
+ *
+ * Reference: boosts.js:3476-3490
+ */
+export function isCeilingTogglable(key: number, ctx: BoostFunctionContext): boolean {
+  const prevKey = key - 1;
+  if (prevKey < 0 || ctx.isBoostBought(`Glass Ceiling ${prevKey}`)) {
+    let check = prevKey - 1;
+    while (check >= 0) {
+      if (ctx.isBoostBought(`Glass Ceiling ${check}`)) {
+        return false;
+      }
+      check--;
+    }
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Run the glass ceiling unlock cascade check.
+ * For ceilings 0-9, automatically unlocks/locks based on toggleability rules.
+ * Equivalent to legacy Molpy.GlassCeilingUnlockCheck().
+ *
+ * Reference: boosts.js:3457-3473
+ */
+export function glassCeilingUnlockCheck(ctx: BoostFunctionContext): void {
+  for (let i = 9; i >= 0; i--) {
+    const bought = ctx.getBoostBought(`Glass Ceiling ${i}`);
+    if (!bought) {
+      if (!ctx.isBadgeEarned('Ceiling Broken')) {
+        if (isCeilingTogglable(i, ctx)) {
+          ctx.unlockBoost(`Glass Ceiling ${i}`);
+        } else {
+          ctx.lockBoost(`Glass Ceiling ${i}`);
+        }
+      }
+    }
+  }
+}
+
+// Register buy/lock functions for each glass ceiling
+for (let i = 0; i < 12; i++) {
+  boostFunctionRegistry[`Glass Ceiling ${i}`] = {
+    /**
+     * buyFunction: Increment power (or reset if Ceiling Broken earned).
+     * Then cascade unlock check.
+     * Reference: boosts.js:3391-3398
+     */
+    buyFunction: (ctx) => {
+      if (ctx.isBadgeEarned('Ceiling Broken')) {
+        ctx.setBoostPower(ctx.boostAlias, 0);
+      } else {
+        ctx.setBoostPower(ctx.boostAlias, ctx.boostPower + 1);
+      }
+      glassCeilingUnlockCheck(ctx);
+    },
+
+    /**
+     * lockFunction: Cascade unlock check after locking.
+     * Reference: boosts.js:3400-3404
+     */
+    lockFunction: (ctx) => {
+      glassCeilingUnlockCheck(ctx);
+    },
+  };
+}
 
 /**
  * Get all registered boost aliases.

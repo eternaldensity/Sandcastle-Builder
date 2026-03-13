@@ -6,10 +6,18 @@ import {
   isGlassCeilingLocked,
   canToggleGlassCeiling,
   getGlassCeilingMultiplierForTool,
+  calculateGlassCeilingPrice,
   GLASS_CEILING_TOOL_MAP,
   GLASS_CEILING_BADGES,
+  GLASS_CEILING_PRICE_INCS,
+  GLASS_CEILING_DESCRIPTIONS,
   type GlassCeilingState,
 } from './glass-ceiling.js';
+import {
+  isCeilingTogglable,
+  glassCeilingUnlockCheck,
+  type BoostFunctionContext,
+} from './boost-functions.js';
 
 describe('Glass Ceiling System', () => {
   describe('calculateGlassCeilingCount', () => {
@@ -452,6 +460,244 @@ describe('Glass Ceiling System', () => {
     it('has correct thresholds', () => {
       expect(GLASS_CEILING_BADGES.CEILING_BROKEN).toBe(10);
       expect(GLASS_CEILING_BADGES.CEILING_DISINTEGRATED).toBe(12);
+    });
+  });
+
+  describe('GLASS_CEILING_PRICE_INCS', () => {
+    it('has 12 entries', () => {
+      expect(GLASS_CEILING_PRICE_INCS).toHaveLength(12);
+    });
+
+    it('has correct values', () => {
+      expect(GLASS_CEILING_PRICE_INCS[0]).toBe(1.1);
+      expect(GLASS_CEILING_PRICE_INCS[1]).toBe(1.25);
+      expect(GLASS_CEILING_PRICE_INCS[2]).toBe(1.6);
+      expect(GLASS_CEILING_PRICE_INCS[10]).toBe(1);
+      expect(GLASS_CEILING_PRICE_INCS[11]).toBe(1);
+    });
+  });
+
+  describe('GLASS_CEILING_DESCRIPTIONS', () => {
+    it('has 12 entries', () => {
+      expect(GLASS_CEILING_DESCRIPTIONS).toHaveLength(12);
+    });
+
+    it('has correct first and last entries', () => {
+      expect(GLASS_CEILING_DESCRIPTIONS[0]).toBe('Sand rate of Buckets');
+      expect(GLASS_CEILING_DESCRIPTIONS[11]).toBe('Castles produced by Beanie Builders');
+    });
+  });
+
+  describe('calculateGlassCeilingPrice', () => {
+    it('calculates price for ceiling 0 at power 0', () => {
+      const price = calculateGlassCeilingPrice(0, 0);
+      // 6 * 1000^1 * 1.1^0 = 6000
+      expect(price.sand).toBe(6000);
+      expect(price.castles).toBe(6000);
+      expect(price.glassBlocks).toBe(50);
+    });
+
+    it('calculates price for ceiling 0 at power 1', () => {
+      const price = calculateGlassCeilingPrice(0, 1);
+      // 6 * 1000 * 1.1^1 = 6600
+      expect(price.sand).toBeCloseTo(6600);
+      expect(price.castles).toBeCloseTo(6600);
+      expect(price.glassBlocks).toBe(50);
+    });
+
+    it('calculates price for ceiling 1 at power 0', () => {
+      const price = calculateGlassCeilingPrice(1, 0);
+      // 6 * 1000^2 * 1.25^0 = 6,000,000
+      expect(price.sand).toBe(6000000);
+      expect(price.castles).toBe(6000000);
+      expect(price.glassBlocks).toBe(100);
+    });
+
+    it('scales GlassBlocks by index', () => {
+      for (let i = 0; i < 12; i++) {
+        const price = calculateGlassCeilingPrice(i, 0);
+        expect(price.glassBlocks).toBe(50 * (i + 1));
+      }
+    });
+
+    it('increases price exponentially with power for ceiling with inc > 1', () => {
+      const p0 = calculateGlassCeilingPrice(3, 0); // inc = 2
+      const p1 = calculateGlassCeilingPrice(3, 1);
+      const p2 = calculateGlassCeilingPrice(3, 2);
+      expect(p1.sand).toBeCloseTo(p0.sand * 2);
+      expect(p2.sand).toBeCloseTo(p0.sand * 4);
+    });
+
+    it('price stays constant for ceiling 10 and 11 (inc = 1)', () => {
+      const p0 = calculateGlassCeilingPrice(10, 0);
+      const p5 = calculateGlassCeilingPrice(10, 5);
+      expect(p0.sand).toBe(p5.sand); // 1^n = 1
+    });
+  });
+});
+
+// =============================================================================
+// Glass Ceiling Boost Functions (from boost-functions.ts)
+// =============================================================================
+
+/**
+ * Create a mock BoostFunctionContext for testing glass ceiling functions.
+ */
+function createMockContext(overrides: {
+  boostAlias?: string;
+  boostPower?: number;
+  boostBought?: number;
+  boughtBoosts?: Record<string, number>;
+  earnedBadges?: string[];
+} = {}): BoostFunctionContext {
+  const boughtBoosts: Record<string, number> = overrides.boughtBoosts ?? {};
+  const earnedBadges = new Set(overrides.earnedBadges ?? []);
+  const boostPowers: Record<string, number> = {};
+  const unlocked: Record<string, boolean> = {};
+  const locked: Record<string, boolean> = {};
+
+  return {
+    boostAlias: overrides.boostAlias ?? 'Glass Ceiling 0',
+    boostPower: overrides.boostPower ?? 0,
+    boostCountdown: 0,
+    boostBought: overrides.boostBought ?? 0,
+
+    getBeachClicks: () => 0,
+    getResource: () => 0,
+    getBoostPower: (alias) => boostPowers[alias] ?? 0,
+    getBoostBought: (alias) => boughtBoosts[alias] ?? 0,
+    isBoostEnabled: () => false,
+    isBoostBought: (alias) => (boughtBoosts[alias] ?? 0) > 0,
+    isBadgeEarned: (name) => earnedBadges.has(name),
+
+    setBoostPower: (alias, power) => { boostPowers[alias] = power; },
+    setBoostCountdown: () => {},
+    addResource: () => {},
+    subtractResource: () => {},
+    lockBoost: (alias) => { locked[alias] = true; delete unlocked[alias]; },
+    unlockBoost: (alias) => { unlocked[alias] = true; delete locked[alias]; },
+    permalockBoost: () => {},
+    recalculatePriceFactor: () => {},
+    earnBadge: (name) => { earnedBadges.add(name); },
+    notify: () => {},
+  };
+}
+
+describe('Glass Ceiling Boost Functions', () => {
+  describe('isCeilingTogglable', () => {
+    it('ceiling 0 is always toggleable', () => {
+      const ctx = createMockContext();
+      expect(isCeilingTogglable(0, ctx)).toBe(true);
+    });
+
+    it('ceiling 1 is toggleable when ceiling 0 is bought', () => {
+      const ctx = createMockContext({
+        boughtBoosts: { 'Glass Ceiling 0': 1 },
+      });
+      expect(isCeilingTogglable(1, ctx)).toBe(true);
+    });
+
+    it('ceiling 1 is not toggleable when ceiling 0 is not bought', () => {
+      const ctx = createMockContext();
+      expect(isCeilingTogglable(1, ctx)).toBe(false);
+    });
+
+    it('ceiling 2 is toggleable when only ceiling 1 is bought', () => {
+      const ctx = createMockContext({
+        boughtBoosts: { 'Glass Ceiling 1': 1 },
+      });
+      expect(isCeilingTogglable(2, ctx)).toBe(true);
+    });
+
+    it('ceiling 2 is not toggleable when ceilings 0 and 1 are both bought', () => {
+      const ctx = createMockContext({
+        boughtBoosts: { 'Glass Ceiling 0': 1, 'Glass Ceiling 1': 1 },
+      });
+      expect(isCeilingTogglable(2, ctx)).toBe(false);
+    });
+
+    it('ceiling 5 is toggleable when only ceiling 4 is bought', () => {
+      const ctx = createMockContext({
+        boughtBoosts: { 'Glass Ceiling 4': 1 },
+      });
+      expect(isCeilingTogglable(5, ctx)).toBe(true);
+    });
+
+    it('ceiling 5 is not toggleable when ceilings 3 and 4 are both bought', () => {
+      const ctx = createMockContext({
+        boughtBoosts: { 'Glass Ceiling 3': 1, 'Glass Ceiling 4': 1 },
+      });
+      expect(isCeilingTogglable(5, ctx)).toBe(false);
+    });
+  });
+
+  describe('glassCeilingUnlockCheck', () => {
+    it('unlocks ceiling 0 when no ceilings are bought', () => {
+      const unlocked: string[] = [];
+      const ctx = createMockContext();
+      // Override unlockBoost to track calls
+      ctx.unlockBoost = (alias) => { unlocked.push(alias); };
+
+      glassCeilingUnlockCheck(ctx);
+
+      expect(unlocked).toContain('Glass Ceiling 0');
+    });
+
+    it('does not unlock ceilings when Ceiling Broken badge is earned', () => {
+      const unlocked: string[] = [];
+      const locked: string[] = [];
+      const ctx = createMockContext({ earnedBadges: ['Ceiling Broken'] });
+      ctx.unlockBoost = (alias) => { unlocked.push(alias); };
+      ctx.lockBoost = (alias) => { locked.push(alias); };
+
+      glassCeilingUnlockCheck(ctx);
+
+      // With Ceiling Broken, the check should not auto-unlock/lock
+      expect(unlocked).toHaveLength(0);
+      expect(locked).toHaveLength(0);
+    });
+
+    it('locks non-toggleable ceilings', () => {
+      const locked: string[] = [];
+      const ctx = createMockContext();
+      ctx.lockBoost = (alias) => { locked.push(alias); };
+
+      glassCeilingUnlockCheck(ctx);
+
+      // Ceilings 1-9 should be locked since only ceiling 0 is toggleable (no ceilings bought)
+      for (let i = 1; i <= 9; i++) {
+        expect(locked).toContain(`Glass Ceiling ${i}`);
+      }
+    });
+
+    it('unlocks next ceiling when previous is bought', () => {
+      const unlocked: string[] = [];
+      const ctx = createMockContext({
+        boughtBoosts: { 'Glass Ceiling 0': 1 },
+      });
+      ctx.unlockBoost = (alias) => { unlocked.push(alias); };
+
+      glassCeilingUnlockCheck(ctx);
+
+      expect(unlocked).toContain('Glass Ceiling 1');
+    });
+
+    it('skips bought ceilings during check', () => {
+      const unlocked: string[] = [];
+      const locked: string[] = [];
+      const ctx = createMockContext({
+        boughtBoosts: { 'Glass Ceiling 0': 1, 'Glass Ceiling 1': 1 },
+      });
+      ctx.unlockBoost = (alias) => { unlocked.push(alias); };
+      ctx.lockBoost = (alias) => { locked.push(alias); };
+
+      glassCeilingUnlockCheck(ctx);
+
+      // Ceilings 0 and 1 are bought, so they should not be in unlock or lock lists
+      expect(unlocked).not.toContain('Glass Ceiling 0');
+      expect(unlocked).not.toContain('Glass Ceiling 1');
+      expect(locked).not.toContain('Glass Ceiling 0');
+      expect(locked).not.toContain('Glass Ceiling 1');
     });
   });
 });

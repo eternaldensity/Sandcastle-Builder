@@ -5,6 +5,7 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Update plan 18 and 19 status in implementation plans doc (#139)
 - Add comprehensive tests for dragon system (#112)
 - Implement dragon combat system (OpponentsAttack) (#111)
 - Implement dragon fledging mechanics (DragonFledge) (#110)
@@ -103,6 +104,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Glass ceiling enhancement: unlock/lock cascade, buy functions, and Tool Factory production (#138)
 - Add infinite resource handling for tool purchases and glass ceiling fallback (#137)
 - Implement Dragon System (Plan 14) - endgame dragon breeding, fighting, and digging (#104)
 - Implement Badge Auto-Earn Enhancement (Plan 15) (#133)

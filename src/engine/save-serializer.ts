@@ -452,7 +452,8 @@ export function createSaveSerializer(gameData: {
   // Add virtual resource boosts that store Sand, Castles, GlassChips, GlassBlocks
   // These are appended at the end to not break boost index compatibility
   const virtualResourceBoosts = ['Sand', 'Castles', 'GlassChips', 'GlassBlocks', 'TF'];
-  const allBoostAliases = [...boostAliases, ...virtualResourceBoosts];
+  const glassCeilingBoosts = Array.from({ length: 12 }, (_, i) => `Glass Ceiling ${i}`);
+  const allBoostAliases = [...boostAliases, ...virtualResourceBoosts, ...glassCeilingBoosts];
 
   const regularBadgeNames = gameData.badgesById
     .filter((b) => b.group === 'badges')

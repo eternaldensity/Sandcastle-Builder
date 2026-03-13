@@ -42,6 +42,7 @@ import {
 import { allUnlockRules } from './unlock-conditions.js';
 import {
   getBoostFunctions,
+  glassCeilingUnlockCheck,
   type BoostFunctionContext,
 } from './boost-functions.js';
 import {
@@ -369,6 +370,16 @@ export class ModernEngine implements GameEngine {
       this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
     }
 
+    // Initialize Glass Ceiling 0-11 as virtual boosts
+    // These are dynamically created in legacy via MakeGlassCeiling()
+    // Reference: boosts.js:3366-3411
+    for (let i = 0; i < 12; i++) {
+      const name = `Glass Ceiling ${i}`;
+      if (!this.boosts.has(name)) {
+        this.boosts.set(name, { unlocked: 0, bought: 0, power: 0, countdown: 0 });
+      }
+    }
+
     // Initialize badges
     for (const [name] of Object.entries(this.gameData.badges)) {
       this.badges.set(name, false);
@@ -385,11 +396,13 @@ export class ModernEngine implements GameEngine {
     // Initialize cached rates
     this.recalculateSandPerClick();
     this.recalculateSandRates();
-      this.recalculateCastleRates();
     this.recalculateCastleRates();
 
     // Check for auto-unlocks (matches legacy CheckBuyUnlocks behavior)
     this.checkAutoUnlocks();
+
+    // Run glass ceiling unlock cascade on fresh init
+    glassCeilingUnlockCheck(this.createBoostFunctionContext('Glass Ceiling 0'));
   }
 
   /**
@@ -491,6 +504,12 @@ export class ModernEngine implements GameEngine {
     if (!this.boosts.has('TF')) {
       this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
     }
+    for (let i = 0; i < 12; i++) {
+      const name = `Glass Ceiling ${i}`;
+      if (!this.boosts.has(name)) {
+        this.boosts.set(name, { unlocked: 0, bought: 0, power: 0, countdown: 0 });
+      }
+    }
 
     // Load boosts
     for (const [alias, boostState] of Object.entries(state.boosts)) {
@@ -546,8 +565,10 @@ export class ModernEngine implements GameEngine {
     this.recalculatePriceFactor();
     this.recalculateSandPerClick();
     this.recalculateSandRates();
-      this.recalculateCastleRates();
     this.recalculateCastleRates();
+
+    // Run glass ceiling unlock cascade after loading
+    glassCeilingUnlockCheck(this.createBoostFunctionContext('Glass Ceiling 0'));
   }
 
   /**
@@ -574,6 +595,12 @@ export class ModernEngine implements GameEngine {
     }
     if (!this.boosts.has('TF')) {
       this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
+    }
+    for (let i = 0; i < 12; i++) {
+      const name = `Glass Ceiling ${i}`;
+      if (!this.boosts.has(name)) {
+        this.boosts.set(name, { unlocked: 0, bought: 0, power: 0, countdown: 0 });
+      }
     }
     this.syncResourceBoosts();
 
@@ -3156,6 +3183,9 @@ export class ModernEngine implements GameEngine {
     const state = this.boosts.get(alias);
     if (!state) return;
 
+    // Skip if already locked (prevents infinite recursion in cascade systems)
+    if (state.unlocked === 0 && state.bought === 0) return;
+
     // Call boost's lockFunction before resetting state
     const functions = getBoostFunctions(alias);
     if (functions?.lockFunction) {
@@ -3216,6 +3246,11 @@ export class ModernEngine implements GameEngine {
         const boost = this.boosts.get(boostAlias);
         return boost?.bought ? (boost.isEnabled ?? true) : false;
       },
+      isBoostBought: (boostAlias) => {
+        const boost = this.boosts.get(boostAlias);
+        return (boost?.bought ?? 0) > 0;
+      },
+      isBadgeEarned: (name) => this.badges.get(name) === true,
 
       // Engine mutations
       setBoostPower: (boostAlias, power) => {
