@@ -836,4 +836,176 @@ describe('ModernEngine', () => {
       expect(state.castles).toBe(4);
     });
   });
+
+  describe('tick orchestration', () => {
+    it('increments life counter on each tick', async () => {
+      const snapshot1 = await engine.getStateSnapshot();
+      const life1 = (engine as any).core.life;
+      expect(life1).toBe(0);
+
+      await engine.tick(5);
+      const life2 = (engine as any).core.life;
+      expect(life2).toBe(5);
+    });
+
+    it('decrements Price Protection power per tick', async () => {
+      // Add Price Protection to test data
+      (engine as any).boosts.set('Price Protection', {
+        unlocked: 1, bought: 1, power: 10, countdown: 0,
+      });
+
+      await engine.tick(3);
+
+      const pp = (engine as any).boosts.get('Price Protection');
+      // Power should decrement from 10 to 7 (3 ticks)
+      expect(pp.power).toBe(7);
+    });
+
+    it('does not decrement Price Protection below 1', async () => {
+      (engine as any).boosts.set('Price Protection', {
+        unlocked: 1, bought: 1, power: 2, countdown: 0,
+      });
+
+      await engine.tick(5);
+
+      const pp = (engine as any).boosts.get('Price Protection');
+      // Power starts at 2, decrements to 1, then stops (only decrements when > 1)
+      expect(pp.power).toBe(1);
+    });
+
+    it('updates ONG elapsed time per tick', async () => {
+      const elapsed1 = (engine as any).ong.elapsed;
+      await engine.tick(10);
+      const elapsed2 = (engine as any).ong.elapsed;
+      expect(elapsed2 - elapsed1).toBe(10000); // 10 ticks * 1000ms
+    });
+
+    it('does not update ONG elapsed during Coma', async () => {
+      // Add Coma Molpy Style as a toggle boost
+      const boostDef = createBoostDef(999, 'Coma Molpy Style', 'boosts');
+      boostDef.isToggle = true;
+      (engine as any).gameData.boosts['Coma Molpy Style'] = boostDef;
+      (engine as any).boosts.set('Coma Molpy Style', {
+        unlocked: 1, bought: 1, power: 1, countdown: 0, isEnabled: true,
+      });
+
+      const elapsed1 = (engine as any).ong.elapsed;
+      await engine.tick(5);
+      const elapsed2 = (engine as any).ong.elapsed;
+      // ONG elapsed should not change during Coma
+      expect(elapsed2).toBe(elapsed1);
+    });
+
+    it('digs sand with cachedTotalSandRate per tick', async () => {
+      // Clear initial rate recalc flag first, then set our rate
+      await engine.tick(1);
+      (engine as any).cachedTotalSandRate = 100;
+
+      await engine.tick(3);
+      const state = await engine.getStateSnapshot();
+      // 3 ticks * 100 sand per tick = 300 sand (before toCastles conversion)
+      // toCastles converts sand to castles via Fibonacci cost sequence
+      expect(state.sand + state.castles).toBeGreaterThan(0);
+    });
+
+    it('locks boost when countdown expires', async () => {
+      (engine as any).boosts.set('TestCountdown', {
+        unlocked: 1, bought: 1, power: 50, countdown: 3,
+      });
+
+      await engine.tick(3);
+
+      const boost = (engine as any).boosts.get('TestCountdown');
+      // After 3 ticks, countdown should be 0, boost locked (bought=0), power reset
+      expect(boost.countdown).toBe(0);
+      expect(boost.bought).toBe(0);
+      expect(boost.power).toBe(0);
+    });
+
+    it('does not lock boost when countdown has not expired', async () => {
+      (engine as any).boosts.set('TestCountdown', {
+        unlocked: 1, bought: 1, power: 50, countdown: 10,
+      });
+
+      await engine.tick(3);
+
+      const boost = (engine as any).boosts.get('TestCountdown');
+      expect(boost.countdown).toBe(7);
+      expect(boost.bought).toBe(1);
+      expect(boost.power).toBe(50);
+    });
+
+    it('recalculates rates on first tick via needsRateRecalc flag', async () => {
+      // needsRateRecalc starts at 1
+      expect((engine as any).needsRateRecalc).toBe(1);
+
+      await engine.tick(1);
+
+      // After first tick, flag should be cleared
+      expect((engine as any).needsRateRecalc).toBe(0);
+    });
+
+    it('flagRateRecalc triggers recalculation on next tick', async () => {
+      // Clear the initial flag
+      await engine.tick(1);
+      expect((engine as any).needsRateRecalc).toBe(0);
+
+      // Flag for recalc
+      engine.flagRateRecalc();
+      expect((engine as any).needsRateRecalc).toBe(1);
+
+      await engine.tick(1);
+      expect((engine as any).needsRateRecalc).toBe(0);
+    });
+
+    it('papal returns 1 when no decree active', () => {
+      expect(engine.papal('Sand')).toBe(1);
+      expect(engine.papal('Chips')).toBe(1);
+      expect(engine.papal('ToolF')).toBe(1);
+    });
+
+    it('papal returns multiplier when decree matches', () => {
+      (engine as any).decreeName = 'Sand';
+      (engine as any).decreeValue = 2;
+      (engine as any).papalBoostFactor = 1.5;
+
+      expect(engine.papal('Sand')).toBe(3); // 2 * 1.5
+      expect(engine.papal('Chips')).toBe(1); // doesn't match
+    });
+
+    it('papal applies inverse for values less than 1', () => {
+      (engine as any).decreeName = 'Sand';
+      (engine as any).decreeValue = 0.5;
+      (engine as any).papalBoostFactor = 2;
+
+      expect(engine.papal('Sand')).toBe(0.25); // 0.5 / 2
+    });
+
+    it('accumulates sand tool totals per tick', async () => {
+      // Clear initial rate recalc flag first, then set our values
+      await engine.tick(1);
+      const bucket = (engine as any).sandTools.get('Bucket');
+      bucket.amount = 5;
+      bucket.totalSand = 0;
+      (engine as any).cachedSandToolRates['Bucket'] = 10;
+
+      await engine.tick(3);
+
+      // totalSand should increase: 3 ticks * 10 rate * 5 amount = 150
+      expect(bucket.totalSand).toBe(150);
+    });
+
+    it('digSand adds sand and auto-converts to castles', async () => {
+      // Clear initial rate recalc flag first, then set our rate
+      await engine.tick(1);
+      (engine as any).cachedTotalSandRate = 1000;
+
+      await engine.tick(1);
+
+      const state = await engine.getStateSnapshot();
+      // Should have produced 1000 sand, some converted to castles
+      expect(state.castles).toBeGreaterThan(0);
+      expect(state.sand + state.castles).toBeGreaterThan(0);
+    });
+  });
 });

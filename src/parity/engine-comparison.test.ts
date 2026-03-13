@@ -347,9 +347,9 @@ describe('Engine Comparison', () => {
       });
 
       // Simulate time passing to open npbONG window
-      // ninjaTime defaults to 400000ms for shortpix
-      // After 400+ ticks (400+ seconds), npbONG should be 1
-      for (let i = 0; i < 410; i++) {
+      // ninjaTime = 400 mNP * npLength(1800) = 720000ms for shortpix
+      // After 720+ ticks (720+ seconds), npbONG should be 1
+      for (let i = 0; i < 730; i++) {
         await modernEngine.tick(1);
       }
 

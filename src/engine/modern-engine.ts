@@ -18,6 +18,8 @@ import { SaveParser, createSaveParser } from './save-parser.js';
 import { SaveSerializer, createSaveSerializer, type SaveState, type CoreGameState } from './save-serializer.js';
 import { UnlockChecker, type UnlockCheckState } from './unlock-checker.js';
 import { calculateFactoryAutomationRuns } from './factory-automation.js';
+import { runToolFactory, type ToolFactoryState, type ToolFactoryResult } from './tool-factory.js';
+import { calculatePapal } from './chip-generation.js';
 import {
   calculateSandToolPurchasePrice,
   calculateCastleToolPrice,
@@ -154,6 +156,8 @@ interface CoreState {
   ninjad: boolean;
   saveCount: number;
   loadCount: number;
+  /** Game tick counter, incremented every mNP */
+  life: number;
 }
 
 /**
@@ -227,6 +231,7 @@ export class ModernEngine implements GameEngine {
     ninjad: false,
     saveCount: 0,
     loadCount: 0,
+    life: 0,
   };
 
   // ONG state machine
@@ -235,7 +240,7 @@ export class ModernEngine implements GameEngine {
     startTime: 0,
     npbONG: 0,
     npLength: 1800,
-    ninjaTime: 400000, // 400 mNP * 1000 for shortpix default
+    ninjaTime: 720000, // 400 mNP * npLength(1800) for shortpix default
   };
 
   // Resources
@@ -304,6 +309,17 @@ export class ModernEngine implements GameEngine {
 
   // Dragon system state
   private dragons: DragonSystemState = createInitialDragonSystemState();
+
+  // Rate recalculation flag (matches legacy Molpy.recalculateRates)
+  private needsRateRecalc = 1;
+
+  // Papal decree state
+  private decreeName = '';
+  private decreeValue = 1;
+  private papalBoostFactor = 1;
+
+  // Judgement level (Plan 26 placeholder)
+  private judgeLevel = 0;
 
   // Unlock checker for auto-unlock logic
   private unlockChecker: UnlockChecker;
@@ -778,22 +794,82 @@ export class ModernEngine implements GameEngine {
    * Reference: castle.js:3338-3460 (Molpy.Think)
    *
    * Each tick represents ~1 mNP (milliNewPix) of game time.
-   * Handles:
-   * - Sand production from sand tools
-   * - Sand to castle conversion (Fibonacci sequence)
-   * - ONG elapsed time tracking
-   * - npbONG window detection
+   * The order of operations matches the legacy Molpy.Think() exactly.
    *
    * IMPORTANT: Castle tools do NOT produce during regular ticks!
    * Castle tools only run DestroyPhase/BuildPhase at ONG transitions.
-   * See castle.js:3768-3787 for the ONG-only castle tool processing.
    */
   private processTick(): void {
+    // 1. Auto-convert sand to castles (castle.js:3340)
+    this.toCastles();
+
+    // 2. Price Protection countdown (castle.js:3343-3344)
+    this.tickPriceProtection();
+
+    // 3. Check ONG unless in ketchup or Coma (castle.js:3345)
+    const isComa = this.isBoostEnabled('Coma Molpy Style');
+    if (!isComa) {
+      this.tickCheckONG();
+    }
+
+    // 4. Boost countdown ticking (castle.js:3348-3366)
+    this.tickBoostCountdowns();
+
+    // 5. Recalculate rates if flagged (castle.js:3394)
+    if (this.needsRateRecalc) {
+      this.calculateRates();
+    }
+
+    // 6. Sand tool total tracking (castle.js:3395-3399)
+    for (const [name, state] of this.sandTools) {
+      if (state.amount > 0) {
+        const rate = this.cachedSandToolRates[name] ?? 0;
+        const produced = rate * state.amount;
+        state.totalSand = isFinite(state.totalSand) ? state.totalSand + produced : Infinity;
+      }
+    }
+
+    // 7. Sand digging with Papal multiplier (castle.js:3401)
+    const sandPermNP = this.cachedTotalSandRate;
+    const papalSand = this.papal('Sand');
+    this.digSand(sandPermNP * papalSand);
+
+    // 8. Glass block/chip rate calculation (castle.js:3436-3437)
+    // Already handled by chip-generation module when rates recalculate
+
+    // 9. Tool Factory per-tick processing (castle.js:3441)
+    this.tickToolFactory();
+
+    // 10. Dragon digging per mNP (castle.js:3443)
+    this.processDragonDig('mnp');
+
+    // 11. Second rate recalc pass (castle.js:3444)
+    if (this.needsRateRecalc) {
+      this.calculateRates();
+    }
+
+    // 12. Redundakitty spawn/despawn countdowns
+    this.tickRedundakitty();
+
+    // 13. Badge checking
+    this.badgeChecker.check('tick', this.buildBadgeCheckState());
+
+    // 14. Sync resource boosts
+    this.syncResourceBoosts();
+
+    // 15. Life counter (castle.js:3447)
+    this.core.life++;
+  }
+
+  /**
+   * Check ONG timing during tick.
+   * Reference: castle.js:3661-3686 (Molpy.CheckONG)
+   */
+  private tickCheckONG(): void {
     // Update ONG elapsed time (1 tick = ~1000ms)
     this.ong.elapsed += 1000;
 
     // Check if npbONG window should open
-    // Reference: castle.js:3675-3684
     if (this.ong.npbONG === 0 && !this.core.ninjad) {
       if (this.ong.elapsed >= this.ong.ninjaTime) {
         this.ong.npbONG = 1;
@@ -805,42 +881,178 @@ export class ModernEngine implements GameEngine {
     }
 
     // Check if ONG should trigger (end of newpix)
-    if (this.ong.elapsed >= this.ong.npLength * 1000) {
-      // Auto-ONG would happen here in real game
-      // For testing, we let advanceToONG() be called explicitly
+    // In testing mode, we let advanceToONG() be called explicitly
+    // In a live game loop, this would auto-trigger ONG
+  }
+
+  /**
+   * Price Protection countdown.
+   * Reference: castle.js:3343-3344
+   */
+  private tickPriceProtection(): void {
+    const pp = this.boosts.get('Price Protection');
+    if (pp && pp.power > 1) {
+      pp.power--;
+    }
+  }
+
+  /**
+   * Dig sand and add to resources.
+   * Reference: boosts.js:7473-7530 (Sand.dig)
+   *
+   * @param amount - Amount of sand to dig (sandPermNP * Papal)
+   */
+  private digSand(amount: number): void {
+    if (!isFinite(this.resources.sand)) {
+      amount = 0; // No point digging if already infinite
     }
 
-    // Calculate sand production from sand tools
-    // Reference: castle.js:3395-3401
-    let sandProduced = 0;
-    for (const [name, state] of this.sandTools) {
-      if (state.amount > 0) {
-        const produced = this.calculateSandToolProduction(name, state.amount);
-        sandProduced += produced;
-        state.totalSand += produced;
-      }
+    this.resources.sand += amount;
+
+    // Float epsilon correction (boosts.js:7482-7487)
+    const gap = Math.ceil(this.resources.sand) - this.resources.sand;
+    if (gap > 0 && gap < 1e-10) {
+      this.resources.sand = Math.ceil(this.resources.sand);
     }
 
-    // Add sand to resources
-    this.resources.sand += sandProduced;
+    // Sand milestone badges (boosts.js:7496-7530)
+    if (this.resources.sand >= 80000000) {
+      this.doUnlockBoost('Glass Furnace');
+    }
 
-    // Auto-convert sand to castles (matches legacy Molpy.Boosts['Sand'].toCastles())
-    // Reference: castle.js:3340
+    // Auto-convert sand to castles after digging
     this.toCastles();
+  }
 
-    // NOTE: Castle tools do NOT produce during ticks - only at ONG!
-    // The legacy game calls DestroyPhase/BuildPhase only in ONGBase.
+  /**
+   * Run Tool Factory per tick.
+   * Reference: castle.js:3441 (Molpy.RunToolFactory)
+   */
+  private tickToolFactory(): void {
+    const tfBoost = this.boosts.get('TF');
+    if (!tfBoost || !tfBoost.bought) return;
 
-    // Process redundakitty spawn/despawn countdowns
-    this.tickRedundakitty();
+    const state = this.buildToolFactoryState();
+    if (!state) return;
 
-    // Process boost countdowns (Blitzing, etc.)
-    this.tickBoostCountdowns();
+    const result = runToolFactory(state);
 
-    this.syncResourceBoosts();
+    // Apply results
+    if (result.totalBuilt > 0) {
+      // Update TF chip buffer
+      tfBoost.power = result.remainingChips;
 
-    // Check tick-based badges (e.g., Badge Collector for badge count milestones)
-    this.badgeChecker.check('tick', this.buildBadgeCheckState());
+      // Add tools
+      for (const [toolName, count] of result.toolsCreated) {
+        const sandTool = this.sandTools.get(toolName);
+        const castleTool = this.castleTools.get(toolName);
+        if (sandTool) {
+          sandTool.amount += count;
+          sandTool.temp += count;
+        } else if (castleTool) {
+          castleTool.amount += count;
+          castleTool.temp += count;
+        }
+      }
+
+      // Earn badges
+      for (const badge of result.badgesEarned) {
+        this.earnBadge(badge);
+      }
+
+      // Flag rate recalculation since tools changed
+      this.flagRateRecalc();
+    }
+  }
+
+  /**
+   * Build ToolFactoryState from current engine state.
+   */
+  private buildToolFactoryState(): ToolFactoryState | null {
+    const tf = this.boosts.get('TF');
+    if (!tf) return null;
+
+    const pc = this.boosts.get('PC');
+    const aa = this.boosts.get('AA');
+    const ac = this.boosts.get('AC');
+    const flipside = this.boosts.get('Flipside');
+
+    // Count glass ceilings
+    const glassCeilings: boolean[] = [];
+    let glassCeilingCount = 0;
+    for (let i = 0; i < 12; i++) {
+      const owned = (this.boosts.get(`Glass Ceiling ${i}`)?.bought ?? 0) > 0;
+      glassCeilings.push(owned);
+      if (owned) glassCeilingCount++;
+    }
+
+    // Get tool prices for TF_ORDER
+    const TF_ORDER = [
+      'Bucket', 'Cuegan', 'Flag', 'Ladder', 'Bag',
+      'NewPixBot', 'Trebuchet', 'Scaffold', 'Wave', 'River',
+      'Helicopter', 'Aeroplane',
+    ];
+    const toolPrices = TF_ORDER.map(name => {
+      const sandTool = this.gameData.sandTools.find(t => t.name === name);
+      const castleTool = this.gameData.castleTools.find(t => t.name === name);
+      const tool = this.sandTools.get(name) ?? this.castleTools.get(name);
+      const basePrice = sandTool?.basePrice ?? castleTool?.basePrice ?? 0;
+      const amount = tool?.amount ?? 0;
+      // Approximate price
+      return basePrice * Math.pow(1.1, amount);
+    });
+
+    return {
+      tfBought: (tf.bought ?? 0) > 0,
+      tfChipBuffer: tf.power ?? 0,
+      pcPower: pc?.power ?? 1,
+      aaEnabled: (aa?.isEnabled ?? false),
+      acBought: (ac?.bought ?? 0) > 0,
+      acPower: ac?.power ?? 0,
+      flipsidePower: flipside?.power ?? 0,
+      glassCeilingCount,
+      glassCeilings,
+      toolPrices,
+      priceFactor: this.priceFactor,
+      papalToolF: this.papal('ToolF'),
+      tdFactor: 1, // TDFactor default
+    };
+  }
+
+  /**
+   * Papal decree multiplier.
+   * Reference: boosts.js:10006-10008
+   *
+   * @param raptor - The system to check (e.g. 'Sand', 'Chips', 'ToolF')
+   * @returns Multiplier (1 if no decree active for this system)
+   */
+  papal(raptor: string): number {
+    return calculatePapal(this.decreeName, raptor, this.decreeValue, this.papalBoostFactor);
+  }
+
+  /**
+   * Orchestrated rate recalculation.
+   * Reference: castle.js:476-487 (Molpy.calculateRates)
+   */
+  private calculateRates(): void {
+    if (this.needsRateRecalc > 1) {
+      this.needsRateRecalc--;
+    } else {
+      this.needsRateRecalc = 0;
+    }
+
+    this.calculateNinjaTime();
+    this.recalculateSandRates();
+    this.recalculateCastleRates();
+    this.recalculateSandPerClick();
+  }
+
+  /**
+   * Flag that rates need recalculation.
+   * Reference: castle.js:473-474 (Molpy.RatesRecalculate)
+   */
+  flagRateRecalc(times = 1): void {
+    this.needsRateRecalc = Math.max(this.needsRateRecalc, times);
   }
 
 
@@ -4243,15 +4455,41 @@ export class ModernEngine implements GameEngine {
    *
    * Reference: castle.js:4050-4300 (Molpy.Loopist)
    */
+  /**
+   * Process boost countdowns.
+   * Reference: castle.js:3348-3375 (Molpy.Think countdown loop)
+   *
+   * For each bought boost with a countdown:
+   * - Skip if Coma is enabled (unless boost has countdownCMS flag)
+   * - Decrement countdown
+   * - On expiry: call countdownLockFunction or lock boost + reset power
+   * - While active: call countdownFunction if registered
+   */
   private tickBoostCountdowns(): void {
-    for (const [name, boost] of this.boosts) {
-      if (boost.countdown && boost.countdown > 0) {
-        boost.countdown--;
+    const isComa = this.isBoostEnabled('Coma Molpy Style');
 
-        // Handle Blitzing expiration
-        if (name === 'Blitzing' && boost.countdown === 0) {
-          boost.power = 0;
+    for (const [name, boost] of this.boosts) {
+      if (!boost.bought || !boost.countdown || boost.countdown <= 0) continue;
+
+      // Skip countdown in Coma unless boost opts in
+      if (isComa) continue;
+
+      boost.countdown--;
+      if (boost.countdown <= 0) {
+        // Countdown expired - lock the boost and reset power
+        this.lockBoost(name);
+        boost.power = 0;
+        boost.countdown = 0;
+
+        // Handle Blitzing expiration specially
+        if (name === 'Blitzing') {
           this.recalculateSandRates();
+        }
+      } else {
+        // Run countdown function if registered
+        const funcs = getBoostFunctions(name);
+        if (funcs?.countdownFunction) {
+          funcs.countdownFunction(this.createBoostFunctionContext(name));
         }
       }
     }
