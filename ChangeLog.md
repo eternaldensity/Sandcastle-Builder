@@ -5,6 +5,9 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Add comprehensive tests for dragon system (#112)
+- Implement dragon combat system (OpponentsAttack) (#111)
+- Implement dragon fledging mechanics (DragonFledge) (#110)
 - Integrate badge checks into modern engine at appropriate trigger points (#136)
 - Add missing badge conditions (AC power, tool count, spending, special badges) (#134)
 - Initialize unlocks on game start in initialize() method (#132)
@@ -100,6 +103,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Implement Dragon System (Plan 14) - endgame dragon breeding, fighting, and digging (#104)
 - Implement Badge Auto-Earn Enhancement (Plan 15) (#133)
 - Implement boost auto-unlock system to reduce parity gaps (#129)
 - Implement save/load parity for legacy compatibility (#125)
