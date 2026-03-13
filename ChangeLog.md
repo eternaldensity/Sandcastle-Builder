@@ -5,6 +5,7 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Archive old plans, create Phase 3 planning doc (#144)
 - Plan 20: Tool Factory Production System (#140)
 - Update plan 18 and 19 status in implementation plans doc (#139)
 - Add comprehensive tests for dragon system (#112)
@@ -105,6 +106,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Plan 21: Auto-Assembly & Blast Furnace (RunFastFactory) (#143)
 - Plan 22: TF Chip Generation & Production Control (#142)
 - Plan 20: Tool Factory Core Production (RunToolFactory) (#141)
 - Glass ceiling enhancement: unlock/lock cascade, buy functions, and Tool Factory production (#138)
