@@ -2575,25 +2575,41 @@ export class ModernEngine implements GameEngine {
   private tickVacuumCleaner(): void {
     if (!this.isBoostEnabled('Vacuum Cleaner')) return;
 
-    const blackhat = this.boosts.get('blackhat');
+    const fc = this.getBoostPower('FluxCrystals');
+    const qq = this.getBoostPower('QQ');
     const vacState: VacuumTickState = {
       vacuumCleanerEnabled: true,
+      sandIsInfinite: !isFinite(this.resources.sand),
       thisSucksLevel: this.getBoostPower('TS'),
-      fluxCrystals: this.getBoostPower('FluxCrystals'),
-      qq: this.getBoostPower('QQ'),
+      fluxCrystals: fc,
+      fluxCrystalsInfinite: !isFinite(fc),
+      qq: qq,
+      qqInfinite: !isFinite(qq),
       papalDyson: this.papal('Dyson'),
       hasBlackHole: this.hasBoost('Black Hole'),
-      blackHoleMultiplier: this.hasBoost('Black Hole') ? 2 + Math.max(0, (blackhat?.power ?? 0) - 8) : 2,
+      blackhatPower: this.getBoostPower('blackhat'),
       isLongpix: this.ong.npLength > 1800,
       hasOvertime: this.isBoostEnabled('Overtime'),
-      blackhatPower: blackhat?.power ?? 0,
+      hasTractorBeam: this.isBoostEnabled('Tractor Beam'),
+      goatsLevel: this.getBoostPower('Goats'),
     };
 
     const result = processVacuumTick(vacState);
     if (result.wasActive) {
       this.addResource('FluxCrystals', -result.fluxCrystalsSpent);
       this.addResource('QQ', -result.qqSpent);
-      this.addResource('Vacuum', result.vacuumGenerated);
+
+      if (result.vacuumGenerated > 0) {
+        this.addResource('Vacuum', result.vacuumGenerated);
+      }
+      if (result.goatsGenerated > 0) {
+        this.addResource('Goats', result.goatsGenerated);
+      }
+
+      // Black Hole unlock when Flux Crystals reach Infinity
+      if (result.shouldUnlockBlackHole && !this.hasBoost('Black Hole')) {
+        this.doUnlockBoost('Black Hole');
+      }
 
       // Check if This Sucks should unlock blackhat
       if (shouldUnlockBlackhat(vacState.thisSucksLevel) && !this.hasBoost('blackhat')) {

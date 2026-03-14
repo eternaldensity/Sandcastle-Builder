@@ -12,10 +12,11 @@
  */
 
 /**
- * Cost per mNP for running the Vacuum Cleaner.
+ * Base cost multiplier per vacuum unit for running the Vacuum Cleaner.
+ * Each unit of vacuum costs 10 Flux Crystals and 10 QQ.
  * Reference: boosts.js:9433-9436 (Molpy.VacCost)
  */
-export const VACUUM_COST_PER_TICK = {
+export const VACUUM_COST_MULTIPLIER = {
   fluxCrystals: 10,
   qq: 10,
 } as const;
@@ -26,24 +27,32 @@ export const VACUUM_COST_PER_TICK = {
 export interface VacuumTickState {
   /** Whether Vacuum Cleaner boost is enabled (toggle) */
   vacuumCleanerEnabled: boolean;
+  /** Whether sand is infinite (required for Vacuum Cleaner) */
+  sandIsInfinite: boolean;
   /** Current "This Sucks" level (controls generation rate) */
   thisSucksLevel: number;
   /** Available Flux Crystals */
   fluxCrystals: number;
+  /** Whether Flux Crystals are infinite */
+  fluxCrystalsInfinite: boolean;
   /** Available QQ */
   qq: number;
+  /** Whether QQ is infinite */
+  qqInfinite: boolean;
   /** Papal 'Dyson' multiplier */
   papalDyson: number;
   /** Whether Black Hole boost is owned */
   hasBlackHole: boolean;
-  /** Black Hole bonus multiplier (from blackhat power scaling) */
-  blackHoleMultiplier: number;
+  /** blackhat power level (0 if not owned) */
+  blackhatPower: number;
   /** Whether it's a longpix (NP length > 1800) */
   isLongpix: boolean;
   /** Whether Overtime boost is enabled */
   hasOvertime: boolean;
-  /** blackhat power level (for advanced scaling) */
-  blackhatPower: number;
+  /** Whether Tractor Beam is enabled */
+  hasTractorBeam: boolean;
+  /** Current Goats level (for Tractor Beam doubling) */
+  goatsLevel: number;
 }
 
 /**
@@ -52,65 +61,127 @@ export interface VacuumTickState {
 export interface VacuumTickResult {
   /** Vacuum generated this tick */
   vacuumGenerated: number;
+  /** Goats generated this tick (from Tractor Beam) */
+  goatsGenerated: number;
   /** Flux Crystals consumed */
   fluxCrystalsSpent: number;
   /** QQ consumed */
   qqSpent: number;
   /** Whether Vacuum Cleaner was active (had resources) */
   wasActive: boolean;
+  /** Whether Black Hole should be unlocked (Flux Crystals reached Infinity) */
+  shouldUnlockBlackHole: boolean;
+}
+
+/**
+ * Calculate the Black Hole vacuum multiplier.
+ * Without blackhat: 2x
+ * With blackhat: floor(2 + 1.03^(2.8^blackhat_level))
+ *
+ * Reference: castle.js:3424-3425
+ */
+export function calculateBlackHoleMultiplier(blackhatPower: number): number {
+  if (blackhatPower <= 0) return 2;
+  return Math.floor(2 + Math.pow(1.03, Math.pow(2.8, blackhatPower)));
 }
 
 /**
  * Process Vacuum Cleaner for one mNP tick.
- * Consumes 10 Flux Crystals + 10 QQ per tick, generates Vacuum based on This Sucks level.
  *
- * Reference: castle.js:3403-3434
+ * The legacy loop (castle.js:3403-3434):
+ * 1. Check enabled + infinite sand + can afford base cost
+ * 2. Determine loop count (1, or 2 with Overtime on longpix without Tractor Beam)
+ * 3. Per loop iteration:
+ *    a. Calculate base vacs from This Sucks level × Papal Dyson
+ *    b. Cap vacs by available resources (FC/10, QQ/10; or QQ/10M if blackhat>8)
+ *    c. Spend FC and QQ proportional to vacs (10 × vacs each)
+ *    d. Apply Black Hole multiplier to vacs
+ *    e. Either add Goats (Tractor Beam) or add Vacuum
+ *    f. Check if FC reached Infinity → unlock Black Hole
  */
 export function processVacuumTick(state: VacuumTickState): VacuumTickResult {
   const noResult: VacuumTickResult = {
     vacuumGenerated: 0,
+    goatsGenerated: 0,
     fluxCrystalsSpent: 0,
     qqSpent: 0,
     wasActive: false,
+    shouldUnlockBlackHole: false,
   };
 
-  if (!state.vacuumCleanerEnabled) return noResult;
+  if (!state.vacuumCleanerEnabled || !state.sandIsInfinite) return noResult;
 
-  // Check if we can afford the per-tick cost
-  if (state.fluxCrystals < VACUUM_COST_PER_TICK.fluxCrystals ||
-      state.qq < VACUUM_COST_PER_TICK.qq) {
+  // Must be able to afford at least 1 unit
+  if (state.fluxCrystals < VACUUM_COST_MULTIPLIER.fluxCrystals ||
+      state.qq < VACUUM_COST_MULTIPLIER.qq) {
     return noResult;
   }
 
-  // Prevention logic: if blackhat power > 8, don't spend if it would underflow
-  if (state.blackhatPower > 8) {
-    if (state.fluxCrystals - VACUUM_COST_PER_TICK.fluxCrystals < 0 ||
-        state.qq - VACUUM_COST_PER_TICK.qq < 0) {
-      return noResult;
+  // Determine loop count: 1 normally, 2 with Overtime on longpix (unless Tractor Beam)
+  let sucks = 1;
+  if (state.hasOvertime && state.isLongpix && !state.hasTractorBeam) {
+    sucks = 2;
+  }
+
+  let totalVacuum = 0;
+  let totalGoats = 0;
+  let totalFCSpent = 0;
+  let totalQQSpent = 0;
+  let shouldUnlockBH = false;
+
+  // Track remaining resources across loop iterations
+  let remainingFC = state.fluxCrystals;
+  let remainingQQ = state.qq;
+
+  for (let i = 0; i < sucks; i++) {
+    // Calculate base vacuum rate
+    let vacs = Math.floor((state.thisSucksLevel || 1) * state.papalDyson);
+
+    // Cap vacs by available resources
+    if (state.blackhatPower > 8 && !state.qqInfinite) {
+      // Safety mode: cap by FC/10 and QQ/10M to prevent rapid QQ drain
+      vacs = Math.min(vacs, Math.floor(remainingFC / VACUUM_COST_MULTIPLIER.fluxCrystals));
+      vacs = Math.min(vacs, Math.floor(remainingQQ / 10000000));
+    } else {
+      vacs = Math.min(vacs, Math.floor(remainingFC / VACUUM_COST_MULTIPLIER.fluxCrystals));
+      vacs = Math.min(vacs, Math.floor(remainingQQ / VACUUM_COST_MULTIPLIER.qq));
+    }
+
+    if (vacs <= 0) break;
+
+    // Spend resources proportional to vacs
+    const fcCost = VACUUM_COST_MULTIPLIER.fluxCrystals * vacs;
+    const qqCost = VACUUM_COST_MULTIPLIER.qq * vacs;
+    remainingFC -= fcCost;
+    remainingQQ -= qqCost;
+    totalFCSpent += fcCost;
+    totalQQSpent += qqCost;
+
+    // Apply Black Hole multiplier AFTER spending (multiplies output, not cost)
+    if (state.hasBlackHole) {
+      vacs *= calculateBlackHoleMultiplier(state.blackhatPower);
+    }
+
+    // Tractor Beam: add goats instead of vacuum
+    if (state.hasTractorBeam) {
+      totalGoats += state.goatsLevel; // doubles current goat supply
+    } else {
+      totalVacuum += vacs;
+    }
+
+    // Check if FC reached Infinity → unlock Black Hole
+    if (state.fluxCrystalsInfinite) {
+      shouldUnlockBH = true;
     }
   }
 
-  // Calculate base vacuum generation: This Sucks level (or 1 if 0) * Papal Dyson
-  const baseRate = state.thisSucksLevel || 1;
-  let vacuumGenerated = Math.floor(baseRate * state.papalDyson);
-
-  // Black Hole multiplier: base 2x, can scale with blackhat
-  if (state.hasBlackHole) {
-    vacuumGenerated *= state.blackHoleMultiplier;
-  }
-
-  // Overtime: double on longpix
-  if (state.hasOvertime && state.isLongpix) {
-    vacuumGenerated *= 2;
-  }
-
-  vacuumGenerated = Math.floor(vacuumGenerated);
-
   return {
-    vacuumGenerated,
-    fluxCrystalsSpent: VACUUM_COST_PER_TICK.fluxCrystals,
-    qqSpent: VACUUM_COST_PER_TICK.qq,
-    wasActive: true,
+    vacuumGenerated: totalVacuum,
+    goatsGenerated: totalGoats,
+    fluxCrystalsSpent: totalFCSpent,
+    qqSpent: totalQQSpent,
+    wasActive: totalFCSpent > 0 || totalQQSpent > 0,
+    shouldUnlockBlackHole: shouldUnlockBH,
   };
 }
 
@@ -278,4 +349,48 @@ export function calculateLogicatQQ(
  */
 export function calculateVoidStareMultiplier(vacuumLevel: number): number {
   return Math.pow(1.01, vacuumLevel / 100);
+}
+
+/**
+ * Tangled Tesseract Logicat level multiplier.
+ * yield = ((2^(p-4)) * p * (p-1) * (p-2)) / 3
+ * where p = |tesseract.power|
+ *
+ * Reference: boosts.js:10209-10226
+ */
+export function calculateTesseractMultiplier(tesseractPower: number): number {
+  const p = Math.abs(tesseractPower);
+  if (p < 3) return 0;
+  return (Math.pow(2, p - 4) * p * (p - 1) * (p - 2)) / 3;
+}
+
+/**
+ * Italian Plumber (Mario) QQ generation from AA runs.
+ * Opens lvls Question Qubes, using lvls*(lvls+1)/2 total.
+ *
+ * Reference: boosts.js:9536-9584
+ */
+export function calculateMarioQQ(marioBought: number): number {
+  return marioBought * (marioBought + 1) / 2;
+}
+
+/**
+ * Italian Plumber upgrade cost.
+ * Per level: Vacuum: 1000 * mult, QQ: 50000 * lvls * mult
+ *
+ * Reference: boosts.js:9586-9599
+ */
+export interface MarioUpgradeCost {
+  vacuum: number;
+  qq: number;
+}
+
+export function calculateMarioUpgradeCost(
+  currentLevels: number,
+  upgradeAmount: number
+): MarioUpgradeCost {
+  return {
+    vacuum: 1000 * upgradeAmount,
+    qq: 50000 * currentLevels * upgradeAmount,
+  };
 }
