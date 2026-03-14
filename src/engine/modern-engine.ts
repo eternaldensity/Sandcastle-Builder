@@ -128,6 +128,18 @@ import {
   shouldUnlockBlackhat,
   type VacuumTickState,
 } from './flux-system.js';
+import {
+  startSandMould,
+  processSandMouldMaking,
+  startSandMouldFill,
+  processSandMouldFilling,
+  startGlassMould,
+  processGlassMouldMaking,
+  startGlassMouldFill,
+  processGlassMouldFilling,
+  processAllMouldWork,
+  type MonumentState,
+} from './monument-system.js';
 
 /**
  * Internal state for a sand tool
@@ -491,6 +503,91 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Ensure virtual resource boosts exist (Sand, Castles, GlassChips, GlassBlocks, TF, Glass Ceilings).
+   * These are not in game data but are created during save/load/export.
+   */
+  private ensureVirtualBoosts(): void {
+    if (!this.boosts.has('Sand')) {
+      this.boosts.set('Sand', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('Castles')) {
+      this.boosts.set('Castles', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('GlassChips')) {
+      this.boosts.set('GlassChips', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('GlassBlocks')) {
+      this.boosts.set('GlassBlocks', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+    }
+    if (!this.boosts.has('TF')) {
+      this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
+    }
+    for (let i = 0; i < 12; i++) {
+      const name = `Glass Ceiling ${i}`;
+      if (!this.boosts.has(name)) {
+        this.boosts.set(name, { unlocked: 0, bought: 0, power: 0, countdown: 0 });
+      }
+    }
+  }
+
+  /** Convert sand tools Map to serializable Record. */
+  private sandToolsToRecord(): Record<string, ToolState> {
+    const record: Record<string, ToolState> = {};
+    for (const [name, state] of this.sandTools) {
+      record[name] = {
+        amount: state.amount,
+        bought: state.bought,
+        temp: state.temp,
+        totalSand: state.totalSand,
+        totalGlass: state.totalGlass,
+      };
+    }
+    return record;
+  }
+
+  /** Convert castle tools Map to serializable Record. */
+  private castleToolsToRecord(): Record<string, ToolState> {
+    const record: Record<string, ToolState> = {};
+    for (const [name, state] of this.castleTools) {
+      record[name] = {
+        amount: state.amount,
+        bought: state.bought,
+        temp: state.temp,
+        totalCastlesBuilt: state.totalCastlesBuilt,
+        totalCastlesDestroyed: state.totalCastlesDestroyed,
+        totalCastlesWasted: state.totalCastlesWasted,
+        currentActive: state.currentActive,
+        totalGlassBuilt: state.totalGlassBuilt,
+        totalGlassDestroyed: state.totalGlassDestroyed,
+      };
+    }
+    return record;
+  }
+
+  /** Convert boosts Map to serializable Record. */
+  private boostsToRecord(): Record<string, BoostState> {
+    const record: Record<string, BoostState> = {};
+    for (const [alias, state] of this.boosts) {
+      record[alias] = {
+        unlocked: state.unlocked,
+        bought: state.bought,
+        power: state.power,
+        countdown: state.countdown,
+      };
+    }
+    return record;
+  }
+
+  /** Convert badges Map to serializable Record. */
+  private badgesToRecord(): Record<string, boolean> {
+    const record: Record<string, boolean> = {};
+    for (const [name, earned] of this.badges) {
+      record[name] = earned;
+    }
+    return record;
+  }
+
+  /**
    * Ensure engine is initialized.
    */
   private ensureInitialized(): void {
@@ -505,8 +602,6 @@ export class ModernEngine implements GameEngine {
   async loadState(serialized: string): Promise<void> {
     this.ensureInitialized();
 
-    // Decode the save (remove base64 encoding if present)
-    // For now, assume raw format for testing
     const state = this.saveParser.parse(serialized);
 
     // Load core state
@@ -561,29 +656,7 @@ export class ModernEngine implements GameEngine {
       }
     }
 
-    // Ensure virtual resource boosts exist before loading
-    // These are not in game data but are created during save/export
-    if (!this.boosts.has('Sand')) {
-      this.boosts.set('Sand', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
-    }
-    if (!this.boosts.has('Castles')) {
-      this.boosts.set('Castles', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
-    }
-    if (!this.boosts.has('GlassChips')) {
-      this.boosts.set('GlassChips', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
-    }
-    if (!this.boosts.has('GlassBlocks')) {
-      this.boosts.set('GlassBlocks', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
-    }
-    if (!this.boosts.has('TF')) {
-      this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
-    }
-    for (let i = 0; i < 12; i++) {
-      const name = `Glass Ceiling ${i}`;
-      if (!this.boosts.has(name)) {
-        this.boosts.set(name, { unlocked: 0, bought: 0, power: 0, countdown: 0 });
-      }
-    }
+    this.ensureVirtualBoosts();
 
     // Load boosts
     for (const [alias, boostState] of Object.entries(state.boosts)) {
@@ -598,15 +671,10 @@ export class ModernEngine implements GameEngine {
     }
 
     // Load resources from special boosts
-    const sandBoost = this.boosts.get('Sand');
-    const castlesBoost = this.boosts.get('Castles');
-    const glassChipsBoost = this.boosts.get('GlassChips');
-    const glassBlocksBoost = this.boosts.get('GlassBlocks');
-
-    this.resources.sand = sandBoost?.power ?? 0;
-    this.resources.castles = castlesBoost?.power ?? 0;
-    this.resources.glassChips = glassChipsBoost?.power ?? 0;
-    this.resources.glassBlocks = glassBlocksBoost?.power ?? 0;
+    this.resources.sand = this.getBoostPower('Sand');
+    this.resources.castles = this.getBoostPower('Castles');
+    this.resources.glassChips = this.getBoostPower('GlassChips');
+    this.resources.glassBlocks = this.getBoostPower('GlassBlocks');
 
     // Load badges - clear and reload all to ensure clean state
     this.badges.clear();
@@ -653,29 +721,7 @@ export class ModernEngine implements GameEngine {
   async exportState(): Promise<string> {
     this.ensureInitialized();
 
-    // Sync resources to virtual boost powers before export
-    // Ensure virtual resource boosts exist
-    if (!this.boosts.has('Sand')) {
-      this.boosts.set('Sand', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
-    }
-    if (!this.boosts.has('Castles')) {
-      this.boosts.set('Castles', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
-    }
-    if (!this.boosts.has('GlassChips')) {
-      this.boosts.set('GlassChips', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
-    }
-    if (!this.boosts.has('GlassBlocks')) {
-      this.boosts.set('GlassBlocks', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
-    }
-    if (!this.boosts.has('TF')) {
-      this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
-    }
-    for (let i = 0; i < 12; i++) {
-      const name = `Glass Ceiling ${i}`;
-      if (!this.boosts.has(name)) {
-        this.boosts.set(name, { unlocked: 0, bought: 0, power: 0, countdown: 0 });
-      }
-    }
+    this.ensureVirtualBoosts();
     this.syncResourceBoosts();
 
     // Build core game state for serialization
@@ -703,51 +749,6 @@ export class ModernEngine implements GameEngine {
       },
     };
 
-    // Convert sand tools map to record
-    const sandToolsRecord: Record<string, ToolState> = {};
-    for (const [name, state] of this.sandTools) {
-      sandToolsRecord[name] = {
-        amount: state.amount,
-        bought: state.bought,
-        temp: state.temp,
-        totalSand: state.totalSand,
-        totalGlass: state.totalGlass,
-      };
-    }
-
-    // Convert castle tools map to record
-    const castleToolsRecord: Record<string, ToolState> = {};
-    for (const [name, state] of this.castleTools) {
-      castleToolsRecord[name] = {
-        amount: state.amount,
-        bought: state.bought,
-        temp: state.temp,
-        totalCastlesBuilt: state.totalCastlesBuilt,
-        totalCastlesDestroyed: state.totalCastlesDestroyed,
-        totalCastlesWasted: state.totalCastlesWasted,
-        currentActive: state.currentActive,
-        totalGlassBuilt: state.totalGlassBuilt,
-        totalGlassDestroyed: state.totalGlassDestroyed,
-      };
-    }
-
-    // Convert boosts map to record
-    const boostsRecord: Record<string, BoostState> = {};
-    for (const [alias, state] of this.boosts) {
-      boostsRecord[alias] = {
-        unlocked: state.unlocked,
-        bought: state.bought,
-        power: state.power,
-        countdown: state.countdown,
-      };
-    }
-
-    // Convert badges map to record
-    const badgesRecord: Record<string, boolean> = {};
-    for (const [name, earned] of this.badges) {
-      badgesRecord[name] = earned;
-    }
-
     // Convert dragon npData Map to Record
     const npDataRecord: Record<number, NPData> = {};
     for (const [np, data] of this.dragons.npData) {
@@ -757,10 +758,10 @@ export class ModernEngine implements GameEngine {
     // Build save state
     const saveState: SaveState = {
       core: coreState,
-      sandTools: sandToolsRecord,
-      castleTools: castleToolsRecord,
-      boosts: boostsRecord,
-      badges: badgesRecord,
+      sandTools: this.sandToolsToRecord(),
+      castleTools: this.castleToolsToRecord(),
+      boosts: this.boostsToRecord(),
+      badges: this.badgesToRecord(),
       npData: npDataRecord,
     };
 
@@ -773,51 +774,6 @@ export class ModernEngine implements GameEngine {
   async getStateSnapshot(): Promise<GameStateSnapshot> {
     this.ensureInitialized();
 
-    // Convert sand tools map to record
-    const sandToolsRecord: Record<string, ToolState> = {};
-    for (const [name, state] of this.sandTools) {
-      sandToolsRecord[name] = {
-        amount: state.amount,
-        bought: state.bought,
-        temp: state.temp,
-        totalSand: state.totalSand,
-        totalGlass: state.totalGlass,
-      };
-    }
-
-    // Convert castle tools map to record
-    const castleToolsRecord: Record<string, ToolState> = {};
-    for (const [name, state] of this.castleTools) {
-      castleToolsRecord[name] = {
-        amount: state.amount,
-        bought: state.bought,
-        temp: state.temp,
-        totalCastlesBuilt: state.totalCastlesBuilt,
-        totalCastlesDestroyed: state.totalCastlesDestroyed,
-        totalCastlesWasted: state.totalCastlesWasted,
-        currentActive: state.currentActive,
-        totalGlassBuilt: state.totalGlassBuilt,
-        totalGlassDestroyed: state.totalGlassDestroyed,
-      };
-    }
-
-    // Convert boosts map to record
-    const boostsRecord: Record<string, BoostState> = {};
-    for (const [alias, state] of this.boosts) {
-      boostsRecord[alias] = {
-        unlocked: state.unlocked,
-        bought: state.bought,
-        power: state.power,
-        countdown: state.countdown,
-      };
-    }
-
-    // Convert badges map to record
-    const badgesRecord: Record<string, boolean> = {};
-    for (const [name, earned] of this.badges) {
-      badgesRecord[name] = earned;
-    }
-
     return {
       version: this.core.version,
       newpixNumber: this.core.newpixNumber,
@@ -829,10 +785,10 @@ export class ModernEngine implements GameEngine {
       ninjaFreeCount: this.core.ninjaFreeCount,
       ninjaStealth: this.core.ninjaStealth,
       ninjad: this.core.ninjad,
-      sandTools: sandToolsRecord,
-      castleTools: castleToolsRecord,
-      boosts: boostsRecord,
-      badges: badgesRecord,
+      sandTools: this.sandToolsToRecord(),
+      castleTools: this.castleToolsToRecord(),
+      boosts: this.boostsToRecord(),
+      badges: this.badgesToRecord(),
     };
   }
 
@@ -1395,20 +1351,10 @@ export class ModernEngine implements GameEngine {
       return tool?.amount ?? 0;
     };
 
-    const isBoostBought = (name: string): boolean => {
-      const boost = this.boosts.get(name);
-      return (boost?.bought ?? 0) > 0;
-    };
-
-    const getBoostPower = (name: string): number => {
-      const boost = this.boosts.get(name);
-      return boost?.power ?? 0;
-    };
-
     // Collect owned glass ceilings (0-11)
     const glassCeilings: number[] = [];
     for (let i = 0; i <= 11; i++) {
-      if (isBoostBought(`GlassCeiling${i}`)) {
+      if (this.hasBoost(`GlassCeiling${i}`)) {
         glassCeilings.push(i);
       }
     }
@@ -1428,42 +1374,42 @@ export class ModernEngine implements GameEngine {
       newPixBots: getToolAmount('NewPixBot'),
 
       // Boost powers
-      biggerBucketsPower: getBoostPower('BiggerBuckets'),
-      helpingHandPower: getBoostPower('HelpingHand'),
-      flagBearerPower: getBoostPower('FlagBearer'),
-      extensionLadderPower: getBoostPower('ExtensionLadder'),
+      biggerBucketsPower: this.getBoostPower('BiggerBuckets'),
+      helpingHandPower: this.getBoostPower('HelpingHand'),
+      flagBearerPower: this.getBoostPower('FlagBearer'),
+      extensionLadderPower: this.getBoostPower('ExtensionLadder'),
 
       // Glass Ceiling
       glassCeiling: glassCeilings,
 
       // Per-tool boost flags
-      hugeBuckets: isBoostBought('HugeBuckets'),
-      trebuchetPong: isBoostBought('TrebuchetPong'),
-      carrybot: isBoostBought('Carrybot'),
-      buccaneer: isBoostBought('Buccaneer'),
-      flyingBuckets: isBoostBought('FlyingBuckets'),
-      megball: isBoostBought('Megball'),
-      cooperation: isBoostBought('Cooperation'),
-      stickbot: isBoostBought('Stickbot'),
-      theForty: isBoostBought('TheForty'),
-      humanCannonball: isBoostBought('HumanCannonball'),
-      magicMountain: isBoostBought('MagicMountain'),
-      standardbot: isBoostBought('Standardbot'),
-      balancingAct: isBoostBought('BalancingAct'),
-      sbtf: isBoostBought('SBTF'),
-      flyTheFlag: isBoostBought('FlyTheFlag'),
-      ninjaClimber: isBoostBought('NinjaClimber'),
-      levelUp: isBoostBought('LevelUp'),
-      climbbot: isBoostBought('Climbbot'),
-      brokenRung: isBoostBought('BrokenRung'),
-      upUpAndAway: isBoostBought('UpUpAndAway'),
-      embaggening: isBoostBought('Embaggening'),
-      sandbag: isBoostBought('Sandbag'),
-      luggagebot: isBoostBought('Luggagebot'),
-      bagPuns: isBoostBought('BagPuns'),
-      airDrop: isBoostBought('AirDrop'),
-      frenchbot: isBoostBought('Frenchbot'),
-      bacon: isBoostBought('Bacon'),
+      hugeBuckets: this.hasBoost('HugeBuckets'),
+      trebuchetPong: this.hasBoost('TrebuchetPong'),
+      carrybot: this.hasBoost('Carrybot'),
+      buccaneer: this.hasBoost('Buccaneer'),
+      flyingBuckets: this.hasBoost('FlyingBuckets'),
+      megball: this.hasBoost('Megball'),
+      cooperation: this.hasBoost('Cooperation'),
+      stickbot: this.hasBoost('Stickbot'),
+      theForty: this.hasBoost('TheForty'),
+      humanCannonball: this.hasBoost('HumanCannonball'),
+      magicMountain: this.hasBoost('MagicMountain'),
+      standardbot: this.hasBoost('Standardbot'),
+      balancingAct: this.hasBoost('BalancingAct'),
+      sbtf: this.hasBoost('SBTF'),
+      flyTheFlag: this.hasBoost('FlyTheFlag'),
+      ninjaClimber: this.hasBoost('NinjaClimber'),
+      levelUp: this.hasBoost('LevelUp'),
+      climbbot: this.hasBoost('Climbbot'),
+      brokenRung: this.hasBoost('BrokenRung'),
+      upUpAndAway: this.hasBoost('UpUpAndAway'),
+      embaggening: this.hasBoost('Embaggening'),
+      sandbag: this.hasBoost('Sandbag'),
+      luggagebot: this.hasBoost('Luggagebot'),
+      bagPuns: this.hasBoost('BagPuns'),
+      airDrop: this.hasBoost('AirDrop'),
+      frenchbot: this.hasBoost('Frenchbot'),
+      bacon: this.hasBoost('Bacon'),
 
       // For ninja multiplier
       ninjaStealth: this.core.ninjaStealth,
@@ -1475,20 +1421,20 @@ export class ModernEngine implements GameEngine {
       glassUse: 0,
 
       // Global multiplier boosts
-      molpies: isBoostBought('Molpies'),
-      grapevine: isBoostBought('Grapevine'),
-      chirpies: isBoostBought('Chirpies'),
-      facebugs: isBoostBought('Facebugs'),
-      overcompensating: isBoostBought('Overcompensating'),
-      overcompensatingPower: getBoostPower('Overcompensating'),
-      blitzing: isBoostBought('Blitzing'),
-      blitzingPower: getBoostPower('Blitzing'),
-      bbc: isBoostBought('BBC'),
-      bbcPower: getBoostPower('BBC'),
-      rbBought: this.boosts.get('RB')?.bought ?? 0,
-      hugo: isBoostBought('Hugo'),
+      molpies: this.hasBoost('Molpies'),
+      grapevine: this.hasBoost('Grapevine'),
+      chirpies: this.hasBoost('Chirpies'),
+      facebugs: this.hasBoost('Facebugs'),
+      overcompensating: this.hasBoost('Overcompensating'),
+      overcompensatingPower: this.getBoostPower('Overcompensating'),
+      blitzing: this.hasBoost('Blitzing'),
+      blitzingPower: this.getBoostPower('Blitzing'),
+      bbc: this.hasBoost('BBC'),
+      bbcPower: this.getBoostPower('BBC'),
+      rbBought: this.getBoostBought('RB'),
+      hugo: this.hasBoost('Hugo'),
       npLength: this.ong.npLength,
-      wwbBought: this.boosts.get('WWB')?.bought ?? 0,
+      wwbBought: this.getBoostBought('WWB'),
       scaffoldAmount: getToolAmount('Scaffold'),
     };
   }
@@ -1516,20 +1462,10 @@ export class ModernEngine implements GameEngine {
       return tool?.amount ?? 0;
     };
 
-    const isBoostBought = (name: string): boolean => {
-      const boost = this.boosts.get(name);
-      return (boost?.bought ?? 0) > 0;
-    };
-
-    const getBoostPower = (name: string): number => {
-      const boost = this.boosts.get(name);
-      return boost?.power ?? 0;
-    };
-
     // Collect owned glass ceilings
     const glassCeilings: number[] = [];
     for (let i = 0; i < 12; i++) {
-      if (isBoostBought(`Glass Ceiling ${i}`)) {
+      if (this.hasBoost(`Glass Ceiling ${i}`)) {
         glassCeilings.push(i);
       }
     }
@@ -1544,38 +1480,38 @@ export class ModernEngine implements GameEngine {
 
       // Glass Ceiling support
       glassCeilings,
-      wwbBought: this.boosts.get('WWB')?.bought ?? 0,
+      wwbBought: this.getBoostBought('WWB'),
       scaffoldAmount: getToolAmount('Scaffold'),
 
       // NewPixBot boost multipliers
-      busyBot: isBoostBought('Busy Bot'),
-      robotEfficiency: isBoostBought('Robot Efficiency'),
-      robotEfficiencyPower: getBoostPower('Robot Efficiency'),
-      recursivebot: isBoostBought('Recursivebot'),
-      halOKitty: isBoostBought('HAL-0-Kitty'),
-      halBoost: getBoostPower('HAL-0-Kitty'),
+      busyBot: this.hasBoost('Busy Bot'),
+      robotEfficiency: this.hasBoost('Robot Efficiency'),
+      robotEfficiencyPower: this.getBoostPower('Robot Efficiency'),
+      recursivebot: this.hasBoost('Recursivebot'),
+      halOKitty: this.hasBoost('HAL-0-Kitty'),
+      halBoost: this.getBoostPower('HAL-0-Kitty'),
 
       // Trebuchet boost multipliers
-      springFling: isBoostBought('Spring Fling'),
-      trebuchetPong: isBoostBought('Trebuchet Pong'),
-      trebuchetPongPower: getBoostPower('Trebuchet Pong'),
-      flingbot: isBoostBought('Flingbot'),
-      variedAmmo: isBoostBought('Varied Ammo'),
-      variedAmmoPower: getBoostPower('Varied Ammo'),
+      springFling: this.hasBoost('Spring Fling'),
+      trebuchetPong: this.hasBoost('Trebuchet Pong'),
+      trebuchetPongPower: this.getBoostPower('Trebuchet Pong'),
+      flingbot: this.hasBoost('Flingbot'),
+      variedAmmo: this.hasBoost('Varied Ammo'),
+      variedAmmoPower: this.getBoostPower('Varied Ammo'),
 
       // Scaffold boost multipliers
-      precisePlacement: isBoostBought('Precise Placement'),
-      levelUp: isBoostBought('Level Up!'),
-      propbot: isBoostBought('Propbot'),
+      precisePlacement: this.hasBoost('Precise Placement'),
+      levelUp: this.hasBoost('Level Up!'),
+      propbot: this.hasBoost('Propbot'),
 
       // Wave boost multipliers
-      swell: isBoostBought('Swell'),
-      surfbot: isBoostBought('Surfbot'),
-      sbtf: isBoostBought('SBTF'),
-      sbtfPower: getBoostPower('SBTF'),
+      swell: this.hasBoost('Swell'),
+      surfbot: this.hasBoost('Surfbot'),
+      sbtf: this.hasBoost('SBTF'),
+      sbtfPower: this.getBoostPower('SBTF'),
 
       // River boost multipliers
-      smallbot: isBoostBought('Smallbot'),
+      smallbot: this.hasBoost('Smallbot'),
     };
   }
 
@@ -1892,14 +1828,10 @@ export class ModernEngine implements GameEngine {
    * Build the state object for glass chip production calculation.
    */
   private buildGlassChipProductionState(): GlassChipProductionState {
-    const sandRefinery = this.boosts.get('SandRefinery');
-    const glassGoat = this.boosts.get('GlassGoat');
-    const goats = this.boosts.get('Goats');
-
     return {
-      sandRefineryPower: sandRefinery?.power ?? 0,
-      goats: goats?.power ?? 0,
-      hasGlassGoat: (glassGoat?.bought ?? 0) > 0,
+      sandRefineryPower: this.getBoostPower('SandRefinery'),
+      goats: this.getBoostPower('Goats'),
+      hasGlassGoat: this.hasBoost('GlassGoat'),
       papalChipsMult: this.papal('Chips'),
     };
   }
@@ -1908,19 +1840,13 @@ export class ModernEngine implements GameEngine {
    * Build the state object for glass block production calculation.
    */
   private buildGlassBlockProductionState(): GlassBlockProductionState {
-    const glassChiller = this.boosts.get('GlassChiller');
-    const glassGoat = this.boosts.get('GlassGoat');
-    const goats = this.boosts.get('Goats');
-    const ruthlessEfficiency = this.boosts.get('RuthlessEfficiency');
-    const glassTrolling = this.boosts.get('GlassTrolling');
-
     return {
-      glassChillerPower: glassChiller?.power ?? 0,
+      glassChillerPower: this.getBoostPower('GlassChiller'),
       glassChips: this.resources.glassChips,
-      goats: goats?.power ?? 0,
-      hasGlassGoat: (glassGoat?.bought ?? 0) > 0,
+      goats: this.getBoostPower('Goats'),
+      hasGlassGoat: this.hasBoost('GlassGoat'),
       papalBlocksMult: this.papal('Blocks'),
-      hasRuthlessEfficiency: (ruthlessEfficiency?.bought ?? 0) > 0,
+      hasRuthlessEfficiency: this.hasBoost('RuthlessEfficiency'),
       glassTrollingEnabled: this.isBoostEnabled('GlassTrolling'),
     };
   }
@@ -2762,378 +2688,54 @@ export class ModernEngine implements GameEngine {
   }
 
   // =============================================================================
-  // Monument System
-  // =============================================================================
-  // Monuments are created from discoveries through a multi-step process:
-  // 1. Discovery -> Sand Monument (via Sand Mould Maker + Sand Mould Filler)
-  // 2. Sand Monument -> Glass Monument (via Glass Mould Maker + Glass Mould Filler)
-  // 3. Glass Monument -> Diamond Masterpiece (via Diamond Mould Maker + Filler)
-  //
-  // Each step requires:
-  // - A "maker" boost that creates a mould (progress tracked in boost.power)
-  // - A "filler" boost that fills the mould with resources
-  // - Multiple Factory Automation (FA) runs to complete
-  //
-  // State is stored in boost.extra: { Making: number (NP being made) }
-  // Progress is stored in boost.power: 0 = idle, 1-threshold = in progress, >threshold = complete
+  // Monument System (delegated to monument-system.ts)
   // =============================================================================
 
-  /**
-   * Start making a sand mould from a discovery.
-   * Reference: boosts.js:4538-4568
-   */
+  /** Build the MonumentState interface for delegation to pure functions. */
+  private buildMonumentState(): MonumentState {
+    return {
+      badges: this.badges,
+      boosts: this.boosts,
+      resources: this.resources,
+      earnBadge: (alias: string) => this.earnBadge(alias),
+      hasBoost: (alias: string) => this.hasBoost(alias),
+    };
+  }
+
   makeSandMould(np: number): void {
-    const mname = `monums${np}`;
-
-    // Check if badge exists
-    if (!this.badges.has(mname)) {
-      return; // No such mould exists
-    }
-
-    // Check if already earned
-    if (this.badges.get(mname)) {
-      return; // Don't need to make this mould
-    }
-
-    const smm = this.boosts.get('SMM');
-    const smf = this.boosts.get('SMF');
-
-    if (!smm || !smm.bought) {
-      return; // Don't have Sand Mould Maker
-    }
-
-    if (smm.power > 0) {
-      return; // Sand Mould Maker already in use
-    }
-
-    // Check if already filling this mould
-    if (smf && smf.power > 0 && smf.extra?.Making === np) {
-      return; // Already made this mould and filling it
-    }
-
-    // Start making the mould
-    if (!smm.extra) smm.extra = {};
-    smm.extra.Making = np;
-    smm.power = 1;
+    startSandMould(this.buildMonumentState(), np);
   }
 
-  /**
-   * Process sand mould making work during Factory Automation.
-   * Reference: boosts.js:4570-4596
-   * @param runs Number of FA runs available
-   * @returns Remaining FA runs
-   */
   makeSandMouldWork(runs: number): number {
-    const smm = this.boosts.get('SMM');
-    if (!smm || smm.power === 0 || smm.power > 100) {
-      return runs; // Not making, or already complete
-    }
-
-    const np = (smm.extra?.Making as number) ?? 0;
-    let chipsPerRun = np * 100;
-    if (chipsPerRun < 0) chipsPerRun *= chipsPerRun; // Square if negative
-
-    while (runs > 0) {
-      if (this.resources.glassChips < chipsPerRun) {
-        return runs; // Not enough glass chips
-      }
-
-      this.resources.glassChips -= chipsPerRun;
-      runs--;
-      smm.power++;
-
-      if (smm.power > 100) {
-        // Mould creation complete
-        return runs;
-      }
-    }
-
-    return runs;
+    return processSandMouldMaking(this.buildMonumentState(), runs);
   }
 
-  /**
-   * Start filling a sand mould with sand to create a monument.
-   * Reference: boosts.js:4598-4638
-   */
   fillSandMould(np: number): void {
-    const mname = `monums${np}`;
-    const smm = this.boosts.get('SMM');
-    const smf = this.boosts.get('SMF');
-
-    if (!this.badges.has(mname)) {
-      // Reset SMM if it was making this invalid mould
-      if (smm && smm.extra?.Making === np) {
-        smm.power = 0;
-        if (smm.extra) smm.extra.Making = 0;
-      }
-      return;
-    }
-
-    if (this.badges.get(mname)) {
-      // Already earned, reset SMM if needed
-      if (smm && smm.extra?.Making === np) {
-        smm.power = 0;
-        if (smm.extra) smm.extra.Making = 0;
-      }
-      return;
-    }
-
-    if (!smf || !smf.bought) {
-      return; // Don't have Sand Mould Filler
-    }
-
-    if (smf.power > 0) {
-      return; // Sand Mould Filler already in use
-    }
-
-    if (!smm || smm.power <= 100) {
-      return; // No mould ready to be filled
-    }
-
-    // Start filling the mould
-    if (!smf.extra) smf.extra = {};
-    smf.extra.Making = np;
-    smf.power = 1;
-
-    // Clear maker state
-    if (smm.extra) smm.extra.Making = 0;
-    smm.power = 0;
+    startSandMouldFill(this.buildMonumentState(), np);
   }
 
-  /**
-   * Process sand mould filling work during Factory Automation.
-   * Reference: boosts.js:4640-4668
-   * @param runs Number of FA runs available
-   * @returns Remaining FA runs
-   */
   fillSandMouldWork(runs: number): number {
-    const smf = this.boosts.get('SMF');
-    if (!smf || smf.power === 0) {
-      return runs; // Not filling
-    }
-
-    const np = (smf.extra?.Making as number) ?? 0;
-    const sandPerRun = Math.pow(1.2, Math.abs(np)) * 100;
-    const sandToSpend = np < 0 ? sandPerRun * sandPerRun : sandPerRun;
-
-    while (runs > 0) {
-      if (this.resources.sand < sandToSpend) {
-        return runs; // Not enough sand
-      }
-
-      this.resources.sand -= sandToSpend;
-      runs--;
-      smf.power++;
-
-      if (smf.power > 200) {
-        // Sand mould filling complete - earn the badge
-        const alias = `monums${np}`;
-        this.earnBadge(alias);
-
-        // Clear filler state
-        if (smf.extra) smf.extra.Making = 0;
-        smf.power = 0;
-        return runs;
-      }
-    }
-
-    return runs;
+    return processSandMouldFilling(this.buildMonumentState(), runs);
   }
 
-  /**
-   * Start making a glass mould from a sand monument.
-   * Reference: boosts.js:4670-4700
-   */
   makeGlassMould(np: number): void {
-    const mname = `monumg${np}`;
-    const gmm = this.boosts.get('GMM');
-    const gmf = this.boosts.get('GMF');
-
-    if (!this.badges.has(mname)) {
-      return; // No such mould exists
-    }
-
-    if (this.badges.get(mname)) {
-      return; // Don't need to make this mould
-    }
-
-    if (!gmm || !gmm.bought) {
-      return; // Don't have Glass Mould Maker
-    }
-
-    if (gmm.power > 0) {
-      return; // Glass Mould Maker already in use
-    }
-
-    // Check if already filling this mould
-    if (gmf && gmf.power > 0 && gmf.extra?.Making === np) {
-      return; // Already made this mould and filling it
-    }
-
-    // Start making the mould
-    if (!gmm.extra) gmm.extra = {};
-    gmm.extra.Making = np;
-    gmm.power = 1;
+    startGlassMould(this.buildMonumentState(), np);
   }
 
-  /**
-   * Process glass mould making work during Factory Automation.
-   * Reference: boosts.js:4717-4744
-   * @param runs Number of FA runs available
-   * @returns Remaining FA runs
-   */
   makeGlassMouldWork(runs: number): number {
-    const gmm = this.boosts.get('GMM');
-    if (!gmm || gmm.power === 0 || gmm.power > 400) {
-      return runs; // Not making, or already complete
-    }
-
-    const np = (gmm.extra?.Making as number) ?? 0;
-    const baseChips = Math.pow(1.01, Math.abs(np)) * 1000;
-    const chipsPerRun = np < 0 ? baseChips * baseChips : baseChips;
-
-    while (runs > 0) {
-      if (this.resources.glassChips < chipsPerRun) {
-        return runs; // Not enough glass chips
-      }
-
-      this.resources.glassChips -= chipsPerRun;
-      runs--;
-      gmm.power++;
-
-      if (gmm.power > 400) {
-        // Glass mould creation complete
-        return runs;
-      }
-    }
-
-    return runs;
+    return processGlassMouldMaking(this.buildMonumentState(), runs);
   }
 
-  /**
-   * Start filling a glass mould with glass to create a glass monument.
-   * Reference: boosts.js:4746-4785
-   */
   fillGlassMould(np: number): void {
-    const mname = `monumg${np}`;
-    const gmm = this.boosts.get('GMM');
-    const gmf = this.boosts.get('GMF');
-
-    if (!this.badges.has(mname)) {
-      // Reset GMM if it was making this invalid mould
-      if (gmm && gmm.extra?.Making === np) {
-        gmm.power = 0;
-        if (gmm.extra) gmm.extra.Making = 0;
-      }
-      return;
-    }
-
-    if (this.badges.get(mname)) {
-      // Already earned, reset GMM if needed
-      if (gmm && gmm.extra?.Making === np) {
-        gmm.power = 0;
-        if (gmm.extra) gmm.extra.Making = 0;
-      }
-      return;
-    }
-
-    if (!gmf || !gmf.bought) {
-      return; // Don't have Glass Mould Filler
-    }
-
-    if (gmf.power > 0) {
-      return; // Glass Mould Filler already in use
-    }
-
-    if (!gmm || gmm.power <= 400) {
-      return; // No mould ready to be filled
-    }
-
-    // Start filling the mould
-    if (!gmf.extra) gmf.extra = {};
-    gmf.extra.Making = np;
-    gmf.power = 1;
-
-    // Clear maker state
-    if (gmm.extra) gmm.extra.Making = 0;
-    gmm.power = 0;
+    startGlassMouldFill(this.buildMonumentState(), np);
   }
 
-  /**
-   * Process glass mould filling work during Factory Automation.
-   * Reference: boosts.js:4787-4820
-   * @param runs Number of FA runs available
-   * @returns Remaining FA runs
-   */
   fillGlassMouldWork(runs: number): number {
-    const gmf = this.boosts.get('GMF');
-    if (!gmf || gmf.power === 0) {
-      return runs; // Not filling
-    }
-
-    const np = (gmf.extra?.Making as number) ?? 0;
-    const baseGlass = Math.pow(1.02, Math.abs(np)) * 1000000;
-    const glassToSpend = np < 0 ? baseGlass * baseGlass : baseGlass;
-
-    while (runs > 0) {
-      if (this.resources.glassBlocks < glassToSpend) {
-        return runs; // Not enough glass blocks
-      }
-
-      this.resources.glassBlocks -= glassToSpend;
-      runs--;
-      gmf.power++;
-
-      if (gmf.power > 800) {
-        // Glass mould filling complete - earn the badge
-        const alias = `monumg${np}`;
-        this.earnBadge(alias);
-
-        // Clear filler state
-        if (gmf.extra) gmf.extra.Making = 0;
-        gmf.power = 0;
-        return runs;
-      }
-    }
-
-    return runs;
+    return processGlassMouldFilling(this.buildMonumentState(), runs);
   }
 
-  /**
-   * Process all mould work during Factory Automation.
-   * Called during tick processing when Factory Automation is active.
-   * Reference: castle.js:3166-3185
-   * @param runs Number of FA runs available
-   * @returns Remaining FA runs after all mould work
-   */
   doMouldWork(runs: number): number {
-    // Check if Cold Mould is enabled (disables mould work)
-    const coldMould = this.boosts.get('Cold Mould');
-    if (coldMould && coldMould.power > 0) {
-      return runs; // Cold Mould disables mould work
-    }
-
-    // Process in order: Fill Glass -> Make Glass -> Fill Sand -> Make Sand
-    // This order ensures moulds can be filled before new ones start
-    if (runs > 0) runs = this.fillGlassMouldWork(runs);
-    if (runs > 0) runs = this.makeGlassMouldWork(runs);
-    if (runs > 0) runs = this.fillSandMouldWork(runs);
-    if (runs > 0) runs = this.makeSandMouldWork(runs);
-
-    // Mould Press: If AO + Mould Press, repeat mould work until no progress
-    // Reference: castle.js:3173-3182
-    if (this.hasBoost('AO') && this.hasBoost('MouldPress')) {
-      while (runs > 0) {
-        const start = runs;
-        if (runs > 0) runs = this.fillGlassMouldWork(runs);
-        if (runs > 0) runs = this.makeGlassMouldWork(runs);
-        if (runs > 0) runs = this.fillSandMouldWork(runs);
-        if (runs > 0) runs = this.makeSandMouldWork(runs);
-        if (start === runs) break; // No progress made, exit loop
-      }
-    }
-
-    return runs;
+    return processAllMouldWork(this.buildMonumentState(), runs);
   }
 
   /**
@@ -3726,9 +3328,9 @@ export class ModernEngine implements GameEngine {
       bgBought: this.hasBoost('BG'),
       gmBought: this.hasBoost('GM'),
       boneClickerBought: this.hasBoost('BoneClicker'),
-      bonemealLevel: this.boosts.get('Bonemeal')?.power ?? 0,
+      bonemealLevel: this.getBoostPower('Bonemeal'),
       boostsOwned: this.countBoughtBoosts(),
-      loadedPermNP: this.boosts.get('TF')?.power ?? 0,
+      loadedPermNP: this.getBoostPower('TF'),
     };
 
     const chips = calculateChipsPerClick(chipState);
@@ -5311,7 +4913,7 @@ export class ModernEngine implements GameEngine {
 
     // Check if Ranger is enabled and if logicat cage is full
     const hasRanger = this.boosts.get('Ranger')?.isEnabled ?? false;
-    const logicatCurrent = this.boosts.get('Panther Poke')?.power ?? 0;
+    const logicatCurrent = this.getBoostPower('Panther Poke');
     const logicatMax = this.boosts.get('Panther Poke')?.countdown ?? 0; // PokeBar() max
     const logicatCageFull = logicatCurrent >= logicatMax;
 
@@ -5628,21 +5230,21 @@ export class ModernEngine implements GameEngine {
    */
   private buildRedundakittyBoostState(): RedundakittyBoostState {
     return {
-      kitnip: (this.boosts.get('Kitnip')?.bought ?? 0) > 0,
-      kittiesGalore: (this.boosts.get('Kitties Galore')?.bought ?? 0) > 0,
+      kitnip: this.hasBoost('Kitnip'),
+      kittiesGalore: this.hasBoost('Kitties Galore'),
       rrsrUnlocked: (this.boosts.get('RRSR')?.unlocked ?? 0) > 0,
-      rrsrBought: (this.boosts.get('RRSR')?.bought ?? 0) > 0,
-      doRD: (this.boosts.get('DoRD')?.bought ?? 0) > 0,
-      blastFurnace: (this.boosts.get('Blast Furnace')?.bought ?? 0) > 0,
-      bkj: (this.boosts.get('BKJ')?.bought ?? 0) > 0,
-      bkjPower: this.boosts.get('BKJ')?.power ?? 0,
-      redunception: (this.boosts.get('Redunception')?.bought ?? 0) > 0,
-      logicat: (this.boosts.get('Logicat')?.bought ?? 0) > 0,
-      sgc: (this.boosts.get('SGC')?.bought ?? 0) > 0,
-      doubleDepartment: (this.boosts.get('Double Department')?.bought ?? 0) > 0,
-      schizoblitz: (this.boosts.get('Schizoblitz')?.bought ?? 0) > 0,
-      seaMining: (this.boosts.get('Sea Mining')?.bought ?? 0) > 0,
-      ventusVehemensEnabled: (this.boosts.get('Ventus Vehemens')?.bought ?? 0) > 0 &&
+      rrsrBought: this.hasBoost('RRSR'),
+      doRD: this.hasBoost('DoRD'),
+      blastFurnace: this.hasBoost('Blast Furnace'),
+      bkj: this.hasBoost('BKJ'),
+      bkjPower: this.getBoostPower('BKJ'),
+      redunception: this.hasBoost('Redunception'),
+      logicat: this.hasBoost('Logicat'),
+      sgc: this.hasBoost('SGC'),
+      doubleDepartment: this.hasBoost('Double Department'),
+      schizoblitz: this.hasBoost('Schizoblitz'),
+      seaMining: this.hasBoost('Sea Mining'),
+      ventusVehemensEnabled: this.hasBoost('Ventus Vehemens') &&
                              (this.boosts.get('Ventus Vehemens')?.isEnabled ?? false)
     };
   }
@@ -6258,7 +5860,7 @@ export class ModernEngine implements GameEngine {
     }
 
     const combatBoosts = this.buildCombatBoostState();
-    const hasTopiary = (this.boosts.get('Topiary')?.bought ?? 0) > 0;
+    const hasTopiary = this.hasBoost('Topiary');
 
     const result = dragonFledge(
       clutchIndex,
@@ -6295,7 +5897,7 @@ export class ModernEngine implements GameEngine {
     if (this.dragons.totalNPsWithDragons > 11) {
       this.unlockBoost('Dragon Overview');
     }
-    if (this.dragons.totalNPsWithDragons > 111 && (this.boosts.get('Dragon Overview')?.bought ?? 0) > 0) {
+    if (this.dragons.totalNPsWithDragons > 111 && this.hasBoost('Dragon Overview')) {
       this.unlockBoost('Woolly Jumper');
     }
 
@@ -6395,8 +5997,8 @@ export class ModernEngine implements GameEngine {
   handleRedundaKnightAttack(breathtype: number): CombatOutcome | null {
     if (this.dragons.totalDragons === 0) return null;
 
-    const princessLevel = this.boosts.get('Princesses')?.power ?? 0;
-    const dragonflyLevel = this.boosts.get('Dragonfly')?.power ?? 0;
+    const princessLevel = this.getBoostPower('Princesses');
+    const dragonflyLevel = this.getBoostPower('Dragonfly');
 
     const knight = generateRedundaKnight(this.dragons, dragonflyLevel, princessLevel);
     return this.runCombat(knight.target, knight, breathtype, 1);
@@ -6409,7 +6011,7 @@ export class ModernEngine implements GameEngine {
    * @param opponentType - Type of opponent being hidden from
    */
   dragonsHide(opponentType: number): void {
-    const camelflargeLevel = this.boosts.get('Camelflarge')?.power ?? 0;
+    const camelflargeLevel = this.getBoostPower('Camelflarge');
     const hideTime = calculateHideTime(
       opponentType,
       this.dragons.queen.Level,
