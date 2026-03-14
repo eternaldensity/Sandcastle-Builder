@@ -330,6 +330,107 @@ export const ceilingUnlockRules: UnlockRule[] = [
 ];
 
 /**
+ * Boost-ownership / badge-count / misc unlock rules
+ * Reference: data.js:723-800
+ */
+export const miscUnlockRules: UnlockRule[] = [
+  // Fractal Sandcastles: auto-unlock + auto-buy when Fractals Forever badge earned
+  // Reference: data.js:723-730
+  { boostAlias: 'Fractal Sandcastles', condition: Conditions.badgeEarned('Fractals Forever') },
+
+  // Chateau: unlocked when Unreachable? badge earned
+  // Reference: data.js:731
+  { boostAlias: 'Chateau', condition: Conditions.badgeEarned('Unreachable?') },
+
+  // Ch*rpies: unlocked at 69 badges owned
+  // Reference: data.js:740-742
+  // Note: uses total badges owned, approximated via badge group count
+  // This is a special case - handled in checkAutoUnlocks with custom logic
+
+  // favs: unlocked at 100 boosts owned
+  // Reference: data.js:750
+  // Note: requires boostsOwned count - handled in checkAutoUnlocks with custom logic
+
+  // Glass Jaw: Ninja Builder bought + GlassBlocks.power > 10
+  // Reference: data.js:758
+  {
+    boostAlias: 'Glass Jaw',
+    condition: Conditions.and(
+      Conditions.boostBought('Ninja Builder', 1),
+      Conditions.boostPower('GlassBlocks', 11)
+    ),
+  },
+
+  // Sand Tool Multi-Buy: SandToolsOwned >= 123
+  // Reference: data.js:767
+  // Note: uses total sand tools owned - handled in checkAutoUnlocks with custom logic
+
+  // Castle Tool Multi-Buy: CastleToolsOwned >= 234
+  // Reference: data.js:768
+  // Note: uses total castle tools owned - handled in checkAutoUnlocks with custom logic
+
+  // Memories Revisited: >10 discoveries + DeLorean badge
+  // Reference: data.js:774-776
+  {
+    boostAlias: 'Memories Revisited',
+    condition: Conditions.and(
+      Conditions.badgeGroupCount('discov', 11),
+      Conditions.badgeEarned("Dude, Where's my DeLorean?")
+    ),
+  },
+
+  // Stealth Cam: >100 discoveries
+  // Reference: data.js:781-783
+  { boostAlias: 'Stealth Cam', condition: Conditions.badgeGroupCount('discov', 101) },
+
+  // Mind Glow: >10 sand monuments + Memories Revisited
+  // Reference: data.js:784-786
+  {
+    boostAlias: 'Mind Glow',
+    condition: Conditions.and(
+      Conditions.badgeGroupCount('monums', 11),
+      Conditions.boostBought('Memories Revisited', 1)
+    ),
+  },
+
+  // Memory Singer: >10 glass monuments + Memories Revisited
+  // Reference: data.js:787-789
+  {
+    boostAlias: 'Memory Singer',
+    condition: Conditions.and(
+      Conditions.badgeGroupCount('monumg', 11),
+      Conditions.boostBought('Memories Revisited', 1)
+    ),
+  },
+
+  // Seaish Glass Chips: Sand Purifier power > threshold
+  // Reference: data.js:795
+  { boostAlias: 'Seaish Glass Chips', condition: Conditions.boostPower('Sand Purifier', 501) },
+
+  // Seaish Glass Blocks: Glass Extruder power > threshold
+  // Reference: data.js:796
+  { boostAlias: 'Seaish Glass Blocks', condition: Conditions.boostPower('Glass Extruder', 501) },
+
+  // Rob: AC power >= 500
+  // Reference: data.js:814
+  { boostAlias: 'Rob', condition: Conditions.boostPower('AC', 500) },
+
+  // Discovery Detector: >5 discoveries + discov1 badge earned
+  // Reference: data.js:800
+  {
+    boostAlias: 'Discovery Detector',
+    condition: Conditions.and(
+      Conditions.badgeGroupCount('discov', 6),
+      Conditions.badgeEarned('discov1')
+    ),
+  },
+
+  // AD (Auto-Destroyer): unlocked when TF (Tool Factory) is bought
+  // Reference: data.js:801
+  { boostAlias: 'AD', condition: Conditions.boostBought('TF', 1) },
+];
+
+/**
  * All unlock rules combined
  */
 export const allUnlockRules: UnlockRule[] = [
@@ -337,4 +438,5 @@ export const allUnlockRules: UnlockRule[] = [
   ...resourceUnlockRules,
   ...badgeUnlockRules,
   ...ceilingUnlockRules,
+  ...miscUnlockRules,
 ];

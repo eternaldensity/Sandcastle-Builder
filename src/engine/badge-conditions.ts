@@ -158,6 +158,12 @@ export const badgeConditions: BadgeCondition[] = [
   { badge: 'Ceiling Disintegrated', trigger: 'tool-purchase', check: s => s.glassCeilingCount >= 12 },
 
   // =============================================================================
+  // Initial badges (trigger: 'tick')
+  // Reference: castle.js:3445 - earned on first tick when no badges exist
+  // =============================================================================
+  { badge: 'Redundant Redundancy', trigger: 'tick', check: s => s.badgesOwned === 0 },
+
+  // =============================================================================
   // Meta badges (trigger: 'tick' or 'ong')
   // =============================================================================
   { badge: 'Badge Collector', trigger: 'tick', check: s => s.badgesOwned >= 10 },

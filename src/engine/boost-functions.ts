@@ -71,6 +71,8 @@ export interface BoostFunctions {
   unlockFunction?: UnlockFunction;
   lockFunction?: LockFunction;
   countdownFunction?: CountdownFunction;
+  /** Called instead of generic lock when countdown expires (castle.js:3354) */
+  countdownLockFunction?: CountdownFunction;
   loadFunction?: LoadFunction;
 }
 

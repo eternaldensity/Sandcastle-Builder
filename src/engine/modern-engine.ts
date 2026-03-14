@@ -50,6 +50,7 @@ import {
 import {
   calculateAllSandToolRates,
   calculateTotalSandRate,
+  calculateClickGlobalMultiplier,
   type SandToolRateState,
 } from './sand-rate-calculator.js';
 import {
@@ -177,6 +178,10 @@ interface InternalBoostState extends BoostState {
   permalock?: boolean;
   /** Whether this can be unlocked by Department of Redundancy (mutable at runtime) */
   department?: number;
+  /** Whether countdown continues during Coma Molpy Style (castle.js:3351) */
+  countdownCMS?: boolean;
+  /** Whether to call countdownFunction during CMS without decrementing (castle.js:3364) */
+  callcountdownifCMS?: boolean;
 }
 
 /**
@@ -449,6 +454,26 @@ export class ModernEngine implements GameEngine {
       });
     }
 
+    // Set countdownCMS flags on boosts that count down during Coma
+    // Reference: boosts.js - these boosts have countdownCMS: 1
+    const cmsBoosts = [
+      'ASHF', 'Sea Mining', 'TemporalRift', 'Crystal Dragon',
+      'Cryogenics', 'Blitzing', 'Dragon', 'Dragon Forge',
+      'splosion', 'Maps',
+    ];
+    for (const alias of cmsBoosts) {
+      const boost = this.boosts.get(alias);
+      if (boost) boost.countdownCMS = true;
+    }
+
+    // Set callcountdownifCMS flag
+    // Reference: boosts.js:10774
+    const cmsCallBoosts = ['Fireproof'];
+    for (const alias of cmsCallBoosts) {
+      const boost = this.boosts.get(alias);
+      if (boost) boost.callcountdownifCMS = true;
+    }
+
     // Initialize Tool Factory as virtual boost (acts as both boost and resource)
     // TF is unlocked when a tool price reaches Infinity (Shop Failed badge)
     // Its power represents Glass Chips loaded into it
@@ -658,15 +683,14 @@ export class ModernEngine implements GameEngine {
 
     this.ensureVirtualBoosts();
 
-    // Load boosts
+    // Load boosts (preserving flags set during init like countdownCMS)
     for (const [alias, boostState] of Object.entries(state.boosts)) {
-      if (this.boosts.has(alias)) {
-        this.boosts.set(alias, {
-          unlocked: boostState.unlocked,
-          bought: boostState.bought,
-          power: boostState.power,
-          countdown: boostState.countdown,
-        });
+      const existing = this.boosts.get(alias);
+      if (existing) {
+        existing.unlocked = boostState.unlocked;
+        existing.bought = boostState.bought;
+        existing.power = boostState.power;
+        existing.countdown = boostState.countdown;
       }
     }
 
@@ -969,6 +993,11 @@ export class ModernEngine implements GameEngine {
 
     // 13. Badge checking
     this.badgeChecker.check('tick', this.buildBadgeCheckState());
+
+    // 13b. Final rate recalc if badges triggered it (castle.js:2090 via EarnBadge)
+    if (this.needsRateRecalc) {
+      this.calculateRates();
+    }
 
     // 14. Sync resource boosts
     this.syncResourceBoosts();
@@ -1527,6 +1556,11 @@ export class ModernEngine implements GameEngine {
   /**
    * Check and process auto-unlocks based on current state.
    * This is called after state changes that might trigger unlocks.
+   *
+   * Includes both rule-based unlocks and custom aggregate-count unlocks
+   * that can't easily be expressed as rules (they need total tool/badge/boost counts).
+   *
+   * Reference: data.js:649-826 (CheckBuyUnlocks)
    */
   private checkAutoUnlocks(): void {
     const state = this.buildUnlockCheckState();
@@ -1535,6 +1569,41 @@ export class ModernEngine implements GameEngine {
     for (const alias of toUnlock) {
       this.doUnlockBoost(alias);
     }
+
+    // Custom aggregate-count unlocks (data.js:740-768)
+    const badgesOwned = this.countBadgesOwned();
+    if (badgesOwned >= 69) this.doUnlockBoost('Ch*rpies');
+
+    let boostsOwned = 0;
+    for (const b of this.boosts.values()) {
+      if (b.bought > 0) boostsOwned++;
+    }
+    if (boostsOwned >= 100) this.doUnlockBoost('favs');
+
+    let sandToolsOwned = 0;
+    for (const s of this.sandTools.values()) sandToolsOwned += s.amount;
+    let castleToolsOwned = 0;
+    for (const c of this.castleTools.values()) castleToolsOwned += c.amount;
+    if (sandToolsOwned >= 123) this.doUnlockBoost('Sand Tool Multi-Buy');
+    if (castleToolsOwned >= 234) this.doUnlockBoost('Castle Tool Multi-Buy');
+
+    // Now Where Was I: >50 discoveries + Memories Revisited + far from highest NP
+    // Reference: data.js:777-780
+    const discovCount = this.badgeGroupCounts['discov'] ?? 0;
+    if (discovCount > 50 && this.hasBoost('Memories Revisited')) {
+      const npDist = Math.abs(this.core.newpixNumber - this.core.highestNPvisited);
+      if (npDist >= 20) this.doUnlockBoost('Now Where Was I?');
+    }
+
+    // Knitted Beanies: RB bought high enough that 200^bought is Infinity
+    // Reference: data.js:798
+    const rbBought = this.getBoostBought('RB');
+    if (!isFinite(Math.pow(200, rbBought))) this.doUnlockBoost('Knitted Beanies');
+
+    // Space Elevator: WWB bought high enough that 2^(bought-5) is Infinity
+    // Reference: data.js:799
+    const wwbBought = this.getBoostBought('WWB');
+    if (!isFinite(Math.pow(2, wwbBought - 5))) this.doUnlockBoost('Space Elevator');
   }
 
   /**
@@ -2634,6 +2703,12 @@ export class ModernEngine implements GameEngine {
 
   /**
    * Earn a badge if not already earned.
+   *
+   * Matches legacy EarnBadge (castle.js:2081-2106):
+   * - Increments badge group counts
+   * - Flags rate recalculation
+   * - Earns 'Redundant' badge on every badge earn (cascade)
+   * - Calls checkAutoUnlocks() for unlock cascade
    */
   private earnBadge(name: string): void {
     if (!this.badges.has(name)) {
@@ -2646,6 +2721,14 @@ export class ModernEngine implements GameEngine {
       if (def) {
         this.badgeGroupCounts[def.group] = (this.badgeGroupCounts[def.group] ?? 0) + 1;
       }
+      // Flag rate recalculation (legacy castle.js:2090)
+      this.flagRateRecalc();
+      // Earn 'Redundant' on every badge earn (legacy castle.js:2099)
+      if (name !== 'Redundant') {
+        this.earnBadge('Redundant');
+      }
+      // Trigger unlock cascade (legacy castle.js:2100)
+      this.checkAutoUnlocks();
     }
   }
 
@@ -4435,10 +4518,17 @@ export class ModernEngine implements GameEngine {
   /**
    * Recalculate the cached sand per click value.
    * Called after boost purchases, tool purchases, or state load.
+   *
+   * Applies the click-applicable global multiplier (Molpies, Grapevine,
+   * Ch*rpies, Blitzing) but NOT rate-only multipliers (Facebugs, BBC, etc.).
+   * Reference: boosts.js:7449 - calculateSandPerClick receives the same
+   * multiplier built in calculateSandRates (lines 7434-7447).
    */
   private recalculateSandPerClick(): void {
-    const state = this.buildClickMultiplierState();
-    this.cachedSandPerClick = calculateSandPerClick(state);
+    const clickState = this.buildClickMultiplierState();
+    const rateState = this.buildSandRateState();
+    const globalMult = calculateClickGlobalMultiplier(rateState);
+    this.cachedSandPerClick = calculateSandPerClick(clickState, globalMult);
   }
 
   /**
@@ -5311,15 +5401,33 @@ export class ModernEngine implements GameEngine {
     for (const [name, boost] of this.boosts) {
       if (!boost.bought || !boost.countdown || boost.countdown <= 0) continue;
 
-      // Skip countdown in Coma unless boost opts in
-      if (isComa) continue;
+      const funcs = getBoostFunctions(name);
+
+      // Coma handling (castle.js:3351-3364)
+      if (isComa) {
+        if (boost.countdownCMS) {
+          // countdownCMS boosts still count down during Coma
+        } else if (funcs?.countdownFunction && boost.callcountdownifCMS) {
+          // callcountdownifCMS: call countdown function but don't decrement
+          funcs.countdownFunction(this.createBoostFunctionContext(name));
+          continue;
+        } else {
+          // Normal boosts skip countdown during Coma
+          continue;
+        }
+      }
 
       boost.countdown--;
       if (boost.countdown <= 0) {
-        // Countdown expired - lock the boost and reset power
-        this.lockBoost(name);
-        boost.power = 0;
         boost.countdown = 0;
+        if (funcs?.countdownLockFunction) {
+          // Call boost-specific lock function instead of generic lock
+          funcs.countdownLockFunction(this.createBoostFunctionContext(name));
+        } else {
+          // Default: lock the boost and reset power
+          this.lockBoost(name);
+          boost.power = 0;
+        }
 
         // Handle Blitzing expiration specially
         if (name === 'Blitzing') {
@@ -5327,7 +5435,6 @@ export class ModernEngine implements GameEngine {
         }
       } else {
         // Run countdown function if registered
-        const funcs = getBoostFunctions(name);
         if (funcs?.countdownFunction) {
           funcs.countdownFunction(this.createBoostFunctionContext(name));
         }

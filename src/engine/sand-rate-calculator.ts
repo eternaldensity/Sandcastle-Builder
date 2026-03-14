@@ -306,6 +306,28 @@ export function calculateGlobalSandMultiplier(state: SandToolRateState): number 
 }
 
 /**
+ * Calculate the click-applicable global multiplier.
+ *
+ * This is the subset of the full global multiplier that applies to sand-per-click.
+ * Only includes: Molpies, Grapevine, Ch*rpies, Blitzing.
+ * Does NOT include: Facebugs, Overcompensating, BBC, glass use, Hugo
+ * (those only apply to sand-per-mNP rate).
+ *
+ * Reference: boosts.js:7422-7449 (calculateSandRates builds multiplier,
+ * passes it to calculateSandPerClick at line 7449)
+ */
+export function calculateClickGlobalMultiplier(state: SandToolRateState): number {
+  let multiplier = 1;
+  if (state.molpies) multiplier += 0.01 * state.badgesOwned;
+  if (state.grapevine) multiplier += 0.02 * state.badgesOwned;
+  if (state.chirpies) multiplier += 0.05 * state.badgesOwned;
+  if (state.blitzing && state.blitzingPower > 0) {
+    multiplier *= state.blitzingPower / 100;
+  }
+  return multiplier;
+}
+
+/**
  * Calculate total sand production rate.
  */
 export function calculateTotalSandRate(state: SandToolRateState): number {
