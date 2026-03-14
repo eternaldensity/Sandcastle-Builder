@@ -110,6 +110,24 @@ import type {
   OpponentInstance,
 } from '../types/game-data.js';
 import { isResourceInfinite } from '../utils/number-format.js';
+import {
+  BLACKPRINT_COSTS,
+  BLACKPRINT_ORDER,
+  getBlackprintSubject,
+  calculateConstructionRuns,
+  processBlackprintConstruction,
+  calculateMiloBlackprints,
+  getAvailableBlackprints,
+  type BlackprintPrereqState,
+  type BlackprintConstructionState,
+} from './blackprints.js';
+import {
+  processVacuumTick,
+  calculateLogicatQQ,
+  calculateVoidStareMultiplier,
+  shouldUnlockBlackhat,
+  type VacuumTickState,
+} from './flux-system.js';
 
 /**
  * Internal state for a sand tool
@@ -346,6 +364,17 @@ export class ModernEngine implements GameEngine {
 
   // Photo/Color reaction system state
   private photoColors: PhotoColorState = createInitialColorState();
+
+  // Blackprint construction state
+  private blackprintConstruction: BlackprintConstructionState = {
+    isConstructing: false,
+    constructionSubject: null,
+    constructionProgress: 0,
+    constructionTarget: 0,
+  };
+
+  // Milo (Mysterious Representations) accumulated power for blackprint generation
+  private miloPower = 0;
 
   // Ketchup (catch-up) state
   private ketchupTime = false; // true while processing ketchup ticks
@@ -964,6 +993,9 @@ export class ModernEngine implements GameEngine {
     if (this.hasBoost('Camera') || this.photoColors.blueness > 0 || this.photoColors.otherness > 0) {
       runPhoto(this.photoColors, this.buildPhotoBoostAccess());
     }
+
+    // 10c. Vacuum Cleaner per mNP (castle.js:3403-3434)
+    this.tickVacuumCleaner();
 
     // 11. Second rate recalc pass (castle.js:3444)
     if (this.needsRateRecalc) {
@@ -2483,10 +2515,137 @@ export class ModernEngine implements GameEngine {
       this.syncResourceBoosts();
     }
 
-    // NOTE: FA run processing (mould work, blackprint construction, DoRD rewards)
-    // is implemented in the redundakitty system which handles department boost execution.
-    // FA activation here calculates and charges for runs; actual department work happens
-    // when redundakitty clicks trigger DoRD or when the tick loop processes FA-enabled boosts.
+    // Process FA runs: blackprint construction, Milo generation, then department work
+    if (result.runs > 0) {
+      let remainingRuns = result.runs;
+
+      // 1. Blackprint construction (if CfB is active)
+      if (this.blackprintConstruction.isConstructing && this.blackprintConstruction.constructionSubject) {
+        const constructResult = processBlackprintConstruction(
+          remainingRuns,
+          this.blackprintConstruction.constructionProgress,
+          this.blackprintConstruction.constructionTarget,
+          this.blackprintConstruction.constructionSubject,
+          this.hasBoost('Hubble Double')
+        );
+
+        if (constructResult.completed && constructResult.completedBoost) {
+          // Unlock and buy the constructed boost
+          this.doUnlockBoost(constructResult.completedBoost);
+          const constructedState = this.boosts.get(constructResult.completedBoost);
+          if (constructedState) {
+            constructedState.bought = Math.max(1, constructedState.bought);
+          }
+          this.blackprintConstruction.isConstructing = false;
+          this.blackprintConstruction.constructionSubject = null;
+          this.blackprintConstruction.constructionProgress = 0;
+          this.blackprintConstruction.constructionTarget = 0;
+          remainingRuns = constructResult.remainingRuns;
+        } else {
+          this.blackprintConstruction.constructionProgress = constructResult.progress;
+          remainingRuns = 0;
+        }
+      }
+
+      // 2. Milo blackprint generation (if Milo boost is owned)
+      if (remainingRuns > 0 && this.hasBoost('Milo')) {
+        const vsMultiplier = this.isBoostEnabled('VS')
+          ? calculateVoidStareMultiplier(this.getBoostPower('Vacuum'))
+          : 1;
+        const miloResult = calculateMiloBlackprints(
+          this.miloPower,
+          remainingRuns,
+          this.hasBoost('Rush Job'),
+          vsMultiplier,
+          this.papal('BlackP')
+        );
+        this.miloPower = miloResult.remainingPower;
+        if (miloResult.pages > 0) {
+          this.addResource('Blackprints', miloResult.pages);
+        }
+      }
+    }
+  }
+
+  /**
+   * Process Vacuum Cleaner per mNP.
+   * Consumes Flux Crystals + QQ, generates Vacuum.
+   * Reference: castle.js:3403-3434
+   */
+  private tickVacuumCleaner(): void {
+    if (!this.isBoostEnabled('Vacuum Cleaner')) return;
+
+    const blackhat = this.boosts.get('blackhat');
+    const vacState: VacuumTickState = {
+      vacuumCleanerEnabled: true,
+      thisSucksLevel: this.getBoostPower('TS'),
+      fluxCrystals: this.getBoostPower('FluxCrystals'),
+      qq: this.getBoostPower('QQ'),
+      papalDyson: this.papal('Dyson'),
+      hasBlackHole: this.hasBoost('Black Hole'),
+      blackHoleMultiplier: this.hasBoost('Black Hole') ? 2 + Math.max(0, (blackhat?.power ?? 0) - 8) : 2,
+      isLongpix: this.ong.npLength > 1800,
+      hasOvertime: this.isBoostEnabled('Overtime'),
+      blackhatPower: blackhat?.power ?? 0,
+    };
+
+    const result = processVacuumTick(vacState);
+    if (result.wasActive) {
+      this.addResource('FluxCrystals', -result.fluxCrystalsSpent);
+      this.addResource('QQ', -result.qqSpent);
+      this.addResource('Vacuum', result.vacuumGenerated);
+
+      // Check if This Sucks should unlock blackhat
+      if (shouldUnlockBlackhat(vacState.thisSucksLevel) && !this.hasBoost('blackhat')) {
+        this.doUnlockBoost('blackhat');
+      }
+    }
+  }
+
+  /**
+   * Start blackprint construction for the next available subject.
+   * Reference: boosts.js:4252-4256 (StartBlackprintConstruction)
+   */
+  startBlackprintConstruction(): void {
+    if (this.blackprintConstruction.isConstructing) return;
+
+    const prereqState: BlackprintPrereqState = {
+      hasBadge: (badge) => this.badges.has(badge),
+      hasBoost: (alias) => this.hasBoost(alias),
+      getBoostPower: (alias) => this.getBoostPower(alias),
+      getBoostBought: (alias) => this.getBoostBought(alias),
+      aaRuns: this.getBoostPower('AA'),
+      redactedClicks: this.getBoostPower('Redacted'),
+    };
+
+    const boughtBoosts = new Set<string>();
+    for (const [alias, state] of this.boosts) {
+      if (state.bought > 0) boughtBoosts.add(alias);
+    }
+
+    const pages = this.getBoostPower('Blackprints');
+    const subject = getBlackprintSubject(pages, boughtBoosts, prereqState);
+    if (!subject) return;
+
+    const target = calculateConstructionRuns(
+      subject,
+      this.hasBoost('AE'),
+      this.hasBoost('AA')
+    );
+
+    this.blackprintConstruction = {
+      isConstructing: true,
+      constructionSubject: subject,
+      constructionProgress: 0,
+      constructionTarget: target,
+    };
+  }
+
+  /**
+   * Get current blackprint construction state (for UI/testing).
+   */
+  getBlackprintConstructionState(): BlackprintConstructionState {
+    return { ...this.blackprintConstruction };
   }
 
   /**
@@ -2515,6 +2674,20 @@ export class ModernEngine implements GameEngine {
 
     // For non-toggles, bought > 0 means active
     return true;
+  }
+
+  /**
+   * Get a boost's power value (0 if not found).
+   */
+  private getBoostPower(alias: string): number {
+    return this.boosts.get(alias)?.power ?? 0;
+  }
+
+  /**
+   * Get a boost's bought count (0 if not found).
+   */
+  private getBoostBought(alias: string): number {
+    return this.boosts.get(alias)?.bought ?? 0;
   }
 
   /**
@@ -4028,13 +4201,13 @@ export class ModernEngine implements GameEngine {
    */
   private voidStareMultiplier(stareType: string): number {
     if (!this.isBoostEnabled(stareType)) return 1;
-    const vacuum = this.boosts.get('Vacuum');
-    if (!vacuum) return 1;
+    const vacuumLevel = this.getBoostPower('Vacuum');
+    if (vacuumLevel <= 0) return 1;
 
-    const blackprints = this.boosts.get('Blackprints');
-    if (!blackprints || !isFinite(blackprints.power)) return 1;
+    const blackprints = this.getBoostPower('Blackprints');
+    if (!isFinite(blackprints)) return 1;
 
-    return Math.pow(1.01, vacuum.power / 100);
+    return calculateVoidStareMultiplier(vacuumLevel);
   }
 
   /**
