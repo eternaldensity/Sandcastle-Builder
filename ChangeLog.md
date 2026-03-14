@@ -5,6 +5,10 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Plan 36: Parity Integration & Save Round-Trip (#154)
+- Plan 33: Flux Crystals & Temporal Resources (#151)
+- Plan 32: Vacuum Cleaner & Endgame Resources (#150)
+- Plan 30: Blackprints Construction (#148)
 - Plan 35: Ketchup Fast-Forward System (#153)
 - Plan 34: Advanced Ninja Mechanics (#152)
 - Plan 31: Goat System & Monty Haul Problem (#149)
