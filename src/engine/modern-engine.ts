@@ -94,6 +94,13 @@ import {
   type DigType,
   type DigResult,
 } from './dragon.js';
+import {
+  runPhoto,
+  getPhoto,
+  createInitialColorState,
+  type PhotoColorState,
+  type PhotoBoostAccess,
+} from './photo-system.js';
 import type {
   DragonQueenState,
   DragonHatchlingsState,
@@ -329,6 +336,19 @@ export class ModernEngine implements GameEngine {
 
   // Mustard tool count (tools with NaN amount)
   private mustardToolCount = 0;
+
+  // Monty Haul Problem state
+  private montyDoors: string[] = ['A', 'B', 'C'];
+  private montyPrize = '';    // door with prize
+  private montyChosen = '';   // player's chosen door
+  private montyGoat = '';     // revealed goat door
+  private montyActive = false; // whether a round is in progress
+
+  // Photo/Color reaction system state
+  private photoColors: PhotoColorState = createInitialColorState();
+
+  // Ketchup (catch-up) state
+  private ketchupTime = false; // true while processing ketchup ticks
 
   // Unlock checker for auto-unlock logic
   private unlockChecker: UnlockChecker;
@@ -799,6 +819,94 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
+   * Process elapsed time as ketchup (catch-up) ticks.
+   * Reference: castle.js:4055-4090 (Molpy.Loopist)
+   *
+   * When the game detects elapsed time > 1 tick, it processes missed ticks
+   * in a loop with ketchupTime=true, which skips ONG checks.
+   * Lateness is capped at 7200ms (~4 ticks) to prevent infinite loops.
+   * Excess lateness is converted to Shorks (if PoG+ASHF) or BB (Blackbook).
+   *
+   * @param elapsedMs - milliseconds elapsed since last loop iteration
+   * @param mNPlength - milliseconds per tick (default 1800)
+   */
+  processKetchup(elapsedMs: number, mNPlength = 1800): { ticksProcessed: number; shorks: number; bb: number } {
+    this.ensureInitialized();
+
+    let lateness = elapsedMs;
+    let shorks = 0;
+    let bb = 0;
+
+    // Cap lateness at 7200ms, convert excess (castle.js:4059-4078)
+    if (lateness > 7200) {
+      // PoG + ASHF: convert excess to Shorks
+      if (this.isBoostEnabled('PoG') && this.hasBoost('ASHF')) {
+        const npShorks = Math.floor(lateness / 1000 / mNPlength);
+        if (npShorks > 0) {
+          lateness -= npShorks * 1000 * mNPlength;
+          let shorkGain = npShorks;
+          if (this.hasBoost('SoS')) shorkGain += 1;
+          if (this.hasBoost('Blitzing') && this.hasBoost('LSoS')) shorkGain *= 2;
+          const shorkBoost = this.boosts.get('Shork');
+          if (shorkBoost) shorkBoost.power += shorkGain;
+          shorks = shorkGain;
+        }
+      }
+
+      // Convert remaining excess to Blackbook entries
+      const lateMill = (lateness - 7200) / mNPlength;
+      const bbGain = Math.floor(lateMill);
+      if (bbGain > 0) {
+        const bbBoost = this.boosts.get('BB');
+        if (bbBoost) bbBoost.power += bbGain;
+        bb = bbGain;
+      }
+
+      lateness = 7200; // Hard cap
+    }
+
+    // Process ketchup ticks (castle.js:4079-4090)
+    let ticksProcessed = 0;
+    this.ketchupTime = true;
+    while (lateness >= mNPlength) {
+      this.processTick();
+      lateness -= mNPlength;
+      ticksProcessed++;
+    }
+    this.ketchupTime = false;
+
+    return { ticksProcessed, shorks, bb };
+  }
+
+  /**
+   * Run mustard cleanup - fix NaN resource values.
+   * Reference: boosts.js:7850-7867
+   */
+  mustardCleanup(): boolean {
+    let cleaned = false;
+    const sand = this.boosts.get('Sand');
+    if (sand && typeof sand.power === 'number' && isNaN(sand.power)) {
+      sand.power = 0;
+      cleaned = true;
+    }
+    if (sand && typeof (sand as any).totalDug === 'number' && isNaN((sand as any).totalDug)) {
+      (sand as any).totalDug = 0;
+      cleaned = true;
+    }
+    const castles = this.boosts.get('Castles');
+    if (castles && typeof castles.power === 'number' && isNaN(castles.power)) {
+      castles.power = 0;
+      cleaned = true;
+    }
+    if (castles && typeof (castles as any).totalBuilt === 'number' && isNaN((castles as any).totalBuilt)) {
+      (castles as any).totalBuilt = 0;
+      cleaned = true;
+    }
+    if (cleaned) this.earnBadge('Mustard Cleanup');
+    return cleaned;
+  }
+
+  /**
    * Process a single game tick.
    * Reference: castle.js:3338-3460 (Molpy.Think)
    *
@@ -817,7 +925,7 @@ export class ModernEngine implements GameEngine {
 
     // 3. Check ONG unless in ketchup or Coma (castle.js:3345)
     const isComa = this.isBoostEnabled('Coma Molpy Style');
-    if (!isComa) {
+    if (!(this.ketchupTime || isComa)) {
       this.tickCheckONG();
     }
 
@@ -851,6 +959,11 @@ export class ModernEngine implements GameEngine {
 
     // 10. Dragon digging per mNP (castle.js:3443)
     this.processDragonDig('mnp');
+
+    // 10b. Photo/color reaction system per mNP (castle.js:3461)
+    if (this.hasBoost('Camera') || this.photoColors.blueness > 0 || this.photoColors.otherness > 0) {
+      runPhoto(this.photoColors, this.buildPhotoBoostAccess());
+    }
 
     // 11. Second rate recalc pass (castle.js:3444)
     if (this.needsRateRecalc) {
@@ -2174,7 +2287,17 @@ export class ModernEngine implements GameEngine {
     if (this.hasBoost('NinjaBuilder')) {
       const stealthBuild = this.calcStealthBuild(true, true);
       this.resources.castles += stealthBuild + 1;
-      // Factory Ninja interaction deferred
+
+      // Factory Ninja: run factory automation during stealth (castle.js:334-340)
+      const factoryNinja = this.boosts.get('FactoryNinja');
+      if (factoryNinja && factoryNinja.bought && factoryNinja.power > 0) {
+        this.activateFactoryAutomation();
+        factoryNinja.power--;
+        if (factoryNinja.power <= 0) {
+          factoryNinja.bought = 0;
+          factoryNinja.unlocked = 0;
+        }
+      }
     } else {
       this.resources.castles += 1;
     }
@@ -2246,7 +2369,18 @@ export class ModernEngine implements GameEngine {
       if (ladders) stealthBuild *= ladders.amount;
     }
 
-    // Ninjasaw + VJ interaction deferred
+    // Ninjasaw + VJ: multiply by VJ reward (costs 50 glass blocks)
+    // Reference: castle.js:390-396
+    const ninjasaw = this.boosts.get('Ninjasaw');
+    if (useVJ && ninjasaw && ninjasaw.power && this.isBoostEnabled('VJ')) {
+      if (this.resources.glassBlocks >= 50) {
+        if (spend) this.resources.glassBlocks -= 50;
+        // VJ reward is based on VJ power level
+        const vj = this.boosts.get('VJ');
+        const vjReward = vj ? Math.max(1, vj.power) : 1;
+        stealthBuild *= vjReward;
+      }
+    }
 
     return stealthBuild;
   }
@@ -3255,6 +3389,11 @@ export class ModernEngine implements GameEngine {
     this.clickMustard();
     this.clickDragonQuest();
 
+    // 1b. Photo click: generate Blueness on beach click (castle.js:3471)
+    if (this.hasBoost('Camera') || this.photoColors.blueness > 0) {
+      getPhoto(this.photoColors, this.buildPhotoBoostAccess(), 1);
+    }
+
     // 2. Click achievements (castle.js:167)
     this.checkClickAchievements();
 
@@ -3718,6 +3857,169 @@ export class ModernEngine implements GameEngine {
     if (goats.power >= 2) this.earnBadge('Second Edition');
     if (goats.power >= 20) this.doUnlockBoost('HoM');
     if (goats.power >= 200) this.doUnlockBoost('BeretGuy');
+  }
+
+  /**
+   * Start a Monty Haul Problem round. Sets prize door and marks round active.
+   * Reference: boosts.js:429-431 (unlockFunction)
+   */
+  montyStart(): boolean {
+    const mhp = this.boosts.get('MHP');
+    if (!mhp || !mhp.bought) return false;
+
+    // Generate random prize door
+    this.montyPrize = this.montyDoors[Math.floor(Math.random() * 3)];
+    this.montyGoat = '';
+    this.montyChosen = '';
+    this.montyActive = true;
+    return true;
+  }
+
+  /**
+   * Player selects a door in MHP. If first pick, reveals a goat door.
+   * If second pick (after goat revealed), resolves the game.
+   * Reference: boosts.js:439-466 (Molpy.Monty)
+   */
+  montyChoose(door: string): { result: 'goat-revealed' | 'win' | 'lose'; goatDoor?: string } | null {
+    const mhp = this.boosts.get('MHP');
+    if (!mhp || !mhp.bought || !this.montyActive) return null;
+
+    this.montyChosen = door;
+
+    if (this.montyGoat) {
+      // Second pick — if choosing revealed goat door, need Beret Guy
+      if (door === this.montyGoat && !this.hasBoost('BeretGuy')) {
+        return null; // can't pick revealed goat without Beret Guy
+      }
+      // Resolve the game
+      const won = door === this.montyPrize;
+      this.rewardMonty(won);
+      this.montyActive = false;
+      // Lock MHP (increments power for price scaling)
+      mhp.power++;
+      return { result: won ? 'win' : 'lose' };
+    } else {
+      // First pick — reveal a goat door
+      const goatDoor = this.montyRevealGoat(door);
+      if (!goatDoor) {
+        // Edge case: player picked the prize on first try with specific goat logic
+        // Legacy uses encoded MontyMethod with randomness
+        const won = door === this.montyPrize;
+        this.rewardMonty(won);
+        this.montyActive = false;
+        mhp.power++;
+        return { result: won ? 'win' : 'lose' };
+      }
+      this.montyGoat = goatDoor;
+      return { result: 'goat-revealed', goatDoor };
+    }
+  }
+
+  /**
+   * Find a door to reveal as goat (not the player's choice, not the prize).
+   * Reference: boosts.js MontyMethod encoded logic
+   */
+  private montyRevealGoat(chosen: string): string | null {
+    const candidates = this.montyDoors.filter(d => d !== chosen && d !== this.montyPrize);
+    if (candidates.length === 0) return null;
+    // If player chose the prize, both others are goats — pick randomly
+    return candidates[Math.floor(Math.random() * candidates.length)];
+  }
+
+  /**
+   * Distribute rewards for MHP win/loss.
+   * Reference: boosts.js:472-486 (Molpy.RewardMonty)
+   */
+  private rewardMonty(won: boolean): void {
+    if (won) {
+      // Win: gain 50% of current castles
+      const gain = Math.floor(this.resources.castles / 2);
+      this.resources.castles += gain;
+
+      // Hall of Mirrors: gain 1/5 of glass chips
+      if (this.isBoostEnabled('HoM')) {
+        const chipGain = Math.floor(this.resources.glassChips / 5);
+        this.resources.glassChips += chipGain;
+      }
+
+      // Gruff: gain 3 goats on win
+      if (this.hasBoost('Gruff')) {
+        this.getYourGoat(3);
+      }
+    } else {
+      // Lose: destroy all castles
+      this.resources.castles = 0;
+
+      // Reduce MHP power for price scaling
+      const mhp = this.boosts.get('MHP');
+      if (mhp) {
+        mhp.power = Math.ceil(Math.floor(mhp.power / 1.8));
+      }
+
+      // Hall of Mirrors: lose 1/3 of glass chips
+      if (this.isBoostEnabled('HoM')) {
+        const chipLoss = Math.floor(this.resources.glassChips / 3);
+        this.resources.glassChips -= chipLoss;
+      }
+
+      // Always get 1 goat on loss
+      this.getYourGoat(1);
+    }
+  }
+
+  /**
+   * Get MHP state for display/testing.
+   */
+  getMontyState(): { active: boolean; chosen: string; goatDoor: string; prize: string } {
+    return {
+      active: this.montyActive,
+      chosen: this.montyChosen,
+      goatDoor: this.montyGoat,
+      prize: this.montyPrize,
+    };
+  }
+
+  /**
+   * Build PhotoBoostAccess adapter for the photo system.
+   */
+  private buildPhotoBoostAccess(): PhotoBoostAccess {
+    return {
+      hasBoost: (name: string) => this.hasBoost(name),
+      isEnabled: (name: string) => this.isBoostEnabled(name),
+      getLevel: (name: string) => {
+        const b = this.boosts.get(name);
+        return b ? b.bought : 0;
+      },
+      getPower: (name: string) => {
+        const b = this.boosts.get(name);
+        return b ? b.power : 0;
+      },
+      setPower: (name: string, value: number) => {
+        const b = this.boosts.get(name);
+        if (b) b.power = value;
+      },
+      addPower: (name: string, amount: number) => {
+        const b = this.boosts.get(name);
+        if (b) b.power += amount;
+      },
+      unlockBoost: (name: string) => this.doUnlockBoost(name),
+      earnBadge: (name: string) => this.earnBadge(name),
+      papal: (decree: string) => this.papal(decree),
+    };
+  }
+
+  /**
+   * Get photo color state for testing.
+   */
+  getPhotoColors(): PhotoColorState {
+    return { ...this.photoColors };
+  }
+
+  /**
+   * Set photo color state (for testing).
+   */
+  setPhotoColors(colors: Partial<PhotoColorState>): void {
+    Object.assign(this.photoColors, colors);
   }
 
   /**

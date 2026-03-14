@@ -5,6 +5,10 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Plan 35: Ketchup Fast-Forward System (#153)
+- Plan 34: Advanced Ninja Mechanics (#152)
+- Plan 31: Goat System & Monty Haul Problem (#149)
+- Plan 29: Photo & Color Reaction System (#147)
 - Create Phase 4 Implementation Plans (29-36) (#146)
 - Archive old plans, create Phase 3 planning doc (#144)
 - Plan 20: Tool Factory Production System (#140)
