@@ -123,6 +123,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Add mid-game parity comparison tests for boost/badge/tool scenarios (#171)
 - Add missing ONG-triggered boost logic and buy-function side effects (#164)
 - Plan 23: Game Tick Orchestration (#145)
 - Plan 21: Auto-Assembly & Blast Furnace (RunFastFactory) (#143)
