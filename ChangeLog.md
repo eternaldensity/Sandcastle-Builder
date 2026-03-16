@@ -1,5 +1,8 @@
 ## Changelog
 
+### Security
+- Bump undici from 7.19.1 to 7.24.1 (security) (#170)
+
 ### Fixed
 - Fix badge loss in save/load by migrating hardcoded badges to badge-conditions system (#126)
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
