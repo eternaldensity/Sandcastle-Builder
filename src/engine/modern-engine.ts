@@ -1662,6 +1662,16 @@ export class ModernEngine implements GameEngine {
    * - Various boost mechanics
    */
   private ongBase(): void {
+    // NP==0 unlocks (castle.js:3739-3742)
+    if (this.core.newpixNumber === 0) {
+      this.doUnlockBoost('3DLens');
+      const aperture = this.boosts.get('ApertureScience');
+      const chBoost = this.boosts.get('ControlledHysteresis');
+      if (aperture && aperture.bought >= (aperture.countdown || 1) && chBoost && !chBoost.bought) {
+        this.doUnlockBoost('ControlledHysteresis');
+      }
+    }
+
     // Reset LA level to 1 if owned
     const laBoost = this.boosts.get('LA');
     if (laBoost && laBoost.bought > 0) {
@@ -1744,10 +1754,30 @@ export class ModernEngine implements GameEngine {
     // BBC processing (castle.js:3825-3840)
     this.processBBC();
 
+    // MHP department random assignment (castle.js:3842)
+    if (isFinite(this.resources.castles)) {
+      const mhp = this.boosts.get('MHP');
+      if (mhp) {
+        mhp.department = Math.floor(Math.random() * 3) === 0 ? 1 : 0;
+      }
+    }
+
     // Time Lord reset & Logicat/WotA reset (castle.js:3846-3861)
     if (!this.hasBoost('TemporalRift') || !(this.boosts.get('TemporalRift')?.bought)) {
       this.resetTimeLord();
       this.resetLogicatAtONG();
+
+      // Flux Harvest refresh - reset availability (castle.js:3848)
+      const fluxHarvest = this.boosts.get('FluxHarvest');
+      if (fluxHarvest && fluxHarvest.bought) {
+        fluxHarvest.isEnabled = true;
+      }
+
+      // Shadow Feeder level reset (castle.js:3860)
+      const shadowFeeder = this.boosts.get('ShadowFeeder');
+      if (shadowFeeder && shadowFeeder.isEnabled) {
+        shadowFeeder.power = 1;
+      }
     }
 
     // Lightning Rod decay (castle.js:3862-3874)
@@ -4386,6 +4416,8 @@ export class ModernEngine implements GameEngine {
         return (boost?.bought ?? 0) > 0;
       },
       isBadgeEarned: (name) => this.badges.get(name) === true,
+      getNewpixNumber: () => this.core.newpixNumber,
+      getBadgesOwned: () => this.countBadgesOwned(),
 
       // Engine mutations
       setBoostPower: (boostAlias, power) => {
@@ -4399,6 +4431,18 @@ export class ModernEngine implements GameEngine {
         const boost = this.boosts.get(boostAlias);
         if (boost) {
           boost.countdown = countdown;
+        }
+      },
+      setBoostBought: (boostAlias, bought) => {
+        const boost = this.boosts.get(boostAlias);
+        if (boost) {
+          boost.bought = bought;
+        }
+      },
+      setBoostEnabled: (boostAlias, enabled) => {
+        const boost = this.boosts.get(boostAlias);
+        if (boost) {
+          boost.isEnabled = enabled;
         }
       },
       addResource: (name, amount) => {
@@ -4422,6 +4466,7 @@ export class ModernEngine implements GameEngine {
       lockBoost: (boostAlias) => this.lockBoost(boostAlias),
       unlockBoost: (boostAlias) => this.doUnlockBoost(boostAlias),
       permalockBoost: (boostAlias) => this.permalockBoost(boostAlias),
+      buyBoost: (boostAlias) => this.buyBoost(boostAlias),
       recalculatePriceFactor: () => this.recalculatePriceFactor(),
       earnBadge: (name) => this.earnBadge(name),
       notify: (message) => {

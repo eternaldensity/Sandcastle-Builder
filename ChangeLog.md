@@ -120,6 +120,7 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Add missing ONG-triggered boost logic and buy-function side effects (#164)
 - Plan 23: Game Tick Orchestration (#145)
 - Plan 21: Auto-Assembly & Blast Furnace (RunFastFactory) (#143)
 - Plan 22: TF Chip Generation & Production Control (#142)

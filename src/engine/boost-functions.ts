@@ -40,15 +40,20 @@ export interface BoostFunctionContext {
   isBoostEnabled(alias: string): boolean;
   isBoostBought(alias: string): boolean;
   isBadgeEarned(name: string): boolean;
+  getNewpixNumber(): number;
+  getBadgesOwned(): number;
 
   // Engine mutations
   setBoostPower(alias: string, power: number): void;
   setBoostCountdown(alias: string, countdown: number): void;
+  setBoostBought(alias: string, bought: number): void;
+  setBoostEnabled(alias: string, enabled: boolean): void;
   addResource(name: 'sand' | 'castles' | 'glassChips' | 'glassBlocks', amount: number): void;
   subtractResource(name: 'sand' | 'castles' | 'glassChips' | 'glassBlocks', amount: number): void;
   lockBoost(alias: string): void;
   unlockBoost(alias: string): void;
   permalockBoost(alias: string): void;
+  buyBoost(alias: string): void;
   recalculatePriceFactor(): void;
   earnBadge(name: string): void;
   notify(message: string): void;
@@ -81,6 +86,29 @@ export interface BoostFunctions {
  * Only boosts with custom logic need to be registered.
  */
 export const boostFunctionRegistry: Record<string, BoostFunctions> = {};
+
+// =============================================================================
+// Enable-On-Buy: Toggle boosts that auto-enable when purchased
+// Reference: boosts.js - these all have buyFunction: function() { this.IsEnabled = 1; }
+// =============================================================================
+const enableOnBuyBoosts = [
+  'Furnace Crossfeed',
+  'Furnace Multitasking',
+  'Glass Saw',
+  'Stretchable Chip Storage',
+  'Stretchable Block Storage',
+  'HoM',           // Hall of Mirrors
+  'Draft Dragon',
+];
+
+for (const alias of enableOnBuyBoosts) {
+  if (!boostFunctionRegistry[alias]) {
+    boostFunctionRegistry[alias] = {};
+  }
+  boostFunctionRegistry[alias].buyFunction = (ctx) => {
+    ctx.setBoostEnabled(ctx.boostAlias, true);
+  };
+}
 
 // =============================================================================
 // Priority 1: ASHF (Affordable Swedish Home Furniture)
@@ -689,6 +717,116 @@ export function getRegisteredBoosts(): string[] {
 /**
  * Check if a boost has any registered functions.
  */
+// =============================================================================
+// Phase 3: Impactful Individual buyFunctions
+// =============================================================================
+
+// Safety Hat: Self-locks on buy (it's a joke boost)
+// Reference: boosts.js:5559-5562
+boostFunctionRegistry['Safety Hat'] = {
+  buyFunction: (ctx) => {
+    ctx.lockBoost(ctx.boostAlias);
+  },
+};
+
+// Price Protection: Sets bought to 4 (used as countdown for protection duration)
+// Reference: boosts.js:6603-6604
+boostFunctionRegistry['Price Protection'] = {
+  buyFunction: (ctx) => {
+    ctx.setBoostBought(ctx.boostAlias, 4);
+  },
+};
+
+// Kite and Key: Sets power from sqrt(LR.power), caps at 1e155, raises LR if below
+// Reference: boosts.js:9860-9867
+boostFunctionRegistry['Kite and Key'] = {
+  buyFunction: (ctx) => {
+    let power = ctx.boostPower;
+    if (power < 400) {
+      power = Math.sqrt(ctx.getBoostPower('LR')) || 400;
+    }
+    if (power > 1e155) {
+      power = 1e155;
+    }
+    ctx.setBoostPower(ctx.boostAlias, power);
+    if (ctx.getBoostPower('LR') < power) {
+      ctx.setBoostPower('LR', power);
+    }
+  },
+};
+
+// Lightning in a Bottle: Sets power from LR.power * 1e-36, caps at 1e252, raises LR if below
+// Reference: boosts.js:9886-9893
+boostFunctionRegistry['Lightning in a Bottle'] = {
+  buyFunction: (ctx) => {
+    let power = ctx.boostPower;
+    if (power < 400) {
+      power = (ctx.getBoostPower('LR') * 1e-36) || 400;
+    }
+    if (power > 1e252) {
+      power = 1e252;
+    }
+    ctx.setBoostPower(ctx.boostAlias, power);
+    if (ctx.getBoostPower('LR') < power) {
+      ctx.setBoostPower('LR', power);
+    }
+  },
+};
+
+// =============================================================================
+// Phase 4: Complex buyFunction Implementations
+// =============================================================================
+
+// AC (Automata Control): Sets Level based on Planck Limit badge
+// Reference: boosts.js:6143-6145
+boostFunctionRegistry['AC'] = {
+  buyFunction: (ctx) => {
+    const power = ctx.isBadgeEarned('Planck Limit') ? 6.2e34 : 1;
+    ctx.setBoostPower(ctx.boostAlias, power);
+  },
+};
+
+// PC (Production Control): Bitwise OR power with 1; if Nope! badge, set to 6e51
+// Reference: boosts.js:5930-5933
+boostFunctionRegistry['PC'] = {
+  buyFunction: (ctx) => {
+    let power = ctx.boostPower | 1;
+    if (ctx.isBadgeEarned('Nope!')) power = 6e51;
+    ctx.setBoostPower(ctx.boostAlias, power);
+  },
+};
+
+// Catalyzer: Complex power calculation, increment Level, self-lock
+// Reference: boosts.js:12241-12252
+boostFunctionRegistry['Catalyzer'] = {
+  buyFunction: (ctx) => {
+    let level = ctx.getBoostBought(ctx.boostAlias);
+    if (!level) level = 1;
+    const powmod = (level + 1) / 10;
+    const newpower = Math.pow(
+      2 / 3 * powmod + Math.exp(1 / 6) * Math.sin(15 * powmod),
+      4
+    );
+    ctx.setBoostPower(ctx.boostAlias, newpower);
+    ctx.setBoostBought(ctx.boostAlias, level + 1);
+    ctx.lockBoost(ctx.boostAlias);
+  },
+};
+
+// Chthonism: Coallate - increment Coal.bought, zero Maps.power
+// Reference: boosts.js:12112-12120
+boostFunctionRegistry['Chthonism'] = {
+  buyFunction: (ctx) => {
+    const coalBought = ctx.getBoostBought('Coal');
+    ctx.setBoostBought('Coal', coalBought + 1);
+    ctx.setBoostPower('Maps', 0);
+  },
+};
+
+// =============================================================================
+// Exports
+// =============================================================================
+
 export function hasBoostFunctions(alias: string): boolean {
   return alias in boostFunctionRegistry;
 }
