@@ -43,6 +43,7 @@ export interface BadgeCheckState {
   toolAmounts: Record<string, number>;
 
   // Progress
+  newpixNumber: number;
   beachClicks: number;
   totalCastlesBuilt: number;
   castlesSpent: number;
@@ -130,6 +131,36 @@ export const badgeConditions: BadgeCondition[] = [
   { badge: 'Megopolis', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 1000 },
   { badge: 'Kingdom', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 100000 },
   { badge: 'Empire', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 10000000 },
+  { badge: 'Reign of Terror', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 1e9 },
+  { badge: 'Unreachable?', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 2e12 },
+
+  // =============================================================================
+  // Castle current-count badges (trigger: 'resource-change')
+  // Reference: boosts.js:7745-7800 (Castles.power thresholds)
+  // =============================================================================
+  { badge: 'We Need a Bigger Beach', trigger: 'resource-change', check: s => s.castles >= 1000 },
+  { badge: 'Castle Nation', trigger: 'resource-change', check: s => s.castles >= 1e6 },
+  { badge: 'Castle Planet', trigger: 'resource-change', check: s => s.castles >= 1e9 },
+  { badge: 'Castle Star', trigger: 'resource-change', check: s => s.castles >= 1e12 },
+  { badge: 'Castle Galaxy', trigger: 'resource-change', check: s => s.castles >= 8.888e15 },
+  { badge: 'People Eating Tasty Animals', trigger: 'resource-change', check: s => s.castles >= 1e15 },
+  { badge: 'Y U NO RUN OUT OF SPACE?', trigger: 'resource-change', check: s => s.castles >= 1e24 },
+  { badge: 'Dumpty', trigger: 'resource-change', check: s => s.castles >= 1e36 },
+  { badge: 'This is a silly number', trigger: 'resource-change', check: s => s.castles >= 1e33 },
+  { badge: 'To Da Choppah', trigger: 'resource-change', check: s => s.castles >= 1e39 },
+  { badge: 'Toasters', trigger: 'resource-change', check: s => s.castles >= 1e42 },
+  { badge: 'Dubya', trigger: 'resource-change', check: s => s.castles >= 1e45 },
+  { badge: 'Rub a Dub Dub', trigger: 'resource-change', check: s => s.castles >= 1e90 },
+  { badge: 'WWW', trigger: 'resource-change', check: s => s.castles >= 1e135 },
+  { badge: 'Age of Empires', trigger: 'resource-change', check: s => s.castles >= 1e180 },
+  { badge: 'Queue', trigger: 'resource-change', check: s => s.castles >= 1e48 },
+  { badge: 'What Queue', trigger: 'resource-change', check: s => s.castles >= 1e93 },
+
+  // Sand storage badges (trigger: 'resource-change')
+  // Reference: boosts.js:7499-7530
+  { badge: 'Storehouse', trigger: 'resource-change', check: s => s.sand >= 200 },
+  { badge: 'Bigger Barn', trigger: 'resource-change', check: s => s.sand >= 500 },
+  { badge: 'Warehouse', trigger: 'resource-change', check: s => s.sand >= 8000 },
 
   // =============================================================================
   // Spending badges (trigger: 'tool-purchase')
@@ -156,8 +187,15 @@ export const badgeConditions: BadgeCondition[] = [
   { badge: 'Plain Potato Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 5000 },
   { badge: 'Crinkle Cut Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 20000 },
   { badge: 'BBQ Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 800000 },
-  { badge: 'Sour Cream and Onion Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 5e6 },
+  { badge: 'Corn Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 4e6 },
+  { badge: 'Sour Cream and Onion Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 2e7 },
+  { badge: 'Cinnamon Apple Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 1e8 },
   { badge: 'Salt and Vinegar Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 2e8 },
+  { badge: 'Sweet Chili Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 3e9 },
+  { badge: 'Banana Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 1e11 },
+  { badge: 'Nuclear Fission Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 5e12 },
+  { badge: 'Silicon Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 6e14 },
+  { badge: 'Blue Poker Chips', trigger: 'rate-update', check: s => s.sandPermNP >= 1e19 },
 
   // =============================================================================
   // Boost count badges (trigger: 'tool-purchase')
@@ -185,6 +223,16 @@ export const badgeConditions: BadgeCondition[] = [
   // NOTE: Badge Collector, Badge Hoarder, Badge Connoisseur are NOT in game-data.json
   // and cannot be serialized. Disabled until game-data extraction includes them.
   // =============================================================================
+
+  // =============================================================================
+  // NP-specific badges (trigger: 'ong')
+  // Reference: castle.js various NP checks
+  // =============================================================================
+  { badge: 'Badge Not Found', trigger: 'ong', check: s => s.newpixNumber === 404 },
+  { badge: 'Badge Found', trigger: 'ong', check: s => s.newpixNumber === -404 },
+  { badge: 'War was beginning', trigger: 'ong', check: s => s.newpixNumber === 2101 },
+  { badge: 'Below the Horizon', trigger: 'ong', check: s => s.newpixNumber < 0 },
+  { badge: 'Absolute Zero', trigger: 'ong', check: s => s.newpixNumber === 0 },
 
   // =============================================================================
   // High tier tool count badges (trigger: 'tool-purchase')

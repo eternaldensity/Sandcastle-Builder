@@ -127,6 +127,8 @@
 - Build automated parity testing framework (#11)
 
 ### Added
+- Add auto-buy for Fractal Sandcastles on Fractals Forever badge (#175)
+- Add missing badge earn conditions for sand rate, castle milestones, and NP-specific badges (#174)
 - Register dynamic discovery badges at initialization to close structural parity gap (#172)
 - Add mid-game parity comparison tests for boost/badge/tool scenarios (#171)
 - Add missing ONG-triggered boost logic and buy-function side effects (#164)

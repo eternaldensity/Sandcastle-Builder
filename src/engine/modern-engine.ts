@@ -396,6 +396,9 @@ export class ModernEngine implements GameEngine {
   // Ketchup (catch-up) state
   private ketchupTime = false; // true while processing ketchup ticks
 
+  // Cached badge count (avoids iterating 5600+ badges on every check)
+  private _badgesOwnedCache = 0;
+
   // Unlock checker for auto-unlock logic
   private unlockChecker: UnlockChecker;
 
@@ -748,6 +751,7 @@ export class ModernEngine implements GameEngine {
       }
     }
     this.badgeChecker.setEarnedBadges(earnedBadges);
+    this.recomputeBadgesOwnedCache();
 
     // Load dragon npData
     if (state.npData) {
@@ -1602,6 +1606,15 @@ export class ModernEngine implements GameEngine {
 
     for (const alias of toUnlock) {
       this.doUnlockBoost(alias);
+    }
+
+    // Fractal Sandcastles auto-buy (data.js:723-730)
+    // When unlocked via Fractals Forever badge, it auto-buys for free
+    const fractal = this.boosts.get('Fractal Sandcastles');
+    if (fractal && fractal.unlocked > 0 && !fractal.bought) {
+      fractal.bought = 1;
+      fractal.power = 0;
+      this.flagRateRecalc();
     }
 
     // Click-threshold + tool combo unlocks (data.js:1249-1260)
@@ -2790,8 +2803,9 @@ export class ModernEngine implements GameEngine {
     }
     if (!this.badges.get(name)) {
       // Legacy castle.js:2088 - check Redundant Redundancy BEFORE incrementing BadgesOwned
-      if (this.countBadgesOwned() === 0) {
+      if (this._badgesOwnedCache === 0) {
         this.badges.set('Redundant Redundancy', true);
+        this._badgesOwnedCache++;
         const rrDef = this.gameData.badges['Redundant Redundancy'];
         if (rrDef) {
           this.badgeGroupCounts[rrDef.group] = (this.badgeGroupCounts[rrDef.group] ?? 0) + 1;
@@ -2799,6 +2813,7 @@ export class ModernEngine implements GameEngine {
       }
 
       this.badges.set(name, true);
+      this._badgesOwnedCache++;
       // Update badge group counts
       const def = this.gameData.badges[name];
       if (def) {
@@ -2953,13 +2968,8 @@ export class ModernEngine implements GameEngine {
       }
     }
 
-    // Count badges owned
-    let badgesOwned = 0;
-    for (const [, earned] of this.badges) {
-      if (earned) {
-        badgesOwned++;
-      }
-    }
+    // Count badges owned (use cache for performance)
+    const badgesOwned = this._badgesOwnedCache;
 
     // Build boost powers map using Proxy for lazy access (avoids copying 341 entries)
     const boostsRef = this.boosts;
@@ -2995,6 +3005,7 @@ export class ModernEngine implements GameEngine {
       castleToolsOwned,
       totalToolsOwned: sandToolsOwned + castleToolsOwned,
       toolAmounts,
+      newpixNumber: this.core.newpixNumber,
       beachClicks: this.core.beachClicks,
       totalCastlesBuilt: this.castleBuild.totalBuilt,
       castlesSpent,
@@ -3012,14 +3023,22 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
-   * Count total badges owned.
+   * Count total badges owned (uses cached value for performance).
    */
   private countBadgesOwned(): number {
+    return this._badgesOwnedCache;
+  }
+
+  /**
+   * Recompute the badges owned cache from scratch.
+   * Call after bulk badge operations (init, loadState).
+   */
+  private recomputeBadgesOwnedCache(): void {
     let count = 0;
     for (const earned of this.badges.values()) {
       if (earned) count++;
     }
-    return count;
+    this._badgesOwnedCache = count;
   }
 
   /**
@@ -5068,6 +5087,7 @@ export class ModernEngine implements GameEngine {
       this.badges.set(name, false);
     }
     this.badgeGroupCounts = {};
+    this._badgesOwnedCache = 0;
     this.badgeChecker.setEarnedBadges([]);
 
     // Reset NewPixBot's totalCastlesBuilt (unlike Down, Coma resets this too)
