@@ -58,7 +58,7 @@ import {
   type CastleToolRateState,
   type CastleToolRates,
 } from './castle-rate-calculator.js';
-import { getDiscovery, hasDiscovery } from '../data/discoveries.js';
+import { discoveries, getDiscovery, hasDiscovery } from '../data/discoveries.js';
 import { BadgeChecker } from './badge-checker.js';
 import type { BadgeCheckState } from './badge-conditions.js';
 import {
@@ -491,9 +491,26 @@ export class ModernEngine implements GameEngine {
       }
     }
 
-    // Initialize badges
+    // Initialize static badges from game data
     for (const [name] of Object.entries(this.gameData.badges)) {
       this.badges.set(name, false);
+    }
+
+    // Register dynamic discovery badges (legacy badges.js:1288-2450)
+    // Legacy creates badge entries for all discoveries at startup with earned=false.
+    // Each discovery has 4 badge groups (discov, monums, monumg, diamm) for both
+    // positive and negative NP variants.
+    const badgeGroups = ['discov', 'monums', 'monumg', 'diamm'];
+    for (const disc of discoveries) {
+      const np = disc.np;
+      for (const group of badgeGroups) {
+        const name = `${group}${np}`;
+        if (!this.badges.has(name)) this.badges.set(name, false);
+        if (np > 0) {
+          const negName = `${group}${-np}`;
+          if (!this.badges.has(negName)) this.badges.set(negName, false);
+        }
+      }
     }
 
     // Set start date
@@ -705,6 +722,20 @@ export class ModernEngine implements GameEngine {
 
     // Load badges - clear and reload all to ensure clean state
     this.badges.clear();
+    // Re-register static badges from game data
+    for (const [name] of Object.entries(this.gameData.badges)) {
+      this.badges.set(name, false);
+    }
+    // Re-register dynamic discovery badges
+    const badgeGroups = ['discov', 'monums', 'monumg', 'diamm'];
+    for (const disc of discoveries) {
+      const np = disc.np;
+      for (const group of badgeGroups) {
+        if (!this.badges.has(`${group}${np}`)) this.badges.set(`${group}${np}`, false);
+        if (np > 0 && !this.badges.has(`${group}${-np}`)) this.badges.set(`${group}${-np}`, false);
+      }
+    }
+    // Apply loaded badge state on top
     for (const [name, badgeState] of Object.entries(state.badges)) {
       this.badges.set(name, badgeState.earned);
     }
@@ -2930,17 +2961,21 @@ export class ModernEngine implements GameEngine {
       }
     }
 
-    // Build boost powers map
-    const boostPowers: Record<string, number> = {};
-    for (const [alias, state] of this.boosts) {
-      boostPowers[alias] = state.power;
-    }
+    // Build boost powers map using Proxy for lazy access (avoids copying 341 entries)
+    const boostsRef = this.boosts;
+    const boostPowers = new Proxy({} as Record<string, number>, {
+      get(_target, prop: string) {
+        return boostsRef.get(prop)?.power ?? 0;
+      },
+    });
 
-    // Build badges map
-    const badges: Record<string, boolean> = {};
-    for (const [name, earned] of this.badges) {
-      badges[name] = earned;
-    }
+    // Build badges map using Proxy for lazy access (avoids copying 5600+ entries)
+    const badgesRef = this.badges;
+    const badges = new Proxy({} as Record<string, boolean>, {
+      get(_target, prop: string) {
+        return badgesRef.get(prop) ?? false;
+      },
+    });
 
     // Count glass ceilings owned
     let glassCeilingCount = 0;
