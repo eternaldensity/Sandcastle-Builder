@@ -178,6 +178,7 @@ describe('BadgeChecker', () => {
       totalToolsOwned: 0,
       toolAmounts: {},
       beachClicks: 1,
+      totalCastlesBuilt: 0,
       castlesSpent: 0,
       ninjaStealth: 0,
       ninjaFreeCount: 0,
@@ -207,6 +208,7 @@ describe('BadgeChecker', () => {
       totalToolsOwned: 0,
       toolAmounts: {},
       beachClicks: 2,
+      totalCastlesBuilt: 0,
       castlesSpent: 0,
       ninjaStealth: 0,
       ninjaFreeCount: 0,
@@ -221,10 +223,10 @@ describe('BadgeChecker', () => {
     };
 
     // First check earns all badges that match beachClicks >= 2
-    // Amazon Patent (>= 1), Click Ninja (>= 1), Not So Redundant (>= 2)
+    // Amazon Patent (>= 1), Click Ninja (>= 1), Oops (>= 2), Not So Redundant (>= 2)
     const first = checker.check('click', state);
-    expect(first.length).toBe(3);
-    expect(earnedBadges.length).toBe(3);
+    expect(first.length).toBe(4);
+    expect(earnedBadges.length).toBe(4);
 
     // Second check with same state earns nothing
     earnedBadges = [];

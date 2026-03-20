@@ -504,6 +504,9 @@ export class ModernEngine implements GameEngine {
 
     this.initialized = true;
 
+    // Legacy Molpy.Down() (persist.js:1376) earns 'Not Ground Zero' on fresh game
+    this.earnBadge('Not Ground Zero');
+
     // Initialize cached rates
     this.recalculateSandPerClick();
     this.recalculateSandRates();
@@ -1303,7 +1306,7 @@ export class ModernEngine implements GameEngine {
 
     let bots = npb.amount;
     const np = Math.abs(this.core.newpixNumber);
-    if (this.hasBoost('TimeTravel') || np < 20) {
+    if (this.hasBoost('Time Travel') || np < 20) {
       bots -= 2;
     }
 
@@ -1403,7 +1406,7 @@ export class ModernEngine implements GameEngine {
       newPixBots: getToolAmount('NewPixBot'),
 
       // Boost powers
-      biggerBucketsPower: this.getBoostPower('BiggerBuckets'),
+      biggerBucketsPower: this.getBoostPower('Bigger Buckets'),
       helpingHandPower: this.getBoostPower('HelpingHand'),
       flagBearerPower: this.getBoostPower('FlagBearer'),
       extensionLadderPower: this.getBoostPower('ExtensionLadder'),
@@ -1412,7 +1415,7 @@ export class ModernEngine implements GameEngine {
       glassCeiling: glassCeilings,
 
       // Per-tool boost flags
-      hugeBuckets: this.hasBoost('HugeBuckets'),
+      hugeBuckets: this.hasBoost('Huge Buckets'),
       trebuchetPong: this.hasBoost('TrebuchetPong'),
       carrybot: this.hasBoost('Carrybot'),
       buccaneer: this.hasBoost('Buccaneer'),
@@ -1427,7 +1430,7 @@ export class ModernEngine implements GameEngine {
       balancingAct: this.hasBoost('BalancingAct'),
       sbtf: this.hasBoost('SBTF'),
       flyTheFlag: this.hasBoost('FlyTheFlag'),
-      ninjaClimber: this.hasBoost('NinjaClimber'),
+      ninjaClimber: this.hasBoost('Ninja Climber'),
       levelUp: this.hasBoost('LevelUp'),
       climbbot: this.hasBoost('Climbbot'),
       brokenRung: this.hasBoost('BrokenRung'),
@@ -1435,7 +1438,7 @@ export class ModernEngine implements GameEngine {
       embaggening: this.hasBoost('Embaggening'),
       sandbag: this.hasBoost('Sandbag'),
       luggagebot: this.hasBoost('Luggagebot'),
-      bagPuns: this.hasBoost('BagPuns'),
+      bagPuns: this.hasBoost('Bag Puns'),
       airDrop: this.hasBoost('AirDrop'),
       frenchbot: this.hasBoost('Frenchbot'),
       bacon: this.hasBoost('Bacon'),
@@ -1570,6 +1573,16 @@ export class ModernEngine implements GameEngine {
       this.doUnlockBoost(alias);
     }
 
+    // Click-threshold + tool combo unlocks (data.js:1249-1260)
+    const clicks = this.core.beachClicks;
+    const hasBucket = (this.sandTools.get('Bucket')?.amount ?? 0) >= 1;
+    const hasCuegan = (this.sandTools.get('Cuegan')?.amount ?? 0) >= 1;
+    const hasFlag = (this.sandTools.get('Flag')?.amount ?? 0) >= 1;
+    const hasLadder = (this.sandTools.get('Ladder')?.amount ?? 0) >= 1;
+    if (clicks >= 100 && hasBucket && hasCuegan) this.doUnlockBoost('Helpful Hands');
+    if (clicks >= 1000 && hasCuegan && hasFlag) this.doUnlockBoost('True Colours');
+    if (clicks >= 3333 && hasFlag && hasLadder) this.doUnlockBoost('Raise the Flag');
+
     // Custom aggregate-count unlocks (data.js:740-768)
     const badgesOwned = this.countBadgesOwned();
     if (badgesOwned >= 69) this.doUnlockBoost('Ch*rpies');
@@ -1679,7 +1692,7 @@ export class ModernEngine implements GameEngine {
     }
 
     // Reset Fractal Sandcastles power
-    const fractalBoost = this.boosts.get('FractalSandcastles');
+    const fractalBoost = this.boosts.get('Fractal Sandcastles');
     if (fractalBoost) {
       fractalBoost.power = 0;
     }
@@ -1724,14 +1737,14 @@ export class ModernEngine implements GameEngine {
       }
 
       // Ninja Ritual handling (simplified)
-      const ninjaRitual = this.boosts.get('NinjaRitual');
-      const ninjaHerder = this.boosts.get('NinjaHerder');
+      const ninjaRitual = this.boosts.get('Ninja Ritual');
+      const ninjaHerder = this.boosts.get('Ninja Herder');
       if (ninjaRitual && ninjaRitual.bought > 0) {
         if (!ninjaHerder || ninjaHerder.bought === 0) {
           // No Ninja Herder - check for Lost Goats badge
           if (ninjaRitual.power >= 5) {
             this.earnBadge('Lost Goats');
-            this.doUnlockBoost('NinjaHerder');
+            this.doUnlockBoost('Ninja Herder');
           }
           ninjaRitual.power = 0;
         } else {
@@ -1960,7 +1973,7 @@ export class ModernEngine implements GameEngine {
 
     temporalRift.department = 0;
 
-    const hasTimeTravel = this.hasBoost('TimeTravel') ? 1 : 0;
+    const hasTimeTravel = this.hasBoost('Time Travel') ? 1 : 0;
     const hasFluxCapacitor = this.hasBoost('FluxCapacitor') ? 1 : 0;
     const hasFluxTurbine = this.hasBoost('FluxTurbine') ? 1 : 0;
     const hasMinusWorlds = this.badges.get('Minus Worlds') ? 1 : 0;
@@ -2114,9 +2127,9 @@ export class ModernEngine implements GameEngine {
    * Advances newpixNumber, respecting Temporal Anchor and Signpost.
    */
   private ongAdvanceNewpix(): void {
-    const temporalAnchor = this.boosts.get('TemporalAnchor');
+    const temporalAnchor = this.boosts.get('Temporal Anchor');
     const isAnchored = temporalAnchor && temporalAnchor.bought > 0 &&
-      this.isBoostEnabled('TemporalAnchor');
+      this.isBoostEnabled('Temporal Anchor');
 
     if (!isAnchored && this.core.newpixNumber !== 0) {
       // Check Signpost for return to NP 0
@@ -2257,7 +2270,7 @@ export class ModernEngine implements GameEngine {
     }
 
     // Protection 1: Impervious Ninja (costs 1% of glass chips, min 100)
-    const imperviousNinja = this.boosts.get('ImperviousNinja');
+    const imperviousNinja = this.boosts.get('Impervious Ninja');
     if (imperviousNinja && imperviousNinja.bought > 0) {
       const payment = Math.floor(this.resources.glassChips * 0.01);
       if (payment >= 100) {
@@ -2272,7 +2285,7 @@ export class ModernEngine implements GameEngine {
     }
 
     // Protection 2: Ninja Hope (costs 10 castles)
-    const ninjaHope = this.boosts.get('NinjaHope');
+    const ninjaHope = this.boosts.get('Ninja Hope');
     if (ninjaHope && ninjaHope.bought > 0 && ninjaHope.power > 0) {
       if (this.resources.castles >= 10) {
         this.resources.castles -= 10;
@@ -2282,7 +2295,7 @@ export class ModernEngine implements GameEngine {
     }
 
     // Protection 3: Ninja Penance (costs 30 castles)
-    const ninjaPenance = this.boosts.get('NinjaPenance');
+    const ninjaPenance = this.boosts.get('Ninja Penance');
     if (ninjaPenance && ninjaPenance.bought > 0 && ninjaPenance.power > 0) {
       if (this.resources.castles >= 30) {
         this.resources.castles -= 30;
@@ -2297,7 +2310,7 @@ export class ModernEngine implements GameEngine {
 
     // Badge checks before resetting stealth
     if (this.core.ninjaStealth >= 7 && ninjaHope && ninjaHope.bought > 0) {
-      this.doUnlockBoost('NinjaPenance');
+      this.doUnlockBoost('Ninja Penance');
     }
     if (this.core.ninjaStealth >= 30 && this.core.ninjaStealth < 36) {
       this.earnBadge('Ninja Shortcomings');
@@ -2327,26 +2340,26 @@ export class ModernEngine implements GameEngine {
     }
 
     // Check Ninja Lockdown (disables multipliers)
-    const ninjaLockdown = this.boosts.get('NinjaLockdown');
+    const ninjaLockdown = this.boosts.get('Ninja Lockdown');
     const isLockdownEnabled = ninjaLockdown && ninjaLockdown.bought > 0 &&
-      this.isBoostEnabled('NinjaLockdown');
+      this.isBoostEnabled('Ninja Lockdown');
 
     if (!isLockdownEnabled) {
-      if (this.hasBoost('NinjaLeague')) ninjaInc *= 100;
-      if (this.hasBoost('NinjaLegion')) ninjaInc *= 1000;
-      if (this.hasBoost('NinjaNinjaDuck')) ninjaInc *= 10;
+      if (this.hasBoost('Ninja League')) ninjaInc *= 100;
+      if (this.hasBoost('Ninja Legion')) ninjaInc *= 1000;
+      if (this.hasBoost('Ninja Ninja Duck')) ninjaInc *= 10;
       ninjaInc *= this.papal('Ninja');
     }
 
     this.core.ninjaStealth += ninjaInc;
 
     // Castle reward
-    if (this.hasBoost('NinjaBuilder')) {
+    if (this.hasBoost('Ninja Builder')) {
       const stealthBuild = this.calcStealthBuild(true, true);
       this.resources.castles += stealthBuild + 1;
 
       // Factory Ninja: run factory automation during stealth (castle.js:334-340)
-      const factoryNinja = this.boosts.get('FactoryNinja');
+      const factoryNinja = this.boosts.get('Factory Ninja');
       if (factoryNinja && factoryNinja.bought && factoryNinja.power > 0) {
         this.activateFactoryAutomation();
         factoryNinja.power--;
@@ -2366,11 +2379,11 @@ export class ModernEngine implements GameEngine {
     }
     if (this.core.ninjaStealth >= 16) {
       this.earnBadge('Ninja Dedication');
-      this.doUnlockBoost('NinjaBuilder');
+      this.doUnlockBoost('Ninja Builder');
     }
     if (this.core.ninjaStealth >= 26) {
       this.earnBadge('Ninja Madness');
-      this.doUnlockBoost('NinjaHope');
+      this.doUnlockBoost('Ninja Hope');
     }
     if (this.core.ninjaStealth >= 36) {
       this.earnBadge('Ninja Omnipresence');
@@ -2396,7 +2409,7 @@ export class ModernEngine implements GameEngine {
     let stealthBuild = this.core.ninjaStealth;
 
     // Ninja Assistants: multiply by NewPixBot count
-    if (this.hasBoost('NinjaAssistants')) {
+    if (this.hasBoost('Ninja Assistants')) {
       const npb = this.castleTools.get('NewPixBot');
       if (npb) stealthBuild *= npb.amount;
     }
@@ -2421,7 +2434,7 @@ export class ModernEngine implements GameEngine {
     }
 
     // Ninja Climber: multiply by Ladder count
-    if (this.hasBoost('NinjaClimber')) {
+    if (this.hasBoost('Ninja Climber')) {
       const ladders = this.sandTools.get('Ladder');
       if (ladders) stealthBuild *= ladders.amount;
     }
@@ -2447,7 +2460,7 @@ export class ModernEngine implements GameEngine {
    * Reference: boosts.js:9115-9147 (simplified)
    */
   private ninjaRitual(): void {
-    const ninjaRitual = this.boosts.get('NinjaRitual');
+    const ninjaRitual = this.boosts.get('Ninja Ritual');
     if (!ninjaRitual) return;
 
     const goats = this.boosts.get('Goats');
@@ -2745,6 +2758,15 @@ export class ModernEngine implements GameEngine {
       this.badges.set(name, false);
     }
     if (!this.badges.get(name)) {
+      // Legacy castle.js:2088 - check Redundant Redundancy BEFORE incrementing BadgesOwned
+      if (this.countBadgesOwned() === 0) {
+        this.badges.set('Redundant Redundancy', true);
+        const rrDef = this.gameData.badges['Redundant Redundancy'];
+        if (rrDef) {
+          this.badgeGroupCounts[rrDef.group] = (this.badgeGroupCounts[rrDef.group] ?? 0) + 1;
+        }
+      }
+
       this.badges.set(name, true);
       // Update badge group counts
       const def = this.gameData.badges[name];
@@ -2756,6 +2778,11 @@ export class ModernEngine implements GameEngine {
       // Earn 'Redundant' on every badge earn (legacy castle.js:2099)
       if (name !== 'Redundant') {
         this.earnBadge('Redundant');
+      }
+      // Legacy gui.js:1258 - Notify() earns 'Notified' on every notification.
+      // Every badge earn triggers a notification, so we cascade here.
+      if (name !== 'Notified' && name !== 'Redundant') {
+        this.earnBadge('Notified');
       }
       // Trigger unlock cascade (legacy castle.js:2100)
       this.checkAutoUnlocks();
@@ -2934,6 +2961,7 @@ export class ModernEngine implements GameEngine {
       totalToolsOwned: sandToolsOwned + castleToolsOwned,
       toolAmounts,
       beachClicks: this.core.beachClicks,
+      totalCastlesBuilt: this.castleBuild.totalBuilt,
       castlesSpent,
       ninjaStealth: this.core.ninjaStealth,
       ninjaFreeCount: this.core.ninjaFreeCount,
@@ -3328,7 +3356,7 @@ export class ModernEngine implements GameEngine {
         }
 
         // castle.js:202-211: Ninja Ritual (runs regardless of unstealth result)
-        const ninjaRitual = this.boosts.get('NinjaRitual');
+        const ninjaRitual = this.boosts.get('Ninja Ritual');
         if (ninjaRitual && ninjaRitual.bought > 0) {
           this.ninjaRitual();
           if (ninjaRitual.power > 10) this.doUnlockBoost('WesternParadox');
@@ -3340,7 +3368,7 @@ export class ModernEngine implements GameEngine {
         } else {
           const goats = this.boosts.get('Goats');
           if (goats && goats.power >= 10) {
-            this.doUnlockBoost('NinjaRitual');
+            this.doUnlockBoost('Ninja Ritual');
           }
         }
 
@@ -3393,6 +3421,7 @@ export class ModernEngine implements GameEngine {
    * Matches legacy Molpy.Boosts['Sand'].toCastles() behavior.
    */
   private toCastles(): void {
+    const builtBefore = this.castleBuild.totalBuilt;
     // Convert sand to castles while we have enough
     while (this.resources.sand >= this.castleBuild.nextCastleSand &&
            isFinite(this.resources.castles)) {
@@ -3417,6 +3446,11 @@ export class ModernEngine implements GameEngine {
     }
 
     this.syncResourceBoosts();
+
+    // Check castle-building badges if any castles were built
+    if (this.castleBuild.totalBuilt > builtBefore) {
+      this.badgeChecker.check('resource-change', this.buildBadgeCheckState());
+    }
   }
 
   /**
@@ -3440,7 +3474,7 @@ export class ModernEngine implements GameEngine {
       sandIsInfinite: !isFinite(this.resources.sand),
       bgBought: this.hasBoost('BG'),
       gmBought: this.hasBoost('GM'),
-      boneClickerBought: this.hasBoost('BoneClicker'),
+      boneClickerBought: this.hasBoost('Bone Clicker'),
       bonemealLevel: this.getBoostPower('Bonemeal'),
       boostsOwned: this.countBoughtBoosts(),
       loadedPermNP: this.getBoostPower('TF'),
@@ -3507,7 +3541,7 @@ export class ModernEngine implements GameEngine {
    * or flux crystals (Ritual Rift) to preserve the ritual. Otherwise reset to 0.
    */
   private handleRitualPreservation(): void {
-    const ninjaRitual = this.boosts.get('NinjaRitual');
+    const ninjaRitual = this.boosts.get('Ninja Ritual');
     if (!ninjaRitual || ninjaRitual.bought <= 0) return;
 
     let saveRitual = false;
@@ -3665,7 +3699,7 @@ export class ModernEngine implements GameEngine {
    * Reference: castle.js:280-286
    */
   private processBagPuns(): void {
-    const bagPuns = this.boosts.get('BagPuns');
+    const bagPuns = this.boosts.get('Bag Puns');
     if (!bagPuns || !bagPuns.bought) return;
 
     // Only if VJ not yet bought
@@ -4485,7 +4519,7 @@ export class ModernEngine implements GameEngine {
    */
   private recalculatePriceFactor(): void {
     const ashfState = this.boosts.get('ASHF');
-    const familyDiscountState = this.boosts.get('FamilyDiscount');
+    const familyDiscountState = this.boosts.get('Family Discount');
 
     // ASHF is active if bought and has remaining countdown
     const hasASHF = !!ashfState && ashfState.bought > 0 && ashfState.countdown > 0;
@@ -4540,16 +4574,16 @@ export class ModernEngine implements GameEngine {
     }
 
     return {
-      biggerBuckets: getBoostPower('BiggerBuckets'),
-      hugeBuckets: isBoostBought('HugeBuckets'),
+      biggerBuckets: getBoostPower('Bigger Buckets'),
+      hugeBuckets: isBoostBought('Huge Buckets'),
       buccaneer: isBoostBought('Buccaneer'),
-      helpfulHands: isBoostBought('HelpfulHands'),
-      trueColours: isBoostBought('TrueColours'),
-      raiseTheFlag: isBoostBought('RaiseTheFlag'),
-      handItUp: isBoostBought('HandItUp'),
-      bucketBrigade: isBoostBought('BucketBrigade'),
-      bagPuns: isBoostBought('BagPuns'),
-      boneClicker: isBoostBought('BoneClicker'),
+      helpfulHands: isBoostBought('Helpful Hands'),
+      trueColours: isBoostBought('True Colours'),
+      raiseTheFlag: isBoostBought('Raise the Flag'),
+      handItUp: isBoostBought('Hand it Up'),
+      bucketBrigade: isBoostBought('Bucket Brigade'),
+      bagPuns: isBoostBought('Bag Puns'),
+      boneClicker: isBoostBought('Bone Clicker'),
       bonemeal: getBoostPower('Bonemeal'),
       buckets: getToolAmount('Bucket'),
       cuegans: getToolAmount('Cuegan'),

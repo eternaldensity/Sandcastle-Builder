@@ -275,7 +275,7 @@ boostFunctionRegistry['LockedCrate'] = {
 // Reference: boosts.js (various references to price factor)
 // =============================================================================
 
-boostFunctionRegistry['FamilyDiscount'] = {
+boostFunctionRegistry['Family Discount'] = {
   /**
    * buyFunction: Recalculates price factor for 80% discount.
    * Family Discount provides permanent 80% off (multiply by 0.2).
@@ -390,7 +390,7 @@ boostFunctionRegistry['Goats'] = {
 // Reference: boosts.js (various ninja boosts)
 // =============================================================================
 
-boostFunctionRegistry['NinjaRitual'] = {
+boostFunctionRegistry['Ninja Ritual'] = {
   /**
    * buyFunction: Sets Level to very high if ritual is worn out.
    * Reference: boosts.js:9113
@@ -417,7 +417,7 @@ boostFunctionRegistry['Maps'] = {
   },
 };
 
-boostFunctionRegistry['DragonForge'] = {
+boostFunctionRegistry['Dragon Forge'] = {
   /**
    * buyFunction: Refreshes Dragon Forge display.
    * Reference: boosts.js:10664
@@ -461,7 +461,7 @@ boostFunctionRegistry['Cryogenics'] = {
 // Reference: boosts.js:66
 // =============================================================================
 
-boostFunctionRegistry['BiggerBuckets'] = {
+boostFunctionRegistry['Bigger Buckets'] = {
   /**
    * buyFunction: Increments power by 1.
    * Each power level adds 0.1 to bucket sand rate and click rate.
@@ -477,7 +477,7 @@ boostFunctionRegistry['BiggerBuckets'] = {
 // Reference: boosts.js:985-1020
 // =============================================================================
 
-boostFunctionRegistry['TimeTravel'] = {
+boostFunctionRegistry['Time Travel'] = {
   /**
    * buyFunction: Sets power to 1 (distance of time travel).
    * Reference: boosts.js:1007-1009
@@ -493,7 +493,7 @@ boostFunctionRegistry['TimeTravel'] = {
 // Reference: boosts.js:1105-1130
 // =============================================================================
 
-boostFunctionRegistry['TemporalAnchor'] = {
+boostFunctionRegistry['Temporal Anchor'] = {
   /**
    * buyFunction: Initialize anchor state (handled via IsEnabled toggle in legacy).
    * When enabled, prevents NP from incrementing at ONG.
@@ -533,7 +533,7 @@ boostFunctionRegistry['SMM'] = {
 // Reference: boosts.js:745-780
 // =============================================================================
 
-boostFunctionRegistry['FractalSandcastles'] = {
+boostFunctionRegistry['Fractal Sandcastles'] = {
   /**
    * buyFunction: Sets power to 0 (resets each ONG).
    * Power represents fractal level, which multiplies castle gain.
@@ -550,7 +550,7 @@ boostFunctionRegistry['FractalSandcastles'] = {
 // Reference: boosts.js:9051-9065
 // =============================================================================
 
-boostFunctionRegistry['NinjaLockdown'] = {
+boostFunctionRegistry['Ninja Lockdown'] = {
   /**
    * buyFunction: Initialize the boost.
    * Locking of Impervious Ninja happens when the toggle is activated.

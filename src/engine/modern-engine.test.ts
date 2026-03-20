@@ -42,17 +42,15 @@ const testGameData: GameData = {
     'Goats': createBoostDef(10, 'Goats', 'stuff'),
     'Bonemeal': createBoostDef(20, 'Bonemeal', 'stuff'),
     'Bigger Buckets': createBoostDef(4, 'Bigger Buckets', 'boosts', { Sand: 500 }),
-    'BiggerBuckets': createBoostDef(4, 'BiggerBuckets', 'boosts', { Sand: 500 }),
     'Huge Buckets': createBoostDef(5, 'Huge Buckets', 'boosts', { Sand: 800, Castles: 2 }),
-    'HugeBuckets': createBoostDef(5, 'HugeBuckets', 'boosts', { Sand: 800, Castles: 2 }),
     'Buccaneer': createBoostDef(12, 'Buccaneer', 'boosts', { Sand: 1000 }),
-    'HelpfulHands': createBoostDef(13, 'HelpfulHands', 'boosts', { Sand: 500 }),
-    'TrueColours': createBoostDef(14, 'TrueColours', 'boosts', { Sand: 500 }),
-    'RaiseTheFlag': createBoostDef(15, 'RaiseTheFlag', 'boosts', { Sand: 500 }),
-    'HandItUp': createBoostDef(16, 'HandItUp', 'boosts', { Sand: 500 }),
-    'BucketBrigade': createBoostDef(17, 'BucketBrigade', 'boosts', { Sand: 500 }),
-    'BagPuns': createBoostDef(18, 'BagPuns', 'boosts', { Sand: 500 }),
-    'BoneClicker': createBoostDef(19, 'BoneClicker', 'boosts', { Sand: 500 }),
+    'Helpful Hands': createBoostDef(13, 'Helpful Hands', 'boosts', { Sand: 500 }),
+    'True Colours': createBoostDef(14, 'True Colours', 'boosts', { Sand: 500 }),
+    'Raise the Flag': createBoostDef(15, 'Raise the Flag', 'boosts', { Sand: 500 }),
+    'Hand it Up': createBoostDef(16, 'Hand it Up', 'boosts', { Sand: 500 }),
+    'Bucket Brigade': createBoostDef(17, 'Bucket Brigade', 'boosts', { Sand: 500 }),
+    'Bag Puns': createBoostDef(18, 'Bag Puns', 'boosts', { Sand: 500 }),
+    'Bone Clicker': createBoostDef(19, 'Bone Clicker', 'boosts', { Sand: 500 }),
     'Helping Hand': createBoostDef(6, 'Helping Hand', 'boosts', { Sand: 500, Castles: 2 }),
     'Cooperation': createBoostDef(7, 'Cooperation'),
     'Spring Fling': createBoostDef(8, 'Spring Fling', 'boosts', { Sand: 1000, Castles: 6 }),
@@ -687,14 +685,14 @@ describe('ModernEngine', () => {
 
     it('increases sand per click with BiggerBuckets power', async () => {
       // BiggerBuckets adds 0.1 per power level
-      engine.forceBoostState('BiggerBuckets', { bought: 1, power: 5 });
+      engine.forceBoostState('Bigger Buckets', { bought: 1, power: 5 });
 
       // 1 + 5 * 0.1 = 1.5
       expect(engine.getSandPerClick()).toBe(1.5);
     });
 
     it('doubles sand per click with HugeBuckets', async () => {
-      engine.forceBoostState('HugeBuckets', { bought: 1 });
+      engine.forceBoostState('Huge Buckets', { bought: 1 });
 
       // Base 1 * 2 = 2
       expect(engine.getSandPerClick()).toBe(2);
@@ -708,7 +706,7 @@ describe('ModernEngine', () => {
     });
 
     it('stacks HugeBuckets and Buccaneer multiplicatively', async () => {
-      engine.forceBoostState('HugeBuckets', { bought: 1 });
+      engine.forceBoostState('Huge Buckets', { bought: 1 });
       engine.forceBoostState('Buccaneer', { bought: 1 });
 
       // Base 1 * 2 * 2 = 4
@@ -716,15 +714,15 @@ describe('ModernEngine', () => {
     });
 
     it('combines BiggerBuckets with multiplicative boosts', async () => {
-      engine.forceBoostState('BiggerBuckets', { bought: 1, power: 10 });
-      engine.forceBoostState('HugeBuckets', { bought: 1 });
+      engine.forceBoostState('Bigger Buckets', { bought: 1, power: 10 });
+      engine.forceBoostState('Huge Buckets', { bought: 1 });
 
       // (1 + 10 * 0.1) * 2 = 2 * 2 = 4
       expect(engine.getSandPerClick()).toBe(4);
     });
 
     it('adds pair bonus with HelpfulHands', async () => {
-      engine.forceBoostState('HelpfulHands', { bought: 1 });
+      engine.forceBoostState('Helpful Hands', { bought: 1 });
       engine.forceSandToolAmount('Bucket', 10);
       engine.forceSandToolAmount('Cuegan', 5);
 
@@ -733,7 +731,7 @@ describe('ModernEngine', () => {
     });
 
     it('adds pair bonus with TrueColours', async () => {
-      engine.forceBoostState('TrueColours', { bought: 1 });
+      engine.forceBoostState('True Colours', { bought: 1 });
       engine.forceSandToolAmount('Flag', 3);
       engine.forceSandToolAmount('Cuegan', 8);
 
@@ -742,7 +740,7 @@ describe('ModernEngine', () => {
     });
 
     it('adds pair bonus with RaiseTheFlag', async () => {
-      engine.forceBoostState('RaiseTheFlag', { bought: 1 });
+      engine.forceBoostState('Raise the Flag', { bought: 1 });
       engine.forceSandToolAmount('Flag', 2);
       engine.forceSandToolAmount('Ladder', 4);
 
@@ -751,7 +749,7 @@ describe('ModernEngine', () => {
     });
 
     it('adds pair bonus with HandItUp', async () => {
-      engine.forceBoostState('HandItUp', { bought: 1 });
+      engine.forceBoostState('Hand it Up', { bought: 1 });
       engine.forceSandToolAmount('Bag', 1);
       engine.forceSandToolAmount('Ladder', 3);
 
@@ -760,7 +758,7 @@ describe('ModernEngine', () => {
     });
 
     it('applies BoneClicker final multiplier', async () => {
-      engine.forceBoostState('BoneClicker', { bought: 1 });
+      engine.forceBoostState('Bone Clicker', { bought: 1 });
       engine.forceBoostState('Bonemeal', { power: 2 });
 
       // 1 * (2 * 5) = 10
@@ -768,7 +766,7 @@ describe('ModernEngine', () => {
     });
 
     it('does not apply BoneClicker when bonemeal < 1', async () => {
-      engine.forceBoostState('BoneClicker', { bought: 1 });
+      engine.forceBoostState('Bone Clicker', { bought: 1 });
       engine.forceBoostState('Bonemeal', { power: 0 });
 
       // No multiplier applied
@@ -777,10 +775,10 @@ describe('ModernEngine', () => {
 
     it('stacks all multiplier types correctly', async () => {
       // Set up: BiggerBuckets(5), HugeBuckets, HelpfulHands, BoneClicker with 1 bonemeal
-      engine.forceBoostState('BiggerBuckets', { bought: 1, power: 5 });
-      engine.forceBoostState('HugeBuckets', { bought: 1 });
-      engine.forceBoostState('HelpfulHands', { bought: 1 });
-      engine.forceBoostState('BoneClicker', { bought: 1 });
+      engine.forceBoostState('Bigger Buckets', { bought: 1, power: 5 });
+      engine.forceBoostState('Huge Buckets', { bought: 1 });
+      engine.forceBoostState('Helpful Hands', { bought: 1 });
+      engine.forceBoostState('Bone Clicker', { bought: 1 });
       engine.forceBoostState('Bonemeal', { power: 1 });
       engine.forceSandToolAmount('Bucket', 4);
       engine.forceSandToolAmount('Cuegan', 2);
@@ -794,7 +792,7 @@ describe('ModernEngine', () => {
     });
 
     it('recalculates sand per click when buying tools', async () => {
-      engine.forceBoostState('HelpfulHands', { bought: 1 });
+      engine.forceBoostState('Helpful Hands', { bought: 1 });
       engine.forceResources({ castles: 10000 });
 
       // Initially no tools, so just base rate
@@ -810,20 +808,20 @@ describe('ModernEngine', () => {
 
     it('recalculates sand per click when buying boosts', async () => {
       engine.forceResources({ sand: 10000, castles: 100 });
-      engine.unlockBoost('HugeBuckets');
+      engine.unlockBoost('Huge Buckets');
 
       // Before buying HugeBuckets
       expect(engine.getSandPerClick()).toBe(1);
 
       // Buy HugeBuckets
-      await engine.buyBoost('HugeBuckets');
+      await engine.buyBoost('Huge Buckets');
 
       // After buying HugeBuckets
       expect(engine.getSandPerClick()).toBe(2);
     });
 
     it('applies calculated sand per click in beach clicks', async () => {
-      engine.forceBoostState('BiggerBuckets', { bought: 1, power: 10 });
+      engine.forceBoostState('Bigger Buckets', { bought: 1, power: 10 });
       // (1 + 10*0.1) = 2 sand per click
 
       await engine.clickBeach(5);
@@ -1095,22 +1093,22 @@ describe('ModernEngine', () => {
     });
 
     it('Bag Puns increments every 20 clicks', async () => {
-      (engine as any).boosts.set('BagPuns', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('Bag Puns', { unlocked: 1, bought: 1, power: 0 });
 
       await engine.clickBeach(40);
 
-      const bagPuns = (engine as any).boosts.get('BagPuns');
+      const bagPuns = (engine as any).boosts.get('Bag Puns');
       expect(bagPuns.power).toBe(2); // clicks 20 and 40
     });
 
     it('Bag Puns unlocks VJ at power > 100', async () => {
-      (engine as any).boosts.set('BagPuns', { unlocked: 1, bought: 1, power: 99 });
+      (engine as any).boosts.set('Bag Puns', { unlocked: 1, bought: 1, power: 99 });
 
       // Need exactly 20th click to trigger increment
       (engine as any).core.beachClicks = 19; // next click will be 20
       await engine.clickBeach(1);
 
-      const bagPuns = (engine as any).boosts.get('BagPuns');
+      const bagPuns = (engine as any).boosts.get('Bag Puns');
       expect(bagPuns.power).toBe(100);
 
       // One more cycle to get > 100
@@ -1121,12 +1119,12 @@ describe('ModernEngine', () => {
     });
 
     it('Bag Puns does not increment when VJ is bought', async () => {
-      (engine as any).boosts.set('BagPuns', { unlocked: 1, bought: 1, power: 50 });
+      (engine as any).boosts.set('Bag Puns', { unlocked: 1, bought: 1, power: 50 });
       (engine as any).boosts.set('VJ', { unlocked: 1, bought: 1, power: 0 });
 
       await engine.clickBeach(40);
 
-      const bagPuns = (engine as any).boosts.get('BagPuns');
+      const bagPuns = (engine as any).boosts.get('Bag Puns');
       expect(bagPuns.power).toBe(50); // unchanged
     });
 
@@ -1139,7 +1137,7 @@ describe('ModernEngine', () => {
     });
 
     it('Ritual Sacrifice preserves ninja ritual with goats', async () => {
-      (engine as any).boosts.set('NinjaRitual', { unlocked: 1, bought: 1, power: 30 });
+      (engine as any).boosts.set('Ninja Ritual', { unlocked: 1, bought: 1, power: 30 });
       (engine as any).boosts.set('RitualSacrifice', { unlocked: 1, bought: 1, power: 1, isEnabled: true });
       (engine as any).boosts.set('Goats', { unlocked: 1, bought: 1, power: 10 });
 
@@ -1153,12 +1151,12 @@ describe('ModernEngine', () => {
 
       const goats = (engine as any).boosts.get('Goats');
       expect(goats.power).toBe(5); // spent 5 goats
-      const ninjaRitual = (engine as any).boosts.get('NinjaRitual');
+      const ninjaRitual = (engine as any).boosts.get('Ninja Ritual');
       expect(ninjaRitual.power).toBe(30); // preserved, not reset
     });
 
     it('Ritual resets when no sacrifice available', async () => {
-      (engine as any).boosts.set('NinjaRitual', { unlocked: 1, bought: 1, power: 30 });
+      (engine as any).boosts.set('Ninja Ritual', { unlocked: 1, bought: 1, power: 30 });
       // No RitualSacrifice or RitualRift
 
       (engine as any).ong.npbONG = 1;
@@ -1168,12 +1166,12 @@ describe('ModernEngine', () => {
 
       await engine.clickBeach(1);
 
-      const ninjaRitual = (engine as any).boosts.get('NinjaRitual');
+      const ninjaRitual = (engine as any).boosts.get('Ninja Ritual');
       expect(ninjaRitual.power).toBe(0); // reset
     });
 
     it('Ritual Rift unlock requires Time Lord bought > 8', async () => {
-      (engine as any).boosts.set('NinjaRitual', { unlocked: 1, bought: 1, power: 42 });
+      (engine as any).boosts.set('Ninja Ritual', { unlocked: 1, bought: 1, power: 42 });
       (engine as any).boosts.set('TimeLord', { unlocked: 1, bought: 9, power: 0 });
       (engine as any).boosts.set('RitualRift', { unlocked: 0, bought: 0, power: 0 });
 

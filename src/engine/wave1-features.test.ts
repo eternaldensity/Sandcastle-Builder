@@ -57,13 +57,13 @@ const testGameData: GameData = {
     'MHP': createBoostDef(20, 'MHP', 'boosts'),
     'HoM': createBoostDef(21, 'HoM', 'boosts'),
     'Gruff': createBoostDef(22, 'Gruff', 'boosts'),
-    'BeretGuy': createBoostDef(23, 'BeretGuy', 'boosts'),
-    'NinjaBuilder': createBoostDef(30, 'NinjaBuilder', 'boosts'),
-    'FactoryNinja': createBoostDef(31, 'FactoryNinja', 'boosts'),
-    'NinjaAssistants': createBoostDef(32, 'NinjaAssistants', 'boosts'),
-    'SkullAndCrossbones': createBoostDef(33, 'SkullAndCrossbones', 'boosts'),
+    'Beret Guy': createBoostDef(23, 'Beret Guy', 'boosts'),
+    'Ninja Builder': createBoostDef(30, 'Ninja Builder', 'boosts'),
+    'Factory Ninja': createBoostDef(31, 'Factory Ninja', 'boosts'),
+    'Ninja Assistants': createBoostDef(32, 'Ninja Assistants', 'boosts'),
+    'Skull and Crossbones': createBoostDef(33, 'Skull and Crossbones', 'boosts'),
     'GlassJaw': createBoostDef(34, 'GlassJaw', 'boosts'),
-    'NinjaClimber': createBoostDef(35, 'NinjaClimber', 'boosts'),
+    'Ninja Climber': createBoostDef(35, 'Ninja Climber', 'boosts'),
     'Ninjasaw': createBoostDef(36, 'Ninjasaw', 'boosts'),
     'VJ': createBoostDef(37, 'VJ', 'boosts'),
     'Coma Molpy Style': createBoostDef(40, 'Coma Molpy Style', 'boosts'),
@@ -137,7 +137,7 @@ describe('Plan 31: Goat System & Monty Haul Problem', () => {
 
     it('unlocks BeretGuy at 200 goats', async () => {
       (engine as any).getYourGoat(200);
-      const bg = (engine as any).boosts.get('BeretGuy');
+      const bg = (engine as any).boosts.get('Beret Guy');
       expect(bg.unlocked).toBe(1);
     });
   });
@@ -289,26 +289,26 @@ describe('Plan 34: Advanced Ninja Mechanics', () => {
   describe('Factory Ninja', () => {
     it('runs factory automation during stealth click', async () => {
       // Set up Factory Ninja with power > 0
-      (engine as any).boosts.set('FactoryNinja', { unlocked: 1, bought: 1, power: 3 });
-      (engine as any).boosts.set('NinjaBuilder', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('Factory Ninja', { unlocked: 1, bought: 1, power: 3 });
+      (engine as any).boosts.set('Ninja Builder', { unlocked: 1, bought: 1, power: 0 });
       (engine as any).core.ninjaStealth = 5;
 
       // Call stealthClick directly
       (engine as any).stealthClick();
 
       // Factory Ninja power should decrement
-      const fn = (engine as any).boosts.get('FactoryNinja');
+      const fn = (engine as any).boosts.get('Factory Ninja');
       expect(fn.power).toBe(2);
     });
 
     it('locks Factory Ninja when power reaches 0', async () => {
-      (engine as any).boosts.set('FactoryNinja', { unlocked: 1, bought: 1, power: 1 });
-      (engine as any).boosts.set('NinjaBuilder', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('Factory Ninja', { unlocked: 1, bought: 1, power: 1 });
+      (engine as any).boosts.set('Ninja Builder', { unlocked: 1, bought: 1, power: 0 });
       (engine as any).core.ninjaStealth = 5;
 
       (engine as any).stealthClick();
 
-      const fn = (engine as any).boosts.get('FactoryNinja');
+      const fn = (engine as any).boosts.get('Factory Ninja');
       expect(fn.power).toBe(0);
       expect(fn.bought).toBe(0); // locked
     });

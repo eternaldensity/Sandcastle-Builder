@@ -8,6 +8,10 @@
 - Fix redundakitty chain tracking not incrementing on clicks (#102)
 
 ### Changed
+- Tick-driven boost effects (countdown functions) (#163)
+- Click multipliers from boosts (#162)
+- Auto-unlock boosts via badge earn cascade (#161)
+- Auto-earn initial badges on first tick (#160)
 - Analyze modern-engine.ts size and structure (#155)
 - Decompose large methods (loadState, tickFactoryAutomation, exportState) (#159)
 - Add boost accessor helpers to reduce repetitive patterns (#158)

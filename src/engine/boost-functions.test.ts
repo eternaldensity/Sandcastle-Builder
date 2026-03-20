@@ -67,7 +67,7 @@ const testGameData: GameData = {
     'Goats': createBoostDef(10, 'Goats', 'stuff'),
     'ASHF': createBoostDef(100, 'ASHF', 'hpt', { Sand: 1000 }, { startPower: 0.4, startCountdown: 5 }),
     'PriceProtection': createBoostDef(101, 'PriceProtection', 'boosts', {}, { isToggle: true }),
-    'FamilyDiscount': createBoostDef(102, 'FamilyDiscount', 'boosts', { Castles: 10000 }),
+    'Family Discount': createBoostDef(102, 'Family Discount', 'boosts', { Castles: 10000 }),
     'Riverish': createBoostDef(200, 'Riverish', 'boosts', { Sand: 1000, Castles: 100 }),
     'WotP': createBoostDef(300, 'WotP', 'drac', { Sand: 1000 }),
     'WotT': createBoostDef(301, 'WotT', 'drac', { Sand: 1000 }),
@@ -401,13 +401,13 @@ describe('Plan 5: More Boost Functions', () => {
     ...testGameData,
     boosts: {
       ...testGameData.boosts,
-      'BiggerBuckets': createBoostDef(700, 'BiggerBuckets', 'boosts', { Sand: 500 }),
-      'TimeTravel': createBoostDef(701, 'TimeTravel', 'chron', { Sand: 1000, Castles: 30 }),
-      'TemporalAnchor': createBoostDef(702, 'TemporalAnchor', 'chron', { Diamonds: 1000000 }, { isToggle: true }),
+      'Bigger Buckets': createBoostDef(700, 'Bigger Buckets', 'boosts', { Sand: 500 }),
+      'Time Travel': createBoostDef(701, 'Time Travel', 'chron', { Sand: 1000, Castles: 30 }),
+      'Temporal Anchor': createBoostDef(702, 'Temporal Anchor', 'chron', { Diamonds: 1000000 }, { isToggle: true }),
       'SMM': createBoostDef(703, 'SMM', 'bean', {}),
-      'FractalSandcastles': createBoostDef(704, 'FractalSandcastles', 'boosts', { Sand: 910987654321, Castles: 12345678910 }),
-      'NinjaLockdown': createBoostDef(705, 'NinjaLockdown', 'ninj', { GlassBlocks: 144000000000000000000000000 }, { isToggle: true }),
-      'ImperviousNinja': createBoostDef(706, 'ImperviousNinja', 'ninj', {}),
+      'Fractal Sandcastles': createBoostDef(704, 'Fractal Sandcastles', 'boosts', { Sand: 910987654321, Castles: 12345678910 }),
+      'Ninja Lockdown': createBoostDef(705, 'Ninja Lockdown', 'ninj', { GlassBlocks: 144000000000000000000000000 }, { isToggle: true }),
+      'Impervious Ninja': createBoostDef(706, 'Impervious Ninja', 'ninj', {}),
       'Overcompensating': createBoostDef(707, 'Overcompensating', 'boosts', { Sand: 987645, Castles: 321 }, { startPower: 1.5 }),
       'Blitzing': createBoostDef(708, 'Blitzing', 'boosts', {}, { startCountdown: 23 }),
       'SeaMining': createBoostDef(709, 'SeaMining', 'boosts', {}),
@@ -419,26 +419,26 @@ describe('Plan 5: More Boost Functions', () => {
     await engine.initialize();
   });
 
-  describe('BiggerBuckets', () => {
+  describe('Bigger Buckets', () => {
     it('has buyFunction', () => {
-      const functions = boostFunctionRegistry['BiggerBuckets'];
+      const functions = boostFunctionRegistry['Bigger Buckets'];
       expect(functions.buyFunction).toBeDefined();
     });
 
     it('increments power by 1 when bought', async () => {
       engine.forceResources({ sand: 10000 });
-      engine.forceBoostState('BiggerBuckets', { unlocked: 1, bought: 0, power: 0 });
+      engine.forceBoostState('Bigger Buckets', { unlocked: 1, bought: 0, power: 0 });
 
-      await engine.buyBoost('BiggerBuckets');
+      await engine.buyBoost('Bigger Buckets');
 
-      const state = await engine.getBoostState('BiggerBuckets');
+      const state = await engine.getBoostState('Bigger Buckets');
       expect(state.bought).toBe(1);
       expect(state.power).toBe(1);
     });
 
     it('power increments correctly from previous value', () => {
       // Test the function directly to verify it increments power
-      const functions = boostFunctionRegistry['BiggerBuckets'];
+      const functions = boostFunctionRegistry['Bigger Buckets'];
       expect(functions.buyFunction).toBeDefined();
 
       // The function should increment power, which we verified in the first test
@@ -446,37 +446,37 @@ describe('Plan 5: More Boost Functions', () => {
     });
   });
 
-  describe('TimeTravel', () => {
+  describe('Time Travel', () => {
     it('has buyFunction', () => {
-      const functions = boostFunctionRegistry['TimeTravel'];
+      const functions = boostFunctionRegistry['Time Travel'];
       expect(functions.buyFunction).toBeDefined();
     });
 
     it('sets power to 1 when bought', async () => {
       engine.forceResources({ sand: 10000, castles: 1000 });
-      engine.forceBoostState('TimeTravel', { unlocked: 1, bought: 0, power: 0 });
+      engine.forceBoostState('Time Travel', { unlocked: 1, bought: 0, power: 0 });
 
-      await engine.buyBoost('TimeTravel');
+      await engine.buyBoost('Time Travel');
 
-      const state = await engine.getBoostState('TimeTravel');
+      const state = await engine.getBoostState('Time Travel');
       expect(state.bought).toBe(1);
       expect(state.power).toBe(1);
     });
   });
 
-  describe('TemporalAnchor', () => {
+  describe('Temporal Anchor', () => {
     it('has buyFunction and lockFunction', () => {
-      const functions = boostFunctionRegistry['TemporalAnchor'];
+      const functions = boostFunctionRegistry['Temporal Anchor'];
       expect(functions.buyFunction).toBeDefined();
       expect(functions.lockFunction).toBeDefined();
     });
 
     it('initializes when bought', async () => {
-      // TemporalAnchor costs Diamonds: 1M, which we can't easily provide
+      // Temporal Anchor costs Diamonds: 1M, which we can't easily provide
       // Just verify the function exists and doesn't crash
-      engine.forceBoostState('TemporalAnchor', { unlocked: 1, bought: 1, power: 0 });
+      engine.forceBoostState('Temporal Anchor', { unlocked: 1, bought: 1, power: 0 });
 
-      const state = await engine.getBoostState('TemporalAnchor');
+      const state = await engine.getBoostState('Temporal Anchor');
       expect(state.bought).toBe(1);
     });
   });
@@ -498,41 +498,41 @@ describe('Plan 5: More Boost Functions', () => {
     });
   });
 
-  describe('FractalSandcastles', () => {
+  describe('Fractal Sandcastles', () => {
     it('has buyFunction', () => {
-      const functions = boostFunctionRegistry['FractalSandcastles'];
+      const functions = boostFunctionRegistry['Fractal Sandcastles'];
       expect(functions.buyFunction).toBeDefined();
     });
 
     it('initializes when bought', async () => {
       engine.forceResources({ sand: 1e12, castles: 1e11 });
-      engine.forceBoostState('FractalSandcastles', { unlocked: 1, bought: 0, power: 0 });
+      engine.forceBoostState('Fractal Sandcastles', { unlocked: 1, bought: 0, power: 0 });
 
-      await engine.buyBoost('FractalSandcastles');
+      await engine.buyBoost('Fractal Sandcastles');
 
-      const state = await engine.getBoostState('FractalSandcastles');
+      const state = await engine.getBoostState('Fractal Sandcastles');
       expect(state.bought).toBe(1);
     });
   });
 
-  describe('NinjaLockdown', () => {
+  describe('Ninja Lockdown', () => {
     it('has buyFunction', () => {
-      const functions = boostFunctionRegistry['NinjaLockdown'];
+      const functions = boostFunctionRegistry['Ninja Lockdown'];
       expect(functions.buyFunction).toBeDefined();
     });
 
     it('initializes without locking ImperviousNinja', async () => {
       engine.forceResources({ glassBlocks: 1e27 });
-      engine.forceBoostState('NinjaLockdown', { unlocked: 1, bought: 0, power: 0 });
-      engine.forceBoostState('ImperviousNinja', { unlocked: 1, bought: 1, power: 0 });
+      engine.forceBoostState('Ninja Lockdown', { unlocked: 1, bought: 0, power: 0 });
+      engine.forceBoostState('Impervious Ninja', { unlocked: 1, bought: 1, power: 0 });
 
-      await engine.buyBoost('NinjaLockdown');
+      await engine.buyBoost('Ninja Lockdown');
 
-      const lockdownState = await engine.getBoostState('NinjaLockdown');
+      const lockdownState = await engine.getBoostState('Ninja Lockdown');
       expect(lockdownState.bought).toBe(1);
 
       // ImperviousNinja should still be unlocked (locking happens on toggle activation)
-      const ninjaState = await engine.getBoostState('ImperviousNinja');
+      const ninjaState = await engine.getBoostState('Impervious Ninja');
       expect(ninjaState.unlocked).toBe(1);
     });
   });

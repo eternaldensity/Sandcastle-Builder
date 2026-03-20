@@ -44,6 +44,7 @@ export interface BadgeCheckState {
 
   // Progress
   beachClicks: number;
+  totalCastlesBuilt: number;
   castlesSpent: number;
   ninjaStealth: number;
   ninjaFreeCount: number;
@@ -84,12 +85,16 @@ export const badgeConditions: BadgeCondition[] = [
   // =============================================================================
   { badge: 'Amazon Patent', trigger: 'click', check: s => s.beachClicks >= 1 },
   { badge: 'Click Ninja', trigger: 'click', check: s => s.beachClicks >= 1 },
+  { badge: 'Oops', trigger: 'click', check: s => s.beachClicks >= 2 },
   { badge: 'Not So Redundant', trigger: 'click', check: s => s.beachClicks >= 2 },
+  { badge: 'Just Starting', trigger: 'click', check: s => s.beachClicks >= 10 },
   { badge: 'Click Ninja Ninja', trigger: 'click', check: s => s.beachClicks >= 10 },
   { badge: "Don't Litter!", trigger: 'click', check: s => s.beachClicks >= 14 },
+  { badge: 'Busy Clicking', trigger: 'click', check: s => s.beachClicks >= 100 },
   { badge: 'Y U NO BELIEVE ME?', trigger: 'click', check: s => s.beachClicks >= 128 },
   { badge: 'Beachcomber', trigger: 'click', check: s => s.beachClicks >= 256 },
   { badge: 'Beachwalker', trigger: 'click', check: s => s.beachClicks >= 512 },
+  { badge: 'Click Storm', trigger: 'click', check: s => s.beachClicks >= 1000 },
   { badge: 'Beachranger', trigger: 'click', check: s => s.beachClicks >= 1024 },
 
   // =============================================================================
@@ -113,6 +118,18 @@ export const badgeConditions: BadgeCondition[] = [
   { badge: 'Personal Computer', trigger: 'resource-change', check: s => s.glassChips >= 640000 },
   { badge: 'Great Wall of China', trigger: 'resource-change', check: s => s.glassBlocks >= 12e6 },
   { badge: 'Burj Khalifa', trigger: 'resource-change', check: s => s.glassBlocks >= 828 },
+
+  // =============================================================================
+  // Castle-building badges (trigger: 'resource-change')
+  // Reference: boosts.js:7717-7749 (Castles.totalBuilt thresholds)
+  // =============================================================================
+  { badge: 'Rook', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 1 },
+  { badge: 'Enough for Chess', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 4 },
+  { badge: 'Fortified', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 40 },
+  { badge: 'All Along the Watchtower', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 320 },
+  { badge: 'Megopolis', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 1000 },
+  { badge: 'Kingdom', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 100000 },
+  { badge: 'Empire', trigger: 'resource-change', check: s => s.totalCastlesBuilt >= 10000000 },
 
   // =============================================================================
   // Spending badges (trigger: 'tool-purchase')
@@ -165,10 +182,9 @@ export const badgeConditions: BadgeCondition[] = [
 
   // =============================================================================
   // Meta badges (trigger: 'tick' or 'ong')
+  // NOTE: Badge Collector, Badge Hoarder, Badge Connoisseur are NOT in game-data.json
+  // and cannot be serialized. Disabled until game-data extraction includes them.
   // =============================================================================
-  { badge: 'Badge Collector', trigger: 'tick', check: s => s.badgesOwned >= 10 },
-  { badge: 'Badge Hoarder', trigger: 'tick', check: s => s.badgesOwned >= 50 },
-  { badge: 'Badge Connoisseur', trigger: 'tick', check: s => s.badgesOwned >= 100 },
 
   // =============================================================================
   // High tier tool count badges (trigger: 'tool-purchase')
