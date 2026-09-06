@@ -76,6 +76,15 @@ import {
 } from './redundakitty.js';
 import { createLogicatState } from './logicat.js';
 import {
+  createInitialMontyHaulState,
+  montyStartRound,
+  montyPickDoor,
+  awardGoats,
+  readMontyState,
+  type MontyHaulState,
+  type MontyGameAccess,
+} from './monty-haul.js';
+import {
   createInitialDragonSystemState,
   recalculateDragonSystem,
   processDragonDig,
@@ -372,12 +381,8 @@ export class ModernEngine implements GameEngine {
   // Mustard tool count (tools with NaN amount)
   private mustardToolCount = 0;
 
-  // Monty Haul Problem state
-  private montyDoors: string[] = ['A', 'B', 'C'];
-  private montyPrize = '';    // door with prize
-  private montyChosen = '';   // player's chosen door
-  private montyGoat = '';     // revealed goat door
-  private montyActive = false; // whether a round is in progress
+  // Monty Haul Problem state (behavior in monty-haul.ts)
+  private monty: MontyHaulState = createInitialMontyHaulState();
 
   // Photo/Color reaction system state
   private photoColors: PhotoColorState = createInitialColorState();
@@ -3841,14 +3846,29 @@ export class ModernEngine implements GameEngine {
    * Reference: boosts.js:488-498
    */
   private getYourGoat(n: number): void {
-    const goats = this.boosts.get('Goats');
-    if (!goats) return;
+    awardGoats(this.montyAccess(), n);
+  }
 
-    goats.power += n;
-
-    if (goats.power >= 2) this.earnBadge('Second Edition');
-    if (goats.power >= 20) this.doUnlockBoost('HoM');
-    if (goats.power >= 200) this.doUnlockBoost('BeretGuy');
+  /**
+   * Build the adapter the Monty Haul module needs (see monty-haul.ts).
+   */
+  private montyAccess(): MontyGameAccess {
+    return {
+      hasBoost: (alias) => this.hasBoost(alias),
+      isBoostEnabled: (alias) => this.isBoostEnabled(alias),
+      hasGoatsBoost: () => this.boosts.get('Goats') !== undefined,
+      getCastles: () => this.resources.castles,
+      addCastles: (amount) => { this.resources.castles += amount; },
+      clearCastles: () => { this.resources.castles = 0; },
+      getGlassChips: () => this.resources.glassChips,
+      addGlassChips: (amount) => { this.resources.glassChips += amount; },
+      getGoatPower: () => this.boosts.get('Goats')?.power ?? 0,
+      addGoatPower: (amount) => { const g = this.boosts.get('Goats'); if (g) g.power += amount; },
+      getMHPPower: () => this.boosts.get('MHP')?.power ?? 0,
+      setMHPPower: (power) => { const m = this.boosts.get('MHP'); if (m) m.power = power; },
+      earnBadge: (name) => this.earnBadge(name),
+      unlockBoost: (alias) => this.doUnlockBoost(alias),
+    };
   }
 
   /**
@@ -3857,14 +3877,7 @@ export class ModernEngine implements GameEngine {
    */
   montyStart(): boolean {
     const mhp = this.boosts.get('MHP');
-    if (!mhp || !mhp.bought) return false;
-
-    // Generate random prize door
-    this.montyPrize = this.montyDoors[Math.floor(Math.random() * 3)];
-    this.montyGoat = '';
-    this.montyChosen = '';
-    this.montyActive = true;
-    return true;
+    return montyStartRound(this.monty, !!mhp?.bought);
   }
 
   /**
@@ -3873,102 +3886,14 @@ export class ModernEngine implements GameEngine {
    * Reference: boosts.js:439-466 (Molpy.Monty)
    */
   montyChoose(door: string): { result: 'goat-revealed' | 'win' | 'lose'; goatDoor?: string } | null {
-    const mhp = this.boosts.get('MHP');
-    if (!mhp || !mhp.bought || !this.montyActive) return null;
-
-    this.montyChosen = door;
-
-    if (this.montyGoat) {
-      // Second pick — if choosing revealed goat door, need Beret Guy
-      if (door === this.montyGoat && !this.hasBoost('BeretGuy')) {
-        return null; // can't pick revealed goat without Beret Guy
-      }
-      // Resolve the game
-      const won = door === this.montyPrize;
-      this.rewardMonty(won);
-      this.montyActive = false;
-      // Lock MHP (increments power for price scaling)
-      mhp.power++;
-      return { result: won ? 'win' : 'lose' };
-    } else {
-      // First pick — reveal a goat door
-      const goatDoor = this.montyRevealGoat(door);
-      if (!goatDoor) {
-        // Edge case: player picked the prize on first try with specific goat logic
-        // Legacy uses encoded MontyMethod with randomness
-        const won = door === this.montyPrize;
-        this.rewardMonty(won);
-        this.montyActive = false;
-        mhp.power++;
-        return { result: won ? 'win' : 'lose' };
-      }
-      this.montyGoat = goatDoor;
-      return { result: 'goat-revealed', goatDoor };
-    }
-  }
-
-  /**
-   * Find a door to reveal as goat (not the player's choice, not the prize).
-   * Reference: boosts.js MontyMethod encoded logic
-   */
-  private montyRevealGoat(chosen: string): string | null {
-    const candidates = this.montyDoors.filter(d => d !== chosen && d !== this.montyPrize);
-    if (candidates.length === 0) return null;
-    // If player chose the prize, both others are goats — pick randomly
-    return candidates[Math.floor(Math.random() * candidates.length)];
-  }
-
-  /**
-   * Distribute rewards for MHP win/loss.
-   * Reference: boosts.js:472-486 (Molpy.RewardMonty)
-   */
-  private rewardMonty(won: boolean): void {
-    if (won) {
-      // Win: gain 50% of current castles
-      const gain = Math.floor(this.resources.castles / 2);
-      this.resources.castles += gain;
-
-      // Hall of Mirrors: gain 1/5 of glass chips
-      if (this.isBoostEnabled('HoM')) {
-        const chipGain = Math.floor(this.resources.glassChips / 5);
-        this.resources.glassChips += chipGain;
-      }
-
-      // Gruff: gain 3 goats on win
-      if (this.hasBoost('Gruff')) {
-        this.getYourGoat(3);
-      }
-    } else {
-      // Lose: destroy all castles
-      this.resources.castles = 0;
-
-      // Reduce MHP power for price scaling
-      const mhp = this.boosts.get('MHP');
-      if (mhp) {
-        mhp.power = Math.ceil(Math.floor(mhp.power / 1.8));
-      }
-
-      // Hall of Mirrors: lose 1/3 of glass chips
-      if (this.isBoostEnabled('HoM')) {
-        const chipLoss = Math.floor(this.resources.glassChips / 3);
-        this.resources.glassChips -= chipLoss;
-      }
-
-      // Always get 1 goat on loss
-      this.getYourGoat(1);
-    }
+    return montyPickDoor(this.monty, this.montyAccess(), door);
   }
 
   /**
    * Get MHP state for display/testing.
    */
   getMontyState(): { active: boolean; chosen: string; goatDoor: string; prize: string } {
-    return {
-      active: this.montyActive,
-      chosen: this.montyChosen,
-      goatDoor: this.montyGoat,
-      prize: this.montyPrize,
-    };
+    return readMontyState(this.monty);
   }
 
   /**
