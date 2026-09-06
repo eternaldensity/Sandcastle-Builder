@@ -261,6 +261,10 @@ npm run test:parity:install   # downloads the Playwright Chromium build
 
 ## Continuous Integration
 
+Live workflow: `.github/workflows/ci.yml` (typecheck + full suite with
+browser deps on ubuntu-latest). The example below is retained as the
+parity-only variant for a split-lane future.
+
 ```yaml
 # .github/workflows/parity.yml
 name: Parity Tests
