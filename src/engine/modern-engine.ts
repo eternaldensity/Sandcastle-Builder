@@ -76,6 +76,21 @@ import {
 } from './redundakitty.js';
 import { createLogicatState } from './logicat.js';
 import {
+  toCastles,
+  clickSandGain,
+  clickToolFactoryChips,
+  clickMustard,
+  clickDragonQuest,
+  handleClickNPBadges,
+  checkClickAchievements,
+  handleRitualPreservation,
+  processVJClick,
+  processBagPuns,
+  createRandomTool,
+  checkTemporalRiftClick,
+  type BeachClickAccess,
+} from './beach-click.js';
+import {
   createInitialMontyHaulState,
   montyStartRound,
   montyPickDoor,
@@ -3477,343 +3492,48 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
-   * Auto-convert sand to castles using Fibonacci cost sequence.
-   * Matches legacy Molpy.Boosts['Sand'].toCastles() behavior.
+   * Build the adapter the beach-click helpers need (see beach-click.ts).
    */
-  private toCastles(): void {
-    const builtBefore = this.castleBuild.totalBuilt;
-    // Convert sand to castles while we have enough
-    while (this.resources.sand >= this.castleBuild.nextCastleSand &&
-           isFinite(this.resources.castles)) {
-      // Build one castle (Fractal Sandcastles boost not implemented yet)
-      this.resources.castles++;
-      this.castleBuild.totalBuilt++;
-
-      // Spend sand
-      this.resources.sand -= this.castleBuild.nextCastleSand;
-
-      // Advance Fibonacci sequence for castle cost
-      const currentCost = this.castleBuild.nextCastleSand;
-      this.castleBuild.nextCastleSand = this.castleBuild.prevCastleSand + currentCost;
-      this.castleBuild.prevCastleSand = currentCost;
-
-      // Safety check for infinite/invalid state
-      if (!isFinite(this.resources.sand) || this.castleBuild.nextCastleSand <= 0) {
-        this.castleBuild.nextCastleSand = 1;
-        this.resources.castles = Infinity;
-        break;
-      }
-    }
-
-    this.syncResourceBoosts();
-
-    // Check castle-building badges if any castles were built
-    if (this.castleBuild.totalBuilt > builtBefore) {
-      this.badgeChecker.check('resource-change', this.buildBadgeCheckState());
-    }
-  }
-
-  /**
-   * Sand click handler - adds sand per click.
-   * Reference: boosts.js:7534-7541 (Sand.clickBeach)
-   */
-  private clickSandGain(): void {
-    const sandGained = this.cachedSandPerClick;
-    this.resources.sand += sandGained;
-    this.syncResourceBoosts();
-  }
-
-  /**
-   * Tool Factory click handler - loads glass chips per click.
-   * Reference: boosts.js:5117-5126 (TF.clickBeach)
-   */
-  private clickToolFactoryChips(): void {
-    if (!this.hasBoost('TF')) return;
-
-    const chipState: ChipClickState = {
-      sandIsInfinite: !isFinite(this.resources.sand),
-      bgBought: this.hasBoost('BG'),
-      gmBought: this.hasBoost('GM'),
-      boneClickerBought: this.hasBoost('Bone Clicker'),
-      bonemealLevel: this.getBoostPower('Bonemeal'),
-      boostsOwned: this.countBoughtBoosts(),
-      loadedPermNP: this.getBoostPower('TF'),
+  private beachClickAccess(): BeachClickAccess {
+    return {
+      hasBoost: (alias) => this.hasBoost(alias),
+      isBoostEnabled: (alias) => this.isBoostEnabled(alias),
+      getBoost: (alias) => this.boosts.get(alias),
+      boostEntries: () => this.boosts.entries(),
+      getBoostPower: (alias) => this.getBoostPower(alias),
+      doUnlockBoost: (alias) => this.doUnlockBoost(alias),
+      earnBadge: (name) => this.earnBadge(name),
+      resources: this.resources,
+      cachedSandPerClick: this.cachedSandPerClick,
+      syncResourceBoosts: () => this.syncResourceBoosts(),
+      castleBuild: this.castleBuild,
+      notifyResourceChange: () => this.badgeChecker.check('resource-change', this.buildBadgeCheckState()),
+      notifyClick: () => this.badgeChecker.check('click', this.buildBadgeCheckState()),
+      getBeachClicks: () => this.core.beachClicks,
+      getNewpixNumber: () => this.core.newpixNumber,
+      mustardToolCount: this.mustardToolCount,
+      countBoughtBoosts: () => this.countBoughtBoosts(),
+      getDragonDigRate: () => this.dragons.digRate,
+      digDragonsBeach: () => { void this.processDragonDig('beach'); },
+      getAllToolNames: () => [...this.sandTools.keys(), ...this.castleTools.keys()],
+      getToolState: (name) => this.sandTools.get(name) ?? this.castleTools.get(name),
+      papal: (decree) => this.papal(decree),
+      riftJump: () => this.riftJump(),
     };
-
-    const chips = calculateChipsPerClick(chipState);
-    if (chips > 0) {
-      const tf = this.boosts.get('TF');
-      if (tf) {
-        tf.power += chips;
-      }
-    }
   }
 
-  /**
-   * Mustard click handler - adds mustard from NaN tools.
-   * Reference: boosts.js:7987-7992 (Mustard.clickBeach)
-   */
-  private clickMustard(): void {
-    if (!this.hasBoost('Mustard') || this.mustardToolCount === 0) return;
-    const mustard = this.boosts.get('Mustard');
-    if (mustard) {
-      mustard.power += this.mustardToolCount;
-    }
-  }
-
-  /**
-   * Dragon Quest click handler - triggers dragon digging on click.
-   * Reference: boosts.js:8281-8285 (DQ.clickBeach)
-   */
-  private clickDragonQuest(): void {
-    const dq = this.boosts.get('DQ');
-    if (!dq || !dq.bought) return;
-    if (!this.hasBoost('BeachDragon')) return;
-    if (this.dragons.digRate <= 0) return;
-    this.processDragonDig('beach');
-  }
-
-  /**
-   * Check NP-specific click achievements.
-   * Reference: castle.js:463-468 (Molpy.HandleClickNP)
-   */
-  private handleClickNPBadges(): void {
-    const np = this.core.newpixNumber;
-    if (np === 404) this.earnBadge('Badge Not Found');
-    if (np === -404) this.earnBadge('Badge Found');
-    if (np === 2101) this.earnBadge('War was beginning.');
-  }
-
-  /**
-   * Check click count achievements.
-   * Reference: castle.js:167 (Molpy.CheckClickAchievements)
-   */
-  private checkClickAchievements(): void {
-    // Badge checks based on total beach clicks
-    this.badgeChecker.check('click', this.buildBadgeCheckState());
-  }
-
-  /**
-   * Handle Ritual Sacrifice/Rift to preserve ninja ritual streak on stealth click.
-   * Reference: castle.js:172-191
-   *
-   * On stealth click, if Ninja Ritual power >= 25, spend 5 goats (Ritual Sacrifice)
-   * or flux crystals (Ritual Rift) to preserve the ritual. Otherwise reset to 0.
-   */
-  private handleRitualPreservation(): void {
-    const ninjaRitual = this.boosts.get('Ninja Ritual');
-    if (!ninjaRitual || ninjaRitual.bought <= 0) return;
-
-    let saveRitual = false;
-
-    // Ritual Sacrifice: spend 5 goats (power 25-100)
-    const ritualSacrifice = this.boosts.get('RitualSacrifice');
-    if (ritualSacrifice && this.isBoostEnabled('RitualSacrifice') &&
-        ninjaRitual.power >= 25 && ninjaRitual.power < 101) {
-      const goats = this.boosts.get('Goats');
-      if (goats && goats.power >= 5) {
-        goats.power -= 5;
-        saveRitual = true;
-      }
-    }
-
-    // Ritual Rift: spend floor(ritual_power/10) flux crystals
-    const ritualRift = this.boosts.get('RitualRift');
-    if (ritualRift && this.isBoostEnabled('RitualRift') && !saveRitual) {
-      const cost = Math.floor(ninjaRitual.power / 10);
-      const fluxCrystals = this.boosts.get('FluxCrystals');
-      if (fluxCrystals && fluxCrystals.power >= cost) {
-        fluxCrystals.power -= cost;
-        saveRitual = true;
-      }
-    }
-
-    if (!saveRitual) {
-      ninjaRitual.power = 0;
-    }
-  }
-
-  /**
-   * VJ (Vaulting Jackhammer) click processing.
-   * Every Nth click (N=100, or 20 with Short Saw) triggers VJ reward.
-   * Reference: castle.js:222-279
-   */
-  private processVJClick(): void {
-    const vj = this.boosts.get('VJ');
-    if (!vj || !vj.bought) return;
-
-    const sawmod = this.hasBoost('ShortSaw') ? 20 : 100;
-    if (this.core.beachClicks % sawmod !== 0) return;
-
-    // Build castles as reward
-    const reward = this.getVJReward();
-    this.resources.castles += reward;
-    vj.power++;
-
-    // Glass Saw processing (castle.js:234-277)
-    this.processGlassSaw();
-  }
-
-  /**
-   * Get VJ reward amount.
-   * Reference: boosts.js VJ.getReward
-   */
-  private getVJReward(): number {
-    const vj = this.boosts.get('VJ');
-    if (!vj) return 1;
-    // Base reward scales with VJ power
-    return Math.max(1, vj.power);
-  }
-
-  /**
-   * Glass Saw processing during VJ click.
-   * Converts TF chips to glass blocks.
-   * Reference: castle.js:234-277
-   */
-  private processGlassSaw(): void {
-    if (!this.hasBoost('GlassSaw')) return;
-    const glassSaw = this.boosts.get('GlassSaw');
-    if (!glassSaw || glassSaw.power <= 0) {
-      if (glassSaw && !glassSaw.power) glassSaw.power = 1;
-      return;
-    }
-
-    const tf = this.boosts.get('TF');
-    if (!tf) return;
-
-    const chipsPerBlock = this.getChipsPerBlock();
-    if (chipsPerBlock <= 0) return;
-
-    const glassCeilingCount = this.getGlassCeilingCount();
-    const p = glassSaw.power;
-    const absMaxGlass = glassCeilingCount * 10000000 * p;
-    let maxGlass = Math.min(absMaxGlass, Math.floor(tf.power / chipsPerBlock));
-
-    const glassBlocks = this.boosts.get('GlassBlocks');
-    if (!glassBlocks) return;
-
-    // Buzz Saw with Stretchable Block Storage
-    if (this.hasBoost('BuzzSaw') && this.isBoostEnabled('StretchableBlockStorage')) {
-      maxGlass = Math.max(maxGlass, 0) || 0;
-    } else {
-      // Normal capacity check
-      const capacity = glassBlocks.bought * 50;
-      maxGlass = Math.min(maxGlass, capacity - glassBlocks.power);
-      maxGlass = Math.max(maxGlass, 0) || 0;
-
-      // Backoff loop to ensure we don't exceed capacity
-      let backoff = 1;
-      while (glassBlocks.power + maxGlass > capacity) {
-        maxGlass -= backoff;
-        backoff *= 2;
-      }
-    }
-
-    if (!isFinite(maxGlass)) {
-      this.earnBadge('Infinite Saw');
-    }
-
-    if (!isFinite(glassBlocks.power)) {
-      this.doUnlockBoost('BuzzSaw');
-    }
-
-    // Add glass blocks with Papal multiplier
-    const papalMult = this.papal('GlassSaw');
-    this.resources.glassBlocks += Math.floor(maxGlass * papalMult);
-
-    // Spend TF chips
-    tf.power -= maxGlass * chipsPerBlock;
-
-    // Power growth based on available TF
-    if (tf.power >= absMaxGlass * chipsPerBlock * 10) {
-      glassSaw.power = p * (10 + 5 * (this.hasBoost('BuzzSaw') ? 1 : 0));
-    } else if (tf.power >= absMaxGlass * chipsPerBlock * 2) {
-      glassSaw.power = p * (2 + (this.hasBoost('BuzzSaw') ? 1 : 0));
-    }
-  }
-
-  /**
-   * Get chips per block conversion rate.
-   */
-  private getChipsPerBlock(): number {
-    return calculateChipsPerBlock(
-      this.hasBoost('RuthlessEfficiency'),
-      this.isBoostEnabled('GlassTrolling')
-    );
-  }
-
-  /**
-   * Get count of Glass Ceiling boosts owned.
-   */
-  private getGlassCeilingCount(): number {
-    let count = 0;
-    for (const [name, state] of this.boosts) {
-      if (name.startsWith('GlassCeiling') && state.bought > 0) count++;
-    }
-    return count;
-  }
-
-  /**
-   * Bag Puns progression - every 20 clicks, increment power.
-   * Eventually unlocks VJ at power > 100.
-   * Reference: castle.js:280-286
-   */
-  private processBagPuns(): void {
-    const bagPuns = this.boosts.get('Bag Puns');
-    if (!bagPuns || !bagPuns.bought) return;
-
-    // Only if VJ not yet bought
-    const vj = this.boosts.get('VJ');
-    if (vj && vj.bought) return;
-
-    if (this.core.beachClicks % 20 === 0) {
-      bagPuns.power++;
-      if (bagPuns.power > 100) {
-        this.doUnlockBoost('VJ');
-      }
-    }
-  }
-
-  /**
-   * Create a random tool from tfOrder on click (Spare Tools boost).
-   * Reference: castle.js:288-291
-   */
-  private createRandomTool(): void {
-    // Pick a random tool from all tools
-    const allTools = [...this.sandTools.keys(), ...this.castleTools.keys()];
-    if (allTools.length === 0) return;
-
-    const toolName = allTools[Math.floor(Math.random() * allTools.length)];
-
-    // Try sand tool first, then castle tool
-    const sandTool = this.sandTools.get(toolName);
-    if (sandTool) {
-      sandTool.amount++;
-      sandTool.temp++;
-      return;
-    }
-
-    const castleTool = this.castleTools.get(toolName);
-    if (castleTool) {
-      castleTool.amount++;
-      castleTool.temp++;
-    }
-  }
-
-  /**
-   * Check for accidental temporal rift slip on click.
-   * Reference: castle.js:297-300
-   */
-  private checkTemporalRiftClick(): void {
-    const temporalRift = this.boosts.get('TemporalRift');
-    if (!temporalRift || !temporalRift.bought) return;
-    if (temporalRift.countdown >= 5) return;
-
-    // 50% chance of slipping through
-    if (Math.random() < 0.5) {
-      this.riftJump();
-    }
-  }
+  private toCastles(): void { toCastles(this.beachClickAccess()); }
+  private clickSandGain(): void { clickSandGain(this.beachClickAccess()); }
+  private clickToolFactoryChips(): void { clickToolFactoryChips(this.beachClickAccess()); }
+  private clickMustard(): void { clickMustard(this.beachClickAccess()); }
+  private clickDragonQuest(): void { clickDragonQuest(this.beachClickAccess()); }
+  private handleClickNPBadges(): void { handleClickNPBadges(this.beachClickAccess()); }
+  private checkClickAchievements(): void { checkClickAchievements(this.beachClickAccess()); }
+  private handleRitualPreservation(): void { handleRitualPreservation(this.beachClickAccess()); }
+  private processVJClick(): void { processVJClick(this.beachClickAccess()); }
+  private processBagPuns(): void { processBagPuns(this.beachClickAccess()); }
+  private createRandomTool(): void { createRandomTool(this.beachClickAccess()); }
+  private checkTemporalRiftClick(): void { checkTemporalRiftClick(this.beachClickAccess()); }
 
   /**
    * Donkey - auto-buy system.
