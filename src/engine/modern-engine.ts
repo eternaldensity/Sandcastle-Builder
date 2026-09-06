@@ -5014,18 +5014,31 @@ export class ModernEngine implements GameEngine {
     }
 
     let blastFactor = 1000;
+    let boosted = false;
 
-    // Check for Fractal Sandcastles reduction
+    // Fractal Sandcastles reduction (with Blitzing/BKJ adjustments)
     const fractal = this.boosts.get('Fractal Sandcastles');
     if (fractal && fractal.bought > 0) {
-      blastFactor = Math.max(5, 1000 * Math.pow(0.94, fractal.power ?? 0));
+      blastFactor = Math.max(5, 1000 * Math.pow(0.94, (fractal.power ?? 0) * this.papal('Fractal')));
+      if (this.hasBoost('Blitzing')) {
+        if (this.hasBoost('BKJ')) {
+          const blitzing = this.boosts.get('Blitzing');
+          blastFactor /= Math.max(1, ((blitzing?.power ?? 0) - 800) / 600);
+          boosted = true;
+        }
+        blastFactor /= 2;
+      }
     }
 
     // Calculate how many castles we can make
     let castles = Math.floor(this.resources.sand / blastFactor);
 
-    // Cap at totalBuilt / 3 (or /5 with certain boosts - simplified for now)
-    castles = Math.floor(Math.min(castles, this.castleBuild.totalBuilt / 3));
+    // Cap at totalBuilt / 5 when Blitzing+BKJ boosted, else / 3
+    if (boosted) {
+      castles = Math.floor(Math.min(castles, this.castleBuild.totalBuilt / 5));
+    } else {
+      castles = Math.floor(Math.min(castles, this.castleBuild.totalBuilt / 3));
+    }
 
     if (castles > 0) {
       this.resources.sand -= castles * blastFactor;

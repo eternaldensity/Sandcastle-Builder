@@ -1248,6 +1248,38 @@ describe('ModernEngine', () => {
     });
   });
 
+  describe('blast furnace', () => {
+    function setupBlast(sand: number, totalBuilt: number) {
+      (engine as any).resources.sand = sand;
+      (engine as any).resources.castles = 0;
+      (engine as any).castleBuild.totalBuilt = totalBuilt;
+      (engine as any).castleBuild.nextCastleSand = 1;
+      (engine as any).castleBuild.prevCastleSand = 1;
+    }
+
+    it('caps at totalBuilt / 3 without Blitzing', async () => {
+      (engine as any).boosts.set('Fractal Sandcastles', { unlocked: 1, bought: 1, power: 0 });
+      setupBlast(1000000, 3000);
+
+      await (engine as any).giveBlastFurnaceReward();
+
+      // factor 1000, no Blitzing halve: floor(1e6/1000) = 1000, cap 3000/3
+      expect((engine as any).resources.castles).toBe(1000);
+    });
+
+    it('halves the factor and caps at /5 with Blitzing + BKJ', async () => {
+      (engine as any).boosts.set('Fractal Sandcastles', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('Blitzing', { unlocked: 1, bought: 1, power: 900 });
+      (engine as any).boosts.set('BKJ', { unlocked: 1, bought: 1, power: 0 });
+      setupBlast(1000000, 3000);
+
+      await (engine as any).giveBlastFurnaceReward();
+
+      // factor 1000 / max(1, 100/600) / 2 = 500; floor(1e6/500) = 2000, cap 3000/5
+      expect((engine as any).resources.castles).toBe(600);
+    });
+  });
+
   describe('ONG transition enhancements', () => {
     it('resets Lightning Rod power by 5% at ONG', async () => {
       (engine as any).boosts.set('LR', { unlocked: 1, bought: 1, power: 1000 });
