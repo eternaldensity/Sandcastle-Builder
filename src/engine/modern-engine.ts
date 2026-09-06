@@ -109,26 +109,32 @@ import {
   type MontyHaulState,
   type MontyGameAccess,
 } from './monty-haul.js';
-import {
-  createInitialDragonSystemState,
-  recalculateDragonSystem,
-  processDragonDig,
-  checkDiggingNotification,
-  dragonFledge,
-  processCombatOutcome,
-  generateRedundaKnight,
-  calculateHideTime,
-  calculateDragonMultipliers,
-  findOpponents,
-  type DragonBoostState,
-  type DragonDiggingBoostState,
-  type CombatBoostState,
-  type CombatOutcome,
-  type FledgeResult,
-  type DragonMultipliers,
-  type DigType,
-  type DigResult,
+import { createInitialDragonSystemState } from './dragon.js';
+import type {
+  CombatOutcome,
+  FledgeResult,
+  DigType,
+  DigResult,
 } from './dragon.js';
+import {
+  getDragonDataAtNP as readDragonDataAtNP,
+  setDragonDataAtNP as writeDragonDataAtNP,
+  removeDragonsAtNP as clearDragonsAtNP,
+  getDragonQueenState as readDragonQueenState,
+  setDragonQueenLevel as writeDragonQueenLevel,
+  setDragonOverallState as writeDragonOverallState,
+  getHatchlingsState as readHatchlingsState,
+  getNestState as readNestState,
+  isDragonRecalcNeeded as dragonsNeedRecalc,
+  markDragonRecalcNeeded as markDragonsForRecalc,
+  recalculateDragons as refreshDragons,
+  processDragonDigging as digWithDragons,
+  fledgeDragonClutch as fledgeClutch,
+  runDragonCombat as fightDragonCombat,
+  handleRedundaKnightAttack as counterRedundaKnight,
+  hideDragonsFromOpponents as hideDragons,
+  type DragonControllerAccess,
+} from './dragon-controller.js';
 import {
   runPhoto,
   getPhoto,
@@ -5308,51 +5314,47 @@ export class ModernEngine implements GameEngine {
   }
 
   // ==========================================================================
-  // Dragon System Methods
+  // Dragon System Methods (behavior in dragon-controller.ts)
   // ==========================================================================
 
   /**
-   * Get dragon system state for testing/inspection.
+   * Build the adapter the dragon controller needs (see dragon-controller.ts).
    */
+  private dragonAccess(): DragonControllerAccess {
+    return {
+      dragons: this.dragons,
+      getBoost: (alias) => this.boosts.get(alias),
+      getBoostPower: (alias) => this.getBoostPower(alias),
+      hasBoost: (alias) => this.hasBoost(alias),
+      getNewpixNumber: () => this.core.newpixNumber,
+      addResource: (resource, amount) => this.addResource(resource, amount),
+      earnBadge: (name) => this.earnBadge(name),
+      unlockBoost: (alias) => this.unlockBoost(alias),
+    };
+  }
+
   getDragonState(): DragonSystemState {
     return this.dragons;
   }
 
-  /**
-   * Get dragon data at a specific NP.
-   */
   getDragonDataAtNP(np: number): NPData | undefined {
-    return this.dragons.npData.get(np);
+    return readDragonDataAtNP(this.dragons, np);
   }
 
-  /**
-   * Set dragon data at a specific NP.
-   */
   setDragonDataAtNP(np: number, data: NPData): void {
-    this.dragons.npData.set(np, data);
-    this.dragons.recalcNeeded = true;
+    writeDragonDataAtNP(this.dragons, np, data);
   }
 
-  /**
-   * Remove dragons from a specific NP.
-   */
   removeDragonsAtNP(np: number): void {
-    this.dragons.npData.delete(np);
-    this.dragons.recalcNeeded = true;
+    clearDragonsAtNP(this.dragons, np);
   }
 
-  /**
-   * Get the Dragon Queen state.
-   */
   getDragonQueenState(): DragonQueenState {
-    return { ...this.dragons.queen };
+    return readDragonQueenState(this.dragons);
   }
 
-  /**
-   * Set Dragon Queen level (dragon type that hatchlings mature into).
-   */
   setDragonQueenLevel(level: number): void {
-    this.dragons.queen.Level = level;
+    writeDragonQueenLevel(this.dragons, level);
   }
 
   /**
@@ -5363,454 +5365,63 @@ export class ModernEngine implements GameEngine {
    * @param countdown - Optional countdown in mNP for state to end
    */
   setDragonOverallState(state: DragonOverallState, countdown?: number): void {
-    this.dragons.queen.overallState = state;
-    if (countdown !== undefined) {
-      this.dragons.queen.countdown = countdown;
-    }
+    writeDragonOverallState(this.dragons, state, countdown);
   }
 
-  /**
-   * Get hatchling breeding state.
-   */
   getHatchlingsState(): DragonHatchlingsState {
-    return {
-      clutches: [...this.dragons.hatchlings.clutches],
-      properties: [...this.dragons.hatchlings.properties],
-      diet: [...this.dragons.hatchlings.diet],
-      maturity: [...this.dragons.hatchlings.maturity],
-    };
+    return readHatchlingsState(this.dragons);
   }
 
-  /**
-   * Get dragon nest state.
-   */
   getNestState(): DragonNestState {
-    return {
-      lining: { ...this.dragons.nest.lining },
-    };
+    return readNestState(this.dragons);
   }
 
-  /**
-   * Get total dragons across all NPs.
-   */
   getTotalDragons(): number {
     return this.dragons.totalDragons;
   }
 
-  /**
-   * Get number of NPs with dragons.
-   */
   getTotalNPsWithDragons(): number {
     return this.dragons.totalNPsWithDragons;
   }
 
-  /**
-   * Get highest NP number with dragons.
-   */
   getHighestNPWithDragons(): number {
     return this.dragons.highestNPwithDragons;
   }
 
-  /**
-   * Get current dragon dig rate.
-   */
   getDragonDigRate(): number {
     return this.dragons.digRate;
   }
 
-  /**
-   * Check if dragon recalculation is needed.
-   */
   isDragonRecalcNeeded(): boolean {
-    return this.dragons.recalcNeeded;
+    return dragonsNeedRecalc(this.dragons);
   }
 
-  /**
-   * Mark dragon recalculation as needed.
-   */
   markDragonRecalcNeeded(): void {
-    this.dragons.recalcNeeded = true;
+    markDragonsForRecalc(this.dragons);
   }
 
-  /**
-   * Build dragon boost state from current engine state.
-   * This extracts all boost ownership/power values needed for dragon calculations.
-   */
-  private buildDragonBoostState(): DragonBoostState {
-    const getBoost = (alias: string) => this.boosts.get(alias);
-    const hasBoost = (alias: string) => (getBoost(alias)?.bought ?? 0) > 0;
-    const getLevel = (alias: string) => getBoost(alias)?.power ?? 0;
-
-    return {
-      // Digging multiplier boosts
-      hasBucketAndSpade: hasBoost('Bucket and Spade'),
-      hasStrengthPotion: hasBoost('Strength Potion'),
-      strengthPotionPower: getLevel('Strength Potion'),
-      hasGoldenBull: hasBoost('Golden Bull'),
-
-      // Defence multiplier boosts
-      hasHealingPotion: hasBoost('Healing Potion'),
-      healingPotionPower: getLevel('Healing Potion'),
-      hasOohShiny: hasBoost('Ooh, Shiny!'),
-      goldLevel: getLevel('Gold'),
-      hasClannesque: hasBoost('Clannesque'),
-      cryogenicsLevel: getLevel('Cryogenics'),
-      hasSpines: hasBoost('Spines'),
-      spinesLevel: getLevel('Spines'),
-      hasAdamantineArmour: hasBoost('Adamantine Armour'),
-      adamantineArmourLevel: getLevel('Adamantine Armour'),
-      hasMirrorScales: hasBoost('Mirror Scales'),
-      mirrorScalesLevel: getLevel('Mirror Scales'),
-      hasBaobabTreeFort: hasBoost('Baobab Tree Fort'),
-      hasWotT: hasBoost('WotT'),
-
-      // Attack multiplier boosts
-      hasBigTeeth: hasBoost('Big Teeth'),
-      bigTeethLevel: getLevel('Big Teeth'),
-      hasMagicTeeth: hasBoost('Magic Teeth'),
-      magicTeethLevel: getLevel('Magic Teeth'),
-      hasTusks: hasBoost('Tusks'),
-      tusksLevel: getLevel('Tusks'),
-      hasBigBite: hasBoost('Big Bite'),
-      bigBiteLevel: getLevel('Big Bite'),
-      hasDoubleByte: hasBoost('Double Byte'),
-      doubleByteLevel: getLevel('Double Byte'),
-      hasTrilobite: hasBoost('Trilobite'),
-      trilobiteLevel: getLevel('Trilobite'),
-      hasDiamondDentures: hasBoost('Diamond Dentures'),
-      hasWotP: hasBoost('WotP'),
-
-      // Breath multiplier boosts
-      hasAutumnOfMatriarch: hasBoost('Autumn of the Matriarch'),
-      dqTotalLoses: this.dragons.queen.totalloses,
-      hasMQALLOBS: hasBoost('MQALLOBS'),
-      catalyzerPower: getLevel('Catalyzer'),
-
-      // Luck boosts
-      hasLuckyRing: hasBoost('Lucky Ring'),
-      hasCupOfTea: hasBoost('Cup of Tea'),
-      cupOfTeaPower: getLevel('Cup of Tea'),
-
-      // Hide modifier
-      hasChintzyTiara: hasBoost('Chintzy Tiara'),
-    };
-  }
-
-  /**
-   * Recalculate dragon system if needed.
-   * Reference: dragons.js:467-550 (DragonDigRecalc)
-   *
-   * @returns Array of boost aliases to unlock (based on consecutive NPs)
-   */
   recalculateDragons(): string[] {
-    if (!this.dragons.recalcNeeded) {
-      return [];
-    }
-
-    const boostState = this.buildDragonBoostState();
-    const unlocks = recalculateDragonSystem(this.dragons, boostState);
-
-    // Unlock boosts based on consecutive NPs with dragons
-    for (const alias of unlocks) {
-      this.unlockBoost(alias);
-    }
-
-    return unlocks;
+    return refreshDragons(this.dragonAccess());
   }
 
-  /**
-   * Build digging boost state from current engine state.
-   */
-  private buildDragonDiggingBoostState(): DragonDiggingBoostState {
-    const getBoost = (alias: string) => this.boosts.get(alias);
-    const hasBoost = (alias: string) => (getBoost(alias)?.bought ?? 0) > 0;
-
-    return {
-      hasShades: hasBoost('Shades'),
-      hasCutDiamonds: hasBoost('Cut Diamonds'),
-      hasSparkle: hasBoost('Sparkle'),
-      hasSeacoal: hasBoost('Seacoal'),
-      hasSeaMining: hasBoost('Sea Mining'),
-      seaMiningPower: getBoost('Sea Mining')?.power ?? 0,
-    };
-  }
-
-  /**
-   * Process dragon digging for mNP tick or beach click.
-   * Reference: dragons.js:552-651
-   *
-   * @param type - 'mnp' for tick-based digging, 'beach' for beach click
-   * @returns Dig result if something was found, null otherwise
-   */
   processDragonDig(type: DigType): DigResult | null {
-    // Ensure dragon state is up to date
-    if (this.dragons.recalcNeeded) {
-      this.recalculateDragons();
-    }
-
-    const boosts = this.buildDragonDiggingBoostState();
-    const result = processDragonDig(type, this.dragons, boosts);
-
-    if (result) {
-      // Add resources
-      if (result.resource && result.amount > 0) {
-        this.addResource(result.resource, result.amount);
-      }
-
-      // Earn badges
-      if (result.earnedBadge) {
-        this.earnBadge(result.earnedBadge);
-      }
-
-      // First find badge
-      if (result.resource) {
-        this.earnBadge('Found Something!');
-      }
-
-      // Unlock Beach Dragon
-      if (result.unlockBeachDragon) {
-        this.unlockBoost('Beach Dragon');
-      }
-
-      // Handle Sea Mining power increment
-      if (type === 'beach' && boosts.hasSeaMining && boosts.seaMiningPower > 0) {
-        const seaMiningBoost = this.boosts.get('Sea Mining');
-        if (seaMiningBoost) {
-          seaMiningBoost.power++;
-        }
-      }
-    }
-
-    // Check for notification batch
-    const finds = checkDiggingNotification(this.dragons);
-    if (finds) {
-      // In a real implementation, this would trigger a notification
-      // For now, we just clear the finds (already done in checkDiggingNotification)
-    }
-
-    return result;
+    return digWithDragons(this.dragonAccess(), type);
   }
 
-  /**
-   * Build combat boost state from current engine state.
-   */
-  private buildCombatBoostState(): CombatBoostState {
-    const getBoost = (alias: string) => this.boosts.get(alias);
-    const hasBoost = (alias: string) => (getBoost(alias)?.bought ?? 0) > 0;
-    const getLevel = (alias: string) => getBoost(alias)?.power ?? 0;
-
-    return {
-      hasDragonBreath: hasBoost('Dragon Breath'),
-      hasMouthwash: hasBoost('Mouthwash'),
-      hasEthylAlcohol: hasBoost('Ethyl Alcohol'),
-      ethylAlcoholAmount: getLevel('Ethyl Alcohol'),
-      hasDragonfly: hasBoost('Dragonfly'),
-      dragonflyLevel: getLevel('Dragonfly'),
-      hasHealingPotion: hasBoost('Healing Potion'),
-      healingPotionAmount: getLevel('Healing Potion'),
-      hasCupOfTea: hasBoost('Cup of Tea'),
-      cupOfTeaAmount: getLevel('Cup of Tea'),
-      hasTupleOrNothing: hasBoost('Tuple or Nothing'),
-      hasCamelflarge: hasBoost('Camelflarge'),
-      camelflargeLevel: getLevel('Camelflarge'),
-      hasHonorAmongSerpents: hasBoost('Honor Among Serpents'),
-      hasCryogenics: hasBoost('Cryogenics'),
-      cryogenicsLevel: getLevel('Cryogenics'),
-      hasRoboticHatcher: hasBoost('Robotic Hatcher'),
-      roboticHatcherEnabled: hasBoost('Robotic Hatcher') && (getBoost('Robotic Hatcher')?.isEnabled ?? true),
-      goatsAmount: getLevel('Goats'),
-    };
-  }
-
-  /**
-   * Build dragon multipliers from current state.
-   */
-  private buildDragonMultipliers(): DragonMultipliers {
-    return {
-      digMultiplier: this.dragons.digMultiplier,
-      attackMultiplier: this.dragons.attackMultiplier,
-      defenceMultiplier: this.dragons.defenceMultiplier,
-      breathMultiplier: this.dragons.breathMultiplier,
-      luck: this.dragons.luck,
-      hideMod: this.dragons.hideMod,
-    };
-  }
-
-  /**
-   * Fledge a clutch of dragons at the current NP.
-   * Reference: dragons.js:680-785 (DragonFledge)
-   *
-   * @param clutchIndex - Index of the clutch to fledge
-   * @returns Fledge result
-   */
   fledgeDragons(clutchIndex: number): FledgeResult {
-    // Ensure dragon state is up to date
-    if (this.dragons.recalcNeeded) {
-      this.recalculateDragons();
-    }
-
-    const combatBoosts = this.buildCombatBoostState();
-    const hasTopiary = this.hasBoost('Topiary');
-
-    const result = dragonFledge(
-      clutchIndex,
-      this.core.newpixNumber,
-      this.dragons,
-      combatBoosts,
-      hasTopiary
-    );
-
-    // Apply badges
-    for (const badge of result.badges) {
-      this.earnBadge(badge);
-    }
-
-    // Apply unlocks
-    for (const unlock of result.unlocks) {
-      this.unlockBoost(unlock);
-    }
-
-    // Unlock Topiary
-    if (result.unlockTopiary) {
-      this.unlockBoost('Topiary');
-    }
-
-    // Apply combat outcome state changes
-    if (result.combatResult && result.combatResult.result !== 0) {
-      this.applyCombatStateChanges(result.combatResult, result.opponents!);
-    }
-
-    // Recalculate dragon aggregates
-    this.recalculateDragons();
-
-    // Post-fledge unlocks
-    if (this.dragons.totalNPsWithDragons > 11) {
-      this.unlockBoost('Dragon Overview');
-    }
-    if (this.dragons.totalNPsWithDragons > 111 && this.hasBoost('Dragon Overview')) {
-      this.unlockBoost('Woolly Jumper');
-    }
-
-    return result;
+    return fledgeClutch(this.dragonAccess(), clutchIndex);
   }
 
-  /**
-   * Run combat at a specific NP against opponents.
-   * Reference: dragons.js:827-1066 (OpponentsAttack)
-   *
-   * @param where - NP where combat occurs
-   * @param opponents - Opponent instance
-   * @param breathtype - Breath attack type index (0=none)
-   * @param fighttype - 0=fledge, 1=RedundaKnight attack
-   * @returns Combat outcome
-   */
   runCombat(where: number, opponents: OpponentInstance, breathtype: number, fighttype: number): CombatOutcome | null {
-    const npd = this.dragons.npData.get(where);
-    if (!npd || npd.amount <= 0) return null;
-
-    // Ensure dragon state is up to date
-    if (this.dragons.recalcNeeded) {
-      this.recalculateDragons();
-    }
-
-    const multipliers = this.buildDragonMultipliers();
-    const combatBoosts = this.buildCombatBoostState();
-
-    const outcome = processCombatOutcome(
-      where, opponents, npd, this.dragons, multipliers, combatBoosts, breathtype, fighttype
-    );
-
-    this.applyCombatOutcome(outcome);
-    return outcome;
+    return fightDragonCombat(this.dragonAccess(), where, opponents, breathtype, fighttype);
   }
 
-  /**
-   * Apply combat outcome to engine state (rewards, state changes, etc).
-   */
-  private applyCombatOutcome(outcome: CombatOutcome): void {
-    // Apply rewards
-    for (const reward of outcome.rewards) {
-      if (reward.resource !== 'Thing') {
-        this.addResource(reward.resource, reward.amount);
-      }
-    }
-
-    // Apply experience
-    if (outcome.experience > 0) {
-      this.addResource('exp', outcome.experience);
-    }
-
-    // Apply state changes
-    if (outcome.stateChange !== null) {
-      this.dragons.queen.overallState = outcome.stateChange;
-      if (outcome.countdown > 0) {
-        this.dragons.queen.countdown = outcome.countdown;
-      }
-    }
-
-    // Apply badges
-    for (const badge of outcome.badges) {
-      this.earnBadge(badge);
-    }
-
-    // Apply unlocks
-    for (const unlock of outcome.unlocks) {
-      this.unlockBoost(unlock);
-    }
-
-    this.dragons.recalcNeeded = true;
-  }
-
-  /**
-   * Apply combat state changes from a fledge combat result.
-   */
-  private applyCombatStateChanges(stats: import('../types/game-data.js').CombatStats, opponents: OpponentInstance): void {
-    // State changes from combat are handled within dragonFledge -> opponentsAttack
-    // The npd.amount is already mutated by opponentsAttack
-    // We just need to apply recovery state if needed
-    if (stats.recoveryTime > 0) {
-      this.dragons.queen.overallState = 1; // Recovering
-      this.dragons.queen.countdown = stats.recoveryTime;
-    }
-    if (stats.result === 3 && this.dragons.queen.overallState !== 0) {
-      this.dragons.queen.overallState = 0; // Back to digging on easy victory
-    }
-  }
-
-  /**
-   * Generate and execute a RedundaKnight attack.
-   * Reference: dragons.js:1068-1101
-   *
-   * @param breathtype - Breath type to use in response
-   * @returns Combat outcome, or null if no dragons to attack
-   */
   handleRedundaKnightAttack(breathtype: number): CombatOutcome | null {
-    if (this.dragons.totalDragons === 0) return null;
-
-    const princessLevel = this.getBoostPower('Princesses');
-    const dragonflyLevel = this.getBoostPower('Dragonfly');
-
-    const knight = generateRedundaKnight(this.dragons, dragonflyLevel, princessLevel);
-    return this.runCombat(knight.target, knight, breathtype, 1);
+    return counterRedundaKnight(this.dragonAccess(), breathtype);
   }
 
-  /**
-   * Make dragons hide from opponents.
-   * Reference: dragons.js:1111-1117 (DragonsHide)
-   *
-   * @param opponentType - Type of opponent being hidden from
-   */
   dragonsHide(opponentType: number): void {
-    const camelflargeLevel = this.getBoostPower('Camelflarge');
-    const hideTime = calculateHideTime(
-      opponentType,
-      this.dragons.queen.Level,
-      camelflargeLevel,
-      this.dragons.hideMod
-    );
-
-    this.dragons.queen.overallState = 2; // Hiding
-    this.dragons.queen.countdown = hideTime;
+    hideDragons(this.dragonAccess(), opponentType);
   }
 
   // =============================================================================
