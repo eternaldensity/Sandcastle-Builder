@@ -191,7 +191,7 @@ We use a **hybrid approach** with strict verification at each step:
 
 ### Current Status
 - **454 tests** passing across 13 test files
-- **Vitest 3.0.0** - DO NOT upgrade to 4.x (has "No test suite found" bug)
+- **Vitest 3.2.x** - DO NOT upgrade to 4.x/5.x (has "No test suite found" bug); 3.2.7+ required (fixes critical RCE GHSA-9crc-q9x8-hgqq)
 - **TypeScript ESNext + Bundler** module resolution
 - **DOM types enabled** for Playwright browser testing
 
@@ -210,7 +210,7 @@ npm run typecheck 2>&1 | grep "error TS"   # List all TypeScript errors
 ```
 
 ### Known Issues
-- **Vitest 4.x incompatibility** - causes "No test suite found" error, stay on 3.0.0
+- **Vitest 4.x/5.x incompatibility** - causes "No test suite found" error, stay on 3.2.x
 - **Union type issues** - Map/Record unions in UnlockCheckState require type assertions in tests
 - **DOM globals** - `window` object requires DOM lib in tsconfig.json for Playwright code
 
