@@ -108,6 +108,7 @@ import {
   runPhoto,
   getPhoto,
   createInitialColorState,
+  buildPhotoBoostAccess,
   type PhotoColorState,
   type PhotoBoostAccess,
 } from './photo-system.js';
@@ -3897,32 +3898,20 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
-   * Build PhotoBoostAccess adapter for the photo system.
+   * Build PhotoBoostAccess adapter for the photo system (see photo-system.ts).
    */
   private buildPhotoBoostAccess(): PhotoBoostAccess {
-    return {
-      hasBoost: (name: string) => this.hasBoost(name),
-      isEnabled: (name: string) => this.isBoostEnabled(name),
-      getLevel: (name: string) => {
-        const b = this.boosts.get(name);
-        return b ? b.bought : 0;
-      },
-      getPower: (name: string) => {
-        const b = this.boosts.get(name);
-        return b ? b.power : 0;
-      },
-      setPower: (name: string, value: number) => {
-        const b = this.boosts.get(name);
-        if (b) b.power = value;
-      },
-      addPower: (name: string, amount: number) => {
-        const b = this.boosts.get(name);
-        if (b) b.power += amount;
-      },
-      unlockBoost: (name: string) => this.doUnlockBoost(name),
-      earnBadge: (name: string) => this.earnBadge(name),
-      papal: (decree: string) => this.papal(decree),
-    };
+    return buildPhotoBoostAccess({
+      hasBoost: (alias) => this.hasBoost(alias),
+      isBoostEnabled: (alias) => this.isBoostEnabled(alias),
+      getBoostBought: (alias) => this.boosts.get(alias)?.bought ?? 0,
+      getBoostPower: (alias) => this.getBoostPower(alias),
+      setBoostPower: (alias, value) => { const b = this.boosts.get(alias); if (b) b.power = value; },
+      addBoostPower: (alias, amount) => { const b = this.boosts.get(alias); if (b) b.power += amount; },
+      unlockBoost: (alias) => this.doUnlockBoost(alias),
+      earnBadge: (name) => this.earnBadge(name),
+      papal: (decree) => this.papal(decree),
+    });
   }
 
   /**

@@ -32,6 +32,40 @@ export interface PhotoBoostAccess {
 }
 
 /**
+ * Narrow engine surface needed to build a PhotoBoostAccess. The engine
+ * implements this with closures over its own boosts/resources so this
+ * module stays dependency-free (same pattern as blackprints.ts).
+ */
+export interface PhotoEngineAccess {
+  hasBoost(alias: string): boolean;
+  isBoostEnabled(alias: string): boolean;
+  getBoostBought(alias: string): number;
+  getBoostPower(alias: string): number;
+  setBoostPower(alias: string, value: number): void;
+  addBoostPower(alias: string, amount: number): void;
+  unlockBoost(alias: string): void;
+  earnBadge(name: string): void;
+  papal(decree: string): number;
+}
+
+/**
+ * Build the PhotoBoostAccess adapter from engine closures.
+ */
+export function buildPhotoBoostAccess(engine: PhotoEngineAccess): PhotoBoostAccess {
+  return {
+    hasBoost: (name) => engine.hasBoost(name),
+    isEnabled: (name) => engine.isBoostEnabled(name),
+    getLevel: (name) => engine.getBoostBought(name),
+    getPower: (name) => engine.getBoostPower(name),
+    setPower: (name, value) => engine.setBoostPower(name, value),
+    addPower: (name, amount) => engine.addBoostPower(name, amount),
+    unlockBoost: (name) => engine.unlockBoost(name),
+    earnBadge: (name) => engine.earnBadge(name),
+    papal: (decree) => engine.papal(decree),
+  };
+}
+
+/**
  * Run the full photo system for one mNP tick.
  * Reference: castle.js:3461-3470
  */
