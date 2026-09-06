@@ -18,6 +18,8 @@
  * - priceFunction: 1 boost
  */
 
+import { parsePriceValue } from './price-calculator.js';
+
 /**
  * Context passed to boost functions.
  * Provides access to engine state and methods without exposing internals.
@@ -256,17 +258,34 @@ boostFunctionRegistry['LockedCrate'] = {
   /**
    * lockFunction: Awards glass blocks based on various factors.
    * Reference: boosts.js:3783-3794
-   * Note: Simplified - full implementation needs Logicat multiplier
    */
   lockFunction: (ctx) => {
-    // Calculate win amount (simplified - would use LogiMult in full impl)
-    const basePrize = 2000; // Base value, LogiMult('2K') in legacy
+    // LogiMult('2K') = DeMolpify('2K') x Logicat bought
+    const basePrize = parsePriceValue('2K') * ctx.getBoostBought('Logicat');
     let win = Math.ceil(basePrize);
+    // Note: legacy also does this.CrateCount++ (display/save bookkeeping
+    // with no gameplay effect); the modern save codec does not round-trip
+    // it, so it is intentionally not tracked.
     win = Math.floor(win / (6 - ctx.boostBought));
+
+    // Make space: GlassBlocks capacity is bought x 50
+    const blBought = ctx.getBoostBought('GlassBlocks');
+    const blPower = ctx.getBoostPower('GlassBlocks');
+    if (blBought * 50 < blPower + win) {
+      ctx.setBoostBought('GlassBlocks', Math.ceil((blPower + win) / 50));
+    }
 
     // Award glass blocks
     ctx.addResource('glassBlocks', win);
     ctx.notify(`+${win} Glass Blocks!`);
+
+    // Camera owners discover something random
+    if (ctx.isBoostBought('Camera')) {
+      ctx.earnBadge('discov' + Math.ceil(ctx.getNewpixNumber() * Math.random()));
+    }
+
+    // Blackprints from previous purchases
+    ctx.setBoostPower('Blackprints', ctx.getBoostPower('Blackprints') + ctx.boostBought);
   },
 };
 

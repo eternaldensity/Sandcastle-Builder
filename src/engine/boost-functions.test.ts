@@ -14,6 +14,7 @@ import {
   hasBoostFunctions,
   getRegisteredBoosts,
 } from './boost-functions.js';
+import type { BoostFunctionContext } from './boost-functions.js';
 import { ModernEngine } from './modern-engine.js';
 import type { GameData, BoostGroup } from '../types/game-data.js';
 
@@ -73,6 +74,7 @@ const testGameData: GameData = {
     'WotT': createBoostDef(301, 'WotT', 'drac', { Sand: 1000 }),
     'MHP': createBoostDef(400, 'MHP', 'boosts', { Sand: 100 }, { department: true }),
     'LockedCrate': createBoostDef(500, 'LockedCrate', 'boosts', { Sand: 500, Castles: 500, GlassBlocks: 15 }),
+    'Logicat': createBoostDef(501, 'Logicat', 'boosts', {}),
     'TemporalRift': createBoostDef(600, 'TemporalRift', 'chron', {}, { startCountdown: 7 }),
   },
   boostsById: [] as any,
@@ -170,6 +172,83 @@ describe('Boost Function Registry', () => {
       expect(functions.unlockFunction).toBeDefined();
       expect(functions.lockFunction).toBeDefined();
       expect(functions.loadFunction).toBeDefined();
+    });
+  });
+
+  describe('LockedCrate lockFunction', () => {
+    function crateCtx(overrides: {
+      logicatBought?: number; crateBought?: number; glassBought?: number;
+      glassPower?: number; camera?: boolean; np?: number;
+    } = {}) {
+      const powers: Record<string, number> = { GlassBlocks: overrides.glassPower ?? 0, Blackprints: 0 };
+      const bought: Record<string, number> = {
+        Logicat: overrides.logicatBought ?? 1,
+        GlassBlocks: overrides.glassBought ?? 10,
+        Camera: overrides.camera ? 1 : 0,
+      };
+      const badges: string[] = [];
+      const resources: Record<string, number> = {};
+      const noop = () => undefined;
+      const ctx = {
+        boostAlias: 'LockedCrate', boostPower: 0, boostCountdown: 0,
+        boostBought: overrides.crateBought ?? 1,
+        getBeachClicks: () => 0,
+        getResource: () => 0,
+        getBoostPower: (a: string) => powers[a] ?? 0,
+        getBoostBought: (a: string) => bought[a] ?? 0,
+        isBoostEnabled: () => false,
+        isBoostBought: (a: string) => (bought[a] ?? 0) > 0,
+        isBadgeEarned: () => false,
+        getNewpixNumber: () => overrides.np ?? 100,
+        getBadgesOwned: () => 0,
+        setBoostPower: (a: string, v: number) => { powers[a] = v; },
+        setBoostCountdown: noop,
+        setBoostBought: (a: string, v: number) => { bought[a] = v; },
+        setBoostEnabled: noop,
+        addResource: (name: string, amount: number) => { resources[name] = (resources[name] ?? 0) + amount; },
+        subtractResource: noop,
+        lockBoost: noop,
+        unlockBoost: noop,
+        permalockBoost: noop,
+        buyBoost: noop,
+        recalculatePriceFactor: noop,
+        earnBadge: (name: string) => { badges.push(name); },
+        notify: noop,
+      } as unknown as BoostFunctionContext;
+      return { ctx, powers, bought, badges, resources };
+    }
+
+    it('scales the prize by Logicat bought (LogiMult)', () => {
+      const { ctx, resources } = crateCtx({ logicatBought: 2, crateBought: 1 });
+      boostFunctionRegistry['LockedCrate'].lockFunction!(ctx);
+      // ceil(2000 * 2) = 4000, floor(4000 / (6 - 1)) = 800
+      expect(resources['glassBlocks']).toBe(800);
+    });
+
+    it('awards nothing without Logicat', () => {
+      const { ctx, resources } = crateCtx({ logicatBought: 0 });
+      boostFunctionRegistry['LockedCrate'].lockFunction!(ctx);
+      expect(resources['glassBlocks'] ?? 0).toBe(0);
+    });
+
+    it('makes GlassBlocks space when over capacity', () => {
+      const { ctx, bought } = crateCtx({ glassBought: 1, glassPower: 40 });
+      boostFunctionRegistry['LockedCrate'].lockFunction!(ctx);
+      // win = floor(2000 / 5) = 400; capacity 50 < 440 -> bought = ceil(440 / 50) = 9
+      expect(bought['GlassBlocks']).toBe(9);
+    });
+
+    it('adds Blackprints equal to crate bought count', () => {
+      const { ctx, powers } = crateCtx({ crateBought: 3 });
+      boostFunctionRegistry['LockedCrate'].lockFunction!(ctx);
+      expect(powers['Blackprints']).toBe(3);
+    });
+
+    it('earns a random discovery with Camera', () => {
+      const { ctx, badges } = crateCtx({ camera: true, np: 100 });
+      boostFunctionRegistry['LockedCrate'].lockFunction!(ctx);
+      expect(badges.length).toBe(1);
+      expect(badges[0].startsWith('discov')).toBe(true);
     });
   });
 
@@ -330,15 +409,27 @@ describe('Boost Functions Integration', () => {
       expect(state.power).toBe(400);
     });
 
-    it('awards glass blocks on lock', async () => {
+    it('awards nothing on lock without Logicat', async () => {
       engine.forceResources({ glassBlocks: 0 });
       engine.forceBoostState('LockedCrate', { unlocked: 1, bought: 1, power: 100 });
 
       engine.lockBoost('LockedCrate');
 
       const snapshot = await engine.getStateSnapshot();
-      // Should have received some glass blocks (simplified formula in test)
-      expect(snapshot.glassBlocks).toBeGreaterThan(0);
+      // LogiMult('2K') with no Logicat owned pays nothing
+      expect(snapshot.glassBlocks).toBe(0);
+    });
+
+    it('awards glass blocks on lock with Logicat', async () => {
+      engine.forceResources({ glassBlocks: 0 });
+      engine.forceBoostState('LockedCrate', { unlocked: 1, bought: 1, power: 100 });
+      engine.forceBoostState('Logicat', { unlocked: 1, bought: 2, power: 0 });
+
+      engine.lockBoost('LockedCrate');
+
+      const snapshot = await engine.getStateSnapshot();
+      // ceil(2000 * 2) = 4000, floor(4000 / (6 - 1)) = 800
+      expect(snapshot.glassBlocks).toBe(800);
     });
   });
 

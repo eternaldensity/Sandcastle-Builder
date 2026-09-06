@@ -33,7 +33,7 @@ browser run, that assertion should be revisited and this table updated.
 |---|---|---|---|
 | G5 | Sand→castles | ~~`Fractal Sandcastles` ignored~~ — fixed: fractal branch + `Fractals Forever`/`Getting Expensive` badges, covered by `beach-click.test.ts` | `src/engine/beach-click.ts` |
 | G6 | Ninja Ritual | ~~Simplified grant~~ — fixed: CMNT×PR, Papal Goats, Zooman/Tortoise, worn-out branch, all threshold unlocks/badges; LA/Shutter branch still needs Maps/currentStory systems | `modern-engine.ts: ninjaRitual` |
-| G7 | Boost lock prize | Fixed 2000 base; legacy scales via `LogiMult` | `src/engine/boost-functions.ts` lockFunction |
+| G7 | Boost lock prize | ~~Fixed 2000~~ — fixed: `LogiMult('2K')` via Logicat count, GlassBlocks make-space, Camera discovery, Blackprints payout; `CrateCount` display bookkeeping intentionally untracked (not in save codec) | `src/engine/boost-functions.ts` lockFunction |
 | G8 | Sand Blaster cap | Always `totalBuilt/3`; legacy uses `/5` with certain boosts | `modern-engine.ts: giveBlastFurnaceReward` |
 | G9 | Castle spend totals | `castlesSpent` approximated from `bought` counts, no purchase history | `modern-engine.ts: buildBadgeCheckState` |
 | G10 | Shadow Feeder | Auto-assembly conditions simplified | `src/engine/auto-assembly.ts:201` |
