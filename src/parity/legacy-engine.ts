@@ -108,10 +108,20 @@ export class LegacyEngine implements GameEngine {
     this.server = server;
     this.serverPort = port;
 
-    // Launch headless Chromium
-    this.browser = await chromium.launch({
-      headless: true,
-    });
+    // Launch headless Chromium. A missing binary is handled by the
+    // suite-level skip (see browser-check.ts); anything else is a broken
+    // install (e.g. missing system libraries on Linux) worth a clear hint.
+    try {
+      this.browser = await chromium.launch({
+        headless: true,
+      });
+    } catch (error) {
+      throw new Error(
+        `Chromium launch failed: ${(error as Error).message}. ` +
+        'Run `npm run test:parity:install` to download the browser; ' +
+        'on Linux you may also need `npx playwright install-deps chromium` (requires sudo).',
+      );
+    }
 
     // Create a new browser context
     this.context = await this.browser.newContext();

@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:parity": "vitest run --reporter=verbose src/parity/",
+    "test:parity:install": "playwright install chromium",
     "build": "tsc",
     "typecheck": "tsc --noEmit"
   },

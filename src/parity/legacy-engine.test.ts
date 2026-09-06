@@ -3,9 +3,11 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { isChromiumAvailable } from './browser-check.js';
+const hasBrowser = isChromiumAvailable();
 import { LegacyEngine } from './legacy-engine.js';
 
-describe('LegacyEngine', () => {
+describe.skipIf(!hasBrowser)('LegacyEngine', () => {
   let engine: LegacyEngine;
 
   beforeAll(async () => {
@@ -74,7 +76,7 @@ describe('LegacyEngine', () => {
   });
 });
 
-describe('ParityRunner with LegacyEngine', () => {
+describe.skipIf(!hasBrowser)('ParityRunner with LegacyEngine', () => {
   let engine: LegacyEngine;
 
   beforeAll(async () => {

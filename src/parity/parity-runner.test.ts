@@ -3,6 +3,8 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { isChromiumAvailable } from './browser-check.js';
+const hasBrowser = isChromiumAvailable();
 import { LegacyEngine } from './legacy-engine.js';
 import { ParityTestRunner, FixtureBuilder, compareStates } from './parity-runner.js';
 import type { GameStateSnapshot } from './game-engine.js';
@@ -173,7 +175,7 @@ describe('FixtureBuilder', () => {
   });
 });
 
-describe('ParityTestRunner with Legacy Engine', () => {
+describe.skipIf(!hasBrowser)('ParityTestRunner with Legacy Engine', () => {
   let engine: LegacyEngine;
   let runner: ParityTestRunner;
 

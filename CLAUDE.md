@@ -28,6 +28,7 @@ npm run build         # Compile TypeScript to dist/
 npm test              # Run all tests (REQUIRED before committing)
 npm run test:watch    # Watch mode for test-driven development
 npm run test:parity   # Run parity tests with verbose output
+npm run test:parity:install  # Install Playwright Chromium (once per machine)
 ```
 
 ## Development Workflow
@@ -213,6 +214,10 @@ npm run typecheck 2>&1 | grep "error TS"   # List all TypeScript errors
 - **Vitest 4.x/5.x incompatibility** - causes "No test suite found" error, stay on 3.2.x
 - **Union type issues** - Map/Record unions in UnlockCheckState require type assertions in tests
 - **DOM globals** - `window` object requires DOM lib in tsconfig.json for Playwright code
+- **Missing browser binary** - browser parity suites skip cleanly when Chromium
+  isn't installed (`src/parity/browser-check.ts`); run `npm run test:parity:install`,
+  and on Linux `npx playwright install-deps chromium` (needs sudo).
+  `PARITY_NO_BROWSER=1` forces the skip.
 
 ## Open Issues
 

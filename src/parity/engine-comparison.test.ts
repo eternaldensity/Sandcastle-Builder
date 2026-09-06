@@ -12,6 +12,8 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
+import { isChromiumAvailable } from './browser-check.js';
+const hasBrowser = isChromiumAvailable();
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
@@ -41,7 +43,7 @@ async function runActions(
   return engine.getStateSnapshot();
 }
 
-describe('Engine Comparison', () => {
+describe.skipIf(!hasBrowser)('Engine Comparison', () => {
   let legacyEngine: LegacyEngine;
 
   beforeAll(async () => {

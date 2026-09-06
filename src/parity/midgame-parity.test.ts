@@ -14,6 +14,8 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { isChromiumAvailable } from './browser-check.js';
+const hasBrowser = isChromiumAvailable();
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
@@ -75,7 +77,7 @@ function countBoughtBoosts(snap: GameStateSnapshot): number {
   return count;
 }
 
-describe('Mid-Game Parity', () => {
+describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
   let legacyEngine: LegacyEngine;
 
   beforeAll(async () => {

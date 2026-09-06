@@ -241,6 +241,24 @@ class ParityTestRunner {
 - UI state (layout, visibility)
 - Display formatting
 
+## Browser Setup (Windows, WSL, Linux, CI)
+
+Browser-backed suites drive the legacy game through Playwright Chromium.
+The binary is platform-specific and is **not** checked in, so each machine
+provisions it once:
+
+```bash
+npm run test:parity:install   # downloads the Playwright Chromium build
+```
+
+- **Windows / macOS:** the install script is all you need.
+- **Linux:** the browser additionally needs system libraries:
+  `npx playwright install-deps chromium` (requires sudo). Without them,
+  suites fail at launch with an install hint rather than a cryptic error.
+- **Minimal environments (no browser, no sudo):** browser suites skip
+  cleanly via `src/parity/browser-check.ts`, so `npm test` stays green.
+  Set `PARITY_NO_BROWSER=1` to force the skip even when a binary exists.
+
 ## Continuous Integration
 
 ```yaml
@@ -257,6 +275,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install browser and system deps
+        run: |
+          npx playwright install chromium
+          npx playwright install-deps chromium
 
       - name: Run parity tests
         run: npm run test:parity
