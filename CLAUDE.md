@@ -15,6 +15,7 @@ This is a modernization project for Sandcastle Builder, an incremental game base
 │       ├── game-engine.ts     # GameEngine interface
 │       ├── legacy-engine.ts   # Playwright wrapper for legacy game
 │       └── parity-runner.ts   # Test runner with state comparison
+│   └── ui/                # View models (phase 1; see docs/architecture/ui-track-scope.md)
 ├── docs/
 │   ├── architecture/      # Design documents
 │   └── wiki/              # Scraped game wiki (19 pages)
