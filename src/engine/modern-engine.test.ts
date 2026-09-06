@@ -1214,6 +1214,40 @@ describe('ModernEngine', () => {
     });
   });
 
+  describe('ninja ritual formula', () => {
+    it('grants goats with CMNT x PR multiplier', async () => {
+      (engine as any).boosts.set('Ninja Ritual', { unlocked: 1, bought: 1, power: 30 });
+      (engine as any).boosts.set('Goats', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('CMNT', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('PR', { unlocked: 1, bought: 1, power: 10 });
+
+      await (engine as any).ninjaRitual();
+
+      // floor((1 + 30 * 10 / 5) * papal) = 61
+      expect((engine as any).boosts.get('Goats').power).toBe(61);
+    });
+
+    it('starts level jumps at x20 with Zooman', async () => {
+      (engine as any).boosts.set('Ninja Ritual', { unlocked: 1, bought: 1, power: 30 });
+      (engine as any).boosts.set('Goats', { unlocked: 1, bought: 1, power: 0 });
+      (engine as any).boosts.set('Zooman', { unlocked: 1, bought: 1, power: 0 });
+
+      await (engine as any).ninjaRitual();
+
+      // 30 + 20 = 50, then Zooman bonus 200 + floor(50/10000)
+      expect((engine as any).boosts.get('Ninja Ritual').power).toBe(250);
+    });
+
+    it('earns threshold badges at high ritual levels', async () => {
+      (engine as any).boosts.set('Ninja Ritual', { unlocked: 1, bought: 1, power: 2000000 });
+      (engine as any).boosts.set('Goats', { unlocked: 1, bought: 1, power: 0 });
+
+      await (engine as any).ninjaRitual();
+
+      expect((engine as any).badges.get('Mega Ritual')).toBe(true);
+    });
+  });
+
   describe('ONG transition enhancements', () => {
     it('resets Lightning Rod power by 5% at ONG', async () => {
       (engine as any).boosts.set('LR', { unlocked: 1, bought: 1, power: 1000 });

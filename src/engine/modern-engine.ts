@@ -2548,20 +2548,49 @@ export class ModernEngine implements GameEngine {
     if (!goats) return;
 
     const oldLevel = ninjaRitual.power;
+    const cmntMult = this.hasBoost('CMNT') ? this.getBoostPower('PR') : 1;
+    const papalGoats = this.papal('Goats');
 
-    // Grant goats (simplified - full formula has many multipliers)
-    goats.power += Math.floor(1 + oldLevel / 5);
+    if (this.badges.get('The Ritual is worn out') === true) {
+      goats.power += Math.floor((1e298 * cmntMult / 5) * papalGoats);
+      ninjaRitual.power = 1e298;
+    } else {
+      // Grant goats (CMNT×PR multiplier, Papal Goats)
+      goats.power += Math.floor((1 + oldLevel * cmntMult / 5) * papalGoats);
 
-    // Level up with exponential jumps
-    let mult = 1;
-    while (ninjaRitual.power <= oldLevel) {
-      ninjaRitual.power += mult;
-      mult *= 10;
+      // Level up with exponential jumps (Zooman starts at ×20)
+      let mult = this.hasBoost('Zooman') ? 20 : 1;
+      while (ninjaRitual.power <= oldLevel) {
+        ninjaRitual.power += mult;
+        mult *= 10;
+      }
+      if (this.hasBoost('Zooman')) {
+        ninjaRitual.power += mult + Math.floor(ninjaRitual.power / 10000);
+      }
+      if (this.hasBoost('Mutant Tortoise')) {
+        ninjaRitual.power = Math.floor(ninjaRitual.power * 1.005);
+      }
     }
 
-    // Badge thresholds
-    if (ninjaRitual.power > 1000000) this.earnBadge('Mega Ritual');
-    if (ninjaRitual.power > 1e12) this.earnBadge('Tera Ritual');
+    // Note: the LA/Shutter branch (castle.js) needs Maps/currentStory
+    // systems, which the headless engine does not model yet.
+
+    // Threshold unlocks/badges
+    const lvl = ninjaRitual.power;
+    const timeLordInfinite = !isFinite(this.getBoostPower('Time Lord'));
+    if (lvl > 777 && timeLordInfinite && this.hasBoost('Shadow Feeder') &&
+        !this.isBoostEnabled('Mario')) {
+      this.doUnlockBoost('Shadow Ninja');
+    }
+    if (lvl > 77777) this.doUnlockBoost('Zooman');
+    if (lvl > 1000000) this.earnBadge('Mega Ritual');
+    if (lvl > 77777777) this.doUnlockBoost('Mutant Tortoise');
+    if (lvl > 1e12) this.earnBadge('Tera Ritual');
+    if (lvl > 1e18) this.earnBadge('Had Enough Ritual?');
+    if (lvl > 777e21) this.doUnlockBoost('CMNT');
+    if (lvl > 365e24) this.earnBadge('Yearly Ritual');
+    if (lvl > 1e84) this.earnBadge('Wololololo Ritual');
+    if (lvl > 1e298) this.earnBadge('The Ritual is worn out');
   }
 
   /**

@@ -397,8 +397,9 @@ boostFunctionRegistry['Ninja Ritual'] = {
    */
   buyFunction: (ctx) => {
     // In legacy: if (Molpy.Earned('The Ritual is worn out')) this.Level = 1e298
-    // We check for the badge and set power accordingly
-    // Note: Would need badge check here in full implementation
+    if (ctx.isBadgeEarned('The Ritual is worn out')) {
+      ctx.setBoostPower('Ninja Ritual', 1e298);
+    }
   },
 };
 
