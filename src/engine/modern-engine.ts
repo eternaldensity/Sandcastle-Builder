@@ -91,6 +91,16 @@ import {
   type BeachClickAccess,
 } from './beach-click.js';
 import {
+  canAffordShopPrice,
+  isBoostAffordable,
+  getBoostShopPrice,
+  buyShopBoost,
+  toggleShopBoost,
+  lockShopBoost,
+  permalockShopBoost,
+  type BoostShopAccess,
+} from './boost-shop.js';
+import {
   createInitialMontyHaulState,
   montyStartRound,
   montyPickDoor,
@@ -3826,105 +3836,54 @@ export class ModernEngine implements GameEngine {
   }
 
   /**
-   * Check if a boost is affordable at its current price.
-   * Reference: castle.js:1522-1528 (Boost.isAffordable)
-   *
-   * @param alias - Boost alias to check
-   * @returns True if the boost can be purchased
+   * Build the adapter the boost shop needs (see boost-shop.ts).
+   * The resource ledger (hasResource/subtractResource/...) stays here:
+   * it is shared kernel used by tick, vacuum, flux, and ONG systems.
    */
+  private shopAccess(): BoostShopAccess {
+    return {
+      ensureInitialized: () => this.ensureInitialized(),
+      getBoost: (alias) => this.boosts.get(alias),
+      getBoostDef: (alias) => this.gameData.boosts[alias],
+      getPriceFactor: () => this.priceFactor,
+      hasResource: (resource, amount) => this.hasResource(resource, amount),
+      spendShopPrice: (price) => this.spendPrice(price),
+      checkAutoUnlocks: () => this.checkAutoUnlocks(),
+      runBuyFunction: (alias) => {
+        const functions = getBoostFunctions(alias);
+        if (functions?.buyFunction) {
+          functions.buyFunction(this.createBoostFunctionContext(alias));
+        }
+      },
+      runLockFunction: (alias) => {
+        const functions = getBoostFunctions(alias);
+        if (functions?.lockFunction) {
+          functions.lockFunction(this.createBoostFunctionContext(alias));
+        }
+      },
+      recalculateAfterPurchase: () => {
+        this.recalculatePriceFactor();
+        this.recalculateSandPerClick();
+        this.recalculateSandRates();
+        this.recalculateCastleRates();
+      },
+      recalculateAfterLock: () => {
+        this.recalculatePriceFactor();
+        this.recalculateSandPerClick();
+      },
+    };
+  }
+
   async isBoostAffordable(alias: string): Promise<boolean> {
-    this.ensureInitialized();
-
-    const state = this.boosts.get(alias);
-    const def = this.gameData.boosts[alias];
-
-    if (!state || !def) return false;
-
-    // Must be unlocked but not yet bought
-    if (state.unlocked <= state.bought) return false;
-
-    // Calculate price with priceFactor applied
-    const realPrice = calculateBoostPrice(def.price, this.priceFactor);
-
-    // Free boosts are always affordable
-    if (isPriceFree(realPrice)) return true;
-
-    // Check if we can afford the price
-    return this.canAffordPrice(realPrice);
+    return isBoostAffordable(this.shopAccess(), alias);
   }
 
-  /**
-   * Get the calculated price for a boost (after priceFactor).
-   * Reference: castle.js:1531-1542 (Boost.CalcPrice)
-   *
-   * @param alias - Boost alias
-   * @returns Calculated price object, or empty if boost not found
-   */
   getBoostPrice(alias: string): Record<string, number> {
-    const def = this.gameData.boosts[alias];
-    if (!def) return {};
-
-    return calculateBoostPrice(def.price, this.priceFactor);
+    return getBoostShopPrice(this.shopAccess(), alias);
   }
 
-  /**
-   * Buy/unlock a boost.
-   * Applies priceFactor to boost price and checks affordability.
-   * Reference: castle.js:1499-1520 (Boost.buy)
-   */
   async buyBoost(alias: string): Promise<void> {
-    this.ensureInitialized();
-
-    const state = this.boosts.get(alias);
-    if (!state) return;
-
-    const def = this.gameData.boosts[alias];
-    if (!def) return;
-
-    // Check if unlocked but not bought
-    if (state.unlocked > state.bought) {
-      // Calculate price with priceFactor applied
-      const realPrice = calculateBoostPrice(def.price, this.priceFactor);
-      const isFree = isPriceFree(realPrice);
-
-      // Check if we can afford it
-      if (!isFree && !this.canAffordPrice(realPrice)) {
-        return; // Can't afford
-      }
-
-      // Spend the resources
-      if (!isFree) {
-        this.spendPrice(realPrice);
-      }
-
-      state.bought++;
-      this.checkAutoUnlocks();
-
-      // Call boost's buyFunction if registered
-      const functions = getBoostFunctions(alias);
-      if (functions?.buyFunction) {
-        functions.buyFunction(this.createBoostFunctionContext(alias));
-      }
-
-      // Recalculate rates after boost purchase
-      this.recalculatePriceFactor();
-      this.recalculateSandPerClick();
-      this.recalculateSandRates();
-      this.recalculateCastleRates();
-    }
-  }
-
-  /**
-   * Check if player can afford a price.
-   * Reference: castle.js:1284-1293 (Molpy.Has with object)
-   */
-  private canAffordPrice(price: Record<string, number>): boolean {
-    for (const [resource, amount] of Object.entries(price)) {
-      if (!this.hasResource(resource, amount)) {
-        return false;
-      }
-    }
-    return true;
+    return buyShopBoost(this.shopAccess(), alias);
   }
 
   /**
@@ -4044,60 +4003,16 @@ export class ModernEngine implements GameEngine {
     return true;
   }
 
-  /**
-   * Toggle a boost on/off.
-   */
   async toggleBoost(alias: string): Promise<void> {
-    this.ensureInitialized();
-
-    const state = this.boosts.get(alias);
-    const def = this.gameData.boosts[alias];
-
-    if (!state || !def || !def.isToggle) return;
-
-    // Toggle isEnabled state
-    state.isEnabled = !state.isEnabled;
+    return toggleShopBoost(this.shopAccess(), alias);
   }
 
-  /**
-   * Lock a boost (reset bought and unlocked to 0).
-   * Calls the boost's lockFunction if registered.
-   * Reference: castle.js Molpy.LockBoost
-   */
   lockBoost(alias: string): void {
-    this.ensureInitialized();
-
-    const state = this.boosts.get(alias);
-    if (!state) return;
-
-    // Skip if already locked (prevents infinite recursion in cascade systems)
-    if (state.unlocked === 0 && state.bought === 0) return;
-
-    // Call boost's lockFunction before resetting state
-    const functions = getBoostFunctions(alias);
-    if (functions?.lockFunction) {
-      functions.lockFunction(this.createBoostFunctionContext(alias));
-    }
-
-    // Reset the boost state
-    state.bought = 0;
-    state.unlocked = 0;
-
-    // Recalculate rates after lock
-    this.recalculatePriceFactor();
-    this.recalculateSandPerClick();
+    return lockShopBoost(this.shopAccess(), alias);
   }
 
-  /**
-   * Permalock a boost (prevents it from being unlocked again).
-   */
   permalockBoost(alias: string): void {
-    this.ensureInitialized();
-
-    const state = this.boosts.get(alias);
-    if (state) {
-      state.permalock = true;
-    }
+    return permalockShopBoost(this.shopAccess(), alias);
   }
 
   // ===========================================================================
