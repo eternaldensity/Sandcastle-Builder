@@ -1280,6 +1280,26 @@ describe('ModernEngine', () => {
     });
   });
 
+  describe('castle spend totals', () => {
+    it('tracks cumulative castles spent on tool purchases', async () => {
+      engine.forceResources({ castles: 100000 });
+      expect((engine as any).totalCastlesSpent).toBe(0);
+
+      await engine.buyTool('castle', 'NewPixBot');
+
+      expect((engine as any).totalCastlesSpent).toBeGreaterThan(0);
+    });
+
+    it('earns Big Spender past the 2e8 threshold', async () => {
+      engine.forceResources({ castles: 100000 });
+      (engine as any).totalCastlesSpent = 300000000;
+
+      await engine.buyTool('castle', 'NewPixBot');
+
+      expect((engine as any).badges.get('Big Spender')).toBe(true);
+    });
+  });
+
   describe('ONG transition enhancements', () => {
     it('resets Lightning Rod power by 5% at ONG', async () => {
       (engine as any).boosts.set('LR', { unlocked: 1, bought: 1, power: 1000 });

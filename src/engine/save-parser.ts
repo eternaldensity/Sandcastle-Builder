@@ -135,17 +135,23 @@ export function parseGamenums(
     state.redacted!.chainMax = parseFloat(pixels[14]) || 0;
     state.lootPerPage = parseInt(pixels[15]) || 20;
 
-    // Version 4.1+ has time field
+    // Version 4.1+ inserts gameTime at pixels[16], but saves written
+    // without it (including older modern saves) omit the field. A dayjs
+    // timestamp is ~1e12+ and largestNP never is, so detect structurally:
+    // without this, every trailing field shifts by one (previously masked
+    // because the largestNP fallback papered over the shift).
     let offset = 0;
     if (version >= 4.1) {
-      // pixels[16] is time (dayjs timestamp), skip it for now
-      offset = 1;
+      // pixels[16] is time (dayjs timestamp) when present
+      offset = parseFloat(pixels[16]) > 1e12 ? 1 : 0;
     }
 
     state.largestNPvisited![0] =
       parseInt(pixels[16 + offset]) ||
       parseFloat(pixels[16 + offset]) ||
       Math.abs(np);
+    // Cumulative castles spent (trailing field; absent in older saves)
+    state.castlesSpentTotal = parseFloat(pixels[17 + offset]) || 0;
     // Additional fracParts would be parsed here if needed
   } else if (version >= 3.3332) {
     // Older v3.3332-3.7 format
@@ -482,6 +488,7 @@ export class SaveParser {
       notifsReceived: gamenums.notifsReceived || 0,
       npbONG: gamenums.npbONG || 0,
       lootPerPage: gamenums.lootPerPage || 20,
+      castlesSpentTotal: gamenums.castlesSpentTotal || 0,
       largestNPvisited: gamenums.largestNPvisited || { 0: 1 },
       redacted: gamenums.redacted || {
         countup: 0,

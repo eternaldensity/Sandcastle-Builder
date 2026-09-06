@@ -335,6 +335,13 @@ export class ModernEngine implements GameEngine {
   };
 
   // Castle building state (Fibonacci sequence for sand cost)
+  /**
+   * Cumulative castles spent through the economy (tool/boost purchases,
+   * time travel). Matches legacy Castles.spent; feeds Big Spender badges.
+   * Wiped on Molpy Down like the rest of the economy.
+   */
+  private totalCastlesSpent = 0;
+
   private castleBuild: CastleBuildState = {
     prevCastleSand: 0,
     nextCastleSand: 1,
@@ -704,6 +711,9 @@ export class ModernEngine implements GameEngine {
     // Load ONG state
     this.ong.npbONG = (state.npbONG ?? 0) as 0 | 1;
 
+    // Load cumulative spend totals
+    this.totalCastlesSpent = state.castlesSpentTotal ?? 0;
+
     // Load redundakitty state
     if (state.redacted) {
       this.redundakitty.totalClicks = state.redacted.totalClicks ?? 0;
@@ -837,6 +847,7 @@ export class ModernEngine implements GameEngine {
       notifsReceived: 0,
       npbONG: this.ong.npbONG,
       lootPerPage: 20,
+      castlesSpentTotal: this.totalCastlesSpent,
       largestNPvisited: { 0: this.core.highestNPvisited },
       redacted: {
         countup: 0,
@@ -3014,17 +3025,8 @@ export class ModernEngine implements GameEngine {
       toolAmounts[name] = state.amount;
     }
 
-    // Calculate castles spent (total bought - current owned)
-    let castlesSpent = 0;
-    for (const [, state] of this.sandTools) {
-      // Sand tools typically cost sand, not castles
-      // This is a simplified calculation
-    }
-    for (const [, state] of this.castleTools) {
-      // Castle tools cost castles
-      // Need to calculate based on purchase history
-      castlesSpent += state.bought; // Simplified
-    }
+    // Cumulative castles spent through the economy (legacy Castles.spent)
+    const castlesSpent = this.totalCastlesSpent;
 
     // Count boosts owned
     let boostsOwned = 0;
@@ -3310,6 +3312,7 @@ export class ModernEngine implements GameEngine {
       this.resources.glassChips -= chipCost;
     } else {
       this.resources.castles -= castleCost;
+      this.totalCastlesSpent += castleCost;
     }
 
     // Unlock PG (Philosopher's Gloves) if returning to highest NP with 24+ prey
@@ -3800,6 +3803,7 @@ export class ModernEngine implements GameEngine {
       }
     } else if (this.resources.castles >= price) {
       this.resources.castles -= price;
+      this.totalCastlesSpent += price;
       state.amount++;
       state.bought++;
       this.syncResourceBoosts();
@@ -3859,6 +3863,7 @@ export class ModernEngine implements GameEngine {
       }
     } else if (this.resources.castles >= price) {
       this.resources.castles -= price;
+      this.totalCastlesSpent += price;
       state.amount++;
       state.bought++;
 
@@ -3973,6 +3978,7 @@ export class ModernEngine implements GameEngine {
         return;
       case 'Castles':
         this.resources.castles -= amount;
+        this.totalCastlesSpent += amount;
         return;
       case 'GlassChips':
         this.resources.glassChips -= amount;
@@ -4521,6 +4527,9 @@ export class ModernEngine implements GameEngine {
     this.castleBuild.prevCastleSand = 0;
     this.castleBuild.nextCastleSand = 1;
     this.castleBuild.totalBuilt = 0;
+
+    // Reset cumulative spend totals (legacy resets Castles.spent)
+    this.totalCastlesSpent = 0;
 
     // Reset ninja state
     this.core.ninjaFreeCount = 0;

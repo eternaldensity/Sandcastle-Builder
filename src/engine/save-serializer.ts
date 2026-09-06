@@ -72,6 +72,8 @@ export interface CoreGameState {
   };
   /** Optional game time (dayjs timestamp) for v4.1+ */
   gameTime?: number;
+  /** Cumulative castles spent (appended after largestNPvisited) */
+  castlesSpentTotal?: number;
 }
 
 /**
@@ -79,7 +81,7 @@ export interface CoreGameState {
  * Reference: persist.js Molpy.GamenumsToString (v3.7+ format)
  *
  * Format: newpix;clicks;nfCount;nStealth;ninjad;saves;loads;notifs;npbONG;
- *         redacted(countup;toggle;loc;clicks;chain;chainMax);lootPerPage;time;largestNP[0];...fracParts
+ *         redacted(countup;toggle;loc;clicks;chain;chainMax);lootPerPage;time;largestNP[0];spent;...fracParts
  */
 export function gamenumsToString(state: CoreGameState): string {
   const s = SEMICOLON;
@@ -110,6 +112,9 @@ export function gamenumsToString(state: CoreGameState): string {
 
   // largestNPvisited[0]
   str += (state.largestNPvisited?.[0] ?? Math.abs(state.newpixNumber)) + s;
+
+  // Cumulative castles spent (trailing: old saves without it read as 0)
+  str += (state.castlesSpentTotal ?? 0) + s;
 
   // Additional fracParts would be added here for multi-story support
   // For now, we support the main story only

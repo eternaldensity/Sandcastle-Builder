@@ -35,7 +35,7 @@ browser run, that assertion should be revisited and this table updated.
 | G6 | Ninja Ritual | ~~Simplified grant~~ — fixed: CMNT×PR, Papal Goats, Zooman/Tortoise, worn-out branch, all threshold unlocks/badges; LA/Shutter branch still needs Maps/currentStory systems | `modern-engine.ts: ninjaRitual` |
 | G7 | Boost lock prize | ~~Fixed 2000~~ — fixed: `LogiMult('2K')` via Logicat count, GlassBlocks make-space, Camera discovery, Blackprints payout; `CrateCount` display bookkeeping intentionally untracked (not in save codec) | `src/engine/boost-functions.ts` lockFunction |
 | G8 | Sand Blaster cap | ~~Always `/3`~~ — fixed: Papal Fractal scaling, Blitzing/BKJ factor + `/5` cap; Furnace Crossfeed/Multitasking early branches still open (need Sand Refinery/Glass Chiller systems) | `modern-engine.ts: giveBlastFurnaceReward` |
-| G9 | Castle spend totals | `castlesSpent` approximated from `bought` counts, no purchase history | `modern-engine.ts: buildBadgeCheckState` |
+| G9 | Castle spend totals | ~~Approximated~~ — fixed: running `Castles.spent` counter at every Spend-equivalent (tool/boost/time-travel purchases), persisted in saves, Big Spender badges read it; also fixed a latent gamenums off-by-one (parser assumed v4.1+ `gameTime` the writer never emits — now detected structurally) | `modern-engine.ts: totalCastlesSpent` |
 | G10 | Shadow Feeder | Auto-assembly conditions simplified | `src/engine/auto-assembly.ts:201` |
 | G11 | Save parser | `NextLegalNP` fractional-NP logic simplified to increment | `src/engine/save-parser.ts:372` |
 

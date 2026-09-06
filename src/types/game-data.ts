@@ -390,6 +390,9 @@ export interface GameState {
   /** Save count */
   saveCount: number;
 
+  /** Cumulative castles spent through the economy (Big Spender badges) */
+  castlesSpentTotal: number;
+
   /** Load count */
   loadCount: number;
 

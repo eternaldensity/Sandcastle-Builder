@@ -76,6 +76,7 @@ describe('SaveSerializer', () => {
         npbONG: 1,
         lootPerPage: 30,
         largestNPvisited: { 0: 42 },
+        castlesSpentTotal: 123456,
         redacted: {
           countup: 0,
           toggle: 0,
@@ -97,6 +98,7 @@ describe('SaveSerializer', () => {
       expect(parsed.saveCount).toBe(10);
       expect(parsed.loadCount).toBe(5);
       expect(parsed.lootPerPage).toBe(30);
+      expect(parsed.castlesSpentTotal).toBe(123456);
       expect(parsed.redacted?.totalClicks).toBe(25);
       expect(parsed.redacted?.chainCurrent).toBe(5);
       expect(parsed.redacted?.chainMax).toBe(10);
