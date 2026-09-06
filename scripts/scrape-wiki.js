@@ -4,7 +4,7 @@
  *
  * Usage: node scripts/scrape-wiki.js
  *
- * Dependencies: npm install node-fetch cheerio
+ * Dependencies: npm install cheerio (fetch uses the Node 18+ global)
  */
 
 const fs = require('fs').promises;
@@ -61,7 +61,6 @@ const KNOWN_BADGES = new Set();
  * Fetch a wiki page and return HTML
  */
 async function fetchPage(pageUrl) {
-    const fetch = (await import('node-fetch')).default;
     const url = `${WIKI_BASE}/${pageUrl}`;
     console.log(`Fetching: ${url}`);
 
