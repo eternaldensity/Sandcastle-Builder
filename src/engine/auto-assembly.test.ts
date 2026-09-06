@@ -3,6 +3,7 @@ import {
   calculateAAConsumption,
   runFastFactory,
   calculateZooKeep,
+  calculatePokeBar,
   type AAConsumptionState,
   type FastFactoryState,
 } from './auto-assembly.js';
@@ -196,8 +197,21 @@ describe('runFastFactory', () => {
       logiPuzzleBought: false,
       logiPuzzleLevel: 0,
       pokeBarThreshold: 0,
-      shadowFeederActive: false,
-      codaActive: false,
+      shadowFeederBought: false,
+      shadowFeederEnabled: false,
+      shadowFeederPower: 0,
+      logiPuzzlePower: 0,
+      shadwDrgnBought: false,
+      bonemealPower: 0,
+      banananasEnabled: false,
+      cagedActive: false,
+      cagedPuzzles: 0,
+      shadowNinjaBought: false,
+      ninjaRitualLevel: 0,
+      ritualWornOut: false,
+      castlesInfinite: false,
+      codaBought: false,
+      codaEnabled: false,
       ...overrides,
     };
   }
@@ -380,20 +394,83 @@ describe('runFastFactory', () => {
     expect(result.zooVisits).toBe(0);
   });
 
-  it('zoo keep skipped when shadowFeederActive', () => {
-    const result = runFastFactory(200, makeState({
+  function feederState() {
+    return makeState({
       zkBought: true,
       redactedTotalClicks: 5000,
       logicatBought: 5,
       logiPuzzleBought: true,
       logiPuzzleLevel: 10,
       pokeBarThreshold: 5,
-      shadowFeederActive: true,
-    }), fixedRng);
+      shadowFeederBought: true,
+      shadowFeederEnabled: true,
+      shadowFeederPower: 0,
+      logiPuzzlePower: 150,
+      shadwDrgnBought: true,
+      bonemealPower: 10,
+    });
+  }
+
+  it('shadow feeder strikes instead of zoo keep', () => {
+    const result = runFastFactory(200, feederState(), fixedRng);
+    expect(result.shadowStrike).toBe(true);
+    expect(result.shadowFeederGain).toBe(1);
+    expect(result.bonemealSpent).toBe(5);
     expect(result.zooVisits).toBe(0);
   });
 
-  it('zoo keep skipped when codaActive', () => {
+  it('shadow feeder blocked when its power reaches PokeBar', () => {
+    const result = runFastFactory(200, feederState(), fixedRng);
+    // sanity: base case strikes
+    expect(result.shadowStrike).toBe(true);
+    const blocked = runFastFactory(200, {
+      ...feederState(),
+      shadowFeederPower: 5,
+    }, fixedRng);
+    expect(blocked.shadowStrike).toBe(false);
+    expect(blocked.zooVisits).toBeGreaterThanOrEqual(0);
+  });
+
+  it('shadow feeder blocked without 100 LogiPuzzle power', () => {
+    const result = runFastFactory(200, {
+      ...feederState(),
+      logiPuzzlePower: 50,
+    }, fixedRng);
+    expect(result.shadowStrike).toBe(false);
+  });
+
+  it('caged sync branch with Bananananas active and behind', () => {
+    const result = runFastFactory(200, {
+      ...feederState(),
+      banananasEnabled: true,
+      cagedActive: true,
+      cagedPuzzles: 3,
+    }, fixedRng);
+    expect(result.cagedSyncPuzzles).toBe(true);
+    expect(result.shadowStrike).toBe(false);
+  });
+
+  it('caged generate branch prices via LogiMult', () => {
+    const result = runFastFactory(200, {
+      ...feederState(),
+      banananasEnabled: true,
+      cagedActive: false,
+    }, fixedRng);
+    // puz = floor((10 - 1) / 10) * 10 = 0
+    expect(result.cagedGeneratePuz).toBe(0);
+    expect(result.cagedGenerateCost).toBe(0);
+    const rich = runFastFactory(200, {
+      ...feederState(),
+      banananasEnabled: true,
+      cagedActive: false,
+      logiPuzzleLevel: 25,
+    }, fixedRng);
+    // puz = floor(24 / 10) * 10 = 20; cost = (100 + 25 * 5) * 20
+    expect(rich.cagedGeneratePuz).toBe(20);
+    expect(rich.cagedGenerateCost).toBe((100 + 25 * 5) * 20);
+  });
+
+  it('coda path strikes, runs zoo keep, and spends 1WW bonemeal', () => {
     const result = runFastFactory(200, makeState({
       zkBought: true,
       redactedTotalClicks: 5000,
@@ -401,9 +478,24 @@ describe('runFastFactory', () => {
       logiPuzzleBought: true,
       logiPuzzleLevel: 10,
       pokeBarThreshold: 5,
-      codaActive: true,
+      codaBought: true,
+      codaEnabled: true,
+      shadowFeederEnabled: false,
+      castlesInfinite: true,
+      bonemealPower: 1e84,
+      ritualWornOut: true,
     }), fixedRng);
-    expect(result.zooVisits).toBe(0);
+    expect(result.shadowStrike).toBe(true);
+    expect(result.runZooKeep).toBe(true);
+    expect(result.bonemealSpent).toBe(1e84);
+    expect(result.ninjaRitualTrigger).toBe(true);
+  });
+
+  it('calculatePokeBar matches the legacy formula', () => {
+    // floor(4 + PR * (1 + CDSP) * max(1, log(AC) - 10)) with CDSP > 0
+    expect(calculatePokeBar(2, 3, 100000)).toBe(Math.floor(4 + 2 * 4 * Math.max(1, Math.log(100000) - 10, 1)));
+    // CDSP 0 collapses the last factor to 1
+    expect(calculatePokeBar(2, 0, 100000)).toBe(Math.floor(4 + 2 * 1 * 1));
   });
 });
 

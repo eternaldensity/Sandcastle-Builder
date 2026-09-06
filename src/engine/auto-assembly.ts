@@ -11,6 +11,7 @@
  */
 
 import { TF_ORDER } from './tool-factory.js';
+import { parsePriceValue } from './price-calculator.js';
 
 // =============================================================================
 // AA Tool Consumption (boosts.js:5266-5313)
@@ -198,11 +199,50 @@ export interface FastFactoryState {
   /** PokeBar threshold for zoo keep */
   pokeBarThreshold: number;
 
-  /** Whether Shadow Feeder boost conditions are met (complex, simplified) */
-  shadowFeederActive: boolean;
+  /** Whether Shadow Feeder boost is bought */
+  shadowFeederBought: boolean;
 
-  /** Whether coda boost conditions are met */
-  codaActive: boolean;
+  /** Whether Shadow Feeder boost is enabled */
+  shadowFeederEnabled: boolean;
+
+  /** Shadow Feeder power (must be below PokeBar to feed) */
+  shadowFeederPower: number;
+
+  /** LogiPuzzle power (needs 100 for the feeder) */
+  logiPuzzlePower: number;
+
+  /** Whether ShadwDrgn boost is bought */
+  shadwDrgnBought: boolean;
+
+  /** Bonemeal power (feeder spends 5, coda spends 1WW) */
+  bonemealPower: number;
+
+  /** Whether Bananananas boost is enabled (caged-puzzle branches) */
+  banananasEnabled: boolean;
+
+  /** Whether the caged puzzle generator is active */
+  cagedActive: boolean;
+
+  /** Caged puzzle count */
+  cagedPuzzles: number;
+
+  /** Whether Shadow Ninja boost is bought (ritual trigger) */
+  shadowNinjaBought: boolean;
+
+  /** Ninja Ritual level (ritual trigger needs > 777) */
+  ninjaRitualLevel: number;
+
+  /** Whether the worn-out ritual badge is earned (coda trigger) */
+  ritualWornOut: boolean;
+
+  /** Whether castles are infinite (coda path) */
+  castlesInfinite: boolean;
+
+  /** Whether coda boost is bought */
+  codaBought: boolean;
+
+  /** Whether coda boost is enabled */
+  codaEnabled: boolean;
 }
 
 /**
@@ -235,6 +275,30 @@ export interface FastFactoryResult {
 
   /** Number of zoo visits (Panther Poke triggers) */
   zooVisits: number;
+
+  /** ShadowStrike(1) happened (feeder and coda paths) */
+  shadowStrike: boolean;
+
+  /** Shadow Feeder power gained */
+  shadowFeederGain: number;
+
+  /** Bonemeal spent (5 feeder, 1WW coda) */
+  bonemealSpent: number;
+
+  /** The engine should call NinjaRitual() after applying */
+  ninjaRitualTrigger: boolean;
+
+  /** Sync caged puzzles to LogiPuzzle level (Bananananas branch) */
+  cagedSyncPuzzles: boolean;
+
+  /** Caged puzzles to generate, 0 for none (engine spends cagedGenerateCost if affordable) */
+  cagedGeneratePuz: number;
+
+  /** GlassBlocks cost of the caged generation */
+  cagedGenerateCost: number;
+
+  /** Coda path also runs zooKeep(left) */
+  runZooKeep: boolean;
 }
 
 /**
@@ -253,6 +317,25 @@ export interface FastFactoryResult {
  *
  * Reference: boosts.js:5315-5397
  */
+/**
+ * PokeBar threshold: LogiPuzzle power needed for Panther Poke.
+ * Reference: boosts.js:5964 (Molpy.PokeBar)
+ */
+export function calculatePokeBar(prLevel: number, cdspPower: number, acLevel: number): number {
+  return Math.floor(
+    4 +
+      prLevel * (1 + cdspPower) * (cdspPower ? Math.max(1, Math.log(acLevel) - 10, 1) : 1),
+  );
+}
+
+/**
+ * Logicat multiplier: DeMolpify(s) x Logicat bought.
+ * Reference: boosts.js:4192 (Molpy.LogiMult)
+ */
+function logiMult(state: FastFactoryState, s: string): number {
+  return parsePriceValue(s) * state.logicatBought;
+}
+
 export function runFastFactory(
   times: number,
   state: FastFactoryState,
@@ -268,6 +351,14 @@ export function runFastFactory(
     blackprintPages: 0,
     updatedZKPower: state.zkPower,
     zooVisits: 0,
+    shadowStrike: false,
+    shadowFeederGain: 0,
+    bonemealSpent: 0,
+    ninjaRitualTrigger: false,
+    cagedSyncPuzzles: false,
+    cagedGeneratePuz: 0,
+    cagedGenerateCost: 0,
+    runZooKeep: false,
   };
 
   if (times <= 0) return result;
@@ -321,14 +412,58 @@ export function runFastFactory(
     state.logiPuzzleBought
   ) {
     if (state.logiPuzzleLevel >= state.pokeBarThreshold) {
-      // Shadow Feeder and coda paths are complex endgame dragon mechanics.
-      // For the base case, we do zooKeep.
-      if (!state.shadowFeederActive && !state.codaActive) {
+      const pokeBar = state.pokeBarThreshold;
+      if (
+        state.shadowFeederBought &&
+        state.shadowFeederEnabled &&
+        state.logiPuzzlePower >= 100 &&
+        state.shadwDrgnBought &&
+        state.shadowFeederPower < pokeBar &&
+        state.bonemealPower >= 5
+      ) {
+        result.bonemealSpent = 5;
+        if (
+          state.banananasEnabled &&
+          state.cagedActive &&
+          state.cagedPuzzles < state.logiPuzzleLevel
+        ) {
+          // Sync caged puzzles; engine zeroes LogiPuzzle on apply
+          result.cagedSyncPuzzles = true;
+        } else if (state.banananasEnabled && !state.cagedActive) {
+          // Priced generation; engine spends the cost if affordable
+          const puz = Math.floor((state.logiPuzzleLevel - 1) / 10) * 10;
+          result.cagedGeneratePuz = puz;
+          result.cagedGenerateCost = (100 + logiMult(state, '25')) * puz;
+        } else {
+          result.shadowStrike = true;
+          result.shadowFeederGain = 1;
+          if (
+            state.shadowNinjaBought &&
+            state.ninjaRitualLevel > 777 &&
+            !state.marioEnabled &&
+            Math.log(state.ninjaRitualLevel) * rng() > 5
+          ) {
+            result.ninjaRitualTrigger = true;
+          }
+        }
+      } else if (
+        state.codaBought &&
+        state.codaEnabled &&
+        !state.shadowFeederEnabled &&
+        state.castlesInfinite &&
+        state.bonemealPower >= parsePriceValue('1WW')
+      ) {
+        result.shadowStrike = true;
+        result.runZooKeep = true;
+        if (state.ritualWornOut && !state.marioEnabled) {
+          result.ninjaRitualTrigger = true;
+        }
+        result.bonemealSpent = parsePriceValue('1WW');
+      } else {
         const zooResult = calculateZooKeep(left, state.zkPower, rng);
         result.updatedZKPower = zooResult.updatedPower;
         result.zooVisits = zooResult.zooVisits;
       }
-      // Shadow feeder / coda paths deferred to dragon system integration
     }
   }
 
