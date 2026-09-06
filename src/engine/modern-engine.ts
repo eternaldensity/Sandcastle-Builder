@@ -3533,6 +3533,8 @@ export class ModernEngine implements GameEngine {
       digDragonsBeach: () => { void this.processDragonDig('beach'); },
       getAllToolNames: () => [...this.sandTools.keys(), ...this.castleTools.keys()],
       getToolState: (name) => this.sandTools.get(name) ?? this.castleTools.get(name),
+      getFractalPower: () => this.boosts.get('Fractal Sandcastles')?.power ?? 0,
+      addFractalPower: (amount) => { const f = this.boosts.get('Fractal Sandcastles'); if (f) f.power += amount; },
       papal: (decree) => this.papal(decree),
       riftJump: () => this.riftJump(),
     };

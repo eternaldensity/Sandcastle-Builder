@@ -50,22 +50,41 @@ export interface BeachClickAccess {
   digDragonsBeach(): void;
   getAllToolNames(): string[];
   getToolState(name: string): ToolState | undefined;
+  getFractalPower(): number;
+  addFractalPower(amount: number): void;
   papal(decree: string): number;
   riftJump(): void;
 }
 
 /**
  * Auto-convert sand to castles using Fibonacci cost sequence.
- * Matches legacy Molpy.Boosts['Sand'].toCastles() behavior.
+ * Matches legacy Molpy.Boosts['Sand'].toCastles() behavior
+ * (boosts.js Sand.toCastles).
  */
 export function toCastles(access: BeachClickAccess): void {
   const builtBefore = access.castleBuild.totalBuilt;
   // Convert sand to castles while we have enough
   while (access.resources.sand >= access.castleBuild.nextCastleSand &&
          isFinite(access.resources.castles)) {
-    // Build one castle (Fractal Sandcastles boost not implemented yet)
-    access.resources.castles++;
-    access.castleBuild.totalBuilt++;
+    // Fractal Sandcastles builds many castles per iteration instead of one.
+    // Reference: boosts.js Sand.toCastles fractal branch.
+    // (Legacy Castles.build also applies the castle globalMult; the modern
+    // engine tracks no such multiplier, so amounts land unscaled as before.)
+    let built: number;
+    if (access.hasBoost('Fractal Sandcastles')) {
+      const m = access.hasBoost('Fractal Fractals') ? 1.5 : 1.35;
+      built = Math.floor(
+        Math.pow(m, access.getFractalPower() * access.papal('Fractal')),
+      );
+      access.addFractalPower(1);
+      if (access.getFractalPower() >= 60) {
+        access.earnBadge('Fractals Forever');
+      }
+    } else {
+      built = 1;
+    }
+    access.resources.castles += built;
+    access.castleBuild.totalBuilt += built;
 
     // Spend sand
     access.resources.sand -= access.castleBuild.nextCastleSand;
@@ -74,6 +93,9 @@ export function toCastles(access: BeachClickAccess): void {
     const currentCost = access.castleBuild.nextCastleSand;
     access.castleBuild.nextCastleSand = access.castleBuild.prevCastleSand + currentCost;
     access.castleBuild.prevCastleSand = currentCost;
+    if (access.castleBuild.nextCastleSand > 80) {
+      access.earnBadge('Getting Expensive');
+    }
 
     // Safety check for infinite/invalid state
     if (!isFinite(access.resources.sand) || access.castleBuild.nextCastleSand <= 0) {

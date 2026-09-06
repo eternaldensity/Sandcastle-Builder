@@ -31,7 +31,7 @@ browser run, that assertion should be revisited and this table updated.
 
 | # | Area | Gap | Refs |
 |---|---|---|---|
-| G5 | Sand→castles | `Fractal Sandcastles` boost ignored in `toCastles` | `src/engine/beach-click.ts` |
+| G5 | Sand→castles | ~~`Fractal Sandcastles` ignored~~ — fixed: fractal branch + `Fractals Forever`/`Getting Expensive` badges, covered by `beach-click.test.ts` | `src/engine/beach-click.ts` |
 | G6 | Ninja Ritual | Goat grant simplified (`1 + level/5`); full formula at boosts.js:9115-9147 has more multipliers | `modern-engine.ts: ninjaRitual` |
 | G7 | Boost lock prize | Fixed 2000 base; legacy scales via `LogiMult` | `src/engine/boost-functions.ts` lockFunction |
 | G8 | Sand Blaster cap | Always `totalBuilt/3`; legacy uses `/5` with certain boosts | `modern-engine.ts: giveBlastFurnaceReward` |
