@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "sourceVersion": 4.12,
-  "extractedAt": "2026-01-25T06:27:28.140Z",
+  "extractedAt": "2026-09-07T09:38:22.722Z",
   "boosts": {
     "Bigger Buckets": {
       "id": 0,
@@ -1168,7 +1168,7 @@
       "icon": "chromatic",
       "group": "boosts",
       "description": "",
-      "stats": "",
+      "stats": "\"huehuehuehuehuehuehue\"",
       "price": {
         "Sand": "200",
         "Castles": "10"
@@ -1215,7 +1215,7 @@
       "alias": "Ninja Assistants",
       "icon": "ninjaassistants",
       "group": "ninj",
-      "description": "Ninja Builder\\",
+      "description": "Ninja Builder's Castle output is multiplied by the number of NewPixBots you have.",
       "stats": null,
       "price": {
         "Sand": "250M",
@@ -1483,7 +1483,7 @@
       "alias": "Bag Puns",
       "icon": "bagpuns",
       "group": "boosts",
-      "description": "Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25.<br>Yes, most of the ",
+      "description": "Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25.<br>Yes, most of the \"puns\" are just word substitutions. I claim no responsibility :P",
       "price": {
         "Sand": "1470M",
         "Castles": "450021"
@@ -1554,7 +1554,7 @@
       "alias": "Skull and Crossbones",
       "icon": "skullcrossbones",
       "group": "ninj",
-      "description": "Pirates vs. Ninjas! Ninja Builder\\",
+      "description": "Pirates vs. Ninjas! Ninja Builder's Castle output is raised by 5% cumulatively per flag owned over 40",
       "stats": null,
       "price": {
         "Sand": "304050607",
@@ -2181,7 +2181,7 @@
       "alias": "Ninja Climber",
       "icon": "ninjaclimber",
       "group": "ninj",
-      "description": "Multiplies Ninja Builder\\",
+      "description": "Multiplies Ninja Builder's Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level",
       "stats": null,
       "price": {
         "Sand": "490P",
@@ -2473,7 +2473,7 @@
       "icon": "pantherglaze",
       "group": "bean",
       "description": "Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>",
-      "stats": "If you have Infinite Castles, Not Lucky related boosts don\\",
+      "stats": "If you have Infinite Castles, Not Lucky related boosts don't use glass blocks. Instead they produce glass chips.<br>",
       "price": {
         "GlassBlocks": "45K"
       },
@@ -2639,7 +2639,7 @@
       "alias": "Safety Hat",
       "icon": "safetyhat",
       "group": "boosts",
-      "description": "It\\",
+      "description": "It's green, comfortable, stylish, and protects you from all kinds of harm! Best of all, it's completely free!",
       "stats": null,
       "price": {},
       "className": null,
@@ -2660,7 +2660,7 @@
       "alias": "Safety Pumpkin",
       "icon": "safetypumpkin",
       "group": "boosts",
-      "description": "It\\",
+      "description": "It's orange, comfortable, stylish, and reduces the likelihood of industrial accidents!",
       "stats": null,
       "price": {
         "GlassBlocks": "20K"
@@ -3446,7 +3446,7 @@
     },
     "SGC": {
       "id": 144,
-      "name": "Schrödinger\\",
+      "name": "Schrödinger's Gingercat",
       "alias": "SGC",
       "icon": "sgc",
       "group": "boosts",
@@ -3735,7 +3735,7 @@
       "alias": "FiM",
       "icon": "fim",
       "group": "boosts",
-      "description": "Cuegan\\",
+      "description": "Cuegan's Glass production is multiplied by the number of million LaPetites, and Lapetite's Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)",
       "stats": null,
       "price": {
         "GlassBlocks": "750E"
@@ -3759,7 +3759,7 @@
       "icon": "suchglass",
       "group": "ninj",
       "description": "Glass production of Buckets is multiplied by a thousandth of the Ninja Stealth level",
-      "stats": "<div class=",
+      "stats": "<div class=\"magentatext bigtext\">Very wow</div><br><div class=\"cyantext rightjust bigtext\">Much ninja</div><br><div class=\"limetext bigtext\">So Bucket</div>",
       "price": {
         "GlassBlocks": "8Z"
       },
@@ -4083,7 +4083,7 @@
       "alias": "Dragon Foundry",
       "icon": "dragonfoundry",
       "group": "drac",
-      "description": "Crystal Dragon\\",
+      "description": "Crystal Dragon's effect is multiplied by 1% of Glassed Lightning",
       "stats": "Remember to power up Glassed Lightning with Thunderbird, or else this will have a detrimental effect on Temporal Duplication!",
       "price": {
         "GlassBlocks": "70WW"
@@ -4130,7 +4130,7 @@
       "icon": "beretguy",
       "group": "boosts",
       "description": "You may choose to take a revealed Goat",
-      "stats": "...and my yard has so much grass, and I\\",
+      "stats": "...and my yard has so much grass, and I'll teach you tricks, and...",
       "price": {
         "GlassBlocks": "20T"
       },
@@ -4219,7 +4219,7 @@
       "icon": "wota",
       "group": "boosts",
       "description": "",
-      "stats": "More Caged Logicats are retained through an ONG as you progress further from the Beginning of Time, compared to the NewPix in which this was unlocked.<br>Protip: Temporal Rifts don\\",
+      "stats": "More Caged Logicats are retained through an ONG as you progress further from the Beginning of Time, compared to the NewPix in which this was unlocked.<br>Protip: Temporal Rifts don't affect Caged Logicat puzzles",
       "price": {
         "LogiPuzzle": "625"
       },
@@ -4747,7 +4747,7 @@
       "alias": "Glass Trolling",
       "icon": "glasstrolling",
       "group": "prize",
-      "description": "If you type ",
+      "description": "If you type \"OK, GLASS\" into the import box, the cost of making Glass Blocks from Glass Chips is reduced by a factor of 5 until the next ONG",
       "stats": null,
       "price": {
         "GlassBlocks": "500"
@@ -4796,7 +4796,7 @@
     },
     "Archimedes": {
       "id": 200,
-      "name": "Archimedes\\",
+      "name": "Archimedes's Lever",
       "alias": "Archimedes",
       "icon": "archimedesslever",
       "group": "prize",
@@ -5104,7 +5104,7 @@
       "alias": "Buzz Saw",
       "icon": "buzzsaw",
       "group": "boosts",
-      "description": "Glass Saw\\",
+      "description": "Glass Saw's power will go up 50% faster and it will expand Glass Storage if necessary (and possible).",
       "stats": null,
       "price": {
         "GlassBlocks": "12E",
@@ -5128,7 +5128,7 @@
       "alias": "Lubrication",
       "icon": "lubrication",
       "group": "prize",
-      "description": "Glass Furnace and Glass Blower\\",
+      "description": "Glass Furnace and Glass Blower's switching time is reduced by 99% (uses 100 Mustard per toggle).",
       "stats": null,
       "price": {
         "Mustard": "6K"
@@ -5836,7 +5836,7 @@
       "alias": "Marketing",
       "icon": "marketing",
       "group": "hpt",
-      "description": "Numbers don\\",
+      "description": "Numbers don't have to add up",
       "stats": null,
       "price": {},
       "className": null,
@@ -6951,7 +6951,7 @@
     },
     "MQALLOBS": {
       "id": 292,
-      "name": "Megan\\",
+      "name": "Megan's Quick-Acting, Long-Lasting Odorific Breath Spray©",
       "alias": "MQALLOBS",
       "icon": "spray",
       "group": "boosts",
@@ -7223,7 +7223,7 @@
     },
     "terrytao": {
       "id": 304,
-      "name": "Fields\\",
+      "name": "Fields' Mettle",
       "alias": "terrytao",
       "icon": "fieldsmettle",
       "group": "bean",
@@ -7366,7 +7366,7 @@
     },
     "Vise": {
       "id": 310,
-      "name": "Plumber\\",
+      "name": "Plumber's Vise",
       "alias": "Vise",
       "icon": "vise",
       "group": "dimen",
@@ -7567,7 +7567,7 @@
     },
     "bluhint": {
       "id": 319,
-      "name": "Blue",
+      "name": "Blue's Hints",
       "alias": "bluhint",
       "icon": null,
       "group": "varie",
@@ -7596,7 +7596,7 @@
       "icon": null,
       "group": "varie",
       "description": "Reduces waste from radioactive decay.",
-      "stats": "Did you know that neutrons are smaller than atoms? We sure didn",
+      "stats": "Did you know that neutrons are smaller than atoms? We sure didn't.",
       "price": {
         "Blueness": "12.5"
       },
@@ -7713,7 +7713,7 @@
       "icon": null,
       "group": "varie",
       "description": "",
-      "stats": "In the element 1921, Eisenstein was awarded the Metal of Nobility for his work in emcee. Wait. That last part wasn",
+      "stats": "In the element 1921, Eisenstein was awarded the Metal of Nobility for his work in emcee. Wait. That last part wasn't right.",
       "price": {
         "Whiteness": "12.5"
       },
@@ -7736,7 +7736,7 @@
       "alias": "Atomic Pump",
       "icon": null,
       "group": "varie",
-      "description": "Just hope it doesn",
+      "description": "Just hope it doesn't a splode.",
       "stats": null,
       "price": {},
       "className": null,
@@ -7757,7 +7757,7 @@
       "alias": "Blue Fragment",
       "icon": null,
       "group": "varie",
-      "description": "Enough of these, and you",
+      "description": "Enough of these, and you'll get a... nevermind.",
       "stats": null,
       "price": {},
       "className": null,
@@ -8065,7 +8065,7 @@
       "alias": "Safety Rail",
       "icon": "safetyrail",
       "group": "boosts",
-      "description": "It\\",
+      "description": "It's a safe cyan colour and made of the hardest metal!",
       "stats": null,
       "price": {
         "Diamonds": "200"
@@ -9249,7 +9249,7 @@
       "icon": "chromatic",
       "group": "boosts",
       "description": "",
-      "stats": "",
+      "stats": "\"huehuehuehuehuehuehue\"",
       "price": {
         "Sand": "200",
         "Castles": "10"
@@ -9296,7 +9296,7 @@
       "alias": "Ninja Assistants",
       "icon": "ninjaassistants",
       "group": "ninj",
-      "description": "Ninja Builder\\",
+      "description": "Ninja Builder's Castle output is multiplied by the number of NewPixBots you have.",
       "stats": null,
       "price": {
         "Sand": "250M",
@@ -9564,7 +9564,7 @@
       "alias": "Bag Puns",
       "icon": "bagpuns",
       "group": "boosts",
-      "description": "Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25.<br>Yes, most of the ",
+      "description": "Doubles Sand rate of Bags. Clicks give 40% more sand for every 5 bags above 25.<br>Yes, most of the \"puns\" are just word substitutions. I claim no responsibility :P",
       "price": {
         "Sand": "1470M",
         "Castles": "450021"
@@ -9635,7 +9635,7 @@
       "alias": "Skull and Crossbones",
       "icon": "skullcrossbones",
       "group": "ninj",
-      "description": "Pirates vs. Ninjas! Ninja Builder\\",
+      "description": "Pirates vs. Ninjas! Ninja Builder's Castle output is raised by 5% cumulatively per flag owned over 40",
       "stats": null,
       "price": {
         "Sand": "304050607",
@@ -10262,7 +10262,7 @@
       "alias": "Ninja Climber",
       "icon": "ninjaclimber",
       "group": "ninj",
-      "description": "Multiplies Ninja Builder\\",
+      "description": "Multiplies Ninja Builder's Castle output by the number of Ladders owned, and the Sand dug by Ladders by the Ninja Stealth level",
       "stats": null,
       "price": {
         "Sand": "490P",
@@ -10554,7 +10554,7 @@
       "icon": "pantherglaze",
       "group": "bean",
       "description": "Early cat<br>Takes the blocks<br>But the late<br>Brings the chips<br><i>Panther Glaze</i>",
-      "stats": "If you have Infinite Castles, Not Lucky related boosts don\\",
+      "stats": "If you have Infinite Castles, Not Lucky related boosts don't use glass blocks. Instead they produce glass chips.<br>",
       "price": {
         "GlassBlocks": "45K"
       },
@@ -10720,7 +10720,7 @@
       "alias": "Safety Hat",
       "icon": "safetyhat",
       "group": "boosts",
-      "description": "It\\",
+      "description": "It's green, comfortable, stylish, and protects you from all kinds of harm! Best of all, it's completely free!",
       "stats": null,
       "price": {},
       "className": null,
@@ -10741,7 +10741,7 @@
       "alias": "Safety Pumpkin",
       "icon": "safetypumpkin",
       "group": "boosts",
-      "description": "It\\",
+      "description": "It's orange, comfortable, stylish, and reduces the likelihood of industrial accidents!",
       "stats": null,
       "price": {
         "GlassBlocks": "20K"
@@ -11527,7 +11527,7 @@
     },
     {
       "id": 144,
-      "name": "Schrödinger\\",
+      "name": "Schrödinger's Gingercat",
       "alias": "SGC",
       "icon": "sgc",
       "group": "boosts",
@@ -11816,7 +11816,7 @@
       "alias": "FiM",
       "icon": "fim",
       "group": "boosts",
-      "description": "Cuegan\\",
+      "description": "Cuegan's Glass production is multiplied by the number of million LaPetites, and Lapetite's Glass production is multiplied by the number of million Cuegans. (Or is it Cuegen???)",
       "stats": null,
       "price": {
         "GlassBlocks": "750E"
@@ -11840,7 +11840,7 @@
       "icon": "suchglass",
       "group": "ninj",
       "description": "Glass production of Buckets is multiplied by a thousandth of the Ninja Stealth level",
-      "stats": "<div class=",
+      "stats": "<div class=\"magentatext bigtext\">Very wow</div><br><div class=\"cyantext rightjust bigtext\">Much ninja</div><br><div class=\"limetext bigtext\">So Bucket</div>",
       "price": {
         "GlassBlocks": "8Z"
       },
@@ -12164,7 +12164,7 @@
       "alias": "Dragon Foundry",
       "icon": "dragonfoundry",
       "group": "drac",
-      "description": "Crystal Dragon\\",
+      "description": "Crystal Dragon's effect is multiplied by 1% of Glassed Lightning",
       "stats": "Remember to power up Glassed Lightning with Thunderbird, or else this will have a detrimental effect on Temporal Duplication!",
       "price": {
         "GlassBlocks": "70WW"
@@ -12211,7 +12211,7 @@
       "icon": "beretguy",
       "group": "boosts",
       "description": "You may choose to take a revealed Goat",
-      "stats": "...and my yard has so much grass, and I\\",
+      "stats": "...and my yard has so much grass, and I'll teach you tricks, and...",
       "price": {
         "GlassBlocks": "20T"
       },
@@ -12300,7 +12300,7 @@
       "icon": "wota",
       "group": "boosts",
       "description": "",
-      "stats": "More Caged Logicats are retained through an ONG as you progress further from the Beginning of Time, compared to the NewPix in which this was unlocked.<br>Protip: Temporal Rifts don\\",
+      "stats": "More Caged Logicats are retained through an ONG as you progress further from the Beginning of Time, compared to the NewPix in which this was unlocked.<br>Protip: Temporal Rifts don't affect Caged Logicat puzzles",
       "price": {
         "LogiPuzzle": "625"
       },
@@ -12828,7 +12828,7 @@
       "alias": "Glass Trolling",
       "icon": "glasstrolling",
       "group": "prize",
-      "description": "If you type ",
+      "description": "If you type \"OK, GLASS\" into the import box, the cost of making Glass Blocks from Glass Chips is reduced by a factor of 5 until the next ONG",
       "stats": null,
       "price": {
         "GlassBlocks": "500"
@@ -12877,7 +12877,7 @@
     },
     {
       "id": 200,
-      "name": "Archimedes\\",
+      "name": "Archimedes's Lever",
       "alias": "Archimedes",
       "icon": "archimedesslever",
       "group": "prize",
@@ -13185,7 +13185,7 @@
       "alias": "Buzz Saw",
       "icon": "buzzsaw",
       "group": "boosts",
-      "description": "Glass Saw\\",
+      "description": "Glass Saw's power will go up 50% faster and it will expand Glass Storage if necessary (and possible).",
       "stats": null,
       "price": {
         "GlassBlocks": "12E",
@@ -13209,7 +13209,7 @@
       "alias": "Lubrication",
       "icon": "lubrication",
       "group": "prize",
-      "description": "Glass Furnace and Glass Blower\\",
+      "description": "Glass Furnace and Glass Blower's switching time is reduced by 99% (uses 100 Mustard per toggle).",
       "stats": null,
       "price": {
         "Mustard": "6K"
@@ -13917,7 +13917,7 @@
       "alias": "Marketing",
       "icon": "marketing",
       "group": "hpt",
-      "description": "Numbers don\\",
+      "description": "Numbers don't have to add up",
       "stats": null,
       "price": {},
       "className": null,
@@ -15032,7 +15032,7 @@
     },
     {
       "id": 292,
-      "name": "Megan\\",
+      "name": "Megan's Quick-Acting, Long-Lasting Odorific Breath Spray©",
       "alias": "MQALLOBS",
       "icon": "spray",
       "group": "boosts",
@@ -15304,7 +15304,7 @@
     },
     {
       "id": 304,
-      "name": "Fields\\",
+      "name": "Fields' Mettle",
       "alias": "terrytao",
       "icon": "fieldsmettle",
       "group": "bean",
@@ -15447,7 +15447,7 @@
     },
     {
       "id": 310,
-      "name": "Plumber\\",
+      "name": "Plumber's Vise",
       "alias": "Vise",
       "icon": "vise",
       "group": "dimen",
@@ -15648,7 +15648,7 @@
     },
     {
       "id": 319,
-      "name": "Blue",
+      "name": "Blue's Hints",
       "alias": "bluhint",
       "icon": null,
       "group": "varie",
@@ -15677,7 +15677,7 @@
       "icon": null,
       "group": "varie",
       "description": "Reduces waste from radioactive decay.",
-      "stats": "Did you know that neutrons are smaller than atoms? We sure didn",
+      "stats": "Did you know that neutrons are smaller than atoms? We sure didn't.",
       "price": {
         "Blueness": "12.5"
       },
@@ -15794,7 +15794,7 @@
       "icon": null,
       "group": "varie",
       "description": "",
-      "stats": "In the element 1921, Eisenstein was awarded the Metal of Nobility for his work in emcee. Wait. That last part wasn",
+      "stats": "In the element 1921, Eisenstein was awarded the Metal of Nobility for his work in emcee. Wait. That last part wasn't right.",
       "price": {
         "Whiteness": "12.5"
       },
@@ -15817,7 +15817,7 @@
       "alias": "Atomic Pump",
       "icon": null,
       "group": "varie",
-      "description": "Just hope it doesn",
+      "description": "Just hope it doesn't a splode.",
       "stats": null,
       "price": {},
       "className": null,
@@ -15838,7 +15838,7 @@
       "alias": "Blue Fragment",
       "icon": null,
       "group": "varie",
-      "description": "Enough of these, and you",
+      "description": "Enough of these, and you'll get a... nevermind.",
       "stats": null,
       "price": {},
       "className": null,
@@ -16146,7 +16146,7 @@
       "alias": "Safety Rail",
       "icon": "safetyrail",
       "group": "boosts",
-      "description": "It\\",
+      "description": "It's a safe cyan colour and made of the hardest metal!",
       "stats": null,
       "price": {
         "Diamonds": "200"
@@ -16529,7 +16529,7 @@
       "id": 40,
       "name": "Clerical Error",
       "group": "badges",
-      "description": "Receive a badge you haven\\",
+      "description": "Receive a badge you haven't earned",
       "stats": null,
       "visibility": 1,
       "hasDynamicDescription": false
@@ -16768,18 +16768,9 @@
       "visibility": 1,
       "hasDynamicDescription": false
     },
-    "Not So ": {
-      "id": 67,
-      "name": "Not So ",
-      "group": "badges",
-      "description": "Click 2 ",
-      "stats": null,
-      "visibility": 1,
-      "hasDynamicDescription": false
-    },
-    "Don": {
+    "Don't Litter!": {
       "id": 68,
-      "name": "Don",
+      "name": "Don't Litter!",
       "group": "badges",
       "description": "Click 14 ",
       "stats": null,
@@ -16795,9 +16786,9 @@
       "visibility": 1,
       "hasDynamicDescription": false
     },
-    "Have you noticed it": {
+    "Have you noticed it's slower?": {
       "id": 70,
-      "name": "Have you noticed it",
+      "name": "Have you noticed it's slower?",
       "group": "badges",
       "description": "Experience the LongPix",
       "stats": null,
@@ -16867,9 +16858,9 @@
       "visibility": 1,
       "hasDynamicDescription": false
     },
-    "Dude, Where": {
+    "Dude, Where's my DeLorean?": {
       "id": 78,
-      "name": "Dude, Where",
+      "name": "Dude, Where's my DeLorean?",
       "group": "badges",
       "description": "Travel through Time 640 Times",
       "stats": null,
@@ -16953,7 +16944,7 @@
       "name": "Better This Way",
       "group": "badges",
       "description": "Purchase 50 Boosts",
-      "stats": "So you\\",
+      "stats": "So you're telling me Badgers build the castle by firing boots at the sand with trebuchets?",
       "visibility": 0,
       "hasDynamicDescription": false
     },
@@ -17128,9 +17119,9 @@
       "visibility": 1,
       "hasDynamicDescription": false
     },
-    "\\\\/\\\\/AR]-[AMMER": {
+    "\\/\\/AR]-[AMMER": {
       "id": 107,
-      "name": "\\\\/\\\\/AR]-[AMMER",
+      "name": "\\/\\/AR]-[AMMER",
       "group": "badges",
       "description": "Have 40K Tools",
       "stats": null,
@@ -17384,7 +17375,7 @@
       "id": 137,
       "name": "Getting Expensive",
       "group": "badges",
-      "description": "Each time Sand is converted into a Castle, the next Castle costs more sand.<br>But don\\",
+      "description": "Each time Sand is converted into a Castle, the next Castle costs more sand.<br>But don't worry: the price will reset back to 1 when the timer beside the clock reaches 0.",
       "stats": null,
       "visibility": 1,
       "hasDynamicDescription": false
@@ -17547,7 +17538,7 @@
       "name": "Badge Found",
       "group": "badges",
       "description": "Description Found",
-      "stats": "What is this, I don\\",
+      "stats": "What is this, I don't even?",
       "visibility": 0,
       "hasDynamicDescription": false
     },
@@ -17556,7 +17547,7 @@
       "name": "Typo Storm",
       "group": "badges",
       "description": "Encounter 1000 different typos in a play session (resets on reload)",
-      "stats": "Toggle typo mode by typing ",
+      "stats": "Toggle typo mode by typing \"typo\" into the Import dialog.<br>",
       "visibility": 0,
       "hasDynamicDescription": false
     },
@@ -17879,7 +17870,7 @@
       "id": 192,
       "name": "GDP of the World",
       "group": "badges",
-      "description": "Have more Gold than the World\\",
+      "description": "Have more Gold than the World's GDP in dollars",
       "stats": null,
       "visibility": 1,
       "hasDynamicDescription": false
@@ -17893,18 +17884,18 @@
       "visibility": 1,
       "hasDynamicDescription": false
     },
-    "What\\": {
+    "What's the score?": {
       "id": 194,
-      "name": "What\\",
+      "name": "What's the score?",
       "group": "badges",
       "description": "Lost more than 20 dragons in fights",
       "stats": null,
       "visibility": 1,
       "hasDynamicDescription": false
     },
-    "That\\": {
+    "That's gross": {
       "id": 195,
-      "name": "That\\",
+      "name": "That's gross",
       "group": "badges",
       "description": "Lost more than 144 dragons in fights",
       "stats": null,
@@ -17951,7 +17942,7 @@
       "id": 200,
       "name": "Flip It Real Good",
       "group": "badges",
-      "description": "Flip between positive and negative NP \\",
+      "description": "Flip between positive and negative NP '87 times",
       "stats": null,
       "visibility": 1,
       "hasDynamicDescription": false
@@ -17965,9 +17956,9 @@
       "visibility": 1,
       "hasDynamicDescription": false
     },
-    "And It Don\\": {
+    "And It Don't Stop": {
       "id": 202,
-      "name": "And It Don\\",
+      "name": "And It Don't Stop",
       "group": "badges",
       "description": "Played the game as long after T** **d as before",
       "stats": null,
@@ -18064,9 +18055,9 @@
       "visibility": 1,
       "hasDynamicDescription": false
     },
-    "Two Pots O\\": {
+    "Two Pots O' Gold": {
       "id": 213,
-      "name": "Two Pots O\\",
+      "name": "Two Pots O' Gold",
       "group": "badges",
       "description": "The Dragons found two things at once",
       "stats": "♪Double Math.random()bow all across the skyyy♪",
@@ -18134,6 +18125,123 @@
       "description": "Be extra safe from the threat of Safety Hats.",
       "stats": null,
       "visibility": 1,
+      "hasDynamicDescription": false
+    },
+    "Not So Redundant": {
+      "id": 218,
+      "name": "Not So Redundant",
+      "group": "badges",
+      "description": "Click 2 Redundantkitties",
+      "stats": null,
+      "visibility": 1,
+      "hasDynamicDescription": false
+    },
+    "Bucket Shop Failed": {
+      "id": 219,
+      "name": "Bucket Shop Failed",
+      "group": "badges",
+      "description": "The price of Bucket is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "Cuegan Shop Failed": {
+      "id": 220,
+      "name": "Cuegan Shop Failed",
+      "group": "badges",
+      "description": "The price of Cuegan is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "Flag Shop Failed": {
+      "id": 221,
+      "name": "Flag Shop Failed",
+      "group": "badges",
+      "description": "The price of Flag is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "Ladder Shop Failed": {
+      "id": 222,
+      "name": "Ladder Shop Failed",
+      "group": "badges",
+      "description": "The price of Ladder is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "Bag Shop Failed": {
+      "id": 223,
+      "name": "Bag Shop Failed",
+      "group": "badges",
+      "description": "The price of Bag is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "LaPetite Shop Failed": {
+      "id": 224,
+      "name": "LaPetite Shop Failed",
+      "group": "badges",
+      "description": "The price of LaPetite is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "NewPixBot Shop Failed": {
+      "id": 225,
+      "name": "NewPixBot Shop Failed",
+      "group": "badges",
+      "description": "The price of NewPixBot is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "Trebuchet Shop Failed": {
+      "id": 226,
+      "name": "Trebuchet Shop Failed",
+      "group": "badges",
+      "description": "The price of Trebuchet is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "Scaffold Shop Failed": {
+      "id": 227,
+      "name": "Scaffold Shop Failed",
+      "group": "badges",
+      "description": "The price of Scaffold is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "Wave Shop Failed": {
+      "id": 228,
+      "name": "Wave Shop Failed",
+      "group": "badges",
+      "description": "The price of Wave is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "River Shop Failed": {
+      "id": 229,
+      "name": "River Shop Failed",
+      "group": "badges",
+      "description": "The price of River is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    "Beanie Builder Shop Failed": {
+      "id": 230,
+      "name": "Beanie Builder Shop Failed",
+      "group": "badges",
+      "description": "The price of Beanie Builder is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
       "hasDynamicDescription": false
     }
   },
@@ -18502,7 +18610,7 @@
       "id": 40,
       "name": "Clerical Error",
       "group": "badges",
-      "description": "Receive a badge you haven\\",
+      "description": "Receive a badge you haven't earned",
       "stats": null,
       "visibility": 1,
       "hasDynamicDescription": false
@@ -18742,17 +18850,8 @@
       "hasDynamicDescription": false
     },
     {
-      "id": 67,
-      "name": "Not So ",
-      "group": "badges",
-      "description": "Click 2 ",
-      "stats": null,
-      "visibility": 1,
-      "hasDynamicDescription": false
-    },
-    {
       "id": 68,
-      "name": "Don",
+      "name": "Don't Litter!",
       "group": "badges",
       "description": "Click 14 ",
       "stats": null,
@@ -18770,7 +18869,7 @@
     },
     {
       "id": 70,
-      "name": "Have you noticed it",
+      "name": "Have you noticed it's slower?",
       "group": "badges",
       "description": "Experience the LongPix",
       "stats": null,
@@ -18842,7 +18941,7 @@
     },
     {
       "id": 78,
-      "name": "Dude, Where",
+      "name": "Dude, Where's my DeLorean?",
       "group": "badges",
       "description": "Travel through Time 640 Times",
       "stats": null,
@@ -18926,7 +19025,7 @@
       "name": "Better This Way",
       "group": "badges",
       "description": "Purchase 50 Boosts",
-      "stats": "So you\\",
+      "stats": "So you're telling me Badgers build the castle by firing boots at the sand with trebuchets?",
       "visibility": 0,
       "hasDynamicDescription": false
     },
@@ -19103,7 +19202,7 @@
     },
     {
       "id": 107,
-      "name": "\\\\/\\\\/AR]-[AMMER",
+      "name": "\\/\\/AR]-[AMMER",
       "group": "badges",
       "description": "Have 40K Tools",
       "stats": null,
@@ -19357,7 +19456,7 @@
       "id": 137,
       "name": "Getting Expensive",
       "group": "badges",
-      "description": "Each time Sand is converted into a Castle, the next Castle costs more sand.<br>But don\\",
+      "description": "Each time Sand is converted into a Castle, the next Castle costs more sand.<br>But don't worry: the price will reset back to 1 when the timer beside the clock reaches 0.",
       "stats": null,
       "visibility": 1,
       "hasDynamicDescription": false
@@ -19520,7 +19619,7 @@
       "name": "Badge Found",
       "group": "badges",
       "description": "Description Found",
-      "stats": "What is this, I don\\",
+      "stats": "What is this, I don't even?",
       "visibility": 0,
       "hasDynamicDescription": false
     },
@@ -19529,7 +19628,7 @@
       "name": "Typo Storm",
       "group": "badges",
       "description": "Encounter 1000 different typos in a play session (resets on reload)",
-      "stats": "Toggle typo mode by typing ",
+      "stats": "Toggle typo mode by typing \"typo\" into the Import dialog.<br>",
       "visibility": 0,
       "hasDynamicDescription": false
     },
@@ -19852,7 +19951,7 @@
       "id": 192,
       "name": "GDP of the World",
       "group": "badges",
-      "description": "Have more Gold than the World\\",
+      "description": "Have more Gold than the World's GDP in dollars",
       "stats": null,
       "visibility": 1,
       "hasDynamicDescription": false
@@ -19868,7 +19967,7 @@
     },
     {
       "id": 194,
-      "name": "What\\",
+      "name": "What's the score?",
       "group": "badges",
       "description": "Lost more than 20 dragons in fights",
       "stats": null,
@@ -19877,7 +19976,7 @@
     },
     {
       "id": 195,
-      "name": "That\\",
+      "name": "That's gross",
       "group": "badges",
       "description": "Lost more than 144 dragons in fights",
       "stats": null,
@@ -19924,7 +20023,7 @@
       "id": 200,
       "name": "Flip It Real Good",
       "group": "badges",
-      "description": "Flip between positive and negative NP \\",
+      "description": "Flip between positive and negative NP '87 times",
       "stats": null,
       "visibility": 1,
       "hasDynamicDescription": false
@@ -19940,7 +20039,7 @@
     },
     {
       "id": 202,
-      "name": "And It Don\\",
+      "name": "And It Don't Stop",
       "group": "badges",
       "description": "Played the game as long after T** **d as before",
       "stats": null,
@@ -20039,7 +20138,7 @@
     },
     {
       "id": 213,
-      "name": "Two Pots O\\",
+      "name": "Two Pots O' Gold",
       "group": "badges",
       "description": "The Dragons found two things at once",
       "stats": "♪Double Math.random()bow all across the skyyy♪",
@@ -20107,6 +20206,123 @@
       "description": "Be extra safe from the threat of Safety Hats.",
       "stats": null,
       "visibility": 1,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 218,
+      "name": "Not So Redundant",
+      "group": "badges",
+      "description": "Click 2 Redundantkitties",
+      "stats": null,
+      "visibility": 1,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 219,
+      "name": "Bucket Shop Failed",
+      "group": "badges",
+      "description": "The price of Bucket is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 220,
+      "name": "Cuegan Shop Failed",
+      "group": "badges",
+      "description": "The price of Cuegan is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 221,
+      "name": "Flag Shop Failed",
+      "group": "badges",
+      "description": "The price of Flag is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 222,
+      "name": "Ladder Shop Failed",
+      "group": "badges",
+      "description": "The price of Ladder is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 223,
+      "name": "Bag Shop Failed",
+      "group": "badges",
+      "description": "The price of Bag is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 224,
+      "name": "LaPetite Shop Failed",
+      "group": "badges",
+      "description": "The price of LaPetite is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 225,
+      "name": "NewPixBot Shop Failed",
+      "group": "badges",
+      "description": "The price of NewPixBot is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 226,
+      "name": "Trebuchet Shop Failed",
+      "group": "badges",
+      "description": "The price of Trebuchet is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 227,
+      "name": "Scaffold Shop Failed",
+      "group": "badges",
+      "description": "The price of Scaffold is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 228,
+      "name": "Wave Shop Failed",
+      "group": "badges",
+      "description": "The price of Wave is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 229,
+      "name": "River Shop Failed",
+      "group": "badges",
+      "description": "The price of River is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
+      "hasDynamicDescription": false
+    },
+    {
+      "id": 230,
+      "name": "Beanie Builder Shop Failed",
+      "group": "badges",
+      "description": "The price of Beanie Builder is too ch*rping high!",
+      "stats": null,
+      "visibility": 2,
       "hasDynamicDescription": false
     }
   ],
@@ -20184,7 +20400,7 @@
       "name": "NewPixBot",
       "commonName": "newpixbot|newpixbots|unautomated|automated",
       "icon": "newpixbot",
-      "description": "Automates castles after the ONG\\n(if not ninja\\",
+      "description": "Automates castles after the ONG\n(if not ninja'd)",
       "type": "castle",
       "basePrice": 1,
       "nextThreshold": 1,

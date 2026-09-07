@@ -154,7 +154,10 @@ async function extractBadges() {
             badge.description = extractStringProperty(badgeContent, 'desc') || '';
         }
 
-        if (badge.name) {
+        // Skip dynamically-concatenated names ('Not So ' + word2): their
+        // canonical static forms are appended by appendDynamicBadges.
+        const dynamicName = /^\s*name\s*:\s*('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")\s*\+/.test(badgeContent);
+        if (badge.name && !dynamicName) {
             badges.push(badge);
             badgesByName[badge.name] = badge;
         }
@@ -163,6 +166,36 @@ async function extractBadges() {
     console.log(`Extracted ${badges.length} badges`);
     return { badges, badgesByName };
 }
+
+/**
+ * Append badges that badges.js defines dynamically, in canonical form.
+ * - 'Not So Redundant': 'Not So ' + Redacted.word2, and word2 is the
+ *   constant 'Redundant' (castle.js Redacted constructor).
+ * - '<tool> Shop Failed': one per sand/castle tool (badges.js loops).
+ * IDs continue the sequence so re-runs are stable.
+ */
+function appendDynamicBadges(badges, badgesByName, sandTools, castleTools) {
+    let id = badges.length;
+    const add = (name, description, visibility) => {
+        if (badgesByName[name]) return;
+        const badge = {
+            id: id++,
+            name,
+            group: 'badges',
+            description,
+            stats: null,
+            visibility,
+            hasDynamicDescription: false,
+        };
+        badges.push(badge);
+        badgesByName[name] = badge;
+    };
+    add('Not So Redundant', 'Click 2 Redundantkitties', 1);
+    for (const tool of [...sandTools, ...castleTools]) {
+        if (tool.name) add(`${tool.name} Shop Failed`, `The price of ${tool.name} is too ch*rping high!`, 2);
+    }
+}
+
 
 /**
  * Extract tool definitions from tools.js
@@ -316,10 +349,30 @@ async function extractVersion() {
  * Helper: Extract a string property from object literal content
  */
 function extractStringProperty(content, propName) {
-    // Match property: 'value' or property: "value"
-    const pattern = new RegExp(`${propName}\\s*:\\s*['"]([^'"]*?)['"]`);
+    // Match a JS string literal in either quote style, honouring backslash
+    // escapes so apostrophes (Don\'t) and escaped slashes (\\/\\/) survive.
+    const pattern = new RegExp(`${propName}\\s*:\\s*('(?:[^'\\\\]|\\\\.)*'|"(?:[^"\\\\]|\\\\.)*")`);
     const match = content.match(pattern);
-    return match ? match[1] : null;
+    if (!match) return null;
+    return decodeJsString(match[1]);
+}
+
+/**
+ * Decode a JS string literal (including its quotes) to a plain string.
+ */
+function decodeJsString(literal) {
+    const body = literal.slice(1, -1);
+    const unescapes = { n: '\n', t: '\t', r: '\r', '\\': '\\', "'": "'", '"': '"', '/': '/' };
+    let out = '';
+    for (let i = 0; i < body.length; i++) {
+        if (body[i] === '\\' && i + 1 < body.length) {
+            out += unescapes[body[i + 1]] ?? body[i + 1];
+            i++;
+        } else {
+            out += body[i];
+        }
+    }
+    return out;
 }
 
 /**
@@ -354,6 +407,9 @@ async function main() {
         const { badges, badgesByName } = await extractBadges();
         const { sandTools, castleTools } = await extractTools();
         const groups = await extractGroups();
+
+        // Canonical forms of dynamically-defined badges (see function docs)
+        appendDynamicBadges(badges, badgesByName, sandTools, castleTools);
 
         // Build complete game data object
         const gameData = {
