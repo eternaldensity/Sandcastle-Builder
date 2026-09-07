@@ -19,7 +19,7 @@
  */
 
 import type { BoostState, ToolState, GameData, NPData } from '../types/game-data.js';
-import { nextLegalNP } from './save-parser.js';
+import { nextLegalNP, RUNTIME_BADGES } from './save-parser.js';
 
 /** Delimiters used in save format */
 const PIPE = 'P';
@@ -469,16 +469,7 @@ export function createSaveSerializer(gameData: {
     .filter((b) => b.group !== 'badges')
     .map((b) => b.name);
 
-  // Add runtime badges that are defined in badge-conditions but not in gameData
-  // These are appended to preserve badge index compatibility with legacy saves
-  const runtimeBadges = [
-    'Click Ninja',
-    'Click Ninja Ninja',
-    'Not So Redundant',
-    "Don't Litter!",
-    'Beachcomber',
-  ];
-  const allRegularBadgeNames = [...regularBadgeNames, ...runtimeBadges];
+  const allRegularBadgeNames = [...regularBadgeNames, ...RUNTIME_BADGES];
 
   return new SaveSerializer(allBoostAliases, allRegularBadgeNames, otherBadgeNames);
 }

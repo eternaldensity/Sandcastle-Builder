@@ -53,6 +53,15 @@ browser run, that assertion should be revisited and this table updated.
 | G14 | ~~Shared session~~ — fixed: each `engine-comparison` suite launches a fresh LegacyEngine; `legacy-engine.test.ts` already isolated per describe |, so legacy state accumulates between describes (`engine-comparison` header). Prefer a fresh context per suite so comparisons start from identical states. |
 | G15 | `Parity Gap Summary` bakes in `expect(critical).toBeGreaterThan(0)`. Flip to `toBe(0)` (minus allow-listed intentional gaps) once G1–G4 are resolved. |
 
+## Closed by the first green CI run + H1 probe
+
+| # | Verdict |
+|---|---|
+| G1 | **Closed (false alarm).** No ninja click penalty exists in legacy; base 1 + multipliers fully implemented and pinned. Live CI log shows legacy `sandPerClick: 1`. The `~0.22` note was stale. |
+| G2/G3 | **Implemented, live-confirmed at start.** CI log: both engines start 1 unlocked / 0 bought / 4 badges (`Redundant Redundancy, Redundant, Notified, Not Ground Zero`). Exact startup-equality still rides the browser suites. |
+| Badge over-earn | **Fixed.** `Not So Redundant` / `Don't Litter!` / `Y U NO BELIEVE ME?` were fired by *beach* clicks via duplicate declarative rules; legacy earns them on *kitty* totalClicks (castle.js:2409-2416), which the engine already implemented in `processKittyClickBadges`. Duplicate rules deleted; kitty thresholds now unit-tested. |
+| Registry shape | **Open (cosmetic).** Legacy statically defines badges modern never registers (`Have you noticed it's slower?`, `Dude, Where's my DeLorean?`, `//AR]-[AMMER`, per-tool `X Shop Failed`, ...), so snapshots show `undefined` vs `false`. Behaviorally inert (earn paths create on demand) but noisy; completing the extraction is its own stage. |
+
 ## Deliberate simplifications (keep)
 
 - Mustard tools with `NaN` amounts; Doubletap recursion guard; backoff

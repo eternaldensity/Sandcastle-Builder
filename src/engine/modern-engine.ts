@@ -14,7 +14,7 @@
 
 import type { BoostState, ToolState, GameData, NPData } from '../types/game-data.js';
 import type { GameEngine, GameStateSnapshot, TestAction } from '../parity/game-engine.js';
-import { SaveParser, createSaveParser } from './save-parser.js';
+import { SaveParser, createSaveParser, RUNTIME_BADGES } from './save-parser.js';
 import { SaveSerializer, createSaveSerializer, type SaveState, type CoreGameState } from './save-serializer.js';
 import { UnlockChecker, type UnlockCheckState } from './unlock-checker.js';
 import { calculateFactoryAutomationRuns } from './factory-automation.js';
@@ -542,6 +542,11 @@ export class ModernEngine implements GameEngine {
     for (const [name] of Object.entries(this.gameData.badges)) {
       this.badges.set(name, false);
     }
+    // Register runtime badges (earned by engine logic, absent from
+    // game-data): legacy defines every badge up front.
+    for (const name of RUNTIME_BADGES) {
+      if (!this.badges.has(name)) this.badges.set(name, false);
+    }
 
     // Register dynamic discovery badges (legacy badges.js:1288-2450)
     // Legacy creates badge entries for all discoveries at startup with earned=false.
@@ -775,6 +780,17 @@ export class ModernEngine implements GameEngine {
     // Re-register static badges from game data
     for (const [name] of Object.entries(this.gameData.badges)) {
       this.badges.set(name, false);
+    }
+    // Re-register runtime badges (see initialize)
+    for (const name of RUNTIME_BADGES) {
+      if (!this.badges.has(name)) this.badges.set(name, false);
+    }
+    // Re-register runtime badges (earned by engine logic, absent from
+    // game-data): legacy defines every badge up front, so fresh engines
+    // must read false rather than undefined — this also keeps save
+    // round-trips stable for badges earned mid-session.
+    for (const name of RUNTIME_BADGES) {
+      if (!this.badges.has(name)) this.badges.set(name, false);
     }
     // Re-register dynamic discovery badges
     const badgeGroups = ['discov', 'monums', 'monumg', 'diamm'];

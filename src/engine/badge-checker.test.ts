@@ -225,10 +225,11 @@ describe('BadgeChecker', () => {
     };
 
     // First check earns all badges that match beachClicks >= 2
-    // Amazon Patent (>= 1), Click Ninja (>= 1), Oops (>= 2), Not So Redundant (>= 2)
+    // Amazon Patent (>= 1), Click Ninja (>= 1), Oops (>= 2).
+    // ('Not So Redundant' is a kitty-click badge, earned in processKittyClickBadges.)
     const first = checker.check('click', state);
-    expect(first.length).toBe(4);
-    expect(earnedBadges.length).toBe(4);
+    expect(first.length).toBe(3);
+    expect(earnedBadges.length).toBe(3);
 
     // Second check with same state earns nothing
     earnedBadges = [];
@@ -283,7 +284,8 @@ describe('Badge Integration with ModernEngine', () => {
 
     const state = await engine.getStateSnapshot();
     expect(state.badges['Amazon Patent']).toBe(true);
-    expect(state.badges['Not So Redundant']).toBe(true);
+    // 'Not So Redundant' is a kitty-click badge: beach clicks must not earn it
+    expect(state.badges['Not So Redundant'] ?? false).toBe(false);
   });
 
   it('earns tool count badges', async () => {

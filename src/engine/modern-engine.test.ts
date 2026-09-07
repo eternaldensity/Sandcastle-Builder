@@ -1300,6 +1300,31 @@ describe('ModernEngine', () => {
     });
   });
 
+  describe('kitty click badges', () => {
+    it('does not earn kitty badges from beach clicks', async () => {
+      await engine.clickBeach(200);
+
+      const state = await engine.getStateSnapshot();
+      expect(state.badges['Not So Redundant'] ?? false).toBe(false);
+      expect(state.badges["Don't Litter!"] ?? false).toBe(false);
+      expect(state.badges['Y U NO BELIEVE ME?'] ?? false).toBe(false);
+    });
+
+    it('earns kitty badges at totalClicks thresholds', async () => {
+      (engine as any).redundakitty.totalClicks = 2;
+      await (engine as any).processKittyClickBadges();
+      expect((engine as any).badges.get('Not So Redundant')).toBe(true);
+
+      (engine as any).redundakitty.totalClicks = 14;
+      await (engine as any).processKittyClickBadges();
+      expect((engine as any).badges.get("Don't Litter!")).toBe(true);
+
+      (engine as any).redundakitty.totalClicks = 128;
+      await (engine as any).processKittyClickBadges();
+      expect((engine as any).badges.get('Y U NO BELIEVE ME?')).toBe(true);
+    });
+  });
+
   describe('ONG transition enhancements', () => {
     it('resets Lightning Rod power by 5% at ONG', async () => {
       (engine as any).boosts.set('LR', { unlocked: 1, bought: 1, power: 1000 });

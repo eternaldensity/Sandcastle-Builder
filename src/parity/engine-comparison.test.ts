@@ -112,10 +112,22 @@ describe.skipIf(!hasBrowser)('Engine Comparison', () => {
 
       // Count boosts
       let boostCount = 0;
-      for (const [,] of Object.entries(modernState.boosts)) {
+      let unlockedBoosts = 0;
+      let boughtBoosts = 0;
+      for (const [, state] of Object.entries(modernState.boosts)) {
         boostCount++;
+        if (state.unlocked > 0) unlockedBoosts++;
+        if (state.bought > 0) boughtBoosts++;
       }
       console.log(`Total boosts in state: ${boostCount}`);
+      console.log(`Unlocked boosts: ${unlockedBoosts}`);
+      console.log(`Bought boosts: ${boughtBoosts}`);
+
+      let earnedBadges = 0;
+      for (const [, earned] of Object.entries(modernState.badges)) {
+        if (earned) earnedBadges++;
+      }
+      console.log(`Earned badges: ${earnedBadges}`);
 
       await modernEngine.dispose();
 

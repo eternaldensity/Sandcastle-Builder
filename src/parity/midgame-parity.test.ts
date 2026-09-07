@@ -78,18 +78,21 @@ function countBoughtBoosts(snap: GameStateSnapshot): number {
 }
 
 describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
-  let legacyEngine: LegacyEngine;
-
-  beforeAll(async () => {
-    legacyEngine = new LegacyEngine();
-    await legacyEngine.initialize();
-  }, 60000);
-
-  afterAll(async () => {
-    await legacyEngine.dispose();
-  });
+  // NOTE: each nested suite launches its own fresh LegacyEngine so no
+  // state leaks between comparisons (G14). Shared setup was removed.
 
   describe('Fresh Game After First Tick', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('both engines earn initial badges on first tick', async () => {
       // Legacy: already initialized (has run at least one Think())
       const legacyState = await legacyEngine.getStateSnapshot();
@@ -118,6 +121,17 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
   });
 
   describe('Beach Clicking Parity', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('compares click results from fresh state on both engines', async () => {
       // We need fresh legacy state - use save/load to reset
       const modern = new ModernEngine(gameData);
@@ -145,7 +159,8 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
       const modern = new ModernEngine(gameData);
       await modern.initialize();
 
-      // Click enough to earn Amazon Patent (1 click) and Not So Redundant (2 clicks)
+      // Click enough to earn Amazon Patent (1 click); kitty badges
+      // ('Not So Redundant' et al.) come from kitty clicks, not beach clicks
       await modern.clickBeach(5);
       await modern.tick(1); // Process badge checks
 
@@ -168,6 +183,17 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
   });
 
   describe('Tool Purchase and Production', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('compares tool purchase and sand production on both engines', async () => {
       // Bucket costs 8 castles. ONG resets Fibonacci, so click+ONG+click to accumulate.
       const modern = new ModernEngine(gameData);
@@ -224,6 +250,17 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
   });
 
   describe('ONG Transition Parity', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('compares state after clicks + ONG on both engines', async () => {
       const modern = new ModernEngine(gameData);
       await modern.initialize();
@@ -280,6 +317,17 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
   });
 
   describe('Multi-Action Sequence Parity', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('compares a realistic early game session on both engines', async () => {
       const modern = new ModernEngine(gameData);
       await modern.initialize();
@@ -356,6 +404,17 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
   });
 
   describe('Full State Comparison', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('measures parity gap for fresh-game 10-click + ONG scenario', async () => {
       const modern = new ModernEngine(gameData);
       await modern.initialize();

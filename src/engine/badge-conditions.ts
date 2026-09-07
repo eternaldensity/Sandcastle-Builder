@@ -81,18 +81,17 @@ export interface BadgeCheckState {
  */
 export const badgeConditions: BadgeCondition[] = [
   // =============================================================================
-  // Click badges (trigger: 'click')
+  // Click badges (trigger: 'click'). NOTE: the redundakitty click badges
+  // ('Not So Redundant', "Don't Litter!", 'Y U NO BELIEVE ME?') are earned
+  // by totalClicks in processKittyClickBadges, not here.
   // Reference: data.js:1240+, badges.js click-based badges
   // =============================================================================
   { badge: 'Amazon Patent', trigger: 'click', check: s => s.beachClicks >= 1 },
   { badge: 'Click Ninja', trigger: 'click', check: s => s.beachClicks >= 1 },
   { badge: 'Oops', trigger: 'click', check: s => s.beachClicks >= 2 },
-  { badge: 'Not So Redundant', trigger: 'click', check: s => s.beachClicks >= 2 },
   { badge: 'Just Starting', trigger: 'click', check: s => s.beachClicks >= 10 },
   { badge: 'Click Ninja Ninja', trigger: 'click', check: s => s.beachClicks >= 10 },
-  { badge: "Don't Litter!", trigger: 'click', check: s => s.beachClicks >= 14 },
   { badge: 'Busy Clicking', trigger: 'click', check: s => s.beachClicks >= 100 },
-  { badge: 'Y U NO BELIEVE ME?', trigger: 'click', check: s => s.beachClicks >= 128 },
   { badge: 'Beachcomber', trigger: 'click', check: s => s.beachClicks >= 256 },
   { badge: 'Beachwalker', trigger: 'click', check: s => s.beachClicks >= 512 },
   { badge: 'Click Storm', trigger: 'click', check: s => s.beachClicks >= 1000 },

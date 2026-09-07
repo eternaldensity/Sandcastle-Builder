@@ -544,6 +544,20 @@ export class SaveParser {
 /**
  * Create a SaveParser from game data
  */
+/**
+ * Runtime badges: earned by engine logic but absent from game-data.json.
+ * Appended to the codec badge order (index compatibility) and registered
+ * at engine init so fresh engines read `false` instead of `undefined`,
+ * matching legacy startup where badges.js defines every badge up front.
+ */
+export const RUNTIME_BADGES = [
+  'Click Ninja',
+  'Click Ninja Ninja',
+  'Not So Redundant',
+  "Don't Litter!",
+  'Beachcomber',
+];
+
 export function createSaveParser(gameData: {
   boostsById: Array<{ alias: string }>;
   badgesById: Array<{ name: string; group: string }>;
@@ -563,16 +577,7 @@ export function createSaveParser(gameData: {
     .filter((b) => b.group !== 'badges')
     .map((b) => b.name);
 
-  // Add runtime badges that are defined in badge-conditions but not in gameData
-  // These are appended to preserve badge index compatibility with legacy saves
-  const runtimeBadges = [
-    'Click Ninja',
-    'Click Ninja Ninja',
-    'Not So Redundant',
-    "Don't Litter!",
-    'Beachcomber',
-  ];
-  const allRegularBadgeNames = [...regularBadgeNames, ...runtimeBadges];
+  const allRegularBadgeNames = [...regularBadgeNames, ...RUNTIME_BADGES];
 
   return new SaveParser(allBoostAliases, allRegularBadgeNames, otherBadgeNames);
 }
