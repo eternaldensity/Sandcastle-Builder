@@ -551,11 +551,9 @@ export class SaveParser {
  * matching legacy startup where badges.js defines every badge up front.
  */
 export const RUNTIME_BADGES = [
-  'Click Ninja',
-  'Click Ninja Ninja',
   'Not So Redundant',
   "Don't Litter!",
-  'Beachcomber',
+  'Y U NO BELIEVE ME?',
 ];
 
 export function createSaveParser(gameData: {

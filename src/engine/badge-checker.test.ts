@@ -224,12 +224,13 @@ describe('BadgeChecker', () => {
       glassCeilingCount: 0,
     };
 
-    // First check earns all badges that match beachClicks >= 2
-    // Amazon Patent (>= 1), Click Ninja (>= 1), Oops (>= 2).
-    // ('Not So Redundant' is a kitty-click badge, earned in processKittyClickBadges.)
+    // First check earns all badges that match beachClicks >= 2:
+    // Amazon Patent (>= 1), Oops (>= 2).
+    // ('Click Ninja' never existed in legacy; kitty badges live in
+    // processKittyClickBadges, not here.)
     const first = checker.check('click', state);
-    expect(first.length).toBe(3);
-    expect(earnedBadges.length).toBe(3);
+    expect(first.length).toBe(2);
+    expect(earnedBadges.length).toBe(2);
 
     // Second check with same state earns nothing
     earnedBadges = [];

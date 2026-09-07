@@ -87,15 +87,10 @@ export const badgeConditions: BadgeCondition[] = [
   // Reference: data.js:1240+, badges.js click-based badges
   // =============================================================================
   { badge: 'Amazon Patent', trigger: 'click', check: s => s.beachClicks >= 1 },
-  { badge: 'Click Ninja', trigger: 'click', check: s => s.beachClicks >= 1 },
   { badge: 'Oops', trigger: 'click', check: s => s.beachClicks >= 2 },
   { badge: 'Just Starting', trigger: 'click', check: s => s.beachClicks >= 10 },
-  { badge: 'Click Ninja Ninja', trigger: 'click', check: s => s.beachClicks >= 10 },
   { badge: 'Busy Clicking', trigger: 'click', check: s => s.beachClicks >= 100 },
-  { badge: 'Beachcomber', trigger: 'click', check: s => s.beachClicks >= 256 },
-  { badge: 'Beachwalker', trigger: 'click', check: s => s.beachClicks >= 512 },
   { badge: 'Click Storm', trigger: 'click', check: s => s.beachClicks >= 1000 },
-  { badge: 'Beachranger', trigger: 'click', check: s => s.beachClicks >= 1024 },
 
   // =============================================================================
   // Tool count badges (trigger: 'tool-purchase')
