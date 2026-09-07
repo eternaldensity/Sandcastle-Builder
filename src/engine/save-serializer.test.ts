@@ -22,6 +22,7 @@ import {
   parseBadges,
   parseOtherBadges,
   parseNPData,
+  nextLegalNP,
 } from './save-parser.js';
 import type { ToolState, BoostState, NPData } from '../types/game-data.js';
 
@@ -334,6 +335,30 @@ describe('SaveSerializer', () => {
       expect(parsed[10]?.magic1).toBe(2);
       expect(parsed[11]?.dragonType).toBe(2);
       expect(parsed[12]?.amount).toBe(200); // duplicate handled
+    });
+
+    it('walks fractional NPs (NextLegalNP)', () => {
+      expect(nextLegalNP(1)).toBe(1.1);
+      expect(nextLegalNP(1.1)).toBe(2);
+      expect(nextLegalNP(2)).toBe(2.1);
+      expect(nextLegalNP(-1)).toBe(0);
+      expect(nextLegalNP(0)).toBe(1);
+    });
+
+    it('round-trips fractional dragon data', () => {
+      const original: Record<number, NPData> = {
+        1: { dragonType: 1, amount: 10, defence: 5, attack: 3, dig: 2 },
+        1.1: { dragonType: 3, amount: 7, defence: 1, attack: 1, dig: 1 },
+        2: { dragonType: 2, amount: 20, defence: 10, attack: 6, dig: 4 },
+      };
+
+      const serialized = npDataToString(original);
+      const parsed = parseNPData(serialized, 4.0);
+
+      expect(parsed[1]?.amount).toBe(10);
+      expect(parsed[1.1]?.dragonType).toBe(3);
+      expect(parsed[1.1]?.amount).toBe(7);
+      expect(parsed[2]?.amount).toBe(20);
     });
   });
 

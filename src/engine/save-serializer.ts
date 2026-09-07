@@ -19,6 +19,7 @@
  */
 
 import type { BoostState, ToolState, GameData, NPData } from '../types/game-data.js';
+import { nextLegalNP } from './save-parser.js';
 
 /** Delimiters used in save format */
 const PIPE = 'P';
@@ -312,7 +313,8 @@ export function npDataToString(npData: Record<number, NPData>): string {
   let str = lowest + s + highest;
   let lastNP = '';
 
-  for (let np = lowest; np <= highest; np++) {
+  // Walk legal NPs including fractional stories (1, 1.1, 2, ...)
+  for (let np = lowest; np <= highest; np = nextLegalNP(np)) {
     str += s;
     const dd = npData[np];
 

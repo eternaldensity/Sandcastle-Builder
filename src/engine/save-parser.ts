@@ -375,13 +375,6 @@ export function parseNPData(
   let lastFields: string[] = [];
   let np = lowest;
 
-  // For v4+, use NextLegalNP logic (simplified here as incrementing)
-  // For older versions, just increment by 1
-  const nextNP = (current: number): number => {
-    // Simplified: just increment. Full logic would handle fractional NPs.
-    return current + 1;
-  };
-
   while (np <= highest && pixels.length > 0) {
     const pixel = pixels.shift()!;
 
@@ -424,10 +417,51 @@ export function parseNPData(
       };
     }
 
-    np = version >= 4 ? nextNP(np) : np + 1;
+    np = version >= 4 ? nextLegalNP(np) : np + 1;
   }
 
   return npData;
+}
+
+/**
+ * Fractional story parts (legacy Molpy.fracParts, data.js).
+ * Legal NPs are integers plus these fractions (1, 1.1, 2, 2.1, ...).
+ */
+export const FRAC_PARTS = [0.1];
+
+/**
+ * Next legal NP in a save walk, including fractional stories.
+ * Reference: dragons.js Molpy.NextLegalNP
+ */
+export function nextLegalNP(at: number, fracParts: number[] = FRAC_PARTS): number {
+  const frac = Number(
+    ((Math.abs(at * 10) - Math.floor(Math.abs(at)) * 10) / 10).toFixed(3),
+  );
+  if (at < -1) {
+    if (fracParts.indexOf(frac) > -1) {
+      if (fracParts.indexOf(frac) > 0) {
+        return -1 * (Math.floor(Math.abs(at)) + fracParts[fracParts.indexOf(frac) - 1]);
+      } else {
+        return -1 * Math.floor(Math.abs(at));
+      }
+    } else {
+      return -1 * (Math.floor(Math.abs(at)) - 1 + fracParts[fracParts.length - 1]);
+    }
+  } else if (at >= 1) {
+    if (fracParts.indexOf(frac) > -1) {
+      if (fracParts.indexOf(frac) < fracParts.length - 1) {
+        return Math.floor(Math.abs(at)) + fracParts[fracParts.indexOf(frac) + 1];
+      } else {
+        return Math.floor(Math.abs(at)) + 1;
+      }
+    } else {
+      return at + fracParts[0];
+    }
+  } else if (at === -1) {
+    return 0;
+  } else {
+    return 1;
+  }
 }
 
 /**
