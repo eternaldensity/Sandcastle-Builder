@@ -44,7 +44,6 @@ import {
 import { allUnlockRules } from './unlock-conditions.js';
 import {
   getBoostFunctions,
-  glassCeilingUnlockCheck,
   type BoostFunctionContext,
 } from './boost-functions.js';
 import {
@@ -538,6 +537,11 @@ export class ModernEngine implements GameEngine {
       }
     }
 
+    // Mirror legacy shop paint: gui.js repaintLoot() (via repaintAll on page
+    // load) unconditionally unlocks Chromatic Heresy, so every legacy
+    // session carries it. The headless engine has no shop to do it.
+    this.doUnlockBoost('Chromatic Heresy');
+
     // Initialize static badges from game data
     for (const [name] of Object.entries(this.gameData.badges)) {
       this.badges.set(name, false);
@@ -584,8 +588,9 @@ export class ModernEngine implements GameEngine {
     // Check for auto-unlocks (matches legacy CheckBuyUnlocks behavior)
     this.checkAutoUnlocks();
 
-    // Run glass ceiling unlock cascade on fresh init
-    glassCeilingUnlockCheck(this.createBoostFunctionContext('Glass Ceiling 0'));
+    // Note: no glass-ceiling cascade here. Legacy runs
+    // GlassCeilingUnlockCheck only from ceiling buy/lock functions
+    // (boosts.js), never eagerly at init — see Glass Ceiling 0 gap.
   }
 
   /**
@@ -834,8 +839,7 @@ export class ModernEngine implements GameEngine {
     this.recalculateSandRates();
     this.recalculateCastleRates();
 
-    // Run glass ceiling unlock cascade after loading
-    glassCeilingUnlockCheck(this.createBoostFunctionContext('Glass Ceiling 0'));
+    // Note: no glass-ceiling cascade after loading either (see above).
   }
 
   /**

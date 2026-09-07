@@ -56,6 +56,8 @@ const testGameData: GameData = {
     'Spring Fling': createBoostDef(8, 'Spring Fling', 'boosts', { Sand: 1000, Castles: 6 }),
     'Trebuchet Pong': createBoostDef(9, 'Trebuchet Pong'),
     'Goat Boost': createBoostDef(11, 'Goat Boost', 'boosts', { Goats: 5 }),
+    'Chromatic Heresy': createBoostDef(48, 'Chromatic Heresy', 'boosts', { Sand: 200, Castles: 10 }),
+    'Glass Ceiling 0': createBoostDef(60, 'Glass Ceiling 0', 'boosts', {}),
   },
   boostsById: [
     { alias: 'Sand' },
@@ -201,6 +203,18 @@ describe('ModernEngine', () => {
       expect(boostState.unlocked).toBe(0);
       expect(boostState.bought).toBe(0);
       expect(boostState.power).toBe(0);
+    });
+
+    it('unlocks Chromatic Heresy at init (legacy shop paint)', async () => {
+      // gui.js repaintLoot (via repaintAll on page load) unlocks it
+      const state = await engine.getBoostState('Chromatic Heresy');
+      expect(state.unlocked).toBe(1);
+    });
+
+    it('leaves Glass Ceiling 0 locked at init (no eager cascade)', async () => {
+      // Legacy runs the ceiling cascade only from buy/lock functions
+      const state = await engine.getBoostState('Glass Ceiling 0');
+      expect(state.unlocked).toBe(0);
     });
   });
 

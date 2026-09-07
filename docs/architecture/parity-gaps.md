@@ -53,6 +53,13 @@ browser run, that assertion should be revisited and this table updated.
 | G14 | ~~Shared session~~ — fixed: each `engine-comparison` suite launches a fresh LegacyEngine; `legacy-engine.test.ts` already isolated per describe |, so legacy state accumulates between describes (`engine-comparison` header). Prefer a fresh context per suite so comparisons start from identical states. |
 | G15 | `Parity Gap Summary` bakes in `expect(critical).toBeGreaterThan(0)`. Flip to `toBe(0)` (minus allow-listed intentional gaps) once G1–G4 are resolved. |
 
+## Closed by live CI evidence
+
+| # | Verdict |
+|---|---|
+| Unlock: Chromatic Heresy | **Fixed (UI-originated).** Legacy `gui.js repaintLoot` (via `repaintAll` on page load) unconditionally unlocks it, so every legacy session carries it. Mirrored in `initialize()` with a comment; the future UI track owns this behavior. |
+| Unlock: Glass Ceiling 0 | **Fixed (eager cascade removed).** Legacy runs the ceiling cascade only from ceiling buy/lock functions; modern ran it at init *and* load. Removed both eager calls (buy/lock paths already cascade). |
+
 ## Closed by the first green CI run + H1 probe
 
 | # | Verdict |
