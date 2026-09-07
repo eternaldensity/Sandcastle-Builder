@@ -526,6 +526,14 @@ describe.skipIf(!hasBrowser)('Engine Comparison', () => {
       // Document key gaps
       console.log('\nKey parity gaps to address (see docs/architecture/parity-gaps.md):');
       console.log('G1-G4 need a green browser run to close; G5-G11 are fixed.');
+      // Full enumerated diff for triage (CI sets PARITY_DUMP_DIFFS=1).
+      // Default runs keep the sample above to stay readable.
+      if (process.env.PARITY_DUMP_DIFFS) {
+        console.log(`\nAll differences (${result.differences.length}):`);
+        for (const d of result.differences) {
+          console.log(`  [${d.severity}] ${d.path}: legacy=${d.legacy}, modern=${d.modern}`);
+        }
+      }
 
       await modernEngine.dispose();
 

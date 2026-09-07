@@ -274,14 +274,18 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
       ];
 
       const modernState = await runActions(modern, actions);
+      const legacyState = await runActions(legacyEngine, actions);
 
       console.log(`\n=== ONG Transition Parity ===`);
+      console.log(`Legacy: NP=${legacyState.newpixNumber}, sand=${legacyState.sand}, castles=${legacyState.castles}`);
+      console.log(`Legacy badges: ${countEarnedBadges(legacyState)}, unlocked boosts: ${countUnlockedBoosts(legacyState)}`);
       console.log(`Modern: NP=${modernState.newpixNumber}, sand=${modernState.sand}, castles=${modernState.castles}`);
       console.log(`Modern badges: ${countEarnedBadges(modernState)}`);
       console.log(`Modern unlocked boosts: ${countUnlockedBoosts(modernState)}`);
 
-      // After ONG, newpix should advance
+      // After ONG, newpix should advance on both engines
       expect(modernState.newpixNumber).toBe(2);
+      expect(legacyState.newpixNumber).toBe(2);
       // Fibonacci cost should reset (nextCastleSand back to 1)
       // Resources should be non-negative
       expect(modernState.sand).toBeGreaterThanOrEqual(0);
@@ -294,23 +298,29 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
       const modern = new ModernEngine(gameData);
       await modern.initialize();
 
-      // ONG without clicking = ninja (no click in this NP)
-      // First tick earns badges, then ONG
-      await modern.tick(1);
-      const preONG = await modern.getStateSnapshot();
-      expect(preONG.ninjad).toBe(false); // No click yet
+      // Click once so ninjad is set, then ONG must clear it — same on both
+      await modern.clickBeach(1);
+      await legacyEngine.clickBeach(1);
+      const modernPre = await modern.getStateSnapshot();
+      const legacyPre = await legacyEngine.getStateSnapshot();
+      expect(modernPre.ninjad).toBe(true);
+      expect(legacyPre.ninjad).toBe(true);
 
       await modern.advanceToONG();
-      const postONG = await modern.getStateSnapshot();
+      await legacyEngine.advanceToONG();
+      const modernPost = await modern.getStateSnapshot();
+      const legacyPost = await legacyEngine.getStateSnapshot();
 
       console.log(`\n=== Ninja ONG Detection ===`);
-      console.log(`Pre-ONG ninjad: ${preONG.ninjad}`);
-      console.log(`Post-ONG ninjad: ${postONG.ninjad}`);
-      console.log(`Post-ONG ninjaFreeCount: ${postONG.ninjaFreeCount}`);
+      console.log(`Pre-ONG ninjad: legacy=${legacyPre.ninjad}, modern=${modernPre.ninjad}`);
+      console.log(`Post-ONG ninjad: legacy=${legacyPost.ninjad}, modern=${modernPost.ninjad}`);
+      console.log(`Post-ONG ninjaFreeCount: legacy=${legacyPost.ninjaFreeCount}, modern=${modernPost.ninjaFreeCount}`);
 
-      // After ONG, ninjad should be reset
-      expect(postONG.ninjad).toBe(false);
-      expect(postONG.newpixNumber).toBe(2);
+      // After ONG, ninjad should be reset on both engines
+      expect(modernPost.ninjad).toBe(false);
+      expect(legacyPost.ninjad).toBe(false);
+      expect(modernPost.newpixNumber).toBe(2);
+      expect(legacyPost.newpixNumber).toBe(2);
 
       await modern.dispose();
     });
@@ -460,6 +470,14 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
         console.log(`\nSample critical diffs:`);
         for (const d of criticalDiffs) {
           console.log(`  ${d.path}: legacy=${d.legacy}, modern=${d.modern}`);
+        }
+      }
+      // Full enumerated diff for triage (CI sets PARITY_DUMP_DIFFS=1).
+      // Default runs keep the sample above to stay readable.
+      if (process.env.PARITY_DUMP_DIFFS) {
+        console.log(`\nAll differences (${result.differences.length}):`);
+        for (const d of result.differences) {
+          console.log(`  [${d.severity}] ${d.path}: legacy=${d.legacy}, modern=${d.modern}`);
         }
       }
 

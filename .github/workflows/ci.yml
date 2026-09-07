@@ -24,3 +24,6 @@ jobs:
 
       - name: Run tests (includes browser parity suites)
         run: npm test
+        env:
+          # Enumerated parity diffs in CI logs (off by default locally)
+          PARITY_DUMP_DIFFS: '1'
