@@ -298,7 +298,9 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
       const modern = new ModernEngine(gameData);
       await modern.initialize();
 
-      // Click once so ninjad is set, then ONG must clear it — same on both
+      // Click once so ninjad is set, then ONG must clear it — same on both.
+      // NP asserts are deltas: this suite shares one legacy session, so it
+      // may enter past NP 1 (a prior test already ONG'd).
       await modern.clickBeach(1);
       await legacyEngine.clickBeach(1);
       const modernPre = await modern.getStateSnapshot();
@@ -316,11 +318,11 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
       console.log(`Post-ONG ninjad: legacy=${legacyPost.ninjad}, modern=${modernPost.ninjad}`);
       console.log(`Post-ONG ninjaFreeCount: legacy=${legacyPost.ninjaFreeCount}, modern=${modernPost.ninjaFreeCount}`);
 
-      // After ONG, ninjad should be reset on both engines
+      // After ONG, ninjad should be reset and NP advanced by exactly 1
       expect(modernPost.ninjad).toBe(false);
       expect(legacyPost.ninjad).toBe(false);
-      expect(modernPost.newpixNumber).toBe(2);
-      expect(legacyPost.newpixNumber).toBe(2);
+      expect(modernPost.newpixNumber).toBe(modernPre.newpixNumber + 1);
+      expect(legacyPost.newpixNumber).toBe(legacyPre.newpixNumber + 1);
 
       await modern.dispose();
     });
@@ -463,6 +465,14 @@ describe.skipIf(!hasBrowser)('Mid-Game Parity', () => {
       console.log(`  Clicks: legacy=${legacyState.beachClicks}, modern=${modernState.beachClicks}`);
       console.log(`  Badges: legacy=${countEarnedBadges(legacyState)}, modern=${countEarnedBadges(modernState)}`);
       console.log(`  Unlocked boosts: legacy=${countUnlockedBoosts(legacyState)}, modern=${countUnlockedBoosts(modernState)}`);
+      const legacyUnlocked = Object.entries(legacyState.boosts).filter(([, b]) => b.unlocked > 0).map(([n]) => n);
+      const modernUnlocked = Object.entries(modernState.boosts).filter(([, b]) => b.unlocked > 0).map(([n]) => n);
+      console.log(`  Unlocked names legacy: ${legacyUnlocked.join(', ')}`);
+      console.log(`  Unlocked names modern: ${modernUnlocked.join(', ')}`);
+      const legacyBadges = Object.entries(legacyState.badges).filter(([, e]) => e).map(([n]) => n);
+      const modernBadges = Object.entries(modernState.badges).filter(([, e]) => e).map(([n]) => n);
+      console.log(`  Earned badges legacy: ${legacyBadges.join(', ')}`);
+      console.log(`  Earned badges modern: ${modernBadges.join(', ')}`);
 
       // Log some critical diffs for debugging
       const criticalDiffs = result.differences.filter(d => d.severity === 'critical').slice(0, 10);
