@@ -18,9 +18,9 @@ re-measured there before they are closed.
 
 | # | Area | Legacy | Modern | Severity |
 |---|---|---|---|---|
-| G1 | Beach click base rate | ~0.22 sand/click with ninja penalty | Simplified 1/click before multipliers (`engine-comparison` header) | critical |
-| G2 | Boost auto-unlock on start | Legacy unlocks on game start | `checkAutoUnlocks` exists — likely closed, unconfirmed | critical |
-| G3 | Badge auto-earn on conditions | Legacy earns on conditions | `badgeChecker` exists — likely closed, unconfirmed | critical |
+| G1 | Beach click base rate | ~~~0.22 with ninja penalty~~ — stale comment: no ninja penalty exists in legacy ClickBeach; base 1 + multipliers (boosts.js:7359-7391) is fully implemented and pinned (`calculateSandPerClick` base test + the suite's own legacy `sandPerClick == 1` assertion) | Simplified 1/click before multipliers (`engine-comparison` header) | critical |
+| G2 | Boost auto-unlock on start | Implemented (`initialize` runs `checkAutoUnlocks`, data.js:649-826) — awaiting browser snapshot confirmation | `checkAutoUnlocks` exists — likely closed, unconfirmed | critical |
+| G3 | Badge auto-earn on conditions | Implemented (`badgeChecker` on tick/click/ONG + earn cascades) — awaiting browser snapshot confirmation | `badgeChecker` exists — likely closed, unconfirmed | critical |
 | G4 | Click multipliers | Complex boost modifiers (was issue #21) | Partially implemented | important |
 
 G1–G4 date from the early `Parity Gap Summary` suite, which asserts
@@ -50,7 +50,7 @@ browser run, that assertion should be revisited and this table updated.
 
 | # | Issue |
 |---|---|
-| G14 | Browser suites reuse one browser session, so legacy state accumulates between describes (`engine-comparison` header). Prefer a fresh context per suite so comparisons start from identical states. |
+| G14 | ~~Shared session~~ — fixed: each `engine-comparison` suite launches a fresh LegacyEngine; `legacy-engine.test.ts` already isolated per describe |, so legacy state accumulates between describes (`engine-comparison` header). Prefer a fresh context per suite so comparisons start from identical states. |
 | G15 | `Parity Gap Summary` bakes in `expect(critical).toBeGreaterThan(0)`. Flip to `toBe(0)` (minus allow-listed intentional gaps) once G1–G4 are resolved. |
 
 ## Deliberate simplifications (keep)

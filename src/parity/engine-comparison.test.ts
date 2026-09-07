@@ -4,11 +4,14 @@
  * Runs identical action sequences on both LegacyEngine and ModernEngine
  * to identify parity gaps and validate the modern implementation.
  *
- * Key findings from initial tests:
- * - Legacy game starts with some boosts unlocked and badges earned
- * - Beach click yields ~0.22 sand in legacy (base rate with ninja penalty)
- * - Modern engine uses simplified 1 sand per click
- * - State accumulates in legacy engine between tests (browser session)
+ * Each suite below launches a FRESH legacy browser session, so comparisons
+ * start from identical states (see G14 in docs/architecture/parity-gaps.md).
+ *
+ * Verified against legacy sources (no ninja click penalty exists;
+ * boosts.js:7359-7391 gives base 1 + multipliers, as implemented):
+ * - Legacy and modern both dig 1 sand per click on a fresh game
+ *   (asserted in 'Beach Click Comparison')
+ * - Legacy starts with some boosts unlocked and badges earned
  */
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
@@ -44,18 +47,21 @@ async function runActions(
 }
 
 describe.skipIf(!hasBrowser)('Engine Comparison', () => {
-  let legacyEngine: LegacyEngine;
-
-  beforeAll(async () => {
-    legacyEngine = new LegacyEngine();
-    await legacyEngine.initialize();
-  }, 60000);
-
-  afterAll(async () => {
-    await legacyEngine.dispose();
-  });
+  // NOTE: each nested suite launches its own fresh LegacyEngine so no
+  // state leaks between comparisons (G14). Shared setup was removed.
 
   describe('Initial State Analysis', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('captures legacy initial state for reference', async () => {
       const legacyState = await legacyEngine.getStateSnapshot();
 
@@ -119,6 +125,17 @@ describe.skipIf(!hasBrowser)('Engine Comparison', () => {
   });
 
   describe('Beach Click Comparison', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('checks legacy sandPerClick and auto-castle conversion', async () => {
       // Diagnose how legacy handles sand clicks and auto-castle conversion
       const page = await legacyEngine.getMolpyHandle();
@@ -227,9 +244,8 @@ describe.skipIf(!hasBrowser)('Engine Comparison', () => {
       const modernEngine = new ModernEngine(gameData);
       await modernEngine.initialize();
 
-      // Click same number of times on both
-      // Note: Legacy engine has accumulated state from previous tests
-      // So we check the deltas, not absolute values
+      // Click same number of times on both fresh engines
+      // (this suite owns its legacy session, so states start identical)
       const legacyBefore = await legacyEngine.getStateSnapshot();
       await legacyEngine.clickBeach(5);
       const legacyAfter = await legacyEngine.getStateSnapshot();
@@ -253,6 +269,17 @@ describe.skipIf(!hasBrowser)('Engine Comparison', () => {
   });
 
   describe('ONG Transition Comparison', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('compares newpix increment', async () => {
       const legacyBefore = await legacyEngine.getStateSnapshot();
       await legacyEngine.advanceToONG();
@@ -441,6 +468,17 @@ describe.skipIf(!hasBrowser)('Engine Comparison', () => {
   });
 
   describe('Parity Gap Summary', () => {
+    let legacyEngine: LegacyEngine;
+
+    beforeAll(async () => {
+      legacyEngine = new LegacyEngine();
+      await legacyEngine.initialize();
+    }, 60000);
+
+    afterAll(async () => {
+      await legacyEngine.dispose();
+    });
+
     it('documents known parity gaps', async () => {
       const modernEngine = new ModernEngine(gameData);
       await modernEngine.initialize();
@@ -450,7 +488,7 @@ describe.skipIf(!hasBrowser)('Engine Comparison', () => {
         { type: 'click', target: 'beach', count: 5 },
       ];
 
-      // Note: Legacy state already has accumulated state from previous tests
+      // Both engines start fresh (suite-owned legacy session)
       const legacyStateBefore = await legacyEngine.getStateSnapshot();
       for (const action of actions) {
         await legacyEngine.executeAction(action);
@@ -474,11 +512,8 @@ describe.skipIf(!hasBrowser)('Engine Comparison', () => {
       console.log(`Cosmetic differences: ${result.counts.cosmetic}`);
 
       // Document key gaps
-      console.log('\nKey parity gaps to address:');
-      console.log('1. Boost unlocking: Legacy has auto-unlock logic on game start');
-      console.log('2. Badge earning: Legacy earns badges automatically on conditions');
-      console.log('3. Click multipliers: Legacy has complex boost modifiers (issue #21 partial)');
-      console.log('IMPLEMENTED: Sand-to-castle Fibonacci conversion (toCastles)');
+      console.log('\nKey parity gaps to address (see docs/architecture/parity-gaps.md):');
+      console.log('G1-G4 need a green browser run to close; G5-G11 are fixed.');
 
       await modernEngine.dispose();
 
