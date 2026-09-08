@@ -53,6 +53,13 @@ browser run, that assertion should be revisited and this table updated.
 | G14 | ~~Shared session~~ — fixed: each `engine-comparison` suite launches a fresh LegacyEngine; `legacy-engine.test.ts` already isolated per describe |, so legacy state accumulates between describes (`engine-comparison` header). Prefer a fresh context per suite so comparisons start from identical states. |
 | G15 | `Parity Gap Summary` bakes in `expect(critical).toBeGreaterThan(0)`. Flip to `toBe(0)` (minus allow-listed intentional gaps) once G1–G4 are resolved. |
 
+## Closed by live CI evidence (third run)
+
+| # | Verdict |
+|---|---|
+| Unlock count 3v4 | **Artifact on both sides, fixed.** Legacy's extra two were Sand + Castles (now snapshotted); modern's extra was GlassChips, which legacy starts locked — virtual defaults corrected to unlocked:0/bought:0. Sand/Castles mirror observed live state (unlocked:1, bought:0) even though their defs declare bought:1; the zeroing mechanism is unidentified. |
+| Gap Summary 6 criticals | **All accounted for.** GlassChips unlocked/bought, GlassBlocks unlocked/bought, Sand.bought, Castles.bought — the same virtual-default fixes above. |
+
 ## Closed by live CI evidence (second run)
 
 | # | Verdict |

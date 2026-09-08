@@ -616,16 +616,20 @@ export class ModernEngine implements GameEngine {
    */
   private ensureVirtualBoosts(): void {
     if (!this.boosts.has('Sand')) {
-      this.boosts.set('Sand', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+      // Defs declare bought:1, but live sessions read bought 0 with
+      // unlocked 1 (mechanism unidentified; observed twice). Mirror live.
+      this.boosts.set('Sand', { unlocked: 1, bought: 0, power: 0, countdown: 0 });
     }
     if (!this.boosts.has('Castles')) {
-      this.boosts.set('Castles', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+      this.boosts.set('Castles', { unlocked: 1, bought: 0, power: 0, countdown: 0 });
     }
     if (!this.boosts.has('GlassChips')) {
-      this.boosts.set('GlassChips', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+      // Unlocks on first chip gain (GlassChips.Add), not at load
+      this.boosts.set('GlassChips', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
     }
     if (!this.boosts.has('GlassBlocks')) {
-      this.boosts.set('GlassBlocks', { unlocked: 1, bought: 1, power: 0, countdown: 0 });
+      // Unlocks on first block gain, not at load
+      this.boosts.set('GlassBlocks', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
     }
     if (!this.boosts.has('TF')) {
       this.boosts.set('TF', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
