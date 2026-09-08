@@ -13,9 +13,12 @@ describe('Discovery System', () => {
   });
 
   describe('Discovery Data', () => {
-    it('has 700 total discoveries', () => {
+    it('has 758 total discoveries (700 integer + 58 fractional)', () => {
+      // Fractional MakeQuadBadge entries (badges.js) were missing until
+      // the discoveries-extracted.json repair; see parity-gaps.md registry.
       const allNPs = getAllDiscoveryNPs();
-      expect(allNPs.length).toBe(700);
+      expect(allNPs.length).toBe(758);
+      expect(getDiscovery(13.1)?.name).toBe('Another one?');
     });
 
     it('has discovery for NP 1 (In the Beginning)', () => {

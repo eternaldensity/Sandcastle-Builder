@@ -15,6 +15,11 @@
     "desc": "11 pix before humanoid life. A new record?"
   },
   {
+    "np": 13.1,
+    "name": "Another one?",
+    "desc": "The beanies might have an adventure."
+  },
+  {
     "np": 16,
     "name": "Dip",
     "desc": "when Cueball dipped his toe in the fluid"
@@ -110,6 +115,26 @@
     "desc": "when Cueball also left"
   },
   {
+    "np": 197.1,
+    "name": "The Sea",
+    "desc": "The first sign of OTTishness in over 180 pix."
+  },
+  {
+    "np": 202.1,
+    "name": "Wave",
+    "desc": "The sea is uneven."
+  },
+  {
+    "np": 203.1,
+    "name": "Hour-long Night",
+    "desc": "The first night lasts an hour. It is uneventful."
+  },
+  {
+    "np": 209.1,
+    "name": "The Forty arrive",
+    "desc": "We hear a familiar voice from a familiar scene."
+  },
+  {
     "np": 210,
     "name": "That Looks Grand",
     "desc": "when Cueball completed the bridge connecting the two castles together"
@@ -125,6 +150,11 @@
     "desc": "when something flew through the air towards Cueball from behind"
   },
   {
+    "np": 212.1,
+    "name": "T** **d again?",
+    "desc": "In which we see the familiar scene."
+  },
+  {
     "np": 213,
     "name": "Surprise Attack",
     "desc": "the moment Cueball realised he was under fire"
@@ -133,6 +163,11 @@
     "np": 214,
     "name": "Cornered",
     "desc": "when the corner was knocked off the bridge"
+  },
+  {
+    "np": 216.1,
+    "name": "Well that was quick",
+    "desc": "In which t1i suddenly seemed to have ended."
   },
   {
     "np": 218,
@@ -155,14 +190,49 @@
     "desc": "Megan throwing her arms up as Cueball launched the trebuchet"
   },
   {
+    "np": 228.1,
+    "name": "Not over yet",
+    "desc": "The scene changes to reveal something new."
+  },
+  {
     "np": 232,
     "name": "Take Cover!",
     "desc": "when Cuegan jumped for cover after firing the trebuchet almost vertically"
   },
   {
+    "np": 237.1,
+    "name": "Settling in",
+    "desc": "In which we see the collected Forty once more."
+  },
+  {
     "np": 260,
     "name": "Shake it Out",
     "desc": "the time when Megan woke up and shook the sand out of her hair"
+  },
+  {
+    "np": 262.1,
+    "name": "Let's find out",
+    "desc": "Cueball and Megan go to meet their islandmates."
+  },
+  {
+    "np": 291.1,
+    "name": "Different air",
+    "desc": "The air is different."
+  },
+  {
+    "np": 292.1,
+    "name": "Seen the top already",
+    "desc": "In which we learn that Cueball and Megan have seen the top of the mountain"
+  },
+  {
+    "np": 294.1,
+    "name": "Breathe",
+    "desc": "Megan wonders if people can breathe on mountains."
+  },
+  {
+    "np": 304.1,
+    "name": "Another snake",
+    "desc": "Cueball sees a different snake."
   },
   {
     "np": 308,
@@ -173,6 +243,11 @@
     "np": 309,
     "name": "Whoops!",
     "desc": "the time that Megan slipped off the sand mound she had built"
+  },
+  {
+    "np": 317.1,
+    "name": "Just thinking",
+    "desc": "Cueball explains his slowness."
   },
   {
     "np": 318.1,
@@ -188,6 +263,11 @@
     "np": 321.1,
     "name": "Very cautious",
     "desc": "Increased efforts to be careful."
+  },
+  {
+    "np": 345.1,
+    "name": "It moved",
+    "desc": "A plant somehow moves."
   },
   {
     "np": 346.1,
@@ -220,6 +300,11 @@
     "desc": "the time that Cueball took a break to have a closer look at the fluid"
   },
   {
+    "np": 400.1,
+    "name": "The Top",
+    "desc": "Megan announces their arrival to the top of the island."
+  },
+  {
     "np": 402,
     "name": "Tiny",
     "desc": "Megan holding up something very tiny"
@@ -240,14 +325,49 @@
     "desc": "the sixth text, in which Cueball does not think they can build it much taller"
   },
   {
+    "np": 418.1,
+    "name": "Another Castle",
+    "desc": "The pair tries to make a dirt castle."
+  },
+  {
     "np": 421,
     "name": "The First Pole",
     "desc": "when Megan brought the first pole"
   },
   {
+    "np": 426.1,
+    "name": "I miss our beach",
+    "desc": "Dirt doesn't shape well."
+  },
+  {
+    "np": 432.1,
+    "name": "They've been here",
+    "desc": "The Beanies have been there."
+  },
+  {
+    "np": 440.1,
+    "name": "The Beanie fortress",
+    "desc": "Cueball finishes a replica of the Beanie Fortress."
+  },
+  {
+    "np": 441.1,
+    "name": "Mountain identified",
+    "desc": "Megan figures out where they are."
+  },
+  {
+    "np": 448.1,
+    "name": "Two flags",
+    "desc": "The pair leave a corresponding pair of flags in the castle."
+  },
+  {
     "np": 451,
     "name": "Breath Easy",
     "desc": "when Megan finished lifting the first pole into position and had a chance to catch her breath"
+  },
+  {
+    "np": 455.1,
+    "name": "Beanie cam",
+    "desc": "The Beanies spot the castle."
   },
   {
     "np": 460,
@@ -310,6 +430,11 @@
     "desc": "when the two sides of the scaffolding were joined"
   },
   {
+    "np": 556.1,
+    "name": "The other half",
+    "desc": "We learn just how small the island is."
+  },
+  {
     "np": 560.1,
     "name": "Broken castle",
     "desc": "The pair spots something interesting."
@@ -350,6 +475,11 @@
     "desc": "when Cueball put flags on the Rooks"
   },
   {
+    "np": 633.1,
+    "name": "Warning signs",
+    "desc": "We see a sinister-looking series of Xs."
+  },
+  {
     "np": 637,
     "name": "Questioning",
     "desc": "when Megan wondered if it rained on the sea, as they stood on the observation platform"
@@ -370,9 +500,19 @@
     "desc": "when Cueball wondered about other rivers, as Megan attached a rope to a pole"
   },
   {
+    "np": 649.1,
+    "name": "Not a castle",
+    "desc": "The castle is arrived at."
+  },
+  {
     "np": 653,
     "name": "Next Level",
     "desc": "when Cuegan finished lifting the next horizontal piece above the platform"
+  },
+  {
+    "np": 658.1,
+    "name": "Recent",
+    "desc": "Someone was there recently."
   },
   {
     "np": 659,
@@ -400,6 +540,41 @@
     "desc": "the instant of Megan's fall off the bucket"
   },
   {
+    "np": 679.1,
+    "name": "There's a cave",
+    "desc": "Cueball notices a cave."
+  },
+  {
+    "np": 680.1,
+    "name": "Someone inside",
+    "desc": "Someone is inside."
+  },
+  {
+    "np": 681.1,
+    "name": "Beanies!",
+    "desc": "The beanies yell for the first time."
+  },
+  {
+    "np": 685.1,
+    "name": "Oh no!",
+    "desc": "Cueball yells for the first time."
+  },
+  {
+    "np": 760.1,
+    "name": "Back home",
+    "desc": "The foursome arrives back to the Forty's camp."
+  },
+  {
+    "np": 772.1,
+    "name": "Beanies learn quickly",
+    "desc": "The beanie figures out a word."
+  },
+  {
+    "np": 788.1,
+    "name": "and draw well",
+    "desc": "The beanie uses her sketchbook."
+  },
+  {
     "np": 792,
     "name": "Nap",
     "desc": "when Megan took a nap on the platform after finishing the Top Castle"
@@ -415,9 +590,19 @@
     "desc": "when LaPetite left, having made a big impression on our hearts"
   },
   {
+    "np": 804.1,
+    "name": "Close call",
+    "desc": "Cueball realizes how lucky he is."
+  },
+  {
     "np": 806,
     "name": "Megan Up!",
     "desc": "when Megan Molpies Up, though we had no idea it was called that at the time"
+  },
+  {
+    "np": 808.1,
+    "name": "Cueball gets excited",
+    "desc": "Cueball accidentally creates an awkward situation."
   },
   {
     "np": 812,
@@ -465,6 +650,11 @@
     "desc": "when Cueball suggested that there may be something wrong with the other rivers"
   },
   {
+    "np": 844.1,
+    "name": "Beanies learn extremely quickly",
+    "desc": "The Beanie learns to speak a language somewhat overnight."
+  },
+  {
     "np": 845,
     "name": "Extra flags",
     "desc": "Megan bringing some more flags for the top castle"
@@ -510,6 +700,11 @@
     "desc": "the critical moment when Megan suggested finding out why the sea was rising and Cueball immediately agreed"
   },
   {
+    "np": 864.1,
+    "name": "Not Superman",
+    "desc": "The Beanie displays her non-superman, non-plane art."
+  },
+  {
     "np": 865,
     "name": "Bags",
     "desc": "when Megan went to get bags"
@@ -530,14 +725,29 @@
     "desc": "Megan saying bye"
   },
   {
+    "np": 924.1,
+    "name": "Assorted Art",
+    "desc": "The Beanie shows her sketchbook's content."
+  },
+  {
     "np": 925,
     "name": "Crumbling",
     "desc": "when part of the castle fell into the liquid"
   },
   {
+    "np": 926.1,
+    "name": "Some sort of molpy",
+    "desc": "Another drawing of something weird."
+  },
+  {
     "np": 951,
     "name": "She Returns",
     "desc": "the brief moment in The Fading when LaPetite returned, and there was much rejoicing"
+  },
+  {
+    "np": 956.1,
+    "name": "She knows everything",
+    "desc": "The pair discuss their views on Beanish knowledge."
   },
   {
     "np": 969,
@@ -580,6 +790,11 @@
     "desc": "Cueball and Megan stop to drink"
   },
   {
+    "np": 997.1,
+    "name": "Bad water",
+    "desc": "The pair realize that the water is dangerous."
+  },
+  {
     "np": 999,
     "name": "Change Direction",
     "desc": "when the picture changes orientation by 90 degrees"
@@ -608,6 +823,11 @@
     "np": 1018,
     "name": "Steam bottle",
     "desc": "Megan says: If we don't find something today, we'll have to start using the steam bottle."
+  },
+  {
+    "np": 1023.1,
+    "name": "The plan",
+    "desc": "The Beanie reveals the chosen method of retrieval."
   },
   {
     "np": 1024,
@@ -710,14 +930,34 @@
     "desc": "Cueball: I'm glad we found this river."
   },
   {
+    "np": 1094.1,
+    "name": "Crunch",
+    "desc": "The body makes a crunching sound."
+  },
+  {
     "np": 1096,
     "name": "Bigger",
     "desc": "Megan: This river is even bigger than it looked."
   },
   {
+    "np": 1097.1,
+    "name": "Stuck",
+    "desc": "The retrieval device gets stuck."
+  },
+  {
+    "np": 1105.1,
+    "name": "Lasso",
+    "desc": "Megan begins to try to lasso the body."
+  },
+  {
     "np": 1106.1,
     "name": "Yeah!",
     "desc": "Megan successfully gets the body."
+  },
+  {
+    "np": 1115.1,
+    "name": "Looking weird",
+    "desc": "The pair comment on their cave protection devices."
   },
   {
     "np": 1123,
@@ -770,6 +1010,11 @@
     "desc": "Megan: It'd have to rise a lot higher before any tents got wet."
   },
   {
+    "np": 1173.1,
+    "name": "Burial site",
+    "desc": "The trio finish burying the body."
+  },
+  {
     "np": 1178,
     "name": "Bigger Hills",
     "desc": "Cueball: This river flows from bigger hills than ours."
@@ -788,6 +1033,11 @@
     "np": 1184,
     "name": "Swim in",
     "desc": "Megan: I wonder if it's possible to swim in."
+  },
+  {
+    "np": 1202.1,
+    "name": "Fossils",
+    "desc": "The Beanie shows the pair something from the dead bodies."
   },
   {
     "np": 1212,
@@ -815,6 +1065,11 @@
     "desc": "The Beanish boat is revealed."
   },
   {
+    "np": 1229.1,
+    "name": "Map",
+    "desc": "A crude map is finished."
+  },
+  {
     "np": 1233,
     "name": "Windier",
     "desc": "Megan: It must get windier up here."
@@ -833,6 +1088,21 @@
     "np": 1276,
     "name": "Raptor",
     "desc": "First raptor spotted (a swift)"
+  },
+  {
+    "np": 1291.1,
+    "name": "Back already",
+    "desc": "The trio return by boat."
+  },
+  {
+    "np": 1321.1,
+    "name": "Oil barrels",
+    "desc": "The second image from the book."
+  },
+  {
+    "np": 1323.1,
+    "name": "Radioactive",
+    "desc": "The fourth image from the book."
   },
   {
     "np": 1338,
@@ -860,6 +1130,11 @@
     "desc": "Cueball finds the first traces of people"
   },
   {
+    "np": 1373.1,
+    "name": "Who taught them",
+    "desc": "Lapetite explains what is happening, suggesting an answer to an old question."
+  },
+  {
     "np": 1378,
     "name": "Berries Eaten",
     "desc": "Cueball gives berries to Megan"
@@ -885,6 +1160,11 @@
     "desc": "They discuss what is in the camp"
   },
   {
+    "np": 1395.1,
+    "name": "Summon bigger boat",
+    "desc": "A bigger Beanish boat is revealed."
+  },
+  {
     "np": 1396,
     "name": "Ibises",
     "desc": "Ibises are seen eating in the damp ground"
@@ -905,6 +1185,11 @@
     "desc": "Megan: I'm surprised we haven't been seen by any people yet."
   },
   {
+    "np": 1408.1,
+    "name": "T** **d for real.",
+    "desc": "T** **d is displayed a second time."
+  },
+  {
     "np": 1409,
     "name": "Live Here",
     "desc": "Megan: If it's this empty, we should live here."
@@ -923,6 +1208,11 @@
     "np": 1414,
     "name": "Get Fresher",
     "desc": "Cueball says the sea should get fresher"
+  },
+  {
+    "np": 1414.1,
+    "name": "Rosetta returns",
+    "desc": "Rosetta is seen receiving the maps from the pair."
   },
   {
     "np": 1415,
