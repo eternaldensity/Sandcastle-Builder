@@ -53,6 +53,14 @@ browser run, that assertion should be revisited and this table updated.
 | G14 | ~~Shared session~~ — fixed: each `engine-comparison` suite launches a fresh LegacyEngine; `legacy-engine.test.ts` already isolated per describe |, so legacy state accumulates between describes (`engine-comparison` header). Prefer a fresh context per suite so comparisons start from identical states. |
 | G15 | `Parity Gap Summary` bakes in `expect(critical).toBeGreaterThan(0)`. Flip to `toBe(0)` (minus allow-listed intentional gaps) once G1–G4 are resolved. |
 
+## Closed by live CI evidence (second run)
+
+| # | Verdict |
+|---|---|
+| Unlock count 3v1 | **Artifact, fixed.** Legacy's extra two were Sand + Castles, which the engine tracked as resources but omitted from snapshots. `initialize()` now ensures virtual boosts, so snapshots include them. |
+| Switching countdowns | **Fixed.** Legacy constructor zeroes countdown (`startCountdown` applies on activation); init no longer seeds 1500/2500. |
+| Polarizer power | **Fixed.** `startPower: -1` restored in game-data (extractor block-splitting drops it; pinned by test, limitation documented in extractor). |
+
 ## Closed by live CI evidence
 
 | # | Verdict |
