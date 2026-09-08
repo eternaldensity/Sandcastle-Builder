@@ -68,3 +68,19 @@ describe('badge registry', () => {
     );
   });
 });
+
+describe('boost extraction values', () => {
+  it('keeps hand-verified values the extractor cannot reach', () => {
+    // Polarizer.startPower lives in a nested def the one-level extractor
+    // regex cannot see; snapshots depend on it (legacy power -1).
+    const boosts = gameData.boosts as Record<string, { startPower?: number; startCountdown?: number }>;
+    expect(boosts['Polarizer']?.startPower).toBe(-1);
+  });
+
+  it('starts Switching countdowns from defs (zeroed live at init)', () => {
+    // Legacy constructor zeroes countdown; the def values apply on activation.
+    const boosts = gameData.boosts as Record<string, { startPower?: number; startCountdown?: number }>;
+    expect(boosts['Glass Furnace Switching']?.startCountdown).toBe(1500);
+    expect(boosts['Glass Blower Switching']?.startCountdown).toBe(2500);
+  });
+});

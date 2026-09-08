@@ -490,13 +490,15 @@ export class ModernEngine implements GameEngine {
       });
     }
 
-    // Initialize boosts with default values
+    // Initialize boosts with default values.
+    // Legacy constructor sets power from startPower but ALWAYS zeroes
+    // countdown (castle.js Boost); startCountdown applies on activation.
     for (const [alias, def] of Object.entries(this.gameData.boosts)) {
       this.boosts.set(alias, {
         unlocked: 0,
         bought: 0,
         power: def.startPower ?? 0,
-        countdown: def.startCountdown ?? 0,
+        countdown: 0,
       });
     }
 
@@ -536,6 +538,10 @@ export class ModernEngine implements GameEngine {
         this.boosts.set(name, { unlocked: 0, bought: 0, power: 0, countdown: 0 });
       }
     }
+
+    // Resource boosts exist from page load in legacy; snapshots must
+    // include them (idempotent — skips TF/ceilings already set above).
+    this.ensureVirtualBoosts();
 
     // Mirror legacy shop paint: gui.js repaintLoot() (via repaintAll on page
     // load) unconditionally unlocks Chromatic Heresy, so every legacy

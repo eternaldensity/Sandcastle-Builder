@@ -7631,7 +7631,8 @@
       "hasLockFunction": false,
       "hasUnlockFunction": false,
       "hasCountdownFunction": false,
-      "hasLoadFunction": false
+      "hasLoadFunction": false,
+      "startPower": -1
     },
     "Meteor": {
       "id": 322,

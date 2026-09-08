@@ -34,11 +34,9 @@ const testGameData: GameData = {
   version: '1.0.0',
   sourceVersion: 4.12,
   extractedAt: '2026-01-25T00:00:00.000Z',
+  // Note: no Sand/Castles/GlassChips/GlassBlocks defs here, matching
+  // production game-data — the engine provides them as virtual boosts.
   boosts: {
-    'Sand': createBoostDef(0, 'Sand', 'stuff'),
-    'Castles': createBoostDef(1, 'Castles', 'stuff'),
-    'GlassChips': createBoostDef(2, 'GlassChips', 'stuff'),
-    'GlassBlocks': createBoostDef(3, 'GlassBlocks', 'stuff'),
     'Goats': createBoostDef(10, 'Goats', 'stuff'),
     'Bonemeal': createBoostDef(20, 'Bonemeal', 'stuff'),
     'Bigger Buckets': createBoostDef(4, 'Bigger Buckets', 'boosts', { Sand: 500 }),
@@ -215,6 +213,20 @@ describe('ModernEngine', () => {
       // Legacy runs the ceiling cascade only from buy/lock functions
       const state = await engine.getBoostState('Glass Ceiling 0');
       expect(state.unlocked).toBe(0);
+    });
+
+    it('zeroes countdowns at init like the legacy constructor', async () => {
+      // castle.js Boost: this.countdown = 0 (startCountdown applies on activation)
+      const furnace = await engine.getBoostState('Glass Furnace Switching');
+      const blower = await engine.getBoostState('Glass Blower Switching');
+      expect(furnace.countdown).toBe(0);
+      expect(blower.countdown).toBe(0);
+    });
+
+    it('includes virtual resource boosts in snapshots', async () => {
+      const snapshot = await engine.getStateSnapshot();
+      expect(snapshot.boosts['Sand']?.unlocked).toBe(1);
+      expect(snapshot.boosts['Castles']?.unlocked).toBe(1);
     });
   });
 

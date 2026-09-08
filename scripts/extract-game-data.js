@@ -48,6 +48,10 @@ async function extractBoosts() {
     const boostsByAlias = {};
 
     // Match new Molpy.Boost({ ... }) patterns
+    // NOTE: one-level nesting only. Deeper defs (e.g. Polarizer) lose tail
+    // fields — game-data.json carries hand-verified values for those, pinned
+    // by badge-registry.test.ts. Do not “fix” with balanced matching: nested
+    // `new Molpy.Boost(` occurrences inside defs double-count (341 -> 465).
     // This regex finds the content between the opening { and closing });
     const boostPattern = /new\s+Molpy\.Boost\s*\(\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}\s*\)/g;
 
