@@ -53,6 +53,13 @@ browser run, that assertion should be revisited and this table updated.
 | G14 | ~~Shared session~~ — fixed: each `engine-comparison` suite launches a fresh LegacyEngine; `legacy-engine.test.ts` already isolated per describe |, so legacy state accumulates between describes (`engine-comparison` header). Prefer a fresh context per suite so comparisons start from identical states. |
 | G15 | `Parity Gap Summary` bakes in `expect(critical).toBeGreaterThan(0)`. Flip to `toBe(0)` (minus allow-listed intentional gaps) once G1–G4 are resolved. |
 
+## Closed by live CI evidence (fourth run)
+
+| # | Verdict |
+|---|---|
+| Unlock count 3v4 | **Fixed both directions.** Sand/Castles start *locked* (legacy defs declare unlocked, live reads locked until first dig/build — mirrored with unlock-on-first-gain in `clickSandGain`/`toCastles`); GlassChips/Blocks start locked. The `bought:1` in defs is likewise not live state (observed 0 everywhere). |
+| GlassBlocks countdown | **Fixed (field, not value).** Legacy tracks this in a separate `luckyGlass` field (castle.js:3763); modern hijacked `countdown`. Split into its own optional field; full Not-Lucky gift consumption is a follow-up (H6). |
+
 ## Closed by live CI evidence (third run)
 
 | # | Verdict |

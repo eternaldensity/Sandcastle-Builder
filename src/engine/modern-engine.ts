@@ -222,6 +222,8 @@ interface InternalBoostState extends BoostState {
   countdownCMS?: boolean;
   /** Whether to call countdownFunction during CMS without decrementing (castle.js:3364) */
   callcountdownifCMS?: boolean;
+  /** Glass available to Not Lucky gifts, reset per tick (castle.js:3763) */
+  luckyGlass?: number;
 }
 
 /**
@@ -616,12 +618,13 @@ export class ModernEngine implements GameEngine {
    */
   private ensureVirtualBoosts(): void {
     if (!this.boosts.has('Sand')) {
-      // Defs declare bought:1, but live sessions read bought 0 with
-      // unlocked 1 (mechanism unidentified; observed twice). Mirror live.
-      this.boosts.set('Sand', { unlocked: 1, bought: 0, power: 0, countdown: 0 });
+      // Legacy starts these locked; first dig/build unlocks (see clickSandGain
+      // and toCastles). Defs declare unlocked/bought, live reads unlocked 0,
+      // bought 0 until play begins.
+      this.boosts.set('Sand', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
     }
     if (!this.boosts.has('Castles')) {
-      this.boosts.set('Castles', { unlocked: 1, bought: 0, power: 0, countdown: 0 });
+      this.boosts.set('Castles', { unlocked: 0, bought: 0, power: 0, countdown: 0 });
     }
     if (!this.boosts.has('GlassChips')) {
       // Unlocks on first chip gain (GlassChips.Add), not at load
@@ -1823,11 +1826,11 @@ export class ModernEngine implements GameEngine {
     // Reference: castle.js:3757-3762
     this.processGlassProduction();
 
-    // Lucky Glass reset (castle.js:3763)
+    // Lucky Glass reset (castle.js:3763) — its own field, not countdown
     const glassBlocks = this.boosts.get('GlassBlocks');
     const glassChiller = this.boosts.get('GlassChiller');
     if (glassBlocks) {
-      glassBlocks.countdown = (glassChiller?.power ?? 0) + 1; // luckyGlass stored in countdown
+      glassBlocks.luckyGlass = (glassChiller?.power ?? 0) + 1;
     }
 
     // Castle tool destroy/build cycles

@@ -110,6 +110,11 @@ export function toCastles(access: BeachClickAccess): void {
   // Check castle-building badges if any castles were built
   if (access.castleBuild.totalBuilt > builtBefore) {
     access.notifyResourceChange();
+    // First build unlocks Castles (legacy Castles.build self-unlocks)
+    const castles = access.getBoost('Castles');
+    if (castles && !castles.unlocked) {
+      access.doUnlockBoost('Castles');
+    }
   }
 }
 
@@ -120,6 +125,11 @@ export function toCastles(access: BeachClickAccess): void {
 export function clickSandGain(access: BeachClickAccess): void {
   const sandGained = access.cachedSandPerClick;
   access.resources.sand += sandGained;
+  // First dig unlocks Sand (legacy Sand.dig self-unlocks)
+  const sand = access.getBoost('Sand');
+  if (sand && !sand.unlocked) {
+    access.doUnlockBoost('Sand');
+  }
   access.syncResourceBoosts();
 }
 

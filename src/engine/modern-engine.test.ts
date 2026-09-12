@@ -223,10 +223,27 @@ describe('ModernEngine', () => {
       expect(blower.countdown).toBe(0);
     });
 
-    it('includes virtual resource boosts in snapshots', async () => {
+    it('includes virtual resource boosts in snapshots, locked at init', async () => {
+      // Legacy starts Sand/Castles locked; first dig/build unlocks them
       const snapshot = await engine.getStateSnapshot();
-      expect(snapshot.boosts['Sand']?.unlocked).toBe(1);
-      expect(snapshot.boosts['Castles']?.unlocked).toBe(1);
+      expect(snapshot.boosts['Sand']).toBeDefined();
+      expect(snapshot.boosts['Sand']?.unlocked).toBe(0);
+      expect(snapshot.boosts['Castles']?.unlocked).toBe(0);
+    });
+
+    it('unlocks Sand and Castles on first click', async () => {
+      await engine.clickBeach(1);
+      const sand = await engine.getBoostState('Sand');
+      const castles = await engine.getBoostState('Castles');
+      expect(sand.unlocked).toBe(1);
+      expect(castles.unlocked).toBe(1);
+    });
+
+    it('tracks luckyGlass separately from countdown', async () => {
+      await engine.advanceToONG();
+      const blocks = await engine.getBoostState('GlassBlocks');
+      expect(blocks.countdown).toBe(0);
+      expect((engine as any).boosts.get('GlassBlocks')?.luckyGlass).toBe(1);
     });
   });
 
@@ -1503,7 +1520,8 @@ describe('ModernEngine', () => {
       await engine.advanceToONG();
 
       const gb = (engine as any).boosts.get('GlassBlocks');
-      expect(gb.countdown).toBe(8); // GlassChiller.power + 1
+      expect(gb.luckyGlass).toBe(8); // GlassChiller.power + 1
+      expect(gb.countdown).toBe(0);
     });
 
     it('Doublepost runs castle tools twice at ONG', async () => {
