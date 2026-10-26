@@ -13,7 +13,7 @@
 			if(!isFinite(mult)) return Infinity;
 			if(Molpy.Got('Huge Buckets')) mult *= 2;
 			if(Molpy.Got('Trebuchet Pong'))
-				mult *= Math.pow(1.5, Math.min(Math.floor(Molpy.CastleTools['Trebuchet'].amount / 2, 2000)));
+				mult *= Math.pow(1.5, Math.floor(Math.min(Molpy.CastleTools['Trebuchet'].amount / 2, 2000)));
 			if(Molpy.Got('Carrybot')) mult *= 4;
 			if(Molpy.Got('Buccaneer')) mult *= 2;
 			if(Molpy.Got('Flying Buckets')) mult *= Molpy.CastleTools['Trebuchet'].amount;
