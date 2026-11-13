@@ -51,10 +51,30 @@
 			<textarea onkeydown=Molpy.KeyDown id="exporttext">
 			</textarea>
 		</div>
-		<div id="devtweets">
-			<a class="twitter-timeline" href="https://twitter.com/HotdogVendorED" data-widget-id="409406668296822784">Tweets by @HotdogVendorED</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		<div id="bluesky">
+			<a class="bluesky-card" href="https://bsky.app/profile/her.toy.cybernetic.gay" target="_blank" rel="noopener noreferrer" title="Follow on Bluesky">
+				<img id="bluesky-avatar" class="bluesky-avatar" src="" alt="Bluesky avatar" />
+				<span class="bluesky-text">
+					<span class="bluesky-name">her.toy.cybernetic.gay</span>
+					<span class="bluesky-handle">@her.toy.cybernetic.gay</span>
+					<span class="bluesky-cta">Follow on Bluesky &#x2197;</span>
+				</span>
+			</a>
 		</div>
+<script>
+(function(){
+	var actor = 'her.toy.cybernetic.gay';
+	fetch('https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=' + encodeURIComponent(actor))
+		.then(function(r){ return r.json(); })
+		.then(function(d){
+			var img = document.getElementById('bluesky-avatar');
+			if (img && d && d.avatar) img.src = d.avatar;
+			var name = document.querySelector('.bluesky-name');
+			if (name && d && d.displayName) name.textContent = d.displayName;
+		})
+		.catch(function(){});
+})();
+</script>
 	</div>
 	<div id="scrumptiousdonuts"></div>
 </body>
